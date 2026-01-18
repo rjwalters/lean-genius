@@ -1,33 +1,121 @@
 {
   "id": "erdos-1031",
-  "title": "Erdős Problem #1031",
+  "title": "Erdős Problem #1031: Induced Regular Subgraphs in Non-Ramsey Graphs",
   "slug": "erdos-1031",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices which contains no trivial (empty or complete) subgraph on ... many vertices, then must ... ...",
+  "description": "If G on n vertices has no trivial subgraph on ≥ 10 log n vertices, must G contain an induced non-trivial regular subgraph on ≫ log n vertices? YES (Prömel-Rödl 1999). Stronger: such G is c log n - universal.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Fajtlowicz-Staton, Prömel-Rödl (1999)",
     "sourceUrl": "https://erdosproblems.com/1031",
-    "date": "",
+    "date": "1999",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1031Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "regular-graphs",
+      "universality"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 5,
     "erdosNumber": 1031,
     "erdosUrl": "https://erdosproblems.com/1031",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [82]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1031 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph on $n$ vertices which contains no trivial (empty or complete) subgraph on $\\geq 10\\log n$ many vertices, then must $G$ contain an induced non-trivial regular subgraph on $\\gg \\log n$ many vertices?\n\n\n\nA question of Erd\\H{o}s, Fajtlowicz, and Staton. Erd\\H{o}s \\cite{Er93} writes 'Perhaps very much more is true but we could not even prove this seemingly weak result'.\n\nBy Ramsey's theorem every graph on $n$ vertices contains a trivial subgraph on $\\gg \\log n$ many vertices.\n\nThis is true, and was proved by Pr\\\"{o}mel and R\\\"{o}dl \\cite{PrRo99}, in the strong sense that, for any $c>0$, if $G$ contains no trivial subgraph on $\\geq c\\log n$ vertices then $G$ contains all graphs with $O_c(\\log n)$ many vertices as induced subgraphs.\n\nSee also [82] for how large an induced regular subgraph a general graph must contain.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[PrRo99] Pr\\\"omel, Hans J\\\"urgen and R\\\"odl, Vojt\\v ech, Non-{R}amsey graphs are {$c\\log n$}-universal. J. Combin. Theory Ser. A (1999), 379--384.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Ramsey Theory Background**\n\nBy Ramsey's theorem, every graph on n vertices contains a trivial (empty or complete) subgraph on ≫ log n vertices. Graphs avoiding large trivial subgraphs are called 'non-Ramsey'.\n\n**The Question**: Erdős, Fajtlowicz, and Staton asked whether non-Ramsey graphs must contain large induced non-trivial regular subgraphs.\n\n**Resolution**: Prömel and Rödl (1999) proved something much stronger: non-Ramsey graphs are 'c log n - universal' - they contain ALL graphs on O(log n) vertices as induced subgraphs.",
+    "problemStatement": "**Problem Statement**\n\nIf G is a graph on n vertices with no trivial (empty or complete) subgraph on ≥ 10 log n vertices, must G contain an induced non-trivial regular subgraph on ≫ log n vertices?\n\n**Status**: SOLVED\n\n**Answer**: YES (Prömel-Rödl 1999)",
+    "proofStrategy": "**Proof Approach**\n\n1. **Universality**: Prömel-Rödl prove that non-Ramsey graphs are c log n - universal.\n\n2. **Regular Subgraphs Exist**: Since universal graphs contain all small graphs, they contain k-regular graphs for appropriate k.\n\n3. **Key Insight**: Avoiding trivial subgraphs forces such rich structure that the graph contains everything of moderate size.\n\n4. **From Universality to Regular**: Pick any non-trivial regular graph H on O(log n) vertices; it appears as an induced subgraph.",
+    "keyInsights": [
+      "Trivial subgraph: empty or complete induced subgraph",
+      "Ramsey: every graph has trivial subgraph on ≫ log n vertices",
+      "Non-Ramsey: avoids trivial subgraphs on ≥ c log n vertices",
+      "Prömel-Rödl: non-Ramsey → c log n - universal",
+      "Universal → contains all regular subgraphs of appropriate size"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "simple-graphs",
+      "title": "Simple Graphs",
+      "summary": "completeGraph, emptyGraph definitions",
+      "startLine": 25,
+      "endLine": 39
+    },
+    {
+      "id": "trivial",
+      "title": "Trivial Subgraphs",
+      "summary": "isTrivialInduced, isIndependentSet, isClique",
+      "startLine": 41,
+      "endLine": 63
+    },
+    {
+      "id": "regular",
+      "title": "Regular Subgraphs",
+      "summary": "inducedDegree, isKRegularInduced, isNontrivialRegular",
+      "startLine": 65,
+      "endLine": 85
+    },
+    {
+      "id": "non-ramsey",
+      "title": "The Non-Ramsey Property",
+      "summary": "noLargeTrivial, ramsey_trivial_bound",
+      "startLine": 87,
+      "endLine": 101
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdos_1031_conjecture",
+      "startLine": 103,
+      "endLine": 115
+    },
+    {
+      "id": "promel-rodl",
+      "title": "Prömel-Rödl Theorem (1999)",
+      "summary": "isInducedSubgraph, containsInduced, isKUniversal, promel_rodl",
+      "startLine": 117,
+      "endLine": 144
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "exists_nontrivial_regular, erdos_1031_solved",
+      "startLine": 146,
+      "endLine": 172
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Theory",
+      "summary": "ramseyNumber, ramsey_upper_bound, ramsey_log_trivial",
+      "startLine": 174,
+      "endLine": 202
+    },
+    {
+      "id": "non-ramsey-graphs",
+      "title": "Non-Ramsey Graphs",
+      "summary": "isNonRamsey, nonRamsey_exist",
+      "startLine": 204,
+      "endLine": 219
+    },
+    {
+      "id": "universality",
+      "title": "Universality and Regular Subgraphs",
+      "summary": "nonRamsey_universal, universal_has_regular",
+      "startLine": 221,
+      "endLine": 251
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1031 asked whether graphs avoiding large trivial subgraphs must contain large induced non-trivial regular subgraphs. Prömel and Rödl (1999) proved the much stronger result that such 'non-Ramsey' graphs are c log n - universal: they contain all graphs on O(log n) vertices as induced subgraphs.",
+    "implications": "**Theoretical Significance**\n\n1. **Graph Universality**: Non-Ramsey graphs have remarkably rich structure\n\n2. **Ramsey Theory**: Connects to classical Ramsey bounds\n\n3. **Regular Subgraphs**: Strong existence guarantees from universality\n\n4. **Induced Subgraph Structure**: Understanding what graphs must contain",
+    "openQuestions": [
+      "What are the optimal constants in the universality result?",
+      "Algorithmic: can we efficiently find the induced subgraphs?",
+      "What about directed or hypergraph versions?",
+      "Connections to the regularity lemma?",
+      "Problem 82: general induced regular subgraph bounds"
+    ]
   }
 }

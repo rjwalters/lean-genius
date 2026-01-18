@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-641-header",
+    "proofId": "erdos-641",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #641: Edge-Disjoint Cycles on Same Vertex Set**\n\nIs there a function f such that χ(G) ≥ f(k) implies G has k edge-disjoint cycles on the same vertices?\n\n**Answer**: NO (DISPROVED by Janzer-Steiner-Sudakov 2024)\n\nFails even for k = 2: graphs exist with high χ but no 4-regular subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-graph",
+    "proofId": "erdos-641",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "**Graph V** = SimpleGraph V\n\nA simple undirected graph on vertex set V.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-641-coloring",
+    "proofId": "erdos-641",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Proper Coloring",
+    "content": "**IsProperColoring(G, k, c)**: A function c: V → Fin k such that adjacent vertices have different colors.\n\n∀ u v, G.Adj u v → c u ≠ c v",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-chromatic",
+    "proofId": "erdos-641",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber(G)** = min { k | G is k-colorable }\n\nThe minimum number of colors needed for a proper coloring.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-cycle",
+    "proofId": "erdos-641",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "definition",
+    "title": "Cycle",
+    "content": "**IsCycle(G, vs)**: A closed path with no repeated vertices.\n\n- Length ≥ 3\n- All vertices distinct\n- Consecutive adjacency\n- Last vertex adjacent to first",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-edge-disjoint",
+    "proofId": "erdos-641",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "Edge-Disjoint Cycles",
+    "content": "**EdgeDisjointCycles(G, c1, c2)**: Two cycles sharing no edges.\n\nBoth are cycles, and no edge appears in both cycles simultaneously.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-k-cycles",
+    "proofId": "erdos-641",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "definition",
+    "title": "k Edge-Disjoint Cycles Same Vertices",
+    "content": "**HasKEdgeDisjointCyclesSameVertices(G, k, S)**:\n\nk cycles, all on vertex set S, pairwise edge-disjoint.\n\nThis is the structure the conjecture asks about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-regular",
+    "proofId": "erdos-641",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "definition",
+    "title": "Regular Graph",
+    "content": "**IsRegular(G, r)**: Every vertex has degree exactly r.\n\n∀ v, degree(v) = r",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-regular-subgraph",
+    "proofId": "erdos-641",
+    "range": { "startLine": 90, "endLine": 95 },
+    "type": "definition",
+    "title": "Regular Subgraph",
+    "content": "**HasRegularSubgraph(G, r, S)**: G contains an r-regular subgraph on vertices S.\n\nA subgraph H where every vertex in S has degree r in H.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-equivalence",
+    "proofId": "erdos-641",
+    "range": { "startLine": 97, "endLine": 101 },
+    "type": "theorem",
+    "title": "Cycles ↔ Regular",
+    "content": "**edge_disjoint_cycles_iff_regular**:\n\nk edge-disjoint cycles on same vertices ↔ 2k-regular subgraph.\n\nThis equivalence is why the problem reduces to finding regular subgraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-conjecture",
+    "proofId": "erdos-641",
+    "range": { "startLine": 109, "endLine": 116 },
+    "type": "definition",
+    "title": "Erdős-Hajnal Conjecture",
+    "content": "**ErdosHajnalConjecture** (DISPROVED):\n\n∃ f : ℕ → ℕ such that χ(G) ≥ f(k) ⟹ G has k edge-disjoint cycles on same vertices.\n\nJanzer-Steiner-Sudakov showed this is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-conjecture-regular",
+    "proofId": "erdos-641",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "definition",
+    "title": "Conjecture (Regular Form)",
+    "content": "**ErdosHajnalConjectureRegular**: Equivalent formulation.\n\n∃ f such that χ(G) ≥ f(k) ⟹ G has 2k-regular subgraph.\n\nUsing the cycle-regular equivalence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-k2",
+    "proofId": "erdos-641",
+    "range": { "startLine": 131, "endLine": 136 },
+    "type": "definition",
+    "title": "The k = 2 Case",
+    "content": "**Case_k_2**: Does high χ imply a 4-regular subgraph?\n\nThis is the specific case that JSS disproved. Even this weakest case fails!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-k2-false",
+    "proofId": "erdos-641",
+    "range": { "startLine": 138, "endLine": 139 },
+    "type": "axiom",
+    "title": "k = 2 is FALSE",
+    "content": "**case_k_2_false**: ¬Case_k_2\n\nThe k = 2 case is false, which implies the full conjecture is false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-jss",
+    "proofId": "erdos-641",
+    "range": { "startLine": 147, "endLine": 154 },
+    "type": "axiom",
+    "title": "JSS Counterexample",
+    "content": "**jss_counterexample**: The Janzer-Steiner-Sudakov construction.\n\nFor all n ≥ 10, there exist graphs with:\n- χ ≥ c · (log log n)/(log log log n)\n- No 4-regular subgraph\n\nThis disproves the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-jss-bound",
+    "proofId": "erdos-641",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "definition",
+    "title": "JSS Chromatic Bound",
+    "content": "**jss_chromatic_bound(n)** = ⌊(log log n)/(log log log n)⌋\n\nThe chromatic number achieved by the counterexample graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-no-4-reg",
+    "proofId": "erdos-641",
+    "range": { "startLine": 160, "endLine": 164 },
+    "type": "axiom",
+    "title": "No 4-Regular Subgraph",
+    "content": "**jss_no_4_regular**: For n ≥ 10, the JSS graphs have:\n\n∀ S, ¬HasRegularSubgraph G 4 S\n\nNo subset of vertices induces a 4-regular subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-disproof",
+    "proofId": "erdos-641",
+    "range": { "startLine": 172, "endLine": 179 },
+    "type": "theorem",
+    "title": "Main Disproof",
+    "content": "**erdos_hajnal_false**: ¬ErdosHajnalConjecture\n\nThe Erdős-Hajnal conjecture is FALSE.\n\nProof: JSS gives graphs with arbitrarily high χ but no 4-regular subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-main",
+    "proofId": "erdos-641",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "theorem",
+    "title": "Erdős #641 DISPROVED",
+    "content": "**erdos_641**: ¬ErdosHajnalConjecture\n\nErdős Problem #641 is DISPROVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-641-odd-cycles",
+    "proofId": "erdos-641",
+    "range": { "startLine": 191, "endLine": 196 },
+    "type": "axiom",
+    "title": "High χ → Long Odd Cycles",
+    "content": "**high_chi_long_odd_cycle**: A positive result.\n\nHigh chromatic number DOES force long odd cycles. This is true even though regular subgraphs are not forced.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-gyarfas",
+    "proofId": "erdos-641",
+    "range": { "startLine": 198, "endLine": 203 },
+    "type": "axiom",
+    "title": "Gyárfás Theorem",
+    "content": "**gyarfas_theorem**: Another positive result.\n\nHigh χ implies either large clique number or long odd cycle.\n\nContrast: Regular subgraphs are NOT guaranteed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-641-kim",
+    "proofId": "erdos-641",
+    "range": { "startLine": 205, "endLine": 209 },
+    "type": "axiom",
+    "title": "Kim Bound",
+    "content": "**kim_bound**: Triangle-free graphs have χ = O(√(n/log n)).\n\nShows that triangle-free graphs can have high chromatic number, relevant to understanding the counterexample.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-641-hadwiger",
+    "proofId": "erdos-641",
+    "range": { "startLine": 217, "endLine": 220 },
+    "type": "definition",
+    "title": "Hadwiger's Conjecture",
+    "content": "**HadwigerConjecture**: χ(G) ≥ t ⟹ G has K_t minor.\n\nA famous OPEN conjecture about chromatic number forcing minors.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-641-final",
+    "proofId": "erdos-641",
+    "range": { "startLine": 259, "endLine": 277 },
+    "type": "theorem",
+    "title": "Final Result",
+    "content": "**erdos_641_disproved**: ¬ErdosHajnalConjecture\n\n**Summary**: High chromatic number does NOT guarantee k edge-disjoint cycles on the same vertex set, even for k = 2.\n\nJanzer-Steiner-Sudakov (2024) constructed the counterexample.",
+    "significance": "critical"
+  }
+]

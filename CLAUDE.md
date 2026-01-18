@@ -534,34 +534,76 @@ Aristotle is an external proof search tool for Lean 4. It can automatically prov
 
 ### Key Limitations
 
-**Aristotle only proves theorem/lemma sorries. It skips definition sorries.**
+**CRITICAL: Aristotle only proves theorem/lemma sorries. It skips definitions and axioms entirely.**
+
+This is the most important thing to understand about Aristotle:
+- **Axioms** = "assume this is true" → Aristotle never attempts to prove them
+- **Theorem sorries** = "prove this" → Aristotle will search for proofs
 
 ```lean
 -- ✅ Aristotle CAN prove:
 theorem sidon_bound : A.card ≤ n := by sorry
 lemma computeA_22 : computeA β = 10 := by sorry
 
--- ❌ Aristotle SKIPS:
-def chromaticNumber (G : SimpleGraph V) : ℕ := by sorry
-def danzerPoints : Finset Point := sorry
-theorem placeholder : True := by sorry  -- No value
+-- ❌ Aristotle SKIPS (will NOT attempt):
+def chromaticNumber (G : SimpleGraph V) : ℕ := by sorry   -- Definition sorry
+def danzerPoints : Finset Point := sorry                   -- Definition sorry
+axiom jss_counterexample : ∃ G, ...                        -- Axiom (treated as given)
+theorem placeholder : True := by sorry                     -- No mathematical content
 ```
+
+**Implication for Erdős formalizations**: Our files use `axiom` for deep results (Ramsey bounds, probabilistic lemmas, etc.). These are semantically correct but Aristotle-unfriendly. Convert to theorem sorries before submission.
 
 ### Pre-Submission Checklist
 
 1. **No definition sorries** - Aristotle will skip these and dependent theorems fail
-2. **No placeholder True theorems** - Provide real mathematical content
-3. **No OPEN conjectures** - Aristotle searches for existing proofs, can't discover new ones
-4. **No `/-!` docstring sections** - Use `/-` instead (causes parsing errors)
-5. **Simple namespace structure** - Complex nesting may fail to load
+2. **Convert axioms to theorem sorries** - Axioms are unprovable; convert to `theorem X : ... := by sorry`
+3. **No placeholder True theorems** - Provide real mathematical content
+4. **No OPEN conjectures** - Aristotle searches for existing proofs, can't discover new ones
+5. **No `/-!` docstring sections** - Use `/-` instead (causes parsing errors)
+6. **Simple namespace structure** - Complex nesting may fail to load
 
 ```bash
 # Check for problems
 grep -n "def.*:=.*sorry" your-file.lean          # Definition sorries
+grep -n "^axiom " your-file.lean                  # Axioms (convert to theorems)
 grep -n "theorem.*: True" your-file.lean         # Placeholder theorems
 grep -n "theorem erdos_[0-9]*\s*:" your-file.lean # Potential OPEN problems
 grep -n "/-!" your-file.lean                      # Docstring sections (may fail)
 ```
+
+### Preparing Files for Aristotle
+
+**IMPORTANT**: Most Erdős formalizations use `axiom` for deep mathematical results. These MUST be converted to theorem sorries before Aristotle can attempt proofs.
+
+```lean
+-- BEFORE (in main file - Aristotle will SKIP):
+axiom keevash_sudakov_bound (n : ℕ) : countEdges n ≤ n^2 / 4
+
+-- AFTER (for Aristotle submission - Aristotle will ATTEMPT):
+theorem keevash_sudakov_bound (n : ℕ) : countEdges n ≤ n^2 / 4 := by sorry
+```
+
+**Quick conversion command**:
+```bash
+# Convert all axioms to theorem sorries (creates backup)
+sed -i.bak 's/^axiom \([^:]*\):/theorem \1 :=/; s/theorem \([^:]*\) :=$/theorem \1 := by sorry/' file.lean
+```
+
+**Why this works**: Aristotle searches Mathlib and known results. If the result exists in Mathlib or can be derived from it, Aristotle will find the proof. Axioms are treated as "given" and never attempted.
+
+**Workflow for axiom-heavy files**:
+1. Copy the file to a `-provable.lean` variant
+2. Convert all `axiom` declarations to `theorem ... := by sorry`
+3. Verify no definition sorries exist (these block everything)
+4. Submit the provable variant to Aristotle
+5. Merge successful proofs back to the main file (keep working axioms as axioms if not proven)
+
+**Writing Aristotle-friendly files from the start**:
+If you plan to submit to Aristotle, consider using `theorem ... := by sorry` instead of `axiom` for results that might be provable from Mathlib. Reserve `axiom` only for:
+- Results definitely NOT in Mathlib (recent papers, etc.)
+- Foundational assumptions you truly want as axioms
+- OPEN problems (conjectures)
 
 ### Syntax Compatibility
 
@@ -613,8 +655,15 @@ cat research/aristotle-jobs.json | jq '[.jobs[] | .status] | group_by(.) | map({
 | erdos-58 | `chromaticNumber` def sorry | Theorems axiomatized |
 | erdos-97 | `danzerPoints` def sorry | Construction skipped |
 | erdos-39 | Placeholder `True` theorem | No progress |
+| erdos-1030 | Axiom-heavy file (no conversion) | No proofs attempted |
+| erdos-1026 | Axiom-heavy file (no conversion) | No proofs attempted |
+| erdos-630 | Definition sorries | Blocked dependent theorems |
 
-**Lesson**: Only submit files where all definitions are complete.
+**Key Learnings**:
+- **Axiom-heavy files** (#1030, #1026): Had many `axiom` declarations for deep results. Aristotle treated these as "given" and had nothing to prove. **Fix**: Convert axioms to theorem sorries before submission.
+- **Definition sorries** (#630): When definitions use `sorry`, all dependent theorems fail to typecheck. Aristotle can't prove theorems that reference undefined values. **Fix**: Complete all definitions before submission.
+
+**Lesson**: Only submit files where all definitions are complete AND axioms have been converted to theorem sorries.
 
 ### Documentation
 

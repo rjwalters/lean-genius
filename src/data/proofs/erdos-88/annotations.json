@@ -1,1 +1,209 @@
-[]
+[
+  {
+    "id": "ann-88-header",
+    "proofId": "erdos-88",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #88: Induced Subgraphs in Ramsey Graphs**\n\nThe Erdős-McKay Conjecture: For ε-Ramsey graphs, induced subgraphs achieve all edge counts up to δn².\n\n**Answer**: PROVED by Kwan-Sah-Sauermann-Sawhney (2022).\n\n**Prize**: $100 (awarded).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-graph",
+    "proofId": "erdos-88",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "A **simple graph** on vertex set V is Mathlib's `SimpleGraph V`.\n\nSymmetric, irreflexive adjacency relation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-88-edge-count",
+    "proofId": "erdos-88",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "**edgeCount(G)** = |E(G)|, the number of edges in the graph.\n\nComputed as the cardinality of the edge finset.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-clique",
+    "proofId": "erdos-88",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Clique",
+    "content": "A **clique** is a subset where all pairs are adjacent.\n\nFormally: ∀ u v ∈ S, u ≠ v → G.Adj u v.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-independent",
+    "proofId": "erdos-88",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "An **independent set** is a subset where no pairs are adjacent.\n\nFormally: ∀ u v ∈ S, u ≠ v → ¬G.Adj u v.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-clique-number",
+    "proofId": "erdos-88",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "Clique Number ω(G)",
+    "content": "**ω(G)** = size of the largest clique.\n\nThe supremum over all clique sizes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-independence-number",
+    "proofId": "erdos-88",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "Independence Number α(G)",
+    "content": "**α(G)** = size of the largest independent set.\n\nThe supremum over all independent set sizes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-ramsey-bounded",
+    "proofId": "erdos-88",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "Ramsey-Bounded Graph",
+    "content": "A graph is **(k, ℓ)-Ramsey-bounded** if ω(G) < k and α(G) < ℓ.\n\nNo large clique and no large independent set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-epsilon-ramsey",
+    "proofId": "erdos-88",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "definition",
+    "title": "ε-Ramsey Graph",
+    "content": "A graph is **ε-Ramsey** if ω(G), α(G) < ε log n.\n\nThe logarithmic bound is the natural scale for Ramsey-type constraints.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-induced",
+    "proofId": "erdos-88",
+    "range": { "startLine": 94, "endLine": 98 },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "The **induced subgraph** on S contains all edges of G between vertices in S.\n\nThe natural restriction of G to a subset.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-induced-edge",
+    "proofId": "erdos-88",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "definition",
+    "title": "Induced Edge Count",
+    "content": "**inducedEdgeCount(G, S)** = number of edges in G[S].\n\nThe quantity whose range we want to control.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-achieves-all",
+    "proofId": "erdos-88",
+    "range": { "startLine": 116, "endLine": 119 },
+    "type": "definition",
+    "title": "Achieves All Edge Counts",
+    "content": "**AchievesAllEdgeCounts(G, M)**: G has induced subgraphs with edge counts 0, 1, 2, ..., M.\n\nThe key property the conjecture asserts.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-edge-range",
+    "proofId": "erdos-88",
+    "range": { "startLine": 121, "endLine": 125 },
+    "type": "definition",
+    "title": "Edge Count Range Property",
+    "content": "**EdgeCountRangeProperty(G, δ)**: G achieves all edge counts up to δn².\n\nThe quadratic bound is optimal (Erdős-Szemerédi).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-conjecture",
+    "proofId": "erdos-88",
+    "range": { "startLine": 133, "endLine": 142 },
+    "type": "definition",
+    "title": "Erdős-McKay Conjecture",
+    "content": "**Conjecture**: ∀ ε > 0, ∃ δ > 0 such that every ε-Ramsey graph on n vertices achieves all edge counts up to δn².\n\n**Status**: PROVED (KSSS 2022).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-weak",
+    "proofId": "erdos-88",
+    "range": { "startLine": 144, "endLine": 153 },
+    "type": "definition",
+    "title": "Weak Erdős-McKay Bound",
+    "content": "Erdős and McKay proved the weaker bound: δ(log n)² instead of δn².\n\nThe gap from logarithmic to polynomial was the challenge.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-szemeredi",
+    "proofId": "erdos-88",
+    "range": { "startLine": 161, "endLine": 171 },
+    "type": "axiom",
+    "title": "Erdős-Szemerédi Density",
+    "content": "**Erdős-Szemerédi**: ε-Ramsey graphs have Θ(n²) edges.\n\nThis makes δn² the natural target - it's the order of magnitude of total edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-anticoncentration",
+    "proofId": "erdos-88",
+    "range": { "startLine": 179, "endLine": 181 },
+    "type": "definition",
+    "title": "Anticoncentration",
+    "content": "**Anticoncentration**: a distribution doesn't concentrate on any single value.\n\nKey technique: random induced subgraph edge counts are well-spread.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-ksss",
+    "proofId": "erdos-88",
+    "range": { "startLine": 202, "endLine": 208 },
+    "type": "axiom",
+    "title": "KSSS Theorem",
+    "content": "**Kwan-Sah-Sauermann-Sawhney (2022)**:\n\nThe Erdős-McKay conjecture is TRUE.\n\nUsed anticoncentration to show random subgraphs hit all edge counts.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-prize",
+    "proofId": "erdos-88",
+    "range": { "startLine": 210, "endLine": 211 },
+    "type": "definition",
+    "title": "Prize",
+    "content": "**$100 Erdős Prize** awarded to KSSS for solving this problem.\n\nOne of the notable Erdős problem prizes.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-88-delta",
+    "proofId": "erdos-88",
+    "range": { "startLine": 222, "endLine": 226 },
+    "type": "definition",
+    "title": "The δ Function",
+    "content": "**δ(ε)** is the function guaranteed by KSSS.\n\nFor each ε > 0, there exists δ(ε) > 0 such that ε-Ramsey graphs achieve all edge counts up to δn².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-delta-pos",
+    "proofId": "erdos-88",
+    "range": { "startLine": 228, "endLine": 232 },
+    "type": "theorem",
+    "title": "δ(ε) > 0",
+    "content": "**Theorem**: δ(ε) > 0 for all ε > 0.\n\nThe function is well-defined and positive.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-88-main",
+    "proofId": "erdos-88",
+    "range": { "startLine": 270, "endLine": 283 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #88: SOLVED**\n\nThe Erdős-McKay conjecture is TRUE.\n\nFor ε > 0, every ε-Ramsey graph has induced subgraphs with all edge counts up to δn².\n\n**Prize**: $100 (awarded to KSSS 2022).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-88-answer",
+    "proofId": "erdos-88",
+    "range": { "startLine": 285, "endLine": 290 },
+    "type": "definition",
+    "title": "The Answer",
+    "content": "**Answer**: YES\n\nThe Erdős-McKay conjecture is TRUE (KSSS 2022).",
+    "significance": "supporting"
+  }
+]

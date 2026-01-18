@@ -1,33 +1,121 @@
 {
   "id": "erdos-1028",
-  "title": "Erdős Problem #1028",
+  "title": "Erdős Problem #1028: Discrepancy of Sign Functions",
   "slug": "erdos-1028",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[H(n)=\\min_f \\max_{X\\subseteq \\{1,\\ldots,n\\}} \\left\\lvert \\sum_{x\\neq y\\in X} f(x,y)\\right\\rvert,\\]where ... ranges over ...",
+  "description": "Let H(n) = min_f max_X |∑_{x≠y∈X} f(x,y)| where f: pairs → {±1}. Erdős (1963) proved n/4 ≤ H(n) ≪ n^(3/2). Erdős-Spencer (1971) proved H(n) ≫ n^(3/2). Answer: H(n) = Θ(n^(3/2)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1963), Erdős-Spencer (1971)",
     "sourceUrl": "https://erdosproblems.com/1028",
-    "date": "",
+    "date": "1971",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1028Problem.lean",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "discrepancy-theory",
+      "erdos",
+      "signed-graphs",
+      "probabilistic-method"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 11,
     "erdosNumber": 1028,
     "erdosUrl": "https://erdosproblems.com/1028",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1028 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[H(n)=\\min_f \\max_{X\\subseteq \\{1,\\ldots,n\\}} \\left\\lvert \\sum_{x\\neq y\\in X} f(x,y)\\right\\rvert,\\]where $f$ ranges over all functions $f:X^2\\to \\{-1,1\\}$. Estimate $H(n)$.\n\n\n\nErd\\H{o}s \\cite{Er63d} proved\\[\\frac{n}{4}\\leq H(n) \\ll n^{3/2}.\\]Erd\\H{o}s and Spencer \\cite{ErSp71} proved that $H(n)\\gg n^{3/2}$.\n\n\n\n\nReferences\n\n\n[Er63d] Erd\\H{o}s, P\\'al, On combinatorial questions connected with a theorem of\n{R}amsey and van der {W}aerden. Mat. Lapok (1963), 29--37.\n\n[ErSp71] Erd\\H{o}s, P. and Spencer, J., Imbalances in {$k$}-colorations. Networks (1971/72), 379--385.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Discrepancy Theory**\n\nThis problem asks about the unavoidable imbalance when assigning ±1 to pairs. No matter how cleverly you choose signs, some subset will have large discrepancy.\n\n**Historical Development**:\n- 1963: Erdős proved n/4 ≤ H(n) ≪ n^(3/2)\n- 1971: Erdős-Spencer closed the gap: H(n) ≫ n^(3/2)\n\n**Interpretation**: f defines a signed complete graph. H(n) measures the minimum possible maximum imbalance over all induced subgraphs.",
+    "problemStatement": "**Problem Statement**\n\nLet H(n) = min_f max_{X ⊆ {1,...,n}} |∑_{x≠y∈X} f(x,y)|, where f ranges over all functions f: X² → {-1, 1}.\n\nEstimate H(n).\n\n**Status**: SOLVED\n\n**Answer**: H(n) = Θ(n^(3/2))",
+    "proofStrategy": "**Proof Approach**\n\n1. **Upper Bound (Probabilistic)**: Random sign functions have max discrepancy O(n^(3/2)) with high probability.\n\n2. **Lower Bound (Erdős 1963)**: Linear bound n/4 via simple counting.\n\n3. **Improved Lower Bound (Erdős-Spencer 1971)**: Entropy or counting arguments give n^(3/2).\n\n4. **Key Insight**: The n^(3/2) bound arises from the √(pairs in subset of size k) ≈ k for k ≈ √n.",
+    "keyInsights": [
+      "Sign function f: pairs → {±1}",
+      "Discrepancy of X = |sum of f over pairs in X|",
+      "H(n) = min over f of max discrepancy",
+      "Erdős: n/4 ≤ H(n) ≪ n^(3/2)",
+      "Erdős-Spencer: H(n) = Θ(n^(3/2))"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sign-functions",
+      "title": "Sign Functions",
+      "summary": "SignFunction, isValidSign, validSignFunctions",
+      "startLine": 23,
+      "endLine": 38
+    },
+    {
+      "id": "discrepancy",
+      "title": "Discrepancy",
+      "summary": "pairSum, discrepancy, maxDiscrepancy",
+      "startLine": 40,
+      "endLine": 56
+    },
+    {
+      "id": "h-function",
+      "title": "The Function H(n)",
+      "summary": "H definition, H_spec",
+      "startLine": 58,
+      "endLine": 71
+    },
+    {
+      "id": "erdos-bounds",
+      "title": "Erdős's Bounds (1963)",
+      "summary": "erdos_lower, erdos_upper, erdos_bounds",
+      "startLine": 73,
+      "endLine": 100
+    },
+    {
+      "id": "erdos-spencer",
+      "title": "Erdős-Spencer (1971)",
+      "summary": "erdos_spencer_lower, erdos_spencer_improves",
+      "startLine": 102,
+      "endLine": 115
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "summary": "H_asymptotic, erdos_1028_question, erdos_1028_solved",
+      "startLine": 117,
+      "endLine": 149
+    },
+    {
+      "id": "symmetric",
+      "title": "Symmetric Functions",
+      "summary": "isSymmetric, symmetric_pairSum",
+      "startLine": 151,
+      "endLine": 164
+    },
+    {
+      "id": "graph",
+      "title": "Graph Interpretation",
+      "summary": "asSignedGraph, discrepancy_as_imbalance",
+      "startLine": 166,
+      "endLine": 179
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Intuition",
+      "summary": "expectedDiscrepancy, expected_discrepancy_bound, random_upper",
+      "startLine": 181,
+      "endLine": 205
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound and Special Cases",
+      "summary": "large_discrepancy_exists, H_two, H_three, homogeneous_small_discrepancy",
+      "startLine": 207,
+      "endLine": 242
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1028 asked to estimate H(n), the minimum possible maximum discrepancy over sign functions on pairs. Erdős (1963) gave n/4 ≤ H(n) ≪ n^(3/2), and Erdős-Spencer (1971) closed the gap: H(n) = Θ(n^(3/2)).",
+    "implications": "**Theoretical Significance**\n\n1. **Discrepancy Theory**: Fundamental result on unavoidable imbalance\n\n2. **Signed Graphs**: Minimum imbalance in edge-signed complete graphs\n\n3. **Probabilistic Method**: Upper bound via random signs\n\n4. **Ramsey Connection**: Large homogeneous subsets relate to discrepancy",
+    "openQuestions": [
+      "What are the exact constants in the asymptotic?",
+      "Algorithmic: can we efficiently find high-discrepancy subsets?",
+      "What about hypergraph versions (k-tuples)?",
+      "Connections to graph Ramsey theory?",
+      "What if f is constrained (e.g., induced by a graph)?"
+    ]
   }
 }

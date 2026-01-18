@@ -1094,92 +1094,118 @@
       "set-families"
     ],
     "erdosNumber": 1022,
-    "sorries": 8,
+    "sorries": 9,
     "annotationCount": 18
   },
   {
     "id": "erdos-1023",
-    "title": "Erdős Problem #1023",
+    "title": "Erdős Problem #1023: Union-Free Families",
     "slug": "erdos-1023",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of a family of subsets of ... such that no set in this family is the union of other members of th...",
+    "description": "Let F(n) be the max size of a family of subsets of {1,...,n} where no set is the union of other members. Is F(n) ~ c · 2^n / √n? YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-families",
+      "erdos",
+      "extremal-combinatorics",
+      "antichains"
     ],
     "erdosNumber": 1023,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 10,
+    "annotationCount": 20
   },
   {
     "id": "erdos-1024",
-    "title": "Erdős Problem #1024",
+    "title": "Erdős Problem #1024: Independent Sets in Linear Hypergraphs",
     "slug": "erdos-1024",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every ...-uniform linear hypergraph on ... vertices contains an independent set on ... vertices. Estimat...",
+    "description": "Let f(n) be the minimum independence number guaranteed in every 3-uniform linear hypergraph on n vertices. Phelps-Rödl (1986) proved f(n) ≍ (n log n)^(1/2), refining Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "hypergraphs",
+      "erdos",
+      "independence-number",
+      "steiner-systems"
     ],
     "erdosNumber": 1024,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 29
   },
   {
     "id": "erdos-1025",
-    "title": "Erdős Problem #1025",
+    "title": "Erdős Problem #1025: Independent Sets in Pair Functions",
     "slug": "erdos-1025",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a function from all pairs of elements in ... to ... such that ... and ... for all .... We call ... independent if ...",
+    "description": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) ≠ x,y. Let g(n) be the minimum guaranteed independent set size. Erdős-Hajnal (1958) proved n^(1/3) ≪ g(n) ≪ (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = Θ(n^(1/2)).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-mappings",
+      "erdos",
+      "extremal-combinatorics",
+      "probabilistic-method"
     ],
     "erdosNumber": 1025,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 27
   },
   {
     "id": "erdos-1026",
-    "title": "Erdős Problem #1026",
+    "title": "Erdős Problem #1026: Monotonic Subsequence Sum Optimization",
     "slug": "erdos-1026",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of distinct real numbers. Determine\\[\\max\\left(\\sum x_{i_r}\\right),\\]where the maximum is taken over al...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a sequence of distinct reals, determine max sum over monotonic subsequences. The optimal constant is c = 1: maxMonotonicSum ≥ (1-o(1)) · totalSum/√n. This is a weighted Erdős-Szekeres theorem.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sequences",
+      "monotonic-subsequences",
+      "erdos-szekeres",
+      "optimization"
     ],
     "erdosNumber": 1026,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-1027",
-    "title": "Erdős Problem #1027",
+    "title": "Erdős Problem #1027: Intersecting Sets and Property B",
     "slug": "erdos-1027",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... be sufficiently large depending on .... Suppose that $...c2^n...n...X=\\cup_{A\\in }A...\\gg_c 2^{\\lvert X\\...",
+    "description": "Let F be a family of at most c·2^n sets of size n, and X = ∪F. Must there exist ≫_c 2^|X| sets B ⊆ X that intersect every set in F yet contain none? YES (proved by Koishi Chan). Connection to Property B (2-chromatic families).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-families",
+      "erdos",
+      "property-b",
+      "2-colorable"
     ],
     "erdosNumber": 1027,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 6,
+    "annotationCount": 27
   },
   {
     "id": "erdos-1028",
-    "title": "Erdős Problem #1028",
+    "title": "Erdős Problem #1028: Discrepancy of Sign Functions",
     "slug": "erdos-1028",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[H(n)=\\min_f \\max_{X\\subseteq \\{1,\\ldots,n\\}} \\left\\lvert \\sum_{x\\neq y\\in X} f(x,y)\\right\\rvert,\\]where ... ranges over ...",
+    "description": "Let H(n) = min_f max_X |∑_{x≠y∈X} f(x,y)| where f: pairs → {±1}. Erdős (1963) proved n/4 ≤ H(n) ≪ n^(3/2). Erdős-Spencer (1971) proved H(n) ≫ n^(3/2). Answer: H(n) = Θ(n^(3/2)).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "discrepancy-theory",
+      "erdos",
+      "signed-graphs",
+      "probabilistic-method"
     ],
     "erdosNumber": 1028,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 11,
+    "annotationCount": 27
   },
   {
     "id": "erdos-1029",
@@ -1201,59 +1227,76 @@
   },
   {
     "id": "erdos-1030",
-    "title": "Erdős Problem #1030",
+    "title": "Erdős Problem #1030: Ramsey Number Growth Rate",
     "slug": "erdos-1030",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the Ramsey number then prove the existence of some ... such that\\[\\lim_k {R(k,k)}> 1+c.\\]\n\n\n\nA problem of Erds and ...",
-    "status": "pending",
+    "description": "Prove the existence of c > 0 such that lim_{k→∞} R(k+1,k)/R(k,k) > 1+c. Solved by Burr-Erdős-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) ≥ 2k-5.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics",
+      "growth-rates"
     ],
     "erdosNumber": 1030,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 22
   },
   {
     "id": "erdos-1031",
-    "title": "Erdős Problem #1031",
+    "title": "Erdős Problem #1031: Induced Regular Subgraphs in Non-Ramsey Graphs",
     "slug": "erdos-1031",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices which contains no trivial (empty or complete) subgraph on ... many vertices, then must ... ...",
+    "description": "If G on n vertices has no trivial subgraph on ≥ 10 log n vertices, must G contain an induced non-trivial regular subgraph on ≫ log n vertices? YES (Prömel-Rödl 1999). Stronger: such G is c log n - universal.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "regular-graphs",
+      "universality"
     ],
     "erdosNumber": 1031,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 28
   },
   {
     "id": "erdos-1033",
-    "title": "Erdős Problem #1033",
+    "title": "Erdős Problem #1033: Triangle Degree Sums in Dense Graphs",
     "slug": "erdos-1033",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every graph on ... vertices with ... many edges contains a triangle whose vertices have degrees summing ...",
+    "description": "Let h(n) = max k such that every graph on n vertices with > n²/4 edges contains a triangle with degree sum ≥ k. Conjecture: h(n) ≥ (2(√3−1)−o(1))n ≈ 1.464n. Known: (21/16)n ≤ h(n) ≤ 2(√3−1)n.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-graph-theory",
+      "erdos",
+      "triangles",
+      "turan-theory"
     ],
     "erdosNumber": 1033,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 14,
+    "annotationCount": 40
   },
   {
     "id": "erdos-1034",
-    "title": "Erdős Problem #1034",
+    "title": "Erdős Problem #1034: Triangle Neighbors in Dense Graphs",
     "slug": "erdos-1034",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with ... many edges. Must there be a triangle ... in ... and vertices ..., where ..., such...",
+    "description": "Let G have n vertices and > n²/4 edges. Must there exist a triangle T with > (1/2 - o(1))n vertices each adjacent to ≥ 2 of T's vertices? NO (Ma-Tang). Bounds: (1/6)n ≤ h(n) ≤ (2 - √(5/2))n ≈ 0.419n.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-graph-theory",
+      "erdos",
+      "triangles",
+      "counterexample"
     ],
     "erdosNumber": 1034,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 15,
+    "annotationCount": 42
   },
   {
     "id": "erdos-1036",
@@ -2089,7 +2132,7 @@
     "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
     "slug": "erdos-110",
     "description": "Is there F(n) such that every ℵ₁-chromatic graph has an n-chromatic subgraph on ≤F(n) vertices? DISPROVED by Lambie-Hanson (2020) in ZFC. Earlier, Shelah showed consistency of a negative answer.",
-    "status": "pending",
+    "status": "complete",
     "badge": "disproved",
     "tags": [
       "graph-theory",
@@ -2101,8 +2144,9 @@
       "disproved"
     ],
     "erdosNumber": 110,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 20
   },
   {
     "id": "erdos-1100",
@@ -2498,17 +2542,23 @@
   },
   {
     "id": "erdos-113",
-    "title": "Erdős Problem #113",
+    "title": "Erdős Problem #113: Extremal Numbers and Degeneracy of Bipartite Graphs",
     "slug": "erdos-113",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is bipartite then ... if and only ... is ...-degenerate, that is, ... contains no induced subgraph with minimal degree...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "The Erdős-Simonovits Conjecture (1984) claimed: for bipartite G, ex(n;G) ≪ n^{3/2} if and only if G is 2-degenerate. DISPROVED by Janzer (2023) who constructed 3-regular bipartite H with ex(n;H) ≪ n^{4/3+ε}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "bipartite-graphs",
+      "degeneracy",
+      "counterexample",
+      "disproved"
     ],
     "erdosNumber": 113,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 21
   },
   {
     "id": "erdos-1131",
@@ -3068,17 +3118,23 @@
   },
   {
     "id": "erdos-165",
-    "title": "Erdős Problem #165",
+    "title": "Erdős Problem #165: Asymptotic Formula for R(3,k)",
     "slug": "erdos-165",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for ....\n\n\n\nIt is known that there exists some constant ... such that for large ...\\[(c+o(1)){\\log...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine the asymptotic formula for R(3,k), the Ramsey number for triangles vs independent sets. The answer is R(3,k) = Θ(k²/log k), with current best bounds (1/2 - o(1))k²/log k ≤ R(3,k) ≤ (1 + o(1))k²/log k.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory",
+      "triangle-free",
+      "probabilistic-method"
     ],
     "erdosNumber": 165,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 20
   },
   {
     "id": "erdos-166",
@@ -4775,17 +4831,23 @@
   },
   {
     "id": "erdos-283",
-    "title": "Erdős Problem #283",
+    "title": "Erdős Problem #283: Egyptian Fractions and Polynomial Values",
     "slug": "erdos-283",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a polynomial whose leading coefficient is positive and such that there exists no ... with ... for all .... Is it t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can every sufficiently large m be represented as a sum of polynomial values p(n₁) + ... + p(nₖ) where the n's also form an Egyptian fraction summing to 1?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "polynomials",
+      "additive-combinatorics"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 283,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-284",
@@ -5016,17 +5078,24 @@
   },
   {
     "id": "erdos-299",
-    "title": "Erdős Problem #299",
+    "title": "Erdős Problem #299: Bounded Gap Sequences and Unit Fractions",
     "slug": "erdos-299",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence ... such that ... and no finite sum of ... is equal to ...?\n\n\n\nThere does not exist such a sequ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there an infinite sequence with bounded gaps such that no finite sum of reciprocals equals 1? The answer is NO, as proved by Bloom (2021).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "density",
+      "additive-combinatorics"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 299,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-3",
@@ -5708,17 +5777,23 @@
   },
   {
     "id": "erdos-355",
-    "title": "Erdős Problem #355",
+    "title": "Erdős Problem #355: Lacunary Sequences and Rational Representation",
     "slug": "erdos-355",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a lacunary sequence ... (so that ... and there exists some ... such that ... for all ...) such that\\[\\left\\{ \\sum_{a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can a lacunary sequence's reciprocal sums cover all rationals in an open interval? YES for lacunarity constant in (1,2), proved by van Doorn and Kovač (2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "lacunary-sequences",
+      "reciprocal-sums"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 355,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 12
   },
   {
     "id": "erdos-356",
@@ -6910,7 +6985,7 @@
     "erdosNumber": 455,
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-458",
@@ -8853,45 +8928,65 @@
   },
   {
     "id": "erdos-626",
-    "title": "Erdős Problem #626",
+    "title": "Erdős Problem #626: Chromatic Number and Girth",
     "slug": "erdos-626",
-    "description": "Let k&#x2265;4\" role=\"presentation\" style=\"position: relative;\">k≥4k≥4k\\geq 4 and gk(n)\" role=\"presentation\" style=\"position: relative;\">gk(n)gk(n)g_k(n) denote the largest m\" role=\"presentation\" s...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g_k(n) be the largest m such that there exists an n-vertex graph with chromatic number k and girth > m. Does lim_{n→∞} g_k(n)/log n exist? Bounds: (1/4 log k)·log n ≤ g_k(n) ≤ (2/log(k-2))·log n + 1.",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "girth",
+      "probabilistic-method",
+      "asymptotics",
+      "open-problem"
     ],
     "erdosNumber": 626,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 18,
+    "annotationCount": 18
   },
   {
     "id": "erdos-627",
-    "title": "Erdős Problem #627",
+    "title": "Erdős Problem #627: Chromatic Number and Clique Number Ratio",
     "slug": "erdos-627",
-    "description": "Let &#x03C9;(G)\" role=\"presentation\" style=\"position: relative;\">ω(G)ω(G)\\omega(G) denote the clique number of G\" role=\"presentation\" style=\"position: relative;\">GGG and &#x03C7;(G)\" role=\"presenta...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) = max χ(G)/ω(G) over n-vertex graphs. Does lim_{n→∞} f(n)/(n/(log n)²) exist? Known: f(n) ≍ n/(log n)², and if limit exists it's in (log 2)²·[1/4,1] ≈ [0.12, 0.48].",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "clique-number",
+      "perfect-graphs",
+      "asymptotics",
+      "open-problem"
     ],
     "erdosNumber": 627,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 19,
+    "annotationCount": 18
   },
   {
     "id": "erdos-628",
-    "title": "Erdős Problem #628",
+    "title": "Erdős Problem #628: The Erdős-Lovász Tihany Conjecture",
     "slug": "erdos-628",
-    "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with chromatic number k\" role=\"presentation\" style=\"position: relative;\">kkk containing no Kk\" role=\"presentation\" style=\"posit...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If χ(G) = k and G is K_k-free, must G be (a,b)-splittable for a,b ≥ 2 with a + b = k + 1? Special cases proven: a = b = 3 (Brown-Jung), quasi-line graphs, α = 2 (Balogh et al.).",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "graph-decomposition",
+      "clique-free",
+      "open-problem"
     ],
     "erdosNumber": 628,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 16,
+    "annotationCount": 15
   },
   {
     "id": "erdos-629",
@@ -8930,45 +9025,64 @@
   },
   {
     "id": "erdos-630",
-    "title": "Erdős Problem #630",
+    "title": "Erdős Problem #630: List Chromatic Number of Planar Bipartite Graphs",
     "slug": "erdos-630",
-    "description": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every planar bipartite graph have χ_L ≤ 3? SOLVED: YES by Alon-Tarsi (1992) using the Combinatorial Nullstellensatz. The bound is tight (K_{2,4} achieves it).",
+    "status": "formalized",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "list-coloring",
+      "chromatic-number",
+      "planar-graphs",
+      "bipartite-graphs",
+      "solved"
     ],
     "erdosNumber": 630,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 17,
+    "annotationCount": 17
   },
   {
     "id": "erdos-631",
-    "title": "Erdős Problem #631",
+    "title": "Erdős Problem #631: List Chromatic Number of Planar Graphs",
     "slug": "erdos-631",
-    "description": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every planar graph have χ_L ≤ 5? Is this best possible? SOLVED: YES (Thomassen 1994) and YES (Voigt 1993). The bound is tight.",
+    "status": "formalized",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "list-coloring",
+      "chromatic-number",
+      "planar-graphs",
+      "solved"
     ],
     "erdosNumber": 631,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 17,
+    "annotationCount": 18
   },
   {
     "id": "erdos-632",
-    "title": "Erdős Problem #632",
+    "title": "Erdős Problem #632: The (a,b)-Choosability Scaling Conjecture",
     "slug": "erdos-632",
-    "description": "A graph is (a,b)\" role=\"presentation\" style=\"position: relative;\">(a,b)(a,b)(a,b)-choosable if for any assignment of a list of a\" role=\"presentation\" style=\"position: relative;\">aaa colours to each...",
-    "status": "pending",
+    "description": "If G is (a,b)-choosable, is G also (am,bm)-choosable for all m ≥ 1? DISPROVED by Dvořák-Hu-Sereni (2019) - fails for (4,1) to (8,2).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "list-coloring",
+      "choosability",
+      "counterexample",
+      "disproved"
     ],
     "erdosNumber": 632,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 5,
+    "annotationCount": 29
   },
   {
     "id": "erdos-633",
@@ -8991,17 +9105,22 @@
   },
   {
     "id": "erdos-634",
-    "title": "Erdős Problem #634",
+    "title": "Erdős Problem #634: Triangle Dissection into Congruent Pieces",
     "slug": "erdos-634",
-    "description": "Find all n\" role=\"presentation\" style=\"position: relative;\">nnn such that there is at least one triangle which can be cut into n\" role=\"presentation\" style=\"position: relative;\">nnn congruent trian...",
-    "status": "pending",
+    "description": "Find all n such that some triangle can be cut into n congruent triangles. OPEN: k², 2k², 3k², k²+m² work; 7, 11 fail (Beeson); 19 unknown. $25 prize.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "dissection",
+      "congruent-triangles",
+      "open-problem"
     ],
     "erdosNumber": 634,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 7,
+    "annotationCount": 25
   },
   {
     "id": "erdos-636",
@@ -9036,17 +9155,23 @@
   },
   {
     "id": "erdos-639",
-    "title": "Erdős Problem #639",
+    "title": "Erdős Problem #639: Edges Not in Monochromatic Triangles",
     "slug": "erdos-639",
-    "description": "Is it true that if the edges of Kn\" role=\"presentation\" style=\"position: relative;\">KnKnK_n are 2-coloured then there are at most n2/4\" role=\"presentation\" style=\"position: relative;\">n2/4n2/4n^2/4...",
-    "status": "pending",
+    "description": "In a 2-coloring of K_n, are there at most n²/4 edges not appearing in any monochromatic triangle? SOLVED: Keevash-Sudakov (2004) determined the exact threshold for all n.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "monochromatic-triangles",
+      "extremal-combinatorics",
+      "complete-graphs"
     ],
     "erdosNumber": 639,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 22
   },
   {
     "id": "erdos-64",
@@ -9067,17 +9192,23 @@
   },
   {
     "id": "erdos-641",
-    "title": "Erdős Problem #641",
+    "title": "Erdős Problem #641: Edge-Disjoint Cycles on Same Vertex Set",
     "slug": "erdos-641",
-    "description": "Is there some function f\" role=\"presentation\" style=\"position: relative;\">fff such that for all k&#x2265;1\" role=\"presentation\" style=\"position: relative;\">k≥1k≥1k\\geq 1 if a finite graph G\" role=\"...",
-    "status": "pending",
+    "description": "Is there a function f such that χ(G) ≥ f(k) implies G has k edge-disjoint cycles on the same vertices? DISPROVED by Janzer-Steiner-Sudakov (2024) - fails even for k=2.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "regular-subgraphs",
+      "counterexample",
+      "disproved"
     ],
     "erdosNumber": 641,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 24
   },
   {
     "id": "erdos-642",
@@ -9153,17 +9284,23 @@
   },
   {
     "id": "erdos-646",
-    "title": "Erdős Problem #646",
+    "title": "Erdős Problem #646: Even Powers of Primes Dividing Factorials",
     "slug": "erdos-646",
-    "description": "Let p1,&#x2026;,pk\" role=\"presentation\" style=\"position: relative;\">p1,…,pkp1,…,pkp_1,\\ldots,p_k be distinct primes. Are there infinitely many n\" role=\"presentation\" style=\"position: relative;\">nnn...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For distinct primes p₁,...,pₖ, are there infinitely many n where n! is divisible by an even power of each pᵢ? YES, proved by Berend (1997) with bounded gaps.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "p-adic-valuation",
+      "density",
+      "solved"
     ],
     "erdosNumber": 646,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-647",
@@ -9200,17 +9337,23 @@
   },
   {
     "id": "erdos-649",
-    "title": "Erdős Problem #649",
+    "title": "Erdős Problem #649: Greatest Prime Factors of Consecutive Integers",
     "slug": "erdos-649",
-    "description": "Let P(m)\" role=\"presentation\" style=\"position: relative;\">P(m)P(m)P(m) denote the greatest prime factor of m\" role=\"presentation\" style=\"position: relative;\">mmm. Is it true that, for any two prime...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can any two primes p, q be achieved as P(n) = p and P(n+1) = q for some n? DISPROVED: The pair (2, 7) fails since 2^k ≢ -1 (mod 7) for all k.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "counterexample",
+      "disproved",
+      "modular-arithmetic"
     ],
     "erdosNumber": 649,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-65",
@@ -12122,7 +12265,7 @@
     "title": "Erdős Problem #88: Induced Subgraphs in Ramsey Graphs",
     "slug": "erdos-88",
     "description": "In a graph with no large clique or independent set, can we find induced subgraphs with any desired edge count up to δn²? The Erdős-McKay conjecture was proved by Kwan, Sah, Sauermann, and Sawhney (2022), earning the $100 prize.",
-    "status": "pending",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
       "graph-theory",
@@ -12133,8 +12276,9 @@
       "extremal-combinatorics"
     ],
     "erdosNumber": 88,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 23
   },
   {
     "id": "erdos-880",
@@ -12382,17 +12526,23 @@
   },
   {
     "id": "erdos-900",
-    "title": "Erdős Problem #900",
+    "title": "Erdős Problem #900: Longest Path in Sparse Random Graphs",
     "slug": "erdos-900",
-    "description": "There is a function f:(1/2,&#x221E;)&#x2192;R\" role=\"presentation\" style=\"position: relative;\">f:(1/2,∞)→ℝf:(1/2,∞)→Rf:(1/2,\\infty)\\to  such that f(c)&#x2192;0\" role=\"presentation\" style=\"position:...",
-    "status": "pending",
+    "description": "There exists a function f:(1/2,∞)→ℝ with f(c)→0 as c→1/2 and f(c)→1 as c→∞, such that G(n,cn) has whp a path of length ≥f(c)n. SOLVED by Ajtai-Komlós-Szemerédi (1981).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "longest-path",
+      "probabilistic-method",
+      "phase-transition"
     ],
     "erdosNumber": 900,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 23
   },
   {
     "id": "erdos-901",

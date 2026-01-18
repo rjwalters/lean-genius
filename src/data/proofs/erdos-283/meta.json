@@ -1,33 +1,136 @@
 {
   "id": "erdos-283",
-  "title": "Erdős Problem #283",
+  "title": "Erdős Problem #283: Egyptian Fractions and Polynomial Values",
   "slug": "erdos-283",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a polynomial whose leading coefficient is positive and such that there exists no ... with ... for all .... Is it t...",
+  "description": "Can every sufficiently large m be represented as a sum of polynomial values p(n₁) + ... + p(nₖ) where the n's also form an Egyptian fraction summing to 1?",
   "meta": {
-    "author": "Unknown",
+    "author": "Graham (1963) for p(x)=x; Alekseyev (2019) for p(x)=x²; General: Open",
     "sourceUrl": "https://erdosproblems.com/283",
-    "date": "",
-    "status": "pending",
+    "date": "1963",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos283Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "polynomials",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 283,
     "erdosUrl": "https://erdosproblems.com/283",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial",
+        "description": "Integer polynomials ℤ[X]",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Algebra.Polynomial.Eval.Defs"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Eventually/sufficiently large quantifier",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums over sets",
+        "module": "Mathlib.Data.Finset.Sum"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsEgyptianDecomposition capturing unit fractions summing to 1",
+      "Definition of HasNoUniversalDivisor for polynomial conditions",
+      "Formal statement of Graham's theorem and Alekseyev's theorem",
+      "Verified Egyptian fraction examples: {2,3,6} and {2,4,6,12}",
+      "Verified Alekseyev's example: squares summing to 200"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #283 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p:\\mathbb{Z}\\to \\mathbb{Z}$ be a polynomial whose leading coefficient is positive and such that there exists no $d\\geq 2$ with $d\\mid p(n)$ for all $n\\geq 1$. Is it true that, for all sufficiently large $m$, there exist integers $1\\leq n_1<\\cdots <n_k$ such that\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]and\\[m=p(n_1)+\\cdots+p(n_k)?\\]\n\n\n\nGraham \\cite{Gr63} has proved this when $p(x)=x$. Graham also conjectures that this remains true with $1$ replaced by an arbitrary rational $\\alpha>0$ (provided $m$ is taken sufficiently large depending on $\\alpha$).\n\nCassels \\cite{Ca60} has proved that these conditions on the polynomial imply every sufficiently large integer is the sum of $p(n_i)$ with distinct $n_i$. Burr has proved this if $p(x)=x^k$ with $k\\geq 1$ and if we allow $n_i=n_j$.\n\nAlekseyev \\cite{Al19} has proved this when $p(x)=x^2$, for all $m>8542$. For example,\\[1=\\frac{1}{2}+\\frac{1}{4}+\\frac{1}{6}+\\frac{1}{12}\\]and\\[200 = 2^2+4^2+6^2+12^2.\\]van Doorn \\cite{vD25} has investigated the question of what 'sufficiently large' means for $p(x)=x$. van Doorn has also proved the original conjecture for many linear and quadratic polynomials, for example $p(x)=x+5$ or $p(x)=x^2+100$ - see the comments section.\n\n\n\n\nReferences\n\n\n[Al19] Alekseyev, Max A., On partitions into squares of distinct integers whose\nreciprocals sum to 1. (2019), 213--221.\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.\n\n[Gr63] Graham, R. L., A theorem on partitions. J. Austral. Math. Soc. (1963), 435-441.\n\n[vD25] W. van Doorn, Partitions with prescribed sum of rationals: asymptotic bounds. arXiv:2502.02200 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #283 connects two classical topics: Egyptian fractions (sums of distinct unit fractions, used by ancient Egyptians) and additive representation of integers by polynomial values.\n\nThe problem asks: given a polynomial p with positive leading coefficient and no universal divisor (no d ≥ 2 dividing all p(n)), can every sufficiently large m be written as p(n₁) + ... + p(nₖ) where additionally 1/n₁ + ... + 1/nₖ = 1?\n\nGraham (1963) proved this for p(x) = x, showing that for large enough m, there exist distinct positive integers whose reciprocals sum to 1 and whose values sum to m. Alekseyev (2019) extended this to p(x) = x², proving it for all m > 8542. van Doorn (2025) extended to many linear and quadratic polynomials.\n\nThe general case remains open. The Egyptian fraction constraint is crucial: without it, Cassels (1960) showed the representation is always possible under the polynomial conditions.",
+    "problemStatement": "Let $p: \\mathbb{Z} \\to \\mathbb{Z}$ be a polynomial with positive leading coefficient, and suppose there is no $d \\geq 2$ dividing $p(n)$ for all $n \\geq 1$.\n\nIs it true that for all sufficiently large $m$, there exist distinct positive integers $n_1 < n_2 < \\cdots < n_k$ such that:\n$$\\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k} = 1$$\nand\n$$p(n_1) + p(n_2) + \\cdots + p(n_k) = m$$\n\n**Status**: PARTIALLY SOLVED\n- $p(x) = x$: YES (Graham 1963)\n- $p(x) = x^2$: YES for $m > 8542$ (Alekseyev 2019)\n- General polynomial: OPEN",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **IsEgyptianDecomposition**: A finite set of positive integers whose reciprocals sum to 1\n2. **HasNoUniversalDivisor**: The polynomial condition (no d ≥ 2 dividing all values)\n3. **ErdosCondition**: The main property that for sufficiently large m, such decompositions exist\n\nWe prove structural theorems (X and X² have no universal divisor) and verify concrete examples. The main results by Graham and Alekseyev are stated as axioms since their proofs require detailed combinatorial arguments not in Mathlib.",
+    "keyInsights": [
+      "**Egyptian fractions are ancient**: The Egyptians represented all fractions as sums of distinct unit fractions. There are infinitely many ways to write 1 as such a sum: {1}, {2,3,6}, {2,4,6,12}, etc.",
+      "**The two constraints interact**: We need integers whose reciprocals sum to 1 AND whose polynomial values sum to m. This severely restricts which sets we can use.",
+      "**Universal divisor condition**: If d | p(n) for all n, then only m divisible by d can be represented. The condition rules this out.",
+      "**Alekseyev's example**: 1/2 + 1/4 + 1/6 + 1/12 = 1 and 2² + 4² + 6² + 12² = 200. This shows 200 is achievable for squares.",
+      "**The gap to general polynomials**: While linear and quadratic cases are solved, higher degrees remain open. The difficulty grows with polynomial complexity."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "egyptian-fractions",
+      "title": "Egyptian Fractions",
+      "startLine": 42,
+      "endLine": 70,
+      "summary": "Definition of IsEgyptianDecomposition and verified examples."
+    },
+    {
+      "id": "polynomial-condition",
+      "title": "Polynomial Condition",
+      "startLine": 72,
+      "endLine": 104,
+      "summary": "Definition of HasNoUniversalDivisor with proofs for X and X²."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 106,
+      "endLine": 128,
+      "summary": "Definition of ErdosCondition and the main conjecture statement."
+    },
+    {
+      "id": "graham-theorem",
+      "title": "Graham's Theorem",
+      "startLine": 130,
+      "endLine": 144,
+      "summary": "Graham's 1963 result for p(x) = x."
+    },
+    {
+      "id": "alekseyev-theorem",
+      "title": "Alekseyev's Theorem",
+      "startLine": 146,
+      "endLine": 163,
+      "summary": "Alekseyev's 2019 result for p(x) = x² with concrete example."
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions and Related Results",
+      "startLine": 165,
+      "endLine": 199,
+      "summary": "van Doorn's extensions and Cassels' theorem (without Egyptian constraint)."
+    },
+    {
+      "id": "structure",
+      "title": "Structure of Egyptian Fractions",
+      "startLine": 218,
+      "endLine": 236,
+      "summary": "Infinitely many decompositions exist; trivial example {1}."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 238,
+      "endLine": 261,
+      "summary": "Combined theorem summarizing known results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #283, which asks whether polynomial values can represent all large integers subject to an Egyptian fraction constraint. The problem is solved for p(x) = x (Graham 1963) and p(x) = x² (Alekseyev 2019), but remains open for general polynomials.",
+    "implications": "This problem connects:\n\n1. **Egyptian fractions**: An ancient representation system still yielding open problems\n2. **Additive number theory**: Representing integers as sums of special sequences\n3. **Polynomial arithmetic**: How polynomial structure affects representability\n\nThe Egyptian fraction constraint makes the problem much harder than plain additive representation (solved by Cassels).",
+    "openQuestions": [
+      "Does ErdosCondition hold for all polynomials with positive leading coefficient and no universal divisor?",
+      "What is the exact threshold for p(x) = x? (Graham showed 'sufficiently large' but not the exact bound)",
+      "Can the threshold 8542 for p(x) = x² be improved?",
+      "What about p(x) = xᵏ for k ≥ 3?"
+    ]
   }
 }

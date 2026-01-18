@@ -1,33 +1,121 @@
 {
   "id": "erdos-1025",
-  "title": "Erdős Problem #1025",
+  "title": "Erdős Problem #1025: Independent Sets in Pair Functions",
   "slug": "erdos-1025",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a function from all pairs of elements in ... to ... such that ... and ... for all .... We call ... independent if ...",
+  "description": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) ≠ x,y. Let g(n) be the minimum guaranteed independent set size. Erdős-Hajnal (1958) proved n^(1/3) ≪ g(n) ≪ (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = Θ(n^(1/2)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal (1958), Spencer (1972), Conlon-Fox-Sudakov (2016)",
     "sourceUrl": "https://erdosproblems.com/1025",
-    "date": "",
+    "date": "2016",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1025Problem.lean",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-mappings",
+      "erdos",
+      "extremal-combinatorics",
+      "probabilistic-method"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 4,
     "erdosNumber": 1025,
     "erdosUrl": "https://erdosproblems.com/1025",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1025 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f$ be a function from all pairs of elements in $\\{1,\\ldots,n\\}$ to $\\{1,\\ldots,n\\}$ such that $f(x,y)\\neq x$ and $\\neq y$ for all $x,y$. We call $X\\subseteq \\{1,\\ldots,n\\}$ independent if whenever $x,y\\in X$ we have $f(x,y)\\not\\in X$.\n\nLet $g(n)$ be such that, in every function $f$, there is an independent set of size at least $g(n)$. Estimate $g(n)$.\n\n\n\nA question of Erd\\H{o}s and Hajnal \\cite{ErHa58}, who could prove\\[n^{1/3} \\ll g(n) \\ll (n\\log n)^{1/2}.\\]Spencer \\cite{Sp72} proved $g(n)\\gg n^{1/2}$. Conlon, Fox, and Sudakov \\cite{CFS16} proved $g(n)\\ll n^{1/2}$.\n\n\n\n\nReferences\n\n\n[CFS16] Conlon, David and Fox, Jacob and Sudakov, Benny, Short proofs of some extremal results {II}. J. Combin. Theory Ser. B (2016), 173--196.\n\n[ErHa58] Erd\\H{o}s, P. and Hajnal, A., On the structure of set mappings. Acta Math. Acad. Sci. Hungar. (1958), 111-133.\n\n[Sp72] Spencer, Joel, Tur\\'an's theorem for {$k$}-graphs. Discrete Math. (1972), 183--186.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Pair Functions and Independent Sets**\n\nThis problem concerns functions f: {pairs from {1,...,n}} → {1,...,n} with the constraint that f(x,y) ∉ {x, y}. A set X is independent if f(x,y) ∉ X for all pairs x,y ∈ X.\n\n**Historical Development**:\n- 1958: Erdős-Hajnal proved n^(1/3) ≪ g(n) ≪ (n log n)^(1/2)\n- 1972: Spencer improved lower bound to n^(1/2)\n- 2016: Conlon-Fox-Sudakov matched with upper bound n^(1/2)\n\n**Connection to Set Mappings**: This is closely related to Erdős-Hajnal's work on set mappings, where each element maps to a subset not containing itself.",
+    "problemStatement": "**Problem Statement**\n\nLet f be a function from all pairs {x,y} ⊆ {1,...,n} to {1,...,n} such that f(x,y) ≠ x and f(x,y) ≠ y. A set X ⊆ {1,...,n} is independent if f(x,y) ∉ X whenever x,y ∈ X.\n\nLet g(n) be such that every such function f has an independent set of size at least g(n). Estimate g(n).\n\n**Status**: SOLVED\n\n**Answer**: g(n) = Θ(n^(1/2))",
+    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - C(n,2)p³. Optimize p ≈ n^(-1/2) to get Ω(n^(1/2)).\n\n2. **Upper Bound (Construction)**: Conlon-Fox-Sudakov constructed pair functions achieving small independent sets using algebraic methods.\n\n3. **Key Insight**: The constraint f(x,y) ∉ {x,y} limits how much the function can \"spread out\" pairs, but still allows constructions with O(n^(1/2)) maximum independent sets.",
+    "keyInsights": [
+      "Pair function: f maps pairs to elements, avoiding the pair itself",
+      "Independent set: f(x,y) ∉ X for all pairs in X",
+      "Erdős-Hajnal (1958): n^(1/3) ≪ g(n) ≪ (n log n)^(1/2)",
+      "Spencer (1972): g(n) ≫ n^(1/2) via probabilistic method",
+      "Conlon-Fox-Sudakov (2016): g(n) ≪ n^(1/2) via construction"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "pair-functions",
+      "title": "Pair Functions",
+      "summary": "PairFunction, isValidPairFunction definitions",
+      "startLine": 24,
+      "endLine": 41
+    },
+    {
+      "id": "independent-sets",
+      "title": "Independent Sets",
+      "summary": "isIndependent, empty_independent, singleton_independent",
+      "startLine": 43,
+      "endLine": 68
+    },
+    {
+      "id": "extremal",
+      "title": "The Extremal Function g(n)",
+      "summary": "validPairFunctions, maxIndependent, g definition",
+      "startLine": 70,
+      "endLine": 91
+    },
+    {
+      "id": "erdos-hajnal",
+      "title": "Erdős-Hajnal Bounds (1958)",
+      "summary": "erdos_hajnal_lower, erdos_hajnal_upper, erdos_hajnal_bounds",
+      "startLine": 93,
+      "endLine": 117
+    },
+    {
+      "id": "spencer",
+      "title": "Spencer's Improvement (1972)",
+      "summary": "spencer_lower, spencer_improves_eh",
+      "startLine": 119,
+      "endLine": 132
+    },
+    {
+      "id": "cfs",
+      "title": "Conlon-Fox-Sudakov (2016)",
+      "summary": "cfs_upper, cfs_improves_eh",
+      "startLine": 134,
+      "endLine": 147
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "summary": "g_asymptotic, erdos_1025_question, erdos_1025_solved",
+      "startLine": 149,
+      "endLine": 181
+    },
+    {
+      "id": "set-mappings",
+      "title": "Related: Set Mappings",
+      "summary": "SetMapping, isFreeSet, pairToSetMapping",
+      "startLine": 183,
+      "endLine": 198
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Approach",
+      "summary": "expectedIndependent, probabilistic_lower_sketch",
+      "startLine": 200,
+      "endLine": 214
+    },
+    {
+      "id": "construction",
+      "title": "Upper Bound Construction",
+      "summary": "construction_upper, historical_bounds",
+      "startLine": 216,
+      "endLine": 242
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1025 asked to estimate g(n), the minimum guaranteed independent set size in pair functions. After 58 years of progress, the answer is g(n) = Θ(n^(1/2)): Spencer (1972) proved the lower bound and Conlon-Fox-Sudakov (2016) matched it with the upper bound.",
+    "implications": "**Theoretical Significance**\n\n1. **Set Mappings**: Fundamental result on structure of set mappings\n\n2. **Extremal Combinatorics**: Clean Θ(n^(1/2)) answer after gap between n^(1/3) and (n log n)^(1/2)\n\n3. **Probabilistic Method**: Lower bound via random selection and optimization\n\n4. **Algebraic Constructions**: Upper bound via explicit constructions",
+    "openQuestions": [
+      "What are the exact constants in the asymptotic?",
+      "Analogous problems for k-tuples instead of pairs?",
+      "Algorithmic complexity of finding independent sets?",
+      "What if we allow f(x,y) = x or f(x,y) = y with bounded frequency?",
+      "Connections to hypergraph coloring?"
+    ]
   }
 }

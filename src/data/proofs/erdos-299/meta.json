@@ -1,33 +1,135 @@
 {
   "id": "erdos-299",
-  "title": "Erdős Problem #299",
+  "title": "Erdős Problem #299: Bounded Gap Sequences and Unit Fractions",
   "slug": "erdos-299",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence ... such that ... and no finite sum of ... is equal to ...?\n\n\n\nThere does not exist such a sequ...",
+  "description": "Is there an infinite sequence with bounded gaps such that no finite sum of reciprocals equals 1? The answer is NO, as proved by Bloom (2021).",
   "meta": {
-    "author": "Unknown",
+    "author": "Bloom (2021)",
     "sourceUrl": "https://erdosproblems.com/299",
-    "date": "",
-    "status": "pending",
+    "date": "2021",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos299Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "density",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 299,
     "erdosUrl": "https://erdosproblems.com/299",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic analysis",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for bounded gaps",
+        "module": "Mathlib.Analysis.Asymptotics.Defs"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums for unit fractions",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality for density calculations",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of bounded-gap sequences using O(1) notation",
+      "Definition of upper density and positive density for sets",
+      "Connection between bounded gaps and positive density",
+      "Verified Egyptian fraction examples: {2,3,6} and {2,4,6,12}",
+      "Proof that powers of 2 have unbounded gaps"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #299 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence $a_1<a_2<\\cdots $ such that $a_{i+1}-a_i=O(1)$ and no finite sum of $\\frac{1}{a_i}$ is equal to $1$?\n\n\n\nThere does not exist such a sequence, which follows from the positive solution to [298] by Bloom \\cite{Bl21}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Bl21] Bloom, T. F., On a density conjecture about unit fractions. arXiv:2112.03726 (2021).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #299 asks whether there exists an infinite sequence a₁ < a₂ < ... with bounded gaps (a_{i+1} - a_i = O(1)) such that no finite subset has reciprocals summing to exactly 1.\n\nThis question connects to the ancient study of Egyptian fractions (representing 1 as sums of distinct unit fractions) and modern density arguments. The key insight is that sequences with bounded gaps have positive density.\n\nThe problem was resolved by Thomas Bloom in 2021, who proved the stronger result (Problem #298) that any set of positive upper density contains a finite subset whose reciprocals sum to 1. Since bounded-gap sequences necessarily have positive density, no such sequence can avoid containing a unit fraction sum.\n\nBloom's work built on deep techniques from additive combinatorics and resolved a long-standing conjecture of Erdős and Graham.",
+    "problemStatement": "Is there an infinite sequence $a_1 < a_2 < \\cdots$ such that:\n1. $a_{i+1} - a_i = O(1)$ (bounded gaps)\n2. No finite sum $\\frac{1}{a_{i_1}} + \\frac{1}{a_{i_2}} + \\cdots + \\frac{1}{a_{i_k}} = 1$\n\n**Answer**: NO. Such a sequence does not exist.\n\n**Proof**: Bounded-gap sequences have positive density. By Bloom's theorem (Problem #298), any set of positive upper density contains a finite subset whose reciprocals sum to 1. Therefore, bounded-gap sequences must contain unit fraction sums.",
+    "proofStrategy": "The proof has two main steps:\n\n1. **Bounded gaps imply positive density**: If a strictly increasing sequence has gaps bounded by C, then approximately N/C elements are below N, giving density at least 1/C.\n\n2. **Positive density implies unit fraction sum**: Bloom's theorem (2021) shows that any set of positive upper density contains a finite subset with reciprocals summing to 1.\n\nWe formalize Bloom's theorem as an axiom since its full proof requires sophisticated techniques from additive combinatorics beyond current Mathlib. We verify concrete examples of Egyptian fractions and prove structural properties of bounded-gap sequences.",
+    "keyInsights": [
+      "**Egyptian fractions**: Sums of distinct unit fractions equaling 1, like 1/2 + 1/3 + 1/6 = 1. The ancient Egyptians used only such fractions.",
+      "**Bounded gaps and density**: A sequence with gaps ≤ C has density at least 1/C, since it contains roughly N/C elements below N.",
+      "**Bloom's breakthrough**: The 2021 result showing positive density sets contain unit fraction sums resolved a 50+ year old Erdős-Graham conjecture.",
+      "**Contrast with sparse sequences**: Powers of 2 have unbounded gaps and their reciprocals sum to less than 1 (geometric series). Bounded gaps prevent such avoidance."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 49,
+      "endLine": 66,
+      "summary": "Key definitions: bounded gaps, unit fraction sums, and avoiding unit fractions."
+    },
+    {
+      "id": "density",
+      "title": "Upper Density",
+      "startLine": 73,
+      "endLine": 85,
+      "summary": "Definition of counting function, upper density, and positive density for sets of natural numbers."
+    },
+    {
+      "id": "key-lemma",
+      "title": "Bounded Gaps Imply Positive Density",
+      "startLine": 93,
+      "endLine": 101,
+      "summary": "The crucial connection: sequences with bounded gaps have positive density."
+    },
+    {
+      "id": "bloom",
+      "title": "Bloom's Theorem",
+      "startLine": 109,
+      "endLine": 117,
+      "summary": "Axiom encoding Bloom's 2021 result: positive density sets contain unit fraction sums."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "startLine": 123,
+      "endLine": 155,
+      "summary": "The main theorem: no bounded-gap sequence avoids unit fraction sums."
+    },
+    {
+      "id": "density-variant",
+      "title": "Density Variant",
+      "startLine": 164,
+      "endLine": 173,
+      "summary": "Restatement showing positive density alone suffices."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 181,
+      "endLine": 201,
+      "summary": "Verified examples: arithmetic sequence gaps and Egyptian fractions {2,3,6} and {2,4,6,12}."
+    },
+    {
+      "id": "sparse",
+      "title": "Why Bounded Gaps Matter",
+      "startLine": 209,
+      "endLine": 227,
+      "summary": "Proof that powers of 2 have unbounded gaps, showing the condition is necessary."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #299, proving that no infinite sequence with bounded gaps can avoid containing a finite subset whose reciprocals sum to 1. The proof relies on Bloom's 2021 theorem connecting positive density to Egyptian fractions.",
+    "implications": "This result has implications for:\n\n1. **Egyptian fractions**: Shows unit fraction representations of 1 are unavoidable in dense sequences\n\n2. **Density and structure**: Demonstrates how density conditions force arithmetic structure\n\n3. **Additive combinatorics**: Connects classical Erdős problems to modern techniques",
+    "openQuestions": [
+      "What is the minimum density required to guarantee a unit fraction sum?",
+      "Can we compute explicit bounds on the size of the subset needed?",
+      "What about sums equaling other rationals, not just 1?"
+    ]
   }
 }

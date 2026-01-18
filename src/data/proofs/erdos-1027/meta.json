@@ -1,33 +1,121 @@
 {
   "id": "erdos-1027",
-  "title": "Erdős Problem #1027",
+  "title": "Erdős Problem #1027: Intersecting Sets and Property B",
   "slug": "erdos-1027",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... be sufficiently large depending on .... Suppose that $...c2^n...n...X=\\cup_{A\\in }A...\\gg_c 2^{\\lvert X\\...",
+  "description": "Let F be a family of at most c·2^n sets of size n, and X = ∪F. Must there exist ≫_c 2^|X| sets B ⊆ X that intersect every set in F yet contain none? YES (proved by Koishi Chan). Connection to Property B (2-chromatic families).",
   "meta": {
-    "author": "Unknown",
+    "author": "Koishi Chan (proof)",
     "sourceUrl": "https://erdosproblems.com/1027",
-    "date": "",
+    "date": "2024",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1027Problem.lean",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-families",
+      "erdos",
+      "property-b",
+      "2-colorable"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 6,
     "erdosNumber": 1027,
     "erdosUrl": "https://erdosproblems.com/1027",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [901]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1027 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c>0$, and let $n$ be sufficiently large depending on $c$. Suppose that $\\mathcal{F}$ is a family of at most $c2^n$ many finite sets of size $n$. Let $X=\\cup_{A\\in \\mathcal{F}}A$.\n\nMust there exist $\\gg_c 2^{\\lvert X\\rvert}$ many sets $B\\subset X$ which intersect every set in $\\mathcal{F}$, yet contain none of them?\n\n\n\nThe existence of a single such $B$ is equivalent to $\\mathcal{F}$ being $2$-chromatic (or having property B), see [901].\n\nThis is true, and a proof was given in the comment section by Koishi Chan.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Property B and 2-Colorability**\n\nA family F has Property B if there exists a 2-coloring of the ground set such that no set in F is monochromatic. Equivalently, there exists a set B that intersects every member of F but contains none of them.\n\n**The Question**: Erdős asked whether bounded families (at most c·2^n sets of size n) have not just one such set B, but exponentially many.\n\n**Resolution**: Koishi Chan proved this is true: there exist ≫_c 2^|X| good sets B.\n\n**Connection to Problem 901**: The existence of a single good set is equivalent to Property B, which is the subject of Problem 901.",
+    "problemStatement": "**Problem Statement**\n\nLet c > 0 and n be sufficiently large. Suppose F is a family of at most c·2^n sets, each of size n. Let X = ∪_{A∈F} A.\n\nMust there exist ≫_c 2^|X| sets B ⊆ X which intersect every set in F, yet contain none of them?\n\n**Status**: SOLVED\n\n**Answer**: YES (proved by Koishi Chan)",
+    "proofStrategy": "**Proof Approach**\n\n1. **Property B First**: Show bounded families have Property B (at least one good set exists).\n\n2. **Abundance**: From one good set, show many exist via probabilistic or counting arguments.\n\n3. **Probabilistic Intuition**: A random subset B intersects A with probability 1 - 2^(-n) and doesn't contain A with probability 1 - 2^(-n). For bounded |F|, expected good sets is large.\n\n4. **Density Bound**: The fraction of subsets that are good is bounded below by a constant depending only on c.",
+    "keyInsights": [
+      "Good set B: intersects all members of F, contains none",
+      "Property B ↔ existence of a single good set",
+      "Bounded families (≤ c·2^n sets of size n) have Property B",
+      "Not just one good set, but exponentially many exist",
+      "Connected to Problem 901 on 2-colorability"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "set-families",
+      "title": "Set Families",
+      "summary": "SetFamily, familyUnion, isNUniform",
+      "startLine": 24,
+      "endLine": 41
+    },
+    {
+      "id": "intersecting",
+      "title": "Intersecting and Non-Containing Sets",
+      "summary": "intersectsAll, containsNone, isGoodSet, goodSets",
+      "startLine": 43,
+      "endLine": 64
+    },
+    {
+      "id": "property-b",
+      "title": "Property B (2-Chromatic)",
+      "summary": "hasPropertyB, is2Colorable, propertyB_iff_2colorable",
+      "startLine": 66,
+      "endLine": 85
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "goodSetCount, erdos_1027_conjecture",
+      "startLine": 87,
+      "endLine": 104
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "erdos_1027_solution, erdos_1027_solved",
+      "startLine": 106,
+      "endLine": 123
+    },
+    {
+      "id": "problem-901",
+      "title": "Connection to Problem 901",
+      "summary": "problem_901_connection, problem_901",
+      "startLine": 125,
+      "endLine": 139
+    },
+    {
+      "id": "existence",
+      "title": "Existence of Good Sets",
+      "summary": "propertyB_for_bounded, single_implies_many",
+      "startLine": 141,
+      "endLine": 160
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Intuition",
+      "summary": "probIntersects, probNotContains, expectedGoodSets",
+      "startLine": 162,
+      "endLine": 188
+    },
+    {
+      "id": "density",
+      "title": "Density of Good Sets",
+      "summary": "goodSetDensity, goodSetDensity_lower",
+      "startLine": 190,
+      "endLine": 207
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Counting",
+      "summary": "empty_family_good, singleton_family_good, good_set_inclusion_exclusion",
+      "startLine": 209,
+      "endLine": 235
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1027 asked whether bounded families (at most c·2^n sets of size n) have exponentially many 'good' sets B that intersect all members but contain none. Koishi Chan proved the answer is YES: there exist ≫_c 2^|X| such sets.",
+    "implications": "**Theoretical Significance**\n\n1. **Property B Abundance**: Not just existence but abundance of 2-colorings\n\n2. **Probabilistic Method**: Random sets often satisfy both conditions\n\n3. **Extremal Set Theory**: Bounds on intersecting families\n\n4. **Problem 901 Connection**: Links to fundamental results on 2-colorability",
+    "openQuestions": [
+      "What is the optimal constant δ in terms of c?",
+      "Does the result extend to k-colorability for k > 2?",
+      "Algorithmic aspects: can we efficiently find good sets?",
+      "What about non-uniform families?",
+      "Connections to hypergraph coloring?"
+    ]
   }
 }

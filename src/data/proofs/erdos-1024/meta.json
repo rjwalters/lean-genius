@@ -1,33 +1,121 @@
 {
   "id": "erdos-1024",
-  "title": "Erdős Problem #1024",
+  "title": "Erdős Problem #1024: Independent Sets in Linear Hypergraphs",
   "slug": "erdos-1024",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every ...-uniform linear hypergraph on ... vertices contains an independent set on ... vertices. Estimat...",
+  "description": "Let f(n) be the minimum independence number guaranteed in every 3-uniform linear hypergraph on n vertices. Phelps-Rödl (1986) proved f(n) ≍ (n log n)^(1/2), refining Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
   "meta": {
-    "author": "Unknown",
+    "author": "Phelps-Rödl (1986)",
     "sourceUrl": "https://erdosproblems.com/1024",
-    "date": "",
+    "date": "1986",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1024Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "hypergraphs",
+      "erdos",
+      "independence-number",
+      "steiner-systems"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 5,
     "erdosNumber": 1024,
     "erdosUrl": "https://erdosproblems.com/1024",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1024 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be such that every $3$-uniform linear hypergraph on $n$ vertices contains an independent set on $f(n)$ vertices. Estimate $f(n)$.\n\n\n\nA hypergraph is linear if $\\lvert A\\cap B\\rvert\\leq 1$ for all edges $A$ and $B$. An independent set of vertices is one which contains no edges. A $3$-uniform linear hypergraph is sometimes called a partial Steiner triple system.\n\nErd\\H{o}s could prove\\[n^{1/2} \\ll f(n) \\ll n^{2/3}.\\]Phelps and R\\\"{o}dl \\cite{PhRo86} proved\\[f(n) \\asymp (n\\log n)^{1/2}.\\]\n\n\n\n\nReferences\n\n\n[PhRo86] Phelps, K. T. and R\\\"odl, V., Steiner triple systems with minimum independence number. Ars Combin. (1986), 167--172.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Linear Hypergraphs**\n\nA hypergraph is linear if any two edges share at most one vertex. A 3-uniform linear hypergraph is also called a partial Steiner triple system.\n\n**Independent Sets**: A set of vertices is independent if it contains no complete edge.\n\n**Erdős's Original Bounds**: Erdős proved n^(1/2) ≪ f(n) ≪ n^(2/3), leaving a gap between the exponents 1/2 and 2/3.\n\n**Resolution**: Phelps and Rödl (1986) determined the exact asymptotic: f(n) ≍ (n log n)^(1/2). The log factor closes Erdős's gap.",
+    "problemStatement": "**Problem Statement**\n\nLet f(n) be such that every 3-uniform linear hypergraph on n vertices contains an independent set of size f(n). Estimate f(n).\n\n**Status**: SOLVED (Phelps-Rödl 1986)\n\n**Answer**: f(n) ≍ (n log n)^(1/2)\n\n**Note**: Erdős's original bounds were n^(1/2) ≪ f(n) ≪ n^(2/3).",
+    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - mp³ (where m = number of edges). Optimize p.\n\n2. **Upper Bound (Construction)**: Build linear hypergraphs with small independence numbers using algebraic or probabilistic constructions.\n\n3. **Key Insight**: The number of edges m in a 3-uniform linear hypergraph is at most n²/6 (Steiner bound). This gives (n log n)^(1/2).\n\n4. **The Log Factor**: Arises from careful analysis of edge distribution.",
+    "keyInsights": [
+      "Linear hypergraph: |A ∩ B| ≤ 1 for all edges A, B",
+      "3-uniform linear = partial Steiner triple system",
+      "Erdős: n^(1/2) ≪ f(n) ≪ n^(2/3)",
+      "Phelps-Rödl: f(n) ≍ (n log n)^(1/2)",
+      "The log factor precisely closes Erdős's gap"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypergraphs",
+      "title": "Hypergraphs",
+      "summary": "Hypergraph, vertices, isKUniform, is3Uniform",
+      "startLine": 23,
+      "endLine": 43
+    },
+    {
+      "id": "linear",
+      "title": "Linear Hypergraphs",
+      "summary": "isLinear, is3UniformLinear definitions",
+      "startLine": 45,
+      "endLine": 57
+    },
+    {
+      "id": "independent",
+      "title": "Independent Sets",
+      "summary": "isIndependent, independenceNumber",
+      "startLine": 59,
+      "endLine": 77
+    },
+    {
+      "id": "extremal",
+      "title": "The Extremal Function f(n)",
+      "summary": "linearHypergraphs3, f definition",
+      "startLine": 79,
+      "endLine": 96
+    },
+    {
+      "id": "erdos-bounds",
+      "title": "Erdős's Bounds",
+      "summary": "erdos_lower_bound, erdos_upper_bound",
+      "startLine": 98,
+      "endLine": 121
+    },
+    {
+      "id": "phelps-rodl",
+      "title": "Phelps-Rödl Theorem (1986)",
+      "summary": "asymptoticBound, phelps_rodl",
+      "startLine": 123,
+      "endLine": 150
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Question Answered",
+      "summary": "erdos_1024_question, erdos_1024_solved",
+      "startLine": 152,
+      "endLine": 167
+    },
+    {
+      "id": "steiner",
+      "title": "Steiner Triple Systems",
+      "summary": "isSteinerTripleSystem, steiner_existence",
+      "startLine": 169,
+      "endLine": 188
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Lower Bound",
+      "summary": "expectedIndependent, probabilistic_lower",
+      "startLine": 190,
+      "endLine": 204
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison of Bounds",
+      "summary": "bound_comparison, log_factor_refinement",
+      "startLine": 217,
+      "endLine": 234
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1024 asked to estimate the minimum independence number f(n) of 3-uniform linear hypergraphs. Phelps and Rödl (1986) determined f(n) ≍ (n log n)^(1/2), precisely closing the gap in Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
+    "implications": "**Theoretical Significance**\n\n1. **Hypergraph Independence**: Fundamental result on guaranteed independent sets\n\n2. **Steiner Systems**: Applies to partial Steiner triple systems\n\n3. **Probabilistic Method**: Lower bound via random selection\n\n4. **Log Factor**: Precise asymptotic between polynomial bounds",
+    "openQuestions": [
+      "What are the exact constants in the asymptotic?",
+      "What about k-uniform linear hypergraphs for k > 3?",
+      "Algorithmic complexity of finding independent sets?",
+      "What about independence ratio (independence number / n)?",
+      "Connections to coding theory and designs?"
+    ]
   }
 }

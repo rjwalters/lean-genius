@@ -1,1 +1,380 @@
-[]
+[
+  {
+    "id": "ann-1034-edgecount",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "edgeCount",
+    "content": "Number of edges in a graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-turan",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "turanThreshold",
+    "content": "The Turán threshold n²/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-aboveturan",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "isAboveTuran",
+    "content": "Graph has > n²/4 edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-triangle",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 52, "endLine": 62 },
+    "type": "definition",
+    "title": "Triangle",
+    "content": "Three mutually adjacent vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-trivertices",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "Triangle.vertices",
+    "content": "The set {v1, v2, v3}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-tricard",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "theorem",
+    "title": "Triangle.card_vertices",
+    "content": "Triangle has 3 vertices.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1034-adjcount",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "definition",
+    "title": "adjacentToTriangleCount",
+    "content": "Count of triangle vertices adjacent to y.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-goodneighbor",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "definition",
+    "title": "isGoodNeighbor",
+    "content": "y adjacent to ≥ 2 triangle vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-goodneighbors",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "definition",
+    "title": "goodNeighbors",
+    "content": "Set of good neighbors (excluding triangle).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-goodcount",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "definition",
+    "title": "goodNeighborCount",
+    "content": "Count of good neighbors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-hastriwith",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 109, "endLine": 111 },
+    "type": "definition",
+    "title": "hasTriangleWithNeighbors",
+    "content": "G has triangle with ≥ k good neighbors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-validbound",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 113, "endLine": 118 },
+    "type": "definition",
+    "title": "isValidBound",
+    "content": "k is valid lower bound for h(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-h",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 120, "endLine": 122 },
+    "type": "definition",
+    "title": "h(n)",
+    "content": "The extremal function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-conjecture",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 130, "endLine": 137 },
+    "type": "definition",
+    "title": "erdos_faudree_conjecture",
+    "content": "Original (false) conjecture: > (1/2)n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-false",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "theorem",
+    "title": "erdos_faudree_false",
+    "content": "The conjecture is false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-matang",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 149, "endLine": 150 },
+    "type": "definition",
+    "title": "maTangConstant",
+    "content": "2 - √(5/2) ≈ 0.4189.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-matangapprox",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 152, "endLine": 154 },
+    "type": "theorem",
+    "title": "maTang_approx",
+    "content": "Numerical value verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1034-counterex",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 156, "endLine": 162 },
+    "type": "axiom",
+    "title": "Ma-Tang Counterexample",
+    "content": "Graphs with bounded good neighbors exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-hupper",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "theorem",
+    "title": "h_upper_bound",
+    "content": "h(n) ≤ (2 - √(5/2))n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-isbook",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 175, "endLine": 177 },
+    "type": "definition",
+    "title": "isBook",
+    "content": "Triangle plus common neighbors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-booksize",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 179, "endLine": 180 },
+    "type": "definition",
+    "title": "bookSize",
+    "content": "Number of pages.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1034-booklemma",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 182, "endLine": 189 },
+    "type": "axiom",
+    "title": "book_lemma",
+    "content": "Dense graphs have book of size n/6.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-bookgood",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "theorem",
+    "title": "book_pages_are_good",
+    "content": "Book pages are good neighbors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-hlower",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 197, "endLine": 199 },
+    "type": "theorem",
+    "title": "h_lower_bound",
+    "content": "h(n) ≥ (1/6)n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-hbounds",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 207, "endLine": 210 },
+    "type": "theorem",
+    "title": "h_bounds",
+    "content": "(1/6)n ≤ h(n) ≤ (2 - √(5/2))n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-boundgap",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 212, "endLine": 213 },
+    "type": "definition",
+    "title": "boundGap",
+    "content": "Gap between bounds ≈ 0.25.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-gapvalue",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 215, "endLine": 217 },
+    "type": "theorem",
+    "title": "gap_value",
+    "content": "Gap verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1034-k4free",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 225, "endLine": 228 },
+    "type": "definition",
+    "title": "isK4Free",
+    "content": "G has no K₄.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-k4const",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 230, "endLine": 231 },
+    "type": "definition",
+    "title": "k4FreeConstant",
+    "content": "2√3 - 3 ≈ 0.464.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-k4approx",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 233, "endLine": 235 },
+    "type": "theorem",
+    "title": "k4Free_approx",
+    "content": "K₄-free constant verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1034-k4result",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 237, "endLine": 243 },
+    "type": "axiom",
+    "title": "maTang_k4free",
+    "content": "K₄-free counterexample.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-k4worse",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 245, "endLine": 247 },
+    "type": "theorem",
+    "title": "k4free_worse",
+    "content": "K₄-free bound > general bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-p905",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 255, "endLine": 261 },
+    "type": "definition",
+    "title": "problem_905_weaker",
+    "content": "Problem 905 (weaker version).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-stronger905",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 263, "endLine": 266 },
+    "type": "theorem",
+    "title": "stronger_than_905",
+    "content": "1034 implies 905.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-maxgood",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 274, "endLine": 277 },
+    "type": "definition",
+    "title": "maxGoodNeighborCount",
+    "content": "Maximum over all triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-extremal",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 279, "endLine": 283 },
+    "type": "definition",
+    "title": "isMaTangExtremal",
+    "content": "Graph achieving Ma-Tang bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-question",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 291, "endLine": 294 },
+    "type": "definition",
+    "title": "erdos_1034_question",
+    "content": "What is the correct threshold?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-partial",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 296, "endLine": 300 },
+    "type": "theorem",
+    "title": "erdos_1034_partial",
+    "content": "Bounds on h(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1034-disproved",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 302, "endLine": 303 },
+    "type": "theorem",
+    "title": "erdos_1034_disproved",
+    "content": "Conjecture definitively false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1034-triadj",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 311, "endLine": 314 },
+    "type": "theorem",
+    "title": "triangle_vertex_adjacent",
+    "content": "Triangle vertex has adj count ≥ 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1034-fullyadj",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 316, "endLine": 320 },
+    "type": "theorem",
+    "title": "fully_adjacent_is_good",
+    "content": "Adjacent to all 3 → count = 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1034-booksubset",
+    "proofId": "erdos-1034",
+    "range": { "startLine": 322, "endLine": 327 },
+    "type": "theorem",
+    "title": "book_subset_good",
+    "content": "Book pages ⊆ good neighbors.",
+    "significance": "key"
+  }
+]

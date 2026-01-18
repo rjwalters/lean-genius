@@ -1,1 +1,227 @@
-[]
+[
+  {
+    "id": "ann-634-header",
+    "proofId": "erdos-634",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #634: Triangle Dissection into Congruent Pieces**\n\nFind all n such that some triangle can be cut into n congruent triangles.\n\n**Status**: OPEN with $25 prize\n\n**Known**: k², 2k², 3k², 6k², k²+m² work; 7, 11 fail; 19 unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-triangle",
+    "proofId": "erdos-634",
+    "range": { "startLine": 42, "endLine": 52 },
+    "type": "definition",
+    "title": "Triangle Structure",
+    "content": "**Triangle**: Represented by side lengths (a, b, c) with:\n- All sides positive\n- Triangle inequality: a+b>c, b+c>a, c+a>b\n\nThis captures the essential geometric constraint.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-congruent",
+    "proofId": "erdos-634",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Congruence",
+    "content": "**Congruent(T₁, T₂)**: Two triangles have the same side lengths (up to ordering).\n\nRepresented as equality of multisets: {a, b, c} = {a', b', c'}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-congruent-equiv",
+    "proofId": "erdos-634",
+    "range": { "startLine": 58, "endLine": 66 },
+    "type": "theorem",
+    "title": "Congruence is Equivalence",
+    "content": "**Congruence** is reflexive, symmetric, and transitive.\n\nThis follows directly from multiset equality.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-634-similar",
+    "proofId": "erdos-634",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "Similarity",
+    "content": "**Similar(T₁, T₂)**: Side lengths are proportional.\n\n∃ k > 0, T₂ = k · T₁\n\nWeaker than congruence (allows scaling).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-dissection",
+    "proofId": "erdos-634",
+    "range": { "startLine": 89, "endLine": 93 },
+    "type": "definition",
+    "title": "Dissection",
+    "content": "**Dissection(T, n)**: A partition of triangle T into n triangular pieces.\n\nThe pieces must tile T exactly (no gaps or overlaps).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-congruent-dissection",
+    "proofId": "erdos-634",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "definition",
+    "title": "Congruent Dissection",
+    "content": "**IsCongruentDissection**: All n pieces are congruent to each other.\n\n∀ i j, Congruent(pieces[i], pieces[j])",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-dissectable",
+    "proofId": "erdos-634",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "definition",
+    "title": "Dissectable",
+    "content": "**IsDissectable(n)**: ∃ triangle T that can be cut into n congruent triangles.\n\nThis is the central predicate of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-squares",
+    "proofId": "erdos-634",
+    "range": { "startLine": 109, "endLine": 111 },
+    "type": "theorem",
+    "title": "Squares Dissectable",
+    "content": "**squares_dissectable**: k² is dissectable for all k ≥ 1.\n\nDivide each side into k parts → k² congruent triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-two-squares",
+    "proofId": "erdos-634",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "theorem",
+    "title": "2k² Dissectable",
+    "content": "**two_squares_dissectable**: 2n² is dissectable.\n\nUses right triangle constructions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-three-squares",
+    "proofId": "erdos-634",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "theorem",
+    "title": "3k² Dissectable",
+    "content": "**three_squares_dissectable**: 3n² is dissectable.\n\nEquilateral triangle divided into 3n² congruent pieces.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-sum-squares",
+    "proofId": "erdos-634",
+    "range": { "startLine": 125, "endLine": 128 },
+    "type": "theorem",
+    "title": "Sum of Squares",
+    "content": "**sum_squares_dissectable**: n² + m² is dissectable for n, m ≥ 1.\n\nConnects to number theory: which numbers are sums of two squares.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-27",
+    "proofId": "erdos-634",
+    "range": { "startLine": 130, "endLine": 132 },
+    "type": "theorem",
+    "title": "27 Dissectable",
+    "content": "**twenty_seven_dissectable**: 27 is dissectable.\n\nSpecial equilateral triangle construction. Note: 27 = 3³ ≠ any of the standard forms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-seven",
+    "proofId": "erdos-634",
+    "range": { "startLine": 140, "endLine": 141 },
+    "type": "axiom",
+    "title": "7 NOT Dissectable",
+    "content": "**seven_not_dissectable**: ¬IsDissectable 7\n\n**Beeson's Theorem**: No triangle can be cut into 7 congruent triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-eleven",
+    "proofId": "erdos-634",
+    "range": { "startLine": 143, "endLine": 144 },
+    "type": "axiom",
+    "title": "11 NOT Dissectable",
+    "content": "**eleven_not_dissectable**: ¬IsDissectable 11\n\n**Beeson's Theorem**: No triangle can be cut into 11 congruent triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-non-diss-form",
+    "proofId": "erdos-634",
+    "range": { "startLine": 149, "endLine": 156 },
+    "type": "theorem",
+    "title": "Non-Dissectable Form",
+    "content": "**non_dissectable_form**: Both 7 and 11 are primes of form 4k+3.\n\n7 = 4·1 + 3, 11 = 4·2 + 3\n\nThis pattern led to the 4k+3 conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-conjecture",
+    "proofId": "erdos-634",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "definition",
+    "title": "4k+3 Conjecture",
+    "content": "**Conjecture_4k3**: Primes of form 4k+3 are not dissectable.\n\nExcept for 3 (which is 3·1² and hence dissectable).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-19",
+    "proofId": "erdos-634",
+    "range": { "startLine": 184, "endLine": 188 },
+    "type": "definition",
+    "title": "Open Case: 19",
+    "content": "**OpenCase_19**: Is 19 dissectable?\n\n19 = 4·4 + 3 is prime of form 4k+3.\n\nThis is the smallest case with unknown status.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-conjecture-implies",
+    "proofId": "erdos-634",
+    "range": { "startLine": 193, "endLine": 196 },
+    "type": "theorem",
+    "title": "Conjecture Implies 19",
+    "content": "**conjecture_implies_19**: If the 4k+3 conjecture holds, then 19 is NOT dissectable.\n\n19 is prime, 19 ≠ 3, and 19 = 4·4 + 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-soifer",
+    "proofId": "erdos-634",
+    "range": { "startLine": 212, "endLine": 214 },
+    "type": "axiom",
+    "title": "Soifer's Theorem",
+    "content": "**soifer_theorem**: For SIMILAR (not congruent) triangles, all n except 2, 3, 5 work.\n\nThis completely solves the similar version of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-similar-fails",
+    "proofId": "erdos-634",
+    "range": { "startLine": 216, "endLine": 223 },
+    "type": "axiom",
+    "title": "Similar Failures",
+    "content": "**2, 3, 5 NOT similar-dissectable**.\n\nThese are the ONLY failures for similar dissections.\n\nContrast: Congruent dissection has many more failures.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-sww",
+    "proofId": "erdos-634",
+    "range": { "startLine": 239, "endLine": 245 },
+    "type": "axiom",
+    "title": "Snover-Waiveris-Williams",
+    "content": "**sww_theorem**: Self-similar dissection (pieces similar to original) requires:\n\nn ∈ {k², k² + m², 3k²}\n\nComplete characterization for this restricted case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-zhang",
+    "proofId": "erdos-634",
+    "range": { "startLine": 253, "endLine": 255 },
+    "type": "axiom",
+    "title": "Zhang (2025)",
+    "content": "**zhang_2025**: For a ≥ b ≥ 1, sufficiently large n makes n²ab dissectable.\n\nRecent progress on sufficient conditions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-634-partial",
+    "proofId": "erdos-634",
+    "range": { "startLine": 271, "endLine": 299 },
+    "type": "theorem",
+    "title": "Partial Answer",
+    "content": "**erdos_634_partial**:\n\n- All k² are dissectable\n- 7 is NOT dissectable\n- 11 is NOT dissectable\n\nThis summarizes what is proven about the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-634-final",
+    "proofId": "erdos-634",
+    "range": { "startLine": 301, "endLine": 307 },
+    "type": "definition",
+    "title": "Final Status",
+    "content": "**Erdős Problem #634: OPEN**\n\n$25 prize remains unclaimed.\n\nComplete characterization of dissectable n is unknown.",
+    "significance": "critical"
+  }
+]

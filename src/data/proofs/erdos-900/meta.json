@@ -1,33 +1,173 @@
 {
   "id": "erdos-900",
-  "title": "Erdős Problem #900",
+  "title": "Erdős Problem #900: Longest Path in Sparse Random Graphs",
   "slug": "erdos-900",
-  "description": "There is a function f:(1/2,&#x221E;)&#x2192;R\" role=\"presentation\" style=\"position: relative;\">f:(1/2,∞)→ℝf:(1/2,∞)→Rf:(1/2,\\infty)\\to  such that f(c)&#x2192;0\" role=\"presentation\" style=\"position:...",
+  "description": "There exists a function f:(1/2,∞)→ℝ with f(c)→0 as c→1/2 and f(c)→1 as c→∞, such that G(n,cn) has whp a path of length ≥f(c)n. SOLVED by Ajtai-Komlós-Szemerédi (1981).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Ajtai-Komlós-Szemerédi (1981 solution)",
     "sourceUrl": "https://erdosproblems.com/900",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos900Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "longest-path",
+      "probabilistic-method",
+      "phase-transition"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 900,
     "erdosUrl": "https://erdosproblems.com/900",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for random graph model",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for f(c) behavior",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for subcritical path bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "AKS1981",
+        "citation": "Ajtai, M., Komlós, J., and Szemerédi, E. (1981). The longest path in a random graph. Combinatorica 1, 1-12.",
+        "type": "paper"
+      },
+      {
+        "key": "Erdos1982",
+        "citation": "Erdős, P. (1982). Problems and results on graphs and hypergraphs. [Er82e]",
+        "type": "paper"
+      },
+      {
+        "key": "ErdosRenyi1960",
+        "citation": "Erdős, P. and Rényi, A. (1960). On the evolution of random graphs. Publ. Math. Inst. Hungar. Acad. Sci. 5, 17-61.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the Erdős-Rényi random graph model G(n, m)",
+      "Definition of paths and longest path length",
+      "Probabilistic framework for 'with high probability' events",
+      "The giant component phase transition at c = 1/2",
+      "Statement of the path length function f(c) and its limiting behavior",
+      "Axiomatization of the Ajtai-Komlós-Szemerédi theorem",
+      "Subcritical regime analysis (O(log n) paths)"
+    ],
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #900 from erdosproblems.com.",
-    "problemStatement": "There is a function f:(1/2,&#x221E;)&#x2192;R\" role=\"presentation\" style=\"position: relative;\">f:(1/2,∞)→ℝf:(1/2,∞)→Rf:(1/2,\\infty)\\to \\mathbb{R} such that f(c)&#x2192;0\" role=\"presentation\" style=\"position: relative;\">f(c)→0f(c)→0f(c)\\to 0 as c&#x2192;1/2\" role=\"presentation\" style=\"position: relative;\">c→1/2c→1/2c\\to 1/2 and f(c)&#x2192;1\" role=\"presentation\" style=\"position: relative;\">f(c)→1f(c)→1f(c)\\to 1 as c&#x2192;&#x221E;\" role=\"presentation\" style=\"position: relative;\">c→∞c→∞c\\to \\infty and every random graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices and cn\" role=\"presentation\" style=\"position: relative;\">cncncn edges has (with high probability) a path of length at least f(c)n\" role=\"presentation\" style=\"position: relative;\">f(c)nf(c)nf(c)n. This was proved by Ajtai, Komlós, and Szemerédi [AKS81]. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Random Graphs and Long Paths**\n\nThe Erdős-Rényi random graph G(n, m) is the uniform distribution over graphs with n vertices and m edges. When m = cn for constant c, this is the 'sparse' regime.\n\n**Phase Transition at c = 1/2**: Below this threshold, the graph is a forest (whp). Above it, a 'giant component' of size Θ(n) emerges.\n\n**Erdős's Question**: How long is the longest path in G(n, cn)? The answer depends on c:\n- For c < 1/2: O(log n) (logarithmic)\n- For c > 1/2: Θ(n) (linear in n)\n\n**The Solution**: Ajtai, Komlós, and Szemerédi (1981) proved there exists f(c) such that the longest path has length approximately f(c)·n, where f(c) → 0 as c → 1/2 and f(c) → 1 as c → ∞.",
+    "problemStatement": "**Problem Statement**\n\nProve: There exists a function f:(1/2, ∞) → ℝ such that:\n1. f(c) → 0 as c → 1/2⁺\n2. f(c) → 1 as c → ∞\n3. G(n, cn) has (with high probability) a path of length at least f(c)·n\n\n**Answer**: PROVED by Ajtai-Komlós-Szemerédi (1981)\n\nThe function f(c) captures the phase transition from logarithmic to linear path lengths.",
+    "proofStrategy": "**The Formalization**\n\n1. Defines the Erdős-Rényi model G(n, m)\n2. Defines paths and path length\n3. Sets up probabilistic framework (whp events)\n4. States the giant component phase transition at c = 1/2\n5. Defines the path length function f(c)\n6. States its limiting behavior (→ 0 at 1/2, → 1 at ∞)\n7. Axiomatizes the AKS theorem\n8. Covers subcritical regime (O(log n) paths)\n9. Covers Hamiltonian path threshold",
+    "keyInsights": [
+      "The threshold c = 1/2 corresponds to average degree 1 (edge of connectivity)",
+      "Below c = 1/2, the graph is a forest and paths are O(log n)",
+      "Above c = 1/2, the giant component allows linear-length paths",
+      "f(c) is monotone increasing from 0 to 1 on (1/2, ∞)",
+      "The rotation-extension technique is key to the AKS proof",
+      "For very large c (dense graphs), paths are nearly Hamiltonian"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "random-graph-model",
+      "title": "Random Graph Model",
+      "summary": "Erdős-Rényi G(n, m)",
+      "startLine": 32,
+      "endLine": 52
+    },
+    {
+      "id": "paths",
+      "title": "Paths in Graphs",
+      "summary": "Path definition and length",
+      "startLine": 54,
+      "endLine": 74
+    },
+    {
+      "id": "probability",
+      "title": "High Probability Events",
+      "summary": "Whp framework for random graphs",
+      "startLine": 76,
+      "endLine": 93
+    },
+    {
+      "id": "giant-component",
+      "title": "The Giant Component Threshold",
+      "summary": "Phase transition at c = 1/2",
+      "startLine": 95,
+      "endLine": 115
+    },
+    {
+      "id": "path-function",
+      "title": "The Path Length Function",
+      "summary": "f(c) and its properties",
+      "startLine": 117,
+      "endLine": 143
+    },
+    {
+      "id": "aks-theorem",
+      "title": "The Ajtai-Komlós-Szemerédi Theorem",
+      "summary": "Main result solving Erdős #900",
+      "startLine": 145,
+      "endLine": 165
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Behavior at specific c values",
+      "startLine": 167,
+      "endLine": 183
+    },
+    {
+      "id": "subcritical",
+      "title": "The Subcritical Regime",
+      "summary": "O(log n) paths below threshold",
+      "startLine": 185,
+      "endLine": 198
+    },
+    {
+      "id": "hamiltonian",
+      "title": "Hamiltonian Paths",
+      "summary": "The dense regime",
+      "startLine": 200,
+      "endLine": 222
+    },
+    {
+      "id": "techniques",
+      "title": "Proof Techniques",
+      "summary": "DFS, expansion, rotation-extension",
+      "startLine": 224,
+      "endLine": 245
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem #900 is SOLVED",
+      "startLine": 247,
+      "endLine": 283
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #900 asks for a function f(c) characterizing the longest path length in sparse random graphs G(n, cn). SOLVED by Ajtai-Komlós-Szemerédi (1981) who proved f(c) exists with f(c)→0 as c→1/2 and f(c)→1 as c→∞, establishing the phase transition from logarithmic to linear path lengths.",
+    "implications": "**Theoretical Significance**\n\n1. **Phase Transitions**: Demonstrates sharp transition at c = 1/2 for path lengths\n\n2. **Random Graph Theory**: Foundational result on structure of sparse random graphs\n\n3. **Probabilistic Method**: Showcases power of probabilistic combinatorics\n\n4. **Hamiltonian Path Theory**: Connects to threshold for spanning paths",
+    "openQuestions": [
+      "Exact formula for f(c)?",
+      "Tight concentration bounds on longest path length?",
+      "Extension to other random graph models (e.g., preferential attachment)?",
+      "Algorithmic aspects: finding long paths efficiently"
+    ]
   }
 }

@@ -7,7 +7,7 @@
     "author": "Erdős-Hajnal-Szemerédi (conjecture), Shelah (consistency), Lambie-Hanson (2020 ZFC disproof)",
     "sourceUrl": "https://erdosproblems.com/110",
     "date": "2020",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos110Problem.lean",
     "tags": [
       "graph-theory",
@@ -19,16 +19,63 @@
       "disproved"
     ],
     "badge": "disproved",
-    "sorries": 1,
+    "sorries": 2,
     "erdosNumber": 110,
     "erdosUrl": "https://erdosproblems.com/110",
     "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs on a vertex type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic including ℵ₀, ℵ₁",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for subgraph bounds",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "LambieHanson2020",
+        "citation": "Lambie-Hanson, C. (2020). Chromatic numbers of ℵ₁-graphs. arXiv:2001.03368.",
+        "type": "paper"
+      },
+      {
+        "key": "Shelah2005",
+        "citation": "Shelah, S. (2005). On chromatic numbers of graphs. Periodica Mathematica Hungarica 50, 249-260.",
+        "type": "paper"
+      },
+      {
+        "key": "ErdosHajnalSzemeredi1982",
+        "citation": "Erdős, P., Hajnal, A., and Szemerédi, E. (1982). On almost bipartite large chromatic graphs. Annals of Discrete Mathematics 12, 117-123.",
+        "type": "paper"
+      },
+      {
+        "key": "deBruijnErdos1951",
+        "citation": "de Bruijn, N.G. and Erdős, P. (1951). A colour problem for infinite graphs and a problem in the theory of relations. Indagationes Mathematicae 13, 369-373.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of chromatic number for infinite graphs using cardinals",
+      "Statement of the Erdős-Hajnal-Szemerédi conjecture",
+      "Axiomatization of de Bruijn-Erdős theorem",
+      "Formalization of Lambie-Hanson's counterexample structure",
+      "Proof that the conjecture is disproved"
+    ],
     "relatedProblems": []
   },
   "overview": {
     "historicalContext": "**Finite Subgraphs of Infinite Chromatic Graphs**\n\nThe de Bruijn-Erdős theorem (1951) states that a graph with infinite chromatic number contains finite subgraphs of every finite chromatic number. But how efficiently? This problem asks whether there's a universal bound F(n) on the size needed to achieve chromatic number n.\n\n**The Conjecture (Erdős-Hajnal-Szemerédi 1982)**: For graphs with chromatic number ℵ₁ (the first uncountable cardinal), there should exist F(n) such that an n-chromatic subgraph exists on at most F(n) vertices.\n\n**Important**: This fails for ℵ₀-chromatic graphs! The uncountability is essential.\n\n**Erdős's Expectation**: If F exists, it must grow faster than any k-fold iterated exponential.\n\n**The Disproof**:\n- Shelah (2005): Showed it's consistent with ZFC that no such F exists\n- Lambie-Hanson (2020): Constructed an actual ZFC counterexample - no set-theoretic assumptions needed!",
     "problemStatement": "**Problem Statement**\n\nIs there a function F: ℕ → ℕ such that every graph G with chromatic number ℵ₁ has, for all sufficiently large n, a subgraph with chromatic number n on at most F(n) vertices?\n\n**Answer**: NO (DISPROVED in ZFC)\n\n**Lambie-Hanson (2020)**: Constructed a graph with chromatic number ℵ₁ such that no such function F exists.\n\n**Note**: The conjecture specifically requires χ(G) = ℵ₁. For χ(G) = ℵ₀, counterexamples were already known.",
-    "proofStrategy": "**The Counterexample (Lambie-Hanson 2020)**\n\nThe construction uses sophisticated set-theoretic and combinatorial techniques:\n\n1. **Building the Graph**: Construct a graph G with χ(G) = ℵ₁ where chromatic subgraphs are 'sparse' but require increasingly large vertex sets.\n\n2. **Growth Rate Control**: Ensure that for any candidate F(n), there exists n where the minimum n-chromatic subgraph exceeds F(n) vertices.\n\n3. **ZFC Construction**: Unlike Shelah's consistency result, this works in any model of ZFC.\n\n**Shelah's Earlier Result (2005)**:\n- Showed the negative answer is consistent with ZFC\n- Left open whether it's provable in ZFC\n- Lambie-Hanson closed this gap\n\n**de Bruijn-Erdős Foundation**:\n- Guarantees finite n-chromatic subgraphs exist\n- But says nothing about their size",
+    "proofStrategy": "**The Formalization**\n\n1. Defines chromatic number and k-colorability\n2. Defines induced subgraphs and chromatic subgraph bounds\n3. Introduces cardinals ℵ₀ and ℵ₁ from Mathlib\n4. States the de Bruijn-Erdős theorem (existence without bounds)\n5. States the Erdős-Hajnal-Szemerédi conjecture\n6. Axiomatizes Shelah's consistency result\n7. Axiomatizes Lambie-Hanson's ZFC counterexample\n8. Proves the conjecture is FALSE\n9. Characterizes the counterexample graph structure",
     "keyInsights": [
       "DISPROVED in ZFC by Lambie-Hanson (2020) - no set-theoretic assumptions needed",
       "Shelah (2005) had earlier shown consistency of negative answer",
@@ -41,11 +88,74 @@
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 36,
-      "endLine": 37,
-      "summary": "The current proof is a placeholder (erdos_110 : True). The conjecture was DISPROVED by Lambie-Hanson (2020)."
+      "id": "basic-graph-theory",
+      "title": "Basic Graph Theory",
+      "summary": "Chromatic numbers and colorings",
+      "startLine": 31,
+      "endLine": 51
+    },
+    {
+      "id": "subgraphs",
+      "title": "Subgraphs and Induced Subgraphs",
+      "summary": "Finite chromatic subgraph definitions",
+      "startLine": 53,
+      "endLine": 71
+    },
+    {
+      "id": "cardinals",
+      "title": "Cardinals and Infinite Chromatic Numbers",
+      "summary": "ℵ₀, ℵ₁, and infinite chromatic numbers",
+      "startLine": 73,
+      "endLine": 100
+    },
+    {
+      "id": "de-bruijn-erdos",
+      "title": "de Bruijn-Erdős Theorem",
+      "summary": "Foundation: existence of finite chromatic subgraphs",
+      "startLine": 102,
+      "endLine": 120
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Hajnal-Szemerédi Conjecture",
+      "summary": "The conjecture that was disproved",
+      "startLine": 122,
+      "endLine": 145
+    },
+    {
+      "id": "shelah",
+      "title": "Shelah's Consistency Result",
+      "summary": "2005: Consistent that no F exists",
+      "startLine": 147,
+      "endLine": 166
+    },
+    {
+      "id": "lambie-hanson",
+      "title": "Lambie-Hanson's ZFC Disproof",
+      "summary": "2020: Definitive ZFC counterexample",
+      "startLine": 168,
+      "endLine": 192
+    },
+    {
+      "id": "growth-rate",
+      "title": "Erdős's Growth Rate Expectations",
+      "summary": "Faster than any tower function",
+      "startLine": 194,
+      "endLine": 219
+    },
+    {
+      "id": "counterexample",
+      "title": "Properties of the Counterexample",
+      "summary": "Lambie-Hanson's graph structure",
+      "startLine": 237,
+      "endLine": 264
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem #110 is DISPROVED",
+      "startLine": 266,
+      "endLine": 297
     }
   ],
   "conclusion": {

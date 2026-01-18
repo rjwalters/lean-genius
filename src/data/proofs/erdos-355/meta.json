@@ -1,33 +1,115 @@
 {
   "id": "erdos-355",
-  "title": "Erdős Problem #355",
+  "title": "Erdős Problem #355: Lacunary Sequences and Rational Representation",
   "slug": "erdos-355",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a lacunary sequence ... (so that ... and there exists some ... such that ... for all ...) such that\\[\\left\\{ \\sum_{a...",
+  "description": "Can a lacunary sequence's reciprocal sums cover all rationals in an open interval? YES for lacunarity constant in (1,2), proved by van Doorn and Kovač (2025).",
   "meta": {
-    "author": "Unknown",
+    "author": "van Doorn and Kovač (2025)",
     "sourceUrl": "https://erdosproblems.com/355",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos355Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "lacunary-sequences",
+      "reciprocal-sums"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 355,
     "erdosUrl": "https://erdosproblems.com/355",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums for reciprocal computations",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Set.Ioo",
+        "description": "Open intervals for rational containment",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "positivity",
+        "description": "Proving positivity of powers",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsLacunaryWith capturing the ratio condition",
+      "Definition of ReciprocalSums for achievable sums from a sequence",
+      "Proof that powers of 2 form a lacunary sequence with ratio 2",
+      "Formalization of van Doorn-Kovač theorem as axiom",
+      "Fibonacci-like sequence example with ratio approximately φ"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #355 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a lacunary sequence $A\\subseteq \\mathbb{N}$ (so that $A=\\{a_1<a_2<\\cdots\\}$ and there exists some $\\lambda>1$ such that $a_{n+1}/a_n\\geq \\lambda$ for all $n\\geq 1$) such that\\[\\left\\{ \\sum_{a\\in A'}\\frac{1}{a} : A'\\subseteq A\\textrm{ finite}\\right\\}\\]contains all rationals in some open interval?\n\n\n\nBleicher and Erd\\H{o}s conjectured the answer is no.\n\nIn fact the answer is yes, with any lacunarity constant $\\lambda\\in (1,2)$ (though not $\\lambda=2$), as proved by van Doorn and Kova\\v{c} \\cite{DoKo25}.\n\n\n\n\nReferences\n\n\n[DoKo25] W. van Doorn and V. Kova\\v{c}, Lacunary sequences whose reciprocal sums represent all rationals in an interval. arXiv:2509.24971 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #355 asks whether a lacunary sequence (where consecutive terms have ratio at least λ > 1) can have its finite reciprocal sums cover all rationals in some open interval.\n\nBleicher and Erdős originally conjectured the answer was NO [BlEr76, p.167]. They reasoned that sparse sequences like powers of 2 have reciprocal sums that form a discrete set (dyadic rationals), unable to fill any interval.\n\nThe problem was resolved in 2025 by van Doorn and Kovač, who proved that for any lacunarity constant λ ∈ (1, 2), there exist sequences whose reciprocal sums do cover all rationals in an interval. Crucially, λ = 2 is the sharp boundary: powers of 2 (λ = 2) cannot achieve this, but any λ < 2 suffices.\n\nThe proof constructs explicit sequences that balance being sparse enough to be lacunary while having enough 'overlap' between levels to achieve density in reciprocal sums.",
+    "problemStatement": "Is there a **lacunary sequence** $A \\subseteq \\mathbb{N}$ (where $A = \\{a_1 < a_2 < \\cdots\\}$ and there exists $\\lambda > 1$ such that $a_{n+1}/a_n \\geq \\lambda$ for all $n$) such that\n$$\\left\\{ \\sum_{a \\in A'} \\frac{1}{a} : A' \\subseteq A \\text{ finite} \\right\\}$$\ncontains all rationals in some open interval?\n\n**Answer**: YES, for any $\\lambda \\in (1, 2)$, though not for $\\lambda = 2$.\n\n**Proof**: van Doorn and Kovač [DoKo25] constructed explicit lacunary sequences achieving this property.",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **IsLacunaryWith**: A sequence is lacunary with parameter λ if a_{n+1}/a_n ≥ λ for all n\n2. **ReciprocalSums**: The set of all finite reciprocal sums from a sequence\n3. **RepresentsRationalsIn**: The property that all rationals in an interval are achievable\n\nThe main result (van Doorn-Kovač theorem) is stated as an axiom since its proof requires sophisticated constructions beyond current Mathlib.\n\nWe prove that powers of 2 form a lacunary sequence with λ = 2, illustrating the boundary case. For λ < 2, the van Doorn-Kovač theorem guarantees existence of suitable sequences.",
+    "keyInsights": [
+      "**Lacunary sequences**: Sequences where terms grow at least exponentially (a_{n+1}/a_n ≥ λ > 1). Powers of 2 are the canonical example with λ = 2.",
+      "**The critical threshold λ = 2**: For λ = 2, reciprocal sums are dyadic rationals and cannot fill an interval. For λ < 2, there's enough 'overlap' to achieve density.",
+      "**Egyptian fractions connection**: Finite sums of distinct unit fractions. The question asks when these can cover all rationals in an interval.",
+      "**Disproving Bleicher-Erdős**: The 2025 result showed their NO conjecture was wrong for λ < 2, demonstrating the subtlety of the problem."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 39,
+      "endLine": 68,
+      "summary": "Key definitions: IsLacunaryWith, IsLacunary, ReciprocalSums, RepresentsRationalsIn."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Lacunary Sequences",
+      "startLine": 70,
+      "endLine": 104,
+      "summary": "Properties: strict monotonicity, convergent reciprocal sums, powers of 2 example."
+    },
+    {
+      "id": "boundary",
+      "title": "The Critical λ = 2 Boundary",
+      "startLine": 106,
+      "endLine": 125,
+      "summary": "Why λ = 2 fails: dyadic rationals don't fill intervals."
+    },
+    {
+      "id": "main-result",
+      "title": "van Doorn-Kovač Theorem",
+      "startLine": 127,
+      "endLine": 153,
+      "summary": "Main result: for λ ∈ (1,2), lacunary sequences can represent all rationals in an interval."
+    },
+    {
+      "id": "sharp-boundary",
+      "title": "Sharp Boundary",
+      "startLine": 168,
+      "endLine": 185,
+      "summary": "The threshold λ = 2 is sharp: (1,2) works, [2,∞) doesn't."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Intuition",
+      "startLine": 187,
+      "endLine": 222,
+      "summary": "Fibonacci-like sequence example and intuition for why λ < 2 works."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #355, which asks whether lacunary sequences can have reciprocal sums covering all rationals in an interval. The van Doorn-Kovač theorem (2025) proves YES for λ ∈ (1,2), disproving the Bleicher-Erdős conjecture.",
+    "implications": "This result has implications for:\n\n1. **Egyptian fractions**: Shows that certain structured sequences can achieve full rational coverage\n\n2. **Number theory**: Demonstrates subtle threshold phenomena in sequence properties\n\n3. **Additive combinatorics**: Connects sequence growth rates to density of achievable sums",
+    "openQuestions": [
+      "What is the smallest interval achievable for a given λ ∈ (1,2)?",
+      "Can explicit constructions be given for specific λ values?",
+      "What happens for sequences with weaker growth conditions than lacunarity?"
+    ]
   }
 }

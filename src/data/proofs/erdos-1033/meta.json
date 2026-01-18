@@ -1,33 +1,156 @@
 {
   "id": "erdos-1033",
-  "title": "Erdős Problem #1033",
+  "title": "Erdős Problem #1033: Triangle Degree Sums in Dense Graphs",
   "slug": "erdos-1033",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every graph on ... vertices with ... many edges contains a triangle whose vertices have degrees summing ...",
+  "description": "Let h(n) = max k such that every graph on n vertices with > n²/4 edges contains a triangle with degree sum ≥ k. Conjecture: h(n) ≥ (2(√3−1)−o(1))n ≈ 1.464n. Known: (21/16)n ≤ h(n) ≤ 2(√3−1)n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Laskar (1985), Fan (1988)",
     "sourceUrl": "https://erdosproblems.com/1033",
-    "date": "",
+    "date": "1985",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1033Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-graph-theory",
+      "erdos",
+      "triangles",
+      "turan-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 14,
     "erdosNumber": 1033,
     "erdosUrl": "https://erdosproblems.com/1033",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1033 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be such that every graph on $n$ vertices with $>n^2/4$ many edges contains a triangle whose vertices have degrees summing to at least $h(n)$. Estimate $h(n)$. In particular, is it true that\\[h(n)\\geq (2(\\sqrt{3}-1)-o(1))n?\\]\n\n\n\nErd\\H{o}s and Laskar \\cite{ErLa85} proved\\[2(\\sqrt{3}-1)n \\geq h(n) \\geq (1+c)n\\]for some $c>0$. The lower bound was improved to $\\frac{21}{16}n$ by Fan \\cite{Fa88}.\n\n\n\n\nReferences\n\n\n[ErLa85] Erd\\H{o}s, Paul and Laskar, Renu, A note on the size of a chordal subgraph. Congr. Numer. (1985), 81--86.\n\n[Fa88] Fan, Genghua, Degree sum for a triangle in a graph. J. Graph Theory (1988), 249--263.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Turán Theory Background**\n\nTurán's theorem states that every graph on n vertices with more than n²/4 edges contains a triangle. This problem asks: given that triangles exist, how large must the degree sum of some triangle be?\n\n**Historical Development**:\n- 1985: Erdős and Laskar proved (1+c)n ≤ h(n) ≤ 2(√3−1)n\n- 1988: Fan improved lower bound to (21/16)n = 1.3125n\n\n**Current Status**: Open - gap between 1.3125n and 1.464n remains.",
+    "problemStatement": "**Problem Statement**\n\nLet h(n) be such that every graph on n vertices with > n²/4 edges contains a triangle whose vertices have degrees summing to at least h(n). Estimate h(n).\n\n**Conjecture**: h(n) ≥ (2(√3−1)−o(1))n ≈ 1.464n\n\n**Status**: OPEN",
+    "proofStrategy": "**Known Approach**\n\n1. **Upper Bound**: Erdős-Laskar construct graphs just above Turán threshold where all triangles have degree sum ≤ 2(√3−1)n.\n\n2. **Lower Bound (Fan)**: Careful analysis shows h(n) ≥ (21/16)n via degree counting in triangles.\n\n3. **Key Insight**: The constant 2(√3−1) arises from optimizing triangle configurations in nearly-bipartite graphs.\n\n4. **Gap**: Closing the 0.15n gap between bounds remains open.",
+    "keyInsights": [
+      "Turán threshold: n²/4 edges forces a triangle",
+      "h(n) = guaranteed minimum of max triangle degree sum",
+      "Upper bound 2(√3−1)n ≈ 1.464n from Erdős-Laskar",
+      "Lower bound (21/16)n = 1.3125n from Fan",
+      "Gap of about 0.15n remains open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-setup",
+      "title": "Graph Setup",
+      "summary": "vertexCount, edgeCount definitions",
+      "startLine": 28,
+      "endLine": 41
+    },
+    {
+      "id": "turan-threshold",
+      "title": "Turán Threshold",
+      "summary": "turanThreshold, isAboveTuran, turan_has_triangle",
+      "startLine": 43,
+      "endLine": 59
+    },
+    {
+      "id": "triangles",
+      "title": "Triangles and Degree Sums",
+      "summary": "Triangle structure, vertexDegree, triangleDegreeSum",
+      "startLine": 61,
+      "endLine": 90
+    },
+    {
+      "id": "h-function",
+      "title": "The Function h(n)",
+      "summary": "hasDenseTriangle, isValidLowerBound, h definition",
+      "startLine": 92,
+      "endLine": 117
+    },
+    {
+      "id": "constant",
+      "title": "The Constant 2(√3−1)",
+      "summary": "erdosLaskarConstant, erdosLaskar_approx",
+      "startLine": 119,
+      "endLine": 130
+    },
+    {
+      "id": "upper-bound",
+      "title": "Erdős-Laskar Upper Bound",
+      "summary": "erdos_laskar_upper, upper_bound_tight",
+      "startLine": 132,
+      "endLine": 148
+    },
+    {
+      "id": "original-lower",
+      "title": "Erdős-Laskar Lower Bound",
+      "summary": "erdos_laskar_lower, lower_beats_n",
+      "startLine": 150,
+      "endLine": 166
+    },
+    {
+      "id": "fan-bound",
+      "title": "Fan's Improved Lower Bound",
+      "summary": "fanConstant, fan_lower, current_bounds",
+      "startLine": 168,
+      "endLine": 190
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "summary": "boundGap, gap_positive, gap_approx",
+      "startLine": 192,
+      "endLine": 208
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdos_1033_conjecture, h_asymptotic",
+      "startLine": 210,
+      "endLine": 229
+    },
+    {
+      "id": "degree-properties",
+      "title": "Degree Sum Properties",
+      "summary": "triangle_min_degree, triangle_sum_min, dense_average_degree",
+      "startLine": 231,
+      "endLine": 251
+    },
+    {
+      "id": "maximum",
+      "title": "Maximum Triangle Degree Sum",
+      "summary": "maxTriangleDegreeSum, h_as_min",
+      "startLine": 253,
+      "endLine": 270
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Graphs",
+      "summary": "isExtremal, extremal_exists",
+      "startLine": 272,
+      "endLine": 287
+    },
+    {
+      "id": "turan-graph",
+      "title": "Relation to Turán Graph",
+      "summary": "bipartite_no_triangle, turan_plus_one",
+      "startLine": 289,
+      "endLine": 311
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "h_three, h_four",
+      "startLine": 313,
+      "endLine": 325
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1033 asks to estimate h(n), where every graph on n vertices with > n²/4 edges contains a triangle with degree sum ≥ h(n). Erdős-Laskar (1985) proved h(n) ≤ 2(√3−1)n, and Fan (1988) proved h(n) ≥ (21/16)n. The gap remains open.",
+    "implications": "**Theoretical Significance**\n\n1. **Turán Theory Extension**: Refines our understanding beyond triangle existence\n\n2. **Degree-Sum Problems**: Template for similar extremal questions\n\n3. **Extremal Graph Structure**: Near-Turán graphs have specific triangle properties\n\n4. **Algorithmic Implications**: Finding high-degree-sum triangles",
+    "openQuestions": [
+      "Is h(n) = (2(√3−1)−o(1))n? (Main conjecture)",
+      "What are the extremal graphs achieving h(n)?",
+      "Can the lower bound be improved beyond (21/16)n?",
+      "What about k-cliques instead of triangles?",
+      "Algorithmic: efficiently finding max-degree-sum triangle"
+    ]
   }
 }

@@ -1,33 +1,158 @@
 {
   "id": "erdos-641",
-  "title": "Erdős Problem #641",
+  "title": "Erdős Problem #641: Edge-Disjoint Cycles on Same Vertex Set",
   "slug": "erdos-641",
-  "description": "Is there some function f\" role=\"presentation\" style=\"position: relative;\">fff such that for all k&#x2265;1\" role=\"presentation\" style=\"position: relative;\">k≥1k≥1k\\geq 1 if a finite graph G\" role=\"...",
+  "description": "Is there a function f such that χ(G) ≥ f(k) implies G has k edge-disjoint cycles on the same vertices? DISPROVED by Janzer-Steiner-Sudakov (2024) - fails even for k=2.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal (problem), Janzer-Steiner-Sudakov (2024 disproof)",
     "sourceUrl": "https://erdosproblems.com/641",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos641Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "regular-subgraphs",
+      "counterexample",
+      "disproved"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 641,
     "erdosUrl": "https://erdosproblems.com/641",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.degree",
+        "description": "Vertex degree for regularity",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Degree"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for chromatic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "JSS2024",
+        "citation": "Janzer, O., Steiner, R., and Sudakov, B. (2024). Graphs with high chromatic number and no regular subgraphs.",
+        "type": "paper"
+      },
+      {
+        "key": "ErdosHajnal",
+        "citation": "Erdős, P. and Hajnal, A. Original problem on edge-disjoint cycles and chromatic number.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of edge-disjoint cycles on same vertex set",
+      "Connection to 2k-regular subgraphs",
+      "Statement of the Erdős-Hajnal conjecture",
+      "Axiomatization of the JSS counterexample",
+      "Related positive results (odd cycles, Gyárfás theorem)"
+    ],
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #641 from erdosproblems.com.",
-    "problemStatement": "Is there some function f\" role=\"presentation\" style=\"position: relative;\">fff such that for all k&#x2265;1\" role=\"presentation\" style=\"position: relative;\">k≥1k≥1k\\geq 1 if a finite graph G\" role=\"presentation\" style=\"position: relative;\">GGG has chromatic number &#x2265;f(k)\" role=\"presentation\" style=\"position: relative;\">≥f(k)≥f(k)\\geq f(k) then G\" role=\"presentation\" style=\"position: relative;\">GGG has k\" role=\"presentation\" style=\"position: relative;\">kkk edge disjoint cycles on the same set of vertices?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Chromatic Number and Substructures**\n\nHigh chromatic number forces various substructures: long odd cycles, large cliques (if triangle-free is ruled out), etc. Erdős and Hajnal asked whether it also forces edge-disjoint cycles on the same vertex set.\n\n**The Key Observation**: k edge-disjoint cycles on the same vertices form a 2k-regular subgraph. So the question becomes: does high χ imply regular subgraphs?\n\n**The Surprise**: Janzer-Steiner-Sudakov (2024) showed the answer is NO, even for k = 2. There exist graphs with arbitrarily high chromatic number but no 4-regular subgraph.",
+    "problemStatement": "**Problem Statement**\n\nIs there a function f such that for all k ≥ 1, if χ(G) ≥ f(k), then G contains k edge-disjoint cycles on the same set of vertices?\n\n**Answer**: NO (DISPROVED)\n\nJanzer-Steiner-Sudakov showed this fails even for k = 2:\n- There exist n-vertex graphs with χ ≥ c · (log log n)/(log log log n)\n- Yet these graphs contain no 4-regular subgraph",
+    "proofStrategy": "**The Formalization**\n\n1. Defines chromatic number and k-colorability\n2. Defines cycles and edge-disjoint cycles\n3. Defines regular subgraphs\n4. Shows k edge-disjoint cycles ↔ 2k-regular subgraph\n5. States the Erdős-Hajnal conjecture\n6. Focuses on k = 2 case (4-regular subgraph)\n7. Axiomatizes JSS counterexample construction\n8. Proves the conjecture is FALSE\n9. Notes positive results that ARE true (odd cycles, Gyárfás)",
+    "keyInsights": [
+      "k edge-disjoint cycles on same vertices = 2k-regular subgraph",
+      "High chromatic number does NOT imply regular subgraphs",
+      "The counterexample has χ = Θ(log log n / log log log n)",
+      "This is a rare case where Erdős's intuition was wrong",
+      "Positive results still hold: high χ implies long odd cycles"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "chromatic-number",
+      "title": "Graphs and Chromatic Number",
+      "summary": "Basic definitions",
+      "startLine": 34,
+      "endLine": 53
+    },
+    {
+      "id": "cycles",
+      "title": "Cycles and Regular Subgraphs",
+      "summary": "Edge-disjoint cycles definition",
+      "startLine": 55,
+      "endLine": 78
+    },
+    {
+      "id": "regular",
+      "title": "Regular Subgraphs",
+      "summary": "Connection to regularity",
+      "startLine": 80,
+      "endLine": 101
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Hajnal Conjecture",
+      "summary": "The disproved statement",
+      "startLine": 103,
+      "endLine": 123
+    },
+    {
+      "id": "k-2",
+      "title": "The k = 2 Case",
+      "summary": "Does high χ imply 4-regular?",
+      "startLine": 125,
+      "endLine": 139
+    },
+    {
+      "id": "jss",
+      "title": "The JSS Counterexample",
+      "summary": "Graphs with high χ, no 4-regular",
+      "startLine": 141,
+      "endLine": 164
+    },
+    {
+      "id": "disproof",
+      "title": "The Main Disproof",
+      "summary": "Erdős #641 is DISPROVED",
+      "startLine": 166,
+      "endLine": 183
+    },
+    {
+      "id": "positive",
+      "title": "Positive Results",
+      "summary": "What IS true about high χ",
+      "startLine": 185,
+      "endLine": 209
+    },
+    {
+      "id": "related",
+      "title": "Related Conjectures",
+      "summary": "Hadwiger, Reed, etc.",
+      "startLine": 211,
+      "endLine": 230
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem #641 is DISPROVED",
+      "startLine": 253,
+      "endLine": 285
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #641 asks whether high chromatic number guarantees k edge-disjoint cycles on the same vertex set. DISPROVED by Janzer-Steiner-Sudakov (2024) who constructed graphs with χ = Ω(log log n / log log log n) but no 4-regular subgraph, showing the conjecture fails even for k = 2.",
+    "implications": "**Theoretical Significance**\n\n1. **Limits of Chromatic Number**: Shows χ does not control all local structures\n\n2. **Regular Subgraphs**: High χ does not force any fixed regularity\n\n3. **Counterexample Techniques**: Random graphs with careful edge removal\n\n4. **Contrast with Positive Results**: χ DOES force odd cycles, cliques (Gyárfás)",
+    "openQuestions": [
+      "What is the maximum χ for graphs without 4-regular subgraphs?",
+      "Are there other substructures high χ fails to force?",
+      "Can the JSS bound be improved?",
+      "What about r-regular for r ≠ 4?"
+    ]
   }
 }

@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-e299-header",
+    "proofId": "erdos-299",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #299** asks whether there exists an infinite sequence with bounded gaps such that no finite sum of reciprocals equals 1. The answer is **NO**: Bloom (2021) proved that bounded-gap sequences must contain Egyptian fraction sums.",
+    "mathContext": "We import Asymptotics for O(1) notation, Filter.atTop for asymptotic statements, and Finset for finite sums. The key connection is that bounded gaps imply positive density.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "unit-fractions", "density", "egyptian-fractions"]
+  },
+  {
+    "id": "ann-e299-bounded-gaps",
+    "proofId": "erdos-299",
+    "range": { "startLine": 49, "endLine": 56 },
+    "type": "definition",
+    "title": "Bounded Gap Sequences",
+    "content": "**HasBoundedGaps** captures sequences where consecutive differences are O(1) - bounded by some constant C for large n. **HasUniformBoundedGaps** is a simpler version requiring all gaps to be ≤ C.",
+    "mathContext": "Using Asymptotics.IsBigO, we define (fun n => a(n+1) - a(n)) =O[atTop] (1). The simpler uniform version is ∀ n, a(n+1) - a(n) ≤ C.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotics", "big-O", "sequences"]
+  },
+  {
+    "id": "ann-e299-unit-fractions",
+    "proofId": "erdos-299",
+    "range": { "startLine": 58, "endLine": 65 },
+    "type": "definition",
+    "title": "Unit Fraction Sums",
+    "content": "**HasUnitFractionSum** defines a finite set of positive integers whose reciprocals sum to exactly 1 - an Egyptian fraction decomposition. **AvoidsUnitFractionSum** means no finite subset of the sequence sums to 1.",
+    "mathContext": "HasUnitFractionSum S := (∀ n ∈ S, n > 0) ∧ (∑ n ∈ S, 1/n) = 1. We use ℚ for decidable equality in native_decide proofs.",
+    "significance": "critical",
+    "relatedConcepts": ["egyptian-fractions", "finset", "rational-arithmetic"]
+  },
+  {
+    "id": "ann-e299-density",
+    "proofId": "erdos-299",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "definition",
+    "title": "Upper Density",
+    "content": "**Upper density** measures what fraction of natural numbers belong to a set. The **counting function** |A ∩ [1,N]| counts elements up to N, and upper density is limsup of this ratio as N → ∞.",
+    "mathContext": "upperDensity A = limsup (|A ∩ [1,N]| / N) as N → ∞. HasPositiveUpperDensity means this limit is > 0. Sets with positive density are 'large' in a precise sense.",
+    "significance": "critical",
+    "relatedConcepts": ["limsup", "counting", "natural-density"]
+  },
+  {
+    "id": "ann-e299-key-lemma",
+    "proofId": "erdos-299",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "theorem",
+    "title": "Bounded Gaps Imply Positive Density",
+    "content": "**The crucial connection**: if a strictly increasing sequence has gaps bounded by C, its range has positive density (at least 1/C). This is because bounded gaps force the sequence to include many elements below any N.",
+    "mathContext": "Intuitively: if gaps ≤ C, then a_n ≤ a_0 + n·C, so there are at least N/C - O(1) elements below N. The proof requires careful counting arguments.",
+    "significance": "critical",
+    "relatedConcepts": ["density", "counting", "gaps"]
+  },
+  {
+    "id": "ann-e299-bloom",
+    "proofId": "erdos-299",
+    "range": { "startLine": 110, "endLine": 118 },
+    "type": "axiom",
+    "title": "Bloom's Theorem (2021)",
+    "content": "**Bloom's theorem** (Problem #298): If A ⊆ ℕ has positive upper density and 0 ∉ A, then A contains a finite subset S with ∑_{n ∈ S} 1/n = 1. This resolved the Erdős-Graham conjecture using deep additive combinatorics.",
+    "mathContext": "Stated as an axiom because the full proof requires sophisticated techniques beyond Mathlib. The 2021 paper uses polynomial methods and density increment arguments.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "additive-combinatorics", "erdos-graham"]
+  },
+  {
+    "id": "ann-e299-main",
+    "proofId": "erdos-299",
+    "range": { "startLine": 133, "endLine": 147 },
+    "type": "theorem",
+    "title": "Main Result: No Such Sequence Exists",
+    "content": "**Erdős Problem #299 (SOLVED)**: There does NOT exist an infinite sequence with bounded gaps that avoids unit fraction sums. The proof chains: bounded gaps → positive density → contains unit fraction sum (by Bloom).",
+    "mathContext": "The full proof: assume such a sequence exists. By boundedGaps_implies_positiveDensity, its range has positive density. By bloom_theorem, it contains a unit fraction sum. Contradiction.",
+    "significance": "critical",
+    "relatedConcepts": ["contradiction", "main-theorem", "solved"]
+  },
+  {
+    "id": "ann-e299-examples",
+    "proofId": "erdos-299",
+    "range": { "startLine": 189, "endLine": 201 },
+    "type": "theorem",
+    "title": "Egyptian Fraction Examples",
+    "content": "**Verified examples**: {2, 3, 6} gives 1/2 + 1/3 + 1/6 = 1, and {2, 4, 6, 12} gives 1/2 + 1/4 + 1/6 + 1/12 = 1. These concrete examples show that Egyptian fractions with sum 1 exist.",
+    "mathContext": "We use native_decide for the rational arithmetic verification. The positivity conditions are proved by case analysis with omega.",
+    "significance": "supporting",
+    "relatedConcepts": ["native-decide", "verification", "computation"]
+  },
+  {
+    "id": "ann-e299-powers-of-two",
+    "proofId": "erdos-299",
+    "range": { "startLine": 211, "endLine": 227 },
+    "type": "theorem",
+    "title": "Powers of 2 Have Unbounded Gaps",
+    "content": "**Contrast with sparse sequences**: Powers of 2 (1, 2, 4, 8, ...) have gaps that grow without bound (2^{n+1} doubles each time). Their reciprocals sum to less than 1 (geometric series). This shows bounded gaps are necessary.",
+    "mathContext": "Proof by contradiction: if gaps ≤ C for all n, then 2^{C+1} ≤ C at position C, but 2^{C+1} > C + 1 > C by Nat.lt_two_pow_self.",
+    "significance": "supporting",
+    "relatedConcepts": ["counterexample", "geometric-series", "exponential-growth"]
+  },
+  {
+    "id": "ann-e299-summary",
+    "proofId": "erdos-299",
+    "range": { "startLine": 231, "endLine": 249 },
+    "type": "theorem",
+    "title": "Summary of Results",
+    "content": "**Summary**: We bundle the main theorem (no bounded-gap sequence avoids unit fractions), the density variant (positive density suffices), and verified Egyptian fraction examples into a single theorem statement.",
+    "mathContext": "erdos_299_summary packages: (1) the impossibility result, (2) the density variant using bloom_theorem, and (3) the concrete example {2,3,6}.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "bundled-theorem", "completeness"]
+  }
+]

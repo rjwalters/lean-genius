@@ -1,33 +1,121 @@
 {
   "id": "erdos-1023",
-  "title": "Erdős Problem #1023",
+  "title": "Erdős Problem #1023: Union-Free Families",
   "slug": "erdos-1023",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of a family of subsets of ... such that no set in this family is the union of other members of th...",
+  "description": "Let F(n) be the max size of a family of subsets of {1,...,n} where no set is the union of other members. Is F(n) ~ c · 2^n / √n? YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Kleitman, Hunter",
     "sourceUrl": "https://erdosproblems.com/1023",
-    "date": "",
+    "date": "1971",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1023Problem.lean",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-families",
+      "erdos",
+      "extremal-combinatorics",
+      "antichains"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 10,
     "erdosNumber": 1023,
     "erdosUrl": "https://erdosproblems.com/1023",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [447]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1023 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(n)$ be the maximal size of a family of subsets of $\\{1,\\ldots,n\\}$ such that no set in this family is the union of other members of the family. Is it true that there is a constant $c>0$ such that\\[F(n)\\sim c \\frac{2^n}{n^{1/2}}?\\]\n\n\n\nErd\\H{o}s and Kleitman proved in unpublished work that\\[F(n)\\asymp \\frac{2^n}{n^{1/2}}.\\](\\cite{Er71} has an exponent of $3/2$, but this is presumably a typo.)\n\nHunter observes in the comments that this follows from the solution to [447], which implies $F(n)\\sim \\binom{n}{n/2}$.\n\nIf we only rule out solutions to $A=B\\cup C$ (that is, forbid a set being the union of two other sets in the family) then this is the subject of [447].\n\n\n\n\nReferences\n\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Union-Free Families**\n\nA family of sets is union-free if no member equals the union of other members. This is a natural extremal problem: how large can such a family be?\n\n**Antichains**: If no set contains another, then certainly no set can be a union of others. So antichains are union-free.\n\n**Sperner's Theorem**: The largest antichain on {1,...,n} is the middle layer - sets of size n/2. This has C(n, n/2) elements.\n\n**Resolution**: Erdős-Kleitman proved F(n) = C(n, n/2), and Hunter observed this follows from Problem 447 on 2-union-free families.",
+    "problemStatement": "**Problem Statement**\n\nLet F(n) be the maximum size of a family of subsets of {1,...,n} such that no set in the family is the union of other members.\n\nIs there a constant c > 0 such that F(n) ~ c · 2^n / √n?\n\n**Status**: SOLVED\n\n**Answer**: YES. F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.",
+    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound**: The middle layer (sets of size n/2) is an antichain, hence union-free. Size = C(n, n/2).\n\n2. **Upper Bound (Erdős-Kleitman)**: No union-free family can exceed C(n, n/2).\n\n3. **Asymptotics**: By Stirling, C(n, n/2) ~ √(2/π) · 2^n / √n.\n\n4. **Hunter's Observation**: Problem 447 (2-union-free) has the same answer, and union-free ⊆ 2-union-free.\n\n**Key Insight**: The antichain bound is tight for union-free families.",
+    "keyInsights": [
+      "Union-free: no set is union of other members",
+      "Antichains are union-free (no containment → no union)",
+      "Middle layer C(n, n/2) achieves the maximum",
+      "F(n) ~ √(2/π) · 2^n / √n by Stirling",
+      "Follows from Problem 447 on 2-union-free families"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "set-families",
+      "title": "Set Families on {1,...,n}",
+      "summary": "SetFamily, powerSet definitions",
+      "startLine": 23,
+      "endLine": 38
+    },
+    {
+      "id": "union-free",
+      "title": "Union-Free Families",
+      "summary": "familyUnion, isUnionOf, isUnionFree",
+      "startLine": 40,
+      "endLine": 64
+    },
+    {
+      "id": "extremal",
+      "title": "The Extremal Function F(n)",
+      "summary": "unionFreeMax definition",
+      "startLine": 66,
+      "endLine": 79
+    },
+    {
+      "id": "antichains",
+      "title": "Antichains are Union-Free",
+      "summary": "isAntichain, antichain_unionFree",
+      "startLine": 81,
+      "endLine": 93
+    },
+    {
+      "id": "middle-layer",
+      "title": "The Middle Layer",
+      "summary": "layer, middleLayer, middleLayer_antichain",
+      "startLine": 95,
+      "endLine": 124
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound: F(n) ≥ C(n, n/2)",
+      "summary": "unionFreeMax_ge_middle",
+      "startLine": 126,
+      "endLine": 135
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound: F(n) ≤ C(n, n/2)",
+      "summary": "erdos_kleitman_upper, unionFreeMax_eq_middle",
+      "startLine": 137,
+      "endLine": 152
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Form",
+      "summary": "centralBinomial, Stirling, asymptoticConstant",
+      "startLine": 154,
+      "endLine": 175
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Question Answered",
+      "summary": "erdos_1023_question, erdos_1023_solved",
+      "startLine": 177,
+      "endLine": 197
+    },
+    {
+      "id": "problem-447",
+      "title": "Connection to Problem 447",
+      "summary": "isTwoUnionFree, hunter_observation",
+      "startLine": 199,
+      "endLine": 238
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1023 asked whether the maximum union-free family has size ~ c · 2^n / √n. The answer is YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n. The middle layer achieves this bound, and Erdős-Kleitman proved it's optimal.",
+    "implications": "**Theoretical Significance**\n\n1. **Extremal Set Theory**: Tight bound on union-free families\n\n2. **Connection to Antichains**: Sperner's theorem is the key ingredient\n\n3. **Stirling's Approximation**: Converts exact bound to asymptotic form\n\n4. **Problem 447 Link**: Hunter's observation connects related problems",
+    "openQuestions": [
+      "What about union-free families with additional constraints?",
+      "Analogous problems for other operations (intersection, difference)?",
+      "Algorithmic complexity of finding maximum union-free families?",
+      "Generalizations to multisets or infinite families?",
+      "What if we forbid unions of exactly k sets?"
+    ]
   }
 }

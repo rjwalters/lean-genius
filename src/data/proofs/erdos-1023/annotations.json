@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-1023-setfamily",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 29, "endLine": 30 },
+    "type": "definition",
+    "title": "Set Family",
+    "content": "Collection of subsets of Fin n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-powerset",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Power Set",
+    "content": "All subsets of {0,...,n-1}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1023-familyunion",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Family Union",
+    "content": "Union of all sets in a subfamily.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-isunionof",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Is Union Of",
+    "content": "A set equals union of a subfamily (size >= 2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-unionfree",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Union-Free",
+    "content": "No member is union of other members.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-unionfreemax",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "definition",
+    "title": "F(n) = unionFreeMax",
+    "content": "Maximum size of union-free family.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-antichain",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "Antichain",
+    "content": "No set contains another.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-antichainuf",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "theorem",
+    "title": "Antichain -> Union-Free",
+    "content": "No containment implies no unions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-layer",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "definition",
+    "title": "Layer",
+    "content": "Sets of exactly size k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-middlelayer",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "definition",
+    "title": "Middle Layer",
+    "content": "Sets of size n/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-middleantichain",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 113, "endLine": 120 },
+    "type": "theorem",
+    "title": "Middle Layer is Antichain",
+    "content": "Same size -> no containment.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-lowerbound",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 132, "endLine": 135 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "F(n) >= C(n, n/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-upperbound",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "theorem",
+    "title": "Erdos-Kleitman Upper",
+    "content": "F(n) <= C(n, n/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-exact",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "theorem",
+    "title": "Exact Value",
+    "content": "F(n) = C(n, n/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-central",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 160, "endLine": 161 },
+    "type": "definition",
+    "title": "Central Binomial",
+    "content": "C(n, n/2) - central binomial coefficient.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-asymp",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 167, "endLine": 168 },
+    "type": "definition",
+    "title": "Asymptotic Constant",
+    "content": "c = sqrt(2/pi) ~ 0.798.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-question",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 183, "endLine": 187 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Is F(n) ~ c * 2^n / sqrt(n)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-solved",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 189, "endLine": 197 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "YES, c = sqrt(2/pi).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1023-twounion",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 209, "endLine": 211 },
+    "type": "definition",
+    "title": "2-Union-Free",
+    "content": "No set is union of exactly two others.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1023-hunter",
+    "proofId": "erdos-1023",
+    "range": { "startLine": 231, "endLine": 238 },
+    "type": "theorem",
+    "title": "Hunter's Observation",
+    "content": "1023 follows from Problem 447.",
+    "significance": "key"
+  }
+]

@@ -1,34 +1,180 @@
 {
   "id": "erdos-634",
-  "title": "Erdős Problem #634",
+  "title": "Erdős Problem #634: Triangle Dissection into Congruent Pieces",
   "slug": "erdos-634",
-  "description": "Find all n\" role=\"presentation\" style=\"position: relative;\">nnn such that there is at least one triangle which can be cut into n\" role=\"presentation\" style=\"position: relative;\">nnn congruent trian...",
+  "description": "Find all n such that some triangle can be cut into n congruent triangles. OPEN: k², 2k², 3k², k²+m² work; 7, 11 fail (Beeson); 19 unknown. $25 prize.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Beeson (negative results), Soifer (similar case), Snover-Waiveris-Williams, Zhang (2025)",
     "sourceUrl": "https://erdosproblems.com/634",
-    "date": "",
-    "status": "pending",
+    "date": "ongoing",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos634Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "dissection",
+      "congruent-triangles",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 7,
     "erdosNumber": 634,
     "erdosUrl": "https://erdosproblems.com/634",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$25"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Multiset",
+        "description": "For triangle congruence via side length multisets",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summing areas of dissection pieces",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality for 4k+3 conjecture",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "Beeson",
+        "citation": "Beeson, M. Proof that 7 and 11 are not dissectable into congruent triangles.",
+        "type": "paper"
+      },
+      {
+        "key": "Soifer",
+        "citation": "Soifer, A. Similar triangle dissections: all n except 2, 3, 5 work.",
+        "type": "paper"
+      },
+      {
+        "key": "SWW",
+        "citation": "Snover, S., Waiveris, C., and Williams, J. Rep-tiles revisited: self-similar dissections.",
+        "type": "paper"
+      },
+      {
+        "key": "Zhang2025",
+        "citation": "Zhang (2025). On sufficient conditions for triangle dissectability.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of triangle congruence via side length multisets",
+      "Definition of triangle dissection and congruent dissection",
+      "Statement of known positive results (k², 2k², 3k², 6k², k²+m²)",
+      "Axiomatization of Beeson's negative results (7, 11)",
+      "Statement of the 4k+3 prime conjecture",
+      "Soifer's theorem on similar dissections",
+      "Snover-Waiveris-Williams self-similar characterization",
+      "Analysis of open case n = 19"
+    ],
+    "relatedProblems": ["erdos-633"]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #634 from erdosproblems.com. Originally offered with a prize of $25.",
-    "problemStatement": "Find all n\" role=\"presentation\" style=\"position: relative;\">nnn such that there is at least one triangle which can be cut into n\" role=\"presentation\" style=\"position: relative;\">nnn congruent triangles.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Triangle Dissection Problem**\n\nErdős asked: for which n can some triangle be dissected into n congruent (same size and shape) triangular pieces?\n\n**Known Positive Results**: Perfect squares k² (divide sides into k parts), plus 2k², 3k², 6k², and sums of two squares k²+m². Also 27 via special construction.\n\n**Known Negative Results**: Beeson proved 7 and 11 are impossible.\n\n**The Similar Case**: Soifer completely solved the analogous problem for similar (not congruent) triangles: all n except 2, 3, 5 work.\n\n**Open**: Whether 19 works remains unknown. A $25 prize is offered for a complete characterization.",
+    "problemStatement": "**Problem Statement**\n\nFind all positive integers n such that there exists at least one triangle which can be dissected into n congruent triangles.\n\n**Status**: OPEN ($25 prize)\n\n**Known**: Works for k², 2k², 3k², 6k², k²+m², 27. Fails for 7, 11. Unknown for 19.",
+    "proofStrategy": "**The Formalization**\n\n1. Defines triangles via side lengths (a, b, c) with triangle inequality\n2. Defines congruence as equality of side length multisets\n3. Defines similar triangles (proportional sides)\n4. Defines dissection structure and congruent dissection\n5. States positive results for various n forms\n6. Axiomatizes Beeson's impossibility proofs for 7, 11\n7. States the 4k+3 prime conjecture\n8. Covers Soifer's theorem on similar dissections\n9. Covers Snover-Waiveris-Williams self-similar characterization\n10. Analyzes the open case n = 19",
+    "keyInsights": [
+      "Congruent dissection is much harder than similar dissection",
+      "Perfect squares k² always work (grid subdivision)",
+      "7 and 11 are the only known failures - both are primes of form 4k+3",
+      "The conjecture: primes of form 4k+3 (except 3) never work",
+      "19 is the smallest open case (also prime of form 4k+3)",
+      "For similar triangles, only 2, 3, 5 fail (Soifer)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "triangles",
+      "title": "Triangles and Congruence",
+      "summary": "Basic geometric definitions",
+      "startLine": 36,
+      "endLine": 66
+    },
+    {
+      "id": "similar",
+      "title": "Similar Triangles",
+      "summary": "Weaker notion than congruence",
+      "startLine": 68,
+      "endLine": 81
+    },
+    {
+      "id": "dissection",
+      "title": "Triangle Dissection",
+      "summary": "Central definition of the problem",
+      "startLine": 83,
+      "endLine": 101
+    },
+    {
+      "id": "positive",
+      "title": "Known Positive Results",
+      "summary": "Values that ARE dissectable",
+      "startLine": 103,
+      "endLine": 132
+    },
+    {
+      "id": "beeson",
+      "title": "Beeson's Negative Results",
+      "summary": "7 and 11 are NOT dissectable",
+      "startLine": 134,
+      "endLine": 156
+    },
+    {
+      "id": "conjecture",
+      "title": "The 4k+3 Conjecture",
+      "summary": "Primes of form 4k+3 may fail",
+      "startLine": 158,
+      "endLine": 176
+    },
+    {
+      "id": "open",
+      "title": "Open Cases",
+      "summary": "19 is the smallest unknown",
+      "startLine": 178,
+      "endLine": 196
+    },
+    {
+      "id": "soifer",
+      "title": "Similar Triangles (Soifer)",
+      "summary": "Complete answer for similar case",
+      "startLine": 198,
+      "endLine": 223
+    },
+    {
+      "id": "self-similar",
+      "title": "Self-Similar Dissections",
+      "summary": "Snover-Waiveris-Williams theorem",
+      "startLine": 225,
+      "endLine": 245
+    },
+    {
+      "id": "recent",
+      "title": "Recent Progress",
+      "summary": "Zhang (2025) and other developments",
+      "startLine": 247,
+      "endLine": 263
+    },
+    {
+      "id": "main-result",
+      "title": "Main Results",
+      "summary": "Erdős Problem #634 partial answer",
+      "startLine": 265,
+      "endLine": 313
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #634 asks for which n some triangle can be dissected into n congruent triangles. OPEN: Known to work for k², 2k², 3k², 6k², k²+m², 27. Known to fail for 7, 11 (Beeson). The case n=19 and complete characterization remain open with a $25 prize.",
+    "implications": "**Theoretical Significance**\n\n1. **Geometry vs Number Theory**: Dissectability connects geometry to number-theoretic properties (4k+3 primes)\n\n2. **Congruence vs Similarity**: The similar problem is completely solved; congruence is much harder\n\n3. **Algorithmic Questions**: No known algorithm to decide dissectability for arbitrary n\n\n4. **Open Prize Problem**: One of the remaining Erdős problems with unclaimed prize",
+    "openQuestions": [
+      "Is 19 dissectable? (smallest unknown case)",
+      "Complete characterization of dissectable n?",
+      "Is the 4k+3 prime conjecture true?",
+      "What is the density of dissectable numbers?",
+      "Are there infinitely many non-dissectable n?"
+    ]
   }
 }

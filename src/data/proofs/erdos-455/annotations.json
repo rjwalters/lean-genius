@@ -1,1 +1,90 @@
-[]
+[
+  {
+    "id": "ann-e455-header",
+    "proofId": "erdos-455",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #455** asks about prime sequences with non-decreasing gaps. If q₁ < q₂ < ... are primes where each gap is at least as large as the previous, must the sequence grow faster than n²? The partial result by Richter (1976) shows liminf q_n/n² > 0.352.",
+    "mathContext": "We import Mathlib modules for primes, filters, monotonicity, and liminf/limsup. The Filter.atTop framework expresses asymptotic statements like \"for all sufficiently large n\".",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "primes", "gaps", "open-problem"]
+  },
+  {
+    "id": "ann-e455-nondecgaps",
+    "proofId": "erdos-455",
+    "range": { "startLine": 34, "endLine": 37 },
+    "type": "definition",
+    "title": "Non-Decreasing Gaps",
+    "content": "**HasNonDecreasingGaps** is the key constraint: for all n, the gap q_{n+1} - q_n must be at least as large as the previous gap q_n - q_{n-1}. This is a discrete convexity condition that forces sequences to spread out increasingly.",
+    "mathContext": "Formally: ∀ n, q(n+1) - q(n) ≥ q(n) - q(n-1). Note that for natural number subtraction, if the gaps shrink, the inequality fails.",
+    "significance": "critical",
+    "relatedConcepts": ["convexity", "gaps", "sequences"]
+  },
+  {
+    "id": "ann-e455-structure",
+    "proofId": "erdos-455",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "definition",
+    "title": "Monotone-Gap Prime Sequence",
+    "content": "**MonotoneGapPrimeSeq** bundles all constraints into a single structure: the sequence must be strictly increasing, all terms must be prime, and the gaps must be non-decreasing. This clean formalization makes stating results precise.",
+    "mathContext": "A Lean 4 structure with fields: seq : ℕ → ℕ, strictMono : StrictMono seq, allPrime : ∀ n, (seq n).Prime, nonDecGaps : HasNonDecreasingGaps seq.",
+    "significance": "critical",
+    "relatedConcepts": ["structure", "primes", "strictmono"]
+  },
+  {
+    "id": "ann-e455-richter",
+    "proofId": "erdos-455",
+    "range": { "startLine": 54, "endLine": 69 },
+    "type": "theorem",
+    "title": "Richter's Lower Bound (1976)",
+    "content": "**Richter proved that liminf q_n/n² > 0.352** for any monotone-gap prime sequence. This shows such sequences must grow at least quadratically. The proof uses prime distribution estimates and appeared in Acta Arithmetica.",
+    "mathContext": "Stated as an axiom because the proof requires the Prime Number Theorem and careful gap analysis not formalized in Mathlib. The bound 0.352 comes from explicit calculations in Richter's paper.",
+    "significance": "critical",
+    "relatedConcepts": ["liminf", "quadratic-growth", "prime-distribution"]
+  },
+  {
+    "id": "ann-e455-conjecture",
+    "proofId": "erdos-455",
+    "range": { "startLine": 71, "endLine": 88 },
+    "type": "theorem",
+    "title": "The Open Conjecture",
+    "content": "**Erdős's full conjecture remains open**: must lim q_n/n² = ∞? While Richter proved the liminf is positive, the question of whether the limit exists and equals infinity is unresolved. This would mean superquadratic growth is required.",
+    "mathContext": "We formalize this as an abstract proposition erdos_455_conjecture and prove it equivalent to: ∀ q : MonotoneGapPrimeSeq, Tendsto (q_n/n²) atTop atTop.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "tendsto", "superquadratic"]
+  },
+  {
+    "id": "ann-e455-consequence",
+    "proofId": "erdos-455",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "theorem",
+    "title": "Quadratic Growth Consequence",
+    "content": "**As a consequence of Richter's bound**, we know q_n ≥ c·n² for some c > 0 and all sufficiently large n. This follows from the definition of liminf: if liminf > 0.352, then eventually the ratio stays above 0.35.",
+    "mathContext": "Stated as: ∃ c > 0, ∀ᶠ n in atTop, q_n ≥ c·n². The \"eventually\" quantifier ∀ᶠ n in atTop means \"for all but finitely many n\".",
+    "significance": "supporting",
+    "relatedConcepts": ["eventually", "lower-bound", "quadratic"]
+  },
+  {
+    "id": "ann-e455-structural",
+    "proofId": "erdos-455",
+    "range": { "startLine": 111, "endLine": 124 },
+    "type": "theorem",
+    "title": "Structural Properties",
+    "content": "**Basic structural theorems**: gaps are always positive (from strict monotonicity), and all primes in the sequence are at least 2 (from primality). These elementary facts help build intuition about these sequences.",
+    "mathContext": "gaps_pos uses q.strictMono; first_prime_ge_two and all_ge_two use Nat.Prime.two_le from Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": ["primes", "monotonicity", "basic-facts"]
+  },
+  {
+    "id": "ann-e455-restrictive",
+    "proofId": "erdos-455",
+    "range": { "startLine": 126, "endLine": 150 },
+    "type": "concept",
+    "title": "Why the Condition is Restrictive",
+    "content": "**The consecutive primes 2, 3, 5, 7, 11, 13, ... do NOT satisfy this condition!** Their gaps are 1, 2, 2, 4, 2, ... and since 2 < 4, the gap after 13 violates monotonicity. Monotone-gap prime sequences must be carefully chosen subsequences.",
+    "mathContext": "The alternative characterization nonDecGaps_alt shows the condition is equivalent to: for all n ≥ 1, the (n+1)th gap is at least the nth gap.",
+    "significance": "supporting",
+    "relatedConcepts": ["counterexample", "prime-gaps", "restriction"]
+  }
+]

@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-110-header",
+    "proofId": "erdos-110",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs**\n\nConjecture: For ℵ₁-chromatic graphs, there exists F(n) bounding the size of n-chromatic subgraphs.\n\n**Answer**: NO - DISPROVED by Lambie-Hanson (2020) in ZFC.\n\nKey result: No such function F exists, even for uncountable chromatic number.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-graph",
+    "proofId": "erdos-110",
+    "range": { "startLine": 37, "endLine": 38 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "A **simple graph** on vertex type V is a symmetric, irreflexive adjacency relation.\n\nThis is Mathlib's `SimpleGraph V` type.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-110-coloring",
+    "proofId": "erdos-110",
+    "range": { "startLine": 40, "endLine": 43 },
+    "type": "definition",
+    "title": "Proper Coloring",
+    "content": "A **proper k-coloring** assigns colors 1..k to vertices so adjacent vertices have different colors.\n\nFormally: c : V → Fin k with G.Adj v w → c v ≠ c w.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-110-kcolorable",
+    "proofId": "erdos-110",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "k-Colorable",
+    "content": "A graph is **k-colorable** if it admits a proper k-coloring.\n\nThis is the fundamental concept in chromatic graph theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-110-chromatic",
+    "proofId": "erdos-110",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The **chromatic number** χ(G) is the minimum k for which G is k-colorable.\n\nFor infinite graphs, this can be an infinite cardinal (ℵ₀, ℵ₁, ...).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-induced",
+    "proofId": "erdos-110",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "The **induced subgraph** on S ⊆ V contains all edges of G between vertices in S.\n\nThis is the natural restriction of G to a subset of vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-110-finite-subgraph",
+    "proofId": "erdos-110",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "Finite n-Chromatic Subgraph",
+    "content": "**HasFiniteNChromaticSubgraph(G, n, bound)**: G has an n-chromatic subgraph on at most `bound` vertices.\n\nThe conjecture asks if `bound = F(n)` exists uniformly.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-aleph0",
+    "proofId": "erdos-110",
+    "range": { "startLine": 82, "endLine": 83 },
+    "type": "definition",
+    "title": "Aleph-0 (ℵ₀)",
+    "content": "**ℵ₀** (aleph-null) is the cardinality of the natural numbers.\n\nIt's the smallest infinite cardinal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-110-aleph1",
+    "proofId": "erdos-110",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "definition",
+    "title": "Aleph-1 (ℵ₁)",
+    "content": "**ℵ₁** (aleph-one) is the first uncountable cardinal.\n\nℵ₁ = succ(ℵ₀), the successor of aleph-null.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-cardinal-chromatic",
+    "proofId": "erdos-110",
+    "range": { "startLine": 93, "endLine": 100 },
+    "type": "definition",
+    "title": "Cardinal Chromatic Number",
+    "content": "**HasChromaticNumber(G, κ)**: G has chromatic number exactly the cardinal κ.\n\nFor ℵ₁: not k-colorable for any finite k, but 'ℵ₁-colorable' in a suitable sense.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-debruijn",
+    "proofId": "erdos-110",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "axiom",
+    "title": "de Bruijn-Erdős Theorem",
+    "content": "**de Bruijn-Erdős Theorem (1951)**:\n\nIf χ(G) = ∞, then for every n, G contains a finite n-chromatic subgraph.\n\n**Crucial limitation**: This says nothing about the SIZE of such subgraphs!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-conjecture",
+    "proofId": "erdos-110",
+    "range": { "startLine": 128, "endLine": 138 },
+    "type": "definition",
+    "title": "Erdős-Hajnal-Szemerédi Conjecture",
+    "content": "**Conjecture (1982)**: For ℵ₁-chromatic graphs, there exists F : ℕ → ℕ such that for large n, an n-chromatic subgraph exists on ≤ F(n) vertices.\n\n**Status**: DISPROVED by Lambie-Hanson (2020).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-aleph0-fails",
+    "proofId": "erdos-110",
+    "range": { "startLine": 140, "endLine": 145 },
+    "type": "axiom",
+    "title": "Conjecture Fails for ℵ₀",
+    "content": "The conjecture **already fails for ℵ₀-chromatic graphs**.\n\nThis was known before Erdős-Hajnal-Szemerédi conjectured it might hold for ℵ₁.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-110-shelah",
+    "proofId": "erdos-110",
+    "range": { "startLine": 153, "endLine": 161 },
+    "type": "axiom",
+    "title": "Shelah's Consistency Result",
+    "content": "**Shelah's Theorem (2005)**:\n\nIt is **consistent with ZFC** that no such F exists.\n\nThis left open: is it provable in ZFC, or just consistent?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-110-lambie-hanson",
+    "proofId": "erdos-110",
+    "range": { "startLine": 174, "endLine": 181 },
+    "type": "axiom",
+    "title": "Lambie-Hanson's ZFC Disproof",
+    "content": "**Lambie-Hanson Theorem (2020)**:\n\nThe conjecture is FALSE **in ZFC** (no extra assumptions).\n\nConstructed an ℵ₁-chromatic graph defeating every proposed F.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-disproved",
+    "proofId": "erdos-110",
+    "range": { "startLine": 183, "endLine": 192 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "**Theorem**: ¬ErdosHajnalSzemerediConjecture\n\nThe conjecture is FALSE. Proof: apply Lambie-Hanson's counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-tower",
+    "proofId": "erdos-110",
+    "range": { "startLine": 207, "endLine": 208 },
+    "type": "definition",
+    "title": "Tower Function",
+    "content": "**tower(k, n)** = 2^2^...^n with k iterations.\n\nErdős expected F would grow faster than any tower function. Moot: F doesn't exist!",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-110-counterexample-struct",
+    "proofId": "erdos-110",
+    "range": { "startLine": 243, "endLine": 252 },
+    "type": "definition",
+    "title": "Lambie-Hanson Graph Structure",
+    "content": "**LambieHansonGraph** structure:\n\n1. χ(G) = ℵ₁ exactly\n2. Defeats all proposed bounds F\n3. Still has n-chromatic subgraphs (de Bruijn-Erdős)\n\nThe graph exists by Lambie-Hanson's construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-110-main",
+    "proofId": "erdos-110",
+    "range": { "startLine": 272, "endLine": 284 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #110: DISPROVED**\n\nThe Erdős-Hajnal-Szemerédi conjecture is FALSE.\n\n- Shelah (2005): Consistent with ZFC that no F exists\n- Lambie-Hanson (2020): Proved in ZFC that no F exists\n\nde Bruijn-Erdős guarantees existence but not uniform bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-110-answer",
+    "proofId": "erdos-110",
+    "range": { "startLine": 286, "endLine": 291 },
+    "type": "definition",
+    "title": "The Answer",
+    "content": "**Answer**: NO\n\nDisproved by Lambie-Hanson (2020) in ZFC.\n\nNo uniform bound F(n) exists for ℵ₁-chromatic graphs.",
+    "significance": "supporting"
+  }
+]

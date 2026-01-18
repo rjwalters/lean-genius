@@ -1,1 +1,245 @@
-[]
+[
+  {
+    "id": "ann-1027-setfamily",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 33, "endLine": 33 },
+    "type": "definition",
+    "title": "SetFamily",
+    "content": "Collection of finite sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-familyunion",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "familyUnion",
+    "content": "Union of all sets in family.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-nuniform",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "isNUniform",
+    "content": "All sets have size n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-intersectsall",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 51, "endLine": 52 },
+    "type": "definition",
+    "title": "intersectsAll",
+    "content": "B intersects every set in F.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-containsnone",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "containsNone",
+    "content": "B contains no set in F.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-isgoodset",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "definition",
+    "title": "isGoodSet",
+    "content": "Intersects all but contains none.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-goodsets",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "definition",
+    "title": "goodSets",
+    "content": "All good subsets of X.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-propertyb",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 75, "endLine": 76 },
+    "type": "definition",
+    "title": "hasPropertyB",
+    "content": "Exists a good set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-2colorable",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "definition",
+    "title": "is2Colorable",
+    "content": "2-coloring with no monochromatic set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-propbiff",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "theorem",
+    "title": "Property B Equivalence",
+    "content": "Property B ↔ 2-colorable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-goodsetcount",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 94, "endLine": 95 },
+    "type": "definition",
+    "title": "goodSetCount",
+    "content": "Number of good sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-conjecture",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 98, "endLine": 104 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "≫_c 2^|X| good sets exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-solution",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 113, "endLine": 113 },
+    "type": "axiom",
+    "title": "Main Solution",
+    "content": "Conjecture is true (Koishi Chan).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-solved",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 116, "endLine": 123 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "Many good sets exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-problem901conn",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "definition",
+    "title": "Problem 901 Connection",
+    "content": "Property B ↔ 2-colorable (Problem 901).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-problem901",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 137, "endLine": 139 },
+    "type": "theorem",
+    "title": "Problem 901",
+    "content": "The connection holds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-propbbound",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 148, "endLine": 154 },
+    "type": "axiom",
+    "title": "Property B for Bounded",
+    "content": "Bounded families have Property B.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-singlemany",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 157, "endLine": 160 },
+    "type": "theorem",
+    "title": "Single Implies Many",
+    "content": "One good set → many good sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-probintersects",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 169, "endLine": 170 },
+    "type": "definition",
+    "title": "probIntersects",
+    "content": "1 - (1/2)^n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1027-probnotcontains",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 173, "endLine": 174 },
+    "type": "definition",
+    "title": "probNotContains",
+    "content": "1 - (1/2)^n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1027-expected",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 177, "endLine": 178 },
+    "type": "definition",
+    "title": "expectedGoodSets",
+    "content": "Expected count from random.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-expectedpos",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 181, "endLine": 188 },
+    "type": "theorem",
+    "title": "Expected Positive",
+    "content": "Expected good sets > 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-density",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 197, "endLine": 198 },
+    "type": "definition",
+    "title": "goodSetDensity",
+    "content": "Fraction of good subsets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1027-densitylower",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 201, "endLine": 207 },
+    "type": "axiom",
+    "title": "Density Lower Bound",
+    "content": "Density ≥ δ > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1027-emptyfamily",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 216, "endLine": 218 },
+    "type": "theorem",
+    "title": "Empty Family",
+    "content": "All subsets are good.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1027-singletonfamily",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 221, "endLine": 223 },
+    "type": "theorem",
+    "title": "Singleton Family",
+    "content": "≥ 2^(n-1) good sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1027-inclexcl",
+    "proofId": "erdos-1027",
+    "range": { "startLine": 232, "endLine": 235 },
+    "type": "theorem",
+    "title": "Inclusion-Exclusion",
+    "content": "Lower bound via counting.",
+    "significance": "key"
+  }
+]

@@ -1,1 +1,263 @@
-[]
+[
+  {
+    "id": "ann-1024-hypergraph",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 32, "endLine": 32 },
+    "type": "definition",
+    "title": "Hypergraph",
+    "content": "Collection of edges (sets of vertices).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-vertices",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 35, "endLine": 36 },
+    "type": "definition",
+    "title": "Vertices",
+    "content": "The vertex set of a hypergraph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1024-kuniform",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "k-Uniform",
+    "content": "All edges have exactly k vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-3uniform",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 43, "endLine": 43 },
+    "type": "definition",
+    "title": "3-Uniform",
+    "content": "Hypergraph where all edges have 3 vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-linear",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 52, "endLine": 53 },
+    "type": "definition",
+    "title": "Linear Hypergraph",
+    "content": "|A ∩ B| ≤ 1 for all distinct edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-3uniformlinear",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "3-Uniform Linear",
+    "content": "Partial Steiner triple system.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-independent",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "No edge is contained in S.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-indnumber",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "Size of largest independent set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-existsind",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "theorem",
+    "title": "Exists Independent",
+    "content": "Empty set is always independent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1024-linhyper3",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 86, "endLine": 87 },
+    "type": "definition",
+    "title": "linearHypergraphs3",
+    "content": "Set of all 3-uniform linear hypergraphs on Fin n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-f",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "definition",
+    "title": "f(n)",
+    "content": "Minimum independence number over all 3-uniform linear hypergraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-fspec",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "theorem",
+    "title": "f Specification",
+    "content": "f(n) is the guaranteed independent set size.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-erdoslower",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 105, "endLine": 106 },
+    "type": "axiom",
+    "title": "Erdős Lower Bound",
+    "content": "f(n) ≥ c · n^(1/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-erdosupper",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 109, "endLine": 110 },
+    "type": "axiom",
+    "title": "Erdős Upper Bound",
+    "content": "f(n) ≤ C · n^(2/3).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-erdosbounds",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 113, "endLine": 121 },
+    "type": "theorem",
+    "title": "Erdős Bounds Combined",
+    "content": "n^(1/2) ≪ f(n) ≪ n^(2/3).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-asymptotic",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 130, "endLine": 131 },
+    "type": "definition",
+    "title": "Asymptotic Bound",
+    "content": "(n log n)^(1/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-prlower",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 134, "endLine": 135 },
+    "type": "axiom",
+    "title": "Phelps-Rödl Lower",
+    "content": "f(n) ≥ c · (n log n)^(1/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-prupper",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 138, "endLine": 139 },
+    "type": "axiom",
+    "title": "Phelps-Rödl Upper",
+    "content": "f(n) ≤ C · (n log n)^(1/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-phelpsrodl",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 142, "endLine": 150 },
+    "type": "theorem",
+    "title": "Phelps-Rödl Theorem",
+    "content": "f(n) ≍ (n log n)^(1/2) (1986).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-question",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Estimate f(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-solved",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "f(n) ≍ (n log n)^(1/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1024-sts",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 176, "endLine": 178 },
+    "type": "definition",
+    "title": "Steiner Triple System",
+    "content": "Covers every pair exactly once.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-steinerexist",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "axiom",
+    "title": "Steiner Existence",
+    "content": "STS exist for n ≡ 1, 3 (mod 6).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-stsdensest",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 186, "endLine": 188 },
+    "type": "theorem",
+    "title": "STS Densest",
+    "content": "STS have n(n-1)/6 edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1024-expected",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 197, "endLine": 198 },
+    "type": "definition",
+    "title": "Expected Independent",
+    "content": "pn - mp³ from random selection.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-problower",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 201, "endLine": 204 },
+    "type": "theorem",
+    "title": "Probabilistic Lower",
+    "content": "Optimizing p gives lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-construction",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 213, "endLine": 215 },
+    "type": "axiom",
+    "title": "Upper Construction",
+    "content": "Hypergraphs with small independence number exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-comparison",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 224, "endLine": 227 },
+    "type": "theorem",
+    "title": "Bound Comparison",
+    "content": "n^(1/2) ≤ (n log n)^(1/2) ≤ n^(2/3).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1024-logfactor",
+    "proofId": "erdos-1024",
+    "range": { "startLine": 230, "endLine": 234 },
+    "type": "theorem",
+    "title": "Log Factor Refinement",
+    "content": "Log factor closes Erdős's gap.",
+    "significance": "key"
+  }
+]

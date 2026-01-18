@@ -1,1 +1,263 @@
-[]
+[
+  {
+    "id": "ann-632-header",
+    "proofId": "erdos-632",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #632: The (a,b)-Choosability Scaling Conjecture**\n\nIf G is (a,b)-choosable, is G also (am,bm)-choosable for all m ≥ 1?\n\n**Answer**: NO (DISPROVED by Dvořák-Hu-Sereni 2019)\n\nFails at (4,1) → (8,2): there exists a graph that is (4,1)-choosable but NOT (8,2)-choosable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-graph",
+    "proofId": "erdos-632",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "**Graph V** = SimpleGraph V\n\nA simple undirected graph on vertex set V.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-632-color-assignment",
+    "proofId": "erdos-632",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "Color Assignment",
+    "content": "**ColorAssignment V a** = V → Finset (Fin a)\n\nAssigns to each vertex a list of available colors from {0, 1, ..., a-1}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-valid-assignment",
+    "proofId": "erdos-632",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Valid Assignment",
+    "content": "**IsValidAssignment(L)**: Each vertex gets exactly a colors.\n\n∀ v, |L(v)| = a",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-color-selection",
+    "proofId": "erdos-632",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "definition",
+    "title": "Color Selection",
+    "content": "**ColorSelection V a** = V → Finset (Fin a)\n\nA function picking a subset of colors for each vertex.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-valid-selection",
+    "proofId": "erdos-632",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Valid Selection",
+    "content": "**IsValidSelection(L, S, b)**: Each selection has exactly b colors from the list.\n\n∀ v, S(v) ⊆ L(v) ∧ |S(v)| = b",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-disjoint",
+    "proofId": "erdos-632",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Selections Disjoint",
+    "content": "**SelectionsDisjoint(G, S)**: Adjacent vertices have disjoint color selections.\n\n∀ u v, G.Adj u v → S(u) ∩ S(v) = ∅",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-choosable",
+    "proofId": "erdos-632",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
+    "title": "(a,b)-Choosability",
+    "content": "**IsChoosable(G, a, b)**: For ANY assignment of a colors to each vertex, there EXISTS a selection of b colors from each list such that adjacent vertices have disjoint selections.\n\nThis is the central definition of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-list-chromatic-le",
+    "proofId": "erdos-632",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "definition",
+    "title": "List Chromatic ≤ a",
+    "content": "**listChromaticNumber_le(G, a)** = IsChoosable G a 1\n\n(a,1)-choosability is exactly χ_L(G) ≤ a.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-list-chromatic",
+    "proofId": "erdos-632",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "List Chromatic Number",
+    "content": "**listChromaticNumber(G)** = min { a | IsChoosable G a 1 }\n\nThe minimum number of colors needed for list coloring.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-list-ge-chromatic",
+    "proofId": "erdos-632",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "axiom",
+    "title": "χ_L ≥ χ",
+    "content": "**list_chromatic_ge_chromatic**: χ_L(G) ≥ χ(G)\n\nList chromatic number is at least the ordinary chromatic number.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-mono-a",
+    "proofId": "erdos-632",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "theorem",
+    "title": "Monotonicity in a",
+    "content": "**choosable_mono_a**: More colors available makes it easier.\n\na₁ ≤ a₂ → IsChoosable G a₁ b → IsChoosable G a₂ b",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-632-mono-b",
+    "proofId": "erdos-632",
+    "range": { "startLine": 111, "endLine": 114 },
+    "type": "theorem",
+    "title": "Anti-monotonicity in b",
+    "content": "**choosable_mono_b**: Fewer colors to select makes it easier.\n\nb₁ ≥ b₂ → IsChoosable G a b₁ → IsChoosable G a b₂",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-632-ert-conjecture",
+    "proofId": "erdos-632",
+    "range": { "startLine": 132, "endLine": 136 },
+    "type": "definition",
+    "title": "ERT Conjecture",
+    "content": "**ERT_Conjecture** (DISPROVED):\n\n∀ G a b m, m ≥ 1 → IsChoosable G a b → IsChoosable G (a*m) (b*m)\n\nThis is the scaling property that Erdős, Rubin, and Taylor conjectured.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-m-eq-1",
+    "proofId": "erdos-632",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "theorem",
+    "title": "Trivial Case m = 1",
+    "content": "**ert_m_eq_1**: The conjecture holds trivially for m = 1.\n\nIsChoosable G a b → IsChoosable G (a*1) (b*1)",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-632-case-m2",
+    "proofId": "erdos-632",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "definition",
+    "title": "Case m = 2",
+    "content": "**ERT_Case_m2**: The m = 2 case.\n\n∀ G a b, IsChoosable G a b → IsChoosable G (2a) (2b)\n\nThis is the first non-trivial case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-4-1-to-8-2",
+    "proofId": "erdos-632",
+    "range": { "startLine": 166, "endLine": 169 },
+    "type": "definition",
+    "title": "(4,1) → (8,2) Case",
+    "content": "**ERT_Case_4_1_to_8_2**: Does (4,1)-choosable imply (8,2)-choosable?\n\nThis is the specific case that DHS disproved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-4-1-false",
+    "proofId": "erdos-632",
+    "range": { "startLine": 171, "endLine": 172 },
+    "type": "axiom",
+    "title": "(4,1) → (8,2) FALSE",
+    "content": "**ert_4_1_to_8_2_false**: ¬ERT_Case_4_1_to_8_2\n\nThe (4,1) → (8,2) case is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-dhs",
+    "proofId": "erdos-632",
+    "range": { "startLine": 180, "endLine": 184 },
+    "type": "axiom",
+    "title": "DHS Counterexample",
+    "content": "**dhs_counterexample**: The Dvořák-Hu-Sereni theorem.\n\n∃ G, IsChoosable G 4 1 ∧ ¬IsChoosable G 8 2\n\nThis disproves the ERT conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-dhs-structure",
+    "proofId": "erdos-632",
+    "range": { "startLine": 186, "endLine": 191 },
+    "type": "axiom",
+    "title": "DHS Graph Structure",
+    "content": "**dhs_graph_structure**: The counterexample graph has n > 100 vertices.\n\nThe construction is detailed in [DHS19].",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-bad-assignment",
+    "proofId": "erdos-632",
+    "range": { "startLine": 193, "endLine": 198 },
+    "type": "axiom",
+    "title": "Bad Assignment",
+    "content": "**dhs_bad_assignment**: There exists a color assignment with 8 colors such that no valid 2-selection makes adjacent vertices disjoint.\n\nThis is the key to the counterexample.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-m2-false",
+    "proofId": "erdos-632",
+    "range": { "startLine": 206, "endLine": 214 },
+    "type": "theorem",
+    "title": "m = 2 Case FALSE",
+    "content": "**ert_m2_false**: ¬ERT_Case_m2\n\nThe m = 2 case of the conjecture is false.\n\nProof: Follows from ert_4_1_to_8_2_false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-conjecture-false",
+    "proofId": "erdos-632",
+    "range": { "startLine": 216, "endLine": 221 },
+    "type": "theorem",
+    "title": "Conjecture FALSE",
+    "content": "**ert_conjecture_false**: ¬ERT_Conjecture\n\nThe Erdős-Rubin-Taylor conjecture is FALSE.\n\nProof: The m = 2 case fails, so the general conjecture fails.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-main",
+    "proofId": "erdos-632",
+    "range": { "startLine": 223, "endLine": 225 },
+    "type": "theorem",
+    "title": "Erdős #632 DISPROVED",
+    "content": "**erdos_632**: ¬ERT_Conjecture\n\nErdős Problem #632 is DISPROVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-632-fractional",
+    "proofId": "erdos-632",
+    "range": { "startLine": 233, "endLine": 238 },
+    "type": "axiom",
+    "title": "Fractional Scales",
+    "content": "**fractional_choosability_scales**: Fractional choosability DOES scale.\n\nContrast: Integer (a,b)-choosability does NOT scale.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-complete",
+    "proofId": "erdos-632",
+    "range": { "startLine": 240, "endLine": 243 },
+    "type": "axiom",
+    "title": "Complete Graphs",
+    "content": "**complete_graph_ert**: For complete graphs, the ERT conjecture holds.\n\nSpecial graph classes can satisfy the scaling property.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-bipartite",
+    "proofId": "erdos-632",
+    "range": { "startLine": 245, "endLine": 248 },
+    "type": "axiom",
+    "title": "Bipartite Graphs",
+    "content": "**bipartite_ert**: For bipartite graphs, the ERT conjecture holds.\n\nAnother class where scaling works.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-632-ohba",
+    "proofId": "erdos-632",
+    "range": { "startLine": 271, "endLine": 275 },
+    "type": "axiom",
+    "title": "Ohba's Theorem",
+    "content": "**ohba_noel_reed_wu**: χ_L(G) = χ(G) when |V| ≤ 2χ(G) + 1.\n\nA related result about when list chromatic equals chromatic.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-632-final",
+    "proofId": "erdos-632",
+    "range": { "startLine": 311, "endLine": 323 },
+    "type": "theorem",
+    "title": "Final Result",
+    "content": "**erdos_632_disproved**: ¬ERT_Conjecture\n\n**Summary**: The (a,b)-choosability scaling conjecture is FALSE.\n\nDvořák-Hu-Sereni (2019) showed (4,1)-choosable does NOT imply (8,2)-choosable.",
+    "significance": "critical"
+  }
+]

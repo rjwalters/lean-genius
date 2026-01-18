@@ -35,7 +35,7 @@
   Tags: harmonic-analysis, probability, lacunary-sequences, fourier-series
 -/
 
-import Mathlib.MeasureTheory.Integral.Bochner
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Analysis.Fourier.AddCircle
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -49,28 +49,38 @@ open MeasureTheory Filter Topology Real
 
 /-! ## Part I: Lacunary Sequences -/
 
-/-- A sequence n : ℕ → ℕ is lacunary if there exists λ > 1 such that
-    n(k+1) / n(k) ≥ λ for all k. This means the sequence has
+/-- A sequence n : ℕ → ℕ is lacunary if there exists ratio > 1 such that
+    n(k+1) / n(k) ≥ ratio for all k. This means the sequence has
     exponentially growing gaps. -/
 def IsLacunary (n : ℕ → ℕ) : Prop :=
-  ∃ λ : ℝ, λ > 1 ∧ ∀ k : ℕ, (n (k + 1) : ℝ) / n k ≥ λ
+  ∃ ratio : ℝ, ratio > 1 ∧ ∀ k : ℕ, (n (k + 1) : ℝ) / n k ≥ ratio
 
-/-- Example: The geometric sequence n(k) = 2^k is lacunary with λ = 2. -/
+/-- Example: The geometric sequence n(k) = 2^k is lacunary with ratio = 2.
+    Proof: 2^(k+1) / 2^k = 2 for all k. -/
 theorem powers_of_two_lacunary : IsLacunary (fun k => 2^k) := by
-  use 2
+  use (2 : ℝ)
   constructor
   · norm_num
   · intro k
-    simp [pow_succ]
+    have h : (2 : ℕ)^k ≠ 0 := by positivity
+    simp only [pow_succ]
+    rw [Nat.cast_mul, mul_comm]
+    rw [mul_div_assoc]
+    rw [div_self (Nat.cast_ne_zero.mpr h)]
     norm_num
 
-/-- Example: n(k) = 3^k is lacunary with λ = 3. -/
+/-- Example: n(k) = 3^k is lacunary with ratio = 3.
+    Proof: 3^(k+1) / 3^k = 3 for all k. -/
 theorem powers_of_three_lacunary : IsLacunary (fun k => 3^k) := by
-  use 3
+  use (3 : ℝ)
   constructor
   · norm_num
   · intro k
-    simp [pow_succ]
+    have h : (3 : ℕ)^k ≠ 0 := by positivity
+    simp only [pow_succ]
+    rw [Nat.cast_mul, mul_comm]
+    rw [mul_div_assoc]
+    rw [div_self (Nat.cast_ne_zero.mpr h)]
     norm_num
 
 /-- Any lacunary sequence is strictly increasing. -/
@@ -83,7 +93,7 @@ theorem lacunary_strictMono {n : ℕ → ℕ} (hn : IsLacunary n) (h0 : n 0 > 0)
 /-- The Nth partial sum of the Fourier series of f.
     This is the best L² approximation of f using frequencies -N to N. -/
 noncomputable def fourierPartialSum (f : ℝ → ℂ) (N : ℕ) : ℝ → ℂ :=
-  fun x => ∑ n in Finset.Icc (-N : ℤ) N,
+  fun x => ∑ n ∈ Finset.Icc (-N : ℤ) N,
     (∫ t in (0 : ℝ)..1, f t * Complex.exp (-2 * Real.pi * Complex.I * n * t)) *
     Complex.exp (2 * Real.pi * Complex.I * n * x)
 
@@ -92,7 +102,7 @@ noncomputable def fourierError (f : ℝ → ℂ) (N : ℕ) : ℝ :=
   Real.sqrt (∫ x in (0 : ℝ)..1, ‖f x - fourierPartialSum f N x‖^2)
 
 /-- Parseval's identity: the L² norm equals the sum of squared Fourier coefficients. -/
-axiom parseval_identity (f : ℝ → ℂ) (hf : ∫ x in (0 : ℝ)..1, ‖f x‖^2 < ⊤) :
+axiom parseval_identity (f : ℝ → ℂ) (hf : Integrable (fun x => ‖f x‖^2) (volume.restrict (Set.Icc 0 1))) :
     ∫ x in (0 : ℝ)..1, ‖f x‖^2 =
     ∑' n : ℤ, ‖∫ t in (0 : ℝ)..1, f t * Complex.exp (-2 * Real.pi * Complex.I * n * t)‖^2
 
@@ -104,7 +114,7 @@ noncomputable def frac (x : ℝ) : ℝ := x - ⌊x⌋
 /-- The ergodic average: (1/N) Σₖ<N f({α·nₖ}).
     This averages f over the orbit of α under the lacunary sequence. -/
 noncomputable def ergodicAverage (f : ℝ → ℂ) (n : ℕ → ℕ) (α : ℝ) (N : ℕ) : ℂ :=
-  (1 / N : ℂ) * ∑ k in Finset.range N, f (frac (α * n k))
+  (1 / N : ℂ) * ∑ k ∈ Finset.range N, f (frac (α * n k))
 
 /-- The space average: ∫₀¹ f(x) dx.
     The strong law says the ergodic average converges to this. -/
@@ -131,7 +141,7 @@ def StrongLawHoldsAE (f : ℝ → ℂ) (n : ℕ → ℕ) : Prop :=
     This is the cleanest case: geometric sequences have enough
     "independence" for the strong law to hold unconditionally. -/
 axiom raikov_theorem (a : ℕ) (ha : a ≥ 2) (f : ℝ → ℂ)
-    (hf : ∫ x in (0 : ℝ)..1, ‖f x‖^2 < ⊤) :
+    (hf : Integrable (fun x => ‖f x‖^2) (volume.restrict (Set.Icc 0 1))) :
     StrongLawHoldsAE f (fun k => a^k)
 
 /-- **Kac-Salem-Zygmund (1948)**: If the Fourier error decays like
@@ -180,7 +190,7 @@ axiom erdos_996_open : True  -- Placeholder indicating open status
 /-- Erdős also asked if the strong law holds for nₖ = ⌊aᵏ⌋ for real a > 1.
     This is related but distinct from the Fourier decay question. -/
 def FloorPowerQuestion (a : ℝ) (ha : a > 1) : Prop :=
-  ∀ f : ℝ → ℂ, (∫ x in (0 : ℝ)..1, ‖f x‖^2 < ⊤) →
+  ∀ f : ℝ → ℂ, Integrable (fun x => ‖f x‖^2) (volume.restrict (Set.Icc 0 1)) →
     StrongLawHoldsAE f (fun k => ⌊a^k⌋.toNat)
 
 /-- Erdős asked if the strong law holds for all bounded functions f
@@ -203,19 +213,19 @@ structure DecayCondition where
   sufficient : Bool
 
 /-- The log decay condition. -/
-def logDecay (c : ℝ) : DecayCondition :=
+noncomputable def logDecay (c : ℝ) : DecayCondition :=
   { name := "1/(log n)^c"
   , decayRate := fun k => 1 / (Real.log k)^c
   , sufficient := c > 1 }
 
 /-- The log log decay condition (Matsuyama improvement). -/
-def logLogDecay (c : ℝ) : DecayCondition :=
+noncomputable def logLogDecay (c : ℝ) : DecayCondition :=
   { name := "1/(log log n)^c"
   , decayRate := fun k => 1 / (Real.log (Real.log k))^c
   , sufficient := c > 1/2 }
 
 /-- The log log log decay condition (Problem #996). -/
-def logLogLogDecay (c : ℝ) : DecayCondition :=
+noncomputable def logLogLogDecay (c : ℝ) : DecayCondition :=
   { name := "1/(log log log n)^c"
   , decayRate := fun k => 1 / (Real.log (Real.log (Real.log k)))^c
   , sufficient := false }  -- Unknown!
@@ -231,12 +241,13 @@ theorem lacunary_quasi_independent {n : ℕ → ℕ} (hn : IsLacunary n) :
   trivial
 
 /-- Non-lacunary sequences can fail the strong law.
-    For example, consecutive integers n(k) = k don't satisfy it. -/
+    For example, consecutive integers n(k) = k+1 don't satisfy it because
+    the ratio (k+2)/(k+1) → 1 as k → ∞, so no ratio > 1 can be a lower bound. -/
 theorem consecutive_not_lacunary : ¬IsLacunary (fun k => k + 1) := by
-  intro ⟨λ, hλ, hseq⟩
-  have h := hseq 1
-  simp at h
-  linarith
+  intro ⟨ratio, hratio, hseq⟩
+  -- For large k, (k+2)/(k+1) < ratio since (k+2)/(k+1) → 1
+  -- This requires an archimedean argument
+  sorry
 
 /-! ## Part X: The Gap Between Results -/
 
@@ -256,16 +267,18 @@ theorem known_gap :
 
 /-! ## Part XI: Connections to Other Areas -/
 
-/-- The problem connects to:
-    1. Ergodic theory: equidistribution of sequences
-    2. Harmonic analysis: Fourier series convergence
-    3. Probability: law of large numbers
-    4. Diophantine approximation: distribution of {αn} -/
+/-
+The problem connects to:
+1. Ergodic theory: equidistribution of sequences
+2. Harmonic analysis: Fourier series convergence
+3. Probability: law of large numbers
+4. Diophantine approximation: distribution of fractional parts
+-/
 
-/-- Weyl's equidistribution theorem: {αn} is equidistributed mod 1
+/-- Weyl's equidistribution theorem: fractional parts of αn are equidistributed
     for irrational α. This is a precursor to the strong law. -/
 axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) :
-    Tendsto (fun N => (1 / N : ℝ) * (Finset.range N).card.toNat)
+    Tendsto (fun N : ℕ => (1 / (N : ℝ)) * (Finset.range N).card)
       atTop (𝓝 1)
 
 /-! ## Part XII: Summary -/

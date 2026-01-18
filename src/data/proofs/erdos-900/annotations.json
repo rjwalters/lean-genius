@@ -1,1 +1,209 @@
-[]
+[
+  {
+    "id": "ann-900-header",
+    "proofId": "erdos-900",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #900: Longest Path in Sparse Random Graphs**\n\nThere exists f:(1/2,∞)→ℝ with f(c)→0 as c→1/2 and f(c)→1 as c→∞, such that G(n,cn) has whp a path of length ≥f(c)n.\n\n**Answer**: PROVED (Ajtai-Komlós-Szemerédi 1981)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-graph",
+    "proofId": "erdos-900",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "**Graph n** = SimpleGraph (Fin n)\n\nA simple undirected graph on n labeled vertices.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-900-erdos-renyi",
+    "proofId": "erdos-900",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Erdős-Rényi Model",
+    "content": "**G(n, m)**: Random graph with n vertices and exactly m edges.\n\nUniform distribution over all such graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-path",
+    "proofId": "erdos-900",
+    "range": { "startLine": 60, "endLine": 63 },
+    "type": "definition",
+    "title": "Path",
+    "content": "**IsPath(G, vs)**: A sequence of distinct vertices with consecutive adjacency.\n\nvs.Nodup ∧ ∀ i, G.Adj vs[i] vs[i+1]",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-path-length",
+    "proofId": "erdos-900",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "Path Length",
+    "content": "**pathLength(vs)** = |vs| - 1 = number of edges in the path.\n\nThe quantity we want to maximize.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-longest-path",
+    "proofId": "erdos-900",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "definition",
+    "title": "Longest Path Length",
+    "content": "**longestPathLength(G)** = sup over all paths in G.\n\nThe central quantity of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-whp",
+    "proofId": "erdos-900",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "With High Probability",
+    "content": "**whp**: An event holds with probability → 1 as n → ∞.\n\nStandard notion in probabilistic combinatorics.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-whp-sparse",
+    "proofId": "erdos-900",
+    "range": { "startLine": 90, "endLine": 93 },
+    "type": "definition",
+    "title": "Whp in Sparse Random",
+    "content": "**WhpInSparseRandom(c, P)**: P holds whp in G(n, cn).\n\nFor all ε > 0, ∃ N such that n ≥ N ⟹ Prob[P] > 1 - ε.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-critical",
+    "proofId": "erdos-900",
+    "range": { "startLine": 101, "endLine": 102 },
+    "type": "definition",
+    "title": "Critical Density",
+    "content": "**c = 1/2**: The threshold for giant component emergence.\n\nAverage degree = 2c, so c = 1/2 means average degree 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-subcritical",
+    "proofId": "erdos-900",
+    "range": { "startLine": 104, "endLine": 106 },
+    "type": "axiom",
+    "title": "Subcritical Forest",
+    "content": "**c < 1/2**: G(n, cn) is a forest whp.\n\nNo cycles, only trees. Paths are O(log n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-supercritical",
+    "proofId": "erdos-900",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "axiom",
+    "title": "Supercritical Giant",
+    "content": "**c > 1/2**: A unique giant component of size Θ(n) emerges.\n\nThis allows for linear-length paths.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-path-function",
+    "proofId": "erdos-900",
+    "range": { "startLine": 123, "endLine": 127 },
+    "type": "definition",
+    "title": "Path Length Function",
+    "content": "**f(c)**: The fraction of n achieved by longest path whp.\n\nFor c > 1/2, longest path ≈ f(c)·n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-limit-half",
+    "proofId": "erdos-900",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "axiom",
+    "title": "f(c) → 0 at 1/2",
+    "content": "**lim_{c→1/2⁺} f(c) = 0**\n\nNear the threshold, paths are short (o(n)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-limit-inf",
+    "proofId": "erdos-900",
+    "range": { "startLine": 133, "endLine": 135 },
+    "type": "axiom",
+    "title": "f(c) → 1 at ∞",
+    "content": "**lim_{c→∞} f(c) = 1**\n\nDense graphs have nearly Hamiltonian paths.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-monotone",
+    "proofId": "erdos-900",
+    "range": { "startLine": 137, "endLine": 139 },
+    "type": "axiom",
+    "title": "f is Monotone",
+    "content": "**f is increasing on (1/2, ∞)**\n\nMore edges → longer paths.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-aks",
+    "proofId": "erdos-900",
+    "range": { "startLine": 151, "endLine": 155 },
+    "type": "axiom",
+    "title": "AKS Theorem",
+    "content": "**Ajtai-Komlós-Szemerédi (1981)**:\n\nG(n, cn) has whp a path of length ≥ f(c)·n.\n\nThe main result solving Erdős #900.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-tight",
+    "proofId": "erdos-900",
+    "range": { "startLine": 157, "endLine": 160 },
+    "type": "axiom",
+    "title": "AKS Tight",
+    "content": "**Tightness**: The bound f(c)·n is essentially optimal.\n\nLongest path ≈ f(c)·n (up to o(n) error).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-subcrit-path",
+    "proofId": "erdos-900",
+    "range": { "startLine": 191, "endLine": 194 },
+    "type": "axiom",
+    "title": "Subcritical Path Length",
+    "content": "**c < 1/2**: Longest path is O(log n).\n\nForests have logarithmic diameter.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-hamiltonian",
+    "proofId": "erdos-900",
+    "range": { "startLine": 206, "endLine": 208 },
+    "type": "definition",
+    "title": "Hamiltonian Path",
+    "content": "**IsHamiltonianPath**: Path visiting every vertex exactly once.\n\nThe maximum possible path length = n - 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-ham-threshold",
+    "proofId": "erdos-900",
+    "range": { "startLine": 214, "endLine": 217 },
+    "type": "axiom",
+    "title": "Hamiltonian Threshold",
+    "content": "**For c ≥ (log n)/2**: G(n, cn) has whp a Hamiltonian path.\n\nThe dense regime where f(c) → 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-rotation",
+    "proofId": "erdos-900",
+    "range": { "startLine": 241, "endLine": 245 },
+    "type": "axiom",
+    "title": "Rotation-Extension",
+    "content": "**Rotation-extension technique**: Key method in AKS proof.\n\nEither extend path or path already covers all reachable vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-900-conjecture",
+    "proofId": "erdos-900",
+    "range": { "startLine": 253, "endLine": 259 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "**ErdosConjecture900**: ∃ f with the three required properties.\n\n1. f(c) → 0 as c → 1/2\n2. f(c) → 1 as c → ∞\n3. G(n, cn) has whp path ≥ f(c)n",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-900-main",
+    "proofId": "erdos-900",
+    "range": { "startLine": 261, "endLine": 272 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #900: SOLVED**\n\nThe conjecture is TRUE.\n\nAjtai-Komlós-Szemerédi (1981) proved f(c) exists with all required properties.",
+    "significance": "critical"
+  }
+]

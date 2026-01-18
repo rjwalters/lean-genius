@@ -1,33 +1,179 @@
 {
   "id": "erdos-632",
-  "title": "Erdős Problem #632",
+  "title": "Erdős Problem #632: The (a,b)-Choosability Scaling Conjecture",
   "slug": "erdos-632",
-  "description": "A graph is (a,b)\" role=\"presentation\" style=\"position: relative;\">(a,b)(a,b)(a,b)-choosable if for any assignment of a list of a\" role=\"presentation\" style=\"position: relative;\">aaa colours to each...",
+  "description": "If G is (a,b)-choosable, is G also (am,bm)-choosable for all m ≥ 1? DISPROVED by Dvořák-Hu-Sereni (2019) - fails for (4,1) to (8,2).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rubin-Taylor (1980 conjecture), Dvořák-Hu-Sereni (2019 disproof)",
     "sourceUrl": "https://erdosproblems.com/632",
-    "date": "",
-    "status": "pending",
+    "date": "2019",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos632Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "list-coloring",
+      "choosability",
+      "counterexample",
+      "disproved"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 5,
     "erdosNumber": 632,
     "erdosUrl": "https://erdosproblems.com/632",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for choosability definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Color lists and selections",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Disjoint",
+        "description": "Disjoint color selections for adjacent vertices",
+        "module": "Mathlib.Order.Disjoint"
+      }
+    ],
+    "references": [
+      {
+        "key": "DHS2019",
+        "citation": "Dvořák, Z., Hu, X., and Sereni, J.-S. (2019). A counterexample to a conjecture of Erdős, Rubin and Taylor on graph colouring.",
+        "type": "paper"
+      },
+      {
+        "key": "ERT1980",
+        "citation": "Erdős, P., Rubin, A. L., and Taylor, H. (1980). Choosability in graphs. Proc. West Coast Conf. on Combinatorics, Graph Theory and Computing.",
+        "type": "paper"
+      },
+      {
+        "key": "ATV1997",
+        "citation": "Alon, N., Tuza, Z., and Voigt, M. (1997). Choosability and fractional chromatic numbers. Discrete Math. 165/166, 31-38.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of (a,b)-choosability",
+      "Definition of color assignments and valid selections",
+      "Statement of the Erdős-Rubin-Taylor conjecture",
+      "Axiomatization of the Dvořák-Hu-Sereni counterexample",
+      "Connection to list chromatic number (a,1 case)",
+      "Positive results for special graph classes",
+      "Related choosability theorems (Ohba, Galvin)"
+    ],
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #632 from erdosproblems.com.",
-    "problemStatement": "A graph is (a,b)\" role=\"presentation\" style=\"position: relative;\">(a,b)(a,b)(a,b)-choosable if for any assignment of a list of a\" role=\"presentation\" style=\"position: relative;\">aaa colours to each of its vertices there is a subset of b\" role=\"presentation\" style=\"position: relative;\">bbb colours from each list such that the subsets of adjacent vertices are disjoint. If G\" role=\"presentation\" style=\"position: relative;\">GGG is (a,b)\" role=\"presentation\" style=\"position: relative;\">(a,b)(a,b)(a,b)-choosable then G\" role=\"presentation\" style=\"position: relative;\">GGG is (am,bm)\" role=\"presentation\" style=\"position: relative;\">(am,bm)(am,bm)(am,bm)-choosable for every integer m&#x2265;1\" role=\"presentation\" style=\"position: relative;\">m≥1m≥1m\\geq 1.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**List Coloring and Choosability**\n\nA graph is (a,b)-choosable if given any assignment of a colors to each vertex, one can select b colors from each list such that adjacent vertices have disjoint color subsets.\n\n**The b = 1 Case**: (a,1)-choosability is exactly the condition χ_L(G) ≤ a (list chromatic number at most a).\n\n**The Conjecture**: Erdős, Rubin, and Taylor (1980) conjectured that choosability scales: if G is (a,b)-choosable then G is (am,bm)-choosable for all m ≥ 1.\n\n**The Surprise**: Dvořák, Hu, and Sereni (2019) showed this is FALSE, even for the simplest non-trivial case m = 2.",
+    "problemStatement": "**Problem Statement**\n\nConjecture: If G is (a,b)-choosable then G is (am,bm)-choosable for every integer m ≥ 1.\n\n**Answer**: NO (DISPROVED)\n\nDvořák-Hu-Sereni showed this fails for the case (4,1) → (8,2):\n- There exists a graph G that is (4,1)-choosable\n- But G is NOT (8,2)-choosable",
+    "proofStrategy": "**The Formalization**\n\n1. Defines color assignments and valid selections\n2. Defines (a,b)-choosability\n3. Defines list chromatic number as (a,1)-choosability\n4. States the Erdős-Rubin-Taylor conjecture\n5. Focuses on the m = 2 case\n6. Axiomatizes the DHS counterexample\n7. Proves the conjecture is FALSE\n8. Notes positive results that ARE true (bipartite, complete graphs)\n9. Connects to related choosability problems (Ohba, Galvin)",
+    "keyInsights": [
+      "(a,1)-choosability is equivalent to list chromatic number ≤ a",
+      "The conjecture fails at the first non-trivial case: (4,1) → (8,2)",
+      "Fractional choosability DOES scale (contrast with integer case)",
+      "The conjecture holds for special classes: bipartite, complete graphs",
+      "Choosability is more subtle than chromatic number"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "color-lists",
+      "title": "Graphs and Color Lists",
+      "summary": "Basic setup for list coloring",
+      "startLine": 37,
+      "endLine": 58
+    },
+    {
+      "id": "choosability",
+      "title": "(a,b)-Choosability",
+      "summary": "The central definition",
+      "startLine": 60,
+      "endLine": 79
+    },
+    {
+      "id": "list-chromatic",
+      "title": "List Chromatic Number",
+      "summary": "The b = 1 special case",
+      "startLine": 81,
+      "endLine": 98
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Choosability",
+      "summary": "Monotonicity and basic facts",
+      "startLine": 100,
+      "endLine": 124
+    },
+    {
+      "id": "ert-conjecture",
+      "title": "The Erdős-Rubin-Taylor Conjecture",
+      "summary": "The disproved statement",
+      "startLine": 126,
+      "endLine": 153
+    },
+    {
+      "id": "m-2-case",
+      "title": "The m = 2 Case",
+      "summary": "The specific case that was disproved",
+      "startLine": 155,
+      "endLine": 172
+    },
+    {
+      "id": "dhs-counterexample",
+      "title": "The DHS Counterexample",
+      "summary": "Graphs with (4,1) but not (8,2)",
+      "startLine": 174,
+      "endLine": 198
+    },
+    {
+      "id": "disproof",
+      "title": "The Main Disproof",
+      "summary": "Erdős #632 is DISPROVED",
+      "startLine": 200,
+      "endLine": 225
+    },
+    {
+      "id": "positive",
+      "title": "Positive Results",
+      "summary": "What IS true about scaling",
+      "startLine": 227,
+      "endLine": 253
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Problems",
+      "summary": "Ohba, Galvin, List Coloring Conjecture",
+      "startLine": 255,
+      "endLine": 275
+    },
+    {
+      "id": "construction",
+      "title": "The Construction Details",
+      "summary": "How the counterexample is built",
+      "startLine": 277,
+      "endLine": 303
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem #632 is DISPROVED",
+      "startLine": 305,
+      "endLine": 337
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #632 asks whether (a,b)-choosability implies (am,bm)-choosability for all m ≥ 1. DISPROVED by Dvořák-Hu-Sereni (2019) who constructed a graph that is (4,1)-choosable but not (8,2)-choosable.",
+    "implications": "**Theoretical Significance**\n\n1. **Choosability Subtlety**: Integer choosability does not scale like fractional choosability\n\n2. **List vs Ordinary Coloring**: List coloring has fundamentally different behavior\n\n3. **Counterexample Techniques**: The DHS construction uses clever list assignments\n\n4. **Special Classes**: The conjecture DOES hold for bipartite and complete graphs",
+    "openQuestions": [
+      "What is the smallest counterexample graph?",
+      "Which graph classes satisfy the ERT conjecture?",
+      "Does the conjecture hold for m = 2 and specific (a,b) pairs?",
+      "What is the correct scaling relationship for choosability?"
+    ]
   }
 }

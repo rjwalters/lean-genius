@@ -1,1 +1,245 @@
-[]
+[
+  {
+    "id": "ann-1025-pairfunc",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 33, "endLine": 33 },
+    "type": "definition",
+    "title": "PairFunction",
+    "content": "Maps unordered pairs (Sym2) to elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-valid",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "isValidPairFunction",
+    "content": "f(x,y) ≠ x and f(x,y) ≠ y for all pairs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-validalt",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "Alternative Validity",
+    "content": "Using explicit pairs instead of Sym2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1025-independent",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "isIndependent",
+    "content": "f(x,y) ∉ X for all x,y ∈ X.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-emptyind",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "theorem",
+    "title": "Empty Independent",
+    "content": "Empty set is always independent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1025-singletonind",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 63, "endLine": 68 },
+    "type": "theorem",
+    "title": "Singleton Independent",
+    "content": "Singletons are independent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1025-validfuncs",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 77, "endLine": 78 },
+    "type": "definition",
+    "title": "validPairFunctions",
+    "content": "Set of all valid pair functions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-maxind",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 81, "endLine": 82 },
+    "type": "definition",
+    "title": "maxIndependent",
+    "content": "Maximum independent set size for a function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-g",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "definition",
+    "title": "g(n)",
+    "content": "Minimum over all valid functions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-gspec",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "theorem",
+    "title": "g Specification",
+    "content": "g(n) is the guaranteed independent set size.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-ehlower",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 100, "endLine": 101 },
+    "type": "axiom",
+    "title": "Erdős-Hajnal Lower",
+    "content": "g(n) ≥ c · n^(1/3).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-ehupper",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "axiom",
+    "title": "Erdős-Hajnal Upper",
+    "content": "g(n) ≤ C · (n log n)^(1/2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-ehbounds",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 108, "endLine": 117 },
+    "type": "theorem",
+    "title": "Erdős-Hajnal Combined",
+    "content": "n^(1/3) ≪ g(n) ≪ (n log n)^(1/2) (1958).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-spencer",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 126, "endLine": 127 },
+    "type": "axiom",
+    "title": "Spencer Lower",
+    "content": "g(n) ≥ c · n^(1/2) (1972).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-spencerimproves",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 130, "endLine": 132 },
+    "type": "theorem",
+    "title": "Spencer Improves",
+    "content": "n^(1/3) ≤ n^(1/2).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1025-cfs",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 141, "endLine": 142 },
+    "type": "axiom",
+    "title": "CFS Upper",
+    "content": "g(n) ≤ C · n^(1/2) (2016).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-cfsimproves",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "theorem",
+    "title": "CFS Improves",
+    "content": "n^(1/2) ≤ (n log n)^(1/2).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1025-asymptotic",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 156, "endLine": 164 },
+    "type": "theorem",
+    "title": "g Asymptotic",
+    "content": "g(n) = Θ(n^(1/2)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-question",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 173, "endLine": 175 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Estimate g(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-solved",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 178, "endLine": 181 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "g(n) = Θ(n^(1/2)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1025-setmapping",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 190, "endLine": 190 },
+    "type": "definition",
+    "title": "SetMapping",
+    "content": "Assigns subsets not containing element.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-freeset",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 193, "endLine": 194 },
+    "type": "definition",
+    "title": "isFreeSet",
+    "content": "a ∉ φ(b) for all a, b ∈ F.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-pairtoset",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 197, "endLine": 198 },
+    "type": "definition",
+    "title": "pairToSetMapping",
+    "content": "Pair functions induce set mappings.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1025-expected",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 207, "endLine": 208 },
+    "type": "definition",
+    "title": "expectedIndependent",
+    "content": "pn - C(n,2)p³ from random selection.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-problower",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 211, "endLine": 214 },
+    "type": "theorem",
+    "title": "Probabilistic Lower",
+    "content": "Random gives Ω(n^(1/2)).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-construction",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 223, "endLine": 225 },
+    "type": "axiom",
+    "title": "Upper Construction",
+    "content": "Functions with small independent sets exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1025-historical",
+    "proofId": "erdos-1025",
+    "range": { "startLine": 234, "endLine": 242 },
+    "type": "theorem",
+    "title": "Historical Bounds",
+    "content": "Timeline: 1958 → 1972 → 2016.",
+    "significance": "key"
+  }
+]

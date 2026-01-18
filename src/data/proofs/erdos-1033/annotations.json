@@ -1,1 +1,362 @@
-[]
+[
+  {
+    "id": "ann-1033-vertexcount",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "vertexCount",
+    "content": "Number of vertices in the graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-edgecount",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "edgeCount",
+    "content": "Number of edges in the graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-turan",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "definition",
+    "title": "turanThreshold",
+    "content": "The Turán threshold n²/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-aboveturan",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "isAboveTuran",
+    "content": "Graph has > n²/4 edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-turanhas",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "axiom",
+    "title": "Turán's Theorem",
+    "content": "Above threshold → has triangle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-triangle",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 67, "endLine": 77 },
+    "type": "definition",
+    "title": "Triangle",
+    "content": "Three mutually adjacent vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-vertexdegree",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "vertexDegree",
+    "content": "Degree of a vertex.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-tridegsum",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "definition",
+    "title": "triangleDegreeSum",
+    "content": "Sum of degrees of triangle vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-triangles",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 88, "endLine": 90 },
+    "type": "definition",
+    "title": "triangles",
+    "content": "Set of all triangles in G.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-hasdense",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "definition",
+    "title": "hasDenseTriangle",
+    "content": "Has triangle with degree sum ≥ k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-validlower",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 103, "endLine": 108 },
+    "type": "definition",
+    "title": "isValidLowerBound",
+    "content": "k is valid lower bound for h(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-h",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "definition",
+    "title": "h(n)",
+    "content": "Maximum guaranteed degree sum.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-hspec",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 114, "endLine": 117 },
+    "type": "theorem",
+    "title": "h_spec",
+    "content": "h(n) is well-defined.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-elconst",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 125, "endLine": 126 },
+    "type": "definition",
+    "title": "erdosLaskarConstant",
+    "content": "2(√3−1) ≈ 1.464.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-elapprox",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 128, "endLine": 130 },
+    "type": "theorem",
+    "title": "erdosLaskar_approx",
+    "content": "Numerical value verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-elupper",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 138, "endLine": 140 },
+    "type": "axiom",
+    "title": "Erdős-Laskar Upper",
+    "content": "h(n) ≤ 2(√3−1)n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-uppertight",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 142, "endLine": 148 },
+    "type": "axiom",
+    "title": "Upper Bound Tight",
+    "content": "Graphs achieving upper bound exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-ellower",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "axiom",
+    "title": "Erdős-Laskar Lower",
+    "content": "h(n) ≥ (1+c)n for some c > 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-lowerbeats",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 160, "endLine": 166 },
+    "type": "theorem",
+    "title": "lower_beats_n",
+    "content": "h(n) > n (non-trivial bound).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-fanconst",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 174, "endLine": 175 },
+    "type": "definition",
+    "title": "fanConstant",
+    "content": "21/16 = 1.3125.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-fanimproves",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 177, "endLine": 179 },
+    "type": "theorem",
+    "title": "fan_improves",
+    "content": "21/16 > 1 (beats trivial).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-fanlower",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "axiom",
+    "title": "Fan Lower",
+    "content": "h(n) ≥ (21/16)n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-currentbounds",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 185, "endLine": 190 },
+    "type": "theorem",
+    "title": "current_bounds",
+    "content": "(21/16)n ≤ h(n) ≤ 2(√3−1)n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-boundgap",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 198, "endLine": 199 },
+    "type": "definition",
+    "title": "boundGap",
+    "content": "Gap between upper and lower bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-gappos",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 201, "endLine": 204 },
+    "type": "theorem",
+    "title": "gap_positive",
+    "content": "Gap > 0: problem is open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-gapapprox",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 206, "endLine": 208 },
+    "type": "theorem",
+    "title": "gap_approx",
+    "content": "Gap ≈ 0.15.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-conjecture",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 216, "endLine": 219 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "h(n) ≥ (2(√3−1)−o(1))n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1033-hasymptotic",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 221, "endLine": 224 },
+    "type": "definition",
+    "title": "h_asymptotic",
+    "content": "h(n)/n → 2(√3−1).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-conjgivesasym",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 226, "endLine": 229 },
+    "type": "theorem",
+    "title": "conjecture_gives_asymptotic",
+    "content": "Conjecture → exact asymptotics.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-trimindeg",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 237, "endLine": 240 },
+    "type": "theorem",
+    "title": "triangle_min_degree",
+    "content": "Each triangle vertex has degree ≥ 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-trisummin",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 242, "endLine": 245 },
+    "type": "theorem",
+    "title": "triangle_sum_min",
+    "content": "Triangle degree sum ≥ 6.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-denseavg",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 247, "endLine": 251 },
+    "type": "theorem",
+    "title": "dense_average_degree",
+    "content": "Dense graphs have high average degree.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-maxtridegs",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 259, "endLine": 262 },
+    "type": "definition",
+    "title": "maxTriangleDegreeSum",
+    "content": "Maximum triangle degree sum in G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-hasmin",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 264, "endLine": 270 },
+    "type": "theorem",
+    "title": "h_as_min",
+    "content": "h(n) = min over dense graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-isextremal",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 278, "endLine": 282 },
+    "type": "definition",
+    "title": "isExtremal",
+    "content": "Graph achieves h(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-extremalexists",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 284, "endLine": 287 },
+    "type": "axiom",
+    "title": "extremal_exists",
+    "content": "Extremal graphs exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-bipartitenotri",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 295, "endLine": 302 },
+    "type": "theorem",
+    "title": "bipartite_no_triangle",
+    "content": "Balanced bipartite has no triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-turanplusone",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 304, "endLine": 311 },
+    "type": "theorem",
+    "title": "turan_plus_one",
+    "content": "Adding edge to Turán creates triangle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1033-hthree",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 319, "endLine": 321 },
+    "type": "theorem",
+    "title": "h(3)",
+    "content": "h(3) = 6.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1033-hfour",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 323, "endLine": 325 },
+    "type": "theorem",
+    "title": "h(4)",
+    "content": "h(4) = 7.",
+    "significance": "supporting"
+  }
+]

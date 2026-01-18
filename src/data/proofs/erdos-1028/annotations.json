@@ -1,1 +1,245 @@
-[]
+[
+  {
+    "id": "ann-1028-signfunc",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 30, "endLine": 30 },
+    "type": "definition",
+    "title": "SignFunction",
+    "content": "Maps pairs to integers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-isvalidsign",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "isValidSign",
+    "content": "f(x,y) ∈ {-1, 1}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-validsigns",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 37, "endLine": 38 },
+    "type": "definition",
+    "title": "validSignFunctions",
+    "content": "Set of valid sign functions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-pairsum",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "pairSum",
+    "content": "Sum of f(x,y) over distinct pairs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-discrepancy",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 51, "endLine": 52 },
+    "type": "definition",
+    "title": "discrepancy",
+    "content": "|pairSum|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-maxdisc",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "maxDiscrepancy",
+    "content": "Maximum over all subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-h",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "H(n)",
+    "content": "Minimum over f of max discrepancy.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-hspec",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "theorem",
+    "title": "H Specification",
+    "content": "Optimal f exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-erdoslower",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "theorem",
+    "title": "Erdős Lower",
+    "content": "H(n) ≥ n/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-erdosupper",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "axiom",
+    "title": "Erdős Upper",
+    "content": "H(n) ≤ C · n^(3/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-erdosbounds",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 89, "endLine": 100 },
+    "type": "theorem",
+    "title": "Erdős Bounds",
+    "content": "n/4 ≤ H(n) ≪ n^(3/2) (1963).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-eslower",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 109, "endLine": 110 },
+    "type": "axiom",
+    "title": "Erdős-Spencer Lower",
+    "content": "H(n) ≥ c · n^(3/2) (1971).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-esimproves",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "theorem",
+    "title": "ES Improves",
+    "content": "n ≤ n^(3/2).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1028-asymptotic",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 124, "endLine": 132 },
+    "type": "theorem",
+    "title": "H Asymptotic",
+    "content": "H(n) = Θ(n^(3/2)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-question",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 141, "endLine": 143 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Estimate H(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-solved",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 146, "endLine": 149 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "H(n) = Θ(n^(3/2)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1028-symmetric",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 158, "endLine": 159 },
+    "type": "definition",
+    "title": "isSymmetric",
+    "content": "f(x,y) = f(y,x).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-symmpair",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 162, "endLine": 164 },
+    "type": "theorem",
+    "title": "Symmetric PairSum",
+    "content": "Counts each pair twice.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1028-signedgraph",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 173, "endLine": 174 },
+    "type": "definition",
+    "title": "asSignedGraph",
+    "content": "View f as edge signs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-imbalance",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 177, "endLine": 179 },
+    "type": "theorem",
+    "title": "Discrepancy as Imbalance",
+    "content": "Imbalance of induced subgraph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-expected",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 188, "endLine": 189 },
+    "type": "definition",
+    "title": "expectedDiscrepancy",
+    "content": "√(k(k-1)).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-expectedbound",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 192, "endLine": 194 },
+    "type": "theorem",
+    "title": "Expected Bound",
+    "content": "Expected ≤ k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1028-randomupper",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 203, "endLine": 205 },
+    "type": "axiom",
+    "title": "Random Upper",
+    "content": "Random f has O(n^(3/2)) max discrepancy.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-largeexists",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 214, "endLine": 216 },
+    "type": "theorem",
+    "title": "Large Discrepancy Exists",
+    "content": "Some X has discrepancy ≥ n^(3/2)/100.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1028-htwo",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 225, "endLine": 226 },
+    "type": "theorem",
+    "title": "H(2)",
+    "content": "H(2) = 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1028-hthree",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 229, "endLine": 230 },
+    "type": "theorem",
+    "title": "H(3)",
+    "content": "H(3) = 4.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1028-homogeneous",
+    "proofId": "erdos-1028",
+    "range": { "startLine": 239, "endLine": 242 },
+    "type": "theorem",
+    "title": "Homogeneous Discrepancy",
+    "content": "All +1 gives |X|(|X|-1).",
+    "significance": "key"
+  }
+]
