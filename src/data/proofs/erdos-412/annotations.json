@@ -7,7 +7,8 @@
     "title": "Problem Statement",
     "content": "Erdős Problem #412 asks whether all iterated sum-of-divisors sequences eventually merge. Given any two starting points m,n ≥ 2, does there exist i,j such that σᵢ(m) = σⱼ(n)?",
     "mathContext": "The sum of divisors σ(n) = Σ_{d|n} d sums all divisors including 1 and n. Iterating gives σₖ(n) = σ(σₖ₋₁(n)).",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Iterated functions", "Dynamical systems"]
   },
   {
     "id": "ann-412-imports",
@@ -26,7 +27,8 @@
     "title": "Sum of Divisors Function",
     "content": "We define σ(n) as the sum of all divisors of n, using `Nat.divisors` to get the finite set of divisors and summing with `Finset.sum`.",
     "mathContext": "σ(n) = Σ_{d|n} d. For example: σ(6) = 1 + 2 + 3 + 6 = 12.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Divisors", "Perfect numbers", "Multiplicative functions"]
   },
   {
     "id": "ann-412-sigma-one",
@@ -55,7 +57,8 @@
     "title": "Iterated Sigma",
     "content": "The k-th iterate of σ: σ₀(n) = n and σₖ(n) = σ(σₖ₋₁(n)). We use `Function.iterate` from Mathlib.",
     "mathContext": "iterSigma k n = σ^[k](n), the k-fold composition of σ applied to n.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Function iteration", "Orbits", "Sequences"]
   },
   {
     "id": "ann-412-iter-zero",
@@ -112,7 +115,8 @@
     "title": "σ-Equivalence",
     "content": "Two numbers m, n are σ-equivalent if their iterated sequences eventually meet: ∃ i j, σᵢ(m) = σⱼ(n).",
     "mathContext": "This is an equivalence relation on ℕ. The conjecture asks if there is only one equivalence class for n ≥ 2.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Equivalence relations", "Orbit equivalence", "Convergence"]
   },
   {
     "id": "ann-412-conjecture",
@@ -176,7 +180,8 @@
     "title": "Aliquot Sum",
     "content": "The aliquot sum s(n) = σ(n) - n is the sum of PROPER divisors (excluding n). Perfect numbers satisfy s(n) = n.",
     "mathContext": "Problem #412 is about σ (including n), not s (excluding n). But the problems are related.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": ["Perfect numbers", "Aliquot sequences", "Proper divisors"]
   },
   {
     "id": "ann-412-perfect-6",
@@ -204,7 +209,8 @@
     "title": "Growth Property",
     "content": "For n ≥ 2, σ(n) ≥ n + 1. Since 1 and n are always divisors, σ(n) ≥ 1 + n. This means sequences are strictly increasing.",
     "mathContext": "We prove this by showing {1, n} ⊆ divisors(n) and summing.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Monotone sequences", "Fixed points", "Abundant numbers"]
   },
   {
     "id": "ann-412-strict-growth",
