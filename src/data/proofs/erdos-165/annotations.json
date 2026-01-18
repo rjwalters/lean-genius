@@ -59,7 +59,7 @@
   {
     "id": "ann-e165-aks",
     "proofId": "erdos-165",
-    "range": { "startLine": 106, "endLine": 114 },
+    "range": { "startLine": 107, "endLine": 115 },
     "type": "axiom",
     "title": "Ajtai-Komlos-Szemeredi Theorem",
     "content": "**AKS (1980):**\n\nR(3,k) = O(k^2/log k)\n\nMore precisely: R(3,k) <= C * k^2/log k for some constant C.\n\n**Breakthrough:** This was the first result showing the log factor in the denominator. Previous bounds were O(k^2).",
@@ -69,7 +69,7 @@
   {
     "id": "ann-e165-shearer",
     "proofId": "erdos-165",
-    "range": { "startLine": 116, "endLine": 123 },
+    "range": { "startLine": 117, "endLine": 124 },
     "type": "axiom",
     "title": "Shearer's Theorem",
     "content": "**Shearer (1983):**\n\nR(3,k) <= (1 + o(1)) * k^2/log k\n\nThis is the **tight upper bound**: the coefficient 1 cannot be improved.\n\nThe proof analyzes independence numbers in triangle-free graphs using entropy methods.",
@@ -79,7 +79,7 @@
   {
     "id": "ann-e165-kim",
     "proofId": "erdos-165",
-    "range": { "startLine": 138, "endLine": 149 },
+    "range": { "startLine": 139, "endLine": 150 },
     "type": "axiom",
     "title": "Kim's Theorem",
     "content": "**Kim (1995) - BREAKTHROUGH:**\n\nR(3,k) >= (c + o(1)) * k^2/log k for some c > 0.\n\nKim's original constant: c >= 1/162.\n\n**This established the order of magnitude:** R(3,k) = Theta(k^2/log k)\n\nKim's proof introduced the **triangle-free process** (semi-random method):\n- Start with empty graph\n- Repeatedly add random edges that don't create triangles\n- Analyze the resulting graph's independence number\n\n**This won the $250 prize.**",
@@ -90,7 +90,7 @@
   {
     "id": "ann-e165-bohman-keevash",
     "proofId": "erdos-165",
-    "range": { "startLine": 151, "endLine": 158 },
+    "range": { "startLine": 152, "endLine": 159 },
     "type": "axiom",
     "title": "Bohman-Keevash Bound",
     "content": "**Bohman-Keevash (2021):**\n\nc >= 1/4\n\nImproved Kim's constant by a factor of 40 through more careful analysis of the triangle-free process.\n\nProved independently by Pontiveros-Griffiths-Morris (2020), who conjectured c = 1/4 is optimal.",
@@ -99,7 +99,7 @@
   {
     "id": "ann-e165-cjms",
     "proofId": "erdos-165",
-    "range": { "startLine": 160, "endLine": 167 },
+    "range": { "startLine": 161, "endLine": 168 },
     "type": "axiom",
     "title": "CJMS Bound",
     "content": "**Campos-Jenssen-Michelen-Sahasrabudhe (2025):**\n\nc >= 1/3\n\n**Disproved the PGM conjecture (c = 1/4).**\n\nUsed new techniques beyond the standard triangle-free process analysis.",
@@ -108,7 +108,7 @@
   {
     "id": "ann-e165-hhkp",
     "proofId": "erdos-165",
-    "range": { "startLine": 169, "endLine": 176 },
+    "range": { "startLine": 170, "endLine": 177 },
     "type": "axiom",
     "title": "Hefty-Horn-King-Pfender Bound",
     "content": "**HHKP (2025) - CURRENT BEST:**\n\nc >= 1/2\n\nPaper title: \"Improving R(3,k) in just two bites\"\n\nBoth CJMS and HHKP conjecture that **c = 1/2 is the true constant**, meaning:\n\nR(3,k) ~ (1/2) * k^2/log k",
@@ -155,7 +155,7 @@
   {
     "id": "ann-e165-pgm-false",
     "proofId": "erdos-165",
-    "range": { "startLine": 246, "endLine": 252 },
+    "range": { "startLine": 247, "endLine": 253 },
     "type": "theorem",
     "title": "PGM Conjecture Disproved",
     "content": "**The PGM conjecture is FALSE.**\n\nPontiveros-Griffiths-Morris (2020) conjectured c = 1/4.\n\nThis was disproved by CJMS (2025) who showed c >= 1/3.",
@@ -183,7 +183,7 @@
   {
     "id": "ann-e165-main",
     "proofId": "erdos-165",
-    "range": { "startLine": 273, "endLine": 298 },
+    "range": { "startLine": 274, "endLine": 298 },
     "type": "theorem",
     "title": "Main Result",
     "content": "**Erdos Problem #165: SOLVED**\n\n**Answer:** R(3,k) = Theta(k^2/log k)\n\nThe theorem provides:\n- Constants c_1 = 1/2, c_2 = 1\n- For any epsilon > 0, there exists k_0 such that for k >= k_0:\n  - (1/2 - epsilon) * k^2/log k <= R(3,k) [from HHKP]\n  - R(3,k) <= (1 + epsilon) * k^2/log k [from Shearer]\n\n**Prize:** The $250 prize was claimed by Kim (1995) for establishing the order of magnitude.",

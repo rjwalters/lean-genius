@@ -11,7 +11,7 @@
   {
     "id": "ann-639-complete-graph",
     "proofId": "erdos-639",
-    "range": { "startLine": 36, "endLine": 37 },
+    "range": { "startLine": 35, "endLine": 36 },
     "type": "definition",
     "title": "Complete Graph",
     "content": "**K_n** = the complete graph on n vertices.\n\nEvery pair of vertices is connected by an edge.",
@@ -20,7 +20,7 @@
   {
     "id": "ann-639-edge-coloring",
     "proofId": "erdos-639",
-    "range": { "startLine": 45, "endLine": 46 },
+    "range": { "startLine": 44, "endLine": 45 },
     "type": "definition",
     "title": "Edge Coloring",
     "content": "**EdgeColoring n** = Fin n → Fin n → Bool\n\nAssigns each edge a color (true = red, false = blue).",
@@ -29,7 +29,7 @@
   {
     "id": "ann-639-symmetric",
     "proofId": "erdos-639",
-    "range": { "startLine": 48, "endLine": 50 },
+    "range": { "startLine": 47, "endLine": 49 },
     "type": "definition",
     "title": "Symmetric Coloring",
     "content": "**IsSymmetricColoring**: c i j = c j i for all i, j.\n\nEnsures undirected edges have consistent colors.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-639-triangle",
     "proofId": "erdos-639",
-    "range": { "startLine": 58, "endLine": 65 },
+    "range": { "startLine": 56, "endLine": 63 },
     "type": "definition",
     "title": "Triangle",
     "content": "**Triangle n**: three distinct vertices v1, v2, v3.\n\nThe basic structure for Ramsey theory in K_n.",
@@ -47,7 +47,7 @@
   {
     "id": "ann-639-monochromatic",
     "proofId": "erdos-639",
-    "range": { "startLine": 67, "endLine": 69 },
+    "range": { "startLine": 65, "endLine": 67 },
     "type": "definition",
     "title": "Monochromatic Triangle",
     "content": "**IsMonochromatic**: all three edges have the same color.\n\nc(v1,v2) = c(v1,v3) = c(v2,v3)",
@@ -56,7 +56,7 @@
   {
     "id": "ann-639-red-triangle",
     "proofId": "erdos-639",
-    "range": { "startLine": 71, "endLine": 73 },
+    "range": { "startLine": 69, "endLine": 71 },
     "type": "definition",
     "title": "Red Triangle",
     "content": "**IsRedTriangle**: all edges colored true (red).\n\nOne of two types of monochromatic triangles.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-639-blue-triangle",
     "proofId": "erdos-639",
-    "range": { "startLine": 75, "endLine": 77 },
+    "range": { "startLine": 73, "endLine": 75 },
     "type": "definition",
     "title": "Blue Triangle",
     "content": "**IsBlueTriangle**: all edges colored false (blue).\n\nThe other type of monochromatic triangle.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-639-edge-in-mono",
     "proofId": "erdos-639",
-    "range": { "startLine": 90, "endLine": 93 },
+    "range": { "startLine": 92, "endLine": 94 },
     "type": "definition",
     "title": "Edge in Mono Triangle",
     "content": "**EdgeInMonoTriangle(c, i, j)**: ∃ vertex k such that triangle (i,j,k) is monochromatic.\n\nThe edge participates in at least one mono triangle.",
@@ -83,7 +83,7 @@
   {
     "id": "ann-639-edge-not-in-mono",
     "proofId": "erdos-639",
-    "range": { "startLine": 95, "endLine": 98 },
+    "range": { "startLine": 96, "endLine": 98 },
     "type": "definition",
     "title": "Edge Not in Mono Triangle",
     "content": "**EdgeNotInMonoTriangle(c, i, j)**: for ALL k, triangle (i,j,k) is NOT monochromatic.\n\nThese are the 'exceptional' edges we're counting.",
@@ -92,7 +92,7 @@
   {
     "id": "ann-639-count",
     "proofId": "erdos-639",
-    "range": { "startLine": 100, "endLine": 103 },
+    "range": { "startLine": 100, "endLine": 102 },
     "type": "definition",
     "title": "Count of Non-Mono Edges",
     "content": "**countEdgesNotInMono(c)**: number of edges avoiding all mono triangles.\n\nThis is the quantity we're bounding by n²/4.",
@@ -101,7 +101,7 @@
   {
     "id": "ann-639-bound-quarter",
     "proofId": "erdos-639",
-    "range": { "startLine": 111, "endLine": 112 },
+    "range": { "startLine": 109, "endLine": 110 },
     "type": "definition",
     "title": "The Bound n²/4",
     "content": "**boundQuarter(n)** = n²/4 (integer division).\n\nThe conjectured upper bound, achieved by bipartite coloring.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-639-exact-bound",
     "proofId": "erdos-639",
-    "range": { "startLine": 114, "endLine": 118 },
+    "range": { "startLine": 112, "endLine": 116 },
     "type": "definition",
     "title": "Exact Bound by n",
     "content": "**exactBound(n)**:\n- n ≤ 5: C(n,2) (all edges)\n- n = 6: 10\n- n ≥ 7: ⌊n²/4⌋",
@@ -119,7 +119,7 @@
   {
     "id": "ann-639-small-5",
     "proofId": "erdos-639",
-    "range": { "startLine": 126, "endLine": 130 },
+    "range": { "startLine": 123, "endLine": 127 },
     "type": "axiom",
     "title": "Case n ≤ 5",
     "content": "**K_5 has a 2-coloring with NO monochromatic triangle.**\n\nSo for n ≤ 5, all edges can avoid mono triangles.",
@@ -128,7 +128,7 @@
   {
     "id": "ann-639-case-6",
     "proofId": "erdos-639",
-    "range": { "startLine": 132, "endLine": 138 },
+    "range": { "startLine": 129, "endLine": 135 },
     "type": "axiom",
     "title": "Case n = 6",
     "content": "**For n = 6: at most 10 edges avoid mono triangles.**\n\nR(3,3) = 6 means every 2-coloring of K_6 has a mono triangle.",
@@ -137,7 +137,7 @@
   {
     "id": "ann-639-ramsey",
     "proofId": "erdos-639",
-    "range": { "startLine": 140, "endLine": 142 },
+    "range": { "startLine": 137, "endLine": 139 },
     "type": "axiom",
     "title": "Ramsey R(3,3) = 6",
     "content": "**R(3,3) = 6**: Every 2-coloring of K_6 has a mono triangle.\n\nThe classic Ramsey number for triangles.",
@@ -146,7 +146,7 @@
   {
     "id": "ann-639-keevash-sudakov",
     "proofId": "erdos-639",
-    "range": { "startLine": 150, "endLine": 154 },
+    "range": { "startLine": 146, "endLine": 150 },
     "type": "axiom",
     "title": "Keevash-Sudakov Theorem",
     "content": "**Keevash-Sudakov (2004)**: For n ≥ 7, at most ⌊n²/4⌋ edges avoid mono triangles.\n\nThe complete solution to Erdős #639.",
@@ -155,7 +155,7 @@
   {
     "id": "ann-639-tight",
     "proofId": "erdos-639",
-    "range": { "startLine": 156, "endLine": 159 },
+    "range": { "startLine": 152, "endLine": 155 },
     "type": "axiom",
     "title": "Bound is Tight",
     "content": "**Tightness**: There exist colorings achieving exactly ⌊n²/4⌋.\n\nThe bound is best possible.",
@@ -164,7 +164,7 @@
   {
     "id": "ann-639-bipartite",
     "proofId": "erdos-639",
-    "range": { "startLine": 161, "endLine": 164 },
+    "range": { "startLine": 157, "endLine": 160 },
     "type": "definition",
     "title": "Bipartite Coloring",
     "content": "**balancedBipartiteColoring**: Split vertices into two halves.\n\nCross-edges one color, within-half edges another. Achieves the bound.",
@@ -173,7 +173,7 @@
   {
     "id": "ann-639-pyber",
     "proofId": "erdos-639",
-    "range": { "startLine": 195, "endLine": 202 },
+    "range": { "startLine": 196, "endLine": 203 },
     "type": "axiom",
     "title": "Pyber's Covering",
     "content": "**Pyber (1986)**: Edges of 2-colored K_n covered by ⌊n²/4⌋+2 mono cliques.\n\nThis implies the Erdős #639 bound (observed by Alon).",
@@ -182,7 +182,7 @@
   {
     "id": "ann-639-erdos-rousseau",
     "proofId": "erdos-639",
-    "range": { "startLine": 216, "endLine": 219 },
+    "range": { "startLine": 205, "endLine": 208 },
     "type": "axiom",
     "title": "Erdős-Rousseau-Schelp",
     "content": "**Erdős-Rousseau-Schelp**: The bound holds for sufficiently large n.\n\nUnpublished partial result before Keevash-Sudakov.",
@@ -191,7 +191,7 @@
   {
     "id": "ann-639-main",
     "proofId": "erdos-639",
-    "range": { "startLine": 248, "endLine": 263 },
+    "range": { "startLine": 216, "endLine": 229 },
     "type": "theorem",
     "title": "Main Result",
     "content": "**Erdős Problem #639: SOLVED**\n\nAt most exactBound(n) edges avoid mono triangles:\n- n ≥ 7: ⌊n²/4⌋\n- n ≤ 5: all edges\n- n = 6: exactly 10\n\nKeevash-Sudakov (2004) completed the picture.",

@@ -5,6 +5,83 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-01-18 (Session 26) - Mathlib TM Bridge Exploration
+
+**Mode**: REVISIT (pool exhausted)
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Verified candidate pool is exhausted (0 available, all completed/skipped/surveyed)
+2. Identified pnp-barriers as only surveyed problem with tractability 5
+3. Scouted Mathlib for new TM/complexity developments
+4. Found `Mathlib.Computability.TMComputable` has `TM2ComputableInPolyTime`
+5. Confirmed import works in our proofs environment (Lean 4.26.0, Mathlib 4.26.0)
+6. Explored bridge concept between our abstract oracle TM model and Mathlib's concrete TM2
+7. Found **LeanMillenniumPrizeProblems** project (github.com/lean-dojo) - has sorry-free P vs NP definitions
+
+**Key findings**:
+
+**Mathlib Infrastructure Available**:
+- `Turing.TM2ComputableInPolyTime` - concrete polynomial-time TM2 computation
+- `Turing.TM2Computable` - general TM2 computation
+- `Computability.FinEncoding` - encoding types for TM input/output
+- Structure includes: `tm : FinTM2`, `time : Polynomial ℕ`, `outputsFun` proof
+
+**Bridge Concept Validated**:
+```lean
+-- This type-checks in our environment:
+def MathLibInP (problem : ℕ → Bool) : Prop :=
+  ∃ (ea : Computability.FinEncoding ℕ)
+    (eb : Computability.FinEncoding Bool),
+    Nonempty (Turing.TM2ComputableInPolyTime ea eb problem)
+```
+
+The key difference:
+- Our `inP`: Existential over abstract programs with polynomial step count
+- Mathlib's `TM2ComputableInPolyTime`: Contains concrete TM2 machine
+
+**LeanMillenniumPrizeProblems Project**:
+- Has `Millennium.InP`, `Millennium.InNP`, `Millennium.NPComplete`
+- Uses `Language` type over finite alphabets
+- 22 commits, sorry-free, axiom-free
+- Key theorem `PEqualsNP` stated with "Direct" fidelity to Clay PDF
+- Missing: SAT, Cook-Levin, concrete NP-complete problems
+
+**Key insight**:
+A formal bridge between our abstract oracle TM model and Mathlib's concrete TM2 would require proving the Church-Turing equivalence - that our abstract computation model captures exactly what TM2 can compute. This is substantial work (~300-500 lines) but would:
+1. Validate our PNPBarriers.lean against concrete Mathlib foundation
+2. Enable importing theorems from other Lean complexity projects
+3. Strengthen the formal rigor of our barrier theorems
+
+**Infrastructure assessment**:
+| Component | Our Status | Mathlib Status |
+|-----------|------------|----------------|
+| Polynomial time | ✅ Abstract `Polynomial` | ✅ `Polynomial ℕ` |
+| TM model | ✅ `OracleProgram` (abstract) | ✅ `TM2` (concrete) |
+| Complexity classes | ✅ P, NP via oracle TM | ⚠️ No standard classes |
+| Oracles | ✅ Full support | ❌ Not available |
+| Verification | ✅ `OracleVerifier` | ⚠️ No NP verifiers |
+
+**Outcome**:
+- Scouting complete, no proof modifications this session
+- Documented bridge path and external project resources
+- Confirmed Mathlib has necessary primitives for bridge work
+
+**Files Modified**:
+- `research/problems/pnp-barriers/knowledge.md` - this file (session documentation)
+
+**Next steps**:
+1. **HIGH VALUE**: Build formal bridge to Mathlib TM2 (~300-500 lines)
+   - Define `MathLibInP` using `TM2ComputableInPolyTime`
+   - State equivalence axiom `mathlib_P_equiv_abstract_P`
+   - This validates our entire framework
+2. Add resource-bounded Kolmogorov complexity (poly-time bounds)
+3. Add more connections to circuit complexity
+4. Explore integration with LeanMillenniumPrizeProblems definitions
+
+---
+
 ## Session 2026-01-14 (Session 25) - Kolmogorov Complexity
 
 **Mode**: REVISIT

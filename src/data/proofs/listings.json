@@ -1589,7 +1589,7 @@
     "slug": "erdos-1050",
     "description": "Is ∑_{n≥1} 1/(2^n - 3) irrational? SOLVED by Borwein (1991): YES. More generally, ∑ 1/(q^n + r) is irrational for q ≥ 2 and rational r ≠ 0, r ≠ -q^n.",
     "status": "complete",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -1600,8 +1600,8 @@
     ],
     "erdosNumber": 1050,
     "mathlibCount": 4,
-    "sorries": 12,
-    "annotationCount": 29
+    "sorries": 11,
+    "annotationCount": 35
   },
   {
     "id": "erdos-1052",
@@ -6583,17 +6583,23 @@
   },
   {
     "id": "erdos-418",
-    "title": "Erdős Problem #418",
+    "title": "Erdos Problem #418: Non-Cototients",
     "slug": "erdos-418",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many positive integers not of the form ...?\n\n\n\nAsked by Erds and Sierpi\\'{n}ski. Numbers not of the form...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there infinitely many positive integers not of the form n - phi(n)? Yes - integers 2^k * 509203 are non-cototients.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient",
+      "cototient",
+      "goldbach"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 418,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-419",
@@ -6851,17 +6857,23 @@
   },
   {
     "id": "erdos-442",
-    "title": "Erdős Problem #442",
+    "title": "Erdős #442: LCM Sums Over Dense Subsets",
     "slug": "erdos-442",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... is such that\\[{\\log\\log x}\\sum_{n\\in A\\cap [1,x)}{n}\\to \\infty\\]then\\[\\left(\\sum_{n\\in A\\cap [1,x)}{n}...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If a subset A ⊆ ℕ has reciprocal sum growing faster than log log x, must the normalized LCM sum diverge? NO — Tao (2024) constructed a counterexample and proved the threshold is sharp.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "dense-sets",
+      "counterexample",
+      "tao"
     ],
     "erdosNumber": 442,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-443",
@@ -9120,7 +9132,7 @@
     "erdosNumber": 631,
     "mathlibCount": 3,
     "sorries": 17,
-    "annotationCount": 18
+    "annotationCount": 15
   },
   {
     "id": "erdos-632",
@@ -9407,7 +9419,7 @@
     "erdosNumber": 648,
     "mathlibCount": 4,
     "sorries": 6,
-    "annotationCount": 28
+    "annotationCount": 33
   },
   {
     "id": "erdos-649",

@@ -146,7 +146,7 @@
     "id": "ann-e373-hickerson",
     "proofId": "erdos-373",
     "range": { "startLine": 146, "endLine": 156 },
-    "type": "axiom",
+    "type": "definition",
     "title": "Hickerson's Conjecture",
     "content": "**hickersonSolutions** lists the four conjectured solutions. **hickerson_conjecture** asserts S equals exactly this set. **hickerson_maximum** says n <= 16 for all solutions.",
     "mathContext": "Hickerson's complete classification: {(9, [7,3,3,2]), (10, [7,6]), (10, [7,5,3]), (16, [14,5,2])}.",
@@ -178,7 +178,7 @@
   {
     "id": "ann-e373-summary",
     "proofId": "erdos-373",
-    "range": { "startLine": 209, "endLine": 218 },
+    "range": { "startLine": 210, "endLine": 215 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_373_summary** bundles all four verified solutions into one theorem, confirming the computational results.",

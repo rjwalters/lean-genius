@@ -1,1 +1,163 @@
-[]
+[
+  {
+    "id": "ann-442-header",
+    "proofId": "erdos-442",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #442 asks: If a set A ⊆ ℕ has reciprocal sum growing faster than log log x, must the normalized LCM sum diverge?\n\n**Answer**: NO — Tao (2024) constructed a counterexample where the reciprocal sum grows like exp((1/2+o(1))√(log log x)·log log log x) yet the normalized LCM sum stays bounded.\n\nMoreover, Tao proved this threshold is **sharp**: faster growth does imply divergence.",
+    "mathContext": "The normalized LCM sum is (Σ_{n∈A} 1/n)⁻² · Σ_{a<b} 1/lcm(a,b). The 'density condition' (1/log log x)·Σ 1/n → ∞ captures sets denser than primes.",
+    "significance": "critical",
+    "relatedConcepts": ["lcm", "density", "counterexample", "Tao"]
+  },
+  {
+    "id": "ann-442-imports",
+    "proofId": "erdos-442",
+    "range": { "startLine": 28, "endLine": 40 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import:\n- **GCD/LCM basics**: For lcm function and properties\n- **BigOperators**: For finite sums over sets\n- **SpecialFunctions**: For Real.log and Real.exp\n- **Filter**: For limits (Tendsto, atTop)\n- **Classical**: For decidability on arbitrary sets",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "imports"]
+  },
+  {
+    "id": "ann-442-logplus",
+    "proofId": "erdos-442",
+    "range": { "startLine": 44, "endLine": 51 },
+    "type": "definition",
+    "title": "Iterated Logarithms",
+    "content": "We define **log⁺(x) = max(log x, 1)** to ensure positivity. Iterating gives:\n- **log₂⁺(x)** = log⁺(log⁺(x))\n- **log₃⁺(x)** = log⁺(log₂⁺(x))\n\nFor large x, these equal the natural iterated logs. The ⁺ ensures we stay above 1 for small inputs.",
+    "mathContext": "The growth threshold involves √(log₂⁺ x) · log₃⁺ x. These iterated logs grow very slowly: log₂(10⁶) ≈ 2.6, log₃(10⁶) ≈ 1.2.",
+    "significance": "key",
+    "relatedConcepts": ["logarithm", "iteration", "growth rate"]
+  },
+  {
+    "id": "ann-442-logplus-props",
+    "proofId": "erdos-442",
+    "range": { "startLine": 53, "endLine": 62 },
+    "type": "theorem",
+    "title": "Log⁺ Properties",
+    "content": "**logPlus_ge_one**: log⁺(x) ≥ 1 for all x. This is immediate from the max definition.\n\n**logPlus_eq_log**: For x ≥ e, we have log⁺(x) = log(x). The proof shows log(x) ≥ 1 when x ≥ e, so the max equals log(x).",
+    "significance": "supporting",
+    "relatedConcepts": ["max", "logarithm"]
+  },
+  {
+    "id": "ann-442-reciprocal-sum",
+    "proofId": "erdos-442",
+    "range": { "startLine": 66, "endLine": 83 },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "**reciprocalSum A N** = Σ_{n∈A, n≤N} 1/n is the sum of reciprocals of elements of A up to N.\n\nThis uses `Finset.filter` with classical decidability to sum over elements in A ∩ [1,N].\n\n**harmonicSum_pos**: The full harmonic sum H_N = Σ_{n=1}^N 1/n is positive for N ≥ 1.",
+    "mathContext": "For the full integers, H_N ~ log N. For primes, Σ_{p≤N} 1/p ~ log log N (Mertens). Dense sets grow faster than log log.",
+    "significance": "critical",
+    "relatedConcepts": ["harmonic sum", "density", "Mertens theorem"]
+  },
+  {
+    "id": "ann-442-lcm-sum",
+    "proofId": "erdos-442",
+    "range": { "startLine": 87, "endLine": 99 },
+    "type": "definition",
+    "title": "LCM Sum",
+    "content": "**lcmSum A N** = Σ_{a,b∈A, a<b≤N} 1/lcm(a,b) sums reciprocal LCMs over ordered pairs.\n\n**normalizedLcmSum** = (reciprocalSum)⁻² · lcmSum divides by the square of the reciprocal sum.\n\nThe normalization asks: relative to the 'expected' pairwise interactions from density alone, do LCMs contribute significantly?",
+    "mathContext": "If elements were random, we'd expect lcm(a,b) ≈ a·b (coprime). The question is whether structure can make LCMs systematically larger, suppressing the normalized sum.",
+    "significance": "critical",
+    "relatedConcepts": ["lcm", "normalization", "pairwise interactions"]
+  },
+  {
+    "id": "ann-442-density",
+    "proofId": "erdos-442",
+    "range": { "startLine": 103, "endLine": 111 },
+    "type": "definition",
+    "title": "The Density Condition",
+    "content": "**isDenseSubset A**: (reciprocalSum A N)/(log₂⁺ N) → ∞ as N → ∞.\n\nThis means A has reciprocal sum growing faster than log log N. Since primes achieve exactly log log N (Mertens), this captures sets 'denser than primes' in a reciprocal-sum sense.\n\n**primes_are_dense** (axiom): The primes satisfy this condition (they're the borderline case).",
+    "mathContext": "A set with (1/log log x)·Σ 1/n → ∞ must be quite dense. Examples: {1,...,N} trivially works; carefully chosen smooth numbers can also work.",
+    "significance": "key",
+    "relatedConcepts": ["density", "primes", "Mertens theorem"]
+  },
+  {
+    "id": "ann-442-conjecture",
+    "proofId": "erdos-442",
+    "range": { "startLine": 115, "endLine": 136 },
+    "type": "definition",
+    "title": "The Conjecture and Its Refutation",
+    "content": "**Erdos442Conjecture**: For all dense A, the normalized LCM sum diverges.\n\n**tao_counterexample** (axiom): This is FALSE. Tao constructed A where:\n- A is dense (satisfies the density condition)\n- Yet normalizedLcmSum A N stays bounded!\n\n**erdos_442_answer**: The equivalence False ↔ Erdos442Conjecture captures that the conjecture is false.",
+    "mathContext": "The intuition 'more elements means more LCM interactions' fails because Tao's construction has controlled prime factorizations that make LCMs systematically large.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "counterexample", "disproof"]
+  },
+  {
+    "id": "ann-442-tao-construction",
+    "proofId": "erdos-442",
+    "range": { "startLine": 140, "endLine": 155 },
+    "type": "axiom",
+    "title": "Tao's Construction",
+    "content": "**TaoGrowthRate**: exp((1/2)·√(log₂⁺ x)·log₃⁺ x) is the threshold growth rate.\n\n**tao_construction** (axiom): There exists A with:\n1. Reciprocal sum = exp((1/2+o(1))·√(log₂⁺ N)·log₃⁺ N)\n2. normalizedLcmSum A N ≤ C for some constant C\n\nThe o(1) term goes to 0 as N → ∞, so the growth rate is precisely TaoGrowthRate.",
+    "mathContext": "For x = 10^6: √(log₂⁺ x) ≈ 1.6, log₃⁺ x ≈ 1.2, so the exponent is about 1. The reciprocal sum grows like e ≈ 2.7 — much faster than log log(10^6) ≈ 2.6.",
+    "significance": "critical",
+    "relatedConcepts": ["construction", "growth rate", "threshold"]
+  },
+  {
+    "id": "ann-442-optimality",
+    "proofId": "erdos-442",
+    "range": { "startLine": 159, "endLine": 170 },
+    "type": "axiom",
+    "title": "Tao's Optimality Theorem",
+    "content": "**FasterThanThreshold A**: reciprocalSum A N > exp(C·√(log₂⁺ N)·log₃⁺ N) for any C > 0, eventually.\n\n**tao_optimality** (axiom): If A grows faster than the threshold, normalizedLcmSum A N → ∞.\n\nThis shows the threshold is **sharp**: at exp((1/2+o(1))·...) the normalized sum is bounded; above it, the sum diverges.",
+    "mathContext": "The sharpness is remarkable: there's a precise phase transition at 1/2 in the exponent. This is determined by the balance between density and LCM structure.",
+    "significance": "key",
+    "relatedConcepts": ["optimality", "sharpness", "phase transition"]
+  },
+  {
+    "id": "ann-442-key-insight",
+    "proofId": "erdos-442",
+    "range": { "startLine": 174, "endLine": 186 },
+    "type": "concept",
+    "title": "Why the Counterexample Works",
+    "content": "**Structure defeats density**: Tao's set has elements sharing prime factors in a controlled way.\n\nThis makes:\n- **Reciprocal sum large**: Many elements contribute 1/n\n- **LCM sum bounded**: Shared factors make lcm(a,b) large, so 1/lcm(a,b) stays small\n\nThe construction uses **smooth numbers** (numbers with only small prime factors) arranged to maximize LCMs while maintaining density.",
+    "mathContext": "For coprime a,b: lcm(a,b) = a·b. For non-coprime: lcm(a,b) < a·b. Tao's elements share enough factors to keep LCMs close to products, preventing the normalized sum from growing.",
+    "significance": "key",
+    "relatedConcepts": ["smooth numbers", "prime factorization", "structure"]
+  },
+  {
+    "id": "ann-442-lcm-gcd",
+    "proofId": "erdos-442",
+    "range": { "startLine": 190, "endLine": 207 },
+    "type": "theorem",
+    "title": "LCM-GCD Identity",
+    "content": "**lcm_gcd_identity**: lcm(a,b) · gcd(a,b) = a · b.\n\nThis fundamental identity connects LCM and GCD. It follows from unique factorization: for each prime p, max(vₚ(a), vₚ(b)) + min(vₚ(a), vₚ(b)) = vₚ(a) + vₚ(b).\n\n**lcm_coprime**: For coprime a,b, lcm(a,b) = a·b (since gcd = 1).\n\n**one_div_lcm**: 1/lcm(a,b) = gcd(a,b)/(a·b), connecting reciprocal LCM to GCD.",
+    "mathContext": "This identity is key to understanding when 1/lcm is small: when gcd is small (elements coprime), 1/lcm ≈ 1/(a·b). When gcd is large (shared factors), 1/lcm > 1/(a·b).",
+    "significance": "key",
+    "relatedConcepts": ["lcm", "gcd", "unique factorization"]
+  },
+  {
+    "id": "ann-442-examples",
+    "proofId": "erdos-442",
+    "range": { "startLine": 211, "endLine": 218 },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "We verify LCM computations:\n- **lcm(6, 10) = 30**: 6 = 2·3, 10 = 2·5, so lcm = 2·3·5 = 30\n- **gcd(6, 10) = 2**: The shared factor\n- **lcm(3, 5) = 15**: Coprime case, lcm = product\n\nThese are checked by `native_decide`, which computes the values.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "computation"]
+  },
+  {
+    "id": "ann-442-summary",
+    "proofId": "erdos-442",
+    "range": { "startLine": 222, "endLine": 243 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_442_summary** combines the main results:\n1. ¬ Erdos442Conjecture — the conjecture is false\n2. ∃ A with bounded normalizedLcmSum — Tao's counterexample exists\n\nThe proof uses `tao_counterexample` and extracts the bounded set from `tao_construction`.",
+    "mathContext": "This formalizes: 'Erdős Problem #442 is resolved in the negative, with an explicit (axiomatized) counterexample.'",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "existence", "counterexample"]
+  },
+  {
+    "id": "ann-442-final-notes",
+    "proofId": "erdos-442",
+    "range": { "startLine": 247, "endLine": 266 },
+    "type": "concept",
+    "title": "Historical Significance",
+    "content": "This formalization captures a 44-year-old problem from Erdős-Graham (1980), resolved by Terence Tao in July 2024.\n\n**Key takeaways**:\n1. The threshold exp(C√(log log x)·log log log x) is exact\n2. Structure (controlled prime factorizations) can defeat density\n3. The construction uses sophisticated smooth number techniques\n\nThe arXiv paper (2407.04226) contains the full details.",
+    "significance": "supporting",
+    "relatedConcepts": ["history", "Erdős-Graham", "Tao", "resolution"]
+  }
+]

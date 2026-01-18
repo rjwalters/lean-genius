@@ -303,6 +303,10 @@ export interface ProofMeta {
   erdosPrizeValue?: string
   /** Current status of the Erdős problem */
   erdosProblemStatus?: ErdosProblemStatus
+  /** URL to forum discussion thread on erdosproblems.com */
+  erdosForumUrl?: string
+  /** URL to announcement post about the solution */
+  erdosAnnouncementUrl?: string
 }
 
 export interface ProofSection {

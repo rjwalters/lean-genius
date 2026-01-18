@@ -1,33 +1,132 @@
 {
   "id": "erdos-418",
-  "title": "Erdős Problem #418",
+  "title": "Erdos Problem #418: Non-Cototients",
   "slug": "erdos-418",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many positive integers not of the form ...?\n\n\n\nAsked by Erds and Sierpi\\'{n}ski. Numbers not of the form...",
+  "description": "Are there infinitely many positive integers not of the form n - phi(n)? Yes - integers 2^k * 509203 are non-cototients.",
   "meta": {
-    "author": "Unknown",
+    "author": "Browkin and Schinzel (1995)",
     "sourceUrl": "https://erdosproblems.com/418",
-    "date": "",
-    "status": "pending",
+    "date": "1995",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos418Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient",
+      "cototient",
+      "goldbach"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 418,
     "erdosUrl": "https://erdosproblems.com/418",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "phi(p) = p - 1 for prime p",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infiniteness of sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of cototient n - phi(n)",
+      "Verified cototient values for small n using native_decide",
+      "Proved cototient(p) = 1 for prime p",
+      "Definition of non-cototient and the main conjecture",
+      "Browkin-Schinzel witness sequence 2^k * 509203",
+      "Conditional result: Goldbach implies all odd numbers are cototients"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #418 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many positive integers not of the form $n-\\phi(n)$?\n\n\n\nAsked by Erd\\H{o}s and Sierpi\\'{n}ski. Numbers not of the form we call non-cototients. It follows from the Goldbach conjecture that every odd number can be written as $n-\\phi(n)$. What happens for even numbers?\n\nBrowkin and Schinzel \\cite{BrSc95} provided an affirmative answer to this question, proving that any integer of the shape $2^{k}\\cdot 509203$ for $k\\geq 1$ is a non-cototient. It is open whether the set of non-cototients has positive density.\n\nErd\\H{o}s \\cite{Er73b} has shown that a positive density set of natural numbers cannot be written as $\\sigma(n)-n$ (numbers not of this form are called nonaliquot, or sometimes untouchable). Banks and Luca \\cite{BaLu05} have proved that the set of nonaliquots has lower density $\\geq 1/48$. This bound was improved to $0.06$ by Chen and Zhao \\cite{ChZh11}. Pollack and Pomerance \\cite{PoPo16} give a heuristic that predicts the density exactly (with a value of $\\approx 0.17$).\n\nThis is discussed in problem B36 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[BaLu05] Banks, William D. and Luca, Florian, Nonaliquots and {R}obbins numbers. Colloq. Math. (2005), 27--32.\n\n[BrSc95] Browkin, J. and Schinzel, A., On integers not of the form {$n-\\phi(n)$}. Colloq. Math. (1995), 55-58.\n\n[ChZh11] Chen, Yong-Gao and Zhao, Qing-Qing, Nonaliquot numbers. Publ. Math. Debrecen (2011), 439--442.\n\n[Er73b] Erd\\H{o}s, P., \\\"{U}ber die Zahlen der Form $\\sigma (n)-n$ und $n-\\phi(n)$. Elem. Math. (1973), 83-86.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[PoPo16] Pollack, Paul and Pomerance, Carl, Some problems of Erd\\H{o}s on the sum-of-divisors function. Trans. Amer. Math. Soc. Ser. B (2016), 1-26.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdos Problem #418 was posed by Erdos and Sierpinski. It asks whether there are infinitely many 'non-cototients' - positive integers that cannot be expressed as n - phi(n) for any n, where phi is Euler's totient function.\n\nThe cototient of n is n - phi(n), which counts the integers from 1 to n that share a common factor with n. Numbers not in the range of this function are called non-cototients.\n\nBrowkin and Schinzel provided an affirmative answer in 1995, proving that any integer of the form 2^k * 509203 (for k >= 1) is a non-cototient. The mysterious number 509203 has special properties related to covering systems.\n\nIt remains open whether non-cototients have positive density. The Browkin-Schinzel construction gives a sparse set (powers of 2 times a constant). A related problem about nonaliquots (numbers not of the form sigma(n) - n) was shown by Erdos to have positive density.",
+    "problemStatement": "Are there infinitely many positive integers not of the form $n - \\phi(n)$?\n\n**Definition**: The cototient of $n$ is $n - \\phi(n)$. A **non-cototient** is a number that is not a cototient value for any $n$.\n\n**Answer**: YES\n\n**Proof**: Browkin and Schinzel (1995) showed that $2^k \\cdot 509203$ is a non-cototient for all $k \\geq 1$.\n\n**Status**: SOLVED",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **cototient(n)** = n - phi(n), the count of non-coprime integers\n2. **IsCototientValue(m)**: there exists n with cototient(n) = m\n3. **IsNonCototient(m)**: m > 0 and not a cototient value\n4. **NonCototients**: the set of all non-cototients\n\nWe verify cototient values for small n (0, 1, 2, 3, 4, 5 are all cototients). The smallest non-cototient is 10.\n\nThe main theorem is stated as an axiom: NonCototients is infinite. The Browkin-Schinzel witness sequence 2^(k+1) * 509203 provides infinitely many examples.\n\nWe also formalize the conditional result that, assuming strengthened Goldbach, every odd number is a cototient.",
+    "keyInsights": [
+      "**Cototient**: n - phi(n) counts integers in [1,n] sharing a factor with n. For prime p, cototient(p) = 1.",
+      "**Non-cototients**: The smallest is 10. Others include 26, 34, 50, 52, 58, ... (OEIS A005278).",
+      "**Browkin-Schinzel magic number**: 509203 has special properties making 2^k * 509203 non-cototients for all k >= 1.",
+      "**Goldbach connection**: If every even n > 6 is the sum of two distinct primes, then every odd number is a cototient (via cototient(p*q) = p + q - 1).",
+      "**Open question**: Do non-cototients have positive density? The Browkin-Schinzel set is sparse (density 0)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 37,
+      "endLine": 65,
+      "summary": "cototient, IsCototientValue, IsNonCototient, CototientValues, NonCototients."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 66,
+      "endLine": 90,
+      "summary": "Verified cototient values: cototient(1)=0, cototient(2)=1, cototient(p)=1."
+    },
+    {
+      "id": "small-values",
+      "title": "Small Cototient Values",
+      "startLine": 91,
+      "endLine": 111,
+      "summary": "0, 1, 2, 3, 4, 5 are all cototients."
+    },
+    {
+      "id": "first-non-cototient",
+      "title": "First Non-Cototient",
+      "startLine": 112,
+      "endLine": 127,
+      "summary": "10 is the smallest non-cototient. List of small non-cototients."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 128,
+      "endLine": 150,
+      "summary": "Browkin-Schinzel: 2^(k+1) * 509203 are non-cototients. Infinitely many exist."
+    },
+    {
+      "id": "goldbach",
+      "title": "Conditional Result",
+      "startLine": 151,
+      "endLine": 176,
+      "summary": "Under strengthened Goldbach, every odd number is a cototient."
+    },
+    {
+      "id": "density",
+      "title": "Open Questions",
+      "startLine": 177,
+      "endLine": 194,
+      "summary": "Does the set of non-cototients have positive density?"
+    },
+    {
+      "id": "nonaliquots",
+      "title": "Related: Nonaliquots",
+      "startLine": 195,
+      "endLine": 213,
+      "summary": "Numbers not of form sigma(n) - n have positive density (Erdos 1973)."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdos Problem #418 on non-cototients. The answer is YES: there are infinitely many non-cototients. The Browkin-Schinzel construction 2^k * 509203 provides infinitely many witnesses. Under Goldbach, all odd numbers are cototients.",
+    "implications": "This problem connects to:\n\n1. **Covering systems**: The number 509203 arises from number-theoretic constructions\n\n2. **Density questions**: Non-cototient density is open, but nonaliquot density is positive\n\n3. **Goldbach conjecture**: Illustrates connections between additive and multiplicative number theory",
+    "openQuestions": [
+      "Do non-cototients have positive density?",
+      "Are there other infinite families of non-cototients?",
+      "What makes 509203 special?",
+      "Can we characterize which even numbers are non-cototients?"
+    ]
   }
 }

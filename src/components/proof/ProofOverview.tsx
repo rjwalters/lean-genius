@@ -4,6 +4,7 @@ import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import { ProofBadge } from '@/components/ui/proof-badge'
 import { BADGE_INFO } from '@/types/proof'
 import type { Proof, ProofVersionInfo, VersionHistoryEntry } from '@/types/proof'
+import { ErdosProblemCard } from './ErdosProblemCard'
 import {
   Dialog,
   DialogContent,
@@ -191,7 +192,7 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
           )}
 
           {/* Badge & Mathlib Transparency */}
-          {(meta.badge || meta.mathlibDependencies || meta.originalContributions) && (
+          {(meta.badge || meta.mathlibDependencies || meta.originalContributions || meta.erdosNumber) && (
             <div className="grid gap-4 sm:grid-cols-2">
               {/* Badge info */}
               {meta.badge && (
@@ -250,6 +251,20 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                     ))}
                   </ul>
                 </div>
+              )}
+
+              {/* Erdős Problem Card */}
+              {meta.erdosNumber && (
+                <ErdosProblemCard
+                  erdosNumber={meta.erdosNumber}
+                  erdosUrl={meta.erdosUrl}
+                  erdosProblemStatus={meta.erdosProblemStatus}
+                  solvedBy={meta.erdosSolvedBy ?? (meta as { solvedBy?: string }).solvedBy}
+                  solvedDate={meta.erdosSolvedDate ?? (meta as { solvedDate?: string }).solvedDate}
+                  prizeValue={meta.erdosPrizeValue}
+                  forumUrl={meta.erdosForumUrl}
+                  announcementUrl={meta.erdosAnnouncementUrl}
+                />
               )}
             </div>
           )}

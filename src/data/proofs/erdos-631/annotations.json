@@ -56,7 +56,7 @@
   {
     "id": "ann-631-planar",
     "proofId": "erdos-631",
-    "range": { "startLine": 78, "endLine": 80 },
+    "range": { "startLine": 94, "endLine": 96 },
     "type": "definition",
     "title": "Planar Graphs",
     "content": "A graph is **planar** if it can be drawn in the plane without edge crossings.\n\nPlanarity severely constrains graph structure.\n\nK_5 and K_{3,3} are the minimal non-planar graphs (Kuratowski).",
@@ -65,7 +65,7 @@
   {
     "id": "ann-631-four-color",
     "proofId": "erdos-631",
-    "range": { "startLine": 96, "endLine": 99 },
+    "range": { "startLine": 98, "endLine": 104 },
     "type": "axiom",
     "title": "Four Color Theorem",
     "content": "**Every planar graph has χ ≤ 4.**\n\nFamously proved by Appel & Haken (1976) using computers.\n\nBut this doesn't immediately give χ_L ≤ 4 — that's the List Coloring Conjecture!",
@@ -74,7 +74,7 @@
   {
     "id": "ann-631-thomassen",
     "proofId": "erdos-631",
-    "range": { "startLine": 108, "endLine": 111 },
+    "range": { "startLine": 125, "endLine": 127 },
     "type": "axiom",
     "title": "Thomassen's Theorem",
     "content": "**Thomassen (1994):** Every planar graph has χ_L ≤ 5.\n\nThis is the main result! The proof is remarkably short and elegant.\n\nUses induction on |V| + |E| with careful analysis of near-triangulations.\n\nAnswers Question 1 of Erdős #631.",
@@ -83,7 +83,7 @@
   {
     "id": "ann-631-voigt",
     "proofId": "erdos-631",
-    "range": { "startLine": 131, "endLine": 134 },
+    "range": { "startLine": 147, "endLine": 150 },
     "type": "axiom",
     "title": "Voigt's Construction",
     "content": "**Voigt (1993):** There exists a planar graph with χ_L = 5.\n\nThis shows Thomassen's bound is tight!\n\nThe original construction had 238 vertices.\n\nAnswers Question 2 of Erdős #631: YES, the bound is best possible.",
@@ -92,7 +92,7 @@
   {
     "id": "ann-631-voigt-size",
     "proofId": "erdos-631",
-    "range": { "startLine": 136, "endLine": 139 },
+    "range": { "startLine": 152, "endLine": 155 },
     "type": "axiom",
     "title": "Voigt's Graph Size",
     "content": "Voigt's original construction has 238 vertices.\n\nThis is quite large! Researchers have worked to find smaller examples.\n\nGutner (1996) gave a simpler construction with fewer vertices.",
@@ -101,7 +101,7 @@
   {
     "id": "ann-631-smallest",
     "proofId": "erdos-631",
-    "range": { "startLine": 146, "endLine": 149 },
+    "range": { "startLine": 162, "endLine": 165 },
     "type": "axiom",
     "title": "Smallest Known Example",
     "content": "The smallest known planar graph with χ_L = 5 has about 63 vertices.\n\nFinding smaller examples is an active area of research.\n\nThe exact minimum is unknown.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-631-list-conj",
     "proofId": "erdos-631",
-    "range": { "startLine": 153, "endLine": 156 },
+    "range": { "startLine": 169, "endLine": 172 },
     "type": "definition",
     "title": "List Coloring Conjecture",
     "content": "**Open:** Is χ_L ≤ 4 for all planar graphs?\n\nWe know χ ≤ 4 (Four Color Theorem) and χ_L ≤ 5 (Thomassen).\n\nClosing this gap is a major open problem!\n\nVoigt's construction has χ_L = 5, not 4, so some graphs need 5.",
@@ -119,43 +119,16 @@
   {
     "id": "ann-631-gap",
     "proofId": "erdos-631",
-    "range": { "startLine": 163, "endLine": 169 },
+    "range": { "startLine": 179, "endLine": 183 },
     "type": "theorem",
     "title": "The χ vs χ_L Gap",
     "content": "For planar graphs: χ ≤ 4 (Four Color) but χ_L ≤ 5 (Thomassen).\n\nThe gap is exactly 1 — can it be closed?\n\nIf the List Coloring Conjecture is false, there exist planar graphs with χ ≤ 4 but χ_L = 5.\n\nVoigt's graph has χ_L = 5, but what is its χ?",
     "significance": "key"
   },
   {
-    "id": "ann-631-alon-tarsi",
-    "proofId": "erdos-631",
-    "range": { "startLine": 173, "endLine": 177 },
-    "type": "axiom",
-    "title": "Alon-Tarsi Theorem",
-    "content": "**Alon-Tarsi (1992):** Planar bipartite graphs have χ_L ≤ 3.\n\nThis is better than the general planar bound!\n\nSee Erdős Problem #630 for details.\n\nProof uses the Combinatorial Nullstellensatz.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-631-outerplanar",
-    "proofId": "erdos-631",
-    "range": { "startLine": 179, "endLine": 185 },
-    "type": "definition",
-    "title": "Outerplanar Graphs",
-    "content": "A graph is **outerplanar** if it can be drawn with all vertices on the outer face.\n\nOuterplanar ⊂ planar, so they're simpler.\n\nOuterplanar graphs have χ_L ≤ 3 (better than general planar bound of 5).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-631-girth",
-    "proofId": "erdos-631",
-    "range": { "startLine": 192, "endLine": 196 },
-    "type": "axiom",
-    "title": "High Girth Planar Graphs",
-    "content": "**Planar graphs with girth ≥ 5 have χ_L ≤ 3.**\n\nGirth = length of shortest cycle. High girth means sparse.\n\nSparse planar graphs are easier to list-color.\n\nThis gives another class with better bounds than general planar.",
-    "significance": "key"
-  },
-  {
     "id": "ann-631-main",
     "proofId": "erdos-631",
-    "range": { "startLine": 231, "endLine": 254 },
+    "range": { "startLine": 263, "endLine": 270 },
     "type": "theorem",
     "title": "Main Status",
     "content": "**Erdős Problem #631: SOLVED**\n\n1. **Question 1:** χ_L ≤ 5 for planar? YES (Thomassen 1994)\n2. **Question 2:** Is 5 tight? YES (Voigt 1993)\n3. **Gap:** χ ≤ 4 but χ_L ≤ 5 (can we close it?)\n4. **Open:** List Coloring Conjecture (χ_L ≤ 4 for planar)\n5. **Better bounds:** Bipartite planar, outerplanar, girth ≥ 5 all have χ_L ≤ 3",

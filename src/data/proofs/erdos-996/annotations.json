@@ -56,7 +56,7 @@
   {
     "id": "ann-996-fourier-partial",
     "proofId": "erdos-996",
-    "range": { "startLine": 83, "endLine": 88 },
+    "range": { "startLine": 93, "endLine": 98 },
     "type": "definition",
     "title": "Fourier Partial Sums",
     "content": "The Nth Fourier partial sum fₙ(x) uses frequencies from -N to N. It's the best L² approximation of f using trigonometric polynomials of degree N.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-996-fourier-error",
     "proofId": "erdos-996",
-    "range": { "startLine": 90, "endLine": 92 },
+    "range": { "startLine": 100, "endLine": 102 },
     "type": "definition",
     "title": "Fourier Error",
     "content": "The L² error ‖f - fₙ‖₂ measures how well the partial sum approximates f. Smoother functions have faster-decaying error. This decay rate is central to Problem #996.",
@@ -128,7 +128,7 @@
   {
     "id": "ann-996-raikov",
     "proofId": "erdos-996",
-    "range": { "startLine": 128, "endLine": 135 },
+    "range": { "startLine": 138, "endLine": 145 },
     "type": "axiom",
     "title": "Raikov's Theorem",
     "content": "**Raikov**: For geometric sequences nₖ = aᵏ (a ≥ 2), the strong law holds for ALL f ∈ L² without any Fourier decay condition. Geometric sequences are 'maximally lacunary'.",
@@ -137,7 +137,7 @@
   {
     "id": "ann-996-ksz",
     "proofId": "erdos-996",
-    "range": { "startLine": 137, "endLine": 144 },
+    "range": { "startLine": 147, "endLine": 154 },
     "type": "axiom",
     "title": "Kac-Salem-Zygmund (1948)",
     "content": "**KSZ 1948**: If Fourier error decays like 1/(log n)^c for c > 1, the strong law holds for any lacunary sequence. First general result for non-geometric lacunary sequences.",
@@ -146,7 +146,7 @@
   {
     "id": "ann-996-erdos-1949",
     "proofId": "erdos-996",
-    "range": { "startLine": 146, "endLine": 152 },
+    "range": { "startLine": 156, "endLine": 162 },
     "type": "axiom",
     "title": "Erdős (1949)",
     "content": "**Erdős 1949**: Improved to 1/(log log n)^c for c > 1. This replaces log with log log—a significant weakening of the required decay condition.",
@@ -191,7 +191,7 @@
   {
     "id": "ann-996-bounded",
     "proofId": "erdos-996",
-    "range": { "startLine": 186, "endLine": 190 },
+    "range": { "startLine": 197, "endLine": 200 },
     "type": "definition",
     "title": "Bounded Function Question",
     "content": "Another open question: Does the strong law hold for ALL bounded functions f and lacunary sequences n, without any Fourier decay condition?",
@@ -236,7 +236,7 @@
   {
     "id": "ann-996-quasi-indep",
     "proofId": "erdos-996",
-    "range": { "startLine": 225, "endLine": 231 },
+    "range": { "startLine": 239, "endLine": 241 },
     "type": "theorem",
     "title": "Quasi-Independence",
     "content": "Lacunary sequences have 'quasi-independence': the fractional parts {α·nₖ} behave almost like independent random variables. This is why probabilistic tools apply.",
@@ -263,7 +263,7 @@
   {
     "id": "ann-996-weyl",
     "proofId": "erdos-996",
-    "range": { "startLine": 265, "endLine": 269 },
+    "range": { "startLine": 278, "endLine": 282 },
     "type": "axiom",
     "title": "Weyl Equidistribution",
     "content": "Weyl's theorem: {αn} is equidistributed mod 1 for irrational α. This is a precursor—lacunary sequences give a 'sparse' version with similar equidistribution.",
