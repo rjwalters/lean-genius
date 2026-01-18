@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-605-header",
+    "proofId": "erdos-605",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #605 asks: Can n points on a sphere have superlinearly many pairs at the same distance? Specifically, does there exist f(n) → ∞ such that we can achieve f(n)·n repeated-distance pairs? The answer is YES, with f(n) = √(log n) working for all spheres of radius > 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-605-sphere",
+    "proofId": "erdos-605",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Sphere Definition",
+    "content": "A sphere of radius r in ℝ³ is the set of points at distance r from the origin. The 2-sphere S² is the surface (not the solid ball). Point configurations on spheres have different distance properties than planar configurations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-605-sqrt2",
+    "proofId": "erdos-605",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "The √2 Sphere",
+    "content": "The sphere of radius √2 is special: it can inscribe a cube with edge length 2, whose vertices lie on the sphere. This geometric property allows achieving the tight bound u(n) ≈ n^{4/3}, better than general spheres.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-605-config",
+    "proofId": "erdos-605",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Sphere Configuration",
+    "content": "A configuration is n distinct points on a sphere. We require injectivity (distinctness) and that all points lie on the sphere. The goal is to maximize repeated distances among the n(n-1)/2 pairs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-605-pairs",
+    "proofId": "erdos-605",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "Counting Distance Pairs",
+    "content": "For a configuration, we count how many pairs have exactly distance d. The maximum over all distances d gives the 'repeated distance count'. We want this to grow superlinearly in n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-605-u-function",
+    "proofId": "erdos-605",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "definition",
+    "title": "The Function u_D(n)",
+    "content": "u_D(n) = maximum number of pairs at a single distance, among all configurations of n points on a sphere of radius D. This is the central quantity. The question asks: does u_D(n) grow faster than O(n)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-605-statement",
+    "proofId": "erdos-605",
+    "range": { "startLine": 91, "endLine": 98 },
+    "type": "theorem",
+    "title": "Erdős Problem #605 Statement",
+    "content": "The formal statement: Does there exist f : ℕ → ℝ with f(n) → ∞ such that u_D(n) ≥ f(n)·n for all large n? This asks whether repeated distances can grow superlinearly. The answer is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-605-iterlog",
+    "proofId": "erdos-605",
+    "range": { "startLine": 102, "endLine": 106 },
+    "type": "definition",
+    "title": "Iterated Logarithm",
+    "content": "log*(n) is the iterated logarithm: how many times you apply log until reaching ≤ 1. It grows incredibly slowly: log*(10^10^10) ≈ 4. Yet even this suffices for superlinear growth!",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-605-ehp",
+    "proofId": "erdos-605",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "axiom",
+    "title": "EHP Bound (1989)",
+    "content": "Erdős-Hickerson-Pach proved u_D(n) ≫ n·log*(n) for any D > 1. This was the first superlinear bound, answering Problem #605 affirmatively. The iterated logarithm is tiny, but it DOES go to infinity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-605-swanepoel",
+    "proofId": "erdos-605",
+    "range": { "startLine": 116, "endLine": 121 },
+    "type": "axiom",
+    "title": "Swanepoel-Valtr Bound (2004)",
+    "content": "Swanepoel and Valtr improved to u_D(n) ≫ n·√(log n). This is much stronger than log*(n) - for n = 10^100, √(log n) ≈ 15 while log*(n) ≈ 5. The gap to the upper bound n^{4/3} remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-605-upper",
+    "proofId": "erdos-605",
+    "range": { "startLine": 123, "endLine": 128 },
+    "type": "axiom",
+    "title": "Upper Bound",
+    "content": "For ALL radii D > 0, we have u_D(n) ≪ n^{4/3}. This comes from incidence geometry - points and circles in ℝ³ can't have too many incidences. The exponent 4/3 matches the √2 sphere lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-605-sqrt2-tight",
+    "proofId": "erdos-605",
+    "range": { "startLine": 130, "endLine": 137 },
+    "type": "axiom",
+    "title": "√2 Sphere Tight Bound",
+    "content": "For D = √2: u(n) ≈ n^{4/3} exactly. Both upper and lower bounds match! This uses cube vertices and related constructions. The √2 radius is special because cubes inscribe perfectly.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-605-solved",
+    "proofId": "erdos-605",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Erdős #605 is solved: taking f(n) = √(log n), we have u_D(n) ≥ c·n·√(log n) for some c > 0 (Swanepoel-Valtr). Since √(log n) → ∞, the problem is answered affirmatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-605-great-circle",
+    "proofId": "erdos-605",
+    "range": { "startLine": 166, "endLine": 171 },
+    "type": "definition",
+    "title": "Great Circle Configuration",
+    "content": "Placing n points evenly on a great circle gives a simple configuration. The distances form a multiset based on angles 2πk/n. This achieves linear repeated distances - good but not superlinear.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-605-asymptotic",
+    "proofId": "erdos-605",
+    "range": { "startLine": 179, "endLine": 185 },
+    "type": "definition",
+    "title": "Asymptotic Notation",
+    "content": "f ≫ g (asymptotically at least) means f(n) ≥ c·g(n) for some c > 0 and large n. f ≈ g (asymptotically equal) means both f ≫ g and g ≫ f. For √2 sphere: u(n) ≈ n^{4/3}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-605-open",
+    "proofId": "erdos-605",
+    "range": { "startLine": 201, "endLine": 209 },
+    "type": "insight",
+    "title": "Open Questions",
+    "content": "Key open questions: (1) Is √(log n) optimal for general D > 1? (2) Can n^{4/3} be achieved for all D? (3) What happens for D = 1 exactly? The gap between √(log n) and n^{1/3} extra factor is mysterious.",
+    "significance": "key"
+  }
+]
