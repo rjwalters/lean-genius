@@ -7355,17 +7355,21 @@
   },
   {
     "id": "erdos-484",
-    "title": "Erdős Problem #484",
+    "title": "Erdős Problem #484: Monochromatic Sums in Colorings",
     "slug": "erdos-484",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that there exists an absolute constant ... such that, whenever ... is ...-coloured (and ... is large enough depending o...",
-    "status": "pending",
+    "description": "Prove ∃ c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums. SOLVED: Erdős-Sárközy-Sós (1989) proved N/2 - O(N^{1-1/2^{k+1}}) even sums exist, with O(log N) for k=2.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "colorings",
+      "sumsets",
+      "ramsey-theory"
     ],
     "erdosNumber": 484,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-485",

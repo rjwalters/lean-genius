@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-484-1",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #484: Prove ∃ c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums (a + b where a,b same color, a ≠ b). SOLVED by Erdős-Sárközy-Sós (1989).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-2",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 38,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "k-Coloring",
+    "content": "A k-coloring of {1,...,N} is a function χ: {1,...,N} → {1,...,k} assigning each integer one of k colors. The goal is to find monochromatic structure regardless of how the coloring is chosen.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-3",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 51,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Monochromatic Sum",
+    "content": "An integer s is a monochromatic sum if s = a + b where a ≠ b and both a, b have the same color under χ. This is a sum within a single color class, not across different colors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-4",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 71,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Roth's Conjecture",
+    "content": "Roth conjectured: ∃ c > 0 such that for any k-coloring of {1,...,N}, at least cN integers are representable as monochromatic sums. This asks for positive density of representable integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-5",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 82,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Roth's Conjecture is TRUE",
+    "content": "Erdős, Sárközy, and Sós proved Roth's conjecture in 1989 [ESS89]. They established even stronger bounds than the conjecture required, giving precise error terms depending on k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-6",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 92,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "ESS Main Theorem",
+    "content": "Erdős-Sárközy-Sós (1989): In any k-coloring of {1,...,N}, at least N/2 - O(N^{1-1/2^{k+1}}) even integers are representable as monochromatic sums. This is stronger than just 'cN' - almost half work!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-7",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 114,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "The Exponent Formula",
+    "content": "The error term has exponent 1 - 1/2^{k+1}. For k=2: exponent = 7/8. For k=3: exponent = 15/16. As k→∞, the exponent approaches 1, so error grows but stays sub-linear.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-484-8",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 126,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Two-Coloring Case",
+    "content": "For k=2: At least N/2 - O(log N) even integers are monochromatic sums. The logarithmic error is dramatically better than the general bound and represents the special structure of 2-colorings.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-9",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 139,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "O(log N) is Optimal",
+    "content": "There exists a 2-coloring where no power of 2 is a monochromatic sum. Since there are ~log₂ N powers of 2 up to 2N, the O(log N) error term cannot be improved. Tight bound!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-484-10",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 148,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Optimal Construction",
+    "content": "Color n by ν₂(n) mod 2, where ν₂(n) is the 2-adic valuation (largest power of 2 dividing n). Then 2^m cannot be a monochromatic sum because sums 2^a + 2^b with same color parity don't equal 2^m.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-484-11",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 159,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Sumset Structure",
+    "content": "For a color class C, the sumset C + C = {a + b : a,b ∈ C} contains many elements. By pigeonhole, some color class has size ≥ N/k, ensuring a large sumset that covers most even numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-484-12",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 173,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Fourier Methods",
+    "content": "The proof uses exponential sum techniques (Fourier analysis on ℤ/Nℤ) to count representation numbers r(s) = #{(a,b) : a+b=s, χ(a)=χ(b)} and bound exceptions where r(s) = 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-484-13",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 191,
+      "endLine": 202
+    },
+    "type": "theorem",
+    "title": "Positive Density",
+    "content": "positive_density: Almost half of all even numbers in {1,...,2N} are monochromatic sums. The constant c in Roth's conjecture can be taken close to 1/2 for large N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-484-14",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 220,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Ben Green's Refinement",
+    "content": "Problem 25 on Ben Green's open problems list asks for more precise counting of monochromatic sums and understanding which colorings minimize them. The ESS result is a starting point.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-484-15",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 252,
+      "endLine": 258
+    },
+    "type": "concept",
+    "title": "Schur's Theorem",
+    "content": "Schur's theorem: In any finite coloring of ℕ, there exist monochromatic a, b, c with a + b = c. This is the 'equation version' - asking for the sum itself to be monochromatic, not just representable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-484-16",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 273,
+      "endLine": 279
+    },
+    "type": "concept",
+    "title": "Hindman's Theorem",
+    "content": "Hindman's theorem: Finite colorings of ℕ contain infinite monochromatic sets closed under finite sums. Much stronger than Schur - gives infinite structure, not just one equation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-484-17",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 298,
+      "endLine": 304
+    },
+    "type": "concept",
+    "title": "ESS Collaboration",
+    "content": "Erdős, Sárközy, and Sós formed a highly productive trio in additive combinatorics. Their collaboration produced numerous important results on sumsets, difference sets, and partition problems.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-484-18",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 331,
+      "endLine": 346
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_484_status: Roth's conjecture is PROVED. For general k: N/2 - O(N^{1-1/2^{k+1}}) even sums. For k=2: N/2 - O(log N) even sums. The O(log N) bound is optimal (2-adic construction).",
+    "significance": "critical"
+  }
+]
