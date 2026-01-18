@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-630-header",
+    "proofId": "erdos-630",
+    "range": { "startLine": 1, "endLine": 19 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős #630:** List chromatic number of planar bipartite graphs.\n\n**Question:** Does every planar bipartite graph have χ_L ≤ 3?\n\n**Answer:** YES (Alon-Tarsi 1992)\n\n**Method:** Combinatorial Nullstellensatz\n\n**Tight:** K_{2,4} achieves χ_L = 3",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-630-list-assignment",
+    "proofId": "erdos-630",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "List Assignment",
+    "content": "A **list assignment** L gives each vertex v a finite set L(v) of available colors.\n\nDifferent vertices can have different lists — this is what makes list coloring harder than ordinary coloring.\n\nExample: v₁ gets {red, blue}, v₂ gets {blue, green}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-630-list-coloring",
+    "proofId": "erdos-630",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "definition",
+    "title": "List Coloring",
+    "content": "A **list coloring** assigns each vertex a color from its list such that adjacent vertices get different colors.\n\n- Each vertex uses a color from its own list\n- The coloring must still be proper (no adjacent same colors)\n\nThe challenge: works for ANY list assignment, not just specific ones.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-630-choosable",
+    "proofId": "erdos-630",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "definition",
+    "title": "k-Choosable",
+    "content": "G is **k-choosable** (k-list-colorable) if for ANY assignment of lists of size k, a proper list coloring exists.\n\nThis is a worst-case guarantee: no matter what lists you give, coloring succeeds.\n\nk-choosability implies (k+1)-choosability.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-630-chi-L",
+    "proofId": "erdos-630",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "List Chromatic Number",
+    "content": "`listChromaticNumber G` = χ_L(G) = minimum k such that G is k-choosable.\n\nThis measures the 'list coloring difficulty' of G.\n\nχ_L(G) ≥ χ(G) always, but the gap can be large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-630-chi-L-ge-chi",
+    "proofId": "erdos-630",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "theorem",
+    "title": "χ_L ≥ χ",
+    "content": "**List chromatic number ≥ chromatic number.**\n\nIf all vertices get the same list of k colors, list coloring reduces to ordinary k-coloring.\n\nSo k-choosability implies k-colorability, hence χ_L ≥ χ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-bipartite-gap",
+    "proofId": "erdos-630",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "axiom",
+    "title": "Bipartite Gap",
+    "content": "**Bipartite graphs can have χ_L > χ!**\n\nFor K_{n,n} (complete bipartite): χ = 2 but χ_L grows with n.\n\nThis shows list coloring is genuinely harder than ordinary coloring.\n\nThe gap comes from adversarial list choices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-planar",
+    "proofId": "erdos-630",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "definition",
+    "title": "Planar Graphs",
+    "content": "A graph is **planar** if it can be drawn in the plane without edge crossings.\n\nPlanarity severely constrains graph structure.\n\nK_5 and K_{3,3} are the minimal non-planar graphs (Kuratowski).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-four-color",
+    "proofId": "erdos-630",
+    "range": { "startLine": 95, "endLine": 98 },
+    "type": "axiom",
+    "title": "Four Color Theorem",
+    "content": "**Every planar graph has χ ≤ 4.**\n\nFamously proved by Appel & Haken (1976) using computers.\n\nBut this doesn't immediately give χ_L ≤ 4 — that's the open List Coloring Conjecture!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-thomassen",
+    "proofId": "erdos-630",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "axiom",
+    "title": "Thomassen's Theorem",
+    "content": "**Thomassen (1994):** Every planar graph has χ_L ≤ 5.\n\nThis is the best known bound for general planar graphs.\n\nThe proof is short and elegant (unlike Four Color Theorem).\n\nGap: χ ≤ 4 but we only know χ_L ≤ 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-bipartite-chi-2",
+    "proofId": "erdos-630",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "theorem",
+    "title": "Bipartite χ = 2",
+    "content": "**Bipartite graphs have χ ≤ 2.**\n\nBy definition: vertices split into two parts with edges only between parts.\n\nColor one part red, other blue — done!\n\nBut for LIST coloring, this doesn't help directly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-alon-tarsi",
+    "proofId": "erdos-630",
+    "range": { "startLine": 125, "endLine": 129 },
+    "type": "axiom",
+    "title": "Alon-Tarsi Theorem",
+    "content": "**Alon-Tarsi (1992):** Planar bipartite graphs are 3-choosable.\n\nχ_L(G) ≤ 3 for all planar bipartite G.\n\nThis is the main result! Combines planarity and bipartiteness constraints.\n\nThe proof uses the Combinatorial Nullstellensatz.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-630-graph-poly",
+    "proofId": "erdos-630",
+    "range": { "startLine": 142, "endLine": 144 },
+    "type": "definition",
+    "title": "Graph Polynomial",
+    "content": "The **graph polynomial** P_G = ∏_{(u,v)∈E} (x_u - x_v).\n\nThis polynomial encodes the adjacency structure.\n\nA proper coloring corresponds to an evaluation where P_G ≠ 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-nullstellensatz",
+    "proofId": "erdos-630",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "axiom",
+    "title": "Combinatorial Nullstellensatz",
+    "content": "**Alon's Combinatorial Nullstellensatz:**\n\nIf a certain coefficient in P_G is nonzero, then G is k-choosable.\n\nThe key is showing this coefficient is nonzero for planar bipartite graphs.\n\nThis converts a combinatorial problem to algebra!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-630-tight",
+    "proofId": "erdos-630",
+    "range": { "startLine": 161, "endLine": 165 },
+    "type": "theorem",
+    "title": "Bound is Tight",
+    "content": "**The bound 3 is best possible.**\n\nSome planar bipartite graphs have χ_L = 3 exactly.\n\nExample: K_{2,4} is planar, bipartite, and has χ_L = 3.\n\nSo we can't improve 3 to 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-list-conj",
+    "proofId": "erdos-630",
+    "range": { "startLine": 199, "endLine": 202 },
+    "type": "definition",
+    "title": "List Coloring Conjecture",
+    "content": "**Open:** Is χ_L ≤ 4 for all planar graphs?\n\nWe know χ ≤ 4 (Four Color Theorem) and χ_L ≤ 5 (Thomassen).\n\nClosing this gap is a major open problem!\n\nFor bipartite planar, we have the stronger χ_L ≤ 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-630-main",
+    "proofId": "erdos-630",
+    "range": { "startLine": 227, "endLine": 247 },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "**Erdős Problem #630: SOLVED**\n\n1. **Question:** χ_L ≤ 3 for planar bipartite?\n2. **Answer:** YES (Alon-Tarsi 1992)\n3. **Method:** Combinatorial Nullstellensatz\n4. **Tight:** K_{2,4} achieves χ_L = 3\n5. **Related:** χ_L ≤ 5 for all planar (Thomassen)\n6. **Open:** χ_L ≤ 4 for planar? (List Coloring Conjecture)",
+    "significance": "critical"
+  }
+]

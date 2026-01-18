@@ -1,33 +1,149 @@
 {
   "id": "erdos-630",
-  "title": "Erdős Problem #630",
+  "title": "Erdős Problem #630: List Chromatic Number of Planar Bipartite Graphs",
   "slug": "erdos-630",
-  "description": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such ...",
+  "description": "Does every planar bipartite graph have χ_L ≤ 3? SOLVED: YES by Alon-Tarsi (1992) using the Combinatorial Nullstellensatz. The bound is tight (K_{2,4} achieves it).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rubin-Taylor (problem), Alon-Tarsi (solution 1992)",
     "sourceUrl": "https://erdosproblems.com/630",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos630Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "list-coloring",
+      "chromatic-number",
+      "planar-graphs",
+      "bipartite-graphs",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "solved",
+    "sorries": 17,
     "erdosNumber": 630,
     "erdosUrl": "https://erdosproblems.com/630",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsBipartite",
+        "description": "Bipartite graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Bipartite"
+      },
+      {
+        "theorem": "MvPolynomial",
+        "description": "Multivariate polynomials",
+        "module": "Mathlib.Algebra.MvPolynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of list chromatic number (choosability)",
+      "Definition of k-choosable graphs",
+      "Statement of Alon-Tarsi theorem",
+      "Definition of planar graphs",
+      "Reference to Four Color Theorem",
+      "Reference to Thomassen's 5-list theorem",
+      "Connection to Combinatorial Nullstellensatz",
+      "Graph polynomial formulation"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #630 from erdosproblems.com.",
-    "problemStatement": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such that for any assignment of a list of k\" role=\"presentation\" style=\"position: relative;\">kkk colours to each vertex of G\" role=\"presentation\" style=\"position: relative;\">GGG (perhaps different lists for different vertices) a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours. Does every planar bipartite graph G\" role=\"presentation\" style=\"position: relative;\">GGG have &#x03C7;L(G)&#x2264;3\" role=\"presentation\" style=\"position: relative;\">χL(G)≤3χL(G)≤3\\chi_L(G)\\leq 3? A problem of Erdős, Rubin, and Taylor [ERT80]. The answer is yes, proved by Alon and Tarsi [AlTa92]. See also [631]. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "List coloring generalizes ordinary graph coloring by allowing each vertex to have its own set of available colors. The question is whether a proper coloring exists for ANY assignment of lists of size k.\n\n**Historical Development:**\n- 1980: Erdős, Rubin, Taylor posed the problem\n- 1992: Alon & Tarsi proved YES using algebraic methods\n- 1994: Thomassen proved all planar graphs are 5-choosable\n- The 'List Coloring Conjecture' (χ_L ≤ 4 for planar) remains OPEN\n\n**Key insight:** χ_L can exceed χ, even for bipartite graphs!",
+    "problemStatement": "**Definition:** The list chromatic number χ_L(G) is the minimum k such that for ANY assignment of lists of k colors to vertices, a proper list coloring exists.\n\n**Question:** For planar bipartite graphs, is χ_L(G) ≤ 3?\n\n**Answer:** YES (Alon-Tarsi 1992)\n\nThis is remarkable because:\n- Bipartite graphs have χ = 2\n- But χ_L can be larger (even K_{2,4} needs χ_L = 3)\n- Planarity bounds χ_L at 3 for bipartite graphs",
+    "proofStrategy": "The formalization:\n\n1. Defines list assignment and list coloring\n2. Defines k-choosability and χ_L\n3. Shows χ_L ≥ χ always\n4. Defines planarity and states Four Color Theorem\n5. States Alon-Tarsi theorem as main result\n6. Introduces graph polynomial and Combinatorial Nullstellensatz\n7. Shows bound is tight (K_{2,4})\n8. Connects to other results (Thomassen, outerplanar)",
+    "keyInsights": [
+      "**χ_L ≥ χ always:** List coloring is harder than ordinary coloring.",
+      "**Bipartite χ_L > χ possible:** K_{n,n} has χ = 2 but χ_L grows with n.",
+      "**Planarity constrains χ_L:** For planar bipartite, χ_L ≤ 3.",
+      "**Algebraic proof:** Uses Combinatorial Nullstellensatz on graph polynomial.",
+      "**Tight bound:** K_{2,4} achieves χ_L = 3."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Chromatic number and colorability",
+      "startLine": 29,
+      "endLine": 37
+    },
+    {
+      "id": "list-coloring",
+      "title": "List Coloring",
+      "summary": "List assignment, choosability, χ_L",
+      "startLine": 39,
+      "endLine": 58
+    },
+    {
+      "id": "list-properties",
+      "title": "Properties of χ_L",
+      "summary": "Comparison with χ",
+      "startLine": 60,
+      "endLine": 81
+    },
+    {
+      "id": "planar-graphs",
+      "title": "Planar Graphs",
+      "summary": "Euler's formula, Four Color Theorem",
+      "startLine": 83,
+      "endLine": 103
+    },
+    {
+      "id": "bipartite-graphs",
+      "title": "Bipartite Graphs",
+      "summary": "Bipartite characterization and χ",
+      "startLine": 105,
+      "endLine": 121
+    },
+    {
+      "id": "alon-tarsi",
+      "title": "The Alon-Tarsi Theorem",
+      "summary": "Main result: planar bipartite χ_L ≤ 3",
+      "startLine": 123,
+      "endLine": 138
+    },
+    {
+      "id": "algebraic-method",
+      "title": "The Algebraic Method",
+      "summary": "Graph polynomial and Nullstellensatz",
+      "startLine": 140,
+      "endLine": 157
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness",
+      "summary": "Bound is tight at 3",
+      "startLine": 159,
+      "endLine": 172
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "Non-planar bipartite, K_{n,n}",
+      "startLine": 174,
+      "endLine": 207
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Status",
+      "summary": "Complete status summary",
+      "startLine": 225,
+      "endLine": 254
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #630 is SOLVED. Alon and Tarsi (1992) proved that every planar bipartite graph has list chromatic number at most 3. The proof uses the Combinatorial Nullstellensatz, an algebraic technique relating polynomial coefficients to colorability. The bound is tight: K_{2,4} achieves χ_L = 3.",
+    "implications": "This problem connects to:\n\n1. **List Coloring Theory:** Relationship between χ and χ_L\n2. **Planar Graph Theory:** Constraints from planarity\n3. **Algebraic Combinatorics:** Combinatorial Nullstellensatz applications\n4. **Four Color Theorem:** Extension to list coloring\n5. **Open problems:** List Coloring Conjecture (χ_L ≤ 4 for planar)",
+    "openQuestions": [
+      "Is χ_L ≤ 4 for all planar graphs? (List Coloring Conjecture)",
+      "Can the algebraic method be extended to prove χ_L ≤ 4?",
+      "What is the exact value of χ_L for K_{n,n}?",
+      "Are there simpler proofs of Alon-Tarsi?",
+      "What other graph classes have bounded χ_L despite unbounded χ?"
+    ]
   }
 }
