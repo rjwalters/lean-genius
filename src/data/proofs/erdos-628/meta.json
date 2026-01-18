@@ -1,33 +1,148 @@
 {
   "id": "erdos-628",
-  "title": "Erdős Problem #628",
+  "title": "Erdős Problem #628: The Erdős-Lovász Tihany Conjecture",
   "slug": "erdos-628",
-  "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with chromatic number k\" role=\"presentation\" style=\"position: relative;\">kkk containing no Kk\" role=\"presentation\" style=\"posit...",
+  "description": "If χ(G) = k and G is K_k-free, must G be (a,b)-splittable for a,b ≥ 2 with a + b = k + 1? Special cases proven: a = b = 3 (Brown-Jung), quasi-line graphs, α = 2 (Balogh et al.).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Lovász (conjecture), Brown-Jung (a=b=3), Balogh-Kostochka-Prince-Stiebitz (special cases)",
     "sourceUrl": "https://erdosproblems.com/628",
-    "date": "",
-    "status": "pending",
+    "date": "1968",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos628Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "graph-decomposition",
+      "clique-free",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "conjecture",
+    "sorries": 16,
     "erdosNumber": 628,
     "erdosUrl": "https://erdosproblems.com/628",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.induce",
+        "description": "Induced subgraphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Finset.Disjoint",
+        "description": "Disjoint finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of (a,b)-splittability",
+      "Formalization of Tihany Conjecture",
+      "Statement of Brown-Jung theorem (a = b = 3)",
+      "Definition of quasi-line graphs",
+      "Statement of Balogh et al. results",
+      "Connection to critical graphs",
+      "Relationship to perfect graphs",
+      "Connection to odd cycles"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #628 from erdosproblems.com.",
-    "problemStatement": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with chromatic number k\" role=\"presentation\" style=\"position: relative;\">kkk containing no Kk\" role=\"presentation\" style=\"position: relative;\">KkKkK_k. If a,b&#x2265;2\" role=\"presentation\" style=\"position: relative;\">a,b≥2a,b≥2a,b\\geq 2 and a+b=k+1\" role=\"presentation\" style=\"position: relative;\">a+b=k+1a+b=k+1a+b=k+1 then must there exist two disjoint subgraphs of G\" role=\"presentation\" style=\"position: relative;\">GGG with chromatic numbers &#x2265;a\" role=\"presentation\" style=\"position: relative;\">≥a≥a\\geq a and &#x2265;b\" role=\"presentation\" style=\"position: relative;\">≥b≥b\\geq b respectively?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős-Lovász Tihany Conjecture (1968) asks about the structure of K_k-free graphs with chromatic number k. Such graphs must achieve their high chromatic number through global structure rather than large cliques.\n\n**Historical Development:**\n- 1968: Erdős posed the question, initially for a = b = 3\n- 1969: Brown & Jung proved the a = b = 3 case\n- 2009: Balogh, Kostochka, Prince & Stiebitz proved for quasi-line graphs and α = 2\n- 2022: Song published comprehensive survey\n\n**Key insight:** K_k-free k-chromatic graphs have rich decomposition structure.",
+    "problemStatement": "**Setup:** G has χ(G) = k but no K_k (clique of size k).\n\n**Definition:** G is (a,b)-splittable if it contains vertex-disjoint subgraphs with χ ≥ a and χ ≥ b.\n\n**Question:** For a,b ≥ 2 with a + b = k + 1, is G always (a,b)-splittable?\n\n**Status:** OPEN\n- a = b = 3: PROVED (equivalent to containing two disjoint odd cycles)\n- Quasi-line graphs: PROVED\n- Independence number 2: PROVED\n- General case: OPEN",
+    "proofStrategy": "The formalization:\n\n1. Defines chromatic number, clique number, K_k-free\n2. Defines (a,b)-splittability via disjoint vertex sets\n3. States the Tihany Conjecture formally\n4. States Brown-Jung theorem for a = b = 3\n5. Defines quasi-line graphs and states Balogh et al. result\n6. States result for independence number 2\n7. Connects to critical graphs and perfect graphs\n8. Shows connection to odd cycles",
+    "keyInsights": [
+      "**(a,b)-splittability:** Decompose into disjoint high-chromatic parts.",
+      "**K_k-free k-chromatic:** Such graphs exist and have special structure.",
+      "**a = b = 3 case:** Equivalent to containing two disjoint odd cycles.",
+      "**Quasi-line graphs:** Neighborhoods are unions of two cliques.",
+      "**Perfect graphs:** Vacuously satisfy (they have K_k when χ = k)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Chromatic number, clique number, K_k-free",
+      "startLine": 31,
+      "endLine": 47
+    },
+    {
+      "id": "splittability",
+      "title": "The (a,b)-Splittability Property",
+      "summary": "Definition of splittability",
+      "startLine": 49,
+      "endLine": 64
+    },
+    {
+      "id": "tihany-conjecture",
+      "title": "The Tihany Conjecture",
+      "summary": "Main conjecture statement",
+      "startLine": 66,
+      "endLine": 85
+    },
+    {
+      "id": "brown-jung",
+      "title": "Special Case: a = b = 3",
+      "summary": "Brown-Jung theorem (1969)",
+      "startLine": 87,
+      "endLine": 109
+    },
+    {
+      "id": "quasi-line",
+      "title": "Quasi-Line Graphs",
+      "summary": "Balogh et al. result for quasi-line",
+      "startLine": 111,
+      "endLine": 133
+    },
+    {
+      "id": "alpha-2",
+      "title": "Independence Number 2",
+      "summary": "Balogh et al. result for α = 2",
+      "startLine": 135,
+      "endLine": 150
+    },
+    {
+      "id": "critical-graphs",
+      "title": "Critical Graphs",
+      "summary": "k-critical graph properties",
+      "startLine": 152,
+      "endLine": 168
+    },
+    {
+      "id": "perfect-graphs",
+      "title": "Perfect Graphs",
+      "summary": "Why Tihany is vacuous for perfect graphs",
+      "startLine": 170,
+      "endLine": 185
+    },
+    {
+      "id": "odd-cycles",
+      "title": "Connection to Odd Cycles",
+      "summary": "Odd cycles and (3,3)-splittability",
+      "startLine": 204,
+      "endLine": 219
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Status",
+      "summary": "Complete status summary",
+      "startLine": 221,
+      "endLine": 254
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #628 (the Erdős-Lovász Tihany Conjecture) is OPEN in general. The conjecture asks whether K_k-free k-chromatic graphs are (a,b)-splittable for all valid (a,b) pairs. Special cases are proven: a = b = 3 (Brown-Jung 1969), quasi-line graphs, and graphs with independence number 2 (Balogh et al. 2009).",
+    "implications": "This problem connects to:\n\n1. **Graph Decomposition:** Splitting graphs into high-chromatic parts\n2. **Critical Graph Theory:** Structure of minimal k-chromatic graphs\n3. **Perfect Graph Theory:** Why perfect graphs don't need Tihany\n4. **Odd Cycles:** Role in 3-chromatic subgraphs\n5. **Extremal Graph Theory:** K_k-free graphs with high chromatic number",
+    "openQuestions": [
+      "Does Tihany hold for all (a,b) pairs?",
+      "What is the simplest counterexample if false?",
+      "Can the quasi-line and α = 2 results be generalized?",
+      "What is the structure of minimal counterexamples?",
+      "Does Tihany hold for random K_k-free k-chromatic graphs?"
+    ]
   }
 }
