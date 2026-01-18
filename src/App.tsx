@@ -9,6 +9,7 @@ const ResearchPage = lazy(() => import('@/pages/ResearchPage').then(m => ({ defa
 const ResearchProblemPage = lazy(() => import('@/pages/ResearchProblemPage').then(m => ({ default: m.ResearchProblemPage })))
 const SubmitPage = lazy(() => import('@/pages/SubmitPage').then(m => ({ default: m.SubmitPage })))
 const AboutPage = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })))
+const ErdosPage = lazy(() => import('@/pages/ErdosPage').then(m => ({ default: m.ErdosPage })))
 
 function LoadingSpinner() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/research/:slug" element={<ResearchProblemPage />} />
             <Route path="/submit" element={<SubmitPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/erdos" element={<ErdosPage />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
