@@ -3212,17 +3212,21 @@
   },
   {
     "id": "erdos-166",
-    "title": "Erdős Problem #166",
+    "title": "Erdős Problem #166: Ramsey Number R(4,k) Lower Bound",
     "slug": "erdos-166",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that\\[R(4,k) \\gg {(\\log k)^{O(1)}}.\\]\n\n\n\nSpencer  proved\\[R(4,k) \\gg (k\\log k)^{5/2}.\\]Ajtai, Koml\\'{o}s, and Szemer\\'{...",
-    "status": "pending",
-    "badge": "axiom",
+    "description": "Prove that R(4,k) >> k³/(log k)^O(1). SOLVED by Mattheus-Verstraete (2023): R(4,k) >> k³/(log k)⁴, earning the $250 Erdős prize.",
+    "status": "complete",
+    "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory",
+      "probabilistic-method"
     ],
     "erdosNumber": 166,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-167",
