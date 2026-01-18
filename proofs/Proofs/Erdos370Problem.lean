@@ -1,4 +1,15 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: b29022e9-7828-4445-bb20-31e0fe4ca2c9
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+-/
+
+/-
   Erdős Problem #370: Consecutive Smooth Numbers
 
   Source: https://erdosproblems.com/370
@@ -28,6 +39,10 @@
 
 import Mathlib
 
+
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['harmonicSorry291181', 'Erdos370.gpf_mul_le', 'Erdos370.gpf', 'Erdos370.gpf_prime_pow', 'Erdos370.gpf_64', 'Erdos370.gpf_63', 'Erdos370.gpf_le_one', 'Erdos370.steinerberger_factorization', 'Erdos370.gpf_prime_of_gt_one', 'Erdos370.gpf_dvd', 'Erdos370.gpf_prime']-/
 namespace Erdos370
 
 open Nat Finset BigOperators
@@ -142,6 +157,15 @@ def ValidSteinerbergerM (m : ℕ) : Prop :=
 
 /-! ## Main Theorem -/
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Function expected at
+  ConsecutiveSqrtSmooth
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  n-/
 /--
 **Theorem (Steinerberger)**: There are infinitely many n satisfying the condition.
 
@@ -158,6 +182,15 @@ theorem erdos_370_infinitely_many :
   -- The proof uses the Steinerberger construction with appropriate m
   sorry
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Function expected at
+  ConsecutiveSqrtSmooth
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (f k)-/
 /--
 **Erdős Problem #370 (SOLVED)**:
 There exist infinitely many n such that gpf(n) < √n and gpf(n+1) < √(n+1).
@@ -179,9 +212,14 @@ density related to the Dickman-de Bruijn function.
 -/
 noncomputable def PomeranceExponent : ℝ := 1 / Real.sqrt (Real.exp 1)
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['harmonicSorry94577', 'dickman_density']-/
 /-- The Dickman function ρ(u) gives the density of u-smooth numbers. -/
 axiom dickman_density (α : ℝ) (hα : 0 < α ∧ α ≤ 1) :
-    ∃ ρ : ℝ, ρ > 0 ∧ ρ ≤ 1 -- density of {n : gpf(n) ≤ n^α}
+    ∃ ρ : ℝ, ρ > 0 ∧ ρ ≤ 1
+
+-- density of {n : gpf(n) ≤ n^α}
 
 /-! ## Summary
 
@@ -209,4 +247,10 @@ There are infinitely many such m, giving infinitely many n.
 - Pomerance: Density perspective via Dickman function
 -/
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected name `Erdos370` after `end`: The current section is unnamed
+
+Hint: Delete the name `Erdos370` to end the current unnamed scope; outer named scopes can then be closed using additional `end` command(s):
+  end ̵E̵r̵d̵o̵s̵3̵7̵0̵-/
 end Erdos370
