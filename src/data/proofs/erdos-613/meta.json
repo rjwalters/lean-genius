@@ -1,33 +1,148 @@
 {
   "id": "erdos-613",
-  "title": "Erdős Problem #613",
+  "title": "Erdős Problem #613: Graph Decomposition and Size Ramsey Numbers",
   "slug": "erdos-613",
-  "description": "Let n&#x2265;3\" role=\"presentation\" style=\"position: relative;\">n≥3n≥3n\\geq 3 and G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with (2n+12)&#x2212;(n2)&#x2212;1\" role=\"presenta...",
+  "description": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n² + 0.577n^{3/2} < r̂ < n² + √2·n^{3/2} + n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Pikhurko (disproof), Tao (Lean verification), Faudree (partial)",
     "sourceUrl": "https://erdosproblems.com/613",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos613Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey",
+      "graph-decomposition",
+      "counterexample",
+      "lean-verified"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "solved",
+    "sorries": 14,
     "erdosNumber": 613,
     "erdosUrl": "https://erdosproblems.com/613",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsBipartite",
+        "description": "Bipartite graph predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Bipartite"
+      }
+    ],
+    "originalContributions": [
+      "Definition of critical edge count C(2n+1,2) - C(n,2) - 1",
+      "Formalization of graph decomposition property",
+      "Statement of size Ramsey number for stars vs odd cycles",
+      "Pikhurko's bounds as axioms",
+      "Reference to Tao's Lean-verified counterexample at n=5",
+      "Faudree's partial result for |V| = 2n+1",
+      "Small cases n=3,4 verified"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #613 from erdosproblems.com.",
-    "problemStatement": "Let n&#x2265;3\" role=\"presentation\" style=\"position: relative;\">n≥3n≥3n\\geq 3 and G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with (2n+12)&#x2212;(n2)&#x2212;1\" role=\"presentation\" style=\"position: relative;\">(2n+12)−(n2)−1(2n+12)−(n2)−1\\binom{2n+1}{2}-\\binom{n}{2}-1 edges. Must G\" role=\"presentation\" style=\"position: relative;\">GGG be the union of a bipartite graph and a graph with maximum degree less than n\" role=\"presentation\" style=\"position: relative;\">nnn?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the size Ramsey number r̂(K_{1,n}, F) where K_{1,n} is a star and F is the family of odd cycles. The conjecture proposed that r̂ = C(2n+1,2) - C(n,2), which is equivalent to asking whether graphs with one fewer edge can be decomposed.\n\n**History:**\n- Faudree (unpublished): Proved for graphs with exactly 2n+1 vertices\n- Pikhurko: DISPROVED the general conjecture with asymptotic bounds\n- Tao: Formalized counterexample at n=5 in Lean — first Lean-verified Erdős disproof\n\n**Bounds:** n² + 0.577n^{3/2} < r̂(K_{1,n}, F) < n² + √2·n^{3/2} + n",
+    "problemStatement": "**Question:** For n ≥ 3, if G has C(2n+1,2) - C(n,2) - 1 edges, must G decompose as:\n- H₁ (bipartite) ∪ H₂ (max degree < n)?\n\n**Equivalently:** Is r̂(K_{1,n}, F) = C(2n+1,2) - C(n,2)?\n\n**Answer:** NO — the conjecture is DISPROVED.\n- n = 3, 4: Conjecture holds\n- n = 5: First counterexample (Lean-verified)\n- General: Pikhurko's asymptotic bounds show the error is Θ(n^{3/2})",
+    "proofStrategy": "The formalization:\n\n1. Defines `criticalEdgeCount n = C(2n+1,2) - C(n,2) - 1`\n2. Defines `HasDecomposition G n` for the bipartite + bounded decomposition\n3. States `OriginalConjecture` and proves it FALSE\n4. States `pikhurko_lower_bound` and `pikhurko_upper_bound`\n5. References `tao_counterexample_n5` (Lean-verified)\n6. States `faudree_partial` for restricted vertex count\n7. Verifies small cases n = 3, 4",
+    "keyInsights": [
+      "**Size Ramsey:** r̂(H,F) = min edges such that any 2-coloring has monochromatic H or F.",
+      "**Decomposition view:** G decomposes iff G avoids both K_{1,n} and odd cycles in complementary parts.",
+      "**Counterexample at n=5:** 44 edges is not enough — some graphs cannot decompose.",
+      "**Vertex count matters:** With exactly 2n+1 vertices, the conjecture HOLDS (Faudree).",
+      "**Error is Θ(n^{3/2}):** The conjectured value differs from truth by order n^{3/2}."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "edge-counts",
+      "title": "Edge Counts",
+      "summary": "Critical edge count and binomial formulas",
+      "startLine": 30,
+      "endLine": 45
+    },
+    {
+      "id": "decomposition",
+      "title": "Graph Decomposition",
+      "summary": "Bipartite + bounded degree decomposition",
+      "startLine": 47,
+      "endLine": 70
+    },
+    {
+      "id": "original-conjecture",
+      "title": "Original Conjecture",
+      "summary": "The decomposition conjecture",
+      "startLine": 72,
+      "endLine": 79
+    },
+    {
+      "id": "size-ramsey",
+      "title": "Size Ramsey Number",
+      "summary": "r̂(K_{1,n}, F) definition",
+      "startLine": 81,
+      "endLine": 103
+    },
+    {
+      "id": "pikhurko",
+      "title": "Pikhurko's Disproof",
+      "summary": "Bounds and falsity of conjecture",
+      "startLine": 105,
+      "endLine": 120
+    },
+    {
+      "id": "counterexample",
+      "title": "Counterexample at n=5",
+      "summary": "Tao's Lean-verified counterexample",
+      "startLine": 122,
+      "endLine": 139
+    },
+    {
+      "id": "faudree",
+      "title": "Faudree's Partial Result",
+      "summary": "Holds when |V| = 2n+1",
+      "startLine": 141,
+      "endLine": 161
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Analysis",
+      "summary": "Gap and error analysis",
+      "startLine": 163,
+      "endLine": 182
+    },
+    {
+      "id": "small-cases",
+      "title": "Special Cases",
+      "summary": "n = 3, 4 verified",
+      "startLine": 197,
+      "endLine": 225
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Status",
+      "summary": "Complete status summary",
+      "startLine": 227,
+      "endLine": 260
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #613 is DISPROVED. The original conjecture that graphs with C(2n+1,2) - C(n,2) - 1 edges decompose into bipartite + bounded-degree is FALSE for n ≥ 5. Pikhurko established asymptotic bounds showing the true size Ramsey number differs by Θ(n^{3/2}). Tao formalized the n=5 counterexample in Lean, making this one of the first formally verified Erdős disproofs.",
+    "implications": "This problem connects to:\n\n1. **Size Ramsey Theory:** Edge-minimization variant of classical Ramsey\n2. **Graph Decomposition:** Structure of dense graphs\n3. **Formalized Mathematics:** Lean verification of counterexamples\n4. **Bipartite Graphs:** Role of odd cycles in decomposition\n5. **Extremal Graph Theory:** Edge count thresholds",
+    "openQuestions": [
+      "What is the exact value of r̂(K_{1,n}, F)?",
+      "Can the gap between Pikhurko's bounds be narrowed?",
+      "What is the structure of extremal graphs for each n?",
+      "Does a similar decomposition hold with different degree bounds?",
+      "What happens for other Ramsey-type decomposition problems?"
+    ]
   }
 }

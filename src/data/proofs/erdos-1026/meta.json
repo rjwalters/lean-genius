@@ -1,33 +1,134 @@
 {
   "id": "erdos-1026",
-  "title": "Erdős Problem #1026",
+  "title": "Erdős Problem #1026: Monotonic Subsequence Sum Optimization",
   "slug": "erdos-1026",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of distinct real numbers. Determine\\[\\max\\left(\\sum x_{i_r}\\right),\\]where the maximum is taken over al...",
+  "description": "For a sequence of distinct reals, determine max sum over monotonic subsequences. The optimal constant is c = 1: maxMonotonicSum ≥ (1-o(1)) · totalSum/√n. This is a weighted Erdős-Szekeres theorem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1971 question), Tidor-Wang-Yang (2016 proof), Cambie, Hanani",
     "sourceUrl": "https://erdosproblems.com/1026",
-    "date": "",
-    "status": "pending",
+    "date": "2016",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1026Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sequences",
+      "monotonic-subsequences",
+      "erdos-szekeres",
+      "optimization"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1026,
     "erdosUrl": "https://erdosproblems.com/1026",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotonic functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root of real numbers",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum of sets",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definitions of RealSeq, Subsequence, IsIncreasing, IsDecreasing, IsMonotonic",
+      "Definition of subsequenceSum and maxMonotonicSum",
+      "Statement of Erdős-Szekeres theorem (1935)",
+      "Hanani's decomposition theorem (1957)",
+      "Formalization of the weighted Erdős-Szekeres theorem (Tidor-Wang-Yang 2016)",
+      "Proof that optimal constant c = 1",
+      "LIS/LDS bounds as corollaries"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1026 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n$ be a sequence of distinct real numbers. Determine\\[\\max\\left(\\sum x_{i_r}\\right),\\]where the maximum is taken over all monotonic subsequences.\n\n\n\nThis is as Erd\\H{o}s posed the problem in \\cite{Er71}, which is rather ambiguous. Discussion between several users in the comments section has led to the following precise possible question, as posed by van Doorn:\n\nWhat is the largest constant $c$ such that, for all sequences of $n$ real numbers $x_1,\\ldots,x_n$,\\[\\max\\left(\\sum x_{i_r}\\right)> (c-o(1))\\frac{1}{\\sqrt{n}}\\sum x_i\\](where again the maximum is taken over all monotonic subsequences)? A construction of Cambie in the comments shows that $c\\leq 1$. Hanani \\cite{Ha57} showed that every sequence is the disjoint union of at most $(\\sqrt{2}+o(1))\\sqrt{n}$ many monotonic subsequences, whence $c\\geq 1/\\sqrt{2}$.\n\nCambie makes the stronger conjecture that if $x_1,\\ldots,x_{k^2}$ are distinct positive real numbers with $\\sum x_i=1$ then there is always a monotonic subsequence with sum at least $1/k$. This is a weighted-form of the Erd\\H{o}s-Szekeres theorem, and is also mentioned (as an open question) in a survey on the latter by Steele \\cite{St95}.\n\nThis stronger conjecture appears to have been first proved by Tidor, Wang, and Yang \\cite{TWY16}, and is also implicit in work of Wagner \\cite{Wa17}. A proof was given and formalised by Aristotle (see the comments), with an alternative proof provided by Chan. In particular, this shows that $c=1$.\n\n\n\n\n\nReferences\n\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[Ha57] Hanani, Haim, On the number of monotonic subsequences. Bull. Res. Council Israel Sect. F (1957/58), 11--13.\n\n[St95] Steele, J. Michael, Variations on the monotone subsequence theme of {E}rd\\H{o}s and\n{S}zekeres. (1995), 111--131.\n\n[TWY16] J. Tidor, V. Wang, and B. Yang, $1$-color avoiding paths, special tournaments, and incidence geometry. arXiv:1608.04153 (2016).\n\n[Wa17] Wagner, Adam Zsolt, Large subgraphs in rainbow-triangle free colorings. J. Graph Theory (2017), 141--148.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Monotonic Subsequence Sum Problem**\n\nErdős (1971) posed this optimization problem: given a sequence of distinct real numbers, what is the maximum sum achievable by a monotonic subsequence?\n\n**Timeline:**\n- **1935**: Erdős-Szekeres prove every sequence of n²+1 elements has a monotonic subsequence of length n+1\n- **1957**: Hanani shows every sequence decomposes into ≤ (√2+o(1))√n monotonic parts\n- **1995**: Steele surveys variations on the Erdős-Szekeres theme\n- **2016**: Tidor-Wang-Yang prove the weighted version, showing c = 1\n- **2017**: Wagner gives an independent proof via tournament theory\n- **Aristotle + Chan**: Formalized proofs\n\nThe result is a beautiful weighted generalization of Erdős-Szekeres.",
+    "problemStatement": "**Problem Statement**\n\nLet x₁, ..., xₙ be distinct real numbers. Determine:\n\nmax(Σ x_{i_r})\n\nwhere the maximum is over all monotonic (increasing or decreasing) subsequences.\n\n**Precise Formulation (van Doorn):**\nWhat is the largest c such that for all sequences,\n\nmax(Σ x_{i_r}) ≥ (c - o(1)) · (1/√n) · Σ xᵢ ?\n\n**Answer:** c = 1\n\n**Weighted Erdős-Szekeres:**\nIf x₁, ..., x_{k²} are distinct positive reals with Σxᵢ = 1, there exists a monotonic subsequence with sum ≥ 1/k.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define RealSeq, Subsequence with StrictMono indices\n\n2. **Monotonicity:** IsIncreasing, IsDecreasing, IsMonotonic predicates\n\n3. **Sums:** subsequenceSum, totalSum, maxMonotonicSum\n\n4. **Erdős-Szekeres:** The classical (r-1)(s-1)+1 bound\n\n5. **Hanani:** Decomposition into ≤ √(2n) monotonic parts\n\n6. **Main Bounds:** Hanani gives c ≥ 1/√2, Cambie shows c ≤ 1\n\n7. **Tidor-Wang-Yang:** The weighted theorem proving c = 1\n\n8. **LIS/LDS:** Standard bounds as corollaries",
+    "keyInsights": [
+      "**Erdős-Szekeres Foundation:** Every sequence of (r-1)(s-1)+1 elements has an increasing subsequence of length r OR decreasing of length s",
+      "**Hanani's Decomposition:** At most (√2 + o(1))√n monotonic subsequences cover any sequence",
+      "**The Pigeonhole Argument:** If k parts cover the sequence, one part has sum ≥ totalSum/k",
+      "**Weighted Generalization:** The weighted Erdős-Szekeres is much stronger than just length bounds",
+      "**Tightness:** Cambie's construction shows c = 1 is optimal",
+      "**LIS × LDS ≥ n:** A beautiful consequence of Erdős-Szekeres"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sequences",
+      "title": "Sequences and Monotonicity",
+      "summary": "RealSeq, Subsequence, IsIncreasing, IsDecreasing, IsMonotonic, subsequenceSum",
+      "startLine": 49,
+      "endLine": 81
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "The Erdős-Szekeres Theorem",
+      "summary": "Classical (r-1)(s-1)+1 bound and n²+1 corollary",
+      "startLine": 83,
+      "endLine": 106
+    },
+    {
+      "id": "hanani",
+      "title": "Hanani's Decomposition",
+      "summary": "MonotonicDecomposition structure and √(2n) bound",
+      "startLine": 108,
+      "endLine": 139
+    },
+    {
+      "id": "max-sum",
+      "title": "The Maximum Monotonic Sum Problem",
+      "summary": "maxMonotonicSumLength, maxMonotonicSum, normalizedRatio",
+      "startLine": 141,
+      "endLine": 158
+    },
+    {
+      "id": "bounds",
+      "title": "The Main Conjecture",
+      "summary": "Hanani lower bound (c ≥ 1/√2), Cambie upper bound (c ≤ 1)",
+      "startLine": 160,
+      "endLine": 185
+    },
+    {
+      "id": "weighted",
+      "title": "The Weighted Erdős-Szekeres Theorem",
+      "summary": "weighted_erdos_szekeres, tidor_wang_yang, optimal_constant_is_one",
+      "startLine": 187,
+      "endLine": 225
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "LIS, LDS definitions and bounds",
+      "startLine": 227,
+      "endLine": 249
+    },
+    {
+      "id": "main",
+      "title": "Main Results Summary",
+      "summary": "erdos_1026 theorem, tightness, tournament connection",
+      "startLine": 251,
+      "endLine": 283
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1026 asked for the maximum sum over monotonic subsequences. The optimal constant is c = 1: every sequence has a monotonic subsequence with sum at least (1-o(1)) · totalSum/√n. This follows from the weighted Erdős-Szekeres theorem proved by Tidor-Wang-Yang (2016). Cambie's construction shows the bound is tight.",
+    "implications": "**Theoretical Connections**\n\n1. **Erdős-Szekeres Theory:** Extends length bounds to weighted (sum) bounds\n\n2. **Dilworth's Theorem:** The decomposition bounds connect to antichain decomposition\n\n3. **Tournament Theory:** Wagner's alternative proof uses tournament coloring\n\n4. **Algorithmic Applications:** Finding optimal monotonic subsequences has O(n log n) algorithms\n\n5. **Probabilistic Combinatorics:** Random sequences achieve the extremal bounds",
+    "openQuestions": [
+      "What is the exact extremal construction for small n?",
+      "Does the bound extend to approximate monotonicity?",
+      "What are the best algorithmic approaches to find maximum-sum monotonic subsequences?",
+      "Complete proofs of the 20 axiomatized results",
+      "Extend to k-monotonic decompositions (neither increasing nor decreasing)"
+    ]
   }
 }

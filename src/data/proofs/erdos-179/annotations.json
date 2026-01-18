@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-179-header",
+    "proofId": "erdos-179",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #179: Arithmetic Progression Supersaturation**\n\nDefine F_k(N, ℓ) as the minimum number of k-term APs that forces an ℓ-term AP.\n\nQuestions:\n1. Is F₃(N, 4) = o(N²)?\n2. Is lim log F₃(N, ℓ) / log N = 2 for ℓ > 3?\n\n**Answer**: YES to both (Fox-Pohoata 2020, improved by Leng-Sah-Sawhney 2024).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-ap-def",
+    "proofId": "erdos-179",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "An **arithmetic progression** of length k with first term a and common difference d:\n\n{a, a+d, a+2d, ..., a+(k-1)d}\n\nRepresented as `Finset.image (fun i => a + i * d) (Finset.range k)`.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-contains-ap",
+    "proofId": "erdos-179",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "ContainsAP",
+    "content": "A set **contains a k-term AP** if some arithmetic progression of length k is a subset.\n\nNote: We require d > 0 to avoid trivial constant sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-count-aps",
+    "proofId": "erdos-179",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Counting APs",
+    "content": "**countAPs(A, k)** counts the number of k-term APs contained in set A.\n\nThis is defined by filtering the powerset for sets that match an AP pattern with d > 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-supersaturation-function",
+    "proofId": "erdos-179",
+    "range": { "startLine": 55, "endLine": 64 },
+    "type": "definition",
+    "title": "The Supersaturation Function F",
+    "content": "**F_k(N, ℓ)** is the supersaturation threshold:\n\nThe minimum M such that every set A of size N with at least M many k-term APs must contain an ℓ-term AP.\n\nThis captures the 'tipping point' where short progressions force long ones.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-supersaturation-property",
+    "proofId": "erdos-179",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Supersaturation Property",
+    "content": "**SupersaturationProperty(k, N, ℓ, M)** holds when:\n\nEvery set A with |A| = N and countAPs(A, k) ≥ M contains an ℓ-term AP.\n\nF_k(N, ℓ) is the minimal such M.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-lower-bound",
+    "proofId": "erdos-179",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "axiom",
+    "title": "Lower Bound",
+    "content": "**Lower bound**: F_k(N, ℓ) ≥ N^{1.99} eventually.\n\nSets avoiding ℓ-APs (like Behrend's construction) can have many k-APs, giving a lower bound close to N².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-upper-trivial",
+    "proofId": "erdos-179",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "**Trivial upper bound**: F_k(N, ℓ) ≤ N².\n\nA set of size N has at most O(N²) pairs, hence at most O(N²) arithmetic progressions of any fixed length.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-179-question1",
+    "proofId": "erdos-179",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "definition",
+    "title": "Question 1",
+    "content": "**Erdős's Question 1**: Is F₃(N, 4) = o(N²)?\n\nIn other words: does having many 3-APs (but sub-quadratically many) force a 4-AP?\n\nAnswer: YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-question2",
+    "proofId": "erdos-179",
+    "range": { "startLine": 99, "endLine": 103 },
+    "type": "definition",
+    "title": "Question 2",
+    "content": "**Erdős's Question 2**: For ℓ > 3, is lim log F₃(N, ℓ) / log N = 2?\n\nThis asks: is the exponent exactly 2 in the asymptotic growth of F₃(N, ℓ)?\n\nAnswer: YES. The function is N^{2-o(1)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-fox-pohoata",
+    "proofId": "erdos-179",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "axiom",
+    "title": "Fox-Pohoata Theorem",
+    "content": "**Fox-Pohoata Theorem (2020)**:\n\nFor all fixed 1 ≤ k < ℓ:\n\nF_k(N, ℓ) ≤ N² / (log log N)^{C_ℓ}\n\nwhere C_ℓ > 0 is a constant depending on ℓ.\n\nThis proves F_k(N, ℓ) = N^{2-o(1)}, answering both of Erdős's questions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-question1-solved",
+    "proofId": "erdos-179",
+    "range": { "startLine": 119, "endLine": 125 },
+    "type": "theorem",
+    "title": "Question 1 Solved",
+    "content": "**Corollary**: Question 1 is TRUE.\n\nF₃(N, 4) ≤ N² / (log log N)^C = o(N²) as N → ∞.\n\nThe (log log N)^C factor goes to infinity, so the ratio to N² goes to zero.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-question2-solved",
+    "proofId": "erdos-179",
+    "range": { "startLine": 127, "endLine": 130 },
+    "type": "theorem",
+    "title": "Question 2 Solved",
+    "content": "**Corollary**: Question 2 is TRUE.\n\nlog F₃(N, ℓ) / log N → 2 as N → ∞.\n\nThe o(1) correction in N^{2-o(1)} vanishes in the log ratio.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-leng-sah-sawhney",
+    "proofId": "erdos-179",
+    "range": { "startLine": 138, "endLine": 142 },
+    "type": "axiom",
+    "title": "Leng-Sah-Sawhney Improvement",
+    "content": "**Leng-Sah-Sawhney (2024)**: Improved bound:\n\nF_k(N, ℓ) ≤ N² / exp((log log N)^{c_ℓ})\n\nThis is a significant improvement: exp((log log N)^c) grows faster than any power of log log N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-improvement",
+    "proofId": "erdos-179",
+    "range": { "startLine": 144, "endLine": 148 },
+    "type": "theorem",
+    "title": "Improvement Significance",
+    "content": "**The improvement is significant**: For large N,\n\nexp((log log N)^c) >> (log log N)^C\n\nThe exponential function dominates any polynomial, giving a much tighter bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-szemeredi",
+    "proofId": "erdos-179",
+    "range": { "startLine": 156, "endLine": 159 },
+    "type": "axiom",
+    "title": "Szemerédi's Theorem",
+    "content": "**Szemerédi's Theorem**: Sets with positive density contain arbitrarily long APs.\n\nFor any δ > 0 and ℓ ≥ 3, sufficiently large sets with density ≥ δ contain ℓ-term APs.\n\nBounds on F_k relate to bounds on the Szemerédi function r_ℓ(N).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-roth",
+    "proofId": "erdos-179",
+    "range": { "startLine": 176, "endLine": 179 },
+    "type": "axiom",
+    "title": "Roth's Theorem",
+    "content": "**Roth's Theorem (1953)**: No 3-AP-free set has positive density.\n\nThis is the k = 3 case of Szemerédi, proved earlier by different methods.\n\nRoth's bounds directly affect F₃(N, ℓ) bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-behrend",
+    "proofId": "erdos-179",
+    "range": { "startLine": 181, "endLine": 185 },
+    "type": "axiom",
+    "title": "Behrend's Construction",
+    "content": "**Behrend's Construction (1946)**: There exist 3-AP-free sets of size\n\nN / exp(c√(log N))\n\nThis provides the best known lower bound for r₃(N), and hence affects lower bounds for F₃.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-179-main",
+    "proofId": "erdos-179",
+    "range": { "startLine": 215, "endLine": 224 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #179: SOLVED**\n\nBoth questions have affirmative answers:\n1. F₃(N, 4) = o(N²) ✓\n2. lim log F₃(N, ℓ) / log N = 2 for all ℓ > 3 ✓\n\nThe supersaturation function F_k(N, ℓ) = N^{2-o(1)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-179-answer",
+    "proofId": "erdos-179",
+    "range": { "startLine": 226, "endLine": 228 },
+    "type": "definition",
+    "title": "The Answer",
+    "content": "**Answer**: YES to both of Erdős's questions.\n\nF₃(N, 4) = o(N²) and the limiting exponent is exactly 2.",
+    "significance": "supporting"
+  }
+]

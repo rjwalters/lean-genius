@@ -1,33 +1,121 @@
 {
   "id": "erdos-1022",
-  "title": "Erdős Problem #1022",
+  "title": "Erdős Problem #1022: Property B and Sparse Set Families",
   "slug": "erdos-1022",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant ..., where ... as ..., such that if $...t...X...<c_t\\lvert X\\rvert...A\\in ...A\\subseteq X......2...c_2=1$...",
+  "description": "Is there c_t → ∞ such that if F is a family of sets of size ≥ t, and for every X there are < c_t|X| subsets of X in F, then F has property B (2-colorable)? Known: c_2 = 1 (Lovász 1968).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Lovász (1968)",
     "sourceUrl": "https://erdosproblems.com/1022",
-    "date": "",
+    "date": "1971",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1022Problem.lean",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "hypergraphs",
+      "erdos",
+      "property-b",
+      "set-families"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 9,
     "erdosNumber": 1022,
     "erdosUrl": "https://erdosproblems.com/1022",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1022 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant $c_t$, where $c_t\\to \\infty$ as $t\\to \\infty$, such that if $\\mathcal{F}$ is a finite family of finite sets, all of size at least $t$, and for every set $X$ there are $<c_t\\lvert X\\rvert$ many $A\\in \\mathcal{F}$ with $A\\subseteq X$, then $\\mathcal{F}$ has chromatic number $2$ (in other words, has property B)?\n\n\n\nErd\\H{o}s originally conjectured, in this language, that $c_2=1$, which was proved by Lov\\'{a}sz \\cite{Lo68}.\n\n\n\n\nReferences\n\n\n[Lo68] Lov\\'{a}sz, L., On covering of graphs. Theory of Graphs (Proc. Colloq., Tihany, 1966) (1968), 231-236.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Property B and Hypergraph Coloring**\n\nProperty B (named after Bernstein) asks when a family of sets can be 2-colored so that no set is monochromatic. This is equivalent to hypergraph 2-colorability.\n\n**The Sparseness Condition**: For every set X, count how many family members are subsets of X. If this count is < c_t|X| for all X, the family is 'sparse'.\n\n**Lovász's Result (1968)**: Erdős originally conjectured c_2 = 1 for the t = 2 case, which Lovász proved.\n\n**The Open Question**: Does c_t → ∞ as t → ∞? That is, do larger minimum set sizes allow sparser families to still have property B?",
+    "problemStatement": "**Problem Statement**\n\nIs there a constant c_t (with c_t → ∞ as t → ∞) such that:\n- If F is a finite family of finite sets, all of size ≥ t, and\n- For every set X, fewer than c_t|X| members of F are subsets of X,\n- Then F has property B (chromatic number 2)?\n\n**Status**: OPEN\n\n**Known**: c_2 = 1 (Lovász 1968)",
+    "proofStrategy": "**Approaches to the Problem**\n\n1. **Probabilistic Method**: Random 2-colorings succeed if expected monochromatic sets < 1.\n\n2. **Lovász Local Lemma**: Handles dependencies between sets in the family.\n\n3. **Cover-Free Families**: Connection to families where no set is covered by few others.\n\n4. **Density Arguments**: Sparseness bounds the local density of the family.\n\n**Challenge**: The condition involves ALL possible supersets X, not just sets in F.",
+    "keyInsights": [
+      "Property B = 2-colorability = chromatic number 2",
+      "Sparseness: < c_t|X| subsets of X in F for all X",
+      "t = 2 case: c_2 = 1 (Lovász 1968)",
+      "Conjecture: c_t → ∞ as t → ∞",
+      "Connected to Lovász Local Lemma techniques"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "set-families",
+      "title": "Set Families",
+      "summary": "SetFamily, groundSet, minSetSize definitions",
+      "startLine": 22,
+      "endLine": 39
+    },
+    {
+      "id": "property-b",
+      "title": "Property B (2-Colorability)",
+      "summary": "TwoColoring, isNonMonochromatic, hasPropertyB",
+      "startLine": 41,
+      "endLine": 61
+    },
+    {
+      "id": "chromatic",
+      "title": "Chromatic Number",
+      "summary": "KColoring, isKColorable, chromaticNumber",
+      "startLine": 63,
+      "endLine": 87
+    },
+    {
+      "id": "sparseness",
+      "title": "Sparseness Condition",
+      "summary": "subsetCount, isSparse, hasMinSize",
+      "startLine": 89,
+      "endLine": 105
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ThresholdFunction, tendsToInfinity, erdos_1022_conjecture",
+      "startLine": 107,
+      "endLine": 124
+    },
+    {
+      "id": "lovasz",
+      "title": "The t = 2 Case (Lovász 1968)",
+      "summary": "c2 = 1 and lovasz_theorem",
+      "startLine": 126,
+      "endLine": 147
+    },
+    {
+      "id": "hypergraph",
+      "title": "Equivalent Hypergraph Formulation",
+      "summary": "Hypergraph, erdos_1022_hypergraph",
+      "startLine": 149,
+      "endLine": 172
+    },
+    {
+      "id": "necessary",
+      "title": "Necessary Conditions",
+      "summary": "threshold_positive, threshold_grows",
+      "startLine": 174,
+      "endLine": 193
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Intuition",
+      "summary": "expectedMonochromatic and bounds",
+      "startLine": 210,
+      "endLine": 228
+    },
+    {
+      "id": "cover-free",
+      "title": "Connection to Cover-Free Families",
+      "summary": "isCoverFree, coverFree_implies_sparse",
+      "startLine": 230,
+      "endLine": 244
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1022 asks whether sparse set families (with sparseness depending on minimum set size) must have property B. The t = 2 case is solved (Lovász 1968, c_2 = 1), but the general case with c_t → ∞ remains open.",
+    "implications": "**Theoretical Significance**\n\n1. **Hypergraph Coloring**: Fundamental question about 2-colorability\n\n2. **Probabilistic Combinatorics**: Connects to Local Lemma techniques\n\n3. **Extremal Set Theory**: Density conditions forcing structure\n\n4. **Coding Theory**: Cover-free families have applications",
+    "openQuestions": [
+      "Does c_t → ∞ as t → ∞?",
+      "What is the growth rate of c_t if it exists?",
+      "Can Lovász Local Lemma be applied for general t?",
+      "What constructions give lower bounds on c_t?",
+      "Are there algorithmic approaches to finding 2-colorings?"
+    ]
   }
 }

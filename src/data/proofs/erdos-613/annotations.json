@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-613-header",
+    "proofId": "erdos-613",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős #613:** Graph decomposition and size Ramsey numbers.\n\n**Question:** Can graphs with C(2n+1,2) - C(n,2) - 1 edges decompose into bipartite + bounded-degree?\n\n**Answer:** NO — DISPROVED by Pikhurko.\n- n = 3, 4: Holds\n- n = 5: First counterexample (Lean-verified by Tao)\n\n**Bounds:** n² + 0.577n^{3/2} < r̂ < n² + √2·n^{3/2} + n",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-critical",
+    "proofId": "erdos-613",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Critical Edge Count",
+    "content": "`criticalEdgeCount n = C(2n+1,2) - C(n,2) - 1`\n\nThis is one less than the conjectured size Ramsey number. The question asks: with this many edges, can we always decompose?\n\nFor n=5: 55 - 10 - 1 = 44 edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-bipartite",
+    "proofId": "erdos-613",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Bipartite Graphs",
+    "content": "A graph is **bipartite** iff it has no odd cycles.\n\nBipartite graphs can be 2-colored: vertices split into two groups with edges only between groups.\n\nOdd cycles are the obstruction to bipartiteness.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-613-decomp",
+    "proofId": "erdos-613",
+    "range": { "startLine": 65, "endLine": 70 },
+    "type": "definition",
+    "title": "Decomposition Property",
+    "content": "`HasDecomposition G n` means G = H₁ ∪ H₂ where:\n- H₁ is bipartite\n- H₂ has max degree < n\n\nThe bipartite part handles 'most' edges; the bounded-degree part handles the rest.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-conjecture",
+    "proofId": "erdos-613",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "definition",
+    "title": "Original Conjecture",
+    "content": "**Conjecture (DISPROVED):**\n\nFor n ≥ 3, any graph with criticalEdgeCount n edges has the decomposition property.\n\nThis is equivalent to r̂(K_{1,n}, F) = C(2n+1,2) - C(n,2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-star",
+    "proofId": "erdos-613",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "Star Graph K_{1,n}",
+    "content": "The **star graph K_{1,n}** has one center vertex adjacent to n leaves.\n\nA graph contains K_{1,n} iff some vertex has degree ≥ n.\n\nStars are the 'simplest' high-degree subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-613-size-ramsey",
+    "proofId": "erdos-613",
+    "range": { "startLine": 95, "endLine": 99 },
+    "type": "definition",
+    "title": "Size Ramsey Number",
+    "content": "**r̂(H, F)** = minimum edges m such that:\n\nAny graph with m edges contains H OR has property F.\n\nHere: H = K_{1,n} (star), F = 'contains odd cycle' (non-bipartite).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-pikhurko-lower",
+    "proofId": "erdos-613",
+    "range": { "startLine": 107, "endLine": 111 },
+    "type": "axiom",
+    "title": "Pikhurko's Lower Bound",
+    "content": "**Lower bound:** r̂ > n² + 0.577·n^{3/2}\n\nThis exceeds the conjectured C(2n+1,2) - C(n,2) ≈ n² + n for large n.\n\nThe gap of Θ(n^{3/2}) disproves the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-pikhurko-upper",
+    "proofId": "erdos-613",
+    "range": { "startLine": 113, "endLine": 116 },
+    "type": "axiom",
+    "title": "Pikhurko's Upper Bound",
+    "content": "**Upper bound:** r̂ < n² + √2·n^{3/2} + n\n\nCombined with lower bound: r̂ = n² + Θ(n^{3/2}).\n\nThe exact coefficient in the n^{3/2} term is unknown (between 0.577 and √2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-false",
+    "proofId": "erdos-613",
+    "range": { "startLine": 118, "endLine": 120 },
+    "type": "theorem",
+    "title": "Conjecture is FALSE",
+    "content": "`original_conjecture_false : ¬OriginalConjecture`\n\nThe decomposition property fails for some graphs with the critical edge count.\n\nThis is a complete disproof, not just a gap in the proof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-tao",
+    "proofId": "erdos-613",
+    "range": { "startLine": 124, "endLine": 128 },
+    "type": "axiom",
+    "title": "Tao's Lean Verification",
+    "content": "**Tao's counterexample at n = 5:**\n\nThere exists a graph with 44 edges that CANNOT be decomposed into bipartite + max-degree-4.\n\nThis was **formally verified in Lean** — one of the first Erdős disproofs with computer verification!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-613-smallest",
+    "proofId": "erdos-613",
+    "range": { "startLine": 130, "endLine": 139 },
+    "type": "theorem",
+    "title": "Smallest Counterexample",
+    "content": "n = 5 is the **smallest counterexample**.\n\n- n = 3: 17 edges, conjecture HOLDS\n- n = 4: 29 edges, conjecture HOLDS  \n- n = 5: 44 edges, conjecture FAILS\n\nThe transition from true to false happens exactly at n = 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-613-faudree",
+    "proofId": "erdos-613",
+    "range": { "startLine": 143, "endLine": 148 },
+    "type": "axiom",
+    "title": "Faudree's Partial Result",
+    "content": "**Faudree (unpublished):** If |V| = 2n + 1 exactly, the conjecture HOLDS.\n\nThe counterexamples require more vertices! With exactly 2n+1 vertices and the critical edge count, decomposition is always possible.\n\nThis shows the vertex count matters, not just edge count.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-613-vertex-matters",
+    "proofId": "erdos-613",
+    "range": { "startLine": 150, "endLine": 161 },
+    "type": "theorem",
+    "title": "Vertex Count Matters",
+    "content": "The same edge count behaves differently depending on vertex count:\n\n- |V| = 2n + 1: Decomposition exists (Faudree)\n- |V| > 2n + 1: Counterexamples possible (Pikhurko)\n\nEdge density alone doesn't determine decomposability.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-613-gap",
+    "proofId": "erdos-613",
+    "range": { "startLine": 165, "endLine": 175 },
+    "type": "definition",
+    "title": "Gap Analysis",
+    "content": "The gap between Pikhurko's bounds:\n\n(√2 - 0.577)·n^{3/2} + n ≈ 0.84·n^{3/2}\n\nThis gap grows as n^{3/2}, so the relative error shrinks as n → ∞, but the absolute error grows.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-613-n3",
+    "proofId": "erdos-613",
+    "range": { "startLine": 199, "endLine": 204 },
+    "type": "theorem",
+    "title": "n = 3 Case",
+    "content": "For n = 3: criticalEdgeCount = 17.\n\nEvery graph with 17 edges CAN be decomposed into:\n- Bipartite part (no odd cycles)\n- Max-degree-2 part\n\nThe conjecture holds for this small case.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-613-main",
+    "proofId": "erdos-613",
+    "range": { "startLine": 229, "endLine": 253 },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "**Erdős Problem #613: DISPROVED**\n\n1. **Original conjecture:** FALSE (Pikhurko)\n2. **Small cases n = 3, 4:** TRUE\n3. **First counterexample:** n = 5 (Tao, Lean-verified)\n4. **Restricted case |V| = 2n+1:** TRUE (Faudree)\n5. **Asymptotic:** r̂ = n² + Θ(n^{3/2}), not n² + O(n)\n\nThis is a rare, clean disproof of an Erdős conjecture with formal verification.",
+    "significance": "critical"
+  }
+]

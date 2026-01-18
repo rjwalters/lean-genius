@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-1022-setfamily",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "definition",
+    "title": "Set Family",
+    "content": "Finite collection of finite sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-groundset",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "Ground Set",
+    "content": "Union of all sets in the family.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1022-twocoloring",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Two-Coloring",
+    "content": "Assignment of elements to {true, false}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-nonmono",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Non-Monochromatic",
+    "content": "Set has both colors represented.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-propertyb",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Property B",
+    "content": "2-coloring exists with no monochromatic set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1022-kcolorable",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "definition",
+    "title": "k-Colorable",
+    "content": "k colors suffice for non-monochromaticity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-chromatic",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "Minimum colors for non-monochromaticity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1022-subsetcount",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "definition",
+    "title": "Subset Count",
+    "content": "Number of family sets that are subsets of X.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-issparse",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "definition",
+    "title": "Sparseness Condition",
+    "content": "For all X: subsetCount(F, X) < c * |X|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1022-hasminsize",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "definition",
+    "title": "Minimum Set Size",
+    "content": "All sets in F have size at least t.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-threshold",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 113, "endLine": 114 },
+    "type": "definition",
+    "title": "Threshold Function",
+    "content": "c_t mapping minimum size to sparseness bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-tendsinfty",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 116, "endLine": 118 },
+    "type": "definition",
+    "title": "Tends to Infinity",
+    "content": "c_t -> infinity as t -> infinity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1022-conjecture",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 120, "endLine": 124 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "Exists c_t -> infinity giving property B.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1022-c2",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 132, "endLine": 133 },
+    "type": "definition",
+    "title": "c_2 = 1",
+    "content": "Threshold for t = 2 case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-lovasz",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 135, "endLine": 138 },
+    "type": "theorem",
+    "title": "Lovasz Theorem (1968)",
+    "content": "c_2 = 1 suffices for t = 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1022-hypergraph",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 155, "endLine": 156 },
+    "type": "definition",
+    "title": "Hypergraph",
+    "content": "Alternative name for set family.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1022-expected",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 216, "endLine": 218 },
+    "type": "definition",
+    "title": "Expected Monochromatic",
+    "content": "Expected count under random 2-coloring.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1022-coverfree",
+    "proofId": "erdos-1022",
+    "range": { "startLine": 236, "endLine": 239 },
+    "type": "definition",
+    "title": "r-Cover-Free",
+    "content": "No set covered by r others.",
+    "significance": "key"
+  }
+]

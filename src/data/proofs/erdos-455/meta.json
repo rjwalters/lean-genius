@@ -1,33 +1,96 @@
 {
   "id": "erdos-455",
-  "title": "Erdős Problem #455",
+  "title": "Erdős Problem #455: Monotone Prime Gap Sequences",
   "slug": "erdos-455",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of primes such that\\[q_{n+1}-q_n\\geq q_n-q_{n-1}.\\]Must\\[\\lim_n {n^2}=\\infty?\\]\n\n\n\nRichter  proved that...",
+  "description": "If primes q₁ < q₂ < ... have non-decreasing gaps, must q_n grow faster than n²?",
   "meta": {
-    "author": "Unknown",
+    "author": "Richter (1976, partial); Open",
     "sourceUrl": "https://erdosproblems.com/455",
-    "date": "",
-    "status": "pending",
+    "date": "1976",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos455Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "sequences",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 455,
     "erdosUrl": "https://erdosproblems.com/455",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotonic sequences",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic behavior",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "liminf",
+        "description": "Limit inferior for sequences",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "Structure MonotoneGapPrimeSeq capturing the problem constraints",
+      "Formal statement of Richter's lower bound on liminf",
+      "Equivalence formulation of the open conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #455 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $q_1<q_2<\\cdots$ be a sequence of primes such that\\[q_{n+1}-q_n\\geq q_n-q_{n-1}.\\]Must\\[\\lim_n \\frac{q_n}{n^2}=\\infty?\\]\n\n\n\nRichter \\cite{Ri76} proved that\\[\\liminf_n \\frac{q_n}{n^2}>0.352\\cdots.\\]\n\n\n\n\nReferences\n\n\n[Ri76] Richter, Bernd, \\\"{U}ber die Monotonie von Differenzenfolgen. Acta Arith. (1976), 225-227.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns sequences of primes where consecutive gaps never decrease. Such sequences must spread out increasingly, but the question is: how fast?\n\nErdős asked whether these sequences must grow superquadratically, i.e., whether lim q_n/n² = ∞. This remains open.\n\nIn 1976, Bernd Richter made progress by proving a lower bound: liminf q_n/n² > 0.352. This shows such sequences must grow at least quadratically, but whether they must grow strictly faster remains unknown.",
+    "problemStatement": "Let $q_1 < q_2 < \\cdots$ be a sequence of primes with non-decreasing gaps:\n$$q_{n+1} - q_n \\geq q_n - q_{n-1}$$\n\n**Open Question**: Must $\\lim_{n \\to \\infty} \\frac{q_n}{n^2} = \\infty$?\n\n**Partial Result (Richter 1976)**: $\\liminf_{n \\to \\infty} \\frac{q_n}{n^2} > 0.352$",
+    "proofStrategy": "We formalize the problem using a structure `MonotoneGapPrimeSeq` that captures all the constraints: strict monotonicity, primality of all terms, and non-decreasing gaps.\n\nRichter's lower bound is stated as an axiom since its proof requires careful prime distribution estimates. The main conjecture is formalized as an equivalence: the conjecture holds iff all such sequences have q_n/n² tending to infinity.\n\nWe also prove basic structural properties: gaps are positive, all terms are at least 2, etc.",
+    "keyInsights": [
+      "**Non-decreasing gaps are restrictive**: The sequence of all primes (2, 3, 5, 7, 11, 13, ...) does NOT satisfy this condition because the gap 13-11=2 is less than 11-7=4.",
+      "**Quadratic growth is necessary**: Richter's bound shows q_n ≥ 0.352·n² eventually. The gaps must grow like n to maintain non-decreasing differences.",
+      "**The conjecture asks for more**: While quadratic growth is proved, the question is whether strictly superquadratic growth (faster than any cn²) is required.",
+      "**Discrete convexity**: The non-decreasing gaps condition is equivalent to discrete convexity - the sequence lies above its secant lines."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 29,
+      "endLine": 46,
+      "summary": "Defines HasNonDecreasingGaps and MonotoneGapPrimeSeq structure"
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 48,
+      "endLine": 104,
+      "summary": "Richter's bound, the open conjecture, and growth consequences"
+    },
+    {
+      "id": "structure",
+      "title": "Structural Properties",
+      "startLine": 106,
+      "endLine": 154,
+      "summary": "Basic properties of monotone-gap prime sequences"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures the open Erdős Problem #455 about prime sequences with monotonically non-decreasing gaps. While Richter's 1976 result shows such sequences must grow at least quadratically, the question of whether they must grow strictly faster than n² remains open.",
+    "implications": "The problem connects prime distribution theory with discrete convexity. A resolution would shed light on how the distribution of primes constrains specially structured subsequences.",
+    "openQuestions": [
+      "Must lim q_n/n² = ∞ for all monotone-gap prime sequences?",
+      "What is the exact value of the liminf constant (Richter showed > 0.352)?",
+      "Do infinitely many monotone-gap prime sequences exist?"
+    ]
   }
 }

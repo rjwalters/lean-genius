@@ -1076,22 +1076,26 @@
       "bipartite-graphs"
     ],
     "erdosNumber": 1021,
-    "sorries": 6,
+    "sorries": 7,
     "annotationCount": 19
   },
   {
     "id": "erdos-1022",
-    "title": "Erdős Problem #1022",
+    "title": "Erdős Problem #1022: Property B and Sparse Set Families",
     "slug": "erdos-1022",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant ..., where ... as ..., such that if $...t...X...<c_t\\lvert X\\rvert...A\\in ...A\\subseteq X......2...c_2=1$...",
+    "description": "Is there c_t → ∞ such that if F is a family of sets of size ≥ t, and for every X there are < c_t|X| subsets of X in F, then F has property B (2-colorable)? Known: c_2 = 1 (Lovász 1968).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "hypergraphs",
+      "erdos",
+      "property-b",
+      "set-families"
     ],
     "erdosNumber": 1022,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 8,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1023",
@@ -3308,17 +3312,22 @@
   },
   {
     "id": "erdos-179",
-    "title": "Erdős Problem #179",
+    "title": "Erdős Problem #179: Arithmetic Progression Supersaturation",
     "slug": "erdos-179",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be integers and define ... to be minimal such that every set ... of size ... which contains at least ... many ...-ter...",
-    "status": "pending",
+    "description": "For integers 1 ≤ k < ℓ, define F_k(N, ℓ) as the minimum number such that every set A ⊆ ℕ of size N containing at least F_k(N, ℓ) many k-term APs must contain an ℓ-term AP. Questions: Is F₃(N, 4) = o(N²)? Is lim log F₃(N, ℓ) / log N = 2 for all ℓ > 3? Answer: YES to both.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "supersaturation",
+      "ramsey-theory"
     ],
     "erdosNumber": 179,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 7,
+    "annotationCount": 20
   },
   {
     "id": "erdos-18",
@@ -6886,15 +6895,20 @@
   },
   {
     "id": "erdos-455",
-    "title": "Erdős Problem #455",
+    "title": "Erdős Problem #455: Monotone Prime Gap Sequences",
     "slug": "erdos-455",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of primes such that\\[q_{n+1}-q_n\\geq q_n-q_{n-1}.\\]Must\\[\\lim_n {n^2}=\\infty?\\]\n\n\n\nRichter  proved that...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If primes q₁ < q₂ < ... have non-decreasing gaps, must q_n grow faster than n²?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "sequences",
+      "open-problem"
     ],
     "erdosNumber": 455,
+    "mathlibCount": 4,
     "sorries": 0,
     "annotationCount": 0
   },
@@ -8625,17 +8639,24 @@
   },
   {
     "id": "erdos-613",
-    "title": "Erdős Problem #613",
+    "title": "Erdős Problem #613: Graph Decomposition and Size Ramsey Numbers",
     "slug": "erdos-613",
-    "description": "Let n&#x2265;3\" role=\"presentation\" style=\"position: relative;\">n≥3n≥3n\\geq 3 and G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with (2n+12)&#x2212;(n2)&#x2212;1\" role=\"presenta...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n² + 0.577n^{3/2} < r̂ < n² + √2·n^{3/2} + n.",
+    "status": "formalized",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey",
+      "graph-decomposition",
+      "counterexample",
+      "lean-verified"
     ],
     "erdosNumber": 613,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 14,
+    "annotationCount": 17
   },
   {
     "id": "erdos-615",

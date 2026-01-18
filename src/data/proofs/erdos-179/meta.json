@@ -1,33 +1,137 @@
 {
   "id": "erdos-179",
-  "title": "Erdős Problem #179",
+  "title": "Erdős Problem #179: Arithmetic Progression Supersaturation",
   "slug": "erdos-179",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be integers and define ... to be minimal such that every set ... of size ... which contains at least ... many ...-ter...",
+  "description": "For integers 1 ≤ k < ℓ, define F_k(N, ℓ) as the minimum number such that every set A ⊆ ℕ of size N containing at least F_k(N, ℓ) many k-term APs must contain an ℓ-term AP. Questions: Is F₃(N, 4) = o(N²)? Is lim log F₃(N, ℓ) / log N = 2 for all ℓ > 3? Answer: YES to both.",
   "meta": {
-    "author": "Unknown",
+    "author": "Fox-Pohoata (2020), Leng-Sah-Sawhney (2024)",
     "sourceUrl": "https://erdosproblems.com/179",
-    "date": "",
-    "status": "pending",
+    "date": "2020",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos179Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "supersaturation",
+      "ramsey-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 7,
     "erdosNumber": 179,
     "erdosUrl": "https://erdosproblems.com/179",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for counting APs",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic analysis filters",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "FoxPohoata2020",
+        "citation": "Fox, J. and Pohoata, C. (2020). Sets without k-term progressions can have many shorter progressions. arXiv:1908.09905.",
+        "type": "paper"
+      },
+      {
+        "key": "LengSahSawhney2024",
+        "citation": "Leng, J., Sah, A. and Sawhney, M. (2024). Improved bounds for Szemerédi's theorem. arXiv:2402.17995.",
+        "type": "paper"
+      },
+      {
+        "key": "Szemeredi1975",
+        "citation": "Szemerédi, E. (1975). On sets of integers containing no k elements in arithmetic progression. Acta Arithmetica 27, 199-245.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the supersaturation function F_k(N, ℓ)",
+      "Axiomatization of Fox-Pohoata and Leng-Sah-Sawhney bounds",
+      "Connection to Szemerédi's theorem and Roth's theorem",
+      "Formalization of Erdős's two specific questions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #179 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq k<\\ell$ be integers and define $F_k(N,\\ell)$ to be minimal such that every set $A\\subset \\mathbb{N}$ of size $N$ which contains at least $F_k(N,\\ell)$ many $k$-term arithmetic progressions must contain an $\\ell$-term arithmetic progression. Find good upper bounds for $F_k(N,\\ell)$. Is it true that\\[F_3(N,4)=o(N^2)?\\]Is it true that for every $\\ell>3$\\[\\lim_{N\\to \\infty}\\frac{\\log F_3(N,\\ell)}{\\log N}=2?\\]\n\n\n\nErd\\H{o}s remarks the upper bound $o(N^2)$ is certainly false for $\\ell >\\epsilon \\log N$. The answer is yes: Fox and Pohoata \\cite{FoPo20} have shown that, for all fixed $1\\leq k<\\ell$,\\[F_k(N,\\ell)=N^{2-o(1)}\\]and in fact\\[F_{k}(N,\\ell) \\leq \\frac{N^2}{(\\log\\log N)^{C_\\ell}}\\]where $C_\\ell>0$ is some constant. In fact, they show that, if $r_\\ell(N)$ is the size of the largest subset of $\\{1,\\ldots,N\\}$ without an $\\ell$-term arithmetic progression then there exists some absolute constant $c>0$ such that\\[\\left(c \\frac{r_\\ell(N)}{N}\\right)^{2(k-1)}N^2 < F_k(N,\\ell) <\\left(\\frac{r_\\ell(N)}{N}\\right)^{O(1)}N^2.\\]Any improved bounds for Szemer\\'{e}di's theorem (see [139]) therefore yield improved bounds for $F_k(N,\\ell)$. In particular, the bounds of Leng, Sah, and Sawhney \\cite{LSS24} imply\\[F_k(N,\\ell) \\leq \\frac{N^2}{\\exp((\\log\\log N)^{c_\\ell})}\\]for some constant $c_\\ell>0$.\n\n\n\n\nReferences\n\n\n[FoPo20] Fox, J. and Pohoata, C., Sets without $k$-term progressions can have many shorter progressions. arXiv:1908.09905 (2020).\n\n[LSS24] Leng, J., Sah, A. and Sawhney, M., Improved bounds for Szemer\\'{e}di's theorem. arXiv:2402.17995 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem about arithmetic progression supersaturation, asking: if a set has 'too many' k-term APs, must it contain a longer ℓ-term AP? This connects to the broader theme of density and structure in combinatorics. Fox and Pohoata resolved both questions in 2020, showing F_k(N, ℓ) = N^{2-o(1)}. Leng, Sah, and Sawhney improved the bounds in 2024 using advances in Szemerédi's theorem.",
+    "problemStatement": "Let 1 ≤ k < ℓ be integers. Define F_k(N, ℓ) as the minimum number such that every set A ⊆ ℕ of size N containing at least F_k(N, ℓ) many k-term arithmetic progressions must contain an ℓ-term AP.\n\nErdős asked two questions:\n1. Is F₃(N, 4) = o(N²)?\n2. For every ℓ > 3, is lim_{N→∞} log F₃(N, ℓ) / log N = 2?\n\nThe answer to both is YES.",
+    "proofStrategy": "The formalization:\n\n1. Defines arithmetic progressions and the counting function\n2. Defines the supersaturation function F_k(N, ℓ)\n3. States Erdős's two questions formally\n4. Axiomatizes Fox-Pohoata's bound: F_k(N, ℓ) ≤ N² / (log log N)^C\n5. Axiomatizes Leng-Sah-Sawhney's improvement: F_k(N, ℓ) ≤ N² / exp((log log N)^c)\n6. Proves both questions are resolved by these results\n7. Connects to Szemerédi's theorem and Roth's theorem",
+    "keyInsights": [
+      "The supersaturation function F_k(N, ℓ) captures when having many short APs forces long APs",
+      "F_k(N, ℓ) = N^{2-o(1)} means the exponent is 2 but with a slowly decaying correction",
+      "Bounds on F_k relate directly to bounds on r_ℓ(N), the Szemerédi function",
+      "The 2024 improvements use breakthrough bounds for Szemerédi's theorem"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "arithmetic-progressions",
+      "title": "Arithmetic Progressions",
+      "summary": "Definition of k-term APs and counting",
+      "startLine": 31,
+      "endLine": 48
+    },
+    {
+      "id": "supersaturation-function",
+      "title": "The Supersaturation Function",
+      "summary": "Definition of F_k(N, ℓ)",
+      "startLine": 49,
+      "endLine": 74
+    },
+    {
+      "id": "erdos-questions",
+      "title": "Erdős's Questions",
+      "summary": "The two specific questions Erdős asked",
+      "startLine": 89,
+      "endLine": 104
+    },
+    {
+      "id": "fox-pohoata",
+      "title": "Fox-Pohoata Theorem",
+      "summary": "The 2020 breakthrough solving both questions",
+      "startLine": 105,
+      "endLine": 131
+    },
+    {
+      "id": "leng-sah-sawhney",
+      "title": "Leng-Sah-Sawhney Improvement",
+      "summary": "The 2024 state-of-the-art bound",
+      "startLine": 132,
+      "endLine": 149
+    },
+    {
+      "id": "szemeredi-connection",
+      "title": "Connection to Szemerédi",
+      "summary": "Relationship to density theorems",
+      "startLine": 150,
+      "endLine": 191
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem #179 is SOLVED",
+      "startLine": 209,
+      "endLine": 234
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #179 asks about the supersaturation function F_k(N, ℓ): how many k-term APs force an ℓ-term AP? Both of Erdős's questions have affirmative answers: F₃(N, 4) = o(N²) and the limiting exponent is 2. This was proved by Fox-Pohoata in 2020, with improvements by Leng-Sah-Sawhney in 2024.",
+    "implications": "The supersaturation phenomenon connects to:\n\n1. Szemerédi's theorem on arithmetic progressions in dense sets\n2. Bounds on r_ℓ(N), the maximum size of AP-free sets\n3. The broader theory of extremal combinatorics\n4. Ramsey-type questions about forcing structure",
+    "openQuestions": [
+      "Optimal constants C_ℓ and c_ℓ in the bounds",
+      "Tight bounds for specific small values of k and ℓ",
+      "Generalizations to other patterns beyond APs"
+    ]
   }
 }

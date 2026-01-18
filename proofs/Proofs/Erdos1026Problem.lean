@@ -40,7 +40,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Finprod
 
 open Finset BigOperators
 
@@ -150,7 +150,7 @@ noncomputable def maxMonotonicSumLength {n : ℕ} (seq : RealSeq n) (m : ℕ) : 
 
 /-- The maximum sum over ALL monotonic subsequences (any length). -/
 noncomputable def maxMonotonicSum {n : ℕ} (seq : RealSeq n) : ℝ :=
-  sSup {s | ∃ m (sub : Subsequence n m), IsMonotonic seq sub ∧ s = subsequenceSum seq sub}
+  sSup {s | ∃ (m : ℕ) (sub : Subsequence n m), IsMonotonic seq sub ∧ s = subsequenceSum seq sub}
 
 /-- The ratio of max monotonic sum to total sum, normalized by √n. -/
 noncomputable def normalizedRatio {n : ℕ} (seq : RealSeq n) (hn : n > 0)
@@ -163,7 +163,7 @@ noncomputable def normalizedRatio {n : ℕ} (seq : RealSeq n) (hn : n > 0)
 Erdős asked for the optimal constant c.
 -/
 
-/--
+/-
 **The Optimal Constant Problem:**
 Find the largest c such that for all sequences of n positive reals,
   maxMonotonicSum(seq) ≥ (c - o(1)) · (1/√n) · totalSum(seq)
@@ -180,7 +180,7 @@ axiom hanani_lower_bound (n : ℕ) (seq : RealSeq n)
 
 /-- Cambie's upper bound: c ≤ 1 (by explicit construction). -/
 axiom cambie_upper_bound :
-    ∀ ε > 0, ∃ n (seq : RealSeq n),
+    ∀ ε > 0, ∃ (n : ℕ) (seq : RealSeq n),
       Function.Injective seq ∧ (∀ i, seq i > 0) ∧
       maxMonotonicSum seq ≤ (1 + ε) * totalSum seq / Real.sqrt n
 
@@ -220,7 +220,7 @@ axiom tidor_wang_yang : ∀ (k : ℕ) (hk : k ≥ 1)
 
 /-- The optimal constant is exactly 1. -/
 axiom optimal_constant_is_one :
-    ∀ ε > 0, ∀ n (seq : RealSeq n),
+    ∀ ε > 0, ∀ (n : ℕ) (seq : RealSeq n),
       Function.Injective seq → (∀ i, seq i > 0) → totalSum seq > 0 →
       maxMonotonicSum seq ≥ (1 - ε) * totalSum seq / Real.sqrt n
 
@@ -231,11 +231,11 @@ Connections to other combinatorial optimization problems.
 -/
 
 /-- The length of the longest increasing subsequence (LIS). -/
-def LIS {n : ℕ} (seq : RealSeq n) : ℕ :=
+noncomputable def LIS {n : ℕ} (seq : RealSeq n) : ℕ :=
   sSup {m | ∃ (sub : Subsequence n m), IsIncreasing seq sub}
 
 /-- The length of the longest decreasing subsequence (LDS). -/
-def LDS {n : ℕ} (seq : RealSeq n) : ℕ :=
+noncomputable def LDS {n : ℕ} (seq : RealSeq n) : ℕ :=
   sSup {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub}
 
 /-- LIS · LDS ≥ n (a consequence of Erdős-Szekeres). -/
@@ -267,11 +267,12 @@ theorem erdos_1026 : ∀ (k : ℕ) (hk : k ≥ 1)
     maxMonotonicSum seq ≥ 1 / k :=
   fun k hk seq hDistinct hPos hSum => tidor_wang_yang k hk seq hDistinct hPos hSum
 
-/-- The result is tight: Cambie's construction achieves equality. -/
+/-- The result is tight: Cambie's construction achieves equality asymptotically.
+    For any ε > 0 and large enough k, there exists a sequence achieving sum ≤ 1/k + ε. -/
 axiom erdos_1026_tight :
-    ∀ k : ℕ, k ≥ 1 → ∃ (seq : RealSeq (k^2)),
+    ∀ ε > 0, ∃ k₀, ∀ k ≥ k₀, ∃ (seq : RealSeq (k^2)),
       Function.Injective seq ∧ (∀ i, seq i > 0) ∧
-      totalSum seq = 1 ∧ maxMonotonicSum seq = 1 / k + o (1 : ℝ)
+      totalSum seq = 1 ∧ maxMonotonicSum seq ≤ 1 / k + ε
 
 /-- Connection to tournament theory (Wagner). -/
 axiom tournament_connection :
