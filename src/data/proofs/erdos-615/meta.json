@@ -1,33 +1,151 @@
 {
   "id": "erdos-615",
-  "title": "Erdős Problem #615",
+  "title": "Erdos Problem #615: Ramsey-Turan Number rt(n; 4, n/log n)",
   "slug": "erdos-615",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some constant ... such that if ... is a graph with ... vertices and ... edges then ... must contain either a...",
+  "description": "Does there exist c > 0 such that graphs with (1/8-c)n^2 edges must contain K4 or independence set of size n/log n? NO, disproved by Fox-Loh-Zhao (2015).",
   "meta": {
-    "author": "Unknown",
+    "author": "Fox-Loh-Zhao (2015 resolution), Erdos-Hajnal-Simonovits-Sos-Szemeredi (1993 problem)",
     "sourceUrl": "https://erdosproblems.com/615",
-    "date": "",
-    "status": "pending",
+    "date": "2015",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos615Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "ramsey-theory",
+      "turan-theory",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 615,
     "erdosUrl": "https://erdosproblems.com/615",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "Clique-free predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventually statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural logarithm for naturals",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "hasClique, hasIndependentSet definitions for graphs",
+      "isRTGraph definition: Ramsey-Turan condition",
+      "rt function: Ramsey-Turan number definition",
+      "threshold_one_eighth: the critical 1/8 constant",
+      "erdos_615_conjecture: formal statement of the problem",
+      "ehss_upper_bound axiom: linear case upper bound",
+      "sudakov_upper_bound axiom: subquadratic regime",
+      "fox_loh_zhao_lower_bound axiom: critical window theorem",
+      "criticalWindow function: sqrt(log n / log log n)",
+      "erdos_615 theorem: main result (conjecture is false)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #615 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some constant $c>0$ such that if $G$ is a graph with $n$ vertices and $\\geq (1/8-c)n^2$ edges then $G$ must contain either a $K_4$ or an independent set on at least $n/\\log n$ vertices?\n\n\n\nA problem of Erd\\H{o}s, Hajnal, Simonovits, S\\'{o}s, and Szemer\\'{e}di \\cite{EHSSS93}. In other words, if $\\mathrm{rt}(n;k,\\ell)$ is the Ramsey-Tur\\'{a}n number then is it true that\\[\\mathrm{rt}(n; 4,n/\\log n)< (1/8-c)n^2?\\]Erd\\H{o}s, Hajnal, S\\'{o}s, and Szemer\\'{e}di \\cite{EHSS83} proved that for any fixed $\\epsilon>0$\\[\\mathrm{rt}(n; 4,\\epsilon n)< (1/8+o(1))n^2.\\]Sudakov \\cite{Su03} proved that\\[\\mathrm{rt}(n; 4,ne^{-f(n)})=o(n^2)\\]whenever $f(n)/\\sqrt{\\log n}\\to \\infty$.\n\n\nResolved by Fox, Loh, and Zhao \\cite{FLZ15} who showed that the answer is no; in fact they prove that\\[\\mathrm{rt}(n; 4, ne^{-f(n)})\\geq (1/8-o(1))n^2\\]whenever $f(n) =o(\\sqrt{\\log n/\\log\\log n})$.\n\nSee also [22] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[EHSS83] Erd\\H{o}s, P. and Hajnal, A. and S\\'{o}s, Vera T. and Szemer\\'{e}di, E., More results on Ramsey-Tur\\'{a}n type problems. Combinatorica (1983), 69-81.\n\n[EHSSS93] Erd\\H{o}s, P. and Hajnal, A. and Simonovits, M. and S\\'{o}s,\nV. T. and Szemer\\'{e}di, E., Tur\\'{a}n-Ramsey theorems and simple asymptotically extremal\nstructures. Combinatorica (1993), 31-56.\n\n[FLZ15] Fox, Jacob and Loh, Po-Shen and Zhao, Yufei, The critical window for the classical Ramsey-Tur\\'{a}n\nproblem. Combinatorica (2015), 435-476.\n\n[Su03] Sudakov, Benny, A few remarks on Ramsey-Tur\\'{a}n-type problems. J. Combin. Theory Ser. B (2003), 99-106.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #615**\n\nThis is a fundamental problem in Ramsey-Turan theory, combining ideas from extremal graph theory and Ramsey theory.\n\n**Key History:**\n- Erdos-Hajnal-Simonovits-Sos-Szemeredi [EHSSS93] posed the problem (1993)\n- Erdos-Hajnal-Sos-Szemeredi [EHSS83] proved rt(n; 4, en) < (1/8 + o(1))n^2 (1983)\n- Sudakov [Su03] proved rt is subquadratic for very slow growth (2003)\n- Fox-Loh-Zhao [FLZ15] resolved it negatively (2015)\n\n**The Ramsey-Turan Number:**\nrt(n; k, l) = max edges in n-vertex graph with no K_k and no independent set of size l.\n\nThis combines Ramsey theory (avoiding monochromatic structures) with Turan theory (maximizing edges).",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nDoes there exist $c > 0$ such that if $G$ is a graph with $n$ vertices and $\\geq (1/8 - c)n^2$ edges, then $G$ must contain either $K_4$ or an independent set of size $n/\\log n$?\n\n**Equivalently:** Is $\\mathrm{rt}(n; 4, n/\\log n) < (1/8 - c)n^2$?\n\n**Answer: NO**\n\nFox, Loh, and Zhao (2015) proved that $\\mathrm{rt}(n; 4, n/\\log n) \\geq (1/8 - o(1))n^2$.\n\nThe \"critical window\" occurs at $f(n) \\approx \\sqrt{\\log n / \\log\\log n}$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define hasClique, hasIndependentSet, isRTGraph using Mathlib's SimpleGraph.\n\n2. **RT Number:** Define rt(n; k, l) as the maximum edge count.\n\n3. **Problem Statement:** State erdos_615_conjecture asking for constant c.\n\n4. **Upper Bounds:** Axiomatize EHSS83 and Sudakov results.\n\n5. **Fox-Loh-Zhao:** Axiomatize the critical window theorem showing lower bound.\n\n6. **Resolution:** The conjecture is false - no such c exists.\n\n7. **Critical Window:** Define and explain the phase transition at sqrt(log n / log log n).",
+    "keyInsights": [
+      "**1/8 Threshold:** For linear independence alpha(G) < en, rt(n;4,en) ~ (1/8)n^2",
+      "**Critical Window:** Phase transition at f(n) ~ sqrt(log n / log log n)",
+      "**Subquadratic Regime:** When f(n)/sqrt(log n) -> infinity, rt = o(n^2)",
+      "**Disproof:** For n/log n independence, 1/8 cannot be improved",
+      "**Turan Connection:** ex(n, K4) ~ (1/6)n^2, but with independence constraint get 1/8",
+      "**3-Partite Structure:** K4-free graphs can be nearly tripartite"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "hasClique, hasIndependentSet, isRTGraph, rt function",
+      "startLine": 42,
+      "endLine": 87
+    },
+    {
+      "id": "problem-statement",
+      "title": "The Problem Statement",
+      "summary": "threshold_one_eighth, erdos_615_conjecture",
+      "startLine": 89,
+      "endLine": 114
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "ehss_upper_bound, sudakov_upper_bound",
+      "startLine": 116,
+      "endLine": 144
+    },
+    {
+      "id": "fox-loh-zhao",
+      "title": "Fox-Loh-Zhao Resolution",
+      "summary": "fox_loh_zhao_lower_bound, erdos_615_false, erdos_615",
+      "startLine": 146,
+      "endLine": 180
+    },
+    {
+      "id": "critical-window",
+      "title": "The Critical Window",
+      "summary": "criticalWindow function, isInCriticalWindow, phase transition",
+      "startLine": 182,
+      "endLine": 206
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "turan_k4, rt_linear, isSublinear",
+      "startLine": 208,
+      "endLine": 239
+    },
+    {
+      "id": "related-problems",
+      "title": "Connection to Other Problems",
+      "summary": "isRamseyRelated, rt_turan_bound",
+      "startLine": 241,
+      "endLine": 263
+    },
+    {
+      "id": "construction",
+      "title": "The Construction",
+      "summary": "simonovits_sos_construction",
+      "startLine": 265,
+      "endLine": 283
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_615_summary, erdos_615_answer",
+      "startLine": 285,
+      "endLine": 315
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #615 asked whether the 1/8 threshold for rt(n; 4, l) could be improved when l = n/log n. The answer is NO: Fox, Loh, and Zhao (2015) proved that rt(n; 4, n/log n) >= (1/8 - o(1))n^2. They identified a critical window at f(n) ~ sqrt(log n / log log n) where the behavior transitions from (1/8)n^2 to subquadratic.",
+    "implications": "**Combinatorial Significance**\n\n1. **Ramsey-Turan Theory:** Establishes precise thresholds for K4-free graphs with independence constraints\n\n2. **Critical Phenomena:** Identifies exact transition point between quadratic and subquadratic regimes\n\n3. **Probabilistic Methods:** The construction uses random graph techniques\n\n4. **3-Partite Structure:** K4-free dense graphs are approximately tripartite\n\n5. **Phase Transitions:** Mathematical proof of \"critical window\" phenomenon",
+    "openQuestions": [
+      "What is the exact constant in the critical window?",
+      "Analogous results for rt(n; k, l) with k > 4?",
+      "Can the constructions be made explicit?",
+      "What is the behavior exactly at the critical window?",
+      "Extensions to hypergraphs?"
+    ]
   }
 }
