@@ -1,33 +1,104 @@
 {
   "id": "erdos-812",
-  "title": "Erdős Problem #812",
+  "title": "Erdős Problem #812: Growth of Consecutive Ramsey Numbers",
   "slug": "erdos-812",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[{R(n)}\\geq 1+c\\]for some constant ..., for all large ...? Is it true that\\[R(n+1)-R(n) \\gg n^2?\\]\n\n\n\nBurr, E...",
+  "description": "Two questions about Ramsey number growth: (1) Is R(n+1)/R(n) ≥ 1+c for some c > 0? (2) Is R(n+1) - R(n) ≫ n²? Both questions remain OPEN. Best known: R(n+1) - R(n) ≥ 4n - 8 (Burr-Erdős-Faudree-Schelp 1989).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Burr, Faudree, Schelp",
     "sourceUrl": "https://erdosproblems.com/812",
-    "date": "",
-    "status": "pending",
+    "date": "1989-1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos812Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 812,
     "erdosUrl": "https://erdosproblems.com/812",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #812 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[\\frac{R(n+1)}{R(n)}\\geq 1+c\\]for some constant $c>0$, for all large $n$? Is it true that\\[R(n+1)-R(n) \\gg n^2?\\]\n\n\n\nBurr, Erd\\H{o}s, Faudree, and Schelp \\cite{BEFS89} proved that\\[R(n+1)-R(n) \\geq 4n-8\\]for all $n\\geq 2$. The lower bound of [165] implies that\\[R(n+2)-R(n) \\gg n^{2-o(1)}.\\]\n\n\n\n\nReferences\n\n\n[BEFS89] Burr, S. A. and Erd\\H{o}s, P. and Faudree, R. J. and Schelp, R.\nH., On the difference between consecutive {R}amsey numbers. Utilitas Math. (1989), 115--118.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the growth rate of the diagonal Ramsey numbers R(n), fundamental objects in combinatorics. Ramsey proved their existence in 1930, Erdős-Szekeres established upper bounds in 1935, and Erdős introduced probabilistic lower bounds in 1947. Despite nearly a century of study, exact growth rates remain mysterious. Even R(5) is unknown (43 ≤ R(5) ≤ 48). This problem asks whether consecutive Ramsey numbers grow by at least a constant ratio or by at least quadratic differences.",
+    "problemStatement": "Is it true that R(n+1)/R(n) ≥ 1 + c for some constant c > 0 and all large n? Is it true that R(n+1) - R(n) ≫ n²?",
+    "proofStrategy": "The formalization defines the Ramsey function R(n), states the two main conjectures, and presents the known results. The BEFS theorem gives a linear lower bound on differences. The connection to Problem #165 shows that two-step differences are almost quadratic. The gap between one-step and two-step bounds is highlighted.",
+    "keyInsights": [
+      "The linear bound R(n+1) - R(n) ≥ 4n - 8 is best known",
+      "Two-step differences R(n+2) - R(n) ≫ n^{2-o(1)} are much larger",
+      "Cannot be resolved by finite computation - needs asymptotic arguments",
+      "Ramsey numbers have mysterious growth between 2^{n/2} and 4^n",
+      "The sequence R(n) may have irregular jumps"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Ramsey Number Definitions",
+      "startLine": 35,
+      "endLine": 71,
+      "summary": "Defines the diagonal Ramsey number R(n), basic properties (R(1)=1, R(2)=2, monotonicity), known values (R(3)=6, R(4)=18), and the classical bounds 2^{n/2} ≤ R(n) ≤ 4^n/√n."
+    },
+    {
+      "id": "section-2",
+      "title": "Main Questions",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "Formalizes the two main conjectures: the ratio conjecture (R(n+1)/R(n) ≥ 1+c) and the quadratic difference conjecture (R(n+1) - R(n) ≫ n²)."
+    },
+    {
+      "id": "section-3",
+      "title": "Known Results",
+      "startLine": 96,
+      "endLine": 129,
+      "summary": "States the BEFS theorem (R(n+1) - R(n) ≥ 4n - 8), notes this linear bound is best known, and presents the related result from Problem #165 about two-step differences."
+    },
+    {
+      "id": "section-4",
+      "title": "Implications",
+      "startLine": 130,
+      "endLine": 158,
+      "summary": "Shows what would follow from the conjectures: ratio bound implies exponential growth, quadratic differences imply super-polynomial growth."
+    },
+    {
+      "id": "section-5",
+      "title": "Why Questions Are Hard",
+      "startLine": 159,
+      "endLine": 190,
+      "summary": "Explains difficulties: even R(5) is unknown, irregular behavior, probabilistic methods don't give consecutive differences, and computational barriers."
+    },
+    {
+      "id": "section-6",
+      "title": "Related Problems",
+      "startLine": 191,
+      "endLine": 214,
+      "summary": "Connections to Problem #165 (Ramsey lower bounds), off-diagonal Ramsey numbers R(s,t), and hypergraph Ramsey numbers."
+    },
+    {
+      "id": "section-7",
+      "title": "Historical Context",
+      "startLine": 215,
+      "endLine": 247,
+      "summary": "History from Ramsey (1930) through Erdős-Szekeres (1935) to Erdős's probabilistic method (1947). Includes the famous 'aliens' quote about R(5) and R(6)."
+    },
+    {
+      "id": "section-8",
+      "title": "Summary and Status",
+      "startLine": 248,
+      "endLine": 315,
+      "summary": "Complete summary with known Ramsey values, calculated ratios and differences, and the main status theorem capturing the BEFS bound and open status."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #812 asks two OPEN questions about Ramsey number growth: whether consecutive ratios are bounded below by 1+c, and whether consecutive differences are at least quadratic. The best known result is the linear bound R(n+1) - R(n) ≥ 4n - 8.",
+    "implications": "Resolving either conjecture would significantly advance our understanding of Ramsey number asymptotics, a central problem in combinatorics that has resisted attack for nearly a century.",
+    "openQuestions": [
+      "Is R(n+1)/R(n) ≥ 1 + c for some c > 0?",
+      "Is R(n+1) - R(n) ≫ n²?",
+      "What is R(5) exactly?",
+      "Can the linear BEFS bound be improved?"
+    ]
   }
 }

@@ -11598,17 +11598,20 @@
   },
   {
     "id": "erdos-812",
-    "title": "Erdős Problem #812",
+    "title": "Erdős Problem #812: Growth of Consecutive Ramsey Numbers",
     "slug": "erdos-812",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[{R(n)}\\geq 1+c\\]for some constant ..., for all large ...? Is it true that\\[R(n+1)-R(n) \\gg n^2?\\]\n\n\n\nBurr, E...",
-    "status": "pending",
+    "description": "Two questions about Ramsey number growth: (1) Is R(n+1)/R(n) ≥ 1+c for some c > 0? (2) Is R(n+1) - R(n) ≫ n²? Both questions remain OPEN. Best known: R(n+1) - R(n) ≥ 4n - 8 (Burr-Erdős-Faudree-Schelp 1989).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory"
     ],
     "erdosNumber": 812,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-813",
