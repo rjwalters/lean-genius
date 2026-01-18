@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This module formalizes **Erdős Problem #251**: Is the sum Σ pₙ/2ⁿ irrational? The sum converges to approximately **3.59686...** (OEIS A098990), but its arithmetic nature remains **unknown**.",
     "mathContext": "The series Σ pₙ/2ⁿ = 2/2 + 3/4 + 5/8 + 7/16 + ... converges absolutely since pₙ ~ n ln n by the prime number theorem, and Σ n ln n / 2ⁿ converges by the ratio test.",
-    "significance": "supporting",
+    "significance": "critical",
     "relatedConcepts": ["irrational numbers", "prime numbers", "infinite series"]
   },
   {
@@ -166,5 +166,33 @@
     "mathContext": "Each computation is straightforward arithmetic: 1 + 3/4 = 7/4, then + 5/8 = 19/8, then + 7/16 = 45/16, then + 11/32 = 101/32. The pattern of numerators (1, 7, 19, 45, 101) has no simple formula.",
     "significance": "supporting",
     "relatedConcepts": ["norm_num", "exact arithmetic", "partial sums"]
+  },
+  {
+    "id": "ann-e251-positivity",
+    "proofId": "erdos-251",
+    "range": {
+      "startLine": 90,
+      "endLine": 91
+    },
+    "type": "axiom",
+    "title": "Positivity",
+    "content": "The Erdős sum is **positive** since all terms pₙ/2^(n+1) are positive (primes are positive, powers of 2 are positive).",
+    "mathContext": "Positivity follows immediately from pₙ ≥ 2 for all n. Combined with the bounds axiom, we have 3 < erdosSum < 4.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity", "series bounds"]
+  },
+  {
+    "id": "ann-e251-general-conjecture",
+    "proofId": "erdos-251",
+    "range": {
+      "startLine": 174,
+      "endLine": 182
+    },
+    "type": "definition",
+    "title": "Erdős's General Conjecture",
+    "content": "**Erdős's General Conjecture**: If gₙ ≥ 2 for all n and gₙ = o(pₙ), then Σ pₙ/(g₁·g₂·...·gₙ) is irrational. This encompasses Problem #251 (gₙ = 2 for all n) as a special case.",
+    "mathContext": "The condition gₙ = o(pₙ) means gₙ/pₙ → 0 as n → ∞. The requirement gₙ ≥ 2 ensures the products g₁·...·gₙ grow, making the series converge. The example gₙ = pₙ + 1 shows some growth condition is needed.",
+    "significance": "key",
+    "relatedConcepts": ["general conjecture", "product denominators", "little-o notation"]
   }
 ]
