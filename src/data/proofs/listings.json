@@ -1300,31 +1300,39 @@
   },
   {
     "id": "erdos-1036",
-    "title": "Erdős Problem #1036",
+    "title": "Erdős Problem #1036: Distinct Induced Subgraphs in Non-Ramsey Graphs",
     "slug": "erdos-1036",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices which does not contain a trivial (empty or complete) graph on more than ... vertices. Must...",
+    "description": "Let G be non-Ramsey (no trivial subgraph on > c log n vertices). Must G contain ≥ 2^{Ω_c(n)} non-isomorphic induced subgraphs? YES (Shelah 1998). Prior: Alon-Hajnal (1991) proved exp(n(log n)^{-O(log log n)}).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "induced-subgraphs",
+      "isomorphism"
     ],
     "erdosNumber": 1036,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 11,
+    "annotationCount": 44
   },
   {
     "id": "erdos-1037",
-    "title": "Erdős Problem #1037",
+    "title": "Erdős Problem #1037: Degree Diversity and Ramsey Properties",
     "slug": "erdos-1037",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices in which every degree occurs at most twice, and the number of distinct degree is .... Must...",
+    "description": "Let G have n vertices where every degree occurs at most twice and distinct degrees > (1/2 + ε)n. Must G have a trivial subgraph much larger than log n? NO (Cambie-Chan-Hunter). Counterexample: ≥ 3n/4 distinct degrees, max trivial O(log n).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "degree-sequences",
+      "erdos",
+      "ramsey-theory",
+      "counterexample"
     ],
     "erdosNumber": 1037,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 10,
+    "annotationCount": 37
   },
   {
     "id": "erdos-1038",
@@ -1347,17 +1355,21 @@
   },
   {
     "id": "erdos-1039",
-    "title": "Erdős Problem #1039",
+    "title": "Erdős Problem #1039: Polynomial Lemniscate Disc Radius",
     "slug": "erdos-1039",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... for all .... Let ... be the radius of the largest disc which is contained in ....\n\nDetermine the behaviour o...",
+    "description": "Let f(z) = ∏(z-zᵢ) with |zᵢ| ≤ 1. Let ρ(f) = radius of largest disc in {z: |f(z)| < 1}. Is ρ(f) ≫ 1/n? OPEN. Known: 1/(2en²) ≤ ρ(f) (Pommerenke), ρ(f) ≫ 1/(n√log n) (KLR 2025). Upper: ρ(zⁿ-1) ≤ π/(2n).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "complex-analysis",
+      "polynomials",
+      "erdos",
+      "lemniscates",
+      "open-problem"
     ],
     "erdosNumber": 1039,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 9,
+    "annotationCount": 32
   },
   {
     "id": "erdos-104",
@@ -1379,17 +1391,21 @@
   },
   {
     "id": "erdos-1040",
-    "title": "Erdős Problem #1040",
+    "title": "Erdős Problem #1040: Transfinite Diameter and Sublevel Set Measure",
     "slug": "erdos-1040",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a closed infinite set, and let ... be the infimum of\\[\\lvert \\{ z: \\lvert f(z)\\rvert < 1\\}\\rvert,\\]as ... ranges o...",
+    "description": "Let F ⊆ ℂ be closed infinite, μ(F) = inf of |{z: |f(z)| < 1}| over polynomials with roots in F. Is μ(F) determined by transfinite diameter? Is μ(F) = 0 when ρ(F) ≥ 1? OPEN. Known for line segments/discs (EHP 1958).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "complex-analysis",
+      "polynomials",
+      "erdos",
+      "potential-theory",
+      "open-problem"
     ],
     "erdosNumber": 1040,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 7,
+    "annotationCount": 32
   },
   {
     "id": "erdos-1041",
@@ -1510,31 +1526,43 @@
   },
   {
     "id": "erdos-1048",
-    "title": "Erdős Problem #1048",
+    "title": "Erdős Problem #1048: Polynomial Lemniscate Diameter",
     "slug": "erdos-1048",
-    "description": "If f&#x2208;C[x]\" role=\"presentation\" style=\"position: relative;\">f∈ℂ[x]f∈C[x]f\\in [x] is a monic polynomial with all roots satisfying &#x007C;z&#x007C;&#x2264;r\" role=\"presentation\" style=\"positio...",
-    "status": "pending",
+    "description": "For a monic polynomial f ∈ ℂ[x] with roots in |z| ≤ r where r < 2, must L(f,1) = {z : |f(z)| < 1} have a component with diameter > 2-r? DISPROVED by Pommerenke (1961) for r > 1.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "disproved"
     ],
     "erdosNumber": 1048,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 11,
+    "annotationCount": 35
   },
   {
     "id": "erdos-1049",
-    "title": "Erdős Problem #1049",
+    "title": "Erdős Problem #1049: Irrationality of Divisor Sums",
     "slug": "erdos-1049",
-    "description": "Let t&gt;1\" role=\"presentation\" style=\"position: relative;\">t>1t>1t>1 be a rational number. Is&#x2211;n=1&#x221E;1tn&#x2212;1=&#x2211;n=1&#x221E;&#x03C4;(n)tn\" role=\"presentation\" style=\"text-align...",
-    "status": "pending",
+    "description": "For rational t > 1, is ∑_{n≥1} 1/(t^n - 1) = ∑_{n≥1} τ(n)/t^n irrational? OPEN: Erdős proved YES for integer t ≥ 2. Chowla's conjecture for all rationals unresolved.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "divisor-function",
+      "series",
+      "open-problem"
     ],
     "erdosNumber": 1049,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 14,
+    "annotationCount": 30
   },
   {
     "id": "erdos-105",
@@ -1557,17 +1585,23 @@
   },
   {
     "id": "erdos-1050",
-    "title": "Erdős Problem #1050",
+    "title": "Erdős Problem #1050: Irrationality of ∑ 1/(2^n - 3)",
     "slug": "erdos-1050",
-    "description": "Is&#x2211;n=1&#x221E;12n&#x2212;3\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑n=1∞12n−3∑n=1∞12n−3",
-    "status": "pending",
+    "description": "Is ∑_{n≥1} 1/(2^n - 3) irrational? SOLVED by Borwein (1991): YES. More generally, ∑ 1/(q^n + r) is irrational for q ≥ 2 and rational r ≠ 0, r ≠ -q^n.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "series",
+      "transcendence",
+      "solved"
     ],
     "erdosNumber": 1050,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 12,
+    "annotationCount": 29
   },
   {
     "id": "erdos-1052",
@@ -5830,17 +5864,23 @@
   },
   {
     "id": "erdos-359",
-    "title": "Erdős Problem #359",
+    "title": "Erdos Problem #359: MacMahon's Prime Numbers of Measurement",
     "slug": "erdos-359",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers such that ... and ... is the least integer which is not a sum of consecutive earl...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the density of MacMahon's sequence where each term is the smallest integer not expressible as a sum of consecutive earlier terms? Conjectured: a_k ~ (k log k) / (log log k).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sequences",
+      "density",
+      "consecutive-sums"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 359,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-360",
@@ -6027,17 +6067,23 @@
   },
   {
     "id": "erdos-373",
-    "title": "Erdős Problem #373",
+    "title": "Erdos Problem #373: Factorials as Products of Factorials",
     "slug": "erdos-373",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that the equation\\[n! = a_1!a_2!\\cdots a_k!,\\]with ..., has only finitely many solutions.\n\n\n\nThis would follow if ..., w...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Show that n! = a_1! * a_2! * ... * a_k! with n-1 > a_1 >= ... >= a_k >= 2 has only finitely many solutions. Conditionally solved under ABC conjecture (Luca 2007).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "diophantine-equations",
+      "abc-conjecture"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 373,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-375",
@@ -6109,17 +6155,23 @@
   },
   {
     "id": "erdos-379",
-    "title": "Erdős Problem #379",
+    "title": "Erdos Problem #379: Binomial Coefficients and Prime Power Divisibility",
     "slug": "erdos-379",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest integer such that, for all ..., the binomial coefficient ... is divisible by ... for some prime .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let S(n) be the largest s such that every C(n,k) for 1 <= k < n is divisible by some p^s. Is limsup S(n) = infinity?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-powers",
+      "lucas-theorem"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 379,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-38",
@@ -6474,17 +6526,22 @@
   },
   {
     "id": "erdos-412",
-    "title": "Erdős Problem #412",
+    "title": "Erdős #412: Iterated Sum of Divisors Convergence",
     "slug": "erdos-412",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., the sum of divisors function, and ....\n\nIs it true that, for every ..., there exist some ... such that ...?\n\n\n\nIn  E...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do all iterated sum-of-divisors sequences eventually meet? For every m,n ≥ 2, is there i,j such that σᵢ(m) = σⱼ(n)? Open. Selfridge provided evidence suggesting NO.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sum-of-divisors",
+      "iteration",
+      "convergence"
     ],
     "erdosNumber": 412,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 27
   },
   {
     "id": "erdos-415",
@@ -7161,23 +7218,24 @@
   },
   {
     "id": "erdos-48",
-    "title": "Erdős Problem #48: φ(n) = σ(m)",
+    "title": "Erdos Problem #48: Infinitely Many Pairs with phi(n) = sigma(m)",
     "slug": "erdos-48",
-    "description": "Are there infinitely many integers n, m such that Euler's totient φ(n) equals the sum of divisors σ(m)?",
+    "description": "Are there infinitely many integers n, m such that phi(n) = sigma(m)? YES, proved by Ford-Luca-Pomerance (2010).",
     "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
-      "arithmetic-functions",
       "totient",
-      "divisors"
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "solved"
     ],
     "dateAdded": "2026-01-13",
     "erdosNumber": 48,
-    "mathlibCount": 2,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 6
+    "annotationCount": 22
   },
   {
     "id": "erdos-480",
@@ -8907,7 +8965,7 @@
     ],
     "erdosNumber": 624,
     "sorries": 2,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-625",
@@ -9124,17 +9182,22 @@
   },
   {
     "id": "erdos-636",
-    "title": "Erdős Problem #636",
+    "title": "Erdős Problem #636: Distinct Induced Subgraphs in Ramsey Graphs",
     "slug": "erdos-636",
-    "description": "Suppose G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices which contains no complete graph or independent set on &...",
-    "status": "pending",
+    "description": "Must a Ramsey graph (no large clique or independent set) on n vertices have Θ(n^(5/2)) induced subgraphs with distinct (vertex, edge) signatures? SOLVED by Kwan-Sudakov (2021).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "induced-subgraphs",
+      "counting"
     ],
     "erdosNumber": 636,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 23
   },
   {
     "id": "erdos-637",
@@ -9212,17 +9275,23 @@
   },
   {
     "id": "erdos-642",
-    "title": "Erdős Problem #642",
+    "title": "Erdős Problem #642: Cycles with More Vertices than Diagonals",
     "slug": "erdos-642",
-    "description": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be the maximal number of edges in a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices such that all cyc...",
-    "status": "pending",
+    "description": "Let f(n) be the maximal edges in a graph where every cycle has more vertices than diagonals. Is f(n) ≪ n? OPEN: Ω(n^(3/2)) ≤ f(n) ≤ O(n(log n)^8).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles",
+      "diagonals",
+      "open-problem"
     ],
     "erdosNumber": 642,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 10,
+    "annotationCount": 29
   },
   {
     "id": "erdos-643",
@@ -9323,17 +9392,22 @@
   },
   {
     "id": "erdos-648",
-    "title": "Erdős Problem #648",
+    "title": "Erdős Problem #648: Decreasing Greatest Prime Factors",
     "slug": "erdos-648",
-    "description": "Let g(n)\" role=\"presentation\" style=\"position: relative;\">g(n)g(n)g(n) denote the largest t\" role=\"presentation\" style=\"position: relative;\">ttt such that there exist integers 2&#x2264;a1&lt;a2&lt;...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) be the longest increasing sequence below n with strictly decreasing greatest prime factors. What is g(n)? SOLVED: g(n) ≍ (n/log n)^(1/2) (Cambie 2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "sequences",
+      "asymptotics"
     ],
     "erdosNumber": 648,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 6,
+    "annotationCount": 28
   },
   {
     "id": "erdos-649",
@@ -13233,17 +13307,23 @@
   },
   {
     "id": "erdos-956",
-    "title": "Erdős Problem #956",
+    "title": "Erdős Problem #956: Unit Distances Between Convex Translates",
     "slug": "erdos-956",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... then the distance between ... and ... is defined by\\[\\delta(C,D)=\\inf_{}\\| c-d\\|.\\]Let ... be the maximal number of un...",
-    "status": "pending",
+    "description": "Let h(n) be the max unit distances among n disjoint convex translates. Is h(n) > n^(1+c) for some c > 0? OPEN: Known bounds are Ω(n log n / log log n) ≤ h(n) ≤ O(n^(4/3)).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "unit-distances",
+      "convex-sets",
+      "open-problem"
     ],
     "erdosNumber": 956,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 12,
+    "annotationCount": 25
   },
   {
     "id": "erdos-957",

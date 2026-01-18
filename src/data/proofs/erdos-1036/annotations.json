@@ -1,1 +1,398 @@
-[]
+[
+  {
+    "id": "ann-1036-vertexcount",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "vertexCount",
+    "content": "Number of vertices.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1036-trivial",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "definition",
+    "title": "isTrivialInduced",
+    "content": "Empty or complete induced subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-independent",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "isIndependentSet",
+    "content": "No edges within S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-clique",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "isClique",
+    "content": "All pairs in S adjacent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-trivialiff",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 58, "endLine": 61 },
+    "type": "theorem",
+    "title": "trivial_iff",
+    "content": "Trivial = independent or clique.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1036-nolargetrivial",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "noLargeTrivial",
+    "content": "No trivial subgraph of size ≥ k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-nonramsey",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "definition",
+    "title": "isNonRamsey",
+    "content": "No trivial on > c log n vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-ramsey",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "axiom",
+    "title": "ramsey_theorem",
+    "content": "Non-Ramsey graphs exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-induced",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 89, "endLine": 93 },
+    "type": "definition",
+    "title": "inducedSubgraph",
+    "content": "Induced subgraph on S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-inducedpair",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 95, "endLine": 99 },
+    "type": "definition",
+    "title": "InducedPair",
+    "content": "Two induced subgraphs of same size.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1036-graphiso",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 107, "endLine": 109 },
+    "type": "definition",
+    "title": "GraphIso",
+    "content": "Graph isomorphism.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-inducediso",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 111, "endLine": 114 },
+    "type": "definition",
+    "title": "inducedIso",
+    "content": "Isomorphism of induced subgraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-isorefl",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 116, "endLine": 119 },
+    "type": "theorem",
+    "title": "inducedIso_refl",
+    "content": "Isomorphism is reflexive.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1036-isosymm",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 121, "endLine": 124 },
+    "type": "theorem",
+    "title": "inducedIso_symm",
+    "content": "Isomorphism is symmetric.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1036-isotrans",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 126, "endLine": 129 },
+    "type": "theorem",
+    "title": "inducedIso_trans",
+    "content": "Isomorphism is transitive.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1036-allsubsets",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 137, "endLine": 139 },
+    "type": "definition",
+    "title": "allInducedSubsets",
+    "content": "All vertex subsets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-sameisoclass",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 141, "endLine": 143 },
+    "type": "definition",
+    "title": "sameIsoClass",
+    "content": "Same isomorphism class.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-distinctcount",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "definition",
+    "title": "distinctInducedCount",
+    "content": "Count of distinct induced subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-hasdistinct",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 149, "endLine": 153 },
+    "type": "definition",
+    "title": "hasDistinctInduced",
+    "content": "Has ≥ k distinct induced subgraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-conjecture",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 161, "endLine": 168 },
+    "type": "definition",
+    "title": "erdos_renyi_conjecture",
+    "content": "2^{Ω(n)} distinct induced subgraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-ahexp",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 176, "endLine": 178 },
+    "type": "definition",
+    "title": "alonHajnalExponent",
+    "content": "n(log n)^{-O(log log n)}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-ahbound",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 180, "endLine": 186 },
+    "type": "axiom",
+    "title": "Alon-Hajnal Bound",
+    "content": "Weaker exponential bound (1991).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-ahweaker",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 188, "endLine": 191 },
+    "type": "theorem",
+    "title": "alon_hajnal_weaker",
+    "content": "Alon-Hajnal < Shelah.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-bipartite",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 199, "endLine": 202 },
+    "type": "definition",
+    "title": "hasCompleteBipartite",
+    "content": "Contains K_{s,t}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-avoidsbip",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 204, "endLine": 206 },
+    "type": "definition",
+    "title": "avoidsBipartite",
+    "content": "No K_{k,k} or complement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-ehbip",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 208, "endLine": 214 },
+    "type": "axiom",
+    "title": "Erdős-Hajnal Bipartite",
+    "content": "Bipartite-avoiding → 2^{Ω(n)} (1989).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-nonramseyavoids",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 216, "endLine": 219 },
+    "type": "theorem",
+    "title": "nonRamsey_avoids_bipartite",
+    "content": "Non-Ramsey → avoids bipartite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-shelah",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 227, "endLine": 233 },
+    "type": "axiom",
+    "title": "Shelah's Theorem",
+    "content": "Full 2^{Ω(n)} bound (1998).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-solved",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 235, "endLine": 239 },
+    "type": "theorem",
+    "title": "erdos_1036_solved",
+    "content": "Conjecture is true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1036-shelahbound",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 247, "endLine": 248 },
+    "type": "definition",
+    "title": "shelahBound",
+    "content": "2^{c'n}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-ahbounddef",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 250, "endLine": 252 },
+    "type": "definition",
+    "title": "alonHajnalBound",
+    "content": "Alon-Hajnal bound type.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-shelahbetter",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 254, "endLine": 257 },
+    "type": "theorem",
+    "title": "shelah_better",
+    "content": "Shelah exponentially better.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-distinctupper",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 265, "endLine": 268 },
+    "type": "theorem",
+    "title": "distinct_upper",
+    "content": "At most 2^n subsets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1036-random",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 270, "endLine": 275 },
+    "type": "axiom",
+    "title": "random_graph_distinct",
+    "content": "Random graphs have ~2^n distinct.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-randomlike",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 277, "endLine": 284 },
+    "type": "theorem",
+    "title": "nonRamsey_random_like",
+    "content": "Non-Ramsey is random-like.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-inducedsize",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 292, "endLine": 294 },
+    "type": "definition",
+    "title": "inducedOfSize",
+    "content": "k-vertex induced subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-distinctsize",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 296, "endLine": 298 },
+    "type": "definition",
+    "title": "distinctOfSize",
+    "content": "Distinct k-vertex subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-hasdistinctsize",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 300, "endLine": 303 },
+    "type": "definition",
+    "title": "hasDistinctOfSize",
+    "content": "Has ≥ m distinct k-vertex subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-fixedsize",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 305, "endLine": 311 },
+    "type": "axiom",
+    "title": "nonRamsey_fixed_size",
+    "content": "Many distinct k-vertex subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-compnonramsey",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 319, "endLine": 322 },
+    "type": "theorem",
+    "title": "complement_nonRamsey",
+    "content": "Complement preserves non-Ramsey.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-compdistinct",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 324, "endLine": 327 },
+    "type": "theorem",
+    "title": "complement_distinct",
+    "content": "Distinct subgraphs in G vs Gᶜ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-kuniversal",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 335, "endLine": 341 },
+    "type": "definition",
+    "title": "isKUniversal",
+    "content": "Contains all k-vertex graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-univdistinct",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 343, "endLine": 346 },
+    "type": "theorem",
+    "title": "universal_implies_distinct",
+    "content": "Universality → many distinct.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1036-viauniv",
+    "proofId": "erdos-1036",
+    "range": { "startLine": 348, "endLine": 355 },
+    "type": "theorem",
+    "title": "via_universality",
+    "content": "Alternative proof via Prömel-Rödl.",
+    "significance": "key"
+  }
+]

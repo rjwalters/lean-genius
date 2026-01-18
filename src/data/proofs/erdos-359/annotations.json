@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e359-header",
+    "proofId": "erdos-359",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Introduction",
+    "content": "**Erdos Problem #359** concerns MacMahon's sequence where a_1 = 1 and each a_{i+1} is the smallest integer not expressible as a sum of consecutive earlier terms. The main questions ask about the growth rate of this sequence.",
+    "mathContext": "The sequence is OEIS A002048: 1, 2, 4, 5, 8, 10, 14, 15, ... Andrews conjectured a_k ~ (k log k) / (log log k). The problem remains OPEN.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "macmahon", "consecutive-sums", "density"]
+  },
+  {
+    "id": "ann-e359-consecutive-sum",
+    "proofId": "erdos-359",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "Consecutive Sums",
+    "content": "**ConsecutiveSum** computes the sum A(a) + A(a+1) + ... + A(b) of consecutive terms. Unlike subset sums, we require the terms to be contiguous.",
+    "mathContext": "Defined as sum over Finset.Icc a b. The constraint of consecutive indices creates the gaps that define MacMahon's sequence.",
+    "significance": "critical",
+    "relatedConcepts": ["finset", "sum", "intervals"]
+  },
+  {
+    "id": "ann-e359-achievable",
+    "proofId": "erdos-359",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "Achievable Sums",
+    "content": "**AchievableSums** is the set of all integers expressible as a consecutive sum from the first k+1 terms. A number is achievable if it equals some A(a) + A(a+1) + ... + A(b) with b <= k.",
+    "mathContext": "This set grows as k increases. The next term A(k+1) is chosen as the smallest integer greater than A(k) that is NOT in this set.",
+    "significance": "critical",
+    "relatedConcepts": ["set", "membership", "greedy-selection"]
+  },
+  {
+    "id": "ann-e359-isgoodfor",
+    "proofId": "erdos-359",
+    "range": { "startLine": 63, "endLine": 67 },
+    "type": "definition",
+    "title": "IsGoodFor Predicate",
+    "content": "**IsGoodFor A n** says: A(0) = n, A is strictly increasing, and each A(j+1) is the least integer greater than A(j) not achievable as a consecutive sum from A(0)...A(j).",
+    "mathContext": "Uses IsLeast from Mathlib to formally capture 'smallest integer satisfying a condition'. The recursion uniquely determines the sequence given n.",
+    "significance": "critical",
+    "relatedConcepts": ["isLeast", "recursion", "uniqueness"]
+  },
+  {
+    "id": "ann-e359-macmahon",
+    "proofId": "erdos-359",
+    "range": { "startLine": 70, "endLine": 70 },
+    "type": "definition",
+    "title": "MacMahon Sequence",
+    "content": "**IsMacMahonSeq** defines THE MacMahon sequence as the unique sequence 'good for 1'. This is the sequence 1, 2, 4, 5, 8, 10, 14, 15, ... (OEIS A002048).",
+    "mathContext": "Named after Percy MacMahon who studied these 'prime numbers of measurement'. The sequence has fascinating connections to combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["OEIS", "uniqueness", "definition"]
+  },
+  {
+    "id": "ann-e359-basic-props",
+    "proofId": "erdos-359",
+    "range": { "startLine": 77, "endLine": 92 },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "**macmahon_first_term** shows A(0) = 1, **macmahon_strictMono** proves strict monotonicity, and **term_is_achievable** shows each A(i) is achievable as the 'singleton sum' of just itself.",
+    "mathContext": "These are direct consequences of the definition. Strict monotonicity follows because A(j+1) > A(j) by construction.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "first-term", "singleton"]
+  },
+  {
+    "id": "ann-e359-values",
+    "proofId": "erdos-359",
+    "range": { "startLine": 101, "endLine": 109 },
+    "type": "definition",
+    "title": "Known Sequence Values",
+    "content": "**macmahonValues** lists the first 8 terms: 1, 2, 4, 5, 8, 10, 14, 15. Note that 3, 6, 7, 9, 11, 12, 13 are all skipped because they're achievable as consecutive sums.",
+    "mathContext": "3 = 1 + 2, 6 = 2 + 4, 7 = 1 + 2 + 4, etc. The 'gaps' in the sequence reveal which sums are achievable.",
+    "significance": "key",
+    "relatedConcepts": ["OEIS-A002048", "concrete-values", "gaps"]
+  },
+  {
+    "id": "ann-e359-skip-examples",
+    "proofId": "erdos-359",
+    "range": { "startLine": 117, "endLine": 134 },
+    "type": "theorem",
+    "title": "Why 3 and 6 are Skipped",
+    "content": "**three_is_achievable** proves 3 in AchievableSums (since 3 = 1 + 2 = A(0) + A(1)). **six_is_achievable** proves 6 in AchievableSums (since 6 = 2 + 4 = A(1) + A(2)).",
+    "mathContext": "These verified theorems show concrete examples of the sequence's construction. Each uses the Finset.sum_Icc_succ_top lemma to compute the sum.",
+    "significance": "supporting",
+    "relatedConcepts": ["verification", "consecutive-sum", "concrete"]
+  },
+  {
+    "id": "ann-e359-growth-conjectures",
+    "proofId": "erdos-359",
+    "range": { "startLine": 144, "endLine": 162 },
+    "type": "axiom",
+    "title": "Growth Rate Conjectures (OPEN)",
+    "content": "**Three open conjectures**: (1) a_k/k -> infinity (superlinear), (2) a_k/k^{1+c} -> 0 for c > 0 (subpolynomial), (3) Andrews' conjecture a_k ~ (k log k)/(log log k).",
+    "mathContext": "These capture the expected intermediate growth rate - faster than linear but slower than any polynomial > 1. All remain OPEN.",
+    "significance": "critical",
+    "relatedConcepts": ["tendsto", "asymptotic", "open-problem"]
+  },
+  {
+    "id": "ann-e359-porubsky-upper",
+    "proofId": "erdos-359",
+    "range": { "startLine": 170, "endLine": 176 },
+    "type": "axiom",
+    "title": "Porubsky's Upper Bound (1977)",
+    "content": "**porubsky_upper** states: for any epsilon > 0, infinitely many k satisfy a_k < (log k)^epsilon * (k log k)/(log log k). This gives partial evidence for Andrews' conjecture.",
+    "mathContext": "The bound shows the sequence doesn't grow too much faster than the conjectured rate, at least infinitely often.",
+    "significance": "key",
+    "relatedConcepts": ["upper-bound", "partial-result", "1977"]
+  },
+  {
+    "id": "ann-e359-counting",
+    "proofId": "erdos-359",
+    "range": { "startLine": 177, "endLine": 184 },
+    "type": "definition",
+    "title": "Counting Functions",
+    "content": "**countingFunction** counts terms <= x, and **primeCounting** counts primes <= x. These allow comparing MacMahon's sequence to primes.",
+    "mathContext": "The counting function A(x) = |{i : A(i) <= x}| measures how 'dense' the sequence is up to x.",
+    "significance": "supporting",
+    "relatedConcepts": ["counting", "primes", "density"]
+  },
+  {
+    "id": "ann-e359-porubsky-density",
+    "proofId": "erdos-359",
+    "range": { "startLine": 186, "endLine": 192 },
+    "type": "axiom",
+    "title": "Porubsky's Density Bound",
+    "content": "**porubsky_density_bound** states limsup A(x)/pi(x) >= 1/log(2). MacMahon's sequence is denser than primes by at least this factor infinitely often.",
+    "mathContext": "Since 1/log(2) ~ 1.44, the sequence has at least 44% more elements than primes (asymptotically, infinitely often).",
+    "significance": "key",
+    "relatedConcepts": ["limsup", "prime-comparison", "density-bound"]
+  },
+  {
+    "id": "ann-e359-general-n",
+    "proofId": "erdos-359",
+    "range": { "startLine": 199, "endLine": 204 },
+    "type": "axiom",
+    "title": "General Starting Value",
+    "content": "**general_n_superlinear** conjectures that sequences 'good for n' (starting with any n > 0) also have superlinear growth a_k/k -> infinity.",
+    "mathContext": "The problem generalizes beyond n = 1. Different starting values create different sequences but with similar growth behavior.",
+    "significance": "supporting",
+    "relatedConcepts": ["generalization", "starting-value", "superlinear"]
+  },
+  {
+    "id": "ann-e359-summary",
+    "proofId": "erdos-359",
+    "range": { "startLine": 222, "endLine": 235 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_359_summary** bundles basic facts: A(0) = 1 for MacMahon sequences, strict monotonicity holds, and the first and eighth values are 1 and 15 respectively.",
+    "mathContext": "A convenience theorem packaging the core verified results for quick reference.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "packaging", "verification"]
+  }
+]

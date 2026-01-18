@@ -1,1 +1,317 @@
-[]
+[
+  {
+    "id": "ann-1048-header",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1048: Polynomial Lemniscate Diameter**\n\nFor monic f ∈ ℂ[x] with roots in |z| ≤ r where r < 2, must L(f,1) have a component with diameter > 2-r?\n\n**Status**: DISPROVED by Pommerenke (1961) for r > 1.\n\n**Counterexample**: f(z) = z^n - r^n for large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-monic",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
+    "title": "Monic Polynomial",
+    "content": "**IsMonic f**: A polynomial is monic if its leading coefficient is 1.\n\nMonic polynomials have nice asymptotic behavior: |f(z)| ~ |z|^n as |z| → ∞.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-roots",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "Roots",
+    "content": "**roots f**: The set of zeros of polynomial f.\n\nroots f = {z ∈ ℂ : f(z) = 0}",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-bounded",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Root Bound",
+    "content": "**RootsBoundedBy f r**: All roots satisfy |z| ≤ r.\n\nThis constraint on root location is the key hypothesis.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-struct",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "BoundedMonicPoly",
+    "content": "**BoundedMonicPoly r**: A monic polynomial with all roots in |z| ≤ r.\n\nStructure fields:\n- poly: the polynomial\n- monic: leading coeff = 1\n- bounded: all roots in disk of radius r\n- nontrivial: degree ≥ 1",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-lemniscate",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Lemniscate",
+    "content": "**lemniscate f c**: L(f, c) = {z ∈ ℂ : |f(z)| < c}.\n\nThe sublevel set of polynomial absolute value.\n\nClassically called a lemniscate after Bernoulli's work.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-unit-lemn",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "Unit Lemniscate",
+    "content": "**unitLemniscate f**: L(f, 1) = {z : |f(z)| < 1}.\n\nThe lemniscate at level 1, central to the problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-open",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "theorem",
+    "title": "Lemniscates Open",
+    "content": "**lemniscate_isOpen**: L(f, c) is an open set for c > 0.\n\nFollows from continuity of |f(·)|.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-lemn-bounded",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 73, "endLine": 76 },
+    "type": "theorem",
+    "title": "Lemniscates Bounded",
+    "content": "**lemniscate_bounded**: L(f, c) is bounded for monic f.\n\nSince |f(z)| → ∞ as |z| → ∞ for monic polynomials.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-component",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "definition",
+    "title": "Connected Component",
+    "content": "**ConnectedComponent S z**: The largest connected subset of S containing z.\n\nDefined as the union of all connected sets through z.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-diameter",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 88, "endLine": 90 },
+    "type": "definition",
+    "title": "Diameter",
+    "content": "**diameter S**: The supremum of distances between points in S.\n\ndiam(S) = sup{|z - w| : z, w ∈ S}",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-max-diam",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "definition",
+    "title": "Max Component Diameter",
+    "content": "**maxComponentDiameter f c**: Maximum diameter over all components of L(f, c).\n\nThe key quantity in the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-conjecture",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 102, "endLine": 107 },
+    "type": "definition",
+    "title": "EHP Conjecture",
+    "content": "**EHPConjecture (1958)**: For monic f with roots in |z| ≤ r < 2, some component of L(f,1) has diameter > 2-r.\n\nAsked by Erdős, Herzog, and Piranian.\n\nDisproved by Pommerenke (1961) for r > 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-counter",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "definition",
+    "title": "Counterexample",
+    "content": "**pommerenkeCounterexample r n**: f(z) = z^n - r^n.\n\nRoots are the n-th roots of r^n, all at distance r from origin.\n\nFor r > 1, creates n small components.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-counter-monic",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 119, "endLine": 122 },
+    "type": "theorem",
+    "title": "Counterexample Monic",
+    "content": "**counterexample_monic**: z^n - r^n is monic.\n\nLeading coefficient is 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-counter-roots",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 124, "endLine": 128 },
+    "type": "theorem",
+    "title": "Counterexample Roots",
+    "content": "**counterexample_roots**: Roots of z^n - r^n are r·e^(2πik/n).\n\nThe n-th roots of r^n, evenly distributed on circle |z| = r.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-counter-bounded",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 130, "endLine": 133 },
+    "type": "theorem",
+    "title": "Counterexample Bounded",
+    "content": "**counterexample_bounded**: All roots have |z| = r.\n\nSatisfies the hypothesis of roots bounded by r.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-n-components",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 135, "endLine": 138 },
+    "type": "axiom",
+    "title": "N Components",
+    "content": "**counterexample_n_components**: L(z^n - r^n, 1) has n connected components.\n\nFor r > 1, the lemniscate splits into n separate pieces around each root.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-vanish",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 140, "endLine": 143 },
+    "type": "axiom",
+    "title": "Diameters Vanish",
+    "content": "**pommerenke_diameter_vanishes (1961)**: Component diameters → 0 as n → ∞.\n\nFor r > 1, the components shrink to points.\n\nThis disproves the conjecture: 2-r > 0 but max diameter → 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-false",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "theorem",
+    "title": "Conjecture False",
+    "content": "**EHP_false_for_r_gt_1**: The EHP conjecture is FALSE.\n\nPommerenke's counterexample for r > 1 shows the conjecture fails.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-phi",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 155, "endLine": 156 },
+    "type": "definition",
+    "title": "Golden Ratio",
+    "content": "**φ_minus_1**: (√5 - 1)/2 ≈ 0.618.\n\nThe golden ratio minus 1, a critical threshold in Pommerenke's results.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-small-r",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 162, "endLine": 165 },
+    "type": "axiom",
+    "title": "Case r ≤ 1/2",
+    "content": "**pommerenke_case_small_r**: For r ≤ 1/2, the component containing 0 has diameter ≥ 2.\n\nThis is optimal, achieved by f(z) = z^n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-medium-r",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 167, "endLine": 170 },
+    "type": "axiom",
+    "title": "Case 1/2 < r ≤ φ-1",
+    "content": "**pommerenke_case_medium_r**: For 1/2 < r ≤ (√5-1)/2, diameter > 1/r.\n\nThe bound transitions at r = 1/2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-large-r",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 172, "endLine": 175 },
+    "type": "axiom",
+    "title": "Case φ-1 ≤ r ≤ 1",
+    "content": "**pommerenke_case_large_r**: For (√5-1)/2 ≤ r ≤ 1, diameter > 2 - r².\n\nThe bound involves r² rather than r.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1048-zn-diam",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 183, "endLine": 186 },
+    "type": "theorem",
+    "title": "z^n Diameter",
+    "content": "**zn_diameter**: diameter(L(z^n, 1)) = 2.\n\nFor f(z) = z^n (all roots at origin), L(f,1) is the unit disk.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-sharp",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 188, "endLine": 191 },
+    "type": "theorem",
+    "title": "Bound Sharp",
+    "content": "**diameter_2_sharp**: The diameter ≥ 2 bound for r = 0 is sharp.\n\nCannot improve beyond diameter 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-r-eq-1",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 193, "endLine": 196 },
+    "type": "axiom",
+    "title": "r = 1 Case",
+    "content": "**diameter_near_1_for_r_eq_1**: For r = 1, max diameter < 1 + ε for any ε > 0.\n\nThe diameter bound degrades as r → 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-count-bound",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 204, "endLine": 207 },
+    "type": "axiom",
+    "title": "Component Count",
+    "content": "**component_count_bound**: Degree n polynomial has ≤ n components.\n\nThe topology of lemniscates is controlled by degree.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-exterior",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 209, "endLine": 212 },
+    "type": "theorem",
+    "title": "Exterior Unbounded",
+    "content": "**exterior_unbounded**: The complement of L(f, c) contains unbounded components.\n\nSince |f(z)| → ∞ as |z| → ∞.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-capacity",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 220, "endLine": 221 },
+    "type": "definition",
+    "title": "Log Capacity",
+    "content": "**logCapacity S**: The logarithmic capacity of set S.\n\nA potential-theoretic quantity measuring 'size' in complex analysis.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-cap-lemn",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 223, "endLine": 225 },
+    "type": "axiom",
+    "title": "Lemniscate Capacity",
+    "content": "**lemniscate_capacity**: cap(L(f, c)) = c^(1/n) for degree n monic f.\n\nClassical result in potential theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-cap-diam",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 227, "endLine": 229 },
+    "type": "axiom",
+    "title": "Capacity-Diameter",
+    "content": "**capacity_diameter_inequality**: diameter ≥ 4 · capacity for connected sets.\n\nCapacity bounds diameter from below.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1048-main",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 237, "endLine": 250 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_1048**: Erdős Problem #1048 is DISPROVED.\n\nThe EHP conjecture fails for r > 1.\n\nPommerenke's counterexample z^n - r^n has components with vanishing diameter.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-answer",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 252, "endLine": 258 },
+    "type": "definition",
+    "title": "Final Answer",
+    "content": "**erdos_1048_answer**: \"DISPROVED for r > 1 (Pommerenke 1961). Positive results for r ≤ 1.\"\n\n**erdos_1048_status**: \"DISPROVED by Christian Pommerenke (1961)\"",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1048-insight",
+    "proofId": "erdos-1048",
+    "range": { "startLine": 260, "endLine": 265 },
+    "type": "theorem",
+    "title": "Pommerenke's Insight",
+    "content": "**pommerenke_insight**: For r > 1, arbitrarily small component diameters are achievable.\n\nGiven any δ > 0, there exists a bounded monic poly with max component diameter < δ.",
+    "significance": "key"
+  }
+]

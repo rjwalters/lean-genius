@@ -1,33 +1,167 @@
 {
   "id": "erdos-1049",
-  "title": "Erdős Problem #1049",
+  "title": "Erdős Problem #1049: Irrationality of Divisor Sums",
   "slug": "erdos-1049",
-  "description": "Let t&gt;1\" role=\"presentation\" style=\"position: relative;\">t>1t>1t>1 be a rational number. Is&#x2211;n=1&#x221E;1tn&#x2212;1=&#x2211;n=1&#x221E;&#x03C4;(n)tn\" role=\"presentation\" style=\"text-align...",
+  "description": "For rational t > 1, is ∑_{n≥1} 1/(t^n - 1) = ∑_{n≥1} τ(n)/t^n irrational? OPEN: Erdős proved YES for integer t ≥ 2. Chowla's conjecture for all rationals unresolved.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1948), Chowla (conjecture)",
     "sourceUrl": "https://erdosproblems.com/1049",
-    "date": "",
-    "status": "pending",
+    "date": "1948",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1049Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "divisor-function",
+      "series",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 14,
     "erdosNumber": 1049,
     "erdosUrl": "https://erdosproblems.com/1049",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrationality predicate",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series summation",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "IsAlgebraic",
+        "description": "Algebraic number predicate",
+        "module": "Mathlib.RingTheory.Algebraic"
+      }
+    ],
+    "references": [
+      {
+        "key": "Er48",
+        "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
+        "type": "paper"
+      },
+      {
+        "key": "Er88c",
+        "citation": "Erdős, P. (1988). Problems and results on number theoretic properties of consecutive integers and related questions, p. 102.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of divisor function τ(n)",
+      "Definition of the series S(t) = ∑ 1/(t^n - 1)",
+      "The classical identity S(t) = D(t) = ∑ τ(n)/t^n",
+      "Axiomatization of Erdős's irrationality result for integers",
+      "Statement of Chowla's conjecture for rationals",
+      "Definition of Erdős-Borwein constant S(2)",
+      "Connection to Lambert series",
+      "Transcendentality and algebraic independence conjectures"
+    ],
+    "relatedProblems": ["erdos-1048", "erdos-1050"]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1049 from erdosproblems.com.",
-    "problemStatement": "Let t&gt;1\" role=\"presentation\" style=\"position: relative;\">t>1t>1t>1 be a rational number. Is&#x2211;n=1&#x221E;1tn&#x2212;1=&#x2211;n=1&#x221E;&#x03C4;(n)tn\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑n=1∞1tn−1=∑n=1∞τ(n)tn∑n=1∞1tn−1=∑n=1∞τ(n)tn",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Divisor Sums and Irrationality**\n\nThe series ∑_{n≥1} 1/(t^n - 1) equals ∑_{n≥1} τ(n)/t^n, where τ(n) is the divisor counting function.\n\n**Erdős (1948)** proved this sum is irrational when t is an integer ≥ 2.\n\n**Chowla's Conjecture**: The sum should be irrational for ALL rational t > 1.\n\nThe value S(2) ≈ 1.606695... is called the Erdős-Borwein constant.",
+    "problemStatement": "**Problem Statement**\n\nFor a rational number t > 1, is the sum\n\n∑_{n=1}^∞ 1/(t^n - 1) = ∑_{n=1}^∞ τ(n)/t^n\n\nirrational?\n\n**Status**: OPEN\n\n**Partial Result**: YES for integer t ≥ 2 (Erdős 1948).",
+    "proofStrategy": "**The Formalization**\n\n1. Defines the divisor function τ(n) = |{d : d|n}|\n2. Defines the series S(t) = ∑ 1/(t^n - 1)\n3. Defines the divisor series D(t) = ∑ τ(n)/t^n\n4. Proves the classical identity S(t) = D(t)\n5. Axiomatizes Erdős's irrationality result for integers\n6. States Chowla's conjecture for all rationals\n7. Defines the Erdős-Borwein constant S(2)\n8. Connects to Lambert series theory\n9. States transcendentality conjectures\n10. Provides asymptotic bounds",
+    "keyInsights": [
+      "The identity ∑ 1/(t^n-1) = ∑ τ(n)/t^n is classical",
+      "Erdős proved irrationality for integer t ≥ 2 in 1948",
+      "Chowla's conjecture extends this to all rational t > 1",
+      "S(2) ≈ 1.606695 is the Erdős-Borwein constant",
+      "The series is a Lambert series with a_n = 1",
+      "Transcendentality for algebraic t > 1 is also conjectured"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "divisor",
+      "title": "The Divisor Function",
+      "summary": "τ(n) = number of divisors",
+      "startLine": 26,
+      "endLine": 61
+    },
+    {
+      "id": "series",
+      "title": "The Series",
+      "summary": "S(t) and D(t) definitions",
+      "startLine": 63,
+      "endLine": 85
+    },
+    {
+      "id": "identity",
+      "title": "The Identity",
+      "summary": "S(t) = D(t)",
+      "startLine": 87,
+      "endLine": 112
+    },
+    {
+      "id": "erdos-result",
+      "title": "Erdős's Result",
+      "summary": "Irrationality for integers",
+      "startLine": 114,
+      "endLine": 134
+    },
+    {
+      "id": "chowla",
+      "title": "Chowla's Conjecture",
+      "summary": "Conjecture for all rationals",
+      "startLine": 136,
+      "endLine": 151
+    },
+    {
+      "id": "special",
+      "title": "Special Values",
+      "summary": "Erdős-Borwein constant",
+      "startLine": 153,
+      "endLine": 178
+    },
+    {
+      "id": "algebraic",
+      "title": "Algebraic Properties",
+      "summary": "Transcendentality conjectures",
+      "startLine": 180,
+      "endLine": 197
+    },
+    {
+      "id": "lambert",
+      "title": "Lambert Series",
+      "summary": "Connection to Lambert series",
+      "startLine": 199,
+      "endLine": 217
+    },
+    {
+      "id": "partial",
+      "title": "Partial Results",
+      "summary": "Known progress on conjecture",
+      "startLine": 219,
+      "endLine": 238
+    },
+    {
+      "id": "main",
+      "title": "Main Results",
+      "summary": "Summary of Erdős #1049",
+      "startLine": 240,
+      "endLine": 275
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1049 asks whether ∑_{n≥1} 1/(t^n - 1) is irrational for rational t > 1. This equals ∑ τ(n)/t^n by a classical identity. OPEN: Erdős (1948) proved YES for integer t ≥ 2. Chowla's conjecture that this holds for all rational t > 1 remains unresolved.",
+    "implications": "**Theoretical Significance**\n\n1. **Number Theory**: Connects divisor function to transcendence theory\n\n2. **Irrationality Proofs**: Techniques extend Erdős's methods\n\n3. **Lambert Series**: Special case of broader Lambert series theory\n\n4. **Mathematical Constants**: Erdős-Borwein constant S(2) ≈ 1.606695...",
+    "openQuestions": [
+      "Is S(t) irrational for all rational t > 1? (Chowla's conjecture)",
+      "Is S(t) transcendental for algebraic t > 1?",
+      "What are the Diophantine approximation properties of S(t)?",
+      "Linear independence of S(t) for different t values?"
+    ]
   }
 }

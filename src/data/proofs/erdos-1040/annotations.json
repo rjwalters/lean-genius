@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "ann-1040-nthdiameter",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 30, "endLine": 34 },
+    "type": "definition",
+    "title": "nthDiameter",
+    "content": "The n-th diameter of set F.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-transfinite",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "transfiniteDiameter",
+    "content": "Logarithmic capacity of F.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-transfinite2",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "transfiniteDiameter'",
+    "content": "Alternative limit definition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-diam-eq",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "axiom",
+    "title": "transfiniteDiameter_eq",
+    "content": "Two definitions agree.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-polyinf",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "definition",
+    "title": "PolynomialInF",
+    "content": "Polynomial with roots in F.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-eval",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "PolynomialInF.eval",
+    "content": "Evaluate polynomial at z.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-sublevel",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "sublevelSet",
+    "content": "{z : |f(z)| < 1}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-measure",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "sublevelMeasure",
+    "content": "Lebesgue measure of sublevel set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-mu",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "mu",
+    "content": "μ(F) = inf of sublevel measures.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-mureal",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "definition",
+    "title": "muReal",
+    "content": "μ(F) as real number.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-determined",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 91, "endLine": 96 },
+    "type": "definition",
+    "title": "muDeterminedByDiameter",
+    "content": "Is μ(F) determined by ρ(F)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-conjecture",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 98, "endLine": 102 },
+    "type": "definition",
+    "title": "diameterOneConjecture",
+    "content": "μ(F) = 0 when ρ(F) ≥ 1?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-open",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "axiom",
+    "title": "problem_open",
+    "content": "The problem is open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-lineseg",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "definition",
+    "title": "isLineSegment",
+    "content": "Line segment in ℂ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-disc",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "definition",
+    "title": "isClosedDisc",
+    "content": "Closed disc in ℂ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-lineseg-det",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 119, "endLine": 121 },
+    "type": "axiom",
+    "title": "lineSegment_determined",
+    "content": "μ determined for line segments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-disc-det",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "axiom",
+    "title": "disc_determined",
+    "content": "μ determined for discs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-lineseg-diam",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "axiom",
+    "title": "lineSegment_diameter",
+    "content": "Line segment: ρ = L/4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-disc-diam",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "axiom",
+    "title": "disc_diameter",
+    "content": "Disc of radius r: ρ = r.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-small",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 139, "endLine": 144 },
+    "type": "axiom",
+    "title": "small_diameter_disc",
+    "content": "ρ(F) < 1 → sublevel contains disc.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-discconst",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 146, "endLine": 149 },
+    "type": "definition",
+    "title": "discConstant",
+    "content": "The disc constant for F.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-netanyahu",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 155, "endLine": 161 },
+    "type": "axiom",
+    "title": "erdos_netanyahu",
+    "content": "Erdős-Netanyahu 1973 result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-unitdisc",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 167, "endLine": 172 },
+    "type": "definition",
+    "title": "unitDiscCase",
+    "content": "Connection to Problem 1039.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-unitdisc-diam",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 174, "endLine": 177 },
+    "type": "theorem",
+    "title": "unitDisc_diameter",
+    "content": "Unit disc has ρ = 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-mono",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 183, "endLine": 186 },
+    "type": "theorem",
+    "title": "transfiniteDiameter_mono",
+    "content": "ρ is monotone.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-nonneg",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 188, "endLine": 191 },
+    "type": "theorem",
+    "title": "transfiniteDiameter_nonneg",
+    "content": "ρ ≥ 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-finite",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 193, "endLine": 196 },
+    "type": "theorem",
+    "title": "finite_diameter_zero",
+    "content": "Finite sets have ρ = 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-scale",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 198, "endLine": 202 },
+    "type": "theorem",
+    "title": "transfiniteDiameter_scale",
+    "content": "Scaling property.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1040-mumono",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 208, "endLine": 211 },
+    "type": "theorem",
+    "title": "mu_mono",
+    "content": "μ is monotone in F.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-muinf",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 213, "endLine": 216 },
+    "type": "theorem",
+    "title": "mu_infimum",
+    "content": "μ(F) is approached.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1040-question",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 222, "endLine": 223 },
+    "type": "definition",
+    "title": "erdos_1040_question",
+    "content": "The main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1040-state",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 225, "endLine": 231 },
+    "type": "theorem",
+    "title": "erdos_1040_current_state",
+    "content": "Current known results.",
+    "significance": "critical"
+  }
+]

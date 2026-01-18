@@ -1,33 +1,121 @@
 {
   "id": "erdos-359",
-  "title": "Erdős Problem #359",
+  "title": "Erdos Problem #359: MacMahon's Prime Numbers of Measurement",
   "slug": "erdos-359",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers such that ... and ... is the least integer which is not a sum of consecutive earl...",
+  "description": "What is the density of MacMahon's sequence where each term is the smallest integer not expressible as a sum of consecutive earlier terms? Conjectured: a_k ~ (k log k) / (log log k).",
   "meta": {
-    "author": "Unknown",
+    "author": "MacMahon (1920s), Andrews (1975), Porubsky (1977)",
     "sourceUrl": "https://erdosproblems.com/359",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos359Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sequences",
+      "density",
+      "consecutive-sums"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 359,
     "erdosUrl": "https://erdosproblems.com/359",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for growth rate statements",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals for consecutive sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strict monotonicity of the sequence",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "IsLeast",
+        "description": "Characterizing the minimum element",
+        "module": "Mathlib.Order.Bounds.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of consecutive sum achievability",
+      "Definition of MacMahon sequence as 'good for 1'",
+      "Verified examples of why 3 and 6 are skipped",
+      "Formalization of Andrews' asymptotic conjecture",
+      "Formalization of Porubsky's density bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #359 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1<a_2<\\cdots$ be an infinite sequence of integers such that $a_1=n$ and $a_{i+1}$ is the least integer which is not a sum of consecutive earlier $a_j$s. What can be said about the density of this sequence?\n\nIn particular, in the case $n=1$, can one prove that $a_k/k\\to \\infty$ and $a_k/k^{1+c}\\to 0$ for any $c>0$?\n\n\n\nA problem of MacMahon, studied by Andrews \\cite{An75}. When $n=1$ this sequence begins\\[1,2,4,5,8,10,14,15,\\ldots.\\]This sequence is A002048 in the OEIS. Andrews conjectures\\[a_k\\sim \\frac{k\\log k}{\\log\\log k}.\\]Porubsky \\cite{Po77} proved that, for any $\\epsilon>0$, there are infinitely many $k$ such that\\[a_k < (\\log k)^\\epsilon \\frac{k\\log k}{\\log\\log k},\\]and also that if $A(x)$ counts the number of $a_i\\leq x$ then\\[\\limsup \\frac{A(x)}{\\pi(x)}\\geq \\frac{1}{\\log 2}\\]where $\\pi(x)$ counts the number of primes $\\leq x$.\n\nSee also [839].\n\n\n\n\nReferences\n\n\n[An75] Andrews, George E., Research Problems: Mac Mahon's Prime Numbers of Measurement. Amer. Math. Monthly (1975), 922-923.\n\n[Po77] Porubsk\\'y, \\v S., On {M}ac{M}ahon's segmented numbers and related sequences. Nieuw Arch. Wisk. (3) (1977), 403--408.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdos Problem #359 concerns MacMahon's 'prime numbers of measurement' (OEIS A002048), a sequence defined by P.A. MacMahon in the early 20th century. The sequence starts with 1, and each subsequent term is the smallest positive integer that cannot be expressed as a sum of consecutive earlier terms.\n\nThe sequence begins: 1, 2, 4, 5, 8, 10, 14, 15, 21, 22, 26, 28, ...\n\nGeorge Andrews studied this sequence in 1975 and conjectured that a_k ~ (k log k) / (log log k). Stefan Porubsky proved partial results in 1977, establishing bounds comparing the sequence to the prime counting function.\n\nThe question of the exact growth rate remains OPEN. It is conjectured that a_k/k tends to infinity (superlinear growth) but a_k/k^{1+c} tends to 0 for any c > 0 (subpolynomial growth).",
+    "problemStatement": "Let $a_1 < a_2 < \\cdots$ be an infinite sequence where $a_1 = n$ and $a_{i+1}$ is the smallest integer not expressible as a sum of consecutive earlier terms $a_j + a_{j+1} + \\cdots + a_k$.\n\n**Questions** (for $n = 1$):\n1. Prove $a_k / k \\to \\infty$\n2. Prove $a_k / k^{1+c} \\to 0$ for any $c > 0$\n\n**Conjecture** (Andrews): $a_k \\sim \\frac{k \\log k}{\\log \\log k}$\n\n**Status**: OPEN",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **ConsecutiveSum**: The sum of terms A(a) + A(a+1) + ... + A(b)\n2. **AchievableSums**: All integers expressible as consecutive sums\n3. **IsGoodFor**: A sequence is 'good for n' if A(0) = n and each A(j+1) is the smallest integer greater than A(j) not in AchievableSums\n4. **IsMacMahonSeq**: The sequence 'good for 1'\n\nThe growth rate conjectures are stated as axioms since they remain open. We verify concrete examples (why 3 and 6 are skipped) and formalize Porubsky's density bounds.",
+    "keyInsights": [
+      "**Consecutive sums**: Unlike subset sums, we only consider sums of consecutive terms. This is more restrictive but creates interesting gaps.",
+      "**OEIS A002048**: The MacMahon sequence 1, 2, 4, 5, 8, 10, 14, 15, ... is well-studied. Note 3 is missing because 3 = 1 + 2.",
+      "**Andrews' conjecture**: The growth rate a_k ~ (k log k) / (log log k) is superlinear but subpolynomial - a delicate intermediate growth.",
+      "**Porubsky's comparison**: The sequence is denser than primes by a factor of at least 1/log(2), connecting to prime number theory."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 40,
+      "endLine": 70,
+      "summary": "ConsecutiveSum, AchievableSums, IsGoodFor, IsMacMahonSeq definitions."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 72,
+      "endLine": 92,
+      "summary": "Properties: first term is 1, sequence is strictly increasing."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "startLine": 94,
+      "endLine": 134,
+      "summary": "First 8 values: 1, 2, 4, 5, 8, 10, 14, 15. Why 3 and 6 are skipped."
+    },
+    {
+      "id": "growth-conjectures",
+      "title": "Growth Rate Conjectures",
+      "startLine": 136,
+      "endLine": 162,
+      "summary": "Open conjectures: superlinear but subpolynomial growth, Andrews' asymptotic."
+    },
+    {
+      "id": "porubsky",
+      "title": "Porubsky's Results",
+      "startLine": 164,
+      "endLine": 192,
+      "summary": "Porubsky's upper bound and density comparison with primes."
+    },
+    {
+      "id": "general-n",
+      "title": "General Starting Value",
+      "startLine": 194,
+      "endLine": 204,
+      "summary": "Extension to sequences starting with n != 1."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdos Problem #359 about MacMahon's sequence where each term is the smallest integer not expressible as a consecutive sum of earlier terms. The growth rate conjectures remain OPEN.",
+    "implications": "This problem has implications for:\n\n1. **Additive combinatorics**: Consecutive sum representations vs subset sums\n\n2. **Density of integer sequences**: Connection to prime counting function\n\n3. **Asymptotic analysis**: Intermediate growth rates between linear and polynomial",
+    "openQuestions": [
+      "Prove a_k / k tends to infinity (superlinear growth)",
+      "Prove a_k / k^{1+c} tends to 0 for c > 0 (subpolynomial growth)",
+      "Verify Andrews' conjecture: a_k ~ (k log k) / (log log k)",
+      "Characterize the density for general starting value n"
+    ]
   }
 }

@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e624-header",
+    "proofId": "erdos-624",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Introduction",
+    "content": "**Erdos Problem #624** asks about covering properties of subset functions. Given a set X of size n, what is the minimum H(n) such that some function f : P(X) -> X has {f(A) : A in Y} = X for all Y in X with |Y| >= H(n)? The conjecture states H(n) - log_2(n) -> infinity.",
+    "mathContext": "The covering number H(n) measures how large a subset must be to guarantee that the function's image over all its sub-subsets covers X. Known bounds: log_2(n) <= H(n) < log_2(n) + O(log log n).",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "covering-problems", "combinatorics", "set-functions"]
+  },
+  {
+    "id": "ann-e624-subset-image",
+    "proofId": "erdos-624",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "Subset Image Definition",
+    "content": "**subsetImage** computes {f(A) : A in Y}, the set of all values f takes on subsets of Y. This is the key object we study: for how large Y can we guarantee this image equals all of X?",
+    "mathContext": "Formally: subsetImage f Y = Y.powerset.image f. Since Y has 2^|Y| subsets, the image has at most 2^|Y| elements.",
+    "significance": "critical",
+    "relatedConcepts": ["powerset", "function-image", "finset"]
+  },
+  {
+    "id": "ann-e624-covering-function",
+    "proofId": "erdos-624",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "definition",
+    "title": "H-Covering Function",
+    "content": "**IsCoveringFunction** captures when f is H-covering: for every Y in X with |Y| >= H, the subset image {f(A) : A in Y} equals all of X. The smaller H, the more powerful the covering function.",
+    "mathContext": "This is a strong property: even 'small' subsets Y of size H must generate images covering all of X. The existence of such functions with small H is the core question.",
+    "significance": "critical",
+    "relatedConcepts": ["covering", "surjectivity", "minimum"]
+  },
+  {
+    "id": "ann-e624-covering-number",
+    "proofId": "erdos-624",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "The Covering Number H(n)",
+    "content": "**coveringNumber** defines H(X) as the infimum of all H for which an H-covering function exists. This is the central quantity: how small can H be while still achieving full coverage?",
+    "mathContext": "Defined as sInf { H : N | exists f, IsCoveringFunction X f H }. The problem asks about the growth rate of H(n) = coveringNumber X when |X| = n.",
+    "significance": "critical",
+    "relatedConcepts": ["infimum", "optimization", "growth-rate"]
+  },
+  {
+    "id": "ann-e624-basic-properties",
+    "proofId": "erdos-624",
+    "range": { "startLine": 55, "endLine": 67 },
+    "type": "theorem",
+    "title": "Basic Cardinality Bounds",
+    "content": "**card_powerset_eq** and **subsetImage_card_le** establish fundamental size bounds. The powerset has exactly 2^|Y| elements, so any image through a function has at most 2^|Y| elements.",
+    "mathContext": "These bounds are essential: if subsetImage f Y = X, then |X| <= 2^|Y|, giving |Y| >= log_2|X|. This is the source of the lower bound on H(n).",
+    "significance": "key",
+    "relatedConcepts": ["cardinality", "powerset", "logarithm"]
+  },
+  {
+    "id": "ann-e624-lower-bound",
+    "proofId": "erdos-624",
+    "range": { "startLine": 69, "endLine": 85 },
+    "type": "theorem",
+    "title": "Lower Bound: H(n) >= log_2(n)",
+    "content": "**covering_lower_bound** proves that if f is H-covering, then 2^H >= |X|. **coveringNumber_ge_log** concludes H(n) >= ceil(log_2(n)). This is a simple counting argument.",
+    "mathContext": "The argument: take Y with |Y| = H. Then {f(A) : A in Y} = X has |X| elements, but has at most 2^H elements. So 2^H >= |X|, giving H >= log_2|X|.",
+    "significance": "key",
+    "relatedConcepts": ["counting-argument", "logarithm", "lower-bound"]
+  },
+  {
+    "id": "ann-e624-upper-bound",
+    "proofId": "erdos-624",
+    "range": { "startLine": 87, "endLine": 97 },
+    "type": "axiom",
+    "title": "Erdos-Hajnal Upper Bound (1968)",
+    "content": "**erdos_hajnal_upper_bound** states that H(n) < log_2(n) + 3*log_2(log_2(n)) + O(1) for large n. This construction shows H(n) is close to log_2(n), but the gap grows slowly.",
+    "mathContext": "Stated as axiom because the explicit construction requires sophisticated combinatorial techniques. The key point: H(n) - log_2(n) = O(log log n), but is it unbounded?",
+    "significance": "critical",
+    "relatedConcepts": ["construction", "upper-bound", "log-log"]
+  },
+  {
+    "id": "ann-e624-main-conjecture",
+    "proofId": "erdos-624",
+    "range": { "startLine": 99, "endLine": 111 },
+    "type": "axiom",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**MainConjecture** formalizes that H(n) - log_2(n) -> infinity. For any constant C, eventually H(n) > log_2(n) + C. This remains **OPEN** and is the core of Erdos Problem #624.",
+    "mathContext": "Formally: for all C, exists N, for all n > N and |X| = n, coveringNumber X > log_2(n) + C. This would show the gap is unbounded.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "asymptotic", "divergence"]
+  },
+  {
+    "id": "ann-e624-weaker",
+    "proofId": "erdos-624",
+    "range": { "startLine": 113, "endLine": 122 },
+    "type": "axiom",
+    "title": "Weaker Conjecture (Also OPEN)",
+    "content": "**WeakerConjecture** asks: for n = 2^k, is H(n) >= k + 1? This would show even log_2(n) itself is never achievable. Remarkably, even this weaker statement remains **OPEN**!",
+    "mathContext": "This says no function achieves the optimal H = log_2(n). If true, there's always a gap of at least 1. This is strictly weaker than the main conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["open-problem", "powers-of-two", "gap"]
+  },
+  {
+    "id": "ann-e624-alon-upper",
+    "proofId": "erdos-624",
+    "range": { "startLine": 124, "endLine": 136 },
+    "type": "axiom",
+    "title": "Alon's Upper Bound on Coverage",
+    "content": "**alon_upper_bound** shows there exists c > 0 such that for any f, some Y of size k has |{f(A) : A in Y}| < (1 - c) * 2^k. This proves no function is 'too good' - some subsets always miss coverage.",
+    "mathContext": "The constant c is absolute (independent of k). This gives a structural limitation on all covering functions: there's always a 'bad' subset that doesn't nearly cover X.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole", "limitation", "constant-gap"]
+  },
+  {
+    "id": "ann-e624-alon-lower",
+    "proofId": "erdos-624",
+    "range": { "startLine": 138, "endLine": 146 },
+    "type": "axiom",
+    "title": "Alon's Construction",
+    "content": "**alon_lower_construction** shows there exist good functions: some f achieves |{f(A) : A in Y}| > 2^k / 4 for all Y of size k. The image is always at least 1/4 of the maximum possible.",
+    "mathContext": "Combined with alon_upper_bound, this shows the image is between 1/4 and (1-c) of 2^k. Good functions exist, but none are perfect.",
+    "significance": "supporting",
+    "relatedConcepts": ["construction", "lower-bound", "explicit"]
+  },
+  {
+    "id": "ann-e624-summary",
+    "proofId": "erdos-624",
+    "range": { "startLine": 148, "endLine": 163 },
+    "type": "theorem",
+    "title": "Summary of Results",
+    "content": "**Summary**: H(n) is sandwiched between log_2(n) and log_2(n) + O(log log n). The main conjecture (H(n) - log_2(n) -> infinity) and even the weaker statement (H(2^k) >= k+1) remain **OPEN**.",
+    "mathContext": "Known: log_2(n) <= H(n) < log_2(n) + O(log log n). Unknown: whether the gap is bounded or unbounded. Alon's results give partial information about the structure.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "open-questions", "bounds"]
+  }
+]

@@ -1,33 +1,128 @@
 {
   "id": "erdos-1040",
-  "title": "Erdős Problem #1040",
+  "title": "Erdős Problem #1040: Transfinite Diameter and Sublevel Set Measure",
   "slug": "erdos-1040",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a closed infinite set, and let ... be the infimum of\\[\\lvert \\{ z: \\lvert f(z)\\rvert < 1\\}\\rvert,\\]as ... ranges o...",
+  "description": "Let F ⊆ ℂ be closed infinite, μ(F) = inf of |{z: |f(z)| < 1}| over polynomials with roots in F. Is μ(F) determined by transfinite diameter? Is μ(F) = 0 when ρ(F) ≥ 1? OPEN. Known for line segments/discs (EHP 1958).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Herzog-Piranian (1958), Erdős-Netanyahu (1973)",
     "sourceUrl": "https://erdosproblems.com/1040",
     "date": "",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1040Problem.lean",
     "tags": [
-      "erdos"
+      "complex-analysis",
+      "polynomials",
+      "erdos",
+      "potential-theory",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 7,
     "erdosNumber": 1040,
     "erdosUrl": "https://erdosproblems.com/1040",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": [1039]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1040 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F\\subseteq \\mathbb{C}$ be a closed infinite set, and let $\\mu(F)$ be the infimum of\\[\\lvert \\{ z: \\lvert f(z)\\rvert < 1\\}\\rvert,\\]as $f$ ranges over all polynomials of the shape $\\prod (z-z_i)$ with $z_i\\in F$.\n\nIs $\\mu(F)$ determined by the transfinite diameter of $F$? In particular, is $\\mu(F)=0$ whenever the transfinite diameter of $F$ is $\\geq 1$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}, who show that the answer is yes if $F$ is a line segment or disc, and that if the transfinite diameter is $<1$ then $\\{ z: \\lvert f(z)\\rvert < 1\\}$ always contains a disc of radius $\\gg_F 1$.\n\nErd\\H{o}s and Netanyahu \\cite{ErNe73} proved that if $F$ is also bounded and connected, with transfinite diameter $0<c<1$, then $\\{ z: \\lvert f(z)\\rvert < 1\\}$ always contains a disc of radius $\\gg_c 1$.\n\nThe transfinite diameter of $F$, also known as the logarithmic capacity, is defined by\\[\\rho(F)=\\lim_{n\\to \\infty}\\sup_{z_1,\\ldots,z_n\\in F}\\left(\\prod_{i<j}\\lvert z_i-z_j\\rvert\\right)^{1/\\binom{n}{2}}.\\]\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[ErNe73] Erd\\H{o}s, P. and Netanyahu, E., A remark on polynomials and the transfinite diameter. Israel J. Math. (1973), 23--25.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős-Herzog-Piranian Problem**\n\nThis problem concerns the relationship between the transfinite diameter (logarithmic capacity) of a set F and the measure of polynomial sublevel sets with roots in F.\n\n**Historical Development**:\n- 1958: Erdős, Herzog, and Piranian posed the problem, proved it for line segments and discs\n- 1973: Erdős and Netanyahu gave explicit bounds for bounded connected sets\n- Related to Problem 1039 (inscribed disc radius in sublevel sets)",
+    "problemStatement": "**Problem Statement**\n\nLet F ⊆ ℂ be a closed infinite set. Define μ(F) as the infimum of |{z : |f(z)| < 1}| over all polynomials f(z) = ∏(z - zᵢ) with zᵢ ∈ F.\n\nIs μ(F) determined by the transfinite diameter of F?\nIn particular, is μ(F) = 0 whenever the transfinite diameter ≥ 1?\n\n**Status**: OPEN\n\n**Known**:\n- YES for line segments and discs (EHP 1958)\n- When ρ(F) < 1, sublevel sets contain a disc of radius ≫_F 1",
+    "proofStrategy": "**Approach**\n\n1. **Transfinite Diameter**: The logarithmic capacity ρ(F) = lim sup of (∏|zᵢ - zⱼ|)^(2/n(n-1)) over n-point configurations.\n\n2. **Special Cases**: For line segments of length L, ρ = L/4. For discs of radius r, ρ = r.\n\n3. **Small Diameter**: When ρ(F) < 1, every sublevel set contains a disc of positive radius.\n\n4. **The Gap**: General sets with ρ(F) ≥ 1 remain unresolved.",
+    "keyInsights": [
+      "μ(F) = infimum of sublevel set measures over polynomials with roots in F",
+      "Transfinite diameter = logarithmic capacity",
+      "Known for line segments and discs (EHP 1958)",
+      "ρ(F) < 1 → sublevel sets contain positive-radius disc",
+      "Conjecture: μ(F) = 0 when ρ(F) ≥ 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "transfinite-diameter",
+      "title": "Transfinite Diameter",
+      "summary": "nthDiameter, transfiniteDiameter, transfiniteDiameter'",
+      "startLine": 26,
+      "endLine": 46
+    },
+    {
+      "id": "polynomials",
+      "title": "Polynomials with Roots in F",
+      "summary": "PolynomialInF, eval, sublevelSet, sublevelMeasure",
+      "startLine": 48,
+      "endLine": 73
+    },
+    {
+      "id": "mu-function",
+      "title": "The Function μ(F)",
+      "summary": "mu, muReal definitions",
+      "startLine": 75,
+      "endLine": 85
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "muDeterminedByDiameter, diameterOneConjecture",
+      "startLine": 87,
+      "endLine": 105
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results: Line Segments and Discs",
+      "summary": "isLineSegment, isClosedDisc, lineSegment_determined, disc_determined",
+      "startLine": 107,
+      "endLine": 133
+    },
+    {
+      "id": "small-diameter",
+      "title": "Small Transfinite Diameter",
+      "summary": "small_diameter_disc, discConstant",
+      "startLine": 135,
+      "endLine": 149
+    },
+    {
+      "id": "erdos-netanyahu",
+      "title": "Erdős-Netanyahu Result (1973)",
+      "summary": "erdos_netanyahu axiom",
+      "startLine": 151,
+      "endLine": 161
+    },
+    {
+      "id": "problem-1039",
+      "title": "Relationship to Problem 1039",
+      "summary": "unitDiscCase, unitDisc_diameter",
+      "startLine": 163,
+      "endLine": 177
+    },
+    {
+      "id": "diameter-properties",
+      "title": "Properties of Transfinite Diameter",
+      "summary": "transfiniteDiameter_mono, transfiniteDiameter_nonneg, finite_diameter_zero, transfiniteDiameter_scale",
+      "startLine": 179,
+      "endLine": 202
+    },
+    {
+      "id": "mu-properties",
+      "title": "Properties of μ",
+      "summary": "mu_mono, mu_infimum",
+      "startLine": 204,
+      "endLine": 216
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "summary": "erdos_1040_question, erdos_1040_current_state",
+      "startLine": 218,
+      "endLine": 231
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1040 asks whether the infimum μ(F) of sublevel set measures is determined by the transfinite diameter of F, and specifically whether μ(F) = 0 when ρ(F) ≥ 1. The answer is YES for line segments and discs, and when ρ(F) < 1 the sublevel sets always contain a disc of positive radius. The general case remains open.",
+    "implications": "**Theoretical Significance**\n\n1. **Potential Theory**: Deep connection between capacity and polynomial behavior\n\n2. **Complex Analysis**: Understanding sublevel sets of polynomials\n\n3. **Extremal Problems**: Which sets F minimize/maximize μ(F)?\n\n4. **Connection to #1039**: Unit disc case bridges both problems",
+    "openQuestions": [
+      "Is μ(F) = 0 when transfinite diameter ≥ 1?",
+      "Is μ(F) determined by transfinite diameter alone?",
+      "Explicit formula for μ(F) in terms of ρ(F)?",
+      "Characterize extremal sets for fixed ρ(F)",
+      "Higher-dimensional analogues?"
+    ]
   }
 }

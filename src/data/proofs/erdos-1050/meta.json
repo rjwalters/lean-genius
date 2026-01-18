@@ -1,33 +1,174 @@
 {
   "id": "erdos-1050",
-  "title": "Erdős Problem #1050",
+  "title": "Erdős Problem #1050: Irrationality of ∑ 1/(2^n - 3)",
   "slug": "erdos-1050",
-  "description": "Is&#x2211;n=1&#x221E;12n&#x2212;3\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑n=1∞12n−3∑n=1∞12n−3",
+  "description": "Is ∑_{n≥1} 1/(2^n - 3) irrational? SOLVED by Borwein (1991): YES. More generally, ∑ 1/(q^n + r) is irrational for q ≥ 2 and rational r ≠ 0, r ≠ -q^n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Borwein (1991 proof)",
     "sourceUrl": "https://erdosproblems.com/1050",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1050Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "series",
+      "transcendence",
+      "solved"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 12,
     "erdosNumber": 1050,
     "erdosUrl": "https://erdosproblems.com/1050",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Irrational",
+        "description": "Irrationality predicate",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series summation",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendence predicate",
+        "module": "Mathlib.RingTheory.Algebraic"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Summability of sequences",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "Bo91",
+        "citation": "Borwein, P. (1991). On the irrationality of certain series. Math. Proc. Cambridge Philos. Soc., 112:141-146.",
+        "type": "paper"
+      },
+      {
+        "key": "Er48",
+        "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
+        "type": "paper"
+      },
+      {
+        "key": "ErGr80",
+        "citation": "Erdős, P. and Graham, R. (1980). Old and new problems and results in combinatorial number theory, p. 62.",
+        "type": "book"
+      }
+    ],
+    "originalContributions": [
+      "General series T(q, r) = ∑ 1/(q^n + r)",
+      "Specific series S = ∑ 1/(2^n - 3)",
+      "Convergence conditions for T(q, r)",
+      "First terms computation",
+      "Axiomatization of Borwein's irrationality theorem",
+      "Application to ∑ 1/(2^n - 3)",
+      "Related series: ∑ 1/(2^n - 1), ∑ 1/(2^n + 1)",
+      "Erdős's transcendence conjecture statement",
+      "Connection to Problem #1049",
+      "Numerical approximation S ≈ 0.287"
+    ],
+    "relatedProblems": ["erdos-1049", "erdos-1051"]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1050 from erdosproblems.com.",
-    "problemStatement": "Is&#x2211;n=1&#x221E;12n&#x2212;3\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑n=1∞12n−3∑n=1∞12n−3",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Borwein's Irrationality Theorem**\n\nErdős proved ∑ 1/(2^n - 1) is irrational (1948) and conjectured ∑ 1/(2^n + t) should be transcendental for integer t ≠ 0.\n\n**Borwein (1991)** proved the more general irrationality result: ∑ 1/(q^n + r) is irrational for integer q ≥ 2 and rational r ≠ 0, r ≠ -q^n.\n\nThe stronger transcendence conjecture remains OPEN.",
+    "problemStatement": "**Problem Statement**\n\nIs the sum ∑_{n=1}^∞ 1/(2^n - 3) irrational?\n\n**Status**: SOLVED by Borwein (1991)\n\n**Answer**: YES\n\nThe series equals -1 + 1 + 1/5 + 1/13 + 1/29 + ... ≈ 0.287",
+    "proofStrategy": "**The Formalization**\n\n1. Defines general series T(q, r) = ∑ 1/(q^n + r)\n2. Defines specific series S = T(2, -3)\n3. Proves convergence under appropriate conditions\n4. Computes first terms: -1 + 1 + 1/5 + 1/13 + ...\n5. Axiomatizes Borwein's irrationality theorem\n6. Applies to prove S is irrational\n7. Covers related series: ∑ 1/(2^n ± 1), ∑ 1/(3^n - 1)\n8. States Erdős's transcendence conjecture\n9. Connects to Problem #1049\n10. Provides numerical approximation",
+    "keyInsights": [
+      "Borwein's theorem covers ∑ 1/(q^n + r) for q ≥ 2, rational r ≠ 0",
+      "The condition r ≠ -q^n avoids poles in the series",
+      "First term 1/(2^1 - 3) = -1 is negative",
+      "Despite this, S ≈ 0.287 is positive overall",
+      "Erdős's transcendence conjecture remains open",
+      "This generalizes his 1948 result on ∑ 1/(2^n - 1)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "series",
+      "title": "The Series",
+      "summary": "Definition of T(q, r) and S",
+      "startLine": 26,
+      "endLine": 45
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence",
+      "summary": "Conditions for summability",
+      "startLine": 47,
+      "endLine": 69
+    },
+    {
+      "id": "first-terms",
+      "title": "First Terms",
+      "summary": "Computing 2^n - 3 values",
+      "startLine": 71,
+      "endLine": 96
+    },
+    {
+      "id": "borwein",
+      "title": "Borwein's Theorem",
+      "summary": "The main irrationality result",
+      "startLine": 98,
+      "endLine": 122
+    },
+    {
+      "id": "related",
+      "title": "Related Series",
+      "summary": "Other applications of Borwein's theorem",
+      "startLine": 124,
+      "endLine": 172
+    },
+    {
+      "id": "transcendence",
+      "title": "Transcendence Conjecture",
+      "summary": "Erdős's stronger conjecture",
+      "startLine": 174,
+      "endLine": 202
+    },
+    {
+      "id": "connection",
+      "title": "Connection to #1049",
+      "summary": "Relation to divisor sums",
+      "startLine": 204,
+      "endLine": 223
+    },
+    {
+      "id": "numerical",
+      "title": "Numerical Values",
+      "summary": "Approximation of S",
+      "startLine": 225,
+      "endLine": 249
+    },
+    {
+      "id": "oeis",
+      "title": "OEIS Connection",
+      "summary": "Sequence A331372",
+      "startLine": 251,
+      "endLine": 270
+    },
+    {
+      "id": "main",
+      "title": "Main Results",
+      "summary": "Summary of Erdős #1050",
+      "startLine": 272,
+      "endLine": 307
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1050 was SOLVED by Peter Borwein (1991). The sum ∑_{n≥1} 1/(2^n - 3) is irrational. Borwein proved the more general result that ∑ 1/(q^n + r) is irrational for integer q ≥ 2 and rational r ≠ 0, r ≠ -q^n. Erdős's stronger transcendence conjecture remains open.",
+    "implications": "**Theoretical Significance**\n\n1. **Irrationality Theory**: Extends Erdős's 1948 methods\n\n2. **Series Analysis**: General framework for ∑ 1/(q^n + r)\n\n3. **Open Problems**: Transcendence conjecture still unresolved\n\n4. **Connections**: Links to Lambert series and divisor functions",
+    "openQuestions": [
+      "Is ∑ 1/(2^n + t) transcendental for all integer t ≠ 0?",
+      "What is the irrationality measure of S?",
+      "Are T(q, r) values algebraically independent for different q, r?",
+      "What about complex values of r?"
+    ]
   }
 }

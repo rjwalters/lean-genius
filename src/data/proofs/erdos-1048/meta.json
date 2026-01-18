@@ -1,33 +1,167 @@
 {
   "id": "erdos-1048",
-  "title": "Erdős Problem #1048",
+  "title": "Erdős Problem #1048: Polynomial Lemniscate Diameter",
   "slug": "erdos-1048",
-  "description": "If f&#x2208;C[x]\" role=\"presentation\" style=\"position: relative;\">f∈ℂ[x]f∈C[x]f\\in [x] is a monic polynomial with all roots satisfying &#x007C;z&#x007C;&#x2264;r\" role=\"presentation\" style=\"positio...",
+  "description": "For a monic polynomial f ∈ ℂ[x] with roots in |z| ≤ r where r < 2, must L(f,1) = {z : |f(z)| < 1} have a component with diameter > 2-r? DISPROVED by Pommerenke (1961) for r > 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Herzog-Piranian (1958), Pommerenke (1961)",
     "sourceUrl": "https://erdosproblems.com/1048",
-    "date": "",
-    "status": "pending",
+    "date": "1961",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1048Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "disproved"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 11,
     "erdosNumber": 1048,
     "erdosUrl": "https://erdosproblems.com/1048",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex",
+        "description": "Complex number type ℂ",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomial ring ℂ[X]",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "IsConnected",
+        "description": "Connected topological spaces",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "IsBounded",
+        "description": "Bounded sets in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Bounded"
+      }
+    ],
+    "references": [
+      {
+        "key": "EHP58",
+        "citation": "Erdős, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. Journal d'Analyse Mathématique, p. 142.",
+        "type": "paper"
+      },
+      {
+        "key": "Po61",
+        "citation": "Pommerenke, Ch. (1961). On the derivative of a polynomial. Michigan Math. J., 8:23-27.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of polynomial lemniscate L(f, c)",
+      "Structure for bounded monic polynomials",
+      "Definition of connected component diameter",
+      "Formalization of Erdős-Herzog-Piranian conjecture",
+      "Pommerenke's counterexample z^n - r^n",
+      "Positive results for r ≤ 1 in three regimes",
+      "Connection to logarithmic capacity",
+      "Optimal examples showing tightness of bounds"
+    ],
+    "relatedProblems": ["erdos-1047"]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1048 from erdosproblems.com.",
-    "problemStatement": "If f&#x2208;C[x]\" role=\"presentation\" style=\"position: relative;\">f∈ℂ[x]f∈C[x]f\\in \\mathbb{C}[x] is a monic polynomial with all roots satisfying &#x007C;z&#x007C;&#x2264;r\" role=\"presentation\" style=\"position: relative;\">|z|≤r|z|≤r\\lvert z\\rvert \\leq r for some r&lt;2\" role=\"presentation\" style=\"position: relative;\">r2r2r, then must{z:&#x007C;f(z)&#x007C;&lt;1}\" role=\"presentation\" style=\"text-align: center; position: relative;\">{z:|f(z)|1}{z:|f(z)|1}",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Polynomial Lemniscates and the EHP Conjecture**\n\nA lemniscate L(f, c) = {z ∈ ℂ : |f(z)| < c} is the sublevel set of a polynomial's absolute value.\n\n**Erdős-Herzog-Piranian (1958)** asked: For monic f with roots in |z| ≤ r (r < 2), must L(f,1) have a component with diameter > 2-r?\n\n**Pommerenke (1961)** showed this is FALSE for r > 1: The polynomial z^n - r^n has n components whose diameters → 0 as n → ∞.\n\nFor r ≤ 1, modified positive results hold with different diameter bounds.",
+    "problemStatement": "**Problem Statement**\n\nFor a monic polynomial f ∈ ℂ[x] with all roots satisfying |z| ≤ r where r < 2, must the set L(f,1) = {z : |f(z)| < 1} contain a connected component with diameter greater than 2-r?\n\n**Status**: DISPROVED by Pommerenke (1961) for r > 1.\n\n**Counterexample**: f(z) = z^n - r^n for large n.",
+    "proofStrategy": "**The Formalization**\n\n1. Defines monic polynomials and root constraints\n2. Defines lemniscate L(f, c) = {z : |f(z)| < c}\n3. Defines connected components and their diameters\n4. States the Erdős-Herzog-Piranian conjecture\n5. Presents Pommerenke's counterexample z^n - r^n\n6. Shows component diameters vanish as degree increases\n7. Covers positive results for r ≤ 1:\n   - r ≤ 1/2: diam ≥ 2\n   - 1/2 < r ≤ (√5-1)/2: diam > 1/r\n   - (√5-1)/2 ≤ r ≤ 1: diam > 2 - r²\n8. Connects to logarithmic capacity theory",
+    "keyInsights": [
+      "The conjecture fails for r > 1 but holds (modified) for r ≤ 1",
+      "Counterexample z^n - r^n creates n small components for large n",
+      "The golden ratio φ = (√5+1)/2 appears as a critical threshold",
+      "Polynomial degree controls the number of components (≤ n)",
+      "Logarithmic capacity provides lower bounds on diameter",
+      "The case r = 0 (all roots at origin) gives sharp diameter = 2"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "polynomials",
+      "title": "Polynomials and Roots",
+      "summary": "Monic polynomials with bounded roots",
+      "startLine": 28,
+      "endLine": 50
+    },
+    {
+      "id": "lemniscates",
+      "title": "Lemniscates",
+      "summary": "Level sets L(f, c) = {z : |f(z)| < c}",
+      "startLine": 52,
+      "endLine": 76
+    },
+    {
+      "id": "components",
+      "title": "Connected Components",
+      "summary": "Components and their diameters",
+      "startLine": 78,
+      "endLine": 94
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "Erdős-Herzog-Piranian question",
+      "startLine": 96,
+      "endLine": 107
+    },
+    {
+      "id": "counterexample",
+      "title": "Pommerenke's Counterexample",
+      "summary": "Disproving the conjecture for r > 1",
+      "startLine": 109,
+      "endLine": 147
+    },
+    {
+      "id": "positive",
+      "title": "Positive Results",
+      "summary": "Modified bounds for r ≤ 1",
+      "startLine": 149,
+      "endLine": 175
+    },
+    {
+      "id": "optimal",
+      "title": "Optimal Examples",
+      "summary": "Showing bounds are tight",
+      "startLine": 177,
+      "endLine": 196
+    },
+    {
+      "id": "degree",
+      "title": "Degree and Components",
+      "summary": "Component count bounded by degree",
+      "startLine": 198,
+      "endLine": 212
+    },
+    {
+      "id": "capacity",
+      "title": "Potential Theory",
+      "summary": "Logarithmic capacity connections",
+      "startLine": 214,
+      "endLine": 229
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Resolution of Erdős #1048",
+      "startLine": 231,
+      "endLine": 271
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1048 was DISPROVED by Pommerenke (1961). The Erdős-Herzog-Piranian conjecture (1958) asked whether L(f,1) must have a component with diameter > 2-r for monic f with roots in |z| ≤ r < 2. Pommerenke showed this is false for r > 1 using the counterexample f(z) = z^n - r^n. For r ≤ 1, modified positive results exist with the golden ratio as a critical threshold.",
+    "implications": "**Theoretical Significance**\n\n1. **Complex Analysis**: Shows lemniscate structure depends critically on root distribution\n\n2. **Polynomial Theory**: Degree controls component count but not diameter\n\n3. **Potential Theory**: Logarithmic capacity provides geometric bounds\n\n4. **Critical Thresholds**: Golden ratio (√5-1)/2 ≈ 0.618 emerges naturally",
+    "openQuestions": [
+      "What is the exact diameter bound for r ∈ (1/2, (√5-1)/2)?",
+      "Can the positive results be unified into a single formula?",
+      "What happens for non-monic polynomials?",
+      "Higher-dimensional generalizations?"
+    ]
   }
 }

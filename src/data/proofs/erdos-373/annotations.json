@@ -1,1 +1,189 @@
-[]
+[
+  {
+    "id": "ann-e373-header",
+    "proofId": "erdos-373",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "concept",
+    "title": "Problem Introduction",
+    "content": "**Erdos Problem #373** asks whether n! = a_1! * a_2! * ... * a_k! (with n-1 > a_1 >= ... >= a_k >= 2) has only finitely many solutions. This is OPEN unconditionally, but proved under ABC conjecture by Luca (2007).",
+    "mathContext": "The constraint a_1 < n-1 rules out trivial solutions. Hickerson conjectured exactly 4 solutions exist: 9!, 10! (two ways), and 16!.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "factorials", "diophantine", "abc-conjecture"]
+  },
+  {
+    "id": "ann-e373-factorial-product",
+    "proofId": "erdos-373",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Factorial Product",
+    "content": "**factorialProduct** computes the product a_1! * a_2! * ... * a_k! from a list [a_1, a_2, ..., a_k]. This is the right-hand side of our equation.",
+    "mathContext": "Defined as (l.map Nat.factorial).prod - map factorial over the list, then take the product.",
+    "significance": "critical",
+    "relatedConcepts": ["factorial", "list", "product"]
+  },
+  {
+    "id": "ann-e373-solution-def",
+    "proofId": "erdos-373",
+    "range": { "startLine": 48, "endLine": 49 },
+    "type": "definition",
+    "title": "Solution Predicate",
+    "content": "**IsSolution** captures when (n, [a_1, ..., a_k]) satisfies n! = a_1! * ... * a_k!. This is the basic equation without constraints.",
+    "mathContext": "Simply requires n.factorial = factorialProduct l. The non-trivial constraints come separately.",
+    "significance": "supporting",
+    "relatedConcepts": ["equation", "predicate", "equality"]
+  },
+  {
+    "id": "ann-e373-nontrivial",
+    "proofId": "erdos-373",
+    "range": { "startLine": 56, "endLine": 65 },
+    "type": "definition",
+    "title": "Non-trivial Solution",
+    "content": "**IsNontrivialSolution** adds constraints: (1) list sorted descending, (2) largest term < n-1, (3) all terms >= 2. This rules out trivial solutions like n! = (n-1)! * n.",
+    "mathContext": "The constraint a_1 < n-1 is crucial - without it, any n that's a product of smaller factorials gives a trivial solution.",
+    "significance": "critical",
+    "relatedConcepts": ["constraints", "non-trivial", "sorted"]
+  },
+  {
+    "id": "ann-e373-set-s",
+    "proofId": "erdos-373",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "definition",
+    "title": "The Set S",
+    "content": "**S** is the set of all non-trivial solutions. The main conjecture is that S is finite. Hickerson conjectured |S| = 4.",
+    "mathContext": "S = { (n, l) | IsNontrivialSolution n l }. The finiteness of S is the central question.",
+    "significance": "critical",
+    "relatedConcepts": ["set", "solutions", "finiteness"]
+  },
+  {
+    "id": "ann-e373-solution-9",
+    "proofId": "erdos-373",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "theorem",
+    "title": "Solution: 9! = 2!3!3!7!",
+    "content": "**solution_9** verifies 9! = 2! * 3! * 3! * 7! = 362880. Note the repeated 3! - this is the only known solution with a repeated factor.",
+    "mathContext": "Proved by native_decide which computes both sides. 362880 = 2 * 6 * 6 * 5040.",
+    "significance": "key",
+    "relatedConcepts": ["verification", "native-decide", "computation"]
+  },
+  {
+    "id": "ann-e373-solution-10",
+    "proofId": "erdos-373",
+    "range": { "startLine": 77, "endLine": 78 },
+    "type": "theorem",
+    "title": "Solution: 10! = 6!7! (Suranyi)",
+    "content": "**solution_10_67** verifies 10! = 6! * 7! = 3628800. This is the famous Suranyi solution - conjectured to be the ONLY two-factor solution.",
+    "mathContext": "720 * 5040 = 3628800. Computationally verified to be unique for n <= 10^3000.",
+    "significance": "critical",
+    "relatedConcepts": ["suranyi", "two-factor", "uniqueness"]
+  },
+  {
+    "id": "ann-e373-solution-10-alt",
+    "proofId": "erdos-373",
+    "range": { "startLine": 81, "endLine": 82 },
+    "type": "theorem",
+    "title": "Solution: 10! = 3!5!7!",
+    "content": "**solution_10_357** verifies 10! = 3! * 5! * 7!. This is the second way to write 10! as a product of factorials.",
+    "mathContext": "6 * 120 * 5040 = 3628800. Shows n = 10 has two different representations.",
+    "significance": "key",
+    "relatedConcepts": ["alternative", "representation", "10"]
+  },
+  {
+    "id": "ann-e373-solution-16",
+    "proofId": "erdos-373",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "theorem",
+    "title": "Solution: 16! = 14!5!2!",
+    "content": "**solution_16** verifies 16! = 14! * 5! * 2!. This is the largest known solution and Hickerson conjectures it's the maximum.",
+    "mathContext": "16! = 20922789888000. The factor 14! is close to 16!, showing a_1 must be near n.",
+    "significance": "key",
+    "relatedConcepts": ["maximum", "hickerson", "16"]
+  },
+  {
+    "id": "ann-e373-finiteness",
+    "proofId": "erdos-373",
+    "range": { "startLine": 95, "endLine": 95 },
+    "type": "axiom",
+    "title": "Main Finiteness Conjecture",
+    "content": "**erdos_373_finiteness** states S.Finite - the main open conjecture. Proved conditionally under ABC (Luca 2007), but unconditional proof remains open.",
+    "mathContext": "This is the central question of Erdos Problem #373. All evidence suggests |S| = 4.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "finiteness", "conjecture"]
+  },
+  {
+    "id": "ann-e373-prime-factor",
+    "proofId": "erdos-373",
+    "range": { "startLine": 104, "endLine": 109 },
+    "type": "axiom",
+    "title": "Largest Prime Factor",
+    "content": "**maxPrimeFactor** axiomatizes P(n), the largest prime dividing n. Erdos showed finiteness would follow from P(n(n-1)) > 4 log n for large n.",
+    "mathContext": "This connects factorial equations to analytic number theory. The bound P(n(n-1)) > 4 log n is itself an open problem.",
+    "significance": "key",
+    "relatedConcepts": ["prime-factor", "reduction", "number-theory"]
+  },
+  {
+    "id": "ann-e373-erdos-reduction",
+    "proofId": "erdos-373",
+    "range": { "startLine": 112, "endLine": 119 },
+    "type": "axiom",
+    "title": "Erdos's Reductions",
+    "content": "**erdos_reduction** and **erdos_reduction_alt** show: if prime factor bounds hold (either P(n(n-1)) > 4 log n or P(n(n+1))/log n -> infinity), then S is finite.",
+    "mathContext": "These reductions transform the combinatorial problem into an analytic number theory question about prime factors.",
+    "significance": "key",
+    "relatedConcepts": ["reduction", "prime-bounds", "implication"]
+  },
+  {
+    "id": "ann-e373-abc",
+    "proofId": "erdos-373",
+    "range": { "startLine": 128, "endLine": 137 },
+    "type": "axiom",
+    "title": "ABC Conjecture and Luca's Theorem",
+    "content": "**ABCConjecture** defines the famous ABC conjecture. **luca_theorem** states: ABC implies S is finite. This is Luca's 2007 conditional result.",
+    "mathContext": "ABC bounds c in terms of the radical rad(abc). Luca used this to control factorial equations.",
+    "significance": "critical",
+    "relatedConcepts": ["abc-conjecture", "luca", "conditional"]
+  },
+  {
+    "id": "ann-e373-hickerson",
+    "proofId": "erdos-373",
+    "range": { "startLine": 146, "endLine": 156 },
+    "type": "axiom",
+    "title": "Hickerson's Conjecture",
+    "content": "**hickersonSolutions** lists the four conjectured solutions. **hickerson_conjecture** asserts S equals exactly this set. **hickerson_maximum** says n <= 16 for all solutions.",
+    "mathContext": "Hickerson's complete classification: {(9, [7,3,3,2]), (10, [7,6]), (10, [7,5,3]), (16, [14,5,2])}.",
+    "significance": "key",
+    "relatedConcepts": ["classification", "complete-list", "maximum"]
+  },
+  {
+    "id": "ann-e373-suranyi",
+    "proofId": "erdos-373",
+    "range": { "startLine": 158, "endLine": 170 },
+    "type": "axiom",
+    "title": "Suranyi's Conjecture",
+    "content": "**TwoFactorSolutions** captures n! = a!b! with constraints. **suranyi_conjecture** asserts the only solution is 10! = 6!7!. Verified computationally for n <= 10^3000.",
+    "mathContext": "The two-factor case is simpler but still open. Massive computational search found no other solutions.",
+    "significance": "key",
+    "relatedConcepts": ["two-factor", "uniqueness", "computational"]
+  },
+  {
+    "id": "ann-e373-bounds",
+    "proofId": "erdos-373",
+    "range": { "startLine": 177, "endLine": 189 },
+    "type": "axiom",
+    "title": "Bounds on Solutions",
+    "content": "**erdos_bound** and **bhat_ramachandra_bound** show: in any solution n! = a_1!a_2!, we have a_1 >= n - O(log log n). The largest factor must be very close to n.",
+    "mathContext": "Erdos proved a_1 >= n - 5 log log n. Bhat-Ramachandra improved the constant to (1+o(1))/log 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["bounds", "closeness", "asymptotic"]
+  },
+  {
+    "id": "ann-e373-summary",
+    "proofId": "erdos-373",
+    "range": { "startLine": 209, "endLine": 218 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_373_summary** bundles all four verified solutions into one theorem, confirming the computational results.",
+    "mathContext": "Packages 9!, 10! (two ways), and 16! solutions for easy reference.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "verification", "bundled"]
+  }
+]

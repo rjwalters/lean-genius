@@ -1,1 +1,209 @@
-[]
+[
+  {
+    "id": "ann-636-header",
+    "proofId": "erdos-636",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #636: Distinct Induced Subgraphs in Ramsey Graphs**\n\nMust a Ramsey graph (no large clique or independent set) on n vertices have Θ(n^(5/2)) induced subgraphs with distinct (vertex, edge) signatures?\n\n**Status**: SOLVED by Kwan-Sudakov (2021)\n\n**Answer**: YES - exactly Θ(n^(5/2)) distinct signatures.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-graph-abbrev",
+    "proofId": "erdos-636",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "Graph Type",
+    "content": "**Graph V**: Abbreviation for SimpleGraph V.\n\nA simple graph on vertex set V (no self-loops, no multi-edges).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-clique-number",
+    "proofId": "erdos-636",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "definition",
+    "title": "Clique Number",
+    "content": "**cliqueNumber G**: ω(G) = size of largest clique in G.\n\nA clique is a set of pairwise adjacent vertices.\n\nUses Mathlib's SimpleGraph.cliqueNum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-636-independence-number",
+    "proofId": "erdos-636",
+    "range": { "startLine": 48, "endLine": 51 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "**independenceNumber G**: α(G) = size of largest independent set.\n\nAn independent set has no two adjacent vertices.\n\nDefined as clique number of complement: α(G) = ω(Gᶜ).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-636-no-large-homog",
+    "proofId": "erdos-636",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "definition",
+    "title": "No Large Homogeneous Set",
+    "content": "**NoLargeHomogeneousSet G k**: Both ω(G) ≤ k and α(G) ≤ k.\n\nA 'homogeneous set' is either a clique or independent set.\n\nThis is the key Ramsey-type condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-induced-subgraph",
+    "proofId": "erdos-636",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "**inducedSubgraph G S**: The subgraph of G induced by vertex set S.\n\nEdges are exactly those of G between vertices in S.\n\nUses Mathlib's SimpleGraph.induce.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-636-edge-count",
+    "proofId": "erdos-636",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "Induced Edge Count",
+    "content": "**inducedEdgeCount G S**: Number of edges in the induced subgraph G[S].\n\nCounted via the edge finset cardinality.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-signature",
+    "proofId": "erdos-636",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "definition",
+    "title": "Signature",
+    "content": "**Signature**: A pair (vertex count, edge count) = ℕ × ℕ.\n\n**getSignature G S**: Returns (|S|, |E(G[S])|).\n\nTwo induced subgraphs have the same signature iff they have the same number of vertices AND edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-all-signatures",
+    "proofId": "erdos-636",
+    "range": { "startLine": 87, "endLine": 95 },
+    "type": "definition",
+    "title": "Counting Signatures",
+    "content": "**allSignatures G**: The set of all distinct signatures achievable by induced subgraphs of G.\n\n**distinctSignatureCount G**: The cardinality |allSignatures G|.\n\nThis is the quantity the problem asks about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-different-signatures",
+    "proofId": "erdos-636",
+    "range": { "startLine": 97, "endLine": 100 },
+    "type": "definition",
+    "title": "Different Signatures",
+    "content": "**DifferentSignatures G S₁ S₂**: Two induced subgraphs have different signatures.\n\ngetSignature G S₁ ≠ getSignature G S₂\n\nThey differ in vertex count or edge count (or both).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-ramsey-bound",
+    "proofId": "erdos-636",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "definition",
+    "title": "Ramsey Bound",
+    "content": "**ramseyBound k**: Rough upper bound 2^(2k) on R(k,k).\n\n**ramsey_graphs_exist**: For n ≥ R(k,k), there exist graphs with ω, α ≤ k.\n\nThis is a classical Ramsey theory existence result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-is-ramsey-graph",
+    "proofId": "erdos-636",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "definition",
+    "title": "Ramsey Graph Condition",
+    "content": "**IsRamseyGraph G C**: ω(G), α(G) ≤ C log n.\n\nThis is the precise condition: no homogeneous set larger than O(log n).\n\nSuch graphs exist by probabilistic arguments.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-efs",
+    "proofId": "erdos-636",
+    "range": { "startLine": 126, "endLine": 133 },
+    "type": "axiom",
+    "title": "Erdős-Faudree-Sós Theorem",
+    "content": "**erdos_faudree_sos**: Ramsey graphs have ≥ cn^(3/2) distinct signatures.\n\nThis was the original bound proved by Erdős, Faudree, and Sós.\n\nLater improved by Kwan-Sudakov to n^(5/2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-636-kwan-sudakov",
+    "proofId": "erdos-636",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "axiom",
+    "title": "Kwan-Sudakov Theorem",
+    "content": "**kwan_sudakov (2021)**: Ramsey graphs have ≥ cn^(5/2) distinct signatures.\n\nThis is the optimal lower bound, improving the EFS result.\n\n**ks_improves_efs**: 5/2 > 3/2 (the improvement).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-upper-bound",
+    "proofId": "erdos-636",
+    "range": { "startLine": 159, "endLine": 166 },
+    "type": "axiom",
+    "title": "Upper Bound",
+    "content": "**signature_upper_bound**: No Ramsey graph has more than O(n^(5/2)) distinct signatures.\n\n**exponent_optimal**: The exponent 5/2 is optimal.\n\nThis gives the matching upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-636-theta-bound",
+    "proofId": "erdos-636",
+    "range": { "startLine": 168, "endLine": 176 },
+    "type": "theorem",
+    "title": "Theta Bound",
+    "content": "**theta_bound**: Θ(n^(5/2)) distinct signatures.\n\nCombines the Kwan-Sudakov lower bound and the upper bound.\n\n∃ c₁, c₂ > 0: c₁n^(5/2) ≤ distinctSignatureCount G ≤ c₂n^(5/2)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-probabilistic",
+    "proofId": "erdos-636",
+    "range": { "startLine": 184, "endLine": 197 },
+    "type": "axiom",
+    "title": "Proof Techniques",
+    "content": "**ks_probabilistic_method**: The proof uses probabilistic arguments.\n\n**signature_distribution**: Signatures are well-distributed in the (v, e) plane.\n\n**vertex_count_range**: Vertex count ranges 0 to n.\n\nKey insight: random induced subgraphs have spread-out signatures.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-edge-range",
+    "proofId": "erdos-636",
+    "range": { "startLine": 199, "endLine": 203 },
+    "type": "theorem",
+    "title": "Edge Count Range",
+    "content": "**edge_count_range**: |E(G[S])| ≤ |S|(|S|-1)/2.\n\nThe edge count is bounded by the maximum possible edges.\n\nThis is the complete graph bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-non-ramsey",
+    "proofId": "erdos-636",
+    "range": { "startLine": 211, "endLine": 225 },
+    "type": "axiom",
+    "title": "Ramsey Condition Essential",
+    "content": "**non_ramsey_smaller_bound**: Without the Ramsey condition, fewer signatures possible.\n\n**clique_few_signatures**: Complete graphs have ≤ n+1 signatures.\n\n**empty_few_signatures**: Empty graphs have ≤ n+1 signatures.\n\nThe Ramsey condition is essential for the n^(5/2) bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-636-ramsey-forces",
+    "proofId": "erdos-636",
+    "range": { "startLine": 227, "endLine": 232 },
+    "type": "axiom",
+    "title": "Ramsey Forces Complexity",
+    "content": "**ramsey_forces_complexity**: The Ramsey condition forces 'complex' local structure.\n\nWithout large cliques or independent sets, the graph must have varied local behavior.\n\nThis variation yields many different signatures.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-isomorphism",
+    "proofId": "erdos-636",
+    "range": { "startLine": 240, "endLine": 255 },
+    "type": "definition",
+    "title": "Related Problems",
+    "content": "**CountDistinctIsomorphismTypes**: Counting distinct induced subgraphs up to isomorphism (much harder).\n\n**ErdosHajnalConjecture**: Related conjecture about excluding induced subgraphs.\n\n**induced_path_count**: Counting specific induced structures.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-636-main-result",
+    "proofId": "erdos-636",
+    "range": { "startLine": 263, "endLine": 284 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_636**: Erdős Problem #636 is SOLVED.\n\nQuestion: Must a Ramsey graph have ≫ n^(5/2) distinct signatures?\n\nAnswer: YES (Kwan-Sudakov 2021)\n\nThe theorem follows directly from kwan_sudakov.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-636-answer",
+    "proofId": "erdos-636",
+    "range": { "startLine": 282, "endLine": 293 },
+    "type": "definition",
+    "title": "Final Answer",
+    "content": "**erdos_636_answer**: \"SOLVED: Kwan-Sudakov (2021) proved Θ(n^(5/2)) distinct signatures\"\n\n**erdos_636_exponent**: 5/2\n\nThe problem is completely resolved with tight bounds.",
+    "significance": "critical"
+  }
+]

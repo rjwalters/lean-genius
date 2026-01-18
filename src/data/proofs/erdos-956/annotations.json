@@ -1,1 +1,227 @@
-[]
+[
+  {
+    "id": "ann-956-header",
+    "proofId": "erdos-956",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #956: Unit Distances Between Convex Translates**\n\nLet h(n) = max unit distances among n disjoint convex translates.\n\n**Status**: OPEN\n\n**Conjecture**: h(n) > n^(1+c) for some c > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-set-distance",
+    "proofId": "erdos-956",
+    "range": { "startLine": 37, "endLine": 42 },
+    "type": "definition",
+    "title": "Set Distance",
+    "content": "**setDistance C D**: δ(C, D) = inf{dist(c, d) : c ∈ C, d ∈ D}.\n\nThe minimum distance between any two points in the sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-set-distance-symm",
+    "proofId": "erdos-956",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "theorem",
+    "title": "Distance Symmetry",
+    "content": "**setDistance_symm**: δ(C, D) = δ(D, C).\n\nSet distance is symmetric.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-956-set-distance-nonneg",
+    "proofId": "erdos-956",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "theorem",
+    "title": "Distance Non-negative",
+    "content": "**setDistance_nonneg**: δ(C, D) ≥ 0.\n\nSet distance is always non-negative.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-956-compact-convex",
+    "proofId": "erdos-956",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "definition",
+    "title": "Compact Convex Set",
+    "content": "**CompactConvex**: A structure with:\n- carrier: the set in ℝ²\n- convex: the set is convex\n- compact: the set is compact\n- nonempty: the set is nonempty",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-translate",
+    "proofId": "erdos-956",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "definition",
+    "title": "Translate",
+    "content": "**translate C x**: C +ₛ x = {c + x : c ∈ C}.\n\nThe translation of set C by vector x.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-translate-props",
+    "proofId": "erdos-956",
+    "range": { "startLine": 81, "endLine": 89 },
+    "type": "theorem",
+    "title": "Translate Properties",
+    "content": "**translate_convex, translate_compact**: Translates preserve convexity and compactness.\n\nThese are essential for the problem setup.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-956-disjoint-config",
+    "proofId": "erdos-956",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "definition",
+    "title": "Disjoint Translates",
+    "content": "**DisjointTranslates n**: A configuration with:\n- base: a CompactConvex set\n- centers: n points in ℝ²\n- disjoint: all translates are pairwise disjoint",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-unit-distance",
+    "proofId": "erdos-956",
+    "range": { "startLine": 104, "endLine": 107 },
+    "type": "definition",
+    "title": "Has Unit Distance",
+    "content": "**HasUnitDistance config i j**: δ(C + xᵢ, C + xⱼ) = 1.\n\nTwo translates are at unit distance apart.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-count",
+    "proofId": "erdos-956",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "definition",
+    "title": "Unit Distance Count",
+    "content": "**unitDistanceCount config**: Number of pairs at unit distance.\n\nCounts unordered pairs (i, j) with i < j and unit distance.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-h-def",
+    "proofId": "erdos-956",
+    "range": { "startLine": 121, "endLine": 123 },
+    "type": "definition",
+    "title": "Function h(n)",
+    "content": "**h n**: Maximum unit distances among n disjoint translates.\n\nThe extremal function of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-h-mono",
+    "proofId": "erdos-956",
+    "range": { "startLine": 125, "endLine": 130 },
+    "type": "theorem",
+    "title": "Monotonicity",
+    "content": "**h_mono**: h(n) ≤ h(m) for n ≤ m.\n\n**h_nonneg**: h(n) ≥ 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-956-f-def",
+    "proofId": "erdos-956",
+    "range": { "startLine": 138, "endLine": 145 },
+    "type": "definition",
+    "title": "Point Unit Distance Function",
+    "content": "**unitDistancePoints n**: f(n) = max unit distances among n points in ℝ².\n\nThe classical unit distance function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-h-ge-f",
+    "proofId": "erdos-956",
+    "range": { "startLine": 147, "endLine": 149 },
+    "type": "theorem",
+    "title": "h ≥ f",
+    "content": "**h_ge_f**: h(n) ≥ f(n).\n\nConvex translates can achieve at least as many unit distances as points.\n\n(Use small disks centered at the points.)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-f-bounds",
+    "proofId": "erdos-956",
+    "range": { "startLine": 151, "endLine": 157 },
+    "type": "axiom",
+    "title": "f(n) Bounds",
+    "content": "**f_upper_bound**: f(n) ≤ n^(4/3) (Spencer-Szemerédi-Trotter).\n\n**f_lower_bound**: f(n) ≥ n^(1+c/2) for some c > 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-erdos-pach",
+    "proofId": "erdos-956",
+    "range": { "startLine": 165, "endLine": 170 },
+    "type": "axiom",
+    "title": "Erdős-Pach Upper Bound",
+    "content": "**erdos_pach_upper_bound (1990)**: h(n) ≤ 2n^(4/3).\n\nThe best known upper bound for convex translates.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-general-convex",
+    "proofId": "erdos-956",
+    "range": { "startLine": 178, "endLine": 191 },
+    "type": "definition",
+    "title": "General Convex Sets",
+    "content": "**DisjointConvexSets n**: n disjoint convex sets (not necessarily translates).\n\n**h_general n**: Max unit distances for general convex sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-general-bound",
+    "proofId": "erdos-956",
+    "range": { "startLine": 193, "endLine": 202 },
+    "type": "axiom",
+    "title": "General Convex Bound",
+    "content": "**erdos_pach_general**: h_general(n) ≤ 2n^(7/5).\n\n**h_le_h_general**: h(n) ≤ h_general(n).\n\n**general_exponent_larger**: 7/5 > 4/3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-conjecture",
+    "proofId": "erdos-956",
+    "range": { "startLine": 210, "endLine": 216 },
+    "type": "definition",
+    "title": "The Conjecture",
+    "content": "**ErdosPachConjecture**: ∃ c > 0, ∀ n ≥ 10, h(n) > n^(1+c).\n\n**SuperlinearConjecture**: h(n) grows faster than linear.\n\nThe main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-conjecture-from-f",
+    "proofId": "erdos-956",
+    "range": { "startLine": 218, "endLine": 221 },
+    "type": "theorem",
+    "title": "Conjecture from f",
+    "content": "**conjecture_from_f**: If f(n) > n^(1+c), then the Erdős-Pach conjecture holds.\n\nSince h(n) ≥ f(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-956-constructions",
+    "proofId": "erdos-956",
+    "range": { "startLine": 229, "endLine": 235 },
+    "type": "axiom",
+    "title": "Constructions",
+    "content": "**lattice_construction**: Lattices give ≥ n-1 unit distances.\n\n**grid_construction**: Grids give Ω(n log n / log log n) unit distances.\n\nThese are the best known lower bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-956-incidence",
+    "proofId": "erdos-956",
+    "range": { "startLine": 243, "endLine": 251 },
+    "type": "axiom",
+    "title": "Incidence Geometry",
+    "content": "**szemeredi_trotter**: The famous point-line incidence bound.\n\n**upper_bound_uses_incidences**: The h(n) upper bound uses Szemerédi-Trotter.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-956-special",
+    "proofId": "erdos-956",
+    "range": { "startLine": 259, "endLine": 267 },
+    "type": "theorem",
+    "title": "Special Cases",
+    "content": "**disk_case**: For disks, unit distances bounded by f(n) + n.\n\n**segment_case**: Line segments can achieve 2(n-1) unit distances.\n\nDifferent shapes may have different behavior.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-956-main",
+    "proofId": "erdos-956",
+    "range": { "startLine": 275, "endLine": 291 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_956_bounds**: Summary of known bounds.\n\nΩ(n log n / log log n) ≤ h(n) ≤ O(n^(4/3))\n\nThe conjecture h(n) > n^(1+c) remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-956-answer",
+    "proofId": "erdos-956",
+    "range": { "startLine": 293, "endLine": 304 },
+    "type": "definition",
+    "title": "Problem Status",
+    "content": "**erdos_956_answer**: \"OPEN: Is h(n) > n^(1+c) for some c > 0?\"\n\n**erdos_956_status**: \"OPEN - Erdős-Pach conjecture unresolved\"\n\n**bounds_gap**: The upper bound n^(4/3) exceeds the lower bound n log n / log log n.",
+    "significance": "critical"
+  }
+]

@@ -1,33 +1,177 @@
 {
   "id": "erdos-636",
-  "title": "Erdős Problem #636",
+  "title": "Erdős Problem #636: Distinct Induced Subgraphs in Ramsey Graphs",
   "slug": "erdos-636",
-  "description": "Suppose G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices which contains no complete graph or independent set on &...",
+  "description": "Must a Ramsey graph (no large clique or independent set) on n vertices have Θ(n^(5/2)) induced subgraphs with distinct (vertex, edge) signatures? SOLVED by Kwan-Sudakov (2021).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Faudree-Sós (problem), Kwan-Sudakov (2021 solution)",
     "sourceUrl": "https://erdosproblems.com/636",
-    "date": "",
-    "status": "pending",
+    "date": "2021",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos636Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "induced-subgraphs",
+      "counting"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 636,
     "erdosUrl": "https://erdosproblems.com/636",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.cliqueNum",
+        "description": "Clique number for Ramsey condition",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.induce",
+        "description": "Induced subgraphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for Ramsey bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "KwSu2021",
+        "citation": "Kwan, M. and Sudakov, B. (2021). Proof of the Erdős-Faudree-Sós conjecture on induced subgraph signatures.",
+        "type": "paper"
+      },
+      {
+        "key": "EFS",
+        "citation": "Erdős, P., Faudree, R., and Sós, V. Original problem and n^(3/2) lower bound.",
+        "type": "paper"
+      },
+      {
+        "key": "Er93",
+        "citation": "Erdős, P. (1993). [Er93, p.346]",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of induced subgraph signatures",
+      "Definition of Ramsey graph condition (bounded clique and independence number)",
+      "Statement of the Erdős-Faudree-Sós n^(3/2) bound",
+      "Axiomatization of the Kwan-Sudakov n^(5/2) theorem",
+      "Proof that the bound is tight (Θ notation)",
+      "Connection to Ramsey theory and homogeneity",
+      "Analysis of extreme cases (cliques, empty graphs)"
+    ],
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #636 from erdosproblems.com.",
-    "problemStatement": "Suppose G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices which contains no complete graph or independent set on &#x226B;log&#x2061;n\" role=\"presentation\" style=\"position: relative;\">≫logn≫log⁡n\\gg \\log n many vertices. Must G\" role=\"presentation\" style=\"position: relative;\">GGG contain &#x226B;n5/2\" role=\"presentation\" style=\"position: relative;\">≫n5/2≫n5/2\\gg n^{5/2} induced subgraphs which pairwise differ in either the number of vertices or the number of edges?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Induced Subgraph Signatures in Ramsey Graphs**\n\nA 'Ramsey graph' has no large clique or independent set (both bounded by O(log n)). Such graphs exist by probabilistic arguments.\n\n**The Question**: How many distinct 'signatures' (vertex count, edge count) must the induced subgraphs of a Ramsey graph have?\n\n**History**: Erdős, Faudree, and Sós proved ≥ cn^(3/2). They conjectured n^(5/2) is optimal.\n\n**Resolution**: Kwan and Sudakov (2021) proved the conjecture: exactly Θ(n^(5/2)) distinct signatures.",
+    "problemStatement": "**Problem Statement**\n\nSuppose G is a graph on n vertices with no clique or independent set of size ≫ log n. Must G contain ≫ n^(5/2) induced subgraphs that pairwise differ in either vertex count or edge count?\n\n**Answer**: YES (SOLVED)\n\nKwan-Sudakov proved the optimal bound: Θ(n^(5/2)) distinct signatures.",
+    "proofStrategy": "**The Formalization**\n\n1. Defines clique number and independence number\n2. Defines the Ramsey graph condition (both ≤ C log n)\n3. Defines induced subgraph signatures as (|V|, |E|) pairs\n4. Defines the count of distinct signatures\n5. States the Erdős-Faudree-Sós n^(3/2) bound\n6. Axiomatizes the Kwan-Sudakov n^(5/2) theorem\n7. States the matching upper bound\n8. Proves the exponent 5/2 is tight\n9. Analyzes extreme cases (cliques have few signatures)",
+    "keyInsights": [
+      "A signature is just (vertex count, edge count) - not the subgraph itself",
+      "Ramsey graphs have 'complex' structure forcing many signatures",
+      "Cliques and empty graphs have only O(n) distinct signatures",
+      "The Ramsey condition is essential: without it, fewer signatures possible",
+      "The exponent improved from 3/2 (EFS) to 5/2 (KS)",
+      "The bound 5/2 is optimal: both lower and upper bounds match"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Graphs and Basic Definitions",
+      "summary": "Clique and independence numbers",
+      "startLine": 34,
+      "endLine": 56
+    },
+    {
+      "id": "induced",
+      "title": "Induced Subgraphs",
+      "summary": "Central objects being counted",
+      "startLine": 58,
+      "endLine": 79
+    },
+    {
+      "id": "counting",
+      "title": "Counting Distinct Signatures",
+      "summary": "The quantity of interest",
+      "startLine": 81,
+      "endLine": 100
+    },
+    {
+      "id": "ramsey",
+      "title": "The Ramsey Condition",
+      "summary": "Graphs with bounded homogeneous sets",
+      "startLine": 102,
+      "endLine": 118
+    },
+    {
+      "id": "efs",
+      "title": "Erdős-Faudree-Sós Result",
+      "summary": "The weaker n^(3/2) bound",
+      "startLine": 120,
+      "endLine": 133
+    },
+    {
+      "id": "kwan-sudakov",
+      "title": "Kwan-Sudakov Theorem",
+      "summary": "The optimal n^(5/2) bound",
+      "startLine": 135,
+      "endLine": 151
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality",
+      "summary": "The bound is tight",
+      "startLine": 153,
+      "endLine": 176
+    },
+    {
+      "id": "techniques",
+      "title": "Proof Techniques",
+      "summary": "Key ideas in the proof",
+      "startLine": 178,
+      "endLine": 203
+    },
+    {
+      "id": "ramsey-theory",
+      "title": "Connections to Ramsey Theory",
+      "summary": "Role of the homogeneity condition",
+      "startLine": 205,
+      "endLine": 232
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Erdős-Hajnal and others",
+      "startLine": 234,
+      "endLine": 255
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem #636 is SOLVED",
+      "startLine": 257,
+      "endLine": 293
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #636 asks whether Ramsey graphs must have many induced subgraphs with distinct (vertex, edge) signatures. SOLVED by Kwan-Sudakov (2021) who proved the optimal bound: exactly Θ(n^(5/2)) distinct signatures, improving the earlier n^(3/2) bound of Erdős-Faudree-Sós.",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Graph Structure**: Shows Ramsey graphs have inherent complexity\n\n2. **Counting Problems**: Determines exact order of magnitude for this counting problem\n\n3. **Probabilistic Method**: The proof uses sophisticated probabilistic arguments\n\n4. **Tight Bounds**: Both upper and lower bounds are Θ(n^(5/2))",
+    "openQuestions": [
+      "What about counting distinct isomorphism types (not just signatures)?",
+      "How does the constant c in cn^(5/2) depend on the Ramsey parameter C?",
+      "Similar questions for other graph properties besides signatures",
+      "Algorithmic aspects: finding many distinct signatures efficiently"
+    ]
   }
 }

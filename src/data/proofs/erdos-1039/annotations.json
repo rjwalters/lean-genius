@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "ann-1039-unitdisc",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 29, "endLine": 36 },
+    "type": "definition",
+    "title": "UnitDiscPolynomial",
+    "content": "Monic polynomial with roots in unit disc.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-eval",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "UnitDiscPolynomial.eval",
+    "content": "Polynomial as function ℂ → ℂ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-sublevel",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "sublevelSet",
+    "content": "{z : |f(z)| < 1}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-inscribed",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "isInscribedDisc",
+    "content": "Disc of radius r inscribed in S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-inscribedradius",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "inscribedDiscRadius",
+    "content": "Supremum of inscribed disc radii.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-rho",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "definition",
+    "title": "rho",
+    "content": "ρ(f) - the main quantity of interest.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-rootsofunity",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 67, "endLine": 74 },
+    "type": "definition",
+    "title": "rootsOfUnity",
+    "content": "The polynomial zⁿ - 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-benchmark",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "axiom",
+    "title": "benchmark_upper",
+    "content": "ρ(zⁿ - 1) ≤ π/(2n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-pommerenke",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "axiom",
+    "title": "pommerenke_lower",
+    "content": "ρ(f) ≥ 1/(2en²).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-pomexp",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "definition",
+    "title": "pommerenkeExponent",
+    "content": "Exponent is 2 (quadratic).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1039-klr",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 95, "endLine": 98 },
+    "type": "axiom",
+    "title": "klr_lower",
+    "content": "ρ(f) ≥ c/(n√log n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-klrbetter",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 100, "endLine": 104 },
+    "type": "theorem",
+    "title": "klr_better_than_pommerenke",
+    "content": "KLR bound beats Pommerenke for large n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-conjecture",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 110, "endLine": 113 },
+    "type": "definition",
+    "title": "ehpConjecture",
+    "content": "Conjecture: ρ(f) ≫ 1/n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-open",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "axiom",
+    "title": "ehp_open",
+    "content": "The conjecture is open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-pombound",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "definition",
+    "title": "pommerenkeBound",
+    "content": "1/(2en²).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-klrbound",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "definition",
+    "title": "klrBound",
+    "content": "c/(n√log n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-conjbound",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "definition",
+    "title": "conjecturedBound",
+    "content": "c/n (conjectured).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-benchbound",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 135, "endLine": 137 },
+    "type": "definition",
+    "title": "benchmarkBound",
+    "content": "π/(2n) (upper bound).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-gap",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 139, "endLine": 142 },
+    "type": "theorem",
+    "title": "bounds_gap",
+    "content": "Gap between lower and upper bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-lemniscate",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "definition",
+    "title": "lemniscate",
+    "content": "{z : |f(z)| = 1}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-isopen",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 152, "endLine": 154 },
+    "type": "theorem",
+    "title": "sublevelSet_isOpen",
+    "content": "Sublevel set is open.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1039-nonempty",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 156, "endLine": 159 },
+    "type": "theorem",
+    "title": "sublevelSet_nonempty",
+    "content": "Sublevel set is non-empty.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1039-rootin",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "theorem",
+    "title": "root_in_sublevelSet",
+    "content": "Roots are in sublevel set.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1039-area",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 170, "endLine": 171 },
+    "type": "definition",
+    "title": "sublevelArea",
+    "content": "Area of sublevel set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-areaimplies",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 173, "endLine": 176 },
+    "type": "theorem",
+    "title": "area_implies_disc_bound",
+    "content": "Area ≥ π·ρ².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-klrarea",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 178, "endLine": 180 },
+    "type": "axiom",
+    "title": "klr_area_bound",
+    "content": "KLR area bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-degone",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 186, "endLine": 189 },
+    "type": "theorem",
+    "title": "degree_one_optimal",
+    "content": "For n=1, ρ(f) = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1039-clustered",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 191, "endLine": 193 },
+    "type": "definition",
+    "title": "hasClusteredRoots",
+    "content": "Roots within ε of center.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-clusterimplies",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 195, "endLine": 199 },
+    "type": "theorem",
+    "title": "clustered_implies_large_disc",
+    "content": "Clustered roots → large disc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-random",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 205, "endLine": 209 },
+    "type": "axiom",
+    "title": "random_polynomial_expected",
+    "content": "Random: E[ρ] ~ 1/√n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1039-question",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 215, "endLine": 217 },
+    "type": "definition",
+    "title": "erdos_1039_question",
+    "content": "The main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1039-state",
+    "proofId": "erdos-1039",
+    "range": { "startLine": 219, "endLine": 231 },
+    "type": "theorem",
+    "title": "erdos_1039_current_state",
+    "content": "Current known bounds.",
+    "significance": "critical"
+  }
+]

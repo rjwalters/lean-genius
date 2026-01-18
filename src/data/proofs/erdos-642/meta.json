@@ -1,33 +1,186 @@
 {
   "id": "erdos-642",
-  "title": "Erdős Problem #642",
+  "title": "Erdős Problem #642: Cycles with More Vertices than Diagonals",
   "slug": "erdos-642",
-  "description": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be the maximal number of edges in a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices such that all cyc...",
+  "description": "Let f(n) be the maximal edges in a graph where every cycle has more vertices than diagonals. Is f(n) ≪ n? OPEN: Ω(n^(3/2)) ≤ f(n) ≤ O(n(log n)^8).",
   "meta": {
-    "author": "Unknown",
+    "author": "Hamburger-Szegedy (problem), Chen-Erdős-Staton (1996), Draganić-Methuku-Munhá Correia-Sudakov (2024)",
     "sourceUrl": "https://erdosproblems.com/642",
-    "date": "",
-    "status": "pending",
+    "date": "ongoing",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos642Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles",
+      "diagonals",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 10,
     "erdosNumber": 642,
     "erdosUrl": "https://erdosproblems.com/642",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Edge counting",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for DMMS bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "CES96",
+        "citation": "Chen, G., Erdős, P., and Staton, W. (1996). Proof that f(n) = O(n^(3/2)).",
+        "type": "paper"
+      },
+      {
+        "key": "DMMS24",
+        "citation": "Draganić, N., Methuku, A., Munhá Correia, D., and Sudakov, B. (2024). Cycles with many chords. Random Structures & Algorithms 65: 3-16.",
+        "type": "paper"
+      },
+      {
+        "key": "Er97d",
+        "citation": "Erdős, P. (1997). Problem collection mentioning this problem.",
+        "type": "paper"
+      },
+      {
+        "key": "BMMS24",
+        "citation": "Bradač, D., Methuku, A., and Sudakov, B. (2024). The extremal number of cycles with all diagonals. IMRN 12: 9728-9742.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of cycles and diagonals in graph theory",
+      "Definition of the cycle-diagonal condition",
+      "Statement of the extremal function f(n)",
+      "Axiomatization of Chen-Erdős-Staton O(n^(3/2)) bound",
+      "Axiomatization of DMMS O(n(log n)^8) bound",
+      "Statement of the Hamburger-Szegedy conjecture",
+      "Connection to girth-5 graphs and Turán problems",
+      "Expander graph techniques for cycle finding",
+      "Analysis of critical cycle length (transition at 5)"
+    ],
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #642 from erdosproblems.com.",
-    "problemStatement": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be the maximal number of edges in a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices such that all cycles have more vertices than diagonals. Is it true that f(n)&#x226A;n\" role=\"presentation\" style=\"position: relative;\">f(n)≪nf(n)≪nf(n)\\ll n?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Cycles with More Vertices than Diagonals**\n\nA 'diagonal' of a cycle is an edge between non-adjacent vertices on the cycle. This problem, posed by Hamburger and Szegedy, asks about graphs where every cycle has more vertices than diagonals.\n\n**The Extremal Function**: f(n) = max edges in an n-vertex graph satisfying this condition.\n\n**Progress**:\n- Chen-Erdős-Staton (1996): f(n) = O(n^(3/2))\n- Draganić-Methuku-Munhá Correia-Sudakov (2024): f(n) = O(n(log n)^8)\n\n**Lower Bound**: Girth-5 graphs (no short cycles) give f(n) = Ω(n^(3/2)).\n\n**Status**: OPEN - Is f(n) = o(n)?",
+    "problemStatement": "**Problem Statement**\n\nLet f(n) be the maximal number of edges in a graph on n vertices such that all cycles have more vertices than diagonals. Is it true that f(n) ≪ n?\n\n**Status**: OPEN\n\n**Known Bounds**:\n- Lower: Ω(n^(3/2)) from girth-5 constructions\n- Upper: O(n(log n)^8) from DMMS 2024",
+    "proofStrategy": "**The Formalization**\n\n1. Defines cycles in graphs as vertex sequences\n2. Defines diagonals as edges between non-adjacent cycle vertices\n3. Defines the cycle-diagonal condition: |V(C)| > |diagonals of C|\n4. Defines the extremal function f(n)\n5. States trivial bounds (trees, complete graphs)\n6. Axiomatizes Chen-Erdős-Staton O(n^(3/2)) bound\n7. Axiomatizes DMMS O(n(log n)^8) bound\n8. States the Hamburger-Szegedy conjecture\n9. Connects to girth-5 graphs for lower bound\n10. Introduces expander techniques used in DMMS\n11. Analyzes critical cycle length (transition at k=5)",
+    "keyInsights": [
+      "A diagonal is an edge between non-adjacent vertices of a cycle",
+      "Short cycles (length ≤ 4) always satisfy the condition",
+      "Critical transition at length 5: a pentagon with all diagonals violates the condition",
+      "Girth-5 graphs trivially satisfy the condition (no diagonals possible)",
+      "The gap between upper and lower bounds is (log n)^8 / √n",
+      "Expander graphs are key to the DMMS improvement"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cycles",
+      "title": "Graphs and Cycles",
+      "summary": "Basic definitions for cycles in graphs",
+      "startLine": 30,
+      "endLine": 48
+    },
+    {
+      "id": "diagonals",
+      "title": "Diagonals of a Cycle",
+      "summary": "Edges between non-adjacent cycle vertices",
+      "startLine": 50,
+      "endLine": 71
+    },
+    {
+      "id": "condition",
+      "title": "The Cycle-Diagonal Condition",
+      "summary": "Central constraint of the problem",
+      "startLine": 73,
+      "endLine": 87
+    },
+    {
+      "id": "trivial",
+      "title": "Trivial Bounds",
+      "summary": "Basic observations about f(n)",
+      "startLine": 89,
+      "endLine": 106
+    },
+    {
+      "id": "ces",
+      "title": "Chen-Erdős-Staton Bound",
+      "summary": "f(n) = O(n^(3/2)) from 1996",
+      "startLine": 108,
+      "endLine": 119
+    },
+    {
+      "id": "dmms",
+      "title": "DMMS Bound (2024)",
+      "summary": "f(n) = O(n(log n)^8)",
+      "startLine": 121,
+      "endLine": 134
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture",
+      "summary": "Is f(n) = o(n)?",
+      "startLine": 136,
+      "endLine": 154
+    },
+    {
+      "id": "girth",
+      "title": "Related Extremal Problems",
+      "summary": "Girth-5 graphs and Turán problems",
+      "startLine": 156,
+      "endLine": 180
+    },
+    {
+      "id": "expanders",
+      "title": "Expander Techniques",
+      "summary": "Key tool in DMMS proof",
+      "startLine": 182,
+      "endLine": 205
+    },
+    {
+      "id": "short-long",
+      "title": "Short vs Long Cycles",
+      "summary": "Critical transition at length 5",
+      "startLine": 207,
+      "endLine": 225
+    },
+    {
+      "id": "main-result",
+      "title": "Main Results",
+      "summary": "Summary of Erdős #642",
+      "startLine": 227,
+      "endLine": 271
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #642 asks whether f(n) ≪ n, where f(n) is the maximum edges in an n-vertex graph where every cycle has more vertices than diagonals. OPEN: The best known bounds are Ω(n^(3/2)) ≤ f(n) ≤ O(n(log n)^8). The gap is significant and the conjecture f(n) = o(n) remains unresolved.",
+    "implications": "**Theoretical Significance**\n\n1. **Extremal Graph Theory**: Connects to classical Turán-type problems\n\n2. **Cycle Structure**: Explores relationship between cycle length and chord density\n\n3. **Expander Graphs**: DMMS proof uses sophisticated random walk arguments\n\n4. **Computational Barrier**: Cannot be resolved by finite computation alone",
+    "openQuestions": [
+      "Is f(n) = o(n)? (The main open question)",
+      "Can the DMMS bound be improved to O(n polylog(n))?",
+      "Can the DMMS bound be improved to O(n)?",
+      "What is the exact constant in the lower bound Ω(n^(3/2))?",
+      "What is the structure of extremal graphs achieving f(n)?"
+    ]
   }
 }

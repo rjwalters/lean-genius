@@ -1,1 +1,263 @@
-[]
+[
+  {
+    "id": "ann-1050-header",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1050: Irrationality of ∑ 1/(2^n - 3)**\n\nIs ∑_{n≥1} 1/(2^n - 3) irrational?\n\n**Status**: SOLVED by Borwein (1991)\n\n**Answer**: YES. Borwein proved ∑ 1/(q^n + r) is irrational for q ≥ 2, r ≠ 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-T-def",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "General Series T",
+    "content": "**T q r**: T(q, r) = ∑_{n≥1} 1/(q^n + r).\n\nThe general series covered by Borwein's theorem.\n\nConverges for q ≥ 2 and r not a negative power of q.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-S-def",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "Series S",
+    "content": "**S**: S = T(2, -3) = ∑_{n≥1} 1/(2^n - 3).\n\nThe specific series of Erdős Problem #1050.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-alt",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Alternative Form",
+    "content": "**sumTwoMinusThree**: Alternative definition of ∑ 1/(2^n - 3).\n\nShows the explicit form of the series.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-summable",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "theorem",
+    "title": "Convergence",
+    "content": "**T_summable**: T(q, r) converges for q ≥ 2 and r ≠ -q^n.\n\nThe condition r ≠ -q^n avoids division by zero.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1050-S-summable",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "theorem",
+    "title": "S Convergence",
+    "content": "**S_summable**: ∑ 1/(2^n - 3) converges.\n\nSince 3 ≠ 2^n for any n ≥ 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-denom",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "theorem",
+    "title": "Nonzero Denominators",
+    "content": "**denom_nonzero**: 2^n - 3 ≠ 0 for n ≥ 2.\n\nFor n = 1: 2^1 - 3 = -1 ≠ 0.\nFor n ≥ 2: 2^n ≥ 4 > 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-first",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "theorem",
+    "title": "First Term",
+    "content": "**first_term**: 1/(2^1 - 3) = 1/(-1) = -1.\n\nThe first term is negative!\n\nBut the series sums to a positive value.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1050-term1",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 77, "endLine": 78 },
+    "type": "theorem",
+    "title": "Term 1",
+    "content": "**term_1**: 2^1 - 3 = -1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-term2",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 80, "endLine": 81 },
+    "type": "theorem",
+    "title": "Term 2",
+    "content": "**term_2**: 2^2 - 3 = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-term3",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 83, "endLine": 84 },
+    "type": "theorem",
+    "title": "Term 3",
+    "content": "**term_3**: 2^3 - 3 = 5.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-first-terms",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 92, "endLine": 96 },
+    "type": "theorem",
+    "title": "First Terms",
+    "content": "**S_first_terms**: S = -1 + 1 + 1/5 + 1/13 + 1/29 + ...\n\nThe first two terms cancel, then positive terms dominate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1050-borwein",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 104, "endLine": 108 },
+    "type": "axiom",
+    "title": "Borwein's Theorem",
+    "content": "**borwein_irrationality (1991)**: ∑ 1/(q^n + r) is irrational for:\n- Integer q ≥ 2\n- Rational r ≠ 0\n- r ≠ -q^n for any n ≥ 1\n\nThe main theorem that solves Problem #1050.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-S-irr",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 110, "endLine": 121 },
+    "type": "theorem",
+    "title": "S is Irrational",
+    "content": "**S_irrational**: ∑ 1/(2^n - 3) is irrational.\n\nApplies Borwein's theorem with q = 2, r = -3.\n\nNeed to verify: -3 ≠ -2^n for any n ≥ 1.\nSince 2^n ∈ {2, 4, 8, 16, ...}, never equals 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-2n-1",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 129, "endLine": 141 },
+    "type": "theorem",
+    "title": "∑ 1/(2^n - 1)",
+    "content": "**sum_2n_minus_1_irrational**: ∑ 1/(2^n - 1) is irrational.\n\nThis is Erdős's original 1948 result.\n\nNow follows from Borwein's general theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1050-2n+1",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 143, "endLine": 153 },
+    "type": "theorem",
+    "title": "∑ 1/(2^n + 1)",
+    "content": "**sum_2n_plus_1_irrational**: ∑ 1/(2^n + 1) is irrational.\n\nAnother application of Borwein's theorem with r = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-3n-1",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 155, "endLine": 167 },
+    "type": "theorem",
+    "title": "∑ 1/(3^n - 1)",
+    "content": "**sum_3n_minus_1_irrational**: ∑ 1/(3^n - 1) is irrational.\n\nExtends to base 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-general",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 169, "endLine": 172 },
+    "type": "theorem",
+    "title": "General Case",
+    "content": "**general_irrational**: ∑ 1/(q^n + r) is irrational for valid q, r.\n\nThe full generality of Borwein's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1050-trans-conj",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 180, "endLine": 183 },
+    "type": "definition",
+    "title": "Transcendence Conjecture",
+    "content": "**ErdosTranscendenceConjecture**: ∑ 1/(2^n + t) is transcendental for integer t ≠ 0.\n\nErdős's stronger conjecture.\n\nStatus: OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-gen-trans",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 185, "endLine": 189 },
+    "type": "definition",
+    "title": "General Transcendence",
+    "content": "**GeneralTranscendenceConjecture**: T(q, r) is transcendental for all valid q, r.\n\nThe general form of Erdős's conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1050-S1049",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 210, "endLine": 212 },
+    "type": "definition",
+    "title": "Problem #1049 Series",
+    "content": "**S_1049 t**: S(t) = ∑ 1/(t^n - 1) from Problem #1049.\n\nThis equals T(t, -1) for integer t.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-T-eq-S1049",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 214, "endLine": 216 },
+    "type": "theorem",
+    "title": "Connection",
+    "content": "**T_eq_S_1049**: T(q, -1) = S_1049(q).\n\nProblem #1049 is the special case r = -1 of this problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1050-approx",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 231, "endLine": 232 },
+    "type": "axiom",
+    "title": "Approximation",
+    "content": "**S_approx**: 0.286 < S < 0.288.\n\nS ≈ 0.287.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-positive",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 234, "endLine": 237 },
+    "type": "theorem",
+    "title": "S Positive",
+    "content": "**S_positive**: S > 0.\n\nDespite first term being -1, the series is positive.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-lt-one",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 239, "endLine": 242 },
+    "type": "theorem",
+    "title": "S < 1",
+    "content": "**S_lt_one**: S < 1.\n\nThe series converges to a small positive value.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-oeis",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 257, "endLine": 260 },
+    "type": "definition",
+    "title": "OEIS Sequence",
+    "content": "**oeis_A331372**: The denominators 2^n - 3.\n\nRelated to OEIS sequence A331372.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1050-main",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 278, "endLine": 288 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_1050**: ∑ 1/(2^n - 3) is irrational.\n\nSolved by Borwein (1991).\n\nThe transcendence conjecture remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-answer",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 290, "endLine": 296 },
+    "type": "definition",
+    "title": "Final Answer",
+    "content": "**erdos_1050_answer**: \"SOLVED: ∑ 1/(2^n - 3) is irrational (Borwein 1991)\"\n\n**erdos_1050_status**: \"SOLVED by Peter Borwein (1991)\"",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1050-borwein-thm",
+    "proofId": "erdos-1050",
+    "range": { "startLine": 298, "endLine": 301 },
+    "type": "theorem",
+    "title": "Borwein's Full Theorem",
+    "content": "**borwein_theorem**: ∑ 1/(q^n + r) is irrational for q ≥ 2, r ≠ 0, r ≠ -q^n.\n\nThe complete statement of Borwein's 1991 result.",
+    "significance": "critical"
+  }
+]

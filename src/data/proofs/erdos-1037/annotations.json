@@ -1,1 +1,335 @@
-[]
+[
+  {
+    "id": "ann-1037-vertexcount",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "definition",
+    "title": "vertexCount",
+    "content": "Number of vertices in the graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1037-degree",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "degree",
+    "content": "Degree of a vertex v in graph G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-degreemultiset",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "degreeMultiset",
+    "content": "Multiset of all vertex degrees.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1037-distinctdegrees",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "distinctDegrees",
+    "content": "Set of distinct degrees in the graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-distinctcount",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 48, "endLine": 49 },
+    "type": "definition",
+    "title": "distinctDegreeCount",
+    "content": "Number of distinct degree values.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-multiplicity",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "degreeMultiplicity",
+    "content": "How many times degree d appears.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-limited",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "hasLimitedMultiplicity",
+    "content": "Every degree occurs at most twice.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-manydistinct",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "hasManyDistinctDegrees",
+    "content": "Distinct degrees > (1/2 + ε)n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-chenerdos",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "isChenErdosGraph",
+    "content": "Satisfies Chen-Erdős conditions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-independent",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "definition",
+    "title": "isIndependentSet",
+    "content": "No edges within S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-clique",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "isClique",
+    "content": "All pairs in S adjacent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-trivialset",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "definition",
+    "title": "isTrivialSet",
+    "content": "Independent set or clique.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-maxtrivial",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "maxTrivialSize",
+    "content": "Size of largest trivial subset.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-conjecture",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 95, "endLine": 101 },
+    "type": "definition",
+    "title": "chenErdosConjecture",
+    "content": "Degree constraints → large trivial subgraph?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-false",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 103, "endLine": 104 },
+    "type": "axiom",
+    "title": "chenErdos_false",
+    "content": "The conjecture is false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-cambieconst",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 110, "endLine": 111 },
+    "type": "definition",
+    "title": "cambieConstant",
+    "content": "3/4 - the counterexample achieves this.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-exceedshalf",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 113, "endLine": 116 },
+    "type": "theorem",
+    "title": "cambie_exceeds_half",
+    "content": "3/4 > 1/2 verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1037-construction",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 118, "endLine": 126 },
+    "type": "axiom",
+    "title": "Cambie-Chan-Hunter Construction",
+    "content": "Counterexample with ≥ 3n/4 distinct degrees.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-counterexworks",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "theorem",
+    "title": "counterexample_works",
+    "content": "Construction disproves for ε < 1/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-ramsey",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 140, "endLine": 141 },
+    "type": "definition",
+    "title": "ramseyNumber",
+    "content": "Ramsey number R(k,k).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-ramseytheorem",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 143, "endLine": 148 },
+    "type": "axiom",
+    "title": "ramsey_theorem",
+    "content": "Large graphs have trivial set of size k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-ramseylower",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "axiom",
+    "title": "ramsey_lower_bound",
+    "content": "R(k,k) ≥ 2^(k/2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-nohelp",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 154, "endLine": 161 },
+    "type": "theorem",
+    "title": "degree_diversity_no_ramsey_help",
+    "content": "Degree diversity doesn't help Ramsey.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-degreesum",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 167, "endLine": 170 },
+    "type": "theorem",
+    "title": "degree_sum_eq_twice_edges",
+    "content": "Sum of degrees = 2|E|.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1037-limitedbound",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 172, "endLine": 176 },
+    "type": "theorem",
+    "title": "limited_multiplicity_bound",
+    "content": "Limited multiplicity → distinct ≤ n/2 + 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-maxdeg",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 178, "endLine": 179 },
+    "type": "definition",
+    "title": "maxPossibleDegree",
+    "content": "Maximum possible degree n-1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1037-degbound",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "theorem",
+    "title": "degree_bound",
+    "content": "All degrees ≤ n-1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1037-optimal",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 189, "endLine": 190 },
+    "type": "definition",
+    "title": "optimalDistinctBound",
+    "content": "3/4 is optimal for multiplicity 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-maxdistinct",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 192, "endLine": 196 },
+    "type": "theorem",
+    "title": "max_distinct_with_limited_mult",
+    "content": "At most (3n)/4 + O(1) distinct degrees.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-cambieoptimal",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 198, "endLine": 206 },
+    "type": "theorem",
+    "title": "cambie_is_optimal",
+    "content": "Construction is asymptotically optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-multk",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 212, "endLine": 214 },
+    "type": "definition",
+    "title": "hasMultiplicityAtMost",
+    "content": "For multiplicity at most k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-generalbound",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 216, "endLine": 217 },
+    "type": "definition",
+    "title": "generalMultiplicityBound",
+    "content": "k/(k+1) general bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-generalconj",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 219, "endLine": 226 },
+    "type": "definition",
+    "title": "generalBoundConjecture",
+    "content": "General multiplicity bound conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-mult2",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 228, "endLine": 232 },
+    "type": "theorem",
+    "title": "multiplicity_two_bound",
+    "content": "For k=2, bound is 2/3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1037-beats",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 234, "endLine": 237 },
+    "type": "theorem",
+    "title": "cambie_beats_general",
+    "content": "3/4 > 2/3 (beats general bound).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1037-disproved",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 243, "endLine": 253 },
+    "type": "theorem",
+    "title": "erdos_1037_disproved",
+    "content": "Main result: conjecture is disproved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1037-answer",
+    "proofId": "erdos-1037",
+    "range": { "startLine": 255, "endLine": 256 },
+    "type": "theorem",
+    "title": "erdos_1037_answer",
+    "content": "The answer to #1037 is NO.",
+    "significance": "critical"
+  }
+]

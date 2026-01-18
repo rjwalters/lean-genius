@@ -1,33 +1,156 @@
 {
   "id": "erdos-1036",
-  "title": "Erdős Problem #1036",
+  "title": "Erdős Problem #1036: Distinct Induced Subgraphs in Non-Ramsey Graphs",
   "slug": "erdos-1036",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices which does not contain a trivial (empty or complete) graph on more than ... vertices. Must...",
+  "description": "Let G be non-Ramsey (no trivial subgraph on > c log n vertices). Must G contain ≥ 2^{Ω_c(n)} non-isomorphic induced subgraphs? YES (Shelah 1998). Prior: Alon-Hajnal (1991) proved exp(n(log n)^{-O(log log n)}).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rényi (question), Shelah (1998, solution)",
     "sourceUrl": "https://erdosproblems.com/1036",
-    "date": "",
+    "date": "1998",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1036Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "induced-subgraphs",
+      "isomorphism"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 11,
     "erdosNumber": 1036,
     "erdosUrl": "https://erdosproblems.com/1036",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [1031]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1036 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices which does not contain a trivial (empty or complete) graph on more than $c\\log n$ vertices. Must $G$ contain at least $2^{\\Omega_c(n)}$ many induced subgraphs which are not pairwise isomorphic?\n\n\n\nA question of Erd\\H{o}s and R\\'{e}nyi. Alon and Hajnal \\cite{AlHa91} proved that $G$ must contain at least\\[\\exp\\left(n(\\log n)^{-O(\\log\\log n)}\\right)\\]many non-isomorphic induced subgraphs.\n\nErd\\H{o}s and Hajnal \\cite{ErHa89b} proved that if $G$ does not contain a complete bipartite graph or its complement on more than $c\\log n$ vertices then $G$ contains at least $2^{\\Omega_c(n)}$ many non-isomorphic induced subgraphs.\n\nThis is true, and was proved by Shelah \\cite{Sh98}.\n\n\n\n\nReferences\n\n\n[AlHa91] Alon, N. and Hajnal, A., Ramsey graphs contain many distinct induced subgraphs. Graphs Combin. (1991), 1--6.\n\n[ErHa89b] Erd\\H{o}s, P. and Hajnal, A., On the number of distinct induced subgraphs of a graph. Discrete Math. (1989), 145--154.\n\n[Sh98] Shelah, Saharon, Erd\\H{o}s and {R}\\'{e}nyi conjecture. J. Combin. Theory Ser. A (1998), 179--185.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Erdős-Rényi Conjecture**\n\nErdős and Rényi asked whether graphs avoiding large homogeneous (trivial) subgraphs must have rich induced subgraph structure. Non-Ramsey graphs can't have large cliques or independent sets, so they must be 'complex'.\n\n**Historical Development**:\n- 1989: Erdős-Hajnal proved 2^{Ω(n)} for bipartite-avoiding graphs\n- 1991: Alon-Hajnal proved exp(n(log n)^{-O(log log n)}) for all non-Ramsey\n- 1998: Shelah proved the full 2^{Ω(n)} bound",
+    "problemStatement": "**Problem Statement**\n\nLet G be a graph on n vertices with no trivial (empty or complete) subgraph on more than c log n vertices. Must G contain at least 2^{Ω_c(n)} non-isomorphic induced subgraphs?\n\n**Status**: SOLVED (YES)\n\n**Answer**: Shelah (1998) proved this is true.",
+    "proofStrategy": "**Proof Approach (Shelah)**\n\n1. **Non-Ramsey Structure**: Avoiding homogeneous subgraphs forces diverse local structure.\n\n2. **Counting Argument**: Show that many vertex subsets give non-isomorphic induced subgraphs.\n\n3. **Key Insight**: The constraint of no large trivial subgraph forces exponentially many distinct patterns.\n\n4. **Connection to Universality**: Related to Problem 1031 (Prömel-Rödl universality).",
+    "keyInsights": [
+      "Non-Ramsey: no trivial subgraph on > c log n vertices",
+      "Trivial = empty (independent) or complete (clique)",
+      "Shelah: ≥ 2^{Ω(n)} distinct induced subgraphs",
+      "Alon-Hajnal: weaker exp(n(log n)^{-O(log log n)}) bound",
+      "Avoiding homogeneity forces structural diversity"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-setup",
+      "title": "Graph Setup",
+      "summary": "vertexCount definition",
+      "startLine": 28,
+      "endLine": 37
+    },
+    {
+      "id": "trivial",
+      "title": "Trivial Subgraphs",
+      "summary": "isTrivialInduced, isIndependentSet, isClique",
+      "startLine": 39,
+      "endLine": 61
+    },
+    {
+      "id": "non-ramsey",
+      "title": "Non-Ramsey Graphs",
+      "summary": "noLargeTrivial, isNonRamsey, ramsey_theorem",
+      "startLine": 63,
+      "endLine": 81
+    },
+    {
+      "id": "induced",
+      "title": "Induced Subgraphs",
+      "summary": "inducedSubgraph, InducedPair",
+      "startLine": 83,
+      "endLine": 99
+    },
+    {
+      "id": "isomorphism",
+      "title": "Graph Isomorphism",
+      "summary": "GraphIso, inducedIso, equivalence properties",
+      "startLine": 101,
+      "endLine": 129
+    },
+    {
+      "id": "counting",
+      "title": "Counting Distinct Induced Subgraphs",
+      "summary": "allInducedSubsets, sameIsoClass, hasDistinctInduced",
+      "startLine": 131,
+      "endLine": 153
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Rényi Conjecture",
+      "summary": "erdos_renyi_conjecture definition",
+      "startLine": 155,
+      "endLine": 168
+    },
+    {
+      "id": "alon-hajnal",
+      "title": "Alon-Hajnal Bound (1991)",
+      "summary": "alonHajnalExponent, alon_hajnal_bound",
+      "startLine": 170,
+      "endLine": 191
+    },
+    {
+      "id": "erdos-hajnal",
+      "title": "Erdős-Hajnal Bipartite Result (1989)",
+      "summary": "hasCompleteBipartite, avoidsBipartite, erdos_hajnal_bipartite",
+      "startLine": 193,
+      "endLine": 219
+    },
+    {
+      "id": "shelah",
+      "title": "Shelah's Theorem (1998)",
+      "summary": "shelah_theorem, erdos_1036_solved",
+      "startLine": 221,
+      "endLine": 239
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison of Bounds",
+      "summary": "shelahBound, alonHajnalBound, shelah_better",
+      "startLine": 241,
+      "endLine": 257
+    },
+    {
+      "id": "counting-args",
+      "title": "Counting Arguments",
+      "summary": "distinct_upper, random_graph_distinct, nonRamsey_random_like",
+      "startLine": 259,
+      "endLine": 284
+    },
+    {
+      "id": "fixed-size",
+      "title": "Fixed-Size Induced Subgraphs",
+      "summary": "inducedOfSize, hasDistinctOfSize, nonRamsey_fixed_size",
+      "startLine": 286,
+      "endLine": 311
+    },
+    {
+      "id": "complement",
+      "title": "Complement Symmetry",
+      "summary": "complement_nonRamsey, complement_distinct",
+      "startLine": 313,
+      "endLine": 327
+    },
+    {
+      "id": "problem-1031",
+      "title": "Connection to Problem 1031",
+      "summary": "isKUniversal, universal_implies_distinct, via_universality",
+      "startLine": 329,
+      "endLine": 355
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1036 asked whether non-Ramsey graphs (no trivial subgraph on > c log n vertices) must contain 2^{Ω(n)} non-isomorphic induced subgraphs. Shelah (1998) proved YES. Prior work by Alon-Hajnal gave a weaker bound exp(n(log n)^{-O(log log n)}).",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Theory**: Non-Ramsey graphs have rich structure\n\n2. **Graph Diversity**: Avoiding homogeneity forces exponentially many patterns\n\n3. **Connection to Universality**: Related to Prömel-Rödl (Problem 1031)\n\n4. **Combinatorial Counting**: Deep connection between structure avoidance and diversity",
+    "openQuestions": [
+      "What is the optimal constant in the exponent?",
+      "Algorithmic: efficiently finding distinct induced subgraphs?",
+      "What about hypergraph versions?",
+      "Connections to the regularity lemma?",
+      "Can Shelah's proof be simplified?"
+    ]
   }
 }

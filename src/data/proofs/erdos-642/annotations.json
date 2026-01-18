@@ -1,1 +1,263 @@
-[]
+[
+  {
+    "id": "ann-642-header",
+    "proofId": "erdos-642",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #642: Cycles with More Vertices than Diagonals**\n\nLet f(n) be the maximal edges in a graph where every cycle has more vertices than diagonals. Is f(n) ≪ n?\n\n**Status**: OPEN\n\n**Known Bounds**: Ω(n^(3/2)) ≤ f(n) ≤ O(n(log n)^8)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-cycle",
+    "proofId": "erdos-642",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "definition",
+    "title": "Cycle Structure",
+    "content": "**Cycle G**: A structure with:\n- vertices: List V (the cycle vertices)\n- length_ge_3: at least 3 vertices\n- is_cycle: consecutive vertices are adjacent\n- no_repeated: no repeated vertices\n\nThis captures cycles in the graph-theoretic sense.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-cycle-len",
+    "proofId": "erdos-642",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Cycle Length",
+    "content": "**Cycle.len C**: The number of vertices in cycle C.\n\nThis is the key quantity compared against diagonals.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-cycle-adjacent",
+    "proofId": "erdos-642",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Cycle Adjacency",
+    "content": "**CycleAdjacent n i j**: Two positions i, j in a cycle of length n are adjacent if they differ by 1 (mod n).\n\nUsed to determine which edges are NOT diagonals.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-diagonal",
+    "proofId": "erdos-642",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "definition",
+    "title": "Diagonal Definition",
+    "content": "**IsDiagonal C e**: Edge e is a diagonal of cycle C if:\n- It connects two distinct cycle vertices\n- Those vertices are NOT adjacent on the cycle\n- The edge exists in the graph\n\nDiagonals are 'chords' cutting across the cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-diagonal-count",
+    "proofId": "erdos-642",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "Diagonal Count",
+    "content": "**diagonalCount C**: Number of diagonals present in cycle C.\n\nCounts edges that cut across the cycle (not on the cycle itself).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-condition",
+    "proofId": "erdos-642",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "definition",
+    "title": "Cycle-Diagonal Condition",
+    "content": "**SatisfiesCycleDiagonalCondition G**: For every cycle C in G:\n\n|V(C)| > diagonalCount(C)\n\nEvery cycle has more vertices than diagonals.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-extremal-f",
+    "proofId": "erdos-642",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "definition",
+    "title": "Extremal Function f(n)",
+    "content": "**f(n)**: Maximum edges in an n-vertex graph satisfying the cycle-diagonal condition.\n\nThis is the central quantity of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-trivial-lower",
+    "proofId": "erdos-642",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "theorem",
+    "title": "Tree Lower Bound",
+    "content": "**f_ge_tree**: f(n) ≥ n - 1.\n\nTrees have no cycles, so trivially satisfy the condition.\n\nThey have n - 1 edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-trivial-upper",
+    "proofId": "erdos-642",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "theorem",
+    "title": "Complete Graph Bound",
+    "content": "**f_le_complete**: f(n) ≤ n(n-1)/2.\n\nNo graph has more edges than the complete graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-max-diagonals",
+    "proofId": "erdos-642",
+    "range": { "startLine": 103, "endLine": 106 },
+    "type": "theorem",
+    "title": "Maximum Diagonals",
+    "content": "**max_diagonals_in_cycle**: A cycle of length k has at most k(k-3)/2 possible diagonals.\n\nTotal pairs - cycle edges = C(k,2) - k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-ces",
+    "proofId": "erdos-642",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "axiom",
+    "title": "Chen-Erdős-Staton (1996)",
+    "content": "**chen_erdos_staton**: f(n) ≤ 2n^(3/2).\n\nThe first non-trivial upper bound on the extremal function.\n\nProved in 1996 by Chen, Erdős, and Staton.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-dmms",
+    "proofId": "erdos-642",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "axiom",
+    "title": "DMMS Bound (2024)",
+    "content": "**dmms_2024**: f(n) ≤ n(log n)^8.\n\nDraganić-Methuku-Munhá Correia-Sudakov improved the CES bound significantly.\n\nUses expander graph techniques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-dmms-improves",
+    "proofId": "erdos-642",
+    "range": { "startLine": 131, "endLine": 134 },
+    "type": "theorem",
+    "title": "DMMS Improves CES",
+    "content": "**dmms_improves_ces**: For n ≥ 1000, the DMMS bound beats CES.\n\nn(log n)^8 < 2n^(3/2) for large n.\n\nThe improvement factor is n^(1/2) / (log n)^8.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-conjecture",
+    "proofId": "erdos-642",
+    "range": { "startLine": 142, "endLine": 144 },
+    "type": "definition",
+    "title": "Hamburger-Szegedy Conjecture",
+    "content": "**HamburgerSzegedyConjecture**: f(n) = o(n).\n\n∀ ε > 0, ∃ N, ∀ n ≥ N: f(n) < εn\n\nThe main open question of Problem #642.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-linear",
+    "proofId": "erdos-642",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "definition",
+    "title": "Linear Bound Conjecture",
+    "content": "**LinearBoundConjecture**: ∃ C > 0, f(n) ≤ Cn.\n\nA weaker version: f(n) = O(n).\n\nStill open!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-girth",
+    "proofId": "erdos-642",
+    "range": { "startLine": 162, "endLine": 164 },
+    "type": "definition",
+    "title": "Girth Definition",
+    "content": "**HasGirth G g**: Graph G has girth ≥ g.\n\nNo cycles of length < g exist in G.\n\nGirth-5 means no triangles (C₃) or 4-cycles (C₄).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-girth5",
+    "proofId": "erdos-642",
+    "range": { "startLine": 166, "endLine": 170 },
+    "type": "theorem",
+    "title": "Girth-5 Satisfies",
+    "content": "**girth_5_satisfies**: Girth ≥ 5 graphs satisfy the condition.\n\nWith girth ≥ 5, every cycle has length ≥ 5, and a cycle of length k ≥ 5 can have at most (k-3) diagonals before violating k > diagonals.\n\nActually, girth ≥ 5 graphs have NO short cycles, so the condition is trivially satisfied since there are no diagonals on cycles of length ≥ 5 that could accumulate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-turan",
+    "proofId": "erdos-642",
+    "range": { "startLine": 172, "endLine": 175 },
+    "type": "axiom",
+    "title": "Turán C₄-free",
+    "content": "**turan_C4_free**: Girth-5 graphs can have Ω(n^(3/2)) edges.\n\nConstructions from finite geometry (incidence graphs of projective planes).\n\nThis gives the lower bound on f(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-lower",
+    "proofId": "erdos-642",
+    "range": { "startLine": 177, "endLine": 180 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "**f_lower_bound**: f(n) ≥ Ω(n^(3/2)).\n\nFrom girth-5 graph constructions.\n\nThere's a significant gap to the upper bound!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-expander",
+    "proofId": "erdos-642",
+    "range": { "startLine": 188, "endLine": 193 },
+    "type": "definition",
+    "title": "Expander Graphs",
+    "content": "**IsExpander G d λ**: G is a (n, d, λ)-expander.\n\n- All vertices have degree d (d-regular)\n- Second eigenvalue ≤ λ (spectral gap)\n\nExpanders have strong mixing properties.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-sublinear-exp",
+    "proofId": "erdos-642",
+    "range": { "startLine": 195, "endLine": 199 },
+    "type": "definition",
+    "title": "Sublinear Expanders",
+    "content": "**IsSublinearExpander G**: Degree d = n^ε for some ε < 1.\n\nThese are 'sparse' expanders.\n\nKey tool in the DMMS proof.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-exp-lemma",
+    "proofId": "erdos-642",
+    "range": { "startLine": 201, "endLine": 205 },
+    "type": "axiom",
+    "title": "Expander Cycle Lemma",
+    "content": "**expander_cycle_lemma**: Random walks in good expanders find cycles with many diagonals.\n\nKey lemma: Either G violates the condition OR G has few edges.\n\nThis is the heart of the DMMS improvement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-short-cycles",
+    "proofId": "erdos-642",
+    "range": { "startLine": 213, "endLine": 216 },
+    "type": "theorem",
+    "title": "Short Cycles OK",
+    "content": "**short_cycles_ok**: Cycles of length ≤ 4 always satisfy the condition.\n\nFor k ≤ 4: k > k(k-3)/2\n- k=3: 3 > 0 ✓\n- k=4: 4 > 2 ✓",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-642-pentagon",
+    "proofId": "erdos-642",
+    "range": { "startLine": 218, "endLine": 220 },
+    "type": "theorem",
+    "title": "Pentagon Violation",
+    "content": "**pentagon_all_diags_violates**: A pentagon (5-cycle) with all diagonals violates the condition.\n\n5 vertices, 5 diagonals → 5 > 5 is FALSE.\n\nCritical transition point!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-critical",
+    "proofId": "erdos-642",
+    "range": { "startLine": 222, "endLine": 225 },
+    "type": "theorem",
+    "title": "Critical Length",
+    "content": "**critical_length**: For k ≥ 5, k ≤ k(k-3)/2.\n\nLong cycles CAN have more diagonals than vertices.\n\nThe transition happens at length 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-642-main",
+    "proofId": "erdos-642",
+    "range": { "startLine": 233, "endLine": 250 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_642_bounds**: Summary of known bounds.\n\nΩ(n^(3/2)) ≤ f(n) ≤ O(n(log n)^8)\n\nThe question f(n) = o(n) remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-answer",
+    "proofId": "erdos-642",
+    "range": { "startLine": 252, "endLine": 258 },
+    "type": "definition",
+    "title": "Problem Status",
+    "content": "**erdos_642_answer**: OPEN problem.\n\n**erdos_642_status**: Hamburger-Szegedy conjecture unresolved.\n\nSignificant gap remains between known bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-642-gap",
+    "proofId": "erdos-642",
+    "range": { "startLine": 260, "endLine": 265 },
+    "type": "theorem",
+    "title": "Bounds Gap",
+    "content": "**bounds_gap**: The gap between bounds is (log n)^8 / n^(1/2).\n\nUpper / Lower = n(log n)^8 / n^(3/2) = (log n)^8 / √n\n\nThis gap shrinks slowly (only polylog / polynomial).",
+    "significance": "supporting"
+  }
+]

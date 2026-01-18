@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-412-header",
+    "proofId": "erdos-412",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #412 asks whether all iterated sum-of-divisors sequences eventually merge. Given any two starting points m,n ≥ 2, does there exist i,j such that σᵢ(m) = σⱼ(n)?",
+    "mathContext": "The sum of divisors σ(n) = Σ_{d|n} d sums all divisors including 1 and n. Iterating gives σₖ(n) = σ(σₖ₋₁(n)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-412-imports",
+    "proofId": "erdos-412",
+    "range": { "startLine": 30, "endLine": 38 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import number-theoretic functions from Mathlib, including divisor utilities and big operators for sums over finite sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-sigma-def",
+    "proofId": "erdos-412",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Sum of Divisors Function",
+    "content": "We define σ(n) as the sum of all divisors of n, using `Nat.divisors` to get the finite set of divisors and summing with `Finset.sum`.",
+    "mathContext": "σ(n) = Σ_{d|n} d. For example: σ(6) = 1 + 2 + 3 + 6 = 12.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-412-sigma-one",
+    "proofId": "erdos-412",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "theorem",
+    "title": "σ(1) = 1",
+    "content": "The only divisor of 1 is 1 itself, so σ(1) = 1. Verified by `native_decide`.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-sigma-examples",
+    "proofId": "erdos-412",
+    "range": { "startLine": 50, "endLine": 60 },
+    "type": "theorem",
+    "title": "Computed Examples",
+    "content": "We verify σ values computationally: σ(2) = 3, σ(6) = 12, σ(12) = 28, σ(28) = 56. These use `native_decide` for decidable equality.",
+    "mathContext": "The divisors of 6 are {1, 2, 3, 6}, summing to 12. The divisors of 28 are {1, 2, 4, 7, 14, 28}, summing to 56.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-iter-def",
+    "proofId": "erdos-412",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "definition",
+    "title": "Iterated Sigma",
+    "content": "The k-th iterate of σ: σ₀(n) = n and σₖ(n) = σ(σₖ₋₁(n)). We use `Function.iterate` from Mathlib.",
+    "mathContext": "iterSigma k n = σ^[k](n), the k-fold composition of σ applied to n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-412-iter-zero",
+    "proofId": "erdos-412",
+    "range": { "startLine": 69, "endLine": 70 },
+    "type": "theorem",
+    "title": "Base Case",
+    "content": "The 0-th iterate is the identity: iterSigma 0 n = n. This is definitional (rfl).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-iter-succ",
+    "proofId": "erdos-412",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "theorem",
+    "title": "Inductive Step",
+    "content": "The (k+1)-th iterate applies σ to the k-th iterate: iterSigma (k+1) n = σ(iterSigma k n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-sequence-2",
+    "proofId": "erdos-412",
+    "range": { "startLine": 76, "endLine": 82 },
+    "type": "theorem",
+    "title": "Sequence from 2",
+    "content": "Starting from 2: 2 → 3 → 4 → 7 → 8 → 15 → ... Each step applies σ. Verified computationally.",
+    "mathContext": "σ(2) = 3, σ(3) = 4, σ(4) = 7, σ(7) = 8, σ(8) = 15.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-412-sequence-3",
+    "proofId": "erdos-412",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "theorem",
+    "title": "Sequence from 3",
+    "content": "Starting from 3: 3 → 4 → 7 → 8 → 15 → ... This merges with the sequence from 2 after one step!",
+    "mathContext": "σ₁(2) = 3 = σ₀(3), so the sequences merge at 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-412-merge-2-3",
+    "proofId": "erdos-412",
+    "range": { "startLine": 91, "endLine": 92 },
+    "type": "theorem",
+    "title": "Merge Point: 2 and 3",
+    "content": "The sequences from 2 and 3 merge immediately: σ₁(2) = 3 = σ₀(3). This is the simplest example of σ-equivalence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-412-equiv-def",
+    "proofId": "erdos-412",
+    "range": { "startLine": 96, "endLine": 99 },
+    "type": "definition",
+    "title": "σ-Equivalence",
+    "content": "Two numbers m, n are σ-equivalent if their iterated sequences eventually meet: ∃ i j, σᵢ(m) = σⱼ(n).",
+    "mathContext": "This is an equivalence relation on ℕ. The conjecture asks if there is only one equivalence class for n ≥ 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-412-conjecture",
+    "proofId": "erdos-412",
+    "range": { "startLine": 101, "endLine": 105 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "Erdős412Conjecture: All integers m, n ≥ 2 are σ-equivalent. This would mean there's essentially one universal sequence that all iterated σ-sequences eventually join.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-412-open-status",
+    "proofId": "erdos-412",
+    "range": { "startLine": 107, "endLine": 113 },
+    "type": "axiom",
+    "title": "Open Status",
+    "content": "The problem remains OPEN. Selfridge's numerical evidence suggests some sequences might never merge, but nothing has been proven either way.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-412-equiv-2-3",
+    "proofId": "erdos-412",
+    "range": { "startLine": 117, "endLine": 118 },
+    "type": "theorem",
+    "title": "Example: 2 ≡ 3",
+    "content": "2 and 3 are σ-equivalent with i=1, j=0: σ₁(2) = 3 = σ₀(3). The sequences merge after just one step from 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-equiv-2-4",
+    "proofId": "erdos-412",
+    "range": { "startLine": 120, "endLine": 121 },
+    "type": "theorem",
+    "title": "Example: 2 ≡ 4",
+    "content": "2 and 4 are σ-equivalent with i=2, j=0: σ₂(2) = 4 = σ₀(4). Starting from 2, we reach 4 in two steps.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-equiv-5-6",
+    "proofId": "erdos-412",
+    "range": { "startLine": 123, "endLine": 124 },
+    "type": "theorem",
+    "title": "Example: 5 ≡ 6",
+    "content": "5 and 6 are σ-equivalent with i=1, j=0: σ(5) = 6. For primes p, σ(p) = p + 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-equiv-7-8",
+    "proofId": "erdos-412",
+    "range": { "startLine": 126, "endLine": 127 },
+    "type": "theorem",
+    "title": "Example: 7 ≡ 8",
+    "content": "7 and 8 are σ-equivalent with i=1, j=0: σ(7) = 8. Another prime-to-next-integer merge.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-aliquot-def",
+    "proofId": "erdos-412",
+    "range": { "startLine": 131, "endLine": 138 },
+    "type": "definition",
+    "title": "Aliquot Sum",
+    "content": "The aliquot sum s(n) = σ(n) - n is the sum of PROPER divisors (excluding n). Perfect numbers satisfy s(n) = n.",
+    "mathContext": "Problem #412 is about σ (including n), not s (excluding n). But the problems are related.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-412-perfect-6",
+    "proofId": "erdos-412",
+    "range": { "startLine": 140, "endLine": 141 },
+    "type": "theorem",
+    "title": "6 is Perfect",
+    "content": "s(6) = σ(6) - 6 = 12 - 6 = 6. The proper divisors of 6 are 1, 2, 3, which sum to 6.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-perfect-28",
+    "proofId": "erdos-412",
+    "range": { "startLine": 143, "endLine": 144 },
+    "type": "theorem",
+    "title": "28 is Perfect",
+    "content": "s(28) = σ(28) - 28 = 56 - 28 = 28. The proper divisors of 28 sum to 28.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-growth",
+    "proofId": "erdos-412",
+    "range": { "startLine": 148, "endLine": 163 },
+    "type": "theorem",
+    "title": "Growth Property",
+    "content": "For n ≥ 2, σ(n) ≥ n + 1. Since 1 and n are always divisors, σ(n) ≥ 1 + n. This means sequences are strictly increasing.",
+    "mathContext": "We prove this by showing {1, n} ⊆ divisors(n) and summing.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-412-strict-growth",
+    "proofId": "erdos-412",
+    "range": { "startLine": 165, "endLine": 168 },
+    "type": "theorem",
+    "title": "Strict Growth",
+    "content": "For n ≥ 2, σ(n) > n. This follows immediately from σ(n) ≥ n + 1. No n ≥ 2 can be a fixed point of σ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-412-difficulty",
+    "proofId": "erdos-412",
+    "range": { "startLine": 172, "endLine": 185 },
+    "type": "concept",
+    "title": "Why This Is Hard",
+    "content": "To prove convergence: show all sequences hit a common value. To disprove: find m, n whose sequences never meet (infinitely many inequalities). Both directions are extremely difficult.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-412-periodic-def",
+    "proofId": "erdos-412",
+    "range": { "startLine": 189, "endLine": 192 },
+    "type": "definition",
+    "title": "σ-Periodicity",
+    "content": "A number n is σ-periodic if σₖ(n) = n for some k ≥ 1. Since σ(n) > n for n ≥ 2, no such n exists.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-no-periodic",
+    "proofId": "erdos-412",
+    "range": { "startLine": 194, "endLine": 197 },
+    "type": "theorem",
+    "title": "No Periodicity",
+    "content": "For n ≥ 2, σ₁(n) > n. This rules out period-1 cycles. Combined with growth, no n ≥ 2 can return to itself.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-412-summary",
+    "proofId": "erdos-412",
+    "range": { "startLine": 201, "endLine": 223 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "We formalize the sum of divisors, its iteration, σ-equivalence, growth properties, and verified examples. The main conjecture (all n ≥ 2 equivalent) remains OPEN.",
+    "significance": "critical"
+  }
+]

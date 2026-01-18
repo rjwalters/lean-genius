@@ -1,33 +1,185 @@
 {
   "id": "erdos-956",
-  "title": "Erdős Problem #956",
+  "title": "Erdős Problem #956: Unit Distances Between Convex Translates",
   "slug": "erdos-956",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... then the distance between ... and ... is defined by\\[\\delta(C,D)=\\inf_{}\\| c-d\\|.\\]Let ... be the maximal number of un...",
+  "description": "Let h(n) be the max unit distances among n disjoint convex translates. Is h(n) > n^(1+c) for some c > 0? OPEN: Known bounds are Ω(n log n / log log n) ≤ h(n) ≤ O(n^(4/3)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Pach (problem and 1990 bounds)",
     "sourceUrl": "https://erdosproblems.com/956",
-    "date": "",
-    "status": "pending",
+    "date": "ongoing",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos956Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "unit-distances",
+      "convex-sets",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 12,
     "erdosNumber": 956,
     "erdosUrl": "https://erdosproblems.com/956",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ² representation",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convexity of sets",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "IsCompact",
+        "description": "Compactness for bounded closed sets",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Metric.dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "ErPa90",
+        "citation": "Erdős, P. and Pach, J. (1990). Variations on the theme of repeated distances. Combinatorica, 261-269.",
+        "type": "paper"
+      },
+      {
+        "key": "SST83",
+        "citation": "Spencer, J., Szemerédi, E., and Trotter, W. (1983). Unit distances in the Euclidean plane. Graph Theory and Combinatorics.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of set distance δ(C, D)",
+      "Structure for compact convex sets in ℝ²",
+      "Definition of translate C + x",
+      "Structure for disjoint translates configuration",
+      "Definition of unit distance between translates",
+      "Definition of extremal function h(n)",
+      "Connection to classical unit distance function f(n)",
+      "Axiomatization of Erdős-Pach upper bound O(n^(4/3))",
+      "General convex sets case O(n^(7/5))",
+      "Statement of the Erdős-Pach conjecture h(n) > n^(1+c)",
+      "Connection to Szemerédi-Trotter incidence bounds"
+    ],
+    "relatedProblems": ["erdos-90"]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #956 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $C,D\\subseteq \\mathbb{R}^2$ then the distance between $C$ and $D$ is defined by\\[\\delta(C,D)=\\inf_{\\substack{c\\in C\\\\ d\\in D}}\\| c-d\\|.\\]Let $h(n)$ be the maximal number of unit distances between disjoint convex translates. That is, the maximal $m$ such that there is a compact convex set $C\\subset \\mathbb{R}^2$ and a set $X$ of size $n$ such that all $(C+x)_{x\\in X}$ are disjoint and there are $m$ pairs $x_1,x_2\\in X$ such that\\[\\delta(C+x_1,C+x_2)=1.\\]Determine $h(n)$ - in particular, prove that there exists a constant $c>0$ such that $h(n)>n^{1+c}$ for all large $n$.\n\n\n\n\nA problem of Erd\\H{o}s and Pach \\cite{ErPa90}, who proved that $h(n) \\ll n^{4/3}$. They also consider the related function where we consider $n$ disjoint convex sets (not necessarily translates), for which they give an upper bound of $\\ll n^{7/5}$.\n\nIt is trivial that $h(n)\\geq f(n)$, where $f(n)$ is the maximal number of unit distances determined by $n$ points in $\\mathbb{R}^2$ (see [90]).\n\n\n\n\nReferences\n\n\n[ErPa90] Erd\\H{o}s, P. and Pach, J., Variations on the theme of repeated distances. Combinatorica (1990), 261--269.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Unit Distances Between Convex Translates**\n\nδ(C, D) = inf{|c - d| : c ∈ C, d ∈ D} is the distance between sets.\n\n**The Problem**: Given n disjoint translates of a compact convex set C, what is the maximum number h(n) of pairs at unit distance?\n\n**Erdős-Pach (1990)**: Proved h(n) ≪ n^(4/3). For general (non-translate) convex sets: O(n^(7/5)).\n\n**Connection**: h(n) ≥ f(n) where f(n) is the classical unit distance function.\n\n**Status**: OPEN - Is h(n) > n^(1+c) for some c > 0?",
+    "problemStatement": "**Problem Statement**\n\nLet h(n) be the maximal number of unit distances between n disjoint convex translates of a compact convex set C ⊂ ℝ².\n\nProve that there exists c > 0 such that h(n) > n^(1+c) for all large n.\n\n**Status**: OPEN\n\n**Known Bounds**:\n- Upper: O(n^(4/3)) (Erdős-Pach 1990)\n- Lower: Ω(n log n / log log n)",
+    "proofStrategy": "**The Formalization**\n\n1. Defines set distance δ(C, D) = inf of point distances\n2. Defines CompactConvex structure for ℝ²\n3. Defines translation C + x\n4. Defines DisjointTranslates configuration\n5. Defines h(n) as supremum of unit distance counts\n6. Connects to classical unit distance function f(n)\n7. Axiomatizes Erdős-Pach O(n^(4/3)) upper bound\n8. Covers general (non-translate) convex sets O(n^(7/5))\n9. States the Erdős-Pach superlinear conjecture\n10. Discusses constructions and special cases\n11. Connects to Szemerédi-Trotter incidence bounds",
+    "keyInsights": [
+      "Set distance δ(C, D) is the inf of point-to-point distances",
+      "h(n) ≥ f(n) where f(n) is the point unit distance function",
+      "The upper bound n^(4/3) matches the point unit distance bound",
+      "General convex sets allow more unit distances: O(n^(7/5))",
+      "The conjecture asks for superlinear growth: h(n) > n^(1+c)",
+      "Szemerédi-Trotter incidence bounds are key to upper bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "set-distance",
+      "title": "Distance Between Sets",
+      "summary": "The fundamental distance notion δ(C, D)",
+      "startLine": 31,
+      "endLine": 58
+    },
+    {
+      "id": "convex",
+      "title": "Convex Sets and Translates",
+      "summary": "Compact convex sets in ℝ²",
+      "startLine": 60,
+      "endLine": 89
+    },
+    {
+      "id": "configuration",
+      "title": "Disjoint Translates Configuration",
+      "summary": "The setup for the problem",
+      "startLine": 91,
+      "endLine": 113
+    },
+    {
+      "id": "h-function",
+      "title": "The Function h(n)",
+      "summary": "The extremal function",
+      "startLine": 115,
+      "endLine": 130
+    },
+    {
+      "id": "unit-distance",
+      "title": "Connection to Unit Distance Problem",
+      "summary": "h(n) relates to classical f(n)",
+      "startLine": 132,
+      "endLine": 157
+    },
+    {
+      "id": "upper-bound",
+      "title": "Erdős-Pach Upper Bound",
+      "summary": "h(n) ≪ n^(4/3)",
+      "startLine": 159,
+      "endLine": 170
+    },
+    {
+      "id": "general",
+      "title": "General Convex Sets",
+      "summary": "Non-translate case O(n^(7/5))",
+      "startLine": 172,
+      "endLine": 202
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "Is h(n) > n^(1+c)?",
+      "startLine": 204,
+      "endLine": 221
+    },
+    {
+      "id": "constructions",
+      "title": "Known Constructions",
+      "summary": "Lower bound examples",
+      "startLine": 223,
+      "endLine": 235
+    },
+    {
+      "id": "incidence",
+      "title": "Connections to Incidence Geometry",
+      "summary": "Szemerédi-Trotter bounds",
+      "startLine": 237,
+      "endLine": 251
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "summary": "Disks, segments, etc.",
+      "startLine": 253,
+      "endLine": 267
+    },
+    {
+      "id": "main-result",
+      "title": "Main Results",
+      "summary": "Summary of Erdős #956",
+      "startLine": 269,
+      "endLine": 310
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #956 asks whether h(n) > n^(1+c) for some c > 0, where h(n) is the maximum unit distances among n disjoint convex translates. OPEN: The best known bounds are Ω(n log n / log log n) ≤ h(n) ≤ O(n^(4/3)). The gap between the upper bound and the conjectured superlinear lower bound remains unresolved.",
+    "implications": "**Theoretical Significance**\n\n1. **Convex Geometry**: Connects convexity to distance counting\n\n2. **Unit Distance Problem**: Generalizes the classical point unit distance problem\n\n3. **Incidence Geometry**: Upper bounds use Szemerédi-Trotter-type arguments\n\n4. **Extremal Combinatorics**: Seeks optimal configurations",
+    "openQuestions": [
+      "Is h(n) > n^(1+c) for some c > 0? (The main conjecture)",
+      "What is the exact order of magnitude of h(n)?",
+      "Does the shape of C affect the asymptotic behavior?",
+      "Can the n^(4/3) upper bound be improved?",
+      "What about higher dimensions?"
+    ]
   }
 }

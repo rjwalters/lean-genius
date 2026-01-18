@@ -1,33 +1,135 @@
 {
   "id": "erdos-1039",
-  "title": "Erdős Problem #1039",
+  "title": "Erdős Problem #1039: Polynomial Lemniscate Disc Radius",
   "slug": "erdos-1039",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... for all .... Let ... be the radius of the largest disc which is contained in ....\n\nDetermine the behaviour o...",
+  "description": "Let f(z) = ∏(z-zᵢ) with |zᵢ| ≤ 1. Let ρ(f) = radius of largest disc in {z: |f(z)| < 1}. Is ρ(f) ≫ 1/n? OPEN. Known: 1/(2en²) ≤ ρ(f) (Pommerenke), ρ(f) ≫ 1/(n√log n) (KLR 2025). Upper: ρ(zⁿ-1) ≤ π/(2n).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Herzog-Piranian (problem), Pommerenke (1961), KLR (2025)",
     "sourceUrl": "https://erdosproblems.com/1039",
     "date": "",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1039Problem.lean",
     "tags": [
-      "erdos"
+      "complex-analysis",
+      "polynomials",
+      "erdos",
+      "lemniscates",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 9,
     "erdosNumber": 1039,
     "erdosUrl": "https://erdosproblems.com/1039",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1039 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\prod_{i=1}^n(z-z_i)\\in \\mathbb{C}[z]$ with $\\lvert z_i\\rvert \\leq 1$ for all $i$. Let $\\rho(f)$ be the radius of the largest disc which is contained in $\\{z: \\lvert f(z)\\rvert< 1\\}$.\n\nDetermine the behaviour of $\\rho(f)$. In particular, is it always true that $\\rho(f)\\gg 1/n$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian, who note that $f(z)=z^n-1$ has $\\rho(f) \\leq \\frac{\\pi/2}{n}$.\n\nPommerenke \\cite{Po61} proved that\\[\\rho(f) \\geq \\frac{1}{2en^2}.\\]Krishnapur, Lundberg, and Ramachandran \\cite{KLR25} proved\\[\\rho(f) \\gg \\frac{1}{n\\sqrt{\\log n}}.\\]\n\n\n\n\nReferences\n\n\n[KLR25] M. Krishnapur, E. Lundberg, and K. Ramachandran, On the area of polynomial lemniscates. arXiv:2503.18270 (2025).\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős-Herzog-Piranian Problem**\n\nThis problem concerns the geometry of polynomial lemniscates - the level curves {z : |f(z)| = c} of complex polynomials. The sublevel set {z : |f(z)| < 1} contains a largest inscribed disc of radius ρ(f).\n\n**Historical Development**:\n- 1958: Erdős, Herzog, and Piranian posed the problem\n- 1961: Pommerenke proved ρ(f) ≥ 1/(2en²)\n- 2025: Krishnapur-Lundberg-Ramachandran improved to ρ(f) ≫ 1/(n√log n)",
+    "problemStatement": "**Problem Statement**\n\nLet f(z) = ∏(z - zᵢ) ∈ ℂ[z] with |zᵢ| ≤ 1 for all i.\nLet ρ(f) be the radius of the largest disc contained in {z : |f(z)| < 1}.\n\nDetermine the behavior of ρ(f). Is it always true that ρ(f) ≫ 1/n?\n\n**Status**: OPEN\n\n**Known Bounds**:\n- Upper: ρ(zⁿ - 1) ≤ π/(2n) (benchmark)\n- Lower: ρ(f) ≥ 1/(2en²) (Pommerenke 1961)\n- Lower: ρ(f) ≫ 1/(n√log n) (KLR 2025)",
+    "proofStrategy": "**Approach to Bounds**\n\n1. **Upper Bound (Benchmark)**: The polynomial zⁿ - 1 has roots evenly distributed on the unit circle, giving ρ(f) ≤ π/(2n).\n\n2. **Pommerenke's Method**: Uses potential theory and properties of Green's functions.\n\n3. **KLR Approach**: Establishes area bounds for the sublevel set, which imply disc bounds via isoperimetric reasoning.\n\n4. **Gap**: The conjecture ρ(f) ≫ 1/n remains open - the √log n factor in the KLR bound is not yet eliminated.",
+    "keyInsights": [
+      "ρ(f) = radius of largest disc in sublevel set {z : |f(z)| < 1}",
+      "Benchmark: zⁿ - 1 gives upper bound π/(2n)",
+      "Pommerenke (1961): ρ(f) ≥ 1/(2en²) - quadratic lower bound",
+      "KLR (2025): ρ(f) ≫ 1/(n√log n) - nearly linear",
+      "Conjecture: ρ(f) ≫ 1/n - the √log n gap remains"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "polynomial-setup",
+      "title": "Polynomial Setup",
+      "summary": "UnitDiscPolynomial structure, eval, sublevelSet",
+      "startLine": 25,
+      "endLine": 46
+    },
+    {
+      "id": "inscribed-disc",
+      "title": "Inscribed Disc Radius",
+      "summary": "isInscribedDisc, inscribedDiscRadius, rho",
+      "startLine": 48,
+      "endLine": 61
+    },
+    {
+      "id": "benchmark",
+      "title": "The Benchmark: zⁿ - 1",
+      "summary": "rootsOfUnity, benchmark_upper",
+      "startLine": 63,
+      "endLine": 78
+    },
+    {
+      "id": "pommerenke",
+      "title": "Pommerenke's Lower Bound (1961)",
+      "summary": "pommerenke_lower, pommerenkeExponent",
+      "startLine": 80,
+      "endLine": 89
+    },
+    {
+      "id": "klr",
+      "title": "KLR Bound (2025)",
+      "summary": "klr_lower, klr_better_than_pommerenke",
+      "startLine": 91,
+      "endLine": 104
+    },
+    {
+      "id": "conjecture",
+      "title": "The EHP Conjecture",
+      "summary": "ehpConjecture, ehp_open",
+      "startLine": 106,
+      "endLine": 117
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison of Bounds",
+      "summary": "pommerenkeBound, klrBound, conjecturedBound, benchmarkBound",
+      "startLine": 119,
+      "endLine": 142
+    },
+    {
+      "id": "lemniscate",
+      "title": "Lemniscate Properties",
+      "summary": "lemniscate, sublevelSet_isOpen, root_in_sublevelSet",
+      "startLine": 144,
+      "endLine": 164
+    },
+    {
+      "id": "area",
+      "title": "Area Bounds",
+      "summary": "sublevelArea, area_implies_disc_bound, klr_area_bound",
+      "startLine": 166,
+      "endLine": 180
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "degree_one_optimal, hasClusteredRoots, clustered_implies_large_disc",
+      "startLine": 182,
+      "endLine": 199
+    },
+    {
+      "id": "random",
+      "title": "Random Polynomials",
+      "summary": "random_polynomial_expected",
+      "startLine": 201,
+      "endLine": 209
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "summary": "erdos_1039_question, erdos_1039_current_state",
+      "startLine": 211,
+      "endLine": 231
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1039 asks whether polynomials with roots in the unit disc always have sublevel sets containing a disc of radius ≫ 1/n. The best known lower bound is 1/(n√log n) by Krishnapur-Lundberg-Ramachandran (2025), improving Pommerenke's 1/(2en²) from 1961. The conjecture ρ(f) ≫ 1/n remains open.",
+    "implications": "**Theoretical Significance**\n\n1. **Complex Analysis**: Understanding polynomial sublevel sets and lemniscates\n\n2. **Potential Theory**: Connections to Green's functions and capacity\n\n3. **Extremal Problems**: What polynomial configurations minimize ρ(f)?\n\n4. **Random Polynomials**: Expected behavior differs from worst case",
+    "openQuestions": [
+      "Is ρ(f) ≫ 1/n? (The main conjecture)",
+      "Can the √log n factor in KLR be eliminated?",
+      "What is the extremal polynomial configuration?",
+      "Higher-dimensional analogues?",
+      "Connections to other polynomial inequalities?"
+    ]
   }
 }

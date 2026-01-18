@@ -1,1 +1,272 @@
-[]
+[
+  {
+    "id": "ann-1049-header",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1049: Irrationality of Divisor Sums**\n\nFor rational t > 1, is ∑_{n≥1} 1/(t^n - 1) irrational?\n\nThis equals ∑ τ(n)/t^n where τ is the divisor function.\n\n**Status**: OPEN\n\n**Partial**: YES for integer t ≥ 2 (Erdős 1948).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-tau-def",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 32, "endLine": 33 },
+    "type": "definition",
+    "title": "Divisor Function",
+    "content": "**tau n**: τ(n) = |{d : d divides n}|.\n\nThe number of positive divisors of n.\n\nτ(6) = 4 since 1, 2, 3, 6 divide 6.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-tau-one",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 38, "endLine": 40 },
+    "type": "theorem",
+    "title": "τ(1) = 1",
+    "content": "**tau_one**: τ(1) = 1.\n\nThe only divisor of 1 is 1 itself.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-tau-prime",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "theorem",
+    "title": "τ of Prime",
+    "content": "**tau_prime**: τ(p) = 2 for prime p.\n\nPrimes have exactly two divisors: 1 and p.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-tau-pow",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "theorem",
+    "title": "τ of Prime Power",
+    "content": "**tau_prime_pow**: τ(p^k) = k + 1.\n\nDivisors of p^k are 1, p, p², ..., p^k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-tau-mult",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 50, "endLine": 53 },
+    "type": "theorem",
+    "title": "Multiplicativity",
+    "content": "**tau_multiplicative**: τ(mn) = τ(m)τ(n) for coprime m, n.\n\nThe divisor function is multiplicative.\n\nThis is key for computing τ via prime factorization.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-S-def",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "Series S(t)",
+    "content": "**S t**: S(t) = ∑_{n≥1} 1/(t^n - 1).\n\nThe main series of the problem.\n\nConverges for t > 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-D-def",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "definition",
+    "title": "Divisor Series D(t)",
+    "content": "**D t**: D(t) = ∑_{n≥1} τ(n)/t^n.\n\nThe divisor-weighted exponential series.\n\nThis equals S(t) by the classical identity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-S-summable",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 77, "endLine": 80 },
+    "type": "theorem",
+    "title": "S Convergence",
+    "content": "**S_summable**: S(t) converges for t > 1.\n\nSince t^n - 1 ~ t^n for large n, terms decay like 1/t^n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-identity",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 93, "endLine": 101 },
+    "type": "theorem",
+    "title": "Classical Identity",
+    "content": "**S_eq_D**: ∑ 1/(t^n - 1) = ∑ τ(n)/t^n.\n\nProof: τ(n) = Σ_{d|n} 1, so\n∑ τ(n)/t^n = ∑_d ∑_m 1/t^{dm} = ∑_d 1/(t^d - 1).\n\nA fundamental identity connecting the two series.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-double-sum",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 103, "endLine": 107 },
+    "type": "theorem",
+    "title": "Double Sum",
+    "content": "**double_sum_identity**: ∑_{d,m≥1} 1/t^{dm} = ∑_{n≥1} τ(n)/t^n.\n\nCounting divisor pairs (d, m) with dm = n gives τ(n) terms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-geometric",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 109, "endLine": 112 },
+    "type": "theorem",
+    "title": "Geometric Series",
+    "content": "**geometric_divisor**: ∑_{m≥1} 1/t^{dm} = 1/(t^d - 1).\n\nThis is a geometric series with ratio 1/t^d.\n\nKey step in proving the identity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-erdos",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 120, "endLine": 122 },
+    "type": "axiom",
+    "title": "Erdős's Theorem",
+    "content": "**erdos_integer_irrational (1948)**: S(t) is irrational for integer t ≥ 2.\n\nThe main partial result towards the full conjecture.\n\nPublished in the Journal of the Indian Mathematical Society.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-S2-def",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 124, "endLine": 125 },
+    "type": "definition",
+    "title": "S(2)",
+    "content": "**S_at_2**: S(2) = ∑_{n≥1} 1/(2^n - 1).\n\n= 1 + 1/3 + 1/7 + 1/15 + 1/31 + ...\n\nThe Erdős-Borwein constant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-S2-irr",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "theorem",
+    "title": "S(2) Irrational",
+    "content": "**S_at_2_irrational**: S(2) is irrational.\n\nImmediate from Erdős's theorem with t = 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-chowla",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 142, "endLine": 144 },
+    "type": "definition",
+    "title": "Chowla's Conjecture",
+    "content": "**ChowlaConjecture**: S(t) is irrational for ALL rational t > 1.\n\nGeneralizes Erdős's result from integers to all rationals.\n\nStatus: OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-chowla-int",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 149, "endLine": 151 },
+    "type": "theorem",
+    "title": "Chowla for Integers",
+    "content": "**chowla_for_integers**: Chowla's conjecture holds for integer t ≥ 2.\n\nThis is precisely Erdős's 1948 result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-approx",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 159, "endLine": 160 },
+    "type": "axiom",
+    "title": "S(2) Approximation",
+    "content": "**S_at_2_approx**: S(2) ≈ 1.606695...\n\n1.606 < S(2) < 1.607.\n\nThis is the Erdős-Borwein constant.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-EB",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 162, "endLine": 163 },
+    "type": "definition",
+    "title": "Erdős-Borwein Constant",
+    "content": "**erdosBorweinConstant**: The value S(2) ≈ 1.606695...\n\nNamed after Erdős and Peter Borwein who studied its properties.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-S3",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 168, "endLine": 170 },
+    "type": "theorem",
+    "title": "S(3) Irrational",
+    "content": "**S_at_3_irrational**: S(3) = ∑ 1/(3^n - 1) is irrational.\n\nAnother instance of Erdős's theorem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-infinity",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 172, "endLine": 174 },
+    "type": "theorem",
+    "title": "Limit at 1",
+    "content": "**S_tendsto_infinity**: S(t) → +∞ as t → 1⁺.\n\nThe series diverges as we approach the boundary.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-zero",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 176, "endLine": 178 },
+    "type": "theorem",
+    "title": "Limit at Infinity",
+    "content": "**S_tendsto_zero**: S(t) → 0 as t → +∞.\n\nAll terms vanish as t grows.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-trans",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 186, "endLine": 188 },
+    "type": "definition",
+    "title": "Transcendental Conjecture",
+    "content": "**TranscendentalConjecture**: S(t) is transcendental for algebraic t > 1.\n\nStronger than irrationality: not just ∉ ℚ but not algebraic.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-trans-implies",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 190, "endLine": 193 },
+    "type": "theorem",
+    "title": "Transcendental Implies Chowla",
+    "content": "**transcendental_implies_chowla**: If S(t) is transcendental for algebraic t, then Chowla's conjecture holds.\n\nTranscendental numbers are irrational.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-lambert",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 205, "endLine": 207 },
+    "type": "definition",
+    "title": "Lambert Series",
+    "content": "**isLambertSeries**: ∑ a_n q^n/(1 - q^n).\n\nA classical type of generating function.\n\nS(t) is a Lambert series with a_n = 1 and q = 1/t.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1049-S-lambert",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 209, "endLine": 212 },
+    "type": "theorem",
+    "title": "S as Lambert",
+    "content": "**S_as_lambert**: S(t) = ∑_{n≥1} (1/t)^n/(1 - (1/t)^n).\n\nRecasting S(t) as a Lambert series with q = 1/t.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-bounds",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 235, "endLine": 238 },
+    "type": "theorem",
+    "title": "Bounds on S",
+    "content": "**S_bounds**: 1/(t-1) ≤ S(t) ≤ t/(t-1)².\n\nUpper and lower bounds for the series.\n\nUseful for numerical approximation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1049-main",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 246, "endLine": 257 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_1049_partial**: For integer t ≥ 2, S(t) is irrational.\n\nThis is Erdős's 1948 theorem, the main known result.\n\nThe full Chowla conjecture for rationals remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-answer",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 259, "endLine": 265 },
+    "type": "definition",
+    "title": "Final Answer",
+    "content": "**erdos_1049_answer**: \"OPEN: Irrational for integer t ≥ 2 (Erdős). Chowla's conjecture unresolved.\"\n\n**erdos_1049_status**: \"OPEN - Chowla's conjecture unresolved\"",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1049-final",
+    "proofId": "erdos-1049",
+    "range": { "startLine": 267, "endLine": 269 },
+    "type": "theorem",
+    "title": "Final Theorem",
+    "content": "**erdos_1049**: ∀ integer t ≥ 2, S(t) is irrational.\n\nThe complete statement of Erdős's partial resolution.",
+    "significance": "critical"
+  }
+]

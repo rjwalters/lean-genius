@@ -1,33 +1,128 @@
 {
   "id": "erdos-1037",
-  "title": "Erdős Problem #1037",
+  "title": "Erdős Problem #1037: Degree Diversity and Ramsey Properties",
   "slug": "erdos-1037",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices in which every degree occurs at most twice, and the number of distinct degree is .... Must...",
+  "description": "Let G have n vertices where every degree occurs at most twice and distinct degrees > (1/2 + ε)n. Must G have a trivial subgraph much larger than log n? NO (Cambie-Chan-Hunter). Counterexample: ≥ 3n/4 distinct degrees, max trivial O(log n).",
   "meta": {
-    "author": "Unknown",
+    "author": "Chen-Erdős (conjecture), Cambie-Chan-Hunter (disproof)",
     "sourceUrl": "https://erdosproblems.com/1037",
-    "date": "",
+    "date": "2025",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1037Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "degree-sequences",
+      "erdos",
+      "ramsey-theory",
+      "counterexample"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 10,
     "erdosNumber": 1037,
     "erdosUrl": "https://erdosproblems.com/1037",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1037 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices in which every degree occurs at most twice, and the number of distinct degree is $>(\\frac{1}{2}+\\epsilon)n$. Must $G$ contain a trivial (empty or complete) subgraph of size 'much larger' than $\\log n$?\n\n\n\nA question of Chen and Erd\\H{o}s.\n\nThe answer is no - Cambie, Chan, and Hunter have in the commment section given a simple construction of a graph on $n$ vertices with at least $\\frac{3}{4}n$ distinct degrees, every degree appears at most twice, and the largest trivial subgraph has size $O(\\log n)$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Chen-Erdős Conjecture**\n\nChen and Erdős asked whether diversity in degree sequences forces large homogeneous subgraphs. If a graph has many distinct degrees (> (1/2 + ε)n) with each degree appearing at most twice, must it contain a clique or independent set much larger than log n?\n\n**Resolution**: Cambie, Chan, and Hunter disproved the conjecture by constructing graphs with ≥ 3n/4 distinct degrees (each appearing at most twice) where the largest trivial subgraph has size only O(log n).",
+    "problemStatement": "**Problem Statement**\n\nLet G be a graph on n vertices where:\n- Every degree occurs at most twice\n- The number of distinct degrees > (1/2 + ε)n\n\nMust G contain a trivial (empty or complete) subgraph of size 'much larger' than log n?\n\n**Status**: DISPROVED (Cambie-Chan-Hunter)\n\n**Answer**: NO - The counterexample achieves ≥ 3n/4 distinct degrees with max trivial size O(log n).",
+    "proofStrategy": "**Counterexample Construction (Cambie-Chan-Hunter)**\n\n1. **Construction**: Build graphs with carefully chosen edges to maximize distinct degrees while limiting clique/independent set sizes.\n\n2. **Key Properties**:\n   - At least 3n/4 distinct degrees\n   - Each degree appears at most twice\n   - Largest trivial subgraph has size O(log n)\n\n3. **Why It Works**: Degree diversity does not correlate with Ramsey-type structure - one can have very diverse degrees while still avoiding large homogeneous sets.",
+    "keyInsights": [
+      "Degree multiplicity ≤ 2 means each degree appears at most twice",
+      "Original conjecture: > (1/2 + ε)n distinct degrees → large trivial subgraph",
+      "Disproved: counterexample has ≥ 3n/4 distinct degrees but max trivial O(log n)",
+      "Degree diversity is independent of Ramsey structure",
+      "3/4 is essentially optimal for multiplicity 2"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-setup",
+      "title": "Graph Setup",
+      "summary": "vertexCount, degree definitions",
+      "startLine": 23,
+      "endLine": 34
+    },
+    {
+      "id": "degree-sequences",
+      "title": "Degree Sequences",
+      "summary": "degreeMultiset, distinctDegrees, degreeMultiplicity",
+      "startLine": 36,
+      "endLine": 53
+    },
+    {
+      "id": "degree-constraints",
+      "title": "Degree Constraints",
+      "summary": "hasLimitedMultiplicity, hasManyDistinctDegrees, isChenErdosGraph",
+      "startLine": 55,
+      "endLine": 69
+    },
+    {
+      "id": "trivial-subgraphs",
+      "title": "Trivial Subgraphs",
+      "summary": "isIndependentSet, isClique, isTrivialSet, maxTrivialSize",
+      "startLine": 71,
+      "endLine": 89
+    },
+    {
+      "id": "conjecture",
+      "title": "The Chen-Erdős Conjecture",
+      "summary": "chenErdosConjecture, chenErdos_false",
+      "startLine": 91,
+      "endLine": 104
+    },
+    {
+      "id": "counterexample",
+      "title": "Cambie-Chan-Hunter Counterexample",
+      "summary": "cambieConstant, cambieChanHunter_construction, counterexample_works",
+      "startLine": 106,
+      "endLine": 134
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Connection",
+      "summary": "ramseyNumber, ramsey_theorem, degree_diversity_no_ramsey_help",
+      "startLine": 136,
+      "endLine": 161
+    },
+    {
+      "id": "degree-properties",
+      "title": "Degree Sequence Properties",
+      "summary": "degree_sum_eq_twice_edges, limited_multiplicity_bound, degree_bound",
+      "startLine": 163,
+      "endLine": 183
+    },
+    {
+      "id": "stronger-bounds",
+      "title": "Stronger Bounds",
+      "summary": "optimalDistinctBound, max_distinct_with_limited_mult, cambie_is_optimal",
+      "startLine": 185,
+      "endLine": 206
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "hasMultiplicityAtMost, generalMultiplicityBound, multiplicity_two_bound",
+      "startLine": 208,
+      "endLine": 237
+    },
+    {
+      "id": "resolved",
+      "title": "The Resolved Question",
+      "summary": "erdos_1037_disproved, erdos_1037_answer",
+      "startLine": 239,
+      "endLine": 256
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1037 asked whether graphs with many distinct degrees (each appearing at most twice) must contain large trivial subgraphs. Cambie, Chan, and Hunter disproved this by constructing graphs with ≥ 3n/4 distinct degrees where the largest clique or independent set has size only O(log n).",
+    "implications": "**Theoretical Significance**\n\n1. **Degree Diversity vs Ramsey**: Degree sequence diversity is independent of Ramsey-type structure\n\n2. **Multiplicity Constraints**: Even strict multiplicity bounds don't force large homogeneous sets\n\n3. **Optimal Construction**: The 3/4 bound appears to be essentially optimal for multiplicity 2\n\n4. **Counterexample Method**: Shows limits of degree-based approaches to Ramsey theory",
+    "openQuestions": [
+      "What is the exact maximum distinct degrees with multiplicity ≤ k?",
+      "Can similar constructions work for higher multiplicity bounds?",
+      "What about degree-regular graphs (all degrees equal)?",
+      "Connections to other Ramsey-type problems?",
+      "Algorithmic complexity of finding max trivial subgraph?"
+    ]
   }
 }

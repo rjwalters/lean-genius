@@ -1,33 +1,130 @@
 {
   "id": "erdos-373",
-  "title": "Erdős Problem #373",
+  "title": "Erdos Problem #373: Factorials as Products of Factorials",
   "slug": "erdos-373",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that the equation\\[n! = a_1!a_2!\\cdots a_k!,\\]with ..., has only finitely many solutions.\n\n\n\nThis would follow if ..., w...",
+  "description": "Show that n! = a_1! * a_2! * ... * a_k! with n-1 > a_1 >= ... >= a_k >= 2 has only finitely many solutions. Conditionally solved under ABC conjecture (Luca 2007).",
   "meta": {
-    "author": "Unknown",
+    "author": "Luca (2007, conditional), Erdos (1976)",
     "sourceUrl": "https://erdosproblems.com/373",
-    "date": "",
-    "status": "pending",
+    "date": "2007",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos373Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "diophantine-equations",
+      "abc-conjecture"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 373,
     "erdosUrl": "https://erdosproblems.com/373",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function for solution verification",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finiteness of solution sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic conditions for reductions",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Verified all four conjectured solutions: 9!, 10! (two ways), 16!",
+      "Formalization of Erdos's reduction via prime factor bounds",
+      "Definition of ABC conjecture and Luca's conditional result",
+      "Hickerson's conjecture on complete classification",
+      "Suranyi's conjecture on two-factor solutions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #373 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that the equation\\[n! = a_1!a_2!\\cdots a_k!,\\]with $n-1>a_1\\geq a_2\\geq \\cdots \\geq a_k\\geq 2$, has only finitely many solutions.\n\n\n\nThis would follow if $P(n(n+1))/\\log n\\to \\infty$, where $P(m)$ denotes the largest prime factor of $m$ (see Problem [368]). Erd\\H{o}s \\cite{Er76d} proved that this problem would also follow from showing that $P(n(n-1))>4\\log n$.\n\nThe condition $a_1<n-1$ is necessary to rule out the trivial solutions when $n=a_2!\\cdots a_k!$.\n\nSur\\'{a}nyi was the first to conjecture that the only non-trivial solution to $a!b!=n!$ is $6!7!=10!$. More generally, Hickerson (as reported in \\cite{Er76d}) conjectured that the only non-trivial solutions to the equation in the problem statement are\\[9!=2!3!3!7!,\\]\\[10!=6!7!,\\]\\[10!=3!5!7!,\\]and\\[16!=14!5!2!.\\]Luca \\cite{Lu07b} has shown that there are only finitely many solutions, conditional on the ABC conjecture, and proved unconditionally that the number of $n\\leq x$ which admit a non-trivial solution is\\[\\leq \\exp \\bigg(f(x)\\frac{\\log (x)}{\\log\\log (x)}\\bigg)\\]for any function $f(x)$ which tends to infinity.\n\nThis is discussed in problem B23 of Guy's collection \\cite{Gu04}.\n\nIn the case when $k=2$, Erd\\H{o}s \\cite{Er93} proved that if $n!=a_1!a_2!$ with $n-1>a_1\\geq a_2$ then\\[a_1\\geq n-5\\log\\log n,\\]and says it 'would be nice' to prove $a_1\\geq n-o(\\log\\log n)$. Bhat and Ramachandra \\cite{BhRa10} replace the $5$ with $(1+o(1))\\frac{1}{\\log 2}$, and also prove that the same bound holds for arbitrary $k\\geq 2$.\n\nNumerical investigations on solutions to $n!=a_1!a_2!$ have been carried out by Caldwell \\cite{Ca94} and Habsieger \\cite{Ha}, and it is known that there are no solutions aside from $10!=6!7!$ for $n\\leq 10^{3000}$.\n\n\n\n\nReferences\n\n\n[BhRa10] Bhat, K. Dzh. and Ramachandra, K., A remark on factorials that are products of factorials. Mat. Zametki (2010), 350--354.\n\n[Ca94] C. Caldwell, The Diophantine equation $A!B!=C!$. J. Recreat. Math. (1994), 128-133.\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ha] Haight, J. A., Metric Diophantine approximation and related topics. PhD thesis ().\n\n[Lu07b] Luca, Florian, On factorials which are products of factorials. Math. Proc. Cambridge Philos. Soc. (2007), 533--542.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdos Problem #373 asks whether the Diophantine equation n! = a_1! * a_2! * ... * a_k! (with the constraint n-1 > a_1 >= a_2 >= ... >= a_k >= 2) has only finitely many solutions.\n\nThe constraint a_1 < n-1 rules out trivial solutions like n! = (n-1)! * n = (n-1)! * a_2! * ... where n factors as a product of factorials of smaller numbers.\n\nSuranyi was the first to conjecture that 6!7! = 10! is the only two-factor solution. Hickerson conjectured that there are exactly four non-trivial solutions in total.\n\nFlorian Luca proved in 2007 that the set of solutions is finite, assuming the ABC conjecture. Erdos showed that finiteness would follow from the number-theoretic conjecture P(n(n-1)) > 4 log n for large n, where P(m) is the largest prime factor of m.",
+    "problemStatement": "Show that the equation\n$$n! = a_1! \\cdot a_2! \\cdots a_k!$$\nwith $n-1 > a_1 \\geq a_2 \\geq \\cdots \\geq a_k \\geq 2$ has only finitely many solutions.\n\n**Known Solutions** (Hickerson's conjecture: these are ALL):\n- $9! = 2! \\cdot 3! \\cdot 3! \\cdot 7!$\n- $10! = 6! \\cdot 7!$\n- $10! = 3! \\cdot 5! \\cdot 7!$\n- $16! = 14! \\cdot 5! \\cdot 2!$\n\n**Status**: OPEN (conditionally solved under ABC conjecture)",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **factorialProduct**: Product of factorials of a list\n2. **IsNontrivialSolution**: Captures all the constraints\n3. **S**: The set of all non-trivial solutions\n\nWe verify all four known solutions using native_decide. The finiteness of S is stated as an axiom, along with:\n- Erdos's reduction to prime factor bounds\n- Luca's theorem (conditional on ABC)\n- Hickerson's and Suranyi's conjectures",
+    "keyInsights": [
+      "**Trivial vs non-trivial**: The constraint a_1 < n-1 rules out n! = (n-1)! * n which always holds when n is a product of smaller factorials.",
+      "**ABC connection**: Luca's 2007 result uses the ABC conjecture to control the size of solutions, giving conditional finiteness.",
+      "**Computational evidence**: No two-factor solutions except 10! = 6!7! exist for n <= 10^3000, strong evidence for Suranyi's conjecture.",
+      "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 35,
+      "endLine": 68,
+      "summary": "factorialProduct, IsSolution, IsNontrivialSolution, and the set S."
+    },
+    {
+      "id": "solutions",
+      "title": "Verified Solutions",
+      "startLine": 70,
+      "endLine": 91,
+      "summary": "Computationally verified: 9!, 10! (two ways), 16!."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Finiteness Conjecture",
+      "startLine": 93,
+      "endLine": 95,
+      "summary": "The main open conjecture: S is finite."
+    },
+    {
+      "id": "reductions",
+      "title": "Erdos's Reductions",
+      "startLine": 97,
+      "endLine": 120,
+      "summary": "Reductions to prime factor bounds P(n(n-1)) > 4 log n."
+    },
+    {
+      "id": "luca",
+      "title": "Luca's Theorem",
+      "startLine": 122,
+      "endLine": 137,
+      "summary": "Finiteness conditional on ABC conjecture."
+    },
+    {
+      "id": "hickerson",
+      "title": "Hickerson's Conjecture",
+      "startLine": 139,
+      "endLine": 151,
+      "summary": "Complete classification: exactly four solutions."
+    },
+    {
+      "id": "suranyi",
+      "title": "Suranyi's Conjecture",
+      "startLine": 153,
+      "endLine": 170,
+      "summary": "Two-factor case: only 10! = 6!7!."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on Solutions",
+      "startLine": 172,
+      "endLine": 189,
+      "summary": "Erdos and Bhat-Ramachandra bounds on a_1."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdos Problem #373 on factorials that are products of factorials. The finiteness conjecture remains OPEN unconditionally, but is proved under the ABC conjecture (Luca 2007). We verify all four known solutions.",
+    "implications": "This problem has implications for:\n\n1. **Diophantine equations**: Factorial equations have rich structure\n\n2. **ABC conjecture applications**: Demonstrates the power of ABC for finiteness results\n\n3. **Prime factor theory**: Connects to open questions about P(n(n-1))",
+    "openQuestions": [
+      "Prove finiteness unconditionally (without ABC)",
+      "Verify Hickerson's conjecture: exactly 4 solutions",
+      "Verify Suranyi's conjecture: 10! = 6!7! is the only two-factor solution",
+      "Prove P(n(n-1)) > 4 log n for large n"
+    ]
   }
 }
