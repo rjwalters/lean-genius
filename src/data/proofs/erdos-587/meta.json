@@ -1,33 +1,99 @@
 {
   "id": "erdos-587",
-  "title": "Erdős Problem #587",
+  "title": "Erdős Problem #587: Square-Sum-Free Subsets",
   "slug": "erdos-587",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that, for all ..., ... is not a square?\n\n\n\nErds observed that ... is possible, takin...",
+  "description": "Determining the maximum size of a subset A of {1,...,N} such that no non-empty subset has a sum equal to a perfect square.",
   "meta": {
-    "author": "Unknown",
+    "author": "Nguyen and Vu (2010)",
     "sourceUrl": "https://erdosproblems.com/587",
-    "date": "",
-    "status": "pending",
+    "date": "2010",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos587Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "squares",
+      "sumsets"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 587,
     "erdosUrl": "https://erdosproblems.com/587",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic behavior",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for polylogarithmic factors",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "IsSquare",
+        "description": "Predicate for perfect squares",
+        "module": "Mathlib.Algebra.Associated.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of square-sum-free subsets",
+      "Asymptotic bounds formalized with Filter.Eventually",
+      "Verified concrete examples of square-sum-free sets"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #587 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that, for all $\\emptyset\\neq S\\subseteq A$, $\\sum_{n\\in S}n$ is not a square?\n\n\n\nErd\\H{o}s observed that $\\lvert A\\rvert \\gg N^{1/3}$ is possible, taking the first $\\approx N^{1/3}$ multiples of some prime $p\\approx N^{2/3}$.\n\nEssentially solved by Nguyen and Vu \\cite{NgVu10}, who proved that $\\lvert A\\rvert\\ll N^{1/3}(\\log N)^{O(1)}$.\n\nSee also [438].\n\nThis question was {IMAGE=587Picture,asked by Erd\\H{o}s to a young Terence Tao in 1985}. We thank Tao for sharing this memory and a {IMAGE=587Letter,letter of Erd\\H{o}s describing the problem}.\n\n\n\n\nReferences\n\n\n[NgVu10] Nguyen, Hoi H. and Vu, Van H., Squares in sumsets. An irregular mind (2010), 491-524.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Paul Erdős, who famously asked a young Terence Tao about it in 1985 during a mathematics conference. Erdős was interested in understanding the structure of sets where subset sums avoid being perfect squares.\n\nErdős himself showed that sets of size N^{1/3} are achievable by a clever construction: taking approximately N^{1/3} multiples of a prime p near N^{2/3}. The key insight is that sums of distinct multiples of p are divisible by p but not by p², hence cannot be perfect squares.\n\nThe problem was essentially solved by Hoi H. Nguyen and Van H. Vu in their 2010 paper \"Squares in sumsets\" published in the Szemerédi 70th birthday volume \"An irregular mind\". They proved the matching upper bound of O(N^{1/3}·(log N)^{O(1)}), confirming that Erdős's simple construction is essentially optimal.",
+    "problemStatement": "What is the maximum size of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that for all non-empty $S \\subseteq A$, the sum $\\sum_{n \\in S} n$ is not a perfect square?\n\n**Answer**: $|A| = \\Theta(N^{1/3} \\cdot (\\log N)^{O(1)})$",
+    "proofStrategy": "We formalize the definition of square-sum-free subsets and state the asymptotic bounds as axioms. The lower bound (Erdős's construction) and upper bound (Nguyen-Vu theorem) are stated as axioms because their proofs require sophisticated results from additive combinatorics not yet available in Mathlib.\n\nWe then derive the combined tight asymptotic bound as a theorem from these axioms using Filter.Eventually. We also prove structural theorems about square-sum-free sets (empty set, singletons) and verify concrete examples.",
+    "keyInsights": [
+      "**Square-sum-free property**: A set A is square-sum-free if no non-empty subset has a sum equal to a perfect square. This is stronger than just requiring individual elements to be non-squares.",
+      "**Erdős's prime construction**: Taking multiples of a large prime p avoids square sums because subset sums are divisible by p but not p². This elegant construction achieves the optimal order of magnitude.",
+      "**Additive combinatorics**: The Nguyen-Vu upper bound uses deep tools from additive combinatorics, including results about the distribution of squares in sumsets.",
+      "**Polylogarithmic gap**: There remains a polylogarithmic gap between the lower and upper bounds, suggesting the exact constant is not yet known.",
+      "**Connection to Tao**: Erdős posed this problem to 10-year-old Terry Tao in 1985, demonstrating Erdős's famous mentorship of young mathematicians."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Documents the problem and imports Mathlib dependencies"
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 27,
+      "endLine": 45,
+      "summary": "Defines IsSquareSumFree predicate and MaxNotSqSum function"
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 47,
+      "endLine": 97,
+      "summary": "Erdős lower bound, Nguyen-Vu upper bound, and combined tight bound"
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 99,
+      "endLine": 160,
+      "summary": "Structural theorems for empty sets and singletons, plus counterexamples"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures the asymptotic solution to Erdős Problem #587, showing that the maximum size of a square-sum-free subset of {1,...,N} is Θ(N^{1/3}·(log N)^{O(1)}). The formalization uses axioms for the main bounds since their proofs require additive combinatorics beyond current Mathlib capabilities.",
+    "implications": "The result demonstrates that Erdős's simple prime-multiple construction is essentially optimal. It also shows deep connections between number theory (squares) and additive combinatorics (sumsets).",
+    "openQuestions": [
+      "What is the exact polylogarithmic factor in the upper bound?",
+      "Can the gap between Ω(N^{1/3}) and O(N^{1/3}·(log N)^{O(1)}) be closed?",
+      "What about higher powers instead of squares?"
+    ]
   }
 }

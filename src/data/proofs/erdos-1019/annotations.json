@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-1019-edgecount",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 30, "endLine": 32 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Number of edges in a simple graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1019-isplanar",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "isPlanar",
+    "content": "Graph embeddable in plane without crossings.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-eulerbound",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "theorem",
+    "title": "Euler's Formula Bound",
+    "content": "Planar graphs have at most 3n - 6 edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1019-saturated",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "isSaturatedPlanar",
+    "content": "Planar graph with exactly 3n - 6 edges (maximal).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-turan",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "definition",
+    "title": "Turán Edges",
+    "content": "⌊n²/4⌋ - the maximum triangle-free edge count.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1019-threshold",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "definition",
+    "title": "saturatedPlanarThreshold",
+    "content": "⌊n²/4⌋ + ⌊(n+1)/2⌋ edges forces structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-k3",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 104, "endLine": 108 },
+    "type": "definition",
+    "title": "Triangle K₃",
+    "content": "K₃ is a saturated planar graph on 3 vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1019-turantheorem",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 110, "endLine": 113 },
+    "type": "theorem",
+    "title": "Turán's Theorem",
+    "content": "Graphs with > n²/4 edges contain triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-induced",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 121, "endLine": 125 },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "Subgraph on vertex subset with all original edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1019-haslargesaturated",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "definition",
+    "title": "hasLargeSaturatedPlanarSubgraph",
+    "content": "Contains saturated planar subgraph on > 3 vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-k4saturated",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 142, "endLine": 143 },
+    "type": "theorem",
+    "title": "K₄ is Saturated Planar",
+    "content": "K₄ has 6 = 3(4) - 6 edges, so is saturated planar.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1019-containsk4",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "definition",
+    "title": "containsK4",
+    "content": "Graph contains complete 4-clique K₄.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1019-cycleplus",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 160, "endLine": 168 },
+    "type": "definition",
+    "title": "C_l + 2K₁",
+    "content": "Cycle of length l with 2 apex vertices connected to all.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-lowerthreshold",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 186, "endLine": 187 },
+    "type": "definition",
+    "title": "Lower Threshold",
+    "content": "⌊n²/4⌋ + ⌊(n-1)/2⌋ - achievable without large saturated planar.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1019-question",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 202, "endLine": 207 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Does threshold force large saturated planar subgraphs?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-simonovits",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 215, "endLine": 221 },
+    "type": "theorem",
+    "title": "Simonovits's Theorem",
+    "content": "Dense graphs contain K₄ or C_l + 2K₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-solved",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 223, "endLine": 228 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "Erdős #1019 answered: YES, via Simonovits.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1019-gap",
+    "proofId": "erdos-1019",
+    "range": { "startLine": 274, "endLine": 278 },
+    "type": "theorem",
+    "title": "Threshold Gap",
+    "content": "Gap is exactly 1 edge - threshold is optimal.",
+    "significance": "key"
+  }
+]

@@ -1026,17 +1026,21 @@
   },
   {
     "id": "erdos-1019",
-    "title": "Erdős Problem #1019",
+    "title": "Erdős Problem #1019: Saturated Planar Subgraphs in Dense Graphs",
     "slug": "erdos-1019",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA planar graph on ... vertices with ... edges (the maximum possible) is called saturated. Does every graph on ... vertices wi...",
+    "description": "Does every graph on n vertices with ⌊n²/4⌋ + ⌊(n+1)/2⌋ edges contain a saturated planar graph with more than 3 vertices? Simonovits proved yes: such graphs must contain K₄ or C_l + 2K₁.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "planar-graphs",
+      "erdos",
+      "extremal-combinatorics",
+      "turan-theory"
     ],
     "erdosNumber": 1019,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 6,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1020",
@@ -8198,17 +8202,22 @@
   },
   {
     "id": "erdos-587",
-    "title": "Erdős Problem #587",
+    "title": "Erdős Problem #587: Square-Sum-Free Subsets",
     "slug": "erdos-587",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that, for all ..., ... is not a square?\n\n\n\nErds observed that ... is possible, takin...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determining the maximum size of a subset A of {1,...,N} such that no non-empty subset has a sum equal to a perfect square.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "squares",
+      "sumsets"
     ],
     "erdosNumber": 587,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-588",
@@ -8571,17 +8580,23 @@
   },
   {
     "id": "erdos-611",
-    "title": "Erdős Problem #611",
+    "title": "Erdős Problem #611: Clique Transversal with Large Cliques",
     "slug": "erdos-611",
-    "description": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that includ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If all maximal cliques have size ≥ cn, is τ(G) = o(n)? Estimate k_c(n) such that cliques of size ≥ k_c(n) force τ < (1-c)n. Bollobás-Erdős: cliques ≥ n+3-2√n give τ = 1.",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "clique-transversal",
+      "maximal-cliques",
+      "threshold-functions",
+      "open-problem"
     ],
     "erdosNumber": 611,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 12,
+    "annotationCount": 16
   },
   {
     "id": "erdos-612",
@@ -9243,17 +9258,23 @@
   },
   {
     "id": "erdos-656",
-    "title": "Erdős Problem #656",
+    "title": "Erdős Problem #656: Density Version of Hindman's Theorem",
     "slug": "erdos-656",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set with positive upper density. Must there exist an infinite set ... and integer ... such that\\[B+B+t\\subseteq ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A ⊆ ℕ have positive upper density. Must there exist infinite B and integer t with B+B+t ⊆ A? YES! Proved by Kra-Moreira-Richter-Robertson (2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "density",
+      "sumsets",
+      "ramsey-theory",
+      "ergodic-theory"
     ],
     "erdosNumber": 656,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 19
   },
   {
     "id": "erdos-657",

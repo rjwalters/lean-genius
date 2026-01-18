@@ -17,9 +17,7 @@ Reference: https://erdosproblems.com/587
 
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Lattice.Fold
 import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Nat.Squarefree
 import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
@@ -33,13 +31,18 @@ We define `MaxNotSqSum N` as the maximum cardinality of a subset A ⊆ {1,...,N}
 such that no non-empty subset of A has a sum that is a perfect square.
 -/
 
-/-- A subset A of {1,...,N} is "square-sum-free" if no non-empty subset has a square sum. -/
+/-- A subset A is "square-sum-free" if no non-empty subset has a square sum. -/
 def IsSquareSumFree (A : Finset ℕ) : Prop :=
   ∀ S ⊆ A, S.Nonempty → ¬IsSquare (∑ n ∈ S, n)
 
-/-- `MaxNotSqSum N` is the size of the largest square-sum-free subset of {1,...,N}. -/
-def MaxNotSqSum (N : ℕ) : ℕ :=
-  (Finset.Icc 1 N).powerset.filter (fun A => IsSquareSumFree A) |>.sup Finset.card
+/--
+`MaxNotSqSum N` is the size of the largest square-sum-free subset of {1,...,N}.
+
+This is the central quantity in Erdős Problem #587. Erdős asked for the asymptotic
+behavior of this function.
+-/
+noncomputable def MaxNotSqSum (N : ℕ) : ℕ :=
+  sSup { k : ℕ | ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsSquareSumFree A ∧ A.card = k }
 
 /-!
 ## Main Results
@@ -58,7 +61,7 @@ are themselves multiples of p but not multiples of p², making them non-squares.
 This axiom captures Erdős's constructive lower bound.
 -/
 axiom erdos_lower_bound : ∃ c : ℝ, c > 0 ∧
-    ∀ᶠ N in Filter.atTop, (MaxNotSqSum N : ℝ) ≥ c * (N : ℝ) ^ (1/3 : ℝ)
+    ∀ᶠ (N : ℕ) in Filter.atTop, (MaxNotSqSum N : ℝ) ≥ c * (N : ℝ) ^ (1/3 : ℝ)
 
 /--
 **Nguyen-Vu Upper Bound (2010)**
@@ -73,7 +76,7 @@ This is stated as an axiom because the full proof requires deep results from
 additive combinatorics that are not yet in Mathlib.
 -/
 axiom nguyen_vu_upper_bound : ∃ (C : ℝ) (k : ℝ), C > 0 ∧ k > 0 ∧
-    ∀ᶠ N in Filter.atTop,
+    ∀ᶠ (N : ℕ) in Filter.atTop,
       (MaxNotSqSum N : ℝ) ≤ C * (N : ℝ) ^ (1/3 : ℝ) * (Real.log N) ^ k
 
 /--
@@ -85,7 +88,7 @@ Combining Erdős's construction and the Nguyen-Vu theorem, we have:
 This shows that Erdős's simple prime-multiple construction is essentially optimal.
 -/
 theorem erdos_587_tight_bound : ∃ (c C : ℝ) (k : ℝ), c > 0 ∧ C > 0 ∧ k ≥ 0 ∧
-    ∀ᶠ N in Filter.atTop,
+    ∀ᶠ (N : ℕ) in Filter.atTop,
       c * (N : ℝ) ^ (1/3 : ℝ) ≤ (MaxNotSqSum N : ℝ) ∧
       (MaxNotSqSum N : ℝ) ≤ C * (N : ℝ) ^ (1/3 : ℝ) * (Real.log N) ^ k := by
   obtain ⟨c, hc_pos, hc_bound⟩ := erdos_lower_bound
@@ -103,8 +106,7 @@ We verify the square-sum-free property for small examples to build intuition.
 theorem empty_is_square_sum_free : IsSquareSumFree ∅ := by
   intro S hS hSne
   simp only [Finset.subset_empty] at hS
-  rw [hS] at hSne
-  exact hSne.ne_empty rfl
+  exact absurd hS hSne.ne_empty
 
 /-- A singleton {n} is square-sum-free if and only if n is not a perfect square. -/
 theorem singleton_square_sum_free_iff (n : ℕ) :
@@ -120,20 +122,36 @@ theorem singleton_square_sum_free_iff (n : ℕ) :
     rw [this, Finset.sum_singleton]
     exact hn
 
-/-- {2} is square-sum-free since 2 is not a perfect square. -/
-example : IsSquareSumFree {2} := by
-  rw [singleton_square_sum_free_iff]
+/-- 2 is not a perfect square. -/
+theorem two_not_square : ¬IsSquare (2 : ℕ) := by
   intro ⟨k, hk⟩
-  omega
+  have h1 : k ≤ 1 := by
+    by_contra h
+    push_neg at h
+    have : k * k ≥ 2 * 2 := Nat.mul_self_le_mul_self (Nat.succ_le_of_lt h)
+    omega
+  interval_cases k <;> omega
+
+/-- 3 is not a perfect square. -/
+theorem three_not_square : ¬IsSquare (3 : ℕ) := by
+  intro ⟨k, hk⟩
+  have h1 : k ≤ 1 := by
+    by_contra h
+    push_neg at h
+    have : k * k ≥ 2 * 2 := Nat.mul_self_le_mul_self (Nat.succ_le_of_lt h)
+    omega
+  interval_cases k <;> omega
+
+/-- {2} is square-sum-free since 2 is not a perfect square. -/
+example : IsSquareSumFree ({2} : Finset ℕ) :=
+  singleton_square_sum_free_iff 2 |>.mpr two_not_square
 
 /-- {3} is square-sum-free since 3 is not a perfect square. -/
-example : IsSquareSumFree {3} := by
-  rw [singleton_square_sum_free_iff]
-  intro ⟨k, hk⟩
-  omega
+example : IsSquareSumFree ({3} : Finset ℕ) :=
+  singleton_square_sum_free_iff 3 |>.mpr three_not_square
 
 /-- {1, 2} is NOT square-sum-free since 1 is a perfect square (1 = 1²). -/
-example : ¬IsSquareSumFree ({1, 2} : Finset ℕ) := by
+theorem one_two_not_square_sum_free : ¬IsSquareSumFree ({1, 2} : Finset ℕ) := by
   intro h
   have := h {1} (by decide : ({1} : Finset ℕ) ⊆ {1, 2}) (Finset.singleton_nonempty 1)
   simp only [Finset.sum_singleton] at this

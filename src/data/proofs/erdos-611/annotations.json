@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-611-header",
+    "proofId": "erdos-611",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős #611:** How do large cliques affect τ(G)?\n\n**Q1:** If all maximal cliques have size ≥ cn, is τ = o(n)?\n**Q2:** Estimate k_c(n) so that cliques ≥ k_c(n) force τ < (1-c)n.\n\n**Known:** τ ≤ n - √(kn) when all cliques have size ≥ k.\n**Special:** If cliques ≥ n + 3 - 2√n, then τ = 1 (Bollobás-Erdős).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-cliques-large",
+    "proofId": "erdos-611",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "AllCliquesLarge",
+    "content": "`AllCliquesLarge G k` means every maximal clique has at least k vertices.\n\nThis is the key constraint: we're asking how large cliques force small transversals.\n\nFor k = 2, this is trivially true (edges exist). For k = n, G must be complete.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-cliques-linear",
+    "proofId": "erdos-611",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "AllCliquesLinear",
+    "content": "`AllCliquesLinear G c` means every clique has size ≥ cn for c ∈ (0,1).\n\nThis is a linear lower bound on clique size. For c = 1/2, every clique has at least n/2 vertices.\n\nSuch graphs are 'highly cliquey' — most vertices share cliques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-q1",
+    "proofId": "erdos-611",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "definition",
+    "title": "Question 1: Sublinear τ",
+    "content": "**Question 1:** If all cliques have size ≥ cn, is τ(G) = o_c(n)?\n\nFormally: for every ε > 0, eventually τ(G) < εn.\n\n**Answer:** YES! The Erdős-Gallai-Tuza bound gives τ ≤ (1-√c)n, which is strictly sublinear.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-q2",
+    "proofId": "erdos-611",
+    "range": { "startLine": 95, "endLine": 104 },
+    "type": "definition",
+    "title": "Question 2: Threshold k_c(n)",
+    "content": "**Question 2:** Find k_c(n) such that cliques ≥ k_c(n) ⟹ τ < (1-c)n.\n\n**Threshold property:** k_c(n) is the minimum k achieving this.\n\n**Known lower bound:** k_c(n) ≥ n^{c'/log log n} — very slow growth.\n\n**Upper bound:** Not well understood!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-egt-large",
+    "proofId": "erdos-611",
+    "range": { "startLine": 116, "endLine": 120 },
+    "type": "axiom",
+    "title": "Erdős-Gallai-Tuza Bound",
+    "content": "**Key Result:** If every clique has size ≥ k, then τ ≤ n - √(kn).\n\nThis is powerful: larger k ⟹ smaller τ. The √(kn) term grows with both k and n.\n\nFor k = 2 (trivial): τ ≤ n - √(2n), matching #610.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-sublinear",
+    "proofId": "erdos-611",
+    "range": { "startLine": 122, "endLine": 127 },
+    "type": "theorem",
+    "title": "Linear Cliques → Sublinear τ",
+    "content": "**Consequence:** For k = cn, we get:\n\nτ ≤ n - √(cn·n) = n - √c·n = (1-√c)n\n\nFor c = 1/4: τ ≤ n/2. For c = 1/2: τ ≤ (1-√0.5)n ≈ 0.29n.\n\nThis answers Question 1 affirmatively!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-lower-bound",
+    "proofId": "erdos-611",
+    "range": { "startLine": 139, "endLine": 144 },
+    "type": "axiom",
+    "title": "Threshold Lower Bound",
+    "content": "**Lower bound:** k_c(n) ≥ n^{c'/log log n} for some constant c'.\n\nThis grows VERY slowly — faster than any constant, but slower than n^ε for any ε > 0.\n\nExample: For n = 10^6, log log n ≈ 2.56, so n^{1/2.56} ≈ n^{0.39}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-611-bollobas-threshold",
+    "proofId": "erdos-611",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "definition",
+    "title": "Bollobás-Erdős Threshold",
+    "content": "The critical threshold for τ = 1 is:\n\nn + 3 - 2√n\n\nFor n = 100: threshold = 100 + 3 - 20 = 83.\nFor n = 10000: threshold = 10000 + 3 - 200 = 9803.\n\nAlmost all vertices must be in every clique!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-tau-one",
+    "proofId": "erdos-611",
+    "range": { "startLine": 160, "endLine": 165 },
+    "type": "axiom",
+    "title": "τ = 1 Theorem",
+    "content": "**Bollobás-Erdős:** If all cliques have size ≥ n + 3 - 2√n, then τ(G) = 1.\n\nThis means a SINGLE vertex hits every maximal clique!\n\nIntuitively: cliques are so large they must all overlap significantly.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-611-optimal",
+    "proofId": "erdos-611",
+    "range": { "startLine": 167, "endLine": 174 },
+    "type": "axiom",
+    "title": "Threshold Optimality",
+    "content": "The threshold n + 3 - 2√n is **optimal**.\n\nFor any ε > 0, there exist graphs where:\n- All cliques have size ≥ n + 3 - 2√n - ε\n- But τ ≥ 2 (no single vertex works)\n\nThe constant 3 is exact!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-611-complete",
+    "proofId": "erdos-611",
+    "range": { "startLine": 178, "endLine": 181 },
+    "type": "theorem",
+    "title": "Complete Graph",
+    "content": "**Complete graph Kₙ:** τ = 1\n\nThere's one maximal clique (all n vertices). Any single vertex hits it.\n\nThis satisfies the Bollobás-Erdős condition: clique size n ≥ n + 3 - 2√n for n ≥ 9.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-611-bipartite",
+    "proofId": "erdos-611",
+    "range": { "startLine": 183, "endLine": 186 },
+    "type": "theorem",
+    "title": "Complete Bipartite Graph",
+    "content": "**K_{n/2,n/2}:** Cliques have size 2, so τ = n/2.\n\nEvery edge is a maximal clique. Need one endpoint from each edge.\n\nThis is the worst case for clique size 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-611-random",
+    "proofId": "erdos-611",
+    "range": { "startLine": 195, "endLine": 202 },
+    "type": "axiom",
+    "title": "Random Graph Lower Bound",
+    "content": "Random graphs show the lower bound on k_c(n) is necessary.\n\nThere exist graphs with:\n- All cliques have size ≈ n^{c/log log n}\n- But τ ≈ (1-c)n\n\nSo k_c(n) must grow at least this fast.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-611-refines-610",
+    "proofId": "erdos-611",
+    "range": { "startLine": 206, "endLine": 213 },
+    "type": "theorem",
+    "title": "Relationship to #610",
+    "content": "**#611 refines #610** by adding clique size constraints.\n\n#610 asks about τ in general.\n#611 asks: if we KNOW cliques are large, can we do better?\n\nAnswer: YES — the bound τ ≤ n - √(kn) improves with k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-611-main",
+    "proofId": "erdos-611",
+    "range": { "startLine": 217, "endLine": 238 },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "**Erdős Problem #611: PARTIALLY RESOLVED**\n\n**Q1:** ANSWERED — τ ≤ (1-√c)n for linear cliques.\n\n**Q2:** OPEN — k_c(n) ≥ n^{c'/log log n} is known, but tight bounds remain elusive.\n\n**Special case:** The τ = 1 threshold n + 3 - 2√n is exactly known (Bollobás-Erdős).",
+    "significance": "critical"
+  }
+]

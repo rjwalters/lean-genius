@@ -1,33 +1,121 @@
 {
   "id": "erdos-1019",
-  "title": "Erdős Problem #1019",
+  "title": "Erdős Problem #1019: Saturated Planar Subgraphs in Dense Graphs",
   "slug": "erdos-1019",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA planar graph on ... vertices with ... edges (the maximum possible) is called saturated. Does every graph on ... vertices wi...",
+  "description": "Does every graph on n vertices with ⌊n²/4⌋ + ⌊(n+1)/2⌋ edges contain a saturated planar graph with more than 3 vertices? Simonovits proved yes: such graphs must contain K₄ or C_l + 2K₁.",
   "meta": {
-    "author": "Unknown",
+    "author": "Simonovits (PhD thesis)",
     "sourceUrl": "https://erdosproblems.com/1019",
-    "date": "",
+    "date": "1970s",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1019Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "planar-graphs",
+      "erdos",
+      "extremal-combinatorics",
+      "turan-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 6,
     "erdosNumber": 1019,
     "erdosUrl": "https://erdosproblems.com/1019",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1019 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA planar graph on $n$ vertices with $3n-6$ edges (the maximum possible) is called saturated. Does every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+\\lfloor \\frac{n+1}{2}\\rfloor$ edges contain a saturated planar graph with $>3$ vertices?\n\n\n\nA saturated planar graph on $3$ vertices is a triangle, which by Tur\\'{a}n's theorem is contained in every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+1$ edges. Erd\\H{o}s \\cite{Er71} writes it is 'easy to construct' a graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+\\lfloor\\frac{n-1}{2}\\rfloor$ edges which contains no saturated planar graph with $>3$ vertices.\n\nErd\\H{o}s \\cite{Er69c} proved that every graph with $n$ vertices and $\\lfloor n^2/4\\rfloor+k$ edges contains a saturated planar graph on $\\gg k/n$ vertices, answering a question of Dirac.\n\nThis was proved in the affirmative by Simonovits in his PhD thesis - indeed, it must contain either a $K_4$ or $C_l+2K_1$ for some $l\\geq 3$. The proof is given by Cambie in the comments.\n\n\n\n\nReferences\n\n\n[Er69c] Erd\\H{o}s, P., \\\"Uber die in {G}raphen enthaltenen saturierten planaren\n{G}raphen. Math. Nachr. (1969), 13--17.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Planar Graphs and Density**\n\nSaturated planar graphs are maximal planar graphs with exactly 3n - 6 edges. The smallest is K₃ (a triangle) on 3 vertices.\n\n**Turán Connection**: By Turán's theorem, any graph with more than n²/4 edges contains a triangle. Erdős asked what happens with more edges.\n\n**The Construction**: Erdős showed graphs with ⌊n²/4⌋ + ⌊(n-1)/2⌋ edges can avoid saturated planar subgraphs larger than triangles. But adding one more edge forces structure.\n\n**Resolution**: Simonovits proved in his PhD thesis that the threshold ⌊n²/4⌋ + ⌊(n+1)/2⌋ forces K₄ or C_l + 2K₁.",
+    "problemStatement": "**Problem Statement**\n\nA saturated planar graph on n vertices has exactly 3n - 6 edges (the maximum for planarity). Does every graph on n vertices with ⌊n²/4⌋ + ⌊(n+1)/2⌋ edges contain a saturated planar subgraph with more than 3 vertices?\n\n**Status**: SOLVED (Simonovits)\n\n**Answer**: YES. Such graphs must contain either K₄ or C_l + 2K₁ (cycle with 2 apex vertices).\n\n**Note**: The threshold is tight - Erdős constructed graphs with one fewer edge avoiding such subgraphs.",
+    "proofStrategy": "**Proof Approach (Simonovits)**\n\n1. **Threshold Analysis**: The edge count ⌊n²/4⌋ + ⌊(n+1)/2⌋ exceeds Turán's bound by ⌊(n+1)/2⌋.\n\n2. **Structure Forcing**: Extra edges must create dense local structure beyond triangles.\n\n3. **Case Analysis**: Either K₄ appears (4-clique), or cycle structures C_l with apex vertices form.\n\n4. **Both are Saturated Planar**: K₄ has 6 = 3(4) - 6 edges. C_l + 2K₁ has 3l = 3(l+2) - 6 edges.\n\n**Key Insight**: The gap between the construction threshold and the forcing threshold is exactly 1 edge.",
+    "keyInsights": [
+      "Saturated planar graphs have exactly 3n - 6 edges",
+      "K₃ (triangle) is the smallest saturated planar graph",
+      "Threshold ⌊n²/4⌋ + ⌊(n+1)/2⌋ forces larger structure",
+      "K₄ or C_l + 2K₁ must appear in dense enough graphs",
+      "The threshold is optimal (tight within 1 edge)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "edgeCount and vertexCount definitions",
+      "startLine": 22,
+      "endLine": 35
+    },
+    {
+      "id": "planar-graphs",
+      "title": "Planar Graphs",
+      "summary": "isPlanar definition and Euler bound",
+      "startLine": 37,
+      "endLine": 49
+    },
+    {
+      "id": "saturated-planar",
+      "title": "Saturated Planar Graphs",
+      "summary": "isSaturatedPlanar definition (3n - 6 edges)",
+      "startLine": 51,
+      "endLine": 71
+    },
+    {
+      "id": "threshold",
+      "title": "Edge Density Threshold",
+      "summary": "turanEdges, additionalThreshold, saturatedPlanarThreshold",
+      "startLine": 73,
+      "endLine": 90
+    },
+    {
+      "id": "triangles",
+      "title": "Triangles and Turán's Theorem",
+      "summary": "K₃ and Turán's triangle theorem",
+      "startLine": 92,
+      "endLine": 113
+    },
+    {
+      "id": "subgraphs",
+      "title": "Induced Subgraphs",
+      "summary": "hasSaturatedPlanarSubgraph and hasLargeSaturatedPlanarSubgraph",
+      "startLine": 115,
+      "endLine": 134
+    },
+    {
+      "id": "k4",
+      "title": "Complete Graph K₄",
+      "summary": "K₄ as smallest large saturated planar",
+      "startLine": 136,
+      "endLine": 152
+    },
+    {
+      "id": "cycle-plus",
+      "title": "Cycle Plus Independent Vertices",
+      "summary": "C_l + 2K₁ structure",
+      "startLine": 154,
+      "endLine": 178
+    },
+    {
+      "id": "simonovits",
+      "title": "Simonovits's Theorem",
+      "summary": "Main theorem: K₄ or C_l + 2K₁ guaranteed",
+      "startLine": 209,
+      "endLine": 228
+    },
+    {
+      "id": "threshold-gap",
+      "title": "Threshold Optimality",
+      "summary": "Gap is exactly 1 edge",
+      "startLine": 268,
+      "endLine": 291
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1019 asked whether dense graphs (⌊n²/4⌋ + ⌊(n+1)/2⌋ edges) must contain saturated planar subgraphs larger than triangles. Simonovits proved yes: such graphs contain K₄ or C_l + 2K₁. The threshold is optimal - Erdős constructed counterexamples with one fewer edge.",
+    "implications": "**Theoretical Significance**\n\n1. **Extremal Graph Theory**: Precise threshold for forcing planar structure\n\n2. **Turán Theory**: Extends classical triangle-forcing to larger structures\n\n3. **Planar Graph Theory**: Connects density to maximal planar subgraphs\n\n4. **Optimal Bounds**: The 1-edge gap shows the threshold is tight",
+    "openQuestions": [
+      "Can the proof be made more constructive?",
+      "What happens for other surfaces (torus, projective plane)?",
+      "Is there an efficient algorithm to find K₄ or C_l + 2K₁?",
+      "What about weighted versions of the problem?",
+      "Can similar thresholds be found for other graph properties?"
+    ]
   }
 }

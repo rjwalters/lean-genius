@@ -1,33 +1,144 @@
 {
   "id": "erdos-611",
-  "title": "Erdős Problem #611",
+  "title": "Erdős Problem #611: Clique Transversal with Large Cliques",
   "slug": "erdos-611",
-  "description": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that includ...",
+  "description": "If all maximal cliques have size ≥ cn, is τ(G) = o(n)? Estimate k_c(n) such that cliques of size ≥ k_c(n) force τ < (1-c)n. Bollobás-Erdős: cliques ≥ n+3-2√n give τ = 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Gallai-Tuza, Bollobás-Erdős",
     "sourceUrl": "https://erdosproblems.com/611",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos611Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "clique-transversal",
+      "maximal-cliques",
+      "threshold-functions",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "conjecture",
+    "sorries": 12,
     "erdosNumber": 611,
     "erdosUrl": "https://erdosproblems.com/611",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for cliques",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for thresholds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic analysis",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of AllCliquesLarge and AllCliquesLinear",
+      "Statement of Question 1 (linear clique size → sublinear τ)",
+      "Definition of threshold function k_c(n)",
+      "Formalization of Erdős-Gallai-Tuza bound τ ≤ n - √(kn)",
+      "Statement of Bollobás-Erdős threshold n + 3 - 2√n",
+      "Lower bound k_c(n) ≥ n^{c'/log log n}"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #611 from erdosproblems.com.",
-    "problemStatement": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that include at least one from each maximal clique of G\" role=\"presentation\" style=\"position: relative;\">GGG (sometimes called the clique transversal number). Is it true that if all maximal cliques in G\" role=\"presentation\" style=\"position: relative;\">GGG have at least cn\" role=\"presentation\" style=\"position: relative;\">cncncn vertices then &#x03C4;(G)=oc(n)\" role=\"presentation\" style=\"position: relative;\">τ(G)=oc(n)τ(G)=oc(n)\\tau(G)=o_c(n)? Similarly, estimate for c&gt;0\" role=\"presentation\" style=\"position: relative;\">c>0c>0c>0 the minimal kc(n)\" role=\"presentation\" style=\"position: relative;\">kc(n)kc(n)k_c(n) such that if every maximal clique in G\" role=\"presentation\" style=\"position: relative;\">GGG has at least kc(n)\" role=\"presentation\" style=\"position: relative;\">kc(n)kc(n)k_c(n) vertices then &#x",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem refines Erdős Problem #610 by asking: if all maximal cliques are large, how much smaller can τ(G) be?\n\nErdős, Gallai, and Tuza (1992) proved that if every clique has size ≥ k, then τ ≤ n - √(kn). For k = cn, this gives τ ≤ (1-√c)n.\n\nBollobás and Erdős found the exact threshold for τ = 1: if all cliques have size ≥ n + 3 - 2√n, then a single vertex hits them all. This threshold is optimal.",
+    "problemStatement": "**Question 1:** If all maximal cliques have size ≥ cn, is τ(G) = o_c(n)?\n\n**Answer:** YES — we get τ ≤ (1 - √c)n, which is strictly less than n.\n\n**Question 2:** For c > 0, estimate k_c(n) such that cliques of size ≥ k_c(n) force τ < (1-c)n.\n\n**Known:** k_c(n) ≥ n^{c'/log log n} for some c' > 0.\n\n**Special case:** k_{~1}(n) = n + 3 - 2√n gives τ = 1.",
+    "proofStrategy": "The formalization:\n\n1. Defines `AllCliquesLarge G k` and `AllCliquesLinear G c`\n2. States `Question1_LinearCliques` and `Question2_ThresholdEstimate`\n3. Axiomatizes `erdos_gallai_tuza_large_cliques`: τ ≤ n - √(kn)\n4. Proves `linear_cliques_sublinear`: τ ≤ (1-√c)n for linear cliques\n5. States `bollobas_erdos_tau_one` for the τ = 1 threshold\n6. States `threshold_lower_bound` for k_c(n) ≥ n^{c'/log log n}",
+    "keyInsights": [
+      "**Large cliques help:** If min clique size = cn, then τ ≤ (1-√c)n — bigger cliques mean smaller transversals.",
+      "**Threshold function k_c(n):** The minimum clique size needed to force τ < (1-c)n. Grows very slowly.",
+      "**Bollobás-Erdős:** The exact threshold n + 3 - 2√n for τ = 1. This is optimal!",
+      "**Lower bound:** k_c(n) ≥ n^{c'/log log n}, so even forcing small τ requires nearly-linear cliques.",
+      "**Relation to #610:** This refines #610 by adding clique size constraints."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cliques-transversals",
+      "title": "Cliques and Transversals",
+      "summary": "Definitions from #610",
+      "startLine": 32,
+      "endLine": 54
+    },
+    {
+      "id": "minimum-clique-size",
+      "title": "Minimum Clique Size",
+      "summary": "AllCliquesLarge and AllCliquesLinear predicates",
+      "startLine": 56,
+      "endLine": 71
+    },
+    {
+      "id": "question1",
+      "title": "Question 1: Linear Clique Size",
+      "summary": "If cliques have size ≥ cn, is τ = o(n)?",
+      "startLine": 73,
+      "endLine": 91
+    },
+    {
+      "id": "question2",
+      "title": "Question 2: Threshold Function",
+      "summary": "Estimate k_c(n) for τ < (1-c)n",
+      "startLine": 93,
+      "endLine": 112
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Erdős-Gallai-Tuza bound τ ≤ n - √(kn)",
+      "startLine": 114,
+      "endLine": 135
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound on k_c(n)",
+      "summary": "k_c(n) ≥ n^{c'/log log n}",
+      "startLine": 137,
+      "endLine": 152
+    },
+    {
+      "id": "bollobas-erdos",
+      "title": "Bollobás-Erdős Threshold",
+      "summary": "τ = 1 when cliques ≥ n + 3 - 2√n",
+      "startLine": 154,
+      "endLine": 174
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Complete, bipartite, and Turán graphs",
+      "startLine": 176,
+      "endLine": 191
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Statement",
+      "summary": "Summary of open status",
+      "startLine": 215,
+      "endLine": 245
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #611 explores how large clique sizes constrain the clique transversal number. Question 1 is essentially answered: linear clique sizes give sublinear τ. Question 2 (estimating k_c(n)) remains partially open — the lower bound n^{c'/log log n} is known but tight upper bounds are elusive.",
+    "implications": "This problem connects to:\n\n1. **Clique Structure:** How clique sizes influence transversals\n2. **Threshold Functions:** The trade-off between clique size and τ\n3. **Extremal Graph Theory:** Constructing graphs with large cliques and large τ\n4. **Problem #610:** Generalizes by adding clique size constraints\n5. **Ramsey Theory:** Via probabilistic constructions",
+    "openQuestions": [
+      "What is the exact growth rate of k_c(n)?",
+      "Can the Bollobás-Erdős threshold be generalized to τ = k?",
+      "What is the structure of extremal graphs for Question 2?",
+      "How does k_c(n) depend on c?",
+      "Are there efficient algorithms when cliques are guaranteed large?"
+    ]
   }
 }

@@ -1,1 +1,90 @@
-[]
+[
+  {
+    "id": "ann-e587-header",
+    "proofId": "erdos-587",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Introduction and Imports",
+    "content": "**Erdős Problem #587** asks for the maximum size of a subset A of {1,...,N} where no non-empty subset has a sum equal to a perfect square. The header documents the answer: |A| = Θ(N^{1/3} · (log N)^{O(1)}). Notably, Erdős posed this problem to a young Terence Tao in 1985.",
+    "mathContext": "We import Mathlib modules for finite sets, filters (for asymptotic statements), and special functions (logarithms, powers). The Filter.atTop framework allows us to express statements like \"for all sufficiently large N\".",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "mathlib", "imports", "asymptotic-analysis"]
+  },
+  {
+    "id": "ann-e587-square-sum-free",
+    "proofId": "erdos-587",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "definition",
+    "title": "Square-Sum-Free Property",
+    "content": "**A set A is square-sum-free** if for every non-empty subset S ⊆ A, the sum of elements in S is not a perfect square. This is a strong condition: not only must individual elements be non-squares, but all possible subset sums must avoid being squares.",
+    "mathContext": "Formally: IsSquareSumFree(A) ⟺ ∀ S ⊆ A, S ≠ ∅ → ¬IsSquare(∑_{n ∈ S} n). The predicate IsSquare from Mathlib checks if a number equals some k² for natural k.",
+    "significance": "critical",
+    "relatedConcepts": ["squares", "subset-sums", "finset", "combinatorics"]
+  },
+  {
+    "id": "ann-e587-max-function",
+    "proofId": "erdos-587",
+    "range": { "startLine": 38, "endLine": 45 },
+    "type": "definition",
+    "title": "Maximum Square-Sum-Free Subset Size",
+    "content": "**MaxNotSqSum(N)** is the central quantity: the largest possible cardinality of a square-sum-free subset of {1,...,N}. Erdős's question asks for the asymptotic behavior of this function as N grows.",
+    "mathContext": "Defined as sSup { k | ∃ A ⊆ [1,N], IsSquareSumFree(A) ∧ |A| = k }. This takes the supremum over all achievable cardinalities. The definition is noncomputable because it involves an unbounded search.",
+    "significance": "critical",
+    "relatedConcepts": ["supremum", "asymptotic-growth", "optimization"]
+  },
+  {
+    "id": "ann-e587-lower-bound",
+    "proofId": "erdos-587",
+    "range": { "startLine": 54, "endLine": 64 },
+    "type": "theorem",
+    "title": "Erdős's Lower Bound Construction",
+    "content": "**Erdős showed that MaxNotSqSum(N) ≥ cN^{1/3}** for some constant c > 0. His elegant construction takes approximately N^{1/3} multiples of a prime p ≈ N^{2/3}. Since any sum of distinct multiples of p is divisible by p but not by p², it cannot be a perfect square.",
+    "mathContext": "Stated as an axiom: ∃ c > 0, ∀ᶠ N, MaxNotSqSum(N) ≥ c·N^{1/3}. The ∀ᶠ notation means \"for all sufficiently large N\" using Filter.atTop. This is an axiom because formalizing the prime-multiple construction requires number-theoretic results not in Mathlib.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-numbers", "construction", "lower-bound"]
+  },
+  {
+    "id": "ann-e587-upper-bound",
+    "proofId": "erdos-587",
+    "range": { "startLine": 66, "endLine": 80 },
+    "type": "theorem",
+    "title": "Nguyen-Vu Upper Bound",
+    "content": "**Nguyen and Vu (2010) proved the matching upper bound**: MaxNotSqSum(N) ≤ C·N^{1/3}·(log N)^{O(1)}. Their paper \"Squares in sumsets\" appeared in the Szemerédi 70th birthday volume. This shows Erdős's simple construction is essentially optimal.",
+    "mathContext": "Stated as an axiom: ∃ C > 0, k > 0, ∀ᶠ N, MaxNotSqSum(N) ≤ C·N^{1/3}·(log N)^k. The proof uses sophisticated additive combinatorics techniques analyzing the distribution of squares in sumsets, which are not yet formalized in Mathlib.",
+    "significance": "critical",
+    "relatedConcepts": ["additive-combinatorics", "upper-bound", "sumsets"]
+  },
+  {
+    "id": "ann-e587-main-theorem",
+    "proofId": "erdos-587",
+    "range": { "startLine": 82, "endLine": 97 },
+    "type": "theorem",
+    "title": "Combined Tight Asymptotic Bound",
+    "content": "**The main theorem combines both bounds** to show MaxNotSqSum(N) = Θ(N^{1/3}·(log N)^{O(1)}). This is the complete answer to Erdős's question: the maximum size grows like the cube root of N, up to polylogarithmic factors.",
+    "mathContext": "The proof is straightforward: we obtain the constants from both axioms and combine the eventually-true statements using Filter.Eventually.and. The result states: ∃ c, C, k, ∀ᶠ N, c·N^{1/3} ≤ MaxNotSqSum(N) ≤ C·N^{1/3}·(log N)^k.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic-bounds", "theta-notation", "filter-eventually"]
+  },
+  {
+    "id": "ann-e587-singleton",
+    "proofId": "erdos-587",
+    "range": { "startLine": 111, "endLine": 123 },
+    "type": "theorem",
+    "title": "Singleton Characterization",
+    "content": "**A singleton {n} is square-sum-free if and only if n is not a perfect square.** This fundamental lemma helps understand the structure: any square-sum-free set must avoid perfect squares as elements (since the singleton subset would violate the property).",
+    "mathContext": "We prove both directions: (→) If IsSquareSumFree({n}), apply it to S = {n} to get ¬IsSquare(n). (←) If ¬IsSquare(n), then any non-empty S ⊆ {n} must equal {n}, and its sum is just n, which is not a square.",
+    "significance": "supporting",
+    "relatedConcepts": ["singleton", "iff", "characterization"]
+  },
+  {
+    "id": "ann-e587-counterexample",
+    "proofId": "erdos-587",
+    "range": { "startLine": 153, "endLine": 158 },
+    "type": "theorem",
+    "title": "Counterexample: {1, 2} Fails",
+    "content": "**The set {1, 2} is NOT square-sum-free** because 1 is a perfect square (1 = 1²). This shows that avoiding squares in subset sums is non-trivial: even the smallest natural numbers can cause problems. Any square-sum-free subset of {1,...,N} must exclude 1 entirely.",
+    "mathContext": "The proof applies the square-sum-free hypothesis to S = {1} ⊆ {1, 2}. The sum is 1, which equals 1² by rfl, giving a contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": ["counterexample", "verification", "decide"]
+  }
+]
