@@ -17,7 +17,7 @@
       "primes",
       "covering-systems"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 2,
     "erdosNumber": 9,
     "erdosUrl": "https://erdosproblems.com/9",
@@ -50,12 +50,13 @@
       "Upper density definition and positive density question",
       "Axiomatization of Schinzel, Crocker, and Pan bounds",
       "Covering systems insufficiency argument",
-      "Proved small examples: 1, 3 are exceptional; 5, 9 are representable"
+      "Proved small examples: 1, 3 are exceptional; 5, 7, 9 are representable",
+      "Proved seven_not_in_A showing 7 is NOT exceptional"
     ]
   },
   "overview": {
     "historicalContext": "This problem concerns the representation of odd integers as p + 2^k + 2^l where p is prime. Erdős asked whether the set A of odd integers WITHOUT such a representation has positive upper density.\n\nSchinzel proved A is infinite (credited by Erdős in 1977). Crocker (1971) showed at least log log N such integers exist up to N. Pan (2011) dramatically improved this to N^{1-ε} for any ε > 0.\n\nErdős made the key observation that covering systems cannot resolve this problem - integers of the form p + 2^k + 2^l exist in every arithmetic progression.",
-    "problemStatement": "**Question (Erdős, OPEN):** Let A be the set of odd integers not of the form p + 2^k + 2^l. Is the upper density of A positive?\n\n**Known bounds:**\n- Schinzel: A is infinite\n- Crocker (1971): |A ∩ {1,...,N}| ≫ log log N\n- Pan (2011): |A ∩ {1,...,N}| ≫ N^{1-ε} for any ε > 0\n- Question: |A ∩ {1,...,N}| ≫ N (positive density)?\n\n**First elements of A (OEIS A006286):** 1, 127, 149, 251, 331, 337, 373, ...",
+    "problemStatement": "**Question (Erdős, OPEN):** Let A be the set of odd integers not of the form p + 2^k + 2^l. Is the upper density of A positive?\n\n**Known bounds:**\n- Schinzel: A is infinite\n- Crocker (1971): |A ∩ {1,...,N}| ≫ log log N\n- Pan (2011): |A ∩ {1,...,N}| ≫ N^{1-ε} for any ε > 0\n- Question: |A ∩ {1,...,N}| ≫ N (positive density)?\n\n**First ODD elements of A:** 1, 127, 149, 251, 331, 337, 373, ...\n\n(Note: OEIS A006286 lists ALL integers not of this form, including evens. For odd integers specifically, the sequence starts with 1, 127, 149, ...)",
     "proofStrategy": "The formalization defines:\n\n1. `HasPrimePlusTwoPowersForm n`: n = p + 2^k + 2^l for some prime p\n2. `A`: odd integers without such representation\n3. `upperDensity A`: the upper asymptotic density\n4. `erdos_9_question`: is upperDensity A > 0?\n\nWe axiomatize:\n- Schinzel's result: A is infinite\n- Crocker (1971): ≫ log log N bound\n- Pan (2011): ≫ N^{1-ε} bound\n- Erdős's observation on covering systems",
     "keyInsights": [
       "**Covering systems fail:** Erdős observed that p + 2^k + 2^l hits every arithmetic progression, so covering system methods cannot prove positive density.",
@@ -67,53 +68,81 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Overview",
+      "summary": "Header documentation with problem statement and known results",
+      "startLine": 1,
+      "endLine": 27
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "Prime + two powers form, set A, counting function",
-      "startLine": 35,
-      "endLine": 72
+      "summary": "HasPrimePlusTwoPowersForm, sets S and A",
+      "startLine": 43,
+      "endLine": 55
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Prime plus one power theorem, representation non-uniqueness",
+      "startLine": 56,
+      "endLine": 78
     },
     {
       "id": "density",
       "title": "Density Definitions",
-      "summary": "Upper density and positive density",
-      "startLine": 68,
-      "endLine": 80
+      "summary": "countA counting function, upperDensity, hasPositiveUpperDensity",
+      "startLine": 79,
+      "endLine": 93
     },
     {
       "id": "conjecture",
       "title": "The Erdős Question",
       "summary": "OPEN: Does A have positive upper density?",
-      "startLine": 82,
-      "endLine": 97
+      "startLine": 94,
+      "endLine": 110
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Schinzel, Crocker, and Pan bounds",
-      "startLine": 99,
-      "endLine": 145
+      "summary": "Schinzel, Crocker (1971), and Pan (2011) bounds",
+      "startLine": 111,
+      "endLine": 160
     },
     {
       "id": "covering",
       "title": "Covering Systems",
-      "summary": "Why covering systems cannot resolve this",
-      "startLine": 147,
-      "endLine": 179
+      "summary": "Why covering systems cannot resolve this problem",
+      "startLine": 161,
+      "endLine": 194
     },
     {
       "id": "examples",
       "title": "Small Examples",
-      "summary": "1, 3 are exceptional; 5, 9 are representable",
-      "startLine": 181,
-      "endLine": 228
+      "summary": "1, 3 in A; 5, 7, 9 in S (representable)",
+      "startLine": 195,
+      "endLine": 258
     },
     {
-      "id": "status",
-      "title": "Problem Status",
-      "summary": "Summary and open status",
-      "startLine": 265,
-      "endLine": 292
+      "id": "bounds",
+      "title": "Bounds Comparison",
+      "summary": "Growth hierarchy: log log N << N^{1-ε} << N",
+      "startLine": 259,
+      "endLine": 278
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Romanoff's theorem and problems #10, #11, #16",
+      "startLine": 279,
+      "endLine": 293
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and references",
+      "startLine": 294,
+      "endLine": 322
     }
   ],
   "conclusion": {

@@ -26,7 +26,15 @@
   This file formalizes the definitions and known partial results.
 -/
 
-import Mathlib
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Parity
+import Mathlib.Data.Set.Card
+import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Order.LiminfLimsup
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.NumberTheory.Padics.PadicVal.Defs
+import Mathlib.Algebra.Order.Ring.Lemmas
 
 open Set Nat Filter
 
@@ -187,8 +195,11 @@ theorem covering_systems_insufficient :
 /-! ## Small Examples -/
 
 /-- The first few elements of A (odd integers not representable).
-    From OEIS A006286: 1, 3, 7, 127, 149, ... -/
-def first_elements_A : List ℕ := [1, 3, 7, 127, 149, 251, 331, 337, 373]
+    Note: OEIS A006286 lists ALL integers not of form p + 2^k + 2^l.
+    For ODD integers specifically: 1, 127, 149, 251, 331, 337, 373, ...
+    (3 is borderline - see three_in_A)
+    7 is NOT in A: 7 = 3 + 2^1 + 2^1. -/
+def first_elements_A : List ℕ := [1, 127, 149, 251, 331, 337, 373]
 
 /-- 1 is trivially in A (1 is odd, and 1 = p + 2^k + 2^l has no solution). -/
 theorem one_in_A : 1 ∈ A := by
@@ -225,6 +236,18 @@ theorem five_in_S : 5 ∈ S := by
   constructor
   · exact Nat.prime_three
   · norm_num
+
+/-- 7 is in S: 7 = 3 + 2^1 + 2^1 = 3 + 2 + 2. So 7 is NOT exceptional. -/
+theorem seven_in_S : 7 ∈ S := by
+  use 3, 1, 1
+  constructor
+  · exact Nat.prime_three
+  · norm_num
+
+/-- 7 is NOT in A (it can be represented as p + 2^k + 2^l). -/
+theorem seven_not_in_A : 7 ∉ A := by
+  intro ⟨_, _, h⟩
+  exact h seven_in_S
 
 /-- 9 is in S: 9 = 5 + 2^1 + 2^1 = 5 + 2 + 2. -/
 theorem nine_in_S : 9 ∈ S := by
