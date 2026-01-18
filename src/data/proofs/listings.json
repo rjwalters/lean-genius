@@ -1663,17 +1663,21 @@
   },
   {
     "id": "erdos-1058",
-    "title": "Erdős Problem #1058",
+    "title": "Erdős Problem #1058: Prime Divisors of n!+1 Between Consecutive Primes",
     "slug": "erdos-1058",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the sequence of prime numbers. Are there only finitely many ... such that ... and the only primes dividing ... are...",
-    "status": "pending",
+    "description": "Are there only finitely many n in [p_{k-1}, p_k) such that the only primes dividing n!+1 are p_k and p_{k+1}? SOLVED: Luca (2001) proved the only solutions are n = 1, 2, 3, 4, 5.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "prime-divisors",
+      "diophantine"
     ],
     "erdosNumber": 1058,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 18
   },
   {
     "id": "erdos-106",
