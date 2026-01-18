@@ -114,7 +114,7 @@
       "startLine": 173,
       "endLine": 212
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "Lacunary Growth Lemmas",
     "content": "Key technical lemmas:\n- `lacunary_sequence_growth`: a_n >= a_0 * r^n\n- `lacunary_index_upper_bound`: n <= C * log N when a_n <= N\n\nThese establish that lacunary sequences grow exponentially, so their indices grow logarithmically.",
     "significance": "supporting"
@@ -162,7 +162,7 @@
       "startLine": 292,
       "endLine": 301
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Main Result",
     "content": "`erdos_37_disproved` (axiom): No lacunary set can be an essential component.\n`erdos_37_answer` (theorem): The answer to Erdos Problem #37 is NO.\n\nThe theorem follows directly from the axiom by contradiction.",
     "significance": "critical"

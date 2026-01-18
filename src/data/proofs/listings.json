@@ -2090,7 +2090,7 @@
     "erdosNumber": 1102,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 10
+    "annotationCount": 12
   },
   {
     "id": "erdos-1106",
@@ -4637,17 +4637,22 @@
   },
   {
     "id": "erdos-274",
-    "title": "Erdős Problem #274",
+    "title": "Erdős Problem #274: Exact Coverings by Cosets (Herzog-Schönheim)",
     "slug": "erdos-274",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a group then can there exist an exact covering of ... by more than one cosets of different sizes? (i.e. each elemen...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can a group be exactly covered by cosets with pairwise distinct indices? NO for abelian groups (Sun 2004). OPEN in general.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "group-theory",
+      "cosets",
+      "covering-systems",
+      "combinatorics"
     ],
     "erdosNumber": 274,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-275",
@@ -5298,17 +5303,23 @@
   },
   {
     "id": "erdos-326",
-    "title": "Erdős Problem #326",
+    "title": "Erdős Problem #326: Additive Bases and Non-Convergent Subsequences",
     "slug": "erdos-326",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis of order .... Must there exist ... which is also a basis such that\\[\\lim_{k\\to \\infty}{k^2}\\]doe...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A be an additive basis of order 2. Must there exist a subset B which is also a basis such that the growth ratio of B has no limit?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "bases",
+      "growth-rates"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 326,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-328",
@@ -5802,13 +5813,14 @@
       "additive-number-theory",
       "schnirelmann-density",
       "essential-component",
-      "lacunary-sets"
+      "lacunary-sets",
+      "aristotle"
     ],
     "dateAdded": "2026-01-17",
     "erdosNumber": 37,
     "mathlibCount": 5,
-    "sorries": 2,
-    "annotationCount": 2
+    "sorries": 1,
+    "annotationCount": 16
   },
   {
     "id": "erdos-370",
@@ -5822,11 +5834,12 @@
       "number-theory",
       "prime-factors",
       "smooth-numbers",
-      "solved"
+      "solved",
+      "aristotle"
     ],
     "erdosNumber": 370,
     "sorries": 2,
-    "annotationCount": 7
+    "annotationCount": 8
   },
   {
     "id": "erdos-371",
@@ -6139,17 +6152,23 @@
   },
   {
     "id": "erdos-398",
-    "title": "Erdős Problem #398",
+    "title": "Erdős Problem #398: The Brocard-Ramanujan Conjecture",
     "slug": "erdos-398",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre the only solutions to\\[n!=x^2-1\\]when ...?\n\n\n\nThe Brocard-Ramanujan conjecture. Erds and Graham describe this as an old c...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are the only solutions to n! + 1 = m² when n = 4, 5, 7? This classic conjecture, dating to Brocard (1876) and Ramanujan, remains open despite computational verification to 10^9.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "factorial",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 398,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-399",

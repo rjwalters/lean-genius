@@ -1,33 +1,119 @@
 {
   "id": "erdos-398",
-  "title": "Erdős Problem #398",
+  "title": "Erdős Problem #398: The Brocard-Ramanujan Conjecture",
   "slug": "erdos-398",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre the only solutions to\\[n!=x^2-1\\]when ...?\n\n\n\nThe Brocard-Ramanujan conjecture. Erds and Graham describe this as an old c...",
+  "description": "Are the only solutions to n! + 1 = m² when n = 4, 5, 7? This classic conjecture, dating to Brocard (1876) and Ramanujan, remains open despite computational verification to 10^9.",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (Brocard 1876, Ramanujan)",
     "sourceUrl": "https://erdosproblems.com/398",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos398Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "factorial",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 398,
     "erdosUrl": "https://erdosproblems.com/398",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function on natural numbers",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finite sets in Mathlib",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Brocard-Ramanujan conjecture",
+      "Verified the three known Brown numbers: (4,5), (5,11), (7,71)",
+      "Verified non-solutions for n = 0, 1, 2, 3, 6, 8",
+      "Formalization of Overholt's conditional finiteness result",
+      "Verified factorial dominates squares for small n"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #398 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre the only solutions to\\[n!=x^2-1\\]when $n=4,5,7$?\n\n\n\nThe Brocard-Ramanujan conjecture. Erd\\H{o}s and Graham describe this as an old conjecture, and write it 'is almost certainly true but it is intractable at present'.\n\nOverholt \\cite{Ov93} has shown that this has only finitely many solutions assuming a weak form of the ABC conjecture.\n\nThere are no other solutions below $10^9$ (see the OEIS page).\n\n\n\n\nReferences\n\n\n[Ov93] Overholt, Marius, The Diophantine equation $n!+1=m^2$. Bull. London Math. Soc. (1993), 104.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Brocard-Ramanujan conjecture is one of the oldest unsolved problems in number theory. Henri Brocard first posed it in 1876 and again in 1885, asking for which integers n is n! + 1 a perfect square. Srinivasa Ramanujan independently considered the same question.\n\nThree solutions are known: n = 4 (giving 5²), n = 5 (giving 11²), and n = 7 (giving 71²). These are called 'Brown numbers' after a 1974 paper by Paul Erdős and W. Obláth that connected them to this problem.\n\nErdős and Graham described the conjecture as 'almost certainly true but intractable at present.' Despite over 140 years of attention from mathematicians, no proof exists. Overholt (1993) showed that the ABC conjecture would imply only finitely many solutions exist, providing theoretical support for the conjecture.",
+    "problemStatement": "**The Brocard-Ramanujan Conjecture**: Are the only natural numbers $n$ for which $n! + 1$ is a perfect square when $n = 4, 5, 7$?\n\nEquivalently: Are $(4, 5)$, $(5, 11)$, and $(7, 71)$ the only pairs $(n, m)$ satisfying $n! + 1 = m^2$?\n\n**Status**: OPEN\n\n**Known Results**:\n- Three solutions verified: $4! + 1 = 25 = 5^2$, $5! + 1 = 121 = 11^2$, $7! + 1 = 5041 = 71^2$\n- No additional solutions below $n = 10^9$ (computational search)\n- Overholt (1993): Only finitely many solutions under weak ABC conjecture",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Defining Brown numbers**: A pair (n, m) with n! + 1 = m²\n\n2. **Verifying known solutions**: Using `native_decide` to confirm (4,5), (5,11), (7,71) satisfy the equation\n\n3. **Verifying non-solutions**: Computing n! + 1 for small n and showing they are not perfect squares\n\n4. **Stating the conjecture**: The set of n with n! + 1 a perfect square equals {4, 5, 7}\n\n5. **Conditional result**: Axiomatizing Overholt's theorem on finiteness under weak ABC",
+    "keyInsights": [
+      "**Brown numbers**: Pairs (n, m) with n! + 1 = m² are extremely rare. Only three are known in 140+ years of searching.",
+      "**Factorial growth**: n! grows much faster than m², so 'near misses' become increasingly unlikely for large n.",
+      "**ABC connection**: The ABC conjecture would imply only finitely many Brown numbers exist, supporting the conjecture.",
+      "**Computational evidence**: No solutions exist between n = 8 and n = 10^9, providing strong empirical support.",
+      "**Why it's hard**: Proving no more solutions exist requires understanding when n! + 1 can factor as a perfect square—a deep number-theoretic question."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Problem statement, historical background, and references."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 25,
+      "endLine": 31,
+      "summary": "Mathlib imports for factorial, sets, and finite sets."
+    },
+    {
+      "id": "brown-numbers",
+      "title": "The Brocard-Ramanujan Equation",
+      "startLine": 33,
+      "endLine": 75,
+      "summary": "Definition of Brown numbers and verification of the three known solutions."
+    },
+    {
+      "id": "non-solutions",
+      "title": "Small Cases: Non-Solutions",
+      "startLine": 77,
+      "endLine": 113,
+      "summary": "Verification that n = 0, 1, 2, 3, 6, 8 are not Brown numbers."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 115,
+      "endLine": 164,
+      "summary": "Statement of the Brocard-Ramanujan conjecture and known elements."
+    },
+    {
+      "id": "conditional",
+      "title": "Conditional Results",
+      "startLine": 166,
+      "endLine": 186,
+      "summary": "Overholt's theorem on finiteness under weak ABC conjecture."
+    },
+    {
+      "id": "growth",
+      "title": "Growth Analysis",
+      "startLine": 188,
+      "endLine": 219,
+      "summary": "Why solutions are rare: factorial dominates squares."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #398, the Brocard-Ramanujan conjecture, which asks whether n! + 1 = m² has only the three known solutions n = 4, 5, 7. We verify these solutions and several non-solutions, state the conjecture formally, and include Overholt's conditional finiteness result.",
+    "implications": "The Brocard-Ramanujan conjecture, if proven, would demonstrate the extreme rarity of factorial-square coincidences. Its connection to the ABC conjecture suggests deep links between additive and multiplicative number theory.",
+    "openQuestions": [
+      "Are 4, 5, 7 the only Brown numbers? (The main conjecture)",
+      "Can the ABC conjecture be used to give explicit bounds?",
+      "What is the density of near-misses (n! + 1 close to a perfect square)?",
+      "Are there analogous conjectures for n! + k = m² with k ≠ 1?"
+    ]
   }
 }

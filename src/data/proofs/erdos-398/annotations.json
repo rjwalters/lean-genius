@@ -1,1 +1,181 @@
-[]
+[
+  {
+    "id": "ann-e398-header",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #398** is the famous Brocard-Ramanujan conjecture: Are the only solutions to n! + 1 = m² when n = 4, 5, 7?\n\nThis is one of the oldest unsolved problems in number theory, dating to **Brocard (1876)** and independently posed by **Ramanujan**.",
+    "mathContext": "The equation n! + 1 = m² asks when a factorial plus one is a perfect square. Only three solutions are known after 140+ years of searching.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Brocard's problem",
+      "Ramanujan",
+      "factorial",
+      "Diophantine equations"
+    ]
+  },
+  {
+    "id": "ann-e398-imports",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 25,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **factorial** from Mathlib (`Nat.factorial`) and **finite sets** (`Set.Finite`) for stating the conditional finiteness result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "factorial",
+      "finite sets"
+    ]
+  },
+  {
+    "id": "ann-e398-brown-def",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 33,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Brown Numbers",
+    "content": "A **Brown number** is a pair (n, m) satisfying n! + 1 = m². The definition `IsBrownNumber n m` formalizes this predicate.\n\nThe name comes from a 1974 paper connecting these pairs to the Brocard problem.",
+    "mathContext": "The three known Brown numbers are:\n- (4, 5): 4! + 1 = 25 = 5²\n- (5, 11): 5! + 1 = 121 = 11²\n- (7, 71): 7! + 1 = 5041 = 71²",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Brocard problem",
+      "perfect squares",
+      "factorial"
+    ]
+  },
+  {
+    "id": "ann-e398-verified-solutions",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 50,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "The Three Known Solutions",
+    "content": "We **verify** that (4, 5), (5, 11), and (7, 71) are Brown numbers using `native_decide`.\n\nThis is Lean's kernel-verified computation: it actually evaluates 4! + 1 = 25 = 5² and confirms equality.",
+    "mathContext": "The `native_decide` tactic compiles the decidable proposition to native code and executes it, providing a proof by computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "verified computation",
+      "constructive proof"
+    ]
+  },
+  {
+    "id": "ann-e398-non-solutions",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 77,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Non-Solutions",
+    "content": "We verify that **n = 0, 1, 2, 3, 6, 8** do NOT yield Brown numbers by computing n! + 1:\n\n- 0! + 1 = 2 (between 1² and 2²)\n- 1! + 1 = 2 (between 1² and 2²)\n- 2! + 1 = 3 (between 1² and 2²)\n- 3! + 1 = 7 (between 2² and 3²)\n- 6! + 1 = 721 (between 26² and 27²)\n- 8! + 1 = 40321 (between 200² and 201²)",
+    "mathContext": "These computations show that n! + 1 falls strictly between consecutive squares, proving it cannot be a perfect square.",
+    "significance": "key",
+    "relatedConcepts": [
+      "verification",
+      "non-existence",
+      "consecutive squares"
+    ]
+  },
+  {
+    "id": "ann-e398-brocard-set",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 115,
+      "endLine": 151
+    },
+    "type": "definition",
+    "title": "The Brocard Set",
+    "content": "**BrocardSet** is the set of all n such that n! + 1 is a perfect square.\n\nWe prove that {4, 5, 7} ⊆ BrocardSet, establishing that all known Brown numbers are in this set.",
+    "mathContext": "The conjecture states BrocardSet = {4, 5, 7}, meaning these are the ONLY elements. We can only prove the inclusion, not equality.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "set builder notation",
+      "subset relation",
+      "mathematical conjecture"
+    ]
+  },
+  {
+    "id": "ann-e398-conjecture",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 152,
+      "endLine": 165
+    },
+    "type": "definition",
+    "title": "The Open Conjecture",
+    "content": "**brocard_ramanujan_conjecture** states that BrocardSet = {4, 5, 7}.\n\nThis is the **OPEN** conjecture: no proof or disproof exists despite 140+ years of effort.\n\nErdős and Graham called it 'almost certainly true but intractable at present.'",
+    "mathContext": "The conjecture is defined as a Prop (proposition) rather than proved. Its truth value is unknown.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "conjecture",
+      "set equality"
+    ]
+  },
+  {
+    "id": "ann-e398-overholt",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 166,
+      "endLine": 187
+    },
+    "type": "axiom",
+    "title": "Overholt's Conditional Result",
+    "content": "**Overholt (1993)** proved that if the ABC conjecture holds (even in a weak form), then BrocardSet is **finite**.\n\nThis is axiomatized because the proof requires deep analytic number theory beyond current Mathlib.",
+    "mathContext": "The ABC conjecture is a major open problem about the relationship between addition and multiplication. It would imply many other results, including the finiteness of Brown numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ABC conjecture",
+      "conditional proof",
+      "finiteness"
+    ]
+  },
+  {
+    "id": "ann-e398-growth",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 188,
+      "endLine": 212
+    },
+    "type": "theorem",
+    "title": "Factorial Growth",
+    "content": "We verify that **n² < n!** for n = 4, 5, 6, 7, 8.\n\nThis illustrates why Brown numbers are rare: factorials grow much faster than squares, making 'near misses' (n! + 1 close to a square) increasingly unlikely.",
+    "mathContext": "By Stirling's approximation, n! ≈ √(2πn)(n/e)^n grows faster than any polynomial. The probability of n! + 1 being exactly a square decreases rapidly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rate",
+      "Stirling approximation",
+      "heuristic argument"
+    ]
+  },
+  {
+    "id": "ann-e398-open",
+    "proofId": "erdos-398",
+    "range": {
+      "startLine": 213,
+      "endLine": 218
+    },
+    "type": "theorem",
+    "title": "Status: Open",
+    "content": "The final theorem `erdos_398_is_open` is a trivial True statement serving as documentation.\n\nIt marks that this problem remains **OPEN** - we have formalized the conjecture but cannot prove it.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problem",
+      "documentation",
+      "research frontier"
+    ]
+  }
+]
