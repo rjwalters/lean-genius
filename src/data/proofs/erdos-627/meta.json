@@ -1,33 +1,149 @@
 {
   "id": "erdos-627",
-  "title": "Erdős Problem #627",
+  "title": "Erdős Problem #627: Chromatic Number and Clique Number Ratio",
   "slug": "erdos-627",
-  "description": "Let &#x03C9;(G)\" role=\"presentation\" style=\"position: relative;\">ω(G)ω(G)\\omega(G) denote the clique number of G\" role=\"presentation\" style=\"position: relative;\">GGG and &#x03C7;(G)\" role=\"presenta...",
+  "description": "Let f(n) = max χ(G)/ω(G) over n-vertex graphs. Does lim_{n→∞} f(n)/(n/(log n)²) exist? Known: f(n) ≍ n/(log n)², and if limit exists it's in (log 2)²·[1/4,1] ≈ [0.12, 0.48].",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (asymptotics), Tutte-Zykov (constructions)",
     "sourceUrl": "https://erdosproblems.com/627",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos627Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "clique-number",
+      "perfect-graphs",
+      "asymptotics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "conjecture",
+    "sorries": 19,
     "erdosNumber": 627,
     "erdosUrl": "https://erdosproblems.com/627",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of χ/ω ratio for graphs",
+      "Definition of f(n) as maximum ratio over n-vertex graphs",
+      "Statement of Tutte-Zykov construction (ω=2, χ arbitrary)",
+      "Statement of Erdős's asymptotic bounds",
+      "Formalization of limit existence question",
+      "Connection to perfect graphs and Strong Perfect Graph Theorem",
+      "Mycielski and Kneser graph constructions",
+      "Ramsey theory connection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #627 from erdosproblems.com.",
-    "problemStatement": "Let &#x03C9;(G)\" role=\"presentation\" style=\"position: relative;\">ω(G)ω(G)\\omega(G) denote the clique number of G\" role=\"presentation\" style=\"position: relative;\">GGG and &#x03C7;(G)\" role=\"presentation\" style=\"position: relative;\">χ(G)χ(G)\\chi(G) the chromatic number. If f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) is the maximum value of &#x03C7;(G)/&#x03C9;(G)\" role=\"presentation\" style=\"position: relative;\">χ(G)/ω(G)χ(G)/ω(G)\\chi(G)/\\omega(G), as G\" role=\"presentation\" style=\"position: relative;\">GGG ranges over all graphs on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices, then doeslimn&#x2192;&#x221E;f(n)n/(log&#x2061;n)2\" role=\"presentation\" style=\"text-align: center; position: relative;\">limn→∞f(n)n/(logn)2limn→∞f(n)n/(log⁡n)2",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores how far chromatic number can exceed clique number. While ω(G) ≤ χ(G) always, the gap can be arbitrarily large.\n\n**Historical Development:**\n- Tutte and Zykov independently showed ω=2 graphs can have arbitrarily large χ\n- Erdős established f(n) ≍ n/(log n)²\n- The Mycielski construction (1955) gives explicit examples\n- Lovász's proof of Kneser graph chromatic number (1978) provides another construction\n- Strong Perfect Graph Theorem (2006) characterizes χ = ω graphs\n\n**Key insight:** Triangle-free graphs can require arbitrarily many colors!",
+    "problemStatement": "**Setup:** Let f(n) = max χ(G)/ω(G) over all graphs G on n vertices.\n\n**Question:** Does lim_{n→∞} f(n) / (n/(log n)²) exist?\n\n**Status:** OPEN\n- f(n) ≍ n/(log n)² is known (Erdős)\n- If the limit exists, it lies in (log 2)² · [1/4, 1] ≈ [0.12, 0.48]\n- The ratio is bounded but may oscillate",
+    "proofStrategy": "The formalization:\n\n1. Defines clique number ω(G) and chromatic number χ(G)\n2. Defines the ratio χ/ω and proves it's ≥ 1\n3. Defines f(n) as the supremum of ratios\n4. States Tutte-Zykov construction showing f(n) → ∞\n5. States Erdős's asymptotic bounds\n6. Formalizes limit existence and potential bounds\n7. Connects to perfect graphs (χ = ω always)\n8. References Mycielski and Kneser constructions",
+    "keyInsights": [
+      "**χ ≥ ω always:** A k-clique needs k colors, providing a lower bound on χ.",
+      "**Gap can be huge:** Tutte-Zykov shows χ/ω can be arbitrarily large even with ω = 2.",
+      "**f(n) = Θ(n/(log n)²):** The maximum ratio grows roughly like n/(log n)².",
+      "**Perfect graphs:** For perfect graphs, χ = ω exactly (no gap).",
+      "**Limit bounds:** If the limit exists, it's roughly between 0.12 and 0.48."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-parameters",
+      "title": "Basic Graph Parameters",
+      "summary": "Clique number, chromatic number, colorability",
+      "startLine": 30,
+      "endLine": 46
+    },
+    {
+      "id": "ratio",
+      "title": "The Ratio χ/ω",
+      "summary": "Definition and basic properties",
+      "startLine": 48,
+      "endLine": 62
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(n)",
+      "summary": "Maximum ratio over n-vertex graphs",
+      "startLine": 64,
+      "endLine": 76
+    },
+    {
+      "id": "tutte-zykov",
+      "title": "Tutte-Zykov Construction",
+      "summary": "Triangle-free graphs with large χ",
+      "startLine": 78,
+      "endLine": 98
+    },
+    {
+      "id": "erdos-asymptotics",
+      "title": "Erdős's Asymptotic Bounds",
+      "summary": "f(n) ≍ n/(log n)²",
+      "startLine": 100,
+      "endLine": 128
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Does the limit of f(n)/(n/(log n)²) exist?",
+      "startLine": 130,
+      "endLine": 148
+    },
+    {
+      "id": "perfect-graphs",
+      "title": "Perfect Graphs",
+      "summary": "Graphs with χ = ω",
+      "startLine": 150,
+      "endLine": 168
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Theory Connection",
+      "summary": "Ramsey numbers and f(n)",
+      "startLine": 170,
+      "endLine": 183
+    },
+    {
+      "id": "constructions",
+      "title": "Explicit Constructions",
+      "summary": "Mycielski and Kneser graphs",
+      "startLine": 185,
+      "endLine": 204
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Status",
+      "summary": "Complete status summary",
+      "startLine": 224,
+      "endLine": 252
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #627 is OPEN. We know f(n) = Θ(n/(log n)²), where f(n) is the maximum χ/ω ratio over n-vertex graphs, but whether the normalized limit exists is unknown. If the limit exists, it lies in (log 2)² · [1/4, 1] ≈ [0.12, 0.48].",
+    "implications": "This problem connects to:\n\n1. **Perfect Graph Theory:** The Strong Perfect Graph Theorem characterizes χ = ω\n2. **Extremal Graph Theory:** Understanding gaps between graph parameters\n3. **Ramsey Theory:** Ramsey numbers provide bounds on f(n)\n4. **Graph Constructions:** Mycielski, Kneser graphs achieve high χ/ω\n5. **Probabilistic Method:** Random graphs contribute to bounds",
+    "openQuestions": [
+      "Does lim_{n→∞} f(n)/(n/(log n)²) exist?",
+      "If the limit exists, what is its exact value?",
+      "Can the bounds (log 2)²·[1/4, 1] be narrowed?",
+      "What is the structure of extremal graphs achieving f(n)?",
+      "How does the answer change if we restrict to specific graph classes?"
+    ]
   }
 }

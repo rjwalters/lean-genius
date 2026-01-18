@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-627-header",
+    "proofId": "erdos-627",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős #627:** Chromatic number vs clique number ratio.\n\n**Definition:** f(n) = max χ(G)/ω(G) over all n-vertex graphs.\n\n**Question:** Does lim_{n→∞} f(n)/(n/(log n)²) exist?\n\n**Status:** OPEN\n\n**Known:**\n- f(n) ≍ n/(log n)² (Erdős)\n- If limit exists, it's in (log 2)²·[1/4, 1] ≈ [0.12, 0.48]",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-clique",
+    "proofId": "erdos-627",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Clique Number",
+    "content": "The **clique number** ω(G) is the size of the largest clique (complete subgraph) in G.\n\nω(G) = k means G contains K_k but not K_{k+1}.\n\nThis measures local density: how many mutually adjacent vertices exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-chromatic",
+    "proofId": "erdos-627",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The **chromatic number** χ(G) is the minimum number of colors needed to color vertices so no adjacent vertices share a color.\n\nχ(G) measures global coloring difficulty, which depends on the entire graph structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-ratio",
+    "proofId": "erdos-627",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "The Ratio χ/ω",
+    "content": "`chiOmegaRatio G = χ(G) / ω(G)`\n\nThis ratio measures how much harder coloring is than the clique lower bound suggests.\n\n- Ratio = 1: Graph is 'perfect' (cliques fully determine coloring)\n- Ratio > 1: Global structure requires more colors than local density implies",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-chi-ge-omega",
+    "proofId": "erdos-627",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "theorem",
+    "title": "χ ≥ ω Always",
+    "content": "**Fundamental bound:** χ(G) ≥ ω(G) for all graphs.\n\nA k-clique requires k distinct colors (all vertices adjacent), so χ ≥ ω.\n\nThis means the ratio χ/ω is always ≥ 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-627-f-function",
+    "proofId": "erdos-627",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "`f n` = maximum χ(G)/ω(G) over all graphs G with n vertices.\n\nThis captures the worst-case gap between clique number and chromatic number for n-vertex graphs.\n\nThe question is: how does f(n) grow with n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-tutte-zykov",
+    "proofId": "erdos-627",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "axiom",
+    "title": "Tutte-Zykov Construction",
+    "content": "**Tutte and Zykov (independently):**\n\nGraphs with ω = 2 (triangle-free) can have arbitrarily large χ!\n\nThis is surprising: triangle-free graphs seem 'sparse' but can still require many colors. The ratio χ/ω can be arbitrarily large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-triangle-free",
+    "proofId": "erdos-627",
+    "range": { "startLine": 89, "endLine": 98 },
+    "type": "theorem",
+    "title": "Triangle-Free Large χ",
+    "content": "For any k, there exist triangle-free graphs with chromatic number ≥ k.\n\nThis follows from Tutte-Zykov: ω = 2 means no triangles (K_3).\n\n**Intuition breaker:** Locally sparse (no triangles) doesn't mean globally easy to color!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-627-normalized",
+    "proofId": "erdos-627",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "definition",
+    "title": "Normalized Function",
+    "content": "`fNormalized n = f n / (n / (log n)²)`\n\nSince f(n) ≍ n/(log n)², this normalization should be bounded.\n\nThe main question: does fNormalized(n) converge as n → ∞?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-erdos-asymptotic",
+    "proofId": "erdos-627",
+    "range": { "startLine": 112, "endLine": 117 },
+    "type": "axiom",
+    "title": "Erdős's Asymptotic",
+    "content": "**Erdős proved:** f(n) ≍ n/(log n)²\n\nMeaning: c₁ · n/(log n)² ≤ f(n) ≤ c₂ · n/(log n)² for constants c₁, c₂ > 0.\n\nSo f(n) grows, but slower than linear. The (log n)² denominator makes growth sub-polynomial.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-limit",
+    "proofId": "erdos-627",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "definition",
+    "title": "Limit Existence",
+    "content": "`LimitExists` means lim_{n→∞} f(n)/(n/(log n)²) exists.\n\nWe know this ratio is bounded, but it might oscillate rather than converge.\n\nThis is the OPEN question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-limit-bounds",
+    "proofId": "erdos-627",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "axiom",
+    "title": "Limit Bounds",
+    "content": "**If the limit exists,** it lies in (log 2)² · [1/4, 1].\n\nNumerically: (log 2)² ≈ 0.48, so the limit (if it exists) is in [0.12, 0.48].\n\nThis 4× gap shows we don't know f(n) precisely even asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-627-perfect",
+    "proofId": "erdos-627",
+    "range": { "startLine": 152, "endLine": 154 },
+    "type": "definition",
+    "title": "Perfect Graphs",
+    "content": "A graph is **perfect** if χ(H) = ω(H) for all induced subgraphs H.\n\nFor perfect graphs, the χ/ω ratio is exactly 1 — no gap at all!\n\nExamples: bipartite graphs, chordal graphs, comparability graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-627-spgt",
+    "proofId": "erdos-627",
+    "range": { "startLine": 162, "endLine": 168 },
+    "type": "axiom",
+    "title": "Strong Perfect Graph Theorem",
+    "content": "**Chudnovsky, Robertson, Seymour, Thomas (2006):**\n\nG is perfect ⟺ G has no odd hole or odd antihole.\n\nAn odd hole is an induced odd cycle C_{2k+1} for k ≥ 2.\nAn odd antihole is the complement of an odd hole.\n\nThis landmark theorem completely characterizes perfect graphs!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-627-ramsey",
+    "proofId": "erdos-627",
+    "range": { "startLine": 172, "endLine": 178 },
+    "type": "theorem",
+    "title": "Ramsey Connection",
+    "content": "**Connection to Ramsey numbers:**\n\nf(R(k,k)) ≥ k, where R(k,k) is the diagonal Ramsey number.\n\nRamsey graphs (those achieving Ramsey bounds) have large χ/ω ratio because they avoid both large cliques and large independent sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-627-mycielski",
+    "proofId": "erdos-627",
+    "range": { "startLine": 187, "endLine": 195 },
+    "type": "definition",
+    "title": "Mycielski Construction",
+    "content": "**Mycielski (1955):** Explicit construction of triangle-free high-χ graphs.\n\nM_k has ω = 2 and χ = k. The construction recursively builds larger graphs.\n\nM_1 = K_2, and M_{k+1} extends M_k by adding 'shadow' vertices.\n\nThis gives concrete examples of large χ/ω ratio.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-627-kneser",
+    "proofId": "erdos-627",
+    "range": { "startLine": 197, "endLine": 204 },
+    "type": "definition",
+    "title": "Kneser Graphs",
+    "content": "**Kneser graph K(n,k):** Vertices are k-subsets of [n], edges connect disjoint subsets.\n\n**Lovász (1978):** χ(K(n,k)) = n - 2k + 2 (used topological methods!)\n\nKneser graphs provide another family achieving large χ/ω ratio.\n\nK(5,2) is the famous Petersen graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-627-main",
+    "proofId": "erdos-627",
+    "range": { "startLine": 226, "endLine": 245 },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "**Erdős Problem #627: OPEN**\n\n1. **f(n) ≍ n/(log n)²:** Erdős established the growth rate\n2. **Limit question:** Does f(n)/(n/(log n)²) converge? UNKNOWN\n3. **Limit bounds:** If exists, in (log 2)²·[1/4, 1] ≈ [0.12, 0.48]\n4. **Tutte-Zykov:** Triangle-free graphs can have arbitrarily large χ\n5. **Perfect graphs:** χ = ω always (ratio exactly 1)\n6. **Constructions:** Mycielski, Kneser achieve high ratio",
+    "significance": "critical"
+  }
+]
