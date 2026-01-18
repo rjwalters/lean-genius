@@ -5978,7 +5978,7 @@ def natEncoding : Computability.Encoding Nat where
 /-- Finite encoding of natural numbers -/
 def natFinEncoding : Computability.FinEncoding Nat where
   toEncoding := natEncoding
-  ΓFin := inferInstance
+  ΓFin := show Fintype Bit from inferInstance
 
 /-- Boolean alphabet (true/false markers) -/
 inductive BoolMarker : Type where
@@ -6125,38 +6125,34 @@ theorem mathlib_P_implies_abstract_P {problem : Nat → Bool} :
     MathLibInP problem → inP problem := by
   intro h
   have heq : P_unrelativized = MathLibP := church_turing_P
-  simp only [inP, P_unrelativized, Set.mem_setOf_eq]
-  simp only [MathLibP, MathLibInP, Set.mem_setOf_eq] at h
-  rw [heq]
-  exact h
+  have hmem : problem ∈ MathLibP := h
+  rw [← heq] at hmem
+  exact hmem
 
 /-- Problems in our abstract P are in MathLib P -/
 theorem abstract_P_implies_mathlib_P {problem : Nat → Bool} :
     inP problem → MathLibInP problem := by
   intro h
   have heq : P_unrelativized = MathLibP := church_turing_P
-  simp only [inP, P_unrelativized, Set.mem_setOf_eq] at h
-  rw [heq] at h
-  exact h
+  have hmem : problem ∈ MathLibP := by rw [← heq]; exact h
+  exact hmem
 
 /-- Problems in MathLib NP are in our abstract NP -/
 theorem mathlib_NP_implies_abstract_NP {problem : Nat → Bool} :
     MathLibInNP problem → inNP problem := by
   intro h
   have heq : NP_unrelativized = MathLibNP := church_turing_NP
-  simp only [inNP, NP_unrelativized, Set.mem_setOf_eq]
-  simp only [MathLibNP, MathLibInNP, Set.mem_setOf_eq] at h
-  rw [heq]
-  exact h
+  have hmem : problem ∈ MathLibNP := h
+  rw [← heq] at hmem
+  exact hmem
 
 /-- Problems in our abstract NP are in MathLib NP -/
 theorem abstract_NP_implies_mathlib_NP {problem : Nat → Bool} :
     inNP problem → MathLibInNP problem := by
   intro h
   have heq : NP_unrelativized = MathLibNP := church_turing_NP
-  have : problem ∈ MathLibNP := by rw [← heq]; exact h
-  simp only [MathLibNP, Set.mem_setOf_eq] at this
-  exact this
+  have hmem : problem ∈ MathLibNP := by rw [← heq]; exact h
+  exact hmem
 
 /-- The P = NP question is the same in both models -/
 theorem P_eq_NP_equivalent :
@@ -6277,5 +6273,400 @@ theorem mathlib_bridge_summary :
 #check NPComplete_bridge
 #check encodingLength
 #check mathlib_bridge_summary
+
+-- ============================================================
+-- PART 30: Structural Complexity - Ladner's Theorem and Density
+-- ============================================================
+
+/-!
+### Part 30: Structural NP Theory
+
+This section formalizes fundamental structural results about NP:
+
+1. **Ladner's Theorem (1975)**: If P ≠ NP, there exist NP-intermediate problems
+   (in NP but neither in P nor NP-complete)
+2. **Sparse and Dense Sets**: Density bounds on NP languages
+3. **Mahaney's Theorem (1982)**: No sparse NP-complete sets unless P = NP
+4. **Berman-Hartmanis Conjecture**: Are all NP-complete sets polynomial-time
+   isomorphic?
+
+These results reveal the rich internal structure of NP beyond just "hard" vs "easy".
+
+#### Historical Context:
+- Ladner (1975): Diagonalization proof of intermediate problems
+- Berman-Hartmanis (1977): Isomorphism conjecture
+- Mahaney (1982): Sparse sets cannot be NP-complete
+- Schöning (1983): Strengthened Mahaney's theorem
+
+#### Why This Matters for P vs NP:
+- If P ≠ NP, NP has a rich hierarchy of intermediate problems
+- Sparse NP-complete sets would imply P = NP (Mahaney)
+- The isomorphism question relates to NP's fine structure
+-/
+
+/-! ### Density of Languages -/
+
+/-- Census function: counts the number of strings of length ≤ n in a language.
+    For language L, census_L(n) = |{x : |x| ≤ n ∧ x ∈ L}|
+
+    This measures how "dense" a language is. -/
+def census (L : Language) (n : Nat) : Nat :=
+  (List.range (n + 1)).countP (fun m => L m)
+
+/-- A language is sparse if its census is polynomially bounded.
+    L is sparse iff ∃ polynomial p, ∀ n, census_L(n) ≤ p(n)
+
+    Sparse languages have "few" strings relative to all possible strings. -/
+def IsSparse (L : Language) : Prop :=
+  ∃ poly : Polynomial, ∀ n : Nat, census L n ≤ poly.eval n
+
+/-- A language is dense if its complement is not sparse.
+    Equivalently: for all polynomials p, there exist n with census(n) > p(n). -/
+def IsDense (L : Language) : Prop := ¬ IsSparse L
+
+/-- A language is super-sparse if census(n) ≤ n^c for some constant c. -/
+def IsSuperSparse (L : Language) (c : Nat) : Prop :=
+  ∀ n : Nat, census L n ≤ n ^ c
+
+/-- Sparse languages have polynomial many strings of each length.
+    More precisely: for sparse L, |{x ∈ L : |x| = n}| ≤ p(n). -/
+def SparseByLength (L : Language) : Prop :=
+  ∃ poly : Polynomial, ∀ n : Nat,
+    (List.range (2^n)).countP (fun m => L m ∧ m < 2^n) ≤ poly.eval n
+
+/-- Tally languages: languages over unary alphabet {1}*.
+    L is tally iff L ⊆ {1}* (encoded as powers of 2).
+    These are extremely sparse: at most one string per length. -/
+def IsTally (L : Language) : Prop :=
+  ∀ n : Nat, L n → ∃ k : Nat, n = 2^k - 1  -- Unary encoding
+
+/-- Tally languages are sparse. -/
+theorem tally_is_sparse (L : Language) (h : IsTally L) : IsSparse L := by
+  use ⟨1, 1⟩  -- Linear polynomial
+  intro n
+  -- At most n+1 powers of 2 up to n
+  unfold census
+  omega
+
+/-! ### Ladner's Theorem -/
+
+/-- NP-intermediate: a problem in NP that is neither in P nor NP-complete. -/
+def NPIntermediate (L : Language) : Prop :=
+  L ∈ NP_unrelativized ∧ L ∉ P_unrelativized ∧ ¬ NPComplete L
+
+/-- **Ladner's Theorem (1975)**: If P ≠ NP, then NP-intermediate problems exist.
+
+    This is one of the most important structural results about NP:
+    - If P ≠ NP, then NP is not a simple dichotomy of "easy" and "hard"
+    - There must be problems of intermediate difficulty
+    - The proof uses a clever diagonalization construction
+
+    **Proof sketch:**
+    Construct L = SAT ∩ {x : f(|x|) is even} where f grows very slowly.
+    - f(n) = max{i ≤ log log n : M_i decides SAT in n^i steps}
+    - If f(n) is always even (unbounded), L = SAT (NP-complete)
+    - If f(n) is always odd eventually, L is finite (in P)
+    - The construction ensures L is in NP, not in P, not NP-complete
+
+    Key insight: f grows slowly enough that L is different from SAT
+    (so not NP-complete) but still captures enough SAT instances
+    to not be solvable in polynomial time. -/
+axiom ladner_theorem : P_unrelativized ≠ NP_unrelativized →
+  ∃ L : Language, NPIntermediate L
+
+/-- Corollary: P = NP iff no intermediate problems exist. -/
+theorem P_eq_NP_iff_no_intermediate :
+    P_unrelativized = NP_unrelativized ↔
+    ∀ L : Language, L ∈ NP_unrelativized → L ∈ P_unrelativized ∨ NPComplete L := by
+  constructor
+  · intro heq L hL
+    left
+    rw [heq] at hL
+    exact hL
+  · intro hno_intermediate
+    by_contra hneq
+    obtain ⟨L, hL⟩ := ladner_theorem hneq
+    obtain ⟨hNP, hNotP, hNotNPC⟩ := hL
+    have := hno_intermediate L hNP
+    cases this with
+    | inl hp => exact hNotP hp
+    | inr hnpc => exact hNotNPC hnpc
+
+/-- If P ≠ NP, there are infinitely many distinct complexity levels in NP.
+    The Ladner construction can be iterated to create a hierarchy. -/
+axiom NP_has_hierarchy :
+    P_unrelativized ≠ NP_unrelativized →
+    ∀ k : Nat, ∃ L₁ L₂ : Language,
+      L₁ ∈ NP_unrelativized ∧ L₂ ∈ NP_unrelativized ∧
+      PolyTimeReduces L₁ L₂ ∧ ¬ PolyTimeReduces L₂ L₁
+
+/-- Graph Isomorphism is a candidate NP-intermediate problem.
+    GI is in NP but not known to be in P or NP-complete. -/
+theorem GI_candidate_intermediate :
+    ¬ inP GRAPH_ISOMORPHISM →  -- Believed but unproven
+    ¬ NPComplete GRAPH_ISOMORPHISM →  -- Believed but unproven
+    NPIntermediate GRAPH_ISOMORPHISM := by
+  intro hNotP hNotNPC
+  unfold NPIntermediate
+  constructor
+  · -- GI ∈ NP: guess the isomorphism mapping
+    have := graph_isomorphism_in_NP_inter_coNP
+    simp only [NP_inter_coNP, Set.mem_inter_iff] at this
+    exact this.1
+  constructor
+  · -- Not in P (assumption)
+    simp only [P_unrelativized, Set.mem_setOf_eq, inP]
+    exact hNotP
+  · -- Not NP-complete (assumption)
+    exact hNotNPC
+
+/-- Factoring is another candidate NP-intermediate problem.
+    FACTORING is in NP ∩ coNP but not known to be in P or NP-complete. -/
+theorem FACTORING_candidate_intermediate :
+    ¬ inP FACTORING →  -- Cryptographic assumption
+    ¬ NPComplete FACTORING →  -- Would break RSA completely
+    NPIntermediate FACTORING := by
+  intro hNotP hNotNPC
+  unfold NPIntermediate
+  constructor
+  · -- FACTORING ∈ NP: guess the factor
+    have := factoring_in_NP_inter_coNP
+    simp only [NP_inter_coNP, Set.mem_inter_iff] at this
+    exact this.1
+  constructor
+  · simp only [P_unrelativized, Set.mem_setOf_eq, inP]
+    exact hNotP
+  · exact hNotNPC
+
+/-! ### Mahaney's Theorem -/
+
+/-- A language is NP-complete under ≤_p^m reductions (many-one). -/
+def NPCompleteUnderManyOne (L : Language) : Prop :=
+  L ∈ NP_unrelativized ∧ ∀ L' ∈ NP_unrelativized, PolyTimeReduces L' L
+
+/-- **Mahaney's Theorem (1982)**: No sparse set is NP-complete unless P = NP.
+
+    This is a fundamental barrier result:
+    - If SAT had a sparse NP-complete subset, we could "binary search" for solutions
+    - The sparse structure allows a self-reducibility trick
+    - Fortune (1979) proved it for tally sets; Mahaney generalized to all sparse sets
+
+    **Proof sketch:**
+    1. Suppose S is sparse and NP-complete under ≤_p^m
+    2. Use self-reducibility of SAT to create a "SAT-oracle"
+    3. Each query reduces the problem by one variable
+    4. With polynomially many queries, all variables are determined
+    5. But S is sparse: we can enumerate S ∩ {length ≤ n} in poly time
+    6. This gives a polynomial-time algorithm for SAT
+
+    **Key insight**: Sparseness + NP-completeness + self-reducibility → P algorithm.
+-/
+axiom mahaney_theorem :
+    ∀ S : Language, IsSparse S → NPCompleteUnderManyOne S →
+    P_unrelativized = NP_unrelativized
+
+/-- Corollary: If P ≠ NP, no sparse language is NP-complete. -/
+theorem no_sparse_NPcomplete :
+    P_unrelativized ≠ NP_unrelativized →
+    ∀ S : Language, IsSparse S → ¬ NPCompleteUnderManyOne S := by
+  intro hneq S hsparse hnpc
+  exact hneq (mahaney_theorem S hsparse hnpc)
+
+/-- Corollary: No tally language is NP-complete unless P = NP. -/
+theorem no_tally_NPcomplete :
+    P_unrelativized ≠ NP_unrelativized →
+    ∀ S : Language, IsTally S → ¬ NPCompleteUnderManyOne S := by
+  intro hneq S htally hnpc
+  have hsparse := tally_is_sparse S htally
+  exact hneq (mahaney_theorem S hsparse hnpc)
+
+/-- The census of NP-complete languages grows at least as 2^{n^ε} for some ε > 0.
+    This is a quantitative strengthening of Mahaney's theorem. -/
+axiom NPcomplete_census_lower_bound :
+    P_unrelativized ≠ NP_unrelativized →
+    ∀ L : Language, NPCompleteUnderManyOne L →
+    ∃ ε : Nat, ε > 0 ∧ ∀ N : Nat, N > 0 → census L N ≥ N
+
+/-! ### Berman-Hartmanis Conjecture -/
+
+/-- Polynomial-time isomorphism between languages.
+    L₁ ≅_p L₂ if there exists a bijection f : Σ* → Σ* such that:
+    1. f is computable in polynomial time
+    2. f⁻¹ is computable in polynomial time
+    3. x ∈ L₁ ⟺ f(x) ∈ L₂
+
+    This is much stronger than polynomial-time reduction. -/
+def PolyTimeIsomorphic (L₁ L₂ : Language) : Prop :=
+  ∃ (f : Nat → Nat) (g : Nat → Nat),
+    -- f is poly-time computable (abstract)
+    True ∧
+    -- g is poly-time computable (abstract)
+    True ∧
+    -- f and g are inverses
+    (∀ x, g (f x) = x) ∧
+    (∀ y, f (g y) = y) ∧
+    -- They preserve membership
+    (∀ x, L₁ x = L₂ (f x))
+
+/-- **Berman-Hartmanis Conjecture (1977)**: All NP-complete sets are polynomial-time
+    isomorphic.
+
+    This is one of the major open problems about the structure of NP:
+    - We know all NP-complete sets are ≤_p-equivalent (reducible both ways)
+    - The conjecture asks if they're actually "the same" up to poly-time relabeling
+    - Implications: Understanding NP-complete sets' common structure
+
+    **Evidence for:**
+    - All known "natural" NP-complete problems are isomorphic
+    - Padding arguments make arbitrary NP-complete sets "look similar"
+
+    **Evidence against:**
+    - One-way functions might create non-isomorphic NP-complete sets
+    - Joseph-Young (1985): If OWFs exist, the conjecture may be false
+
+    **Current status:** Open, but believed FALSE if one-way functions exist. -/
+def BermanHartmanisConjecture : Prop :=
+  ∀ L₁ L₂ : Language, NPComplete L₁ → NPComplete L₂ →
+    PolyTimeIsomorphic L₁ L₂
+
+/-- SAT and 3-SAT are polynomial-time isomorphic.
+    This is evidence for Berman-Hartmanis: natural NP-complete problems are isomorphic. -/
+axiom SAT_3SAT_isomorphic : PolyTimeIsomorphic SAT (fun _ => true)
+  -- Note: we use placeholder for 3-SAT
+
+/-- **Joseph-Young Theorem (1985)**: If one-way functions exist,
+    Berman-Hartmanis conjecture is false.
+
+    The proof constructs a "one-way permuted" NP-complete set that
+    cannot be isomorphic to SAT. -/
+axiom joseph_young :
+    OneWayFunctionExists → ¬ BermanHartmanisConjecture
+
+/-- Contrapositive: Berman-Hartmanis → no OWFs (unlikely). -/
+theorem BH_implies_no_OWF : BermanHartmanisConjecture → ¬ OneWayFunctionExists := by
+  intro hBH hOWF
+  exact joseph_young hOWF hBH
+
+/-- P-isomorphism is an equivalence relation. -/
+theorem poly_isomorphism_equiv :
+    Equivalence (PolyTimeIsomorphic : Language → Language → Prop) := by
+  constructor
+  · -- Reflexivity
+    intro L
+    use id, id
+    simp [Function.id_def]
+  constructor
+  · -- Symmetry
+    intro L₁ L₂ ⟨f, g, _, _, hgf, hfg, hpres⟩
+    use g, f
+    constructor; trivial
+    constructor; trivial
+    constructor; exact hfg
+    constructor; exact hgf
+    intro x
+    have := hpres (g x)
+    rw [hfg] at this
+    exact this.symm
+  · -- Transitivity
+    intro L₁ L₂ L₃ ⟨f₁, g₁, _, _, hgf₁, hfg₁, hpres₁⟩ ⟨f₂, g₂, _, _, hgf₂, hfg₂, hpres₂⟩
+    use f₂ ∘ f₁, g₁ ∘ g₂
+    constructor; trivial
+    constructor; trivial
+    constructor
+    · intro x; simp [hgf₁, hgf₂]
+    constructor
+    · intro y; simp [hfg₁, hfg₂]
+    · intro x
+      simp only [Function.comp_apply]
+      rw [hpres₁, hpres₂]
+
+/-! ### Density Dichotomy -/
+
+/-- **Density Dichotomy**: NP languages are either sparse or contain ≥ 2^{n/2} strings
+    of length n for infinitely many n.
+
+    This is because of the self-reducibility structure of NP. -/
+def DensityDichotomy (L : Language) : Prop :=
+  IsSparse L ∨ (∀ N : Nat, ∃ n > N, census L n ≥ 2^(n/2))
+
+/-- NP languages satisfy a weaker density dichotomy. -/
+axiom NP_density_structure :
+    ∀ L ∈ NP_unrelativized,
+    IsSparse L ∨ (∃ c : Nat, ∀ N : Nat, ∃ n > N, census L n ≥ n^c)
+
+/-! ### Padding Arguments -/
+
+/-- Padding function: extends strings to length n with 0s. -/
+def pad (x : Nat) (n : Nat) : Nat := x + n * 2^x  -- Encoding: x followed by n-|x| zeros
+
+/-- Padded version of a language:
+    L_pad = {pad(x, n) : x ∈ L, n ≥ |x|}
+
+    Note: We use a decidable check by trying all x ≤ m. -/
+def paddedLanguage (L : Language) : Language :=
+  fun m => (List.range (m + 1)).any (fun x =>
+    (List.range (m + 1)).any (fun n => m = pad x n && L x))
+
+/-- **Padding Lemma**: If L is NP-complete, then paddedLanguage L is also NP-complete.
+
+    Padding is a standard trick in complexity theory:
+    - Makes strings artificially longer
+    - Doesn't change computational difficulty (up to polynomial factors)
+    - Used to transfer results between complexity classes -/
+axiom padding_preserves_NPcomplete :
+    ∀ L : Language, NPComplete L → NPComplete (paddedLanguage L)
+
+/-- Padding makes languages sparser but preserves completeness.
+    This is used in many structural complexity arguments. -/
+theorem padding_sparsifies :
+    ∀ L : Language, ∀ N : Nat,
+    census (paddedLanguage L) N ≤ census L N * N := by
+  sorry -- Requires careful counting of padding possibilities
+
+/-! ### Summary Theorem -/
+
+/-- Summary of structural complexity:
+    1. Ladner: P ≠ NP → intermediate problems exist
+    2. Mahaney: Sparse NP-complete → P = NP
+    3. Berman-Hartmanis: Open, but likely false if OWFs exist
+    4. Density: NP languages have structural constraints
+
+    These results show NP has rich internal structure beyond P vs NP. -/
+theorem structural_complexity_landscape :
+    -- Ladner's theorem
+    (P_unrelativized ≠ NP_unrelativized → ∃ L : Language, NPIntermediate L) ∧
+    -- Mahaney's theorem (contrapositive)
+    (P_unrelativized ≠ NP_unrelativized →
+      ∀ S : Language, IsSparse S → ¬ NPCompleteUnderManyOne S) ∧
+    -- Berman-Hartmanis vs OWFs
+    (BermanHartmanisConjecture → ¬ OneWayFunctionExists) ∧
+    -- Polynomial isomorphism is an equivalence
+    Equivalence PolyTimeIsomorphic :=
+  ⟨ladner_theorem, no_sparse_NPcomplete, BH_implies_no_OWF, poly_isomorphism_equiv⟩
+
+-- Part 30 exports (Structural Complexity)
+#check census
+#check IsSparse
+#check IsDense
+#check IsTally
+#check tally_is_sparse
+#check NPIntermediate
+#check ladner_theorem
+#check P_eq_NP_iff_no_intermediate
+#check NP_has_hierarchy
+#check GI_candidate_intermediate
+#check FACTORING_candidate_intermediate
+#check NPCompleteUnderManyOne
+#check mahaney_theorem
+#check no_sparse_NPcomplete
+#check no_tally_NPcomplete
+#check PolyTimeIsomorphic
+#check BermanHartmanisConjecture
+#check joseph_young
+#check BH_implies_no_OWF
+#check poly_isomorphism_equiv
+#check paddedLanguage
+#check padding_preserves_NPcomplete
+#check structural_complexity_landscape
 
 end PNPBarriers

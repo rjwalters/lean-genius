@@ -7515,17 +7515,24 @@
   },
   {
     "id": "erdos-516",
-    "title": "Erdős Problem #516",
+    "title": "Erdős Problem #516: Gap Series and the Minimum Modulus Problem",
     "slug": "erdos-516",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function of finite order such that .... Let ... and .... Is it true that\\[\\limsup{\\log M(r)}=1?\\]\n\n\n\nA p...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For entire functions with Fabry gaps (nₖ/k → ∞), is lim sup (log m(r))/(log M(r)) = 1? YES - proved by Fuchs (1963).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "gap-series",
+      "fabry-gaps",
+      "minimum-modulus"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 516,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-517",

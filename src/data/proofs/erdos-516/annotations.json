@@ -1,1 +1,187 @@
-[]
+[
+  {
+    "id": "ann-e516-header",
+    "proofId": "erdos-516",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #516** concerns gap series and the minimum modulus problem for entire functions.\n\nFor f(z) = Σ aₖzⁿᵏ with Fabry gaps (nₖ/k → ∞), is lim sup (log m(r))/(log M(r)) = 1?\n\n**Answer**: YES - proved by Fuchs (1963).\n\nThe problem originated with Pólya (1929) and was progressively solved under weaker conditions.",
+    "mathContext": "M(r) = max_{|z|=r} |f(z)| is the maximum modulus, m(r) = min_{|z|=r} |f(z)| is the minimum modulus. The ratio of their logarithms measures how 'uniformly' the function grows on circles.",
+    "significance": "critical",
+    "relatedConcepts": ["gap-series", "entire-functions", "minimum-modulus"]
+  },
+  {
+    "id": "ann-e516-imports",
+    "proofId": "erdos-516",
+    "range": { "startLine": 22, "endLine": 32 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import:\n- **Complex.Basic**: Complex number foundations\n- **Calculus.FDeriv**: Differentiability for entire functions\n- **Pow.Real, Log.Basic**: Real powers and logarithms for the modulus ratio\n- **InfiniteSum**: For power series HasSum predicate",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "complex-analysis"]
+  },
+  {
+    "id": "ann-e516-fabry",
+    "proofId": "erdos-516",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Fabry Gap Condition",
+    "content": "**HasFabryGaps(n)**: The sequence (nₖ) satisfies nₖ/k → ∞.\n\n```lean\ndef HasFabryGaps (n : ℕ → ℕ) : Prop :=\n  Tendsto (fun k => (n k : ℝ) / k) atTop atTop\n```\n\nThis means gaps between nonzero terms grow faster than linear - the series is 'superlinearly sparse'.",
+    "mathContext": "Named after Eugène Fabry who studied the boundary behavior of such series. If nₖ/k → ∞, then the series has a natural boundary on its circle of convergence (Fabry's theorem).",
+    "significance": "critical",
+    "relatedConcepts": ["tendsto", "atTop", "sparse-series"]
+  },
+  {
+    "id": "ann-e516-fejer",
+    "proofId": "erdos-516",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "Fejér Gap Condition",
+    "content": "**HasFejerGaps(n)**: The series Σ 1/nₖ converges.\n\n```lean\ndef HasFejerGaps (n : ℕ → ℕ) : Prop :=\n  Summable (fun k => (1 : ℝ) / n k)\n```\n\nThis is weaker than Fabry gaps. It remains open whether this suffices for the minimum modulus result.",
+    "mathContext": "Named after Lipót Fejér. This condition appears in Macintyre's optimality result: if Σ 1/nₖ = ∞, counterexamples to the minimum modulus result exist.",
+    "significance": "key",
+    "relatedConcepts": ["summable", "comparison-test"]
+  },
+  {
+    "id": "ann-e516-fabry-implies-fejer",
+    "proofId": "erdos-516",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "theorem",
+    "title": "Fabry Implies Fejér",
+    "content": "**Theorem**: Fabry gaps imply Fejér gaps.\n\nIf nₖ/k → ∞, then eventually nₖ > k², so Σ 1/nₖ < Σ 1/k² < ∞.\n\nThis shows Fabry is a strictly stronger condition.",
+    "mathContext": "The proof uses the comparison test: superlinear growth of nₖ gives superlinear decay of 1/nₖ, which is summable.",
+    "significance": "supporting",
+    "relatedConcepts": ["comparison-test", "p-series"]
+  },
+  {
+    "id": "ann-e516-finite-order",
+    "proofId": "erdos-516",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "definition",
+    "title": "Finite Order Entire Functions",
+    "content": "**OfFiniteOrder(f)**: f is entire and has growth bound |f(z)| ≤ c·exp(|z|^a).\n\n```lean\ndef OfFiniteOrder (f : ℂ → ℂ) : Prop :=\n  Differentiable ℂ f ∧ ∃ c ≥ 0, ∃ a ≥ 0, ∀ z, ‖f z‖ ≤ c * rexp (‖z‖ ^ a)\n```\n\nThe order is the infimum of valid exponents a.",
+    "mathContext": "Order measures growth rate. Order 0 = polynomial, order 1 = exp(cz), order 2 = exp(z²). The exponential function has order 1.",
+    "significance": "critical",
+    "relatedConcepts": ["entire-function", "growth-rate", "order"]
+  },
+  {
+    "id": "ann-e516-order-def",
+    "proofId": "erdos-516",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "definition",
+    "title": "Order of an Entire Function",
+    "content": "**orderOf(f)** = inf{ a ≥ 0 : |f(z)| ≤ c·exp(|z|^a) for some c }.\n\nThis is the precise growth rate of the function. The main theorems assume finite order, meaning orderOf(f) < ∞.",
+    "significance": "supporting",
+    "relatedConcepts": ["infimum", "growth-bound"]
+  },
+  {
+    "id": "ann-e516-max-modulus",
+    "proofId": "erdos-516",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "Maximum Modulus",
+    "content": "**maxModulus(f, r)** = M(r) = sup_{|z|=r} |f(z)|.\n\n```lean\nnoncomputable def maxModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=\n  ⨆ z : {z : ℂ // ‖z‖ = r}, ‖f z‖\n```\n\nThe supremum of |f| on the circle of radius r.",
+    "mathContext": "For entire functions, M(r) is continuous, increasing, and log M(r) is convex (Hadamard three-circles theorem).",
+    "significance": "key",
+    "relatedConcepts": ["supremum", "circle", "maximum-principle"]
+  },
+  {
+    "id": "ann-e516-min-modulus",
+    "proofId": "erdos-516",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "definition",
+    "title": "Minimum Modulus",
+    "content": "**minModulus(f, r)** = m(r) = inf_{|z|=r} |f(z)|.\n\n```lean\nnoncomputable def minModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=\n  ⨅ z : {z : ℂ // ‖z‖ = r}, ‖f z‖\n```\n\nThe infimum of |f| on the circle - can be much smaller than M(r).",
+    "mathContext": "For most entire functions, m(r) can be extremely small (near zeros). Gap series are special: the sparse terms prevent deep minima.",
+    "significance": "key",
+    "relatedConcepts": ["infimum", "zeros", "argument-principle"]
+  },
+  {
+    "id": "ann-e516-ratio",
+    "proofId": "erdos-516",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "definition",
+    "title": "Modulus Ratio",
+    "content": "**modulusRatio(f, r)** = (log m(r))/(log M(r)).\n\nThis ratio measures how uniformly f grows on circles. For general entire functions it can be anywhere in [0, 1]. The main theorem says it approaches 1 for gap series.",
+    "mathContext": "Using logarithms is essential: Wiman's stronger result m(r)/M(r) → 1 only holds under stronger gap conditions.",
+    "significance": "critical",
+    "relatedConcepts": ["logarithm", "ratio", "asymptotic"]
+  },
+  {
+    "id": "ann-e516-fuchs",
+    "proofId": "erdos-516",
+    "range": { "startLine": 101, "endLine": 117 },
+    "type": "axiom",
+    "title": "Fuchs's Theorem (1963)",
+    "content": "**Fuchs's Theorem** (Erdős Problem #516 Solution):\n\nFor f(z) = Σ aₖzⁿᵏ with Fabry gaps and finite order:\n\n**lim sup (log m(r))/(log M(r)) = 1**\n\nMore precisely: for any ε > 0, log m(r) > (1-ε) log M(r) outside a set of logarithmic density 0.",
+    "mathContext": "Axiomatized because the proof requires Nevanlinna theory (value distribution), Phragmén-Lindelöf principles, and careful analysis of the exceptional set - all beyond current Mathlib.",
+    "significance": "critical",
+    "relatedConcepts": ["limsup", "logarithmic-density", "nevanlinna-theory"]
+  },
+  {
+    "id": "ann-e516-wiman",
+    "proofId": "erdos-516",
+    "range": { "startLine": 125, "endLine": 135 },
+    "type": "axiom",
+    "title": "Wiman's Theorem (1914)",
+    "content": "**Wiman's Theorem**: Under the stronger condition (nₖ₊₁ - nₖ)² > nₖ:\n\n**lim sup m(r)/M(r) = 1** (without logarithms!)\n\nThis is a much stronger conclusion but requires much stronger gaps.",
+    "mathContext": "Wiman's condition means consecutive gaps grow like √nₖ. This is much stronger than Fabry gaps nₖ/k → ∞.",
+    "significance": "key",
+    "relatedConcepts": ["historical", "stronger-gaps"]
+  },
+  {
+    "id": "ann-e516-erdos-macintyre",
+    "proofId": "erdos-516",
+    "range": { "startLine": 137, "endLine": 147 },
+    "type": "axiom",
+    "title": "Erdős-Macintyre Theorem (1954)",
+    "content": "**Erdős-Macintyre**: Under Σ 1/(nₖ₊₁ - nₖ) < ∞:\n\n**lim sup (log m(r))/(log M(r)) = 1**\n\nThis intermediate result uses convergence of gap reciprocals.",
+    "mathContext": "This was a major step toward Fuchs's theorem. The condition is weaker than Wiman's but stronger than Fabry.",
+    "significance": "key",
+    "relatedConcepts": ["historical", "gap-reciprocals"]
+  },
+  {
+    "id": "ann-e516-kovari",
+    "proofId": "erdos-516",
+    "range": { "startLine": 156, "endLine": 167 },
+    "type": "axiom",
+    "title": "Kovári's Theorem (1965)",
+    "content": "**Kovári's Extension**: For ANY entire function (not necessarily finite order) with nₖ > k(log k)^{2+c}:\n\n**lim sup (log m(r))/(log M(r)) = 1**\n\nThis extends beyond finite order but requires stronger gaps than Fabry.",
+    "mathContext": "Kovári's condition lies between Fabry (nₖ/k → ∞) and the open Fejér conjecture (Σ 1/nₖ < ∞).",
+    "significance": "key",
+    "relatedConcepts": ["infinite-order", "stronger-gaps"]
+  },
+  {
+    "id": "ann-e516-fejer-conj",
+    "proofId": "erdos-516",
+    "range": { "startLine": 176, "endLine": 190 },
+    "type": "definition",
+    "title": "Fejér Gap Conjecture (Open)",
+    "content": "**Open Conjecture**: Does Σ 1/nₖ < ∞ suffice for the minimum modulus result?\n\n```lean\ndef fejer_gap_conjecture : Prop :=\n  ∀ {f : ℂ → ℂ} {n : ℕ → ℕ},\n    HasFejerGaps n → ... → limsup ... = 1\n```\n\nThis would extend the result to the optimal gap condition.",
+    "mathContext": "Macintyre showed Fejér gaps would be optimal: if Σ 1/nₖ = ∞, counterexamples exist. But it's unknown if Fejér gaps suffice.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "optimal-condition"]
+  },
+  {
+    "id": "ann-e516-macintyre-counter",
+    "proofId": "erdos-516",
+    "range": { "startLine": 192, "endLine": 205 },
+    "type": "axiom",
+    "title": "Macintyre's Counterexample (1952)",
+    "content": "**Macintyre's Counterexample**: Given any (nₖ) with Σ 1/nₖ = ∞, there exists an entire function f(z) = Σ aₖzⁿᵏ that tends to 0 along the positive real axis.\n\nThis shows Fejér gaps would be the **optimal** condition if the conjecture holds.",
+    "mathContext": "If f → 0 along ℝ⁺ but M(r) → ∞, then (log m(r))/(log M(r)) cannot approach 1. So divergent Σ 1/nₖ allows counterexamples.",
+    "significance": "key",
+    "relatedConcepts": ["counterexample", "optimality"]
+  },
+  {
+    "id": "ann-e516-solved",
+    "proofId": "erdos-516",
+    "range": { "startLine": 214, "endLine": 221 },
+    "type": "theorem",
+    "title": "Erdős #516 Solved",
+    "content": "**Main Result**: Erdős Problem #516 is SOLVED for finite order + Fabry gaps.\n\n```lean\ntheorem erdos_516_solved :\n    ∀ {f : ℂ → ℂ} {n : ℕ → ℕ},\n      HasFabryGaps n → ... → OfFiniteOrder f →\n      limsup (fun r => modulusRatio f r) atTop = 1\n```\n\nThis follows directly from Fuchs's theorem.",
+    "mathContext": "The original question asked by Pólya in 1929 is completely resolved by Fuchs 1963. The remaining open question (Fejér gaps) is a natural extension.",
+    "significance": "critical",
+    "relatedConcepts": ["main-result", "solved"]
+  }
+]

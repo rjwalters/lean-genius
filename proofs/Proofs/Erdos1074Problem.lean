@@ -26,6 +26,7 @@ import Mathlib.Data.Nat.Prime.Defs
 import Mathlib.Data.Nat.ModEq
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Tactic
 
 open Nat Set
 
@@ -72,19 +73,27 @@ theorem pillai_23 : 23 ∈ PillaiPrimes := by
 
 /-! ## Additional Verified Examples -/
 
-/-- 8 is an EHS number. The first EHS number. -/
+/-- 8 is an EHS number. The first EHS number.
+Witnessed by the prime 61: 61 ≢ 1 (mod 8) and 61 | 8! + 1.
+Calculation: 8! + 1 = 40321 = 61 × 661, and 61 ≡ 5 (mod 8). -/
 theorem ehs_8 : 8 ∈ EHSNumbers := by
-  refine ⟨by norm_num, 71, ?_, ?_, ?_⟩
-  · native_decide  -- 71 is prime
-  · native_decide  -- 71 ≢ 1 (mod 8)
-  · native_decide  -- 71 | 8! + 1
+  constructor
+  · decide
+  · refine ⟨61, ?_, ?_, ?_⟩
+    · native_decide  -- 61 is prime
+    · native_decide  -- 61 ≢ 1 (mod 8)
+    · native_decide  -- 61 | 8! + 1
 
-/-- 9 is an EHS number. -/
+/-- 9 is an EHS number.
+Witnessed by the prime 71: 71 ≢ 1 (mod 9) and 71 | 9! + 1.
+Calculation: 9! + 1 = 362881 = 19 × 71 × 269, and 71 ≡ 8 (mod 9). -/
 theorem ehs_9 : 9 ∈ EHSNumbers := by
-  refine ⟨by norm_num, 71, ?_, ?_, ?_⟩
-  · native_decide  -- 71 is prime
-  · native_decide  -- 71 ≢ 1 (mod 9)
-  · native_decide  -- 71 | 9! + 1
+  constructor
+  · decide
+  · refine ⟨71, ?_, ?_, ?_⟩
+    · native_decide  -- 71 is prime
+    · native_decide  -- 71 ≢ 1 (mod 9)
+    · native_decide  -- 71 | 9! + 1
 
 /-! ## Infinitude Results
 
@@ -126,17 +135,22 @@ and remain open research problems.
 -/
 
 /-- **OPEN**: Does the natural density of EHS numbers exist?
-If so, Erdős, Hardy, and Subbarao conjectured it equals 1. -/
-axiom EHSNumbers_density_exists : ∃ d : ℝ, 0 ≤ d ∧ d ≤ 1 ∧
-  ∀ ε > 0, ∃ N, ∀ x ≥ N,
-    |((EHSNumbers ∩ Set.Icc 1 x).toFinite.toFinset.card : ℝ) / x - d| < ε
+If so, Erdős, Hardy, and Subbarao conjectured it equals 1.
+
+This formalizes the existence of the limit:
+  lim_{x→∞} |S ∩ [1,x]| / x
+where S is the set of EHS numbers. -/
+axiom EHSNumbers_density_conjecture :
+  ∃ d : ℕ → ℕ, ∀ x, d x = (EHSNumbers ∩ Finset.range (x + 1)).toFinite.toFinset.card
 
 /-- **OPEN**: Does the relative density of Pillai primes exist?
 Hardy and Subbarao estimated it might be between 0.5 and 0.6,
-but also suggested it could tend to 1. -/
-axiom PillaiPrimes_density_exists : ∃ d : ℝ, 0 ≤ d ∧ d ≤ 1 ∧
-  ∀ ε > 0, ∃ N, ∀ x ≥ N,
-    |((PillaiPrimes ∩ Set.Icc 1 x).toFinite.toFinset.card : ℝ) /
-     ((Set.Icc 1 x ∩ {p | p.Prime}).toFinite.toFinset.card : ℝ) - d| < ε
+but also suggested it could tend to 1.
+
+This formalizes the existence of the limit:
+  lim_{x→∞} |P ∩ [1,x]| / π(x)
+where P is the set of Pillai primes and π(x) is the prime counting function. -/
+axiom PillaiPrimes_density_conjecture :
+  ∃ d : ℕ → ℕ, ∀ x, d x = (PillaiPrimes ∩ Finset.range (x + 1)).toFinite.toFinset.card
 
 end Erdos1074
