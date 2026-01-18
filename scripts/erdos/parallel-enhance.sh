@@ -284,7 +284,7 @@ You are working in an isolated git worktree with your own branch.
 ## Quick Start
 
 1. Read the full instructions: \`cat .loom/roles/erdos-enhancer.md\`
-2. Claim a stub: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random\`
+2. Claim a stub: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any\`
 3. Enhance it (Lean proof, meta.json, annotations.json)
 4. Build: \`pnpm build\`
 5. Commit: \`git add -A && git commit -m "Enhance Erdős #N: Title"\`

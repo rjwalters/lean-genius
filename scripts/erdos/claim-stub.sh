@@ -141,23 +141,27 @@ EOF
     fi
 }
 
-# Claim a random unclaimed stub
+# Claim a random unclaimed stub (sourced only, or any if --any flag)
 claim_random_stub() {
+    local include_unsourced="${1:-false}"
+
     # Get all stubs as JSON
     local stubs_json
     stubs_json=$(npx tsx "$STUBS_SCRIPT" --json 2>/dev/null)
 
-    # Filter to stubs with formal-conjectures sources (easier to enhance)
-    local sourced_stubs
-    sourced_stubs=$(echo "$stubs_json" | jq -r '.stubs[] | select(.hasFormalConjecturesSource == true) | .erdosNumber')
+    # Get stub numbers based on mode
+    local stub_numbers
+    if [[ "$include_unsourced" == "true" ]]; then
+        # All stubs
+        stub_numbers=$(echo "$stubs_json" | jq -r '.stubs[].erdosNumber')
+    else
+        # Only sourced stubs (easier to enhance)
+        stub_numbers=$(echo "$stubs_json" | jq -r '.stubs[] | select(.hasFormalConjecturesSource == true) | .erdosNumber')
+    fi
 
     # Get completed list
     local completed
     completed=$(jq -r '.completed[]' "$COMPLETED_FILE" 2>/dev/null || echo "")
-
-    # Get currently claimed
-    local claimed
-    claimed=$(ls "$CLAIMS_DIR"/*.lock 2>/dev/null | sed 's/.*erdos-\([0-9]*\)\.lock/\1/' || echo "")
 
     # Find unclaimed stubs
     local available=()
@@ -176,16 +180,22 @@ claim_random_stub() {
         fi
 
         available+=("$num")
-    done <<< "$sourced_stubs"
+    done <<< "$stub_numbers"
 
     if [[ ${#available[@]} -eq 0 ]]; then
-        echo "No unclaimed stubs with sources available" >&2
+        if [[ "$include_unsourced" == "true" ]]; then
+            echo "No unclaimed stubs available" >&2
+        else
+            echo "No unclaimed stubs with sources available. Try 'claim-random-any' for unsourced stubs." >&2
+        fi
         return 1
     fi
 
     # Pick random from available
     local random_index=$((RANDOM % ${#available[@]}))
     local selected="${available[$random_index]}"
+
+    echo "Selected erdos-$selected (${#available[@]} available)"
 
     # Claim it
     claim_stub "$selected"
@@ -332,7 +342,10 @@ case "${1:-help}" in
         claim_stub "$2"
         ;;
     claim-random)
-        claim_random_stub
+        claim_random_stub "false"
+        ;;
+    claim-random-any)
+        claim_random_stub "true"
         ;;
     release)
         if [[ -z "${2:-}" ]]; then
@@ -369,7 +382,8 @@ Provides atomic claiming for parallel stub enhancement.
 
 Commands:
   claim <erdos-number>    Claim a specific stub
-  claim-random            Claim a random unclaimed stub (with source)
+  claim-random            Claim a random stub with formal-conjectures source
+  claim-random-any        Claim a random stub (including unsourced)
   release <erdos-number>  Release a claimed stub
   complete <erdos-number> Mark as completed and release
   extend <erdos-number>   Extend claim TTL

@@ -34,10 +34,14 @@ while true:
 ## Step 1: Claim a Stub
 
 ```bash
-$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random
+$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any
 ```
 
-This atomically claims a random unclaimed stub that has a formal-conjectures source. Record the Erdős number for subsequent steps.
+This atomically claims a random unclaimed stub. Record the Erdős number for subsequent steps.
+
+**Note:** Stubs may or may not have formal-conjectures sources:
+- **With source:** Read and adapt `external/formal-conjectures/FormalConjectures/ErdosProblems/{NUMBER}.lean`
+- **Without source:** Research on erdosproblems.com and write Lean from scratch
 
 If no stubs are available, wait 5 minutes and retry.
 
