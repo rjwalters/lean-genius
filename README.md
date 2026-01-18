@@ -1,6 +1,25 @@
 # LeanGenius
 
-An interactive web application for viewing annotated Lean 4 proofs with line-by-line explanations, threaded discussions, and user accounts.
+> *"The Truth Mines were a honeycomb of abstract constructs, a vast, three-dimensional maze of crystallized theorems and conjectures... The mines were inexhaustible."*
+> — Greg Egan, *Diaspora*
+
+An interactive web application for exploring formal mathematics — annotated Lean 4 proofs with line-by-line explanations, threaded discussions, and autonomous research on open problems.
+
+## The Mission
+
+Systematically formalize the [Erdős Problems](https://erdosproblems.com) and advance the frontier of verified mathematics through human-AI collaboration.
+
+See [research/VISION.md](research/VISION.md) for the full vision.
+
+## Related Projects
+
+We're part of a growing ecosystem working to map mathematical truth:
+
+| Project | Focus |
+|---------|-------|
+| [erdosproblems.com](https://erdosproblems.com) | Canonical Erdős problem database |
+| [Mathlib](https://github.com/leanprover-community/mathlib4) | Lean 4 mathematical library |
+| [Erdosproblems-LLM-Hunter](https://github.com/mehmetmars7/Erdosproblems-llm-hunter) | Tracking informal LLM solution attempts |
 
 ## Tech Stack
 
