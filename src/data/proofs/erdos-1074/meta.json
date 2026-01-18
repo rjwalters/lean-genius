@@ -1,33 +1,122 @@
 {
   "id": "erdos-1074",
-  "title": "Erdős Problem #1074",
+  "title": "Erdős Problem #1074: EHS Numbers and Pillai Primes",
   "slug": "erdos-1074",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of all ... such that there exists a prime ... such that .... Does\\[\\lim {x}\\]exist? What is it?\n\nSimilarly...",
+  "description": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erdős-Hardy-Subbarao), but density questions remain OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hardy-Subbarao (infinitude), Chowla (23 ∈ P), Pillai (1930 question)",
     "sourceUrl": "https://erdosproblems.com/1074",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1074Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorial",
+      "prime-divisors",
+      "modular-arithmetic",
+      "density",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1074,
     "erdosUrl": "https://erdosproblems.com/1074",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function n!",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Nat.ModEq",
+        "description": "Modular congruence relation",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "EHSNumbers definition: {m ≥ 1 | ∃ prime p ≢ 1 (mod m) with p | m! + 1}",
+      "PillaiPrimes definition: {p prime | ∃ m with p ≢ 1 (mod m) and p | m! + 1}",
+      "Verified: 23 is a Pillai prime (Chowla's example via 14! + 1)",
+      "Verified: 8 is the first EHS number (via prime 61)",
+      "Verified: 9 is an EHS number (via prime 71)",
+      "Axiom: EHSNumbers are infinite (Erdős-Hardy-Subbarao)",
+      "Axiom: PillaiPrimes are infinite (Erdős-Hardy-Subbarao)",
+      "Open density conjectures formalized"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1074 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S$ be the set of all $m\\geq 1$ such that there exists a prime $p\\not\\equiv 1\\pmod{m}$ such that $m!+1\\equiv 0\\pmod{p}$. Does\\[\\lim \\frac{\\lvert S\\cap [1,x]\\rvert}{x}\\]exist? What is it?\n\nSimilarly, if $P$ is the set of all primes $p$ such that there exists an $m$ with $p\\not\\equiv 1\\pmod{m}$ such that $m!+1\\equiv 0\\pmod{p}$, then does\\[\\lim \\frac{\\lvert P\\cap [1,x]\\rvert}{\\pi(x)}\\]exist? What is it?\n\n\n\nQuestions raised by Erd\\H{o}s, Hardy, and Subbarao, who called the set $S$ 'EHS numbers' and the set $P$ 'Pillai primes', and proved that both $S$ and $P$ are infinite. Pillai \\cite{Pi30} raised the question of whether there exist any primes in $P$. This was answered by Chowla, who noted that, for example,\\[14!+1\\equiv 18!+1\\equiv 0\\pmod{23}.\\]The sequence $S$ begins\\[8,9,13,14,15,16,17,\\ldots\\]and is A064164 in the OEIS. The sequence $P$ begins\\[23,29,59,61,67,71,\\ldots\\]and is A063980 in the OEIS.\n\nRegarding the first question, Hardy and Subbarao computed all EHS numbers up to $2^{10}$, and write '...if this trend conditions we expect [the limit] to be around $0.5$, if it exists. The frequency with which the EHS numbers occur - most often in long sequences of consecutive integers - makes us believe that their asymptotic density exists and is unity. Erd\\H{o}s, though initially hesitant, later agreed with this view.'\n\nRegarding the second question, they write '[from the data] it would appear that if the limit exists, it is perhaps between $0.5$ and $0.6$. But then there seems to be no reason why the ratio should not tend to $1$, even though very slowly and certainly not monotonically.'\n\nThis is discussed in problem A2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Pi30] S. S. Pillai, Question 1490. J. Indian Math. Soc. (1930), 230.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1074**\n\nThis problem concerns special relationships between factorials and prime divisors.\n\n**Key History:**\n- Pillai (1930): First asked whether any primes p exist with p | m! + 1 and p ≢ 1 (mod m)\n- Chowla: Answered Pillai by showing 23 | 14! + 1 and 23 ≢ 1 (mod 14)\n- Erdős, Hardy, Subbarao: Named these sets 'EHS numbers' and 'Pillai primes', proved both infinite\n- Hardy-Subbarao: Computed EHS numbers up to 2^10, conjectured density is 1\n\n**Mathematical Setting:**\n- m! + 1 has prime factors that satisfy Wilson's theorem conditions\n- The condition p ≢ 1 (mod m) excludes the 'trivial' case where p - 1 | m\n- EHS numbers tend to occur in long consecutive runs",
+    "problemStatement": "**Problem Statement (Partially Open)**\n\nLet S = {m ≥ 1 | ∃ prime p ≢ 1 (mod m) with p | m! + 1} (EHS numbers).\nLet P = {p prime | ∃ m with p ≢ 1 (mod m) and p | m! + 1} (Pillai primes).\n\n**Questions:**\n1. Does lim |S ∩ [1,x]| / x exist? If so, what is it?\n2. Does lim |P ∩ [1,x]| / π(x) exist? If so, what is it?\n\n**Known Results:**\n- Both S and P are infinite (Erdős-Hardy-Subbarao)\n- S begins: 8, 9, 13, 14, 15, 16, 17, ... (OEIS A064164)\n- P begins: 23, 29, 59, 61, 67, 71, ... (OEIS A063980)\n\n**Conjectures:**\n- Hardy-Subbarao: Density of S is 1\n- Density of P may be between 0.5 and 1",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Set Definitions:** Define EHSNumbers and PillaiPrimes as subsets of ℕ\n\n2. **Verified Examples:**\n   - 23 ∈ PillaiPrimes via 14! + 1 ≡ 0 (mod 23) (Chowla)\n   - 8 ∈ EHSNumbers via 61 | 8! + 1 (first EHS number)\n   - 9 ∈ EHSNumbers via 71 | 9! + 1\n\n3. **Infinitude Results:** State as axioms (deep number theory)\n\n4. **Open Problems:** State density conjectures formally\n\nThe verified examples use native_decide to computationally check divisibility and congruence conditions.",
+    "keyInsights": [
+      "**Wilson's Theorem Connection:** For prime p, (p-1)! ≡ -1 (mod p), so p | (p-1)! + 1",
+      "**EHS Condition:** Requires p ≢ 1 (mod m), excluding the Wilson case",
+      "**Consecutive Runs:** EHS numbers often appear in long sequences",
+      "**First EHS:** 8 is first because 1-7 fail the p ≢ 1 (mod m) condition",
+      "**Chowla's Example:** 14! + 1 = 87,178,291,201 has factor 23, and 23 ≢ 1 (mod 14)",
+      "**Density Mystery:** Why would EHS numbers have density 1? The condition seems restrictive"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "summary": "EHSNumbers and PillaiPrimes set definitions",
+      "startLine": 34,
+      "endLine": 46
+    },
+    {
+      "id": "chowla-example",
+      "title": "Chowla's Example",
+      "summary": "23 is a Pillai prime: 14! + 1 ≡ 0 (mod 23)",
+      "startLine": 48,
+      "endLine": 72
+    },
+    {
+      "id": "ehs-examples",
+      "title": "EHS Number Examples",
+      "summary": "Verified: 8 and 9 are EHS numbers",
+      "startLine": 74,
+      "endLine": 96
+    },
+    {
+      "id": "infinitude",
+      "title": "Infinitude Results",
+      "summary": "Both sets are infinite (Erdős-Hardy-Subbarao)",
+      "startLine": 98,
+      "endLine": 115
+    },
+    {
+      "id": "open-problems",
+      "title": "Open Density Problems",
+      "summary": "Do the asymptotic densities exist?",
+      "startLine": 117,
+      "endLine": 154
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1074 asks about the asymptotic densities of EHS numbers and Pillai primes. While both sets are known to be infinite (proved by Erdős, Hardy, and Subbarao), the density questions remain open. Hardy and Subbarao conjectured that EHS numbers have density 1, but this has not been proved.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Wilson's Theorem:** (p-1)! ≡ -1 (mod p) for primes p\n\n2. **Factorial Structure:** m! + 1 can have prime factors not predicted by Wilson\n\n3. **Residue Classes:** The condition p ≢ 1 (mod m) is about prime distribution\n\n4. **Density Theory:** Asymptotic density of arithmetic sets is subtle\n\n5. **OEIS:** A064164 (EHS numbers) and A063980 (Pillai primes)",
+    "openQuestions": [
+      "Does the natural density of EHS numbers exist?",
+      "If so, is it equal to 1 as conjectured?",
+      "Does the relative density of Pillai primes among all primes exist?",
+      "Can we explicitly construct infinitely many EHS numbers?",
+      "What is the longest gap between consecutive EHS numbers?"
+    ]
   }
 }

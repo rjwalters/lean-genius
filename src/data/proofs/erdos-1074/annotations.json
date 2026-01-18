@@ -1,1 +1,108 @@
-[]
+[
+  {
+    "id": "ann-e1074-imports",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Header and Imports",
+    "content": "**Erdős Problem #1074: EHS Numbers and Pillai Primes**\n\nThis file formalizes a problem about factorial divisibility and prime residue classes.\n\n**Key Imports:**\n- `Nat.Factorial.Basic`: Factorial function n!\n- `Nat.Prime.Defs`: Prime number predicate\n- `Nat.ModEq`: Modular congruence ≡ [MOD m]\n- `Set.Finite.Basic`: Set.Infinite predicate\n\nThe problem concerns primes p that divide m! + 1 while satisfying p ≢ 1 (mod m).",
+    "mathContext": "Wilson's theorem states (p-1)! ≡ -1 (mod p) for prime p, so p always divides (p-1)! + 1. The EHS condition excludes this 'trivial' case.",
+    "significance": "supporting",
+    "relatedConcepts": ["Wilson's theorem", "Factorial", "Modular arithmetic"]
+  },
+  {
+    "id": "ann-e1074-ehs-def",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 34, "endLine": 40 },
+    "type": "definition",
+    "title": "EHS Numbers",
+    "content": "**EHSNumbers: The Main Object**\n\nNamed after Erdős, Hardy, and Subbarao who introduced and studied this set.\n\n**Definition:**\n```lean\ndef EHSNumbers : Set ℕ :=\n  {m | 1 ≤ m ∧ ∃ p, p.Prime ∧ ¬p ≡ 1 [MOD m] ∧ p ∣ m ! + 1}\n```\n\nAn integer m ≥ 1 is an EHS number if there exists a prime p such that:\n1. p divides m! + 1\n2. p is NOT congruent to 1 modulo m\n\n**First few EHS numbers:** 8, 9, 13, 14, 15, 16, 17, ... (OEIS A064164)",
+    "mathContext": "The condition p ≢ 1 (mod m) excludes primes where p - 1 divides m, which would make divisibility 'expected' from Wilson's theorem considerations.",
+    "significance": "critical",
+    "relatedConcepts": ["Factorial", "Prime divisors", "Wilson's theorem"]
+  },
+  {
+    "id": "ann-e1074-pillai-def",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "Pillai Primes",
+    "content": "**PillaiPrimes: The Dual Perspective**\n\nNamed after S. S. Pillai who first asked whether such primes exist (1930).\n\n**Definition:**\n```lean\ndef PillaiPrimes : Set ℕ :=\n  {p | p.Prime ∧ ∃ m, ¬p ≡ 1 [MOD m] ∧ p ∣ m ! + 1}\n```\n\nA prime p is a Pillai prime if there exists m such that:\n1. p divides m! + 1\n2. p is NOT congruent to 1 modulo m\n\n**First few Pillai primes:** 23, 29, 59, 61, 67, 71, ... (OEIS A063980)",
+    "mathContext": "Pillai's original 1930 question was simply whether ANY such primes exist. Chowla answered by finding 23.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime numbers", "Factorial divisibility"]
+  },
+  {
+    "id": "ann-e1074-chowla-divisibility",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 48, "endLine": 58 },
+    "type": "theorem",
+    "title": "Chowla's Divisibility",
+    "content": "**Key Divisibility: 23 | 14! + 1**\n\nChowla's fundamental observation that answered Pillai's question.\n\n**Calculation:**\n- 14! = 87,178,291,200\n- 14! + 1 = 87,178,291,201\n- 87,178,291,201 ÷ 23 = 3,790,360,487\n\n**Verification in Lean:**\n```lean\ntheorem twentyThree_dvd_factorial_14_plus_one : 23 ∣ 14 ! + 1 := by\n  native_decide\n```\n\nThe tactic `native_decide` performs this large arithmetic check automatically.",
+    "significance": "key",
+    "relatedConcepts": ["Divisibility", "Factorial computation"]
+  },
+  {
+    "id": "ann-e1074-chowla-congruence",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "theorem",
+    "title": "Chowla's Congruence Check",
+    "content": "**The Non-Congruence: 23 ≢ 1 (mod 14)**\n\nThe second condition for 23 to be a Pillai prime.\n\n**Calculation:**\n- 23 = 1 × 14 + 9\n- So 23 ≡ 9 (mod 14)\n- Since 9 ≠ 1, we have 23 ≢ 1 (mod 14) ✓\n\n**Why this matters:**\nIf p ≡ 1 (mod m), then p - 1 is divisible by m, which creates a 'Wilson-like' situation where p | m! + 1 would be less surprising.",
+    "significance": "key",
+    "relatedConcepts": ["Modular arithmetic", "Congruence"]
+  },
+  {
+    "id": "ann-e1074-pillai-23",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "theorem",
+    "title": "23 is a Pillai Prime",
+    "content": "**pillai_23: Chowla's Complete Result**\n\nCombining the divisibility and congruence checks proves 23 ∈ PillaiPrimes.\n\n**Proof Structure:**\n```lean\ntheorem pillai_23 : 23 ∈ PillaiPrimes := by\n  refine ⟨twentyThree_prime, 14, twentyThree_not_cong_one_mod_14, ?_⟩\n  exact twentyThree_dvd_factorial_14_plus_one\n```\n\n**The witness:** m = 14 satisfies all conditions:\n- 23 is prime ✓\n- 23 ≢ 1 (mod 14) ✓\n- 23 | 14! + 1 ✓\n\nThis was the first known Pillai prime, answering Pillai's 1930 question.",
+    "mathContext": "Chowla also noted that 18! + 1 ≡ 0 (mod 23), providing a second witness for 23 being a Pillai prime.",
+    "significance": "critical",
+    "relatedConcepts": ["Existence proof", "Witness construction"]
+  },
+  {
+    "id": "ann-e1074-ehs-8",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 76, "endLine": 85 },
+    "type": "theorem",
+    "title": "8 is the First EHS Number",
+    "content": "**ehs_8: The Smallest EHS Number**\n\n8 is the first EHS number, witnessed by the prime 61.\n\n**Calculation:**\n- 8! = 40,320\n- 8! + 1 = 40,321 = 61 × 661\n- 61 mod 8 = 5 ≠ 1 ✓\n\n**Why 1-7 fail:**\nFor m = 1 to 7, every prime divisor p of m! + 1 satisfies p ≡ 1 (mod m).\n\n**Proof:**\n```lean\ntheorem ehs_8 : 8 ∈ EHSNumbers := by\n  constructor\n  · decide\n  · refine ⟨61, ?_, ?_, ?_⟩\n    · native_decide  -- 61 is prime\n    · native_decide  -- 61 ≢ 1 (mod 8)\n    · native_decide  -- 61 | 8! + 1\n```",
+    "significance": "key",
+    "relatedConcepts": ["Factorial factorization", "First element"]
+  },
+  {
+    "id": "ann-e1074-ehs-9",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 87, "endLine": 96 },
+    "type": "theorem",
+    "title": "9 is an EHS Number",
+    "content": "**ehs_9: Second Example**\n\n9 is an EHS number, also witnessed by the prime 71.\n\n**Calculation:**\n- 9! = 362,880\n- 9! + 1 = 362,881 = 19 × 71 × 269\n- 71 mod 9 = 8 ≠ 1 ✓\n\n**Note:** 19 mod 9 = 1, so 19 doesn't work as a witness.\nBut 71 and 269 both work (71 ≡ 8, 269 ≡ 8 mod 9).\n\nThis shows EHS numbers can have multiple valid witnesses.",
+    "significance": "supporting",
+    "relatedConcepts": ["Multiple witnesses", "Factorial factorization"]
+  },
+  {
+    "id": "ann-e1074-infinitude",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 98, "endLine": 115 },
+    "type": "axiom",
+    "title": "Infinitude Results",
+    "content": "**Both Sets Are Infinite**\n\nErdős, Hardy, and Subbarao proved that both EHSNumbers and PillaiPrimes are infinite sets.\n\n**Axioms:**\n```lean\naxiom EHSNumbers_infinite : EHSNumbers.Infinite\naxiom PillaiPrimes_infinite : PillaiPrimes.Infinite\n```\n\n**Why axioms?**\nThe proofs require sophisticated number-theoretic arguments about:\n- Distribution of prime factors of m! + 1\n- Primes in arithmetic progressions\n- Analytic techniques\n\nThese results are well beyond current Mathlib formalization capabilities.",
+    "mathContext": "The proof uses properties of prime factorizations of factorial values combined with Dirichlet's theorem on primes in arithmetic progressions.",
+    "significance": "critical",
+    "relatedConcepts": ["Infinite sets", "Deep number theory"]
+  },
+  {
+    "id": "ann-e1074-open-density",
+    "proofId": "erdos-1074",
+    "range": { "startLine": 117, "endLine": 154 },
+    "type": "concept",
+    "title": "Open Density Problems",
+    "content": "**The Main Open Questions**\n\nThe central unsolved parts of Problem 1074:\n\n**Question 1:** Does lim |S ∩ [1,x]| / x exist?\n- Hardy-Subbarao computed EHS numbers to 2^10\n- Observed density appears to approach 1\n- But no proof exists\n\n**Question 2:** Does lim |P ∩ [1,x]| / π(x) exist?\n- Estimated between 0.5 and 0.6\n- Could potentially tend to 1\n\n**Why these are hard:**\n- Density questions require understanding ALL large m, not just specific examples\n- The factorial growth rate makes computations difficult\n- No general pattern for when m is/isn't an EHS number",
+    "mathContext": "Asymptotic density questions in number theory often remain open even when infinitude is proved. Compare to the density of primes (which is 0 by the Prime Number Theorem).",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic density", "Open problems", "Prime counting function"]
+  }
+]

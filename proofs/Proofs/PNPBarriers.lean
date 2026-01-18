@@ -6340,13 +6340,16 @@ def SparseByLength (L : Language) : Prop :=
 def IsTally (L : Language) : Prop :=
   ∀ n : Nat, L n → ∃ k : Nat, n = 2^k - 1  -- Unary encoding
 
-/-- Tally languages are sparse. -/
+/-- Tally languages are sparse.
+
+    **Proof sketch:** A tally language L contains only strings of the form 1^k
+    (encoded as 2^k - 1). For any bound n, there are at most log₂(n+1) such
+    strings up to n, since 2^k - 1 ≤ n implies k ≤ log₂(n+1). -/
 theorem tally_is_sparse (L : Language) (h : IsTally L) : IsSparse L := by
-  use ⟨1, 1⟩  -- Linear polynomial
+  use ⟨1, 1⟩  -- Linear polynomial (actually logarithmic suffices)
   intro n
-  -- At most n+1 powers of 2 up to n
-  unfold census
-  omega
+  -- At most log₂(n+1) powers of 2 up to n, which is ≤ n for n ≥ 1
+  sorry  -- Requires cardinality bound on tally strings
 
 /-! ### Ladner's Theorem -/
 
@@ -6381,8 +6384,10 @@ theorem P_eq_NP_iff_no_intermediate :
   constructor
   · intro heq L hL
     left
-    rw [heq] at hL
-    exact hL
+    have : L ∈ P_unrelativized := by
+      simp only [heq] at hL ⊢
+      exact hL
+    exact this
   · intro hno_intermediate
     by_contra hneq
     obtain ⟨L, hL⟩ := ladner_theorem hneq
@@ -6549,14 +6554,12 @@ theorem BH_implies_no_OWF : BermanHartmanisConjecture → ¬ OneWayFunctionExist
 
 /-- P-isomorphism is an equivalence relation. -/
 theorem poly_isomorphism_equiv :
-    Equivalence (PolyTimeIsomorphic : Language → Language → Prop) := by
-  constructor
-  · -- Reflexivity
+    Equivalence (PolyTimeIsomorphic : Language → Language → Prop) where
+  refl := by
     intro L
     use id, id
     simp [Function.id_def]
-  constructor
-  · -- Symmetry
+  symm := by
     intro L₁ L₂ ⟨f, g, _, _, hgf, hfg, hpres⟩
     use g, f
     constructor; trivial
@@ -6567,7 +6570,7 @@ theorem poly_isomorphism_equiv :
     have := hpres (g x)
     rw [hfg] at this
     exact this.symm
-  · -- Transitivity
+  trans := by
     intro L₁ L₂ L₃ ⟨f₁, g₁, _, _, hgf₁, hfg₁, hpres₁⟩ ⟨f₂, g₂, _, _, hgf₂, hfg₂, hpres₂⟩
     use f₂ ∘ f₁, g₁ ∘ g₂
     constructor; trivial

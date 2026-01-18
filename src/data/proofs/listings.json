@@ -1788,17 +1788,25 @@
   },
   {
     "id": "erdos-1074",
-    "title": "Erdős Problem #1074",
+    "title": "Erdős Problem #1074: EHS Numbers and Pillai Primes",
     "slug": "erdos-1074",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of all ... such that there exists a prime ... such that .... Does\\[\\lim {x}\\]exist? What is it?\n\nSimilarly...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erdős-Hardy-Subbarao), but density questions remain OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorial",
+      "prime-divisors",
+      "modular-arithmetic",
+      "density",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1074,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-1075",
@@ -7531,7 +7539,7 @@
     "dateAdded": "2026-01-18",
     "erdosNumber": 516,
     "mathlibCount": 4,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 17
   },
   {

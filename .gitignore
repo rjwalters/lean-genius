@@ -46,8 +46,13 @@ proofs/data/knuth/tour-finder/Cargo.lock
 proofs/data/knuth/tour-finder/target/
 research/claims/*.json
 research/claims/*.lock
+research/stub-claims/*.lock
+research/stub-claims/erdos-*.json
 research/db/*.bak
 research/db/knowledge.db
+
+# Loom logs
+.loom/logs/
 
 # Test artifacts
 test-results/
