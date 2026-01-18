@@ -1,1 +1,192 @@
-[]
+[
+  {
+    "id": "ann-e165-ramsey",
+    "proofId": "erdos-165",
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "axiom",
+    "title": "Ramsey Number",
+    "content": "The **Ramsey number** R(m,n) is the minimum N such that any 2-coloring of the edges of K_N contains either a red K_m or a blue K_n.\n\nEquivalently: any graph on N vertices contains K_m as a subgraph or an independent set of size n.\n\nAxiomatized since the exact definition requires extensive graph coloring machinery.",
+    "mathContext": "This is the foundational definition of Ramsey theory, from Ramsey's 1930 theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey's theorem", "Graph coloring", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-e165-symmetry",
+    "proofId": "erdos-165",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "axiom",
+    "title": "Ramsey Symmetry",
+    "content": "**R(m,n) = R(n,m)**\n\nRamsey numbers are symmetric because swapping red/blue colors swaps the roles of m and n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e165-base-cases",
+    "proofId": "erdos-165",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "axiom",
+    "title": "Ramsey Base Cases",
+    "content": "**Base cases:**\n\n- R(1,n) = 1: Any vertex is trivially a K_1\n- R(2,n) = n: Need n vertices to guarantee either an edge (K_2) or n independent vertices\n\nThese form the boundary conditions for the recurrence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e165-recurrence",
+    "proofId": "erdos-165",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "axiom",
+    "title": "Ramsey Recurrence",
+    "content": "**R(m,n) <= R(m-1,n) + R(m,n-1)**\n\nThis recurrence follows from considering any vertex v:\n- In K_N with N = R(m-1,n) + R(m,n-1)\n- Either v has >= R(m-1,n) red neighbors (giving K_m by induction)\n- Or v has >= R(m,n-1) blue neighbors (giving independent set by induction)\n\nThis gives R(m,n) <= C(m+n-2, m-1), the binomial upper bound.",
+    "mathContext": "The classical proof from Ramsey (1930) and Erdos-Szekeres (1935).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e165-r3",
+    "proofId": "erdos-165",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "definition",
+    "title": "R(3,k) Definition",
+    "content": "**R(3,k) = R3(k)**\n\nThe minimum N such that any graph on N vertices contains:\n- A **triangle** (K_3), OR\n- An **independent set** of size k\n\nEquivalently: every triangle-free graph on N vertices has independence number >= k.\n\nThis is the central object of Erdos Problem #165.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e165-small-values",
+    "proofId": "erdos-165",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "axiom",
+    "title": "Small Values of R(3,k)",
+    "content": "**Known exact values:**\n\n| k | R(3,k) |\n|---|--------|\n| 3 | 6 |\n| 4 | 9 |\n| 5 | 14 |\n| 6 | 18 |\n| 7 | 23 |\n| 8 | 28 |\n| 9 | 36 |\n\nBeyond k=9, exact values are unknown. These were determined by computer search and construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e165-aks",
+    "proofId": "erdos-165",
+    "range": { "startLine": 106, "endLine": 114 },
+    "type": "axiom",
+    "title": "Ajtai-Komlos-Szemeredi Theorem",
+    "content": "**AKS (1980):**\n\nR(3,k) = O(k^2/log k)\n\nMore precisely: R(3,k) <= C * k^2/log k for some constant C.\n\n**Breakthrough:** This was the first result showing the log factor in the denominator. Previous bounds were O(k^2).",
+    "mathContext": "The proof uses probabilistic methods and the Lovasz Local Lemma.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e165-shearer",
+    "proofId": "erdos-165",
+    "range": { "startLine": 116, "endLine": 123 },
+    "type": "axiom",
+    "title": "Shearer's Theorem",
+    "content": "**Shearer (1983):**\n\nR(3,k) <= (1 + o(1)) * k^2/log k\n\nThis is the **tight upper bound**: the coefficient 1 cannot be improved.\n\nThe proof analyzes independence numbers in triangle-free graphs using entropy methods.",
+    "mathContext": "Shearer's entropy method is a powerful technique in combinatorics.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e165-kim",
+    "proofId": "erdos-165",
+    "range": { "startLine": 138, "endLine": 149 },
+    "type": "axiom",
+    "title": "Kim's Theorem",
+    "content": "**Kim (1995) - BREAKTHROUGH:**\n\nR(3,k) >= (c + o(1)) * k^2/log k for some c > 0.\n\nKim's original constant: c >= 1/162.\n\n**This established the order of magnitude:** R(3,k) = Theta(k^2/log k)\n\nKim's proof introduced the **triangle-free process** (semi-random method):\n- Start with empty graph\n- Repeatedly add random edges that don't create triangles\n- Analyze the resulting graph's independence number\n\n**This won the $250 prize.**",
+    "mathContext": "Kim's semi-random method was revolutionary and has since been applied to many problems.",
+    "significance": "critical",
+    "relatedConcepts": ["Triangle-free process", "Semi-random method", "Probabilistic combinatorics"]
+  },
+  {
+    "id": "ann-e165-bohman-keevash",
+    "proofId": "erdos-165",
+    "range": { "startLine": 151, "endLine": 158 },
+    "type": "axiom",
+    "title": "Bohman-Keevash Bound",
+    "content": "**Bohman-Keevash (2021):**\n\nc >= 1/4\n\nImproved Kim's constant by a factor of 40 through more careful analysis of the triangle-free process.\n\nProved independently by Pontiveros-Griffiths-Morris (2020), who conjectured c = 1/4 is optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e165-cjms",
+    "proofId": "erdos-165",
+    "range": { "startLine": 160, "endLine": 167 },
+    "type": "axiom",
+    "title": "CJMS Bound",
+    "content": "**Campos-Jenssen-Michelen-Sahasrabudhe (2025):**\n\nc >= 1/3\n\n**Disproved the PGM conjecture (c = 1/4).**\n\nUsed new techniques beyond the standard triangle-free process analysis.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e165-hhkp",
+    "proofId": "erdos-165",
+    "range": { "startLine": 169, "endLine": 176 },
+    "type": "axiom",
+    "title": "Hefty-Horn-King-Pfender Bound",
+    "content": "**HHKP (2025) - CURRENT BEST:**\n\nc >= 1/2\n\nPaper title: \"Improving R(3,k) in just two bites\"\n\nBoth CJMS and HHKP conjecture that **c = 1/2 is the true constant**, meaning:\n\nR(3,k) ~ (1/2) * k^2/log k",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e165-asymptotic",
+    "proofId": "erdos-165",
+    "range": { "startLine": 185, "endLine": 199 },
+    "type": "theorem",
+    "title": "Asymptotic Order",
+    "content": "**R(3,k) = Theta(k^2/log k)**\n\nThere exist constants c_1, c_2 > 0 such that:\n\nc_1 * k^2/log k <= R(3,k) <= c_2 * k^2/log k\n\nfor all sufficiently large k.\n\nThis theorem is partially proven (uses sorry for the detailed bounds).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e165-current-bounds",
+    "proofId": "erdos-165",
+    "range": { "startLine": 201, "endLine": 204 },
+    "type": "axiom",
+    "title": "Current Best Bounds",
+    "content": "**The state of the art (as of 2025):**\n\n- **Lower:** R(3,k) >= (1/2 - o(1)) * k^2/log k [HHKP 2025]\n- **Upper:** R(3,k) <= (1 + o(1)) * k^2/log k [Shearer 1983]\n\nThe gap: c in [1/2, 1].\n\nConjecture: c = 1/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e165-tfp",
+    "proofId": "erdos-165",
+    "range": { "startLine": 212, "endLine": 218 },
+    "type": "axiom",
+    "title": "Triangle-Free Process",
+    "content": "The **triangle-free process** is a randomized graph construction:\n\n1. Start with G = empty graph on n vertices\n2. Repeat:\n   - Choose a random non-edge {u,v}\n   - If adding {u,v} doesn't create a triangle, add it\n3. Stop when no more edges can be added\n\nThe resulting graph is maximal triangle-free and has small independence number.",
+    "mathContext": "Kim's insight: this process produces graphs that give good lower bounds for R(3,k).",
+    "significance": "key",
+    "relatedConcepts": ["Semi-random method", "Random graph processes"]
+  },
+  {
+    "id": "ann-e165-main-conjecture",
+    "proofId": "erdos-165",
+    "range": { "startLine": 242, "endLine": 244 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "**Conjecture: c = 1/2**\n\nR(3,k) ~ (1/2) * k^2/log k\n\nMore precisely: for any epsilon > 0, there exists k_0 such that for k >= k_0:\n\n(1/2 - epsilon) * k^2/log k <= R(3,k) <= (1/2 + epsilon) * k^2/log k\n\nBoth CJMS (2025) and HHKP (2025) conjecture this is true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e165-pgm-false",
+    "proofId": "erdos-165",
+    "range": { "startLine": 246, "endLine": 252 },
+    "type": "theorem",
+    "title": "PGM Conjecture Disproved",
+    "content": "**The PGM conjecture is FALSE.**\n\nPontiveros-Griffiths-Morris (2020) conjectured c = 1/4.\n\nThis was disproved by CJMS (2025) who showed c >= 1/3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e165-erdos-544",
+    "proofId": "erdos-165",
+    "range": { "startLine": 259, "endLine": 262 },
+    "type": "axiom",
+    "title": "Related: Erdos #544",
+    "content": "**Erdos Problem #544: General R(k,k)**\n\nThe diagonal Ramsey number R(k,k) satisfies:\n\n2^(k/2) <= R(k,k) <= 4^k\n\nDetermining the base of the exponential is a major open problem.\n\nErdos offered $100 for proving R(k,k) >= 2^(1+epsilon)^k for any epsilon > 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["Diagonal Ramsey numbers"]
+  },
+  {
+    "id": "ann-e165-erdos-986",
+    "proofId": "erdos-165",
+    "range": { "startLine": 264, "endLine": 268 },
+    "type": "axiom",
+    "title": "Related: Erdos #986",
+    "content": "**Erdos Problem #986: R(s,k) for fixed s**\n\nFor fixed s >= 3:\n\nR(s,k) = Theta(k^(s-1) / (log k)^(s-2))\n\nThe case s=3 is Problem #165.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e165-main",
+    "proofId": "erdos-165",
+    "range": { "startLine": 273, "endLine": 298 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdos Problem #165: SOLVED**\n\n**Answer:** R(3,k) = Theta(k^2/log k)\n\nThe theorem provides:\n- Constants c_1 = 1/2, c_2 = 1\n- For any epsilon > 0, there exists k_0 such that for k >= k_0:\n  - (1/2 - epsilon) * k^2/log k <= R(3,k) [from HHKP]\n  - R(3,k) <= (1 + epsilon) * k^2/log k [from Shearer]\n\n**Prize:** The $250 prize was claimed by Kim (1995) for establishing the order of magnitude.",
+    "significance": "critical"
+  }
+]

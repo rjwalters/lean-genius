@@ -1,34 +1,144 @@
 {
   "id": "erdos-165",
-  "title": "Erdős Problem #165",
+  "title": "Erdős Problem #165: Asymptotic Formula for R(3,k)",
   "slug": "erdos-165",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for ....\n\n\n\nIt is known that there exists some constant ... such that for large ...\\[(c+o(1)){\\log...",
+  "description": "Determine the asymptotic formula for R(3,k), the Ramsey number for triangles vs independent sets. The answer is R(3,k) = Θ(k²/log k), with current best bounds (1/2 - o(1))k²/log k ≤ R(3,k) ≤ (1 + o(1))k²/log k.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kim (1995 breakthrough), Shearer (1983 upper), Hefty-Horn-King-Pfender (2025 lower)",
     "sourceUrl": "https://erdosproblems.com/165",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos165Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory",
+      "triangle-free",
+      "probabilistic-method"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 165,
     "erdosUrl": "https://erdosproblems.com/165",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$250"
+    "erdosPrizeValue": "$250",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Basic graph theory definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root of real numbers",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatized Ramsey number function ramseyNumber(m,n)",
+      "Definition of R3(k) = R(3,k) for triangle vs independent set",
+      "Shearer's upper bound (1983): R(3,k) ≤ (1 + o(1))k²/log k",
+      "Kim's breakthrough lower bound (1995): R(3,k) ≥ c·k²/log k",
+      "Bohman-Keevash bound (2021): c ≥ 1/4",
+      "CJMS bound (2025): c ≥ 1/3",
+      "HHKP bound (2025): c ≥ 1/2",
+      "Main theorem combining upper and lower bounds",
+      "Conjectures about exact constant c = 1/2"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #165 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for $R(3,k)$.\n\n\n\nIt is known that there exists some constant $c>0$ such that for large $k$\\[(c+o(1))\\frac{k^2}{\\log k}\\leq R(3,k) \\leq (1+o(1))\\frac{k^2}{\\log k}.\\]The lower bound is due to Kim \\cite{Ki95}, the upper bound is due to Shearer \\cite{Sh83}, improving an earlier bound of Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS80}.\n\nThe value of $c$ in the lower bound has seen a number of improvements. Kim's original proof gave $c\\geq 1/162$. The bound $c\\geq 1/4$ was proved independently by Bohman and Keevash \\cite{BoKe21} and Pontiveros, Griffiths and Morris \\cite{PGM20}. The latter collection of authors conjecture that this lower bound is the true order of magnitude.\n\nThis was, however, improved by Campos, Jenssen, Michelen, and Sahasrabudhe \\cite{CJMS25} to $c\\geq 1/3$, and further by Hefty, Horn, King, and Pfender \\cite{HHKP25} to $c\\geq 1/2$. Both of these papers conjecture that $c=1/2$ is the correct asymptotic.\n\nSee also [544], and [986] for the general case. See [1013] for a related function.\n\n\n\n\nReferences\n\n\n[AKS80] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, A note on Ramsey numbers. J. Combin. Theory Ser. A (1980), 354-360.\n\n[BoKe21] Bohman, Tom and Keevash, Peter, Dynamic concentration of the triangle-free process. Random Structures Algorithms (2021), 221-293.\n\n[CJMS25] M. Campos, M. Jenssen, M. Michelen, and J. Sahasrabudhe, A new lower bound for the Ramsey numbers $R(3,k)$. arXiv:2505.13371 (2025).\n\n[HHKP25] Z. Hefty, P. Horn, D. King, and F. Pfender, Improving $R(3,k)$ in just two bites. arXiv:2510.19718 (2025).\n\n[Ki95] Kim, J. H., The Ramsey number $R(3,t)$ has order of magnitude $t^2/\\log t$. Random Structures and Algorithms (1995), 173-207.\n\n[PGM20] Fiz Pontiveros, Gonzalo and Griffiths, Simon and Morris, Robert, The triangle-free process and the Ramsey number $R(3,k)$. Mem. Amer. Math. Soc. (2020), v+125.\n\n[Sh83] Shearer J., A note on the independence number of triangle-free graphs. Discrete Math. (1983), 83-87.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The R(3,k) Ramsey Number Problem**\n\nThis is one of the most actively studied problems in Ramsey theory. R(3,k) is the minimum N such that any graph on N vertices contains either a triangle (K₃) or an independent set of size k.\n\n**Timeline:**\n- **1980**: Ajtai-Komlós-Szemerédi prove R(3,k) = O(k²/log k)\n- **1983**: Shearer improves to R(3,k) ≤ (1+o(1))k²/log k (tight upper bound)\n- **1995**: Kim proves R(3,k) = Ω(k²/log k) using the triangle-free process\n- **2020-2021**: Bohman-Keevash and Pontiveros-Griffiths-Morris: c ≥ 1/4\n- **2025**: Campos-Jenssen-Michelen-Sahasrabudhe: c ≥ 1/3\n- **2025**: Hefty-Horn-King-Pfender: c ≥ 1/2 (current best)\n\nThe $250 prize was claimed when Kim established the order of magnitude.",
+    "problemStatement": "**Problem Statement**\n\nGive an asymptotic formula for R(3,k).\n\n**Known Bounds:**\n- Upper: R(3,k) ≤ (1 + o(1)) · k²/log k [Shearer 1983]\n- Lower: R(3,k) ≥ (c + o(1)) · k²/log k for some c > 0 [Kim 1995]\n\n**The Question:** What is the exact value of c?\n\n**Current Best:** c ≥ 1/2 [Hefty-Horn-King-Pfender 2025]\n\n**Conjecture:** c = 1/2, meaning R(3,k) ~ (1/2) · k²/log k",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Ramsey Basics:** Axiomatize ramseyNumber(m,n) with symmetry, base cases, and recurrence\n\n2. **R3 Definition:** Define R3(k) = ramseyNumber(3,k) noncomputably\n\n3. **Upper Bounds:** Shearer's independence number result for triangle-free graphs\n\n4. **Lower Bounds:** Chain of improving constants from Kim through HHKP\n\n5. **Triangle-Free Process:** The probabilistic construction underlying lower bounds\n\n6. **Main Theorem:** Combine to get R(3,k) = Θ(k²/log k)\n\n7. **Conjectures:** State and disprove the PGM conjecture (c = 1/4)",
+    "keyInsights": [
+      "**The Upper Bound is Tight:** Shearer's 1983 result R(3,k) ≤ (1+o(1))k²/log k is essentially optimal",
+      "**Kim's Breakthrough:** The semi-random triangle-free process gives the matching lower bound order",
+      "**Recent Progress:** The constant c has improved from 1/162 (Kim) to 1/2 (HHKP) in 30 years",
+      "**The Conjectured Value:** Both CJMS and HHKP conjecture c = 1/2 is the true constant",
+      "**PGM Conjecture Disproved:** The earlier conjecture c = 1/4 is now known to be false",
+      "**Connection to Independence Numbers:** R(3,k) bounds translate to independence numbers in triangle-free graphs"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "ramsey-basics",
+      "title": "Ramsey Numbers - Basic Definitions",
+      "summary": "ramseyNumber axiom, symmetry, base cases, recurrence relation",
+      "startLine": 46,
+      "endLine": 72
+    },
+    {
+      "id": "r3-definition",
+      "title": "R(3,k) - Triangle vs Independent Set",
+      "summary": "R3 definition, characterization, small values",
+      "startLine": 74,
+      "endLine": 95
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "AKS theorem (1980), Shearer's theorem (1983), independence lemma",
+      "startLine": 97,
+      "endLine": 131
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds - History of Constant c",
+      "summary": "Kim (1995), Bohman-Keevash (2021), CJMS (2025), HHKP (2025)",
+      "startLine": 133,
+      "endLine": 177
+    },
+    {
+      "id": "main-result",
+      "title": "Main Asymptotic Result",
+      "summary": "R3_asymptotic_order theorem, current_best_bounds axiom",
+      "startLine": 179,
+      "endLine": 204
+    },
+    {
+      "id": "triangle-free-process",
+      "title": "The Triangle-Free Process",
+      "summary": "Probabilistic construction, Kim's insight",
+      "startLine": 206,
+      "endLine": 231
+    },
+    {
+      "id": "conjectures",
+      "title": "Conjectures and Open Questions",
+      "summary": "Main conjecture (c=1/2), PGM conjecture (disproved)",
+      "startLine": 233,
+      "endLine": 253
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Erdős #544 (general R(k,k)), #986 (R(s,k) for fixed s)",
+      "startLine": 255,
+      "endLine": 268
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Results Summary",
+      "summary": "erdos_165 theorem, prize_claimed",
+      "startLine": 270,
+      "endLine": 303
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #165 asked for an asymptotic formula for R(3,k). The answer is R(3,k) = Θ(k²/log k). The upper bound (1+o(1))k²/log k is due to Shearer (1983). The lower bound has seen dramatic improvement: from c ≥ 1/162 (Kim 1995) to c ≥ 1/2 (Hefty-Horn-King-Pfender 2025). The exact constant remains open, with c = 1/2 being the current conjecture.",
+    "implications": "**Theoretical Connections**\n\n1. **Independence Numbers:** R(3,k) bounds give information about independence numbers in triangle-free graphs\n\n2. **Probabilistic Method:** Kim's triangle-free process exemplifies the power of semi-random methods\n\n3. **Ramsey Theory:** This is a key benchmark problem in the field\n\n4. **Related Problems:** Connects to Erdős #544 (diagonal R(k,k)) and #986 (off-diagonal R(s,k))\n\n5. **Algorithm Design:** The triangle-free process has algorithmic applications",
+    "openQuestions": [
+      "What is the exact value of c in R(3,k) ~ c·k²/log k?",
+      "Is c = 1/2 the correct asymptotic constant?",
+      "Can the triangle-free process analysis be further improved?",
+      "What are the exact values of R(3,k) for small k beyond k=9?",
+      "Complete the sorry-marked proof in R3_asymptotic_order"
+    ]
   }
 }
