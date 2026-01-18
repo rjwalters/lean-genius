@@ -10350,17 +10350,21 @@
   },
   {
     "id": "erdos-721",
-    "title": "Erdős Problem #721",
+    "title": "Erdős Problem #721: Van der Waerden Numbers W(3,k)",
     "slug": "erdos-721",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the van der Waerden number defined as the minimum ... such that in any red/blue colouring of ... there exists eith...",
-    "status": "pending",
+    "description": "Give reasonable bounds for W(3,k), the minimum n such that any red/blue coloring of {1,...,n} contains a red 3-AP or blue k-AP. SOLVED: Both challenges met - superpolynomial lower bounds (Green, Hunter) and subexponential upper bounds (Schoen, Bloom-Sisask).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "van-der-waerden",
+      "arithmetic-progressions",
+      "additive-combinatorics"
     ],
     "erdosNumber": 721,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 18
   },
   {
     "id": "erdos-722",
