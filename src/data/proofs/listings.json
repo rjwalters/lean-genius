@@ -8473,7 +8473,7 @@
     "id": "erdos-591",
     "title": "Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)",
     "slug": "erdos-591",
-    "description": "Does the ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² hold? That is, must every 2-coloring of K_{ω^(ω²)} contain a red copy of itself or a blue triangle?",
+    "description": "The ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² holds. Proved independently by Schipperus (2010) and Darby.",
     "status": "complete",
     "badge": "axiom",
     "tags": [
@@ -8482,7 +8482,7 @@
       "ramsey-theory",
       "ordinals",
       "combinatorics",
-      "open-problem"
+      "solved"
     ],
     "dateAdded": "2026-01-16",
     "erdosNumber": 591,
@@ -10666,17 +10666,24 @@
   },
   {
     "id": "erdos-751",
-    "title": "Erdős Problem #751",
+    "title": "Erdos Problem #751: Cycle Lengths in 4-Chromatic Graphs",
     "slug": "erdos-751",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... If ... are the lengths of the cycles in ... then can ... be arbitrarily large? ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For graphs with chromatic number 4, can consecutive cycle lengths have arbitrarily large gaps? Answer: NO - Bondy-Vince (1998) proved min degree >= 3 implies two cycles differ by at most 2.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cycles",
+      "girth",
+      "minimum-degree"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 751,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-752",
