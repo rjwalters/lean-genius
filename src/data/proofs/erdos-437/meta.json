@@ -1,33 +1,170 @@
 {
   "id": "erdos-437",
-  "title": "Erdős Problem #437",
+  "title": "Erdős Problem #437: Square Partial Products",
   "slug": "erdos-437",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many of the partial products ... can be squares? Is it true that, for any ..., there can be more than ... square...",
+  "description": "For 1 ≤ a₁ < ... < aₖ ≤ x, how many partial products can be squares? Can there be > x^(1-ε) squares? YES, proved by Bui-Pratt-Zaharescu (2024) with precise bounds via hyperelliptic curves.",
   "meta": {
-    "author": "Unknown",
+    "author": "Bui-Pratt-Zaharescu (2024), Tao (bounds)",
     "sourceUrl": "https://erdosproblems.com/437",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos437Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "perfect-squares",
+      "partial-products",
+      "hyperelliptic-curves",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 437,
     "erdosUrl": "https://erdosproblems.com/437",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sqrt",
+        "description": "Integer square root",
+        "module": "Mathlib.Data.Nat.Sqrt"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "List.scanl",
+        "description": "Prefix scan operation",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsStrictlyIncreasing: strictly increasing list predicate",
+      "IsBoundedSequence: bounds constraint on elements",
+      "partialProducts: list of cumulative products",
+      "isSquare: perfect square predicate",
+      "squareCount: count of square partial products",
+      "IsValidSequence: combined validity predicate",
+      "L: maximum square count function",
+      "u: scaling function √(log x · log log x)",
+      "L_le_x axiom: trivial upper bound",
+      "L_little_o_x axiom: o(x) from Siegel's theorem",
+      "erdos437Conjecture: the main question",
+      "erdos_437 axiom: solved affirmatively",
+      "L_lower_bound axiom: x·exp(-(√2+o(1))u(x))",
+      "L_upper_bound axiom: x·exp(-(1/√2+o(1))u(x))",
+      "hyperelliptic_connection: link to algebraic curves"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #437 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq a_1<\\cdots<a_k\\leq x$. How many of the partial products $a_1,a_1a_2,\\ldots,a_1\\cdots a_k$ can be squares? Is it true that, for any $\\epsilon>0$, there can be more than $x^{1-\\epsilon}$ squares?\n\n\n\nErd\\H{o}s and Graham write it is 'trivial' that there are $o(x)$ many such squares, although this is not quite trivial, using Siegel's theorem.\n\nA positive answer follows from work of Bui, Pratt, and Zaharescu \\cite{BPZ24}, as noted by Tao in this blog post. In particular Tao shows that, if $L(x)$ is the maximal number of such squares possible, and $u(x)=(\\log x\\log\\log x)^{1/2}$, then\\[x\\exp(-(2^{1/2}+o(1))u(x)) \\leq L(x) \\leq x\\exp(-(2^{-1/2}+o(1))u(x)).\\]See also [841].\n\n\n\n\nReferences\n\n\n[BPZ24] Bui, Hung M. and Pratt, Kyle and Zaharescu, Alexandru, A problem of Erd\\H{o}s-Graham-Granville-{S}elfridge on\nintegral points on hyperelliptic curves. Math. Proc. Cambridge Philos. Soc. (2024), 309--323.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #437**\n\nThis problem asks about the multiplicative structure of increasing sequences. Given a sequence a₁ < a₂ < ... < aₖ ≤ x, we form partial products a₁, a₁a₂, a₁a₂a₃, etc. The question: how many can be perfect squares?\n\n**Key History:**\n- Erdős-Graham [ErGr80]: Original problem, noted L(x) = o(x) is 'trivial' via Siegel\n- Bui-Pratt-Zaharescu [BPZ24]: Proved the affirmative answer using hyperelliptic curves\n- Tao (blog post): Established precise asymptotic bounds\n\n**Mathematical Setting:**\n- Related to problems about integral points on algebraic curves\n- Connection to Siegel's theorem on elliptic curves\n- Involves analysis of squarefree parts and multiplicative structure",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $1 \\leq a_1 < \\cdots < a_k \\leq x$. How many of the partial products\n$$a_1, a_1a_2, \\ldots, a_1 \\cdots a_k$$\ncan be perfect squares?\n\nIs it true that for any $\\epsilon > 0$, there can be more than $x^{1-\\epsilon}$ squares?\n\n**Answer: YES**\n\n**Precise bounds on $L(x)$ (max square count):**\n$$x \\cdot \\exp\\left(-(\\sqrt{2}+o(1))u(x)\\right) \\leq L(x) \\leq x \\cdot \\exp\\left(-\\left(\\frac{1}{\\sqrt{2}}+o(1)\\right)u(x)\\right)$$\nwhere $u(x) = \\sqrt{\\log x \\cdot \\log\\log x}$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sequence Setup:** Define strictly increasing sequences, boundedness, and partial products.\n\n2. **Square Detection:** Define isSquare predicate and squareCount function.\n\n3. **L(x) Function:** Define L as the supremum of squareCount over valid sequences.\n\n4. **u(x) Scale:** The natural scale is u(x) = √(log x · log log x).\n\n5. **Bounds:** Axiomatize the Erdős-Graham o(x) bound and Bui-Pratt-Zaharescu precise bounds.\n\n6. **Main Result:** The conjecture erdos437Conjecture is TRUE.\n\n7. **Proof Ingredients:** Connection to hyperelliptic curves and Siegel's theorem.",
+    "keyInsights": [
+      "**Partial Products as Multiplicative Sums:** Each partial product accumulates prime factors multiplicatively",
+      "**Squareness Constraint:** A product is square iff all prime exponents are even",
+      "**o(x) is 'Trivial':** Erdős-Graham use Siegel's theorem on elliptic curves for L(x) = o(x)",
+      "**But x^(1-ε) is Achievable:** Despite being o(x), L(x) grows faster than any x^(1-ε)",
+      "**Hyperelliptic Curves:** The key is counting integral points on curves y² = polynomial",
+      "**u(x) Scale:** The factor √(log x · log log x) appears naturally in the analysis"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "partial-products",
+      "title": "Partial Products",
+      "summary": "IsStrictlyIncreasing, IsBoundedSequence, partialProducts",
+      "startLine": 36,
+      "endLine": 67
+    },
+    {
+      "id": "square-counting",
+      "title": "Square Counting",
+      "summary": "isSquare, DecidablePred, squareCount",
+      "startLine": 68,
+      "endLine": 96
+    },
+    {
+      "id": "l-function",
+      "title": "The Function L(x)",
+      "summary": "IsValidSequence, L definition",
+      "startLine": 97,
+      "endLine": 117
+    },
+    {
+      "id": "u-function",
+      "title": "The u(x) Function",
+      "summary": "u(x) = √(log x · log log x)",
+      "startLine": 118,
+      "endLine": 130
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "L_le_x, L_little_o_x via Siegel",
+      "startLine": 131,
+      "endLine": 148
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "erdos437Conjecture, erdos_437 axiom",
+      "startLine": 149,
+      "endLine": 167
+    },
+    {
+      "id": "precise-bounds",
+      "title": "Precise Bounds",
+      "summary": "L_lower_bound, L_upper_bound by Tao",
+      "startLine": 168,
+      "endLine": 191
+    },
+    {
+      "id": "proof-ingredients",
+      "title": "Proof Ingredients",
+      "summary": "siegel_theorem_consequence, hyperelliptic_connection",
+      "startLine": 192,
+      "endLine": 214
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "powers_of_four_all_squares, primes_few_squares",
+      "startLine": 215,
+      "endLine": 238
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Analysis",
+      "summary": "L_growth_rate, L_beats_power",
+      "startLine": 239,
+      "endLine": 272
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_437_summary, erdos_437_answer",
+      "startLine": 273,
+      "endLine": 300
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #437 asked whether the maximum number of square partial products L(x) can exceed x^(1-ε) for any ε > 0. The answer is YES, proved by Bui-Pratt-Zaharescu (2024). Tao established precise bounds showing L(x) is between x·exp(-(√2+o(1))u(x)) and x·exp(-(1/√2+o(1))u(x)) where u(x) = √(log x · log log x).",
+    "implications": "**Mathematical Connections**\n\n1. **Siegel's Theorem:** Implies L(x) = o(x) via finiteness of integral points on elliptic curves\n\n2. **Hyperelliptic Curves:** The precise bounds come from analyzing y² = product polynomial\n\n3. **Multiplicative Number Theory:** Connects to distribution of squarefree parts\n\n4. **Related to #841:** Companion problem on related multiplicative structures\n\n5. **Subexponential Growth:** L(x)/x decays like exp(-c√(log x · log log x))",
+    "openQuestions": [
+      "What is the exact leading constant in the exponent?",
+      "Can we construct explicit sequences achieving L(x)?",
+      "How does the problem generalize to k-th powers?",
+      "What happens for non-increasing sequences?",
+      "Connection to the abc conjecture?"
+    ]
   }
 }
