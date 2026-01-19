@@ -1,33 +1,145 @@
 {
   "id": "erdos-207",
-  "title": "Erdős Problem #207",
+  "title": "Erdős Problem #207: High-Girth Steiner Triple Systems",
   "slug": "erdos-207",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ..., if ... is sufficiently large and ... then there exists a 3-uniform hypergraph on ... vertices such that\n{UL}\n{LI...",
+  "description": "For g≥2 and large admissible n, do STS(n) with girth ≥g exist? YES (Kwan-Sah-Sawhney-Simkin 2022).",
   "meta": {
-    "author": "Unknown",
+    "author": "Kwan-Sah-Sawhney-Simkin (2022 proof)",
     "sourceUrl": "https://erdosproblems.com/207",
-    "date": "",
-    "status": "pending",
+    "date": "2022",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos207Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "steiner-systems",
+      "hypergraphs",
+      "design-theory",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 207,
     "erdosUrl": "https://erdosproblems.com/207",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.biUnion",
+        "description": "Union over finite set family",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Hypergraph3 structure: 3-uniform hypergraph",
+      "edgeContainsPair, IsSteinerTripleSystem definitions",
+      "vertexSpan, HasGirthAtLeast definitions",
+      "IsAdmissible definition: n ≡ 1,3 (mod 6)",
+      "kirkman_theorem axiom: STS existence condition",
+      "erdos207Conjecture definition",
+      "kwan_sah_sawhney_simkin_2022 axiom: main solution",
+      "IsPaschConfiguration, IsPaschFree definitions",
+      "girth_3_iff_pasch_free theorem",
+      "IsResolvable, kirkmanSchoolgirlProblem definitions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #207 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $g\\geq 2$, if $n$ is sufficiently large and $\\equiv 1,3\\pmod{6}$ then there exists a 3-uniform hypergraph on $n$ vertices such that\n{UL}\n{LI}every pair of vertices is contained in exactly one edge (i.e. the graph is a Steiner triple system) and{/LI}\n{LI}for any $2\\leq j\\leq g$ any collection of $j$ edges contains at least $j+3$ vertices.{/LI}\n{/UL}\n\n\n\nProved by Kwan, Sah, Sawhney, and Simkin \\cite{KSSS22b}.\n\n\n\n\nReferences\n\n\n[KSSS22b] Kwan, M. and Sah, A. and Sawhney, M. and Simkin, M., High-girth Steiner triple systems. arXiv:2201.04554 (2022).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Steiner Triple Systems and High Girth**\n\nA Steiner triple system (STS) of order n is a collection of 3-element subsets (triples) of an n-set such that every pair of elements appears in exactly one triple. These fundamental combinatorial structures were first studied by Kirkman in 1847, who proved they exist if and only if n ≡ 1 or 3 (mod 6).\n\n**The Girth Question**\n\nErdős asked in 1976 whether STS with arbitrarily high girth exist. The girth condition requires that any j edges (2 ≤ j ≤ g) span at least j+3 vertices, preventing \"tight\" configurations where edges overlap heavily.\n\n**The Resolution (2022)**\n\nKwan, Sah, Sawhney, and Simkin resolved this in 2022 using a sophisticated random greedy construction. Their proof employs the Rödl nibble method and introduces a \"spread measure\" to control the girth property during construction.\n\n**Special Case: Pasch-Free STS**\n\nThe girth-3 case corresponds to avoiding the Pasch configuration (4 triples on 6 vertices). Anti-Pasch STS were known to exist before KSSS's general result.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nFor any $g \\geq 2$, if $n$ is sufficiently large and $n \\equiv 1, 3 \\pmod{6}$, does there exist a 3-uniform hypergraph on $n$ vertices such that:\n1. Every pair of vertices is contained in exactly one edge (Steiner triple system)\n2. For any $2 \\leq j \\leq g$, any collection of $j$ edges contains at least $j+3$ vertices\n\n**Answer: YES**\n\nKwan, Sah, Sawhney, and Simkin (2022) proved that high-girth Steiner triple systems exist for all admissible orders.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraphs:** Define Hypergraph3 structure for 3-uniform hypergraphs.\n\n2. **STS Property:** Formalize IsSteinerTripleSystem requiring each pair in exactly one edge.\n\n3. **Girth:** Define HasGirthAtLeast requiring j edges span ≥ j+3 vertices.\n\n4. **Admissibility:** Define IsAdmissible for n ≡ 1, 3 (mod 6).\n\n5. **Main Result:** Axiomatize Kirkman's theorem and KSSS theorem.\n\n6. **Special Cases:** Define Pasch configurations and anti-Pasch STS.\n\n7. **Related:** Include resolvable STS and Kirkman schoolgirl problem.\n\n**Why Axiomatization?** The KSSS proof is highly technical, using probabilistic combinatorics (Rödl nibble, concentration inequalities) far beyond Mathlib.",
+    "keyInsights": [
+      "**Kirkman's Condition:** STS(n) exists iff n ≡ 1, 3 (mod 6). This is necessary for the girth question to make sense.",
+      "**Why j+3?:** Two edges share at most 1 vertex in an STS, so 2 edges span ≥ 5 = 2+3 vertices. The condition generalizes this.",
+      "**Pasch Configuration:** The obstacle to girth 3 - four triples {abc, ade, bdf, cef} on 6 vertices.",
+      "**Random Greedy Works:** Surprisingly, a careful random construction achieves arbitrary girth.",
+      "**Spread Measure:** The key technical innovation in KSSS - measures how uniformly distributed a partial STS is."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypergraphs",
+      "title": "Hypergraphs and STS",
+      "summary": "Hypergraph3, edgeContainsPair, IsSteinerTripleSystem definitions",
+      "startLine": 37,
+      "endLine": 64
+    },
+    {
+      "id": "girth",
+      "title": "Girth Conditions",
+      "summary": "vertexSpan, HasGirthAtLeast, girthExplanation",
+      "startLine": 65,
+      "endLine": 95
+    },
+    {
+      "id": "admissibility",
+      "title": "The Admissibility Condition",
+      "summary": "IsAdmissible, kirkman_theorem, stsTripleCount",
+      "startLine": 96,
+      "endLine": 125
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "erdos207Conjecture definition",
+      "startLine": 126,
+      "endLine": 139
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "kwan_sah_sawhney_simkin_2022, erdos_207 theorem",
+      "startLine": 140,
+      "endLine": 158
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Girth 2, Pasch configurations, anti-Pasch STS",
+      "startLine": 159,
+      "endLine": 197
+    },
+    {
+      "id": "techniques",
+      "title": "Proof Techniques",
+      "summary": "Random construction, spread measure",
+      "startLine": 198,
+      "endLine": 219
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "IsResolvable, kirkmanSchoolgirlProblem",
+      "startLine": 220,
+      "endLine": 244
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_207_summary theorem",
+      "startLine": 245,
+      "endLine": 282
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #207 asked whether high-girth Steiner triple systems exist for all admissible orders. Kwan, Sah, Sawhney, and Simkin (2022) proved YES using a random greedy construction with spread measure analysis. The result generalizes earlier work on Pasch-free (girth ≥ 3) STS to arbitrary girth.",
+    "implications": "**Implications in Design Theory**\n\n1. **Arbitrary Girth:** Any forbidden configuration can be avoided in large STS.\n\n2. **Random Methods Work:** Even for highly structured objects like STS, probabilistic constructions succeed.\n\n3. **Spread Measure Technique:** A new tool applicable to other design construction problems.\n\n4. **Hypergraph Regularity:** Connects to Szemerédi-type regularity for hypergraphs.\n\n5. **Coding Theory:** High-girth STS relate to error-correcting codes with specific distance properties.",
+    "openQuestions": [
+      "Explicit constructions (non-random) for high-girth STS",
+      "Optimal threshold N(g) for existence",
+      "High-girth Steiner systems with other block sizes",
+      "Counting high-girth STS of order n",
+      "Resolvable high-girth STS"
+    ]
   }
 }
