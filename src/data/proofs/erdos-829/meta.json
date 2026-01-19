@@ -1,33 +1,133 @@
 {
   "id": "erdos-829",
-  "title": "Erdős Problem #829",
+  "title": "Erdős Problem #829: Representations as Sums of Two Cubes",
   "slug": "erdos-829",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of cubes. Is it true that\\[1_A\\ast 1_A(n) \\ll (\\log n)^{O(1)}?\\]\n\n\n\nMordell proved that\\[\\limsup_{n\\to \\in...",
+  "description": "Is 1_A * 1_A(n) << (log n)^{O(1)} where A is the set of cubes? OPEN. Known: Mordell (unbounded), Mahler (>>(log n)^{1/4}), Stewart (>>(log n)^{11/13}).",
   "meta": {
-    "author": "Unknown",
+    "author": "Mordell (unbounded), Mahler (1935 lower bound), Stewart (2008 improvement)",
     "sourceUrl": "https://erdosproblems.com/829",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos829Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "cubes",
+      "representation-functions",
+      "elliptic-curves",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 829,
     "erdosUrl": "https://erdosproblems.com/829",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm function for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Counting representations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Asymptotic behavior",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsCube definition: perfect cubes",
+      "CubeSet definition: set of cubes",
+      "cubeRepresentations definition: r_2(n) representation function",
+      "HasPolylogBound definition: the Erdős question",
+      "ErdosQuestion definition: main problem formulation",
+      "mordell_unbounded axiom: limsup = infinity",
+      "mahler_1935 axiom: (log n)^{1/4} lower bound",
+      "stewart_2008 axiom: (log n)^{11/13} lower bound",
+      "hardy_ramanujan_1729 axiom: taxicab number",
+      "elliptic_curve_connection axiom: connection to curves",
+      "erdos_829_summary theorem: state of knowledge"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #829 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be the set of cubes. Is it true that\\[1_A\\ast 1_A(n) \\ll (\\log n)^{O(1)}?\\]\n\n\n\nMordell proved that\\[\\limsup_{n\\to \\infty} 1_A\\ast 1_A(n)=\\infty\\]and Mahler \\cite{Ma35b} proved\\[1_A\\ast 1_A(n) \\gg (\\log n)^{1/4}\\]for infinitely many $n$. Stewart \\cite{St08} improved this to\\[1_A\\ast 1_A(n) \\gg (\\log n)^{11/13}.\\]\n\n\n\n\nReferences\n\n\n[Ma35b] Mahler, Kurt, On the Lattice Points on Curves of Genus 1. Proc. London Math. Soc. (2) (1935), 431-466.\n\n[St08] Stewart, Cameron L., Cubic {T}hue equations with many solutions. Int. Math. Res. Not. IMRN (2008), Art. ID rnn040, 11.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #829**\n\nA question about the growth rate of the representation function for sums of two cubes.\n\n**Key History:**\n- Mordell: Proved the representation function is unbounded\n- Mahler (1935): Established lower bound (log n)^{1/4} infinitely often\n- Stewart (2008): Improved to (log n)^{11/13} infinitely often\n\n**Connection to 1729:**\nThe Hardy-Ramanujan number 1729 = 1³ + 12³ = 9³ + 10³ is the smallest taxicab number.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet A ⊂ ℕ be the set of perfect cubes. Is it true that\n\n1_A * 1_A(n) << (log n)^{O(1)} ?\n\nIn words: Is the number of representations of n as a sum of two cubes bounded by some power of log n?\n\n**Status: OPEN**\n\nWe know lower bounds but no upper bound has been established.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cubes:** Define IsCube, CubeSet for perfect cubes\n\n2. **Representation Function:** cubeRepresentations counting pairs\n\n3. **The Question:** HasPolylogBound, ErdosQuestion\n\n4. **Lower Bounds:** mordell_unbounded, mahler_1935, stewart_2008\n\n5. **Examples:** Hardy-Ramanujan 1729, taxicab numbers\n\n6. **Theory:** Elliptic curve connections",
+    "keyInsights": [
+      "**Unbounded Growth:** Mordell showed limsup r_2(n) = infinity",
+      "**Best Lower Bound:** Stewart (2008): r_2(n) >> (log n)^{11/13} infinitely often",
+      "**Elliptic Curve Connection:** Representations correspond to rational points on x³ + y³ = n",
+      "**1729 - Hardy-Ramanujan:** Smallest number with 2 representations as sum of two cubes",
+      "**Gap Remains:** Upper bound question completely open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cubes-representation",
+      "title": "Cubes and Representation Function",
+      "summary": "IsCube, CubeSet, cubeRepresentations definitions",
+      "startLine": 38,
+      "endLine": 72
+    },
+    {
+      "id": "erdos-question",
+      "title": "The Erdős Question",
+      "summary": "HasPolylogBound, ErdosQuestion definitions",
+      "startLine": 74,
+      "endLine": 92
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "summary": "mordell_unbounded, mahler_1935, stewart_2008 axioms",
+      "startLine": 94,
+      "endLine": 143
+    },
+    {
+      "id": "famous-examples",
+      "title": "Famous Examples",
+      "summary": "1729 Hardy-Ramanujan number, taxicab numbers",
+      "startLine": 145,
+      "endLine": 172
+    },
+    {
+      "id": "theory",
+      "title": "Theoretical Framework",
+      "summary": "Elliptic curves, density, cube-free numbers",
+      "startLine": 174,
+      "endLine": 208
+    },
+    {
+      "id": "the-gap",
+      "title": "The Gap",
+      "summary": "What remains unknown, why it's hard",
+      "startLine": 210,
+      "endLine": 234
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_829_summary, erdos_829 theorems",
+      "startLine": 260,
+      "endLine": 313
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #829 asks whether the number of representations of n as a sum of two cubes is bounded by (log n)^c for some constant c. The problem remains OPEN. Known lower bounds show r_2(n) >> (log n)^{11/13} infinitely often (Stewart 2008), but no upper bound is known.",
+    "implications": "**Number Theory Connections**\n\n1. **Elliptic Curves:** Representations correspond to rational points on x³ + y³ = n\n\n2. **Rank Distribution:** Problem is connected to ranks of elliptic curves\n\n3. **Taxicab Numbers:** Study of numbers with multiple representations\n\n4. **Additive Combinatorics:** Convolution of indicator functions\n\n5. **Waring's Problem:** Related questions about sums of powers",
+    "openQuestions": [
+      "Is there ANY upper bound r_2(n) << (log n)^c?",
+      "What is the true growth rate of max r_2(n)?",
+      "Connection to ranks of elliptic curves?",
+      "Can the exponent 11/13 be improved?",
+      "Analogues for higher powers?"
+    ]
   }
 }

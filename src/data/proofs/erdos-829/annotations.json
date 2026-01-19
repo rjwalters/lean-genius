@@ -1,1 +1,148 @@
-[]
+[
+  {
+    "id": "ann-e829-header",
+    "proofId": "erdos-829",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #829: Sums of Two Cubes**\n\nIs 1_A * 1_A(n) << (log n)^{O(1)} where A is the set of cubes?\n\n**Status: OPEN**\n\nKnown lower bounds exist but no upper bound has been established.",
+    "mathContext": "This connects additive number theory, elliptic curves, and the distribution of cube sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Perfect cubes", "Representation functions", "Elliptic curves", "Taxicab numbers"]
+  },
+  {
+    "id": "ann-e829-cube",
+    "proofId": "erdos-829",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "definition",
+    "title": "Perfect Cube",
+    "content": "**IsCube:**\n\nn is a perfect cube if n = k³ for some natural number k.\n\nA = {0, 1, 8, 27, 64, 125, 216, ...}",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e829-representation",
+    "proofId": "erdos-829",
+    "range": { "startLine": 55, "endLine": 64 },
+    "type": "definition",
+    "title": "Representation Function",
+    "content": "**cubeRepresentations:**\n\nr₂(n) = number of ways to write n as a³ + b³ with a ≤ b.\n\nThis is the convolution 1_A * 1_A(n) of the cube indicator function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-polylog",
+    "proofId": "erdos-829",
+    "range": { "startLine": 78, "endLine": 84 },
+    "type": "definition",
+    "title": "Polylogarithmic Bound",
+    "content": "**HasPolylogBound:**\n\nDoes r₂(n) ≤ C·(log n)^c for some constants C, c?\n\nThis is the open question - we know lower bounds but not upper bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-erdos-q",
+    "proofId": "erdos-829",
+    "range": { "startLine": 86, "endLine": 92 },
+    "type": "definition",
+    "title": "The Erdős Question",
+    "content": "**ErdosQuestion:**\n\nIs 1_A * 1_A(n) << (log n)^{O(1)}?\n\nEquivalently: Is the representation function bounded by any power of log n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-mordell",
+    "proofId": "erdos-829",
+    "range": { "startLine": 98, "endLine": 106 },
+    "type": "axiom",
+    "title": "Mordell's Theorem",
+    "content": "**mordell_unbounded:**\n\nThe representation function is unbounded: limsup r₂(n) = ∞.\n\nThere exist integers with arbitrarily many representations as sums of two cubes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-mahler",
+    "proofId": "erdos-829",
+    "range": { "startLine": 125, "endLine": 132 },
+    "type": "axiom",
+    "title": "Mahler's Theorem (1935)",
+    "content": "**mahler_1935:**\n\nFor infinitely many n: r₂(n) >> (log n)^{1/4}.\n\nThis quantified how fast the representation function grows.\n\nPublished in Proc. London Math. Soc. (1935).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e829-stewart",
+    "proofId": "erdos-829",
+    "range": { "startLine": 134, "endLine": 143 },
+    "type": "axiom",
+    "title": "Stewart's Theorem (2008)",
+    "content": "**stewart_2008:**\n\nFor infinitely many n: r₂(n) >> (log n)^{11/13}.\n\nThis significantly improved Mahler's exponent from 1/4 ≈ 0.25 to 11/13 ≈ 0.846.\n\nPublished in Int. Math. Res. Not. IMRN (2008).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-1729",
+    "proofId": "erdos-829",
+    "range": { "startLine": 149, "endLine": 165 },
+    "type": "concept",
+    "title": "Hardy-Ramanujan Number 1729",
+    "content": "**The Taxicab Number:**\n\n1729 = 1³ + 12³ = 9³ + 10³\n\nFamous story: Hardy visited Ramanujan in hospital, mentioning his taxi number 1729 was 'dull'. Ramanujan instantly noted it's the smallest number expressible as a sum of two cubes in two different ways.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e829-taxicab3",
+    "proofId": "erdos-829",
+    "range": { "startLine": 167, "endLine": 172 },
+    "type": "concept",
+    "title": "Taxicab(3)",
+    "content": "**taxicab_3:**\n\n87539319 = 167³ + 436³ = 228³ + 423³ = 255³ + 414³\n\nThe smallest number with 3 representations as sum of two cubes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e829-elliptic",
+    "proofId": "erdos-829",
+    "range": { "startLine": 178, "endLine": 186 },
+    "type": "concept",
+    "title": "Elliptic Curve Connection",
+    "content": "**elliptic_curve_connection:**\n\nRepresentations a³ + b³ = n correspond to rational points on the elliptic curve x³ + y³ = n.\n\nBy Mordell-Weil theorem, these curves have finitely generated point groups, but varying ranks.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-density",
+    "proofId": "erdos-829",
+    "range": { "startLine": 188, "endLine": 198 },
+    "type": "concept",
+    "title": "Density of Sums",
+    "content": "**density_of_sums:**\n\nThe counting function of numbers representable as sums of two cubes is asymptotically ~ c·x^{2/3}.\n\nMost integers cannot be expressed as sums of two cubes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e829-gap",
+    "proofId": "erdos-829",
+    "range": { "startLine": 214, "endLine": 225 },
+    "type": "concept",
+    "title": "The Open Gap",
+    "content": "**the_gap:**\n\nKnown: r₂(n) >> (log n)^{11/13} infinitely often (Stewart)\n\nUnknown: Is r₂(n) << (log n)^c for ANY c?\n\nThe gap between 11/13 ≈ 0.846 (lower) and unknown (upper) remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-difficulty",
+    "proofId": "erdos-829",
+    "range": { "startLine": 227, "endLine": 234 },
+    "type": "concept",
+    "title": "Why It's Hard",
+    "content": "**difficulty_reasons:**\n\nThe problem is connected to:\n1. Ranks of elliptic curves x³ + y³ = n\n2. Distribution of rational points\n3. Deep questions in algebraic number theory\n\nUnderstanding these requires controlling arithmetic of many curves simultaneously.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e829-main",
+    "proofId": "erdos-829",
+    "range": { "startLine": 295, "endLine": 298 },
+    "type": "theorem",
+    "title": "Erdős Problem #829: OPEN",
+    "content": "**erdos_829:**\n\nStatus: OPEN\n\nThe question of whether r₂(n) << (log n)^c remains unanswered.\n\nWe formalize known results as axioms while the main question is open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e829-summary",
+    "proofId": "erdos-829",
+    "range": { "startLine": 264, "endLine": 293 },
+    "type": "theorem",
+    "title": "State of Knowledge",
+    "content": "**erdos_829_summary:**\n\n1. **Mordell:** limsup r₂(n) = ∞ (unbounded)\n2. **Mahler (1935):** r₂(n) >> (log n)^{1/4} infinitely often\n3. **Stewart (2008):** r₂(n) >> (log n)^{11/13} infinitely often\n\n**Open:** Upper bound r₂(n) << (log n)^c?",
+    "significance": "critical"
+  }
+]
