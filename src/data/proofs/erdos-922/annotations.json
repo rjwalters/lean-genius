@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "id": "ann-e922-independent-set",
+    "proofId": "erdos-922",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "**IsIndependentSet S:**\n\nA set S of vertices is independent if no two vertices in S are adjacent.\n\n**Definition:**\n```lean\ndef IsIndependentSet (S : Finset V) : Prop :=\n  ∀ u ∈ S, ∀ v ∈ S, ¬G.Adj u v\n```\n\nIndependent sets are central to graph coloring: each color class must be independent.",
+    "mathContext": "Finding maximum independent sets is NP-hard in general, making this property computationally interesting.",
+    "significance": "critical",
+    "relatedConcepts": ["Clique", "Vertex cover", "Graph coloring"]
+  },
+  {
+    "id": "ann-e922-independence-number",
+    "proofId": "erdos-922",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "**independenceNumber G = α(G):**\n\nThe size of the largest independent set in G.\n\n**Properties:**\n- α(Kₙ) = 1 (complete graph: only singletons)\n- α(empty graph on n vertices) = n\n- χ(G) ≥ n/α(G) (lower bound on chromatic number)",
+    "significance": "key",
+    "relatedConcepts": ["Clique number", "Ramsey numbers", "Perfect graphs"]
+  },
+  {
+    "id": "ann-e922-proper-coloring",
+    "proofId": "erdos-922",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Proper Coloring",
+    "content": "**IsProperColoring c:**\n\nA coloring c : V → ℕ is proper if adjacent vertices have different colors.\n\n**Definition:**\n```lean\ndef IsProperColoring (c : V → ℕ) : Prop :=\n  ∀ u v, G.Adj u v → c u ≠ c v\n```\n\nEach color class in a proper coloring is an independent set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e922-chromatic-number",
+    "proofId": "erdos-922",
+    "range": { "startLine": 59, "endLine": 68 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber' G = χ(G):**\n\nThe minimum number of colors needed for a proper coloring.\n\n**Examples:**\n- χ(Kₙ) = n (complete graph)\n- χ(bipartite) ≤ 2\n- χ(odd cycle) = 3\n\nComputing χ(G) is NP-hard in general.",
+    "mathContext": "The chromatic number is one of the most studied graph invariants.",
+    "significance": "critical",
+    "relatedConcepts": ["Four color theorem", "Chromatic polynomial", "Perfect graphs"]
+  },
+  {
+    "id": "ann-e922-folkman-property",
+    "proofId": "erdos-922",
+    "range": { "startLine": 77, "endLine": 87 },
+    "type": "definition",
+    "title": "The Folkman Property",
+    "content": "**hasFolkmanPropertyInduced k:**\n\nEvery induced subgraph on W vertices has an independent set of size at least (|W|-k)/2.\n\n**Equivalently:** α(H) ≥ (|V(H)| - k)/2 for all induced subgraphs H.\n\nThis is the key condition in Erdős Problem #922.",
+    "mathContext": "The condition must hold for ALL subgraphs, not just the original graph.",
+    "significance": "critical",
+    "relatedConcepts": ["Subgraph", "Induced subgraph", "Hereditary property"]
+  },
+  {
+    "id": "ann-e922-k0-case",
+    "proofId": "erdos-922",
+    "range": { "startLine": 95, "endLine": 96 },
+    "type": "definition",
+    "title": "The k = 0 Case",
+    "content": "**hasFolkmanPropertyZero:**\n\nEvery subgraph has α ≥ n/2.\n\n**Key observation:** This forces the graph to be bipartite!\n\n**Why:** An odd cycle Cₙ has α = (n-1)/2 < n/2, so odd cycles are forbidden.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e922-k0-bipartite",
+    "proofId": "erdos-922",
+    "range": { "startLine": 98, "endLine": 103 },
+    "type": "theorem",
+    "title": "k = 0 Implies Bipartiteness",
+    "content": "**folkman_zero_implies_bipartite:**\n\nIf every subgraph has α ≥ n/2, then χ(G) ≤ 2.\n\n**Proof idea:**\n- No odd cycles exist (they violate the condition)\n- A graph is bipartite iff it has no odd cycles\n- Bipartite graphs are 2-colorable",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e922-folkman-theorem",
+    "proofId": "erdos-922",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "axiom",
+    "title": "Folkman's Theorem (1970)",
+    "content": "**folkman_theorem:**\n\nIf G has the Folkman property with parameter k, then χ(G) ≤ k+2.\n\n**Statement:**\n```lean\naxiom folkman_theorem :\n  ∀ (k : ℕ), hasFolkmanPropertyInduced G k → χ(G) ≤ k + 2\n```\n\nThis is the main result, proved by Jon Folkman in 1970.",
+    "mathContext": "Folkman's original proof uses induction and careful analysis of graph structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e922-erdos-922",
+    "proofId": "erdos-922",
+    "range": { "startLine": 121, "endLine": 124 },
+    "type": "theorem",
+    "title": "Erdős Problem #922: SOLVED",
+    "content": "**erdos_922:**\n\nThe statement of the problem, now a theorem:\n\n∀ k ≥ 0, Folkman property with k → χ(G) ≤ k+2\n\n**Answer: YES** - proved by Folkman (1970).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e922-tightness",
+    "proofId": "erdos-922",
+    "range": { "startLine": 132, "endLine": 136 },
+    "type": "axiom",
+    "title": "The Bound is Tight",
+    "content": "**folkman_bound_tight:**\n\nFor every k ≥ 0, there exist graphs achieving χ(G) = k+2 while satisfying the Folkman property.\n\nThe bound k+2 cannot be improved in general.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e922-k1-case",
+    "proofId": "erdos-922",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "theorem",
+    "title": "The k = 1 Case",
+    "content": "**folkman_k1:**\n\nFor k = 1: Folkman property implies χ(G) ≤ 3.\n\nThis is the first non-trivial case that Erdős and Hajnal couldn't prove themselves.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e922-independence-ratio",
+    "proofId": "erdos-922",
+    "range": { "startLine": 152, "endLine": 154 },
+    "type": "definition",
+    "title": "Independence Ratio",
+    "content": "**independenceRatio:**\n\nα(G)/n - the fraction of vertices in a maximum independent set.\n\nThe Folkman property with k says: for all subgraphs H on m vertices, α(H)/m ≥ (m-k)/(2m).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e922-greedy-bound",
+    "proofId": "erdos-922",
+    "range": { "startLine": 173, "endLine": 175 },
+    "type": "axiom",
+    "title": "Greedy Coloring Bound",
+    "content": "**greedy_coloring_bound:**\n\nχ(G) ≤ Δ(G) + 1 where Δ(G) is the maximum degree.\n\nGreedy coloring always uses at most Δ+1 colors. Folkman graphs have special degree structure.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e922-erdos-hajnal",
+    "proofId": "erdos-922",
+    "range": { "startLine": 189, "endLine": 195 },
+    "type": "definition",
+    "title": "The Erdős-Hajnal Formulation",
+    "content": "**erdosHajnalQuestion k:**\n\nThe original 1967 question:\n\nIf every subgraph H has an independent set of size ≥ (|V(H)|-k)/2, must χ(G) ≤ k+2?\n\nErdős and Hajnal couldn't prove even k=1. Folkman resolved all cases in 1970.",
+    "mathContext": "Published in Magyar Tudomanyos Akademia Matematikai Lapok (1967).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e922-ramsey",
+    "proofId": "erdos-922",
+    "range": { "startLine": 207, "endLine": 211 },
+    "type": "axiom",
+    "title": "Ramsey Connection",
+    "content": "**ramsey_connection:**\n\nLarge graphs have either large cliques or large independent sets.\n\nThis Ramsey-type principle underlies why the Folkman property constrains chromatic number.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ramsey theorem", "Ramsey numbers"]
+  },
+  {
+    "id": "ann-e922-brooks",
+    "proofId": "erdos-922",
+    "range": { "startLine": 213, "endLine": 216 },
+    "type": "axiom",
+    "title": "Brooks' Theorem",
+    "content": "**brooks_theorem:**\n\nχ(G) ≤ Δ(G) unless G is complete or an odd cycle.\n\nBrooks' theorem improves greedy coloring for most graphs. It's related but distinct from Folkman's result.",
+    "mathContext": "Proved by R. L. Brooks in 1941.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e922-summary",
+    "proofId": "erdos-922",
+    "range": { "startLine": 225, "endLine": 235 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_922_summary:**\n\nCombines the main results:\n1. Folkman's theorem: property with k → χ ≤ k+2\n2. Tightness: bound is achieved for all k\n3. Special case: k=0 gives bipartiteness\n\nThe answer to Erdős Problem #922 is YES.",
+    "significance": "critical"
+  }
+]
