@@ -1,1 +1,125 @@
-[]
+[
+  {
+    "id": "ann-e1086-header",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1086: Maximum Triangles with Equal Area**\n\nLet g(n) = max number of triangles with the same area from any n points in ℝ².\n\n**Current Bounds:**\n- Lower: n² log log n (Erdős-Purdy, 1971)\n- Upper: n^(20/9) ≈ n^2.222 (Raz-Sharir, 2017)\n\n**Status:** OPEN - the exact growth rate of g(n) is unknown.\n\n**Attribution:** Erdős-Purdy attribute the question to Oppenheim.",
+    "mathContext": "This is a fundamental problem in discrete geometry, connecting to incidence geometry and extremal combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["Triangle area", "Point configurations", "Incidence geometry"]
+  },
+  {
+    "id": "ann-e1086-area-count",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "axiom",
+    "title": "Triangle Area Count",
+    "content": "**triangleAreaCount:**\n\nFor a given configuration of n points and an area value a, counts how many triangles with those vertices have area exactly a.\n\nThis is a function of both the geometric configuration and the target area.",
+    "significance": "key",
+    "relatedConcepts": ["Triangle area", "Point configuration"]
+  },
+  {
+    "id": "ann-e1086-g-function",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 61, "endLine": 70 },
+    "type": "axiom",
+    "title": "The g(n) Function",
+    "content": "**maxEqualAreaTriangles (g(n)):**\n\nThe maximum, over all n-point configurations and all areas, of the triangle count.\n\n**Definition:**\ng(n) = max_{config, area} triangleAreaCount(n, config, area)\n\nThis is the quantity Erdős asks to estimate.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal function", "Maximum count"]
+  },
+  {
+    "id": "ann-e1086-lower-bound",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 83, "endLine": 91 },
+    "type": "axiom",
+    "title": "Erdős-Purdy Lower Bound (1971)",
+    "content": "**erdos_purdy_lower_bound:**\n\ng(n) ≫ n² log log n\n\nThis means there exist point configurations with Ω(n² log log n) triangles of the same area.\n\n**Notable:** The log log n factor is unusual and suggests subtle structure in optimal configurations.\n\nErdős-Purdy believed this lower bound is close to the truth.",
+    "mathContext": "The log log n factor arises from a clever construction using multiplicative structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bound", "Construction"]
+  },
+  {
+    "id": "ann-e1086-raz-sharir",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 101, "endLine": 109 },
+    "type": "axiom",
+    "title": "Raz-Sharir Upper Bound (2017)",
+    "content": "**raz_sharir_2017:**\n\ng(n) ≪ n^(20/9) ≈ n^2.222\n\nThis is the current best known upper bound.\n\n**History of Upper Bounds:**\n1. Erdős-Purdy (1971): n^(5/2) = n^2.5\n2. Pach-Sharir (1992): Improved\n3. DST (2009): Further improved\n4. Apfelbaum-Sharir (2010): Further improved\n5. Raz-Sharir (2017): n^(20/9)",
+    "mathContext": "Upper bounds use sophisticated techniques from incidence geometry, particularly the Szemerédi-Trotter theorem and its generalizations.",
+    "significance": "critical",
+    "relatedConcepts": ["Upper bound", "Incidence geometry"]
+  },
+  {
+    "id": "ann-e1086-gap",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 128, "endLine": 139 },
+    "type": "theorem",
+    "title": "The Exponent Gap",
+    "content": "**exponent_bounds:**\n\nThe gap between exponents is 2 < 20/9 ≈ 2.222.\n\nThis is the central open question: what is the true exponent?\n\n- If Erdős-Purdy conjecture is true: exponent = 2 (with log log n factor)\n- Current upper bound gives exponent ≤ 20/9\n\nClosing this gap would resolve the problem.",
+    "significance": "key",
+    "relatedConcepts": ["Exponent", "Gap", "Open problem"]
+  },
+  {
+    "id": "ann-e1086-conjecture",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "definition",
+    "title": "Erdős-Purdy Conjecture",
+    "content": "**erdosPurdyConjecture:**\n\ng(n) = Θ(n² log log n)\n\nErdős and Purdy believed the lower bound is essentially tight, meaning the true growth rate is n² log log n.\n\nThis would mean the upper bound can be improved from n^(20/9) to n^(2+o(1)).\n\n**Status:** Unresolved conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["Conjecture", "Tight bound"]
+  },
+  {
+    "id": "ann-e1086-higher-dim",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 156, "endLine": 162 },
+    "type": "axiom",
+    "title": "Higher-Dimensional Generalization",
+    "content": "**maxEqualVolumeSimplex g_d^r(n):**\n\nThe maximum number of r-dimensional simplices with equal volume from n points in ℝ^d.\n\n**Special Cases:**\n- g_2^1(n): Equal-area triangles in the plane (our g(n))\n- g_3^2(n): Equal-area triangles in 3D\n- g_d^(d-1)(n): Equal-volume (d-1)-simplices in ℝ^d",
+    "significance": "key",
+    "relatedConcepts": ["Higher dimensions", "Simplex", "Volume"]
+  },
+  {
+    "id": "ann-e1086-3d-bounds",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 164, "endLine": 178 },
+    "type": "axiom",
+    "title": "3D Bounds",
+    "content": "**g3_2_upper and g3_2_original:**\n\nFor triangles in 3D space:\n- Original: g_3^2(n) ≪ n^(8/3) (Erdős-Purdy, 1971)\n- Improved: g_3^2(n) ≪ n^2.4286 (DST, 2009)\n\nThe 3D case is somewhat easier than 2D because the extra dimension provides more freedom.",
+    "significance": "supporting",
+    "relatedConcepts": ["3D geometry", "Upper bounds"]
+  },
+  {
+    "id": "ann-e1086-oppenheim-lenz",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 201, "endLine": 221 },
+    "type": "axiom",
+    "title": "Oppenheim-Lenz Construction",
+    "content": "**oppenheim_lenz_lower:**\n\nFor k-simplices in ℝ^(2k+2):\ng_{2k+2}^k(n) ≥ (1/(k+1)^(k+1) + o(1)) · n^(k+1)\n\nThis uses a construction by Lenz, observed by Oppenheim.\n\n**Conjecture:** This lower bound is tight, i.e., g_{2k+2}^k(n) = Θ(n^(k+1) / (k+1)^(k+1)).\n\nSome high-dimensional cases are better understood than the 2D case!",
+    "mathContext": "The Lenz construction uses algebraic geometry to build extremal configurations.",
+    "significance": "key",
+    "relatedConcepts": ["Construction", "High dimensions", "Tight bounds"]
+  },
+  {
+    "id": "ann-e1086-main",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 258, "endLine": 265 },
+    "type": "theorem",
+    "title": "Main Theorem: Combined Bounds",
+    "content": "**erdos_1086:**\n\nThe main theorem combines both bounds:\n\n1. ∃ C₁ > 0 such that g(n) ≥ C₁ · n² · log(log n) for n ≥ 10\n2. ∃ C₂ > 0 such that g(n) ≤ C₂ · n^(20/9) for n ≥ 3\n\nThis formalizes what we know: bounds exist, but the exact answer is unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Combined bounds"]
+  },
+  {
+    "id": "ann-e1086-summary",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 267, "endLine": 276 },
+    "type": "theorem",
+    "title": "Summary: Problem is OPEN",
+    "content": "**erdos_1086_summary:**\n\nThe problem has known bounds (exponents between 2 and 20/9) but no tight estimate.\n\n**Key Takeaways:**\n- Lower bound: n² log log n (Erdős-Purdy, 1971)\n- Upper bound: n^(20/9) (Raz-Sharir, 2017)\n- Conjecture: g(n) = Θ(n² log log n)\n- Status: OPEN",
+    "significance": "key"
+  }
+]

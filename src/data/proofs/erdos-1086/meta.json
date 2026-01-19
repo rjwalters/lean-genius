@@ -1,33 +1,124 @@
 {
   "id": "erdos-1086",
-  "title": "Erdős Problem #1086",
+  "title": "Erdős Problem #1086: Maximum Triangles with Equal Area",
   "slug": "erdos-1086",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that any set of ... points in ... contains the vertices of at most ... many triangles with the same a...",
+  "description": "Estimate g(n), the max number of equal-area triangles from n points in ℝ². Known bounds: n² log log n ≪ g(n) ≪ n^(20/9). OPEN problem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Oppenheim (original), Erdős-Purdy (1971 bounds), Raz-Sharir (2017 upper)",
     "sourceUrl": "https://erdosproblems.com/1086",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1086Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "extremal-combinatorics",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1086,
     "erdosUrl": "https://erdosproblems.com/1086",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for growth rates",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "triangleAreaCount axiom: count of equal-area triangles",
+      "maxEqualAreaTriangles (g(n)): maximum over all configurations",
+      "erdos_purdy_lower_bound: g(n) ≫ n² log log n",
+      "raz_sharir_2017: g(n) ≪ n^(20/9)",
+      "erdosPurdyConjecture: g(n) = Θ(n² log log n)",
+      "maxEqualVolumeSimplex: higher-dimensional generalization g_d^r(n)",
+      "oppenheim_lenz_lower: construction for k-simplices",
+      "oppenheimLenzConjecture: conjectured tight bound",
+      "erdos_1086: combined bounds theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1086 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be minimal such that any set of $n$ points in $\\mathbb{R}^2$ contains the vertices of at most $g(n)$ many triangles with the same area. Estimate $g(n)$.\n\n\n\nEquivalently, how many triangles of area $1$ can a set of $n$ points in $\\mathbb{R}^2$ determine? Erd\\H{o}s and Purdy attribute this question to Oppenheim. Erd\\H{o}s and Purdy \\cite{ErPu71} proved\\[n^2\\log\\log n \\ll g(n) \\ll n^{5/2},\\]and believed the lower bound to be closer to the truth. The upper bound has been improved a number of times - by Pach and Sharir \\cite{PaSh92}, Dumitrescu, Sharir, and T\\'{o}th \\cite{DST09}, Apfelbaum and Sharir \\cite{ApSh10}, and Apfaulbaum \\cite{Ap13}. The best known bound is\\[g(n) \\ll n^{20/9}\\]by Raz and Sharir \\cite{RaSh17}.\n\nErd\\H{o}s and Purdy also ask a similar question about the higher-dimensional generalisations - more generally, let $g_d^{r}(n)$ be minimal such that any set of $n$ points in $\\mathbb{R}^d$ contains the vertices of at most $g_d^{r}(n)$ many $r$-dimensional simplices with the same volume.\n\nErd\\H{o}s and Purdy \\cite{ErPu71} proved $g_3^2(n) \\ll n^{8/3}$, and Dumitrescu, Sharir, and T\\'{o}th \\cite{DST09} improved this to $g_3^2(n) \\ll n^{2.4286}$.\nErd\\H{o}s and Purdy \\cite{ErPu71} proved $g_6^2(n)\\gg n^3$. Purdy \\cite{Pu74} proved\\[g_4^2(n)\\leq g^2_5(n) \\ll n^{3-c}\\]for some constant $c>0$. An observation of Oppenheim (using a construction of Lenz) detailed in \\cite{ErPu71} shows that\\[g_{2k+2}^k(n)\\geq \\left(\\frac{1}{(k+1)^{k+1}}+o(1)\\right)n^{k+1}\\]and Erd\\H{o}s and Purdy conjecture this is the best possible.\n\nSee also [90] and [755].\n\n\n\n\nReferences\n\n\n[Ap13] R. Apfelbaum, Geometric Incidences and Repeated Configurations. Ph.D. Dissertation, School of Computer Science, Tel Aviv University (2013).\n\n[ApSh10] Apfelbaum, Roel and Sharir, Micha, An improved bound on the number of unit area triangles. Discrete Comput. Geom. (2010), 753--761.\n\n[DST09] Dumitrescu, Adrian and Sharir, Micha and T\\'oth, Csaba D., Extremal problems on triangle areas in two and three\ndimensions. J. Combin. Theory Ser. A (2009), 1177--1198.\n\n[ErPu71] Erd\\H{o}s, Paul and Purdy, George, Some extremal problems in geometry. J. Combinatorial Theory Ser. A (1971), 246--252.\n\n[PaSh92] Pach, J\\'anos and Sharir, Micha, Repeated angles in the plane and related problems. J. Combin. Theory Ser. A (1992), 12--22.\n\n[Pu74] Purdy, George, Some extremal problems in geometry. Discrete Math. (1974), 305--315.\n\n[RaSh17] Raz, Orit E. and Sharir, Micha, The number of unit-area triangles in the plane: theme and\nvariation. Combinatorica (2017), 1221--1240.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1086**\n\nThis problem concerns counting triangles with equal area formed by points in the plane, a fundamental question in discrete geometry.\n\n**Key History:**\n- Oppenheim: Original question (attributed by Erdős-Purdy)\n- Erdős-Purdy (1971): First bounds n² log log n ≪ g(n) ≪ n^(5/2)\n- Pach-Sharir (1992), DST (2009), Apfelbaum-Sharir (2010): Progressive improvements\n- Raz-Sharir (2017): Current best upper bound n^(20/9)\n\n**Mathematical Context:**\nThe function g(n) measures the maximum number of triangles with the same area that any n-point configuration can determine. Understanding this function relates to incidence geometry and the structure of point configurations.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $g(n)$ be minimal such that any set of $n$ points in $\\mathbb{R}^2$ contains the vertices of at most $g(n)$ triangles with the same area.\n\nEstimate $g(n)$.\n\n**Current Bounds:**\n- Lower: $n^2 \\log\\log n \\ll g(n)$ (Erdős-Purdy, 1971)\n- Upper: $g(n) \\ll n^{20/9}$ (Raz-Sharir, 2017)\n\n**Conjecture:** Erdős and Purdy believed the lower bound closer to the truth, suggesting $g(n) = \\Theta(n^2 \\log\\log n)$.\n\nThe gap between exponents 2 and 20/9 ≈ 2.222 remains open.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Functions:** Define triangleAreaCount and maxEqualAreaTriangles (g(n))\n\n2. **Known Bounds:**\n   - erdos_purdy_lower_bound: g(n) ≫ n² log log n\n   - raz_sharir_2017: g(n) ≪ n^(20/9)\n\n3. **Conjecture:** erdosPurdyConjecture formalizes the believed tight bound\n\n4. **Higher Dimensions:** maxEqualVolumeSimplex generalizes to g_d^r(n)\n\n5. **Constructions:** oppenheim_lenz_lower gives lower bounds in high dimensions\n\nThe problem is captured as having known bounds but remaining open.",
+    "keyInsights": [
+      "**Log Log Factor:** The lower bound has an unusual log log n factor, suggesting subtle structure",
+      "**Exponent Gap:** The gap between 2 and 20/9 ≈ 2.222 is the main open question",
+      "**Incidence Geometry:** Upper bounds use incidence bounds for points and curves",
+      "**Higher Dimensions:** The problem generalizes to g_d^r(n) for r-simplices in ℝ^d",
+      "**Oppenheim-Lenz:** A construction shows tight bounds in specific high dimensions",
+      "**Related to Unit Distance:** Connected to #90 (unit distances) and #755"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "triangle-function",
+      "title": "The Triangle Area Function",
+      "summary": "triangleAreaCount, maxEqualAreaTriangles (g(n))",
+      "startLine": 46,
+      "endLine": 70
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "Trivial upper, Erdős-Purdy lower, Raz-Sharir upper",
+      "startLine": 72,
+      "endLine": 122
+    },
+    {
+      "id": "gap-conjecture",
+      "title": "The Gap and Conjecture",
+      "summary": "Exponent gap, Erdős-Purdy conjecture",
+      "startLine": 124,
+      "endLine": 150
+    },
+    {
+      "id": "higher-dimensions",
+      "title": "Higher Dimensions",
+      "summary": "maxEqualVolumeSimplex g_d^r(n), bounds for d=3,4,5,6",
+      "startLine": 152,
+      "endLine": 195
+    },
+    {
+      "id": "oppenheim-lenz",
+      "title": "Oppenheim-Lenz Construction",
+      "summary": "Lower bounds and conjecture for k-simplices",
+      "startLine": 197,
+      "endLine": 221
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Problems",
+      "summary": "Relations to #90 and #755",
+      "startLine": 223,
+      "endLine": 240
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1086 main theorem, status OPEN",
+      "startLine": 242,
+      "endLine": 277
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1086 asks to estimate g(n), the maximum number of equal-area triangles from n points in the plane. Current bounds are n² log log n ≪ g(n) ≪ n^(20/9), with Erdős-Purdy believing the lower bound closer to truth. The problem remains open with the main question being whether g(n) = Θ(n² log log n).",
+    "implications": "**Connections and Extensions**\n\n1. **Incidence Geometry:** Upper bounds use sophisticated tools from incidence theory\n\n2. **Higher Dimensions:** Generalizes to k-simplices in higher-dimensional spaces\n\n3. **Oppenheim-Lenz:** Some specific high-dimensional cases have tight bounds\n\n4. **Related Problems:** Connected to unit distance (#90) and other geometric counting questions",
+    "openQuestions": [
+      "Is g(n) = Θ(n² log log n)? (Erdős-Purdy conjecture)",
+      "Can the upper bound n^(20/9) be improved?",
+      "Tight bounds for g_d^r(n) in general dimensions",
+      "Algorithmic aspects: finding configurations achieving g(n)"
+    ]
   }
 }

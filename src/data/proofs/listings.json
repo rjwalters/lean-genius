@@ -1994,17 +1994,23 @@
   },
   {
     "id": "erdos-1086",
-    "title": "Erdős Problem #1086",
+    "title": "Erdős Problem #1086: Maximum Triangles with Equal Area",
     "slug": "erdos-1086",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that any set of ... points in ... contains the vertices of at most ... many triangles with the same a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate g(n), the max number of equal-area triangles from n points in ℝ². Known bounds: n² log log n ≪ g(n) ≪ n^(20/9). OPEN problem.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "extremal-combinatorics",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1086,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-1087",
