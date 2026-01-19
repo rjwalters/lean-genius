@@ -339,10 +339,43 @@ attach_to_agent() {
     tmux attach-session -t "$session_name"
 }
 
+# Send continue signal to agents (resumes after API limits)
+send_continue() {
+    local agent_num="${1:-all}"
+    local sent=0
+
+    if [[ "$agent_num" == "all" ]]; then
+        for session in $(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep '^researcher-' || true); do
+            tmux send-keys -t "$session" "continue" Enter 2>/dev/null && \
+                print_success "Sent continue to $session" && ((sent++)) || \
+                print_warning "Could not send to $session"
+        done
+    else
+        local session_name="researcher-$agent_num"
+        if tmux has-session -t "$session_name" 2>/dev/null; then
+            tmux send-keys -t "$session_name" "continue" Enter 2>/dev/null && \
+                print_success "Sent continue to $session_name" && ((sent++)) || \
+                print_warning "Could not send to $session_name"
+        else
+            print_error "No session found: $session_name"
+            exit 1
+        fi
+    fi
+
+    if [[ $sent -eq 0 ]]; then
+        print_warning "No agents to send continue signal to"
+    else
+        echo "Sent continue to $sent agent(s). They should resume work shortly."
+    fi
+}
+
 # Main command dispatch
 case "${1:-}" in
     --status|-s)
         show_status
+        ;;
+    --continue|-c)
+        send_continue "${2:-all}"
         ;;
     --graceful-stop)
         signal_graceful_stop "${2:-all}"
@@ -370,6 +403,8 @@ Each agent works in its own git worktree with a dedicated branch.
 Usage:
   ./parallel-research.sh [count]            Launch N agents (default: 2, max: 5)
   ./parallel-research.sh --status           Show running agents and claims
+  ./parallel-research.sh --continue         Resume all agents after API limits reset
+  ./parallel-research.sh --continue N       Resume agent N specifically
   ./parallel-research.sh --graceful-stop    Signal agents to stop after current work
   ./parallel-research.sh --graceful-stop N  Signal agent N to stop
   ./parallel-research.sh --stop             Force stop all agents immediately

@@ -274,6 +274,36 @@ attach_agent() {
     tmux attach -t "$session"
 }
 
+# Send continue signal to agents (resumes after API limits)
+send_continue() {
+    local agent_num="${1:-all}"
+    local sent=0
+
+    if [[ "$agent_num" == "all" ]]; then
+        for session in $(get_running_agents); do
+            tmux send-keys -t "$session" "continue" Enter 2>/dev/null && \
+                print_success "Sent continue to $session" && ((sent++)) || \
+                print_warning "Could not send to $session"
+        done
+    else
+        local session="$SESSION_PREFIX-$agent_num"
+        if tmux has-session -t "$session" 2>/dev/null; then
+            tmux send-keys -t "$session" "continue" Enter 2>/dev/null && \
+                print_success "Sent continue to $session" && ((sent++)) || \
+                print_warning "Could not send to $session"
+        else
+            print_error "Agent $agent_num is not running"
+            exit 1
+        fi
+    fi
+
+    if [[ $sent -eq 0 ]]; then
+        print_warning "No agents to send continue signal to"
+    else
+        echo "Sent continue to $sent agent(s). They should resume work shortly."
+    fi
+}
+
 # Launch agents
 launch_agents() {
     local count="${1:-$DEFAULT_AGENTS}"
@@ -388,6 +418,9 @@ case "${1:-}" in
     --status|-s)
         show_status
         ;;
+    --continue|-c)
+        send_continue "${2:-all}"
+        ;;
     --stop)
         stop_agents
         ;;
@@ -421,6 +454,8 @@ Each agent works in its own git worktree with a dedicated branch.
 Usage:
   $0 [count]            Launch N agents (default: 3, max: 8)
   $0 --status           Show running agents, worktrees, and claims
+  $0 --continue         Resume all agents after API limits reset
+  $0 --continue N       Resume agent N specifically
   $0 --graceful-stop    Signal agents to stop after current work
   $0 --graceful-stop N  Signal agent N to stop after current work
   $0 --stop             Force stop all agents immediately
