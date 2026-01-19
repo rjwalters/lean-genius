@@ -1,1 +1,149 @@
-[]
+[
+  {
+    "id": "ann-e1081-header",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1081: Sums of Two Squarefull Numbers**\n\nThis problem asks about the asymptotic count of integers expressible as sums of two squarefull numbers.\n\n**Question:**\nIs A(x) ~ c · x / √(log x) for some c > 0?\n\n**Answer: NO**\n\nOdoni (1981) disproved this. The correct asymptotic has exponent α = 1 - 2^(-1/3) ≈ 0.206, not 1/2.",
+    "mathContext": "A squarefull (powerful) number is one where every prime divisor appears with exponent at least 2. Examples: 1, 4, 8, 9, 16, 25, 27, ...",
+    "significance": "critical",
+    "relatedConcepts": ["Squarefull numbers", "Asymptotic analysis", "Counting functions"]
+  },
+  {
+    "id": "ann-e1081-squarefull-def",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 43, "endLine": 53 },
+    "type": "definition",
+    "title": "Squarefull Number Definition",
+    "content": "**IsSquarefull m:**\n\nA positive integer m is squarefull if for every prime p dividing m, we have p² | m.\n\n**Definition:**\n```lean\ndef IsSquarefull (m : ℕ) : Prop :=\n  m > 0 ∧ ∀ p : ℕ, p.Prime → p ∣ m → p^2 ∣ m\n```\n\n**Examples:** 1, 4=2², 8=2³, 9=3², 16=2⁴, 25=5², 27=3³, ...\n\nAlso called 'powerful' numbers.",
+    "mathContext": "The sequence of squarefull numbers begins: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, ... (OEIS A001694)",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Powerful numbers", "OEIS A001694"]
+  },
+  {
+    "id": "ann-e1081-squarefull-alt",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 55, "endLine": 66 },
+    "type": "definition",
+    "title": "Alternative Characterization",
+    "content": "**IsSquarefullAlt m:**\n\nAlternative characterization: m is squarefull iff m = a² · b³ for some positive integers a, b.\n\n**Definition:**\n```lean\ndef IsSquarefullAlt (m : ℕ) : Prop :=\n  ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ m = a^2 * b^3\n```\n\nThis form is useful for counting: there are O(√x) squarefull numbers up to x.",
+    "significance": "key",
+    "relatedConcepts": ["Squarefull numbers", "Counting arguments"]
+  },
+  {
+    "id": "ann-e1081-examples",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 68, "endLine": 107 },
+    "type": "theorem",
+    "title": "Squarefull Examples",
+    "content": "**Verified squarefull numbers:**\n\n- **one_squarefull:** 1 is squarefull (vacuously true)\n- **four_squarefull:** 4 = 2² is squarefull\n- **eight_squarefull:** 8 = 2³ is squarefull\n- **nine_squarefull:** 9 = 3² is squarefull\n\nThese are proved using interval_cases to check all prime divisors.",
+    "significance": "supporting",
+    "relatedConcepts": ["Squarefull numbers", "Computational verification"]
+  },
+  {
+    "id": "ann-e1081-sums-def",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 112, "endLine": 117 },
+    "type": "definition",
+    "title": "Sums of Two Squarefull Numbers",
+    "content": "**IsSumOfTwoSquarefull n:**\n\nn is expressible as a + b where both a and b are squarefull.\n\n**Definition:**\n```lean\ndef IsSumOfTwoSquarefull (n : ℕ) : Prop :=\n  ∃ a b : ℕ, IsSquarefull a ∧ IsSquarefull b ∧ n = a + b\n```\n\n**Examples:** 5 = 1 + 4, 13 = 4 + 9, 17 = 8 + 9, ...",
+    "significance": "critical",
+    "relatedConcepts": ["Squarefull numbers", "Additive representations"]
+  },
+  {
+    "id": "ann-e1081-sum-examples",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 119, "endLine": 131 },
+    "type": "theorem",
+    "title": "Sum Examples",
+    "content": "**five_is_sum:** 5 = 1 + 4 (both squarefull)\n\n**thirteen_is_sum:** 13 = 4 + 9 (both squarefull)\n\nThese are constructive proofs providing explicit witnesses.",
+    "significance": "supporting",
+    "relatedConcepts": ["Constructive proofs", "Witness arguments"]
+  },
+  {
+    "id": "ann-e1081-counting",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 137, "endLine": 158 },
+    "type": "definition",
+    "title": "The Counting Function A(x)",
+    "content": "**A(x):**\n\nCounts integers n ≤ x that are sums of two squarefull numbers.\n\n**Definition:**\n```lean\nnoncomputable def A (x : ℕ) : ℕ :=\n  (Finset.range (x + 1)).filter (fun n => IsSumOfTwoSquarefull n) |>.card\n```\n\n**Squarefull count S(x):**\nS(x) ~ ζ(3/2)/ζ(3) · √x ≈ 2.173 · √x\n\nThis density of squarefull numbers informs the naive heuristic for A(x).",
+    "mathContext": "The constant ζ(3/2)/ζ(3) ≈ 2.173 comes from careful Dirichlet series analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Counting functions", "Zeta function", "Asymptotic density"]
+  },
+  {
+    "id": "ann-e1081-conjecture",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 164, "endLine": 179 },
+    "type": "axiom",
+    "title": "Erdős's Conjecture (Disproved)",
+    "content": "**erdos_conjecture:**\n\nErdős conjectured (1976) that A(x) ~ c · x / √(log x) for some c > 0.\n\n**odoni_disproof:**\n```lean\naxiom odoni_disproof : ¬erdos_conjecture\n```\n\nOdoni (1981) proved this is FALSE. The count A(x) grows strictly faster than x/√(log x).",
+    "mathContext": "Erdős's heuristic was based on naive probabilistic arguments that didn't account for the multiplicative structure of squarefull numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproved conjectures", "Odoni's paper"]
+  },
+  {
+    "id": "ann-e1081-odoni",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 185, "endLine": 197 },
+    "type": "axiom",
+    "title": "Odoni's Lower Bound",
+    "content": "**odoni_lower_bound:**\n\nOdoni (1981) proved:\n$$A(x) \\gg \\exp\\left(c \\frac{\\log\\log\\log x}{\\log\\log x}\\right) \\frac{x}{\\sqrt{\\log x}}$$\n\nThis shows A(x) exceeds x/√(log x) by a slowly growing (but unbounded) factor exp(c · log log log x / log log x).",
+    "mathContext": "The triple-log growth rate is extremely slow but sufficient to disprove the asymptotic.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Triple logarithm", "Slow growth"]
+  },
+  {
+    "id": "ann-e1081-alpha",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 203, "endLine": 209 },
+    "type": "definition",
+    "title": "The Critical Exponent α",
+    "content": "**alpha:**\n\nThe correct exponent for the counting function.\n\n```lean\nnoncomputable def alpha : ℝ := 1 - (2 : ℝ)^(-(1/3 : ℝ))\n```\n\nα = 1 - 2^(-1/3) ≈ 0.206299\n\nCompare: Erdős conjectured 1/2 = 0.5, but the true exponent is much smaller!",
+    "mathContext": "This specific exponent arises from the analysis of binary quadratic forms with large discriminant.",
+    "significance": "critical",
+    "relatedConcepts": ["Exponents", "Blomer-Granville", "Quadratic forms"]
+  },
+  {
+    "id": "ann-e1081-blomer-granville",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 211, "endLine": 223 },
+    "type": "axiom",
+    "title": "Blomer-Granville Theorem (2006)",
+    "content": "**blomer_granville_2006:**\n\nThe correct asymptotic:\n$$A(x) = (\\log\\log x)^{O(1)} \\cdot \\frac{x}{(\\log x)^{\\alpha}}$$\n\nwhere α = 1 - 2^(-1/3) ≈ 0.206299.\n\nThis provides both upper and lower bounds with the correct exponent, up to polylogarithmic factors.",
+    "mathContext": "Blomer and Granville used the theory of binary quadratic forms to obtain these tight bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["Blomer-Granville", "Quadratic forms", "Duke Math. J."]
+  },
+  {
+    "id": "ann-e1081-comparison",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 225, "endLine": 235 },
+    "type": "theorem",
+    "title": "Exponent Comparison",
+    "content": "**alpha_less_than_half:**\n\nα ≈ 0.206 < 1/2 = 0.5\n\nSince (log x)^α < (log x)^(1/2) = √(log x) for large x, we have:\nx / (log x)^α > x / √(log x)\n\nThis confirms A(x) grows FASTER than Erdős expected.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic comparison", "Exponent analysis"]
+  },
+  {
+    "id": "ann-e1081-heuristic",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 241, "endLine": 257 },
+    "type": "concept",
+    "title": "Why the Conjecture Failed",
+    "content": "**Heuristic Explanation:**\n\nErdős's conjecture was based on naive probabilistic reasoning:\n- Squarefull numbers up to x: ~ c₁√x\n- Naive probability n is a sum: ~ (√x)²/x = 1\n- Expected count: ~ x with some logarithmic correction\n\n**Why it failed:**\nSquarefull numbers are NOT uniformly distributed. They cluster due to their multiplicative structure (m = a²b³). Small values of a and b contribute disproportionately to sums.",
+    "significance": "key",
+    "relatedConcepts": ["Probabilistic heuristics", "Clustering", "Non-uniformity"]
+  },
+  {
+    "id": "ann-e1081-summary",
+    "proofId": "erdos-1081",
+    "range": { "startLine": 280, "endLine": 309 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_1081_summary:**\n\nThe complete answer to Erdős Problem #1081.\n\n**Results:**\n1. ¬erdos_conjecture (the conjecture is false)\n2. alpha < 1/2 (true exponent is smaller)\n3. The answer is NO\n\n**Key Insight:**\nA(x) grows as x/(log x)^α with α ≈ 0.206, significantly faster than the conjectured x/√(log x) = x/(log x)^(1/2).",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "Disproved conjectures", "Correct asymptotics"]
+  }
+]

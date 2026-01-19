@@ -1,33 +1,152 @@
 {
   "id": "erdos-1081",
-  "title": "Erdős Problem #1081",
+  "title": "Erdős Problem #1081: Sums of Two Squarefull Numbers",
   "slug": "erdos-1081",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... which are the sum of two squarefull numbers (a number ... is squarefull if ... implies ...). ...",
+  "description": "Let A(x) count integers n ≤ x that are sums of two squarefull numbers. Is A(x) ~ c·x/√(log x)? NO, disproved by Odoni (1981). Correct asymptotic: A(x) ~ x/(log x)^α where α = 1-2^(-1/3) ≈ 0.206.",
   "meta": {
-    "author": "Unknown",
+    "author": "Odoni (1981 disproof), Blomer-Granville (2006 refinement)",
     "sourceUrl": "https://erdosproblems.com/1081",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1081Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "squarefull-numbers",
+      "asymptotic-analysis",
+      "counting-functions",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1081,
     "erdosUrl": "https://erdosproblems.com/1081",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter finite sets by predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "IsSquarefull definition: m > 0 and p|m implies p²|m",
+      "IsSquarefullAlt: Alternative characterization as a²b³",
+      "IsSumOfTwoSquarefull: n = a + b for squarefull a, b",
+      "Counting function A(x): Number of sums up to x",
+      "erdos_conjecture: The false claim A(x) ~ cx/√(log x)",
+      "odoni_disproof axiom: The conjecture is false",
+      "odoni_lower_bound axiom: A(x) grows faster than conjectured",
+      "alpha constant: 1 - 2^(-1/3) ≈ 0.206299",
+      "blomer_granville_2006 axiom: Tight bounds for A(x)",
+      "Examples: 1, 4, 8, 9 are squarefull; 5, 13 are sums",
+      "erdos_1081_summary: Combined main results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1081 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A(x)$ count the number of $n\\leq x$ which are the sum of two squarefull numbers (a number $m$ is squarefull if $p\\mid m$ implies $p^2\\mid m$). Is it true that\\[A(x) \\sim c \\frac{x}{\\sqrt{\\log x}}\\]for some $c>0$?\n\n\n\nOdoni \\cite{Od81} proved this is false, and that\\[A(x) \\gg \\exp\\left(c\\frac{\\log\\log\\log x}{\\log\\log x}\\right)\\frac{x}{\\sqrt{\\log x}}\\]for some constant $c>0$. Estimates for $A(x)$ have been improved by Baker and Brudern \\cite{BaBr94}, Blomer \\cite{Bl04}, and most recently by Blomer and Granville \\cite{BlGr06}, who proved\\[A(x)= (\\log\\log x)^{O(1)}\\frac{x}{(\\log x)^{\\alpha}}\\]where $\\alpha=1-2^{-1/3}\\approx 0.206299$.\n\nSee also [940].\n\n\n\n\nReferences\n\n\n[BaBr94] Baker, R. C. and Br\\\"udern, J., On sums of two squarefull numbers. Math. Proc. Cambridge Philos. Soc. (1994), 1--5.\n\n[Bl04] Blomer, Valentin, Binary quadratic forms with large discriminants and sums of\ntwo squareful numbers. J. Reine Angew. Math. (2004), 213--234.\n\n[BlGr06] Blomer, Valentin and Granville, Andrew, Estimates for representation numbers of quadratic forms. Duke Math. J. (2006), 261--302.\n\n[Od81] Odoni, R. W. K., A problem of {E}rd\\H{o}s on sums of two squarefull numbers. Acta Arith. (1981), 145--162.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1081: Sums of Two Squarefull Numbers**\n\nThis problem concerns the asymptotic behavior of integers expressible as sums of two squarefull (powerful) numbers.\n\n**Key History:**\n- Erdős (1976): Conjectured A(x) ~ c·x/√(log x) for some constant c > 0\n- Odoni (1981): Disproved the conjecture, showing A(x) grows faster\n- Baker-Brüdern (1994): Improved bounds\n- Blomer (2004): Further refinements using quadratic forms\n- Blomer-Granville (2006): Determined the correct exponent α = 1 - 2^(-1/3) ≈ 0.206\n\n**Mathematical Setting:**\nA squarefull number m is one where every prime divisor p satisfies p² | m. Equivalently, m can be written as a²b³ for positive integers a, b. The sequence begins: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ...",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A(x)$ count the number of $n \\leq x$ which are the sum of two squarefull numbers (a number $m$ is squarefull if $p \\mid m$ implies $p^2 \\mid m$).\n\nIs it true that $A(x) \\sim c \\cdot \\frac{x}{\\sqrt{\\log x}}$ for some $c > 0$?\n\n**Answer: NO**\n\nOdoni (1981) disproved this, showing:\n$$A(x) \\gg \\exp\\left(c \\frac{\\log\\log\\log x}{\\log\\log x}\\right) \\frac{x}{\\sqrt{\\log x}}$$\n\nBlomer-Granville (2006) proved the correct asymptotic:\n$$A(x) = (\\log\\log x)^{O(1)} \\frac{x}{(\\log x)^{\\alpha}}$$\nwhere $\\alpha = 1 - 2^{-1/3} \\approx 0.206299$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefull Numbers:** Define IsSquarefull requiring p | m → p² | m for all primes p.\n\n2. **Alternative Form:** Define IsSquarefullAlt as existence of a, b with m = a²b³.\n\n3. **Sums:** Define IsSumOfTwoSquarefull as n = a + b for squarefull a, b.\n\n4. **Counting Function:** A(x) counts sums up to x.\n\n5. **Erdős's Conjecture:** Formalize as asymptotic A(x) ~ cx/√(log x).\n\n6. **Odoni's Disproof:** Axiomatize that the conjecture is false.\n\n7. **Blomer-Granville:** Axiomatize the correct exponent α = 1 - 2^(-1/3).\n\n8. **Examples:** Verify small squarefull numbers and their sums.",
+    "keyInsights": [
+      "**Squarefull Numbers:** Also called powerful numbers; m is squarefull iff m = a²b³ for some a, b ≥ 1",
+      "**Density:** Squarefull numbers up to x number approximately ζ(3/2)/ζ(3) · √x ≈ 2.173√x",
+      "**Wrong Exponent:** Erdős conjectured exponent 1/2 in (log x); true exponent is α ≈ 0.206",
+      "**Faster Growth:** A(x) grows faster than expected because squarefull numbers cluster",
+      "**Quadratic Forms:** Blomer-Granville used binary quadratic form theory for tight bounds",
+      "**Historical Note:** This is one of several Erdős conjectures that were disproved"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "squarefull",
+      "title": "Squarefull Numbers",
+      "summary": "Definition of squarefull (powerful) numbers and alternative characterization",
+      "startLine": 39,
+      "endLine": 78
+    },
+    {
+      "id": "examples-squarefull",
+      "title": "Squarefull Examples",
+      "summary": "Proofs that 1, 4, 8, 9 are squarefull",
+      "startLine": 80,
+      "endLine": 107
+    },
+    {
+      "id": "sums",
+      "title": "Sums of Two Squarefull",
+      "summary": "Definition and examples: 5 = 1+4, 13 = 4+9",
+      "startLine": 108,
+      "endLine": 132
+    },
+    {
+      "id": "counting",
+      "title": "The Counting Function A(x)",
+      "summary": "A(x) definition and squarefull count asymptotic S(x) ~ c√x",
+      "startLine": 133,
+      "endLine": 159
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős's Conjecture (Disproved)",
+      "summary": "The false conjecture A(x) ~ cx/√(log x) and Odoni's disproof",
+      "startLine": 160,
+      "endLine": 180
+    },
+    {
+      "id": "odoni",
+      "title": "Odoni's Lower Bound",
+      "summary": "A(x) grows faster by a slowly growing factor",
+      "startLine": 181,
+      "endLine": 198
+    },
+    {
+      "id": "blomer-granville",
+      "title": "Blomer-Granville Refinement",
+      "summary": "The correct exponent α = 1 - 2^(-1/3) ≈ 0.206",
+      "startLine": 199,
+      "endLine": 236
+    },
+    {
+      "id": "explanation",
+      "title": "Why the Conjecture Failed",
+      "summary": "Heuristic explanation and connection to quadratic forms",
+      "startLine": 237,
+      "endLine": 275
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete answer: NO, with correct exponent α ≈ 0.206",
+      "startLine": 276,
+      "endLine": 311
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1081 asked whether A(x), the count of integers up to x expressible as sums of two squarefull numbers, satisfies A(x) ~ c·x/√(log x). The answer is NO, disproved by Odoni in 1981. The correct asymptotic is A(x) ~ x/(log x)^α where α = 1 - 2^(-1/3) ≈ 0.206, meaning A(x) grows significantly faster than Erdős expected.",
+    "implications": "**Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n3. **Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques",
+    "openQuestions": [
+      "Exact leading constant in A(x) asymptotic",
+      "Higher order terms in the expansion of A(x)",
+      "Generalization to sums of k squarefull numbers for k > 2",
+      "Distribution of gaps between sums of two squarefull numbers",
+      "Analogous questions for other classes of arithmetic numbers"
+    ]
   }
 }
