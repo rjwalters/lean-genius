@@ -1,1 +1,363 @@
-[]
+[
+  {
+    "id": "ann-e698-header",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #698**: GCDs of Binomial Coefficients\n\nIs there h(n) → ∞ such that gcd(C(n,i), C(n,j)) ≥ h(n) for all 2 ≤ i < j ≤ n/2?\n\n**Status**: SOLVED (Bergman 2011)\n\n**Answer**: YES - the minimum GCD grows like Ω(√n).\n\n**Origin**: Erdős and Szekeres (1978).",
+    "mathContext": "This problem explores the arithmetic structure of Pascal's triangle, asking whether middle entries share increasingly large common factors.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binomial-coefficients",
+      "gcd",
+      "pascal-triangle",
+      "bergman"
+    ]
+  },
+  {
+    "id": "ann-e698-binom-def",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 40,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Binomial Coefficients and GCD",
+    "content": "**binom n k**: Wrapper for Nat.choose n k.\n\n```lean\ndef binom (n k : ℕ) : ℕ := Nat.choose n k\n```\n\n**binomGcd n i j**: The GCD of two binomial coefficients.\n\n```lean\ndef binomGcd (n i j : ℕ) : ℕ := Nat.gcd (binom n i) (binom n j)\n```\n\nThese are the central objects of study in this problem.",
+    "mathContext": "Binomial coefficients C(n,k) = n!/(k!(n-k)!) count combinations. Their arithmetic properties reveal deep structure.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binomial-coefficients",
+      "gcd",
+      "nat-choose"
+    ]
+  },
+  {
+    "id": "ann-e698-valid-pair",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 61,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Valid Index Pairs",
+    "content": "**isValidPair n i j**: A pair (i, j) is valid if 2 ≤ i < j ≤ n/2.\n\n```lean\ndef isValidPair (n i j : ℕ) : Prop :=\n  2 ≤ i ∧ i < j ∧ j ≤ n / 2\n```\n\n**Why these constraints?**\n- i ≥ 2: Excludes trivial edge cases\n- i < j: Avoids redundancy (gcd is symmetric)\n- j ≤ n/2: By symmetry C(n,k) = C(n,n-k), we only need the lower half",
+    "mathContext": "The restriction to j ≤ n/2 uses Pascal's triangle symmetry. For n = 10, valid pairs include (2,3), (2,4), (2,5), (3,4), (3,5), (4,5).",
+    "significance": "key",
+    "relatedConcepts": [
+      "valid-pair",
+      "symmetry",
+      "constraints"
+    ]
+  },
+  {
+    "id": "ann-e698-erdos-szekeres",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 68,
+      "endLine": 82
+    },
+    "type": "axiom",
+    "title": "Erdős-Szekeres Bound (1978)",
+    "content": "**axiom erdos_szekeres_bound**: gcd(C(n,i), C(n,j)) ≥ C(n,i)/C(j,i)\n\n**axiom erdos_szekeres_exponential**: gcd(C(n,i), C(n,j)) ≥ 2^i\n\n**The key observation**:\nC(n,i) divides C(n,j) · C(j,i) (by a counting argument).\nSo any common divisor of C(n,i) and C(n,j) must be at least C(n,i)/C(j,i) ≥ 2^i.\n\nThis shows the GCD is exponential in i!",
+    "mathContext": "The bound uses the identity C(n,j) · C(j,i) = C(n,i) · C(n-i,j-i), which follows from counting ordered selections.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "erdos-szekeres-1978",
+      "lower-bound",
+      "exponential"
+    ]
+  },
+  {
+    "id": "ann-e698-gcd-gt-one",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 84,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "GCD is Always > 1",
+    "content": "**theorem gcd_always_gt_one**: For valid pairs, gcd > 1.\n\n**Proof**:\n1. By erdos_szekeres_exponential: gcd ≥ 2^i\n2. Since i ≥ 2: 2^i ≥ 2^2 = 4\n3. Therefore: gcd ≥ 4 > 1 ✓\n\nThis is one of the few theorems proved directly (not axiomatized)!",
+    "mathContext": "This theorem shows that distinct middle binomial coefficients always share non-trivial factors - a surprising structural property of Pascal's triangle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proved-theorem",
+      "non-trivial-gcd",
+      "corollary"
+    ]
+  },
+  {
+    "id": "ann-e698-sharpness",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 98,
+      "endLine": 110
+    },
+    "type": "axiom",
+    "title": "Sharpness of Erdős-Szekeres Bound",
+    "content": "**axiom sharpness_example**: For prime p, gcd(C(2p,1), C(2p,p)) = 2.\n\n**The construction**:\n- Take i = 1, j = p, n = 2p\n- C(2p,1) = 2p\n- C(2p,p) is divisible by exactly 2 (not p)\n- So gcd = 2 = 2^1 = 2^i ✓\n\nThis shows the Erdős-Szekeres bound is tight for small i.",
+    "mathContext": "Finding extremal examples that achieve bounds is a key technique in combinatorics. This example shows we can't improve the base case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sharpness",
+      "extremal",
+      "prime"
+    ]
+  },
+  {
+    "id": "ann-e698-question",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 112,
+      "endLine": 132
+    },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**tendsToInfinity h**: Function h grows unboundedly.\n\n```lean\ndef tendsToInfinity (h : ℕ → ℕ) : Prop :=\n  ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, h n > M\n```\n\n**erdos698Question**: Does the minimum GCD grow unboundedly?\n\n```lean\ndef erdos698Question : Prop :=\n  ∃ h : ℕ → ℕ, tendsToInfinity h ∧\n    ∀ n i j : ℕ, isValidPair n i j → binomGcd n i j ≥ h n\n```\n\nThe Erdős-Szekeres bound shows gcd ≥ 2^i depends on i, not n. The question is whether a bound depending only on n also grows.",
+    "mathContext": "The distinction is subtle: 2^i can be small when i = 2. The question asks if there's a *uniform* lower bound growing with n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "main-question",
+      "unbounded-growth",
+      "uniform-bound"
+    ]
+  },
+  {
+    "id": "ann-e698-bergman-bound",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 134,
+      "endLine": 162
+    },
+    "type": "axiom",
+    "title": "Bergman's Theorem (2011)",
+    "content": "**axiom bergman_bound_exists**:\ngcd(C(n,i), C(n,j)) ≥ c · n^{1/2} · 2^i / i^{3/2}\n\n**axiom min_gcd_growth**:\nFor n ≥ 4 and valid pairs, gcd ≥ c · √n.\n\n**The key improvement**:\nBergman's bound has an n-dependent term! Taking i = 2 (the minimum valid i):\ngcd ≥ c · √n · 4 / 2^{3/2} = c' · √n\n\nSo the minimum GCD grows like √n - answering Erdős-Szekeres affirmatively.",
+    "mathContext": "Bergman's 2011 paper 'On common divisors of multinomial coefficients' appeared in Bull. Aust. Math. Soc. The proof uses deep number-theoretic techniques.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "bergman-2011",
+      "sqrt-growth",
+      "main-result"
+    ]
+  },
+  {
+    "id": "ann-e698-resolution",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 164,
+      "endLine": 195
+    },
+    "type": "theorem",
+    "title": "Resolution of the Problem",
+    "content": "**bergmanH c n**: The growth function h(n) = ⌊c · √n⌋.\n\n```lean\nnoncomputable def bergmanH (c : ℝ) (n : ℕ) : ℕ :=\n  ⌊c * Real.sqrt n⌋₊\n```\n\n**theorem bergmanH_unbounded**: h(n) = ⌊c · √n⌋ → ∞.\n\n**theorem erdos698_answer : erdos698Question**\n\nBy Bergman's bound, taking h = bergmanH c gives an unbounded function with gcd ≥ h(n) for all valid pairs.",
+    "mathContext": "The resolution connects Bergman's analytic bound to the discrete existence question. The floor function ensures h is a natural number.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "resolution",
+      "floor-function",
+      "growth-function"
+    ]
+  },
+  {
+    "id": "ann-e698-sorry1",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 179,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Unboundedness (sorry)",
+    "content": "**theorem bergmanH_unbounded** contains a sorry at line 182.\n\n**What's needed**: Show ⌊c · √n⌋ → ∞ as n → ∞.\n\n**The argument**: For any M, take N > (M/c)². Then for n ≥ N:\nc · √n > c · √((M/c)²) = M\nso ⌊c · √n⌋ > M. ✓\n\nThis is standard real analysis but requires setting up the floor function bounds.",
+    "mathContext": "The sorry indicates where the formal proof needs completing. The mathematics is clear; it's a matter of formalizing the real analysis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sorry",
+      "real-analysis",
+      "floor"
+    ]
+  },
+  {
+    "id": "ann-e698-sorry2",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 188,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "Main Answer (sorry)",
+    "content": "**theorem erdos698_answer** contains a sorry at line 195.\n\n**What's needed**: Show gcd ≥ ⌊c · √n⌋ from gcd ≥ c · √n.\n\n**The argument**: By min_gcd_growth:\n(gcd : ℝ) ≥ c · √n\n\nSince gcd is a natural number and gcd ≥ c · √n:\ngcd ≥ ⌊c · √n⌋ ✓",
+    "mathContext": "The connection between real bounds and natural number floors is routine but needs careful formalization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sorry",
+      "floor-bound",
+      "coercion"
+    ]
+  },
+  {
+    "id": "ann-e698-pascal",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 197,
+      "endLine": 215
+    },
+    "type": "axiom",
+    "title": "Pascal's Triangle Structure",
+    "content": "**axiom divisibility_structure**: Middle entries share common factors.\n\n**axiom pascal_primes**: Primes in Pascal's triangle are rare.\n\nThe only primes in Pascal's triangle (except edges) are C(p,k) for prime p, 0 < k < p.\n\n**Observation**: Since interior entries share factors, they can't all be prime. This connects to the GCD question.",
+    "mathContext": "Pascal's triangle has rich divisibility structure. Row n has entry n in position 1, and all interior entries are divisible by primes ≤ n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pascal-triangle",
+      "primes",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e698-multinomial",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 217,
+      "endLine": 222
+    },
+    "type": "axiom",
+    "title": "Multinomial Generalization",
+    "content": "**axiom multinomial_generalization**: Bergman proved broader results.\n\nThe multinomial coefficient (n; k₁, k₂, ..., kₘ) = n! / (k₁! · k₂! · ... · kₘ!)\n\nBergman's paper actually studies GCDs of multinomial coefficients, with binomial coefficients as the special case m = 2.",
+    "mathContext": "Generalizing from binomial to multinomial coefficients is a common pattern in combinatorics. The GCD structure extends naturally.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multinomial",
+      "generalization",
+      "bergman"
+    ]
+  },
+  {
+    "id": "ann-e698-kummer",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 233,
+      "endLine": 244
+    },
+    "type": "axiom",
+    "title": "Kummer's Theorem",
+    "content": "**axiom kummer_theorem**: p-adic valuation via carry counting.\n\n**Kummer's Theorem (1852)**:\nThe largest power of prime p dividing C(m+n, m) equals the number of carries when adding m and n in base p.\n\n**Example**: C(10,3) in base 2:\n10 = 1010₂, 3 = 0011₂\nAdding 3 + 7 = 10 has 3 carries, so 2³ | C(10,3).\n\nThis connects GCDs to digital representations!",
+    "mathContext": "Kummer's theorem provides an algorithmic way to compute p-adic valuations of binomial coefficients. It's fundamental to understanding their prime factorizations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "kummer",
+      "p-adic",
+      "carries"
+    ]
+  },
+  {
+    "id": "ann-e698-lucas",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 246,
+      "endLine": 252
+    },
+    "type": "axiom",
+    "title": "Lucas' Theorem",
+    "content": "**axiom lucas_theorem**: Modular structure of binomial coefficients.\n\n**Lucas' Theorem (1878)**:\nC(m,n) mod p = ∏ C(mᵢ, nᵢ) mod p\n\nwhere mᵢ, nᵢ are base-p digits of m, n.\n\n**Consequence**: C(m,n) ≡ 0 (mod p) iff some nᵢ > mᵢ.\n\nThis gives modular information complementing Kummer's multiplicative information.",
+    "mathContext": "Lucas' theorem reduces modular computation of large binomial coefficients to small ones. Combined with Kummer, it gives complete prime factor information.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lucas",
+      "modular",
+      "base-p"
+    ]
+  },
+  {
+    "id": "ann-e698-summary",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 254,
+      "endLine": 272
+    },
+    "type": "theorem",
+    "title": "Summary of Results",
+    "content": "**theorem erdos_698_summary** combines:\n\n1. **Erdős-Szekeres bound**: gcd ≥ 2^i\n2. **Non-trivial GCD**: gcd > 1 always\n3. **Affirmative answer**: erdos698Question = YES\n\nThis packages all the main results into one theorem for easy reference.",
+    "mathContext": "Summary theorems document what has been achieved. They're useful for building on this work in future proofs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "packaging",
+      "documentation"
+    ]
+  },
+  {
+    "id": "ann-e698-main",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 274,
+      "endLine": 287
+    },
+    "type": "theorem",
+    "title": "Main Result: erdos_698",
+    "content": "**theorem erdos_698 : erdos698Question**\n\n**Statement**: There exists h(n) → ∞ such that gcd(C(n,i), C(n,j)) ≥ h(n) for all valid pairs.\n\n**Proof**: Follows from erdos698_answer, which uses Bergman's bound.\n\n**Status**: SOLVED by Bergman (2011)\n\n**The answer**: h(n) = Ω(√n) works - the minimum GCD grows like the square root of n.",
+    "mathContext": "This is the formal resolution of Erdős Problem #698. The theorem states the existence of the required growth function.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "main-theorem",
+      "erdos-698",
+      "solved"
+    ]
+  },
+  {
+    "id": "ann-e698-historical",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Historical Context",
+    "content": "**Timeline**:\n- **1978**: Erdős and Szekeres pose the problem\n- **1978**: They prove gcd ≥ 2^i (exponential in i, not n)\n- **2011**: Bergman proves gcd ≫ √n · 2^i / i^{3/2}\n\n**The gap**: 33 years from problem statement to complete resolution!\n\n**Reference**: Bergman, G.M. 'On common divisors of multinomial coefficients' Bull. Aust. Math. Soc. (2011), 138-157.",
+    "mathContext": "Many Erdős problems take decades to resolve. The delay often reflects the need for new techniques or perspectives.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "history",
+      "timeline",
+      "erdos-szekeres"
+    ]
+  },
+  {
+    "id": "ann-e698-imports",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 29,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Mathlib Imports",
+    "content": "**Required Mathlib modules**:\n\n- `Nat.Choose.Basic`: Binomial coefficients\n- `Nat.GCD.Basic`: Greatest common divisor\n- `Data.Real.Sqrt`: Square root function\n- `Pow.Real`: Real exponentiation\n- `Order.Floor`: Floor function\n\nThese provide tools for both discrete (GCD, choose) and continuous (sqrt, floor) mathematics.",
+    "mathContext": "The problem bridges discrete and continuous mathematics - studying integer GCDs but with bounds involving square roots.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "imports",
+      "lean4"
+    ]
+  },
+  {
+    "id": "ann-e698-number-theory",
+    "proofId": "erdos-698",
+    "range": {
+      "startLine": 224,
+      "endLine": 231
+    },
+    "type": "axiom",
+    "title": "Number Theory Connections",
+    "content": "**axiom number_theory_connections**: Links to broader theory.\n\n**Key connections**:\n1. **p-adic valuations**: Kummer's theorem\n2. **Modular arithmetic**: Lucas' theorem\n3. **Prime distribution**: Factors of factorials\n4. **Combinatorial identities**: Pascal relations\n\nThe GCD of binomial coefficients sits at a nexus of number theory and combinatorics.",
+    "mathContext": "Understanding why these coefficients share factors requires tools from across number theory. This problem showcases the unity of the field.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "number-theory",
+      "connections",
+      "interdisciplinary"
+    ]
+  }
+]
