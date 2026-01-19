@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-e986-header",
+    "proofId": "erdos-986",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #986: Ramsey Number Lower Bounds**\n\nThis problem asks about asymptotic lower bounds for off-diagonal Ramsey numbers.\n\n**Question:**\nFor fixed k ≥ 3, is R(k,n) ≫ n^(k-1) / (log n)^c?\n\n**Status:**\n- k = 3: YES (Spencer 1977)\n- k = 4: YES (Mattheus-Verstraete 2023)\n- k ≥ 5: OPEN",
+    "mathContext": "R(k,n) is the smallest N such that any 2-coloring of K_N edges contains a red K_k or blue K_n.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey numbers", "Graph coloring", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e986-ramsey-def",
+    "proofId": "erdos-986",
+    "range": { "startLine": 43, "endLine": 59 },
+    "type": "definition",
+    "title": "Ramsey Number Definition",
+    "content": "**RamseyNumber k n:**\n\nThe smallest N such that any 2-coloring of K_N edges contains either:\n- A red complete graph K_k, OR\n- A blue complete graph K_n\n\n**Definition:**\n```lean\nnoncomputable def RamseyNumber (k n : ℕ) : ℕ :=\n  Nat.find (RamseyExists k n)\n```\n\nRamsey's theorem guarantees this minimum exists (though proving it is non-trivial).",
+    "mathContext": "Named after Frank P. Ramsey who proved the existence theorem in 1930.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey's theorem", "Complete graphs", "Graph coloring"]
+  },
+  {
+    "id": "ann-e986-asymptotic-notation",
+    "proofId": "erdos-986",
+    "range": { "startLine": 67, "endLine": 87 },
+    "type": "definition",
+    "title": "Asymptotic Notation",
+    "content": "**AsymptoticLowerBound (≫):**\n\nf ≫ g means f(n) ≥ c·g(n) for some constant c > 0 and all sufficiently large n.\n\n**AsymptoticUpperBound (≪):**\n\nf ≪ g means f(n) ≤ c·g(n) for some constant c > 0 and all sufficiently large n.\n\nThese capture 'big-Omega' and 'big-O' asymptotic behavior.",
+    "significance": "key",
+    "relatedConcepts": ["Big-O notation", "Big-Omega", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e986-conjecture",
+    "proofId": "erdos-986",
+    "range": { "startLine": 89, "endLine": 102 },
+    "type": "definition",
+    "title": "The Conjectured Lower Bound",
+    "content": "**erdos_986_conjecture k:**\n\nFor fixed k ≥ 3, there exists c > 0 such that:\nR(k,n) ≫ n^(k-1) / (log n)^c\n\n```lean\ndef erdos_986_conjecture (k : ℕ) : Prop :=\n  k ≥ 3 →\n  ∃ c : ℝ, c > 0 ∧\n    (fun n => (RamseyNumber k n : ℝ)) ≫\n    (fun n => (n : ℝ)^(k-1) / (log n)^c)\n```\n\nThis says R(k,n) grows polynomially like n^(k-1) up to logarithmic factors.",
+    "mathContext": "The conjectured polynomial exponent k-1 matches the known upper bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial growth", "Logarithmic correction", "Upper bounds"]
+  },
+  {
+    "id": "ann-e986-spencer",
+    "proofId": "erdos-986",
+    "range": { "startLine": 104, "endLine": 124 },
+    "type": "axiom",
+    "title": "Spencer's Result (1977)",
+    "content": "**spencer_1977:**\n\nSpencer proved the k = 3 case: R(3,n) ≫ n² / (log n)^c.\n\n```lean\naxiom spencer_1977 :\n  ∃ c : ℝ, c > 0 ∧\n    (fun n => (RamseyNumber 3 n : ℝ)) ≫\n    (fun n => (n : ℝ)^2 / (log n)^c)\n```\n\nSpencer used probabilistic methods to establish this asymptotic lower bound.",
+    "mathContext": "Spencer's paper 'Asymptotic lower bounds for Ramsey functions' appeared in Discrete Math. (1977).",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic method", "R(3,n)", "Spencer 1977"]
+  },
+  {
+    "id": "ann-e986-mattheus-verstraete",
+    "proofId": "erdos-986",
+    "range": { "startLine": 126, "endLine": 146 },
+    "type": "axiom",
+    "title": "Mattheus-Verstraete Breakthrough (2023)",
+    "content": "**mattheus_verstraete_2023:**\n\nA major breakthrough proving the k = 4 case: R(4,n) ≫ n³ / (log n)^c.\n\n```lean\naxiom mattheus_verstraete_2023 :\n  ∃ c : ℝ, c > 0 ∧\n    (fun n => (RamseyNumber 4 n : ℝ)) ≫\n    (fun n => (n : ℝ)^3 / (log n)^c)\n```\n\nThis resolved a long-standing open problem, determining the asymptotic order of R(4,n).",
+    "mathContext": "Their paper 'The asymptotics of r(4,t)' used algebraic geometry techniques. arXiv:2306.04007",
+    "significance": "critical",
+    "relatedConcepts": ["R(4,n)", "Algebraic geometry", "2023 breakthrough"]
+  },
+  {
+    "id": "ann-e986-bohman-keevash",
+    "proofId": "erdos-986",
+    "range": { "startLine": 148, "endLine": 162 },
+    "type": "axiom",
+    "title": "Bohman-Keevash Lower Bound (2010)",
+    "content": "**bohman_keevash_2010:**\n\nBest known general lower bound for all k ≥ 3:\nR(k,n) ≫ n^((k+1)/2) / (log n)^α\n\nwhere α depends on k.\n\nThis bound has polynomial exponent (k+1)/2, which is weaker than the conjectured k-1 for k ≥ 5.",
+    "mathContext": "Bohman and Keevash analyzed the 'H-free process' - a random greedy algorithm avoiding cliques.",
+    "significance": "key",
+    "relatedConcepts": ["H-free process", "Random graphs", "General lower bounds"]
+  },
+  {
+    "id": "ann-e986-aks-upper",
+    "proofId": "erdos-986",
+    "range": { "startLine": 164, "endLine": 172 },
+    "type": "axiom",
+    "title": "AKS Upper Bound (1980)",
+    "content": "**aks_1980_upper:**\n\nAjtai-Komlós-Szemerédi proved the upper bound:\nR(k,n) ≪ n^(k-1) / (log n)^(k-2)\n\nNote: The polynomial exponent k-1 matches the conjecture's lower bound target.",
+    "mathContext": "The AKS bound uses stepwise probabilistic arguments and established the 'correct' polynomial growth rate.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bounds", "Probabilistic combinatorics", "AKS 1980"]
+  },
+  {
+    "id": "ann-e986-gap-analysis",
+    "proofId": "erdos-986",
+    "range": { "startLine": 174, "endLine": 200 },
+    "type": "concept",
+    "title": "The Polynomial Exponent Gap",
+    "content": "**exponent_gap k:**\n\nFor k ≥ 5, there's a significant gap between:\n- Known lower bound exponent: (k+1)/2\n- Conjectured lower bound exponent: k-1\n\n**Gap formula:** (k-1) - (k+1)/2 = (k-3)/2\n\n**Examples:**\n- k = 5: gap = 1\n- k = 10: gap = 3.5\n\nThis gap grows with k, making the general case increasingly difficult.",
+    "mathContext": "The gap represents the 'unknown territory' in Ramsey theory asymptotics.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial growth", "Open problems", "Exponent analysis"]
+  },
+  {
+    "id": "ann-e986-summary",
+    "proofId": "erdos-986",
+    "range": { "startLine": 216, "endLine": 249 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_986_summary:**\n\nCombines all known results about the conjecture.\n\n**Status Table:**\n\n| k | Status | Who/When |\n|---|--------|----------|\n| 3 | **YES** | Spencer, 1977 |\n| 4 | **YES** | Mattheus-Verstraete, 2023 |\n| ≥5 | **OPEN** | - |\n\n**Key insight:** The 46-year gap between solving k=3 and k=4 shows the difficulty of these problems.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "Ramsey theory", "Partial solutions"]
+  }
+]
