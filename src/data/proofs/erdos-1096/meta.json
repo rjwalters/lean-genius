@@ -1,33 +1,142 @@
 {
   "id": "erdos-1096",
-  "title": "Erdős Problem #1096",
+  "title": "Erdős Problem #1096: Gap Convergence in q-Expansions",
   "slug": "erdos-1096",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and consider the set of numbers of the shape ... (for all finite ...), ordered by size as ....\n\nIs it true that, prov...",
+  "description": "For 1 < q < 1 + ε, do gaps in the sequence of q-representable numbers tend to 0? Conjectured threshold: smallest Pisot number q₀ ≈ 1.3247.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Joó (1991 problem), Erdős-Joó-Komornik (1990 partial results)",
     "sourceUrl": "https://erdosproblems.com/1096",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1096Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "pisot-numbers",
+      "q-expansions",
+      "algebraic-numbers",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1096,
     "erdosUrl": "https://erdosproblems.com/1096",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a sequence",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "QRepresentable definition: set of q-representable numbers",
+      "qSequence definition: ordered enumeration of q-representable numbers",
+      "gap definition: consecutive differences x_{k+1} - x_k",
+      "IsPisot definition: Pisot-Vijayaraghavan number predicate",
+      "smallestPisot definition: q₀ ≈ 1.3247, root of x³ = x + 1",
+      "HasGapProperty definition: gaps converge to 0",
+      "pisot_no_gap_property axiom: Pisot numbers lack gap property",
+      "gap_universal_bound axiom: gaps ≤ 1 for q ≤ 2",
+      "ErdosJooConjecture definition: threshold at smallest Pisot",
+      "bugeaud_characterization axiom: Pisot iff m-digit gaps bounded below",
+      "ejs_refinement axiom: for q < φ, only need m = 2"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1096 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<q<1+\\epsilon$ and consider the set of numbers of the shape $\\sum_{i\\in S}q^i$ (for all finite $S$), ordered by size as $0=x_1<x_2<\\cdots$.\n\nIs it true that, provided $\\epsilon>0$ is sufficiently small, $x_{k+1}-x_k \\to 0$?\n\n\n\nA problem of Erd\\H{o}s and Jo\\'{o} posed in the 1991 problem session of Great Western Number Theory.\n\nThey speculate that the threshold may be $q_0$, where $q_0\\approx 1.3247$ is the real root of $x^3=x+1$, and is the smallest Pisot-Vijayaraghavan number.\n\nIn \\cite{EJK90} Erd\\H{o}, Jo\\'{o}, and Komornik prove that any Pisot-Vijayaraghavan number cannot have this property, and also prove that, for any $1<q\\leq 2$, $x_{k+1}-x_k\\leq 1$ for all $k$.\n\nThe sequence always begins $0,1,q$.\n\nBugeaud \\cite{Bu96} proved that $1<q\\leq 2$ is a Pisot-Vijayaraghavan number if and only if\\[\\liminf (x_{k+1}^m-x_k^m)>0\\]for all $m\\geq 1$, where $x_k^m$ is the set of those numbers which can be written as a finite sum $\\sum_{n\\geq 0}c_nq^n$ for some $c_n\\in \\{0,\\ldots,m\\}$ (so that the sequence in the question is $x_k^1$). Erd\\H{o}s, Jo\\'{o}, and Schnitzer \\cite{EJS96} improved this to show that, if $1<q<(1+\\sqrt{5})/2$, then $q$ is a Pisot-Vijayaraghavan number if and only if\\[\\liminf (x_{k+1}^2-x_k^2)>0.\\]\n\n\n\n\nReferences\n\n\n[Bu96] Bugeaud, Y., On a property of {P}isot numbers and related questions. Acta Math. Hungar. (1996), 33--39.\n\n[EJK90] Erd\\H{o}s, P\\'al and Jo\\'o, Istv\\'an and Komornik, Vilmos, Characterization of the unique expansions\n{$1=\\sum^\\infty_{i=1}q^{-n_i}$} and related problems. Bull. Soc. Math. France (1990), 377--390.\n\n[EJS96] Erd\\H{o}s, P. and Jo\\'o, I. and Schnitzer, F. J., On {P}isot numbers. Ann. Univ. Sci. Budapest. E\\\"otv\\\"os Sect. Math. (1996), 95--99.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1096** was posed by Erdős and Joó at the 1991 Great Western Number Theory conference. It concerns the structure of q-expansions: numbers that can be written as finite sums Σ q^i.\n\n**Key Historical Developments:**\n- **1990 (Erdős-Joó-Komornik):** Proved Pisot-Vijayaraghavan numbers cannot have gaps → 0. Also showed universal bound: gaps ≤ 1 for 1 < q ≤ 2.\n- **1991 (Great Western):** Erdős and Joó posed the problem, conjecturing the threshold is q₀ ≈ 1.3247.\n- **1996 (Bugeaud):** Characterized Pisot numbers via gap behavior in m-digit expansions.\n- **1996 (Erdős-Joó-Schnitzer):** Refined characterization for q < φ.\n\nThe smallest Pisot number q₀ is the real root of x³ = x + 1, a remarkable algebraic integer discovered by Le Lionnais in 1983.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $1 < q < 1 + \\varepsilon$ and consider the set of numbers of the form $\\sum_{i \\in S} q^i$ for all finite $S \\subseteq \\mathbb{N}$, ordered by size as $0 = x_1 < x_2 < x_3 < \\cdots$.\n\nIs it true that, provided $\\varepsilon > 0$ is sufficiently small, $x_{k+1} - x_k \\to 0$?\n\n**Conjecture:** The threshold is $q_0 \\approx 1.3247$, the smallest Pisot-Vijayaraghavan number.\n\n**Known:**\n- Pisot numbers (including $q_0$) do NOT have this property\n- For all $1 < q \\leq 2$: gaps satisfy $x_{k+1} - x_k \\leq 1$\n\n**Open:** Whether all $1 < q < q_0$ have gaps → 0",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define q-representable numbers as sums of powers of q, the ordered sequence, and gaps.\n\n2. **Pisot Numbers:** Define the Pisot property and the smallest Pisot number q₀.\n\n3. **Gap Property:** Formalize the condition that gaps tend to 0.\n\n4. **Key Results:** Axiomatize Erdős-Joó-Komornik (Pisot ⇒ no gap property, universal bound) and Bugeaud's characterization.\n\n5. **Conjecture:** State the Erdős-Joó conjecture about the threshold at q₀.",
+    "keyInsights": [
+      "**q-Representable:** Numbers that can be written as Σ_{i∈S} q^i for finite S form a countable dense set.",
+      "**Pisot Numbers:** Algebraic integers > 1 whose conjugates all have |·| < 1. They have unique expansion properties.",
+      "**Smallest Pisot:** q₀ ≈ 1.3247, root of x³ = x + 1. It's the conjectured threshold.",
+      "**Gap Property:** Do the gaps x_{k+1} - x_k converge to 0? Pisot numbers provably fail this.",
+      "**Universal Bound:** For all 1 < q ≤ 2, gaps are at most 1 (never arbitrarily large).",
+      "**Golden Ratio:** φ = (1+√5)/2 ≈ 1.618 is also a Pisot number, playing a special role in refinements."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "q-expansions",
+      "title": "q-Expansions",
+      "summary": "Definition of q-representable numbers and basic examples",
+      "startLine": 39,
+      "endLine": 70
+    },
+    {
+      "id": "ordered-sequence",
+      "title": "The Ordered Sequence",
+      "summary": "Enumeration of q-representable numbers and gap definition",
+      "startLine": 72,
+      "endLine": 97
+    },
+    {
+      "id": "pisot-numbers",
+      "title": "Pisot-Vijayaraghavan Numbers",
+      "summary": "Definition of Pisot numbers, smallest Pisot q₀, golden ratio φ",
+      "startLine": 99,
+      "endLine": 132
+    },
+    {
+      "id": "ejk-results",
+      "title": "Erdős-Joó-Komornik Results (1990)",
+      "summary": "Pisot numbers lack gap property; universal gap bound ≤ 1",
+      "startLine": 134,
+      "endLine": 160
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Erdős-Joó conjecture: threshold at smallest Pisot",
+      "startLine": 162,
+      "endLine": 183
+    },
+    {
+      "id": "m-digit",
+      "title": "Characterization via m-Digit Expansions",
+      "summary": "Bugeaud's characterization and Erdős-Joó-Schnitzer refinement",
+      "startLine": 185,
+      "endLine": 221
+    },
+    {
+      "id": "hardness",
+      "title": "Why the Problem is Hard",
+      "summary": "Complexity of q-expansions and density near 1",
+      "startLine": 223,
+      "endLine": 245
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Connections to β-expansions and unique representations",
+      "startLine": 247,
+      "endLine": 268
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main results combining what's known about gaps and Pisot numbers",
+      "startLine": 270,
+      "endLine": 301
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1096 asks whether gaps in the sequence of q-representable numbers tend to 0 for q close to 1. Erdős and Joó conjectured the threshold is q₀ ≈ 1.3247, the smallest Pisot number. It's known that Pisot numbers do NOT have this property and that gaps are bounded by 1 for all q ≤ 2, but the exact threshold remains open.",
+    "implications": "**Implications for Number Theory**\n\n1. **Pisot Numbers:** The problem reveals deep connections between gaps in q-expansions and algebraic properties of q.\n\n2. **Expansion Structure:** Understanding which q give gaps → 0 illuminates the structure of digital expansions.\n\n3. **Ergodic Theory:** Related to β-expansions and the dynamics of T: x ↦ βx mod 1.\n\n4. **Unique Representations:** Connected to when 1 has a unique expansion, which characterizes Pisot numbers.",
+    "openQuestions": [
+      "Does every 1 < q < q₀ have the gap property (gaps → 0)?",
+      "What is the exact threshold behavior at q₀?",
+      "Is there a probabilistic interpretation of the gap distribution?",
+      "Can the Bugeaud characterization be refined further?",
+      "How do gaps behave for algebraic q that are not Pisot?"
+    ]
   }
 }
