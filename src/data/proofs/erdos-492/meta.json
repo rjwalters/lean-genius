@@ -1,33 +1,151 @@
 {
   "id": "erdos-492",
-  "title": "Erdős Problem #492",
+  "title": "Erdos Problem #492: Uniform Distribution Relative to a Fixed Sequence",
   "slug": "erdos-492",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite such that .... For any ... let\\[f(x) = {a_{i+1}-a_i}\\in [0,1),\\]where .... Is it true that, for almost al...",
+  "description": "Is the sequence f(alpha*n) uniformly distributed in [0,1) for almost all alpha, where f generalizes the fractional part to an arbitrary increasing sequence? NO, disproved by Schmidt (1969).",
   "meta": {
-    "author": "Unknown",
+    "author": "Schmidt (1969 disproof), Le Veque (1953 original), Davenport-Erdos (1963 partial)",
     "sourceUrl": "https://erdosproblems.com/492",
-    "date": "",
-    "status": "pending",
+    "date": "1969",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos492Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "uniform-distribution",
+      "diophantine-approximation",
+      "measure-theory",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 492,
     "erdosUrl": "https://erdosproblems.com/492",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Measure",
+        "description": "Lebesgue measure for 'almost all' statements",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definitions for density condition",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Int.fract",
+        "description": "Fractional part function",
+        "module": "Mathlib.Topology.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotone sequences",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for growth rate bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "IncreasingSequence structure: formalization of infinite increasing sequences",
+      "hasDensityCondition: the convergence condition a_{i+1}/a_i -> 1",
+      "generalizedFractionalPart: the function f(x) = (x - a_i)/(a_{i+1} - a_i)",
+      "IsUniformlyDistributed: Weyl's criterion for uniform distribution",
+      "naturalNumberSequence: the special case A = N",
+      "hasMonotonicDifferences: condition for Davenport-LeVeque theorem",
+      "hasFastGrowth: condition a_n >> n^{1/2+epsilon} for Davenport-Erdos",
+      "schmidt_counterexample axiom: the main disproof",
+      "erdos_492_disproved theorem: the answer is NO",
+      "hasCriticalGrowth: the threshold around sqrt(n)",
+      "IsBadlyApproximable: connection to Diophantine approximation",
+      "erdos_492_summary: comprehensive collection of results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #492 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<a_2<\\cdots\\}\\subseteq \\mathbb{N}$ be infinite such that $a_{i+1}/a_i\\to 1$. For any $x\\geq a_1$ let\\[f(x) = \\frac{x-a_i}{a_{i+1}-a_i}\\in [0,1),\\]where $x\\in [a_i,a_{i+1})$. Is it true that, for almost all $\\alpha$, the sequence $f(\\alpha n)$ is uniformly distributed in $[0,1)$?\n\n\n\nFor example if $A=\\mathbb{N}$ then $f(x)=\\{x\\}$ is the usual fractional part operator.\n\nA problem due to Le Veque \\cite{LV53}, who proved it in some special cases. Davenport and LeVeque \\cite{DaLe63} proved this under the assumption that $a_n-a_{n-1}$ is monotonic. Davenport and Erd\\H{o}s \\cite{DaEr63} proved it is true if $a_n \\gg n^{1/2+\\epsilon}$ for some $\\epsilon>0$.\n\nThe general conjecture is false, as shown by Schmidt \\cite{Sc69}.\n\n\n\n\nReferences\n\n\n[DaEr63] Davenport, H. and Erd\\H{o}s, P., A theorem on uniform distribution. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1963), 3--11.\n\n[DaLe63] Davenport, H. and LeVeque, W. J., Uniform distribution relative to a fixed sequence. Michigan Math. J. (1963), 315--319.\n\n[LV53] Le Veque, W. J., On uniform distribution modulo a subdivision. Pacific J. of Math. (1953), 757-771.\n\n[Sc69] Schmidt, W. M., Disproof of some conjectures on Diophantine approximations. Studia Sci. Math. Hungar. (1969), 137-144.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #492**\n\nThis problem generalizes the classical equidistribution theorem to arbitrary increasing sequences.\n\n**Historical Development:**\n- Le Veque (1953) posed the original problem and proved special cases\n- Davenport and LeVeque (1963) proved the conjecture when consecutive differences are monotonic\n- Davenport and Erdos (1963) proved it holds when a_n grows faster than n^{1/2+epsilon}\n- Schmidt (1969) constructed a counterexample, definitively disproving the general conjecture\n\n**The Setting:**\nGiven an infinite increasing sequence A = {a_1 < a_2 < ...} with a_{i+1}/a_i -> 1, define f(x) = (x - a_i)/(a_{i+1} - a_i) for x in [a_i, a_{i+1}). When A = N (natural numbers), f(x) = {x} is the fractional part.\n\n**The Question:**\nIs f(alpha*n) uniformly distributed in [0,1) for almost all alpha? For A = N, this is Weyl's classical theorem (1916). The question asks whether this extends to all sequences satisfying the density condition.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ be infinite with $a_{i+1}/a_i \\to 1$.\n\nFor $x \\geq a_1$, define:\n$$f(x) = \\frac{x - a_i}{a_{i+1} - a_i} \\in [0,1)$$\nwhere $x \\in [a_i, a_{i+1})$.\n\n**Question:** Is it true that for almost all $\\alpha$, the sequence $f(\\alpha n)$ is uniformly distributed in $[0,1)$?\n\n**Answer: NO**\n\nSchmidt (1969) constructed a counterexample showing the general conjecture is false.\n\n**Positive Results:**\n- Holds when $a_n - a_{n-1}$ is monotonic (Davenport-LeVeque 1963)\n- Holds when $a_n \\gg n^{1/2+\\varepsilon}$ (Davenport-Erdos 1963)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Structures:** Define IncreasingSequence as a structure with strictly monotone, unbounded sequences\n\n2. **Density Condition:** Formalize a_{i+1}/a_i -> 1 using Filter.Tendsto\n\n3. **Generalized Fractional Part:** Define f(x) via findIndex to locate the appropriate interval\n\n4. **Uniform Distribution:** Use Weyl's criterion (proportion in [a,b) converges to b-a)\n\n5. **Positive Results as Axioms:**\n   - Weyl's theorem for A = N\n   - Davenport-LeVeque for monotonic differences\n   - Davenport-Erdos for fast growth\n\n6. **Schmidt's Counterexample:** Axiomatize the existence of a counterexample\n\n7. **Main Theorem:** Derive erdos_492_disproved from schmidt_counterexample\n\nThe formalization uses measure theory ('almost all' = measure 1) and captures the boundary between success (fast growth) and failure (slow growth near sqrt(n)).",
+    "keyInsights": [
+      "**Generalized Fractional Part:** f(x) measures relative position within the interval [a_i, a_{i+1}), generalizing {x} = x - floor(x)",
+      "**The Density Condition:** a_{i+1}/a_i -> 1 ensures intervals become arbitrarily thin relatively, but may remain absolutely thick",
+      "**Critical Growth Rate:** The threshold is around a_n ~ sqrt(n). Above this (with epsilon margin), equidistribution holds; below, counterexamples exist",
+      "**Monotonic Differences:** When a_n - a_{n-1} is monotonic, the structure is regular enough to guarantee equidistribution",
+      "**Connection to Diophantine Approximation:** The counterexample exploits how certain alpha are approximated by rationals p/q where a_q is near p",
+      "**Weyl's Theorem as Base Case:** For A = N, equidistribution is classical (1916). The question asks how far this extends"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "IncreasingSequence structure, hasDensityCondition, generalizedFractionalPart",
+      "startLine": 45,
+      "endLine": 84
+    },
+    {
+      "id": "natural-numbers",
+      "title": "Natural Numbers Case",
+      "summary": "naturalNumberSequence, naturals_have_density_condition, naturals_fractional_part",
+      "startLine": 85,
+      "endLine": 113
+    },
+    {
+      "id": "uniform-distribution",
+      "title": "Uniform Distribution",
+      "summary": "IsUniformlyDistributed definition, alphaMultiples, generalizedAlphaSequence",
+      "startLine": 114,
+      "endLine": 140
+    },
+    {
+      "id": "positive-results",
+      "title": "Positive Results",
+      "summary": "weyl_equidistribution, davenport_leveque, davenport_erdos axioms",
+      "startLine": 141,
+      "endLine": 187
+    },
+    {
+      "id": "schmidt-counterexample",
+      "title": "Schmidt's Counterexample",
+      "summary": "schmidt_counterexample axiom, erdos_492_disproved theorem",
+      "startLine": 188,
+      "endLine": 217
+    },
+    {
+      "id": "boundary",
+      "title": "Critical Growth Rate",
+      "summary": "hasCriticalGrowth, schmidt_construction_has_critical_growth",
+      "startLine": 218,
+      "endLine": 241
+    },
+    {
+      "id": "diophantine",
+      "title": "Diophantine Approximation",
+      "summary": "IsBadlyApproximable, connection to counterexample construction",
+      "startLine": 242,
+      "endLine": 263
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Results",
+      "summary": "erdos_492_summary, erdos_492_answer",
+      "startLine": 264,
+      "endLine": 306
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #492 asked whether the generalized fractional part sequence f(alpha*n) is uniformly distributed for almost all alpha when A is any increasing sequence with a_{i+1}/a_i -> 1. The answer is NO. Schmidt (1969) constructed a counterexample, while earlier work by Davenport-LeVeque and Davenport-Erdos identified sufficient conditions (monotonic differences or fast growth) under which the conjecture does hold.",
+    "implications": "**Implications and Connections**\n\n1. **Limits of Weyl's Theorem:** The classical equidistribution theorem does not generalize to all sparse sequences\n\n2. **Growth Rate Threshold:** There is a sharp transition around a_n ~ sqrt(n) between equidistribution and non-equidistribution\n\n3. **Structure Matters:** Monotonicity of differences provides enough regularity for equidistribution\n\n4. **Diophantine Approximation:** The counterexample construction relies on number-theoretic properties of how reals are approximated by rationals\n\n5. **Measure Theory:** The formalization demonstrates the interplay between analysis and number theory via 'almost all' statements",
+    "openQuestions": [
+      "Exact characterization of sequences for which equidistribution holds",
+      "Optimal growth rate threshold between success and failure",
+      "Explicit construction of Schmidt's counterexample sequence",
+      "Generalization to other discrepancy measures beyond uniform distribution",
+      "Connection to metric number theory and Hausdorff dimension"
+    ]
   }
 }

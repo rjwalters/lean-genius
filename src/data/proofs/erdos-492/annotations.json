@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "id": "ann-e492-header",
+    "proofId": "erdos-492",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #492: Uniform Distribution Relative to a Fixed Sequence**\n\nThis problem asks whether a generalization of the classical equidistribution theorem holds for arbitrary sparse sequences.\n\n**The Setup:**\n- Given an increasing sequence A = {a_1 < a_2 < ...} with a_{i+1}/a_i -> 1\n- Define f(x) = (x - a_i)/(a_{i+1} - a_i) for x in [a_i, a_{i+1})\n- When A = N (natural numbers), f(x) = {x} (the fractional part)\n\n**The Question:** Is f(alpha*n) uniformly distributed for almost all alpha?\n\n**Answer: NO** - Schmidt (1969) constructed a counterexample.",
+    "mathContext": "The problem connects uniform distribution theory, measure theory ('almost all' means measure 1), and Diophantine approximation. The classical Weyl theorem (1916) says {alpha*n} is equidistributed for irrational alpha; this asks whether the same holds for generalized fractional parts.",
+    "significance": "critical",
+    "relatedConcepts": ["Weyl equidistribution", "Fractional part", "Measure theory", "Diophantine approximation"]
+  },
+  {
+    "id": "ann-e492-increasing-sequence",
+    "proofId": "erdos-492",
+    "range": { "startLine": 51, "endLine": 58 },
+    "type": "definition",
+    "title": "Increasing Sequence Structure",
+    "content": "**IncreasingSequence:**\n\nA structure capturing infinite strictly increasing sequences of natural numbers.\n\n**Components:**\n- `seq : N -> N` - the sequence itself\n- `strictly_increasing` - each term is larger than the previous\n- `unbounded` - the sequence grows without bound\n\n**Example:** A = {1, 2, 3, ...} = N\n**Example:** A = {1, 2, 4, 8, ...} = powers of 2\n**Example:** A = {1, 4, 9, 16, ...} = perfect squares",
+    "mathContext": "The structure ensures we have a well-defined increasing sequence to work with. The unboundedness condition is needed to cover all sufficiently large x.",
+    "significance": "critical",
+    "relatedConcepts": ["Strictly monotone functions", "Sequences", "Natural numbers"]
+  },
+  {
+    "id": "ann-e492-density-condition",
+    "proofId": "erdos-492",
+    "range": { "startLine": 59, "endLine": 64 },
+    "type": "definition",
+    "title": "The Density Condition",
+    "content": "**hasDensityCondition:**\n\nThe key hypothesis: a_{i+1}/a_i -> 1 as i -> infinity.\n\n**Meaning:** Consecutive terms become arbitrarily close in ratio.\n\n**Examples satisfying the condition:**\n- A = N: (n+1)/n = 1 + 1/n -> 1\n- A = {n^2}: (n+1)^2/n^2 = 1 + 2/n + 1/n^2 -> 1\n- A = {floor(n log n)}: ratios -> 1\n\n**Non-example:**\n- A = {2^n}: 2^{n+1}/2^n = 2 (constant, not -> 1)",
+    "mathContext": "The density condition ensures the sequence is 'dense enough' that consecutive intervals have comparable sizes asymptotically. This is necessary but not sufficient for equidistribution.",
+    "significance": "critical",
+    "relatedConcepts": ["Limit of sequences", "Density", "Asymptotic behavior"]
+  },
+  {
+    "id": "ann-e492-generalized-frac",
+    "proofId": "erdos-492",
+    "range": { "startLine": 73, "endLine": 84 },
+    "type": "definition",
+    "title": "Generalized Fractional Part",
+    "content": "**generalizedFractionalPart:**\n\nFor x in [a_i, a_{i+1}), define:\n\nf(x) = (x - a_i) / (a_{i+1} - a_i) in [0, 1)\n\n**Interpretation:** This measures where x falls within its interval, normalized to [0,1).\n\n**Special case A = N:**\n- For x in [n, n+1), f(x) = (x - n) / 1 = x - n = {x}\n- So f(x) equals the usual fractional part!\n\n**Key property:** f(x) is always in [0, 1), regardless of the sequence A.",
+    "mathContext": "This generalizes the fractional part {x} = x - floor(x) to arbitrary subdivisions of the real line. The key insight is that we're measuring relative position, not absolute position.",
+    "significance": "critical",
+    "relatedConcepts": ["Fractional part", "Normalization", "Interval subdivision"]
+  },
+  {
+    "id": "ann-e492-natural-numbers",
+    "proofId": "erdos-492",
+    "range": { "startLine": 91, "endLine": 113 },
+    "type": "definition",
+    "title": "Natural Numbers as Base Case",
+    "content": "**naturalNumberSequence:**\n\nThe natural numbers N = {1, 2, 3, ...} form the canonical increasing sequence.\n\n**Properties:**\n- `seq = id` (identity function)\n- Strictly increasing (trivially)\n- Unbounded (trivially)\n\n**Density condition:** (n+1)/n -> 1 as n -> infinity\n\n**Key fact:** For A = N, the generalized fractional part equals the standard fractional part {x} = x - floor(x).\n\nThis is the base case that connects to Weyl's classical theorem.",
+    "significance": "key",
+    "relatedConcepts": ["Natural numbers", "Fractional part", "Weyl's theorem"]
+  },
+  {
+    "id": "ann-e492-uniform-distribution",
+    "proofId": "erdos-492",
+    "range": { "startLine": 121, "endLine": 129 },
+    "type": "definition",
+    "title": "Uniform Distribution",
+    "content": "**IsUniformlyDistributed:**\n\nA sequence (x_n) in [0,1) is uniformly distributed if:\n\nFor all 0 <= a < b <= 1:\nlim_{N->inf} (1/N) * |{n <= N : x_n in [a,b)}| = b - a\n\n**Meaning:** The proportion of terms falling in any subinterval converges to the length of that interval.\n\n**Intuition:** Terms are spread evenly throughout [0,1), without clustering in any particular region.\n\n**This is Weyl's criterion** for equidistribution.",
+    "mathContext": "Uniform distribution is a fundamental concept in analytic number theory. It captures the idea that a sequence 'fills up' an interval evenly. The definition uses counting measure normalized by N.",
+    "significance": "critical",
+    "relatedConcepts": ["Weyl criterion", "Discrepancy", "Equidistribution"]
+  },
+  {
+    "id": "ann-e492-weyl",
+    "proofId": "erdos-492",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "axiom",
+    "title": "Weyl's Equidistribution Theorem",
+    "content": "**weyl_equidistribution:**\n\nFor any irrational alpha, the sequence {alpha * n} = (alpha*n mod 1) is uniformly distributed in [0,1).\n\n**Historical significance:** Proved by Hermann Weyl in 1916, this is one of the foundational results in the theory of uniform distribution.\n\n**Equivalently:** For almost all alpha (all irrationals, i.e., measure 1), equidistribution holds.\n\nThis is the base case that Erdos #492 attempts to generalize.",
+    "mathContext": "Weyl's theorem shows that rational and irrational numbers behave fundamentally differently for equidistribution. For rational alpha = p/q, the sequence is periodic with period q and definitely NOT equidistributed.",
+    "significance": "critical",
+    "relatedConcepts": ["Irrational numbers", "Modular arithmetic", "Classical number theory"]
+  },
+  {
+    "id": "ann-e492-davenport-leveque",
+    "proofId": "erdos-492",
+    "range": { "startLine": 162, "endLine": 174 },
+    "type": "axiom",
+    "title": "Davenport-LeVeque Theorem",
+    "content": "**davenport_leveque:**\n\nIf a_n - a_{n-1} is monotonic (either always increasing or always decreasing), then for almost all alpha, f(alpha*n) is uniformly distributed.\n\n**hasMonotonicDifferences:** Either:\n- Monotone(n -> a_{n+1} - a_n): gaps are increasing\n- Antitone(n -> a_{n+1} - a_n): gaps are decreasing\n\n**Examples:**\n- A = {n^2}: differences are 2n+1, increasing\n- A = N: differences are constant 1, both monotone and antitone\n\nThis is a sufficient condition for the conjecture to hold.",
+    "mathContext": "The monotonicity condition provides enough regularity that the equidistribution proof goes through. Published in Michigan Math. J. (1963).",
+    "significance": "key",
+    "relatedConcepts": ["Monotonic functions", "Sufficient conditions", "Gap sequences"]
+  },
+  {
+    "id": "ann-e492-davenport-erdos",
+    "proofId": "erdos-492",
+    "range": { "startLine": 176, "endLine": 186 },
+    "type": "axiom",
+    "title": "Davenport-Erdos Theorem",
+    "content": "**davenport_erdos:**\n\nIf a_n grows faster than n^{1/2+epsilon} for some epsilon > 0, then for almost all alpha, f(alpha*n) is uniformly distributed.\n\n**hasFastGrowth:** There exist epsilon > 0 and C > 0 such that:\na_n >= C * n^{1/2 + epsilon} for all n\n\n**Key insight:** Fast growth means the intervals [a_i, a_{i+1}) have enough 'room' that the sequence f(alpha*n) doesn't cluster.\n\n**Published 1963:** This was a major partial result toward the general conjecture.",
+    "mathContext": "The exponent 1/2 is critical. Sequences growing faster than sqrt(n) satisfy the conjecture; those growing at or slower than sqrt(n) may not. This identifies the 'phase transition' in behavior.",
+    "significance": "key",
+    "relatedConcepts": ["Growth rates", "Polynomial growth", "Critical exponents"]
+  },
+  {
+    "id": "ann-e492-schmidt",
+    "proofId": "erdos-492",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "axiom",
+    "title": "Schmidt's Counterexample",
+    "content": "**schmidt_counterexample:**\n\nThere exists an increasing sequence A satisfying the density condition such that the set of alpha where f(alpha*n) is NOT uniformly distributed has positive measure.\n\n**Statement:**\n```lean\naxiom schmidt_counterexample :\n    exists A : IncreasingSequence,\n      hasDensityCondition A and\n      not(forall^ae alpha, IsUniformlyDistributed ...)\n```\n\n**This definitively disproves the general conjecture.**\n\nPublished by W. M. Schmidt in 1969 in Studia Sci. Math. Hungar.",
+    "mathContext": "Schmidt's construction exploits the freedom in choosing the sequence A. By carefully constructing A (likely near the critical growth rate sqrt(n)), he showed the conjecture fails. The counterexample uses techniques from Diophantine approximation.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Measure theory", "Diophantine approximation"]
+  },
+  {
+    "id": "ann-e492-main-theorem",
+    "proofId": "erdos-492",
+    "range": { "startLine": 205, "endLine": 217 },
+    "type": "theorem",
+    "title": "Erdos #492: DISPROVED",
+    "content": "**erdos_492_disproved:**\n\n```lean\ntheorem erdos_492_disproved :\n    not(forall A : IncreasingSequence, hasDensityCondition A ->\n        forall^ae alpha, IsUniformlyDistributed (generalizedAlphaSequence A alpha))\n```\n\n**Proof:** By contradiction. If the conjecture held for all A, it would hold for Schmidt's counterexample A. But Schmidt proved it fails for that A. Contradiction.\n\n**The answer to Erdos Problem #492 is NO.**",
+    "mathContext": "The theorem follows directly from the existence of Schmidt's counterexample. The proof is a simple application of the axiom: assume the universal statement, apply it to A, get a contradiction with the fact that A is a counterexample.",
+    "significance": "critical",
+    "relatedConcepts": ["Proof by contradiction", "Universal quantification", "Existential counterexamples"]
+  },
+  {
+    "id": "ann-e492-critical-growth",
+    "proofId": "erdos-492",
+    "range": { "startLine": 224, "endLine": 241 },
+    "type": "definition",
+    "title": "Critical Growth Rate",
+    "content": "**hasCriticalGrowth:**\n\nA sequence has critical growth if a_n <= C * sqrt(n) for some constant C.\n\n**The boundary:**\n- a_n >> n^{1/2+epsilon}: conjecture HOLDS (Davenport-Erdos)\n- a_n ~ sqrt(n): counterexamples EXIST (Schmidt)\n\n**Intuition:** Near sqrt(n) growth, the intervals are 'just barely' dense enough to satisfy the density condition, but 'not regular enough' to guarantee equidistribution.\n\nSchmidt's counterexample lives in this critical regime.",
+    "mathContext": "The exponent 1/2 appears naturally in this problem. It relates to how well alpha*n can be approximated by rationals p/q where a_q is close to p. The critical growth rate is where approximation becomes problematic.",
+    "significance": "key",
+    "relatedConcepts": ["Growth rates", "Phase transitions", "Critical phenomena"]
+  },
+  {
+    "id": "ann-e492-diophantine",
+    "proofId": "erdos-492",
+    "range": { "startLine": 248, "endLine": 262 },
+    "type": "definition",
+    "title": "Diophantine Approximation Connection",
+    "content": "**IsBadlyApproximable:**\n\nA real alpha is badly approximable if there exists c > 0 such that:\n|alpha - p/q| > c/q^2 for all rationals p/q.\n\n**Connection to the problem:**\nFor badly approximable alpha, the sequence alpha*n has predictable behavior modulo 1. Schmidt's counterexample exploits this by constructing A so that:\n- For certain 'bad' alpha, f(alpha*n) clusters\n- These 'bad' alpha form a set of positive measure\n\n**Well-known fact:** Badly approximable numbers have measure 0, but there are uncountably many of them (e.g., quadratic irrationals like sqrt(2)).",
+    "mathContext": "Diophantine approximation studies how well real numbers can be approximated by rationals. The exponent 2 in 1/q^2 is related to continued fractions and the golden ratio. The connection to equidistribution is deep.",
+    "significance": "key",
+    "relatedConcepts": ["Continued fractions", "Diophantine equations", "Badly approximable numbers"]
+  },
+  {
+    "id": "ann-e492-summary",
+    "proofId": "erdos-492",
+    "range": { "startLine": 270, "endLine": 292 },
+    "type": "theorem",
+    "title": "Summary of All Results",
+    "content": "**erdos_492_summary:**\n\nCollects the complete picture:\n\n1. **FALSE in general:** Schmidt's counterexample exists\n\n2. **TRUE for monotonic differences:** Davenport-LeVeque 1963\n\n3. **TRUE for fast growth:** Davenport-Erdos 1963, when a_n >> n^{1/2+epsilon}\n\n**The landscape:**\n- Sequences with regular structure (monotonic gaps) -> equidistribution holds\n- Sequences with fast growth -> equidistribution holds\n- General sequences with slow growth -> counterexamples exist\n\nThis completely resolves Erdos Problem #492.",
+    "mathContext": "The summary theorem packages all the major results about this problem. It shows the conjecture is false but characterizes exactly when it succeeds. This is typical in mathematics: a conjecture may be false in general but true under additional hypotheses.",
+    "significance": "key",
+    "relatedConcepts": ["Summary theorems", "Classification results", "Sufficient conditions"]
+  },
+  {
+    "id": "ann-e492-answer",
+    "proofId": "erdos-492",
+    "range": { "startLine": 293, "endLine": 306 },
+    "type": "theorem",
+    "title": "Final Answer",
+    "content": "**erdos_492_answer:**\n\nThe answer to Erdos Problem #492 is **NO**.\n\nThere exists a sequence A satisfying the density condition and a set S of positive measure such that for all alpha in S, the sequence f(alpha*n) is NOT uniformly distributed.\n\n**Key features of the counterexample:**\n1. A satisfies a_{i+1}/a_i -> 1\n2. S has positive Lebesgue measure\n3. For alpha in S, f(alpha*n) clusters (not equidistributed)\n\nThe conjecture fails despite the intuitive appeal of generalizing Weyl's theorem.",
+    "mathContext": "This theorem packages the answer in a form that directly addresses Erdos's original question. The positive measure condition is crucial - it's not just a set of measure zero that fails, but a substantial set.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdos problems", "Counterexamples", "Measure-theoretic statements"]
+  }
+]

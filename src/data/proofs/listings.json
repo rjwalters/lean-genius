@@ -7479,17 +7479,24 @@
   },
   {
     "id": "erdos-492",
-    "title": "Erdős Problem #492",
+    "title": "Erdos Problem #492: Uniform Distribution Relative to a Fixed Sequence",
     "slug": "erdos-492",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite such that .... For any ... let\\[f(x) = {a_{i+1}-a_i}\\in [0,1),\\]where .... Is it true that, for almost al...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is the sequence f(alpha*n) uniformly distributed in [0,1) for almost all alpha, where f generalizes the fractional part to an arbitrary increasing sequence? NO, disproved by Schmidt (1969).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "uniform-distribution",
+      "diophantine-approximation",
+      "measure-theory",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 492,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-494",
