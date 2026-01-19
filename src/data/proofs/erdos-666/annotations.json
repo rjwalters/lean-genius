@@ -1,1 +1,115 @@
-[]
+[
+  {
+    "id": "ann-e666-header",
+    "proofId": "erdos-666",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #666: C₆ in Hypercube Subgraphs**\n\nQuestion: Does every ε-dense subgraph of Qₙ contain C₆?\n\n**Answer:** NO\n\n**Counterexamples:**\n- Chung (1992): 4-partition into C₆-free parts (ε = 1/4)\n- Conder (1993): 3-coloring (ε = 1/3)",
+    "mathContext": "The hypercube Qₙ has 2ⁿ vertices and n·2ⁿ⁻¹ edges.",
+    "significance": "critical",
+    "relatedConcepts": ["Hypercube", "Cycles", "Edge partition"]
+  },
+  {
+    "id": "ann-e666-hypercube",
+    "proofId": "erdos-666",
+    "range": { "startLine": 40, "endLine": 67 },
+    "type": "definition",
+    "title": "Hypercube Graph",
+    "content": "**Hypercube n:**\n\nVertices: Fin (2^n) (binary strings of length n)\n\nAdjacency: x ~ y iff popcount(x XOR y) = 1 (differ in exactly one bit)\n\n**Properties:**\n- |V| = 2ⁿ\n- |E| = n·2ⁿ⁻¹\n- n-regular",
+    "significance": "critical",
+    "relatedConcepts": ["Binary representation", "Hamming distance"]
+  },
+  {
+    "id": "ann-e666-cycles",
+    "proofId": "erdos-666",
+    "range": { "startLine": 73, "endLine": 96 },
+    "type": "definition",
+    "title": "Cycles in Graphs",
+    "content": "**HasCycle G k:**\n\nG contains a cycle of length k (injective sequence with cyclic adjacency).\n\n**Specific cycles:**\n- HasC4: 4-cycle (square)\n- HasC6: 6-cycle (hexagon)\n- HasC2k: even cycle of length 2k",
+    "significance": "key",
+    "relatedConcepts": ["Graph cycles", "Even cycles"]
+  },
+  {
+    "id": "ann-e666-dense",
+    "proofId": "erdos-666",
+    "range": { "startLine": 102, "endLine": 117 },
+    "type": "definition",
+    "title": "ε-Dense Subgraph",
+    "content": "**EpsilonDenseSubgraph n ε H:**\n\nH is a subgraph of Qₙ with at least ε·n·2ⁿ⁻¹ edges.\n\nThis captures 'significant fraction' of hypercube edges.",
+    "significance": "key",
+    "relatedConcepts": ["Edge density", "Subgraph"]
+  },
+  {
+    "id": "ann-e666-conjecture",
+    "proofId": "erdos-666",
+    "range": { "startLine": 123, "endLine": 140 },
+    "type": "theorem",
+    "title": "Erdős's Conjecture (Disproved)",
+    "content": "**ErdosConjecture, erdos_conjecture_false:**\n\nConjecture: For all ε > 0, sufficiently large n, ε-dense subgraphs of Qₙ contain C₆.\n\nThis is FALSE. Counterexample: ε = 1/4 via Chung's partition.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproved conjecture", "Counterexample"]
+  },
+  {
+    "id": "ann-e666-chung",
+    "proofId": "erdos-666",
+    "range": { "startLine": 146, "endLine": 174 },
+    "type": "axiom",
+    "title": "Chung's Result (1992)",
+    "content": "**chung_1992, chung_counterexample:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs, each C₆-free.\n\nEach part has ~1/4 of all edges but contains no 6-cycle.",
+    "mathContext": "Published in J. Graph Theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Edge partition", "Chung 1992"]
+  },
+  {
+    "id": "ann-e666-bdt",
+    "proofId": "erdos-666",
+    "range": { "startLine": 180, "endLine": 197 },
+    "type": "axiom",
+    "title": "Brouwer-Dejter-Thomassen (1993)",
+    "content": "**brouwer_dejter_thomassen_1993:**\n\nIndependently proved Qₙ can be 4-colored with no monochromatic C₄ or C₆.\n\nThis confirms and extends Chung's result.",
+    "mathContext": "Published in J. Algebraic Combin.",
+    "significance": "key",
+    "relatedConcepts": ["Edge coloring", "BDT 1993"]
+  },
+  {
+    "id": "ann-e666-conder",
+    "proofId": "erdos-666",
+    "range": { "startLine": 203, "endLine": 231 },
+    "type": "axiom",
+    "title": "Conder's Improvement (1993)",
+    "content": "**conder_1993, conder_better_bound:**\n\nFor n ≥ 3, Qₙ edges can be 3-colored with no monochromatic C₄ or C₆.\n\nThis improves Chung/BDT: even denser C₆-free subgraphs exist (ε = 1/3).",
+    "significance": "key",
+    "relatedConcepts": ["Improved bound", "Conder 1993"]
+  },
+  {
+    "id": "ann-e666-generalized",
+    "proofId": "erdos-666",
+    "range": { "startLine": 237, "endLine": 253 },
+    "type": "definition",
+    "title": "Generalized Conjecture",
+    "content": "**GeneralizedConjecture:**\n\nFor k ≥ 3, ∃ c > 0, aₖ < 1 such that ≥ c·n^{aₖ}·2ⁿ edges forces C_{2k}.\n\nExpected: aₖ → 0 as k → ∞.\n\nThis remains OPEN.",
+    "significance": "key",
+    "relatedConcepts": ["Open problem", "General cycles"]
+  },
+  {
+    "id": "ann-e666-turan",
+    "proofId": "erdos-666",
+    "range": { "startLine": 259, "endLine": 270 },
+    "type": "axiom",
+    "title": "Turán-type for C₄",
+    "content": "**turan_c4_hypercube:**\n\nMax edges in C₄-free subgraph of Qₙ is Θ(√n · 2ⁿ).\n\nC₄ requires more edges than C₆ to force.",
+    "significance": "supporting",
+    "relatedConcepts": ["Turán numbers", "C₄ threshold"]
+  },
+  {
+    "id": "ann-e666-summary",
+    "proofId": "erdos-666",
+    "range": { "startLine": 276, "endLine": 305 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_666_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | ε-dense Qₙ subgraph ⊃ C₆? |\n| Answer | NO |\n| Chung (1992) | 4-partition, ε=1/4 counterexample |\n| Conder (1993) | 3-coloring, ε=1/3 counterexample |\n| Generalized | Open for C_{2k} |",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Resolution"]
+  }
+]
