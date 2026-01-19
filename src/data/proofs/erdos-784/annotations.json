@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "erdos-784-intro",
+    "proofId": "erdos-784",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 25 },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #784 asks: if A has reciprocal sum ≤ C, must ≫ x/(log x)^c elements survive sieving? Answer: YES for C ≤ 1, NO for C > 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-reciprocal-sum",
+    "proofId": "erdos-784",
+    "type": "definition",
+    "range": { "startLine": 43, "endLine": 45 },
+    "title": "Reciprocal Sum",
+    "content": "The reciprocal sum of A is Σ_{n∈A} 1/n. This measures how 'dense' the set is in terms of divisibility coverage.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-784-sieved-set",
+    "proofId": "erdos-784",
+    "type": "definition",
+    "range": { "startLine": 47, "endLine": 53 },
+    "title": "Sieved Set",
+    "content": "The sieved set contains m ∈ [1,x] not divisible by any a ∈ A. The count of such elements is denoted sievedCount(A, x).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-784-h-function",
+    "proofId": "erdos-784",
+    "type": "definition",
+    "range": { "startLine": 55, "endLine": 62 },
+    "title": "Sieving Function H_C(x)",
+    "content": "H_C(x) = minimum sieved count over all valid sets A ⊆ {2,...,x} with reciprocal sum ≤ C. This is the worst-case sieving scenario.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-question",
+    "proofId": "erdos-784",
+    "type": "definition",
+    "range": { "startLine": 70, "endLine": 73 },
+    "title": "The Main Question",
+    "content": "HasPolynomialLogBound(C) asks: does there exist c > 0 such that H_C(x) ≫ x/(log x)^c? This is the original Erdős question.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-ruzsa-lower",
+    "proofId": "erdos-784",
+    "type": "axiom",
+    "range": { "startLine": 81, "endLine": 84 },
+    "title": "Ruzsa Lower Bound",
+    "content": "Ruzsa (1982): H₁(x) ≥ K · x/log x. This establishes the lower bound for the critical case C = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-saias-upper",
+    "proofId": "erdos-784",
+    "type": "axiom",
+    "range": { "startLine": 86, "endLine": 89 },
+    "title": "Saias Upper Bound",
+    "content": "Saias (1998): H₁(x) ≤ K · x/log x. Combined with Ruzsa's lower bound, this gives H₁(x) ≍ x/log x.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-h-one-asymptotic",
+    "proofId": "erdos-784",
+    "type": "theorem",
+    "range": { "startLine": 91, "endLine": 98 },
+    "title": "H₁(x) Asymptotic",
+    "content": "H₁(x) ≍ x/log x: both lower and upper bounds of this form hold. This is the complete answer for C = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-union-bound",
+    "proofId": "erdos-784",
+    "type": "theorem",
+    "range": { "startLine": 112, "endLine": 117 },
+    "title": "Union Bound for C < 1",
+    "content": "For C < 1, the union bound gives sievedCount ≥ (1-C)x - 1. Since this is linear, any polynomial-log bound holds trivially.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-784-alpha",
+    "proofId": "erdos-784",
+    "type": "definition",
+    "range": { "startLine": 138, "endLine": 145 },
+    "title": "Exponent α = e^{1-C}",
+    "content": "For C > 1, the critical exponent is α = e^{1-C} < 1. This controls the sublinear growth H_C(x) ≍ x^α/log x.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-ruzsa-negative",
+    "proofId": "erdos-784",
+    "type": "axiom",
+    "range": { "startLine": 147, "endLine": 151 },
+    "title": "Ruzsa Negative Answer",
+    "content": "For C > 1: H_C(x) = x^{α+o(1)} where α = e^{1-C} < 1. This is sublinear growth, ruling out polynomial-log bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-weingartner",
+    "proofId": "erdos-784",
+    "type": "axiom",
+    "range": { "startLine": 153, "endLine": 157 },
+    "title": "Weingartner 2025",
+    "content": "Precise asymptotics for C > 1: H_C(x) ≍ x^{e^{1-C}}/log x. This refines Ruzsa's result with the log factor.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-784-negative-answer",
+    "proofId": "erdos-784",
+    "type": "theorem",
+    "range": { "startLine": 159, "endLine": 165 },
+    "title": "Answer NO for C > 1",
+    "content": "For C > 1, no polynomial-log bound exists because H_C(x) grows sublinearly like x^α where α < 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-schinzel-szekeres",
+    "proofId": "erdos-784",
+    "type": "axiom",
+    "range": { "startLine": 173, "endLine": 179 },
+    "title": "Schinzel-Szekeres Construction",
+    "content": "The 1959 construction shows x/(log x)^c is best possible for C = 1. For any c, there exist sets achieving this bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-784-trivial",
+    "proofId": "erdos-784",
+    "type": "theorem",
+    "range": { "startLine": 187, "endLine": 195 },
+    "title": "Trivial Case: 1 ∈ A",
+    "content": "If 1 ∈ A, then sievedCount = 0 since everything is divisible by 1. Hence we require a ≥ 2 for all a ∈ A.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-784-complete-answer",
+    "proofId": "erdos-784",
+    "type": "theorem",
+    "range": { "startLine": 221, "endLine": 239 },
+    "title": "Complete Answer",
+    "content": "For any C > 0: YES if C ≤ 1, NO if C > 1. The transition at C = 1 is sharp—a phase transition in sieving behavior.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-main-statement",
+    "proofId": "erdos-784",
+    "type": "theorem",
+    "range": { "startLine": 245, "endLine": 267 },
+    "title": "Main Problem Statement",
+    "content": "Complete formalization: H₁(x) ≍ x/log x, H_C(x) ≍ x^{e^{1-C}}/log x for C > 1, YES for C ≤ 1, NO for C > 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-784-summary",
+    "proofId": "erdos-784",
+    "type": "theorem",
+    "range": { "startLine": 269, "endLine": 283 },
+    "title": "Summary Theorem",
+    "content": "Summary: C = 1 has polynomial-log bound (x/log x), while C > 1 fails (sublinear x^α growth).",
+    "significance": "critical"
+  }
+]
