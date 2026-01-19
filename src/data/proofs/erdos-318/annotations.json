@@ -1,1 +1,201 @@
-[]
+[
+  {
+    "id": "ann-e318-header",
+    "proofId": "erdos-318",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #318: Signed Unit Fractions with Zero Sum**\n\nGiven A ⊆ ℕ and sign function f:A→{±1}, must there exist finite S ⊂ A with ∑f(n)/n = 0?\n\n**Answers:**\n- Arithmetic progressions: YES (Sattler 1982)\n- Positive density: NO (counterexamples exist)\n- Squares excluding 1: OPEN\n\nThis is known as Property P₁ in the literature.",
+    "mathContext": "Part of the broader study of Egyptian fractions and unit fraction sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Unit fractions", "Arithmetic progressions"]
+  },
+  {
+    "id": "ann-e318-signed-sum",
+    "proofId": "erdos-318",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "Signed Unit Sum",
+    "content": "**signedUnitSum:**\n\nGiven S ⊆ ℕ and f:ℕ→ℤ, compute ∑_{n∈S} f(n)/n.\n\n```lean\ndef signedUnitSum (S : Finset ℕ) (f : ℕ → ℤ) : ℚ :=\n  ∑ n ∈ S, (f n : ℚ) / (n : ℚ)\n```\n\nThis is the central quantity in Property P₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-sign-function",
+    "proofId": "erdos-318",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "definition",
+    "title": "Sign Function",
+    "content": "**IsSignFunction:**\n\nA function f:ℕ→ℤ is a sign function if f(n) ∈ {-1, 1} for all n.\n\n```lean\ndef IsSignFunction (f : ℕ → ℤ) : Prop :=\n  ∀ n : ℕ, f n = 1 ∨ f n = -1\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e318-nonconstant",
+    "proofId": "erdos-318",
+    "range": { "startLine": 65, "endLine": 70 },
+    "type": "definition",
+    "title": "Non-Constant Property",
+    "content": "**IsNonConstant:**\n\nA sign function is non-constant on A if it takes both values +1 and -1 on A.\n\n```lean\ndef IsNonConstant (A : Set ℕ) (f : ℕ → ℤ) : Prop :=\n  (∃ a ∈ A, f a = 1) ∧ (∃ b ∈ A, f b = -1)\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e318-property-p1",
+    "proofId": "erdos-318",
+    "range": { "startLine": 79, "endLine": 87 },
+    "type": "definition",
+    "title": "Property P₁",
+    "content": "**HasPropertyP1:**\n\nA set A has Property P₁ if every non-constant sign function admits a zero-sum finite subset.\n\n```lean\ndef HasPropertyP1 (A : Set ℕ) : Prop :=\n  ∀ f : ℕ → ℤ, IsSignFunction f → IsNonConstant A f →\n    ∃ S : Finset ℕ, S.Nonempty ∧ (↑S : Set ℕ) ⊆ A ∧ signedUnitSum S f = 0\n```",
+    "mathContext": "The central property studied in this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-ap",
+    "proofId": "erdos-318",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "**arithmeticProgression:**\n\nThe set {a, a+d, a+2d, ...} for a, d > 0.\n\n```lean\ndef arithmeticProgression (a d : ℕ) : Set ℕ :=\n  {n : ℕ | ∃ k : ℕ, n = a + k * d}\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e318-erdos-straus",
+    "proofId": "erdos-318",
+    "range": { "startLine": 116, "endLine": 120 },
+    "type": "axiom",
+    "title": "Erdős-Straus 1975",
+    "content": "**erdos_straus_1975:**\n\nThe natural numbers have Property P₁.\n\nFrom: Erdős, P. and Straus, E.G. (1975), Solution to Problem 387, Nieuw Arch. Wisk.",
+    "mathContext": "The first result establishing P₁ for a natural set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-sattler-odd",
+    "proofId": "erdos-318",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "axiom",
+    "title": "Sattler 1975 (Odd Numbers)",
+    "content": "**sattler_odd_1975:**\n\nThe odd numbers have Property P₁.\n\nExtension of Erdős-Straus to a proper subset of ℕ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e318-sattler-main",
+    "proofId": "erdos-318",
+    "range": { "startLine": 128, "endLine": 133 },
+    "type": "axiom",
+    "title": "Sattler's Main Theorem (1982)",
+    "content": "**sattler_1982:**\n\nEvery infinite arithmetic progression has Property P₁.\n\n```lean\naxiom sattler_1982 (a d : ℕ) (ha : a ≥ 1) (hd : d ≥ 1) :\n    HasPropertyP1 (arithmeticProgression a d)\n```\n\nThis resolves the main question of Problem #318.",
+    "mathContext": "From: Sattler (1982b), On Erdős property P₁ for arithmetical sequence.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-main-thm",
+    "proofId": "erdos-318",
+    "range": { "startLine": 139, "endLine": 148 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_318_arithmetic_progression:**\n\nThe answer to the main question is YES.\n\n```lean\ntheorem erdos_318_arithmetic_progression :\n    ∀ a d : ℕ, a ≥ 1 → d ≥ 1 → HasPropertyP1 (arithmeticProgression a d)\n```\n\nDirect from Sattler's theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-counterex-set",
+    "proofId": "erdos-318",
+    "range": { "startLine": 162, "endLine": 167 },
+    "type": "definition",
+    "title": "Counterexample Set",
+    "content": "**counterexampleSet:**\n\nSets with exactly one even number fail Property P₁.\n\n```lean\ndef counterexampleSet (m : ℕ) : Set ℕ :=\n  {n : ℕ | n % 2 = 1 ∨ n = 2 * m}\n```\n\nOdd numbers plus one even 2m.",
+    "mathContext": "Erdős observed this counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-counterex-fails",
+    "proofId": "erdos-318",
+    "range": { "startLine": 177, "endLine": 186 },
+    "type": "axiom",
+    "title": "Counterexample Fails P₁",
+    "content": "**counterexample_fails_P1:**\n\nSets with exactly one even fail P₁.\n\n**Intuition:** The even 2m can't be canceled. Sums of 1/odd have odd denominators in lowest terms, so can't equal any multiple of 1/2m.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-density-insuff",
+    "proofId": "erdos-318",
+    "range": { "startLine": 188, "endLine": 197 },
+    "type": "theorem",
+    "title": "Positive Density Insufficient",
+    "content": "**positive_density_insufficient:**\n\nThere exist positive-density sets without Property P₁.\n\n```lean\ntheorem positive_density_insufficient :\n    ∃ A : Set ℕ, hasPositiveDensity A ∧ ¬HasPropertyP1 A\n```\n\nThe counterexampleSet has density ~1/2 but fails P₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-squares",
+    "proofId": "erdos-318",
+    "range": { "startLine": 203, "endLine": 208 },
+    "type": "definition",
+    "title": "Squares Excluding One",
+    "content": "**squaresExcludingOne:**\n\nThe set {4, 9, 16, 25, ...} = {k² : k ≥ 2}.\n\n```lean\ndef squaresExcludingOne : Set ℕ :=\n  {n : ℕ | ∃ k : ℕ, k ≥ 2 ∧ n = k^2}\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e318-why-exclude-1",
+    "proofId": "erdos-318",
+    "range": { "startLine": 210, "endLine": 217 },
+    "type": "theorem",
+    "title": "Why Exclude 1",
+    "content": "**sum_reciprocal_squares_less_than_one:**\n\n∑_{k≥2} 1/k² < 1.\n\nSo we can't cancel -1/1 = -1 with positive reciprocals of squares. Including 1 makes the problem trivially false.",
+    "mathContext": "Related to Basel problem: ∑1/k² = π²/6 ≈ 1.645",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e318-squares-open",
+    "proofId": "erdos-318",
+    "range": { "startLine": 219, "endLine": 231 },
+    "type": "definition",
+    "title": "Squares Conjecture (OPEN)",
+    "content": "**erdos_318_squares_conjecture:**\n\nDoes squaresExcludingOne have Property P₁?\n\n```lean\ndef erdos_318_squares_conjecture : Prop :=\n  HasPropertyP1 squaresExcludingOne\n```\n\nSattler announced a proof in 1982 but never published it. This remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-common-denom",
+    "proofId": "erdos-318",
+    "range": { "startLine": 237, "endLine": 246 },
+    "type": "theorem",
+    "title": "Common Denominator",
+    "content": "**zero_sum_integer_form:**\n\nIf ∑f(n)/n = 0, multiply by ∏m to get an integer equation.\n\nThis transforms rational arithmetic to integer arithmetic.",
+    "mathContext": "Key technique for analyzing unit fraction sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e318-parity",
+    "proofId": "erdos-318",
+    "range": { "startLine": 248, "endLine": 256 },
+    "type": "definition",
+    "title": "Parity Obstruction",
+    "content": "**parityObstruction:**\n\nFor P₁ to fail, there's typically a parity obstruction.\n\nIf denominators have incompatible prime factors, zero sums become impossible.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e318-egyptian",
+    "proofId": "erdos-318",
+    "range": { "startLine": 262, "endLine": 268 },
+    "type": "definition",
+    "title": "Egyptian Fractions",
+    "content": "**isEgyptianRepresentation:**\n\nProperty P₁ connects to signed Egyptian fraction representations.\n\nAn Egyptian fraction is a sum of distinct unit fractions: ∑1/nᵢ = q.",
+    "mathContext": "Named for ancient Egyptian mathematics.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős-Straus conjecture"]
+  },
+  {
+    "id": "ann-e318-summary",
+    "proofId": "erdos-318",
+    "range": { "startLine": 281, "endLine": 306 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_318_summary:**\n\n1. Arithmetic progressions: P₁ holds (Sattler 1982)\n2. Natural numbers: P₁ holds (Erdős-Straus 1975)\n3. Odd numbers: P₁ holds (Sattler 1975)\n4. Positive density: NOT sufficient\n5. Squares: OPEN",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e318-status",
+    "proofId": "erdos-318",
+    "range": { "startLine": 308, "endLine": 315 },
+    "type": "axiom",
+    "title": "Problem Status",
+    "content": "**erdos_318_status:**\n\n- Arithmetic progressions: SOLVED (YES)\n- Positive density: SOLVED (NO)\n- Squares: OPEN\n\nPartially solved problem with one remaining open case.",
+    "significance": "critical"
+  }
+]
