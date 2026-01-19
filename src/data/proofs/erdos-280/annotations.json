@@ -1,1 +1,179 @@
-[]
+[
+  {
+    "id": "ann-e280-header",
+    "proofId": "erdos-280",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #280: Covering Congruences and Sieve Methods**\n\nGiven a sequence n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k and residues aₖ mod nₖ, count integers m < nₖ avoiding all congruence classes.\n\n**Original Conjecture (DISPROVED):** Count should be Ω(k).\n\n**Cambie's Counterexample:** nₖ = 2^k, aₖ = 2^(k-1) + 1\nResult: Only m = 1 survives, so count = 1.",
+    "mathContext": "Erdős and Graham expected sieve methods would be needed. Instead, a trivial counterexample resolved the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Covering systems", "Sieve methods", "Congruences"]
+  },
+  {
+    "id": "ann-e280-congruence-class",
+    "proofId": "erdos-280",
+    "range": { "startLine": 43, "endLine": 51 },
+    "type": "definition",
+    "title": "Congruence Class",
+    "content": "**CongruenceClass:**\n\nA structure specifying a residue class a mod n:\n- `modulus`: the modulus n ≥ 1\n- `residue`: the residue a < n\n\n```lean\nstructure CongruenceClass where\n  modulus : ℕ\n  residue : ℕ\n  hmod : modulus ≥ 1\n  hres : residue < modulus\n```",
+    "significance": "key",
+    "relatedConcepts": ["Modular arithmetic", "Residue classes"]
+  },
+  {
+    "id": "ann-e280-in-class",
+    "proofId": "erdos-280",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "definition",
+    "title": "Class Membership",
+    "content": "**InCongruenceClass m c:**\n\nm ≡ a (mod n), i.e., m belongs to the congruence class c.\n\n```lean\ndef InCongruenceClass (m : ℕ) (c : CongruenceClass) : Prop :=\n  m % c.modulus = c.residue\n```",
+    "significance": "key",
+    "relatedConcepts": ["Modular congruence"]
+  },
+  {
+    "id": "ann-e280-avoids",
+    "proofId": "erdos-280",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "definition",
+    "title": "Avoiding Congruence Classes",
+    "content": "**AvoidsAllClasses m classes:**\n\nm avoids all specified classes: m ≢ aᵢ (mod nᵢ) for all i.\n\nThis is the key predicate for counting survivors.",
+    "significance": "key",
+    "relatedConcepts": ["Avoidance", "Sieving"]
+  },
+  {
+    "id": "ann-e280-count",
+    "proofId": "erdos-280",
+    "range": { "startLine": 71, "endLine": 76 },
+    "type": "definition",
+    "title": "Count of Avoiders",
+    "content": "**CountAvoiders N classes:**\n\nThe number of m < N that avoid all specified congruence classes.\n\nThis is what Erdős conjectured should be Ω(k).",
+    "mathContext": "The conjecture claimed this count grows with k, but Cambie showed it can be constant.",
+    "significance": "critical",
+    "relatedConcepts": ["Counting functions", "Sieve output"]
+  },
+  {
+    "id": "ann-e280-growth-bound",
+    "proofId": "erdos-280",
+    "range": { "startLine": 78, "endLine": 83 },
+    "type": "definition",
+    "title": "Growth Bound",
+    "content": "**SatisfiesGrowthBound n ε:**\n\nThe sequence n satisfies nₖ > (1+ε)k log k for all k ≥ 2.\n\nThis bound is optimal because pₖ ~ k log k (Prime Number Theorem).",
+    "mathContext": "If we allowed nₖ < k log k, we could use primes, which is much more constrained.",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "Growth rates"]
+  },
+  {
+    "id": "ann-e280-original-conjecture",
+    "proofId": "erdos-280",
+    "range": { "startLine": 85, "endLine": 97 },
+    "type": "definition",
+    "title": "Original Conjecture (DISPROVED)",
+    "content": "**OriginalConjecture:**\n\nFor any sequence satisfying the growth bound, the count of avoiders is Ω(k):\n∃ c > 0 such that CountAvoiders(nₖ) ≥ c·k infinitely often.\n\n**Status:** DISPROVED by Cambie's counterexample.",
+    "mathContext": "Erdős believed this might require sophisticated sieve methods. It was resolved by elementary means.",
+    "significance": "critical",
+    "relatedConcepts": ["Conjectures", "Lower bounds"]
+  },
+  {
+    "id": "ann-e280-cambie-n",
+    "proofId": "erdos-280",
+    "range": { "startLine": 103, "endLine": 107 },
+    "type": "definition",
+    "title": "Cambie's Sequence nₖ = 2^k",
+    "content": "**cambie_n k:**\n\nnₖ = 2^k. The moduli grow as powers of 2.\n\nThis satisfies the growth bound since 2^k grows exponentially, much faster than k log k.",
+    "significance": "key",
+    "relatedConcepts": ["Exponential growth", "Powers of 2"]
+  },
+  {
+    "id": "ann-e280-cambie-a",
+    "proofId": "erdos-280",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "definition",
+    "title": "Cambie's Residues aₖ = 2^(k-1) + 1",
+    "content": "**cambie_a k:**\n\naₖ = 2^(k-1) + 1 for k ≥ 1.\n\nThese residues are cleverly chosen so that almost all integers fall into some class, leaving only m = 1 uncovered.",
+    "mathContext": "The key insight is that these residues 'tile' the integers [2, 2^k) efficiently.",
+    "significance": "key",
+    "relatedConcepts": ["Covering construction", "Residue choice"]
+  },
+  {
+    "id": "ann-e280-cambie-growth",
+    "proofId": "erdos-280",
+    "range": { "startLine": 115, "endLine": 126 },
+    "type": "theorem",
+    "title": "Cambie Satisfies Growth Bound",
+    "content": "**cambie_satisfies_growth:**\n\n2^k > (1+ε)k log k for ε = 1 and large k.\n\nExponential growth dominates polynomial-logarithmic growth.",
+    "significance": "key",
+    "relatedConcepts": ["Growth comparison", "Exponential vs polynomial"]
+  },
+  {
+    "id": "ann-e280-cambie-increasing",
+    "proofId": "erdos-280",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "theorem",
+    "title": "Cambie Sequence is Increasing",
+    "content": "**cambie_increasing:**\n\ni < j implies 2^i < 2^j.\n\nThis follows from Nat.pow_lt_pow_right.",
+    "significance": "supporting",
+    "relatedConcepts": ["Monotonicity", "Power function"]
+  },
+  {
+    "id": "ann-e280-only-one",
+    "proofId": "erdos-280",
+    "range": { "startLine": 136, "endLine": 142 },
+    "type": "axiom",
+    "title": "Only m = 1 Survives",
+    "content": "**cambie_only_one_avoider:**\n\nFor k ≥ 1, every m with 1 < m < 2^k is covered by some congruence class.\n\nOnly m = 1 avoids all classes - a remarkable covering property.",
+    "mathContext": "The proof uses the binary representation of m to identify which class covers it.",
+    "significance": "critical",
+    "relatedConcepts": ["Covering property", "Binary representation"]
+  },
+  {
+    "id": "ann-e280-count-one",
+    "proofId": "erdos-280",
+    "range": { "startLine": 144, "endLine": 150 },
+    "type": "theorem",
+    "title": "Count is Exactly 1",
+    "content": "**cambie_count_is_one:**\n\nFor Cambie's construction, CountAvoiders = 1 for all k ≥ 1.\n\nThis directly contradicts the conjecture requiring count ≥ c·k.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexample", "Constant count"]
+  },
+  {
+    "id": "ann-e280-conjecture-false",
+    "proofId": "erdos-280",
+    "range": { "startLine": 156, "endLine": 170 },
+    "type": "theorem",
+    "title": "Conjecture is False",
+    "content": "**original_conjecture_false, erdos_280_disproved:**\n\n¬OriginalConjecture\n\nCambie's example satisfies all hypotheses but has count = 1, not Ω(k).\n\nThis resolves Erdős Problem #280 in the negative.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof", "Counterexample construction"]
+  },
+  {
+    "id": "ann-e280-optimal",
+    "proofId": "erdos-280",
+    "range": { "startLine": 176, "endLine": 192 },
+    "type": "concept",
+    "title": "Optimality of the Bound",
+    "content": "**Why (1+ε)k log k?**\n\nThe k-th prime pₖ ~ k log k by the Prime Number Theorem.\n\nIf we allowed nₖ < k log k, we could use nₖ = pₖ (primes), creating a much more constrained and interesting problem.",
+    "mathContext": "The growth bound separates 'easy' counterexamples from potentially hard cases.",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "Optimal bounds"]
+  },
+  {
+    "id": "ann-e280-sieve",
+    "proofId": "erdos-280",
+    "range": { "startLine": 194, "endLine": 222 },
+    "type": "concept",
+    "title": "Sieve Methods and Non-Trivial Variants",
+    "content": "**Why Erdős Expected Sieves:**\n\nCounting integers avoiding residue classes is classic sieve territory.\n\n**Why Sieves Weren't Needed:**\nThe problem allowed too much freedom in (nₖ, aₖ), enabling a trivial counterexample.\n\n**Non-Trivial Variants:**\nAdding constraints may yield open problems:\n- Coprime moduli\n- Prime moduli\n- 'Spread out' residues",
+    "significance": "key",
+    "relatedConcepts": ["Sieve methods", "Problem variants"]
+  },
+  {
+    "id": "ann-e280-summary",
+    "proofId": "erdos-280",
+    "range": { "startLine": 228, "endLine": 253 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_280_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Conjecture | DISPROVED |\n| Counterexample | nₖ = 2^k, aₖ = 2^(k-1)+1 |\n| Count | Exactly 1 (just m = 1) |\n| Growth bound | Optimal (matches pₖ ~ k log k) |\n| Variants | Coprimality may restore interest |",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Resolution"]
+  }
+]
