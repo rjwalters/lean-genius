@@ -9768,17 +9768,23 @@
   },
   {
     "id": "erdos-669",
-    "title": "Erdős Problem #669",
+    "title": "Erdős Problem #669: Lines Through k Points (Generalized Orchard Problem)",
     "slug": "erdos-669",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... points in ... there exist at most ... many distinct lines passing through at least ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate F_k(n) and f_k(n), the max lines through at-least-k or exactly-k points. Solved for k=3 (Orchard Problem); OPEN for k>=4.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "orchard-problem",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 669,
+    "mathlibCount": 1,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-67",

@@ -1,1 +1,105 @@
-[]
+[
+  {
+    "id": "ann-e669-header",
+    "proofId": "erdos-669",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #669: Generalized Orchard Problem**\n\nDefine:\n- F_k(n): max lines through at least k points among n points\n- f_k(n): max lines through exactly k points\n\n**Question:** Determine lim F_k(n)/n² and lim f_k(n)/n²\n\n**Status:**\n- k = 2: Trivial (limit = 1/2)\n- k = 3: Solved (limit = 1/6, Burr-Grünbaum-Sloane 1974)\n- k >= 4: OPEN",
+    "mathContext": "This generalizes Sylvester's classical Orchard Problem: how many lines through 3+ points can n points in the plane determine?",
+    "significance": "critical",
+    "relatedConcepts": ["Orchard problem", "Collinear points", "Incidence geometry"]
+  },
+  {
+    "id": "ann-e669-Fk",
+    "proofId": "erdos-669",
+    "range": { "startLine": 43, "endLine": 50 },
+    "type": "axiom",
+    "title": "At-Least-k Lines (F_k)",
+    "content": "**atLeastKLines (F_k(n)):**\n\nThe maximum number of distinct lines passing through at least k points among any configuration of n points in the plane.\n\nThis counts lines with k, k+1, k+2, ... points on them.",
+    "significance": "critical",
+    "relatedConcepts": ["Line counting", "Point configuration"]
+  },
+  {
+    "id": "ann-e669-fk",
+    "proofId": "erdos-669",
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "axiom",
+    "title": "Exactly-k Lines (f_k)",
+    "content": "**exactlyKLines (f_k(n)):**\n\nThe maximum number of lines passing through exactly k points.\n\nTrivially f_k(n) <= F_k(n) since exactly-k lines are a subset of at-least-k lines.",
+    "significance": "critical",
+    "relatedConcepts": ["Line counting", "Subset"]
+  },
+  {
+    "id": "ann-e669-k2",
+    "proofId": "erdos-669",
+    "range": { "startLine": 71, "endLine": 81 },
+    "type": "theorem",
+    "title": "k = 2 Case (Trivial)",
+    "content": "**f2_eq_choose and F2_eq_choose:**\n\nFor k = 2, every pair of distinct points defines a unique line:\n\nf_2(n) = F_2(n) = C(n,2) = n(n-1)/2\n\nLimit: lim F_2(n)/n² = 1/2\n\nThis is the only case where f_k = F_k for all n.",
+    "significance": "supporting",
+    "relatedConcepts": ["Binomial coefficient", "Pair counting"]
+  },
+  {
+    "id": "ann-e669-orchard",
+    "proofId": "erdos-669",
+    "range": { "startLine": 87, "endLine": 91 },
+    "type": "concept",
+    "title": "The Orchard Problem",
+    "content": "**Orchard Problem (k = 3):**\n\nSylvester's classical problem (1893): How should trees be planted in an orchard to maximize the number of rows containing exactly 3 trees?\n\nEquivalently: Maximize lines through 3 or more points among n points in the plane.",
+    "mathContext": "Named for the practical question of orchard layout. Has beautiful extremal constructions.",
+    "significance": "key",
+    "relatedConcepts": ["Sylvester", "Tree planting", "Configuration"]
+  },
+  {
+    "id": "ann-e669-bgs",
+    "proofId": "erdos-669",
+    "range": { "startLine": 93, "endLine": 110 },
+    "type": "axiom",
+    "title": "Burr-Grünbaum-Sloane Theorem (1974)",
+    "content": "**burr_grunbaum_sloane_f3 and burr_grunbaum_sloane_F3:**\n\nFor the Orchard Problem (k = 3):\n\nf_3(n) = n²/6 - O(n)\nF_3(n) = n²/6 - O(n)\n\n**Limit:** lim F_3(n)/n² = lim f_3(n)/n² = 1/6\n\nThis completely solves the k = 3 case.",
+    "mathContext": "The 1974 paper by Burr, Grünbaum, and Sloane is the definitive treatment of the Orchard Problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic", "Solved case"]
+  },
+  {
+    "id": "ann-e669-upper",
+    "proofId": "erdos-669",
+    "range": { "startLine": 127, "endLine": 141 },
+    "type": "axiom",
+    "title": "Upper Bounds",
+    "content": "**Fk_upper_bound:**\n\nF_k(n) <= C(n,2) / C(k,2)\n\n**Why?** Each line through k+ points contributes at least C(k,2) pairs to the total C(n,2) pairs.\n\n**Asymptotic:**\nlim F_k(n)/n² <= 1/(k(k-1))\n\nFor k = 3: upper bound 1/6 (achieved)\nFor k = 4: upper bound 1/12",
+    "significance": "key",
+    "relatedConcepts": ["Counting argument", "Upper bound"]
+  },
+  {
+    "id": "ann-e669-k4",
+    "proofId": "erdos-669",
+    "range": { "startLine": 147, "endLine": 156 },
+    "type": "axiom",
+    "title": "k = 4 Case (Open)",
+    "content": "**k4_upper:**\n\nFor k = 4:\nlim F_4(n)/n² <= 1/12\n\nThe exact value is **unknown**.\n\nIs the bound 1/12 achieved? This is open.",
+    "significance": "key",
+    "relatedConcepts": ["Open question", "Upper bound"]
+  },
+  {
+    "id": "ann-e669-questions",
+    "proofId": "erdos-669",
+    "range": { "startLine": 170, "endLine": 191 },
+    "type": "definition",
+    "title": "Open Questions",
+    "content": "**Three Main Open Questions:**\n\n1. **erdos669_question1:** Do the limits exist for all k >= 2?\n\n2. **erdos669_question2:** Is 1/(k(k-1)) the true limit for k >= 4?\n\n3. **erdos669_question3:** Do f_k and F_k have the same limit for k >= 4?\n\nFor k = 3, all these are answered affirmatively. For k >= 4, all remain open.",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Limit existence"]
+  },
+  {
+    "id": "ann-e669-main",
+    "proofId": "erdos-669",
+    "range": { "startLine": 228, "endLine": 238 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_669:**\n\nCombines what is known:\n\n1. k = 3 solved: F_3(n) = n²/6 - O(n)\n2. General upper bound: F_k(n)/n² <= 1/(k(k-1)) + o(1)\n\n**Status:** Partially solved (k = 2,3 complete; k >= 4 open)",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Partial solution"]
+  }
+]

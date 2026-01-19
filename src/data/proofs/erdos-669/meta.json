@@ -1,33 +1,112 @@
 {
   "id": "erdos-669",
-  "title": "Erdős Problem #669",
+  "title": "Erdős Problem #669: Lines Through k Points (Generalized Orchard Problem)",
   "slug": "erdos-669",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... points in ... there exist at most ... many distinct lines passing through at least ....",
+  "description": "Estimate F_k(n) and f_k(n), the max lines through at-least-k or exactly-k points. Solved for k=3 (Orchard Problem); OPEN for k>=4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Burr-Grünbaum-Sloane (1974 for k=3), Erdős (general problem)",
     "sourceUrl": "https://erdosproblems.com/669",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos669Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "orchard-problem",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 669,
     "erdosUrl": "https://erdosproblems.com/669",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for counting bounds",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "atLeastKLines (F_k(n)): max lines through >=k points",
+      "exactlyKLines (f_k(n)): max lines through exactly k points",
+      "f_le_F: trivial inequality f_k <= F_k",
+      "burr_grunbaum_sloane_f3/F3: k=3 solved with limit 1/6",
+      "orchard_limit: asymptotic limit for k=3",
+      "Fk_upper_bound: general upper bound",
+      "limExists_Fk/fk: limit existence definitions",
+      "erdos669_question1/2/3: open questions formalized",
+      "erdos_669: main theorem combining known results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #669 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F_k(n)$ be minimal such that for any $n$ points in $\\mathbb{R}^2$ there exist at most $F_k(n)$ many distinct lines passing through at least $k$ of the points, and $f_k(n)$ similarly but with lines passing through exactly $k$ points.\n\nEstimate $f_k(n)$ and $F_k(n)$ - in particular, determine $\\lim F_k(n)/n^2$ and $\\lim f_k(n)/n^2$.\n\n\n\nTrivially $f_k(n)\\leq F_k(n)$ and $f_2(n)=F_2(n)=\\binom{n}{2}$. The problem with $k=3$ is the classical 'Orchard problem' of Sylvester. Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} have proved that\\[f_3(n)=\\frac{n^2}{6}-O(n)\\]and\\[F_3(n)=\\frac{n^2}{6}-O(n).\\]There is a trivial upper bound of $F_k(n) \\leq \\binom{n}{2}/\\binom{k}{2}$, and hence\\[\\lim F_k(n)/n^2 \\leq \\frac{1}{k(k-1)}.\\]See also [101].\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #669: Generalized Orchard Problem**\n\nThis problem generalizes Sylvester's classical Orchard Problem from 1893, asking how many lines through k or more points can n points determine.\n\n**Key History:**\n- 1893: Sylvester poses the Orchard Problem (k=3)\n- 1974: Burr, Grünbaum, and Sloane solve the k=3 case completely\n- General k >= 4: Remains open\n\n**Mathematical Context:**\nThe problem defines two functions:\n- F_k(n): max lines through at least k points\n- f_k(n): max lines through exactly k points\n\nFor k=3, the celebrated result is that both limits equal 1/6.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet $F_k(n)$ be the maximum number of distinct lines passing through at least $k$ points among any $n$ points in $\\mathbb{R}^2$.\n\nLet $f_k(n)$ be the maximum for lines through exactly $k$ points.\n\nEstimate $f_k(n)$ and $F_k(n)$. Determine:\n- $\\lim_{n\\to\\infty} F_k(n)/n^2$\n- $\\lim_{n\\to\\infty} f_k(n)/n^2$\n\n**Status:**\n- k = 2: Trivial, limit = 1/2\n- k = 3: Solved, limit = 1/6 (Burr-Grünbaum-Sloane, 1974)\n- k >= 4: OPEN, upper bound 1/(k(k-1)) known",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Functions:** Define atLeastKLines (F_k) and exactlyKLines (f_k)\n\n2. **Basic Properties:**\n   - f_k(n) <= F_k(n)\n   - k = 2: Both equal C(n,2)\n\n3. **Orchard Problem (k = 3):**\n   - burr_grunbaum_sloane_f3/F3: Main result\n   - orchard_limit: Limit equals 1/6\n\n4. **Upper Bounds:**\n   - Fk_upper_bound: F_k(n) <= C(n,2)/C(k,2)\n   - Fk_limit_upper: Asymptotic <= 1/(k(k-1))\n\n5. **Open Questions:** Formalize what remains unknown",
+    "keyInsights": [
+      "**Orchard Problem:** The k=3 case has a beautiful geometric interpretation: how to plant trees in an orchard to maximize rows of 3",
+      "**Trivial Bound:** F_k(n) <= C(n,2)/C(k,2) since each line is counted C(k,2) times by pairs",
+      "**k=3 Limit:** Both F_3 and f_3 have limit 1/6, achieved by specific constructions",
+      "**k>=4 Open:** Even the existence of limits is not proven for general k",
+      "**Gap:** Is 1/(k(k-1)) the true limit, or can it be smaller?",
+      "**f vs F:** Whether f_k and F_k have the same limit is unknown for k>=4"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "line-functions",
+      "title": "The Line Counting Functions",
+      "summary": "F_k(n) and f_k(n) definitions",
+      "startLine": 39,
+      "endLine": 59
+    },
+    {
+      "id": "basic-relations",
+      "title": "Basic Relationships",
+      "summary": "f_k <= F_k, k=2 case",
+      "startLine": 61,
+      "endLine": 81
+    },
+    {
+      "id": "orchard",
+      "title": "The Orchard Problem (k=3)",
+      "summary": "Burr-Grünbaum-Sloane theorem, limit 1/6",
+      "startLine": 83,
+      "endLine": 121
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Trivial upper bound, asymptotic bound 1/(k(k-1))",
+      "startLine": 123,
+      "endLine": 141
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "summary": "k=4 case, limit existence, f vs F comparison",
+      "startLine": 143,
+      "endLine": 191
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "known_results, erdos_669 main theorem",
+      "startLine": 193,
+      "endLine": 240
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #669 asks to estimate F_k(n) and f_k(n), the maximum number of lines through at least k or exactly k points among n points in the plane. The case k=3 (Orchard Problem) was solved by Burr-Grünbaum-Sloane in 1974, showing both limits equal 1/6. For k>=4, the exact limits remain unknown, with only upper bounds 1/(k(k-1)) established.",
+    "implications": "**Connections and Extensions**\n\n1. **Orchard Problem:** Classical geometry problem with beautiful constructions\n\n2. **Incidence Geometry:** Related to Szemeredi-Trotter and other incidence bounds\n\n3. **Problem #101:** Related question about collinear points\n\n4. **Higher Dimensions:** Natural extensions to hyperplanes in R^d",
+    "openQuestions": [
+      "Exact value of lim F_k(n)/n^2 for k >= 4",
+      "Does the limit exist for all k?",
+      "Is 1/(k(k-1)) tight?",
+      "Do f_k and F_k have the same limit for k >= 4?"
+    ]
   }
 }
