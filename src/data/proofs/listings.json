@@ -13117,17 +13117,20 @@
   },
   {
     "id": "erdos-926",
-    "title": "Erdős Problem #926",
+    "title": "Erdős Problem #926: Turán Number of H_k",
     "slug": "erdos-926",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that\\[(n;H_k) \\ll_k n^{3/2},\\]where ... is the graph on vertices ..., where ... is adjacent to all ... an...",
-    "status": "pending",
+    "description": "For k ≥ 4, is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph with central vertex x adjacent to k vertices y_1,...,y_k, and (k choose 2) vertices z_ij each adjacent to a unique pair y_i, y_j? Answer: YES. Proved by Füredi (1991) with bound (kn)^(3/2), improved by Alon-Krivelevich-Sudakov (2003) to k·n^(3/2).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "turan-number",
+      "probabilistic-method"
     ],
     "erdosNumber": 926,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-927",
