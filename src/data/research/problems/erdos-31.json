@@ -1,8 +1,13 @@
 {
   "slug": "erdos-31",
   "title": "Erdos #31",
+<<<<<<< HEAD
   "phase": "ACT",
   "status": "active",
+=======
+  "phase": "PROGRESS",
+  "status": "complete",
+>>>>>>> 9a8fbe3c (Research: erdos-31 - Survey comprehensive Lorentz formalization)
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -32,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "COMPLETE: Comprehensive 500-line formalization with all key results. Density definitions, powers_of_2_density_zero proved, squares_density_zero proved, optimal_B_density_zero proved. Main theorem Erdos31Statement defined with Lorentz construction axiomatized. Builds with only minor warnings (2026-01-19).",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
@@ -55,7 +60,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T00:00:00.000Z",
-  "lastUpdate": "2026-01-14T00:00:00.000Z",
+  "lastUpdate": "2026-01-19T16:55:00Z",
   "significance": 7,
   "tractability": 7
 }
