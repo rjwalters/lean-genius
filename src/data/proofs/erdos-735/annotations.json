@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-735-point-config",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Point Configuration",
+    "range": { "startLine": 39, "endLine": 39 },
+    "content": "A finite set of points in the plane. The question asks which configurations admit 'magic' weightings.",
+    "significance": "fundamental"
+  },
+  {
+    "id": "ann-735-weighting",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Positive Weighting",
+    "range": { "startLine": 42, "endLine": 42 },
+    "content": "An assignment of strictly positive real numbers to each point. The positivity constraint is crucial—negative weights would make the problem trivial.",
+    "significance": "foundational"
+  },
+  {
+    "id": "ann-735-config-line",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Configuration Line",
+    "range": { "startLine": 45, "endLine": 48 },
+    "content": "A line determined by the configuration must contain at least 2 points. These are the lines whose weight sums we want to equalize.",
+    "significance": "foundational"
+  },
+  {
+    "id": "ann-735-is-magic",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Magic Configuration",
+    "range": { "startLine": 58, "endLine": 59 },
+    "content": "A configuration is magic if there exist positive weights and a constant c > 0 such that every line sum equals c. This is the central property being characterized.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-735-collinear",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Collinear Configuration",
+    "range": { "startLine": 68, "endLine": 70 },
+    "content": "Class 1: All points lie on a single line. This is trivially magic since there's only one line to consider.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-735-collinear-magic",
+    "proofId": "erdos-735",
+    "type": "theorem",
+    "title": "Collinear is Magic",
+    "range": { "startLine": 73, "endLine": 75 },
+    "content": "Any collinear configuration is magic. With only one line, any positive weights work—there's nothing to balance.",
+    "significance": "educational"
+  },
+  {
+    "id": "ann-735-general-position",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "General Position",
+    "range": { "startLine": 78, "endLine": 81 },
+    "content": "Class 2: No three points are collinear. Every line contains exactly 2 points, so equal weights give equal sums.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-735-near-pencil",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Near-Pencil Configuration",
+    "range": { "startLine": 89, "endLine": 93 },
+    "content": "Class 3: Exactly n-1 points lie on a line, with one point off the line. Lines through the special point can be balanced with careful weight choices.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-735-incenter",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Incenter Configuration",
+    "range": { "startLine": 101, "endLine": 109 },
+    "content": "Class 4: A triangle with its incenter and points on angle bisectors. This family and its projective images form the most exotic magic class.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-735-projective",
+    "proofId": "erdos-735",
+    "type": "theorem",
+    "title": "Projective Preservation",
+    "range": { "startLine": 126, "endLine": 129 },
+    "content": "Projective transformations preserve the magic property. This allows identifying configurations up to projective equivalence.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-735-murty",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Murty's Conjecture",
+    "range": { "startLine": 139, "endLine": 140 },
+    "content": "Murty conjectured these four classes (collinear, general, near-pencil, incenter) are exactly the magic configurations. This is what ABKPR08 proved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-735-classification",
+    "proofId": "erdos-735",
+    "type": "theorem",
+    "title": "Magic Classification",
+    "range": { "startLine": 143, "endLine": 155 },
+    "content": "The main theorem: Murty's conjecture is TRUE. A configuration is magic if and only if it belongs to one of the four classes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-735-not-magic",
+    "proofId": "erdos-735",
+    "type": "theorem",
+    "title": "Non-Magic Outside Classes",
+    "range": { "startLine": 174, "endLine": 178 },
+    "content": "The contrapositive: any configuration not in the four classes cannot be magic. The proof shows obstructions to positive solutions.",
+    "significance": "educational"
+  },
+  {
+    "id": "ann-735-incidence",
+    "proofId": "erdos-735",
+    "type": "definition",
+    "title": "Incidence Matrix",
+    "range": { "startLine": 213, "endLine": 215 },
+    "content": "The incidence matrix encodes which points lie on which lines. Magic configurations correspond to the matrix equation having positive solutions.",
+    "significance": "advanced"
+  }
+]
