@@ -11695,17 +11695,26 @@
   },
   {
     "id": "erdos-816",
-    "title": "Erdős Problem #816",
+    "title": "Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3",
     "slug": "erdos-816",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Must ... contain two vertices of the same degree which are joined by a pa...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let G be a graph with 2n+1 vertices and n² + n + 1 edges. Must G contain two vertices of the same degree joined by a path of length 3? YES - proved by Chen-Ma (2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graphs",
+      "paths",
+      "degree-sequence",
+      "bipartite-graphs",
+      "turan-type",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 816,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-817",
