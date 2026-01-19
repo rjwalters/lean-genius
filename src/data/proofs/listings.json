@@ -2380,17 +2380,24 @@
   },
   {
     "id": "erdos-1112",
-    "title": "Erdős Problem #1112",
+    "title": "Erdős Problem #1112: k-fold Sumsets Avoiding Lacunary Sequences",
     "slug": "erdos-1112",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Does there exist an integer ... such that if ... is a lacunary sequence of positive integers with ... then t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 3 and gap bounds d₁ < d₂, does there exist r such that for any r-lacunary sequence B, there exists A with bounded gaps where the k-fold sumset kA avoids B?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sumsets",
+      "lacunary-sequences",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1112,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-1113",
@@ -5398,17 +5405,25 @@
   },
   {
     "id": "erdos-310",
-    "title": "Erdős Problem #310",
+    "title": "Erdos Problem #310: Unit Fractions from Dense Subsets",
     "slug": "erdos-310",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Is it true that for any ... with ... there exists some ... such that\\[{b}=\\sum_{n\\in S}{n}\\]with ...?\n\n\n\nLiu...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any dense subset A of {1,...,N}, can we find S in A such that the sum of 1/n for n in S equals a/b with bounded denominator? YES, proved by Liu-Sawhney (2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "density",
+      "combinatorics",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 310,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-314",
@@ -12340,17 +12355,23 @@
   },
   {
     "id": "erdos-867",
-    "title": "Erdős Problem #867",
+    "title": "Erdos Problem #867: Consecutive Sum-Free Sets",
     "slug": "erdos-867",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... has no solutions to\\[a_i+a_{i+1}+\\cdots+a_j\\in A\\]then\\[\\lvert A\\rvert \\leq {2}+O(1)?\\]\n\n\n\nA finitary ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that a set A with no consecutive subsequence sums in A has size at most N/2 + O(1)? NO - disproved by Freud (1993) and Coppersmith-Phillips (1996).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "density-bounds",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 867,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-868",
