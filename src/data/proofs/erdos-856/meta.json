@@ -1,33 +1,95 @@
 {
   "id": "erdos-856",
-  "title": "Erdős Problem #856",
+  "title": "LCM-Free Sets and Logarithmic Density",
   "slug": "erdos-856",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the maximum value of ..., where ... ranges over all subsets of ... which contain no subset of size ... wit...",
+  "description": "Estimate f_k(N), the maximum harmonic sum of subsets of {1,...,N} with no k elements having uniform pairwise LCM. Status: OPEN. Bounds relate to sunflower conjecture.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/856",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos856Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-number-theory",
+      "lcm",
+      "logarithmic-density",
+      "sunflower-conjecture"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 856,
     "erdosUrl": "https://erdosproblems.com/856",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #856 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $f_k(N)$ be the maximum value of $\\sum_{n\\in A}\\frac{1}{n}$, where $A$ ranges over all subsets of $\\{1,\\ldots,N\\}$ which contain no subset of size $k$ with the same pairwise least common multiple.\n\nEstimate $f_k(N)$.\n\n\n\nErd\\H{o}s \\cite{Er70} notes that\\[f_k(N) \\ll \\frac{\\log N}{\\log\\log N}.\\]Indeed, let $A$ be such a set. This in particular implies that, for every $t$, there are $<k$ solutions to $t=ap$ with $a\\in A$ and $p$ prime, whence\\[\\sum_{n\\in A}\\frac{1}{n}\\sum_{p<N}\\frac{1}{p}< k \\sum_{t<N^2}\\frac{1}{t} \\ll \\log N,\\]and the bound follows since $\\sum_{p<N}\\frac{1}{p}\\gg \\log\\log N$.\n\nImproved bounds have been given by Tang and Zhang \\cite{TaZh25}, who proved bounds of the shape\\[(\\log N)^{b_k-o(1)}\\leq f_k(N)\\leq (\\log N)^{c_k+o(1)}\\]for some constants $0<b_k\\leq c_k\\leq 1$, and in particular\\[(\\log N)^{0.438}\\leq f_3(N)\\leq (\\log N)^{0.889},\\]say, for all large $N$. The exponents here are related to progress in the sunflower conjecture [857], to which this problem is closely related. For example, the exponents $c_k$ are $<1$ (and so the upper bound above is non-trivial) if and only if [857] holds for $k$-sunflowers.\n\nThe analogous question with natural density in place of logarithmic density (that is, we measure $\\lvert A\\rvert$ in place of $\\sum_{n\\in A}\\frac{1}{n}$) is the subject of [536]. In particular Erd\\H{o}s \\cite{Er70} has constructed $A\\subseteq \\{1,\\ldots,N\\}$ with $\\lvert A\\rvert \\gg N$ where no four have the same pairwise least common multiple, and hence the interest of the natural density problem is the $k=3$ case.\n\nA related combinatorial problem is asked at [857].\n\n\n\n\nReferences\n\n\n[Er70] Erd\\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.\n\n[TaZh25] Q. Tang and H. Zhang, Average first-passage times for character sums. (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1970 [Er70], asking about the maximum harmonic sum of subsets avoiding k elements with uniform pairwise LCM. This connects to the sunflower conjecture and has seen recent progress by Tang and Zhang (2025).",
+    "problemStatement": "Let k ≥ 3 and f_k(N) be the maximum value of Σ_{n∈A} 1/n, where A ranges over all subsets of {1,...,N} which contain no subset of size k with the same pairwise least common multiple. Estimate f_k(N).",
+    "proofStrategy": "The problem remains OPEN. Key partial results include Erdős's upper bound log(N)/log(log(N)) and Tang-Zhang's improved bounds showing (log N)^{b_k} ≤ f_k(N) ≤ (log N)^{c_k}. The connection to sunflower conjecture provides structural insight.",
+    "keyInsights": [
+      "Erdős (1970): f_k(N) ≪ log(N)/log(log(N))",
+      "Tang-Zhang (2025): (log N)^{0.438} ≤ f_3(N) ≤ (log N)^{0.889}",
+      "c_k < 1 iff sunflower conjecture holds for k-sunflowers",
+      "Related to Problem #536 (natural density) and Problem #857 (sunflowers)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lcm-basics",
+      "startLine": 47,
+      "endLine": 65,
+      "summary": "Basic LCM definitions and properties"
+    },
+    {
+      "id": "uniform-lcm",
+      "startLine": 66,
+      "endLine": 89,
+      "summary": "Uniform pairwise LCM and k-LCM-free sets"
+    },
+    {
+      "id": "log-density",
+      "startLine": 90,
+      "endLine": 107,
+      "summary": "Harmonic sum and f_k(N) definition"
+    },
+    {
+      "id": "erdos-bound",
+      "startLine": 108,
+      "endLine": 132,
+      "summary": "Erdős 1970 upper bound log(N)/log(log(N))"
+    },
+    {
+      "id": "tang-zhang",
+      "startLine": 133,
+      "endLine": 158,
+      "summary": "Tang-Zhang 2025 improved bounds"
+    },
+    {
+      "id": "sunflower",
+      "startLine": 159,
+      "endLine": 196,
+      "summary": "Connection to sunflower conjecture"
+    },
+    {
+      "id": "natural-density",
+      "startLine": 197,
+      "endLine": 223,
+      "summary": "Natural density variant (Problem #536)"
+    },
+    {
+      "id": "summary",
+      "startLine": 268,
+      "endLine": 300,
+      "summary": "Summary of open problem status"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #856 remains OPEN. The goal is to estimate f_k(N), the maximum harmonic sum of k-LCM-free subsets of {1,...,N}. Erdős gave an initial bound, Tang-Zhang (2025) improved it to polynomial powers of log N, and the problem is deeply connected to the sunflower conjecture.",
+    "implications": "Progress on this problem would shed light on the sunflower conjecture and related combinatorial structures. The connection shows that forbidden LCM patterns create constraints analogous to sunflower-free families.",
+    "openQuestions": [
+      "What is the precise growth rate of f_k(N)?",
+      "Can the Tang-Zhang bounds be improved?",
+      "What is the exact relationship between exponents and sunflower progress?"
+    ]
   }
 }
