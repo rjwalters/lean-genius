@@ -1,33 +1,91 @@
 {
   "id": "erdos-811",
-  "title": "Erdős Problem #811",
+  "title": "Rainbow Graphs in Balanced Edge-Colorings",
   "slug": "erdos-811",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose .... We say that an edge-colouring of ... using ... colours is balanced if every vertex sees exactly ... many edges o...",
+  "description": "Characterize graphs G such that every balanced edge-coloring of K_n contains a rainbow copy of G. K_4 fails (Clemen-Wagner 2023), but full characterization is open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Pyber, and Tuza",
     "sourceUrl": "https://erdosproblems.com/811",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos811Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "rainbow-colorings",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 10,
     "erdosNumber": 811,
     "erdosUrl": "https://erdosproblems.com/811",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #811 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $n\\equiv 1\\pmod{m}$. We say that an edge-colouring of $K_n$ using $m$ colours is balanced if every vertex sees exactly $\\lfloor n/m\\rfloor$ many edges of each colours.\n\nFor which graphs $G$ is it true that, if $m=e(G)$, for all large $n\\equiv 1\\pmod{m}$, every balanced edge-colouring of $K_n$ with $m$ colours contains a rainbow copy of $G$? (That is, a subgraph isomorphic to $G$ where each edge receives a different colour.)\n\n\n\nIn \\cite{Er91} Erd\\H{o}s credits this problem to himself, Pyber, and Tuza. This problem was explored in a paper of Erd\\H{o}s and Tuza \\cite{ErTu93}. In \\cite{Er96} Erd\\H{o}s seems to suggest that this might be true for every graph $G$, and specifically asks specific challenge posed in \\cite{Er91} and \\cite{Er96} is whether, in any balanced edge-colouring of $K_{6n+1}$ by $6$ colours there must exist a rainbow $C_6$ and $K_4$.\n\nIn general, one can ask for a quantitative version, defining $d_G(n)$ to be minimal (if it exists) such that if $n$ is sufficiently large and the edges of $K_n$ are coloured with $e(G)$ many colours such that the minimum degree of each colour class is $\\geq d_G(n)$ then there is a rainbow copy of $G$. Erd\\H{o}s and Tuza \\cite{ErTu93} proved that\\[\\lfloor n/6\\rfloor \\leq d_{C_4}(n) \\leq \\left(\\frac{1}{4}-c\\right)n\\]for some constant $c>0$.\n\nAxenovich and Clemen \\cite{AxCl24} have proved that there exist infinitely many graphs without this property. In particular, they show that for any odd $\\ell \\geq 3$ and $m=\\lfloor \\sqrt{\\ell}+3.5\\rfloor$ there exist arbitrarily large $n$ such that $K_n$ has a balanced edge-colouring using $\\ell$ colours which contains no rainbow $K_m$. They conjecture that $K_m$ lacks this property for all $m\\geq 4$.\n\nClemen and Wagner \\cite{ClWa23} proved that $K_4$ does lack this property.\n\n\n\n\nReferences\n\n\n[AxCl24] Axenovich, Maria and Clemen, Felix C., Rainbow subgraphs in edge-colored complete graphs: answering\ntwo questions by {E}rd\\H{o}s and {T}uza. J. Graph Theory (2024), 57--66.\n\n[ClWa23] Clemen, Felix Christian and Wagner, Adam Zsolt, Balanced edge-colorings avoiding rainbow cliques of size four. Electron. J. Combin. (2023), Paper No. 3.17, 3.\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n[Er96] Erd\\H{o}s, Paul, Some of my favourite problems on cycles and colourings. Tatra Mt. Math. Publ. (1996), 7-9.\n\n[ErTu93] Erd\\H{o}s, Paul and Tuza, Zsolt, Rainbow subgraphs in edge-colorings of complete graphs. (1993), 81--88.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #811 concerns rainbow subgraphs in balanced edge-colorings. The problem was posed by Erdős, Pyber, and Tuza (1991). A balanced coloring of K_n with m colors requires each vertex to see exactly ⌊n/m⌋ edges of each color (only possible when n ≡ 1 mod m). A rainbow subgraph uses each color at most once. The question asks which graphs G are guaranteed to appear as rainbow subgraphs in every balanced coloring of K_n. Recent work by Clemen-Wagner (2023) and Axenovich-Clemen (2024) has resolved some cases negatively.",
+    "problemStatement": "For which graphs G is it true that if m = e(G), for all large n ≡ 1 (mod m), every balanced edge-coloring of K_n with m colors contains a rainbow copy of G?\n\nSpecific challenge: In any balanced 6-coloring of K_{6n+1}, must there exist a rainbow C_6 or rainbow K_4?\n\nKnown: K_4 does NOT have this property (Clemen-Wagner 2023). Infinitely many complete graphs fail (Axenovich-Clemen 2024).",
+    "proofStrategy": "This problem remains OPEN. Our formalization defines edge colorings, balanced colorings, rainbow subgraphs, and the rainbow property for graphs. We axiomatize known results: Erdős-Tuza bounds for C_4, Clemen-Wagner's disproof for K_4, and Axenovich-Clemen's result showing infinitely many K_m fail. We also state their conjecture that all K_m fail for m ≥ 4.",
+    "keyInsights": [
+      "A balanced coloring exists only when n ≡ 1 (mod m), ensuring equal color distribution",
+      "K_4 lacks the rainbow property: there exist balanced 6-colorings of K_n without rainbow K_4",
+      "Axenovich-Clemen conjecture: K_m fails for all m ≥ 4",
+      "The quantitative version studies d_G(n), the minimum degree threshold for rainbow G",
+      "Erdős's specific challenge about C_6 and K_4 in 6-colorings remains open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "Complete graphs K_n and edge count formula."
+    },
+    {
+      "id": "colorings",
+      "title": "Edge Colorings",
+      "startLine": 60,
+      "endLine": 82,
+      "summary": "Edge coloring structure, color degree at vertices, and balanced coloring definition."
+    },
+    {
+      "id": "rainbow",
+      "title": "Rainbow Subgraphs",
+      "startLine": 84,
+      "endLine": 106,
+      "summary": "Graph embeddings, rainbow copies, and the rainbow property definition."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 108,
+      "endLine": 150,
+      "summary": "K_4 lacks property (Clemen-Wagner), Axenovich-Clemen results on K_m."
+    },
+    {
+      "id": "main-question",
+      "title": "The Open Question",
+      "startLine": 165,
+      "endLine": 185,
+      "summary": "Main characterization question and Erdős's specific C_6/K_4 challenge."
+    },
+    {
+      "id": "related",
+      "title": "Related Definitions",
+      "startLine": 187,
+      "endLine": 220,
+      "summary": "Rainbow minimum degree d_G(n) and small cases discussion."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #811 asks which graphs G are guaranteed rainbow copies in every balanced edge-coloring. K_4 is now known to fail. The full characterization of graphs with this property remains open.",
+    "implications": "This problem connects Ramsey theory (unavoidable substructures) with graph coloring (chromatic structures). The failure of K_4 suggests that even highly symmetric graphs may lack the rainbow property, potentially due to algebraic constructions avoiding rainbow complete graphs.",
+    "openQuestions": [
+      "Which specific graphs G have the rainbow property?",
+      "Does the Axenovich-Clemen conjecture hold for all K_m with m ≥ 4?",
+      "What about cycles? Does C_6 have the property in 6-colorings?",
+      "Can we characterize graphs by structural properties that predict the rainbow property?"
+    ]
   }
 }
