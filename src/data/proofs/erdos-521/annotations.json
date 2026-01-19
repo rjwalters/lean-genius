@@ -1,1 +1,121 @@
-[]
+[
+  {
+    "id": "ann-e521-header",
+    "proofId": "erdos-521",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #521: Real Roots of Random ±1 Polynomials**\n\nIs lim_{n→∞} R_n / log n = 2/π almost surely?\n\n**Status: OPEN**\n\nExpected value is known (Erdős-Offord 1956), almost sure limit is open.",
+    "mathContext": "This connects probability theory, polynomial analysis, and number theory through the Kac-Rice formula.",
+    "significance": "critical",
+    "relatedConcepts": ["Random polynomials", "Littlewood polynomials", "Root counting", "Strong law of large numbers"]
+  },
+  {
+    "id": "ann-e521-littlewood",
+    "proofId": "erdos-521",
+    "range": { "startLine": 57, "endLine": 63 },
+    "type": "definition",
+    "title": "Littlewood Polynomial",
+    "content": "**IsLittlewoodPolynomial:**\n\nA polynomial with all coefficients in {-1, 0, 1}.\n\nFor this problem, we focus on polynomials with all non-zero coefficients in {-1, 1}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e521-root-count",
+    "proofId": "erdos-521",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "definition",
+    "title": "Real Root Count",
+    "content": "**realRootCount:**\n\nR_n = number of real roots of the random polynomial f_n.\n\nThis is the main quantity of interest - how does it grow with degree n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e521-erdos-offord",
+    "proofId": "erdos-521",
+    "range": { "startLine": 102, "endLine": 111 },
+    "type": "axiom",
+    "title": "Erdős-Offord Theorem (1956)",
+    "content": "**erdos_offord_1956:**\n\nFor random ±1 polynomials: E[R_n] = (2/π + o(1)) log n\n\nThis establishes the expected number of real roots, but only in expectation.\n\nPublished in Proc. London Math. Soc. (1956).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e521-constant",
+    "proofId": "erdos-521",
+    "range": { "startLine": 113, "endLine": 118 },
+    "type": "definition",
+    "title": "The Constant 2/π",
+    "content": "**erdosOffordConstant:**\n\n2/π ≈ 0.6366197...\n\nThis is the limiting ratio of real roots to log(degree) for random ±1 polynomials.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e521-question",
+    "proofId": "erdos-521",
+    "range": { "startLine": 131, "endLine": 137 },
+    "type": "definition",
+    "title": "The Erdős Question",
+    "content": "**ErdosQuestion:**\n\nDoes R_n / log n → 2/π ALMOST SURELY (not just in expectation)?\n\nThis is the difference between weak and strong convergence - much harder to prove.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e521-do-2024",
+    "proofId": "erdos-521",
+    "range": { "startLine": 154, "endLine": 163 },
+    "type": "axiom",
+    "title": "Do's Theorem (2024)",
+    "content": "**do_2024:**\n\nFor roots in [-1,1], almost surely: R_n[-1,1] / log n → 1/π\n\nThis is a partial result proving the almost sure limit for a restricted domain.\n\nPublished in arXiv:2403.06353 (2024).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e521-log-growth",
+    "proofId": "erdos-521",
+    "range": { "startLine": 192, "endLine": 199 },
+    "type": "concept",
+    "title": "Logarithmic Growth",
+    "content": "**logarithmic_growth:**\n\nR_n = O(log n) almost surely.\n\nThe number of real roots grows very slowly - much slower than the degree n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e521-complex-vs-real",
+    "proofId": "erdos-521",
+    "range": { "startLine": 201, "endLine": 209 },
+    "type": "concept",
+    "title": "Complex vs Real Roots",
+    "content": "**complex_vs_real:**\n\nA degree n polynomial has exactly n complex roots (counting multiplicity).\n\nBut only ~(2/π) log n are real - the vast majority are complex!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e521-strong-weak",
+    "proofId": "erdos-521",
+    "range": { "startLine": 241, "endLine": 247 },
+    "type": "concept",
+    "title": "Strong vs Weak Law",
+    "content": "**strong_vs_weak:**\n\n- Weak: E[R_n]/log n → 2/π (KNOWN by Erdős-Offord)\n- Strong: R_n/log n → 2/π a.s. (OPEN)\n\nExpected value is easier than almost sure convergence.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e521-main",
+    "proofId": "erdos-521",
+    "range": { "startLine": 297, "endLine": 300 },
+    "type": "theorem",
+    "title": "Erdős Problem #521: OPEN",
+    "content": "**erdos_521:**\n\nStatus: OPEN\n\nThe question of whether R_n/log n → 2/π almost surely remains unanswered.\n\nPartial results exist but the full question is open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e521-state",
+    "proofId": "erdos-521",
+    "range": { "startLine": 310, "endLine": 326 },
+    "type": "theorem",
+    "title": "Properties of 2/π",
+    "content": "**erdos_521_state:**\n\nProves: 0 < 2/π < 1\n\nThe Erdős-Offord constant is positive but less than 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e521-summary",
+    "proofId": "erdos-521",
+    "range": { "startLine": 267, "endLine": 295 },
+    "type": "theorem",
+    "title": "State of Knowledge",
+    "content": "**erdos_521_summary:**\n\n1. **Erdős-Offord (1956):** E[R_n] = (2/π + o(1)) log n\n2. **Do (2024):** R_n[-1,1]/log n → 1/π a.s.\n\n**Open:** R_n/log n → 2/π almost surely?",
+    "significance": "critical"
+  }
+]

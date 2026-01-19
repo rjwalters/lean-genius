@@ -2122,17 +2122,24 @@
   },
   {
     "id": "erdos-1096",
-    "title": "Erdős Problem #1096",
+    "title": "Erdős Problem #1096: Gap Convergence in q-Expansions",
     "slug": "erdos-1096",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and consider the set of numbers of the shape ... (for all finite ...), ordered by size as ....\n\nIs it true that, prov...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For 1 < q < 1 + ε, do gaps in the sequence of q-representable numbers tend to 0? Conjectured threshold: smallest Pisot number q₀ ≈ 1.3247.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "pisot-numbers",
+      "q-expansions",
+      "algebraic-numbers",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1096,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-1098",
@@ -2982,7 +2989,7 @@
     "slug": "erdos-144",
     "description": "The density of integers with two divisors d₁ < d₂ < 2d₁ exists and equals 1. SOLVED by Maier-Tenenbaum (1984), who proved the stronger version for any c > 1. The threshold β* = log 3 - 1 separates density 1 from density 0.",
     "status": "complete",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -4125,17 +4132,25 @@
   },
   {
     "id": "erdos-226",
-    "title": "Erdős Problem #226",
+    "title": "Erdős Problem #226: Entire Functions Preserving Rationality",
     "slug": "erdos-226",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-linear function ... such that, for all ..., ... is rational if and only if ... is?\n\n\n\nThis is Problem ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there an entire non-linear function f such that x ∈ ℚ ↔ f(x) ∈ ℚ for all real x? SOLVED: YES by Barth-Schneider (1970) - transcendental entire functions with this property exist.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "transcendental-functions",
+      "rationality",
+      "countable-dense-sets",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 226,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 6,
+    "sorries": 1,
+    "annotationCount": 16
   },
   {
     "id": "erdos-227",
@@ -5495,17 +5510,24 @@
   },
   {
     "id": "erdos-318",
-    "title": "Erdős Problem #318",
+    "title": "Erdős Problem #318: Signed Unit Fractions with Zero Sum",
     "slug": "erdos-318",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite arithmetic progression and ... be a non-constant function. Must there exist a finite non-empty ... suc...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given A ⊆ ℕ and f:A→{±1}, must ∃ finite S ⊂ A with ∑f(n)/n = 0? YES for arithmetic progressions.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "arithmetic-progressions",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 318,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 21
   },
   {
     "id": "erdos-32",
@@ -7019,7 +7041,7 @@
     "slug": "erdos-444",
     "description": "Let A ⊆ ℕ be infinite and d_A(n) count divisors of n in A. Is limsup max d_A(n) / (Σ 1/a)^k = ∞ for all k? SOLVED: YES by Erdős-Sárközy (1980) - the maximum grows faster than any power of the harmonic sum.",
     "status": "complete",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -7027,7 +7049,9 @@
       "harmonic-sums",
       "extremal"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 444,
+    "mathlibCount": 4,
     "sorries": 0,
     "annotationCount": 18
   },
@@ -7745,17 +7769,25 @@
   },
   {
     "id": "erdos-521",
-    "title": "Erdős Problem #521",
+    "title": "Erdős Problem #521: Real Roots of Random ±1 Polynomials",
     "slug": "erdos-521",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be independently uniformly chosen at random from .... If ... counts the number of real roots of ... then is it true t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is lim R_n/log n = 2/π almost surely for random ±1 polynomials? OPEN for full result. Known: E[R_n] = (2/π+o(1))log n, and a.s. limit 1/π for roots in [-1,1].",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "polynomials",
+      "random-polynomials",
+      "real-roots",
+      "analysis",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 521,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-522",
@@ -7849,17 +7881,24 @@
   },
   {
     "id": "erdos-529",
-    "title": "Erdős Problem #529",
+    "title": "Erdos Problem #529: Self-Avoiding Walk End-to-End Distance",
     "slug": "erdos-529",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the expected distance from the origin after taking ... random steps from the origin in ... (conditional on no self...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Study the expected end-to-end distance d_k(n) of self-avoiding walks in Z^k. High dimensions (k >= 5) resolved with d_k(n) ~ sqrt(n). Lower dimensions remain open with conjectured anomalous exponents.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "random-walks",
+      "self-avoiding-walks",
+      "statistical-mechanics",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 529,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-531",
@@ -8350,17 +8389,23 @@
   },
   {
     "id": "erdos-572",
-    "title": "Erdős Problem #572",
+    "title": "Erdős Problem #572: Lower Bound for Extremal Function of Even Cycles",
     "slug": "erdos-572",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for ...\\[(n;C_{2k})\\gg n^{1+{k}}.\\]\n\n\n\nIt is easy to see that ... for any ... (and ...) (since no bipartite graph c...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Show that ex(n; C_{2k}) >> n^{1+1/k} for k >= 3. Proved for k=3,5 (Benson 1966); general case has weaker LUW bound.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "even-cycles",
+      "turan-type",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 572,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-573",
@@ -8378,17 +8423,21 @@
   },
   {
     "id": "erdos-576",
-    "title": "Erdős Problem #576",
+    "title": "Erdős Problem #576: Turán Numbers for Hypercube Graphs",
     "slug": "erdos-576",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the ...-dimensional hypercube graph (so that ... has ... vertices and ... edges). Determine the behaviour of\\[(n;Q...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine the behavior of ex(n; Q_k), the Turán number for the k-dimensional hypercube graph. This is one of the major open problems in extremal graph theory.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "hypercube",
+      "turan-number",
+      "bipartite-graphs"
     ],
     "erdosNumber": 576,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 23
   },
   {
     "id": "erdos-577",
@@ -10359,17 +10408,23 @@
   },
   {
     "id": "erdos-714",
-    "title": "Erdős Problem #714",
+    "title": "Erdős Problem #714: The Zarankiewicz Problem for K_{r,r}",
     "slug": "erdos-714",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[(n; K_{r,r}) \\gg n^{2-1/r}?\\]\n\n\n\nK\\\"{o}v\\'{a}ri, S\\'{o}s, and Tur\\'{a}n  proved\\[(n; K_{r,r}) \\ll n^{2-1/r}\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is ex(n; K_{r,r}) >> n^{2-1/r}? Proved for r=2,3; open for r >= 4. The Zarankiewicz problem on complete bipartite subgraphs.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "zarankiewicz",
+      "bipartite-graphs",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 714,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-715",
@@ -10635,17 +10690,24 @@
   },
   {
     "id": "erdos-733",
-    "title": "Erdős Problem #733",
+    "title": "Erdos Problem #733: Line-Compatible Sequences",
     "slug": "erdos-733",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence ... line-compatible if there is a set of ... points in ... such that there are ... lines ... containing at le...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How many line-compatible sequences exist for n points? Answer: exp(Theta(n^{1/2})), proved by Szemeredi-Trotter (1983).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "geometry",
+      "incidences",
+      "szemeredi-trotter",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 733,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-734",
@@ -11503,17 +11565,24 @@
   },
   {
     "id": "erdos-798",
-    "title": "Erdős Problem #798",
+    "title": "Erdos Problem #798: Covering Lattice Points with Lines",
     "slug": "erdos-798",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimum number of points in ... such that the ... lines determined by these points cover all points in ....\n\nE...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the minimum number of points in {1,...,n}^2 needed to generate lines covering all lattice points? YES, t(n) = o(n); specifically t(n) = Theta(n^{2/3} log n).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "lattice-points",
+      "covering-problems",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 798,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 6,
+    "annotationCount": 14
   },
   {
     "id": "erdos-799",
@@ -11551,22 +11620,24 @@
   },
   {
     "id": "erdos-80",
-    "title": "Erdős Problem #80: Book Size in Triangle Graphs",
+    "title": "Erdos Problem #80: Book Size in Triangle-Saturated Graphs",
     "slug": "erdos-80",
-    "description": "In a dense graph where every edge lies in a triangle, how large must the largest 'book' be - an edge shared by many triangles? This open problem of Erdős and Rothschild has a phase transition at density 1/4, with the precise growth rate still unknown.",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "In dense graphs where every edge lies in a triangle, how large must the maximum 'book' be? Fox-Loh (2012) disproved polynomial growth; the precise rate for c < 1/4 remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
+      "erdos",
       "graph-theory",
       "extremal-combinatorics",
-      "erdos",
       "triangles",
-      "regularity-lemma",
+      "phase-transition",
       "open-problem"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 80,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 4,
+    "annotationCount": 15
   },
   {
     "id": "erdos-800",
@@ -11884,17 +11955,24 @@
   },
   {
     "id": "erdos-820",
-    "title": "Erdős Problem #820",
+    "title": "Erdős Problem #820: GCD of Exponential Sequences",
     "slug": "erdos-820",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest integer ... such that there exist ... with ....\n\nIs it true that ... infinitely often? (That is, ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let H(n) = min{l : ∃k<l with gcd(k^n-1, l^n-1)=1}. Is H(n)=3 infinitely often?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "exponential-sequences",
+      "multiplicative-order",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 820,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-821",
@@ -11945,17 +12023,25 @@
   },
   {
     "id": "erdos-824",
-    "title": "Erdős Problem #824",
+    "title": "Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors",
     "slug": "erdos-824",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of integers ... such that ... and ..., where ... is the sum of divisors function.\n\nIs it true that ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let h(x) count coprime pairs (a, b) with σ(a) = σ(b). Is h(x) > x^{2-o(1)}? Known: h(x)/x → ∞ (Pollack-Pomerance 2016).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "sum-of-divisors",
+      "coprimality",
+      "counting-functions",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 824,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-829",
@@ -13770,17 +13856,21 @@
   },
   {
     "id": "erdos-969",
-    "title": "Erdős Problem #969",
+    "title": "Erdős Problem #969: Error Term in Squarefree Integer Counting",
     "slug": "erdos-969",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of squarefree integers in .... Determine the order of magnitude in the error term in the asymptotic\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine the order of magnitude of the error term E(x) in the asymptotic Q(x) = (6/π²)x + E(x), where Q(x) counts squarefree integers up to x.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analytic-number-theory",
+      "squarefree",
+      "error-terms",
+      "riemann-hypothesis"
     ],
     "erdosNumber": 969,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 20
   },
   {
     "id": "erdos-97",

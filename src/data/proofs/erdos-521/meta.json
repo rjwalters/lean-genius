@@ -1,33 +1,132 @@
 {
   "id": "erdos-521",
-  "title": "Erdős Problem #521",
+  "title": "Erdős Problem #521: Real Roots of Random ±1 Polynomials",
   "slug": "erdos-521",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be independently uniformly chosen at random from .... If ... counts the number of real roots of ... then is it true t...",
+  "description": "Is lim R_n/log n = 2/π almost surely for random ±1 polynomials? OPEN for full result. Known: E[R_n] = (2/π+o(1))log n, and a.s. limit 1/π for roots in [-1,1].",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Offord (1956 expected value), Kac (1943), Do (2024 partial a.s.)",
     "sourceUrl": "https://erdosproblems.com/521",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos521Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "polynomials",
+      "random-polynomials",
+      "real-roots",
+      "analysis",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 521,
     "erdosUrl": "https://erdosproblems.com/521",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomial definitions",
+        "module": "Mathlib.Data.Polynomial.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic formulas",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "Pi constant for 2/π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "RandomSign definition: ε ∈ {-1,1}",
+      "RandomLittlewoodPolynomial definition: f_n with random coefficients",
+      "IsLittlewoodPolynomial definition: ±1 polynomials",
+      "IsRealRoot definition: real roots",
+      "realRootCount definition: R_n counting function",
+      "erdosOffordConstant definition: 2/π",
+      "ErdosQuestion definition: almost sure limit",
+      "erdos_offord_1956 axiom: expected value result",
+      "do_2024 axiom: a.s. result for [-1,1]",
+      "erdos_521_state theorem: properties of 2/π"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #521 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $(\\epsilon_k)_{k\\geq 0}$ be independently uniformly chosen at random from $\\{-1,1\\}$. If $R_n$ counts the number of real roots of $f_n(z)=\\sum_{0\\leq k\\leq n}\\epsilon_k z^k$ then is it true that, almost surely,\\[\\lim_{n\\to \\infty}\\frac{R_n}{\\log n}=\\frac{2}{\\pi}?\\]\n\n\n\nErd\\H{o}s and Offord \\cite{EO56} showed that the number of real roots of a random degree $n$ polynomial with $\\pm 1$ coefficients is $(\\frac{2}{\\pi}+o(1))\\log n$.\n\nIt is ambiguous in \\cite{Er61} whether Erd\\H{o}s intended the coefficients to be uniformly chosen from $\\{-1,1\\}$ or $\\{0,1\\}$. In the latter case, the constant $\\frac{2}{\\pi}$ should be $\\frac{1}{\\pi}$ (see the discussion in the comments).\n\nIn the case of $\\{-1,1\\}$ Do \\cite{Do24} proved that, if $R_n[-1,1]$ counts the number of roots in $[-1,1]$, then, almost surely,\\[\\lim_{n\\to \\infty}\\frac{R_n[-1,1]}{\\log n}=\\frac{1}{\\pi}.\\]See also [522].\n\n\n\n\nReferences\n\n\n[Do24] Y. Do, A strong law of large numbers for real roots of random polynomials. arXiv:2403.06353 (2024).\n\n[EO56] Erd\\\"{o}s, Paul and Offord, A. C., On the number of real roots of a random algebraic equation. Proc. London Math. Soc. (3) (1956), 139-160.\n\n[Er61] Erd\\H{o}s, Paul, Some unsolved problems. Magyar Tud. Akad. Mat. Kutat\\'{o} Int. K\\\"{o}zl. (1961), 221-254.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #521**\n\nA question about random polynomials with ±1 coefficients.\n\n**Key History:**\n- Kac (1943): Formula for expected roots with normal coefficients\n- Erdős-Offord (1956): E[R_n] = (2/π + o(1)) log n for ±1 coefficients\n- Do (2024): Almost sure result for roots in [-1,1]\n\n**Note:** Ambiguity exists whether {-1,1} or {0,1} coefficients were intended.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet (ε_k)_{k≥0} be i.i.d. uniform on {-1,1}. For f_n(z) = Σ_{k=0}^n ε_k z^k, does\n\nlim_{n→∞} R_n / log n = 2/π\n\nhold almost surely?\n\n**Status: OPEN**\n\nExpected value is known; almost sure convergence is the open question.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Random Polynomials:** Define Littlewood polynomials with ±1 coefficients\n\n2. **Root Counting:** Define realRootCount, realRootCountInterval\n\n3. **The Constant:** erdosOffordConstant = 2/π ≈ 0.6366\n\n4. **Known Results:** erdos_offord_1956 (expected), do_2024 (a.s. for [-1,1])\n\n5. **Open Question:** ErdosQuestion (full a.s. limit)",
+    "keyInsights": [
+      "**Expected vs Almost Sure:** E[R_n]/log n → 2/π is known, a.s. convergence is open",
+      "**The Constant 2/π:** Approximately 0.6366, real roots grow logarithmically",
+      "**Partial Result (Do 2024):** R_n[-1,1]/log n → 1/π almost surely",
+      "**Strong Law:** This is asking for a strong law of large numbers type result",
+      "**Most Roots Complex:** Degree n has n roots, but only ~(2/π)log n are real"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "random-polynomials",
+      "title": "Random Polynomials",
+      "summary": "RandomSign, RandomLittlewoodPolynomial, IsLittlewoodPolynomial",
+      "startLine": 40,
+      "endLine": 63
+    },
+    {
+      "id": "counting-roots",
+      "title": "Counting Real Roots",
+      "summary": "IsRealRoot, realRootCount, realRootCountInterval",
+      "startLine": 65,
+      "endLine": 88
+    },
+    {
+      "id": "kac-erdos-offord",
+      "title": "Kac-Erdős-Offord Formula",
+      "summary": "kac_formula, erdos_offord_1956, erdosOffordConstant",
+      "startLine": 90,
+      "endLine": 125
+    },
+    {
+      "id": "erdos-question",
+      "title": "The Erdős Question",
+      "summary": "ErdosQuestion, known_vs_open",
+      "startLine": 127,
+      "endLine": 148
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "do_2024, roots_outside_interval, concentration_results",
+      "startLine": 150,
+      "endLine": 179
+    },
+    {
+      "id": "probability-context",
+      "title": "Probability Theory Context",
+      "summary": "strong_vs_weak, coefficient_independence",
+      "startLine": 237,
+      "endLine": 261
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_521_summary, erdos_521, erdos_521_state",
+      "startLine": 263,
+      "endLine": 328
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #521 asks whether R_n/log n → 2/π almost surely for random ±1 polynomials. The expected value E[R_n] = (2/π+o(1))log n is known (Erdős-Offord 1956). The almost sure convergence remains OPEN, though Do (2024) proved it for roots restricted to [-1,1].",
+    "implications": "**Probability and Analysis Connections**\n\n1. **Random Polynomial Theory:** Central question in the field\n\n2. **Strong vs Weak Laws:** Difference between expectation and a.s. convergence\n\n3. **Kac-Rice Formula:** Connection to general root counting\n\n4. **Littlewood Polynomials:** Applications in analysis and signal processing\n\n5. **Complex Analysis:** Most roots are complex, few are real",
+    "openQuestions": [
+      "Does R_n/log n → 2/π almost surely?",
+      "What is the variance of R_n?",
+      "What about roots outside [-1,1]?",
+      "Extensions to other coefficient distributions?",
+      "Connection to {0,1} coefficient case?"
+    ]
   }
 }
