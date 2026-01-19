@@ -1,1 +1,138 @@
-[]
+[
+  {
+    "id": "ann-e794-hypergraph3",
+    "proofId": "erdos-794",
+    "range": { "startLine": 48, "endLine": 61 },
+    "type": "definition",
+    "title": "3-Uniform Hypergraph",
+    "content": "A **3-uniform hypergraph** is a hypergraph where every edge contains exactly 3 vertices. We represent it as a structure with a vertex set and an edge set of 3-element subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-contains-k4minus",
+    "proofId": "erdos-794",
+    "range": { "startLine": 71, "endLine": 78 },
+    "type": "definition",
+    "title": "K₄⁻ Subgraph (4 vertices, 3 edges)",
+    "content": "`ContainsK4Minus H` means the hypergraph H contains 4 vertices with exactly 3 edges among them. This is K₄ minus one edge in the 3-uniform setting.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-contains-5-7",
+    "proofId": "erdos-794",
+    "range": { "startLine": 80, "endLine": 87 },
+    "type": "definition",
+    "title": "5-7 Subgraph (5 vertices, 7 edges)",
+    "content": "`Contains5_7 H` means the hypergraph has 5 vertices with exactly 7 edges. Balogh observed this is actually redundant - it always implies K₄⁻.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e794-balogh",
+    "proofId": "erdos-794",
+    "range": { "startLine": 91, "endLine": 99 },
+    "type": "theorem",
+    "title": "Balogh's Observation",
+    "content": "**Balogh's Key Insight:** Any 5-vertex set with 7 edges in a 3-uniform hypergraph contains a 4-vertex subset with 3 edges. This means the second condition in the original problem is redundant.",
+    "mathContext": "This simplifies the problem: we only need to ask about K₄⁻.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-conjecture",
+    "proofId": "erdos-794",
+    "range": { "startLine": 108, "endLine": 117 },
+    "type": "definition",
+    "title": "Original Erdős Conjecture",
+    "content": "`Erdos794Conjecture` states: Every 3-uniform hypergraph on 3n vertices with at least n³+1 edges contains K₄⁻ or the 5-7 configuration. This turns out to be FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-simplified",
+    "proofId": "erdos-794",
+    "range": { "startLine": 119, "endLine": 128 },
+    "type": "definition",
+    "title": "Simplified Conjecture",
+    "content": "After Balogh's observation, the conjecture simplifies to: Every 3-uniform hypergraph on 3n vertices with at least n³+1 edges contains K₄⁻. This is also FALSE.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e794-harris-structure",
+    "proofId": "erdos-794",
+    "range": { "startLine": 139, "endLine": 159 },
+    "type": "definition",
+    "title": "Harris's Counterexample Structure",
+    "content": "Harris constructed a counterexample on 9 vertices (n=3) with exactly 28 = 3³+1 edges that avoids K₄⁻.\n\n**Construction:** Take 27 edges {a,b,c} where a∈{1,2,3}, b∈{4,5,6}, c∈{7,8,9} (cross-product edges), then add edge {1,2,3}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-threshold",
+    "proofId": "erdos-794",
+    "range": { "startLine": 161, "endLine": 165 },
+    "type": "theorem",
+    "title": "Threshold for n=3",
+    "content": "For n=3, the threshold is n³+1 = 27+1 = 28 edges. Harris's counterexample achieves exactly this threshold.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e794-counterexample-exists",
+    "proofId": "erdos-794",
+    "range": { "startLine": 167, "endLine": 176 },
+    "type": "theorem",
+    "title": "Harris Counterexample Exists",
+    "content": "The axiom `harris_counterexample_exists` asserts: There exists a 3-uniform hypergraph on 9 vertices with 28 edges that avoids K₄⁻. This disproves the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-disproved",
+    "proofId": "erdos-794",
+    "range": { "startLine": 180, "endLine": 189 },
+    "type": "theorem",
+    "title": "Problem Disproved",
+    "content": "`erdos_794_disproved` proves ¬Erdos794Simplified by applying Harris's counterexample. The hypergraph has 9 vertices (n=3), 28 edges (≥ n³+1), but no K₄⁻.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-original-false",
+    "proofId": "erdos-794",
+    "range": { "startLine": 191, "endLine": 196 },
+    "type": "theorem",
+    "title": "Original Conjecture False",
+    "content": "`erdos_794_original_false` shows the original conjecture (with both conditions) is also false. Since the simplified version is false and implies the original, both fail.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e794-turan-density",
+    "proofId": "erdos-794",
+    "range": { "startLine": 200, "endLine": 204 },
+    "type": "definition",
+    "title": "Turán Density for K₄⁻",
+    "content": "The **Turán density** is the maximum edge density a 3-uniform hypergraph can have while avoiding K₄⁻. The conjectured value is 2/7.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e794-frankl-furedi",
+    "proofId": "erdos-794",
+    "range": { "startLine": 206, "endLine": 210 },
+    "type": "theorem",
+    "title": "Frankl-Füredi Lower Bound",
+    "content": "**Frankl-Füredi (1984):** The Turán density for K₄⁻ is at least 2/7. This shows the original threshold (implying density 2/9) was too low.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-summary",
+    "proofId": "erdos-794",
+    "range": { "startLine": 243, "endLine": 265 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "`erdos_794_summary` combines all results: (1) The conjecture is disproved, (2) The 5-7 condition is redundant, (3) The correct density threshold is at least 2/7.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e794-main",
+    "proofId": "erdos-794",
+    "range": { "startLine": 267, "endLine": 268 },
+    "type": "theorem",
+    "title": "Main Theorem: Erdős #794 is False",
+    "content": "The final theorem `erdos_794` states: ¬Erdos794Conjecture. The problem as originally posed by Erdős is disproved.",
+    "significance": "critical"
+  }
+]
