@@ -14567,17 +14567,22 @@
   },
   {
     "id": "erdos-904",
-    "title": "Erdős Problem #904",
+    "title": "Erdős Problem #904: Triangles with High Degree Sum",
     "slug": "erdos-904",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with ... vertices and ... edges then it contains a triangle on ... such that\\[d(x)+d(y)+d(z) \\geq {2}n.\\]\n\n...",
-    "status": "pending",
+    "description": "If G is a graph with n vertices and more than n²/4 edges, then it contains a triangle on vertices x, y, z such that d(x) + d(y) + d(z) ≥ (3/2)n. This was conjectured by Bollobás and Erdős and proved by Edwards in 1978.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "triangles",
+      "turan",
+      "solved"
     ],
     "erdosNumber": 904,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-905",
