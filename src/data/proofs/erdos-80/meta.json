@@ -1,69 +1,146 @@
 {
   "id": "erdos-80",
-  "title": "Erdős Problem #80: Book Size in Triangle Graphs",
+  "title": "Erdos Problem #80: Book Size in Triangle-Saturated Graphs",
   "slug": "erdos-80",
-  "description": "In a dense graph where every edge lies in a triangle, how large must the largest 'book' be - an edge shared by many triangles? This open problem of Erdős and Rothschild has a phase transition at density 1/4, with the precise growth rate still unknown.",
+  "description": "In dense graphs where every edge lies in a triangle, how large must the maximum 'book' be? Fox-Loh (2012) disproved polynomial growth; the precise rate for c < 1/4 remains OPEN.",
   "meta": {
-    "author": "Erdős & Rothschild (problem), Fox & Loh (2012), Khadziivanov & Nikiforov (1979)",
+    "author": "Erdos-Rothschild (problem), Fox-Loh (2012), Edwards-Khadziivanov-Nikiforov (1979)",
     "sourceUrl": "https://erdosproblems.com/80",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos80Problem.lean",
     "tags": [
+      "erdos",
       "graph-theory",
       "extremal-combinatorics",
-      "erdos",
       "triangles",
-      "regularity-lemma",
+      "phase-transition",
       "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 80,
     "erdosUrl": "https://erdosproblems.com/80",
     "erdosProblemStatus": "open",
-    "relatedProblems": [
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
       {
-        "id": "erdos-600",
-        "relationship": "Related problem on triangles in graphs"
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       },
       {
-        "id": "erdos-905",
-        "relationship": "Edwards/Khadziivanov-Nikiforov result for c > 1/4"
+        "theorem": "SimpleGraph.Adj",
+        "description": "Adjacency relation in graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Order.Filter.Basic"
       }
+    ],
+    "originalContributions": [
+      "isTriangle definition: three pairwise adjacent vertices",
+      "edgeInTriangle definition: edge contained in some triangle",
+      "isTriangleSaturated definition: every edge in a triangle",
+      "bookSize definition: number of triangles sharing an edge",
+      "hasBook definition: graph has book of given size",
+      "isDense definition: at least cn^2 edges",
+      "f function: Erdos-Rothschild book function",
+      "critical_threshold: the phase transition at 1/4",
+      "alon_trotter_bound axiom: f_c(n) << n^{1/2}",
+      "fox_loh_bound axiom: f_c(n) <= n^{O(1/log log n)}",
+      "linear_bound_above_threshold axiom: f_c(n) >= n/6 for c > 1/4",
+      "regularity_lower_bound axiom: f_c(n) -> infinity",
+      "erdos_polynomial_conjecture_false: disproved conjecture",
+      "erdos_log_conjecture: open weaker conjecture",
+      "erdos_80_summary theorem: comprehensive summary"
     ]
   },
   "overview": {
-    "historicalContext": "**Books in Dense Triangle Graphs**\n\nA 'book' in graph theory is an edge shared by multiple triangles - like the spine of a book with triangular pages. This problem asks: in a dense graph where every edge participates in at least one triangle, how large must the largest book be?\n\n**The Phase Transition at c = 1/4**: A remarkable phenomenon occurs at edge density 1/4:\n- For c > 1/4: Books of linear size n/6 are guaranteed (Edwards, Khadziivanov-Nikiforov 1979)\n- For c < 1/4: Books can be subpolynomial in size\n\n**Erdős's Conjectures Disproved**: Erdős asked whether f_c(n) > n^ε for some ε > 0. Fox and Loh (2012) disproved this, showing f_c(n) ≤ n^{O(1/log log n)} for c < 1/4.\n\n**The Gap**: Szemerédi's regularity lemma implies f_c(n) → ∞, but the precise growth rate between 'tending to infinity' and the Fox-Loh upper bound remains open.",
-    "problemStatement": "**Problem Statement**\n\nLet c > 0 and define f_c(n) as the maximum m such that every graph G with:\n- n vertices\n- at least cn² edges\n- every edge contained in at least one triangle\n\nmust contain a book of size m (an edge shared by at least m different triangles).\n\n**Questions**:\n1. Estimate f_c(n)\n2. Is f_c(n) > n^ε for some ε > 0? (DISPROVED by Fox-Loh)\n3. Is f_c(n) ≫ log n? (OPEN)\n\n**Current Status**: OPEN - the precise growth rate of f_c(n) for c < 1/4 is unknown.",
-    "proofStrategy": "**Known Results**\n\n**Upper Bounds (c < 1/4)**:\n1. Alon-Trotter: f_c(n) ≪ n^{1/2}\n2. Fox-Loh (2012): f_c(n) ≤ n^{O(1/log log n)} - disproves polynomial growth\n\n**Lower Bounds**:\n1. Szemerédi regularity: f_c(n) → ∞ (very slow, tower-type growth)\n2. For c > 1/4: f_c(n) ≥ n/6 (Edwards, Khadziivanov-Nikiforov)\n\n**The Gap**: Lower bounds from regularity are 'very poor' - the true growth rate for c < 1/4 lies somewhere between 'tending to infinity' and n^{o(1)}.\n\n**Key Techniques**:\n- Szemerédi regularity lemma for lower bounds\n- Probabilistic constructions for upper bounds\n- Algebraic constructions (Alon-Trotter)",
+    "historicalContext": "**Erdos Problem #80**\n\nThis problem concerns 'books' in graphs - edges that are shared by many triangles.\n\n**Key History:**\n- Erdos & Rothschild: Posed the original problem about book size in dense triangle-saturated graphs\n- Alon-Trotter: Proved f_c(n) << n^{1/2} for c < 1/4\n- Edwards, Khadziivanov-Nikiforov (1979): Proved f_c(n) >= n/6 for c > 1/4\n- Fox-Loh (2012): Disproved Erdos's polynomial growth conjecture\n\n**The Phase Transition:**\nA remarkable threshold occurs at c = 1/4:\n- Above 1/4: Linear books guaranteed\n- Below 1/4: Only subpolynomial growth known",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet c > 0 and define f_c(n) as the maximum m such that every n-vertex graph with at least cn^2 edges, where every edge lies in a triangle, must contain a book of size m.\n\n**Questions:**\n1. Estimate f_c(n)\n2. Is f_c(n) > n^epsilon for some epsilon > 0? (DISPROVED by Fox-Loh)\n3. Is f_c(n) >> log n? (OPEN)\n\n**Current Status:** OPEN - the precise growth rate for c < 1/4 is unknown.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define triangles, books, and triangle-saturation\n\n2. **The f Function:** Define f_c(n) as a supremum over graphs\n\n3. **Upper Bounds:**\n   - Alon-Trotter: f_c(n) << n^{1/2}\n   - Fox-Loh: f_c(n) <= n^{O(1/log log n)}\n\n4. **Lower Bounds:**\n   - Linear for c > 1/4\n   - Regularity gives f_c(n) -> infinity (weak)\n\n5. **Phase Transition:** Formalize the threshold at c = 1/4\n\n6. **Open Questions:** State the weaker conjecture f_c(n) >> log n",
     "keyInsights": [
-      "A 'book' is an edge shared by multiple triangles - the central edge is the 'spine'",
-      "Phase transition at c = 1/4: linear books above, subpolynomial below",
-      "Fox-Loh disproved Erdős's polynomial growth conjecture",
-      "Regularity lemma gives existence (f_c(n) → ∞) but extremely weak bounds",
-      "The gap between upper and lower bounds for c < 1/4 is enormous",
-      "The condition 'every edge in a triangle' is essential - without it, star graphs have no books"
+      "**Book Definition:** An edge shared by m triangles - the edge is the 'spine'",
+      "**Phase Transition at 1/4:** Sharp threshold separating linear from subpolynomial regimes",
+      "**Fox-Loh Disproof:** No polynomial lower bound for c < 1/4",
+      "**Regularity Gap:** Lower bounds from regularity are extremely weak (tower-type)",
+      "**Triangle Saturation Essential:** Without requiring every edge in a triangle, no books guaranteed"
     ]
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 36,
-      "endLine": 37,
-      "summary": "The current proof is a placeholder (erdos_80 : True). This is an OPEN problem - formalization would capture known bounds."
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "isTriangle, edgeInTriangle, isTriangleSaturated, bookSize, hasBook",
+      "startLine": 47,
+      "endLine": 97
+    },
+    {
+      "id": "f-function",
+      "title": "The f_c(n) Function",
+      "summary": "isDense, f function definition",
+      "startLine": 99,
+      "endLine": 125
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "alon_trotter_bound, fox_loh_bound, erdos_polynomial_conjecture_false",
+      "startLine": 127,
+      "endLine": 162
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "summary": "linear_bound_above_threshold, regularity_lower_bound, f_tends_to_infinity",
+      "startLine": 164,
+      "endLine": 196
+    },
+    {
+      "id": "phase-transition",
+      "title": "The Phase Transition",
+      "summary": "critical_threshold, above_threshold_linear, below_threshold_subpolynomial",
+      "startLine": 198,
+      "endLine": 235
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "summary": "erdos_log_conjecture, erdos_log_conjecture_open",
+      "startLine": 237,
+      "endLine": 252
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_80_summary, erdos_80_is_open",
+      "startLine": 254,
+      "endLine": 288
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #80 asks for the growth rate of the largest book (edge in many triangles) in dense triangle-saturated graphs. Fox and Loh (2012) disproved Erdős's polynomial growth conjecture, showing f_c(n) ≤ n^{O(1/log log n)} for c < 1/4. The problem remains OPEN: the true growth rate between regularity-based lower bounds and the Fox-Loh upper bound is unknown.",
-    "implications": "**Theoretical Significance**\n\n1. **Regularity Lemma Limits**: The gap exposes limitations of regularity-based arguments for precise bounds\n\n2. **Phase Transitions**: The c = 1/4 threshold is a sharp transition in graph structure\n\n3. **Extremal Graph Theory**: Connects triangle density to local structure (books)\n\n4. **Probabilistic Constructions**: Fox-Loh's upper bound uses sophisticated random graph techniques",
+    "summary": "Erdos Problem #80 asks for the growth rate of the largest book in dense triangle-saturated graphs. Fox and Loh (2012) disproved the polynomial growth conjecture, showing f_c(n) <= n^{O(1/log log n)} for c < 1/4. The problem remains OPEN: the true growth rate between regularity-based lower bounds and the Fox-Loh upper bound is unknown.",
+    "implications": "**Graph-Theoretic Significance**\n\n1. **Regularity Limitations:** Exposes the weakness of regularity-based bounds\n\n2. **Phase Transitions:** The c = 1/4 threshold is a sharp structural transition\n\n3. **Triangle Structure:** Connects global density to local triangle configurations\n\n4. **Extremal Combinatorics:** Open gap challenges current proof techniques",
     "openQuestions": [
       "What is the true growth rate of f_c(n) for c < 1/4?",
-      "Is f_c(n) ≫ log n? (Erdős's weaker conjecture, still open)",
-      "Can the regularity lemma lower bounds be improved?",
-      "What happens at the critical density c = 1/4 exactly?",
-      "Are there explicit constructions achieving the Fox-Loh upper bound?"
+      "Is f_c(n) >> log n? (Erdos's weaker conjecture, still open)",
+      "Can regularity-based lower bounds be improved?",
+      "What happens exactly at the critical threshold c = 1/4?",
+      "Are there explicit constructions achieving Fox-Loh bounds?"
     ]
   }
 }

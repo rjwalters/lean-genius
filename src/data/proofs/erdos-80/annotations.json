@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e80-header",
+    "proofId": "erdos-80",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #80: Book Size in Triangle-Saturated Graphs**\n\nA 'book' is an edge shared by multiple triangles. In a dense graph where every edge lies in at least one triangle, how large must the maximum book be?\n\n**Status: OPEN**\n\n**Key Results:**\n- For c > 1/4: f_c(n) >= n/6 (linear books)\n- For c < 1/4: f_c(n) <= n^{O(1/log log n)} (Fox-Loh)\n- Polynomial growth DISPROVED\n- Logarithmic growth OPEN",
+    "mathContext": "This is an open problem in extremal graph theory with a remarkable phase transition at density 1/4.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph theory", "Triangles", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e80-triangle",
+    "proofId": "erdos-80",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "definition",
+    "title": "Triangle Definition",
+    "content": "**isTriangle:**\n\nA triangle is three vertices {a, b, c} that are pairwise adjacent.\n\n**Definition:**\n```lean\ndef isTriangle (G : SimpleGraph V) (a b c : V) : Prop :=\n  a != b and b != c and a != c and G.Adj a b and G.Adj b c and G.Adj a c\n```",
+    "significance": "key",
+    "relatedConcepts": ["Adjacency", "Clique", "K_3"]
+  },
+  {
+    "id": "ann-e80-triangle-saturated",
+    "proofId": "erdos-80",
+    "range": { "startLine": 68, "endLine": 73 },
+    "type": "definition",
+    "title": "Triangle-Saturated Graph",
+    "content": "**isTriangleSaturated:**\n\nA graph where every edge is contained in at least one triangle.\n\n**Definition:**\n```lean\ndef isTriangleSaturated (G : SimpleGraph V) : Prop :=\n  forall u v, G.Adj u v -> edgeInTriangle G u v\n```\n\n**Key insight:** Without this condition, star graphs have no books at all!",
+    "mathContext": "This condition is essential for the problem to be non-trivial.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e80-book-size",
+    "proofId": "erdos-80",
+    "range": { "startLine": 75, "endLine": 88 },
+    "type": "definition",
+    "title": "Book Size",
+    "content": "**bookSize:**\n\nThe number of triangles sharing an edge (u, v).\n\n**Definition:**\n```lean\ndef bookSize (G : SimpleGraph V) (u v : V) : N :=\n  (Finset.univ.filter fun w => isTriangle G u v w).card\n```\n\n**Intuition:** The edge (u,v) is the 'spine' of a book, and each triangle {u,v,w} is a 'page'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e80-f-function",
+    "proofId": "erdos-80",
+    "range": { "startLine": 112, "endLine": 125 },
+    "type": "definition",
+    "title": "The Erdos-Rothschild Function f_c(n)",
+    "content": "**f(c, n):**\n\nThe maximum m such that EVERY n-vertex graph with at least cn^2 edges and every edge in a triangle must contain a book of size at least m.\n\n**Key properties:**\n- This is a 'worst-case' guarantee\n- Measures how unavoidable large books are\n- Depends critically on the density parameter c",
+    "mathContext": "The central object of study in Erdos Problem #80.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e80-alon-trotter",
+    "proofId": "erdos-80",
+    "range": { "startLine": 133, "endLine": 141 },
+    "type": "axiom",
+    "title": "Alon-Trotter Upper Bound",
+    "content": "**alon_trotter_bound:**\n\nFor c < 1/4: f_c(n) << n^{1/2}\n\n**Construction:** Alon and Trotter showed there exist triangle-saturated graphs with cn^2 edges where the maximum book size is O(sqrt(n)).\n\nThis is a constructive upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e80-fox-loh",
+    "proofId": "erdos-80",
+    "range": { "startLine": 143, "endLine": 151 },
+    "type": "axiom",
+    "title": "Fox-Loh Upper Bound (2012)",
+    "content": "**fox_loh_bound:**\n\nFor c < 1/4: f_c(n) <= n^{O(1/log log n)}\n\n**Significance:** This is essentially n^{o(1)}, which means NO polynomial lower bound exists!\n\nThis disproved Erdos's conjecture that f_c(n) > n^epsilon for some epsilon > 0.\n\n**Technique:** Sophisticated probabilistic construction.",
+    "mathContext": "The key breakthrough that resolved one of Erdos's questions negatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e80-disproved",
+    "proofId": "erdos-80",
+    "range": { "startLine": 153, "endLine": 162 },
+    "type": "theorem",
+    "title": "Polynomial Conjecture: DISPROVED",
+    "content": "**erdos_polynomial_conjecture_false:**\n\nErdos asked: Is f_c(n) > n^epsilon for some epsilon > 0?\n\n**Answer: NO** (for c < 1/4)\n\nFox-Loh's construction shows f_c(n) <= n^{O(1/log log n)}, which for any fixed epsilon eventually becomes smaller than n^epsilon.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e80-linear-bound",
+    "proofId": "erdos-80",
+    "range": { "startLine": 168, "endLine": 175 },
+    "type": "axiom",
+    "title": "Linear Bound Above Threshold",
+    "content": "**linear_bound_above_threshold:**\n\nFor c > 1/4: f_c(n) >= n/6\n\n**Key result:** Above the threshold 1/4, books of LINEAR size are guaranteed!\n\nProved independently by Edwards and by Khadziivanov-Nikiforov (1979).",
+    "mathContext": "This shows the phase transition at c = 1/4 is sharp.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e80-regularity",
+    "proofId": "erdos-80",
+    "range": { "startLine": 177, "endLine": 185 },
+    "type": "axiom",
+    "title": "Regularity Lower Bound",
+    "content": "**regularity_lower_bound:**\n\nFor all c > 0: f_c(n) -> infinity as n -> infinity.\n\nSzemeredi's regularity lemma implies book size must grow unboundedly.\n\n**Weakness:** The bounds from regularity are 'tower-type' - extremely weak. The gap between this and Fox-Loh is enormous.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e80-threshold",
+    "proofId": "erdos-80",
+    "range": { "startLine": 202, "endLine": 208 },
+    "type": "definition",
+    "title": "Critical Threshold",
+    "content": "**critical_threshold = 1/4:**\n\nThe phase transition point separating two regimes:\n\n- **c > 1/4:** Linear books (f_c(n) >= n/6)\n- **c < 1/4:** Subpolynomial books (f_c(n) <= n^{o(1)})\n\nThis is one of the cleanest phase transitions in extremal graph theory.",
+    "mathContext": "The threshold 1/4 has a natural interpretation related to Turan's theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Phase transition", "Turan theorem"]
+  },
+  {
+    "id": "ann-e80-above",
+    "proofId": "erdos-80",
+    "range": { "startLine": 210, "endLine": 225 },
+    "type": "theorem",
+    "title": "Above Threshold: Linear Growth",
+    "content": "**above_threshold_linear:**\n\nFor c > 1/4: exists delta > 0 such that f_c(n) >= delta * n\n\nSpecifically, delta = 1/6 works.\n\n**Meaning:** In dense-enough graphs with every edge in a triangle, some edge must be in linearly many triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e80-below",
+    "proofId": "erdos-80",
+    "range": { "startLine": 227, "endLine": 235 },
+    "type": "theorem",
+    "title": "Below Threshold: Subpolynomial",
+    "content": "**below_threshold_subpolynomial:**\n\nFor c < 1/4: For any epsilon > 0, eventually f_c(n) <= n^epsilon.\n\n**Meaning:** Below the threshold, book sizes can be made subpolynomial. The exact growth rate is UNKNOWN.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e80-log-conjecture",
+    "proofId": "erdos-80",
+    "range": { "startLine": 241, "endLine": 252 },
+    "type": "definition",
+    "title": "Erdos's Weaker Conjecture: OPEN",
+    "content": "**erdos_log_conjecture:**\n\nIs f_c(n) >> log n for c < 1/4?\n\n**Status: OPEN**\n\nThis is weaker than the polynomial growth conjecture (which was disproved). It asks whether book sizes grow at least logarithmically.\n\nThe answer is unknown as of 2024.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e80-summary",
+    "proofId": "erdos-80",
+    "range": { "startLine": 258, "endLine": 286 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_80_summary:**\n\nComplete characterization of what is known:\n\n1. f_c(n) -> infinity for all c > 0 (regularity)\n2. f_c(n) >= n/6 for c > 1/4 (linear)\n3. f_c(n) <= n^{O(1/log log n)} for c < 1/4 (Fox-Loh)\n4. Polynomial growth DISPROVED for c < 1/4\n5. Logarithmic growth OPEN\n\n**The Gap:** For c < 1/4, the true growth rate lies somewhere between 'tending to infinity' and n^{o(1)}.",
+    "significance": "critical"
+  }
+]
