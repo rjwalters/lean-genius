@@ -1,33 +1,130 @@
 {
   "id": "erdos-651",
-  "title": "Erdős Problem #651",
+  "title": "Erdős Problem #651: Exponential Growth of f_k(n)",
   "slug": "erdos-651",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the smallest integer such that any ... points in general position in ... contain ... which determine a convex ...",
+  "description": "Does the convex position function f_k(n) grow exponentially in higher dimensions? NO - disproved by Pohoata-Zakharov (2022).",
   "meta": {
-    "author": "Unknown",
+    "author": "Pohoata-Zakharov (2022 disproof), Erdős (1997 problem)",
     "sourceUrl": "https://erdosproblems.com/651",
-    "date": "",
-    "status": "pending",
+    "date": "2022",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos651Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "convex-geometry",
+      "combinatorics",
+      "ramsey-theory",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 651,
     "erdosUrl": "https://erdosproblems.com/651",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for growth bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for Erdős-Szekeres bounds",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "convexPositionFn axiom: abstract f_k(n) function",
+      "hasExponentialLowerBound definition: captures the conjecture",
+      "hasSubexponentialGrowth definition: formalizes 2^{o(n)} growth",
+      "pohoata_zakharov_2022 axiom: the disproof result",
+      "erdos_651 theorem: the main disproof",
+      "dimension_gap theorem: k=2 vs k>=3 dichotomy",
+      "Erdős-Szekeres bounds for k=2",
+      "Monotonicity properties in k and n"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #651 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_k(n)$ denote the smallest integer such that any $f_k(n)$ points in general position in $\\mathbb{R}^k$ contain $n$ which determine a convex polyhedron. Is it true that\\[f_k(n) > (1+c_k)^n\\]for some constant $c_k>0$?\n\n\n\nThe function when $k=2$ is the subject of the Erd\\H{o}s-Klein-Szekeres conjecture, see [107]. One can show that\\[f_2(n)>f_3(n)>\\cdots.\\]The answer is no, even for $k=3$: Pohoata and Zakharov \\cite{PoZa22} have proved that\\[f_3(n)\\leq 2^{o(n)}.\\]\n\n\n\n\nReferences\n\n\n[PoZa22] Pohoata, C. and Zakharov, D., Convex polytopes from fewer points. arXiv:2208.04878 (2022).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #651**\n\nThis problem concerns the Ramsey-type function f_k(n), which measures how many points in general position in k-dimensional space are needed to guarantee n points in convex position.\n\n**Key History:**\n- Erdős-Szekeres (1935): Introduced f_2(n) for the plane, proving exponential bounds\n- Erdős [Er97e]: Asked whether exponential growth persists in all dimensions\n- Pohoata-Zakharov (2022): Disproved the conjecture by showing f_3(n) ≤ 2^{o(n)}\n\n**Mathematical Context:**\nThe planar case (k=2) is the famous Erdős-Klein-Szekeres problem (Erdős #107), where the exact value of f_2(n) remains open. For k=2, exponential growth is guaranteed: f_2(n) ≥ 2^{n-2} + 1. The question asked whether this exponential behavior extends to higher dimensions.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet f_k(n) denote the smallest integer such that any f_k(n) points in general position in $\\mathbb{R}^k$ contain n points determining a convex polyhedron.\n\nIs it true that $f_k(n) > (1 + c_k)^n$ for some constant $c_k > 0$?\n\n**Answer: NO**\n\nPohoata and Zakharov (2022) proved that $f_3(n) \\leq 2^{o(n)}$, showing that the exponential lower bound fails already in 3 dimensions. By monotonicity ($f_k(n) \\leq f_3(n)$ for $k \\geq 3$), it fails for all $k \\geq 3$.\n\nRemarkably, the conjecture IS true for k=2 (the plane).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Abstract Function:** Define convexPositionFn as an axiomatized function representing f_k(n)\n\n2. **Growth Definitions:**\n   - hasExponentialLowerBound: ∃ c > 0 such that f_k(n) > (1+c)^n\n   - hasSubexponentialGrowth: ∀ ε > 0, eventually f(n) < (1+ε)^n\n\n3. **Key Axioms:**\n   - pohoata_zakharov_2022: f_3 has subexponential growth\n   - exponential_holds_k2: f_2 has exponential growth (Erdős-Szekeres)\n   - Monotonicity in k: f_{k+1}(n) ≤ f_k(n)\n\n4. **Main Theorem:** Derive the disproof from the axioms",
+    "keyInsights": [
+      "**Dimension Dichotomy:** A sharp transition occurs between k=2 (exponential) and k≥3 (subexponential)",
+      "**Monotonicity:** f_2(n) > f_3(n) > f_4(n) > ... - higher dimensions make convexity easier",
+      "**Erdős-Szekeres Connection:** The k=2 case is the famous Happy Ending Problem",
+      "**2^{o(n)} Notation:** This means g(n) where g(n)/n → 0, i.e., slower than any exponential",
+      "**Ramsey Theory:** The problem has deep connections to Ramsey numbers and extremal combinatorics"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "convex-position-function",
+      "title": "The Convex Position Function",
+      "summary": "Definition of f_k(n) as an axiomatized function with key properties",
+      "startLine": 40,
+      "endLine": 56
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Well-definedness, lower bounds, monotonicity in k and n",
+      "startLine": 57,
+      "endLine": 90
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "The k = 2 Case (Erdős-Szekeres)",
+      "summary": "Upper and lower bounds for the planar case, known small values",
+      "startLine": 91,
+      "endLine": 121
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős's Conjecture",
+      "summary": "hasExponentialLowerBound definition, k=2 satisfies it",
+      "startLine": 122,
+      "endLine": 142
+    },
+    {
+      "id": "pohoata-zakharov",
+      "title": "Pohoata-Zakharov Disproof",
+      "summary": "Subexponential growth definition, main disproof theorem",
+      "startLine": 143,
+      "endLine": 180
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_651 theorem and complete answer",
+      "startLine": 181,
+      "endLine": 207
+    },
+    {
+      "id": "dimension-gap",
+      "title": "The Dimension Gap",
+      "summary": "Qualitative difference between k=2 and k≥3, convergence to n",
+      "startLine": 208,
+      "endLine": 231
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_651_summary combining all results",
+      "startLine": 232,
+      "endLine": 250
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #651 asked whether the convex position function f_k(n) grows exponentially in all dimensions k ≥ 2. Pohoata and Zakharov (2022) showed the answer is NO: f_3(n) ≤ 2^{o(n)}, which is subexponential. By monotonicity, this extends to all k ≥ 3. However, the conjecture IS true for k = 2, where Erdős-Szekeres shows f_2(n) ≥ 2^{n-2} + 1.",
+    "implications": "**Geometric Implications**\n\n1. **Dimension Transition:** There is a qualitative change in behavior between 2D and 3D\n\n2. **High-Dimensional Ease:** Finding convex polytopes becomes dramatically easier as dimension increases\n\n3. **Erdős-Szekeres Uniqueness:** The exponential behavior of the planar case is special\n\n4. **Ramsey Connections:** Relates to Ramsey theory and extremal problems in discrete geometry",
+    "openQuestions": [
+      "What is the exact growth rate of f_3(n)?",
+      "Is there a polynomial bound f_k(n) ≤ n^{O(1)} for large k?",
+      "Exact value of f_2(n) (Erdős-Klein-Szekeres conjecture)",
+      "Sharp bounds for the dimension k where f_k(n) = n for all n"
+    ]
   }
 }

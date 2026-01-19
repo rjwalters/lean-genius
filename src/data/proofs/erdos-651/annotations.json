@@ -1,1 +1,126 @@
-[]
+[
+  {
+    "id": "ann-e651-header",
+    "proofId": "erdos-651",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #651: Exponential Growth of f_k(n)**\n\nThis problem asks about the growth rate of the convex position function f_k(n), which measures how many points in k-dimensional space are needed to guarantee n points forming a convex polytope.\n\n**The Question:**\nDoes f_k(n) grow at least exponentially in n for all dimensions k ≥ 2?\n\n**The Answer:** NO\n\nPohoata and Zakharov (2022) showed that already in 3 dimensions, f_3(n) ≤ 2^{o(n)}, which grows slower than any exponential. This disproves the conjecture.\n\nRemarkably, the conjecture IS true for k = 2 (the plane), where the Erdős-Szekeres theorem gives exponential bounds.",
+    "mathContext": "The function f_k(n) generalizes the classical Erdős-Szekeres 'Happy Ending Problem' to higher dimensions. In discrete geometry, understanding growth rates of such Ramsey-type functions is fundamental.",
+    "significance": "critical",
+    "relatedConcepts": ["Convex position", "Ramsey theory", "Erdős-Szekeres theorem"]
+  },
+  {
+    "id": "ann-e651-convex-fn",
+    "proofId": "erdos-651",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "definition",
+    "title": "The Convex Position Function",
+    "content": "**convexPositionFn (f_k(n)):**\n\nThe smallest integer M such that any M points in general position in k-dimensional space contain n points that form the vertices of a convex polytope.\n\n**General Position:**\nNo k+1 points lie in a (k-1)-dimensional hyperplane.\n\n**Convex Polytope:**\nThe convex hull of the n points has all n points as vertices.\n\n**Axiomatized** because formalizing point configurations in ℝ^k requires substantial geometric machinery.",
+    "mathContext": "This is a Ramsey-type function: we seek the threshold where a desired configuration is guaranteed to exist.",
+    "significance": "critical",
+    "relatedConcepts": ["General position", "Convex hull", "Ramsey numbers"]
+  },
+  {
+    "id": "ann-e651-monotonicity",
+    "proofId": "erdos-651",
+    "range": { "startLine": 76, "endLine": 89 },
+    "type": "axiom",
+    "title": "Monotonicity Properties",
+    "content": "**Key Monotonicity Results:**\n\n1. **Monotonicity in k:**\n   f_{k+1}(n) ≤ f_k(n)\n   Higher dimensions make convexity easier - more room to avoid non-convex configurations.\n\n2. **Monotonicity in n:**\n   f_k(n) ≤ f_k(n+1)\n   Finding more points in convex position requires more points.\n\n**Implication:**\nf_2(n) > f_3(n) > f_4(n) > ... > n\n\nThis chain is crucial: if f_3(n) is subexponential, so is f_k(n) for all k ≥ 3.",
+    "significance": "key",
+    "relatedConcepts": ["Dimension dependence", "Ramsey monotonicity"]
+  },
+  {
+    "id": "ann-e651-erdos-szekeres",
+    "proofId": "erdos-651",
+    "range": { "startLine": 91, "endLine": 121 },
+    "type": "theorem",
+    "title": "The k = 2 Case (Erdős-Szekeres)",
+    "content": "**Erdős-Szekeres Theorem (1935):**\n\nFor points in the plane (k = 2):\n\n**Upper Bound:**\nf_2(n) ≤ (2n-4 choose n-2) + 1 ≈ 4^n / √n\n\n**Lower Bound:**\nf_2(n) ≥ 2^{n-2} + 1\n\n**Known Values:**\n- f_2(3) = 3 (triangle)\n- f_2(4) = 5 (convex quadrilateral)\n- f_2(5) = 9 (convex pentagon)\n- f_2(6) = 17 (convex hexagon)\n\nThe exact value of f_2(n) for general n is the Erdős-Klein-Szekeres conjecture (Problem #107).",
+    "mathContext": "This classical result shows exponential growth in the plane. The 'Happy Ending Problem' name comes from Klein and Szekeres marrying after working on it.",
+    "significance": "critical",
+    "relatedConcepts": ["Happy Ending Problem", "Convex polygons", "Binomial coefficients"]
+  },
+  {
+    "id": "ann-e651-exponential-def",
+    "proofId": "erdos-651",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "definition",
+    "title": "Exponential Lower Bound",
+    "content": "**hasExponentialLowerBound:**\n\nA dimension k has an exponential lower bound if there exists c > 0 such that:\n  f_k(n) > (1 + c)^n for all n ≥ k + 1\n\n**Formal Definition:**\n```lean\ndef hasExponentialLowerBound (k : ℕ) : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ k + 1 →\n    (f_ k (n) : ℝ) > (1 + c) ^ (n : ℝ)\n```\n\nThis captures Erdős's original question: does every dimension have such a bound?",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential growth", "Asymptotic bounds"]
+  },
+  {
+    "id": "ann-e651-subexponential",
+    "proofId": "erdos-651",
+    "range": { "startLine": 147, "endLine": 154 },
+    "type": "definition",
+    "title": "Subexponential Growth",
+    "content": "**hasSubexponentialGrowth:**\n\nA function g has subexponential growth (written g(n) = 2^{o(n)}) if for every ε > 0, eventually g(n) < (1 + ε)^n.\n\n**Formal Definition:**\n```lean\ndef hasSubexponentialGrowth (g : ℕ → ℕ) : Prop :=\n  ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →\n    (g n : ℝ) < (1 + ε) ^ (n : ℝ)\n```\n\nSubexponential means 'slower than any exponential' - it rules out exponential lower bounds.",
+    "mathContext": "The o(n) notation in 2^{o(n)} means the exponent grows slower than linearly, e.g., n/log(n) or √n.",
+    "significance": "key",
+    "relatedConcepts": ["Little-o notation", "Growth rates", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e651-pohoata-zakharov",
+    "proofId": "erdos-651",
+    "range": { "startLine": 156, "endLine": 165 },
+    "type": "axiom",
+    "title": "Pohoata-Zakharov Theorem",
+    "content": "**pohoata_zakharov_2022:**\n\nThe convex position function f_3(n) has subexponential growth:\n  f_3(n) ≤ 2^{o(n)}\n\n**Statement:**\n```lean\naxiom pohoata_zakharov_2022 : hasSubexponentialGrowth (convexPositionFn 3)\n```\n\nThis is the key result that disproves Erdős's conjecture. It was proved in 2022 using sophisticated probabilistic methods.\n\n**Reference:** arXiv:2208.04878",
+    "mathContext": "The proof uses the container method and entropy techniques from combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["Container method", "Probabilistic combinatorics"]
+  },
+  {
+    "id": "ann-e651-main-disproof",
+    "proofId": "erdos-651",
+    "range": { "startLine": 185, "endLine": 196 },
+    "type": "theorem",
+    "title": "Erdős Problem #651: DISPROVED",
+    "content": "**erdos_651:**\n\nThe conjecture that f_k(n) > (1 + c_k)^n for all k ≥ 2 is FALSE.\n\n**Proof:**\n```lean\ntheorem erdos_651 : ¬ (∀ k : ℕ, k ≥ 2 → hasExponentialLowerBound k) := by\n  intro h\n  have h3 := h 3 (by norm_num : 3 ≥ 2)\n  exact no_exponential_lower_bound_k3 h3\n```\n\nThe proof instantiates the universal claim at k = 3 and derives a contradiction from Pohoata-Zakharov.",
+    "significance": "critical",
+    "relatedConcepts": ["Proof by contradiction", "Counterexample"]
+  },
+  {
+    "id": "ann-e651-complete-answer",
+    "proofId": "erdos-651",
+    "range": { "startLine": 198, "endLine": 206 },
+    "type": "theorem",
+    "title": "Complete Answer",
+    "content": "**erdos_651_complete:**\n\nThe complete picture of exponential growth:\n\n1. **k = 2:** YES, exponential lower bound holds (Erdős-Szekeres)\n2. **k ≥ 3:** NO, f_k(n) grows subexponentially (Pohoata-Zakharov)\n\n**Statement:**\n```lean\ntheorem erdos_651_complete :\n    hasExponentialLowerBound 2 ∧\n    (∀ k : ℕ, k ≥ 3 → ¬ hasExponentialLowerBound k) :=\n  ⟨exponential_holds_k2, no_exponential_lower_bound_k_ge_3⟩\n```\n\nThis is the definitive resolution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e651-dimension-gap",
+    "proofId": "erdos-651",
+    "range": { "startLine": 212, "endLine": 222 },
+    "type": "theorem",
+    "title": "The Dimension Gap",
+    "content": "**dimension_gap:**\n\nThere is a sharp qualitative transition between 2 and 3 dimensions:\n\n- **k = 2:** Exponential growth (at least 2^{n-2} + 1)\n- **k = 3:** Subexponential growth (at most 2^{o(n)})\n\n**Statement:**\n```lean\ntheorem dimension_gap :\n    hasExponentialLowerBound 2 ∧ ¬ hasExponentialLowerBound 3 :=\n  ⟨exponential_holds_k2, no_exponential_lower_bound_k3⟩\n```\n\nThis dimension-dependent phenomenon is geometrically significant.",
+    "mathContext": "Many results in discrete geometry exhibit dimension-dependent behavior, but this transition at k = 3 is particularly striking.",
+    "significance": "key",
+    "relatedConcepts": ["Dimension dependence", "Phase transitions"]
+  },
+  {
+    "id": "ann-e651-convergence",
+    "proofId": "erdos-651",
+    "range": { "startLine": 224, "endLine": 230 },
+    "type": "axiom",
+    "title": "Convergence to Trivial Bound",
+    "content": "**fk_converges_to_n:**\n\nAs dimension k → ∞, the function f_k(n) converges to the trivial lower bound n.\n\n**Statement:**\nFor any n ≥ 3, there exists K such that for all k ≥ K, f_k(n) = n.\n\n**Intuition:**\nIn very high dimensions, almost any set of n points in general position forms a convex polytope. The constraint becomes vacuous.",
+    "significance": "supporting",
+    "relatedConcepts": ["High-dimensional geometry", "Limiting behavior"]
+  },
+  {
+    "id": "ann-e651-summary",
+    "proofId": "erdos-651",
+    "range": { "startLine": 236, "endLine": 248 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_651_summary:**\n\nCombines all the main results:\n\n1. hasExponentialLowerBound 2 - exponential in 2D\n2. ¬ hasExponentialLowerBound 3 - not exponential in 3D\n3. ∀ k ≥ 3, ¬ hasExponentialLowerBound k - extends to all k ≥ 3\n\n```lean\ntheorem erdos_651_summary :\n    (hasExponentialLowerBound 2) ∧\n    (¬ hasExponentialLowerBound 3) ∧\n    (∀ k, k ≥ 3 → ¬ hasExponentialLowerBound k)\n```\n\nThis theorem packages the complete resolution of Erdős Problem #651.",
+    "significance": "key"
+  }
+]
