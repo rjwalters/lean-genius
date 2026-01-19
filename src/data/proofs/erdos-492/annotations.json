@@ -1,1 +1,180 @@
-[]
+[
+  {
+    "id": "ann-e492-unity-ratio-seq",
+    "proofId": "erdos-492",
+    "range": { "startLine": 48, "endLine": 51 },
+    "type": "definition",
+    "title": "Unity Ratio Sequence",
+    "content": "**UnityRatioSeq:**\n\nA structure capturing sequences A = {a₁ < a₂ < ...} where consecutive ratios approach 1.\n\n**Fields:**\n- `seq : ℕ → ℕ` - The strictly increasing sequence\n- `strictMono` - Proof that seq is strictly monotonic\n- `ratioLimit` - Proof that aₙ₊₁/aₙ → 1\n\nThese sequences generalize the natural numbers.",
+    "mathContext": "The unity ratio condition ensures gaps grow slower than the terms themselves.",
+    "significance": "critical",
+    "relatedConcepts": ["Strictly monotonic sequences", "Limit of ratios"]
+  },
+  {
+    "id": "ann-e492-naturals",
+    "proofId": "erdos-492",
+    "range": { "startLine": 57, "endLine": 63 },
+    "type": "definition",
+    "title": "Natural Numbers Sequence",
+    "content": "**naturalsSeq:**\n\nThe standard example where A = ℕ (i.e., aₙ = n).\n\n**Properties:**\n- aₙ₊₁/aₙ = (n+1)/n → 1\n- Gaps are constant: aₙ₊₁ - aₙ = 1\n\nThis is the classical case where Weyl's equidistribution theorem applies.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e492-interval-index",
+    "proofId": "erdos-492",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "Interval Index Function",
+    "content": "**intervalIndex:**\n\nGiven x ≥ a₁, find the unique index i such that x ∈ [aᵢ, aᵢ₊₁).\n\nThis partitions [a₁, ∞) into intervals determined by the sequence A.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e492-gen-frac",
+    "proofId": "erdos-492",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "definition",
+    "title": "Generalized Fractional Part",
+    "content": "**generalizedFrac:**\n\nf(x) = (x - aᵢ)/(aᵢ₊₁ - aᵢ) where x ∈ [aᵢ, aᵢ₊₁).\n\n**Key properties:**\n- Maps each interval [aᵢ, aᵢ₊₁) linearly onto [0, 1)\n- f(aᵢ) = 0 and f(aᵢ₊₁⁻) = 1\n- For A = ℕ, this is the usual fractional part {x}",
+    "mathContext": "This generalizes the fractional part operator to arbitrary subdivisions of ℝ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e492-uniform-dist",
+    "proofId": "erdos-492",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "definition",
+    "title": "Uniform Distribution",
+    "content": "**isUniformlyDistributed:**\n\nA sequence (xₙ) in [0,1) is uniformly distributed if for all subintervals [a,b):\n\nlim_{N→∞} (1/N) |{n ≤ N : xₙ ∈ [a,b)}| = b - a\n\nEvery subinterval receives its \"fair share\" of points asymptotically.",
+    "mathContext": "This is the standard definition from Weyl's theory of equidistribution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e492-weyl",
+    "proofId": "erdos-492",
+    "range": { "startLine": 132, "endLine": 133 },
+    "type": "axiom",
+    "title": "Weyl's Equidistribution Theorem",
+    "content": "**weyl_equidistribution:**\n\nFor irrational α, the sequence ({αn})_{n≥1} is uniformly distributed mod 1.\n\n**Statement:** ∀ α irrational, {αn} is u.d. in [0,1)\n\nThis classical theorem (1916) is the foundation of equidistribution theory.",
+    "mathContext": "Weyl's theorem is foundational for ergodic theory and has deep connections to number theory.",
+    "significance": "key",
+    "relatedConcepts": ["Fractional parts", "Irrational rotation"]
+  },
+  {
+    "id": "ann-e492-conjecture",
+    "proofId": "erdos-492",
+    "range": { "startLine": 150, "endLine": 151 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**erdosConjecture:**\n\nFor almost all α, the sequence f(αn) is uniformly distributed in [0,1).\n\n**Formalization:** There exists a full-measure set S such that for all α ∈ S, f(αn) is u.d.\n\n**Status:** This conjecture is FALSE in general (Schmidt, 1969).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e492-schmidt",
+    "proofId": "erdos-492",
+    "range": { "startLine": 157, "endLine": 158 },
+    "type": "axiom",
+    "title": "Schmidt's Counterexample",
+    "content": "**schmidt_counterexample:**\n\nThere exists a unity ratio sequence A for which the conjecture fails.\n\n**Reference:** Schmidt, W. M. (1969), \"Disproof of some conjectures on Diophantine approximations\", Studia Sci. Math. Hungar.\n\nSchmidt constructed A with oscillating gaps that destroy uniform distribution for a positive measure set of α.",
+    "mathContext": "The counterexample uses delicate constructions from Diophantine approximation theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e492-disproved",
+    "proofId": "erdos-492",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "theorem",
+    "title": "Main Result: Conjecture Disproved",
+    "content": "**erdos_492_disproved:**\n\n∃ A : UnityRatioSeq, ¬erdosConjecture A\n\nErdős Problem #492 is DISPROVED. The general conjecture is false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e492-monotonic-gaps",
+    "proofId": "erdos-492",
+    "range": { "startLine": 176, "endLine": 177 },
+    "type": "definition",
+    "title": "Monotonic Gap Condition",
+    "content": "**hasMonotonicGaps:**\n\nThe sequence of gaps gₙ = aₙ₊₁ - aₙ is eventually monotonically increasing.\n\n**Significance:** This is a sufficient condition for the conjecture to hold.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e492-davenport-leveque",
+    "proofId": "erdos-492",
+    "range": { "startLine": 183, "endLine": 184 },
+    "type": "axiom",
+    "title": "Davenport-LeVeque Theorem",
+    "content": "**davenport_leveque:**\n\nIf the gaps aₙ₊₁ - aₙ are monotonic, then the conjecture holds.\n\n**Reference:** Davenport & LeVeque (1963), \"Uniform distribution relative to a fixed sequence\", Michigan Math. J.\n\nMonotonic gaps prevent the oscillations that destroy uniform distribution.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e492-poly-growth",
+    "proofId": "erdos-492",
+    "range": { "startLine": 190, "endLine": 191 },
+    "type": "definition",
+    "title": "Polynomial Growth Condition",
+    "content": "**hasPolynomialGrowth:**\n\nThe sequence satisfies aₙ ≥ C·n^{1/2+ε} for some constants C, ε > 0.\n\n**Meaning:** Terms grow at least as fast as √n (up to a polynomial factor).\n\nThis is another sufficient condition for the conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e492-davenport-erdos",
+    "proofId": "erdos-492",
+    "range": { "startLine": 197, "endLine": 198 },
+    "type": "axiom",
+    "title": "Davenport-Erdős Theorem",
+    "content": "**davenport_erdos:**\n\nIf aₙ >> n^{1/2+ε}, then the conjecture holds.\n\n**Reference:** Davenport & Erdős (1963), \"A theorem on uniform distribution\", Magyar Tud. Akad. Mat. Kutató Int. Közl.\n\nPolynomial growth ensures gaps don't oscillate too wildly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e492-naturals-case",
+    "proofId": "erdos-492",
+    "range": { "startLine": 204, "endLine": 210 },
+    "type": "theorem",
+    "title": "Natural Numbers Case",
+    "content": "**naturals_case:**\n\nFor A = ℕ, the conjecture holds.\n\n**Proof:** The natural numbers have constant gaps (all equal to 1), which are trivially monotonic. By Davenport-LeVeque, the conjecture holds.\n\nThis recovers Weyl's classical theorem as a special case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e492-gap",
+    "proofId": "erdos-492",
+    "range": { "startLine": 233, "endLine": 234 },
+    "type": "definition",
+    "title": "Gap Function",
+    "content": "**gap:**\n\ngₙ = aₙ₊₁ - aₙ, the n-th gap in the sequence.\n\nThe behavior of gaps (monotonic vs. oscillating) determines whether uniform distribution holds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e492-oscillating",
+    "proofId": "erdos-492",
+    "range": { "startLine": 240, "endLine": 241 },
+    "type": "definition",
+    "title": "Oscillating Gaps",
+    "content": "**hasOscillatingGaps:**\n\nThe gaps are NOT eventually monotonic - they oscillate indefinitely.\n\n**Key insight:** Oscillating gaps can destroy uniform distribution, as Schmidt's counterexample shows.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e492-ae",
+    "proofId": "erdos-492",
+    "range": { "startLine": 267, "endLine": 268 },
+    "type": "definition",
+    "title": "Almost All Uniform",
+    "content": "**almostAllUniform:**\n\nThe set of α for which f(αn) is NOT u.d. has measure zero.\n\n**Equivalent formulation:** volume{α | ¬isUniformlyDistributed(f(αn))} = 0\n\nThis is the measure-theoretic way to state \"almost all α\".",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e492-summary",
+    "proofId": "erdos-492",
+    "range": { "startLine": 294, "endLine": 303 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_492_summary:**\n\nCombines all main results:\n1. Schmidt's counterexample exists (conjecture FALSE in general)\n2. Monotonic gaps ⟹ conjecture TRUE (Davenport-LeVeque)\n3. Polynomial growth ⟹ conjecture TRUE (Davenport-Erdős)\n4. Natural numbers ⟹ conjecture TRUE (Weyl)\n\nThis gives a complete picture of what is known.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e492-main",
+    "proofId": "erdos-492",
+    "range": { "startLine": 309, "endLine": 310 },
+    "type": "theorem",
+    "title": "Erdős Problem #492",
+    "content": "**erdos_492:**\n\nThe main theorem: ∃ A : UnityRatioSeq, ¬erdosConjecture A\n\nErdős Problem #492 is DISPROVED. The answer to the question is NO - the conjecture does not hold for all unity ratio sequences.",
+    "significance": "critical"
+  }
+]
