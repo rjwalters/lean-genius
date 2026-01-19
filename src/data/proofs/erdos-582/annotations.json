@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e582-header",
+    "proofId": "erdos-582",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #582: Folkman Numbers**\n\nThis problem asks: Does there exist a graph G that is K4-free (no complete subgraph on 4 vertices), yet every 2-coloring of its edges contains a monochromatic triangle?\n\n**Answer: YES** - proved by Folkman in 1970.\n\n**The Folkman Number f(2,3,4):**\nThe minimum number of vertices needed satisfies:\n19 <= f(2,3,4) <= 941\n\n**Prize:** Erdos offered $100 for a construction with < 10^10 vertices. Spencer claimed this in 1988.",
+    "mathContext": "This problem sits at the intersection of Ramsey theory and extremal graph theory. It asks whether 'sparse' graphs (avoiding K4) can still have strong Ramsey properties.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Folkman numbers", "Graph coloring", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-e582-clique",
+    "proofId": "erdos-582",
+    "range": { "startLine": 50, "endLine": 70 },
+    "type": "definition",
+    "title": "Cliques and K_n-Free Graphs",
+    "content": "**hasClique:**\n\nA graph G has a clique of size k if there exists a set of k vertices where every pair is adjacent.\n\n```lean\ndef hasClique (G : SimpleGraph V) (k : N) : Prop :=\n  exists s : Finset V, s.card = k and G.IsClique s\n```\n\n**isKFree:**\n\nA graph is K_n-free if it contains no clique of size n.\n\n```lean\ndef isKFree (G : SimpleGraph V) (n : N) : Prop :=\n  not hasClique G n\n```",
+    "mathContext": "The K4-free condition means the graph contains no 4-clique. This is a 'density' restriction that seemingly limits Ramsey behavior.",
+    "significance": "key",
+    "relatedConcepts": ["Complete graphs", "Cliques", "Forbidden subgraphs"]
+  },
+  {
+    "id": "ann-e582-coloring",
+    "proofId": "erdos-582",
+    "range": { "startLine": 78, "endLine": 102 },
+    "type": "definition",
+    "title": "Edge Colorings",
+    "content": "**EdgeColoring:**\n\nA 2-coloring assigns each edge a color (Red or Blue, represented as Bool).\n\n```lean\ndef EdgeColoring (G : SimpleGraph V) := G.edgeSet -> Bool\n```\n\n**monochromaticSubgraph:**\n\nGiven a coloring, extract the subgraph containing only edges of one color.\n\nThis allows us to ask: does the red subgraph or blue subgraph contain a triangle?",
+    "mathContext": "Edge colorings partition the edges into two classes. Ramsey theory studies what structures must appear in at least one color class.",
+    "significance": "key",
+    "relatedConcepts": ["Graph coloring", "Ramsey partitions"]
+  },
+  {
+    "id": "ann-e582-ramsey-prop",
+    "proofId": "erdos-582",
+    "range": { "startLine": 104, "endLine": 111 },
+    "type": "definition",
+    "title": "The Ramsey Property",
+    "content": "**hasRamseyProperty:**\n\nA graph G has the Ramsey property for (K3, 2) if every 2-coloring of its edges contains a monochromatic triangle.\n\n```lean\ndef hasRamseyProperty (G : SimpleGraph V) : Prop :=\n  forall c : EdgeColoring G, hasClique (monochromaticSubgraph G c true) 3 or\n                             hasClique (monochromaticSubgraph G c false) 3\n```\n\nThis captures: 'no matter how you color the edges red/blue, you get a single-color triangle.'",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey numbers", "Monochromatic subgraphs"]
+  },
+  {
+    "id": "ann-e582-folkman-graph",
+    "proofId": "erdos-582",
+    "range": { "startLine": 120, "endLine": 137 },
+    "type": "definition",
+    "title": "Folkman Graphs",
+    "content": "**isFolkmanGraph:**\n\nA Folkman graph for (2,3,4) is a graph that:\n1. Is K4-free (contains no 4-clique)\n2. Has the Ramsey property (every 2-coloring has a monochromatic triangle)\n\n```lean\ndef isFolkmanGraph (G : SimpleGraph V) : Prop :=\n  isKFree G 4 and hasRamseyProperty G\n```\n\n**folkmanNumber_2_3_4:**\nThe minimum number of vertices in any Folkman graph.",
+    "mathContext": "The surprising fact is that such graphs exist at all! Being K4-free is a strong restriction, yet it doesn't prevent the Ramsey property.",
+    "significance": "critical",
+    "relatedConcepts": ["Folkman numbers", "Extremal graphs"]
+  },
+  {
+    "id": "ann-e582-existence",
+    "proofId": "erdos-582",
+    "range": { "startLine": 145, "endLine": 163 },
+    "type": "axiom",
+    "title": "Folkman's Existence Theorem",
+    "content": "**folkman_existence:**\n\nThere exists a K4-free graph where every 2-coloring contains a monochromatic triangle.\n\n```lean\naxiom folkman_existence :\n    exists (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),\n      isFolkmanGraph G\n```\n\n**erdos_582:**\nThis is the affirmative answer to the problem.\n\nFolkman's original proof (1970) gave astronomically large bounds on the number of vertices required.",
+    "mathContext": "Folkman's proof was non-constructive and gave bounds that were towers of exponentials. Subsequent work dramatically reduced this.",
+    "significance": "critical",
+    "relatedConcepts": ["Existence proofs", "Non-constructive methods"]
+  },
+  {
+    "id": "ann-e582-bounds",
+    "proofId": "erdos-582",
+    "range": { "startLine": 171, "endLine": 198 },
+    "type": "theorem",
+    "title": "Quantitative Bounds",
+    "content": "**Current Best Bounds:**\n\n**Lower Bound (Radziszowski-Xu 2007):**\nf(2,3,4) >= 19\n\n**Upper Bound (Dudek-Rodl 2008):**\nf(2,3,4) <= 941\n\n```lean\ntheorem folkman_bounds : 19 <= folkmanNumber_2_3_4 and folkmanNumber_2_3_4 <= 941\n```\n\n**Spencer's Bound (1988):**\nf(2,3,4) <= 3 x 10^9, which resolved Erdos's $100 challenge for < 10^10 vertices.",
+    "mathContext": "The gap between 19 and 941 remains one of the intriguing open problems. Radziszowski-Xu conjecture the true value is <= 127.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Upper bounds", "Exact values"]
+  },
+  {
+    "id": "ann-e582-timeline",
+    "proofId": "erdos-582",
+    "range": { "startLine": 204, "endLine": 232 },
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "**Bound Improvement Timeline:**\n\n- 1970 Folkman: Existence (astronomical)\n- 1986 Frankl-Rodl: <= 7 x 10^11\n- 1988 Spencer: <= 3 x 10^9 (won $100)\n- 2007 Lu: <= 9697 (explicit)\n- 2008 Dudek-Rodl: <= 941 (current)\n\n```lean\ntheorem bounds_improvement :\n    folkmanNumber_2_3_4 <= 941 and\n    941 <= 9697 and\n    9697 <= 3 * 10^9 and\n    3 * 10^9 <= 7 * 10^11\n```\n\nEach improvement was a significant achievement in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Historical progress", "Bound improvements"]
+  },
+  {
+    "id": "ann-e582-ramsey-r33",
+    "proofId": "erdos-582",
+    "range": { "startLine": 238, "endLine": 254 },
+    "type": "axiom",
+    "title": "Classical Ramsey R(3,3)",
+    "content": "**ramsey_3_3:**\n\nThe classical Ramsey number R(3,3) = 6: any 2-coloring of K6 contains a monochromatic triangle.\n\n```lean\naxiom ramsey_3_3 : forall c : EdgeColoring (completeGraph (Fin 6)),\n    hasClique (monochromaticSubgraph ... c true) 3 or\n    hasClique (monochromaticSubgraph ... c false) 3\n```\n\n**Connection:** Folkman numbers ask: what if we can't use the complete graph? What's the smallest K4-free graph with the same property?",
+    "mathContext": "R(3,3) = 6 is one of the few exactly known Ramsey numbers. Folkman numbers add a forbidden subgraph constraint.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey numbers", "R(3,3)", "Complete graphs"]
+  },
+  {
+    "id": "ann-e582-f233",
+    "proofId": "erdos-582",
+    "range": { "startLine": 267, "endLine": 277 },
+    "type": "theorem",
+    "title": "f(2,3,3) = Infinity",
+    "content": "**folkman_2_3_3_infinite:**\n\nThere is NO triangle-free graph where every 2-coloring has a monochromatic triangle!\n\n```lean\ntheorem folkman_2_3_3_infinite :\n    not exists (V : Type) ... (G : SimpleGraph V),\n      isKFree G 3 and hasRamseyProperty G\n```\n\n**Why?** If G is triangle-free (K3-free), then G itself contains no triangles. So neither the red nor blue subgraph can contain a triangle!",
+    "mathContext": "This shows the constraint matters: f(2,3,3) = infinity but f(2,3,4) is finite. The jump from K3-free to K4-free is crucial.",
+    "significance": "key",
+    "relatedConcepts": ["Triangle-free graphs", "Degenerate cases"]
+  },
+  {
+    "id": "ann-e582-constructions",
+    "proofId": "erdos-582",
+    "range": { "startLine": 283, "endLine": 297 },
+    "type": "axiom",
+    "title": "Explicit Constructions",
+    "content": "**lu_explicit_construction:**\n\nLu (2007) gave an EXPLICIT construction of a Folkman graph on 9697 vertices using Cayley graphs over finite fields.\n\n```lean\naxiom lu_explicit_construction :\n    exists (G : SimpleGraph (Fin 9697)), isFolkmanGraph G\n```\n\n**dudek_rodl_construction:**\n\nDudek-Rodl (2008) verified a 941-vertex Folkman graph using probabilistic and computer-assisted methods.\n\nThe gap between explicit (9697) and probabilistic (941) is significant.",
+    "mathContext": "Explicit constructions are valuable for understanding structure. Probabilistic methods give better bounds but less insight.",
+    "significance": "key",
+    "relatedConcepts": ["Explicit constructions", "Probabilistic method", "Computer verification"]
+  },
+  {
+    "id": "ann-e582-summary",
+    "proofId": "erdos-582",
+    "range": { "startLine": 303, "endLine": 316 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_582_summary:**\n\nCombines all main results:\n1. Such graphs exist (Folkman 1970)\n2. 19 <= f(2,3,4) <= 941 (current bounds)\n3. Conjecture: f(2,3,4) <= 127\n\n```lean\ntheorem erdos_582_summary :\n    (exists ... isFolkmanGraph G) and\n    19 <= folkmanNumber_2_3_4 and\n    folkmanNumber_2_3_4 <= 941\n```",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Main results"]
+  },
+  {
+    "id": "ann-e582-prize",
+    "proofId": "erdos-582",
+    "range": { "startLine": 318, "endLine": 331 },
+    "type": "theorem",
+    "title": "The $100 Challenge",
+    "content": "**erdos_100_challenge_resolved:**\n\nErdos offered $100 for finding a Folkman graph with < 10^10 vertices. Spencer (1988) claimed this prize.\n\n```lean\ntheorem erdos_100_challenge_resolved : folkmanNumber_2_3_4 < 10^10 := by\n  calc folkmanNumber_2_3_4 <= 941 := folkman_upper_bound\n    _ < 10^10 := by norm_num\n```\n\n**Conjecture:** Radziszowski-Xu (2007) conjecture f(2,3,4) <= 127.",
+    "mathContext": "Erdos famously offered cash prizes for solving his problems. The $100 prize for this problem motivated significant research.",
+    "significance": "key",
+    "relatedConcepts": ["Erdos prizes", "Open conjectures"]
+  }
+]
