@@ -1,33 +1,140 @@
 {
   "id": "erdos-1134",
-  "title": "Erdős Problem #1134",
+  "title": "Erdős Problem #1134: Density of Sets Closed Under Affine Maps",
   "slug": "erdos-1134",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest set which contains ... and is closed under the operations\\[x\\mapsto 2x+1,\\]\\[x\\mapsto 3x+1,\\]and\\[x\\m...",
+  "description": "Let A ⊆ ℕ be the smallest set containing 1 and closed under x ↦ 2x+1, x ↦ 3x+1, and x ↦ 6x+1. Does A have positive lower density? Answer: NO.",
   "meta": {
-    "author": "Unknown",
+    "author": "Crampin-Hilton",
     "sourceUrl": "https://erdosproblems.com/1134",
-    "date": "",
-    "status": "pending",
+    "date": "1972",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1134Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "density",
+      "affine-maps",
+      "recursively-defined-sets",
+      "number-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 1134,
     "erdosUrl": "https://erdosproblems.com/1134",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1134 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be the smallest set which contains $1$ and is closed under the operations\\[x\\mapsto 2x+1,\\]\\[x\\mapsto 3x+1,\\]and\\[x\\mapsto 6x+1.\\]Does $A$ have positive lower density?\n\n\n\nLagarias \\cite{La16} reports that Erd\\H{o}s asked this in 1972, offering £10 for a solution. (Although Hilton told Lagarias that this problem may have been formulated by Klarner, and that Erd\\H{o}s liked it and offered a prize for its solution.)\n\nErd\\H{o}s had earlier proved (as reported in \\cite{KlRa74}) that if $A$ is the smallest set which contains $1$ and is closed under the operations $x\\mapsto m_ix+b_i$ for some (possibly infinite) collection of $m_i\\geq 1$ and $b_i\\geq 0$ then, if $\\sigma>0$ is such that $\\sum \\frac{1}{m_i^\\sigma}=1$ then, for all large $X$,\\[\\lvert A\\cap [1,X]\\rvert \\ll X^{\\sigma+o(1)}.\\]This result does not help with the given problem since $\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{6}=1$.\n\nThis was answered in the negative soon afterwards by Crampin and Hilton (as reported in \\cite{Kl82}), who proved that in fact, for all large $X$,\\[\\lvert A\\cap [1,X]\\rvert \\ll X^{\\tau+o(1)}\\]where $\\tau\\approx 0.900626$ is the unique positive root of\\[6^{-\\tau}+\\sum_{k\\geq 0}(3\\cdot 2^k)^{-\\tau}=1.\\]Their proof is given in \\cite{La16}.\n\nKlarner has several (open) variants of this problem - see Section 8.9 of \\cite{La16}. For example, it is unknown if the smallest set $A$ which contains $0$ and is closed under\\[x\\mapsto 2x,\\]\\[x\\mapsto 3x+2,\\]and\\[x\\mapsto 6x+3\\]has positive density. This problem is repeated by Guy \\cite{Gu83b} in an article called 'Don't Try to Solve These Problems'. This is Problem E36 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Gu83b] Guy, Richard K., Unsolved {P}roblems: {D}on't {T}ry to {S}olve {T}hese\n{P}roblems. Amer. Math. Monthly (1983), 35--38+39--41.\n\n[Kl82] Klarner, David A., A sufficient condition for certain semigroups to be free. J. Algebra (1982), 140--148.\n\n[KlRa74] Klarner, D. A. and Rado, R., Arithmetic properties of certain recursively defined sets. Pacific J. Math. (1974), 445--463.\n\n[La16] Lagarias, Jeffrey C., Erd\\H os, {K}larner, and the {$3x+1$} problem. Amer. Math. Monthly (2016), 753--776.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős asked this problem in 1972, offering £10 for a solution. Lagarias reports that the problem may have been formulated by Klarner, but Erdős liked it and promoted it. The problem is connected to Collatz-type iterations and Klarner's work on affine semigroups. It was solved soon afterwards by Crampin and Hilton.",
+    "problemStatement": "Let A ⊆ ℕ be the smallest set which contains 1 and is closed under the operations x ↦ 2x+1, x ↦ 3x+1, and x ↦ 6x+1. Does A have positive lower density?",
+    "proofStrategy": "The key observation is that while the Klarner-Rado general bound gives |A ∩ [1,X]| ≪ X^{σ+o(1)} with σ determined by Σ 1/mᵢ^σ = 1, for this problem 1/2 + 1/3 + 1/6 = 1 gives the trivial σ = 1. However, Crampin-Hilton exploited the special structure of the operations to prove a sharper bound with exponent τ ≈ 0.900626 < 1, showing the density is 0.",
+    "keyInsights": [
+      "The Klarner-Rado bound Σ 1/mᵢ^σ = 1 gives σ = 1 since 1/2 + 1/3 + 1/6 = 1, which doesn't prove density 0",
+      "Crampin-Hilton found the true exponent τ ≈ 0.900626 satisfying 6^{-τ} + Σ_{k≥0} (3·2^k)^{-τ} = 1",
+      "Since τ < 1, the counting function grows like X^τ, implying lower density is 0",
+      "The problem is connected to the 3x+1 problem through the study of affine maps",
+      "Related open variants by Klarner remain unsolved, including the set starting at 0 with 2x, 3x+2, 6x+3"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 34,
+      "endLine": 65,
+      "summary": "Defines the three affine operations f₁(x) = 2x+1, f₂(x) = 3x+1, f₃(x) = 6x+1 and the inductively-defined set A containing 1 and closed under these operations."
+    },
+    {
+      "id": "density-definitions",
+      "title": "Density Definitions",
+      "startLine": 67,
+      "endLine": 87,
+      "summary": "Defines the counting function |A ∩ [1,X]|, lower and upper asymptotic density, and what it means for a set to have positive lower density."
+    },
+    {
+      "id": "klarner-rado",
+      "title": "The Klarner-Rado General Bound",
+      "startLine": 89,
+      "endLine": 114,
+      "summary": "States the Klarner-Rado 1974 result giving |S ∩ [1,X]| ≪ X^{σ+o(1)} for sets closed under affine maps, where σ satisfies Σ 1/mᵢ^σ = 1. Notes this gives the trivial bound for our problem."
+    },
+    {
+      "id": "crampin-hilton",
+      "title": "The Crampin-Hilton Improvement",
+      "startLine": 116,
+      "endLine": 137,
+      "summary": "States the Crampin-Hilton theorem giving the sharp exponent τ ≈ 0.900626 < 1 satisfying 6^{-τ} + Σ_{k≥0} (3·2^k)^{-τ} = 1, which proves the counting function grows sublinearly."
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "startLine": 139,
+      "endLine": 157,
+      "summary": "The central theorem: A does NOT have positive lower density. Since τ < 1, the density is exactly 0 and |A ∩ [1,X]|/X → 0."
+    },
+    {
+      "id": "structure-of-A",
+      "title": "Structure of A",
+      "startLine": 159,
+      "endLine": 184,
+      "summary": "Explores the structure of elements in A as compositions of the three operations applied to 1. Shows first few elements: 1, 3, 4, 7, ..."
+    },
+    {
+      "id": "crampin-hilton-insight",
+      "title": "Why Crampin-Hilton Works",
+      "startLine": 186,
+      "endLine": 203,
+      "summary": "Explains the algebraic structure that allows the improved bound and defines the characteristic equation whose root is τ."
+    },
+    {
+      "id": "collatz-connection",
+      "title": "Connection to 3x+1 Problem",
+      "startLine": 205,
+      "endLine": 221,
+      "summary": "Notes the connection to Collatz-type iterations as discussed by Lagarias (2016), and historical context about Klarner possibly formulating the problem."
+    },
+    {
+      "id": "open-variants",
+      "title": "Open Variants",
+      "startLine": 223,
+      "endLine": 248,
+      "summary": "Defines Klarner's open variant: the set A' containing 0 and closed under 2x, 3x+2, 6x+3. Whether A' has positive density remains open—listed in Guy's 'Don't Try to Solve These Problems'."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "startLine": 250,
+      "endLine": 288,
+      "summary": "Complete formalization of Erdős Problem #1134: A does not have positive lower density, |A ∩ [1,X]| ≪ X^{τ+o(1)} with τ ≈ 0.9006 < 1."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
-  }
+    "summary": "Erdős Problem #1134 is SOLVED with answer NO. The set A closed under x ↦ 2x+1, x ↦ 3x+1, x ↦ 6x+1 does not have positive lower density. Crampin-Hilton proved |A ∩ [1,X]| ≪ X^{τ+o(1)} where τ ≈ 0.900626 < 1, implying the density is exactly 0.",
+    "implications": "The result shows that even though 1/2 + 1/3 + 1/6 = 1 (which would give a trivial bound from Klarner-Rado), the special structure of these operations allows a stronger analysis. This connects to the broader study of affine semigroups and Collatz-type problems.",
+    "openQuestions": [
+      "Does the variant set A' (containing 0, closed under 2x, 3x+2, 6x+3) have positive density?",
+      "What is the exact constant in the X^τ growth rate?",
+      "How do similar problems behave for other choices of affine maps?"
+    ]
+  },
+  "mathlibDependencies": [
+    {
+      "theorem": "Finset.card",
+      "description": "Cardinality of finite sets for counting function",
+      "module": "Mathlib.Data.Finset.Card"
+    },
+    {
+      "theorem": "Set membership",
+      "description": "Basic set theory for defining A",
+      "module": "Mathlib.Data.Set.Basic"
+    },
+    {
+      "theorem": "Real.log",
+      "description": "Logarithm function for asymptotic bounds",
+      "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    },
+    {
+      "theorem": "tsum",
+      "description": "Infinite sums for the characteristic equation",
+      "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+    }
+  ]
 }
