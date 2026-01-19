@@ -4834,17 +4834,24 @@
   },
   {
     "id": "erdos-270",
-    "title": "Erdős Problem #270",
+    "title": "Erdős Problem #270: Irrationality of Product-Reciprocal Series",
     "slug": "erdos-270",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... as .... Is it true that\\[\\sum_{n\\geq 1} {(n+1)\\cdots (n+f(n))}\\]is irrational?\n\n\n\nErds and Graham write 'the answer i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For f(n) → ∞, is Σ 1/((n+1)⋯(n+f(n))) always irrational? NO - any positive real α is achievable. The non-decreasing case remains open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "series",
+      "transcendental-numbers",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 270,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 13
   },
   {
     "id": "erdos-271",

@@ -1,33 +1,146 @@
 {
   "id": "erdos-270",
-  "title": "Erdős Problem #270",
+  "title": "Erdős Problem #270: Irrationality of Product-Reciprocal Series",
   "slug": "erdos-270",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... as .... Is it true that\\[\\sum_{n\\geq 1} {(n+1)\\cdots (n+f(n))}\\]is irrational?\n\n\n\nErds and Graham write 'the answer i...",
+  "description": "For f(n) → ∞, is Σ 1/((n+1)⋯(n+f(n))) always irrational? NO - any positive real α is achievable. The non-decreasing case remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (1980 problem), Crmarić-Kovač (2025 disproof)",
     "sourceUrl": "https://erdosproblems.com/270",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos270Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "series",
+      "transcendental-numbers",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 270,
     "erdosUrl": "https://erdosproblems.com/270",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Irrational",
+        "description": "Irrational number predicate",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendental number predicate",
+        "module": "Mathlib.RingTheory.Algebraic"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite sum notation",
+        "module": "Mathlib.Topology.Instances.Real"
+      }
+    ],
+    "originalContributions": [
+      "risingProduct definition: (n+1)(n+2)⋯(n+k)",
+      "seriesTerm definition: 1/((n+1)⋯(n+f(n)))",
+      "productReciprocalSeries definition: the series sum",
+      "TendsToInfinity predicate: f(n) → ∞",
+      "IsNondecreasing predicate: monotonicity",
+      "ErdosGrahamConjecture definition: the original claim",
+      "crmaric_kovac_2025 axiom: any α > 0 achievable",
+      "erdos_270_disproved theorem: negation of conjecture",
+      "hansenConstant definition: 1/3 + 2π/3^(5/2)",
+      "hansen_transcendental axiom: special case f(n)=n",
+      "NondecreasingConjecture definition: remaining open problem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #270 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)\\to \\infty$ as $n\\to \\infty$. Is it true that\\[\\sum_{n\\geq 1} \\frac{1}{(n+1)\\cdots (n+f(n))}\\]is irrational?\n\n\n\nErd\\H{o}s and Graham write 'the answer is almost surely in the affirmative if $f(n)$ is assumed to be nondecreasing'. Even the case $f(n)=n$ is unknown, although Hansen \\cite{Ha75} has shown that\\[\\sum_n \\frac{1}{\\binom{2n}{n}}=\\sum_n \\frac{n!}{(n+1)\\cdots (n+n)}=\\frac{1}{3}+\\frac{2\\pi}{3^{5/2}}\\]is transcendental.\n\nCrmari\\'{c} and Kova\\v{c} \\cite{CrKo25} have shown that the answer to this question is no in a strong sense: for any $\\alpha \\in (0,\\infty)$ there exists a function $f:\\mathbb{N}\\to\\mathbb{N}$ such that $f(n)\\to \\infty$ as $n\\to\\infty$ and\\[\\sum_{n\\geq 1} \\frac{1}{(n+1)\\cdots (n+f(n))}=\\alpha.\\]It is still possible that this sum is always irrational if $f$ is assumed to be non-decreasing; Crmari\\'{c} and Kova\\v{c} show that the set of the possible values of such a sum has Lebesgue measure zero.\n\n\n\n\n\nReferences\n\n\n[CrKo25] T. Crmari\\'{c} and V. Kova\\v{c}, On the irrationality of certain super-polynomially decaying series. arXiv:2504.18712 (2025).\n\n[Ha75] Hansen, E. R., A Table of Series and Products. Prentice-Hall (1975), 87.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #270** was posed by Erdős and Graham concerning the rationality of certain series involving products. The series Σ 1/((n+1)(n+2)⋯(n+f(n))) where f(n) → ∞ was conjectured to always be irrational.\n\n**Key Historical Developments:**\n- **1975 (Hansen):** Showed that for f(n) = n, the sum equals 1/3 + 2π/3^(5/2), which is transcendental (not just irrational).\n- **1980 (Erdős-Graham):** Formally posed the conjecture, writing \"the answer is almost surely in the affirmative if f(n) is assumed to be nondecreasing.\"\n- **2025 (Crmarić-Kovač):** Completely disproved the conjecture! They showed that for ANY positive real α, there exists f with the sum equal to α.\n\nThe disproof is striking: the conjecture asked if the sum is ALWAYS irrational, but in fact it can be ANY positive real number - rational, irrational, or transcendental.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $f(n) \\to \\infty$ as $n \\to \\infty$. Is it true that\n$$\\sum_{n \\geq 1} \\frac{1}{(n+1)(n+2)\\cdots(n+f(n))}$$\nis irrational?\n\n**Answer: NO** (Crmarić-Kovač, 2025)\n\nIn fact, for ANY $\\alpha \\in (0, \\infty)$, there exists $f: \\mathbb{N} \\to \\mathbb{N}$ with $f(n) \\to \\infty$ such that the sum equals $\\alpha$ exactly.\n\n**Open Question:**\nIs the sum always irrational when $f$ is NON-DECREASING?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define the rising product (n+1)⋯(n+k), the series term, and the full series.\n\n2. **Limit Conditions:** Formalize TendsToInfinity (f(n) → ∞) and IsNondecreasing.\n\n3. **Original Conjecture:** State ErdosGrahamConjecture as the claim that the series is always irrational.\n\n4. **Disproof (Crmarić-Kovač):** Axiomatize their result that any α > 0 is achievable, then derive a contradiction.\n\n5. **Special Cases:** Include Hansen's transcendental result for f(n) = n.\n\n6. **Open Problem:** State the non-decreasing case as still open.",
+    "keyInsights": [
+      "**Complete Disproof:** The series can equal ANY positive real, not just irrationals.",
+      "**Counterintuitive:** One might expect products in denominators to yield \"random-looking\" sums, but careful construction achieves any target.",
+      "**Hansen's Constant:** For f(n) = n, the sum 1/3 + 2π/3^(5/2) ≈ 0.536 is transcendental.",
+      "**Measure Zero:** For non-decreasing f, the possible sums form a set of Lebesgue measure zero - strong evidence the restricted conjecture might be true.",
+      "**Construction Key:** The disproof exploits non-monotonicity of f to \"tune\" partial sums to any target.",
+      "**Recent Result:** This was only solved in 2025, showing active research continues on Erdős problems."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "series-definition",
+      "title": "The Product-Reciprocal Series",
+      "summary": "Definitions of risingProduct, seriesTerm, and productReciprocalSeries",
+      "startLine": 48,
+      "endLine": 76
+    },
+    {
+      "id": "limit-condition",
+      "title": "The Limit Condition",
+      "summary": "TendsToInfinity and IsNondecreasing predicates",
+      "startLine": 78,
+      "endLine": 96
+    },
+    {
+      "id": "original-conjecture",
+      "title": "The Original Conjecture",
+      "summary": "ErdosGrahamConjecture stating the series is always irrational",
+      "startLine": 98,
+      "endLine": 112
+    },
+    {
+      "id": "disproof",
+      "title": "The Crmarić-Kovač Disproof (2025)",
+      "summary": "Any positive real is achievable; conjecture is false",
+      "startLine": 114,
+      "endLine": 153
+    },
+    {
+      "id": "hansen",
+      "title": "Special Case f(n) = n",
+      "summary": "Hansen's transcendental result and central binomial connection",
+      "startLine": 155,
+      "endLine": 194
+    },
+    {
+      "id": "nondecreasing",
+      "title": "The Non-decreasing Case (Still Open)",
+      "summary": "NondecreasingConjecture and measure zero result",
+      "startLine": 196,
+      "endLine": 223
+    },
+    {
+      "id": "bounds",
+      "title": "Examples and Bounds",
+      "summary": "Convergence, upper and lower bounds",
+      "startLine": 225,
+      "endLine": 252
+    },
+    {
+      "id": "construction",
+      "title": "Why the Construction Works",
+      "summary": "Intuition for Crmarić-Kovač and non-decreasing difficulty",
+      "startLine": 254,
+      "endLine": 281
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem combining disproof and related results",
+      "startLine": 283,
+      "endLine": 312
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #270 asked whether series Σ 1/((n+1)⋯(n+f(n))) with f(n) → ∞ are always irrational. Crmarić and Kovač (2025) disproved this completely, showing any positive real can be achieved. The special case f(n) = n gives Hansen's transcendental constant 1/3 + 2π/3^(5/2). The non-decreasing case remains open.",
+    "implications": "**Implications for Number Theory**\n\n1. **Flexibility of Series:** Rapidly decaying series can still be \"tuned\" to any value through careful coefficient choice.\n\n2. **Monotonicity Matters:** The non-decreasing restriction fundamentally changes the problem.\n\n3. **Measure-Theoretic View:** Non-decreasing sums form a measure-zero set - \"almost all\" reals are not achievable this way.\n\n4. **Active Research:** Erdős problems continue to be solved even 50+ years after being posed.",
+    "openQuestions": [
+      "Is the sum always irrational when f is non-decreasing?",
+      "What is the exact structure of the set of achievable values for non-decreasing f?",
+      "Are there other natural restrictions on f that force irrationality?",
+      "Can the Crmarić-Kovač construction be made effective/explicit?"
+    ]
   }
 }
