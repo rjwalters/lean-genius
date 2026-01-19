@@ -6873,17 +6873,22 @@
   },
   {
     "id": "erdos-431",
-    "title": "Erdős Problem #431",
+    "title": "Erdős Problem #431: Inverse Goldbach Problem",
     "slug": "erdos-431",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there two infinite sets ... and ... such that ... agrees with the set of prime numbers up to finitely many exceptions?\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there two infinite sets A and B such that A + B agrees with the set of prime numbers up to finitely many exceptions? Known as Ostmann's 'inverse Goldbach problem'. The answer is conjectured to be NO.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "additive-combinatorics",
+      "sumset"
     ],
     "erdosNumber": 431,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 2,
+    "annotationCount": 27
   },
   {
     "id": "erdos-433",
