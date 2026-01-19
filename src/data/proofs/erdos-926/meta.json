@@ -1,16 +1,19 @@
 {
   "id": "erdos-926",
-  "title": "Erdős Problem #926",
+  "title": "Erdős Problem #926: Turán Number of H_k",
   "slug": "erdos-926",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that\\[(n;H_k) \\ll_k n^{3/2},\\]where ... is the graph on vertices ..., where ... is adjacent to all ... an...",
+  "description": "For k ≥ 4, is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph with central vertex x adjacent to k vertices y_1,...,y_k, and (k choose 2) vertices z_ij each adjacent to a unique pair y_i, y_j? Answer: YES. Proved by Füredi (1991) with bound (kn)^(3/2), improved by Alon-Krivelevich-Sudakov (2003) to k·n^(3/2).",
   "meta": {
-    "author": "Unknown",
+    "author": "Füredi (1991), Alon-Krivelevich-Sudakov (2003)",
     "sourceUrl": "https://erdosproblems.com/926",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos926Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "turan-number",
+      "probabilistic-method"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +22,25 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #926 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 4$. Is it true that\\[\\mathrm{ex}(n;H_k) \\ll_k n^{3/2},\\]where $H_k$ is the graph on vertices $x,y_1,\\ldots,y_k,z_1,\\ldots,z_{\\binom{k}{2}}$, where $x$ is adjacent to all $y_i$ and each pair of $y_i,y_j$ is adjacent to a unique $z_i$.\n\n\n\nIt is trivial that $\\mathrm{ex}(n;H_k)\\gg n^{3/2}$ since $H_k$ contians a $C_4$ for $k\\geq 3$. Erd\\H{o}s \\cite{Er71} claimed a proof for $k=3$.\n\nThe answer is yes, proved by F\\\"{u}redi \\cite{Fu91}, who proved that\\[\\mathrm{ex}(n;H_k) \\ll (kn)^{3/2}.\\]This was improved to\\[\\mathrm{ex}(n;H_k) \\ll kn^{3/2}\\]by Alon, Krivelevich, and Sudakov \\cite{AKS03}.\n\nSince each $H_k$ is 2-degenerate this is a special case of [146].\n\nThe extremal number of the graph $H_k$ with the vertex $x$ omitted is the subject of [1021].\n\n\n\n\nReferences\n\n\n[AKS03] Alon, Noga and Krivelevich, Michael and Sudakov, Benny, Tur\\'{a}n numbers of bipartite graphs and related\nRamsey-type questions. Combin. Probab. Comput. (2003), 477-494.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[Fu91] F\\\"{u}redi, Zolt\\'an, On a {T}ur\\'an type problem of {E}rd\\H{o}s. Combinatorica (1991), 75--79.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #926 asks about the Turán number of a specific graph H_k. The problem originates from Erdős's 1971 paper 'Some unsolved problems in graph theory and combinatorial analysis'. Erdős claimed a proof for k=3 in that paper. The general case was resolved by Füredi in 1991 and improved by Alon, Krivelevich, and Sudakov in 2003.",
+    "problemStatement": "Let k ≥ 4. Is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph on vertices x, y_1, ..., y_k, z_1, ..., z_(k choose 2), where x is adjacent to all y_i and each pair y_i, y_j is adjacent to a unique z_ij?",
+    "proofStrategy": "The lower bound ex(n; H_k) ≫ n^(3/2) is trivial since H_k contains C_4 for k ≥ 3 (the 4-cycle x - y_1 - z_12 - y_2 - x). Füredi (1991) proved ex(n; H_k) ≪ (kn)^(3/2) using probabilistic methods and dependent random choice. Alon-Krivelevich-Sudakov (2003) improved this to k·n^(3/2) using refined techniques.",
+    "keyInsights": [
+      "H_k contains C_4 as a subgraph, giving the lower bound via Kővári-Sós-Turán",
+      "H_k is 2-degenerate (all z_ij vertices have degree exactly 2)",
+      "H_k is bipartite with parts {x} ∪ {z_ij} and {y_1,...,y_k}",
+      "The problem is a special case of the 2-degenerate conjecture (Problem 146)",
+      "Dependent random choice is the key technique for the upper bound"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #926 is SOLVED. The answer is YES: ex(n; H_k) ≪_k n^(3/2) for all k ≥ 4. The tight bound is Θ_k(n^(3/2)), with the lower bound from C_4 containment and the upper bound from Alon-Krivelevich-Sudakov.",
+    "implications": "This confirms the expected behavior for 2-degenerate graphs and connects to the broader 2-degenerate conjecture (Problem 146). The techniques developed, particularly dependent random choice, have become fundamental in extremal combinatorics.",
+    "openQuestions": [
+      "Problem 146: Does ex(n; H) ≪ n^(3/2) for all 2-degenerate H?",
+      "Problem 1021: What is ex(n; H_k - x) for H_k with vertex x removed?",
+      "Can the implicit constant in ex(n; H_k) ≤ C·k·n^(3/2) be determined precisely?"
+    ]
   }
 }

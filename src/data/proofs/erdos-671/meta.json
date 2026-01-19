@@ -1,100 +1,142 @@
 {
   "id": "erdos-671",
-  "title": "Erdős #671: Lagrange Interpolation Convergence",
+  "title": "Erdos Problem #671: Lagrange Interpolation Convergence",
   "slug": "erdos-671",
-  "description": "Can Lagrange interpolation L^n f(x) → f(x) even when the Lebesgue function λ_n(x) → ∞? Known: λ_n diverges somewhere (Bernstein), |L^n f| diverges a.e. for some f (Erdős-Vértesi). Prize: $250.",
+  "description": "Can Lagrange interpolation converge at points where the Lebesgue function diverges? Two open questions with $250 prize. Bernstein (1931) and Erdos-Vertesi (1980) established fundamental divergence results.",
   "meta": {
-    "author": "Paul Erdős, Sergei Bernstein, Péter Vértesi",
+    "author": "Erdos-Vertesi (1980 divergence), Bernstein (1931 Lebesgue divergence)",
     "sourceUrl": "https://erdosproblems.com/671",
     "date": "1980",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos671Problem.lean",
     "tags": [
       "erdos",
       "analysis",
       "interpolation",
-      "approximation-theory"
+      "approximation-theory",
+      "lebesgue-function",
+      "open"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 23,
     "erdosNumber": 671,
     "erdosUrl": "https://erdosproblems.com/671",
     "erdosProblemStatus": "open",
-    "erdosPrizeValue": "$250"
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Polynomials.Basic"
+      },
+      {
+        "theorem": "ContinuousMap",
+        "description": "Continuous functions on compact sets",
+        "module": "Mathlib.Topology.ContinuousFunction.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for divergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "InterpolationPoints structure: n distinct points in [-1,1]",
+      "lagrangeBasis definition: Lagrange basis polynomials p_i^n",
+      "lagrangeInterp definition: interpolation operator L^n f",
+      "lebesgueFunction definition: lambda_n(x) = sum |p_i(x)|",
+      "lebesgueConstant definition: Lambda_n = max lambda_n(x)",
+      "bernstein theorem: divergence at some point (sorry)",
+      "erdos_vertesi theorem: a.e. divergence for some f (sorry)",
+      "Question1 definition: convergence despite local divergence",
+      "Question2 definition: convergence despite universal divergence",
+      "chebyshevNodes definition: optimal point sequence",
+      "equidistantNodes definition: bad point sequence",
+      "faber theorem: no uniform convergence for all C^0",
+      "MainConjecture definition: Q1 iff Q2?"
+    ]
   },
   "overview": {
-    "historicalContext": "Bernstein (1931) proved the Lebesgue function diverges at some point for any interpolation scheme. Erdős and Vértesi (1980) showed that for any points, some continuous function has |L^n f(x)| → ∞ almost everywhere. The questions ask whether convergence can still occur despite Lebesgue function divergence.",
-    "problemStatement": "Given points a_i^n ∈ [-1,1], define Lagrange basis polynomials p_i^n and interpolation L^n f(x) = Σ f(a_i^n) p_i^n(x). The Lebesgue function is λ_n(x) = Σ |p_i^n(x)|. Q1: Can λ_n(x) → ∞ yet L^n f(x) → f(x) for some x? Q2: Can λ_n(x) → ∞ for ALL x, yet still have convergence somewhere?",
-    "proofStrategy": "We formalize interpolation points, Lagrange basis polynomials, the interpolation operator, the Lebesgue function and constant, Bernstein's theorem, Erdős-Vértesi theorem, the two main questions, special point sequences (Chebyshev, equidistant), convergence conditions, and measure-theoretic aspects.",
+    "historicalContext": "**Erdos Problem #671**\n\nThis is a deep problem in approximation theory about the relationship between the Lebesgue function and Lagrange interpolation convergence.\n\n**Key History:**\n- 1931: Bernstein proves lambda_n(x) diverges at some point for any interpolation scheme\n- 1980: Erdos and Vertesi prove that for any points, some continuous f has |L^n f(x)| -> infinity a.e.\n- Present: Questions 1 and 2 remain open with $250 prize\n\n**Mathematical Context:**\nThe Lebesgue function lambda_n(x) = sum |p_i^n(x)| controls interpolation error: the error is bounded by (1 + Lambda_n) times the best polynomial approximation. When Lambda_n grows, uniform convergence fails. The questions ask whether *pointwise* convergence can still occur when lambda_n diverges.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nGiven points $a_i^n \\in [-1,1]$, define Lagrange basis polynomials $p_i^n$ and interpolation $L^n f(x) = \\sum f(a_i^n) p_i^n(x)$. The Lebesgue function is $\\lambda_n(x) = \\sum |p_i^n(x)|$.\n\n**Question 1:** Does there exist points such that for every continuous $f$, there exists $x$ with $\\limsup \\lambda_n(x) = \\infty$ yet $L^n f(x) \\to f(x)$?\n\n**Question 2:** Can $\\lambda_n(x) \\to \\infty$ for ALL $x$, yet for every continuous $f$, some $x$ has $L^n f(x) \\to f(x)$?\n\n**Prize: $250**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Structures:** Define InterpolationPoints, PointSequence for varying n.\n\n2. **Lagrange Basis:** Define p_i^n and prove interpolation properties.\n\n3. **Lebesgue Function:** Define lambda_n(x) and the Lebesgue constant Lambda_n.\n\n4. **Classical Theorems:** State Bernstein (1931) and Erdos-Vertesi (1980) as sorried theorems.\n\n5. **The Questions:** Define Question1 and Question2 formally as Prop.\n\n6. **Special Cases:** Chebyshev nodes (optimal) and equidistant nodes (bad).\n\n7. **Main Conjecture:** The relationship between Q1 and Q2.\n\nThe questions are axiomatized since they remain open.",
     "keyInsights": [
-      "Bernstein (1931): limsup λ_n(x₀) = ∞ for some x₀",
-      "Erdős-Vértesi (1980): |L^n f(x)| → ∞ a.e. for some continuous f",
-      "Chebyshev nodes minimize Lebesgue constant: Λ_n ~ (2/π) log n",
-      "Equidistant nodes have exponential Lebesgue constant growth",
-      "Faber's theorem: No universal uniform convergence"
+      "**Lebesgue Function:** lambda_n(x) = sum |p_i(x)| controls how errors propagate from data to interpolant",
+      "**Bernstein's Theorem:** For ANY choice of nodes, lambda_n diverges at some point - uniform convergence always fails somewhere",
+      "**Erdos-Vertesi:** Even stronger - for any nodes, some continuous f diverges almost everywhere under L^n",
+      "**Chebyshev Nodes:** x_k = cos((2k-1)pi/2n) minimize Lambda_n to O(log n) - the best possible",
+      "**Equidistant Nodes:** Equally-spaced points cause Lambda_n to grow exponentially (Runge phenomenon)",
+      "**Q1 vs Q2:** Q2 implies Q1 trivially. The main conjecture asks if they're equivalent."
     ]
   },
   "sections": [
     {
       "id": "basic-defs",
       "title": "Basic Definitions",
-      "summary": "Interpolation points and Lagrange basis",
+      "summary": "InterpolationPoints structure and Lagrange basis polynomials",
       "startLine": 34,
       "endLine": 58
     },
     {
       "id": "lagrange-interp",
       "title": "Lagrange Interpolation",
-      "summary": "The operator L^n and its properties",
+      "summary": "The operator L^n and its interpolation properties",
       "startLine": 60,
       "endLine": 75
     },
     {
       "id": "lebesgue",
-      "title": "Lebesgue Function",
-      "summary": "λ_n(x) and the Lebesgue constant Λ_n",
+      "title": "The Lebesgue Function",
+      "summary": "lambda_n(x) and the Lebesgue constant Lambda_n",
       "startLine": 77,
       "endLine": 96
     },
     {
       "id": "bernstein",
-      "title": "Bernstein's Theorem",
-      "summary": "Divergence at some point (1931)",
+      "title": "Bernstein's Theorem (1931)",
+      "summary": "Divergence at some point for any scheme",
       "startLine": 98,
       "endLine": 114
     },
     {
       "id": "erdos-vertesi",
-      "title": "Erdős-Vértesi Theorem",
-      "summary": "Divergence a.e. for some f (1980)",
+      "title": "Erdos-Vertesi Theorem (1980)",
+      "summary": "Almost everywhere divergence for some continuous f",
       "startLine": 116,
       "endLine": 128
     },
     {
       "id": "question1",
-      "title": "Question 1",
-      "summary": "Convergence despite local divergence",
+      "title": "Question 1 (OPEN)",
+      "summary": "Convergence despite local Lebesgue divergence",
       "startLine": 130,
       "endLine": 140
     },
     {
       "id": "question2",
-      "title": "Question 2",
-      "summary": "Convergence despite universal divergence",
+      "title": "Question 2 (OPEN)",
+      "summary": "Convergence despite universal Lebesgue divergence",
       "startLine": 142,
       "endLine": 158
     },
     {
       "id": "special-points",
       "title": "Special Point Sequences",
-      "summary": "Chebyshev and equidistant nodes",
+      "summary": "Chebyshev (optimal) and equidistant (bad) nodes",
       "startLine": 160,
       "endLine": 177
     },
     {
       "id": "convergence",
       "title": "Convergence Conditions",
-      "summary": "When does L^n f → f?",
+      "summary": "When does L^n f converge?",
       "startLine": 179,
       "endLine": 196
     },
@@ -121,13 +163,14 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #671 on Lagrange interpolation convergence. Despite Bernstein's divergence theorem and Erdős-Vértesi's a.e. divergence result, the questions ask whether pointwise convergence can still occur when the Lebesgue function diverges.",
-    "implications": "Resolution would clarify the subtle relationship between the Lebesgue function (which controls error) and actual convergence behavior. The problem connects approximation theory with measure theory.",
+    "summary": "Erdos Problem #671 asks two profound questions about Lagrange interpolation: can convergence occur where the Lebesgue function (which controls error) diverges? Despite Bernstein's and Erdos-Vertesi's negative results about universal behavior, the questions about pointwise convergence remain open with a $250 prize.",
+    "implications": "**Significance in Approximation Theory**\n\n1. **Error Control:** Resolution would clarify when Lebesgue function divergence truly prevents convergence\n\n2. **Node Selection:** Would inform optimal choice of interpolation nodes\n\n3. **Pointwise vs Uniform:** Highlights the gap between pointwise and uniform convergence theory\n\n4. **Measure Theory Connection:** Connects approximation theory with measure-theoretic questions\n\n5. **Computational Implications:** Would impact numerical analysis algorithms",
     "openQuestions": [
-      "Can L^n f(x) → f(x) at points where λ_n(x) → ∞? (Q1, $250)",
-      "Can λ_n(x) → ∞ everywhere yet still have some convergence? (Q2)",
-      "What is the measure of convergence/divergence sets?",
-      "Are there special point sequences that answer the questions?"
+      "Question 1: Can L^n f(x) -> f(x) at points where lambda_n(x) -> infinity? ($250)",
+      "Question 2: Can lambda_n(x) -> infinity everywhere yet still have some convergence?",
+      "Is Question 1 equivalent to Question 2?",
+      "What is the measure of convergence/divergence sets for typical f?",
+      "Do there exist 'optimal' point sequences for the questions?"
     ]
   }
 }

@@ -1,33 +1,50 @@
 {
   "id": "erdos-815",
-  "title": "Erdős Problem #815",
+  "title": "Erdős Problem #815: Cycles in Degree 3 Critical Graphs",
   "slug": "erdos-815",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large. Is it true that if ... is a graph with ... vertices and ... edges such that every prop...",
+  "description": "Must degree 3 critical graphs (n vertices, 2n-2 edges, proper subgraphs have min degree ≤ 2) contain C_k for all k ≥ 3? DISPROVED by Narins-Pokrovskiy-Szabó (2017): arbitrarily large such graphs exist with no C_23.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős & Hajnal (conjecture), Narins-Pokrovskiy-Szabó (disproof)",
     "sourceUrl": "https://erdosproblems.com/815",
-    "date": "",
-    "status": "pending",
+    "date": "2017",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos815Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graphs",
+      "cycles",
+      "counterexample",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "disproved",
     "sorries": 0,
     "erdosNumber": 815,
     "erdosUrl": "https://erdosproblems.com/815",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #815 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $n$ be sufficiently large. Is it true that if $G$ is a graph with $n$ vertices and $2n-2$ edges such that every proper induced subgraph has minimum degree $\\leq 2$ then $G$ must contain a copy of $C_k$?\n\n\n\nIn \\cite{Er91} Erd\\H{o}s attributes this to himself and Hajnal, claiming they could prove it for $3\\leq k\\leq 6$, but it appears in an earlier paper of Erd\\H{o}s, Faudree, Gy\\'{a}rf\\'{a}s, and Schelp \\cite{EFGS88}, where they prove that such a graph on $n\\geq 5$ vertices contains cycles of length $3$, $4$, and $5$, and a cycle of length at least $\\lfloor \\log_2n\\rfloor$, and need not contain a cycle of length longer than $\\sqrt{n}$.\n\nSuch graphs are called degree $3$ critical. This conjecture was disproved by Narins, Pokrovskiy, and Szab\\'{o} \\cite{NPS17}, who proved that there are arbitrarily large such graphs with no cycle of length $23$.\n\nIt remains open whether this question has an affirmative answer if we restrict to even $k$.\n\n\n\n\nReferences\n\n\n[EFGS88] Erd\\H{o}s, P. and Faudree, R. and Gy\\'{a}rf\\'{a}s, A. and Schelp,\nR. H., Cycles in graphs without proper subgraphs of minimum degree\n{$3$}. Ars Combin. (1988), 195--201.\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n[NPS17] Narins, Lothar and Pokrovskiy, Alexey and Szab\\'{o}, Tibor, Graphs without proper subgraphs of minimum degree 3 and short\ncycles. Combinatorica (2017), 495--519.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #815 concerns 'degree 3 critical' graphs - graphs with n vertices and 2n-2 edges where every proper induced subgraph has minimum degree at most 2. Erdős and Hajnal conjectured that such graphs must contain cycles of all lengths k ≥ 3 (for sufficiently large n). They claimed to prove the cases k = 3, 4, 5, 6.\n\nEarlier, Erdős, Faudree, Gyárfás, and Schelp (1988) proved that such graphs always contain C_3, C_4, C_5, and a cycle of length at least log₂(n), but need not contain cycles longer than √n.\n\nThe conjecture was disproved by Narins, Pokrovskiy, and Szabó in 2017, who constructed arbitrarily large degree 3 critical graphs with no cycle of length 23. The even k case remains open.",
+    "problemStatement": "Let k ≥ 3 and n be sufficiently large. If G is a graph with n vertices and 2n-2 edges such that every proper induced subgraph has minimum degree ≤ 2, must G contain a copy of C_k?\n\n**Answer**: NO (DISPROVED)\n\nNarins-Pokrovskiy-Szabó (2017) constructed counterexamples with no C_23.",
+    "proofStrategy": "We formalize:\n1. The definition of degree 3 critical graphs\n2. The Erdős-Hajnal conjecture\n3. EFGS positive results (C_3, C_4, C_5 always exist)\n4. EFGS bounds (log n ≤ longest cycle ≤ √n)\n5. The Narins-Pokrovskiy-Szabó counterexample as an axiom\n6. A formal proof that this counterexample disproves the conjecture\n\nThe disproof is by contradiction: the conjecture would imply large graphs contain C_23, but the counterexample provides arbitrarily large graphs without C_23.",
+    "keyInsights": [
+      "Degree 3 critical graphs are on the boundary of having a '3-regular core'",
+      "EFGS (1988) proved short cycles (3, 4, 5) always exist in such graphs",
+      "EFGS also proved: log₂(n) ≤ longest cycle length ≤ √n",
+      "Narins-Pokrovskiy-Szabó (2017) found counterexamples avoiding C_23",
+      "The even k case remains open - perhaps different techniques are needed",
+      "The number 23 is the smallest odd k where their construction works"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #815 is DISPROVED. The Erdős-Hajnal conjecture that degree 3 critical graphs must contain all cycle lengths k ≥ 3 is false. Narins, Pokrovskiy, and Szabó constructed arbitrarily large such graphs with no C_23. However, such graphs do always contain C_3, C_4, and C_5.",
+    "implications": "The result shows that while degree 3 critical graphs have rich local cycle structure (short cycles always exist), global constraints (avoiding a specific longer cycle) can be achieved through careful construction. This separates the 'short cycle' and 'arbitrary cycle' behaviors.",
+    "openQuestions": [
+      "Does the conjecture hold for even k?",
+      "What is the smallest k for which counterexamples exist?",
+      "Can the techniques extend to other odd k values?",
+      "What is the structure of graphs avoiding both C_23 and being degree 3 critical?"
+    ]
   }
 }
