@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-e804-header",
+    "proofId": "erdos-804",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #804: Independent Sets in Locally Independent Graphs**\n\nThe problem asks: if EVERY small induced subgraph has a good independent set, how good must the GLOBAL independent set be?\n\nErdős and Hajnal conjectured optimistic bounds:\n- f((log n)², n) ≥ n^(1/2 - o(1))\n- f((log n)³, n) ≫ (log n)³\n\n**Both were WRONG!** Alon-Sudakov (2007) proved the true answer is only (log n)² / log log n.",
+    "mathContext": "This is a local-to-global structure problem. Local guarantees (every small subgraph has large independent set) don't translate to global guarantees as strongly as expected.",
+    "significance": "critical",
+    "relatedConcepts": ["Independent sets", "Local-global propagation", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e804-independent",
+    "proofId": "erdos-804",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Independent Set Definition",
+    "content": "**IsIndependent G S:**\n\nA set S of vertices is independent (or stable) if no two vertices in S are adjacent:\n$$\\forall u, v \\in S, u \\neq v \\implies \\neg G.\\text{Adj}(u, v)$$\n\n**Examples:**\n- In any graph, {v} (singleton) is independent\n- In K_n (complete graph), only singletons are independent\n- In empty graph, any set is independent",
+    "significance": "critical",
+    "relatedConcepts": ["Stable sets", "Vertex covers", "Graph coloring"]
+  },
+  {
+    "id": "ann-e804-alpha",
+    "proofId": "erdos-804",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "Independence Number α(G)",
+    "content": "**independenceNumber G:**\n\nα(G) = maximum size of an independent set in G.\n\n**Examples:**\n- α(K_n) = 1 (only singletons work)\n- α(empty graph on n vertices) = n\n- α(cycle C_n) = ⌊n/2⌋\n\nComputing α(G) is NP-hard in general.",
+    "significance": "critical",
+    "relatedConcepts": ["Clique number", "Chromatic number", "NP-completeness"]
+  },
+  {
+    "id": "ann-e804-local-independence",
+    "proofId": "erdos-804",
+    "range": { "startLine": 77, "endLine": 84 },
+    "type": "definition",
+    "title": "Local Independence Property",
+    "content": "**HasLocalIndependence G m k:**\n\nA graph has the (m, k)-local independence property if EVERY induced subgraph on m vertices contains an independent set of size ≥ k.\n\n**Interpretation:** This is a very strong condition! It says that no matter which m vertices you pick, you can find k non-adjacent ones among them.\n\nThe question: does this local guarantee force a large global independent set?",
+    "significance": "critical",
+    "relatedConcepts": ["Local properties", "Induced subgraphs"]
+  },
+  {
+    "id": "ann-e804-conjecture-1",
+    "proofId": "erdos-804",
+    "range": { "startLine": 114, "endLine": 127 },
+    "type": "axiom",
+    "title": "Conjecture 1 (Disproved)",
+    "content": "**erdos_hajnal_conjecture_1_false:**\n\nErdős-Hajnal conjectured: f((log n)², n) ≥ n^(1/2 - o(1))\n\nThis would mean: if every (log n)²-vertex subgraph has α ≥ log n, then the whole graph has α almost √n.\n\n**DISPROVED!** The true bound is only Θ((log n)² / log log n), which is MUCH smaller than √n.\n\nThe conjecture was off by an exponential factor!",
+    "significance": "critical",
+    "relatedConcepts": ["False conjectures", "Tight bounds"]
+  },
+  {
+    "id": "ann-e804-conjecture-2",
+    "proofId": "erdos-804",
+    "range": { "startLine": 129, "endLine": 142 },
+    "type": "axiom",
+    "title": "Conjecture 2 (Disproved)",
+    "content": "**erdos_hajnal_conjecture_2_false:**\n\nErdős-Hajnal conjectured: f((log n)³, n) ≫ (log n)³\n\nThis would mean: if every (log n)³-vertex subgraph has α ≥ log n, then the whole graph has α much larger than (log n)³.\n\n**DISPROVED!** The true bound is only Θ((log n)² / log log n), which is smaller than (log n)³.\n\nRemarkably, increasing m from (log n)² to (log n)³ doesn't significantly improve the global bound!",
+    "significance": "critical",
+    "relatedConcepts": ["False conjectures", "Saturation effects"]
+  },
+  {
+    "id": "ann-e804-upper-bound",
+    "proofId": "erdos-804",
+    "range": { "startLine": 150, "endLine": 162 },
+    "type": "axiom",
+    "title": "Alon-Sudakov Upper Bound",
+    "content": "**alon_sudakov_upper_bound_1:**\n\nThere exist graphs where:\n- Every (log n)²-vertex subgraph has α ≥ log n\n- But the global α is only O((log n)²)\n\n**Construction idea:** Dense random graphs G(n, p) with p ≈ 1 - 1/log n have this property. They're dense enough that global α is small, but sparse enough locally to have good local independent sets.",
+    "significance": "key",
+    "relatedConcepts": ["Random graphs", "Probabilistic method"]
+  },
+  {
+    "id": "ann-e804-lower-bound",
+    "proofId": "erdos-804",
+    "range": { "startLine": 164, "endLine": 176 },
+    "type": "axiom",
+    "title": "Alon-Sudakov Lower Bound",
+    "content": "**alon_sudakov_lower_bound_1:**\n\nAny graph where every (log n)²-vertex subgraph has α ≥ log n must have:\n$$\\alpha(G) \\geq c \\cdot \\frac{(\\log n)^2}{\\log \\log n}$$\n\n**The log log n factor is crucial!** It appears mysteriously in many extremal combinatorics bounds.\n\nCombined with the upper bound, this gives the tight characterization.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bounds", "Tight bounds", "Log log factors"]
+  },
+  {
+    "id": "ann-e804-tight-bound-2",
+    "proofId": "erdos-804",
+    "range": { "startLine": 178, "endLine": 196 },
+    "type": "axiom",
+    "title": "Tight Bound for (log n)³",
+    "content": "**alon_sudakov_tight_bound_2:**\n\n$$f((\\log n)^3, n) \\asymp \\frac{(\\log n)^2}{\\log \\log n}$$\n\n**Surprising fact:** The answer for m = (log n)³ is THE SAME as for m = (log n)² (up to constants)!\n\nIncreasing the local window size by a factor of log n doesn't help the global bound. The bottleneck is elsewhere.",
+    "mathContext": "This shows a saturation effect: beyond a certain point, stronger local conditions don't improve global outcomes.",
+    "significance": "critical",
+    "relatedConcepts": ["Saturation", "Asymptotic equivalence"]
+  },
+  {
+    "id": "ann-e804-main-theorem",
+    "proofId": "erdos-804",
+    "range": { "startLine": 202, "endLine": 224 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_804:**\n\nBoth original Erdős-Hajnal conjectures are FALSE:\n\n1. f((log n)², n) ≱ n^(1/2 - o(1)) ✗\n2. f((log n)³, n) ≯ (log n)³ ✗\n\nThe true answer in both cases is Θ((log n)² / log log n).\n\nThis completely resolves Erdős Problem #804 in the negative.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős Problem #804", "Disproof"]
+  },
+  {
+    "id": "ann-e804-random-graphs",
+    "proofId": "erdos-804",
+    "range": { "startLine": 232, "endLine": 245 },
+    "type": "concept",
+    "title": "Random Graph Intuition",
+    "content": "**random_graph_intuition:**\n\nRandom graphs G(n, p) with p ≈ 1 - 1/log n provide counterexamples:\n\n1. **Local structure:** In m-vertex induced subgraphs, ≈ m/log n vertices are expected to form an independent set (due to low local density).\n\n2. **Global structure:** But globally, α(G) ≈ (log n)² because the overall edge density is high.\n\nRandom constructions often give optimal or near-optimal examples in extremal graph theory.",
+    "mathContext": "The probabilistic method is a powerful tool: showing random objects have certain properties proves existence.",
+    "significance": "key",
+    "relatedConcepts": ["Probabilistic method", "Random graphs", "G(n,p)"]
+  },
+  {
+    "id": "ann-e804-ramsey",
+    "proofId": "erdos-804",
+    "range": { "startLine": 247, "endLine": 256 },
+    "type": "concept",
+    "title": "Ramsey Theory Connection",
+    "content": "**ramsey_connection:**\n\nThe problem connects to Ramsey theory:\n- Local independence = controlling structure of small induced subgraphs\n- Global independence = large-scale structure\n\nRamsey theory studies how local constraints force global patterns. Here, Erdős-Hajnal overestimated the forcing strength.\n\nNote: This is DIFFERENT from the famous Erdős-Hajnal conjecture about forbidden induced subgraphs (which remains open).",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey numbers", "Regularity lemma", "Erdős-Hajnal conjecture"]
+  },
+  {
+    "id": "ann-e804-problem-805",
+    "proofId": "erdos-804",
+    "range": { "startLine": 262, "endLine": 267 },
+    "type": "concept",
+    "title": "Connection to Problem #805",
+    "content": "**related_to_805:**\n\nErdős Problem #805 asks closely related questions about local-to-global independence.\n\nThe Alon-Sudakov paper [AlSu07] resolves BOTH problems using similar techniques. If you understand #804, you understand the essence of #805 as well.",
+    "significance": "key",
+    "relatedConcepts": ["Problem #805", "Related problems"]
+  },
+  {
+    "id": "ann-e804-summary",
+    "proofId": "erdos-804",
+    "range": { "startLine": 308, "endLine": 334 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_804_summary:**\n\n**Erdős Problem #804: DISPROVED (Alon-Sudakov, 2007)**\n\n**Original Questions:**\n1. f((log n)², n) ≥ n^(1/2 - o(1))? **NO**\n2. f((log n)³, n) ≫ (log n)³? **NO**\n\n**True Bounds:**\n1. f((log n)², n) = Θ((log n)² / log log n)\n2. f((log n)³, n) = Θ((log n)² / log log n)\n\n**Key Lesson:** Local structure → global structure is weaker than intuition suggests. The loss is measured by the mysterious log log n factor.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Disproof", "Tight bounds"]
+  }
+]
