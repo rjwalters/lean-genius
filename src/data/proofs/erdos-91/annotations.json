@@ -1,1 +1,117 @@
-[]
+[
+  {
+    "id": "ann-e91-header",
+    "proofId": "erdos-91",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #91: Non-Uniqueness of Minimal Distance Sets**\n\nFor n-point sets minimizing distinct distances, are there multiple non-similar optimal configurations?\n\n**Known Results:**\n- n=3: UNIQUE (equilateral triangle)\n- n=4: NON-UNIQUE (square vs bowtie)\n- n=5: UNIQUE (pentagon) - Kovács 2024\n- n=6-9: NON-UNIQUE\n- Large n: OPEN",
+    "mathContext": "The problem connects to the Erdős distinct distances problem (#89) which asks for the minimum number of distinct distances.",
+    "significance": "critical",
+    "relatedConcepts": ["Distinct distances", "Point configurations", "Similarity"]
+  },
+  {
+    "id": "ann-e91-point-distance",
+    "proofId": "erdos-91",
+    "range": { "startLine": 40, "endLine": 51 },
+    "type": "definition",
+    "title": "Point and Distance",
+    "content": "**Point and dist:**\n\nPoints are pairs (x, y) ∈ ℝ². Distance is Euclidean:\n\n```lean\nabbrev Point := ℝ × ℝ\n\nnoncomputable def dist (p q : Point) : ℝ :=\n  Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)\n```",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean distance", "Plane geometry"]
+  },
+  {
+    "id": "ann-e91-distinct-distances",
+    "proofId": "erdos-91",
+    "range": { "startLine": 53, "endLine": 65 },
+    "type": "definition",
+    "title": "Distinct Distances",
+    "content": "**distinctDistances A:**\n\nThe set of all pairwise distances in point set A.\n\n**numDistinctDistances A:**\n\nThe cardinality of the distinct distance set.\n\nFor n points, this ranges from 1 (equilateral triangle) to C(n,2) (general position).",
+    "mathContext": "Minimizing this count is the Erdős distinct distances problem.",
+    "significance": "key",
+    "relatedConcepts": ["Distance sets", "Combinatorics"]
+  },
+  {
+    "id": "ann-e91-optimal",
+    "proofId": "erdos-91",
+    "range": { "startLine": 67, "endLine": 86 },
+    "type": "definition",
+    "title": "Optimal Configurations",
+    "content": "**IsOptimal A:**\n\nA configuration A is optimal if it achieves the minimum number of distinct distances among all |A|-point sets.\n\n```lean\ndef IsOptimal (A : Finset Point) : Prop :=\n  A.card > 0 ∧ numDistinctDistances A = minDistinctDistances A.card\n```",
+    "significance": "key",
+    "relatedConcepts": ["Extremal configurations", "Optimization"]
+  },
+  {
+    "id": "ann-e91-similarity",
+    "proofId": "erdos-91",
+    "range": { "startLine": 88, "endLine": 109 },
+    "type": "definition",
+    "title": "Similarity of Point Sets",
+    "content": "**AreSimilar A B:**\n\nTwo point sets are similar if one can be transformed to the other by translation, rotation, reflection, and uniform scaling.\n\n**AreNonSimilar A B:**\n\nSame cardinality but NOT similar - the key property we're looking for in multiple optima.",
+    "mathContext": "Similarity is the natural equivalence relation for geometric questions.",
+    "significance": "key",
+    "relatedConcepts": ["Similarity transformations", "Isometry groups"]
+  },
+  {
+    "id": "ann-e91-n3-unique",
+    "proofId": "erdos-91",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "axiom",
+    "title": "n=3: Equilateral Triangle Unique",
+    "content": "**n3_unique:**\n\nThe equilateral triangle is the unique optimal 3-point configuration.\n\nIt achieves 1 distinct distance, which is the minimum possible for 3 points.",
+    "significance": "key",
+    "relatedConcepts": ["Equilateral triangle", "Uniqueness"]
+  },
+  {
+    "id": "ann-e91-n4-two",
+    "proofId": "erdos-91",
+    "range": { "startLine": 124, "endLine": 133 },
+    "type": "axiom",
+    "title": "n=4: Two Non-Similar Optima",
+    "content": "**n4_two_optima:**\n\nTwo non-similar 4-point configurations achieve the minimum 2 distinct distances:\n1. **Square:** side s, diagonal s√2\n2. **Bowtie:** Two equilateral triangles sharing an edge\n\nThis is the first case of non-uniqueness.",
+    "significance": "key",
+    "relatedConcepts": ["Square", "Bowtie configuration", "Non-uniqueness"]
+  },
+  {
+    "id": "ann-e91-n5-kovacs",
+    "proofId": "erdos-91",
+    "range": { "startLine": 135, "endLine": 143 },
+    "type": "axiom",
+    "title": "n=5: Pentagon Unique (Kovács 2024)",
+    "content": "**kovacs_2024_n5_unique:**\n\nThe regular pentagon is uniquely optimal for n=5, achieving 2 distinct distances.\n\n**Historical note:** Erdős attributed this to 'a colleague from Zagreb' whose letter he lost. Kovács (2024) finally published a rigorous proof.",
+    "mathContext": "The mystery of the 'Zagreb colleague' was a famous anecdote in combinatorics for decades.",
+    "significance": "critical",
+    "relatedConcepts": ["Regular pentagon", "Kovács 2024", "Zagreb mystery"]
+  },
+  {
+    "id": "ann-e91-n6to9",
+    "proofId": "erdos-91",
+    "range": { "startLine": 145, "endLine": 154 },
+    "type": "axiom",
+    "title": "n=6-9: Non-Uniqueness Holds",
+    "content": "**n6_to_9_nonunique:**\n\nFor each n from 6 to 9, there exist at least two non-similar optimal configurations.\n\nErdős verified this for these small cases, but the pattern for all large n is unknown.",
+    "significance": "key",
+    "relatedConcepts": ["Small cases", "Non-uniqueness pattern"]
+  },
+  {
+    "id": "ann-e91-conjecture",
+    "proofId": "erdos-91",
+    "range": { "startLine": 160, "endLine": 169 },
+    "type": "definition",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**erdos_91_conjecture:**\n\nFor sufficiently large n, there exist at least two non-similar optimal n-point configurations.\n\n```lean\ndef erdos_91_conjecture : Prop :=\n  ∃ N : ℕ, ∀ n : ℕ, n ≥ N →\n    ∃ A B : Finset Point, ...\n```\n\n**Status: OPEN**",
+    "mathContext": "The non-monotonic pattern (unique at n=5 but non-unique at n=4,6) makes this hard to prove.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Asymptotic behavior"]
+  },
+  {
+    "id": "ann-e91-summary",
+    "proofId": "erdos-91",
+    "range": { "startLine": 243, "endLine": 277 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_91_summary:**\n\nCombines the known results:\n\n| n | Status | Configuration |\n|---|--------|---------------|\n| 3 | UNIQUE | Equilateral triangle |\n| 4 | NON-UNIQUE | Square, Bowtie |\n| 5 | UNIQUE | Regular pentagon (Kovács 2024) |\n| 6-9 | NON-UNIQUE | Multiple examples |\n| Large | OPEN | Conjectured non-unique |",
+    "significance": "critical",
+    "relatedConcepts": ["Known results", "Research frontier"]
+  }
+]

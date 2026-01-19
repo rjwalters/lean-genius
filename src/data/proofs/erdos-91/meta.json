@@ -7,7 +7,7 @@
     "author": "Erdős (problem), Kovács (2024, n=5 proof)",
     "sourceUrl": "https://erdosproblems.com/91",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos91Problem.lean",
     "tags": [
       "discrete-geometry",
@@ -16,8 +16,8 @@
       "point-configurations",
       "open-problem"
     ],
-    "badge": "open",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 91,
     "erdosUrl": "https://erdosproblems.com/91",
     "erdosProblemStatus": "open",
@@ -43,11 +43,46 @@
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
+      "id": "distance-defs",
+      "title": "Distance Sets in the Plane",
       "startLine": 36,
-      "endLine": 37,
-      "summary": "The current proof is a placeholder (erdos_91 : True). This is an OPEN problem about optimal distance configurations."
+      "endLine": 65,
+      "summary": "Point type, dist function, distinctDistances, numDistinctDistances"
+    },
+    {
+      "id": "optimal",
+      "title": "Optimal Configurations",
+      "startLine": 67,
+      "endLine": 86,
+      "summary": "minDistinctDistances and IsOptimal definitions"
+    },
+    {
+      "id": "similarity",
+      "title": "Similarity of Point Sets",
+      "startLine": 88,
+      "endLine": 109,
+      "summary": "AreSimilar and AreNonSimilar definitions"
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases n = 3,4,5,6-9",
+      "startLine": 111,
+      "endLine": 154,
+      "summary": "Known uniqueness/non-uniqueness results"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture for Large n",
+      "startLine": 156,
+      "endLine": 186,
+      "summary": "erdos_91_conjecture and strong version (OPEN)"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 239,
+      "endLine": 277,
+      "summary": "Combined results and status"
     }
   ],
   "conclusion": {
