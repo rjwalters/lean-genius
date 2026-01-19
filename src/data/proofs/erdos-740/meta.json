@@ -1,33 +1,120 @@
 {
   "id": "erdos-740",
-  "title": "Erdős Problem #740",
+  "title": "Erdős Problem #740: Chromatic Number and Odd Cycle Avoidance",
   "slug": "erdos-740",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...G......r\\geq 1...G......\\leq r...=\\aleph_0...r=3......r...f_r()...\\geq f_r()......\\leq r...r=3......\\leq C$).\n\n\n\n\nRef...",
+  "description": "Must every graph with infinite chromatic number 𝔪 contain a subgraph with χ = 𝔪 that avoids all odd cycles of length ≤ r?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal (conjecture), Rödl (partial result)",
     "sourceUrl": "https://erdosproblems.com/740",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos740Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cycles",
+      "infinite-cardinals",
+      "set-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 740,
     "erdosUrl": "https://erdosproblems.com/740",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #740 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathfrak{m}$ be an infinite cardinal and $G$ be a graph with chromatic number $\\mathfrak{m}$. Let $r\\geq 1$. Must $G$ contain a subgraph of chromatic number $\\mathfrak{m}$ which does not contain any odd cycle of length $\\leq r$?\n\n\n\nA question of Erd\\H{o}s and Hajnal. R\\\"{o}dl proved this is true if $\\mathfrak{m}=\\aleph_0$ and $r=3$ (see [108] for the finitary version).\n\nMore generally, Erd\\H{o}s and Hajnal asked must there exist (for every cardinal $\\mathfrak{m}$ and integer $r$) some $f_r(\\mathfrak{m})$ such that every graph with chromatic number $\\geq f_r(\\mathfrak{m})$ contains a subgraph with chromatic number $\\mathfrak{m}$ with no odd cycle of length $\\leq r$?\n\nErd\\H{o}s \\cite{Er95d} claimed that even the $r=3$ case of this is open: must every graph with sufficiently large chromatic number contain a triangle free graph with chromatic number $\\mathfrak{m}$?\n\nIn \\cite{Er81} Erd\\H{o}s also asks the same question but with girth (i.e. the subgraph does not contain any cycle at all of length $\\leq C$).\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er95d] Erd\\H{o}s, Paul, On some problems in combinatorial set theory. Publ. Inst. Math. (Beograd) (N.S.) (1995), 61-65.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Hajnal posed this problem about preserving chromatic number while avoiding short odd cycles. Rödl proved the case 𝔪 = ℵ₀ and r = 3 (triangle-free). Erdős listed this in [Er81] as one of the problems he 'would most like to see solved.' The general case and the threshold function f_r(𝔪) remain open.",
+    "problemStatement": "Let 𝔪 be an infinite cardinal and G be a graph with chromatic number 𝔪. Let r ≥ 1. Must G contain a subgraph of chromatic number 𝔪 which does not contain any odd cycle of length ≤ r?",
+    "proofStrategy": "We formalize chromatic numbers for infinite graphs, cycles, and odd cycle avoidance. We state the Erdős-Hajnal conjecture, Rödl's theorem for the countable triangle-free case, and explore the girth variant. The bipartite case shows limits of what's possible.",
+    "keyInsights": [
+      "Rödl proved: every ℵ₀-chromatic graph has a triangle-free subgraph with χ = ℵ₀",
+      "The general case for arbitrary infinite cardinals remains open",
+      "The threshold function f_r(𝔪) question asks for quantitative bounds",
+      "The girth variant (avoiding ALL cycles ≤ r) implies the odd cycle version",
+      "Bipartite graphs have χ ≤ 2, so the 'r = ∞' version fails for 𝔪 > 2"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "chromatic-number",
+      "title": "Part I: Graph Coloring and Chromatic Number",
+      "summary": "chromaticNumber definition, isColorable for infinite cardinals",
+      "startLine": 37,
+      "endLine": 56
+    },
+    {
+      "id": "cycles",
+      "title": "Part II: Cycles in Graphs",
+      "summary": "Cycle structure, isOddCycle, containsOddCycleLeq, isTriangleFree",
+      "startLine": 58,
+      "endLine": 105
+    },
+    {
+      "id": "subgraphs",
+      "title": "Part III: Subgraphs",
+      "summary": "inducedSubgraph, hasSubgraphWith property",
+      "startLine": 107,
+      "endLine": 125
+    },
+    {
+      "id": "conjecture",
+      "title": "Part IV: The Erdős-Hajnal Conjecture",
+      "summary": "erdosHajnalConjecture, triangleFreeConjecture, countableCase",
+      "startLine": 127,
+      "endLine": 158
+    },
+    {
+      "id": "rodl",
+      "title": "Part V: Rödl's Theorem",
+      "summary": "rodl_theorem axiom, countable_triangle_free corollary",
+      "startLine": 160,
+      "endLine": 175
+    },
+    {
+      "id": "threshold",
+      "title": "Part VI: The General Function f_r(𝔪)",
+      "summary": "thresholdFunctionExists, thresholdFunctionOpen",
+      "startLine": 177,
+      "endLine": 200
+    },
+    {
+      "id": "girth",
+      "title": "Part VII: Girth Variant",
+      "summary": "girth, girthGreaterThan, girthConjecture, girth_implies_odd",
+      "startLine": 202,
+      "endLine": 246
+    },
+    {
+      "id": "finite",
+      "title": "Part VIII: Finite Analogs",
+      "summary": "finiteAnalog, finite_triangle_free_progress",
+      "startLine": 248,
+      "endLine": 268
+    },
+    {
+      "id": "bipartite",
+      "title": "Part IX: Bipartite Subgraphs",
+      "summary": "isBipartite, no_infinite_bipartite theorem",
+      "startLine": 270,
+      "endLine": 296
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "summary": "erdos_740_summary, erdos_740 main theorem, openQuestion",
+      "startLine": 298,
+      "endLine": 340
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #740 asks whether graphs with infinite chromatic number must contain subgraphs preserving that chromatic number while avoiding short odd cycles. Rödl proved this for ℵ₀ and r = 3 (triangle-free). The general case for all infinite cardinals and the threshold function f_r(𝔪) remain open.",
+    "implications": "The problem connects infinite combinatorics with graph coloring theory. It relates to the study of how chromatic number behaves under subgraph restrictions and the general question of what graph properties can be preserved while eliminating cycles.",
+    "openQuestions": [
+      "Does the conjecture hold for all infinite cardinals 𝔪?",
+      "Does the threshold function f_r(𝔪) exist?",
+      "What is the relationship between the odd cycle and girth variants?",
+      "Can Rödl's result be extended to r > 3 for ℵ₀?"
+    ]
   }
 }
