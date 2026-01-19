@@ -1,33 +1,97 @@
 {
   "id": "erdos-715",
-  "title": "Erdős Problem #715",
+  "title": "Erdős Problem #715: Regular Subgraphs in Regular Graphs",
   "slug": "erdos-715",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every regular graph of degree ... contain a regular subgraph of degree ...? Is there any ... such that every regular gra...",
+  "description": "Does every 4-regular graph contain a 3-regular subgraph? SOLVED: YES by Tashkinov (1982). Every r-regular graph with r ≥ 4 contains a 3-regular subgraph.",
   "meta": {
-    "author": "Unknown",
+    "author": "Berge, Sauer",
     "sourceUrl": "https://erdosproblems.com/715",
-    "date": "",
-    "status": "pending",
+    "date": "1982",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos715Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "regular-graphs",
+      "subgraphs"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 14,
     "erdosNumber": 715,
     "erdosUrl": "https://erdosproblems.com/715",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #715 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every regular graph of degree $4$ contain a regular subgraph of degree $3$? Is there any $r$ such that every regular graph of degree $r$ must contain a regular subgraph of degree $3$?\n\n\n\nA problem of Berge (or Berge and Sauer). Alon, Friedland, and Kalai \\cite{AFK84} proved that every $4$-regular graph plus an edge contains a $3$-regular subgraph, and hence in particular every $r$-regular graph with $r\\geq 5$ contains a $3$-regular subgraph.\n\nThe answer is yes, proved by Tashkinov \\cite{Ta82}.\n\n\n\n\n\nReferences\n\n\n[AFK84] Alon, N. and Friedland, S. and Kalai, G., Every {$4$}-regular graph plus an edge contains a\n{$3$}-regular subgraph. J. Combin. Theory Ser. B (1984), 92-93.\n\n[Ta82] Tashkinov, Regular subgraphs of regular graphs. Soviet Math. Dokl. (1982), 37-38.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Berge and Sauer. It asks whether regular graphs of sufficient degree must contain regular subgraphs of smaller degree. The question is fundamental to understanding the structure of regular graphs and their decomposition properties.",
+    "problemStatement": "Does every regular graph of degree 4 contain a regular subgraph of degree 3? More generally, is there any r such that every r-regular graph must contain a 3-regular subgraph?",
+    "proofStrategy": "The formalization captures: (1) Basic graph definitions with SimpleGraph', degree, IsRegular. (2) Subgraph definitions. (3) The main question HasRegularSubgraph(r, k). (4) Tashkinov's theorem for r=4. (5) Alon-Friedland-Kalai's auxiliary result. (6) Counterexamples showing r < 4 fails (K_4, Petersen graph). (7) Edge counting arguments for necessary conditions.",
+    "keyInsights": [
+      "Tashkinov (1982): Every 4-regular graph contains a 3-regular subgraph—the first complete answer",
+      "Alon-Friedland-Kalai (1984): Every 4-regular graph plus an edge contains a 3-regular subgraph",
+      "This implies r ≥ 5 case immediately (remove an edge, apply AFK, the subgraph is still in original)",
+      "K_4 is 3-regular but has no proper 3-regular subgraph (it IS the subgraph)",
+      "The Petersen graph is another minimal 3-regular graph",
+      "The threshold for k-regular subgraphs is an interesting general question"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Basic Definitions",
+      "startLine": 29,
+      "endLine": 45,
+      "summary": "Defines SimpleGraph' structure, vertex degree, and r-regular property (every vertex has degree r)."
+    },
+    {
+      "title": "Subgraphs",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "Defines IsSubgraph (edges contained), spanning subgraphs, and induced subgraphs on vertex subsets."
+    },
+    {
+      "title": "The Main Question",
+      "startLine": 63,
+      "endLine": 69,
+      "summary": "Defines HasRegularSubgraph(r, k): does every r-regular graph contain a k-regular subgraph? This is the central predicate."
+    },
+    {
+      "title": "Main Results",
+      "startLine": 71,
+      "endLine": 96,
+      "summary": "States Tashkinov's theorem (4-regular ⟹ 3-regular subgraph), corollary for r ≥ 4, and Alon-Friedland-Kalai's 4-regular + edge result."
+    },
+    {
+      "title": "Counterexamples for r < 4",
+      "startLine": 98,
+      "endLine": 121,
+      "summary": "K_4 is 3-regular with no proper 3-regular subgraph. Shows the threshold is exactly 4."
+    },
+    {
+      "title": "The Berge-Sauer Question",
+      "startLine": 123,
+      "endLine": 131,
+      "summary": "Formalizes the original question and its positive answer via Tashkinov."
+    },
+    {
+      "title": "The Petersen Graph",
+      "startLine": 143,
+      "endLine": 174,
+      "summary": "Defines the Petersen graph (famous 3-regular graph on 10 vertices) and shows it has no proper 3-regular subgraph."
+    },
+    {
+      "title": "Edge Counting",
+      "startLine": 176,
+      "endLine": 189,
+      "summary": "Handshaking lemma: r-regular graph on n vertices has rn/2 edges. Necessary condition: rn must be even."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #715 (Berge-Sauer Question) asked whether every 4-regular graph contains a 3-regular subgraph. Tashkinov (1982) proved YES. Consequently, every r-regular graph with r ≥ 4 contains a 3-regular subgraph. The threshold is exactly 4: 3-regular graphs like K_4 and the Petersen graph are minimal.",
+    "implications": "This result illuminates the structure of regular graphs. It shows that high-degree regularity imposes strong structural constraints. The techniques relate to factor theory and graph decomposition.",
+    "openQuestions": [
+      "What is the threshold for k-regular subgraphs for general k?",
+      "Can Tashkinov's proof be made constructive efficiently?",
+      "What are the optimal bounds for the number of vertices needed?",
+      "How does this extend to multigraphs and hypergraphs?"
+    ]
   }
 }
