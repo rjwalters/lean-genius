@@ -1,33 +1,138 @@
 {
   "id": "erdos-903",
-  "title": "Erdős Problem #903",
+  "title": "Erdős Problem #903: Block Designs and the de Bruijn-Erdős Gap",
   "slug": "erdos-903",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... for some prime power ..., and let ... be a block design (so that every pair ... is contained in exactly one ...).\n\nIs...",
+  "description": "For n = p² + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t ≥ n + p. Proved by Erdős-Fowler-Sós-Wilson (1985).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Sós (conjecture), Erdős-Fowler-Sós-Wilson (1985)",
     "sourceUrl": "https://erdosproblems.com/903",
-    "date": "",
-    "status": "pending",
+    "date": "1985",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos903Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "block-designs",
+      "finite-geometry",
+      "projective-planes"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 903,
     "erdosUrl": "https://erdosproblems.com/903",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Basic finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finite set properties",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized BlockDesign structure with pair coverage property",
+      "Defined IsPrimePower and IsProjectivePlaneSize predicates",
+      "Formalized ProjectivePlane structure with axioms",
+      "Stated de Bruijn-Erdős theorem (1948): t ≥ n",
+      "Stated Erdős-Fowler-Sós-Wilson theorem (1985): t > n implies t ≥ n + p",
+      "Defined achievableBlocks set and gap_theorem",
+      "Connected to Fisher's inequality for 2-designs",
+      "Stated stronger bound: t ≥ n + 1.148p unless broken projective plane"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #903 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n=p^2+p+1$ for some prime power $p$, and let $A_1,\\ldots,A_t\\subseteq \\{1,\\ldots,n\\}$ be a block design (so that every pair $x,y\\in \\{1,\\ldots,n\\}$ is contained in exactly one $A_i$).\n\nIs it true that if $t>n$ then $t\\geq n+p$?\n\n\n\nA conjecture of Erd\\H{o}s and S\\'{o}s. The classic finite geometry construction shows that $t=n$ is possible. A theorem of Erd\\H{o}s and de Bruijn \\cite{dBEr48} states that $t\\geq n$.\n\nThis is true, and was proved by Erd\\H{o}s, Fowler, S\\'{o}s, and Wilson \\cite{EFSW85}, who further show that unless the block design is obtained from a projective plane by 'breaking up' one of its lines then $t\\geq n+cp$ where $c\\approx 1.148$.\n\nIn general, one can ask what the possible values of $t$ are, for a given $n$.\n\n\n\n\nReferences\n\n\n[EFSW85] Erd\\H{o}s, P. and Fowler, Joel C. and S\\'os, Vera T. and\nWilson, Richard M., On {$2$}-designs. J. Combin. Theory Ser. A (1985), 131--142.\n\n[dBEr48] de Bruijn, N. G. and Erd\\H{o}s, P., On a combinatorial problem. Nederl. Akad. Wetensch., Proc. (1948), 1277--1279 = Indagationes Math. 10, 421--423.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was a conjecture of Erdős and Sós about block designs. A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block.\n\nThe classic projective plane construction shows t = n is achievable when n = p² + p + 1 for prime power p. The de Bruijn-Erdős theorem (1948) established that t ≥ n for any block design.\n\nErdős and Sós conjectured that there is a 'gap': if t > n, then t ≥ n + p. This was proved by Erdős, Fowler, Sós, and Wilson (1985), who further showed that unless the design comes from a projective plane with one line 'broken up', we have t ≥ n + cp where c ≈ 1.148.",
+    "problemStatement": "**Problem**: Let $n = p^2 + p + 1$ for some prime power $p$, and let $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,n\\}$ be a block design (every pair $x, y \\in \\{1,\\ldots,n\\}$ is contained in exactly one $A_i$).\n\nIs it true that if $t > n$ then $t \\geq n + p$?\n\n**Answer**: YES\n\n**Key Results**:\n- de Bruijn-Erdős (1948): $t \\geq n$\n- Projective plane: $t = n$ is achievable\n- EFSW (1985): $t > n \\Rightarrow t \\geq n + p$\n- Stronger: $t \\geq n + 1.148p$ unless broken projective plane",
+    "proofStrategy": "The formalization defines BlockDesign as a structure with blocks (finite sets of finite sets) satisfying the pair coverage property. ProjectivePlane is formalized with its classical axioms. The de Bruijn-Erdős theorem and EFSW theorem are axiomatized. The gap structure is captured by showing values in (n, n+p) are not achievable.",
+    "keyInsights": [
+      "**Pair coverage**: Every pair of distinct elements must be in exactly one block - this is the defining property of a block design.",
+      "**Projective planes achieve minimum**: When n = p² + p + 1, projective planes of order p have exactly n lines (blocks), achieving the minimum.",
+      "**The gap phenomenon**: There are no block designs with t blocks where n < t < n + p - these values are 'forbidden'.",
+      "**Broken projective planes**: The only designs with t in [n+p, n+1.148p) come from breaking one line of a projective plane.",
+      "**Fisher's inequality connection**: For uniform block designs (2-designs), Fisher's inequality gives b ≥ v, equivalent to de Bruijn-Erdős."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "BlockDesign structure, numBlocks, IsPrimePower, projectivePlaneOrder, IsProjectivePlaneSize",
+      "startLine": 29,
+      "endLine": 63
+    },
+    {
+      "id": "de-bruijn-erdos",
+      "title": "The de Bruijn-Erdős Theorem",
+      "summary": "de_bruijn_erdos axiom, IsMinimalDesign, minimal_design_uniform",
+      "startLine": 64,
+      "endLine": 81
+    },
+    {
+      "id": "projective-planes",
+      "title": "Projective Plane Constructions",
+      "summary": "ProjectivePlane structure, toBlockDesign, projective_plane_minimal",
+      "startLine": 82,
+      "endLine": 111
+    },
+    {
+      "id": "erdos-sos-theorem",
+      "title": "The Erdős-Sós Conjecture (Now Theorem)",
+      "summary": "erdos_sos_theorem, efsw_1985, efsw_strong",
+      "startLine": 112,
+      "endLine": 138
+    },
+    {
+      "id": "gap-structure",
+      "title": "The Gap Structure",
+      "summary": "achievableBlocks, n_achievable, gap_theorem, first_above_n",
+      "startLine": 139,
+      "endLine": 165
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete examples for p = 2, 3, 4, 5",
+      "startLine": 166,
+      "endLine": 181
+    },
+    {
+      "id": "2-designs",
+      "title": "Connection to Combinatorial Designs",
+      "summary": "Is2Design, fisher_inequality, de_bruijn_erdos_from_fisher",
+      "startLine": 182,
+      "endLine": 201
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_903_statement, erdos_903_answer, erdos_903_summary",
+      "startLine": 202,
+      "endLine": 246
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #903 asks whether block designs on n = p² + p + 1 points with more than n blocks must have at least n + p blocks. The answer is YES, proved by Erdős-Fowler-Sós-Wilson (1985). The projective plane achieves the minimum t = n, and there is a gap: no designs exist with t in (n, n+p).",
+    "implications": "This result reveals the rigid structure of block designs near the de Bruijn-Erdős minimum. The gap phenomenon shows that slightly exceeding the minimum forces a significant jump in the number of blocks. This has connections to finite geometry, combinatorial design theory, and the classification of near-minimal designs.",
+    "openQuestions": [
+      "What are all achievable values of t for general n?",
+      "Can the constant c ≈ 1.148 be improved?",
+      "What is the structure of designs achieving t = n + p exactly?",
+      "How does the gap phenomenon generalize to other design parameters?"
+    ]
   }
 }
