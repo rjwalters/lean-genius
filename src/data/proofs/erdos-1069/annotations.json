@@ -1,1 +1,243 @@
-[]
+[
+  {
+    "id": "ann-e1069-context",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #1069: Given n points in ℝ², the number of k-rich lines (containing ≥k points) is O(n²/k³) when k ≤ √n. This was conjectured by Erdős-Croft-Purdy and proved by Szemerédi-Trotter (1983).",
+    "significance": "critical",
+    "tags": ["erdos", "incidence-geometry", "szemeredi-trotter"]
+  },
+  {
+    "id": "ann-e1069-point-def",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Point in ℝ²",
+    "content": "A point in the plane is simply a pair of real numbers (x, y) ∈ ℝ × ℝ.",
+    "significance": "supporting",
+    "tags": ["point", "definition"],
+    "leanSymbol": "Point"
+  },
+  {
+    "id": "ann-e1069-line-def",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Line in ℝ²",
+    "content": "A line is represented by coefficients (a, b, c) where ax + by = c, with the requirement that (a, b) ≠ (0, 0). This is the implicit form of a line.",
+    "significance": "key",
+    "tags": ["line", "definition"],
+    "leanSymbol": "Line"
+  },
+  {
+    "id": "ann-e1069-on-line",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Point on Line",
+    "content": "A point (x, y) lies on line (a, b, c) iff ax + by = c. This is the incidence relation between points and lines.",
+    "significance": "key",
+    "tags": ["incidence", "definition"],
+    "leanSymbol": "Point.onLine"
+  },
+  {
+    "id": "ann-e1069-incidence-count",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "definition",
+    "title": "Incidence Count",
+    "content": "The incidence count of a line l with respect to point set P is |{p ∈ P : p lies on l}|, the number of points of P on l.",
+    "significance": "critical",
+    "tags": ["incidence", "counting"],
+    "leanSymbol": "incidenceCount"
+  },
+  {
+    "id": "ann-e1069-k-rich",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "k-Rich Lines",
+    "content": "A line l is k-rich with respect to P if it contains at least k points from P: incidenceCount(P, l) ≥ k. These are the 'heavy' lines.",
+    "significance": "critical",
+    "tags": ["k-rich", "definition"],
+    "leanSymbol": "isKRich"
+  },
+  {
+    "id": "ann-e1069-num-k-rich",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "Number of k-Rich Lines",
+    "content": "The main quantity of interest: how many lines in L are k-rich with respect to P?",
+    "significance": "critical",
+    "tags": ["k-rich", "counting"],
+    "leanSymbol": "numKRichLines"
+  },
+  {
+    "id": "ann-e1069-total-incidences",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "Total Incidences",
+    "content": "The total number of incidences I(P, L) = Σ_{l ∈ L} incidenceCount(P, l). This counts point-line pairs where the point lies on the line.",
+    "significance": "critical",
+    "tags": ["incidence", "total"],
+    "leanSymbol": "totalIncidences"
+  },
+  {
+    "id": "ann-e1069-sz-tr-bound",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "definition",
+    "title": "Szemerédi-Trotter Bound Function",
+    "content": "The Szemerédi-Trotter bound: n^(2/3) · m^(2/3) + n + m, where n = |P| and m = |L|. This bounds the maximum possible incidences.",
+    "significance": "critical",
+    "tags": ["szemeredi-trotter", "bound"],
+    "leanSymbol": "szTrBound"
+  },
+  {
+    "id": "ann-e1069-sz-tr-thm",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 112, "endLine": 114 },
+    "type": "axiom",
+    "title": "Szemerédi-Trotter Theorem",
+    "content": "The fundamental incidence bound: I(P, L) ≤ C · (|P|^(2/3)|L|^(2/3) + |P| + |L|) for some absolute constant C. This 1983 result revolutionized incidence geometry.",
+    "significance": "critical",
+    "tags": ["szemeredi-trotter", "main-theorem"],
+    "leanSymbol": "szemeredi_trotter"
+  },
+  {
+    "id": "ann-e1069-exponent-optimal",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 116, "endLine": 119 },
+    "type": "axiom",
+    "title": "Optimality of Exponent",
+    "content": "The exponent 2/3 in Szemerédi-Trotter is optimal: there exist configurations achieving this bound up to constant factors.",
+    "significance": "key",
+    "tags": ["szemeredi-trotter", "optimality"],
+    "leanSymbol": "szTr_exponent_optimal"
+  },
+  {
+    "id": "ann-e1069-k-rich-bound-fn",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "definition",
+    "title": "k-Rich Bound Function",
+    "content": "The k-rich lines bound: n²/k³. When k ≤ √n, there are at most O(n²/k³) lines containing ≥ k points.",
+    "significance": "critical",
+    "tags": ["k-rich", "bound"],
+    "leanSymbol": "kRichBound"
+  },
+  {
+    "id": "ann-e1069-k-rich-bound",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "axiom",
+    "title": "k-Rich Lines Bound (Erdős #1069)",
+    "content": "The main result: the number of k-rich lines is O(n²/k³) when k ≤ √n. This follows from Szemerédi-Trotter via a counting argument.",
+    "significance": "critical",
+    "tags": ["k-rich", "main-result"],
+    "leanSymbol": "kRich_bound"
+  },
+  {
+    "id": "ann-e1069-main",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 141, "endLine": 145 },
+    "type": "theorem",
+    "title": "Erdős Problem #1069 Statement",
+    "content": "Formal statement of Erdős #1069: numKRichLines(P, L, k) ≤ C · n²/k³ when k² ≤ n. This is the answer to the Erdős-Croft-Purdy conjecture.",
+    "significance": "critical",
+    "tags": ["erdos-1069", "main-result"],
+    "leanSymbol": "erdos_1069"
+  },
+  {
+    "id": "ann-e1069-dyadic",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 153, "endLine": 155 },
+    "type": "definition",
+    "title": "Dyadic Decomposition",
+    "content": "Partition lines by incidence count: dyadicLines(P, L, i) contains lines with 2^i ≤ incidences < 2^(i+1). This is a key proof technique.",
+    "significance": "key",
+    "tags": ["dyadic", "proof-technique"],
+    "leanSymbol": "dyadicLines"
+  },
+  {
+    "id": "ann-e1069-lattice",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 175, "endLine": 177 },
+    "type": "definition",
+    "title": "Lattice Points Construction",
+    "content": "The m×m integer lattice {(i,j) : 0 ≤ i,j < m} provides lower bound constructions. It has m² points and many √n-rich lines.",
+    "significance": "key",
+    "tags": ["lattice", "lower-bound"],
+    "leanSymbol": "latticePoints"
+  },
+  {
+    "id": "ann-e1069-lattice-lower",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 183, "endLine": 185 },
+    "type": "axiom",
+    "title": "Lattice Lower Bound",
+    "content": "The m×m lattice has ≥ 2m-2 many m-rich lines (horizontal and vertical lines). This shows the bound cannot be improved beyond O(√n).",
+    "significance": "key",
+    "tags": ["lattice", "lower-bound"],
+    "leanSymbol": "lattice_lower_bound"
+  },
+  {
+    "id": "ann-e1069-sah",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 187, "endLine": 191 },
+    "type": "axiom",
+    "title": "Sah's Improved Construction",
+    "content": "Sah (1987) gave a construction with ≥ (3+o(1))√n many √n-rich lines, improving the lattice's 2√n. The optimal constant remains open.",
+    "significance": "key",
+    "tags": ["sah", "lower-bound"],
+    "leanSymbol": "sah_construction"
+  },
+  {
+    "id": "ann-e1069-case-k2",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 199, "endLine": 202 },
+    "type": "theorem",
+    "title": "Case k=2",
+    "content": "When k=2, the bound gives O(n²) 2-rich lines. This is trivial since any two points determine a line, giving at most (n choose 2) = O(n²) lines.",
+    "significance": "supporting",
+    "tags": ["special-case"],
+    "leanSymbol": "case_k2"
+  },
+  {
+    "id": "ann-e1069-case-sqrt",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 204, "endLine": 209 },
+    "type": "theorem",
+    "title": "Case k=√n",
+    "content": "When k=√n, there are at most O(√n) many √n-rich lines. This is the critical case where the bound becomes linear in √n.",
+    "significance": "key",
+    "tags": ["special-case"],
+    "leanSymbol": "case_sqrt_n"
+  },
+  {
+    "id": "ann-e1069-dual",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 222, "endLine": 226 },
+    "type": "axiom",
+    "title": "Dual k-Rich Bound",
+    "content": "By point-line duality: given n lines, the number of k-rich points (points on ≥k lines) is also O(n²/k³).",
+    "significance": "key",
+    "tags": ["duality"],
+    "leanSymbol": "dual_kRich_bound"
+  },
+  {
+    "id": "ann-e1069-summary",
+    "proofId": "erdos-1069",
+    "range": { "startLine": 253, "endLine": 262 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Erdős Problem #1069 is completely solved: Szemerédi-Trotter gives the incidence bound, which implies the k-rich lines bound O(n²/k³) for k ≤ √n.",
+    "significance": "critical",
+    "tags": ["summary", "main-result"],
+    "leanSymbol": "erdos_1069_summary"
+  }
+]
