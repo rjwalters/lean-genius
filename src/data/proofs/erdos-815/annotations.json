@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-815-1",
+    "proofId": "erdos-815",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #815 asks whether 'degree 3 critical' graphs must contain cycles of all lengths k ≥ 3. These are graphs with n vertices, 2n-2 edges, where every proper induced subgraph has minimum degree ≤ 2. DISPROVED by Narins-Pokrovskiy-Szabó (2017) who found such graphs with no C_23.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-815-2",
+    "proofId": "erdos-815",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "The minimum degree of a graph is the smallest degree among all vertices. We define it using Finset.min' over the image of the degree function. This is key to the 'degree 3 critical' condition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-815-3",
+    "proofId": "erdos-815",
+    "range": { "startLine": 59, "endLine": 68 },
+    "type": "definition",
+    "title": "Degree 3 Critical Graphs",
+    "content": "A graph is 'degree 3 critical' if: (1) it has 2n-2 edges for n vertices, and (2) every proper induced subgraph has minimum degree ≤ 2. These graphs are on the boundary of having a '3-regular core' - they have enough edges for complexity but can't localize that structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-815-4",
+    "proofId": "erdos-815",
+    "range": { "startLine": 78, "endLine": 85 },
+    "type": "definition",
+    "title": "Cycles in Graphs",
+    "content": "A cycle of length k (C_k) is a closed walk of length k that doesn't repeat edges. We define ContainsCk using walks in Mathlib's SimpleGraph. The question is which cycle lengths must appear in degree 3 critical graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-815-5",
+    "proofId": "erdos-815",
+    "range": { "startLine": 89, "endLine": 97 },
+    "type": "definition",
+    "title": "The Erdős-Hajnal Conjecture",
+    "content": "The conjecture: for all k ≥ 3 and sufficiently large n, every degree 3 critical graph on n vertices contains C_k. This would mean such graphs have rich cycle structure - containing ALL possible cycle lengths.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-815-6",
+    "proofId": "erdos-815",
+    "range": { "startLine": 101, "endLine": 108 },
+    "type": "axiom",
+    "title": "EFGS Short Cycles Theorem",
+    "content": "Erdős-Faudree-Gyárfás-Schelp (1988) proved: every degree 3 critical graph on n ≥ 5 vertices contains C_3, C_4, AND C_5. So short cycles are guaranteed - the question was about longer ones.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-815-7",
+    "proofId": "erdos-815",
+    "range": { "startLine": 110, "endLine": 115 },
+    "type": "axiom",
+    "title": "EFGS Long Cycle Theorem",
+    "content": "EFGS also proved: every degree 3 critical graph contains a cycle of length at least ⌊log₂ n⌋. This gives a lower bound on the longest cycle, but doesn't guarantee specific cycle lengths.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-815-8",
+    "proofId": "erdos-815",
+    "range": { "startLine": 117, "endLine": 125 },
+    "type": "axiom",
+    "title": "EFGS Upper Bound",
+    "content": "EFGS showed there exist degree 3 critical graphs with no cycle longer than √n. This means not ALL long cycles are guaranteed - there's a gap between log₂(n) and √n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-815-9",
+    "proofId": "erdos-815",
+    "range": { "startLine": 140, "endLine": 153 },
+    "type": "axiom",
+    "title": "Narins-Pokrovskiy-Szabó Counterexample",
+    "content": "The key result (2017): for any N, there exists a degree 3 critical graph on ≥N vertices with NO cycle of length 23. This disproves the Erdős-Hajnal conjecture for k = 23.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-815-10",
+    "proofId": "erdos-815",
+    "range": { "startLine": 155, "endLine": 164 },
+    "type": "theorem",
+    "title": "The Formal Disproof",
+    "content": "We prove ¬ErdosHajnalConjecture by contradiction: the conjecture would give N such that all large degree 3 critical graphs have C_23. But Narins-Pokrovskiy-Szabó provides such a graph on ≥N vertices WITHOUT C_23. Contradiction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-815-11",
+    "proofId": "erdos-815",
+    "range": { "startLine": 168, "endLine": 180 },
+    "type": "concept",
+    "title": "Open Problem: Even k",
+    "content": "The counterexample uses k = 23 (odd). It remains OPEN whether degree 3 critical graphs must contain C_k for all even k ≥ 4. Perhaps even and odd cycle lengths behave differently in these graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-815-12",
+    "proofId": "erdos-815",
+    "range": { "startLine": 184, "endLine": 200 },
+    "type": "concept",
+    "title": "Understanding the Condition",
+    "content": "Why 'degree 3 critical'? A graph with 2n-2 edges has average degree ~4. The subgraph condition means no dense core exists. These graphs balance: enough edges for complexity, but structure can't be localized. Named because they're minimal graphs where some vertex has degree ≥3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-815-13",
+    "proofId": "erdos-815",
+    "range": { "startLine": 204, "endLine": 219 },
+    "type": "concept",
+    "title": "Construction Idea",
+    "content": "How does the counterexample work? Narins-Pokrovskiy-Szabó use recursive structure and careful local analysis to build graphs satisfying |E| = 2|V| - 2 and the subgraph condition while avoiding any 23-cycle. The number 23 is the smallest odd k where their technique works.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-815-14",
+    "proofId": "erdos-815",
+    "range": { "startLine": 223, "endLine": 248 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "Erdős Problem #815 is DISPROVED. While degree 3 critical graphs always contain C_3, C_4, C_5 (EFGS), and cycles of length log₂(n) to √n, specific longer lengths like 23 can be avoided. Timeline: 1988 EFGS positive results, 1991 Erdős states problem, 2017 Narins-Pokrovskiy-Szabó disproof.",
+    "significance": "critical"
+  }
+]

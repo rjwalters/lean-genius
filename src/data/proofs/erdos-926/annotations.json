@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-926-1",
+    "proofId": "erdos-926",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #926 asks about the Turán number of a specific graph H_k. The Turán number ex(n; H) is the maximum number of edges an n-vertex graph can have while avoiding H as a subgraph. This problem asks whether ex(n; H_k) grows like n^(3/2) (up to factors depending on k).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-926-2",
+    "proofId": "erdos-926",
+    "range": { "startLine": 36, "endLine": 43 },
+    "type": "definition",
+    "title": "Structure of Graph H_k",
+    "content": "H_k is a carefully designed forbidden subgraph: one central vertex x connected to k vertices y_1,...,y_k, plus (k choose 2) additional vertices z_ij where each z_ij is adjacent to exactly the pair y_i, y_j. This creates a 'fan' from x with interconnected 'witness' vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-926-3",
+    "proofId": "erdos-926",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Vertex Count Formula",
+    "content": "The total vertex count is 1 (for x) + k (for the y_i) + (k choose 2) (for the z_ij). For example: H_4 has 1 + 4 + 6 = 11 vertices, and H_5 has 1 + 5 + 10 = 16 vertices. The quadratic growth in k makes these graphs increasingly complex.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-926-4",
+    "proofId": "erdos-926",
+    "range": { "startLine": 63, "endLine": 73 },
+    "type": "definition",
+    "title": "Edge Count Formula",
+    "content": "H_k has k edges from x to the y_i vertices, plus 2·(k choose 2) edges from z_ij vertices (each z_ij connects to exactly two y vertices). Using the formula: k + 2·(k choose 2) = k + k(k-1) = k². For H_4: 4 + 12 = 16 edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-926-5",
+    "proofId": "erdos-926",
+    "range": { "startLine": 79, "endLine": 86 },
+    "type": "insight",
+    "title": "C_4 Containment",
+    "content": "A key observation: H_k contains C_4 (a 4-cycle) as a subgraph whenever k ≥ 3. The cycle is: x - y_1 - z_12 - y_2 - x. This is crucial because it gives us a 'free' lower bound from the well-known C_4 extremal number.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-926-6",
+    "proofId": "erdos-926",
+    "range": { "startLine": 88, "endLine": 94 },
+    "type": "definition",
+    "title": "2-Degeneracy",
+    "content": "A graph is d-degenerate if every subgraph has a vertex of degree at most d. H_k is 2-degenerate: all z_ij vertices have degree exactly 2, so we can always find a low-degree vertex. This structural property connects to extremal bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-926-7",
+    "proofId": "erdos-926",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "insight",
+    "title": "Bipartiteness",
+    "content": "H_k is bipartite! One part contains {x} ∪ {all z_ij}, the other contains {y_1,...,y_k}. Check: x only connects to y's, and z_ij only connect to y's. This bipartite structure is relevant for applying Kővári-Sós-Turán type bounds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-926-8",
+    "proofId": "erdos-926",
+    "range": { "startLine": 107, "endLine": 111 },
+    "type": "definition",
+    "title": "Extremal Number Definition",
+    "content": "The extremal number ex(n; H) is one of the most fundamental concepts in extremal graph theory. It asks: what's the maximum number of edges you can have in an n-vertex graph that contains no copy of H? This is the central quantity Erdős was asking about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-926-9",
+    "proofId": "erdos-926",
+    "range": { "startLine": 113, "endLine": 121 },
+    "type": "theorem",
+    "title": "Kővári-Sós-Turán Theorem",
+    "content": "A foundational result in extremal graph theory: for complete bipartite graphs K_{r,s}, we have ex(n; K_{r,s}) ≤ (1/2)(s-1)^(1/r)·n^(2-1/r) + O(n). For C_4 = K_{2,2}, this gives ex(n; C_4) ~ (1/2)n^(3/2). This 1954 theorem is key to our lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-926-10",
+    "proofId": "erdos-926",
+    "range": { "startLine": 133, "endLine": 143 },
+    "type": "lemma",
+    "title": "Lower Bound via Subgraph",
+    "content": "Here's the elegant lower bound argument: since H_k contains C_4, any graph avoiding H_k in particular avoids... well, it might still have C_4. But any C_4-free graph is certainly H_k-free. So ex(n; C_4) ≤ ex(n; H_k), giving ex(n; H_k) ≫ n^(3/2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-926-11",
+    "proofId": "erdos-926",
+    "range": { "startLine": 148, "endLine": 156 },
+    "type": "theorem",
+    "title": "Füredi's Theorem (1991)",
+    "content": "Füredi proved the first upper bound: ex(n; H_k) ≪ (kn)^(3/2) = k^(3/2)·n^(3/2). This uses the probabilistic method and 'dependent random choice' - a technique where you select vertices based on common neighborhoods to get useful concentration properties.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-926-12",
+    "proofId": "erdos-926",
+    "range": { "startLine": 158, "endLine": 169 },
+    "type": "theorem",
+    "title": "AKS Improvement (2003)",
+    "content": "Alon, Krivelevich, and Sudakov refined the bound to ex(n; H_k) ≪ k·n^(3/2). This removes a factor of √k from Füredi's bound. The improvement came from more sophisticated applications of dependent random choice and better analysis of the embedding process.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-926-13",
+    "proofId": "erdos-926",
+    "range": { "startLine": 171, "endLine": 177 },
+    "type": "theorem",
+    "title": "Main Result: Problem Solved",
+    "content": "The main theorem states: YES, ex(n; H_k) ≪_k n^(3/2) for k ≥ 4. The subscript k in ≪_k means the implicit constant may depend on k. Combined with the lower bound, we have ex(n; H_k) = Θ_k(n^(3/2)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-926-14",
+    "proofId": "erdos-926",
+    "range": { "startLine": 182, "endLine": 199 },
+    "type": "concept",
+    "title": "Connection to Degeneracy Conjecture",
+    "content": "Problem 146 conjectures that ALL 2-degenerate graphs H satisfy ex(n; H) ≪ n^(3/2). Since H_k is 2-degenerate, Problem 926 is a special case. The general degeneracy bound gives ex(n; H) = O(n^(2-1/d)) for d-degenerate H, which for d=2 yields O(n^(3/2)).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-926-15",
+    "proofId": "erdos-926",
+    "range": { "startLine": 223, "endLine": 235 },
+    "type": "tactic",
+    "title": "Dependent Random Choice",
+    "content": "This probabilistic technique is key to both proofs. The idea: pick a random r-tuple of vertices, then look at their common neighborhood S. This set S has controlled expected size AND high 'codegree' properties, making it useful for finding forbidden subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-926-16",
+    "proofId": "erdos-926",
+    "range": { "startLine": 247, "endLine": 265 },
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "1971: Erdős poses the problem and claims k=3 case. 1991: Füredi proves ex(n; H_k) ≪ (kn)^(3/2). 2003: Alon-Krivelevich-Sudakov improve to k·n^(3/2). The problem evolved from a specific question to showcase of powerful probabilistic techniques.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-926-17",
+    "proofId": "erdos-926",
+    "range": { "startLine": 267, "endLine": 272 },
+    "type": "theorem",
+    "title": "Tight Order of Magnitude",
+    "content": "The final answer: ex(n; H_k) = Θ_k(n^(3/2)). The lower bound comes from C_4 containment (polyhedral construction achieving ex(n; C_4) ~ (1/2)n^(3/2)), and the upper bound from the AKS theorem. The n^(3/2) behavior is exact for all k ≥ 3.",
+    "significance": "key"
+  }
+]

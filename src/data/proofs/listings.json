@@ -1569,7 +1569,7 @@
     "title": "Erdős Problem #105: Lines Avoiding a Point Set",
     "slug": "erdos-105",
     "description": "Given n points A (not collinear) and n-3 points B, must some line hit 2+ points of A and miss B entirely? DISPROVED by Xichuan with explicit counterexamples. Variants with n-4 or (1-o(1))n remain open.",
-    "status": "pending",
+    "status": "complete",
     "badge": "disproved",
     "tags": [
       "discrete-geometry",
@@ -1580,8 +1580,8 @@
       "disproved"
     ],
     "erdosNumber": 105,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 16
   },
   {
     "id": "erdos-1050",
@@ -9830,20 +9830,24 @@
   },
   {
     "id": "erdos-671",
-    "title": "Erdős #671: Lagrange Interpolation Convergence",
+    "title": "Erdos Problem #671: Lagrange Interpolation Convergence",
     "slug": "erdos-671",
-    "description": "Can Lagrange interpolation L^n f(x) → f(x) even when the Lebesgue function λ_n(x) → ∞? Known: λ_n diverges somewhere (Bernstein), |L^n f| diverges a.e. for some f (Erdős-Vértesi). Prize: $250.",
-    "status": "formalized",
-    "badge": "wip",
+    "description": "Can Lagrange interpolation converge at points where the Lebesgue function diverges? Two open questions with $250 prize. Bernstein (1931) and Erdos-Vertesi (1980) established fundamental divergence results.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "analysis",
       "interpolation",
-      "approximation-theory"
+      "approximation-theory",
+      "lebesgue-function",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 671,
+    "mathlibCount": 4,
     "sorries": 23,
-    "annotationCount": 14
+    "annotationCount": 15
   },
   {
     "id": "erdos-672",
@@ -11704,17 +11708,22 @@
   },
   {
     "id": "erdos-815",
-    "title": "Erdős Problem #815",
+    "title": "Erdős Problem #815: Cycles in Degree 3 Critical Graphs",
     "slug": "erdos-815",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large. Is it true that if ... is a graph with ... vertices and ... edges such that every prop...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must degree 3 critical graphs (n vertices, 2n-2 edges, proper subgraphs have min degree ≤ 2) contain C_k for all k ≥ 3? DISPROVED by Narins-Pokrovskiy-Szabó (2017): arbitrarily large such graphs exist with no C_23.",
+    "status": "complete",
+    "badge": "disproved",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graphs",
+      "cycles",
+      "counterexample",
+      "disproved"
     ],
     "erdosNumber": 815,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-816",
@@ -13150,17 +13159,20 @@
   },
   {
     "id": "erdos-926",
-    "title": "Erdős Problem #926",
+    "title": "Erdős Problem #926: Turán Number of H_k",
     "slug": "erdos-926",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that\\[(n;H_k) \\ll_k n^{3/2},\\]where ... is the graph on vertices ..., where ... is adjacent to all ... an...",
-    "status": "pending",
+    "description": "For k ≥ 4, is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph with central vertex x adjacent to k vertices y_1,...,y_k, and (k choose 2) vertices z_ij each adjacent to a unique pair y_i, y_j? Answer: YES. Proved by Füredi (1991) with bound (kn)^(3/2), improved by Alon-Krivelevich-Sudakov (2003) to k·n^(3/2).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "turan-number",
+      "probabilistic-method"
     ],
     "erdosNumber": 926,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-927",

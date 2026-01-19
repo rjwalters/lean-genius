@@ -7,7 +7,7 @@
     "author": "Erdős & Purdy (conjecture), Xichuan (disproof)",
     "sourceUrl": "https://erdosproblems.com/105",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos105Problem.lean",
     "tags": [
       "discrete-geometry",
@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "disproved",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 105,
     "erdosUrl": "https://erdosproblems.com/105",
     "erdosProblemStatus": "solved",
@@ -44,15 +44,7 @@
       "$50 prize was awarded for the disproof"
     ]
   },
-  "sections": [
-    {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 34,
-      "endLine": 35,
-      "summary": "The current proof is a placeholder (erdos_105 : True). The original conjecture was DISPROVED by Xichuan."
-    }
-  ],
+  "sections": [],
   "conclusion": {
     "summary": "Erdős Problem #105 (Erdős-Purdy conjecture) asked whether n-3 obstacle points can block all rich lines through n points. DISPROVED by Xichuan with explicit counterexamples. The exact threshold between cn and n-3 where the statement transitions from true to false remains open.",
     "implications": "**Theoretical Significance**\n\n1. **Incidence Geometry**: Reveals limits of 'rich line' existence theorems\n\n2. **Szemerédi-Trotter**: The constant in cn is important - near-linear obstacles can block\n\n3. **Combinatorial Geometry**: Shows careful constructions can defeat natural conjectures\n\n4. **Open Threshold**: The exact transition point is an interesting structural question",
