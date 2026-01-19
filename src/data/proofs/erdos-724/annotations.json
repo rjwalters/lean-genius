@@ -1,1 +1,184 @@
-[]
+[
+  {
+    "id": "ann-e724-header",
+    "proofId": "erdos-724",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #724: Mutually Orthogonal Latin Squares**\n\nThe problem asks about the growth rate of f(n), the maximum number of mutually orthogonal Latin squares (MOLS) of order n.\n\n**The Question:**\nIs f(n) ≫ n^(1/2)?\n\n**Status:** OPEN\n\n**Progress:**\n- Chowla, Erdős, Straus (1960): f(n) ≫ n^(1/91)\n- Wilson (1974): f(n) ≫ n^(1/17)\n- Beth (1983): f(n) ≫ n^(1/14.8) (current best)\n\nThe gap between the best known exponent (~0.068) and the conjectured exponent (0.5) is substantial.",
+    "mathContext": "Latin squares have been studied since Euler's 36 officers problem (1782). The study of MOLS connects to finite geometry, coding theory, and experimental design.",
+    "significance": "critical",
+    "relatedConcepts": ["Latin squares", "Orthogonality", "Combinatorics"]
+  },
+  {
+    "id": "ann-e724-latin-square",
+    "proofId": "erdos-724",
+    "range": { "startLine": 55, "endLine": 67 },
+    "type": "definition",
+    "title": "Latin Square Definition",
+    "content": "**IsLatinSquare:**\n\nA Latin square of order n is an n×n array filled with n different symbols such that each symbol appears exactly once in each row and exactly once in each column.\n\n**Formal Definition:**\n```lean\ndef IsLatinSquare {n : ℕ} (L : Fin n → Fin n → Fin n) : Prop :=\n  (∀ i, Function.Bijective (L i)) ∧\n  (∀ j, Function.Bijective (fun i => L i j))\n```\n\n**Examples:**\n- The standard addition table modulo n is a Latin square\n- Any group's Cayley table is a Latin square",
+    "mathContext": "The term 'Latin square' comes from Euler's use of Latin letters to fill the squares. The constraint ensures that the array represents a quasigroup operation.",
+    "significance": "critical",
+    "relatedConcepts": ["Permutations", "Quasigroups", "Sudoku"]
+  },
+  {
+    "id": "ann-e724-orthogonality",
+    "proofId": "erdos-724",
+    "range": { "startLine": 76, "endLine": 88 },
+    "type": "definition",
+    "title": "Orthogonal Latin Squares",
+    "content": "**AreOrthogonal:**\n\nTwo Latin squares L and M of order n are orthogonal if, when superimposed, every ordered pair (L[i,j], M[i,j]) appears exactly once.\n\n**Formal Definition:**\n```lean\ndef AreOrthogonal {n : ℕ} (L M : Fin n → Fin n → Fin n) : Prop :=\n  Function.Bijective (fun ij => (L ij.1 ij.2, M ij.1 ij.2))\n```\n\n**Visualization:**\nFor n=3, superimposing two orthogonal squares gives 9 distinct pairs (0,0), (0,1), ..., (2,2).\n\n**MutuallyOrthogonal:**\nA set of Latin squares is mutually orthogonal if every pair in the set is orthogonal.",
+    "mathContext": "The superposition of orthogonal Latin squares is called a Graeco-Latin square, from Euler's notation using Greek and Latin letters.",
+    "significance": "critical",
+    "relatedConcepts": ["Graeco-Latin squares", "Superposition", "Bijectivity"]
+  },
+  {
+    "id": "ann-e724-mols-function",
+    "proofId": "erdos-724",
+    "range": { "startLine": 96, "endLine": 110 },
+    "type": "definition",
+    "title": "The MOLS Function f(n)",
+    "content": "**maxMOLS (f(n)):**\n\nThe maximum number of mutually orthogonal Latin squares of order n.\n\n**Key Values:**\n- f(1) = ∞ (trivially, any 1×1 squares are MOLS)\n- f(2) = 1 (no pair of orthogonal 2×2 squares exists)\n- f(p) = p - 1 for any prime p\n- f(p^k) = p^k - 1 for any prime power\n- f(6) = 1 (Euler's conjecture was correct for n=6)\n- f(10) < 9 (proved by computer search)\n\n**Definition:**\n```lean\nnoncomputable def maxMOLS (n : ℕ) : ℕ∞ :=\n  ⨆ (S : Finset ...) (hS : MutuallyOrthogonal S), S.card\n```",
+    "mathContext": "The function f(n) is also denoted N(n) in some literature. It equals n-1 precisely when a projective plane of order n exists.",
+    "significance": "critical",
+    "relatedConcepts": ["Supremum", "Projective planes", "Prime powers"]
+  },
+  {
+    "id": "ann-e724-upper-bound",
+    "proofId": "erdos-724",
+    "range": { "startLine": 119, "endLine": 126 },
+    "type": "axiom",
+    "title": "Upper Bound f(n) ≤ n-1",
+    "content": "**mols_upper_bound:**\n\nFor all n ≥ 2, the maximum number of MOLS is at most n - 1.\n\n```lean\naxiom mols_upper_bound (n : ℕ) (hn : n ≥ 2) : f(n) ≤ n - 1\n```\n\n**Why n-1?**\nGiven any Latin square L, we can construct at most n-1 other squares orthogonal to it and to each other. This follows from counting the constraints on the first row when we fix the first column.",
+    "mathContext": "This bound is achieved when n is a prime power, via constructions using finite field arithmetic.",
+    "significance": "critical",
+    "relatedConcepts": ["Projective planes", "Affine planes", "Finite fields"]
+  },
+  {
+    "id": "ann-e724-prime-power",
+    "proofId": "erdos-724",
+    "range": { "startLine": 128, "endLine": 135 },
+    "type": "axiom",
+    "title": "Prime Power Theorem",
+    "content": "**mols_prime_power:**\n\nIf n = p^k for a prime p and k ≥ 1, then f(n) = n - 1.\n\n```lean\naxiom mols_prime_power (p k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :\n    f(p ^ k) = p ^ k - 1\n```\n\n**Construction:**\nUsing the finite field GF(p^k), define L_a[i,j] = a·i + j where a ranges over the p^k - 1 nonzero elements. These p^k - 1 squares are mutually orthogonal.",
+    "mathContext": "This construction is equivalent to building an affine plane from a vector space over the finite field.",
+    "significance": "key",
+    "relatedConcepts": ["Finite fields", "Vector spaces", "Affine planes"]
+  },
+  {
+    "id": "ann-e724-bose-parker-shrikhande",
+    "proofId": "erdos-724",
+    "range": { "startLine": 137, "endLine": 144 },
+    "type": "axiom",
+    "title": "Bose-Parker-Shrikhande Theorem",
+    "content": "**bose_parker_shrikhande:**\n\nFor all n ≥ 7, there exist at least 2 mutually orthogonal Latin squares of order n.\n\n```lean\naxiom bose_parker_shrikhande (n : ℕ) (hn : n ≥ 7) : f(n) ≥ 2\n```\n\n**Historical Significance:**\nThis 1960 result disproved Euler's famous conjecture from 1782 that f(n) = 1 for n ≡ 2 (mod 4). The disproof was a major event in combinatorics, reported in the New York Times.",
+    "mathContext": "Euler's conjecture was based on the observation that no pair of orthogonal Latin squares exists for n=2 or n=6. The cases n=2 and n=6 remain the only orders with f(n)=1.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's conjecture", "36 officers problem"]
+  },
+  {
+    "id": "ann-e724-special-cases",
+    "proofId": "erdos-724",
+    "range": { "startLine": 146, "endLine": 152 },
+    "type": "axiom",
+    "title": "Special Cases: f(2)=1 and f(6)=1",
+    "content": "**f_two and f_six:**\n\nThe only orders n with f(n) = 1 are n = 2 and n = 6.\n\n```lean\naxiom f_two : f(2) = 1\naxiom f_six : f(6) = 1\n```\n\n**For n=2:**\nA simple counting argument shows no pair of orthogonal 2×2 Latin squares can exist.\n\n**For n=6:**\nThis is the famous '36 officers problem' posed by Euler. The impossibility was proved in the 1900s using counting arguments.",
+    "significance": "key",
+    "relatedConcepts": ["36 officers problem", "Order 6"]
+  },
+  {
+    "id": "ann-e724-chowla-erdos-straus",
+    "proofId": "erdos-724",
+    "range": { "startLine": 161, "endLine": 168 },
+    "type": "axiom",
+    "title": "Chowla-Erdős-Straus Bound",
+    "content": "**chowla_erdos_straus:**\n\nFor sufficiently large n, f(n) ≥ C · n^(1/91) for some constant C > 0.\n\nThis was the first polynomial lower bound on f(n), established in 1960.\n\n```lean\naxiom chowla_erdos_straus : ∃ C : ℝ, C > 0 ∧\n    ∀ n : ℕ, n ≥ 2 → f(n) ≥ C * n ^ (1/91)\n```\n\n**Method:**\nThe proof uses prime number theory and constructions based on prime factorizations.",
+    "mathContext": "The exponent 1/91 seems arbitrary but comes from the analysis of how primes are distributed in factorizations.",
+    "significance": "key",
+    "relatedConcepts": ["Prime factorization", "Asymptotic bounds"]
+  },
+  {
+    "id": "ann-e724-wilson",
+    "proofId": "erdos-724",
+    "range": { "startLine": 170, "endLine": 175 },
+    "type": "axiom",
+    "title": "Wilson's Improvement",
+    "content": "**wilson_1974:**\n\nWilson improved the exponent from 1/91 to 1/17 in 1974.\n\n```lean\naxiom wilson_1974 : ∃ C : ℝ, C > 0 ∧\n    ∀ n : ℕ, n ≥ 2 → f(n) ≥ C * n ^ (1/17)\n```\n\n**Improvement Factor:**\n1/17 ≈ 0.059 vs 1/91 ≈ 0.011, a 5× improvement in the exponent.",
+    "significance": "supporting",
+    "relatedConcepts": ["Asymptotic improvements"]
+  },
+  {
+    "id": "ann-e724-beth",
+    "proofId": "erdos-724",
+    "range": { "startLine": 177, "endLine": 184 },
+    "type": "axiom",
+    "title": "Beth's Improvement (Current Best)",
+    "content": "**beth_1983:**\n\nBeth improved the lower bound exponent to 1/14.8 in 1983. This remains the best known result.\n\n```lean\naxiom beth_1983 : ∃ C : ℝ, C > 0 ∧\n    ∀ n : ℕ, n ≥ 2 → f(n) ≥ C * n ^ (1/14.8)\n```\n\n**The Gap:**\nEven this best known exponent of ≈0.068 is far from the conjectured 0.5.\n\nNo further improvements have been made in over 40 years.",
+    "mathContext": "Beth's method uses sieve techniques (Siebverfahren) to improve the counting arguments.",
+    "significance": "critical",
+    "relatedConcepts": ["Sieve methods", "Current state of the art"]
+  },
+  {
+    "id": "ann-e724-conjecture",
+    "proofId": "erdos-724",
+    "range": { "startLine": 192, "endLine": 205 },
+    "type": "definition",
+    "title": "Erdős Conjecture Statement",
+    "content": "**erdos_724_conjecture:**\n\nThe main open problem: does f(n) grow at least as fast as n^(1/2)?\n\n```lean\ndef erdos_724_conjecture : Prop :=\n  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → f(n) ≥ C * n ^ (1/2)\n```\n\n**The Gap:**\n- Best known exponent: 1/14.8 ≈ 0.068\n- Conjectured exponent: 1/2 = 0.5\n- Ratio: about 7× difference\n\nClosing this gap would be a major breakthrough in combinatorics.",
+    "mathContext": "The exponent 1/2 is natural because for prime powers f(n) = n-1 ≈ n, so the question is how bad non-prime-powers can be.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Asymptotic growth"]
+  },
+  {
+    "id": "ann-e724-example-order-3",
+    "proofId": "erdos-724",
+    "range": { "startLine": 211, "endLine": 230 },
+    "type": "theorem",
+    "title": "Example: MOLS of Order 3",
+    "content": "**latinSquare3_L and latinSquare3_M:**\n\nExplicit construction of two orthogonal Latin squares of order 3.\n\n**L (addition mod 3):**\n```\n0 1 2\n1 2 0\n2 0 1\n```\n\n**M (2×row + col mod 3):**\n```\n0 1 2\n2 0 1\n1 2 0\n```\n\nSuperimposing gives all 9 pairs: (0,0), (1,1), (2,2), (1,2), (2,0), (0,1), (2,1), (0,2), (1,0).\n\nSince 3 is prime, we have f(3) = 3 - 1 = 2.",
+    "significance": "key",
+    "relatedConcepts": ["Concrete constructions", "Prime case"]
+  },
+  {
+    "id": "ann-e724-projective-plane",
+    "proofId": "erdos-724",
+    "range": { "startLine": 251, "endLine": 266 },
+    "type": "axiom",
+    "title": "Projective Plane Connection",
+    "content": "**mols_projective_plane_equiv:**\n\nThe maximum f(n) = n - 1 is achieved if and only if a projective plane of order n exists.\n\n**Known Results:**\n- Projective planes exist for all prime powers\n- No projective plane of order 10 (Lam-Thiel-Swiercz, 1989)\n- Status unknown for n = 12, 15, 18, ...\n\n```lean\naxiom mols_projective_plane_equiv (n : ℕ) (hn : n ≥ 2) :\n    f(n) = n - 1 ↔ ∃ (ProjectivePlane : Type), True\n```\n\n**f_ten_lt_nine:**\nThe famous computer proof that no projective plane of order 10 exists implies f(10) < 9.",
+    "mathContext": "The equivalence goes through affine planes: n-1 MOLS ↔ affine plane of order n ↔ projective plane of order n.",
+    "significance": "key",
+    "relatedConcepts": ["Projective planes", "Affine planes", "Order 10"]
+  },
+  {
+    "id": "ann-e724-macneish",
+    "proofId": "erdos-724",
+    "range": { "startLine": 275, "endLine": 283 },
+    "type": "axiom",
+    "title": "MacNeish's Conjecture",
+    "content": "**MacNeish's Bound:**\n\nMacNeish conjectured that f(n) equals the minimum of p_i^{a_i} - 1 over the prime power factorization n = ∏p_i^{a_i}.\n\n**Status:** DISPROVED\n\nWhile MacNeish's formula gives a valid lower bound (using direct products), it is not tight. The true behavior of f(n) is more complex.\n\n```lean\naxiom macneish_lower_bound (n : ℕ) (hn : n ≥ 2) :\n    ∃ m : ℕ, m ≥ 1 ∧ f(n) ≥ m\n```",
+    "significance": "supporting",
+    "relatedConcepts": ["Direct products", "Lower bounds"]
+  },
+  {
+    "id": "ann-e724-status-theorem",
+    "proofId": "erdos-724",
+    "range": { "startLine": 305, "endLine": 310 },
+    "type": "theorem",
+    "title": "Summary of Known Results",
+    "content": "**erdos_724_status:**\n\nCombines the main established results about f(n):\n\n```lean\ntheorem erdos_724_status :\n    (∀ n, n ≥ 2 → f(n) ≤ n - 1) ∧\n    (∀ p k, Nat.Prime p → k ≥ 1 → f(p^k) = p^k - 1) ∧\n    (∀ n, n ≥ 7 → f(n) ≥ 2)\n```\n\n1. Upper bound: f(n) ≤ n - 1\n2. Prime powers achieve equality: f(p^k) = p^k - 1\n3. Bose-Parker-Shrikhande: f(n) ≥ 2 for n ≥ 7",
+    "significance": "key",
+    "relatedConcepts": ["Summary theorems", "Known results"]
+  },
+  {
+    "id": "ann-e724-exponent-gap",
+    "proofId": "erdos-724",
+    "range": { "startLine": 320, "endLine": 326 },
+    "type": "theorem",
+    "title": "The Exponent Gap",
+    "content": "**exponent_gap:**\n\nA simple verification that the best known exponent is far from the conjectured one.\n\n```lean\ntheorem exponent_gap :\n    (1 : ℝ) / 14.8 < (1 : ℝ) / 2 := by norm_num\n```\n\n**Numerical values:**\n- Best known: 1/14.8 ≈ 0.068\n- Conjectured: 1/2 = 0.5\n- Gap: about 7× difference\n\nThis gap has remained open for over 40 years since Beth's 1983 result.",
+    "mathContext": "Closing this gap would require fundamentally new techniques, as the current sieve-based methods seem to have reached their limits.",
+    "significance": "key",
+    "relatedConcepts": ["Open gaps", "Research frontiers"]
+  }
+]
