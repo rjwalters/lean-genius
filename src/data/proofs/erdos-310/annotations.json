@@ -1,1 +1,189 @@
-[]
+[
+  {
+    "id": "ann-e310-header",
+    "proofId": "erdos-310",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #310: Unit Fractions from Dense Subsets**\n\nGiven a subset A of {1,...,N} with density at least alpha (meaning |A| >= alpha*N), can we always find a subset S of A such that the sum of 1/n for n in S equals a rational a/b where the denominator b is bounded by a constant depending only on alpha?\n\n**Answer: YES**\n\nLiu and Sawhney (2024) proved this affirmatively, with the optimal bound b <= exp(O(1/alpha)).",
+    "mathContext": "This problem connects Egyptian fraction theory (representing rationals as sums of distinct unit fractions) with density arguments in combinatorial number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Density arguments", "Unit fractions"]
+  },
+  {
+    "id": "ann-e310-unit-fraction-sum",
+    "proofId": "erdos-310",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "definition",
+    "title": "Unit Fraction Sum",
+    "content": "**unitFractionSum:**\n\nThe sum of unit fractions 1/n for n in a finite set S of positive integers.\n\n**Definition:**\n```lean\ndef unitFractionSum (S : Finset N) : Q :=\n  sum over n in S of (if n > 0 then 1/n else 0)\n```\n\nThis is the core quantity in Egyptian fraction problems.",
+    "mathContext": "Unit fractions 1/n are also called Egyptian fractions because ancient Egyptians represented all fractions this way.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Rational arithmetic", "Finset.sum"]
+  },
+  {
+    "id": "ann-e310-is-dense",
+    "proofId": "erdos-310",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "definition",
+    "title": "Dense Subset Property",
+    "content": "**isDense:**\n\nA subset A of {1,...,N} is alpha-dense if |A| >= alpha*N.\n\n**Definition:**\n```lean\ndef isDense (A : Finset N) (N : N) (alpha : Q) : Prop :=\n  A is subset of {1,...,N} and\n  |A| >= alpha * N\n```\n\nThe parameter alpha represents the density: alpha = 1 means A = {1,...,N}, alpha = 1/2 means A contains at least half the elements.",
+    "mathContext": "Density conditions are fundamental in additive combinatorics and number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Density", "Subset cardinality", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e310-bounded-denom",
+    "proofId": "erdos-310",
+    "range": { "startLine": 56, "endLine": 62 },
+    "type": "definition",
+    "title": "Bounded Denominator Property",
+    "content": "**hasBoundedDenom:**\n\nA rational a/b has bounded denominator if b <= C for some constant C.\n\n**Definition:**\n```lean\ndef hasBoundedDenom (q : Q) (bound : N) : Prop :=\n  q.den <= bound and q.num.natAbs <= q.den\n```\n\nThe key question is whether C can depend only on alpha, not on N.",
+    "significance": "key",
+    "relatedConcepts": ["Rational arithmetic", "Denominator bounds"]
+  },
+  {
+    "id": "ann-e310-conjecture",
+    "proofId": "erdos-310",
+    "range": { "startLine": 71, "endLine": 82 },
+    "type": "definition",
+    "title": "Erdos-Graham Conjecture",
+    "content": "**erdosGrahamConjecture:**\n\nThe formal statement of Erdos Problem #310:\n\nFor any alpha > 0, there exists a constant C(alpha) such that for any N and any alpha-dense A in {1,...,N}, there exists S in A with unit fraction sum a/b where a <= b <= C(alpha).\n\n**Statement:**\n```lean\ndef erdosGrahamConjecture : Prop :=\n  for all alpha > 0,\n  exists C > 0,\n  for all N > 0,\n  for all A that is alpha-dense,\n  exists S subset A with bounded denominator sum\n```",
+    "mathContext": "This conjecture appeared in Erdos and Graham's influential 1980 book on problems in combinatorial number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdos problems", "Unit fractions", "Density methods"]
+  },
+  {
+    "id": "ann-e310-liu-sawhney",
+    "proofId": "erdos-310",
+    "range": { "startLine": 90, "endLine": 107 },
+    "type": "axiom",
+    "title": "Liu-Sawhney Theorem",
+    "content": "**liu_sawhney_theorem:**\n\nThe 2024 resolution of Erdos #310 with quantitative bounds.\n\n**Statement:**\nFor 0 < alpha <= 1/2 and any alpha-dense A, there exists S subset A with:\n- S is nonempty\n- unit fraction sum of S has denominator <= exp(O(1/alpha))\n\n**Key insight:** Liu and Sawhney observed that Bloom's 2021 density result on integers representable as unit fraction sums implies this theorem.",
+    "mathContext": "The bound exp(O(1/alpha)) is optimal - they also proved lower bounds showing this cannot be improved.",
+    "significance": "critical",
+    "relatedConcepts": ["Bloom's theorem", "Optimal bounds", "Unit fractions"]
+  },
+  {
+    "id": "ann-e310-bloom",
+    "proofId": "erdos-310",
+    "range": { "startLine": 109, "endLine": 121 },
+    "type": "axiom",
+    "title": "Bloom's Density Theorem",
+    "content": "**bloom_unit_fraction_density:**\n\nThe set of integers that can be written as a sum of distinct unit fractions summing to 1 has positive density.\n\n**Statement:**\nThere exists delta > 0 such that for all N, there are at least delta * N integers up to N that can be represented as such sums.\n\nThis 2021 breakthrough was the foundation for Liu-Sawhney's resolution of Erdos #310.",
+    "mathContext": "Bloom's result answered a long-standing question about the distribution of numbers representable as Egyptian fractions summing to 1.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Density", "Number representation"]
+  },
+  {
+    "id": "ann-e310-classic-egyptian",
+    "proofId": "erdos-310",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "theorem",
+    "title": "Classic Egyptian Fraction",
+    "content": "**classic_egyptian_one:**\n\n1/2 + 1/3 + 1/6 = 1\n\nThis is the most famous Egyptian fraction representation of 1, known since antiquity.\n\nVerified computationally using norm_num.",
+    "significance": "supporting",
+    "relatedConcepts": ["Egyptian fractions", "Unit fraction sums"]
+  },
+  {
+    "id": "ann-e310-examples",
+    "proofId": "erdos-310",
+    "range": { "startLine": 133, "endLine": 147 },
+    "type": "theorem",
+    "title": "Unit Fraction Sum Examples",
+    "content": "**Unit fraction sum verifications:**\n\n- 1/2 + 1/4 = 3/4\n- 1/3 + 1/6 = 1/2\n- 1/2 + 1/3 = 5/6\n- 1/4 + 1/5 + 1/20 = 1/2\n\nThese demonstrate various ways to achieve rational sums from unit fractions, all verified by norm_num.",
+    "significance": "supporting",
+    "relatedConcepts": ["Rational arithmetic", "Unit fractions"]
+  },
+  {
+    "id": "ann-e310-full-density",
+    "proofId": "erdos-310",
+    "range": { "startLine": 155, "endLine": 164 },
+    "type": "theorem",
+    "title": "Full Density Trivial Case",
+    "content": "**full_density_trivial:**\n\nIf A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.\n\nThis shows the problem is trivial for density 1. The interesting case is when alpha < 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e310-sharpness",
+    "proofId": "erdos-310",
+    "range": { "startLine": 186, "endLine": 197 },
+    "type": "axiom",
+    "title": "Sharpness of Bounds",
+    "content": "**liu_sawhney_sharpness:**\n\nThe bound b <= exp(O(1/alpha)) is optimal: for any constant C, there exist alpha-dense sets where every subset's unit fraction sum has denominator > C.\n\nThis shows Liu-Sawhney's result is essentially best possible - the exponential dependence on 1/alpha cannot be avoided.",
+    "mathContext": "Optimal bounds in number theory are rare and valuable - they give complete understanding of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Optimal results"]
+  },
+  {
+    "id": "ann-e310-egyptian-exists",
+    "proofId": "erdos-310",
+    "range": { "startLine": 206, "endLine": 214 },
+    "type": "axiom",
+    "title": "Egyptian Fraction Existence",
+    "content": "**egyptian_fraction_exists:**\n\nEvery positive rational q can be written as q = sum of 1/n for n in some finite set S of distinct positive integers.\n\nThis classical result is provable by the greedy algorithm: repeatedly subtract the largest unit fraction <= q.",
+    "mathContext": "This explains why Egyptian fractions are of interest - they provide a universal representation system for positive rationals.",
+    "significance": "key",
+    "relatedConcepts": ["Greedy algorithm", "Rational representation"]
+  },
+  {
+    "id": "ann-e310-erdos-straus",
+    "proofId": "erdos-310",
+    "range": { "startLine": 231, "endLine": 240 },
+    "type": "definition",
+    "title": "Erdos-Straus Conjecture",
+    "content": "**erdosStrausConjecture:**\n\nFor all n >= 2, 4/n = 1/a + 1/b + 1/c for some positive integers a, b, c.\n\nThis famous conjecture remains OPEN, though verified computationally for n <= 10^17.\n\nIt's related to Erdos #310 in studying which rationals have nice unit fraction representations.",
+    "mathContext": "Despite extensive computational verification, no proof is known. The conjecture has resisted all attacks since 1948.",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Unit fractions", "Number theory"]
+  },
+  {
+    "id": "ann-e310-straus-examples",
+    "proofId": "erdos-310",
+    "range": { "startLine": 242, "endLine": 252 },
+    "type": "theorem",
+    "title": "Erdos-Straus Examples",
+    "content": "**Verified cases of Erdos-Straus:**\n\n- n = 3: 4/3 = 1/1 + 1/3\n- n = 5: 4/5 = 1/2 + 1/4 + 1/20\n\nThese demonstrate the conjecture for small values. The proofs use norm_num for computational verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e310-main-theorem",
+    "proofId": "erdos-310",
+    "range": { "startLine": 260, "endLine": 290 },
+    "type": "theorem",
+    "title": "Main Theorem: Erdos 310",
+    "content": "**erdos_310:**\n\n```lean\ntheorem erdos_310 : erdosGrahamConjecture\n```\n\n**Proof outline:**\n1. For alpha <= 1/2: Apply liu_sawhney_theorem directly\n2. For alpha > 1/2: The set is more than half full, so it's also (1/2)-dense; apply liu_sawhney_theorem with alpha' = 1/2\n\nThe answer to Erdos's question is YES.",
+    "mathContext": "The reduction from arbitrary alpha > 1/2 to alpha = 1/2 is a simple monotonicity argument.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem resolution", "Case analysis"]
+  },
+  {
+    "id": "ann-e310-answer",
+    "proofId": "erdos-310",
+    "range": { "startLine": 292, "endLine": 295 },
+    "type": "theorem",
+    "title": "The Answer is YES",
+    "content": "**erdos_310_answer:**\n\nExistential witness that erdosGrahamConjecture holds.\n\n```lean\ntheorem erdos_310_answer :\n  exists _ : erdosGrahamConjecture, True :=\n  (erdos_310, trivial)\n```\n\nThis packages the result as an existence statement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e310-croot",
+    "proofId": "erdos-310",
+    "range": { "startLine": 301, "endLine": 312 },
+    "type": "axiom",
+    "title": "Croot's Theorem",
+    "content": "**croot_theorem:**\n\nEvery set of positive integers with positive density contains a finite subset whose reciprocals sum to 1.\n\nThis is a strong precursor to Bloom's work, showing that density alone guarantees the existence of unit fraction sums equal to 1.",
+    "mathContext": "Croot's work established foundational results connecting density to Egyptian fraction representations.",
+    "significance": "key",
+    "relatedConcepts": ["Density", "Egyptian fractions", "Sum equals 1"]
+  },
+  {
+    "id": "ann-e310-summary",
+    "proofId": "erdos-310",
+    "range": { "startLine": 314, "endLine": 333 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_310_summary:**\n\nCombines the main results:\n\n1. erdosGrahamConjecture holds (the main theorem)\n2. For any alpha in (0, 1/2], there exists C such that alpha-dense sets have subsets with bounded denominator unit fraction sums\n\nThis provides a complete summary of what was proved about Erdos #310.",
+    "significance": "key"
+  }
+]
