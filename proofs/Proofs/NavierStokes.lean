@@ -6,14 +6,14 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Data.Complex.ExponentialBounds
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Topology.Order.Basic
-import Mathlib.Data.Real.Pi.Bounds
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.LinearAlgebra.Matrix.Symmetric
@@ -143,7 +143,7 @@ def c_FK : ℝ := (1 - Real.exp (-2)) * Real.pi^2 / 4
 theorem c_FK_pos : 0 < c_FK := by
   unfold c_FK
   have h1 : Real.exp (-2) < 1 := by
-    calc Real.exp (-2) < Real.exp 0 := Real.exp_lt_exp_of_lt (by norm_num : (-2:ℝ) < 0)
+    calc Real.exp (-2) < Real.exp 0 := Real.exp_strictMono (by norm_num : (-2:ℝ) < 0)
       _ = 1 := Real.exp_zero
   have h2 : 0 < 1 - Real.exp (-2) := by linarith
   positivity
@@ -632,7 +632,7 @@ def κ_gaussian : ℝ := 1 - Real.exp (-2)
 theorem κ_gaussian_pos : 0 < κ_gaussian := by
   unfold κ_gaussian
   have h : Real.exp (-2) < 1 := by
-    calc Real.exp (-2) < Real.exp 0 := Real.exp_lt_exp_of_lt (by norm_num : (-2:ℝ) < 0)
+    calc Real.exp (-2) < Real.exp 0 := Real.exp_strictMono (by norm_num : (-2:ℝ) < 0)
       _ = 1 := Real.exp_zero
   linarith
 
@@ -706,7 +706,7 @@ theorem exp_ten_gt_20000 : Real.exp (10:ℝ) > 20000 := by
   -- We show: exp(1)^10 > 2.7182818283^10 > 20000
   -- First: exp(1)^10 > 2.7182818283^10
   have hpow_exp : Real.exp 1 ^ 10 > 2.7182818283 ^ 10 := by
-    apply pow_lt_pow_left he (by norm_num) (by norm_num)
+    gcongr
   -- Second: 2.7182818283^10 > 20000
   -- Using (2718/1000)^10 = 2718^10/10^30 and showing 2718^10 > 20000 * 10^30
   have hpow_num : (2.7182818283 : ℝ) ^ 10 > 20000 := by
@@ -717,7 +717,7 @@ theorem exp_ten_gt_20000 : Real.exp (10:ℝ) > 20000 := by
     rw [div_pow]
     -- Need: 27182818283^10 / 10000000000^10 > 20000
     -- i.e., 27182818283^10 > 20000 * 10^100
-    rw [gt_iff_lt, lt_div_iff (by positivity)]
+    rw [gt_iff_lt, lt_div_iff₀ (by positivity)]
     -- 20000 * 10000000000^10 < 27182818283^10
     norm_num
   linarith
@@ -769,7 +769,7 @@ lemma ratio_le_one (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) (x₀ :
     ratio sol t x₀ ≤ 1 := by
   have hEpos : 0 < sol.E t := sol.E_pos t ht
   have hEloc_le := E_loc_le_E sol t x₀ (diffusion_scale sol.ν (sol.Ω t))
-  exact div_le_one_of_le hEloc_le (le_of_lt hEpos)
+  exact div_le_one_of_le₀ hEloc_le (le_of_lt hEpos)
 
 
 /-- Range bounded above -/
@@ -967,7 +967,9 @@ theorem K_ball_suffices (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
   unfold minConcentrationForK at h_avg
   have hct_pos : criticalThreshold > 0 := by unfold criticalThreshold; positivity
   calc thetaAt sol t ≥ criticalThreshold * K * (1 + ε) / K := h_avg
-    _ = criticalThreshold * (1 + ε) := by field_simp; ring
+    _ = criticalThreshold * (1 + ε) := by
+      have hK' : (K : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hK)
+      field_simp [hK']
     _ > criticalThreshold := by nlinarith [hct_pos, hε]
 
 

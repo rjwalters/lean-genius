@@ -2,14 +2,18 @@ import Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass
 import Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Basic
 import Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Point
 import Mathlib.NumberTheory.LSeries.Basic
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib.NumberTheory.ArithmeticFunction.Defs
+import Mathlib.NumberTheory.ArithmeticFunction.Misc
+import Mathlib.NumberTheory.ArithmeticFunction.Moebius
+import Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt
+import Mathlib.NumberTheory.ArithmeticFunction.Zeta
 import Mathlib.Algebra.Group.Subgroup.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Data.Complex.ExponentialBounds
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Topology.Order.Basic
 import Mathlib.Tactic
 
@@ -301,7 +305,7 @@ structure ModularForm (k N : ℕ) where
     It was proved for semistable curves by Wiles (1995), completing FLT,
     and extended to all E/ℚ by 2001. -/
 axiom modularity_theorem (E : EllipticCurveQ) :
-  ∃ (f : ModularForm 2 (conductor E)), True
+  ∃ (_ : ModularForm 2 (conductor E)), True
 
 /-- Consequence: L(E, s) has analytic continuation to all of ℂ. -/
 theorem LFunction_analytic_continuation (_E : EllipticCurveQ) :
@@ -618,7 +622,7 @@ def congruentNumberCurve (n : ℕ) (hn : n > 0) : EllipticCurveQ where
   a := -(n : ℚ)^2
   b := 0
   discriminant_ne_zero := by
-    simp only [ne_eq, mul_zero, add_zero]
+    simp only [ne_eq]
     -- 4 * (-n²)³ + 27 * 0² = -4n⁶ ≠ 0
     ring_nf
     simp only [neg_ne_zero]
