@@ -2604,17 +2604,20 @@
   },
   {
     "id": "erdos-1122",
-    "title": "Erdős Problem #1122",
+    "title": "Erdős Problem #1122: Additive Functions and Monotonicity Defects",
     "slug": "erdos-1122",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive function (i.e. ... whenever ...). Let\\[A=\\{ n \\geq 1: f(n+1)< f(n)\\}.\\]If ... then must ... for some ....",
-    "status": "pending",
+    "description": "Let f: ℕ → ℝ be additive. If the set A = {n : f(n+1) < f(n)} has |A ∩ [1,X]| = o(X), must f(n) = c·log(n)?",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-functions",
+      "analytic-number-theory"
     ],
     "erdosNumber": 1122,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1123",

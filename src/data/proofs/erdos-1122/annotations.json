@@ -1,1 +1,169 @@
-[]
+[
+  {
+    "id": "ann-e1122-header",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1122: Additive Functions and Monotonicity Defects**\n\nLet f: ℕ → ℝ be additive (f(ab) = f(a) + f(b) when gcd(a,b) = 1).\n\nDefine A = {n ≥ 1 : f(n+1) < f(n)} (monotonicity defects).\n\n**Conjecture:** If |A ∩ [1,X]| = o(X), must f(n) = c·log(n)?\n\n**Status:** OPEN - partial progress by Mangerel (2022)",
+    "mathContext": "From Erdős's 1946 work on additive functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Additive functions", "Monotonicity", "Logarithms"]
+  },
+  {
+    "id": "ann-e1122-additive",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 48, "endLine": 49 },
+    "type": "definition",
+    "title": "Additive Function",
+    "content": "**IsAdditive:**\n\nf: ℕ → ℝ is additive if f(ab) = f(a) + f(b) whenever gcd(a,b) = 1.\n\n```lean\ndef IsAdditive (f : ℕ → ℝ) : Prop :=\n  ∀ a b : ℕ, a ≥ 1 → b ≥ 1 → Nat.gcd a b = 1 → f (a * b) = f a + f b\n```\n\nExamples: log(n), ω(n) (distinct prime factors), Ω(n) (prime factors with multiplicity).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-completely-additive",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "Completely Additive",
+    "content": "**IsCompletelyAdditive:**\n\nf(ab) = f(a) + f(b) for ALL a, b (not just coprime).\n\n```lean\ndef IsCompletelyAdditive (f : ℕ → ℝ) : Prop :=\n  ∀ a b : ℕ, a ≥ 1 → b ≥ 1 → f (a * b) = f a + f b\n```\n\nThe logarithm is completely additive: log(ab) = log(a) + log(b).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1122-log-additive",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "theorem",
+    "title": "Logarithm is Completely Additive",
+    "content": "**log_completely_additive:**\n\n```lean\ntheorem log_completely_additive : IsCompletelyAdditive (fun n => Real.log n) := by\n  intro a b ha hb\n  simp only\n  rw [Nat.cast_mul]\n  exact Real.log_mul (by positivity) (by positivity)\n```\n\nThis is the fundamental property making log the canonical additive function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1122-defect-set",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 83, "endLine": 84 },
+    "type": "definition",
+    "title": "Monotonicity Defect Set",
+    "content": "**monotonicityDefectSet:**\n\nA = {n ≥ 1 : f(n+1) < f(n)}\n\n```lean\ndef monotonicityDefectSet (f : ℕ → ℝ) : Set ℕ :=\n  {n : ℕ | n ≥ 1 ∧ f (n + 1) < f n}\n```\n\nThis is where f fails to be monotone increasing - the \"defects\" in monotonicity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-defect-count",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "definition",
+    "title": "Defect Counting Function",
+    "content": "**defectCount:**\n\n|A ∩ [1,X]| = number of monotonicity failures up to X.\n\n```lean\nnoncomputable def defectCount (f : ℕ → ℝ) (X : ℕ) : ℕ :=\n  Finset.card (Finset.filter (fun n => n ∈ monotonicityDefectSet f) (Finset.range (X + 1)))\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1122-littleo",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 97, "endLine": 98 },
+    "type": "definition",
+    "title": "Little-o Condition",
+    "content": "**defectIsLittleO:**\n\n|A ∩ [1,X]| = o(X) means defects are asymptotically sparse.\n\n```lean\ndef defectIsLittleO (f : ℕ → ℝ) : Prop :=\n  ∀ ε > 0, ∃ N : ℕ, ∀ X ≥ N, (defectCount f X : ℝ) < ε * X\n```\n\nThis is the key hypothesis in the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-logarithmic-form",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 124, "endLine": 125 },
+    "type": "definition",
+    "title": "Logarithmic Form",
+    "content": "**hasLogarithmicForm:**\n\nf(n) = c·log(n) for some constant c ∈ ℝ.\n\n```lean\ndef hasLogarithmicForm (f : ℕ → ℝ) : Prop :=\n  ∃ c : ℝ, ∀ n : ℕ, n ≥ 1 → f n = c * Real.log n\n```\n\nThe conjecture asks: does sparse defects force this form?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-erdos-empty",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 157, "endLine": 158 },
+    "type": "axiom",
+    "title": "Erdős Empty Defect Theorem",
+    "content": "**erdos_empty_defect:**\n\nIf A = ∅ (f strictly increasing), then f = c·log.\n\n```lean\naxiom erdos_empty_defect (f : ℕ → ℝ) (hf : IsAdditive f) (hempty : hasEmptyDefectSet f) :\n    hasLogarithmicForm f\n```\n\nProof idea: An increasing additive function must be logarithmic.",
+    "mathContext": "Erdős (1946)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-vanishing",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 167, "endLine": 168 },
+    "type": "axiom",
+    "title": "Vanishing Increments Theorem",
+    "content": "**erdos_vanishing_increments:**\n\nIf f(n+1) - f(n) → 0, then f = c·log.\n\n```lean\naxiom erdos_vanishing_increments (f : ℕ → ℝ) (hf : IsAdditive f)\n    (hvanish : incrementsVanish f) : hasLogarithmicForm f\n```\n\nAlso known as Kátai-Wirsing theorem.",
+    "mathContext": "Erdős (1946), also Kátai-Wirsing",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-mangerel-density",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 178, "endLine": 180 },
+    "type": "definition",
+    "title": "Mangerel's Density Condition",
+    "content": "**satisfiesMangerelDensity:**\n\n|A ∩ [1,X]| ≪ X/(log X)^{2+c} for some c > 0.\n\n```lean\ndef satisfiesMangerelDensity (f : ℕ → ℝ) : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧\n    ∀ X : ℕ, X ≥ 2 → (defectCount f X : ℝ) ≤ C * X / (Real.log X)^(2 + c)\n```\n\nThis is stronger than o(X) but weaker than empty.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1122-mangerel-thm",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 195, "endLine": 197 },
+    "type": "axiom",
+    "title": "Mangerel's Theorem (2022)",
+    "content": "**mangerel_2022:**\n\nUnder the density bound and bounded prime values, f = c·log.\n\n```lean\naxiom mangerel_2022 (f : ℕ → ℝ) (hf : IsAdditive f)\n    (hdensity : satisfiesMangerelDensity f) (hbounded : hasBoundedPrimeValues f) :\n    hasLogarithmicForm f\n```\n\nFrom: Ramanujan J. (2022), 1023-1090.",
+    "mathContext": "Alexander Mangerel's 2022 partial progress.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-conjecture",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 207, "endLine": 208 },
+    "type": "definition",
+    "title": "The Conjecture",
+    "content": "**erdos1122Conjecture:**\n\nIf f is additive and |A ∩ [1,X]| = o(X), then f = c·log.\n\n```lean\ndef erdos1122Conjecture : Prop :=\n  ∀ f : ℕ → ℝ, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f\n```\n\n**Status:** OPEN",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-hierarchy",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 248, "endLine": 250 },
+    "type": "definition",
+    "title": "Condition Hierarchy",
+    "content": "**conditionHierarchy:**\n\nempty ⊂ Mangerel density ⊂ o(X) (strictly)\n\n```lean\ndef conditionHierarchy : Prop :=\n  (∀ f : ℕ → ℝ, hasEmptyDefectSet f → satisfiesMangerelDensity f) ∧\n  (∀ f : ℕ → ℝ, satisfiesMangerelDensity f → defectIsLittleO f)\n```\n\nThe conjecture asks: does the result extend all the way to o(X)?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1122-log-example",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 260, "endLine": 266 },
+    "type": "theorem",
+    "title": "Log Has Empty Defect",
+    "content": "**log_has_empty_defect:**\n\nlog(n) is strictly increasing on ℕ⁺, so A = ∅.\n\n```lean\ntheorem log_has_empty_defect : hasEmptyDefectSet (fun n => Real.log n) := by\n  unfold hasEmptyDefectSet monotonicityDefectSet\n  ext n\n  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and, not_lt]\n  intro hn\n  apply Real.log_le_log (by positivity)\n  simp [hn]\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1122-omega",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 272, "endLine": 275 },
+    "type": "definition",
+    "title": "Prime Factors Function ω(n)",
+    "content": "**omega:**\n\nω(n) = number of distinct prime factors.\n\n```lean\ndef omega (n : ℕ) : ℕ := n.primeFactors.card\n```\n\nThis is additive: ω(ab) = ω(a) + ω(b) when gcd(a,b) = 1.\nBut ω is not logarithmic - it grows much slower than log.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1122-summary",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 337, "endLine": 348 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1122_summary:**\n\n```lean\ntheorem erdos_1122_summary :\n    (∀ f : ℕ → ℝ, IsAdditive f → hasEmptyDefectSet f → hasLogarithmicForm f) ∧\n    (∀ f : ℕ → ℝ, IsAdditive f → incrementsVanish f → hasLogarithmicForm f) ∧\n    (∀ f : ℕ → ℝ, IsAdditive f → satisfiesMangerelDensity f →\n      hasBoundedPrimeValues f → hasLogarithmicForm f) := ...\n```\n\nConsolidates the three known positive results.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1122-status",
+    "proofId": "erdos-1122",
+    "range": { "startLine": 357, "endLine": 357 },
+    "type": "axiom",
+    "title": "Problem Status",
+    "content": "**erdos_1122_status:**\n\n**OPEN**\n\n- Empty defect case: SOLVED (Erdős 1946)\n- Vanishing increments: SOLVED (Erdős/Kátai-Wirsing)\n- Mangerel density: SOLVED (Mangerel 2022)\n- General o(X): OPEN\n\nThe gap between X/(log X)^{2+c} and o(X) remains unresolved.",
+    "significance": "critical"
+  }
+]
