@@ -1,1 +1,177 @@
-[]
+[
+  {
+    "id": "ann-e748-header",
+    "proofId": "erdos-748",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #748: The Cameron-Erdős Conjecture**\n\n**Question:** Is f(n) = 2^{(1+o(1))n/2} where f(n) counts sum-free subsets of {1,...,n}?\n\n**Answer: YES**\n\nProved independently by Green (2004) and Sapozhenko (2003).",
+    "mathContext": "A set A is sum-free if a = b + c has no solution with a,b,c ∈ A. The trivial lower bound 2^{n/2} comes from subsets of [n/2, n].",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Additive combinatorics", "Asymptotic enumeration"]
+  },
+  {
+    "id": "ann-e748-sumfree",
+    "proofId": "erdos-748",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "definition",
+    "title": "Sum-Free Set",
+    "content": "**IsSumFree A:**\n\nA set A is sum-free if there are no a, b, c ∈ A with a = b + c.\n\nEquivalently, A ∩ (A + A) = ∅.\n\nExamples: {}, {1}, {2,3}, {4,5,6}, all odd numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e748-sumfree-alt",
+    "proofId": "erdos-748",
+    "range": { "startLine": 57, "endLine": 70 },
+    "type": "theorem",
+    "title": "Equivalent Definition",
+    "content": "**sumFree_iff:**\n\nIsSumFree A ↔ IsSumFree' A\n\nThe two formulations (a ≠ b + c vs b + c ≠ a) are equivalent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e748-counting",
+    "proofId": "erdos-748",
+    "range": { "startLine": 76, "endLine": 87 },
+    "type": "definition",
+    "title": "Counting Function f(n)",
+    "content": "**f(n):**\n\nThe number of sum-free subsets of {1,...,n}.\n\nThis is the central object: how does f(n) grow with n?\n\nOEIS A007865: f(1)=2, f(2)=3, f(3)=6, f(4)=9, f(5)=16, ...",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e748-upperhalf",
+    "proofId": "erdos-748",
+    "range": { "startLine": 93, "endLine": 105 },
+    "type": "theorem",
+    "title": "Upper Half is Sum-Free",
+    "content": "**upperHalf_sumFree:**\n\nAny subset of {n/2+1, ..., n} is sum-free.\n\n**Proof:** If a, b ∈ [n/2+1, n], then a + b ≥ n + 2 > n, so a + b can't be in the set.\n\nThis gives the trivial lower bound f(n) ≥ 2^{n/2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e748-lower",
+    "proofId": "erdos-748",
+    "range": { "startLine": 107, "endLine": 112 },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "**trivial_lower_bound:**\n\nf(n) ≥ 2^{n/2} for n ≥ 2.\n\nThis is the easy direction: there are 2^{n/2} subsets of the upper half, all sum-free.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e748-conjecture",
+    "proofId": "erdos-748",
+    "range": { "startLine": 118, "endLine": 128 },
+    "type": "definition",
+    "title": "The Cameron-Erdős Conjecture",
+    "content": "**cameronErdosConjecture:**\n\nf(n) = 2^{(1+o(1))n/2}\n\nFormal statement: For all ε > 0, for large enough n,\n(1-ε)·n/2 ≤ log₂(f(n)) ≤ (1+ε)·n/2\n\nThis says the trivial lower bound is essentially tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e748-green",
+    "proofId": "erdos-748",
+    "range": { "startLine": 134, "endLine": 139 },
+    "type": "axiom",
+    "title": "Green's Theorem (2004)",
+    "content": "**green_upper_bound:**\n\nf(n) ≪ 2^{n/2}, i.e., f(n) ≤ C · 2^{n/2} for some constant C.\n\nProved in Bull. London Math. Soc. (2004).\n\nThis establishes the upper bound matching the lower bound up to constants.",
+    "mathContext": "Green's proof uses sophisticated container methods and Fourier analysis.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e748-sapozhenko",
+    "proofId": "erdos-748",
+    "range": { "startLine": 141, "endLine": 146 },
+    "type": "axiom",
+    "title": "Sapozhenko's Theorem (2003)",
+    "content": "**sapozhenko_upper_bound:**\n\nSame result as Green, proved independently.\n\nPublished in Dokl. Akad. Nauk (2003).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e748-precise",
+    "proofId": "erdos-748",
+    "range": { "startLine": 148, "endLine": 161 },
+    "type": "axiom",
+    "title": "Precise Asymptotic",
+    "content": "**precise_asymptotic:**\n\nf(n) ~ c_n · 2^{n/2} where c_n depends on parity of n.\n\n- c_even: constant for even n\n- c_odd: constant for odd n\n\nThis is stronger than just f(n) = 2^{(1+o(1))n/2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e748-proved",
+    "proofId": "erdos-748",
+    "range": { "startLine": 163, "endLine": 173 },
+    "type": "theorem",
+    "title": "Conjecture PROVED",
+    "content": "**cameron_erdos_proved:**\n\nThe Cameron-Erdős conjecture is true.\n\nFrom the lower and upper bounds:\n- f(n) ≥ 2^{n/2}\n- f(n) ≤ C · 2^{n/2}\n\nWe get log₂(f(n)) ∈ [n/2, n/2 + O(1)], which is (1+o(1))·n/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e748-empty",
+    "proofId": "erdos-748",
+    "range": { "startLine": 179, "endLine": 184 },
+    "type": "theorem",
+    "title": "Empty Set is Sum-Free",
+    "content": "**empty_sumFree:**\n\nThe empty set is trivially sum-free (no elements to form a sum).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e748-singleton",
+    "proofId": "erdos-748",
+    "range": { "startLine": 186, "endLine": 193 },
+    "type": "theorem",
+    "title": "Singletons are Sum-Free",
+    "content": "**singleton_sumFree:**\n\n{x} is sum-free for x > 0 because x ≠ x + x = 2x.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e748-odds",
+    "proofId": "erdos-748",
+    "range": { "startLine": 195, "endLine": 210 },
+    "type": "theorem",
+    "title": "Odd Numbers are Sum-Free",
+    "content": "**oddNumbers_sumFree:**\n\nThe set of odd numbers in [1,n] is sum-free.\n\n**Proof:** odd + odd = even, but all elements are odd, so no sum can equal an element.\n\nThis gives another family of large sum-free sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e748-structure",
+    "proofId": "erdos-748",
+    "range": { "startLine": 216, "endLine": 229 },
+    "type": "axiom",
+    "title": "Structure Theorem",
+    "content": "**structure_theorem:**\n\nMost sum-free sets are \"essentially\" of two types:\n1. Subsets of [n/2+1, n]\n2. Subsets of odd numbers in [1, n]\n\nGreen's proof shows these two types dominate the count, explaining why f(n) ~ 2^{n/2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e748-schur",
+    "proofId": "erdos-748",
+    "range": { "startLine": 231, "endLine": 238 },
+    "type": "axiom",
+    "title": "Schur Connection",
+    "content": "**schur_connection:**\n\nThe maximum size of a sum-free subset of [1,n] is ⌈n/2⌉.\n\nThis connects to Schur numbers in Ramsey theory: the minimum n such that any r-coloring of [1,n] has a monochromatic sum a = b + c.",
+    "significance": "supporting",
+    "relatedConcepts": ["Schur numbers", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e748-oeis",
+    "proofId": "erdos-748",
+    "range": { "startLine": 244, "endLine": 255 },
+    "type": "concept",
+    "title": "OEIS A007865",
+    "content": "**Small values of f(n):**\n\n- f(1) = 2: {}, {1}\n- f(2) = 3: {}, {1}, {2}\n- f(3) = 6: {}, {1}, {2}, {3}, {1,3}, {2,3}\n- f(4) = 9\n- f(5) = 16\n\nThe sequence grows like 2^{n/2}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e748-summary",
+    "proofId": "erdos-748",
+    "range": { "startLine": 261, "endLine": 285 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_748_summary:**\n\nCombines all main results:\n\n1. Trivial lower bound: f(n) ≥ 2^{n/2}\n2. Green/Sapozhenko upper bound: f(n) ≤ C · 2^{n/2}\n3. Precise asymptotic: f(n) ~ c_n · 2^{n/2}\n\nThe Cameron-Erdős conjecture is PROVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e748-main",
+    "proofId": "erdos-748",
+    "range": { "startLine": 287, "endLine": 290 },
+    "type": "theorem",
+    "title": "Erdős Problem #748: PROVED",
+    "content": "**erdos_748:**\n\nThe main theorem: cameronErdosConjecture holds.\n\nThe number of sum-free subsets of {1,...,n} is 2^{(1+o(1))n/2}.",
+    "significance": "critical"
+  }
+]
