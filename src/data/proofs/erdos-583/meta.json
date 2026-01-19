@@ -1,33 +1,153 @@
 {
   "id": "erdos-583",
-  "title": "Erdős Problem #583",
+  "title": "Erdős Problem #583: Edge-Disjoint Path Partition Conjecture",
   "slug": "erdos-583",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEvery connected graph on ... vertices can be partitioned into at most ... edge-disjoint paths.\n\n\n\nA problem of Erds and Galla...",
+  "description": "Can every connected graph on n vertices be partitioned into at most ⌈n/2⌉ edge-disjoint paths? This Erdős-Gallai conjecture remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős and Gallai (1959)",
     "sourceUrl": "https://erdosproblems.com/583",
-    "date": "",
-    "status": "pending",
+    "date": "1959",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos583Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "path-decomposition",
+      "edge-partition",
+      "combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 583,
     "erdosUrl": "https://erdosproblems.com/583",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Basic simple graph type and operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Connected",
+        "description": "Graph connectivity predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected"
+      },
+      {
+        "theorem": "SimpleGraph.edgeSet",
+        "description": "Edge set of a simple graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for representing edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      }
+    ],
+    "originalContributions": [
+      "Formalized path partition structures in Mathlib's SimpleGraph framework",
+      "Stated Lovász, Chung, Pyber, and Fan theorems as axioms",
+      "Connected Erdős-Gallai conjecture to Hajós cycle conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #583 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEvery connected graph on $n$ vertices can be partitioned into at most $\\lceil n/2\\rceil$ edge-disjoint paths.\n\n\n\nA problem of Erd\\H{o}s and Gallai. Lov\\'{a}sz \\cite{Lo68} proved that every graph on $n$ vertices can be partitioned into at most $\\lfloor n/2\\rfloor$ edge-disjoint paths and cycles, which implies that every graph can be partitioned into at most $n-1$ paths.\n\nChung \\cite{Ch78} proved that every connected graph on $n$ vertices can be partitioned into at most $\\lceil n/2\\rceil$ edge-disjoint trees. Pyber \\cite{Py96} has shown that every connected graph on $n$ vertices can be covered by at most $n/2+O(n^{3/4})$ paths.\n\nIf we drop the edge-disjoint condition then this conjecture was proved by Fan \\cite{Fa02}.\n\nHajos \\cite{Lo68} has conjectured that if $G$ has all degrees even then $G$ can be partitioned into at most $\\lfloor n/2\\rfloor$ edge-disjoint cycles.\n\nSee also [184] for an analogous problem decomposing into edges and cycles and [1017] for decomposing into complete graphs. See also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Ch78] Chung, F. R. K., On partitions of graphs into trees. Discrete Math. (1978), 23-30.\n\n[Fa02] Fan, Genghua, Subgraph coverings and edge switchings. J. Combin. Theory Ser. B (2002), 54-83.\n\n[Lo68] Lov\\'{a}sz, L., On covering of graphs. Theory of Graphs (Proc. Colloq., Tihany, 1966) (1968), 231-236.\n\n[Py96] Pyber, L., Covering the edges of a connected graph by paths. J. Combin. Theory Ser. B (1996), 152-159.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This conjecture was posed by Erdős and Gallai around 1959 and remains one of the oldest open problems in graph decomposition theory. The problem asks whether every connected graph on n vertices can be partitioned into at most ⌈n/2⌉ edge-disjoint paths, where the edges of each path are used exactly once across all paths.\n\nSubstantial progress has been made toward understanding path and cycle decompositions. Lovász (1968) proved that every graph can be partitioned into at most ⌊n/2⌋ edge-disjoint paths and cycles, which implies every graph can be partitioned into at most n-1 paths. Chung (1978) showed that connected graphs can be partitioned into at most ⌈n/2⌉ edge-disjoint trees, and Pyber (1996) proved that connected graphs can be covered by n/2 + O(n^{3/4}) paths.\n\nFan (2002) made a major breakthrough by proving that the conjecture holds if we drop the edge-disjoint requirement—that is, connected graphs can be covered by ⌈n/2⌉ paths (with possible edge overlaps). However, the full edge-disjoint version remains stubbornly open after more than 60 years.",
+    "problemStatement": "Let $G$ be a connected graph on $n$ vertices. The **Erdős-Gallai conjecture** asks: can the edges of $G$ always be partitioned into at most $\\lceil n/2 \\rceil$ edge-disjoint paths?\n\n**Status**: OPEN - This is a falsifiable conjecture that could potentially be disproven by exhibiting a counterexample.",
+    "proofStrategy": "The formalization defines the key structures for path partitions in Mathlib's SimpleGraph framework: GraphPath (sequences of adjacent vertices), PathPartition (edge-disjoint collections covering all edges), and PathCover (covering without disjointness). The main conjecture is stated as ErdosGallaiConjecture, and related results by Lovász, Chung, Pyber, and Fan are included as axioms. The formalization also connects to Hajós' conjecture about cycle decompositions of Eulerian graphs.",
+    "keyInsights": [
+      "**Edge-disjoint vs. covering**: Fan proved the covering version (allowing edge overlaps), but the edge-disjoint partition version remains open. This gap is the key unsolved difficulty.",
+      "**Paths vs. paths-and-cycles**: Lovász's ⌊n/2⌋ bound for paths and cycles together shows the challenge is specifically about avoiding cycles.",
+      "**Tree decompositions**: Chung's theorem gives ⌈n/2⌉ edge-disjoint trees, showing the bound is achievable for more flexible structures.",
+      "**Asymptotic near-miss**: Pyber's n/2 + O(n^{3/4}) result is tantalizingly close but doesn't settle the exact bound.",
+      "**Hajós connection**: The related conjecture for Eulerian graphs (even-degree vertices) and cycle decompositions shows deep connections in graph decomposition theory."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "GraphPath, edgeSet, EdgeDisjoint, CoversAllEdges, PathPartition",
+      "startLine": 33,
+      "endLine": 70
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Erdős-Gallai Conjecture",
+      "summary": "ErdosGallaiConjecture, satisfiesConjecture",
+      "startLine": 72,
+      "endLine": 86
+    },
+    {
+      "id": "lovasz-theorem",
+      "title": "Lovász's Theorem (1968)",
+      "summary": "GraphCycle, PathCyclePartition, lovasz_theorem, lovasz_corollary",
+      "startLine": 88,
+      "endLine": 115
+    },
+    {
+      "id": "chung-theorem",
+      "title": "Chung's Theorem (1978)",
+      "summary": "TreePartition, chung_theorem, chung_implies_tree_bound",
+      "startLine": 117,
+      "endLine": 137
+    },
+    {
+      "id": "pyber-theorem",
+      "title": "Pyber's Theorem (1996)",
+      "summary": "PathCover, pyber_theorem, pyber_partial_progress",
+      "startLine": 139,
+      "endLine": 158
+    },
+    {
+      "id": "fan-theorem",
+      "title": "Fan's Theorem (2002)",
+      "summary": "fan_theorem, fan_covers_conjecture",
+      "startLine": 160,
+      "endLine": 173
+    },
+    {
+      "id": "hajos-conjecture",
+      "title": "Hajós' Conjecture",
+      "summary": "IsEulerian, HajosConjecture, hajos_conjecture_open",
+      "startLine": 175,
+      "endLine": 193
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "tree_satisfies, complete_graph_satisfies, cycle_satisfies",
+      "startLine": 195,
+      "endLine": 212
+    },
+    {
+      "id": "main-statement",
+      "title": "Erdős Problem #583 Statement",
+      "summary": "erdos_583_conjecture, erdos_gallai_open",
+      "startLine": 214,
+      "endLine": 231
+    },
+    {
+      "id": "bounds-examples",
+      "title": "Lower Bounds and Examples",
+      "summary": "star_needs_few_paths, bipartite_tight",
+      "startLine": 233,
+      "endLine": 248
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_583_summary and erdos_583_answer",
+      "startLine": 250,
+      "endLine": 272
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #583 (the Erdős-Gallai Conjecture) remains open: can every connected graph on n vertices be partitioned into at most ⌈n/2⌉ edge-disjoint paths? The formalization captures the conjecture and key related results by Lovász, Chung, Pyber, and Fan.",
+    "implications": "A proof would establish a fundamental structural property of connected graphs, with applications in network design and routing. A counterexample would likely reveal new extremal behavior in graph decompositions.",
+    "openQuestions": [
+      "Is there a connected graph requiring more than ⌈n/2⌉ edge-disjoint paths?",
+      "Can the gap between Pyber's O(n^{3/4}) error and the conjectured exact bound be closed?",
+      "Is Hajós' conjecture about Eulerian graphs and cycle decompositions true?"
+    ]
   }
 }

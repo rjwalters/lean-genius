@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-e583-context",
+    "proofId": "erdos-583",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #583 (the Erdős-Gallai Conjecture): Can every connected graph on n vertices be partitioned into at most ⌈n/2⌉ edge-disjoint paths? This remains OPEN after 60+ years. Key progress: Lovász (1968) for paths+cycles, Chung (1978) for trees, Pyber (1996) for asymptotic, Fan (2002) for non-disjoint covering.",
+    "significance": "critical",
+    "tags": ["erdos", "graph-theory", "path-decomposition"]
+  },
+  {
+    "id": "ann-e583-graph-path",
+    "proofId": "erdos-583",
+    "range": { "startLine": 41, "endLine": 46 },
+    "type": "definition",
+    "title": "Graph Path",
+    "content": "A GraphPath in a SimpleGraph is a sequence of distinct vertices where consecutive vertices are adjacent. The `distinct` field ensures no vertex repetition (making it a path, not a walk), and `edges` ensures adjacency.",
+    "significance": "critical",
+    "tags": ["definition", "graph-path"],
+    "leanSymbol": "GraphPath"
+  },
+  {
+    "id": "ann-e583-edge-set",
+    "proofId": "erdos-583",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Edge Set of a Path",
+    "content": "The edgeSet of a path is the set of all edges (as symmetric pairs Sym2 V) used by consecutive vertices in the path. This set is needed to define edge-disjointness.",
+    "significance": "key",
+    "tags": ["definition", "edges"],
+    "leanSymbol": "GraphPath.edgeSet"
+  },
+  {
+    "id": "ann-e583-edge-disjoint",
+    "proofId": "erdos-583",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "definition",
+    "title": "Edge-Disjoint Paths",
+    "content": "A collection of paths is edge-disjoint if no two paths share any edge. This is the crucial constraint that distinguishes the Erdős-Gallai conjecture from Fan's covering theorem.",
+    "significance": "critical",
+    "tags": ["definition", "edge-disjoint"],
+    "leanSymbol": "EdgeDisjoint"
+  },
+  {
+    "id": "ann-e583-covers",
+    "proofId": "erdos-583",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Covering All Edges",
+    "content": "CoversAllEdges means every edge of the graph appears in at least one path in the collection. Combined with EdgeDisjoint, this gives a partition.",
+    "significance": "key",
+    "tags": ["definition", "covering"],
+    "leanSymbol": "CoversAllEdges"
+  },
+  {
+    "id": "ann-e583-partition",
+    "proofId": "erdos-583",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "definition",
+    "title": "Path Partition",
+    "content": "A PathPartition combines edge-disjoint paths that cover all edges—a true partition of the edge set into paths. The conjecture asks: can every connected graph have such a partition with ≤ ⌈n/2⌉ paths?",
+    "significance": "critical",
+    "tags": ["definition", "partition"],
+    "leanSymbol": "PathPartition"
+  },
+  {
+    "id": "ann-e583-conjecture",
+    "proofId": "erdos-583",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "definition",
+    "title": "The Erdős-Gallai Conjecture",
+    "content": "The main conjecture: for every connected graph G on n vertices, there exists a path partition with at most ⌈n/2⌉ = (n+1)/2 paths. The ceiling accounts for odd vertex counts.",
+    "significance": "critical",
+    "tags": ["conjecture", "erdos-gallai"],
+    "leanSymbol": "ErdosGallaiConjecture"
+  },
+  {
+    "id": "ann-e583-satisfies",
+    "proofId": "erdos-583",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "definition",
+    "title": "Satisfies Conjecture",
+    "content": "A predicate for checking whether a specific graph satisfies the Erdős-Gallai bound. Useful for stating results about special graph classes.",
+    "significance": "supporting",
+    "tags": ["definition", "predicate"],
+    "leanSymbol": "satisfiesConjecture"
+  },
+  {
+    "id": "ann-e583-cycle",
+    "proofId": "erdos-583",
+    "range": { "startLine": 94, "endLine": 101 },
+    "type": "definition",
+    "title": "Graph Cycle",
+    "content": "A GraphCycle is a closed path: distinct vertices with edges connecting consecutive vertices and the last vertex back to the first. Requires length ≥ 3 to avoid degenerate cases.",
+    "significance": "key",
+    "tags": ["definition", "cycle"],
+    "leanSymbol": "GraphCycle"
+  },
+  {
+    "id": "ann-e583-lovasz",
+    "proofId": "erdos-583",
+    "range": { "startLine": 109, "endLine": 111 },
+    "type": "axiom",
+    "title": "Lovász's Theorem (1968)",
+    "content": "Every graph can be partitioned into at most ⌊n/2⌋ edge-disjoint paths AND cycles. Allowing cycles makes the problem easier—the Erdős-Gallai conjecture requires paths only.",
+    "significance": "critical",
+    "tags": ["axiom", "lovasz", "1968"],
+    "leanSymbol": "lovasz_theorem"
+  },
+  {
+    "id": "ann-e583-lovasz-cor",
+    "proofId": "erdos-583",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "axiom",
+    "title": "Corollary: n-1 Paths Suffice",
+    "content": "From Lovász: every graph partitions into at most n-1 paths. This is weaker than the conjecture's ⌈n/2⌉ but still a useful baseline bound.",
+    "significance": "key",
+    "tags": ["axiom", "corollary"],
+    "leanSymbol": "lovasz_corollary"
+  },
+  {
+    "id": "ann-e583-tree-partition",
+    "proofId": "erdos-583",
+    "range": { "startLine": 123, "endLine": 126 },
+    "type": "definition",
+    "title": "Tree Partition",
+    "content": "A TreePartition divides the graph into edge-disjoint trees (connected acyclic subgraphs). Trees are more flexible than paths but still structured.",
+    "significance": "supporting",
+    "tags": ["definition", "tree"],
+    "leanSymbol": "TreePartition"
+  },
+  {
+    "id": "ann-e583-chung",
+    "proofId": "erdos-583",
+    "range": { "startLine": 128, "endLine": 130 },
+    "type": "axiom",
+    "title": "Chung's Theorem (1978)",
+    "content": "Connected graphs partition into at most ⌈n/2⌉ edge-disjoint trees. This achieves the conjectured bound but with trees instead of paths—the harder constraint remains open.",
+    "significance": "critical",
+    "tags": ["axiom", "chung", "1978"],
+    "leanSymbol": "chung_theorem"
+  },
+  {
+    "id": "ann-e583-path-cover",
+    "proofId": "erdos-583",
+    "range": { "startLine": 145, "endLine": 148 },
+    "type": "definition",
+    "title": "Path Cover",
+    "content": "A PathCover is a collection of paths that covers all edges, but paths may share edges. This relaxation of edge-disjointness is what Fan's theorem addresses.",
+    "significance": "key",
+    "tags": ["definition", "cover"],
+    "leanSymbol": "PathCover"
+  },
+  {
+    "id": "ann-e583-pyber",
+    "proofId": "erdos-583",
+    "range": { "startLine": 150, "endLine": 153 },
+    "type": "axiom",
+    "title": "Pyber's Theorem (1996)",
+    "content": "Connected graphs can be covered by n/2 + O(n^{3/4}) paths. This is asymptotically close to the conjecture but the O(n^{3/4}) error term prevents exact confirmation.",
+    "significance": "critical",
+    "tags": ["axiom", "pyber", "1996", "asymptotic"],
+    "leanSymbol": "pyber_theorem"
+  },
+  {
+    "id": "ann-e583-fan",
+    "proofId": "erdos-583",
+    "range": { "startLine": 166, "endLine": 168 },
+    "type": "axiom",
+    "title": "Fan's Theorem (2002)",
+    "content": "Connected graphs can be covered by at most ⌈n/2⌉ paths. This proves the exact bound but WITHOUT the edge-disjoint requirement. The full conjecture remains open.",
+    "significance": "critical",
+    "tags": ["axiom", "fan", "2002", "covering"],
+    "leanSymbol": "fan_theorem"
+  },
+  {
+    "id": "ann-e583-eulerian",
+    "proofId": "erdos-583",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "definition",
+    "title": "Eulerian Graph",
+    "content": "A graph is Eulerian if every vertex has even degree. Eulerian graphs have Eulerian circuits (closed walks using every edge exactly once).",
+    "significance": "key",
+    "tags": ["definition", "eulerian"],
+    "leanSymbol": "IsEulerian"
+  },
+  {
+    "id": "ann-e583-hajos",
+    "proofId": "erdos-583",
+    "range": { "startLine": 185, "endLine": 189 },
+    "type": "definition",
+    "title": "Hajós' Conjecture",
+    "content": "Hajós conjectured that Eulerian graphs (all degrees even) partition into at most ⌊n/2⌋ edge-disjoint cycles. This is a cycle analog of Erdős-Gallai and also remains open.",
+    "significance": "key",
+    "tags": ["conjecture", "hajos", "cycle"],
+    "leanSymbol": "HajosConjecture"
+  },
+  {
+    "id": "ann-e583-tree-special",
+    "proofId": "erdos-583",
+    "range": { "startLine": 201, "endLine": 203 },
+    "type": "axiom",
+    "title": "Trees Satisfy Conjecture",
+    "content": "Any tree on n vertices satisfies the conjecture trivially: a tree with n vertices has n-1 edges and can be covered by a single Hamiltonian path (or fewer paths if not Hamiltonian).",
+    "significance": "supporting",
+    "tags": ["axiom", "tree", "special-case"],
+    "leanSymbol": "tree_satisfies"
+  },
+  {
+    "id": "ann-e583-complete",
+    "proofId": "erdos-583",
+    "range": { "startLine": 205, "endLine": 207 },
+    "type": "axiom",
+    "title": "Complete Graphs Satisfy Conjecture",
+    "content": "Complete graphs K_n satisfy the Erdős-Gallai conjecture. The structure of complete graphs allows efficient path decompositions.",
+    "significance": "supporting",
+    "tags": ["axiom", "complete-graph", "special-case"],
+    "leanSymbol": "complete_graph_satisfies"
+  },
+  {
+    "id": "ann-e583-main-equiv",
+    "proofId": "erdos-583",
+    "range": { "startLine": 220, "endLine": 226 },
+    "type": "theorem",
+    "title": "Main Conjecture Equivalence",
+    "content": "Formal statement that the Erdős-Gallai conjecture is equivalent to: for all connected graphs on n vertices, there exists a path partition of size at most ⌈n/2⌉.",
+    "significance": "critical",
+    "tags": ["theorem", "equivalence"],
+    "leanSymbol": "erdos_583_conjecture"
+  },
+  {
+    "id": "ann-e583-open",
+    "proofId": "erdos-583",
+    "range": { "startLine": 228, "endLine": 231 },
+    "type": "axiom",
+    "title": "Status: Open",
+    "content": "The Erdős-Gallai conjecture is neither proved nor disproved. This axiom records that the problem remains open as of the formalization.",
+    "significance": "critical",
+    "tags": ["axiom", "open-problem"],
+    "leanSymbol": "erdos_gallai_open"
+  },
+  {
+    "id": "ann-e583-summary",
+    "proofId": "erdos-583",
+    "range": { "startLine": 254, "endLine": 267 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Collects the main results: (1) the Erdős-Gallai conjecture statement, (2) Lovász's ⌊n/2⌋ paths-and-cycles bound, and (3) Fan's ⌈n/2⌉ covering theorem.",
+    "significance": "critical",
+    "tags": ["summary", "main-result"],
+    "leanSymbol": "erdos_583_summary"
+  }
+]
