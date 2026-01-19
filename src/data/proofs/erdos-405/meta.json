@@ -1,33 +1,144 @@
 {
   "id": "erdos-405",
-  "title": "Erdős Problem #405",
+  "title": "Erdős Problem #405: Factorial Plus Power Equals Prime Power",
   "slug": "erdos-405",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an odd prime. Is it true that the equation\\[(p-1)!+a^{p-1}=p^k\\]has only finitely many solutions?\n\n\n\nErds and Grah...",
+  "description": "Let p be an odd prime. Is it true that the equation (p-1)! + a^{p-1} = p^k has only finitely many solutions? Yu-Liu (1996) proved there are exactly three solutions: 2! + 1² = 3, 2! + 5² = 27, and 4! + 1⁴ = 25.",
   "meta": {
-    "author": "Unknown",
+    "author": "Yu-Liu (1996), Brindza-Erdős (1991)",
     "sourceUrl": "https://erdosproblems.com/405",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos405Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "factorials",
+      "p-adic-analysis"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 405,
     "erdosUrl": "https://erdosproblems.com/405",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function for natural numbers",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation of natural numbers",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized Yu-Liu complete characterization of solutions",
+      "Verified three solutions computationally",
+      "Connected Wilson's theorem to the Diophantine structure",
+      "Formalized p-adic analysis framework for the equation"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #405 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p$ be an odd prime. Is it true that the equation\\[(p-1)!+a^{p-1}=p^k\\]has only finitely many solutions?\n\n\n\nErd\\H{o}s and Graham remark that it is probably true that in general $(p-1)!+a^{p-1}$ is rarely a power at all (although this can happen, for example $6!+2^6=28^2$).\n\nErd\\H{o}s and Graham ask this allowing the case $p=2$, but this is presumably an oversight, since clearly there are infinitely many solutions to this equation when $p=2$.\n\nBrindza and Erd\\H{o}s \\cite{BrEr91} proved that there are finitely many such solutions. Yu and Liu \\cite{YuLi96} showed that the only solutions are\\[2!+1^2=3\\]\\[2!+5^2=3^3\\]and\\[4!+1^4=5^2.\\]\n\n\n\n\nReferences\n\n\n[BrEr91] Brindza, B. and Erd\\H{o}s, P., On some {D}iophantine problems involving powers and\nfactorials. J. Austral. Math. Soc. Ser. A (1991), 1--7.\n\n[YuLi96] Yu, Kunrui and Liu, Dehua, A complete resolution of a problem of {E}rd\\H{o}s and {G}raham. Rocky Mountain J. Math. (1996), 1235--1244.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Graham posed this problem, noting that (p-1)! + a^{p-1} is rarely a power at all (though 6! + 2⁶ = 28² is one example). Brindza and Erdős (1991) proved finiteness, and Yu and Liu (1996) achieved a complete resolution finding exactly three solutions.",
+    "problemStatement": "Let p be an odd prime. Is it true that the equation (p-1)! + a^{p-1} = p^k has only finitely many solutions?",
+    "proofStrategy": "The proof combines: (1) Wilson's theorem showing (p-1)! ≡ -1 (mod p), (2) Fermat's little theorem showing a^{p-1} ≡ 1 (mod p) when p ∤ a, (3) p-adic analysis constraining possible exponents k, and (4) Baker's theory bounding solutions to exponential Diophantine equations.",
+    "keyInsights": [
+      "Wilson's theorem gives (p-1)! ≡ -1 (mod p), while Fermat gives a^{p-1} ≡ 1 (mod p) for p ∤ a, so the sum is divisible by p",
+      "The p-adic valuation of (p-1)! is 0, severely constraining the equation",
+      "For p ≥ 7, the factorial (p-1)! grows too fast for the equation to have solutions",
+      "Only p ∈ {3, 5} can yield solutions, and exhaustive analysis finds exactly three"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 35,
+      "endLine": 56,
+      "summary": "The Solution structure and IsSolution predicate for the Diophantine equation (p-1)! + a^{p-1} = p^k."
+    },
+    {
+      "id": "three-solutions",
+      "title": "The Three Known Solutions",
+      "startLine": 58,
+      "endLine": 93,
+      "summary": "Computational verification of the three solutions: (3,1,1), (3,5,3), and (5,1,2)."
+    },
+    {
+      "id": "finiteness-results",
+      "title": "The Finiteness Results",
+      "startLine": 95,
+      "endLine": 113,
+      "summary": "Brindza-Erdős (1991) finiteness theorem and Yu-Liu (1996) complete characterization."
+    },
+    {
+      "id": "wilson-theorem",
+      "title": "Wilson's Theorem Connection",
+      "startLine": 115,
+      "endLine": 132,
+      "summary": "Application of Wilson's theorem and Fermat's little theorem to the equation."
+    },
+    {
+      "id": "exceptional-case",
+      "title": "The Exceptional Case",
+      "startLine": 134,
+      "endLine": 147,
+      "summary": "Analysis when p divides a, showing severe constraints on solutions."
+    },
+    {
+      "id": "padic-analysis",
+      "title": "p-adic Analysis",
+      "startLine": 149,
+      "endLine": 166,
+      "summary": "p-adic valuation constraints via Legendre's formula."
+    },
+    {
+      "id": "only-these-solutions",
+      "title": "Why Only These Solutions",
+      "startLine": 168,
+      "endLine": 202,
+      "summary": "Analysis explaining why only p = 3 and p = 5 can yield solutions."
+    },
+    {
+      "id": "perfect-power",
+      "title": "General Perfect Power Question",
+      "startLine": 204,
+      "endLine": 223,
+      "summary": "Erdős-Graham observation that (p-1)! + a^{p-1} is rarely a perfect power."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "startLine": 225,
+      "endLine": 238,
+      "summary": "Complete formalization of Erdős Problem #405."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 240,
+      "endLine": 261,
+      "summary": "Summary theorem combining existence and uniqueness of the three solutions."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #405 is completely solved. The equation (p-1)! + a^{p-1} = p^k has exactly three solutions: (p,a,k) = (3,1,1), (3,5,3), and (5,1,2), corresponding to 2! + 1 = 3, 2! + 25 = 27, and 24 + 1 = 25.",
+    "implications": "The complete resolution demonstrates the power of combining elementary number theory (Wilson, Fermat) with p-adic methods and Baker's theory for Diophantine equations.",
+    "openQuestions": [
+      "Are there infinitely many primes p for which (p-1)! + a^{p-1} is a perfect power for some a?",
+      "What is the density of pairs (p, a) for which (p-1)! + a^{p-1} is a perfect power?"
+    ]
   }
 }
