@@ -1,33 +1,90 @@
 {
   "id": "erdos-294",
-  "title": "Erdős Problem #294",
+  "title": "Erdős Problem #294: Egyptian Fractions and the t(N) Function",
   "slug": "erdos-294",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the least integer ... such that there is no solution to\\[1={n_1}+\\cdots+{n_k}\\]with .... Estimate .......",
+  "description": "Let t(N) be the least t with no Egyptian representation of 1 using denominators in [t,N]. Estimate t(N).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős & Ronald Graham",
     "sourceUrl": "https://erdosproblems.com/294",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos294Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 7,
     "erdosNumber": 294,
     "erdosUrl": "https://erdosproblems.com/294",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #294 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$ and let $t(N)$ be the least integer $t$ such that there is no solution to\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]with $t=n_1<\\cdots <n_k\\leq N$. Estimate $t(N)$.\n\n\n\nErd\\H{o}s and Graham \\cite{ErGr80} could show\\[t(N)\\ll\\frac{N}{\\log N},\\]but had no idea of the true value of $t(N)$.\n\nSolved by Liu and Sawhney \\cite{LiSa24} (up to $(\\log\\log N)^{O(1)}$), who proved that\\[\\frac{N}{(\\log N)(\\log\\log N)^3(\\log\\log\\log N)^{O(1)}}\\ll t(N) \\ll \\frac{N}{\\log N}.\\]\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[LiSa24] Liu, Y. and Sawhney, M., On further questions regarding unit fractions. arXiv:2404.07113 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph 'Old and new problems and results in combinatorial number theory'. Egyptian fractions (sums of distinct unit fractions) have been studied since ancient Egypt. The function t(N) measures when we can no longer represent 1 as an Egyptian fraction with bounded denominators. Erdős and Graham proved t(N) ≪ N/log N but had 'no idea' of the true value. Liu and Sawhney settled this in 2024.",
+    "problemStatement": "Let N ≥ 1 and let t(N) be the least integer t such that there is NO solution to 1 = 1/n₁ + 1/n₂ + ⋯ + 1/nₖ with t = n₁ < n₂ < ⋯ < nₖ ≤ N. Estimate t(N).",
+    "proofStrategy": "The formalization defines Egyptian fractions as sums over finite sets and the t(N) function as a minimum over non-representable starting points. The Erdős-Graham upper bound and Liu-Sawhney lower bound are axiomatized. The main theorem confirms t(N) ≍ N/((log N)(log log N)^O(1)).",
+    "keyInsights": [
+      "{2, 3, 6} represents 1: 1/2 + 1/3 + 1/6 = 1",
+      "t(N) measures the 'density' of Egyptian representations of 1",
+      "The harmonic sum H_N = ∑1/k ≈ log N plays a key role",
+      "Almost all starting points t < N allow representations",
+      "The gap between upper and lower bounds is only polylogarithmic"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-egyptian",
+      "title": "Egyptian Fractions",
+      "startLine": 44,
+      "endLine": 74,
+      "summary": "Defines unit fractions and Egyptian sums"
+    },
+    {
+      "id": "sec-t-function",
+      "title": "The t(N) Function",
+      "startLine": 75,
+      "endLine": 107,
+      "summary": "Defines constrained representations and the t(N) function"
+    },
+    {
+      "id": "sec-small-values",
+      "title": "Small Values",
+      "startLine": 108,
+      "endLine": 140,
+      "summary": "Analyzes t(2), t(6), and harmonic sums"
+    },
+    {
+      "id": "sec-erdos-graham",
+      "title": "Erdős-Graham Upper Bound",
+      "startLine": 141,
+      "endLine": 164,
+      "summary": "t(N) ≪ N/log N from 1980"
+    },
+    {
+      "id": "sec-liu-sawhney",
+      "title": "Liu-Sawhney Theorem",
+      "startLine": 165,
+      "endLine": 193,
+      "summary": "Lower bound from 2024 resolving the problem"
+    },
+    {
+      "id": "sec-greedy",
+      "title": "Greedy Algorithm",
+      "startLine": 239,
+      "endLine": 265,
+      "summary": "Connection to greedy Egyptian fraction algorithms"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Problem #294 is SOLVED. Erdős-Graham (1980) proved t(N) ≪ N/log N. Liu-Sawhney (2024) proved the matching lower bound t(N) ≫ N/((log N)(log log N)³...), determining t(N) up to polylogarithmic factors.",
+    "implications": "The result shows that 'almost all' starting points allow Egyptian representations of 1, with the exceptional set having density ≈ (log N)/N. This connects to deep questions about harmonic sums and prime distributions.",
+    "openQuestions": [
+      "Can the polylogarithmic gap be closed?",
+      "What is the exact value of t(N) for small N?",
+      "Is there an efficient algorithm to compute t(N)?",
+      "What about Egyptian representations of other rationals?"
+    ]
   }
 }
