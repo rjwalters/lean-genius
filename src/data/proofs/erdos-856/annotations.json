@@ -1,1 +1,136 @@
-[]
+[
+  {
+    "id": "ann-e856-header",
+    "proofId": "erdos-856",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #856: LCM-Free Sets**\n\nEstimate f_k(N) = max harmonic sum of subsets with no k elements having uniform pairwise LCM.\n\n**Status:** OPEN\n\n**Best bounds:** (log N)^{b_k} ≤ f_k(N) ≤ (log N)^{c_k}",
+    "mathContext": "Connects to sunflower conjecture: c_k < 1 iff sunflower conjecture holds for k.",
+    "significance": "critical",
+    "relatedConcepts": ["LCM", "Harmonic sum", "Sunflower conjecture"]
+  },
+  {
+    "id": "ann-e856-lcm",
+    "proofId": "erdos-856",
+    "range": { "startLine": 51, "endLine": 65 },
+    "type": "definition",
+    "title": "Least Common Multiple",
+    "content": "**myLcm a b:** lcm(a,b) = ab/gcd(a,b)\n\nBasic properties: lcm(a,b) = lcm(b,a), lcm(a,a) = a.",
+    "significance": "supporting",
+    "relatedConcepts": ["LCM", "GCD"]
+  },
+  {
+    "id": "ann-e856-uniform",
+    "proofId": "erdos-856",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "definition",
+    "title": "Uniform Pairwise LCM",
+    "content": "**HasUniformPairwiseLCM A t:** All distinct pairs in A have lcm = t.\n\nThis is the forbidden structure: we want sets avoiding k elements with this property.",
+    "significance": "critical",
+    "relatedConcepts": ["LCM", "Uniform structure"]
+  },
+  {
+    "id": "ann-e856-lcmfree",
+    "proofId": "erdos-856",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "LCM-Free Set",
+    "content": "**IsLCMFree A k:** A contains no k-subset with uniform pairwise LCM.\n\nThese are the sets we're maximizing over.",
+    "significance": "critical",
+    "relatedConcepts": ["Forbidden substructure", "Extremal"]
+  },
+  {
+    "id": "ann-e856-harmonic",
+    "proofId": "erdos-856",
+    "range": { "startLine": 94, "endLine": 100 },
+    "type": "definition",
+    "title": "Harmonic Sum",
+    "content": "**harmonicSum A:** Σ_{n∈A} 1/n\n\nThis measures logarithmic density, contrasting with natural density |A|.",
+    "significance": "critical",
+    "relatedConcepts": ["Logarithmic density", "Harmonic series"]
+  },
+  {
+    "id": "ann-e856-fk",
+    "proofId": "erdos-856",
+    "range": { "startLine": 101, "endLine": 107 },
+    "type": "definition",
+    "title": "f_k(N)",
+    "content": "**f_k k N:** Maximum harmonic sum over k-LCM-free subsets of {1,...,N}.\n\nThis is the quantity we want to estimate.",
+    "significance": "critical",
+    "relatedConcepts": ["Maximum", "Extremal problem"]
+  },
+  {
+    "id": "ann-e856-erdos",
+    "proofId": "erdos-856",
+    "range": { "startLine": 112, "endLine": 123 },
+    "type": "axiom",
+    "title": "Erdős Upper Bound",
+    "content": "**erdos_1970_upper_bound:**\n\nf_k(N) ≪ log(N)/log(log(N))\n\nProof uses: for every t, there are < k solutions to t = ap with a ∈ A and p prime.",
+    "mathContext": "From 'Some extremal problems in combinatorial number theory' (1970).",
+    "significance": "key",
+    "relatedConcepts": ["Upper bound", "Prime counting"]
+  },
+  {
+    "id": "ann-e856-tangzhang",
+    "proofId": "erdos-856",
+    "range": { "startLine": 137, "endLine": 149 },
+    "type": "axiom",
+    "title": "Tang-Zhang Bounds",
+    "content": "**tang_zhang_2025:**\n\n(log N)^{b_k - o(1)} ≤ f_k(N) ≤ (log N)^{c_k + o(1)}\n\nfor constants 0 < b_k ≤ c_k ≤ 1.",
+    "mathContext": "Published in 2025, significantly improving Erdős's bound.",
+    "significance": "key",
+    "relatedConcepts": ["Recent progress", "Polynomial bounds"]
+  },
+  {
+    "id": "ann-e856-k3",
+    "proofId": "erdos-856",
+    "range": { "startLine": 150, "endLine": 158 },
+    "type": "axiom",
+    "title": "k=3 Bounds",
+    "content": "**tang_zhang_k3:**\n\n(log N)^{0.438} ≤ f_3(N) ≤ (log N)^{0.889}\n\nThe specific exponents for the k=3 case.",
+    "significance": "key",
+    "relatedConcepts": ["Explicit bounds", "k=3 case"]
+  },
+  {
+    "id": "ann-e856-sunflower",
+    "proofId": "erdos-856",
+    "range": { "startLine": 163, "endLine": 184 },
+    "type": "definition",
+    "title": "Sunflower",
+    "content": "**IsSunflower sets k:** A k-sunflower is k sets where any two have the same intersection (core).\n\n**SunflowerConjectureForK k:** Large families contain k-sunflowers.",
+    "mathContext": "The sunflower conjecture is a major open problem in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Sunflower lemma", "Erdős-Rado"]
+  },
+  {
+    "id": "ann-e856-connection",
+    "proofId": "erdos-856",
+    "range": { "startLine": 185, "endLine": 196 },
+    "type": "axiom",
+    "title": "Sunflower Connection",
+    "content": "**sunflower_connection:**\n\nc_k < 1 (non-trivial upper bound) ⟺ sunflower conjecture holds for k.\n\nThis deep connection relates two seemingly different problems.",
+    "significance": "critical",
+    "relatedConcepts": ["Equivalence", "Sunflower conjecture"]
+  },
+  {
+    "id": "ann-e856-natural",
+    "proofId": "erdos-856",
+    "range": { "startLine": 201, "endLine": 217 },
+    "type": "axiom",
+    "title": "Natural Density Variant",
+    "content": "**g_k k N:** Maximum |A| over k-LCM-free subsets.\n\n**erdos_natural_density_k4:** g_4(N) ≫ N\n\nErdős showed sets of linear size can avoid 4-element uniform LCM subsets.",
+    "significance": "supporting",
+    "relatedConcepts": ["Problem #536", "Natural density"]
+  },
+  {
+    "id": "ann-e856-summary",
+    "proofId": "erdos-856",
+    "range": { "startLine": 272, "endLine": 299 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_856_summary:**\n\n1. Problem is OPEN\n2. Erdős gave initial bound log(N)/log(log(N))\n3. Tang-Zhang improved to polynomial powers of log N\n4. Connected to sunflower conjecture\n\n**Goal:** Determine precise growth rate of f_k(N).",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open problem"]
+  }
+]
