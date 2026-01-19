@@ -1,1 +1,220 @@
-[]
+[
+  {
+    "id": "ann-882-header",
+    "proofId": "erdos-882",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #882** asks: what is the maximum size of A ⊆ {1,...,n} such that no two distinct non-empty subset sums divide each other? The answer is asymptotically log₂ n.",
+    "mathContext": "This problem combines combinatorics (subset selection) with number theory (divisibility). The constraint that no two sums divide each other is weaker than requiring all sums to be distinct.",
+    "significance": "critical",
+    "relatedConcepts": ["subset-sums", "divisibility", "extremal-combinatorics"]
+  },
+  {
+    "id": "ann-882-icc1n",
+    "proofId": "erdos-882",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Icc1n",
+    "content": "The set {1, 2, ..., n} represented as a Finset, filtering range(n+1) for elements ≥ 1 and ≤ n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-882-nonemptysubsets",
+    "proofId": "erdos-882",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "nonemptySubsets",
+    "content": "All non-empty subsets of a finite set A, computed as A.powerset filtered to exclude ∅.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-subsetsums",
+    "proofId": "erdos-882",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "subsetSums",
+    "content": "The set {∑_{a ∈ S} a : ∅ ≠ S ⊆ A} of all non-empty subset sums. This is the image of nonemptySubsets under the sum function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-divfree",
+    "proofId": "erdos-882",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "DivisibilityFree",
+    "content": "A set S is divisibility-free if no two distinct elements a, b ∈ S satisfy a | b or b | a. This is the key property we want for subset sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-validsubset",
+    "proofId": "erdos-882",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "ValidSubset",
+    "content": "A is a valid subset of {1,...,n} if all elements are in [1,n] and the subset sums are divisibility-free.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-maxvalidsize",
+    "proofId": "erdos-882",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "definition",
+    "title": "maxValidSize",
+    "content": "The maximum cardinality |A| over all valid subsets A. This is what the problem asks us to determine.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-greedy",
+    "proofId": "erdos-882",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "axiom",
+    "title": "Greedy Lower Bound",
+    "content": "The greedy algorithm achieves |A| ≥ log₃ n - 1. This is a weak lower bound compared to log₂ n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-sandor",
+    "proofId": "erdos-882",
+    "range": { "startLine": 86, "endLine": 93 },
+    "type": "definition",
+    "title": "Sándor's Construction",
+    "content": "A = {2^i + m·2^m : 0 ≤ i < m} achieves |A| = m ≈ log₂ n. This clever construction uses powers of 2 with a common large offset.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-elrss",
+    "proofId": "erdos-882",
+    "range": { "startLine": 95, "endLine": 102 },
+    "type": "definition",
+    "title": "ELRSS Construction",
+    "content": "A = {2^m - 2^(m-1), ..., 2^m - 1} achieves |A| > log₂ n - 1. This construction by Erdős, Lev, Rauzy, Sándor, and Sárközy (1999) also guarantees distinct subset sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-distinct",
+    "proofId": "erdos-882",
+    "range": { "startLine": 110, "endLine": 113 },
+    "type": "definition",
+    "title": "DistinctSubsetSums",
+    "content": "Property that all non-empty subset sums are distinct. This is implied by divisibility-free, giving the upper bound connection.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-divimplies",
+    "proofId": "erdos-882",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "theorem",
+    "title": "div_free_implies_distinct",
+    "content": "If subset sums are divisibility-free, they must be distinct. This connects the problem to Erdős #1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-sumbound",
+    "proofId": "erdos-882",
+    "range": { "startLine": 128, "endLine": 132 },
+    "type": "theorem",
+    "title": "sum_bound",
+    "content": "For A ⊆ {1,...,n}, the sum σ(A) = ∑A ≤ |A| · n. This bounds the total sum by the set size times the maximum element.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-882-upperrefined",
+    "proofId": "erdos-882",
+    "range": { "startLine": 134, "endLine": 137 },
+    "type": "axiom",
+    "title": "Refined Upper Bound",
+    "content": "|A| ≤ log₂ n + ½ log₂(log n) + 3 for n ≥ 16. This follows from the distinct subset sums bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-conjectured",
+    "proofId": "erdos-882",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "axiom",
+    "title": "Conjectured Bound",
+    "content": "Conjectured: |A| ≤ log₂ n + O(1), i.e., the ½ log₂(log n) term can be removed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-lowermax",
+    "proofId": "erdos-882",
+    "range": { "startLine": 149, "endLine": 153 },
+    "type": "theorem",
+    "title": "lower_bound_max",
+    "content": "For n ≥ 4, there exists a valid A with |A| ≥ log₂ n - 2. Uses ELRSS or Sándor construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-uppermax",
+    "proofId": "erdos-882",
+    "range": { "startLine": 155, "endLine": 160 },
+    "type": "theorem",
+    "title": "upper_bound_max",
+    "content": "For n ≥ 16, every valid A satisfies |A| ≤ log₂ n + ½ log₂(log n) + 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-singleton",
+    "proofId": "erdos-882",
+    "range": { "startLine": 166, "endLine": 179 },
+    "type": "theorem",
+    "title": "example_singleton",
+    "content": "A = {1} is valid for any n ≥ 1. Its only subset sum is 1, which is trivially divisibility-free.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-882-example23",
+    "proofId": "erdos-882",
+    "range": { "startLine": 181, "endLine": 191 },
+    "type": "theorem",
+    "title": "example_2_3",
+    "content": "A = {2, 3} is valid for n ≥ 3. Subset sums are {2, 3, 5}, and none of 2, 3, 5 divide each other.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-882-erdos1",
+    "proofId": "erdos-882",
+    "range": { "startLine": 197, "endLine": 199 },
+    "type": "axiom",
+    "title": "Erdős #1 Connection",
+    "content": "Connection to Erdős Problem #1: ValidSubset implies DistinctSubsetSums, giving the upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-882-sidon",
+    "proofId": "erdos-882",
+    "range": { "startLine": 201, "endLine": 205 },
+    "type": "axiom",
+    "title": "Sidon Connection",
+    "content": "Connection to Sidon sets (Erdős #13), which require distinct pairwise sums. Our problem is about all subset sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-882-statement",
+    "proofId": "erdos-882",
+    "range": { "startLine": 211, "endLine": 220 },
+    "type": "theorem",
+    "title": "erdos_882_statement",
+    "content": "Main theorem combining lower and upper bounds: log₂ n - 2 ≤ maxValidSize(n) ≤ log₂ n + ½ log₂(log n) + 3 for large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-answer",
+    "proofId": "erdos-882",
+    "range": { "startLine": 222, "endLine": 228 },
+    "type": "theorem",
+    "title": "erdos_882_answer",
+    "content": "The answer is (1 + o(1)) log₂ n. The problem is SOLVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-882-summary",
+    "proofId": "erdos-882",
+    "range": { "startLine": 230, "endLine": 235 },
+    "type": "theorem",
+    "title": "erdos_882_summary",
+    "content": "Summary: Erdős-Sárközy posed the problem, Sándor and ELRSS (1999) gave optimal constructions, answer is log₂ n.",
+    "significance": "critical"
+  }
+]

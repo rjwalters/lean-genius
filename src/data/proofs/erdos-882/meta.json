@@ -1,33 +1,137 @@
 {
   "id": "erdos-882",
-  "title": "Erdős Problem #882",
+  "title": "Erdős Problem #882: Subset Sums Without Divisibility",
   "slug": "erdos-882",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that in the set\\[\\left\\{ \\sum_{a\\in S} a : \\emptyset\\neq S\\subseteq A\\right\\}\\]no tw...",
+  "description": "What is the maximum size of A ⊆ {1,...,n} such that no two distinct non-empty subset sums divide each other? Answer: (1+o(1)) log₂ n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Sárközy (problem), ELRSS (1999)",
     "sourceUrl": "https://erdosproblems.com/882",
-    "date": "",
-    "status": "pending",
+    "date": "1999",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos882Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "subset-sums",
+      "divisibility"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 882,
     "erdosUrl": "https://erdosproblems.com/882",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.log",
+        "description": "Natural number logarithm",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset of a finite set",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter elements of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized subsetSums: set of all non-empty subset sums of A",
+      "Defined DivisibilityFree: no two distinct elements divide each other",
+      "Defined ValidSubset: A ⊆ {1,...,n} with divisibility-free subset sums",
+      "Stated Sándor's construction achieving log₂ n",
+      "Stated ELRSS (1999) construction: {2^m - 2^(m-1), ..., 2^m - 1}",
+      "Stated upper bound: log₂ n + ½ log₂(log n) + O(1)",
+      "Connected to Erdős Problem #1 (distinct subset sums)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #882 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,n\\}$ such that in the set\\[\\left\\{ \\sum_{a\\in S} a : \\emptyset\\neq S\\subseteq A\\right\\}\\]no two distinct elements divide each other?\n\n\n\nA problem of Erd\\H{o}s and S\\'{a}rk\\H{o}zy. The greedy algorithm shows that\\[\\lvert A\\rvert\\geq (1-o(1))\\log_3 n\\]is possible, but Erd\\H{o}s and S\\'{a}rk\\H{o}zy speculated that $\\lvert A\\rvert=(1-o(1))\\log_2n$ is possible.\n\nIn \\cite{Er98} Erd\\H{o}s reports (but gives no reference) that S\\'{a}ndor has proved that $\\lvert A\\rvert=(1-o(1))\\log_2 n$ is achievable, taking $A=\\{ 2^i+m2^m : 0\\leq i<m\\}$ and $n=2^{m-1}+m2^m$.\n\nErd\\H{o}s, Lev, Rauzy, S\\'{a}ndor, and S\\'{a}rk\\\"{o}zy \\cite{ELRSS99} proved that\\[\\lvert A\\rvert > \\log_2 n -1\\]is achievable, taking $A=\\{2^m-2^{m-1},2^m-2^{m-2},\\ldots,2^m-1\\}$. This property also implies that $\\sum_{a\\in S}a$ are distinct for distinct subsets $S$, whence [1] implies\\[\\lvert A\\rvert \\leq \\log_2 n+\\tfrac{1}{2}\\log_2\\log n+O(1),\\]and likely $\\lvert A\\rvert\\leq \\log_2n+O(1)$.\n\nSee also [13].\n\n\n\n\nReferences\n\n\n[ELRSS99] Erd\\H{o}s, P. and Lev, V. and Rauzy, G. and S\\'andor, C. and\nS\\'ark\\\"ozy, A., Greedy algorithm, arithmetic progressions, subset sums and\ndivisibility. Discrete Math. (1999), 119--135.\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Sárközy about extremal set theory and subset sums. The question asks: given A ⊆ {1,...,n}, what is the maximum |A| such that no two of the 2^|A| - 1 non-empty subset sums divide each other?\n\nThe greedy algorithm gives |A| ≥ (1-o(1)) log₃ n, but Erdős and Sárközy speculated that log₂ n should be achievable. This was confirmed by Sándor using the clever construction A = {2^i + m·2^m : 0 ≤ i < m}.\n\nErdős, Lev, Rauzy, Sándor, and Sárközy (1999) proved |A| > log₂ n - 1 is achievable using A = {2^m - 2^(m-1), ..., 2^m - 1}. This construction also guarantees distinct subset sums, connecting to Erdős Problem #1, which implies the upper bound |A| ≤ log₂ n + ½ log₂(log n) + O(1).",
+    "problemStatement": "**Problem**: Find the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that in the set\n$$\\left\\{ \\sum_{a\\in S} a : \\emptyset \\neq S \\subseteq A \\right\\}$$\nno two distinct elements divide each other.\n\n**Answer**: $|A| = (1 + o(1)) \\log_2 n$\n\n**Bounds**:\n- Lower: $|A| > \\log_2 n - 1$ (ELRSS 1999 construction)\n- Upper: $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2(\\log n) + O(1)$\n- Conjectured: $|A| \\leq \\log_2 n + O(1)$",
+    "proofStrategy": "The formalization defines the set of non-empty subset sums of A and the property that no two distinct sums divide each other (DivisibilityFree). Key constructions are axiomatized: Sándor's {2^i + m·2^m} and the ELRSS construction {2^m - 2^(m-1), ..., 2^m - 1}. The upper bound follows from the connection to distinct subset sums (Erdős #1), since divisibility-free implies distinctness.",
+    "keyInsights": [
+      "**Divisibility-free implies distinct**: If no two sums divide each other, they must all be distinct numbers.",
+      "**Connection to Erdős #1**: The distinct subset sums problem gives upper bound log₂ n + O(log log n).",
+      "**ELRSS construction**: A = {2^m - 2^(m-1), ..., 2^m - 1} achieves log₂ n - 1 and has all sums distinct.",
+      "**Sándor's construction**: A = {2^i + m·2^m : 0 ≤ i < m} achieves asymptotically log₂ n.",
+      "**Greedy gives log₃**: Simple greedy selection achieves only log₃ n, showing clever constructions are needed."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Icc1n, nonemptySubsets, subsetSums, DivisibilityFree, ValidSubset",
+      "startLine": 37,
+      "endLine": 61
+    },
+    {
+      "id": "optimization",
+      "title": "The Optimization Problem",
+      "summary": "maxValidSize definition",
+      "startLine": 62,
+      "endLine": 75
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "greedy_lower_bound, SandorConstruction, ELRSSConstruction",
+      "startLine": 76,
+      "endLine": 103
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "DistinctSubsetSums, div_free_implies_distinct, upper_bound_refined",
+      "startLine": 104,
+      "endLine": 142
+    },
+    {
+      "id": "the-answer",
+      "title": "The Answer",
+      "summary": "lower_bound_max, upper_bound_max theorems",
+      "startLine": 143,
+      "endLine": 161
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "example_singleton, example_2_3",
+      "startLine": 162,
+      "endLine": 192
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Erdős Problems",
+      "summary": "erdos_1_connection, sidon_connection",
+      "startLine": 193,
+      "endLine": 206
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_882_statement, erdos_882_answer, erdos_882_summary",
+      "startLine": 207,
+      "endLine": 237
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #882 asks for the maximum size of A ⊆ {1,...,n} such that no two non-empty subset sums divide each other. The answer is (1+o(1)) log₂ n. The ELRSS (1999) construction achieves log₂ n - 1, and the upper bound is log₂ n + ½ log₂(log n) + O(1), likely tight to log₂ n + O(1).",
+    "implications": "This problem connects subset sum theory to divisibility, showing that logarithmic-sized sets can have divisibility-free subset sums. The tight relationship with Erdős #1 (distinct subset sums) demonstrates deep connections between combinatorial number theory problems.",
+    "openQuestions": [
+      "Is the upper bound exactly log₂ n + O(1)?",
+      "What is the exact constant in the O(1) term?",
+      "Can the ELRSS construction be improved?",
+      "What happens for other divisibility conditions?"
+    ]
   }
 }

@@ -13380,17 +13380,22 @@
   },
   {
     "id": "erdos-882",
-    "title": "Erdős Problem #882",
+    "title": "Erdős Problem #882: Subset Sums Without Divisibility",
     "slug": "erdos-882",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that in the set\\[\\left\\{ \\sum_{a\\in S} a : \\emptyset\\neq S\\subseteq A\\right\\}\\]no tw...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the maximum size of A ⊆ {1,...,n} such that no two distinct non-empty subset sums divide each other? Answer: (1+o(1)) log₂ n.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "subset-sums",
+      "divisibility"
     ],
     "erdosNumber": 882,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 24
   },
   {
     "id": "erdos-883",
