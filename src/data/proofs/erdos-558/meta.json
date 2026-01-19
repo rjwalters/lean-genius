@@ -1,33 +1,126 @@
 {
   "id": "erdos-558",
-  "title": "Erdős Problem #558",
+  "title": "Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs",
   "slug": "erdos-558",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the minimal ... such that if the edges of ... are ...-coloured then there is a monochromatic copy of .... Dete...",
+  "description": "Determine R(K_{s,t}; k), the minimum m such that any k-coloring of K_m contains monochromatic K_{s,t}. Key results: R(K_{2,2}; k) ~ k², R(K_{3,3}; k) ~ k³.",
   "meta": {
-    "author": "Unknown",
+    "author": "Chung-Graham (1975), Alon-Rónyai-Szabó (1999)",
     "sourceUrl": "https://erdosproblems.com/558",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos558Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "bipartite-graphs",
+      "multicolor-ramsey",
+      "graph-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 558,
     "erdosUrl": "https://erdosproblems.com/558",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #558 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(G;k)$ denote the minimal $m$ such that if the edges of $K_m$ are $k$-coloured then there is a monochromatic copy of $G$. Determine\\[R(K_{s,t};k)\\]where $K_{s,t}$ is the complete bipartite graph with $s$ vertices in one component and $t$ in the other.\n\n\n\nChung and Graham \\cite{ChGr75} prove the general bounds\\[(2\\pi\\sqrt{st})^{\\frac{1}{s+t}}\\left(\\frac{s+t}{e^2}\\right)k^{\\frac{st-1}{s+t}}\\leq R(K_{s,t};k)\\leq (t-1)(k+k^{1/s})^s\\]and determined\\[R(K_{2,2},k)=(1+o(1))k^2.\\]Alon, R\\'{o}nyai, and Szab\\'{o} \\cite{ARS99} have proved that\\[R(K_{3,3},k)=(1+o(1))k^3\\]and that if $s\\geq (t-1)!+1$ then\\[R(K_{s,t},k)\\asymp k^t.\\]This problem is #27 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ARS99] Alon, Noga and R\\'{o}nyai, Lajos and Szab\\'{o}, Tibor, Norm-graphs: variations and applications. J. Combin. Theory Ser. B (1999), 280-290.\n\n[ChGr75] Chung, Fan R. K. and Graham, R. L., On multicolor Ramsey numbers for complete bipartite graphs. J. Combinatorial Theory Ser. B (1975), 164-169.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem generalizes classical Ramsey theory to multicolor settings and bipartite graphs. Chung-Graham (1975) established general bounds and solved the K_{2,2} case. Alon-Rónyai-Szabó (1999) made major progress with norm graph constructions, proving R(K_{3,3}; k) ~ k³ and establishing the critical threshold s ≥ (t-1)!+1 for when R(K_{s,t}; k) ≍ k^t.",
+    "problemStatement": "Let R(G; k) denote the minimal m such that if the edges of K_m are k-coloured then there is a monochromatic copy of G. Determine R(K_{s,t}; k) where K_{s,t} is the complete bipartite graph.",
+    "proofStrategy": "The formalization defines complete bipartite graphs, k-colorings, and the multicolor Ramsey number R(K_{s,t}; k). The Chung-Graham bounds give the general framework. Special cases K_{2,2} and K_{3,3} have tight asymptotics. The Alon-Rónyai-Szabó theorem establishes that R(K_{s,t}; k) ≍ k^t when s ≥ (t-1)!+1, using norm graph constructions from algebraic geometry.",
+    "keyInsights": [
+      "R(K_{s,t}; k) grows polynomially in k (unlike R(K_n; 2) which is exponential)",
+      "R(K_{2,2}; k) = (1+o(1))k² via projective plane constructions",
+      "R(K_{3,3}; k) = (1+o(1))k³ via norm graphs",
+      "Critical threshold: s ≥ (t-1)!+1 implies exponent is exactly t",
+      "Norm graphs over finite fields give tight lower bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "CompleteBipartite, EdgeColoring, hasMonochromaticBipartite, ramseyBipartite",
+      "startLine": 36,
+      "endLine": 70
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "ramsey_bipartite_exists, ramsey_bipartite_minimal, monotonicity",
+      "startLine": 72,
+      "endLine": 98
+    },
+    {
+      "id": "chung-graham",
+      "title": "Chung-Graham Bounds (1975)",
+      "summary": "chungGrahamLower, chungGrahamUpper, chung_graham_bounds",
+      "startLine": 100,
+      "endLine": 124
+    },
+    {
+      "id": "k22-case",
+      "title": "The Case K_{2,2} (Four-Cycle)",
+      "summary": "C4, ramsey_K22, ramsey_K22_asymptotic, ramsey_K22_lower",
+      "startLine": 126,
+      "endLine": 147
+    },
+    {
+      "id": "k33-case",
+      "title": "The Case K_{3,3}",
+      "summary": "K33, ramsey_K33, ramsey_K33_asymptotic, ramsey_K33_lower",
+      "startLine": 149,
+      "endLine": 170
+    },
+    {
+      "id": "alon-ronyai-szabo",
+      "title": "The General Theorem of Alon-Rónyai-Szabó",
+      "summary": "criticalS, alon_ronyai_szabo, below_threshold",
+      "startLine": 172,
+      "endLine": 191
+    },
+    {
+      "id": "main-theorem",
+      "title": "Erdős Problem #558 Statement",
+      "summary": "erdos_558 combining bounds and threshold theorem",
+      "startLine": 193,
+      "endLine": 210
+    },
+    {
+      "id": "norm-graphs",
+      "title": "Norm Graphs and Lower Bounds",
+      "summary": "normGraph, norm_graph_bipartite_free, norm_graph_lower_bound",
+      "startLine": 212,
+      "endLine": 228
+    },
+    {
+      "id": "specific-bounds",
+      "title": "Specific Values and Bounds",
+      "summary": "ramsey_K23, ramsey_K24, ramsey_K2t_exponent",
+      "startLine": 230,
+      "endLine": 247
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Extremal Graph Theory",
+      "summary": "zarankiewicz_connection, turan_lower_bound",
+      "startLine": 249,
+      "endLine": 260
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_558_summary and erdos_558_answer",
+      "startLine": 262,
+      "endLine": 281
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #558 has been substantially resolved. R(K_{2,2}; k) ~ k² and R(K_{3,3}; k) ~ k³ are known precisely. For general s, t: if s ≥ (t-1)!+1 then R(K_{s,t}; k) ≍ k^t. The Chung-Graham bounds give general estimates for all cases.",
+    "implications": "These multicolor Ramsey results connect Ramsey theory with extremal graph theory and algebraic combinatorics. Norm graphs provide a bridge to finite field constructions.",
+    "openQuestions": [
+      "What is the exact exponent for R(K_{s,t}; k) when s < (t-1)!+1?",
+      "Can the constants in the asymptotic bounds be determined exactly?",
+      "What happens for non-complete bipartite graphs?",
+      "Are there better constructions than norm graphs?"
+    ]
   }
 }
