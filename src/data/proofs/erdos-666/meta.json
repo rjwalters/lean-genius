@@ -1,33 +1,48 @@
 {
   "id": "erdos-666",
-  "title": "Erdős Problem #666",
+  "title": "Erdős Problem #666: C₆ in Hypercube Subgraphs",
   "slug": "erdos-666",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the ...-dimensional hypercube graph (so that ... has ... vertices and ... edges). Is it true that, for every ..., ...",
+  "description": "Does every ε-dense subgraph of the n-hypercube Qₙ contain C₆? Answer: NO. Chung (1992) and Brouwer-Dejter-Thomassen (1993) showed Qₙ can be 4-partitioned into C₆-free subgraphs.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1991), Chung (1992), Brouwer-Dejter-Thomassen (1993), Conder (1993)",
     "sourceUrl": "https://erdosproblems.com/666",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos666Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "hypercube",
+      "cycles",
+      "extremal-graph-theory",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 666,
     "erdosUrl": "https://erdosproblems.com/666",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #666 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Is it true that, for every $\\epsilon>0$, if $n$ is sufficiently large, every subgraph of $Q_n$ with\\[\\geq \\epsilon n2^{n-1}\\]many edges contains a $C_6$?\n\n\n\nIn \\cite{Er91} Erd\\H{o}s further suggests that perhaps, for every $k\\geq 3$, there are constants $c$ and $a_k<1$ such that every subgraph with at least $cn^{a_k}2^n$ many edges contains a $C_{2k}$, where $a_k\\to 0$ as $k\\to \\infty$.\n\nThe answer to this problem is no: Chung \\cite{Ch92} and Brouwer, Dejter, and Thomassen \\cite{BDT93} constructed an edge-partition of $Q_n$ into four subgraphs, each containing no $C_6$.\n\nSee also [86].\n\n\n\n\nReferences\n\n\n[BDT93] Brouwer, A. E. and Dejter, I. J. and Thomassen, C., Highly symmetric subgraphs of hypercubes. J. Algebraic Combin. (1993), 25-29.\n\n[Ch92] Chung, Fan R. K., Subgraphs of a hypercube containing no small even cycles. J. Graph Theory (1992), 273-286.\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős asked in 1991 whether dense subgraphs of the n-dimensional hypercube Qₙ must contain 6-cycles (C₆). The hypercube Qₙ has 2ⁿ vertices and n·2ⁿ⁻¹ edges, with vertices adjacent iff they differ in one coordinate.\n\n**Resolution:**\n- **1992 (Chung)**: Showed Qₙ can be edge-partitioned into 4 C₆-free subgraphs\n- **1993 (Brouwer-Dejter-Thomassen)**: Independent 4-coloring result\n- **1993 (Conder)**: Improved to 3 colors\n\nThe answer is NO: a subgraph with 1/4 (or even 1/3) of all edges need not contain C₆.",
+    "problemStatement": "**Question:** Let Qₙ be the n-dimensional hypercube (2ⁿ vertices, n·2ⁿ⁻¹ edges). For every ε > 0, if n is sufficiently large, does every subgraph of Qₙ with ≥ ε·n·2ⁿ⁻¹ edges contain C₆?\n\n**Answer:** NO\n\n**Counterexamples:**\n- ε = 1/4: Chung's 4-partition (1992)\n- ε = 1/3: Conder's 3-coloring (1993)\n\n**Generalized Question (OPEN):** For C_{2k}, there may exist c > 0 and aₖ < 1 such that ≥ c·n^{aₖ}·2ⁿ edges forces C_{2k}.",
+    "proofStrategy": "The formalization defines the hypercube graph Qₙ via XOR of bit representations (vertices differ in exactly one coordinate). Cycles C_k are defined as injective sequences with cyclic adjacency. Chung's 1992 result is axiomatized: Qₙ can be partitioned into 4 C₆-free subgraphs. The main theorem shows Erdős's conjecture is false.",
+    "keyInsights": [
+      "Hypercube Qₙ: vertices differ in one bit ↔ adjacent",
+      "Qₙ has 2ⁿ vertices and n·2ⁿ⁻¹ edges (n-regular)",
+      "Chung's partition gives 4 parts, each ~1/4 edges, no C₆",
+      "Conder improved to 3 colors (even denser C₆-free subgraphs)",
+      "Generalized question for C_{2k} remains open"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #666 asked whether ε-dense hypercube subgraphs must contain C₆. The answer is NO: Chung (1992) and Brouwer-Dejter-Thomassen (1993) independently showed Qₙ can be 4-partitioned into C₆-free subgraphs. Conder (1993) improved this to 3 colors.",
+    "implications": "The result shows the hypercube has surprising structure allowing sparse cycle-free subgraphs. This connects to Ramsey-Turán problems in hypercubes and extremal graph theory in structured graphs.",
+    "openQuestions": [
+      "What is the minimum number of colors to avoid monochromatic C₆ in Qₙ?",
+      "For C_{2k}, what density threshold forces the cycle?",
+      "Does aₖ → 0 as k → ∞ in the generalized conjecture?"
+    ]
   }
 }
