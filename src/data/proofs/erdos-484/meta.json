@@ -1,16 +1,20 @@
 {
   "id": "erdos-484",
-  "title": "Erdős Problem #484",
+  "title": "Erdős Problem #484: Monochromatic Sums in Colorings",
   "slug": "erdos-484",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that there exists an absolute constant ... such that, whenever ... is ...-coloured (and ... is large enough depending o...",
+  "description": "Prove ∃ c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums. SOLVED: Erdős-Sárközy-Sós (1989) proved N/2 - O(N^{1-1/2^{k+1}}) even sums exist, with O(log N) for k=2.",
   "meta": {
-    "author": "Unknown",
+    "author": "Roth, Erdős, Sárközy, Sós",
     "sourceUrl": "https://erdosproblems.com/484",
-    "date": "",
-    "status": "pending",
+    "date": "1989",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos484Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "colorings",
+      "sumsets",
+      "ramsey-theory"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +23,82 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #484 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that there exists an absolute constant $c>0$ such that, whenever $\\{1,\\ldots,N\\}$ is $k$-coloured (and $N$ is large enough depending on $k$) then there are at least $cN$ many integers in $\\{1,\\ldots,N\\}$ which are representable as a monochromatic sum (that is, $a+b$ where $a,b\\in \\{1,\\ldots,N\\}$ are in the same colour class and $a\\neq b$).\n\n\n\nA conjecture of Roth.\n\nSolved by Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS89}, who in fact prove that there are at least\\[\\frac{N}{2}-O(N^{1-1/2^{k+1}})\\]many even numbers which are of this form. They also prove that if $k=2$ then there are at least\\[\\frac{N}{2}-O(\\log N)\\]many even numbers which are of this form, and that $O(\\log N)$ is best possible, since there is a $2$-colouring such that no power of $2$ is representable as a monochromatic sum.\n\nA refinement of this problem appears as Problem 25 on the open problems list of Ben Green.\n\n\n\n\nReferences\n\n\n[ESS89] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and S\\'{o}s, V. T., On a conjecture of {R}oth and some related problems. I. (1989), 47--59.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This was originally a conjecture of Klaus Roth about the structure of sumsets under finite partitions. Erdős promoted the problem, and it was solved by Erdős, Sárközy, and Sós in 1989. Their solution established precise bounds that were stronger than the original conjecture. A refinement appears as Problem 25 on Ben Green's open problems list.",
+    "problemStatement": "Prove that there exists an absolute constant c > 0 such that, whenever {1,...,N} is k-colored (with N large enough depending on k), there are at least cN integers representable as monochromatic sums - that is, a + b where a, b are in the same color class and a ≠ b.",
+    "proofStrategy": "The formalization defines k-colorings and monochromatic sums, then states Roth's conjecture. We present the Erdős-Sárközy-Sós theorem giving the precise bound N/2 - O(N^{1-1/2^{k+1}}) for even sums, and the improved O(log N) bound for 2-colorings. The optimality construction using 2-adic valuations is also stated.",
+    "keyInsights": [
+      "Almost half of all even numbers are representable as monochromatic sums",
+      "For 2-colorings: N/2 - O(log N) even sums, with O(log N) optimal",
+      "Optimal construction colors n by ν₂(n) mod 2, blocking powers of 2",
+      "The error exponent 1 - 1/2^{k+1} approaches 1 as k increases",
+      "Uses sumset theory, density arguments, and Fourier methods"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Basic Definitions",
+      "startLine": 34,
+      "endLine": 66,
+      "summary": "Defines k-colorings, color classes, monochromatic sums, and the set of representable integers."
+    },
+    {
+      "id": "section-2",
+      "title": "Roth's Conjecture (Proved)",
+      "startLine": 67,
+      "endLine": 87,
+      "summary": "Formalizes Roth's conjecture about the existence of constant c > 0 and states it was proved by ESS."
+    },
+    {
+      "id": "section-3",
+      "title": "Erdős-Sárközy-Sós Theorem",
+      "startLine": 88,
+      "endLine": 121,
+      "summary": "States the main theorem: N/2 - O(N^{1-1/2^{k+1}}) even numbers are monochromatic sums."
+    },
+    {
+      "id": "section-4",
+      "title": "Two-Coloring Case",
+      "startLine": 122,
+      "endLine": 154,
+      "summary": "The special case k=2 with O(log N) error and its optimality via the 2-adic coloring."
+    },
+    {
+      "id": "section-5",
+      "title": "Key Proof Ideas",
+      "startLine": 155,
+      "endLine": 186,
+      "summary": "Explains the main proof techniques: sumset structure, density arguments, Fourier methods, pigeonhole."
+    },
+    {
+      "id": "section-6",
+      "title": "Consequences",
+      "startLine": 187,
+      "endLine": 215,
+      "summary": "Derives consequences including the specific constant c = 1/4 and its improvement to 1/2 - ε."
+    },
+    {
+      "id": "section-7",
+      "title": "Related Problems",
+      "startLine": 248,
+      "endLine": 279,
+      "summary": "Connections to Schur's theorem, Rado's theorem, Folkman's theorem, and Hindman's theorem."
+    },
+    {
+      "id": "section-8",
+      "title": "Summary and Status",
+      "startLine": 305,
+      "endLine": 358,
+      "summary": "Complete summary stating the problem was solved by ESS in 1989 with precise bounds."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #484 was SOLVED by Erdős, Sárközy, and Sós in 1989. They proved that in any k-coloring of {1,...,N}, at least N/2 - O(N^{1-1/2^{k+1}}) even integers are representable as monochromatic sums. For 2-colorings, the bound improves to N/2 - O(log N), which is optimal as shown by the 2-adic valuation construction.",
+    "implications": "The result establishes that monochromatic sums are unavoidable in colorings - almost half of all even numbers must be representable. This connects partition theory to additive combinatorics and sumset structure.",
+    "openQuestions": [
+      "What is the exact optimal constant in front of the error term?",
+      "How do the results extend to higher-order monochromatic sums?",
+      "What is the structure of optimal colorings that minimize monochromatic sums?"
+    ]
   }
 }

@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-144-1",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #144: Does the density of integers with close divisors (d₁ < d₂ < 2d₁) equal 1? SOLVED by Maier-Tenenbaum (1984). The threshold β* = log 3 - 1 separates density 1 from density 0 in the refined version.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-2",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "The natural density d(A) = lim |A ∩ {1,...,n}| / n measures the 'proportion' of integers in A. For close divisors, density 1 means almost all integers have this property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-3",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 51,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Close Divisors Property",
+    "content": "An integer n has 'close divisors' if divisors d₁ < d₂ exist with d₂ < 2d₁. This means two divisors are within a factor of 2. Example: 6 has divisors 2, 3 with 3 < 2·2 = 4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-4",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 59,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "c-Close Divisors",
+    "content": "The generalization: for any c > 1, n has c-close divisors if d₂ < c·d₁ for some divisors d₁ < d₂. The theorem holds for ALL c > 1, not just c = 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-5",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 83,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "erdos_144_conjecture: The density of integers with close divisors equals 1. This was the original question - do 'almost all' integers have such divisors?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-6",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 97,
+      "endLine": 101
+    },
+    "type": "theorem",
+    "title": "Maier-Tenenbaum Theorem",
+    "content": "The definitive answer: YES, density equals 1. Maier and Tenenbaum proved this in 1984, earning reportedly $650 (more than the $250 prize) for solving both versions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-7",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 113,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Critical Exponent",
+    "content": "β* = log 3 - 1 ≈ 0.0986 is the magic threshold. For divisors d₂ < d₁(1 + (log n)^{-β}), density is 1 when β < β* and 0 when β > β*. A beautiful phase transition!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-8",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 119,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "Refined Close Divisors",
+    "content": "The refined version: n has (β)-close divisors if d₂ < d₁(1 + (log n)^{-β}). This allows studying increasingly tight divisor ratios as n grows.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-9",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 134,
+      "endLine": 140
+    },
+    "type": "theorem",
+    "title": "Erdős-Hall Theorem",
+    "content": "For β > log 3 - 1, the density of (β)-close divisors equals 0. Erdős and Hall (1979) proved this complementary result, establishing one half of the phase transition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-10",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 142,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Maier-Tenenbaum Refined",
+    "content": "For β < log 3 - 1, density equals 1. This completes the picture: divisors can get arbitrarily close (relative to log n) for almost all integers, up to the threshold β*.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-11",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 150,
+      "endLine": 157
+    },
+    "type": "theorem",
+    "title": "Phase Transition",
+    "content": "The density jumps discontinuously from 0 to 1 at β* = log 3 - 1. This is a sharp threshold - there's no intermediate behavior.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-144-12",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 163,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Prime Powers Fail",
+    "content": "Prime powers p^k have divisors 1, p, p², ..., p^k. Consecutive divisors differ by factor p ≥ 2, so NO prime power has close divisors. They form the 'exceptional' set of density 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-144-13",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 171,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Example: 6",
+    "content": "6 = 2·3 has divisors 1, 2, 3, 6. Check: 2 < 3 < 4 = 2·2. So d₁ = 2, d₂ = 3 works! The multiple prime factors create clustering.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-144-14",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 201,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "Intuition: Lumpy Integers",
+    "content": "Most integers have many prime factors (by Erdős-Kac, ~log log n on average). More prime factors means more divisors, which tend to cluster. 'Generic' integers are 'lumpy' with close divisors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-144-15",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 212,
+      "endLine": 217
+    },
+    "type": "concept",
+    "title": "Erdős's Retracted Claim",
+    "content": "In 1964, Erdős claimed a proof for β < log 3 - 1 giving density 1. The proof was flawed and retracted in 1979. This shows even Erdős made mistakes - but his conjecture was ultimately correct!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-144-16",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 237,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Divisor Distribution",
+    "content": "The proof exploits how divisors of typical integers distribute. Most divisors cluster around √n, creating many opportunities for close pairs. This is a key insight from multiplicative number theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-144-17",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 244,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "Erdős-Kac Connection",
+    "content": "The Erdős-Kac theorem: ω(n) (number of prime factors) is approximately normally distributed with mean and variance log log n. This explains why 'typical' integers have many factors and thus close divisors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-144-18",
+    "proofId": "erdos-144",
+    "range": {
+      "startLine": 331,
+      "endLine": 339
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_144_status: Both the basic conjecture (c = 2) and strong version (any c > 1) are proven. Maier-Tenenbaum completely resolved this $250 problem, revealing the beautiful phase transition at β* = log 3 - 1.",
+    "significance": "critical"
+  }
+]

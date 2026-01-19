@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-166-1",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #166: Prove R(4,k) >> k³/(log k)^O(1). SOLVED by Mattheus-Verstraete (2023) who showed R(4,k) >> k³/(log k)⁴, earning the $250 Erdős prize. This resolved a 43-year gap in Ramsey theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-166-2",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 40,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Ramsey Number R(s,t)",
+    "content": "R(s,t) is the minimum N such that any 2-coloring of the complete graph K_N contains either a monochromatic K_s (red clique) or a monochromatic K_t (blue clique). This is the fundamental object in Ramsey theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-166-3",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 59,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Symmetry of Ramsey Numbers",
+    "content": "R(s, t) = R(t, s) for all s, t. This follows from swapping the roles of red and blue in any 2-coloring - what was a red K_s becomes a blue K_s.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-166-4",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 70,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "R(1,t) = 1",
+    "content": "R(1, t) = 1 for all t ≥ 1. Any single vertex trivially forms a monochromatic K_1, regardless of the edge coloring. This is the base case for Ramsey number recursions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-166-5",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 88,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "R(2,t) = t",
+    "content": "R(2, t) = t for all t ≥ 2. Either some two vertices share a red edge (giving K_2 in red), or all edges are blue, forming a complete blue K_t. This elegant argument establishes the exact value.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-166-6",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 132,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Known Exact Values",
+    "content": "R(3,3) = 6 is the most famous result - any 2-coloring of K_6 has a monochromatic triangle. R(4,4) = 18 and R(4,5) = 25 are the largest known exact values for s = 4. Computing larger values is extremely difficult.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-166-7",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 152,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "R(3,k) Bounds",
+    "content": "The best known bounds for R(3,k) are c₁·k²/log k ≤ R(3,k) ≤ c₂·k²/log k. This tight asymptotic result shows R(3,k) ~ k²/log k, a major achievement in Ramsey theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-166-8",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 166,
+      "endLine": 175
+    },
+    "type": "theorem",
+    "title": "Spencer's Lower Bound (1977)",
+    "content": "Spencer proved R(4,k) ≥ c·(k log k)^{5/2} using probabilistic methods. This was the best lower bound for over 40 years, but fell far short of the expected k³/(log k)^O(1).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-166-9",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 184,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Probabilistic Method",
+    "content": "Spencer's proof uses the probabilistic method: a randomly constructed graph avoids K_4 with high probability while maintaining a small independence number. This technique revolutionized combinatorics but has limits.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-166-10",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 195,
+      "endLine": 204
+    },
+    "type": "theorem",
+    "title": "AKS Upper Bound (1980)",
+    "content": "Ajtai-Komlós-Szemerédi proved R(4,k) ≤ C·k³/(log k)² using a clever greedy coloring algorithm. This established that R(4,k) grows like k³ up to polylogarithmic factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-166-11",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 213,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "The 43-Year Gap",
+    "content": "From 1980 to 2023, the gap between Spencer's lower bound (k log k)^{5/2} and the AKS upper bound k³/(log k)² remained open. Erdős offered $250 for resolving this fundamental question in Ramsey theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-166-12",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 224,
+      "endLine": 233
+    },
+    "type": "theorem",
+    "title": "Mattheus-Verstraete (2023)",
+    "content": "R(4,k) ≥ c·k³/(log k)⁴ for some constant c > 0. This SOLVED Erdős Problem #166, earning the $250 prize. The proof uses algebraic graph constructions from finite geometry rather than probabilistic methods.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-166-13",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 235,
+      "endLine": 255
+    },
+    "type": "concept",
+    "title": "Algebraic Constructions",
+    "content": "Mattheus and Verstraete used incidence graphs of projective planes over finite fields to construct 'pseudo-random' graphs with small clique number but large independence number. This algebraic approach succeeded where probabilistic methods failed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-166-14",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 261,
+      "endLine": 271
+    },
+    "type": "definition",
+    "title": "Erdős Problem #166 Statement",
+    "content": "There exist constants c > 0 and A > 0 such that R(4,k) ≥ c·k³/(log k)^A for all sufficiently large k. This asks for the lower bound to match the upper bound up to polylogarithmic factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-166-15",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 273,
+      "endLine": 279
+    },
+    "type": "theorem",
+    "title": "Problem SOLVED",
+    "content": "erdos_166_solved: The Mattheus-Verstraete theorem with A = 4 proves Erdős Problem #166. The lower bound now matches the upper bound up to the exponent of log k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-166-16",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 287,
+      "endLine": 293
+    },
+    "type": "theorem",
+    "title": "Current Best Bounds",
+    "content": "c·k³/(log k)⁴ ≤ R(4,k) ≤ C·k³/(log k)². The gap is now only in the exponent of log k (4 vs 2). Both bounds confirm R(4,k) = Θ(k³/(log k)^α) for some 2 ≤ α ≤ 4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-166-17",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 363,
+      "endLine": 375
+    },
+    "type": "concept",
+    "title": "The $250 Prize",
+    "content": "Erdős offered monetary prizes for solutions to problems he considered important. The $250 prize for Problem #166 was collected by Mattheus and Verstraete after their 2023 breakthrough. Ron Graham's estate manages the prize fund.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-166-18",
+    "proofId": "erdos-166",
+    "range": {
+      "startLine": 406,
+      "endLine": 434
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_166_status: Erdős Problem #166 is SOLVED. R(4,k) >> k³/(log k)⁴, resolving a 43-year-old question. The algebraic construction breakthrough opens new directions in extremal combinatorics and Ramsey theory.",
+    "significance": "critical"
+  }
+]

@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-1128-1",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1128: Must any 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ contain a countably infinite monochromatic cube? DISPROVED by Prikry-Mills (1978): NO, bad colorings exist. Prize: $50.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-2",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 40,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "The Cardinal ℵ₁",
+    "content": "ℵ₁ (aleph-one) is the first uncountable cardinal. A set has cardinality ℵ₁ if it has the same size as the first uncountable ordinal ω₁. Key fact: ℵ₁ > ℵ₀ but we can't 'count' to ℵ₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-3",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "The Cardinal ℵ₀",
+    "content": "ℵ₀ (aleph-naught) is countable infinity - the cardinality of ℕ. A countably infinite set can be listed as a₁, a₂, a₃, ... The problem asks for ℵ₀-sized monochromatic cubes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-4",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 69,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "2-Coloring",
+    "content": "A 2-coloring of A × B × C assigns each triple (a, b, c) a color from {0, 1}. Think of coloring every cell of a 3D grid. The question: must some infinite sub-grid be monochromatic?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-5",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 75,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Monochromatic Cube",
+    "content": "A cube A₁ × B₁ × C₁ is monochromatic if ALL triples (a, b, c) with a ∈ A₁, b ∈ B₁, c ∈ C₁ have the same color. Every point in the sub-cube has one color.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-6",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 96,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "Erdős-Hajnal Conjecture",
+    "content": "The conjecture: For any 2-coloring of ℵ₁ × ℵ₁ × ℵ₁, there exist countably infinite A₁, B₁, C₁ such that A₁ × B₁ × C₁ is monochromatic. This would be an infinite Ramsey-type result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-7",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 110,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Prikry-Mills Disproof",
+    "content": "The conjecture is FALSE! Prikry and Mills (1978) found a 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ with NO countably infinite monochromatic cube. The proof was unpublished but later documented.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-8",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 120,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Existence of Bad Coloring",
+    "content": "There exists χ: ℵ₁ × ℵ₁ × ℵ₁ → {0,1} such that for ALL countably infinite A₁, B₁, C₁, the cube A₁ × B₁ × C₁ contains BOTH colors. No escape from mixed colors!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-9",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 134,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Counterexample Construction",
+    "content": "The bad coloring uses ordinal arithmetic. By carefully interleaving colors based on ordinal structure, one ensures ANY ℵ₀ × ℵ₀ × ℵ₀ cube must intersect both color classes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1128-10",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 142,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Key Idea",
+    "content": "The uncountability of ℵ₁ is essential. With only countably many colors to assign, and uncountably many ordinals to work with, one can encode enough information to break all ℵ₀-cubes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1128-11",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 153,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Partition Arrow Notation",
+    "content": "κ → (λ)ⁿ means: any 2-coloring of n-element subsets of κ has a homogeneous set of size λ. The product version asks about Cartesian products instead of subsets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1128-12",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 167,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Problem in Notation",
+    "content": "Is ℵ₁ × ℵ₁ × ℵ₁ → (ℵ₀)³₂ true? NO! The Prikry-Mills result shows ℵ₁³ ↛ (ℵ₀)³₂ - the negative arrow means the partition property FAILS.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1128-13",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 174,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Two-Dimensional Case",
+    "content": "Even ℵ₁ × ℵ₁ → (ℵ₀)²₂ is false. The 2D version also fails, though by a different construction. Infinite-dimensional Ramsey theory is full of negative results.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1128-14",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 185,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Finite Case Works",
+    "content": "For FINITE cardinals, the analogous statements ARE true! This is classical Ramsey theory. The infinite case is fundamentally different - uncountability creates counterexamples.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1128-15",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 192,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Countable Case",
+    "content": "ℵ₀ × ℵ₀ × ℵ₀ → (n)³₂ is true for any finite n. Countable products have finite monochromatic cubes. But not countably infinite ones - that also fails.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1128-16",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 224,
+      "endLine": 229
+    },
+    "type": "concept",
+    "title": "Todorčević's Work",
+    "content": "Todorčević [To94] systematically studied partitions of 3D combinatorial cubes. His work documented the Prikry-Mills result and explored many related problems.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1128-17",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 242,
+      "endLine": 247
+    },
+    "type": "concept",
+    "title": "Unpublished History",
+    "content": "Prikry and Mills found the counterexample in 1978 but never formally published it. The result was preserved through citations by Todorčević and Komjáth. Mathematics survives through community knowledge.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1128-18",
+    "proofId": "erdos-1128",
+    "range": {
+      "startLine": 259,
+      "endLine": 283
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_1128_status: The Erdős-Hajnal conjecture is FALSE. There exists a 2-coloring of ℵ₁³ with no ℵ₀³ monochromatic cube. A fundamental negative result in infinite Ramsey theory.",
+    "significance": "critical"
+  }
+]

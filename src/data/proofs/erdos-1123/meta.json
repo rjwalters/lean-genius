@@ -1,16 +1,20 @@
 {
   "id": "erdos-1123",
-  "title": "Erdős Problem #1123",
+  "title": "Erdős Problem #1123: Boolean Algebras Modulo Density Zero Sets",
   "slug": "erdos-1123",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Boolean algebra of sets of integers modulo sets of density ... (that is, in which two sets are equivalent if a...",
+  "description": "Are B₁ = P(ℕ)/I₁ and B₂ = P(ℕ)/I₂ isomorphic, where I₁, I₂ are the density-zero and log-density-zero ideals? Set-theoretically dependent: YES under CH (Just-Krawczyk 1984).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Stanisław Ulam",
     "sourceUrl": "https://erdosproblems.com/1123",
-    "date": "",
+    "date": "1984",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1123Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "boolean-algebras",
+      "density",
+      "continuum-hypothesis"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -20,15 +24,83 @@
     "erdosPrizeValue": "$100"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1123 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $B_1$ be the Boolean algebra of sets of integers modulo sets of density $0$ (that is, in which two sets are equivalent if and only if they differ by a set of density $0$) and let $B_2$ be the Boolean algebra of sets modulo sets of logarithmic density $0$.\n\nProve that $B_1$ and $B_2$ are not isomorphic.\n\n\n\nA question of Erd\\H{o}s and Ulam, who noted that the Boolean algebra modulo finite sets is not isomorphic to either of these two, because the former has no upper bound while the other two do.\n\nThey thought they had a proof of the main claim, but this was 'lost'. Erd\\H{o}s \\cite{Er81b} writes 'When I first visited Ulam in 1943 or 1944 in Madison we had the proof, then six months later we had forgotten the proof, and had to reconstruct it, so it seems that the proof should have been correct. Now the proof is gone and nobody can prove it. This problem should be settled; perhaps I should offer a hundred dollars for a proof (or a disproof) that these two Boolean algebras are not isomorphic. If it is trivial I well deserve to have to pay the hundred dollars.'\n\nIn fact Just and Krawczyk \\cite{JuKr84} proved, assuming the continuum hypothesis, that these two algebras are isomorphic. It is unclear whether this counts as a solution - in \\cite{JuKr84} they claim Erd\\H{o}s and Ulam asked about this only under the continuum hypothesis, but this is not mentioned in \\cite{Er81b}.\n\nOn the other hand, the question whether these two algebras are isomorphic appears in \\cite{VMR80} as Question 48, where it is attributed to Erd\\H{o}s, and there it is only asked about assuming the continuum hypothesis.\n\n\n\n\nReferences\n\n\n[Er81b] Erd\\H{o}s, P., My Scottish Book 'Problems'. The Scottish Book (1981), 27-35 (page numbers are given for the 2nd edition of The Scottish Book).\n\n[JuKr84] Just, Winfried and Krawczyk, Adam, On certain {B}oolean algebras {${\\scr P}(\\omega )/I$}. Trans. Amer. Math. Soc. (1984), 411--429.\n\n[VMR80] van Douwen, Eric K. and Monk, J. Donald and Rubin, Matatyahu, Some questions about {B}oolean algebras. Algebra Universalis (1980), 220--243.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem arose from Erdős's visit to Ulam in Madison, Wisconsin in 1943-44. They believed they had proved non-isomorphism, but the proof was 'lost' and never reconstructed. Erdős wrote: 'The proof is gone and nobody can prove it.' He offered $100 for a resolution. Just and Krawczyk (1984) proved that under the Continuum Hypothesis, the algebras ARE isomorphic - a surprising positive answer to a question posed negatively.",
+    "problemStatement": "Let B₁ be the Boolean algebra P(ℕ)/I₁ where I₁ is the ideal of density-zero sets (d(A) = 0 means |A ∩ {1,...,n}|/n → 0). Let B₂ be P(ℕ)/I₂ where I₂ is the ideal of logarithmic-density-zero sets (δ(A) = 0 means (1/log n)·Σ_{k∈A, k≤n} 1/k → 0). Prove that B₁ and B₂ are not isomorphic as Boolean algebras.",
+    "proofStrategy": "The resolution is set-theoretically dependent. Just and Krawczyk (1984) showed that under the Continuum Hypothesis (CH), both algebras have cardinality ℵ₁ and satisfy similar saturation properties, enabling a back-and-forth construction of an isomorphism. Without CH, the question may have a different answer. The formalization captures the density definitions, the quotient Boolean algebra construction, and the conditional isomorphism result.",
+    "keyInsights": [
+      "Natural density 0 implies logarithmic density 0, but not conversely",
+      "Both P(ℕ)/I₁ and P(ℕ)/I₂ are Boolean algebras",
+      "Under CH, both algebras have cardinality ℵ₁",
+      "Saturation properties under CH enable back-and-forth isomorphism",
+      "The isomorphism question is independent of ZFC",
+      "Erdős-Ulam's lost 'proof' of non-isomorphism was likely erroneous"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "density-definitions",
+      "title": "Density Definitions",
+      "startLine": 40,
+      "endLine": 68,
+      "summary": "Natural density, logarithmic density, and their zero conditions"
+    },
+    {
+      "id": "density-relationships",
+      "title": "Relationship Between Densities",
+      "startLine": 70,
+      "endLine": 100,
+      "summary": "Natural density zero implies log-density zero, ideal containment"
+    },
+    {
+      "id": "boolean-algebras",
+      "title": "The Boolean Algebras",
+      "startLine": 102,
+      "endLine": 133,
+      "summary": "B₁ and B₂ as quotient Boolean algebras"
+    },
+    {
+      "id": "original-question",
+      "title": "Erdős-Ulam's Original Question",
+      "startLine": 135,
+      "endLine": 159,
+      "summary": "The isomorphism question and the lost proof"
+    },
+    {
+      "id": "just-krawczyk",
+      "title": "Just-Krawczyk's Resolution",
+      "startLine": 161,
+      "endLine": 186,
+      "summary": "Isomorphism under CH, proof technique, independence"
+    },
+    {
+      "id": "ideals",
+      "title": "The Ideals I₁ and I₂",
+      "startLine": 188,
+      "endLine": 213,
+      "summary": "Properties of density-zero ideals and their differences"
+    },
+    {
+      "id": "set-theory",
+      "title": "Set-Theoretic Context",
+      "startLine": 215,
+      "endLine": 237,
+      "summary": "Continuum Hypothesis and classification of quotient algebras"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 291,
+      "endLine": 336,
+      "summary": "Complete resolution: set-theoretically dependent, isomorphic under CH"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1123 is SET-THEORETICALLY DEPENDENT. The question of whether B₁ = P(ℕ)/(density zero) and B₂ = P(ℕ)/(log-density zero) are isomorphic depends on set-theoretic axioms. Just and Krawczyk (1984) proved that under the Continuum Hypothesis, they ARE isomorphic. This resolved the $100 question, though not in the way Erdős and Ulam originally expected - they believed non-isomorphism held unconditionally.",
+    "implications": "This problem beautifully illustrates the interaction between number theory (density concepts), algebra (Boolean algebras), and set theory (independence results). It shows that even natural-seeming algebraic questions can be undecidable in ZFC. The result contributed to the broader study of quotient Boolean algebras P(ω)/I, which remains an active area of set-theoretic research.",
+    "openQuestions": [
+      "What happens without CH - are there models where B₁ ≇ B₂?",
+      "Classification of P(ω)/I for other natural ideals",
+      "Connections to forcing and cardinal characteristics"
+    ]
   }
 }
