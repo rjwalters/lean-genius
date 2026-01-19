@@ -1,33 +1,126 @@
 {
   "id": "erdos-272",
-  "title": "Erdős Problem #272",
+  "title": "Erdős Problem #272: Intersection Properties of Subsets",
   "slug": "erdos-272",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the largest ... such that there are ... with ... a non-empty arithmetic progression for all ...?\n\n\n\nSimonovi...",
+  "description": "Maximum number of sets A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N²/2. Solved by Szabó (1999).",
   "meta": {
-    "author": "Unknown",
+    "author": "Szabó (1999)",
     "sourceUrl": "https://erdosproblems.com/272",
-    "date": "",
-    "status": "pending",
+    "date": "1999",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos272Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "intersection-theory",
+      "arithmetic-progressions",
+      "extremal-set-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 6,
     "erdosNumber": 272,
     "erdosUrl": "https://erdosproblems.com/272",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #272 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. What is the largest $t$ such that there are $A_1,\\ldots,A_t\\subseteq \\{1,\\ldots,N\\}$ with $A_i\\cap A_j$ a non-empty arithmetic progression for all $i\\neq j$?\n\n\n\nSimonovits and S\\'{o}s \\cite{SiSo81} have shown that $t\\ll N^2$.\n\nErd\\H{o}s and Graham asked whether the maximal $t$ is achieved when we take the $A_i$ to be all arithmetic progressions in $\\{1,\\ldots,N\\}$ containing some fixed element, 'presumably the integer $\\lfloor N/2\\rfloor$'. This was disproved by Simonovits and S\\'{o}s \\cite{SiSo81}, who observed that taking all sets containing at most $3$ elements, containing some fixed element, produces $\\binom{N}{2}+1$ many such sets, which is asymptotically greater than the number of arithmetic progressions containing a fixed element, which is $\\sim \\frac{\\pi^2}{24}N^2$.\n\nIf we drop the non-empty requirement then Graham, Simonovits, and S\\'{o}s \\cite{GSS80} have shown that\\[t\\leq \\binom{N}{3}+\\binom{N}{2}+\\binom{N}{1}+1\\]and this is best possible.\n\nSzabo \\cite{Sz99} proved that the maximal such $t$ is equal to\\[\\frac{N^2}{2}+O(N^{5/3}(\\log N)^3),\\]resolving the asymptotic question. On the other hand, Szabo showed that the conjecture of Simonovits and S\\'{o}s that $\\binom{n}{2}+1$ is best possible is false, giving a construction which yields\\[t \\geq \\binom{N}{2}+\\left\\lfloor\\frac{N-1}{4}\\right\\rfloor+1.\\]Szabo conjectures that the asymptotic $t=\\binom{N}{2}+O(N)$ holds, and that in any extremal example there is an integer contained in all sets.\n\n\n\n\nReferences\n\n\n[GSS80] Graham, R. L. and Simonovits, M. and S\\'{o}s, V. T., A note on the intersection properties of subsets of integers. J. Combin. Theory Ser. A (1980), 106-110.\n\n[SiSo81] Simonovits, Mikl\\'{o}s and S\\'{o}s, Vera T., Intersection properties of subsets of integers. European J. Combin. (1981), 363-372.\n\n[Sz99] Szab\\'o, Tibor, Intersection properties of subsets of integers. European J. Combin. (1999), 429--444.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores intersection properties of set families. Simonovits-Sós (1981) showed t = O(N²) and disproved the Erdős-Graham conjecture that APs through ⌊N/2⌋ are optimal. Szabó (1999) determined the exact asymptotic: t = N²/2 + O(N^(5/3)(log N)³). The empty intersection case was completely solved by Graham-Simonovits-Sós (1980).",
+    "problemStatement": "Let N ≥ 1. What is the largest t such that there exist sets A_1,...,A_t ⊆ {1,...,N} with A_i ∩ A_j a non-empty arithmetic progression for all i ≠ j?",
+    "proofStrategy": "The formalization defines arithmetic progressions, the AP-intersection property, and the maximum family size. The key results are: (1) Simonovits-Sós upper bound t = O(N²), (2) Small sets through a fixed element beat APs through the middle, (3) Szabó's asymptotic t = N²/2 + O(N^(5/3)(log N)³), (4) Graham-Simonovits-Sós exact answer for the empty intersection case.",
+    "keyInsights": [
+      "Sets of size ≤ 3 through a fixed element beat APs through the middle",
+      "The Erdős-Graham conjecture (APs through N/2 optimal) is FALSE",
+      "Asymptotic answer: t ~ N²/2 (leading constant is 1/2)",
+      "Empty intersection case has exact answer: C(N,3) + C(N,2) + C(N,1) + 1",
+      "Extremal families likely have a common element (Szabó's conjecture)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "interval, ArithProg, IsArithProg, singleton_is_ap, pair_is_ap",
+      "startLine": 36,
+      "endLine": 77
+    },
+    {
+      "id": "ap-intersection",
+      "title": "The AP-Intersection Property",
+      "summary": "hasAPIntersectionProperty, maxAPFamily definitions",
+      "startLine": 79,
+      "endLine": 100
+    },
+    {
+      "id": "simonovits-sos",
+      "title": "The Simonovits-Sós Upper Bound",
+      "summary": "simonovits_sos_upper, simonovits_sos_lower axioms",
+      "startLine": 102,
+      "endLine": 114
+    },
+    {
+      "id": "erdos-graham",
+      "title": "The Erdős-Graham Conjecture (Disproved)",
+      "summary": "apsThroughElement, aps_through_middle, erdos_graham_conjecture_false",
+      "startLine": 116,
+      "endLine": 135
+    },
+    {
+      "id": "small-sets",
+      "title": "The Simonovits-Sós Construction",
+      "summary": "smallSetsThroughElement, small_sets_count, small_sets_has_AP",
+      "startLine": 137,
+      "endLine": 158
+    },
+    {
+      "id": "szabo-theorem",
+      "title": "Szabó's Theorem (1999)",
+      "summary": "szabo_theorem asymptotic, szabo_leading_constant, erdos_272",
+      "startLine": 160,
+      "endLine": 179
+    },
+    {
+      "id": "szabo-lower",
+      "title": "Szabó's Construction and Lower Bound",
+      "summary": "szabo_lower_bound, szabo_conjecture, szabo_common_element_conjecture",
+      "startLine": 181,
+      "endLine": 199
+    },
+    {
+      "id": "empty-case",
+      "title": "The Empty Intersection Case",
+      "summary": "hasAPIntersectionEmpty, maxAPFamilyEmpty, graham_simonovits_sos",
+      "startLine": 201,
+      "endLine": 224
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Examples",
+      "summary": "small_case_3, small_case_4, pairs_through_one, pairs_has_AP",
+      "startLine": 226,
+      "endLine": 245
+    },
+    {
+      "id": "generalizations",
+      "title": "Related Results and Generalizations",
+      "summary": "hasKAPIntersection, k_ap_intersection_bound, helly_connection",
+      "startLine": 247,
+      "endLine": 263
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_272_summary and erdos_272_answer",
+      "startLine": 265,
+      "endLine": 286
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #272 was resolved by Szabó (1999): the maximum t is N²/2 + O(N^(5/3)(log N)³). The Erdős-Graham conjecture was disproved by Simonovits-Sós. The empty intersection case has exact answer C(N,3)+C(N,2)+C(N,1)+1.",
+    "implications": "This result connects extremal set theory with arithmetic progressions. The problem shows that small sets (size ≤ 3) can be more flexible than structured sets like APs when requiring intersection properties.",
+    "openQuestions": [
+      "Is the exact answer t = C(N,2) + O(N)? (Szabó's conjecture)",
+      "Does every extremal family have a common element?",
+      "What is the exact coefficient of the O(N) term?",
+      "Can similar bounds be obtained for k-term AP intersections?"
+    ]
   }
 }
