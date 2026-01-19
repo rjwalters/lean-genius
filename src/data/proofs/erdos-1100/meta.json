@@ -1,33 +1,45 @@
 {
   "id": "erdos-1100",
-  "title": "Erdős Problem #1100",
+  "title": "Erdős Problem #1100: Coprime Consecutive Divisors",
   "slug": "erdos-1100",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are the divisors of ..., then let ... count the number of ... for which ....\n\nIs it true that ... for almost all ...? ...",
+  "description": "Let 1 = d₁ < d₂ < ... < d_τ(n) = n be the divisors of n. Define τ⊥(n) as the count of indices i where gcd(dᵢ, dᵢ₊₁) = 1. Three questions: (1) Does τ⊥(n)/ω(n) → ∞ for almost all n? (2) Is τ⊥(n) < exp((log n)^o(1)) for all n? (3) For squarefree n with ω(n) = k, what is g(k) = max τ⊥(n)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/1100",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1100Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "coprimality"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 1100,
     "erdosUrl": "https://erdosproblems.com/1100",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1100 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $1=d_1<\\cdots<d_{\\tau(n)}=n$ are the divisors of $n$, then let $\\tau_\\perp(n)$ count the number of $i$ for which $(d_i,d_{i+1})=1$.\n\nIs it true that $\\tau_\\perp(n)/\\omega(n)\\to \\infty$ for almost all $n$? Is it true that\\[\\tau_\\perp(n)< \\exp((\\log n)^{o(1)})\\]for all $n$?\n\nLet\\[g(k) = \\max_{\\omega(n)=k}\\tau_\\perp(n),\\]where $\\omega(n)$ counts the number of distinct prime divisors of $n$, and $n$ is restricted to squarefree integers. Determine the growth of $g(k)$.\n\n\n\nThe function $\\tau_\\perp(n)$ was considered by Erd\\H{o}s and Hall \\cite{ErHa78}. It is trivial that $\\tau_\\perp(n)\\geq \\omega(n)$ (with equality for infinitely many $n$). Erd\\H{o}s and Hall prove, for all $\\epsilon>0$ and sufficiently large $x$,\\[\\max_{n<x} \\tau_\\perp(n) > \\exp((\\log\\log x)^{2-\\epsilon}).\\]Erd\\H{o}s and Simonovits (see \\cite{Er81h}) proved\\[(2^{1/2}+o(1))^k < g(k) < (2-c)^k\\]for some constant $c>0$.\n\n\n\n\nReferences\n\n\n[Er81h] Erd\\H{o}s, P., Some problems and results on additive and multiplicative\nnumber theory. Analytic number theory (Philadelphia, Pa., 1980) (1981), 171-182.\n\n[ErHa78] Erd\\H{o}s, P. and Hall, R. R., On some unconventional problems on the divisors of integers. J. Austral. Math. Soc. Ser. A (1978), 479--485.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Hall in their 1978 paper 'On some unconventional problems on the divisors of integers'. It explores the structure of divisor sequences by counting how often consecutive divisors are coprime. The function τ⊥(n) captures a subtle arithmetic property: how the prime factorization of n constrains the 'gaps' between consecutive divisors.",
+    "problemStatement": "Let 1 = d₁ < d₂ < ... < d_τ(n) = n be the divisors of n in increasing order. Define τ⊥(n) to count the number of indices i for which gcd(dᵢ, dᵢ₊₁) = 1.\n\n**Question 1 (OPEN):** Is it true that τ⊥(n)/ω(n) → ∞ for almost all n?\n\n**Question 2 (OPEN):** Is it true that τ⊥(n) < exp((log n)^o(1)) for all n?\n\n**Question 3:** For squarefree n with ω(n) = k prime factors, determine the growth of g(k) = max τ⊥(n).\n\n**Known results:**\n- τ⊥(n) ≥ ω(n) trivially (equality for infinitely many n)\n- Erdős-Hall: max_{n<x} τ⊥(n) > exp((log log x)^(2-ε))\n- Erdős-Simonovits: (√2 + o(1))^k < g(k) < (2-c)^k for some c > 0",
+    "proofStrategy": "We formalize the definitions of τ⊥(n) and g(k), axiomatize the known bounds from Erdős-Hall and Erdős-Simonovits, and state the three open questions precisely. The exponential bounds on g(k) are captured in a theorem showing the growth rate lies between √2 and 2-c.",
+    "keyInsights": [
+      "Consecutive divisors dᵢ and dᵢ₊₁ differ by multiplying or dividing by prime powers",
+      "Coprimality of consecutive divisors creates intricate combinatorial constraints",
+      "The bounds on g(k) show structure is neither trivial nor chaotic",
+      "Questions 1 and 2 remain open despite decades of study"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1100 poses three questions about τ⊥(n), the count of coprime consecutive divisor pairs. While the trivial lower bound τ⊥(n) ≥ ω(n) is established, and partial exponential bounds on g(k) are known from Erdős-Simonovits, the main questions about growth rates remain open.",
+    "implications": "Understanding τ⊥(n) would illuminate the fine structure of divisor lattices and how prime factorizations constrain the ordering of divisors.",
+    "openQuestions": [
+      "Does τ⊥(n)/ω(n) → ∞ for almost all n?",
+      "Is τ⊥(n) < exp((log n)^o(1)) for all n?",
+      "What is the exact growth rate of g(k)?"
+    ]
   }
 }
