@@ -9595,17 +9595,24 @@
   },
   {
     "id": "erdos-653",
-    "title": "Erdős Problem #653",
+    "title": "Erdős Problem #653: Distinct Distance Counts in the Plane",
     "slug": "erdos-653",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ..., where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let ... be the maximum number of...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n points in the plane, let R(xᵢ) count distinct distances from xᵢ. What is the maximum number of distinct R-values? Conjecture: g(n) ≥ (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "combinatorial-geometry",
+      "point-configurations",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 653,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 19
   },
   {
     "id": "erdos-656",

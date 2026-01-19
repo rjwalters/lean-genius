@@ -1,33 +1,170 @@
 {
   "id": "erdos-653",
-  "title": "Erdős Problem #653",
+  "title": "Erdős Problem #653: Distinct Distance Counts in the Plane",
   "slug": "erdos-653",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ..., where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let ... be the maximum number of...",
+  "description": "For n points in the plane, let R(xᵢ) count distinct distances from xᵢ. What is the maximum number of distinct R-values? Conjecture: g(n) ≥ (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Fishburn (3/8 bound), Csizmadia (7/10 bound)",
     "sourceUrl": "https://erdosproblems.com/653",
-    "date": "",
-    "status": "pending",
+    "date": "1997",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos653Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "combinatorial-geometry",
+      "point-configurations",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 653,
     "erdosUrl": "https://erdosproblems.com/653",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of a finite set under a function",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of a finite set",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum over a set",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "euclidDist: Euclidean distance in the plane",
+      "PointConfig: finite point configurations",
+      "distanceSet: set of distances from a point",
+      "distinctDistCount: R(xᵢ) function",
+      "rValueSet: set of R-values for a configuration",
+      "numDistinctRValues: count of distinct R-values",
+      "g: maximum distinct R-values function",
+      "erdos_fishburn_bound axiom: g(n) > 3n/8",
+      "csizmadia_bound axiom: g(n) > 7n/10",
+      "upper_bound axiom: g(n) < n - cn^{2/3}",
+      "erdos653Conjecture: the open conjecture",
+      "IsCollinear: collinear point predicate",
+      "IsRegularPolygon: regular polygon predicate",
+      "IsOptimalConfig: configurations achieving g(n)",
+      "totalDistinctDistances: total distinct distances"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #653 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ and let $R(x_i)=\\#\\{ \\lvert x_j-x_i\\rvert : j\\neq i\\}$, where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let $g(n)$ be the maximum number of distinct values the $R(x_i)$ can take. Is it true that $g(n) \\geq (1-o(1))n$?\n\n\n\nErd\\H{o}s and Fishburn proved $g(n)>\\frac{3}{8}n$ and Csizmadia proved $g(n)>\\frac{7}{10}n$. Both groups proved $g(n) < n-cn^{2/3}$ for some constant $c>0$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #653**\n\nThis problem studies how the \"distance richness\" of individual points in a configuration can vary. For each point xᵢ, R(xᵢ) counts how many distinct distances emanate from it. The question asks: how many different values can R take across all points?\n\n**Key History:**\n- Erdős [Er97e]: Original problem formulation\n- Erdős-Fishburn: Proved g(n) > (3/8)n\n- Csizmadia: Improved to g(n) > (7/10)n\n- Both groups: Proved g(n) < n - cn^{2/3}\n\n**Mathematical Setting:**\n- Related to the famous Erdős distinct distances problem\n- Measures local distance diversity rather than global count\n- Connection to unit distance graphs and extremal combinatorics",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor $n$ points $x_1, \\ldots, x_n \\in \\mathbb{R}^2$, define:\n$$R(x_i) = \\#\\{|x_j - x_i| : j \\neq i\\}$$\n\nLet $g(n)$ be the maximum number of distinct values the $R(x_i)$ can take.\n\n**Conjecture:** $g(n) \\geq (1 - o(1))n$\n\n**Known Bounds:**\n- Lower: $g(n) > \\frac{7}{10}n$ (Csizmadia)\n- Upper: $g(n) < n - cn^{2/3}$\n\n**Status: OPEN**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define euclidDist for plane distance and PointConfig for n-point sets.\n\n2. **R-Function:** Define distanceSet and distinctDistCount (the R function) measuring distances from each point.\n\n3. **g(n) Definition:** Define rValueSet, numDistinctRValues, and g as the supremum over configurations.\n\n4. **Known Bounds:** Axiomatize Erdős-Fishburn (3/8) and Csizmadia (7/10) lower bounds, plus the n - cn^{2/3} upper bound.\n\n5. **The Conjecture:** State erdos653Conjecture as the limit statement g(n)/n → 1.\n\n6. **Special Cases:** Analyze collinear points and regular polygons.",
+    "keyInsights": [
+      "**R(x) = Local Richness:** Each point sees a different number of distinct distances; R measures this local diversity",
+      "**g(n) vs n:** The gap n - g(n) is Θ(n^{2/3}), not o(n) as conjectured to be true",
+      "**7/10 is Best Known:** Csizmadia's bound g(n) > 0.7n is the current record; gap to 1 remains",
+      "**Regular Polygons are Bad:** In a regular n-gon, all points have the same R-value, so g = 1",
+      "**Connection to Distinct Distances:** Related to the total number of distinct distances in the plane",
+      "**Upper Bound Obstruction:** The cn^{2/3} upper gap shows perfect diversity (g = n) is impossible"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "point-config",
+      "title": "Point Configuration",
+      "summary": "euclidDist, PointConfig definitions",
+      "startLine": 38,
+      "endLine": 56
+    },
+    {
+      "id": "distance-count",
+      "title": "Distinct Distance Count",
+      "summary": "distanceSet, distinctDistCount (R function)",
+      "startLine": 57,
+      "endLine": 76
+    },
+    {
+      "id": "g-function",
+      "title": "The Function g(n)",
+      "summary": "rValueSet, numDistinctRValues, g definition",
+      "startLine": 77,
+      "endLine": 103
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "erdos_fishburn_bound, csizmadia_bound, upper_bound",
+      "startLine": 104,
+      "endLine": 133
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "erdos653Conjecture statement, open status",
+      "startLine": 134,
+      "endLine": 158
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "g_pos, g_le_n, g_mono",
+      "startLine": 159,
+      "endLine": 181
+    },
+    {
+      "id": "special-configs",
+      "title": "Special Configurations",
+      "summary": "IsCollinear, IsRegularPolygon, regular polygon R-values",
+      "startLine": 182,
+      "endLine": 210
+    },
+    {
+      "id": "extremal-configs",
+      "title": "Extremal Configurations",
+      "summary": "IsOptimalConfig, optimal_exists",
+      "startLine": 211,
+      "endLine": 228
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Analysis",
+      "summary": "gap_lower_bound, gap_bounds",
+      "startLine": 229,
+      "endLine": 251
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Unit Distance Problem",
+      "summary": "unitDistPairs, totalDistinctDistances",
+      "startLine": 252,
+      "endLine": 271
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_653_summary, erdos_653_open",
+      "startLine": 272,
+      "endLine": 299
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #653 asks whether the maximum number of distinct R-values for n points in the plane satisfies g(n) ≥ (1 - o(1))n. The conjecture remains OPEN. Best known bounds are g(n) > 0.7n (Csizmadia) and g(n) < n - cn^{2/3} (Erdős-Fishburn).",
+    "implications": "**Mathematical Connections**\n\n1. **Distinct Distances Problem:** Related to Erdős's famous question about minimum distinct distances\n\n2. **Unit Distance Graphs:** Configurations with many unit distances have restricted R-value diversity\n\n3. **Extremal Geometry:** Finding optimal configurations is a challenging extremal problem\n\n4. **Asymptotic Gaps:** The n^{2/3} gap suggests fundamental geometric constraints\n\n5. **Local vs Global:** Distinguishes local distance structure from global distance counts",
+    "openQuestions": [
+      "Is g(n) ≥ (1 - o(1))n true? (The main conjecture)",
+      "Can the 7/10 lower bound be improved toward 1?",
+      "What configurations achieve g(n)?",
+      "Is the n^{2/3} upper gap tight?",
+      "How does the problem generalize to higher dimensions?"
+    ]
   }
 }
