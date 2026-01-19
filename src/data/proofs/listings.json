@@ -8367,17 +8367,24 @@
   },
   {
     "id": "erdos-580",
-    "title": "Erdős Problem #580",
+    "title": "Erdős Problem #580: The Loebl-Komlós-Sós Conjecture",
     "slug": "erdos-580",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices such that at least ... vertices have degree at least .... Must ... contain every tree on a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If a graph G on n vertices has at least n/2 vertices of degree at least n/2, must G contain every tree on at most n/2 vertices? YES for large n - proved by Zhao (2011).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "trees",
+      "tree-embedding",
+      "regularity-lemma",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 580,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-581",
