@@ -13,10 +13,11 @@ Estimate f(n). Is there a constant c > 0 such that f(n) = (c + o(1))n?
 Reference: https://erdosproblems.com/1005
 -/
 
-import Mathlib.Data.Rat.Basic
+import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Finset.Basic
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Real.Basic
+import Mathlib.Tactic
 
 open Finset
 
@@ -64,7 +65,12 @@ def similarlyOrdered (f g : FareyFraction) : Prop :=
 /-- Similarly ordered is symmetric. -/
 lemma similarlyOrdered_symm (f g : FareyFraction) :
     similarlyOrdered f g ↔ similarlyOrdered g f := by
-  sorry
+  simp only [similarlyOrdered]
+  constructor <;> intro h <;> rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · right; constructor <;> linarith
+  · left; constructor <;> linarith
+  · right; constructor <;> linarith
+  · left; constructor <;> linarith
 
 /-- Similarly ordered is reflexive. -/
 lemma similarlyOrdered_refl (f : FareyFraction) : similarlyOrdered f f := by
@@ -85,8 +91,8 @@ def fareyList (n : ℕ) : List FareyFraction :=
 /-- A run of length k starting at index i is similarly ordered. -/
 def isSimOrdered (n : ℕ) (i k : ℕ) : Prop :=
   ∀ j₁ j₂, i ≤ j₁ → j₁ < j₂ → j₂ ≤ i + k →
-    ∀ f₁ f₂, (fareyList n).get? j₁ = some f₁ →
-             (fareyList n).get? j₂ = some f₂ →
+    ∀ f₁ f₂, (fareyList n)[j₁]? = some f₁ →
+             (fareyList n)[j₂]? = some f₂ →
              similarlyOrdered f₁ f₂
 
 /-!
@@ -95,10 +101,10 @@ def isSimOrdered (n : ℕ) (i k : ℕ) : Prop :=
 f(n) is the largest length of a consecutive similarly ordered run.
 -/
 
-/-- f(n) = max length of consecutive similarly ordered Farey fractions. -/
+/-- f(n) = max length of consecutive similarly ordered Farey fractions.
+    This is the supremum over all i of the longest run starting at i. -/
 noncomputable def mayerErdosF (n : ℕ) : ℕ :=
-  Nat.find (⟨0, by simp⟩ : ∃ k, ∀ i, ¬isSimOrdered n i (k + 1))
-  -- Largest k such that some run of length k is similarly ordered
+  sSup { k : ℕ | ∃ i, isSimOrdered n i k }
 
 /-!
 ## Historical Results
@@ -165,8 +171,8 @@ def mediant (f g : FareyFraction) : ℚ :=
 
 /-- Adjacent Farey fractions satisfy |ad - bc| = 1. -/
 axiom farey_adjacent_property (n : ℕ) (i : ℕ) :
-  ∀ f g, (fareyList n).get? i = some f →
-         (fareyList n).get? (i + 1) = some g →
+  ∀ (f g : FareyFraction), (fareyList n)[i]? = some f →
+         (fareyList n)[i + 1]? = some g →
          (f.num : ℤ) * g.denom - f.denom * g.num = 1 ∨
          (f.num : ℤ) * g.denom - f.denom * g.num = -1
 
@@ -185,7 +191,21 @@ theorem similarlyOrdered_iff_monotone (f g : FareyFraction) :
     similarlyOrdered f g ↔
     (toPoint f).1 ≤ (toPoint g).1 ∧ (toPoint f).2 ≤ (toPoint g).2 ∨
     (toPoint f).1 ≥ (toPoint g).1 ∧ (toPoint f).2 ≥ (toPoint g).2 := by
-  sorry
+  simp only [similarlyOrdered, toPoint]
+  constructor
+  · intro h
+    rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · right; exact ⟨Int.le_of_sub_nonneg h1, Int.le_of_sub_nonneg h2⟩
+    · left
+      constructor
+      · have : (g.num : ℤ) - f.num ≥ 0 := by linarith
+        exact Int.le_of_sub_nonneg this
+      · have : (g.denom : ℤ) - f.denom ≥ 0 := by linarith
+        exact Int.le_of_sub_nonneg this
+  · intro h
+    rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · right; constructor <;> omega
+    · left; constructor <;> omega
 
 /-!
 ## Why the Gap Between 1/12 and 1/4?
@@ -195,11 +215,15 @@ in how Farey fractions are ordered.
 -/
 
 /-- The ratio of bounds is 3:1. -/
-theorem bounds_ratio : (1 : ℝ) / 4 / (1 / 12) = 3 := by norm_num
+theorem bounds_ratio : (1 : ℝ) / 4 / (1 / 12) = 3 := by
+  field_simp
+  ring
 
 /-- Closing the gap requires understanding local structure of Farey sequence. -/
 theorem gap_significance :
-    (1 : ℝ) / 4 - 1 / 12 = 1 / 6 := by norm_num
+    (1 : ℝ) / 4 - 1 / 12 = 1 / 6 := by
+  field_simp
+  ring
 
 /-!
 ## Summary
