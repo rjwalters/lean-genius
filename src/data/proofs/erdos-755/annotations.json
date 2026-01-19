@@ -1,1 +1,115 @@
-[]
+[
+  {
+    "id": "ann-e755-header",
+    "proofId": "erdos-755",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #755: Equilateral Triangles in ℝ⁶**\n\nThis problem asks for the maximum number of equilateral triangles formed by n points in 6-dimensional space.\n\n**Question:**\nIs T₆ᵘ(n) ≤ (1/27 + o(1))n³?\n\n**Answer: YES**\n\nProved by Clemen-Dumitrescu-Liu (2025), even for triangles of any size.",
+    "mathContext": "Higher-dimensional geometry allows point configurations that form many more equilateral triangles than possible in the plane.",
+    "significance": "critical",
+    "relatedConcepts": ["Discrete geometry", "Point configurations", "Equilateral triangles"]
+  },
+  {
+    "id": "ann-e755-equilateral",
+    "proofId": "erdos-755",
+    "range": { "startLine": 46, "endLine": 62 },
+    "type": "definition",
+    "title": "Equilateral Triangle Definitions",
+    "content": "**IsEquilateralTriangle:**\n\nThree points p₁, p₂, p₃ form an equilateral triangle if all pairwise distances are equal and positive.\n\n**IsUnitEquilateralTriangle:**\n\nAn equilateral triangle where all sides have length exactly 1.\n\nThe Euclidean distance uses:\n```lean\ndist(x, y) = √(Σᵢ (xᵢ - yᵢ)²)\n```",
+    "significance": "critical",
+    "relatedConcepts": ["Euclidean distance", "Regular polygons"]
+  },
+  {
+    "id": "ann-e755-counting",
+    "proofId": "erdos-755",
+    "range": { "startLine": 67, "endLine": 98 },
+    "type": "definition",
+    "title": "Counting Functions",
+    "content": "**T₆ᵘ(n):**\n\nMaximum number of unit equilateral triangles formed by n points in ℝ⁶.\n\n**T₆(n):**\n\nMaximum number of equilateral triangles of ANY size formed by n points in ℝ⁶.\n\n**T_d(n):**\n\nGeneral dimension version for d-dimensional space.\n\nThese are defined as suprema over all n-point configurations.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal geometry", "Counting problems"]
+  },
+  {
+    "id": "ann-e755-lenz",
+    "proofId": "erdos-755",
+    "range": { "startLine": 104, "endLine": 124 },
+    "type": "axiom",
+    "title": "The Lenz Construction",
+    "content": "**lenz_construction:**\n\nA construction achieving T₆ᵘ(n) ≥ n³/27 - O(n²).\n\n**Method:**\n1. Take three mutually orthogonal circles in ℝ⁶\n2. Place n/3 points on each circle\n3. Arrange points to form inscribed squares on each circle\n\n**Triangle Count:**\nEach triple (one point from each circle) forms an equilateral triangle.\nTotal: (n/3)³ = n³/27 triangles.",
+    "mathContext": "This construction was attributed to Lenz by Erdős, but appears in Erdős-Purdy (1975).",
+    "significance": "critical",
+    "relatedConcepts": ["Orthogonal circles", "Inscribed squares", "Construction"]
+  },
+  {
+    "id": "ann-e755-conjecture",
+    "proofId": "erdos-755",
+    "range": { "startLine": 130, "endLine": 146 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**erdos_conjecture_unit:**\n\nT₆ᵘ(n) ≤ (1/27 + o(1))n³\n\nThe Lenz construction is asymptotically optimal for unit triangles.\n\n**erdos_conjecture_any_size:**\n\nT₆(n) ≤ (1/27 + o(1))n³\n\nErdős believed the same bound should hold for triangles of ANY size.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic bounds", "Extremal problems"]
+  },
+  {
+    "id": "ann-e755-cdl",
+    "proofId": "erdos-755",
+    "range": { "startLine": 152, "endLine": 161 },
+    "type": "axiom",
+    "title": "Clemen-Dumitrescu-Liu 2025",
+    "content": "**cdl_2025_main:**\n\nT₆(n) = (1/27 + o(1))n³\n\n**Statement:**\n```lean\naxiom cdl_2025_main :\n  ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →\n    |((T6 n : ℝ) - (n : ℝ)^3 / 27)| ≤ ε * (n : ℝ)^3\n```\n\nThis proves Erdős's conjecture in a STRONG form: even arbitrary-size triangles satisfy the bound!",
+    "mathContext": "Published as arXiv:2507.19841 (2025). A very recent solution to a long-standing problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Clemen-Dumitrescu-Liu", "2025 breakthrough"]
+  },
+  {
+    "id": "ann-e755-corollaries",
+    "proofId": "erdos-755",
+    "range": { "startLine": 163, "endLine": 184 },
+    "type": "theorem",
+    "title": "Corollaries",
+    "content": "**erdos_conjecture_unit_true:**\n\nThe unit triangles conjecture follows from the any-size result since T₆ᵘ(n) ≤ T₆(n).\n\n**erdos_conjecture_any_size_true:**\n\nThe any-size conjecture follows directly from cdl_2025_main.\n\nThe key implication: |T₆(n) - n³/27| ≤ εn³ implies T₆(n) ≤ (1/27 + ε)n³.",
+    "significance": "key",
+    "relatedConcepts": ["Logical implications", "Bound transfer"]
+  },
+  {
+    "id": "ann-e755-general",
+    "proofId": "erdos-755",
+    "range": { "startLine": 190, "endLine": 208 },
+    "type": "axiom",
+    "title": "Higher Dimensions",
+    "content": "**cdl_general_dimension:**\n\nFor all even d ≥ 6, there exists c_d > 0 such that T_d(n) = (c_d + o(1))n³.\n\n**c6_equals_one_27th:**\n\nFor d = 6: c₆ = 1/27.\n\nCDL found exact formulas for the constant c_d in all even dimensions d ≥ 6.",
+    "significance": "key",
+    "relatedConcepts": ["General dimensions", "Asymptotic constants"]
+  },
+  {
+    "id": "ann-e755-why27",
+    "proofId": "erdos-755",
+    "range": { "startLine": 214, "endLine": 227 },
+    "type": "concept",
+    "title": "Why 1/27?",
+    "content": "**The Constant Explained:**\n\nIn the optimal Lenz construction:\n- Place n/3 points on each of 3 orthogonal circles\n- Each choice of one point from each circle forms an equilateral triangle\n- Total triangles: (n/3) × (n/3) × (n/3) = n³/27\n\nThe constant 1/27 = 1/3³ arises from the optimal partition into 3 equal groups.",
+    "significance": "key",
+    "relatedConcepts": ["Optimal partitioning", "Combinatorial counting"]
+  },
+  {
+    "id": "ann-e755-dimensions",
+    "proofId": "erdos-755",
+    "range": { "startLine": 233, "endLine": 244 },
+    "type": "concept",
+    "title": "Dimension Behavior",
+    "content": "**Growth Rates by Dimension:**\n\n- d = 2: T₂(n) = O(n) (linear)\n- d = 3: T₃(n) = Θ(n²) (quadratic)\n- d = 4, 5: Intermediate behavior\n- d ≥ 6 even: T_d(n) = Θ(n³) (cubic)\n\nThe transition to cubic growth at d = 6 is a significant threshold in discrete geometry.",
+    "significance": "supporting",
+    "relatedConcepts": ["Dimension dependence", "Growth rates"]
+  },
+  {
+    "id": "ann-e755-summary",
+    "proofId": "erdos-755",
+    "range": { "startLine": 250, "endLine": 278 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_755_summary:**\n\nThe complete answer to Erdős Problem #755.\n\n**Results:**\n1. erdos_conjecture_unit (unit triangles): TRUE\n2. erdos_conjecture_any_size (any-size): TRUE\n3. The answer is YES\n\n**Key Insight:**\nThe Lenz construction with three orthogonal circles achieves the optimal constant 1/27 = 1/3³.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "Solved conjectures", "Discrete geometry"]
+  }
+]
