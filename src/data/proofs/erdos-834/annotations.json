@@ -1,1 +1,230 @@
-[]
+[
+  {
+    "proofId": "erdos-834",
+    "type": "structure",
+    "location": {
+      "start": { "line": 42, "column": 0 },
+      "end": { "line": 45, "column": 28 }
+    },
+    "range": { "startLine": 42, "endLine": 45 },
+    "significance": "core",
+    "content": {
+      "title": "Hypergraph Structure",
+      "summary": "A hypergraph consists of a set of hyperedges, where each edge is a finite set of vertices. Unlike regular graphs where edges connect exactly 2 vertices, hyperedges can contain any number of vertices.",
+      "details": "The definition uses `Set (Finset V)` to represent the edge set, allowing infinite hypergraphs while keeping each edge finite.",
+      "prerequisites": ["Set theory", "Finset basics"]
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "definition",
+    "location": {
+      "start": { "line": 47, "column": 0 },
+      "end": { "line": 49, "column": 29 }
+    },
+    "range": { "startLine": 47, "endLine": 49 },
+    "significance": "core",
+    "content": {
+      "title": "k-Uniform Hypergraph",
+      "summary": "A hypergraph is k-uniform if every hyperedge contains exactly k vertices. For k=2, this gives ordinary graphs. For k=3, every edge is a triple of vertices.",
+      "details": "3-uniform hypergraphs are a central object in extremal combinatorics, generalizing the study of graphs to higher-dimensional structures."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "definition",
+    "location": {
+      "start": { "line": 65, "column": 0 },
+      "end": { "line": 67, "column": 44 }
+    },
+    "range": { "startLine": 65, "endLine": 67 },
+    "significance": "core",
+    "content": {
+      "title": "Transversal Definition",
+      "summary": "A transversal (also called vertex cover or hitting set) is a set of vertices that intersects every hyperedge. Every hypergraph has at least one transversal (the entire vertex set).",
+      "details": "Finding minimum transversals is NP-hard in general, but critical hypergraphs have special structure that constrains this problem."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "definition",
+    "location": {
+      "start": { "line": 84, "column": 0 },
+      "end": { "line": 87, "column": 61 }
+    },
+    "range": { "startLine": 84, "endLine": 87 },
+    "significance": "core",
+    "content": {
+      "title": "Transversal-Criticality",
+      "summary": "A hypergraph is k-transversal-critical if its transversal number is exactly k, AND removing any edge reduces the transversal number. This captures the notion that every edge is 'essential' for requiring a cover of size k.",
+      "details": "The conjunction of τ(H) = k and criticality for every edge is a strong constraint that limits the possible structure of such hypergraphs."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "definition",
+    "location": {
+      "start": { "line": 95, "column": 0 },
+      "end": { "line": 97, "column": 66 }
+    },
+    "range": { "startLine": 95, "endLine": 97 },
+    "significance": "core",
+    "content": {
+      "title": "Proper Coloring",
+      "summary": "A proper coloring of a hypergraph assigns colors to vertices such that no edge is monochromatic (all vertices the same color). This generalizes graph coloring to hypergraphs.",
+      "details": "For 2-uniform hypergraphs (graphs), this reduces to standard graph coloring. For k-uniform hypergraphs with k > 2, the constraint is weaker since edges have more vertices."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "definition",
+    "location": {
+      "start": { "line": 103, "column": 0 },
+      "end": { "line": 106, "column": 59 }
+    },
+    "range": { "startLine": 103, "endLine": 106 },
+    "significance": "core",
+    "content": {
+      "title": "Chromatic-Criticality",
+      "summary": "A hypergraph is k-chromatic-critical if its chromatic number is exactly k, AND removing any edge reduces the chromatic number. This is the coloring analogue of transversal-criticality.",
+      "details": "Chromatic-critical graphs and hypergraphs have been extensively studied. Unlike transversal-criticality, chromatic-criticality allows for high minimum degree constructions."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "definition",
+    "location": {
+      "start": { "line": 114, "column": 0 },
+      "end": { "line": 117, "column": 64 }
+    },
+    "range": { "startLine": 114, "endLine": 117 },
+    "significance": "key",
+    "content": {
+      "title": "The Transversal Question",
+      "summary": "Formalizes the transversal interpretation: Does there exist a 3-uniform hypergraph with τ(H) = 3, transversal-critical, and minimum degree ≥ 7?",
+      "details": "This existential statement will be proven FALSE using Li's bound theorem."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "definition",
+    "location": {
+      "start": { "line": 119, "column": 0 },
+      "end": { "line": 122, "column": 64 }
+    },
+    "range": { "startLine": 119, "endLine": 122 },
+    "significance": "key",
+    "content": {
+      "title": "The Chromatic Question",
+      "summary": "Formalizes the chromatic interpretation: Does there exist a 3-uniform hypergraph with χ(H) = 3, chromatic-critical, and minimum degree ≥ 7?",
+      "details": "This existential statement will be proven TRUE using Lovász's construction."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "axiom",
+    "location": {
+      "start": { "line": 129, "column": 0 },
+      "end": { "line": 131, "column": 65 }
+    },
+    "range": { "startLine": 129, "endLine": 131 },
+    "significance": "key",
+    "content": {
+      "title": "Li's Bound Axiom",
+      "summary": "Li (2025) proved that every 3-transversal-critical 3-uniform hypergraph has a vertex of degree at most 6. This is stated as an axiom encoding the mathematical result.",
+      "details": "The full proof involves careful analysis of how edges must be distributed to maintain criticality while ensuring τ = 3. The bound 6 is tight."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "theorem",
+    "location": {
+      "start": { "line": 133, "column": 0 },
+      "end": { "line": 137, "column": 7 }
+    },
+    "range": { "startLine": 133, "endLine": 137 },
+    "significance": "key",
+    "content": {
+      "title": "Transversal Answer: NO",
+      "summary": "Using Li's bound, we prove that no 3-transversal-critical 3-uniform hypergraph can have minimum degree ≥ 7. The proof is by contradiction.",
+      "details": "The proof structure: assume such a hypergraph exists, apply Li's bound to get min degree ≤ 6, contradict the assumption min degree ≥ 7.",
+      "proofTechnique": "Contradiction using axiomatized bound"
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "axiom",
+    "location": {
+      "start": { "line": 144, "column": 0 },
+      "end": { "line": 147, "column": 63 }
+    },
+    "range": { "startLine": 144, "endLine": 147 },
+    "significance": "key",
+    "content": {
+      "title": "Lovász Construction Axiom",
+      "summary": "Lovász showed that for any d, there exist 3-chromatic-critical 3-uniform hypergraphs with minimum degree at least d. This gives infinitely many positive examples.",
+      "details": "The construction is non-trivial and involves carefully building hypergraphs where every edge is essential for maintaining χ = 3."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "theorem",
+    "location": {
+      "start": { "line": 149, "column": 0 },
+      "end": { "line": 152, "column": 42 }
+    },
+    "range": { "startLine": 149, "endLine": 152 },
+    "significance": "key",
+    "content": {
+      "title": "Chromatic Answer: YES",
+      "summary": "Using Lovász's construction with d = 7, we obtain a 3-chromatic-critical 3-uniform hypergraph with minimum degree ≥ 7.",
+      "details": "The proof simply instantiates the existence axiom with d = 7 to get the required hypergraph.",
+      "proofTechnique": "Instantiation of existence axiom"
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "theorem",
+    "location": {
+      "start": { "line": 159, "column": 0 },
+      "end": { "line": 162, "column": 50 }
+    },
+    "range": { "startLine": 159, "endLine": 162 },
+    "significance": "key",
+    "content": {
+      "title": "Complete Resolution",
+      "summary": "The main theorem combining both answers: the transversal question is FALSE and the chromatic question is TRUE. This completely resolves Erdős Problem #834 for both interpretations.",
+      "details": "The resolution demonstrates how the same informal question can have different formal answers depending on interpretation."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "axiom",
+    "location": {
+      "start": { "line": 170, "column": 0 },
+      "end": { "line": 172, "column": 62 }
+    },
+    "range": { "startLine": 170, "endLine": 172 },
+    "significance": "supporting",
+    "content": {
+      "title": "Tightness of Bound",
+      "summary": "The bound 6 in Li's theorem is tight: there exist 3-transversal-critical 3-uniform hypergraphs achieving minimum degree exactly 6.",
+      "details": "This shows the bound cannot be improved, making Li's result optimal."
+    }
+  },
+  {
+    "proofId": "erdos-834",
+    "type": "theorem",
+    "location": {
+      "start": { "line": 174, "column": 0 },
+      "end": { "line": 180, "column": 58 }
+    },
+    "range": { "startLine": 174, "endLine": 180 },
+    "significance": "key",
+    "content": {
+      "title": "Summary Theorem",
+      "summary": "Combines all results: Li's bound holds universally for transversal-critical hypergraphs, and Lovász's construction provides chromatic-critical hypergraphs with arbitrarily high minimum degree.",
+      "details": "This theorem serves as a comprehensive summary of all the key mathematical results in the formalization."
+    }
+  }
+]
