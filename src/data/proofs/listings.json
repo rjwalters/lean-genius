@@ -6824,17 +6824,24 @@
   },
   {
     "id": "erdos-437",
-    "title": "Erdős Problem #437",
+    "title": "Erdős Problem #437: Square Partial Products",
     "slug": "erdos-437",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many of the partial products ... can be squares? Is it true that, for any ..., there can be more than ... square...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For 1 ≤ a₁ < ... < aₖ ≤ x, how many partial products can be squares? Can there be > x^(1-ε) squares? YES, proved by Bui-Pratt-Zaharescu (2024) with precise bounds via hyperelliptic curves.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "perfect-squares",
+      "partial-products",
+      "hyperelliptic-curves",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 437,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 20
   },
   {
     "id": "erdos-438",
