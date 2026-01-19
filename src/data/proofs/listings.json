@@ -9799,20 +9799,24 @@
   },
   {
     "id": "erdos-671",
-    "title": "Erdős #671: Lagrange Interpolation Convergence",
+    "title": "Erdos Problem #671: Lagrange Interpolation Convergence",
     "slug": "erdos-671",
-    "description": "Can Lagrange interpolation L^n f(x) → f(x) even when the Lebesgue function λ_n(x) → ∞? Known: λ_n diverges somewhere (Bernstein), |L^n f| diverges a.e. for some f (Erdős-Vértesi). Prize: $250.",
-    "status": "formalized",
-    "badge": "wip",
+    "description": "Can Lagrange interpolation converge at points where the Lebesgue function diverges? Two open questions with $250 prize. Bernstein (1931) and Erdos-Vertesi (1980) established fundamental divergence results.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "analysis",
       "interpolation",
-      "approximation-theory"
+      "approximation-theory",
+      "lebesgue-function",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 671,
+    "mathlibCount": 4,
     "sorries": 23,
-    "annotationCount": 14
+    "annotationCount": 15
   },
   {
     "id": "erdos-672",
