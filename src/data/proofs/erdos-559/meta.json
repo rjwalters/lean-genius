@@ -1,33 +1,90 @@
 {
   "id": "erdos-559",
-  "title": "Erdős Problem #559",
+  "title": "Erdős Problem #559: Size Ramsey Numbers for Bounded Degree Graphs",
   "slug": "erdos-559",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges that is ...",
+  "description": "Does R̂(G) ≪_d n for bounded-degree graphs G? DISPROVED for d ≥ 3 by Rödl-Szemerédi (2000). The size Ramsey number R̂(G) is the minimum edges m such that some graph H with m edges is Ramsey for G.",
   "meta": {
-    "author": "Unknown",
+    "author": "Beck, Erdős",
     "sourceUrl": "https://erdosproblems.com/559",
-    "date": "",
-    "status": "pending",
+    "date": "1983",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos559Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "extremal-combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 11,
     "erdosNumber": 559,
     "erdosUrl": "https://erdosproblems.com/559",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #559 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges that is Ramsey for $G$.\n\nIf $G$ has $n$ vertices and maximum degree $d$ then prove that\\[\\hat{R}(G)\\ll_d n.\\]\n\n\n\nA problem of Beck, and perhaps also Erd\\H{o}s, although I cannot now find a reference in which Erd\\H{o}s himself discusses this problem - it is asked by Beck in \\cite{Be83b}, a paper which answers a related question of Erd\\H{o}s [720].\n\nBeck \\cite{Be83b} proved this when $G$ is a path. Friedman and Pippenger \\cite{FrPi87} proved this when $G$ is a tree. Haxell, Kohayakawa, and Luczak \\cite{HKL95} proved this when $G$ is a cycle. An alternative proof when $G$ is a cycle (with better constants) was given by Javadi, Khoeini, Omidi, and Pokrovskiy \\cite{JKOP19}.\n\nThis was disproved for $d=3$ by R\\\"{o}dl and Szemer\\'{e}di \\cite{RoSz00}, who constructed a graph on $n$ vertices with maximum degree $3$ such that\\[\\hat{R}(G)\\gg n(\\log n)^{c}\\]for some absolute constant $c>0$. Tikhomirov \\cite{Ti22b} has improved this to\\[\\hat{R}(G)\\gg n\\exp(c\\sqrt{\\log n}).\\]It is an interesting question how large $\\hat{R}(G)$ can be if $G$ has maximum degree $3$. Kohayakawa, R\\\"{o}dl, Schacht, and Szemer\\'{e}di \\cite{KRSS11} proved an upper bound of $\\leq n^{5/3+o(1)}$ and Conlon, Nenadov, and Truji\\'{c} \\cite{CNT22} proved $\\ll n^{8/5}$. The best known upper bound of $\\leq n^{3/2+o(1)}$ is due to Dragani\\'{c} and Petrova \\cite{DrPe22}.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Be83b] Beck, J\\'{o}zsef, On size Ramsey number of paths, trees, and circuits. I. J. Graph Theory (1983), 115-129.\n\n[CNT22] Conlon, David and Nenadov, Rajko and Truji\\'C, Milo\\vS, The size-Ramsey number of cubic graphs. Bull. Lond. Math. Soc. (2022), 2135-2150.\n\n[DrPe22] N. Dragani\\'C and K. Petrova, Size-Ramsey numbers of graphs with maximum degree three. arXiv:2207.05048 (2022).\n\n[FrPi87] Friedman, J. and Pippenger, N., Expanding graphs contain all small trees. Combinatorica (1987), 71-76.\n\n[HKL95] Haxell, P. E. and Kohayakawa, Y. and \\L uczak, T., The induced size-Ramsey number of cycles. Combin. Probab. Comput. (1995), 217-239.\n\n[JKOP19] Javadi, R. and Khoeini, F. and Omidi, G. R. and Pokrovskiy, A., On the size-Ramsey number of cycles. Combin. Probab. Comput. (2019), 871-880.\n\n[KRSS11] Kohayakawa, Yoshiharu and R\\\"{o}dl, Vojt\\vEch and Schacht,\nMathias and Szemer\\'{e}di, Endre, Sparse partition universal graphs for graphs of bounded\ndegree. Adv. Math. (2011), 5041-5065.\n\n[RoSz00] R\\\"{o}dl, Vojt\\vEch and Szemer\\'{e}di, Endre, On size Ramsey numbers of graphs with bounded degree. Combinatorica (2000), 257-262.\n\n[Ti22b] Tikhomirov, K., On bounded degree graphs with large size-Ramsey numbers. arXiv:2210.05818 (2022).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Beck in 1983, with possible prior interest from Erdős. Beck's original paper proved the conjecture for paths. The problem asks whether the size Ramsey number—the minimum number of edges in a graph H that is Ramsey for G—is linear in n for bounded-degree graphs G with n vertices. This is a natural question connecting extremal graph theory with Ramsey theory.",
+    "problemStatement": "Let R̂(G) denote the size Ramsey number: the minimal number of edges m such that there exists a graph H with m edges that is Ramsey for G (any 2-coloring of H's edges contains a monochromatic copy of G). Conjecture (Beck/Erdős): If G has n vertices and maximum degree d, then R̂(G) ≪_d n (i.e., R̂(G) = O_d(n), linear in n with constant depending on d).",
+    "proofStrategy": "The conjecture was DISPROVED for d ≥ 3. The formalization captures: (1) Basic graph definitions with FiniteGraph structure, edge counting, degree functions. (2) The Ramsey property and size Ramsey number definition. (3) The Beck-Erdős conjecture statement and its negation. (4) Positive special cases where linearity holds (paths, trees, cycles). (5) Counterexamples showing superlinear lower bounds for degree-3 graphs. (6) Best known upper bounds showing polynomial growth.",
+    "keyInsights": [
+      "The conjecture HOLDS for restricted graph classes: paths (Beck 1983), trees (Friedman-Pippenger 1987), cycles (Haxell-Kohayakawa-Luczak 1995)",
+      "The conjecture FAILS for general degree-3 graphs, with counterexamples by Rödl-Szemerédi (2000) achieving R̂(G) ≫ n(log n)^c",
+      "Tikhomirov (2022) improved the lower bound to R̂(G) ≫ n·exp(c√(log n))",
+      "Best upper bounds for degree-3 graphs are polynomial: n^{3/2+o(1)} by Draganić-Petrova (2022)",
+      "The exact growth rate for degree-3 graphs remains a major open problem, with a substantial gap between lower and upper bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Basic Definitions",
+      "startLine": 48,
+      "endLine": 71,
+      "summary": "Defines FiniteGraph structure with adjacency, symmetry, looplessness. Includes edgeCount (counting unordered pairs), degree (neighbors of a vertex), and maxDegree (supremum over all vertices)."
+    },
+    {
+      "title": "Ramsey Property and Size Ramsey Number",
+      "startLine": 73,
+      "endLine": 92,
+      "summary": "Defines IsRamseyFor: H is Ramsey for G if any 2-coloring of H's edges contains a monochromatic copy of G. The size Ramsey number sizeRamsey(G) is the minimum edges needed for such an H."
+    },
+    {
+      "title": "The Beck-Erdős Conjecture (Disproved)",
+      "startLine": 94,
+      "endLine": 109,
+      "summary": "States the conjecture: for each d ≥ 1, there exists c > 0 such that R̂(G) ≤ c·n for all n-vertex graphs G with maximum degree at most d. The theorem beck_erdos_conjecture_false asserts this is false."
+    },
+    {
+      "title": "Positive Results (Special Cases)",
+      "startLine": 111,
+      "endLine": 150,
+      "summary": "Formalizes the classes where linearity DOES hold: IsPath, IsTree, IsCycle definitions and theorems beck_paths, friedman_pippenger_trees, haxell_kohayakawa_luczak_cycles proving R̂(G) = O(n) for these families."
+    },
+    {
+      "title": "Counterexamples (d = 3)",
+      "startLine": 152,
+      "endLine": 171,
+      "summary": "The key negative results: rodl_szemeredi_counterexample shows degree-3 graphs can have R̂(G) ≫ n(log n)^c; tikhomirov_improved_lower_bound achieves R̂(G) ≫ n·exp(c√(log n))."
+    },
+    {
+      "title": "Upper Bounds for Degree-3",
+      "startLine": 173,
+      "endLine": 200,
+      "summary": "Best known upper bounds: Kohayakawa et al. n^{5/3+o(1)}, Conlon-Nenadov-Trujić n^{8/5}, Draganić-Petrova n^{3/2+o(1)} (current best)."
+    },
+    {
+      "title": "The Open Question",
+      "startLine": 202,
+      "endLine": 218,
+      "summary": "The remaining challenge: what is the exact growth rate for degree-3 graphs? Currently bounded between n·exp(c√(log n)) and n^{3/2+o(1)}, a substantial gap."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #559 asked whether size Ramsey numbers are linear for bounded-degree graphs. This was DISPROVED for d ≥ 3 by Rödl-Szemerédi (2000). The conjecture holds for special graph classes (paths, trees, cycles), but general degree-3 graphs can have superlinear size Ramsey numbers. The exact growth rate for d = 3 remains open, with current bounds ranging from n·exp(c√(log n)) to n^{3/2+o(1)}.",
+    "implications": "This result shows that Ramsey theory for sparse graphs is more complex than anticipated. The linear bound fails even at degree 3, yet the true behavior is neither fully linear nor polynomial—it lies in an intermediate regime that is still not well-understood.",
+    "openQuestions": [
+      "What is the exact growth rate of R̂(G) for degree-3 graphs?",
+      "Can the gap between n·exp(c√(log n)) and n^{3/2+o(1)} be closed?",
+      "For which specific degree-3 graph families does linearity hold?",
+      "What happens at degree d = 2 (beyond cycles)?"
+    ]
   }
 }
