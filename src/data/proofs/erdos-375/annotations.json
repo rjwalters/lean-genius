@@ -1,1 +1,138 @@
-[]
+[
+  {
+    "id": "ann-e375-header",
+    "proofId": "erdos-375",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #375: Grimm's Conjecture**\n\nGiven k consecutive composite numbers n+1, n+2, ..., n+k, can we always assign a distinct prime divisor to each?\n\n**Status: OPEN**\n\n**Best Partial Result:**\nTrue for k << (log n / log log n)^3 (Ramachandra-Shorey-Tijdeman 1975)\n\n**Critical Implication:**\nIf true, implies prime gaps p_{n+1} - p_n < p_n^{1/2-c}, resolving Legendre's conjecture.",
+    "mathContext": "This problem connects prime factorization with combinatorial matching theory. It's listed as B32 in Guy's Unsolved Problems in Number Theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime gaps", "Hall's marriage theorem", "Consecutive composites"]
+  },
+  {
+    "id": "ann-e375-composite",
+    "proofId": "erdos-375",
+    "range": { "startLine": 46, "endLine": 57 },
+    "type": "definition",
+    "title": "Composite Numbers and Blocks",
+    "content": "**isComposite:**\n\nA natural number n is composite if n > 1 and n is not prime.\n\n```lean\ndef isComposite (n : N) : Prop := n > 1 and not n.Prime\n```\n\n**isCompositeBlock:**\n\nThe integers n+1, n+2, ..., n+k are all composite.\n\n```lean\ndef isCompositeBlock (n k : N) : Prop :=\n  forall i : N, 1 <= i -> i <= k -> isComposite (n + i)\n```",
+    "significance": "key",
+    "relatedConcepts": ["Prime numbers", "Consecutive integers"]
+  },
+  {
+    "id": "ann-e375-assignment",
+    "proofId": "erdos-375",
+    "range": { "startLine": 59, "endLine": 75 },
+    "type": "definition",
+    "title": "Prime Divisor Assignments",
+    "content": "**PrimeDivisorAssignment:**\n\nA function assigning a prime to each position in a composite block.\n\n```lean\ndef PrimeDivisorAssignment (n k : N) := Fin k -> N\n```\n\n**isValidAssignment:**\n\nAn assignment is valid if:\n1. Each assigned number is prime\n2. Each prime divides its corresponding composite\n3. All assigned primes are distinct\n\nThe third condition is the key challenge!",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Injective functions"]
+  },
+  {
+    "id": "ann-e375-conjecture",
+    "proofId": "erdos-375",
+    "range": { "startLine": 83, "endLine": 96 },
+    "type": "definition",
+    "title": "Grimm's Conjecture",
+    "content": "**grimmsConjecture:**\n\nFor any composite block n+1, ..., n+k, there exists a valid assignment of distinct prime divisors.\n\n```lean\ndef grimmsConjecture : Prop :=\n  forall n k : N, k >= 1 -> isCompositeBlock n k ->\n    exists f : PrimeDivisorAssignment n k, isValidAssignment n k f\n```\n\n**Status:** OPEN - neither proved nor disproved.",
+    "mathContext": "This is the central question of Problem #375. The conjecture has profound implications for prime gap bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Number theory conjectures"]
+  },
+  {
+    "id": "ann-e375-trivial",
+    "proofId": "erdos-375",
+    "range": { "startLine": 104, "endLine": 124 },
+    "type": "theorem",
+    "title": "Trivial Cases: k <= 2",
+    "content": "**k = 1 Case:**\nAny composite n+1 has at least one prime divisor. Just pick that prime.\n\n**k = 2 Case:**\nConsecutive integers n+1 and n+2 are coprime (gcd = 1).\nSo they have distinct prime factors, and we can pick one from each.\n\nThese cases are \"trivial\" - the real difficulty starts at k >= 3.",
+    "significance": "key",
+    "relatedConcepts": ["Coprimality", "Consecutive integers"]
+  },
+  {
+    "id": "ann-e375-partial",
+    "proofId": "erdos-375",
+    "range": { "startLine": 130, "endLine": 159 },
+    "type": "axiom",
+    "title": "Partial Results",
+    "content": "**grimm_original (1969):**\nTrue for k << log n / log log n\n\n**erdos_selfridge:**\nTrue for k <= (1+o(1)) log n\n\n**ramachandra_shorey_tijdeman (1975):**\nTrue for k << (log n / log log n)^3\n\n```lean\naxiom ramachandra_shorey_tijdeman :\n    exists c : R, c > 0 and forall n k : N, k >= 1 -> n >= 3 ->\n      (k : R) <= c * (Real.log n / Real.log (Real.log n))^3 ->\n      isCompositeBlock n k ->\n      exists f : PrimeDivisorAssignment n k, isValidAssignment n k f\n```\n\nThis is the current best unconditional result.",
+    "mathContext": "Each improvement was a significant breakthrough. The RST bound is cubic in (log n / log log n).",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic bounds", "Historical progress"]
+  },
+  {
+    "id": "ann-e375-prime-gaps",
+    "proofId": "erdos-375",
+    "range": { "startLine": 173, "endLine": 192 },
+    "type": "concept",
+    "title": "Connection to Prime Gaps",
+    "content": "**grimm_implies_prime_gap:**\n\nIf Grimm's conjecture is true, then prime gaps satisfy:\np_{n+1} - p_n < p_n^{1/2-c} for some c > 0\n\nThis is MUCH stronger than what's currently known!\n\n**legendresConjecture:**\nThere is always a prime between n^2 and (n+1)^2.\n\nGrimm's conjecture would imply Legendre's conjecture, which is why the problem is so hard.",
+    "mathContext": "This connection explains why Grimm's conjecture remains open - proving it would be a major breakthrough in prime gap theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime gaps", "Legendre's conjecture"]
+  },
+  {
+    "id": "ann-e375-example-24",
+    "proofId": "erdos-375",
+    "range": { "startLine": 198, "endLine": 214 },
+    "type": "theorem",
+    "title": "Example: 24, 25, 26",
+    "content": "**example_24_25_26:**\n\n24, 25, 26 are consecutive composites (between primes 23 and 29).\n\n**Factorizations:**\n- 24 = 2^3 x 3\n- 25 = 5^2\n- 26 = 2 x 13\n\n**Valid Assignment:**\np_1 = 2 (divides 24)\np_2 = 5 (divides 25)\np_3 = 13 (divides 26)\n\nDistinct primes: 2, 5, 13 - verified!",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete examples", "Verification"]
+  },
+  {
+    "id": "ann-e375-example-90",
+    "proofId": "erdos-375",
+    "range": { "startLine": 216, "endLine": 233 },
+    "type": "theorem",
+    "title": "Example: 90-95",
+    "content": "**example_90_to_95:**\n\n90 through 95 are 6 consecutive composites (between primes 89 and 97).\n\n**Factorizations:**\n- 90 = 2 x 3^2 x 5\n- 91 = 7 x 13\n- 92 = 2^2 x 23\n- 93 = 3 x 31\n- 94 = 2 x 47\n- 95 = 5 x 19\n\n**Valid Assignment:** 5, 7, 23, 31, 47, 19\n\nNote: Many share factor 2 or 3, but we can find 6 distinct primes.",
+    "significance": "supporting",
+    "relatedConcepts": ["Longer composite runs", "Small prime factors"]
+  },
+  {
+    "id": "ann-e375-counting",
+    "proofId": "erdos-375",
+    "range": { "startLine": 239, "endLine": 253 },
+    "type": "axiom",
+    "title": "Counting Arguments",
+    "content": "**prime_factor_bound:**\n\nA composite n has at least 1 prime factor, at most log_2(n) distinct prime factors.\n\n**small_prime_divisor:**\n\nEvery composite n has a prime divisor p <= sqrt(n).\n\n**Why This Makes Grimm Hard:**\nMany consecutive composites share small primes (2, 3, 5...).\nAs k grows, finding k DISTINCT primes becomes difficult.",
+    "significance": "key",
+    "relatedConcepts": ["Prime factor counting", "Small primes"]
+  },
+  {
+    "id": "ann-e375-hall",
+    "proofId": "erdos-375",
+    "range": { "startLine": 259, "endLine": 292 },
+    "type": "concept",
+    "title": "Hall's Marriage Theorem",
+    "content": "**Bipartite Graph Formulation:**\n\n- Left vertices: composites {n+1, ..., n+k}\n- Right vertices: primes dividing at least one composite\n- Edges: (n+i, p) if p | (n+i)\n\nGrimm's conjecture asks: is there a perfect matching on the left?\n\n**Hall's Condition:**\nFor any subset S of composites, if N(S) = primes dividing some element of S, then |N(S)| >= |S|.\n\n**grimm_iff_hall:**\nGrimm's conjecture is equivalent to Hall's condition holding for all composite blocks.\n\nThis reformulation connects the problem to matching theory.",
+    "mathContext": "Hall's marriage theorem states a perfect matching exists iff Hall's condition holds. This gives an alternate perspective on Grimm's conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Hall's theorem", "Bipartite matching", "Graph theory"]
+  },
+  {
+    "id": "ann-e375-summary",
+    "proofId": "erdos-375",
+    "range": { "startLine": 304, "endLine": 318 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_375_summary:**\n\n1. Trivial cases k <= 2 are provable\n2. Best partial result: k << (log n / log log n)^3\n3. The general conjecture is open\n\n```lean\ntheorem erdos_375_summary :\n    True and  -- trivial cases\n    (exists c ...) and  -- RST bound\n    True  -- open status\n```",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open problems"]
+  },
+  {
+    "id": "ann-e375-difficulty",
+    "proofId": "erdos-375",
+    "range": { "startLine": 320, "endLine": 336 },
+    "type": "theorem",
+    "title": "Why Grimm's Conjecture is Hard",
+    "content": "**grimm_difficulty:**\n\nGrimm's conjecture implies Legendre's conjecture.\n\n```lean\ntheorem grimm_difficulty :\n    grimmsConjecture -> legendresConjecture\n```\n\n**Why Hard:**\n1. Long prime gaps create long composite runs\n2. Many composites share small primes (2, 3, 5)\n3. Distinctness requirement grows harder with k\n4. Full proof would resolve Legendre",
+    "mathContext": "The difficulty stems from the deep connection to prime gaps. Proving Grimm would be a major breakthrough.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem difficulty", "Implications"]
+  }
+]

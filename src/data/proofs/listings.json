@@ -6265,17 +6265,24 @@
   },
   {
     "id": "erdos-375",
-    "title": "Erdős Problem #375",
+    "title": "Erdos Problem #375: Grimm's Conjecture on Consecutive Composites",
     "slug": "erdos-375",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for any ..., if ... are all composite then there are distinct primes ... such that ... for ...?\n\n\n\nNote this ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any k consecutive composites n+1,...,n+k, can we assign distinct prime divisors? Open - if true, implies strong prime gap bounds.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "composite-numbers",
+      "hall-matching",
+      "open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 375,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 5,
+    "annotationCount": 13
   },
   {
     "id": "erdos-376",

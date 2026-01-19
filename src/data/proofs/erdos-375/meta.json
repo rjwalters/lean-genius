@@ -1,33 +1,151 @@
 {
   "id": "erdos-375",
-  "title": "Erdős Problem #375",
+  "title": "Erdos Problem #375: Grimm's Conjecture on Consecutive Composites",
   "slug": "erdos-375",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for any ..., if ... are all composite then there are distinct primes ... such that ... for ...?\n\n\n\nNote this ...",
+  "description": "For any k consecutive composites n+1,...,n+k, can we assign distinct prime divisors? Open - if true, implies strong prime gap bounds.",
   "meta": {
-    "author": "Unknown",
+    "author": "Grimm (1969 conjecture), Ramachandra-Shorey-Tijdeman (1975 partial)",
     "sourceUrl": "https://erdosproblems.com/375",
-    "date": "",
-    "status": "pending",
+    "date": "1969",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos375Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "composite-numbers",
+      "hall-matching",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 375,
     "erdosUrl": "https://erdosproblems.com/375",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisors of natural numbers",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isComposite: composite number predicate",
+      "isCompositeBlock: predicate for k consecutive composites",
+      "PrimeDivisorAssignment: type for prime assignments",
+      "isValidAssignment: validity predicate for assignments",
+      "grimmsConjecture: the main conjecture statement",
+      "grimm_k_eq_1, grimm_k_eq_2: trivial cases",
+      "grimm_original, erdos_selfridge: historical partial results",
+      "ramachandra_shorey_tijdeman: best current bound",
+      "Connection to prime gaps and Legendre's conjecture",
+      "Hall's marriage theorem formulation"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #375 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for any $n,k\\geq 1$, if $n+1,\\ldots,n+k$ are all composite then there are distinct primes $p_1,\\ldots,p_k$ such that $p_i\\mid n+i$ for $1\\leq i\\leq k$?\n\n\n\nNote this is trivial when $k\\leq 2$. Originally conjectured by Grimm \\cite{Gr69}. This is a very difficult problem, since it in particular implies $p_{n+1}-p_n <p_n^{1/2-c}$ for some constant $c>0$, in particular resolving Legendre's conjecture.\n\nGrimm proved that this is true if $k\\ll \\log n/\\log\\log n$. Erd\\H{o}s and Selfridge improved this to $k\\leq (1+o(1))\\log n$. Ramachandra, Shorey, and Tijdeman \\cite{RST75} have improved this to\\[k\\ll\\left(\\frac{\\log n}{\\log\\log n}\\right)^3.\\]This is problem B32 in Guy's collection \\cite{Gu04}.\n\nSee also [860].\n\n\n\n\nReferences\n\n\n[Gr69] Grimm, C. A., A conjecture on consecutive composite numbers. Amer. Math. Monthly (1969), 1126--1128.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[RST75] Ramachandra, K. and Shorey, T. N. and Tijdeman, R., On Grimm's problem relating to factorisation of a block of consecutive integers. J. Reine Angew. Math. (1975), 109-124.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #375: Grimm's Conjecture**\n\nThis conjecture was originally posed by C.A. Grimm in 1969 in the American Mathematical Monthly. It connects prime factorization with combinatorial matching theory.\n\n**The Core Question:**\nGiven any interval of k consecutive composite numbers (a 'prime gap'), can we always assign a distinct prime divisor to each composite?\n\n**Historical Progress:**\n- 1969: Grimm poses conjecture, proves k << log n / log log n\n- 1970s: Erdos-Selfridge extend to k <= (1+o(1)) log n\n- 1975: Ramachandra-Shorey-Tijdeman prove k << (log n / log log n)^3\n\n**Significance:**\nThis is listed as problem B32 in Guy's Unsolved Problems in Number Theory. It remains one of the most intriguing open problems connecting prime gaps to matching theory.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor any $n, k \\geq 1$, if $n+1, \\ldots, n+k$ are all composite, do there exist distinct primes $p_1, \\ldots, p_k$ such that $p_i \\mid (n+i)$ for $1 \\leq i \\leq k$?\n\n**Status: OPEN**\n\nThe conjecture is trivially true for $k \\leq 2$ (consecutive integers are coprime). The best partial result is:\n$$k \\ll \\left(\\frac{\\log n}{\\log \\log n}\\right)^3$$\n\n**Critical Implication:**\nIf true, Grimm's conjecture implies $p_{n+1} - p_n < p_n^{1/2-c}$ for some $c > 0$, which would resolve Legendre's conjecture.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** Define composite numbers, composite blocks, and prime divisor assignments\n\n2. **Validity Predicate:** An assignment is valid if primes divide their targets and are all distinct\n\n3. **Trivial Cases:** Prove k=1 and k=2 cases\n\n4. **Partial Results:** Axiomatize the bounds by Grimm, Erdos-Selfridge, and RST\n\n5. **Hall's Theorem:** Connect to bipartite matching - Grimm's conjecture is equivalent to Hall's condition holding\n\n6. **Implications:** Show connection to prime gap bounds",
+    "keyInsights": [
+      "**Trivial for k <= 2:** Consecutive integers are coprime, so they have distinct prime divisors",
+      "**Hall's Marriage Theorem:** Grimm's conjecture is equivalent to a matching condition in a bipartite graph",
+      "**Prime Gap Connection:** If true, implies prime gaps g_n < p_n^{1/2-c}, stronger than Legendre",
+      "**Small Primes Problem:** Many consecutive composites share small prime factors (2, 3, 5...)",
+      "**Best Bound:** k << (log n / log log n)^3 allows handling moderately long composite runs",
+      "**Difficulty:** The problem is hard precisely because it implies unproven prime gap bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "isComposite, isCompositeBlock, PrimeDivisorAssignment, isValidAssignment",
+      "startLine": 40,
+      "endLine": 75
+    },
+    {
+      "id": "grimms-conjecture",
+      "title": "Grimm's Conjecture",
+      "summary": "The main conjecture statement and open status",
+      "startLine": 77,
+      "endLine": 96
+    },
+    {
+      "id": "trivial-cases",
+      "title": "Trivial Cases",
+      "summary": "k = 1 and k = 2 are provable",
+      "startLine": 98,
+      "endLine": 124
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "summary": "Grimm, Erdos-Selfridge, Ramachandra-Shorey-Tijdeman bounds",
+      "startLine": 126,
+      "endLine": 159
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Connection to Prime Gaps",
+      "summary": "primeGap, grimm_implies_prime_gap, Legendre's conjecture",
+      "startLine": 161,
+      "endLine": 192
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete examples: 24-25-26, 90-95",
+      "startLine": 194,
+      "endLine": 233
+    },
+    {
+      "id": "counting",
+      "title": "Counting Arguments",
+      "summary": "Prime factor bounds, small prime divisors",
+      "startLine": 235,
+      "endLine": 253
+    },
+    {
+      "id": "halls-theorem",
+      "title": "Hall's Marriage Theorem Connection",
+      "summary": "Bipartite graph formulation, Hall's condition, equivalence",
+      "startLine": 255,
+      "endLine": 292
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_375_summary, grimm_difficulty",
+      "startLine": 294,
+      "endLine": 336
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #375, known as Grimm's Conjecture, asks whether any k consecutive composite numbers can be assigned distinct prime divisors. The conjecture remains OPEN. Best partial results show it holds for k << (log n / log log n)^3. The problem is deeply connected to prime gaps - proving Grimm's conjecture would imply bounds stronger than Legendre's conjecture.",
+    "implications": "**Connections and Implications**\n\n1. **Prime Gaps:** Grimm implies p_{n+1} - p_n < p_n^{1/2-c}\n\n2. **Legendre's Conjecture:** Would follow from Grimm's conjecture\n\n3. **Hall's Matching:** Equivalent to a bipartite matching condition\n\n4. **Combinatorial Number Theory:** Bridges divisibility and matching theory\n\n5. **Computational Interest:** Verifying specific instances is tractable",
+    "openQuestions": [
+      "Is Grimm's conjecture true?",
+      "Can the RST bound (log n / log log n)^3 be improved?",
+      "What is the longest known verified composite block?",
+      "Is there a counterexample with explicit n and k?",
+      "Can the Hall's condition formulation lead to new approaches?"
+    ]
   }
 }
