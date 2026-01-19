@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "erdos-175-intro",
+    "proofId": "erdos-175",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 23 },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #175 asks to show C(2n,n) is not squarefree for n ≥ 5. Proved by Granville-Ramaré (1996), with bounds on max prime power exponent f(n) studied by Sander and Erdős-Kolesnik.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-175-central-binom",
+    "proofId": "erdos-175",
+    "type": "definition",
+    "range": { "startLine": 41, "endLine": 42 },
+    "title": "Central Binomial Coefficient",
+    "content": "centralBinom(n) = C(2n, n) = (2n)!/(n!)². These are the middle entries in Pascal's triangle and appear throughout combinatorics.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-squarefree",
+    "proofId": "erdos-175",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 46 },
+    "title": "Squarefreeness",
+    "content": "A number m is squarefree if no prime square p² divides it. Equivalently, m has no repeated prime factors in its factorization.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-kummer",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 58, "endLine": 62 },
+    "title": "Kummer's Theorem",
+    "content": "v_p(C(m+n,m)) equals the number of carries when adding m and n in base p. This fundamental result connects binomial divisibility to digit arithmetic.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-175-v2-binom",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 64, "endLine": 66 },
+    "title": "Power of 2 in Central Binomial",
+    "content": "v_2(C(2n,n)) = popcount(n), the number of 1s in the binary expansion of n. When n = 2^k, this equals 1, so 4 does not divide C(2n,n).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-four-divides",
+    "proofId": "erdos-175",
+    "type": "theorem",
+    "range": { "startLine": 68, "endLine": 71 },
+    "title": "Divisibility by 4",
+    "content": "4 | C(2n,n) if and only if n is not a power of 2. This handles most cases of the problem immediately.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-granville-ramare",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 83, "endLine": 85 },
+    "title": "Granville-Ramaré Theorem",
+    "content": "For n ≥ 5, C(2n,n) is not squarefree. This completes Sárközy's result for large n to cover all n ≥ 5.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-175-sarkozy",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 87, "endLine": 89 },
+    "title": "Sárközy 1985",
+    "content": "Sárközy first proved C(2n,n) is not squarefree for all sufficiently large n. The small cases required additional analysis.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-f-function",
+    "proofId": "erdos-175",
+    "type": "definition",
+    "range": { "startLine": 101, "endLine": 104 },
+    "title": "Function f(n)",
+    "content": "f(n) = max{k : p^k | C(2n,n) for some prime p}. This measures the maximum prime power divisibility of the central binomial.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-f-unbounded",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 106, "endLine": 108 },
+    "title": "f(n) Unbounded (Sander 1992)",
+    "content": "Sander proved f(n) → ∞ as n → ∞. This shows prime power divisibility grows without bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-upper-bound",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 110, "endLine": 112 },
+    "title": "Upper Bound on f(n)",
+    "content": "f(n) ≪ log n for all n. By Kummer, v_p(C(2n,n)) ≤ log_p(n), giving this easy upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-erdos-kolesnik",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 124, "endLine": 127 },
+    "title": "Erdős-Kolesnik Lower Bound",
+    "content": "f(n) ≫ (log n)^{1/4} for all n (1999). This improved Sander's (log n)^{1/10} bound but f(n) ≫ log n for all n remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-175-power-of-2",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 135, "endLine": 137 },
+    "title": "Power of 2 Case",
+    "content": "When n = 2^k (k ≥ 3), an odd prime square divides C(2n,n). This is the crucial case since 4 doesn't divide here.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-record",
+    "proofId": "erdos-175",
+    "type": "axiom",
+    "range": { "startLine": 155, "endLine": 157 },
+    "title": "Record n = 786",
+    "content": "The largest known n where C(2n,n) has no odd prime square factor is n = 786. Erdős believed no larger examples exist.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-example",
+    "proofId": "erdos-175",
+    "type": "theorem",
+    "range": { "startLine": 180, "endLine": 187 },
+    "title": "Example: C(10,5) = 252",
+    "content": "C(10,5) = 252 = 2² × 3² × 7 is not squarefree (divisible by both 4 and 9). This demonstrates the theorem for n = 5.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-175-main-statement",
+    "proofId": "erdos-175",
+    "type": "theorem",
+    "range": { "startLine": 196, "endLine": 209 },
+    "title": "Main Problem Statement",
+    "content": "Complete formalization: C(2n,n) not squarefree for n ≥ 5, f(n) → ∞, and best lower bound (log n)^{1/4}.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-175-summary",
+    "proofId": "erdos-175",
+    "type": "theorem",
+    "range": { "startLine": 215, "endLine": 228 },
+    "title": "Summary Theorem",
+    "content": "Summary combining squarefreeness result with complete characterization of f(n): (log n)^{1/4} ≤ f(n) ≤ log n.",
+    "significance": "critical"
+  }
+]
