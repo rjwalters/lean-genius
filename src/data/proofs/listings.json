@@ -2646,17 +2646,24 @@
   },
   {
     "id": "erdos-1132",
-    "title": "Erdős Problem #1132",
+    "title": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions",
     "slug": "erdos-1132",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nLet ... be an infinite seq...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Two open questions about Lebesgue functions Lₙ(x) for infinite node sequences: must there exist x with large Lₙ(x) infinitely often, and is the growth property satisfied almost everywhere?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "interpolation",
+      "polynomials",
+      "lebesgue-function",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1132,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-1133",
@@ -8374,17 +8381,24 @@
   },
   {
     "id": "erdos-580",
-    "title": "Erdős Problem #580",
+    "title": "Erdős Problem #580: The Loebl-Komlós-Sós Conjecture",
     "slug": "erdos-580",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices such that at least ... vertices have degree at least .... Must ... contain every tree on a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If a graph G on n vertices has at least n/2 vertices of degree at least n/2, must G contain every tree on at most n/2 vertices? YES for large n - proved by Zhao (2011).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "trees",
+      "tree-embedding",
+      "regularity-lemma",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 580,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-581",
@@ -11711,17 +11725,26 @@
   },
   {
     "id": "erdos-816",
-    "title": "Erdős Problem #816",
+    "title": "Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3",
     "slug": "erdos-816",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Must ... contain two vertices of the same degree which are joined by a pa...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let G be a graph with 2n+1 vertices and n² + n + 1 edges. Must G contain two vertices of the same degree joined by a path of length 3? YES - proved by Chen-Ma (2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graphs",
+      "paths",
+      "degree-sequence",
+      "bipartite-graphs",
+      "turan-type",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 816,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-817",
@@ -14135,17 +14158,26 @@
   },
   {
     "id": "erdos-997",
-    "title": "Erdős Problem #997",
+    "title": "Erdős Problem #997: Well-Distributed Sequences and Primes",
     "slug": "erdos-997",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall ... well-distributed if, for every ..., if ... is sufficiently large then, for all ... and intervals ...,\\[\\lvert \\# \\{ ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that for every α, the sequence {αpₙ} of fractional parts of prime multiples is not well-distributed? The 2024 result by Champagne-Le-Liu-Wooley shows this holds for at least one irrational α.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "number-theory",
+      "primes",
+      "equidistribution",
+      "discrepancy",
+      "diophantine-approximation",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 997,
+    "mathlibCount": 6,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-998",

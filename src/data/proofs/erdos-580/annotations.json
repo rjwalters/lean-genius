@@ -1,1 +1,171 @@
-[]
+[
+  {
+    "id": "ann-e580-header",
+    "proofId": "erdos-580",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #580: The Loebl-Komlós-Sós Conjecture**\n\nAlso called the (n/2-n/2-n/2) conjecture:\n\nIf G has n vertices and at least n/2 vertices of degree ≥ n/2, must G contain every tree on ≤ n/2 vertices?\n\n**Answer: YES for large n** - proved by Zhao (2011)\n\n**History:**\n- EFLS95: Conjecture posed\n- AKS 1995: Asymptotic version with (1+ε) factor\n- Zhao 2011: Full conjecture for sufficiently large n",
+    "mathContext": "This is a fundamental problem in extremal graph theory about tree embedding under degree conditions.",
+    "significance": "critical",
+    "relatedConcepts": ["Tree embedding", "Degree conditions", "Regularity Lemma"]
+  },
+  {
+    "id": "ann-e580-degree",
+    "proofId": "erdos-580",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "definition",
+    "title": "Vertex Degree",
+    "content": "**vertexDegree G v:**\n\nThe degree of vertex v in graph G is the number of edges incident to v (equivalently, the number of neighbors).\n\n**Definition:**\n```lean\nnoncomputable def vertexDegree (G : SimpleGraph V) (v : V) : ℕ :=\n  (G.neighborFinset v).card\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e580-high-degree",
+    "proofId": "erdos-580",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "High-Degree Vertices",
+    "content": "**highDegreeVertices G k:**\n\nThe set of vertices with degree at least k.\n\n**Definition:**\n```lean\ndef highDegreeVertices (G : SimpleGraph V) (k : ℕ) : Finset V :=\n  Finset.univ.filter (fun v => vertexDegree G v ≥ k)\n```\n\nThe LKS condition requires this set to have size ≥ n/2 when k = n/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-tree",
+    "proofId": "erdos-580",
+    "range": { "startLine": 69, "endLine": 79 },
+    "type": "definition",
+    "title": "Tree Structure",
+    "content": "**Tree k:**\n\nA tree on k vertices is a connected acyclic graph with k vertices and k-1 edges.\n\n**Structure:**\n```lean\nstructure Tree (k : ℕ) where\n  vertices : Finset ℕ\n  edges : Finset (ℕ × ℕ)\n  card_vertices : vertices.card = k\n  connected : True\n  acyclic : True\n```",
+    "mathContext": "Trees are fundamental graph structures. By Cayley's formula, there are k^(k-2) labeled trees on k vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-embedding",
+    "proofId": "erdos-580",
+    "range": { "startLine": 99, "endLine": 108 },
+    "type": "definition",
+    "title": "Tree Embedding",
+    "content": "**TreeEmbeds T G:**\n\nTree T embeds in graph G if there's an injective map from T's vertices to G's vertices that preserves edges.\n\n**Definition:**\n```lean\ndef TreeEmbeds (T : Tree k) (G : SimpleGraph V) : Prop :=\n  ∃ f : Fin k → V,\n    Function.Injective f ∧\n    ∀ i j : Fin k, (i.val, j.val) ∈ T.edges → G.Adj (f i) (f j)\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-contains-all",
+    "proofId": "erdos-580",
+    "range": { "startLine": 109, "endLine": 115 },
+    "type": "definition",
+    "title": "Contains All Trees",
+    "content": "**ContainsAllTreesUpTo G k:**\n\nGraph G contains all trees of size at most k.\n\n**Definition:**\n```lean\ndef ContainsAllTreesUpTo (G : SimpleGraph V) (k : ℕ) : Prop :=\n  ∀ m : ℕ, m ≤ k → ∀ T : Tree m, TreeEmbeds T G\n```\n\nThe LKS conjecture asks when this holds for k = n/2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e580-lks-cond",
+    "proofId": "erdos-580",
+    "range": { "startLine": 122, "endLine": 130 },
+    "type": "definition",
+    "title": "LKS Condition",
+    "content": "**satisfiesLKS G:**\n\nThe n/2-n/2-n/2 condition: at least n/2 vertices have degree at least n/2.\n\n**Definition:**\n```lean\ndef satisfiesLKS (G : SimpleGraph V) : Prop :=\n  let n := numVertices V\n  (highDegreeVertices G (n / 2)).card ≥ n / 2\n```\n\nThis is the key hypothesis of the Loebl-Komlós-Sós conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-lks-conj",
+    "proofId": "erdos-580",
+    "range": { "startLine": 145, "endLine": 154 },
+    "type": "definition",
+    "title": "LKS Conjecture Statement",
+    "content": "**LKSConjecture:**\n\nThe formal statement of the Loebl-Komlós-Sós conjecture:\n\nIf G satisfies the LKS condition, then G contains all trees up to size n/2.\n\n**Definition:**\n```lean\ndef LKSConjecture : Prop :=\n  ∀ V [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n    satisfiesLKS G → ContainsAllTreesUpTo G (numVertices V / 2)\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-ks-conj",
+    "proofId": "erdos-580",
+    "range": { "startLine": 155, "endLine": 164 },
+    "type": "definition",
+    "title": "Komlós-Sós Generalization",
+    "content": "**KomlosSosConjecture:**\n\nThe generalized version: if ≥ n/2 vertices have degree ≥ k, then G contains all trees on ≤ k vertices.\n\n**Definition:**\n```lean\ndef KomlosSosConjecture : Prop :=\n  ∀ V [Fintype V] [DecidableEq V] (G : SimpleGraph V) (k : ℕ),\n    satisfiesGeneralizedLKS G k → ContainsAllTreesUpTo G k\n```\n\nThis generalizes LKS by decoupling the tree size from the degree threshold.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e580-aks",
+    "proofId": "erdos-580",
+    "range": { "startLine": 171, "endLine": 183 },
+    "type": "axiom",
+    "title": "AKS Theorem (1995)",
+    "content": "**AKS_theorem:**\n\nAjtai, Komlós, and Szemerédi proved an asymptotic version:\n\nFor any ε > 0, if ≥ (1+ε)n/2 vertices have degree ≥ (1+ε)n/2 and n is large enough, then G contains all trees on ≤ n/2 vertices.\n\nThis was the first major progress on the conjecture.",
+    "mathContext": "Published in 'On a conjecture of Loebl', Graph theory, combinatorics, and algorithms (1995).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e580-zhao",
+    "proofId": "erdos-580",
+    "range": { "startLine": 184, "endLine": 193 },
+    "type": "axiom",
+    "title": "Zhao's Theorem (2011)",
+    "content": "**zhao_theorem:**\n\nZhao proved the full LKS conjecture for all sufficiently large n.\n\n**Statement:**\n```lean\naxiom zhao_theorem :\n    ∃ N : ℕ, ∀ V [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n      numVertices V ≥ N → satisfiesLKS G → ContainsAllTreesUpTo G (numVertices V / 2)\n```",
+    "mathContext": "Published in Electron. J. Combin. (2011), Paper 27.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-main",
+    "proofId": "erdos-580",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_580:**\n\nThe main result: for sufficiently large n, the LKS conjecture holds.\n\n**Statement:**\n```lean\ntheorem erdos_580 : ∃ N : ℕ, ∀ V [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n    numVertices V ≥ N → satisfiesLKS G → ContainsAllTreesUpTo G (numVertices V / 2) :=\n  zhao_theorem\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-path",
+    "proofId": "erdos-580",
+    "range": { "startLine": 208, "endLine": 219 },
+    "type": "axiom",
+    "title": "Path Case",
+    "content": "**path_case:**\n\nPaths are easy to embed: any graph satisfying LKS contains all paths of length ≤ n/2 - 1.\n\nThis is because high-degree vertices can be connected in sequence.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e580-star",
+    "proofId": "erdos-580",
+    "range": { "startLine": 220, "endLine": 230 },
+    "type": "axiom",
+    "title": "Star Case",
+    "content": "**star_case:**\n\nStars (one central vertex connected to all others) are also easy to embed.\n\nAny high-degree vertex can serve as the center, with its neighbors as leaves.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e580-tightness",
+    "proofId": "erdos-580",
+    "range": { "startLine": 243, "endLine": 254 },
+    "type": "axiom",
+    "title": "Tightness of LKS",
+    "content": "**LKS_tightness:**\n\nThe n/2-n/2-n/2 condition is tight:\n\nThere exist graphs with (n/2 - 1) vertices of degree (n/2 - 1) that miss some tree on n/2 vertices.\n\n**Example:** K_{n/2-1} ∪ K_{n/2+1} narrowly fails the condition and cannot contain a path spanning both components.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e580-regularity",
+    "proofId": "erdos-580",
+    "range": { "startLine": 270, "endLine": 277 },
+    "type": "axiom",
+    "title": "Regularity Lemma Connection",
+    "content": "**regularity_lemma_used:**\n\nBoth AKS and Zhao's proofs rely on Szemerédi's Regularity Lemma.\n\nThe idea is to decompose G into regular pairs and use the structure to embed trees systematically.",
+    "mathContext": "The Regularity Lemma is a fundamental tool in extremal graph theory.",
+    "significance": "key",
+    "relatedConcepts": ["Szemerédi Regularity Lemma", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-e580-summary",
+    "proofId": "erdos-580",
+    "range": { "startLine": 298, "endLine": 323 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_580_summary:**\n\nThe Loebl-Komlós-Sós (n/2-n/2-n/2) conjecture:\n\nIf G on n vertices has ≥ n/2 vertices of degree ≥ n/2, then G contains every tree on ≤ n/2 vertices.\n\n**Status:** PROVED for large n (Zhao, 2011)\n\n**Key Techniques:**\n- Szemerédi's Regularity Lemma\n- Probabilistic and counting arguments\n- Analysis of tree structure\n\n**Open:** Verify for all n (currently known only for n ≥ N₀).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e580-answer",
+    "proofId": "erdos-580",
+    "range": { "startLine": 324, "endLine": 329 },
+    "type": "theorem",
+    "title": "The Answer: YES for large n",
+    "content": "**erdos_580_answer:**\n\nThe answer to Erdős Problem #580 is YES for sufficiently large n.\n\nThe Loebl-Komlós-Sós conjecture holds when n is large enough, proving that the degree condition forces all small trees to appear.",
+    "significance": "key"
+  }
+]

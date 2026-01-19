@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-e997-header",
+    "proofId": "erdos-997",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #997: Well-Distributed Sequences and Primes**\n\nThe question asks whether the sequence {αpₙ} of fractional parts of prime multiples is non-well-distributed for ALL values of α.\n\n**Key History:**\n- 1955: Hlawka-Petersen introduced well-distributed sequences\n- 1964: Erdős claimed to prove existence of such α\n- 1985: Erdős retracted claim ('proof perhaps never existed')\n- 2024: Champagne-Le-Liu-Wooley proved existence\n\n**Status:** OPEN for the universal statement",
+    "mathContext": "Well-distribution is a strengthening of equidistribution requiring uniform convergence across all starting points.",
+    "significance": "critical",
+    "relatedConcepts": ["Equidistribution", "Fractional parts", "Prime distribution"]
+  },
+  {
+    "id": "ann-e997-frac",
+    "proofId": "erdos-997",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "Fractional Part",
+    "content": "**frac:**\n\nThe fractional part of x is x - ⌊x⌋, always in [0, 1).\n\n**Definition:**\n```lean\nnoncomputable def frac (x : ℝ) : ℝ := x - ⌊x⌋\n```\n\nThis is the key operation for studying {αn} sequences modulo 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-frac-range",
+    "proofId": "erdos-997",
+    "range": { "startLine": 53, "endLine": 63 },
+    "type": "theorem",
+    "title": "Fractional Part Range",
+    "content": "**frac_mem_Ico:**\n\nThe fractional part of any real number lies in [0, 1).\n\nThis is proven directly from properties of the floor function: x - ⌊x⌋ ≥ 0 and x - ⌊x⌋ < 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e997-count",
+    "proofId": "erdos-997",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "**countInInterval:**\n\nCounts elements of a sequence in range (n, n+k] that fall in interval I.\n\n**Definition:**\n```lean\nnoncomputable def countInInterval (x : UnitSequence) (n k : ℕ) (I : Set ℝ) : ℕ :=\n  Finset.card (Finset.filter (fun m => x m ∈ I) (Finset.Ioc n (n + k)))\n```\n\nThis is the building block for measuring distribution.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-well-dist",
+    "proofId": "erdos-997",
+    "range": { "startLine": 89, "endLine": 103 },
+    "type": "definition",
+    "title": "Well-Distributed Sequence",
+    "content": "**WellDistributed:**\n\nA sequence is well-distributed if for every ε > 0, there exists K such that for all k ≥ K, all n, and all intervals I:\n|count - |I|·k| < ε·k\n\n**Key Property:** Uniform over ALL starting points n.\n\n**Definition:**\n```lean\ndef WellDistributed (x : UnitSequence) : Prop :=\n  ∀ ε : ℝ, ε > 0 →\n    ∃ K : ℕ, ∀ k : ℕ, k ≥ K →\n      ∀ n : ℕ, ∀ a b : ℝ, 0 ≤ a → b ≤ 1 → a < b →\n        |↑(countInInterval x n k (Ioc a b)) - (b - a) * ↑k| < ε * ↑k\n```",
+    "mathContext": "This is the Hlawka-Petersen (1955) notion of well-distribution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e997-comparison",
+    "proofId": "erdos-997",
+    "range": { "startLine": 104, "endLine": 116 },
+    "type": "axiom",
+    "title": "Well vs Equidistribution",
+    "content": "**well_distributed_implies_equidistributed:**\n\nWell-distribution is strictly stronger than equidistribution:\n- **Equidistribution:** lim_{n→∞} (1/n)#{m ≤ n : xₘ ∈ I} = |I|\n- **Well-distribution:** This holds uniformly from any starting point\n\nEvery well-distributed sequence is equidistributed, but not conversely.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-prime-seq",
+    "proofId": "erdos-997",
+    "range": { "startLine": 123, "endLine": 128 },
+    "type": "definition",
+    "title": "Prime Sequence",
+    "content": "**primeSequence:**\n\nThe nth prime, using Mathlib's Nat.nth function.\n\n**Definition:**\n```lean\nnoncomputable def primeSequence (n : ℕ) : ℕ := Nat.nth Nat.Prime n\n```\n\np(1) = 2, p(2) = 3, p(3) = 5, etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-prime-mult",
+    "proofId": "erdos-997",
+    "range": { "startLine": 129, "endLine": 135 },
+    "type": "definition",
+    "title": "Prime Multiple Sequence",
+    "content": "**primeMultipleSequence:**\n\nGiven α, the sequence n ↦ {α · pₙ} of fractional parts.\n\n**Definition:**\n```lean\nnoncomputable def primeMultipleSequence (α : ℝ) : UnitSequence :=\n  fun n => frac (α * primeSequence n)\n```\n\nThis is the central object of Erdős's question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e997-lacunary",
+    "proofId": "erdos-997",
+    "range": { "startLine": 150, "endLine": 157 },
+    "type": "definition",
+    "title": "Lacunary Sequence",
+    "content": "**Lacunary:**\n\nA sequence n₁ < n₂ < ... is lacunary if nₖ₊₁/nₖ ≥ q for some q > 1.\n\n**Definition:**\n```lean\ndef Lacunary (s : ℕ → ℕ) : Prop :=\n  ∃ q : ℝ, q > 1 ∧ ∀ k : ℕ, (s (k + 1) : ℝ) ≥ q * s k\n```\n\nLacunary sequences grow at least exponentially.",
+    "mathContext": "Examples: powers of 2, Fibonacci numbers. Primes are NOT lacunary since pₙ₊₁/pₙ → 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-lacunary-thm",
+    "proofId": "erdos-997",
+    "range": { "startLine": 165, "endLine": 177 },
+    "type": "axiom",
+    "title": "Erdős Lacunary Theorem",
+    "content": "**erdos_lacunary_theorem:**\n\nFor any lacunary sequence (nₖ), the sequence {α·nₖ} is not well-distributed for almost all α.\n\nThis is a measure-theoretic result: the exceptional set has measure zero.\n\nHowever, primes are not lacunary (pₙ₊₁/pₙ → 1), so this doesn't directly apply.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-retracted",
+    "proofId": "erdos-997",
+    "range": { "startLine": 184, "endLine": 193 },
+    "type": "axiom",
+    "title": "Erdős's Retracted Claim",
+    "content": "**erdos_1964_retracted_claim:**\n\nIn 1964, Erdős claimed to have proven existence of an irrational α for which {αpₙ} is not well-distributed.\n\nIn 1985, he wrote: \"The theorem is no doubt correct and perhaps will not be difficult to prove but I never was able to reconstruct my 'proof' which perhaps never existed.\"\n\nThis honest retraction is characteristic of Erdős's integrity.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e997-cllw",
+    "proofId": "erdos-997",
+    "range": { "startLine": 194, "endLine": 204 },
+    "type": "axiom",
+    "title": "CLLW Theorem (2024)",
+    "content": "**CLLW_theorem:**\n\nChampagne, Le, Liu, and Wooley proved that there exists an irrational α such that {αpₙ} is not well-distributed.\n\n**Statement:**\n```lean\naxiom CLLW_theorem :\n    ∃ α : ℝ, Irrational α ∧ ¬WellDistributed (primeMultipleSequence α)\n```\n\nThis resolved the existence question that Erdős attempted 60 years earlier.",
+    "mathContext": "Reference: arXiv:2406.19491 (2024)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e997-conjecture",
+    "proofId": "erdos-997",
+    "range": { "startLine": 205, "endLine": 214 },
+    "type": "definition",
+    "title": "Erdős 997 Conjecture",
+    "content": "**Erdos997Conjecture:**\n\nThe full conjecture: for ALL α, {αpₙ} is not well-distributed.\n\n**Definition:**\n```lean\ndef Erdos997Conjecture : Prop :=\n  ∀ α : ℝ, ¬WellDistributed (primeMultipleSequence α)\n```\n\nThe 2024 result proves ∃, but the ∀ statement remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e997-rational",
+    "proofId": "erdos-997",
+    "range": { "startLine": 215, "endLine": 222 },
+    "type": "axiom",
+    "title": "Rational Case",
+    "content": "**rational_case:**\n\nFor rational α = p/q, the sequence {αpₙ} has only finitely many distinct values modulo 1 (at most q values), so cannot be well-distributed.\n\nThis is the easy case of the conjecture.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e997-vinogradov",
+    "proofId": "erdos-997",
+    "range": { "startLine": 223, "endLine": 232 },
+    "type": "axiom",
+    "title": "Vinogradov Equidistribution",
+    "content": "**vinogradov_equidistribution:**\n\nFor irrational α, the sequence {αpₙ} IS equidistributed modulo 1.\n\nThis is a deep result from analytic number theory using exponential sums.\n\nBut equidistribution is weaker than well-distribution, so this doesn't resolve the problem.",
+    "mathContext": "Vinogradov's result shows the sequence fills [0,1) uniformly in the limit, but says nothing about uniformity across starting points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-discrepancy",
+    "proofId": "erdos-997",
+    "range": { "startLine": 239, "endLine": 251 },
+    "type": "definition",
+    "title": "Discrepancy",
+    "content": "**discrepancy:**\n\nThe discrepancy measures deviation from uniform distribution:\nDₙ = sup_I |#{m ≤ n : xₘ ∈ I}/n - |I||\n\n**Definition:**\n```lean\nnoncomputable def discrepancy (x : UnitSequence) (N : ℕ) : ℝ :=\n  ⨆ (a : ℝ) (b : ℝ) (_ : 0 ≤ a) (_ : b ≤ 1) (_ : a < b),\n    |↑(countInInterval x 0 N (Ioc a b)) / ↑N - (b - a)|\n```\n\nWell-distribution requires uniform discrepancy bounds from all starting points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-current",
+    "proofId": "erdos-997",
+    "range": { "startLine": 297, "endLine": 309 },
+    "type": "theorem",
+    "title": "Current Status",
+    "content": "**current_status:**\n\nSummary of known results:\n1. ∃ irrational α: {αpₙ} not well-distributed [CLLW 2024]\n2. For lacunary sequences: not well-distributed for almost all α [Erdős]\n3. Primes are not lacunary (pₙ₊₁/pₙ → 1)\n4. Universal statement for all α: OPEN\n\n**Statement:**\n```lean\ntheorem current_status :\n    (∃ α : ℝ, Irrational α ∧ ¬WellDistributed (primeMultipleSequence α))\n    := CLLW_theorem\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e997-summary",
+    "proofId": "erdos-997",
+    "range": { "startLine": 325, "endLine": 348 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_997_summary:**\n\n**Question:** Is {αpₙ} non-well-distributed for all α?\n\n**Status:** OPEN\n\n**Known:**\n- 2024: Existence proved (CLLW)\n- Rational α: trivially not well-distributed\n- Lacunary sequences: almost all α work\n\n**Open:**\n- Does it hold for all irrational α?\n- What is the measure of exceptional α?\n- Can CLLW be generalized?",
+    "significance": "critical"
+  }
+]

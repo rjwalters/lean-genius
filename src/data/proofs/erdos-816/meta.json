@@ -1,33 +1,166 @@
 {
   "id": "erdos-816",
-  "title": "Erdős Problem #816",
+  "title": "Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3",
   "slug": "erdos-816",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Must ... contain two vertices of the same degree which are joined by a pa...",
+  "description": "Let G be a graph with 2n+1 vertices and n² + n + 1 edges. Must G contain two vertices of the same degree joined by a path of length 3? YES - proved by Chen-Ma (2025).",
   "meta": {
-    "author": "Unknown",
+    "author": "Chen and Ma (2025)",
     "sourceUrl": "https://erdosproblems.com/816",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos816Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graphs",
+      "paths",
+      "degree-sequence",
+      "bipartite-graphs",
+      "turan-type",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 816,
     "erdosUrl": "https://erdosproblems.com/816",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.neighborFinset",
+        "description": "Finite set of neighbors",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Finite set of edges",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite type",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Finset.Disjoint",
+        "description": "Disjoint finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "numVertices, numEdges, degree definitions",
+      "hasPath3: path of length 3 predicate",
+      "hasPath3_symm: symmetry theorem",
+      "sameDegree: equal degree predicate",
+      "hasEqualDegreePath3Pair: main property",
+      "satisfiesEH816: Erdős-Hajnal condition",
+      "satisfiesWeakerEH816: Chen-Ma weaker condition",
+      "isCompleteBipartite: K_{n,n+1} characterization",
+      "K_counterexample: threshold tightness",
+      "chen_ma_theorem: 2025 main result",
+      "erdos_816_for_large_n: corollary for n ≥ 600",
+      "erdos_816_full: complete answer"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #816 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with $2n+1$ vertices and $n^2+n+1$ edges. Must $G$ contain two vertices of the same degree which are joined by a path of length $3$?\n\n\n\nA problem of Erd\\H{o}s and Hajnal. The example of $K_{n,n+1}$ shows that this fails if we only have $n^2+n$ edges.\n\nThis is true, and was proved by Chen and Ma \\cite{ChMa25}, who prove the stronger statement that, provided $n\\geq 600$, all graphs with $2n+1$ vertices and at least $n^2+n$ edges contain two vertices of the same degree joined by a path of length $3$, except $K_{n,n+1}$.\n\n\n\n\nReferences\n\n\n[ChMa25] K. Chen and J. Ma, A problem of Erd\\H{o}s and Hajnal on paths with equal-degree endpoints. arXiv:2503.19569 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #816: Equal-Degree Paths**\n\nThis problem was posed by Erdős and Hajnal and concerns the interplay between degree sequences and path connectivity in graphs.\n\n**The Question:**\nGiven enough edges, must a graph contain two vertices of the same degree that are connected by a path of length 3?\n\n**Key Insight:**\nThe complete bipartite graph K_{n,n+1} has exactly n² + n edges and fails this property: vertices of equal degree are in the same part, but paths of length 3 between same-part vertices don't exist (paths alternate between parts).\n\n**Resolution:**\nChen and Ma (2025, arXiv:2503.19569) proved that one additional edge (n² + n + 1 total) forces the property. They proved the stronger result that for n ≥ 600, even n² + n edges suffice except for K_{n,n+1}.",
+    "problemStatement": "**Problem Statement**\n\nLet $G$ be a graph with $2n+1$ vertices and $n^2 + n + 1$ edges.\n\n**Question:** Must $G$ contain two vertices of the same degree which are joined by a path of length 3?\n\n**Answer:** YES\n\n**Threshold:** The complete bipartite graph $K_{n,n+1}$ has exactly $n^2 + n$ edges and fails this property, showing the threshold is tight.\n\n**Stronger Result (Chen-Ma 2025):**\nFor $n \\geq 600$, all graphs with $2n+1$ vertices and at least $n^2 + n$ edges contain such a pair, except $K_{n,n+1}$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Define vertex count, edge count, and degree using Mathlib's SimpleGraph\n\n2. **Path of Length 3:** Define hasPath3 as existence of distinct intermediate vertices with adjacency\n\n3. **Equal-Degree Pair:** Define sameDegree and hasEqualDegreePath3Pair\n\n4. **Erdős-Hajnal Condition:** Define the (2n+1, n² + n + 1) specification\n\n5. **Counterexample:** Define complete bipartite graph and state it fails with n² + n edges\n\n6. **Chen-Ma Theorem:** Axiomatize the 2025 result for n ≥ 600\n\n7. **Main Result:** Derive the full answer via edge count argument",
+    "keyInsights": [
+      "**K_{n,n+1} as Extremal Graph:** The complete bipartite graph K_{n,n+1} is the unique extremal example—it has exactly n² + n edges and fails the property.",
+      "**Why K_{n,n+1} Fails:** In K_{n,n+1}, one part has degree n+1, the other has degree n. Same-degree vertices are in the same part, but paths of length 3 between them don't exist since paths alternate parts.",
+      "**Edge Threshold:** Adding one edge beyond K_{n,n+1} (to n² + n + 1) breaks the bipartite obstruction and forces the equal-degree path-3 pair.",
+      "**Path Length 3 is Natural:** Path length 3 creates the tension with bipartite structure—it traverses both parts and returns, unlike paths of length 1 or 2.",
+      "**Very Recent Result:** Chen-Ma's 2025 paper (arXiv:2503.19569) resolves a decades-old Erdős-Hajnal problem with a stronger characterization."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-definitions",
+      "title": "Basic Graph Definitions",
+      "summary": "numVertices, numEdges, degree",
+      "startLine": 33,
+      "endLine": 58
+    },
+    {
+      "id": "paths",
+      "title": "Paths of Length 3",
+      "summary": "hasPath3 definition and symmetry",
+      "startLine": 59,
+      "endLine": 85
+    },
+    {
+      "id": "equal-degree",
+      "title": "Equal-Degree Pairs",
+      "summary": "sameDegree, hasEqualDegreePath3Pair",
+      "startLine": 86,
+      "endLine": 103
+    },
+    {
+      "id": "conditions",
+      "title": "The Erdős-Hajnal Condition",
+      "summary": "satisfiesEH816, satisfiesWeakerEH816",
+      "startLine": 104,
+      "endLine": 123
+    },
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "summary": "isCompleteBipartite, K_counterexample",
+      "startLine": 124,
+      "endLine": 157
+    },
+    {
+      "id": "main-theorem",
+      "title": "Chen-Ma Theorem (2025)",
+      "summary": "chen_ma_theorem, erdos_816_for_large_n, erdos_816_full",
+      "startLine": 158,
+      "endLine": 206
+    },
+    {
+      "id": "analysis",
+      "title": "Why Path Length 3?",
+      "summary": "path3_significance, degree_analysis",
+      "startLine": 207,
+      "endLine": 232
+    },
+    {
+      "id": "counting",
+      "title": "Pigeonhole and Counting",
+      "summary": "pigeonhole_degrees, edge_threshold_explanation",
+      "startLine": 233,
+      "endLine": 258
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "turan_connection, ramsey_flavor",
+      "startLine": 259,
+      "endLine": 279
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_816_summary, erdos_816_answer",
+      "startLine": 280,
+      "endLine": 313
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #816 asks whether graphs with 2n+1 vertices and n² + n + 1 edges must contain equal-degree vertices joined by a path of length 3. The answer is YES, proved by Chen and Ma in 2025. The complete bipartite graph K_{n,n+1} (with n² + n edges) is the unique obstruction.",
+    "implications": "**Connections to Other Areas**\n\n1. **Turán-type Problems:** This is a Turán problem for the 'equal-degree path-3' property\n\n2. **Extremal Graph Theory:** K_{n,n+1} emerges as the unique extremal graph\n\n3. **Degree Sequences:** Connects degree distributions to path structure\n\n4. **Bipartite Structure:** The bipartite obstruction explains why K_{n,n+1} is special\n\n5. **Recent Progress:** One of the most recently solved Erdős problems (2025)",
+    "openQuestions": [
+      "Remove the n ≥ 600 restriction from Chen-Ma's stronger result",
+      "Characterize graphs with n² + n edges that contain equal-degree path-3 pairs",
+      "Generalize to paths of other lengths",
+      "Study analogous problems for directed graphs",
+      "Explore algorithmic aspects: efficiently finding such pairs"
+    ]
   }
 }

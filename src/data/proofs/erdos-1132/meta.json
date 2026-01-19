@@ -1,33 +1,150 @@
 {
   "id": "erdos-1132",
-  "title": "Erdős Problem #1132",
+  "title": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions",
   "slug": "erdos-1132",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nLet ... be an infinite seq...",
+  "description": "Two open questions about Lebesgue functions Lₙ(x) for infinite node sequences: must there exist x with large Lₙ(x) infinitely often, and is the growth property satisfied almost everywhere?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1967 problem), Bernstein (1931), Erdős (1961)",
     "sourceUrl": "https://erdosproblems.com/1132",
-    "date": "",
-    "status": "pending",
+    "date": "1967",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1132Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "interpolation",
+      "polynomials",
+      "lebesgue-function",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1132,
     "erdosUrl": "https://erdosproblems.com/1132",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.cos",
+        "description": "Cosine function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "volume.restrict",
+        "description": "Lebesgue measure restricted to a set",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior of a function along a filter",
+        "module": "Mathlib.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Dense",
+        "description": "Density of a set in a topological space",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "lagrangeBasis definition: Lagrange basis polynomials",
+      "lebesgueFunction definition: Lₙ(x) = Σₖ |lₖ(x)|",
+      "lebesgueConstant definition: Λₙ = max Lₙ(x)",
+      "chebyshevNodes definition: optimal interpolation nodes",
+      "equidistantNodes definition: equally spaced nodes",
+      "InfiniteNodeSequence type: sequences in [-1,1]",
+      "existsGoodPoint predicate: Erdős Question 1",
+      "almostEverywhereGrowth predicate: Erdős Question 2",
+      "denseGoodPoints predicate: Bernstein's result",
+      "bernstein_density_theorem: dense good points",
+      "erdos_lower_bound: (2/π)log(n) lower bound",
+      "erdos_max_theorem: maximum exceeds threshold"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1132 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $x_1,\\ldots,x_n\\in [-1,1]$ let\\[l_k(x)=\\frac{\\prod_{i\\neq k}(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that $l_k(x_k)=1$ and $l_k(x_i)=0$ for $i\\neq k$.\n\nLet $x_1,x_2,\\ldots\\in [-1,1]$ be an infinite sequence, and let\\[L_n(x) = \\sum_{1\\leq k\\leq n}\\lvert l_k(x)\\rvert,\\]where each $l_k(x)$ is defined above with respect to $x_1,\\ldots,x_n$.\n\nMust there exist $x\\in (-1,1)$ such that\\[L_n(x) >\\frac{2}{\\pi}\\log n-O(1)\\]for infinitely many $n$?\n\nIs it true that\\[\\limsup_{n\\to \\infty}\\frac{L_n(x)}{\\log n}\\geq \\frac{2}{\\pi}\\]for almost all $x\\in (-1,1)$?\n\n\n\nA result of Bernstein \\cite{Be31} implies that the set of $x\\in(-1,1)$ for which\\[\\limsup_{n\\to \\infty}\\frac{L_n(x)}{\\log n}\\geq \\frac{2}{\\pi}\\]is everywhere dense.\n\nErd\\H{o}s \\cite{Er61c} proved that, for any fixed $x_1,\\ldots,x_n\\in [-1,1]$,\\[\\max_{x\\in [-1,1]}\\sum_{1\\leq k\\leq n}\\lvert l_k(x)\\rvert>\\frac{2}{\\pi}\\log n-O(1).\\]See also [1129] for more on $L_n(x)$.\n\n\n\n\nReferences\n\n\n[Be31] S. Bernstein, Sur la limitation des valeurs d'un polynome $P_n(x)$ de degr\\'{e} n sur tout un segment par ses valeurs en $(n+1)$ points du segment. Izv. Akad. Nauk. SSSR (1931), 1025-1050.\n\n[Er61c] Erd\\H{o}s, P., Problems and results on the theory of interpolation. II. Acta Math. Acad. Sci. Hungar. (1961), 235-244.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1132: Lebesgue Functions in Polynomial Interpolation**\n\nThis problem concerns the Lebesgue function Lₙ(x), a fundamental quantity in polynomial interpolation theory. For any set of nodes x₁,...,xₙ, the Lebesgue function measures how much the Lagrange interpolation can magnify errors.\n\n**Key History:**\n- Bernstein (1931): Proved that 'good' points are dense in (-1,1)\n- Erdős (1961): Proved the maximum of Lₙ always exceeds (2/π)log(n) - O(1)\n- Erdős (1967): Posed the two questions in this problem\n\n**Mathematical Context:**\nThe Lebesgue function Lₙ(x) = Σₖ |lₖ(x)| where lₖ are Lagrange basis polynomials controls interpolation error. For Chebyshev nodes, Λₙ ~ (2/π)log(n), which is optimal. The questions ask whether this growth rate is achieved at fixed points (not just at the maximum) for infinite node sequences.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor an infinite sequence $x_1, x_2, \\ldots \\in [-1,1]$, define the Lebesgue function:\n$$L_n(x) = \\sum_{k=1}^n |l_k(x)|$$\nwhere $l_k$ are the Lagrange basis polynomials for $x_1, \\ldots, x_n$.\n\n**Question 1:** Must there exist $x \\in (-1,1)$ such that $L_n(x) > \\frac{2}{\\pi}\\log n - O(1)$ for infinitely many $n$?\n\n**Question 2:** Is $\\limsup_{n\\to\\infty} \\frac{L_n(x)}{\\log n} \\geq \\frac{2}{\\pi}$ for almost all $x \\in (-1,1)$?\n\n**Status: OPEN**\n\nWe know:\n- The 'good' points are **dense** (Bernstein 1931)\n- The **maximum** always exceeds the threshold (Erdős 1961)\n\nThe gap between 'dense' and 'almost everywhere' remains unresolved.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lagrange Basis:** Define the basis polynomials lₖ(x) satisfying lₖ(xₖ)=1 and lₖ(xᵢ)=0 for i≠k\n\n2. **Lebesgue Function:** Define Lₙ(x) = Σₖ |lₖ(x)| measuring interpolation error amplification\n\n3. **Lebesgue Constant:** Define Λₙ = max Lₙ(x) and state the (2/π)log(n) growth bounds\n\n4. **Infinite Sequences:** Define InfiniteNodeSequence type for sequences in [-1,1]\n\n5. **Open Questions:** Formally state the existence and almost-everywhere questions\n\n6. **Partial Results:** Formalize Bernstein's density theorem and Erdős's maximum bound\n\n7. **Status:** Record that both questions remain open",
+    "keyInsights": [
+      "**Lebesgue Function:** Lₙ(x) = Σₖ |lₖ(x)| controls how interpolation error compares to best approximation error",
+      "**Optimal Growth:** The best possible growth rate is (2/π)log(n), achieved by Chebyshev nodes",
+      "**Dense vs Almost Everywhere:** Bernstein showed good points are dense, but almost-everywhere remains open",
+      "**Chebyshev Nodes:** xₖ = cos((2k-1)π/(2n)) minimize the Lebesgue constant",
+      "**Runge Phenomenon:** Equidistant nodes have exponentially growing Lebesgue constants, causing interpolation instability"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lagrange-basis",
+      "title": "Lagrange Basis Polynomials",
+      "summary": "lagrangeBasis definition and fundamental properties",
+      "startLine": 39,
+      "endLine": 77
+    },
+    {
+      "id": "lebesgue-function",
+      "title": "The Lebesgue Function",
+      "summary": "lebesgueFunction and lebesgueConstant definitions",
+      "startLine": 78,
+      "endLine": 110
+    },
+    {
+      "id": "growth-bounds",
+      "title": "Growth of Lebesgue Constants",
+      "summary": "erdos_lower_bound, chebyshevNodes, optimal growth rate",
+      "startLine": 111,
+      "endLine": 150
+    },
+    {
+      "id": "main-questions",
+      "title": "The Main Questions",
+      "summary": "existsGoodPoint, almostEverywhereGrowth predicates",
+      "startLine": 151,
+      "endLine": 211
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "bernstein_density_theorem, erdos_max_theorem",
+      "startLine": 212,
+      "endLine": 248
+    },
+    {
+      "id": "interpolation-error",
+      "title": "Connection to Interpolation Error",
+      "summary": "Why Lebesgue functions matter for interpolation",
+      "startLine": 249,
+      "endLine": 275
+    },
+    {
+      "id": "examples",
+      "title": "Special Cases and Examples",
+      "summary": "equidistantNodes, Runge phenomenon, Leja points",
+      "startLine": 276,
+      "endLine": 307
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1132_summary and status",
+      "startLine": 308,
+      "endLine": 343
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1132 poses two open questions about Lebesgue functions for infinite node sequences in polynomial interpolation. Question 1 asks whether every sequence has a 'witness' point with large Lebesgue function infinitely often. Question 2 asks whether the optimal growth rate holds for almost all points. We know good points are dense (Bernstein), but the measure-theoretic question remains open.",
+    "implications": "**Connections to Other Areas**\n\n1. **Numerical Analysis:** Lebesgue constants determine polynomial interpolation stability\n\n2. **Approximation Theory:** The (2/π)log(n) bound is fundamental to polynomial approximation\n\n3. **Measure Theory:** Question 2 asks about measure-theoretic vs topological density\n\n4. **Complex Analysis:** Runge phenomenon connects to singularities in the complex plane\n\n5. **Computational Mathematics:** Node selection affects numerical algorithms",
+    "openQuestions": [
+      "Question 1: Does every infinite sequence have a 'witness' point?",
+      "Question 2: Is the growth property satisfied almost everywhere?",
+      "What is the precise measure of the 'good' set for specific sequences?",
+      "Are there sequences where the good set has measure zero but is dense?",
+      "How does the answer depend on regularity conditions on the sequence?"
+    ]
   }
 }

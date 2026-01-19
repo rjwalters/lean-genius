@@ -1,33 +1,161 @@
 {
   "id": "erdos-580",
-  "title": "Erdős Problem #580",
+  "title": "Erdős Problem #580: The Loebl-Komlós-Sós Conjecture",
   "slug": "erdos-580",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices such that at least ... vertices have degree at least .... Must ... contain every tree on a...",
+  "description": "If a graph G on n vertices has at least n/2 vertices of degree at least n/2, must G contain every tree on at most n/2 vertices? YES for large n - proved by Zhao (2011).",
   "meta": {
-    "author": "Unknown",
+    "author": "Zhao (2011 proof), Erdős-Füredi-Loebl-Sós (conjecture)",
     "sourceUrl": "https://erdosproblems.com/580",
-    "date": "",
-    "status": "pending",
+    "date": "2011",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos580Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "trees",
+      "tree-embedding",
+      "regularity-lemma",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 580,
     "erdosUrl": "https://erdosproblems.com/580",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.neighborFinset",
+        "description": "Finite set of neighbors",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of a finite type",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Function.Injective",
+        "description": "Injective function predicate",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "vertexDegree definition: degree of vertex in graph",
+      "highDegreeVertices definition: vertices with degree ≥ k",
+      "Tree structure: k-vertex tree representation",
+      "TreeEmbeds predicate: tree embedding in graph",
+      "ContainsAllTreesUpTo predicate: all trees up to size k",
+      "satisfiesLKS predicate: the n/2-n/2-n/2 condition",
+      "satisfiesGeneralizedLKS: Komlós-Sós generalization",
+      "LKSConjecture: formal statement of conjecture",
+      "KomlosSosConjecture: generalized conjecture",
+      "AKS_theorem: asymptotic version (1995)",
+      "zhao_theorem: full result for large n (2011)",
+      "erdos_580: main theorem",
+      "path_case and star_case: special cases",
+      "LKS_tightness: sharpness of the condition"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #580 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices such that at least $n/2$ vertices have degree at least $n/2$. Must $G$ contain every tree on at most $n/2$ vertices?\n\n\n\nA conjecture of Erd\\H{o}s, F\\\"{u}redi, Loebl, and S\\'{o}s. Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS95} proved an asymptotic version, where at least $(1+\\epsilon)n/2$ vertices have degree at least $(1+\\epsilon)n/2$ (and $n$ is sufficiently large depending on $\\epsilon$).\n\nZhao \\cite{Zh11} has proved this conjecture holds for all sufficiently large $n$.\n\nKoml\\'{o}s and S\\'{o}s conjectured the generalisation that if at least $n/2$ vertices have degree at least $k$ then $G$ contains any tree with $k$ vertices.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[AKS95] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, On a conjecture of Loebl. Graph theory, combinatorics, and algorithms, Vol. 1, 2 (Kalamazoo, MI, 1992) (1995), 1135-1146.\n\n[Zh11] Zhao, Yi, Proof of the {$(n/2-n/2-n/2)$} conjecture for large {$n$}. Electron. J. Combin. (2011), Paper 27, 61.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #580: The Loebl-Komlós-Sós Conjecture**\n\nAlso known as the (n/2-n/2-n/2) conjecture, this is a fundamental problem in extremal graph theory about tree embedding.\n\n**Key History:**\n- Erdős, Füredi, Loebl, Sós (EFLS95): Conjecture posed\n- Ajtai, Komlós, Szemerédi (1995): Proved asymptotic version requiring (1+ε)n/2 instead of n/2\n- Zhao (2011): Proved the full conjecture for all sufficiently large n\n\n**Mathematical Context:**\nThe conjecture relates degree conditions in graphs to the existence of tree subgraphs. It's part of a family of 'forced subgraph' problems asking what graph properties guarantee certain substructures.",
+    "problemStatement": "**Problem Statement (Proved for large n)**\n\nLet $G$ be a graph on $n$ vertices such that at least $n/2$ vertices have degree at least $n/2$. Must $G$ contain every tree on at most $n/2$ vertices?\n\n**Answer: YES** for sufficiently large $n$ (Zhao, 2011)\n\n**Generalization (Komlós-Sós Conjecture):**\nIf at least $n/2$ vertices have degree at least $k$, then $G$ contains every tree on at most $k$ vertices.\n\n**Tightness:**\nThe condition is tight: $K_{n/2-1} \\cup K_{n/2+1}$ narrowly fails the condition and misses some trees.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define vertex degree, high-degree vertex set, and graph size using Mathlib's SimpleGraph\n\n2. **Trees:** Define Tree structure with vertices, edges, connectivity, and acyclicity\n\n3. **Embedding:** Define TreeEmbeds as existence of an injective edge-preserving map\n\n4. **LKS Condition:** Define satisfiesLKS and the generalized version\n\n5. **Conjectures:** Formally state LKSConjecture and KomlosSosConjecture\n\n6. **Results:** Axiomatize AKS theorem and Zhao's theorem, derive main result\n\n7. **Special Cases:** Include path and star cases as easier examples",
+    "keyInsights": [
+      "**The n/2-n/2-n/2 Pattern:** At least n/2 vertices of degree ≥ n/2 forces all trees of size ≤ n/2",
+      "**Tightness:** The condition cannot be weakened - (n/2-1)-(n/2-1) fails for some trees",
+      "**Regularity Method:** Zhao's proof uses Szemerédi's Regularity Lemma to decompose the graph",
+      "**Special Cases First:** Paths and stars are easy; 'broom' trees (path with star) are hardest",
+      "**Asymptotic to Exact:** Progress from (1+ε) factor (AKS) to exact n/2 (Zhao)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-definitions",
+      "title": "Basic Graph Definitions",
+      "summary": "vertexDegree, highDegreeVertices, numVertices",
+      "startLine": 35,
+      "endLine": 62
+    },
+    {
+      "id": "trees",
+      "title": "Trees",
+      "summary": "Tree structure, allTrees, cayley_formula",
+      "startLine": 63,
+      "endLine": 92
+    },
+    {
+      "id": "embedding",
+      "title": "Tree Embedding",
+      "summary": "TreeEmbeds, ContainsAllTreesUpTo",
+      "startLine": 93,
+      "endLine": 115
+    },
+    {
+      "id": "lks-condition",
+      "title": "The LKS Condition",
+      "summary": "satisfiesLKS, satisfiesGeneralizedLKS",
+      "startLine": 116,
+      "endLine": 138
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "LKSConjecture, KomlosSosConjecture",
+      "startLine": 139,
+      "endLine": 164
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "AKS_theorem, zhao_theorem, erdos_580",
+      "startLine": 165,
+      "endLine": 203
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "path_case, star_case, broom_difficulty",
+      "startLine": 204,
+      "endLine": 238
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness Examples",
+      "summary": "LKS_tightness, counterexample_construction",
+      "startLine": 239,
+      "endLine": 265
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "regularity_lemma, ramsey_connection, bandwidth",
+      "startLine": 266,
+      "endLine": 293
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_580_summary, erdos_580_answer",
+      "startLine": 294,
+      "endLine": 331
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #580 (the Loebl-Komlós-Sós conjecture) asks whether graphs with many high-degree vertices must contain all small trees. The answer is YES for sufficiently large n, proved by Zhao (2011) using the Regularity Lemma. The conjecture is sharp: graphs narrowly failing the condition can miss certain trees.",
+    "implications": "**Connections to Other Areas**\n\n1. **Regularity Lemma:** The proof is a major application of Szemerédi's Regularity Lemma\n\n2. **Extremal Graph Theory:** Part of the study of forced substructures in graphs\n\n3. **Ramsey Theory:** Related to questions about unavoidable subgraphs\n\n4. **Tree Packing:** Connected to problems about embedding multiple trees\n\n5. **Bandwidth Theorem:** Related to embedding spanning subgraphs",
+    "openQuestions": [
+      "Verify the conjecture for all n, not just sufficiently large n",
+      "Determine the exact threshold N₀ above which Zhao's proof works",
+      "Prove the Komlós-Sós generalization for all k",
+      "Extend to weighted or directed versions",
+      "Find algorithmic implications for tree embedding"
+    ]
   }
 }
