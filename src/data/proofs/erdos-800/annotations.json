@@ -1,1 +1,189 @@
-[]
+[
+  {
+    "id": "ann-800-1",
+    "proofId": "erdos-800",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "definition",
+    "title": "Vertex Degree",
+    "content": "**vertexDegree G v** counts edges incident to vertex v. In a simple graph, this equals |N(v)|, the size of the neighborhood. Degree is fundamental to the structural condition in this problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Neighborhood", "Adjacency", "Graph structure"]
+  },
+  {
+    "id": "ann-800-2",
+    "proofId": "erdos-800",
+    "range": { "startLine": 64, "endLine": 65 },
+    "type": "definition",
+    "title": "High-Degree Vertex",
+    "content": "**isHighDegree G v** means deg(v) ≥ 3 in graph G. The threshold 3 is crucial: degree-2 vertices are 'subdivision vertices' that can be inserted to separate high-degree vertices.",
+    "significance": "critical",
+    "relatedConcepts": ["Subdivision", "Degree constraints", "Graph structure"]
+  },
+  {
+    "id": "ann-800-3",
+    "proofId": "erdos-800",
+    "range": { "startLine": 72, "endLine": 73 },
+    "type": "definition",
+    "title": "No Adjacent High-Degree",
+    "content": "**noAdjacentHighDegree G** is the central structural condition: no edge connects two vertices of degree ≥ 3. This ensures high-degree vertices form an independent set, enabling probabilistic embedding.",
+    "significance": "critical",
+    "relatedConcepts": ["Independent set", "Subdivided graphs", "Structural restriction"]
+  },
+  {
+    "id": "ann-800-4",
+    "proofId": "erdos-800",
+    "range": { "startLine": 84, "endLine": 85 },
+    "type": "definition",
+    "title": "Subdivision Vertex",
+    "content": "**isSubdivisionVertex G v** means deg(v) = 2. When a graph is subdivided, new degree-2 vertices are inserted along each edge, separating the original high-degree vertices.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-800-5",
+    "proofId": "erdos-800",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "theorem",
+    "title": "Subdivision Implies Condition",
+    "content": "**subdivision_implies_no_adjacent_high_degree** shows that if all neighbors of high-degree vertices have degree ≤ 2, then no two high-degree vertices are adjacent. This captures the essence of subdivided graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-800-6",
+    "proofId": "erdos-800",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "definition",
+    "title": "Complete Graph",
+    "content": "**completeGraph N** is K_N where every pair of distinct vertices is adjacent. The Ramsey number R(G) asks: how large must N be so that any 2-coloring of K_N contains monochromatic G?",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Edge coloring", "Monochromatic subgraph"]
+  },
+  {
+    "id": "ann-800-7",
+    "proofId": "erdos-800",
+    "range": { "startLine": 124, "endLine": 124 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "**edgeColoring N** assigns a color (true/false for red/blue) to each pair of vertices in K_N. Ramsey theory studies when monochromatic structures must appear regardless of the coloring.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-800-8",
+    "proofId": "erdos-800",
+    "range": { "startLine": 130, "endLine": 132 },
+    "type": "definition",
+    "title": "Monochromatic Copy",
+    "content": "**isMonochromatic N c f G** means all edges of G (under embedding f) have the same color in coloring c. Either all red or all blue - this is what Ramsey numbers guarantee must exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-800-9",
+    "proofId": "erdos-800",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "definition",
+    "title": "Ramsey Number",
+    "content": "**ramseyNumber G** = R(G) is the minimum N such that every 2-coloring of K_N contains a monochromatic copy of G. Computing R(G) exactly is notoriously difficult; even R(K_5) is unknown!",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Extremal combinatorics", "Complete graphs"]
+  },
+  {
+    "id": "ann-800-10",
+    "proofId": "erdos-800",
+    "range": { "startLine": 157, "endLine": 158 },
+    "type": "definition",
+    "title": "Linear Ramsey Number",
+    "content": "**hasLinearRamseyNumber G C** means R(G) ≤ C·n where n = |V(G)|. Linear growth is the best possible for graphs with Ω(n) edges. Many natural sparse graphs have linear Ramsey numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-800-11",
+    "proofId": "erdos-800",
+    "range": { "startLine": 172, "endLine": 173 },
+    "type": "axiom",
+    "title": "Alon's Theorem",
+    "content": "**alon_theorem** (1994): If G has no adjacent high-degree vertices, then R(G) ≤ 12n. This is the main result solving Erdős Problem #800. The explicit constant 12 comes from probabilistic analysis.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-800-12",
+    "proofId": "erdos-800",
+    "range": { "startLine": 179, "endLine": 183 },
+    "type": "theorem",
+    "title": "Subdivided Graphs Corollary",
+    "content": "**subdivided_graphs_linear_ramsey** shows any subdivided graph has linear Ramsey number. Subdividing each edge once ensures no adjacent high-degree vertices, so Alon's theorem applies.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-800-13",
+    "proofId": "erdos-800",
+    "range": { "startLine": 193, "endLine": 195 },
+    "type": "definition",
+    "title": "Graph Degeneracy",
+    "content": "**isDegenerateAt G p** means G is p-degenerate: every induced subgraph has a vertex of degree ≤ p. Equivalently, vertices can be ordered so each has ≤ p later neighbors. Trees are 1-degenerate.",
+    "significance": "critical",
+    "relatedConcepts": ["Sparse graphs", "Ordering", "Burr-Erdős conjecture"]
+  },
+  {
+    "id": "ann-800-14",
+    "proofId": "erdos-800",
+    "range": { "startLine": 202, "endLine": 204 },
+    "type": "theorem",
+    "title": "2-Degeneracy",
+    "content": "**no_adjacent_high_degree_is_2_degenerate** shows graphs with no adjacent high-degree vertices are 2-degenerate. This connects Problem #800 to the broader Burr-Erdős conjecture.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-800-15",
+    "proofId": "erdos-800",
+    "range": { "startLine": 213, "endLine": 216 },
+    "type": "axiom",
+    "title": "Burr-Erdős Theorem",
+    "content": "**burr_erdos_theorem** (Lee, 2016): Every p-degenerate n-vertex graph has R(G) ≤ c_p · n. This fully resolves the Burr-Erdős conjecture from 1975. Problem #800 is the p=2 case.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem #163", "Degeneracy", "Linear Ramsey numbers"]
+  },
+  {
+    "id": "ann-800-16",
+    "proofId": "erdos-800",
+    "range": { "startLine": 223, "endLine": 229 },
+    "type": "theorem",
+    "title": "Special Case of #163",
+    "content": "**erdos_800_special_case_of_163** shows Problem #800 follows from the Burr-Erdős conjecture: graphs with no adjacent high-degree vertices are 2-degenerate, so Lee's theorem gives linear R(G).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-800-17",
+    "proofId": "erdos-800",
+    "range": { "startLine": 235, "endLine": 253 },
+    "type": "concept",
+    "title": "Alon's Proof Technique",
+    "content": "**alon_proof_technique** outlines the proof: partition vertices into high-degree (H) and low-degree (L). H is independent, so use probabilistic embedding. L consists of paths/cycles for deterministic extension.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-800-18",
+    "proofId": "erdos-800",
+    "range": { "startLine": 256, "endLine": 263 },
+    "type": "concept",
+    "title": "The Constant 12",
+    "content": "**constant_12_explanation** explains the bound R(G) ≤ 12n: factor 2 for two colors times factor 6 from the probabilistic counting argument. The exact optimal constant remains unknown.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-800-19",
+    "proofId": "erdos-800",
+    "range": { "startLine": 363, "endLine": 366 },
+    "type": "definition",
+    "title": "Problem Statement",
+    "content": "**erdos800Problem** formalizes: for all graphs G with no adjacent high-degree vertices, R(G) grows linearly in n. This is the precise mathematical formulation of Erdős Problem #800.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-800-20",
+    "proofId": "erdos-800",
+    "range": { "startLine": 372, "endLine": 376 },
+    "type": "theorem",
+    "title": "Solution",
+    "content": "**erdos_800** proves the problem: invoke Alon's theorem with constant 12. The result shows R(G) ≤ 12n for all graphs satisfying the structural condition, fully resolving the problem.",
+    "significance": "critical"
+  }
+]
