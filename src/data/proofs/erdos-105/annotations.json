@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-105-1",
+    "proofId": "erdos-105",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #105 asks whether n-3 obstacle points can block all 'rich' lines through n non-collinear points. A rich line contains ≥2 points from the main set. The conjecture was DISPROVED by Xichuan with three explicit counterexamples. The $50 prize was awarded for the disproof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-105-2",
+    "proofId": "erdos-105",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Points in the Plane",
+    "content": "We represent points as elements of EuclideanSpace ℝ (Fin 2), which is the standard Mathlib type for ℝ². This gives us the full machinery of inner product spaces and affine geometry.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-105-3",
+    "proofId": "erdos-105",
+    "range": { "startLine": 50, "endLine": 58 },
+    "type": "definition",
+    "title": "Line Representation",
+    "content": "A line is represented parametrically: a base point plus t times a direction vector (where t ranges over ℝ). The direction must be nonzero. A point p lies on line L if p = basePoint + t·direction for some t.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-105-4",
+    "proofId": "erdos-105",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "Rich Lines",
+    "content": "A line is 'rich' for a set A if it contains at least 2 distinct points from A. This is the key concept - we want to find rich lines that avoid obstacles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-105-5",
+    "proofId": "erdos-105",
+    "range": { "startLine": 64, "endLine": 70 },
+    "type": "definition",
+    "title": "Unblocked Lines",
+    "content": "A line is 'unblocked' by a set B if it contains NO points of B. The goal is to find lines that are both rich (for A) and unblocked (by B).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-105-6",
+    "proofId": "erdos-105",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "Non-Collinearity",
+    "content": "A set is non-collinear if no single line contains all its points. This is a crucial hypothesis - if all points were collinear, there would be exactly one rich line, making the problem trivial.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-105-7",
+    "proofId": "erdos-105",
+    "range": { "startLine": 78, "endLine": 88 },
+    "type": "definition",
+    "title": "The Erdős-Purdy Conjecture",
+    "content": "The conjecture states: for disjoint sets A (n points, non-collinear) and B (n-3 points), there must exist a rich line of A that avoids B entirely. This was the original hope - that n-3 obstacles aren't enough to block all rich lines.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-105-8",
+    "proofId": "erdos-105",
+    "range": { "startLine": 92, "endLine": 109 },
+    "type": "axiom",
+    "title": "Xichuan's Counterexample",
+    "content": "Xichuan (2024) found three explicit counterexamples: configurations where A has n non-collinear points, B has n-3 points, yet EVERY rich line of A contains some point of B. This disproves the Erdős-Purdy conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-105-9",
+    "proofId": "erdos-105",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "theorem",
+    "title": "The Formal Disproof",
+    "content": "We prove ¬ErdosPurdyConjecture by contradiction: the conjecture would give a rich unblocked line for Xichuan's counterexample, but that example was constructed so NO such line exists. This is a clean formal argument using the axiom.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-105-10",
+    "proofId": "erdos-105",
+    "range": { "startLine": 120, "endLine": 130 },
+    "type": "axiom",
+    "title": "Hickerson's n-2 Construction",
+    "content": "Before Xichuan, Hickerson showed that n-2 obstacles CAN block all rich lines. This meant n-3 was the 'critical case' - either the boundary of what's possible, or also achievable. Xichuan proved it's the latter.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-105-11",
+    "proofId": "erdos-105",
+    "range": { "startLine": 132, "endLine": 140 },
+    "type": "axiom",
+    "title": "Beck-Szemerédi-Trotter Positive Result",
+    "content": "With only cn obstacles (c > 0 a small constant), some rich line MUST be unblocked. This uses the Szemerédi-Trotter incidence bound to show there are so many rich lines that cn obstacles can't block them all.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-105-12",
+    "proofId": "erdos-105",
+    "range": { "startLine": 144, "endLine": 157 },
+    "type": "theorem",
+    "title": "Szemerédi-Trotter Theorem",
+    "content": "The famous Szemerédi-Trotter theorem (1983) bounds point-line incidences: I(P,L) = O(|P|^(2/3)|L|^(2/3) + |P| + |L|). This is optimal and fundamental to discrete geometry. It implies many rich lines exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-105-13",
+    "proofId": "erdos-105",
+    "range": { "startLine": 171, "endLine": 184 },
+    "type": "definition",
+    "title": "The Threshold Function",
+    "content": "f(n) = largest number such that f(n) obstacles can't block all rich lines of any n non-collinear points. Known: cn ≤ f(n) ≤ n-4. The exact value remains open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-105-14",
+    "proofId": "erdos-105",
+    "range": { "startLine": 188, "endLine": 196 },
+    "type": "concept",
+    "title": "Open Problem: n-4 Obstacles",
+    "content": "Xichuan disproved n-3, and Hickerson disproved n-2. But what about n-4? Does the conjecture hold there? This is the natural next question after Xichuan's result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-105-15",
+    "proofId": "erdos-105",
+    "range": { "startLine": 210, "endLine": 233 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "Erdős Problem #105 is DISPROVED. The Erdős-Purdy conjecture (n-3 obstacles can't block all rich lines) is false. Key insight: while Szemerédi-Trotter guarantees many rich lines, carefully placed obstacles can block ALL of them.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-105-16",
+    "proofId": "erdos-105",
+    "range": { "startLine": 235, "endLine": 248 },
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "1983: Beck and Szemerédi-Trotter prove positive results with cn obstacles. 1995: Erdős-Purdy conjecture n-3. Later: Hickerson shows n-2 fails. 2024: Xichuan disproves n-3 with three counterexamples. The $50 prize was awarded.",
+    "significance": "supporting"
+  }
+]
