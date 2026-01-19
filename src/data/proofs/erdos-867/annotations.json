@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e867-header",
+    "proofId": "erdos-867",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #867: Consecutive Sum-Free Sets**\n\nThis problem asks about sets where no sum of consecutive elements lies in the set itself.\n\n**The Question:**\nIf A = {a_1 < ... < a_t} in {1, ..., N} avoids all consecutive sums a_i + a_{i+1} + ... + a_j, must |A| <= N/2 + O(1)?\n\n**The Answer: NO**\n\nFreud (1993) and Coppersmith-Phillips (1996) disproved this, showing the maximum density lies between 13/24 and 2/3 - 1/512.",
+    "mathContext": "This is a foundational problem in additive combinatorics, connecting to the study of sum-free sets and density estimates.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Density bounds", "Additive combinatorics", "Problem 839"]
+  },
+  {
+    "id": "ann-e867-consecutive-sums",
+    "proofId": "erdos-867",
+    "range": { "startLine": 49, "endLine": 59 },
+    "type": "definition",
+    "title": "Consecutive Sums",
+    "content": "**consecutiveSums:**\n\nGiven a sorted list A = [a_1, ..., a_t], the consecutive sums are all values a_i + a_{i+1} + ... + a_j where i <= j.\n\n**Examples:**\n- For A = [3, 4, 5]: consecutive sums include 3+4=7, 4+5=9, 3+4+5=12\n- Single elements are trivially in A, so we focus on sums of 2+ elements\n\nThe definition uses list operations: drop, take, and sum.",
+    "significance": "critical",
+    "relatedConcepts": ["List operations", "Subsequence sums"]
+  },
+  {
+    "id": "ann-e867-sumfree-property",
+    "proofId": "erdos-867",
+    "range": { "startLine": 61, "endLine": 72 },
+    "type": "definition",
+    "title": "Consecutive Sum-Free Property",
+    "content": "**isConsecutiveSumFree:**\n\nA sorted set A is consecutive sum-free if no sum of two or more consecutive elements lies in A.\n\n**Formally:**\nFor all i < j, the sum a_i + a_{i+1} + ... + a_j is NOT in A.\n\n**Key Observation:**\nWe exclude single-element 'sums' since trivially a_i in A. The constraint only applies to genuine sums of 2+ elements.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Subsequence constraints"]
+  },
+  {
+    "id": "ann-e867-upper-half",
+    "proofId": "erdos-867",
+    "range": { "startLine": 88, "endLine": 101 },
+    "type": "definition",
+    "title": "Upper Half Construction",
+    "content": "**upperHalf(N):**\n\nThe set (N/2, N] = {floor(N/2) + 1, ..., N}.\n\n**Why It's Sum-Free:**\nAny two elements a, b in (N/2, N] satisfy a + b > N, so their sum exceeds the range.\n\n**Size:**\nupper_half_card proves |upperHalf(N)| = N - N/2 = approximately N/2.\n\nThis shows Erdos's conjectured bound N/2 would be essentially tight IF the conjecture were true.",
+    "mathContext": "The upper half construction is the natural example achieving density 1/2. Erdos asked if one could do better.",
+    "significance": "key",
+    "relatedConcepts": ["Interval sets", "Density bounds"]
+  },
+  {
+    "id": "ann-e867-adenwalla",
+    "proofId": "erdos-867",
+    "range": { "startLine": 123, "endLine": 143 },
+    "type": "axiom",
+    "title": "Adenwalla's Upper Bound",
+    "content": "**Adenwalla's Theorem:**\n\nFor any consecutive sum-free set A in {1, ..., N}:\n  |A| <= (2/3)N + O(log N)\n\n**The Dyadic Argument:**\nPartition into intervals [x, 2x], [2x, 4x], etc. If t elements lie in [x, 2x], their t-1 consecutive pair sums land in (2x, 4x]. These sums are forbidden, limiting how many elements can be in [x, 4x].\n\nSumming over all dyadic intervals gives the 2/3 bound.",
+    "mathContext": "This technique of using dyadic intervals is common in additive combinatorics and harmonic analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Dyadic decomposition", "Upper bounds"]
+  },
+  {
+    "id": "ann-e867-freud",
+    "proofId": "erdos-867",
+    "range": { "startLine": 151, "endLine": 172 },
+    "type": "axiom",
+    "title": "Freud's Construction (Disproof)",
+    "content": "**Freud's Construction (1993):**\n\nFreud constructed consecutive sum-free sets with density at least 19/36.\n\n**The Critical Calculation:**\n19/36 = 0.5278 > 1/2\n\nSince this exceeds 1/2, Erdos's conjecture |A| <= N/2 + O(1) is FALSE.\n\n**The Theorem:**\nWe prove nineteen_thirty_sixth_gt_half : 19/36 > 1/2 using norm_num.\n\nThis is the key disproof of the conjecture.",
+    "mathContext": "Freud's explicit construction showed Erdos's intuition about N/2 being the limit was incorrect.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Explicit constructions"]
+  },
+  {
+    "id": "ann-e867-coppersmith-phillips",
+    "proofId": "erdos-867",
+    "range": { "startLine": 180, "endLine": 210 },
+    "type": "axiom",
+    "title": "Coppersmith-Phillips Bounds",
+    "content": "**Coppersmith-Phillips (1996):**\n\nThey established the current best bounds:\n  13/24 <= max density <= 2/3 - 1/512\n\n**In Decimals:**\n- Lower bound: 13/24 = 0.5417\n- Upper bound: 2/3 - 1/512 = 0.6647\n\n**coppersmith_phillips_lower:** For all N >= 24, there exists A with |A| >= (13/24)N - O(1)\n\n**coppersmith_phillips_upper:** For all A, |A| <= (2/3 - 1/512)N + O(log N)\n\nThe gap between these bounds remains an open problem.",
+    "mathContext": "The SIAM J. Discrete Math. paper gave both improved constructions (lower bound) and refined analysis (upper bound).",
+    "significance": "critical",
+    "relatedConcepts": ["Optimal bounds", "Gap problems"]
+  },
+  {
+    "id": "ann-e867-problem-839",
+    "proofId": "erdos-867",
+    "range": { "startLine": 218, "endLine": 236 },
+    "type": "definition",
+    "title": "Connection to Problem 839",
+    "content": "**Problem 839: The Infinite Version**\n\nProblem 867 is the finitary version of Problem 839, which asks about infinite consecutive sum-free sets.\n\n**isInfiniteConsecutiveSumFree:**\nAn infinite set A in N is consecutive sum-free if for every finite increasing subsequence from A, the sum is not in A.\n\n**Connection:**\nResults about the finitary problem inform the asymptotic density in the infinite case.\n\nThe density bound of 2/3 carries over to the infinite setting.",
+    "significance": "key",
+    "relatedConcepts": ["Problem 839", "Infinite sets", "Asymptotic density"]
+  },
+  {
+    "id": "ann-e867-examples",
+    "proofId": "erdos-867",
+    "range": { "startLine": 242, "endLine": 267 },
+    "type": "theorem",
+    "title": "Concrete Examples",
+    "content": "**Verified Examples:**\n\n1. **{3, 4, 5} in {1, ..., 5}:**\n   - 3 + 4 = 7 not in {3, 4, 5}\n   - 4 + 5 = 9 not in {3, 4, 5}\n   - 3 + 4 + 5 = 12 not in {3, 4, 5}\n   - Density: 3/5 = 0.6\n\n2. **{6, 7, 8, 9, 10} = upperHalf(10):**\n   - Minimum sum: 6 + 7 = 13 > 10\n   - All consecutive sums exceed the range\n   - Density: 5/10 = 0.5\n\nThese examples are verified computationally using native_decide and omega.",
+    "significance": "supporting",
+    "relatedConcepts": ["Computational verification", "Upper half sets"]
+  },
+  {
+    "id": "ann-e867-conjecture-false",
+    "proofId": "erdos-867",
+    "range": { "startLine": 273, "endLine": 282 },
+    "type": "axiom",
+    "title": "The Conjecture is False",
+    "content": "**erdos_867_conjecture_false:**\n\nThe original conjecture that |A| <= N/2 + O(1) is FALSE.\n\nThis is axiomatized because the full proof requires Freud's explicit construction, which is complex to formalize completely.\n\nThe key insight: Freud's sets achieve density 19/36 > 1/2, contradicting the N/2 bound.",
+    "mathContext": "Many Erdos problems are disproved by clever constructions rather than abstract arguments.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof", "Counterexample"]
+  },
+  {
+    "id": "ann-e867-main-theorem",
+    "proofId": "erdos-867",
+    "range": { "startLine": 284, "endLine": 303 },
+    "type": "theorem",
+    "title": "Main Theorem: Erdos #867",
+    "content": "**erdos_867:**\n\nThe main theorem establishes the current state of knowledge:\n\nThere exist rational bounds lb = 13/24 and ub = 2/3 - 1/512 such that:\n1. lb > 1/2 (disproving the conjecture)\n2. lb < ub (the gap is still open)\n\nThe proof uses norm_num and ring tactics for rational arithmetic.\n\n**What This Means:**\nThe maximum density is STRICTLY GREATER than 1/2, but we don't know exactly what it is.",
+    "significance": "critical",
+    "relatedConcepts": ["Best known bounds", "Open problems"]
+  },
+  {
+    "id": "ann-e867-answer",
+    "proofId": "erdos-867",
+    "range": { "startLine": 305, "endLine": 320 },
+    "type": "theorem",
+    "title": "The Answer is NO",
+    "content": "**erdos_867_answer:**\n\nThis theorem packages the final answer:\n\nThere exists c > 1/2 (namely c = 13/24) such that for all sufficiently large N, there exist consecutive sum-free sets A in {1, ..., N} with |A| >= c*N - O(1).\n\nThis directly contradicts Erdos's conjecture that |A| <= N/2 + O(1).\n\n**The Proof:**\nUses coppersmith_phillips_lower to witness the existence of such sets.",
+    "significance": "key",
+    "relatedConcepts": ["Problem resolution", "Lower bounds"]
+  }
+]
