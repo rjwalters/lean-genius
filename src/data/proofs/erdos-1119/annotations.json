@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "erdos-1119-intro",
+    "proofId": "erdos-1119",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 24 },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #1119 asks if families of entire functions with ≤ 𝔪 values at each point have cardinality ≤ 𝔪. Answer: YES if 𝔪⁺ < 𝔠, UNDECIDABLE if 𝔪⁺ = 𝔠.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-wetzel-family",
+    "proofId": "erdos-1119",
+    "type": "definition",
+    "range": { "startLine": 50, "endLine": 52 },
+    "title": "Wetzel Family",
+    "content": "A Wetzel family has at most 𝔪 distinct values {f_α(z₀)} at each point z₀. This generalizes the original Wetzel condition (𝔪 = ℵ₀).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1119-original-wetzel",
+    "proofId": "erdos-1119",
+    "type": "axiom",
+    "range": { "startLine": 68, "endLine": 73 },
+    "title": "Erdős 1964 Wetzel Solution",
+    "content": "If CH fails (𝔠 > ℵ₁), Wetzel families (countable values at each point) are countable. Erdős solved Wetzel's original 1963 question.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-wetzel-ch",
+    "proofId": "erdos-1119",
+    "type": "axiom",
+    "range": { "startLine": 75, "endLine": 81 },
+    "title": "Wetzel Under CH",
+    "content": "If CH holds (𝔠 = ℵ₁), uncountable Wetzel families exist. This shows the problem is sensitive to set-theoretic assumptions.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1119-easy-case",
+    "proofId": "erdos-1119",
+    "type": "axiom",
+    "range": { "startLine": 92, "endLine": 98 },
+    "title": "Easy Case: 𝔪⁺ < 𝔠",
+    "content": "When 𝔪⁺ < 𝔠, the answer is YES: families with ≤ 𝔪 values at each point have cardinality ≤ 𝔪. This is 'easy to see' (Hayman 1974).",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-undecidable-case",
+    "proofId": "erdos-1119",
+    "type": "definition",
+    "range": { "startLine": 117, "endLine": 119 },
+    "title": "Undecidable Case",
+    "content": "The undecidable case occurs when ℵ₀ < 𝔪 < 𝔠 and 𝔪⁺ = 𝔠. The most studied instance is 𝔪 = ℵ₁, 𝔠 = ℵ₂.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-kumar-shelah",
+    "proofId": "erdos-1119",
+    "type": "axiom",
+    "range": { "startLine": 121, "endLine": 126 },
+    "title": "Kumar-Shelah 2017",
+    "content": "There exists a ZFC model with 𝔠 = ℵ₂ where the answer is YES: if family has ≤ ℵ₁ values at each point, then |family| ≤ ℵ₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-schilhan-weinert",
+    "proofId": "erdos-1119",
+    "type": "axiom",
+    "range": { "startLine": 128, "endLine": 134 },
+    "title": "Schilhan-Weinert 2024",
+    "content": "There exists a different ZFC model with 𝔠 = ℵ₂ where the answer is NO: a family with ≤ ℵ₁ values at each point but |family| > ℵ₁ exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-undecidability",
+    "proofId": "erdos-1119",
+    "type": "theorem",
+    "range": { "startLine": 136, "endLine": 140 },
+    "title": "Undecidability Result",
+    "content": "Both YES and NO are consistent with ZFC when 𝔪 = ℵ₁, 𝔠 = ℵ₂. The problem is independent of ZFC in this case.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-continuum",
+    "proofId": "erdos-1119",
+    "type": "theorem",
+    "range": { "startLine": 148, "endLine": 149 },
+    "title": "Continuum Definition",
+    "content": "The continuum 𝔠 = 2^{ℵ₀} is the cardinality of the real numbers. The problem involves cardinals between ℵ₀ and 𝔠.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1119-identity-theorem",
+    "proofId": "erdos-1119",
+    "type": "axiom",
+    "range": { "startLine": 173, "endLine": 178 },
+    "title": "Identity Theorem",
+    "content": "Two entire functions agreeing on uncountably many points are equal. This is why the Wetzel condition constrains families.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1119-wetzel-question",
+    "proofId": "erdos-1119",
+    "type": "definition",
+    "range": { "startLine": 192, "endLine": 197 },
+    "title": "Wetzel's Original Question",
+    "content": "Wetzel (1963) asked: if each value f(z₀) appears only countably often, is the family countable? Erdős showed this is equivalent to ¬CH.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1119-complete",
+    "proofId": "erdos-1119",
+    "type": "theorem",
+    "range": { "startLine": 225, "endLine": 238 },
+    "title": "Complete Characterization",
+    "content": "If 𝔪⁺ < 𝔠, Problem1119(𝔪) is provable in ZFC. If 𝔪⁺ = 𝔠, the answer is independent of ZFC.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-main-statement",
+    "proofId": "erdos-1119",
+    "type": "theorem",
+    "range": { "startLine": 244, "endLine": 259 },
+    "title": "Main Problem Statement",
+    "content": "Complete formalization: Erdős's Wetzel solution, the easy case 𝔪⁺ < 𝔠, and the undecidability when 𝔪⁺ = 𝔠.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1119-summary",
+    "proofId": "erdos-1119",
+    "type": "theorem",
+    "range": { "startLine": 261, "endLine": 266 },
+    "title": "Summary Theorem",
+    "content": "The answer depends on set-theoretic assumptions: YES if 𝔪⁺ < 𝔠 (provable in ZFC), UNDECIDABLE if 𝔪⁺ = 𝔠.",
+    "significance": "critical"
+  }
+]

@@ -1,33 +1,142 @@
 {
   "id": "erdos-1119",
-  "title": "Erdős Problem #1119",
+  "title": "Erdős Problem #1119: Families of Entire Functions with Cardinal Constraints",
   "slug": "erdos-1119",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...\\aleph_0\\aleph_1...\\{f_\\alpha\\}...=\\aleph_1...^+<...^+=...=\\aleph_2...=\\aleph_1...=\\aleph_2$.\n\n\n\n\nReferences\n\n\n[Er64g...",
+  "description": "If a family of entire functions has at most 𝔪 distinct values at each point, must the family have cardinality ≤ 𝔪? Answer: YES if 𝔪⁺ < 𝔠, UNDECIDABLE if 𝔪⁺ = 𝔠.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kumar-Shelah, Schilhan-Weinert",
     "sourceUrl": "https://erdosproblems.com/1119",
-    "date": "",
-    "status": "pending",
+    "date": "2017-2024",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1119Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "entire-functions",
+      "cardinals",
+      "set-theory",
+      "undecidability",
+      "continuum-hypothesis"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1119,
     "erdosUrl": "https://erdosproblems.com/1119",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1119 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathfrak{m}$ be an infinite cardinal with $\\aleph_0<\\mathfrak{m}<\\mathfrak{c}=2^{\\aleph_0}$. Let $\\{f_\\alpha\\}$ be a family of entire functions such that, for every $z_0\\in \\mathbb{C}$, there are at most $\\mathfrak{m}$ distinct values of $f_\\alpha(z_0)$. Must $\\{f_\\alpha\\}$ have cardinality at most $\\mathfrak{m}$?\n\n\n\nThis is Problem 2.46 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nErd\\H{o}s \\cite{Er64g} proved (answering a question of Wetzel) that if there are only countably many distinct values for each $f_\\alpha(z_0)$ then, if $\\mathfrak{c}>\\aleph_1$, the family $\\{f_\\alpha\\}$ is itself countable, and also showed this is false if $\\mathfrak{c}=\\aleph_1$.\n\nIn \\cite{Ha74} it is written that it is 'easy to see' the answer is yes if $\\mathfrak{m}^+<\\mathfrak{c}$, and also that it is possible that the question is undecidable.\n\nIndeed, it has been shown that this is undecidable if $\\mathfrak{m}^+=\\mathfrak{c}$: Kumar and Shelah \\cite{KuSh17} have shown that there is a model in which $\\mathfrak{c}=\\aleph_2$ such that the answer is yes (with $\\mathfrak{m}=\\aleph_1$), while Schilhan and Weinert \\cite{ScWe24} have shown the answer can be no, in a different model with $\\mathfrak{c}=\\aleph_2$.\n\n\n\n\nReferences\n\n\n[Er64g] Erd\\H{o}s, P., An interpolation problem associated with the continuum\nhypothesis. Michigan Math. J. (1964), 9--10.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[KuSh17] Kumar, Ashutosh and Shelah, Saharon, On a question about families of entire functions. Fund. Math. (2017), 279--288.\n\n[ScWe24] Schilhan, Jonathan and Weinert, Thilo, Wetzel families and the continuum. J. Lond. Math. Soc. (2) (2024), Paper No. e12918, 27.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This generalizes Wetzel's 1963 problem, which Erdős solved in 1964. The original problem asked about countable values (𝔪 = ℵ₀), and Erdős showed the answer depends on the Continuum Hypothesis. This problem extends to intermediate cardinals 𝔪 with ℵ₀ < 𝔪 < 𝔠. Hayman (1974) noted the easy case 𝔪⁺ < 𝔠. Kumar-Shelah (2017) and Schilhan-Weinert (2024) showed the case 𝔪⁺ = 𝔠 is undecidable.",
+    "problemStatement": "Let 𝔪 be an infinite cardinal with ℵ₀ < 𝔪 < 𝔠 = 2^{ℵ₀}. Let {f_α} be a family of entire functions such that, for every z₀ ∈ ℂ, there are at most 𝔪 distinct values of f_α(z₀). Must {f_α} have cardinality at most 𝔪?",
+    "proofStrategy": "The answer splits into two cases based on whether 𝔪⁺ < 𝔠 or 𝔪⁺ = 𝔠. In the first case, the answer is YES (provable in ZFC). In the second case, the problem is undecidable in ZFC: Kumar-Shelah constructed a model where YES holds, while Schilhan-Weinert constructed a model where NO holds.",
+    "keyInsights": [
+      "The problem generalizes Wetzel's question from ℵ₀ to arbitrary intermediate cardinals 𝔪",
+      "If 𝔪⁺ < 𝔠, the answer is YES—the family size is bounded by the local multiplicity",
+      "If 𝔪⁺ = 𝔠 (e.g., 𝔪 = ℵ₁, 𝔠 = ℵ₂), the answer is independent of ZFC",
+      "Kumar-Shelah (2017) showed YES is consistent with ZFC in this case",
+      "Schilhan-Weinert (2024) showed NO is also consistent with ZFC",
+      "The identity theorem for entire functions is key: distinct entire functions agree on at most countably many points"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 36,
+      "endLine": 56,
+      "summary": "Defines entire functions, the set of values at a point, Wetzel families with bounded values, and the main question about family cardinality."
+    },
+    {
+      "id": "wetzel-problem",
+      "title": "The Original Wetzel Problem",
+      "startLine": 58,
+      "endLine": 81,
+      "summary": "Erdős's 1964 solution to Wetzel's problem: countable values implies countable family iff ¬CH. If CH holds, uncountable Wetzel families exist."
+    },
+    {
+      "id": "easy-case",
+      "title": "The Easy Case",
+      "startLine": 83,
+      "endLine": 106,
+      "summary": "When 𝔪⁺ < 𝔠, the answer is YES. This is 'easy to see' according to Hayman (1974)."
+    },
+    {
+      "id": "undecidable-case",
+      "title": "The Undecidable Case",
+      "startLine": 108,
+      "endLine": 140,
+      "summary": "When 𝔪⁺ = 𝔠 (e.g., 𝔪 = ℵ₁, 𝔠 = ℵ₂), the problem is undecidable. Kumar-Shelah and Schilhan-Weinert showed both YES and NO are consistent."
+    },
+    {
+      "id": "set-theory",
+      "title": "The Set-Theoretic Framework",
+      "startLine": 142,
+      "endLine": 165,
+      "summary": "Cardinal arithmetic background: the continuum 2^{ℵ₀}, GCH implications, and existence of intermediate cardinals."
+    },
+    {
+      "id": "entire-functions",
+      "title": "Entire Functions Background",
+      "startLine": 167,
+      "endLine": 184,
+      "summary": "Why entire functions are special: the identity theorem says distinct entire functions agree on at most countably many points."
+    },
+    {
+      "id": "wetzel-connection",
+      "title": "Connection to Wetzel's Problem",
+      "startLine": 186,
+      "endLine": 201,
+      "summary": "Wetzel's original question and its equivalence to ¬CH. This problem generalizes that setting."
+    },
+    {
+      "id": "general-framework",
+      "title": "The General Framework",
+      "startLine": 203,
+      "endLine": 219,
+      "summary": "Formalizes the general problem: does local multiplicity bound global cardinality for families of entire functions?"
+    },
+    {
+      "id": "complete-picture",
+      "title": "The Complete Picture",
+      "startLine": 221,
+      "endLine": 238,
+      "summary": "Complete characterization: YES if 𝔪⁺ < 𝔠 (provable in ZFC), undecidable if 𝔪⁺ = 𝔠."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "startLine": 240,
+      "endLine": 269,
+      "summary": "Full formalization combining Erdős's Wetzel solution, the easy case, and the undecidability result."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
-  }
+    "summary": "Erdős Problem #1119 is SOLVED. The answer is YES if 𝔪⁺ < 𝔠 (provable in ZFC) and UNDECIDABLE if 𝔪⁺ = 𝔠. Kumar-Shelah (2017) showed YES is consistent with ZFC when 𝔠 = ℵ₂, while Schilhan-Weinert (2024) showed NO is also consistent.",
+    "implications": "This demonstrates a deep connection between complex analysis (entire functions) and set theory (cardinal arithmetic). The identity theorem for entire functions constrains how much distinct functions can agree, but the global implications depend on set-theoretic assumptions.",
+    "openQuestions": [
+      "Are there other natural function classes where similar undecidability arises?",
+      "What is the exact set-theoretic characterization of when YES holds?",
+      "Does the problem have a definite answer under large cardinal assumptions?"
+    ]
+  },
+  "mathlibDependencies": [
+    {
+      "theorem": "Cardinal.continuum",
+      "description": "The cardinality of the continuum 2^{ℵ₀}",
+      "module": "Mathlib.SetTheory.Cardinal.Continuum"
+    },
+    {
+      "theorem": "Cardinal.aleph",
+      "description": "The aleph cardinals ℵ_α",
+      "module": "Mathlib.SetTheory.Cardinal.Basic"
+    },
+    {
+      "theorem": "Order.succ",
+      "description": "Successor operation for cardinals",
+      "module": "Mathlib.Order.SuccPred.Basic"
+    },
+    {
+      "theorem": "Complex.Basic",
+      "description": "Basic complex number operations",
+      "module": "Mathlib.Data.Complex.Basic"
+    }
+  ]
 }
