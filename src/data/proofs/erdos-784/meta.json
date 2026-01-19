@@ -1,33 +1,141 @@
 {
   "id": "erdos-784",
-  "title": "Erdős Problem #784",
+  "title": "Erdős Problem #784: Sieving Sets with Bounded Reciprocal Sums",
   "slug": "erdos-784",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does there exist a ... (depending on ...) such that, for all sufficiently large ..., if ... has ... then\\[\\#\\{ m\\leq...",
+  "description": "Given C > 0, does there exist c > 0 such that sets A with Σ 1/n ≤ C leave ≫ x/(log x)^c unsieved elements? Answer: YES for C ≤ 1, NO for C > 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ruzsa, Saias, Weingartner",
     "sourceUrl": "https://erdosproblems.com/784",
-    "date": "",
-    "status": "pending",
+    "date": "1982-2025",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos784Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "sieve",
+      "divisibility",
+      "reciprocal-sums",
+      "number-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 784,
     "erdosUrl": "https://erdosproblems.com/784",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #784 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>0$. Does there exist a $c>0$ (depending on $C$) such that, for all sufficiently large $x$, if $A\\subseteq [1,x]$ has $\\sum_{n\\in A}\\frac{1}{n}\\leq C$ then\\[\\#\\{ m\\leq x : a\\nmid m\\textrm{ for all }a\\in A\\}\\gg\\frac{x}{(\\log x)^c}?\\]\n\n\n\nAn example of Schinzel and Szekeres \\cite{ScSz59} shows that this would be best possible (up to the value of $c$).\n\nSee also [542].\n\nIn the comments jif has noted that the answer is trivially no for every $C\\geq 1$ with $A=\\{1\\}$. Presumably (as is usual in these kind of questions) the assumption that $1\\not\\in A$ is intended. jif also notes that a lower bound of $(1-C)x$ is trivial by the union bound if $0<C<1$.\n\nLet $H_C(x)$ be the minimum value of\\[\\#\\{ m\\leq x : a\\nmid m\\textrm{ for all }a\\in A\\}\\]as $A$ ranges over all subsets of $\\{2,\\ldots,\\lfloor x\\rfloor\\}$ with $\\sum_{n\\in A}\\frac{1}{n}\\leq C$, so that this question asks whether\\[H_C(x)\\gg \\frac{x}{(\\log x)^{O_C(1)}}\\]for all $C>0$.\n\nFor $C=1$ it is known that\\[H_1(x)\\asymp \\frac{x}{\\log x}.\\]The lower bound is due to Ruzsa \\cite{Ru82}, and the upper bound is due to Saias \\cite{Sa98}. More precise estimates (including a conjectured asymptotic formula of $\\sim c\\frac{x}{\\log x}$ for an explicit $c\\approx 0.878$) are given by Weingartner \\cite{We25}.\n\nFor fixed $C>1$ Ruzsa answered this question in the negative, and in fact\\[H_C(x)=x^{e^{1-C}+o(1)}.\\]This was improved by Weingartner \\cite{We25} who proved (for any fixed $C>1$)\\[H_C(x)\\asymp \\frac{x^{e^{1-C}}}{\\log x}.\\]Together these answer the given question (positively for $0<C\\leq 1$ and negatively for $C>1$).\n\n\n\n\nReferences\n\n\n[Ru82] Ruzsa, Imre Z., On the small sieve. {II}. {S}ifting by composite numbers. J. Number Theory (1982), 260--268.\n\n[Sa98] Saias, Eric, Applications des entiers \\`a{} diviseurs denses. Acta Arith. (1998), 225--240.\n\n[ScSz59] Schinzel, A. and Szekeres, G., Sur un probl\\`{e}me de M. Paul Erd\\H{o}s. Acta Sci. Math. (Szeged) (1959), 221-229.\n\n[We25] Weingartner, Andreas, The {S}chinzel-{S}zekeres function. Res. Number Theory (2025), Paper No. 63, 32.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem studies the interplay between reciprocal sums and sieving. Schinzel-Szekeres (1959) showed the polynomial bound is best possible. Ruzsa (1982) established the C = 1 lower bound and showed the answer is NO for C > 1. Saias (1998) proved the matching upper bound for C = 1. Weingartner (2025) gave precise asymptotics for all C, completing the picture.",
+    "problemStatement": "Let C > 0. Does there exist c > 0 (depending on C) such that, for all sufficiently large x, if A ⊆ [1,x] has Σ_{n∈A} 1/n ≤ C then #{m ≤ x : a ∤ m for all a ∈ A} ≫ x/(log x)^c?",
+    "proofStrategy": "The answer depends critically on whether C ≤ 1 or C > 1. For C ≤ 1, the reciprocal sum constraint is strong enough that a polynomial-in-log bound holds. For C = 1 specifically, H₁(x) ≍ x/log x. For C > 1, the constraint is too weak: H_C(x) ≍ x^{e^{1-C}}/log x, which is sublinear and doesn't satisfy any polynomial-log bound.",
+    "keyInsights": [
+      "The transition point is C = 1—a sharp phase transition in sieving behavior",
+      "For C < 1, the union bound gives a linear lower bound (1-C)x, so any c works",
+      "For C = 1, H₁(x) ≍ x/log x is the tight asymptotic (Ruzsa lower, Saias upper)",
+      "For C > 1, H_C(x) ≍ x^{α}/log x where α = e^{1-C} < 1—sublinear growth",
+      "The exponent α = e^{1-C} comes from analyzing optimal sieving sets",
+      "Schinzel-Szekeres showed x/(log x)^c bound is best possible for C = 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 37,
+      "endLine": 62,
+      "summary": "Defines reciprocal sum Σ 1/n for a set A, the sieved set of elements not divisible by any a ∈ A, and the sieving function H_C(x)."
+    },
+    {
+      "id": "the-question",
+      "title": "The Question",
+      "startLine": 64,
+      "endLine": 73,
+      "summary": "Formalizes the main question: Does H_C(x) ≫ x/(log x)^c for some c depending on C?"
+    },
+    {
+      "id": "case-c-equals-1",
+      "title": "The Case C = 1",
+      "startLine": 75,
+      "endLine": 104,
+      "summary": "States Ruzsa's lower bound and Saias's upper bound giving H₁(x) ≍ x/log x. Mentions Weingartner's conjectured constant c ≈ 0.878."
+    },
+    {
+      "id": "case-small-c",
+      "title": "The Case 0 < C < 1",
+      "startLine": 106,
+      "endLine": 130,
+      "summary": "The trivial case: union bound gives (1-C)x, which beats any polynomial-log bound. Answer is YES for all c."
+    },
+    {
+      "id": "case-large-c",
+      "title": "The Case C > 1",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "Ruzsa's negative answer: H_C(x) ≍ x^{e^{1-C}}/log x. Since e^{1-C} < 1 for C > 1, this is sublinear—no polynomial-log bound exists."
+    },
+    {
+      "id": "schinzel-szekeres",
+      "title": "Schinzel-Szekeres Example",
+      "startLine": 167,
+      "endLine": 179,
+      "summary": "The 1959 construction showing the x/(log x)^c bound is best possible (up to the value of c)."
+    },
+    {
+      "id": "trivial-cases",
+      "title": "The Trivial Cases",
+      "startLine": 181,
+      "endLine": 198,
+      "summary": "If 1 ∈ A, all elements are divisible. Hence we assume 1 ∉ A (validSet requires a ≥ 2)."
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Dense Divisors",
+      "startLine": 200,
+      "endLine": 215,
+      "summary": "Notes connection to Problem #542 and the general principle that reciprocal sums control sieving."
+    },
+    {
+      "id": "complete-answer",
+      "title": "Complete Answer",
+      "startLine": 217,
+      "endLine": 239,
+      "summary": "Combines all cases: YES for C ≤ 1, NO for C > 1. The transition at C = 1 is sharp."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "startLine": 241,
+      "endLine": 286,
+      "summary": "Complete formalization with both asymptotic formulas and the dichotomous answer to the original question."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
-  }
+    "summary": "Erdős Problem #784 is SOLVED. The answer is YES for 0 < C ≤ 1 and NO for C > 1. For C = 1, H₁(x) ≍ x/log x (Ruzsa-Saias). For C > 1, H_C(x) ≍ x^{e^{1-C}}/log x (Ruzsa-Weingartner), which is sublinear.",
+    "implications": "This establishes a sharp phase transition at C = 1 in the sieving behavior of sets with bounded reciprocal sums. The result connects reciprocal sums (a measure of 'density' of divisors) to the number of unsieved elements, with deep implications for analytic number theory.",
+    "openQuestions": [
+      "What is the exact asymptotic constant for H₁(x) ~ c · x/log x? (Weingartner conjectures c ≈ 0.878)",
+      "What are the lower-order terms in the asymptotic expansion?",
+      "How do these results extend to weighted sieving?"
+    ]
+  },
+  "mathlibDependencies": [
+    {
+      "theorem": "Finset.sum",
+      "description": "Summation over finite sets for reciprocal sums",
+      "module": "Mathlib.Algebra.BigOperators.Finset"
+    },
+    {
+      "theorem": "Real.exp",
+      "description": "Exponential function for the exponent α = e^{1-C}",
+      "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+    },
+    {
+      "theorem": "Real.log",
+      "description": "Logarithm function for asymptotic bounds",
+      "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    },
+    {
+      "theorem": "Finset.filter",
+      "description": "Filtering finite sets for sieved elements",
+      "module": "Mathlib.Data.Finset.Basic"
+    }
+  ]
 }
