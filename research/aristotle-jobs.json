@@ -640,9 +640,9 @@
         "theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by"
       ],
       "notes": "Ramsey R(4,k) lower bound - Mattheus-Verstraete 2023",
-      "status": "completed",
+      "status": "integrated",
       "last_check": "2026-01-15T10:00:00Z",
-      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "outcome": "Already had 0 sorries - no integration needed",
       "integrated": null
     },
     {
@@ -656,9 +656,9 @@
         "theorem trivial_bound (G : SimpleGraph V) :"
       ],
       "notes": "Tuza triangle covering conjecture",
-      "status": "completed",
+      "status": "integrated",
       "last_check": "2026-01-15T10:00:00Z",
-      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "outcome": "Already had 0 sorries - no integration needed",
       "integrated": null
     },
     {
@@ -673,9 +673,9 @@
         "theorem simple_lower_bound (N : ℕ) (hN : N ≥ 1) :"
       ],
       "notes": "n 2n 3n free sets - GSW 1977",
-      "status": "completed",
+      "status": "integrated",
       "last_check": "2026-01-15T10:00:00Z",
-      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "outcome": "Already had 0 sorries - no integration needed",
       "integrated": null
     },
     {
@@ -705,9 +705,9 @@
         "theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n := by"
       ],
       "notes": "Segment intersection chromatic - Pawlik 2014",
-      "status": "completed",
+      "status": "integrated",
       "last_check": "2026-01-15T10:00:00Z",
-      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "outcome": "Already had 0 sorries - no integration needed",
       "integrated": null
     },
     {
@@ -1187,7 +1187,7 @@
         "theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :"
       ],
       "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-Rödl 1991)",
-      "status": "completed",
+      "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-19",
       "outcome": "0 sorries - fully proved by Aristotle"
@@ -1480,7 +1480,7 @@
         "weighted_erdos_szekeres"
       ],
       "notes": "0 sorries, 13 axioms - testing axiom proofs",
-      "status": "completed",
+      "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-19",
       "outcome": "0 sorries - fully proved by Aristotle"
@@ -1516,7 +1516,7 @@
       "problem_id": "erdos-355",
       "submitted": "2026-01-18T18:53:28Z",
       "notes": "Batch: docstrings converted",
-      "status": "completed",
+      "status": "integrated",
       "integrated": "2026-01-19",
       "outcome": "0 sorries - fully proved by Aristotle"
     },
@@ -1526,7 +1526,7 @@
       "problem_id": "erdos-646",
       "submitted": "2026-01-18T18:53:28Z",
       "notes": "Batch: docstrings converted",
-      "status": "completed",
+      "status": "integrated",
       "integrated": "2026-01-19",
       "outcome": "0 sorries - fully proved by Aristotle"
     },

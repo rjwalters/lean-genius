@@ -1,19 +1,35 @@
 # LeanGenius
 
-> *"The Truth Mines were a honeycomb of abstract constructs, a vast, three-dimensional maze of crystallized theorems and conjectures... The mines were inexhaustible."*
+> *"The Truth Mines were a honeycomb of abstract constructs..."*
 > — Greg Egan, *Diaspora*
 
-An interactive web application for exploring formal mathematics — annotated Lean 4 proofs with line-by-line explanations, threaded discussions, and autonomous research on open problems.
+An interactive gallery of formal mathematics — annotated Lean 4 proofs with line-by-line explanations, plus tooling for AI-assisted formalization of open problems.
 
-## The Mission
+## Goals
 
-Systematically formalize the [Erdős Problems](https://erdosproblems.com) and advance the frontier of verified mathematics through human-AI collaboration.
+- Formalize the [Erdős Problems](https://erdosproblems.com) in Lean 4
+- Build infrastructure for human-AI collaborative proof development
+- Create an accessible gallery for exploring verified mathematics
 
-See [research/VISION.md](research/VISION.md) for the full vision.
+See [ROADMAP.md](ROADMAP.md) for current plans.
+
+## Status
+
+| Metric | Count |
+|--------|-------|
+| Lean proof files | 999 |
+| Gallery proofs | 969 |
+| Erdős problems formalized | 320 |
+| Research problems tracked | 341 |
+
+### Infrastructure
+
+- **Enhancement agents**: Parallel workers improving problem formalizations
+- **Aristotle integration**: Proof search via [Harmonic's Aristotle](https://harmonic.fun)
+- **Loom orchestration**: Multi-agent coordination via GitHub labels
+- **Docker builds**: Memory-safe Lean compilation
 
 ## Related Projects
-
-We're part of a growing ecosystem working to map mathematical truth:
 
 | Project | Focus |
 |---------|-------|
