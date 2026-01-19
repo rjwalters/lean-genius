@@ -1,1 +1,138 @@
-[]
+[
+  {
+    "id": "ann-e589-header",
+    "proofId": "erdos-589",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #589: Points in General Position**\n\nLet g(n) be the minimum guaranteed general position subset size in any n-point set with no 4 collinear.\n\n**Known Bounds:**\n- Lower: n^(1/2)·log n (Füredi 1991)\n- Upper: n^(5/6+o(1)) (Balogh-Solymosi 2018)\n\n**Erdős's Belief (WRONG):** g(n) = Ω(n)",
+    "mathContext": "The exact exponent remains open - somewhere between 1/2 and 5/6.",
+    "significance": "critical",
+    "relatedConcepts": ["Collinearity", "General position", "Discrete geometry"]
+  },
+  {
+    "id": "ann-e589-collinear",
+    "proofId": "erdos-589",
+    "range": { "startLine": 45, "endLine": 64 },
+    "type": "definition",
+    "title": "Collinearity Definitions",
+    "content": "**Collinear3 p q r:**\n\nThree points are collinear if they lie on a common line. Uses determinant criterion.\n\n**Collinear4 p q r s:**\n\nFour points are collinear if all lie on a common line (pairwise collinearity of triples).",
+    "significance": "key",
+    "relatedConcepts": ["Determinant", "Lines in plane"]
+  },
+  {
+    "id": "ann-e589-general-position",
+    "proofId": "erdos-589",
+    "range": { "startLine": 66, "endLine": 81 },
+    "type": "definition",
+    "title": "General and Almost General Position",
+    "content": "**InGeneralPosition S:**\n\nNo three points of S are collinear.\n\n**InAlmostGeneralPosition S:**\n\nNo four points of S are collinear (but three may be).\n\nThe problem: extract general position from almost general position.",
+    "significance": "critical",
+    "relatedConcepts": ["General position", "Point configurations"]
+  },
+  {
+    "id": "ann-e589-g-function",
+    "proofId": "erdos-589",
+    "range": { "startLine": 87, "endLine": 106 },
+    "type": "definition",
+    "title": "The Function g(n)",
+    "content": "**g(n):**\n\nThe MINIMUM over all n-point sets in almost general position of the MAXIMUM general position subset size.\n\nThis is the worst-case guarantee: ANY set with no 4 collinear has a subset of at least g(n) points with no 3 collinear.",
+    "mathContext": "g(n) captures the worst-case extractable general position subset.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal functions", "Worst-case analysis"]
+  },
+  {
+    "id": "ann-e589-erdos-belief",
+    "proofId": "erdos-589",
+    "range": { "startLine": 112, "endLine": 127 },
+    "type": "theorem",
+    "title": "Erdős's Belief (Disproved)",
+    "content": "**ErdosBelief, erdos_belief_false:**\n\nErdős originally thought g(n) = Ω(n) - linear growth.\n\nThis was DISPROVED. The density Hales-Jewett theorem implies g(n) = o(n).",
+    "mathContext": "Erdős's intuition was wrong on this problem.",
+    "significance": "key",
+    "relatedConcepts": ["Disproved conjecture", "Sublinear growth"]
+  },
+  {
+    "id": "ann-e589-greedy",
+    "proofId": "erdos-589",
+    "range": { "startLine": 133, "endLine": 154 },
+    "type": "axiom",
+    "title": "Greedy Lower Bound",
+    "content": "**greedy_lower_bound, trivial_lower_bound:**\n\ng(n) ≥ c·√n for some constant c > 0.\n\n**Algorithm:** Pick points one by one, always choosing a point that doesn't form a collinear triple with any two already chosen.\n\nThis is the 'trivial' bound improved by Füredi.",
+    "significance": "key",
+    "relatedConcepts": ["Greedy algorithm", "Lower bounds"]
+  },
+  {
+    "id": "ann-e589-furedi",
+    "proofId": "erdos-589",
+    "range": { "startLine": 160, "endLine": 187 },
+    "type": "axiom",
+    "title": "Füredi's Results (1991)",
+    "content": "**furedi_lower_bound, furedi_upper_bound:**\n\n- Lower: g(n) ≥ c·√n·log n (improves greedy by log factor)\n- Upper: g(n) = o(n) (sublinear growth)\n\nThe upper bound uses the density Hales-Jewett theorem.",
+    "mathContext": "Published in SIAM J. Discrete Math.",
+    "significance": "critical",
+    "relatedConcepts": ["Füredi 1991", "Improved bounds"]
+  },
+  {
+    "id": "ann-e589-dhj",
+    "proofId": "erdos-589",
+    "range": { "startLine": 193, "endLine": 215 },
+    "type": "axiom",
+    "title": "Density Hales-Jewett Connection",
+    "content": "**density_hales_jewett, dhj_implies_sublinear:**\n\nThe DHJ theorem (Furstenberg-Katznelson 1991): For every δ > 0 and k ≥ 2, there exists N such that any δ-dense subset of [k]^N contains a combinatorial line.\n\nThis implies g(n) = o(n) via embedding arguments.",
+    "mathContext": "A deep result in Ramsey theory/ergodic theory.",
+    "significance": "key",
+    "relatedConcepts": ["Hales-Jewett", "Ergodic theory"]
+  },
+  {
+    "id": "ann-e589-balogh-solymosi",
+    "proofId": "erdos-589",
+    "range": { "startLine": 221, "endLine": 252 },
+    "type": "axiom",
+    "title": "Balogh-Solymosi (2018)",
+    "content": "**balogh_solymosi_2018:**\n\ng(n) ≤ n^(5/6+o(1))\n\nProved using the **container method** (Saxton-Thomason, Balogh-Morris-Samotij).\n\nThis was the FIRST application of containers to discrete geometry.\n\n**Construction:** Random n-element subset of large 3D grid, projected to 2D.",
+    "mathContext": "Published in Discrete Analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["Container method", "Balogh-Solymosi 2018"]
+  },
+  {
+    "id": "ann-e589-current-bounds",
+    "proofId": "erdos-589",
+    "range": { "startLine": 243, "endLine": 252 },
+    "type": "theorem",
+    "title": "Current Best Bounds",
+    "content": "**current_bounds:**\n\nn^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1))\n\nThe gap between exponents 1/2 and 5/6 remains open.",
+    "significance": "key",
+    "relatedConcepts": ["Current state", "Open gap"]
+  },
+  {
+    "id": "ann-e589-generalization",
+    "proofId": "erdos-589",
+    "range": { "startLine": 258, "endLine": 275 },
+    "type": "definition",
+    "title": "Generalized Problem",
+    "content": "**g_kl(k, l, n):**\n\nFor k > l ≥ 3, the generalized function where we extract l-general position from k-general position.\n\nThe original problem is g(n) = g_{4,3}(n).",
+    "significance": "supporting",
+    "relatedConcepts": ["Generalization", "Parameters"]
+  },
+  {
+    "id": "ann-e589-open",
+    "proofId": "erdos-589",
+    "range": { "startLine": 281, "endLine": 300 },
+    "type": "concept",
+    "title": "Open Questions",
+    "content": "**ExactGrowthOpen, balogh_solymosi_conjecture:**\n\n**Main open question:** What is the exact exponent α such that g(n) = Θ(n^α)?\n\nIs it 1/2, 5/6, or something in between?\n\nBalogh-Solymosi suggest 5/6 might be correct.",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Exact asymptotics"]
+  },
+  {
+    "id": "ann-e589-summary",
+    "proofId": "erdos-589",
+    "range": { "startLine": 306, "endLine": 342 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_589_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Estimate g(n) |\n| Erdős's belief | g(n) = Ω(n) (WRONG) |\n| Lower bound | c·√n·log n (Füredi) |\n| Upper bound | n^(5/6+o(1)) (Balogh-Solymosi) |\n| Key tools | DHJ, Container method |\n| Status | Partially resolved |",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Current state"]
+  }
+]

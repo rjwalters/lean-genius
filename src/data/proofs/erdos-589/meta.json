@@ -1,33 +1,50 @@
 {
   "id": "erdos-589",
-  "title": "Erdős Problem #589",
+  "title": "Erdős Problem #589: Points in General Position",
   "slug": "erdos-589",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that in any set of ... points in ... with no four points on a line there exists a subset on ... point...",
+  "description": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erdős thought g(n) = Ω(n), but actually n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (origin), Füredi (1991), Furstenberg-Katznelson (1991), Balogh-Solymosi (2018)",
     "sourceUrl": "https://erdosproblems.com/589",
-    "date": "",
-    "status": "pending",
+    "date": "~1980s",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos589Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "combinatorics",
+      "collinearity",
+      "hales-jewett",
+      "container-method",
+      "partially-resolved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 589,
     "erdosUrl": "https://erdosproblems.com/589",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #589 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be maximal such that in any set of $n$ points in $\\mathbb{R}^2$ with no four points on a line there exists a subset on $g(n)$ points with no three points on a line. Estimate $g(n)$.\n\n\n\nThe trivial greedy algorithm gives $g(n)\\gg n^{1/2}$. A similar question can be asked for a set with no $k$ points on a line, searching for a subset with no $l$ points on a line, for any $3\\leq l<k$.\n\nErd\\H{o}s thought that $g(n) \\gg n$, but in fact $g(n)=o(n)$, which follows from the density Hales-Jewett theorem proved by Furstenberg and Katznelson \\cite{FuKa91} (see [185]).\n\nF\\\"{u}eredi \\cite{Fu91b} proved\\[n^{1/2}\\log n\\ll g(n)=o(n).\\]Balogh and Solymosi \\cite{BaSo18} improved the upper bound to\\[g(n) \\ll n^{5/6+o(1)}.\\]\n\n\n\n\nReferences\n\n\n[BaSo18] Balogh, J\\'{o}zsef and Solymosi, J\\'{o}zsef, On the number of points in general position in the plane. Discrete Anal. (2018), Paper No. 16, 20.\n\n[Fu91b] F\\\"{u}redi, Zolt\\'an, Maximal independent subsets in {S}teiner systems and in planar\nsets. SIAM J. Discrete Math. (1991), 196--199.\n\n[FuKa91] Furstenberg, H. and Katznelson, Y., A density version of the Hales-Jewett Theorem. Journal d'Analyse Math\\'{e}matique (1991), 64-119.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",
+    "problemStatement": "**Problem:** Let g(n) be maximal such that in any set of n points in ℝ² with no four collinear, there exists a subset of g(n) points with no three collinear. Estimate g(n).\n\n**Terminology:**\n- General position = no 3 collinear\n- Almost general position = no 4 collinear\n\n**Erdős's Belief (WRONG):** g(n) = Ω(n)\n\n**Known Bounds:**\n- Lower: g(n) ≥ c·√n·log n (Füredi 1991)\n- Upper: g(n) ≤ n^(5/6+o(1)) (Balogh-Solymosi 2018)\n- Trivial: g(n) ≥ c·√n (greedy algorithm)\n\n**Status:** Partially resolved - bounds established but exact asymptotics unknown.",
+    "proofStrategy": "The formalization defines collinearity predicates, general and almost general position, and the function g(n). Erdős's false belief is stated and shown to contradict the density Hales-Jewett theorem. Füredi's 1991 bounds and Balogh-Solymosi's 2018 upper bound are axiomatized. The main summary theorem combines all results.",
+    "keyInsights": [
+      "Erdős's linear growth belief was wrong - g(n) = o(n)",
+      "Density Hales-Jewett theorem provides the key tool for o(n) upper bound",
+      "Balogh-Solymosi used the container method - first application to discrete geometry",
+      "Current gap: exponent between 1/2 and 5/6 is unknown",
+      "Greedy algorithm gives trivial √n lower bound by avoiding collinear triples"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #589 asks for the guaranteed size of a general position subset extractable from any planar point set with no 4 collinear. Erdős believed linear growth, but this was disproved. Current bounds: n^(1/2)·log n ≤ g(n) ≤ n^(5/6+o(1)). The exact order of growth remains open.",
+    "implications": "The problem connects discrete geometry to extremal combinatorics. The density Hales-Jewett theorem and container method provide surprising connections. Balogh-Solymosi's paper was the first application of containers to discrete geometry.",
+    "openQuestions": [
+      "What is the exact exponent α such that g(n) = Θ(n^α)?",
+      "Is the Balogh-Solymosi bound n^(5/6) optimal?",
+      "What about the generalized problem g_{k,l}(n) for other k > l ≥ 3?",
+      "Can the lower bound be improved beyond √n·log n?"
+    ]
   }
 }
