@@ -1,16 +1,21 @@
 {
   "id": "erdos-904",
-  "title": "Erdős Problem #904",
+  "title": "Erdős Problem #904: Triangles with High Degree Sum",
   "slug": "erdos-904",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with ... vertices and ... edges then it contains a triangle on ... such that\\[d(x)+d(y)+d(z) \\geq {2}n.\\]\n\n...",
+  "description": "If G is a graph with n vertices and more than n²/4 edges, then it contains a triangle on vertices x, y, z such that d(x) + d(y) + d(z) ≥ (3/2)n. This was conjectured by Bollobás and Erdős and proved by Edwards in 1978.",
   "meta": {
-    "author": "Unknown",
+    "author": "Bollobás, Erdős (conjecture); Edwards (proof)",
     "sourceUrl": "https://erdosproblems.com/904",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos904Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "triangles",
+      "turan",
+      "solved"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +24,68 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #904 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph with $n$ vertices and $>n^2/4$ edges then it contains a triangle on $x,y,z$ such that\\[d(x)+d(y)+d(z) \\geq \\frac{3}{2}n.\\]\n\n\n\nA conjecture of Bollob\\'{a}s and Erd\\H{o}s. This was proved by Edwards \\cite{Ed78}.\n\n\n\n\nReferences\n\n\n[Ed78] Edwards, C. S., Complete subgraphs with largest sum of vertex degrees. (1978), 293--306.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was conjectured by Béla Bollobás and Paul Erdős as a strengthening of Turán's theorem. While Turán's theorem guarantees that a graph with more than n²/4 edges must contain a triangle, the Bollobás-Erdős conjecture asked whether such a graph must contain a triangle whose vertices have high combined degree. C.S. Edwards proved the conjecture in 1978, showing that not only does a triangle exist, but we can find one where the sum of degrees is at least (3/2)n.",
+    "problemStatement": "If G is a graph with n vertices and more than n²/4 edges, then G contains a triangle on vertices x, y, z such that d(x) + d(y) + d(z) ≥ (3/2)n, where d(v) denotes the degree of vertex v.",
+    "proofStrategy": "Edwards' proof uses a careful analysis of the degree sequence and greedy selection of high-degree vertices. The key insight is that dense graphs must have many vertices of high degree, and these high-degree vertices are likely to form triangles among themselves. The proof combines degree counting arguments with structural properties of dense graphs.",
+    "keyInsights": [
+      "Turán's theorem is the foundation: >n²/4 edges guarantees triangles",
+      "The complete bipartite graph K_{n/2,n/2} shows the threshold is sharp",
+      "Dense graphs must have high-degree vertices that cluster together",
+      "The constant 3/2 is optimal - cannot be improved",
+      "This is an early result in extremal graph theory about structured subgraphs"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Graph-theoretic setup: vertices, edges, degrees, and triangles",
+      "startLine": 43,
+      "endLine": 76
+    },
+    {
+      "id": "turan-context",
+      "title": "Turán's Theorem Context",
+      "summary": "The n²/4 threshold and its significance",
+      "startLine": 77,
+      "endLine": 103
+    },
+    {
+      "id": "bollobas-erdos-conjecture",
+      "title": "The Bollobás-Erdős Conjecture",
+      "summary": "The statement that dense graphs contain high-degree-sum triangles",
+      "startLine": 104,
+      "endLine": 122
+    },
+    {
+      "id": "edwards-theorem",
+      "title": "Edwards' Theorem (1978)",
+      "summary": "The proof that settles the conjecture",
+      "startLine": 123,
+      "endLine": 141
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness and Examples",
+      "summary": "Why the threshold and constant are optimal",
+      "startLine": 142,
+      "endLine": 161
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Connections to Mantel's theorem, Kruskal-Katona, and supersaturation",
+      "startLine": 213,
+      "endLine": 237
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Edwards (1978) proved the Bollobás-Erdős conjecture: any graph with n vertices and more than n²/4 edges contains a triangle whose vertices have degree sum at least (3/2)n. This strengthens Turán's theorem by showing that dense graphs contain not just any triangle, but triangles with high-degree vertices.",
+    "implications": "This result is foundational in extremal graph theory, demonstrating that density conditions force the existence of structured subgraphs. It has connections to supersaturation results and generalizations to larger cliques.",
+    "openQuestions": [
+      "Optimal constants for larger cliques (4-cliques, k-cliques)",
+      "Extensions to hypergraphs",
+      "Variations with different degree constraints"
+    ]
   }
 }

@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-e904-header",
+    "proofId": "erdos-904",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #904: Triangles with High Degree Sum**\n\nIf G has n vertices and >n²/4 edges, does it contain a triangle with d(x)+d(y)+d(z) ≥ (3/2)n?\n\n**Status: SOLVED** (Edwards, 1978)\n\nA strengthening of Turán's theorem showing dense graphs have structured triangles.",
+    "mathContext": "This connects extremal graph theory with degree sequence analysis. The n²/4 threshold is the Turán bound for triangle-free graphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán's theorem", "Extremal graph theory", "Degree sequences", "Complete bipartite graphs"]
+  },
+  {
+    "id": "ann-e904-degree",
+    "proofId": "erdos-904",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Vertex Degree",
+    "content": "**vertexDegree:**\n\nd(v) = number of edges incident to vertex v.\n\nThe degree measures how connected a vertex is within the graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e904-triangle",
+    "proofId": "erdos-904",
+    "range": { "startLine": 63, "endLine": 69 },
+    "type": "definition",
+    "title": "Triangle",
+    "content": "**IsTriangle:**\n\nThree distinct vertices x, y, z with all pairs adjacent:\nG.Adj x y ∧ G.Adj y z ∧ G.Adj x z\n\nThe smallest complete subgraph, also called K₃.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e904-degsum",
+    "proofId": "erdos-904",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "definition",
+    "title": "Triangle Degree Sum",
+    "content": "**triangleDegreeSum:**\n\nd(x) + d(y) + d(z) for triangle vertices.\n\nMeasures the total connectivity of the three triangle vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e904-turan",
+    "proofId": "erdos-904",
+    "range": { "startLine": 81, "endLine": 87 },
+    "type": "definition",
+    "title": "Turán Threshold",
+    "content": "**turanThreshold:**\n\nn²/4 edges = maximum for triangle-free graphs.\n\nAny graph exceeding this must contain a triangle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e904-dense",
+    "proofId": "erdos-904",
+    "range": { "startLine": 88, "endLine": 94 },
+    "type": "definition",
+    "title": "Dense Graph",
+    "content": "**IsDense:**\n\nA graph with more than n²/4 edges.\n\nThese graphs are 'above the Turán threshold' and must contain triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e904-highsum",
+    "proofId": "erdos-904",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "definition",
+    "title": "High Degree Sum",
+    "content": "**HasHighDegreeSum:**\n\nd(x) + d(y) + d(z) ≥ (3/2)n\n\nEquivalently: 2(d(x)+d(y)+d(z)) ≥ 3n.\n\nThis is the key condition the conjecture guarantees.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e904-conjecture",
+    "proofId": "erdos-904",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "theorem",
+    "title": "Bollobás-Erdős Conjecture",
+    "content": "**BollobasErdosConjecture:**\n\nEvery dense graph (>n²/4 edges) contains a triangle with degree sum ≥ (3/2)n.\n\nThis strengthens Turán: not just any triangle, but a 'good' one.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e904-edwards",
+    "proofId": "erdos-904",
+    "range": { "startLine": 127, "endLine": 135 },
+    "type": "axiom",
+    "title": "Edwards' Theorem (1978)",
+    "content": "**edwards_1978:**\n\nThe Bollobás-Erdős conjecture is TRUE.\n\nEdwards proved this in 1978, settling the conjecture.\n\nPublished in Combinatorics (Proc. British Combinatorial Conf.).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e904-main",
+    "proofId": "erdos-904",
+    "range": { "startLine": 136, "endLine": 141 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_904:**\n\nDense graphs contain high-degree-sum triangles.\n\nThis is the answer to Erdős Problem #904.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e904-bipartite",
+    "proofId": "erdos-904",
+    "range": { "startLine": 146, "endLine": 153 },
+    "type": "concept",
+    "title": "Sharpness via Bipartite Graphs",
+    "content": "**complete_bipartite_sharpness:**\n\nK_{n/2,n/2} has exactly n²/4 edges and NO triangles.\n\nThis shows the threshold n²/4 cannot be relaxed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e904-constant",
+    "proofId": "erdos-904",
+    "range": { "startLine": 166, "endLine": 172 },
+    "type": "concept",
+    "title": "Optimal Constant",
+    "content": "**constant_is_tight:**\n\nThe factor 3/2 is best possible.\n\nCannot be improved to a larger constant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e904-mantel",
+    "proofId": "erdos-904",
+    "range": { "startLine": 217, "endLine": 223 },
+    "type": "axiom",
+    "title": "Mantel's Theorem",
+    "content": "**mantel_theorem:**\n\nMax edges in triangle-free graph = ⌊n²/4⌋.\n\nThis is the k=2 case of Turán's theorem (1941).\n\nMantel proved it in 1907 - one of the first extremal results.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e904-summary",
+    "proofId": "erdos-904",
+    "range": { "startLine": 242, "endLine": 264 },
+    "type": "theorem",
+    "title": "State of Knowledge",
+    "content": "**erdos_904_summary:**\n\n1. **Turán/Mantel:** >n²/4 edges → triangle exists\n2. **Bollobás-Erdős:** Conjectured high-degree-sum triangle\n3. **Edwards (1978):** Proved the conjecture\n\nBoth threshold and constant are optimal.",
+    "significance": "critical"
+  }
+]
