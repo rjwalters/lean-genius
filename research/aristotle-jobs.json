@@ -1043,8 +1043,9 @@
         "theorem schinzel_zannier_improved :"
       ],
       "notes": "SOLVED: Minimum terms in squared polynomials. 10 theorem sorries including main result and Schinzel bounds.",
-      "status": "submitted",
-      "last_check": null
+      "status": "failed",
+      "last_check": null,
+      "outcome": "Failed to process"
     },
     {
       "project_id": "ce70d58e-f32d-4b4f-92b0-915a4a722af5",
@@ -1058,8 +1059,9 @@
         "theorem erdos_402_ratio_bound (A : Finset ℕ) (hA : A.Nonempty)"
       ],
       "notes": "SOLVED: Graham GCD conjecture. 5 theorem sorries - main theorem and equality characterization.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "5 sorries remaining"
     },
     {
       "project_id": "ba4e714e-5e2f-436c-97b3-f68d650a232c",
@@ -1073,8 +1075,9 @@
         "theorem optimality :"
       ],
       "notes": "SOLVED: Unit fractions in short intervals. 3 theorem sorries including Croot theorem.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "3 sorries remaining"
     },
     {
       "project_id": "8fd0949b-1b7b-4117-be97-83b948799526",
@@ -1089,8 +1092,9 @@
         "theorem sup_on_circle_eq_trig_sup (p : TrigPoly n) :"
       ],
       "notes": "SOLVED: L1 norm of trig polynomials with real roots. 3 theorem sorries.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "1 sorries remaining"
     },
     {
       "project_id": "b29022e9-7828-4445-bb20-31e0fe4ca2c9",
@@ -1113,8 +1117,9 @@
         "theorem erdos_370_infinitely_many :"
       ],
       "notes": "SOLVED: Consecutive smooth numbers. 2 theorem sorries for infinitude proof.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "2 sorries remaining"
     },
     {
       "project_id": "2b6370a8-cb18-4e3d-a47b-4affb20111af",
@@ -1134,8 +1139,9 @@
         "theorem S_upper_bound (n : ℕ) (π : Perm n) :"
       ],
       "notes": "DISPROVED: Consecutive sums in permutations. 2 theorem sorries for counterexample bounds.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "2 sorries remaining"
     },
     {
       "project_id": "43de7d32-d24a-4a49-8723-3e384c5843fa",
@@ -1181,8 +1187,10 @@
         "theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :"
       ],
       "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-Rödl 1991)",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "integrated": "2026-01-19",
+      "outcome": "0 sorries - fully proved by Aristotle"
     },
     {
       "project_id": "6c92a4bf-4385-4b5f-bb8d-dccabdc86dc3",
@@ -1202,8 +1210,9 @@
         "theorem upper_bound_construction :"
       ],
       "notes": "Distinct Degrees in Induced Subgraphs - SOLVED (Bukh-Sudakov 2007, JKLY 2020)",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "10 sorries remaining"
     },
     {
       "project_id": "7113b02e-9eda-4f07-836a-d4159269ae8c",
@@ -1225,8 +1234,9 @@
         "theorem sufficient_C_works (ε : ℝ) (hε : ε > 0) :"
       ],
       "notes": "Almost Covering Systems - SOLVED/DISPROVED (FFKPY)",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "12 sorries remaining"
     },
     {
       "project_id": "dbed27e3-7759-432b-b8d9-54e1646e11d5",
@@ -1245,8 +1255,9 @@
         "theorem sudakov_theorem : SudakovBound := by"
       ],
       "notes": "Ramsey Numbers and Edge Count - SOLVED (Sudakov 2011)",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "10 sorries remaining"
     },
     {
       "project_id": "9f2c2bd3-8294-4e82-a416-68c7c78d4897",
@@ -1262,8 +1273,9 @@
         "theorem g3_two : g 3 2 = 2 := by"
       ],
       "notes": "Subset Sum Sets and Arithmetic Progressions",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "4 sorries remaining"
     },
     {
       "project_id": "6171a57e-f8cd-484b-8008-7e059e6677b5",
@@ -1287,8 +1299,9 @@
         "theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n ≥ r * k) :"
       ],
       "notes": "The Erdős Matching Conjecture - SOLVED for r=2,3",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "3 sorries remaining"
     },
     {
       "project_id": "d5b9dc51-fd30-4cf4-8008-8291edba84da",
@@ -1315,8 +1328,9 @@
         "trivial_diff_bound"
       ],
       "notes": "Ramsey growth rate - 1 sorry, 16 axioms",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "1 sorries remaining"
     },
     {
       "project_id": "a91747a8-5fee-4ca6-abbf-ddbf2d7bf7e1",
@@ -1339,8 +1353,9 @@
         "theorem mono_iff_red_or_blue (c : EdgeColoring n) (t : Triangle n) :"
       ],
       "notes": "Graph packing - 3 sorries, 10 axioms",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "2 sorries remaining"
     },
     {
       "project_id": "49a4da4a-b365-4379-9e0e-a24840e84ada",
@@ -1371,8 +1386,9 @@
         "tree_diameter"
       ],
       "notes": "Arithmetic progressions - 3 sorries, 19 axioms",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "4 sorries remaining"
     },
     {
       "project_id": "c5bb9a37-1cdb-4194-876e-1c052fff8291",
@@ -1406,8 +1422,9 @@
         "voigt_original_size"
       ],
       "notes": "List chromatic planar - 12 sorries, 17 axioms (just enhanced)",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "15 sorries remaining"
     },
     {
       "project_id": "78a8d147-c6e0-4bef-a5d4-d6565916fec3",
@@ -1438,8 +1455,9 @@
         "thomassen_five_list"
       ],
       "notes": "List chromatic planar bipartite - 16 sorries, 11 axioms (recently enhanced)",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "16 sorries remaining"
     },
     {
       "project_id": "79075175-91c3-4279-9fe5-8977b89ae997",
@@ -1462,8 +1480,10 @@
         "weighted_erdos_szekeres"
       ],
       "notes": "0 sorries, 13 axioms - testing axiom proofs",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "integrated": "2026-01-19",
+      "outcome": "0 sorries - fully proved by Aristotle"
     },
     {
       "project_id": "0bf60f59-5a00-4b46-8251-5371c14cab14",
@@ -1486,8 +1506,9 @@
         "theorem weak_splittability (G : SimpleGraph V) (k a b : ℕ)"
       ],
       "notes": "Tihany conjecture - OPEN but special cases proven",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "13 sorries remaining"
     },
     {
       "project_id": "2ebf5c7a-116c-437b-b939-5baf0dc3a8cd",
@@ -1495,7 +1516,9 @@
       "problem_id": "erdos-355",
       "submitted": "2026-01-18T18:53:28Z",
       "notes": "Batch: docstrings converted",
-      "status": "submitted"
+      "status": "completed",
+      "integrated": "2026-01-19",
+      "outcome": "0 sorries - fully proved by Aristotle"
     },
     {
       "project_id": "0a6569ad-0e33-464a-92a1-6c3c2be2f2f0",
@@ -1503,7 +1526,9 @@
       "problem_id": "erdos-646",
       "submitted": "2026-01-18T18:53:28Z",
       "notes": "Batch: docstrings converted",
-      "status": "submitted"
+      "status": "completed",
+      "integrated": "2026-01-19",
+      "outcome": "0 sorries - fully proved by Aristotle"
     },
     {
       "project_id": "33f46605-5483-48ce-a06c-6de81d4f4f37",
@@ -1511,7 +1536,8 @@
       "problem_id": "erdos-1023",
       "submitted": "2026-01-18T18:53:28Z",
       "notes": "Batch: docstrings converted",
-      "status": "submitted"
+      "status": "completed",
+      "outcome": "1 sorries remaining"
     },
     {
       "project_id": "a3712989-fa67-4ee6-8c0b-190c16f55cbf",
@@ -1519,7 +1545,8 @@
       "problem_id": "erdos-1033",
       "submitted": "2026-01-18T18:53:28Z",
       "notes": "Batch: docstrings converted",
-      "status": "submitted"
+      "status": "completed",
+      "outcome": "14 sorries remaining"
     },
     {
       "project_id": "9d41ab6f-c013-485e-8630-a52c9818476d",
@@ -1527,7 +1554,8 @@
       "problem_id": "erdos-1034",
       "submitted": "2026-01-18T18:53:28Z",
       "notes": "Batch: docstrings converted",
-      "status": "submitted"
+      "status": "completed",
+      "outcome": "12 sorries remaining"
     }
   ],
   "completed": [],
