@@ -3737,17 +3737,24 @@
   },
   {
     "id": "erdos-194",
-    "title": "Erdős Problem #194",
+    "title": "Erdos Problem #194: Chaotic Orderings and Monotone Arithmetic Progressions",
     "slug": "erdos-194",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Must any ordering of $...k...x_1<\\cdots<x_k...k...k=3$, as shown by Ardal, Brown, and Jungi\\'{c} .\n\nSee also [195] a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must any ordering of R contain a monotone k-term arithmetic progression? NO - Chaotic orderings exist that avoid all such progressions, even for k=3.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "arithmetic-progressions",
+      "orderings",
+      "ramsey-theory",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 194,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-195",
