@@ -670,41 +670,85 @@ cat research/aristotle-jobs.json | jq '[.jobs[] | .status] | group_by(.) | map({
 - `research/SORRY-CLASSIFICATION.md` - Classification guide
 - `research/aristotle-jobs.json` - Job history and learnings
 
+## Quick Commands (Makefile)
+
+This repository includes a Makefile with convenient aliases for common tasks. Run `make` or `make help` to see all available commands.
+
+### Cleanup Commands
+
+```bash
+make clean            # Preview all cleanup (dry-run)
+make clean-all        # Deep clean everything (force mode)
+make clean-enhancers  # Clean enhancement agent artifacts
+make clean-research   # Clean research agent artifacts
+make clean-loom       # Clean loom worktrees and branches
+make prune            # Prune git worktrees and remote branches
+```
+
+Cleanup flags (can be combined):
+- `DEEP=1` - Include worktrees, branches, and logs
+- `FORCE=1` - Non-interactive mode (for CI/automation)
+- `DRY=1` - Preview what would be cleaned
+
+```bash
+# Examples
+make clean-enhancers DEEP=1 FORCE=1  # Deep clean enhancers non-interactively
+make clean-research DRY=1            # Preview research cleanup
+```
+
+### Status Commands
+
+```bash
+make status           # Show all agent claim status
+make status-enhancers # Show enhancement claims only
+make status-research  # Show research claims only
+```
+
+### Build Commands
+
+```bash
+make build            # Build the project (pnpm build)
+make test             # Run tests
+make lint             # Run linter
+```
+
+### Agent Launch Commands
+
+```bash
+make enhance N=3      # Launch 3 parallel enhancer agents (default)
+make enhance N=5      # Launch 5 parallel enhancer agents
+make research N=2     # Launch 2 parallel research agents (default)
+```
+
 ## Troubleshooting
 
 ### Common Issues
 
 **Cleaning Up Stale Worktrees and Branches**:
 
-Use the `clean.sh` helper script to restore your repository to a clean state:
+Use `make clean-all` to clean everything, or use the individual cleanup scripts:
 
 ```bash
-# Interactive mode - prompts for confirmation (default)
-./.loom/scripts/clean.sh
+# Preferred: Use Makefile commands
+make clean-all                           # Deep clean everything
+make clean-enhancers DEEP=1 FORCE=1      # Clean enhancement artifacts
+make clean-research DEEP=1 FORCE=1       # Clean research artifacts
+make clean-loom DEEP=1 FORCE=1           # Clean loom artifacts
 
-# Preview mode - shows what would be cleaned without making changes
-./.loom/scripts/clean.sh --dry-run
-
-# Non-interactive mode - auto-confirms all prompts (for CI/automation)
-./.loom/scripts/clean.sh --force
-
-# Deep clean - also removes build artifacts (target/, node_modules/)
-./.loom/scripts/clean.sh --deep
-
-# Combine flags
-./.loom/scripts/clean.sh --deep --force  # Non-interactive deep clean
-./.loom/scripts/clean.sh --deep --dry-run  # Preview deep clean
+# Or use scripts directly
+./.loom/scripts/clean.sh --deep --force  # Loom worktrees/branches
+./scripts/erdos/clean-enhancers.sh --deep --force   # Enhancement agents
+./scripts/research/clean-research.sh --deep --force # Research agents
 ```
 
-**What clean.sh does**:
-- Removes worktrees for closed GitHub issues (prompts per worktree in interactive mode)
-- Deletes local feature branches for closed issues
-- Cleans up Loom tmux sessions
-- (Optional with `--deep`) Removes `target/` and `node_modules/` directories
+**What gets cleaned**:
+- **clean-loom**: Loom worktrees, feature branches for closed issues, tmux sessions
+- **clean-enhancers**: Enhancement claims, erdos-N worktrees, enhancer branches, logs
+- **clean-research**: Research claims, researcher worktrees, researcher branches, logs
 
-**IMPORTANT**: For **CI pipelines and automation**, always use `--force` flag to prevent hanging on prompts:
+**IMPORTANT**: For **CI pipelines and automation**, always use `--force` flag or `FORCE=1`:
 ```bash
-./.loom/scripts/clean.sh --force  # Non-interactive, safe for automation
+make clean-all  # Already uses --force internally
 ```
 
 **Manual cleanup** (if needed):
