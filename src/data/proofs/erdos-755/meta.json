@@ -1,33 +1,140 @@
 {
   "id": "erdos-755",
-  "title": "Erdős Problem #755",
+  "title": "Erdős Problem #755: Equilateral Triangles in ℝ⁶",
   "slug": "erdos-755",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe number of equilateral triangles of size ... formed by any set of ... points in ... is at most ....\n\n\n\nLet ... count the m...",
+  "description": "The maximum number of unit equilateral triangles formed by n points in ℝ⁶ is at most (1/27 + o(1))n³. YES, proved by Clemen-Dumitrescu-Liu (2025) - even for triangles of any size.",
   "meta": {
-    "author": "Unknown",
+    "author": "Clemen-Dumitrescu-Liu (2025 solution), Lenz/Erdős-Purdy (1975 construction)",
     "sourceUrl": "https://erdosproblems.com/755",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos755Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "combinatorial-geometry",
+      "equilateral-triangles",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 755,
     "erdosUrl": "https://erdosproblems.com/755",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for coordinates",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsEquilateralTriangle definition: three points with equal pairwise distances",
+      "IsUnitEquilateralTriangle: equilateral with side length 1",
+      "T6_unit: count of unit equilateral triangles in ℝ⁶",
+      "T6: count of equilateral triangles of any size",
+      "T_d: general dimension counting function",
+      "lenz_construction axiom: lower bound construction",
+      "erdos_conjecture_unit: the original conjecture",
+      "erdos_conjecture_any_size: stronger version",
+      "cdl_2025_main axiom: T₆(n) = (1/27 + o(1))n³",
+      "cdl_general_dimension axiom: formula for even d ≥ 6",
+      "erdos_755_summary: combined main results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #755 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe number of equilateral triangles of size $1$ formed by any set of $n$ points in $\\mathbb{R}^6$ is at most $(\\frac{1}{27}+o(1))n^3$.\n\n\n\nLet $T_6^u(n)$ count the maximal number of equilateral triangles of size $1$ formed by $n$ points in $\\mathbb{R}^6$. The following construction (which \\cite{Er94b} attributes to Lenz, but appears in an earlier paper of Erd\\H{o}s and Purdy \\cite{ErPu75}) shows that\\[T_6^u(n)\\geq \\frac{n^3}{27}-O(n^2):\\]take three suitable orthogonal circles and take $n/3$ points on each of them which form $n/4$ inscribed squares.\n\nErd\\H{o}s believed this conjectured upper bound should hold even if we count equilateral triangles of any size.\n\nThis problem was solved in a strong form by Clemen, Dumitrescu, and Liu \\cite{CDL25b}, who in fact prove that if $T_6(n)$ is the maximal number of equilateral triangles of any size formed by $n$ points in $\\mathbb{R}^6$ then\\[T_6(n)=(\\tfrac{1}{27}+o(1))n^3.\\]Indeed, they give an exact formula for $T_d(n)$ for all even $d\\geq 6$ (and sufficiently large $n$).\n\nSee also [1086].\n\n\n\n\nReferences\n\n\n[CDL25b] F. Clemen, A. Dumitrescu, and D. Liu, The number of regular simplices in higher dimensions. arXiv:2507.19841 (2025).\n\n[Er94b] Erd\\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.\n\n[ErPu75] Erd\\H{o}s, Paul and Purdy, George, Some extremal problems in geometry. {III}. (1975), 291--308.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #755: Equilateral Triangles in ℝ⁶**\n\nThis problem concerns the maximum number of equilateral triangles that can be formed by n points in 6-dimensional Euclidean space.\n\n**Key History:**\n- Lenz (credited by Erdős): Original lower bound construction\n- Erdős-Purdy (1975): Published the orthogonal circles construction\n- Erdős (1994): Conjectured the upper bound T₆ᵘ(n) ≤ (1/27 + o(1))n³\n- Clemen-Dumitrescu-Liu (2025): Proved the conjecture in a stronger form\n\n**Mathematical Setting:**\nIn higher dimensions, point configurations can form many more equilateral triangles than in the plane. The dimension d = 6 is special: it's the first even dimension where cubic growth T_d(n) = Θ(n³) occurs.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nThe number of equilateral triangles of size 1 formed by any set of $n$ points in $\\mathbb{R}^6$ is at most $(\\frac{1}{27}+o(1))n^3$.\n\n**Answer: YES**\n\nClemen-Dumitrescu-Liu (2025) proved:\n- $T_6(n) = (\\frac{1}{27}+o(1))n^3$ even for triangles of ANY size\n- Exact formulas for $T_d(n)$ for all even $d \\geq 6$\n\nThe lower bound $T_6^u(n) \\geq \\frac{n^3}{27} - O(n^2)$ is achieved by the Lenz construction.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Euclidean Setup:** Define distance and equilateral triangles in ℝᵈ.\n\n2. **Counting Functions:** Define T₆ᵘ(n), T₆(n), and T_d(n) as suprema over configurations.\n\n3. **Lenz Construction:** Axiomatize the lower bound using three orthogonal circles.\n\n4. **Erdős's Conjecture:** Formalize both unit and any-size versions.\n\n5. **CDL 2025 Result:** Axiomatize T₆(n) = (1/27 + o(1))n³.\n\n6. **Higher Dimensions:** Axiomatize general formula for even d ≥ 6.\n\n7. **Summary:** Combine to prove the conjecture holds.",
+    "keyInsights": [
+      "**The Constant 1/27:** Comes from partitioning n points into 3 equal groups on orthogonal circles, giving (n/3)³ = n³/27",
+      "**Lenz Construction:** Three mutually orthogonal circles in ℝ⁶, with inscribed squares on each",
+      "**Stronger Result:** The bound holds for triangles of ANY size, not just unit triangles",
+      "**Dimension Threshold:** d = 6 is the first even dimension where cubic growth occurs",
+      "**Exact Formulas:** CDL found exact formulas for T_d(n) for all even d ≥ 6",
+      "**Recent Solution:** Solved in 2025 by Clemen-Dumitrescu-Liu (arXiv:2507.19841)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "euclidean",
+      "title": "Euclidean Space Setup",
+      "summary": "Distance definition and equilateral triangle conditions",
+      "startLine": 36,
+      "endLine": 62
+    },
+    {
+      "id": "counting",
+      "title": "Counting Functions",
+      "summary": "T₆ᵘ(n), T₆(n), T_d(n) definitions",
+      "startLine": 63,
+      "endLine": 99
+    },
+    {
+      "id": "lenz",
+      "title": "The Lenz Construction",
+      "summary": "Lower bound T₆ᵘ(n) ≥ n³/27 - O(n²)",
+      "startLine": 100,
+      "endLine": 125
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős's Conjecture",
+      "summary": "T₆ᵘ(n) ≤ (1/27 + o(1))n³ and stronger any-size version",
+      "startLine": 126,
+      "endLine": 147
+    },
+    {
+      "id": "cdl",
+      "title": "Clemen-Dumitrescu-Liu Solution",
+      "summary": "T₆(n) = (1/27 + o(1))n³ proved in 2025",
+      "startLine": 148,
+      "endLine": 185
+    },
+    {
+      "id": "general",
+      "title": "Higher Dimensions",
+      "summary": "Exact formulas for T_d(n) for even d ≥ 6",
+      "startLine": 186,
+      "endLine": 209
+    },
+    {
+      "id": "explanation",
+      "title": "Why 1/27?",
+      "summary": "The constant explained via optimal partitioning",
+      "startLine": 210,
+      "endLine": 244
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete answer: YES, with exact asymptotic",
+      "startLine": 246,
+      "endLine": 280
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #755 asked whether the maximum number of unit equilateral triangles formed by n points in ℝ⁶ is at most (1/27 + o(1))n³. The answer is YES, proved by Clemen-Dumitrescu-Liu in 2025. They showed the stronger result that T₆(n) = (1/27 + o(1))n³ even for triangles of any size, and found exact formulas for all even dimensions d ≥ 6.",
+    "implications": "**Implications in Discrete Geometry**\n\n1. **Optimal Construction:** The Lenz construction using orthogonal circles is asymptotically optimal\n\n2. **Dimension Threshold:** d = 6 is special for equilateral triangle counts\n\n3. **Size Independence:** Unit vs arbitrary size makes no asymptotic difference\n\n4. **General Dimension:** Exact formulas exist for all even d ≥ 6\n\n5. **Recent Progress:** Problem solved very recently (2025)",
+    "openQuestions": [
+      "Exact second-order terms in the asymptotic expansion",
+      "Behavior for odd dimensions d = 5, 7, 9, ...",
+      "Algorithmic construction of optimal configurations",
+      "Extension to regular k-simplices in higher dimensions",
+      "Connection to Problem #1086 on related geometric configurations"
+    ]
   }
 }
