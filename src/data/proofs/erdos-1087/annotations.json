@@ -1,1 +1,150 @@
-[]
+[
+  {
+    "id": "ann-e1087-header",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #1087: Degenerate Quadruples**\n\nGiven n points in the plane, a set of 4 points is \"degenerate\" if at least two pairs share the same distance. Let f(n) be the maximum number of degenerate quadruples in any n-point configuration.\n\n**The Question:**\nEstimate f(n). Is f(n) <= n^{3+o(1)}?\n\n**Known Bounds (Erdos-Purdy 1971):**\nn^3 log n << f(n) << n^{7/2}\n\nThis leaves a gap: the exponent is between 3 and 3.5.",
+    "mathContext": "This problem belongs to combinatorial geometry, studying extremal properties of point configurations. It connects to the famous unit distance problem and distinct distances problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Combinatorial geometry", "Distance problems", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e1087-point",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 44, "endLine": 55 },
+    "type": "definition",
+    "title": "Points in the Plane",
+    "content": "**Point:**\n\nA point in the Euclidean plane R^2, represented using Mathlib's EuclideanSpace type.\n\n**Distance:**\nThe Euclidean distance d(p,q) = sqrt((p1-q1)^2 + (p2-q2)^2) uses Mathlib's metric space structure.\n\n```lean\nabbrev Point : Type := EuclideanSpace R (Fin 2)\nnoncomputable def dist' (p q : Point) : R := dist p q\n```",
+    "mathContext": "Using Mathlib's EuclideanSpace provides access to all standard metric space theorems and the inner product structure.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean space", "Metric space", "Distance function"]
+  },
+  {
+    "id": "ann-e1087-quadruple",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 63, "endLine": 75 },
+    "type": "definition",
+    "title": "Quadruples and Their Distances",
+    "content": "**Quadruple:**\n\nAn ordered 4-tuple of points (p1, p2, p3, p4).\n\n**Pairwise Distances:**\nA quadruple has C(4,2) = 6 pairwise distances:\n- d(p1,p2), d(p1,p3), d(p1,p4)\n- d(p2,p3), d(p2,p4)\n- d(p3,p4)\n\n```lean\ndef Quadruple := Point x Point x Point x Point\nnoncomputable def quadrupleDistances (q : Quadruple) : Finset R := ...\n```",
+    "significance": "key",
+    "relatedConcepts": ["Combinatorics", "Distance geometry"]
+  },
+  {
+    "id": "ann-e1087-degenerate",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 77, "endLine": 105 },
+    "type": "definition",
+    "title": "Degenerate Quadruples",
+    "content": "**Degenerate Quadruple:**\n\nA quadruple is degenerate if not all 6 pairwise distances are distinct. Equivalently, at least two pairs of points share the same distance.\n\n**Primary Definition:**\n```lean\nnoncomputable def isDegenerate (q : Quadruple) : Prop :=\n  (quadrupleDistances q).card < 6\n```\n\n**Alternative Characterization:**\nExplicitly checks all C(6,2) = 15 pairs of distances for equality.\n\n**Example:** Four points forming a square have only 2 distinct distances (side and diagonal), making it highly degenerate.",
+    "mathContext": "The degeneracy condition captures when a quadruple exhibits \"special\" distance structure rather than generic positioning.",
+    "significance": "critical",
+    "relatedConcepts": ["Distance multisets", "Special configurations"]
+  },
+  {
+    "id": "ann-e1087-count",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 114, "endLine": 149 },
+    "type": "definition",
+    "title": "Counting Degenerate Quadruples",
+    "content": "**countDegenerateQuadruples:**\n\nFor a finite point set S, count how many 4-element subsets are degenerate.\n\n```lean\nnoncomputable def countDegenerateQuadruples (S : Finset Point) : N :=\n  ((S.powersetCard 4).filter (...)).card\n```\n\n**The Function f(n):**\nf(n) = max over all n-point sets S of countDegenerateQuadruples(S)\n\nThis is the central object of the problem: the extremal function for degenerate quadruples.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal functions", "Counting problems"]
+  },
+  {
+    "id": "ann-e1087-lower-bound",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 157, "endLine": 165 },
+    "type": "axiom",
+    "title": "Lower Bound: n^3 log n",
+    "content": "**erdos_purdy_lower_bound:**\n\nThere exist n-point configurations with at least Omega(n^3 log n) degenerate quadruples.\n\n```lean\naxiom erdos_purdy_lower_bound :\n    exists c : R, c > 0 and forall n : N, n >= 4 ->\n      (f n : R) >= c * n^3 * Real.log n\n```\n\n**Construction:** The integer lattice sqrt(n) x sqrt(n) achieves this bound due to many repeated distances (sums of two squares appear with high multiplicity).",
+    "mathContext": "The lower bound construction uses number-theoretic properties of sums of squares and their multiplicities.",
+    "significance": "critical",
+    "relatedConcepts": ["Integer lattice", "Sums of squares", "Repeated distances"]
+  },
+  {
+    "id": "ann-e1087-upper-bound",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 167, "endLine": 175 },
+    "type": "axiom",
+    "title": "Upper Bound: n^{7/2}",
+    "content": "**erdos_purdy_upper_bound:**\n\nEvery n-point configuration has at most O(n^{7/2}) degenerate quadruples.\n\n```lean\naxiom erdos_purdy_upper_bound :\n    exists C : R, C > 0 and forall n : N, n >= 4 ->\n      (f n : R) <= C * n^(7/2)\n```\n\n**Proof Technique:** Uses incidence bounds between points and circles. The Szemeredi-Trotter theorem and its generalizations play a key role.",
+    "mathContext": "The upper bound relies on incidence geometry, bounding how many point-circle pairs can be incident.",
+    "significance": "critical",
+    "relatedConcepts": ["Incidence geometry", "Szemeredi-Trotter theorem"]
+  },
+  {
+    "id": "ann-e1087-gap",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 177, "endLine": 184 },
+    "type": "theorem",
+    "title": "The Exponent Gap",
+    "content": "**bounds_gap:**\n\nThe known bounds leave a gap in the exponent.\n\n```lean\ntheorem bounds_gap : exists alpha beta : R, 3 <= alpha and beta <= 3.5 and alpha < beta\n```\n\n**The Gap:**\n- Lower bound: n^3 (ignoring log factors)\n- Upper bound: n^{3.5}\n\nThe true exponent lies somewhere in [3, 3.5]. Erdos asked if it's essentially 3.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic bounds", "Exponent gaps"]
+  },
+  {
+    "id": "ann-e1087-conjecture",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 193, "endLine": 206 },
+    "type": "definition",
+    "title": "Erdos's Conjecture",
+    "content": "**erdosConjecture:**\n\nThe function f(n) grows like n^{3+o(1)}, meaning for any epsilon > 0, f(n) <= n^{3+epsilon} for large enough n.\n\n```lean\ndef erdosConjecture : Prop :=\n    forall epsilon : R, epsilon > 0 -> exists N : N, forall n : N, n >= N ->\n      (f n : R) <= n^(3 + epsilon)\n```\n\n**Status:** This conjecture remains OPEN. Neither a proof nor a counterexample is known.",
+    "mathContext": "The o(1) notation means the exponent approaches 3 as n grows, allowing for subpolynomial corrections like log factors.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Asymptotic notation", "o(1) exponents"]
+  },
+  {
+    "id": "ann-e1087-unit-dist",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 212, "endLine": 238 },
+    "type": "concept",
+    "title": "Connection to Unit Distances",
+    "content": "**Unit Distance Connection:**\n\nThe unit distance problem asks: how many pairs in n points can be exactly distance 1 apart?\n\n**Key Relationship:**\nIf distance d appears m times among pairs, it contributes O(m^2) to the degenerate quadruple count (by choosing 2 pairs with distance d).\n\n```lean\naxiom degenerate_from_repeated :\n    forall S : Finset Point, forall d : R, d > 0 ->\n    let m := ... -- count of pairs with distance d\n    exists contribution : N, contribution <= m * m and ...\n```\n\nThus bounding repeated distances bounds degenerate quadruples.",
+    "mathContext": "The unit distance problem was posed by Erdos in 1946 and has the same flavor: understanding distance multiplicities in point sets.",
+    "significance": "key",
+    "relatedConcepts": ["Unit distance problem", "Distance multiplicities"]
+  },
+  {
+    "id": "ann-e1087-trivial",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 244, "endLine": 270 },
+    "type": "theorem",
+    "title": "Trivial Bounds",
+    "content": "**Trivial Bounds:**\n\n**Total Quadruples:**\nAn n-point set has C(n,4) = n(n-1)(n-2)(n-3)/24 ~ n^4/24 quadruples.\n\n**Trivial Upper Bound:**\nf(n) <= C(n,4) <= n^4/24, since at most all quadruples could be degenerate.\n\n**Non-trivial Lower Bound:**\nThe lattice construction shows f(n) >= Omega(n^3 log n), far below the trivial bound but still polynomial.",
+    "significance": "supporting",
+    "relatedConcepts": ["Binomial coefficients", "Trivial bounds"]
+  },
+  {
+    "id": "ann-e1087-guth-katz",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 284, "endLine": 291 },
+    "type": "axiom",
+    "title": "Guth-Katz Theorem",
+    "content": "**guth_katz:**\n\nAny n-point set has Omega(n/log n) distinct distances.\n\n```lean\naxiom guth_katz :\n    exists c : R, c > 0 and forall n : N, n >= 2 ->\n      forall S : Finset Point, S.card = n ->\n        (distinctDistances S : R) >= c * n / Real.log n\n```\n\nProved by Guth and Katz in 2015 using the polynomial method, resolving Erdos's distinct distances conjecture up to log factors.",
+    "mathContext": "The Guth-Katz theorem was a major breakthrough using algebraic techniques (polynomial partitioning). While it doesn't directly solve Problem 1087, it shows the power of these methods for distance problems.",
+    "significance": "key",
+    "relatedConcepts": ["Distinct distances", "Polynomial method", "Guth-Katz"]
+  },
+  {
+    "id": "ann-e1087-main",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 314, "endLine": 317 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_1087:**\n\nCombines the known bounds into a single statement.\n\n```lean\ntheorem erdos_1087 :\n    (exists c : R, c > 0 and forall n : N, n >= 4 -> (f n : R) >= c * n^3 * Real.log n) and\n    (exists C : R, C > 0 and forall n : N, n >= 4 -> (f n : R) <= C * n^(7/2)) :=\n  <erdos_purdy_lower_bound, erdos_purdy_upper_bound>\n```\n\nThis formalizes the state of knowledge: n^3 log n << f(n) << n^{7/2}.",
+    "significance": "critical",
+    "relatedConcepts": ["Main results", "Known bounds"]
+  },
+  {
+    "id": "ann-e1087-summary",
+    "proofId": "erdos-1087",
+    "range": { "startLine": 319, "endLine": 330 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_1087_summary:**\n\nThe exponent alpha in f(n) ~ n^alpha satisfies 3 <= alpha <= 3.5.\n\n```lean\ntheorem erdos_1087_summary :\n    exists alpha beta : R, 3 <= alpha and beta <= 3.5 and\n    (forall n : N, n >= 4 -> (f n : R) >= n^alpha) and\n    (forall n : N, n >= 4 -> (f n : R) <= n^beta)\n```\n\n**Open Question:** Is alpha = 3 (with possible log corrections)? This is Erdos Problem #1087.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open problems"]
+  }
+]

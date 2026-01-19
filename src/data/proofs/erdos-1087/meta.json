@@ -1,33 +1,157 @@
 {
   "id": "erdos-1087",
-  "title": "Erdős Problem #1087",
+  "title": "Erdos Problem #1087: Degenerate Quadruples in Point Sets",
   "slug": "erdos-1087",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every set of ... points in ... contains at most ... many sets of four points which are 'degenera...",
+  "description": "Estimate f(n), the maximum number of degenerate 4-point sets in n points in the plane. Is f(n) at most n^{3+o(1)}?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdos-Purdy (1971 bounds)",
     "sourceUrl": "https://erdosproblems.com/1087",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1087Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "distances",
+      "extremal-combinatorics",
+      "point-configurations",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1087,
     "erdosUrl": "https://erdosproblems.com/1087",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space for points in R^2",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Finset.powersetCard",
+        "description": "Subsets of a given cardinality",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Point type: points in the Euclidean plane R^2",
+      "Quadruple type: ordered 4-tuples of points",
+      "quadrupleDistances: the 6 pairwise distances in a quadruple",
+      "isDegenerate: predicate for quadruples with repeated distances",
+      "countDegenerateQuadruples: count degenerate 4-subsets",
+      "f(n): the extremal function for degenerate quadruples",
+      "erdos_purdy_lower_bound axiom: f(n) >= c*n^3*log(n)",
+      "erdos_purdy_upper_bound axiom: f(n) <= C*n^{7/2}",
+      "erdosConjecture: the open question f(n) <= n^{3+o(1)}",
+      "Connection to unit distances and Guth-Katz theorem",
+      "erdos_1087 theorem: combining known bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1087 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that every set of $n$ points in $\\mathbb{R}^2$ contains at most $f(n)$ many sets of four points which are 'degenerate' in the sense that some pair are the same distance apart. Estimate $f(n)$ - in particular, is it true that $f(n)\\leq n^{3+o(1)}$?\n\n\n\nA question of Erd\\H{o}s and Purdy \\cite{ErPu71}, who proved\\[n^3\\log n \\ll f(n) \\ll n^{7/2}.\\]\n\n\n\n\nReferences\n\n\n[ErPu71] Erd\\H{o}s, Paul and Purdy, George, Some extremal problems in geometry. J. Combinatorial Theory Ser. A (1971), 246--252.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #1087**\n\nThis problem was posed by Paul Erdos and George Purdy in their 1971 paper \"Some extremal problems in geometry\" (J. Combinatorial Theory Ser. A, 246-252). It belongs to the rich tradition of combinatorial geometry problems that Erdos pioneered.\n\n**The Setting:**\nGiven n points in the plane, consider all C(n,4) = n(n-1)(n-2)(n-3)/24 subsets of 4 points (quadruples). A quadruple is called \"degenerate\" if at least two of its 6 pairwise distances are equal. Let f(n) be the maximum number of degenerate quadruples over all n-point configurations.\n\n**Historical Progress:**\nErdos and Purdy proved bounds n^3 log n << f(n) << n^{7/2} in 1971. The problem asks whether the upper bound can be improved to n^{3+o(1)}, which would nearly match the lower bound. This remains open as of 2025, representing a gap in our understanding of distance geometry.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $f(n)$ be minimal such that every set of $n$ points in $\\mathbb{R}^2$ contains at most $f(n)$ degenerate sets of four points, where \"degenerate\" means some pair of points are the same distance apart.\n\nEstimate $f(n)$. In particular, is it true that $f(n) \\leq n^{3+o(1)}$?\n\n**Known Bounds (Erdos-Purdy 1971):**\n$$n^3 \\log n \\ll f(n) \\ll n^{7/2}$$\n\n**The Gap:**\nThe exponent lies between 3 and 3.5. The question asks if the true answer is closer to 3.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Representation:** Use Mathlib's EuclideanSpace for points in R^2\n\n2. **Degeneracy Definition:** A quadruple is degenerate if its 6 pairwise distances are not all distinct\n\n3. **Extremal Function:** Define f(n) as the maximum degenerate quadruple count\n\n4. **Axiomatized Bounds:** The Erdos-Purdy bounds are stated as axioms since their proofs require advanced techniques\n\n5. **Related Results:** Connect to unit distances and the Guth-Katz theorem\n\n6. **Open Question:** Formalize the conjecture that f(n) <= n^{3+epsilon} for all epsilon > 0",
+    "keyInsights": [
+      "**Degenerate Quadruples:** A 4-point set is degenerate if any two of its C(4,2)=6 pairwise distances coincide",
+      "**Lower Bound Construction:** The integer lattice achieves many repeated distances, giving Omega(n^3 log n) degenerate quadruples",
+      "**Upper Bound Technique:** The n^{7/2} bound uses incidence geometry arguments",
+      "**Connection to Unit Distances:** If distance d appears m times, it contributes O(m^2) to degenerate quadruples",
+      "**Guth-Katz Relevance:** The breakthrough on distinct distances (2015) provides context but doesn't directly resolve this problem",
+      "**The Gap:** The exponent gap from 3 to 3.5 remains one of the notable open problems in combinatorial geometry"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Point type, distance function, and plane geometry setup",
+      "startLine": 38,
+      "endLine": 55
+    },
+    {
+      "id": "degenerate-quadruples",
+      "title": "Degenerate Quadruples",
+      "summary": "Quadruple type, pairwise distances, degeneracy predicate",
+      "startLine": 57,
+      "endLine": 105
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "summary": "Point configurations, counting degenerate quadruples, extremal function",
+      "startLine": 107,
+      "endLine": 149
+    },
+    {
+      "id": "erdos-purdy-bounds",
+      "title": "Erdos-Purdy Bounds (1971)",
+      "summary": "Lower bound n^3 log n, upper bound n^{7/2}, the gap theorem",
+      "startLine": 151,
+      "endLine": 184
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Erdos's conjecture about n^{3+o(1)}, open status",
+      "startLine": 186,
+      "endLine": 206
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "summary": "Unit distances, repeated distances, connection to other problems",
+      "startLine": 208,
+      "endLine": 238
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "Total quadruples count, trivial upper bound, lattice lower bound",
+      "startLine": 240,
+      "endLine": 270
+    },
+    {
+      "id": "distinct-distances",
+      "title": "Connection to Distinct Distances",
+      "summary": "Guth-Katz theorem, relation between distinct and degenerate",
+      "startLine": 272,
+      "endLine": 300
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_1087 theorem combining bounds, summary theorem",
+      "startLine": 302,
+      "endLine": 330
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #1087 asks for the growth rate of f(n), the maximum number of degenerate 4-point sets in n-point configurations. Erdos and Purdy established bounds n^3 log n << f(n) << n^{7/2} in 1971. The central question - whether f(n) <= n^{3+o(1)} - remains open, representing a gap between exponents 3 and 3.5 in our understanding.",
+    "implications": "**Connections and Implications**\n\n1. **Distance Geometry:** Part of the broader study of distance configurations in the plane\n\n2. **Unit Distance Problem:** Closely related to Erdos's famous unit distance conjecture\n\n3. **Incidence Geometry:** Upper bounds use Szemeredi-Trotter type arguments\n\n4. **Guth-Katz Methods:** The polynomial method that resolved distinct distances may eventually help here\n\n5. **Extremal Combinatorics:** Representative of Turan-type problems in geometry",
+    "openQuestions": [
+      "Is f(n) <= n^{3+epsilon} for all epsilon > 0?",
+      "What is the exact exponent alpha such that f(n) = Theta(n^alpha)?",
+      "Can polynomial method techniques improve the upper bound?",
+      "What is the optimal constant in the lower bound n^3 log n?",
+      "Are there connections to the polynomial partitioning method?"
+    ]
   }
 }
