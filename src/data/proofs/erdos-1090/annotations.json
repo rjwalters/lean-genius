@@ -1,1 +1,150 @@
-[]
+[
+  {
+    "id": "ann-e1090-point-def",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "Point in the Plane",
+    "content": "A point in ℝ² is defined using Mathlib's `EuclideanSpace ℝ (Fin 2)`, which provides a 2-dimensional real Euclidean space with the standard inner product and distance.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1090-two-coloring",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "definition",
+    "title": "Two-Coloring",
+    "content": "A 2-coloring of a point set A is a function from A to Bool. Each point receives one of two colors (true/false, or equivalently red/blue).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1090-collinear-def",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 52, "endLine": 57 },
+    "type": "definition",
+    "title": "Collinearity",
+    "content": "Three points p, q, r are collinear if r - p is a scalar multiple of q - p. This captures that r lies on the line through p and q. The parameterization r = p + t(q - p) describes all points on this line.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1090-line-structure",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 66, "endLine": 79 },
+    "type": "definition",
+    "title": "Line Structure",
+    "content": "A line in ℝ² is defined by a base point and a non-zero direction vector. The `OnLine` predicate determines whether a point p lies on line l: p = l.point + t · l.direction for some real t.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1090-monochromatic-def",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 85, "endLine": 90 },
+    "type": "definition",
+    "title": "Monochromatic Set",
+    "content": "A set S is monochromatic under coloring c if all points in S receive the same color. This is the key property we seek: finding subsets where every point shares one color.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1090-k-collinear-def",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 92, "endLine": 106 },
+    "type": "definition",
+    "title": "k-Collinear and Monochromatic k-Collinear",
+    "content": "`IsKCollinear S k` means S has at least k points all lying on a common line. `MonochromaticKCollinear A k c` asserts that within A, there exists such a k-collinear subset where all points share the same color under c.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1090-ramsey-property",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 112, "endLine": 125 },
+    "type": "definition",
+    "title": "Ramsey Property and Erdős Question",
+    "content": "`HasRamseyProperty A k` means that for EVERY 2-coloring of A, there must exist k monochromatic collinear points. `Erdos1090Question k` asks: for k ≥ 3, does such a finite set A exist? The answer is yes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1090-graham-selfridge",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 127, "endLine": 146 },
+    "type": "theorem",
+    "title": "Graham-Selfridge Theorem (k=3)",
+    "content": "Graham and Selfridge proved the base case: there exists a finite set A ⊂ ℝ² such that any 2-coloring contains 3 monochromatic collinear points. This was cited by Erdős in his 1975 paper [Er75f].",
+    "mathContext": "The `graham_selfridge` axiom captures this result. The `k3_case` theorem shows this implies `Erdos1090Question 3`.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1090-combinatorial-line",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 152, "endLine": 166 },
+    "type": "definition",
+    "title": "Combinatorial Line",
+    "content": "In the cube [k]ⁿ (all n-tuples with entries from {0,...,k-1}), a combinatorial line is a set of k points where some coordinates are fixed and others vary together from 0 to k-1. This is the central object in the Hales-Jewett theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1090-hales-jewett",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 168, "endLine": 177 },
+    "type": "theorem",
+    "title": "Hales-Jewett Theorem",
+    "content": "For any k and r, there exists n such that any r-coloring of [k]ⁿ contains a monochromatic combinatorial line. This is a fundamental result in Ramsey theory, first proved in 1963. It implies van der Waerden's theorem.",
+    "mathContext": "The axiom `hales_jewett (k r : ℕ)` formalizes this: given k ≥ 1 and r ≥ 1, there exists dimension n guaranteeing a monochromatic combinatorial line.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1090-generic-projection",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 179, "endLine": 192 },
+    "type": "theorem",
+    "title": "Generic Projection",
+    "content": "A 'generic' (sufficiently random) projection from [k]ⁿ to ℝ² maps combinatorial lines to geometric lines. The key insight is that for almost all projections, the images of points along a combinatorial line remain collinear in ℝ².",
+    "mathContext": "The `generic_projection` axiom asserts both injectivity and that combinatorial lines map to geometric lines under the projection.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1090-hunter-observation",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 194, "endLine": 200 },
+    "type": "theorem",
+    "title": "Hunter's Observation",
+    "content": "Hunter observed that combining Hales-Jewett with generic projection solves the general case: project [k]ⁿ (for n given by Hales-Jewett) into ℝ². Any 2-coloring pulls back to a 2-coloring of [k]ⁿ, which has a monochromatic combinatorial line, which projects to k monochromatic collinear points.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1090-main-theorem",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 202, "endLine": 214 },
+    "type": "theorem",
+    "title": "Main Result: Erdős #1090 Solved Affirmatively",
+    "content": "The theorem `erdos_1090_affirmative` states: For every k ≥ 3, there exists a finite set A ⊂ ℝ² such that any 2-coloring of A contains k monochromatic collinear points. This answers Erdős's question in the affirmative.",
+    "mathContext": "The proof applies `hunter_observation k hk` directly, showing the general k case follows from the Hales-Jewett based argument.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1090-generalizations",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 294, "endLine": 325 },
+    "type": "definition",
+    "title": "Generalizations",
+    "content": "`Erdos1090Generalized k r` extends to r colors (not just 2), which also holds by using Hales-Jewett for r colors. `Erdos1090HigherDim d k` considers the analogous question in higher dimensions with hyperplanes instead of lines.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1090-sylvester-gallai",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 264, "endLine": 280 },
+    "type": "theorem",
+    "title": "Sylvester-Gallai Theorem",
+    "content": "A related classical result: In any finite set of points in ℝ² not all collinear, there exists a line containing exactly 2 points (an 'ordinary line'). This structural constraint on point configurations connects to Erdős's work on incidence geometry.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1090-summary",
+    "proofId": "erdos-1090",
+    "range": { "startLine": 327, "endLine": 354 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "The `erdos_1090_summary` theorem combines all results: (1) k=3 case by Graham-Selfridge, and (2) general k case by Hunter via Hales-Jewett. The problem is completely solved for all k ≥ 3 with an affirmative answer.",
+    "significance": "critical"
+  }
+]
