@@ -4,9 +4,9 @@
 .DEFAULT_GOAL := help
 
 .PHONY: help clean clean-all clean-enhancers clean-research clean-loom \
-        status status-enhancers status-research \
+        status status-enhancers status-research status-aristotle \
         build test lint \
-        enhance research \
+        enhance research aristotle aristotle-loop \
         prune
 
 # Default target
@@ -25,6 +25,7 @@ help:
 	@echo "  make status           - Show all agent claim status"
 	@echo "  make status-enhancers - Show enhancement claims"
 	@echo "  make status-research  - Show research claims"
+	@echo "  make status-aristotle - Show Aristotle job status"
 	@echo ""
 	@echo "Build:"
 	@echo "  make build            - Build the project (pnpm build)"
@@ -34,6 +35,8 @@ help:
 	@echo "Agents:"
 	@echo "  make enhance N=3      - Launch N parallel enhancer agents"
 	@echo "  make research N=2     - Launch N parallel research agents"
+	@echo "  make aristotle        - Launch Aristotle queue management agent"
+	@echo "  make aristotle-stop   - Stop Aristotle agent"
 	@echo ""
 	@echo "Options:"
 	@echo "  DEEP=1    - Enable deep cleaning (worktrees, branches, logs)"
@@ -88,7 +91,7 @@ prune:
 # Status targets
 # ============================================================================
 
-status: status-enhancers status-research
+status: status-enhancers status-research status-aristotle
 
 status-enhancers:
 	@echo ""
@@ -97,6 +100,10 @@ status-enhancers:
 status-research:
 	@echo ""
 	./scripts/research/claim-problem.sh status
+
+status-aristotle:
+	@echo ""
+	./scripts/aristotle/aristotle-agent.sh --status
 
 # ============================================================================
 # Build targets
@@ -123,3 +130,20 @@ enhance:
 
 research:
 	./scripts/research/parallel-research.sh $(N)
+
+# Aristotle agent (maintains ~20 active proof search jobs)
+# TARGET defaults to 20, INTERVAL defaults to 30 minutes
+TARGET ?= 20
+INTERVAL ?= 30
+
+aristotle:
+	ARISTOTLE_TARGET=$(TARGET) ARISTOTLE_INTERVAL=$(INTERVAL) ./scripts/aristotle/launch-agent.sh
+
+aristotle-stop:
+	./scripts/aristotle/launch-agent.sh --stop
+
+aristotle-attach:
+	./scripts/aristotle/launch-agent.sh --attach
+
+aristotle-logs:
+	./scripts/aristotle/launch-agent.sh --logs
