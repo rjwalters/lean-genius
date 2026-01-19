@@ -1,1 +1,175 @@
-[]
+[
+  {
+    "id": "ann-e915-path",
+    "proofId": "erdos-915",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "definition",
+    "title": "Path Structure",
+    "content": "A `Path G u v` represents a path from u to v in graph G, storing the vertex list with proofs that it starts at u, ends at v, and all consecutive pairs are adjacent in G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e915-vertex-disjoint",
+    "proofId": "erdos-915",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "definition",
+    "title": "Vertex-Disjoint Paths",
+    "content": "`VertexDisjoint G u v p1 p2` means paths p1 and p2 share no internal vertices (endpoints u and v may coincide). Internal vertices are those strictly between the endpoints.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-edge-disjoint",
+    "proofId": "erdos-915",
+    "range": { "startLine": 58, "endLine": 66 },
+    "type": "definition",
+    "title": "Edge-Disjoint Paths",
+    "content": "`EdgeDisjoint G u v p1 p2` means paths p1 and p2 share no edges. This is weaker than vertex-disjoint since paths may share vertices but not the edges connecting them.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-m-vertex-disjoint",
+    "proofId": "erdos-915",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "m Vertex-Disjoint Paths",
+    "content": "`HasMVertexDisjointPaths G u v m` asserts that there exist m paths from u to v that are pairwise vertex-disjoint.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e915-k-function",
+    "proofId": "erdos-915",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "definition",
+    "title": "Function k_m(n)",
+    "content": "**k_m(n)** is the minimum number of edges such that any graph with n vertices and k_m(n) edges contains a vertex pair connected by m vertex-disjoint paths.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-ell-function",
+    "proofId": "erdos-915",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "definition",
+    "title": "Function ℓ_m(n)",
+    "content": "**ℓ_m(n)** is the minimum number of edges for m edge-disjoint paths. Since vertex-disjoint implies edge-disjoint, we have ℓ_m(n) ≤ k_m(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-conjecture",
+    "proofId": "erdos-915",
+    "range": { "startLine": 107, "endLine": 114 },
+    "type": "definition",
+    "title": "Bollobás-Erdős Conjecture",
+    "content": "**The Conjecture (1962):** For all m ≥ 2: k_m(1 + (m-1)n) = 1 + C(m,2)·n. This predicts k_m(n) = (m/2)·n + O(1) linear growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-extremal",
+    "proofId": "erdos-915",
+    "range": { "startLine": 116, "endLine": 126 },
+    "type": "theorem",
+    "title": "Extremal Construction",
+    "content": "n copies of K_m sharing a single vertex (otherwise disjoint) show the conjecture gives a lower bound: this graph has 1 + (m-1)n vertices and 1 + C(m,2)n edges but no m vertex-disjoint paths.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e915-k2",
+    "proofId": "erdos-915",
+    "range": { "startLine": 130, "endLine": 131 },
+    "type": "theorem",
+    "title": "k_2(n) = n",
+    "content": "The m = 2 case is trivial: any graph with n edges on n vertices contains 2 vertex-disjoint paths between some pair (just need the graph to be connected).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e915-bartfai",
+    "proofId": "erdos-915",
+    "range": { "startLine": 133, "endLine": 135 },
+    "type": "theorem",
+    "title": "Bártfai (1960): k_3 Case",
+    "content": "**Bártfai's Result:** k_3(2n) = 3n - 1 and k_3(2n+1) = 3n + 1. This confirms the conjecture for m = 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e915-bollobas",
+    "proofId": "erdos-915",
+    "range": { "startLine": 137, "endLine": 138 },
+    "type": "theorem",
+    "title": "Bollobás (1966): k_4 Case",
+    "content": "**Bollobás's Result:** k_4(n) = 2n - 1. This confirms the conjecture for m = 4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e915-leonard",
+    "proofId": "erdos-915",
+    "range": { "startLine": 158, "endLine": 171 },
+    "type": "theorem",
+    "title": "Leonard (1973) Counterexample",
+    "content": "**The Disproof for m = 5:** Leonard constructed a graph with 57 vertices and 141 edges that avoids 5 vertex-disjoint paths between any pair. The conjecture predicts k_5(57) = 141, so this is an exact counterexample.",
+    "mathContext": "This explicit construction disproved the Bollobás-Erdős conjecture for m = 5.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-sorensen-thomassen",
+    "proofId": "erdos-915",
+    "range": { "startLine": 178, "endLine": 185 },
+    "type": "theorem",
+    "title": "Sørensen-Thomassen (1974): Exact k_5",
+    "content": "**Exact Formula:** k_5(n) = ⌊8n/3⌋ - 3 for n ≥ 13. This is strictly larger than the conjectured (5/2)n + O(1), confirming the conjecture is false for m = 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e915-mader-disproof",
+    "proofId": "erdos-915",
+    "range": { "startLine": 187, "endLine": 192 },
+    "type": "theorem",
+    "title": "Mader (1973): Disproof for m ≥ 6",
+    "content": "**General Disproof:** For any m ≥ 6 and any constant C, there exists n with k_m(n) > (m/2)n + C. This shows the conjecture fails for all m ≥ 6.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-mader-edge",
+    "proofId": "erdos-915",
+    "range": { "startLine": 209, "endLine": 216 },
+    "type": "theorem",
+    "title": "Mader (1973): Edge-Disjoint Solved",
+    "content": "**Complete Solution:** ℓ_m(n) = ⌊m(n-1)/2 + 1⌋ for all m ≥ 2. This confirms the Bollobás-Erdős conjecture for edge-disjoint paths!",
+    "mathContext": "The edge-disjoint version has the exact formula the conjecture predicted.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e915-edge-solved",
+    "proofId": "erdos-915",
+    "range": { "startLine": 218, "endLine": 223 },
+    "type": "theorem",
+    "title": "Edge-Disjoint Conjecture True",
+    "content": "`edge_disjoint_solved` proves `EdgeDisjointConjecture m` for all m ≥ 2 by applying Mader's formula.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e915-degree-condition",
+    "proofId": "erdos-915",
+    "range": { "startLine": 240, "endLine": 251 },
+    "type": "theorem",
+    "title": "Mader's Degree Condition",
+    "content": "**Stronger Result:** A graph with > (m/2)(n-1) - (1/2)Σe_r(G) edges (where e_r counts vertices of degree ≤ r) contains m edge-disjoint paths. This implies the simpler edge-disjoint formula.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e915-three-connected",
+    "proofId": "erdos-915",
+    "range": { "startLine": 255, "endLine": 264 },
+    "type": "theorem",
+    "title": "3-Connected Special Case",
+    "content": "**Sørensen-Thomassen (1974):** The Bollobás-Erdős conjecture holds for 3-connected graphs. This shows connectivity assumptions can rescue the conjecture.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e915-summary",
+    "proofId": "erdos-915",
+    "range": { "startLine": 284, "endLine": 306 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "`erdos_915_summary` combines all results: (1) Vertex-disjoint holds for m ≤ 4, (2) Vertex-disjoint fails for m ≥ 5, (3) Edge-disjoint holds for all m ≥ 2.",
+    "significance": "critical"
+  }
+]
