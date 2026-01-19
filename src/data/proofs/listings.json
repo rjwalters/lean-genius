@@ -9899,17 +9899,21 @@
   },
   {
     "id": "erdos-660",
-    "title": "Erdős Problem #660",
+    "title": "Distinct Distances in Convex Polyhedra",
     "slug": "erdos-660",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the vertices of a convex polyhedron. Are there at least\\[(1-o(1)){2}\\]many distinct distances between the ...?\n\n\n\n...",
-    "status": "pending",
+    "description": "For vertices of a convex polyhedron in ℝ³, are there at least (1-o(1))·n/2 distinct pairwise distances? This extends Altman's 2D result to three dimensions.",
+    "status": "open",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "distinct-distances",
+      "convex-polyhedra",
+      "open-problem"
     ],
     "erdosNumber": 660,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 11,
+    "annotationCount": 16
   },
   {
     "id": "erdos-664",
