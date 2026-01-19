@@ -1,33 +1,176 @@
 {
   "id": "erdos-191",
-  "title": "Erdős Problem #191",
+  "title": "Erdős Problem #191: Monochromatic Sets with Large 1/log Sum",
   "slug": "erdos-191",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be arbitrary. Is it true that, if ... is sufficiently large depending on ..., then in any ...-colouring of ... there ...",
+  "description": "For any C > 0, if n is large enough, any 2-coloring of edges of K({2,...,n}) contains monochromatic X with Σ(1/log x) ≥ C. SOLVED by Rödl (2003). Tight bound: Θ(log log log n) by Conlon-Fox-Sudakov.",
   "meta": {
-    "author": "Unknown",
+    "author": "Rödl (2003), Conlon-Fox-Sudakov (2013)",
     "sourceUrl": "https://erdosproblems.com/191",
-    "date": "",
-    "status": "pending",
+    "date": "2003",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos191Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "graph-coloring",
+      "weighted-sums",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 191,
     "erdosUrl": "https://erdosproblems.com/191",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter finite sets by predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IntegerSet: finite set {2,...,n}",
+      "EdgeColoring: 2-coloring of complete graph edges",
+      "SimpleEdgeColoring: simplified coloring type",
+      "IsMonochromatic: predicate for monochromatic subsets",
+      "HasMonochromaticSubset: existence of monochromatic structure",
+      "logInverseSum: weighted sum Σ(1/log x)",
+      "MonochromaticWithLargeSum: main problem formulation",
+      "erdos191Conjecture: the affirmative conjecture",
+      "erdos_191 axiom: Rödl's solution",
+      "tripleLog: log log log n scale function",
+      "rodl_upper_construction axiom: O(log log log n) upper bound",
+      "conlon_fox_sudakov_bound axiom: Ω(log log log n) lower bound",
+      "erdos_191_from_cfs: derivation from CFS bound",
+      "tight_asymptotic: Θ(log log log n) characterization"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #191 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>0$ be arbitrary. Is it true that, if $n$ is sufficiently large depending on $C$, then in any $2$-colouring of $\\binom{\\{2,\\ldots,n\\}}{2}$ there exists some $X\\subset \\{2,\\ldots,n\\}$ such that $\\binom{X}{2}$ is monochromatic and\\[\\sum_{x\\in X}\\frac{1}{\\log x}\\geq C?\\]\n\n\n\nThe answer is yes, which was proved by R\\\"{o}dl \\cite{Ro03}.\n\nIn the same article R\\\"{o}dl also proved a lower bound for this problem, constructing, for all $n$, a $2$-colouring of $\\binom{\\{2,\\ldots,n\\}}{2}$ such that if $X\\subseteq \\{2,\\ldots,n\\}$ is such that $\\binom{X}{2}$ is monochromatic then\\[\\sum_{x\\in X}\\frac{1}{\\log x}\\ll \\log\\log\\log n.\\]This bound is best possible, as proved by Conlon, Fox, and Sudakov \\cite{CFS13}, who proved that, if $n$ is sufficiently large, then in any $2$-colouring of $\\binom{\\{2,\\ldots,n\\}}{2}$ there exists some $X\\subset \\{2,\\ldots,n\\}$ such that $\\binom{X}{2}$ is monochromatic and\\[\\sum_{x\\in X}\\frac{1}{\\log x}\\geq 2^{-8}\\log\\log\\log n.\\]\n\n\n\n\nReferences\n\n\n[CFS13] Conlon, David and Fox, Jacob and Sudakov, Benny, Two extensions of Ramsey's theorem. Duke Math. J. (2013), 2903-2927.\n\n[Ro03] R\\\"{o}dl, Vojt\\vEch, On homogeneous sets of positive integers. J. Combin. Theory Ser. A (2003), 229-240.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #191**\n\nThis problem combines Ramsey theory with analytic number theory. The setting is the complete graph K_n on vertices {2, ..., n}, with a 2-coloring of its edges. The goal is to find a monochromatic clique whose vertices have large weighted sum using the weight 1/log x.\n\n**Key History:**\n- [ErGr80] Erdős-Graham: Original problem formulation\n- [Ro03] Rödl: Proved the affirmative answer + optimal upper construction\n- [CFS13] Conlon, Fox, Sudakov: Proved tight lower bound 2^{-8} log log log n\n\n**Mathematical Significance:**\n- Extends classical Ramsey theory from cardinality to weighted measures\n- The 1/log x weight is special: it creates the triple-log threshold\n- Connects graph theory, Ramsey theory, and analytic number theory",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $C > 0$ be arbitrary. Is it true that, if $n$ is sufficiently large depending on $C$, then in any 2-colouring of $\\binom{\\{2,\\ldots,n\\}}{2}$ there exists some $X \\subset \\{2,\\ldots,n\\}$ such that $\\binom{X}{2}$ is monochromatic and\n$$\\sum_{x \\in X}\\frac{1}{\\log x} \\geq C?$$\n\n**Answer: YES** (Rödl 2003)\n\n**Tight Bounds:**\n- Lower bound: $\\sum \\frac{1}{\\log x} \\geq 2^{-8} \\log\\log\\log n$ (Conlon-Fox-Sudakov)\n- Upper construction: $\\sum \\frac{1}{\\log x} \\ll \\log\\log\\log n$ (Rödl)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Setup:** Define IntegerSet {2,...,n}, edge colorings, and monochromatic predicates.\n\n2. **Weighted Sum:** Define logInverseSum as Σ(1/log x) over finite sets.\n\n3. **Problem Statement:** MonochromaticWithLargeSum captures 'exists monochromatic X with sum ≥ C'.\n\n4. **Main Conjecture:** erdos191Conjecture states this holds for all C > 0 with large enough n.\n\n5. **Solution:** Axiomatize Rödl's affirmative answer.\n\n6. **Tight Bounds:** Axiomatize Rödl's upper construction and Conlon-Fox-Sudakov lower bound.\n\n7. **Derivation:** Show how CFS bound implies the main conjecture via triple-log growth.",
+    "keyInsights": [
+      "**Weighted Ramsey:** Unlike classical Ramsey which counts vertices, this measures sum of 1/log x",
+      "**Triple Log Threshold:** The natural scale is log log log n, not polynomial or single log",
+      "**Rödl's Upper Construction:** Shows O(log log log n) is best possible via explicit 2-coloring",
+      "**CFS Lower Bound:** The constant 2^{-8} = 1/256 is explicit in the lower bound",
+      "**Why 1/log x?:** This weight makes vertices near n contribute comparably to vertices near 2",
+      "**Ramsey Connection:** Classical Ramsey gives cliques of size ~2 log n; the weighting transforms this"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "IntegerSet, EdgeColoring, SimpleEdgeColoring",
+      "startLine": 37,
+      "endLine": 61
+    },
+    {
+      "id": "monochromatic",
+      "title": "Monochromatic Subsets",
+      "summary": "IsMonochromatic, HasMonochromaticSubset, IsClique",
+      "startLine": 63,
+      "endLine": 85
+    },
+    {
+      "id": "weighted-sum",
+      "title": "The Weighted Sum Function",
+      "summary": "logInverseSum definition and properties",
+      "startLine": 87,
+      "endLine": 115
+    },
+    {
+      "id": "problem-statement",
+      "title": "The Main Problem Statement",
+      "summary": "MonochromaticWithLargeSum, erdos191Conjecture",
+      "startLine": 117,
+      "endLine": 134
+    },
+    {
+      "id": "solution",
+      "title": "Rödl's Theorem",
+      "summary": "erdos_191 axiom (main solution)",
+      "startLine": 136,
+      "endLine": 152
+    },
+    {
+      "id": "tight-bounds",
+      "title": "Tight Bounds",
+      "summary": "tripleLog, rodl_upper_construction, conlon_fox_sudakov_bound",
+      "startLine": 154,
+      "endLine": 194
+    },
+    {
+      "id": "derivation",
+      "title": "Derivation from CFS Bound",
+      "summary": "erdos_191_from_cfs theorem",
+      "startLine": 196,
+      "endLine": 223
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Theory",
+      "summary": "RamseyStyleProperty, classical_ramsey_connection",
+      "startLine": 225,
+      "endLine": 246
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "small_n_bound, monochromatic_pair_exists, sum asymptotic",
+      "startLine": 248,
+      "endLine": 282
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "r-coloring, different weight functions",
+      "startLine": 284,
+      "endLine": 312
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Analysis",
+      "summary": "tight_asymptotic theorem",
+      "startLine": 314,
+      "endLine": 337
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_191_summary, erdos_191_answer",
+      "startLine": 339,
+      "endLine": 371
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #191 asked whether for any C > 0, large enough n guarantees a monochromatic subset X in any 2-coloring of K({2,...,n}) with Σ(1/log x) ≥ C. Rödl proved YES in 2003. Conlon-Fox-Sudakov (2013) established tight bounds: the optimal achievable sum is Θ(log log log n).",
+    "implications": "**Mathematical Connections**\n\n1. **Ramsey Theory Extension:** Generalizes Ramsey-type results from counting to weighted measures\n\n2. **Analytic Number Theory:** The 1/log x weight connects to prime number theory asymptotics\n\n3. **Graph Coloring:** Demonstrates deep structure in edge-colored complete graphs\n\n4. **Triple Logarithm:** One of few natural problems with log log log n threshold\n\n5. **Extremal Combinatorics:** Shows how explicit constructions can match existential bounds",
+    "openQuestions": [
+      "What is the optimal constant in the lower bound (currently 2^{-8})?",
+      "How does the threshold change for r > 2 colors?",
+      "What happens with different weight functions w(x)?",
+      "Can Rödl's construction be derandomized?",
+      "Are there connections to the Hales-Jewett theorem?"
+    ]
   }
 }

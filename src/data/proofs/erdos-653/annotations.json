@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-e653-header",
+    "proofId": "erdos-653",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #653: Distinct Distance Counts in the Plane**\n\nFor n points in the plane, each point xᵢ \"sees\" some number of distinct distances to other points. Call this R(xᵢ). The question asks: what's the maximum number of distinct R-values we can achieve?\n\n**Key Question:** Is g(n) ≥ (1 - o(1))n?\n\n**Known Bounds:**\n- Lower: g(n) > 0.7n (Csizmadia)\n- Upper: g(n) < n - cn^{2/3}\n\n**Status: OPEN**",
+    "mathContext": "This is a discrete geometry problem about point configurations in the plane, related to Erdős's famous distinct distances conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Distinct distances", "Point configurations", "Combinatorial geometry"]
+  },
+  {
+    "id": "ann-e653-euclid-dist",
+    "proofId": "erdos-653",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "**euclidDist:**\n\nThe standard Euclidean distance in the plane:\n```lean\ndef euclidDist (p q : Fin 2 → ℝ) : ℝ :=\n  Real.sqrt ((p 0 - q 0)^2 + (p 1 - q 1)^2)\n```\n\nPoints are represented as functions from Fin 2 to ℝ, giving coordinates (x, y) = (p 0, p 1).",
+    "significance": "key",
+    "relatedConcepts": ["Metric spaces", "Euclidean geometry"]
+  },
+  {
+    "id": "ann-e653-distance-set",
+    "proofId": "erdos-653",
+    "range": { "startLine": 63, "endLine": 69 },
+    "type": "definition",
+    "title": "Distance Set from a Point",
+    "content": "**distanceSet:**\n\nThe set of all distances from point p to other points in the configuration:\n```lean\ndef distanceSet (S : Finset (Fin 2 → ℝ)) (p : Fin 2 → ℝ) : Finset ℝ :=\n  (S.filter (· ≠ p)).image (euclidDist p)\n```\n\nThis filters out p itself, then maps euclidDist to get all distances from p.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e653-r-function",
+    "proofId": "erdos-653",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "definition",
+    "title": "R(x) - Distinct Distance Count",
+    "content": "**distinctDistCount (the R function):**\n\nR(xᵢ) counts how many distinct distances emanate from point xᵢ:\n```lean\ndef distinctDistCount (S : Finset (Fin 2 → ℝ)) (p : Fin 2 → ℝ) : ℕ :=\n  (distanceSet S p).card\n```\n\n**Example:** If point p has 5 other points at distances 1, 1, 2, 3, 3 from it, then R(p) = 3 (three distinct distances: 1, 2, 3).",
+    "significance": "critical",
+    "relatedConcepts": ["Distance spectrum", "Local structure"]
+  },
+  {
+    "id": "ann-e653-r-value-set",
+    "proofId": "erdos-653",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "R-Value Set",
+    "content": "**rValueSet:**\n\nThe set of all R-values achieved by points in the configuration:\n```lean\ndef rValueSet (S : Finset (Fin 2 → ℝ)) : Finset ℕ :=\n  S.image (distinctDistCount S)\n```\n\nIf there are n points, this set has at most n elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e653-g-function",
+    "proofId": "erdos-653",
+    "range": { "startLine": 97, "endLine": 103 },
+    "type": "definition",
+    "title": "The Function g(n)",
+    "content": "**g(n):**\n\nThe maximum number of distinct R-values achievable by any n-point configuration:\n```lean\ndef g (n : ℕ) : ℕ :=\n  sSup { k : ℕ | ∃ S : Finset (Fin 2 → ℝ), S.card = n ∧ numDistinctRValues S = k }\n```\n\n**Goal:** Determine the asymptotic behavior of g(n)/n as n → ∞.\n\n**The conjecture:** g(n)/n → 1.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal problems", "Supremum"]
+  },
+  {
+    "id": "ann-e653-erdos-fishburn",
+    "proofId": "erdos-653",
+    "range": { "startLine": 110, "endLine": 116 },
+    "type": "axiom",
+    "title": "Erdős-Fishburn Lower Bound",
+    "content": "**erdos_fishburn_bound:**\n\ng(n) > (3/8)n for sufficiently large n:\n```lean\naxiom erdos_fishburn_bound :\n  ∀ n : ℕ, n ≥ 8 → g n > 3 * n / 8\n```\n\nThis was the first significant lower bound, showing g(n) is at least a constant fraction of n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e653-csizmadia",
+    "proofId": "erdos-653",
+    "range": { "startLine": 117, "endLine": 124 },
+    "type": "axiom",
+    "title": "Csizmadia Lower Bound",
+    "content": "**csizmadia_bound:**\n\ng(n) > (7/10)n for sufficiently large n:\n```lean\naxiom csizmadia_bound :\n  ∀ n : ℕ, n ≥ 10 → g n > 7 * n / 10\n```\n\nThis improves Erdős-Fishburn from 3/8 = 0.375 to 7/10 = 0.7. The gap to 1 remains the main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e653-upper-bound",
+    "proofId": "erdos-653",
+    "range": { "startLine": 125, "endLine": 133 },
+    "type": "axiom",
+    "title": "Upper Bound",
+    "content": "**upper_bound:**\n\ng(n) < n - cn^{2/3} for some constant c > 0:\n```lean\naxiom upper_bound :\n  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →\n    (g n : ℝ) < n - c * (n : ℝ)^(2/3 : ℝ)\n```\n\n**Significance:** This shows g(n) cannot equal n for large n. The gap is at least Ω(n^{2/3}), which is o(n). So the conjecture asks: is the gap exactly o(n)?",
+    "mathContext": "The n^{2/3} gap is reminiscent of other extremal bounds in discrete geometry.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e653-conjecture",
+    "proofId": "erdos-653",
+    "range": { "startLine": 140, "endLine": 149 },
+    "type": "definition",
+    "title": "The Conjecture",
+    "content": "**erdos653Conjecture:**\n\nFor any ε > 0, there exists N such that for all n ≥ N:\n```lean\ndef erdos653Conjecture : Prop :=\n  ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (g n : ℝ) ≥ (1 - ε) * n\n```\n\n**Equivalently:** g(n)/n → 1 as n → ∞.\n\n**Status:** OPEN - Neither proved nor disproved.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic analysis", "Limit"]
+  },
+  {
+    "id": "ann-e653-g-le-n",
+    "proofId": "erdos-653",
+    "range": { "startLine": 170, "endLine": 175 },
+    "type": "axiom",
+    "title": "Trivial Upper Bound",
+    "content": "**g_le_n:**\n\ng(n) ≤ n always:\n```lean\naxiom g_le_n : ∀ n : ℕ, g n ≤ n\n```\n\n**Reason:** With n points, there are at most n R-values (one per point). So g(n) can never exceed n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e653-collinear",
+    "proofId": "erdos-653",
+    "range": { "startLine": 186, "endLine": 193 },
+    "type": "definition",
+    "title": "Collinear Points",
+    "content": "**IsCollinear:**\n\nPoints lying on a single line:\n```lean\ndef IsCollinear (S : Finset (Fin 2 → ℝ)) : Prop :=\n  ∃ a b : Fin 2 → ℝ, a ≠ b ∧ ∀ p ∈ S, ∃ t : ℝ, p = fun i => a i + t * (b i - a i)\n```\n\nCollinear configurations have special R-value patterns. For equally spaced points, R-values grow systematically from endpoints to center.",
+    "significance": "supporting",
+    "relatedConcepts": ["Line configurations", "Arithmetic progressions"]
+  },
+  {
+    "id": "ann-e653-regular-polygon",
+    "proofId": "erdos-653",
+    "range": { "startLine": 194, "endLine": 202 },
+    "type": "definition",
+    "title": "Regular Polygon",
+    "content": "**IsRegularPolygon:**\n\nPoints on a circle at equal angular spacing:\n```lean\ndef IsRegularPolygon (S : Finset (Fin 2 → ℝ)) : Prop :=\n  ∃ center : Fin 2 → ℝ, ∃ r : ℝ, r > 0 ∧\n    ∀ p ∈ S, euclidDist p center = r\n```\n\n**Key insight:** In a regular n-gon, ALL vertices have the same R-value! So g = 1 for regular polygons - they are the worst configurations for R-diversity.",
+    "significance": "key",
+    "relatedConcepts": ["Circular symmetry", "Extremal configurations"]
+  },
+  {
+    "id": "ann-e653-regular-r-value",
+    "proofId": "erdos-653",
+    "range": { "startLine": 203, "endLine": 210 },
+    "type": "axiom",
+    "title": "Regular Polygon R-Values",
+    "content": "**regular_polygon_r_value:**\n\nIn a regular n-gon, all points have identical R-values:\n```lean\naxiom regular_polygon_r_value (n : ℕ) (hn : n ≥ 3) (S : Finset (Fin 2 → ℝ))\n    (hcard : S.card = n) (hreg : IsRegularPolygon S) :\n    ∀ p q ∈ S, distinctDistCount S p = distinctDistCount S q\n```\n\nBy symmetry, each vertex sees the same set of distances. For a regular n-gon, R = ⌊n/2⌋.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e653-optimal-config",
+    "proofId": "erdos-653",
+    "range": { "startLine": 215, "endLine": 221 },
+    "type": "definition",
+    "title": "Optimal Configurations",
+    "content": "**IsOptimalConfig:**\n\nA configuration achieving the maximum g(n):\n```lean\ndef IsOptimalConfig (S : Finset (Fin 2 → ℝ)) : Prop :=\n  numDistinctRValues S = g S.card\n```\n\nFinding explicit optimal configurations is a challenging open problem. What do they look like?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e653-gap-bounds",
+    "proofId": "erdos-653",
+    "range": { "startLine": 233, "endLine": 240 },
+    "type": "axiom",
+    "title": "Asymptotic Gap",
+    "content": "**gap_lower_bound:**\n\nThe gap n - g(n) is at least Ω(n^{2/3}):\n```lean\naxiom gap_lower_bound :\n  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →\n    (n : ℝ) - g n ≥ c * (n : ℝ)^(2/3 : ℝ)\n```\n\nCombined with the upper bound, we have: c₁n^{2/3} ≤ n - g(n) ≤ c₂n^{2/3} for some constants c₁, c₂.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e653-distinct-dist-conn",
+    "proofId": "erdos-653",
+    "range": { "startLine": 264, "endLine": 271 },
+    "type": "definition",
+    "title": "Total Distinct Distances",
+    "content": "**totalDistinctDistances:**\n\nThe total number of distinct distances in the configuration:\n```lean\ndef totalDistinctDistances (S : Finset (Fin 2 → ℝ)) : ℕ :=\n  (Finset.biUnion S (distanceSet S)).card\n```\n\n**Connection:** The classical Erdős distinct distances problem asks for the minimum. Guth-Katz proved this is Ω(n/log n). This problem is about local diversity rather than global count.",
+    "significance": "supporting",
+    "relatedConcepts": ["Distinct distances problem", "Guth-Katz theorem"]
+  },
+  {
+    "id": "ann-e653-summary",
+    "proofId": "erdos-653",
+    "range": { "startLine": 276, "endLine": 293 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_653_summary:**\n\nCombines the main known results:\n```lean\ntheorem erdos_653_summary :\n  (∀ n ≥ 10, g n > 7 * n / 10) ∧\n  (∀ n, g n ≤ n) ∧\n  (∃ c > 0, ∀ n ≥ 2, (g n : ℝ) < n - c * (n : ℝ)^(2/3 : ℝ))\n```\n\n**What we know:**\n1. g(n) > 0.7n (lower bound)\n2. g(n) ≤ n (trivial upper)\n3. g(n) < n - cn^{2/3} (nontrivial upper)\n\n**What we don't know:** Is the gap exactly o(n)?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e653-open",
+    "proofId": "erdos-653",
+    "range": { "startLine": 294, "endLine": 299 },
+    "type": "theorem",
+    "title": "Open Status",
+    "content": "**erdos_653_open:**\n\nThe conjecture g(n) ≥ (1 - o(1))n remains **OPEN**.\n\nThe gap between the 0.7 lower bound and the (1 - o(1)) conjecture represents one of the key open problems in discrete geometry related to distance configurations.",
+    "significance": "critical"
+  }
+]

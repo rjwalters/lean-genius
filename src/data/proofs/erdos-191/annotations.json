@@ -1,1 +1,236 @@
-[]
+[
+  {
+    "id": "ann-e191-header",
+    "proofId": "erdos-191",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #191: Monochromatic Sets with Large 1/log Sum**\n\nGiven the complete graph K_n on vertices {2, ..., n} with a 2-coloring of edges, we seek a monochromatic subset X where:\n$$\\sum_{x \\in X}\\frac{1}{\\log x} \\geq C$$\n\n**Question:** For any C > 0, does such X exist for large enough n?\n\n**Answer: YES** (Rödl 2003)\n\n**Tight bounds:** Θ(log log log n) by Conlon-Fox-Sudakov.",
+    "mathContext": "This problem combines Ramsey theory (existence of monochromatic structures) with weighted sums from analytic number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Complete graphs", "Edge colorings", "Weighted sums"]
+  },
+  {
+    "id": "ann-e191-integer-set",
+    "proofId": "erdos-191",
+    "range": { "startLine": 43, "endLine": 47 },
+    "type": "definition",
+    "title": "Integer Set {2,...,n}",
+    "content": "**IntegerSet:**\n\nThe finite set {2, 3, ..., n} of integers:\n```lean\ndef IntegerSet (n : ℕ) : Finset ℕ :=\n  Finset.filter (fun x => 2 ≤ x) (Finset.range (n + 1))\n```\n\nWe start at 2 (not 1) because log 1 = 0, which would make 1/log x undefined.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e191-edge-coloring",
+    "proofId": "erdos-191",
+    "range": { "startLine": 49, "endLine": 55 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "**EdgeColoring:**\n\nA 2-coloring assigns each edge {a, b} of the complete graph a color (false = red, true = blue):\n```lean\ndef EdgeColoring (S : Finset ℕ) :=\n  (a : ℕ) → (b : ℕ) → a ∈ S → b ∈ S → a ≠ b → Bool\n```\n\nThe complete graph K_n has n(n-1)/2 edges, each independently colored.",
+    "significance": "key",
+    "relatedConcepts": ["Complete graph", "Graph coloring"]
+  },
+  {
+    "id": "ann-e191-simple-coloring",
+    "proofId": "erdos-191",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "definition",
+    "title": "Simple Edge Coloring",
+    "content": "**SimpleEdgeColoring:**\n\nSimplified version without membership proofs:\n```lean\ndef SimpleEdgeColoring (n : ℕ) := (a : ℕ) → (b : ℕ) → Bool\n```\n\nThis makes formal reasoning easier while capturing the same mathematical content.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e191-is-monochromatic",
+    "proofId": "erdos-191",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "definition",
+    "title": "Monochromatic Subset",
+    "content": "**IsMonochromatic:**\n\nA subset X is monochromatic if all edges within X have the same color:\n```lean\ndef IsMonochromatic (c : SimpleEdgeColoring n) (X : Finset ℕ) (color : Bool) : Prop :=\n  ∀ a b : ℕ, a ∈ X → b ∈ X → a ≠ b → c a b = color\n```\n\nThis is the key structure we seek: a 'clique' in one color.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Cliques"]
+  },
+  {
+    "id": "ann-e191-has-monochromatic",
+    "proofId": "erdos-191",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "definition",
+    "title": "Existence of Monochromatic Subset",
+    "content": "**HasMonochromaticSubset:**\n\nThere exists a color (red or blue) making X monochromatic:\n```lean\ndef HasMonochromaticSubset (c : SimpleEdgeColoring n) (X : Finset ℕ) : Prop :=\n  ∃ color : Bool, IsMonochromatic c X color\n```\n\nThis abstracts away which specific color the subset uses.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e191-log-inverse-sum",
+    "proofId": "erdos-191",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "definition",
+    "title": "The Weighted Sum Σ(1/log x)",
+    "content": "**logInverseSum:**\n\nThe central quantity - sum of inverse logarithms over a finite set:\n```lean\nnoncomputable def logInverseSum (X : Finset ℕ) : ℝ :=\n  X.sum (fun x => 1 / Real.log x)\n```\n\n**Key property:** Unlike cardinality |X|, this gives more weight to smaller x (where log x is smaller).\n\n**Example:** {2, 3, 100} has sum ≈ 1.44 + 0.91 + 0.22 = 2.57",
+    "significance": "critical",
+    "relatedConcepts": ["Weighted sums", "Logarithm", "Harmonic-like sums"]
+  },
+  {
+    "id": "ann-e191-log-pos",
+    "proofId": "erdos-191",
+    "range": { "startLine": 99, "endLine": 105 },
+    "type": "theorem",
+    "title": "Positivity of log x",
+    "content": "**log_pos_of_ge_two:**\n\nFor x ≥ 2, log x > 0, so 1/log x is well-defined and positive:\n```lean\nlemma log_pos_of_ge_two (x : ℕ) (hx : x ≥ 2) : Real.log x > 0\n```\n\nThis is why we use {2, ..., n} instead of {1, ..., n}: log 1 = 0 would cause division by zero.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e191-sum-nonneg",
+    "proofId": "erdos-191",
+    "range": { "startLine": 107, "endLine": 115 },
+    "type": "theorem",
+    "title": "Non-negativity of Sum",
+    "content": "**logInverseSum_nonneg:**\n\nThe sum is non-negative for sets of integers ≥ 2:\n```lean\nlemma logInverseSum_nonneg (X : Finset ℕ) (hX : ∀ x ∈ X, x ≥ 2) :\n    logInverseSum X ≥ 0\n```\n\nSince each term 1/log x > 0 for x ≥ 2, the sum over any such set is positive.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e191-main-def",
+    "proofId": "erdos-191",
+    "range": { "startLine": 121, "endLine": 127 },
+    "type": "definition",
+    "title": "Main Problem Formulation",
+    "content": "**MonochromaticWithLargeSum:**\n\nFor given n and C, every 2-coloring has a monochromatic X with sum ≥ C:\n```lean\ndef MonochromaticWithLargeSum (n : ℕ) (C : ℝ) : Prop :=\n  ∀ c : SimpleEdgeColoring n,\n    ∃ X : Finset ℕ, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧\n      logInverseSum X ≥ C\n```\n\nThis captures 'n is large enough for target sum C'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e191-conjecture",
+    "proofId": "erdos-191",
+    "range": { "startLine": 129, "endLine": 134 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**erdos191Conjecture:**\n\nFor any C > 0, there exists N such that for all n ≥ N, MonochromaticWithLargeSum n C:\n```lean\ndef erdos191Conjecture : Prop :=\n  ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ n ≥ N, MonochromaticWithLargeSum n C\n```\n\n**Interpretation:** No matter how large a sum we want, sufficiently large n guarantees it.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e191-solved",
+    "proofId": "erdos-191",
+    "range": { "startLine": 140, "endLine": 144 },
+    "type": "axiom",
+    "title": "Problem Solved",
+    "content": "**erdos_191:**\n\nThe conjecture is TRUE:\n```lean\naxiom erdos_191 : erdos191Conjecture\n```\n\n**Proved by:** Vojtěch Rödl in 2003. His paper 'On homogeneous sets of positive integers' in J. Combin. Theory Ser. A established the affirmative answer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e191-triple-log",
+    "proofId": "erdos-191",
+    "range": { "startLine": 158, "endLine": 163 },
+    "type": "definition",
+    "title": "Triple Logarithm Scale",
+    "content": "**tripleLog:**\n\nlog log log n - the natural scale for this problem:\n```lean\nnoncomputable def tripleLog (n : ℕ) : ℝ :=\n  Real.log (Real.log (Real.log n))\n```\n\n**Growth:** tripleLog grows extremely slowly:\n- tripleLog(10) ≈ -0.83\n- tripleLog(1000) ≈ 0.67\n- tripleLog(10^100) ≈ 2.13\n\nThis is the correct scale for the tight bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["Iterated logarithm", "Slowly growing functions"]
+  },
+  {
+    "id": "ann-e191-rodl-upper",
+    "proofId": "erdos-191",
+    "range": { "startLine": 165, "endLine": 177 },
+    "type": "axiom",
+    "title": "Rödl's Upper Construction",
+    "content": "**rodl_upper_construction:**\n\nFor any n, there exists a 2-coloring where all monochromatic X satisfy sum ≤ c · log log log n:\n```lean\naxiom rodl_upper_construction :\n  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 16 →\n    ∃ coloring : SimpleEdgeColoring n,\n      ∀ X, X ⊆ IntegerSet n → HasMonochromaticSubset coloring X →\n        logInverseSum X ≤ c * tripleLog n\n```\n\n**Significance:** This shows O(log log log n) is best possible - you cannot do better asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e191-cfs-bound",
+    "proofId": "erdos-191",
+    "range": { "startLine": 179, "endLine": 189 },
+    "type": "axiom",
+    "title": "Conlon-Fox-Sudakov Bound",
+    "content": "**conlon_fox_sudakov_bound:**\n\nFor any 2-coloring, there exists monochromatic X with sum ≥ 2^{-8} · log log log n:\n```lean\naxiom conlon_fox_sudakov_bound :\n  ∀ n : ℕ, n ≥ 16 → ∀ c : SimpleEdgeColoring n,\n    ∃ X : Finset ℕ, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧\n      logInverseSum X ≥ (1 / 256) * tripleLog n\n```\n\n**The constant:** 2^{-8} = 1/256 is explicit. Combined with Rödl's upper bound, this gives Θ(log log log n).",
+    "mathContext": "From 'Two extensions of Ramsey's theorem' in Duke Math. J. (2013).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e191-cfs-constant",
+    "proofId": "erdos-191",
+    "range": { "startLine": 191, "endLine": 194 },
+    "type": "theorem",
+    "title": "The CFS Constant",
+    "content": "**cfs_constant:**\n\nThe constant 2^{-8} = 1/256:\n```lean\nlemma cfs_constant : (1 : ℝ) / 256 = 2^(-(8 : ℝ))\n```\n\nThis explicit constant from Conlon-Fox-Sudakov may not be optimal, but it gives the correct order of magnitude.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e191-derivation",
+    "proofId": "erdos-191",
+    "range": { "startLine": 205, "endLine": 223 },
+    "type": "theorem",
+    "title": "Derivation from CFS",
+    "content": "**erdos_191_from_cfs:**\n\nThe main theorem follows from CFS bound + unboundedness of triple log:\n```lean\ntheorem erdos_191_from_cfs : erdos191Conjecture := by\n  intro C hC\n  obtain ⟨N₀, hN₀⟩ := tripleLog_unbounded (256 * C)\n  use max N₀ 16\n  ...\n```\n\n**Logic:** For any target C, we need (1/256) · tripleLog n ≥ C, i.e., tripleLog n ≥ 256C. Since tripleLog → ∞, such N exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e191-ramsey-style",
+    "proofId": "erdos-191",
+    "range": { "startLine": 229, "endLine": 238 },
+    "type": "definition",
+    "title": "Ramsey-Style Property",
+    "content": "**RamseyStyleProperty:**\n\nNear-optimal version: sum ≥ (1-ε) · tripleLog n:\n```lean\ndef RamseyStyleProperty : Prop :=\n  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ c : SimpleEdgeColoring n,\n    ∃ X, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧\n      logInverseSum X ≥ (1 - ε) * tripleLog n\n```\n\nThis is stronger than the main conjecture - it asks for nearly optimal sum.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e191-classical-ramsey",
+    "proofId": "erdos-191",
+    "range": { "startLine": 240, "endLine": 246 },
+    "type": "axiom",
+    "title": "Classical Ramsey Connection",
+    "content": "**classical_ramsey_connection:**\n\nClassical Ramsey theorem gives monochromatic cliques of size ≈ 2 log n:\n```lean\naxiom classical_ramsey_connection :\n  ∀ n : ℕ, n ≥ 6 → ∀ c : SimpleEdgeColoring n,\n    ∃ X, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧ X.card ≥ 2\n```\n\nThe weighted sum perspective transforms this cardinality guarantee into a sum guarantee.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey numbers", "R(3,3) = 6"]
+  },
+  {
+    "id": "ann-e191-sum-asymptotic",
+    "proofId": "erdos-191",
+    "range": { "startLine": 275, "endLine": 282 },
+    "type": "axiom",
+    "title": "Sum Growth Asymptotic",
+    "content": "**sum_one_over_log_asymptotic:**\n\nThe sum Σ_{x=2}^{k} 1/log x grows like k/log k:\n```lean\naxiom sum_one_over_log_asymptotic :\n  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ k : ℕ, k ≥ 2 →\n    c₁ * k / Real.log k ≤ logInverseSum (IntegerSet k) ∧\n    logInverseSum (IntegerSet k) ≤ c₂ * k / Real.log k\n```\n\nThis is analogous to the prime counting function π(x) ~ x/log x.",
+    "significance": "supporting",
+    "relatedConcepts": ["Prime number theorem", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e191-generalized",
+    "proofId": "erdos-191",
+    "range": { "startLine": 288, "endLine": 296 },
+    "type": "definition",
+    "title": "r-Coloring Generalization",
+    "content": "**erdos191GeneralizedConjecture:**\n\nThe problem extends to r colors:\n```lean\ndef erdos191GeneralizedConjecture (r : ℕ) : Prop :=\n  ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ n ≥ N, ∀ c : (ℕ → ℕ → Fin r),\n    ∃ X, X ⊆ IntegerSet n ∧ ... ∧ logInverseSum X ≥ C\n```\n\nWith more colors, the threshold should increase but still be Θ(log log log n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e191-weighted-sum",
+    "proofId": "erdos-191",
+    "range": { "startLine": 298, "endLine": 304 },
+    "type": "definition",
+    "title": "General Weight Functions",
+    "content": "**weightedSum:**\n\nGeneral weighted sum with arbitrary weight function:\n```lean\nnoncomputable def weightedSum (X : Finset ℕ) (w : ℕ → ℝ) : ℝ :=\n  X.sum w\n```\n\nThe choice w(x) = 1/log x is special - it creates the triple-log threshold. Other weights (1/x, 1/x², etc.) give different thresholds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e191-tight-asymptotic",
+    "proofId": "erdos-191",
+    "range": { "startLine": 318, "endLine": 337 },
+    "type": "theorem",
+    "title": "Tight Asymptotic Bounds",
+    "content": "**tight_asymptotic:**\n\nThe optimal sum is Θ(log log log n):\n```lean\ntheorem tight_asymptotic :\n    (∃ c₁ > 0, ∀ n ≥ 16, ∀ coloring,\n      ∃ X, logInverseSum X ≥ c₁ * tripleLog n) ∧\n    (∃ c₂ > 0, ∀ n ≥ 16, ∃ coloring,\n      ∀ X, logInverseSum X ≤ c₂ * tripleLog n)\n```\n\n**Interpretation:** c₁ = 1/256 (CFS) and c₂ from Rödl's construction. The gap between these constants is the remaining open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e191-summary",
+    "proofId": "erdos-191",
+    "range": { "startLine": 343, "endLine": 364 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_191_summary:**\n\nCombines all main results:\n```lean\ntheorem erdos_191_summary :\n    erdos191Conjecture ∧\n    (∃ c₁ > 0, ... lower bound ...) ∧\n    (∃ c₂ > 0, ... upper bound ...)\n```\n\n**Summary:**\n1. YES, arbitrarily large sums are achievable for large n\n2. Lower bound: Ω(log log log n) guaranteed\n3. Upper construction: O(log log log n) is best possible",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e191-answer",
+    "proofId": "erdos-191",
+    "range": { "startLine": 366, "endLine": 369 },
+    "type": "theorem",
+    "title": "The Answer",
+    "content": "**erdos_191_answer:**\n\nThe answer to Erdős Problem #191 is **YES**.\n\nFor any target sum C > 0, if n is large enough, any 2-coloring of K({2,...,n}) contains a monochromatic subset X with Σ(1/log x) ≥ C.",
+    "significance": "critical"
+  }
+]
