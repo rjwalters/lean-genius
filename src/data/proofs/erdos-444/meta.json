@@ -16,11 +16,46 @@
       "harmonic-sums",
       "extremal"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 444,
     "erdosUrl": "https://erdosproblems.com/444",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets predicate",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter at infinity for limits",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "InfiniteSubset definition: infinite subsets of ℕ",
+      "d_A definition: generalized divisor function counting A-divisors",
+      "H_A definition: partial harmonic sum over A",
+      "M_A definition: maximum A-divisor count",
+      "erdos_graham_conjecture definition: the main statement",
+      "erdos_graham_conjecture_true axiom: the result holds",
+      "Special cases: A = ℕ gives d(n), A = primes gives ω(n)",
+      "erdos_444_status theorem: main result via axiom",
+      "limsup_infinite theorem: statement for all k"
+    ]
   },
   "overview": {
     "historicalContext": "From Erdős and Graham's 'Old and New Problems and Results in Combinatorial Number Theory' (1980), page 88. The problem studies the relationship between restricted divisor functions and partial harmonic sums. Erdős and Sárközy resolved it in their paper 'Some asymptotic formulas on generalized divisor functions IV'.",
