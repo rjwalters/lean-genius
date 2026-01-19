@@ -9998,17 +9998,22 @@
   },
   {
     "id": "erdos-670",
-    "title": "Erdős Problem #670",
+    "title": "Erdős Problem #670: Diameter of Sets with Distinct Distances",
     "slug": "erdos-670",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points such that all pairwise distances differ by at least .... Is the diameter of ... at least ...?\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A ⊆ ℝ^d be n points with all pairwise distances differing by at least 1. Is diameter(A) ≥ (1+o(1))n²? Proved for d=1 by Erdős (1997). Higher dimensions remain OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "combinatorics",
+      "distinct-distances",
+      "metric-geometry"
     ],
     "erdosNumber": 670,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 10,
+    "annotationCount": 27
   },
   {
     "id": "erdos-671",
