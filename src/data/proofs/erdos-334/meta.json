@@ -1,33 +1,104 @@
 {
   "id": "erdos-334",
-  "title": "Erdős Problem #334",
+  "title": "Erdős Problem #334: Smooth Number Representation",
   "slug": "erdos-334",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the best function ... such that every ... can be written as ... where both ... are ...-smooth (that is, are not divisibl...",
+  "description": "Find the best function f(n) such that every n can be written as n = a + b where both a and b are f(n)-smooth (not divisible by any prime p > f(n)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Balog (1989 best bound)",
     "sourceUrl": "https://erdosproblems.com/334",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos334Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "additive-combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 334,
     "erdosUrl": "https://erdosproblems.com/334",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #334 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the best function $f(n)$ such that every $n$ can be written as $n=a+b$ where both $a,b$ are $f(n)$-smooth (that is, are not divisible by any prime $p>f(n)$.)\n\n\n\nErd\\H{o}s originally asked if even $f(n)\\leq n^{1/3}$ is true. This is known, and the best bound is due to Balog \\cite{Ba89} who proved that\\[f(n) \\ll_\\epsilon n^{\\frac{4}{9\\sqrt{e}}+\\epsilon}\\]for all $\\epsilon>0$. (Note $\\frac{4}{9\\sqrt{e}}=0.2695\\ldots$.)\n\nIt is likely that $f(n)\\leq n^{o(1)}$, or even $f(n)\\leq e^{O(\\sqrt{\\log n})}$.\n\nSee also Problem 59 on Green's open problems list.\n\n\n\n\nReferences\n\n\n[Ba89] Balog, A., On additive representation of integers. Acta Math. Hungar. (1989), 297-301.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős originally asked (circa 1980) whether f(n) ≤ n^{1/3} holds, where f(n) is the minimal smoothness bound needed to write n = a + b with both summands f(n)-smooth. This question was answered positively, and Balog (1989) obtained the current best bound f(n) << n^{4/(9√e)+ε} ≈ n^{0.2695} for all ε > 0. The problem asks for the true growth rate of f(n).",
+    "problemStatement": "Find the best function f(n) such that every n can be written as n = a + b where both a and b are f(n)-smooth (that is, are not divisible by any prime p > f(n)).",
+    "proofStrategy": "We formalize smooth numbers and smooth pair representations, state Balog's 1989 bound as the current best result, and express the conjectured bounds f(n) ≤ n^{o(1)} and f(n) ≤ e^{O(√log n)} as open problems. Concrete examples for small numbers demonstrate the definitions.",
+    "keyInsights": [
+      "A number is y-smooth if all its prime factors are at most y",
+      "The key question is: how small can y be while still guaranteeing n = a + b with a, b both y-smooth?",
+      "Balog's exponent 4/(9√e) ≈ 0.2695 improved Erdős's original n^{1/3} bound",
+      "The Dickman function ρ(u) governs the density of smooth numbers",
+      "The problem connects to Goldbach-type questions about additive representations"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "smooth-numbers",
+      "title": "Part I: Smooth Numbers",
+      "summary": "isSmooth definition, one_smooth, prime_power_smooth, smooth_mul",
+      "startLine": 36,
+      "endLine": 73
+    },
+    {
+      "id": "additive-representation",
+      "title": "Part II: Additive Representation by Smooth Numbers",
+      "summary": "hasSmootPairRepr definition, small_has_repr for n ≤ 3",
+      "startLine": 75,
+      "endLine": 91
+    },
+    {
+      "id": "minimal-smoothness",
+      "title": "Part III: The Minimal Smoothness Function",
+      "summary": "minSmoothness definition, minSmoothness_exists axiom",
+      "startLine": 93,
+      "endLine": 111
+    },
+    {
+      "id": "known-bounds",
+      "title": "Part IV: Known Bounds",
+      "summary": "erdos_cube_root_bound, balogExponent, balog_bound axiom",
+      "startLine": 113,
+      "endLine": 140
+    },
+    {
+      "id": "conjectures",
+      "title": "Part V: Conjectured Bounds",
+      "summary": "weakConjecture f(n) ≤ n^{o(1)}, strongConjecture f(n) ≤ e^{O(√log n)}",
+      "startLine": 142,
+      "endLine": 166
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Examples",
+      "summary": "example_10 (10 = 2 + 8), example_100 (100 = 64 + 36)",
+      "startLine": 168,
+      "endLine": 221
+    },
+    {
+      "id": "connections",
+      "title": "Part VII: Connection to Other Problems",
+      "summary": "smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection",
+      "startLine": 223,
+      "endLine": 251
+    },
+    {
+      "id": "summary",
+      "title": "Part VIII: Main Results Summary",
+      "summary": "erdos_334_summary, erdos_334 main theorem, openQuestion",
+      "startLine": 253,
+      "endLine": 299
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #334 asks for the optimal growth rate of f(n), the minimal smoothness bound for representing any n as a sum of two smooth numbers. While Erdős's original n^{1/3} question is resolved, and Balog achieved n^{0.2695}, the conjectured bounds f(n) ≤ n^{o(1)} or f(n) ≤ e^{O(√log n)} remain open.",
+    "implications": "Understanding smooth number representations connects to fundamental questions about the distribution of smooth numbers (via the Dickman function) and has implications for cryptographic algorithms that rely on smooth number properties.",
+    "openQuestions": [
+      "Is f(n) ≤ n^{o(1)} true? (Weak conjecture)",
+      "Is f(n) ≤ e^{O(√log n)} true? (Strong conjecture)",
+      "What is the true growth rate of f(n)?",
+      "Can the exponent 4/(9√e) ≈ 0.2695 be improved?"
+    ]
   }
 }
