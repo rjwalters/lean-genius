@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "erdos-984-intro",
+    "proofId": "erdos-984",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 21 },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #984 asks whether ℕ can be 2-colored such that monochromatic k-term arithmetic progressions starting at a satisfy k ≪_ε a^ε. Zach Hunter proved this is achievable.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-984-coloring",
+    "proofId": "erdos-984",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 40 },
+    "title": "2-Coloring Definition",
+    "content": "A 2-coloring is a function χ: ℕ → Bool assigning each natural number one of two colors (true or false).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-arith-prog",
+    "proofId": "erdos-984",
+    "type": "definition",
+    "range": { "startLine": 42, "endLine": 44 },
+    "title": "Arithmetic Progression",
+    "content": "ArithProg a d k represents the k-term arithmetic progression {a, a+d, a+2d, ..., a+(k-1)d} as a finite set.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-monochromatic",
+    "proofId": "erdos-984",
+    "type": "definition",
+    "range": { "startLine": 46, "endLine": 52 },
+    "title": "Monochromatic Sets",
+    "content": "A set is monochromatic under coloring χ if all its elements share the same color. MonochromaticAP checks this for arithmetic progressions.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-growth-condition",
+    "proofId": "erdos-984",
+    "type": "definition",
+    "range": { "startLine": 60, "endLine": 68 },
+    "title": "Growth Condition",
+    "content": "GrowsSlowerThanAnyPower formalizes k ≪_ε a^ε: for all ε > 0, there exists C > 0 such that k ≤ C·a^ε. SatisfiesCondition requires all monochromatic APs to satisfy this bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-984-van-der-waerden",
+    "proofId": "erdos-984",
+    "type": "axiom",
+    "range": { "startLine": 76, "endLine": 84 },
+    "title": "Van der Waerden's Theorem",
+    "content": "For any r-coloring and k ≥ 3, there exists N = W(r,k) such that any r-coloring of [1..N] contains a monochromatic k-term AP. This fundamental theorem forces monochromatic progressions.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-984-inverse-vdw",
+    "proofId": "erdos-984",
+    "type": "axiom",
+    "range": { "startLine": 86, "endLine": 88 },
+    "title": "Inverse Van der Waerden",
+    "content": "The inverse of the van der Waerden function grows extremely slowly—slower than any fixed power a^ε. This was the bound Spencer achieved with 3 colors.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-spencer",
+    "proofId": "erdos-984",
+    "type": "axiom",
+    "range": { "startLine": 103, "endLine": 107 },
+    "title": "Spencer's 3-Coloring",
+    "content": "Spencer (1975) proved that with 3 colors, one can achieve the bound k ≪ h(a) where h is related to the inverse van der Waerden function, which grows slower than any power.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-erdos-weak",
+    "proofId": "erdos-984",
+    "type": "definition",
+    "range": { "startLine": 115, "endLine": 124 },
+    "title": "Erdős's Weaker Bound",
+    "content": "Erdős claimed a 2-coloring achieving k ≪ a^{1-c} for some absolute constant c > 0, which is weaker than the full k ≪_ε a^ε requirement.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-hunter",
+    "proofId": "erdos-984",
+    "type": "axiom",
+    "range": { "startLine": 132, "endLine": 134 },
+    "title": "Hunter's Theorem",
+    "content": "Zach Hunter proved there exists a 2-coloring satisfying k ≪_ε a^ε for all ε > 0, resolving the problem completely. This is the key external result axiomatized here.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-984-two-colors",
+    "proofId": "erdos-984",
+    "type": "axiom",
+    "range": { "startLine": 152, "endLine": 157 },
+    "title": "Two Colors Suffice",
+    "content": "For any fixed ε > 0, there exists a 2-coloring such that all monochromatic APs starting at a with k terms satisfy k ≤ C·a^ε for some constant C.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-one-color",
+    "proofId": "erdos-984",
+    "type": "theorem",
+    "range": { "startLine": 159, "endLine": 174 },
+    "title": "One Color Insufficient",
+    "content": "With only 1 color, every set is trivially monochromatic, so arbitrarily long APs exist starting at any position. This proves 2 is the minimum number of colors needed.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-erdos-exponent",
+    "proofId": "erdos-984",
+    "type": "axiom",
+    "range": { "startLine": 182, "endLine": 185 },
+    "title": "Erdős's Exponent",
+    "content": "The optimal constant c in Erdős's k ≪ a^{1-c} construction satisfies 0 < c < 1. The exact value remains unspecified.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-984-main-statement",
+    "proofId": "erdos-984",
+    "type": "theorem",
+    "range": { "startLine": 197, "endLine": 211 },
+    "title": "Main Problem Statement",
+    "content": "The complete formalization combines: Hunter's 2-coloring with k ≪_ε a^ε bound, Spencer's 3-coloring result, and Erdős's partial k ≪ a^{1-c} construction.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-984-summary",
+    "proofId": "erdos-984",
+    "type": "theorem",
+    "range": { "startLine": 217, "endLine": 233 },
+    "title": "Summary Theorem",
+    "content": "Summary establishes: (1) The problem is solved affirmatively, (2) 2 colors suffice for any power bound, (3) 1 color is insufficient due to van der Waerden.",
+    "significance": "critical"
+  }
+]
