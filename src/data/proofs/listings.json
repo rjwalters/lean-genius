@@ -11851,17 +11851,24 @@
   },
   {
     "id": "erdos-804",
-    "title": "Erdős Problem #804",
+    "title": "Erdős Problem #804: Independent Sets in Locally Independent Graphs",
     "slug": "erdos-804",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that any graph on ... vertices in which every induced subgraph on ... vertices has an independent set...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If every induced subgraph on m vertices has independent set ≥ log n, how large must the global independent set be? The conjectured bounds n^(1/2-o(1)) and (log n)³ were DISPROVED by Alon-Sudakov (2007).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "independent-sets",
+      "extremal-combinatorics",
+      "ramsey-theory",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 804,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-805",
