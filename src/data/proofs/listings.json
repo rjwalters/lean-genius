@@ -7828,17 +7828,24 @@
   },
   {
     "id": "erdos-534",
-    "title": "Erdős Problem #534",
+    "title": "Erdos Problem #534: Largest Subset with Pairwise Common Divisors",
     "slug": "erdos-534",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset ... which contains ... such that ... for all ...?\n\n\n\nA problem of Erds and Graham (in  it...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the largest subset A of {1,...,N} containing N where gcd(a,b) > 1 for all distinct pairs? Solved by Ahlswede-Khachatrian (1996) using generating sets based on prime factorization.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "gcd",
+      "extremal-set-theory",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 534,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-535",

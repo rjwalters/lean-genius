@@ -1,1 +1,129 @@
-[]
+[
+  {
+    "id": "ann-e534-header",
+    "proofId": "erdos-534",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #534: Largest Subset with Pairwise Common Divisors**\n\nFind the largest A in {1,...,N} containing N where gcd(a,b) > 1 for all distinct pairs.\n\n**History:**\n- Erdos-Graham (1973): posed problem, conjectured answer\n- Ahlswede-Khachatrian (1992): found counterexample\n- Erdos: gave refined conjecture\n- Ahlswede-Khachatrian (1996): proved refined conjecture\n\n**Status:** SOLVED",
+    "mathContext": "This is an extremal set theory problem. The condition gcd(a,b) > 1 means a and b share a common prime factor, making this an intersection problem on prime factor sets.",
+    "significance": "critical",
+    "relatedConcepts": ["GCD", "Prime factorization", "Intersection families", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e534-gcd-intersecting",
+    "proofId": "erdos-534",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "GCD-Intersecting Sets",
+    "content": "**IsGcdIntersecting:**\n\nA set A is GCD-intersecting if every pair of distinct elements shares a common factor > 1.\n\n```lean\ndef IsGcdIntersecting (A : Finset N) : Prop :=\n  forall a b in A, a != b -> Nat.gcd a b > 1\n```\n\n**Examples:**\n- {6, 10, 15}: all pairs share a factor (6,10 share 2; 6,15 share 3; 10,15 share 5)\n- {2, 4, 6, 8}: all even, so all pairs share factor 2",
+    "mathContext": "This condition is equivalent to: the prime factor sets of elements pairwise intersect. This connects to Erdos-Ko-Rado type intersection theorems.",
+    "significance": "critical",
+    "relatedConcepts": ["GCD", "Prime factors", "Intersection property"]
+  },
+  {
+    "id": "ann-e534-valid-set",
+    "proofId": "erdos-534",
+    "range": { "startLine": 55, "endLine": 66 },
+    "type": "definition",
+    "title": "Valid Sets",
+    "content": "**IsValidSet:**\n\nA valid set for N satisfies:\n1. A is contained in {1, ..., N}\n2. N is in A\n3. A is GCD-intersecting\n\n```lean\ndef IsValidSet (A : Finset N) (N : N) : Prop :=\n  (forall a in A, 1 <= a <= N) and N in A and IsGcdIntersecting A\n```\n\n**maxGcdIntersectingSize:** The supremum of |A| over all valid sets.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset", "Subset", "Extremal size"]
+  },
+  {
+    "id": "ann-e534-generating-set",
+    "proofId": "erdos-534",
+    "range": { "startLine": 80, "endLine": 88 },
+    "type": "definition",
+    "title": "Generating Sets",
+    "content": "**generatingSet:**\n\nFor N = q_1^k_1 ... q_r^k_r with q_1 < ... < q_r, and given j:\n\nG_j = {2q_1, 2q_2, ..., 2q_j, q_1 * q_2 * ... * q_j}\n\n**Key insight:** Any two multiples of elements in G_j share a common prime factor.\n\n**Example:** For N = 30 = 2 * 3 * 5 and j = 2:\nG_2 = {4, 6, 6} = {4, 6} (after removing duplicates)\nActually: {2*2, 2*3, 2*3} = {4, 6, 6}",
+    "mathContext": "The generating set is carefully designed so that multiples of its elements pairwise share prime factors. This is the key to the construction.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Divisibility", "Set construction"]
+  },
+  {
+    "id": "ann-e534-candidate-set",
+    "proofId": "erdos-534",
+    "range": { "startLine": 90, "endLine": 95 },
+    "type": "definition",
+    "title": "Candidate Sets",
+    "content": "**candidateSet:**\n\nThe candidate set for parameter j:\n\n```lean\nnoncomputable def candidateSet (N j) : Finset N :=\n  (range (N+1)).filter (fun n => n >= 1 and exists g in generatingSet N j, g | n)\n```\n\n**Meaning:** All integers in [1,N] divisible by at least one element of the generating set.\n\n**Key property:** This set is always GCD-intersecting.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Filter", "Set membership"]
+  },
+  {
+    "id": "ann-e534-original-conjecture",
+    "proofId": "erdos-534",
+    "range": { "startLine": 145, "endLine": 157 },
+    "type": "axiom",
+    "title": "Original Conjecture (Disproved)",
+    "content": "**originalConjecture:**\n\nErdos and Graham conjectured the maximum is either:\n1. N / minFac(N) (multiples of smallest prime factor), or\n2. |{2t : t <= N/2, gcd(2t, N) > 1}| (even numbers sharing factor with N)\n\n```lean\ndef originalConjecture (N) := \n  maxGcdIntersectingSize N = N / minFac(N) or\n  maxGcdIntersectingSize N = originalConjectureValue2 N\n```\n\n**Disproved:** Ahlswede and Khachatrian found counterexamples in 1992.",
+    "mathContext": "The original conjecture was too simple. Certain N with multiple prime factors admit larger sets than predicted.",
+    "significance": "key",
+    "relatedConcepts": ["Conjecture", "Counterexample", "Smallest prime factor"]
+  },
+  {
+    "id": "ann-e534-ahlswede-khachatrian",
+    "proofId": "erdos-534",
+    "range": { "startLine": 171, "endLine": 177 },
+    "type": "axiom",
+    "title": "Ahlswede-Khachatrian Theorem",
+    "content": "**ahlswede_khachatrian:**\n\nThe maximum is achieved by one of the candidate sets:\n\n```lean\naxiom ahlswede_khachatrian (N : N) (hN : N >= 2) :\n    maxGcdIntersectingSize N = refinedConjectureValue N\n```\n\nwhere refinedConjectureValue N = max over j of |candidateSet N j|.\n\n**Published:** Acta Arithmetica (1996).",
+    "mathContext": "This theorem completely characterizes the optimal sets. The proof uses sophisticated combinatorial techniques.",
+    "significance": "critical",
+    "relatedConcepts": ["Main theorem", "Optimization", "Candidate sets"]
+  },
+  {
+    "id": "ann-e534-main-theorem",
+    "proofId": "erdos-534",
+    "range": { "startLine": 179, "endLine": 185 },
+    "type": "theorem",
+    "title": "Erdos Problem #534: SOLVED",
+    "content": "**erdos_534:**\n\n```lean\ntheorem erdos_534 (N : N) (hN : N >= 2) :\n    maxGcdIntersectingSize N = refinedConjectureValue N :=\n  ahlswede_khachatrian N hN\n```\n\n**Meaning:** The maximum size equals the maximum over candidate set sizes.\n\nThis completely answers Erdos's question.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Complete solution", "Erdos problems"]
+  },
+  {
+    "id": "ann-e534-prime-case",
+    "proofId": "erdos-534",
+    "range": { "startLine": 217, "endLine": 221 },
+    "type": "axiom",
+    "title": "Prime Case",
+    "content": "**prime_case:**\n\nFor prime N = p, the maximum is 1:\n\n```lean\naxiom prime_case (p : N) (hp : p.Prime) :\n    maxGcdIntersectingSize p = 1\n```\n\n**Why:** If p is prime and a < p, then gcd(a, p) = 1 (a doesn't divide p).\n\nSo the only valid set is {p} itself.",
+    "mathContext": "Primes are 'lonely' in this sense - they share no factors with smaller numbers.",
+    "significance": "key",
+    "relatedConcepts": ["Prime numbers", "GCD with primes", "Special cases"]
+  },
+  {
+    "id": "ann-e534-singleton",
+    "proofId": "erdos-534",
+    "range": { "startLine": 256, "endLine": 270 },
+    "type": "theorem",
+    "title": "Singleton is Valid",
+    "content": "**singleton_valid:**\n\n```lean\ntheorem singleton_valid (N : N) (hN : N >= 1) : IsValidSet {N} N\n```\n\n**Proof:**\n- {N} is in {1,...,N}: check\n- N is in {N}: check\n- GCD-intersecting: vacuously true (no distinct pairs)\n\nThis shows maxGcdIntersectingSize N >= 1 for all N >= 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lower bound", "Trivial case", "Vacuous truth"]
+  },
+  {
+    "id": "ann-e534-intersecting-families",
+    "proofId": "erdos-534",
+    "range": { "startLine": 278, "endLine": 291 },
+    "type": "concept",
+    "title": "Connection to Intersecting Families",
+    "content": "**gcd_to_intersecting:**\n\nGCD-intersecting sets correspond to intersecting families:\n\n```lean\ntheorem gcd_to_intersecting (A : Finset N) :\n    IsGcdIntersecting A <->\n    IsIntersectingFamily (A.image (fun n => n.primeFactors))\n```\n\n**Meaning:** Map each n to its set of prime factors. Then gcd(a,b) > 1 iff the prime factor sets intersect.\n\nThis connects to Erdos-Ko-Rado type theorems about intersecting families.",
+    "mathContext": "This bridge to intersection theory explains why the problem is tractable - we can use tools from extremal set theory.",
+    "significance": "key",
+    "relatedConcepts": ["Erdos-Ko-Rado", "Intersection families", "Prime factorization"]
+  },
+  {
+    "id": "ann-e534-summary",
+    "proofId": "erdos-534",
+    "range": { "startLine": 299, "endLine": 323 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_534_summary:**\n\n```lean\ntheorem erdos_534_summary (N : N) (hN : N >= 2) :\n    maxGcdIntersectingSize N = refinedConjectureValue N and\n    (exists M, M >= 2 and not originalConjecture M) and\n    IsValidSet {N} N\n```\n\n**Complete picture:**\n1. Maximum = max over candidate sets (Ahlswede-Khachatrian 1996)\n2. Original conjecture was FALSE (counterexamples exist)\n3. Singleton {N} is always valid (minimum = 1)",
+    "significance": "key",
+    "relatedConcepts": ["Summary", "Complete solution", "Historical development"]
+  }
+]

@@ -1,33 +1,160 @@
 {
   "id": "erdos-534",
-  "title": "Erdős Problem #534",
+  "title": "Erdos Problem #534: Largest Subset with Pairwise Common Divisors",
   "slug": "erdos-534",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset ... which contains ... such that ... for all ...?\n\n\n\nA problem of Erds and Graham (in  it...",
+  "description": "What is the largest subset A of {1,...,N} containing N where gcd(a,b) > 1 for all distinct pairs? Solved by Ahlswede-Khachatrian (1996) using generating sets based on prime factorization.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ahlswede-Khachatrian (1996 proof), Erdos-Graham (1973 problem)",
     "sourceUrl": "https://erdosproblems.com/534",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos534Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "gcd",
+      "extremal-set-theory",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 534,
     "erdosUrl": "https://erdosproblems.com/534",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor function",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of prime factors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for subsets of {1,...,N}",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.minFac",
+        "description": "Smallest prime factor",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsGcdIntersecting: predicate for pairwise gcd > 1",
+      "IsValidSet: subset of {1,...,N} containing N with gcd property",
+      "maxGcdIntersectingSize: supremum of valid set sizes",
+      "primeFactorsSorted: sorted list of prime factors",
+      "generatingSet: {2q_1, ..., 2q_j, q_1...q_j} construction",
+      "candidateSet: integers divisible by generating set elements",
+      "originalConjecture: the disproved conjecture",
+      "refinedConjectureValue: max over candidate set sizes",
+      "ahlswede_khachatrian axiom: the main theorem",
+      "prime_case: maximum is 1 for prime N",
+      "IsIntersectingFamily: connection to set intersection theory",
+      "erdos_534_summary: complete solution statement"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #534 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset $A\\subseteq\\{1,\\ldots,N\\}$ which contains $N$ such that $\\mathrm{gcd}(a,b)>1$ for all $a\\neq b\\in A$?\n\n\n\nA problem of Erd\\H{o}s and Graham (in \\cite{Er73} it was stated with $(a,b)=1$ instead but this is clearly a typo). They conjecture that this maximum is either $N/p$ (where $p$ is the smallest prime factor of $N$) or it is the number of integers $\\{2t: t\\leq N/2\\textrm{ and }(2t,N)> 1\\}$.\n\nAhlswede and Khachatrian \\cite{AhKh96} observe that it is 'easy' to find a counterexample to this conjecture, which they informed Erd\\H{o}s about in 1992. Erd\\H{o}s then gave a refined conjecture, that if $N=q_1^{k_1}\\cdots q_r^{k_r}$ (where $q_1<\\cdots <q_r$ are distinct primes) then the maximum is achieved by, for some $1\\leq j\\leq r$, those integers in $[1,N]$ which are a multiple of at least one of\\[\\{2q_1,\\ldots,2q_j,q_1\\cdots q_j\\}.\\]This conjecture was proved by Ahlswede and Khachatrian \\cite{AhKh96}.\n\nSee also [56].\n\n\n\n\nReferences\n\n\n[AhKh96] Ahlswede, Rudolf and Khachatrian, Levon H., Sets of integers with pairwise common divisor and a factor\nfrom a specified set of primes. Acta Arith. (1996), 259--276.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #534**\n\nThis problem concerns extremal sets with prescribed GCD properties.\n\n**Historical Development:**\n- Erdos and Graham posed the problem in 1973 [Er73]\n- They conjectured the maximum is either N/p (smallest prime factor) or |{2t : t <= N/2, gcd(2t,N) > 1}|\n- Ahlswede and Khachatrian found a counterexample in 1992\n- Erdos then gave a refined conjecture based on generating sets\n- Ahlswede and Khachatrian proved the refined conjecture in 1996 [AhKh96]\n\n**Mathematical Context:**\nThis is an intersection problem in disguise: gcd(a,b) > 1 means a and b share a prime factor, so the problem asks for sets whose elements pairwise share a prime factor.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nWhat is the largest possible subset $A \\subseteq \\{1, \\ldots, N\\}$ which contains $N$ such that $\\gcd(a, b) > 1$ for all distinct $a, b \\in A$?\n\n**Answer:** For $N = q_1^{k_1} \\cdots q_r^{k_r}$ with $q_1 < \\cdots < q_r$ distinct primes, the maximum is achieved by integers divisible by at least one of $\\{2q_1, \\ldots, 2q_j, q_1 \\cdots q_j\\}$ for the optimal $j$.\n\n**Original Conjecture (Disproved):** Max is $N/\\text{minFac}(N)$ or $|\\{2t : t \\leq N/2, \\gcd(2t, N) > 1\\}|$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Predicates:** Define IsGcdIntersecting and IsValidSet\n\n2. **Maximum Function:** Define maxGcdIntersectingSize as supremum\n\n3. **Generating Sets:** Construct {2q_1, ..., 2q_j, q_1...q_j} from prime factorization\n\n4. **Candidate Sets:** Integers in [1,N] divisible by generating set elements\n\n5. **Original Conjecture:** State and show it has counterexamples\n\n6. **Refined Conjecture:** Maximum over candidate set sizes\n\n7. **Main Theorem:** Axiomatize Ahlswede-Khachatrian result\n\n8. **Special Cases:** Prime N (max = 1), prime power N (max = p^{k-1})\n\n9. **Connection:** Relate to intersecting families in combinatorics",
+    "keyInsights": [
+      "**GCD as Intersection:** gcd(a,b) > 1 means a and b share a common prime factor - this is an intersection condition on prime factor sets",
+      "**Generating Set Construction:** The optimal sets use {2q_1, ..., 2q_j, q_1...q_j} to ensure all pairs share a prime",
+      "**Prime Case is Trivial:** For prime N, only {N} works since N shares no factor with smaller numbers",
+      "**Counterexample to Original:** The N/p formula fails for certain composite N with specific prime factorizations",
+      "**Optimization over j:** The optimal j depends on the relative sizes of prime factors",
+      "**Connection to Erdos-Ko-Rado:** This is a number-theoretic analog of intersection theorems for families of sets"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "IsGcdIntersecting, IsValidSet, maxGcdIntersectingSize",
+      "startLine": 43,
+      "endLine": 67
+    },
+    {
+      "id": "generating-sets",
+      "title": "Generating Sets",
+      "summary": "primeFactorsSorted, generatingSet, candidateSet",
+      "startLine": 68,
+      "endLine": 96
+    },
+    {
+      "id": "candidate-properties",
+      "title": "Candidate Set Properties",
+      "summary": "candidateSet_is_gcd_intersecting, candidateSet_contains_N, candidateSet_subset",
+      "startLine": 97,
+      "endLine": 125
+    },
+    {
+      "id": "original-conjecture",
+      "title": "Original Conjecture (Disproved)",
+      "summary": "originalConjectureValue1, originalConjectureValue2, original_conjecture_counterexample",
+      "startLine": 126,
+      "endLine": 158
+    },
+    {
+      "id": "refined-conjecture",
+      "title": "Refined Conjecture (Proved)",
+      "summary": "refinedConjectureValue, ahlswede_khachatrian, erdos_534",
+      "startLine": 159,
+      "endLine": 186
+    },
+    {
+      "id": "optimal-set",
+      "title": "Optimal Set Characterization",
+      "summary": "optimalJ, optimalSet, optimalSet_achieves_max",
+      "startLine": 187,
+      "endLine": 210
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "prime_case, prime_power_case, even_case",
+      "startLine": 211,
+      "endLine": 234
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds",
+      "summary": "upper_bound, lower_bound, singleton_valid",
+      "startLine": 235,
+      "endLine": 271
+    },
+    {
+      "id": "intersecting-families",
+      "title": "Connection to Intersecting Families",
+      "summary": "IsIntersectingFamily, gcd_to_intersecting",
+      "startLine": 272,
+      "endLine": 292
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_534_summary, erdos_534_answer",
+      "startLine": 293,
+      "endLine": 337
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #534 asked for the largest subset A of {1,...,N} containing N where all pairs have gcd > 1. The original Erdos-Graham conjecture was disproved by Ahlswede and Khachatrian (1992). Erdos then gave a refined conjecture using generating sets {2q_1, ..., 2q_j, q_1...q_j}, which Ahlswede and Khachatrian proved in 1996.",
+    "implications": "**Implications and Connections**\n\n1. **Extremal Set Theory:** Extends intersection theorems to number-theoretic settings\n\n2. **Prime Factorization Structure:** The solution depends critically on the prime factorization of N\n\n3. **Generating Set Method:** A general technique for constructing extremal sets\n\n4. **Counterexample Discovery:** Shows the importance of testing conjectures computationally\n\n5. **Related Problems:** Connected to Erdos Problem #56 and Erdos-Ko-Rado type results",
+    "openQuestions": [
+      "Efficient algorithms for computing the optimal j",
+      "Generalizations to other GCD conditions (e.g., gcd > k)",
+      "Analogues for arithmetic progressions instead of GCD",
+      "Connections to additive combinatorics",
+      "Average-case behavior over random N"
+    ]
   }
 }
