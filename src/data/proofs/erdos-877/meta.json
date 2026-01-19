@@ -1,33 +1,120 @@
 {
   "id": "erdos-877",
-  "title": "Erdős Problem #877",
+  "title": "Counting Maximal Sum-Free Subsets",
   "slug": "erdos-877",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of maximal sum-free subsets ... - that is, there are no solutions to ... in ... and ... is maximal w...",
+  "description": "Let f_m(n) count maximal sum-free subsets A of {1,...,n}. Is f_m(n) = o(2^{n/2})? SOLVED: YES. Sharp bounds show f_m(n) = (C_n + o(1))2^{n/4} where C_n depends on n mod 4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Cameron-Erdős (problem), Łuczak-Schoen (solved), BLST (sharp bounds)",
     "sourceUrl": "https://erdosproblems.com/877",
-    "date": "",
-    "status": "pending",
+    "date": "2001",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos877Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "counting",
+      "asymptotics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 5,
     "erdosNumber": 877,
     "erdosUrl": "https://erdosproblems.com/877",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #877 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_m(n)$ count the number of maximal sum-free subsets $A\\subseteq\\{1,\\ldots,n\\}$ - that is, there are no solutions to $a=b+c$ in $A$ and $A$ is maximal with this property. Estimate $f(n)$ - is it true that $f_m(n)=o(2^{n/2})$?\n\n\n\nA problem of Cameron and Erd\\H{o}s, who proved that $f_m(n)>2^{n/4}$, and also asked whether\\[f_m(n)=o(f(n)),\\]where $f(n)$ counts the number of all (not necessarily maximal) sum-free sets. Luczak and Schoen \\cite{LuSc01} proved that there exists a constant $c<1/2$ such that\\[f_m(n)<2^{cn},\\]resolving these questions. Balogh, Liu, Sharifzadeh, and Treglown \\cite{BLST15} proved that\\[f_m(n)=2^{(\\frac{1}{4}+o(1))n},\\]which the same authors \\cite{BLST18} later improved to\\[f_m(n)=(C_n+o(1))2^{n/4},\\]where $C_n$ is some explicit constant depending only on $n\\pmod{4}$.\n\nSee [748] for the non-maximal case.\n\n\n\n\nReferences\n\n\n[BLST15] Balogh, J\\'{o}zsef and Liu, Hong and Sharifzadeh, Maryam and\nTreglown, Andrew, The number of maximal sum-free subsets of integers. Proc. Amer. Math. Soc. (2015), 4713--4721.\n\n[BLST18] Balogh, J\\'{o}zsef and Liu, Hong and Sharifzadeh, Maryam and\nTreglown, Andrew, Sharp bound on the number of maximal sum-free subsets of\nintegers. J. Eur. Math. Soc. (JEMS) (2018), 1885--1911.\n\n[LuSc01] \\L uczak, Tomasz and Schoen, Tomasz, On the number of maximal sum-free sets. Proc. Amer. Math. Soc. (2001), 2205--2207.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Sum-free sets (sets containing no solution to a = b + c) are fundamental objects in additive combinatorics. Cameron and Erdős studied the count of maximal sum-free sets and established the lower bound f_m(n) > 2^{n/4}. They asked whether f_m(n) = o(2^{n/2}) and whether f_m(n) = o(f(n)) where f(n) counts all sum-free sets.",
+    "problemStatement": "Let f_m(n) count the number of maximal sum-free subsets of {1,...,n}. Estimate f_m(n) - is it true that f_m(n) = o(2^{n/2})?",
+    "proofStrategy": "The formalization defines sum-free and maximal sum-free sets, establishes the counting functions f(n) and f_m(n), and axiomatizes the key results: Cameron-Erdős lower bound, Łuczak-Schoen upper bound (resolving the main question), and BLST sharp asymptotics.",
+    "keyInsights": [
+      "Sum-free sets satisfy A ∩ (A + A) = ∅",
+      "The odd numbers and upper half of {1,...,n} are canonical sum-free examples",
+      "f_m(n) = Θ(2^{n/4}), much smaller than f(n) = Θ(2^{n/2})",
+      "The exponent 1/4 arises from structural constraints on maximal sets",
+      "BLST used the container method to establish sharp bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sum-free-sets",
+      "title": "Sum-Free Sets",
+      "startLine": 37,
+      "endLine": 79,
+      "summary": "Defines sum-free sets and provides examples (odd numbers, upper half).",
+      "description": "A set A is sum-free if there are no solutions to a = b + c with a, b, c in A. The odd numbers form a natural sum-free set since odd + odd = even."
+    },
+    {
+      "id": "maximal-sum-free",
+      "title": "Maximal Sum-Free Sets",
+      "startLine": 81,
+      "endLine": 107,
+      "summary": "Defines maximal sum-free sets and their characterization.",
+      "description": "A sum-free set A is maximal if adding any element x would create a sum. This means every excluded x is either a sum of two elements or participates in a sum with elements of A."
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions",
+      "startLine": 109,
+      "endLine": 132,
+      "summary": "Defines f(n) for all sum-free sets and f_m(n) for maximal ones.",
+      "description": "The counting functions are defined via filtering the powerset. Every maximal sum-free set is sum-free, so f_m(n) ≤ f(n)."
+    },
+    {
+      "id": "cameron-erdos-bound",
+      "title": "Cameron-Erdős Lower Bound",
+      "startLine": 134,
+      "endLine": 156,
+      "summary": "States f_m(n) > 2^{n/4} via construction from odd numbers.",
+      "description": "Cameron and Erdős proved this lower bound by constructing exponentially many distinct maximal sum-free sets from subsets of odd numbers."
+    },
+    {
+      "id": "luczak-schoen",
+      "title": "Łuczak-Schoen Upper Bound",
+      "startLine": 158,
+      "endLine": 184,
+      "summary": "States f_m(n) < 2^{cn} for c < 1/2, resolving the main question.",
+      "description": "Łuczak and Schoen (2001) proved the existence of c < 1/2 such that f_m(n) < 2^{cn}, establishing that f_m(n) = o(2^{n/2})."
+    },
+    {
+      "id": "blst-sharp",
+      "title": "BLST Sharp Bounds",
+      "startLine": 186,
+      "endLine": 219,
+      "summary": "States f_m(n) = (C_n + o(1))2^{n/4} with C_n depending on n mod 4.",
+      "description": "Balogh, Liu, Sharifzadeh, and Treglown established sharp asymptotics in two papers (2015, 2018), pinning down the exponent as exactly 1/4 and the leading constant C_n."
+    },
+    {
+      "id": "structure",
+      "title": "Structure of Maximal Sum-Free Sets",
+      "startLine": 221,
+      "endLine": 248,
+      "summary": "Discusses canonical constructions and the container method.",
+      "description": "Most maximal sum-free sets fall into three types: subsets of odds, subsets of the upper third, or hybrid constructions. The container method was key to the BLST proof."
+    },
+    {
+      "id": "erdos-748",
+      "title": "Relationship to Erdős #748",
+      "startLine": 250,
+      "endLine": 270,
+      "summary": "Compares f_m(n) = Θ(2^{n/4}) with f(n) = Θ(2^{n/2}).",
+      "description": "The related problem #748 asks about all sum-free sets. The ratio f_m(n)/f(n) → 0, showing maximal sets are exponentially rare among sum-free sets."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 272,
+      "endLine": 308,
+      "summary": "Consolidates the solved status and main theorems.",
+      "description": "Erdős #877 is SOLVED: f_m(n) = o(2^{n/2}) is TRUE, with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4}."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4.",
+    "implications": "This result reveals a striking gap between the count of all sum-free sets (~2^{n/2}) and maximal sum-free sets (~2^{n/4}). The container method developed for this problem has applications to other extremal counting problems.",
+    "openQuestions": [
+      "What are the exact values of C_0, C_1, C_2, C_3?",
+      "Can the structure of maximal sum-free sets be characterized more precisely?",
+      "What about maximal sum-free sets in other groups (Z_n, Z_p)?"
+    ]
   }
 }
