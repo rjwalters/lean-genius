@@ -1,33 +1,148 @@
 {
   "id": "erdos-1045",
-  "title": "Erdős Problem #1045",
+  "title": "Erdős Problem #1045: Maximum Product of Distances",
   "slug": "erdos-1045",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... for all ..., and\\[\\Delta(z_1,\\ldots,z_n)=\\prod_{i\\neq j}\\lvert z_i-z_j\\rvert.\\]What is the maximum possible ...",
+  "description": "Given n complex points with pairwise distances ≤ 2, maximize ∏|zᵢ-zⱼ|. Regular polygon is NOT optimal for even n ≥ 4. Odd n case remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Herzog-Piranian (1958)",
     "sourceUrl": "https://erdosproblems.com/1045",
-    "date": "",
-    "status": "pending",
+    "date": "1958",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1045Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "optimization",
+      "polynomial",
+      "geometry"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1045,
     "erdosUrl": "https://erdosproblems.com/1045",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value (modulus) of complex numbers",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential function",
+        "module": "Mathlib.Data.Complex.Exponential"
+      },
+      {
+        "theorem": "Real.cos",
+        "description": "Real cosine function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized configuration space and diameter constraint",
+      "Stated Pommerenke's 2^{O(n)}·n^n upper bound",
+      "Captured Hu-Tang and Cambie counterexamples for even n",
+      "Stated Sothanaphan and Cambie-Dong-Tang lower bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1045 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $z_1,\\ldots,z_n\\in \\mathbb{C}$ with $\\lvert z_i-z_j\\rvert\\leq 2$ for all $i,j$, and\\[\\Delta(z_1,\\ldots,z_n)=\\prod_{i\\neq j}\\lvert z_i-z_j\\rvert.\\]What is the maximum possible value of $\\Delta$? Is it maximised by taking the $z_i$ to be the vertices of a regular polygon?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}, who proved that, for any monic polynomial $f$, if $\\{ z: \\lvert f(z)\\rvert <1\\}$ is connected and $f$ has roots $z_1,\\ldots,z_n$ then $\\prod_{i\\neq j}\\lvert z_i-z_j\\rvert <n^n$.\n\nThe value of $\\Delta$ when the $z_i$ are the vertices of a regular polygon is $n^n$ when $n$ is even and\\[\\cos(\\pi/2n)^{-n(n-1)}n^n \\sim e^{\\pi^2/8}n^n\\]when $n$ is odd.\n\nPommerenke \\cite{Po61} proved that $\\Delta \\leq 2^{O(n)}n^n$ for all $z_i$ with $\\lvert z_i-z_j\\rvert \\leq 2$.\n\nHu and Tang (see the comments) found examples when $n=4$ and $n=6$ that show that vertices of a regular polygon do not maximise $\\Delta$. Cambie (also in the comments) showed that, in general, the vertices of a regular polygon are not a maximiser for all even $n\\geq 4$.\n\nThere is a lot of discussion of this problem in the comments. It is now known that, for even $n$,\\[\\liminf \\frac{\\max \\Delta}{n^n}\\geq C\\]for some $C>0$. This was proved with $C\\approx 1.0378$ by Sothanaphan \\cite{So25}. An alternative construction by Cambie, Dong, and Tang (see the comments by Stijn Cambie) achieves $C\\approx 1.304457$ for $6\\mid n$, and $C\\approx 1.26853$ for all even $n$.\n\n\nIt remains possible that the regular polygon is a maximiser for odd $n$.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n[So25] N. Sothanaphan, An improved lower bound to Erdos' problem concerning products of distances for fixed diameter. arXiv:2512.14251 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian in 1958. Given n complex points z₁,...,zₙ with all pairwise distances at most 2 (diameter constraint), what is the maximum value of the product Δ = ∏_{i≠j} |zᵢ-zⱼ|? The natural conjecture was that the regular polygon inscribed in a circle of diameter 2 maximizes Δ.\n\nPommerenke (1961) proved the upper bound Δ ≤ 2^{O(n)}·n^n, showing the maximum is at most exponentially larger than the regular polygon value. For the regular polygon: Δ = n^n when n is even, and Δ ~ e^{π²/8}·n^n when n is odd.\n\nThe breakthrough came when Hu and Tang found explicit counterexamples for n = 4 and n = 6, showing the regular polygon is NOT optimal. Cambie then proved this holds for all even n ≥ 4. Recent work by Sothanaphan (2025) and Cambie-Dong-Tang establishes that liminf(max Δ / n^n) ≥ 1.304 for even n, significantly exceeding the regular polygon value of 1.",
+    "problemStatement": "Let $z_1,\\ldots,z_n \\in \\mathbb{C}$ with $|z_i - z_j| \\leq 2$ for all $i,j$. Define\n$$\\Delta(z_1,\\ldots,z_n) = \\prod_{i \\neq j} |z_i - z_j|.$$\n\n**Question**: What is the maximum possible value of $\\Delta$? Is it maximized by the vertices of a regular polygon?\n\n**Answer**:\n- For **even** $n \\geq 4$: Regular polygon is NOT optimal. Better configurations exist with $\\max \\Delta / n^n \\geq 1.304$.\n- For **odd** $n$: Open. The regular polygon may still be optimal.\n\n**Status**: OPEN (partially resolved)",
+    "proofStrategy": "The formalization defines configurations as maps Fin n → ℂ, with DiameterAtMost2 expressing the constraint. The product Delta is defined over all ordered pairs. Key results are axiomatized: Pommerenke's upper bound, the Hu-Tang counterexamples, Cambie's generalization to all even n, and the Sothanaphan/Cambie-Dong-Tang lower bounds. The odd case is stated as an open conjecture.",
+    "keyInsights": [
+      "**Regular polygon value**: For even n, Δ = n^n. For odd n, Δ = cos(π/2n)^{-n(n-1)}·n^n ~ e^{π²/8}·n^n.",
+      "**Counterexamples exist**: Hu-Tang found explicit configurations for n = 4,6 beating the regular polygon. Cambie generalized this to all even n ≥ 4.",
+      "**Quantitative gap**: Recent work shows max Δ / n^n ≥ 1.304 for even n, a 30%+ improvement over regular polygons.",
+      "**Even vs odd dichotomy**: The problem behaves very differently for even and odd n. Only the even case is resolved (regular polygon NOT optimal).",
+      "**Connection to polynomial theory**: Erdős-Herzog-Piranian related this to monic polynomials with connected sublevel sets."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Configuration, DiameterAtMost2, Delta, DeltaSqrt",
+      "startLine": 36,
+      "endLine": 55
+    },
+    {
+      "id": "regular-polygon",
+      "title": "Regular Polygon Configuration",
+      "summary": "RegularPolygon, delta_regular_even, delta_regular_odd",
+      "startLine": 57,
+      "endLine": 76
+    },
+    {
+      "id": "ehp-bound",
+      "title": "Erdős-Herzog-Piranian Bound (1958)",
+      "summary": "polynomialFromRoots, ConnectedSublevelSet, EHP_1958",
+      "startLine": 78,
+      "endLine": 95
+    },
+    {
+      "id": "pommerenke",
+      "title": "Pommerenke's Upper Bound (1961)",
+      "summary": "pommerenke_1961",
+      "startLine": 97,
+      "endLine": 104
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples for Even n",
+      "summary": "hu_tang_n4, hu_tang_n6, cambie_even_not_optimal",
+      "startLine": 106,
+      "endLine": 125
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds for Even n",
+      "summary": "MaxDelta, sothanaphan_2025, cambie_dong_tang_6div, cambie_dong_tang_even",
+      "startLine": 127,
+      "endLine": 148
+    },
+    {
+      "id": "odd-case",
+      "title": "Odd n Remains Open",
+      "summary": "RegularPolygonOptimalOdd, odd_case_open",
+      "startLine": 150,
+      "endLine": 160
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "optimal_n2, regular_optimal_n3",
+      "startLine": 162,
+      "endLine": 174
+    },
+    {
+      "id": "main-statement",
+      "title": "Erdős Problem #1045 Statement",
+      "summary": "erdos_1045_statement, erdos_1045_partial",
+      "startLine": 176,
+      "endLine": 203
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1045_summary and erdos_1045_answer",
+      "startLine": 205,
+      "endLine": 233
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1045 asks for the maximum product of pairwise distances among n points with diameter ≤ 2. For even n ≥ 4, the regular polygon is provably NOT optimal, with better configurations achieving max Δ / n^n ≥ 1.304. For odd n, the regular polygon may still be optimal—this remains open.",
+    "implications": "The resolution for even n reveals surprising complexity in this geometric optimization. The exact maximizers are still unknown, and understanding the structure of optimal configurations remains an open challenge.",
+    "openQuestions": [
+      "What is the exact maximum Δ for each even n?",
+      "Is the regular polygon optimal for odd n?",
+      "What is the structure of optimal configurations for even n?",
+      "What is the true value of liminf(max Δ / n^n) as n → ∞?"
+    ]
   }
 }
