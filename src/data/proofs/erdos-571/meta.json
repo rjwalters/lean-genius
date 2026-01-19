@@ -1,33 +1,90 @@
 {
   "id": "erdos-571",
-  "title": "Erdős Problem #571",
+  "title": "Erdős Problem #571: Rational Turán Exponents for Bipartite Graphs",
   "slug": "erdos-571",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for any rational ... there exists a bipartite graph ... such that\\[(n;G)\\asymp n^{\\alpha}.\\]\n\n\n\nA problem of Erds a...",
+  "description": "Is every rational α ∈ [1,2) a Turán exponent? Does there exist a bipartite graph G with ex(n;G) ≍ n^α for each such α? OPEN. Bukh-Conlon solved the finite family variant.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Simonovits",
     "sourceUrl": "https://erdosproblems.com/571",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos571Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "turan-theory",
+      "bipartite-graphs"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 14,
     "erdosNumber": 571,
     "erdosUrl": "https://erdosproblems.com/571",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #571 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for any rational $\\alpha \\in [1,2)$ there exists a bipartite graph $G$ such that\\[\\mathrm{ex}(n;G)\\asymp n^{\\alpha}.\\]\n\n\n\nA problem of Erd\\H{o}s and Simonovits.\n\nBukh and Conlon \\cite{BuCo18} proved that this holds if we weaken asking for the extremal number of a single graph to asking for the extremal number of a finite family of graphs.\n\nA rational $\\alpha\\in [1,2)$ for which this holds is known as a Tur\\'{a}n exponent. Known Tur\\'{a}n exponents are:\n{UL}\n{LI} $\\frac{3}{2}-\\frac{1}{2s}$ for $s\\geq 2$ (Conlon, Janzer, and Lee \\cite{CJL21}).{/LI}\n{LI} $\\frac{4}{3}-\\frac{1}{3s}$ and $\\frac{5}{4}-\\frac{1}{4s}$ for $s\\geq 2$ (Jiang and Qiu \\cite{JiQi20}).{/LI}\n{LI} $2-\\frac{a}{b}$ for $\\lfloor b/a\\rfloor^3 \\leq a\\leq \\frac{b}{\\lfloor b/a\\rfloor+1}+1$ (Jiang, Jiang, and Ma \\cite{JJM20}).{/LI}\n{LI} $2-\\frac{a}{b}$ with $b>a\\geq 1$ and $b\\equiv \\pm 1\\pmod{a}$ (Kang, Kim, and Liu \\cite{KKL21}).{/LI}\n{LI} $1+a/b$ with $b>a^2$ (Jiang and Qiu \\cite{JiQi23}),{/LI}\n{LI} $2-\\frac{2}{2b+1}$ for $b\\geq 2$ or $7/5$ (Jiang, Ma, and Yepremyan \\cite{JMY22}).{/LI}\n{LI} $2-a/b$ with $b\\geq (a-1)^2$ (Conlon and Janzer \\cite{CoJa22}).{/LI}\n{/UL}\n\nSee also [713] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BuCo18] Bukh, Boris and Conlon, David, Rational exponents in extremal graph theory. J. Eur. Math. Soc. (JEMS) (2018), 1747-1757.\n\n[CJL21] Conlon, David and Janzer, Oliver and Lee, Joonkyung, More on the extremal number of subdivisions. Combinatorica (2021), 465-494.\n\n[CoJa22] Conlon, David and Janzer, Oliver, Rational exponents near two. Adv. Comb. (2022), Paper No. 9, 10.\n\n[JJM20] Jiang, Tao and Jiang, Zilin and Ma, Jie, Negligible obstructions and Tur\\'{a}n exponents. arXiv:2007.02975 (2020).\n\n[JMY22] Jiang, Tao and Ma, Jie and Yepremyan, Liana, On Tur\\'{a}n exponents of bipartite graphs. Combin. Probab. Comput. (2022), 333-344.\n\n[JiQi20] Jiang, Tao and Qiu, Yu, Tur\\'{a}n numbers of bipartite subdivisions. SIAM J. Discrete Math. (2020), 556-570.\n\n[JiQi23] Jiang, Tao and Qiu, Yu, Many Tur\\'{a}n exponents via subdivisions. Combin. Probab. Comput. (2023), 134-150.\n\n[KKL21] Kang, Dong Yeap and Kim, Jaehoon and Liu, Hong, On the rational Tur\\'{a}n exponents conjecture. J. Combin. Theory Ser. B (2021), 149-172.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Simonovits as a fundamental question connecting extremal graph theory with rational number theory. The extremal number ex(n;G) asks: what is the maximum number of edges in an n-vertex graph that contains no copy of G? For bipartite graphs, ex(n;G) is known to be o(n²) but the exact growth rates achievable form a rich structure.",
+    "problemStatement": "Show that for any rational α ∈ [1,2) there exists a bipartite graph G such that ex(n;G) ≍ n^α. Here ≍ means asymptotic equivalence: both O(n^α) and Ω(n^α). A rational α for which this holds is called a Turán exponent.",
+    "proofStrategy": "The formalization captures: (1) Basic graph definitions including bipartiteness and extremal numbers. (2) The definition of Turán exponent and the main conjecture. (3) Extensive known families of Turán exponents from recent research. (4) The Bukh-Conlon theorem for finite families. (5) Classical results like Kővári-Sós-Turán. (6) Specific examples including paths and even cycles.",
+    "keyInsights": [
+      "Turán exponents form a subset of [1,2) ∩ ℚ; the conjecture asks if this subset is all of [1,2) ∩ ℚ",
+      "Bukh-Conlon (2018) proved the weaker version: every rational is achievable for a FINITE FAMILY of bipartite graphs",
+      "Known Turán exponents accumulate near 2: results like Conlon-Janzer cover exponents ≥ 7/4 well",
+      "The hardest cases are exponents close to 1, where constructions are scarce",
+      "Recent progress by Jiang-Qiu (2023) gives exponents 1 + a/b with b > a², partially addressing low exponents"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Basic Definitions",
+      "startLine": 42,
+      "endLine": 69,
+      "summary": "Defines Graph structure, bipartiteness (2-colorable), edge counting, subgraph containment (ContainsCopy), and G-free graphs (IsFree)."
+    },
+    {
+      "title": "Extremal Numbers",
+      "startLine": 71,
+      "endLine": 91,
+      "summary": "Defines the extremal number ex(n;G) as the maximum edges in an n-vertex G-free graph. Includes asymptotic notation definitions (≍, O, Ω) for comparing growth rates."
+    },
+    {
+      "title": "Turán Exponents",
+      "startLine": 92,
+      "endLine": 111,
+      "summary": "Defines IsTuranExponent: α ∈ [1,2) is a Turán exponent if some bipartite G has ex(n;G) ≍ n^α. States the main conjecture that all rationals in [1,2) are Turán exponents."
+    },
+    {
+      "title": "Known Turán Exponents",
+      "startLine": 113,
+      "endLine": 147,
+      "summary": "Formalizes recent results: Conlon-Janzer-Lee (3/2 - 1/(2s)), Jiang-Qiu (4/3 and 5/4 families, 1 + a/b), Jiang-Ma-Yepremyan (2 - 2/(2b+1), 7/5), Conlon-Janzer (2 - a/b near 2)."
+    },
+    {
+      "title": "Finite Families Result",
+      "startLine": 149,
+      "endLine": 165,
+      "summary": "States Bukh-Conlon (2018): every rational α ∈ [1,2) is achievable for a FINITE FAMILY of bipartite graphs, solving the weakened version of the conjecture."
+    },
+    {
+      "title": "Classical Results",
+      "startLine": 167,
+      "endLine": 212,
+      "summary": "Includes Kővári-Sós-Turán theorem (ex(n; K_{s,t}) = O(n^{2-1/s})), Bondy-Simonovits upper bounds, path exponents (ex(n; P_k) = Θ(n)), and even cycle exponents."
+    },
+    {
+      "title": "The Gap",
+      "startLine": 214,
+      "endLine": 232,
+      "summary": "Discusses what remains open: exponents close to 1 are hardest, known constructions cluster near 2, the full conjecture for single bipartite graphs remains open."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #571 asks whether every rational α ∈ [1,2) is a Turán exponent—achievable by some single bipartite graph G with ex(n;G) ≍ n^α. The problem remains OPEN. Bukh-Conlon (2018) solved the finite family variant, and many specific exponents are known, but the single-graph version for all rationals is unresolved.",
+    "implications": "This problem connects extremal graph theory with number theory. A complete solution would illuminate the fine structure of extremal problems for sparse forbidden subgraphs and potentially require new construction techniques.",
+    "openQuestions": [
+      "Is every rational in [1,2) a Turán exponent for a single bipartite graph?",
+      "Can exponents close to 1 (like 1.01) be achieved?",
+      "What is the structure of the set of Turán exponents? Is it dense in [1,2)?",
+      "Are there Turán exponents that require bipartite graphs with specific structural properties?"
+    ]
   }
 }

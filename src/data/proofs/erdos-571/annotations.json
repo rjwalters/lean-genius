@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-571-statement",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 7,
+      "endLine": 9
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "For any rational α ∈ [1,2), does there exist a bipartite graph G with ex(n;G) ≍ n^α? Such an α is called a Turán exponent. The conjecture asks if all rationals in [1,2) are Turán exponents.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-571-extremal",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 73,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Extremal Number",
+    "content": "ex(n;G) is the maximum number of edges in an n-vertex graph that contains no copy of G as a subgraph. This is the fundamental quantity in Turán-type extremal graph theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-571-bipartite",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Bipartite Graphs",
+    "content": "A graph is bipartite if its vertices partition into two sets with edges only between sets (equivalently, 2-colorable). For bipartite G, ex(n;G) = o(n²), making precise growth rates meaningful.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-571-asymptotic",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 79,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Asymptotic Notation",
+    "content": "f ≍ g (AsymptoticEquiv) means c₁g ≤ f ≤ c₂g for constants c₁, c₂ > 0, i.e., f = Θ(g). This captures exact growth rate up to constants, requiring both upper and lower bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-571-turan-exp",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 94,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Turán Exponent",
+    "content": "A rational α ∈ [1,2) is a Turán exponent if some bipartite graph G satisfies ex(n;G) ≍ n^α. The set of Turán exponents is a subset of [1,2) ∩ ℚ; the conjecture asks if it equals the whole interval.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-571-conjecture",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 106,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "The Erdős-Simonovits Conjecture",
+    "content": "Every rational α ∈ [1,2) is a Turán exponent. This would mean every rational growth rate between linear and quadratic is achievable as the extremal number of some bipartite graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-571-cjl",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 115,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Conlon-Janzer-Lee (2021)",
+    "content": "The rationals 3/2 - 1/(2s) for s ≥ 2 are Turán exponents. This family includes 5/4, 7/6, 9/8, ... accumulating at 3/2 from below.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-571-jq-low",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 130,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Jiang-Qiu Low Exponents (2023)",
+    "content": "Rationals 1 + a/b with b > a² are Turán exponents. This addresses the difficult regime of exponents close to 1, though still requires b to be relatively large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-571-jmy",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 135,
+      "endLine": 142
+    },
+    "type": "theorem",
+    "title": "Jiang-Ma-Yepremyan (2022)",
+    "content": "Rationals 2 - 2/(2b+1) for b ≥ 2 are Turán exponents. Also 7/5 is specifically shown to be achievable. These results cover exponents accumulating at 2 from specific arithmetic progressions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-571-near-two",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 144,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Conlon-Janzer Near Two (2022)",
+    "content": "Rationals 2 - a/b with b ≥ (a-1)² are Turán exponents. This covers a dense set of rationals near 2, showing exponents ≥ 7/4 are well-understood.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-571-bukh",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 157,
+      "endLine": 165
+    },
+    "type": "theorem",
+    "title": "Bukh-Conlon Finite Families (2018)",
+    "content": "Every rational α ∈ [1,2) is achievable for a FINITE FAMILY of bipartite graphs (not necessarily a single graph). This solves a weakened version of the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-571-kst",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 169,
+      "endLine": 178
+    },
+    "type": "theorem",
+    "title": "Kővári-Sós-Turán",
+    "content": "ex(n; K_{s,t}) = O(n^{2-1/s}) for complete bipartite K_{s,t} with s ≤ t. This classical result (1954) gives upper bounds showing forbidden bipartite subgraphs yield subquadratic extremal numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-571-paths",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 192,
+      "endLine": 201
+    },
+    "type": "theorem",
+    "title": "Path Exponent",
+    "content": "ex(n; P_k) = Θ(n) for paths P_k, giving Turán exponent 1. Paths are the simplest bipartite graphs and yield linear extremal numbers—the minimum possible for connected forbidden subgraphs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-571-cycles",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 203,
+      "endLine": 212
+    },
+    "type": "theorem",
+    "title": "Even Cycle Exponents",
+    "content": "Even cycles C_{2k} give ex(n; C_{2k}) = O(n^{1+1/k}), yielding exponents of form 1 + 1/k. Combined with lower bounds, these show specific Turán exponents like 3/2, 4/3, 5/4, etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-571-gap",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 229,
+      "endLine": 232
+    },
+    "type": "insight",
+    "title": "The Remaining Challenge",
+    "content": "Exponents close to 1 remain hardest. Known constructions naturally produce exponents accumulating near 2, but covering all rationals near 1 requires fundamentally new techniques.",
+    "significance": "key"
+  }
+]
