@@ -1,34 +1,160 @@
 {
   "id": "erdos-713",
-  "title": "Erdős Problem #713",
+  "title": "Erdős Problem #713: Rational Exponents for Bipartite Turán Numbers",
   "slug": "erdos-713",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every bipartite graph ..., there exists some ... and ... such that\\[(n;G)\\sim cn^\\alpha?\\]Must ... be ra...",
+  "description": "Does ex(n; G) ~ c·n^α for every bipartite G? Must α be rational? Original conjecture (α ∈ {1+1/k, 2-1/k}) disproved by Erdős-Simonovits (1970). Main questions remain OPEN. Prize: $500.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Simonovits (problem), various partial results",
     "sourceUrl": "https://erdosproblems.com/713",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos713Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-combinatorics",
+      "graph-theory",
+      "bipartite-graphs",
+      "turan-problems",
+      "asymptotic-analysis",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 713,
     "erdosUrl": "https://erdosproblems.com/713",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational numbers",
+        "module": "Mathlib.Data.Rat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isBipartite definition: 2-colorable graphs",
+      "isGFree definition: subgraph-free",
+      "extremalNumber axiom: ex(n; G)",
+      "hasPowerLawGrowth definition: ex ~ cn^α",
+      "hasPowerLawOrder definition: ex ≍ n^α",
+      "erdos713StrongQuestion: strong form",
+      "erdos713WeakQuestion: weak form",
+      "erdos713RationalQuestion: rationality question",
+      "kovari_sos_turan axiom: upper bound",
+      "complete_bipartite_lower axiom: lower bound",
+      "complete_bipartite_exponent theorem: rational for K_{s,t}",
+      "erdosOriginalConjecture definition",
+      "erdos_simonovits_counterexample axiom: original conjecture false",
+      "frankl_furedi_hypergraph_counterexample: hypergraph case",
+      "erdos_713_summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #713 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every bipartite graph $G$, there exists some $\\alpha\\in [1,2)$ and $c>0$ such that\\[\\mathrm{ex}(n;G)\\sim cn^\\alpha?\\]Must $\\alpha$ be rational?\n\n\n\nA problem of Erd\\H{o}s and Simonovits. Erd\\H{o}s sometimes asked this in the weaker version with just\\[\\mathrm{ex}(n;G)\\asymp n^{\\alpha}.\\]Erd\\H{o}s \\cite{Er67d} had initially conjectured that, for any bipartite graph $G$, $\\mathrm{ex}(n;G)\\sim cn^{\\alpha}$ for some constant $c>0$ and $\\alpha$ of the shape $1+\\frac{1}{k}$ or $2-\\frac{1}{k}$ for some integer $k\\geq 2$. This was disproved by Erd\\H{o}s and Simonovits \\cite{ErSi70}.\n\nThe analogous statement is not true for hypergraphs, as shown by Frankl and F\\\"{u}redi \\cite{FrFu87}, who proved that if $G$ is the $5$-uniform hypergraph on $8$ vertices with edges $\\{12346,12457,12358\\}$ then $\\mathrm{ex}(n;G)=o(n^5)$ but $\\mathrm{ex}(n;G)\\neq O(n^c)$ for any $c<5$.\n\nA simplified proof was given by F\\\"{u}redi and Gerbner \\cite{FuGe21}, who extended it to a counterexample for all $k\\geq 5$. It remains open whether it is true for $k=3$ and $k=4$ (though F\\\"{u}redi and Gerbner conjecture it is not).\n\nSee also [571].\n\n\n\n\nReferences\n\n\n[Er67d] Erd\\H{o}s, P., Some recent results on extremal problems in graph theory.\n{R}esults. (1967), 117--123 (English); pp. 124--130 (French).\n\n[ErSi70] Erd\\H{o}s, P. and Simonovits, M., Some extremal problems in graph theory. Combinatorial theory and its applications, I-III (Proc. Colloq., Balatonf\\\"{u}red, 1969) (1970), 377-390.\n\n[FrFu87] Frankl, P. and F\\\"uredi, Z., Exact solution of some {T}ur\\'an-type problems. J. Combin. Theory Ser. A (1987), 226--262.\n\n[FuGe21] F\\\"uredi, Zolt\\'an and Gerbner, D\\'aniel, Hypergraphs without exponents. J. Combin. Theory Ser. A (2021), Paper No. 105517, 9.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #713**\n\nThis problem concerns the extremal number ex(n; G) for bipartite graphs G.\n\n**Key History:**\n- Erdős (1967): Conjectured α ∈ {1+1/k, 2-1/k}\n- Erdős-Simonovits (1970): Disproved original conjecture\n- Frankl-Füredi (1987): Hypergraph counterexamples for k ≥ 5\n- Füredi-Gerbner (2021): Extended hypergraph results\n\n**The Setting:**\nex(n; G) = maximum edges in n-vertex G-free graph\nFor bipartite G, ex(n; G) = o(n²) but what is the precise growth?",
+    "problemStatement": "**Problem Statement (OPEN)**\n\n1. Does there exist α ∈ [1,2) and c > 0 such that ex(n; G) ~ c·n^α for every bipartite G?\n\n2. Does ex(n; G) ≍ n^α for some α?\n\n3. Must α be rational?\n\n**Known:**\n- Original conjecture α ∈ {1+1/k, 2-1/k} is FALSE\n- For K_{s,t}: α = 2 - 1/s (rational)\n- Hypergraph version fails for k ≥ 5\n\n**Prize:** $500 (still open)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Bipartite Graphs:** isBipartite definition\n\n2. **Extremal Number:** extremalNumber axiom for ex(n; G)\n\n3. **Growth Conditions:** hasPowerLawGrowth and hasPowerLawOrder\n\n4. **Key Results:**\n   - kovari_sos_turan: upper bound O(n^{2-1/s})\n   - erdos_simonovits_counterexample: original conjecture false\n   - frankl_furedi_hypergraph_counterexample: hypergraph fails",
+    "keyInsights": [
+      "**Bipartite is Special:** For non-bipartite G, Erdős-Stone-Simonovits gives exact answer",
+      "**K_{s,t} is Understood:** Exponent 2-1/s is rational",
+      "**Original Form Failed:** α not restricted to {1+1/k, 2-1/k}",
+      "**Hypergraph Counterexample:** For k ≥ 5, no clean exponent exists",
+      "**Still Open:** Main questions about existence and rationality of α",
+      "**$500 Prize:** Reflects difficulty and importance"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "isBipartite, isGFree definitions",
+      "startLine": 42,
+      "endLine": 62
+    },
+    {
+      "id": "extremal-numbers",
+      "title": "Extremal Numbers",
+      "summary": "extremalNumber axiom and properties",
+      "startLine": 64,
+      "endLine": 81
+    },
+    {
+      "id": "asymptotic-growth",
+      "title": "Asymptotic Growth",
+      "summary": "hasPowerLawGrowth, hasPowerLawOrder definitions",
+      "startLine": 83,
+      "endLine": 101
+    },
+    {
+      "id": "main-questions",
+      "title": "The Main Questions",
+      "summary": "Strong, weak, and rationality questions",
+      "startLine": 103,
+      "endLine": 132
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Kővári-Sós-Turán, complete bipartite bounds",
+      "startLine": 134,
+      "endLine": 161
+    },
+    {
+      "id": "original-conjecture",
+      "title": "Erdős's Original Conjecture",
+      "summary": "Conjecture and Erdős-Simonovits counterexample",
+      "startLine": 163,
+      "endLine": 181
+    },
+    {
+      "id": "hypergraph",
+      "title": "Hypergraph Counterexamples",
+      "summary": "Frankl-Füredi, Füredi-Gerbner results",
+      "startLine": 183,
+      "endLine": 212
+    },
+    {
+      "id": "status",
+      "title": "Current Status",
+      "summary": "What's known and what's open",
+      "startLine": 214,
+      "endLine": 238
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Problem 571, Zarankiewicz, Turán density",
+      "startLine": 240,
+      "endLine": 261
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_713_summary, erdos_713_open",
+      "startLine": 263,
+      "endLine": 300
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #713 asks fundamental questions about extremal numbers of bipartite graphs: Does ex(n; G) have power-law growth cn^α? Is α always rational? The original conjecture (α ∈ {1+1/k, 2-1/k}) was disproved by Erdős-Simonovits (1970). The main questions remain OPEN with a $500 prize.",
+    "implications": "**Connections and Impact**\n\n1. **Extremal Graph Theory:** Fundamental question about bipartite Turán numbers\n\n2. **Zarankiewicz Problem:** K_{s,t} case is a major special case\n\n3. **Hypergraph Theory:** Frankl-Füredi showed the statement fails for k ≥ 5\n\n4. **Turán Density:** Bipartite graphs have zero Turán density\n\n5. **Analytic Combinatorics:** Connects to asymptotic enumeration",
+    "openQuestions": [
+      "Does ex(n; G) ~ cn^α for all bipartite G?",
+      "Does ex(n; G) ≍ n^α for all bipartite G?",
+      "Is α always rational when it exists?",
+      "Resolve hypergraph case for k = 3, 4",
+      "Find explicit counterexample or prove existence"
+    ]
   }
 }

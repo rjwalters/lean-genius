@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-713-1",
+    "proofId": "erdos-713",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "**isBipartite G** means vertices can be 2-colored with no monochromatic edges. Equivalently, V = A ∪ B with all edges between A and B. Bipartite graphs include trees, even cycles, and complete bipartite graphs K_{s,t}.",
+    "significance": "critical",
+    "relatedConcepts": ["2-colorable", "Complete bipartite graphs", "König's theorem"]
+  },
+  {
+    "id": "ann-713-2",
+    "proofId": "erdos-713",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "G-free Graph",
+    "content": "**isGFree H G** means graph H contains no subgraph isomorphic to G. This is the central concept in Turán theory: maximize edges while avoiding a forbidden subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-3",
+    "proofId": "erdos-713",
+    "range": { "startLine": 72, "endLine": 72 },
+    "type": "definition",
+    "title": "Extremal Number",
+    "content": "**extremalNumber n G** = ex(n; G) is the maximum edges in an n-vertex G-free graph. For non-bipartite G, Erdős-Stone-Simonovits determines this. For bipartite G, it's o(n²) but the precise growth is the subject of this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-4",
+    "proofId": "erdos-713",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "definition",
+    "title": "Power-Law Growth",
+    "content": "**hasPowerLawGrowth G c α** means ex(n; G) ~ c·n^α: the ratio ex(n; G)/n^α converges to constant c > 0. This is the strong form asking for exact asymptotic behavior.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-5",
+    "proofId": "erdos-713",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "definition",
+    "title": "Power-Law Order",
+    "content": "**hasPowerLawOrder G α** means ex(n; G) ≍ n^α: the function is sandwiched between c₁·n^α and c₂·n^α. This weaker condition only asks for the growth rate, not the exact constant.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-6",
+    "proofId": "erdos-713",
+    "range": { "startLine": 112, "endLine": 114 },
+    "type": "definition",
+    "title": "Strong Form Question",
+    "content": "**erdos713StrongQuestion** asks: does ex(n; G) ~ c·n^α for every bipartite G? This requires both the existence of exponent α and the existence of limit constant c. This is OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-7",
+    "proofId": "erdos-713",
+    "range": { "startLine": 121, "endLine": 123 },
+    "type": "definition",
+    "title": "Weak Form Question",
+    "content": "**erdos713WeakQuestion** asks: does ex(n; G) ≍ n^α for every bipartite G? This only requires the growth rate, not exact asymptotics. Also OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-8",
+    "proofId": "erdos-713",
+    "range": { "startLine": 129, "endLine": 132 },
+    "type": "definition",
+    "title": "Rationality Question",
+    "content": "**erdos713RationalQuestion** asks: when α exists, must it be rational? For K_{s,t}, α = 2-1/s is rational. But the general question is OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-9",
+    "proofId": "erdos-713",
+    "range": { "startLine": 142, "endLine": 144 },
+    "type": "theorem",
+    "title": "Kővári-Sós-Turán Theorem",
+    "content": "**kovari_sos_turan** gives the upper bound: ex(n; K_{s,t}) = O(n^{2-1/s}) for s ≤ t. This 1954 result is foundational in extremal graph theory and gives the exponent 2-1/s for complete bipartite graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-10",
+    "proofId": "erdos-713",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "**complete_bipartite_lower** gives the matching lower bound: ex(n; K_{s,t}) = Ω(n^{2-1/s}). Combined with KST, this shows ex(n; K_{s,t}) ≍ n^{2-1/s} with rational exponent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-713-11",
+    "proofId": "erdos-713",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "theorem",
+    "title": "Complete Bipartite Exponent",
+    "content": "**complete_bipartite_exponent** shows K_{s,t} has rational exponent 2-1/s. This is a key known case where the problem has a positive answer. The exponent is always of form 2-1/k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-12",
+    "proofId": "erdos-713",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "definition",
+    "title": "Original Conjecture",
+    "content": "**erdosOriginalConjecture** was Erdős's initial guess: α always has form 1+1/k or 2-1/k for integer k ≥ 2. This restricted form was natural given the K_{s,t} case but turned out to be FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-13",
+    "proofId": "erdos-713",
+    "range": { "startLine": 181, "endLine": 181 },
+    "type": "theorem",
+    "title": "Erdős-Simonovits Counterexample",
+    "content": "**erdos_simonovits_counterexample** (1970) disproves the original conjecture. There exist bipartite graphs with exponents not of the form 1+1/k or 2-1/k. The main questions about existence and rationality remain open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-14",
+    "proofId": "erdos-713",
+    "range": { "startLine": 193, "endLine": 195 },
+    "type": "concept",
+    "title": "Frankl-Füredi Hypergraph",
+    "content": "**frankl_furedi_hypergraph_counterexample** (1987) shows the statement fails for k-uniform hypergraphs with k ≥ 5. There exist 5-uniform hypergraphs G where ex(n; G) = o(n^5) but ex(n; G) ≠ O(n^c) for any c < 5.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-713-15",
+    "proofId": "erdos-713",
+    "range": { "startLine": 201, "endLine": 203 },
+    "type": "concept",
+    "title": "Füredi-Gerbner Extension",
+    "content": "**furedi_gerbner_extension** (2021) extended the hypergraph counterexample to all k ≥ 5. They conjecture it also fails for k = 3, 4, but those cases remain open.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-713-16",
+    "proofId": "erdos-713",
+    "range": { "startLine": 248, "endLine": 248 },
+    "type": "concept",
+    "title": "Relation to Problem #571",
+    "content": "**relation_to_571** connects to Erdős Problem #571, which concerns specific exponents for particular bipartite graphs. These problems form a family about Turán numbers of bipartite graphs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-713-17",
+    "proofId": "erdos-713",
+    "range": { "startLine": 254, "endLine": 254 },
+    "type": "concept",
+    "title": "Zarankiewicz Problem",
+    "content": "**zarankiewicz_connection** notes that ex(n; K_{s,t}) is the Zarankiewicz problem, a major open problem in combinatorics. The KST upper bound is conjectured to be tight for K_{2,2} but this is unproven.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-713-18",
+    "proofId": "erdos-713",
+    "range": { "startLine": 260, "endLine": 261 },
+    "type": "concept",
+    "title": "Turán Density",
+    "content": "**turan_density_connection** notes that bipartite graphs have Turán density 0. For non-bipartite G with χ(G) = r+1, the Erdős-Stone-Simonovits theorem gives ex(n; G) = (1-1/r)n²/2 + o(n²). Bipartite is the 'degenerate' case.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-713-19",
+    "proofId": "erdos-713",
+    "range": { "startLine": 273, "endLine": 281 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_713_summary** combines two key facts: (1) the original conjecture is false (Erdős-Simonovits), and (2) complete bipartite graphs have rational exponents. This shows partial progress while main questions remain open.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-713-20",
+    "proofId": "erdos-713",
+    "range": { "startLine": 298, "endLine": 298 },
+    "type": "theorem",
+    "title": "Status: OPEN",
+    "content": "**erdos_713_open** notes the problem remains open. The $500 prize is still available. We know: original conjecture false, K_{s,t} has rational exponent, hypergraph version fails for k ≥ 5. Main questions unresolved.",
+    "significance": "critical"
+  }
+]
