@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-356-1",
+    "proofId": "erdos-356",
+    "type": "definition",
+    "title": "Consecutive Subsum",
+    "content": "A consecutive subsum of a sequence a_1, ..., a_k is a sum of the form Sigma_{i=u}^{v} a_i for some 1 <= u <= v <= k.",
+    "range": { "startLine": 43, "endLine": 44 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-356-2",
+    "proofId": "erdos-356",
+    "type": "definition",
+    "title": "Set of Consecutive Sums",
+    "content": "The set of all consecutive subsums of a sequence, used to count distinct values.",
+    "range": { "startLine": 50, "endLine": 53 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-356-3",
+    "proofId": "erdos-356",
+    "type": "definition",
+    "title": "Trivial Sequence",
+    "content": "The sequence {1, 2, ..., n} is the natural first candidate, but it fails to achieve quadratic growth.",
+    "range": { "startLine": 71, "endLine": 72 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-356-4",
+    "proofId": "erdos-356",
+    "type": "theorem",
+    "title": "Trivial Fails",
+    "content": "The consecutive sums of 1, 2, ..., n are only O(n) in number, not O(n^2). Many sums collide.",
+    "range": { "startLine": 79, "endLine": 81 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-356-5",
+    "proofId": "erdos-356",
+    "type": "definition",
+    "title": "Strictly Increasing",
+    "content": "A valid sequence must satisfy a_1 < a_2 < ... < a_k (strict monotonicity).",
+    "range": { "startLine": 99, "endLine": 100 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-356-6",
+    "proofId": "erdos-356",
+    "type": "definition",
+    "title": "Valid Sequence",
+    "content": "A valid sequence is strictly increasing with all elements at most n.",
+    "range": { "startLine": 113, "endLine": 114 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-356-7",
+    "proofId": "erdos-356",
+    "type": "definition",
+    "title": "Erdos-Graham Conjecture",
+    "content": "There exists c > 0 such that for large n, some valid sequence achieves cn^2 distinct consecutive sums.",
+    "range": { "startLine": 125, "endLine": 129 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-356-8",
+    "proofId": "erdos-356",
+    "type": "axiom",
+    "title": "Beker's Theorem (2023)",
+    "content": "The Erdos-Graham conjecture is TRUE. Strictly increasing sequences can achieve quadratic growth.",
+    "range": { "startLine": 137, "endLine": 137 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-356-9",
+    "proofId": "erdos-356",
+    "type": "definition",
+    "title": "Permutation Conjecture",
+    "content": "Can permutations of {1,...,n} achieve cn^2 distinct consecutive sums?",
+    "range": { "startLine": 154, "endLine": 158 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-356-10",
+    "proofId": "erdos-356",
+    "type": "axiom",
+    "title": "Konieczny's Theorem (2015)",
+    "content": "The permutation conjecture is TRUE. Permutations can achieve quadratic growth in distinct sums.",
+    "range": { "startLine": 166, "endLine": 166 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-356-11",
+    "proofId": "erdos-356",
+    "type": "insight",
+    "title": "Construction Key",
+    "content": "To maximize distinct sums, elements must be spaced to prevent collisions among consecutive subsums.",
+    "range": { "startLine": 172, "endLine": 177 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-356-12",
+    "proofId": "erdos-356",
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "At most k(k+1)/2 consecutive sums are possible for a sequence of length k.",
+    "range": { "startLine": 225, "endLine": 227 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-356-13",
+    "proofId": "erdos-356",
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Erdos #356 is SOLVED: both the main conjecture (Beker) and permutation variant (Konieczny) are true.",
+    "range": { "startLine": 259, "endLine": 264 },
+    "significance": "high"
+  }
+]

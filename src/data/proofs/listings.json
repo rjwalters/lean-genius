@@ -2087,17 +2087,24 @@
   },
   {
     "id": "erdos-1090",
-    "title": "Erdős Problem #1090",
+    "title": "Erdős Problem #1090: Monochromatic Collinear Points",
     "slug": "erdos-1090",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does there exist a finite set ... such that, in any ...-colouring of ..., there exists a line which contains at leas...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 3, does there exist a finite set A ⊂ ℝ² such that any 2-coloring has k monochromatic collinear points? SOLVED: YES. Graham-Selfridge proved k=3; Hunter used Hales-Jewett for general k.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "ramsey-theory",
+      "combinatorics",
+      "collinear-points",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1090,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 3,
+    "annotationCount": 16
   },
   {
     "id": "erdos-1091",
@@ -3828,17 +3835,24 @@
   },
   {
     "id": "erdos-207",
-    "title": "Erdős Problem #207",
+    "title": "Erdős Problem #207: High-Girth Steiner Triple Systems",
     "slug": "erdos-207",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ..., if ... is sufficiently large and ... then there exists a 3-uniform hypergraph on ... vertices such that\n{UL}\n{LI...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For g≥2 and large admissible n, do STS(n) with girth ≥g exist? YES (Kwan-Sah-Sawhney-Simkin 2022).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "steiner-systems",
+      "hypergraphs",
+      "design-theory",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 207,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-208",
@@ -4238,6 +4252,7 @@
       "triangle-free",
       "extremal-combinatorics"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 23,
     "sorries": 0,
     "annotationCount": 18
@@ -6627,17 +6642,24 @@
   },
   {
     "id": "erdos-407",
-    "title": "Erdős Problem #407",
+    "title": "Erdős Problem #407: Newman's Conjecture on 2^a + 3^b + 2^c·3^d",
     "slug": "erdos-407",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of solutions to\\[n=2^a+3^b+2^c3^d\\]with ... integers. Is it true that ... is bounded by some absolut...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is w(n) bounded, where w(n) counts representations n = 2^a + 3^b + 2^c·3^d? Solved: w(n) ≤ 9 always, w(n) ≤ 4 for large n (EGST 1988, Bajpai-Bennett 2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "s-unit-equations",
+      "exponential-diophantine",
+      "powers-of-primes",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 407,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-408",
@@ -8395,17 +8417,20 @@
   },
   {
     "id": "erdos-570",
-    "title": "Erdős Problem #570",
+    "title": "Cycle-Graph Ramsey Numbers",
     "slug": "erdos-570",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that, for any graph ... on ... edges without isolated vertices,\\[R(C_k,H) \\leq 2m+\\left\\lceil{2}\\right\\rc...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 3 and graph H with m edges (no isolated vertices), is R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉? YES - fully resolved through work spanning 1993-2024.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "cycles"
     ],
     "erdosNumber": 570,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 14
   },
   {
     "id": "erdos-571",
@@ -8569,17 +8594,22 @@
   },
   {
     "id": "erdos-583",
-    "title": "Erdős Problem #583",
+    "title": "Erdős Problem #583: Edge-Disjoint Path Partition Conjecture",
     "slug": "erdos-583",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEvery connected graph on ... vertices can be partitioned into at most ... edge-disjoint paths.\n\n\n\nA problem of Erds and Galla...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can every connected graph on n vertices be partitioned into at most ⌈n/2⌉ edge-disjoint paths? This Erdős-Gallai conjecture remains open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "path-decomposition",
+      "edge-partition",
+      "combinatorics"
     ],
     "erdosNumber": 583,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 23
   },
   {
     "id": "erdos-584",
@@ -10417,17 +10447,21 @@
   },
   {
     "id": "erdos-712",
-    "title": "Erdős Problem #712",
+    "title": "Erdős Problem #712: Hypergraph Turán Densities",
     "slug": "erdos-712",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDetermine, for any ..., the value of\\[_r(n,K_k^r)}{{r}},\\]where ... is the largest number of ...-edges which can placed on .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine the Turán density lim ex_r(n, K_k^r)/C(n,r) for k > r > 2. One of the most famous open problems in extremal combinatorics. Prize: $500/$1000.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraph",
+      "turan-number",
+      "extremal-combinatorics",
+      "open-problem"
     ],
     "erdosNumber": 712,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 21
   },
   {
     "id": "erdos-713",
@@ -11302,17 +11336,24 @@
   },
   {
     "id": "erdos-775",
-    "title": "Erdős Problem #775",
+    "title": "Erdős Problem #775: Clique Sizes in 3-Uniform Hypergraphs",
     "slug": "erdos-775",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a ...-uniform hypergraph on ... vertices which contains at least ... different sizes of cliques (maximal complete su...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there a 3-uniform hypergraph on n vertices with at least n - O(1) different clique sizes? NO, disproved by Gao (2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "hypergraphs",
+      "graph-theory",
+      "cliques",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 775,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-777",
