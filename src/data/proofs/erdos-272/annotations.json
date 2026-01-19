@@ -1,1 +1,221 @@
-[]
+[
+  {
+    "id": "ann-e272-context",
+    "proofId": "erdos-272",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #272: Find the largest t such that A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty APs. Szabó (1999) proved t = N²/2 + O(N^(5/3)(log N)³).",
+    "significance": "critical",
+    "tags": ["erdos", "combinatorics", "intersection-theory"]
+  },
+  {
+    "id": "ann-e272-interval",
+    "proofId": "erdos-272",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "The Interval {1,...,N}",
+    "content": "The base set {1,...,N} represented as a finset. All subsets A_i must be contained in this interval.",
+    "significance": "supporting",
+    "tags": ["definition", "interval"],
+    "leanSymbol": "interval"
+  },
+  {
+    "id": "ann-e272-arithprog",
+    "proofId": "erdos-272",
+    "range": { "startLine": 45, "endLine": 53 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "An arithmetic progression is defined by start, common difference, and length. The elements are {start, start+diff, start+2*diff, ...}.",
+    "significance": "critical",
+    "tags": ["definition", "arithmetic-progression"],
+    "leanSymbol": "ArithProg"
+  },
+  {
+    "id": "ann-e272-isarithprog",
+    "proofId": "erdos-272",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "IsArithProg Predicate",
+    "content": "A finset S is an arithmetic progression if it equals the elements of some ArithProg with length ≥ 1. Singletons and pairs are always APs.",
+    "significance": "critical",
+    "tags": ["definition", "arithmetic-progression"],
+    "leanSymbol": "IsArithProg"
+  },
+  {
+    "id": "ann-e272-singleton-ap",
+    "proofId": "erdos-272",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "theorem",
+    "title": "Singletons are APs",
+    "content": "Every singleton {n} is an arithmetic progression. This is important: any non-empty intersection containing one element satisfies the AP requirement.",
+    "significance": "key",
+    "tags": ["theorem", "singleton"],
+    "leanSymbol": "singleton_is_ap"
+  },
+  {
+    "id": "ann-e272-ap-intersection",
+    "proofId": "erdos-272",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "definition",
+    "title": "AP-Intersection Property",
+    "content": "A family F has the AP-intersection property if for all A ≠ B in F, A ∩ B is non-empty AND is an arithmetic progression.",
+    "significance": "critical",
+    "tags": ["definition", "intersection-property"],
+    "leanSymbol": "hasAPIntersectionProperty"
+  },
+  {
+    "id": "ann-e272-max-family",
+    "proofId": "erdos-272",
+    "range": { "startLine": 90, "endLine": 94 },
+    "type": "definition",
+    "title": "Maximum AP Family Size",
+    "content": "maxAPFamily(N) is the largest t such that a family of t sets exists with the AP-intersection property. This is the main quantity to determine.",
+    "significance": "critical",
+    "tags": ["definition", "extremal"],
+    "leanSymbol": "maxAPFamily"
+  },
+  {
+    "id": "ann-e272-simonovits-sos-upper",
+    "proofId": "erdos-272",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "axiom",
+    "title": "Simonovits-Sós Upper Bound",
+    "content": "Simonovits and Sós (1981) proved t = O(N²). This established the quadratic growth rate.",
+    "significance": "critical",
+    "tags": ["upper-bound", "simonovits-sos"],
+    "leanSymbol": "simonovits_sos_upper"
+  },
+  {
+    "id": "ann-e272-aps-through",
+    "proofId": "erdos-272",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "definition",
+    "title": "APs Through an Element",
+    "content": "The set of all arithmetic progressions in {1,...,N} containing a fixed element k. Erdős-Graham conjectured this is optimal for k = ⌊N/2⌋.",
+    "significance": "key",
+    "tags": ["definition", "construction"],
+    "leanSymbol": "apsThroughElement"
+  },
+  {
+    "id": "ann-e272-eg-false",
+    "proofId": "erdos-272",
+    "range": { "startLine": 132, "endLine": 135 },
+    "type": "axiom",
+    "title": "Erdős-Graham Conjecture is FALSE",
+    "content": "The conjecture that APs through the middle element are optimal was disproved by Simonovits-Sós. Small sets through a fixed element do better!",
+    "significance": "critical",
+    "tags": ["conjecture-disproved"],
+    "leanSymbol": "erdos_graham_conjecture_false"
+  },
+  {
+    "id": "ann-e272-small-sets",
+    "proofId": "erdos-272",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "definition",
+    "title": "Small Sets Through an Element",
+    "content": "Sets of size ≤ 3 containing a fixed element k. This gives C(N-1,2) + 1 ~ N²/2 sets with the AP-intersection property.",
+    "significance": "critical",
+    "tags": ["construction", "small-sets"],
+    "leanSymbol": "smallSetsThroughElement"
+  },
+  {
+    "id": "ann-e272-small-sets-count",
+    "proofId": "erdos-272",
+    "range": { "startLine": 147, "endLine": 149 },
+    "type": "axiom",
+    "title": "Small Sets Count",
+    "content": "The family of small sets through k has exactly C(N-1,2) + 1 members. This is asymptotically N²/2.",
+    "significance": "key",
+    "tags": ["count", "small-sets"],
+    "leanSymbol": "small_sets_count"
+  },
+  {
+    "id": "ann-e272-szabo-theorem",
+    "proofId": "erdos-272",
+    "range": { "startLine": 166, "endLine": 169 },
+    "type": "axiom",
+    "title": "Szabó's Theorem (1999)",
+    "content": "The main result: maxAPFamily(N) = N²/2 + O(N^(5/3)(log N)³). This resolves the asymptotic completely.",
+    "significance": "critical",
+    "tags": ["main-theorem", "szabo"],
+    "leanSymbol": "szabo_theorem"
+  },
+  {
+    "id": "ann-e272-leading-constant",
+    "proofId": "erdos-272",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "axiom",
+    "title": "Leading Constant is 1/2",
+    "content": "The leading constant in the asymptotic is exactly 1/2: maxAPFamily(N)/N² → 1/2 as N → ∞.",
+    "significance": "key",
+    "tags": ["asymptotic", "constant"],
+    "leanSymbol": "szabo_leading_constant"
+  },
+  {
+    "id": "ann-e272-main",
+    "proofId": "erdos-272",
+    "range": { "startLine": 176, "endLine": 179 },
+    "type": "theorem",
+    "title": "Erdős Problem #272 Main Theorem",
+    "content": "Formal statement of Erdős #272: the asymptotic answer is t = N²/2 + O(N^(5/3)(log N)³).",
+    "significance": "critical",
+    "tags": ["erdos-272", "main-result"],
+    "leanSymbol": "erdos_272"
+  },
+  {
+    "id": "ann-e272-szabo-lower",
+    "proofId": "erdos-272",
+    "range": { "startLine": 187, "endLine": 189 },
+    "type": "axiom",
+    "title": "Szabó's Lower Bound",
+    "content": "Szabó improved the lower bound to C(N,2) + ⌊(N-1)/4⌋ + 1, showing the Simonovits-Sós construction is not optimal.",
+    "significance": "key",
+    "tags": ["lower-bound", "szabo"],
+    "leanSymbol": "szabo_lower_bound"
+  },
+  {
+    "id": "ann-e272-szabo-conjecture",
+    "proofId": "erdos-272",
+    "range": { "startLine": 191, "endLine": 193 },
+    "type": "axiom",
+    "title": "Szabó's Conjecture",
+    "content": "Szabó conjectures the exact answer is C(N,2) + O(N), i.e., the error term is linear, not N^(5/3).",
+    "significance": "key",
+    "tags": ["conjecture", "szabo"],
+    "leanSymbol": "szabo_conjecture"
+  },
+  {
+    "id": "ann-e272-common-element",
+    "proofId": "erdos-272",
+    "range": { "startLine": 195, "endLine": 199 },
+    "type": "axiom",
+    "title": "Common Element Conjecture",
+    "content": "Szabó conjectures that in any extremal family, there exists an element k contained in ALL sets. This would explain why small sets through k are near-optimal.",
+    "significance": "key",
+    "tags": ["conjecture", "structure"],
+    "leanSymbol": "szabo_common_element_conjecture"
+  },
+  {
+    "id": "ann-e272-empty-case",
+    "proofId": "erdos-272",
+    "range": { "startLine": 215, "endLine": 217 },
+    "type": "axiom",
+    "title": "Graham-Simonovits-Sós Empty Case",
+    "content": "When empty intersections are allowed, the exact answer is C(N,3) + C(N,2) + C(N,1) + 1. This was completely solved in 1980.",
+    "significance": "key",
+    "tags": ["empty-case", "exact"],
+    "leanSymbol": "graham_simonovits_sos"
+  },
+  {
+    "id": "ann-e272-summary",
+    "proofId": "erdos-272",
+    "range": { "startLine": 269, "endLine": 283 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Erdős Problem #272 is solved: t ~ N²/2, Erdős-Graham conjecture false, empty case has exact answer C(N,3)+C(N,2)+C(N,1)+1.",
+    "significance": "critical",
+    "tags": ["summary", "main-result"],
+    "leanSymbol": "erdos_272_summary"
+  }
+]
