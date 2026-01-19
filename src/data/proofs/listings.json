@@ -3565,16 +3565,20 @@
     "id": "erdos-19",
     "title": "Erdős Problem #19: Erdős-Faber-Lovász Conjecture",
     "slug": "erdos-19",
-    "description": "If G is an edge-disjoint union of n copies of K_n, then χ(G) = n.",
+    "description": "If G is an edge-disjoint union of n copies of K_n, is χ(G) = n? YES - proved by Kang-Kelly-Kühn-Methuku-Osthus (2021) for large n, combined with Hindman's small cases.",
     "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
       "chromatic-number",
-      "combinatorics"
+      "combinatorics",
+      "hypergraph",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 19,
+    "mathlibCount": 2,
     "sorries": 0,
     "annotationCount": 17
   },
