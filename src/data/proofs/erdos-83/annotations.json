@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-83-1",
+    "proofId": "erdos-83",
+    "range": { "startLine": 47, "endLine": 47 },
+    "type": "definition",
+    "title": "Ground Set",
+    "content": "**groundSet m** represents [m] = {1, 2, ..., m} as Fin m. Using Fin m gives a decidable type with exactly m elements, suitable for finite combinatorics in Lean.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-2",
+    "proofId": "erdos-83",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "definition",
+    "title": "k-Uniform Family",
+    "content": "**isKUniform F k** means every set in family F has exactly k elements. This is the standard uniformity condition in extremal set theory. Example: all 3-subsets of [7] form a 3-uniform family.",
+    "significance": "critical",
+    "relatedConcepts": ["Hypergraphs", "Uniform hypergraphs", "Set systems"]
+  },
+  {
+    "id": "ann-83-3",
+    "proofId": "erdos-83",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "definition",
+    "title": "t-Intersecting Family",
+    "content": "**isTIntersecting F t** means every pair of sets in F shares at least t elements: |A ∩ B| ≥ t for all A, B ∈ F. The classical Erdős-Ko-Rado theorem is for t=1. This problem requires t=2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-4",
+    "proofId": "erdos-83",
+    "range": { "startLine": 67, "endLine": 68 },
+    "type": "definition",
+    "title": "Classical Intersecting",
+    "content": "**isIntersecting F** is the t=1 case: every pair of sets shares at least one element. This is the setting of the original Erdős-Ko-Rado theorem (1961), which bounded the size of such families.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-5",
+    "proofId": "erdos-83",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "theorem",
+    "title": "Erdős-Ko-Rado Bound",
+    "content": "**erdos_ko_rado_bound** is the classical 1961 result: for k-subsets of [n] with n ≥ 2k, the largest intersecting family has size C(n-1, k-1). This fundamental theorem launched extremal set theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-6",
+    "proofId": "erdos-83",
+    "range": { "startLine": 87, "endLine": 88 },
+    "type": "definition",
+    "title": "EKR Star Family",
+    "content": "**ekrStarFamily n k x** is all k-subsets of [n] containing fixed element x. This 'star' construction achieves the EKR bound. The name comes from the star-like structure when drawn as a hypergraph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-7",
+    "proofId": "erdos-83",
+    "range": { "startLine": 105, "endLine": 105 },
+    "type": "definition",
+    "title": "Problem Parameters",
+    "content": "**erdos83Params n** returns (4n, 2n, 2): ground set size 4n, subset size 2n, intersection threshold 2. These specific parameters make the problem challenging yet tractable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-8",
+    "proofId": "erdos-83",
+    "range": { "startLine": 111, "endLine": 112 },
+    "type": "definition",
+    "title": "Valid Erdős #83 Family",
+    "content": "**isValidErdos83Family n F** combines both conditions: F consists of 2n-subsets of [4n], and every pair shares at least 2 elements. The goal is to maximize |F|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-9",
+    "proofId": "erdos-83",
+    "range": { "startLine": 122, "endLine": 123 },
+    "type": "definition",
+    "title": "The Conjectured Bound",
+    "content": "**erdos83Bound n** = ½(C(4n,2n) - C(2n,n)²). This elegant formula was conjectured by Erdős, Ko, and Rado in 1961. The $500 prize reflected the difficulty of proving this exact bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-10",
+    "proofId": "erdos-83",
+    "range": { "startLine": 128, "endLine": 131 },
+    "type": "definition",
+    "title": "Erdős Problem #83",
+    "content": "**erdos83Question n** is the formal statement: every valid 2-intersecting family F of 2n-subsets of [4n] satisfies |F| ≤ erdos83Bound n. This was open for 36 years.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-11",
+    "proofId": "erdos-83",
+    "range": { "startLine": 142, "endLine": 144 },
+    "type": "definition",
+    "title": "Star-Like Family",
+    "content": "**starLikeFamily n** is the extremal construction: all 2n-subsets of [4n] containing at least n+1 elements from a fixed 2n-set (the 'core'). This achieves the bound erdos83Bound n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-12",
+    "proofId": "erdos-83",
+    "range": { "startLine": 167, "endLine": 169 },
+    "type": "definition",
+    "title": "Critical Ratio",
+    "content": "**criticalRatio m k t** is the key parameter r from Ahlswede-Khachatrian's theorem. It satisfies a specific inequality and determines which 'star-like' family is optimal. Different r values give different extremal structures.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-13",
+    "proofId": "erdos-83",
+    "range": { "startLine": 176, "endLine": 177 },
+    "type": "definition",
+    "title": "AK-Family",
+    "content": "**akFamily m k t r** is the general extremal construction: all k-subsets containing at least (t+r) elements from a fixed (t+2r)-set. The optimal r is determined by criticalRatio.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-14",
+    "proofId": "erdos-83",
+    "range": { "startLine": 184, "endLine": 188 },
+    "type": "theorem",
+    "title": "Complete Intersection Theorem",
+    "content": "**ahlswede_khachatrian_theorem** (1997) is the landmark result: for all valid (m,k,t), the maximum t-intersecting k-uniform family is akFamily with optimal r. This solved the EKR problem for all parameters.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-15",
+    "proofId": "erdos-83",
+    "range": { "startLine": 199, "endLine": 200 },
+    "type": "theorem",
+    "title": "Special Case Reduction",
+    "content": "**erdos83_from_ak** shows that for m=4n, k=2n, t=2, the AK-family size equals erdos83Bound n = ½(C(4n,2n) - C(2n,n)²). This connects the general theorem to the specific Erdős problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-16",
+    "proofId": "erdos-83",
+    "range": { "startLine": 206, "endLine": 213 },
+    "type": "theorem",
+    "title": "Main Answer",
+    "content": "**erdos83_answer** proves erdos83Question by applying ahlswede_khachatrian_theorem with parameters (4n, 2n, 2). The proof extracts the uniformity and intersection conditions, applies AK, and uses erdos83_from_ak.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-83-17",
+    "proofId": "erdos-83",
+    "range": { "startLine": 222, "endLine": 225 },
+    "type": "concept",
+    "title": "Small Cases",
+    "content": "**erdos83_bound_n1** and **erdos83_bound_n2** give bounds for small n. When n=1, we need 2-subsets of [4] with pairwise 2-intersection, which is very restrictive. For n=2, the bound computes from C(8,4)=70 and C(4,2)=6.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-18",
+    "proofId": "erdos-83",
+    "range": { "startLine": 243, "endLine": 243 },
+    "type": "concept",
+    "title": "Phase Transitions",
+    "content": "**phase_transition_structure** notes that optimal families change structure at critical r values. This is analogous to phase transitions in statistical physics - the extremal configuration 'jumps' at threshold parameters.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-19",
+    "proofId": "erdos-83",
+    "range": { "startLine": 270, "endLine": 277 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_83_summary** combines both directions: the bound holds (from erdos83_answer) and is achieved (from starLikeFamily_achieves). This establishes that erdos83Bound n is the exact maximum.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-83-20",
+    "proofId": "erdos-83",
+    "range": { "startLine": 291, "endLine": 291 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_83** is the final answer: erdos83Question n holds for all n ≥ 1. The $500 Erdős prize was awarded to Ahlswede and Khachatrian for their 1997 proof of the Complete Intersection Theorem.",
+    "significance": "critical"
+  }
+]
