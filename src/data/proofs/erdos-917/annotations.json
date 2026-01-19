@@ -1,1 +1,177 @@
-[]
+[
+  {
+    "id": "ann-e917-chromatic-number",
+    "proofId": "erdos-917",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The **chromatic number** of a graph G is the minimum number of colors needed to properly color its vertices. Defined using `Nat.find` on Mathlib's `Colorable` predicate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e917-k-chromatic",
+    "proofId": "erdos-917",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "k-Chromatic Graph",
+    "content": "`IsKChromatic G k` means the chromatic number of G is exactly k. This is a fundamental classification of graphs by their coloring complexity.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e917-k-critical",
+    "proofId": "erdos-917",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "k-Critical Graph",
+    "content": "A graph G is **k-critical** if: (1) its chromatic number is k, AND (2) removing any edge decreases the chromatic number. These are the 'minimal' k-chromatic graphs—every edge is essential for maintaining the chromatic number.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-edge-count",
+    "proofId": "erdos-917",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "The number of edges in a simple graph, computed via `G.edgeFinset.card`. This is the quantity we seek to maximize in k-critical graphs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e917-f-function",
+    "proofId": "erdos-917",
+    "range": { "startLine": 64, "endLine": 77 },
+    "type": "definition",
+    "title": "Maximum Edge Function f_k(n)",
+    "content": "**f_k(n)** is the central object of study: the maximum number of edges in a k-critical graph on n vertices. The axiom `f_defined` asserts this maximum is achieved for k ≥ 4 and n ≥ k.",
+    "mathContext": "This function captures the extremal edge density question for critical graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-question1",
+    "proofId": "erdos-917",
+    "range": { "startLine": 81, "endLine": 87 },
+    "type": "definition",
+    "title": "Question 1: Quadratic Growth",
+    "content": "`Question1 k` asks: Is f_k(n) ≫_k n²? Formally: does there exist c_k > 0 such that f_k(n) ≥ c_k · n² for all large n? This asks whether edge density is truly quadratic.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-toft",
+    "proofId": "erdos-917",
+    "range": { "startLine": 89, "endLine": 95 },
+    "type": "theorem",
+    "title": "Toft (1970): Quadratic Growth",
+    "content": "**Toft's Theorem (1970):** For all k ≥ 4, there exists c > 0 such that f_k(n) ≥ c · n² for all n ≥ k. This answers Question 1 affirmatively—k-critical graphs CAN have quadratically many edges.",
+    "mathContext": "This was surprising to Erdős, who initially expected f_k(n) = o(n²).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-question1-answered",
+    "proofId": "erdos-917",
+    "range": { "startLine": 97, "endLine": 98 },
+    "type": "theorem",
+    "title": "Question 1 Answered",
+    "content": "`question1_answered` confirms that Question 1 is YES for all k ≥ 4, directly applying Toft's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e917-question2",
+    "proofId": "erdos-917",
+    "range": { "startLine": 102, "endLine": 109 },
+    "type": "definition",
+    "title": "Question 2: The k = 6 Case",
+    "content": "`Question2` conjectures that f_6(n) ~ n²/4, meaning the asymptotic density for 6-critical graphs is exactly 1/4. This remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-dirac",
+    "proofId": "erdos-917",
+    "range": { "startLine": 111, "endLine": 118 },
+    "type": "theorem",
+    "title": "Dirac's Construction (1952)",
+    "content": "**Dirac's Key Construction:** Take two disjoint odd cycles C_{2n+1} and add ALL edges between them. This creates a 6-critical graph on 4n+2 vertices with 4n² + 8n + 3 edges, establishing the lower bound f_6(n) ≥ (1/4 - ε)n².",
+    "mathContext": "This construction surprised Erdős, showing 6-critical graphs can be dense.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-question3",
+    "proofId": "erdos-917",
+    "range": { "startLine": 131, "endLine": 142 },
+    "type": "definition",
+    "title": "Question 3: General Asymptotic",
+    "content": "`Question3 k` asks for k ≥ 6: Is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²? This generalizes Question 2 (k=6 gives ⌊6/3⌋=2, so (1/2)(1-1/2) = 1/4).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-erdos-construction",
+    "proofId": "erdos-917",
+    "range": { "startLine": 144, "endLine": 152 },
+    "type": "theorem",
+    "title": "Erdős's Construction (1969)",
+    "content": "**Erdős generalized Dirac's construction:** For k ≡ 0 (mod 3), infinitely many n achieve f_k(n) ≥ (1/2)(1 - 3/k)n² + n. This establishes the lower bound for the conjectured asymptotic when 3 divides k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e917-stiebitz-disproof",
+    "proofId": "erdos-917",
+    "range": { "startLine": 154, "endLine": 160 },
+    "type": "theorem",
+    "title": "Stiebitz (1987): Disproof for k ≢ 0 (mod 3)",
+    "content": "**Stiebitz's Counterexamples (1987):** The asymptotic conjecture is FALSE for k ≢ 0 (mod 3). He showed strictly better lower bounds exist, disproving Erdős's conjecture when 3 does not divide k.",
+    "mathContext": "The mod 3 structure matters because Dirac-type constructions use odd cycles in groups of 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-turan-upper",
+    "proofId": "erdos-917",
+    "range": { "startLine": 164, "endLine": 170 },
+    "type": "theorem",
+    "title": "Turán Upper Bound",
+    "content": "**Trivial Upper Bound:** A k-critical graph has chromatic number k and avoids K_k. By Turán's theorem, it has at most ex(n; K_k) ~ (1/2)(1 - 1/(k-1))n² edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e917-stiebitz-upper",
+    "proofId": "erdos-917",
+    "range": { "startLine": 172, "endLine": 179 },
+    "type": "theorem",
+    "title": "Stiebitz Upper Bound (1987)",
+    "content": "**Stiebitz's improved bound:** f_k(n) < ex(n; K_{k-1}) ~ (1/2)(1 - 1/(k-2))n². This replaces k-1 with k-2, giving a tighter constraint.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e917-luo-ma-yang",
+    "proofId": "erdos-917",
+    "range": { "startLine": 181, "endLine": 188 },
+    "type": "theorem",
+    "title": "Luo-Ma-Yang (2023): Improved Upper Bound",
+    "content": "**Latest result:** f_k(n) ≤ (1/2)(1 - 1/(k-2) - 1/(36(k-1)²) + o(1))n². This 2023 paper improves Stiebitz's upper bound by an additional 1/(36(k-1)²) term.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e917-dirac-structure",
+    "proofId": "erdos-917",
+    "range": { "startLine": 196, "endLine": 210 },
+    "type": "definition",
+    "title": "Dirac Construction Structure",
+    "content": "The `DiracConstruction` structure formalizes Dirac's example: two disjoint odd cycles of length 2n+1 with total vertices 4n+2. The axioms `dirac_is_6_critical` and `dirac_edge_count` assert this construction is 6-critical with 4n² + 8n + 3 edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e917-summary",
+    "proofId": "erdos-917",
+    "range": { "startLine": 234, "endLine": 241 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "`erdos_917_summary` combines all results: (1) Question 1 answered YES for k ≥ 4, (2) Question 3 FALSE for k ≢ 0 (mod 3), (3) Toft's quadratic growth holds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e917-main",
+    "proofId": "erdos-917",
+    "range": { "startLine": 243, "endLine": 244 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "The final theorem `erdos_917` summarizes the current state of knowledge: the problem is PARTIALLY SOLVED with definitive answers to some questions and ongoing research on others.",
+    "significance": "critical"
+  }
+]
