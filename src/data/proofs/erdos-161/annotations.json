@@ -1,1 +1,158 @@
-[]
+[
+  {
+    "id": "ann-161-statement",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 8,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Does F^(t)(n,α) jump as α varies from 0 to 1/2? F^(t)(n,α) is the largest m allowing a 2-coloring where every large subset has at least α fraction of t-subsets in each color.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-161-hypergraph",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Complete t-Uniform Hypergraph",
+    "content": "The complete t-uniform hypergraph on n vertices has all C(n,t) t-subsets as hyperedges. For t=2 this is the complete graph K_n; for t=3 it's all triangles, etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-161-coloring",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Hyperedge Coloring",
+    "content": "A 2-coloring assigns each t-subset (hyperedge) to one of two colors (true/false or red/blue). The question is about how balanced such colorings can be on large subsets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-161-balanced",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 53,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Balanced Coloring Property",
+    "content": "A coloring is (α,m)-balanced if every subset X with |X| ≥ m has at least α·C(|X|,t) hyperedges of each color. This measures how 'mixed' the coloring appears on large subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-161-F-function",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "The Function F^(t)(n,α)",
+    "content": "F(t,n,α) is the largest m such that some 2-coloring is (α,m)-balanced. Larger m means 'more balanced' colorings exist that work on smaller subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-161-ramsey",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 74,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Ramsey Case (α = 0)",
+    "content": "At α=0, the condition becomes vacuous for non-empty subsets. F^(t)(n,0) relates to classical Ramsey theory: finding monochromatic complete sub-hypergraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-161-ehr",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 77,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "Erdős-Hajnal-Rado Conjecture",
+    "content": "F^(t)(n,0) ≍ log_{t-1}(n), the (t-1)-times iterated logarithm. This grows extremely slowly—for t=3, log₂(n) already; for t=4, log(log(n)), etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-161-erdos-spencer",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 92,
+      "endLine": 97
+    },
+    "type": "theorem",
+    "title": "Erdős-Spencer Lower Bound",
+    "content": "For α > 0: F^(t)(n,α) ≫ (log n)^{1/(t-1)}. This is a POWER of logarithm, much larger than the iterated logarithm at α=0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-161-jump-def",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 108,
+      "endLine": 112
+    },
+    "type": "definition",
+    "title": "Jump at α₀",
+    "content": "F has a jump at α₀ if small changes in α cause large changes in F. The key question is whether jumps exist and if so, where and how many.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-161-erdos-belief",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 114,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Erdős's One-Jump Belief",
+    "content": "Erdős believed there is exactly ONE jump, at α=0. Moving from α=0 to any α>0 causes F to jump from iterated log to power of log, but further increases in α don't cause more jumps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-161-cfs",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 122,
+      "endLine": 127
+    },
+    "type": "theorem",
+    "title": "Conlon-Fox-Sudakov (2011)",
+    "content": "F^(3)(n,α) ≤ c·√(log n) for all α > 0. This upper bound matches the Erdős-Spencer lower bound (up to constants), proving F^(3)(n,α) = Θ(√(log n)) for α > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-161-main-result",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 129,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "Complete Characterization for t=3",
+    "content": "For t=3 and any fixed α ∈ (0,1/2): F^(3)(n,α) = Θ(√(log n)). Combined with F^(3)(n,0) = Θ(log log n), this confirms exactly one jump at α=0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-161-phase-transition",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 175,
+      "endLine": 179
+    },
+    "type": "insight",
+    "title": "Phase Transition",
+    "content": "The jump at α=0 represents a phase transition: Ramsey (α=0) requires very slow iterated-log growth, but any positive α allows much faster power-of-log growth. The problem transforms qualitatively.",
+    "significance": "key"
+  }
+]
