@@ -1,33 +1,134 @@
 {
   "id": "erdos-692",
-  "title": "Erdős Problem #692",
+  "title": "Erdős Problem #692: Unimodularity of δ₁(n,m)",
   "slug": "erdos-692",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the density of the set of integers with exactly one divisor in .... Is ... unimodular for ... (i.e. increases unti...",
+  "description": "Is the density δ₁(n,m) of integers with exactly one divisor in (n,m) unimodular? DISPROVED by Cambie (2025).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1986), Ford (2008), Cambie (2025)",
     "sourceUrl": "https://erdosproblems.com/692",
-    "date": "",
-    "status": "pending",
+    "date": "1986",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos692Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 692,
     "erdosUrl": "https://erdosproblems.com/692",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for upper bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets for counting local maxima",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasExactlyOneDivisorIn: predicate for exactly one divisor in interval",
+      "delta1: density function δ₁(n,m)",
+      "erdos_upper_bound: δ₁(n,m) ≪ 1/(log n)^c",
+      "ford_bounds: sharper bounds for various ranges",
+      "IsUnimodular: formal definition of unimodularity",
+      "unimodularity_conjecture: Erdős's original conjecture",
+      "cambie_counterexample_n3: explicit disproof for n=3",
+      "unimodularity_fails_n3/n2: conjecture is FALSE",
+      "IsLocalMax: local maximum definition",
+      "numLocalMaxima: counting function",
+      "cambie_superpolynomial_maxima: superpolynomially many maxima",
+      "erdos_692: main theorem (disproved)",
+      "globalMax_exists: maximum still exists somewhere"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #692 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta_1(n,m)$ be the density of the set of integers with exactly one divisor in $(n,m)$. Is $\\delta_1(n,m)$ unimodular for $m>n+1$ (i.e. increases until some $m$ then decreases thereafter)? For fixed $n$, where does $\\delta_1(n,m)$ achieve its maximum?\n\n\n\nThis was asked by Erd\\H{o}s in 1986 at Oberwolfach.\n\nErd\\H{o}s proved that\\[\\delta_1(n,m) \\ll \\frac{1}{(\\log n)^c}\\]for all $m$, for some constant $c>0$. Sharper bounds (for various ranges of $n$ and $m$) were given by Ford \\cite{Fo08}.\n\nCambie has calculated that unimodularity fails even for $n=2$ and $n=3$. For example,\\[\\delta_1(3,6)= 0.35\\quad \\delta_1(3,7)\\approx 0.33\\quad \\delta_1(3,8)\\approx 0.3619.\\]Furthermore, Cambie \\cite{Ca25} has shown that, for fixed $n$, the sequence $\\delta_1(n,m)$ has superpolynomially many local maxima $m$.\n\nSee also [446].\n\n\n\n\nReferences\n\n\n[Ca25] S. Cambie, Resolution of Erd\\H{o}s' problems about unimodularity. arXiv:2501.10333 (2025).\n\n[Fo08] Ford, Kevin, The distribution of integers with a divisor in a given\ninterval. Ann. of Math. (2) (2008), 367-433.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #692: Divisor Density Unimodularity**\n\nThis problem was posed by Erdős at Oberwolfach in 1986, asking about the behavior of δ₁(n,m), the density of integers with exactly one divisor in the interval (n,m).\n\n**Timeline:**\n- 1986: Erdős poses the problem at Oberwolfach\n- Erdős proves upper bound δ₁(n,m) ≪ 1/(log n)^c\n- 2008: Ford gives sharper bounds in Ann. of Math.\n- 2025: Cambie disproves unimodularity with explicit counterexamples\n\n**Resolution:** The conjecture is FALSE — δ₁(n,m) has many local maxima, not just one global peak.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\delta_1(n,m)$ be the asymptotic density of integers with exactly one divisor in the open interval $(n,m)$.\n\n**Original Questions:**\n1. Is $\\delta_1(n,m)$ unimodular for fixed $n$ and varying $m > n+1$? (increases then decreases)\n2. Where does $\\delta_1(n,m)$ achieve its maximum for fixed $n$?\n\n**Resolution:**\n1. NO — Cambie showed unimodularity fails even for $n=2$ and $n=3$\n2. Open — the location of the global maximum is not fully characterized",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - `delta1`: the density function δ₁(n,m)\n   - `IsUnimodular`: formal definition of unimodular behavior\n   - `unimodularity_conjecture`: the original question\n\n2. **Known Bounds (axioms):**\n   - Erdős's upper bound: O(1/(log n)^c)\n   - Ford's sharper bounds\n\n3. **Disproof (axioms):**\n   - Cambie's counterexample: δ₁(3,6) > δ₁(3,7) < δ₁(3,8)\n   - Superpolynomially many local maxima\n\n4. **Main Theorem:** Combines the disproof with valid bounds",
+    "keyInsights": [
+      "**The Counterexample:** For n=3: δ₁(3,6)≈0.35, δ₁(3,7)≈0.33, δ₁(3,8)≈0.3619 — this goes DOWN then UP, violating unimodularity",
+      "**Small n Suffices:** Unimodularity fails already for n=2 and n=3",
+      "**Many Local Maxima:** Cambie showed superpolynomially many local maxima — far from unimodular",
+      "**Bounds Still Hold:** Erdős's upper bound δ₁(n,m) ≪ 1/(log n)^c remains valid",
+      "**Maximum Exists:** The global maximum exists but its location is complex",
+      "**Ford's Work:** The 2008 Annals paper gives precise asymptotics"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "summary": "HasExactlyOneDivisorIn, delta1, density bounds",
+      "startLine": 45,
+      "endLine": 73
+    },
+    {
+      "id": "erdos-bound",
+      "title": "Erdős's Original Bound",
+      "summary": "δ₁(n,m) ≪ 1/(log n)^c for all m",
+      "startLine": 75,
+      "endLine": 87
+    },
+    {
+      "id": "ford-bounds",
+      "title": "Ford's Sharper Bounds (2008)",
+      "summary": "Refined bounds for various ranges of n and m",
+      "startLine": 89,
+      "endLine": 102
+    },
+    {
+      "id": "unimodularity",
+      "title": "The Unimodularity Question",
+      "summary": "IsUnimodular definition, Erdős's conjecture",
+      "startLine": 104,
+      "endLine": 122
+    },
+    {
+      "id": "cambie-disproof",
+      "title": "Cambie's Disproof (2025)",
+      "summary": "Counterexample for n=3, numerical values",
+      "startLine": 124,
+      "endLine": 161
+    },
+    {
+      "id": "superpolynomial",
+      "title": "Superpolynomially Many Local Maxima",
+      "summary": "IsLocalMax, numLocalMaxima, Cambie's stronger result",
+      "startLine": 163,
+      "endLine": 189
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_692 main theorem, status DISPROVED",
+      "startLine": 191,
+      "endLine": 217
+    },
+    {
+      "id": "maximum-question",
+      "title": "The Maximum Question (Still Open)",
+      "summary": "globalMaxLocation, existence of maximum",
+      "startLine": 219,
+      "endLine": 235
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #692 asked whether δ₁(n,m), the density of integers with exactly one divisor in (n,m), is unimodular. Cambie (2025) disproved this conjecture by showing counterexamples for n=2,3 and proving that δ₁(n,m) has superpolynomially many local maxima. The quantitative bounds of Erdős and Ford remain valid.",
+    "implications": "**Connections and Extensions**\n\n1. **Problem #446:** Related question about divisor distributions\n\n2. **Ford's Annals Paper (2008):** Definitive work on divisor distribution in intervals\n\n3. **Divisor Function Theory:** Part of broader study of arithmetic functions\n\n4. **Density Methods:** Asymptotic density is a central tool in analytic number theory",
+    "openQuestions": [
+      "For fixed n, where does δ₁(n,m) achieve its global maximum?",
+      "What is the exact growth rate of local maxima?",
+      "Similar questions for δₖ(n,m) with k > 1 divisors"
+    ]
   }
 }

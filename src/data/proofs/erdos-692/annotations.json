@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e692-header",
+    "proofId": "erdos-692",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #692: Unimodularity of Divisor Density**\n\n**Question:** Is δ₁(n,m) — the density of integers with exactly one divisor in (n,m) — unimodular?\n\n**Unimodular** means: increases until some peak, then decreases.\n\n**Status:** DISPROVED by Cambie (2025) with explicit counterexamples.",
+    "mathContext": "This problem connects divisor theory with the study of density functions in number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Asymptotic density", "Unimodularity"]
+  },
+  {
+    "id": "ann-e692-exactly-one",
+    "proofId": "erdos-692",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Exactly One Divisor",
+    "content": "**HasExactlyOneDivisorIn(k, n, m):**\n\nThe integer k has exactly one divisor d satisfying n < d < m.\n\nThis uses the unique existence quantifier ∃! to ensure exactly one such divisor.",
+    "significance": "key",
+    "relatedConcepts": ["Divisor", "Unique existence", "Interval"]
+  },
+  {
+    "id": "ann-e692-delta1",
+    "proofId": "erdos-692",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "axiom",
+    "title": "The Density Function δ₁(n,m)",
+    "content": "**delta1 (δ₁):**\n\nThe asymptotic density of integers with exactly one divisor in (n,m).\n\nFormally: δ₁(n,m) = lim_{N→∞} |{k ≤ N : k has exactly one divisor in (n,m)}| / N\n\nThis limit exists and is well-defined for all n, m.",
+    "mathContext": "Asymptotic density is a fundamental tool in analytic number theory for measuring 'how common' a property is among integers.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic density", "Limit", "Natural density"]
+  },
+  {
+    "id": "ann-e692-erdos-bound",
+    "proofId": "erdos-692",
+    "range": { "startLine": 79, "endLine": 87 },
+    "type": "axiom",
+    "title": "Erdős's Upper Bound",
+    "content": "**erdos_upper_bound:**\n\nδ₁(n,m) ≪ 1/(log n)^c for some constant c > 0.\n\nThis means the density tends to 0 as n grows — having exactly one divisor in a large interval becomes increasingly rare.",
+    "mathContext": "The ≪ notation (Vinogradov) means bounded by a constant multiple. Erdős proved this bound originally.",
+    "significance": "key",
+    "relatedConcepts": ["Big O notation", "Logarithm", "Upper bound"]
+  },
+  {
+    "id": "ann-e692-ford",
+    "proofId": "erdos-692",
+    "range": { "startLine": 93, "endLine": 102 },
+    "type": "axiom",
+    "title": "Ford's Sharper Bounds (2008)",
+    "content": "**ford_bounds:**\n\nFord's 2008 Annals of Mathematics paper gives more precise bounds depending on the ratio m/n and other parameters.\n\nThis provides finer control over the density for specific ranges.",
+    "mathContext": "Ford's work is a landmark paper on divisor distribution in intervals.",
+    "significance": "supporting",
+    "relatedConcepts": ["Annals of Math", "Sharp bounds", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e692-unimodular",
+    "proofId": "erdos-692",
+    "range": { "startLine": 108, "endLine": 115 },
+    "type": "definition",
+    "title": "Unimodularity Definition",
+    "content": "**IsUnimodular:**\n\nA function f : ℕ → ℝ is unimodular if there's a peak m₀ where:\n- f is non-decreasing up to m₀\n- f is non-increasing after m₀\n\nVisually: the graph has exactly one 'hump'.",
+    "significance": "critical",
+    "relatedConcepts": ["Monotonicity", "Peak", "Single maximum"]
+  },
+  {
+    "id": "ann-e692-conjecture",
+    "proofId": "erdos-692",
+    "range": { "startLine": 117, "endLine": 122 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**unimodularity_conjecture:**\n\nFor fixed n, is the function m ↦ δ₁(n,m) unimodular?\n\nErdős conjectured this might be true, expecting a simple behavior.\n\n**Status:** FALSE — the behavior is much more complex.",
+    "significance": "critical",
+    "relatedConcepts": ["Conjecture", "Counterexample"]
+  },
+  {
+    "id": "ann-e692-counterexample",
+    "proofId": "erdos-692",
+    "range": { "startLine": 128, "endLine": 139 },
+    "type": "axiom",
+    "title": "Cambie's Counterexample",
+    "content": "**cambie_counterexample_n3:**\n\nFor n = 3:\n- δ₁(3,6) ≈ 0.35\n- δ₁(3,7) ≈ 0.33\n- δ₁(3,8) ≈ 0.3619\n\n**Key Point:** The sequence goes DOWN (0.35→0.33) then UP (0.33→0.3619)!\n\nThis violates unimodularity — there's a local minimum at m=7.",
+    "mathContext": "This concrete counterexample from Cambie's 2025 arXiv paper disproves the conjecture with small values.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexample", "Local minimum", "Numerical computation"]
+  },
+  {
+    "id": "ann-e692-fails",
+    "proofId": "erdos-692",
+    "range": { "startLine": 148, "endLine": 161 },
+    "type": "theorem",
+    "title": "Unimodularity Fails",
+    "content": "**unimodularity_fails_n3 and unimodularity_fails_n2:**\n\nThe unimodularity conjecture is FALSE for n = 2 and n = 3.\n\nThe counterexample directly contradicts any unimodular structure — a local minimum at m=7 means the function goes down then up.",
+    "significance": "critical",
+    "relatedConcepts": ["Negation", "Disproof"]
+  },
+  {
+    "id": "ann-e692-local-max",
+    "proofId": "erdos-692",
+    "range": { "startLine": 167, "endLine": 178 },
+    "type": "definition",
+    "title": "Local Maxima",
+    "content": "**IsLocalMax and numLocalMaxima:**\n\nm₀ is a local maximum if f(m₀-1) < f(m₀) > f(m₀+1).\n\nnumLocalMaxima counts how many local maxima exist up to M.\n\nFor a unimodular function, there would be at most one local maximum.",
+    "significance": "key",
+    "relatedConcepts": ["Local maximum", "Counting", "Unimodular violation"]
+  },
+  {
+    "id": "ann-e692-superpolynomial",
+    "proofId": "erdos-692",
+    "range": { "startLine": 180, "endLine": 189 },
+    "type": "axiom",
+    "title": "Superpolynomially Many Maxima",
+    "content": "**cambie_superpolynomial_maxima:**\n\nFor fixed n ≥ 2, the function m ↦ δ₁(n,m) has **superpolynomially many** local maxima.\n\nThis means: for any polynomial p(M), eventually there are more local maxima up to M than p(M).\n\nThis is a dramatic violation of unimodularity!",
+    "mathContext": "Superpolynomial growth is faster than any polynomial but possibly slower than exponential.",
+    "significance": "critical",
+    "relatedConcepts": ["Superpolynomial", "Growth rate", "Local maxima count"]
+  },
+  {
+    "id": "ann-e692-main",
+    "proofId": "erdos-692",
+    "range": { "startLine": 204, "endLine": 212 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_692:**\n\nCombines the two main results:\n\n1. **Disproof:** Unimodularity fails for n = 3\n2. **Bounds Valid:** Erdős's upper bound still holds\n\n**Status:** The original conjecture is DISPROVED, but the quantitative bounds remain valid.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Disproof", "Valid bounds"]
+  }
+]
