@@ -1,1 +1,187 @@
-[]
+[
+  {
+    "id": "ann-e740-chromatic",
+    "proofId": "erdos-740",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber:**\n\nThe minimum number of colors needed to properly color a graph G, where adjacent vertices receive different colors.\n\nFor infinite graphs, this is a cardinal number, not just a natural number.",
+    "mathContext": "Cardinal-valued chromatic numbers are essential for infinite graph theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Cardinals", "k-colorable"]
+  },
+  {
+    "id": "ann-e740-cycle",
+    "proofId": "erdos-740",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "definition",
+    "title": "Cycle Structure",
+    "content": "**Cycle V G n:**\n\nA cycle of length n is a closed walk with n distinct vertices (except start = end) where consecutive vertices are adjacent.\n\n**Fields:**\n- vertices : Fin n → V\n- closed, edges, distinct conditions",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-odd-cycle",
+    "proofId": "erdos-740",
+    "range": { "startLine": 76, "endLine": 77 },
+    "type": "definition",
+    "title": "Odd Cycle",
+    "content": "**isOddCycle:**\n\nA cycle is odd if its length n is odd (3, 5, 7, ...).\n\nOdd cycles are special: a graph is bipartite iff it has no odd cycles. The smallest odd cycle is a triangle (n = 3).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-contains-odd",
+    "proofId": "erdos-740",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "definition",
+    "title": "Contains Short Odd Cycle",
+    "content": "**containsOddCycleLeq:**\n\nThe graph contains at least one odd cycle of length at most r.\n\n**Definition:** ∃ n ≤ r, Odd n ∧ Cycle exists of length n",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-no-odd",
+    "proofId": "erdos-740",
+    "range": { "startLine": 97, "endLine": 98 },
+    "type": "definition",
+    "title": "No Short Odd Cycles",
+    "content": "**noOddCyclesLeq:**\n\nThe graph contains no odd cycles of length ≤ r.\n\nThis is the key property we want preserved in subgraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e740-triangle-free",
+    "proofId": "erdos-740",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "definition",
+    "title": "Triangle-Free",
+    "content": "**isTriangleFree:**\n\nThe graph contains no triangles (3-cycles). Equivalently, noOddCyclesLeq V G 3.\n\nTriangle-free graphs are a fundamental class studied extensively in extremal graph theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-induced",
+    "proofId": "erdos-740",
+    "range": { "startLine": 115, "endLine": 116 },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "**inducedSubgraph:**\n\nGiven a subset S of vertices, the induced subgraph on S keeps exactly the edges of G that have both endpoints in S.\n\nThis is the natural way to restrict a graph to a subset.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e740-conjecture",
+    "proofId": "erdos-740",
+    "range": { "startLine": 135, "endLine": 140 },
+    "type": "definition",
+    "title": "Erdős-Hajnal Conjecture",
+    "content": "**erdosHajnalConjecture:**\n\nIf χ(G) = 𝔪 (infinite cardinal), must G have a subgraph with χ = 𝔪 and no odd cycles of length ≤ r?\n\n**Formalization:**\n∀ V G, χ(G) = 𝔪 → ∃ S, χ(G[S]) = 𝔪 ∧ noOddCyclesLeq S G[S] r\n\n**Status:** OPEN for general 𝔪 and r.",
+    "mathContext": "This is one of Erdős's 'most wanted' problems from [Er81].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e740-triangle-conj",
+    "proofId": "erdos-740",
+    "range": { "startLine": 146, "endLine": 147 },
+    "type": "definition",
+    "title": "Triangle-Free Conjecture",
+    "content": "**triangleFreeConjecture:**\n\nThe special case r = 3: must every 𝔪-chromatic graph contain a triangle-free subgraph with χ = 𝔪?\n\nThis is the most studied case of the general conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-countable",
+    "proofId": "erdos-740",
+    "range": { "startLine": 153, "endLine": 158 },
+    "type": "definition",
+    "title": "Countable Case",
+    "content": "**countableCase:**\n\nThe conjecture for 𝔪 = ℵ₀ (countably infinite chromatic number).\n\nThis is the case Rödl resolved for r = 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-rodl",
+    "proofId": "erdos-740",
+    "range": { "startLine": 169, "endLine": 169 },
+    "type": "axiom",
+    "title": "Rödl's Theorem",
+    "content": "**rodl_theorem:**\n\nEvery countably chromatic graph contains a triangle-free subgraph with χ = ℵ₀.\n\n**Statement:** countableCase 3\n\nThis is the main positive result for Erdős #740.",
+    "mathContext": "Rödl's proof uses probabilistic and combinatorial methods.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e740-threshold",
+    "proofId": "erdos-740",
+    "range": { "startLine": 186, "endLine": 192 },
+    "type": "definition",
+    "title": "Threshold Function",
+    "content": "**thresholdFunctionExists:**\n\nDoes there exist f_r(𝔪) such that χ(G) ≥ f_r(𝔪) implies G has a subgraph with χ = 𝔪 and no odd cycles ≤ r?\n\nThis quantitative version asks for explicit bounds. Its existence is unknown for most cases.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-girth",
+    "proofId": "erdos-740",
+    "range": { "startLine": 210, "endLine": 212 },
+    "type": "definition",
+    "title": "Girth",
+    "content": "**girth:**\n\nThe length of the shortest cycle in G, or ∞ if G is a forest (acyclic).\n\nGraphs with high girth are sparse and have strong structural properties.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e740-girth-conj",
+    "proofId": "erdos-740",
+    "range": { "startLine": 226, "endLine": 231 },
+    "type": "definition",
+    "title": "Girth Variant Conjecture",
+    "content": "**girthConjecture:**\n\nMust G with χ = 𝔪 contain a subgraph with χ = 𝔪 and girth > r (no cycles at all of length ≤ r)?\n\nThis is stronger than the odd cycle version since it forbids even cycles too.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-girth-implies",
+    "proofId": "erdos-740",
+    "range": { "startLine": 237, "endLine": 246 },
+    "type": "theorem",
+    "title": "Girth Implies Odd Cycle",
+    "content": "**girth_implies_odd:**\n\nThe girth conjecture implies the odd cycle conjecture.\n\n**Proof:** If a subgraph has no cycles ≤ r, it certainly has no ODD cycles ≤ r.\n\nSo the girth variant is strictly stronger.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-bipartite",
+    "proofId": "erdos-740",
+    "range": { "startLine": 278, "endLine": 279 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "**isBipartite:**\n\nA graph with no odd cycles at all. Equivalently, a graph that is 2-colorable.\n\nBipartite graphs have χ ≤ 2, which limits what's possible.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e740-no-bipartite",
+    "proofId": "erdos-740",
+    "range": { "startLine": 286, "endLine": 296 },
+    "type": "theorem",
+    "title": "No Infinite Bipartite",
+    "content": "**no_infinite_bipartite:**\n\nFor 𝔪 > 2, we cannot hope for a bipartite subgraph with χ = 𝔪.\n\n**Reason:** Every bipartite graph has chromatic number at most 2.\n\nThis shows the conjecture must have finite r.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e740-summary",
+    "proofId": "erdos-740",
+    "range": { "startLine": 308, "endLine": 317 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_740_summary:**\n\nCombines all main results:\n1. Rödl's theorem (countableCase 3)\n2. Girth implies odd cycle version\n3. Bipartite version fails for 𝔪 > 2\n\nThis summarizes what we know about Erdős #740.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e740-main",
+    "proofId": "erdos-740",
+    "range": { "startLine": 323, "endLine": 323 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_740:**\n\nThe main theorem: countableCase 3 = rodl_theorem\n\nRödl's result is the strongest known positive case for Erdős #740.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e740-most-wanted",
+    "proofId": "erdos-740",
+    "range": { "startLine": 336, "endLine": 339 },
+    "type": "definition",
+    "title": "Erdős's Most Wanted",
+    "content": "**erdosMostWanted:**\n\nThe full conjecture: for all infinite cardinals 𝔪 and all r ≥ 1, the conjecture holds.\n\nErdős listed this in [Er81] as one of the problems he 'would most like to see solved.'",
+    "mathContext": "This problem connects infinite combinatorics, set theory, and graph coloring.",
+    "significance": "key"
+  }
+]
