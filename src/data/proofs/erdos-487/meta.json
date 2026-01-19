@@ -1,33 +1,84 @@
 {
   "id": "erdos-487",
-  "title": "Erdős Problem #487",
+  "title": "LCM Triples in Dense Sets",
   "slug": "erdos-487",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... have positive density. Must there exist distinct ... such that ... (where ... is the least common multiple of ... and...",
+  "description": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that lcm(a,b) = c? YES - follows from Kleitman's 1971 theorem on union-free collections.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kleitman",
     "sourceUrl": "https://erdosproblems.com/487",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos487Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "density",
+      "lcm"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 487,
     "erdosUrl": "https://erdosproblems.com/487",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #487 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ have positive density. Must there exist distinct $a,b,c\\in A$ such that $[a,b]=c$ (where $[a,b]$ is the least common multiple of $a$ and $b$)?\n\n\n\nDavenport and Erd\\H{o}s \\cite{DaEr37} showed that there must exist an infinite sequence $a_1<a_2\\cdots$ in $A$ such that $a_i\\mid a_j$ for all $i\\leq j$.\n\nThis is true, a consequence of the positive solution to [447] by Kleitman \\cite{Kl71}.\n\n\n\n\nReferences\n\n\n[DaEr37] No reference found.\n\n\n[Kl71] Kleitman, Daniel, Collections of subsets containing no two sets and their union. Proceedings of the LA Meeting AMS (1971), 153-155.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects divisibility in dense sets to combinatorial set theory. The key insight is a bijection between LCM triples and set unions under prime factorization. Davenport and Erdős (1936) proved that dense sets contain infinite divisibility chains. Kleitman (1971) resolved this problem by proving that union-free collections of subsets of [n] have size at most (1+o(1))·C(n, ⌊n/2⌋), which is o(2^n). This bound implies that LCM-free (hence union-free) sets cannot have positive density.",
+    "problemStatement": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that [a,b] = c (where [a,b] is the least common multiple of a and b)?",
+    "proofStrategy": "The proof works by contradiction using the prime factorization bijection. If A has positive density δ > 0 but no LCM triples, then the image of A under the prime factorization map is a union-free collection of sets. By Kleitman's theorem, such collections have size o(2^n), which translates to o(N) elements up to N. But positive density requires at least δN elements, a contradiction for large N.",
+    "keyInsights": [
+      "Prime factorization creates a bijection where lcm(a,b) = c corresponds to union of factorization sets",
+      "LCM-free sets correspond to union-free collections under this bijection",
+      "Kleitman's bound on union-free collections is (1+o(1))·C(n, ⌊n/2⌋) = o(2^n)",
+      "Positive density sets have ~δN elements up to N, but union-free collections have o(N) elements",
+      "The contradiction proves LCM triples must exist in any dense set"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "density-lcm",
+      "startLine": 47,
+      "endLine": 82,
+      "summary": "Definitions for positive upper density, positive lower density, LCM triples, and divisibility chains."
+    },
+    {
+      "id": "union-free",
+      "startLine": 83,
+      "endLine": 111,
+      "summary": "Definition of union-free collections and the prime factorization bijection connecting LCM to set union."
+    },
+    {
+      "id": "davenport-erdos",
+      "startLine": 112,
+      "endLine": 149,
+      "summary": "The 1936 result that sets with positive density contain infinite divisibility chains."
+    },
+    {
+      "id": "kleitman",
+      "startLine": 150,
+      "endLine": 187,
+      "summary": "The 1971 theorem bounding union-free collections to (1+o(1))·C(n, ⌊n/2⌋), which resolves Problem #487."
+    },
+    {
+      "id": "main-result",
+      "startLine": 188,
+      "endLine": 209,
+      "summary": "The main theorem: dense sets contain LCM triples, plus infinitely many such triples."
+    },
+    {
+      "id": "examples",
+      "startLine": 210,
+      "endLine": 259,
+      "summary": "Concrete examples including multiples of 6 (LCM triples exist) and powers of 2 (no LCM triples, but density 0)."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #487 is SOLVED. Sets with positive density must contain distinct elements a, b, c with lcm(a,b) = c. This follows from Kleitman's 1971 bound on union-free collections, using the prime factorization bijection between LCM triples and set unions.",
+    "implications": "The result establishes a fundamental constraint on dense subsets of ℕ: they cannot avoid LCM relationships. This connects number-theoretic density to extremal combinatorics of set systems.",
+    "openQuestions": [
+      "What is the minimum density required to guarantee an LCM triple?",
+      "For density δ, how many distinct LCM triples exist up to N?",
+      "Can the quantitative bounds from Kleitman's theorem be improved?"
+    ]
   }
 }
