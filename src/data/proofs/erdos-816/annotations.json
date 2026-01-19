@@ -1,1 +1,160 @@
-[]
+[
+  {
+    "id": "ann-e816-header",
+    "proofId": "erdos-816",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3**\n\nA problem of Erdős and Hajnal asking:\n\nIf G has 2n+1 vertices and n² + n + 1 edges, must it contain two vertices of the same degree connected by a path of length 3?\n\n**Answer:** YES (Chen-Ma, 2025)\n\n**Key Insight:** K_{n,n+1} with n² + n edges is the unique obstruction.",
+    "mathContext": "This is a Turán-type extremal graph problem about forced substructures.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán problems", "Bipartite graphs", "Degree sequences"]
+  },
+  {
+    "id": "ann-e816-vertices",
+    "proofId": "erdos-816",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "Number of Vertices",
+    "content": "**numVertices:**\n\nThe total count of vertices in the graph.\n\n**Definition:**\n```lean\nnoncomputable def numVertices (V : Type*) [Fintype V] : ℕ := Fintype.card V\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e816-edges",
+    "proofId": "erdos-816",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Number of Edges",
+    "content": "**numEdges:**\n\nThe count of edges in graph G.\n\n**Definition:**\n```lean\nnoncomputable def numEdges (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=\n  G.edgeFinset.card\n```\n\nThe key threshold is n² + n + 1 edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e816-degree",
+    "proofId": "erdos-816",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "Vertex Degree",
+    "content": "**degree:**\n\nThe degree of vertex v is the number of its neighbors.\n\n**Definition:**\n```lean\nnoncomputable def degree (G : SimpleGraph V) (v : V) : ℕ :=\n  (G.neighborFinset v).card\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e816-path3",
+    "proofId": "erdos-816",
+    "range": { "startLine": 63, "endLine": 71 },
+    "type": "definition",
+    "title": "Path of Length 3",
+    "content": "**hasPath3:**\n\nA path of length 3 from u to v consists of 4 distinct vertices u - a - b - v where consecutive pairs are adjacent.\n\n**Definition:**\n```lean\ndef hasPath3 (G : SimpleGraph V) (u v : V) : Prop :=\n  ∃ a b : V, u ≠ a ∧ a ≠ b ∧ b ≠ v ∧ ... ∧\n    G.Adj u a ∧ G.Adj a b ∧ G.Adj b v\n```\n\nPath length 3 is crucial: it creates tension with bipartite structure.",
+    "mathContext": "In bipartite graphs, paths alternate between parts, so length-3 paths between same-part vertices don't exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e816-path3-symm",
+    "proofId": "erdos-816",
+    "range": { "startLine": 72, "endLine": 85 },
+    "type": "theorem",
+    "title": "Path Symmetry",
+    "content": "**hasPath3_symm:**\n\nPaths of length 3 are symmetric: if there's a path from u to v, there's one from v to u.\n\nThe proof reverses the path: u - a - b - v becomes v - b - a - u.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e816-same-deg",
+    "proofId": "erdos-816",
+    "range": { "startLine": 90, "endLine": 96 },
+    "type": "definition",
+    "title": "Same Degree",
+    "content": "**sameDegree:**\n\nTwo vertices have the same degree in graph G.\n\n**Definition:**\n```lean\ndef sameDegree (G : SimpleGraph V) (u v : V) : Prop :=\n  degree G u = degree G v\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e816-main-prop",
+    "proofId": "erdos-816",
+    "range": { "startLine": 97, "endLine": 103 },
+    "type": "definition",
+    "title": "Equal-Degree Path-3 Pair",
+    "content": "**hasEqualDegreePath3Pair:**\n\nThe main property: existence of distinct vertices with same degree connected by path of length 3.\n\n**Definition:**\n```lean\ndef hasEqualDegreePath3Pair (G : SimpleGraph V) : Prop :=\n  ∃ u v : V, u ≠ v ∧ sameDegree G u v ∧ hasPath3 G u v\n```\n\nThis is what the problem asks whether dense graphs must have.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e816-eh-cond",
+    "proofId": "erdos-816",
+    "range": { "startLine": 108, "endLine": 115 },
+    "type": "definition",
+    "title": "Erdős-Hajnal Condition",
+    "content": "**satisfiesEH816:**\n\nA graph satisfies the Erdős-Hajnal condition if it has 2n+1 vertices and n² + n + 1 edges.\n\n**Definition:**\n```lean\ndef satisfiesEH816 (G : SimpleGraph V) [DecidableRel G.Adj] (n : ℕ) : Prop :=\n  numVertices V = 2 * n + 1 ∧\n  numEdges G = n^2 + n + 1\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e816-weaker",
+    "proofId": "erdos-816",
+    "range": { "startLine": 116, "endLine": 123 },
+    "type": "definition",
+    "title": "Chen-Ma Weaker Condition",
+    "content": "**satisfiesWeakerEH816:**\n\nChen-Ma's stronger result uses a weaker condition: at least n² + n edges.\n\n**Definition:**\n```lean\ndef satisfiesWeakerEH816 (G : SimpleGraph V) [DecidableRel G.Adj] (n : ℕ) : Prop :=\n  numVertices V = 2 * n + 1 ∧\n  numEdges G ≥ n^2 + n\n```\n\nWith this condition, only K_{n,n+1} fails.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e816-bipartite",
+    "proofId": "erdos-816",
+    "range": { "startLine": 128, "endLine": 140 },
+    "type": "definition",
+    "title": "Complete Bipartite Graph",
+    "content": "**isCompleteBipartite:**\n\nK_{n,n+1} is the complete bipartite graph with parts of size n and n+1.\n\n**Properties:**\n- All edges go between parts (no edges within a part)\n- Total edges: n(n+1) = n² + n\n- Part A: all vertices have degree n+1\n- Part B: all vertices have degree n\n\nThis is the unique extremal graph for the problem.",
+    "mathContext": "In K_{n,n+1}, same-degree vertices are in the same part, but length-3 paths between them don't exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e816-counter",
+    "proofId": "erdos-816",
+    "range": { "startLine": 141, "endLine": 157 },
+    "type": "axiom",
+    "title": "K_{n,n+1} Counterexample",
+    "content": "**K_counterexample:**\n\nK_{n,n+1} has exactly n² + n edges and does NOT contain an equal-degree path-3 pair.\n\n**Why it fails:**\n1. One part has degree n+1, the other has degree n\n2. Same-degree vertices must be in the same part\n3. Paths of length 3 between same-part vertices would require leaving and returning to the same part\n4. But in bipartite graphs, each step alternates parts, so length-3 returns to the opposite part\n\nThis shows the threshold n² + n + 1 is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e816-chen-ma",
+    "proofId": "erdos-816",
+    "range": { "startLine": 162, "endLine": 173 },
+    "type": "axiom",
+    "title": "Chen-Ma Theorem (2025)",
+    "content": "**chen_ma_theorem:**\n\nFor n ≥ 600, every graph on 2n+1 vertices with at least n² + n edges contains an equal-degree path-3 pair, EXCEPT K_{n,n+1}.\n\n**Statement:**\n```lean\naxiom chen_ma_theorem (n : ℕ) (hn : n ≥ 600) :\n    ∀ ... @satisfiesWeakerEH816 V _ _ G _ n →\n      ¬isCompleteBipartite G n →\n      hasEqualDegreePath3Pair G\n```\n\nThis is a very recent result (arXiv:2503.19569, 2025).",
+    "mathContext": "The proof characterizes K_{n,n+1} as the unique extremal graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e816-large-n",
+    "proofId": "erdos-816",
+    "range": { "startLine": 174, "endLine": 196 },
+    "type": "theorem",
+    "title": "Corollary for Large n",
+    "content": "**erdos_816_for_large_n:**\n\nFor n ≥ 600, with n² + n + 1 edges, we definitely get an equal-degree path-3 pair.\n\n**Proof sketch:**\n1. With n² + n + 1 edges, G cannot be K_{n,n+1} (which has only n² + n edges)\n2. Apply Chen-Ma theorem\n3. Conclude hasEqualDegreePath3Pair G",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e816-full",
+    "proofId": "erdos-816",
+    "range": { "startLine": 197, "endLine": 206 },
+    "type": "axiom",
+    "title": "Full Result",
+    "content": "**erdos_816_full:**\n\nThe complete answer for all n: any graph with 2n+1 vertices and n² + n + 1 edges contains an equal-degree pair joined by a path of length 3.\n\n**Statement:**\n```lean\naxiom erdos_816_full :\n    ∀ n : ℕ, ∀ ... @satisfiesEH816 V _ _ G _ n →\n      hasEqualDegreePath3Pair G\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e816-path-sig",
+    "proofId": "erdos-816",
+    "range": { "startLine": 211, "endLine": 221 },
+    "type": "axiom",
+    "title": "Why Path Length 3",
+    "content": "**path3_significance:**\n\nPath length 3 creates the key tension with bipartite structure:\n- Length 1: Just adjacency, trivial\n- Length 2: Common neighbor\n- Length 3: Must leave and return to same part, impossible in bipartite graphs for same-part endpoints\n\nThis is why K_{n,n+1} (bipartite) fails while non-bipartite graphs succeed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e816-summary",
+    "proofId": "erdos-816",
+    "range": { "startLine": 284, "endLine": 306 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_816_summary:**\n\n**Question:** Must graphs with 2n+1 vertices and n² + n + 1 edges contain equal-degree vertices joined by path of length 3?\n\n**Answer:** YES\n\n**Proof:** Chen-Ma (2025)\n\n**Stronger Result:** For n ≥ 600, even n² + n edges suffice, except K_{n,n+1}\n\n**Threshold:** K_{n,n+1} has exactly n² + n edges and fails. One more edge forces the property.",
+    "significance": "critical"
+  }
+]
