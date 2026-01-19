@@ -1,1 +1,287 @@
-[]
+[
+  {
+    "id": "ann-e878-context",
+    "proofId": "erdos-878",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #878: 'Unconventional' number theoretic functions f(n) and F(n). Four main questions about their growth, maxima, and the unusual sum H(x). Status: OPEN.",
+    "significance": "critical",
+    "tags": ["erdos", "number-theory", "unconventional"]
+  },
+  {
+    "id": "ann-e878-logfloor",
+    "proofId": "erdos-878",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Discrete Logarithm Floor",
+    "content": "logFloor p n is the largest integer ℓ such that p^ℓ ≤ n. This is ⌊log_p(n)⌋ for prime p and positive n.",
+    "significance": "key",
+    "tags": ["definition", "logarithm"],
+    "leanSymbol": "logFloor"
+  },
+  {
+    "id": "ann-e878-primepower",
+    "proofId": "erdos-878",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Prime Power Below n",
+    "content": "primePowerBelow p n = p^{⌊log_p(n)⌋}, the largest power of p not exceeding n. This is the summand in f(n).",
+    "significance": "key",
+    "tags": ["definition", "prime-power"],
+    "leanSymbol": "primePowerBelow"
+  },
+  {
+    "id": "ann-e878-f",
+    "proofId": "erdos-878",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) = ∑_{p|n} p^{⌊log_p(n)⌋}. For each prime factor p of n, add the largest power of p not exceeding n. This is 'unconventional' because ℓ depends on n, not just on the exponent of p in n.",
+    "significance": "critical",
+    "tags": ["definition", "f-function"],
+    "leanSymbol": "f"
+  },
+  {
+    "id": "ann-e878-f-one",
+    "proofId": "erdos-878",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "theorem",
+    "title": "f(1) = 0",
+    "content": "Since 1 has no prime factors, f(1) = 0. The empty sum convention.",
+    "significance": "supporting",
+    "tags": ["theorem", "base-case"],
+    "leanSymbol": "f_one"
+  },
+  {
+    "id": "ann-e878-valid-decomp",
+    "proofId": "erdos-878",
+    "range": { "startLine": 71, "endLine": 77 },
+    "type": "definition",
+    "title": "Valid Decomposition",
+    "content": "A ValidDecomposition of n consists of pairwise coprime integers ≤ n whose prime factors all divide n. Used to define F(n) as the maximum sum.",
+    "significance": "key",
+    "tags": ["definition", "decomposition"],
+    "leanSymbol": "ValidDecomposition"
+  },
+  {
+    "id": "ann-e878-F",
+    "proofId": "erdos-878",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "definition",
+    "title": "The Function F(n)",
+    "content": "F(n) = max over valid decompositions of the sum of parts. This measures how large a sum of coprime integers with restricted prime factors can be.",
+    "significance": "critical",
+    "tags": ["definition", "F-function"],
+    "leanSymbol": "F"
+  },
+  {
+    "id": "ann-e878-f-le-F",
+    "proofId": "erdos-878",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "axiom",
+    "title": "f(n) ≤ F(n)",
+    "content": "The trivial inequality: f(n) is the sum over prime factors, which forms a valid decomposition (prime powers are coprime), so f(n) ≤ F(n).",
+    "significance": "key",
+    "tags": ["axiom", "inequality"],
+    "leanSymbol": "f_le_F"
+  },
+  {
+    "id": "ann-e878-almostall",
+    "proofId": "erdos-878",
+    "range": { "startLine": 97, "endLine": 100 },
+    "type": "definition",
+    "title": "Almost All",
+    "content": "AlmostAll P means the set of n not satisfying P has density 0. Formalized as the limit of the proportion of exceptions in [1,x] being 0.",
+    "significance": "key",
+    "tags": ["definition", "density"],
+    "leanSymbol": "AlmostAll"
+  },
+  {
+    "id": "ann-e878-q1f",
+    "proofId": "erdos-878",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "definition",
+    "title": "Question 1: f(n) = o(n log log n)",
+    "content": "Is f(n) = o(n log log n) for almost all n? The conjecture says f is typically much smaller than its potential maximum.",
+    "significance": "key",
+    "tags": ["conjecture", "question"],
+    "leanSymbol": "Question1_f"
+  },
+  {
+    "id": "ann-e878-q1F",
+    "proofId": "erdos-878",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "definition",
+    "title": "Question 1: F(n) ≫ n log log n",
+    "content": "In contrast to f, F(n) should be ≫ n log log n for almost all n. The optimal decomposition captures much more than the prime-power decomposition.",
+    "significance": "key",
+    "tags": ["conjecture", "question"],
+    "leanSymbol": "Question1_F"
+  },
+  {
+    "id": "ann-e878-q2",
+    "proofId": "erdos-878",
+    "range": { "startLine": 110, "endLine": 115 },
+    "type": "definition",
+    "title": "Question 2: Maximum of f",
+    "content": "Is max_{n≤x} f(n) ~ x log x / log log x? This asks for the precise asymptotic of the maximum.",
+    "significance": "critical",
+    "tags": ["conjecture", "maximum"],
+    "leanSymbol": "Question2"
+  },
+  {
+    "id": "ann-e878-q3",
+    "proofId": "erdos-878",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "definition",
+    "title": "Question 3: Do max f and max F Coincide?",
+    "content": "Is max_{n≤x} f(n) = max_{n≤x} F(n)? Perhaps the same n achieves both maxima.",
+    "significance": "key",
+    "tags": ["conjecture", "maximum"],
+    "leanSymbol": "Question3"
+  },
+  {
+    "id": "ann-e878-H",
+    "proofId": "erdos-878",
+    "range": { "startLine": 128, "endLine": 130 },
+    "type": "definition",
+    "title": "The Sum H(x)",
+    "content": "H(x) = ∑_{n<x} f(n)/n. This sum exhibits unusual behavior: it has no mean value, with limsup = ∞ but finite liminf.",
+    "significance": "critical",
+    "tags": ["definition", "sum"],
+    "leanSymbol": "H"
+  },
+  {
+    "id": "ann-e878-H-lower",
+    "proofId": "erdos-878",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "axiom",
+    "title": "Erdős's Lower Bound on H",
+    "content": "H(x) ≫ x log log log log x. The lower bound involves the 4-fold iterated logarithm, showing extremely slow growth.",
+    "significance": "critical",
+    "tags": ["axiom", "erdos-1984", "bound"],
+    "leanSymbol": "H_lower_bound"
+  },
+  {
+    "id": "ann-e878-H-upper",
+    "proofId": "erdos-878",
+    "range": { "startLine": 136, "endLine": 138 },
+    "type": "axiom",
+    "title": "Erdős's Upper Bound on H",
+    "content": "H(x) ≪ x log log log x. The upper bound uses the 3-fold iterated logarithm. There's still a gap of one iterated log.",
+    "significance": "critical",
+    "tags": ["axiom", "erdos-1984", "bound"],
+    "leanSymbol": "H_upper_bound"
+  },
+  {
+    "id": "ann-e878-limsup",
+    "proofId": "erdos-878",
+    "range": { "startLine": 140, "endLine": 142 },
+    "type": "axiom",
+    "title": "Limsup of H(x)/x is Infinite",
+    "content": "The limsup of (1/x)H(x) is infinite. This is very unusual: the 'average' of f(n)/n can be arbitrarily large along some subsequence.",
+    "significance": "critical",
+    "tags": ["axiom", "limsup"],
+    "leanSymbol": "H_limsup_infinite"
+  },
+  {
+    "id": "ann-e878-liminf",
+    "proofId": "erdos-878",
+    "range": { "startLine": 144, "endLine": 146 },
+    "type": "axiom",
+    "title": "Liminf of H(x)/x is Finite",
+    "content": "The liminf of (1/x)H(x) is finite. Combined with limsup = ∞, this shows f(n)/n has no mean value—a rare property.",
+    "significance": "critical",
+    "tags": ["axiom", "liminf"],
+    "leanSymbol": "H_liminf_finite"
+  },
+  {
+    "id": "ann-e878-no-mean",
+    "proofId": "erdos-878",
+    "range": { "startLine": 148, "endLine": 152 },
+    "type": "theorem",
+    "title": "No Mean Value",
+    "content": "f(n)/n doesn't have a mean value: the average oscillates between finite values and infinity. Very unusual for a function that 'almost behaves as additive'.",
+    "significance": "critical",
+    "tags": ["theorem", "unusual"],
+    "leanSymbol": "f_no_mean_value"
+  },
+  {
+    "id": "ann-e878-erdos1984",
+    "proofId": "erdos-878",
+    "range": { "startLine": 160, "endLine": 166 },
+    "type": "axiom",
+    "title": "Erdős 1984: Partial Asymptotic",
+    "content": "Erdős proved max_{n≤x} f(n) ~ x log x / log log x along SOME sequence x → ∞. The full result for ALL x remains open.",
+    "significance": "critical",
+    "tags": ["axiom", "erdos-1984", "partial"],
+    "leanSymbol": "erdos_1984"
+  },
+  {
+    "id": "ann-e878-conj-F",
+    "proofId": "erdos-878",
+    "range": { "startLine": 172, "endLine": 176 },
+    "type": "definition",
+    "title": "Conjecture: F ~ (1/2)n log log n",
+    "content": "Conjecture: For almost all n, F(n) ~ (1/2)n log log n. The optimal coprime decomposition achieves about half of the theoretical maximum.",
+    "significance": "key",
+    "tags": ["conjecture", "F-function"],
+    "leanSymbol": "Conjecture_F_almost_all"
+  },
+  {
+    "id": "ann-e878-example",
+    "proofId": "erdos-878",
+    "range": { "startLine": 182, "endLine": 185 },
+    "type": "theorem",
+    "title": "Example: f(6)",
+    "content": "f(6) = f(2·3) = primePowerBelow(2,6) + primePowerBelow(3,6) = 4 + 3 = 7, since 2² = 4 ≤ 6 < 8 and 3¹ = 3 ≤ 6 < 9.",
+    "significance": "supporting",
+    "tags": ["theorem", "example"],
+    "leanSymbol": "example_f_6"
+  },
+  {
+    "id": "ann-e878-prime-power",
+    "proofId": "erdos-878",
+    "range": { "startLine": 187, "endLine": 191 },
+    "type": "theorem",
+    "title": "f(p^k) = p^k",
+    "content": "For prime powers, f(p^k) = p^k = n. The only prime factor is p, and p^k ≤ p^k, so f(p^k) = p^k.",
+    "significance": "supporting",
+    "tags": ["theorem", "prime-power"],
+    "leanSymbol": "f_prime_power"
+  },
+  {
+    "id": "ann-e878-related",
+    "proofId": "erdos-878",
+    "range": { "startLine": 197, "endLine": 200 },
+    "type": "axiom",
+    "title": "Related Problem 879",
+    "content": "Erdős Problem #879 asks related questions about these unconventional functions. See [879] on erdosproblems.com.",
+    "significance": "supporting",
+    "tags": ["axiom", "related"],
+    "leanSymbol": "erdos_879_connection"
+  },
+  {
+    "id": "ann-e878-main",
+    "proofId": "erdos-878",
+    "range": { "startLine": 206, "endLine": 225 },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "Formal statement combining the four main questions and Erdős's 1984 partial result. All questions remain open.",
+    "significance": "critical",
+    "tags": ["theorem", "main"],
+    "leanSymbol": "erdos_878_statement"
+  },
+  {
+    "id": "ann-e878-summary",
+    "proofId": "erdos-878",
+    "range": { "startLine": 236, "endLine": 254 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Collects key results: (1) f ≤ F, (2) Erdős's bounds on H, (3) f(n)/n has no mean value. The main questions remain open.",
+    "significance": "critical",
+    "tags": ["summary", "main-result"],
+    "leanSymbol": "erdos_878_summary"
+  }
+]
