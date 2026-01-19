@@ -1,1 +1,144 @@
-[]
+[
+  {
+    "id": "ann-e809-header",
+    "proofId": "erdos-809",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #809: Rainbow Odd Cycles in Dense Graphs**\n\nThis problem asks: how many colors are needed to edge-color a dense graph so that every odd cycle is rainbow (no repeated colors)?\n\n**Setup:**\n- k >= 3 fixed\n- Graph G has n vertices and floor(n^2/4) + 1 edges\n- F_k(n) = minimal colors such that every C_{2k+1} is rainbow\n\n**Conjecture:** F_k(n) ~ n^2/8\n\n**Status:** OPEN - posed by Burr, Erdos, Graham, Sos in 1991",
+    "mathContext": "The edge count floor(n^2/4) + 1 exceeds the Turan number, guaranteeing odd cycles exist. The question is how to color edges to make all of them rainbow.",
+    "significance": "critical",
+    "relatedConcepts": ["Turan's theorem", "Rainbow subgraphs", "Ramsey theory", "Edge coloring"]
+  },
+  {
+    "id": "ann-e809-edge-coloring",
+    "proofId": "erdos-809",
+    "range": { "startLine": 56, "endLine": 65 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "**EdgeColoring:**\n\nAn edge coloring assigns a color (natural number) to each edge of a graph.\n\n```lean\ndef EdgeColoring (G : SimpleGraph V) := G.edgeSet -> N\n```\n\n**numColors:** The number of distinct colors used:\n```lean\nnoncomputable def numColors (G) (c) := (image c G.edgeFinset).card\n```\n\nWe seek to minimize the number of colors while satisfying constraints.",
+    "mathContext": "Edge coloring is a fundamental concept in graph theory. Here we don't require proper coloring (adjacent edges can share colors), but we constrain odd cycles.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Chromatic index", "Edge sets"]
+  },
+  {
+    "id": "ann-e809-odd-cycle",
+    "proofId": "erdos-809",
+    "range": { "startLine": 67, "endLine": 81 },
+    "type": "definition",
+    "title": "Odd Cycle Structure",
+    "content": "**OddCycle:**\n\nRepresents a cycle of length 2k+1 in graph G.\n\n**Components:**\n- `vertices : Fin (2*k+1) -> V` - the cycle vertices in order\n- `is_cycle` - consecutive vertices are adjacent\n- `distinct` - all vertices are different\n\n**Example:** For k=3, this is a 7-cycle C_7.\n\n**edges:** The set of edges traversed:\n```lean\nFinset.univ.image (fun i => [[cyc.vertices i, cyc.vertices (i+1)]])\n```",
+    "mathContext": "Odd cycles are fundamental obstructions to bipartiteness. A graph is bipartite iff it contains no odd cycles.",
+    "significance": "critical",
+    "relatedConcepts": ["Cycles", "Bipartite graphs", "Graph walks"]
+  },
+  {
+    "id": "ann-e809-rainbow",
+    "proofId": "erdos-809",
+    "range": { "startLine": 82, "endLine": 95 },
+    "type": "definition",
+    "title": "Rainbow Property",
+    "content": "**IsRainbow:**\n\nA subgraph is rainbow if all its edges have distinct colors.\n\n```lean\ndef IsRainbow (G) (c : EdgeColoring G) (edges) : Prop :=\n  forall e1 e2 in edges, e1 != e2 -> c(e1) != c(e2)\n```\n\n**IsValidColoring:**\nA coloring is valid if EVERY C_{2k+1} subgraph is rainbow:\n```lean\ndef IsValidColoring (G) (c) (k) := forall cyc : OddCycle G k, IsRainbow G c cyc.edges\n```\n\nThis is the key constraint of the problem.",
+    "mathContext": "Rainbow subgraphs appear throughout combinatorics. They arise in anti-Ramsey theory, which asks for the maximum colors before a rainbow copy appears.",
+    "significance": "critical",
+    "relatedConcepts": ["Rainbow matchings", "Anti-Ramsey numbers", "Distinct representatives"]
+  },
+  {
+    "id": "ann-e809-turan",
+    "proofId": "erdos-809",
+    "range": { "startLine": 103, "endLine": 118 },
+    "type": "axiom",
+    "title": "Turan Threshold",
+    "content": "**turanNumber and edgeThreshold:**\n\n```lean\ndef turanNumber (n) := n^2 / 4\ndef edgeThreshold (n) := turanNumber n + 1\n```\n\n**Turan's Theorem:**\nAny graph with more than floor(n^2/4) edges contains a triangle.\n\n**Why this threshold?**\n- The complete bipartite graph K_{n/2, n/2} has exactly floor(n^2/4) edges and is triangle-free\n- Adding one more edge forces a triangle\n\nFor our problem, this density also forces longer odd cycles C_{2k+1}.",
+    "mathContext": "Turan's theorem (1941) is a cornerstone of extremal graph theory. It determines the maximum edges in a K_r-free graph.",
+    "significance": "key",
+    "relatedConcepts": ["Turan numbers", "Extremal graph theory", "Forbidden subgraphs"]
+  },
+  {
+    "id": "ann-e809-f-function",
+    "proofId": "erdos-809",
+    "range": { "startLine": 133, "endLine": 142 },
+    "type": "definition",
+    "title": "The F_k Function",
+    "content": "**F(k, n):**\n\nThe central object of the problem.\n\n```lean\nnoncomputable def F (k n : N) : N :=\n  sInf {r : N | exists G : SimpleGraph (Fin n),\n    G.edgeFinset.card = edgeThreshold n and\n    exists c : EdgeColoring G, numColors G c = r and IsValidColoring G c k}\n```\n\n**Meaning:** F_k(n) is the MINIMUM r such that SOME graph G on n vertices with the threshold number of edges admits an r-coloring where every C_{2k+1} is rainbow.\n\nNote: We take the minimum over ALL such graphs, not a specific one.",
+    "mathContext": "This optimization over both graphs and colorings makes the problem challenging. Different graph structures may require different numbers of colors.",
+    "significance": "critical",
+    "relatedConcepts": ["Optimization", "Infimum", "Existential quantification"]
+  },
+  {
+    "id": "ann-e809-lower-bound",
+    "proofId": "erdos-809",
+    "range": { "startLine": 157, "endLine": 162 },
+    "type": "axiom",
+    "title": "Burr-Erdos-Graham-Sos Lower Bound",
+    "content": "**burr_erdos_graham_sos:**\n\nThe key known result:\n\n```lean\naxiom burr_erdos_graham_sos (k : N) (hk : k >= 3) :\n    exists c : Q, c > 0 and forall n >= 3, (F k n : Q) >= c * n^2\n```\n\n**Meaning:** F_k(n) >> n^2, i.e., the number of colors required is at least quadratic in n.\n\nThis rules out subquadratic solutions but doesn't pin down the constant.",
+    "mathContext": "The quadratic lower bound was proved by the original authors in 1991. It shows that many colors are needed, but the exact constant remains unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Asymptotic analysis", "Quadratic growth"]
+  },
+  {
+    "id": "ann-e809-conjecture",
+    "proofId": "erdos-809",
+    "range": { "startLine": 184, "endLine": 189 },
+    "type": "definition",
+    "title": "The Conjecture",
+    "content": "**erdos_809_conjecture:**\n\nThe main open question:\n\n```lean\ndef erdos_809_conjecture (k : N) : Prop :=\n  Filter.Tendsto (fun n => (F k n : Q) / n^2) Filter.atTop (nhds (1/8 : Q))\n```\n\n**Meaning:** F_k(n) / n^2 -> 1/8 as n -> infinity.\n\n**Equivalently:** F_k(n) ~ n^2/8 asymptotically.\n\n**Why 1/8?** This is exactly half the edge density (n^2/4) / n^2 = 1/4.",
+    "mathContext": "The conjecture claims that the optimal constant is 1/8. This would mean F_k(n) approaches n^2/8 for large n, regardless of k (as long as k >= 3).",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic equivalence", "Limits", "Conjecture"]
+  },
+  {
+    "id": "ann-e809-bounds-gap",
+    "proofId": "erdos-809",
+    "range": { "startLine": 227, "endLine": 235 },
+    "type": "theorem",
+    "title": "Gap Between Bounds",
+    "content": "**bounds_summary:**\n\nCurrent state of knowledge:\n\n```lean\ntheorem bounds_summary (k n : N) (hk : k >= 3) (hn : n >= 3) :\n    lowerBoundConstant k * n^2 <= F k n and F k n <= edgeThreshold n\n```\n\n**Bounds:**\n- Lower: c * n^2 for some c > 0 (Burr-Erdos-Graham-Sos)\n- Upper: n^2/4 + 1 (trivial: use one color per edge)\n\n**Gap:** The conjecture claims the true value is n^2/8, exactly in the middle (on a log scale).",
+    "mathContext": "The gap between lower and upper bounds is where the interesting mathematics lies. Closing this gap is the main challenge.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bounds", "Lower bounds", "Asymptotic gaps"]
+  },
+  {
+    "id": "ann-e809-rainbow-ramsey",
+    "proofId": "erdos-809",
+    "range": { "startLine": 249, "endLine": 261 },
+    "type": "concept",
+    "title": "Rainbow Ramsey Connection",
+    "content": "**Rainbow Ramsey Interpretation:**\n\nThis problem belongs to rainbow Ramsey theory:\n\n- **Classical Ramsey:** Force monochromatic subgraphs\n- **Anti-Ramsey:** Avoid rainbow subgraphs (find max colors)\n- **This problem:** Force rainbow subgraphs (find min colors)\n\n**rainbowNumber:**\n```lean\nnoncomputable def rainbowNumber (k n : N) := F k n\n```\n\nThe problem asks: what is the rainbow number of C_{2k+1} in maximally dense graphs?",
+    "mathContext": "Rainbow Ramsey theory is a vibrant area studying the interplay between colorings and subgraph structures.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "Anti-Ramsey numbers", "Graph density"]
+  },
+  {
+    "id": "ann-e809-special-cases",
+    "proofId": "erdos-809",
+    "range": { "startLine": 268, "endLine": 276 },
+    "type": "definition",
+    "title": "Special Cases",
+    "content": "**F_3 and 7-cycles:**\n\nThe first non-trivial case is k = 3:\n\n```lean\ndef F_3 (n) := F 3 n\ndef conjecture_7_cycles : Prop := erdos_809_conjecture 3\n```\n\n**Why k >= 3?**\n- k = 1 gives C_3 (triangles), handled by Turan\n- k = 2 gives C_5 (5-cycles), may require different analysis\n- k >= 3 is the regime where the conjecture is stated\n\n**Conjecture for 7-cycles:** F_3(n) ~ n^2/8",
+    "significance": "supporting",
+    "relatedConcepts": ["Triangle-free graphs", "Pentagon-free graphs", "Cycle lengths"]
+  },
+  {
+    "id": "ann-e809-open-status",
+    "proofId": "erdos-809",
+    "range": { "startLine": 293, "endLine": 299 },
+    "type": "theorem",
+    "title": "Open Status",
+    "content": "**erdos_809_open:**\n\nThe problem remains OPEN after 30+ years.\n\n```lean\ntheorem erdos_809_open : True := trivial\n```\n\n**What we know:**\n1. F_k(n) >= c * n^2 for some c > 0 (proved)\n2. F_k(n) <= n^2/4 + 1 (trivial)\n3. Conjecture: F_k(n) ~ n^2/8 (OPEN)\n\n**Progress needed:**\n- Better upper bounds (constructive)\n- Improved lower bounds (show c >= 1/8 - epsilon)",
+    "mathContext": "Many Erdos problems remain open for decades. This one is notable for its simple statement and the gap between known bounds.",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Research directions", "Erdos problems"]
+  },
+  {
+    "id": "ann-e809-summary",
+    "proofId": "erdos-809",
+    "range": { "startLine": 319, "endLine": 342 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_809_summary:**\n\nPackages all known results:\n\n```lean\ntheorem erdos_809_summary (k : N) (hk : k >= 3) :\n    (exists c : Q, c > 0 and forall n >= 3, (F k n : Q) >= c * n^2) and\n    True := by\n  constructor\n  . exact burr_erdos_graham_sos k hk\n  . trivial\n```\n\n**Summary:**\n1. F_k(n) = min colors for rainbow C_{2k+1} in dense graphs\n2. Conjecture: F_k(n) ~ n^2/8\n3. Known: F_k(n) >> n^2\n4. Status: OPEN\n5. Related: Problem #810",
+    "mathContext": "This theorem collects the complete state of knowledge about Erdos #809 in a single statement.",
+    "significance": "key",
+    "relatedConcepts": ["Summary theorems", "State of knowledge", "Problem status"]
+  }
+]

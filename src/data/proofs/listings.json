@@ -11582,17 +11582,24 @@
   },
   {
     "id": "erdos-809",
-    "title": "Erdős Problem #809",
+    "title": "Erdos Problem #809: Rainbow Odd Cycles in Dense Graphs",
     "slug": "erdos-809",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be the minimal ... such that there is a graph ... on ... vertices with ... many edges such that the...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the minimal number of colors needed to edge-color a dense graph so that every odd cycle C_{2k+1} is rainbow? Conjecture: F_k(n) ~ n^2/8. Status: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "ramsey-theory",
+      "edge-coloring",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 809,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-81",

@@ -1,33 +1,159 @@
 {
   "id": "erdos-809",
-  "title": "Erdős Problem #809",
+  "title": "Erdos Problem #809: Rainbow Odd Cycles in Dense Graphs",
   "slug": "erdos-809",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be the minimal ... such that there is a graph ... on ... vertices with ... many edges such that the...",
+  "description": "What is the minimal number of colors needed to edge-color a dense graph so that every odd cycle C_{2k+1} is rainbow? Conjecture: F_k(n) ~ n^2/8. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Burr, Erdos, Graham, Sos (1991)",
     "sourceUrl": "https://erdosproblems.com/809",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos809Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "ramsey-theory",
+      "edge-coloring",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 809,
     "erdosUrl": "https://erdosproblems.com/809",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Basic graph theory structures",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for edge counting",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for edge representation",
+        "module": "Mathlib.Data.Sym.Sym2"
+      }
+    ],
+    "originalContributions": [
+      "EdgeColoring definition: assigns colors to edges of a graph",
+      "OddCycle structure: represents C_{2k+1} subgraphs",
+      "IsRainbow predicate: all edges have distinct colors",
+      "IsValidColoring: every odd cycle is rainbow",
+      "turanNumber: maximum edges in triangle-free graph",
+      "edgeThreshold: floor(n^2/4) + 1",
+      "F function: minimal colors for rainbow odd cycles",
+      "burr_erdos_graham_sos axiom: quadratic lower bound",
+      "erdos_809_conjecture: F_k(n) ~ n^2/8",
+      "rainbowNumber: connection to rainbow Ramsey theory",
+      "erdos_809_summary: complete status of the problem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #809 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and define $F_k(n)$ to be the minimal $r$ such that there is a graph $G$ on $n$ vertices with $\\lfloor n^2/4\\rfloor+1$ many edges such that the edges can be $r$-coloured so that every subgraph isomorphic to $C_{2k+1}$ has no colour repeating on the edges.\n\nIs it true that\\[F_k(n)\\sim n^2/8?\\]\n\n\n\nA problem of Burr, Erd\\H{o}s, Graham, and S\\'{o}s, who proved that\\[F_k(n)\\gg n^2.\\]See also [810].\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #809**\n\nThis problem lies at the intersection of extremal graph theory, Ramsey theory, and edge coloring.\n\n**Historical Background:**\n- Posed by Burr, Erdos, Graham, and Sos in 1991 [Er91]\n- They proved the quadratic lower bound F_k(n) >> n^2\n- Related to Problem #810, which concerns a variant of the same question\n\n**Key Context:**\n- The edge threshold floor(n^2/4) + 1 exceeds the Turan number\n- By Turan's theorem, any graph with this many edges must contain triangles\n- For longer odd cycles C_{2k+1}, similar density guarantees apply\n- The question: how many colors suffice to make all odd cycles rainbow?",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $k \\geq 3$ and define $F_k(n)$ as the minimal $r$ such that there exists a graph $G$ on $n$ vertices with $\\lfloor n^2/4 \\rfloor + 1$ edges where the edges can be $r$-colored so that every subgraph isomorphic to $C_{2k+1}$ has no repeated colors on its edges.\n\n**Conjecture:** Is it true that $F_k(n) \\sim n^2/8$?\n\n**Status: OPEN**\n\n**Known Result:** Burr, Erdos, Graham, and Sos proved $F_k(n) \\gg n^2$, establishing a quadratic lower bound.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structures:** Use Mathlib's SimpleGraph for vertices and edges\n\n2. **Edge Coloring:** Define EdgeColoring as a function from edges to naturals\n\n3. **Odd Cycles:** Define OddCycle structure with vertices and adjacency constraints\n\n4. **Rainbow Property:** IsRainbow checks that all edges in a subgraph have distinct colors\n\n5. **The F Function:** Define as infimum over valid colorings of dense graphs\n\n6. **Known Results:** Axiomatize Turan's theorem and Burr-Erdos-Graham-Sos lower bound\n\n7. **Conjecture Statement:** Express F_k(n) ~ n^2/8 using Filter.Tendsto\n\n8. **Open Status:** Mark the problem as unresolved with supporting discussion",
+    "keyInsights": [
+      "**Rainbow Subgraphs:** A subgraph is rainbow if each edge has a unique color - this constraint on odd cycles drives the coloring complexity",
+      "**Turan Threshold:** With floor(n^2/4) + 1 edges, the graph is just barely too dense to be bipartite, forcing odd cycles",
+      "**Quadratic Scaling:** Both the lower bound (known) and conjectured value are Theta(n^2), differing only in the constant",
+      "**The Constant 1/8:** The conjecture claims F_k(n)/n^2 -> 1/8, exactly half the edge density n^2/4",
+      "**Ramsey Connection:** This is a rainbow Ramsey problem: forcing rainbow structures via density",
+      "**Open for 30+ Years:** Despite the simple statement, the exact asymptotics remain unresolved since 1991"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "EdgeColoring, OddCycle structure, IsRainbow, IsValidColoring",
+      "startLine": 48,
+      "endLine": 96
+    },
+    {
+      "id": "turan",
+      "title": "Turan Threshold",
+      "summary": "turanNumber, edgeThreshold, turan_theorem, dense_has_odd_cycles",
+      "startLine": 97,
+      "endLine": 126
+    },
+    {
+      "id": "f-function",
+      "title": "The F_k Function",
+      "summary": "Definition of F(k,n) and well-definedness",
+      "startLine": 127,
+      "endLine": 150
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "burr_erdos_graham_sos lower bound, F_quadratic_lower_bound",
+      "startLine": 151,
+      "endLine": 177
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "erdos_809_conjecture definition, erdos_809_statement",
+      "startLine": 178,
+      "endLine": 198
+    },
+    {
+      "id": "bounds",
+      "title": "Upper and Lower Bounds",
+      "summary": "F_trivial_upper_bound, lower_bound_implies_quadratic, bounds_summary",
+      "startLine": 199,
+      "endLine": 236
+    },
+    {
+      "id": "rainbow-ramsey",
+      "title": "Rainbow Ramsey Theory",
+      "summary": "IsMaximallyDense, rainbowNumber, rainbow_ramsey_interpretation",
+      "startLine": 237,
+      "endLine": 261
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "F_3 for 7-cycles, conjecture_7_cycles, k >= 3 requirement",
+      "startLine": 262,
+      "endLine": 286
+    },
+    {
+      "id": "open-status",
+      "title": "Open Status",
+      "summary": "erdos_809_open, proof_requirements",
+      "startLine": 287,
+      "endLine": 312
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_809_summary theorem collecting all key results",
+      "startLine": 313,
+      "endLine": 344
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #809 asks for the minimal number of colors F_k(n) needed to edge-color a graph on n vertices with floor(n^2/4) + 1 edges so that every odd cycle C_{2k+1} is rainbow. The conjecture states F_k(n) ~ n^2/8. Burr, Erdos, Graham, and Sos proved the quadratic lower bound F_k(n) >> n^2 in 1991, but the exact asymptotic remains open.",
+    "implications": "**Implications and Connections**\n\n1. **Extremal Graph Theory:** The problem extends Turan-type questions from existence to coloring\n\n2. **Rainbow Ramsey Theory:** Contributes to understanding when dense graphs force rainbow substructures\n\n3. **Cycle Problems:** Part of a broader program on odd cycle structures in dense graphs\n\n4. **Algorithmic Aspects:** Efficient algorithms for finding such colorings would have practical applications\n\n5. **Related Problem #810:** The companion problem explores variants of this question",
+    "openQuestions": [
+      "Prove or disprove the conjecture F_k(n) ~ n^2/8",
+      "Determine the exact constant in the lower bound",
+      "Understand how the constant depends on k",
+      "Characterize which graphs achieve the optimal coloring",
+      "Algorithmic complexity of finding optimal colorings"
+    ]
   }
 }
