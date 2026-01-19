@@ -1,33 +1,158 @@
 {
   "id": "erdos-781",
-  "title": "Erdős Problem #781",
+  "title": "Erdős Problem #781: Descending Waves in 2-Colorings",
   "slug": "erdos-781",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that any ...-colouring of ... contains a monochromatic ...-term descending wave: a sequence ....",
+  "description": "Let f(k) be the minimal n such that any 2-coloring of {1,...,n} contains a monochromatic k-term descending wave. Is f(k) = k² - k + 1? DISPROVED: Alon-Spencer (1989) showed f(k) ≫ k³, so the conjecture is false.",
   "meta": {
-    "author": "Unknown",
+    "author": "Brown-Erdős-Freedman (1990), Alon-Spencer (1989)",
     "sourceUrl": "https://erdosproblems.com/781",
-    "date": "",
-    "status": "pending",
+    "date": "1990",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos781Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "colorings",
+      "descending-waves",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 781,
     "erdosUrl": "https://erdosproblems.com/781",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for growth bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "TwoColoring abbrev for 2-colorings",
+      "StrictlyIncreasing predicate for sequences",
+      "IsDescendingWave definition (midpoint condition)",
+      "HasNonIncreasingGaps equivalent characterization",
+      "DescendingWaveIn structure for waves in sets",
+      "HasMonochromaticWave predicate",
+      "f function for minimal n",
+      "ErdosConjecture781 formal statement",
+      "BEF_lower_bound and BEF_upper_bound axioms",
+      "alon_spencer_cubic axiom: f(k) ≫ k³",
+      "conjecture_disproved theorem",
+      "IsAscendingWave for comparison",
+      "IsQuasiProgression connection",
+      "erdos_781_summary main theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #781 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal $n$ such that any $2$-colouring of $\\{1,\\ldots,n\\}$ contains a monochromatic $k$-term descending wave: a sequence $x_1<\\cdots <x_k$ such that, for $1<j<k$,\\[x_j \\geq \\frac{x_{j+1}+x_{j-1}}{2}.\\]Estimate $f(k)$. In particular is it true that $f(k)=k^2-k+1$ for all $k$?\n\n\n\nA question of Brown, Erd\\H{o}s, and Freedman \\cite{BEF90}, who proved\\[k^2-k+1\\leq f(k) \\leq \\frac{k^3-4k+9}{3}.\\]Resolved by Alon and Spencer \\cite{AlSp89} who proved that in fact $f(k) \\gg k^3$.\n\n\n\n\nReferences\n\n\n[AlSp89] Alon, N. and Spencer, Joel, Ascending waves. J. Combin. Theory Ser. A (1989), 275-287.\n\n[BEF90] Brown, T. C. and Erd\\H{o}s, P. and Freedman, A. R., Quasi-progressions and descending waves. J. Combin. Theory Ser. A (1990), 81-95.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #781: Descending Waves in 2-Colorings**\n\nThis problem concerns monochromatic patterns in 2-colorings of integers, specifically \"descending waves\" where successive gaps are non-increasing.\n\n**Key History:**\n- Brown, Erdős, Freedman (1990): Introduced the problem, proved k² - k + 1 ≤ f(k) ≤ (k³ - 4k + 9)/3\n- Alon, Spencer (1989): DISPROVED the conjecture by showing f(k) ≫ k³\n\n**Mathematical Setting:**\nA descending wave x₁ < x₂ < ... < xₖ satisfies x_j ≥ (x_{j-1} + x_{j+1})/2 for all interior points. Equivalently, the gaps (x_{i+1} - x_i) form a non-increasing sequence.",
+    "problemStatement": "**Problem Statement (DISPROVED)**\n\nLet $f(k)$ be the minimal $n$ such that any 2-coloring of $\\{1, \\ldots, n\\}$ contains a monochromatic $k$-term descending wave.\n\n**Conjecture:** Is $f(k) = k^2 - k + 1$ for all $k$?\n\n**Answer: NO**\n\nAlon and Spencer (1989) proved $f(k) \\gg k^3$, showing the conjecture is false because $f(k)$ grows cubically, not quadratically.\n\n**Known Bounds:**\n- Lower: $f(k) \\geq k^2 - k + 1$ (BEF)\n- Actual growth: $f(k) = \\Theta(k^3)$ (Alon-Spencer)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - TwoColoring (n) = Fin n → Bool\n   - StrictlyIncreasing for sequences\n   - IsDescendingWave: 2x_j ≥ x_{j-1} + x_{j+1}\n   - HasNonIncreasingGaps: equivalent characterization\n\n2. **Central Function:**\n   - f k: minimal n forcing monochromatic k-wave\n\n3. **Key Results:**\n   - BEF_lower_bound: f(k) ≥ k² - k + 1\n   - BEF_upper_bound: f(k) ≤ (k³ - 4k + 9)/3\n   - alon_spencer_cubic: f(k) ≫ k³\n   - conjecture_disproved: ¬ErdosConjecture781\n\n4. **Connections:**\n   - IsAscendingWave for comparison\n   - IsQuasiProgression relation",
+    "keyInsights": [
+      "**Descending Wave = Non-Increasing Gaps:** The midpoint condition x_j ≥ (x_{j-1} + x_{j+1})/2 is equivalent to gaps being non-increasing",
+      "**Lower Bound Correct:** The BEF lower bound k² - k + 1 IS tight for small k",
+      "**Cubic Growth:** Alon-Spencer showed f(k) = Θ(k³), not Θ(k²) as conjectured",
+      "**Probabilistic Methods:** The disproof uses probabilistic constructions to avoid descending waves longer than expected",
+      "**Ascending vs Descending:** Both wave types have similar cubic growth, as shown in the Alon-Spencer paper"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "TwoColoring, StrictlyIncreasing, IsDescendingWave, HasNonIncreasingGaps",
+      "startLine": 35,
+      "endLine": 63
+    },
+    {
+      "id": "wave-structure",
+      "title": "Descending Wave Structure",
+      "summary": "DescendingWaveIn, HasMonochromaticWave",
+      "startLine": 65,
+      "endLine": 78
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(k)",
+      "summary": "f definition, f_exists, f_minimal axioms",
+      "startLine": 80,
+      "endLine": 97
+    },
+    {
+      "id": "conjecture",
+      "title": "The Original Conjecture",
+      "summary": "ErdosConjecture781: f(k) = k² - k + 1",
+      "startLine": 99,
+      "endLine": 107
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "BEF_lower_bound, BEF_upper_bound, alon_spencer_cubic",
+      "startLine": 109,
+      "endLine": 137
+    },
+    {
+      "id": "disproof",
+      "title": "The Disproof",
+      "summary": "conjecture_disproved theorem",
+      "startLine": 139,
+      "endLine": 146
+    },
+    {
+      "id": "specific-values",
+      "title": "Specific Values",
+      "summary": "f_1, f_2, f_3, small_k_correct",
+      "startLine": 148,
+      "endLine": 168
+    },
+    {
+      "id": "construction",
+      "title": "Alon-Spencer Construction",
+      "summary": "alon_spencer_construction axiom",
+      "startLine": 170,
+      "endLine": 186
+    },
+    {
+      "id": "ascending-waves",
+      "title": "Ascending Waves",
+      "summary": "IsAscendingWave, g function, ascending_descending_similar",
+      "startLine": 188,
+      "endLine": 207
+    },
+    {
+      "id": "quasi-progressions",
+      "title": "Quasi-Progressions",
+      "summary": "IsQuasiProgression, descending_wave_is_quasi",
+      "startLine": 209,
+      "endLine": 221
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Main Results",
+      "summary": "erdos_781_summary, erdos_781 main theorem",
+      "startLine": 223,
+      "endLine": 259
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #781 asks whether f(k) = k² - k + 1, where f(k) is the minimal n forcing a monochromatic k-term descending wave in any 2-coloring of {1,...,n}. The conjecture is DISPROVED: Alon and Spencer (1989) showed f(k) ≫ k³, meaning f(k) grows cubically, not quadratically. The lower bound k² - k + 1 is correct but far from tight for large k.",
+    "implications": "**Connections to Ramsey Theory**\n\n1. **Monochromatic Patterns:** This extends classical Ramsey-type questions to structured sequences (descending waves)\n\n2. **Probabilistic Method:** The Alon-Spencer disproof uses probabilistic constructions, a powerful technique in combinatorics\n\n3. **Quasi-Progressions:** Descending waves are related to quasi-arithmetic progressions with bounded errors\n\n4. **Gap Structure:** The non-increasing gaps condition is a constraint on how sequences can be spaced\n\n5. **Growth Rates:** The cubic vs quadratic growth reveals the difficulty of avoiding descending waves",
+    "openQuestions": [
+      "Determine the exact constants in f(k) = Θ(k³)",
+      "Find explicit constructions achieving the cubic lower bound",
+      "Study the r-coloring generalization for r > 2",
+      "Analyze mixed wave patterns (some ascending, some descending)",
+      "Explore algorithmic aspects of finding descending waves in colorings"
+    ]
   }
 }
