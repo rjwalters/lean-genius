@@ -1,34 +1,121 @@
 {
   "id": "erdos-703",
-  "title": "Erdős Problem #703",
+  "title": "Forbidden r-Intersection Families",
   "slug": "erdos-703",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be maximal such that there exists a family $...\\{1,\\ldots,n\\}...T(n,r)...\\lvert A\\cap B\\rvert\\neq r...",
+  "description": "Define T(n,r) as the maximum family size avoiding r-intersection. Is T(n,r) < (2-δ)^n for εn < r < (1/2-ε)n? SOLVED: YES (Frankl-Rödl 1987). Exact values known for small r (Frankl-Füredi 1984).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Frankl-Rödl (solved, 1987)",
     "sourceUrl": "https://erdosproblems.com/703",
-    "date": "",
-    "status": "pending",
+    "date": "1987",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos703Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-families",
+      "extremal",
+      "intersection-problems"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 703,
     "erdosUrl": "https://erdosproblems.com/703",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$250"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #703 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 1$ and define $T(n,r)$ to be maximal such that there exists a family $\\mathcal{F}$ of subsets of $\\{1,\\ldots,n\\}$ of size $T(n,r)$ such that $\\lvert A\\cap B\\rvert\\neq r$ for all $A,B\\in \\mathcal{F}$.\n\nEstimate $T(n,r)$ for $r\\geq 2$. In particular, is it true that for every $\\epsilon>0$ there exists $\\delta>0$ such that for all $\\epsilon n<r<(1/2-\\epsilon) n$ we have\\[T(n,r)<(2-\\delta)^n?\\]\n\n\n\nIt is trivial that $T(n,0)=2^{n-1}$. Frankl and F\\\"{u}redi \\cite{FrFu84b} proved that, for fixed $r$ and $n$ sufficiently large in terms of $r$, the maximal $T(n,r)$ is achieved by taking\\[\\mathcal{F} = \\left\\{ A\\subseteq \\{1,\\ldots,n\\} : \\lvert A\\rvert> \\frac{n+r}{2}\\textrm{ or }\\lvert A\\rvert < r\\right\\}\\]when $n+r$ is odd, and\\[\\mathcal{F} = \\left\\{ A\\subseteq \\{1,\\ldots,n\\} : \\lvert A\\backslash \\{1\\}\\rvert\\geq \\frac{n+r}{2}\\textrm{ or }\\lvert A\\rvert < r\\right\\}\\]when $n+r$ is even. (Frankl \\cite{Fr77b} had earlier proved this for $r=1$ and all $n$.)\n\nAn affirmative answer to the second question implies that the chromatic number of the unit distance graph in $\\mathbb{R}^n$ (with two points joined by an edge if the distance between them is $1$) grows exponentially in $n$, which was proved by alternative methods by Frankl and Wilson \\cite{FrWi81} - see [704].\n\nThe answer to the second question is yes, proved by Frankl and R\\\"{o}dl \\cite{FrRo87}.\n\nSee also [702].\n\n\n\n\nReferences\n\n\n[Fr77b] Frankl, P., An intersection problem for finite sets. Acta Math. Acad. Sci. Hungar. (1977), 371-373.\n\n[FrFu84b] Frankl, P. and F\\\"{u}redi, Z., On hypergraphs without two edges intersecting in a given\nnumber of vertices. J. Combin. Theory Ser. A (1984), 230-236.\n\n[FrRo87] Frankl, Peter and R\\\"{o}dl, Vojtech, Forbidden intersections. Trans. Amer. Math. Soc. (1987), 259-286.\n\n[FrWi81] Frankl, P. and Wilson, R. M., Intersection theorems with geometric consequences. Combinatorica (1981), 357-368.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Intersection problems for set families are fundamental in extremal combinatorics. The classical Erdős-Ko-Rado theorem concerns intersecting families (avoiding 0-intersection). Erdős asked about avoiding r-intersection for general r, particularly whether an exponential bound holds when r is a constant fraction of n. The problem carried a $250 prize.",
+    "problemStatement": "Let T(n,r) be the maximum size of a family F of subsets of {1,...,n} such that |A ∩ B| ≠ r for all A, B in F. Estimate T(n,r). In particular, for every ε > 0, is there δ > 0 such that T(n,r) < (2 - δ)^n for εn < r < (1/2 - ε)n?",
+    "proofStrategy": "The formalization defines r-avoiding families and T(n,r), establishes the trivial case T(n,0) = 2^{n-1}, states the Frankl-Füredi optimal families for fixed r, and axiomatizes the Frankl-Rödl theorem proving the exponential bound for the middle range.",
+    "keyInsights": [
+      "T(n,0) = 2^{n-1} corresponds to classical intersecting families",
+      "Large sets (size > (n+r)/2) avoid r-intersection with each other",
+      "The middle range εn < r < (1/2-ε)n exhibits exponential gap from 2^n",
+      "Connection to unit distance graph chromatic numbers in R^n",
+      "Frankl-Wilson theorem provides key bounds via mod p arguments"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "r-intersection",
+      "title": "Forbidden r-Intersection Families",
+      "startLine": 41,
+      "endLine": 66,
+      "summary": "Defines r-avoiding families and the function T(n,r).",
+      "description": "A family F avoids r-intersection if no two sets have exactly r elements in common. T(n,r) is the maximum size of such a family over subsets of {1,...,n}."
+    },
+    {
+      "id": "trivial-case",
+      "title": "The Trivial Case T(n,0)",
+      "startLine": 68,
+      "endLine": 88,
+      "summary": "T(n,0) = 2^{n-1} is the maximum intersecting family size.",
+      "description": "Avoiding 0-intersection means all pairs must intersect. The maximum is achieved by all sets containing a fixed element, giving 2^{n-1} sets."
+    },
+    {
+      "id": "frankl-1977",
+      "title": "Frankl's Result for r = 1",
+      "startLine": 90,
+      "endLine": 112,
+      "summary": "Frankl (1977) determined T(n,1) for all n.",
+      "description": "For r = 1, the optimal family consists of large sets (size > (n+1)/2) plus the empty set. Large sets cannot have intersection exactly 1."
+    },
+    {
+      "id": "frankl-furedi",
+      "title": "Frankl-Füredi Optimal Families",
+      "startLine": 114,
+      "endLine": 142,
+      "summary": "For fixed r and large n, T(n,r) equals the Frankl-Füredi optimal family size.",
+      "description": "The optimal family depends on the parity of n + r. It consists of very large sets (avoiding r-intersection by pigeonhole) and small sets (size < r, trivially avoiding)."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question - Exponential Bound",
+      "startLine": 144,
+      "endLine": 172,
+      "summary": "Frankl-Rödl (1987) proved T(n,r) < (2-δ)^n for middle range r.",
+      "description": "The main question asked whether T(n,r) is bounded away from 2^n when r is a constant fraction of n. Frankl-Rödl answered YES, proving an exponential gap."
+    },
+    {
+      "id": "chromatic-connection",
+      "title": "Connection to Chromatic Numbers",
+      "startLine": 174,
+      "endLine": 204,
+      "summary": "The exponential bound implies exponential chromatic numbers for unit distance graphs.",
+      "description": "The affirmative answer implies χ(n) ≥ c^n for the unit distance graph in R^n. Frankl-Wilson proved this independently using their mod p theorem."
+    },
+    {
+      "id": "frankl-wilson",
+      "title": "The Frankl-Wilson Theorem",
+      "startLine": 206,
+      "endLine": 226,
+      "summary": "Powerful bounds via modular constraints on set sizes.",
+      "description": "The Frankl-Wilson theorem bounds families where all sets have the same size mod p and avoid certain intersection sizes. This yields polynomial bounds."
+    },
+    {
+      "id": "related",
+      "title": "Related Problem #702",
+      "startLine": 228,
+      "endLine": 237,
+      "summary": "Problem #702 asks about k-uniform families avoiding r-intersection.",
+      "description": "The uniform version restricts to families where all sets have the same size k, a natural strengthening of the problem."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 239,
+      "endLine": 275,
+      "summary": "Erdős #703 is SOLVED: the exponential bound holds.",
+      "description": "The main question is resolved YES by Frankl-Rödl. Key results include the trivial T(n,0), Frankl's T(n,1), Frankl-Füredi's exact values, and the exponential gap theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #703 is SOLVED. The answer to 'Is T(n,r) < (2-δ)^n for middle range r?' is YES, proved by Frankl-Rödl (1987). Exact values of T(n,r) for fixed r and large n were determined by Frankl-Füredi (1984).",
+    "implications": "The exponential bound has deep connections to geometry (unit distance graph chromatic numbers) and coding theory. The Frankl-Rödl theorem is a fundamental result in extremal combinatorics.",
+    "openQuestions": [
+      "What is the optimal δ as a function of ε?",
+      "Can the Frankl-Füredi families be characterized for all n, not just large n?",
+      "What happens for r near n/2 (boundary of the middle range)?"
+    ]
   }
 }

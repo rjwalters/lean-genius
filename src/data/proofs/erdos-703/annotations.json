@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-703-1",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "r-Intersection",
+    "content": "Two sets A and B have r-intersection if |A ∩ B| = r, meaning they share exactly r common elements.",
+    "range": { "startLine": 49, "endLine": 50 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-2",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "r-Avoiding Family",
+    "content": "A family F avoids r-intersection if no two sets in F have exactly r elements in common. This is the central constraint of the problem.",
+    "range": { "startLine": 57, "endLine": 58 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-3",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "T(n,r) Definition",
+    "content": "T(n,r) is the maximum size of an r-avoiding family over subsets of {1,...,n}. The main question asks how large T(n,r) can be.",
+    "range": { "startLine": 64, "endLine": 66 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-4",
+    "proofId": "erdos-703",
+    "type": "theorem",
+    "title": "T(n,0) = 2^{n-1}",
+    "content": "The trivial case: 0-avoiding families are exactly intersecting families. The maximum is 2^{n-1}, achieved by all sets containing a fixed element.",
+    "range": { "startLine": 78, "endLine": 79 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-5",
+    "proofId": "erdos-703",
+    "type": "theorem",
+    "title": "0-Avoiding is Intersecting",
+    "content": "|A ∩ B| ≠ 0 means A and B must intersect. This connects to the classical Erdos-Ko-Rado setting.",
+    "range": { "startLine": 85, "endLine": 88 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-703-6",
+    "proofId": "erdos-703",
+    "type": "axiom",
+    "title": "Frankl (1977)",
+    "content": "Frankl determined T(n,1) for all n. The optimal family consists of large sets (size > (n+1)/2) and the empty set.",
+    "range": { "startLine": 100, "endLine": 102 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-7",
+    "proofId": "erdos-703",
+    "type": "theorem",
+    "title": "Large Sets Avoid 1-Intersection",
+    "content": "If |A|, |B| > (n+1)/2, then |A ∩ B| > 1 by pigeonhole. Large sets cannot have intersection exactly 1.",
+    "range": { "startLine": 108, "endLine": 112 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-703-8",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Frankl-Furedi Odd Family",
+    "content": "For n + r odd, the optimal family is {A : |A| > (n+r)/2 or |A| < r}. Large sets avoid r-intersection; small sets trivially avoid it.",
+    "range": { "startLine": 122, "endLine": 123 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-9",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Frankl-Furedi Even Family",
+    "content": "For n + r even, the construction is slightly different to handle boundary cases, using |A \\ {1}| instead of |A|.",
+    "range": { "startLine": 129, "endLine": 131 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-703-10",
+    "proofId": "erdos-703",
+    "type": "axiom",
+    "title": "Frankl-Furedi (1984)",
+    "content": "For fixed r and n sufficiently large, T(n,r) equals the Frankl-Furedi optimal family size. This determines T(n,r) exactly.",
+    "range": { "startLine": 138, "endLine": 142 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-11",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Main Question",
+    "content": "For every epsilon > 0, is there delta > 0 such that T(n,r) < (2-delta)^n when epsilon*n < r < (1/2-epsilon)*n? This asks about the 'middle range'.",
+    "range": { "startLine": 153, "endLine": 157 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-12",
+    "proofId": "erdos-703",
+    "type": "axiom",
+    "title": "Frankl-Rodl (1987)",
+    "content": "The answer is YES. For r in the middle range, T(n,r) is exponentially bounded away from 2^n. This resolves the main question.",
+    "range": { "startLine": 165, "endLine": 165 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-13",
+    "proofId": "erdos-703",
+    "type": "axiom",
+    "title": "Chromatic Number Connection",
+    "content": "The exponential bound implies that the chromatic number of the unit distance graph in R^n grows exponentially.",
+    "range": { "startLine": 195, "endLine": 196 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-703-14",
+    "proofId": "erdos-703",
+    "type": "axiom",
+    "title": "Frankl-Wilson (1981)",
+    "content": "Proved exponential chromatic number growth independently using their mod p theorem on intersection sizes.",
+    "range": { "startLine": 203, "endLine": 204 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-703-15",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "L-Avoiding Family",
+    "content": "Generalization: a family avoids a set L of intersection sizes if no two sets have intersection size in L.",
+    "range": { "startLine": 215, "endLine": 216 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-703-16",
+    "proofId": "erdos-703",
+    "type": "axiom",
+    "title": "Frankl-Wilson Theorem",
+    "content": "For prime p and sets of uniform size mod p avoiding certain intersections, the family size is bounded by a binomial coefficient.",
+    "range": { "startLine": 223, "endLine": 226 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-703-17",
+    "proofId": "erdos-703",
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Erdos #703 is SOLVED: T(n,r) < (2-delta)^n for middle range r, answering the main question YES.",
+    "range": { "startLine": 260, "endLine": 267 },
+    "significance": "high"
+  }
+]
