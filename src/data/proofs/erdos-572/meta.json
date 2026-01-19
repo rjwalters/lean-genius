@@ -1,33 +1,132 @@
 {
   "id": "erdos-572",
-  "title": "Erdős Problem #572",
+  "title": "Erdős Problem #572: Lower Bound for Extremal Function of Even Cycles",
   "slug": "erdos-572",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for ...\\[(n;C_{2k})\\gg n^{1+{k}}.\\]\n\n\n\nIt is easy to see that ... for any ... (and ...) (since no bipartite graph c...",
+  "description": "Show that ex(n; C_{2k}) >> n^{1+1/k} for k >= 3. Proved for k=3,5 (Benson 1966); general case has weaker LUW bound.",
   "meta": {
-    "author": "Unknown",
+    "author": "Benson (1966 for k=3,5), Lazebnik-Ustimenko-Woldar (1995 general)",
     "sourceUrl": "https://erdosproblems.com/572",
-    "date": "",
-    "status": "pending",
+    "date": "1966",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos572Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "even-cycles",
+      "turan-type",
+      "partially-solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 572,
     "erdosUrl": "https://erdosproblems.com/572",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types for vertex sets",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "edgeFinset",
+        "description": "Finite set of edges in a graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "hasCycleOfLength definition: cycle detection in graphs",
+      "isCycleFree definition: C_{2k}-free property",
+      "edgeCount definition: edge count of simple graph",
+      "exCycle definition: extremal function ex(n; C_{2k})",
+      "bondy_simonovits_upper axiom: upper bound kn^{1+1/k}",
+      "benson_k3, benson_k5 axioms: optimal bounds for k=3,5",
+      "lazebnik_ustimenko_woldar axiom: general LUW bound",
+      "erdosConjectureLowerBound definition: the conjecture",
+      "erdos_572_k3, erdos_572_k5 theorems: partial solutions",
+      "luwExponent, conjecturedExponent: exponent comparison",
+      "erdos_klein_c4, odd_cycle_extremal: related results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #572 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for $k\\geq 3$\\[\\mathrm{ex}(n;C_{2k})\\gg n^{1+\\frac{1}{k}}.\\]\n\n\n\nIt is easy to see that $\\mathrm{ex}(n;C_{2k+1})=\\lfloor n^2/4\\rfloor$ for any $k\\geq 1$ (and $n>2k+1$) (since no bipartite graph contains an odd cycle). Erd\\H{o}s and Klein \\cite{Er38} proved $\\mathrm{ex}(n;C_4)\\asymp n^{3/2}$.\n\nErd\\H{o}s \\cite{Er64c} and Bondy and Simonovits \\cite{BoSi74} showed that\\[\\mathrm{ex}(n;C_{2k})\\ll kn^{1+\\frac{1}{k}}.\\]Benson \\cite{Be66} has proved this conjecture for $k=3$ and $k=5$. Lazebnik, Ustimenko, and Woldar \\cite{LUW95} have shown that, for arbitrary $k\\geq 3$,\\[\\mathrm{ex}(n;C_{2k})\\gg n^{1+\\frac{2}{3k-3+\\nu}},\\]where $\\nu=0$ if $k$ is odd and $\\nu=1$ if $k$ is even. See \\cite{LUW99} for further history and references.\n\nSee also [765] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Be66] Benson, Clark T., Minimal regular graphs of girths eight and twelve. Canadian J. Math. (1966), 1091-1094.\n\n[BoSi74] Bondy, J. A. and Simonovits, M., Cycles of even length in graphs. J. Combinatorial Theory Ser. B (1974), 97-105.\n\n[Er38] P. Erd\\H{o}s, On sequences of integers no one of which divides the product of two others and on related problems. Tomsk. Gos. Univ. Ucen Zap. (1938), 74-82.\n\n[Er64c] Erd\\H{o}s, P., Extremal problems in graph theory. Theory of Graphs and its Applications (Proc. Sympos. Smolenice, 1963) (1964), 29-36.\n\n[LUW95] Lazebnik, F. and Ustimenko, V. A. and Woldar, A. J., A new series of dense graphs of high girth. Bull. Amer. Math. Soc. (N.S.) (1995), 73-79.\n\n[LUW99] Lazebnik, Felix and Ustimenko, Vasiliy A. and Woldar, Andrew\nJ., Polarities and $2k$-cycle-free graphs. Discrete Math. (1999), 503-513.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Extremal Graph Theory and Even Cycles**\n\nThis problem concerns the Turán-type extremal function ex(n; H), which asks for the maximum number of edges in an n-vertex graph containing no copy of H. For even cycles C_{2k}, this is one of the central open problems in extremal graph theory.\n\n**Historical Timeline:**\n- 1938: Erdős and Klein showed ex(n; C_4) ~ n^{3/2}, related to finite projective planes\n- 1964: Erdős conjectured ex(n; C_{2k}) >> n^{1+1/k} for k >= 3\n- 1966: Benson proved the conjecture for k=3 (girth 8) and k=5 (girth 12) using generalized polygons\n- 1974: Bondy-Simonovits proved the upper bound ex(n; C_{2k}) << kn^{1+1/k}\n- 1995: Lazebnik-Ustimenko-Woldar proved a weaker general lower bound\n\n**The Gap:**\nFor k=4 and k >= 6, the conjectured lower bound n^{1+1/k} remains unproved. The LUW bound gives n^{1+2/(3k-3+ν)} which is strictly weaker.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nShow that for $k \\geq 3$,\n$$\\mathrm{ex}(n; C_{2k}) \\gg n^{1+\\frac{1}{k}}$$\n\nwhere $\\mathrm{ex}(n; C_{2k})$ is the maximum number of edges in an $n$-vertex graph containing no $2k$-cycle.\n\n**Partial Results:**\n\n1. **k = 3:** $\\mathrm{ex}(n; C_6) \\geq cn^{4/3}$ (Benson 1966)\n2. **k = 5:** $\\mathrm{ex}(n; C_{10}) \\geq cn^{6/5}$ (Benson 1966)\n3. **General k:** $\\mathrm{ex}(n; C_{2k}) \\geq cn^{1+2/(3k-3+\\nu)}$ (LUW 1995)\n\n**Upper Bound:** $\\mathrm{ex}(n; C_{2k}) \\leq ckn^{1+1/k}$ (Bondy-Simonovits 1974)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Use Mathlib's SimpleGraph for the graph structure.\n\n2. **Cycle Detection:** Define hasCycleOfLength and isCycleFree predicates.\n\n3. **Extremal Function:** Define exCycle as the supremum over edge counts of cycle-free graphs.\n\n4. **Known Results:** Axiomatize Bondy-Simonovits upper bound and Benson/LUW lower bounds.\n\n5. **Conjecture:** Define erdosConjectureLowerBound and prove it for k=3,5 using Benson's axiom.\n\n6. **Exponent Analysis:** Compare LUW exponent with conjectured exponent.\n\n**Why Axioms?** The constructions (generalized polygons, algebraic graphs) require advanced algebraic geometry and incidence geometry not in Mathlib.",
+    "keyInsights": [
+      "**Benson's Construction:** Uses generalized polygons from incidence geometry - these are algebraic constructions achieving optimal density for k=3,5.",
+      "**Upper vs Lower Gap:** Upper bound is kn^{1+1/k}, best general lower bound is n^{1+2/(3k-3+ν)} - significant gap remains.",
+      "**Odd vs Even Cycles:** For odd cycles, ex(n; C_{2k+1}) = n^2/4 exactly (bipartite graphs). Even cycles are much harder.",
+      "**C_4 is Special:** ex(n; C_4) ~ n^{3/2} is connected to projective planes and the Zarankiewicz problem.",
+      "**LUW Matches for k=3:** The LUW exponent 1+2/6 = 4/3 equals the conjectured 1+1/3 for k=3.",
+      "**Open for k=4,6,...:** The conjecture remains open for k=4 and all k >= 6."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-definitions",
+      "title": "Graph-Theoretic Definitions",
+      "summary": "hasCycleOfLength, isCycleFree, edgeCount definitions",
+      "startLine": 43,
+      "endLine": 74
+    },
+    {
+      "id": "extremal-function",
+      "title": "The Extremal Function",
+      "summary": "exCycle definition: ex(n; C_{2k})",
+      "startLine": 75,
+      "endLine": 89
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "bondy_simonovits_upper, benson_k3, benson_k5, lazebnik_ustimenko_woldar axioms",
+      "startLine": 90,
+      "endLine": 143
+    },
+    {
+      "id": "the-conjecture",
+      "title": "The Conjecture",
+      "summary": "erdosConjectureLowerBound, erdos_572_k3, erdos_572_k5 theorems",
+      "startLine": 144,
+      "endLine": 191
+    },
+    {
+      "id": "exponent-comparison",
+      "title": "Comparison of Exponents",
+      "summary": "luwExponent, conjecturedExponent, comparison theorems",
+      "startLine": 192,
+      "endLine": 232
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "erdos_klein_c4 for C_4, odd_cycle_extremal for odd cycles",
+      "startLine": 233,
+      "endLine": 272
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_572_summary, best_known_lower_bounds theorems",
+      "startLine": 273,
+      "endLine": 306
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #572 asks for a lower bound ex(n; C_{2k}) >> n^{1+1/k} for k >= 3. Benson (1966) proved this for k=3 and k=5 using generalized polygons. The general case remains open, with the best known bound being the LUW result n^{1+2/(3k-3+ν)} from 1995.",
+    "implications": "**Implications in Extremal Graph Theory**\n\n1. **Turán-type Problems:** This is a fundamental question about graph density vs forbidden substructures.\n\n2. **Algebraic Constructions:** Optimal constructions come from incidence geometry and algebraic graphs.\n\n3. **Girth Problems:** Related to the cage problem - finding smallest regular graphs of given girth.\n\n4. **Random Graphs:** Probabilistic methods give non-constructive existence but not optimal bounds.\n\n5. **Zarankiewicz Problem:** The C_4 case connects to bipartite graph problems.",
+    "openQuestions": [
+      "Prove ex(n; C_8) >> n^{5/4} (the k=4 case)",
+      "Prove ex(n; C_{2k}) >> n^{1+1/k} for general k >= 6",
+      "Explicit constructions achieving the conjectured bound",
+      "Connections to algebraic geometry and finite geometry",
+      "Optimal constants in the asymptotic bounds"
+    ]
   }
 }
