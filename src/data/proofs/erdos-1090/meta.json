@@ -1,33 +1,161 @@
 {
   "id": "erdos-1090",
-  "title": "Erdős Problem #1090",
+  "title": "Erdős Problem #1090: Monochromatic Collinear Points",
   "slug": "erdos-1090",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does there exist a finite set ... such that, in any ...-colouring of ..., there exists a line which contains at leas...",
+  "description": "For k ≥ 3, does there exist a finite set A ⊂ ℝ² such that any 2-coloring has k monochromatic collinear points? SOLVED: YES. Graham-Selfridge proved k=3; Hunter used Hales-Jewett for general k.",
   "meta": {
-    "author": "Unknown",
+    "author": "Graham-Selfridge (k=3), Hunter (general k via Hales-Jewett)",
     "sourceUrl": "https://erdosproblems.com/1090",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1090Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "ramsey-theory",
+      "combinatorics",
+      "collinear-points",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1090,
     "erdosUrl": "https://erdosproblems.com/1090",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space structure",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Point abbrev for EuclideanSpace ℝ (Fin 2)",
+      "TwoColoring, Collinear, PointsOnLine definitions",
+      "Line structure with point, direction, nonzero",
+      "OnLine predicate for point on line",
+      "IsMonochromatic, IsKCollinear predicates",
+      "MonochromaticKCollinear definition",
+      "HasRamseyProperty definition",
+      "Erdos1090Question formal statement",
+      "graham_selfridge axiom: k=3 case",
+      "CombinatorialLine structure for Hales-Jewett",
+      "hales_jewett axiom statement",
+      "generic_projection axiom",
+      "hunter_observation axiom: general k",
+      "erdos_1090_affirmative main theorem",
+      "SylvesterGallai, HellyProperty related results",
+      "Erdos1090Generalized for r colors",
+      "erdos_1090_summary combining all results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1090 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$. Does there exist a finite set $A\\subset \\mathbb{R}^2$ such that, in any $2$-colouring of $A$, there exists a line which contains at least $k$ points from $A$, and all the points of $A$ on the line have the same colour?\n\n\n\nErd\\H{o}s \\cite{Er75f} says Graham and Selfridge proved the answer is yes when $k=3$.\n\nHunter has observed that, for sufficiently large $n$, a generic projection of $[k]^n$ into $\\mathbb{R}^2$ has this property, by the Hales-Jewett theorem.\n\n\n\n\nReferences\n\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1090: Monochromatic Collinear Points**\n\nThis problem is a Ramsey-type question in Euclidean geometry: given a 2-coloring of a finite point set, must there exist monochromatic collinear points?\n\n**Key History:**\n- Erdős (1975): Posed the problem in [Er75f]\n- Graham-Selfridge: Proved the k=3 case\n- Hunter: Observed that generic projections of [k]ⁿ work via Hales-Jewett\n\n**Mathematical Setting:**\nThe Hales-Jewett theorem guarantees monochromatic combinatorial lines in [k]ⁿ. A generic projection to ℝ² preserves the collinear structure, solving the problem for all k.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $k \\geq 3$. Does there exist a finite set $A \\subset \\mathbb{R}^2$ such that, in any 2-coloring of $A$, there exists a line containing at least $k$ points from $A$, all of the same color?\n\n**Answer: YES for all k ≥ 3.**\n\n**Known Proofs:**\n- $k = 3$: Graham and Selfridge (explicit construction)\n- General $k$: Hunter observed that a generic projection of $[k]^n$ into $\\mathbb{R}^2$ works, using the Hales-Jewett theorem.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - Point in ℝ² using EuclideanSpace\n   - Line structure with point and direction\n   - Collinear, OnLine predicates\n\n2. **Ramsey Property:**\n   - TwoColoring, IsMonochromatic\n   - IsKCollinear, MonochromaticKCollinear\n   - HasRamseyProperty (A, k)\n\n3. **Key Results:**\n   - graham_selfridge axiom: k=3 case\n   - hales_jewett axiom: combinatorial statement\n   - hunter_observation axiom: general k\n\n4. **Generalizations:**\n   - r-coloring version\n   - Higher dimensions",
+    "keyInsights": [
+      "**Hales-Jewett Connection:** Combinatorial lines in [k]ⁿ correspond to geometric lines in ℝ² under generic projection",
+      "**Generic Projection:** For a 'random' linear map, combinatorial lines map injectively to geometric lines",
+      "**Ramsey Property:** The question is really about Ramsey theory in geometric settings",
+      "**Minimum Size:** Finding the smallest set A with the property is an interesting optimization question",
+      "**Generalizations:** The result extends to r colors (using Hales-Jewett for r colors)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Point, TwoColoring, Collinear, Line, OnLine",
+      "startLine": 36,
+      "endLine": 79
+    },
+    {
+      "id": "monochromatic",
+      "title": "Monochromatic Lines",
+      "summary": "IsMonochromatic, IsKCollinear, MonochromaticKCollinear",
+      "startLine": 81,
+      "endLine": 106
+    },
+    {
+      "id": "ramsey-property",
+      "title": "Ramsey Property",
+      "summary": "HasRamseyProperty, Erdos1090Question",
+      "startLine": 108,
+      "endLine": 125
+    },
+    {
+      "id": "graham-selfridge",
+      "title": "Graham-Selfridge (k=3)",
+      "summary": "graham_selfridge axiom, k3_case theorem",
+      "startLine": 127,
+      "endLine": 146
+    },
+    {
+      "id": "hales-jewett",
+      "title": "Hales-Jewett Approach",
+      "summary": "CombinatorialLine, hales_jewett, generic_projection, hunter_observation",
+      "startLine": 148,
+      "endLine": 200
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_1090_affirmative theorem",
+      "startLine": 202,
+      "endLine": 214
+    },
+    {
+      "id": "constructions",
+      "title": "Special Constructions",
+      "summary": "regularNgonWithCenter, gridPoints, projectivePlanePoints",
+      "startLine": 216,
+      "endLine": 236
+    },
+    {
+      "id": "bounds",
+      "title": "Size Bounds",
+      "summary": "ramseyNumber, ramsey_lower_bound, r3_small",
+      "startLine": 238,
+      "endLine": 262
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "SylvesterGallai, HellyProperty",
+      "startLine": 264,
+      "endLine": 292
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "Erdos1090Generalized, Erdos1090HigherDim",
+      "startLine": 294,
+      "endLine": 325
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_1090_summary, erdos_1090 main theorem",
+      "startLine": 327,
+      "endLine": 357
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1090 asks whether, for k ≥ 3, there exists a finite set A ⊂ ℝ² such that any 2-coloring contains k monochromatic collinear points. The answer is YES. Graham and Selfridge proved k=3. Hunter observed that for general k, a generic projection of [k]ⁿ to ℝ² works via the Hales-Jewett theorem.",
+    "implications": "**Connections to Combinatorics and Geometry**\n\n1. **Hales-Jewett Theorem:** The solution relies on this fundamental theorem about combinatorial lines in high-dimensional grids.\n\n2. **Ramsey Theory:** This is part of Euclidean Ramsey theory, asking which configurations are unavoidable.\n\n3. **Sylvester-Gallai:** Related classical result about ordinary lines in point configurations.\n\n4. **Projective Geometry:** Connections to finite projective planes and incidence structures.\n\n5. **Algorithmic Aspects:** Finding minimal sets with the property is computationally interesting.",
+    "openQuestions": [
+      "What is the minimum size of A for each k?",
+      "Find explicit constructions achieving the minimum",
+      "Determine optimal bounds for the r-coloring case",
+      "Explore the higher-dimensional analogue with hyperplanes",
+      "Study the problem with additional geometric constraints"
+    ]
   }
 }
