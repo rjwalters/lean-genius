@@ -3632,17 +3632,25 @@
   },
   {
     "id": "erdos-195",
-    "title": "Erdős Problem #195",
+    "title": "Erdős Problem #195: Monotone Arithmetic Progressions in Permutations of ℤ",
     "slug": "erdos-195",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest ... such that in any permutation of $...k...x_1<\\cdots<x_k...k\\leq 5...k\\leq 4$.\n\nSee also [194] and [196...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the largest k such that every permutation of ℤ must contain a monotone k-term arithmetic progression? Known: 3 ≤ k ≤ 4. OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "number-theory",
+      "arithmetic-progressions",
+      "permutations",
+      "ramsey-theory",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 195,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-198",

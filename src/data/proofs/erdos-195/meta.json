@@ -1,33 +1,128 @@
 {
   "id": "erdos-195",
-  "title": "Erdős Problem #195",
+  "title": "Erdős Problem #195: Monotone Arithmetic Progressions in Permutations of ℤ",
   "slug": "erdos-195",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest ... such that in any permutation of $...k...x_1<\\cdots<x_k...k\\leq 5...k\\leq 4$.\n\nSee also [194] and [196...",
+  "description": "What is the largest k such that every permutation of ℤ must contain a monotone k-term arithmetic progression? Known: 3 ≤ k ≤ 4. OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham, Geneson (2019), Adenwalla (2022)",
     "sourceUrl": "https://erdosproblems.com/195",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos195Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "number-theory",
+      "arithmetic-progressions",
+      "permutations",
+      "ramsey-theory",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 195,
     "erdosUrl": "https://erdosproblems.com/195",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv",
+        "description": "Bijections (permutations) between types",
+        "module": "Mathlib.Logic.Equiv.Defs"
+      },
+      {
+        "theorem": "List.Pairwise",
+        "description": "Pairwise relation on lists for monotonicity",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Permutation: type alias for ℤ ≃ ℤ",
+      "ArithProg: arithmetic progression generator",
+      "IsMonotoneIncreasing/Decreasing: position monotonicity in permutation",
+      "HasMonotoneAP: existence of monotone AP of length k",
+      "geneson_upper_bound: k ≤ 5 from Geneson (2019)",
+      "adenwalla_upper_bound: k ≤ 4 from Adenwalla (2022)",
+      "lower_bound_3: trivial k ≥ 3",
+      "current_bounds: 3 ≤ k ≤ 4",
+      "erdos195_main_question: is k = 4?",
+      "erdos_195: main theorem combining bounds",
+      "erdos_195_dichotomy: resolution depends on main question"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #195 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest $k$ such that in any permutation of $\\mathbb{Z}$ there must exist a monotone $k$-term arithmetic progression $x_1<\\cdots<x_k$?\n\n\n\nGeneson \\cite{Ge19} proved that $k\\leq 5$. Adenwalla \\cite{Ad22} proved that $k\\leq 4$.\n\nSee also [194] and [196].\n\n\n\n\nReferences\n\n\n[Ad22] Adenwalla, S., Avoiding Monotone Arithmetic Progressions in Permutations of Integers. arXiv:2211.04451 (2022).\n\n[Ge19] Geneson, Jesse, Forbidden arithmetic progressions in permutations of subsets\nof the integers. Discrete Math. (2019), 1489-1491.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #195: Monotone APs in Permutations**\n\nThis problem originates from Erdős and Graham's 1979 work on combinatorial number theory. It asks about the unavoidable patterns in permutations of the integers.\n\n**Timeline:**\n- 1979: Erdős-Graham pose the problem\n- 2019: Geneson proves k ≤ 5 (can avoid monotone 6-APs)\n- 2022: Adenwalla improves to k ≤ 4 (can avoid monotone 5-APs)\n\n**Current State:**\nThe answer is either 3 or 4 — we know every permutation has a monotone 3-AP, but it's unknown whether every permutation must have a monotone 4-AP.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $\\pi$ be a permutation of $\\mathbb{Z}$, viewed as a bijection $\\pi : \\mathbb{Z} \\to \\mathbb{Z}$.\n\nA sequence $x_1 < x_2 < \\cdots < x_k$ forming an arithmetic progression is called **monotone** in $\\pi$ if either:\n- $\\pi(x_1) < \\pi(x_2) < \\cdots < \\pi(x_k)$ (increasing), or\n- $\\pi(x_1) > \\pi(x_2) > \\cdots > \\pi(x_k)$ (decreasing)\n\n**Question:** What is the largest $k$ such that every permutation of $\\mathbb{Z}$ must contain a monotone $k$-term AP?\n\n**Known:** $3 \\leq k \\leq 4$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:**\n   - `Permutation`: bijection ℤ ≃ ℤ\n   - `ArithProg`: generates k-term AP from first term and difference\n   - `IsMonotone`: positions in permutation are monotonic\n   - `HasMonotoneAP`: existence predicate\n\n2. **Known Results (as axioms):**\n   - Lower bound: every permutation has monotone 3-AP\n   - Upper bound: some permutation avoids monotone 5-AP (Adenwalla)\n\n3. **Open Question:**\n   - Main question formalized as `erdos195_main_question`\n   - Dichotomy theorem shows answer is 3 or 4",
+    "keyInsights": [
+      "**Monotonicity Condition:** The key insight is that 'monotone' refers to the positions in the permutation, not the values themselves",
+      "**Tight Bounds:** The gap is just one: k is either 3 or 4",
+      "**Adenwalla's Construction:** Explicitly constructs a permutation avoiding monotone 5-APs",
+      "**Relation to Problem #196:** The same question for ℕ instead of ℤ may have different answer",
+      "**Van der Waerden Connection:** Related but distinct from classical Ramsey-type results on APs",
+      "**Computational Intractability:** Cannot be resolved by finite computation"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "summary": "Permutation, ArithProg, IsMonotone, HasMonotoneAP",
+      "startLine": 43,
+      "endLine": 89
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "Geneson (k ≤ 5), Adenwalla (k ≤ 4)",
+      "startLine": 91,
+      "endLine": 113
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Trivial k ≥ 3, current state 3 ≤ k ≤ 4",
+      "startLine": 115,
+      "endLine": 136
+    },
+    {
+      "id": "related-questions",
+      "title": "Related Questions",
+      "summary": "Problem #196 (ℕ version), relationship between variants",
+      "startLine": 138,
+      "endLine": 154
+    },
+    {
+      "id": "van-der-waerden",
+      "title": "Connection to van der Waerden",
+      "summary": "Comparison with classical Ramsey theory",
+      "startLine": 156,
+      "endLine": 173
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "summary": "Main question, structural questions, construction questions",
+      "startLine": 175,
+      "endLine": 199
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_195 main theorem, dichotomy result",
+      "startLine": 201,
+      "endLine": 238
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #195 asks for the largest k such that every permutation of ℤ contains a monotone k-term arithmetic progression. The current bounds are 3 ≤ k ≤ 4, with the upper bound established by Adenwalla (2022) improving Geneson (2019). The exact value remains open.",
+    "implications": "**Connections and Extensions**\n\n1. **Problem #194:** Related question about APs with divisibility condition\n\n2. **Problem #196:** Same question for permutations of ℕ (one-sided infinite)\n\n3. **Permutation Patterns:** Part of broader study of unavoidable patterns in permutations\n\n4. **Ramsey Theory:** Related to classical questions about patterns in combinatorial structures",
+    "openQuestions": [
+      "Does every permutation of ℤ contain a monotone 4-term AP?",
+      "What is the answer for permutations of ℕ (Problem #196)?",
+      "Can we characterize permutations avoiding long monotone APs?",
+      "Is there a simpler construction avoiding monotone 5-APs?"
+    ]
   }
 }

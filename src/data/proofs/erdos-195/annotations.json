@@ -1,1 +1,126 @@
-[]
+[
+  {
+    "id": "ann-e195-header",
+    "proofId": "erdos-195",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #195: Monotone APs in Permutations of ℤ**\n\n**Question:** What is the largest k such that every permutation of ℤ contains a monotone k-term arithmetic progression?\n\n**Key Insight:** 'Monotone' means the positions (values under the permutation) are strictly increasing or decreasing.\n\n**Status:** OPEN with bounds 3 ≤ k ≤ 4",
+    "mathContext": "This connects permutation theory with arithmetic progressions, a blend of combinatorics and number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Permutation", "Arithmetic progression", "Monotone sequence", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e195-permutation",
+    "proofId": "erdos-195",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "Permutation Definition",
+    "content": "**Permutation:**\n\nA permutation of ℤ is defined as a bijection ℤ ≃ ℤ.\n\nThis means it's a function that assigns each integer to a unique integer, with every integer appearing exactly once as an output.",
+    "significance": "key",
+    "relatedConcepts": ["Bijection", "Equiv", "Function"]
+  },
+  {
+    "id": "ann-e195-arithprog",
+    "proofId": "erdos-195",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "**ArithProg(a, d, k):**\n\nGenerates the k-term AP: a, a+d, a+2d, ..., a+(k-1)d\n\nImplemented as mapping indices 0,1,...,k-1 to a + d*i.",
+    "significance": "key",
+    "relatedConcepts": ["List", "Range", "Map"]
+  },
+  {
+    "id": "ann-e195-monotone",
+    "proofId": "erdos-195",
+    "range": { "startLine": 58, "endLine": 77 },
+    "type": "definition",
+    "title": "Monotonicity in Permutations",
+    "content": "**IsMonotone:**\n\nA sequence x₁, x₂, ..., xₖ is **monotone** in permutation π if:\n\n- **Increasing:** π(x₁) < π(x₂) < ... < π(xₖ), OR\n- **Decreasing:** π(x₁) > π(x₂) > ... > π(xₖ)\n\nThis is about the *order* in which elements appear when we apply the permutation.",
+    "mathContext": "Think of the permutation as a rearrangement. Monotone means the AP's elements appear in order (forward or backward) in the rearrangement.",
+    "significance": "critical",
+    "relatedConcepts": ["Pairwise", "Order", "Increasing sequence"]
+  },
+  {
+    "id": "ann-e195-hasmonotone",
+    "proofId": "erdos-195",
+    "range": { "startLine": 79, "endLine": 89 },
+    "type": "definition",
+    "title": "HasMonotoneAP Predicate",
+    "content": "**HasMonotoneAP(π, k):**\n\nStates that permutation π contains a monotone k-term AP.\n\nRequires: existence of first term a and non-zero common difference d such that the AP is monotone in π.",
+    "significance": "key",
+    "relatedConcepts": ["Existence", "Non-zero"]
+  },
+  {
+    "id": "ann-e195-geneson",
+    "proofId": "erdos-195",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "axiom",
+    "title": "Geneson's Upper Bound (2019)",
+    "content": "**geneson_upper_bound:**\n\nThere exists a permutation of ℤ with no monotone 6-term AP.\n\n**Implication:** k ≤ 5\n\nGeneson explicitly constructed such a permutation in 2019.",
+    "mathContext": "This was the first non-trivial upper bound, showing the answer isn't arbitrarily large.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bound", "Construction", "Avoidance"]
+  },
+  {
+    "id": "ann-e195-adenwalla",
+    "proofId": "erdos-195",
+    "range": { "startLine": 105, "endLine": 113 },
+    "type": "axiom",
+    "title": "Adenwalla's Improvement (2022)",
+    "content": "**adenwalla_upper_bound:**\n\nThere exists a permutation of ℤ with no monotone 5-term AP.\n\n**Implication:** k ≤ 4\n\nThis improves Geneson's bound by one, narrowing the gap to just 3 vs 4.",
+    "mathContext": "The 2022 arXiv paper (2211.04451) gives an explicit construction avoiding monotone 5-APs.",
+    "significance": "critical",
+    "relatedConcepts": ["Upper bound", "Improvement", "arXiv"]
+  },
+  {
+    "id": "ann-e195-lower",
+    "proofId": "erdos-195",
+    "range": { "startLine": 119, "endLine": 127 },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "**lower_bound_3:**\n\nEvery permutation of ℤ contains a monotone 3-term AP.\n\n**Why?** In any three consecutive terms of an AP, the permutation values must be either all increasing, all decreasing, or have one in between — but infinite permutations must have unbounded increasing or decreasing subsequences.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bound", "Ramsey theory", "Pigeonhole"]
+  },
+  {
+    "id": "ann-e195-bounds",
+    "proofId": "erdos-195",
+    "range": { "startLine": 129, "endLine": 136 },
+    "type": "theorem",
+    "title": "Current Bounds",
+    "content": "**current_bounds:**\n\n3 ≤ k ≤ 4\n\nThe answer is **exactly one of 3 or 4** — we just don't know which.",
+    "significance": "key",
+    "relatedConcepts": ["Tight bounds", "Open problem"]
+  },
+  {
+    "id": "ann-e195-main-question",
+    "proofId": "erdos-195",
+    "range": { "startLine": 179, "endLine": 187 },
+    "type": "definition",
+    "title": "The Main Open Question",
+    "content": "**erdos195_main_question:**\n\n∀ (π : Permutation), HasMonotoneAP π 4\n\n**Translation:** Does every permutation of ℤ contain a monotone 4-term AP?\n\n- If YES, then k = 4\n- If NO, then k = 3",
+    "significance": "critical",
+    "relatedConcepts": ["Universal quantifier", "Open problem"]
+  },
+  {
+    "id": "ann-e195-main-theorem",
+    "proofId": "erdos-195",
+    "range": { "startLine": 217, "endLine": 222 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_195:**\n\nCombines the known results:\n1. Every permutation has monotone 3-AP (lower bound)\n2. Some permutation has no monotone 5-AP (upper bound)\n\n**Status:** OPEN (exact value of k unknown)",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Partial solution"]
+  },
+  {
+    "id": "ann-e195-dichotomy",
+    "proofId": "erdos-195",
+    "range": { "startLine": 229, "endLine": 236 },
+    "type": "theorem",
+    "title": "Dichotomy Theorem",
+    "content": "**erdos_195_dichotomy:**\n\nThe answer is determined by erdos195_main_question:\n\n- main_question TRUE → k = 4\n- main_question FALSE → k = 3\n\nResolving the main question would complete the solution.",
+    "significance": "key",
+    "relatedConcepts": ["Dichotomy", "Conditional", "Resolution"]
+  }
+]
