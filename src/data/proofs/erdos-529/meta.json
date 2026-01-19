@@ -1,33 +1,141 @@
 {
   "id": "erdos-529",
-  "title": "Erdős Problem #529",
+  "title": "Erdos Problem #529: Self-Avoiding Walk End-to-End Distance",
   "slug": "erdos-529",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the expected distance from the origin after taking ... random steps from the origin in ... (conditional on no self...",
+  "description": "Study the expected end-to-end distance d_k(n) of self-avoiding walks in Z^k. High dimensions (k >= 5) resolved with d_k(n) ~ sqrt(n). Lower dimensions remain open with conjectured anomalous exponents.",
   "meta": {
-    "author": "Unknown",
+    "author": "Hara-Slade (1991-92 high dim), Duminil-Copin-Hammond (2013 2D)",
     "sourceUrl": "https://erdosproblems.com/529",
-    "date": "",
-    "status": "pending",
+    "date": "2013",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos529Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "random-walks",
+      "self-avoiding-walks",
+      "statistical-mechanics",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 529,
     "erdosUrl": "https://erdosproblems.com/529",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "MetricSpace",
+        "description": "Metric space structure",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "SelfAvoidingWalk structure definition",
+      "expectedEndDistance d_k(n) formalization",
+      "criticalExponent function for dimension-dependent nu",
+      "slade_high_dim axiom: original high-dimensional result",
+      "haraSlade_five_dim axiom: k >= 5 result",
+      "duminilCopin_subBallistic axiom: d_2(n) = o(n)",
+      "conjecture_2d: nu = 3/4 for 2D",
+      "conjecture_3d: nu ~ 0.588 for 3D",
+      "conjecture_4d: logarithmic correction",
+      "question1 and question2 formalization",
+      "upperCriticalDimension = 4",
+      "floryExponent prediction",
+      "erdos_529_summary main results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #529 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_k(n)$ be the expected distance from the origin after taking $n$ random steps from the origin in $\\mathbb{Z}^k$ (conditional on no self intersections) - that is, a self-avoiding walk. Is it true that\\[\\lim_{n\\to \\infty}\\frac{d_2(n)}{n^{1/2}}= \\infty?\\]Is it true that\\[d_k(n)\\ll n^{1/2}\\]for $k\\geq 3$?\n\n\n\nSlade \\cite{Sl87} proved that, for $k$ sufficiently large, $d_k(n)\\sim Dn^{1/2}$ for some constant $D>0$ (independent of $k$). Hara and Slade (\\cite{HaSl91} and \\cite{HaSl92}) proved this for all $k\\geq 5$.\n\nFor $k=2$ Duminil-Copin and Hammond \\cite{DuHa13} have proved that $d_2(n)=o(n)$.\n\nIt is now conjectured that $d_k(n)\\ll n^{1/2}$ is false for $k=3$ and $k=4$, and more precisely (see for example Section 1.4 of \\cite{MaSl93}) that $d_2(n)\\sim Dn^{3/4}$, $d_3(n)\\sim n^{\\nu}$ where $\\nu\\approx 0.59$, and $d_4(n)\\sim D(\\log n)^{1/8}n^{1/2}$.\n\nMadras and Slade \\cite{MaSl93} have a monograph on the topic of self-avoiding walks.\n\nSee also [528].\n\n\n\n\nReferences\n\n\n[DuHa13] Duminil-Copin, Hugo and Hammond, Alan, Self-avoiding walk is sub-ballistic. Comm. Math. Phys. (2013), 401--423.\n\n[HaSl91] Hara, Takashi and Slade, Gordon, Critical behaviour of self-avoiding walk in five or more\ndimensions. Bull. Amer. Math. Soc. (N.S.) (1991), 417--423.\n\n[HaSl92] Hara, Takashi and Slade, Gordon, Self-avoiding walk in five or more dimensions. {I}. {T}he\ncritical behaviour. Comm. Math. Phys. (1992), 101--136.\n\n[MaSl93] Madras, Neal and Slade, Gordon, The self-avoiding walk. (1993), xiv+425.\n\n[Sl87] Slade, Gordon, The diffusion of self-avoiding random walk in high dimensions. Comm. Math. Phys. (1987), 661--683.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #529: Self-Avoiding Walks**\n\nSelf-avoiding walks (SAWs) are fundamental objects in statistical mechanics and polymer physics. A SAW on Z^k is a path that never revisits a vertex.\n\n**Key History:**\n- Slade [Sl87]: First rigorous high-dimensional asymptotics\n- Hara-Slade [HaSl91, HaSl92]: Extended to all k >= 5\n- Duminil-Copin-Hammond [DuHa13]: Proved sub-ballistic in 2D\n- Madras-Slade [MaSl93]: Definitive monograph on SAW\n\n**Mathematical Setting:**\nThe key quantity d_k(n) is the expected Euclidean distance from origin to endpoint after n steps. The critical exponent nu describes the power-law growth: d_k(n) ~ n^nu.",
+    "problemStatement": "**Problem Statement (PARTIALLY RESOLVED)**\n\nLet $d_k(n)$ be the expected distance from origin after $n$ steps of a self-avoiding walk on $\\mathbb{Z}^k$.\n\n**Question 1:** Is $\\lim_{n\\to\\infty} d_2(n)/\\sqrt{n} = \\infty$?\n\n**Question 2:** Is $d_k(n) \\ll \\sqrt{n}$ for $k \\geq 3$?\n\n**Known Results:**\n- $k \\geq 5$: $d_k(n) \\sim D\\sqrt{n}$ (PROVED, Hara-Slade)\n- $k = 2$: $d_2(n) = o(n)$ (PROVED, Duminil-Copin-Hammond)\n\n**Conjectures:**\n- $d_2(n) \\sim D \\cdot n^{3/4}$\n- $d_3(n) \\sim n^{\\nu}$ where $\\nu \\approx 0.588$\n- $d_4(n) \\sim D(\\log n)^{1/8}\\sqrt{n}$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **SAW Definition:** Structure for self-avoiding walks with step count and properties\n\n2. **Key Functions:**\n   - expectedEndDistance d_k(n): Expected end-to-end distance\n   - criticalExponent nu_k: Dimension-dependent growth exponent\n   - floryExponent: Flory's prediction 3/(d+2)\n\n3. **Axioms for Results:**\n   - haraSlade_five_dim: High-dimensional sqrt(n) behavior\n   - duminilCopin_subBallistic: 2D is sub-ballistic\n   - Conjectures for low dimensions\n\n4. **Critical Dimension:** d_c = 4 marks transition to mean-field",
+    "keyInsights": [
+      "**Critical Exponent nu:** SAW grows as n^nu; nu = 1/2 in high dimensions (like random walk), but nu > 1/2 in low dimensions (self-avoidance matters more)",
+      "**Upper Critical Dimension:** d_c = 4 separates anomalous (d < 4) from mean-field (d > 4) behavior",
+      "**Flory's Approximation:** nu = 3/(d+2) gives remarkably good predictions: 3/4 for 2D, 3/5 for 3D",
+      "**Sub-Ballistic:** SAW in 2D grows slower than linearly but likely faster than sqrt(n)",
+      "**Logarithmic Corrections:** At d = 4, the base exponent nu = 1/2 has a (log n)^{1/8} multiplicative correction"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "saw-definition",
+      "title": "Self-Avoiding Walks",
+      "summary": "SelfAvoidingWalk structure, endToEndDistance, expectedEndDistance",
+      "startLine": 40,
+      "endLine": 76
+    },
+    {
+      "id": "critical-exponent",
+      "title": "Critical Exponent",
+      "summary": "criticalExponent definition, dimension-dependent values",
+      "startLine": 78,
+      "endLine": 107
+    },
+    {
+      "id": "high-dim",
+      "title": "High-Dimensional Results",
+      "summary": "slade_high_dim, haraSlade_five_dim axioms",
+      "startLine": 109,
+      "endLine": 143
+    },
+    {
+      "id": "question1",
+      "title": "Question 1: Two Dimensions",
+      "summary": "question1 definition, duminilCopin_subBallistic, conjecture_2d",
+      "startLine": 145,
+      "endLine": 186
+    },
+    {
+      "id": "question2",
+      "title": "Question 2: Three and Four Dimensions",
+      "summary": "question2 definition, conjecture_3d, conjecture_4d",
+      "startLine": 188,
+      "endLine": 229
+    },
+    {
+      "id": "critical-dimension",
+      "title": "Upper Critical Dimension",
+      "summary": "upperCriticalDimension = 4, below/above/at critical",
+      "startLine": 231,
+      "endLine": 263
+    },
+    {
+      "id": "flory",
+      "title": "Flory's Prediction",
+      "summary": "floryExponent, flory_2d, flory_3d",
+      "startLine": 265,
+      "endLine": 286
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_529_summary combining all results",
+      "startLine": 288,
+      "endLine": 320
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #529 asks about the growth rate of self-avoiding walk end-to-end distance in various dimensions. For k >= 5, Hara and Slade proved d_k(n) ~ D*sqrt(n). For k = 2, Duminil-Copin and Hammond proved d_2(n) = o(n). The conjectured behavior is d_2(n) ~ n^{3/4}, d_3(n) ~ n^{0.588}, and d_4(n) ~ (log n)^{1/8}*sqrt(n). Question 2 is now believed FALSE for k = 3, 4.",
+    "implications": "**Connections to Physics and Mathematics**\n\n1. **Polymer Physics:** SAW models linear polymers in good solvents\n\n2. **Critical Phenomena:** nu is a critical exponent analogous to magnetization\n\n3. **Conformal Field Theory:** 2D SAW connects to SLE (Schramm-Loewner Evolution)\n\n4. **Lace Expansion:** Technique developed by Brydges-Spencer used in proofs\n\n5. **Universality:** Critical exponents depend only on dimension, not lattice details",
+    "openQuestions": [
+      "Prove d_2(n) ~ n^{3/4} (rigorously establish nu = 3/4)",
+      "Determine exact value of nu in 3D",
+      "Prove or disprove logarithmic correction in 4D",
+      "Understand crossover behavior near d = 4",
+      "Extend results to other lattices (honeycomb, triangular)"
+    ]
   }
 }
