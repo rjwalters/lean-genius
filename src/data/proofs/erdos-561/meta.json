@@ -1,33 +1,119 @@
 {
   "id": "erdos-561",
-  "title": "Erdős Problem #561",
+  "title": "Size Ramsey Numbers for Unions of Stars",
   "slug": "erdos-561",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
+  "description": "For unions of stars F₁ = ∪_{i≤s} K_{1,nᵢ} and F₂ = ∪_{j≤t} K_{1,mⱼ}, prove that the size Ramsey number R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i + j = k}. The uniform case (all nᵢ equal, all mⱼ equal) was proven by Burr-Erdős-Faudree-Rousseau-Schelp (1978).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (conjecture), Burr-Erdős-Faudree-Rousseau-Schelp (uniform case, 1978)",
     "sourceUrl": "https://erdosproblems.com/561",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "partial",
     "proofRepoPath": "Proofs/Erdos561Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "combinatorics",
+      "stars"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 561,
     "erdosUrl": "https://erdosproblems.com/561",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #561 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges such that in any $2$-colouring of the edges of $H$ there is a monochromatic copy of $G$.\n\nLet $F_1$ and $F_2$ be the union of stars. More precisely, let $F_1=\\cup_{i\\leq s} K_{1,n_i}$ and $F_2=\\cup_{j\\leq t} K_{1,m_j}$. Prove that\\[\\hat{R}(F_1,F_2) = \\sum_{2\\leq k\\leq s+2}\\max\\{n_i+m_j-1 : i+j=k\\}.\\]\n\n\n\nBurr, Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{BEFRS78} proved this when all the $n_i$ are identical and all the $m_i$ are identical.\n\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BEFRS78] Burr, S. A. and Erd\\H{o}s, P. and Faudree, R. J. and Rousseau,\nC. C. and Schelp, R. H., Ramsey-minimal graphs for multiple copies. Nederl. Akad. Wetensch. Indag. Math. (1978), 187-195.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Size Ramsey numbers, introduced by Erdős and others in the 1970s, measure the minimum number of edges (rather than vertices) needed in a host graph H to guarantee a monochromatic copy of G in any 2-coloring. For sparse graphs like stars, size Ramsey numbers can be much smaller than the quadratic bound from classical Ramsey numbers. This problem asks for an exact formula for unions of stars, which are among the simplest non-trivial graph families.",
+    "problemStatement": "Let R̂(G) denote the size Ramsey number: the minimal number of edges m such that there is a graph H with m edges where any 2-coloring of the edges of H contains a monochromatic copy of G. For unions of stars F₁ = ∪_{i≤s} K_{1,nᵢ} and F₂ = ∪_{j≤t} K_{1,mⱼ}, prove that R̂(F₁,F₂) = Σ_{2≤k≤s+t} max{nᵢ + mⱼ - 1 : i + j = k}.",
+    "proofStrategy": "The formalization defines star graphs and their unions, establishes the size Ramsey number framework, and states the conjectured formula. The uniform case (proven by BEFRS78) is formalized as an axiom, and the general conjecture remains open. Key bounds are established relating size Ramsey numbers to classical Ramsey numbers.",
+    "keyInsights": [
+      "Size Ramsey numbers can be linear in vertex count for sparse graphs, unlike exponential classical Ramsey numbers",
+      "The formula involves a sum over index pairs, capturing how stars from F₁ and F₂ interact",
+      "The uniform case admits a closed-form solution proven in 1978",
+      "Stars are 'Ramsey-efficient' due to their simple structure"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "star-graphs",
+      "title": "Star Graphs",
+      "startLine": 35,
+      "endLine": 63,
+      "summary": "Defines the Star structure representing K_{1,n} with n leaves, including edge and vertex counts.",
+      "description": "A star graph K_{1,n} consists of one central vertex connected to n leaf vertices, giving n+1 total vertices and n edges. The Star structure requires at least one leaf."
+    },
+    {
+      "id": "star-unions",
+      "title": "Unions of Stars",
+      "startLine": 65,
+      "endLine": 99,
+      "summary": "Defines StarUnion as a disjoint union of stars with component count and total edge/vertex calculations.",
+      "description": "A StarUnion F = ∪_{i≤s} K_{1,nᵢ} is represented as a list of leaf counts. The structure tracks the number of components, total edges (sum of leaf counts), and total vertices."
+    },
+    {
+      "id": "colorings-ramsey",
+      "title": "Graph Colorings and Ramsey Theory",
+      "startLine": 101,
+      "endLine": 127,
+      "summary": "Defines 2-edge-colorings, monochromatic subgraphs, and the Ramsey property for star unions.",
+      "description": "Establishes the framework for Ramsey theory: an EdgeColoring assigns colors to edges, and a graph H has the Ramsey property for (F₁, F₂) if every 2-coloring contains either a red F₁ or blue F₂."
+    },
+    {
+      "id": "size-ramsey-numbers",
+      "title": "Size Ramsey Numbers",
+      "startLine": 129,
+      "endLine": 154,
+      "summary": "Defines the size Ramsey number R̂(F₁, F₂) as the minimum edge count for a graph with the Ramsey property.",
+      "description": "The size Ramsey number minimizes edges rather than vertices, making it particularly relevant for sparse graphs. An existence axiom guarantees finiteness."
+    },
+    {
+      "id": "conjectured-formula",
+      "title": "The Conjectured Formula",
+      "startLine": 156,
+      "endLine": 195,
+      "summary": "Formalizes the Erdős conjecture: R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i + j = k}.",
+      "description": "The formula sums over index pairs (i,j) with i+j=k, taking the maximum of nᵢ + mⱼ - 1 for each k from 2 to s+t. This captures how stars from the two unions interact."
+    },
+    {
+      "id": "uniform-case",
+      "title": "The Uniform Case (BEFRS78)",
+      "startLine": 197,
+      "endLine": 237,
+      "summary": "States and applies the BEFRS78 theorem proving the conjecture when all stars in each union are identical.",
+      "description": "Burr, Erdős, Faudree, Rousseau, and Schelp proved the formula in 1978 for the special case where F₁ consists of s copies of K_{1,n} and F₂ consists of t copies of K_{1,m}."
+    },
+    {
+      "id": "bounds",
+      "title": "Lower and Upper Bounds",
+      "startLine": 239,
+      "endLine": 257,
+      "summary": "Establishes bounds: R̂(F₁,F₂) ≥ max(|E(F₁)|, |E(F₂)|) and upper bounds from complete graphs.",
+      "description": "The lower bound follows because H must be able to contain either F₁ or F₂. The upper bound uses the complete graph K_N, though this is typically far from optimal for sparse graphs."
+    },
+    {
+      "id": "classical-connection",
+      "title": "Connection to Classical Ramsey Numbers",
+      "startLine": 259,
+      "endLine": 285,
+      "summary": "Relates size Ramsey numbers to classical Ramsey numbers, noting that stars are particularly efficient.",
+      "description": "While R̂(F₁,F₂) ≤ (R(F₁,F₂) choose 2), size Ramsey numbers for stars can be linear in vertex count rather than exponential, demonstrating their 'Ramsey efficiency'."
+    },
+    {
+      "id": "summary-main",
+      "title": "Summary and Main Results",
+      "startLine": 287,
+      "endLine": 320,
+      "summary": "Consolidates the main theorem (uniform case proven) and states the open question for general star unions.",
+      "description": "The erdos_561 theorem confirms the uniform case via BEFRS78. The openQuestion definition captures that the general conjecture remains unsolved."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization establishes the framework for size Ramsey numbers of star unions. The BEFRS78 theorem (1978) proves the conjectured formula for uniform star unions, while the general case remains one of the notable open problems in Ramsey theory.",
+    "implications": "A proof of the general case would provide exact values for an important class of size Ramsey numbers and could yield insights into the structure of Ramsey-minimal graphs for sparse graph families.",
+    "openQuestions": [
+      "Does the formula R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i+j=k} hold for all star unions, not just uniform ones?",
+      "What is the structure of Ramsey-minimal graphs for star unions?",
+      "Can the techniques from BEFRS78 be extended to non-uniform cases?"
+    ]
   }
 }
