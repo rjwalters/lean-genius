@@ -1,33 +1,150 @@
 {
   "id": "erdos-734",
-  "title": "Erdős Problem #734",
+  "title": "Erdős Problem #734: Pairwise Balanced Block Designs with Bounded Frequencies",
   "slug": "erdos-734",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind, for all large ..., a non-trivial pairwise balanced block design ... such that, for all ..., there are ... many ... such...",
+  "description": "Find a non-trivial PBD where all block sizes have O(n^{1/2}) frequency. OPEN. de Bruijn-Erdős (1948) implies some size must have high frequency on average.",
   "meta": {
-    "author": "Unknown",
+    "author": "de Bruijn-Erdős (1948 lower bound), Erdős (1981 problem)",
     "sourceUrl": "https://erdosproblems.com/734",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos734Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "design-theory",
+      "block-designs",
+      "pbd",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 734,
     "erdosUrl": "https://erdosproblems.com/734",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for n^{1/2}",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "PBD structure: pairwise balanced block design formalization",
+      "trivialPBD: the trivial design with one block",
+      "isNontrivial predicate: non-trivial designs",
+      "blocksOfSize: counting blocks of a given size",
+      "blockSizesPresent: set of sizes appearing in design",
+      "hasSquareRootBound: the O(n^{1/2}) condition",
+      "erdos734Question: formal statement of the problem",
+      "deBruijn_erdos axiom: m ≥ n for non-trivial PBDs",
+      "projective_plane_exists axiom: existence of planes",
+      "erdos_734_summary: combining known results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #734 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind, for all large $n$, a non-trivial pairwise balanced block design $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that, for all $t$, there are $O(n^{1/2})$ many $i$ such that $\\lvert A_i\\rvert=t$.\n\n\n\n$A_1,\\ldots,A_m$ is a pairwise balanced block design if every pair in $\\{1,\\ldots,n\\}$ is contained in exactly one of the $A_i$.\n\nErd\\H{o}s \\cite{Er81} writes 'this will be probably not be very difficult to prove but so far I was not successful'.\n\nErd\\H{o}s and de Bruijn \\cite{dBEr48} proved that if $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ is a pairwise balanced block design then $m\\geq n$, and this implies there must be some $t$ such that there are $\\gg n^{1/2}$ many $t$ with $\\lvert A_i\\rvert=t$.\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[dBEr48] de Bruijn, N. G. and Erd\\H{o}s, P., On a combinatorial problem. Nederl. Akad. Wetensch., Proc. (1948), 1277--1279 = Indagationes Math. 10, 421--423.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #734**\n\nA question about the structure of pairwise balanced block designs (PBDs).\n\n**Key History:**\n- de Bruijn-Erdős (1948): Proved m ≥ n for any PBD on n points with m blocks\n- Erdős (1981): Posed this problem, writing \"this will probably not be very difficult to prove but so far I was not successful\"\n\n**Mathematical Setting:**\nA PBD is a collection of subsets (blocks) of {1,...,n} such that every pair of elements appears in exactly one block. The question asks if we can spread block sizes evenly enough that no size dominates.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFind, for all large n, a non-trivial pairwise balanced block design A₁,...,Aₘ ⊆ {1,...,n} such that for all t, there are O(n^{1/2}) many blocks of size t.\n\n**Status: OPEN**\n\nKnown constructions (projective and affine planes) have uniform block size, which fails this criterion. No construction achieving the bound is known.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **PBD Structure:** Define PBD as a structure with blocks, pair coverage property, and non-emptiness.\n\n2. **Block Size Counting:** Define blocksOfSize to count blocks of each size and hasSquareRootBound for the O(n^{1/2}) condition.\n\n3. **de Bruijn-Erdős:** Axiomatize the fundamental lower bound m ≥ n.\n\n4. **Known Constructions:** Axiomatize projective and affine planes, noting they fail the criterion.\n\n5. **The Question:** Define erdos734Question as the existence of suitable designs for large n.",
+    "keyInsights": [
+      "**de Bruijn-Erdős Bound:** Any non-trivial PBD on n points has at least n blocks",
+      "**Pigeonhole Consequence:** With ≥ n blocks and ≤ n-1 possible sizes, some size must have multiple blocks",
+      "**Classical Constructions Fail:** Projective planes have uniform block size, giving one size with ≫ √n blocks",
+      "**Spreading Challenge:** Need to find designs where sizes are spread out evenly",
+      "**Erdős's Expectation:** He thought this would be \"not very difficult\" yet remained unsolved"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "pbd-definition",
+      "title": "Pairwise Balanced Block Designs",
+      "summary": "PBD structure, trivialPBD, isNontrivial predicate",
+      "startLine": 38,
+      "endLine": 78
+    },
+    {
+      "id": "block-size-frequencies",
+      "title": "Block Size Frequencies",
+      "summary": "blocksOfSize, blockSizesPresent definitions",
+      "startLine": 80,
+      "endLine": 96
+    },
+    {
+      "id": "de-bruijn-erdos",
+      "title": "de Bruijn-Erdős Theorem",
+      "summary": "deBruijn_erdos axiom: m ≥ n bound and its consequence",
+      "startLine": 98,
+      "endLine": 118
+    },
+    {
+      "id": "erdos-question",
+      "title": "The Erdős Question",
+      "summary": "hasSquareRootBound, erdos734Question definitions",
+      "startLine": 120,
+      "endLine": 138
+    },
+    {
+      "id": "known-constructions",
+      "title": "Known Constructions",
+      "summary": "projective_plane_exists, affine_plane_exists axioms",
+      "startLine": 140,
+      "endLine": 164
+    },
+    {
+      "id": "counting-bounds",
+      "title": "Counting and Bounds",
+      "summary": "pair_count theorem, block_sum_constraint",
+      "startLine": 166,
+      "endLine": 187
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This is Hard",
+      "summary": "construction_difficulty, resolvable_designs",
+      "startLine": 189,
+      "endLine": 209
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "near_uniform_designs_exist, gdd_related",
+      "startLine": 211,
+      "endLine": 228
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Status",
+      "summary": "erdos_734_status, erdos_734_summary, erdos_734 main theorems",
+      "startLine": 230,
+      "endLine": 273
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #734 asks whether there exist non-trivial pairwise balanced block designs where every block size appears in O(n^{1/2}) blocks. The problem remains OPEN. de Bruijn-Erdős (1948) showed m ≥ n for any PBD, implying some averaging constraint, but no construction achieving the bound is known. Classical constructions like projective planes fail because they have uniform block size.",
+    "implications": "**Design Theory Implications**\n\n1. **PBD Structure:** Understanding how block sizes can be distributed\n\n2. **Construction Challenge:** Need new methods beyond classical designs\n\n3. **Combinatorial Balance:** Balancing pair coverage with size diversity\n\n4. **Counting Arguments:** de Bruijn-Erdős and pigeonhole provide constraints\n\n5. **Related Structures:** Connections to group divisible designs and resolvable designs",
+    "openQuestions": [
+      "Does such a PBD exist for ANY n > 2?",
+      "What is the minimum frequency achievable for the most common block size?",
+      "Can randomized constructions approach the bound?",
+      "Are there related existence problems with weaker bounds?",
+      "What algebraic structures might yield such designs?"
+    ]
   }
 }

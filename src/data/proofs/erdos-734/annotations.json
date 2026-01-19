@@ -1,1 +1,181 @@
-[]
+[
+  {
+    "id": "ann-e734-header",
+    "proofId": "erdos-734",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #734: PBDs with Bounded Block Size Frequency**\n\n**Question:** Find a non-trivial pairwise balanced block design where every block size t appears in O(n^{1/2}) blocks.\n\n**Status: OPEN**\n\nErdős (1981) wrote this would \"probably not be very difficult\" but remained unsolved.",
+    "mathContext": "A PBD is a collection of blocks where every pair of elements appears in exactly one block. de Bruijn-Erdős (1948) proved m ≥ n for any PBD.",
+    "significance": "critical",
+    "relatedConcepts": ["Block designs", "Combinatorial designs", "de Bruijn-Erdős theorem"]
+  },
+  {
+    "id": "ann-e734-pbd",
+    "proofId": "erdos-734",
+    "range": { "startLine": 42, "endLine": 54 },
+    "type": "definition",
+    "title": "Pairwise Balanced Design",
+    "content": "**PBD (Pairwise Balanced Design):**\n\nA structure with:\n- `blocks`: A finite set of blocks (subsets of {1,...,n})\n- `pairwise_coverage`: Every pair {i,j} appears in exactly one block\n- `blocks_nonempty`: All blocks are non-empty\n\nThis is the fundamental object of study in combinatorial design theory.",
+    "mathContext": "PBDs generalize projective planes. When all blocks have the same size k, it's called a (v,k,1)-BIBD.",
+    "significance": "critical",
+    "relatedConcepts": ["BIBD", "Projective planes", "Steiner systems"]
+  },
+  {
+    "id": "ann-e734-trivial",
+    "proofId": "erdos-734",
+    "range": { "startLine": 56, "endLine": 70 },
+    "type": "definition",
+    "title": "Trivial PBD",
+    "content": "**trivialPBD:**\n\nThe design with a single block containing all elements.\n\nThis trivially satisfies the pair coverage property but isn't interesting combinatorially. The problem asks for non-trivial designs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e734-nontrivial",
+    "proofId": "erdos-734",
+    "range": { "startLine": 72, "endLine": 78 },
+    "type": "definition",
+    "title": "Non-trivial PBD",
+    "content": "**isNontrivial:**\n\nA PBD is non-trivial if it has more than one block, or if its blocks don't cover all elements.\n\nde Bruijn-Erdős showed non-trivial PBDs must have m ≥ n blocks.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e734-blocks-of-size",
+    "proofId": "erdos-734",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "definition",
+    "title": "Block Size Counting",
+    "content": "**blocksOfSize D t:**\n\nCounts how many blocks in design D have exactly t elements.\n\nThe Erdős question asks: can we make blocksOfSize D t ≤ C√n for ALL t?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e734-sizes-present",
+    "proofId": "erdos-734",
+    "range": { "startLine": 91, "endLine": 96 },
+    "type": "definition",
+    "title": "Block Sizes Present",
+    "content": "**blockSizesPresent D:**\n\nThe set of sizes that actually appear as block sizes in D.\n\nThis can have at most n-1 elements (sizes 2 through n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e734-debruijn",
+    "proofId": "erdos-734",
+    "range": { "startLine": 102, "endLine": 109 },
+    "type": "axiom",
+    "title": "de Bruijn-Erdős Theorem",
+    "content": "**deBruijn_erdos:**\n\nIf A₁,...,Aₘ is a non-trivial PBD on n points, then m ≥ n.\n\nMoreover, m = n only for \"near-pencils\" (one block of size n-1 and n-1 blocks of size 2).\n\nThis is the fundamental counting bound for PBDs.",
+    "mathContext": "Proved in 1948. The proof uses clever counting of pairs and blocks.",
+    "significance": "critical",
+    "relatedConcepts": ["Fisher's inequality", "Combinatorial counting"]
+  },
+  {
+    "id": "ann-e734-frequent",
+    "proofId": "erdos-734",
+    "range": { "startLine": 111, "endLine": 118 },
+    "type": "axiom",
+    "title": "Pigeonhole Consequence",
+    "content": "**some_size_frequent:**\n\nWith m ≥ n blocks and only n-1 possible sizes, by pigeonhole some size must have at least n/(n-1) ≈ 1 block.\n\nMore precisely, with many blocks, some size must have ≫ √n frequency on average.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e734-sqrtbound",
+    "proofId": "erdos-734",
+    "range": { "startLine": 124, "endLine": 129 },
+    "type": "definition",
+    "title": "Square Root Bound",
+    "content": "**hasSquareRootBound D C:**\n\nThe design D satisfies the Erdős condition with constant C if:\n- C > 0\n- For all sizes t, blocksOfSize D t ≤ C·√n\n\nThis is what we want to achieve.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e734-question",
+    "proofId": "erdos-734",
+    "range": { "startLine": 131, "endLine": 138 },
+    "type": "definition",
+    "title": "The Erdős Question",
+    "content": "**erdos734Question:**\n\nFormal statement: Does there exist C > 0 such that for all large enough n, there exists a non-trivial PBD satisfying hasSquareRootBound with constant C?\n\nThis remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e734-projective",
+    "proofId": "erdos-734",
+    "range": { "startLine": 144, "endLine": 155 },
+    "type": "axiom",
+    "title": "Projective Planes",
+    "content": "**projective_plane_exists:**\n\nFor prime q, there exists a projective plane of order q:\n- n = q² + q + 1 points\n- m = q² + q + 1 blocks (lines)\n- All blocks have size q + 1\n\nThis is a symmetric design but FAILS Erdős's condition: one size has ALL blocks!",
+    "mathContext": "Projective planes are the most studied finite geometries. Existence for non-prime-power orders is a major open problem.",
+    "significance": "key",
+    "relatedConcepts": ["Finite geometry", "Projective geometry"]
+  },
+  {
+    "id": "ann-e734-affine",
+    "proofId": "erdos-734",
+    "range": { "startLine": 157, "endLine": 164 },
+    "type": "axiom",
+    "title": "Affine Planes",
+    "content": "**affine_plane_exists:**\n\nDerived from projective planes by removing one line and its points.\n\nFor prime q: n = q² points, m = q² + q blocks.\n\nAlso fails Erdős's condition: uniform block size.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e734-paircount",
+    "proofId": "erdos-734",
+    "range": { "startLine": 170, "endLine": 177 },
+    "type": "theorem",
+    "title": "Pair Counting",
+    "content": "**pair_count:**\n\nA PBD must cover C(n,2) = n(n-1)/2 pairs.\n\nEach block of size k covers C(k,2) = k(k-1)/2 pairs.\n\nSumming over all blocks: Σ C(|B|,2) = C(n,2).\n\nThis constrains how block sizes can be distributed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e734-difficulty",
+    "proofId": "erdos-734",
+    "range": { "startLine": 193, "endLine": 202 },
+    "type": "concept",
+    "title": "Construction Challenge",
+    "content": "**construction_difficulty:**\n\nWhy is this hard?\n\n1. Classical constructions have uniform block sizes\n2. Random constructions don't satisfy pair coverage\n3. Need to balance multiple competing constraints\n\nErdős expected this to be \"not very difficult\" but was wrong.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e734-resolvable",
+    "proofId": "erdos-734",
+    "range": { "startLine": 204, "endLine": 209 },
+    "type": "concept",
+    "title": "Resolvable Designs",
+    "content": "**resolvable_designs:**\n\nA PBD is resolvable if its blocks can be partitioned into parallel classes (partitions of the point set).\n\nThese have additional structure but still tend to have uniform block sizes.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e734-near-uniform",
+    "proofId": "erdos-734",
+    "range": { "startLine": 215, "endLine": 222 },
+    "type": "axiom",
+    "title": "Near-Uniform Designs",
+    "content": "**near_uniform_designs_exist:**\n\nFor some n, PBDs exist with only 2 or 3 different block sizes.\n\nBut if one size dominates, they still fail Erdős's condition. Need size diversity AND frequency bounds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e734-status",
+    "proofId": "erdos-734",
+    "range": { "startLine": 234, "endLine": 246 },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "**erdos_734_status:**\n\nStatus: OPEN\n\nNo construction achieving O(n^{1/2}) frequency for all block sizes is known.\n\nKey observations:\n1. de Bruijn-Erdős: m ≥ n\n2. Pigeonhole: some size must be frequent on average\n3. Classical constructions fail",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e734-summary",
+    "proofId": "erdos-734",
+    "range": { "startLine": 248, "endLine": 266 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_734_summary:**\n\nCombines known results:\n\n1. de Bruijn-Erdős bound m ≥ n holds for all non-trivial PBDs\n2. Projective planes exist for all prime orders\n3. The main question remains open\n\nThe gap between what we can prove and what we want to construct persists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e734-main",
+    "proofId": "erdos-734",
+    "range": { "startLine": 268, "endLine": 271 },
+    "type": "theorem",
+    "title": "Erdős Problem #734: OPEN",
+    "content": "**erdos_734:**\n\nThe problem remains open.\n\nWe formalize the question and known bounds but cannot resolve the main existence question.",
+    "significance": "critical"
+  }
+]
