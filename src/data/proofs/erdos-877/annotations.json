@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-877-1",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "Sum-Free Set",
+    "content": "A set A is sum-free if there are no solutions to a = b + c with a, b, c in A. Equivalently, A and its sumset A + A are disjoint.",
+    "range": { "startLine": 46, "endLine": 47 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-2",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "Sumset Definition",
+    "content": "The sumset A + A consists of all pairwise sums a + b where a, b are in A. Sum-free means A and A + A have empty intersection.",
+    "range": { "startLine": 53, "endLine": 54 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-3",
+    "proofId": "erdos-877",
+    "type": "theorem",
+    "title": "Odd Numbers Are Sum-Free",
+    "content": "The odd numbers form a sum-free set because odd + odd = even, so no odd number can be expressed as the sum of two odd numbers.",
+    "range": { "startLine": 63, "endLine": 66 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-4",
+    "proofId": "erdos-877",
+    "type": "theorem",
+    "title": "Upper Half Is Sum-Free",
+    "content": "The set {n/2 + 1, ..., n} is sum-free because the smallest possible sum exceeds n, so no element can be a sum of two others.",
+    "range": { "startLine": 73, "endLine": 79 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-5",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "Maximal Sum-Free Set",
+    "content": "A sum-free set A is maximal if adding any element x not in A would create a sum (make A no longer sum-free). It's a local maximum under inclusion.",
+    "range": { "startLine": 90, "endLine": 93 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-6",
+    "proofId": "erdos-877",
+    "type": "theorem",
+    "title": "Maximal Criterion",
+    "content": "For maximal sum-free A, every excluded x satisfies: x = a + b for some a, b in A, OR a = x + b for some a, b in A, OR 2x is in A.",
+    "range": { "startLine": 101, "endLine": 107 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-7",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "f(n) - All Sum-Free Sets",
+    "content": "f(n) counts all sum-free subsets of {1,...,n}. Cameron-Erdos conjectured f(n) = Theta(2^{n/2}), which is now proven.",
+    "range": { "startLine": 117, "endLine": 118 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-8",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "f_m(n) - Maximal Sum-Free Sets",
+    "content": "f_m(n) counts maximal sum-free subsets of {1,...,n}. This is the main counting function in Problem #877.",
+    "range": { "startLine": 124, "endLine": 125 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-9",
+    "proofId": "erdos-877",
+    "type": "axiom",
+    "title": "Cameron-Erdos Lower Bound",
+    "content": "f_m(n) > 2^{n/4} for n >= 4. This is proved by constructing exponentially many distinct maximal sum-free sets from subsets of odd numbers.",
+    "range": { "startLine": 143, "endLine": 144 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-10",
+    "proofId": "erdos-877",
+    "type": "axiom",
+    "title": "Luczak-Schoen Theorem",
+    "content": "There exists c < 1/2 such that f_m(n) < 2^{cn}. This resolves the main question: f_m(n) = o(2^{n/2}) is TRUE.",
+    "range": { "startLine": 167, "endLine": 168 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-11",
+    "proofId": "erdos-877",
+    "type": "theorem",
+    "title": "Main Question Resolved",
+    "content": "The main question 'Is f_m(n) = o(2^{n/2})?' is answered YES by the Luczak-Schoen theorem.",
+    "range": { "startLine": 174, "endLine": 176 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-12",
+    "proofId": "erdos-877",
+    "type": "axiom",
+    "title": "BLST 2015 Result",
+    "content": "f_m(n) = 2^{(1/4 + o(1))n}. This pins down the exponent as exactly 1/4, matching the Cameron-Erdos lower bound.",
+    "range": { "startLine": 195, "endLine": 197 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-13",
+    "proofId": "erdos-877",
+    "type": "axiom",
+    "title": "BLST 2018 Sharp Bound",
+    "content": "f_m(n) = (C_n + o(1)) * 2^{n/4} where C_n depends only on n mod 4. This gives the exact leading constant.",
+    "range": { "startLine": 204, "endLine": 207 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-877-14",
+    "proofId": "erdos-877",
+    "type": "insight",
+    "title": "Why the Exponent is 1/4",
+    "content": "The 1/4 exponent arises because only about n/4 elements can be chosen freely in typical maximal sum-free sets, despite the universe having n elements.",
+    "range": { "startLine": 234, "endLine": 240 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-15",
+    "proofId": "erdos-877",
+    "type": "insight",
+    "title": "Container Method",
+    "content": "The BLST proof uses the container method: maximal sum-free sets are contained in a small number of 'containers', each with limited freedom for element choices.",
+    "range": { "startLine": 242, "endLine": 248 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-16",
+    "proofId": "erdos-877",
+    "type": "insight",
+    "title": "Connection to Erdos #748",
+    "content": "Problem #748 asks about f(n), all sum-free sets. The ratio f_m(n)/f(n) tends to 0, showing maximal sets are exponentially rare among all sum-free sets.",
+    "range": { "startLine": 254, "endLine": 259 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-17",
+    "proofId": "erdos-877",
+    "type": "theorem",
+    "title": "Maximal vs All Sum-Free",
+    "content": "f(n) = Theta(2^{n/2}) vs f_m(n) = Theta(2^{n/4}). The gap shows maximality is a strong constraint - there are exponentially fewer maximal sum-free sets.",
+    "range": { "startLine": 267, "endLine": 270 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-877-18",
+    "proofId": "erdos-877",
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Erdos #877 is SOLVED: f_m(n) = o(2^{n/2}) is TRUE. Sharp bounds show f_m(n) = (C_n + o(1))2^{n/4}.",
+    "range": { "startLine": 291, "endLine": 296 },
+    "significance": "high"
+  }
+]
