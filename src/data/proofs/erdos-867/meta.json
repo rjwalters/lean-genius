@@ -1,33 +1,142 @@
 {
   "id": "erdos-867",
-  "title": "Erdős Problem #867",
+  "title": "Erdos Problem #867: Consecutive Sum-Free Sets",
   "slug": "erdos-867",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... has no solutions to\\[a_i+a_{i+1}+\\cdots+a_j\\in A\\]then\\[\\lvert A\\rvert \\leq {2}+O(1)?\\]\n\n\n\nA finitary ...",
+  "description": "Is it true that a set A with no consecutive subsequence sums in A has size at most N/2 + O(1)? NO - disproved by Freud (1993) and Coppersmith-Phillips (1996).",
   "meta": {
-    "author": "Unknown",
+    "author": "Freud (1993 disproof), Coppersmith-Phillips (1996 bounds)",
     "sourceUrl": "https://erdosproblems.com/867",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos867Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "density-bounds",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 867,
     "erdosUrl": "https://erdosproblems.com/867",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Ioc",
+        "description": "Half-open interval as finite set",
+        "module": "Mathlib.Data.Finset.Interval"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "List.sum",
+        "description": "Sum of list elements",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.log2",
+        "description": "Binary logarithm for natural numbers",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "consecutiveSums definition: all consecutive subsequence sums",
+      "isConsecutiveSumFree predicate: no consecutive sum lies in the set",
+      "upperHalf construction: (N/2, N] achieves density 1/2",
+      "adenwalla_upper_bound axiom: density <= 2/3 + o(1)",
+      "freud_construction axiom: density >= 19/36 is achievable",
+      "coppersmith_phillips_lower axiom: density >= 13/24",
+      "coppersmith_phillips_upper axiom: density <= 2/3 - 1/512",
+      "nineteen_thirty_sixth_gt_half theorem: 19/36 > 1/2 (proves conjecture false)",
+      "erdos_867 theorem: main result with best known bounds",
+      "Connection to Problem 839 (infinite version)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #867 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A=\\{a_1<\\cdots <a_t\\}\\subseteq \\{1,\\ldots,N\\}$ has no solutions to\\[a_i+a_{i+1}+\\cdots+a_j\\in A\\]then\\[\\lvert A\\rvert \\leq \\frac{N}{2}+O(1)?\\]\n\n\n\nA finitary version of [839]. Taking $A=(N/2,N]\\cap \\mathbb{N}$ shows $\\lvert A\\rvert \\geq N/2-O(1)$ is possible.\n\nAdenwalla has observed that\\[\\lvert A\\rvert \\leq (\\tfrac{2}{3}+o(1))N.\\]Indeed, if $\\lvert A\\cap [x,2x]\\rvert=t$ then there are $t-1$ distinct sums of consecutive pairs of elements in $(2x,4x]$, all of which are not in $A$ by assumption. It follows that\\[\\lvert A\\cap [x,4x]\\rvert \\leq t+(2x-(t-1))=2x+1.\\]It follows that\\[\\lvert A\\rvert \\leq \\sum_{i\\geq 1}\\lvert A\\cap [4^{-i}n, 4^{1-i}n]\\rvert \\leq \\frac{2}{3}n+O(\\log n).\\]In fact this problem is false. Freud \\cite{Fr93} constructed a sequence with density $\\geq 19/36$. The current best bounds are due to Coppersmith and Phillips \\cite{CoPh96}, who prove that the maximal size of such an $A$ satisfies\\[\\frac{13}{24}N -O(1)\\leq \\lvert A\\rvert \\leq \\left(\\frac{2}{3}-\\frac{1}{512}\\right)N+\\log N.\\]\n\n\n\n\nReferences\n\n\n[CoPh96] Coppersmith, Don and Phillips, Steven, On a question of {E}rd\\H{o}s on subsequence sums. SIAM J. Discrete Math. (1996), 173--177.\n\n[Fr93] R. Freud, Adding numbers - on a problem of P. Erd\\H{o}s. James Cook Mathematical Notes (1993), 6199-6202.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #867: A Disproved Conjecture**\n\nThis problem concerns the maximum density of consecutive sum-free sets - sets where no sum of consecutive elements lies in the set. Erdos posed this in 1992 [Er92c, p.43] as a finitary version of Problem #839.\n\n**The Conjecture:**\nErdos asked whether sets A = {a_1 < ... < a_t} in {1, ..., N} with no consecutive sum a_i + a_{i+1} + ... + a_j in A must satisfy |A| <= N/2 + O(1).\n\n**The Resolution:**\nThe conjecture was disproved. Freud (1993) constructed sets with density 19/36 > 1/2, and Coppersmith-Phillips (1996) established the current best bounds: 13/24 <= max density <= 2/3 - 1/512.\n\n**Key Contributors:**\n- Erdos (1992): Original problem\n- Adenwalla: First improved upper bound using dyadic intervals\n- Freud (1993): Disproved conjecture with density 19/36\n- Coppersmith-Phillips (1996): Current best bounds",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nIs it true that if $A = \\{a_1 < \\cdots < a_t\\} \\subseteq \\{1, \\ldots, N\\}$ has no solutions to\n$$a_i + a_{i+1} + \\cdots + a_j \\in A$$\nthen $|A| \\leq \\frac{N}{2} + O(1)$?\n\n**Answer: NO**\n\nThe maximum density lies in the interval:\n$$\\frac{13}{24} \\leq \\text{max density} \\leq \\frac{2}{3} - \\frac{1}{512}$$\n\nSince $13/24 \\approx 0.5417 > 1/2$, Erdos's conjecture is false.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** We define consecutive sum-free sets and the maximum density function.\n\n2. **Upper Half Example:** The set (N/2, N] is consecutive sum-free and achieves density 1/2, showing Erdos's bound would be tight if true.\n\n3. **Adenwalla's Bound:** Using dyadic interval arguments, we can show density <= 2/3 + o(1).\n\n4. **Freud's Construction:** Axiomatize the existence of sets with density 19/36 > 1/2.\n\n5. **Coppersmith-Phillips Bounds:** The refined bounds 13/24 to 2/3 - 1/512 are stated as axioms.\n\n6. **Main Result:** We prove the conjecture is false by showing 19/36 > 1/2.",
+    "keyInsights": [
+      "**Upper Half Trick:** Taking A = (N/2, N] gives a consecutive sum-free set since any sum of 2+ elements exceeds N",
+      "**Dyadic Decomposition:** Adenwalla's proof uses intervals [x, 2x], [2x, 4x], etc. to bound element counts",
+      "**The Critical Fraction:** 19/36 = 0.5278 > 0.5, disproving Erdos's N/2 conjecture",
+      "**Gap Remains:** The gap between 13/24 = 0.5417 and 2/3 - 1/512 = 0.6647 is still open",
+      "**Connection to Problem 839:** This finitary problem relates to the infinite version asking about asymptotic density"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "consecutiveSums, isConsecutiveSumFree, maxDensity",
+      "startLine": 43,
+      "endLine": 80
+    },
+    {
+      "id": "upper-half",
+      "title": "The Upper Half Example",
+      "summary": "upperHalf definition, upperHalf_card, upperHalf_sumFree",
+      "startLine": 82,
+      "endLine": 116
+    },
+    {
+      "id": "adenwalla-bound",
+      "title": "Adenwalla's Upper Bound",
+      "summary": "adenwalla_dyadic_bound, adenwalla_upper_bound (2/3 + o(1))",
+      "startLine": 117,
+      "endLine": 144
+    },
+    {
+      "id": "freud-construction",
+      "title": "Freud's Lower Bound",
+      "summary": "freud_construction axiom, nineteen_thirty_sixth_gt_half theorem",
+      "startLine": 145,
+      "endLine": 173
+    },
+    {
+      "id": "coppersmith-phillips",
+      "title": "Coppersmith-Phillips Bounds",
+      "summary": "coppersmith_phillips_lower, coppersmith_phillips_upper, best_bounds_fractions",
+      "startLine": 174,
+      "endLine": 211
+    },
+    {
+      "id": "problem-839",
+      "title": "Connection to Problem 839",
+      "summary": "isInfiniteConsecutiveSumFree, problem_839_connection",
+      "startLine": 212,
+      "endLine": 237
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "summary": "Examples with {3,4,5}, {6,7,8,9,10}, upperHalf verification",
+      "startLine": 238,
+      "endLine": 268
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_867_conjecture_false, erdos_867, erdos_867_answer",
+      "startLine": 269,
+      "endLine": 320
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #867 asked whether consecutive sum-free subsets of {1, ..., N} have size at most N/2 + O(1). The answer is NO. Freud (1993) disproved the conjecture by constructing sets with density 19/36 > 1/2. Coppersmith and Phillips (1996) established the current best bounds: 13/24 <= max density <= 2/3 - 1/512. The exact maximum density remains an open problem.",
+    "implications": "**Implications and Connections**\n\n1. **Additive Combinatorics:** This problem highlights the subtlety of sum-free set constructions.\n\n2. **Density Bounds:** The gap between 13/24 and 2/3 - 1/512 suggests difficult intermediate constructions.\n\n3. **Problem 839:** The infinite version of this problem (asymptotic density) remains closely related.\n\n4. **Dyadic Methods:** Adenwalla's dyadic interval technique has applications to other density problems.\n\n5. **Constructive Lower Bounds:** Freud and Coppersmith-Phillips use explicit constructions, not probabilistic methods.",
+    "openQuestions": [
+      "What is the exact maximum density of consecutive sum-free sets?",
+      "Can the gap between 13/24 and 2/3 - 1/512 be narrowed?",
+      "Is there an explicit formula for optimal constructions?",
+      "How does the structure change for different sum constraints?",
+      "What is the answer to Problem 839 (the infinite version)?"
+    ]
   }
 }
