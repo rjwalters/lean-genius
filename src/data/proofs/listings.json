@@ -3077,17 +3077,24 @@
   },
   {
     "id": "erdos-150",
-    "title": "Erdős Problem #150",
+    "title": "Erdos Problem #150: Minimal Cuts in Graphs",
     "slug": "erdos-150",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA minimal cut of a graph is a minimal set of vertices whose removal disconnects the graph. Let ... be the maximum number of m...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does the maximum number of minimal vertex cuts in an n-vertex graph satisfy c(n)^{1/n} converging to some alpha < 2? YES, proved by Bradac (2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "vertex-connectivity",
+      "minimal-cuts",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 150,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 6,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-154",
@@ -8209,17 +8216,24 @@
   },
   {
     "id": "erdos-560",
-    "title": "Erdős Problem #560",
+    "title": "Erdos Problem #560: Size Ramsey Number of Complete Bipartite Graphs",
     "slug": "erdos-560",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine the size Ramsey number R_hat(K_{n,n}) - the minimum edges in a graph H such that any 2-coloring contains a monochromatic K_{n,n}. Known bounds: (1/60)n^2*2^n to (3/2)n^3*2^n.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey-numbers",
+      "bipartite-graphs",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 560,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-561",
@@ -10732,17 +10746,24 @@
   },
   {
     "id": "erdos-743",
-    "title": "Erdős Problem #743",
+    "title": "Erdős Problem #743: Tree Packing Conjecture",
     "slug": "erdos-743",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a collection of trees such that ... has ... vertices. Can we always write ... as the edge disjoint union of the .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can Kₙ always be decomposed as edge-disjoint union of trees T₂,...,Tₙ where Tₖ has k vertices? Known for stars/paths (Gyárfás-Lehel 1978), bounded degree (JKKO 2019), and small/large trees (Bollobás 1983, Janzer-Montgomery 2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "combinatorics",
+      "trees",
+      "graph-decomposition",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 743,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 12
   },
   {
     "id": "erdos-745",
@@ -10988,17 +11009,23 @@
   },
   {
     "id": "erdos-763",
-    "title": "Erdős Problem #763",
+    "title": "Erdős Problem #763: The Erdős-Fuchs Theorem",
     "slug": "erdos-763",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can there exist some constant ... such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nA conjecture of Erds and ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can a set A ⊆ ℕ have representation count ∑_{n≤N} r_A(n) = cN + O(1)? NO - disproved by Erdős-Fuchs (1956).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "representation-functions",
+      "analytic-number-theory",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 763,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-764",
@@ -11162,17 +11189,24 @@
   },
   {
     "id": "erdos-777",
-    "title": "Erdős Problem #777",
+    "title": "Erdos Problem #777: Comparable Pairs in Families of Sets",
     "slug": "erdos-777",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $...\\{1,\\ldots,n\\}...G_{}......A\\sim B...A...B...A\\subseteq B...\\epsilon>0...n...m\\leq (2-\\epsilon)2^{n/2}...G_...0...\\del...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given a family F of subsets of {1,...,n}, how many comparable pairs can it have? Three questions about edge counts in the comparability graph were resolved by Alon, Frankl, and others.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "extremal-set-theory",
+      "graph-theory",
+      "comparability",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 777,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-778",

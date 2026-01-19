@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e743-header",
+    "proofId": "erdos-743",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #743: Tree Packing Conjecture**\n\nCan the complete graph Kₙ always be decomposed as an edge-disjoint union of trees T₂, T₃, ..., Tₙ where Tₖ has exactly k vertices?\n\n**Timeline:**\n- 1978: Gyárfás-Lehel pose conjecture, prove stars/paths case\n- 1983: Fishburn verifies n ≤ 9; Bollobás packs small trees greedily\n- 2019: JKKO proves bounded degree case\n- 2021: Allen et al. prove sublinear degree case\n- 2024: Janzer-Montgomery pack largest cn trees\n\nThe full conjecture remains **OPEN**.",
+    "mathContext": "This is one of the most famous open problems in graph decomposition. The edge count matches perfectly: Σ(k-1) = n(n-1)/2 = |E(Kₙ)|.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph decomposition", "Tree packing", "Combinatorics"]
+  },
+  {
+    "id": "ann-e743-tree",
+    "proofId": "erdos-743",
+    "range": { "startLine": 44, "endLine": 54 },
+    "type": "definition",
+    "title": "Tree Structure",
+    "content": "**Tree (k):**\n\nA tree on k vertices.\n\n**Definition:**\n```lean\nstructure Tree (k : ℕ) where\n  connected : Prop\n  edgeCount : Prop\n  acyclic : Prop\n```\n\nA tree has k vertices, k-1 edges, is connected, and has no cycles.",
+    "mathContext": "Trees are characterized by having exactly one path between any two vertices. They have the minimum number of edges to remain connected.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph theory", "Acyclic graphs", "Connected graphs"]
+  },
+  {
+    "id": "ann-e743-collection",
+    "proofId": "erdos-743",
+    "range": { "startLine": 62, "endLine": 76 },
+    "type": "definition",
+    "title": "Tree Collection and Packing",
+    "content": "**TreeCollection and EdgeDisjointPacking:**\n\n**TreeCollection:**\n```lean\nstructure TreeCollection (n : ℕ) where\n  trees : (k : ℕ) → (2 ≤ k ∧ k ≤ n) → Tree k\n```\nProvides tree Tₖ for each k from 2 to n.\n\n**EdgeDisjointPacking:**\n```lean\ndef EdgeDisjointPacking (n : ℕ) (tc : TreeCollection n) : Prop\n```\nThe trees can be embedded in Kₙ with no edge used twice.",
+    "mathContext": "The conjecture asks if EdgeDisjointPacking holds for ALL possible TreeCollections.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph embedding", "Edge-disjoint", "Graph decomposition"]
+  },
+  {
+    "id": "ann-e743-edges",
+    "proofId": "erdos-743",
+    "range": { "startLine": 78, "endLine": 106 },
+    "type": "theorem",
+    "title": "Edge Count Verification",
+    "content": "**edge_counts_match:**\n\nThe total edges in T₂,...,Tₙ equals |E(Kₙ)|.\n\n**Theorem:**\n```lean\ntheorem edge_counts_match (n : ℕ) (hn : n ≥ 2) :\n    totalTreeEdges n = completeGraphEdges n\n```\n\n**Calculation:**\n- Tree Tₖ has k-1 edges\n- Total: Σ(k-1) for k=2 to n = 1+2+...+(n-1) = n(n-1)/2\n- Kₙ has n(n-1)/2 edges ✓\n\nThis is a necessary condition for packing to be possible.",
+    "mathContext": "The edge counts matching exactly is what makes the conjecture plausible. It's a perfect fit, leaving no edges unused.",
+    "significance": "key",
+    "relatedConcepts": ["Triangular numbers", "Complete graph edges", "Necessary conditions"]
+  },
+  {
+    "id": "ann-e743-special",
+    "proofId": "erdos-743",
+    "range": { "startLine": 108, "endLine": 139 },
+    "type": "definition",
+    "title": "Special Tree Types",
+    "content": "**IsStar, IsPath, and BoundedDegreeCollection:**\n\n**Star:** One central vertex connected to all others (degree k-1, others degree 1)\n\n**Path:** Vertices form a single path (two degree-1 endpoints, others degree 2)\n\n**BoundedDegreeCollection:**\n```lean\ndef BoundedDegreeCollection (n : ℕ) (tc : TreeCollection n) (Δ : ℕ) : Prop :=\n  ∀ k h, maxDegree k (tc.trees k h) ≤ Δ\n```\n\nAll trees have maximum degree at most Δ.",
+    "mathContext": "Stars and paths are the two extremes: stars have one high-degree vertex, paths have all low-degree vertices. Both cases are easier to pack.",
+    "significance": "key",
+    "relatedConcepts": ["Star graphs", "Path graphs", "Maximum degree"]
+  },
+  {
+    "id": "ann-e743-conjecture",
+    "proofId": "erdos-743",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "definition",
+    "title": "Tree Packing Conjecture",
+    "content": "**TreePackingConjecture:**\n\nThe formal statement of the Gyárfás-Lehel conjecture.\n\n**Definition:**\n```lean\ndef TreePackingConjecture : Prop :=\n  ∀ n : ℕ, n ≥ 2 → ∀ tc : TreeCollection n, EdgeDisjointPacking n tc\n```\n\nFor ANY collection of trees T₂,...,Tₙ, we can pack them edge-disjointly into Kₙ.",
+    "mathContext": "The universal quantifier over all tree collections is what makes this hard. Special cases have been proved, but the general case remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["Gyárfás-Lehel conjecture", "Universal statements", "Open problems"]
+  },
+  {
+    "id": "ann-e743-gyarfas",
+    "proofId": "erdos-743",
+    "range": { "startLine": 153, "endLine": 173 },
+    "type": "axiom",
+    "title": "Gyárfás-Lehel Results (1978)",
+    "content": "**gyarfas_lehel_stars and gyarfas_lehel_stars_paths:**\n\n**Stars Case:**\n```lean\naxiom gyarfas_lehel_stars : (all but ≤2 trees are stars) → Packing exists\n```\n\n**Stars and Paths Case:**\n```lean\naxiom gyarfas_lehel_stars_paths :\n    (all trees are stars or paths) → EdgeDisjointPacking n tc\n```\n\nThe original 1978 paper proved these special cases.",
+    "mathContext": "These were the first positive results, showing the conjecture holds for the simplest tree families.",
+    "significance": "critical",
+    "relatedConcepts": ["Gyárfás-Lehel 1978", "Stars", "Paths"]
+  },
+  {
+    "id": "ann-e743-small",
+    "proofId": "erdos-743",
+    "range": { "startLine": 175, "endLine": 201 },
+    "type": "axiom",
+    "title": "Small Cases and Greedy Packing",
+    "content": "**fishburn_small_n and bollobas_greedy:**\n\n**Fishburn (1983):**\n```lean\naxiom fishburn_small_n :\n    ∀ n ≤ 9, ∀ tc : TreeCollection n, EdgeDisjointPacking n tc\n```\nVerified computationally for n ≤ 9.\n\n**Bollobás (1983):**\n```lean\naxiom bollobas_greedy : smallest ⌊n/√2⌋ trees can be packed greedily\n```\nAbout 70% of the smallest trees can always be packed.",
+    "mathContext": "Fishburn's verification was exhaustive for small n. Bollobás showed that a greedy approach works for small trees.",
+    "significance": "key",
+    "relatedConcepts": ["Small cases", "Greedy algorithms", "Computational verification"]
+  },
+  {
+    "id": "ann-e743-bounded",
+    "proofId": "erdos-743",
+    "range": { "startLine": 203, "endLine": 225 },
+    "type": "axiom",
+    "title": "Bounded Degree Results (2019-2021)",
+    "content": "**jkko_bounded_degree and allen_et_al_sublinear_degree:**\n\n**JKKO (2019):**\n```lean\naxiom jkko_bounded_degree (Δ : ℕ) :\n    ∃ N, ∀ n ≥ N, (Δ-bounded collection) → Packing exists\n```\n\n**Allen et al. (2021):**\n```lean\naxiom allen_et_al_sublinear_degree :\n    (max degree ≤ cn/log n) → EdgeDisjointPacking n tc\n```\n\nThese powerful results handle trees with controlled maximum degree.",
+    "mathContext": "The JKKO paper was a major breakthrough using regularity methods. Allen et al. extended this to sublinear degree bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["JKKO theorem", "Regularity lemma", "Degree bounds"]
+  },
+  {
+    "id": "ann-e743-large",
+    "proofId": "erdos-743",
+    "range": { "startLine": 227, "endLine": 251 },
+    "type": "axiom",
+    "title": "Packing Large Trees (2024)",
+    "content": "**janzer_montgomery_large_trees:**\n\n```lean\naxiom janzer_montgomery_large_trees :\n    ∃ c > 0, the largest cn trees can be packed into Kₙ\n```\n\n**Significance:** This 2024 result shows that the \"hardest\" trees (the largest ones) can actually be handled.\n\n**Combined with Bollobás:** Small trees (⌊n/√2⌋) and large trees (cn) can be packed, leaving only the middle-sized trees as the remaining challenge.",
+    "mathContext": "The middle trees (roughly size 0.7n to (1-c)n) remain the hardest case, as they're too big for greedy and too small for the large-tree techniques.",
+    "significance": "critical",
+    "relatedConcepts": ["Janzer-Montgomery 2024", "Large trees", "Middle gap"]
+  },
+  {
+    "id": "ann-e743-ringel",
+    "proofId": "erdos-743",
+    "range": { "startLine": 272, "endLine": 295 },
+    "type": "definition",
+    "title": "Ringel's Conjecture",
+    "content": "**RingelConjecture and ringel_solved:**\n\n**Ringel's Conjecture:**\n```lean\ndef RingelConjecture : Prop :=\n  ∀ n, ∀ T : Tree (n + 1), K_{2n+1} decomposes into 2n+1 copies of T\n```\n\n**Status:** Proved for large n by Montgomery, Pokrovskiy, and Sudakov (2021).\n\nRingel asks about packing identical copies of ONE tree; Gyárfás-Lehel asks about packing DIFFERENT trees of different sizes.",
+    "mathContext": "Ringel's conjecture was a major breakthrough when solved in 2021. The techniques are related but don't directly solve the tree packing conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["Ringel's conjecture", "Graph decomposition", "Identical copies"]
+  },
+  {
+    "id": "ann-e743-summary",
+    "proofId": "erdos-743",
+    "range": { "startLine": 321, "endLine": 359 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_743_summary:**\n\nCombines all major results:\n\n```lean\ntheorem erdos_743_summary :\n    -- Edge counts match\n    (∀ n ≥ 2, totalTreeEdges n = completeGraphEdges n) ∧\n    -- Small cases\n    (∀ n ≤ 9, Packing exists) ∧\n    -- Stars/paths\n    (stars or paths → Packing exists) ∧\n    -- Bounded degree\n    (∀ Δ, Δ-bounded → Packing exists for large n)\n```\n\n**Status:** OPEN. Many special cases proved, but full conjecture remains unsolved.",
+    "mathContext": "This theorem captures the complete current state of knowledge on the Tree Packing Conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorem", "Partial results", "Open problem"]
+  }
+]
