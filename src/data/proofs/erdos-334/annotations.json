@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-e334-smooth-def",
+    "proofId": "erdos-334",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "Smooth Number Definition",
+    "content": "**isSmooth n y:**\n\nA natural number n is y-smooth if every prime factor p of n satisfies p ≤ y.\n\n**Definition:**\n```lean\ndef isSmooth (n : ℕ) (y : ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → p ∣ n → p ≤ y\n```\n\nSmooth numbers are fundamental in number theory and cryptography.",
+    "mathContext": "Smooth numbers appear in factorization algorithms, the quadratic sieve, and Pollard's rho algorithm.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Dickman function", "Cryptography"]
+  },
+  {
+    "id": "ann-e334-one-smooth",
+    "proofId": "erdos-334",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "theorem",
+    "title": "1 is Trivially Smooth",
+    "content": "**one_smooth:**\n\nThe number 1 is y-smooth for any bound y, since 1 has no prime factors at all.\n\n**Proof:** If p is prime and p | 1, then p ≤ 1 (contradiction), so the condition is vacuously true.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e334-prime-power",
+    "proofId": "erdos-334",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "theorem",
+    "title": "Prime Powers are p-Smooth",
+    "content": "**prime_power_smooth:**\n\nAny power p^k of a prime p is p-smooth, since its only prime factor is p itself.\n\n**Application:** Powers of 2 are 2-smooth, powers of 3 are 3-smooth, etc. These are building blocks for smooth representations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-smooth-mul",
+    "proofId": "erdos-334",
+    "range": { "startLine": 68, "endLine": 73 },
+    "type": "theorem",
+    "title": "Product of Smooth Numbers",
+    "content": "**smooth_mul:**\n\nThe product of two y-smooth numbers is also y-smooth.\n\n**Proof:** If p | ab, then p | a or p | b. Either way, p ≤ y since both a and b are y-smooth.\n\nThis closure property is essential for constructing smooth pair representations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-pair-repr",
+    "proofId": "erdos-334",
+    "range": { "startLine": 83, "endLine": 84 },
+    "type": "definition",
+    "title": "Smooth Pair Representation",
+    "content": "**hasSmootPairRepr n y:**\n\nA number n has a y-smooth pair representation if n = a + b where both a and b are y-smooth.\n\n**Definition:**\n```lean\ndef hasSmootPairRepr (n : ℕ) (y : ℕ) : Prop :=\n  ∃ a b : ℕ, a + b = n ∧ isSmooth a y ∧ isSmooth b y\n```\n\nThe central question: how small can y be as a function of n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e334-min-smooth",
+    "proofId": "erdos-334",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "definition",
+    "title": "Minimal Smoothness Function",
+    "content": "**minSmoothness n:**\n\nThe function f(n) is the smallest y such that n has a y-smooth pair representation.\n\nDetermining the growth rate of f(n) is the core of Erdős Problem #334.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e334-exists",
+    "proofId": "erdos-334",
+    "range": { "startLine": 110, "endLine": 111 },
+    "type": "axiom",
+    "title": "Existence of Smooth Representations",
+    "content": "**minSmoothness_exists:**\n\nEvery n ≥ 1 can be written as a + b with a, b having only \"small\" prime factors.\n\nTrival bound: y ≤ n always works (since n = n + 0 and n is n-smooth).\n\nThe question is: how much smaller than n can y be?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-cube-root",
+    "proofId": "erdos-334",
+    "range": { "startLine": 122, "endLine": 124 },
+    "type": "axiom",
+    "title": "Erdős's Original n^{1/3} Question",
+    "content": "**erdos_cube_root_bound:**\n\nErdős originally asked whether f(n) ≤ n^{1/3} holds for all sufficiently large n.\n\n**Status:** This has been answered positively—the cube root bound is achievable.\n\nBut stronger bounds are now known (Balog 1989).",
+    "mathContext": "The cube root appears naturally: if we could always find a = p^k and b = q^l with p, q ≤ n^{1/3}, we'd need p^k + q^l = n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-balog-exp",
+    "proofId": "erdos-334",
+    "range": { "startLine": 131, "endLine": 131 },
+    "type": "definition",
+    "title": "Balog's Exponent 4/(9√e)",
+    "content": "**balogExponent:**\n\n```lean\nnoncomputable def balogExponent : ℝ := 4 / (9 * Real.sqrt Real.exp 1)\n```\n\n**Value:** 4/(9√e) ≈ 4/(9 × 1.6487) ≈ 0.2695\n\nThis significantly improves Erdős's n^{1/3} ≈ n^{0.333}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e334-balog-bound",
+    "proofId": "erdos-334",
+    "range": { "startLine": 138, "endLine": 140 },
+    "type": "axiom",
+    "title": "Balog's 1989 Result",
+    "content": "**balog_bound:**\n\nFor every ε > 0, there exists a constant C such that every n ≥ 2 can be written as a + b with both summands being n^{0.2695+ε}-smooth.\n\n**Reference:** Balog [Ba89]: \"On additive representation of integers\", Acta Math. Hungar. (1989).\n\nThis is the current state of the art.",
+    "mathContext": "The proof uses sophisticated estimates on the density of smooth numbers via the Dickman function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e334-weak-conj",
+    "proofId": "erdos-334",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "definition",
+    "title": "Weak Conjecture: f(n) ≤ n^{o(1)}",
+    "content": "**weakConjecture:**\n\nFor any ε > 0, f(n) ≤ n^ε for all sufficiently large n.\n\n**Meaning:** f(n) grows slower than any fixed polynomial power—it's subpolynomial.\n\n**Status:** OPEN. Current best is n^{0.2695}, which is still polynomial.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-strong-conj",
+    "proofId": "erdos-334",
+    "range": { "startLine": 158, "endLine": 160 },
+    "type": "definition",
+    "title": "Strong Conjecture: f(n) ≤ e^{O(√log n)}",
+    "content": "**strongConjecture:**\n\nf(n) ≤ e^{C√(log n)} for some constant C.\n\n**Growth rate:** Much slower than any polynomial—almost poly-logarithmic.\n\n**Status:** OPEN. This would be a dramatic improvement over current bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-example-10",
+    "proofId": "erdos-334",
+    "range": { "startLine": 178, "endLine": 193 },
+    "type": "theorem",
+    "title": "Example: 10 = 2 + 8",
+    "content": "**example_10:**\n\n10 has a 2-smooth pair representation: 10 = 2 + 8.\n\n**Verification:**\n- 2 = 2¹ is 2-smooth (only prime factor is 2)\n- 8 = 2³ is 2-smooth (only prime factor is 2)\n\nThis is a complete proof using Nat.Prime.dvd_prime_pow.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-example-100",
+    "proofId": "erdos-334",
+    "range": { "startLine": 201, "endLine": 221 },
+    "type": "theorem",
+    "title": "Example: 100 = 64 + 36",
+    "content": "**example_100:**\n\n100 has a 3-smooth pair representation: 100 = 64 + 36.\n\n**Verification:**\n- 64 = 2⁶ is 2-smooth (hence 3-smooth)\n- 36 = 2² × 3² is 3-smooth (prime factors 2 and 3)\n\nThe proof handles both prime divisibility cases using dvd_mul.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-dickman",
+    "proofId": "erdos-334",
+    "range": { "startLine": 240, "endLine": 242 },
+    "type": "axiom",
+    "title": "de Bruijn's Asymptotic",
+    "content": "**de_bruijn_asymptotic:**\n\nThe count ψ(x, y) of y-smooth numbers up to x satisfies:\n\nψ(x, y) ~ x · ρ(u) where u = log x / log y\n\nand ρ is the **Dickman function**.\n\n**Importance:** Understanding smooth number density is key to proving bounds on f(n).",
+    "mathContext": "The Dickman function ρ(u) satisfies ρ(u) = 1 for u ≤ 1 and uρ'(u) + ρ(u-1) = 0 for u > 1.",
+    "significance": "key",
+    "relatedConcepts": ["Smooth numbers", "Analytic number theory"]
+  },
+  {
+    "id": "ann-e334-summary",
+    "proofId": "erdos-334",
+    "range": { "startLine": 263, "endLine": 276 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_334_summary:**\n\nCombines all main results:\n1. Erdős's n^{1/3} question is resolved (erdos_cube_root_bound)\n2. Balog's bound n^{0.2695+ε} is current best (balog_bound)\n3. The optimal bound remains unknown\n\nThis summarizes the state of knowledge for Erdős #334.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e334-main",
+    "proofId": "erdos-334",
+    "range": { "startLine": 282, "endLine": 289 },
+    "type": "theorem",
+    "title": "Main Theorem: n^{0.27+ε}-Smooth",
+    "content": "**erdos_334:**\n\nFor any ε > 0, there exists N such that every n ≥ N can be written as a + b with both summands being n^{0.27+ε}-smooth.\n\n**Derivation:** 0.27 > 4/(9√e) ≈ 0.2695, so this follows from Balog's bound.\n\nThis is the main formalized result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e334-open",
+    "proofId": "erdos-334",
+    "range": { "startLine": 296, "endLine": 298 },
+    "type": "definition",
+    "title": "The Open Question",
+    "content": "**openQuestion:**\n\nWhat is the true growth rate of f(n)?\n\n**Current gap:**\n- Upper bound: n^{0.2695} (Balog)\n- Conjectured: n^{o(1)} or even e^{O(√log n)}\n\nClosing this gap is Erdős Problem #334.",
+    "significance": "critical"
+  }
+]
