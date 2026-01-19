@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-597-1",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #597: Does ω₁² → (ω₁ω, G)² for K₄-free, K_{ℵ₀,ℵ₀}-free graphs G? OPEN. This is a partition calculus problem in infinite combinatorics connecting ordinals, graphs, and Ramsey theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-2",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 39,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "The Ordinal ω₁",
+    "content": "ω₁ is the first uncountable ordinal - the smallest ordinal with uncountably many predecessors. It plays a central role in set theory and partition calculus.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-3",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 51,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Ordinal Product ω₁ω",
+    "content": "ω₁ω is the ordinal product: ω₁ copies of ω. This is an uncountable limit ordinal larger than ω₁ but smaller than ω₁². It appears as the 'target' in the partition relation.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-597-4",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Ordinal Square ω₁²",
+    "content": "ω₁² = ω₁ · ω₁ is the ordinal square. The partition relation asks about 2-colorings of pairs from a set of order type ω₁². This is the 'source' ordinal in the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-5",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 67,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Partition Relation",
+    "content": "α → (β, γ)² means: for any 2-coloring of pairs [α]², either there's a homogeneous set of type β in color 0, OR a copy of γ in color 1. This is the arrow notation of partition calculus.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-6",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 91,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "K_{ℵ₀,ℵ₀}",
+    "content": "The infinite complete bipartite graph with countably many vertices in each class. Baumgartner showed ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})², which forced adding this exclusion to the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-7",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 101,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "K₄-free",
+    "content": "A graph is K₄-free if it contains no complete subgraph on 4 vertices. This forbids too much 'clique structure' in G, a natural restriction in Ramsey-type problems.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-597-8",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 107,
+      "endLine": 111
+    },
+    "type": "definition",
+    "title": "K_{ℵ₀,ℵ₀}-free",
+    "content": "A graph is K_{ℵ₀,ℵ₀}-free if it has no infinite complete bipartite subgraph. This condition was added after Baumgartner's counterexample showed it's necessary.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-597-9",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 119,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "For G with ≤ℵ₁ vertices, no K₄, no K_{ℵ₀,ℵ₀}: does ω₁² → (ω₁ω, G)²? This is the OPEN central question. Both forbidden subgraph conditions appear essential.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-10",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 134,
+      "endLine": 140
+    },
+    "type": "theorem",
+    "title": "Erdős-Hajnal Triangle Case",
+    "content": "ω₁² → (ω₁ω, 3)² is PROVEN. For 2-colorings of pairs from ω₁², there's either a homogeneous set of type ω₁ω or a monochromatic triangle. This is the positive foundation.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-11",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 142,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Baumgartner Counterexample",
+    "content": "ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})². There exists a 2-coloring with no homogeneous ω₁ω and no monochromatic infinite complete bipartite graph. This forced the K_{ℵ₀,ℵ₀}-free condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-597-12",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 150,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Why Both Conditions",
+    "content": "Erdős originally asked with only K₄-free. Baumgartner's counterexample showed this is insufficient - the infinite bipartite graph escapes the relation. Both conditions are needed for the conjecture to have a chance.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-597-13",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 162,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "Finite Case",
+    "content": "Does ω₁² → (ω₁ω, G)² for all finite K₄-free G? This is a natural subproblem. The triangle case (G = K₃) is proven, but general finite K₄-free graphs remain open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-597-14",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 187,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Erdős-Rado Theorem",
+    "content": "A fundamental result in partition calculus giving bounds on partition relations for cardinals. It provides the theoretical framework for problems like this one.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-597-15",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 201,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "Stepping-Up Lemmas",
+    "content": "Techniques to derive partition relations for larger ordinals from known relations for smaller ones. These are key tools in establishing positive partition relations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-597-16",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 219,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "ZFC Dependence",
+    "content": "Some partition relations depend on set-theoretic axioms. This problem may have different answers under different axioms like CH, Martin's Axiom, or large cardinal hypotheses.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-597-17",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 258,
+      "endLine": 262
+    },
+    "type": "concept",
+    "title": "Graph Ramsey Connection",
+    "content": "The problem connects infinite combinatorics to graph Ramsey theory. Finite Ramsey numbers R(n, G) are related to these infinite partition relations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-597-18",
+    "proofId": "erdos-597",
+    "range": {
+      "startLine": 290,
+      "endLine": 295
+    },
+    "type": "theorem",
+    "title": "Status Summary",
+    "content": "Erdős #597 is OPEN. Known: ω₁² → (ω₁ω, 3)² (positive), ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})² (negative). The combined K₄-free AND K_{ℵ₀,ℵ₀}-free case remains the central open question.",
+    "significance": "critical"
+  }
+]

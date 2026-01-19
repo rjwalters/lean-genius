@@ -1,33 +1,105 @@
 {
   "id": "erdos-328",
-  "title": "Erdős Problem #328",
+  "title": "Erdős Problem #328: Partitioning Sets with Bounded Representation Function",
   "slug": "erdos-328",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... and ... is such that ... for all .... Can ... be partitioned into ... many subsets ... (where ... depends only on...",
+  "description": "Can sets A with bounded convolution r_A ≤ C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Nešetřil-Rödl 1985).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Donald Newman",
     "sourceUrl": "https://erdosproblems.com/328",
-    "date": "",
+    "date": "1985",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos328Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "ramsey-theory",
+      "representation-function"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 328,
     "erdosUrl": "https://erdosproblems.com/328",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #328 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq\\mathbb{N}$ and $C>0$ is such that $1_A\\ast 1_A(n)\\leq C$ for all $n\\in\\mathbb{N}$. Can $A$ be partitioned into $t$ many subsets $A_1,\\ldots,A_t$ (where $t=t(C)$ depends only on $C$) such that $1_{A_i}\\ast 1_{A_i}(n)<C$ for all $1\\leq i\\leq t$ and $n\\in \\mathbb{N}$?\n\n\n\nAsked by Erd\\H{o}s and Newman. Ne\\v{s}et\\v{r}il and R\\\"{o}dl \\cite{NeRo85} have shown the answer is no for all $C$ (even if $t$ is also allowed to depend on $A$).\n\nErd\\H{o}s \\cite{Er80e} had previously shown the answer is no for $C=3,4$ and infinitely many other values of $C$.\n\nSee also [774].\n\n\n\n\nReferences\n\n\n[Er80e] Erd\\H{o}s, P., Some applications of Ramsey's theorem to additive number\ntheory. European J. Combin. (1980), 43-46.\n\n[NeRo85] J. Ne\\v{s}et\\v{r}il and V. R\\\"{o}dl, Two proofs in combinatorial number theory. Proc. Amer. Math. Soc. (1985), 185-188.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was asked by Erdős and Newman. Erdős (1980) first showed the answer is NO for C = 3, 4 and infinitely many other values of C. Nešetřil and Rödl (1985) gave the complete negative answer: NO for ALL C, even when the number of partition pieces is allowed to depend on A itself. The proof uses Ramsey-theoretic methods.",
+    "problemStatement": "Suppose A ⊆ ℕ and C > 0 is such that 1_A * 1_A(n) ≤ C for all n ∈ ℕ (i.e., every integer has at most C representations as a sum of two elements from A). Can A be partitioned into t = t(C) subsets A₁,...,Aₜ such that 1_{Aᵢ} * 1_{Aᵢ}(n) < C for all 1 ≤ i ≤ t and n ∈ ℕ?",
+    "proofStrategy": "The formalization defines the representation function r_A(n) = |{(a,b) ∈ A² : a + b = n}|, bounded convolution, and the partition question. The Nešetřil-Rödl theorem is axiomatized: for every C ≥ 1, there exists a 'bad' set A with r_A ≤ C that cannot be partitioned into pieces with r < C, no matter how many pieces are used.",
+    "keyInsights": [
+      "The representation function r_A(n) counts sumset representations",
+      "Sidon sets (B₂ sets) have r_A ≤ 2",
+      "Partitioning cannot always reduce maximum representation",
+      "Even Sidon sets cannot be reduced to unique-sum sets",
+      "Ramsey theory provides the counterexamples",
+      "The obstruction holds for ALL values of C"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "representation-function",
+      "title": "Representation Function",
+      "startLine": 34,
+      "endLine": 60,
+      "summary": "Definition of r_A(n) and bounded convolution"
+    },
+    {
+      "id": "sidon-sets",
+      "title": "B_h Sets (Sidon Sets)",
+      "startLine": 62,
+      "endLine": 88,
+      "summary": "Sidon sets, B_h sets, and their convolution bounds"
+    },
+    {
+      "id": "partition-question",
+      "title": "The Partition Question",
+      "startLine": 90,
+      "endLine": 121,
+      "summary": "Formal statement of the Erdős-Newman question"
+    },
+    {
+      "id": "erdos-partial",
+      "title": "Erdős's Partial Results",
+      "startLine": 123,
+      "endLine": 154,
+      "summary": "Erdős (1980): NO for C = 3, 4, and infinitely many C"
+    },
+    {
+      "id": "nesetril-rodl",
+      "title": "Nešetřil-Rödl's Complete Solution",
+      "startLine": 156,
+      "endLine": 196,
+      "summary": "The complete negative answer for all C"
+    },
+    {
+      "id": "proof-technique",
+      "title": "Proof Technique",
+      "startLine": 198,
+      "endLine": 223,
+      "summary": "Ramsey theory and hypergraph coloring"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 225,
+      "endLine": 253,
+      "summary": "Sidon sets (C=2) and unique sum sets"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 301,
+      "endLine": 341,
+      "summary": "Complete disproof for all C by Nešetřil-Rödl"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #328 is DISPROVED. Nešetřil and Rödl (1985) showed that for ALL values of C ≥ 1, there exist sets A with bounded convolution r_A ≤ C that cannot be partitioned into ANY number of pieces with strictly smaller convolution r_{Aᵢ} < C. This is a fundamental obstruction in additive combinatorics, showing that bounded representation is a robust property.",
+    "implications": "The result demonstrates that the additive structure captured by the representation function cannot be 'improved' through partition arguments. This has implications for the theory of Sidon sets (B₂ sequences), B_h sequences, and more generally for understanding when additive properties are hereditary under partition.",
+    "openQuestions": [
+      "What is the growth rate of the smallest counterexample for each C?",
+      "Analogous questions for other additive structures",
+      "Connections to hypergraph Ramsey numbers"
+    ]
   }
 }

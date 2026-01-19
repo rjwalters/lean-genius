@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-444-1",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #444: For infinite A ⊆ ℕ, is limsup max d_A(n) / H_A(x)^k = ∞ for all k? SOLVED by Erdős-Sárközy (1980): YES, the maximum divisor count grows faster than any power of the harmonic sum.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-444-2",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Generalized Divisor Function d_A(n)",
+    "content": "d_A(n) = |{a ∈ A : a | n}| counts divisors of n that belong to A. When A = ℕ, this is the standard divisor function d(n). When A = primes, this is ω(n), the number of distinct prime factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-444-3",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 49,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Partial Harmonic Sum H_A(x)",
+    "content": "H_A(x) = ∑_{a∈A, a<x} 1/a is the partial sum of reciprocals of elements of A up to x. This measures the 'density' of A. For A = ℕ, H_A(x) ≈ log x. For A = primes, H_A(x) ≈ log log x.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-444-4",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 56,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Maximum M_A(x)",
+    "content": "M_A(x) = max_{n<x} d_A(n) is the maximum number of A-divisors among all n < x. The problem asks how this maximum compares to powers of H_A(x).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-444-5",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 67,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "Erdős-Graham Conjecture",
+    "content": "The conjecture: For any infinite A ⊆ ℕ and any k ≥ 1, limsup_{x→∞} M_A(x) / H_A(x)^k = ∞. The maximum grows faster than ANY fixed power of the harmonic sum.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-444-6",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Conjecture is TRUE",
+    "content": "Erdős and Sárközy proved the conjecture in 1980 in their paper 'Some asymptotic formulas on generalized divisor functions IV' (Studia Sci. Math. Hungar.).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-444-7",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 91,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Case A = ℕ",
+    "content": "When A = ℕ (all naturals), d_A(n) = d(n) is the standard divisor function. H_A(x) ≈ log x (harmonic series). The maximum max_{n<x} d(n) grows like exp(c log x / log log x), faster than any (log x)^k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-444-8",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 99,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Case A = Primes",
+    "content": "When A = primes, d_A(n) = ω(n) counts distinct prime factors. H_A(x) ≈ log log x (Mertens' theorem). The maximum max_{n<x} ω(n) ~ log x / log log x, again faster than (log log x)^k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-444-9",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 118,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Highly Composite Numbers",
+    "content": "The key insight: highly composite numbers relative to A exist. By choosing n with many divisors from A, we can make d_A(n) arbitrarily large compared to H_A(x)^k. These extremal n drive the limsup to infinity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-444-10",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 125,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Growth Rate Comparison",
+    "content": "M_A(x) can exceed any polynomial in H_A(x) because: (1) highly composite numbers exist for any A, (2) constructions can be tailored to A's structure, (3) the limsup picks out favorable subsequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-444-11",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 152,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Probabilistic Heuristic",
+    "content": "A random n < x has about H_A(x) divisors from A on average (by Mertens-type estimates). But the MAXIMUM far exceeds this average - the extremal behavior dominates.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-444-12",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 170,
+      "endLine": 176
+    },
+    "type": "definition",
+    "title": "Standard Divisor Function d(n)",
+    "content": "d(n) counts ALL divisors of n. This is d_A for A = ℕ. Famous result: max_{n<x} d(n) ~ exp(c log x / log log x) where c = log 2. Highly composite numbers achieve this maximum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-444-13",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 177,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "Prime Omega Function ω(n)",
+    "content": "ω(n) counts distinct prime divisors of n. This is d_A for A = primes. max_{n<x} ω(n) ~ log x / log log x (primorial numbers achieve this). Average value is log log n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-444-14",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 200,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "Lower Bound Growth",
+    "content": "The proof shows M_A(x) grows at least exponentially in some function of H_A(x). This ensures the ratio M_A(x)/H_A(x)^k tends to infinity for any fixed k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-444-15",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 207,
+      "endLine": 213
+    },
+    "type": "concept",
+    "title": "No Uniform Upper Bound",
+    "content": "There is NO function f such that M_A(x) ≤ f(H_A(x)) for all x and all infinite A. The maximum divisor count is fundamentally unbounded in terms of the harmonic sum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-444-16",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 250,
+      "endLine": 256
+    },
+    "type": "concept",
+    "title": "Erdős-Graham Book",
+    "content": "The problem appears on page 88 of Erdős and Graham's 'Old and New Problems and Results in Combinatorial Number Theory' (1980), a foundational reference in combinatorial number theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-444-17",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 264,
+      "endLine": 270
+    },
+    "type": "concept",
+    "title": "Series of Papers",
+    "content": "This is part of Erdős and Sárközy's series 'Some asymptotic formulas on generalized divisor functions' (Parts I-IV), a systematic study of restricted divisor functions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-444-18",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 296,
+      "endLine": 306
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_444_status: The conjecture is PROVED. For any infinite A ⊆ ℕ and any k ≥ 1, the maximum d_A grows faster than H_A(x)^k. A beautiful extremal result in multiplicative number theory.",
+    "significance": "critical"
+  }
+]
