@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-682-1",
+    "proofId": "erdos-682",
+    "range": { "startLine": 52, "endLine": 52 },
+    "type": "definition",
+    "title": "The n-th Prime Function",
+    "content": "**nthPrime** axiomatizes the function p_n giving the n-th prime: p_1 = 2, p_2 = 3, p_3 = 5, etc. This is standard in number theory and connects to the Prime Number Theorem: p_n ~ n log n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-2",
+    "proofId": "erdos-682",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "Least Prime Factor",
+    "content": "**leastPrimeFactor m** returns the smallest prime dividing m. For m > 1, this uses Mathlib's `Nat.minFac`. The notation p(m) is standard in analytic number theory. For example: p(12) = 2, p(35) = 5, p(7) = 7.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-3",
+    "proofId": "erdos-682",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "theorem",
+    "title": "Least Prime Factor is Prime",
+    "content": "**leastPrimeFactor_prime** proves that for m > 1, the least prime factor is indeed prime. This follows from Mathlib's `Nat.minFac_prime` which establishes that minFac always returns a prime for integers greater than 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-4",
+    "proofId": "erdos-682",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "definition",
+    "title": "k-Rough Numbers",
+    "content": "**isKRough m k** means m is k-rough: its smallest prime factor is at least k. Equivalently, m is not divisible by any prime less than k. These are complementary to k-smooth numbers (all prime factors ≤ k). Example: 77 = 7 × 11 is 7-rough.",
+    "significance": "critical",
+    "relatedConcepts": ["Smooth numbers", "Prime factorization", "Sieve theory"]
+  },
+  {
+    "id": "ann-682-5",
+    "proofId": "erdos-682",
+    "range": { "startLine": 99, "endLine": 102 },
+    "type": "theorem",
+    "title": "Every Positive Integer is 1-Rough",
+    "content": "**one_rough_all** proves that every positive integer is 1-rough, since the smallest prime is 2 ≥ 1. This is a base case showing the definition is sensible. As k increases, fewer numbers are k-rough.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-6",
+    "proofId": "erdos-682",
+    "range": { "startLine": 121, "endLine": 121 },
+    "type": "definition",
+    "title": "Prime Gap",
+    "content": "**primeGap n** is g_n = p_{n+1} - p_n, the gap between consecutive primes. Twin primes have gap 2. The average gap near p_n is approximately log(p_n) by the Prime Number Theorem. Gaps can be arbitrarily large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-7",
+    "proofId": "erdos-682",
+    "range": { "startLine": 127, "endLine": 128 },
+    "type": "definition",
+    "title": "Gap Interval",
+    "content": "**gapInterval n** is the set of integers strictly between p_n and p_{n+1}. All integers in this interval are composite (by definition of consecutive primes). The question asks about the structure of these composite numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-8",
+    "proofId": "erdos-682",
+    "range": { "startLine": 146, "endLine": 147 },
+    "type": "definition",
+    "title": "Rough Number in Gap Property",
+    "content": "**hasRoughNumberInGap n** is the main property: there exists m between p_n and p_{n+1} such that the smallest prime factor of m is at least as large as the gap size. This captures 'rough' composite numbers in prime gaps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-9",
+    "proofId": "erdos-682",
+    "range": { "startLine": 153, "endLine": 153 },
+    "type": "definition",
+    "title": "Exceptional Index",
+    "content": "**isExceptional n** means the gap (p_n, p_{n+1}) contains no sufficiently rough number. Erdős found that exceptions exist (conditionally infinitely many), but they are rare. The main theorem shows exceptions have density 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-10",
+    "proofId": "erdos-682",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "concept",
+    "title": "Primorial Function",
+    "content": "**primorial n** (denoted n#) is the product of all primes ≤ n. For example: 13# = 2×3×5×7×11×13 = 30030. This number is crucial for Erdős's counterexample construction because every integer in [1, 30030] shares a prime factor with 30030.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-11",
+    "proofId": "erdos-682",
+    "range": { "startLine": 172, "endLine": 175 },
+    "type": "concept",
+    "title": "Dickson's Conjecture",
+    "content": "**dickson_special_case** states infinitely many d exist such that 2183 + 30030d and 2201 + 30030d are both prime. Dickson's conjecture (1904) predicts when linear forms are simultaneously prime. This is used to construct Erdős's counterexamples.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-12",
+    "proofId": "erdos-682",
+    "range": { "startLine": 183, "endLine": 188 },
+    "type": "concept",
+    "title": "Erdős's Conditional Counterexample",
+    "content": "**erdos_counterexample_condition** formalizes why gaps from 2183+30030d to 2201+30030d are exceptional: every integer in [2184, 2200] is divisible by one of 2,3,5,7,11,13 (since 30030 = 13#). The gap is 18, but no integer has smallest prime factor ≥ 18.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-13",
+    "proofId": "erdos-682",
+    "range": { "startLine": 207, "endLine": 209 },
+    "type": "definition",
+    "title": "Almost All Property",
+    "content": "**holdsForAlmostAll P** means P(n) holds for all but a density-0 set of n. Formally: for any ε > 0, the proportion of exceptions up to X is less than ε for large X. This is weaker than 'all but finitely many' but stronger than 'positive density'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-14",
+    "proofId": "erdos-682",
+    "range": { "startLine": 215, "endLine": 215 },
+    "type": "definition",
+    "title": "Erdős Problem #682",
+    "content": "**erdos682Question** is the formal statement: for almost all n, the gap (p_n, p_{n+1}) contains an integer whose smallest prime factor is at least as large as the gap. Despite infinitely many exceptions, the answer is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-15",
+    "proofId": "erdos-682",
+    "range": { "startLine": 225, "endLine": 226 },
+    "type": "definition",
+    "title": "Exceptional Count Function",
+    "content": "**exceptionalCount X** counts how many n ≤ X are exceptional (lack rough numbers in their prime gap). Gafni-Tao proved E(X) ≪ X/(log X)², showing exceptions are rare but not finite.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-16",
+    "proofId": "erdos-682",
+    "range": { "startLine": 232, "endLine": 234 },
+    "type": "theorem",
+    "title": "Gafni-Tao Upper Bound",
+    "content": "**gafni_tao_upper_bound** is the main quantitative result: E(X) ≤ C·X/(log X)² for some constant C. This bound implies E(X)/X → 0, so exceptions have density 0. The (log X)² decay is significant.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-17",
+    "proofId": "erdos-682",
+    "range": { "startLine": 241, "endLine": 245 },
+    "type": "theorem",
+    "title": "Conditional Asymptotic",
+    "content": "**gafni_tao_conditional_asymptotic** states that under the prime tuples conjecture, E(X) ~ c·X/(log X)² for explicit c > 0. This shows the upper bound is essentially tight and gives the true growth rate of exceptions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-18",
+    "proofId": "erdos-682",
+    "range": { "startLine": 257, "endLine": 257 },
+    "type": "theorem",
+    "title": "Affirmative Answer",
+    "content": "**erdos682_answer** proves erdos682Question by invoking gafni_tao_main_theorem. The answer to Erdős's question is YES: for almost all n, the prime gap contains a rough number. This resolved a problem open since Erdős's 1978 work.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-682-19",
+    "proofId": "erdos-682",
+    "range": { "startLine": 297, "endLine": 297 },
+    "type": "concept",
+    "title": "Connection to Problem #680",
+    "content": "**problem_680_connection** links to Erdős Problem #680, which asks about the maximum gap among p_n ≤ X without rough numbers. Problems 680, 681, and 682 form a related family about prime gaps and rough numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-682-20",
+    "proofId": "erdos-682",
+    "range": { "startLine": 346, "endLine": 346 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_682** is the main theorem: erdos682Question holds. For almost all n, the gap between consecutive primes p_n and p_{n+1} contains an integer m with p(m) ≥ g_n. Solved by Gafni-Tao in 2025 using analytic methods.",
+    "significance": "critical"
+  }
+]
