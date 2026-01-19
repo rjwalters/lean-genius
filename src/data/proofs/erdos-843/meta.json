@@ -1,33 +1,50 @@
 {
   "id": "erdos-843",
-  "title": "Erdős Problem #843",
+  "title": "Erdős Problem #843: Are the Squares Ramsey 2-Complete?",
   "slug": "erdos-843",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre the squares Ramsey ...-complete?\n\nThat is, is it true that, in any 2-colouring of the square numbers, every sufficiently ...",
+  "description": "Are the squares Ramsey 2-complete? That is, in any 2-coloring of the squares, can every sufficiently large n be written as a monochromatic sum of distinct squares? Answer: YES (Conlon-Fox-Pham 2021).",
   "meta": {
-    "author": "Unknown",
+    "author": "Burr-Erdős (origin), Conlon-Fox-Pham (2021 published proof)",
     "sourceUrl": "https://erdosproblems.com/843",
-    "date": "",
-    "status": "pending",
+    "date": "~1985",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos843Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "number-theory",
+      "subset-sums",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 843,
     "erdosUrl": "https://erdosproblems.com/843",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "Part of $350 combined"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #843 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre the squares Ramsey $2$-complete?\n\nThat is, is it true that, in any 2-colouring of the square numbers, every sufficiently large $n\\in \\mathbb{N}$ can be written as a monochromatic sum of distinct squares?\n\n\n\nA problem of Burr and Erd\\H{o}s. A similar question can be asked for the set of $k$th powers for any $k\\geq 3$.\n\nIn \\cite{Er95} Erd\\H{o}s reported that Burr had proved that the set of $k$th powers is Ramsey $r$ complete for all $r,k\\geq 2$, but this result was never published. A stronger version was proved by Conlon, Fox, and Pham \\cite{CFP21}, who proved that in fact the set of $k$th powers contains a sparse Ramsey $r$-complete subsequence, again for every $r,k\\geq 2$.\n\nSee also [54] and [55].\n\n\n\n\nReferences\n\n\n[CFP21] Conlon, D. and Fox, J. and Pham, H. T., Subset sums, completeness and colorings. arXiv:2104.14766 (2021).\n\n[Er95] Erd\\H{o}s, Paul, Some of my favourite problems in number theory, combinatorics, and geometry. Resenhas (1995), 165-186.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Burr and Erdős around 1985. A set A ⊆ ℕ is **Ramsey r-complete** if for every r-coloring of A, all sufficiently large integers can be written as a monochromatic sum of distinct elements from A.\n\nErdős reported in 1995 that Burr had proved k-th powers are Ramsey r-complete for all r,k ≥ 2, but this result was never published. The question remained officially open until Conlon, Fox, and Pham (2021) proved a stronger result: k-th powers contain a SPARSE Ramsey r-complete subsequence with counting function ~(log N)², which is optimal.\n\nThe problem is part of a family of three Ramsey completeness problems for which Erdős offered a combined $350 prize.",
+    "problemStatement": "**Question:** Are the squares Ramsey 2-complete?\n\n**Equivalently:** In any 2-coloring of the perfect squares {1, 4, 9, 16, 25, ...}, can every sufficiently large natural number be written as a monochromatic sum of distinct squares?\n\n**Answer:** YES (Conlon-Fox-Pham 2021)\n\n**Stronger Result:** For all r, k ≥ 2, the k-th powers contain a sparse Ramsey r-complete subsequence. The optimal density is ~(log N)².\n\n**Density Bounds:**\n- Upper: ∃ r-Ramsey complete A with |A ∩ [1,N]| ≪ r(log N)² (CFP 2021)\n- Lower: Any r-Ramsey complete A has |A ∩ [1,N]| ≫ (log N)² (CFP 2021)\n- Previous best: |A ∩ [1,N]| ≪ (log N)³ (Burr-Erdős 1985)",
+    "proofStrategy": "The formalization defines Ramsey r-completeness, the sets of squares and k-th powers, and the original question. Conlon-Fox-Pham's 2021 result is axiomatized: k-th powers contain sparse Ramsey r-complete subsequences. The main theorem follows: since a sparse subsequence of squares (= 2nd powers) is Ramsey 2-complete, the full set of squares is also Ramsey 2-complete. Related density bounds and Lagrange's four squares theorem provide context.",
+    "keyInsights": [
+      "A set is Ramsey r-complete if every r-coloring allows monochromatic sum representations of large integers",
+      "Squares = 2nd powers, so the general k-th power result implies the squares result",
+      "The optimal density threshold for Ramsey completeness is (log N)²",
+      "Conlon-Fox-Pham improved Burr-Erdős's (log N)³ bound to the optimal (log N)²",
+      "Lagrange's four squares theorem is related but doesn't directly imply Ramsey completeness"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #843 asked whether the perfect squares are Ramsey 2-complete: in any 2-coloring, can every large integer be written as a monochromatic sum of distinct squares? The answer is YES, proved by Conlon, Fox, and Pham (2021) via a stronger result about sparse Ramsey complete subsequences of k-th powers.",
+    "implications": "The resolution establishes that squares (and all k-th powers) have the strong Ramsey completeness property. The (log N)² density bound is optimal, answering questions about the sparsest possible Ramsey complete sequences. This connects number theory (sums of powers) with Ramsey theory (colorings).",
+    "openQuestions": [
+      "Are there other natural sequences (beyond k-th powers) that are Ramsey r-complete?",
+      "What is the exact constant in the (log N)² density bound?",
+      "How does the threshold N depend on r in practical terms?",
+      "Can explicit constructions of sparse Ramsey complete sequences be given?"
+    ]
   }
 }
