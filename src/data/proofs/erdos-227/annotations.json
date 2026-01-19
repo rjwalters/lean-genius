@@ -48,7 +48,7 @@
     "id": "ann-227-clunie",
     "proofId": "erdos-227",
     "range": { "startLine": 68, "endLine": 71 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Clunie's Partial Result",
     "content": "For functions with aₙ ≥ 0, the limit is always 0.",
     "significance": "key"
@@ -57,7 +57,7 @@
     "id": "ann-227-cluniehayman",
     "proofId": "erdos-227",
     "range": { "startLine": 79, "endLine": 82 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Clunie-Hayman 1964",
     "content": "For any λ ∈ [0, 1/2], there exists f with μ(r)/M(r) → λ.",
     "significance": "critical"
@@ -66,7 +66,7 @@
     "id": "ann-227-upperbound",
     "proofId": "erdos-227",
     "range": { "startLine": 84, "endLine": 87 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bound 1/2",
     "content": "The ratio limit can never exceed 1/2.",
     "significance": "critical"
@@ -111,7 +111,7 @@
     "id": "ann-227-unbounded",
     "proofId": "erdos-227",
     "range": { "startLine": 136, "endLine": 138 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Central Index Unbounded",
     "content": "ν(r) → ∞ as r → ∞.",
     "significance": "supporting"
@@ -120,7 +120,7 @@
     "id": "ann-227-leq",
     "proofId": "erdos-227",
     "range": { "startLine": 146, "endLine": 148 },
-    "type": "axiom",
+    "type": "concept",
     "title": "μ ≤ M",
     "content": "Maximum term is at most maximum modulus.",
     "significance": "key"
@@ -165,7 +165,7 @@
     "id": "ann-227-orderzero",
     "proofId": "erdos-227",
     "range": { "startLine": 176, "endLine": 178 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Order Zero Normal",
     "content": "Functions of order 0 are normal.",
     "significance": "supporting"
@@ -174,7 +174,7 @@
     "id": "ann-227-expnormal",
     "proofId": "erdos-227",
     "range": { "startLine": 186, "endLine": 188 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Exponential Normal",
     "content": "The exponential function is normal.",
     "significance": "supporting"
@@ -183,7 +183,7 @@
     "id": "ann-227-pathological",
     "proofId": "erdos-227",
     "range": { "startLine": 190, "endLine": 197 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pathological Examples",
     "content": "For 0 < λ < 1/2, there exist highly irregular functions achieving λ.",
     "significance": "key"

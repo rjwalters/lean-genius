@@ -57,7 +57,7 @@
   {
     "id": "ann-e303-valid",
     "proofId": "erdos-303",
-    "range": { "startLine": 108, "endLine": 117 },
+    "range": { "startLine": 143, "endLine": 145 },
     "type": "definition",
     "title": "Valid Solutions",
     "content": "**ValidSolution a b c** bundles all requirements for a proper solution:\n\n1. **Nonzero**: a ≠ 0, b ≠ 0, c ≠ 0 (division by zero is undefined)\n2. **Distinct**: a ≠ b, b ≠ c, a ≠ c (we want three different integers)\n3. **Equation**: 1/a = 1/b + 1/c holds",
@@ -68,13 +68,13 @@
   {
     "id": "ann-e303-theorem",
     "proofId": "erdos-303",
-    "range": { "startLine": 119, "endLine": 138 },
-    "type": "axiom",
+    "range": { "startLine": 150, "endLine": 172 },
+    "type": "concept",
     "title": "Brown-Rödl Theorem (SOLVED)",
     "content": "**brownRodl_theorem** states the main result as an axiom:\n\n*For any finite colouring 𝓒 of the integers, there exist distinct nonzero integers a, b, c satisfying 1/a = 1/b + 1/c such that 𝓒(a) = 𝓒(b) = 𝓒(c).*\n\nThis was proved by Brown and Rödl in 1991 using Ramsey-theoretic methods.",
     "mathContext": "The full proof uses sophisticated arguments from Ramsey theory, potentially involving van der Waerden-type results or density methods. It's stated as an axiom because the proof exceeds what we formalize here.\n\nThe alternative statement **erdos303Statement** matches the formal-conjectures format using `List.Nodup` and `Set.Subsingleton`.",
     "significance": "critical",
-    "relatedConcepts": ["axiom", "brown-rodl", "ramsey-theorem", "partition-regularity"]
+    "relatedConcepts": ["brown-rodl", "ramsey-theorem", "partition-regularity"]
   },
   {
     "id": "ann-e303-infinite",
@@ -90,7 +90,7 @@
   {
     "id": "ann-e303-distinct",
     "proofId": "erdos-303",
-    "range": { "startLine": 166, "endLine": 189 },
+    "range": { "startLine": 202, "endLine": 224 },
     "type": "theorem",
     "title": "Solution Distinctness",
     "content": "**solution_distinct** proves that for n ≥ 2, the triple (n, n+1, n(n+1)) has three distinct values:\n\n• n ≠ n+1 (obvious: consecutive integers differ)\n• n+1 ≠ n(n+1): If equal, n(n+1) - (n+1) = (n-1)(n+1) = 0, so n = 1. But n ≥ 2.\n• n ≠ n(n+1): If equal, n·n = 0, so n = 0. But n ≥ 2.",

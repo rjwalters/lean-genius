@@ -22,7 +22,7 @@
     "id": "ann-713-3",
     "proofId": "erdos-713",
     "range": { "startLine": 72, "endLine": 72 },
-    "type": "definition",
+    "type": "concept",
     "title": "Extremal Number",
     "content": "**extremalNumber n G** = ex(n; G) is the maximum edges in an n-vertex G-free graph. For non-bipartite G, Erdős-Stone-Simonovits determines this. For bipartite G, it's o(n²) but the precise growth is the subject of this problem.",
     "significance": "critical"
@@ -76,7 +76,7 @@
     "id": "ann-713-9",
     "proofId": "erdos-713",
     "range": { "startLine": 142, "endLine": 144 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Kővári-Sós-Turán Theorem",
     "content": "**kovari_sos_turan** gives the upper bound: ex(n; K_{s,t}) = O(n^{2-1/s}) for s ≤ t. This 1954 result is foundational in extremal graph theory and gives the exponent 2-1/s for complete bipartite graphs.",
     "significance": "critical"
@@ -85,7 +85,7 @@
     "id": "ann-713-10",
     "proofId": "erdos-713",
     "range": { "startLine": 150, "endLine": 152 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Lower Bound",
     "content": "**complete_bipartite_lower** gives the matching lower bound: ex(n; K_{s,t}) = Ω(n^{2-1/s}). Combined with KST, this shows ex(n; K_{s,t}) ≍ n^{2-1/s} with rational exponent.",
     "significance": "supporting"
@@ -112,7 +112,7 @@
     "id": "ann-713-13",
     "proofId": "erdos-713",
     "range": { "startLine": 181, "endLine": 181 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Erdős-Simonovits Counterexample",
     "content": "**erdos_simonovits_counterexample** (1970) disproves the original conjecture. There exist bipartite graphs with exponents not of the form 1+1/k or 2-1/k. The main questions about existence and rationality remain open.",
     "significance": "critical"

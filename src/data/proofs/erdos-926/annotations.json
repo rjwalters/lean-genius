@@ -83,7 +83,7 @@
   {
     "id": "ann-926-10",
     "proofId": "erdos-926",
-    "range": { "startLine": 133, "endLine": 143 },
+    "range": { "startLine": 134, "endLine": 143 },
     "type": "lemma",
     "title": "Lower Bound via Subgraph",
     "content": "Here's the elegant lower bound argument: since H_k contains C_4, any graph avoiding H_k in particular avoids... well, it might still have C_4. But any C_4-free graph is certainly H_k-free. So ex(n; C_4) ≤ ex(n; H_k), giving ex(n; H_k) ≫ n^(3/2).",
@@ -92,7 +92,7 @@
   {
     "id": "ann-926-11",
     "proofId": "erdos-926",
-    "range": { "startLine": 148, "endLine": 156 },
+    "range": { "startLine": 149, "endLine": 156 },
     "type": "theorem",
     "title": "Füredi's Theorem (1991)",
     "content": "Füredi proved the first upper bound: ex(n; H_k) ≪ (kn)^(3/2) = k^(3/2)·n^(3/2). This uses the probabilistic method and 'dependent random choice' - a technique where you select vertices based on common neighborhoods to get useful concentration properties.",
@@ -119,7 +119,7 @@
   {
     "id": "ann-926-14",
     "proofId": "erdos-926",
-    "range": { "startLine": 182, "endLine": 199 },
+    "range": { "startLine": 183, "endLine": 199 },
     "type": "concept",
     "title": "Connection to Degeneracy Conjecture",
     "content": "Problem 146 conjectures that ALL 2-degenerate graphs H satisfy ex(n; H) ≪ n^(3/2). Since H_k is 2-degenerate, Problem 926 is a special case. The general degeneracy bound gives ex(n; H) = O(n^(2-1/d)) for d-degenerate H, which for d=2 yields O(n^(3/2)).",

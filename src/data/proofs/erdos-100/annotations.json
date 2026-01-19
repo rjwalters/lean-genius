@@ -2,25 +2,25 @@
   {
     "id": "ann-100-point",
     "proofId": "erdos-100",
-    "range": { "startLine": 40, "endLine": 41 },
+    "range": { "startLine": 41, "endLine": 42 },
     "type": "definition",
     "title": "Point",
-    "content": "A point in the Euclidean plane ℝ².",
+    "content": "A point in the Euclidean plane R^2.",
     "significance": "supporting"
   },
   {
     "id": "ann-100-dist",
     "proofId": "erdos-100",
-    "range": { "startLine": 43, "endLine": 44 },
+    "range": { "startLine": 44, "endLine": 45 },
     "type": "definition",
     "title": "Euclidean Distance",
-    "content": "dist(p, q) = ‖p - q‖, the standard Euclidean distance.",
+    "content": "dist(p, q) = ||p - q||, the standard Euclidean distance.",
     "significance": "key"
   },
   {
     "id": "ann-100-mindist",
     "proofId": "erdos-100",
-    "range": { "startLine": 56, "endLine": 58 },
+    "range": { "startLine": 57, "endLine": 59 },
     "type": "definition",
     "title": "Minimum Distance One",
     "content": "All pairwise distances in the point set are at least 1.",
@@ -29,7 +29,7 @@
   {
     "id": "ann-100-intdist",
     "proofId": "erdos-100",
-    "range": { "startLine": 62, "endLine": 63 },
+    "range": { "startLine": 61, "endLine": 64 },
     "type": "definition",
     "title": "Integer Distances",
     "content": "All distances are positive integers (differ by at least 1).",
@@ -38,7 +38,7 @@
   {
     "id": "ann-100-restricted",
     "proofId": "erdos-100",
-    "range": { "startLine": 65, "endLine": 67 },
+    "range": { "startLine": 66, "endLine": 68 },
     "type": "definition",
     "title": "Restricted Distances",
     "content": "Point set satisfies both min distance 1 and integer distances.",
@@ -47,7 +47,7 @@
   {
     "id": "ann-100-diameter",
     "proofId": "erdos-100",
-    "range": { "startLine": 75, "endLine": 79 },
+    "range": { "startLine": 76, "endLine": 80 },
     "type": "definition",
     "title": "Diameter",
     "content": "Maximum pairwise distance in a finite point set.",
@@ -56,43 +56,43 @@
   {
     "id": "ann-100-conjecture",
     "proofId": "erdos-100",
-    "range": { "startLine": 93, "endLine": 95 },
+    "range": { "startLine": 92, "endLine": 96 },
     "type": "definition",
     "title": "Main Conjecture",
-    "content": "For restricted distance sets, diameter ≥ c·n for some c > 0.",
+    "content": "For restricted distance sets, diameter >= c*n for some c > 0.",
     "significance": "critical"
   },
   {
     "id": "ann-100-strong",
     "proofId": "erdos-100",
-    "range": { "startLine": 97, "endLine": 100 },
+    "range": { "startLine": 98, "endLine": 101 },
     "type": "definition",
     "title": "Strong Conjecture",
-    "content": "Diameter ≥ n-1 for sufficiently large n.",
+    "content": "Diameter >= n-1 for sufficiently large n.",
     "significance": "key"
   },
   {
     "id": "ann-100-kanold",
     "proofId": "erdos-100",
-    "range": { "startLine": 108, "endLine": 111 },
-    "type": "theorem",
+    "range": { "startLine": 109, "endLine": 112 },
+    "type": "axiom",
     "title": "Kanold's Bound",
-    "content": "diameter ≥ n^(3/4) for restricted distance sets.",
+    "content": "diameter >= n^(3/4) for restricted distance sets.",
     "significance": "critical"
   },
   {
     "id": "ann-100-guthkatz",
     "proofId": "erdos-100",
-    "range": { "startLine": 115, "endLine": 117 },
+    "range": { "startLine": 114, "endLine": 118 },
     "type": "axiom",
     "title": "Guth-Katz Bound",
-    "content": "diameter ≥ c·n/log n via distinct distances theorem.",
+    "content": "diameter >= c*n/log n via distinct distances theorem.",
     "significance": "critical"
   },
   {
     "id": "ann-100-piepmeyer",
     "proofId": "erdos-100",
-    "range": { "startLine": 129, "endLine": 130 },
+    "range": { "startLine": 126, "endLine": 131 },
     "type": "axiom",
     "title": "Piepmeyer's Construction",
     "content": "9 points with restricted distances and diameter < 5.",
@@ -101,16 +101,16 @@
   {
     "id": "ann-100-ratio",
     "proofId": "erdos-100",
-    "range": { "startLine": 132, "endLine": 141 },
+    "range": { "startLine": 133, "endLine": 142 },
     "type": "theorem",
     "title": "Piepmeyer Ratio",
-    "content": "Diameter/n can be < 5/9 ≈ 0.56.",
+    "content": "Diameter/n can be < 5/9 approximately 0.56.",
     "significance": "key"
   },
   {
     "id": "ann-100-numdist",
     "proofId": "erdos-100",
-    "range": { "startLine": 149, "endLine": 152 },
+    "range": { "startLine": 150, "endLine": 153 },
     "type": "definition",
     "title": "Distinct Distances",
     "content": "Count of distinct pairwise distances in a point set.",
@@ -119,16 +119,16 @@
   {
     "id": "ann-100-distbound",
     "proofId": "erdos-100",
-    "range": { "startLine": 156, "endLine": 159 },
-    "type": "theorem",
-    "title": "Distinct ≤ Diameter",
-    "content": "For integer distances, number of distinct values ≤ diameter.",
+    "range": { "startLine": 155, "endLine": 163 },
+    "type": "lemma",
+    "title": "Distinct <= Diameter",
+    "content": "For integer distances, number of distinct values <= diameter.",
     "significance": "key"
   },
   {
     "id": "ann-100-unitgraph",
     "proofId": "erdos-100",
-    "range": { "startLine": 189, "endLine": 200 },
+    "range": { "startLine": 252, "endLine": 263 },
     "type": "definition",
     "title": "Unit Distance Graph",
     "content": "Graph with edges between points at distance exactly 1.",
