@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-e920-header",
+    "proofId": "erdos-920",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs**\n\nIs g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for k ≥ 4?\n\n**Status: OPEN** (k=3,4 resolved; k≥5 open)\n\nConnects chromatic numbers to Ramsey theory.",
+    "mathContext": "The function g_k(n) measures maximum chromatic complexity of K_k-free graphs. Bounds on Ramsey numbers R(k,m) directly translate to bounds on g_k(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Chromatic number", "K_k-free graphs", "Ramsey numbers", "Probabilistic method"]
+  },
+  {
+    "id": "ann-e920-kfree",
+    "proofId": "erdos-920",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "definition",
+    "title": "K_k-Free Graph",
+    "content": "**IsKFree:**\n\nA graph G is K_k-free if it contains no complete subgraph on k vertices.\n\nFor k=3, this means triangle-free.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-chromatic",
+    "proofId": "erdos-920",
+    "range": { "startLine": 58, "endLine": 65 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber:**\n\nχ(G) = minimum colors to properly color vertices.\n\nAdjacent vertices must have different colors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-gk",
+    "proofId": "erdos-920",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "definition",
+    "title": "Maximum Chromatic Number g_k(n)",
+    "content": "**maxChromaticKFree:**\n\ng_k(n) = max{χ(G) : G is K_k-free with n vertices}\n\nThe 'worst case' chromatic complexity for K_k-free graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-graver",
+    "proofId": "erdos-920",
+    "range": { "startLine": 77, "endLine": 87 },
+    "type": "axiom",
+    "title": "Graver-Yackel Upper Bound (1968)",
+    "content": "**graver_yackel_1968:**\n\ng_k(n) ≪ (n · log log n / log n)^{1-1/(k-1)}\n\nThis is the best known upper bound.\n\nPublished in J. Combinatorial Theory (1968).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-erdos-k3",
+    "proofId": "erdos-920",
+    "range": { "startLine": 99, "endLine": 108 },
+    "type": "axiom",
+    "title": "Erdős Bound for k=3 (1959)",
+    "content": "**erdos_1959_k3:**\n\ng_3(n) ≫ n^{1/2} / log n\n\nDerived from Ramsey bound R(3,m) ≫ (m/log m)².\n\nThe k=3 case is well-understood.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e920-mattheus",
+    "proofId": "erdos-920",
+    "range": { "startLine": 118, "endLine": 127 },
+    "type": "axiom",
+    "title": "Mattheus-Verstraete (2023)",
+    "content": "**mattheus_verstraete_2023:**\n\ng_4(n) ≫ n^{2/3} / (log n)^{4/3}\n\nA major breakthrough! Resolves the k=4 case with optimal exponent 2/3.\n\nVia their proof that R(4,m) ≫ m³/(log m)⁴.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-general",
+    "proofId": "erdos-920",
+    "range": { "startLine": 128, "endLine": 139 },
+    "type": "axiom",
+    "title": "General Lower Bound",
+    "content": "**general_lower_bound:**\n\ng_k(n) ≫ n^{1-2/(k+1)} / (log n)^{c_k}\n\nThis is WEAKER than conjectured (exponent 1-1/(k-1)).\n\nFor k ≥ 5, there's still a gap.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-conjecture",
+    "proofId": "erdos-920",
+    "range": { "startLine": 144, "endLine": 153 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**ErdosConjecture:**\n\nFor k ≥ 4: g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c\n\nConjectured exponent: 1-1/(k-1)\nKnown exponent: 1-2/(k+1)\n\nThe gap grows with k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-gap",
+    "proofId": "erdos-920",
+    "range": { "startLine": 154, "endLine": 165 },
+    "type": "concept",
+    "title": "The Gap",
+    "content": "**the_gap:**\n\nk=4: known=3/5, conjectured=2/3 (RESOLVED by MV2023!)\nk=5: known=2/3, conjectured=3/4 (GAP)\nk=6: known=5/7≈0.71, conjectured=4/5=0.8 (GAP)\n\nThe gap 2/(k+1) - 1/(k-1) grows slowly with k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e920-ramsey",
+    "proofId": "erdos-920",
+    "range": { "startLine": 170, "endLine": 184 },
+    "type": "concept",
+    "title": "Ramsey-Chromatic Connection",
+    "content": "**ramsey_chromatic_connection:**\n\nIf R(k,m) ≥ m^α / (log m)^β\n⟹ g_k(n) ≥ n^{1-1/α} / (log n)^{β/α}\n\nBetter Ramsey bounds give better chromatic bounds!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-ramsey-k4",
+    "proofId": "erdos-920",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "axiom",
+    "title": "Mattheus-Verstraete Ramsey Bound",
+    "content": "**mattheus_verstraete_ramsey:**\n\nR(4,m) ≫ m³ / (log m)⁴\n\nThis was THE breakthrough of 2023!\nα=3, β=4 ⟹ g_4(n) exponent = 1-1/3 = 2/3 ✓",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-summary",
+    "proofId": "erdos-920",
+    "range": { "startLine": 259, "endLine": 287 },
+    "type": "theorem",
+    "title": "State of Knowledge",
+    "content": "**erdos_920_summary:**\n\n**Resolved:**\n- k=3: g_3(n) ≈ (n/log n)^{1/2}\n- k=4: g_4(n) ≫ n^{2/3}/(log n)^{4/3} [MV 2023]\n\n**Open:**\n- k≥5: gap between 1-2/(k+1) and 1-1/(k-1)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e920-main",
+    "proofId": "erdos-920",
+    "range": { "startLine": 288, "endLine": 292 },
+    "type": "theorem",
+    "title": "Erdős Problem #920: OPEN",
+    "content": "**erdos_920:**\n\nStatus: OPEN for k ≥ 5\n\nThe general conjecture remains unresolved.",
+    "significance": "critical"
+  }
+]

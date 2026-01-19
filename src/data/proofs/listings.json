@@ -15196,17 +15196,22 @@
   },
   {
     "id": "erdos-920",
-    "title": "Erdős Problem #920",
+    "title": "Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs",
     "slug": "erdos-920",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest possible chromatic number of a graph with ... vertices which contains no ....\n\nIs it true that, fo...",
-    "status": "pending",
+    "description": "Let g_k(n) denote the largest chromatic number of a K_k-free graph on n vertices. Is g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for k ≥ 4? This connects chromatic numbers to Ramsey theory.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "ramsey-theory",
+      "clique-free",
+      "open"
     ],
     "erdosNumber": 920,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-921",

@@ -1,33 +1,92 @@
 {
   "id": "erdos-920",
-  "title": "Erdős Problem #920",
+  "title": "Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs",
   "slug": "erdos-920",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest possible chromatic number of a graph with ... vertices which contains no ....\n\nIs it true that, fo...",
+  "description": "Let g_k(n) denote the largest chromatic number of a K_k-free graph on n vertices. Is g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for k ≥ 4? This connects chromatic numbers to Ramsey theory.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/920",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos920Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "ramsey-theory",
+      "clique-free",
+      "open"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 920,
     "erdosUrl": "https://erdosproblems.com/920",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #920 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g_k(n)$ denote the largest possible chromatic number of a graph with $n$ vertices which contains no $K_k$.\n\nIs it true that, for $k\\geq 4$,\\[g_k(n) \\gg \\frac{n^{1-\\frac{1}{k-1}}}{(\\log n)^c}\\]for some constant $c>0$?\n\n\n\nGraver and Yackel \\cite{GrYa68} proved that\\[g_k(n) \\ll \\left(n\\frac{\\log\\log n}{\\log n}\\right)^{1-\\frac{1}{k-1}}.\\]Erd\\H{o}s \\cite{Er59b} proved that\\[g_3(n) \\gg \\frac{n^{1/2}}{\\log n},\\]by proving $R(3,m)\\gg (m/\\log m)^2$. Shearer's lower bound for $R(3,m)$ (see [165]) improves this to\\[g_3(n) \\gg \\left(\\frac{n}{\\log n}\\right)^{1/2}.\\]The lower bound $R(4,m) \\gg m^3/(\\log m)^4$ of Mattheus and Verstraete \\cite{MaVe23} (see [166]) implies\\[g_4(n) \\gg \\frac{n^{2/3}}{(\\log n)^{4/3}}.\\]In general it is known (see [986]) that\\[R(k,m)\\gg (\\log m)^{-O_k(1)}m^{\\frac{k+1}{2}}\\]which implies\\[g_k(n) \\gg \\frac{n^{1-\\frac{2}{k+1}}}{(\\log n)^{c_k}}.\\]See [1013] for the case $k=3$.\n\n\n\n\nReferences\n\n\n[Er59b] Erd\\H{o}s, P., Graph theory and probability. Canadian J. Math. (1959), 34-38.\n\n[GrYa68] Graver, Jack E. and Yackel, James, Some graph theoretic results associated with {R}amsey's\ntheorem. J. Combinatorial Theory (1968), 125--175.\n\n[MaVe23] Mattheus, S. and Verstraete, J., The asymptotics of $r(4,t)$. arXiv:2306.04007 (2023).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects two fundamental concepts in graph theory: chromatic numbers and clique-free graphs. The function g_k(n) measures the 'worst case' chromatic complexity among K_k-free graphs. The connection to Ramsey numbers R(k,m) makes this problem central to extremal combinatorics. Recent breakthrough by Mattheus-Verstraete (2023) resolved the k=4 case.",
+    "problemStatement": "Let g_k(n) denote the largest chromatic number of a graph with n vertices containing no complete graph K_k. Is it true that for k ≥ 4, g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for some constant c > 0?",
+    "proofStrategy": "The problem is connected to Ramsey theory: bounds on R(k,m) translate to bounds on g_k(n). The key insight is that if R(k,m) ≫ m^α / (log m)^β, then g_k(n) ≫ n^{1-1/α} / (log n)^{β/α}. Progress comes from improving Ramsey bounds.",
+    "keyInsights": [
+      "g_k(n) is the maximum chromatic number among K_k-free graphs on n vertices",
+      "Upper bound: g_k(n) ≪ (n log log n / log n)^{1-1/(k-1)} [Graver-Yackel 1968]",
+      "Connection to Ramsey numbers: better R(k,m) bounds give better g_k(n) bounds",
+      "k=3 case well-understood: g_3(n) ≈ (n/log n)^{1/2}",
+      "k=4 case resolved by Mattheus-Verstraete (2023): g_4(n) ≫ n^{2/3}/(log n)^{4/3}",
+      "For k ≥ 5, there's still a gap between known and conjectured exponents"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "K_k-free graphs, chromatic number, and g_k(n)",
+      "startLine": 45,
+      "endLine": 72
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "Graver-Yackel (1968) upper bound",
+      "startLine": 73,
+      "endLine": 94
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "summary": "Erdős k=3, Shearer, Mattheus-Verstraete k=4, general bound",
+      "startLine": 95,
+      "endLine": 139
+    },
+    {
+      "id": "erdos-conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "The conjectured lower bound for k ≥ 4",
+      "startLine": 140,
+      "endLine": 165
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Numbers",
+      "summary": "How Ramsey bounds translate to chromatic bounds",
+      "startLine": 166,
+      "endLine": 203
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "State of knowledge and recent progress",
+      "startLine": 255,
+      "endLine": 319
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #920 asks whether g_k(n) ≫ n^{1-1/(k-1)}/(log n)^c for K_k-free graphs. While the k=3 and k=4 cases are resolved (the latter by Mattheus-Verstraete in 2023), the general case for k ≥ 5 remains open with a gap between known (exponent 1-2/(k+1)) and conjectured (exponent 1-1/(k-1)) bounds.",
+    "implications": "This problem connects chromatic number theory to Ramsey theory. Progress on either front advances understanding of both. The Mattheus-Verstraete breakthrough on R(4,t) was transformative for the k=4 case.",
+    "openQuestions": [
+      "Does g_k(n) achieve the conjectured exponent 1-1/(k-1) for k ≥ 5?",
+      "What is the exact constant c in the logarithmic factor?",
+      "Can we prove R(5,m) ≫ m^4/(log m)^c to resolve k=5?"
+    ]
   }
 }
