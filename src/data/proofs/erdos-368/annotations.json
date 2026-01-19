@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e368-header",
+    "proofId": "erdos-368",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #368: Largest Prime Factor of n(n+1)**\n\nThis problem investigates F(n) = gpf(n(n+1)), the largest prime factor of the product of consecutive integers.\n\n**Timeline of Results:**\n- 1918: Pólya proves F(n) → ∞\n- 1935: Mahler shows F(n) ≫ log log n\n- 1967: Schinzel gives upper bound F(n) ≤ n^(O(1/log log log n)) infinitely often\n- 2024: Pasten proves F(n) ≫ (log log n)²/(log log log n)\n\n**Erdős's Conjectures:**\nThe true behavior is F(n) ≈ (log n)².",
+    "mathContext": "The function F captures how unavoidable large prime factors are in consecutive products. OEIS A074399 lists these values.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factors", "Consecutive integers", "Analytic number theory"]
+  },
+  {
+    "id": "ann-e368-gpf",
+    "proofId": "erdos-368",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "definition",
+    "title": "Largest Prime Factor",
+    "content": "**largestPrimeFactor:**\n\nThe largest prime dividing n, denoted gpf(n).\n\n**Definition:**\n```lean\nnoncomputable def largestPrimeFactor (n : ℕ) : ℕ :=\n  if h : n > 1 then (n.primeFactors.max' (Nat.primeFactors_nonempty h))\n  else 0\n```\n\nFor n ≤ 1, gpf(n) = 0. For n > 1, it's the maximum of the prime factors of n.",
+    "mathContext": "This is a fundamental function in number theory. For any n > 1, gpf(n) exists and is at least 2.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Finset.max'", "Number theory"]
+  },
+  {
+    "id": "ann-e368-F",
+    "proofId": "erdos-368",
+    "range": { "startLine": 57, "endLine": 70 },
+    "type": "definition",
+    "title": "F(n) Function",
+    "content": "**F(n): Central Function:**\n\nThe largest prime factor of n(n+1).\n\n**Definition:**\n```lean\nnoncomputable def F (n : ℕ) : ℕ := largestPrimeFactor (n * (n + 1))\n```\n\n**Well-definedness:**\nFor n ≥ 1, we have n(n+1) ≥ 2, so F(n) is the maximum prime factor of a number > 1.",
+    "mathContext": "F(n) measures how large prime factors must appear in products of consecutive integers. The problem asks for bounds on F(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Consecutive products", "Prime bounds", "Growth rates"]
+  },
+  {
+    "id": "ann-e368-coprime",
+    "proofId": "erdos-368",
+    "range": { "startLine": 72, "endLine": 94 },
+    "type": "theorem",
+    "title": "Consecutive Coprimality",
+    "content": "**consecutive_coprime:**\n\nConsecutive integers n and n+1 are always coprime.\n\n**Statement:**\n```lean\ntheorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=\n  Nat.coprime_self_add_one n\n```\n\n**Consequence:**\nThe prime factors of n(n+1) are exactly the union of prime factors of n and n+1, with no overlap. Thus F(n) = max(gpf(n), gpf(n+1)).",
+    "mathContext": "This is a classical result: gcd(n, n+1) = 1 since any common divisor would divide their difference, which is 1.",
+    "significance": "key",
+    "relatedConcepts": ["Coprimality", "GCD", "Prime factor union"]
+  },
+  {
+    "id": "ann-e368-polya",
+    "proofId": "erdos-368",
+    "range": { "startLine": 96, "endLine": 116 },
+    "type": "axiom",
+    "title": "Pólya's Theorem (1918)",
+    "content": "**polya_theorem:**\n\nF(n) → ∞ as n → ∞.\n\n**Statement:**\n```lean\naxiom polya_theorem : ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, F n > M\n```\n\n**Significance:** This foundational 1918 result shows that the largest prime factor of n(n+1) is unbounded. No matter how large M is, eventually F(n) exceeds M.",
+    "mathContext": "Pólya's proof uses elementary but clever arguments about the distribution of smooth numbers. This was the first result on this problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Unboundedness", "Pólya 1918", "Qualitative bounds"]
+  },
+  {
+    "id": "ann-e368-mahler",
+    "proofId": "erdos-368",
+    "range": { "startLine": 118, "endLine": 142 },
+    "type": "axiom",
+    "title": "Mahler's Bound (1935)",
+    "content": "**mahler_bound:**\n\nF(n) ≫ log log n.\n\n**Statement:**\n```lean\naxiom mahler_bound :\n    ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,\n      ∀ n ≥ N, (F n : ℝ) ≥ c * Real.log (Real.log n)\n```\n\n**Significance:** This was the first quantitative lower bound, showing F(n) grows at least as fast as log log n. This is very slow growth, but it's an effective bound.",
+    "mathContext": "Mahler's methods involve transcendence theory and p-adic analysis. The log log n bound held for nearly 90 years.",
+    "significance": "critical",
+    "relatedConcepts": ["Mahler 1935", "Quantitative bounds", "Iterated logarithms"]
+  },
+  {
+    "id": "ann-e368-schinzel",
+    "proofId": "erdos-368",
+    "range": { "startLine": 144, "endLine": 173 },
+    "type": "axiom",
+    "title": "Schinzel's Upper Bound (1967)",
+    "content": "**schinzel_upper and isSmooth:**\n\nFor infinitely many n, F(n) ≤ n^(O(1/log log log n)).\n\n**Upper Bound:**\n```lean\naxiom schinzel_upper :\n    ∃ C : ℝ, C > 0 ∧ ∀ M : ℕ, ∃ n > M,\n      (F n : ℝ) ≤ (n : ℝ) ^ (C / Real.log (Real.log (Real.log n)))\n```\n\n**Smooth Numbers:**\n```lean\ndef isSmooth (B n : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ n → p ≤ B\n```\n\nSchinzel constructs n where n(n+1) is unusually smooth (all prime factors small).",
+    "mathContext": "This shows F(n) cannot always be polynomial in n. The construction uses the distribution of smooth numbers in polynomial sequences.",
+    "significance": "key",
+    "relatedConcepts": ["Schinzel 1967", "Smooth numbers", "Upper bounds"]
+  },
+  {
+    "id": "ann-e368-erdos-conj",
+    "proofId": "erdos-368",
+    "range": { "startLine": 175, "endLine": 198 },
+    "type": "definition",
+    "title": "Erdős's Conjectures",
+    "content": "**erdos_lower_conjecture and erdos_upper_conjecture:**\n\n**Lower Conjecture:**\n```lean\ndef erdos_lower_conjecture : Prop :=\n    ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,\n      ∀ n ≥ N, (F n : ℝ) ≥ c * (Real.log n) ^ 2\n```\n\n**Upper Conjecture:**\n```lean\ndef erdos_upper_conjecture : Prop :=\n    ∀ ε : ℝ, ε > 0 → ∀ M : ℕ, ∃ n > M,\n      (F n : ℝ) < (Real.log n) ^ (2 + ε)\n```\n\nTogether these would show F(n) ≈ (log n)².",
+    "mathContext": "Erdős believed F(n) ≫ (log n)² is the true lower bound, with the upper bound achieved infinitely often.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős conjectures", "Log-squared growth", "Open problems"]
+  },
+  {
+    "id": "ann-e368-pasten",
+    "proofId": "erdos-368",
+    "range": { "startLine": 200, "endLine": 225 },
+    "type": "axiom",
+    "title": "Pasten's Theorem (2024)",
+    "content": "**pasten_bound:**\n\nF(n) ≫ (log log n)² / (log log log n).\n\n**Statement:**\n```lean\naxiom pasten_bound :\n    ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,\n      ∀ n ≥ N, (F n : ℝ) ≥ c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n))\n```\n\n**Significance:** This 2024 breakthrough is the strongest known lower bound, improving Mahler by a factor of (log log n)/(log log log n).",
+    "mathContext": "Pasten's work connects to improvements on subexponential ABC bounds. His actual theorem concerns P(n² + 1), with techniques applicable to n(n+1).",
+    "significance": "critical",
+    "relatedConcepts": ["Pasten 2024", "ABC conjecture", "Modern bounds"]
+  },
+  {
+    "id": "ann-e368-examples",
+    "proofId": "erdos-368",
+    "range": { "startLine": 227, "endLine": 280 },
+    "type": "theorem",
+    "title": "Concrete Examples",
+    "content": "**F values for small n:**\n\n```lean\ntheorem F_small_values :\n    F 1 = 2 ∧ F 2 = 3 ∧ F 3 = 3 ∧ F 4 = 5 ∧\n    F 5 = 5 ∧ F 6 = 7 ∧ F 7 = 7 ∧ F 8 = 3\n```\n\n**Notable:**\n- F(1) = gpf(2) = 2\n- F(8) = gpf(72) = gpf(2³ · 3²) = 3 (surprisingly small!)\n\nThe sequence 2, 3, 3, 5, 5, 7, 7, 3, ... is OEIS A074399.",
+    "mathContext": "The value F(8) = 3 shows that F can be small relative to n when n(n+1) happens to be smooth.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A074399", "Native decide", "Concrete computations"]
+  },
+  {
+    "id": "ann-e368-abc",
+    "proofId": "erdos-368",
+    "range": { "startLine": 303, "endLine": 328 },
+    "type": "axiom",
+    "title": "ABC Connection",
+    "content": "**radical and abc_implies_strong_bound:**\n\n**Radical:**\n```lean\ndef radical (n : ℕ) : ℕ := (n.primeFactors).prod id\n```\nThe product of distinct prime factors of n.\n\n**ABC Implication:**\n```lean\naxiom abc_implies_strong_bound :\n    (ABC conjecture) → (∀ ε > 0, F(n) ≫ (log n)^(1-ε))\n```\n\nIf the ABC conjecture holds, we would have much stronger lower bounds on F(n).",
+    "mathContext": "For n(n+1), we can apply ABC with a=n, b=1, c=n+1. The radical rad(n(n+1)) is controlled by F(n).",
+    "significance": "key",
+    "relatedConcepts": ["ABC conjecture", "Radical", "Diophantine bounds"]
+  },
+  {
+    "id": "ann-e368-summary",
+    "proofId": "erdos-368",
+    "range": { "startLine": 351, "endLine": 385 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_368_summary:**\n\nCombines all main results:\n\n```lean\ntheorem erdos_368_summary :\n    -- Pólya: F(n) → ∞\n    (∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, F n > M) ∧\n    -- Mahler: F(n) ≫ log log n\n    (∃ c > 0, ∃ N, ∀ n ≥ N, F n ≥ c * log log n) ∧\n    -- Pasten: F(n) ≫ (log log n)² / (log log log n)\n    (∃ c > 0, ∃ N, ∀ n ≥ N, F n ≥ c * (log log n)² / log log log n) ∧\n    -- Schinzel upper bound\n    (∃ C > 0, infinitely many n with F n ≤ n^(C/log log log n))\n```\n\n**Status:** Partially solved. Gap remains between Pasten's lower bound and Erdős's conjecture.",
+    "mathContext": "This theorem captures the complete current state of knowledge on Erdős Problem #368.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorem", "Partial resolution", "Open problems"]
+  }
+]
