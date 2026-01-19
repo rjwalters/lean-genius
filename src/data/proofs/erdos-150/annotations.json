@@ -1,1 +1,151 @@
-[]
+[
+  {
+    "id": "ann-e150-header",
+    "proofId": "erdos-150",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #150: Minimal Cuts in Graphs**\n\nA minimal cut is a minimal set of vertices whose removal disconnects a graph. Let c(n) be the maximum number of minimal cuts any n-vertex graph can have.\n\n**Question:** Does c(n)^{1/n} converge to some alpha < 2?\n\n**Answer: YES** (Bradac, 2024)\n\nBradac proved:\n- The limit alpha = lim c(n)^{1/n} exists\n- alpha <= 2^{H(1/3)} = 1.8899...\n- Combined with Seymour's lower bound: alpha >= 3^{1/3} = 1.442...",
+    "mathContext": "This is a problem in extremal graph theory, asking about the maximum growth rate of a combinatorial quantity over all graphs of a given size.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph theory", "Vertex cuts", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e150-vertex-cut",
+    "proofId": "erdos-150",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "definition",
+    "title": "Vertex Cut",
+    "content": "**isVertexCut:**\n\nA set S of vertices is a vertex cut if removing S disconnects the graph.\n\n**Definition:**\n```lean\ndef isVertexCut (G : SimpleGraph V) (S : Set V) : Prop :=\n  not (G.induce (S^c)).Connected\n```\n\nWe check whether the induced subgraph on the complement of S is disconnected.",
+    "mathContext": "Vertex cuts generalize the notion of a cut vertex (articulation point) to sets of vertices.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph connectivity", "Induced subgraph", "Cut vertex"]
+  },
+  {
+    "id": "ann-e150-minimal-cut",
+    "proofId": "erdos-150",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "definition",
+    "title": "Minimal Vertex Cut",
+    "content": "**isMinimalCut:**\n\nA vertex cut S is minimal if no proper subset of S is also a cut.\n\n**Definition:**\n```lean\ndef isMinimalCut (G : SimpleGraph V) (S : Set V) : Prop :=\n  isVertexCut G S and forall T, T subset S -> not isVertexCut G T\n```\n\n**Key point:** Minimal here means inclusion-minimal, not minimum-size.",
+    "mathContext": "Minimal cuts are the 'tight' separators - removing any vertex from S reconnects the graph.",
+    "significance": "critical",
+    "relatedConcepts": ["Inclusion-minimal", "Vertex separator", "Menger's theorem"]
+  },
+  {
+    "id": "ann-e150-max-minimal-cuts",
+    "proofId": "erdos-150",
+    "range": { "startLine": 79, "endLine": 93 },
+    "type": "definition",
+    "title": "Maximum Minimal Cuts Function c(n)",
+    "content": "**maxMinimalCuts c(n):**\n\nThe maximum number of minimal cuts any graph on n vertices can have.\n\n**Definition:**\n```lean\nnoncomputable def maxMinimalCuts (n : N) : N :=\n  sSup {k : N | exists (V : Type), Fintype.card V = n and\n                 exists G : SimpleGraph V, (minimalCuts G).ncard = k}\n```\n\nThis is the central function of Erdos Problem #150.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e150-seymour",
+    "proofId": "erdos-150",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "axiom",
+    "title": "Seymour's Lower Bound",
+    "content": "**seymour_construction:**\n\nc(3m+2) >= 3^m\n\n**The Construction:**\n- Take two vertices u and v\n- Connect them by m independent paths of length 4\n- Each path has 3 internal vertices\n- Total: 2 + 3m = 3m+2 vertices\n\n**Why 3^m cuts?**\nTo disconnect u from v, we must remove at least one vertex from each path. Since each path has 3 internal vertices, there are 3^m ways to choose one from each path.",
+    "mathContext": "This elegant construction shows that c(n) can grow exponentially, and provides the lower bound on alpha.",
+    "significance": "critical",
+    "relatedConcepts": ["Path graphs", "Independent paths", "Menger's theorem"]
+  },
+  {
+    "id": "ann-e150-seymour-lower",
+    "proofId": "erdos-150",
+    "range": { "startLine": 114, "endLine": 120 },
+    "type": "axiom",
+    "title": "Lower Bound on Alpha",
+    "content": "**seymour_lower_bound:**\n\nalpha >= 3^{1/3} = 1.442...\n\n**Derivation:**\nFrom c(3m+2) >= 3^m, taking the (3m+2)th root:\nc(3m+2)^{1/(3m+2)} >= 3^{m/(3m+2)}\n\nAs m -> infinity, m/(3m+2) -> 1/3, so:\nalpha >= 3^{1/3}",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e150-binary-entropy",
+    "proofId": "erdos-150",
+    "range": { "startLine": 128, "endLine": 135 },
+    "type": "definition",
+    "title": "Binary Entropy Function",
+    "content": "**binaryEntropy H(p):**\n\nThe binary entropy function measures uncertainty in a binary random variable.\n\n**Definition:**\nH(p) = -p log_2(p) - (1-p) log_2(1-p)\n\nFor p in (0,1), H(p) in (0,1) with maximum H(1/2) = 1.\n\n**Special value:**\nH(1/3) = log_2(3) - 2/3 = 0.9183...",
+    "mathContext": "The binary entropy function appears throughout information theory and combinatorics, often in counting arguments.",
+    "significance": "key",
+    "relatedConcepts": ["Shannon entropy", "Information theory", "Counting bounds"]
+  },
+  {
+    "id": "ann-e150-limit-exists",
+    "proofId": "erdos-150",
+    "range": { "startLine": 154, "endLine": 164 },
+    "type": "axiom",
+    "title": "Limit Existence",
+    "content": "**limit_exists:**\n\nThe limit alpha = lim c(n)^{1/n} exists.\n\n**Statement:**\n```lean\naxiom limit_exists :\n  exists alpha : R, Filter.Tendsto\n    (fun n : N => (c(n) : R) ^ (1/n))\n    Filter.atTop\n    (nhds alpha)\n```\n\nThis is the first part of Bradac's theorem - the limit is well-defined.",
+    "mathContext": "Limit existence for such extremal functions often follows from sub/superadditivity arguments.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e150-bradac-upper",
+    "proofId": "erdos-150",
+    "range": { "startLine": 172, "endLine": 178 },
+    "type": "axiom",
+    "title": "Bradac's Upper Bound",
+    "content": "**bradac_upper_bound:**\n\nalpha <= 2^{H(1/3)} = 1.8899...\n\nThis is the key result from Bradac's 2024 paper, showing that alpha < 2.\n\nThe upper bound involves sophisticated counting and entropy arguments.",
+    "mathContext": "The appearance of binary entropy suggests counting arguments involving subsets or binary choices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e150-alpha-lt-2",
+    "proofId": "erdos-150",
+    "range": { "startLine": 180, "endLine": 190 },
+    "type": "theorem",
+    "title": "Alpha Less Than Two",
+    "content": "**alpha_less_than_two:**\n\nalpha < 2\n\nThis answers Erdos's question affirmatively.\n\n**Proof outline:**\n1. alpha <= 2^{H(1/3)} (Bradac's upper bound)\n2. H(1/3) < 1, so 2^{H(1/3)} < 2\n3. Therefore alpha < 2\n\nThe proof uses one sorry for the numerical inequality H(1/3) < 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e150-main-theorem",
+    "proofId": "erdos-150",
+    "range": { "startLine": 198, "endLine": 213 },
+    "type": "theorem",
+    "title": "Erdos Problem #150: SOLVED",
+    "content": "**erdos_150:**\n\nThe complete answer to Erdos's question.\n\n**Statement:**\n```lean\ntheorem erdos_150 :\n  exists alpha : R, alpha < 2 and\n    Filter.Tendsto (fun n => (c(n))^(1/n)) Filter.atTop (nhds alpha)\n```\n\n**Answer:** YES, c(n)^{1/n} converges to some alpha < 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e150-bounds",
+    "proofId": "erdos-150",
+    "range": { "startLine": 235, "endLine": 240 },
+    "type": "theorem",
+    "title": "Complete Bounds on Alpha",
+    "content": "**alpha_bounds:**\n\n3^{1/3} <= alpha <= 2^{H(1/3)}\n\nNumerically: 1.442... <= alpha <= 1.890...\n\n**Sources:**\n- Lower bound: Seymour's construction\n- Upper bound: Bradac's theorem\n\nThe gap of about 0.45 remains to be closed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e150-conjecture",
+    "proofId": "erdos-150",
+    "range": { "startLine": 248, "endLine": 254 },
+    "type": "definition",
+    "title": "Bradac's Conjecture",
+    "content": "**bradac_conjecture:**\n\nalpha = 3^{1/3}\n\nBradac conjectures that the lower bound is tight, meaning Seymour's construction is optimal.\n\nIf true, this would determine the exact value alpha = 1.4422...",
+    "mathContext": "Many extremal problems have their bounds achieved by simple, elegant constructions.",
+    "significance": "key",
+    "relatedConcepts": ["Extremal graphs", "Construction optimality"]
+  },
+  {
+    "id": "ann-e150-examples",
+    "proofId": "erdos-150",
+    "range": { "startLine": 267, "endLine": 295 },
+    "type": "theorem",
+    "title": "Concrete Examples",
+    "content": "**Seymour lower bounds for specific values:**\n\n- **c(5) >= 3:** m=1 gives c(5) >= 3^1 = 3\n- **c(8) >= 9:** m=2 gives c(8) >= 3^2 = 9  \n- **c(11) >= 27:** m=3 gives c(11) >= 3^3 = 27\n\nThese follow directly from Seymour's construction with m = 1, 2, 3 paths.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e150-summary",
+    "proofId": "erdos-150",
+    "range": { "startLine": 301, "endLine": 323 },
+    "type": "theorem",
+    "title": "Complete Solution Summary",
+    "content": "**erdos_150_summary:**\n\nComplete characterization of the solution:\n\n1. **Existence:** The limit alpha = lim c(n)^{1/n} exists\n2. **Upper bound:** alpha < 2 (answering the question)\n3. **Bounds:** 3^{1/3} <= alpha <= 2^{H(1/3)}\n4. **Convergence:** c(n)^{1/n} -> alpha\n\n**erdos_150_answer:** Confirms the answer is YES.",
+    "significance": "critical"
+  }
+]

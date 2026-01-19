@@ -1,33 +1,170 @@
 {
   "id": "erdos-150",
-  "title": "Erdős Problem #150",
+  "title": "Erdos Problem #150: Minimal Cuts in Graphs",
   "slug": "erdos-150",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA minimal cut of a graph is a minimal set of vertices whose removal disconnects the graph. Let ... be the maximum number of m...",
+  "description": "Does the maximum number of minimal vertex cuts in an n-vertex graph satisfy c(n)^{1/n} converging to some alpha < 2? YES, proved by Bradac (2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Bradac (2024 proof), Erdos-Nesetril (problem), Seymour (construction)",
     "sourceUrl": "https://erdosproblems.com/150",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos150Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "vertex-connectivity",
+      "minimal-cuts",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 150,
     "erdosUrl": "https://erdosproblems.com/150",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type for finite undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Connected",
+        "description": "Graph connectivity predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality for potentially infinite sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit and convergence",
+        "module": "Mathlib.Topology.Instances.Real"
+      }
+    ],
+    "originalContributions": [
+      "isVertexCut definition: vertex removal disconnects graph",
+      "isMinimalCut definition: inclusion-minimal vertex cut",
+      "minimalCuts set: all minimal cuts of a graph",
+      "maxMinimalCuts function c(n): maximum over all n-vertex graphs",
+      "binaryEntropy definition: H(p) = -p log p - (1-p) log(1-p)",
+      "seymour_construction axiom: c(3m+2) >= 3^m",
+      "limit_exists axiom: c(n)^{1/n} converges",
+      "bradac_upper_bound axiom: alpha <= 2^{H(1/3)}",
+      "alpha_less_than_two theorem: the answer is YES",
+      "erdos_150 theorem: main result with limit",
+      "alpha_bounds theorem: 3^{1/3} <= alpha <= 2^{H(1/3)}",
+      "bradac_conjecture: alpha = 3^{1/3}",
+      "Concrete examples: c(5) >= 3, c(8) >= 9, c(11) >= 27"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #150 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA minimal cut of a graph is a minimal set of vertices whose removal disconnects the graph. Let $c(n)$ be the maximum number of minimal cuts a graph on $n$ vertices can have.\n\nDoes $c(n)^{1/n}\\to \\alpha$ for some $\\alpha <2$?\n\n\n\nAsked by Erd\\H{o}s and Ne\\v{s}et\\v{r}il, who also ask whether $c(3m+2)=3^m$. Seymour observed that $c(3m+2)\\geq 3^m$, as seen by the graph of $m$ independent paths of length $4$ joining two vertices.\n\nSolved by Brada\\v{c} \\cite{Br24}, who proved that $\\alpha=\\lim c(n)^{1/n}$ exists and\\[\\alpha \\leq 2^{H(1/3)}=1.8899\\cdots,\\]where $H(\\cdot)$ is the binary entropy function. Seymour's construction proves that $\\alpha\\geq 3^{1/3}=1.442\\cdots$. Brada\\v{c} conjectures that this lower bound is the true value of $\\alpha$.\n\n\n\n\nReferences\n\n\n[Br24] D. Brada\\vC, On a question of Erd\\H{o}s and Nesetril about minimal cuts in a graph. arXiv:2409.02974 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #150**\n\nThis problem concerns extremal graph theory and the structure of vertex cuts in graphs.\n\n**Key History:**\n- Erdos and Nesetril: Posed the original question about minimal cuts\n- Seymour: Provided the key lower bound construction using paths\n- Bradac (2024): Solved the problem, proving alpha exists and alpha < 2\n\n**Mathematical Setting:**\n- A minimal cut is an inclusion-minimal set of vertices whose removal disconnects the graph\n- c(n) = maximum number of minimal cuts over all n-vertex graphs\n- The question asks about the asymptotic growth rate c(n)^{1/n}",
+    "problemStatement": "**Problem Statement (Proved)**\n\nA minimal cut of a graph is a minimal set of vertices whose removal disconnects the graph. Let c(n) be the maximum number of minimal cuts a graph on n vertices can have.\n\nDoes c(n)^{1/n} converge to some alpha < 2?\n\n**Answer: YES**\n\nBradac (2024) proved:\n1. The limit alpha = lim c(n)^{1/n} exists\n2. alpha <= 2^{H(1/3)} = 1.8899...\n3. Combined with Seymour's lower bound: 3^{1/3} <= alpha <= 2^{H(1/3)}\n\nBradac conjectures the true value is alpha = 3^{1/3} = 1.442...",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define vertex cuts using SimpleGraph.induce and connectivity\n\n2. **Key Functions:**\n   - isVertexCut: removal disconnects the graph\n   - isMinimalCut: no proper subset is also a cut\n   - maxMinimalCuts c(n): supremum over all n-vertex graphs\n\n3. **Seymour's Construction:** Axiomatize c(3m+2) >= 3^m from m independent paths\n\n4. **Binary Entropy:** Define H(p) for the upper bound 2^{H(1/3)}\n\n5. **Main Results:** Axiomatize Bradac's theorem on limit existence and upper bound\n\n6. **Bounds:** Combine to show 3^{1/3} <= alpha <= 2^{H(1/3)} < 2",
+    "keyInsights": [
+      "**Seymour's Construction:** m paths of length 4 between two vertices give 3^m minimal cuts (choose one vertex from each path)",
+      "**Binary Entropy:** H(1/3) = log_2(3) - 2/3 appears in the upper bound",
+      "**Gap in Bounds:** Current bounds leave uncertainty: alpha is between 1.442 and 1.890",
+      "**Bradac's Conjecture:** The lower bound 3^{1/3} is conjectured to be tight",
+      "**Extremal Structure:** The problem asks about the extremal behavior of a combinatorial quantity"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-definitions",
+      "title": "Graph Definitions",
+      "summary": "isVertexCut, isMinimalCut, minimalCuts definitions",
+      "startLine": 43,
+      "endLine": 71
+    },
+    {
+      "id": "max-minimal-cuts",
+      "title": "The Maximum Minimal Cuts Function",
+      "summary": "maxMinimalCuts c(n) definition and notation",
+      "startLine": 73,
+      "endLine": 93
+    },
+    {
+      "id": "seymour-construction",
+      "title": "Seymour's Construction",
+      "summary": "seymour_construction axiom: c(3m+2) >= 3^m",
+      "startLine": 95,
+      "endLine": 120
+    },
+    {
+      "id": "binary-entropy",
+      "title": "Binary Entropy Function",
+      "summary": "binaryEntropy H(p) definition and properties",
+      "startLine": 122,
+      "endLine": 146
+    },
+    {
+      "id": "bradac-theorem",
+      "title": "Bradac's Theorem",
+      "summary": "limit_exists, alpha, bradac_upper_bound, alpha_less_than_two",
+      "startLine": 148,
+      "endLine": 190
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "erdos_150: the limit exists and alpha < 2",
+      "startLine": 192,
+      "endLine": 213
+    },
+    {
+      "id": "bounds-summary",
+      "title": "Bounds Summary",
+      "summary": "alpha_lower_bound, alpha_upper_bound, alpha_bounds",
+      "startLine": 215,
+      "endLine": 240
+    },
+    {
+      "id": "bradac-conjecture",
+      "title": "Bradac's Conjecture",
+      "summary": "bradac_conjecture: alpha = 3^{1/3}",
+      "startLine": 242,
+      "endLine": 254
+    },
+    {
+      "id": "special-values",
+      "title": "Special Values",
+      "summary": "c_seymour_bound, c_5_ge_3, c_8_ge_9, c_11_ge_27",
+      "startLine": 256,
+      "endLine": 295
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_150_summary, erdos_150_answer",
+      "startLine": 297,
+      "endLine": 325
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #150 asked whether c(n)^{1/n} converges to some alpha < 2, where c(n) is the maximum number of minimal vertex cuts in an n-vertex graph. The answer is YES, proved by Bradac in 2024. The limit alpha exists and satisfies 3^{1/3} <= alpha <= 2^{H(1/3)}, approximately 1.442 to 1.890. Bradac conjectures that alpha = 3^{1/3}, which would mean Seymour's construction is optimal.",
+    "implications": "**Graph-Theoretic Connections**\n\n1. **Vertex Connectivity:** Minimal cuts measure the structure of graph separators\n\n2. **Extremal Bounds:** The result establishes tight asymptotic growth for minimal cuts\n\n3. **Entropy Methods:** The binary entropy function appears naturally in the upper bound\n\n4. **Path Constructions:** Seymour's elegant construction using parallel paths is potentially optimal\n\n5. **Open Gap:** The gap between 1.442 and 1.890 remains to be closed",
+    "openQuestions": [
+      "Is alpha exactly 3^{1/3} (Bradac's conjecture)?",
+      "What is the structure of extremal graphs achieving c(n)?",
+      "Can the upper bound 2^{H(1/3)} be improved?",
+      "What is c(n) exactly for small n?",
+      "Are there other natural graph parameters with similar entropy-related bounds?"
+    ]
   }
 }
