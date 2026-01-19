@@ -1,33 +1,141 @@
 {
   "id": "erdos-173",
-  "title": "Erdős Problem #173",
+  "title": "Erdos Problem #173: Monochromatic Triangles in Plane Colorings",
   "slug": "erdos-173",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIn any ...-colouring of ..., for all but at most one triangle ..., there is a monochromatic congruent copy of ....\n\n\n\nFor som...",
+  "description": "In any 2-coloring of R^2, all but at most one triangle T has a monochromatic congruent copy. Shader proved this for all right triangles. The equilateral triangle is the candidate exception.",
   "meta": {
-    "author": "Unknown",
+    "author": "Shader (1976 right triangles), Erdos (problem)",
     "sourceUrl": "https://erdosproblems.com/173",
-    "date": "",
-    "status": "pending",
+    "date": "1976",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos173Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "ramsey-theory",
+      "plane-colorings",
+      "triangles",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 173,
     "erdosUrl": "https://erdosproblems.com/173",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space structure",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function",
+        "module": "Mathlib.Geometry.Euclidean.Basic"
+      },
+      {
+        "theorem": "Equiv.Perm",
+        "description": "Permutations for congruence definition",
+        "module": "Mathlib.Data.Set.Function"
+      }
+    ],
+    "originalContributions": [
+      "PlaneColoring definition for 2-colorings",
+      "Triangle structure with vertices and nondegeneracy",
+      "sideLengths function extracting three sides",
+      "Congruent definition via side length permutation",
+      "IsMonochromatic definition for triangles",
+      "IsEquilateral, IsRightTriangle, IsIsoceles predicates",
+      "IsRamseyTriangle definition for Ramsey property",
+      "AlmostAllTrianglesRamsey statement",
+      "shader_theorem axiom: right triangles are Ramsey",
+      "stripColoring explicit counterexample construction",
+      "equilateral_not_monochromatic_strip axiom",
+      "Similar definition and similarity_preserves_ramsey",
+      "erdos_173_summary main results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #173 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIn any $2$-colouring of $\\mathbb{R}^2$, for all but at most one triangle $T$, there is a monochromatic congruent copy of $T$.\n\n\n\nFor some colourings a single equilateral triangle has to be excluded, considering the colouring by alternating strips. Shader \\cite{Sh76} has proved this is true if we just consider a single right-angled triangle.\n\n\n\n\nReferences\n\n\n[Sh76] Shader, L., All right triangles are Ramsey in $\\mathbbE^2$!. J. Comb. Th. A (1976), 385-389.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #173: Euclidean Ramsey Theory**\n\nThis problem belongs to Euclidean Ramsey theory, which studies whether geometric configurations must appear monochromatically in finite colorings of Euclidean space.\n\n**Key History:**\n- Erdos [Er75f, Er83c]: Posed the problem about monochromatic triangles\n- Shader [Sh76]: Proved all right triangles are Ramsey in R^2\n- Erdos-Graham [ErGr79, ErGr80]: Collected and extended the problem\n\n**Mathematical Setting:**\nGiven a 2-coloring of all points in R^2, we ask whether every triangle shape has a monochromatic congruent copy somewhere in the plane. The strip coloring example shows the equilateral triangle is problematic.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIn any 2-coloring of $\\mathbb{R}^2$, for all but at most one triangle $T$, there is a monochromatic congruent copy of $T$.\n\n**Known Results:**\n- All right triangles are Ramsey (Shader 1976)\n- The equilateral triangle is the candidate exception\n\n**Counterexample Idea:**\nColor $\\mathbb{R}^2$ with alternating horizontal strips. An equilateral triangle of the right height cannot be placed monochromatically.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - PlaneColoring: R^2 -> Bool\n   - Triangle: Three vertices with nondegeneracy\n   - Congruent, IsMonochromatic predicates\n\n2. **Triangle Types:**\n   - IsEquilateral, IsRightTriangle, IsIsoceles\n   - sideLengths to characterize congruence classes\n\n3. **Ramsey Property:**\n   - IsRamseyTriangle: Every coloring has monochromatic copy\n   - AlmostAllTrianglesRamsey: At most one exception\n\n4. **Key Results:**\n   - shader_theorem: Right triangles are Ramsey\n   - stripColoring: Counterexample for equilateral",
+    "keyInsights": [
+      "**Strip Coloring:** Alternating colored strips show equilateral triangles of specific heights cannot be monochromatic",
+      "**Right Triangles:** Shader's theorem handles a large class (all right triangles are Ramsey)",
+      "**Similarity Invariance:** The Ramsey property depends only on shape, not size",
+      "**One Exception:** The problem asks if only one triangle class (likely equilateral) can fail to be Ramsey",
+      "**Euclidean Ramsey:** This is part of a broader theory asking which geometric configurations are unavoidable"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "PlaneColoring, Triangle, sideLengths, Congruent, IsMonochromatic",
+      "startLine": 36,
+      "endLine": 79
+    },
+    {
+      "id": "triangle-types",
+      "title": "Triangle Types",
+      "summary": "IsEquilateral, IsRightTriangle, IsIsoceles predicates",
+      "startLine": 81,
+      "endLine": 109
+    },
+    {
+      "id": "ramsey-property",
+      "title": "Ramsey Property",
+      "summary": "IsRamseyTriangle, AlmostAllTrianglesRamsey definitions",
+      "startLine": 111,
+      "endLine": 130
+    },
+    {
+      "id": "shader-theorem",
+      "title": "Shader's Theorem",
+      "summary": "shader_theorem axiom, right_345_ramsey example",
+      "startLine": 132,
+      "endLine": 159
+    },
+    {
+      "id": "strip-coloring",
+      "title": "Strip Coloring Example",
+      "summary": "stripColoring, equilateral_not_monochromatic_strip",
+      "startLine": 161,
+      "endLine": 190
+    },
+    {
+      "id": "conjecture",
+      "title": "Conjectured Resolution",
+      "summary": "erdos_173_conjecture, equilateral_conjecture",
+      "startLine": 192,
+      "endLine": 209
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "finite_ramsey_triangles, Similar, similarity_preserves_ramsey",
+      "startLine": 211,
+      "endLine": 242
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_173_summary combining all results",
+      "startLine": 244,
+      "endLine": 275
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #173 conjectures that in any 2-coloring of R^2, all but at most one triangle shape has a monochromatic congruent copy. Shader (1976) proved this for all right triangles. The equilateral triangle is the candidate exception, as shown by the strip coloring counterexample.",
+    "implications": "**Connections to Ramsey Theory**\n\n1. **Euclidean Ramsey Theory:** Monochromatic geometric configurations in colored spaces\n\n2. **Graph Ramsey vs Geometric Ramsey:** Different techniques required for continuous settings\n\n3. **Density Ramsey:** Related questions about unavoidable patterns\n\n4. **Higher Dimensions:** Similar questions in R^3 and beyond\n\n5. **Other Shapes:** Generalizations to rectangles, parallelograms, etc.",
+    "openQuestions": [
+      "Prove the equilateral triangle is the only exception",
+      "Determine exactly which triangles are Ramsey",
+      "Extend to higher dimensions",
+      "Study k-colorings for k > 2",
+      "Quantitative bounds on Ramsey numbers for triangles"
+    ]
   }
 }
