@@ -53,7 +53,22 @@ This allows graceful shutdown - you finish current work before stopping.
 $REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any
 ```
 
-This atomically claims a random unclaimed stub. Record the Erdős number for subsequent steps.
+This atomically claims a random unclaimed stub and creates a **problem-specific worktree**.
+
+The claim script will output:
+```
+Claimed erdos-867 by enhancer-1
+Creating fresh worktree: .loom/worktrees/erdos-867
+Branch: feature/erdos-867-enhance
+Worktree ready: .loom/worktrees/erdos-867
+```
+
+**IMPORTANT:** After claiming, change to the problem worktree:
+```bash
+cd $REPO_ROOT/.loom/worktrees/erdos-{NUMBER}
+```
+
+**Resuming partial work:** If a previous agent started this problem, the claim script will reuse their worktree/branch, preserving partial work.
 
 **Note:** Stubs may or may not have formal-conjectures sources:
 - **With source:** Read and adapt `external/formal-conjectures/FormalConjectures/ErdosProblems/{NUMBER}.lean`
@@ -264,17 +279,21 @@ EOF
 $REPO_ROOT/scripts/erdos/claim-stub.sh complete {NUMBER}
 ```
 
-## Step 10: Reset Branch and Loop
+## Step 10: Clean Up and Loop
 
-Reset your branch for the next stub:
+After completing a stub, clean up and claim the next one:
 
 ```bash
-git checkout main
-git pull origin main
-git checkout -B $(git branch --show-current | head -1) main
+# Return to main repo
+cd $REPO_ROOT
+
+# Optional: remove the completed worktree
+git worktree remove .loom/worktrees/erdos-{NUMBER} --force 2>/dev/null || true
+
+# Return to Step 1 to claim a new stub (creates fresh worktree)
 ```
 
-Then return to Step 1 to claim the next stub.
+The next `claim-random-any` will create a new problem-specific worktree.
 
 ## Extending Claims
 

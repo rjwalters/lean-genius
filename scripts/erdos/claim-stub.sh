@@ -86,6 +86,8 @@ claim_stub() {
     local erdos_number="$1"
     local lock_dir="$CLAIMS_DIR/erdos-$erdos_number.lock"
     local claim_file="$CLAIMS_DIR/erdos-$erdos_number.json"
+    local worktree_path="$REPO_ROOT/.loom/worktrees/erdos-$erdos_number"
+    local branch_name="feature/erdos-$erdos_number-enhance"
 
     # Check if already completed
     if jq -e ".completed | index($erdos_number)" "$COMPLETED_FILE" > /dev/null 2>&1; then
@@ -105,10 +107,15 @@ claim_stub() {
   "claimed_at": "$CLAIMED_AT",
   "expires_at": "$EXPIRES_AT",
   "ttl_minutes": $TTL_MINUTES,
-  "status": "in_progress"
+  "status": "in_progress",
+  "worktree": "$worktree_path",
+  "branch": "$branch_name"
 }
 EOF
         echo "Claimed erdos-$erdos_number by $AGENT_ID (expires: $EXPIRES_AT)"
+
+        # Create or reuse problem-specific worktree
+        setup_problem_worktree "$erdos_number"
         return 0
     else
         # Lock exists - check if stale
@@ -126,10 +133,15 @@ EOF
   "claimed_at": "$CLAIMED_AT",
   "expires_at": "$EXPIRES_AT",
   "ttl_minutes": $TTL_MINUTES,
-  "status": "in_progress"
+  "status": "in_progress",
+  "worktree": "$worktree_path",
+  "branch": "$branch_name"
 }
 EOF
                 echo "Claimed erdos-$erdos_number by $AGENT_ID (expires: $EXPIRES_AT)"
+
+                # Create or reuse problem-specific worktree
+                setup_problem_worktree "$erdos_number"
                 return 0
             fi
         fi
@@ -139,6 +151,49 @@ EOF
         echo "Error: erdos-$erdos_number already claimed by $existing_agent" >&2
         return 1
     fi
+}
+
+# Setup problem-specific worktree (creates new or reuses existing with partial work)
+setup_problem_worktree() {
+    local erdos_number="$1"
+    local worktree_path="$REPO_ROOT/.loom/worktrees/erdos-$erdos_number"
+    local branch_name="feature/erdos-$erdos_number-enhance"
+
+    # Check if worktree already exists (has partial work from previous agent)
+    if [[ -d "$worktree_path" ]]; then
+        echo "Reusing existing worktree with partial work: $worktree_path"
+        echo "Branch: $branch_name"
+
+        # Update to latest main but keep local changes
+        (cd "$worktree_path" && git fetch origin main 2>/dev/null) || true
+        return 0
+    fi
+
+    # Check if branch exists on remote (previous work pushed)
+    if git ls-remote --heads origin "$branch_name" 2>/dev/null | grep -q "$branch_name"; then
+        echo "Found existing branch with partial work: $branch_name"
+        git worktree add "$worktree_path" "$branch_name" 2>/dev/null || \
+            git worktree add "$worktree_path" -b "$branch_name" "origin/$branch_name"
+    else
+        # Fresh start - create new worktree from main
+        echo "Creating fresh worktree: $worktree_path"
+        git worktree add "$worktree_path" -b "$branch_name" main 2>/dev/null || {
+            # Branch might exist locally, try to reuse
+            git worktree add "$worktree_path" "$branch_name" 2>/dev/null || {
+                git branch -D "$branch_name" 2>/dev/null
+                git worktree add "$worktree_path" -b "$branch_name" main
+            }
+        }
+    fi
+
+    # Symlink .lake for fast Lean builds
+    if [[ -d "$REPO_ROOT/proofs/.lake" ]] && [[ -d "$worktree_path/proofs" ]]; then
+        rm -rf "$worktree_path/proofs/.lake" 2>/dev/null
+        ln -s "$REPO_ROOT/proofs/.lake" "$worktree_path/proofs/.lake"
+    fi
+
+    echo "Worktree ready: $worktree_path"
+    echo "Branch: $branch_name"
 }
 
 # Claim a random unclaimed stub (sourced only, or any if --any flag)
