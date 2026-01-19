@@ -1,6 +1,8 @@
 # Lean Genius Makefile
 # Convenience aliases for common development tasks
 
+.DEFAULT_GOAL := help
+
 .PHONY: help clean clean-all clean-enhancers clean-research clean-loom \
         status status-enhancers status-research \
         build test lint \
