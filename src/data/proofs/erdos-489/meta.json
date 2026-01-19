@@ -1,33 +1,127 @@
 {
   "id": "erdos-489",
-  "title": "Erdős Problem #489",
+  "title": "Erdős Problem #489: Gaps Between B-Free Numbers",
   "slug": "erdos-489",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set such that .... Let\\[B=\\{ n\\geq 1 : a\\nmid na\\in A\\}.\\]If ... then is it true that\\[\\lim {x}\\sum_{b_i<x}(b_{i...",
+  "description": "For sparse A, does lim (1/x)Σ(b_{i+1}-b_i)² exist for A-free numbers B? OPEN in general; YES for squarefree numbers (Erdős).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (squarefree case solved)",
     "sourceUrl": "https://erdosproblems.com/489",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos489Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gaps",
+      "B-free-numbers",
+      "squarefree",
+      "sieve-theory",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 489,
     "erdosUrl": "https://erdosproblems.com/489",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Squarefree",
+        "description": "Squarefree number definition",
+        "module": "Mathlib.NumberTheory.Squarefree"
+      },
+      {
+        "theorem": "Asymptotics",
+        "description": "Little-o notation for sparseness",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for gap statistics",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "countingFunction definition: |A ∩ [1,x]|",
+      "IsSparse definition: o(√x) growth condition",
+      "BFreeSet definition: numbers not divisible by A",
+      "IsBFree definition: A-free numbers",
+      "gap definition: consecutive gaps",
+      "gapSquaredSum definition: Σ(b_{i+1}-b_i)²",
+      "normalizedGapStatistic definition: (1/x)Σ gaps²",
+      "LimitExists definition: the main question",
+      "ErdosConjecture definition: general sparse case",
+      "PrimeSquares definition: A = {p² : p prime}",
+      "erdos_squarefree_limit axiom: squarefree case solved",
+      "IsKFree definition: k-free numbers"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #489 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a set such that $\\lvert A\\cap [1,x]\\rvert=o(x^{1/2})$. Let\\[B=\\{ n\\geq 1 : a\\nmid n\\textrm{ for all }a\\in A\\}.\\]If $B=\\{b_1<b_2<\\cdots\\}$ then is it true that\\[\\lim \\frac{1}{x}\\sum_{b_i<x}(b_{i+1}-b_i)^2\\]exists (and is finite)?\n\n\n\nFor example, when $A=\\{p^2: p\\textrm{ prime}\\}$ then $B$ is the set of squarefree numbers, and the existence of this limit was proved by Erd\\H{o}s.\n\nSee also [208].\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #489**\n\nA question about gaps between numbers avoiding a sparse set of divisors.\n\n**Key History:**\n- Erdős: Proved the limit exists for squarefree numbers (A = prime squares)\n- General sparse case remains open\n\n**Connection:** Related to Problem #208.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet A ⊆ ℕ with |A ∩ [1,x]| = o(x^{1/2}). Let B be the A-free numbers (not divisible by any a ∈ A). Does\n\nlim_{x→∞} (1/x) Σ_{b_i<x} (b_{i+1} - b_i)²\n\nexist and is finite?\n\n**Status: OPEN** (in general)\n\nSquarefree case (A = prime squares) is solved by Erdős.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sparse Sets:** Define IsSparse via o(√x) counting\n\n2. **B-Free Numbers:** BFreeSet, IsBFree definitions\n\n3. **Gap Statistics:** gap, gapSquaredSum, normalizedGapStatistic\n\n4. **Main Question:** LimitExists, ErdosConjecture\n\n5. **Squarefree Case:** PrimeSquares, erdos_squarefree_limit",
+    "keyInsights": [
+      "**Sparseness Condition:** |A ∩ [1,x]| = o(√x) ensures B has positive density",
+      "**Squarefree Case Solved:** A = {p² : p prime} gives B = squarefree numbers",
+      "**Second Moment:** The sum Σ(gap)² is the second moment of gaps",
+      "**6/π² Density:** Squarefree numbers have density 6/π² ≈ 0.6079",
+      "**General Case Open:** The full conjecture for arbitrary sparse A is open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sparse-bfree",
+      "title": "Sparse Sets and B-Free Numbers",
+      "summary": "countingFunction, IsSparse, BFreeSet, IsBFree",
+      "startLine": 31,
+      "endLine": 63
+    },
+    {
+      "id": "gaps",
+      "title": "Gaps and Gap Statistics",
+      "summary": "nthElement, gap, gapSquaredSum, normalizedGapStatistic",
+      "startLine": 65,
+      "endLine": 94
+    },
+    {
+      "id": "erdos-question",
+      "title": "The Erdős Question",
+      "summary": "LimitExists, ErdosConjecture",
+      "startLine": 96,
+      "endLine": 115
+    },
+    {
+      "id": "squarefree",
+      "title": "The Squarefree Case",
+      "summary": "PrimeSquares, erdos_squarefree_limit, squarefree_density",
+      "startLine": 117,
+      "endLine": 150
+    },
+    {
+      "id": "related",
+      "title": "Related Concepts",
+      "summary": "IsKFree, IsCubefree, Hooley's work",
+      "startLine": 152,
+      "endLine": 181
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_489_summary, erdos_489",
+      "startLine": 236,
+      "endLine": 274
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #489 asks whether the normalized sum of squared gaps Σ(b_{i+1}-b_i)²/x converges for B-free numbers when A is sparse. The squarefree case (A = prime squares) was proved by Erdős. The general case remains OPEN.",
+    "implications": "**Number Theory Connections**\n\n1. **Sieve Methods:** Counting B-free numbers uses sieves\n\n2. **Squarefree Numbers:** Density 6/π² and gap distributions\n\n3. **K-Free Numbers:** Generalization to higher powers\n\n4. **Moment Methods:** Second moment of gap distributions\n\n5. **Hooley's Work:** Gap distributions for k-free numbers",
+    "openQuestions": [
+      "Does the limit exist for all sparse A?",
+      "What is the limiting value when it exists?",
+      "Connection to third and higher moments of gaps?",
+      "Extension to general B-free sets?",
+      "Effective bounds on convergence rate?"
+    ]
   }
 }

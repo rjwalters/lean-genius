@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-e489-header",
+    "proofId": "erdos-489",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #489: Gaps Between B-Free Numbers**\n\nFor sparse A, does lim (1/x)Σ(b_{i+1}-b_i)² exist for A-free numbers?\n\n**Status: OPEN** (in general)\n\nSquarefree case (A = prime squares) is solved.",
+    "mathContext": "This connects number theory, sieve methods, and gap distributions in sequences defined by divisibility conditions.",
+    "significance": "critical",
+    "relatedConcepts": ["B-free numbers", "Squarefree numbers", "Gap distributions", "Sieve theory"]
+  },
+  {
+    "id": "ann-e489-sparse",
+    "proofId": "erdos-489",
+    "range": { "startLine": 42, "endLine": 48 },
+    "type": "definition",
+    "title": "Sparse Set",
+    "content": "**IsSparse:**\n\nA set A is sparse if |A ∩ [1,x]| = o(x^{1/2}).\n\nThis means A grows slower than √x - the critical threshold for this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e489-bfree",
+    "proofId": "erdos-489",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "B-Free Numbers",
+    "content": "**BFreeSet:**\n\nB = {n : a ∤ n for all a ∈ A}\n\nNumbers not divisible by any element of A. Also called A-free numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e489-gap",
+    "proofId": "erdos-489",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "definition",
+    "title": "Gap Function",
+    "content": "**gap:**\n\ng_i = b_{i+1} - b_i\n\nThe gap between consecutive B-free numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e489-normalized",
+    "proofId": "erdos-489",
+    "range": { "startLine": 89, "endLine": 94 },
+    "type": "definition",
+    "title": "Normalized Gap Statistic",
+    "content": "**normalizedGapStatistic:**\n\n(1/x) Σ_{b_i<x} (b_{i+1} - b_i)²\n\nThe second moment of gaps, normalized by x.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e489-limit",
+    "proofId": "erdos-489",
+    "range": { "startLine": 100, "endLine": 108 },
+    "type": "definition",
+    "title": "Limit Existence",
+    "content": "**LimitExists:**\n\nDoes lim_{x→∞} (1/x)Σ(gap)² exist?\n\nThis is the main question - does the second moment of gaps converge?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e489-conjecture",
+    "proofId": "erdos-489",
+    "range": { "startLine": 110, "endLine": 115 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "**ErdosConjecture:**\n\nFor ALL sparse A, the limit exists.\n\nThis is the general open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e489-prime-sq",
+    "proofId": "erdos-489",
+    "range": { "startLine": 121, "endLine": 126 },
+    "type": "definition",
+    "title": "Prime Squares",
+    "content": "**PrimeSquares:**\n\nA = {p² : p prime} = {4, 9, 25, 49, 121, ...}\n\nWhen A = prime squares, B = squarefree numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e489-squarefree-limit",
+    "proofId": "erdos-489",
+    "range": { "startLine": 135, "endLine": 140 },
+    "type": "axiom",
+    "title": "Squarefree Case Solved",
+    "content": "**erdos_squarefree_limit:**\n\nFor A = prime squares (B = squarefree numbers), the limit EXISTS.\n\nThis was proved by Erdős - the known special case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e489-density",
+    "proofId": "erdos-489",
+    "range": { "startLine": 142, "endLine": 150 },
+    "type": "axiom",
+    "title": "Squarefree Density",
+    "content": "**squarefree_density:**\n\nDensity of squarefree numbers is 6/π² ≈ 0.6079.\n\nThis is a classical result in analytic number theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e489-kfree",
+    "proofId": "erdos-489",
+    "range": { "startLine": 156, "endLine": 161 },
+    "type": "definition",
+    "title": "K-Free Numbers",
+    "content": "**IsKFree:**\n\nk-free numbers are not divisible by any k-th power > 1.\n\nSquarefree = 2-free, cubefree = 3-free, etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e489-sparseness",
+    "proofId": "erdos-489",
+    "range": { "startLine": 187, "endLine": 193 },
+    "type": "concept",
+    "title": "Why Sparseness?",
+    "content": "**sparseness_necessity:**\n\nThe condition |A ∩ [1,x]| = o(√x) ensures B has positive density.\n\nIf A is too dense, B could have density 0, making gaps infinite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e489-main",
+    "proofId": "erdos-489",
+    "range": { "startLine": 262, "endLine": 265 },
+    "type": "theorem",
+    "title": "Erdős Problem #489: OPEN",
+    "content": "**erdos_489:**\n\nStatus: OPEN (in general)\n\nSquarefree case solved, general case remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e489-summary",
+    "proofId": "erdos-489",
+    "range": { "startLine": 240, "endLine": 260 },
+    "type": "theorem",
+    "title": "State of Knowledge",
+    "content": "**erdos_489_summary:**\n\n1. **Squarefree case:** SOLVED (limit exists)\n2. **General sparse A:** OPEN\n\nThe second moment of gaps converges for squarefree numbers.",
+    "significance": "critical"
+  }
+]
