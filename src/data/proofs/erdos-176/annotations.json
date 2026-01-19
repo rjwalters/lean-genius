@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e176-header",
+    "proofId": "erdos-176",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #176: Discrepancy of Arithmetic Progressions**\n\nFor any ±1 coloring of {1,...,N}, what is the minimum N guaranteeing a k-AP with discrepancy ≥ ℓ?\n\n**Key Questions:**\n1. Is N(k, ck) ≤ C^k for any c > 0?\n2. Is N(k, 2) ≤ C^k?\n3. Is N(k, √k) ≤ C^k?\n\n**Known:** N(k,1) exactly (Spencer), exponential lower bounds (Erdős).\n**Open:** Even N(k,2) has 'no decent bound' (Erdős-Graham).",
+    "mathContext": "Erdős posed this in 1963. Spencer gave exact formula for N(k,1) in 1973. The problem appears in Erdős-Graham's monograph (1980).",
+    "significance": "critical",
+    "relatedConcepts": ["Discrepancy theory", "Van der Waerden numbers", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e176-arithprog",
+    "proofId": "erdos-176",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "**ArithProg a d k:**\n\nThe k-term arithmetic progression starting at a with common difference d:\n\n{a, a+d, a+2d, ..., a+(k-1)d}\n\nRepresented as a Finset by mapping i ↦ a + i·d over {0, 1, ..., k-1}.",
+    "significance": "critical",
+    "relatedConcepts": ["Sequences", "Finsets"]
+  },
+  {
+    "id": "ann-e176-ap-size",
+    "proofId": "erdos-176",
+    "range": { "startLine": 62, "endLine": 71 },
+    "type": "theorem",
+    "title": "AP Size",
+    "content": "**arithProg_card:**\n\nFor d > 0, (ArithProg a d k).card = k.\n\nThe arithmetic progression has exactly k distinct elements when the common difference is positive. The proof uses injectivity of the index map.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cardinality", "Injectivity"]
+  },
+  {
+    "id": "ann-e176-coloring",
+    "proofId": "erdos-176",
+    "range": { "startLine": 77, "endLine": 88 },
+    "type": "definition",
+    "title": "±1 Colorings",
+    "content": "**Coloring:** ℕ → Int\n\n**IsValidColoring f:** f(n) ∈ {-1, 1} for all n\n\nA ±1 coloring assigns either +1 (\"red\") or -1 (\"blue\") to each natural number. The coloring tries to balance each arithmetic progression.",
+    "significance": "critical",
+    "relatedConcepts": ["Two-coloring", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e176-discrepancy",
+    "proofId": "erdos-176",
+    "range": { "startLine": 90, "endLine": 102 },
+    "type": "definition",
+    "title": "AP Discrepancy",
+    "content": "**APDiscrepancy f a d k:** Σ_{n∈P} f(n)\n\n**HasDiscrepancy f a d k ℓ:** |Σ_{n∈P} f(n)| ≥ ℓ\n\nThe discrepancy measures how unbalanced the coloring is on the AP:\n- Discrepancy 0: equal +1s and -1s\n- Discrepancy k: all same color (monochromatic)\n\nThe problem asks when discrepancy ≥ ℓ is unavoidable.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum", "Absolute value", "Balance"]
+  },
+  {
+    "id": "ann-e176-nkl",
+    "proofId": "erdos-176",
+    "range": { "startLine": 108, "endLine": 122 },
+    "type": "definition",
+    "title": "The N(k,ℓ) Function",
+    "content": "**SatisfiesNkl N k ℓ:** Every valid coloring of {1,...,N} has some k-AP with discrepancy ≥ ℓ.\n\n**Nkl k ℓ:** The minimal such N.\n\nThis is the central object of study. N(k,ℓ) tells us how large the domain must be before every coloring has an unbalanced AP.",
+    "significance": "critical",
+    "relatedConcepts": ["Minimal witness", "Ramsey numbers"]
+  },
+  {
+    "id": "ann-e176-monotone",
+    "proofId": "erdos-176",
+    "range": { "startLine": 124, "endLine": 132 },
+    "type": "theorem",
+    "title": "Monotonicity",
+    "content": "**satisfiesNkl_mono:**\n\nIf N satisfies the N(k,ℓ) condition, so does any N' ≥ N.\n\nLarger domains only make it easier to find unbalanced APs. This monotonicity justifies taking the minimum.",
+    "significance": "supporting",
+    "relatedConcepts": ["Monotonicity", "Well-defined minimum"]
+  },
+  {
+    "id": "ann-e176-vdw",
+    "proofId": "erdos-176",
+    "range": { "startLine": 138, "endLine": 154 },
+    "type": "definition",
+    "title": "Van der Waerden Connection",
+    "content": "**vanDerWaerden k:** = Nkl k k\n\nWhen ℓ = k, discrepancy k means all k terms have the same color - a **monochromatic AP**.\n\nSo N(k,k) equals the van der Waerden number W(k): the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-AP.\n\nVan der Waerden's theorem (1927) proves W(k) exists for all k.",
+    "mathContext": "Van der Waerden numbers grow extremely fast: W(3)=9, W(4)=35, W(5)=178, W(6)=1132, but exact values are unknown for k≥7.",
+    "significance": "critical",
+    "relatedConcepts": ["Van der Waerden theorem", "Monochromatic progressions"]
+  },
+  {
+    "id": "ann-e176-spencer",
+    "proofId": "erdos-176",
+    "range": { "startLine": 160, "endLine": 170 },
+    "type": "axiom",
+    "title": "Spencer's Theorem (1973)",
+    "content": "**spencer_1973:**\n\nIf k = 2^t · m with m odd, then N(k, 1) = 2^t(k-1) + 1.\n\nThis gives an **exact formula** for the smallest N guaranteeing some AP has non-zero discrepancy.\n\n**Example:** k = 4 = 2²·1, so N(4,1) = 4·3 + 1 = 13.\n\nSpencer published this in Bull. Canad. Math. Soc. (1973).",
+    "mathContext": "The 2-adic valuation of k (the power of 2 in k's factorization) determines the formula.",
+    "significance": "critical",
+    "relatedConcepts": ["Exact formulas", "2-adic valuation"]
+  },
+  {
+    "id": "ann-e176-erdos-lower",
+    "proofId": "erdos-176",
+    "range": { "startLine": 194, "endLine": 201 },
+    "type": "axiom",
+    "title": "Erdős Lower Bound (1963)",
+    "content": "**erdos_1963_lower_bound:**\n\nFor any c > 0, N(k, ck) > (1 + α_c)^k where α_c is a function of c.\n\n**Behavior of α_c:**\n- α_c → 0 as c → 0 (small discrepancy is easier to avoid)\n- α_c → √2 - 1 ≈ 0.414 as c → 1 (approaching van der Waerden)\n\nThis proves N(k, ℓ) grows **exponentially** in k for any fixed ratio ℓ/k.",
+    "mathContext": "From Erdős's 1963 paper in Mat. Lapok.",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential lower bounds", "Growth rates"]
+  },
+  {
+    "id": "ann-e176-linear-conj",
+    "proofId": "erdos-176",
+    "range": { "startLine": 215, "endLine": 221 },
+    "type": "definition",
+    "title": "Linear Discrepancy Conjecture",
+    "content": "**LinearDiscrepancyConjecture:**\n\nFor any c > 0, there exists C > 1 such that N(k, ck) ≤ C^k.\n\nCombined with Erdős's lower bound, this would show N(k, ck) is exactly exponential in k.\n\nThis is the most general of the three main conjectures.",
+    "significance": "critical",
+    "relatedConcepts": ["Upper bounds", "Exponential growth"]
+  },
+  {
+    "id": "ann-e176-disc2-conj",
+    "proofId": "erdos-176",
+    "range": { "startLine": 223, "endLine": 228 },
+    "type": "definition",
+    "title": "Discrepancy 2 Conjecture",
+    "content": "**Discrepancy2Conjecture:**\n\nIs there C > 1 with N(k, 2) ≤ C^k?\n\nThis is the weakest question (ℓ = 2 is constant, not growing with k), yet Erdős-Graham wrote that 'no decent bound' is known.\n\nA positive answer would be a major breakthrough.",
+    "significance": "critical",
+    "relatedConcepts": ["Constant discrepancy", "Open problems"]
+  },
+  {
+    "id": "ann-e176-sqrt-conj",
+    "proofId": "erdos-176",
+    "range": { "startLine": 230, "endLine": 236 },
+    "type": "definition",
+    "title": "Square Root Discrepancy Conjecture",
+    "content": "**SqrtDiscrepancyConjecture:**\n\nIs there C > 1 with N(k, √k) ≤ C^k?\n\nThis intermediate case (ℓ = √k grows sublinearly) interpolates between the constant and linear cases.\n\nA positive answer would suggest the linear conjecture might also hold.",
+    "significance": "key",
+    "relatedConcepts": ["Intermediate cases", "Sublinear discrepancy"]
+  },
+  {
+    "id": "ann-e176-connections",
+    "proofId": "erdos-176",
+    "range": { "startLine": 248, "endLine": 261 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "**Connections to Other Problems:**\n\n1. **Erdős Discrepancy Problem:** Concerns discrepancy of homogeneous APs. Proved by Tao (2015) using Fourier analysis.\n\n2. **Szemerédi's Theorem:** Density of sets containing APs. Different focus: subsets vs colorings.\n\n3. **Hales-Jewett:** Higher-dimensional generalization of van der Waerden.\n\nAll share the theme of unavoidable arithmetic structure.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős discrepancy", "Szemerédi theorem", "Hales-Jewett"]
+  },
+  {
+    "id": "ann-e176-summary",
+    "proofId": "erdos-176",
+    "range": { "startLine": 267, "endLine": 299 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_176_summary:**\n\nCaptures the state of knowledge:\n\n1. Spencer gives exact formula for N(k, 1)\n2. N(k, k) = W(k), the van der Waerden number\n3. The main conjectures are precisely stated\n\n**Known:** Exact formula for N(k,1); exponential lower bounds.\n**Open:** Exponential upper bounds for N(k,2), N(k,√k), N(k,ck).",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open questions"]
+  }
+]
