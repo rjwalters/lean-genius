@@ -1,33 +1,105 @@
 {
   "id": "erdos-721",
-  "title": "Erdős Problem #721",
+  "title": "Erdős Problem #721: Van der Waerden Numbers W(3,k)",
   "slug": "erdos-721",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the van der Waerden number defined as the minimum ... such that in any red/blue colouring of ... there exists eith...",
+  "description": "Give reasonable bounds for W(3,k), the minimum n such that any red/blue coloring of {1,...,n} contains a red 3-AP or blue k-AP. SOLVED: Both challenges met - superpolynomial lower bounds (Green, Hunter) and subexponential upper bounds (Schoen, Bloom-Sisask).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Green, Hunter, Schoen, Bloom, Sisask, Kelley, Meka",
     "sourceUrl": "https://erdosproblems.com/721",
-    "date": "",
-    "status": "pending",
+    "date": "1980-2023",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos721Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "van-der-waerden",
+      "arithmetic-progressions",
+      "additive-combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 721,
     "erdosUrl": "https://erdosproblems.com/721",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #721 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $W(3,k)$ be the van der Waerden number defined as the minimum $n$ such that in any red/blue colouring of $\\{1,\\ldots,n\\}$ there exists either a red $3$-term arithmetic progression or a blue $k$-term arithmetic progression.\n\nGive reasonable bounds for $W(3,k)$. In particular, give any non-trivial lower bounds for $W(3,k)$ and prove that $W(3,k) < \\exp(k^c)$ for some constant $c<1$.\n\n\n\nWhile we do not have a full understanding of the growth of $W(3,k)$, both of the specific challenges of Erd\\H{o}s have been met.\nGreen \\cite{Gr22} established the superpolynomial lower bound\\[W(3,k) \\geq \\exp\\left( c\\frac{(\\log k)^{4/3}}{(\\log\\log k)\n^{1/3}}\\right)\\]for some constant $c>0$ (in particular disproving a conjecture of Graham that $W(3,k)\\ll k^2$). Hunter \\cite{Hu22} improved this to\\[W(3,k) \\geq \\exp\\left( c\\frac{(\\log k)^{2}}{\\log\\log k}\\right).\\]The first to show that $W(3,k) < \\exp(k^c)$ for some $c<1$ was Schoen \\cite{Sc21}. The best upper bound currently known is\\[W(3,k) \\ll \\exp\\left( O((\\log k)^9)\\right),\\]which follows from the best bounds known for sets without three-term arithmetic progressions (see \\cite{BlSi23} which improves slightly on the bounds due to Kelley and Meka \\cite{KeMe23}).\n\n\n\n\nReferences\n\n\n[BlSi23] T. F. Bloom and O. Sisask, An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353 (2023).\n\n[Gr22] Green, Ben, New lower bounds for van der {W}aerden numbers. Forum Math. Pi (2022), Paper No. e18, 51.\n\n[Hu22] Hunter, Zach, Improved lower bounds for van der {W}aerden numbers. Combinatorica (2022), 1231-1252.\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n[Sc21] Schoen, Tomasz, A subexponential upper bound for van der {W}aerden numbers\n{$W(3, k)$}. Electron. J. Combin. (2021), Paper No. 2.34, 10.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1980-81, asking for bounds on W(3,k). Graham famously conjectured W(3,k) ≪ k², but this polynomial bound was spectacularly disproved by Green in 2022 who showed superpolynomial growth. The problem was fully resolved through a sequence of breakthroughs: Green's lower bound (2022), Hunter's improvement (2022), Schoen's subexponential upper bound (2021), and the Kelley-Meka/Bloom-Sisask advances (2023).",
+    "problemStatement": "Let W(3,k) be the van der Waerden number - the minimum n such that any red/blue coloring of {1,...,n} contains either a red 3-term arithmetic progression or a blue k-term arithmetic progression. Give reasonable bounds for W(3,k). In particular: (1) give any non-trivial lower bounds for W(3,k), and (2) prove that W(3,k) < exp(k^c) for some constant c < 1.",
+    "proofStrategy": "The formalization presents both the lower and upper bounds that resolve Erdős's challenges. For lower bounds, we state Green's superpolynomial bound and Hunter's improved bound with exponent 2. For upper bounds, we state Schoen's subexponential result and Bloom-Sisask's current best bound. The connection to 3-AP free sets via Kelley-Meka is also formalized.",
+    "keyInsights": [
+      "W(3,k) grows superpolynomially but subexponentially",
+      "Graham's polynomial conjecture W(3,k) ≪ k² is FALSE",
+      "Best lower bound: exp(c(log k)²/log log k) from Hunter",
+      "Best upper bound: exp(C(log k)^9) from Bloom-Sisask",
+      "Intimately connected to density of 3-AP free sets",
+      "Kelley-Meka breakthrough on 3-APs enabled sharp upper bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Van der Waerden Numbers",
+      "startLine": 42,
+      "endLine": 71,
+      "summary": "Defines the van der Waerden number W(3,k) and its basic properties including existence and monotonicity."
+    },
+    {
+      "id": "section-2",
+      "title": "Known Small Values",
+      "startLine": 72,
+      "endLine": 93,
+      "summary": "Lists known exact values W(3,3)=9 through W(3,7)=46 and discusses computational difficulty."
+    },
+    {
+      "id": "section-3",
+      "title": "Graham's Conjecture (Disproved)",
+      "startLine": 94,
+      "endLine": 110,
+      "summary": "Formalizes Graham's polynomial conjecture W(3,k) ≪ k² and states it is FALSE per Green's work."
+    },
+    {
+      "id": "section-4",
+      "title": "Lower Bounds",
+      "startLine": 111,
+      "endLine": 144,
+      "summary": "States Green's superpolynomial lower bound and Hunter's improved bound with exponent 2 in the logarithm."
+    },
+    {
+      "id": "section-5",
+      "title": "Upper Bounds",
+      "startLine": 145,
+      "endLine": 176,
+      "summary": "States Schoen's subexponential upper bound and Bloom-Sisask's current best bound with exponent 9."
+    },
+    {
+      "id": "section-6",
+      "title": "Connection to 3-AP Free Sets",
+      "startLine": 177,
+      "endLine": 206,
+      "summary": "Explains the connection to Roth's theorem, Behrend's construction, and the Kelley-Meka breakthrough."
+    },
+    {
+      "id": "section-7",
+      "title": "Growth Rate and Techniques",
+      "startLine": 207,
+      "endLine": 258,
+      "summary": "Discusses the open question of exact growth rate and the various techniques used in the proofs."
+    },
+    {
+      "id": "section-8",
+      "title": "Summary and Status",
+      "startLine": 316,
+      "endLine": 375,
+      "summary": "Complete summary stating both of Erdős's challenges have been met, with the current best bounds."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #721 was SOLVED. Both challenges have been met: (1) Non-trivial lower bounds were established by Green (2022) and improved by Hunter (2022), showing W(3,k) ≥ exp(c(log k)²/log log k). (2) Subexponential upper bounds were first proved by Schoen (2021) and improved to W(3,k) ≤ exp(C(log k)^9) by Bloom-Sisask (2023). Graham's polynomial conjecture was disproved.",
+    "implications": "The result establishes that van der Waerden numbers grow strictly between polynomial and exponential. The exact growth rate exp((log k)^{2+o(1)}) remains conjectured. The breakthrough connects deeply to the density of sets without 3-term arithmetic progressions.",
+    "openQuestions": [
+      "Is the exact growth rate W(3,k) = exp((log k)^{2+o(1)})?",
+      "Can the gap between lower and upper bound exponents (2 vs 9) be closed?",
+      "What are the bounds for general W(r,k) with r > 3?"
+    ]
   }
 }

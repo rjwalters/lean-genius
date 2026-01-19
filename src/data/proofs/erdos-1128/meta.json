@@ -1,34 +1,105 @@
 {
   "id": "erdos-1128",
-  "title": "Erdős Problem #1128",
+  "title": "Erdős Problem #1128: Monochromatic Cubes in Cardinal Products",
   "slug": "erdos-1128",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be three sets of cardinality .... Is it true that, in any ...-colouring of ..., there must exist ..., ..., ..., all o...",
+  "description": "Let A, B, C have cardinality ℵ₁. Must any 2-coloring of A × B × C contain a countably infinite monochromatic cube A₁ × B₁ × C₁? DISPROVED by Prikry-Mills (1978): NO, such colorings exist with no ℵ₀ × ℵ₀ × ℵ₀ monochromatic cube.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Hajnal, Prikry, Mills",
     "sourceUrl": "https://erdosproblems.com/1128",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1128Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "partition-calculus",
+      "cardinals"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 1128,
     "erdosUrl": "https://erdosproblems.com/1128",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "disproved",
     "erdosPrizeValue": "$50"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1128 from erdosproblems.com. Originally offered with a prize of $50.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B,C$ be three sets of cardinality $\\aleph_1$. Is it true that, in any $2$-colouring of $A\\times B\\times C$, there must exist $A_1\\subset A$, $B_1\\subset B$, $C_1\\subset C$, all of cardinality $\\aleph_0$, such that $A_1\\times B_1\\times C_1$ is monochromatic?\n\n\n\nA problem of Erd\\H{o}s and Hajnal.\n\nThis was disproved by Prikry and Mills in 1978 but this seems to have been unpublished. This is reported by Todor\\v{c}evi\\'{c} \\cite{To94} and Komj\\'{a}th \\cite{Ko25b}.\n\n\n\n\nReferences\n\n\n[Ko25b] P. Komj\\'{a}th, The Erd\\H{o}s-Hajnal Probem List. Bull. Symb. Log. (2025), 418--461.\n\n[To94] Todor\\v cevi\\'c, Stevo, Some partitions of three-dimensional combinatorial cubes. J. Combin. Theory Ser. A (1994), 410--437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A problem of Erdős and Hajnal in partition calculus, asking whether the cardinal Ramsey property ℵ₁³ → (ℵ₀)³₂ holds. Prikry and Mills disproved it in 1978 with a counterexample, though their proof remained unpublished. The result was later documented by Todorčević (1994) and Komjáth (2025).",
+    "problemStatement": "Let A, B, C be three sets of cardinality ℵ₁. Is it true that in any 2-coloring of A × B × C, there must exist A₁ ⊂ A, B₁ ⊂ B, C₁ ⊂ C, all of cardinality ℵ₀, such that A₁ × B₁ × C₁ is monochromatic?",
+    "proofStrategy": "The formalization defines the cardinal setup, the coloring problem, and the monochromatic cube condition. The Prikry-Mills counterexample is stated as an axiom, showing that a 'bad' coloring exists that avoids all countably infinite monochromatic cubes.",
+    "keyInsights": [
+      "The uncountability of ℵ₁ allows construction of 'bad' colorings",
+      "The counterexample uses ordinal structure to encode information",
+      "In partition notation: ℵ₁³ ↛ (ℵ₀)³₂",
+      "Finite Ramsey theory analogues hold, but infinite versions fail",
+      "The 2-dimensional case ℵ₁² ↛ (ℵ₀)²₂ also fails"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Cardinal Definitions",
+      "startLine": 36,
+      "endLine": 64,
+      "summary": "Defines the cardinals ℵ₀ and ℵ₁, and the three sets A, B, C of cardinality ℵ₁."
+    },
+    {
+      "id": "section-2",
+      "title": "The Coloring Problem",
+      "startLine": 65,
+      "endLine": 91,
+      "summary": "Defines 2-colorings of A × B × C, monochromatic cubes, and countably infinite subsets."
+    },
+    {
+      "id": "section-3",
+      "title": "The Conjecture (Disproved)",
+      "startLine": 92,
+      "endLine": 115,
+      "summary": "States the Erdős-Hajnal conjecture and the Prikry-Mills disproof: the conjecture is FALSE."
+    },
+    {
+      "id": "section-4",
+      "title": "The Counterexample",
+      "startLine": 116,
+      "endLine": 148,
+      "summary": "Shows the existence of a bad coloring and sketches the construction idea using ordinal structure."
+    },
+    {
+      "id": "section-5",
+      "title": "Context in Partition Calculus",
+      "startLine": 149,
+      "endLine": 180,
+      "summary": "Places the problem in partition calculus: the arrow notation, product versions, and comparisons with the 2-dimensional case."
+    },
+    {
+      "id": "section-6",
+      "title": "Positive Results",
+      "startLine": 181,
+      "endLine": 205,
+      "summary": "Contrasts with positive results: finite case works, countable case works for finite targets, and some large cardinal results."
+    },
+    {
+      "id": "section-7",
+      "title": "Related Problems",
+      "startLine": 206,
+      "endLine": 230,
+      "summary": "Connections to Erdős-Rado theorem, negative partition relations, and Todorčević's systematic study."
+    },
+    {
+      "id": "section-8",
+      "title": "Summary and Status",
+      "startLine": 231,
+      "endLine": 290,
+      "summary": "Complete summary of the disproof, the main theorem showing the conjecture is false, and historical context."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1128 was DISPROVED by Prikry and Mills in 1978. The answer is NO: there exists a 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ with no countably infinite monochromatic cube.",
+    "implications": "This negative result shows that infinite-dimensional Ramsey theory behaves very differently from the finite case. The uncountability of ℵ₁ allows encoding too much information for any ℵ₀ × ℵ₀ × ℵ₀ cube to be monochromatic.",
+    "openQuestions": [
+      "What is the minimum cardinality κ such that κ³ → (ℵ₀)³₂?",
+      "Do large cardinal axioms affect these partition relations?",
+      "What about other dimensions (4D, 5D, etc.)?"
+    ]
   }
 }

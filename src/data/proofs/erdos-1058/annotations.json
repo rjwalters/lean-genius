@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-1058-1",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1058: Are there only finitely many n in [p_{k-1}, p_k) such that n!+1 is divisible only by p_k and p_{k+1}? SOLVED by Luca (2001): The only solutions are n = 1, 2, 3, 4, 5.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1058-2",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 36,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Prime Sequence",
+    "content": "The prime sequence p₁ = 2, p₂ = 3, p₃ = 5, p₄ = 7, ... enumerates all primes in increasing order. The problem relates n's position in this sequence to divisibility of n!+1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1058-3",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 67,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Interval Condition",
+    "content": "n ∈ [p_{k-1}, p_k) means p_{k-1} ≤ n < p_k. For example, n=4 is in [3,5) since p₂=3 and p₃=5. The interval determines which primes p_k and p_{k+1} are relevant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1058-4",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 74,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Divisibility Condition",
+    "content": "The only primes dividing n!+1 must be p_k and p_{k+1}. This is extremely restrictive - n!+1 typically has many prime factors, so finding cases with only two is rare.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1058-5",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 94,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Erdős-Stewart Conjecture",
+    "content": "Erdős and Stewart conjectured that only finitely many n satisfy the condition. This appears as Problem A2 in Guy's 'Unsolved Problems in Number Theory'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1058-6",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 111,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "Luca's Theorem",
+    "content": "Luca (2001): The only n satisfying the Erdős-Stewart condition are n = 1, 2, 3, 4, 5. This completely classifies all solutions - there are exactly five.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1058-7",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 129,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Case n = 1",
+    "content": "1! + 1 = 2 = 2¹. The only prime factor is 2 = p₁. This satisfies the condition since n=1 is in the appropriate interval and 2 is the relevant prime.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1058-8",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 147,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Case n = 4",
+    "content": "4! + 1 = 25 = 5². The only prime factor is 5 = p₃. Since n=4 is in [p₂, p₃) = [3, 5), and 5 = p₃, this satisfies the condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1058-9",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 153,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Case n = 5",
+    "content": "5! + 1 = 121 = 11². The only prime factor is 11 = p₅. Since n=5 is in [p₃, p₄) = [5, 7), this satisfies the condition with p₄=7 and p₅=11.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1058-10",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 159,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Case n = 6 Fails",
+    "content": "6! + 1 = 721 = 7 × 103. Since 103 is prime and 103 > p₅ = 11, this has 'extra' prime factors beyond p_k and p_{k+1}. The condition fails for n = 6.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1058-11",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 177,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Wilson's Theorem",
+    "content": "Wilson's theorem: (p-1)! ≡ -1 (mod p) for prime p. This means p divides (p-1)!+1. If n = p_k - 1, then p_k divides n!+1, which explains why certain primes appear.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1058-12",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 170,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Factorial Growth",
+    "content": "n! grows extremely fast (faster than exponential). For large n, n!+1 has many prime factors simply because it's so large. This makes the restricted factorization condition increasingly rare.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1058-13",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 202,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "Lower Bound Technique",
+    "content": "For n ≥ 6, n!+1 grows faster than any power of p_{k+1}. If n!+1 = p_k^a · p_{k+1}^b, the size forces a third prime factor to exist.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1058-14",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 223,
+      "endLine": 229
+    },
+    "type": "concept",
+    "title": "Diophantine Methods",
+    "content": "Luca's proof combines growth rate arguments with diophantine equation techniques. By analyzing the equation n!+1 = p_k^a · p_{k+1}^b, all cases with n ≥ 6 are eliminated.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1058-15",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 234,
+      "endLine": 240
+    },
+    "type": "concept",
+    "title": "Related: n!+1 = m²",
+    "content": "The equation n!+1 = m² has known solutions n = 4, 5, 7 (giving 25 = 5², 121 = 11², 5041 = 71²). This is related to Brocard's problem, which asks if there are infinitely many.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1058-16",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 241,
+      "endLine": 246
+    },
+    "type": "concept",
+    "title": "Brocard's Problem",
+    "content": "Brocard's problem: Are there infinitely many n with n!+1 = m²? This famous open problem is related but different - it asks for perfect squares, not restricted prime factorizations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1058-17",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 279,
+      "endLine": 285
+    },
+    "type": "concept",
+    "title": "Luca's Contributions",
+    "content": "Florian Luca is a renowned specialist in diophantine equations involving factorials and special sequences. He has solved many Erdős problems in this area using sophisticated techniques.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1058-18",
+    "proofId": "erdos-1058",
+    "range": {
+      "startLine": 316,
+      "endLine": 329
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_1058_status: The Erdős-Stewart conjecture is PROVED. There are only finitely many solutions (exactly 5), namely n = 1, 2, 3, 4, 5. Complete classification achieved by Luca (2001).",
+    "significance": "critical"
+  }
+]

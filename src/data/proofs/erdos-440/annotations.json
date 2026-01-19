@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-440-1",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #440: Count indices i where lcm(aᵢ, aᵢ₊₁) ≤ x. Is A(x) = O(√x)? What is max liminf A(x)/√x? SOLVED: YES to first, liminf ≤ 1 with equality for A = ℕ (Erdős-Szemerédi 1980).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-2",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 46,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Increasing Sequence",
+    "content": "An increasing sequence A = {a₁ < a₂ < ...} is represented as a function ℕ → ℕ with strictly_increasing property: aᵢ < aᵢ₊₁ for all i. The canonical example is A = ℕ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-440-3",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 54,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Counting Function A(x)",
+    "content": "A(x) counts indices i where lcm(aᵢ, aᵢ₊₁) ≤ x. This measures how many consecutive pairs in the sequence have 'small' LCM relative to x. The function grows slowly for most sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-4",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 62,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Normalized Ratio",
+    "content": "A(x)/√x is the key ratio to study. The question asks: what is the limiting behavior? For A = ℕ, this ratio approaches 1. The problem asks for the maximum possible liminf.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-440-5",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "LCM of Consecutive Naturals",
+    "content": "lcm(n, n+1) = n(n+1) because gcd(n, n+1) = 1 (consecutive integers are coprime). This fundamental fact makes A = ℕ the extremal sequence with the maximum liminf.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-6",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 89,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Counting for Naturals",
+    "content": "For A = ℕ, A(x) counts n with n(n+1) ≤ x, giving A(x) ≈ √x. This follows from n(n+1) ≈ n² for large n, so n ≤ √x gives approximately √x valid indices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-440-7",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 97,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Naturals Achieve liminf = 1",
+    "content": "For A = ℕ, liminf A(x)/√x = 1. This is the maximum possible value, making the natural numbers the extremal sequence for this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-8",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 108,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "Bounded by √x",
+    "content": "A sequence has bounded_by_sqrt if A(x) ≤ C√x for some constant C > 0. The first question asks if ALL sequences satisfy this. The answer is YES.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-440-9",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 115,
+      "endLine": 122
+    },
+    "type": "theorem",
+    "title": "Tao's Elementary Proof",
+    "content": "Terence Tao gave a simple proof that A(x) = O(√x) for any sequence. Key idea: lcm(a,b) ≤ x constrains both a,b ≤ x, and divisor function estimates control the count.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-10",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 124,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Optimal Constant",
+    "content": "c = Σ_{n≥1} 1/(√n(n+1)) ≈ 1.86 is the sharp constant. This infinite sum converges and gives the exact coefficient in the asymptotic bound A(x) ≤ (c + o(1))√x.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-11",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 131,
+      "endLine": 137
+    },
+    "type": "theorem",
+    "title": "van Doorn's Sharp Bound",
+    "content": "van Doorn proved A(x) ≤ (c + o(1))√x where c ≈ 1.86 is the optimal constant. This was originally in Erdős-Szemerédi (1980) but van Doorn gave a rigorous modern treatment.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-12",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 157,
+      "endLine": 162
+    },
+    "type": "theorem",
+    "title": "Erdős-Szemerédi Theorem",
+    "content": "For any infinite sequence A, liminf A(x)/√x ≤ 1. This answers the second question: the maximum possible liminf is exactly 1, achieved by A = ℕ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-440-13",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 175,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Key Observation",
+    "content": "If lcm(a, b) ≤ x, then a, b ≤ x and both divide lcm(a,b). This heavily constrains possible pairs. The LCM condition forces multiplicative relationships between consecutive elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-440-14",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 182,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Counting Argument",
+    "content": "Fix m = lcm(a, b). Then a, b | m. The number of divisor pairs of m with a < b is O(d(m)), the divisor function. Summing over m ≤ x and using divisor estimates gives O(√x).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-440-15",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 197,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Tao's Proof Sketch",
+    "content": "Write a = dm, b = dn with d = gcd(a,b) and gcd(m,n) = 1. Then lcm = dmn ≤ x. Summing over coprime (m,n) with mn ≤ x/d and over d gives the √x bound. Clean and elementary!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-440-16",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 245,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Primes Case",
+    "content": "For A = primes, consecutive primes p, q are coprime so lcm(p,q) = pq which grows quickly. Thus A(x) is very small - primes are far from extremal for this problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-440-17",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 252,
+      "endLine": 257
+    },
+    "type": "concept",
+    "title": "Powers of 2 Case",
+    "content": "For A = {2^n}, lcm(2^n, 2^{n+1}) = 2^{n+1}. So A(x) = log₂(x), which is O(log x), much smaller than √x. Powers are even farther from extremal than primes.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-440-18",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 302,
+      "endLine": 308
+    },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "Erdős #440 is SOLVED. Both questions answered: (1) A(x) = O(√x) for all sequences, (2) liminf A(x)/√x ≤ 1 always, achieved by A = ℕ. Sharp constant c ≈ 1.86 is optimal.",
+    "significance": "critical"
+  }
+]

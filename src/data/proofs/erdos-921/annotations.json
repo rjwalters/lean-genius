@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-921-1",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #921: For k ≥ 4, what is f_k(n) = largest m such that an n-vertex k-chromatic graph can have all odd cycles of length > m? SOLVED: f_k(n) ≍ n^{1/(k-2)} by Kierstead-Szemerédi-Trotter (1984).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-2",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 46,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "χ(G) is the minimum k such that G has a proper k-coloring - assigning colors 1,...,k to vertices so adjacent vertices get different colors. The chromatic number measures the 'complexity' of a graph's structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-3",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 54,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Odd Cycle and Odd Girth",
+    "content": "An odd cycle is a cycle of odd length (3, 5, 7, ...). The odd girth is the length of the shortest odd cycle, or ∞ if the graph is bipartite (has no odd cycles). f_k(n) asks for the maximum odd girth - 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-4",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "The Function f_k(n)",
+    "content": "f_k(n) = largest m such that there exists an n-vertex graph with χ = k and odd girth > m. This measures how 'spread out' the odd cycles can be while maintaining high chromatic number.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-5",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 88,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Erdős-Gallai Conjecture",
+    "content": "f_k(n) ≍ n^{1/(k-2)} for all k ≥ 4. The notation ≍ means asymptotically equivalent: c₁·n^{1/(k-2)} ≤ f_k(n) ≤ c₂·n^{1/(k-2)} for positive constants c₁, c₂.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-6",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 101,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "Kierstead-Szemerédi-Trotter",
+    "content": "The complete resolution: KST (1984) proved the conjecture for ALL k ≥ 4. This was a major achievement in extremal graph theory, requiring sophisticated techniques from regularity and coloring theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-7",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 112,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "Gallai's Lower Bound",
+    "content": "Gallai (1963): f_4(n) ≫ n^{1/2}. He constructed explicit graphs with chromatic number 4 that have large odd girth. This was the foundational result that started the investigation.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-8",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 121,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Erdős's Upper Bound",
+    "content": "Erdős proved (unpublished): f_4(n) ≪ n^{1/2}. Combined with Gallai's lower bound, this shows f_4(n) ≍ √n exactly. The k = 4 case was completely resolved before the general conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-9",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 145,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Exponent Formula",
+    "content": "The exponent 1/(k-2): for k = 4, exponent = 1/2; for k = 5, exponent = 1/3; for k = 6, exponent = 1/4. As k → ∞, the exponent → 0, meaning large chromatic number forces very short odd cycles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-10",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 155,
+      "endLine": 161
+    },
+    "type": "theorem",
+    "title": "General Lower Bound",
+    "content": "For all k ≥ 4: f_k(n) ≫ n^{1/(k-2)}. Explicit constructions show graphs can avoid short odd cycles while having high chromatic number, up to the predicted limit.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-11",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 163,
+      "endLine": 169
+    },
+    "type": "theorem",
+    "title": "General Upper Bound",
+    "content": "For all k ≥ 4: f_k(n) ≪ n^{1/(k-2)}. This is the harder direction - showing that NO construction can do better than the predicted exponent.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-921-12",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 175,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Bipartite Graphs",
+    "content": "A graph is bipartite (2-colorable) if and only if it has no odd cycles. So χ ≥ 3 requires at least one odd cycle. This is the fundamental connection between odd cycles and chromatic number.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-921-13",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 181,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Odd Cycles Force Colors",
+    "content": "Every odd cycle needs 3 colors. A triangle (3-cycle) immediately forces χ ≥ 3. Longer odd cycles don't directly increase χ, but short ones constrain the graph's structure more severely.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-921-14",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 188,
+      "endLine": 194
+    },
+    "type": "concept",
+    "title": "The Trade-off",
+    "content": "High chromatic number 'wants' many short cycles for density, while large odd girth 'wants' no short odd cycles. The tension between these forces determines the exponent 1/(k-2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-921-15",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 207,
+      "endLine": 212
+    },
+    "type": "concept",
+    "title": "Local Chromatic Number",
+    "content": "The proof uses local chromatic number - the maximum χ of neighborhoods. Graphs with locally small chromatic number can have large odd girth. This local/global interplay is key to the argument.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-921-16",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 214,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "Regularity Methods",
+    "content": "Szemerédi's regularity lemma appears in the proof. It allows decomposing the graph into 'regular' parts where counting arguments work. Szemerédi was a coauthor of the final resolution!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-921-17",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 243,
+      "endLine": 248
+    },
+    "type": "concept",
+    "title": "Erdős Girth Conjecture",
+    "content": "Related result: graphs exist with arbitrarily high girth AND arbitrarily high χ. Erdős proved this using the probabilistic method. Problem #921 asks the quantitative question: how do they trade off?",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-921-18",
+    "proofId": "erdos-921",
+    "range": {
+      "startLine": 285,
+      "endLine": 309
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_921_status: For all k ≥ 4, f_k(n) ≍ n^{1/(k-2)} is proved. This completely resolves the Erdős-Gallai conjecture and characterizes the chromatic number / odd girth trade-off.",
+    "significance": "critical"
+  }
+]

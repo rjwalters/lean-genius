@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-1123-1",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1123: Are the Boolean algebras P(ℕ)/I₁ and P(ℕ)/I₂ isomorphic, where I₁ is the density-zero ideal and I₂ is the log-density-zero ideal? Just-Krawczyk (1984) showed: YES under CH. A remarkable set-theoretic independence result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-2",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 44,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "The natural density of A ⊆ ℕ is d(A) = lim_{n→∞} |A ∩ {1,...,n}|/n. This measures the 'proportion' of natural numbers in A. For example, d(evens) = 1/2, d(primes) = 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-3",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Density Zero",
+    "content": "A set has density zero if |A ∩ {1,...,n}|/n → 0. Examples: squares (density 0), primes (density 0), powers of 2 (density 0). The collection of density-zero sets forms an ideal I₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-4",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 57,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Logarithmic Density",
+    "content": "The log density of A is δ(A) = lim_{n→∞} (1/log n)·Σ_{k∈A, k≤n} 1/k. This weighted measure gives more weight to small elements. Log density exists for sets where natural density may not.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-5",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 74,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "Density Implication",
+    "content": "Natural density 0 implies logarithmic density 0. The converse is FALSE: there exist sets with δ(A) = 0 but d(A) undefined or nonzero. This makes I₂ strictly larger than I₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-6",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 82,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Ideal Containment",
+    "content": "I₁ ⊊ I₂ (strict containment). The log-density-zero ideal is strictly larger because log density is a 'finer' notion - it can detect sparseness that natural density misses.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1123-7",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Primes Example",
+    "content": "The primes have natural density 0 (by prime number theorem: π(n) ~ n/log n). Their logarithmic density is also 0. Both density notions agree for many natural sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1123-8",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 106,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "Boolean Algebra B₁",
+    "content": "B₁ = P(ℕ)/I₁: the power set of ℕ quotiented by the density-zero ideal. Two sets A, B are equivalent iff A Δ B (symmetric difference) has density 0. This is a Boolean algebra under induced operations.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-9",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 117,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "Boolean Algebra B₂",
+    "content": "B₂ = P(ℕ)/I₂: the power set of ℕ quotiented by the log-density-zero ideal. Similar construction but with a finer equivalence relation. More sets become equivalent in B₂ than in B₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-10",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 139,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "The Isomorphism Question",
+    "content": "The central question: Is B₁ ≅ B₂ as Boolean algebras? Erdős and Ulam believed NO (non-isomorphic), but their proof was lost. Just-Krawczyk showed YES under CH!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-11",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 146,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "The Lost Proof",
+    "content": "Erdős wrote: 'When I first visited Ulam in 1943 or 1944 in Madison we had the proof, then six months later we had forgotten the proof... Now the proof is gone and nobody can prove it.' The proof may have been erroneous.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1123-12",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 154,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Finite Quotient Distinction",
+    "content": "P(ℕ)/Fin (mod finite sets) differs structurally from B₁ and B₂. The finite ideal has no upper bound, while I₁ and I₂ are closed under arbitrary unions. This gives different Boolean algebra properties.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1123-13",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 165,
+      "endLine": 171
+    },
+    "type": "theorem",
+    "title": "Just-Krawczyk Theorem",
+    "content": "Just and Krawczyk (1984): Under the Continuum Hypothesis, B₁ and B₂ ARE isomorphic. This was a surprising positive answer to Erdős and Ulam's question, which was posed expecting a negative answer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-14",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 173,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Back-and-Forth Method",
+    "content": "Under CH, both algebras have cardinality ℵ₁ and satisfy similar saturation properties. This enables constructing an isomorphism via the back-and-forth method - a classical technique in model theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1123-15",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 180,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "Independence from ZFC",
+    "content": "The isomorphism question is independent of ZFC. Under CH: B₁ ≅ B₂. In other models of set theory, the answer may differ. This is a case where the foundations of mathematics matter!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-16",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 219,
+      "endLine": 223
+    },
+    "type": "definition",
+    "title": "Continuum Hypothesis",
+    "content": "CH states: |ℝ| = ℵ₁, meaning there is no cardinality strictly between countable and continuum. CH is independent of ZFC (Gödel showed consistency, Cohen showed independence). Many algebraic questions depend on CH.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1123-17",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 284,
+      "endLine": 289
+    },
+    "type": "concept",
+    "title": "The $100 Prize",
+    "content": "Erdős offered $100 for resolving this question, remarking that if it were trivial, he deserved to pay. The Just-Krawczyk resolution (conditional on CH) represents a satisfying answer to this challenge.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1123-18",
+    "proofId": "erdos-1123",
+    "range": {
+      "startLine": 315,
+      "endLine": 319
+    },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "Erdős #1123 is SET-THEORETICALLY DEPENDENT. Under CH, Just-Krawczyk proved B₁ ≅ B₂. In ZFC alone, the question is independent. A beautiful intersection of number theory, algebra, and set theory.",
+    "significance": "critical"
+  }
+]

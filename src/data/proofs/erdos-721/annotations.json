@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-721-1",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #721: Give reasonable bounds for the van der Waerden number W(3,k). Two specific challenges: (1) non-trivial lower bounds, (2) prove W(3,k) < exp(k^c) for c < 1. SOLVED: Both challenges met through work of Green, Hunter, Schoen, and Bloom-Sisask.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-2",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 46,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Van der Waerden's Theorem",
+    "content": "Van der Waerden's theorem (1927): For any r colors and k, there exists W(r,k) such that any r-coloring of {1,...,W(r,k)} contains a monochromatic k-term arithmetic progression. A foundational result in Ramsey theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-3",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 53,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "The Number W(3,k)",
+    "content": "W(3,k) is the off-diagonal van der Waerden number: the minimum n such that any red/blue coloring of {1,...,n} contains either a red 3-term AP or a blue k-term AP. Asymmetric - we fix one color's AP length at 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-4",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 76,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Known Exact Values",
+    "content": "Known values: W(3,3)=9, W(3,4)=18, W(3,5)=22, W(3,6)=32, W(3,7)=46. These were computed through exhaustive search. Beyond W(3,7), exact values are unknown - the computational complexity grows rapidly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-721-5",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 98,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "Graham's Conjecture",
+    "content": "Graham conjectured that W(3,k) ≪ k², suggesting polynomial growth. This was a natural guess based on known small values and the structure of arithmetic progressions. It was a famous open problem for decades.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-6",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 105,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Graham's Conjecture is FALSE",
+    "content": "Green (2022) proved Graham's conjecture is FALSE by establishing a superpolynomial lower bound. This was a major breakthrough showing that W(3,k) grows faster than any polynomial, fundamentally changing our understanding.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-7",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 115,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Green's Lower Bound",
+    "content": "Green (2022): W(3,k) ≥ exp(c · (log k)^{4/3} / (log log k)^{1/3}) for some c > 0. This was the first superpolynomial lower bound, disproving Graham's conjecture and showing the growth is intermediate between polynomial and exponential.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-8",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 126,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "Hunter's Improvement",
+    "content": "Hunter (2022): W(3,k) ≥ exp(c · (log k)² / log log k). This improved Green's exponent from 4/3 to 2, giving a stronger lower bound. The exponent 2 is now believed to be close to the truth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-9",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 149,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Schoen's Upper Bound",
+    "content": "Schoen (2021): W(3,k) < exp(k^c) for some c < 1. This answered Erdős's second challenge, showing subexponential growth. The first proof that W(3,k) doesn't grow as fast as 2^k or similar exponentials.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-10",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 159,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "Bloom-Sisask Upper Bound",
+    "content": "Bloom-Sisask (2023): W(3,k) ≤ exp(C · (log k)^9). The current best upper bound, building on Kelley-Meka's breakthrough on 3-AP free sets. Shows W(3,k) grows much slower than previously thought.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-11",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 181,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Connection to Roth's Theorem",
+    "content": "W(3,k) is intimately connected to Roth's theorem on 3-APs. The density of 3-AP free sets determines upper bounds on W(3,k). Progress on one problem translates to progress on the other.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-721-12",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 187,
+      "endLine": 193
+    },
+    "type": "concept",
+    "title": "Behrend's Construction",
+    "content": "Behrend (1946) constructed 3-AP free subsets of {1,...,n} of size exp(c√(log n)). These dense progression-free sets provide lower bounds for W(3,k) by showing how to avoid 3-APs while using many numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-721-13",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 194,
+      "endLine": 200
+    },
+    "type": "theorem",
+    "title": "Kelley-Meka Breakthrough",
+    "content": "Kelley-Meka (2023): Sets without 3-APs in {1,...,n} have density ≤ exp(-c(log n)^{1/12}). This was a revolutionary breakthrough using almost-periodicity, dramatically improving bounds on 3-AP free sets and thus on W(3,k).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-721-14",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 211,
+      "endLine": 221
+    },
+    "type": "concept",
+    "title": "Open Question: Exact Growth",
+    "content": "Is W(3,k) = exp((log k)^{2+o(1)})? Hunter's lower bound has exponent 2, Bloom-Sisask's upper bound has exponent 9. The true answer is conjectured to be near exponent 2, but the gap remains open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-721-15",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 234,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Green's Technique",
+    "content": "Green used dense model theorems and regularity methods from additive combinatorics. The approach transfers bounds from structured settings to general colorings, capturing the pseudorandom vs structured dichotomy.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-721-16",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 252,
+      "endLine": 258
+    },
+    "type": "concept",
+    "title": "Kelley-Meka Technique",
+    "content": "Kelley-Meka introduced a revolutionary approach using almost-periodicity and Bogolyubov's method. Instead of density increment, they use a 'density decrement' in Fourier space, achieving much better bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-721-17",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 293,
+      "endLine": 299
+    },
+    "type": "concept",
+    "title": "Van der Waerden 1927",
+    "content": "Van der Waerden proved his theorem in 1927 using a double induction argument. The original bounds were astronomical (Ackermann-type), growing faster than any primitive recursive function. Modern bounds are dramatically better.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-721-18",
+    "proofId": "erdos-721",
+    "range": {
+      "startLine": 344,
+      "endLine": 358
+    },
+    "type": "theorem",
+    "title": "Final Status",
+    "content": "erdos_721_status: Both of Erdős's challenges are SOLVED. (1) Non-trivial lower bounds: W(3,k) ≥ exp(c(log k)²/log log k) by Hunter. (2) Subexponential upper bound: W(3,k) ≤ exp(C(log k)^9) by Bloom-Sisask. Graham's polynomial conjecture is FALSE.",
+    "significance": "critical"
+  }
+]

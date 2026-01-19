@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-812-1",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #812 asks two questions about Ramsey number growth: (1) Is R(n+1)/R(n) ≥ 1+c for some c > 0? (2) Is R(n+1) - R(n) ≫ n²? Both remain OPEN. Best known: R(n+1) - R(n) ≥ 4n - 8.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-2",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 39,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Diagonal Ramsey Number",
+    "content": "R(n) is the minimum N such that any 2-coloring of edges of K_N contains a monochromatic K_n. This is THE fundamental object in Ramsey theory, and determining its exact growth is one of the biggest open problems in combinatorics.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-3",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 46,
+      "endLine": 53
+    },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "R(1) = 1, R(2) = 2, and R is strictly increasing. These are the trivial values - the interesting behavior begins with R(3) = 6 and R(4) = 18.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-4",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 63,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Classical Bounds",
+    "content": "2^{n/2} ≤ R(n) ≤ 4^n/√n. The lower bound uses the probabilistic method (Erdős 1947), the upper bound comes from Erdős-Szekeres (1935). The gap between these is HUGE and has barely narrowed in 80+ years.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-5",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 76,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Ratio Conjecture",
+    "content": "First question: Is R(n+1)/R(n) ≥ 1 + c for some c > 0? This would establish that consecutive Ramsey numbers grow by at least a constant multiplicative factor - true exponential growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-6",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 83,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Quadratic Difference Conjecture",
+    "content": "Second question: Is R(n+1) - R(n) ≫ n²? This asks if the additive difference between consecutive Ramsey numbers is at least quadratic, which is much stronger than the known linear bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-7",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 100,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "BEFS Theorem",
+    "content": "Burr-Erdős-Faudree-Schelp (1989): R(n+1) - R(n) ≥ 4n - 8 for all n ≥ 2. This linear lower bound is the best known result on consecutive differences. The gap to quadratic is enormous.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-8",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 114,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Two-Step Bound",
+    "content": "From Problem #165: R(n+2) - R(n) ≫ n^{2-o(1)}. The TWO-step difference is almost quadratic! This suggests the one-step conjecture might be true but is much harder to prove.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-9",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 123,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Gap Observation",
+    "content": "We know R(n+2) - R(n) ≫ n^{2-o(1)} but only R(n+1) - R(n) ≥ 4n - 8. The factor of 2 in the step size makes a huge difference. This suggests growth may be irregular.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-10",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 134,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "Ratio Implies Exponential",
+    "content": "If R(n+1)/R(n) ≥ 1 + c, then R(n) ≥ R(k) · (1+c)^{n-k}, giving true exponential growth. This would narrow the gap between known bounds significantly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-11",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 163,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Ramsey Difficulty",
+    "content": "Even R(5) is unknown! We only know 43 ≤ R(5) ≤ 48. Erdős famously said about R(6): 'we should have to just surrender' if aliens demanded it. Growth rates are even harder than exact values.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-12",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 170,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Irregular Behavior",
+    "content": "The sequence R(n) may have irregular jumps. Some consecutive pairs might grow by more, others by less. Uniform bounds like R(n+1)/R(n) ≥ 1 + c are hard to establish.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-13",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 177,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Probabilistic Limitations",
+    "content": "The probabilistic method gives excellent OVERALL bounds (2^{n/2} ≤ R(n)) but says nothing about consecutive differences. Different techniques are needed for difference questions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-14",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 184,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Computational Barriers",
+    "content": "Cannot be resolved through finite computation alone. Even if we computed R(5), R(6), ..., R(100), that wouldn't prove asymptotic statements. Need theoretical arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-15",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 219,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Ramsey's Theorem (1930)",
+    "content": "Frank Ramsey proved the existence of R(n) in his foundational 1930 paper. Nearly a century later, we still don't know the exact growth rate! A testament to the problem's difficulty.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-16",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 232,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "Erdős Probabilistic Method",
+    "content": "In 1947, Erdős proved R(n) > 2^{n/2} using random graphs - a founding application of the probabilistic method. This lower bound has only been improved by factors of √2, not exponentially.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-812-17",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 259,
+      "endLine": 273
+    },
+    "type": "concept",
+    "title": "Known Values",
+    "content": "R(3)/R(2) = 6/2 = 3, R(4)/R(3) = 18/6 = 3. Both ratios are 3, suggesting c ≈ 2 might work. But with only 2 data points, this is speculative. R(4) - R(3) = 12 ≫ 4·3 - 8 = 4.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-812-18",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 279,
+      "endLine": 308
+    },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "Erdős #812 remains OPEN for both questions. Known: BEFS linear bound and Problem #165's two-step bound. Unknown: whether one-step growth is at least quadratic or whether ratios have a constant lower bound.",
+    "significance": "critical"
+  }
+]

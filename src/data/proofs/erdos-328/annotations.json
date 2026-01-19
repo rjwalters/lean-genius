@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-328-1",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #328: Can sets with bounded representation function r_A ≤ C be partitioned so each piece has r < C? DISPROVED by Nešetřil-Rödl (1985): NO for all C, even with arbitrarily many pieces.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-2",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 38,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Representation Function",
+    "content": "r_A(n) = 1_A * 1_A(n) counts ordered pairs (a,b) ∈ A² with a + b = n. This is the convolution of the indicator function with itself. It measures how 'additively rich' the set A is.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-3",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 55,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Bounded Convolution",
+    "content": "A set has bounded convolution if r_A(n) ≤ C for all n. This means every integer has at most C representations as a sum of two elements from A. Such sets are called 'thin' in additive combinatorics.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-4",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 66,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Sidon Sets (B₂ Sets)",
+    "content": "A Sidon set has all pairwise sums distinct, so a + b = c + d implies {a,b} = {c,d}. Equivalently, r_A(n) ≤ 2 for all n. Named after Simon Sidon, these are fundamental in additive number theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-5",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 74,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "B_h Sets",
+    "content": "A B_h set has all h-wise sums distinct (up to permutation). B₂ = Sidon sets. B_h sets grow as O(n^{1/h}), balancing size against additive structure. Higher h means denser allowed sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-328-6",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 94,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "Partition Definition",
+    "content": "A partition of A into t pieces is A₁,...,Aₜ with ⋃Aᵢ = A and Aᵢ ∩ Aⱼ = ∅ for i ≠ j. The question asks if bounded convolution can be 'improved' by partitioning.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-328-7",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 110,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Erdős-Newman Question",
+    "content": "Can every set with r_A ≤ C be partitioned into t(C) pieces each with r_{Aᵢ} < C? If YES, this would be a remarkable 'improvement' theorem. The question asks if t can depend only on C, not on A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-8",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 127,
+      "endLine": 137
+    },
+    "type": "theorem",
+    "title": "Erdős C=3 Counterexample",
+    "content": "Erdős (1980) first showed the answer is NO for C = 3. He constructed a set A with r_A ≤ 3 such that any partition must have some piece with r_{Aᵢ} ≥ 3. This was the first negative result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-328-9",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 139,
+      "endLine": 154
+    },
+    "type": "theorem",
+    "title": "Erdős Infinitely Many C",
+    "content": "Erdős (1980) extended the counterexample to C = 4 and infinitely many other values of C. The pattern suggested the answer might be NO for all C, but a complete proof was missing.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-328-10",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 160,
+      "endLine": 171
+    },
+    "type": "theorem",
+    "title": "Nešetřil-Rödl Theorem",
+    "content": "Nešetřil and Rödl (1985) proved the complete negative answer: for ALL C ≥ 1, there exists a 'bad' set A with r_A ≤ C that cannot be partitioned into pieces with r < C, regardless of how many pieces are allowed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-11",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 173,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Main Disproof",
+    "content": "The Erdős-Newman conjecture is FALSE. No matter how the partition question is posed (fixed t, t depending on C, even t depending on A itself), the answer is always NO for some sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-12",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 185,
+      "endLine": 196
+    },
+    "type": "theorem",
+    "title": "Strong Negative Result",
+    "content": "Even allowing t to depend on both C AND A, the answer is still NO. There exist sets so 'entangled' that no partition of any size can reduce the maximum representation. This is the strongest form of the disproof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-13",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 202,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "Ramsey Theory Connection",
+    "content": "The proof uses Ramsey theory: view A as vertices, with hyperedges connecting pairs that sum to the same value. Partitioning A is like coloring vertices; Ramsey theory forces monochromatic bad configurations.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-14",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 210,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Construction Idea",
+    "content": "For each C, construct A inductively so that at each stage, any partition must have some piece maintaining r ≥ C. The construction is explicit and the growth rate is controlled.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-328-15",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 229,
+      "endLine": 238
+    },
+    "type": "theorem",
+    "title": "Sidon Set Case",
+    "content": "Even Sidon sets (C = 2) cannot always be partitioned into unique-sum sets (r < 2). This is perhaps the most striking case: Sidon sets are already very sparse, yet cannot be 'improved' further.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-328-16",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 240,
+      "endLine": 246
+    },
+    "type": "definition",
+    "title": "Unique Sum Sets",
+    "content": "A set has unique sums if r_A(n) ≤ 1 for all n. These are extremely sparse (much sparser than Sidon sets). The Nešetřil-Rödl result shows Sidon sets cannot be partitioned into unique-sum pieces.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-328-17",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 265,
+      "endLine": 278
+    },
+    "type": "concept",
+    "title": "Connection to Sum-Free Sets",
+    "content": "Sum-free sets (A + A disjoint from A) are related but different. Schur's theorem says ℕ cannot be finitely partitioned into sum-free sets. The Erdős-Newman question is about representation reduction, not sum-freeness.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-328-18",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 325,
+      "endLine": 334
+    },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "Erdős #328 is DISPROVED. The Erdős-Newman conjecture fails for ALL C ≥ 1. Bounded convolution is a robust property that cannot be improved by partition. A fundamental obstruction in additive combinatorics.",
+    "significance": "critical"
+  }
+]
