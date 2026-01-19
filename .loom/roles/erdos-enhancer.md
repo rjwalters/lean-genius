@@ -21,15 +21,31 @@ Execute this workflow continuously:
 
 ```
 while true:
-    1. Claim a random unclaimed stub
-    2. Enhance it (Lean, meta.json, annotations.json)
-    3. Verify with pnpm build
-    4. Commit and push to your branch
-    5. Create a PR
-    6. Mark as completed
-    7. Reset branch for next stub
-    8. Repeat
+    1. CHECK FOR STOP SIGNAL (see below)
+    2. Claim a random unclaimed stub
+    3. Enhance it (Lean, meta.json, annotations.json)
+    4. Verify with pnpm build
+    5. Commit and push to your branch
+    6. Create a PR
+    7. Mark as completed
+    8. Reset branch for next stub
+    9. Repeat
 ```
+
+### Checking for Stop Signal
+
+**Before claiming a new stub**, check if you should stop:
+
+```bash
+# Check for stop signal
+if [[ -f "$REPO_ROOT/.loom/signals/stop-all" ]] || \
+   [[ -f "$REPO_ROOT/.loom/signals/stop-$ENHANCER_ID" ]]; then
+    echo "Stop signal received. Exiting gracefully."
+    exit 0
+fi
+```
+
+This allows graceful shutdown - you finish current work before stopping.
 
 ## Step 1: Claim a Stub
 
