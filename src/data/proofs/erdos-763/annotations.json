@@ -1,1 +1,202 @@
-[]
+[
+  {
+    "id": "ann-e763-header",
+    "proofId": "erdos-763",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #763: The Erdos-Fuchs Theorem**\n\nThis problem asks whether a set A in N can have its representation count grow perfectly linearly with bounded error.\n\n**The Question:**\nCan sum_{n<=N} r_A(n) = cN + O(1) for some infinite set A and constant c > 0?\n\n**The Answer:** NO (Erdos-Fuchs, 1956)\n\nThe proof shows even o(N^{1/4}/(log N)^{1/2}) error is impossible.",
+    "mathContext": "The representation function r_A(n) = |{(a,b) in A x A : a+b=n}| counts representations of n as a sum of two elements from A. This is the convolution 1_A * 1_A.",
+    "significance": "critical",
+    "relatedConcepts": ["Representation functions", "Additive combinatorics", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e763-rep-count",
+    "proofId": "erdos-763",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "definition",
+    "title": "Representation Count",
+    "content": "**representationCount:**\n\nr_A(n) = |{(a, b) in A x A : a + b = n}|\n\nThis counts ordered pairs from A that sum to n.\n\n**Definition:**\n```lean\ndef representationCount (A : Finset N) (n : N) : N :=\n  (A.filter (fun a => a < n and n - a in A)).card +\n  (if n % 2 = 0 and n / 2 in A then 1 else 0)\n```\n\nThe second term handles the diagonal case a = b = n/2.",
+    "mathContext": "This is the additive convolution 1_A * 1_A evaluated at n, central to additive number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Convolution", "Additive bases", "Counting functions"]
+  },
+  {
+    "id": "ann-e763-rep-count-alt",
+    "proofId": "erdos-763",
+    "range": { "startLine": 56, "endLine": 61 },
+    "type": "definition",
+    "title": "Alternative Representation Count",
+    "content": "**representationCount':**\n\nAn alternative definition using the Cartesian product directly:\n\n```lean\ndef representationCount' (A : Finset N) (n : N) : N :=\n  ((A x A).filter (fun p => p.1 + p.2 = n)).card\n```\n\nThis counts pairs (a, b) in A x A with a + b = n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e763-cumulative",
+    "proofId": "erdos-763",
+    "range": { "startLine": 62, "endLine": 70 },
+    "type": "definition",
+    "title": "Cumulative Representation Function",
+    "content": "**cumulativeRepCount:**\n\nR_A(N) = sum_{n <= N} r_A(n)\n\nThe cumulative sum of representation counts up to N.\n\n```lean\ndef cumulativeRepCount (A : Finset N) (N : N) : N :=\n  sum n in range (N + 1), representationCount' A n\n```\n\nThis equals |{(a,b) in A x A : a + b <= N}|.",
+    "mathContext": "The central object in the Erdos-Fuchs theorem. The question is whether R_A(N) can be approximated by cN with bounded error.",
+    "significance": "critical",
+    "relatedConcepts": ["Summation", "Counting functions", "Asymptotic growth"]
+  },
+  {
+    "id": "ann-e763-linear-growth",
+    "proofId": "erdos-763",
+    "range": { "startLine": 77, "endLine": 85 },
+    "type": "definition",
+    "title": "Linear Growth with Bounded Error",
+    "content": "**HasLinearGrowthBounded:**\n\nA set A has asymptotically linear growth with constant c if R_A(N) = cN + O(1).\n\n```lean\ndef HasLinearGrowthBounded (A : N -> Finset N) (c : R) : Prop :=\n  exists M : R, exists N_0 : N, forall N >= N_0,\n    |cumulativeRepCount (A N) N - c * N| <= M\n```\n\nThis captures the O(1) error: the difference is bounded by some constant M.",
+    "mathContext": "This is the precise formalization of 'cN + O(1)' from asymptotic analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["Big-O notation", "Bounded error", "Linear growth"]
+  },
+  {
+    "id": "ann-e763-truncate",
+    "proofId": "erdos-763",
+    "range": { "startLine": 86, "endLine": 91 },
+    "type": "definition",
+    "title": "Truncation of Infinite Sets",
+    "content": "**truncate:**\n\nTo work with infinite sets in Lean, we truncate to finite initial segments:\n\n```lean\ndef truncate (A : Set N) (n : N) : Finset N :=\n  (Finset.range (n + 1)).filter (. in A)\n```\n\ntruncate(A, n) = A intersect {0, 1, ..., n} as a finite set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e763-erdos-fuchs",
+    "proofId": "erdos-763",
+    "range": { "startLine": 98, "endLine": 113 },
+    "type": "axiom",
+    "title": "Erdos-Fuchs Theorem",
+    "content": "**erdos_fuchs_theorem:**\n\nFor any infinite set A in N and constant c > 0, it is impossible that sum_{n<=N} r_A(n) = cN + O(1).\n\n```lean\naxiom erdos_fuchs_theorem :\n  forall (A : Set N), A.Infinite ->\n  forall (c : R), c > 0 ->\n  not HasLinearGrowthBounded (truncate A) c\n```\n\n**Why axiom?** The proof requires Fourier analysis on the circle, Parseval's identity, and trigonometric sum estimates not yet in Mathlib.",
+    "mathContext": "Published in J. London Math. Soc. (1956) by Erdos and Fuchs. The proof analyzes the generating function (sum z^{a_i})^2.",
+    "significance": "critical",
+    "relatedConcepts": ["Fourier analysis", "Parseval's identity", "Trigonometric sums"]
+  },
+  {
+    "id": "ann-e763-main",
+    "proofId": "erdos-763",
+    "range": { "startLine": 114, "endLine": 124 },
+    "type": "theorem",
+    "title": "Erdos Problem #763: DISPROVED",
+    "content": "**erdos_763:**\n\nThe answer to the Erdos-Turan question is NO.\n\n```lean\ntheorem erdos_763 :\n    not exists (A : Set N) (c : R), A.Infinite and c > 0 and\n      HasLinearGrowthBounded (truncate A) c := by\n  push_neg\n  intro A c hInf hc\n  exact erdos_fuchs_theorem A hInf c hc\n```\n\nThe proof uses push_neg to negate the existential, then applies the axiom.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e763-error-term",
+    "proofId": "erdos-763",
+    "range": { "startLine": 131, "endLine": 137 },
+    "type": "definition",
+    "title": "Error Term",
+    "content": "**errorTerm:**\n\nThe difference between cumulative count and linear approximation:\n\n```lean\ndef errorTerm (A : N -> Finset N) (c : R) (N : N) : R :=\n  cumulativeRepCount (A N) N - c * N\n```\n\nThis is R_A(N) - cN, the fluctuation around linear growth.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e763-strong-form",
+    "proofId": "erdos-763",
+    "range": { "startLine": 138, "endLine": 149 },
+    "type": "axiom",
+    "title": "Erdos-Fuchs Strong Form",
+    "content": "**erdos_fuchs_strong:**\n\nEven sum_{n<=N} r(n) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible.\n\n```lean\naxiom erdos_fuchs_strong :\n  forall (A : Set N), A.Infinite ->\n  forall (c : R), c > 0 ->\n  not forall eventually N in atTop,\n    |errorTerm (truncate A) c N| < N^{1/4} / (log N)^{1/2}\n```\n\nThe error must infinitely often exceed this bound.",
+    "mathContext": "This is the stronger form from the original 1956 paper, showing even small-o error is impossible.",
+    "significance": "key",
+    "relatedConcepts": ["Small-o notation", "Error bounds", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e763-montgomery-vaughan",
+    "proofId": "erdos-763",
+    "range": { "startLine": 150, "endLine": 159 },
+    "type": "axiom",
+    "title": "Montgomery-Vaughan Improvement",
+    "content": "**montgomery_vaughan:**\n\nThe error must exceed N^{1/4} infinitely often (1990).\n\n```lean\naxiom montgomery_vaughan :\n  forall (A : Set N), A.Infinite ->\n  forall (c : R), c > 0 ->\n  forall (eps : R), eps > 0 ->\n  frequently N in atTop, |errorTerm (truncate A) c N| > (1 - eps) * N^{1/4}\n```\n\nThis removes the logarithmic factor from the original bound.",
+    "mathContext": "Published in 'A Tribute to Paul Erdos' (1990). This is essentially optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e763-variance",
+    "proofId": "erdos-763",
+    "range": { "startLine": 166, "endLine": 174 },
+    "type": "concept",
+    "title": "Variance Accumulation",
+    "content": "**Key Insight:**\n\nThe representation function r(n) has inherent variability that cannot average out.\n\nHeuristically:\n- If A has density alpha, then r(n) is approximately alpha^2 * n locally\n- But fluctuations are of order sqrt(n)\n- The Fourier analysis shows cumulative error is Theta(N^{1/4})",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e763-fourier",
+    "proofId": "erdos-763",
+    "range": { "startLine": 176, "endLine": 182 },
+    "type": "concept",
+    "title": "Fourier Analysis Mechanism",
+    "content": "**Analytic Proof Method:**\n\nWriting A = {a_1, a_2, ...}, the generating function is f(z) = sum z^{a_i}.\n\nThe representation count has generating function f(z)^2.\n\nParseval's identity relates:\nintegral |f(e^{i*theta})|^4 d*theta to sum r(n)^2\n\nThis L^4 norm controls the error term.",
+    "mathContext": "The proof uses Fourier analysis on the unit circle, a technique now standard in additive combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Generating functions", "Fourier series", "Parseval's identity"]
+  },
+  {
+    "id": "ann-e763-squares",
+    "proofId": "erdos-763",
+    "range": { "startLine": 189, "endLine": 201 },
+    "type": "definition",
+    "title": "Perfect Squares Example",
+    "content": "**perfectSquares:**\n\nA = {n^2 : n in N} = {0, 1, 4, 9, 16, 25, ...}\n\n```lean\ndef perfectSquares : Set N := {n : N | exists k : N, n = k^2}\n```\n\nFor squares, r(n) = O(n^eps) (very sparse representations).\nThe cumulative sum grows much slower than linear.",
+    "mathContext": "The representation function for squares relates to sums of two squares, connected to Jacobi's formula.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sums of squares", "Jacobi's formula"]
+  },
+  {
+    "id": "ann-e763-arithmetic-prog",
+    "proofId": "erdos-763",
+    "range": { "startLine": 202, "endLine": 208 },
+    "type": "definition",
+    "title": "Arithmetic Progressions",
+    "content": "**arithmeticProgression:**\n\nA = {an + b : n in N} for fixed a, b.\n\n```lean\ndef arithmeticProgression (a b : N) : Set N := \n  {n : N | exists k : N, n = a * k + b}\n```\n\nFor AP's: r(n) is approximately n/a for large n, so R(N) is approximately N^2/(2a^2) - quadratic, not linear.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e763-sidon",
+    "proofId": "erdos-763",
+    "range": { "startLine": 209, "endLine": 218 },
+    "type": "definition",
+    "title": "Sidon Sets (B_2 sequences)",
+    "content": "**IsSidonSet:**\n\nA set A is Sidon if all pairwise sums are distinct:\na + b = c + d with a <= b, c <= d implies a = c and b = d.\n\n```lean\ndef IsSidonSet (A : Set N) : Prop :=\n  forall a b c d : N, a in A -> b in A -> c in A -> d in A ->\n    a <= b -> c <= d -> a + b = c + d -> (a = c and b = d)\n```\n\nFor Sidon sets, r(n) is in {0, 1, 2} for all n.",
+    "mathContext": "Named after Simon Sidon; also called B_2 sequences. Studied extensively in additive combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["B_h sequences", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e763-sidon-theorem",
+    "proofId": "erdos-763",
+    "range": { "startLine": 219, "endLine": 226 },
+    "type": "theorem",
+    "title": "Sidon Sets Cannot Achieve Bounded Error",
+    "content": "**sidon_not_bounded:**\n\nEven Sidon sets cannot achieve linear growth with bounded error.\n\n```lean\ntheorem sidon_not_bounded :\n    forall (A : Set N), IsSidonSet A -> A.Infinite ->\n    forall (c : R), c > 0 -> not HasLinearGrowthBounded (truncate A) c :=\n  fun A _ hInf c hc => erdos_fuchs_theorem A hInf c hc\n```\n\nDespite having r(n) <= 2, Sidon sets still exhibit the N^{1/4} error.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e763-k-fold",
+    "proofId": "erdos-763",
+    "range": { "startLine": 233, "endLine": 246 },
+    "type": "axiom",
+    "title": "Problem #764: k-fold Sums",
+    "content": "**erdos_fuchs_k_fold:**\n\nProblem #764 asks about k-fold representations:\nCan sum_{n<=N} r_k(n) = cN + O(1) where r_k counts representations as sums of k elements?\n\nThe Erdos-Fuchs theorem extends to this case with similar N^{1/4} bounds.\n\nSee erdosproblems.com/764 for the generalization.",
+    "significance": "supporting",
+    "relatedConcepts": ["Problem #764", "k-fold sums"]
+  },
+  {
+    "id": "ann-e763-summary",
+    "proofId": "erdos-763",
+    "range": { "startLine": 258, "endLine": 276 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_763_summary:**\n\nCombines the main results:\n\n```lean\ntheorem erdos_763_summary :\n    (not exists (A : Set N) (c : R), A.Infinite and c > 0 and\n      HasLinearGrowthBounded (truncate A) c) and\n    (forall N : N, cumulativeRepCount (truncate perfectSquares N) N <= N)\n```\n\n1. The main impossibility theorem\n2. Squares have sublinear representation count",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e763-answer",
+    "proofId": "erdos-763",
+    "range": { "startLine": 277, "endLine": 285 },
+    "type": "theorem",
+    "title": "The Final Answer",
+    "content": "**erdos_763_answer:**\n\nThe answer to the Erdos-Turan question is definitively NO.\n\n```lean\ntheorem erdos_763_answer : exists (proof : not exists (A : Set N) (c : R),\n    A.Infinite and c > 0 and HasLinearGrowthBounded (truncate A) c),\n    True := by\n  exact (erdos_763, trivial)\n```\n\nNo infinite set A can have R_A(N) = cN + O(1) for any c > 0.",
+    "significance": "critical"
+  }
+]
