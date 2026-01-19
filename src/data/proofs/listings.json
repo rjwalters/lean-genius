@@ -3580,17 +3580,24 @@
   },
   {
     "id": "erdos-191",
-    "title": "Erdős Problem #191",
+    "title": "Erdős Problem #191: Monochromatic Sets with Large 1/log Sum",
     "slug": "erdos-191",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be arbitrary. Is it true that, if ... is sufficiently large depending on ..., then in any ...-colouring of ... there ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any C > 0, if n is large enough, any 2-coloring of edges of K({2,...,n}) contains monochromatic X with Σ(1/log x) ≥ C. SOLVED by Rödl (2003). Tight bound: Θ(log log log n) by Conlon-Fox-Sudakov.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "graph-coloring",
+      "weighted-sums",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 191,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 25
   },
   {
     "id": "erdos-192",
