@@ -1,1 +1,181 @@
-[]
+[
+  {
+    "id": "ann-e448-header",
+    "proofId": "erdos-448",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #448: Divisors in Dyadic Intervals**\n\nThe problem asks whether divisors of most integers cluster into few dyadic intervals.\n\n**The Question:**\nIs τ⁺(n) < ε·τ(n) for almost all n?\n\n**Status:** DISPROVED (1981)\n\n**Key Results:**\n- Erdős-Tenenbaum (1981): Exceptions have density ≍ ε^(1-o(1))\n- Hall-Tenenbaum (1988): Density ≪ ε log(2/ε); distribution function exists\n- Ford (2008): Στ⁺(n) ≍ x(log x)^(1-α)/(log log x)^(3/2)",
+    "mathContext": "Dyadic intervals are [2^k, 2^(k+1)) for k = 0, 1, 2, ... This partition is fundamental in harmonic analysis and number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Dyadic decomposition", "Density"]
+  },
+  {
+    "id": "ann-e448-tau",
+    "proofId": "erdos-448",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "definition",
+    "title": "The Divisor Function τ(n)",
+    "content": "**tau (τ):**\n\nThe standard divisor counting function - counts all positive divisors of n.\n\n```lean\ndef tau (n : ℕ) : ℕ := n.divisors.card\n```\n\n**Examples:**\n- τ(1) = 1\n- τ(6) = 4 (divisors: 1, 2, 3, 6)\n- τ(p) = 2 for prime p\n- τ(2^k) = k + 1",
+    "mathContext": "Also written d(n) or σ₀(n). This is one of the most fundamental arithmetic functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisors", "Arithmetic functions", "Multiplicative functions"]
+  },
+  {
+    "id": "ann-e448-dyadic",
+    "proofId": "erdos-448",
+    "range": { "startLine": 56, "endLine": 67 },
+    "type": "definition",
+    "title": "Dyadic Intervals",
+    "content": "**inDyadicInterval:**\n\nA divisor d is in the k-th dyadic interval if 2^k ≤ d < 2^(k+1).\n\n```lean\ndef inDyadicInterval (d k : ℕ) : Prop :=\n  2 ^ k ≤ d ∧ d < 2 ^ (k + 1)\n```\n\n**Dyadic intervals:**\n- k=0: [1, 2) contains only 1\n- k=1: [2, 4) contains 2, 3\n- k=2: [4, 8) contains 4, 5, 6, 7\n- k=3: [8, 16) contains 8-15\n\nEach interval doubles in size.",
+    "mathContext": "Dyadic intervals form a partition of ℕ. They're useful because they have scale-invariant properties.",
+    "significance": "critical",
+    "relatedConcepts": ["Dyadic decomposition", "Binary representation"]
+  },
+  {
+    "id": "ann-e448-tauplus",
+    "proofId": "erdos-448",
+    "range": { "startLine": 69, "endLine": 82 },
+    "type": "definition",
+    "title": "The Dyadic Spread Function τ⁺(n)",
+    "content": "**tauPlus (τ⁺):**\n\nCounts the number of dyadic intervals [2^k, 2^(k+1)) that contain at least one divisor of n.\n\n```lean\nnoncomputable def tauPlus (n : ℕ) : ℕ :=\n  (Finset.range (Nat.log 2 n + 1)).filter\n    (fun k => ∃ d ∈ n.divisors, inDyadicInterval d k) |>.card\n```\n\n**Interpretation:**\nτ⁺(n) measures how \"spread out\" the divisors of n are across the dyadic scale.\n\n**Bounds:**\n- τ⁺(n) ≤ τ(n) (each interval needs ≥1 divisor)\n- τ⁺(n) ≤ log₂(n) + 1 (limited intervals)",
+    "mathContext": "This is the key function in the problem - it measures divisor spread rather than divisor count.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor distribution", "Interval counting"]
+  },
+  {
+    "id": "ann-e448-basic-props",
+    "proofId": "erdos-448",
+    "range": { "startLine": 88, "endLine": 117 },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "**Key Properties:**\n\n1. **tau_one**: τ(1) = 1\n2. **tau_pos**: τ(n) ≥ 1 for n ≥ 1\n3. **tau_prime**: τ(p) = 2 for prime p\n4. **tauPlus_one**: τ⁺(1) = 1\n5. **tauPlus_le_tau**: τ⁺(n) ≤ τ(n)\n6. **tauPlus_le_log**: τ⁺(n) ≤ log₂(n) + 1\n\n**Intuition:**\n- τ⁺(n) ≤ τ(n) because each occupied interval needs a divisor\n- Multiple divisors can share one interval (like 2 and 3 both in [2,4))",
+    "significance": "key",
+    "relatedConcepts": ["Function bounds", "Elementary properties"]
+  },
+  {
+    "id": "ann-e448-conjecture",
+    "proofId": "erdos-448",
+    "range": { "startLine": 123, "endLine": 133 },
+    "type": "definition",
+    "title": "The Original Conjecture",
+    "content": "**erdos_448_original_conjecture:**\n\nErdős asked whether, for all ε > 0, we have τ⁺(n) < ε·τ(n) for almost all n.\n\n```lean\ndef erdos_448_original_conjecture : Prop :=\n  ∀ ε : ℝ, ε > 0 →\n    ∃ D : Set ℕ, (∀ n ∈ D, τ⁺(n) < ε * τ(n)) ∧\n    -- D has density 1\n```\n\n**In Words:**\nDo divisors of typical integers concentrate into relatively few dyadic intervals?\n\n**Expected:** YES (most divisors cluster together)\n**Actual:** NO (exceptions have positive density)",
+    "mathContext": "\"Almost all\" means the natural density of exceptions is 0, i.e., lim |{n≤N : exception}|/N = 0.",
+    "significance": "critical",
+    "relatedConcepts": ["Natural density", "Concentration"]
+  },
+  {
+    "id": "ann-e448-disproof",
+    "proofId": "erdos-448",
+    "range": { "startLine": 135, "endLine": 157 },
+    "type": "axiom",
+    "title": "The Erdős-Tenenbaum Disproof",
+    "content": "**erdos_tenenbaum_disproof:**\n\nErdős and Tenenbaum (1981) showed the conjecture is FALSE.\n\n**Key Finding:**\nThe upper density of {n : τ⁺(n) ≥ ε·τ(n)} is ≍ ε^(1-o(1)).\n\nThis means:\n- For small ε, about ε^(1-δ) proportion of integers have spread ≥ ε×count\n- Exceptions are NOT negligible!\n\n**erdos_448 theorem:**\n```lean\ntheorem erdos_448 : ¬ erdos_448_original_conjecture\n```\n\nThe conjecture is definitively false.",
+    "mathContext": "The o(1) term in the exponent means the power approaches 1 as ε→0. So density ≈ ε for small ε.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof", "Upper density", "Counterexamples"]
+  },
+  {
+    "id": "ann-e448-hall-tenenbaum",
+    "proofId": "erdos-448",
+    "range": { "startLine": 163, "endLine": 186 },
+    "type": "axiom",
+    "title": "Hall-Tenenbaum Refinements",
+    "content": "**hall_tenenbaum_upper_density:**\n\nHall and Tenenbaum (1988) improved the bounds:\n\nUpper density of {n : τ⁺(n) ≥ ε·τ(n)} is ≪ ε·log(2/ε).\n\n**tauPlus_ratio_has_distribution:**\n\nMoreover, τ⁺(n)/τ(n) has a distribution function F(x).\n\nThis means: for any x ∈ [0,1], the limit\n```\nlim_{N→∞} (1/N) · |{n ≤ N : τ⁺(n)/τ(n) ≤ x}|\n```\nexists and equals F(x).",
+    "mathContext": "The existence of a distribution function implies the ratio τ⁺/τ has well-defined statistical behavior.",
+    "significance": "key",
+    "relatedConcepts": ["Distribution functions", "Refined estimates"]
+  },
+  {
+    "id": "ann-e448-ford-constant",
+    "proofId": "erdos-448",
+    "range": { "startLine": 192, "endLine": 203 },
+    "type": "definition",
+    "title": "The Ford Constant",
+    "content": "**fordAlpha:**\n\nThe Ford constant appearing in the asymptotic for Στ⁺(n):\n\n```lean\nnoncomputable def fordAlpha : ℝ :=\n  1 - (1 + Real.log (Real.log 2)) / Real.log 2\n```\n\n**Numerical value:** α ≈ 0.08607\n\nThis constant has a natural derivation from the structure of divisors and dyadic intervals.",
+    "mathContext": "This is an example of a precisely computable constant arising from number-theoretic analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Named constants", "Analytic number theory"]
+  },
+  {
+    "id": "ann-e448-ford-asymptotic",
+    "proofId": "erdos-448",
+    "range": { "startLine": 205, "endLine": 214 },
+    "type": "axiom",
+    "title": "Ford's Asymptotic",
+    "content": "**ford_asymptotic:**\n\nFord (2008) proved:\n\n$$\\sum_{n \\leq x} \\tau^+(n) \\asymp x \\frac{(\\log x)^{1-\\alpha}}{(\\log\\log x)^{3/2}}$$\n\nwhere α ≈ 0.08607.\n\n**Comparison:**\n- Στ(n) ≈ x log x (much larger)\n- Στ⁺(n) ≈ x (log x)^0.914 / (log log x)^1.5\n\nThis answers Erdős and Graham's question about the sum.",
+    "mathContext": "The exponent 1-α ≈ 0.914 shows τ⁺ grows almost like x log x but with a small correction.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic formulas", "Summatory functions"]
+  },
+  {
+    "id": "ann-e448-example-six",
+    "proofId": "erdos-448",
+    "range": { "startLine": 220, "endLine": 233 },
+    "type": "theorem",
+    "title": "Example: n = 6",
+    "content": "**example_six:**\n\nFor n = 6 = 2 · 3:\n- Divisors: 1, 2, 3, 6\n- τ(6) = 4\n\n**Dyadic distribution:**\n- [1, 2): contains 1\n- [2, 4): contains 2, 3\n- [4, 8): contains 6\n\nτ⁺(6) = 3 (three intervals occupied)\n\nRatio: τ⁺(6)/τ(6) = 3/4 = 0.75",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete examples", "Small cases"]
+  },
+  {
+    "id": "ann-e448-example-twelve",
+    "proofId": "erdos-448",
+    "range": { "startLine": 235, "endLine": 244 },
+    "type": "theorem",
+    "title": "Example: n = 12",
+    "content": "**example_twelve:**\n\nFor n = 12 = 2² · 3:\n- Divisors: 1, 2, 3, 4, 6, 12\n- τ(12) = 6\n\n**Dyadic distribution:**\n- [1, 2): 1\n- [2, 4): 2, 3\n- [4, 8): 4, 6\n- [8, 16): 12\n\nτ⁺(12) = 4 (four intervals occupied)\n\nRatio: τ⁺(12)/τ(12) = 4/6 ≈ 0.67",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete examples"]
+  },
+  {
+    "id": "ann-e448-powers-of-two",
+    "proofId": "erdos-448",
+    "range": { "startLine": 246, "endLine": 255 },
+    "type": "theorem",
+    "title": "Powers of Two",
+    "content": "**tau_power_of_two:**\n\nFor n = 2^k:\n- Divisors: 1, 2, 4, 8, ..., 2^k (all powers of 2)\n- τ(2^k) = k + 1\n\nEach divisor 2^j is in its own interval [2^j, 2^(j+1))!\n\nSo τ⁺(2^k) = k + 1 as well.\n\n**Ratio:** τ⁺(2^k)/τ(2^k) = 1 (maximum possible)\n\nPowers of 2 have maximally spread divisors.",
+    "significance": "key",
+    "relatedConcepts": ["Prime powers", "Extremal cases"]
+  },
+  {
+    "id": "ann-e448-example-210",
+    "proofId": "erdos-448",
+    "range": { "startLine": 257, "endLine": 261 },
+    "type": "axiom",
+    "title": "Example: n = 210",
+    "content": "**example_210:**\n\nFor n = 210 = 2 · 3 · 5 · 7 (product of first 4 primes):\n- τ(210) = 2⁴ = 16 divisors\n- τ⁺(210) = 8 intervals occupied\n\nRatio: τ⁺(210)/τ(210) = 8/16 = 0.5\n\nMultiple divisors share intervals (e.g., 2 and 3 in [2,4), 5 and 6 and 7 in [4,8)).",
+    "significance": "supporting",
+    "relatedConcepts": ["Primorials", "Highly composite structure"]
+  },
+  {
+    "id": "ann-e448-related-problems",
+    "proofId": "erdos-448",
+    "range": { "startLine": 267, "endLine": 283 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "**Connections to Other Erdős Problems:**\n\n**Problem #446:**\nAsks about the maximum value of τ⁺(n)/τ(n).\nThe disproof of #448 shows this ratio doesn't go to 0.\n\n**Problem #449:**\nAsks about divisors in short intervals [y, 2y).\nThe dyadic case is a special case of this more general question.\n\n**Common Theme:**\nAll three problems study how divisors are distributed across intervals of various types.",
+    "significance": "supporting",
+    "relatedConcepts": ["Problem #446", "Problem #449", "Divisor distribution"]
+  },
+  {
+    "id": "ann-e448-summary",
+    "proofId": "erdos-448",
+    "range": { "startLine": 289, "endLine": 317 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_448_summary:**\n\n```lean\ntheorem erdos_448_summary :\n    (∃ ε, ε > 0 ∧ ...) ∧\n    (∀ n ≥ 1, τ⁺(n) ≤ τ(n)) ∧\n    (0.086 < fordAlpha ∧ fordAlpha < 0.087)\n```\n\n**Summary of Results:**\n\n1. **Conjecture FALSE**: Exceptions have positive density\n2. **Basic bound**: τ⁺(n) ≤ τ(n) always holds\n3. **Ford constant**: α ≈ 0.08607 governs growth\n\n**The Answer:** Divisors do NOT cluster into few dyadic intervals for almost all integers.",
+    "significance": "key",
+    "relatedConcepts": ["Summary theorems", "Main results"]
+  },
+  {
+    "id": "ann-e448-answer",
+    "proofId": "erdos-448",
+    "range": { "startLine": 319, "endLine": 331 },
+    "type": "theorem",
+    "title": "The Final Answer",
+    "content": "**erdos_448_answer:**\n\n```lean\ntheorem erdos_448_answer : ∃ (counterexampleDensity : ℝ → ℝ),\n    ∀ ε, 0 < ε → ε < 1/2 →\n      counterexampleDensity ε > 0\n```\n\n**Conclusion:**\nFor any ε > 0, a positive proportion of integers n satisfy τ⁺(n) ≥ ε·τ(n).\n\nThe conjecture that divisors concentrate is definitively FALSE.",
+    "significance": "critical",
+    "relatedConcepts": ["Final answer", "Disproved conjectures"]
+  }
+]

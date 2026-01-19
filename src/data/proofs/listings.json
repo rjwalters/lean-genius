@@ -5398,17 +5398,25 @@
   },
   {
     "id": "erdos-310",
-    "title": "Erdős Problem #310",
+    "title": "Erdos Problem #310: Unit Fractions from Dense Subsets",
     "slug": "erdos-310",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Is it true that for any ... with ... there exists some ... such that\\[{b}=\\sum_{n\\in S}{n}\\]with ...?\n\n\n\nLiu...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any dense subset A of {1,...,N}, can we find S in A such that the sum of 1/n for n in S equals a/b with bounded denominator? YES, proved by Liu-Sawhney (2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "density",
+      "combinatorics",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 310,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-314",
@@ -7032,17 +7040,23 @@
   },
   {
     "id": "erdos-448",
-    "title": "Erdős Problem #448",
+    "title": "Erdős Problem #448: Divisors in Dyadic Intervals",
     "slug": "erdos-448",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the divisors of ... and ... count the number of ... such that ... has a divisor in .... Is it true that, for al...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is τ⁺(n) < ε·τ(n) for almost all n? NO (DISPROVED) - Erdős-Tenenbaum showed exceptions have positive density.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "disproved",
+      "analytic-number-theory"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 448,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-449",
@@ -12340,17 +12354,23 @@
   },
   {
     "id": "erdos-867",
-    "title": "Erdős Problem #867",
+    "title": "Erdos Problem #867: Consecutive Sum-Free Sets",
     "slug": "erdos-867",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... has no solutions to\\[a_i+a_{i+1}+\\cdots+a_j\\in A\\]then\\[\\lvert A\\rvert \\leq {2}+O(1)?\\]\n\n\n\nA finitary ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that a set A with no consecutive subsequence sums in A has size at most N/2 + O(1)? NO - disproved by Freud (1993) and Coppersmith-Phillips (1996).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "density-bounds",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 867,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-868",
