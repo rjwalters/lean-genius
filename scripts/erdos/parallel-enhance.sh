@@ -23,6 +23,7 @@ REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
 ROLE_FILE="$REPO_ROOT/.loom/roles/erdos-enhancer.md"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
+SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 CLAIM_TTL=90  # Minutes
 
 # Colors
@@ -136,9 +137,63 @@ show_status() {
     # Show worktrees
     echo "=== Worktrees ==="
     git worktree list | grep enhancer || echo "  (no enhancer worktrees)"
+
+    # Show stop signal status
+    echo ""
+    echo "=== Stop Signals ==="
+    if [[ -f "$SIGNALS_DIR/stop-all" ]]; then
+        print_warning "STOP-ALL signal pending - agents will stop after current work"
+    else
+        local has_individual=false
+        for sig in "$SIGNALS_DIR"/stop-enhancer-*; do
+            if [[ -f "$sig" ]]; then
+                has_individual=true
+                local agent_num=$(basename "$sig" | sed 's/stop-enhancer-//')
+                print_warning "STOP signal pending for enhancer-$agent_num"
+            fi
+        done
+        if [[ "$has_individual" == "false" ]]; then
+            echo "  (no stop signals pending)"
+        fi
+    fi
 }
 
-# Stop all agents
+# Signal agents to stop gracefully (finish current work first)
+signal_graceful_stop() {
+    local agent_num="${1:-all}"
+
+    mkdir -p "$SIGNALS_DIR"
+
+    if [[ "$agent_num" == "all" ]]; then
+        touch "$SIGNALS_DIR/stop-all"
+        print_success "Signaled all agents to stop after completing current work"
+        echo ""
+        echo "Agents will:"
+        echo "  1. Finish current stub enhancement"
+        echo "  2. Commit, push, and create PR"
+        echo "  3. Exit cleanly"
+        echo ""
+        echo "Monitor with: $0 --status"
+        echo "Force stop:   $0 --stop"
+    else
+        touch "$SIGNALS_DIR/stop-enhancer-$agent_num"
+        print_success "Signaled enhancer-$agent_num to stop after completing current work"
+    fi
+}
+
+# Clear stop signals
+clear_stop_signals() {
+    rm -f "$SIGNALS_DIR/stop-all" 2>/dev/null || true
+    rm -f "$SIGNALS_DIR/stop-enhancer-"* 2>/dev/null || true
+}
+
+# Check if stop signal exists for an agent
+has_stop_signal() {
+    local agent_num="$1"
+    [[ -f "$SIGNALS_DIR/stop-all" ]] || [[ -f "$SIGNALS_DIR/stop-enhancer-$agent_num" ]]
+}
+
+# Stop all agents (force)
 stop_agents() {
     local running
     running=$(get_running_agents)
@@ -154,6 +209,9 @@ stop_agents() {
             print_success "Stopped $session" || \
             print_warning "Failed to stop $session"
     done <<< "$running"
+
+    # Clear any stop signals
+    clear_stop_signals
 
     # Cleanup stale claims
     print_info "Cleaning up claims..."
@@ -238,6 +296,10 @@ launch_agents() {
     # Create directories
     mkdir -p "$LOGS_DIR"
     mkdir -p "$WORKTREES_DIR"
+    mkdir -p "$SIGNALS_DIR"
+
+    # Clear any old stop signals
+    clear_stop_signals
 
     # Ensure claim system is initialized
     mkdir -p "$REPO_ROOT/research/stub-claims"
@@ -284,15 +346,17 @@ You are working in an isolated git worktree with your own branch.
 ## Quick Start
 
 1. Read the full instructions: \`cat .loom/roles/erdos-enhancer.md\`
-2. Claim a stub: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any\`
-3. Enhance it (Lean proof, meta.json, annotations.json)
-4. Build: \`pnpm build\`
-5. Commit: \`git add -A && git commit -m "Enhance Erdős #N: Title"\`
-6. Push: \`git push -u origin feature/enhancer-$i\`
-7. Create PR: \`gh pr create --title "Enhance Erdős #N" --body "Stub enhancement" --label erdos-enhancement\`
-8. Mark complete: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh complete N\`
-9. Reset for next: \`git checkout main && git pull && git checkout -B feature/enhancer-$i main\`
-10. Repeat from step 2
+2. **Check for stop signal before each iteration:**
+   \`[[ -f \$REPO_ROOT/.loom/signals/stop-all ]] && echo "Stopping" && exit 0\`
+3. Claim a stub: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any\`
+4. Enhance it (Lean proof, meta.json, annotations.json)
+5. Build: \`pnpm build\`
+6. Commit: \`git add -A && git commit -m "Enhance Erdős #N: Title"\`
+7. Push: \`git push -u origin feature/enhancer-$i\`
+8. Create PR: \`gh pr create --title "Enhance Erdős #N" --body "Stub enhancement" --label erdos-enhancement\`
+9. Mark complete: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh complete N\`
+10. Reset for next: \`git checkout main && git pull && git checkout -B feature/enhancer-$i main\`
+11. Repeat from step 2
 
 Start now by running step 1 to read the full instructions, then claim and enhance a stub.
 PROMPT_EOF
@@ -327,6 +391,9 @@ case "${1:-}" in
     --stop)
         stop_agents
         ;;
+    --graceful-stop|-g)
+        signal_graceful_stop "${2:-all}"
+        ;;
     --cleanup)
         cleanup_worktrees
         ;;
@@ -354,7 +421,9 @@ Each agent works in its own git worktree with a dedicated branch.
 Usage:
   $0 [count]            Launch N agents (default: 3, max: 8)
   $0 --status           Show running agents, worktrees, and claims
-  $0 --stop             Stop all agents
+  $0 --graceful-stop    Signal agents to stop after current work
+  $0 --graceful-stop N  Signal agent N to stop after current work
+  $0 --stop             Force stop all agents immediately
   $0 --cleanup          Stop agents and remove all enhancer worktrees
   $0 --attach N         Attach to agent N's tmux session
   $0 --help             Show this help
