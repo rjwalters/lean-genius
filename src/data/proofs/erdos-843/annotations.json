@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e843-header",
+    "proofId": "erdos-843",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #843: Are the Squares Ramsey 2-Complete?**\n\nA set A is **Ramsey r-complete** if for every r-coloring of A, all sufficiently large integers can be written as a monochromatic sum of distinct elements from A.\n\n**Question:** Are the squares Ramsey 2-complete?\n\n**Answer:** YES (Conlon-Fox-Pham 2021)\n\n**Historical Progress:**\n- Burr (unpublished): Claimed k-th powers are Ramsey r-complete\n- Conlon-Fox-Pham (2021): Published proof with sparse subsequence result",
+    "mathContext": "The prize was part of a combined $350 for three Ramsey completeness problems.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Subset sums", "k-th powers"]
+  },
+  {
+    "id": "ann-e843-coloring",
+    "proofId": "erdos-843",
+    "range": { "startLine": 47, "endLine": 58 },
+    "type": "definition",
+    "title": "Coloring and Monochromatic Subsets",
+    "content": "**Coloring A r:**\n\nAn r-coloring assigns each element of A a color from {0, 1, ..., r-1}.\n\n**IsMonochromatic c S:**\n\nA subset S is monochromatic if all its elements have the same color under coloring c.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "Colorings"]
+  },
+  {
+    "id": "ann-e843-distinct-sum",
+    "proofId": "erdos-843",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "definition",
+    "title": "Distinct Sum Representation",
+    "content": "**HasDistinctSumRep n available:**\n\nn can be written as a sum of distinct elements from the available set.\n\nThis formalizes the key property: representing integers as subset sums.",
+    "significance": "key",
+    "relatedConcepts": ["Subset sums", "Integer representation"]
+  },
+  {
+    "id": "ann-e843-ramsey-complete",
+    "proofId": "erdos-843",
+    "range": { "startLine": 77, "endLine": 84 },
+    "type": "definition",
+    "title": "Ramsey r-Complete",
+    "content": "**IsRamseyComplete A r:**\n\nA set A is Ramsey r-complete if for every r-coloring of A, there exists N such that every n ≥ N can be written as a monochromatic sum of distinct elements from A.\n\nThis is a strong completeness property combining Ramsey theory with subset sums.",
+    "mathContext": "The 'sufficiently large' threshold N depends on the coloring.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Completeness"]
+  },
+  {
+    "id": "ann-e843-squares",
+    "proofId": "erdos-843",
+    "range": { "startLine": 86, "endLine": 96 },
+    "type": "definition",
+    "title": "Squares and k-th Powers",
+    "content": "**Squares:** {1, 4, 9, 16, 25, ...} = {k² | k ≥ 1}\n\n**KthPowers k:** {1^k, 2^k, 3^k, ...} = {m^k | m ≥ 1}\n\nNote that Squares = KthPowers 2, which will be used to derive the main result.",
+    "significance": "key",
+    "relatedConcepts": ["Perfect squares", "Powers"]
+  },
+  {
+    "id": "ann-e843-original",
+    "proofId": "erdos-843",
+    "range": { "startLine": 108, "endLine": 122 },
+    "type": "definition",
+    "title": "The Original Question",
+    "content": "**OriginalQuestion:**\n\nAre the squares Ramsey 2-complete?\n\nEquivalently: In any 2-coloring of {1, 4, 9, 16, ...}, can every sufficiently large n be written as a monochromatic sum of distinct squares?\n\n**GeneralizedQuestion:**\n\nFor k ≥ 2, are k-th powers Ramsey r-complete for all r ≥ 2?",
+    "significance": "critical",
+    "relatedConcepts": ["Main conjecture", "Generalization"]
+  },
+  {
+    "id": "ann-e843-burr",
+    "proofId": "erdos-843",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "axiom",
+    "title": "Burr's Unpublished Result",
+    "content": "**burr_unpublished:**\n\nBurr proved that k-th powers are Ramsey r-complete for all r, k ≥ 2.\n\nThis result was reported by Erdős in 1995 but was never formally published.",
+    "mathContext": "The lack of publication left the problem officially open until 2021.",
+    "significance": "key",
+    "relatedConcepts": ["Historical", "Unpublished results"]
+  },
+  {
+    "id": "ann-e843-cfp",
+    "proofId": "erdos-843",
+    "range": { "startLine": 136, "endLine": 146 },
+    "type": "axiom",
+    "title": "Conlon-Fox-Pham (2021)",
+    "content": "**conlon_fox_pham_2021:**\n\nFor every r, k ≥ 2, the set of k-th powers contains a SPARSE Ramsey r-complete subsequence.\n\n'Sparse' means |A ∩ {1,...,N}| ≪ r(log N)², which is optimal up to constants.\n\nThis is stronger than just proving k-th powers are Ramsey complete.",
+    "mathContext": "From arXiv:2104.14766 'Subset sums, completeness and colorings'.",
+    "significance": "critical",
+    "relatedConcepts": ["CFP 2021", "Sparse sequences"]
+  },
+  {
+    "id": "ann-e843-subset",
+    "proofId": "erdos-843",
+    "range": { "startLine": 148, "endLine": 157 },
+    "type": "theorem",
+    "title": "Subset Ramsey Complete",
+    "content": "**subset_ramsey_complete:**\n\nIf A ⊆ B and A is Ramsey r-complete, then B is Ramsey r-complete.\n\nThis is the key lemma: sparse subsequence completeness implies full set completeness.",
+    "significance": "key",
+    "relatedConcepts": ["Monotonicity", "Subset property"]
+  },
+  {
+    "id": "ann-e843-kth-powers",
+    "proofId": "erdos-843",
+    "range": { "startLine": 159, "endLine": 166 },
+    "type": "theorem",
+    "title": "k-th Powers Ramsey Complete",
+    "content": "**kth_powers_ramsey_complete:**\n\nFor k ≥ 2 and r ≥ 2, the k-th powers are Ramsey r-complete.\n\nFollows from CFP's sparse subsequence result plus subset_ramsey_complete.",
+    "significance": "key",
+    "relatedConcepts": ["Main result", "Generalization"]
+  },
+  {
+    "id": "ann-e843-resolved",
+    "proofId": "erdos-843",
+    "range": { "startLine": 172, "endLine": 188 },
+    "type": "theorem",
+    "title": "Problem Resolved",
+    "content": "**squares_ramsey_2_complete, erdos_843_resolved:**\n\nThe squares are Ramsey 2-complete.\n\nProof: Squares = KthPowers 2, and kth_powers_ramsey_complete gives the result for k=2, r=2.",
+    "significance": "critical",
+    "relatedConcepts": ["Resolution", "Main theorem"]
+  },
+  {
+    "id": "ann-e843-density",
+    "proofId": "erdos-843",
+    "range": { "startLine": 194, "endLine": 227 },
+    "type": "axiom",
+    "title": "Density Bounds",
+    "content": "**cfp_density_bounds, burr_erdos_upper_bound:**\n\nOptimal density for Ramsey completeness:\n- Upper: ∃ r-Ramsey complete A with |A ∩ [1,N]| ≪ r(log N)² (CFP)\n- Lower: Any r-Ramsey complete A has |A ∩ [1,N]| ≫ (log N)² (CFP)\n- Previous: Burr-Erdős achieved (log N)³\n\nSo (log N)² is the threshold - CFP achieved optimality.",
+    "significance": "key",
+    "relatedConcepts": ["Density", "Optimal bounds"]
+  },
+  {
+    "id": "ann-e843-related",
+    "proofId": "erdos-843",
+    "range": { "startLine": 229, "endLine": 250 },
+    "type": "concept",
+    "title": "Related Problems and Prize",
+    "content": "**Problems 54, 55 (Related):**\n\nBurr-Erdős posed three related problems on Ramsey complete sequences.\n\n**Prize:**\n\nErdős offered a combined $350 for these three problems, all resolved by Conlon-Fox-Pham.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős prizes", "Related problems"]
+  },
+  {
+    "id": "ann-e843-intuition",
+    "proofId": "erdos-843",
+    "range": { "startLine": 256, "endLine": 273 },
+    "type": "concept",
+    "title": "Intuition and Four Squares",
+    "content": "**Why squares are Ramsey 2-complete:**\n\n1. Squares grow quadratically (not too sparse)\n2. Large integers have many representations as sums of squares\n3. In any 2-coloring, one color class has 'enough' squares\n4. Combinatorics of subset sums ensures coverage\n\n**Lagrange's Four Squares Theorem:**\n\nEvery positive integer is a sum of four squares. Related but doesn't directly imply Ramsey completeness.",
+    "significance": "key",
+    "relatedConcepts": ["Intuition", "Lagrange"]
+  },
+  {
+    "id": "ann-e843-summary",
+    "proofId": "erdos-843",
+    "range": { "startLine": 279, "endLine": 307 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_843_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Are squares Ramsey 2-complete? |\n| Answer | YES (Conlon-Fox-Pham 2021) |\n| Generalization | k-th powers Ramsey r-complete |\n| Optimal density | (log N)² |\n| Prize | Part of $350 combined |",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Final answer"]
+  }
+]
