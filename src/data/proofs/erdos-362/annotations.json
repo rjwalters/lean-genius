@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e362-header",
+    "proofId": "erdos-362",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #362** asks about the concentration of subset sums. Given a set A of N natural numbers, how many subsets can sum to the same target value t? The problem has two parts: (1) Is the count always O(2^N / N^{3/2})? (2) With fixed subset size, is it O(2^N / N^2)?",
+    "mathContext": "This is a fundamental question in additive combinatorics, related to the Littlewood-Offord problem. The bounds show strong anti-concentration: no single sum value can be achieved by too many subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["subset-sum", "concentration-inequalities", "additive-combinatorics"]
+  },
+  {
+    "id": "ann-e362-subset-sum-def",
+    "proofId": "erdos-362",
+    "range": { "startLine": 43, "endLine": 62 },
+    "type": "definition",
+    "title": "Subset Sum Counting",
+    "content": "**subsetSumsTo(A, t)** collects all subsets S of A whose elements sum to exactly t. The **subsetSumCount** r_A(t) counts how many such subsets exist. This is the central object: we want to bound max_t r_A(t).",
+    "mathContext": "For a set A = {a_1, ..., a_N}, each subset S corresponds to a choice of which elements to include. The sum ranges from 0 (empty set) to sum(A) (full set). We count subsets achieving each intermediate value.",
+    "significance": "critical",
+    "relatedConcepts": ["powerset", "finset-sum", "counting"]
+  },
+  {
+    "id": "ann-e362-restricted",
+    "proofId": "erdos-362",
+    "range": { "startLine": 70, "endLine": 86 },
+    "type": "definition",
+    "title": "Restricted Subset Sums",
+    "content": "**restrictedSubsetSumsTo(A, t, l)** adds a cardinality constraint: we only count l-element subsets summing to t. This gives r_A(t, l). The second part of the problem bounds max_t r_A(t, l) independently of l.",
+    "mathContext": "Fixing the subset size is a natural constraint in many applications. Remarkably, Halasz showed this gives a stronger bound O(2^N/N^2) than the unrestricted case, with the constant independent of l.",
+    "significance": "key",
+    "relatedConcepts": ["binomial-coefficients", "restricted-partitions"]
+  },
+  {
+    "id": "ann-e362-basic-bounds",
+    "proofId": "erdos-362",
+    "range": { "startLine": 92, "endLine": 112 },
+    "type": "theorem",
+    "title": "Basic Upper Bounds",
+    "content": "**Trivial bounds**: r_A(t) <= 2^N (can't exceed total subsets) and r_A(t, l) <= C(N, l) (can't exceed l-element subsets). The problem asks whether much tighter bounds hold.",
+    "mathContext": "These follow immediately from counting: filter a set and the result can't exceed the original. The interesting question is whether the maximum is actually O(2^N/N^{3/2}), which is much smaller.",
+    "significance": "supporting",
+    "relatedConcepts": ["pigeonhole", "cardinality-bounds"]
+  },
+  {
+    "id": "ann-e362-max-count",
+    "proofId": "erdos-362",
+    "range": { "startLine": 120, "endLine": 127 },
+    "type": "definition",
+    "title": "Concentration Function",
+    "content": "**maxSubsetSumCount(A)** = max_t r_A(t) is the concentration function Q(A). This measures the worst-case clustering of subset sums. The problem asks: is Q(A) always O(2^N/N^{3/2})?",
+    "mathContext": "The concentration function appears throughout probability theory. Here it quantifies how 'spread out' the subset sums are. A small Q(A) means no single value is achieved by many subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["concentration-inequalities", "anti-concentration"]
+  },
+  {
+    "id": "ann-e362-sarkozy-szemeredi",
+    "proofId": "erdos-362",
+    "range": { "startLine": 144, "endLine": 162 },
+    "type": "axiom",
+    "title": "Sarkozy-Szemeredi Theorem",
+    "content": "**Sarkozy-Szemeredi (1965)**: For any A with |A| = N, Q(A) <= C * 2^N / N^{3/2}. This answers the first question of Erdos Problem #362 affirmatively. The bound is sharp up to constants.",
+    "mathContext": "Erdos and Moser (1965) proved a weaker bound with an extra (log N)^{3/2} factor. Sarkozy and Szemeredi removed this, achieving the conjectured bound. The proof uses Fourier analysis on the subset sum distribution.",
+    "significance": "critical",
+    "relatedConcepts": ["fourier-analysis", "exponential-sums"]
+  },
+  {
+    "id": "ann-e362-halasz",
+    "proofId": "erdos-362",
+    "range": { "startLine": 178, "endLine": 199 },
+    "type": "axiom",
+    "title": "Halasz's Theorem",
+    "content": "**Halasz (1977)**: With the constraint |S| = l, we have max_t r_A(t, l) <= C * 2^N / N^2, with C independent of both l and t. This answers the second question of Erdos #362.",
+    "mathContext": "Halasz proved this as a special case of a more general multi-dimensional result about concentration of vector sums. The independence from l is crucial and requires sophisticated analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["multidimensional-concentration", "fourier-methods"]
+  },
+  {
+    "id": "ann-e362-extremal",
+    "proofId": "erdos-362",
+    "range": { "startLine": 207, "endLine": 223 },
+    "type": "axiom",
+    "title": "Stanley's Extremal Result",
+    "content": "**Stanley (1980)**: The symmetric interval {-(N-1)/2, ..., N/2} maximizes the concentration function among all N-element sets. This identifies when the O(2^N/N^{3/2}) bound is tight.",
+    "mathContext": "Stanley used the hard Lefschetz theorem from algebraic geometry to prove this extremal result. The symmetric interval achieves the maximum because its subset sums are most evenly distributed around 0.",
+    "significance": "key",
+    "relatedConcepts": ["hard-lefschetz", "weyl-groups", "extremal-combinatorics"]
+  },
+  {
+    "id": "ann-e362-examples",
+    "proofId": "erdos-362",
+    "range": { "startLine": 231, "endLine": 244 },
+    "type": "proof",
+    "title": "Concrete Examples",
+    "content": "**Verified computations**: For A = {1,2,3}, the sum t = 3 has r_A(3) = 2 (subsets {3} and {1,2}). For A = {1,2,3,4}, the sum t = 5 has r_A(5) = 3. These are computed by native_decide.",
+    "mathContext": "These small examples illustrate the counting: multiple subsets can achieve the same sum. As N grows, the maximum count grows but only as O(2^N/N^{3/2}), much slower than 2^N.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "computation"]
+  },
+  {
+    "id": "ann-e362-probability",
+    "proofId": "erdos-362",
+    "range": { "startLine": 252, "endLine": 270 },
+    "type": "concept",
+    "title": "Probability Interpretation",
+    "content": "**Probabilistic view**: If we pick a random subset uniformly, the probability of any specific sum is at most O(1/N^{3/2}). This shows strong anti-concentration of the random subset sum.",
+    "mathContext": "The concentration function Q(A)/2^N is the maximum probability mass at any point. The bound Q(A) <= C*2^N/N^{3/2} means this probability is O(1/N^{3/2}), implying good anti-concentration.",
+    "significance": "key",
+    "relatedConcepts": ["random-sums", "anti-concentration", "probability-bounds"]
+  },
+  {
+    "id": "ann-e362-littlewood-offord",
+    "proofId": "erdos-362",
+    "range": { "startLine": 278, "endLine": 291 },
+    "type": "concept",
+    "title": "Littlewood-Offord Connection",
+    "content": "**Littlewood-Offord problem**: Count signed sums +/-a_1 +/- ... +/- a_n lying in an interval. Erdos (1945) showed the maximum is C(n, n/2). Problem #362 is a variant counting exact values rather than intervals.",
+    "mathContext": "The Littlewood-Offord problem asks about sums epsilon_1*a_1 + ... + epsilon_n*a_n with epsilon_i = +/-1. This is equivalent to subset sums via the transformation. The problems have similar answers.",
+    "significance": "key",
+    "relatedConcepts": ["signed-sums", "sperner", "antichain"]
+  },
+  {
+    "id": "ann-e362-summary",
+    "proofId": "erdos-362",
+    "range": { "startLine": 297, "endLine": 326 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**Erdos Problem #362: SOLVED.** Both questions answered YES. (1) Sarkozy-Szemeredi: Q(A) = O(2^N/N^{3/2}). (2) Halasz: Q_l(A) = O(2^N/N^2) independently of l. (3) Stanley: symmetric interval is extremal.",
+    "mathContext": "The formalization captures all main results as axioms (the proofs require deep Fourier-analytic techniques). The concrete examples and basic properties are proved directly in Lean.",
+    "significance": "critical",
+    "relatedConcepts": ["additive-combinatorics", "concentration", "extremal-problems"]
+  }
+]

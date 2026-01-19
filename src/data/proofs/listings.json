@@ -5978,17 +5978,24 @@
   },
   {
     "id": "erdos-362",
-    "title": "Erdős Problem #362",
+    "title": "Erdos Problem #362: Subset Sum Concentration",
     "slug": "erdos-362",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of size .... Is it true that, for any fixed ..., there are\\[\\ll {N^{3/2}}\\]many ... such that ...?\n\nI...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a finite set A of N natural numbers, the number of subsets summing to any fixed target t is O(2^N / N^{3/2}), and with fixed subset size l, it is O(2^N / N^2).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "subset-sums",
+      "concentration",
+      "littlewood-offord",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 362,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-363",

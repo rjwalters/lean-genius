@@ -1,33 +1,173 @@
 {
   "id": "erdos-362",
-  "title": "Erdős Problem #362",
+  "title": "Erdos Problem #362: Subset Sum Concentration",
   "slug": "erdos-362",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of size .... Is it true that, for any fixed ..., there are\\[\\ll {N^{3/2}}\\]many ... such that ...?\n\nI...",
+  "description": "For a finite set A of N natural numbers, the number of subsets summing to any fixed target t is O(2^N / N^{3/2}), and with fixed subset size l, it is O(2^N / N^2).",
   "meta": {
-    "author": "Unknown",
+    "author": "Sarkozy-Szemeredi (1965), Halasz (1977)",
     "sourceUrl": "https://erdosproblems.com/362",
-    "date": "",
-    "status": "pending",
+    "date": "1965, 1977",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos362Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "subset-sums",
+      "concentration",
+      "littlewood-offord",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 362,
     "erdosUrl": "https://erdosproblems.com/362",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power set of a finite set",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for fractional powers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "subsetSumsTo definition: subsets of A summing to t",
+      "subsetSumCount definition: count of subsets achieving sum t",
+      "restrictedSubsetSumsTo: l-element subsets summing to t",
+      "restrictedSubsetSumCount: count with cardinality constraint",
+      "maxSubsetSumCount: concentration function Q(A)",
+      "maxRestrictedSubsetSumCount: restricted concentration",
+      "sarkozy_szemeredi_theorem axiom: O(2^N/N^{3/2}) bound",
+      "halasz_theorem axiom: O(2^N/N^2) restricted bound",
+      "stanley_extremal axiom: symmetric interval is extremal",
+      "Concrete examples for {1,2,3} and {1,2,3,4}",
+      "Probability interpretation of concentration",
+      "littlewood_offord_connection: relation to LO problem",
+      "erdos_362_summary: main theorem combining both parts"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #362 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a finite set of size $N$. Is it true that, for any fixed $t$, there are\\[\\ll \\frac{2^N}{N^{3/2}}\\]many $S\\subseteq A$ such that $\\sum_{n\\in S}n=t$?\n\nIf we further ask that $\\lvert S\\rvert=l$ (for any fixed $l$) then is the number of solutions\\[\\ll \\frac{2^N}{N^2},\\]with the implied constant independent of $l$ and $t$?\n\n\n\nErd\\H{o}s and Moser \\cite{Er65} proved the first bound with an additional factor of $(\\log n)^{3/2}$. This was removed by S\\'{a}rk\\\"{o}zy and Szemer\\'{e}di \\cite{SaSz65}, thereby answering the first question in the affirmative. Stanley \\cite{St80} has shown that this quantity is maximised when $A=\\{-\\lfloor \\frac{N-1}{2}\\rfloor,\\ldots,\\lfloor\\frac{N}{2}\\rfloor\\}$.\n\nThe second question was answered in the affirmative by Hal\\'{a}sz \\cite{Ha77}, as a consequence of a more general multi-dimensional result.\n\n\n\n\nReferences\n\n\n[Er65] Erd\\H{o}s, P., Extremal problems in number theory. Proc. Sympos. Pure Math., Vol. VIII (1965), 181-189.\n\n[Ha77] Hal\\'{a}sz, G., Estimates for the concentration function of combinatorial\nnumber theory and probability. Period. Math. Hungar. (1977), 197--211.\n\n[SaSz65] S\\'{a}rk\\\"{o}zi, A. and Szemer\\'{e}di, E., \\\"{U}ber ein Problem von Erd\\H{o}s und Moser. Acta Arith. (1965), 205-208.\n\n[St80] Stanley, Richard P., Weyl groups, the hard Lefschetz theorem, and the Sperner property. SIAM J. Algebraic Discrete Methods (1980), 168-184.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #362**\n\nThis problem concerns the concentration of subset sums, a fundamental question in additive combinatorics.\n\n**Key History:**\n- Erdos and Moser (1965): Posed the problem and proved an initial bound with extra logarithmic factor\n- Sarkozy and Szemeredi (1965): Removed the log factor, proving the sharp O(2^N/N^{3/2}) bound\n- Halasz (1977): Proved the stronger O(2^N/N^2) bound for fixed subset size via multi-dimensional methods\n- Stanley (1980): Identified the symmetric interval as the extremal set using algebraic methods\n\n**Mathematical Setting:**\nGiven a set A of N natural numbers, we count how many subsets sum to a given target. The question is whether this count is always much smaller than the total 2^N subsets. Both conjectured bounds were proved, showing strong anti-concentration of subset sums.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $A \\subseteq \\mathbb{N}$ be a finite set with $|A| = N$. For any fixed target sum $t$:\n\n1. Is the number of subsets $S \\subseteq A$ with $\\sum_{n \\in S} n = t$ bounded by $\\ll \\frac{2^N}{N^{3/2}}$?\n\n2. If we additionally require $|S| = l$ (for any fixed $l$), is the number of solutions $\\ll \\frac{2^N}{N^2}$?\n\n**Answer: YES to both questions.**\n\nThe first part was proved by Sarkozy and Szemeredi (1965), and the second by Halasz (1977).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Subset Sum Sets:** Define subsetSumsTo(A, t) as subsets of A summing to t\n\n2. **Counting Functions:**\n   - subsetSumCount r_A(t): number of subsets summing to t\n   - restrictedSubsetSumCount r_A(t, l): count with |S| = l constraint\n   - maxSubsetSumCount Q(A): maximum over all t\n\n3. **Main Theorems:** Axiomatize Sarkozy-Szemeredi (Part 1) and Halasz (Part 2)\n\n4. **Examples:** Verify counts for small sets using native_decide\n\n5. **Extremal Set:** Stanley's result on symmetric intervals\n\n6. **Connections:** Littlewood-Offord problem and probabilistic interpretation",
+    "keyInsights": [
+      "**Concentration Function:** Q(A) = max_t r_A(t) measures how 'concentrated' subset sums can be",
+      "**O(2^N/N^{3/2}) Bound:** Far smaller than 2^N; most sums are achieved by few subsets",
+      "**Cardinality Constraint Helps:** Fixing |S| = l gives even stronger O(2^N/N^2) bound",
+      "**Symmetric Interval Extremal:** The set {0,1,...,N-1} maximizes concentration",
+      "**Littlewood-Offord Connection:** Related to counting sums +/-a_1 +/- ... +/- a_n in an interval",
+      "**Probability View:** Max probability of any single sum is O(1/N^{3/2})"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "subset-sum-counting",
+      "title": "Subset Sum Counting",
+      "summary": "subsetSumsTo, subsetSumCount definitions and notation",
+      "startLine": 37,
+      "endLine": 62
+    },
+    {
+      "id": "restricted-sums",
+      "title": "Restricted Subset Sums",
+      "summary": "restrictedSubsetSumsTo, restrictedSubsetSumCount with cardinality constraint",
+      "startLine": 64,
+      "endLine": 86
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "empty_sums_to_zero, subsetSumCount_le_pow, restrictedSubsetSumCount_le_choose",
+      "startLine": 88,
+      "endLine": 112
+    },
+    {
+      "id": "max-count",
+      "title": "Maximum Subset Sum Count",
+      "summary": "maxSubsetSumCount concentration function Q(A)",
+      "startLine": 114,
+      "endLine": 127
+    },
+    {
+      "id": "sarkozy-szemeredi",
+      "title": "Sarkozy-Szemeredi Theorem",
+      "summary": "erdos_moser_bound, sarkozy_szemeredi_theorem, erdos_362_part1",
+      "startLine": 129,
+      "endLine": 162
+    },
+    {
+      "id": "halasz",
+      "title": "Halasz's Theorem",
+      "summary": "maxRestrictedSubsetSumCount, halasz_theorem, erdos_362_part2",
+      "startLine": 164,
+      "endLine": 199
+    },
+    {
+      "id": "extremal-set",
+      "title": "The Extremal Set",
+      "summary": "symmetricIntervalSet, stanley_extremal",
+      "startLine": 201,
+      "endLine": 223
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "summary": "Verified counts for {1,2,3} and {1,2,3,4}",
+      "startLine": 225,
+      "endLine": 244
+    },
+    {
+      "id": "probability",
+      "title": "Probability Interpretation",
+      "summary": "maxSubsetSumProbability, probability_bound",
+      "startLine": 246,
+      "endLine": 270
+    },
+    {
+      "id": "littlewood-offord",
+      "title": "Littlewood-Offord Connection",
+      "summary": "littlewood_offord_connection relating to classical problem",
+      "startLine": 272,
+      "endLine": 291
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_362_summary, erdos_362_answer",
+      "startLine": 293,
+      "endLine": 326
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #362 asked whether subset sums are anti-concentrated: can many subsets of a set achieve the same sum? Both questions were answered affirmatively. Sarkozy and Szemeredi (1965) proved the O(2^N/N^{3/2}) bound, and Halasz (1977) proved the stronger O(2^N/N^2) bound for fixed-size subsets. Stanley (1980) showed the symmetric interval is the extremal case.",
+    "implications": "**Combinatorial Connections**\n\n1. **Additive Combinatorics:** Fundamental result on structure of subset sums\n\n2. **Littlewood-Offord Problem:** Closely related to counting signed sums in intervals\n\n3. **Random Sums:** Implies strong anti-concentration for random subset sums\n\n4. **Extremal Combinatorics:** Stanley's algebraic characterization of extremal sets\n\n5. **Probabilistic Method:** The bounds have natural probabilistic interpretations",
+    "openQuestions": [
+      "Exact constants in the asymptotic bounds",
+      "Higher-dimensional generalizations (Halasz's original motivation)",
+      "Optimal bounds for specific families of sets",
+      "Connections to inverse Littlewood-Offord problems",
+      "Computational complexity of finding concentrated sets"
+    ]
   }
 }
