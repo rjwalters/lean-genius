@@ -1,1 +1,136 @@
-[]
+[
+  {
+    "id": "ann-e806-header",
+    "proofId": "erdos-806",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #806: Small Bases for Sumsets**\n\nThe problem asks: given a \"small\" set A ⊆ {1,...,n} with |A| ≤ √n, can we find an even smaller set B such that A ⊆ B + B?\n\n**Key Question:** Can we achieve |B| = o(√n), meaning |B| grows strictly slower than √n?\n\n**Answer:** YES! The optimal bound is Θ((log log n / log n) · √n).\n\nThis was open for 32 years (1977-2009), demonstrating the depth of these additive combinatorics questions.",
+    "mathContext": "A set B is called a basis (or additive basis of order 2) for A if every element of A can be written as a sum of two elements from B.",
+    "significance": "critical",
+    "relatedConcepts": ["Additive bases", "Sumsets", "Kakeya problems"]
+  },
+  {
+    "id": "ann-e806-sumset",
+    "proofId": "erdos-806",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "Sumset Definition",
+    "content": "**finsetSumset B:**\n\nThe sumset B + B is defined as:\n$$B + B = \\{b_1 + b_2 : b_1, b_2 \\in B\\}$$\n\nImplemented using the cartesian product B × B and mapping to sums.\n\n**Example:** If B = {0, 1, 3}, then B + B = {0, 1, 2, 3, 4, 6}.",
+    "significance": "critical",
+    "relatedConcepts": ["Sumsets", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e806-basis",
+    "proofId": "erdos-806",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "definition",
+    "title": "Basis Predicate",
+    "content": "**IsBasisFor B A:**\n\nB is a basis for A if A ⊆ B + B, meaning every element of A can be written as a sum of two elements from B.\n\n**Key insight:** We want to find the SMALLEST B that works.\n\n**Trivial solution:** B = A ∪ {0} always works (since a = a + 0), but this gives |B| ≈ |A|, not o(|A|).",
+    "significance": "critical",
+    "relatedConcepts": ["Additive bases", "Covering problems"]
+  },
+  {
+    "id": "ann-e806-sumset-bound",
+    "proofId": "erdos-806",
+    "range": { "startLine": 61, "endLine": 70 },
+    "type": "theorem",
+    "title": "Sumset Size Bound",
+    "content": "**sumset_card_bound:**\n\n```lean\ntheorem sumset_card_bound (B : Finset ℤ) :\n    (finsetSumset B).card ≤ B.card * B.card\n```\n\nThe sumset has at most |B|² elements (from |B|² possible pairs). In practice, |B + B| is often much smaller due to collisions (different pairs giving the same sum).",
+    "significance": "key",
+    "relatedConcepts": ["Sumset structure", "Combinatorial bounds"]
+  },
+  {
+    "id": "ann-e806-lower-bound",
+    "proofId": "erdos-806",
+    "range": { "startLine": 96, "endLine": 107 },
+    "type": "axiom",
+    "title": "Erdős-Newman Lower Bound (1977)",
+    "content": "**erdos_newman_lower_bound:**\n\nThere exist \"hard\" sets A with |A| ≈ √n such that ANY basis B for A must satisfy:\n$$|B| \\geq (1-\\varepsilon) \\cdot \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}$$\n\n**Significance:** This shows we cannot do better than (log log n / log n) · √n. The question was: can we achieve this for ALL A?",
+    "mathContext": "Erdős and Newman constructed specific sets A with this property, but didn't know if all A could be covered efficiently.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Hard instances"]
+  },
+  {
+    "id": "ann-e806-upper-bound",
+    "proofId": "erdos-806",
+    "range": { "startLine": 115, "endLine": 127 },
+    "type": "axiom",
+    "title": "Alon-Bukh-Sudakov Upper Bound (2009)",
+    "content": "**alon_bukh_sudakov_upper_bound:**\n\nFor ANY A ⊆ {1,...,n} with |A| ≤ √n, there exists B such that:\n1. A ⊆ B + B (B is a basis for A)\n2. |B| ≤ C · (log log n / log n) · √n\n\n**This resolves the problem!** The upper bound matches the lower bound up to a constant C.\n\nThe proof uses ideas from discrete Kakeya problems - an unexpected connection to geometric combinatorics.",
+    "mathContext": "Published in Israel Journal of Mathematics (2009). The paper is titled 'Discrete Kakeya-type problems and small bases.'",
+    "significance": "critical",
+    "relatedConcepts": ["Upper bounds", "Kakeya problems", "Probabilistic method"]
+  },
+  {
+    "id": "ann-e806-main-theorem",
+    "proofId": "erdos-806",
+    "range": { "startLine": 129, "endLine": 143 },
+    "type": "theorem",
+    "title": "Main Theorem: Erdős #806 Solved",
+    "content": "**erdos_806:**\n\n```lean\ntheorem erdos_806 :\n    ∀ n : ℕ, n ≥ 2 →\n      ∀ A : Finset ℤ, ... → A.card ≤ Nat.sqrt n →\n        ∃ B : Finset ℤ, IsBasisFor B A ∧ B.card < Nat.sqrt n\n```\n\nThe answer to Erdős's question is YES: every A has a basis B with |B| = o(√n).",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Existence theorem"]
+  },
+  {
+    "id": "ann-e806-tight-bound",
+    "proofId": "erdos-806",
+    "range": { "startLine": 151, "endLine": 168 },
+    "type": "theorem",
+    "title": "Tight Characterization",
+    "content": "**optimal_basis_size:**\n\nCombining Erdős-Newman (lower) and Alon-Bukh-Sudakov (upper):\n$$|B|_{\\text{optimal}} = \\Theta\\left(\\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}\\right)$$\n\nThis is a rare example of a tight result in additive combinatorics - both bounds match!",
+    "significance": "critical",
+    "relatedConcepts": ["Tight bounds", "Optimal characterization"]
+  },
+  {
+    "id": "ann-e806-kakeya",
+    "proofId": "erdos-806",
+    "range": { "startLine": 176, "endLine": 189 },
+    "type": "concept",
+    "title": "Kakeya Connection",
+    "content": "**kakeya_connection:**\n\nThe Alon-Bukh-Sudakov proof uses ideas from discrete Kakeya problems!\n\n**Kakeya Problem:** Find the smallest set containing a unit line segment in every direction.\n\n**Connection:** Think of B as \"base points\" and B + B as \"midpoints of pairs.\" The geometric structure of how pairs share base points mirrors Kakeya-type arguments.\n\nThis unexpected geometry-number theory connection is one of the beautiful aspects of the proof.",
+    "mathContext": "The Kakeya conjecture is a famous open problem in analysis. Discrete versions have surprising applications in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Kakeya sets", "Geometric combinatorics"]
+  },
+  {
+    "id": "ann-e806-sidon",
+    "proofId": "erdos-806",
+    "range": { "startLine": 206, "endLine": 217 },
+    "type": "definition",
+    "title": "Sidon Sets",
+    "content": "**IsSidonSet S:**\n\nA Sidon set (or B₂ sequence) has all pairwise sums distinct:\n$$a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$$\n\n**Connection to #806:** For Sidon sets, |S + S| = (|S|² + |S|)/2 (maximal). Erdős #806 is dual: given A, find small B with A ⊆ B + B.",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "B₂ sequences", "Sumset structure"]
+  },
+  {
+    "id": "ann-e806-trivial-basis",
+    "proofId": "erdos-806",
+    "range": { "startLine": 231, "endLine": 247 },
+    "type": "theorem",
+    "title": "Trivial Basis",
+    "content": "**trivial_basis:**\n\n```lean\ntheorem trivial_basis (A : Finset ℤ) :\n    IsBasisFor (A ∪ {0}) A\n```\n\nFor any A, the set B = A ∪ {0} is a basis, since a = a + 0 ∈ B + B for any a ∈ A.\n\nThis gives |B| = |A| + 1, which is NOT o(|A|). The non-trivial content of Erdős #806 is that we can do logarithmically better.",
+    "significance": "key",
+    "relatedConcepts": ["Trivial bounds", "Baseline comparison"]
+  },
+  {
+    "id": "ann-e806-asymptotics",
+    "proofId": "erdos-806",
+    "range": { "startLine": 261, "endLine": 271 },
+    "type": "concept",
+    "title": "Asymptotic Behavior",
+    "content": "**log_factor_is_o_one:**\n\nThe factor (log log n / log n) tends to 0 as n → ∞.\n\n**Why o(√n)?** Since (log log n / log n) → 0, we have:\n$$C \\cdot \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n} = o(\\sqrt{n})$$\n\nFor any ε > 0 and large enough n, the basis size is < ε · √n.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotics", "Little-o notation", "Limits"]
+  },
+  {
+    "id": "ann-e806-summary",
+    "proofId": "erdos-806",
+    "range": { "startLine": 277, "endLine": 302 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_806_summary:**\n\n**Question:** For A ⊆ {1,...,n} with |A| ≤ √n, does there exist B with |B| = o(√n) such that A ⊆ B + B?\n\n**Answer:** YES (Alon-Bukh-Sudakov, 2009)\n\n**Optimal Bound:** Θ((log log n / log n) · √n)\n\nThis closed a 32-year-old problem in additive combinatorics, matching the 1977 Erdős-Newman lower bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Problem resolution"]
+  }
+]

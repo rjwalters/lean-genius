@@ -11640,17 +11640,24 @@
   },
   {
     "id": "erdos-806",
-    "title": "Erdős Problem #806",
+    "title": "Erdős Problem #806: Small Bases for Sumsets",
     "slug": "erdos-806",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with .... Must there exist some ... with ... such that ...?\n\n\n\nA problem of Erds and Newman , who proved that there e...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For A ⊆ {1,...,n} with |A| ≤ √n, must there exist B with |B| = o(√n) such that A ⊆ B + B? YES, with optimal bound Θ((log log n / log n) · √n).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "bases",
+      "kakeya",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 806,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 13
   },
   {
     "id": "erdos-807",
