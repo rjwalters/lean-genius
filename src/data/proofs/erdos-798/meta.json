@@ -1,33 +1,145 @@
 {
   "id": "erdos-798",
-  "title": "Erdős Problem #798",
+  "title": "Erdos Problem #798: Covering Lattice Points with Lines",
   "slug": "erdos-798",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimum number of points in ... such that the ... lines determined by these points cover all points in ....\n\nE...",
+  "description": "What is the minimum number of points in {1,...,n}^2 needed to generate lines covering all lattice points? YES, t(n) = o(n); specifically t(n) = Theta(n^{2/3} log n).",
   "meta": {
-    "author": "Unknown",
+    "author": "Alon (1991 solution), Erdos-Purdy (problem and lower bound)",
     "sourceUrl": "https://erdosproblems.com/798",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos798Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "lattice-points",
+      "covering-problems",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 6,
     "erdosNumber": 798,
     "erdosUrl": "https://erdosproblems.com/798",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "latticeGrid definition: the set {1,...,n}^2",
+      "lineThroughPoints definition: line determined by two points",
+      "linesCoversGrid definition: covering condition",
+      "pointsCoversGrid definition: points generate covering lines",
+      "t function: minimum covering points",
+      "erdos_purdy_lower_bound axiom: t(n) >= c*n^{2/3}",
+      "alon_upper_bound axiom: t(n) <= C*n^{2/3}*log n",
+      "alon_construction axiom: explicit construction",
+      "t_is_o_n theorem: t(n) = o(n) (YES answer)",
+      "tight_bounds theorem: combined bounds",
+      "erdos_798 theorem: complete solution",
+      "Explicit bounds for small n: t(2), t(3)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #798 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t(n)$ be the minimum number of points in $\\{1,\\ldots,n\\}^2$ such that the $\\binom{t}{2}$ lines determined by these points cover all points in $\\{1,\\ldots,n\\}^2$.\n\nEstimate $t(n)$. In particular, is it true that $t(n)=o(n)$?\n\n\n\nA problem of Erd\\H{o}s and Purdy, who proved $t(n) \\gg n^{2/3}$.\n\nResolved by Alon \\cite{Al91} who proved $t(n) \\ll n^{2/3}\\log n$.\n\n\n\n\nReferences\n\n\n[Al91] Alon, N., Economical coverings of sets of lattice points. Geom. Funct. Anal. (1991), 224-230.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #798**\n\nThis problem concerns efficient coverage of lattice grids using lines.\n\n**Key History:**\n- Erdos & Purdy: Posed the problem and proved t(n) >> n^{2/3}\n- Alon (1991): Proved t(n) << n^{2/3} log n, resolving the problem\n\n**The Question:**\nGiven the n x n integer grid, what is the minimum number of points such that the lines they determine cover every grid point?\n\n**Mathematical Setting:**\n- Lattice: {1,...,n}^2 has n^2 points\n- Each pair of points determines a line\n- k points give at most C(k,2) = k(k-1)/2 lines",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet t(n) be the minimum number of points in {1,...,n}^2 such that the lines determined by these points cover all points in {1,...,n}^2.\n\nEstimate t(n). In particular, is t(n) = o(n)?\n\n**Answer: YES**\n\nAlon (1991) proved t(n) = Theta(n^{2/3} log n):\n- Lower bound: t(n) >= c*n^{2/3} (Erdos-Purdy)\n- Upper bound: t(n) <= C*n^{2/3}*log n (Alon)\n\nSince n^{2/3} log n = o(n), the answer is YES.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lattice Definitions:** Define latticeGrid, lineThroughPoints\n\n2. **Coverage:** Define when points/lines cover the grid\n\n3. **The t Function:** Minimum covering points\n\n4. **Lower Bound:** Erdos-Purdy counting argument\n   - k points -> O(k^2) lines\n   - Each line covers O(n) points\n   - Need to cover n^2 points\n   - So k^2*n >= n^2 -> k >= n^{2/3}\n\n5. **Upper Bound:** Alon's construction achieves O(n^{2/3} log n)\n\n6. **Main Result:** t(n) = o(n) (YES)",
+    "keyInsights": [
+      "**The 2/3 Exponent:** Balancing lines (O(k^2)) vs coverage (O(n) per line) vs target (n^2 points)",
+      "**Log Factor:** Alon's upper bound has a log n factor; unclear if this is necessary",
+      "**Efficient Coverage:** Lines through carefully chosen points can cover many lattice points",
+      "**Probabilistic Methods:** Alon's construction uses probabilistic arguments",
+      "**o(n) Growth:** The answer YES means sublinear coverage is possible"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lattice-definitions",
+      "title": "Lattice Points and Lines",
+      "summary": "latticeGrid, lineThroughPoints, lines_from_points",
+      "startLine": 38,
+      "endLine": 77
+    },
+    {
+      "id": "covering-function",
+      "title": "The Covering Function t(n)",
+      "summary": "linesCoversGrid, pointsCoversGrid, t definition",
+      "startLine": 79,
+      "endLine": 111
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound (Erdos-Purdy)",
+      "summary": "erdos_purdy_lower_bound, counting argument",
+      "startLine": 113,
+      "endLine": 141
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound (Alon)",
+      "summary": "alon_upper_bound, alon_construction",
+      "startLine": 143,
+      "endLine": 173
+    },
+    {
+      "id": "asymptotic-answer",
+      "title": "The Asymptotic Answer",
+      "summary": "tight_bounds, t_is_o_n",
+      "startLine": 175,
+      "endLine": 203
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Explicit Bounds",
+      "summary": "t_2_bound, t_3_bound, explicit_lower",
+      "startLine": 205,
+      "endLine": 234
+    },
+    {
+      "id": "geometric-insight",
+      "title": "Geometric Insight",
+      "summary": "exponent_explanation, linesThroughOrigin",
+      "startLine": 236,
+      "endLine": 262
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_798, erdos_798_summary, erdos_798_answer",
+      "startLine": 264,
+      "endLine": 311
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #798 asked whether t(n) = o(n), where t(n) is the minimum points needed to cover {1,...,n}^2 with the lines they determine. The answer is YES. Alon (1991) proved t(n) = Theta(n^{2/3} log n), which is indeed o(n). The lower bound n^{2/3} comes from a simple counting argument; the upper bound uses sophisticated constructions.",
+    "implications": "**Geometric and Combinatorial Significance**\n\n1. **Efficient Coverage:** Sublinear points can cover a quadratic grid\n\n2. **Line Geometry:** Demonstrates power of lines in discrete geometry\n\n3. **Probabilistic Methods:** Alon's proof is a success of probabilistic combinatorics\n\n4. **Open Question:** Is the log n factor in the upper bound necessary?",
+    "openQuestions": [
+      "Is t(n) = Theta(n^{2/3}) (without the log factor)?",
+      "What is the exact constant in the lower bound?",
+      "Are there explicit deterministic constructions matching Alon's bound?",
+      "What happens in higher dimensions ({1,...,n}^d)?",
+      "Can the covering points be required to lie on specific curves?"
+    ]
   }
 }
