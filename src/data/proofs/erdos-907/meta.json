@@ -1,33 +1,119 @@
 {
   "id": "erdos-907",
-  "title": "Erdős Problem #907",
+  "title": "Erdős Problem #907: Decomposition of Functions with Continuous Differences",
   "slug": "erdos-907",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that ... is continous for every .... Is it true that\\[f=g+h\\]for some continuous ... and additive ... (i.e. ....",
+  "description": "If f(x+h) - f(x) is continuous for every h > 0, can f be decomposed as g + φ for continuous g and additive φ? Answer: YES, proved by de Bruijn (1951).",
   "meta": {
-    "author": "Unknown",
+    "author": "N. G. de Bruijn (1951)",
     "sourceUrl": "https://erdosproblems.com/907",
-    "date": "",
-    "status": "pending",
+    "date": "1951",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos907Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "functional-equations",
+      "continuity",
+      "additive-functions",
+      "analysis"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 907,
     "erdosUrl": "https://erdosproblems.com/907",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #907 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{R}\\to \\mathbb{R}$ be such that $f(x+h)-f(x)$ is continous for every $h>0$. Is it true that\\[f=g+h\\]for some continuous $g$ and additive $h$ (i.e. $h(x+y)=h(x)+h(y)$)?\n\n\n\nA conjecture of Erd\\H{o}s from the early 1950s. Answered in the affirmative by de Bruijn \\cite{dB51}.\n\nSee also [908].\n\n\n\n\nReferences\n\n\n[dB51] de Bruijn, N. G., Functions whose differences belong to a given class. Nieuw Arch. Wiskunde (2) (1951), 194--218.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős in the early 1950s and connects to Cauchy's functional equation, one of the most fundamental equations in mathematics. Cauchy (1821) showed that additive functions f(x+y) = f(x) + f(y) that are continuous must be linear. However, discontinuous additive functions exist (via Axiom of Choice) and are highly pathological. De Bruijn's 1951 paper 'Functions whose differences belong to a given class' established that if all difference functions are continuous, then f decomposes into a continuous part and an additive part.",
+    "problemStatement": "Let f : ℝ → ℝ be such that f(x+h) - f(x) is continuous for every h > 0. Is it true that f = g + φ for some continuous g and additive φ (i.e., φ(x+y) = φ(x) + φ(y))? Answer: YES.",
+    "proofStrategy": "The formalization defines additive functions via Cauchy's equation, proves basic properties (φ(0) = 0, φ(-x) = -φ(x), φ(nx) = nφ(x)), and establishes that continuous additive functions are linear. The key condition 'hasContinuousDifferences' captures when all Δ_h f are continuous. De Bruijn's theorem is axiomatized: continuous differences imply the decomposition exists. Properties of the decomposition (uniqueness up to linear functions) are also stated.",
+    "keyInsights": [
+      "Additive functions form a vector space over ℚ but not over ℝ",
+      "Continuous additive functions must be linear: φ(x) = cx",
+      "Discontinuous additive functions exist (via AC) and are everywhere dense",
+      "The difference operator Δ_h f(x) = f(x+h) - f(x) captures regularity",
+      "Decomposition is unique up to adding a linear function to g and subtracting from φ"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "additive-functions",
+      "title": "Additive Functions (Cauchy's Equation)",
+      "summary": "IsAdditive definition, basic properties: φ(0)=0, φ(-x)=-φ(x), φ(nx)=nφ(x)",
+      "startLine": 40,
+      "endLine": 78
+    },
+    {
+      "id": "continuous-additive",
+      "title": "Continuous Additive Functions are Linear",
+      "summary": "IsLinear definition, continuous_additive_is_linear axiom",
+      "startLine": 80,
+      "endLine": 104
+    },
+    {
+      "id": "discontinuous-additive",
+      "title": "Discontinuous Additive Functions",
+      "summary": "Existence via AC, dense graph property",
+      "startLine": 106,
+      "endLine": 120
+    },
+    {
+      "id": "difference-operator",
+      "title": "The Difference Operator",
+      "summary": "difference definition, hasContinuousDifferences condition",
+      "startLine": 122,
+      "endLine": 150
+    },
+    {
+      "id": "de-bruijn-theorem",
+      "title": "De Bruijn's Theorem",
+      "summary": "hasDeBruijnDecomposition, de_bruijn_theorem axiom, erdos_907 theorem",
+      "startLine": 152,
+      "endLine": 170
+    },
+    {
+      "id": "decomposition-properties",
+      "title": "Properties of the Decomposition",
+      "summary": "Uniqueness up to linear functions, special cases",
+      "startLine": 172,
+      "endLine": 198
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "f(x)=x² example, continuous functions satisfy condition",
+      "startLine": 200,
+      "endLine": 225
+    },
+    {
+      "id": "regularity-theory",
+      "title": "Connection to Regularity Theory",
+      "summary": "Bounded and measurable difference analogues",
+      "startLine": 227,
+      "endLine": 242
+    },
+    {
+      "id": "related",
+      "title": "Related Problem",
+      "summary": "Connection to Erdős #908, when φ is continuous",
+      "startLine": 244,
+      "endLine": 254
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_907_summary and erdos_907_answer",
+      "startLine": 256,
+      "endLine": 276
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #907 was solved affirmatively by de Bruijn in 1951. If all difference functions Δ_h f are continuous, then f = g + φ for continuous g and additive φ. This provides a complete characterization: such functions are exactly sums of continuous and additive components.",
+    "implications": "De Bruijn's theorem is a foundational result in regularity theory, showing how local properties (continuity of differences) determine global structure (decomposition). It connects to the study of Cauchy's functional equation and pathological functions.",
+    "openQuestions": [
+      "What is the optimal regularity class for the decomposition?",
+      "Are there analogues for other regularity conditions (Hölder, Lipschitz)?",
+      "What happens in higher dimensions or for functions on groups?",
+      "Can the additive component be characterized more explicitly?"
+    ]
   }
 }

@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-e907-context",
+    "proofId": "erdos-907",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #907 asks: if f(x+h) - f(x) is continuous for every h > 0, can f be decomposed as g + φ for continuous g and additive φ? De Bruijn proved YES in 1951.",
+    "significance": "critical",
+    "tags": ["erdos", "functional-equations", "continuity"]
+  },
+  {
+    "id": "ann-e907-additive-def",
+    "proofId": "erdos-907",
+    "range": { "startLine": 40, "endLine": 49 },
+    "type": "definition",
+    "title": "Additive Functions (Cauchy's Equation)",
+    "content": "A function φ : ℝ → ℝ is additive if φ(x + y) = φ(x) + φ(y) for all x, y. This is Cauchy's functional equation, one of the most fundamental in mathematics.",
+    "significance": "critical",
+    "tags": ["additive-functions", "cauchy-equation", "definition"],
+    "leanSymbol": "IsAdditive"
+  },
+  {
+    "id": "ann-e907-additive-zero",
+    "proofId": "erdos-907",
+    "range": { "startLine": 51, "endLine": 55 },
+    "type": "theorem",
+    "title": "Additive Functions Vanish at Zero",
+    "content": "If φ is additive, then φ(0) = 0. Proof: φ(0) = φ(0+0) = φ(0) + φ(0), so φ(0) = 0.",
+    "significance": "key",
+    "tags": ["additive-functions", "basic-property"],
+    "leanSymbol": "additive_zero"
+  },
+  {
+    "id": "ann-e907-additive-neg",
+    "proofId": "erdos-907",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "theorem",
+    "title": "Additive Functions and Negation",
+    "content": "If φ is additive, then φ(-x) = -φ(x). Proof: φ(0) = φ(x + (-x)) = φ(x) + φ(-x) = 0.",
+    "significance": "key",
+    "tags": ["additive-functions", "basic-property"],
+    "leanSymbol": "additive_neg"
+  },
+  {
+    "id": "ann-e907-additive-nat-mul",
+    "proofId": "erdos-907",
+    "range": { "startLine": 63, "endLine": 73 },
+    "type": "theorem",
+    "title": "Additive Functions and Natural Multiplication",
+    "content": "If φ is additive, then φ(nx) = n·φ(x) for all natural numbers n. This follows by induction on n.",
+    "significance": "key",
+    "tags": ["additive-functions", "homogeneity"],
+    "leanSymbol": "additive_nat_mul"
+  },
+  {
+    "id": "ann-e907-additive-rat-mul",
+    "proofId": "erdos-907",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "theorem",
+    "title": "Additive Functions and Rational Multiplication",
+    "content": "If φ is additive, then φ(qx) = q·φ(x) for all rationals q. This extends ℚ-linearity from ℕ-homogeneity.",
+    "significance": "supporting",
+    "tags": ["additive-functions", "homogeneity"],
+    "leanSymbol": "additive_rat_mul"
+  },
+  {
+    "id": "ann-e907-linear-def",
+    "proofId": "erdos-907",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "Linear Functions",
+    "content": "A function φ : ℝ → ℝ is linear if φ(x) = cx for some constant c. Linear functions are the 'nice' additive functions.",
+    "significance": "key",
+    "tags": ["linear-functions", "definition"],
+    "leanSymbol": "IsLinear"
+  },
+  {
+    "id": "ann-e907-linear-additive",
+    "proofId": "erdos-907",
+    "range": { "startLine": 91, "endLine": 96 },
+    "type": "theorem",
+    "title": "Linear Functions are Additive",
+    "content": "Every linear function φ(x) = cx is additive: c(x+y) = cx + cy. The converse requires continuity.",
+    "significance": "key",
+    "tags": ["linear-functions", "additive-functions"],
+    "leanSymbol": "linear_is_additive"
+  },
+  {
+    "id": "ann-e907-cont-additive-linear",
+    "proofId": "erdos-907",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "axiom",
+    "title": "Continuous Additive Functions are Linear",
+    "content": "A fundamental result: if φ is both additive and continuous, then φ(x) = cx for some c. Measurability or monotonicity also suffice.",
+    "significance": "critical",
+    "tags": ["additive-functions", "continuity", "linearity"],
+    "leanSymbol": "continuous_additive_is_linear"
+  },
+  {
+    "id": "ann-e907-mono-additive-linear",
+    "proofId": "erdos-907",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "axiom",
+    "title": "Monotone Additive Functions are Linear",
+    "content": "If φ is additive and monotone (or antitone), then φ must be linear. This is another regularity condition forcing linearity.",
+    "significance": "supporting",
+    "tags": ["additive-functions", "monotonicity", "linearity"],
+    "leanSymbol": "monotone_additive_is_linear"
+  },
+  {
+    "id": "ann-e907-discont-exists",
+    "proofId": "erdos-907",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "axiom",
+    "title": "Existence of Discontinuous Additive Functions",
+    "content": "Via the Axiom of Choice, there exist additive functions that are not continuous. These are highly pathological.",
+    "significance": "key",
+    "tags": ["additive-functions", "axiom-of-choice", "pathological"],
+    "leanSymbol": "exists_discontinuous_additive"
+  },
+  {
+    "id": "ann-e907-discont-dense",
+    "proofId": "erdos-907",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "axiom",
+    "title": "Discontinuous Additive Functions Have Dense Graphs",
+    "content": "A discontinuous additive function has a graph that is dense in ℝ²: for any point (a,b) and ε > 0, there exists x with |x-a| < ε and |φ(x)-b| < ε.",
+    "significance": "supporting",
+    "tags": ["additive-functions", "dense-graph", "pathological"],
+    "leanSymbol": "discontinuous_additive_dense"
+  },
+  {
+    "id": "ann-e907-difference-def",
+    "proofId": "erdos-907",
+    "range": { "startLine": 128, "endLine": 131 },
+    "type": "definition",
+    "title": "The Difference Operator",
+    "content": "The difference operator Δ_h f(x) = f(x+h) - f(x) measures how f changes when translated by h. This is the central object in Erdős #907.",
+    "significance": "critical",
+    "tags": ["difference-operator", "definition"],
+    "leanSymbol": "difference"
+  },
+  {
+    "id": "ann-e907-cont-diffs-def",
+    "proofId": "erdos-907",
+    "range": { "startLine": 133, "endLine": 135 },
+    "type": "definition",
+    "title": "Continuous Differences Condition",
+    "content": "The condition in Erdős #907: f has continuous differences if Δ_h f is continuous for every h > 0. This is weaker than f being continuous.",
+    "significance": "critical",
+    "tags": ["continuous-differences", "definition"],
+    "leanSymbol": "hasContinuousDifferences"
+  },
+  {
+    "id": "ann-e907-cont-has-cont-diffs",
+    "proofId": "erdos-907",
+    "range": { "startLine": 137, "endLine": 142 },
+    "type": "theorem",
+    "title": "Continuous Functions Have Continuous Differences",
+    "content": "If f is continuous, then all its differences are continuous. This is straightforward: Δ_h f = f ∘ (+h) - f is a difference of continuous functions.",
+    "significance": "key",
+    "tags": ["continuous-differences", "continuity"],
+    "leanSymbol": "continuous_has_continuous_differences"
+  },
+  {
+    "id": "ann-e907-additive-diff-const",
+    "proofId": "erdos-907",
+    "range": { "startLine": 144, "endLine": 150 },
+    "type": "theorem",
+    "title": "Additive Differences are Constant",
+    "content": "If φ is additive, then Δ_h φ(x) = φ(h) for all x. The difference is constant because φ(x+h) - φ(x) = φ(h) by additivity.",
+    "significance": "key",
+    "tags": ["additive-functions", "difference-operator"],
+    "leanSymbol": "additive_difference_const"
+  },
+  {
+    "id": "ann-e907-decomp-def",
+    "proofId": "erdos-907",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "definition",
+    "title": "De Bruijn Decomposition",
+    "content": "A function f has a De Bruijn decomposition if f = g + φ for some continuous g and additive φ. This separates the 'regular' and 'irregular' parts.",
+    "significance": "critical",
+    "tags": ["de-bruijn", "decomposition", "definition"],
+    "leanSymbol": "hasDeBruijnDecomposition"
+  },
+  {
+    "id": "ann-e907-de-bruijn-thm",
+    "proofId": "erdos-907",
+    "range": { "startLine": 163, "endLine": 165 },
+    "type": "axiom",
+    "title": "De Bruijn's Theorem (1951)",
+    "content": "The central result: if all differences of f are continuous, then f has a De Bruijn decomposition. This is axiomatized as the full proof requires significant work.",
+    "significance": "critical",
+    "tags": ["de-bruijn", "theorem", "main-result"],
+    "leanSymbol": "de_bruijn_theorem"
+  },
+  {
+    "id": "ann-e907-main",
+    "proofId": "erdos-907",
+    "range": { "startLine": 167, "endLine": 170 },
+    "type": "theorem",
+    "title": "Erdős Problem #907 Statement",
+    "content": "The formal statement of Erdős #907: hasContinuousDifferences f → hasDeBruijnDecomposition f. The answer is YES, via de Bruijn's theorem.",
+    "significance": "critical",
+    "tags": ["erdos-907", "main-result"],
+    "leanSymbol": "erdos_907"
+  },
+  {
+    "id": "ann-e907-unique",
+    "proofId": "erdos-907",
+    "range": { "startLine": 178, "endLine": 183 },
+    "type": "axiom",
+    "title": "Uniqueness of Decomposition",
+    "content": "The decomposition f = g + φ is essentially unique: if f = g₁ + φ₁ = g₂ + φ₂, then g₁ = g₂ + cx and φ₁ = φ₂ - cx for some constant c.",
+    "significance": "key",
+    "tags": ["uniqueness", "decomposition"],
+    "leanSymbol": "decomposition_unique"
+  },
+  {
+    "id": "ann-e907-cont-decomp",
+    "proofId": "erdos-907",
+    "range": { "startLine": 185, "endLine": 191 },
+    "type": "theorem",
+    "title": "Continuous Functions Decompose Trivially",
+    "content": "If f is already continuous, it decomposes as f + 0 where the additive part is zero.",
+    "significance": "supporting",
+    "tags": ["continuous", "decomposition"],
+    "leanSymbol": "continuous_decomposition"
+  },
+  {
+    "id": "ann-e907-sq-example",
+    "proofId": "erdos-907",
+    "range": { "startLine": 206, "endLine": 214 },
+    "type": "theorem",
+    "title": "Example: x² Has Continuous Differences",
+    "content": "The function f(x) = x² has continuous differences: Δ_h(x²) = (x+h)² - x² = 2hx + h², which is continuous in x.",
+    "significance": "supporting",
+    "tags": ["example", "polynomial"],
+    "leanSymbol": "sq_has_continuous_differences"
+  },
+  {
+    "id": "ann-e907-summary",
+    "proofId": "erdos-907",
+    "range": { "startLine": 263, "endLine": 271 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Erdős Problem #907 is completely solved: De Bruijn's theorem gives the decomposition, continuous functions satisfy the condition, and the decomposition is essentially unique.",
+    "significance": "critical",
+    "tags": ["summary", "main-result"],
+    "leanSymbol": "erdos_907_summary"
+  }
+]
