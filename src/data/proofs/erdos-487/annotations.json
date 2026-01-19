@@ -1,1 +1,149 @@
-[]
+[
+  {
+    "id": "ann-e487-header",
+    "proofId": "erdos-487",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #487: LCM Triples in Dense Sets**\n\nLet A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A with lcm(a,b) = c?\n\n**Answer:** YES.\n\n**Proof:** Follows from Kleitman's 1971 theorem on union-free collections.\n\n**Key insight:** Prime factorization bijection maps LCM to set union.",
+    "mathContext": "This connects number-theoretic density to extremal combinatorics. The solution uses the correspondence between LCM-free sets and union-free collections.",
+    "significance": "critical",
+    "relatedConcepts": ["Density", "LCM", "Union-free collections", "Prime factorization"]
+  },
+  {
+    "id": "ann-e487-density",
+    "proofId": "erdos-487",
+    "range": { "startLine": 51, "endLine": 68 },
+    "type": "definition",
+    "title": "Density Definitions",
+    "content": "**HasPositiveUpperDensity A:** lim sup |A ∩ [1,n]| / n > 0.\n\n**HasPositiveLowerDensity A:** lim inf |A ∩ [1,n]| / n > 0.\n\nPositive upper density is the relevant hypothesis: infinitely many n have |A ∩ [1,n]| ≥ δn.",
+    "significance": "critical",
+    "relatedConcepts": ["Density", "Limsup", "Liminf"]
+  },
+  {
+    "id": "ann-e487-lcm-triple",
+    "proofId": "erdos-487",
+    "range": { "startLine": 69, "endLine": 75 },
+    "type": "definition",
+    "title": "LCM Triple",
+    "content": "**IsLCMTriple a b c:** a ≠ b ∧ b ≠ c ∧ a ≠ c ∧ lcm(a,b) = c.\n\nThree distinct elements where the LCM of two equals the third. The distinctness requirement is essential - otherwise lcm(a,a) = a would be trivial.",
+    "significance": "critical",
+    "relatedConcepts": ["LCM", "Distinctness"]
+  },
+  {
+    "id": "ann-e487-div-chain",
+    "proofId": "erdos-487",
+    "range": { "startLine": 76, "endLine": 82 },
+    "type": "definition",
+    "title": "Divisibility Chain",
+    "content": "**IsDivisibilityChain f:** f(i) < f(i+1) for all i, and f(i) | f(j) for i < j.\n\nAn infinite strictly increasing sequence where earlier terms divide later terms. Davenport-Erdős showed dense sets contain such chains.",
+    "significance": "supporting",
+    "relatedConcepts": ["Divisibility", "Infinite sequences"]
+  },
+  {
+    "id": "ann-e487-union-free",
+    "proofId": "erdos-487",
+    "range": { "startLine": 87, "endLine": 95 },
+    "type": "definition",
+    "title": "Union-Free Collection",
+    "content": "**IsUnionFree F:** No three distinct A, B, C ∈ F satisfy A ∪ B = C.\n\nA collection of sets avoiding the union pattern. Under prime factorization, LCM-free sets correspond to union-free collections.",
+    "mathContext": "This is the key combinatorial structure. Kleitman's theorem bounds the size of such collections.",
+    "significance": "critical",
+    "relatedConcepts": ["Set union", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e487-factorization",
+    "proofId": "erdos-487",
+    "range": { "startLine": 96, "endLine": 111 },
+    "type": "definition",
+    "title": "Prime Factorization Bijection",
+    "content": "**factorizationSet n:** The set of (prime, exponent) pairs in n's factorization.\n\nThis creates a bijection ℕ⁺ → P(ℙ × ℕ). Under this map:\n- lcm(a, b) corresponds to union (taking max exponents)\n- gcd(a, b) corresponds to intersection (taking min exponents)",
+    "mathContext": "The fundamental theorem of arithmetic ensures this is a well-defined bijection.",
+    "significance": "key",
+    "relatedConcepts": ["Prime factorization", "Bijection"]
+  },
+  {
+    "id": "ann-e487-davenport",
+    "proofId": "erdos-487",
+    "range": { "startLine": 112, "endLine": 149 },
+    "type": "axiom",
+    "title": "Davenport-Erdős 1936",
+    "content": "**davenport_erdos_1936:**\n\nIf A ⊆ ℕ has positive upper density, then A contains an infinite divisibility chain a₁ | a₂ | a₃ | ...\n\nThis is a precursor to Problem #487. Divisibility chains give structure to dense sets.",
+    "mathContext": "Published in 'On sequences of positive integers' [DaEr36]. Uses density arguments.",
+    "significance": "key",
+    "relatedConcepts": ["Divisibility", "Dense sets"]
+  },
+  {
+    "id": "ann-e487-kleitman",
+    "proofId": "erdos-487",
+    "range": { "startLine": 150, "endLine": 187 },
+    "type": "axiom",
+    "title": "Kleitman's Theorem 1971",
+    "content": "**kleitman_1971:**\n\nUnion-free collections F ⊆ P([n]) satisfy:\n|F| ≤ (1 + o(1)) · C(n, ⌊n/2⌋)\n\nThis is exponentially smaller than 2^n (since C(n,n/2) ≈ 2^n/√n).\n\nThe bound implies union-free = o(2^n), which resolves Problem #487.",
+    "mathContext": "Published in 'Collections of subsets containing no two sets and their union', Proceedings AMS (1971).",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal combinatorics", "Binomial coefficients"]
+  },
+  {
+    "id": "ann-e487-main",
+    "proofId": "erdos-487",
+    "range": { "startLine": 188, "endLine": 209 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**lcm_triple_in_dense_set:**\n\nIf A ⊆ ℕ has positive upper density, then A contains distinct a, b, c with lcm(a,b) = c.\n\n**infinitely_many_lcm_triples:**\n\nIn fact, there are infinitely many such triples.\n\nThese are the main results resolving Erdős Problem #487.",
+    "significance": "critical",
+    "relatedConcepts": ["LCM", "Density", "Kleitman's theorem"]
+  },
+  {
+    "id": "ann-e487-example-6",
+    "proofId": "erdos-487",
+    "range": { "startLine": 214, "endLine": 230 },
+    "type": "theorem",
+    "title": "Example: Multiples of 6",
+    "content": "**multiples_of_6_example:** IsLCMTriple 12 18 36\n\nA = {6, 12, 18, 24, ...} has density 1/6.\n\nlcm(12, 18) = 36 ∈ A gives an explicit LCM triple.\n\nVerified computationally with native_decide.",
+    "significance": "supporting",
+    "relatedConcepts": ["Examples", "Computation"]
+  },
+  {
+    "id": "ann-e487-example-pow2",
+    "proofId": "erdos-487",
+    "range": { "startLine": 231, "endLine": 243 },
+    "type": "theorem",
+    "title": "Counterexample: Powers of 2",
+    "content": "**powers_of_2_no_lcm_triple:**\n\nA = {1, 2, 4, 8, 16, ...} has NO LCM triples.\n\nlcm(2^i, 2^j) = 2^(max i j) = max(a, b), so c ∈ {a, b}.\n\nBut this set has density 0, so the theorem doesn't apply.",
+    "mathContext": "This shows density is necessary - sparse sets can avoid LCM triples.",
+    "significance": "supporting",
+    "relatedConcepts": ["Counterexamples", "Powers of 2"]
+  },
+  {
+    "id": "ann-e487-example-even",
+    "proofId": "erdos-487",
+    "range": { "startLine": 244, "endLine": 259 },
+    "type": "theorem",
+    "title": "Example: Even Numbers",
+    "content": "**even_numbers_example:** IsLCMTriple 4 6 12\n\nA = {2, 4, 6, 8, ...} has density 1/2.\n\nlcm(4, 6) = 12 ∈ A gives an explicit LCM triple.\n\nThe even numbers have many LCM triples due to their density.",
+    "significance": "supporting",
+    "relatedConcepts": ["Examples", "Even numbers"]
+  },
+  {
+    "id": "ann-e487-proof-outline",
+    "proofId": "erdos-487",
+    "range": { "startLine": 260, "endLine": 283 },
+    "type": "concept",
+    "title": "Proof Outline",
+    "content": "**Proof by contradiction:**\n\n1. Assume A has density δ > 0 but no LCM triples.\n2. Map A via prime factorization to a collection F of sets.\n3. F is union-free (since LCM ↔ union).\n4. By Kleitman: |F| = o(2^(log N)) = o(N).\n5. But |A ∩ [1,N]| ≥ δN for large N.\n6. Contradiction: δN ≤ o(N) fails.",
+    "mathContext": "The key step is translating the number-theoretic problem to combinatorics via prime factorization.",
+    "significance": "key",
+    "relatedConcepts": ["Proof by contradiction", "Density counting"]
+  },
+  {
+    "id": "ann-e487-summary",
+    "proofId": "erdos-487",
+    "range": { "startLine": 284, "endLine": 316 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_487_summary:**\n\nCombines both main results:\n\n1. Dense sets contain LCM triples (main result)\n2. Kleitman's bound on union-free collections (the tool)\n\n**Conclusion:** Erdős Problem #487 is SOLVED affirmatively.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Solved problems"]
+  }
+]
