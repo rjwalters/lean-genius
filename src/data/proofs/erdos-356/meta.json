@@ -1,33 +1,120 @@
 {
   "id": "erdos-356",
-  "title": "Erdős Problem #356",
+  "title": "Consecutive Sums in Strictly Increasing Sequences",
   "slug": "erdos-356",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that, for all sufficiently large ..., there exist integers ... such that there are at least ... distin...",
+  "description": "Is there c > 0 such that strictly increasing sequences a₁ < ... < aₖ ≤ n can achieve cn² distinct consecutive sums? SOLVED: YES (Beker 2023). The trivial sequence {1,...,n} fails with only O(n) distinct sums.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (problem), Beker (solved, 2023)",
     "sourceUrl": "https://erdosproblems.com/356",
-    "date": "",
-    "status": "pending",
+    "date": "2023",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos356Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sequences",
+      "additive-combinatorics",
+      "sums"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 356,
     "erdosUrl": "https://erdosproblems.com/356",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #356 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some $c>0$ such that, for all sufficiently large $n$, there exist integers $a_1<\\cdots<a_k\\leq n$ such that there are at least $cn^2$ distinct integers of the form $\\sum_{u\\leq i\\leq v}a_i$?\n\n\n\nThis fails for $a_i=i$ for example. Erd\\H{o}s and Graham also ask what happens if we drop the monotonicity restriction and just ask that the $a_i$ are distinct. They speculated that perhaps some permutation of $\\{1,\\ldots,n\\}$ has at least $cn^2$ such distinct sums - this is true, as proved by Konieczny \\cite{Ko15} (see [34]).\n\nThe original problem was solved (in the affirmative) by Beker \\cite{Be23b}.\n\nThey also ask how many consecutive integers $>n$ can be represented as such a sum? Is it true that, for any $c>0$ at least $cn$ such integers are possible (for sufficiently large $n$)?\n\nSee also [34], [357], and [358].\n\n\n\n\nReferences\n\n\n[Be23b] Beker, A., On a problem of Erd\\H{o}s and Graham about consecutive sums in strictly increasing sequences. arXiv:2311.10087 (2023).\n\n[Ko15] Konieczny, J., On consecutive sums in permutations. arXiv:1504.07156 (2015).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem comes from the Erdős-Graham collaboration on combinatorial number theory. The question asks whether one can do better than the trivial sequence {1, 2, ..., n} in terms of distinct consecutive subsums. The trivial sequence fails because many consecutive sums coincide (e.g., arithmetic progressions have highly structured sums).",
+    "problemStatement": "Is there c > 0 such that for all large n, there exist integers a₁ < a₂ < ... < aₖ ≤ n with at least cn² distinct consecutive sums Σ_{u≤i≤v} aᵢ?",
+    "proofStrategy": "The formalization defines consecutive subsums and the counting function. The trivial sequence failure is established, and Beker's theorem (2023) proving the affirmative answer is axiomatized. Konieczny's related result on permutations is also included.",
+    "keyInsights": [
+      "The trivial sequence {1,...,n} achieves only O(n) distinct consecutive sums",
+      "Careful spacing between elements prevents sum collisions",
+      "Permutations can also achieve cn² distinct sums (Konieczny 2015)",
+      "The problem is closely related to sumset problems in additive combinatorics",
+      "Beker's 2023 construction uses number-theoretic techniques"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "consecutive-sums",
+      "title": "Consecutive Sums",
+      "startLine": 35,
+      "endLine": 60,
+      "summary": "Defines consecutive subsums and the count of distinct values.",
+      "description": "A consecutive subsum is Σ_{i=u}^{v} aᵢ for indices u ≤ v. The goal is to maximize the number of distinct such sums."
+    },
+    {
+      "id": "trivial-sequence",
+      "title": "The Trivial Sequence",
+      "startLine": 62,
+      "endLine": 89,
+      "summary": "Shows {1, 2, ..., n} achieves only O(n) distinct consecutive sums.",
+      "description": "The sequence 1, 2, ..., n has consecutive sums of the form (v-u+1)(v+u)/2. Many of these collide, giving only linear growth."
+    },
+    {
+      "id": "increasing-sequences",
+      "title": "Strictly Increasing Sequences",
+      "startLine": 91,
+      "endLine": 114,
+      "summary": "Defines the constraints: strictly increasing with elements ≤ n.",
+      "description": "A valid sequence for the problem must be strictly increasing (a₁ < a₂ < ... < aₖ) with all elements bounded by n."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 116,
+      "endLine": 137,
+      "summary": "States the Erdős-Graham conjecture and Beker's resolution.",
+      "description": "The conjecture asks for c > 0 and sequences achieving cn² distinct sums. Beker (2023) proved this is possible."
+    },
+    {
+      "id": "permutation-variant",
+      "title": "The Permutation Variant",
+      "startLine": 139,
+      "endLine": 166,
+      "summary": "Konieczny (2015) proved permutations can achieve cn² distinct sums.",
+      "description": "When monotonicity is dropped and we consider permutations of {1,...,n}, quadratic growth is also achievable."
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "startLine": 168,
+      "endLine": 191,
+      "summary": "Discusses the construction strategies for achieving quadratic growth.",
+      "description": "The key is spacing elements to minimize collisions among consecutive sums. Number-theoretic techniques are used in the constructions."
+    },
+    {
+      "id": "related-questions",
+      "title": "Related Questions",
+      "startLine": 193,
+      "endLine": 214,
+      "summary": "Connections to Problems #34, #357, and #358.",
+      "description": "These related problems ask about permutations, consecutive integers representable as sums, and other variants."
+    },
+    {
+      "id": "bounds",
+      "title": "Upper and Lower Bounds",
+      "startLine": 216,
+      "endLine": 238,
+      "summary": "Upper bound is O(n²), lower bound of cn² is achieved.",
+      "description": "The maximum possible is k(k+1)/2 where k is the sequence length. Beker's construction achieves cn² for some c > 0."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 240,
+      "endLine": 272,
+      "summary": "Erdős #356 is SOLVED: quadratic growth is achievable.",
+      "description": "The main conjecture and permutation variant are both proven. The answer is YES."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #356 is SOLVED. The answer is YES: there exist strictly increasing sequences achieving Ω(n²) distinct consecutive sums. Beker (2023) proved the original conjecture; Konieczny (2015) proved the permutation variant.",
+    "implications": "This result shows that the trivial sequence {1,...,n} is far from optimal. Careful construction can achieve quadratic growth in distinct subsums, connecting to broader questions in additive combinatorics.",
+    "openQuestions": [
+      "What is the optimal constant c?",
+      "Can explicit constructions be given with good constants?",
+      "How many consecutive integers > n can be represented as such sums (Problem #357)?"
+    ]
   }
 }
