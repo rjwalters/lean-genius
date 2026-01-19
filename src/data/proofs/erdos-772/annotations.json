@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e772-header",
+    "proofId": "erdos-772",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #772: Sidon Sets in Bounded Convolution Sets**\n\nThis problem asks about the maximum size of Sidon subsets in sets with bounded convolution.\n\n**Question:**\nLet H_k(n) be the maximum size of a Sidon subset in any set A with |A| = n and bounded convolution ‖1_A ∗ 1_A‖_∞ ≤ k.\n\nIs it true that H_k(n)/√n → ∞? Or even H_k(n) > n^{1/2+c} for some c > 0?\n\n**Answer: YES**\n\nThe optimal result is H_k(n) = Θ(n^{2/3}), proved by Alon-Erdős (1985).",
+    "mathContext": "The problem connects Sidon sets (where all pairwise sums are distinct) with convolution bounds (limiting how often any sum can appear). The probabilistic method provides the optimal construction.",
+    "significance": "critical",
+    "relatedConcepts": ["Sidon sets", "Additive combinatorics", "Probabilistic method"]
+  },
+  {
+    "id": "ann-e772-sidon-def",
+    "proofId": "erdos-772",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "**IsSidon** A:\n\nA set A is a Sidon set (also called a B₂ sequence) if all pairwise sums are distinct.\n\n**Definition:**\n```lean\ndef IsSidon (A : Finset ℕ) : Prop :=\n  ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,\n    a + b = c + d → ({a, b} : Finset ℕ) = {c, d}\n```\n\nEquivalently: if a + b = c + d with all elements in A, then the pairs must be the same (as unordered sets).",
+    "mathContext": "Sidon sets were introduced by Simon Sidon in the 1930s. They have applications in Fourier analysis, coding theory, and additive number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["B₂ sequences", "Sum-free sets", "Additive bases"]
+  },
+  {
+    "id": "ann-e772-quadruple",
+    "proofId": "erdos-772",
+    "range": { "startLine": 57, "endLine": 70 },
+    "type": "definition",
+    "title": "Additive Quadruples",
+    "content": "**HasNoAdditiveQuadruple:**\n\nAn alternative characterization of Sidon sets via additive quadruples.\n\n**Definition:**\nA set has no non-trivial additive quadruples if whenever a + b = c + d with a,b,c,d ∈ A, at least one of a=c, a=d, b=c, or b=d holds.\n\n**Equivalence:**\nsidon_iff_no_quadruple proves that IsSidon A ↔ HasNoAdditiveQuadruple A.",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "Additive equations"]
+  },
+  {
+    "id": "ann-e772-representation",
+    "proofId": "erdos-772",
+    "range": { "startLine": 76, "endLine": 99 },
+    "type": "definition",
+    "title": "Representation Count and Convolution",
+    "content": "**representationCount** r_A(n):\n\nCounts how many pairs (a,b) from A sum to n.\n\n**maxRepresentation:**\nThe L^∞ norm of the convolution 1_A ∗ 1_A, i.e., max_n r_A(n).\n\n**HasBoundedConvolution:**\n```lean\ndef HasBoundedConvolution (A : Finset ℕ) (k : ℕ) : Prop :=\n  ∀ n : ℕ, representationCount A n ≤ k\n```\n\nA Sidon set has bounded convolution with k=2 (each sum appears at most once unordered, twice ordered).",
+    "mathContext": "The convolution bound controls how 'spread out' the sumset A + A is. Smaller bounds mean fewer repeated sums.",
+    "significance": "key",
+    "relatedConcepts": ["Convolution", "Sumsets", "Sidon sets"]
+  },
+  {
+    "id": "ann-e772-h-k",
+    "proofId": "erdos-772",
+    "range": { "startLine": 113, "endLine": 120 },
+    "type": "definition",
+    "title": "The Function H_k(n)",
+    "content": "**H_k(n):**\n\nThe central object of Erdős Problem #772.\n\n**Definition:**\n```lean\nnoncomputable def H_k (k n : ℕ) : ℕ :=\n  sSup { r : ℕ | ∃ A : Finset ℕ, A.card = n ∧\n    HasBoundedConvolution A k ∧\n    ∃ B : Finset ℕ, B ⊆ A ∧ IsSidon B ∧ B.card = r }\n```\n\nH_k(n) is the maximum size of a Sidon subset that can be guaranteed in any set of size n with convolution bound k.",
+    "significance": "critical",
+    "relatedConcepts": ["Sidon sets", "Convolution bound", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e772-upper",
+    "proofId": "erdos-772",
+    "range": { "startLine": 126, "endLine": 135 },
+    "type": "axiom",
+    "title": "Erdős's Upper Bound (1984)",
+    "content": "**erdos_1984_upper_bound:**\n\nH_k(n) ≪ n^{2/3}\n\n**Statement:**\n```lean\naxiom erdos_1984_upper_bound :\n  ∃ C : ℝ, C > 0 ∧\n    ∀ k n : ℕ, k ≥ 1 → n ≥ 1 →\n      (H_k k n : ℝ) ≤ C * (n : ℝ)^(2/3 : ℝ)\n```\n\n**Key Point:** The implied constant C is absolute (independent of k). Published in Erdős's 1984 ICM paper.",
+    "mathContext": "Erdős proved this upper bound using counting arguments on additive quadruples.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic bounds", "Erdős problems"]
+  },
+  {
+    "id": "ann-e772-basic-lower",
+    "proofId": "erdos-772",
+    "range": { "startLine": 141, "endLine": 158 },
+    "type": "axiom",
+    "title": "Basic Lower Bound",
+    "content": "**sidon_subset_sqrt** and **basic_lower_bound:**\n\nAny set of size n contains a Sidon subset of size ≫ √n.\n\n**Consequence:**\nH_k(n) ≫ √n for all k.\n\nThis is a weaker bound than the optimal n^{2/3}, but follows from general Sidon set theory (see Problem #530).",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e772-alon-erdos",
+    "proofId": "erdos-772",
+    "range": { "startLine": 164, "endLine": 174 },
+    "type": "axiom",
+    "title": "Alon-Erdős Optimal Lower Bound (1985)",
+    "content": "**alon_erdos_1985:**\n\nH_k(n) ≫_k n^{2/3}\n\n**Statement:**\n```lean\naxiom alon_erdos_1985 :\n  ∀ k : ℕ, k ≥ 1 →\n    ∃ c_k : ℝ, c_k > 0 ∧\n      ∀ n : ℕ, n ≥ 1 →\n        (H_k k n : ℝ) ≥ c_k * (n : ℝ)^(2/3 : ℝ)\n```\n\n**Key Point:** The constant c_k depends on k (subscript notation ≫_k). This matches Erdős's upper bound, giving H_k(n) = Θ(n^{2/3}).",
+    "mathContext": "Published in European J. Combin. (1985). The proof uses the probabilistic method with random subsampling.",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic method", "Alon-Erdős paper"]
+  },
+  {
+    "id": "ann-e772-corollaries",
+    "proofId": "erdos-772",
+    "range": { "startLine": 176, "endLine": 192 },
+    "type": "theorem",
+    "title": "Corollaries: Answering Erdős's Questions",
+    "content": "**ratio_tends_to_infinity:**\nH_k(n)/√n → ∞ as n → ∞.\n\n**stronger_lower_bound:**\nH_k(n) > n^{1/2+c} for c = 1/6 and large n.\n\nThese directly answer Erdős's two questions:\n1. YES, H_k(n)/√n → ∞\n2. YES, H_k(n) > n^{1/2+c} with c = 1/6\n\nThe key insight is that 2/3 = 1/2 + 1/6, so the n^{2/3} bound implies both.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic growth", "Erdős problems"]
+  },
+  {
+    "id": "ann-e772-probabilistic",
+    "proofId": "erdos-772",
+    "range": { "startLine": 198, "endLine": 227 },
+    "type": "proof",
+    "title": "Probabilistic Method Construction",
+    "content": "**The Alon-Erdős Probabilistic Proof:**\n\n1. **Quadruple Bound:** In a set A with ‖1_A∗1_A‖_∞ ≤ k, the number of non-trivial additive quadruples is ≤ k·n².\n\n2. **Random Sampling:** Include each element in A' with probability p ∼ n^{-1/3}.\n\n3. **Expected Size:** E[|A'|] ≈ n · p = n^{2/3}.\n\n4. **Expected Quadruples:** E[quadruples in A'] ≈ k·n² · p⁴ = k·n^{2/3}.\n\n5. **Cleanup:** Remove one element from each remaining quadruple. Since there are ≪ n^{2/3} quadruples, removing at most n^{2/3} elements leaves ≫ n^{2/3} elements.\n\n6. **Result:** The cleaned set is Sidon with size ≫ n^{2/3}.",
+    "mathContext": "This is a classic application of the probabilistic method: random sampling followed by 'cleaning' to remove defects.",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic method", "Random sampling", "Expected value"]
+  },
+  {
+    "id": "ann-e772-optimal",
+    "proofId": "erdos-772",
+    "range": { "startLine": 233, "endLine": 248 },
+    "type": "theorem",
+    "title": "Optimal Bounds Theorem",
+    "content": "**optimal_bounds:**\n\nCombines the upper and lower bounds to show H_k(n) = Θ(n^{2/3}).\n\n**Proof:**\n```lean\ntheorem optimal_bounds :\n    ∀ k : ℕ, k ≥ 1 →\n      ∃ c C : ℝ, c > 0 ∧ C > 0 ∧\n        ∀ n : ℕ, n ≥ 1 →\n          c * (n : ℝ)^(2/3 : ℝ) ≤ (H_k k n : ℝ) ∧\n          (H_k k n : ℝ) ≤ C * (n : ℝ)^(2/3 : ℝ)\n```\n\nThe proof simply combines alon_erdos_1985 (lower) and erdos_1984_upper_bound (upper).",
+    "significance": "key",
+    "relatedConcepts": ["Big-Theta notation", "Asymptotic bounds"]
+  },
+  {
+    "id": "ann-e772-summary",
+    "proofId": "erdos-772",
+    "range": { "startLine": 254, "endLine": 280 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_772_summary:**\n\nThe complete answer to Erdős Problem #772.\n\n**Results:**\n1. H_k(n)/√n → ∞ (first question: YES)\n2. H_k(n) = Θ(n^{2/3}) (optimal bounds)\n\n**Key Insight:**\nThe probabilistic method shows that random subsampling with probability n^{-1/3} balances:\n- Subset size: ≈ n^{2/3}\n- Remaining quadruples: ≈ n^{2/3}\n\nThis optimal balance gives the n^{2/3} answer.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "Sidon sets", "Probabilistic method"]
+  }
+]

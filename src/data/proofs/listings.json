@@ -11227,17 +11227,24 @@
   },
   {
     "id": "erdos-772",
-    "title": "Erdős Problem #772",
+    "title": "Erdős Problem #772: Sidon Sets in Bounded Convolution Sets",
     "slug": "erdos-772",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the maximal ... such that if ... has ... and ... then ... contains a Sidon set of size at least ....\n\nIs i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let H_k(n) be the maximal size of a Sidon subset in sets A with |A|=n and bounded convolution. Is H_k(n)/√n → ∞? YES, proved by Alon-Erdős (1985) with optimal bound H_k(n) = Θ(n^{2/3}).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sidon-sets",
+      "probabilistic-method",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 772,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-773",
