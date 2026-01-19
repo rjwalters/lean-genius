@@ -26,6 +26,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Combinatorics.SimpleGraph.Basic
 
 open Real Set Finset
 
@@ -147,7 +148,7 @@ This problem is related to Erdős #89 on distinct distances.
 -/
 
 /-- The number of distinct distances in a point set. -/
-def numDistinctDistances (A : Finset Point) : ℕ :=
+noncomputable def numDistinctDistances (A : Finset Point) : ℕ :=
   ((A ×ˢ A).filter (fun pq => pq.1 ≠ pq.2)).image (fun pq => dist pq.1 pq.2)
     |>.card
 
@@ -173,12 +174,32 @@ We can establish some basic bounds.
 /-- Lower bound: diameter ≥ 1 for any set with ≥ 2 points and min distance 1. -/
 theorem diameter_ge_one (A : Finset Point) (hA : A.card ≥ 2)
     (h : minDistanceOne A) : diameter A ≥ 1 := by
-  sorry
+  -- Since A has at least 2 elements, it's nonempty
+  have hpos : 0 < A.card := Nat.lt_of_lt_of_le (by norm_num : 0 < 2) hA
+  have hne : A.Nonempty := Finset.card_pos.mp hpos
+  -- Get two distinct elements
+  obtain ⟨p, hp, q, hq, hpq⟩ := Finset.one_lt_card.mp hA
+  -- By minDistanceOne, their distance is ≥ 1
+  have hdist : dist p q ≥ 1 := h p hp q hq hpq
+  -- The diameter is the sup over all pairs
+  simp only [diameter, dif_pos hne]
+  -- The diameter is ≥ dist p q ≥ 1
+  have h1 : A.sup' hne (fun q => dist p q) ≤ A.sup' hne (fun p' => A.sup' hne fun q => dist p' q) :=
+    Finset.le_sup' (fun p' => A.sup' hne fun q => dist p' q) hp
+  have h2 : dist p q ≤ A.sup' hne fun q => dist p q :=
+    Finset.le_sup' (fun q => dist p q) hq
+  linarith
 
 /-- The diameter is achieved by some pair of points. -/
 theorem diameter_achieved (A : Finset Point) (hA : A.Nonempty) :
     ∃ p ∈ A, ∃ q ∈ A, dist p q = diameter A := by
-  sorry
+  simp only [diameter, dif_pos hA]
+  -- The outer sup is achieved by some p
+  obtain ⟨p, hp, hp_eq⟩ := Finset.exists_mem_eq_sup' hA (fun p => A.sup' hA fun q => dist p q)
+  -- The inner sup is achieved by some q
+  obtain ⟨q, hq, hq_eq⟩ := Finset.exists_mem_eq_sup' hA (fun q => dist p q)
+  refine ⟨p, hp, q, hq, ?_⟩
+  simp only [← hp_eq, ← hq_eq]
 
 /-!
 ## Unit Distance Graphs
