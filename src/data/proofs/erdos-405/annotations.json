@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "erdos-405-intro",
+    "proofId": "erdos-405",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 23 },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #405 asks whether the Diophantine equation (p-1)! + a^{p-1} = p^k has only finitely many solutions for odd primes p. The answer is YES, with exactly three solutions found by Yu-Liu (1996).",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-405-solution-structure",
+    "proofId": "erdos-405",
+    "type": "definition",
+    "range": { "startLine": 41, "endLine": 56 },
+    "title": "Solution Structure",
+    "content": "A Solution consists of (p, a, k) where p is an odd prime and (p-1)! + a^{p-1} = p^k. The IsSolution predicate expresses this as a logical proposition.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-solution-1",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 64, "endLine": 71 },
+    "title": "First Solution: (3, 1, 1)",
+    "content": "Verified computationally: 2! + 1² = 2 + 1 = 3 = 3¹. This is the simplest solution where the factorial and power are both small.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-solution-2",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 73, "endLine": 80 },
+    "title": "Second Solution: (3, 5, 3)",
+    "content": "Verified computationally: 2! + 5² = 2 + 25 = 27 = 3³. This shows p = 3 admits two different values of a.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-solution-3",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 82, "endLine": 89 },
+    "title": "Third Solution: (5, 1, 2)",
+    "content": "Verified computationally: 4! + 1⁴ = 24 + 1 = 25 = 5². This is the only solution with p = 5.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-brindza-erdos",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 99, "endLine": 101 },
+    "title": "Brindza-Erdős Finiteness",
+    "content": "Brindza and Erdős (1991) proved that the set of solutions is finite using Baker's theory on linear forms in logarithms.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-405-yu-liu",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 103, "endLine": 108 },
+    "title": "Yu-Liu Complete Characterization",
+    "content": "Yu and Liu (1996) achieved a complete resolution: the only solutions are exactly (3,1,1), (3,5,3), and (5,1,2). This is the key external result axiomatized here.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-405-wilson",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 121, "endLine": 123 },
+    "title": "Wilson's Theorem",
+    "content": "Wilson's theorem states (p-1)! ≡ -1 (mod p) for any prime p. This fundamental result connects factorials to prime modular arithmetic.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-fermat",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 125, "endLine": 127 },
+    "title": "Fermat's Little Theorem",
+    "content": "Fermat's little theorem states a^{p-1} ≡ 1 (mod p) when p does not divide a. Combined with Wilson, this shows the sum is divisible by p.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-sum-divisible",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 129, "endLine": 132 },
+    "title": "Sum Divisibility",
+    "content": "When p does not divide a, Wilson gives -1 (mod p) and Fermat gives 1 (mod p), so (p-1)! + a^{p-1} ≡ 0 (mod p). This is necessary for solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-padic-val",
+    "proofId": "erdos-405",
+    "type": "definition",
+    "range": { "startLine": 155, "endLine": 157 },
+    "title": "p-adic Valuation of Factorial",
+    "content": "The p-adic valuation v_p(n!) counts the total power of p dividing n!, computed by Legendre's formula as the sum of floor(n/p^i).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-legendre",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 159, "endLine": 161 },
+    "title": "Legendre's Formula",
+    "content": "Legendre's formula expresses v_p(n!) = Σ floor(n/p^i). This is essential for understanding the p-adic structure of factorials.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-factorial-padic-zero",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 163, "endLine": 166 },
+    "title": "Factorial p-adic Zero",
+    "content": "For (p-1)!, the p-adic valuation is 0 since no multiple of p appears in 1, 2, ..., p-1. This severely constrains solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-large-prime",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 174, "endLine": 177 },
+    "title": "No Solutions for p ≥ 7",
+    "content": "For primes p ≥ 7, the factorial (p-1)! grows much faster than any feasible p^k - a^{p-1}, ruling out solutions. Only small primes can work.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-405-p3-analysis",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 179, "endLine": 190 },
+    "title": "Analysis for p = 3",
+    "content": "When p = 3, we need 2 + a² = 3^k. The only solutions are a = 1 (giving 3 = 3¹) and a = 5 (giving 27 = 3³).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-p5-analysis",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 192, "endLine": 202 },
+    "title": "Analysis for p = 5",
+    "content": "When p = 5, we need 24 + a⁴ = 5^k. The only solution is a = 1 giving 25 = 5². No other fourth power plus 24 yields a power of 5.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-perfect-power",
+    "proofId": "erdos-405",
+    "type": "definition",
+    "range": { "startLine": 210, "endLine": 212 },
+    "title": "Perfect Power Definition",
+    "content": "A natural number n is a perfect power if n = b^k for some b, k with k ≥ 2. The Erdős-Graham remark concerns when (p-1)! + a^{p-1} is such a power.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-example",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 214, "endLine": 217 },
+    "title": "Example Perfect Power",
+    "content": "Erdős-Graham noted 6! + 2⁶ = 720 + 64 = 784 = 28² is a perfect power, showing the phenomenon does occur outside the p-adic constraint.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-405-main-statement",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 229, "endLine": 238 },
+    "title": "Main Problem Statement",
+    "content": "The complete formalization: the solution set is finite (Brindza-Erdős) and consists of exactly the three known triples (Yu-Liu).",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-405-summary",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 244, "endLine": 258 },
+    "title": "Summary Theorem",
+    "content": "The summary combines existence (three solutions verified) with uniqueness (Yu-Liu characterization), fully resolving Erdős Problem #405.",
+    "significance": "critical"
+  }
+]
