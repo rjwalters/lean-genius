@@ -13,7 +13,11 @@
       "LeanDojo project formalizes Navier-Stokes problem STATEMENT only, not any solution theory",
       "Weak solution framework requires: general distribution theory, unbounded domain Sobolev spaces, Aubin-Lions compactness (not formalized)",
       "2D regularity is easier than 3D but still requires full weak solution machinery",
-      "Energy estimates, Galerkin approximations, monotone operator theory all missing from Mathlib"
+      "Energy estimates, Galerkin approximations, monotone operator theory all missing from Mathlib",
+      "2026-01-19: NavierStokes.lean TwoDimensional namespace contains complete 2D structure",
+      "2026-01-19: antitoneOn_of_deriv_nonpos in Mathlib.Analysis.Calculus.Deriv.MeanValue could prove enstrophy bound",
+      "2026-01-19: enstrophy_identity_2d: HasDerivAt E (-2 * ν * P t) t already formalized",
+      "2026-01-19: Key gap is connecting HasDerivAt to deriv for antitoneOn_of_deriv_nonpos"
     ],
     "builtItems": [],
     "mathlibGaps": [
@@ -33,6 +37,6 @@
     ],
     "progressSummary": "BLOCKED: Comprehensive infrastructure gap analysis completed. Requires multi-year foundational work before NS formalization is tractable."
   },
-  "lastUpdated": "2026-01-18",
+  "lastUpdated": "2026-01-19",
   "claimedBy": null
 }
