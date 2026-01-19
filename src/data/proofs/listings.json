@@ -11671,17 +11671,22 @@
   },
   {
     "id": "erdos-815",
-    "title": "Erdős Problem #815",
+    "title": "Erdős Problem #815: Cycles in Degree 3 Critical Graphs",
     "slug": "erdos-815",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large. Is it true that if ... is a graph with ... vertices and ... edges such that every prop...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must degree 3 critical graphs (n vertices, 2n-2 edges, proper subgraphs have min degree ≤ 2) contain C_k for all k ≥ 3? DISPROVED by Narins-Pokrovskiy-Szabó (2017): arbitrarily large such graphs exist with no C_23.",
+    "status": "complete",
+    "badge": "disproved",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graphs",
+      "cycles",
+      "counterexample",
+      "disproved"
     ],
     "erdosNumber": 815,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-816",
