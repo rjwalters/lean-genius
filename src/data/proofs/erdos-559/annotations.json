@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-559-statement",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 7,
+      "endLine": 12
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "The Beck-Erdős conjecture: for graphs G with n vertices and maximum degree d, is R̂(G) = O_d(n)? This asks if the size Ramsey number grows only linearly in the number of vertices when degree is bounded.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-559-size-ramsey",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 85,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Size Ramsey Number",
+    "content": "R̂(G) is the minimum number of edges m such that there exists a graph H with m edges that is Ramsey for G. Being 'Ramsey for G' means any 2-coloring of H's edges contains a monochromatic copy of G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-559-ramsey-for",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 73,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Ramsey Property",
+    "content": "H is Ramsey for G if every 2-coloring of H's edges contains a monochromatic copy of G—an injective embedding f: V(G) → V(H) where all edges of G map to edges of the same color in H.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-559-finite-graph",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Finite Graph Structure",
+    "content": "A simple graph with finite vertex type, defined by an adjacency relation that is symmetric (undirected) and loopless (no self-edges). This provides the foundation for all graph-theoretic concepts.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-559-degree",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 64,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Degree and Maximum Degree",
+    "content": "The degree of vertex v is the number of its neighbors. The maximum degree Δ(G) is the supremum over all vertices. The conjecture concerns graphs with bounded Δ(G) ≤ d.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-559-conjecture",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 96,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "The Beck-Erdős Conjecture",
+    "content": "For each d ≥ 1, there exists c_d > 0 such that R̂(G) ≤ c_d · n for all n-vertex graphs G with maximum degree at most d. This would make size Ramsey numbers linear in n for bounded degree.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-559-disproved",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 107,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "Conjecture is FALSE",
+    "content": "The Beck-Erdős conjecture is false for d ≥ 3. Rödl and Szemerédi (2000) constructed degree-3 graphs requiring superlinear size Ramsey numbers, definitively disproving the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-559-paths",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 113,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Paths: Linear Bound",
+    "content": "Beck (1983) proved R̂(P_n) = O(n) for paths. This was the first positive result and motivated the general conjecture. Paths are the simplest connected graphs with Δ = 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-559-trees",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 127,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Trees: Linear Bound",
+    "content": "Friedman-Pippenger (1987) extended Beck's result to all trees: R̂(T) = O(n) for any n-vertex tree T. Their proof uses expander graphs and expansion properties.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-559-cycles",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 140,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "Cycles: Linear Bound",
+    "content": "Haxell-Kohayakawa-Luczak (1995) proved R̂(C_n) = O(n) for cycles. This completed the picture for graphs with Δ ≤ 2: all such graphs have linear size Ramsey numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-559-rodl-szemeredi",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 154,
+      "endLine": 162
+    },
+    "type": "theorem",
+    "title": "Rödl-Szemerédi Counterexample",
+    "content": "The key breakthrough: there exist degree-3 graphs with R̂(G) ≫ n(log n)^c for some c > 0. This proves the conjecture fails at d = 3, the smallest possible counterexample degree.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-559-tikhomirov",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 164,
+      "endLine": 171
+    },
+    "type": "theorem",
+    "title": "Tikhomirov's Improved Lower Bound",
+    "content": "Tikhomirov (2022) improved the lower bound to R̂(G) ≫ n·exp(c√(log n)). This is stronger than any poly-logarithmic factor but still subpolynomial in n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-559-upper-bounds",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 175,
+      "endLine": 200
+    },
+    "type": "theorem",
+    "title": "Upper Bounds for Degree-3",
+    "content": "Progress on upper bounds: Kohayakawa et al. showed n^{5/3+o(1)}, Conlon-Nenadov-Trujić improved to n^{8/5}, and Draganić-Petrova (2022) achieved n^{3/2+o(1)}, the current best.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-559-gap",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 204,
+      "endLine": 210
+    },
+    "type": "insight",
+    "title": "The Remaining Gap",
+    "content": "Current bounds for d = 3: lower n·exp(c√(log n)), upper n^{3/2+o(1)}. The gap between these is substantial—the lower bound is barely superlinear while the upper is polynomial.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-559-open",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 211,
+      "endLine": 218
+    },
+    "type": "definition",
+    "title": "Open Question",
+    "content": "What is the true growth rate for degree-3 graphs? Is it closer to n^{1+ε} or n^{3/2}? Determining the exact exponent or showing it doesn't exist remains a major open problem.",
+    "significance": "critical"
+  }
+]
