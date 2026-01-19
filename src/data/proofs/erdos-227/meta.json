@@ -1,33 +1,148 @@
 {
   "id": "erdos-227",
-  "title": "Erdős Problem #227",
+  "title": "Erdős Problem #227: Maximum Term vs Maximum Modulus",
   "slug": "erdos-227",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function which is not a polynomial. Is it true that if\\[\\lim_{r\\to \\infty} {\\max_{\\lvert z\\rvert=r}\\lver...",
+  "description": "For an entire function f = Σaₙzⁿ, if lim μ(r)/M(r) exists (where μ(r) = max|aₙrⁿ| and M(r) = max|f(z)| on |z|=r), must it be 0? DISPROVED: Clunie-Hayman showed the limit can be any λ ∈ [0, 1/2].",
   "meta": {
-    "author": "Unknown",
+    "author": "Clunie-Hayman (1964)",
     "sourceUrl": "https://erdosproblems.com/227",
-    "date": "",
-    "status": "pending",
+    "date": "1964",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos227Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "power-series",
+      "counterexample"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 227,
     "erdosUrl": "https://erdosproblems.com/227",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value (modulus) of complex numbers",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.Icc",
+        "description": "Closed intervals [a, b]",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized EntireFunction structure with power series coefficients",
+      "Defined maxTerm μ(r) and maxModulus M(r) functions",
+      "Stated Clunie's partial result for positive coefficients",
+      "Captured Clunie-Hayman (1964) counterexample: limits fill [0, 1/2]",
+      "Proved original conjecture is false using λ = 1/4"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #227 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f=\\sum_{n=0}^\\infty a_nz^n$ be an entire function which is not a polynomial. Is it true that if\\[\\lim_{r\\to \\infty} \\frac{\\max_n\\lvert a_nr^n\\rvert}{\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert}\\]exists then it must be $0$?\n\n\n\nClunie (unpublished) proved this if $a_n\\geq 0$ for all $n$. This was disproved in general by Clunie and Hayman \\cite{ClHa64}, who showed that the limit can take any value in $[0,1/2]$.\n\nSee also [513].\n\n\n\n\nReferences\n\n\n[ClHa64] Clunie, J. and Hayman, W. K., The maximum term of a power series. J. Analyse Math. (1964), 143-186.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the relationship between two fundamental quantities for entire functions: the maximum term μ(r) = max_n |aₙ|rⁿ and the maximum modulus M(r) = max_{|z|=r} |f(z)|. For polynomials, μ(r)/M(r) → 1 as r → ∞. Erdős asked whether, for transcendental entire functions, this ratio must tend to 0 whenever the limit exists.\n\nClunie proved the answer is YES for functions with non-negative coefficients. However, Clunie and Hayman (1964) spectacularly disproved the general conjecture by constructing entire functions where μ(r)/M(r) → λ for any prescribed λ ∈ [0, 1/2]. The upper bound 1/2 is sharp and cannot be exceeded.",
+    "problemStatement": "Let $f = \\sum_{n=0}^{\\infty} a_n z^n$ be an entire function (not a polynomial). Define:\n- **Maximum term**: $\\mu(r) = \\max_n |a_n| r^n$\n- **Maximum modulus**: $M(r) = \\max_{|z|=r} |f(z)|$\n\n**Question**: If $\\lim_{r \\to \\infty} \\frac{\\mu(r)}{M(r)}$ exists, must it equal 0?\n\n**Answer**: NO.\n\n**Clunie-Hayman (1964)**: The limit can take any value in $[0, 1/2]$, and this interval is sharp.\n\n**Status**: SOLVED (DISPROVED)",
+    "proofStrategy": "The formalization defines EntireFunction as a structure carrying power series coefficients with the property that infinitely many are nonzero. maxTerm and maxModulus are defined as suprema. The Clunie-Hayman theorem is axiomatized: for any λ ∈ [0, 1/2], there exists an entire function with μ(r)/M(r) → λ. The upper bound 1/2 is also axiomatized. The original conjecture is proved false by taking λ = 1/4.",
+    "keyInsights": [
+      "**Dichotomy for positive coefficients**: Clunie proved that functions with aₙ ≥ 0 always have μ(r)/M(r) → 0. The counterexamples require oscillating signs.",
+      "**The interval [0, 1/2] is complete**: Any λ ∈ [0, 1/2] is achievable, and the upper bound 1/2 cannot be exceeded.",
+      "**Counterexamples are pathological**: The functions achieving λ > 0 are highly irregular and typically have infinite order.",
+      "**Central index theory**: The maximum term is achieved at the 'central index' ν(r), which grows to ∞ as r → ∞.",
+      "**Connection to growth**: Functions with μ(r)/M(r) → 0 are called 'normal'; this includes most classical entire functions like exp, sin, cos."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "EntireFunction, maxTerm, maxModulus, termModulusRatio",
+      "startLine": 34,
+      "endLine": 56
+    },
+    {
+      "id": "original-conjecture",
+      "title": "The Original Conjecture",
+      "summary": "OriginalConjecture, clunie_positive_coeffs",
+      "startLine": 57,
+      "endLine": 72
+    },
+    {
+      "id": "counterexample",
+      "title": "Clunie-Hayman Counterexample",
+      "summary": "clunie_hayman_1964, ratio_upper_bound, original_conjecture_false",
+      "startLine": 73,
+      "endLine": 99
+    },
+    {
+      "id": "characterization",
+      "title": "Complete Characterization",
+      "summary": "AchievableLimits, achievable_limits_characterization",
+      "startLine": 100,
+      "endLine": 125
+    },
+    {
+      "id": "central-index",
+      "title": "Central Index",
+      "summary": "centralIndex, central_index_unbounded",
+      "startLine": 126,
+      "endLine": 139
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Relations",
+      "summary": "max_term_le_max_modulus, IsNormal, positive_coeffs_normal",
+      "startLine": 140,
+      "endLine": 161
+    },
+    {
+      "id": "order-type",
+      "title": "Order and Type",
+      "summary": "order, typeOfOrder, order_zero_normal",
+      "startLine": 162,
+      "endLine": 179
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "exp_is_normal, pathological_examples_exist",
+      "startLine": 180,
+      "endLine": 198
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "summary": "erdos_227_statement",
+      "startLine": 199,
+      "endLine": 218
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_227_summary, erdos_227_answer",
+      "startLine": 219,
+      "endLine": 242
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #227 asked whether the limit of μ(r)/M(r) (maximum term over maximum modulus) must be 0 when it exists. This was disproved by Clunie and Hayman (1964), who showed the limit can be any value in [0, 1/2]. The upper bound 1/2 is sharp.",
+    "implications": "The result reveals a fundamental dichotomy in entire function theory: functions with positive coefficients behave 'normally' with μ/M → 0, while functions with oscillating signs can exhibit pathological behavior. This connects to questions about the distribution of zeros and the 'irregularity' of growth.",
+    "openQuestions": [
+      "What is the structure of entire functions achieving limit exactly 1/2?",
+      "Can the results be extended to functions in several complex variables?",
+      "What growth properties characterize functions with μ/M → λ for a fixed λ?"
+    ]
   }
 }
