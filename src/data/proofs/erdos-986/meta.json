@@ -1,33 +1,138 @@
 {
   "id": "erdos-986",
-  "title": "Erdős Problem #986",
+  "title": "Erdős Problem #986: Ramsey Number Lower Bounds",
   "slug": "erdos-986",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any fixed ...,\\[R(k,n) \\gg }{(\\log n)^c}\\]for some constant ....\n\n\n\nSpencer  proved this for ... and Mattheus and Verstra...",
+  "description": "For fixed k ≥ 3, is R(k,n) ≫ n^(k-1)/(log n)^c? YES for k=3 (Spencer 1977), YES for k=4 (Mattheus-Verstraete 2023), OPEN for k≥5. Gap between known bounds grows with k.",
   "meta": {
-    "author": "Unknown",
+    "author": "Spencer (1977, k=3), Mattheus-Verstraete (2023, k=4)",
     "sourceUrl": "https://erdosproblems.com/986",
-    "date": "",
-    "status": "pending",
+    "date": "1977-2023",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos986Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory",
+      "asymptotic-analysis",
+      "partially-solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 986,
     "erdosUrl": "https://erdosproblems.com/986",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partial",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Find minimum satisfying predicate",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "RamseyNumber definition: smallest N for monochromatic K_k or K_n",
+      "AsymptoticLowerBound (≫) and AsymptoticUpperBound (≪) notation",
+      "erdos_986_conjecture: the conjectured lower bound for fixed k",
+      "spencer_1977 axiom: k=3 case proved",
+      "mattheus_verstraete_2023 axiom: k=4 case proved (major breakthrough)",
+      "bohman_keevash_2010 axiom: best known general lower bound",
+      "aks_1980_upper axiom: best known upper bound",
+      "exponent_gap: analysis of the polynomial gap for k≥5",
+      "erdos_986_summary: combined results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #986 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any fixed $k\\geq 3$,\\[R(k,n) \\gg \\frac{n^{k-1}}{(\\log n)^c}\\]for some constant $c=c(k)>0$.\n\n\n\nSpencer \\cite{Sp77} proved this for $k=3$ and Mattheus and Verstraete \\cite{MaVe23} proved this for $k=4$.\n\nThe best general bounds available are\\[\\frac{n^{\\frac{k+1}{2}}}{(\\log n)^{\\frac{1}{k-2}-\\frac{k+1}{2}}}\\ll_k R(k,n) \\ll_k \\frac{n^{k-1}}{(\\log n)^{k-2}}.\\]The lower bound was proved by Bohman and Keevash \\cite{BoKe10}. The upper bound was proved by Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS80}. Li, Rousseau, and Zang \\cite{LRZ01} have shown that $\\ll_k$ in the upper bound can be improved to $\\leq (1+o(1))$.\n\nThe special case $k=3$ is the topic of [165] and $k=4$ is the topic of [166].\n\nThis problem is #6 in Ramsey Theory in the graphs problem collection.\n\nSee also [920].\n\n\n\n\nReferences\n\n\n[AKS80] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, A note on Ramsey numbers. J. Combin. Theory Ser. A (1980), 354-360.\n\n[BoKe10] Bohman, Tom and Keevash, Peter, The early evolution of the {$H$}-free process. Invent. Math. (2010), 291--336.\n\n[LRZ01] Li, Yusheng and Rousseau, Cecil C. and Zang, Wenan, Asymptotic upper bounds for {R}amsey functions. Graphs Combin. (2001), 123--128.\n\n[MaVe23] Mattheus, S. and Verstraete, J., The asymptotics of $r(4,t)$. arXiv:2306.04007 (2023).\n\n[Sp77] Spencer, J., Asymptotic lower bounds for Ramsey functions. Discrete Math. (1977), 69-76.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #986: Ramsey Number Lower Bounds**\n\nThis problem concerns asymptotic lower bounds for off-diagonal Ramsey numbers R(k,n) where k is fixed and n grows.\n\n**Key History:**\n- Erdős conjectured that R(k,n) ≫ n^(k-1)/(log n)^c for fixed k ≥ 3\n- Spencer (1977): Proved the conjecture for k = 3\n- Ajtai-Komlós-Szemerédi (1980): Upper bound R(k,n) ≪ n^(k-1)/(log n)^(k-2)\n- Bohman-Keevash (2010): Best general lower bound n^((k+1)/2)/...\n- Mattheus-Verstraete (2023): Major breakthrough proving k = 4 case\n\n**Mathematical Setting:**\nR(k,n) is the smallest N such that any 2-coloring of K_N edges contains a monochromatic K_k or K_n. The problem asks how fast R(k,n) grows for fixed k.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nFor any fixed $k \\geq 3$, prove that:\n$$R(k,n) \\gg \\frac{n^{k-1}}{(\\log n)^c}$$\nfor some constant $c = c(k) > 0$.\n\n**Status:**\n- $k = 3$: **YES** (Spencer, 1977)\n- $k = 4$: **YES** (Mattheus-Verstraete, 2023)\n- $k \\geq 5$: **OPEN**\n\n**Best Known Bounds (general k):**\n- Lower: $R(k,n) \\gg_k n^{(k+1)/2} / (\\log n)^{\\alpha}$ [Bohman-Keevash 2010]\n- Upper: $R(k,n) \\ll_k n^{k-1} / (\\log n)^{k-2}$ [AKS 1980]",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Ramsey Numbers:** Define R(k,n) as the minimum N for monochromatic cliques.\n\n2. **Asymptotic Notation:** Define ≫ and ≪ for asymptotic bounds.\n\n3. **Conjecture:** Formalize erdos_986_conjecture(k) for each fixed k.\n\n4. **Spencer 1977:** Axiomatize the k = 3 result.\n\n5. **Mattheus-Verstraete 2023:** Axiomatize the k = 4 breakthrough.\n\n6. **General Bounds:** Axiomatize Bohman-Keevash and AKS bounds.\n\n7. **Gap Analysis:** Compute the polynomial exponent gap for k ≥ 5.\n\n8. **Summary:** Combine all known results.",
+    "keyInsights": [
+      "**Partial Progress:** k=3 solved 1977, k=4 solved 2023; general case open",
+      "**Exponent Gap:** Known lower bound has exponent (k+1)/2, conjecture has k-1",
+      "**Gap Formula:** The gap (k-1) - (k+1)/2 = (k-3)/2 grows with k",
+      "**2023 Breakthrough:** Mattheus-Verstraete's k=4 result was major progress",
+      "**Upper Bound Match:** The AKS upper bound has the conjectured polynomial exponent",
+      "**Related Problems:** #165 (k=3), #166 (k=4), #920 all connect to this"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "ramsey-def",
+      "title": "Ramsey Number Definition",
+      "summary": "Definition of R(k,n) and existence axiom",
+      "startLine": 39,
+      "endLine": 65
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Notation",
+      "summary": "Definitions of ≫ and ≪ for asymptotic bounds",
+      "startLine": 67,
+      "endLine": 87
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjectured Lower Bound",
+      "summary": "Erdős's conjecture: R(k,n) ≫ n^(k-1)/(log n)^c",
+      "startLine": 89,
+      "endLine": 102
+    },
+    {
+      "id": "spencer",
+      "title": "Spencer's k=3 Result",
+      "summary": "Spencer (1977) proved the conjecture for k=3",
+      "startLine": 104,
+      "endLine": 124
+    },
+    {
+      "id": "mattheus-verstraete",
+      "title": "Mattheus-Verstraete k=4 Result",
+      "summary": "2023 breakthrough proving the k=4 case",
+      "startLine": 126,
+      "endLine": 146
+    },
+    {
+      "id": "general-bounds",
+      "title": "Best Known General Bounds",
+      "summary": "Bohman-Keevash lower and AKS upper bounds",
+      "startLine": 148,
+      "endLine": 172
+    },
+    {
+      "id": "gap-analysis",
+      "title": "The Gap for k≥5",
+      "summary": "Analysis of the polynomial exponent gap",
+      "startLine": 174,
+      "endLine": 200
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Combined results: k=3,4 YES; k≥5 OPEN",
+      "startLine": 216,
+      "endLine": 249
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #986 asks whether R(k,n) ≫ n^(k-1)/(log n)^c for fixed k ≥ 3. The answer is YES for k=3 (Spencer 1977) and k=4 (Mattheus-Verstraete 2023), but OPEN for k≥5. The gap between the known lower bound (polynomial exponent (k+1)/2) and the conjectured bound (exponent k-1) grows as (k-3)/2, making the general case a major open problem in Ramsey theory.",
+    "implications": "**Implications in Ramsey Theory**\n\n1. **Asymptotic Behavior:** Determines the growth rate of off-diagonal Ramsey numbers\n\n2. **Probabilistic Methods:** Spencer's proof used probabilistic combinatorics\n\n3. **Algebraic Geometry:** Mattheus-Verstraete used algebraic techniques\n\n4. **H-free Process:** Bohman-Keevash analyzed random graph evolution\n\n5. **Computational Hardness:** Exact Ramsey numbers are notoriously difficult to compute",
+    "openQuestions": [
+      "Prove the conjecture for k = 5 (next case after k = 4)",
+      "Prove the conjecture for general k ≥ 5",
+      "Determine the optimal constant c(k) in the logarithmic factor",
+      "Improve the polynomial exponent in general lower bounds",
+      "Find new techniques beyond probabilistic and algebraic methods"
+    ]
   }
 }
