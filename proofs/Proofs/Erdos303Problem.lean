@@ -1,4 +1,26 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 902cbc85-4aed-4819-918b-8fbbbf60f71a
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :
+    UnitFractionEq a b c ↔ UnitFractionEqAlt a b c
+
+- theorem monochromatic_iff_alt (𝓒 : ℤ → α) (a b c : ℤ) :
+    Monochromatic 𝓒 a b c ↔ MonochromaticAlt 𝓒 a b c
+
+- theorem infinitely_many_solutions :
+    ∀ n : ℤ, n ≥ 2 → UnitFractionEq n (n + 1) (n * (n + 1))
+-/
+
+/-
   Erdős Problem #303: Monochromatic Unit Fraction Solutions
 
   **Problem**: Is it true that in any finite colouring of the integers there
@@ -25,6 +47,7 @@
 
 import Mathlib
 
+
 open Set
 
 namespace Erdos303
@@ -50,7 +73,11 @@ theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc :
     UnitFractionEq a b c ↔ UnitFractionEqAlt a b c := by
   -- The proof involves field_simp and algebraic manipulation
   -- From 1/a = 1/b + 1/c, multiply by abc to get bc = a(b+c)
-  sorry
+  -- By definition of UnitFractionEq, we have $1/a = 1/b + 1/c$.
+  simp [Erdos303.UnitFractionEq, Erdos303.UnitFractionEqAlt];
+  -- By multiplying both sides of the equation by $a * b * c$, we can eliminate the denominators and obtain the equivalent equation $b * c = a * (b + c)$.
+  field_simp [ha, hb, hc];
+  norm_cast ; ring
 
 /-
 ## Examples of Unit Fraction Solutions
@@ -103,7 +130,8 @@ def MonochromaticAlt (𝓒 : ℤ → α) (a b c : ℤ) : Prop :=
 theorem monochromatic_iff_alt (𝓒 : ℤ → α) (a b c : ℤ) :
     Monochromatic 𝓒 a b c ↔ MonochromaticAlt 𝓒 a b c := by
   -- Equal colours iff image is singleton
-  sorry
+  simp [Erdos303.Monochromatic, Erdos303.MonochromaticAlt];
+  aesop_cat
 
 /-
 ## The Main Theorem (Brown-Rödl 1991)
@@ -116,6 +144,9 @@ In any finite colouring of ℤ, there exist distinct a, b, c with
 def ValidSolution (a b c : ℤ) : Prop :=
   a ≠ 0 ∧ b ≠ 0 ∧ c ≠ 0 ∧ a ≠ b ∧ b ≠ c ∧ a ≠ c ∧ UnitFractionEq a b c
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos303.brownRodl_theorem', 'harmonicSorry970858']-/
 /-- **Erdős Problem #303 (SOLVED)**: Brown-Rödl Theorem.
 
 In any finite colouring of the integers, there exists a monochromatic
@@ -134,6 +165,9 @@ def erdos303Statement : Prop :=
       (1/a : ℝ) = 1/b + 1/c ∧
       (𝓒 '' {a, b, c}).Subsingleton
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos303.erdos303_true', 'harmonicSorry537023']-/
 /-- The statement is true. -/
 axiom erdos303_true : erdos303Statement
 
@@ -161,7 +195,9 @@ theorem infinitely_many_solutions :
     ∀ n : ℤ, n ≥ 2 → UnitFractionEq n (n + 1) (n * (n + 1)) := by
   intro n hn
   -- Technical proof involving field_simp and ring
-  sorry
+  unfold Erdos303.UnitFractionEq;
+  field_simp;
+  push_cast; ring;
 
 /-- The solutions n, (n+1), n(n+1) are distinct for n ≥ 2. -/
 theorem solution_distinct (n : ℤ) (hn : n ≥ 2) :
