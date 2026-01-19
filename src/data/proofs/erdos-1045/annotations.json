@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-e1045-context",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #1045: Maximize ∏|zᵢ-zⱼ| for n complex points with diameter ≤ 2. Regular polygon NOT optimal for even n ≥ 4, but may be optimal for odd n (open).",
+    "significance": "critical",
+    "tags": ["erdos", "complex-analysis", "optimization"]
+  },
+  {
+    "id": "ann-e1045-config",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Configuration",
+    "content": "A Configuration of n points is a function Fin n → ℂ, assigning a complex number to each index.",
+    "significance": "key",
+    "tags": ["definition", "configuration"],
+    "leanSymbol": "Configuration"
+  },
+  {
+    "id": "ann-e1045-diameter",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Diameter Constraint",
+    "content": "DiameterAtMost2 means all pairwise distances |zᵢ - zⱼ| ≤ 2. This bounds the 'spread' of the configuration.",
+    "significance": "critical",
+    "tags": ["definition", "constraint"],
+    "leanSymbol": "DiameterAtMost2"
+  },
+  {
+    "id": "ann-e1045-delta",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Product of Distances Δ",
+    "content": "Delta(z₁,...,zₙ) = ∏_{i≠j} |zᵢ-zⱼ|. The product is over all ORDERED pairs, so each distance appears twice.",
+    "significance": "critical",
+    "tags": ["definition", "delta"],
+    "leanSymbol": "Delta"
+  },
+  {
+    "id": "ann-e1045-regular",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "definition",
+    "title": "Regular Polygon",
+    "content": "The n-th roots of unity form a regular polygon on the unit circle. Scaling gives diameter 2.",
+    "significance": "key",
+    "tags": ["definition", "regular-polygon"],
+    "leanSymbol": "RegularPolygon"
+  },
+  {
+    "id": "ann-e1045-delta-even",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "axiom",
+    "title": "Δ for Even n",
+    "content": "For a regular n-gon with even n, Δ = n^n. This is a classical result from the theory of cyclotomic polynomials.",
+    "significance": "critical",
+    "tags": ["axiom", "even"],
+    "leanSymbol": "delta_regular_even"
+  },
+  {
+    "id": "ann-e1045-delta-odd",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 73, "endLine": 76 },
+    "type": "axiom",
+    "title": "Δ for Odd n",
+    "content": "For odd n, Δ = cos(π/2n)^{-n(n-1)} · n^n, which asymptotically equals e^{π²/8} · n^n. The odd case has a factor > 1.",
+    "significance": "critical",
+    "tags": ["axiom", "odd"],
+    "leanSymbol": "delta_regular_odd"
+  },
+  {
+    "id": "ann-e1045-polynomial",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "definition",
+    "title": "Polynomial from Roots",
+    "content": "polynomialFromRoots constructs the monic polynomial f(w) = ∏(w - zᵢ). The product of pairwise distances equals |Δf'(z)|^{1/2}.",
+    "significance": "supporting",
+    "tags": ["definition", "polynomial"],
+    "leanSymbol": "polynomialFromRoots"
+  },
+  {
+    "id": "ann-e1045-ehp",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "axiom",
+    "title": "Erdős-Herzog-Piranian (1958)",
+    "content": "If the sublevel set {w : |f(w)| < 1} is connected and f is monic with roots zᵢ, then Δ < n^n. This connects to potential theory.",
+    "significance": "key",
+    "tags": ["axiom", "ehp-1958"],
+    "leanSymbol": "EHP_1958"
+  },
+  {
+    "id": "ann-e1045-pommerenke",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 101, "endLine": 104 },
+    "type": "axiom",
+    "title": "Pommerenke's Upper Bound (1961)",
+    "content": "For any configuration with diameter ≤ 2, Δ ≤ 2^{O(n)} · n^n. This shows max Δ is at most exponentially larger than the regular polygon value.",
+    "significance": "critical",
+    "tags": ["axiom", "pommerenke", "upper-bound"],
+    "leanSymbol": "pommerenke_1961"
+  },
+  {
+    "id": "ann-e1045-hu-tang-4",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "axiom",
+    "title": "Hu-Tang Counterexample n=4",
+    "content": "Hu and Tang found an explicit 4-point configuration beating the square. This was the first counterexample to the regular polygon conjecture.",
+    "significance": "critical",
+    "tags": ["axiom", "counterexample"],
+    "leanSymbol": "hu_tang_n4"
+  },
+  {
+    "id": "ann-e1045-hu-tang-6",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "axiom",
+    "title": "Hu-Tang Counterexample n=6",
+    "content": "Similar counterexample for n=6. The regular hexagon is not optimal.",
+    "significance": "key",
+    "tags": ["axiom", "counterexample"],
+    "leanSymbol": "hu_tang_n6"
+  },
+  {
+    "id": "ann-e1045-cambie",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 122, "endLine": 125 },
+    "type": "axiom",
+    "title": "Cambie: All Even n ≥ 4",
+    "content": "Cambie generalized the counterexamples: regular polygon is NOT optimal for ANY even n ≥ 4. This resolves the even case completely.",
+    "significance": "critical",
+    "tags": ["axiom", "cambie", "generalization"],
+    "leanSymbol": "cambie_even_not_optimal"
+  },
+  {
+    "id": "ann-e1045-maxdelta",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "definition",
+    "title": "Maximum Δ",
+    "content": "MaxDelta(n) = sup{Δ(z) : DiameterAtMost2(z)}. The maximum product over all valid configurations.",
+    "significance": "key",
+    "tags": ["definition", "maximum"],
+    "leanSymbol": "MaxDelta"
+  },
+  {
+    "id": "ann-e1045-sothanaphan",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 135, "endLine": 138 },
+    "type": "axiom",
+    "title": "Sothanaphan (2025)",
+    "content": "liminf(max Δ / n^n) ≥ 1.0378 for even n. This quantifies how much better optimal configurations are than regular polygons.",
+    "significance": "key",
+    "tags": ["axiom", "sothanaphan", "2025"],
+    "leanSymbol": "sothanaphan_2025"
+  },
+  {
+    "id": "ann-e1045-cdt-6",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 140, "endLine": 143 },
+    "type": "axiom",
+    "title": "Cambie-Dong-Tang: 6|n",
+    "content": "When 6 divides n, the lower bound improves to C ≈ 1.304. Special structure is exploited.",
+    "significance": "key",
+    "tags": ["axiom", "cambie-dong-tang"],
+    "leanSymbol": "cambie_dong_tang_6div"
+  },
+  {
+    "id": "ann-e1045-cdt-even",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 145, "endLine": 148 },
+    "type": "axiom",
+    "title": "Cambie-Dong-Tang: All Even n",
+    "content": "For all even n, liminf(max Δ / n^n) ≥ 1.269. The current best lower bound.",
+    "significance": "critical",
+    "tags": ["axiom", "cambie-dong-tang", "best-bound"],
+    "leanSymbol": "cambie_dong_tang_even"
+  },
+  {
+    "id": "ann-e1045-odd-conj",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 154, "endLine": 157 },
+    "type": "definition",
+    "title": "Odd Conjecture",
+    "content": "Conjecture: The regular polygon IS optimal for odd n. No counterexamples are known for odd n.",
+    "significance": "key",
+    "tags": ["conjecture", "odd"],
+    "leanSymbol": "RegularPolygonOptimalOdd"
+  },
+  {
+    "id": "ann-e1045-odd-open",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 159, "endLine": 160 },
+    "type": "axiom",
+    "title": "Odd Case Open",
+    "content": "Whether regular polygon is optimal for odd n remains unresolved. Neither proved nor disproved.",
+    "significance": "critical",
+    "tags": ["axiom", "open"],
+    "leanSymbol": "odd_case_open"
+  },
+  {
+    "id": "ann-e1045-n2",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 166, "endLine": 169 },
+    "type": "axiom",
+    "title": "Optimal for n=2",
+    "content": "For n=2, the maximum Δ = 4 is achieved by any two points at distance 2. This is trivially optimal.",
+    "significance": "supporting",
+    "tags": ["axiom", "example"],
+    "leanSymbol": "optimal_n2"
+  },
+  {
+    "id": "ann-e1045-n3",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "axiom",
+    "title": "Regular Optimal for n=3",
+    "content": "The equilateral triangle is optimal for n=3. This is an odd case where the conjecture holds.",
+    "significance": "supporting",
+    "tags": ["axiom", "example"],
+    "leanSymbol": "regular_optimal_n3"
+  },
+  {
+    "id": "ann-e1045-main",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 180, "endLine": 197 },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "Combines: (1) Pommerenke's upper bound, (2) regular polygon not optimal for even n ≥ 4, (3) lower bounds exceeding n^n for even n.",
+    "significance": "critical",
+    "tags": ["theorem", "main"],
+    "leanSymbol": "erdos_1045_statement"
+  },
+  {
+    "id": "ann-e1045-summary",
+    "proofId": "erdos-1045",
+    "range": { "startLine": 209, "endLine": 225 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Summary: Even n resolved (regular NOT optimal, max Δ / n^n ≥ 1.269). Odd n remains open.",
+    "significance": "critical",
+    "tags": ["summary", "main-result"],
+    "leanSymbol": "erdos_1045_summary"
+  }
+]
