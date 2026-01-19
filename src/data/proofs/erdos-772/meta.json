@@ -1,33 +1,153 @@
 {
   "id": "erdos-772",
-  "title": "Erdős Problem #772",
+  "title": "Erdős Problem #772: Sidon Sets in Bounded Convolution Sets",
   "slug": "erdos-772",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the maximal ... such that if ... has ... and ... then ... contains a Sidon set of size at least ....\n\nIs i...",
+  "description": "Let H_k(n) be the maximal size of a Sidon subset in sets A with |A|=n and bounded convolution. Is H_k(n)/√n → ∞? YES, proved by Alon-Erdős (1985) with optimal bound H_k(n) = Θ(n^{2/3}).",
   "meta": {
-    "author": "Unknown",
+    "author": "Alon-Erdős (1985 solution), Erdős (1984 problem)",
     "sourceUrl": "https://erdosproblems.com/772",
-    "date": "",
-    "status": "pending",
+    "date": "1985",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos772Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sidon-sets",
+      "probabilistic-method",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 772,
     "erdosUrl": "https://erdosproblems.com/772",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Basic",
+        "description": "Basic finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number operations",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for fractional powers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "IsSidon definition: A set where all pairwise sums are distinct",
+      "HasNoAdditiveQuadruple: No non-trivial solutions to a+b=c+d",
+      "representationCount: Counts representations r_A(n)",
+      "HasBoundedConvolution: Sets with ‖1_A∗1_A‖_∞ ≤ k",
+      "H_k function: Maximum Sidon subset size in bounded convolution sets",
+      "erdos_1984_upper_bound axiom: H_k(n) ≪ n^{2/3}",
+      "sidon_subset_sqrt axiom: Any set contains Sidon subset of size ≫ √n",
+      "alon_erdos_1985 axiom: H_k(n) ≫_k n^{2/3}",
+      "quadruple_bound axiom: Additive quadruples ≤ k·n² in bounded sets",
+      "probabilistic_construction axiom: Random subsampling construction",
+      "optimal_bounds theorem: H_k(n) = Θ(n^{2/3})",
+      "erdos_772_summary: Combined main results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #772 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 1$ and $H_k(n)$ be the maximal $r$ such that if $A\\subset\\mathbb{N}$ has $\\lvert A\\rvert=n$ and $\\| 1_A\\ast 1_A\\|_\\infty \\leq k$ then $A$ contains a Sidon set of size at least $r$.\n\nIs it true that $H_k(n)/n^{1/2}\\to \\infty$? Or even $H_k(n) > n^{1/2+c}$ for some constant $c>0$?\n\n\n\nErd\\H{o}s \\cite{Er84d} proved that\\[H_k(n) \\ll n^{2/3}\\](where the implied constant is absolute). The lower bound $H_k(n)\\gg n^{1/2}$ follows from the fact that any set of size $n$ contains a Sidon set of size $\\gg n^{1/2}$ (see [530]).\n\nThe answer is yes, and in fact\\[H_k(n) \\gg_k n^{2/3},\\]proved by Alon and Erd\\H{o}s \\cite{AlEr85}. We sketch their proof as follows: take a random subset $A'\\subset A$, including each $n\\in A'$ with probability $\\asymp n^{-1/3}$. The number of non-trivial additive quadruples in $A$ is $\\ll n^2$ and hence only $\\ll n^{2/3}$ non-trivial additive quadruples remain in $A'$. Since the size of the random subset is $\\gg n^{2/3}$, all of the remaining non-trivial additive quadruples can be removed by removing at most $\\lvert A'\\rvert/2$ (choosing the constants suitably).\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[Er84d] Erd\\H{o}s, P., Extremal problems in number theory, combinatorics and\ngeometry. Proceedings of the International Congress of\nMathematicians, Vol. 1, 2 (Warsaw, 1983) (1984), 51-70.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #772: Sidon Sets in Bounded Convolution Sets**\n\nThis problem connects two important concepts in additive combinatorics: Sidon sets (where all pairwise sums are distinct) and sets with bounded convolution (where no sum is represented too many times).\n\n**Key History:**\n- Erdős (1984): Posed the problem and proved H_k(n) ≪ n^{2/3}\n- Alon-Erdős (1985): Proved the matching lower bound H_k(n) ≫_k n^{2/3}\n- The basic lower bound H_k(n) ≫ √n follows from Problem #530\n\n**Mathematical Setting:**\nLet H_k(n) be the maximum r such that any set A ⊆ ℕ with |A| = n and bounded convolution ‖1_A ∗ 1_A‖_∞ ≤ k contains a Sidon subset of size at least r. Erdős asked whether H_k(n)/√n → ∞, and whether H_k(n) > n^{1/2+c} for some c > 0.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $k \\geq 1$ and $H_k(n)$ be the maximal $r$ such that if $A \\subset \\mathbb{N}$ has $|A| = n$ and $\\|1_A \\ast 1_A\\|_\\infty \\leq k$, then $A$ contains a Sidon set of size at least $r$.\n\nIs it true that $H_k(n)/n^{1/2} \\to \\infty$? Or even $H_k(n) > n^{1/2+c}$ for some constant $c > 0$?\n\n**Answer: YES**\n\nAlon and Erdős (1985) proved:\n- Upper bound: $H_k(n) \\ll n^{2/3}$ (Erdős 1984, absolute constant)\n- Lower bound: $H_k(n) \\gg_k n^{2/3}$ (Alon-Erdős 1985, constant depends on k)\n\nThus $H_k(n) = \\Theta(n^{2/3})$, and the answer is YES with $c = 1/6$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sidon Sets:** Define IsSidon as the property that all pairwise sums are distinct, equivalently {a,b} = {c,d} whenever a+b = c+d.\n\n2. **Bounded Convolution:** Define representation count r_A(n) and the bounded convolution property ‖1_A ∗ 1_A‖_∞ ≤ k.\n\n3. **The Function H_k:** Define as supremum over Sidon subset sizes in qualifying sets.\n\n4. **Upper Bound:** Axiomatize Erdős's 1984 result H_k(n) ≪ n^{2/3}.\n\n5. **Basic Lower Bound:** Use the fact that any set has a Sidon subset of size ≫ √n.\n\n6. **Optimal Lower Bound:** Axiomatize Alon-Erdős (1985) using probabilistic method.\n\n7. **Probabilistic Construction:** Sample with probability ∼n^{-1/3}, then remove remaining quadruples.\n\n8. **Summary:** Combine to show H_k(n) = Θ(n^{2/3}).",
+    "keyInsights": [
+      "**Sidon Sets:** Sets where all pairwise sums a+b are distinct; equivalently, no non-trivial additive quadruples a+b=c+d",
+      "**Bounded Convolution:** ‖1_A ∗ 1_A‖_∞ ≤ k means each sum is represented at most k times",
+      "**Additive Quadruples:** In a bounded convolution set, the number of non-trivial quadruples is ≤ k·n²",
+      "**Probabilistic Method:** Random subsampling with probability n^{-1/3} balances subset size with quadruple elimination",
+      "**Optimal Exponent:** The answer 2/3 = 1/2 + 1/6 shows H_k(n) grows strictly faster than √n",
+      "**Constant Dependence:** The upper bound constant is absolute, but the lower bound constant depends on k"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sidon-sets",
+      "title": "Sidon Sets",
+      "summary": "Definition of Sidon sets and equivalent characterizations via additive quadruples",
+      "startLine": 42,
+      "endLine": 70
+    },
+    {
+      "id": "convolution",
+      "title": "Convolution and Representation Function",
+      "summary": "Representation count r_A(n), max representation, bounded convolution property",
+      "startLine": 72,
+      "endLine": 107
+    },
+    {
+      "id": "h-k-function",
+      "title": "The Function H_k(n)",
+      "summary": "Definition of H_k as maximum Sidon subset size in bounded convolution sets",
+      "startLine": 109,
+      "endLine": 127
+    },
+    {
+      "id": "upper-bound",
+      "title": "Erdős's Upper Bound",
+      "summary": "Erdős 1984: H_k(n) ≪ n^{2/3} with absolute constant",
+      "startLine": 129,
+      "endLine": 141
+    },
+    {
+      "id": "basic-lower",
+      "title": "Basic Lower Bound",
+      "summary": "H_k(n) ≫ √n from Sidon subset existence (Problem #530)",
+      "startLine": 143,
+      "endLine": 158
+    },
+    {
+      "id": "optimal-lower",
+      "title": "Alon-Erdős Optimal Lower Bound",
+      "summary": "Alon-Erdős 1985: H_k(n) ≫_k n^{2/3}, answering Erdős's question",
+      "startLine": 160,
+      "endLine": 192
+    },
+    {
+      "id": "probabilistic",
+      "title": "Proof Sketch (Probabilistic Method)",
+      "summary": "Additive quadruple count, probabilistic construction with p ∼ n^{-1/3}",
+      "startLine": 194,
+      "endLine": 227
+    },
+    {
+      "id": "optimal-result",
+      "title": "Optimal Result",
+      "summary": "H_k(n) = Θ(n^{2/3}), combining upper and lower bounds",
+      "startLine": 229,
+      "endLine": 248
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete answer: YES, with optimal bound n^{2/3}",
+      "startLine": 250,
+      "endLine": 282
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #772 asked whether H_k(n)/√n → ∞ for sets with bounded convolution. The answer is YES, proved by Alon and Erdős in 1985. The optimal result is H_k(n) = Θ(n^{2/3}), showing that the exponent 2/3 = 1/2 + 1/6 gives the correct growth rate, answering Erdős's question about whether H_k(n) > n^{1/2+c} for some c > 0.",
+    "implications": "**Implications in Additive Combinatorics**\n\n1. **Structure vs Randomness:** Sets with bounded convolution retain enough Sidon structure\n\n2. **Probabilistic Method:** Random subsampling is optimal for finding Sidon subsets\n\n3. **Exponent Gap:** The gap between 1/2 (trivial) and 2/3 (optimal) is substantial\n\n4. **Dependence on k:** Lower bound constant depends on k, upper bound does not\n\n5. **Connection to #530:** The basic √n bound for all sets is far from optimal here",
+    "openQuestions": [
+      "Explicit construction achieving the n^{2/3} bound (avoiding probabilistic method)",
+      "Optimal dependence of the constant on k in the lower bound",
+      "Higher-dimensional analogues for Sidon sets in ℤⁿ",
+      "Connection to sum-free sets and related structures",
+      "Effective bounds for the threshold N in H_k(n) > n^{2/3-ε}"
+    ]
   }
 }
