@@ -14005,17 +14005,25 @@
   },
   {
     "id": "erdos-991",
-    "title": "Erdős Problem #991",
+    "title": "Erdős Problem #991: Discrepancy of Optimal Logarithmic Energy Points",
     "slug": "erdos-991",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... maximises\\[\\prod_{i<j}\\lvert w_i-w_j\\rvert\\]over all possible sets of size ....\n\nIs it true that\\[\\max_C\\lvert \\l...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do optimal logarithmic energy point configurations on S² have small spherical cap discrepancy? YES, proved via classical potential theory with quantitative bounds by Brauchart (2008) and Marzo-Mas (2021).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrepancy-theory",
+      "potential-theory",
+      "sphere",
+      "logarithmic-energy",
+      "fekete-points",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 991,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-992",
