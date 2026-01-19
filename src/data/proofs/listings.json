@@ -2646,17 +2646,24 @@
   },
   {
     "id": "erdos-1132",
-    "title": "Erdős Problem #1132",
+    "title": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions",
     "slug": "erdos-1132",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nLet ... be an infinite seq...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Two open questions about Lebesgue functions Lₙ(x) for infinite node sequences: must there exist x with large Lₙ(x) infinitely often, and is the growth property satisfied almost everywhere?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "interpolation",
+      "polynomials",
+      "lebesgue-function",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1132,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-1133",
