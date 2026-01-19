@@ -7101,17 +7101,22 @@
   },
   {
     "id": "erdos-445",
-    "title": "Erdős Problem #445",
+    "title": "Erdős Problem #445: Multiplicative Inverses in Short Intervals",
     "slug": "erdos-445",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any ..., if ... is a sufficiently large prime then, for any ..., there exist ... such that ...?\n\n\n\nHeilb...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For c > 1/2, can we find a,b ∈ (n, n+p^c) with ab ≡ 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "kloosterman-sums",
+      "exponential-sums"
     ],
     "erdosNumber": 445,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 26
   },
   {
     "id": "erdos-446",

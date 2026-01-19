@@ -1,1 +1,236 @@
-[]
+[
+  {
+    "id": "ann-445-hasinverse",
+    "proofId": "erdos-445",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "HasInverse",
+    "content": "ab ≡ 1 (mod p): a and b are multiplicative inverses.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-openinterval",
+    "proofId": "erdos-445",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "OpenInterval",
+    "content": "The interval (n, n + L) as a finite set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-haspair",
+    "proofId": "erdos-445",
+    "range": { "startLine": 43, "endLine": 47 },
+    "type": "definition",
+    "title": "HasInversePairInInterval",
+    "content": "∃ a, b ∈ (n, n + p^c) with ab ≡ 1 (mod p).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-mainconj",
+    "proofId": "erdos-445",
+    "range": { "startLine": 55, "endLine": 59 },
+    "type": "definition",
+    "title": "MainConjecture",
+    "content": "For c > 1/2, inverse pairs exist in (n, n + p^c).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-strongconj",
+    "proofId": "erdos-445",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "definition",
+    "title": "StrongConjecture",
+    "content": "c = 1/2 is the exact threshold.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-heilbronn-thresh",
+    "proofId": "erdos-445",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "axiom",
+    "title": "Heilbronn Threshold",
+    "content": "Some c₀ close to 1 where Heilbronn's result applies.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-445-heilbronn",
+    "proofId": "erdos-445",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "axiom",
+    "title": "Heilbronn Unpublished",
+    "content": "Result holds for c > c₀ close to 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-kloosterman",
+    "proofId": "erdos-445",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "KloostermanSum",
+    "content": "K(m,n;p) = Σₓ e^{2πi(mx + nx⁻¹)/p}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-weil",
+    "proofId": "erdos-445",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "axiom",
+    "title": "Weil Bound",
+    "content": "|K(m,n;p)| ≤ 2√p — the key estimate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-heathbrown",
+    "proofId": "erdos-445",
+    "range": { "startLine": 97, "endLine": 101 },
+    "type": "axiom",
+    "title": "Heath-Brown 2000",
+    "content": "Result holds for all c > 3/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-threshold",
+    "proofId": "erdos-445",
+    "range": { "startLine": 103, "endLine": 110 },
+    "type": "theorem",
+    "title": "Heath-Brown Threshold",
+    "content": "c₀ = 3/4 is the current best bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-openrange",
+    "proofId": "erdos-445",
+    "range": { "startLine": 118, "endLine": 119 },
+    "type": "definition",
+    "title": "OpenRange",
+    "content": "The gap (1/2, 3/4] that remains open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-gapopen",
+    "proofId": "erdos-445",
+    "range": { "startLine": 121, "endLine": 125 },
+    "type": "axiom",
+    "title": "Gap Open",
+    "content": "c ∈ (1/2, 3/4] is neither proved nor disproved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-currentknowledge",
+    "proofId": "erdos-445",
+    "range": { "startLine": 127, "endLine": 138 },
+    "type": "theorem",
+    "title": "Current Knowledge",
+    "content": "c > 3/4 works; gap is (1/2, 3/4].",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-countcoprime",
+    "proofId": "erdos-445",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "definition",
+    "title": "countCoprime",
+    "content": "Count elements coprime to p in an interval.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-445-mostlycoprime",
+    "proofId": "erdos-445",
+    "range": { "startLine": 150, "endLine": 153 },
+    "type": "theorem",
+    "title": "Mostly Coprime",
+    "content": "Almost all elements in (n, n + p^c) are coprime to p.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-445-totalpairs",
+    "proofId": "erdos-445",
+    "range": { "startLine": 155, "endLine": 159 },
+    "type": "theorem",
+    "title": "Total Inverse Pairs",
+    "content": "There are exactly p - 1 inverse pairs mod p.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-445-heuristic",
+    "proofId": "erdos-445",
+    "range": { "startLine": 161, "endLine": 166 },
+    "type": "axiom",
+    "title": "Heuristic Pairs",
+    "content": "Expected ~L²/p pairs in interval of length L.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-thresholdheuristic",
+    "proofId": "erdos-445",
+    "range": { "startLine": 168, "endLine": 173 },
+    "type": "theorem",
+    "title": "Threshold Heuristic",
+    "content": "c = 1/2 gives expected 1 pair; c > 1/2 gives ≫ 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-ramanujan",
+    "proofId": "erdos-445",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "definition",
+    "title": "RamanujanSum",
+    "content": "Special case of Kloosterman sum.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-445-kloostermandetects",
+    "proofId": "erdos-445",
+    "range": { "startLine": 185, "endLine": 188 },
+    "type": "axiom",
+    "title": "Kloosterman Detects Inverses",
+    "content": "Kloosterman sums count inverse pairs in intervals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-heathbrownmethod",
+    "proofId": "erdos-445",
+    "range": { "startLine": 190, "endLine": 194 },
+    "type": "axiom",
+    "title": "Heath-Brown's Method",
+    "content": "Weil bound + averaging gives c > 3/4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-445-inverseinap",
+    "proofId": "erdos-445",
+    "range": { "startLine": 202, "endLine": 204 },
+    "type": "definition",
+    "title": "InverseInAP",
+    "content": "Finding inverses in arithmetic progressions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-445-statement",
+    "proofId": "erdos-445",
+    "range": { "startLine": 219, "endLine": 234 },
+    "type": "theorem",
+    "title": "erdos_445_statement",
+    "content": "Heilbronn + Heath-Brown + open gap.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-summary",
+    "proofId": "erdos-445",
+    "range": { "startLine": 240, "endLine": 253 },
+    "type": "theorem",
+    "title": "erdos_445_summary",
+    "content": "Summary: c > 3/4 proved, c ∈ (1/2, 3/4] open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-445-answer",
+    "proofId": "erdos-445",
+    "range": { "startLine": 255, "endLine": 256 },
+    "type": "theorem",
+    "title": "erdos_445_answer",
+    "content": "Status: OPEN for c ∈ (1/2, 3/4].",
+    "significance": "critical"
+  }
+]

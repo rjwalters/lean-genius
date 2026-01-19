@@ -1,33 +1,149 @@
 {
   "id": "erdos-445",
-  "title": "Erdős Problem #445",
+  "title": "Erdős Problem #445: Multiplicative Inverses in Short Intervals",
   "slug": "erdos-445",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any ..., if ... is a sufficiently large prime then, for any ..., there exist ... such that ...?\n\n\n\nHeilb...",
+  "description": "For c > 1/2, can we find a,b ∈ (n, n+p^c) with ab ≡ 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Heath-Brown (2000)",
     "sourceUrl": "https://erdosproblems.com/445",
-    "date": "",
-    "status": "pending",
+    "date": "2000",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos445Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "kloosterman-sums",
+      "exponential-sums"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 445,
     "erdosUrl": "https://erdosproblems.com/445",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value for Kloosterman bounds",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized HasInverse and HasInversePairInInterval predicates",
+      "Stated Heilbronn's unpublished result for c close to 1",
+      "Captured Heath-Brown (2000): proved for c > 3/4 using Kloosterman sums",
+      "Defined Kloosterman sum and stated Weil bound |K| ≤ 2√p",
+      "Explained heuristic: threshold c = 1/2 from expected pair count"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #445 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any $c>1/2$, if $p$ is a sufficiently large prime then, for any $n\\geq 0$, there exist $a,b\\in(n,n+p^c)$ such that $ab\\equiv 1\\pmod{p}$?\n\n\n\nHeilbronn (unpublished) proved this for $c$ sufficiently close to $1$. Heath-Brown \\cite{He00} used Kloosterman sums to prove this for all $c>3/4$.\n\nThis is discussed in this MathOverflow question.\n\n\n\n\nReferences\n\n\n[He00] Heath-Brown, D. R., Arithmetic applications of {K}loosterman sums. Nieuw Arch. Wiskd. (5) (2000), 380--384.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns finding multiplicative inverse pairs (a, b with ab ≡ 1 mod p) within short intervals. The question is: how short can the interval (n, n + p^c) be while still guaranteeing such a pair exists?\n\nHeilbronn proved the result for c sufficiently close to 1 (unpublished). The breakthrough came from Heath-Brown (2000), who used Kloosterman sums and the Weil bound |K(m,n;p)| ≤ 2√p to prove the result for all c > 3/4.\n\nThe heuristic argument suggests c = 1/2 is the true threshold: an interval of length L contains roughly L²/p inverse pairs, so L = p^{1/2} gives ~1 pair on average.",
+    "problemStatement": "For any $c > 1/2$, if $p$ is a sufficiently large prime, then for any $n \\geq 0$, there exist $a, b \\in (n, n + p^c)$ such that $ab \\equiv 1 \\pmod{p}$.\n\n**Known Results**:\n- **Heilbronn** (unpublished): True for $c$ sufficiently close to 1\n- **Heath-Brown** (2000): True for all $c > 3/4$\n- **Gap**: $c \\in (1/2, 3/4]$ remains OPEN\n\n**Status**: OPEN",
+    "proofStrategy": "The formalization defines HasInverse (ab ≡ 1 mod p) and HasInversePairInInterval. The main conjecture states that for c > 1/2, inverse pairs exist in intervals of length p^c. Heilbronn's result and Heath-Brown (2000) are axiomatized. Kloosterman sums are defined, and the Weil bound is stated. The heuristic counting argument explains why c = 1/2 is believed to be the threshold.",
+    "keyInsights": [
+      "**Heuristic threshold**: An interval of length L contains ~L²/p inverse pairs. For L = p^c, this is p^{2c-1}, which is ≥ 1 when c ≥ 1/2.",
+      "**Kloosterman sums are key**: Heath-Brown's c > 3/4 result uses K(m,n;p) = Σₓ e^{2πi(mx + nx⁻¹)/p} and the Weil bound.",
+      "**Gap remains**: The range c ∈ (1/2, 3/4] is neither proved nor disproved.",
+      "**Connection to exponential sums**: This is part of a broader theme connecting arithmetic questions to bounds on exponential sums.",
+      "**Uniformity in n**: The result must hold for ALL starting points n, not just typical ones."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "HasInverse, OpenInterval, HasInversePairInInterval",
+      "startLine": 29,
+      "endLine": 48
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "MainConjecture, StrongConjecture",
+      "startLine": 49,
+      "endLine": 66
+    },
+    {
+      "id": "heilbronn",
+      "title": "Heilbronn's Result",
+      "summary": "heilbronn_threshold, heilbronn_unpublished",
+      "startLine": 67,
+      "endLine": 82
+    },
+    {
+      "id": "heath-brown",
+      "title": "Heath-Brown's Result",
+      "summary": "KloostermanSum, weil_bound, heath_brown_2000",
+      "startLine": 83,
+      "endLine": 111
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "summary": "OpenRange, gap_open, current_knowledge",
+      "startLine": 112,
+      "endLine": 139
+    },
+    {
+      "id": "counting",
+      "title": "Counting Argument",
+      "summary": "countCoprime, total_inverse_pairs, heuristic_pairs",
+      "startLine": 140,
+      "endLine": 174
+    },
+    {
+      "id": "kloosterman",
+      "title": "Kloosterman Sums",
+      "summary": "RamanujanSum, kloosterman_detects_inverses, heath_brown_method",
+      "startLine": 175,
+      "endLine": 195
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "InverseInAP, PrimitiveRootInInterval",
+      "startLine": 196,
+      "endLine": 214
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "summary": "erdos_445_statement",
+      "startLine": 215,
+      "endLine": 235
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_445_summary, erdos_445_answer",
+      "startLine": 236,
+      "endLine": 259
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #445 asks whether multiplicative inverse pairs exist in intervals of length p^c for c > 1/2. Heath-Brown (2000) proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains open, with c = 1/2 believed to be the true threshold.",
+    "implications": "A resolution would advance our understanding of the distribution of multiplicative structure mod p. The problem connects to deep tools in analytic number theory, particularly exponential sum estimates.",
+    "openQuestions": [
+      "Does the conjecture hold for c = 0.6? c = 0.7?",
+      "What are the best techniques for c ∈ (1/2, 3/4]?",
+      "Is c = 1/2 actually the threshold, or could it be lower?",
+      "Can character sum methods improve on Kloosterman approaches?"
+    ]
   }
 }
