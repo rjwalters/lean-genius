@@ -1,33 +1,119 @@
 {
   "id": "erdos-576",
-  "title": "Erdős Problem #576",
+  "title": "Erdős Problem #576: Turán Numbers for Hypercube Graphs",
   "slug": "erdos-576",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the ...-dimensional hypercube graph (so that ... has ... vertices and ... edges). Determine the behaviour of\\[(n;Q...",
+  "description": "Determine the behavior of ex(n; Q_k), the Turán number for the k-dimensional hypercube graph. This is one of the major open problems in extremal graph theory.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/576",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos576Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "hypercube",
+      "turan-number",
+      "bipartite-graphs"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 576,
     "erdosUrl": "https://erdosproblems.com/576",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #576 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_k$ be the $k$-dimensional hypercube graph (so that $Q_k$ has $2^k$ vertices and $k2^{k-1}$ edges). Determine the behaviour of\\[\\mathrm{ex}(n;Q_k).\\]\n\n\n\nErd\\H{o}s and Simonovits \\cite{ErSi70} proved that\\[(\\tfrac{1}{2}+o(1))n^{3/2}\\leq \\mathrm{ex}(n;Q_3) \\ll n^{8/5}.\\](In \\cite{ErSi70} they mention that Erd\\H{o}s had originally conjectured that $ \\mathrm{ex}(n;Q_3)\\gg n^{5/3}$.) Erd\\H{o}s and Simonovits also proved that, if $G$ is the graph $Q_3$ with a missing edge, then $\\mathrm{ex}(n;G)\\asymp n^{3/2}$.\n\nIn \\cite{Er74c}, \\cite{Er81}, and \\cite{Er93} Erd\\H{o}s asked whether it is $\\mathrm{ex}(n;Q_3)\\asymp n^{8/5}$.\n\nA theorem of Sudakov and Tomon \\cite{SuTo22} implies\\[\\mathrm{ex}(n;Q_k)=o(n^{2-\\frac{1}{k}}).\\]Janzer and Sudakov \\cite{JaSu22} have improved this to\\[\\mathrm{ex}(n;Q_k)\\ll_k n^{2-\\frac{1}{k-1}+\\frac{1}{(k-1)2^{k-1}}}.\\]See also the entry in the graphs problem collection and [1035].\n\n\n\n\nReferences\n\n\n[Er74c] Erd\\H{o}s, Paul, Extremal problems on graphs and hypergraphs. (1974), 75-84.\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[ErSi70] Erd\\H{o}s, P. and Simonovits, M., Some extremal problems in graph theory. Combinatorial theory and its applications, I-III (Proc. Colloq., Balatonf\\\"{u}red, 1969) (1970), 377-390.\n\n[JaSu22] Janzer, O. and Sudakov, B., On the Tur\\'{a}n number of the hypercube. arXiv:2211.02015 (2024).\n\n[SuTo22] Sudakov, Benny and Tomon, Istv\\'{a}n, The extremal number of tight cycles. Int. Math. Res. Not. IMRN (2022), 9663-9684.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from the foundational work of Erdős and Simonovits in 1970 on extremal problems for bipartite graphs. The hypercube graph Q_k is a fundamental structure in combinatorics, appearing in coding theory, Boolean function analysis, and theoretical computer science. Determining the Turán number ex(n; Q_k) asks: what is the maximum number of edges in an n-vertex graph that contains no copy of Q_k as a subgraph? While the Erdős-Stone theorem completely resolves this question for non-bipartite graphs, the bipartite case remains notoriously difficult. The hypercube Turán problem exemplifies this difficulty and has attracted attention from leading combinatorialists for over 50 years.",
+    "problemStatement": "Let Q_k be the k-dimensional hypercube graph (so that Q_k has 2^k vertices and k·2^(k-1) edges). Determine the behaviour of ex(n; Q_k), the maximum number of edges in an n-vertex Q_k-free graph.",
+    "proofStrategy": "The formalization establishes the key definitions (hypercube graph, Turán number) and states the known bounds as axioms. For the 3-dimensional hypercube Q_3, Erdős and Simonovits (1970) proved (1/2 + o(1))n^(3/2) ≤ ex(n; Q_3) ≪ n^(8/5). Recent work by Sudakov-Tomon (2022) and Janzer-Sudakov (2022) has improved upper bounds for general k. The problem asks whether ex(n; Q_3) ≍ n^(8/5), which remains open. The formalization also captures the broader context of bipartite Turán theory and the Kővári-Sós-Turán theorem.",
+    "keyInsights": [
+      "The hypercube Q_k is bipartite (vertices partition by parity of 1-bits), making Turán theory more difficult",
+      "Lower bound construction uses probabilistic methods and algebraic constructions",
+      "Upper bounds rely on dependent random choice and regularity methods",
+      "The exponent gap (3/2 to 8/5) for Q_3 has remained open for 50+ years",
+      "Removing one edge from Q_3 drops the exponent to exactly 3/2"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypercube-definition",
+      "title": "Hypercube Graph Definition",
+      "summary": "HypercubeVertex, hammingDistance, hypercubeAdj, hypercubeGraph definitions",
+      "startLine": 42,
+      "endLine": 77
+    },
+    {
+      "id": "hypercube-properties",
+      "title": "Properties of Hypercube Graphs",
+      "summary": "hypercube_vertex_count, hypercube_degree, hypercube_edge_count",
+      "startLine": 79,
+      "endLine": 98
+    },
+    {
+      "id": "turan-numbers",
+      "title": "Turán Numbers",
+      "summary": "IsSubgraphFree, turanNumber definitions for extremal graph theory",
+      "startLine": 100,
+      "endLine": 121
+    },
+    {
+      "id": "erdos-simonovits-bounds",
+      "title": "Erdős-Simonovits Bounds (1970)",
+      "summary": "erdos_simonovits_lower_bound, erdos_simonovits_upper_bound axioms",
+      "startLine": 123,
+      "endLine": 146
+    },
+    {
+      "id": "recent-progress",
+      "title": "Recent Progress",
+      "summary": "sudakov_tomon_bound, janzerSudakovExponent, janzer_sudakov_bound",
+      "startLine": 148,
+      "endLine": 172
+    },
+    {
+      "id": "open-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdos_conjecture_Q3, bound_gap, janzer_sudakov_vs_conjecture",
+      "startLine": 174,
+      "endLine": 194
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "erdos_simonovits_minus_edge showing sensitivity to single edge removal",
+      "startLine": 196,
+      "endLine": 209
+    },
+    {
+      "id": "bipartite-context",
+      "title": "Bipartite Turán Theory",
+      "summary": "hypercube_bipartite, bipartite_turan_subquadratic context",
+      "startLine": 211,
+      "endLine": 231
+    },
+    {
+      "id": "kovari-sos-turan",
+      "title": "The Kővári-Sós-Turán Theorem",
+      "summary": "kovari_sos_turan, hypercube_contains_complete_bipartite",
+      "startLine": 233,
+      "endLine": 248
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Main Theorem",
+      "summary": "erdos_576_summary combining all known bounds and the open status",
+      "startLine": 250,
+      "endLine": 274
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #576 asks for the behavior of ex(n; Q_k), the Turán number for hypercube graphs. Despite 50+ years of work, even the case k=3 remains open: we know n^(3/2) ≪ ex(n; Q_3) ≪ n^(8/5) but the exact exponent is unknown. The problem exemplifies the difficulty of bipartite Turán theory.",
+    "implications": "Resolution would significantly advance our understanding of extremal graph theory for bipartite graphs. The hypercube's role in coding theory and computer science adds practical relevance.",
+    "openQuestions": [
+      "Is ex(n; Q_3) ≍ n^(8/5)?",
+      "What is the correct exponent for ex(n; Q_k) for general k?",
+      "Can dependent random choice methods close the gap for Q_3?",
+      "Are there algebraic constructions that match the conjectured lower bound?"
+    ]
   }
 }
