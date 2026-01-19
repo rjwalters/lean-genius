@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e570-header",
+    "proofId": "erdos-570",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #570: Cycle-Graph Ramsey Numbers**\n\nFor k ≥ 3 and H with m edges (no isolated vertices):\nR(C_k, H) ≤ 2m + ⌈(k-1)/2⌉\n\n**Status:** SOLVED (1993-2024)\n\n**Key contributors:** EFRS, Sidorenko, Jayawardene, Cambie et al.",
+    "mathContext": "R(G, H) is the minimum n such that any 2-coloring of K_n contains either G or H as a monochromatic subgraph.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Cycles", "Graph coloring"]
+  },
+  {
+    "id": "ann-e570-cycle",
+    "proofId": "erdos-570",
+    "range": { "startLine": 46, "endLine": 75 },
+    "type": "definition",
+    "title": "Cycle Graph",
+    "content": "**CycleGraph k:** The cycle C_k on k vertices (k ≥ 3).\n\nAdjacency: vertices i and j are adjacent iff |i - j| ≡ 1 (mod k).\n\nThis is the graph the 'red' player tries to avoid in the Ramsey game.",
+    "significance": "key",
+    "relatedConcepts": ["Cycles", "SimpleGraph"]
+  },
+  {
+    "id": "ann-e570-edges",
+    "proofId": "erdos-570",
+    "range": { "startLine": 76, "endLine": 83 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "**edgeCount G:** Number of edges in graph G.\n\nThis is the parameter m in the conjecture. The upper bound is linear in m.",
+    "significance": "supporting",
+    "relatedConcepts": ["Edges", "Size"]
+  },
+  {
+    "id": "ann-e570-isolated",
+    "proofId": "erdos-570",
+    "range": { "startLine": 84, "endLine": 97 },
+    "type": "definition",
+    "title": "Isolated Vertices",
+    "content": "**IsIsolated G v:** Vertex v has no neighbors.\n\n**NoIsolatedVertices G:** Every vertex has at least one neighbor.\n\nThe conjecture requires H to have no isolated vertices. This ensures m ≥ |V(H)|/2.",
+    "significance": "supporting",
+    "relatedConcepts": ["Degree", "Minimum degree"]
+  },
+  {
+    "id": "ann-e570-ramsey",
+    "proofId": "erdos-570",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "definition",
+    "title": "Ramsey Number",
+    "content": "**RamseyNumber G H:** The minimum n such that any 2-coloring of K_n contains either a red G or blue H.\n\nThis is the central object of study. The conjecture bounds R(C_k, H) in terms of k and |E(H)|.",
+    "mathContext": "Ramsey's theorem guarantees R(G, H) exists and is finite for any G, H.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Complete graphs"]
+  },
+  {
+    "id": "ann-e570-upperbound",
+    "proofId": "erdos-570",
+    "range": { "startLine": 125, "endLine": 130 },
+    "type": "definition",
+    "title": "Upper Bound Function",
+    "content": "**UpperBound k m:** 2m + ⌈(k-1)/2⌉\n\nThis is the conjectured upper bound. It's linear in m (the edge count) with an additive term depending only on k.",
+    "significance": "key",
+    "relatedConcepts": ["Bounds", "Ceiling function"]
+  },
+  {
+    "id": "ann-e570-conjecture",
+    "proofId": "erdos-570",
+    "range": { "startLine": 131, "endLine": 143 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "**Erdos570Conjecture:**\n\n∀ k ≥ 3, ∀ H with m edges and no isolated vertices:\nR(C_k, H) ≤ 2m + ⌈(k-1)/2⌉\n\nThis is the main statement to be proved.",
+    "significance": "critical",
+    "relatedConcepts": ["Conjecture", "Ramsey bounds"]
+  },
+  {
+    "id": "ann-e570-efrs",
+    "proofId": "erdos-570",
+    "range": { "startLine": 148, "endLine": 159 },
+    "type": "axiom",
+    "title": "EFRS 1993 (Even k)",
+    "content": "**efrs_1993_even:**\n\nThe conjecture holds for all even k ≥ 4.\n\nErdős-Faudree-Rousseau-Schelp proved this in 'Ramsey size linear graphs' (1993).",
+    "mathContext": "Even cycles have special structure that simplifies the extremal analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Even cycles", "Original proof"]
+  },
+  {
+    "id": "ann-e570-sidorenko",
+    "proofId": "erdos-570",
+    "range": { "startLine": 160, "endLine": 170 },
+    "type": "axiom",
+    "title": "Sidorenko 1993 (k=3)",
+    "content": "**sidorenko_1993_triangle:**\n\nFor k = 3 (triangles), R(C_3, H) ≤ 2m + 1.\n\nSidorenko proved this in 'The Ramsey number of an n-edge graph versus triangle' (1993).",
+    "significance": "key",
+    "relatedConcepts": ["Triangles", "k=3"]
+  },
+  {
+    "id": "ann-e570-jayawardene",
+    "proofId": "erdos-570",
+    "range": { "startLine": 182, "endLine": 192 },
+    "type": "axiom",
+    "title": "Jayawardene 1999 (k=5)",
+    "content": "**jayawardene_1999_pentagon:**\n\nFor k = 5 (pentagons), R(C_5, H) ≤ 2m + 2.\n\nJayawardene extended the result to the pentagon case in 1999.",
+    "significance": "key",
+    "relatedConcepts": ["Pentagons", "k=5"]
+  },
+  {
+    "id": "ann-e570-cfmpp",
+    "proofId": "erdos-570",
+    "range": { "startLine": 193, "endLine": 204 },
+    "type": "axiom",
+    "title": "CFMPP 2024 (Odd k≥7)",
+    "content": "**cfmpp_2024_odd:**\n\nFor all odd k ≥ 7, R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉.\n\nCambie-Freschi-Morawski-Petrova-Pokrovskiy completed the proof in 2024, resolving the final cases.",
+    "mathContext": "This recent result closed a 30-year gap in the theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Odd cycles", "Recent progress"]
+  },
+  {
+    "id": "ann-e570-resolved",
+    "proofId": "erdos-570",
+    "range": { "startLine": 209, "endLine": 237 },
+    "type": "theorem",
+    "title": "Complete Resolution",
+    "content": "**erdos_570_resolved:** Erdos570Conjecture\n\nThe conjecture holds for ALL k ≥ 3 by combining:\n- Even k: EFRS 1993\n- k = 3: Sidorenko 1993\n- k = 5: Jayawardene 1999\n- Odd k ≥ 7: CFMPP 2024",
+    "significance": "critical",
+    "relatedConcepts": ["Case analysis", "Complete proof"]
+  },
+  {
+    "id": "ann-e570-examples",
+    "proofId": "erdos-570",
+    "range": { "startLine": 242, "endLine": 256 },
+    "type": "theorem",
+    "title": "Examples",
+    "content": "**Concrete examples:**\n\n- R(C_3, K_3) = 6: bound = 2·3 + 1 = 7 ≥ 6 ✓\n- R(C_4, P_3) ≤ 6: bound = 2·2 + 2 = 6\n\nThe bound is verified for classical cases.",
+    "significance": "supporting",
+    "relatedConcepts": ["Examples", "Verification"]
+  },
+  {
+    "id": "ann-e570-summary",
+    "proofId": "erdos-570",
+    "range": { "startLine": 296, "endLine": 324 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_570_summary:**\n\nCombines the main conjecture with all individual case proofs.\n\n**Timeline:**\n- 1993: Even k and k=3\n- 1999: k=5\n- 2024: Odd k≥7\n\n**Status:** FULLY RESOLVED",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Historical timeline"]
+  }
+]
