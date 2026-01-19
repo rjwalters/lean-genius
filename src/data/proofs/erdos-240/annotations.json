@@ -1,1 +1,363 @@
-[]
+[
+  {
+    "id": "ann-e240-header",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #240**: Gaps Between P-Smooth Numbers\n\nIs there an infinite set of primes P such that gaps between consecutive P-smooth numbers → ∞?\n\n**Status**: SOLVED (Tijdeman 1973)\n\n**Answer**: YES - For any ε > 0, there exists an infinite P with gaps ≫ aᵢ^{1-ε}.\n\n**Origin**: Asked to Erdős by Wintner.",
+    "mathContext": "P-smooth numbers are integers divisible only by primes in P. The question asks whether P can be infinite while gaps still grow unboundedly.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "smooth-numbers",
+      "prime-factors",
+      "gaps",
+      "tijdeman"
+    ]
+  },
+  {
+    "id": "ann-e240-smooth-def",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 42,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "P-Smooth Numbers",
+    "content": "**isPSmooth P n**: A positive integer n is P-smooth if all its prime factors lie in P.\n\n```lean\ndef isPSmooth (P : Set ℕ) (n : ℕ) : Prop :=\n  n > 0 ∧ ∀ p : ℕ, p.Prime → p ∣ n → p ∈ P\n```\n\n**smoothNumbers P**: The set {n : isPSmooth P n}\n\n**Examples**:\n- If P = {2, 3}, then 12 = 2² · 3 is P-smooth\n- If P = {2}, only powers of 2 are P-smooth",
+    "mathContext": "Smooth numbers play a key role in factorization algorithms and Diophantine equations. The terminology 'smooth' refers to having only 'small' prime factors.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime-factorization",
+      "smooth-numbers",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e240-one-smooth",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 60,
+      "endLine": 67
+    },
+    "type": "theorem",
+    "title": "1 is Always P-Smooth",
+    "content": "**theorem one_isPSmooth**: 1 is P-smooth for any P.\n\n**Proof**: 1 > 0 ✓, and 1 has no prime divisors, so the condition is vacuously true.\n\nThis is one of the few theorems proved directly rather than axiomatized.",
+    "mathContext": "The vacuous truth argument: if p is prime and p | 1, we'd have p = 1, contradicting primality. So no prime divides 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous-truth",
+      "divisibility",
+      "base-case"
+    ]
+  },
+  {
+    "id": "ann-e240-enum",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 69,
+      "endLine": 94
+    },
+    "type": "axiom",
+    "title": "Enumeration of P-Smooth Numbers",
+    "content": "**axiom smoothEnum P : ℕ → ℕ**: Ordered enumeration of P-smooth numbers.\n\n**Properties axiomatized**:\n- `smoothEnum_pos`: smoothEnum P i > 0\n- `smoothEnum_smooth`: smoothEnum P i is P-smooth\n- `smoothEnum_strictly_increasing`: i < j → smoothEnum P i < smoothEnum P j\n- `smoothEnum_surjective`: Every P-smooth n equals smoothEnum P i for some i\n\nThis gives us the sequence a₁ < a₂ < a₃ < ··· of all P-smooth numbers.",
+    "mathContext": "We axiomatize enumeration because explicitly constructing it requires well-ordering arguments and decidability of isPSmooth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "enumeration",
+      "axiomatization",
+      "well-ordering"
+    ]
+  },
+  {
+    "id": "ann-e240-gap",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Gap Function",
+    "content": "**def gap P i**: The gap between consecutive P-smooth numbers.\n\n```lean\ndef gap (P : Set ℕ) (i : ℕ) : ℕ :=\n  smoothEnum P (i + 1) - smoothEnum P i\n```\n\nThis is aᵢ₊₁ - aᵢ where (aᵢ) is the sequence of P-smooth numbers.",
+    "mathContext": "The central quantity in this problem. For finite P, gaps grow due to Pólya's theorem. For infinite P, the behavior depends on P's structure.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "gaps",
+      "consecutive",
+      "difference"
+    ]
+  },
+  {
+    "id": "ann-e240-question",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 102,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**gapsTendToInfinity P**: For every M, some gap exceeds M.\n\n```lean\ndef gapsTendToInfinity (P : Set ℕ) : Prop :=\n  ∀ M : ℕ, ∃ i : ℕ, gap P i > M\n```\n\n**erdos240Question**: Does there exist an INFINITE P with unbounded gaps?\n\n```lean\ndef erdos240Question : Prop :=\n  ∃ P : Set ℕ, (∀ p ∈ P, Nat.Prime p) ∧ P.Infinite ∧ gapsTendToInfinity P\n```",
+    "mathContext": "For finite P, gaps → ∞ is well-known. The question asks if this can happen even with infinitely many allowed primes.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "unbounded",
+      "infinite-set",
+      "erdos-wintner"
+    ]
+  },
+  {
+    "id": "ann-e240-polya",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 120,
+      "endLine": 138
+    },
+    "type": "axiom",
+    "title": "Pólya's Theorem (1918)",
+    "content": "**axiom polya_theorem**: For quadratic f(n) = an² + bn + c without repeated roots, the largest prime factor of f(n) → ∞.\n\n**polya_corollary**: For n(n+k), there are arbitrarily large primes dividing some value.\n\n**Why it matters**: If consecutive integers n and n+k are both P-smooth for finite P, then n(n+k) is also P-smooth. But Pólya says n(n+k) eventually has prime factors outside any finite P.",
+    "mathContext": "Pólya's 1918 paper 'Zur arithmetischen Untersuchung der Polynome' established this fundamental result about prime factors of polynomial values.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "polya-1918",
+      "quadratic",
+      "prime-factors"
+    ]
+  },
+  {
+    "id": "ann-e240-finite-case",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 140,
+      "endLine": 166
+    },
+    "type": "axiom",
+    "title": "Finite P Case",
+    "content": "**axiom finite_P_unbounded_gaps**: For finite P, gaps → ∞.\n\n**Proof idea**: Suppose gaps are bounded by k. Then infinitely often aᵢ₊₁ - aᵢ = k for some fixed k. This means n and n+k are both P-smooth infinitely often. But n(n+k) has arbitrarily large prime factors by Pólya - contradiction!\n\n**tijdeman_finite_bound**: The quantitative version:\n```\ngap(P, i) ≫ aᵢ / (log aᵢ)^C\n```",
+    "mathContext": "The finite case is the 'easy' direction - any finite P forces gaps to grow. The challenge is showing this can happen for infinite P too.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite-set",
+      "contradiction",
+      "quantitative-bound"
+    ]
+  },
+  {
+    "id": "ann-e240-tijdeman",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 168,
+      "endLine": 196
+    },
+    "type": "axiom",
+    "title": "Tijdeman's Main Theorem (1973)",
+    "content": "**axiom tijdeman_main_theorem**: For any ε > 0, there exists an INFINITE P such that:\n```\ngap(P, i) ≥ c · aᵢ^{1-ε}\n```\n\n**Key insight**: Make P 'sparse' - if primes in P grow fast, P-smooth numbers are sparse, hence large gaps.\n\n**erdos240_answer**: Applies Tijdeman with ε = 1/2 to answer YES.\n\nThis completely resolves the Erdős-Wintner question.",
+    "mathContext": "Tijdeman's 1973 paper 'On integers with many small prime factors' was the definitive resolution. The construction chooses primes growing super-polynomially.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "tijdeman-1973",
+      "sparse-primes",
+      "main-theorem"
+    ]
+  },
+  {
+    "id": "ann-e240-construction",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 198,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Construction Ideas",
+    "content": "**How to construct such P?**\n\nThe key is making primes grow fast enough:\n\n**Singleton example**: If P = {p}, then P-smooth numbers are 1, p, p², p³, ...\nGaps: p-1, p(p-1), p²(p-1), ... which grow exponentially!\n\n**theorem singleton_large_gaps**: gapsTendToInfinity {p} for any prime p.\n\n**General construction**: Choose primes p₁ < p₂ < ··· growing fast enough (e.g., super-exponentially) to keep P-smooth numbers sparse.",
+    "mathContext": "The singleton case is intuitive: powers of p spread out rapidly. Tijdeman's construction carefully balances having infinitely many primes while keeping P-smooth numbers sparse.",
+    "significance": "key",
+    "relatedConcepts": [
+      "construction",
+      "singleton",
+      "sparse"
+    ]
+  },
+  {
+    "id": "ann-e240-stormer",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 228,
+      "endLine": 241
+    },
+    "type": "axiom",
+    "title": "Størmer's Theorem",
+    "content": "**axiom stormer_theorem**: For finite P, only finitely many consecutive integers can both be P-smooth.\n\n**Formally**: ∃ N, ∀ n > N, ¬(isPSmooth P n ∧ isPSmooth P (n+1))\n\n**Consequence**: Eventually, no two consecutive integers are both P-smooth when P is finite. This is another way to see gaps must grow.",
+    "mathContext": "Størmer's theorem has applications in solving Diophantine equations. It shows the constraint of P-smoothness is very restrictive for consecutive integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stormer",
+      "consecutive",
+      "diophantine"
+    ]
+  },
+  {
+    "id": "ann-e240-abc",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 243,
+      "endLine": 255
+    },
+    "type": "axiom",
+    "title": "Connection to ABC Conjecture",
+    "content": "**ABC Conjecture connection**: Better gap bounds would follow from ABC.\n\nThe ABC conjecture states: for coprime a, b, c with a + b = c,\n```\nc < rad(abc)^{1+ε}\n```\nwhere rad is the radical (product of distinct primes).\n\nSince P-smooth numbers have small radicals, ABC would constrain how close consecutive P-smooth numbers can be.",
+    "mathContext": "The ABC conjecture, if true, would revolutionize our understanding of smooth number gaps. It remains one of the most important open problems in number theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abc-conjecture",
+      "radical",
+      "open-problem"
+    ]
+  },
+  {
+    "id": "ann-e240-summary",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 257,
+      "endLine": 278
+    },
+    "type": "theorem",
+    "title": "Summary of Results",
+    "content": "**theorem erdos_240_summary** combines three key results:\n\n1. **Finite P → unbounded gaps** (Pólya-based)\n2. **Tijdeman's theorem** (infinite P with gaps ≫ aᵢ^{1-ε})\n3. **erdos240Question = YES**\n\nThis theorem encapsulates the complete resolution of the problem.",
+    "mathContext": "Packaging results into a summary theorem is good Lean practice - it documents what has been achieved and makes the main results easily accessible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "complete-resolution",
+      "documentation"
+    ]
+  },
+  {
+    "id": "ann-e240-main",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 279,
+      "endLine": 291
+    },
+    "type": "theorem",
+    "title": "Main Result: erdos_240",
+    "content": "**theorem erdos_240 : erdos240Question**\n\n**Statement**: There exists an infinite set of primes P such that gaps between consecutive P-smooth numbers tend to infinity.\n\n**Proof**: Follows immediately from erdos240_answer, which applies Tijdeman's theorem.\n\n**Status**: SOLVED by Tijdeman (1973)",
+    "mathContext": "This is the formal statement that the answer to Erdős Problem #240 is YES. The theorem is the culmination of all the machinery developed above.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "main-theorem",
+      "erdos-240",
+      "solved"
+    ]
+  },
+  {
+    "id": "ann-e240-historical",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Historical Context",
+    "content": "**Timeline**:\n- **Wintner**: Originally posed the question to Erdős\n- **Pólya (1918)**: Proved prime factors of quadratics grow unboundedly\n- **Tijdeman (1973)**: Completely resolved the question\n\n**Related problems**:\n- Erdős Problem #368 on erdosproblems.com\n- S-unit equations in Diophantine analysis\n- Cryptographic applications of smooth numbers",
+    "mathContext": "This problem sits at the intersection of analytic number theory (prime factors of polynomials) and combinatorics (structure of smooth number sets).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "history",
+      "wintner",
+      "timeline"
+    ]
+  },
+  {
+    "id": "ann-e240-intuition",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 168,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Intuition: Why Sparse Primes Work",
+    "content": "**Why can infinite P still give large gaps?**\n\nThink of P-smooth numbers as 'reachable' by multiplying primes in P.\n\n**Dense P** (e.g., all primes up to B): Many P-smooth numbers, small gaps.\n\n**Sparse P** (e.g., primes growing exponentially): Few combinations, P-smooth numbers spread out.\n\n**The magic**: P can be infinite but sparse enough that P-smooth numbers are rare, forcing large gaps.",
+    "mathContext": "The density of P-smooth numbers depends on how 'thick' P is. Tijdeman showed there's a threshold where P is infinite but gaps still diverge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intuition",
+      "dense-vs-sparse",
+      "threshold"
+    ]
+  },
+  {
+    "id": "ann-e240-sorry1",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 191,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Gap Growth Analysis (sorry)",
+    "content": "**theorem erdos240_answer** contains a sorry at line 196.\n\n**What's needed**: Show that gaps growing like aᵢ^{1/2} eventually exceed any bound M.\n\n**The argument**: Since c · aᵢ^{1/2} → ∞ as aᵢ → ∞, and the P-smooth numbers are unbounded, we can find i with gap(P, i) > M.\n\nThis is a standard real analysis argument but requires careful setup of the limit.",
+    "mathContext": "The sorry indicates where additional work is needed to complete the formal proof. The mathematical content is clear - it's a matter of formalizing the limit argument.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sorry",
+      "limit",
+      "real-analysis"
+    ]
+  },
+  {
+    "id": "ann-e240-sorry2",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 222,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Singleton Gaps (sorry)",
+    "content": "**theorem singleton_large_gaps** contains a sorry at line 226.\n\n**What's needed**: For P = {p}, show gaps between consecutive powers of p → ∞.\n\n**The argument**: The sequence is 1, p, p², p³, ...\nGaps are p-1, p²-p, p³-p², ... = p-1, p(p-1), p²(p-1), ...\nThese clearly grow without bound since pⁿ(p-1) → ∞.",
+    "mathContext": "This is a straightforward example that illustrates the phenomenon. The proof would use properties of geometric sequences.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sorry",
+      "geometric-sequence",
+      "example"
+    ]
+  },
+  {
+    "id": "ann-e240-imports",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 31,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Mathlib Imports",
+    "content": "**Required Mathlib modules**:\n\n- `Nat.Prime.Basic`: Prime number predicate\n- `Data.Real.Basic`: Real number operations\n- `Data.Set.Basic`: Set operations (Infinite, Nonempty)\n- `Data.Finset.Basic`: Finite sets\n- `Log.Basic`: Natural logarithm (for Tijdeman's bound)\n- `Pow.Real`: Real exponentiation (for aᵢ^{1-ε})\n\nThese provide the foundational tools for stating the problem.",
+    "mathContext": "Lean 4 with Mathlib provides a rich library for formalizing number-theoretic statements. The imports reflect the analytical nature of the problem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "imports",
+      "lean4"
+    ]
+  },
+  {
+    "id": "ann-e240-progressions",
+    "proofId": "erdos-240",
+    "range": {
+      "startLine": 250,
+      "endLine": 255
+    },
+    "type": "axiom",
+    "title": "Smooth Numbers in Progressions",
+    "content": "**axiom smooth_in_progressions**: Placeholder for distribution of P-smooth numbers in arithmetic progressions.\n\n**Connection to Linnik-type problems**: How are P-smooth numbers distributed mod q? Are there P-smooth numbers in every residue class?\n\nThis connects to questions about the equidistribution of smooth numbers.",
+    "mathContext": "The distribution of smooth numbers in arithmetic progressions is related to sieve methods and has applications in algorithms and cryptography.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic-progressions",
+      "linnik",
+      "distribution"
+    ]
+  }
+]

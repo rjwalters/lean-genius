@@ -1,33 +1,155 @@
 {
   "id": "erdos-240",
-  "title": "Erdős Problem #240",
+  "title": "Erdős Problem #240: Gaps Between P-Smooth Numbers",
   "slug": "erdos-240",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite set of primes ... such that if ... is the set of integers divisible only by primes in ... then ...?\n\n\n\nO...",
+  "description": "Is there an infinite set of primes P such that gaps between consecutive P-smooth numbers → ∞? YES - Tijdeman (1973) proved for any ε > 0, exists infinite P with gaps ≫ aᵢ^{1-ε}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Wintner (problem), Pólya (1918), Tijdeman (1973)",
     "sourceUrl": "https://erdosproblems.com/240",
-    "date": "",
-    "status": "pending",
+    "date": "1973",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos240Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "prime-factors",
+      "gaps",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 240,
     "erdosUrl": "https://erdosproblems.com/240",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "isPSmooth definition: n divisible only by primes in P",
+      "smoothNumbers set: all P-smooth numbers",
+      "one_isPSmooth theorem: 1 is always P-smooth",
+      "smoothEnum axiom: ordered enumeration of P-smooth numbers",
+      "gap definition: difference between consecutive smooths",
+      "gapsTendToInfinity predicate: gaps are unbounded",
+      "erdos240Question: formal problem statement",
+      "polya_theorem axiom: prime factors of quadratics → ∞",
+      "finite_P_unbounded_gaps axiom: finite P implies gaps → ∞",
+      "tijdeman_finite_bound axiom: gaps ≫ aᵢ/(log aᵢ)^C",
+      "tijdeman_main_theorem axiom: gaps ≫ aᵢ^{1-ε} for infinite P",
+      "erdos240_answer theorem: YES answer",
+      "stormer_theorem axiom: finitely many consecutive P-smooth pairs",
+      "erdos_240 theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #240 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite set of primes $P$ such that if $\\{a_1<a_2<\\cdots\\}$ is the set of integers divisible only by primes in $P$ then $\\lim a_{i+1}-a_i=\\infty$?\n\n\n\nOriginally asked to Erd\\H{o}s by Wintner.\n\nThe limit is infinite for a finite set of primes, which follows from a theorem of P\\'{o}lya \\cite{Po18}, that if $f(n)$ is a quadratic integer polynomial without repeated roots then as $n\\to \\infty$ the largest prime factor of $f(n)$ also approaches infinity. Indeed, if $P$ is a finite set of primes and $(a_i)$ is the set of integers divisible only by primes in $P$, and $a_{i+1}-a_i$ is bounded, then there exists some $k$ such that $a_{i+1}=a_i+k$ infinitely often, which contradicts P\\'{o}lya's theorem with $f(n)=n(n+k)$.\n\nTijdeman \\cite{Ti73} proved that, if $P$ is a finite set of primes, then\\[a_{i+1}-a_i \\gg \\frac{a_i}{(\\log a_i)^C}\\]for some constant $C>0$ depending on $P$.\n\nTijdeman \\cite{Ti73} resolved this question, proving that, for any $\\epsilon>0$, there exists an infinite set of primes $P$ such that, with $a_i$ defined as above,\\[a_{i+1}-a_i \\gg a_i^{1-\\epsilon}.\\]See also [368].\n\n\n\n\nReferences\n\n\n[Po18] P\\'{o}lya, Georg, Zur arithmetischen {U}ntersuchung der {P}olynome. Math. Z. (1918), 143--148.\n\n[Ti73] Tijdeman, R., On integers with many small prime factors. Compositio Math. (1973), 319--330.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #240**\n\nThis problem concerns gaps between smooth numbers.\n\n**Key History:**\n- Wintner: Originally asked to Erdős\n- Pólya (1918): Prime factors of quadratics grow unboundedly\n- Tijdeman (1973): Resolved the question completely\n\n**The Setting:**\nP-smooth numbers are integers divisible only by primes in P.\nFor finite P, gaps → ∞ is easy (via Pólya). The question is about infinite P.\n\n**Related:** Problem 368 on erdosproblems.com",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs there an infinite set of primes P such that if {a₁ < a₂ < ···} are the P-smooth numbers, then lim(aᵢ₊₁ - aᵢ) = ∞?\n\n**Answer: YES**\n\nTijdeman (1973) proved: For any ε > 0, there exists an infinite set of primes P such that gaps satisfy aᵢ₊₁ - aᵢ ≫ aᵢ^{1-ε}.\n\n**Key insight:** Making P 'sparse' (primes grow fast) makes P-smooth numbers sparse, hence large gaps.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **P-Smooth Numbers:** isPSmooth P n := n > 0 ∧ all prime divisors in P\n\n2. **Enumeration:** smoothEnum P i = i-th smallest P-smooth number\n\n3. **Gaps:** gap P i = smoothEnum P (i+1) - smoothEnum P i\n\n4. **Main Question:** erdos240Question := ∃ infinite P with gaps → ∞\n\n5. **Key Results:**\n   - polya_theorem: prime factors of quadratics → ∞\n   - finite_P_unbounded_gaps: finite P implies gaps → ∞\n   - tijdeman_main_theorem: infinite P exists with gaps ≫ aᵢ^{1-ε}",
+    "keyInsights": [
+      "**Pólya's Foundation:** Quadratic n(n+k) has large prime factors",
+      "**Finite P:** If gaps bounded, n and n+k both P-smooth infinitely - contradiction",
+      "**Tijdeman's Bound:** For finite P, gaps ≫ aᵢ/(log aᵢ)^C",
+      "**Sparse Primes:** If P is sparse, P-smooth numbers are sparse",
+      "**Singleton Example:** P = {p} gives gaps that grow exponentially",
+      "**Størmer Connection:** Only finitely many consecutive P-smooth pairs"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "p-smooth-numbers",
+      "title": "P-Smooth Numbers",
+      "summary": "isPSmooth, smoothNumbers, one_isPSmooth definitions",
+      "startLine": 42,
+      "endLine": 67
+    },
+    {
+      "id": "enumeration",
+      "title": "Enumeration and Gaps",
+      "summary": "smoothEnum axioms, gap definition",
+      "startLine": 69,
+      "endLine": 100
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "gapsTendToInfinity, erdos240Question",
+      "startLine": 102,
+      "endLine": 118
+    },
+    {
+      "id": "polya-theorem",
+      "title": "Pólya's Theorem (1918)",
+      "summary": "polya_theorem, polya_corollary axioms",
+      "startLine": 120,
+      "endLine": 138
+    },
+    {
+      "id": "finite-p",
+      "title": "Finite P Case",
+      "summary": "finite_P_unbounded_gaps, tijdeman_finite_bound",
+      "startLine": 140,
+      "endLine": 166
+    },
+    {
+      "id": "tijdeman-main",
+      "title": "Tijdeman's Main Theorem",
+      "summary": "tijdeman_main_theorem, erdos240_answer",
+      "startLine": 168,
+      "endLine": 196
+    },
+    {
+      "id": "construction",
+      "title": "Construction Ideas",
+      "summary": "tijdeman_construction, singleton_large_gaps",
+      "startLine": 198,
+      "endLine": 226
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "stormer_theorem, abc_connection, smooth_in_progressions",
+      "startLine": 228,
+      "endLine": 255
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_240_summary, erdos_240 main theorem",
+      "startLine": 257,
+      "endLine": 291
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #240, asked by Wintner, asks whether an infinite set of primes P can have unbounded gaps between P-smooth numbers. Tijdeman (1973) proved the answer is YES: for any ε > 0, there exists an infinite P with gaps ≫ aᵢ^{1-ε}. The key is choosing primes that grow fast enough to keep P-smooth numbers sparse.",
+    "implications": "**Connections and Impact**\n\n1. **Pólya's Theorem:** Foundation for understanding prime factors of polynomials\n\n2. **Størmer's Theorem:** Finitely many consecutive P-smooth pairs\n\n3. **ABC Conjecture:** Would give stronger gap bounds\n\n4. **Diophantine Equations:** P-smooth numbers appear in S-unit equations\n\n5. **Cryptography:** Smooth numbers in factorization algorithms",
+    "openQuestions": [
+      "Optimal constant in the exponent 1 - ε",
+      "Explicit construction of P achieving large gaps",
+      "Distribution of gaps for specific prime sets",
+      "Connection to the ABC conjecture",
+      "Higher-dimensional generalizations"
+    ]
   }
 }
