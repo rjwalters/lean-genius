@@ -1,1 +1,232 @@
-[]
+[
+  {
+    "id": "ann-e712-context",
+    "proofId": "erdos-712",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #712: Determine hypergraph Turán densities for k > r > 2. One of the most famous OPEN problems in combinatorics. Erdős offered $500 for any case, $1000 for the full solution.",
+    "significance": "critical",
+    "tags": ["erdos", "hypergraph", "turan-number", "open-problem"]
+  },
+  {
+    "id": "ann-e712-hypergraph",
+    "proofId": "erdos-712",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph",
+    "content": "An r-uniform hypergraph has edges that are exactly r-element subsets of vertices. This generalizes graphs (r=2) to higher uniformity.",
+    "significance": "critical",
+    "tags": ["hypergraph", "definition"],
+    "leanSymbol": "Hypergraph"
+  },
+  {
+    "id": "ann-e712-clique",
+    "proofId": "erdos-712",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "Hypergraph Clique",
+    "content": "A set S of vertices forms a clique K_k^r in hypergraph H if every r-subset of S is an edge. This is the forbidden structure in the Turán problem.",
+    "significance": "critical",
+    "tags": ["clique", "definition"],
+    "leanSymbol": "formsClique"
+  },
+  {
+    "id": "ann-e712-clique-free",
+    "proofId": "erdos-712",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "K_k^r-Free Hypergraph",
+    "content": "A hypergraph is K_k^r-free if no k vertices form a complete clique. The Turán problem asks: what's the maximum number of edges in such a hypergraph?",
+    "significance": "critical",
+    "tags": ["clique-free", "definition"],
+    "leanSymbol": "isCliqueFree"
+  },
+  {
+    "id": "ann-e712-turan-number",
+    "proofId": "erdos-712",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "definition",
+    "title": "Hypergraph Turán Number",
+    "content": "ex_r(n, K_k^r) is the maximum number of r-edges on n vertices with no complete k-clique. The central quantity in extremal hypergraph theory.",
+    "significance": "critical",
+    "tags": ["turan-number", "definition"],
+    "leanSymbol": "turanNumber"
+  },
+  {
+    "id": "ann-e712-density",
+    "proofId": "erdos-712",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "definition",
+    "title": "Turán Density",
+    "content": "The Turán density π_r(K_k^r) = lim_{n→∞} ex_r(n, K_k^r)/C(n,r). This is the asymptotic edge density achievable while avoiding K_k^r.",
+    "significance": "critical",
+    "tags": ["turan-density", "definition"],
+    "leanSymbol": "turanDensity"
+  },
+  {
+    "id": "ann-e712-density-exists",
+    "proofId": "erdos-712",
+    "range": { "startLine": 100, "endLine": 104 },
+    "type": "axiom",
+    "title": "Turán Density Exists",
+    "content": "The Turán density exists as a limit (proven). The sequence ex_r(n, K_k^r)/C(n,r) converges to a well-defined value.",
+    "significance": "key",
+    "tags": ["turan-density", "existence"],
+    "leanSymbol": "turan_density_exists"
+  },
+  {
+    "id": "ann-e712-graph-density",
+    "proofId": "erdos-712",
+    "range": { "startLine": 116, "endLine": 118 },
+    "type": "definition",
+    "title": "Graph Turán Density Formula",
+    "content": "For graphs (r=2), the Turán density is (1-1/(k-1))/2. This is achieved by the balanced complete (k-1)-partite graph.",
+    "significance": "critical",
+    "tags": ["graph", "turan-theorem"],
+    "leanSymbol": "turanGraphDensity"
+  },
+  {
+    "id": "ann-e712-turan-thm",
+    "proofId": "erdos-712",
+    "range": { "startLine": 120, "endLine": 122 },
+    "type": "axiom",
+    "title": "Turán's Theorem (1941)",
+    "content": "Turán's theorem: For graphs, π_2(K_k) = (1-1/(k-1))/2. This completely solves the graph Turán problem.",
+    "significance": "critical",
+    "tags": ["turan-theorem", "graph"],
+    "leanSymbol": "turan_theorem"
+  },
+  {
+    "id": "ann-e712-k43-conjecture",
+    "proofId": "erdos-712",
+    "range": { "startLine": 141, "endLine": 142 },
+    "type": "definition",
+    "title": "Turán's Conjecture for K_4^3",
+    "content": "Turán conjectured π_3(K_4^3) = 5/9 ≈ 0.556. This is achieved by the balanced 4-partition construction T(n,4,3).",
+    "significance": "critical",
+    "tags": ["conjecture", "k43"],
+    "leanSymbol": "turanConjectureK43"
+  },
+  {
+    "id": "ann-e712-k43-lower",
+    "proofId": "erdos-712",
+    "range": { "startLine": 152, "endLine": 154 },
+    "type": "axiom",
+    "title": "K_4^3 Lower Bound",
+    "content": "The Turán construction gives π_3(K_4^3) ≥ 5/9. This is conjectured to be tight but remains unproven.",
+    "significance": "key",
+    "tags": ["k43", "lower-bound"],
+    "leanSymbol": "K43_lower_bound"
+  },
+  {
+    "id": "ann-e712-k43-upper",
+    "proofId": "erdos-712",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "axiom",
+    "title": "K_4^3 Upper Bound (Razborov)",
+    "content": "Flag algebra methods (Razborov, 2010) give π_3(K_4^3) ≤ 0.5616. There's still a gap from the conjectured 5/9 ≈ 0.556.",
+    "significance": "key",
+    "tags": ["k43", "upper-bound", "flag-algebras"],
+    "leanSymbol": "K43_upper_bound_razborov"
+  },
+  {
+    "id": "ann-e712-positive",
+    "proofId": "erdos-712",
+    "range": { "startLine": 166, "endLine": 168 },
+    "type": "axiom",
+    "title": "Density is Positive",
+    "content": "For all k > r, the Turán density is strictly positive. There exist K_k^r-free hypergraphs with positive edge density.",
+    "significance": "key",
+    "tags": ["turan-density", "positive"],
+    "leanSymbol": "turan_density_positive"
+  },
+  {
+    "id": "ann-e712-de-caen",
+    "proofId": "erdos-712",
+    "range": { "startLine": 170, "endLine": 172 },
+    "type": "axiom",
+    "title": "De Caen's Lower Bound",
+    "content": "De Caen's bound: π_r(K_k^r) ≥ 1 - C(k-1,r)/C(k,r). This generalizes to arbitrary r and k.",
+    "significance": "key",
+    "tags": ["de-caen", "lower-bound"],
+    "leanSymbol": "de_caen_lower_bound"
+  },
+  {
+    "id": "ann-e712-kruskal-katona",
+    "proofId": "erdos-712",
+    "range": { "startLine": 174, "endLine": 176 },
+    "type": "axiom",
+    "title": "Kruskal-Katona Upper Bound",
+    "content": "The Kruskal-Katona theorem implies π_r(K_k^r) ≤ 1 - 1/k. This is weak but applies generally.",
+    "significance": "key",
+    "tags": ["kruskal-katona", "upper-bound"],
+    "leanSymbol": "kruskal_katona_upper"
+  },
+  {
+    "id": "ann-e712-problem",
+    "proofId": "erdos-712",
+    "range": { "startLine": 188, "endLine": 192 },
+    "type": "definition",
+    "title": "Erdős Problem #712 Statement",
+    "content": "The problem: determine the exact Turán density for any k > r > 2. Erdős asked for an explicit (preferably rational) formula.",
+    "significance": "critical",
+    "tags": ["erdos-712", "problem-statement"],
+    "leanSymbol": "erdos_712_problem"
+  },
+  {
+    "id": "ann-e712-open",
+    "proofId": "erdos-712",
+    "range": { "startLine": 194, "endLine": 196 },
+    "type": "axiom",
+    "title": "Problem is OPEN",
+    "content": "The problem remains completely open for all k > r > 2. No exact Turán density is known for any hypergraph case.",
+    "significance": "critical",
+    "tags": ["open-problem"],
+    "leanSymbol": "erdos_712_open"
+  },
+  {
+    "id": "ann-e712-main",
+    "proofId": "erdos-712",
+    "range": { "startLine": 198, "endLine": 213 },
+    "type": "theorem",
+    "title": "Erdős Problem #712 Main Theorem",
+    "content": "The density exists and is bounded, but the exact value is unknown for all k > r > 2. This is the formal statement that the problem is open.",
+    "significance": "critical",
+    "tags": ["erdos-712", "main-theorem"],
+    "leanSymbol": "erdos_712"
+  },
+  {
+    "id": "ann-e712-flag-algebras",
+    "proofId": "erdos-712",
+    "range": { "startLine": 239, "endLine": 241 },
+    "type": "axiom",
+    "title": "Flag Algebra Method",
+    "content": "Razborov's flag algebra method (2007) is the most powerful tool for upper bounds. It uses semidefinite programming on local density constraints.",
+    "significance": "key",
+    "tags": ["flag-algebras", "computational"],
+    "leanSymbol": "flag_algebra_method"
+  },
+  {
+    "id": "ann-e712-computed",
+    "proofId": "erdos-712",
+    "range": { "startLine": 243, "endLine": 248 },
+    "type": "axiom",
+    "title": "Computed Bounds for Small Cases",
+    "content": "Known bounds: 5/9 ≤ π_3(K_4^3) ≤ 0.562, and 0.75 ≤ π_3(K_5^3) ≤ 0.769. Gaps remain in all cases.",
+    "significance": "key",
+    "tags": ["computational", "bounds"],
+    "leanSymbol": "computed_bounds"
+  },
+  {
+    "id": "ann-e712-summary",
+    "proofId": "erdos-712",
+    "range": { "startLine": 272, "endLine": 283 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Erdős Problem #712 is OPEN. Turán solved graphs (1941), but hypergraphs remain unsolved for 80+ years. Prize: $500 any case, $1000 full solution.",
+    "significance": "critical",
+    "tags": ["summary", "open-problem"],
+    "leanSymbol": "erdos_712_summary"
+  }
+]

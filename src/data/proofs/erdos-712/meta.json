@@ -1,34 +1,127 @@
 {
   "id": "erdos-712",
-  "title": "Erdős Problem #712",
+  "title": "Erdős Problem #712: Hypergraph Turán Densities",
   "slug": "erdos-712",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDetermine, for any ..., the value of\\[_r(n,K_k^r)}{{r}},\\]where ... is the largest number of ...-edges which can placed on .....",
+  "description": "Determine the Turán density lim ex_r(n, K_k^r)/C(n,r) for k > r > 2. One of the most famous open problems in extremal combinatorics. Prize: $500/$1000.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős (1981)",
     "sourceUrl": "https://erdosproblems.com/712",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos712Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraph",
+      "turan-number",
+      "extremal-combinatorics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 712,
     "erdosUrl": "https://erdosproblems.com/712",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #712 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDetermine, for any $k>r>2$, the value of\\[\\frac{\\mathrm{ex}_r(n,K_k^r)}{\\binom{n}{r}},\\]where $\\mathrm{ex}_r(n,K_k^r)$ is the largest number of $r$-edges which can placed on $n$ vertices so that there exists no set of $k$ vertices which is covered by all $\\binom{k}{r}$ possible $r$-edges.\n\n\n\nTur\\'{an proved} that, when $r=2$, this limit is\\[\\frac{1}{2}\\left(1-\\frac{1}{k-1}\\right).\\]Erd\\H{o}s \\cite{Er81} offered \\$500 for the determination of this value for any fixed $k>r>2$, and \\$1000 for 'clearing up the whole set of problems'.\n\nSee also [500] for the case $r=3$ and $k=4$.\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is one of the most famous open problems in extremal combinatorics, dating back to Turán's work in 1941. While Turán completely solved the graph case (r=2), determining that ex_2(n,K_k)/C(n,2) → (1-1/(k-1))/2, the hypergraph case for r > 2 has resisted all attempts for over 80 years. Even the simplest case, ex_3(n, K_4^3), remains open. Erdős offered $500 for any single case with k > r > 2, and $1000 for 'clearing up the whole set of problems'.",
+    "problemStatement": "Determine, for any k > r > 2, the value of lim_{n→∞} ex_r(n, K_k^r)/C(n,r), where ex_r(n, K_k^r) is the maximum number of r-edges on n vertices containing no complete k-clique K_k^r.",
+    "proofStrategy": "The formalization defines r-uniform hypergraphs, the Turán number ex_r(n, K_k^r), and the Turán density π_r(K_k^r). For r=2, Turán's theorem gives the exact answer. For r>2, we state the problem as open and include known bounds (de Caen lower bound, Razborov/flag algebra upper bounds). The famous case K_4^3 is highlighted: Turán conjectured π_3(K_4^3) = 5/9, with current bounds 5/9 ≤ π_3(K_4^3) ≤ 0.5616.",
+    "keyInsights": [
+      "Graph case (r=2) completely solved by Turán (1941)",
+      "Hypergraph case (r>2) is open for ALL k > r",
+      "Even simplest hypergraph case K_4^3 is unsolved after 80+ years",
+      "Flag algebras give best upper bounds but can't close the gap",
+      "Turán's conjecture: π_3(K_4^3) = 5/9 from balanced partition"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypergraph-def",
+      "title": "r-Uniform Hypergraphs",
+      "summary": "Hypergraph structure, edgeCount, formsClique, isCliqueFree definitions",
+      "startLine": 38,
+      "endLine": 65
+    },
+    {
+      "id": "turan-number",
+      "title": "Hypergraph Turán Numbers",
+      "summary": "turanNumber definition, turanNumberDef, turan_upper_trivial",
+      "startLine": 67,
+      "endLine": 88
+    },
+    {
+      "id": "turan-density",
+      "title": "The Turán Density",
+      "summary": "turanDensity, turan_density_exists, turan_density_bounds",
+      "startLine": 90,
+      "endLine": 108
+    },
+    {
+      "id": "turan-theorem",
+      "title": "Classical Turán Theorem (r=2)",
+      "summary": "turanGraphDensity, turan_theorem for graphs",
+      "startLine": 110,
+      "endLine": 133
+    },
+    {
+      "id": "k43-conjecture",
+      "title": "The Case r=3, k=4 (Turán's Conjecture)",
+      "summary": "turanConjectureK43 = 5/9, K43_lower_bound, K43_upper_bound_razborov",
+      "startLine": 135,
+      "endLine": 158
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds and Results",
+      "summary": "turan_density_positive, de_caen_lower_bound, kruskal_katona_upper, flag_algebras_upper",
+      "startLine": 160,
+      "endLine": 180
+    },
+    {
+      "id": "general-problem",
+      "title": "The General Problem Statement",
+      "summary": "erdos_712_problem, erdos_712_open, erdos_712 theorem",
+      "startLine": 182,
+      "endLine": 213
+    },
+    {
+      "id": "conjectures",
+      "title": "Related Conjectures",
+      "summary": "extremal_structure_conjecture, sidorenko_hypergraph, mubayi_K53_conjecture",
+      "startLine": 215,
+      "endLine": 231
+    },
+    {
+      "id": "computational",
+      "title": "Computational Approaches",
+      "summary": "flag_algebra_method, computed_bounds",
+      "startLine": 233,
+      "endLine": 248
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Problems",
+      "summary": "ramsey_connection, coding_connection, property_testing_connection",
+      "startLine": 250,
+      "endLine": 266
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_712_summary stating problem is OPEN",
+      "startLine": 268,
+      "endLine": 286
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #712 remains one of the most famous open problems in combinatorics. While Turán solved the graph case (r=2) in 1941, determining hypergraph Turán densities for any k > r > 2 is completely open. Even the simplest case K_4^3 has resisted 80+ years of effort. Current bounds: 5/9 ≤ π_3(K_4^3) ≤ 0.5616.",
+    "implications": "A solution would be a major breakthrough in extremal combinatorics. The problem connects to Ramsey theory, coding theory, and property testing. Flag algebra methods have improved bounds but cannot close the gap.",
+    "openQuestions": [
+      "Is π_3(K_4^3) = 5/9 (Turán's conjecture)?",
+      "What is the structure of extremal hypergraphs?",
+      "Can flag algebras determine exact densities?",
+      "Is there a pattern relating densities for different k and r?"
+    ]
   }
 }
