@@ -27,6 +27,7 @@ const DECLARATION_KEYWORDS: DeclarationKind[] = [
   'instance',
   'class',
   'inductive',
+  'example',
 ];
 
 /**
@@ -306,9 +307,17 @@ function tryParseDeclaration(
   if (!foundKind) return null;
 
   // Extract name (first identifier after keyword)
+  // Note: 'example' declarations don't have names, they go directly to ':'
   const nameMatch = afterKeyword.match(/^([a-zA-Z_][a-zA-Z0-9_']*)/);
-  if (!nameMatch) return null;
-  const name = nameMatch[1];
+  let name: string | undefined;
+  if (foundKind === 'example') {
+    // Examples are anonymous - use a placeholder name based on line number
+    name = `example_${startIndex + 1}`;
+  } else if (nameMatch) {
+    name = nameMatch[1];
+  } else {
+    return null;
+  }
 
   // Find the end of the declaration
   const endIndex = findDeclarationEnd(lines, startIndex);
@@ -337,8 +346,12 @@ function findDeclarationEnd(lines: string[], startIndex: number): number {
   for (let i = startIndex; i < lines.length; i++) {
     const line = lines[i];
 
-    // Track brace and paren depth
-    for (const char of line) {
+    // Strip line comments before counting delimiters
+    // This prevents parens/braces in comments from affecting depth tracking
+    const lineWithoutComment = line.replace(/--.*$/, '');
+
+    // Track brace and paren depth (only in non-comment code)
+    for (const char of lineWithoutComment) {
       if (char === '{') braceDepth++;
       if (char === '}') braceDepth--;
       if (char === '(') parenDepth++;

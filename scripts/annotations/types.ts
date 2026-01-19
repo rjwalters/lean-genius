@@ -29,7 +29,8 @@ export type DeclarationKind =
   | 'axiom'
   | 'instance'
   | 'class'
-  | 'inductive';
+  | 'inductive'
+  | 'example';
 
 /**
  * An anchor that identifies a location in a Lean file by semantic reference

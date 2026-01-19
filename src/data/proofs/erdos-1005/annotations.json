@@ -2,7 +2,7 @@
   {
     "id": "ann-1005-fareyfrac",
     "proofId": "erdos-1005",
-    "range": { "startLine": 32, "endLine": 38 },
+    "range": { "startLine": 34, "endLine": 39 },
     "type": "definition",
     "title": "Farey Fraction",
     "content": "Pair (a,b) with gcd(a,b)=1, 0 ≤ a ≤ b, denom > 0.",
@@ -11,7 +11,7 @@
   {
     "id": "ann-1005-fareyseq",
     "proofId": "erdos-1005",
-    "range": { "startLine": 40, "endLine": 42 },
+    "range": { "startLine": 41, "endLine": 43 },
     "type": "definition",
     "title": "Farey Sequence",
     "content": "All Farey fractions with denominator ≤ n, in order.",
@@ -20,7 +20,7 @@
   {
     "id": "ann-1005-count",
     "proofId": "erdos-1005",
-    "range": { "startLine": 44, "endLine": 49 },
+    "range": { "startLine": 45, "endLine": 50 },
     "type": "theorem",
     "title": "Farey Count Asymptotic",
     "content": "|F_n| ~ 3n²/π², the number of Farey fractions.",
@@ -29,7 +29,7 @@
   {
     "id": "ann-1005-simord",
     "proofId": "erdos-1005",
-    "range": { "startLine": 59, "endLine": 62 },
+    "range": { "startLine": 60, "endLine": 63 },
     "type": "definition",
     "title": "Similarly Ordered",
     "content": "(a-c)(b-d) ≥ 0: numerator and denominator move together.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-1005-symm",
     "proofId": "erdos-1005",
-    "range": { "startLine": 64, "endLine": 67 },
+    "range": { "startLine": 65, "endLine": 73 },
     "type": "theorem",
     "title": "Symmetry",
     "content": "similarlyOrdered f g ↔ similarlyOrdered g f.",
@@ -47,7 +47,7 @@
   {
     "id": "ann-1005-issimord",
     "proofId": "erdos-1005",
-    "range": { "startLine": 85, "endLine": 90 },
+    "range": { "startLine": 91, "endLine": 96 },
     "type": "definition",
     "title": "isSimOrdered",
     "content": "A run of length k starting at i is pairwise similarly ordered.",
@@ -56,7 +56,7 @@
   {
     "id": "ann-1005-mayerf",
     "proofId": "erdos-1005",
-    "range": { "startLine": 98, "endLine": 101 },
+    "range": { "startLine": 104, "endLine": 107 },
     "type": "definition",
     "title": "mayerErdosF(n)",
     "content": "Max length of consecutive similarly ordered Farey fractions.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-1005-mayer",
     "proofId": "erdos-1005",
-    "range": { "startLine": 109, "endLine": 110 },
+    "range": { "startLine": 115, "endLine": 116 },
     "type": "theorem",
     "title": "Mayer (1942)",
     "content": "f(n) → ∞ as n → ∞.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-1005-erdos43",
     "proofId": "erdos-1005",
-    "range": { "startLine": 112, "endLine": 113 },
+    "range": { "startLine": 118, "endLine": 119 },
     "type": "theorem",
     "title": "Erdős (1943)",
     "content": "f(n) ≫ n: linear growth in n.",
@@ -83,7 +83,7 @@
   {
     "id": "ann-1005-vdlower",
     "proofId": "erdos-1005",
-    "range": { "startLine": 121, "endLine": 123 },
+    "range": { "startLine": 127, "endLine": 129 },
     "type": "theorem",
     "title": "van Doorn Lower Bound",
     "content": "f(n) ≥ (1/12 - o(1))n.",
@@ -92,7 +92,7 @@
   {
     "id": "ann-1005-vdupper",
     "proofId": "erdos-1005",
-    "range": { "startLine": 125, "endLine": 127 },
+    "range": { "startLine": 131, "endLine": 133 },
     "type": "theorem",
     "title": "van Doorn Upper Bound",
     "content": "f(n) ≤ n/4 + O(1).",
@@ -101,7 +101,7 @@
   {
     "id": "ann-1005-hasconst",
     "proofId": "erdos-1005",
-    "range": { "startLine": 141, "endLine": 144 },
+    "range": { "startLine": 147, "endLine": 150 },
     "type": "definition",
     "title": "Asymptotic Constant (OPEN)",
     "content": "∃c: f(n)/n → c as n → ∞.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-1005-vdconj",
     "proofId": "erdos-1005",
-    "range": { "startLine": 146, "endLine": 148 },
+    "range": { "startLine": 152, "endLine": 154 },
     "type": "definition",
     "title": "van Doorn Conjecture",
     "content": "c = 1/4 is the asymptotic constant.",
@@ -119,7 +119,7 @@
   {
     "id": "ann-1005-mediant",
     "proofId": "erdos-1005",
-    "range": { "startLine": 162, "endLine": 164 },
+    "range": { "startLine": 168, "endLine": 170 },
     "type": "definition",
     "title": "Mediant",
     "content": "mediant(a/b, c/d) = (a+c)/(b+d).",
@@ -128,7 +128,7 @@
   {
     "id": "ann-1005-adjacent",
     "proofId": "erdos-1005",
-    "range": { "startLine": 166, "endLine": 171 },
+    "range": { "startLine": 172, "endLine": 177 },
     "type": "theorem",
     "title": "Adjacent Property",
     "content": "Adjacent Farey fractions satisfy |ad - bc| = 1.",
@@ -137,7 +137,7 @@
   {
     "id": "ann-1005-monotone",
     "proofId": "erdos-1005",
-    "range": { "startLine": 183, "endLine": 188 },
+    "range": { "startLine": 189, "endLine": 208 },
     "type": "theorem",
     "title": "Monotone Interpretation",
     "content": "Similarly ordered ↔ monotone in both coordinates.",

@@ -12,7 +12,7 @@
   {
     "id": "ann-elliptic-curve",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 100, "endLine": 126},
+    "range": {"startLine": 116, "endLine": 130},
     "type": "definition",
     "title": "Elliptic Curves over ℚ",
     "content": "**Elliptic Curve E/ℚ**:\n\nWeierstrass form:\n$$y^2 = x^3 + ax + b, \\quad a, b \\in \\mathbb{Q}$$\n\n**Discriminant**: Δ = −16(4a³ + 27b²) ≠ 0 (smoothness)\n\n**j-invariant**: j = −1728(4a³)/Δ\n\n**Key property**: E(ℚ) forms an abelian group under the chord-tangent law.",
@@ -56,7 +56,7 @@
   {
     "id": "ann-analytic-rank",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 316, "endLine": 349},
+    "range": {"startLine": 320, "endLine": 353},
     "type": "definition",
     "title": "Analytic Rank",
     "content": "**Analytic Rank**:\n\n$$r_{\\text{an}}(E) = \\text{ord}_{s=1} L(E, s)$$\n\nThe order of vanishing at the central point s = 1.\n\n**Parity constraint** (from functional equation):\n- w(E) = +1 ⟹ r_an is even\n- w(E) = −1 ⟹ r_an is odd\n\n**BSD predicts**: r_an = r_alg (algebraic rank).\n\nThis is the heart of the conjecture!",

@@ -2,7 +2,7 @@
   {
     "id": "ann-e355-header",
     "proofId": "erdos-355",
-    "range": { "startLine": 1, "endLine": 24 },
+    "range": { "startLine": 1, "endLine": 46 },
     "type": "concept",
     "title": "Problem Introduction",
     "content": "**Erdős Problem #355** asks whether a lacunary sequence can have its finite reciprocal sums cover all rationals in some open interval. A lacunary sequence has consecutive terms with ratio at least λ > 1. The answer is **YES** for λ ∈ (1,2), proved by van Doorn and Kovač in 2025, disproving the Bleicher-Erdős conjecture.",
@@ -13,7 +13,7 @@
   {
     "id": "ann-e355-lacunary-def",
     "proofId": "erdos-355",
-    "range": { "startLine": 48, "endLine": 53 },
+    "range": { "startLine": 68, "endLine": 76 },
     "type": "definition",
     "title": "Lacunary Sequences",
     "content": "**IsLacunaryWith** defines a lacunary sequence with a specific ratio parameter λ: the sequence must have positive terms and each consecutive ratio a_{n+1}/a_n must be at least λ. **IsLacunary** is the existential version: there exists some λ > 1 satisfying the condition.",
@@ -24,7 +24,7 @@
   {
     "id": "ann-e355-reciprocal-sums",
     "proofId": "erdos-355",
-    "range": { "startLine": 57, "endLine": 68 },
+    "range": { "startLine": 78, "endLine": 91 },
     "type": "definition",
     "title": "Reciprocal Sums and Interval Coverage",
     "content": "**ReciprocalSums** defines the set of all finite sums ∑_{i ∈ S} 1/a_i achievable from finite subsets S of the sequence indices. **RepresentsRationalsIn** captures when every rational in an open interval (u, v) is such a sum.",
@@ -35,7 +35,7 @@
   {
     "id": "ann-e355-strict-mono",
     "proofId": "erdos-355",
-    "range": { "startLine": 77, "endLine": 82 },
+    "range": { "startLine": 99, "endLine": 109 },
     "type": "theorem",
     "title": "Lacunary Implies Strictly Increasing",
     "content": "**lacunary_strictMono** shows that any lacunary sequence is strictly increasing. Since each term is at least λ > 1 times the previous one, and all terms are positive, the sequence must grow.",
@@ -46,7 +46,7 @@
   {
     "id": "ann-e355-powers-of-two",
     "proofId": "erdos-355",
-    "range": { "startLine": 91, "endLine": 104 },
+    "range": { "startLine": 125, "endLine": 140 },
     "type": "theorem",
     "title": "Powers of 2 are Lacunary with λ = 2",
     "content": "**powers_of_two_lacunary** proves that the sequence 2, 4, 8, 16, ... is lacunary with ratio exactly 2. This is the boundary case: λ = 2 is the exact threshold between sequences that can and cannot cover intervals.",
@@ -57,7 +57,7 @@
   {
     "id": "ann-e355-boundary-section",
     "proofId": "erdos-355",
-    "range": { "startLine": 114, "endLine": 125 },
+    "range": { "startLine": 144, "endLine": 152 },
     "type": "axiom",
     "title": "Why λ = 2 is the Critical Boundary",
     "content": "**The critical insight**: For λ = 2 (powers of 2), the reciprocal sums are exactly the dyadic rationals k/2^n. These form a countable discrete set with gaps - they cannot fill any open interval. For example, 1/3 is not a dyadic rational.",
@@ -68,7 +68,7 @@
   {
     "id": "ann-e355-van-doorn-kovac",
     "proofId": "erdos-355",
-    "range": { "startLine": 142, "endLine": 143 },
+    "range": { "startLine": 286, "endLine": 296 },
     "type": "axiom",
     "title": "van Doorn-Kovač Theorem (2025)",
     "content": "**The main result**: For any λ ∈ (1, 2), there exists a lacunary sequence with ratio parameter λ whose reciprocal sums contain all rationals in some open interval. This resolved Erdős Problem #355 in the affirmative.",
@@ -79,7 +79,7 @@
   {
     "id": "ann-e355-main-theorem",
     "proofId": "erdos-355",
-    "range": { "startLine": 148, "endLine": 153 },
+    "range": { "startLine": 298, "endLine": 305 },
     "type": "theorem",
     "title": "Main Result: Such Sequences Exist",
     "content": "**erdos_355_solved** instantiates the van Doorn-Kovač theorem with λ = 3/2, proving existence of a lacunary sequence whose reciprocal sums cover all rationals in some interval. Since 1 < 3/2 < 2, this falls in the valid range.",
@@ -90,8 +90,8 @@
   {
     "id": "ann-e355-sharp-threshold",
     "proofId": "erdos-355",
-    "range": { "startLine": 176, "endLine": 181 },
-    "type": "theorem",
+    "range": { "startLine": 330, "endLine": 336 },
+    "type": "lemma",
     "title": "Sharp Threshold at λ = 2",
     "content": "**sharp_threshold** bundles both directions: (1) For λ ∈ (1,2), such sequences exist (van Doorn-Kovač); (2) For λ = 2, no such sequence exists. The threshold λ = 2 is exactly sharp.",
     "mathContext": "The axiom lambda_two_fails captures that no sequence with ratio exactly 2 can cover an interval. Combined with vanDoorn_Kovac_theorem, this gives the complete picture.",
@@ -101,7 +101,7 @@
   {
     "id": "ann-e355-fibonacci-example",
     "proofId": "erdos-355",
-    "range": { "startLine": 191, "endLine": 206 },
+    "range": { "startLine": 346, "endLine": 361 },
     "type": "definition",
     "title": "Fibonacci-like Sequence Example",
     "content": "**fibLikeSeq** defines a sequence starting 1, 2, 3, 5, 8, 13, ... where each term is the sum of the two previous. This sequence has ratio approaching the golden ratio φ ≈ 1.618, which is in (1, 2).",
@@ -112,8 +112,8 @@
   {
     "id": "ann-e355-intuition",
     "proofId": "erdos-355",
-    "range": { "startLine": 218, "endLine": 222 },
-    "type": "theorem",
+    "range": { "startLine": 363, "endLine": 373 },
+    "type": "lemma",
     "title": "Intuition: Why λ < 2 Works",
     "content": "**The key intuition**: For λ = 2, reciprocal sums are exactly dyadic rationals - a discrete, nowhere-dense set. For λ < 2, the 'overlap' between consecutive levels of the sequence allows reciprocal sums to become dense, eventually covering all rationals in some interval.",
     "mathContext": "When λ < 2, we have a_{n+1} < 2a_n, so the intervals [1/a_{n+1}, 1/a_n] overlap in a way that allows filling gaps. The construction is delicate and requires careful analysis.",
@@ -123,7 +123,7 @@
   {
     "id": "ann-e355-summary",
     "proofId": "erdos-355",
-    "range": { "startLine": 227, "endLine": 232 },
+    "range": { "startLine": 375, "endLine": 386 },
     "type": "theorem",
     "title": "Summary of Results",
     "content": "**erdos_355_summary** packages the main results: (1) existence of lacunary sequences covering intervals, (2) powers of 2 form a lacunary sequence with λ = 2, (3) 3/2 is in the valid range (1, 2).",

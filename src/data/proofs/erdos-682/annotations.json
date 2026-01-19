@@ -3,7 +3,7 @@
     "id": "ann-682-1",
     "proofId": "erdos-682",
     "range": { "startLine": 52, "endLine": 52 },
-    "type": "definition",
+    "type": "concept",
     "title": "The n-th Prime Function",
     "content": "**nthPrime** axiomatizes the function p_n giving the n-th prime: p_1 = 2, p_2 = 3, p_3 = 5, etc. This is standard in number theory and connects to the Prime Number Theorem: p_n ~ n log n.",
     "significance": "supporting"
@@ -139,7 +139,7 @@
     "id": "ann-682-16",
     "proofId": "erdos-682",
     "range": { "startLine": 232, "endLine": 234 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Gafni-Tao Upper Bound",
     "content": "**gafni_tao_upper_bound** is the main quantitative result: E(X) ≤ C·X/(log X)² for some constant C. This bound implies E(X)/X → 0, so exceptions have density 0. The (log X)² decay is significant.",
     "significance": "critical"
@@ -148,7 +148,7 @@
     "id": "ann-682-17",
     "proofId": "erdos-682",
     "range": { "startLine": 241, "endLine": 245 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Conditional Asymptotic",
     "content": "**gafni_tao_conditional_asymptotic** states that under the prime tuples conjecture, E(X) ~ c·X/(log X)² for explicit c > 0. This shows the upper bound is essentially tight and gives the true growth rate of exceptions.",
     "significance": "supporting"

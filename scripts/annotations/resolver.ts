@@ -278,8 +278,9 @@ export function validateLineAnnotations(
     }
 
     // Check if the construct matches what we expect based on annotation type
+    // Note: 'example' is an anonymous theorem, so we allow 'theorem' type annotations to match
     const typeMatches =
-      (ann.type === 'theorem' && construct.kind === 'theorem') ||
+      (ann.type === 'theorem' && (construct.kind === 'theorem' || construct.kind === 'example')) ||
       (ann.type === 'lemma' && construct.kind === 'lemma') ||
       (ann.type === 'definition' && (construct.kind === 'def' || construct.kind === 'abbrev' || construct.kind === 'structure')) ||
       (ann.type === 'axiom' && construct.kind === 'axiom') ||

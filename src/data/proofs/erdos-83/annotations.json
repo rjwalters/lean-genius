@@ -40,7 +40,7 @@
     "id": "ann-83-5",
     "proofId": "erdos-83",
     "range": { "startLine": 78, "endLine": 81 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Erdős-Ko-Rado Bound",
     "content": "**erdos_ko_rado_bound** is the classical 1961 result: for k-subsets of [n] with n ≥ 2k, the largest intersecting family has size C(n-1, k-1). This fundamental theorem launched extremal set theory.",
     "significance": "critical"
@@ -121,7 +121,7 @@
     "id": "ann-83-14",
     "proofId": "erdos-83",
     "range": { "startLine": 184, "endLine": 188 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Complete Intersection Theorem",
     "content": "**ahlswede_khachatrian_theorem** (1997) is the landmark result: for all valid (m,k,t), the maximum t-intersecting k-uniform family is akFamily with optimal r. This solved the EKR problem for all parameters.",
     "significance": "critical"
@@ -130,7 +130,7 @@
     "id": "ann-83-15",
     "proofId": "erdos-83",
     "range": { "startLine": 199, "endLine": 200 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Special Case Reduction",
     "content": "**erdos83_from_ak** shows that for m=4n, k=2n, t=2, the AK-family size equals erdos83Bound n = ½(C(4n,2n) - C(2n,n)²). This connects the general theorem to the specific Erdős problem.",
     "significance": "critical"

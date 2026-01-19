@@ -5462,17 +5462,21 @@
   },
   {
     "id": "erdos-305",
-    "title": "Erdős Problem #305",
+    "title": "Maximum Denominator in Egyptian Fraction Representations",
     "slug": "erdos-305",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers ... let ... be the minimal value of ... such that there exist integers ... with\\[{b}={n_1}+\\cdots+{n_k}.\\]Estima...",
-    "status": "pending",
+    "description": "For integers 1 ≤ a < b, let D(a,b) be the minimum maximum denominator needed to represent a/b as an Egyptian fraction. Is D(b) = max_a D(a,b) bounded by b(log b)^{1+o(1)}? Solved by Yokota (1988), improved by Liu-Sawhney (2024).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "greedy-algorithm"
     ],
     "erdosNumber": 305,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-306",
@@ -10703,17 +10707,22 @@
   },
   {
     "id": "erdos-716",
-    "title": "Erdős Problem #716",
+    "title": "The Ruzsa-Szemerédi (6,3) Problem",
     "slug": "erdos-716",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...3...6...3...3...3...k...k-3...3......r_{k-3}(n)...\\{1,\\ldots,n\\}...k-3...k=6,7,8...r$}-graphs. (1973), 53--63.\n\n[Er75...",
-    "status": "pending",
+    "description": "Let ℱ be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is ex₃(n, ℱ) = o(n²)? Equivalently, what is the maximum number of edges in a graph where every edge belongs to a unique triangle? Solved by Ruzsa-Szemerédi (1978).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraph-theory",
+      "extremal-combinatorics",
+      "regularity-lemma",
+      "triangle-removal-lemma",
+      "additive-combinatorics"
     ],
     "erdosNumber": 716,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-717",
@@ -11994,17 +12003,22 @@
   },
   {
     "id": "erdos-800",
-    "title": "Erdős Problem #800",
+    "title": "Linear Ramsey Numbers for Graphs Without Adjacent High-Degree Vertices",
     "slug": "erdos-800",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices which has no two adjacent vertices of degree ... then\\[R(G)\\ll n,\\]where the implied consta...",
-    "status": "pending",
+    "description": "If G is a graph on n vertices which has no two adjacent vertices of degree ≥ 3, then R(G) ≪ n, where R(G) is the Ramsey number and the implied constant is absolute. Solved by Noga Alon (1994) who proved R(G) ≤ 12n.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "subdivisions",
+      "degeneracy",
+      "probabilistic-method"
     ],
     "erdosNumber": 800,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-801",
@@ -12510,7 +12524,7 @@
     ],
     "erdosNumber": 834,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-835",
