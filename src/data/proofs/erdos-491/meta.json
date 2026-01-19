@@ -1,33 +1,125 @@
 {
   "id": "erdos-491",
-  "title": "Erdős Problem #491",
+  "title": "Erdős Problem #491: Characterization of Additive Functions",
   "slug": "erdos-491",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive function (i.e. ... whenever ...). If there is a constant ... such that ... for all ... then must there...",
+  "description": "If f: ℕ → ℝ is additive and |f(n+1) - f(n)| < c for all n, then f(n) = c'·log(n) + O(1). Proved by Wirsing (1970).",
   "meta": {
-    "author": "Unknown",
+    "author": "Wirsing (1970)",
     "sourceUrl": "https://erdosproblems.com/491",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos491Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-functions",
+      "logarithm",
+      "characterization"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 491,
     "erdosUrl": "https://erdosproblems.com/491",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #491 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{N}\\to \\mathbb{R}$ be an additive function (i.e. $f(ab)=f(a)+f(b)$ whenever $(a,b)=1$). If there is a constant $c$ such that $\\lvert f(n+1)-f(n)\\rvert <c$ for all $n$ then must there exist some $c'$ such that\\[f(n)=c'\\log n+O(1)?\\]\n\n\n\nErd\\H{o}s \\cite{Er46} proved that if $f(n+1)-f(n)=o(1)$ or $f(n+1)\\geq f(n)$ then $f(n)=c\\log n$ for some constant $c$.\n\nThis is true, and was proved by Wirsing \\cite{Wi70}.\n\nSee also [897] and [1122].\n\n\n\n\nReferences\n\n\n[Er46] Erd\\H{o}s, P., On the distribution function of additive functions. Annals of Math. (1946), 1-20.\n\n[Wi70] Wirsing, E., A characterization of $\\log n$ as an additive arthemetic function. Symposia Math. (1970), 45-47.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős (1946) proved that if f is additive and f(n+1) - f(n) = o(1) or f(n+1) ≥ f(n), then f(n) = c·log(n). He asked whether bounded consecutive differences (|f(n+1) - f(n)| < c) also imply a logarithmic form. Wirsing (1970) resolved this affirmatively with the weaker conclusion f(n) = c'·log(n) + O(1).",
+    "problemStatement": "Let f: ℕ → ℝ be an additive function (f(ab) = f(a) + f(b) when gcd(a,b) = 1). If there exists c such that |f(n+1) - f(n)| < c for all n, must there exist c' such that f(n) = c'·log(n) + O(1)?",
+    "proofStrategy": "The formalization defines additive functions, bounded consecutive differences, and the characterization f(n) = c'·log(n) + O(1). Wirsing's theorem is stated as an axiom, along with Erdős's 1946 results as special cases. The uniqueness of the coefficient c' and connections to prime factorization are included.",
+    "keyInsights": [
+      "Additive functions with bounded consecutive differences are essentially logarithmic",
+      "The logarithm is characterized as the unique additive function (up to scaling) with this regularity",
+      "Bounded differences give f = c'·log + O(1), while vanishing differences give exact f = c·log",
+      "Additive functions are determined by their values on prime powers",
+      "The coefficient c' in the characterization is unique"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsAdditive, IsCompletelyAdditive, completely_additive_is_additive",
+      "startLine": 36,
+      "endLine": 56
+    },
+    {
+      "id": "bounded-differences",
+      "title": "Bounded Differences Condition",
+      "summary": "HasBoundedDifferences, log_bounded_differences",
+      "startLine": 58,
+      "endLine": 70
+    },
+    {
+      "id": "erdos-1946",
+      "title": "Erdős's Earlier Results (1946)",
+      "summary": "DifferencesTendToZero, IsMonotone, erdos_1946_o1, erdos_1946_monotone",
+      "startLine": 72,
+      "endLine": 94
+    },
+    {
+      "id": "wirsing-theorem",
+      "title": "Wirsing's Theorem (1970)",
+      "summary": "IsLogPlusO1, wirsing_theorem, wirsingConstant",
+      "startLine": 96,
+      "endLine": 114
+    },
+    {
+      "id": "main-theorem",
+      "title": "Erdős Problem #491 Statement",
+      "summary": "erdos_491, erdos_491_explicit",
+      "startLine": 116,
+      "endLine": 133
+    },
+    {
+      "id": "characterization-properties",
+      "title": "Properties of the Characterization",
+      "summary": "wirsing_constant_unique, wirsing_monotone_nonneg, log_unique_completely_additive",
+      "startLine": 135,
+      "endLine": 154
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Non-Examples",
+      "summary": "log_satisfies_hypothesis, nonExample, non_example_bounded_diff",
+      "startLine": 156,
+      "endLine": 182
+    },
+    {
+      "id": "prime-factorization",
+      "title": "Connection to Prime Factorization",
+      "summary": "additive_from_prime_powers, additiveFromPrimes, additive_from_primes_is_additive",
+      "startLine": 184,
+      "endLine": 201
+    },
+    {
+      "id": "rate-of-convergence",
+      "title": "Rate of Convergence",
+      "summary": "wirsing_explicit_bound, deviation_bounded_not_zero",
+      "startLine": 203,
+      "endLine": 219
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "erdos_897_connection, erdos_1122_connection",
+      "startLine": 221,
+      "endLine": 235
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_491_summary and erdos_491_answer",
+      "startLine": 237,
+      "endLine": 256
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #491 was resolved by Wirsing (1970): if f is additive with bounded consecutive differences, then f(n) = c'·log(n) + O(1). The logarithm is essentially the unique additive function with this regularity property.",
+    "implications": "This result characterizes the logarithm among additive functions and shows that boundedness of consecutive differences is a strong constraint that forces logarithmic behavior up to O(1) error.",
+    "openQuestions": [
+      "What is the optimal constant in the O(1) bound in terms of c?",
+      "Can similar characterizations be found for multiplicative functions?",
+      "What happens if we relax 'bounded' to 'slowly growing' differences?"
+    ]
   }
 }
