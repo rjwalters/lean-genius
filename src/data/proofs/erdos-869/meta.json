@@ -1,33 +1,151 @@
 {
   "id": "erdos-869",
-  "title": "Erdős Problem #869",
+  "title": "Erdős Problem #869: Minimal Additive Bases from Disjoint Bases",
   "slug": "erdos-869",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are disjoint additive bases of order ... (i.e. ... contains all large integers) then must ... contain a minimal additi...",
+  "description": "If A₁, A₂ are disjoint additive bases of order 2, must A₁ ∪ A₂ contain a minimal additive basis?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős and Nathanson (1988 question)",
     "sourceUrl": "https://erdosproblems.com/869",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos869Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "bases",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 869,
     "erdosUrl": "https://erdosproblems.com/869",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set",
+        "description": "Set theory definitions and operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat",
+        "description": "Natural number operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Filter.Cofinite",
+        "description": "Cofinite filter for density conditions",
+        "module": "Mathlib.Order.Filter.Cofinite"
+      }
+    ],
+    "originalContributions": [
+      "sumset definition: A + B = {a + b : a ∈ A, b ∈ B}",
+      "doubling definition: A + A",
+      "containsAllLarge definition: complement is finite",
+      "isAdditiveBasis2 definition: A + A cofinite",
+      "isEssential definition: element whose removal breaks basis property",
+      "isMinimalBasis definition: every element is essential",
+      "containsMinimalBasis definition: existence of minimal sub-basis",
+      "areDisjointBases definition: disjoint additive bases",
+      "erdos_869_conjecture: the open problem statement",
+      "hartter_nathanson axiom: bases without minimal sub-bases exist",
+      "union_of_bases theorem: union of disjoint bases is a basis",
+      "basis_monotone theorem: superset of basis is a basis"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #869 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A_1,A_2$ are disjoint additive bases of order $2$ (i.e. $A_i+A_i$ contains all large integers) then must $A=A_1\\cup A_2$ contain a minimal additive basis of order $2$ (one such that deleting any element creates infinitely many $n\\not\\in A+A$)?\n\n\n\nA question of Erd\\H{o}s and Nathanson \\cite{ErNa88}.\n\nHärtter \\cite{Ha56} and Nathanson \\cite{Na74} proved that there exist additive bases which do not contain any minimal additive bases.\n\n\n\n\nReferences\n\n\n[ErNa88] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Partitions of bases into disjoint unions of bases. J. Number Theory (1988), 1--9.\n\n[Ha56] H\\\"{a}rtter, Erich, Ein Beitrag zur {T}heorie der {M}inimalbasen. J. Reine Angew. Math. (1956), 170--204.\n\n[Na74] Nathanson, Melvyn B., Minimal bases and maximal nonbases in additive number theory. J. Number Theory (1974), 324--333.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #869: Minimal Additive Bases**\n\nThis problem in additive combinatorics asks about the structure of additive bases formed from disjoint unions.\n\n**Background:**\n- **Additive basis of order 2**: A set B where B + B (all pairwise sums) contains all sufficiently large integers\n- **Minimal basis**: A basis where removing any element leaves infinitely many integers unrepresentable\n\n**Key Prior Results:**\n- **Härtter (1956)**: Proved there exist additive bases containing no minimal sub-basis\n- **Nathanson (1974)**: Extended this result with further constructions\n- **Erdős-Nathanson (1988)**: Posed this question about disjoint bases\n\n**The Key Insight:**\nWhile arbitrary bases may lack minimal sub-bases, the question is whether the special structure of arising from two disjoint bases forces the existence of a minimal sub-basis.",
+    "problemStatement": "**Problem Statement (Open)**\n\nIf $A_1, A_2$ are disjoint additive bases of order 2 (i.e., $A_i + A_i$ contains all large integers), then must $A = A_1 \\cup A_2$ contain a minimal additive basis of order 2?\n\nA minimal additive basis is one such that deleting any element creates infinitely many $n \\notin A + A$.\n\n**Status: OPEN**\n\nThe problem cannot be resolved by finite computation.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Formalize sumsets, additive bases of order 2, essential elements, and minimal bases\n\n2. **Key Concepts:**\n   - containsAllLarge: complement is finite\n   - isEssential: removal breaks cofiniteness\n   - isMinimalBasis: every element is essential\n\n3. **Known Results:** Axiomatize Härtter-Nathanson theorem (bases without minimal sub-bases exist)\n\n4. **Structural Theorems:** Prove union of disjoint bases is a basis, basis monotonicity\n\n5. **Conjecture:** State the open problem as a Prop definition\n\n6. **Challenges:** Highlight why disjointness might matter",
+    "keyInsights": [
+      "**Additive Basis of Order 2**: Set B where B + B contains all large integers",
+      "**Minimal Basis**: Every element is essential - removing any one breaks the basis property",
+      "**Härtter-Nathanson**: Some bases contain NO minimal sub-bases",
+      "**Disjointness Structure**: A₁ ∩ A₂ = ∅ adds extra constraints",
+      "**Cross-Sums**: In A₁ ∪ A₂, we get new sums a₁ + a₂ with a₁ ∈ A₁, a₂ ∈ A₂",
+      "**The Question**: Does disjoint union structure force minimal sub-bases to exist?"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sumsets-bases",
+      "title": "Sumsets and Additive Bases",
+      "summary": "Definitions of sumset, doubling, cofinite, and additive basis of order 2",
+      "startLine": 43,
+      "endLine": 76
+    },
+    {
+      "id": "minimal-bases",
+      "title": "Minimal Additive Bases",
+      "summary": "Essential elements, minimal bases, and containment definitions",
+      "startLine": 78,
+      "endLine": 106
+    },
+    {
+      "id": "disjoint-bases",
+      "title": "Disjoint Bases",
+      "summary": "Disjointness and disjoint additive bases definitions",
+      "startLine": 108,
+      "endLine": 124
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Nathanson Conjecture",
+      "summary": "Statement of the open problem",
+      "startLine": 126,
+      "endLine": 139
+    },
+    {
+      "id": "negative-results",
+      "title": "Known Negative Results",
+      "summary": "Härtter-Nathanson theorem and union of bases theorem",
+      "startLine": 141,
+      "endLine": 173
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "summary": "Basis monotonicity, minimal bases are thin, essential elements",
+      "startLine": 175,
+      "endLine": 204
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Powers of 2, dense sets, existence of disjoint bases",
+      "startLine": 206,
+      "endLine": 233
+    },
+    {
+      "id": "challenges",
+      "title": "Why the Problem is Hard",
+      "summary": "Challenges from Härtter-Nathanson and cross-sums",
+      "startLine": 235,
+      "endLine": 256
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Summary theorem and open question statement",
+      "startLine": 258,
+      "endLine": 300
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #869 asks whether the union of two disjoint additive bases of order 2 must contain a minimal additive basis. The problem remains OPEN. While Härtter-Nathanson showed that some bases contain no minimal sub-bases, the question is whether the special structure of disjoint union forces such a sub-basis to exist.",
+    "implications": "**Additive Combinatorics Significance**\n\n1. **Basis Structure**: Understanding when minimal bases exist within larger bases\n\n2. **Disjointness Constraints**: How structural conditions affect sub-basis existence\n\n3. **Essential Elements**: Which elements are truly necessary for representation\n\n4. **Partition Theory**: Connections to partitioning bases into disjoint pieces\n\n5. **Representation Theory**: How integers can be represented as sums",
+    "openQuestions": [
+      "Does the conjecture hold? (The main question)",
+      "Can Härtter-Nathanson examples arise from disjoint unions?",
+      "What is the role of cross-sums in determining minimal sub-bases?",
+      "Are there weaker conditions that guarantee minimal sub-basis existence?",
+      "What is the structure of the set of essential elements?"
+    ]
   }
 }
