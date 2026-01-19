@@ -1,1 +1,140 @@
-[]
+[
+  {
+    "id": "ann-e560-header",
+    "proofId": "erdos-560",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #560: Size Ramsey Numbers**\n\nThis problem asks for the size Ramsey number R_hat(K_{n,n}) - the minimum number of EDGES (not vertices) in a graph H such that any 2-coloring of H's edges contains a monochromatic K_{n,n}.\n\n**Status:** OPEN - exact value unknown, bounds established\n\n**Known Bounds:**\n(1/60)n^2*2^n < R_hat(K_{n,n}) < (3/2)n^3*2^n\n\nThe gap between bounds is O(n).",
+    "mathContext": "Size Ramsey numbers measure edge-complexity of Ramsey phenomena, in contrast to classical Ramsey numbers which count vertices.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Graph coloring", "Bipartite graphs"]
+  },
+  {
+    "id": "ann-e560-edge-coloring",
+    "proofId": "erdos-560",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "**EdgeColoring:**\n\nA 2-coloring of edges assigns each edge a color (True or False, representing red/blue).\n\n**Definition:**\n```lean\ndef EdgeColoring (G : SimpleGraph V) := G.edgeSet -> Bool\n```\n\nThis is the fundamental object for Ramsey-type problems.",
+    "significance": "key",
+    "relatedConcepts": ["Graph coloring", "Ramsey theory", "Boolean functions"]
+  },
+  {
+    "id": "ann-e560-bipartite",
+    "proofId": "erdos-560",
+    "range": { "startLine": 51, "endLine": 70 },
+    "type": "definition",
+    "title": "Complete Bipartite Graph K_{n,n}",
+    "content": "**completeBipartiteGraph:**\n\nK_{n,n} has two disjoint sets of n vertices each, with an edge between every vertex in one set and every vertex in the other.\n\n**Definition:** Uses Sum types (Fin n + Fin n) for vertices:\n```lean\ndef completeBipartiteGraph (n : N) : SimpleGraph (Fin n + Fin n) where\n  Adj v w := match v, w with\n    | Sum.inl _, Sum.inr _ => True\n    | Sum.inr _, Sum.inl _ => True\n    | _, _ => False\n```\n\n**Edge count:** K_{n,n} has n^2 edges.",
+    "mathContext": "Complete bipartite graphs are fundamental in graph theory and have rich Ramsey-theoretic properties.",
+    "significance": "critical",
+    "relatedConcepts": ["Bipartite graphs", "Complete graphs", "Sum types"]
+  },
+  {
+    "id": "ann-e560-monochromatic",
+    "proofId": "erdos-560",
+    "range": { "startLine": 82, "endLine": 100 },
+    "type": "definition",
+    "title": "Monochromatic Copy and Size Ramsey",
+    "content": "**HasMonochromaticCopy and sizeRamseyNumber:**\n\nA monochromatic copy of G in H under coloring c is an embedding of G into H where all mapped edges have the same color.\n\n**Size Ramsey Number:** R_hat(G) is the minimum edge count m such that:\n- There exists H with m edges\n- Every 2-coloring of H contains a monochromatic G\n\nThis is fundamentally different from classical Ramsey numbers which minimize vertices.",
+    "mathContext": "The size Ramsey number can be much smaller than C(R(G),2), the edges in the complete graph on R(G) vertices.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph embeddings", "Ramsey numbers", "Optimization"]
+  },
+  {
+    "id": "ann-e560-lower-bound",
+    "proofId": "erdos-560",
+    "range": { "startLine": 116, "endLine": 121 },
+    "type": "axiom",
+    "title": "Erdos-Rousseau Lower Bound (1993)",
+    "content": "**erdos_rousseau_lower_bound:**\n\nFor n >= 6, R_hat(K_{n,n}) > (1/60)*n^2*2^n.\n\n**Statement:**\n```lean\naxiom erdos_rousseau_lower_bound (n : N) (hn : n >= 6) :\n    (R_hat(K[n,n]) : R) > (1 / 60) * n^2 * 2^n\n```\n\nThis was proved using probabilistic counting arguments.",
+    "mathContext": "The lower bound shows that even edge-minimal Ramsey graphs for K_{n,n} must have exponentially many edges with n^2 polynomial factor.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Probabilistic method", "Erdos-Rousseau"]
+  },
+  {
+    "id": "ann-e560-upper-bound",
+    "proofId": "erdos-560",
+    "range": { "startLine": 123, "endLine": 128 },
+    "type": "axiom",
+    "title": "Upper Bound (EFRS 1978)",
+    "content": "**upper_bound:**\n\nR_hat(K_{n,n}) < (3/2)*n^3*2^n.\n\n**Statement:**\n```lean\naxiom upper_bound (n : N) (hn : n >= 1) :\n    (R_hat(K[n,n]) : R) < (3 / 2) * n^3 * 2^n\n```\n\nProved independently by EFRS (1978) and Nesetril-Rodl (1978) using explicit constructions.",
+    "mathContext": "The upper bound constructs specific graphs that force monochromatic K_{n,n} in any 2-coloring.",
+    "significance": "critical",
+    "relatedConcepts": ["Upper bounds", "Constructive proofs", "EFRS"]
+  },
+  {
+    "id": "ann-e560-combined-bounds",
+    "proofId": "erdos-560",
+    "range": { "startLine": 130, "endLine": 138 },
+    "type": "theorem",
+    "title": "Combined Size Ramsey Bounds",
+    "content": "**size_ramsey_bounds:**\n\nCombines both bounds into a single theorem for n >= 6:\n\n(1/60)*n^2*2^n < R_hat(K_{n,n}) < (3/2)*n^3*2^n\n\nThe ratio of upper to lower bound is 90n, showing the gap is O(n).",
+    "significance": "key",
+    "relatedConcepts": ["Bound analysis", "Asymptotic gaps"]
+  },
+  {
+    "id": "ann-e560-cfw-general",
+    "proofId": "erdos-560",
+    "range": { "startLine": 144, "endLine": 160 },
+    "type": "axiom",
+    "title": "Conlon-Fox-Wigderson Results (2023)",
+    "content": "**CFW General and Asymptotic Bounds:**\n\nFor s <= t:\n- R_hat(K_{s,t}) >> s^{2-s/t} * t * 2^s\n- When t >> s*log(s): R_hat(K_{s,t}) ~ s^2 * t * 2^s\n\nThese 2023 results give tight asymptotic bounds when t is large compared to s.\n\nFor the balanced case s = t = n, this suggests R_hat(K_{n,n}) ~ n^3 * 2^n.",
+    "mathContext": "The CFW paper made significant progress on this 40+ year old problem, providing new techniques for both upper and lower bounds.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic analysis", "Modern results", "CFW paper"]
+  },
+  {
+    "id": "ann-e560-conjecture",
+    "proofId": "erdos-560",
+    "range": { "startLine": 162, "endLine": 172 },
+    "type": "axiom",
+    "title": "CFW Conjecture",
+    "content": "**cfw_conjecture:**\n\nConjectured: R_hat(K_{n,n}) = Theta(n^3 * 2^n).\n\nThis would mean:\n- The upper bound (3/2)*n^3*2^n is tight up to constants\n- The lower bound (1/60)*n^2*2^n can be improved by factor n\n- The true order is n^3*2^n\n\nThis is the natural extension of asymptotic results to the balanced case.",
+    "mathContext": "If true, this conjecture would resolve Problem #560 up to constant factors.",
+    "significance": "key",
+    "relatedConcepts": ["Conjectures", "Asymptotic bounds", "Open problems"]
+  },
+  {
+    "id": "ann-e560-properties",
+    "proofId": "erdos-560",
+    "range": { "startLine": 174, "endLine": 199 },
+    "type": "axiom",
+    "title": "Basic Properties",
+    "content": "**Size Ramsey Properties:**\n\n1. **Monotonicity:** G subgraph of G' implies R_hat(G) <= R_hat(G')\n\n2. **Lower bound:** R_hat(G) >= |E(G)| (need at least as many edges)\n\n3. **K_{1,1} case:** R_hat(K_{1,1}) = 1 (single edge)\n\n4. **Path linear:** R_hat(P_n) = O(n) (linear in path length)\n\nThese basic properties establish the framework for size Ramsey theory.",
+    "significance": "key",
+    "relatedConcepts": ["Monotonicity", "Trivial bounds", "Path graphs"]
+  },
+  {
+    "id": "ann-e560-classical",
+    "proofId": "erdos-560",
+    "range": { "startLine": 201, "endLine": 227 },
+    "type": "definition",
+    "title": "Classical Ramsey Relation",
+    "content": "**classicalRamseyNumber and Relationship:**\n\nThe classical Ramsey number R(G) counts vertices: minimum N such that K_N 2-coloring yields monochromatic G.\n\n**Key relationship:**\nR_hat(G) <= C(R(G), 2) = edges in K_{R(G)}\n\n**For K_{n,n}:** Classical Ramsey grows doubly exponentially: R(K_{n,n}) ~ 2^{2^n}\n\nThis shows size Ramsey numbers are fundamentally different - they capture edge efficiency.",
+    "mathContext": "The relationship shows that size Ramsey numbers are always at most the edges in the complete graph on R(G) vertices, but can be much smaller.",
+    "significance": "key",
+    "relatedConcepts": ["Classical Ramsey", "Complete graphs", "Efficiency"]
+  },
+  {
+    "id": "ann-e560-gap",
+    "proofId": "erdos-560",
+    "range": { "startLine": 229, "endLine": 258 },
+    "type": "theorem",
+    "title": "Bounds Gap Analysis",
+    "content": "**bounds_gap:**\n\nThe ratio between upper and lower bounds:\n\n(3/2)*n^3*2^n / ((1/60)*n^2*2^n) = 90*n\n\nSo the gap is O(n) - a linear factor of uncertainty remains.\n\n**Implication:** If CFW conjecture is true (R_hat ~ n^3*2^n), then the lower bound can be improved by factor n while upper bound is optimal.",
+    "significance": "key",
+    "relatedConcepts": ["Gap analysis", "Asymptotic bounds", "Linear factors"]
+  },
+  {
+    "id": "ann-e560-summary",
+    "proofId": "erdos-560",
+    "range": { "startLine": 260, "endLine": 291 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_560_summary:**\n\nCombines all main results for n >= 6:\n\n1. **Lower bound:** (1/60)*n^2*2^n (Erdos-Rousseau 1993)\n2. **Upper bound:** (3/2)*n^3*2^n (EFRS 1978)\n3. **Monotonicity:** m <= n implies R_hat(K_{m,m}) <= R_hat(K_{n,n})\n\n**Status:** OPEN - exact value unknown, O(n) gap between bounds\n\n**Conjecture:** R_hat(K_{n,n}) = Theta(n^3*2^n) (CFW 2023)",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open problem", "All bounds"]
+  }
+]
