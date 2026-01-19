@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "ann-e978-header",
+    "proofId": "erdos-978",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #978: Power-Free Values of Polynomials**\n\nThis problem asks three related questions about how often polynomial values avoid high prime powers.\n\n**Questions:**\n1. Does the set of n with f(n) being (d-1)-power-free have positive density? → YES (Hooley 1967)\n2. Are there infinitely many n with f(n) being (d-2)-power-free? → YES for d ≥ 9 (Browning 2011)\n3. Does n⁴ + 2 give infinitely many squarefree values? → OPEN",
+    "mathContext": "For irreducible f ∈ ℤ[x] of degree d > 2 with d ≠ 2^l. A number is k-power-free if no prime p has p^k dividing it.",
+    "significance": "critical",
+    "relatedConcepts": ["Power-free numbers", "Irreducible polynomials", "Asymptotic density"]
+  },
+  {
+    "id": "ann-e978-powerfree-def",
+    "proofId": "erdos-978",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "definition",
+    "title": "k-Power-Free Numbers",
+    "content": "**IsPowerFree k n:**\n\nA positive integer n is k-power-free if no prime p satisfies p^k | n.\n\n**Definition:**\n```lean\ndef IsPowerFree (k n : ℕ) : Prop :=\n  n > 0 ∧ ∀ p : ℕ, p.Prime → ¬(p^k ∣ n)\n```\n\n**Key insight:** This generalizes squarefree (k=2) and cubefree (k=3).",
+    "mathContext": "The density of k-power-free numbers is 1/ζ(k), where ζ is the Riemann zeta function.",
+    "significance": "critical",
+    "relatedConcepts": ["Squarefree numbers", "Prime divisibility", "Zeta function"]
+  },
+  {
+    "id": "ann-e978-squarefree-cubefree",
+    "proofId": "erdos-978",
+    "range": { "startLine": 54, "endLine": 62 },
+    "type": "definition",
+    "title": "Squarefree and Cubefree",
+    "content": "**Special Cases:**\n\n- **IsSquarefree n** = IsPowerFree 2 n (no p² divides n)\n- **IsCubefree n** = IsPowerFree 3 n (no p³ divides n)\n\nSquarefree numbers: 1, 2, 3, 5, 6, 7, 10, 11, 13, ...\nCubefree numbers: 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, ... (all except 8, 16, 24, ...)",
+    "significance": "key",
+    "relatedConcepts": ["Power-free numbers", "Prime factorization"]
+  },
+  {
+    "id": "ann-e978-squarefree-examples",
+    "proofId": "erdos-978",
+    "range": { "startLine": 64, "endLine": 87 },
+    "type": "theorem",
+    "title": "Squarefree Examples",
+    "content": "**Verified squarefree numbers:**\n\n- **one_squarefree:** 1 is squarefree (vacuously: p² ≥ 4 > 1 for any prime)\n- **two_squarefree:** 2 is squarefree (only prime is 2, and 4 ∤ 2)\n- **three_squarefree:** 3 is squarefree (only prime is 3, and 9 ∤ 3)\n\nThese are fully proved using interval_cases and omega tactics.",
+    "significance": "supporting",
+    "relatedConcepts": ["Computational verification", "Squarefree numbers"]
+  },
+  {
+    "id": "ann-e978-irreducible",
+    "proofId": "erdos-978",
+    "range": { "startLine": 88, "endLine": 101 },
+    "type": "definition",
+    "title": "Irreducible Polynomials",
+    "content": "**IsIrreducible f:**\n\nA polynomial f ∈ ℤ[x] is irreducible if:\n1. degree(f) ≥ 1\n2. f = g·h implies g or h is constant\n\n**Definition:**\n```lean\ndef IsIrreducible (f : Polynomial ℤ) : Prop :=\n  f.degree ≥ 1 ∧\n    ∀ g h : Polynomial ℤ, f = g * h →\n      (g.degree = 0 ∨ h.degree = 0)\n```",
+    "mathContext": "Irreducibility over ℤ is related to but distinct from irreducibility over ℚ by Gauss's lemma.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial factorization", "Gauss's lemma", "Eisenstein criterion"]
+  },
+  {
+    "id": "ann-e978-f-example",
+    "proofId": "erdos-978",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "definition",
+    "title": "The Polynomial n⁴ + 2",
+    "content": "**f_example:**\n\nThe specific polynomial n⁴ + 2 is the focus of Question 3.\n\n```lean\nnoncomputable def f_example : Polynomial ℤ := X^4 + 2\n```\n\n**f_example_irreducible:** This is irreducible by Eisenstein's criterion with p = 2:\n- 2 | 0 (coefficient of X³, X², X)\n- 2 | 2 (constant term)\n- 4 ∤ 2 (constant term)\n- 2 ∤ 1 (leading coefficient)",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein criterion", "Polynomial irreducibility"]
+  },
+  {
+    "id": "ann-e978-density",
+    "proofId": "erdos-978",
+    "range": { "startLine": 114, "endLine": 126 },
+    "type": "definition",
+    "title": "Density of Power-Free Values",
+    "content": "**powerFreeDensity f k x:**\n\nCounts the proportion of n ≤ x for which f(n) is k-power-free.\n\n```lean\nnoncomputable def powerFreeDensity (f : Polynomial ℤ) (k : ℕ) (x : ℕ) : ℝ :=\n  (Finset.range (x + 1)).filter (fun n =>\n    IsPowerFree k (f.eval n).natAbs\n  ) |>.card / x\n```\n\nThe key question is whether this converges to a positive limit as x → ∞.",
+    "mathContext": "Asymptotic density is a fundamental concept in analytic number theory for measuring 'how often' a property holds.",
+    "significance": "key",
+    "relatedConcepts": ["Natural density", "Asymptotic analysis", "Counting functions"]
+  },
+  {
+    "id": "ann-e978-erdos-1953",
+    "proofId": "erdos-978",
+    "range": { "startLine": 127, "endLine": 142 },
+    "type": "axiom",
+    "title": "Erdős's Original Result (1953)",
+    "content": "**erdos_1953_infinitely_many:**\n\nErdős (1953) proved: For irreducible f of degree d > 2 with d ≠ 2^l, there exist infinitely many n with f(n) being (d-1)-power-free.\n\n```lean\naxiom erdos_1953_infinitely_many :\n  ∀ f : Polynomial ℤ, IsIrreducible f →\n    f.natDegree > 2 → (∀ l : ℕ, f.natDegree ≠ 2^l) →\n      ∀ N : ℕ, ∃ n : ℕ, n > N ∧\n        IsPowerFree (f.natDegree - 1) (f.eval n).natAbs\n```\n\nThis was the precursor to the density question.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős 1953", "Power-free polynomial values"]
+  },
+  {
+    "id": "ann-e978-hooley",
+    "proofId": "erdos-978",
+    "range": { "startLine": 143, "endLine": 172 },
+    "type": "axiom",
+    "title": "Hooley's Positive Density (1967)",
+    "content": "**hooley_1967_positive_density:**\n\nHooley (1967) strengthened Erdős's result: The (d-1)-power-free values have POSITIVE DENSITY.\n\n```lean\naxiom hooley_1967_positive_density :\n  ∀ f : Polynomial ℤ, IsIrreducible f →\n    f.natDegree > 2 → (∀ l : ℕ, f.natDegree ≠ 2^l) →\n      ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →\n        |powerFreeDensity f (f.natDegree - 1) x - c| < ε\n```\n\n**This completely answers Question 1: YES.**",
+    "mathContext": "Hooley used sieve methods to obtain the asymptotic density with explicit error terms.",
+    "significance": "critical",
+    "relatedConcepts": ["Sieve methods", "Asymptotic density", "Hooley 1967"]
+  },
+  {
+    "id": "ann-e978-heath-brown-browning",
+    "proofId": "erdos-978",
+    "range": { "startLine": 173, "endLine": 206 },
+    "type": "axiom",
+    "title": "Heath-Brown and Browning Results",
+    "content": "**heath_brown_2006 and browning_2011:**\n\nFor (d-2)-power-free values:\n\n- **Heath-Brown (2006):** Proved infinitely many for d ≥ 10\n- **Browning (2011):** Extended to d ≥ 9 with asymptotic formula\n\n```lean\naxiom browning_2011 :\n  ∀ f : Polynomial ℤ, IsIrreducible f →\n    f.natDegree ≥ 9 →\n      ∀ N : ℕ, ∃ n : ℕ, n > N ∧\n        IsPowerFree (f.natDegree - 2) (f.eval n).natAbs\n```\n\n**This partially answers Question 2: YES for d ≥ 9, OPEN for d < 9.**",
+    "mathContext": "Browning used the determinant method from algebraic geometry combined with counting techniques.",
+    "significance": "critical",
+    "relatedConcepts": ["Heath-Brown 2006", "Browning 2011", "Determinant method"]
+  },
+  {
+    "id": "ann-e978-n4-plus-2",
+    "proofId": "erdos-978",
+    "range": { "startLine": 207, "endLine": 253 },
+    "type": "concept",
+    "title": "The n⁴ + 2 Case (OPEN)",
+    "content": "**squarefree_conjecture_n4_plus_2:**\n\nThe specific question: Does n⁴ + 2 represent infinitely many squarefree numbers?\n\n**Status: OPEN**\n\nFor degree d = 4:\n- (d-1) = 3-power-free (cubefree): YES by Hooley (n⁴ + 2 IS cubefree infinitely often)\n- (d-2) = 2-power-free (squarefree): OPEN (d = 4 < 9, outside Browning's range)\n\n```lean\ndef squarefree_conjecture_n4_plus_2 : Prop :=\n  ∀ N : ℕ, ∃ n : ℕ, n > N ∧ IsSquarefree ((n^4 + 2 : ℤ).natAbs)\n```",
+    "mathContext": "The gap between what we know (cubefree) and what we want (squarefree) represents a significant open problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Squarefree conjecture", "n⁴ + 2", "Open problems"]
+  },
+  {
+    "id": "ann-e978-n4-cubefree",
+    "proofId": "erdos-978",
+    "range": { "startLine": 233, "endLine": 238 },
+    "type": "axiom",
+    "title": "What IS Known: n⁴ + 2 is Cubefree",
+    "content": "**n4_plus_2_cubefree:**\n\nBy Hooley's theorem, infinitely many n have n⁴ + 2 cubefree.\n\n```lean\naxiom n4_plus_2_cubefree :\n  ∀ N : ℕ, ∃ n : ℕ, n > N ∧ IsCubefree ((n^4 + 2 : ℤ).natAbs)\n```\n\nThis follows from Hooley's (d-1)-power-free result with d = 4.",
+    "significance": "key",
+    "relatedConcepts": ["Cubefree numbers", "Hooley's theorem", "Known results"]
+  },
+  {
+    "id": "ann-e978-summary",
+    "proofId": "erdos-978",
+    "range": { "startLine": 255, "endLine": 295 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_978_summary:**\n\nCombines all three main results into one theorem.\n\n**Status of Erdős Problem #978:**\n\n| Question | About | Answer |\n|----------|-------|--------|\n| 1 | (d-1)-power-free density | **YES** (Hooley 1967) |\n| 2 | (d-2)-power-free infinitely many | **YES for d ≥ 9** (Browning 2011) |\n| 3 | n⁴ + 2 squarefree | **OPEN** (d = 4 < 9) |\n\n**Key insight:** The gap between (d-1) and (d-2) power-free represents the frontier of current knowledge.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "Partial solutions", "Research frontier"]
+  }
+]
