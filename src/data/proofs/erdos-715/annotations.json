@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-715-statement",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 7,
+      "endLine": 9
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Does every 4-regular graph contain a 3-regular subgraph? Is there any r such that every r-regular graph must contain a 3-regular subgraph? This is the Berge-Sauer question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-715-degree",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 37,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Vertex Degree",
+    "content": "The degree of a vertex v is the number of edges incident to v, or equivalently the number of neighbors. Counted as |{u : G.adj v u}|.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-regular",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 42,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "r-Regular Graph",
+    "content": "A graph is r-regular if every vertex has degree exactly r. Examples: K_n is (n-1)-regular, cycles are 2-regular, complete bipartite K_{n,n} is n-regular.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-715-subgraph",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Subgraph",
+    "content": "H is a subgraph of G if every edge of H is also an edge of G. We write H ⊆ G. A spanning subgraph uses the same vertex set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-main-question",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 65,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "HasRegularSubgraph",
+    "content": "HasRegularSubgraph(r, k): Does every r-regular graph contain a k-regular subgraph? This predicate captures the general question for any r and k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-715-tashkinov",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Tashkinov's Theorem",
+    "content": "Tashkinov (1982): Every 4-regular graph contains a 3-regular subgraph. This is the main positive result answering the Berge-Sauer question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-715-corollary",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Corollary for r ≥ 4",
+    "content": "Every r-regular graph with r ≥ 4 contains a 3-regular subgraph. Follows from Tashkinov since we can first find a 4-regular subgraph (or use directly).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-afk",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 81,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Alon-Friedland-Kalai (1984)",
+    "content": "Every 4-regular graph plus an edge contains a 3-regular subgraph. This implies the r ≥ 5 case directly: remove an edge to get degree sequence ≥ 4 at most vertices, apply this result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-k4",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 100,
+      "endLine": 104
+    },
+    "type": "definition",
+    "title": "K_4 - Complete Graph",
+    "content": "K_4 is the complete graph on 4 vertices: every pair is adjacent. It is 3-regular (each vertex has 3 neighbors). It's a minimal 3-regular graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-k4-minimal",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 109,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "K_4 is Minimal",
+    "content": "K_4 has no proper 3-regular subgraph. The only 3-regular spanning subgraph of K_4 is K_4 itself. This shows 3-regular graphs don't always have proper 3-regular subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-berge-sauer",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 125,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Berge-Sauer Answer",
+    "content": "The Berge-Sauer question has a positive answer: r = 4 works. Every 4-regular graph (and hence every r-regular with r ≥ 4) contains a 3-regular subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-715-petersen",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 145,
+      "endLine": 164
+    },
+    "type": "definition",
+    "title": "Petersen Graph",
+    "content": "The Petersen graph is a famous 3-regular graph on 10 vertices. It has many remarkable properties including being non-Hamiltonian. It's a minimal 3-regular graph (no proper 3-regular subgraph).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-edge-count",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 178,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Handshaking Lemma",
+    "content": "In an r-regular graph on n vertices, there are rn/2 edges. This follows from summing degrees: each edge contributes 2 to the total degree sum.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-715-parity",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 185,
+      "endLine": 189
+    },
+    "type": "theorem",
+    "title": "Parity Condition",
+    "content": "For an r-regular graph on n vertices to exist, rn must be even. This is necessary since the number of edges must be an integer.",
+    "significance": "supporting"
+  }
+]
