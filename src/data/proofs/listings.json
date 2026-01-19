@@ -1747,17 +1747,21 @@
   },
   {
     "id": "erdos-1069",
-    "title": "Erdős Problem #1069",
+    "title": "Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines",
     "slug": "erdos-1069",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any ... points in ..., the number of ...-rich lines (lines which contain ... of the points) is, provided ...,\\[\\ll {k^3...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given n points in ℝ², the number of k-rich lines (containing ≥k points) is O(n²/k³) for k ≤ √n. Proved by Szemerédi-Trotter (1983).",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "incidence-geometry",
+      "szemeredi-trotter",
+      "combinatorial-geometry",
+      "k-rich-lines"
     ],
     "erdosNumber": 1069,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 8,
+    "annotationCount": 22
   },
   {
     "id": "erdos-107",
@@ -7517,17 +7521,21 @@
   },
   {
     "id": "erdos-487",
-    "title": "Erdős Problem #487",
+    "title": "LCM Triples in Dense Sets",
     "slug": "erdos-487",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... have positive density. Must there exist distinct ... such that ... (where ... is the least common multiple of ... and...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that lcm(a,b) = c? YES - follows from Kleitman's 1971 theorem on union-free collections.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "density",
+      "lcm"
     ],
     "erdosNumber": 487,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 14
   },
   {
     "id": "erdos-489",
@@ -10222,17 +10230,20 @@
   },
   {
     "id": "erdos-701",
-    "title": "Erdős Problem #701",
+    "title": "Chvátal's Conjecture on Intersecting Families",
     "slug": "erdos-701",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...B\\subseteq A\\in...B\\in ...x...'\\subseteq ......\\{1,\\ldots,n\\}...A\\in ...f:B\\to A...x\\leq f(x)...x\\in B...B\\in ..........",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let F be a hereditary family. There exists x such that every intersecting subfamily F' has |F'| ≤ |{A ∈ F : x ∈ A}|. Status: OPEN with partial results.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "intersecting-families",
+      "extremal-set-theory"
     ],
     "erdosNumber": 701,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-702",
@@ -11501,17 +11512,23 @@
   },
   {
     "id": "erdos-794",
-    "title": "Erdős Problem #794",
+    "title": "Erdős Problem #794: 3-Uniform Hypergraph Edge Density",
     "slug": "erdos-794",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that every ...-uniform hypergraph on ... vertices with at least ... edges must contain either a subgraph on ... ve...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that every 3-uniform hypergraph on 3n vertices with at least n³+1 edges contains K₄⁻? DISPROVED by Harris. Balogh noted the 5-7 condition is redundant. Frankl-Füredi showed density ≥ 2/7 needed.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraphs",
+      "extremal-combinatorics",
+      "turan-density",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 794,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-795",
@@ -12944,6 +12961,7 @@
       "primes",
       "covering-systems"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 9,
     "mathlibCount": 4,
     "sorries": 2,
@@ -13068,17 +13086,21 @@
   },
   {
     "id": "erdos-907",
-    "title": "Erdős Problem #907",
+    "title": "Erdős Problem #907: Decomposition of Functions with Continuous Differences",
     "slug": "erdos-907",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that ... is continous for every .... Is it true that\\[f=g+h\\]for some continuous ... and additive ... (i.e. ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If f(x+h) - f(x) is continuous for every h > 0, can f be decomposed as g + φ for continuous g and additive φ? Answer: YES, proved by de Bruijn (1951).",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "functional-equations",
+      "continuity",
+      "additive-functions",
+      "analysis"
     ],
     "erdosNumber": 907,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 23
   },
   {
     "id": "erdos-908",
@@ -13256,17 +13278,22 @@
   },
   {
     "id": "erdos-920",
-    "title": "Erdős Problem #920",
+    "title": "Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs",
     "slug": "erdos-920",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest possible chromatic number of a graph with ... vertices which contains no ....\n\nIs it true that, fo...",
-    "status": "pending",
+    "description": "Let g_k(n) denote the largest chromatic number of a K_k-free graph on n vertices. Is g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for k ≥ 4? This connects chromatic numbers to Ramsey theory.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "ramsey-theory",
+      "clique-free",
+      "open"
     ],
     "erdosNumber": 920,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-921",
