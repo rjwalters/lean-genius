@@ -1,33 +1,143 @@
 {
   "id": "erdos-917",
-  "title": "Erdős Problem #917",
+  "title": "Erdős Problem #917: Critical Graphs and Edge Density",
   "slug": "erdos-917",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the largest number of edges in a graph on ... vertices which has chromatic number ... and is critical (i.e...",
+  "description": "Let k ≥ 4 and f_k(n) be the maximum edges in a k-critical graph on n vertices. Is f_k(n) ≫_k n²? Is f_6(n) ~ n²/4? For k ≥ 6, is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²? PARTIALLY SOLVED: Question 1 YES (Toft 1970). Question 3 FALSE for k ≢ 0 (mod 3) (Stiebitz 1987).",
   "meta": {
-    "author": "Unknown",
+    "author": "Dirac (1952), Erdős (1969), Toft (1970), Stiebitz (1987), Luo-Ma-Yang (2023)",
     "sourceUrl": "https://erdosproblems.com/917",
-    "date": "",
-    "status": "pending",
+    "date": "1949",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos917Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "critical-graphs",
+      "turan-type",
+      "partially-solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 917,
     "erdosUrl": "https://erdosproblems.com/917",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Colorable",
+        "description": "Graph coloring",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber noncomputable definition",
+      "IsKChromatic predicate for exact chromatic number",
+      "IsKCritical definition (chromatic + edge-critical)",
+      "edgeCount for SimpleGraph",
+      "f function for maximum edges in k-critical graphs",
+      "Question1, Question2, Question3 formal definitions",
+      "toft_1970 axiom: f_k(n) ≫_k n² for k ≥ 4",
+      "question1_answered theorem",
+      "dirac_construction axiom for k=6",
+      "erdos_construction axiom for k ≡ 0 (mod 3)",
+      "stiebitz_1987_disproof axiom for k ≢ 0 (mod 3)",
+      "turan_upper and stiebitz_upper bound axioms",
+      "luo_ma_yang_2023 improved upper bound",
+      "DiracConstruction structure",
+      "erdos_917_summary main theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #917 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 4$ and $f_k(n)$ be the largest number of edges in a graph on $n$ vertices which has chromatic number $k$ and is critical (i.e. deleting any edge reduces the chromatic number).\n\nIs it true that\\[f_k(n) \\gg_k n^2?\\]Is it true that\\[f_6(n)\\sim n^2/4?\\]More generally, is it true that, for $k\\geq 6$,\\[f_k(n) \\sim \\frac{1}{2}\\left(1-\\frac{1}{\\lfloor k/3\\rfloor}\\right)n^2?\\]\n\n\n\nErd\\H{o}s \\cite{Er93} wrote 'I learned of this definition from Dirac in 1949 and immediately asked whether $f_k(n)=o(n^2)$. To my great surprise Dirac constructed a $6$ critical graph on $n$ vertices with more than $\\frac{n^2}{4}$ edges.' In fact Dirac \\cite{Di52} proved\\[f_6(4n+2) \\geq 4n^2+8n+3,\\]as witnessed by taking two disjoint copies of $C_{2n+1}$ and adding all edges between them.\n\nErd\\H{o}s \\cite{Er69b} observed that Dirac's construction generalises to show that, if $3\\mid k$, there are infinitely many values of $n$ (those of the shape $mk/3$ where $m$ is odd) such that\\[f_k(n) \\geq \\frac{1}{2}\\left(1-\\frac{1}{k/3}\\right)n^2 + n.\\]Toft \\cite{To70} proved that $f_k(n)\\gg_k n^2$ for $k\\geq 4$.\n\nConstructions of Stiebitz \\cite{St87} show that, for $k\\geq 6$, there exist infinitely many values of $n$ such that\\[f_k(n) \\geq \\frac{1}{2}\\left(1-\\frac{1}{\\lfloor k/3\\rfloor+\\delta_k}\\right)n^2\\]where $\\delta_k=0$ if $k\\equiv 0\\pmod{3}$, $\\delta_k=1/7$ if $k\\equiv 1\\pmod{3}$, and $\\delta_k\\equiv 24/69$ if $k\\equiv 2\\pmod{3}$, which disproves Erd\\H{o}s' conjectured asympotic for $k\\not\\equiv 0\\pmod{3}$.\n\nStiebitz also proved the general upper bound\\[f_k(n) < \\mathrm{ex}(n;K_{k-1})\\sim \\frac{1}{2}\\left(1-\\frac{1}{k-2}\\right)n^2\\]for large $n$. Luo, Ma, and Yang \\cite{LMY23} have improved this upper bound to\\[f_k(n) \\leq \\frac{1}{2}\\left(1-\\frac{1}{k-2}-\\frac{1}{36(k-1)^2}+o(1)\\right)n^2\\]See also [944] and [1032].\n\n\n\n\nReferences\n\n\n[Di52] Dirac, G. A., A property of {$4$}-chromatic graphs and some remarks on\ncritical graphs. J. London Math. Soc. (1952), 85-92.\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[LMY23] Luo, Cong and Ma, Jie and Yang, Tianchi, On the maximum number of edges in {$k$}-critical graphs. Combin. Probab. Comput. (2023), 900--911.\n\n[St87] Stiebitz, M., Subgraphs of colour-critical graphs. Combinatorica (1987), 303--312.\n\n[To70] Toft, B., On the maximal number of edges of critical {$k$}-chromatic\ngraphs. Studia Sci. Math. Hungar. (1970), 461--470.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #917: Critical Graphs and Edge Density**\n\nThis problem concerns the maximum number of edges in k-critical graphs—graphs whose chromatic number is exactly k but decreases when any edge is removed.\n\n**Key History:**\n- Erdős (1949): Asked Dirac about f_k(n) = o(n²), surprised by counterexamples\n- Dirac (1952): Constructed 6-critical graphs with >n²/4 edges using two odd cycles\n- Erdős (1969): Generalized for k ≡ 0 (mod 3)\n- Toft (1970): Proved f_k(n) ≫_k n² for all k ≥ 4\n- Stiebitz (1987): Disproved the asymptotic conjecture for k ≢ 0 (mod 3)\n- Luo-Ma-Yang (2023): Improved upper bounds\n\n**Mathematical Setting:**\nA k-critical graph has chromatic number k but removing ANY edge reduces it. The function f_k(n) measures the maximum edge density achievable by such graphs on n vertices.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet $k \\geq 4$ and let $f_k(n)$ be the maximum number of edges in a $k$-critical graph on $n$ vertices.\n\n**Question 1:** Is $f_k(n) \\gg_k n^2$? (Does edge count grow quadratically?)\n**Answer: YES** (Toft 1970)\n\n**Question 2:** Is $f_6(n) \\sim n^2/4$?\n**Status: OPEN** (Lower bound established by Dirac, upper bound not proven)\n\n**Question 3:** For $k \\geq 6$, is $f_k(n) \\sim \\frac{1}{2}(1 - \\frac{1}{\\lfloor k/3 \\rfloor})n^2$?\n**Partially Answered:**\n- FALSE for $k \\not\\equiv 0 \\pmod{3}$ (Stiebitz 1987)\n- OPEN for $k \\equiv 0 \\pmod{3}$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - chromaticNumber via Nat.find on Colorable\n   - IsKChromatic: chromatic number equals k\n   - IsKCritical: k-chromatic AND edge-critical\n   - edgeCount via edgeFinset.card\n\n2. **Central Function:**\n   - f k n: maximum edges in k-critical graph on n vertices\n\n3. **Three Questions:**\n   - Question1: ∃ c > 0, f_k(n) ≥ c·n²\n   - Question2: f_6(n)/n² → 1/4\n   - Question3: f_k(n)/n² → (1/2)(1 - 1/⌊k/3⌋)\n\n4. **Key Results:**\n   - toft_1970: Question1 is YES\n   - dirac_construction: f_6(4n+2) ≥ 4n² + 8n + 3\n   - stiebitz_1987_disproof: Question3 FALSE for k ≢ 0 (mod 3)\n   - luo_ma_yang_2023: improved upper bounds\n\n5. **Summary Theorem:**\n   - Combines all partial results into erdos_917_summary",
+    "keyInsights": [
+      "**Critical vs Chromatic:** k-critical graphs are the 'minimal' k-chromatic graphs—every edge is essential",
+      "**Quadratic Growth:** Toft's 1970 result shows f_k(n) grows like n², answering Question 1 affirmatively",
+      "**Dirac's Construction:** Two disjoint odd cycles C_{2n+1} with all cross edges gives a 6-critical graph with ~n²/4 edges",
+      "**Mod 3 Matters:** The asymptotic behavior depends on k mod 3; Stiebitz showed the conjectured formula fails for k ≢ 0 (mod 3)",
+      "**Upper Bounds:** Stiebitz proved f_k(n) < ex(n; K_{k-1}), improved by Luo-Ma-Yang (2023)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "chromaticNumber, IsKChromatic, IsKCritical, edgeCount",
+      "startLine": 38,
+      "endLine": 61
+    },
+    {
+      "id": "f-function",
+      "title": "The Maximum Edge Function f_k(n)",
+      "summary": "Definition of f and f_defined axiom",
+      "startLine": 62,
+      "endLine": 78
+    },
+    {
+      "id": "question1",
+      "title": "Question 1: Quadratic Growth",
+      "summary": "Question1 definition, toft_1970 axiom, question1_answered theorem",
+      "startLine": 79,
+      "endLine": 99
+    },
+    {
+      "id": "question2",
+      "title": "Question 2: The k = 6 Case",
+      "summary": "Question2 definition, dirac_construction axiom",
+      "startLine": 100,
+      "endLine": 129
+    },
+    {
+      "id": "question3",
+      "title": "Question 3: The General Asymptotic",
+      "summary": "Question3 definition, erdos_construction, stiebitz_1987_disproof",
+      "startLine": 131,
+      "endLine": 161
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "turan_upper, stiebitz_upper, luo_ma_yang_2023",
+      "startLine": 162,
+      "endLine": 189
+    },
+    {
+      "id": "constructions",
+      "title": "Special Constructions",
+      "summary": "DiracConstruction structure, dirac_is_6_critical, dirac_edge_count",
+      "startLine": 190,
+      "endLine": 211
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Main Results",
+      "summary": "erdos_917_summary, erdos_917 main theorem",
+      "startLine": 212,
+      "endLine": 246
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #917 asks about the maximum edge density of k-critical graphs. Question 1 (quadratic growth) is answered YES by Toft (1970). Question 2 (f_6(n) ~ n²/4) remains OPEN. Question 3 (general asymptotic) is FALSE for k ≢ 0 (mod 3) by Stiebitz (1987) but remains open for k ≡ 0 (mod 3). The formalization captures all known results including the 2023 improved upper bounds by Luo-Ma-Yang.",
+    "implications": "**Connections to Graph Theory**\n\n1. **Turán-Type Problems:** Upper bounds come from extremal graph theory (avoiding K_{k-1})\n\n2. **Critical Graph Structure:** Understanding which graphs are k-critical reveals fundamental chromatic structure\n\n3. **Extremal Combinatorics:** The interplay between local (edge removal) and global (chromatic number) properties\n\n4. **Dirac's Construction:** Shows that odd cycles joined completely produce critical graphs with high edge density\n\n5. **Arithmetic Dependence:** The k mod 3 phenomenon connects to the odd cycle structure in Dirac-type constructions",
+    "openQuestions": [
+      "Is f_6(n) ~ n²/4? (Question 2)",
+      "For k ≡ 0 (mod 3), is f_k(n) ~ (1/2)(1 - 1/(k/3))n²?",
+      "Find the exact asymptotic for f_k(n) when k ≢ 0 (mod 3)",
+      "Close the gap between current upper and lower bounds",
+      "Characterize which graphs achieve f_k(n)"
+    ]
   }
 }
