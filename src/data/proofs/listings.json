@@ -3885,17 +3885,24 @@
   },
   {
     "id": "erdos-209",
-    "title": "Erdős Problem #209",
+    "title": "Erdős Problem #209: Gallai Triangles in Line Arrangements",
     "slug": "erdos-209",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite collection of ... non-parallel lines in ... such that there are no points where at least four lines from ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must every line arrangement (d ≥ 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by Füredi-Palásti (1984) and Escudero (2016).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "line-arrangements",
+      "sylvester-gallai",
+      "incidence-geometry",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 209,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-21",
