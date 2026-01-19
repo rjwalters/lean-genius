@@ -13,7 +13,13 @@
       "Mathlib HAS: Dirichlet characters, L-functions, von Mangoldt function, prime counting, Dirichlet's theorem",
       "Repository axiomatizes Zhang's result in Erdos5PrimeGaps.lean but cannot prove it",
       "Zhang's proof is 50+ pages of dense analytic number theory combining multiple techniques",
-      "Polymath8 involved dozens of mathematicians coordinating to optimize constants"
+      "Polymath8 involved dozens of mathematicians coordinating to optimize constants",
+      "2026-01-19 CONFIRMED: Selberg sieve and Bombieri-Vinogradov NOT in Mathlib",
+      "2026-01-19: Zulip discussions show sieve methods are a future goal, not completed",
+      "2026-01-19: Bhavik Mehta formalized Eratosthenes-Legendre sieve for unit fractions",
+      "2026-01-19: Maynard sieve interest for infinite partial sumsets in primes",
+      "2026-01-19: Erdos5PrimeGaps.lean has zhang_bounded_gaps axiom + 4 other axioms",
+      "2026-01-19: Vaughans identity needed before B-V can be formalized"
     ],
     "builtItems": [
       "zhang_bounded_gaps axiom in Erdos5PrimeGaps.lean",
@@ -28,12 +34,13 @@
       "Sieve weights and admissible k-tuple machinery"
     ],
     "nextSteps": [
-      "Accept theorem as axiom for downstream results (current approach)",
-      "Monitor Mathlib for sieve theory developments",
-      "Consider contributing Selberg sieve as standalone project (2+ year effort)"
+      "Accept zhang_bounded_gaps as axiom (current approach - correct)",
+      "Monitor Mathlib for Selberg sieve developments",
+      "Consider contributing Eratosthenes-Legendre sieve (simpler, in progress elsewhere)",
+      "Vaughans identity formalization as prerequisite milestone"
     ],
-    "progressSummary": "BLOCKED: Complete absence of sieve theory infrastructure. Estimated 2-5 years research-level effort. Axiom approach used for downstream consequences."
+    "progressSummary": "CONFIRMED BLOCKED (2026-01-19): Sieve theory infrastructure remains absent from Mathlib. Zulip discussions show active interest but no completed formalizations. Current axiom-based approach is correct. Estimated 2+ years for infrastructure."
   },
-  "lastUpdated": "2026-01-18",
+  "lastUpdated": "2026-01-19",
   "claimedBy": null
 }
