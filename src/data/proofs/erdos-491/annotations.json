@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-e491-context",
+    "proofId": "erdos-491",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #491: If f: ℕ → ℝ is additive with |f(n+1) - f(n)| < c for all n, must f(n) = c'·log(n) + O(1)? Erdős (1946) proved weaker versions, Wirsing (1970) proved the full result.",
+    "significance": "critical",
+    "tags": ["erdos", "number-theory", "additive-functions"]
+  },
+  {
+    "id": "ann-e491-additive",
+    "proofId": "erdos-491",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Additive Function",
+    "content": "A function f: ℕ → ℝ is additive if f(1) = 0 and f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. This is the standard definition in analytic number theory.",
+    "significance": "critical",
+    "tags": ["definition", "additive-function"],
+    "leanSymbol": "IsAdditive"
+  },
+  {
+    "id": "ann-e491-completely-additive",
+    "proofId": "erdos-491",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Completely Additive Function",
+    "content": "A function f is completely additive if f(ab) = f(a) + f(b) for ALL pairs a, b (not just coprime). The logarithm is the canonical example.",
+    "significance": "key",
+    "tags": ["definition", "completely-additive"],
+    "leanSymbol": "IsCompletelyAdditive"
+  },
+  {
+    "id": "ann-e491-log-additive",
+    "proofId": "erdos-491",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "axiom",
+    "title": "Logarithm is Completely Additive",
+    "content": "The natural logarithm satisfies log(ab) = log(a) + log(b) for all positive integers. This is the prototypical completely additive function.",
+    "significance": "key",
+    "tags": ["axiom", "logarithm"],
+    "leanSymbol": "log_is_completely_additive"
+  },
+  {
+    "id": "ann-e491-bounded-diff",
+    "proofId": "erdos-491",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "Bounded Consecutive Differences",
+    "content": "HasBoundedDifferences f c means |f(n+1) - f(n)| < c for all n. This is the key hypothesis in Erdős's problem.",
+    "significance": "critical",
+    "tags": ["definition", "bounded-differences"],
+    "leanSymbol": "HasBoundedDifferences"
+  },
+  {
+    "id": "ann-e491-log-bounded",
+    "proofId": "erdos-491",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "axiom",
+    "title": "Logarithm Has Bounded Differences",
+    "content": "The logarithm has bounded consecutive differences since log((n+1)/n) → 0 as n → ∞ and is bounded by log(2) for n ≥ 1.",
+    "significance": "key",
+    "tags": ["axiom", "logarithm"],
+    "leanSymbol": "log_bounded_differences"
+  },
+  {
+    "id": "ann-e491-tend-zero",
+    "proofId": "erdos-491",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "Differences Tend to Zero",
+    "content": "DifferencesTendToZero f means f(n+1) - f(n) → 0 as n → ∞. This is a stronger condition than bounded differences.",
+    "significance": "key",
+    "tags": ["definition", "o(1)"],
+    "leanSymbol": "DifferencesTendToZero"
+  },
+  {
+    "id": "ann-e491-monotone",
+    "proofId": "erdos-491",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "Monotonicity",
+    "content": "IsMonotone f means f(n+1) ≥ f(n) for all n. This is another special case Erdős considered.",
+    "significance": "supporting",
+    "tags": ["definition", "monotone"],
+    "leanSymbol": "IsMonotone"
+  },
+  {
+    "id": "ann-e491-erdos-o1",
+    "proofId": "erdos-491",
+    "range": { "startLine": 86, "endLine": 89 },
+    "type": "axiom",
+    "title": "Erdős 1946: Vanishing Differences",
+    "content": "If f is additive and f(n+1) - f(n) = o(1), then f(n) = c·log(n) exactly. This is the stronger conclusion under the stronger hypothesis.",
+    "significance": "critical",
+    "tags": ["axiom", "erdos-1946"],
+    "leanSymbol": "erdos_1946_o1"
+  },
+  {
+    "id": "ann-e491-erdos-mono",
+    "proofId": "erdos-491",
+    "range": { "startLine": 91, "endLine": 94 },
+    "type": "axiom",
+    "title": "Erdős 1946: Monotone Case",
+    "content": "If f is additive and monotone (f(n+1) ≥ f(n)), then f(n) = c·log(n) with c ≥ 0. Monotonicity forces exact logarithmic behavior.",
+    "significance": "key",
+    "tags": ["axiom", "erdos-1946", "monotone"],
+    "leanSymbol": "erdos_1946_monotone"
+  },
+  {
+    "id": "ann-e491-logpluso1",
+    "proofId": "erdos-491",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "definition",
+    "title": "f = c·log + O(1)",
+    "content": "IsLogPlusO1 f c' means |f(n) - c'·log(n)| ≤ M for some M and all n ≥ 1. This is the weaker conclusion in Wirsing's theorem.",
+    "significance": "critical",
+    "tags": ["definition", "asymptotic"],
+    "leanSymbol": "IsLogPlusO1"
+  },
+  {
+    "id": "ann-e491-wirsing",
+    "proofId": "erdos-491",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "axiom",
+    "title": "Wirsing's Theorem (1970)",
+    "content": "If f is additive with bounded consecutive differences, then f(n) = c'·log(n) + O(1). This resolves Erdős Problem #491 affirmatively.",
+    "significance": "critical",
+    "tags": ["axiom", "wirsing", "1970", "main-result"],
+    "leanSymbol": "wirsing_theorem"
+  },
+  {
+    "id": "ann-e491-wirsing-const",
+    "proofId": "erdos-491",
+    "range": { "startLine": 111, "endLine": 114 },
+    "type": "definition",
+    "title": "Wirsing's Constant",
+    "content": "wirsingConstant extracts the coefficient c' from Wirsing's theorem using Classical.choose. This constant is unique.",
+    "significance": "supporting",
+    "tags": ["definition", "constant"],
+    "leanSymbol": "wirsingConstant"
+  },
+  {
+    "id": "ann-e491-main",
+    "proofId": "erdos-491",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "theorem",
+    "title": "Erdős Problem #491 Main Theorem",
+    "content": "Formal statement of the main result: additive + bounded differences implies f = c'·log + O(1). Direct application of Wirsing's theorem.",
+    "significance": "critical",
+    "tags": ["erdos-491", "main-result"],
+    "leanSymbol": "erdos_491"
+  },
+  {
+    "id": "ann-e491-explicit",
+    "proofId": "erdos-491",
+    "range": { "startLine": 128, "endLine": 133 },
+    "type": "theorem",
+    "title": "Explicit Formulation",
+    "content": "Alternative statement making the bound M explicit: there exist c' and M > 0 such that |f(n) - c'·log(n)| ≤ M for all n ≥ 1.",
+    "significance": "key",
+    "tags": ["theorem", "explicit"],
+    "leanSymbol": "erdos_491_explicit"
+  },
+  {
+    "id": "ann-e491-unique",
+    "proofId": "erdos-491",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "axiom",
+    "title": "Uniqueness of c'",
+    "content": "The coefficient c' in f = c'·log + O(1) is unique. If f is close to both c'·log and c''·log (up to O(1)), then c' = c''.",
+    "significance": "key",
+    "tags": ["axiom", "uniqueness"],
+    "leanSymbol": "wirsing_constant_unique"
+  },
+  {
+    "id": "ann-e491-mono-nonneg",
+    "proofId": "erdos-491",
+    "range": { "startLine": 146, "endLine": 149 },
+    "type": "axiom",
+    "title": "Monotone Implies c' ≥ 0",
+    "content": "If f is additive and monotone, then the Wirsing constant c' is non-negative. This follows from log being increasing.",
+    "significance": "supporting",
+    "tags": ["axiom", "monotone"],
+    "leanSymbol": "wirsing_monotone_nonneg"
+  },
+  {
+    "id": "ann-e491-log-unique",
+    "proofId": "erdos-491",
+    "range": { "startLine": 151, "endLine": 154 },
+    "type": "axiom",
+    "title": "Logarithm is Unique Completely Additive",
+    "content": "For completely additive functions with bounded differences, f = c'·log exactly (not just up to O(1)). The logarithm is uniquely characterized.",
+    "significance": "key",
+    "tags": ["axiom", "completely-additive", "uniqueness"],
+    "leanSymbol": "log_unique_completely_additive"
+  },
+  {
+    "id": "ann-e491-non-example",
+    "proofId": "erdos-491",
+    "range": { "startLine": 169, "endLine": 178 },
+    "type": "theorem",
+    "title": "Non-Additive Counter-Example",
+    "content": "The function f(n) = n is not additive but has bounded consecutive differences. It does NOT satisfy f = c·log + O(1), showing additivity is essential.",
+    "significance": "supporting",
+    "tags": ["theorem", "counter-example"],
+    "leanSymbol": "non_example_bounded_diff"
+  },
+  {
+    "id": "ann-e491-prime-powers",
+    "proofId": "erdos-491",
+    "range": { "startLine": 190, "endLine": 193 },
+    "type": "axiom",
+    "title": "Additive Functions from Prime Powers",
+    "content": "An additive function f is determined by its values on prime powers: f(n) = Σ f(p^{v_p(n)}) where the sum is over primes dividing n.",
+    "significance": "key",
+    "tags": ["axiom", "prime-factorization"],
+    "leanSymbol": "additive_from_prime_powers"
+  },
+  {
+    "id": "ann-e491-from-primes",
+    "proofId": "erdos-491",
+    "range": { "startLine": 195, "endLine": 197 },
+    "type": "definition",
+    "title": "Additive Extension from Primes",
+    "content": "additiveFromPrimes g extends any function g on primes to a completely additive function on ℕ by f(n) = Σ g(p)·v_p(n).",
+    "significance": "key",
+    "tags": ["definition", "extension"],
+    "leanSymbol": "additiveFromPrimes"
+  },
+  {
+    "id": "ann-e491-explicit-bound",
+    "proofId": "erdos-491",
+    "range": { "startLine": 209, "endLine": 212 },
+    "type": "axiom",
+    "title": "Explicit Bound on Deviation",
+    "content": "Wirsing's theorem gives an explicit bound: |f(n) - c'·log(n)| ≤ 10c for n ≥ 2, where c is the bound on consecutive differences.",
+    "significance": "supporting",
+    "tags": ["axiom", "explicit-bound"],
+    "leanSymbol": "wirsing_explicit_bound"
+  },
+  {
+    "id": "ann-e491-summary",
+    "proofId": "erdos-491",
+    "range": { "startLine": 241, "endLine": 251 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Erdős #491 is solved: (1) bounded differences ⟹ f = c'·log + O(1), (2) Erdős 1946 results are special cases, (3) c' is unique.",
+    "significance": "critical",
+    "tags": ["summary", "main-result"],
+    "leanSymbol": "erdos_491_summary"
+  }
+]
