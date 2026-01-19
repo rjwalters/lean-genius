@@ -1,16 +1,21 @@
 {
   "id": "erdos-800",
-  "title": "Erdős Problem #800",
+  "title": "Linear Ramsey Numbers for Graphs Without Adjacent High-Degree Vertices",
   "slug": "erdos-800",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices which has no two adjacent vertices of degree ... then\\[R(G)\\ll n,\\]where the implied consta...",
+  "description": "If G is a graph on n vertices which has no two adjacent vertices of degree ≥ 3, then R(G) ≪ n, where R(G) is the Ramsey number and the implied constant is absolute. Solved by Noga Alon (1994) who proved R(G) ≤ 12n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Noga Alon",
     "sourceUrl": "https://erdosproblems.com/800",
-    "date": "",
-    "status": "pending",
+    "date": "1994",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos800Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "subdivisions",
+      "degeneracy",
+      "probabilistic-method"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +24,53 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #800 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph on $n$ vertices which has no two adjacent vertices of degree $\\geq 3$ then\\[R(G)\\ll n,\\]where the implied constant is absolute.\n\n\n\nA problem of Burr and Erd\\H{o}s. Solved in the affirmative by Alon \\cite{Al94}. This is a special case of [163].\n\n\n\n\nReferences\n\n\n[Al94] Alon, Noga, Subdivided graphs have linear Ramsey numbers. J. Graph Theory (1994), 343-347.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Burr and Erdős in 1975 as part of their broader conjecture about Ramsey numbers of sparse graphs. It asks whether graphs with a specific structural restriction—no two adjacent vertices of high degree—have Ramsey numbers growing linearly in the number of vertices. This is a special case of the Burr-Erdős conjecture (Problem #163), which concerns p-degenerate graphs.",
+    "problemStatement": "If G is a graph on n vertices which has no two adjacent vertices of degree ≥ 3, then R(G) ≪ n, where R(G) is the Ramsey number (minimum N such that any 2-coloring of K_N contains a monochromatic copy of G) and the implied constant is absolute.",
+    "proofStrategy": "Alon's proof uses the probabilistic method. The key observation is that high-degree vertices form an independent set. Randomly embed these vertices into the complete graph, then deterministically extend along paths of low-degree vertices. Careful counting yields the bound R(G) ≤ 12n.",
+    "keyInsights": [
+      "Graphs with no adjacent high-degree vertices include all subdivided graphs (where each edge is subdivided at least once)",
+      "The high-degree vertices (degree ≥ 3) form an independent set due to the structural constraint",
+      "Such graphs are 2-degenerate, connecting to the broader Burr-Erdős conjecture",
+      "The probabilistic embedding of the independent set of high-degree vertices is the key technique",
+      "The constant 12 comes from a factor of 2 (two colors) times 6 (from the probabilistic analysis)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "ramsey-background",
+      "title": "Background: Ramsey Numbers",
+      "summary": "Definition and significance of Ramsey numbers in graph theory",
+      "startLine": 107,
+      "endLine": 159
+    },
+    {
+      "id": "structural-condition",
+      "title": "The Structural Condition",
+      "summary": "No adjacent vertices of degree ≥ 3 captures subdivided graphs",
+      "startLine": 67,
+      "endLine": 105
+    },
+    {
+      "id": "alon-solution",
+      "title": "Alon's Theorem (1994)",
+      "summary": "Main result: R(G) ≤ 12n using probabilistic embedding",
+      "startLine": 160,
+      "endLine": 183
+    },
+    {
+      "id": "burr-erdos",
+      "title": "Connection to Burr-Erdős Conjecture",
+      "summary": "Problem #800 as a special case of the broader conjecture on degenerate graphs",
+      "startLine": 185,
+      "endLine": 229
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #800 was solved by Noga Alon in 1994, who proved that graphs on n vertices with no adjacent high-degree vertices have Ramsey number at most 12n. This elegant result shows that subdivided graphs have linear Ramsey numbers.",
+    "implications": "The result demonstrates the power of the probabilistic method in Ramsey theory and contributed to the eventual resolution of the broader Burr-Erdős conjecture by Lee (2016).",
+    "openQuestions": [
+      "What is the optimal constant C such that R(G) ≤ Cn for all graphs with no adjacent high-degree vertices?",
+      "Can the bound be improved for specific families of subdivided graphs?"
+    ]
   }
 }
