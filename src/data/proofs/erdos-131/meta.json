@@ -1,33 +1,91 @@
 {
   "id": "erdos-131",
-  "title": "Erdős Problem #131",
+  "title": "Non-Dividing Sets",
   "slug": "erdos-131",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of ... such that no ... divides the sum of any distinct elements of .... Estimate .... In particu...",
+  "description": "Maximum size of A ⊆ {1,...,N} where no a ∈ A divides the sum of other elements. Original question resolved (NO), but exact growth rate remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/131",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos131Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "divisibility",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 16,
     "erdosNumber": 131,
     "erdosUrl": "https://erdosproblems.com/131",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #131 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the maximal size of $A\\subseteq\\{1,\\ldots,N\\}$ such that no $a\\in A$ divides the sum of any distinct elements of $A\\backslash\\{a\\}$. Estimate $F(N)$. In particular, is it true that\\[F(N) > N^{1/2-o(1)}?\\]\n\n\n\nThis was studied by Erd\\H{o}s, Lev, Rauzy, S\\'{a}ndor, and S\\'{a}rk\\\"{o}zy \\cite{ELRSS99}, where they call such a property 'non-dividing', and prove the explicit bound\\[F(N)<3N^{1/2}+1.\\]In \\cite{Er97b} Erd\\H{o}s credits Csaba with a construction that proves $F(N) \\gg N^{1/5}$. Such a construction was also given in \\cite{ELRSS99}, where it is linked to the problem of non-averaging sets (see [186]).\n\nIndeed, every such set is non-averaging, and hence the result of Pham and Zakharov \\cite{PhZa24} implies\\[F(N) \\leq N^{1/4+o(1)}.\\]This shows the answer to the original question is no, but the general question of the correct growth of $F(N)$ remains open.\n\nIn \\cite{Er75b} Erd\\H{o}s writes that he originally thought $F(N) <(\\log N)^{O(1)}$, but that Straus proved that\\[F(N) > \\exp((\\sqrt{\\tfrac{2}{\\log 2}}+o(1))\\sqrt{\\log N}).\\]See also [13].\n\nThis is discussed in problem C16 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ELRSS99] Erd\\H{o}s, P. and Lev, V. and Rauzy, G. and S\\'andor, C. and\nS\\'ark\\\"ozy, A., Greedy algorithm, arithmetic progressions, subset sums and\ndivisibility. Discrete Math. (1999), 119--135.\n\n[Er75b] Erd\\H{o}s, Paul, Problems and results in combinatorial number theory. Journ\\'{e}es Arithm\\'{e}tiques de Bordeaux (Conf., Univ. Bordeaux, Bordeaux, 1974) (1975), 295-310.\n\n[Er97b] Erd\\H{o}s, Paul, Some old and new problems in various branches of combinatorics. Discrete Math. (1997), 227-231.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[PhZa24] Pham, H. T. and Zakharov, D., Sharp bound for the Erd\\H{o}s-Straus non-averaging set problem. arXiv:2410.14624 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #131 asks for the maximum size F(N) of a 'non-dividing' subset of {1,...,N}. A set is non-dividing if no element divides the sum of any distinct subset of other elements. Erdős originally conjectured F(N) < (log N)^O(1), but Straus proved it grows much faster: exp(c√(log N)). The original specific question 'Is F(N) > N^{1/2-o(1)}?' was recently answered NO by Pham-Zakharov (2024), who showed F(N) ≤ N^{1/4+o(1)} via the connection to non-averaging sets.",
+    "problemStatement": "Let F(N) be the maximal size of A ⊆ {1, ..., N} such that no a ∈ A divides the sum of any distinct elements of A \\ {a}. Estimate F(N).\n\nOriginal question: Is F(N) > N^{1/2-o(1)}?\nAnswer: NO (Pham-Zakharov 2024, via F(N) ≤ N^{1/4+o(1)})\n\nRemaining open: What is the exact growth rate of F(N)?",
+    "proofStrategy": "The exact growth remains OPEN. Our formalization defines non-dividing sets and proves they are non-averaging (connecting to Problem #186). We axiomatize: ELRSS upper bound 3√N+1, Pham-Zakharov N^{1/4+o(1)} bound, Csaba's N^{1/5} lower bound, and Straus's exp(c√(log N)) lower bound. The key insight is that non-dividing ⟹ non-averaging allows transferring results.",
+    "keyInsights": [
+      "Non-dividing implies non-averaging: if no a | Σ(others), then a ≠ average(others)",
+      "Pham-Zakharov (2024) resolved original question: F(N) ≤ N^{1/4+o(1)} < N^{1/2-o(1)}",
+      "Straus disproved Erdős's original (log N)^O(1) conjecture with exp(c√(log N)) lower bound",
+      "The gap between N^{1/4} (upper) and exp(√(log N)) (lower) is huge and remains open",
+      "OEIS A068063 contains computed values of F(N)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 41,
+      "endLine": 62,
+      "summary": "Non-dividing and non-averaging set definitions."
+    },
+    {
+      "id": "relationship",
+      "title": "Non-dividing Implies Non-averaging",
+      "startLine": 64,
+      "endLine": 77,
+      "summary": "Every non-dividing set is non-averaging, connecting to Problem #186."
+    },
+    {
+      "id": "f-function",
+      "title": "The Function F(N)",
+      "startLine": 79,
+      "endLine": 89,
+      "summary": "Definition of F(N) as maximum non-dividing set size."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 91,
+      "endLine": 110,
+      "summary": "ELRSS (3√N+1) and Pham-Zakharov (N^{1/4+o(1)}) bounds resolving original question."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 112,
+      "endLine": 130,
+      "summary": "Csaba (N^{1/5}) and Straus (exp(c√(log N))) constructions."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 132,
+      "endLine": 152,
+      "summary": "The exact growth rate between N^{1/4} and exp(√(log N)) remains unknown."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #131's original question (Is F(N) > N^{1/2-o(1)}?) was answered NO by Pham-Zakharov (2024). However, the exact growth rate of F(N) remains open with a large gap between known upper (N^{1/4}) and lower (exp(√(log N))) bounds.",
+    "implications": "This problem connects to non-averaging sets (Problem #186) and has applications to sum-free sequences and divisibility structures. The resolution of the original question came via a surprising connection to non-averaging bounds.",
+    "openQuestions": [
+      "What is the exact asymptotic growth of F(N)?",
+      "Can the upper bound N^{1/4+o(1)} be improved?",
+      "Can the lower bound exp(c√(log N)) be improved to polynomial?",
+      "Is there a structural characterization of optimal non-dividing sets?"
+    ]
   }
 }
