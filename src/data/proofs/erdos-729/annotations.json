@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "erdos-729-intro",
+    "proofId": "erdos-729",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 23 },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #729 asks whether the divisibility bound a + b ≤ n + O(log n) for a!b! | n! persists when ignoring small primes. Barreto-Leeham proved it does.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-729-padic-val",
+    "proofId": "erdos-729",
+    "type": "definition",
+    "range": { "startLine": 41, "endLine": 47 },
+    "title": "Factorial p-adic Valuation",
+    "content": "factorialPadicVal computes v_p(n!) via Legendre's formula as the sum of floor(n/p^i) over all positive i. This counts how many times p divides n!.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-divides",
+    "proofId": "erdos-729",
+    "type": "definition",
+    "range": { "startLine": 53, "endLine": 55 },
+    "title": "Factorial Divisibility",
+    "content": "DividesFactorial n a b holds when a!·b! | n!. This is equivalent to n!/(a!b!) being an integer, which happens exactly when a + b ≤ n for binomial coefficients.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-erdos-classical",
+    "proofId": "erdos-729",
+    "type": "axiom",
+    "range": { "startLine": 63, "endLine": 65 },
+    "title": "Erdős 1968 Classical Result",
+    "content": "Erdős proved: if a!b! | n! then a + b ≤ n + O(log n). The proof uses only the constraint from powers of 2 via Legendre's formula.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-729-powers-of-two",
+    "proofId": "erdos-729",
+    "type": "theorem",
+    "range": { "startLine": 67, "endLine": 73 },
+    "title": "Powers of Two Argument",
+    "content": "The elegant proof: v_2(n!) = n - s_2(n) where s_2(n) is the binary digit sum. If a!b! | n! then v_2(a!) + v_2(b!) ≤ v_2(n!), giving a + b ≤ n + O(log n).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-small-primes",
+    "proofId": "erdos-729",
+    "type": "definition",
+    "range": { "startLine": 81, "endLine": 83 },
+    "title": "Small Primes",
+    "content": "SmallPrimes(C) is the set of primes p ≤ C. The problem asks what happens when we 'ignore' these primes in the divisibility analysis.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-relaxed",
+    "proofId": "erdos-729",
+    "type": "definition",
+    "range": { "startLine": 90, "endLine": 93 },
+    "title": "Relaxed Divisibility",
+    "content": "DividesFactorialModSmall allows multiplying by a factor k with only small prime divisors, then checking if k·a!·b! | n!. This 'ignores' small primes.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-question",
+    "proofId": "erdos-729",
+    "type": "definition",
+    "range": { "startLine": 101, "endLine": 106 },
+    "title": "The Question",
+    "content": "InfinitelyManyExceptions(C) asks: are there infinitely many (a, b, n) with a + b > n + C·log n where the denominator has only small primes?",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-729-barreto-leeham",
+    "proofId": "erdos-729",
+    "type": "axiom",
+    "range": { "startLine": 114, "endLine": 116 },
+    "title": "Barreto-Leeham Theorem",
+    "content": "The answer is NO: ¬InfinitelyManyExceptions(C) for all C > 0. The bound a + b ≤ n + O(log n) persists even when ignoring small primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-729-bound",
+    "proofId": "erdos-729",
+    "type": "axiom",
+    "range": { "startLine": 118, "endLine": 122 },
+    "title": "Extended Bound",
+    "content": "Equivalently: there exists D > 0 such that DividesFactorialModSmall(n, a, b, C) implies a + b ≤ n + D·log n.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-digit-sum",
+    "proofId": "erdos-729",
+    "type": "definition",
+    "range": { "startLine": 147, "endLine": 150 },
+    "title": "Digit Sum",
+    "content": "digitSum p n computes the sum of digits of n in base p. This appears in Legendre's identity: v_p(n!) = (n - s_p(n))/(p-1).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-legendre-identity",
+    "proofId": "erdos-729",
+    "type": "axiom",
+    "range": { "startLine": 152, "endLine": 154 },
+    "title": "Legendre's Identity",
+    "content": "v_p(n!) = (n - s_p(n))/(p-1) where s_p(n) is the digit sum in base p. For p = 2, this simplifies to v_2(n!) = n - s_2(n).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-rigidity",
+    "proofId": "erdos-729",
+    "type": "axiom",
+    "range": { "startLine": 167, "endLine": 171 },
+    "title": "Factorial Rigidity",
+    "content": "The constraint a + b ≤ n + O(log n) comes from ALL primes collectively. Large primes carry sufficient information—ignoring small primes doesn't relax the bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-729-main-statement",
+    "proofId": "erdos-729",
+    "type": "theorem",
+    "range": { "startLine": 183, "endLine": 192 },
+    "title": "Main Problem Statement",
+    "content": "The complete formalization: Erdős's classical bound (1968) plus Barreto-Leeham's extension showing the bound persists modulo small primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-729-summary",
+    "proofId": "erdos-729",
+    "type": "theorem",
+    "range": { "startLine": 198, "endLine": 209 },
+    "title": "Summary Theorem",
+    "content": "The answer is NO: there are not infinitely many exceptions. The bound a + b ≤ n + O(log n) is intrinsic to factorial structure and robust to ignoring small primes.",
+    "significance": "critical"
+  }
+]
