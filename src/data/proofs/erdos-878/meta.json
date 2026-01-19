@@ -1,33 +1,148 @@
 {
   "id": "erdos-878",
-  "title": "Erdős Problem #878",
+  "title": "Erdős Problem #878: Unconventional Number Theoretic Functions",
   "slug": "erdos-878",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the factorisation of ... into distinct primes then let\\[f(n)=\\sum p_i^{\\ell_i},\\]where ... is chosen such that .......",
+  "description": "Study of f(n) = ∑ pᵢ^ℓᵢ and F(n) = max ∑ aᵢ over coprime decompositions. Questions about their growth, asymptotics, and the unusual behavior of H(x) = ∑ f(n)/n. Open problem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1984)",
     "sourceUrl": "https://erdosproblems.com/878",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos878Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factorization",
+      "additive-functions",
+      "asymptotic"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 878,
     "erdosUrl": "https://erdosproblems.com/878",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Discrete logarithm (floor of log base b)",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of functions between filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized the 'unconventional' functions f(n) and F(n)",
+      "Stated Erdős's bounds on H(x) = ∑ f(n)/n",
+      "Formalized the unusual property that f(n)/n lacks a mean value",
+      "Connected the four main open questions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #878 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $n=\\prod_{1\\leq i\\leq t} p_i^{k_i}$ is the factorisation of $n$ into distinct primes then let\\[f(n)=\\sum p_i^{\\ell_i},\\]where $\\ell_i$ is chosen such that $n\\in [p_i^{\\ell_i},p_i^{\\ell_i+1})$. Furthermore, let\\[F(n)=\\max \\sum_{i=1}^t a_i\\]where the maximum is taken over all $a_1,\\ldots,a_t\\leq n$ such that $(a_i,a_j)=1$ for $i\\neq j$ and all prime factors of each $a_i$ are prime factors of $n$.\n\nIs it true that, for almost all $n$,\\[f(n)=o(n\\log\\log n)\\]and\\[F(n) \\gg n\\log\\log n?\\]Is it true that\\[\\max_{n\\leq x}f(n)\\sim \\frac{x\\log x}{\\log\\log x}?\\]Is it true that (for all $x$, or perhaps just for all large $x$)\\[\\max_{n\\leq x}f(n)=\\max_{n\\leq x}F(n)?\\]Find an asymptotic formula for the number of $n<x$ such that $f(n)=F(n)$. Find an asymptotic formula for\\[H(x)=\\sum_{n<x}\\frac{f(n)}{n}.\\]Is it true that\\[H(x) \\ll x\\log\\log\\log\\log x?\\]\n\n\n\nErd\\H{o}s \\cite{Er84e} proved that\\[\\max_{n\\leq x}f(n)\\sim \\frac{x\\log x}{\\log\\log x}\\]for a sequence of $x\\to \\infty$.\n\nIt is trivial that $f(n)\\leq F(n)$ for all $n$. It may be true that, for almost all $n$,\\[F(n)\\sim \\frac{1}{2}n\\log\\log n.\\]Erd\\H{o}s notes that $f(n)/n$ 'almost behaves as a conventional additive function', but unusually $f(n)/n$ does not have a mean value - indeed,\\[\\limsup \\frac{1}{x}\\sum_{n<x}\\frac{f(n)}{n}=\\infty\\]but\\[\\liminf \\frac{1}{x}\\sum_{n<x}\\frac{f(n)}{n}<\\infty.\\]Erd\\H{o}s \\cite{Er84e} proved that\\[x\\log\\log\\log\\log x\\ll H(x) \\ll x\\log\\log\\log x.\\]See also [879].\n\n\n\n\nReferences\n\n\n[Er84e] Erd\\H{o}s, P., On two unconventional number theoretic functions and on some\nrelated problems. (1984), 113--121.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős introduced these 'unconventional number theoretic functions' in 1984. Unlike typical additive functions, f(n) is defined by summing prime powers p^ℓ where ℓ depends on n (not just on the prime power dividing n). This creates unusual asymptotic behavior.\n\nThe function f(n)/n 'almost behaves as a conventional additive function' but exhibits the remarkable property of having no mean value: the limsup of (1/x)∑_{n<x} f(n)/n is infinite while the liminf is finite. This is very unusual in analytic number theory.\n\nErdős proved partial results: max_{n≤x} f(n) ~ x log x / log log x holds along some sequence of x → ∞, and established bounds x log⁴ x ≪ H(x) ≪ x log³ x (where log^k denotes k-fold iterated logarithm). The full asymptotic for all x remains open.",
+    "problemStatement": "For $n = \\prod p_i^{k_i}$ (prime factorization), define:\n- $f(n) = \\sum p_i^{\\ell_i}$ where $\\ell_i$ satisfies $n \\in [p_i^{\\ell_i}, p_i^{\\ell_i+1})$\n- $F(n) = \\max \\sum a_i$ over pairwise coprime $a_i \\leq n$ with prime factors dividing $n$\n\n**Main Questions**:\n1. Is $f(n) = o(n \\log\\log n)$ for almost all $n$, while $F(n) \\gg n \\log\\log n$?\n2. Is $\\max_{n \\leq x} f(n) \\sim \\frac{x \\log x}{\\log\\log x}$?\n3. Do $\\max_{n \\leq x} f(n)$ and $\\max_{n \\leq x} F(n)$ coincide?\n4. Find asymptotics for $H(x) = \\sum_{n<x} f(n)/n$.\n\n**Status**: OPEN",
+    "proofStrategy": "The formalization defines f(n) using Nat.primeFactors and Nat.log, and F(n) via ValidDecomposition structures. The 'almost all' concept is formalized using density zero. Erdős's known results (bounds on H(x), partial asymptotic for max f) are stated as axioms. The unusual property that f(n)/n has no mean value is captured via limsup = ∞ and finite liminf.",
+    "keyInsights": [
+      "**Unconventional definition**: Unlike standard additive functions where f(p^k) depends only on p and k, here the summand p^ℓ depends on the whole number n through ℓ = ⌊log_p n⌋.",
+      "**No mean value**: The function f(n)/n has limsup = ∞ but finite liminf when averaged—a very unusual phenomenon in number theory.",
+      "**Gap between f and F**: While f(n) ≤ F(n) always, the typical behavior differs: f(n) = o(n log log n) vs F(n) ~ (1/2)n log log n conjecturally.",
+      "**Partial asymptotic**: Erdős showed max_{n≤x} f(n) ~ x log x / log log x, but only along a subsequence—the full result remains open.",
+      "**Iterated logarithms**: The bounds on H(x) involve four-fold and three-fold iterated logarithms, showing extremely slow growth."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "f-definition",
+      "title": "The Function f(n)",
+      "summary": "logFloor, primePowerBelow, f, f_one, f_prime",
+      "startLine": 36,
+      "endLine": 62
+    },
+    {
+      "id": "F-definition",
+      "title": "The Function F(n)",
+      "summary": "ValidDecomposition, F, f_le_F",
+      "startLine": 64,
+      "endLine": 89
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Behavior",
+      "summary": "AlmostAll, Question1_f, Question1_F, Question2, Question3",
+      "startLine": 91,
+      "endLine": 120
+    },
+    {
+      "id": "H-function",
+      "title": "The Sum H(x)",
+      "summary": "H, H_lower_bound, H_upper_bound, H_limsup_infinite, H_liminf_finite, f_no_mean_value",
+      "startLine": 122,
+      "endLine": 152
+    },
+    {
+      "id": "erdos-1984",
+      "title": "Erdős's 1984 Result",
+      "summary": "erdos_1984 partial asymptotic",
+      "startLine": 154,
+      "endLine": 166
+    },
+    {
+      "id": "conjecture-F",
+      "title": "Conjecture on F(n)",
+      "summary": "Conjecture_F_almost_all",
+      "startLine": 168,
+      "endLine": 176
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "example_f_6, f_prime_power",
+      "startLine": 178,
+      "endLine": 191
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "erdos_879_connection",
+      "startLine": 193,
+      "endLine": 200
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "summary": "erdos_878_statement, erdos_878_open",
+      "startLine": 202,
+      "endLine": 230
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_878_summary and erdos_878_answer",
+      "startLine": 232,
+      "endLine": 259
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #878 introduces 'unconventional' number theoretic functions f(n) and F(n) with unusual asymptotic properties. The main questions about their growth rates, maxima, and the behavior of H(x) = ∑ f(n)/n remain open. The remarkable property that f(n)/n has no mean value distinguishes these functions from typical additive functions.",
+    "implications": "Understanding these functions would shed light on the boundary between 'conventional' and 'unconventional' additive number theory. The techniques required to resolve these questions may have broader applications to understanding functions with non-standard dependencies on prime factorization.",
+    "openQuestions": [
+      "Is max_{n≤x} f(n) ~ x log x / log log x for all x (not just a subsequence)?",
+      "What is the true asymptotic for H(x)?",
+      "Is F(n) ~ (1/2)n log log n for almost all n?",
+      "Do max f and max F coincide for large x?"
+    ]
   }
 }
