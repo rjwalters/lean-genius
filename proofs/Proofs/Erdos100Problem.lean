@@ -152,11 +152,53 @@ noncomputable def numDistinctDistances (A : Finset Point) : ℕ :=
   ((A ×ˢ A).filter (fun pq => pq.1 ≠ pq.2)).image (fun pq => dist pq.1 pq.2)
     |>.card
 
+/-- All distances in a restricted distance set are at most the diameter. -/
+lemma dist_le_diameter (A : Finset Point) (hne : A.Nonempty) (p q : Point)
+    (hp : p ∈ A) (hq : q ∈ A) : dist p q ≤ diameter A := by
+  simp only [diameter, dif_pos hne]
+  have h1 : dist p q ≤ A.sup' hne (fun q => dist p q) :=
+    Finset.le_sup' (fun q => dist p q) hq
+  have h2 : A.sup' hne (fun q => dist p q) ≤ A.sup' hne (fun p' => A.sup' hne fun q => dist p' q) :=
+    Finset.le_sup' (fun p' => A.sup' hne fun q => dist p' q) hp
+  linarith
+
+/-- For restricted distance sets, all distances are positive integers ≤ diameter. -/
+lemma restricted_dist_is_nat (A : Finset Point) (h : hasRestrictedDistances A)
+    (p q : Point) (hp : p ∈ A) (hq : q ∈ A) (hpq : p ≠ q) :
+    ∃ k : ℕ, k ≥ 1 ∧ k ≤ Nat.floor (diameter A) ∧ dist p q = k := by
+  obtain ⟨k, hk1, hk_eq⟩ := h.2 p hp q hq hpq
+  refine ⟨k, hk1, ?_, hk_eq⟩
+  have hne : A.Nonempty := ⟨p, hp⟩
+  have hle : dist p q ≤ diameter A := dist_le_diameter A hne p q hp hq
+  rw [hk_eq] at hle
+  exact Nat.le_floor hle
+
 /-- For restricted distance sets, distinct distances ≤ diameter.
     (Since distances are integers from 1 to diameter.) -/
 theorem distinct_distances_le_diameter (A : Finset Point)
     (h : hasRestrictedDistances A) :
     numDistinctDistances A ≤ Nat.floor (diameter A) := by
+  -- If A is empty or singleton, numDistinctDistances = 0
+  by_cases hcard : A.card ≤ 1
+  · simp only [numDistinctDistances]
+    -- For singleton or empty sets, the filtered product is empty
+    have : (A ×ˢ A).filter (fun pq => pq.1 ≠ pq.2) = ∅ := by
+      ext ⟨p, q⟩
+      simp only [Finset.mem_filter, Finset.mem_product, Finset.not_mem_empty, iff_false, not_and]
+      intro hp hq hpq
+      have := Finset.card_le_one.mp hcard hp hq
+      exact hpq this
+    simp [this]
+  push_neg at hcard
+  -- A has at least 2 elements
+  have hne : A.Nonempty := by
+    rcases Finset.card_pos.mp (Nat.lt_of_lt_of_le (by norm_num : 0 < 2) hcard) with ⟨x, hx⟩
+    exact ⟨x, hx⟩
+  -- The argument: each distinct distance d satisfies 1 ≤ d ≤ diameter (as a positive integer).
+  -- So the distances form a subset of {1, 2, ..., floor(diameter)}, giving the bound.
+  -- This requires showing the image injects into Nat via the integer structure.
+  -- Technical proof omitted - follows from restricted_dist_is_nat which shows each distance
+  -- is a natural number in [1, floor(diameter)].
   sorry
 
 /-- Guth-Katz (2015): Any n points determine ≫ n / log n distinct distances.
@@ -225,7 +267,11 @@ def unitDistanceGraph (A : Finset Point) : SimpleGraph Point where
 theorem unit_graph_min_distance (A : Finset Point)
     (h : hasRestrictedDistances A) (p q : Point) (hp : p ∈ A) (hq : q ∈ A)
     (hpq : p ≠ q) : dist p q = 1 ↔ (unitDistanceGraph A).Adj p q := by
-  sorry
+  constructor
+  · intro hdist
+    exact ⟨hp, hq, hdist⟩
+  · intro ⟨_, _, hdist⟩
+    exact hdist
 
 /-!
 ## Lattice Point Configurations
@@ -241,7 +287,20 @@ def latticeBox (n : ℕ) : Finset Point :=
 theorem lattice_integer_distances :
     ∀ p q : Point, (∀ i, ∃ k : ℤ, p i = k) → (∀ i, ∃ k : ℤ, q i = k) →
     ∃ k : ℕ, dist p q = Real.sqrt k := by
-  sorry
+  intro p q hp hq
+  -- For integer coordinate points, dist(p,q)² = (p₀-q₀)² + (p₁-q₁)² is a natural number
+  -- Get the integer coordinates
+  obtain ⟨a₀, ha₀⟩ := hp 0
+  obtain ⟨a₁, ha₁⟩ := hp 1
+  obtain ⟨b₀, hb₀⟩ := hq 0
+  obtain ⟨b₁, hb₁⟩ := hq 1
+  -- The squared distance is (a₀ - b₀)² + (a₁ - b₁)²
+  -- This is a sum of squares of integers, hence a natural number (when nonnegative)
+  use ((a₀ - b₀).natAbs ^ 2 + (a₁ - b₁).natAbs ^ 2 : ℕ)
+  simp only [dist]
+  -- dist p q = ‖p - q‖ = sqrt((p 0 - q 0)² + (p 1 - q 1)²)
+  -- The proof requires showing the norm equals sqrt of sum of squares
+  sorry  -- Requires EuclideanSpace norm computation
 
 /-!
 ## Summary
