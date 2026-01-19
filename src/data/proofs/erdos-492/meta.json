@@ -1,33 +1,105 @@
 {
   "id": "erdos-492",
-  "title": "Erdős Problem #492",
+  "title": "Erdős Problem #492: Uniform Distribution Relative to a Fixed Sequence",
   "slug": "erdos-492",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite such that .... For any ... let\\[f(x) = {a_{i+1}-a_i}\\in [0,1),\\]where .... Is it true that, for almost al...",
+  "description": "Is f(αn) uniformly distributed in [0,1) for almost all α, where f is a generalized fractional part? DISPROVED by Schmidt (1969).",
   "meta": {
-    "author": "Unknown",
+    "author": "Schmidt (1969 counterexample)",
     "sourceUrl": "https://erdosproblems.com/492",
-    "date": "",
-    "status": "pending",
+    "date": "1969",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos492Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "uniform-distribution",
+      "diophantine-approximation",
+      "measure-theory",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 6,
     "erdosNumber": 492,
     "erdosUrl": "https://erdosproblems.com/492",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #492 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<a_2<\\cdots\\}\\subseteq \\mathbb{N}$ be infinite such that $a_{i+1}/a_i\\to 1$. For any $x\\geq a_1$ let\\[f(x) = \\frac{x-a_i}{a_{i+1}-a_i}\\in [0,1),\\]where $x\\in [a_i,a_{i+1})$. Is it true that, for almost all $\\alpha$, the sequence $f(\\alpha n)$ is uniformly distributed in $[0,1)$?\n\n\n\nFor example if $A=\\mathbb{N}$ then $f(x)=\\{x\\}$ is the usual fractional part operator.\n\nA problem due to Le Veque \\cite{LV53}, who proved it in some special cases. Davenport and LeVeque \\cite{DaLe63} proved this under the assumption that $a_n-a_{n-1}$ is monotonic. Davenport and Erd\\H{o}s \\cite{DaEr63} proved it is true if $a_n \\gg n^{1/2+\\epsilon}$ for some $\\epsilon>0$.\n\nThe general conjecture is false, as shown by Schmidt \\cite{Sc69}.\n\n\n\n\nReferences\n\n\n[DaEr63] Davenport, H. and Erd\\H{o}s, P., A theorem on uniform distribution. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1963), 3--11.\n\n[DaLe63] Davenport, H. and LeVeque, W. J., Uniform distribution relative to a fixed sequence. Michigan Math. J. (1963), 315--319.\n\n[LV53] Le Veque, W. J., On uniform distribution modulo a subdivision. Pacific J. of Math. (1953), 757-771.\n\n[Sc69] Schmidt, W. M., Disproof of some conjectures on Diophantine approximations. Studia Sci. Math. Hungar. (1969), 137-144.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Le Veque posed this problem in 1953, proving special cases. Davenport-LeVeque (1963) showed it holds when gaps are monotonic, and Davenport-Erdős (1963) proved it for sequences with aₙ >> n^{1/2+ε}. Schmidt (1969) finally disproved the general conjecture by constructing a counterexample with oscillating gaps.",
+    "problemStatement": "Let A = {a₁ < a₂ < ...} ⊆ ℕ be infinite with aᵢ₊₁/aᵢ → 1. Define f(x) = (x - aᵢ)/(aᵢ₊₁ - aᵢ) for x ∈ [aᵢ, aᵢ₊₁). Is f(αn) uniformly distributed in [0,1) for almost all α?",
+    "proofStrategy": "We define unity ratio sequences, the generalized fractional part function, and uniform distribution. We state Schmidt's counterexample as an axiom, along with positive results by Davenport-LeVeque (monotonic gaps) and Davenport-Erdős (polynomial growth). The natural numbers case follows from Weyl's theorem.",
+    "keyInsights": [
+      "For A = ℕ, f(x) = {x} is the usual fractional part, and Weyl's theorem applies",
+      "The conjecture is TRUE when gaps aₙ₊₁ - aₙ are monotonically increasing",
+      "The conjecture is TRUE when aₙ >> n^{1/2+ε} (polynomial growth)",
+      "Schmidt's counterexample has carefully controlled oscillating gaps",
+      "The key obstruction is rapid oscillation in gap sizes while maintaining aᵢ₊₁/aᵢ → 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "unity-ratio-sequences",
+      "title": "Part I: Increasing Sequences Approaching Unity Ratio",
+      "summary": "UnityRatioSeq structure, naturalsSeq example, powers_not_unity",
+      "startLine": 40,
+      "endLine": 72
+    },
+    {
+      "id": "generalized-frac",
+      "title": "Part II: The Generalized Fractional Part Function",
+      "summary": "intervalIndex, generalizedFrac definition, naturals_frac_eq",
+      "startLine": 74,
+      "endLine": 111
+    },
+    {
+      "id": "uniform-distribution",
+      "title": "Part III: Uniform Distribution",
+      "summary": "isUniformlyDistributed, weyl_equidistribution, erdosDavenportSeq",
+      "startLine": 113,
+      "endLine": 140
+    },
+    {
+      "id": "conjecture-fate",
+      "title": "Part IV: The Conjecture and Its Fate",
+      "summary": "erdosConjecture definition, schmidt_counterexample axiom, erdos_492_disproved",
+      "startLine": 142,
+      "endLine": 166
+    },
+    {
+      "id": "positive-cases",
+      "title": "Part V: Positive Cases",
+      "summary": "hasMonotonicGaps, davenport_leveque, hasPolynomialGrowth, davenport_erdos, naturals_case",
+      "startLine": 168,
+      "endLine": 210
+    },
+    {
+      "id": "counterexample-structure",
+      "title": "Part VI: The Structure of Counterexamples",
+      "summary": "gap definition, hasOscillatingGaps, monotonic_vs_oscillating",
+      "startLine": 212,
+      "endLine": 257
+    },
+    {
+      "id": "measure-theory",
+      "title": "Part VII: Measure-Theoretic Formulation",
+      "summary": "almostAllUniform, conjecture_iff_ae, schmidt_positive_measure",
+      "startLine": 259,
+      "endLine": 283
+    },
+    {
+      "id": "summary",
+      "title": "Part VIII: Summary",
+      "summary": "erdos_492_summary, erdos_492 main theorem, openQuestion",
+      "startLine": 285,
+      "endLine": 320
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #492 asked whether a generalized fractional part function f(αn) is uniformly distributed for almost all α. Schmidt (1969) disproved the general conjecture, but it holds under additional conditions: monotonic gaps (Davenport-LeVeque) or polynomial growth aₙ >> n^{1/2+ε} (Davenport-Erdős).",
+    "implications": "The problem reveals the subtle interplay between sequence structure and equidistribution. Gap oscillations can destroy uniform distribution even when consecutive ratios approach 1. This connects to Diophantine approximation and measure-theoretic dynamics.",
+    "openQuestions": [
+      "What is the exact characterization of sequences for which the conjecture holds?",
+      "Can the polynomial growth exponent 1/2+ε be improved?",
+      "What measure-theoretic properties characterize the exceptional set?"
+    ]
   }
 }
