@@ -1,1 +1,245 @@
-[]
+[
+  {
+    "id": "ann-431-sumset",
+    "proofId": "erdos-431",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Sumset",
+    "content": "A + B = {a + b : a ∈ A, b ∈ B}, the set of all pairwise sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-primes",
+    "proofId": "erdos-431",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Primes Set",
+    "content": "The set of all prime numbers {p : Nat.Prime p}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-agreefinitely",
+    "proofId": "erdos-431",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "AgreeFinitely",
+    "content": "S and T agree up to finitely many exceptions: both S \\ T and T \\ S are finite.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-symmdiff",
+    "proofId": "erdos-431",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "theorem",
+    "title": "Symmetric Difference",
+    "content": "AgreeFinitely S T ↔ (S ∆ T).Finite — equivalent symmetric difference characterization.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-431-inversegoldbachpair",
+    "proofId": "erdos-431",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "InverseGoldbachPair",
+    "content": "A, B infinite with A + B agreeing with Primes up to finite exceptions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-conjecture",
+    "proofId": "erdos-431",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "InverseGoldbachConjecture",
+    "content": "The conjecture: No such pair A, B exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-conjectured",
+    "proofId": "erdos-431",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "axiom",
+    "title": "Conjecture Status",
+    "content": "Axiom stating the conjecture is believed to be true (unproven).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-counting",
+    "proofId": "erdos-431",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "countingFunction",
+    "content": "|A ∩ [1,x]| — number of elements of A up to x.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-growthbounds",
+    "proofId": "erdos-431",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "definition",
+    "title": "GrowthBounds",
+    "content": "x^{1/2}/(log x · log log x) ≪ |A ∩ [1,x]| ≪ x^{1/2} · log log x.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-elsholtzharper",
+    "proofId": "erdos-431",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "axiom",
+    "title": "Elsholtz-Harper 2015",
+    "content": "If InverseGoldbachPair A B, then A and B satisfy GrowthBounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-primecounting",
+    "proofId": "erdos-431",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "axiom",
+    "title": "Prime Number Theorem",
+    "content": "π(x) ~ x/log(x) — prime counting asymptotics.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-heuristic",
+    "proofId": "erdos-431",
+    "range": { "startLine": 105, "endLine": 110 },
+    "type": "definition",
+    "title": "HeuristicMismatch",
+    "content": "Heuristic: √x-sized sumsets have ~x elements, but primes have ~x/log x.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-431-nosolution",
+    "proofId": "erdos-431",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "axiom",
+    "title": "Heuristic No Solution",
+    "content": "Size mismatch heuristically rules out solutions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-431-triplesumset",
+    "proofId": "erdos-431",
+    "range": { "startLine": 126, "endLine": 128 },
+    "type": "definition",
+    "title": "TripleSumset",
+    "content": "A + B + C = {a + b + c : a ∈ A, b ∈ B, c ∈ C}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-inversegoldbachtriple",
+    "proofId": "erdos-431",
+    "range": { "startLine": 130, "endLine": 133 },
+    "type": "definition",
+    "title": "InverseGoldbachTriple",
+    "content": "A, B, C nontrivial with A + B + C ≈ Primes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-elsholtz2001",
+    "proofId": "erdos-431",
+    "range": { "startLine": 135, "endLine": 136 },
+    "type": "axiom",
+    "title": "Elsholtz 2001",
+    "content": "No such triple A, B, C exists — three-set case is solved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-notriple",
+    "proofId": "erdos-431",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "theorem",
+    "title": "no_triple_solution",
+    "content": "Direct consequence of Elsholtz 2001 axiom.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-restrictedsumset",
+    "proofId": "erdos-431",
+    "range": { "startLine": 149, "endLine": 153 },
+    "type": "definition",
+    "title": "RestrictedSumset",
+    "content": "Sumset with index restriction — only certain pairs summed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-taoziegler",
+    "proofId": "erdos-431",
+    "range": { "startLine": 155, "endLine": 159 },
+    "type": "axiom",
+    "title": "Tao-Ziegler 2023",
+    "content": "Infinite B, C exist with restricted sumset ⊆ Primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-consistent",
+    "proofId": "erdos-431",
+    "range": { "startLine": 161, "endLine": 170 },
+    "type": "theorem",
+    "title": "tao_ziegler_consistent",
+    "content": "Tao-Ziegler result is consistent with conjecture (sums IN primes, not EQUAL TO).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-431-goldbach",
+    "proofId": "erdos-431",
+    "range": { "startLine": 178, "endLine": 180 },
+    "type": "definition",
+    "title": "GoldbachConjecture",
+    "content": "Every even n > 2 is sum of two primes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-goldbachimplies",
+    "proofId": "erdos-431",
+    "range": { "startLine": 182, "endLine": 187 },
+    "type": "theorem",
+    "title": "goldbach_implies_sumset",
+    "content": "Goldbach ⟹ Primes + Primes ⊇ {evens > 2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-primesnotprimes",
+    "proofId": "erdos-431",
+    "range": { "startLine": 189, "endLine": 195 },
+    "type": "theorem",
+    "title": "primes_sumset_not_primes",
+    "content": "Primes + Primes ≠ Primes (mod finite) — different structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-431-smallelements",
+    "proofId": "erdos-431",
+    "range": { "startLine": 203, "endLine": 205 },
+    "type": "axiom",
+    "title": "Small Elements Required",
+    "content": "Any solution A, B must contain 1 or 2 in specific ways.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-431-statement",
+    "proofId": "erdos-431",
+    "range": { "startLine": 228, "endLine": 241 },
+    "type": "theorem",
+    "title": "erdos_431_statement",
+    "content": "Main statement combining all known results.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-summary",
+    "proofId": "erdos-431",
+    "range": { "startLine": 250, "endLine": 263 },
+    "type": "theorem",
+    "title": "erdos_431_summary",
+    "content": "Summary: three-set solved, two-set has bounds, restricted positive results exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-431-answer",
+    "proofId": "erdos-431",
+    "range": { "startLine": 265, "endLine": 266 },
+    "type": "theorem",
+    "title": "erdos_431_answer",
+    "content": "Problem status: OPEN (likely NO).",
+    "significance": "critical"
+  }
+]

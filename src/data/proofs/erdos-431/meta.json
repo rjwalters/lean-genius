@@ -1,33 +1,161 @@
 {
   "id": "erdos-431",
-  "title": "Erdős Problem #431",
+  "title": "Erdős Problem #431: Inverse Goldbach Problem",
   "slug": "erdos-431",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there two infinite sets ... and ... such that ... agrees with the set of prime numbers up to finitely many exceptions?\n\n\n...",
+  "description": "Are there two infinite sets A and B such that A + B agrees with the set of prime numbers up to finitely many exceptions? Known as Ostmann's 'inverse Goldbach problem'. The answer is conjectured to be NO.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ostmann (problem), Elsholtz-Harper (2015)",
     "sourceUrl": "https://erdosproblems.com/431",
-    "date": "",
-    "status": "pending",
+    "date": "1950s",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos431Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "additive-combinatorics",
+      "sumset"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 431,
     "erdosUrl": "https://erdosproblems.com/431",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "The prime counting function π(x)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finite set predicate",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized sumset A + B and 'agree finitely' predicate",
+      "Stated Elsholtz-Harper (2015) growth bounds: x^{1/2}/(log x · log log x) ≪ |A ∩ [1,x]| ≪ x^{1/2} · log log x",
+      "Captured Elsholtz (2001) result ruling out A + B + C = Primes",
+      "Stated Tao-Ziegler (2023) restricted sumset result",
+      "Connected to Goldbach conjecture showing Primes + Primes ≠ Primes (mod finite)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #431 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there two infinite sets $A$ and $B$ such that $A+B$ agrees with the set of prime numbers up to finitely many exceptions?\n\n\n\nA problem of Ostmann, sometimes known as the 'inverse Goldbach problem'. The answer is surely no. The best result in this direction is due to Elsholtz and Harper \\cite{ElHa15}, who showed that if $A,B$ are such sets then for all large $x$ we must have\\[\\frac{x^{1/2}}{\\log x\\log\\log x} \\ll \\lvert A \\cap [1,x]\\rvert \\ll x^{1/2}\\log\\log x\\]and similarly for $B$.\n\nElsholtz \\cite{El01} has proved there are no sets $A,B,C$ (all of size at least $2$) such that $A+B+C$ agrees with the set of prime numbers up to finitely many exceptions.\n\nGranville \\cite{Gr90} proved, conditional on the prime $k$-tuples conjecture, that there are infinite sets $B$ and $C$ such that\\[\\{ \\tfrac{b+c}{2}: b\\in B, c\\in C\\}\\]is a subset of the primes. Tao and Ziegler \\cite{TaZi23} gave an unconditional proof that there are infinite sets $B=\\{b_1<\\cdots\\}$ and $C=\\{c_1<\\cdots\\}$ such that\\[\\{ b_i+c_j : b_i\\in B, c_j\\in C, i<j\\}\\]is a subset of the primes.\n\nSee also [429] and [432].\n\n\n\n\nReferences\n\n\n[El01] Elsholtz, Christian, The inverse Goldbach problem. Mathematika (2001), 151-158.\n\n[ElHa15] Elsholtz, Christian and Harper, Adam J., Additive decompositions of sets with restricted prime factors. Trans. Amer. Math. Soc. (2015), 7403-7427.\n\n[Gr90] Granville, Andrew, A note on sums of primes. Canad. Math. Bull. (1990), 452--454.\n\n[TaZi23] Tao, Terence and Ziegler, Tamar, Infinite partial sumsets in the primes. J. Anal. Math. (2023), 375--389.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is known as Ostmann's 'inverse Goldbach problem'. While Goldbach conjectured that every even number > 2 is a sum of two primes (Primes + Primes ⊇ evens), Ostmann asked the reverse: can A + B = Primes for some infinite A, B? The answer is widely believed to be NO.\n\nThe best partial result is due to Elsholtz and Harper (2015), who proved that if such A, B exist, they must satisfy extremely restrictive growth bounds: for large x, x^{1/2}/(log x · log log x) ≪ |A ∩ [1,x]| ≪ x^{1/2} · log log x, and similarly for B. This narrows the search space significantly.\n\nElsholtz (2001) completely resolved the three-set case: no A, B, C (with |A|, |B|, |C| ≥ 2) can satisfy A + B + C = Primes (mod finite). This shows the problem gets strictly harder with fewer sets.\n\nTao and Ziegler (2023) proved a positive result in the opposite direction: there exist infinite B, C such that the restricted sumset {bᵢ + cⱼ : i < j} is entirely contained in the primes.",
+    "problemStatement": "Let $A + B = \\{a + b : a \\in A, b \\in B\\}$ denote the sumset. Two sets $S, T \\subseteq \\mathbb{N}$ **agree up to finitely many exceptions** if $(S \\setminus T) \\cup (T \\setminus S)$ is finite.\n\n**Question**: Do there exist infinite sets $A, B \\subseteq \\mathbb{N}$ such that $A + B$ agrees with the set of primes up to finitely many exceptions?\n\n**Conjecture**: NO.\n\n**Known Results**:\n- Elsholtz-Harper (2015): If such $A, B$ exist, then $\\frac{x^{1/2}}{\\log x \\cdot \\log\\log x} \\ll |A \\cap [1,x]| \\ll x^{1/2} \\cdot \\log\\log x$\n- Elsholtz (2001): No three sets $A, B, C$ satisfy $A + B + C =$ primes (mod finite)\n- Tao-Ziegler (2023): Infinite sets with restricted sums entirely in primes exist\n\n**Status**: OPEN",
+    "proofStrategy": "The formalization defines the sumset A + B and the notion of two sets agreeing up to finitely many exceptions. The main conjecture (InverseGoldbachConjecture) states no infinite pair A, B satisfies the inverse Goldbach property. Key results are axiomatized: Elsholtz-Harper growth bounds, Elsholtz's three-set impossibility, and Tao-Ziegler's restricted sumset construction. Heuristic arguments are sketched showing why the conjecture should be true: sumsets of √x-sized sets contain roughly x elements, while primes up to x number only x/log(x).",
+    "keyInsights": [
+      "**Size mismatch heuristic**: If |A ∩ [1,x]| ~ √x and |B ∩ [1,x]| ~ √x, then |A+B ∩ [1,2x]| ~ x, but π(2x) ~ x/log(x). These don't match for large x.",
+      "**Three sets is too many**: Elsholtz (2001) completely ruled out A + B + C = Primes (mod finite), showing additional degrees of freedom make the problem easier.",
+      "**Tight growth bounds**: Elsholtz-Harper (2015) proved any hypothetical A, B must have counting functions squeezed between x^{1/2}/(log x · log log x) and x^{1/2} · log log x.",
+      "**Restricted sums work**: Tao-Ziegler (2023) showed that with the restriction i < j on indices, infinite B, C with B + C ⊆ Primes exist. The full sumset is harder.",
+      "**Connection to Goldbach**: This is the 'inverse' of Goldbach's conjecture, asking if primes can be GENERATED as a sumset rather than being a SOURCE for sumsets."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Sumset, Primes, AgreeFinitely, symmDiff characterization",
+      "startLine": 36,
+      "endLine": 55
+    },
+    {
+      "id": "inverse-goldbach",
+      "title": "The Inverse Goldbach Conjecture",
+      "summary": "InverseGoldbachPair, InverseGoldbachConjecture",
+      "startLine": 56,
+      "endLine": 72
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions and Growth Bounds",
+      "summary": "countingFunction, GrowthBounds, Elsholtz-Harper 2015",
+      "startLine": 73,
+      "endLine": 93
+    },
+    {
+      "id": "heuristics",
+      "title": "Heuristic Arguments",
+      "summary": "prime_counting_asymptotic, HeuristicMismatch, heuristic_no_solution",
+      "startLine": 94,
+      "endLine": 119
+    },
+    {
+      "id": "three-sets",
+      "title": "Three Sets Ruled Out",
+      "summary": "TripleSumset, InverseGoldbachTriple, Elsholtz 2001",
+      "startLine": 120,
+      "endLine": 142
+    },
+    {
+      "id": "positive-results",
+      "title": "Partial Positive Results",
+      "summary": "RestrictedSumset, Tao-Ziegler 2023",
+      "startLine": 143,
+      "endLine": 171
+    },
+    {
+      "id": "goldbach-connection",
+      "title": "Connection to Goldbach",
+      "summary": "GoldbachConjecture, goldbach_implies_sumset, primes_sumset_not_primes",
+      "startLine": 172,
+      "endLine": 196
+    },
+    {
+      "id": "structural-constraints",
+      "title": "Structural Constraints",
+      "summary": "must_contain_small_elements, AvoidedResidues",
+      "startLine": 197,
+      "endLine": 211
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Connections to Erdős #429 and #432",
+      "startLine": 212,
+      "endLine": 223
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "summary": "erdos_431_statement combining all results",
+      "startLine": 224,
+      "endLine": 245
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_431_summary and erdos_431_answer",
+      "startLine": 246,
+      "endLine": 269
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #431 asks whether the primes can be written as A + B for infinite sets A, B (up to finitely many exceptions). This 'inverse Goldbach problem' is widely believed to have answer NO. Elsholtz-Harper (2015) proved severe constraints on any such A, B, and Elsholtz (2001) ruled out the three-set case entirely.",
+    "implications": "A resolution would have deep implications for understanding the additive structure of primes. The problem sits at the intersection of additive combinatorics and analytic number theory, connecting to prime distribution and Goldbach-type questions.",
+    "openQuestions": [
+      "Does there exist any pair of infinite sets A, B with A + B = Primes (mod finite)?",
+      "Can the Elsholtz-Harper growth bounds be tightened further?",
+      "What structural properties must A and B have if they exist?",
+      "Are there other restricted sumset constructions giving subsets of primes?"
+    ]
   }
 }
