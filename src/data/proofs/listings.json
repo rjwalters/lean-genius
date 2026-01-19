@@ -13538,17 +13538,25 @@
   },
   {
     "id": "erdos-928",
-    "title": "Erdős Problem #928",
+    "title": "Erdős Problem #928: Density of Consecutive Smooth Numbers",
     "slug": "erdos-928",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... denote the largest prime divisor of .... Does the density of integers ... such that ... and ... exist?\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does the natural density of n with P(n) < n^α and P(n+1) < (n+1)^β exist? Logarithmic density = ρ(1/α)ρ(1/β) (Teräväinen 2018). Natural density conditional on Elliott-Halberstam (Wang 2021). OPEN unconditionally.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "friable-numbers",
+      "prime-factors",
+      "density",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 928,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 21
   },
   {
     "id": "erdos-93",

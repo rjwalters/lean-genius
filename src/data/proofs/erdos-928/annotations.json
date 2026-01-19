@@ -1,1 +1,198 @@
-[]
+[
+  {
+    "id": "ann-e928-header",
+    "proofId": "erdos-928",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #928: Consecutive Smooth Numbers**\n\n**Question:** Does the density of n with P(n) < n^α and P(n+1) < (n+1)^β exist?\n\n**Status: OPEN** (partially resolved)\n\n**Known:**\n- Log density = ρ(1/α)ρ(1/β) (Teräväinen 2018)\n- Natural density under EH (Wang 2021)\n\nP(n) = largest prime factor. ρ = Dickman function.",
+    "mathContext": "A number is α-smooth if its largest prime factor is < n^α. The Dickman function ρ(u) gives the density of u⁻¹-smooth numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["Smooth numbers", "Dickman function", "Prime factors", "Analytic number theory"]
+  },
+  {
+    "id": "ann-e928-lpf",
+    "proofId": "erdos-928",
+    "range": { "startLine": 46, "endLine": 53 },
+    "type": "definition",
+    "title": "Largest Prime Factor",
+    "content": "**largestPrimeFactor n:**\n\nP(n) = the largest prime divisor of n, or 1 if n ≤ 1.\n\nAlso denoted P⁺(n) in the literature.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-lpf-prime",
+    "proofId": "erdos-928",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "axiom",
+    "title": "P(n) is Prime",
+    "content": "**lpf_prime:**\n\nFor n > 1, largestPrimeFactor n is a prime number.\n\nThis follows from the definition as max of prime factors.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e928-smooth",
+    "proofId": "erdos-928",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "α-Smooth Number",
+    "content": "**isSmooth α n:**\n\nn is α-smooth if n > 0 and P(n) < n^α.\n\nEquivalently, all prime factors of n are 'small' relative to n.\n\nExample: Powers of 2 are highly smooth for any α > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-friable",
+    "proofId": "erdos-928",
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "definition",
+    "title": "y-Friable Number",
+    "content": "**isFriable y n:**\n\nn is y-friable if P(n) ≤ y.\n\nThis is an absolute bound on prime factors, versus the relative α-smooth condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e928-dickman",
+    "proofId": "erdos-928",
+    "range": { "startLine": 105, "endLine": 113 },
+    "type": "axiom",
+    "title": "The Dickman Function",
+    "content": "**dickman_function ρ(u):**\n\nDefined by the delay differential equation:\n- ρ(u) = 1 for u ∈ [0, 1]\n- uρ'(u) = -ρ(u-1) for u > 1\n\nThis fundamental function governs smooth number distribution.",
+    "mathContext": "Named after Karl Dickman (1930). Also called the Dickman-de Bruijn function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-dickman-props",
+    "proofId": "erdos-928",
+    "range": { "startLine": 115, "endLine": 126 },
+    "type": "axiom",
+    "title": "Dickman Function Properties",
+    "content": "**Properties of ρ(u):**\n\n- ρ(1) = 1 (all n are 1-smooth)\n- ρ(2) = 1 - ln(2) ≈ 0.307\n- ρ(u) ~ u^{-u} for large u\n- ρ is positive, continuous, and decreasing for u > 1",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e928-psi",
+    "proofId": "erdos-928",
+    "range": { "startLine": 132, "endLine": 137 },
+    "type": "definition",
+    "title": "Counting Function Ψ",
+    "content": "**psi x y:**\n\nΨ(x, y) = #{n ≤ x : P(n) ≤ y}\n\nThe number of y-friable integers up to x.\n\nThis is the central counting function in smooth number theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e928-dickman-thm",
+    "proofId": "erdos-928",
+    "range": { "startLine": 139, "endLine": 149 },
+    "type": "axiom",
+    "title": "Dickman's Theorem (1930)",
+    "content": "**dickman_theorem:**\n\nΨ(x, x^α) / x → ρ(1/α) as x → ∞\n\nThe density of α-smooth numbers is ρ(1/α).\n\nThis is the foundational result on smooth number distribution.",
+    "mathContext": "For example, ρ(2) ≈ 0.307 means about 30.7% of integers have P(n) < √n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-consec",
+    "proofId": "erdos-928",
+    "range": { "startLine": 155, "endLine": 161 },
+    "type": "definition",
+    "title": "Consecutive Smooth Numbers",
+    "content": "**consecutiveSmooth α β N:**\n\nThe set of n ≤ N where both n is α-smooth and n+1 is β-smooth.\n\nThis is the object we're counting in the main problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-density",
+    "proofId": "erdos-928",
+    "range": { "startLine": 163, "endLine": 170 },
+    "type": "definition",
+    "title": "Density Existence",
+    "content": "**densityExists α β:**\n\nThe natural density limit exists:\nlim_{N→∞} |{n ≤ N : P(n) < n^α ∧ P(n+1) < (n+1)^β}| / N\n\nThe main question asks: does this limit exist for all α, β?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-question",
+    "proofId": "erdos-928",
+    "range": { "startLine": 172, "endLine": 178 },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**erdos928Question:**\n\n∀ α, β ∈ (0,1), densityExists α β\n\nThis is the formal statement of Erdős Problem #928.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-indep",
+    "proofId": "erdos-928",
+    "range": { "startLine": 184, "endLine": 193 },
+    "type": "definition",
+    "title": "Independence Conjecture",
+    "content": "**independenceConjecture α β:**\n\nThe events 'n is α-smooth' and 'n+1 is β-smooth' are independent.\n\nThat is, the density (if it exists) equals ρ(1/α) · ρ(1/β).\n\nHeuristic: gcd(n, n+1) = 1, so they share no prime factors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e928-inf-many",
+    "proofId": "erdos-928",
+    "range": { "startLine": 199, "endLine": 209 },
+    "type": "axiom",
+    "title": "Infinitely Many Exist",
+    "content": "**infinitely_many_exist:**\n\nFor any α, β ∈ (0,1), infinitely many n exist with both P(n) < n^α and P(n+1) < (n+1)^β.\n\nFollows from Schinzel's result that P(n(n+1)) ≤ n^{O(1/log log n)} infinitely often.\n\nMeza observed this implication.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e928-terav",
+    "proofId": "erdos-928",
+    "range": { "startLine": 211, "endLine": 221 },
+    "type": "axiom",
+    "title": "Teräväinen (2018)",
+    "content": "**teravainen_log_density:**\n\nThe LOGARITHMIC density exists and equals ρ(1/α) · ρ(1/β).\n\nLog density: lim (1/log N) · Σ_{n ≤ N, satisfies} 1/n\n\nThis is weaker than natural density but still significant progress.",
+    "mathContext": "From 'On binary correlations of multiplicative functions', Forum Math. Sigma (2018).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-wang",
+    "proofId": "erdos-928",
+    "range": { "startLine": 223, "endLine": 231 },
+    "type": "axiom",
+    "title": "Wang (2021)",
+    "content": "**wang_conditional:**\n\nUnder the Elliott-Halberstam conjecture for friable integers, the natural density exists and equals ρ(1/α) · ρ(1/β).\n\nThis is conditional on a major open conjecture in analytic number theory.",
+    "mathContext": "From J. Number Theory (2021).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-eh",
+    "proofId": "erdos-928",
+    "range": { "startLine": 237, "endLine": 245 },
+    "type": "axiom",
+    "title": "Elliott-Halberstam Conjecture",
+    "content": "**elliott_halberstam_conjecture:**\n\nA strengthening of the Bombieri-Vinogradov theorem about primes in arithmetic progressions.\n\nThe 'friable' version concerns smooth numbers in progressions.\n\nThis conjecture enables better control of error terms in sieve methods.",
+    "significance": "key",
+    "relatedConcepts": ["Bombieri-Vinogradov", "Sieve theory", "Primes in progressions"]
+  },
+  {
+    "id": "ann-e928-crypto",
+    "proofId": "erdos-928",
+    "range": { "startLine": 275, "endLine": 281 },
+    "type": "concept",
+    "title": "Cryptographic Relevance",
+    "content": "**cryptographic_relevance:**\n\nSmooth numbers are crucial in integer factorization:\n- Quadratic Sieve (QS)\n- Number Field Sieve (NFS)\n\nThese algorithms seek integers with small prime factors to build factor bases.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e928-difficulty",
+    "proofId": "erdos-928",
+    "range": { "startLine": 287, "endLine": 296 },
+    "type": "concept",
+    "title": "Why This Is Hard",
+    "content": "**The Challenge:**\n\n1. Natural density requires understanding arithmetic correlations\n2. Consecutive integers n, n+1 are coprime (share no factors)\n3. Yet their smoothness properties seem independent\n4. Proving independence needs deep analytic techniques\n\nLog density is easier because it smooths out fluctuations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e928-summary",
+    "proofId": "erdos-928",
+    "range": { "startLine": 310, "endLine": 323 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_928_summary:**\n\nCombines known results:\n1. Infinitely many consecutive smooth numbers exist\n2. Logarithmic density = ρ(1/α)ρ(1/β) (Teräväinen)\n3. Natural density conditional on EH (Wang)\n\nThe unconditional natural density remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e928-main",
+    "proofId": "erdos-928",
+    "range": { "startLine": 325, "endLine": 337 },
+    "type": "theorem",
+    "title": "Erdős Problem #928: OPEN",
+    "content": "**erdos_928:**\n\nThe main theorem records the OPEN status.\n\n**Known:**\n- Infinitely many such n exist (Schinzel/Meza)\n- Log density = ρ(1/α)ρ(1/β) (Teräväinen 2018)\n- Natural density under EH (Wang 2021)\n\n**Open:** Does natural density exist unconditionally?",
+    "significance": "critical"
+  }
+]
