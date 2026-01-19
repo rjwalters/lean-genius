@@ -4895,17 +4895,21 @@
   },
   {
     "id": "erdos-272",
-    "title": "Erdős Problem #272",
+    "title": "Erdős Problem #272: Intersection Properties of Subsets",
     "slug": "erdos-272",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the largest ... such that there are ... with ... a non-empty arithmetic progression for all ...?\n\n\n\nSimonovi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Maximum number of sets A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N²/2. Solved by Szabó (1999).",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "intersection-theory",
+      "arithmetic-progressions",
+      "extremal-set-theory"
     ],
     "erdosNumber": 272,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 6,
+    "annotationCount": 20
   },
   {
     "id": "erdos-274",
@@ -7575,17 +7579,21 @@
   },
   {
     "id": "erdos-491",
-    "title": "Erdős Problem #491",
+    "title": "Erdős Problem #491: Characterization of Additive Functions",
     "slug": "erdos-491",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive function (i.e. ... whenever ...). If there is a constant ... such that ... for all ... then must there...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If f: ℕ → ℝ is additive and |f(n+1) - f(n)| < c for all n, then f(n) = c'·log(n) + O(1). Proved by Wirsing (1970).",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-functions",
+      "logarithm",
+      "characterization"
     ],
     "erdosNumber": 491,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 23
   },
   {
     "id": "erdos-492",
@@ -8236,17 +8244,21 @@
   },
   {
     "id": "erdos-558",
-    "title": "Erdős Problem #558",
+    "title": "Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs",
     "slug": "erdos-558",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the minimal ... such that if the edges of ... are ...-coloured then there is a monochromatic copy of .... Dete...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine R(K_{s,t}; k), the minimum m such that any k-coloring of K_m contains monochromatic K_{s,t}. Key results: R(K_{2,2}; k) ~ k², R(K_{3,3}; k) ~ k³.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "bipartite-graphs",
+      "multicolor-ramsey",
+      "graph-theory"
     ],
     "erdosNumber": 558,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 28
   },
   {
     "id": "erdos-559",
@@ -11351,17 +11363,24 @@
   },
   {
     "id": "erdos-781",
-    "title": "Erdős Problem #781",
+    "title": "Erdős Problem #781: Descending Waves in 2-Colorings",
     "slug": "erdos-781",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that any ...-colouring of ... contains a monochromatic ...-term descending wave: a sequence ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(k) be the minimal n such that any 2-coloring of {1,...,n} contains a monochromatic k-term descending wave. Is f(k) = k² - k + 1? DISPROVED: Alon-Spencer (1989) showed f(k) ≫ k³, so the conjecture is false.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "colorings",
+      "descending-waves",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 781,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 4,
+    "annotationCount": 18
   },
   {
     "id": "erdos-784",
@@ -11700,31 +11719,41 @@
   },
   {
     "id": "erdos-803",
-    "title": "Erdős Problem #803",
+    "title": "D-Balanced Subgraphs in Dense Graphs",
     "slug": "erdos-803",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call a graph ... ...-balanced (or ...-almost-regular) if the maximum degree of ... is at most ... times the minimum degree...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do graphs with n log n edges contain O(1)-balanced subgraphs with m log m edges? NO - disproved by Alon (2008). Maximum is O(m√(log m)).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "degree-sequences",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 803,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 13
   },
   {
     "id": "erdos-804",
-    "title": "Erdős Problem #804",
+    "title": "Erdős Problem #804: Independent Sets in Locally Independent Graphs",
     "slug": "erdos-804",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that any graph on ... vertices in which every induced subgraph on ... vertices has an independent set...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If every induced subgraph on m vertices has independent set ≥ log n, how large must the global independent set be? The conjectured bounds n^(1/2-o(1)) and (log n)³ were DISPROVED by Alon-Sudakov (2007).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "independent-sets",
+      "extremal-combinatorics",
+      "ramsey-theory",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 804,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-805",
@@ -12382,17 +12411,21 @@
   },
   {
     "id": "erdos-856",
-    "title": "Erdős Problem #856",
+    "title": "LCM-Free Sets and Logarithmic Density",
     "slug": "erdos-856",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the maximum value of ..., where ... ranges over all subsets of ... which contain no subset of size ... wit...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate f_k(N), the maximum harmonic sum of subsets of {1,...,N} with no k elements having uniform pairwise LCM. Status: OPEN. Bounds relate to sunflower conjecture.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-number-theory",
+      "lcm",
+      "logarithmic-density",
+      "sunflower-conjecture"
     ],
     "erdosNumber": 856,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-857",
@@ -13204,17 +13237,24 @@
   },
   {
     "id": "erdos-915",
-    "title": "Erdős Problem #915",
+    "title": "Erdős Problem #915: Disjoint Paths in Graphs",
     "slug": "erdos-915",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Must ... contain two points which are connected by ... disjoint paths?\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must a graph with 1+n(m-1) vertices and 1+nC(m,2) edges contain two vertices connected by m disjoint paths? SOLVED: Vertex-disjoint FALSE for m ≥ 5 (Leonard, Mader). Edge-disjoint TRUE for all m (Mader 1973).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "connectivity",
+      "disjoint-paths",
+      "extremal-graph-theory",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 915,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 5,
+    "annotationCount": 19
   },
   {
     "id": "erdos-916",
@@ -13232,17 +13272,24 @@
   },
   {
     "id": "erdos-917",
-    "title": "Erdős Problem #917",
+    "title": "Erdős Problem #917: Critical Graphs and Edge Density",
     "slug": "erdos-917",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the largest number of edges in a graph on ... vertices which has chromatic number ... and is critical (i.e...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let k ≥ 4 and f_k(n) be the maximum edges in a k-critical graph on n vertices. Is f_k(n) ≫_k n²? Is f_6(n) ~ n²/4? For k ≥ 6, is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²? PARTIALLY SOLVED: Question 1 YES (Toft 1970). Question 3 FALSE for k ≢ 0 (mod 3) (Stiebitz 1987).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "critical-graphs",
+      "turan-type",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 917,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 19
   },
   {
     "id": "erdos-918",
@@ -13332,17 +13379,20 @@
   },
   {
     "id": "erdos-923",
-    "title": "Erdős Problem #923",
+    "title": "Triangle-Free Subgraphs with High Chromatic Number",
     "slug": "erdos-923",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there is some ... such that if ... has chromatic number ... then ... contains a triangle-free...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For every k, is there f(k) such that graphs with chromatic number ≥ f(k) contain triangle-free subgraphs with chromatic number ≥ k? Answer: YES (Rödl, 1977).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "triangle-free"
     ],
     "erdosNumber": 923,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-924",
