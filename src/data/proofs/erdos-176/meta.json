@@ -1,33 +1,145 @@
 {
   "id": "erdos-176",
-  "title": "Erdős Problem #176",
+  "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
   "slug": "erdos-176",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that for any ... there must exist a ...-term arithmetic progression ... such that\\[ \\left\\lve...",
+  "description": "Find bounds for N(k,ℓ), the minimal N such that any ±1 coloring of {1,...,N} has a k-AP with discrepancy ≥ ℓ. Known: N(k,1) exactly; Open: N(k,2) ≤ C^k?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (1980), Spencer (1973), Erdős (1963)",
     "sourceUrl": "https://erdosproblems.com/176",
-    "date": "",
-    "status": "pending",
+    "date": "1963",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos176Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "discrepancy",
+      "arithmetic-progressions",
+      "van-der-waerden",
+      "ramsey-theory",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 176,
     "erdosUrl": "https://erdosproblems.com/176",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "ArithProg definition: k-term arithmetic progression as Finset",
+      "Coloring definition: ±1 valued functions",
+      "IsValidColoring definition: values in {-1, 1}",
+      "APDiscrepancy definition: sum of coloring over AP",
+      "HasDiscrepancy definition: |sum| ≥ ℓ condition",
+      "SatisfiesNkl definition: N-property for N(k,ℓ)",
+      "Nkl definition: minimal N with the property",
+      "vanDerWaerden definition: W(k) = N(k,k)",
+      "spencer_1973 axiom: exact formula for N(k,1)",
+      "erdos_1963_lower_bound axiom: exponential lower bounds",
+      "LinearDiscrepancyConjecture: N(k,ck) ≤ C^k?",
+      "Discrepancy2Conjecture: N(k,2) ≤ C^k?",
+      "SqrtDiscrepancyConjecture: N(k,√k) ≤ C^k?"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #176 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N(k,\\ell)$ be the minimal $N$ such that for any $f:\\{1,\\ldots,N\\}\\to\\{-1,1\\}$ there must exist a $k$-term arithmetic progression $P$ such that\\[ \\left\\lvert \\sum_{n\\in P}f(n)\\right\\rvert\\geq \\ell.\\]Find good upper bounds for $N(k,\\ell)$. Is it true that for any $c>0$ there exists some $C>1$ such that\\[N(k,ck)\\leq C^k?\\]What about\\[N(k,2)\\leq C^k\\]or\\[N(k,\\sqrt{k})\\leq C^k?\\]\n\n\n\nWhen $\\ell=k$ this is the van der Waerden number $W(k)$ (see [138]). Spencer \\cite{Sp73} has proved that if $k=2^tm$ with $m$ odd then\\[N(k,1)=2^t(k-1)+1.\\]Erd\\H{o}s and Graham write that 'no decent bound' is known even for $N(k,2)$.\n\nErd\\H{o}s \\cite{Er63d} proved that, for every $c>0$,\\[N(k,ck)> (1+\\alpha_c)^k\\]where $\\alpha_c\\to 0$ as $c\\to 0$ and $\\alpha_c\\to \\sqrt{2}-1$ as $c\\to 1$.\n\n\n\n\nReferences\n\n\n[Er63d] Erd\\H{o}s, P\\'al, On combinatorial questions connected with a theorem of\n{R}amsey and van der {W}aerden. Mat. Lapok (1963), 29--37.\n\n[Sp73] J. Spencer, Problems 185. Bull. Canad. Math. Soc. (1973), 185.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #176** concerns the discrepancy of ±1 colorings with respect to arithmetic progressions. This is a fundamental problem in Ramsey theory and combinatorial number theory.\n\n**Historical Development:**\n- **1963 (Erdős):** Proved exponential lower bounds N(k,ck) > (1+α_c)^k.\n- **1973 (Spencer):** Gave exact formula for N(k,1): if k = 2^t·m with m odd, then N(k,1) = 2^t(k-1) + 1.\n- **1980 (Erdős-Graham):** Stated that 'no decent bound' is known even for N(k,2).\n\nThe problem connects to van der Waerden numbers: when ℓ = k, N(k,k) equals the van der Waerden number W(k).",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $N(k, \\ell)$ be the minimal $N$ such that for any $f:\\{1,\\ldots,N\\}\\to\\{-1,1\\}$, there exists a $k$-term arithmetic progression $P$ with $|\\sum_{n\\in P} f(n)| \\geq \\ell$.\n\n**Questions:**\n1. For any $c > 0$, is there $C > 1$ with $N(k, ck) \\leq C^k$?\n2. Is $N(k, 2) \\leq C^k$ for some $C$?\n3. Is $N(k, \\sqrt{k}) \\leq C^k$ for some $C$?\n\n**Known:**\n- $N(k,k) = W(k)$ (van der Waerden number)\n- $N(k,1)$ has exact formula (Spencer 1973)\n- $N(k,ck) > (1+\\alpha_c)^k$ (Erdős 1963)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define arithmetic progressions, ±1 colorings, and discrepancy.\n\n2. **N(k,ℓ) Function:** Define the property SatisfiesNkl and the minimal Nkl.\n\n3. **Van der Waerden:** Connect N(k,k) to van der Waerden numbers.\n\n4. **Known Results:** Axiomatize Spencer's exact formula and Erdős's lower bounds.\n\n5. **Open Questions:** State the three main conjectures precisely.",
+    "keyInsights": [
+      "**Arithmetic Progressions:** Sets of the form {a, a+d, a+2d, ..., a+(k-1)d}.",
+      "**Discrepancy:** The sum Σ_{n∈P} f(n) measures how 'unbalanced' a coloring is on P.",
+      "**N(k,ℓ):** Minimal N guaranteeing some k-AP has discrepancy ≥ ℓ.",
+      "**Van der Waerden:** N(k,k) = W(k); discrepancy k means monochromatic AP.",
+      "**Spencer's Formula:** For N(k,1), the exact value depends on the 2-adic valuation of k.",
+      "**Exponential Growth:** Both upper and lower bounds are expected to be exponential in k."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "arithmetic-progressions",
+      "title": "Arithmetic Progressions",
+      "summary": "Definition of k-term APs as Finsets",
+      "startLine": 43,
+      "endLine": 71
+    },
+    {
+      "id": "colorings",
+      "title": "Colorings and Discrepancy",
+      "summary": "±1 colorings and AP discrepancy definitions",
+      "startLine": 73,
+      "endLine": 102
+    },
+    {
+      "id": "nkl-function",
+      "title": "The N(k,ℓ) Function",
+      "summary": "Definition of N(k,ℓ) and monotonicity",
+      "startLine": 104,
+      "endLine": 132
+    },
+    {
+      "id": "van-der-waerden",
+      "title": "Van der Waerden Numbers",
+      "summary": "Connection between N(k,k) and W(k)",
+      "startLine": 134,
+      "endLine": 154
+    },
+    {
+      "id": "spencer",
+      "title": "Spencer's Theorem",
+      "summary": "Exact formula for N(k,1)",
+      "startLine": 156,
+      "endLine": 182
+    },
+    {
+      "id": "erdos-lower",
+      "title": "Erdős's Lower Bounds",
+      "summary": "Exponential lower bounds from 1963",
+      "startLine": 184,
+      "endLine": 209
+    },
+    {
+      "id": "open-questions",
+      "title": "Main Open Questions",
+      "summary": "Three conjectures about upper bounds",
+      "startLine": 211,
+      "endLine": 242
+    },
+    {
+      "id": "connections",
+      "title": "Related Problems",
+      "summary": "Connections to Erdős discrepancy and Szemerédi",
+      "startLine": 244,
+      "endLine": 261
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Current state of knowledge",
+      "startLine": 263,
+      "endLine": 299
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #176 asks for bounds on N(k,ℓ), the minimal N guaranteeing any ±1 coloring has a k-AP with discrepancy ≥ ℓ. Spencer gave an exact formula for N(k,1), and Erdős proved exponential lower bounds. The main open questions concern whether exponential upper bounds exist for N(k,2), N(k,√k), and N(k,ck).",
+    "implications": "**Implications for Combinatorics**\n\n1. **Discrepancy Theory:** Understanding N(k,ℓ) illuminates the limits of balancing colorings.\n\n2. **Ramsey Theory:** Connected to van der Waerden numbers and unavoidable patterns.\n\n3. **Ergodic Theory:** Related to uniformity of sequences and distributions.\n\n4. **Complexity:** The hardness of computing N(k,ℓ) relates to computational Ramsey theory.",
+    "openQuestions": [
+      "Is N(k, 2) ≤ C^k for some constant C?",
+      "Is N(k, √k) ≤ C^k?",
+      "For any c > 0, is N(k, ck) ≤ C^k for some C = C(c)?",
+      "What is the exact growth rate of N(k, 2)?",
+      "Can probabilistic methods improve upper bounds?"
+    ]
   }
 }
