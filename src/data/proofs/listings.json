@@ -3383,17 +3383,24 @@
   },
   {
     "id": "erdos-173",
-    "title": "Erdős Problem #173",
+    "title": "Erdos Problem #173: Monochromatic Triangles in Plane Colorings",
     "slug": "erdos-173",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIn any ...-colouring of ..., for all but at most one triangle ..., there is a monochromatic congruent copy of ....\n\n\n\nFor som...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "In any 2-coloring of R^2, all but at most one triangle T has a monochromatic congruent copy. Shader proved this for all right triangles. The equilateral triangle is the candidate exception.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "ramsey-theory",
+      "plane-colorings",
+      "triangles",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 173,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-174",

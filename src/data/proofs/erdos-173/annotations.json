@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-e173-header",
+    "proofId": "erdos-173",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #173: Monochromatic Triangles in Plane Colorings**\n\nThis problem belongs to Euclidean Ramsey theory, which studies whether geometric configurations must appear monochromatically in finite colorings of Euclidean space.\n\n**Key Question:**\nIn any 2-coloring of R², for all but at most one triangle T, is there a monochromatic congruent copy of T?\n\n**Known Results:**\n- Shader (1976): All right triangles are Ramsey\n- The equilateral triangle is the candidate exception\n- Strip coloring shows equilateral triangles of specific heights cannot be placed monochromatically",
+    "mathContext": "Euclidean Ramsey theory asks which geometric configurations are unavoidable in colorings. Unlike graph Ramsey theory, the continuous nature of R² requires different techniques.",
+    "significance": "critical",
+    "relatedConcepts": ["Euclidean Ramsey theory", "Plane colorings", "Congruent triangles"]
+  },
+  {
+    "id": "ann-e173-coloring",
+    "proofId": "erdos-173",
+    "range": { "startLine": 40, "endLine": 43 },
+    "type": "definition",
+    "title": "Plane Coloring",
+    "content": "**PlaneColoring:**\n\nA 2-coloring of the Euclidean plane R².\n\n**Definition:**\n```lean\ndef PlaneColoring := EuclideanSpace ℝ (Fin 2) → Bool\n```\n\nEach point in the plane is assigned one of two colors (true or false). The challenge is to find monochromatic copies of triangles regardless of how the plane is colored.",
+    "mathContext": "Using Bool for colors is equivalent to using {0, 1} or any two-element set. The key insight is that with only 2 colors, pigeonhole-type arguments become powerful.",
+    "significance": "critical",
+    "relatedConcepts": ["2-colorings", "Euclidean space", "Chromatic problems"]
+  },
+  {
+    "id": "ann-e173-triangle",
+    "proofId": "erdos-173",
+    "range": { "startLine": 45, "endLine": 56 },
+    "type": "definition",
+    "title": "Triangle Structure",
+    "content": "**Triangle:**\n\nA triangle defined by three vertices in R² with a nondegeneracy condition.\n\n**Definition:**\n```lean\nstructure Triangle where\n  v1 : EuclideanSpace ℝ (Fin 2)\n  v2 : EuclideanSpace ℝ (Fin 2)\n  v3 : EuclideanSpace ℝ (Fin 2)\n  nondegenerate : v1 ≠ v2 ∧ v2 ≠ v3 ∧ v1 ≠ v3\n```\n\nThe nondegeneracy condition ensures the three vertices are distinct (and implicitly non-collinear for a proper triangle).",
+    "mathContext": "Triangles are characterized up to congruence by their three side lengths. Two triangles with the same side lengths are congruent.",
+    "significance": "critical",
+    "relatedConcepts": ["Vertices", "Nondegeneracy", "Euclidean geometry"]
+  },
+  {
+    "id": "ann-e173-sidelengths",
+    "proofId": "erdos-173",
+    "range": { "startLine": 58, "endLine": 65 },
+    "type": "definition",
+    "title": "Side Lengths",
+    "content": "**sideLengths:**\n\nExtract the three side lengths of a triangle.\n\n**Definition:**\n```lean\nnoncomputable def sideLengths (T : Triangle) : Fin 3 → ℝ\n  | 0 => dist T.v1 T.v2\n  | 1 => dist T.v2 T.v3\n  | 2 => dist T.v1 T.v3\n```\n\nThe three side lengths uniquely determine a triangle up to congruence (SSS congruence theorem).",
+    "mathContext": "Using dist from Mathlib provides the Euclidean distance. The ordering of sides is arbitrary but fixed.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean distance", "SSS congruence", "Triangle classification"]
+  },
+  {
+    "id": "ann-e173-congruent",
+    "proofId": "erdos-173",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "definition",
+    "title": "Congruent Triangles",
+    "content": "**Congruent:**\n\nTwo triangles are congruent if they have the same side lengths (up to permutation).\n\n**Definition:**\n```lean\ndef Congruent (T1 T2 : Triangle) : Prop :=\n  ∃ σ : Equiv.Perm (Fin 3), ∀ i, sideLengths T1 i = sideLengths T2 (σ i)\n```\n\nThe permutation σ accounts for different orderings of the vertices. This is the formal statement of SSS congruence.",
+    "mathContext": "Using Equiv.Perm from Mathlib provides a clean way to express that side lengths match up to reordering.",
+    "significance": "critical",
+    "relatedConcepts": ["SSS congruence", "Permutations", "Geometric equivalence"]
+  },
+  {
+    "id": "ann-e173-monochromatic",
+    "proofId": "erdos-173",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "definition",
+    "title": "Monochromatic Triangle",
+    "content": "**IsMonochromatic:**\n\nA triangle is monochromatic under a coloring if all three vertices have the same color.\n\n**Definition:**\n```lean\ndef IsMonochromatic (T : Triangle) (c : PlaneColoring) : Prop :=\n  c T.v1 = c T.v2 ∧ c T.v2 = c T.v3\n```\n\nThis is the key property we seek: finding a congruent copy where all vertices share one color.",
+    "mathContext": "By transitivity of equality, this ensures c(v1) = c(v2) = c(v3), i.e., all three vertices have the same color.",
+    "significance": "critical",
+    "relatedConcepts": ["Vertex coloring", "Monochromatic configurations", "Ramsey property"]
+  },
+  {
+    "id": "ann-e173-types",
+    "proofId": "erdos-173",
+    "range": { "startLine": 81, "endLine": 109 },
+    "type": "definition",
+    "title": "Triangle Types",
+    "content": "**Triangle Classification:**\n\nThree important triangle types are defined:\n\n1. **IsEquilateral:** All three sides equal\n```lean\ndef IsEquilateral (T : Triangle) : Prop :=\n  sideLengths T 0 = sideLengths T 1 ∧ sideLengths T 1 = sideLengths T 2\n```\n\n2. **IsRightTriangle:** Satisfies Pythagorean theorem\n```lean\ndef IsRightTriangle (T : Triangle) : Prop :=\n  a² + b² = c² ∨ b² + c² = a² ∨ a² + c² = b²\n```\n\n3. **IsIsoceles:** At least two sides equal\n\nThese predicates help classify which triangles are Ramsey.",
+    "mathContext": "Right triangles are particularly important as Shader proved they are all Ramsey. The equilateral triangle is the candidate exception.",
+    "significance": "key",
+    "relatedConcepts": ["Triangle classification", "Pythagorean theorem", "Shader's theorem"]
+  },
+  {
+    "id": "ann-e173-ramsey",
+    "proofId": "erdos-173",
+    "range": { "startLine": 111, "endLine": 130 },
+    "type": "definition",
+    "title": "Ramsey Property",
+    "content": "**IsRamseyTriangle and AlmostAllTrianglesRamsey:**\n\n**IsRamseyTriangle:**\n```lean\ndef IsRamseyTriangle (T : Triangle) : Prop :=\n  ∀ c : PlaneColoring, ∃ T' : Triangle, Congruent T T' ∧ IsMonochromatic T' c\n```\nA triangle shape is Ramsey if every 2-coloring contains a monochromatic congruent copy.\n\n**AlmostAllTrianglesRamsey:**\n```lean\ndef AlmostAllTrianglesRamsey : Prop :=\n  ∃ exceptional : Option Triangle,\n    ∀ T : Triangle, (∀ T_exc, exceptional = some T_exc → ¬Congruent T T_exc) →\n    IsRamseyTriangle T\n```\nAll but at most one triangle shape is Ramsey.",
+    "mathContext": "The problem asks if AlmostAllTrianglesRamsey holds, with the equilateral triangle as the candidate exception.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Euclidean Ramsey", "Unavoidable configurations"]
+  },
+  {
+    "id": "ann-e173-shader",
+    "proofId": "erdos-173",
+    "range": { "startLine": 132, "endLine": 159 },
+    "type": "axiom",
+    "title": "Shader's Theorem",
+    "content": "**shader_theorem:**\n\nAll right triangles are Ramsey in R².\n\n**Statement:**\n```lean\naxiom shader_theorem :\n    ∀ T : Triangle, IsRightTriangle T → IsRamseyTriangle T\n```\n\n**Significance:** This 1976 result by Shader handles a large class of triangles. Every 2-coloring of R² contains a monochromatic congruent copy of any given right triangle.\n\n**Example:** The 3-4-5 right triangle is Ramsey (theorem right_345_ramsey).",
+    "mathContext": "Shader's proof uses clever geometric constructions to find monochromatic right triangles. The technique doesn't extend to equilateral triangles.",
+    "significance": "critical",
+    "relatedConcepts": ["Shader 1976", "Right triangles", "Euclidean Ramsey"]
+  },
+  {
+    "id": "ann-e173-strip",
+    "proofId": "erdos-173",
+    "range": { "startLine": 161, "endLine": 190 },
+    "type": "theorem",
+    "title": "Strip Coloring Counterexample",
+    "content": "**stripColoring and equilateral_not_monochromatic_strip:**\n\n**Strip Coloring:**\n```lean\nnoncomputable def stripColoring (h : ℝ) (h_pos : h > 0) : PlaneColoring :=\n  fun p => (Int.floor (p 1 / h) % 2 = 0)\n```\nColor R² with alternating horizontal strips of width h.\n\n**Counterexample:**\n```lean\naxiom equilateral_not_monochromatic_strip :\n    ∀ h : ℝ, h > 0 →\n    ∃ T : Triangle, IsEquilateral T ∧\n    sideLengths T 0 = 2 * h / Real.sqrt 3 ∧\n    ¬∃ T' : Triangle, Congruent T T' ∧ IsMonochromatic T' (stripColoring h ‹h > 0›)\n```\n\nAn equilateral triangle whose height equals the strip width cannot be placed monochromatically.",
+    "mathContext": "This construction shows the equilateral triangle is problematic. If one vertex is in a strip, the other two (at height h above) straddle the strip boundary.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Strip constructions", "Equilateral triangles"]
+  },
+  {
+    "id": "ann-e173-conjecture",
+    "proofId": "erdos-173",
+    "range": { "startLine": 192, "endLine": 209 },
+    "type": "axiom",
+    "title": "Conjectured Resolution",
+    "content": "**erdos_173_conjecture and equilateral_conjecture:**\n\n**Main Conjecture:**\n```lean\naxiom erdos_173_conjecture : AlmostAllTrianglesRamsey\n```\nAll triangles except possibly one (the equilateral triangle) are Ramsey.\n\n**Stronger Conjecture:**\n```lean\naxiom equilateral_conjecture :\n    ∃ c : PlaneColoring, ∀ T : Triangle, IsEquilateral T → IsRamseyTriangle T\n```\nPerhaps even the equilateral triangle is Ramsey for \"most\" colorings, with only special constructions (like strip coloring) avoiding it.",
+    "mathContext": "The problem remains open. Proving or disproving these conjectures would complete our understanding of monochromatic triangles in plane colorings.",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Erdős conjectures", "Equilateral exception"]
+  },
+  {
+    "id": "ann-e173-similar",
+    "proofId": "erdos-173",
+    "range": { "startLine": 211, "endLine": 242 },
+    "type": "definition",
+    "title": "Similarity and Related Results",
+    "content": "**Similar and similarity_preserves_ramsey:**\n\n**Similar Triangles:**\n```lean\ndef Similar (T1 T2 : Triangle) : Prop :=\n  ∃ k : ℝ, k > 0 ∧ ∀ i, sideLengths T1 i = k * sideLengths T2 i\n```\nTwo triangles are similar if their side lengths are proportional.\n\n**Similarity Preserves Ramsey:**\n```lean\naxiom similarity_preserves_ramsey :\n    ∀ T1 T2 : Triangle, Similar T1 T2 → (IsRamseyTriangle T1 ↔ IsRamseyTriangle T2)\n```\n\nThe Ramsey property depends only on shape, not size. This is why we speak of \"triangle shapes\" being Ramsey.",
+    "mathContext": "Since R² can be scaled arbitrarily, similar triangles have identical Ramsey status. This reduces the problem to studying similarity classes.",
+    "significance": "key",
+    "relatedConcepts": ["Similarity", "Scale invariance", "Shape classification"]
+  },
+  {
+    "id": "ann-e173-summary",
+    "proofId": "erdos-173",
+    "range": { "startLine": 244, "endLine": 275 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_173_summary:**\n\nCombines all main results:\n\n```lean\ntheorem erdos_173_summary :\n    -- All right triangles are Ramsey\n    (∀ T : Triangle, IsRightTriangle T → IsRamseyTriangle T) ∧\n    -- At most one exception is tight\n    (∃ T : Triangle, IsEquilateral T ∧ ¬IsRamseyTriangle T) ∧\n    -- The conjecture\n    AlmostAllTrianglesRamsey\n```\n\n**Status:**\n1. Right triangles: All Ramsey (Shader 1976) ✓\n2. Equilateral triangle: Possibly the only exception\n3. Problem remains OPEN for complete resolution",
+    "mathContext": "This open problem connects to broader questions in Euclidean Ramsey theory about which geometric configurations are unavoidable.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorem", "Partial resolution", "Open problem"]
+  }
+]
