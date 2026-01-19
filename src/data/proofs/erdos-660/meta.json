@@ -1,33 +1,90 @@
 {
   "id": "erdos-660",
-  "title": "Erdős Problem #660",
+  "title": "Distinct Distances in Convex Polyhedra",
   "slug": "erdos-660",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the vertices of a convex polyhedron. Are there at least\\[(1-o(1)){2}\\]many distinct distances between the ...?\n\n\n\n...",
+  "description": "For vertices of a convex polyhedron in ℝ³, are there at least (1-o(1))·n/2 distinct pairwise distances? This extends Altman's 2D result to three dimensions.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/660",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos660Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "distinct-distances",
+      "convex-polyhedra",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 11,
     "erdosNumber": 660,
     "erdosUrl": "https://erdosproblems.com/660",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #660 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^3$ be the vertices of a convex polyhedron. Are there at least\\[(1-o(1))\\frac{n}{2}\\]many distinct distances between the $x_i$?\n\n\n\nFor the similar problem in $\\mathbb{R}^2$ there are always at least $n/2$ distances, as proved by Altman \\cite{Al63} (see [93]). In \\cite{Er75f} Erd\\H{o}s claims that Altman proved that the vertices determine $\\gg n$ many distinct distances, but gives no reference.\n\n\n\n\nReferences\n\n\n[Al63] Altman, E., On a problem of P. Erd\\H{o}s. Amer. Math. Monthly (1963), 148-157.\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #660 asks whether the vertices of a convex polyhedron in three-dimensional space must determine nearly n/2 distinct pairwise distances. This problem extends a classical result by Altman (1963) who proved that the vertices of a convex polygon in ℝ² always determine at least n/2 distinct distances. In his 1975 paper, Erdős mentioned that Altman may have proved an even stronger result (≫n distances) but provided no reference. The distinct distances problem is one of the central topics in combinatorial geometry, with the general case (arbitrary point sets) being resolved by Guth and Katz in 2015.",
+    "problemStatement": "Let x₁, ..., xₙ ∈ ℝ³ be the vertices of a convex polyhedron. Are there at least (1 - o(1)) · n/2 many distinct distances between the xᵢ? The notation (1 - o(1)) means that the ratio approaches 1 as n → ∞, so the conjecture asserts a linear lower bound with constant approaching 1/2.",
+    "proofStrategy": "This problem remains OPEN. Our formalization defines convex polyhedron vertices using extreme points of convex hulls and the distinct distances function. We state the main conjecture using little-o notation formalized via limit definitions. We also include Altman's solved 2D analogue as a comparison point, along with special cases for Platonic solids (tetrahedron, cube, octahedron) that can be verified computationally.",
+    "keyInsights": [
+      "The 2D case is solved: Altman (1963) proved vertices of a convex n-gon determine ≥n/2 distinct distances",
+      "The 3D generalization remains open and cannot be resolved by finite computation",
+      "For structured point sets (convex positions), stronger bounds than the general Guth-Katz result are expected",
+      "Regular polyhedra provide test cases: tetrahedron (1 distance), octahedron (2), cube (3)",
+      "The little-o notation captures the asymptotic nature of the conjectured bound"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Geometric Definitions",
+      "startLine": 39,
+      "endLine": 63,
+      "summary": "Definitions for points in ℝ³, Euclidean distance, convex polyhedron vertices, and the distinct distances function."
+    },
+    {
+      "id": "altman-2d",
+      "title": "Altman's 2D Result",
+      "startLine": 65,
+      "endLine": 92,
+      "summary": "The solved two-dimensional analogue: convex polygon vertices in ℝ² determine at least n/2 distinct distances."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 94,
+      "endLine": 112,
+      "summary": "The main statement of Erdős Problem #660 formalized with little-o asymptotic notation."
+    },
+    {
+      "id": "partial-results",
+      "title": "Weaker Bounds",
+      "startLine": 114,
+      "endLine": 130,
+      "summary": "Trivial lower bounds and the weaker linear conjecture without precise constants."
+    },
+    {
+      "id": "special-cases",
+      "title": "Platonic Solids",
+      "startLine": 132,
+      "endLine": 166,
+      "summary": "Concrete examples: tetrahedron (4 vertices, 1 distance), cube (8 vertices, 3 distances), octahedron (6 vertices, 2 distances)."
+    },
+    {
+      "id": "guth-katz",
+      "title": "General Distinct Distances",
+      "startLine": 168,
+      "endLine": 179,
+      "summary": "The Guth-Katz theorem (2015) for arbitrary point sets: Ω(n/log n) distinct distances in the plane."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #660 remains open. We formalize the conjecture that convex polyhedron vertices in ℝ³ determine at least (1-o(1))·n/2 distinct distances, building on Altman's solved 2D result. The problem connects to the broader distinct distances problem in combinatorial geometry.",
+    "implications": "Resolution of this problem would extend our understanding of distance distributions in convex sets across dimensions. The 2D/3D comparison suggests geometric constraints of convexity force many distinct distances, but the precise constants remain elusive in three dimensions.",
+    "openQuestions": [
+      "Does the conjecture hold with constant exactly 1/2 (not just approaching 1/2)?",
+      "What is the minimum number of distinct distances for convex polyhedra with n vertices?",
+      "How does the answer generalize to higher dimensions ℝᵈ for d > 3?"
+    ]
   }
 }

@@ -1,1 +1,194 @@
-[]
+[
+  {
+    "id": "ann-660-statement",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 7,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "The core question: given n vertices of a convex polyhedron in 3D space, must there be at least (1-o(1))·n/2 distinct pairwise distances? The little-o notation means the bound approaches n/2 as n grows large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-660-altman",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 17,
+      "endLine": 22
+    },
+    "type": "insight",
+    "title": "Altman's 2D Result",
+    "content": "In 1963, Altman proved that convex polygon vertices in ℝ² always determine at least n/2 distinct distances. This is the solved 2D analogue that motivates the 3D conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-660-context",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 24,
+      "endLine": 29
+    },
+    "type": "insight",
+    "title": "Distinct Distances Problem",
+    "content": "The distinct distances problem asks: how many different pairwise distances must n points determine? Erdős posed this in 1946. For arbitrary points, Guth-Katz (2015) proved Ω(n/log n). For convex positions, better bounds are expected.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-660-point3d",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
+    "type": "code",
+    "title": "Point3D Type",
+    "content": "We represent points in ℝ³ using Mathlib's EuclideanSpace type. This gives us the full structure of Euclidean space including the distance metric.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-660-dist",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "The distance between two points p and q is defined using Mathlib's built-in dist function, which computes the standard Euclidean distance √((p₁-q₁)² + (p₂-q₂)² + (p₃-q₃)²).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-660-polyhedron",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Convex Polyhedron Vertices",
+    "content": "A set of points forms convex polyhedron vertices if: (1) the set is nonempty, (2) every point is an extreme point (vertex) of the convex hull, and (3) the convex hull is nonempty. This captures the geometric notion of vertices of a 3D convex body.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-660-pairwise",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "type": "code",
+    "title": "Pairwise Distances",
+    "content": "Given a finite set S of points, we compute all pairwise distances by taking the Cartesian product S × S and mapping each pair to its Euclidean distance. The result is a finite set of real numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-660-distinct",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Distinct Distances Count",
+    "content": "We count distinct distances by filtering out zero (self-distances where a point is paired with itself) and taking the cardinality. This gives the number of genuinely different positive distances.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-660-altman-thm",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 83,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Altman's Theorem",
+    "content": "This theorem states the solved 2D case: any convex polygon with n ≥ 3 vertices has at least ⌊n/2⌋ distinct distances. The proof uses geometric properties of convex curves but is marked sorry as it requires substantial development.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-660-littleo",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 96,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "Little-o Notation",
+    "content": "We formalize f(n) = o(g(n)) as: for every ε > 0, eventually |f(n)/g(n)| < ε. This captures functions that grow strictly slower than g. Here, (1-o(1)) means a quantity approaching 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-660-conjecture",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 100,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "The open problem: there exists a vanishing function ε(n) → 0 such that n vertices of any convex polyhedron determine at least (1 - ε(n)) · n/2 distinct distances. This is marked sorry as it remains unproven.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-660-trivial",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "Any two distinct points have a positive distance between them. So n ≥ 2 points must have at least 1 distinct distance. This is the weakest possible lower bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-660-tetrahedron",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 134,
+      "endLine": 139
+    },
+    "type": "example",
+    "title": "Regular Tetrahedron",
+    "content": "The regular tetrahedron has 4 vertices, all equidistant from each other. Thus it has exactly 1 distinct distance (the edge length). This shows the conjecture bound is not tight for small n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-660-cube",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 141,
+      "endLine": 147
+    },
+    "type": "example",
+    "title": "Cube Distances",
+    "content": "A cube has 8 vertices with exactly 3 distinct distances: edge length a, face diagonal a√2, and space diagonal a√3. The conjecture predicts ≥ (1-o(1))·4 distances for large n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-660-octahedron",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 149,
+      "endLine": 154
+    },
+    "type": "example",
+    "title": "Octahedron Distances",
+    "content": "The regular octahedron has 6 vertices arranged so opposite vertices are at distance 2a (axis) while adjacent vertices are at distance a√2 (edge). This gives exactly 2 distinct distances.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-660-guthkatz",
+    "proofId": "erdos-660",
+    "range": {
+      "startLine": 170,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Guth-Katz Theorem",
+    "content": "The landmark 2015 result: any n points in the plane determine at least c·n/log(n) distinct distances. This resolved Erdős's 1946 conjecture up to the log factor. For convex positions, we expect even better bounds.",
+    "significance": "key"
+  }
+]
