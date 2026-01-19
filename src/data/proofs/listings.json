@@ -2824,17 +2824,24 @@
   },
   {
     "id": "erdos-132",
-    "title": "Erdős Problem #132",
+    "title": "Erdős Problem #132: Distance Multiplicities in Planar Point Sets",
     "slug": "erdos-132",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points. Must there be two distances which occur at least once but between at most ... pairs of points...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given n points in ℝ², must there exist two distances that each occur at most n times? True for n=5,6 (Erdős-Fishburn 1995) and convex position (CDL 2025), but OPEN for general n≥7.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distance-problems",
+      "combinatorial-geometry",
+      "planar-point-sets",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 132,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 23
   },
   {
     "id": "erdos-133",
