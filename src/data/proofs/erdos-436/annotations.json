@@ -1,1 +1,181 @@
-[]
+[
+  {
+    "id": "ann-e436-header",
+    "proofId": "erdos-436",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #436: Consecutive kth Power Residues**\n\nFor prime p and k,m ≥ 2, let r(k,m,p) be the minimal r such that r, r+1, ..., r+m-1 are all kth power residues mod p.\n\nDefine Λ(k,m) = lim sup_{p→∞} r(k,m,p).\n\n**Questions:**\n1. Is Λ(k,2) finite for all k? **YES** (Hildebrand 1991)\n2. Is Λ(k,3) finite for all odd k? **OPEN**\n3. How large are Λ(k,2) and Λ(k,3)?\n\n**Status:** PARTIALLY SOLVED",
+    "mathContext": "Originally posed by Lehmer and Lehmer in 1962.",
+    "significance": "critical",
+    "relatedConcepts": ["Power residues", "Quadratic residues", "Legendre symbol"]
+  },
+  {
+    "id": "ann-e436-kth-residue",
+    "proofId": "erdos-436",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "definition",
+    "title": "kth Power Residue",
+    "content": "**IsKthPowerResidue:**\n\nr is a kth power residue mod p if ∃x: x^k ≡ r (mod p).\n\n```lean\ndef IsKthPowerResidue (r k p : ℕ) : Prop :=\n  ∃ x : ℕ, x^k % p = r % p\n```\n\nFor k=2, these are quadratic residues. For k=3, cubic residues, etc.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-consecutive",
+    "proofId": "erdos-436",
+    "range": { "startLine": 55, "endLine": 61 },
+    "type": "definition",
+    "title": "Consecutive kth Power Residues",
+    "content": "**AreConsecutiveKthResidues:**\n\nr, r+1, ..., r+m-1 are all kth power residues mod p.\n\n```lean\ndef AreConsecutiveKthResidues (r k m p : ℕ) : Prop :=\n  ∀ i : ℕ, i < m → IsKthPowerResidue (r + i) k p\n```\n\nThis captures \"runs\" of consecutive power residues.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-min-consec",
+    "proofId": "erdos-436",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "definition",
+    "title": "Minimal Consecutive Run r(k,m,p)",
+    "content": "**minConsecKthResidues:**\n\nr(k,m,p) = min{r ≥ 1 : r, r+1, ..., r+m-1 are kth power residues mod p}\n\n```lean\nnoncomputable def minConsecKthResidues (k m p : ℕ) : ℕ :=\n  Nat.find (...)\n```\n\nThis function measures where the first run of m consecutive residues appears.",
+    "mathContext": "The function r(k,m,p) varies with the prime p.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e436-lambda-finite",
+    "proofId": "erdos-436",
+    "range": { "startLine": 77, "endLine": 86 },
+    "type": "definition",
+    "title": "The Λ(k,m) Function",
+    "content": "**LambdaFinite:**\n\nΛ(k,m) = lim sup_{p→∞} r(k,m,p)\n\n```lean\ndef LambdaFinite (k m : ℕ) : Prop :=\n  ∃ N : ℕ, ∀ p : ℕ, Nat.Prime p → p > N → minConsecKthResidues k m p ≤ N\n```\n\nΛ(k,m) being finite means: for large p, consecutive kth power residues appear within bounded range.",
+    "mathContext": "The Lehmer-Lehmer function captures the eventual behavior as p grows.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-lambda-2-2",
+    "proofId": "erdos-436",
+    "range": { "startLine": 97, "endLine": 103 },
+    "type": "axiom",
+    "title": "Λ(2,2) = 9",
+    "content": "**lambda_2_2:**\n\nThe first pair of consecutive quadratic residues is bounded by 9.\n\n**Proof sketch:** 9 = 3² is always a QR. If 10 isn't a QR, then since 10 = 2·5, either 2 or 5 must be a QR:\n- If 2 is QR: {1,2} are consecutive QRs\n- If 5 is QR: {4,5} are consecutive QRs (since 4=2²)\n\nSo one of {1,2}, {4,5}, {9,10} always works.",
+    "mathContext": "The Lehmer-Lehmer elementary argument (1962).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e436-computed-values",
+    "proofId": "erdos-436",
+    "range": { "startLine": 103, "endLine": 133 },
+    "type": "axiom",
+    "title": "Computed Lambda Values",
+    "content": "**Known exact values for Λ(k,2):**\n\n| k | Λ(k,2) | Author(s) | Year |\n|---|--------|-----------|------|\n| 2 | 9 | Lehmer-Lehmer | 1962 |\n| 3 | 77 | Dunton | 1965 |\n| 4 | 1224 | Bierstedt-Mills | 1963 |\n| 5 | 7888 | Lehmer-Lehmer-Mills | 1963 |\n| 6 | 202124 | Lehmer-Lehmer-Mills | 1963 |\n| 7 | 1649375 | Brillhart-Lehmer-Lehmer | 1964 |\n\nAlso: Λ(3,3) = 23532 (Lehmer-Lehmer-Mills-Selfridge 1962).\n\nThe growth is very rapid, suggesting super-polynomial behavior.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e436-hildebrand",
+    "proofId": "erdos-436",
+    "range": { "startLine": 139, "endLine": 147 },
+    "type": "axiom",
+    "title": "Hildebrand's Theorem",
+    "content": "**hildebrand_theorem (1991):**\n\nΛ(k,2) is finite for all k ≥ 2.\n\n```lean\naxiom hildebrand_theorem (k : ℕ) (hk : k ≥ 2) : LambdaFinite k 2\n```\n\nFor any k, if p is sufficiently large, there exist consecutive kth power residues bounded by O_k(1).\n\nThis resolved the first question of Problem #436 affirmatively.",
+    "mathContext": "Adolf Hildebrand's proof uses character sum estimates and the large sieve inequality.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-question1-solved",
+    "proofId": "erdos-436",
+    "range": { "startLine": 149, "endLine": 153 },
+    "type": "theorem",
+    "title": "Question 1 Solved",
+    "content": "**erdos_436_question1:**\n\n```lean\ntheorem erdos_436_question1 : ∀ k : ℕ, k ≥ 2 → LambdaFinite k 2 := by\n  exact hildebrand_theorem\n```\n\nThis theorem confirms: YES, Λ(k,2) is finite for all k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-lambda-3-3",
+    "proofId": "erdos-436",
+    "range": { "startLine": 159, "endLine": 164 },
+    "type": "axiom",
+    "title": "Λ(3,3) = 23532",
+    "content": "**lambda_3_3:**\n\nThree consecutive cubic residues are bounded by 23532.\n\nProved by Lehmer, Lehmer, Mills, and Selfridge (1962) using early computer assistance - one of the first \"machine proofs\" in number theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e436-even-infinite",
+    "proofId": "erdos-436",
+    "range": { "startLine": 165, "endLine": 171 },
+    "type": "axiom",
+    "title": "Λ(k,3) = ∞ for Even k",
+    "content": "**lambda_even_3_infinite:**\n\n```lean\naxiom lambda_even_3_infinite (k : ℕ) (hk : k ≥ 2) (heven : 2 ∣ k) :\n    ¬LambdaFinite k 3\n```\n\nFor even k, no universal bound exists for three consecutive kth power residues.\n\nProved by Lehmer and Lehmer (1962).",
+    "mathContext": "The parity of k fundamentally affects the m=3 case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-question2-open",
+    "proofId": "erdos-436",
+    "range": { "startLine": 172, "endLine": 182 },
+    "type": "definition",
+    "title": "Question 2: Open",
+    "content": "**erdos436Question2:**\n\nIs Λ(k,3) finite for all odd k ≥ 5?\n\n```lean\ndef erdos436Question2 : Prop :=\n  ∀ k : ℕ, k ≥ 3 → k % 2 = 1 → LambdaFinite k 3\n```\n\nOnly Λ(3,3) = 23532 is known to be finite among odd k ≥ 3.\n\n**Status:** OPEN",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-graham",
+    "proofId": "erdos-436",
+    "range": { "startLine": 187, "endLine": 196 },
+    "type": "axiom",
+    "title": "Graham's Theorem",
+    "content": "**graham_theorem (1964):**\n\nΛ(k,m) = ∞ for all k ≥ 2 and m ≥ 4.\n\n```lean\naxiom graham_theorem (k m : ℕ) (hk : k ≥ 2) (hm : m ≥ 4) :\n    ¬LambdaFinite k m\n```\n\nNo matter how large p is, there's no universal bound for 4+ consecutive kth power residues.",
+    "mathContext": "R.L. Graham's result shows m ≤ 3 is the interesting regime.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-only-small-m",
+    "proofId": "erdos-436",
+    "range": { "startLine": 198, "endLine": 203 },
+    "type": "theorem",
+    "title": "Only Small m Matters",
+    "content": "**only_small_m_finite:**\n\n```lean\ntheorem only_small_m_finite (k m : ℕ) (hk : k ≥ 2) (hm : m ≥ 4) :\n    ¬LambdaFinite k m :=\n  graham_theorem k m hk hm\n```\n\nCorollary: Only m ∈ {2, 3} is interesting for finite bounds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e436-qr-explanation",
+    "proofId": "erdos-436",
+    "range": { "startLine": 208, "endLine": 218 },
+    "type": "theorem",
+    "title": "Why Λ(2,2) = 9 Explained",
+    "content": "**lambda_2_2_explanation:**\n\nKey observation: 9 = 3² is always a QR.\n\nIf 10 is also a QR, done with {9,10}.\n\nOtherwise, 10 = 2·5 is not a QR.\n- Since (10/p) = (2/p)(5/p) = -1\n- Either (2/p) = 1 or (5/p) = 1\n- If 2 is QR: {1,2} works\n- If 5 is QR: {4,5} works (4=2² is always QR)\n\nSo {1,2}, {4,5}, or {9,10} always works → Λ(2,2) ≤ 9.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e436-legendre",
+    "proofId": "erdos-436",
+    "range": { "startLine": 219, "endLine": 226 },
+    "type": "definition",
+    "title": "Legendre Symbol Connection",
+    "content": "**legendreSymbolConnection:**\n\na is a quadratic residue mod p iff (a/p) = 1 (Legendre symbol).\n\nFor general k, the connection is to kth power residue characters χ_k:\na is a kth power residue mod p iff χ_k(a) = 1.\n\nThis connects the problem to character sum theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e436-growth",
+    "proofId": "erdos-436",
+    "range": { "startLine": 238, "endLine": 245 },
+    "type": "definition",
+    "title": "Growth Rate Question",
+    "content": "**growthRateQuestion:**\n\nThe known values suggest rapid growth:\n- Λ(2,2) = 9\n- Λ(3,2) = 77\n- Λ(4,2) = 1224\n- Λ(5,2) = 7888\n- Λ(6,2) = 202124\n- Λ(7,2) = 1649375\n\nRatios: 77/9 ≈ 8.6, 1224/77 ≈ 15.9, 7888/1224 ≈ 6.4, ...\n\nGrowth appears faster than polynomial but the exact rate is unknown.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e436-summary",
+    "proofId": "erdos-436",
+    "range": { "startLine": 270, "endLine": 280 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_436_summary:**\n\n```lean\ntheorem erdos_436_summary :\n    (∀ k : ℕ, k ≥ 2 → LambdaFinite k 2) ∧\n    (∀ k m : ℕ, k ≥ 2 → m ≥ 4 → ¬LambdaFinite k m) ∧\n    (∀ k : ℕ, k ≥ 2 → 2 ∣ k → ¬LambdaFinite k 3) := ...\n```\n\nConsolidates the three main resolved aspects:\n1. Hildebrand: Λ(k,2) finite for all k\n2. Graham: Λ(k,m) = ∞ for m ≥ 4\n3. Lehmer-Lehmer: Λ(k,3) = ∞ for even k",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e436-status",
+    "proofId": "erdos-436",
+    "range": { "startLine": 282, "endLine": 290 },
+    "type": "axiom",
+    "title": "Problem Status",
+    "content": "**erdos_436_status:**\n\n**PARTIALLY SOLVED**\n\n- Question 1 (Λ(k,2) finite): ✓ SOLVED (Hildebrand 1991)\n- Question 2 (Λ(k,3) for odd k): OPEN for k ≥ 5\n- Growth rate: OPEN\n\nKey remaining questions: Is Λ(5,3) finite? What is Λ(k,2)'s growth rate?",
+    "significance": "critical"
+  }
+]
