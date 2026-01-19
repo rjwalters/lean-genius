@@ -20,7 +20,43 @@
     "erdosNumber": 19,
     "erdosUrl": "https://erdosproblems.com/19",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Function.Bijective",
+        "description": "Bijective functions",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "SimpleGraph' structure: custom simple graph for cleaner axioms",
+      "completeGraph definition: K_V on vertex type V",
+      "EdgeDisjoint predicate: no common edges",
+      "IsProperColoring/IsKColorable: proper vertex colorings",
+      "chromaticNumber axiom: minimum coloring number",
+      "EFLFamily structure: n cliques of size n, pairwise ≤1 vertex overlap",
+      "eflUnionGraph: union graph construction",
+      "efl_chromatic_lower_bound axiom: χ(G) ≥ n",
+      "hindman_small_cases axiom: n < 10 cases",
+      "kahn_asymptotic/kahn_explicit_bound: χ(G) ≤ n + o(n)",
+      "kang_kelly_kuhn_methuku_osthus axiom: main 2021 result",
+      "EFLConjecture/efl_conjecture_resolved: full statement",
+      "LinearHypergraph structure: equivalent formulation",
+      "NearlyDisjointFamily structure: set-theoretic equivalent",
+      "erdos_furedi_generalization axiom: k-wise intersection case"
+    ]
   },
   "overview": {
     "historicalContext": "The Erdős-Faber-Lovász Conjecture was posed at a party in Boulder, Colorado in September 1972. It became one of the most famous problems in combinatorics, resisting proof for nearly 50 years until Kang, Kelly, Kühn, Methuku, and Osthus resolved it for all sufficiently large n in 2021.",
@@ -34,7 +70,92 @@
       "The absorbing method handles irregular configurations"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background",
+      "summary": "Historical context and significance of the EFL conjecture",
+      "startLine": 37,
+      "endLine": 46
+    },
+    {
+      "id": "graph-definitions",
+      "title": "Graph Definitions",
+      "summary": "SimpleGraph', completeGraph, EdgeDisjoint",
+      "startLine": 48,
+      "endLine": 66
+    },
+    {
+      "id": "chromatic-number",
+      "title": "Chromatic Number",
+      "summary": "IsProperColoring, IsKColorable, chromaticNumber axioms",
+      "startLine": 68,
+      "endLine": 93
+    },
+    {
+      "id": "efl-setup",
+      "title": "EFL Setup",
+      "summary": "EFLFamily structure, eflUnionGraph construction",
+      "startLine": 95,
+      "endLine": 127
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "summary": "efl_chromatic_lower_bound: χ(G) ≥ n",
+      "startLine": 129,
+      "endLine": 137
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "hindman_small_cases: n < 10",
+      "startLine": 139,
+      "endLine": 147
+    },
+    {
+      "id": "kahn-1992",
+      "title": "Kahn's Result (1992)",
+      "summary": "kahn_asymptotic, kahn_explicit_bound: χ(G) ≤ (1+o(1))n",
+      "startLine": 149,
+      "endLine": 162
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result (2021)",
+      "summary": "kang_kelly_kuhn_methuku_osthus, EFLConjecture, efl_conjecture_resolved",
+      "startLine": 164,
+      "endLine": 181
+    },
+    {
+      "id": "equivalent-formulations",
+      "title": "Equivalent Formulations",
+      "summary": "LinearHypergraph, NearlyDisjointFamily structures",
+      "startLine": 183,
+      "endLine": 227
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Projective planes, Steiner systems",
+      "startLine": 229,
+      "endLine": 249
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions",
+      "summary": "erdos_furedi_generalization, triangle_free_variant",
+      "startLine": 251,
+      "endLine": 269
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete timeline and status",
+      "startLine": 334,
+      "endLine": 363
+    }
+  ],
   "conclusion": {
     "summary": "The Erdős-Faber-Lovász Conjecture, posed in 1972, was resolved for all sufficiently large n in 2021 using the absorbing method. Combined with Hindman's verification of small cases, the conjecture is now fully proven: every edge-disjoint union of n copies of K_n is n-colorable.",
     "implications": "The resolution demonstrates the power of the absorbing method in extremal combinatorics and settles a 50-year-old question about graph coloring and hypergraph chromatic indices.",
