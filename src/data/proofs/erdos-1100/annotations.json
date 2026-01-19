@@ -1,1 +1,174 @@
-[]
+[
+  {
+    "id": "ann-e1100-header",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1100: Coprime Consecutive Divisors**\n\nFor n with divisors 1 = d₁ < d₂ < ... < d_τ(n) = n, let τ⊥(n) count indices i where gcd(dᵢ, dᵢ₊₁) = 1.\n\n**Three Questions:**\n1. Does τ⊥(n)/ω(n) → ∞ for almost all n? (OPEN)\n2. Is τ⊥(n) < exp((log n)^o(1)) for all n? (OPEN)\n3. What is the growth of g(k) = max τ⊥(n) for squarefree n with k prime factors?",
+    "mathContext": "This problem connects divisor theory with coprimality, exploring how the prime structure of n constrains consecutive divisors.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Coprimality", "Almost all"]
+  },
+  {
+    "id": "ann-e1100-divisorlist",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "definition",
+    "title": "Divisor List",
+    "content": "**divisorList n:**\n\nThe list of divisors of n in increasing order: 1 = d₁ < d₂ < ... < d_τ(n) = n.\n\n```lean\nnoncomputable def divisorList (n : ℕ) : List ℕ :=\n  (Finset.filter (· ∣ n) (Finset.range (n + 1))).sort (· ≤ ·)\n```",
+    "significance": "key",
+    "relatedConcepts": ["Divisors", "Sorting", "Finset"]
+  },
+  {
+    "id": "ann-e1100-tau",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "definition",
+    "title": "Divisor Count τ(n)",
+    "content": "**tau n:**\n\nThe number of divisors of n, denoted τ(n) or d(n).\n\n```lean\ndef tau (n : ℕ) : ℕ := (Finset.filter (· ∣ n) (Finset.range (n + 1))).card\n```",
+    "mathContext": "For n = p₁^a₁ · ... · p_k^a_k, we have τ(n) = (a₁+1)·...·(a_k+1).",
+    "significance": "supporting",
+    "relatedConcepts": ["Divisor function", "Multiplicative functions"]
+  },
+  {
+    "id": "ann-e1100-omega",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Distinct Prime Divisors ω(n)",
+    "content": "**omega n:**\n\nThe number of distinct prime divisors of n, denoted ω(n).\n\n```lean\ndef omega (n : ℕ) : ℕ := n.primeFactors.card\n```",
+    "mathContext": "ω(n) counts prime factors without multiplicity. For almost all n, ω(n) ≈ log log n by Hardy-Ramanujan.",
+    "significance": "key",
+    "relatedConcepts": ["Prime factorization", "Additive functions"]
+  },
+  {
+    "id": "ann-e1100-tauperp",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 63, "endLine": 71 },
+    "type": "definition",
+    "title": "Coprime Consecutive Divisors τ⊥(n)",
+    "content": "**tauPerp n:**\n\nCount of indices i where gcd(dᵢ, dᵢ₊₁) = 1.\n\n```lean\nnoncomputable def tauPerp (n : ℕ) : ℕ :=\n  let divs := divisorList n\n  (List.range (divs.length - 1)).filter\n    (fun i => Nat.gcd (divs.getD i 0) (divs.getD (i + 1) 0) = 1)\n  |>.length\n```",
+    "mathContext": "Consecutive divisors being coprime means they share no prime factors - a strong constraint given they both divide n.",
+    "significance": "critical",
+    "relatedConcepts": ["GCD", "Coprimality", "Consecutive elements"]
+  },
+  {
+    "id": "ann-e1100-lower-bound",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "axiom",
+    "title": "Basic Lower Bound",
+    "content": "**tau_perp_lower_bound:**\n\nτ⊥(n) ≥ ω(n) trivially. At minimum, consecutive prime powers contribute coprime pairs.\n\nThis is tight for infinitely many n (equality achieved).",
+    "mathContext": "The prime powers p^a in the divisor list create natural 'barriers' where coprimality occurs.",
+    "significance": "key",
+    "relatedConcepts": ["Prime powers", "Lower bounds"]
+  },
+  {
+    "id": "ann-e1100-equality",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "axiom",
+    "title": "Equality Infinitely Often",
+    "content": "**tau_perp_equality_infinitely_often:**\n\nThere exist infinitely many n with τ⊥(n) = ω(n).\n\nThis shows the lower bound is tight - but the question is whether this is rare.",
+    "significance": "key",
+    "relatedConcepts": ["Sharpness", "Infinite families"]
+  },
+  {
+    "id": "ann-e1100-question1",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 86, "endLine": 102 },
+    "type": "definition",
+    "title": "Question 1: Almost All Growth (OPEN)",
+    "content": "**question1_almost_all_growth:**\n\nDoes τ⊥(n)/ω(n) → ∞ for almost all n?\n\n\"Almost all\" means the set of exceptions has density 0.\n\n```lean\ndef question1_almost_all_growth : Prop :=\n  ∀ M : ℝ, M > 0 →\n    ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →\n      (density of n with τ⊥(n)/ω(n) < M) < ε\n```",
+    "mathContext": "This asks if typically τ⊥(n) greatly exceeds ω(n), even though equality holds infinitely often.",
+    "significance": "critical",
+    "relatedConcepts": ["Almost all", "Natural density", "Asymptotic behavior"]
+  },
+  {
+    "id": "ann-e1100-question2",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 109, "endLine": 121 },
+    "type": "definition",
+    "title": "Question 2: Upper Bound (OPEN)",
+    "content": "**question2_upper_bound:**\n\nIs τ⊥(n) < exp((log n)^o(1)) for all n?\n\nThis asks if τ⊥(n) grows slower than any fixed power of log n.\n\n```lean\ndef question2_upper_bound : Prop :=\n  ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →\n    (tauPerp n : ℝ) < exp ((log n)^ε)\n```",
+    "mathContext": "The o(1) exponent makes this a very slow growth - sub-polylogarithmic.",
+    "significance": "critical",
+    "relatedConcepts": ["Sublogarithmic growth", "Little-o notation"]
+  },
+  {
+    "id": "ann-e1100-erdos-hall",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 123, "endLine": 130 },
+    "type": "axiom",
+    "title": "Erdős-Hall Lower Bound on Maximum",
+    "content": "**erdos_hall_max_lower_bound:**\n\nFor all ε > 0 and sufficiently large x:\n  max_{n<x} τ⊥(n) > exp((log log x)^(2-ε))\n\nThis shows the maximum grows at least double-logarithmically with a power approaching 2.",
+    "mathContext": "From Erdős-Hall 1978: 'On some unconventional problems on the divisors of integers'.",
+    "significance": "key",
+    "relatedConcepts": ["Maximum function", "Double logarithm", "Extremal values"]
+  },
+  {
+    "id": "ann-e1100-g-function",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 144, "endLine": 145 },
+    "type": "definition",
+    "title": "The Function g(k)",
+    "content": "**g k:**\n\nMaximum τ⊥(n) among squarefree n with exactly k distinct prime factors.\n\n```lean\nnoncomputable def g (k : ℕ) : ℕ :=\n  sSup { tauPerp n | n : ℕ, Squarefree n ∧ omega n = k }\n```",
+    "mathContext": "Restricting to squarefree numbers simplifies the divisor structure while preserving the essential combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Squarefree numbers", "Extremal functions", "Supremum"]
+  },
+  {
+    "id": "ann-e1100-simonovits",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 147, "endLine": 158 },
+    "type": "axiom",
+    "title": "Erdős-Simonovits Bounds",
+    "content": "**erdos_simonovits_bounds:**\n\n(√2 + o(1))^k < g(k) < (2-c)^k for some constant c > 0.\n\nThis establishes that g(k) grows exponentially with base strictly between √2 ≈ 1.414 and 2.",
+    "mathContext": "The gap between √2 and 2 suggests the true base is somewhere in between, but its exact value remains unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential bounds", "Growth rates", "Erdős-Simonovits"]
+  },
+  {
+    "id": "ann-e1100-exponential",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 164, "endLine": 179 },
+    "type": "theorem",
+    "title": "Exponential Growth of g(k)",
+    "content": "**g_exponential_growth:**\n\nThere exist α, β with √2 ≤ α and β < 2 such that:\nα^k ≤ g(k) ≤ β^k for sufficiently large k.\n\nThis theorem combines the Erdős-Simonovits bounds into a clean statement about exponential growth.",
+    "mathContext": "The proof uses the axiomatized bounds but requires limit arguments for the o(1) terms.",
+    "significance": "key",
+    "relatedConcepts": ["Exponential growth", "Asymptotic bounds"]
+  },
+  {
+    "id": "ann-e1100-examples",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 181, "endLine": 205 },
+    "type": "concept",
+    "title": "Worked Examples",
+    "content": "**Example: n = 6**\nDivisors: 1, 2, 3, 6\n- gcd(1,2) = 1 ✓\n- gcd(2,3) = 1 ✓\n- gcd(3,6) = 3 ✗\n\nτ⊥(6) = 2, ω(6) = 2 → equality\n\n**Example: n = 12**\nDivisors: 1, 2, 3, 4, 6, 12\n- gcd(1,2) = 1 ✓\n- gcd(2,3) = 1 ✓\n- gcd(3,4) = 1 ✓\n- gcd(4,6) = 2 ✗\n- gcd(6,12) = 6 ✗\n\nτ⊥(12) = 3, ω(12) = 2 → exceeds ω",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete examples", "Verification"]
+  },
+  {
+    "id": "ann-e1100-insight",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 207, "endLine": 221 },
+    "type": "insight",
+    "title": "Why This Problem Is Hard",
+    "content": "**Structural Insight:**\n\nFor n = p₁^a₁ · ... · p_k^a_k:\n- Consecutive divisors differ by multiplying/dividing by prime powers\n- Coprimality requires consecutive divisors to share no common prime\n- This creates intricate combinatorial constraints on the divisor lattice\n\nThe exponential bounds on g(k) show the structure is neither trivial (would give polynomial) nor chaotic (would give 2^k).",
+    "mathContext": "The divisor lattice has a partial order structure, and τ⊥ counts 'coprime jumps' in chains.",
+    "significance": "key",
+    "relatedConcepts": ["Divisor lattice", "Combinatorial constraints"]
+  },
+  {
+    "id": "ann-e1100-summary",
+    "proofId": "erdos-1100",
+    "range": { "startLine": 227, "endLine": 256 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_1100_summary:**\n\nCombines the known results:\n\n| Property | Status |\n|----------|--------|\n| τ⊥(n) ≥ ω(n) | PROVEN (trivial) |\n| Equality infinitely often | PROVEN |\n| max_{n<x} τ⊥(n) > exp((log log x)^(2-ε)) | PROVEN (Erdős-Hall) |\n| (√2)^k < g(k) < (2-c)^k | PROVEN (Erdős-Simonovits) |\n| τ⊥(n)/ω(n) → ∞ almost always | OPEN |\n| τ⊥(n) < exp((log n)^o(1)) | OPEN |",
+    "significance": "critical",
+    "relatedConcepts": ["Known results", "Open problems", "Research frontier"]
+  }
+]
