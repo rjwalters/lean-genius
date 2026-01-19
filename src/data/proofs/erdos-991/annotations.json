@@ -1,1 +1,189 @@
-[]
+[
+  {
+    "id": "ann-e991-header",
+    "proofId": "erdos-991",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #991: Discrepancy of Optimal Logarithmic Energy Points**\n\nThis problem asks whether point configurations that maximize the product of pairwise distances on the sphere distribute uniformly with respect to spherical caps.\n\n**The Setup:**\n- Take n points on the unit sphere S²\n- Find the configuration maximizing ∏|wᵢ - wⱼ| (product of all pairwise distances)\n- Ask: do these optimal points spread evenly across all spherical caps?\n\n**The Answer: YES**\n\nThe cap discrepancy is o(n), meaning the deviation from uniform distribution is sublinear in the number of points.",
+    "mathContext": "This connects logarithmic potential theory, discrepancy theory, and approximation on spheres. The optimal configurations are called Fekete points.",
+    "significance": "critical",
+    "relatedConcepts": ["Potential theory", "Discrepancy theory", "Fekete points"]
+  },
+  {
+    "id": "ann-e991-unit-sphere",
+    "proofId": "erdos-991",
+    "range": { "startLine": 42, "endLine": 48 },
+    "type": "definition",
+    "title": "Unit Sphere",
+    "content": "**UnitSphere:**\n\nThe set of points in R³ at unit distance from the origin:\n```lean\ndef UnitSphere : Set (Fin 3 → ℝ) :=\n  {w : Fin 3 → ℝ | ∑ i, (w i)^2 = 1}\n```\n\nThis is the 2-dimensional sphere S² embedded in 3-dimensional space. Points are represented as functions from Fin 3 (indices 0, 1, 2) to real numbers.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean space", "Manifolds"]
+  },
+  {
+    "id": "ann-e991-sphere-dist",
+    "proofId": "erdos-991",
+    "range": { "startLine": 49, "endLine": 55 },
+    "type": "definition",
+    "title": "Chordal Distance",
+    "content": "**sphereDist:**\n\nThe Euclidean (chordal) distance between two points on the sphere:\n```lean\ndef sphereDist (w₁ w₂ : Fin 3 → ℝ) : ℝ :=\n  Real.sqrt (∑ i, (w₁ i - w₂ i)^2)\n```\n\nThis measures the straight-line distance through the interior of the sphere, not the geodesic (great circle) distance along the surface. For points on S², the chordal distance ranges from 0 to 2.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean distance", "Geodesic distance"]
+  },
+  {
+    "id": "ann-e991-log-energy",
+    "proofId": "erdos-991",
+    "range": { "startLine": 63, "endLine": 73 },
+    "type": "definition",
+    "title": "Logarithmic Energy",
+    "content": "**logEnergy:**\n\nThe logarithmic energy of a point configuration:\n```lean\ndef logEnergy (points : Finset (Fin 3 → ℝ)) : ℝ :=\n  ∑ p₁ ∈ points, ∑ p₂ ∈ points,\n    if p₁ ≠ p₂ then -Real.log (sphereDist p₁ p₂) / 2 else 0\n```\n\n**Key insight:** Minimizing E(A) = -log(∏|wᵢ - wⱼ|) is equivalent to maximizing the product of distances.\n\nLogarithmic energy arises naturally in potential theory: think of points as charged particles repelling with logarithmic potential.",
+    "mathContext": "The logarithmic kernel -log|x-y| is the fundamental solution to Laplace's equation in 2D.",
+    "significance": "critical",
+    "relatedConcepts": ["Potential theory", "Electrostatics", "Riesz energy"]
+  },
+  {
+    "id": "ann-e991-optimal-config",
+    "proofId": "erdos-991",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "definition",
+    "title": "Optimal Configurations",
+    "content": "**IsOptimalConfig:**\n\nA configuration is optimal if it minimizes logarithmic energy among all n-point sets on the sphere:\n```lean\ndef IsOptimalConfig (points : Finset (Fin 3 → ℝ)) : Prop :=\n  (∀ p ∈ points, p ∈ UnitSphere) ∧\n  ∀ other, other.card = points.card →\n    (∀ p ∈ other, p ∈ UnitSphere) →\n    logEnergy points ≤ logEnergy other\n```\n\n**Fekete points:** Optimal configurations are called Fekete points in approximation theory. They arise in polynomial interpolation on spheres.",
+    "significance": "critical",
+    "relatedConcepts": ["Fekete points", "Approximation theory"]
+  },
+  {
+    "id": "ann-e991-spherical-cap",
+    "proofId": "erdos-991",
+    "range": { "startLine": 92, "endLine": 99 },
+    "type": "definition",
+    "title": "Spherical Caps",
+    "content": "**SphericalCap:**\n\nA spherical cap is the portion of S² above a certain latitude:\n```lean\ndef SphericalCap (center : Fin 3 → ℝ) (cosAngle : ℝ) : Set (Fin 3 → ℝ) :=\n  {w ∈ UnitSphere | ∑ i, (center i) * (w i) ≥ cosAngle}\n```\n\n**Parameters:**\n- center: direction of the cap's center (north pole of the cap)\n- cosAngle: cosine of the angular radius (cosAngle = 1 is just the center, cosAngle = -1 is the whole sphere)\n\nThe cap includes all points whose dot product with the center is at least cosAngle.",
+    "significance": "critical",
+    "relatedConcepts": ["Spherical geometry", "Geodesic balls"]
+  },
+  {
+    "id": "ann-e991-cap-area",
+    "proofId": "erdos-991",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "definition",
+    "title": "Normalized Cap Area",
+    "content": "**normalizedCapArea:**\n\nThe area of a spherical cap, normalized so the full sphere has area 1:\n```lean\ndef normalizedCapArea (cosAngle : ℝ) : ℝ :=\n  (1 - cosAngle) / 2\n```\n\n**Examples:**\n- cosAngle = 1: area = 0 (just a point)\n- cosAngle = 0: area = 1/2 (hemisphere)\n- cosAngle = -1: area = 1 (full sphere)\n\nThe actual area is 2π(1 - cos θ); normalizing by 4π gives (1 - cos θ)/2.",
+    "significance": "key",
+    "relatedConcepts": ["Spherical area", "Solid angle"]
+  },
+  {
+    "id": "ann-e991-cap-count",
+    "proofId": "erdos-991",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "definition",
+    "title": "Cap Count",
+    "content": "**capCount:**\n\nThe number of points from a configuration that fall within a cap:\n```lean\ndef capCount (points : Finset (Fin 3 → ℝ)) (cap : Set (Fin 3 → ℝ)) : ℕ :=\n  (points.filter (· ∈ cap)).card\n```\n\nFor uniform distribution, we expect capCount ≈ αC · n where αC is the cap's normalized area and n is the total number of points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e991-small-discrepancy",
+    "proofId": "erdos-991",
+    "range": { "startLine": 129, "endLine": 139 },
+    "type": "definition",
+    "title": "Small Discrepancy Property",
+    "content": "**HasSmallDiscrepancy:**\n\nA point set has small discrepancy if the deviation from uniform distribution is sublinear in n:\n```lean\ndef HasSmallDiscrepancy (points : Finset (Fin 3 → ℝ)) : Prop :=\n  ∀ center cosAngle, ... →\n  ∃ bound : ℕ → ℝ, (∀ n, bound n / n → 0) ∧\n    ||A ∩ C| - αC · n| ≤ bound(n)\n```\n\n**Intuition:** If n points were perfectly uniform, each cap C would contain exactly αC · n points. The discrepancy measures the worst-case deviation. Being o(n) means this deviation grows slower than n itself.",
+    "significance": "critical",
+    "relatedConcepts": ["Discrepancy theory", "Uniform distribution"]
+  },
+  {
+    "id": "ann-e991-brauchart",
+    "proofId": "erdos-991",
+    "range": { "startLine": 146, "endLine": 160 },
+    "type": "axiom",
+    "title": "Brauchart's Bound (2008)",
+    "content": "**brauchart_bound:**\n\nFor optimal logarithmic energy points, the cap discrepancy is O(n^{3/4}):\n```lean\naxiom brauchart_bound :\n  ∀ points, IsOptimalConfig points →\n  ∃ C > 0, ∀ cap, ||A ∩ cap| - αC · n| ≤ C · n^(3/4)\n```\n\n**Publication:** Brauchart (2008), \"Optimal logarithmic energy points on the unit sphere\", Math. Comp.\n\nThis was the first quantitative bound, improving on the qualitative o(n) from classical potential theory.",
+    "mathContext": "The proof uses estimates from logarithmic potential theory and properties of the equilibrium measure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e991-marzo-mas",
+    "proofId": "erdos-991",
+    "range": { "startLine": 167, "endLine": 183 },
+    "type": "axiom",
+    "title": "Marzo-Mas Improvement (2021)",
+    "content": "**marzo_mas_bound:**\n\nImproved bound: discrepancy is O(n^{2/3}):\n```lean\naxiom marzo_mas_bound :\n  ∀ points, IsOptimalConfig points →\n  ∃ C > 0, ∀ cap, ||A ∩ cap| - αC · n| ≤ C · n^(2/3)\n```\n\n**Publication:** Marzo-Mas (2021), \"Discrepancy of minimal Riesz energy points\", Constr. Approx.\n\nThis matches an earlier unpublished bound by Wolff. The result is proved for general Riesz s-energy, with logarithmic energy as the s → 0 limit.",
+    "mathContext": "The improvement from 3/4 to 2/3 is a factor of n^{1/12}, significant for large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e991-main-theorem",
+    "proofId": "erdos-991",
+    "range": { "startLine": 207, "endLine": 224 },
+    "type": "theorem",
+    "title": "Main Theorem: Erdős #991",
+    "content": "**erdos_991:**\n\nOptimal logarithmic energy points have o(n) discrepancy:\n```lean\ntheorem erdos_991 :\n    ∀ points, IsOptimalConfig points →\n    HasSmallDiscrepancy points\n```\n\n**Answer to Erdős:** YES, optimal configurations distribute uniformly.\n\n**Proof sketch:** Uses marzo_mas_bound to get O(n^{2/3}), which is o(n) since 2/3 < 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e991-fekete",
+    "proofId": "erdos-991",
+    "range": { "startLine": 231, "endLine": 238 },
+    "type": "definition",
+    "title": "Fekete Points",
+    "content": "**FeketePoints:**\n\nThe set of optimal n-point configurations:\n```lean\ndef FeketePoints (n : ℕ) : Set (Finset (Fin 3 → ℝ)) :=\n  {points | points.card = n ∧ IsOptimalConfig points}\n```\n\n**Named after:** Michael Fekete (1886-1957), Hungarian mathematician.\n\n**Applications:**\n- Polynomial interpolation on spheres\n- Numerical integration (quadrature)\n- Sampling for computer graphics",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial interpolation", "Quadrature"]
+  },
+  {
+    "id": "ann-e991-riesz",
+    "proofId": "erdos-991",
+    "range": { "startLine": 239, "endLine": 247 },
+    "type": "definition",
+    "title": "Riesz s-Energy",
+    "content": "**rieszEnergy:**\n\nGeneralization of logarithmic energy with parameter s:\n```lean\ndef rieszEnergy (s : ℝ) (points : Finset (Fin 3 → ℝ)) : ℝ :=\n  ∑_{i≠j} |wᵢ - wⱼ|^{-s}\n```\n\n**Connection to logarithmic energy:** As s → 0, Riesz energy converges (after normalization) to logarithmic energy.\n\n**Physical interpretation:** s = 1 is Coulomb energy (electrostatics in 3D), s = 2 is used in various physics models.",
+    "mathContext": "Marzo-Mas prove discrepancy bounds for general s-energy; our result is the s → 0 case.",
+    "significance": "key",
+    "relatedConcepts": ["Coulomb energy", "Potential theory"]
+  },
+  {
+    "id": "ann-e991-equidistribution",
+    "proofId": "erdos-991",
+    "range": { "startLine": 248, "endLine": 260 },
+    "type": "axiom",
+    "title": "Equidistribution from Potential Theory",
+    "content": "**potential_theory_equidistribution:**\n\nFekete points equidistribute in the limit:\n```lean\naxiom potential_theory_equidistribution :\n  ∀ ε > 0, ∃ N, ∀ n ≥ N, ∀ points ∈ FeketePoints n,\n  ∀ cap, ||A ∩ cap|/n - αC| < ε\n```\n\n**Classical result:** This is the qualitative o(n) statement from classical potential theory. Fekete points converge weakly to the uniform measure on the sphere.\n\n**Attribution:** The exact origin is unclear; Brauchart cites it as following from 'classical potential theory'.",
+    "mathContext": "This is a weak-* convergence result: the empirical measures of Fekete points converge to the uniform measure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e991-hemisphere",
+    "proofId": "erdos-991",
+    "range": { "startLine": 265, "endLine": 283 },
+    "type": "theorem",
+    "title": "Hemisphere Approximation",
+    "content": "**hemisphere_approx:**\n\nFor the hemisphere (cosAngle = 0), approximately half the points fall in each half:\n```lean\ntheorem hemisphere_approx : ... →\n  ||A ∩ hemisphere| - n/2| ≤ C · n^(2/3)\n```\n\n**Proof:** Follows from marzo_mas_bound with cosAngle = 0, since normalizedCapArea(0) = 1/2.\n\n**Intuition:** Optimal points are roughly symmetric - you can't bunch too many on one side without increasing energy.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e991-improvement",
+    "proofId": "erdos-991",
+    "range": { "startLine": 302, "endLine": 315 },
+    "type": "theorem",
+    "title": "Improvement Factor",
+    "content": "**improvement_factor:**\n\nMerge-Mas improves on Brauchart by n^{1/12}:\n```lean\ntheorem improvement_factor :\n  n^(3/4) / n^(2/3) = n^(1/12)\n```\n\n**Verification:** 3/4 - 2/3 = 9/12 - 8/12 = 1/12.\n\n**Significance:** For n = 10^12 points, this is a factor of 10 improvement. For practical n, the improvement is modest but theoretically significant.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e991-summary",
+    "proofId": "erdos-991",
+    "range": { "startLine": 337, "endLine": 358 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_991_summary:**\n\nCombines the main results:\n```lean\ntheorem erdos_991_summary :\n  (∀ points, IsOptimalConfig points → HasSmallDiscrepancy points) ∧\n  (∀ points, IsOptimalConfig points →\n   ∃ C > 0, ∀ cap, discrepancy ≤ C · n^(2/3))\n```\n\n**What we proved:**\n1. Qualitative: optimal points have o(n) discrepancy\n2. Quantitative: the bound is O(n^{2/3})\n3. Follows from classical potential theory with modern improvements",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e991-answer",
+    "proofId": "erdos-991",
+    "range": { "startLine": 359, "endLine": 364 },
+    "type": "theorem",
+    "title": "The Answer",
+    "content": "**erdos_991_answer:**\n\nThe answer to Erdős Problem #991 is **YES**.\n\nOptimal logarithmic energy point configurations on S² have small spherical cap discrepancy. They distribute uniformly in the limit, with quantitative bounds of O(n^{2/3}).",
+    "significance": "critical"
+  }
+]

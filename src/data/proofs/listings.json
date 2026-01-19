@@ -3587,17 +3587,24 @@
   },
   {
     "id": "erdos-191",
-    "title": "Erdős Problem #191",
+    "title": "Erdős Problem #191: Monochromatic Sets with Large 1/log Sum",
     "slug": "erdos-191",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be arbitrary. Is it true that, if ... is sufficiently large depending on ..., then in any ...-colouring of ... there ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any C > 0, if n is large enough, any 2-coloring of edges of K({2,...,n}) contains monochromatic X with Σ(1/log x) ≥ C. SOLVED by Rödl (2003). Tight bound: Θ(log log log n) by Conlon-Fox-Sudakov.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "graph-coloring",
+      "weighted-sums",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 191,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 25
   },
   {
     "id": "erdos-192",
@@ -6831,17 +6838,24 @@
   },
   {
     "id": "erdos-437",
-    "title": "Erdős Problem #437",
+    "title": "Erdős Problem #437: Square Partial Products",
     "slug": "erdos-437",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many of the partial products ... can be squares? Is it true that, for any ..., there can be more than ... square...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For 1 ≤ a₁ < ... < aₖ ≤ x, how many partial products can be squares? Can there be > x^(1-ε) squares? YES, proved by Bui-Pratt-Zaharescu (2024) with precise bounds via hyperelliptic curves.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "perfect-squares",
+      "partial-products",
+      "hyperelliptic-curves",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 437,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 20
   },
   {
     "id": "erdos-438",
@@ -9609,17 +9623,24 @@
   },
   {
     "id": "erdos-653",
-    "title": "Erdős Problem #653",
+    "title": "Erdős Problem #653: Distinct Distance Counts in the Plane",
     "slug": "erdos-653",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ..., where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let ... be the maximum number of...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n points in the plane, let R(xᵢ) count distinct distances from xᵢ. What is the maximum number of distinct R-values? Conjecture: g(n) ≥ (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "combinatorial-geometry",
+      "point-configurations",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 653,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 19
   },
   {
     "id": "erdos-656",
@@ -14040,17 +14061,25 @@
   },
   {
     "id": "erdos-991",
-    "title": "Erdős Problem #991",
+    "title": "Erdős Problem #991: Discrepancy of Optimal Logarithmic Energy Points",
     "slug": "erdos-991",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... maximises\\[\\prod_{i<j}\\lvert w_i-w_j\\rvert\\]over all possible sets of size ....\n\nIs it true that\\[\\max_C\\lvert \\l...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do optimal logarithmic energy point configurations on S² have small spherical cap discrepancy? YES, proved via classical potential theory with quantitative bounds by Brauchart (2008) and Marzo-Mas (2021).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrepancy-theory",
+      "potential-theory",
+      "sphere",
+      "logarithmic-energy",
+      "fekete-points",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 991,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-992",
