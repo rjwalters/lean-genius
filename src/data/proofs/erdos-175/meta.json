@@ -1,33 +1,140 @@
 {
   "id": "erdos-175",
-  "title": "Erdős Problem #175",
+  "title": "Erdős Problem #175: Central Binomial Coefficient Not Squarefree",
   "slug": "erdos-175",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that, for any ..., the binomial coefficient ... is not squarefree.\n\n\n\nIt is easy to see that ... except when ..., and he...",
+  "description": "Show that for n ≥ 5, C(2n,n) is not squarefree. Proved by Granville-Ramaré (1996). The function f(n) = max prime power exponent satisfies (log n)^{1/4} ≪ f(n) ≪ log n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Granville-Ramaré (1996), Sárközy (1985), Sander, Erdős-Kolesnik",
     "sourceUrl": "https://erdosproblems.com/175",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos175Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "squarefree",
+      "prime-powers"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 175,
     "erdosUrl": "https://erdosproblems.com/175",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient function",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation of natural numbers",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Squarefree",
+        "description": "Squarefreeness predicate",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      }
+    ],
+    "originalContributions": [
+      "Formalized central binomial squarefreeness for n ≥ 5",
+      "Axiomatized bounds on maximum prime power exponent f(n)",
+      "Connected Kummer's theorem to divisibility analysis",
+      "Included explicit computations for small cases"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #175 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that, for any $n\\geq 5$, the binomial coefficient $\\binom{2n}{n}$ is not squarefree.\n\n\n\nIt is easy to see that $4\\mid \\binom{2n}{n}$ except when $n=2^k$, and hence it suffices to prove this when $n$ is a power of $2$.\n\nProved by S\\'{a}rk\\\"{o}zy \\cite{Sa85} for all sufficiently large $n$, and by Granville and Ramar\\'{e} \\cite{GrRa96} for all $n\\geq 5$.\n\nMore generally, if $f(n)$ is the largest integer such that, for some prime $p$, we have $p^{f(n)}$ dividing $\\binom{2n}{n}$, then $f(n)$ should tend to infinity with $n$. Can one even disprove that $f(n)\\gg \\log n$?\n\nSander \\cite{Sa92} proved that $f(n)\\to \\infty$, and later \\cite{Sa95} quantified this to $f(n) \\gg (\\log n)^{1/10-o(1)}$. Sander \\cite{Sa95} also proved that $f(n)\\ll \\log n$ for all $n$, and that $f(n) \\gg \\log n$ for almost all $n$. The proofs of the latter two facts are very easy using Kummer's theorem -- indeed, this immediately implies that any $p$ divides $\\binom{2n}{n}$ with multiplicity $\\ll \\log_p n$, and that the multiplicity with which $2$ divides $\\binom{2n}{n}$ is equal to the number of $1$s in the binary expansion of $n$, which is $\\gg \\log n$ for almost all $n$.\n\nErd\\H{o}s and Kolesnik \\cite{ErKo99} improved the lower bound for all $n$ to\\[f(n) \\gg (\\log n)^{1/4-o(1)}.\\]It remains open whether $f(n) \\gg \\log n$ for all $n$.\n\nSander \\cite{Sa92b} proved that, for all $0<\\epsilon<1$, if $n$ is sufficiently large and $\\lvert d\\rvert\\leq n^{1-\\epsilon}$ then $\\binom{2n+d}{n}$ is not squarefree.\n\nThe largest $n$ known for which $\\binom{2n}{n}$ is not divisible by the square of an odd prime is $n=786$ (found by Levine). Guy \\cite{Gu04} reports that Erd\\H{o}s 'feels sure that there are no larger such $n$'.\n\nSee also [379].\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ErKo99] Erd\\H{o}s, Paul and Kolesnik, Grigori, Prime power divisors of binomial coefficients. Discrete Math. (1999), 101--117.\n\n[GrRa96] Granville, Andrew and Ramar\\'{e}, Olivier, Explicit bounds on exponential sums and the scarcity of\nsquarefree binomial coefficients. Mathematika (1996), 73--107.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Sa85] S\\'{a}rk\\\"{o}zy, A., On divisors of binomial coefficients. Journal of Number Theory (1985), 70-80.\n\n[Sa92] Sander, J. W., Prime power divisors of binomial coefficients. J. Reine Angew. Math. (1992), 1--20.\n\n[Sa92b] Sander, J. W., On prime divisors of binomial coefficients. Bull. London Math. Soc. (1992), 140--142.\n\n[Sa95] Sander, J. W., On the order of prime powers dividing {$\\binom {2n}n$}. Acta Math. (1995), 85--118.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Sárközy (1985) proved the result for sufficiently large n. Granville-Ramaré (1996) completed the proof for all n ≥ 5. The related function f(n) measuring maximum prime power exponent has been studied by Sander (1992, 1995) and Erdős-Kolesnik (1999), who improved the lower bound to (log n)^{1/4}.",
+    "problemStatement": "Show that for any n ≥ 5, the central binomial coefficient C(2n, n) is not squarefree.",
+    "proofStrategy": "The proof has two main cases: (1) When n is not a power of 2, then 4 | C(2n,n), so it's not squarefree. (2) When n = 2^k, one must show an odd prime square divides C(2n,n). Kummer's theorem relates v_p(C(m+n,m)) to carries in base-p addition, giving v_2(C(2n,n)) = popcount(n).",
+    "keyInsights": [
+      "4 | C(2n, n) unless n is a power of 2 (by Kummer's theorem)",
+      "v_2(C(2n, n)) equals the number of 1s in the binary expansion of n",
+      "For n = 2^k, the squareness comes from odd primes",
+      "f(n) satisfies (log n)^{1/4} ≪ f(n) ≪ log n with the lower bound open for all n"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 35,
+      "endLine": 50,
+      "summary": "Central binomial coefficient, squarefreeness, and maximum prime power exponent."
+    },
+    {
+      "id": "divisibility-by-4",
+      "title": "Divisibility by 4",
+      "startLine": 52,
+      "endLine": 75,
+      "summary": "Kummer's theorem and the condition for 4 | C(2n, n)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 77,
+      "endLine": 93,
+      "summary": "Granville-Ramaré's proof that C(2n,n) is not squarefree for n ≥ 5."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "startLine": 95,
+      "endLine": 127,
+      "summary": "Bounds on the maximum prime power exponent: (log n)^{1/4} to log n."
+    },
+    {
+      "id": "power-of-2-case",
+      "title": "Power of 2 Case",
+      "startLine": 129,
+      "endLine": 142,
+      "summary": "When n = 2^k, odd prime squares provide the squareness."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 144,
+      "endLine": 157,
+      "summary": "Extensions to C(2n+d, n) and the record n = 786."
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "startLine": 159,
+      "endLine": 172,
+      "summary": "Is f(n) ≫ log n for all n? Known only for almost all n."
+    },
+    {
+      "id": "explicit-examples",
+      "title": "Explicit Examples",
+      "startLine": 174,
+      "endLine": 190,
+      "summary": "Concrete computations: C(10,5) = 252 = 2² × 3² × 7."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "startLine": 192,
+      "endLine": 209,
+      "summary": "Complete formalization of squarefreeness and f(n) bounds."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 211,
+      "endLine": 231,
+      "summary": "Summary theorem with both squarefreeness and f(n) characterization."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #175 is solved: C(2n, n) is not squarefree for n ≥ 5. The maximum prime power exponent f(n) satisfies (log n)^{1/4} ≪ f(n) ≪ log n, with the lower bound open for all n but proven for almost all n.",
+    "implications": "The result reveals deep structure in binomial coefficients, connecting to Kummer's theorem on carries in addition. The analysis of f(n) shows prime power divisibility grows slowly but unboundedly.",
+    "openQuestions": [
+      "Does f(n) ≫ log n hold for ALL n?",
+      "Are there n > 786 where C(2n,n) has no odd prime square factor?",
+      "What is the exact growth rate of f(n)?"
+    ]
   }
 }
