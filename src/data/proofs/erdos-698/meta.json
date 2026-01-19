@@ -1,33 +1,158 @@
 {
   "id": "erdos-698",
-  "title": "Erdős Problem #698",
+  "title": "Erdős Problem #698: GCDs of Binomial Coefficients",
   "slug": "erdos-698",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that for all ...\\[\\left( {i},{j}\\right) \\geq h(n)?\\]\n\n\n\nA problem of Erds and Szekeres, who observed t...",
+  "description": "Is there h(n) → ∞ such that gcd(C(n,i), C(n,j)) ≥ h(n) for all 2 ≤ i < j ≤ n/2? YES - Bergman (2011) proved gcd ≫ n^{1/2} · 2^i / i^{3/2}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Szekeres (problem, 1978), Bergman (solution, 2011)",
     "sourceUrl": "https://erdosproblems.com/698",
-    "date": "",
-    "status": "pending",
+    "date": "2011",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos698Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "gcd",
+      "pascal-triangle",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 698,
     "erdosUrl": "https://erdosproblems.com/698",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "binom definition: Nat.choose wrapper",
+      "binomGcd definition: GCD of two binomial coefficients",
+      "isValidPair predicate: 2 ≤ i < j ≤ n/2",
+      "erdos_szekeres_bound axiom: gcd ≥ C(n,i)/C(j,i)",
+      "erdos_szekeres_exponential axiom: gcd ≥ 2^i",
+      "gcd_always_gt_one theorem: GCD is always > 1",
+      "sharpness_example axiom: bound is tight at i=1, j=p, n=2p",
+      "tendsToInfinity definition: function grows unboundedly",
+      "erdos698Question: formal problem statement",
+      "bergman_bound_exists axiom: gcd ≥ c · n^{1/2} · 2^i / i^{3/2}",
+      "bergman_theorem axiom: main bound",
+      "min_gcd_growth axiom: minimum grows like Ω(√n)",
+      "bergmanH definition: the growth function h(n) = ⌊c · √n⌋",
+      "bergmanH_unbounded theorem: h(n) → ∞",
+      "erdos698_answer theorem: YES answer",
+      "kummer_theorem, lucas_theorem axioms: number-theoretic connections",
+      "erdos_698 theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #698 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some $h(n)\\to \\infty$ such that for all $2\\leq i<j\\leq n/2$\\[\\textrm{gcd}\\left( \\binom{n}{i},\\binom{n}{j}\\right) \\geq h(n)?\\]\n\n\n\nA problem of Erd\\H{o}s and Szekeres, who observed that\\[\\textrm{gcd}\\left( \\binom{n}{i},\\binom{n}{j}\\right) \\geq \\frac{\\binom{n}{i}}{\\binom{j}{i}}\\geq 2^i\\](in particular the greatest common divisor is always $>1$). This inequality is sharp for $i=1$, $j=p$, and $n=2p$.\n\nThis was resolved by Bergman \\cite{Be11}, who proved that for any $2\\leq i<j\\leq n/2$\\[\\textrm{gcd}\\left( \\binom{n}{i},\\binom{n}{j}\\right) \\gg n^{1/2}\\frac{2^i}{i^{3/2}},\\]where the implied constant is absolute.\n\n\n\n\nReferences\n\n\n[Be11] Bergman, George M., On common divisors of multinomial coefficients. Bull. Aust. Math. Soc. (2011), 138--157.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #698**\n\nThis problem concerns GCDs of binomial coefficients in Pascal's triangle.\n\n**Key History:**\n- Erdős & Szekeres (1978): Posed the problem and observed gcd ≥ 2^i\n- They noted this bound is sharp for i=1, j=p, n=2p\n- Bergman (2011): Proved the minimum GCD grows like Ω(√n)\n\n**The Setting:**\nFor valid index pairs 2 ≤ i < j ≤ n/2, we study gcd(C(n,i), C(n,j)).",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs there some h(n) → ∞ such that for all 2 ≤ i < j ≤ n/2:\ngcd(C(n,i), C(n,j)) ≥ h(n)?\n\n**Answer: YES**\n\nBergman (2011) proved: gcd(C(n,i), C(n,j)) ≫ n^{1/2} · 2^i / i^{3/2}\n\n**Key insight:** The minimum GCD (achieved near i=2) grows like √n, confirming unbounded growth.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Binomial Coefficients:** binom n k = Nat.choose n k\n\n2. **GCD Function:** binomGcd n i j = gcd(C(n,i), C(n,j))\n\n3. **Valid Pairs:** isValidPair n i j := 2 ≤ i < j ≤ n/2\n\n4. **Key Results:**\n   - erdos_szekeres_exponential: gcd ≥ 2^i\n   - gcd_always_gt_one: GCD > 1 always\n   - bergman_bound_exists: gcd ≫ n^{1/2} · 2^i / i^{3/2}\n   - erdos698_answer: YES answer",
+    "keyInsights": [
+      "**Erdős-Szekeres Bound:** gcd ≥ C(n,i)/C(j,i) ≥ 2^i",
+      "**Always Non-trivial:** The GCD is always > 1 for valid pairs",
+      "**Sharpness:** The 2^i bound is achieved for i=1, j=p, n=2p",
+      "**Bergman's Improvement:** Minimum GCD grows like Ω(√n)",
+      "**Kummer's Connection:** p-adic valuation via carry counting",
+      "**Lucas' Theorem:** Modular structure of binomial coefficients"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "binom, binomGcd definitions",
+      "startLine": 40,
+      "endLine": 55
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "Erdős-Szekeres Observation",
+      "summary": "isValidPair, erdos_szekeres_bound, exponential bound, gcd_always_gt_one",
+      "startLine": 57,
+      "endLine": 96
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness of Bound",
+      "summary": "sharpness_example axiom",
+      "startLine": 98,
+      "endLine": 110
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "tendsToInfinity, erdos698Question",
+      "startLine": 112,
+      "endLine": 132
+    },
+    {
+      "id": "bergman-theorem",
+      "title": "Bergman's Theorem (2011)",
+      "summary": "bergman_bound_exists, bergman_theorem, min_gcd_growth",
+      "startLine": 134,
+      "endLine": 162
+    },
+    {
+      "id": "resolution",
+      "title": "Resolution of the Problem",
+      "summary": "bergmanH, bergmanH_unbounded, erdos698_answer",
+      "startLine": 164,
+      "endLine": 195
+    },
+    {
+      "id": "implications",
+      "title": "Implications and Generalizations",
+      "summary": "divisibility_structure, pascal_primes, multinomial_generalization",
+      "startLine": 197,
+      "endLine": 231
+    },
+    {
+      "id": "kummer-lucas",
+      "title": "Kummer and Lucas Theorems",
+      "summary": "kummer_theorem, lucas_theorem",
+      "startLine": 233,
+      "endLine": 252
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_698_summary, erdos_698 main theorem",
+      "startLine": 254,
+      "endLine": 287
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #698, posed by Erdős and Szekeres in 1978, asks whether the minimum GCD of binomial coefficients C(n,i) and C(n,j) for valid pairs 2 ≤ i < j ≤ n/2 grows unboundedly. Bergman (2011) proved YES: gcd ≫ n^{1/2} · 2^i / i^{3/2}, showing the minimum grows like Ω(√n).",
+    "implications": "**Connections and Impact**\n\n1. **Pascal's Triangle Structure:** Middle entries share non-trivial common factors\n\n2. **Kummer's Theorem:** p-adic valuations via carry counting\n\n3. **Lucas' Theorem:** Modular structure of binomial coefficients\n\n4. **Multinomial Generalization:** Bergman proved broader results\n\n5. **Number Theory:** Connects to prime factor distribution",
+    "openQuestions": [
+      "Optimal constant in Bergman's bound",
+      "Exact asymptotic behavior of minimum GCD",
+      "Higher-dimensional multinomial extensions",
+      "Connection to p-adic analysis",
+      "Algorithmic computation of the minimum"
+    ]
   }
 }
