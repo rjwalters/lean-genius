@@ -1,33 +1,155 @@
 {
   "id": "erdos-515",
-  "title": "Erdős Problem #515",
+  "title": "Erdős Problem #515: Path Integrals of Inverse Entire Functions",
   "slug": "erdos-515",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function, not a polynomial. Does there exist a locally rectifiable path ... tending to infinity such tha...",
+  "description": "For transcendental entire f, does there exist a path C → ∞ such that ∫_C |f|^{-λ} dz < ∞ for ALL λ > 0? SOLVED: YES by Lewis-Rossi-Weitsman (1984).",
   "meta": {
-    "author": "Unknown",
+    "author": "Lewis-Rossi-Weitsman (1984 solution), Zhang (1977 finite order), Huber (1957 partial)",
     "sourceUrl": "https://erdosproblems.com/515",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos515Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "path-integrals",
+      "subharmonic-functions",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 515,
     "erdosUrl": "https://erdosproblems.com/515",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Differentiable",
+        "description": "Differentiability for entire functions",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.integral",
+        "description": "Lebesgue integration for path integrals",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real powers for |f|^{-λ}",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for paths to infinity",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsEntire definition: entire functions on ℂ",
+      "IsTranscendental definition: non-polynomial entire",
+      "HasFiniteOrder definition: growth bounded by exp(|z|^ρ)",
+      "PathToInfinity definition: continuous path → ∞",
+      "LocallyRectifiable definition: finite length on bounded segments",
+      "IsGoodPath definition: locally rectifiable path to ∞",
+      "pathIntegralInversePower definition: ∫_C |f|^{-λ} dz",
+      "IntegralIsFinite definition: integral converges",
+      "HuberQuestion definition: weaker form (path depends on λ)",
+      "ErdosQuestion definition: stronger form (single path for all λ)",
+      "UniversalQuestion definition: holds for all transcendental f",
+      "huber_1957 axiom: path exists for each λ",
+      "zhang_1977 axiom: single path for finite order",
+      "lewis_rossi_weitsman_1984 axiom: single path for all f",
+      "erdos_515 theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #515 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be an entire function, not a polynomial. Does there exist a locally rectifiable path $C$ tending to infinity such that, for every $\\lambda>0$, the integral\\[\\int_C \\lvert f(z)\\rvert^{-\\lambda} \\mathrm{d}z\\]is finite?\n\n\n\nHuber \\cite{Hu57} proved that for every $\\lambda>0$ there is such a path $C_\\lambda$ such that this integral is finite.\n\nThis is true. The case when $f$ has finite order was proved by Zhang \\cite{Zh77}. The general case was proved by Lewis, Rossi, and Weitsman \\cite{LRW84}, who in fact proved this with $\\lvert f\\rvert$ replaced by $e^u$ where $u$ is any subharmonic function.\n\n\n\n\nReferences\n\n\n[Hu57] Huber, Alfred, On subharmonic functions and differential geometry in the large. Comment. Math. Helv. (1957), 13-72.\n\n[LRW84] Lewis, John and Rossi, John and Weitsman, Allen, On the growth of subharmonic functions along paths. Ark. Mat. (1984), 109--119.\n\n[Zh77] Zhang, Guang Hou, Asymptotic values of entire and meromorphic functions. Kexue Tongbao (1977), 480, 486.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #515**\n\nA problem in complex analysis about integrability along paths.\n\n**Key History:**\n- Huber (1957): Proved that for each λ > 0, a path C_λ exists with finite integral (different path for each λ)\n- Zhang (1977): Proved a single path works when f has finite order\n- Lewis-Rossi-Weitsman (1984): Proved a single path works for ALL transcendental entire functions\n\n**Remarkable Extension:**\nThe LRW result actually holds for e^u where u is any subharmonic function, not just log|f| for entire f.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(z) be an entire function, not a polynomial. Does there exist a locally rectifiable path C tending to infinity such that, for EVERY λ > 0, the integral\n\n∫_C |f(z)|^{-λ} dz\n\nis finite?\n\n**Answer: YES** (Lewis-Rossi-Weitsman, 1984)\n\nA single path C works for all λ > 0 simultaneously.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire, IsTranscendental, HasFiniteOrder\n\n2. **Paths:** Define PathToInfinity, LocallyRectifiable, IsGoodPath\n\n3. **Path Integrals:** Define pathIntegralInversePower, IntegralIsFinite\n\n4. **Questions:** Formalize HuberQuestion (weak) and ErdosQuestion (strong)\n\n5. **Partial Results:** Axiomatize Huber (1957) and Zhang (1977)\n\n6. **Main Result:** Axiomatize Lewis-Rossi-Weitsman (1984)",
+    "keyInsights": [
+      "**Uniformity in λ:** The key difficulty is finding ONE path that works for ALL λ > 0",
+      "**Path Avoids Small Values:** The path must avoid regions where f is small",
+      "**Growth Exploitation:** Entire functions grow rapidly along most rays; the path uses this",
+      "**Subharmonic Generalization:** Result extends beyond entire functions to subharmonic functions",
+      "**Three Stages:** Huber (each λ) → Zhang (finite order) → LRW (all f)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "entire-functions",
+      "title": "Entire Functions",
+      "summary": "IsEntire, IsTranscendental, HasFiniteOrder definitions",
+      "startLine": 42,
+      "endLine": 66
+    },
+    {
+      "id": "paths",
+      "title": "Paths in ℂ",
+      "summary": "PathToInfinity, LocallyRectifiable, IsGoodPath definitions",
+      "startLine": 68,
+      "endLine": 92
+    },
+    {
+      "id": "path-integrals",
+      "title": "Path Integrals",
+      "summary": "pathIntegralInversePower, IntegralIsFinite definitions",
+      "startLine": 94,
+      "endLine": 111
+    },
+    {
+      "id": "questions",
+      "title": "The Questions",
+      "summary": "HuberQuestion, ErdosQuestion, UniversalQuestion definitions",
+      "startLine": 113,
+      "endLine": 144
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "huber_1957, zhang_1977 axioms",
+      "startLine": 146,
+      "endLine": 167
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "summary": "lewis_rossi_weitsman_1984 axiom",
+      "startLine": 169,
+      "endLine": 188
+    },
+    {
+      "id": "insights",
+      "title": "Why This is Surprising",
+      "summary": "Key insights about growth, uniformity, subharmonic functions",
+      "startLine": 190,
+      "endLine": 214
+    },
+    {
+      "id": "construction",
+      "title": "Construction Ideas",
+      "summary": "Path construction, avoiding zeros, growth along rays",
+      "startLine": 216,
+      "endLine": 240
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_515_summary, erdos_515, erdos_515_answer theorems",
+      "startLine": 242,
+      "endLine": 297
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #515 asked whether, for a transcendental entire function f, there exists a locally rectifiable path C → ∞ such that ∫_C |f(z)|^{-λ} dz < ∞ for ALL λ > 0. The answer is YES, proved by Lewis, Rossi, and Weitsman (1984). This completed a progression: Huber (1957) showed a path exists for each λ separately, Zhang (1977) proved a single path works for finite order functions, and LRW proved the general case.",
+    "implications": "**Complex Analysis Connections**\n\n1. **Path Integral Theory:** Understanding integrability of functions along paths\n\n2. **Subharmonic Functions:** Result generalizes to e^u for subharmonic u\n\n3. **Growth Rates:** Connection between function growth and path integrability\n\n4. **Geometric Function Theory:** How paths can be chosen to control integrals\n\n5. **Entire Function Classification:** Different behavior based on order",
+    "openQuestions": [
+      "Explicit construction of the path for specific functions?",
+      "Optimal path (minimizing the integral)?",
+      "Rate of decay of the integral as a function of λ?",
+      "Higher-dimensional analogues?",
+      "Meromorphic function extensions?"
+    ]
   }
 }
