@@ -10753,17 +10753,24 @@
   },
   {
     "id": "erdos-743",
-    "title": "Erdős Problem #743",
+    "title": "Erdős Problem #743: Tree Packing Conjecture",
     "slug": "erdos-743",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a collection of trees such that ... has ... vertices. Can we always write ... as the edge disjoint union of the .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can Kₙ always be decomposed as edge-disjoint union of trees T₂,...,Tₙ where Tₖ has k vertices? Known for stars/paths (Gyárfás-Lehel 1978), bounded degree (JKKO 2019), and small/large trees (Bollobás 1983, Janzer-Montgomery 2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "combinatorics",
+      "trees",
+      "graph-decomposition",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 743,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 12
   },
   {
     "id": "erdos-745",

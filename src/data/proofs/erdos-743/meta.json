@@ -1,33 +1,153 @@
 {
   "id": "erdos-743",
-  "title": "Erdős Problem #743",
+  "title": "Erdős Problem #743: Tree Packing Conjecture",
   "slug": "erdos-743",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a collection of trees such that ... has ... vertices. Can we always write ... as the edge disjoint union of the .....",
+  "description": "Can Kₙ always be decomposed as edge-disjoint union of trees T₂,...,Tₙ where Tₖ has k vertices? Known for stars/paths (Gyárfás-Lehel 1978), bounded degree (JKKO 2019), and small/large trees (Bollobás 1983, Janzer-Montgomery 2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Gyárfás-Lehel (1978), Bollobás (1983), JKKO (2019), Janzer-Montgomery (2024)",
     "sourceUrl": "https://erdosproblems.com/743",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos743Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "combinatorics",
+      "trees",
+      "graph-decomposition",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 743,
     "erdosUrl": "https://erdosproblems.com/743",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite set summation",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Tree structure with connected, edgeCount, acyclic properties",
+      "TreeCollection (n) for T₂,...,Tₙ",
+      "EdgeDisjointPacking predicate",
+      "completeGraphEdges and totalTreeEdges functions",
+      "edge_counts_match theorem: necessary condition",
+      "IsStar, IsPath, IsCaterpillar predicates",
+      "BoundedDegreeCollection definition",
+      "TreePackingConjecture formal statement",
+      "gyarfas_lehel_stars and gyarfas_lehel_stars_paths axioms",
+      "fishburn_small_n axiom: n ≤ 9 verified",
+      "bollobas_greedy axiom: small trees",
+      "jkko_bounded_degree axiom: bounded degree case",
+      "allen_et_al_sublinear_degree axiom: cn/log n degree",
+      "janzer_montgomery_large_trees axiom: large trees",
+      "RingelConjecture definition and ringel_solved",
+      "erdos_743_summary combining all results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #743 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $T_2,\\ldots,T_n$ be a collection of trees such that $T_k$ has $k$ vertices. Can we always write $K_n$ as the edge disjoint union of the $T_k$?\n\n\n\nA conjecture of Gy\\'{a}rf\\'{a}s, known as the tree packing conjecture.\n\nGy\\'{a}rf\\'{a}s and Lehel \\cite{GyLe78} proved that this holds if all but at most $2$ of the trees are stars, or if all the trees are stars or paths. Fishburn \\cite{Fi83} proved this for $n\\leq 9$. Bollob\\'{a}s \\cite{Bo83} proved that the smallest $\\lfloor n/\\sqrt{2}\\rfloor$ many trees can always be packed greedily into $K_n$.\n\nJoos, Kim, K\\\"{u}hn, and Osthus \\cite{JKKO19} proved that this conjecture holds when the trees have bounded maximum degree. Allen, B\\\"{o}ttcher, Clemens, Hladky, Piguet, and Taraz \\cite{ABCHPT21} proved that this conjecture holds when all the trees have maximum degree $\\leq c\\frac{n}{\\log n}$ for some constant $c>0$.\n\nJanzer and Montgomery \\cite{JaMo24} have proved that there exists some $c>0$ such that the largest $cn$ trees can be packed into $K_n$.\n\n\n\n\nReferences\n\n\n[ABCHPT21] Allen, Peter and B\\\"ottcher, Julia and Clemens, Dennis and Hladky, J. and D. Piguet and Taraz, Anusch, The tree packing conjecture for trees of almost linear maximum degree. arXiv:2106.11720 (2021).\n\n[Bo83] Bollob\\'{a}s, B\\'{e}la, Some remarks on packing trees. Discrete Math. (1983), 203-204.\n\n[Fi83] Fishburn, P. C., Balanced integer arrays: a matrix packing theorem. J. Combin. Theory Ser. A (1983), 98-101.\n\n[GyLe78] Gy\\'{a}rf\\'{a}s, A. and Lehel, J., Packing trees of different order into {$K\\sb{n}$}. (1978), 463-469.\n\n[JKKO19] Joos, Felix and Kim, Jaehoon and K\\\"{u}hn, Daniela and Osthus,\nDeryk, Optimal packings of bounded degree trees. J. Eur. Math. Soc. (JEMS) (2019), 3573-3647.\n\n[JaMo24] Janzer, B. and R. Montgomery, Packing the largest trees in the tree packing conjecture. arXiv:2403.10515 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #743: Tree Packing Conjecture**\n\nThis famous conjecture of Gyárfás and Lehel asks whether the complete graph Kₙ can be decomposed into trees T₂, T₃, ..., Tₙ where Tₖ has exactly k vertices.\n\n**Key History:**\n- Gyárfás-Lehel (1978): Posed the conjecture; proved stars/paths case\n- Fishburn (1983): Verified for n ≤ 9\n- Bollobás (1983): Proved smallest ⌊n/√2⌋ trees can be packed greedily\n- JKKO (2019): Proved for bounded degree trees\n- Allen et al. (2021): Proved for max degree ≤ cn/log n\n- Janzer-Montgomery (2024): Proved largest cn trees can be packed\n\n**Edge Count Verification:**\nThe conjecture is consistent because:\nΣ(k-1) for k=2 to n = 1+2+...+(n-1) = n(n-1)/2 = |E(Kₙ)|",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $T_2, T_3, \\ldots, T_n$ be a collection of trees where $T_k$ has exactly $k$ vertices. Can we always write $K_n$ as the edge-disjoint union of the $T_k$?\n\n**Known Special Cases:**\n- Stars and paths: Yes (Gyárfás-Lehel 1978)\n- All but ≤2 trees are stars: Yes (Gyárfás-Lehel 1978)\n- n ≤ 9: Yes (Fishburn 1983)\n- Bounded max degree Δ: Yes for large n (JKKO 2019)\n- Max degree ≤ cn/log n: Yes (Allen et al. 2021)\n\n**Partial Packing:**\n- Smallest ⌊n/√2⌋ trees: Can be packed greedily (Bollobás 1983)\n- Largest cn trees: Can be packed (Janzer-Montgomery 2024)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Structures:**\n   - Tree (k): Structure with connected, edgeCount, acyclic\n   - TreeCollection (n): Collection T₂,...,Tₙ\n   - EdgeDisjointPacking: Can pack into Kₙ\n\n2. **Special Tree Types:**\n   - IsStar, IsPath, IsCaterpillar predicates\n   - BoundedDegreeCollection for degree bounds\n\n3. **Key Results as Axioms:**\n   - gyarfas_lehel_stars_paths, fishburn_small_n\n   - bollobas_greedy, jkko_bounded_degree\n   - janzer_montgomery_large_trees\n\n4. **Verification:**\n   - edge_counts_match: Necessary condition\n   - complete_graph_edges_small: Concrete values",
+    "keyInsights": [
+      "**Edge Count:** The total edges in T₂,...,Tₙ exactly equals |E(Kₙ)| = n(n-1)/2, a necessary condition",
+      "**Stars/Paths:** The simplest trees (stars and paths) satisfy the conjecture, suggesting structure matters",
+      "**Degree Constraint:** Bounded degree trees are easier; high-degree vertices create packing challenges",
+      "**Greedy vs Full:** Bollobás shows greedy works for small trees; Janzer-Montgomery handles large trees separately",
+      "**Middle Gap:** Trees of intermediate size (roughly 0.7n to (1-c)n vertices) remain the hardest case"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Tree, TreeCollection, EdgeDisjointPacking, completeGraphEdges",
+      "startLine": 40,
+      "endLine": 76
+    },
+    {
+      "id": "edge-count",
+      "title": "Edge Count Verification",
+      "summary": "totalTreeEdges, sum_tree_edges, edge_counts_match",
+      "startLine": 78,
+      "endLine": 106
+    },
+    {
+      "id": "tree-types",
+      "title": "Special Tree Types",
+      "summary": "IsStar, IsPath, maxDegree, BoundedDegreeCollection",
+      "startLine": 108,
+      "endLine": 139
+    },
+    {
+      "id": "conjecture",
+      "title": "Tree Packing Conjecture",
+      "summary": "TreePackingConjecture formal statement",
+      "startLine": 141,
+      "endLine": 151
+    },
+    {
+      "id": "gyarfas-lehel",
+      "title": "Gyárfás-Lehel Results",
+      "summary": "gyarfas_lehel_stars, gyarfas_lehel_stars_paths axioms",
+      "startLine": 153,
+      "endLine": 173
+    },
+    {
+      "id": "small-greedy",
+      "title": "Small Cases and Greedy",
+      "summary": "fishburn_small_n, bollobas_greedy axioms",
+      "startLine": 175,
+      "endLine": 201
+    },
+    {
+      "id": "bounded-degree",
+      "title": "Bounded Degree Results",
+      "summary": "jkko_bounded_degree, allen_et_al_sublinear_degree",
+      "startLine": 203,
+      "endLine": 225
+    },
+    {
+      "id": "large-trees",
+      "title": "Packing Large Trees",
+      "summary": "janzer_montgomery_large_trees, middle_trees_remain",
+      "startLine": 227,
+      "endLine": 251
+    },
+    {
+      "id": "ringel",
+      "title": "Ringel's Conjecture",
+      "summary": "RingelConjecture definition, ringel_solved",
+      "startLine": 272,
+      "endLine": 295
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_743_summary combining all results",
+      "startLine": 321,
+      "endLine": 359
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #743 (Tree Packing Conjecture) asks whether Kₙ can be decomposed into trees T₂,...,Tₙ where Tₖ has k vertices. Major partial results: Gyárfás-Lehel (1978) proved stars/paths; Fishburn (1983) verified n≤9; Bollobás (1983) packs small trees greedily; JKKO (2019) handles bounded degree; Allen et al. (2021) handles sublinear degree; Janzer-Montgomery (2024) packs large trees. The full conjecture remains open.",
+    "implications": "**Connections to Graph Theory**\n\n1. **Graph Decomposition:** Part of the broader theory of decomposing graphs into prescribed subgraphs\n\n2. **Ringel's Conjecture:** Related problem about decomposing K_{2n+1} into copies of a single tree (recently solved)\n\n3. **Graceful Labeling:** Connected to whether trees have graceful labelings\n\n4. **Extremal Combinatorics:** Techniques from regularity methods and probabilistic combinatorics\n\n5. **Algorithmic Aspects:** Efficient algorithms exist for special cases like stars and paths",
+    "openQuestions": [
+      "Prove the full Tree Packing Conjecture",
+      "Handle trees of intermediate size (roughly 0.7n to (1-c)n vertices)",
+      "Improve the constant c in Janzer-Montgomery's result",
+      "Find structural characterizations of packable collections",
+      "Extend to random tree collections"
+    ]
   }
 }
