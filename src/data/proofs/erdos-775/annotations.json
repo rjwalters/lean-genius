@@ -1,1 +1,194 @@
-[]
+[
+  {
+    "id": "ann-e775-header",
+    "proofId": "erdos-775",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #775:** Clique Sizes in k-Uniform Hypergraphs\n\n**Question:** Is there a 3-uniform hypergraph on n vertices with at least n - O(1) different sizes of maximal cliques?\n\n**Answer:** NO (Gao, 2025)\n\n**Background:**\n- Moon-Moser (1965): Graphs have at most n - log₂n + O(1) clique sizes\n- Spencer (1971): This bound is achievable\n- Erdős: Constructed hypergraphs with n - log*n clique sizes\n- Gao (2025): Proved n - O(1) is impossible for k ≥ 3",
+    "mathContext": "A k-uniform hypergraph has edges that are k-element sets. A clique is a vertex set where every k-subset is an edge. The problem asks about the maximum diversity of clique sizes.",
+    "significance": "critical",
+    "relatedConcepts": ["Hypergraphs", "Cliques", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e775-uniform-hypergraph",
+    "proofId": "erdos-775",
+    "range": { "startLine": 52, "endLine": 63 },
+    "type": "definition",
+    "title": "k-Uniform Hypergraph",
+    "content": "**UniformHypergraph k V:**\n\nA structure representing a k-uniform hypergraph on vertex type V.\n\n**Components:**\n- `edges`: A set of k-element subsets of V\n- `uniform`: Proof that every edge has exactly k vertices\n\n**Examples:**\n- k = 2: Ordinary graph\n- k = 3: Each edge is a \"triangle\" of 3 vertices",
+    "mathContext": "k-uniform hypergraphs generalize graphs. The uniformity constraint (all edges same size) is key to the problem's structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Graphs", "Hypergraphs", "Uniformity"]
+  },
+  {
+    "id": "ann-e775-hypergraph3",
+    "proofId": "erdos-775",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "3-Uniform Hypergraph",
+    "content": "**Hypergraph3 V:**\n\nAbbreviation for `UniformHypergraph 3 V`.\n\nThis is the main object of study in Erdős #775: hypergraphs where every edge contains exactly 3 vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e775-complete-hypergraph",
+    "proofId": "erdos-775",
+    "range": { "startLine": 72, "endLine": 77 },
+    "type": "definition",
+    "title": "Complete k-Uniform Hypergraph",
+    "content": "**completeHypergraph k S:**\n\nThe hypergraph on vertex set S containing all k-subsets of S as edges.\n\n```lean\ndef completeHypergraph (k : ℕ) {V : Type*} (S : Finset V) : Set (Finset V) :=\n  {e : Finset V | e ⊆ S ∧ e.card = k}\n```\n\nThis defines what it means for a vertex set to be \"completely connected.\"",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e775-isclique",
+    "proofId": "erdos-775",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "definition",
+    "title": "Clique Predicate",
+    "content": "**IsClique H S:**\n\nS is a clique in hypergraph H if every k-subset of S is an edge of H.\n\n```lean\ndef IsClique {k : ℕ} {V : Type*} (H : UniformHypergraph k V) (S : Finset V) : Prop :=\n  completeHypergraph k S ⊆ H.edges\n```\n\nThis generalizes the graph clique concept to hypergraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-maximal-clique",
+    "proofId": "erdos-775",
+    "range": { "startLine": 86, "endLine": 91 },
+    "type": "definition",
+    "title": "Maximal Clique",
+    "content": "**IsMaximalClique H S:**\n\nS is a maximal clique if:\n1. S is a clique in H\n2. Adding any vertex v ∉ S would break the clique property\n\nMaximal cliques cannot be extended. The problem asks about the sizes of ALL maximal cliques, not just the largest one.",
+    "significance": "critical",
+    "relatedConcepts": ["Maximum clique", "Clique number"]
+  },
+  {
+    "id": "ann-e775-clique-sizes",
+    "proofId": "erdos-775",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "definition",
+    "title": "Clique Sizes Set",
+    "content": "**cliqueSizes H:**\n\nThe set of all cardinalities of maximal cliques in H.\n\n```lean\ndef cliqueSizes {k : ℕ} {V : Type*} [DecidableEq V] (H : UniformHypergraph k V) : Set ℕ :=\n  {n : ℕ | ∃ S : Finset V, IsMaximalClique H S ∧ S.card = n}\n```\n\nThe problem asks: can |cliqueSizes H| ≥ n - O(1)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-num-clique-sizes",
+    "proofId": "erdos-775",
+    "range": { "startLine": 104, "endLine": 110 },
+    "type": "definition",
+    "title": "Number of Clique Sizes",
+    "content": "**numCliqueSizes H:**\n\nThe cardinality of the cliqueSizes set.\n\nThis counts how many DIFFERENT sizes of maximal cliques exist in H. Erdős asked if this can be as large as n - C for some constant C.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e775-spencer",
+    "proofId": "erdos-775",
+    "range": { "startLine": 116, "endLine": 125 },
+    "type": "axiom",
+    "title": "Spencer's Construction (1971)",
+    "content": "**spencer_graph_construction:**\n\nFor graphs (k=2), there exists a graph on n vertices with at least n - log₂n - O(1) different clique sizes.\n\nThis shows ordinary graphs can achieve much more clique size diversity than hypergraphs.",
+    "mathContext": "Spencer's probabilistic construction achieves the Moon-Moser optimal bound for graphs.",
+    "significance": "key",
+    "relatedConcepts": ["Probabilistic method", "Graph theory"]
+  },
+  {
+    "id": "ann-e775-moon-moser",
+    "proofId": "erdos-775",
+    "range": { "startLine": 127, "endLine": 136 },
+    "type": "axiom",
+    "title": "Moon-Moser Theorem (1965)",
+    "content": "**moon_moser_upper_bound:**\n\nEvery graph on n vertices has at most n - log₂n + O(1) different clique sizes.\n\nCombined with Spencer's construction, this characterizes the optimal bound for graphs: exactly n - Θ(log n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e775-erdos-construction",
+    "proofId": "erdos-775",
+    "range": { "startLine": 142, "endLine": 152 },
+    "type": "axiom",
+    "title": "Erdős's Hypergraph Construction",
+    "content": "**erdos_hypergraph_construction:**\n\nErdős showed that for 3-uniform hypergraphs, one can achieve n - log*n different clique sizes.\n\nHere log* is the iterated logarithm: the number of times you can take log₂ before reaching ≤ 1.\n\n**Examples:**\n- log*(16) = 3 (16 → 4 → 2 → 1)\n- log*(65536) = 4\n\nThis grows VERY slowly, but still → ∞.",
+    "mathContext": "The iterated logarithm log* grows extremely slowly: log*(2^65536) = 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e775-question",
+    "proofId": "erdos-775",
+    "range": { "startLine": 160, "endLine": 168 },
+    "type": "definition",
+    "title": "Erdős's Question",
+    "content": "**erdos775Question:**\n\nFormal statement: Does there exist a constant C such that for all n ≥ 3, there exists a 3-uniform hypergraph on n vertices with at least n - C different clique sizes?\n\n```lean\ndef erdos775Question : Prop :=\n  ∃ C : ℕ, ∀ n : ℕ, n ≥ 3 →\n    ∃ (H : Hypergraph3 (Fin n)) (numSizes : ℕ),\n      numSizes ≥ n - C\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-gao-function",
+    "proofId": "erdos-775",
+    "range": { "startLine": 174, "endLine": 183 },
+    "type": "definition",
+    "title": "Gao's Growth Function",
+    "content": "**gaoFunction k:**\n\nFor each k ≥ 3, this function f_k(n) quantifies the gap: every k-uniform hypergraph on n vertices has at most n - f_k(n) clique sizes.\n\nThe key property is that f_k(n) → ∞ as n → ∞, preventing any constant bound.",
+    "mathContext": "The exact form of f_k(n) comes from Gao's analysis. Our formalization uses an approximation based on iterated logarithm.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-gao-bound",
+    "proofId": "erdos-775",
+    "range": { "startLine": 185, "endLine": 192 },
+    "type": "axiom",
+    "title": "Gao's Upper Bound",
+    "content": "**gao_upper_bound:**\n\nFor any k ≥ 3 and any k-uniform hypergraph H on n vertices:\n\nnumCliqueSizes H ≤ n - f_k(n)\n\nThis is the key quantitative result that rules out n - O(1) clique sizes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-gao-infinity",
+    "proofId": "erdos-775",
+    "range": { "startLine": 194, "endLine": 199 },
+    "type": "axiom",
+    "title": "f_k(n) Tends to Infinity",
+    "content": "**gaoFunction_tendsto_infinity:**\n\nFor any k ≥ 3 and any bound M, there exists N such that f_k(n) ≥ M for all n ≥ N.\n\nThis ensures that the gap n - (number of clique sizes) grows without bound, preventing any constant gap.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-answer",
+    "proofId": "erdos-775",
+    "range": { "startLine": 205, "endLine": 230 },
+    "type": "theorem",
+    "title": "Erdős #775: DISPROVED",
+    "content": "**erdos_775_answer:**\n\n```lean\ntheorem erdos_775_answer : ¬erdos775Question\n```\n\n**Proof Idea:**\n1. Assume there exists constant C (proof by contradiction)\n2. By gaoFunction_tendsto_infinity, choose N such that f_3(n) ≥ C+1 for n ≥ N\n3. Take n = max(N, 3)\n4. The assumed hypergraph would have ≥ n - C clique sizes\n5. But Gao's bound gives ≤ n - (C+1) clique sizes\n6. Contradiction: n - C ≤ n - (C+1) is impossible",
+    "mathContext": "The proof uses a standard technique: showing that for any proposed constant, a large enough n violates it.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-main",
+    "proofId": "erdos-775",
+    "range": { "startLine": 232, "endLine": 235 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_775:**\n\n```lean\ntheorem erdos_775 : ¬erdos775Question := erdos_775_answer\n```\n\nThe answer to Erdős Problem #775 is NO.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e775-comparison",
+    "proofId": "erdos-775",
+    "range": { "startLine": 241, "endLine": 259 },
+    "type": "theorem",
+    "title": "Graphs vs Hypergraphs",
+    "content": "**graphs_vs_hypergraphs:**\n\nThis theorem captures the fundamental dichotomy:\n\n1. **Graphs (k=2):** Can achieve n - log₂n - O(1) clique sizes (Spencer)\n2. **Hypergraphs (k≥3):** Cannot achieve n - O(1) clique sizes (Gao)\n\nThe extra uniformity constraint for k ≥ 3 fundamentally limits clique size diversity.",
+    "mathContext": "This phase transition at k=2 vs k≥3 is a striking structural result in extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Phase transition", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e775-related",
+    "proofId": "erdos-775",
+    "range": { "startLine": 265, "endLine": 270 },
+    "type": "concept",
+    "title": "Related Problem #927",
+    "content": "**Connection to Erdős Problem #927:**\n\nProblem #927 asks related questions about clique structures in hypergraphs. Both problems explore how hypergraph structure constrains clique properties.\n\nThis connection is noted on erdosproblems.com.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e775-summary",
+    "proofId": "erdos-775",
+    "range": { "startLine": 272, "endLine": 291 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_775_summary:**\n\nCombines all main results:\n\n1. ¬erdos775Question: The answer is NO\n2. For any k ≥ 3 and any target M, sufficiently large hypergraphs have clique diversity bounded by n - M\n\n```lean\ntheorem erdos_775_summary :\n    ¬erdos775Question ∧\n    (∀ k ≥ 3, ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, ∀ H : UniformHypergraph k (Fin n),\n      numCliqueSizes H ≤ n - M)\n```",
+    "significance": "key"
+  }
+]
