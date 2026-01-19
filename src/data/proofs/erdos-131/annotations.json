@@ -1,1 +1,158 @@
-[]
+[
+  {
+    "id": "ann-131-statement",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 7,
+      "endLine": 12
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Let F(N) be the maximum size of A ⊆ {1,...,N} where no element divides the sum of other distinct elements. The original question 'Is F(N) > N^{1/2-o(1)}?' was answered NO.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-nondiv",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Non-Dividing Set",
+    "content": "A set A is non-dividing if for every a ∈ A, we have a ∤ Σ(S) for all subsets S ⊆ A\\{a} with |S| ≥ 2. No element can divide any sum of other elements.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-nonavg",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 59,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Non-Averaging Set",
+    "content": "A set is non-averaging if no element equals the average of any subset of other elements. This connects to Problem #186.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-131-implies",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 66,
+      "endLine": 77
+    },
+    "type": "theorem",
+    "title": "Non-dividing ⟹ Non-averaging",
+    "content": "Every non-dividing set is non-averaging. If a = avg(S), then a | Σ(S). This connection allows transferring bounds from non-averaging to non-dividing.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-f-def",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "The Function F(N)",
+    "content": "F(N) is the maximum cardinality of a non-dividing subset of {1,...,N}. This is the central object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-elrss",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 93,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "ELRSS Upper Bound",
+    "content": "ELRSS (1999): F(N) < 3√N + 1. This was the first strong upper bound, showing F grows at most like √N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-131-pham",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 98,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "Pham-Zakharov Bound",
+    "content": "Pham-Zakharov (2024): F(N) ≤ N^{1/4+o(1)}. This resolved the original question negatively, via the connection to non-averaging sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-resolved",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 105,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Original Question Resolved",
+    "content": "The original question 'Is F(N) > N^{1/2-o(1)}?' is answered NO. Since N^{1/4} < N^{1/2-ε} for large N, the Pham-Zakharov bound rules out this growth rate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-csaba",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 114,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "Csaba Lower Bound",
+    "content": "Csaba: F(N) ≫ N^{1/5}. This construction provides a polynomial lower bound, showing non-trivial non-dividing sets exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-131-straus",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 119,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Straus Lower Bound",
+    "content": "Straus: F(N) > exp(c√(log N)) where c = √(2/log 2) ≈ 1.7. This disproved Erdős's original conjecture that F(N) < (log N)^O(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-gap",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 134,
+      "endLine": 146
+    },
+    "type": "insight",
+    "title": "The Open Gap",
+    "content": "Current gap: exp(c√(log N)) ≤ F(N) ≤ N^{1/4+o(1)}. This is a massive gap between subexponential and polynomial growth. Closing it remains the main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-131-log",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 148,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "Erdős's Original Conjecture False",
+    "content": "Erdős originally thought F(N) < (log N)^O(1). Straus disproved this: exp(√(log N)) grows faster than any polynomial in log N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-131-connection",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 196,
+      "endLine": 206
+    },
+    "type": "insight",
+    "title": "Connection to Non-Averaging",
+    "content": "F(N) ≤ g(N) where g(N) is the non-averaging function from Problem #186. This allows Pham-Zakharov's bound on g(N) to apply to F(N).",
+    "significance": "key"
+  }
+]
