@@ -1,1 +1,175 @@
-[]
+[
+  {
+    "id": "ann-e714-header",
+    "proofId": "erdos-714",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #714: The Zarankiewicz Problem**\n\nIs ex(n; K_{r,r}) >> n^{2-1/r}?\n\nThis asks if the Kovari-Sos-Turan upper bound is tight.\n\n**Status:** Proved for r=2,3; OPEN for r >= 4.",
+    "mathContext": "One of the most famous open problems in extremal graph theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal graph theory", "Bipartite graphs", "Turan-type problems"]
+  },
+  {
+    "id": "ann-e714-bipartite",
+    "proofId": "erdos-714",
+    "range": { "startLine": 42, "endLine": 50 },
+    "type": "definition",
+    "title": "Complete Bipartite Subgraph",
+    "content": "**containsCompleteBipartite:**\n\nG contains K_{r,s} if there exist disjoint sets A, B with |A|=r, |B|=s, and all edges between A and B present.\n\n```lean\ndef containsCompleteBipartite (G : SimpleGraph V) [Fintype V] (r s : N) : Prop :=\n  exists (A B : Finset V), A.card = r and B.card = s and Disjoint A B and\n    forall a in A, forall b in B, G.Adj a b\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e714-krr-free",
+    "proofId": "erdos-714",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "definition",
+    "title": "K_{r,r}-Free Property",
+    "content": "**isKrrFree:**\n\nA graph is K_{r,r}-free if it contains no complete bipartite K_{r,r}.\n\n```lean\ndef isKrrFree (G : SimpleGraph V) [Fintype V] (r : N) : Prop :=\n  not containsCompleteBipartite G r r\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e714-extremal",
+    "proofId": "erdos-714",
+    "range": { "startLine": 68, "endLine": 76 },
+    "type": "definition",
+    "title": "Extremal Function for K_{r,r}",
+    "content": "**exKrr:**\n\nex(n; K_{r,r}) = max{|E(G)| : G has n vertices, no K_{r,r}}\n\n```lean\nnoncomputable def exKrr (n r : N) : N :=\n  sSup {m : N | exists V G, card V = n and isKrrFree G r and edgeCount G = m}\n```\n\nThis is the central object in the Zarankiewicz problem.",
+    "mathContext": "The extremal function measures the maximum edge density avoiding K_{r,r}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e714-kst",
+    "proofId": "erdos-714",
+    "range": { "startLine": 81, "endLine": 93 },
+    "type": "axiom",
+    "title": "Kovari-Sos-Turan Upper Bound",
+    "content": "**kovari_sos_turan:**\n\nFor all r >= 2: ex(n; K_{r,r}) <= c * n^{2-1/r}\n\nMore precisely: ex(n; K_{r,r}) <= (1/2)(r-1)^{1/r} * n^{2-1/r} + O(n)\n\nThis 1954 theorem is the fundamental upper bound.",
+    "mathContext": "Proved by double counting: count pairs (v, S) where S is an r-subset of neighbors of v.",
+    "significance": "critical",
+    "relatedConcepts": ["Double counting", "Counting arguments"]
+  },
+  {
+    "id": "ann-e714-exponent",
+    "proofId": "erdos-714",
+    "range": { "startLine": 94, "endLine": 102 },
+    "type": "definition",
+    "title": "The KST Exponent",
+    "content": "**kstExponent:**\n\nThe exponent 2 - 1/r:\n- r=2: 3/2 = 1.5\n- r=3: 5/3 = 1.667\n- r=4: 7/4 = 1.75\n- As r -> infinity: exponent -> 2",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e714-conjecture",
+    "proofId": "erdos-714",
+    "range": { "startLine": 107, "endLine": 116 },
+    "type": "definition",
+    "title": "The Erdos Conjecture",
+    "content": "**erdosConjectureLowerBound:**\n\nFor all r >= 2: ex(n; K_{r,r}) >> n^{2-1/r}\n\n```lean\ndef erdosConjectureLowerBound (r : N) : Prop :=\n  exists c > 0, forall n >= 1, exKrr n r >= c * n^{2-1/r}\n```\n\nThis asks if the KST upper bound is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e714-r2",
+    "proofId": "erdos-714",
+    "range": { "startLine": 117, "endLine": 129 },
+    "type": "axiom",
+    "title": "Complete Solution for r=2",
+    "content": "**zarankiewicz_r2:**\n\nex(n; K_{2,2}) = (1/2 + o(1)) * n^{3/2}\n\nSince K_{2,2} = C_4 (the 4-cycle), this follows from the Erdos-Klein-Reiman theorem.\n\nExtremal graphs come from incidence graphs of projective planes.",
+    "mathContext": "The Petersen graph and friends achieve the bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Projective planes", "C_4-free graphs", "Problem #768"]
+  },
+  {
+    "id": "ann-e714-r3",
+    "proofId": "erdos-714",
+    "range": { "startLine": 130, "endLine": 144 },
+    "type": "axiom",
+    "title": "Brown's Theorem for r=3",
+    "content": "**brown_theorem:**\n\nex(n; K_{3,3}) >= c * n^{5/3}\n\nBrown (1966) and independently Erdos-Renyi-Sos (1966) proved this.\n\nThe construction uses generalized hexagons from incidence geometry.",
+    "mathContext": "Uses algebraic constructions over finite fields.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e714-r2-proof",
+    "proofId": "erdos-714",
+    "range": { "startLine": 145, "endLine": 159 },
+    "type": "theorem",
+    "title": "Conjecture Proved for r=2",
+    "content": "**erdos_714_r2:**\n\n```lean\ntheorem erdos_714_r2 : erdosConjectureLowerBound 2 := by\n  unfold erdosConjectureLowerBound\n  obtain (c1, c2, hc1, _, hbounds) := zarankiewicz_r2\n  use c1\n  ...\n```\n\nFollows from zarankiewicz_r2 since 3/2 = 2 - 1/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e714-r3-proof",
+    "proofId": "erdos-714",
+    "range": { "startLine": 160, "endLine": 171 },
+    "type": "theorem",
+    "title": "Conjecture Proved for r=3",
+    "content": "**erdos_714_r3:**\n\nFollows from Brown's theorem since 5/3 = 2 - 1/3.\n\nThe construction uses generalized hexagons.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e714-r4-open",
+    "proofId": "erdos-714",
+    "range": { "startLine": 176, "endLine": 183 },
+    "type": "axiom",
+    "title": "r=4 Case: OPEN",
+    "content": "**r4_open:**\n\nNo construction achieving ex(n; K_{4,4}) >> n^{7/4} is known.\n\nThe best known lower bound is strictly weaker than n^{7/4}.\n\nThis is one of the most famous open problems in extremal combinatorics.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e714-projective",
+    "proofId": "erdos-714",
+    "range": { "startLine": 196, "endLine": 206 },
+    "type": "axiom",
+    "title": "Projective Plane Construction",
+    "content": "**projective_plane_construction:**\n\nFor r=2, extremal graphs come from incidence graphs of projective planes PG(2,q).\n\nIf q is prime, the incidence graph has:\n- q^2 + q + 1 vertices\n- (q+1)(q^2+q+1) edges\n- No K_{2,2} subgraph",
+    "mathContext": "Projective planes over finite fields provide optimal K_{2,2}-free graphs.",
+    "significance": "key",
+    "relatedConcepts": ["Finite geometry", "Projective planes"]
+  },
+  {
+    "id": "ann-e714-hexagon",
+    "proofId": "erdos-714",
+    "range": { "startLine": 207, "endLine": 213 },
+    "type": "axiom",
+    "title": "Generalized Hexagons",
+    "content": "**generalized_hexagon_construction:**\n\nFor r=3, constructions use generalized hexagons (girth-12 cages from incidence geometry).\n\nThese algebraic constructions give K_{3,3}-free graphs with n^{5/3} edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e714-c4",
+    "proofId": "erdos-714",
+    "range": { "startLine": 225, "endLine": 234 },
+    "type": "theorem",
+    "title": "K_{2,2} = C_4",
+    "content": "**k22_equals_c4:**\n\nK_{2,2} is exactly the 4-cycle C_4.\n\nSo ex(n; K_{2,2}) = ex(n; C_4), connecting this problem to Problem #768.",
+    "mathContext": "Both ask for maximum edges in a graph with no 4-cycle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e714-matrix",
+    "proofId": "erdos-714",
+    "range": { "startLine": 241, "endLine": 248 },
+    "type": "axiom",
+    "title": "Matrix Formulation",
+    "content": "**zarankiewicz_matrix_formulation:**\n\nThe Zarankiewicz problem z(m,n;r,s) asks for the maximum 1s in an m x n 0-1 matrix with no all-1s r x s submatrix.\n\nex(n; K_{r,r}) = z(n,n;r,r)/2 approximately.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e714-summary",
+    "proofId": "erdos-714",
+    "range": { "startLine": 253, "endLine": 268 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_714_summary:**\n\n```lean\ntheorem erdos_714_summary :\n    erdosConjectureLowerBound 2 and\n    erdosConjectureLowerBound 3\n```\n\n1. r=2: SOLVED (exact asymptotics)\n2. r=3: SOLVED (Brown 1966)\n3. r>=4: OPEN",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e714-status",
+    "proofId": "erdos-714",
+    "range": { "startLine": 269, "endLine": 288 },
+    "type": "theorem",
+    "title": "Zarankiewicz Problem Status",
+    "content": "**zarankiewicz_status:**\n\nCombines all results:\n1. KST upper bound for all r >= 2\n2. Lower bound matching upper bound for r=2,3\n3. Gap remains for r >= 4\n\nOne of the most famous open problems in extremal combinatorics.",
+    "significance": "critical"
+  }
+]
