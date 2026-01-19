@@ -1,33 +1,84 @@
 {
   "id": "erdos-701",
-  "title": "Erdős Problem #701",
+  "title": "Chvátal's Conjecture on Intersecting Families",
   "slug": "erdos-701",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...B\\subseteq A\\in...B\\in ...x...'\\subseteq ......\\{1,\\ldots,n\\}...A\\in ...f:B\\to A...x\\leq f(x)...x\\in B...B\\in ..........",
+  "description": "Let F be a hereditary family. There exists x such that every intersecting subfamily F' has |F'| ≤ |{A ∈ F : x ∈ A}|. Status: OPEN with partial results.",
   "meta": {
-    "author": "Unknown",
+    "author": "Chvátal",
     "sourceUrl": "https://erdosproblems.com/701",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos701Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "intersecting-families",
+      "extremal-set-theory"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 701,
     "erdosUrl": "https://erdosproblems.com/701",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #701 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathcal{F}$ be a family of sets closed under taking subsets (i.e. if $B\\subseteq A\\in\\mathcal{F}$ then $B\\in \\mathcal{F}$). There exists some element $x$ such that whenever $\\mathcal{F}'\\subseteq \\mathcal{F}$ is an intersecting subfamily we have\\[\\lvert \\mathcal{F}'\\rvert \\leq \\lvert \\{ A\\in \\mathcal{F} : x\\in A\\}\\rvert.\\]\n\n\n\nA problem of Chv\\'{a}tal \\cite{Ch74}, who proved it replacing the closed under subsets condition with the (stronger) condition that, assuming all sets in $\\mathcal{F}$ are subsets of $\\{1,\\ldots,n\\}$, whenever $A\\in \\mathcal{F}$ and there is an injection $f:B\\to A$ such that $x\\leq f(x)$ for all $x\\in B$, then $B\\in \\mathcal{F}$.\n\nSterboul \\cite{St74} proved this when, letting $\\mathcal{G}$ be the maximal sets (under inclusion) in $\\mathcal{F}$, all sets in $\\mathcal{G}$ have the same size, $\\lvert A\\cap B\\rvert\\leq 1$ for all $A\\neq B\\in \\mathcal{G}$, and at least two sets in $\\mathcal{G}$ have non-empty intersection.\n\nFrankl and Kupavskii \\cite{FrKu23} have proved this when $\\mathcal{F}$ has covering number $2$.\n\nBorg \\cite{Bo11} has proposed a weighted generalisation of this conjecture, which he proves under certain additional assumptions.\n\n\n\n\nReferences\n\n\n[Bo11] Borg, Peter, On Chv\\'{a}tal's conjecture and a conjecture on families of\nsigned sets. European J. Combin. (2011), 140-145.\n\n[Ch74] Chv\\'{a}tal, V., Intersecting families of edges in hypergraphs having the\nhereditary property. (1974), 61-66.\n\n[FrKu23] Frankl, Peter and Kupavskii, Andrey, Perfect matchings in down-sets. Discrete Math. (2023), Paper No. 113323, 7.\n\n[St74] Sterboul, F., Sur une conjecture de V. Chv\\'{a}tal. (1974), 152-164.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Chvátal's conjecture (1974) generalizes the Erdős-Ko-Rado theorem to hereditary families. The conjecture asserts that the maximum intersecting subfamily is always a 'star' - all sets containing a fixed element. Despite nearly 50 years of research, the general case remains open. Partial results exist for injection-based orderings (Chvátal 1974), Sterboul conditions (1974), covering number 2 (Frankl-Kupavskii 2023), and weighted versions (Borg 2011).",
+    "problemStatement": "Let F be a family of sets closed under taking subsets (hereditary). There exists an element x such that for any intersecting subfamily F' ⊆ F: |F'| ≤ |{A ∈ F : x ∈ A}|.",
+    "proofStrategy": "The formalization defines hereditary families, intersecting families, and stars. The main conjecture is axiomatized as open. Partial results (Sterboul conditions, covering number 2) are stated as separate axioms. The connection to Erdős-Ko-Rado is explored, showing how uniform families are NOT hereditary (explaining why EKR is not a direct special case).",
+    "keyInsights": [
+      "Hereditary = closed under subsets (also called downsets or ideals)",
+      "Stars (sets containing x) are always intersecting subfamilies",
+      "The conjecture says some star is MAXIMAL among all intersecting subfamilies",
+      "The difficulty is finding a single x that works for ALL intersecting subfamilies",
+      "Uniform k-families are not hereditary, so EKR doesn't directly apply"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hereditary",
+      "startLine": 42,
+      "endLine": 71,
+      "summary": "Definitions of hereditary families with examples (power set, bounded cardinality)."
+    },
+    {
+      "id": "intersecting",
+      "startLine": 72,
+      "endLine": 99,
+      "summary": "Definitions of intersecting families with examples (empty, singleton)."
+    },
+    {
+      "id": "stars",
+      "startLine": 100,
+      "endLine": 129,
+      "summary": "Definition of stars and proofs that stars are intersecting and are subfamilies."
+    },
+    {
+      "id": "conjecture",
+      "startLine": 130,
+      "endLine": 151,
+      "summary": "Statement of Chvátal's conjecture as a definition and axiom recording its open status."
+    },
+    {
+      "id": "partial",
+      "startLine": 152,
+      "endLine": 217,
+      "summary": "Partial results: Sterboul conditions, Frankl-Kupavskii (covering number 2), Borg's weighted version."
+    },
+    {
+      "id": "ekr",
+      "startLine": 218,
+      "endLine": 258,
+      "summary": "Connection to Erdős-Ko-Rado; proof that uniform families are not hereditary."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #701 (Chvátal's Conjecture) remains OPEN. The conjecture asserts that for hereditary families, the maximum intersecting subfamily is a star. Partial results exist for special cases but the general conjecture is unresolved.",
+    "implications": "A resolution would unify and extend classical results in extremal set theory. The conjecture connects hereditary families (independence systems, matroids) with intersection properties.",
+    "openQuestions": [
+      "Does the conjecture hold for all hereditary families?",
+      "What structural properties of F determine which element x achieves the maximum star?",
+      "Can the weighted generalization (Borg) be fully resolved?",
+      "Are there counterexamples for families with high covering number?"
+    ]
   }
 }
