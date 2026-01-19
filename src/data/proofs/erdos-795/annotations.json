@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-795-distinct-products",
+    "proofId": "erdos-795",
+    "type": "definition",
+    "title": "Distinct Subset Products",
+    "range": { "startLine": 38, "endLine": 40 },
+    "content": "A set has distinct subset products if every subset yields a unique product. The empty subset gives 1, singletons give themselves, and all larger subsets must also be distinguishable by their products.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-795-g-function",
+    "proofId": "erdos-795",
+    "type": "definition",
+    "title": "The Function g(n)",
+    "range": { "startLine": 47, "endLine": 50 },
+    "content": "g(n) is the maximum size of a subset of {1,...,n} with distinct subset products. The problem asks for tight asymptotic bounds on this function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-795-prime-pi",
+    "proofId": "erdos-795",
+    "type": "definition",
+    "title": "Prime Counting Function",
+    "range": { "startLine": 54, "endLine": 55 },
+    "content": "π(n) counts primes up to n. The prime number theorem gives π(n) ~ n/log n, but the exact relationship to g(n) involves careful analysis.",
+    "significance": "foundational"
+  },
+  {
+    "id": "ann-795-erdos-bound",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Erdős's Upper Bound",
+    "range": { "startLine": 59, "endLine": 62 },
+    "content": "Erdős (1966) proved g(n) ≤ π(n) + O(n^{1/2}/log n). This shows g(n) is dominated by the prime count plus a lower-order term.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-795-conjecture",
+    "proofId": "erdos-795",
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "range": { "startLine": 66, "endLine": 68 },
+    "content": "Erdős asked whether g(n) ≤ π(n) + π(√n) + o(n^{1/2}/log n). This would show the primes-plus-prime-squares construction is essentially optimal.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-795-raghavan-upper",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Raghavan's Upper Bound",
+    "range": { "startLine": 74, "endLine": 77 },
+    "content": "Raghavan (2025) proved g(n) ≤ π(n) + π(√n) + O(n^{5/12+o(1)}). The error term n^{5/12} is much smaller than the conjectured o(n^{1/2}/log n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-795-raghavan-lower",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Raghavan's Lower Bound",
+    "range": { "startLine": 80, "endLine": 83 },
+    "content": "Raghavan also showed g(n) ≥ π(n) + π(√n) + π(∛n)/3 - O(1). This proves optimal sets include contributions from primes, their squares, AND some cubes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-795-solved",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Conjecture Confirmed",
+    "range": { "startLine": 86, "endLine": 89 },
+    "content": "The main theorem: Erdős's conjecture is TRUE. For large n, Raghavan's upper bound implies the conjectured bound since n^{5/12} = o(n^{1/2}/log n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-795-primes-distinct",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Primes Have Distinct Products",
+    "range": { "startLine": 95, "endLine": 97 },
+    "content": "The primes ≤ n automatically have distinct subset products by the fundamental theorem of arithmetic—different prime sets give different products.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-795-squares-distinct",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Adding Prime Squares",
+    "range": { "startLine": 108, "endLine": 111 },
+    "content": "Adding squares of small primes maintains distinct products. If p² is in the set, it contributes a factor of 2 to the exponent of p, distinguishable from using p once or not at all.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-795-structure",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Structure of Optimal Sets",
+    "range": { "startLine": 121, "endLine": 131 },
+    "content": "Key structural result: optimal sets decompose into primes P, prime squares P², and a small remainder R. The remainder has size at most π(∛n)/2.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-795-sidon",
+    "proofId": "erdos-795",
+    "type": "definition",
+    "title": "Multiplicative Sidon Set",
+    "range": { "startLine": 147, "endLine": 148 },
+    "content": "A multiplicative Sidon set has no non-trivial product relations: ab = cd implies {a,b} = {c,d}. This is stronger than having distinct subset products.",
+    "significance": "educational"
+  },
+  {
+    "id": "ann-795-sidon-implies",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Sidon Implies Distinct Products",
+    "range": { "startLine": 151, "endLine": 154 },
+    "content": "Multiplicative Sidon sets automatically have distinct subset products, but the converse fails—distinct products is a weaker condition.",
+    "significance": "educational"
+  },
+  {
+    "id": "ann-795-example-good",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Example: {2, 3, 5}",
+    "range": { "startLine": 172, "endLine": 173 },
+    "content": "The set {2, 3, 5} has distinct subset products: 1, 2, 3, 5, 6, 10, 15, 30 are all different. This illustrates the primes-only construction.",
+    "significance": "educational"
+  },
+  {
+    "id": "ann-795-example-bad",
+    "proofId": "erdos-795",
+    "type": "theorem",
+    "title": "Counterexample: {2, 3, 6}",
+    "range": { "startLine": 176, "endLine": 177 },
+    "content": "The set {2, 3, 6} does NOT have distinct products: {6} and {2, 3} both give product 6. Including composite numbers creates collisions.",
+    "significance": "educational"
+  }
+]

@@ -1782,17 +1782,22 @@
   },
   {
     "id": "erdos-1070",
-    "title": "Erdős Problem #1070",
+    "title": "Erdős Problem #1070: Independence Number of Unit Distance Graphs",
     "slug": "erdos-1070",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that, given any ... points in ..., there exist ... points such that no two are distance ... apart. Es...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate f(n), the minimum independence number of n-point unit distance graphs in ℝ². Is f(n) ≥ n/4? Best bounds: 0.22936n ≤ f(n) ≤ (2/7)n. The n/4 question cannot be resolved via density methods.",
+    "status": "complete",
+    "badge": "open",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "discrete-geometry",
+      "unit-distance-graphs",
+      "erdos",
+      "independence-number",
+      "hadwiger-nelson"
     ],
     "erdosNumber": 1070,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-1074",
@@ -11623,15 +11628,19 @@
     "id": "erdos-795",
     "title": "Erdős Problem #795",
     "slug": "erdos-795",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of ... such that the products ... are distinct for all .... Is it true that\\[g(n) \\leq \\pi(n)+\\pi...",
-    "status": "pending",
+    "description": "Determine tight bounds for g(n), the maximum size of a subset of {1,...,n} with all subset products distinct.",
+    "status": "solved",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "prime-counting",
+      "distinct-products"
     ],
     "erdosNumber": 795,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 15,
+    "annotationCount": 15
   },
   {
     "id": "erdos-796",
