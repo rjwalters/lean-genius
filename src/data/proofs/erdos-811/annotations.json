@@ -1,1 +1,158 @@
-[]
+[
+  {
+    "id": "ann-811-statement",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 7,
+      "endLine": 13
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "The core question: which graphs G are guaranteed to appear as rainbow subgraphs in every balanced edge-coloring of K_n? A rainbow copy uses each color exactly once.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-balanced",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 73,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Balanced Coloring",
+    "content": "An edge-coloring of K_n with m colors is balanced if every vertex sees exactly ⌊n/m⌋ edges of each color. This requires n ≡ 1 (mod m).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-congruence",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Congruence Condition",
+    "content": "Balanced colorings exist only when n ≡ 1 (mod m). This ensures (n-1) is divisible by m, allowing equal color distribution at each vertex.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-811-rainbow",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 92,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Rainbow Subgraph",
+    "content": "A rainbow copy of graph G is an embedding where all edges receive different colors. For G with m edges, this uses m distinct colors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-property",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 99,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "Rainbow Property",
+    "content": "Graph G has the rainbow property if for all large n ≡ 1 (mod e(G)), every balanced coloring of K_n contains a rainbow copy of G. This is the property being characterized.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-c4",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 110,
+      "endLine": 116
+    },
+    "type": "definition",
+    "title": "4-Cycle C_4",
+    "content": "The 4-cycle has 4 edges. Erdős-Tuza (1993) studied rainbow C_4 copies, establishing bounds ⌊n/6⌋ ≤ d_{C_4}(n) ≤ (1/4 - c)n for the minimum degree threshold.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-811-k4",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 118,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "Complete Graph K_4",
+    "content": "K_4 has 6 edges. This is the first complete graph shown to FAIL the rainbow property (Clemen-Wagner 2023).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-k4-fails",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 135,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "K_4 Fails",
+    "content": "Clemen-Wagner (2023): K_4 does NOT have the rainbow property. There exist balanced 6-colorings of K_n without any rainbow K_4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-axcl",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 140,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "Axenovich-Clemen Result",
+    "content": "Axenovich-Clemen (2024): Infinitely many complete graphs K_m lack the rainbow property. For odd ℓ ≥ 3, K_m fails for m = ⌊√ℓ + 3.5⌋.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-conjecture",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 154,
+      "endLine": 163
+    },
+    "type": "conjecture",
+    "title": "Axenovich-Clemen Conjecture",
+    "content": "Conjecture: K_m lacks the rainbow property for ALL m ≥ 4. This would mean no complete graph (except K_2, K_3) is guaranteed rainbow in balanced colorings.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-811-main",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 167,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Main Open Question",
+    "content": "Erdős Problem #811 (OPEN): Characterize all graphs G with the rainbow property. The question remains open even for specific families like cycles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-811-challenge",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 179,
+      "endLine": 185
+    },
+    "type": "insight",
+    "title": "Erdős's Specific Challenge",
+    "content": "Erdős asked: In any balanced 6-coloring of K_{6n+1}, must there exist a rainbow C_6 or rainbow K_4? Since K_4 fails, the C_6 question gains importance.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-811-mindegree",
+    "proofId": "erdos-811",
+    "range": {
+      "startLine": 189,
+      "endLine": 196
+    },
+    "type": "definition",
+    "title": "Rainbow Minimum Degree",
+    "content": "d_G(n) is the minimum color degree needed to guarantee a rainbow copy of G. This quantitative version generalizes the all-or-nothing rainbow property question.",
+    "significance": "key"
+  }
+]
