@@ -1,16 +1,20 @@
 {
   "id": "erdos-305",
-  "title": "Erdős Problem #305",
+  "title": "Maximum Denominator in Egyptian Fraction Representations",
   "slug": "erdos-305",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers ... let ... be the minimal value of ... such that there exist integers ... with\\[{b}={n_1}+\\cdots+{n_k}.\\]Estima...",
+  "description": "For integers 1 ≤ a < b, let D(a,b) be the minimum maximum denominator needed to represent a/b as an Egyptian fraction. Is D(b) = max_a D(a,b) bounded by b(log b)^{1+o(1)}? Solved by Yokota (1988), improved by Liu-Sawhney (2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Yokota, Liu-Sawhney",
     "sourceUrl": "https://erdosproblems.com/305",
-    "date": "",
-    "status": "pending",
+    "date": "1988",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos305Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "greedy-algorithm"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +23,53 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #305 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers $1\\leq a<b$ let $D(a,b)$ be the minimal value of $n_k$ such that there exist integers $1\\leq n_1<\\cdots <n_k$ with\\[\\frac{a}{b}=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Estimate $D(b)=\\max_{1\\leq a<b}D(a,b)$. Is it true that\\[D(b) \\ll b(\\log b)^{1+o(1)}?\\]\n\n\n\nBleicher and Erd\\H{o}s \\cite{BlEr76} have shown that\\[D(b)\\ll b(\\log b)^2.\\]If $b=p$ is a prime then\\[D(p) \\gg p\\log p.\\]This was solved by Yokota \\cite{Yo88}, who proved that\\[D(b)\\ll b(\\log b)(\\log\\log b)^4(\\log\\log\\log b)^2.\\]This was improved by Liu and Sawhney \\cite{LiSa24} to\\[D(b)\\ll b(\\log b)(\\log\\log b)^3(\\log\\log\\log b)^{O(1)}.\\]\n\n\n\n\nReferences\n\n\n[BlEr76] Bleicher, M. N. and Erd\\H{o}s, P., Denominators of unit fractions. J. Number Th. (1976), 157-168.\n\n[LiSa24] Liu, Y. and Sawhney, M., On further questions regarding unit fractions. arXiv:2404.07113 (2024).\n\n[Yo88] Yokota, H., On a problem of Bleicher and Erd\\H{o}s. J. Number Theory (1988), 198-207.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Egyptian fractions—sums of distinct unit fractions—date back to ancient Egypt (Rhind Papyrus, c. 1650 BCE). This problem asks how large denominators must be to represent any rational a/b. Bleicher and Erdős (1976) initiated the modern study, proving D(b) ≪ b(log b)². The question was whether the (log b)² can be reduced to (log b)^{1+o(1)}.",
+    "problemStatement": "For integers 1 ≤ a < b, let D(a,b) be the minimal maximum denominator in any Egyptian fraction representation of a/b. Define D(b) = max_{1 ≤ a < b} D(a,b). Is it true that D(b) ≪ b(log b)^{1+o(1)}?",
+    "proofStrategy": "Yokota (1988) proved D(b) ≪ b(log b)(log log b)⁴(log log log b)² using refined analysis of the greedy algorithm and number-theoretic techniques. Liu-Sawhney (2024) improved this to (log log b)³(log log log b)^{O(1)} using connections to additive combinatorics.",
+    "keyInsights": [
+      "The greedy (Fibonacci-Sylvester) algorithm gives existence but not optimal denominators",
+      "Lower bound D(p) ≫ p log p for primes shows (log b)¹ factor is necessary",
+      "The iterated logarithm factors (log log b)^k are (log b)^{o(1)}",
+      "Harmonic sums H_n ~ log n explain why logarithms appear",
+      "The problem connects to dense subsets summing to 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "egyptian-basics",
+      "title": "Egyptian Fractions",
+      "summary": "Definition of Egyptian fractions and the existence theorem",
+      "startLine": 44,
+      "endLine": 77
+    },
+    {
+      "id": "d-functions",
+      "title": "The D(a,b) and D(b) Functions",
+      "summary": "Definition of minimum maximum denominator functions",
+      "startLine": 79,
+      "endLine": 117
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Upper and lower bounds from Bleicher-Erdős, Yokota, Liu-Sawhney",
+      "startLine": 119,
+      "endLine": 189
+    },
+    {
+      "id": "greedy",
+      "title": "The Greedy Algorithm",
+      "summary": "Fibonacci-Sylvester algorithm and its properties",
+      "startLine": 191,
+      "endLine": 228
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #305 was solved by Yokota (1988) who proved D(b) ≪ b(log b)(log log b)⁴(log log log b)², confirming D(b) ≪ b(log b)^{1+o(1)}. Liu-Sawhney (2024) improved the bound to (log log b)³(log log log b)^{O(1)}.",
+    "implications": "The result shows that Egyptian fraction representations require denominators only slightly larger than b log b. This connects number theory to algorithmic questions about fraction representation and has implications for additive combinatorics.",
+    "openQuestions": [
+      "Can the bound be improved to D(b) ≪ b(log b)(log log b)^{1+o(1)}?",
+      "What is the exact constant in the lower bound D(p) ≫ p log p?"
+    ]
   }
 }
