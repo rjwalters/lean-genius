@@ -2168,17 +2168,24 @@
   },
   {
     "id": "erdos-1099",
-    "title": "Erdős Problem #1099",
+    "title": "Erdős Problem #1099: Divisor Ratio Sum Boundedness",
     "slug": "erdos-1099",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the divisors of ..., and for ... let\\[h_\\alpha(n) = \\sum_i \\left( }{d_i}-1\\right)^\\alpha.\\]Is it true that\\[\\limin...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For α > 1, is liminf h_α(n) bounded, where h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α over consecutive divisors? YES, proved by Vose (1984).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "consecutive-ratios",
+      "liminf",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 1099,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 6,
+    "annotationCount": 15
   },
   {
     "id": "erdos-11",
