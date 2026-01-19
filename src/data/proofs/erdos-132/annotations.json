@@ -1,1 +1,216 @@
-[]
+[
+  {
+    "id": "ann-e132-header",
+    "proofId": "erdos-132",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #132: Distance Multiplicities**\n\n**Question:** Given n points in ℝ², must there exist two 'rare' distances (occurring 1 to n times)?\n\n**Status: OPEN** with $100 prize\n\n**Known Results:**\n- n = 4: FALSE (counterexample)\n- n = 5, 6: TRUE (Erdős-Fishburn 1995)\n- Convex position: TRUE (CDL 2025)",
+    "mathContext": "A 'rare distance' occurs at least once but at most n times. The maximum distance is always rare by Hopf-Pannwitz (1934).",
+    "significance": "critical",
+    "relatedConcepts": ["Discrete geometry", "Distance problems", "Combinatorial geometry"]
+  },
+  {
+    "id": "ann-e132-point",
+    "proofId": "erdos-132",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "definition",
+    "title": "Point Type",
+    "content": "**Point:**\n\nWe use EuclideanSpace ℝ (Fin 2) from Mathlib to represent points in the plane ℝ².\n\nThis provides the inner product structure needed for distance calculations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e132-dist",
+    "proofId": "erdos-132",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "definition",
+    "title": "Distance Function",
+    "content": "**dist(p, q):**\n\nThe Euclidean distance between points p and q, defined as ‖p - q‖.\n\nThis is the standard L² distance in the plane.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-dist-symm",
+    "proofId": "erdos-132",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "theorem",
+    "title": "Distance Symmetry",
+    "content": "**dist_symm:**\n\ndist(p, q) = dist(q, p)\n\nDistance is symmetric - proved using ‖p - q‖ = ‖-(q - p)‖ = ‖q - p‖.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e132-pairs",
+    "proofId": "erdos-132",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "definition",
+    "title": "Pairs at Distance d",
+    "content": "**pairsAtDistance A d:**\n\nThe set of unordered pairs {p, q} from A with p ≠ q and dist(p, q) = d.\n\nFormalized by filtering the powerset of A for 2-element sets at distance d.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-multiplicity",
+    "proofId": "erdos-132",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "definition",
+    "title": "Distance Multiplicity",
+    "content": "**multiplicity A d:**\n\nThe number of distinct pairs of points in A at distance d.\n\nThis is the central quantity: how many times does distance d occur in A?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-rare",
+    "proofId": "erdos-132",
+    "range": { "startLine": 99, "endLine": 104 },
+    "type": "definition",
+    "title": "Rare Distance",
+    "content": "**isRareDistance A d:**\n\nA distance d is 'rare' in A if:\n1. d > 0 (positive distance)\n2. multiplicity A d ≥ 1 (occurs at least once)\n3. multiplicity A d ≤ |A| (occurs at most n times)\n\nThe problem asks: must there be TWO such distances?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-question1",
+    "proofId": "erdos-132",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "definition",
+    "title": "Erdős Question Part 1",
+    "content": "**erdos132_question1:**\n\n∃ N, ∀ n ≥ N, ∀ A with |A| = n, ∃ d₁ ≠ d₂ both rare in A\n\nMust every large enough point set have at least two rare distances?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-question2",
+    "proofId": "erdos-132",
+    "range": { "startLine": 121, "endLine": 127 },
+    "type": "definition",
+    "title": "Erdős Question Part 2",
+    "content": "**erdos132_question2:**\n\n∀ k, ∃ N, ∀ n ≥ N, ∀ A with |A| = n, countRareDistances(A) ≥ k\n\nDoes the count of rare distances → ∞ as n → ∞?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-strong",
+    "proofId": "erdos-132",
+    "range": { "startLine": 129, "endLine": 135 },
+    "type": "definition",
+    "title": "Strong Conjecture",
+    "content": "**erdos132_strong_conjecture:**\n\nErdős conjectured there might be at least n^{1-o(1)} rare distances.\n\nThis would be a very strong result, far beyond just two rare distances.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-maxdist",
+    "proofId": "erdos-132",
+    "range": { "startLine": 141, "endLine": 146 },
+    "type": "definition",
+    "title": "Maximum Distance",
+    "content": "**maxDistance A:**\n\nThe largest distance between any two points in A.\n\nThis is the diameter of the point set and plays a key role in Hopf-Pannwitz.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-hopf",
+    "proofId": "erdos-132",
+    "range": { "startLine": 148, "endLine": 155 },
+    "type": "axiom",
+    "title": "Hopf-Pannwitz Theorem (1934)",
+    "content": "**hopf_pannwitz:**\n\nmultiplicity A (maxDistance A) ≤ |A|\n\nThe maximum distance in n points occurs at most n times.\n\n**Significance:** This proves ONE rare distance always exists.",
+    "mathContext": "The proof uses the fact that the diameter endpoints must be on the convex hull, and a counting argument.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-oneraref",
+    "proofId": "erdos-132",
+    "range": { "startLine": 157, "endLine": 167 },
+    "type": "theorem",
+    "title": "At Least One Rare Distance",
+    "content": "**at_least_one_rare:**\n\nEvery set of ≥ 2 points has at least one rare distance.\n\nThis is an immediate corollary of Hopf-Pannwitz: the maximum distance is rare.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-counter",
+    "proofId": "erdos-132",
+    "range": { "startLine": 173, "endLine": 189 },
+    "type": "axiom",
+    "title": "Counterexample for n=4",
+    "content": "**counterexample_n4:**\n\nTwo equilateral triangles of the same side length sharing an edge.\n\nThis configuration has:\n- 4 edges at distance s (the side length)\n- 2 edges at distance s√3 (the diagonals = diameter)\n\nSince 4 > 4 = n for the short distance, only the maximum is rare.\n\nHence n = 4 FAILS - there is only ONE rare distance.",
+    "mathContext": "This shows the problem is subtle and requires n ≥ 5.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-false4",
+    "proofId": "erdos-132",
+    "range": { "startLine": 191, "endLine": 204 },
+    "type": "theorem",
+    "title": "n=4 is False",
+    "content": "**erdos132_false_for_4:**\n\nThe statement 'two rare distances exist' is FALSE for n = 4.\n\nProved by showing the counterexample has only one rare distance (the maximum).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-ef5",
+    "proofId": "erdos-132",
+    "range": { "startLine": 210, "endLine": 216 },
+    "type": "axiom",
+    "title": "Erdős-Fishburn for n=5",
+    "content": "**erdos_fishburn_5:**\n\nFor any 5 points in ℝ², there exist two rare distances.\n\nProved in 'Multiplicities of interpoint distances' (1995).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-ef6",
+    "proofId": "erdos-132",
+    "range": { "startLine": 218, "endLine": 224 },
+    "type": "axiom",
+    "title": "Erdős-Fishburn for n=6",
+    "content": "**erdos_fishburn_6:**\n\nFor any 6 points in ℝ², there exist two rare distances.\n\nAlso proved in Erdős-Fishburn (1995).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-convex",
+    "proofId": "erdos-132",
+    "range": { "startLine": 230, "endLine": 236 },
+    "type": "definition",
+    "title": "Convex Position",
+    "content": "**inConvexPosition A:**\n\nA point set is in convex position if no point lies in the convex hull of the others.\n\nEquivalently, every point is on the boundary of the convex hull.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e132-cdl",
+    "proofId": "erdos-132",
+    "range": { "startLine": 238, "endLine": 244 },
+    "type": "axiom",
+    "title": "Clemen-Dumitrescu-Liu (2025)",
+    "content": "**clemen_dumitrescu_liu_convex:**\n\nFor points in convex position with |A| ≥ 5, two rare distances always exist.\n\nRecent progress from arXiv:2505.04283 (2025).",
+    "mathContext": "The convex case is more tractable because all points are on the boundary.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-unit",
+    "proofId": "erdos-132",
+    "range": { "startLine": 270, "endLine": 277 },
+    "type": "axiom",
+    "title": "Unit Distance Bound",
+    "content": "**unit_distance_bound:**\n\nmultiplicity(A, d) ≤ C · n^{4/3} for some constant C.\n\nThis is the Spencer-Szemerédi-Trotter bound on unit distances.\n\nIt constrains how many times any single distance can occur.",
+    "significance": "supporting",
+    "relatedConcepts": ["Unit distance problem", "Incidence geometry"]
+  },
+  {
+    "id": "ann-e132-gk",
+    "proofId": "erdos-132",
+    "range": { "startLine": 279, "endLine": 285 },
+    "type": "axiom",
+    "title": "Guth-Katz Distinct Distances",
+    "content": "**guth_katz_distinct_distances:**\n\nn points determine Ω(n/log n) distinct distances.\n\nProved by Guth-Katz (2015), resolving Erdős's distinct distances conjecture.\n\nThis provides context for the rare distances problem.",
+    "significance": "supporting",
+    "relatedConcepts": ["Distinct distances problem", "Polynomial method"]
+  },
+  {
+    "id": "ann-e132-summary",
+    "proofId": "erdos-132",
+    "range": { "startLine": 316, "endLine": 342 },
+    "type": "theorem",
+    "title": "Summary of Known Results",
+    "content": "**erdos_132_summary:**\n\nCombines all known results:\n1. Hopf-Pannwitz: max distance ≤ n occurrences\n2. n = 4: counterexample exists\n3. n = 5, 6: two rare distances exist\n4. Convex position: two rare distances exist\n\nThe general case for n ≥ 7 remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e132-main",
+    "proofId": "erdos-132",
+    "range": { "startLine": 344, "endLine": 354 },
+    "type": "theorem",
+    "title": "Erdős Problem #132: OPEN",
+    "content": "**erdos_132:**\n\nThe main theorem records that the problem status is OPEN.\n\n**What's Known:**\n- TRUE for n = 5, 6 (Erdős-Fishburn)\n- TRUE for convex position (Clemen-Dumitrescu-Liu)\n- OPEN for general n ≥ 7\n\n$100 prize offered for 'any nontrivial result'.",
+    "significance": "critical"
+  }
+]
