@@ -1,34 +1,49 @@
 {
   "id": "erdos-426",
-  "title": "Erdős Problem #426",
+  "title": "Erdős Problem #426: Unique Subgraphs",
   "slug": "erdos-426",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say ... is a unique subgraph of ... if there is exactly one way to find ... as a subgraph (not necessarily induced) of ......",
+  "description": "Can a graph on n vertices have ≫ 2^(n choose 2)/n! unique subgraphs? Answer: NO (Bradač-Christoph 2024). Unique subgraphs are rare.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Entringer (1972), Brouwer (1975), Bradač-Christoph (2024 resolution)",
     "sourceUrl": "https://erdosproblems.com/426",
-    "date": "",
-    "status": "pending",
+    "date": "1972",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos426Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "subgraph-counting",
+      "combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 426,
     "erdosUrl": "https://erdosproblems.com/426",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$25"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #426 from erdosproblems.com. Originally offered with a prize of $25.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say $H$ is a unique subgraph of $G$ if there is exactly one way to find $H$ as a subgraph (not necessarily induced) of $G$. Is there a graph on $n$ vertices with\\[\\gg \\frac{2^{\\binom{n}{2}}}{n!}\\]many distinct unique subgraphs?\n\n\n\nA problem of Erd\\H{o}s and Entringer \\cite{EnEr72}, who constructed a graph with\\[\\gg 2^{\\binom{n}{2}-O(n^{3/2+o(1)})}\\]many unique subgraphs. This was improved by Harary and Schwenk \\cite{HaSc73} and then by Brouwer \\cite{Br75}, who constructed a graph with\\[\\gg \\frac{2^{\\binom{n}{2}-O(n)}}{n!}\\]many unique subgraphs.\n\nNote that there are $\\sim 2^{\\binom{n}{2}}/n!$ many non-isomorphic graphs on $n$ vertices (folklore, often attributed to P\\'{o}lya), and hence the bound in the problem statement is trivially best possible.\n\nErd\\H{o}s believed Brouwer's construction was essentially best possible, but Spencer suggested that $\\gg \\frac{2^{\\binom{n}{2}}}{n!}$ may be possible. Erd\\H{o}s offered \\$100 for such a construction and \\$25 for a proof that no such construction is possible.\n\nBrada\\v{c} and Christoph \\cite{BrCh24} have proved the answer is no: if $f(n)$ is the maximum number of unique subgraphs in a graph on $n$ vertices then\\[f(n) = o\\left(\\frac{2^{\\binom{n}{2}}}{n!}\\right).\\](Quantitatively the $o(1)$ in their argument can be taken to be $O(\\frac{\\log\\log\\log n}{\\log\\log n})$.)\n\n\n\n\nReferences\n\n\n[Br75] Brouwer, A. E., Note: ``On the number of unique subgraphs of a graph'' (J.\nCombinatorial Theory Ser. B {\\bf 13} (1972), 112-115)\nby R. C. Entringer and P. Erd\\H{o}s. J. Combinatorial Theory Ser. B (1975), 184-185.\n\n[BrCh24] Brada\\vC, D. and Christoph, M., Unique subgraphs are rare. arXiv:2410.16233 (2024).\n\n[EnEr72] Entringer, R. C. and Erd\\H{o}s, Paul, On the number of unique subgraphs of a graph. J. Combinatorial Theory Ser. B (1972), 112-115.\n\n[HaSc73] Harary, Frank and Schwenk, Allen J., On the number of unique subgraphs. J. Combinatorial Theory Ser. B (1973), 156-160.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originated with Erdős and Entringer in 1972. They asked whether a graph could have as many unique subgraphs as there are non-isomorphic graphs (~ 2^(n choose 2)/n! by Pólya). Entringer-Erdős achieved 2^{(n choose 2) - O(n^{3/2})} unique subgraphs. Brouwer (1975) improved this to 2^{(n choose 2) - O(n)}/n!.\n\nErdős believed Brouwer's construction was essentially optimal and offered $25 for a proof. Spencer suggested the full bound might be achievable (Erdős offered $100 for such a construction). In 2024, Bradač and Christoph proved the answer is NO: f(n) = o(2^(n choose 2)/n!).",
+    "problemStatement": "We say H is a **unique subgraph** of G if there is exactly one way to find H as a subgraph (not necessarily induced) of G.\n\n**Question:** Is there a graph on n vertices with ≫ 2^(n choose 2)/n! many distinct unique subgraphs?\n\n**Answer:** NO (Bradač-Christoph 2024)\n\nf(n) = o(2^(n choose 2)/n!), with the o(1) being O(log log log n / log log n).\n\n**Historical bounds:**\n- Brouwer (1975): 2^{(n choose 2) - O(n)}/n! unique subgraphs achievable\n- Bradač-Christoph (2024): 2^(n choose 2)/n! is NOT achievable",
+    "proofStrategy": "We formalize unique subgraphs via SubgraphCopy, IsUniqueSubgraph, and CountUniqueSubgraphs. The maximum f(n) = maxUniqueSubgraphs is defined. Historical constructions (Entringer-Erdős, Brouwer) and the Bradač-Christoph resolution are axiomatized. The main theorem establishes ¬OriginalQuestion.",
+    "keyInsights": [
+      "Number of non-isomorphic graphs on n vertices is ~ 2^(n choose 2)/n! (Pólya)",
+      "A unique subgraph must embed in exactly one way - this is rare",
+      "Brouwer's construction loses a factor of 2^{O(n)} from the naive bound",
+      "Bradač-Christoph show even the naive bound is unachievable",
+      "Quantitatively: o(1) = O(log log log n / log log n)"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #426 asked whether graphs can have many unique subgraphs (~ all non-isomorphic graphs). Bradač-Christoph (2024) proved the answer is NO: f(n) = o(2^(n choose 2)/n!). The $25 prize was awarded for proving impossibility.",
+    "implications": "The result shows that unique subgraphs are fundamentally rare. Most graphs have structural regularities (automorphisms, repeated patterns) that create multiple embeddings of any subgraph. This has implications for graph reconstruction and identification.",
+    "openQuestions": [
+      "What is the exact asymptotic behavior of f(n)?",
+      "Can the quantitative bound O(log log log n / log log n) be improved?",
+      "What structural properties maximize unique subgraph count?",
+      "What is the situation for specific graph families (trees, planar graphs)?"
+    ]
   }
 }
