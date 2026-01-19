@@ -2,32 +2,103 @@
   "id": "erdos-735",
   "title": "Erdős Problem #735",
   "slug": "erdos-735",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any ... points in ... when can one give positive weights to the points such that the sum of the weights of the points a...",
+  "description": "Characterize point configurations admitting positive weights with equal sums on all lines (magic configurations).",
   "meta": {
-    "author": "Unknown",
+    "author": "Ackerman, Buchin, Knauer, Pinchasi, Rote",
     "sourceUrl": "https://erdosproblems.com/735",
-    "date": "",
-    "status": "pending",
+    "date": "2008",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos735Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "combinatorics",
+      "incidence-geometry",
+      "characterization"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 13,
     "erdosNumber": 735,
     "erdosUrl": "https://erdosproblems.com/735",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #735 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any $n$ points in $\\mathbb{R}^2$ when can one give positive weights to the points such that the sum of the weights of the points along every line containing at least two points is the same?\n\n\n\nA problem of Murty, who conjectured this is only possible in one of four cases: all points on a line, no three points on a line, $n-1$ on a line, and a triangle, the angle bisectors, and the incentre (or a projective equivalence).\n\nThe previous configurations are the only examples, as proved by Ackerman, Buchin, Knauer, Pinchasi, and Rote \\cite{ABKPR08}.\n\n\n\n\nReferences\n\n\n[ABKPR08] Ackerman, Eyal and Buchin, Kevin and Knauer, Christian and\nPinchasi, Rom and Rote, G\\\"{u}nter, There are not too many magic configurations. Discrete Comput. Geom. (2008), 3-16.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Murty conjectured that only four types of point configurations in the plane can admit positive weights making all line sums equal. Such configurations are called 'magic'. The conjecture was proved in 2008, completing the classification of magic configurations.",
+    "problemStatement": "Given any n points in ℝ², when can one give positive weights to the points such that the sum of the weights along every line containing at least two points is the same?",
+    "proofStrategy": "The proof analyzes the linear system of equations arising from the equal-sum constraint. By studying the incidence structure and using combinatorial arguments, the authors show that only four families can satisfy all constraints with positive weights.",
+    "keyInsights": [
+      "The magic property is preserved under projective transformations",
+      "Equal weights work for general position (no 3 collinear)",
+      "Collinear configurations are trivially magic (one line)",
+      "Near-pencil and incenter configurations require careful weight tuning",
+      "Any configuration outside these classes has an obstruction"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-735-header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Introduction to magic configurations and Murty's conjecture about the four magic classes."
+    },
+    {
+      "id": "sec-735-basic",
+      "title": "Basic Setup",
+      "startLine": 36,
+      "endLine": 53,
+      "summary": "Definitions for point configurations, weightings, configuration lines, and line sums."
+    },
+    {
+      "id": "sec-735-magic",
+      "title": "Magic Configurations",
+      "startLine": 55,
+      "endLine": 63,
+      "summary": "Definition of magic configurations: admit weightings with equal line sums."
+    },
+    {
+      "id": "sec-735-classes",
+      "title": "The Four Magic Classes",
+      "startLine": 65,
+      "endLine": 114,
+      "summary": "Definitions and magic proofs for collinear, general position, near-pencil, and incenter configurations."
+    },
+    {
+      "id": "sec-735-projective",
+      "title": "Projective Equivalence",
+      "startLine": 116,
+      "endLine": 129,
+      "summary": "Projective transformations preserve the magic property."
+    },
+    {
+      "id": "sec-735-classification",
+      "title": "The Main Classification",
+      "startLine": 131,
+      "endLine": 178,
+      "summary": "Murty's conjecture is true: magic iff in one of the four classes."
+    },
+    {
+      "id": "sec-735-examples",
+      "title": "Examples",
+      "startLine": 180,
+      "endLine": 208,
+      "summary": "Concrete examples of magic configurations and a non-magic counterexample."
+    },
+    {
+      "id": "sec-735-linear",
+      "title": "Linear Algebra Perspective",
+      "startLine": 210,
+      "endLine": 231,
+      "summary": "The incidence matrix viewpoint and dimension counting arguments."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #735 is SOLVED. The 2008 proof confirms Murty's conjecture: a point configuration is magic if and only if it is collinear, in general position, a near-pencil, or projectively equivalent to the incenter configuration.",
+    "implications": "This provides a complete classification of weighted incidence structures with uniform line sums. The techniques connect discrete geometry with linear algebra over the positive reals.",
+    "openQuestions": [
+      "What are analogous characterizations in higher dimensions?",
+      "Can the classification extend to non-positive or complex weights?",
+      "What is the computational complexity of recognizing magic configurations?"
+    ]
   }
 }
