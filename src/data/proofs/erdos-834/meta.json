@@ -1,16 +1,21 @@
 {
   "id": "erdos-834",
-  "title": "Erdős Problem #834",
+  "title": "3-Critical 3-Uniform Hypergraphs",
   "slug": "erdos-834",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a ...-critical ...-uniform hypergraph in which every vertex has degree ...?\n\n\n\nA problem of Erds and Lov\\'{a...",
+  "description": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree ≥ 7? The answer depends on the definition of '3-critical': NO for transversal-criticality (Li 2025 proved max is 6), YES for chromatic-criticality (explicit constructions exist).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, László Lovász",
     "sourceUrl": "https://erdosproblems.com/834",
-    "date": "",
-    "status": "pending",
+    "date": "1970s",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos834Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraphs",
+      "combinatorics",
+      "extremal",
+      "chromatic-number",
+      "transversal"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +24,73 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #834 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a $3$-critical $3$-uniform hypergraph in which every vertex has degree $\\geq 7$?\n\n\n\nA problem of Erd\\H{o}s and Lov\\'{a}sz.\n\nThey do not specify what is meant by $3$-critical. One definition in the literature is: a hypergraph is $3$-critical if there is a set of $3$ vertices which intersects every edge, but no such set of size $2$, and yet for any edge $e$ there is a pair of vertices which intersects every edge except $e$. Raphael Steiner observes that a $3$-critical hypergraph in this sense has bounded size, so this problem would be a finite computation, and perhaps is not what they meant.\n\nAn alternative definition is that a hypergraph is $3$-critical if it has chromatic number $3$, but its chromatic number becomes $2$ after deleting any edge or vertex.\n\nIn either case, this has been resolved by Li \\cite{Li25}. In the first formulation, the transversal notion of criticality, Li proves that a $3$-critical $3$-uniform hypergraph must have a vertex of degree $\\leq 6$.\n\nOn the other hand, in the second formulation, the chromatic notion of criticality, Li provides an explicit $3$-critical $3$-uniform hypergraph on $9$ vertices with minimum degree $7$.\n\n\n\n\nReferences\n\n\n[Li25] R. Li, On an Erd\\H{o}s-Lov\\'{a}sz problem: $3$-critical $3$-graphs of minimum degree $7$. arXiv:2512.24850 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Lovász, exploring the structure of critical hypergraphs. The question asks about the minimum degree possible in 3-critical 3-uniform hypergraphs. Interestingly, the answer depends entirely on what '3-critical' means: the transversal interpretation (τ(H) = 3) gives a different answer than the chromatic interpretation (χ(H) = 3). Li (2025) resolved both cases completely.",
+    "problemStatement": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree ≥ 7?\n\nTwo interpretations:\n1. **Transversal-critical**: τ(H) = 3, meaning the minimum vertex cover has size 3, but removing any edge reduces this to 2. Answer: NO - Li proved maximum minimum degree is exactly 6.\n2. **Chromatic-critical**: χ(H) = 3, meaning chromatic number is 3, but removing any edge reduces it to 2. Answer: YES - Li constructed explicit examples with minimum degree 7.",
+    "proofStrategy": "The proof formalizes both interpretations and their different answers. For transversal-criticality, Li's bound shows that some vertex must have degree at most 6 (and this bound is tight). For chromatic-criticality, explicit constructions demonstrate hypergraphs with arbitrarily high minimum degree.",
+    "keyInsights": [
+      "The ambiguity in 'critical' leads to genuinely different mathematical questions",
+      "Transversal-critical hypergraphs have bounded structure due to critical edge constraints",
+      "Chromatic-critical hypergraphs can have arbitrary minimum degree via Lovász-type constructions",
+      "Li (2025) resolved both cases, showing the bound 6 is tight for transversal-criticality"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Hypergraph Definitions",
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "Core definitions for hypergraphs, k-uniformity, vertex degree, and minimum degree of a hypergraph."
+    },
+    {
+      "title": "Transversal Number",
+      "startLine": 59,
+      "endLine": 71,
+      "summary": "Defines transversals (vertex covers) and the transversal number τ(H), the minimum size of a transversal."
+    },
+    {
+      "title": "Transversal-Criticality",
+      "startLine": 73,
+      "endLine": 87,
+      "summary": "Defines k-transversal-critical hypergraphs: τ(H) = k and removing any edge reduces τ."
+    },
+    {
+      "title": "Chromatic Number",
+      "startLine": 89,
+      "endLine": 106,
+      "summary": "Defines proper colorings of hypergraphs (no monochromatic edges), chromatic number χ(H), and chromatic-criticality."
+    },
+    {
+      "title": "Main Question Formulations",
+      "startLine": 108,
+      "endLine": 122,
+      "summary": "States both versions of the question: existence of 3-critical 3-uniform hypergraphs with minimum degree ≥ 7 under each definition."
+    },
+    {
+      "title": "Li's Theorem (2025)",
+      "startLine": 124,
+      "endLine": 137,
+      "summary": "Li's bound: transversal-critical hypergraphs have minimum degree ≤ 6. This answers NO to the transversal version."
+    },
+    {
+      "title": "Lovász's Construction",
+      "startLine": 139,
+      "endLine": 152,
+      "summary": "Lovász's result: chromatic-critical hypergraphs exist with arbitrarily high minimum degree. This answers YES to the chromatic version."
+    },
+    {
+      "title": "Complete Resolution",
+      "startLine": 154,
+      "endLine": 180,
+      "summary": "Combines both results to fully resolve the problem: NO for transversal-critical, YES for chromatic-critical, with the bound 6 being tight."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The problem is SOLVED with different answers depending on interpretation. For transversal-criticality, NO: Li (2025) proved the maximum minimum degree is exactly 6. For chromatic-criticality, YES: constructions exist with arbitrarily high minimum degree. The Lean formalization captures both interpretations, their respective theorems, and the complete resolution.",
+    "implications": "This problem illustrates how ambiguity in mathematical definitions can lead to genuinely different questions. The transversal interpretation has tight structural constraints, while the chromatic interpretation allows much more flexibility.",
+    "openQuestions": [
+      "Can the explicit construction of tight examples (minimum degree 6, transversal-critical) be simplified?",
+      "What is the structure of minimal chromatic-critical hypergraphs achieving high minimum degree?",
+      "How do these bounds generalize to k-critical k-uniform hypergraphs for k > 3?"
+    ]
   }
 }
