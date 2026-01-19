@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e824-header",
+    "proofId": "erdos-824",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors**\n\nLet h(x) count pairs (a, b) with 1 ≤ a < b < x where gcd(a,b) = 1 and σ(a) = σ(b).\n\n**The Question:** Is h(x) > x^{2-o(1)}?\n\n**Known:**\n- h(x)/x → ∞ (Pollack-Pomerance 2016)\n- h(x) ≤ x² (trivial)\n\n**Open:** The enormous gap between linear and near-quadratic growth.",
+    "mathContext": "Erdős posed this in 1974 and proved limsup h(x)/x = ∞. Pollack and Pomerance strengthened this to h(x)/x → ∞ in 2016.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum of divisors", "Coprimality", "Counting functions"]
+  },
+  {
+    "id": "ann-e824-sigma",
+    "proofId": "erdos-824",
+    "range": { "startLine": 47, "endLine": 56 },
+    "type": "definition",
+    "title": "Sum of Divisors Function",
+    "content": "**sigma n:**\n\nσ(n) = Σ_{d|n} d, the sum of all positive divisors of n.\n\n**Examples:**\n- σ(1) = 1\n- σ(6) = 1 + 2 + 3 + 6 = 12\n- σ(12) = 1 + 2 + 3 + 4 + 6 + 12 = 28\n- σ(p) = p + 1 for prime p\n\nThis is one of the most classical functions in number theory.",
+    "mathContext": "Related to perfect numbers (σ(n) = 2n), abundant numbers (σ(n) > 2n), and deficient numbers (σ(n) < 2n).",
+    "significance": "critical",
+    "relatedConcepts": ["Divisors", "Multiplicative functions", "Perfect numbers"]
+  },
+  {
+    "id": "ann-e824-sigma-bound",
+    "proofId": "erdos-824",
+    "range": { "startLine": 58, "endLine": 74 },
+    "type": "theorem",
+    "title": "Basic Bound on σ",
+    "content": "**sigma_ge_n_plus_one:**\n\nFor n > 1, σ(n) ≥ n + 1.\n\n**Proof:** Every n > 1 has at least two divisors: 1 and n itself. So σ(n) ≥ 1 + n.\n\nEquality holds exactly when n is prime (only divisors are 1 and n).",
+    "significance": "supporting",
+    "relatedConcepts": ["Prime numbers", "Divisor bounds"]
+  },
+  {
+    "id": "ann-e824-sigma-equal",
+    "proofId": "erdos-824",
+    "range": { "startLine": 88, "endLine": 99 },
+    "type": "definition",
+    "title": "σ-Equal and Coprime Pairs",
+    "content": "**SigmaEqual a b:** σ(a) = σ(b)\n\n**IsCoprimeSigmaEqualPair a b:** 1 ≤ a < b, gcd(a,b) = 1, and σ(a) = σ(b)\n\nThese pairs are the objects counted by h(x). The coprimality constraint is crucial: without it, given any σ-equal pair, we could manufacture infinitely many more by multiplying both by common factors.",
+    "significance": "critical",
+    "relatedConcepts": ["Coprimality", "GCD", "Pair counting"]
+  },
+  {
+    "id": "ann-e824-counting",
+    "proofId": "erdos-824",
+    "range": { "startLine": 101, "endLine": 116 },
+    "type": "definition",
+    "title": "The Counting Function h(x)",
+    "content": "**h x:**\n\nCounts pairs (a, b) with:\n- 1 ≤ a < b < x\n- gcd(a, b) = 1\n- σ(a) = σ(b)\n\nThe definition iterates over the range and filters for valid pairs. An alternative definition `hCount` counts pairs directly from the product set.",
+    "significance": "critical",
+    "relatedConcepts": ["Counting functions", "Filtering", "Pair enumeration"]
+  },
+  {
+    "id": "ann-e824-erdos-1974",
+    "proofId": "erdos-824",
+    "range": { "startLine": 122, "endLine": 127 },
+    "type": "axiom",
+    "title": "Erdős 1974 Result",
+    "content": "**erdos_1974_limsup:**\n\nFor any M, there exists x with h(x) > M·x.\n\nThis means limsup h(x)/x = ∞: the ratio h(x)/x is unbounded. However, this doesn't say the limit exists or that the ratio is always large.",
+    "mathContext": "From Erdős's 1974 paper 'Remarks on some problems in number theory.'",
+    "significance": "critical",
+    "relatedConcepts": ["Limsup", "Unbounded ratios"]
+  },
+  {
+    "id": "ann-e824-pp-2016",
+    "proofId": "erdos-824",
+    "range": { "startLine": 129, "endLine": 134 },
+    "type": "axiom",
+    "title": "Pollack-Pomerance 2016",
+    "content": "**pollack_pomerance_2016:**\n\nThe limit h(x)/x → ∞ as x → ∞.\n\nThis is stronger than Erdős's limsup result: not just that h(x)/x occasionally exceeds any bound, but that it eventually stays above any bound.\n\nFormalized as Filter.Tendsto to atTop.",
+    "mathContext": "From 'Some problems of Erdős on the sum-of-divisors function', Trans. Amer. Math. Soc. Ser. B (2016).",
+    "significance": "critical",
+    "relatedConcepts": ["Limits", "Filter convergence"]
+  },
+  {
+    "id": "ann-e824-superlinear",
+    "proofId": "erdos-824",
+    "range": { "startLine": 136, "endLine": 147 },
+    "type": "theorem",
+    "title": "Superlinear Growth",
+    "content": "**h_superlinear:**\n\nFor any constant C, eventually h(x) > C·x.\n\nThis is an immediate consequence of the Pollack-Pomerance result: if h(x)/x → ∞, then for any C there's an X beyond which h(x)/x > C.",
+    "significance": "key",
+    "relatedConcepts": ["Superlinear growth", "Eventual bounds"]
+  },
+  {
+    "id": "ann-e824-strong",
+    "proofId": "erdos-824",
+    "range": { "startLine": 153, "endLine": 161 },
+    "type": "definition",
+    "title": "The Strong Conjecture",
+    "content": "**StrongConjecture:**\n\nFor any ε > 0, eventually h(x) > x^{2-ε}.\n\nThis is much stronger than h(x)/x → ∞. It says h(x) grows nearly quadratically, almost matching the trivial upper bound h(x) ≤ x².\n\n**The Gap:** We don't even know h(x) > x^{1.01} for large x!",
+    "significance": "critical",
+    "relatedConcepts": ["Near-quadratic growth", "Asymptotic bounds"]
+  },
+  {
+    "id": "ann-e824-upper",
+    "proofId": "erdos-824",
+    "range": { "startLine": 163, "endLine": 169 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "**h_upper_bound:**\n\nh(x) ≤ x²\n\nThis is trivial: we're counting pairs (a, b) with a, b < x, and there are at most x² such pairs.\n\nThe conjecture asks if h(x) is close to this upper bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["Upper bounds", "Trivial bounds"]
+  },
+  {
+    "id": "ann-e824-coprimality",
+    "proofId": "erdos-824",
+    "range": { "startLine": 184, "endLine": 203 },
+    "type": "concept",
+    "title": "Why Coprimality Matters",
+    "content": "**The Importance of gcd(a,b) = 1:**\n\nWithout the coprimality constraint, counting σ-equal pairs is much easier. If σ(a) = σ(b), then σ(ka) might equal σ(kb) for various k, creating 'trivial' pairs.\n\n**Example:** σ(14) = σ(15) = 24, and gcd(14, 15) = 1. So (14, 15) is a valid coprime σ-equal pair counted by h.\n\nThe proof `example_coprime_pair` verifies this computationally.",
+    "significance": "key",
+    "relatedConcepts": ["Coprimality constraint", "Trivial pairs"]
+  },
+  {
+    "id": "ann-e824-squarefree",
+    "proofId": "erdos-824",
+    "range": { "startLine": 209, "endLine": 223 },
+    "type": "definition",
+    "title": "Squarefree Variant",
+    "content": "**IsSquarefree n:** No prime p has p² | n.\n\n**hSquarefree x:** Count pairs (a, b) where both are squarefree and σ(a) = σ(b).\n\nThis is a different constraint than coprimality:\n- (4, 9) are coprime but neither is squarefree\n- (6, 10) are both squarefree but not coprime\n\nThe relationship between hSquarefree and h is not immediately clear.",
+    "significance": "key",
+    "relatedConcepts": ["Squarefree integers", "Variant problems"]
+  },
+  {
+    "id": "ann-e824-weisenberg",
+    "proofId": "erdos-824",
+    "range": { "startLine": 225, "endLine": 232 },
+    "type": "definition",
+    "title": "Weisenberg Variant",
+    "content": "**WeisenbergCondition a b:**\n\nNo proper divisors u | a, v | b with σ(u) = σ(v) and coprimality conditions.\n\nThis is the strongest condition eliminating 'trivial duplicates': it requires that the σ-equality isn't inherited from smaller pairs.\n\nWeisenberg suggested this as a more refined question.",
+    "significance": "supporting",
+    "relatedConcepts": ["Primitive pairs", "Trivial duplicates"]
+  },
+  {
+    "id": "ann-e824-untouchable",
+    "proofId": "erdos-824",
+    "range": { "startLine": 245, "endLine": 251 },
+    "type": "definition",
+    "title": "Untouchable Numbers",
+    "content": "**IsUntouchable n:**\n\nA number n is untouchable if n ≠ s(m) = σ(m) - m for any m.\n\nThese are numbers not in the range of the 'sum of proper divisors' function.\n\nThe distribution of σ-values relates to which numbers are untouchable. Pollack and Pomerance also studied untouchable numbers in their 2016 paper.",
+    "significance": "supporting",
+    "relatedConcepts": ["Proper divisors", "Range of s(n)"]
+  },
+  {
+    "id": "ann-e824-summary",
+    "proofId": "erdos-824",
+    "range": { "startLine": 257, "endLine": 278 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_824_summary:**\n\nCaptures the state of knowledge:\n\n1. h grows faster than linear (h_superlinear)\n2. The strong conjecture is precisely stated (StrongConjecture)\n\n**What's Known:** h(x)/x → ∞\n**What's Open:** h(x) > x^{2-ε} (or even h(x) > x^{1.01})\n\nThe gap between proven and conjectured is enormous.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open questions"]
+  }
+]
