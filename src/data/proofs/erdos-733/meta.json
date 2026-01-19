@@ -1,33 +1,145 @@
 {
   "id": "erdos-733",
-  "title": "Erdős Problem #733",
+  "title": "Erdos Problem #733: Line-Compatible Sequences",
   "slug": "erdos-733",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence ... line-compatible if there is a set of ... points in ... such that there are ... lines ... containing at le...",
+  "description": "How many line-compatible sequences exist for n points? Answer: exp(Theta(n^{1/2})), proved by Szemeredi-Trotter (1983).",
   "meta": {
-    "author": "Unknown",
+    "author": "Szemeredi-Trotter (1983 solution), Erdos (problem and lower bound)",
     "sourceUrl": "https://erdosproblems.com/733",
-    "date": "",
-    "status": "pending",
+    "date": "1983",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos733Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "geometry",
+      "incidences",
+      "szemeredi-trotter",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 733,
     "erdosUrl": "https://erdosproblems.com/733",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "List.Sorted",
+        "description": "Sorted lists",
+        "module": "Mathlib.Data.List.Sort"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "PointSet type: finite point configurations",
+      "lineThrough definition: line through two points",
+      "pointsOnLine definition: incidence count",
+      "richLines definition: lines with >= 2 points",
+      "isLineCompatible definition: realizable sequences",
+      "countLineCompatible function: sequence count f(n)",
+      "szemeredi_trotter axiom: incidence theorem",
+      "rich_lines_bound axiom: k-rich lines bound",
+      "lower_bound axiom: exp(c*sqrt(n)) lower bound",
+      "upper_bound axiom: exp(C*sqrt(n)) upper bound",
+      "erdos_733 theorem: complete tight bounds",
+      "limitConstant definition: Erdos's follow-up question"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #733 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence $1<X_1\\leq\\cdots X_m\\leq n$ line-compatible if there is a set of $n$ points in $\\mathbb{R}^2$ such that there are $m$ lines $\\ell_1,\\ldots,\\ell_m$ containing at least two points, and the number of points on $\\ell_i$ is exactly $X_i$.\n\nProve that there are at most\\[\\exp(O(n^{1/2}))\\]many line-compatible sequences.\n\n\n\nThis problem is essentially the same as [607], but with multiplicities.\n\nErd\\H{o}s writes that it is 'easy' to prove there are at least\\[\\exp(cn^{1/2})\\]many such sequences for some constant $c>0$, but expected proving the upper bound to be difficult. Once it is done, he asked for the existence and value of\\[\\lim_{n\\to \\infty}\\frac{\\log f(n)}{n^{1/2}},\\]where $f(n)$ counts the number of line-compatible sequences.\n\nThis is true, and was proved by Szemer\\'{e}di and Trotter \\cite{SzTr83}.\n\nSee also [732].\n\n\n\n\nReferences\n\n\n[SzTr83] Szemer\\'{e}di, Endre and Trotter, Jr., William T., Extremal problems in discrete geometry. Combinatorica (1983), 381-392.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #733**\n\nThis problem concerns the combinatorics of point-line incidences.\n\n**Key History:**\n- Erdos posed the problem about counting line-compatible sequences\n- He noted the lower bound exp(c*sqrt(n)) was 'easy' via grid constructions\n- Szemeredi-Trotter (1983) proved the matching upper bound\n\n**Related Problems:**\n- Problem #607: Similar problem without multiplicities\n- Problem #732: Related incidence problem\n\n**The Szemeredi-Trotter Theorem:**\nThe key tool is their incidence theorem: n points and m lines have O(n^{2/3}m^{2/3} + n + m) incidences.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nA sequence 1 < X_1 <= X_2 <= ... <= X_m <= n is 'line-compatible' if some n-point configuration realizes it, where X_i is the number of points on line i.\n\nProve there are at most exp(O(n^{1/2})) such sequences.\n\n**Answer: PROVED**\n\n- Lower bound: exp(c*sqrt(n)) (Erdos, 'easy')\n- Upper bound: exp(C*sqrt(n)) (Szemeredi-Trotter, 1983)\n\nTogether: f(n) = exp(Theta(sqrt(n))).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point/Line Definitions:** PointSet, lineThrough, pointsOnLine\n\n2. **Line-Compatible:** Define isLineCompatible, countLineCompatible f(n)\n\n3. **Szemeredi-Trotter:** Axiomatize the incidence theorem\n\n4. **Lower Bound:** Grid construction gives exp(c*sqrt(n))\n\n5. **Upper Bound:** Szemeredi-Trotter implies exp(C*sqrt(n))\n\n6. **Main Result:** f(n) = exp(Theta(sqrt(n)))",
+    "keyInsights": [
+      "**Line-Compatible:** Sequences of point counts on lines that can be realized",
+      "**Szemeredi-Trotter:** The incidence bound I = O(n^{2/3}m^{2/3} + n + m) is key",
+      "**Grid Construction:** sqrt(n) x sqrt(n) grid gives many line-compatible sequences",
+      "**The sqrt(n) Exponent:** Arises from balancing grid dimensions and line counts",
+      "**Open Question:** What is the limit lim log(f(n)) / sqrt(n)?"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "point-configurations",
+      "title": "Point Configurations",
+      "summary": "PointSet, lineThrough, pointsOnLine, richLines",
+      "startLine": 39,
+      "endLine": 72
+    },
+    {
+      "id": "line-compatible",
+      "title": "Line-Compatible Sequences",
+      "summary": "isLineCompatible, countLineCompatible",
+      "startLine": 74,
+      "endLine": 105
+    },
+    {
+      "id": "szemeredi-trotter",
+      "title": "The Szemeredi-Trotter Theorem",
+      "summary": "szemeredi_trotter axiom, rich_lines_bound",
+      "startLine": 107,
+      "endLine": 132
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "summary": "lower_bound axiom, grid_gives_lower",
+      "startLine": 134,
+      "endLine": 161
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "summary": "upper_bound axiom, incidence_control",
+      "startLine": 163,
+      "endLine": 190
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "summary": "tight_bounds, erdos_733",
+      "startLine": 192,
+      "endLine": 227
+    },
+    {
+      "id": "limit-question",
+      "title": "The Limit Question",
+      "summary": "limitConstant, limit_bounds",
+      "startLine": 229,
+      "endLine": 253
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_733_summary, erdos_733_answer",
+      "startLine": 255,
+      "endLine": 291
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #733 asked for bounds on the number of line-compatible sequences. Szemeredi and Trotter (1983) proved the upper bound exp(O(sqrt(n))), matching Erdos's 'easy' lower bound. The count is exp(Theta(sqrt(n))). Erdos also asked about the limiting constant lim log(f(n))/sqrt(n), which remains an interesting follow-up.",
+    "implications": "**Combinatorial Geometry Significance**\n\n1. **Incidence Theory:** Showcases the power of Szemeredi-Trotter\n\n2. **Exponential Counting:** Growth is faster than polynomial but slower than 2^n\n\n3. **Grid Extremality:** Grids are near-optimal for generating sequences\n\n4. **Related Problems:** Connects to #607 (without multiplicities) and #732",
+    "openQuestions": [
+      "What is the exact value of lim log(f(n)) / sqrt(n)?",
+      "Can the constants c and C be determined explicitly?",
+      "What configurations achieve the maximum sequence count?",
+      "Higher-dimensional generalizations?",
+      "Connections to algebraic geometry methods?"
+    ]
   }
 }
