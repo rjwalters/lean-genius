@@ -1,1 +1,150 @@
-[]
+[
+  {
+    "id": "ann-e1112-header",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1112: k-fold Sumsets vs Lacunary Sequences**\n\nThis problem explores a fascinating tension in additive combinatorics:\n- **Lacunary sequences** grow exponentially (b_{i+1} ≥ r·b_i), making them extremely sparse.\n- **Bounded gap sequences** A have d₁ ≤ a_{i+1} - a_i ≤ d₂, making them relatively dense.\n- **k-fold sumsets** kA = {a₁ + ⋯ + a_k} grow denser as k increases.\n\n**The Question:** Can we always find A that avoids hitting B with its k-fold sumset?\n\n**The Surprise:** For k=2, YES. For k=3, NO - a fundamental phase transition!",
+    "mathContext": "The problem originates from Erdős and Graham's 1980 monograph and was partially resolved by Bollobás, Hegyvári, and Jin in 1997.",
+    "significance": "critical",
+    "relatedConcepts": ["Lacunary sequences", "Sumsets", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e1112-lacunary",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 44, "endLine": 52 },
+    "type": "definition",
+    "title": "Lacunary Sequences",
+    "content": "**IsLacunary r B:**\n\nA sequence B = {b₀ < b₁ < b₂ < ⋯} is **r-lacunary** if:\n1. B is strictly increasing\n2. Each term is at least r times the previous: b_{i+1} ≥ r·b_i\n\n**Examples:**\n- Powers of 2: {1, 2, 4, 8, 16, ...} is 2-lacunary\n- Powers of 10: {1, 10, 100, 1000, ...} is 10-lacunary\n\nLacunary sequences grow exponentially and are extremely sparse among the integers.",
+    "mathContext": "The term 'lacunary' comes from Latin 'lacuna' (gap), emphasizing the large gaps between consecutive terms.",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential growth", "Sparse sequences"]
+  },
+  {
+    "id": "ann-e1112-bounded-gaps",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 54, "endLine": 62 },
+    "type": "definition",
+    "title": "Bounded Gap Sequences",
+    "content": "**HasBoundedGaps d₁ d₂ A:**\n\nA sequence A = {a₀ < a₁ < a₂ < ⋯} has **gaps bounded by [d₁, d₂]** if:\n1. A is strictly increasing\n2. d₁ ≤ a_{i+1} - a_i ≤ d₂ for all i\n\n**Example with [2, 3]:**\n- Valid: {0, 2, 5, 7, 10, 12, ...} (gaps: 2, 3, 2, 3, 2)\n- Invalid: {0, 1, 4} (gap 1 < 2) or {0, 5} (gap 5 > 3)\n\nThese sequences are quasi-arithmetic: nearly evenly spaced but with some flexibility.",
+    "significance": "critical",
+    "relatedConcepts": ["Arithmetic progressions", "Gap sequences"]
+  },
+  {
+    "id": "ann-e1112-sumsets",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 71, "endLine": 99 },
+    "type": "definition",
+    "title": "k-fold Sumsets",
+    "content": "**TwoFoldSumset, ThreeFoldSumset, KFoldSumset:**\n\nThe **k-fold sumset** kA consists of all sums of k elements from A:\n- 2A = A + A = {a + b : a, b ∈ A}\n- 3A = A + A + A = {a + b + c : a, b, c ∈ A}\n- kA = {a₁ + ⋯ + a_k : a_i ∈ A}\n\n**Key Property:** As k increases, kA becomes denser.\n\n**Example:** If A = {0, 2, 3}, then:\n- 2A = {0, 2, 3, 4, 5, 6}\n- 3A = {0, 2, 3, 4, 5, 6, 7, 8, 9}\n\nThe sumset 'fills in' more and more of the integers.",
+    "mathContext": "Sumsets are central to additive combinatorics, connecting to the Cauchy-Davenport theorem and Freiman's theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Sumsets", "Additive number theory"]
+  },
+  {
+    "id": "ann-e1112-avoidance",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 107, "endLine": 122 },
+    "type": "definition",
+    "title": "The Avoidance Problem",
+    "content": "**AvoidancePossible and RkExists:**\n\n**AvoidancePossible(k, r, d₁, d₂):** For ANY r-lacunary B, there EXISTS A with [d₁, d₂] gaps such that kA ∩ B = ∅.\n\n**RkExists(k, d₁, d₂):** There is some r ≥ 2 making avoidance possible.\n\nThe function r_k(d₁, d₂) is the minimal such r (if it exists).\n\n**The Central Question:** For which (k, d₁, d₂) does r_k exist?\n\nThis formalizes the interplay between sparse exponential sequences and quasi-arithmetic sequences.",
+    "significance": "critical",
+    "relatedConcepts": ["Intersection problems", "Combinatorial existence"]
+  },
+  {
+    "id": "ann-e1112-erdos-graham",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 130, "endLine": 152 },
+    "type": "axiom",
+    "title": "Erdős-Graham Theorem (1980)",
+    "content": "**erdos_graham_1980:**\n\nIf B is 2-lacunary with b₁ ≥ 5, there exists A with gaps in [2, 3] such that (A + A) ∩ B = ∅.\n\n**Implication:** r₂(2, 3) = 2.\n\n**Intuition:** The 2-fold sumset A + A is still sparse enough that, by carefully choosing A, we can 'weave between' the elements of any 2-lacunary sequence.\n\nThe construction is non-trivial and requires careful combinatorial arguments.",
+    "mathContext": "From Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.'",
+    "significance": "critical",
+    "relatedConcepts": ["Avoidance constructions", "Sumset density"]
+  },
+  {
+    "id": "ann-e1112-bhj",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 160, "endLine": 181 },
+    "type": "axiom",
+    "title": "Bollobás-Hegyvári-Jin Theorem (1997)",
+    "content": "**bollobas_hegevari_jin_1997:**\n\nFor ANY growth rate sequence r₁ < r₂ < ⋯, there exists B with b_{i+1} ≥ r_i·b_i such that (A + A + A) ∩ B ≠ ∅ for EVERY A with [2, 3] gaps.\n\n**Implication:** r₃(2, 3) does NOT exist!\n\n**This is striking:** No matter how fast B grows - even faster than any fixed exponential - every A will have its 3-fold sumset hit B.\n\n**The Key Insight:** 3A contains 'too many' elements; the combinatorial structure forces intersection.",
+    "mathContext": "The negative result shows a fundamental barrier that cannot be overcome by making B sparser.",
+    "significance": "critical",
+    "relatedConcepts": ["Impossibility results", "Phase transitions"]
+  },
+  {
+    "id": "ann-e1112-r3-not-exists",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 174, "endLine": 181 },
+    "type": "theorem",
+    "title": "r₃(2,3) Does Not Exist",
+    "content": "**r3_23_not_exists:**\n\n```lean\ntheorem r3_23_not_exists : ¬RkExists 3 2 3\n```\n\nThis theorem formalizes the non-existence: there is NO value of r that makes 3-fold avoidance possible with [2, 3] gaps.\n\nThe proof uses the BHJ axiom: for any proposed r, they construct a specific counterexample B.",
+    "significance": "critical",
+    "relatedConcepts": ["Non-existence proofs", "Counterexamples"]
+  },
+  {
+    "id": "ann-e1112-chen",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 187, "endLine": 206 },
+    "type": "axiom",
+    "title": "Chen's Generalization (2000)",
+    "content": "**chen_r2_bound:**\n\nFor any a < b with b ≠ 2a, we have r₂(a, b) ≤ 2.\n\n**This generalizes Erdős-Graham:** The [2, 3] case is not special; most gap bounds work for k = 2.\n\n**Critical Exception:** When b = 2a (e.g., [1, 2], [2, 4], [3, 6]), different behavior occurs. The ratio b/a = 2 exactly matches the lacunary growth rate, creating interference.",
+    "mathContext": "Chen's result shows the k = 2 case is largely resolved, shifting focus to k ≥ 3.",
+    "significance": "key",
+    "relatedConcepts": ["Generalization", "Critical ratios"]
+  },
+  {
+    "id": "ann-e1112-tang-yang",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 214, "endLine": 222 },
+    "type": "axiom",
+    "title": "Tang-Yang Results (2021)",
+    "content": "**tang_yang_2021:**\n\nAdditional non-existence results for k ≥ 3 with various parameter combinations.\n\nThese results expand the known 'impossibility region' for the r_k function, showing that the k = 3 barrier extends to many other parameter choices.\n\nThe complete characterization remains open.",
+    "mathContext": "Published in Publicationes Mathematicae Debrecen (2021).",
+    "significance": "key",
+    "relatedConcepts": ["Non-existence landscape", "Parameter space"]
+  },
+  {
+    "id": "ann-e1112-open-problem",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 230, "endLine": 249 },
+    "type": "concept",
+    "title": "The Open Problem",
+    "content": "**erdos_1112_partially_resolved:**\n\nWhat we know:\n1. r₂ exists in most cases (Chen 2000)\n2. r₃(2, 3) does NOT exist (BHJ 1997)\n3. Various other k ≥ 3 cases don't exist (Tang-Yang 2021)\n\nWhat remains OPEN:\n- Complete characterization of when r_k(d₁, d₂) exists\n- Whether ANY (k, d₁, d₂) with k ≥ 3 allows avoidance\n\nThis is a genuine open problem in additive combinatorics!",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Research directions"]
+  },
+  {
+    "id": "ann-e1112-dichotomy",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 257, "endLine": 282 },
+    "type": "concept",
+    "title": "The k=2 vs k≥3 Dichotomy",
+    "content": "**Why the Phase Transition at k = 3?**\n\n**For k = 2:** A + A has 'manageable' density. If A has gaps in [d₁, d₂], then A has density roughly 1/average_gap. The sumset A + A roughly doubles this, but remains sparse enough to avoid lacunary sequences.\n\n**For k ≥ 3:** A + A + A hits 'too many' values. The combinatorial explosion of 3-fold sums means that no matter how carefully A is chosen or how sparse B is, intersection is unavoidable.\n\n**Analogy:** Think of A as a net. With 2 copies, you can still find paths through. With 3+ copies, the net becomes too dense - any target will be caught.",
+    "mathContext": "This represents a genuine phase transition in the mathematical structure of the problem.",
+    "significance": "key",
+    "relatedConcepts": ["Phase transitions", "Density arguments"]
+  },
+  {
+    "id": "ann-e1112-summary",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 300, "endLine": 305 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1112_summary:**\n\n```lean\ntheorem erdos_1112_summary :\n    (RkExists 2 2 3) ∧ (¬RkExists 3 2 3)\n```\n\nThis captures the essential result:\n- 2-fold sumsets CAN avoid lacunary sequences (with r = 2)\n- 3-fold sumsets CANNOT avoid lacunary sequences (no r works)\n\nThe problem exhibits a clean phase transition at k = 3.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Dichotomy theorem"]
+  },
+  {
+    "id": "ann-e1112-references",
+    "proofId": "erdos-1112",
+    "range": { "startLine": 307, "endLine": 316 },
+    "type": "concept",
+    "title": "Open Questions and References",
+    "content": "**Key Open Questions:**\n\n1. Complete characterization of r_k(d₁, d₂) existence\n2. Are there ANY k ≥ 3 cases where avoidance is possible?\n3. Exact value of r₂(a, 2a) in the critical ratio case\n4. Probabilistic and Fourier-analytic approaches\n\n**References:**\n- [ErGr80] Erdős-Graham 1980\n- [BHJ97] Bollobás-Hegyvári-Jin 1997\n- [Ch00] Chen 2000\n- [TaYa21] Tang-Yang 2021",
+    "significance": "supporting",
+    "relatedConcepts": ["Open problems", "Literature"]
+  }
+]

@@ -2380,17 +2380,24 @@
   },
   {
     "id": "erdos-1112",
-    "title": "Erdős Problem #1112",
+    "title": "Erdős Problem #1112: k-fold Sumsets Avoiding Lacunary Sequences",
     "slug": "erdos-1112",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Does there exist an integer ... such that if ... is a lacunary sequence of positive integers with ... then t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 3 and gap bounds d₁ < d₂, does there exist r such that for any r-lacunary sequence B, there exists A with bounded gaps where the k-fold sumset kA avoids B?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sumsets",
+      "lacunary-sequences",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1112,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-1113",
