@@ -1,1 +1,141 @@
-[]
+[
+  {
+    "id": "ann-e777-header",
+    "proofId": "erdos-777",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #777: Comparable Pairs in Families of Sets**\n\nThis problem studies the comparability graph G_F on a family F of subsets of {1,...,n}. Two sets A, B are connected if one contains the other.\n\nThree questions were posed about the maximum number of edges:\n1. Edge bound when |F| is small\n2. Does quadratic edge density imply small |F|?\n3. Subquadratic threshold behavior\n\nAll three were resolved by Alon, Frankl, and collaborators.",
+    "mathContext": "The comparability graph captures the partial order structure of set inclusion. This is a fundamental object in extremal combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["Partial orders", "Extremal set theory", "Comparability graphs"]
+  },
+  {
+    "id": "ann-e777-comparable",
+    "proofId": "erdos-777",
+    "range": { "startLine": 54, "endLine": 69 },
+    "type": "definition",
+    "title": "Comparable Sets",
+    "content": "**Comparable:**\n\nTwo sets A and B are comparable if A ⊆ B or B ⊆ A.\n\n**Definition:**\n```lean\ndef Comparable (A B : Finset α) : Prop := A ⊆ B ∨ B ⊆ A\n```\n\n**Properties:**\n- Reflexive: Every set is comparable to itself\n- Symmetric: If A comparable to B, then B comparable to A\n- Not transitive: {1} and {1,2} are comparable, {1,2} and {2} are comparable, but {1} and {2} are not",
+    "mathContext": "Comparability defines adjacency in the comparability graph. Unlike equality, it allows sets of different sizes to be related.",
+    "significance": "critical",
+    "relatedConcepts": ["Subset relation", "Partial orders", "Comparability"]
+  },
+  {
+    "id": "ann-e777-graph",
+    "proofId": "erdos-777",
+    "range": { "startLine": 71, "endLine": 93 },
+    "type": "definition",
+    "title": "Comparability Graph",
+    "content": "**comparabilityEdges:**\n\nThe edge set of the comparability graph G_F.\n\n**Definition:**\n```lean\ndef comparabilityEdges (F : Finset (Finset α)) : Finset ((Finset α) × (Finset α)) :=\n  F.product F |>.filter (fun ⟨A, B⟩ => A ≠ B ∧ (A ⊆ B ∨ B ⊆ A))\n```\n\n**Note:** This counts ordered pairs (A, B) and (B, A) separately. The actual edge count is half this value.",
+    "mathContext": "The comparability graph is central to understanding the structure of set families under inclusion.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph theory", "Edge counting", "Finset operations"]
+  },
+  {
+    "id": "ann-e777-baseset",
+    "proofId": "erdos-777",
+    "range": { "startLine": 95, "endLine": 116 },
+    "type": "definition",
+    "title": "Base Set and Power Set",
+    "content": "**baseSet and powerSetOfBase:**\n\n- baseSet(n) = {0, 1, ..., n-1} = Finset.range n\n- powerSetOfBase(n) = all subsets of baseSet(n)\n\n**Key theorem:**\n```lean\ntheorem powerSet_card (n : ℕ) : (powerSetOfBase n).card = 2^n\n```\n\nThe power set has 2^n elements, which is the maximum possible family size.",
+    "significance": "key",
+    "relatedConcepts": ["Finite sets", "Power sets", "Cardinality"]
+  },
+  {
+    "id": "ann-e777-question1",
+    "proofId": "erdos-777",
+    "range": { "startLine": 118, "endLine": 148 },
+    "type": "axiom",
+    "title": "Question 1: Edge Bound (YES)",
+    "content": "**question1_affirmative:**\n\nFor ε > 0 and n sufficiently large, if |F| ≤ (2-ε)·2^{n/2}, then G_F has < 2^n edges.\n\n**Answer: YES** (Alon-Das-Glebov-Sudakov 2015)\n\n**Significance:** This gives an upper bound on edges in terms of family size.\n\n**Tightness:** The extremal construction shows (2-ε) cannot be replaced by 2:\nWhen n is even, taking all subsets of {1,...,n/2} plus their unions with {1,...,n/2}\nachieves |F| = 2^{n/2+1} and exactly 2^n edges.",
+    "mathContext": "This resolves the first question posed by Daykin and Erdos. The proof uses sophisticated counting arguments from [ADGS15].",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal bounds", "ADGS theorem", "Edge counting"]
+  },
+  {
+    "id": "ann-e777-question2",
+    "proofId": "erdos-777",
+    "range": { "startLine": 150, "endLine": 183 },
+    "type": "axiom",
+    "title": "Question 2: Quadratic Density (NO)",
+    "content": "**question2_negative:**\n\n\"If G_F has ≥ cm² edges, must |F| ≪_c 2^{n/2}?\" Answer: NO.\n\n**Counterexample (Alon-Frankl 1985):**\nLet F consist of sets S where:\n- |S ∩ {n/2+1,...,n}| ≤ 1, OR\n- |S ∩ {1,...,n/2}| ≥ n/2 - 1\n\nThen |F| ≫ n·2^{n/2} but edges ≥ (1/32)·C(m,2).\n\nThis shows family size can far exceed 2^{n/2} while maintaining constant edge density.",
+    "mathContext": "The counterexample exploits the asymmetric structure of set intersections to create many comparable pairs in a large family.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Edge density", "Alon-Frankl construction"]
+  },
+  {
+    "id": "ann-e777-question3",
+    "proofId": "erdos-777",
+    "range": { "startLine": 185, "endLine": 218 },
+    "type": "axiom",
+    "title": "Question 3: Subquadratic Threshold (YES)",
+    "content": "**question3_affirmative:**\n\nFor any ε > 0, there exists δ > 0 such that if G_F has > m^{2-δ} edges, then |F| < (2+ε)^{n/2}.\n\n**Answer: YES** (Alon-Frankl 1985)\n\n**Quantitative bound:** For k ≥ 1 and |F| = 2^{(1/(k+1)+δ)n}:\nedges < (1 - 1/k)·C(m,2) + O(m^{2 - Ω_k(δ^{k+1})})\n\nThis establishes a threshold phenomenon for edge density.",
+    "mathContext": "The proof uses delicate counting arguments involving the structure of comparable pairs at different size levels.",
+    "significance": "critical",
+    "relatedConcepts": ["Threshold phenomena", "Density bounds", "Alon-Frankl theorem"]
+  },
+  {
+    "id": "ann-e777-daykin-frankl",
+    "proofId": "erdos-777",
+    "range": { "startLine": 220, "endLine": 244 },
+    "type": "axiom",
+    "title": "Daykin-Frankl Theorem",
+    "content": "**daykinFrankl:**\n\nIf G_F has (1 + o(1))·C(m,2) edges (almost all pairs comparable), then |F|^{1/n} → 1 as n → ∞.\n\n**Interpretation:** Families with nearly all pairs comparable must be \"chain-like\" - their growth rate (as measured by |F|^{1/n}) approaches 1.\n\nThis is the asymptotic characterization of near-complete comparability.",
+    "mathContext": "This early result by Daykin and Frankl motivated the three questions that form the main problem.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic analysis", "Chains", "Complete comparability"]
+  },
+  {
+    "id": "ann-e777-chain",
+    "proofId": "erdos-777",
+    "range": { "startLine": 246, "endLine": 263 },
+    "type": "definition",
+    "title": "Chains and Antichains",
+    "content": "**IsChain and IsAntichain:**\n\n- **Chain:** Every two elements are comparable\n- **Antichain:** No two distinct elements are comparable\n\n**Definitions:**\n```lean\ndef IsChain (F : Finset (Finset α)) : Prop :=\n  ∀ A ∈ F, ∀ B ∈ F, Comparable A B\n\ndef IsAntichain (F : Finset (Finset α)) : Prop :=\n  ∀ A ∈ F, ∀ B ∈ F, A ≠ B → ¬Comparable A B\n```\n\nChains have maximum edges; antichains have zero edges.",
+    "significance": "key",
+    "relatedConcepts": ["Totally ordered sets", "Sperner theory", "Dilworth's theorem"]
+  },
+  {
+    "id": "ann-e777-sperner",
+    "proofId": "erdos-777",
+    "range": { "startLine": 278, "endLine": 286 },
+    "type": "axiom",
+    "title": "Sperner's Bound",
+    "content": "**sperner_bound:**\n\nThe maximum antichain in the power set of {1,...,n} has size C(n, ⌊n/2⌋).\n\n**Statement:**\n```lean\naxiom sperner_bound (n : ℕ) :\n    ∀ F : Finset (Finset ℕ),\n    (∀ S ∈ F, S ⊆ baseSet n) →\n    IsAntichain F →\n    F.card ≤ Nat.choose n (n / 2)\n```\n\nThis is the classical Sperner's theorem from combinatorics.",
+    "mathContext": "Sperner's theorem (1928) is one of the foundational results in extremal set theory.",
+    "significance": "key",
+    "relatedConcepts": ["Sperner's theorem", "Binomial coefficients", "LYM inequality"]
+  },
+  {
+    "id": "ann-e777-examples",
+    "proofId": "erdos-777",
+    "range": { "startLine": 288, "endLine": 318 },
+    "type": "theorem",
+    "title": "Comparability Examples",
+    "content": "**Concrete Examples:**\n\n1. **singleton_comparable:** Two distinct singletons {a} and {b} are NOT comparable (neither contains the other)\n\n2. **empty_comparable:** The empty set ∅ is comparable to every set (∅ ⊆ A for all A)\n\n3. **full_comparable:** Every subset A of a base set B is comparable to B (A ⊆ B)\n\nThese illustrate the basic behavior of comparability.",
+    "significance": "supporting",
+    "relatedConcepts": ["Singletons", "Empty set", "Subset relation"]
+  },
+  {
+    "id": "ann-e777-adgs",
+    "proofId": "erdos-777",
+    "range": { "startLine": 320, "endLine": 337 },
+    "type": "axiom",
+    "title": "ADGS Theorem (2015)",
+    "content": "**ADGS_theorem:**\n\nThe main result of Alon, Das, Glebov, and Sudakov (2015) that resolves Question 1.\n\nTheorem 1.4 and Corollary 1.5 of their paper establish that for ε > 0 and n large, if |F| ≤ (2-ε)·2^{n/2}, then G_F has fewer than 2^n comparable pairs.\n\n**Reference:** J. Combin. Theory Ser. B (2015), 164-185.",
+    "mathContext": "The ADGS paper used new techniques to settle this 30+ year old problem of Daykin and Erdos.",
+    "significance": "key",
+    "relatedConcepts": ["ADGS paper", "Comparable pairs", "Edge bounds"]
+  },
+  {
+    "id": "ann-e777-summary",
+    "proofId": "erdos-777",
+    "range": { "startLine": 339, "endLine": 380 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_777_summary:**\n\nCombines all three main results:\n\n1. **Question 1 (YES):** Small families have bounded edges\n2. **Question 2 (NO):** Quadratic density does not imply small family\n3. **Question 3 (YES):** Subquadratic threshold exists\n\n```lean\ntheorem erdos_777_summary :\n    (∀ ε : ℝ, ε > 0 → ...) ∧  -- Q1\n    (∃ (f : ℕ → ...), ...) ∧   -- Q2\n    (∀ ε : ℝ, ε > 0 → ...)    -- Q3\n```\n\nErdos Problem #777 is completely resolved.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorem", "Complete resolution", "Three questions"]
+  }
+]
