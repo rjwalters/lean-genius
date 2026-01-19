@@ -1,1 +1,184 @@
-[]
+[
+  {
+    "id": "ann-305-1",
+    "proofId": "erdos-305",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "definition",
+    "title": "Egyptian Fraction",
+    "content": "**isEgyptianFraction S** means S is a valid set of denominators for an Egyptian fraction (all positive). Egyptian fractions date to ancient Egypt (Rhind Papyrus, c. 1650 BCE).",
+    "significance": "critical",
+    "relatedConcepts": ["Unit fractions", "Rational representation", "Ancient mathematics"]
+  },
+  {
+    "id": "ann-305-2",
+    "proofId": "erdos-305",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "definition",
+    "title": "Unit Fraction Sum",
+    "content": "**unitFractionSum S** computes ∑_{n ∈ S} 1/n. This is the value represented by the Egyptian fraction with denominators in S.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-305-3",
+    "proofId": "erdos-305",
+    "range": { "startLine": 68, "endLine": 69 },
+    "type": "definition",
+    "title": "Egyptian Representation",
+    "content": "**isEgyptianRepresentation S a b** means S gives an Egyptian fraction equal to a/b. Every rational 0 < a/b < 1 has such a representation.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-4",
+    "proofId": "erdos-305",
+    "range": { "startLine": 76, "endLine": 77 },
+    "type": "axiom",
+    "title": "Existence Theorem",
+    "content": "**egyptian_representation_exists** guarantees every positive rational < 1 has an Egyptian fraction representation. This follows from the greedy algorithm (Fibonacci-Sylvester).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-5",
+    "proofId": "erdos-305",
+    "range": { "startLine": 87, "endLine": 88 },
+    "type": "definition",
+    "title": "Maximum Denominator",
+    "content": "**maxDenominator S** returns the largest element of S. The problem asks: what is the minimum possible maximum denominator?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-6",
+    "proofId": "erdos-305",
+    "range": { "startLine": 114, "endLine": 117 },
+    "type": "definition",
+    "title": "D(b) Function",
+    "content": "**D_b b** = max_{1 ≤ a < b} D(a,b) is the worst-case minimum maximum denominator for fractions with denominator b. This is the central quantity in Erdős Problem #305.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-7",
+    "proofId": "erdos-305",
+    "range": { "startLine": 127, "endLine": 128 },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "**D_b_lower_trivial**: D(b) ≥ b for b ≥ 2. The fraction (b-1)/b requires denominator at least b in any representation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-305-8",
+    "proofId": "erdos-305",
+    "range": { "startLine": 135, "endLine": 136 },
+    "type": "axiom",
+    "title": "Prime Lower Bound",
+    "content": "**D_prime_lower**: D(p) ≫ p log p for prime p. This shows the (log b)¹ factor is necessary, making the conjecture sharp up to o(1) in the exponent.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-9",
+    "proofId": "erdos-305",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "axiom",
+    "title": "Bleicher-Erdős Bound",
+    "content": "**bleicher_erdos_bound** (1976): D(b) ≪ b(log b)². This was the first strong upper bound, initiating the modern study of this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-10",
+    "proofId": "erdos-305",
+    "range": { "startLine": 152, "endLine": 155 },
+    "type": "axiom",
+    "title": "Yokota's Bound",
+    "content": "**yokota_bound** (1988): D(b) ≪ b(log b)(log log b)⁴(log log log b)². This solved Erdős #305 by showing D(b) ≪ b(log b)^{1+o(1)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-11",
+    "proofId": "erdos-305",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "axiom",
+    "title": "Liu-Sawhney Bound",
+    "content": "**liu_sawhney_bound** (2024): D(b) ≪ b(log b)(log log b)³(log log log b)^{O(1)}. Improved Yokota's bound using additive combinatorics techniques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-12",
+    "proofId": "erdos-305",
+    "range": { "startLine": 177, "endLine": 179 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "**erdos305Conjecture**: Is D(b) ≪ b(log b)^{1+o(1)}? This asks if the exponent 1 on log b is essentially optimal, with only subpolynomial correction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-13",
+    "proofId": "erdos-305",
+    "range": { "startLine": 186, "endLine": 189 },
+    "type": "theorem",
+    "title": "Solution",
+    "content": "**erdos_305_solved** proves the conjecture. Since (log log b)^k = (log b)^{o(1)}, Yokota's bound confirms D(b) ≪ b(log b)^{1+o(1)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-305-14",
+    "proofId": "erdos-305",
+    "range": { "startLine": 202, "endLine": 208 },
+    "type": "definition",
+    "title": "Greedy Algorithm",
+    "content": "**greedyStep** implements the Fibonacci-Sylvester algorithm: subtract the largest unit fraction 1/⌈b/a⌉ ≤ a/b, then recurse. Always terminates but may not give optimal denominators.",
+    "significance": "critical",
+    "relatedConcepts": ["Fibonacci", "Sylvester", "Algorithmic number theory"]
+  },
+  {
+    "id": "ann-305-15",
+    "proofId": "erdos-305",
+    "range": { "startLine": 223, "endLine": 228 },
+    "type": "axiom",
+    "title": "Greedy Not Optimal",
+    "content": "**greedy_not_optimal**: The greedy algorithm can produce unnecessarily large denominators. Example: 2/9 = 1/5 + 1/45 (greedy) vs 1/6 + 1/18 (optimal).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-305-16",
+    "proofId": "erdos-305",
+    "range": { "startLine": 240, "endLine": 241 },
+    "type": "axiom",
+    "title": "Representation of 1",
+    "content": "**one_representations**: 1 = 1/2 + 1/3 + 1/6 is the simplest Egyptian fraction for 1. Many representations exist, connecting to perfect numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-305-17",
+    "proofId": "erdos-305",
+    "range": { "startLine": 273, "endLine": 274 },
+    "type": "axiom",
+    "title": "Odd Egyptian Fractions",
+    "content": "**odd_egyptian_exists**: Every rational with odd denominator has an Egyptian fraction using only odd denominators. A variant of the existence theorem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-305-18",
+    "proofId": "erdos-305",
+    "range": { "startLine": 303, "endLine": 308 },
+    "type": "axiom",
+    "title": "Harmonic Connection",
+    "content": "**harmonic_connection**: Harmonic sums H_n = ∑_{k=1}^n 1/k ~ log n explain why logarithms appear in D(b) bounds. Egyptian fractions are partial harmonic sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-305-19",
+    "proofId": "erdos-305",
+    "range": { "startLine": 320, "endLine": 325 },
+    "type": "axiom",
+    "title": "Dense Egyptian Fractions",
+    "content": "**dense_egyptian_fractions**: Liu-Sawhney proved sets A ⊆ [1,N] with ∑ 1/n ≥ (log N)^{4/5+o(1)} contain a subset summing to 1. Connects to additive combinatorics.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-305-20",
+    "proofId": "erdos-305",
+    "range": { "startLine": 352, "endLine": 352 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_305** proves the problem: D(b) ≪ b(log b)^{1+o(1)} follows from Yokota's bound. The maximum denominator needed grows only slightly faster than b log b.",
+    "significance": "critical"
+  }
+]
