@@ -1,33 +1,149 @@
 {
   "id": "erdos-874",
-  "title": "Erdős Problem #874",
+  "title": "Erdős Problem #874: Admissible Sets and Subset Sum Disjointness",
   "slug": "erdos-874",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size of the largest set ... such that the sets\\[S_r = \\{ a_1+\\cdots +a_r : a_1<\\cdots<a_r\\in A\\}\\]are disj...",
+  "description": "Is k(N) ~ 2√N where k(N) is the max size of A ⊆ {1,...,N} with disjoint subset sums S_r? PROVED by Deshouillers-Freiman (1999).",
   "meta": {
-    "author": "Unknown",
+    "author": "Straus (1966), ENS (1991), Deshouillers-Freiman (1999)",
     "sourceUrl": "https://erdosproblems.com/874",
-    "date": "",
-    "status": "pending",
+    "date": "1999",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos874Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "extremal-set-theory",
+      "subset-sums",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 874,
     "erdosUrl": "https://erdosproblems.com/874",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sumSet definition for r-element subset sums",
+      "hasDisjointSums and Admissible definitions",
+      "BoundedAdmissible for sets in {1,...,N}",
+      "k(N) function as maximum admissible set size",
+      "strausSet construction for lower bound",
+      "Straus lower/upper bound axioms (1966)",
+      "ENS improved upper bound axiom (1991)",
+      "Deshouillers-Freiman main theorem axiom (1999)",
+      "k_limit_is_two: the limit equals 2",
+      "erdos_874 and erdos_874_answer main theorems"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #874 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k(N)$ denote the size of the largest set $A\\subseteq \\{1,\\ldots,N\\}$ such that the sets\\[S_r = \\{ a_1+\\cdots +a_r : a_1<\\cdots<a_r\\in A\\}\\]are disjoint for distinct $r\\geq 1$. Estimate $k(N)$ - in particular, is it true that $k(N)\\sim 2N^{1/2}$?\n\n\n\nStraus \\cite{St66} calls such sets admissible, and proved that\\[\\limsup \\frac{k(N)}{N^{1/2}}\\leq \\frac{4}{\\sqrt{3}}=2.309\\cdots,\\]and that $A=(N-k,N]\\cap \\mathbb{N}$ has this property for $k=2m-1$ if $N\\in [m^2,m^2+m)$ and for $k=2m$ if $N\\in [m^2+m,(m+1)^2)$, which implies that\\[\\liminf \\frac{k(N)}{N^{1/2}}\\geq 2.\\]Erd\\H{o}s, Nicolas, and S\\'{a}rk\\\"{o}zy \\cite{ENS91} improved the upper bound to\\[\\limsup \\frac{k(N)}{N^{1/2}}\\leq (143/27)^{1/2}=2.301\\cdots.\\]The conjecture was proved (for all large $N$) by Deshouillers and Freiman \\cite{DeFr99}, who further show that in some cases the largest such $A$ has the form $(N-k,N]\\cap \\mathbb{N}$ as above.\n\nSee also [186] and [789]. For an infinite version of this problem see [875].\n\n\n\n\nReferences\n\n\n[DeFr99] Deshouillers, Jean-Marc and Freiman, Gregory A., On an additive problem of Erd\\H{o}s and {S}traus. {II}. Ast\\'{e}risque (1999), xii, 141--148.\n\n[ENS91] Erd\\H{o}s, P. and Nicolas, J.-L. and S\\'{a}rk\\\"ozy, A., Sommes de sous-ensembles. S\\'{e}m. Th\\'{e}or. Nombres Bordeaux (2) (1991), 55--72.\n\n[St66] Straus, E. G., On a problem in combinatorial number theory. J. Math. Sci. (1966), 77--80.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about 'admissible' sets A ⊆ {1,...,N} where sums of r distinct elements form disjoint sets for each r. Straus (1966) introduced the term and established that 2 ≤ liminf k(N)/√N ≤ limsup k(N)/√N ≤ 4/√3. Erdős-Nicolas-Sárközy (1991) improved the upper bound to √(143/27). Finally, Deshouillers-Freiman (1999) proved the conjecture: k(N) ~ 2√N.",
+    "problemStatement": "**Question:** Let k(N) denote the size of the largest subset A ⊆ {1,...,N} such that the sets S_r = { a₁ + ⋯ + a_r : a₁ < ⋯ < a_r ∈ A } are disjoint for distinct r ≥ 1. Is k(N) ~ 2√N?\n\n**Answer: YES** (Deshouillers-Freiman, 1999)\n\nThe limit lim_{N→∞} k(N)/√N = 2 exists.",
+    "proofStrategy": "The formalization defines:\n\n1. **sumSet(A, r):** Set of all r-element subset sums from A\n2. **Admissible(A):** S_r are pairwise disjoint for r ≥ 1\n3. **k(N):** Maximum |A| for admissible A ⊆ {1,...,N}\n\nWe axiomatize:\n- Straus (1966): Lower bound via interval construction, upper bound 4/√3\n- ENS (1991): Improved upper bound √(143/27)\n- Deshouillers-Freiman (1999): k(N)/√N → 2",
+    "keyInsights": [
+      "**Admissible = Disjoint Sums:** The key property is that you can determine r from the sum alone.",
+      "**Intervals are often optimal:** Sets of the form (N-k, N] ∩ ℕ achieve the lower bound.",
+      "**Why intervals work:** Large consecutive integers have well-separated sum ranges.",
+      "**Growth is √N:** The constraint of disjoint sums limits the set size to O(√N).",
+      "**Straus's construction:** For appropriate k, the top k integers form an admissible set."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "sumSet, hasDisjointSums, Admissible, BoundedAdmissible",
+      "startLine": 38,
+      "endLine": 69
+    },
+    {
+      "id": "k-function",
+      "title": "The Function k(N)",
+      "summary": "Definition of k(N) as maximum admissible set size",
+      "startLine": 71,
+      "endLine": 88
+    },
+    {
+      "id": "straus",
+      "title": "Straus's Results (1966)",
+      "summary": "Lower bound construction and 4/√3 upper bound",
+      "startLine": 90,
+      "endLine": 129
+    },
+    {
+      "id": "ens",
+      "title": "ENS Improvement (1991)",
+      "summary": "Improved upper bound √(143/27) ≈ 2.301",
+      "startLine": 131,
+      "endLine": 156
+    },
+    {
+      "id": "deshouillers-freiman",
+      "title": "Deshouillers-Freiman Resolution (1999)",
+      "summary": "Main theorem: k(N) ~ 2√N proved",
+      "startLine": 158,
+      "endLine": 186
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Small cases: N=4, N=9, why intervals work",
+      "startLine": 188,
+      "endLine": 223
+    },
+    {
+      "id": "properties",
+      "title": "Sum Set Properties",
+      "summary": "Cardinality bounds and constraints",
+      "startLine": 225,
+      "endLine": 244
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Connection to #186, #789, #875 (infinite version)",
+      "startLine": 246,
+      "endLine": 266
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_874 and erdos_874_answer main theorems",
+      "startLine": 268,
+      "endLine": 309
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #874 asked whether k(N) ~ 2√N, where k(N) is the maximum size of an admissible subset of {1,...,N}. The conjecture was proved by Deshouillers-Freiman in 1999, confirming that the limit k(N)/√N equals 2. The proof built on earlier bounds by Straus (1966) and Erdős-Nicolas-Sárközy (1991).",
+    "implications": "**Extremal Set Theory Connections:**\n\n1. **Subset Sum Structure:** Understanding when sums determine their decomposition.\n2. **Greedy Constructions:** Intervals often achieve extremal bounds.\n3. **Growth Rates:** The √N growth is natural for sum-disjointness constraints.\n4. **Additive Combinatorics:** Relates to Sidon sets and B_h sequences.\n5. **Computational Aspects:** Finding optimal admissible sets for given N.",
+    "openQuestions": [
+      "Exact values of k(N) for small N",
+      "When is the interval (N-k, N] exactly optimal vs approximately optimal?",
+      "Generalizations to subset sums with multiplicity",
+      "Infinite version (Problem #875): growth rate of admissible subsets"
+    ]
   }
 }
