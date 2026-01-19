@@ -1,1 +1,136 @@
-[]
+[
+  {
+    "id": "ann-e733-header",
+    "proofId": "erdos-733",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #733: Line-Compatible Sequences**\n\nA sequence is 'line-compatible' if it records the point counts on lines for some n-point configuration.\n\n**Question:** How many such sequences exist?\n\n**Answer:** exp(Theta(sqrt(n)))\n\n- Lower: exp(c*sqrt(n)) (Erdos, 'easy')\n- Upper: exp(C*sqrt(n)) (Szemeredi-Trotter 1983)",
+    "mathContext": "A counting problem in combinatorial geometry solved using the Szemeredi-Trotter incidence theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Incidences", "Point-line geometry", "Szemeredi-Trotter"]
+  },
+  {
+    "id": "ann-e733-pointset",
+    "proofId": "erdos-733",
+    "range": { "startLine": 45, "endLine": 49 },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "**PointSet:**\n\nA finite set of points in the plane R^2.\n\n**Type:** Finset (R x R)\n\nThe basic object of study - we count line-compatible sequences for n-point configurations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e733-line",
+    "proofId": "erdos-733",
+    "range": { "startLine": 51, "endLine": 65 },
+    "type": "definition",
+    "title": "Lines and Incidences",
+    "content": "**lineThrough, pointsOnLine:**\n\n- lineThrough(p, q): The line through points p and q\n- pointsOnLine(P, L): Count of points from P that lie on line L\n\nThese define the incidence structure between points and lines.",
+    "significance": "key",
+    "relatedConcepts": ["Collinearity", "Incidence geometry"]
+  },
+  {
+    "id": "ann-e733-line-compatible",
+    "proofId": "erdos-733",
+    "range": { "startLine": 80, "endLine": 97 },
+    "type": "definition",
+    "title": "Line-Compatible Sequences",
+    "content": "**isLineCompatible:**\n\nA sorted sequence [X_1, ..., X_m] with 2 <= X_i <= n is line-compatible if some n-point configuration has m lines with exactly these point counts.\n\n**Example:** [2, 2, 3] means 2 lines with 2 points each and 1 line with 3 points.",
+    "mathContext": "The central definition of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e733-count",
+    "proofId": "erdos-733",
+    "range": { "startLine": 99, "endLine": 105 },
+    "type": "definition",
+    "title": "Counting Function f(n)",
+    "content": "**countLineCompatible f(n):**\n\nThe number of distinct line-compatible sequences for n points.\n\nThe problem asks for bounds on f(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e733-szemeredi-trotter",
+    "proofId": "erdos-733",
+    "range": { "startLine": 113, "endLine": 123 },
+    "type": "axiom",
+    "title": "Szemeredi-Trotter Theorem",
+    "content": "**szemeredi_trotter:**\n\nFor n points and m lines, the number of incidences is:\nI(P, L) <= C * (n^{2/3} * m^{2/3} + n + m)\n\nThis is a fundamental result in combinatorial geometry, proved in 1983.\n\nIt is the key tool for the upper bound on line-compatible sequences.",
+    "mathContext": "One of the most important theorems in discrete geometry.",
+    "significance": "critical",
+    "relatedConcepts": ["Incidence bounds", "Crossing number inequality"]
+  },
+  {
+    "id": "ann-e733-rich-lines",
+    "proofId": "erdos-733",
+    "range": { "startLine": 125, "endLine": 132 },
+    "type": "axiom",
+    "title": "Rich Lines Bound",
+    "content": "**rich_lines_bound:**\n\nThe number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).\n\nThis is a corollary of Szemeredi-Trotter and controls the possible sequence patterns.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e733-lower",
+    "proofId": "erdos-733",
+    "range": { "startLine": 140, "endLine": 151 },
+    "type": "axiom",
+    "title": "Lower Bound (Erdos)",
+    "content": "**lower_bound:**\n\nf(n) >= exp(c * sqrt(n))\n\nErdos considered this 'easy'.\n\n**Construction:** A sqrt(n) x sqrt(n) grid has Theta(n) lines through it. Selecting different subsets of lines gives exponentially many sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e733-grid",
+    "proofId": "erdos-733",
+    "range": { "startLine": 153, "endLine": 161 },
+    "type": "theorem",
+    "title": "Grid Construction",
+    "content": "**grid_gives_lower:**\n\nA sqrt(n) x sqrt(n) integer grid has:\n- n points total\n- Theta(sqrt(n)) horizontal lines\n- Theta(sqrt(n)) vertical lines\n- Many diagonal lines\n\nTotal: Theta(n) lines, giving 2^{Theta(sqrt(n))} subsequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e733-upper",
+    "proofId": "erdos-733",
+    "range": { "startLine": 169, "endLine": 178 },
+    "type": "axiom",
+    "title": "Upper Bound (Szemeredi-Trotter)",
+    "content": "**upper_bound:**\n\nf(n) <= exp(C * sqrt(n))\n\nProved by Szemeredi and Trotter (1983) using their incidence theorem.\n\nThe proof controls the number of possible sequence patterns by bounding incidences.",
+    "mathContext": "This was the 'difficult' direction that Erdos anticipated.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e733-tight",
+    "proofId": "erdos-733",
+    "range": { "startLine": 198, "endLine": 205 },
+    "type": "theorem",
+    "title": "Tight Bounds",
+    "content": "**tight_bounds:**\n\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nCombines lower and upper bounds to show f(n) = exp(Theta(sqrt(n))).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e733-main",
+    "proofId": "erdos-733",
+    "range": { "startLine": 207, "endLine": 227 },
+    "type": "theorem",
+    "title": "Erdos Problem #733: SOLVED",
+    "content": "**erdos_733:**\n\nComplete solution: f(n) = exp(Theta(sqrt(n)))\n\nFor n >= 4, there exist c, C > 0 such that:\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nThe Szemeredi-Trotter theorem is the key tool.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e733-limit",
+    "proofId": "erdos-733",
+    "range": { "startLine": 235, "endLine": 253 },
+    "type": "definition",
+    "title": "The Limit Question",
+    "content": "**limitConstant:**\n\nErdos asked: Does lim log(f(n)) / sqrt(n) exist?\n\nIf so, what is its value?\n\nBy the tight bounds, any limit must lie between c and C. The exact value remains of interest.",
+    "mathContext": "An open follow-up question posed by Erdos.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e733-summary",
+    "proofId": "erdos-733",
+    "range": { "startLine": 259, "endLine": 289 },
+    "type": "theorem",
+    "title": "Complete Summary",
+    "content": "**erdos_733_summary:**\n\n1. Line-compatible sequences counted by f(n)\n2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)\n3. Upper: f(n) <= exp(C*sqrt(n)) (Szemeredi-Trotter)\n4. Together: f(n) = exp(Theta(sqrt(n)))\n\n**erdos_733_answer:** Confirms the complete bounds.",
+    "significance": "critical"
+  }
+]
