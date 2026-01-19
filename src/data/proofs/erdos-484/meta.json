@@ -16,11 +16,42 @@
       "sumsets",
       "ramsey-theory"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 484,
     "erdosUrl": "https://erdosproblems.com/484",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter elements of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Coloring type: Fin N → Fin k for k-colorings",
+      "colorClass definition: elements of given color",
+      "isMonochromaticSum predicate: a + b with same color",
+      "monochromaticSums set: all representable sums",
+      "roth_conjecture definition: formal problem statement",
+      "ESS_theorem axiom: N/2 - O(N^{1-1/2^{k+1}}) bound",
+      "ESS_two_coloring axiom: O(log N) bound for k=2",
+      "two_coloring_optimal axiom: optimality construction",
+      "positive_density theorem: derives from ESS",
+      "Related theorem connections: Schur, Rado, Folkman, Hindman"
+    ]
   },
   "overview": {
     "historicalContext": "This was originally a conjecture of Klaus Roth about the structure of sumsets under finite partitions. Erdős promoted the problem, and it was solved by Erdős, Sárközy, and Sós in 1989. Their solution established precise bounds that were stronger than the original conjecture. A refinement appears as Problem 25 on Ben Green's open problems list.",
