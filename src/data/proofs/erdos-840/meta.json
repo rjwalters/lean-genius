@@ -1,33 +1,90 @@
 {
   "id": "erdos-840",
-  "title": "Erdős Problem #840",
+  "title": "Quasi-Sidon Subsets",
   "slug": "erdos-840",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest quasi-Sidon subset ..., where we say that ... is quasi-Sidon if\\[\\lvert A+A\\rvert=(1+o(1))...",
+  "description": "How large can a quasi-Sidon subset of {1,...,N} be? A set A is quasi-Sidon if |A+A| = (1+o(1))·C(|A|,2). Bounds: (2/√3)√N ≤ f(N) ≤ 1.86√N.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős and Freud",
     "sourceUrl": "https://erdosproblems.com/840",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos840Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "sumsets",
+      "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 15,
     "erdosNumber": 840,
     "erdosUrl": "https://erdosproblems.com/840",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #840 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(N)$ be the size of the largest quasi-Sidon subset $A\\subset\\{1,\\ldots,N\\}$, where we say that $A$ is quasi-Sidon if\\[\\lvert A+A\\rvert=(1+o(1))\\binom{\\lvert A\\rvert}{2}.\\]How does $f(N)$ grow?\n\n\n\nConsidered by Erd\\H{o}s and Freud \\cite{ErFr91}, who proved\\[\\left(\\frac{2}{\\sqrt{3}}+o(1)\\right)N^{1/2} \\leq f(N) \\leq \\left(2+o(1)\\right)N^{1/2}.\\](Although both bounds were already given by Erd\\H{o}s in \\cite{Er81h}.) Note that $2/\\sqrt{3}=1.15\\cdots$. The lower bound is taking a genuine Sidon set $B\\subset [1,N/3]$ of size $\\sim N^{1/2}/\\sqrt{3}$ and taking the union with $\\{N-b : b\\in B\\}$. The upper bound was improved by Pikhurko \\cite{Pi06} to\\[f(N) \\leq \\left(\\left(\\frac{1}{4}+\\frac{1}{(\\pi+2)^2}\\right)^{-1/2}+o(1)\\right)N^{1/2}\\](the constant here is $=1.863\\cdots$).\n\nThe analogous question with $A-A$ in place of $A+A$ is simpler, and there the maximal size is $\\sim N^{1/2}$, as proved by Cilleruelo.\n\n\nSee also [30], [819], and [864].\n\n\n\n\nReferences\n\n\n[Er81h] Erd\\H{o}s, P., Some problems and results on additive and multiplicative\nnumber theory. Analytic number theory (Philadelphia, Pa., 1980) (1981), 171-182.\n\n[ErFr91] Erd\\H{o}s, P. and Freud, R., On sums of a {S}idon-sequence. J. Number Theory (1991), 196--205.\n\n[Pi06] Pikhurko, Oleg, Dense edge-magic graphs and thin additive bases. Discrete Math. (2006), 2097--2107.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #840 concerns quasi-Sidon sets, a relaxation of the classical Sidon sets (B₂ sequences). A Sidon set has all pairwise sums distinct, giving |A+A| = C(|A|,2) + |A| exactly. A quasi-Sidon set only requires |A+A| to approach C(|A|,2) asymptotically. The problem asks for the maximum size f(N) of a quasi-Sidon subset of {1,...,N}. Erdős and Freud studied this in 1991, establishing both upper and lower bounds of order √N. Pikhurko (2006) improved the upper bound constant.",
+    "problemStatement": "Let f(N) be the size of the largest quasi-Sidon subset A ⊆ {1, ..., N}, where A is quasi-Sidon if |A + A| = (1 + o(1)) · C(|A|, 2). How does f(N) grow?\n\nKnown bounds:\n- Lower: f(N) ≥ (2/√3 + o(1))√N ≈ 1.15√N (Erdős-Freud, 1991)\n- Upper: f(N) ≤ (c_P + o(1))√N where c_P ≈ 1.86 (Pikhurko, 2006)\n\nThe question is to determine the exact asymptotic constant.",
+    "proofStrategy": "This problem remains OPEN. Our formalization defines Sidon sets (all pairwise sums distinct), quasi-Sidon sets (sumset size approaches expected), and the function f(N). We axiomatize the Erdős-Freud bounds and Pikhurko's improvement. The lower bound construction uses a Sidon set B ⊆ [1, N/3] combined with its reflection {N - b : b ∈ B}.",
+    "keyInsights": [
+      "Classical Sidon sets have size ~√N; quasi-Sidon allows slightly larger sets",
+      "Lower bound construction: Sidon set B in [1, N/3] union {N - b : b ∈ B} achieves ~(2/√3)√N",
+      "Pikhurko's upper bound uses edge-magic graphs and thin additive bases",
+      "The gap between ~1.15 and ~1.86 is where the true constant lies",
+      "For A - A (difference sets), Cilleruelo showed the answer is simpler: ~√N"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 39,
+      "endLine": 57,
+      "summary": "Definitions for interval sets, sumsets, and Sidon sets where all pairwise sums are distinct."
+    },
+    {
+      "id": "quasi-sidon",
+      "title": "Quasi-Sidon Sets",
+      "startLine": 59,
+      "endLine": 78,
+      "summary": "Little-o notation and the definition of quasi-Sidon sets with asymptotically optimal sumset size."
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(N)",
+      "startLine": 80,
+      "endLine": 91,
+      "summary": "Definition of f(N) as the maximum size of a quasi-Sidon subset of {1,...,N}."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 93,
+      "endLine": 138,
+      "summary": "Erdős-Freud lower and upper bounds, Pikhurko's improved upper bound of ~1.86√N."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 140,
+      "endLine": 152,
+      "summary": "The question: what is the exact asymptotic constant for f(N)/√N?"
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "startLine": 154,
+      "endLine": 195,
+      "summary": "Difference sets (Cilleruelo's result), Sidon set bounds, and gap analysis."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #840 asks for the exact growth rate of the largest quasi-Sidon subset of {1,...,N}. Currently known: (2/√3 + o(1))√N ≤ f(N) ≤ (1.86 + o(1))√N. The true constant remains unknown.",
+    "implications": "This problem connects sumset theory, Sidon sets, and additive combinatorics. The gap between 1.15 and 1.86 suggests our understanding of quasi-Sidon structures is incomplete. Resolving this would illuminate the structure of sets with nearly optimal sumset sizes.",
+    "openQuestions": [
+      "What is the exact asymptotic constant c such that f(N) ~ c√N?",
+      "Can the lower bound construction be improved?",
+      "Is there a connection to the discrete Kakeya problem or other additive combinatorics questions?"
+    ]
   }
 }

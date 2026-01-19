@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-840-statement",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 7,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "The core question: how large can a quasi-Sidon subset of {1,...,N} be? A quasi-Sidon set has sumset size approaching the binomial coefficient C(|A|,2) asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-840-sidon",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 49,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Sidon Sets",
+    "content": "A Sidon set (B₂ sequence) has all pairwise sums distinct: a₁ + a₂ = a₃ + a₄ implies {a₁, a₂} = {a₃, a₄}. This gives exactly |A|(|A|+1)/2 distinct sums in A + A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-840-sumset",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Sumset A + A",
+    "content": "The sumset A + A is {a + b : a, b ∈ A}. For a Sidon set of size k, |A + A| = C(k,2) + k = k(k+1)/2. A quasi-Sidon set has |A + A| close to this value.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-840-quasi",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 74,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Quasi-Sidon Definition",
+    "content": "A set A is quasi-Sidon if |A + A| = (1 + o(1)) · C(|A|, 2). This allows some collisions in the sumset as long as they are asymptotically negligible.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-840-f-function",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 82,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "The Function f(N)",
+    "content": "f(N) is the maximum cardinality of a quasi-Sidon subset of {1, ..., N}. The problem asks for the asymptotic growth of f(N), which is known to be Θ(√N).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-840-lower",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "Erdős-Freud (1991): f(N) ≥ (2/√3 + o(1))√N ≈ 1.15√N. The construction uses a Sidon set B in [1, N/3] and its reflection {N - b : b ∈ B}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-840-construction",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 108,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "Lower Bound Construction",
+    "content": "Take a Sidon set B ⊆ [1, N/3] of size ~√(N/3) and form A = B ∪ {N - b : b ∈ B}. The set A has ~2√(N/3) = (2/√3)√N elements and is quasi-Sidon.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-840-upper-ef",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 120,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "Erdős-Freud Upper Bound",
+    "content": "Erdős-Freud (1991): f(N) ≤ (2 + o(1))√N. This was the original upper bound before Pikhurko's improvement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-840-pikhurko",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 126,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Pikhurko's Upper Bound",
+    "content": "Pikhurko (2006): f(N) ≤ ((1/4 + 1/(π+2)²)^(-1/2) + o(1))√N ≈ 1.86√N. Uses connection to edge-magic graphs and thin additive bases.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-840-constant",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 134,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "Pikhurko Constant",
+    "content": "The Pikhurko constant c_P = (1/4 + 1/(π+2)²)^(-1/2) ≈ 1.863. This involves π due to the connection with trigonometric sums in the analysis.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-840-question",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 142,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "The Open Question",
+    "content": "What is the exact constant c such that f(N) ~ c√N? Currently known: 2/√3 ≤ c ≤ 1.863. Closing this gap is the main challenge.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-840-diffset",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 160,
+      "endLine": 166
+    },
+    "type": "theorem",
+    "title": "Difference Sets",
+    "content": "Cilleruelo proved the analogous problem for A - A instead of A + A is simpler: the maximum quasi-Sidon size is ~√N with constant 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-840-sidon-bound",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 170,
+      "endLine": 174
+    },
+    "type": "theorem",
+    "title": "Classical Sidon Bound",
+    "content": "For actual Sidon sets (not quasi-Sidon), the maximum size in {1,...,N} is √N + O(N^(1/4)). Quasi-Sidon sets can be slightly larger.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-840-gap",
+    "proofId": "erdos-840",
+    "range": {
+      "startLine": 184,
+      "endLine": 194
+    },
+    "type": "insight",
+    "title": "The Gap",
+    "content": "The current gap between bounds is about 0.71: from ~1.15 to ~1.86. The true constant lies somewhere in this interval, and determining it exactly remains open.",
+    "significance": "key"
+  }
+]
