@@ -1,1 +1,107 @@
-[]
+[
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 39, "endLine": 41 },
+    "title": "Euclidean Distance Function",
+    "content": "The standard Euclidean distance function in ℝ², used to define unit distance graphs.",
+    "significance": "foundational"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 43, "endLine": 45 },
+    "title": "Unit Distance Relation",
+    "content": "Two points form a unit distance pair if their Euclidean distance equals exactly 1. This is the edge relation in unit distance graphs.",
+    "significance": "foundational"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 47, "endLine": 52 },
+    "title": "Unit Distance Graph Structure",
+    "content": "A unit distance graph on n points in the plane with edges between points at distance 1. This is the central object of study for the problem.",
+    "significance": "core"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 54, "endLine": 58 },
+    "title": "Independent Set Definition",
+    "content": "A subset of vertices with no two at unit distance. Finding large independent sets is the goal of the problem.",
+    "significance": "foundational"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 70, "endLine": 71 },
+    "title": "The Function f(n)",
+    "content": "f(n) = minimum independence number over all n-point unit distance graphs. This is the function Erdős asks to estimate.",
+    "significance": "core"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 87, "endLine": 88 },
+    "title": "Density Constant m₁",
+    "content": "m₁ = supremum density of measurable unit-distance-free sets in ℝ². Larman and Rogers connected this to f(n).",
+    "significance": "core"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 101, "endLine": 103 },
+    "title": "Larman-Rogers Theorem",
+    "content": "Key theorem: f(n) ≥ m₁·n. This connects the discrete problem to continuous density theory.",
+    "significance": "major"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 110, "endLine": 111 },
+    "title": "Croft's Lower Bound",
+    "content": "Croft (1967) proved m₁ ≥ 0.22936, giving the best known lower bound for f(n).",
+    "significance": "major"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 125, "endLine": 129 },
+    "title": "Moser Spindle",
+    "content": "The Moser spindle: 7 vertices forming a unit distance graph with independence number 2. This gives f(n) ≤ (2/7)n ≈ 0.285n.",
+    "significance": "major"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 135, "endLine": 137 },
+    "title": "Moser Spindle Upper Bound",
+    "content": "By tiling with Moser spindles, any n points can be arranged to have independence number at most (2/7)n.",
+    "significance": "major"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 144, "endLine": 148 },
+    "title": "Best Known Bounds Theorem",
+    "content": "Main result: 0.22936n ≤ f(n) ≤ (2/7)n for all n. The gap between 0.229 and 0.285 remains open.",
+    "significance": "core"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 156, "endLine": 157 },
+    "title": "ACMVZ Upper Bound on m₁",
+    "content": "ACMVZ (2023) proved m₁ ≤ 0.247. This is crucial for the n/4 impossibility result.",
+    "significance": "major"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 162, "endLine": 165 },
+    "title": "Density Insufficient for n/4",
+    "content": "Since m₁ ≤ 0.247 < 0.25 = 1/4, density methods CANNOT prove f(n) ≥ n/4. New techniques are needed.",
+    "significance": "core"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 177, "endLine": 188 },
+    "title": "Chromatic Number Connection",
+    "content": "Connection to Hadwiger-Nelson: χ(plane) is between 5 and 7. Since f(n) ≥ n/χ, this gives f(n) ≥ n/7.",
+    "significance": "notable"
+  },
+  {
+    "proofId": "erdos-1070",
+    "range": { "startLine": 214, "endLine": 219 },
+    "title": "Complete Summary",
+    "content": "Summary of Erdős #1070: Best bounds 0.22936n ≤ f(n) ≤ (2/7)n. The n/4 question cannot be resolved via density. Problem remains OPEN.",
+    "significance": "summary"
+  }
+]

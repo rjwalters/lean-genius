@@ -1,33 +1,117 @@
 {
   "id": "erdos-1070",
-  "title": "Erdős Problem #1070",
+  "title": "Erdős Problem #1070: Independence Number of Unit Distance Graphs",
   "slug": "erdos-1070",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that, given any ... points in ..., there exist ... points such that no two are distance ... apart. Es...",
+  "description": "Estimate f(n), the minimum independence number of n-point unit distance graphs in ℝ². Is f(n) ≥ n/4? Best bounds: 0.22936n ≤ f(n) ≤ (2/7)n. The n/4 question cannot be resolved via density methods.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Larman-Rogers, Croft, ACMVZ",
     "sourceUrl": "https://erdosproblems.com/1070",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1070Problem.lean",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "discrete-geometry",
+      "unit-distance-graphs",
+      "erdos",
+      "independence-number",
+      "hadwiger-nelson"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "open",
+    "sorries": 2,
     "erdosNumber": 1070,
     "erdosUrl": "https://erdosproblems.com/1070",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": [
+      {
+        "id": "erdos-508",
+        "relationship": "Hadwiger-Nelson chromatic number problem"
+      },
+      {
+        "id": "erdos-232",
+        "relationship": "Density m₁ of unit-distance-free sets"
+      },
+      {
+        "id": "erdos-1066",
+        "relationship": "Strict variant with no distances < 1"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1070 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that, given any $n$ points in $\\mathbb{R}^2$, there exist $f(n)$ points such that no two are distance $1$ apart. Estimate $f(n)$. In particular, is it true that $f(n)\\geq n/4$?\n\n\n\nIn other words, estimate the minimal independence number of a unit distance graph with $n$ vertices. If $\\omega$ is the independence number and $\\chi$ is the chromatic number then $\\omega \\chi\\geq n$, and hence $f(n)\\geq n/\\chi$, where $\\chi$ is the answer to the Hadwiger-Nelson problem [508].\n\nThe Moser spindle shows $f(n)\\leq \\frac{2}{7}n\\approx 0.285n$. Larman and Rogers \\cite{LaRo72} noted that if $m_1$ is the supremum of the upper densities of measurable subsets of $\\mathbb{R}^2$ which have no unit distance pairs then\\[f(n)\\geq m_1n.\\]Croft \\cite{Cr67} gave the best-known lower bound of $m_1\\geq 0.22936$ and hence\\[0.22936n \\leq f(n) \\leq \\frac{2}{7}n\\approx 0.285n.\\]Ambrus, Csisz\\'{a}rik, Matolcsi, Varga, and Zs\\'{a}mboki \\cite{ACMVZ23} have proved that $m_1\\leq 0.247$, and hence this approach cannot achieve $f(n)\\geq n/4$. See [232] for more on $m_1$.\n\nIf we also insist that no two points are distance $<1$ apart then this is problem becomes [1066].\n\n\n\n\nReferences\n\n\n[ACMVZ23] G. Ambrus, A. Csisz\\'{a}rik, M. Matolcsi, D. Varga, and P. Zs\\'{a}mboki, The density of planar sets avoiding unit distances. arXiv:2207.14179 (2023).\n\n[Cr67] H. T. Croft, Incidence incidents. Eureka (1967), 22-26.\n\n[LaRo72] Larman, D. G. and Rogers, C. A., The realization of distances within sets in Euclidean space. Mathematika (1972), 1-24.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Unit Distance Graphs and Independence**\n\nA unit distance graph has vertices as points in the plane and edges between points at distance exactly 1. This problem asks for the minimum possible independence number (largest set with no edges) across all n-point configurations.\n\n**The Density Approach**: Larman and Rogers (1972) connected this to the maximum density m₁ of measurable sets avoiding unit distances: f(n) ≥ m₁·n.\n\n**Key Results**:\n- Croft (1967): m₁ ≥ 0.22936, giving f(n) ≥ 0.22936n\n- Moser spindle: A 7-vertex graph with independence 2, giving f(n) ≤ (2/7)n\n- ACMVZ (2023): m₁ ≤ 0.247, showing density methods cannot achieve n/4\n\n**Connection to Hadwiger-Nelson**: Since ω·χ ≥ n for independence number ω and chromatic number χ, we have f(n) ≥ n/χ. With 5 ≤ χ ≤ 7, this gives f(n) ≥ n/7.",
+    "problemStatement": "**Problem Statement**\n\nLet f(n) be the maximum k such that any n points in ℝ² contain k points with no two at distance 1. Estimate f(n).\n\n**Main Question**: Is f(n) ≥ n/4?\n\n**Best Known Bounds**: 0.22936n ≤ f(n) ≤ (2/7)n ≈ 0.285n\n\n**Status**: OPEN - bounds established but exact asymptotic unknown",
+    "proofStrategy": "**Approaches and Results**\n\n**Lower Bound (Density Method)**:\n1. Define m₁ = sup density of unit-distance-free measurable sets\n2. Larman-Rogers: f(n) ≥ m₁·n\n3. Croft: m₁ ≥ 0.22936\n4. Combined: f(n) ≥ 0.22936n\n\n**Upper Bound (Moser Spindle)**:\n1. The Moser spindle is a 7-vertex unit distance graph\n2. Its independence number is 2\n3. Copying this graph shows f(n) ≤ (2/7)n\n\n**The n/4 Barrier**:\n- ACMVZ (2023) proved m₁ ≤ 0.247\n- Since 0.247 < 0.25 = 1/4, density methods alone cannot prove f(n) ≥ n/4\n- New techniques would be needed to close the gap",
+    "keyInsights": [
+      "f(n) is the minimum independence number across all n-point unit distance graphs",
+      "Best bounds: 0.22936n ≤ f(n) ≤ (2/7)n ≈ 0.285n",
+      "The density constant m₁ satisfies 0.22936 ≤ m₁ ≤ 0.247",
+      "Moser spindle (7 vertices, independence 2) gives the upper bound",
+      "The n/4 question CANNOT be resolved via density methods alone",
+      "Connected to Hadwiger-Nelson: f ≥ n/χ where χ is the chromatic number",
+      "De Grey (2018) showed χ ≥ 5, so n/5 is a theoretical lower limit",
+      "Gap between 0.22936 and 2/7 ≈ 0.285 remains open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "unit-distance-graphs",
+      "title": "Unit Distance Graphs",
+      "startLine": 39,
+      "endLine": 62,
+      "summary": "Definitions of unit distance graphs, the distance function, unit distance relation, and independent sets."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "startLine": 64,
+      "endLine": 79,
+      "summary": "Definition of f(n) as the minimum independence number and its relationship to the chromatic number."
+    },
+    {
+      "id": "density-bound",
+      "title": "Density-Based Lower Bound",
+      "startLine": 81,
+      "endLine": 117,
+      "summary": "The Larman-Rogers theorem connecting f(n) to density m₁, and Croft's lower bound m₁ ≥ 0.22936."
+    },
+    {
+      "id": "moser-spindle",
+      "title": "The Moser Spindle Upper Bound",
+      "startLine": 119,
+      "endLine": 148,
+      "summary": "The Moser spindle construction giving f(n) ≤ (2/7)n ≈ 0.285n."
+    },
+    {
+      "id": "quarter-question",
+      "title": "The n/4 Question",
+      "startLine": 150,
+      "endLine": 168,
+      "summary": "The main question f(n) ≥ n/4 and proof that density methods cannot achieve it (m₁ ≤ 0.247 < 1/4)."
+    },
+    {
+      "id": "hadwiger-nelson",
+      "title": "Connection to Hadwiger-Nelson",
+      "startLine": 170,
+      "endLine": 195,
+      "summary": "How chromatic number bounds (5 ≤ χ ≤ 7) relate to independence number bounds."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 197,
+      "endLine": 221,
+      "summary": "Complete summary stating best bounds and the status of the n/4 question."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1070 asks for the minimum independence number f(n) of n-point unit distance graphs. Best bounds are 0.22936n ≤ f(n) ≤ (2/7)n. The question f(n) ≥ n/4 cannot be resolved via the density approach since m₁ ≤ 0.247 < 1/4. The problem connects to Hadwiger-Nelson (chromatic number of the plane).",
+    "implications": "**Theoretical Significance**\n\n1. **Graph Coloring**: Deeply connected to the Hadwiger-Nelson problem on the chromatic number of the plane\n\n2. **Density Theory**: The density m₁ bridges continuous and discrete settings\n\n3. **Extremal Combinatorics**: Fundamental question about structure of unit distance graphs\n\n4. **Impossibility Result**: ACMVZ shows limitations of the density approach",
+    "openQuestions": [
+      "Determine the exact asymptotic of f(n)/n as n → ∞",
+      "Is f(n) ≥ n/4? (requires new techniques beyond density)",
+      "Find better constructions for the upper bound",
+      "Improve the Croft lower bound on m₁",
+      "Resolve the Hadwiger-Nelson problem (5 ≤ χ ≤ 7)"
+    ]
   }
 }
