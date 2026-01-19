@@ -1,33 +1,156 @@
 {
   "id": "erdos-209",
-  "title": "Erdős Problem #209",
+  "title": "Erdős Problem #209: Gallai Triangles in Line Arrangements",
   "slug": "erdos-209",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite collection of ... non-parallel lines in ... such that there are no points where at least four lines from ...",
+  "description": "Must every line arrangement (d ≥ 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by Füredi-Palásti (1984) and Escudero (2016).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Füredi-Palásti (1984), Escudero (2016)",
     "sourceUrl": "https://erdosproblems.com/209",
-    "date": "",
-    "status": "pending",
+    "date": "2016",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos209Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "line-arrangements",
+      "sylvester-gallai",
+      "incidence-geometry",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 209,
     "erdosUrl": "https://erdosproblems.com/209",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets for counting lines through points",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type for coordinates",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Line2D structure: line representation ax + by + c = 0",
+      "areParallel definition: parallel line criterion",
+      "LineArrangement definition: finite set of lines",
+      "NoFourConcurrent definition: no 4+ lines through any point",
+      "IsOrdinaryPoint definition: exactly 2 lines meet",
+      "Is3RichPoint definition: 3+ lines meet",
+      "IsGallaiTriangle definition: triangle with ordinary vertices",
+      "sylvester_gallai axiom: ordinary points exist",
+      "furedi_palasti_1984 axiom: counterexamples for d not ≡ 0 (mod 9)",
+      "escudero_2016 axiom: counterexamples for all d ≥ 4",
+      "erdos_209 theorem: main disproof"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #209 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite collection of $d\\geq 4$ non-parallel lines in $\\mathbb{R}^2$ such that there are no points where at least four lines from $A$ meet. Must there exist a 'Gallai triangle' (or 'ordinary triangle'): three lines from $A$ which intersect in three points, and each of these intersection points only intersects two lines from $A$?\n\n\n\nEquivalently, one can ask the dual problem: given $n$ points in $\\mathbb{R}^2$ such that there are no lines containing at least four points then there are three points such that the lines determined by them are ordinary ones (i.e. contain exactly two points each).\n\nThe Sylvester-Gallai theorem implies that there must exist a point where only two lines from $A$ meet. This problem asks whether there must exist three such points which form a triangle (with sides induced by lines from $A$). F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84} showed this is false when $d\\geq 4$ is not divisible by $9$. Escudero \\cite{Es16} showed this is false for all $d\\geq 4$.\n\nSee also [960].\n\n\n\n\nReferences\n\n\n[Es16] Escudero, Juan Garc\\'{i}a, Gallai triangles in configurations of lines in the projective plane. C. R. Math. Acad. Sci. Paris (2016), 551-554.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #209** is a question in incidence geometry about the structure of line arrangements. The classical Sylvester-Gallai theorem (1893) guarantees that any finite set of points not all collinear determines at least one \"ordinary line\" (containing exactly 2 points). Erdős asked: can we extend this to triangles?\n\n**Historical Development:**\n- **1893 (Sylvester-Gallai):** Ordinary points/lines must exist.\n- **1984 (Füredi-Palásti):** Disproved the conjecture for most d.\n- **2016 (Escudero):** Completed the disproof for ALL d ≥ 4.\n\n**Key Insight:** While ordinary points always exist, they can be positioned to avoid forming triangles with only ordinary vertices.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A$ be a finite collection of $d \\geq 4$ non-parallel lines in $\\mathbb{R}^2$ such that no point lies on 4 or more lines. Must there exist a **Gallai triangle** (or **ordinary triangle**): three lines from $A$ that form a triangle where each vertex involves exactly two lines?\n\n**Answer: NO!**\n\n**Resolution:**\n- Füredi-Palásti (1984): No for $d$ not divisible by 9\n- Escudero (2016): No for ALL $d \\geq 4$\n\n**Dual Formulation:** Given $n$ points with no 4 collinear, must there exist 3 points where each pair determines an ordinary line?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lines and Arrangements:** Define lines via coefficients, parallel criterion, and line arrangements as finite sets.\n\n2. **Incidence Properties:** Define ordinary points (2 lines), 3-rich points (3+ lines), and Gallai triangles.\n\n3. **Sylvester-Gallai:** Axiomatize that ordinary points always exist.\n\n4. **Counterexamples:** Axiomatize Füredi-Palásti (1984) and Escudero (2016) constructions.\n\n5. **Main Result:** Prove the conjecture is false for all d ≥ 4.\n\n6. **Dual Problem:** Explain the point-line duality.",
+    "keyInsights": [
+      "**Ordinary Points Exist:** Sylvester-Gallai guarantees at least one point where exactly 2 lines meet.",
+      "**Triangles Blocked:** Ordinary points can be positioned so that every triangle has at least one 3-rich vertex.",
+      "**Algebraic Constructions:** Counterexamples use special algebraic or projective configurations.",
+      "**Partial Result First:** Füredi-Palásti (1984) handled most d, then Escudero (2016) filled the gap.",
+      "**Point-Line Duality:** The problem has an equivalent dual formulation about point configurations.",
+      "**Connection to #960:** Related questions about line arrangements and Gallai-type structures."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lines-plane",
+      "title": "Lines in the Plane",
+      "summary": "Line2D structure, containment, and parallel criterion",
+      "startLine": 40,
+      "endLine": 76
+    },
+    {
+      "id": "arrangements",
+      "title": "Line Arrangements",
+      "summary": "LineArrangement, NoFourConcurrent, NoParallels",
+      "startLine": 78,
+      "endLine": 102
+    },
+    {
+      "id": "ordinary-gallai",
+      "title": "Ordinary Points and Gallai Triangles",
+      "summary": "IsOrdinaryPoint, Is3RichPoint, IsGallaiTriangle definitions",
+      "startLine": 104,
+      "endLine": 141
+    },
+    {
+      "id": "sylvester-gallai",
+      "title": "The Sylvester-Gallai Theorem",
+      "summary": "Classical theorem and corollary about ordinary points",
+      "startLine": 143,
+      "endLine": 176
+    },
+    {
+      "id": "disproof",
+      "title": "The Erdős Question and Its Disproof",
+      "summary": "Füredi-Palásti and Escudero counterexamples",
+      "startLine": 178,
+      "endLine": 222
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_209 theorem: disproved for all d ≥ 4",
+      "startLine": 224,
+      "endLine": 246
+    },
+    {
+      "id": "intuition",
+      "title": "Proof Intuition",
+      "summary": "Why 3-rich points can block Gallai triangles",
+      "startLine": 248,
+      "endLine": 271
+    },
+    {
+      "id": "dual",
+      "title": "The Dual Problem",
+      "summary": "Point-line duality and dual Sylvester-Gallai",
+      "startLine": 273,
+      "endLine": 294
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Problem #960, Beck's theorem, Dirac-Motzkin",
+      "startLine": 296,
+      "endLine": 319
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Fano plane, general position cases",
+      "startLine": 321,
+      "endLine": 338
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and final answer",
+      "startLine": 340,
+      "endLine": 368
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #209 asked whether every d-line arrangement (d ≥ 4, no parallels, no 4-concurrent) must contain a Gallai triangle. This was DISPROVED: Füredi-Palásti (1984) showed counterexamples exist for d not divisible by 9, and Escudero (2016) completed the proof for all d ≥ 4. While Sylvester-Gallai guarantees ordinary points exist, they can be positioned to avoid forming triangles.",
+    "implications": "**Implications for Incidence Geometry**\n\n1. **Limits of Sylvester-Gallai:** The theorem doesn't extend to triangular structures as hoped.\n\n2. **Algebraic Configurations:** Special line arrangements have surprising combinatorial properties.\n\n3. **Point-Line Duality:** The dual problem about points is equally interesting.\n\n4. **Constructive Methods:** Both counterexamples use explicit algebraic constructions.",
+    "openQuestions": [
+      "What is the minimum number of 3-rich points needed to block all Gallai triangles?",
+      "Can the constructions be simplified or made more explicit?",
+      "What happens in higher dimensions (hyperplane arrangements)?",
+      "Are there natural restrictions under which Gallai triangles must exist?",
+      "What is the connection to other Erdős geometry problems?"
+    ]
   }
 }
