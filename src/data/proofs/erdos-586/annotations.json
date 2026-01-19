@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-586-residue-class",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Residue Class",
+    "range": { "startLine": 37, "endLine": 38 },
+    "content": "A residue class a (mod n) is the set of all integers x such that x ≡ a (mod n). This is the fundamental building block of covering systems.",
+    "significance": "fundamental"
+  },
+  {
+    "id": "ann-586-congruence-class",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Congruence Class Structure",
+    "range": { "startLine": 41, "endLine": 44 },
+    "content": "A structured representation of a congruence class with a residue, a positive modulus, and a proof that the modulus is positive. This structure enables formal reasoning about collections of congruence classes.",
+    "significance": "foundational"
+  },
+  {
+    "id": "ann-586-covering-system",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Covering System",
+    "range": { "startLine": 53, "endLine": 55 },
+    "content": "A finite nonempty collection of congruence classes. The key question is whether such a system can 'cover' all integers—meaning every integer belongs to at least one class.",
+    "significance": "fundamental"
+  },
+  {
+    "id": "ann-586-is-covering",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "IsCovering Predicate",
+    "range": { "startLine": 66, "endLine": 67 },
+    "content": "A covering system is a 'true covering' if every integer is covered by at least one congruence class. This is the completeness condition that Schinzel's question asks about.",
+    "significance": "fundamental"
+  },
+  {
+    "id": "ann-586-antichain",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Antichain Under Divisibility",
+    "range": { "startLine": 75, "endLine": 76 },
+    "content": "A set of moduli forms an antichain if no two elements divide each other. This is the key constraint in Schinzel's question—can we achieve full coverage with such incomparable moduli?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-586-schinzel-question",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Schinzel's Question",
+    "range": { "startLine": 85, "endLine": 86 },
+    "content": "The formal statement of the problem: does there exist a covering system where the moduli form an antichain? This existential statement is what BBMST prove is false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-586-bbmst-theorem",
+    "proofId": "erdos-586",
+    "type": "theorem",
+    "title": "BBMST Theorem",
+    "range": { "startLine": 92, "endLine": 93 },
+    "content": "The main result: there is NO covering system with antichain moduli. Proved by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba in 2022 using density arguments. This resolves Schinzel's question negatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-586-comparable-corollary",
+    "proofId": "erdos-586",
+    "type": "theorem",
+    "title": "Comparable Moduli Corollary",
+    "range": { "startLine": 96, "endLine": 99 },
+    "content": "Equivalent formulation: every true covering system must have at least two comparable moduli (one divides the other). This shows divisibility relationships are necessary for coverage.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-586-trivial-covering",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Trivial Covering Example",
+    "range": { "startLine": 104, "endLine": 109 },
+    "content": "The simplest covering system: 0 (mod 2) and 1 (mod 2). Every integer is either even or odd, so this covers all integers. The moduli are both 2, so trivially comparable.",
+    "significance": "educational"
+  },
+  {
+    "id": "ann-586-erdos-covering",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Erdős Covering Example",
+    "range": { "startLine": 117, "endLine": 125 },
+    "content": "A classic non-trivial covering system with 5 classes. The moduli {2, 3, 4, 6, 12} have many divisibility relations (2|4, 2|6, 2|12, 3|6, 3|12, 4|12, 6|12), illustrating that real coverings have comparable moduli.",
+    "significance": "educational"
+  },
+  {
+    "id": "ann-586-uncovered-density",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "Uncovered Density",
+    "range": { "startLine": 154, "endLine": 155 },
+    "content": "A measure of what fraction of integers remain uncovered. If the sum of 1/n_i over all moduli is less than 1, some integers must be uncovered. The key is showing antichain moduli force this.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-586-density-bound",
+    "proofId": "erdos-586",
+    "type": "theorem",
+    "title": "Density Bound Lemma",
+    "range": { "startLine": 158, "endLine": 161 },
+    "content": "The technical heart of the proof: for any system with antichain moduli, the uncovered density is strictly positive. This immediately implies such systems cannot cover all integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-586-antichain-not-covering",
+    "proofId": "erdos-586",
+    "type": "theorem",
+    "title": "Antichain Implies Non-Covering",
+    "range": { "startLine": 164, "endLine": 170 },
+    "content": "The logical consequence: if moduli form an antichain, then positive density is uncovered, which contradicts full coverage. This theorem bridges the density bound to the main result.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-586-k-covering",
+    "proofId": "erdos-586",
+    "type": "definition",
+    "title": "k-Covering Definition",
+    "range": { "startLine": 198, "endLine": 199 },
+    "content": "A generalization where every integer must be covered by at least k classes (not just 1). This strengthening of the covering condition is still impossible with antichain moduli.",
+    "significance": "advanced"
+  },
+  {
+    "id": "ann-586-no-k-covering",
+    "proofId": "erdos-586",
+    "type": "theorem",
+    "title": "No Antichain k-Covering",
+    "range": { "startLine": 206, "endLine": 208 },
+    "content": "The BBMST argument extends: no k-covering with antichain moduli exists for any k ≥ 1. The density bound approach handles all multiplicities uniformly.",
+    "significance": "advanced"
+  }
+]

@@ -2,32 +2,102 @@
   "id": "erdos-586",
   "title": "Erdős Problem #586",
   "slug": "erdos-586",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system such that no two of the moduli divide each other?\n\n\n\nAsked by Schinzel, motivated by a question of...",
+  "description": "Is there a covering system such that no two of the moduli divide each other?",
   "meta": {
-    "author": "Unknown",
+    "author": "Balister, Bollobás, Morris, Sahasrabudhe, Tiba",
     "sourceUrl": "https://erdosproblems.com/586",
-    "date": "",
-    "status": "pending",
+    "date": "2022",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos586Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "covering-systems",
+      "number-theory",
+      "combinatorics",
+      "antichain"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 8,
     "erdosNumber": 586,
     "erdosUrl": "https://erdosproblems.com/586",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #586 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system such that no two of the moduli divide each other?\n\n\n\nAsked by Schinzel, motivated by a question of Erd\\H{o}s and Selfridge (see [7]). The answer is no, as proved by Balister, Bollob\\'{a}s, Morris, Sahasrabudhe, and Tiba \\cite{BBMST22}.\n\n\n\n\nReferences\n\n\n[BBMST22] Balister, Paul and Bollob\\'{a}s, B\\'{e}la and Morris, Robert\nand Sahasrabudhe, Julian and Tiba, Marius, On the Erd\\H{o}s covering problem: the density of the uncovered set. Invent. Math. (2022), 377-414.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was asked by Schinzel, motivated by questions of Erdős and Selfridge about the structure of covering systems. A covering system is a finite collection of congruence classes such that every integer belongs to at least one class. The question asks whether the moduli can form an antichain under divisibility—meaning no modulus divides any other. This is part of a broader investigation into what constraints covering systems must satisfy.",
+    "problemStatement": "Is there a covering system such that no two of the moduli divide each other? Equivalently: can we cover all integers with congruence classes whose moduli form an antichain under the divisibility relation?",
+    "proofStrategy": "The proof by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022) uses probabilistic and analytic methods combined with careful sieving inequalities. The key insight is showing that any collection of congruence classes with antichain moduli must leave a positive density of integers uncovered. This density bound is established through sophisticated analysis of the 'uncovered set' in covering problems.",
+    "keyInsights": [
+      "The antichain condition on moduli severely restricts coverage capability",
+      "Probabilistic methods can bound the density of uncovered integers from below",
+      "The proof is part of the broader 'Erdős covering problem' breakthrough",
+      "Related questions about odd moduli covering systems remain open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-586-header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Header documentation explaining the problem, its history, and the negative resolution by BBMST (2022)."
+    },
+    {
+      "id": "sec-586-basic-defs",
+      "title": "Basic Definitions",
+      "startLine": 34,
+      "endLine": 48,
+      "summary": "Foundational definitions for residue classes and congruence classes with their set representations."
+    },
+    {
+      "id": "sec-586-covering-systems",
+      "title": "Covering Systems",
+      "startLine": 50,
+      "endLine": 67,
+      "summary": "Definition of covering systems as finite collections of congruence classes that cover all integers."
+    },
+    {
+      "id": "sec-586-antichain",
+      "title": "Antichain Condition",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "Defines what it means for moduli to form an antichain under divisibility and the central question."
+    },
+    {
+      "id": "sec-586-main-result",
+      "title": "Main Result",
+      "startLine": 88,
+      "endLine": 99,
+      "summary": "The BBMST theorem: there is no covering system with antichain moduli, answering Schinzel's question negatively."
+    },
+    {
+      "id": "sec-586-examples",
+      "title": "Classical Covering Systems",
+      "startLine": 101,
+      "endLine": 131,
+      "summary": "Examples of covering systems including the trivial covering and Erdős's non-trivial covering, demonstrating that known coverings have comparable moduli."
+    },
+    {
+      "id": "sec-586-density",
+      "title": "Density Results",
+      "startLine": 151,
+      "endLine": 170,
+      "summary": "The key density bound: antichain moduli systems leave positive density uncovered, making full coverage impossible."
+    },
+    {
+      "id": "sec-586-generalizations",
+      "title": "Generalizations",
+      "startLine": 196,
+      "endLine": 208,
+      "summary": "Extension to k-coverings: no k-covering with antichain moduli exists for any k ≥ 1."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #586 (Schinzel's Question) is SOLVED with answer NO. The 2022 proof by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba demonstrates that any system with antichain moduli must leave a positive density of integers uncovered, making a covering system with such moduli impossible.",
+    "implications": "This result is part of a major breakthrough on covering system problems. It shows that the divisibility structure among moduli is essential for achieving full coverage. The density-based approach has broader applications to related covering problems.",
+    "openQuestions": [
+      "Does there exist a covering system where all moduli are odd? (Erdős-Selfridge problem - still open)",
+      "What is the minimum modulus achievable in covering systems with distinct moduli?",
+      "Can the density bounds be made explicit and tight?"
+    ]
   }
 }
