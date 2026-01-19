@@ -1,33 +1,83 @@
 {
   "id": "erdos-803",
-  "title": "Erdős Problem #803",
+  "title": "D-Balanced Subgraphs in Dense Graphs",
   "slug": "erdos-803",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call a graph ... ...-balanced (or ...-almost-regular) if the maximum degree of ... is at most ... times the minimum degree...",
+  "description": "Do graphs with n log n edges contain O(1)-balanced subgraphs with m log m edges? NO - disproved by Alon (2008). Maximum is O(m√(log m)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Alon",
     "sourceUrl": "https://erdosproblems.com/803",
-    "date": "",
-    "status": "pending",
+    "date": "2008",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos803Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "degree-sequences",
+      "extremal-combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 803,
     "erdosUrl": "https://erdosproblems.com/803",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #803 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call a graph $H$ $D$-balanced (or $D$-almost-regular) if the maximum degree of $H$ is at most $D$ times the minimum degree of $H$.\n\nIs it true that for every $m\\geq 1$, if $n$ is sufficiently large, any graph on $n$ vertices with $\\geq n\\log n$ edges contains a $O(1)$-balanced subgraph with $m$ vertices and $\\gg m\\log m$ edges (where the implied constants are absolute)?\n\n\n\nA problem of Erd\\H{o}s and Simonovits \\cite{ErSi70}, who proved a similar claim replacing $\\log n$ and $\\log m$ by $n^{c}$ and $m^c$ respectively, for any constant $c>0$ (where the balance parameter may depend on $c$). (See [1077].)\n\nAlon \\cite{Al08} proved this is false: for every $D>1$ and large $n$ there is a graph $G$ with $n$ vertices and $\\geq n\\log n$ edges such that if $H$ is a $D$-balanced subgraph then $H$ has $\\ll m\\sqrt{\\log m}+\\log D$ many edges.\n\nJanzer and Sudakov \\cite{JaSu23} have proved that, for any $k$, if $n$ is sufficiently large then any graph on $n$ vertices with at least $n\\log n$ edges contains a $O(1)$-balanced subgraph on $m\\geq k$ vertices with\\[\\gg_k \\frac{\\sqrt{\\log m}}{(\\log\\log m)^{3/2}}m\\]many edges.\n\nSee also [1077].\n\n\n\n\nReferences\n\n\n[Al08] Alon, Noga, Problems and results in extremal combinatorics. {II}. Discrete Math. (2008), 4460-4472.\n\n[ErSi70] Erd\\H{o}s, P. and Simonovits, M., Some extremal problems in graph theory. Combinatorial theory and its applications, I-III (Proc. Colloq., Balatonf\\\"{u}red, 1969) (1970), 377-390.\n\n[JaSu23] Janzer, Oliver and Sudakov, Benny, Resolution of the {E}rd\\H{o}s-{S}auer problem on regular\nsubgraphs. Forum Math. Pi (2023), Paper No. e19, 13.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about finding 'nearly regular' (D-balanced) subgraphs with many edges in graphs with logarithmic density. Erdős and Simonovits proved the analogous result for polynomial density (n^(1+c) edges). Alon (2008) disproved the logarithmic case, showing the maximum is O(m√(log m)), not O(m log m). Janzer-Sudakov (2023) achieved the best positive result: m√(log m)/(log log m)^(3/2) edges.",
+    "problemStatement": "A graph H is D-balanced if Δ(H) ≤ D·δ(H). Is it true that for every m ≥ 1, any sufficiently large graph with n log n edges contains a O(1)-balanced subgraph with m vertices and m log m edges?",
+    "proofStrategy": "The formalization defines D-balanced graphs, logarithmic density, and states the conjecture. Alon's counterexample is axiomatized, showing that for any D > 1, there exist graphs where all D-balanced subgraphs have only O(m√(log m)) edges. Positive results (Erdős-Simonovits for polynomial density, Janzer-Sudakov for logarithmic) are also stated.",
+    "keyInsights": [
+      "D-balanced means Δ(H) ≤ D·δ(H) (max degree bounded by D times min degree)",
+      "The conjecture asked for m log m edges but only m√(log m) is achievable",
+      "The gap factor √(log m) grows unboundedly",
+      "Polynomial density (n^(1+c) edges) behaves differently - conjecture holds",
+      "The logarithmic density threshold n log n is a critical regime"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "balanced",
+      "startLine": 43,
+      "endLine": 100,
+      "summary": "Definitions: maxDegree, minDegree, IsDBalanced; proofs that regular graphs are 1-balanced and balanced property is monotone in D."
+    },
+    {
+      "id": "density",
+      "startLine": 101,
+      "endLine": 125,
+      "summary": "Definitions: edgeCount, vertexCount, HasLogDensity (n log n edges threshold)."
+    },
+    {
+      "id": "conjecture",
+      "startLine": 126,
+      "endLine": 149,
+      "summary": "The original (false) conjecture: O(1)-balanced subgraphs with m log m edges."
+    },
+    {
+      "id": "alon",
+      "startLine": 150,
+      "endLine": 182,
+      "summary": "Alon's 2008 counterexample: maximum is O(m√(log m)), disproving the conjecture."
+    },
+    {
+      "id": "positive",
+      "startLine": 183,
+      "endLine": 227,
+      "summary": "Positive results: Erdős-Simonovits (polynomial density) and Janzer-Sudakov 2023 (best logarithmic bound)."
+    },
+    {
+      "id": "gap",
+      "startLine": 228,
+      "endLine": 270,
+      "summary": "Gap analysis and examples: the factor √(log m) between conjecture and reality."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #803 is DISPROVED. Alon (2008) showed that graphs with n log n edges do NOT always contain O(1)-balanced subgraphs with m log m edges. The correct bound is O(m√(log m)). This contrasts with the polynomial density regime where Erdős-Simonovits shows the conjecture holds.",
+    "implications": "The logarithmic density threshold n log n is a critical regime where balanced subgraph finding becomes fundamentally harder. This separates the behavior of sparse vs dense graphs in extremal combinatorics.",
+    "openQuestions": [
+      "What is the exact constant in O(m√(log m))?",
+      "Can the Janzer-Sudakov bound be improved to match Alon's upper bound?",
+      "Are there other density thresholds with interesting phase transitions?"
+    ]
   }
 }

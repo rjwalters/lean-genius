@@ -1,1 +1,136 @@
-[]
+[
+  {
+    "id": "ann-e803-header",
+    "proofId": "erdos-803",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #803: D-Balanced Subgraphs**\n\nDo graphs with n log n edges contain O(1)-balanced subgraphs with m log m edges?\n\n**Answer:** NO (Alon 2008)\n\nThe correct bound is O(m√(log m)), not O(m log m).",
+    "mathContext": "D-balanced means Δ(H) ≤ D·δ(H). The conjecture failed at the logarithmic density threshold.",
+    "significance": "critical",
+    "relatedConcepts": ["D-balanced", "Degree sequences", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e803-maxdeg",
+    "proofId": "erdos-803",
+    "range": { "startLine": 47, "endLine": 54 },
+    "type": "definition",
+    "title": "Maximum Degree",
+    "content": "**maxDegree G:** The maximum degree Δ(G) = max{deg(v) : v ∈ V(G)}.\n\nThis is the largest degree among all vertices.",
+    "significance": "supporting",
+    "relatedConcepts": ["Degree", "Maximum"]
+  },
+  {
+    "id": "ann-e803-mindeg",
+    "proofId": "erdos-803",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "**minDegree G:** The minimum degree δ(G) = min{deg(v) : v ∈ V(G)}.\n\nThis is the smallest degree among all vertices.",
+    "significance": "supporting",
+    "relatedConcepts": ["Degree", "Minimum"]
+  },
+  {
+    "id": "ann-e803-balanced",
+    "proofId": "erdos-803",
+    "range": { "startLine": 63, "endLine": 71 },
+    "type": "definition",
+    "title": "D-Balanced Graph",
+    "content": "**IsDBalanced G D:** Δ(G) ≤ D · δ(G).\n\nA graph is D-balanced (or D-almost-regular) if the ratio of max to min degree is at most D. Regular graphs are 1-balanced.",
+    "significance": "critical",
+    "relatedConcepts": ["Balance", "Regular graphs"]
+  },
+  {
+    "id": "ann-e803-regular",
+    "proofId": "erdos-803",
+    "range": { "startLine": 72, "endLine": 89 },
+    "type": "theorem",
+    "title": "Regular ⟹ 1-Balanced",
+    "content": "**regular_is_1_balanced:**\n\nIf all vertices have the same degree k, then Δ = δ = k, so Δ ≤ 1·δ.\n\nRegular graphs are the most balanced possible.",
+    "significance": "supporting",
+    "relatedConcepts": ["Regular graphs", "Balance"]
+  },
+  {
+    "id": "ann-e803-density",
+    "proofId": "erdos-803",
+    "range": { "startLine": 118, "endLine": 125 },
+    "type": "definition",
+    "title": "Logarithmic Density",
+    "content": "**HasLogDensity G:** edgeCount G ≥ n log n.\n\nThis is the critical density threshold. The conjecture asks about graphs at this density level.",
+    "significance": "key",
+    "relatedConcepts": ["Density", "Threshold"]
+  },
+  {
+    "id": "ann-e803-conjecture",
+    "proofId": "erdos-803",
+    "range": { "startLine": 130, "endLine": 149 },
+    "type": "definition",
+    "title": "The (False) Conjecture",
+    "content": "**Erdos803Conjecture:**\n\n∃ D, ∀ m, ∀ n large, ∀ G with n log n edges:\nG contains a D-balanced subgraph with m vertices and m log m edges.\n\nThis conjecture is FALSE (Alon 2008).",
+    "significance": "critical",
+    "relatedConcepts": ["Conjecture", "Disproved"]
+  },
+  {
+    "id": "ann-e803-alon",
+    "proofId": "erdos-803",
+    "range": { "startLine": 154, "endLine": 174 },
+    "type": "axiom",
+    "title": "Alon's Counterexample",
+    "content": "**alon_2008_counterexample:**\n\nFor every D > 1, there exists a graph G with n log n edges such that:\nAll D-balanced subgraphs have ≤ O(m√(log m)) edges.\n\nThis disproves the conjecture - the bound is √(log m), not log m.",
+    "mathContext": "Published in 'Problems and results in extremal combinatorics II' (2008).",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexample", "Upper bound"]
+  },
+  {
+    "id": "ann-e803-disproved",
+    "proofId": "erdos-803",
+    "range": { "startLine": 175, "endLine": 182 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "**erdos_803_disproved:** ¬Erdos803Conjecture\n\nAlon's counterexample shows no constant D works for all graphs with logarithmic density.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproved", "Counterexample"]
+  },
+  {
+    "id": "ann-e803-polynomial",
+    "proofId": "erdos-803",
+    "range": { "startLine": 187, "endLine": 206 },
+    "type": "axiom",
+    "title": "Erdős-Simonovits (Polynomial)",
+    "content": "**erdos_simonovits_polynomial:**\n\nFor polynomial density (n^(1+c) edges), the conjecture DOES hold:\nGraphs contain D-balanced subgraphs with m^(1+c) edges.\n\nThe logarithmic case is fundamentally different.",
+    "mathContext": "The polynomial density regime was resolved positively by Erdős-Simonovits in 1970.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial density", "Positive result"]
+  },
+  {
+    "id": "ann-e803-janzer",
+    "proofId": "erdos-803",
+    "range": { "startLine": 207, "endLine": 227 },
+    "type": "axiom",
+    "title": "Janzer-Sudakov 2023",
+    "content": "**janzer_sudakov_2023:**\n\nBest positive result for logarithmic density:\nO(1)-balanced subgraphs with m√(log m)/(log log m)^(3/2) edges.\n\nThis is close to Alon's upper bound of m√(log m).",
+    "mathContext": "Published in Forum of Mathematics, Pi (2023). Resolves the Erdős-Sauer problem.",
+    "significance": "key",
+    "relatedConcepts": ["Best bound", "Recent progress"]
+  },
+  {
+    "id": "ann-e803-gap",
+    "proofId": "erdos-803",
+    "range": { "startLine": 232, "endLine": 251 },
+    "type": "concept",
+    "title": "Gap Analysis",
+    "content": "**The Gap:**\n\n- Conjecture: m log m edges\n- Reality (upper): m√(log m) edges\n- Best achieved: m√(log m)/(log log m)^(3/2)\n\nThe gap factor √(log m) grows without bound.",
+    "significance": "key",
+    "relatedConcepts": ["Gap", "Asymptotics"]
+  },
+  {
+    "id": "ann-e803-summary",
+    "proofId": "erdos-803",
+    "range": { "startLine": 275, "endLine": 300 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_803_summary:**\n\n1. Conjecture is FALSE (Alon 2008)\n2. Polynomial density behaves differently\n3. Correct bound is Θ(m√(log m))\n\n**Key insight:** Logarithmic density is a critical threshold.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Disproved"]
+  }
+]
