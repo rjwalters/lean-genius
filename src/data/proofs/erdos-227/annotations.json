@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-227-entirefunc",
+    "proofId": "erdos-227",
+    "range": { "startLine": 40, "endLine": 43 },
+    "type": "definition",
+    "title": "EntireFunction",
+    "content": "Power series with infinitely many nonzero coefficients.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-maxterm",
+    "proofId": "erdos-227",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "maxTerm (μ)",
+    "content": "μ(r) = sup_n |aₙ|rⁿ — the maximum term of the power series.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-maxmodulus",
+    "proofId": "erdos-227",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "maxModulus (M)",
+    "content": "M(r) = sup_{|z|=r} |f(z)| — the maximum modulus on circle of radius r.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-ratio",
+    "proofId": "erdos-227",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "termModulusRatio",
+    "content": "The ratio μ(r)/M(r) whose limiting behavior is studied.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-origconj",
+    "proofId": "erdos-227",
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "definition",
+    "title": "OriginalConjecture",
+    "content": "Erdős asked: if lim μ(r)/M(r) exists, must it be 0?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-clunie",
+    "proofId": "erdos-227",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "axiom",
+    "title": "Clunie's Partial Result",
+    "content": "For functions with aₙ ≥ 0, the limit is always 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-227-cluniehayman",
+    "proofId": "erdos-227",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "axiom",
+    "title": "Clunie-Hayman 1964",
+    "content": "For any λ ∈ [0, 1/2], there exists f with μ(r)/M(r) → λ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-upperbound",
+    "proofId": "erdos-227",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "axiom",
+    "title": "Upper Bound 1/2",
+    "content": "The ratio limit can never exceed 1/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-false",
+    "proofId": "erdos-227",
+    "range": { "startLine": 89, "endLine": 98 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "Taking λ = 1/4 contradicts the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-achievable",
+    "proofId": "erdos-227",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "definition",
+    "title": "AchievableLimits",
+    "content": "The set of all possible limiting values.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-227-characterization",
+    "proofId": "erdos-227",
+    "range": { "startLine": 110, "endLine": 124 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "AchievableLimits = [0, 1/2] exactly.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-centralindex",
+    "proofId": "erdos-227",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "definition",
+    "title": "centralIndex",
+    "content": "The index n where |aₙ|rⁿ achieves the maximum.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-227-unbounded",
+    "proofId": "erdos-227",
+    "range": { "startLine": 136, "endLine": 138 },
+    "type": "axiom",
+    "title": "Central Index Unbounded",
+    "content": "ν(r) → ∞ as r → ∞.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-227-leq",
+    "proofId": "erdos-227",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "axiom",
+    "title": "μ ≤ M",
+    "content": "Maximum term is at most maximum modulus.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-227-isnormal",
+    "proofId": "erdos-227",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "definition",
+    "title": "IsNormal",
+    "content": "Functions with μ(r)/M(r) → 0 are called 'normal'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-227-posnormal",
+    "proofId": "erdos-227",
+    "range": { "startLine": 154, "endLine": 160 },
+    "type": "theorem",
+    "title": "Positive Coeffs Normal",
+    "content": "Functions with aₙ ≥ 0 are normal (Clunie).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-227-order",
+    "proofId": "erdos-227",
+    "range": { "startLine": 168, "endLine": 170 },
+    "type": "definition",
+    "title": "Order",
+    "content": "Order ρ: growth rate inf{ρ : M(r) ≤ exp(rᵖ)}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-227-type",
+    "proofId": "erdos-227",
+    "range": { "startLine": 172, "endLine": 174 },
+    "type": "definition",
+    "title": "Type",
+    "content": "Type σ: finer growth measure within given order.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-227-orderzero",
+    "proofId": "erdos-227",
+    "range": { "startLine": 176, "endLine": 178 },
+    "type": "axiom",
+    "title": "Order Zero Normal",
+    "content": "Functions of order 0 are normal.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-227-expnormal",
+    "proofId": "erdos-227",
+    "range": { "startLine": 186, "endLine": 188 },
+    "type": "axiom",
+    "title": "Exponential Normal",
+    "content": "The exponential function is normal.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-227-pathological",
+    "proofId": "erdos-227",
+    "range": { "startLine": 190, "endLine": 197 },
+    "type": "axiom",
+    "title": "Pathological Examples",
+    "content": "For 0 < λ < 1/2, there exist highly irregular functions achieving λ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-227-statement",
+    "proofId": "erdos-227",
+    "range": { "startLine": 203, "endLine": 217 },
+    "type": "theorem",
+    "title": "erdos_227_statement",
+    "content": "Complete statement: conjecture false, positive case true, limits = [0,1/2].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-summary",
+    "proofId": "erdos-227",
+    "range": { "startLine": 223, "endLine": 236 },
+    "type": "theorem",
+    "title": "erdos_227_summary",
+    "content": "Summary of all main results.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-227-answer",
+    "proofId": "erdos-227",
+    "range": { "startLine": 238, "endLine": 239 },
+    "type": "theorem",
+    "title": "erdos_227_answer",
+    "content": "Status: SOLVED (DISPROVED).",
+    "significance": "critical"
+  }
+]
