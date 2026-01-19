@@ -13,34 +13,156 @@
       "erdos",
       "extremal-graph-theory",
       "turan-number",
-      "probabilistic-method"
+      "probabilistic-method",
+      "bipartite-graphs"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 926,
     "erdosUrl": "https://erdosproblems.com/926",
-    "erdosProblemStatus": "solved"
-  },
-  "overview": {
-    "historicalContext": "Erdős Problem #926 asks about the Turán number of a specific graph H_k. The problem originates from Erdős's 1971 paper 'Some unsolved problems in graph theory and combinatorial analysis'. Erdős claimed a proof for k=3 in that paper. The general case was resolved by Füredi in 1991 and improved by Alon, Krivelevich, and Sudakov in 2003.",
-    "problemStatement": "Let k ≥ 4. Is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph on vertices x, y_1, ..., y_k, z_1, ..., z_(k choose 2), where x is adjacent to all y_i and each pair y_i, y_j is adjacent to a unique z_ij?",
-    "proofStrategy": "The lower bound ex(n; H_k) ≫ n^(3/2) is trivial since H_k contains C_4 for k ≥ 3 (the 4-cycle x - y_1 - z_12 - y_2 - x). Füredi (1991) proved ex(n; H_k) ≪ (kn)^(3/2) using probabilistic methods and dependent random choice. Alon-Krivelevich-Sudakov (2003) improved this to k·n^(3/2) using refined techniques.",
-    "keyInsights": [
-      "H_k contains C_4 as a subgraph, giving the lower bound via Kővári-Sós-Turán",
-      "H_k is 2-degenerate (all z_ij vertices have degree exactly 2)",
-      "H_k is bipartite with parts {x} ∪ {z_ij} and {y_1,...,y_k}",
-      "The problem is a special case of the 2-degenerate conjecture (Problem 146)",
-      "Dependent random choice is the key technique for the upper bound"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Basic graph theory definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Subgraph",
+        "description": "Subgraph definitions for containment",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for vertex counting",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "hkVertexCount definition: 1 + k + (k choose 2) vertices in H_k",
+      "hkEdgeCount definition: k + 2*(k choose 2) edges in H_k",
+      "h4_vertex_count, h5_vertex_count: verified examples via native_decide",
+      "h4_edge_count: verified example via native_decide",
+      "hk_contains_c4 axiom: H_k contains C_4 for k ≥ 3",
+      "hk_2_degenerate axiom: H_k is 2-degenerate",
+      "hk_bipartite axiom: H_k is bipartite",
+      "kovari_sos_turan axiom: extremal number bounds for bipartite graphs",
+      "c4_extremal axiom: C_4 extremal number ~(1/2)n^(3/2)",
+      "hk_lower_bound axiom: lower bound from C_4 containment",
+      "furedi_theorem axiom: ex(n; H_k) ≪ (kn)^(3/2)",
+      "alon_krivelevich_sudakov axiom: ex(n; H_k) ≪ k·n^(3/2)",
+      "erdos_926 theorem: main result confirming YES",
+      "degenerate_conjecture axiom: connection to Problem 146",
+      "dependent_random_choice axiom: key proof technique"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "**Erdős Problem #926** addresses the extremal number of a specific graph H_k, a fundamental question in extremal combinatorics. The problem originated in Erdős's 1971 paper 'Some unsolved problems in graph theory and combinatorial analysis', where he claimed to have proved the k=3 case.\n\nThe graph H_k has a distinctive structure: a central vertex x connected to k vertices y_1,...,y_k, with (k choose 2) additional vertices z_ij, each connecting exactly one pair y_i, y_j. This creates a 'fan-like' structure that naturally contains 4-cycles.\n\nThe problem was fully resolved through work by Füredi (1991), who proved ex(n; H_k) ≪ (kn)^(3/2), and later improved by Alon, Krivelevich, and Sudakov (2003) to the optimal k·n^(3/2). These results established the tight asymptotic behavior Θ_k(n^(3/2)).",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet k ≥ 4. Is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph on vertices x, y_1, ..., y_k, z_1, ..., z_(k choose 2), where x is adjacent to all y_i and each pair y_i, y_j is adjacent to a unique z_ij?\n\n**Answer: YES**\n\n- Füredi (1991): ex(n; H_k) ≪ (kn)^(3/2)\n- Alon-Krivelevich-Sudakov (2003): ex(n; H_k) ≪ k·n^(3/2)\n\nThe lower bound ex(n; H_k) ≫ n^(3/2) is trivial since H_k contains C_4.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structure:** Define H_k's vertex and edge counts using Nat.choose\n\n2. **Verified Examples:** Use native_decide to verify H_4 has 11 vertices, H_5 has 16 vertices\n\n3. **Graph Properties:** Axiomatize that H_k contains C_4, is 2-degenerate, and is bipartite\n\n4. **Lower Bound:** The C_4 containment gives ex(n; H_k) ≥ ex(n; C_4) ≫ n^(3/2) via Kővári-Sós-Turán\n\n5. **Upper Bounds:** Axiomatize Füredi's (kn)^(3/2) and AKS's k·n^(3/2) bounds\n\n6. **Connections:** Link to the 2-degenerate conjecture (Problem 146) and dependent random choice method",
+    "keyInsights": [
+      "**H_k Contains C_4:** The 4-cycle x - y_1 - z_12 - y_2 - x gives the lower bound via Kővári-Sós-Turán",
+      "**2-Degeneracy:** All z_ij vertices have degree exactly 2, making H_k 2-degenerate",
+      "**Bipartite Structure:** Parts are {x} ∪ {z_ij} and {y_1,...,y_k}",
+      "**Special Case of Problem 146:** The 2-degenerate conjecture would imply this result",
+      "**Dependent Random Choice:** Key technique in both Füredi and AKS proofs",
+      "**Tight Bounds:** The answer is Θ_k(n^(3/2)), fully determining the order of magnitude"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-docs",
+      "title": "Problem Overview",
+      "summary": "Header documentation with problem statement, answer, and references",
+      "startLine": 1,
+      "endLine": 25
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "summary": "Mathlib imports for graph theory, combinatorics, and finite sets",
+      "startLine": 27,
+      "endLine": 34
+    },
+    {
+      "id": "graph-hk",
+      "title": "The Graph H_k",
+      "summary": "Definition of H_k structure with vertex and edge counts",
+      "startLine": 36,
+      "endLine": 74
+    },
+    {
+      "id": "properties",
+      "title": "Properties of H_k",
+      "summary": "C_4 containment, 2-degeneracy, bipartiteness axioms",
+      "startLine": 75,
+      "endLine": 102
+    },
+    {
+      "id": "extremal-numbers",
+      "title": "Extremal Numbers",
+      "summary": "Definition of extremal number and Kővári-Sós-Turán theorem",
+      "startLine": 103,
+      "endLine": 129
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "summary": "Trivial lower bound from C_4 containment",
+      "startLine": 130,
+      "endLine": 144
+    },
+    {
+      "id": "furedi",
+      "title": "Füredi's Theorem (1991)",
+      "summary": "First upper bound: ex(n; H_k) ≪ (kn)^(3/2)",
+      "startLine": 145,
+      "endLine": 157
+    },
+    {
+      "id": "aks",
+      "title": "Alon-Krivelevich-Sudakov (2003)",
+      "summary": "Improved bound: ex(n; H_k) ≪ k·n^(3/2)",
+      "startLine": 158,
+      "endLine": 178
+    },
+    {
+      "id": "degeneracy",
+      "title": "Connection to Degeneracy",
+      "summary": "Link to 2-degenerate conjecture (Problem 146)",
+      "startLine": 179,
+      "endLine": 199
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Problem 1021, Erdős's original claim, proof techniques",
+      "startLine": 200,
+      "endLine": 243
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_926_summary and erdos_926_order theorems",
+      "startLine": 244,
+      "endLine": 274
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #926 is SOLVED. The answer is YES: ex(n; H_k) ≪_k n^(3/2) for all k ≥ 4. The tight bound is Θ_k(n^(3/2)), with the lower bound from C_4 containment and the upper bound from Alon-Krivelevich-Sudakov.",
-    "implications": "This confirms the expected behavior for 2-degenerate graphs and connects to the broader 2-degenerate conjecture (Problem 146). The techniques developed, particularly dependent random choice, have become fundamental in extremal combinatorics.",
+    "implications": "This result confirms the expected behavior for Turán numbers of graphs containing 4-cycles. The techniques developed—particularly dependent random choice—have become fundamental in extremal combinatorics. Since H_k is 2-degenerate, this provides evidence for the broader 2-degenerate conjecture (Problem 146).",
     "openQuestions": [
       "Problem 146: Does ex(n; H) ≪ n^(3/2) for all 2-degenerate H?",
       "Problem 1021: What is ex(n; H_k - x) for H_k with vertex x removed?",
-      "Can the implicit constant in ex(n; H_k) ≤ C·k·n^(3/2) be determined precisely?"
+      "Can the implicit constant in ex(n; H_k) ≤ C·k·n^(3/2) be determined precisely?",
+      "What is the exact extremal number for small values of k and n?"
     ]
   }
 }
