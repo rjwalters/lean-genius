@@ -1,132 +1,180 @@
 {
   "id": "erdos-550",
-  "title": "Erdős #550: Ramsey Numbers for Trees and Multipartite Graphs",
+  "title": "Erdős Problem #550: Ramsey Numbers for Trees and Multipartite Graphs",
   "slug": "erdos-550",
-  "description": "For T a tree on n vertices and G = K_{m₁,...,mₖ}, prove R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁. Chvátal (1977): R(T,Kₘ) = (m-1)(n-1)+1 is the foundational result.",
+  "description": "For sufficiently large n, if T is a tree on n vertices and G = K_{m₁,...,mₖ} is a complete multipartite graph, prove R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁.",
   "meta": {
-    "author": "Paul Erdős, Václav Chvátal",
+    "author": "Erdős, Faudree, Rousseau, Schelp (1985)",
     "sourceUrl": "https://erdosproblems.com/550",
     "date": "1985",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos550Problem.lean",
     "tags": [
       "erdos",
       "graph-theory",
       "ramsey-theory",
-      "trees"
+      "trees",
+      "multipartite-graphs"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 12,
     "erdosNumber": 550,
     "erdosUrl": "https://erdosproblems.com/550",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Connected",
+        "description": "Graph connectivity predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Adj",
+        "description": "Graph adjacency relation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Finite set of edges",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsTree definition: connected and acyclic graph predicate",
+      "CompleteMultipartite structure: representation of K_{m₁,...,mₖ}",
+      "chromaticNumber definition: χ(G) = k for k-partite graph",
+      "ramseyNumber definition: R(T, G) as minimum coloring N",
+      "ConjecturedBound: (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁",
+      "ErdosConjecture: statement of the main conjecture",
+      "chvatal theorem: R(T, Kₘ) = (m-1)(n-1)+1 (axiomatized)",
+      "complete_graph_case: reduction to Chvátal for G = Kₘ",
+      "bipartite_case: bounds for K_{m,m}",
+      "IsPath definition: path graph characterization",
+      "maxDegree: maximum vertex degree in tree",
+      "BurrConjecture: bounded degree Ramsey linear bound",
+      "turanNumber: extremal graph function",
+      "asymptotic_behavior: R(T_n, Kₘ) ~ (m-1)n"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem extends Chvátal's 1977 exact result R(T,Kₘ) = (m-1)(n-1)+1 to complete multipartite graphs. The conjecture proposes a recursive bound using the chromatic number χ(G) = k and the bipartite Ramsey number R(T,K_{m₁,m₂}). It appears as #16 in the Ramsey Theory problems collection.",
-    "problemStatement": "Let m₁ ≤ ⋯ ≤ mₖ and n be sufficiently large. If T is a tree on n vertices and G is the complete multipartite graph K_{m₁,...,mₖ}, prove that R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁.",
-    "proofStrategy": "We formalize trees, complete multipartite graphs, Ramsey numbers, Chvátal's theorem, the main conjecture, special cases (paths, stars, bounded degree), probabilistic lower bounds, extremal constructions, and asymptotic behavior.",
+    "historicalContext": "**Erdős Problem #550**\n\nThis problem was proposed by Erdős, Faudree, Rousseau, and Schelp in 1985 [EFRS85] as a natural extension of Chvátal's fundamental 1977 result on tree-vs-complete-graph Ramsey numbers.\n\n**Foundation: Chvátal's Theorem (1977)**\n\nChvátal proved that for any tree T on n vertices and any complete graph Kₘ:\n$$R(T, K_m) = (m-1)(n-1) + 1$$\n\nThis is one of the few exact Ramsey results, giving the precise minimum N such that any 2-coloring of K_N contains either a red copy of T or a blue copy of Kₘ.\n\n**The Generalization**\n\nProblem #550 asks whether this elegant formula extends to complete multipartite graphs G = K_{m₁,...,mₖ} via a recursive bound involving the chromatic number χ(G) = k and the bipartite Ramsey number R(T, K_{m₁,m₂}).",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor sufficiently large n, let $m_1 \\leq \\cdots \\leq m_k$ and T be a tree on n vertices. If G is the complete multipartite graph K_{m₁,...,mₖ}, prove that:\n\n$$R(T,G) \\leq (\\chi(G)-1)(R(T,K_{m_1,m_2})-1)+m_1$$\n\nwhere χ(G) = k is the chromatic number (number of parts).\n\n**Current Status: OPEN**\n\nThis problem cannot be resolved with finite computation and remains one of the open questions in Ramsey theory for graphs.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Graph Foundations:** Define IsTree (connected + acyclic), vertex count, edge count properties\n\n2. **Multipartite Graphs:** Structure for K_{m₁,...,mₖ} with sorted part sizes and chromatic number = k\n\n3. **Ramsey Numbers:** Define R(T, G) as minimum N for guaranteed monochromatic embedding\n\n4. **Chvátal's Theorem:** Axiomatize the exact result R(T, Kₘ) = (m-1)(n-1)+1\n\n5. **The Conjecture:** Formalize the conjectured bound and state as axiom (since open)\n\n6. **Special Cases:** Complete graphs reduce to Chvátal; bipartite case; paths and stars\n\n7. **Related Results:** Burr's conjecture (proved), probabilistic bounds, asymptotics",
     "keyInsights": [
-      "Chvátal (1977): R(T, Kₘ) = (m-1)(n-1) + 1 exactly",
-      "χ(K_{m₁,...,mₖ}) = k (number of parts)",
-      "The bound reduces to Chvátal when G = Kₘ",
-      "Burr's conjecture for bounded-degree trees is proved",
-      "For fixed m, R(T_n, Kₘ) ~ (m-1)n asymptotically"
+      "**Chvátal's Exact Formula:** R(T, Kₘ) = (m-1)(n-1) + 1 is the foundation - one of few exact Ramsey results",
+      "**Chromatic Number Role:** χ(K_{m₁,...,mₖ}) = k counts the independent parts, governing the recursive bound",
+      "**Recursive Structure:** The bound uses R(T, K_{m₁,m₂}) - the bipartite case - as a building block",
+      "**Complete Graph Reduction:** When G = Kₘ (all parts size 1), the conjecture reduces exactly to Chvátal",
+      "**Burr's Conjecture (Proved):** For bounded-degree trees, R(T, K₃) ≤ C·n for some constant C",
+      "**Asymptotic Behavior:** R(T_n, Kₘ) ~ (m-1)n as n → ∞, with exact leading coefficient m-1"
     ]
   },
   "sections": [
     {
       "id": "graph-defs",
       "title": "Graph Definitions",
-      "summary": "Trees and vertex counting",
+      "summary": "IsTree predicate (connected + acyclic), vertexCount function, tree_edge_count theorem",
       "startLine": 30,
       "endLine": 43
     },
     {
       "id": "multipartite",
       "title": "Complete Multipartite Graphs",
-      "summary": "K_{m₁,...,mₖ} structure and chromatic number",
+      "summary": "CompleteMultipartite structure with k parts of sizes m₁ ≤ ... ≤ mₖ, chromatic number χ = k",
       "startLine": 45,
       "endLine": 73
     },
     {
       "id": "ramsey",
       "title": "Ramsey Numbers",
-      "summary": "Definition of R(T, G)",
+      "summary": "Definition of R(T, G) as minimum N for guaranteed red T or blue G in any 2-coloring",
       "startLine": 75,
       "endLine": 93
     },
     {
       "id": "chvatal",
       "title": "Chvátal's Theorem",
-      "summary": "R(T, Kₘ) = (m-1)(n-1) + 1",
+      "summary": "The foundational result R(T, Kₘ) = (m-1)(n-1)+1 for trees vs complete graphs (1977)",
       "startLine": 95,
       "endLine": 115
     },
     {
       "id": "conjecture",
-      "title": "The Conjecture",
-      "summary": "The conjectured bound for multipartite G",
+      "title": "The Main Conjecture",
+      "summary": "ConjecturedBound definition and ErdosConjecture statement for multipartite graphs",
       "startLine": 117,
       "endLine": 137
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "Complete graphs, bipartite, stars",
+      "summary": "Complete graph case (reduces to Chvátal), bipartite K_{m,m}, star graphs",
       "startLine": 139,
       "endLine": 161
     },
     {
       "id": "paths",
       "title": "Path Graphs",
-      "summary": "P_n and Gerencsér-Gyárfás",
+      "summary": "IsPath definition, path-complete Ramsey, Gerencsér-Gyárfás theorem R(Pₙ, Pₘ)",
       "startLine": 163,
       "endLine": 180
     },
     {
       "id": "tree-structure",
       "title": "Tree Structure",
-      "summary": "Maximum degree and Burr's conjecture",
+      "summary": "Maximum degree, bounded-degree Ramsey bounds, Burr's conjecture (proved)",
       "startLine": 182,
       "endLine": 203
     },
     {
       "id": "turan",
       "title": "Turán Connections",
-      "summary": "Extremal graph theory connections",
+      "summary": "Turán number definition, connection between Ramsey and extremal graph theory",
       "startLine": 205,
       "endLine": 214
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Bounds",
-      "summary": "Lower bounds from random graphs",
+      "summary": "Lower bounds from random graph arguments, tree embedding requirements",
       "startLine": 216,
       "endLine": 229
     },
     {
       "id": "extremal",
       "title": "Extremal Graphs",
-      "summary": "Constructions achieving bounds",
+      "summary": "Extremal construction with (m-1)(n-1) vertices avoiding both red T and blue Kₘ",
       "startLine": 231,
       "endLine": 243
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
-      "summary": "R(T_n, Kₘ) ~ (m-1)n",
+      "summary": "R(T_n, Kₘ) ~ (m-1)n as n → ∞ with exact leading coefficient",
       "startLine": 245,
       "endLine": 258
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #550 on Ramsey numbers for trees and complete multipartite graphs. The conjecture extends Chvátal's exact result R(T,Kₘ) = (m-1)(n-1)+1 to multipartite graphs using a recursive bound involving the chromatic number.",
-    "implications": "The problem connects tree embedding with Ramsey theory. Chvátal's theorem provides the complete answer for complete graphs, but the extension to multipartite graphs remains open. Special cases like bounded-degree trees (Burr's conjecture) have been resolved.",
+    "summary": "This formalization captures Erdős Problem #550, an open conjecture on Ramsey numbers for trees versus complete multipartite graphs. Building on Chvátal's 1977 exact result R(T, Kₘ) = (m-1)(n-1)+1, the problem asks whether a recursive bound involving the chromatic number extends to all multipartite graphs.",
+    "implications": "**Ramsey Theory Impact**\n\n1. **Tree Embedding:** Understanding when large complete graphs force tree subgraphs\n\n2. **Chromatic Approach:** Using χ(G) to bound Ramsey numbers recursively\n\n3. **Exact vs Asymptotic:** Chvátal gives exact values; the conjecture proposes an exact upper bound\n\n4. **Special Cases:** Complete graphs, bipartite graphs, paths, and bounded-degree trees all have known results\n\n5. **Burr's Conjecture:** The related result for bounded-degree trees is now proved",
     "openQuestions": [
-      "Does the conjectured bound hold for all sufficiently large n?",
-      "What is the exact value of R(T, K_{m,m}) for general trees?",
-      "Can the bound be improved for specific tree families?",
-      "What is the relationship to Turán extremal graphs?"
+      "Does the conjectured bound R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁ hold for all sufficiently large n?",
+      "What is the exact value of R(T, K_{m,m}) for general trees T?",
+      "Can the bound be improved for specific tree families (paths, stars, caterpillars)?",
+      "What is the precise relationship between Ramsey numbers and Turán extremal graphs?",
+      "Are there non-trivial lower bounds matching the conjectured upper bound?"
     ]
   }
 }

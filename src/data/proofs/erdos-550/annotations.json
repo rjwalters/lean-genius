@@ -1,155 +1,244 @@
 [
   {
-    "id": "ann-550-tree",
+    "id": "ann-e550-header",
+    "proofId": "erdos-550",
+    "range": { "startLine": 1, "endLine": 16 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #550: Ramsey Numbers for Trees and Multipartite Graphs**\n\nThis file formalizes an open conjecture from 1985 that extends Chvátal's exact Ramsey result.\n\n**The Question:**\nFor a tree T on n vertices and complete multipartite graph G = K_{m₁,...,mₖ}, is it true that:\n$$R(T,G) \\leq (\\chi(G)-1)(R(T,K_{m_1,m_2})-1)+m_1$$\n\n**Status:** OPEN\n\n**Foundation:** Chvátal (1977) proved R(T, Kₘ) = (m-1)(n-1)+1 exactly.",
+    "mathContext": "Ramsey theory asks: how large must a structure be to guarantee a monochromatic substructure? Here we seek the minimum N such that any red-blue coloring of K_N contains either a red tree T or a blue complete multipartite graph G.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Graph coloring", "Trees", "Complete multipartite graphs"]
+  },
+  {
+    "id": "ann-e550-istree",
     "proofId": "erdos-550",
     "range": { "startLine": 32, "endLine": 34 },
     "type": "definition",
-    "title": "IsTree",
-    "content": "A graph is a tree if connected and acyclic.",
-    "significance": "critical"
+    "title": "Tree Definition",
+    "content": "**IsTree G:**\n\nA graph G is a tree if it is:\n1. **Connected:** There is a path between any two vertices\n2. **Acyclic:** Contains no cycles\n\n**Equivalent characterizations:**\n- Connected with exactly n-1 edges (for n vertices)\n- Minimal connected graph (removing any edge disconnects it)\n- Maximal acyclic graph (adding any edge creates a cycle)\n\n```lean\ndef IsTree (G : SimpleGraph V) : Prop :=\n  G.Connected ∧ ∀ (u v : V), G.Adj u v → G.Reachable u v\n```",
+    "mathContext": "Trees are fundamental in Ramsey theory because they are sparse (only n-1 edges) yet highly structured.",
+    "significance": "critical",
+    "relatedConcepts": ["Connected graphs", "Acyclic graphs", "Spanning trees"]
   },
   {
-    "id": "ann-550-multipartite",
+    "id": "ann-e550-vertexcount",
     "proofId": "erdos-550",
-    "range": { "startLine": 47, "endLine": 51 },
+    "range": { "startLine": 36, "endLine": 43 },
     "type": "definition",
-    "title": "CompleteMultipartite",
-    "content": "K_{m₁,...,mₖ} with sorted part sizes.",
-    "significance": "critical"
+    "title": "Vertex and Edge Counting",
+    "content": "**vertexCount V:**\n\nThe number of vertices in a finite graph, using Fintype.card.\n\n**tree_edge_count theorem:**\n\nEvery tree on n vertices has exactly n-1 edges. This is a fundamental characterization:\n- A graph with n vertices and n-1 edges is a tree iff it is connected\n- Equivalently: a tree iff it is acyclic\n\nThis sparsity is key to tree Ramsey numbers being relatively small.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card", "Graph edges", "Tree characterization"]
   },
   {
-    "id": "ann-550-chromatic",
+    "id": "ann-e550-multipartite",
+    "proofId": "erdos-550",
+    "range": { "startLine": 47, "endLine": 58 },
+    "type": "definition",
+    "title": "Complete Multipartite Graphs",
+    "content": "**CompleteMultipartite structure:**\n\nRepresents K_{m₁,...,mₖ} - a complete k-partite graph with:\n- **k** independent parts (no edges within parts)\n- **Part sizes** m₁ ≤ m₂ ≤ ... ≤ mₖ (sorted)\n- **All edges** between different parts\n\n**Examples:**\n- K₃ = K_{1,1,1} (complete graph, 3 parts of size 1)\n- K_{2,3} = complete bipartite graph (parts of size 2 and 3)\n- K_{m,m,...,m} with k parts (balanced multipartite)\n\n**Chromatic number:** χ(K_{m₁,...,mₖ}) = k exactly (each part needs its own color)",
+    "mathContext": "Complete multipartite graphs are the Turán extremal graphs - they have the maximum number of edges among graphs avoiding a clique K_{k+1}.",
+    "significance": "critical",
+    "relatedConcepts": ["Complete bipartite graphs", "Turán graphs", "Chromatic number"]
+  },
+  {
+    "id": "ann-e550-chromatic",
     "proofId": "erdos-550",
     "range": { "startLine": 57, "endLine": 58 },
     "type": "definition",
     "title": "Chromatic Number",
-    "content": "χ(K_{m₁,...,mₖ}) = k (number of parts).",
-    "significance": "critical"
+    "content": "**chromaticNumber G = k:**\n\nFor a complete k-partite graph, the chromatic number equals k exactly.\n\n**Why?**\n- Each part is an independent set (can share a color)\n- Different parts have all edges between them (need different colors)\n- Therefore: exactly k colors needed = k parts\n\nThis simple formula for multipartite graphs is crucial for the conjectured bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Independent sets", "k-partite graphs"]
   },
   {
-    "id": "ann-550-ramsey",
+    "id": "ann-e550-bipartite",
+    "proofId": "erdos-550",
+    "range": { "startLine": 66, "endLine": 73 },
+    "type": "definition",
+    "title": "Complete Bipartite Graph",
+    "content": "**completeBipartite m1 m2:**\n\nConstructs K_{m₁,m₂} as a 2-partite graph.\n\n```lean\ndef completeBipartite (m1 m2 : ℕ) (h : m1 ≤ m2) : CompleteMultipartite\n```\n\n**Properties:**\n- 2 parts with m₁ and m₂ vertices\n- m₁ × m₂ edges (every vertex in part 1 connects to every vertex in part 2)\n- Chromatic number χ = 2\n\nThe bipartite Ramsey number R(T, K_{m₁,m₂}) appears in the conjectured bound.",
+    "significance": "key",
+    "relatedConcepts": ["Bipartite graphs", "Matching theory", "König's theorem"]
+  },
+  {
+    "id": "ann-e550-ramsey",
     "proofId": "erdos-550",
     "range": { "startLine": 77, "endLine": 88 },
     "type": "definition",
-    "title": "Ramsey Number",
-    "content": "R(T,G): smallest N where any 2-coloring of K_N contains red T or blue G.",
-    "significance": "critical"
+    "title": "Ramsey Number Definition",
+    "content": "**ramseyNumber T G:**\n\nThe Ramsey number R(T, G) is the minimum N such that:\n- Any 2-coloring of the edges of K_N (complete graph on N vertices)\n- Contains either a red copy of T or a blue copy of G\n\n**Interpretation:**\n- Color K_N with red and blue\n- Look for monochromatic red tree T or blue multipartite G\n- R(T,G) is the smallest N where this is guaranteed\n\n**Existence:** Ramsey's theorem guarantees R(T,G) exists for all finite T, G.",
+    "mathContext": "Computing Ramsey numbers is notoriously difficult. Erdős famously said that if aliens demanded R(5,5), humanity should try computing it; but if they demanded R(6,6), we should prepare for war.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey's theorem", "Graph coloring", "Pigeonhole principle"]
   },
   {
-    "id": "ann-550-chvatal",
+    "id": "ann-e550-chvatal",
     "proofId": "erdos-550",
     "range": { "startLine": 97, "endLine": 101 },
-    "type": "theorem",
-    "title": "Chvátal's Theorem",
-    "content": "R(T, Kₘ) = (m-1)(n-1) + 1 exactly (1977).",
-    "significance": "critical"
+    "type": "axiom",
+    "title": "Chvátal's Theorem (1977)",
+    "content": "**chvatal theorem:**\n\nFor any tree T on n vertices and complete graph Kₘ:\n$$R(T, K_m) = (m-1)(n-1) + 1$$\n\n**Why exact?** This is remarkable - most Ramsey numbers are only known approximately.\n\n**Upper bound:** Induction on n and m shows R(T, Kₘ) ≤ (m-1)(n-1)+1\n\n**Lower bound:** Take (m-1) disjoint copies of K_{n-1} colored red. This has (m-1)(n-1) vertices, no red tree T_n (each component too small), and no blue K_m (no blue edges).\n\nAxiomatized because the full proof requires substantial graph-theoretic machinery.",
+    "mathContext": "This is one of the few exact Ramsey results, alongside R(path, path) and R(cycle, cycle) for specific cases.",
+    "significance": "critical",
+    "relatedConcepts": ["Exact Ramsey numbers", "Tree embedding", "Extremal graphs"]
   },
   {
-    "id": "ann-550-bound",
+    "id": "ann-e550-chvatal-bounds",
+    "proofId": "erdos-550",
+    "range": { "startLine": 103, "endLine": 115 },
+    "type": "theorem",
+    "title": "Chvátal Upper and Lower Bounds",
+    "content": "**chvatal_upper and chvatal_lower:**\n\nSeparate statements of the two directions:\n\n**Upper bound:** Any 2-coloring of K_{(m-1)(n-1)+1} contains red T or blue Kₘ\n\n**Lower bound:** There exists a 2-coloring of K_{(m-1)(n-1)} with no red T and no blue Kₘ\n\n**The extremal construction:**\n- Take m-1 disjoint complete graphs K_{n-1}\n- Color all edges within components red\n- Color all edges between components blue\n- No red T (each red component has only n-1 vertices)\n- No blue Kₘ (blue edges form complete (m-1)-partite graph, which has no Kₘ)",
+    "significance": "key",
+    "relatedConcepts": ["Upper bounds", "Lower bounds", "Extremal constructions"]
+  },
+  {
+    "id": "ann-e550-conjectured-bound",
     "proofId": "erdos-550",
     "range": { "startLine": 119, "endLine": 126 },
     "type": "definition",
-    "title": "Conjectured Bound",
-    "content": "(χ(G)-1)(R(T,K_{m₁,m₂})-1) + m₁.",
-    "significance": "critical"
+    "title": "The Conjectured Bound",
+    "content": "**ConjecturedBound T G:**\n\nFor tree T and k-partite graph G = K_{m₁,...,mₖ}:\n$$(\\chi(G)-1)(R(T,K_{m_1,m_2})-1)+m_1$$\n\n**Components:**\n- χ(G) = k (chromatic number = number of parts)\n- R(T, K_{m₁,m₂}) = Ramsey number for T vs bipartite K_{m₁,m₂}\n- m₁ = smallest part size\n\n**Intuition:** The bound is \"recursive\" - it uses the bipartite case R(T, K_{m₁,m₂}) as a building block, scaling by χ-1.",
+    "mathContext": "The structure suggests an inductive proof approach: reduce from k parts to 2 parts (bipartite case).",
+    "significance": "critical",
+    "relatedConcepts": ["Recursive bounds", "Chromatic number", "Bipartite Ramsey"]
   },
   {
-    "id": "ann-550-conjecture",
+    "id": "ann-e550-conjecture",
     "proofId": "erdos-550",
-    "range": { "startLine": 128, "endLine": 134 },
-    "type": "definition",
-    "title": "Erdős Conjecture",
-    "content": "R(T,G) ≤ conjectured bound for large n. OPEN.",
-    "significance": "critical"
+    "range": { "startLine": 128, "endLine": 137 },
+    "type": "axiom",
+    "title": "Erdős's Conjecture (OPEN)",
+    "content": "**ErdosConjecture:**\n\nFor all sufficiently large n:\n$$R(T,G) \\leq (\\chi(G)-1)(R(T,K_{m_1,m_2})-1)+m_1$$\n\n**Status:** This conjecture is OPEN since 1985.\n\n**Why \"sufficiently large n\"?** Small cases may have exceptional behavior; the asymptotic bound is the main interest.\n\n**Axiomatized as:** `erdos_conjecture_open : ErdosConjecture`\n\nThis cannot be resolved by finite computation - it requires a conceptual proof or disproof.",
+    "mathContext": "Open problems in Ramsey theory often remain unsolved for decades due to the difficulty of proving universal bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Asymptotic bounds", "Ramsey theory conjectures"]
   },
   {
-    "id": "ann-550-complete",
+    "id": "ann-e550-complete-case",
     "proofId": "erdos-550",
     "range": { "startLine": 141, "endLine": 145 },
     "type": "theorem",
     "title": "Complete Graph Case",
-    "content": "For G = Kₘ, reduces to Chvátal's theorem.",
-    "significance": "key"
+    "content": "**complete_graph_case:**\n\nWhen G = Kₘ (complete graph on m vertices), the conjecture reduces to Chvátal's theorem.\n\n**Verification:**\n- Kₘ = K_{1,1,...,1} with m parts of size 1\n- χ(Kₘ) = m\n- K_{m₁,m₂} = K_{1,1} = K₂ (single edge)\n- R(T, K₂) = n (need n vertices to embed n-vertex tree)\n\nBound becomes: (m-1)(n-1) + 1 = Chvátal's formula. ✓",
+    "significance": "key",
+    "relatedConcepts": ["Chvátal's theorem", "Complete graphs", "Special cases"]
   },
   {
-    "id": "ann-550-bipartite",
+    "id": "ann-e550-bipartite-case",
     "proofId": "erdos-550",
     "range": { "startLine": 147, "endLine": 152 },
     "type": "theorem",
     "title": "Bipartite Case",
-    "content": "Bound for K_{m,m}.",
-    "significance": "key"
+    "content": "**bipartite_case:**\n\nFor balanced bipartite G = K_{m,m}:\n$$R(T, K_{m,m}) \\leq (n-1)(2m-1) + m$$\n\n**Components:**\n- χ(K_{m,m}) = 2\n- m₁ = m₂ = m\n\nThis special case is more tractable than general multipartite graphs.\n\n**Note:** Even exact values of R(T, K_{m,m}) are unknown for most trees T.",
+    "significance": "key",
+    "relatedConcepts": ["Bipartite graphs", "Balanced graphs", "Special bounds"]
   },
   {
-    "id": "ann-550-path",
+    "id": "ann-e550-star",
+    "proofId": "erdos-550",
+    "range": { "startLine": 154, "endLine": 161 },
+    "type": "definition",
+    "title": "Star Graph",
+    "content": "**starGraph n:**\n\nThe star K_{1,n-1} - a tree with one central vertex connected to n-1 leaves.\n\n**Properties:**\n- n vertices, n-1 edges (like all trees)\n- Diameter 2 (any two vertices at distance ≤ 2)\n- Maximum degree = n-1 (the center)\n\n**Ramsey behavior:** Stars have simpler Ramsey bounds than general trees because of their regular structure.",
+    "significance": "supporting",
+    "relatedConcepts": ["Star graphs", "Tree families", "Ramsey simplification"]
+  },
+  {
+    "id": "ann-e550-ispath",
     "proofId": "erdos-550",
     "range": { "startLine": 165, "endLine": 168 },
     "type": "definition",
-    "title": "IsPath",
-    "content": "Path P_n: tree with max degree 2.",
-    "significance": "key"
+    "title": "Path Graph",
+    "content": "**IsPath G:**\n\nA path P_n is a tree where:\n- All vertices have degree ≤ 2\n- Exactly two vertices (endpoints) have degree 1\n- All other vertices have degree 2\n\n**Examples:**\n- P₂: single edge (•—•)\n- P₃: two edges (•—•—•)\n- P_n: chain of n vertices\n\nPaths are the \"thinnest\" trees - they have minimum maximum degree (at most 2).",
+    "significance": "key",
+    "relatedConcepts": ["Path graphs", "Hamiltonian paths", "Linear structures"]
   },
   {
-    "id": "ann-550-maxdeg",
+    "id": "ann-e550-path-ramsey",
     "proofId": "erdos-550",
-    "range": { "startLine": 184, "endLine": 186 },
-    "type": "definition",
-    "title": "Max Degree",
-    "content": "Maximum vertex degree in tree.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-550-burr",
-    "proofId": "erdos-550",
-    "range": { "startLine": 194, "endLine": 199 },
-    "type": "definition",
-    "title": "Burr's Conjecture",
-    "content": "For bounded Δ, R(T, K₃) ≤ C·n.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-550-burr-proved",
-    "proofId": "erdos-550",
-    "range": { "startLine": 201, "endLine": 203 },
+    "range": { "startLine": 170, "endLine": 180 },
     "type": "theorem",
-    "title": "Burr Proved",
-    "content": "Burr's conjecture is true.",
-    "significance": "key"
+    "title": "Path Ramsey Numbers",
+    "content": "**path_complete:**\n\nR(P_n, K_m) = (m-1)(n-1) + 1 (Chvátal applies to paths).\n\n**gerencser_gyarfas (Gerencsér-Gyárfás theorem):**\n\nFor paths vs paths:\n$$R(P_n, P_m) = n + \\lfloor m/2 \\rfloor - 1 \\quad \\text{for } n \\geq m \\geq 2$$\n\nThis is another exact Ramsey result! Path-vs-path has a clean formula.\n\n**Example:** R(P₅, P₄) = 5 + 2 - 1 = 6",
+    "mathContext": "Paths are among the best-understood graphs in Ramsey theory due to their simple structure.",
+    "significance": "key",
+    "relatedConcepts": ["Gerencsér-Gyárfás theorem", "Path embeddings", "Exact formulas"]
   },
   {
-    "id": "ann-550-turan",
+    "id": "ann-e550-maxdegree",
     "proofId": "erdos-550",
-    "range": { "startLine": 207, "endLine": 209 },
+    "range": { "startLine": 184, "endLine": 192 },
+    "type": "definition",
+    "title": "Maximum Degree",
+    "content": "**maxDegree G:**\n\nThe maximum vertex degree in graph G:\n```lean\nnoncomputable def maxDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=\n  Finset.univ.sup (G.degree ·)\n```\n\n**For trees:**\n- Path P_n: Δ = 2\n- Star K_{1,n-1}: Δ = n-1\n- Binary tree: Δ = 3\n\n**bounded_degree_ramsey:** Trees with bounded maximum degree have better Ramsey bounds.",
+    "significance": "key",
+    "relatedConcepts": ["Vertex degree", "Bounded-degree graphs", "Ramsey bounds"]
+  },
+  {
+    "id": "ann-e550-burr",
+    "proofId": "erdos-550",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "theorem",
+    "title": "Burr's Conjecture (Proved)",
+    "content": "**BurrConjecture Δ:**\n\nFor any fixed maximum degree Δ, there exists C such that for all trees T with maxDegree(T) ≤ Δ:\n$$R(T, K_3) \\leq C \\cdot n$$\n\n**Significance:** This linear bound is optimal up to the constant C.\n\n**burr_conjecture theorem:** States that BurrConjecture holds for all Δ.\n\n**History:** Originally conjectured by Burr, later proved through work of multiple researchers.\n\nThis is a positive result about bounded-degree trees having \"nice\" Ramsey behavior.",
+    "mathContext": "Bounded-degree constraints often make combinatorial problems more tractable.",
+    "significance": "critical",
+    "relatedConcepts": ["Linear Ramsey bounds", "Bounded-degree trees", "Structural graph theory"]
+  },
+  {
+    "id": "ann-e550-turan",
+    "proofId": "erdos-550",
+    "range": { "startLine": 207, "endLine": 214 },
     "type": "definition",
     "title": "Turán Number",
-    "content": "Max edges avoiding K_r.",
-    "significance": "supporting"
+    "content": "**turanNumber n r:**\n\nThe Turán number ex(n, K_r) is the maximum number of edges in an n-vertex graph with no K_r subgraph.\n\n**Formula:**\n$$\\text{ex}(n, K_r) \\approx \\left(1 - \\frac{1}{r-1}\\right) \\frac{n^2}{2}$$\n\n**Connection to Ramsey:** Turán extremal graphs (balanced complete (r-1)-partite graphs) inform the extremal constructions for Ramsey lower bounds.\n\nramsey_turan_connection notes this deep relationship.",
+    "mathContext": "Extremal graph theory and Ramsey theory are closely intertwined - extremal graphs often appear in Ramsey constructions.",
+    "significance": "supporting",
+    "relatedConcepts": ["Turán's theorem", "Extremal graphs", "Zarankiewicz problem"]
   },
   {
-    "id": "ann-550-lower",
+    "id": "ann-e550-probabilistic",
     "proofId": "erdos-550",
-    "range": { "startLine": 218, "endLine": 223 },
+    "range": { "startLine": 218, "endLine": 229 },
     "type": "theorem",
-    "title": "Probabilistic Lower",
-    "content": "R(T, G) ≥ n - 1 for n-vertex tree.",
-    "significance": "key"
+    "title": "Probabilistic Lower Bounds",
+    "content": "**probabilistic_lower:**\n\nFor any tree T on n vertices and graph G:\n$$R(T, G) \\geq n - 1$$\n\n**Proof idea:** A tree on n vertices needs n vertices to be embedded. If we have fewer than n vertices, there's nowhere to put the tree.\n\n**tree_embedding_lower:** Specifically, R(T, K₂) ≥ n because we need at least n vertices.\n\n**Note:** These are weak lower bounds; the actual Ramsey numbers are typically much larger.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bounds", "Probabilistic method", "Tree embedding"]
   },
   {
-    "id": "ann-550-extremal",
+    "id": "ann-e550-extremal",
     "proofId": "erdos-550",
-    "range": { "startLine": 233, "endLine": 238 },
+    "range": { "startLine": 233, "endLine": 243 },
     "type": "definition",
-    "title": "Extremal Graph",
-    "content": "(m-1)(n-1) vertices, no red tree, no blue Kₘ.",
-    "significance": "key"
+    "title": "Extremal Graph Construction",
+    "content": "**RamseyExtremalGraph n m:**\n\nThe extremal construction for R(T, Kₘ) that achieves the lower bound:\n- Take (m-1)(n-1) vertices\n- Partition into m-1 groups of n-1 vertices each\n- Color edges within groups red\n- Color edges between groups blue\n\n**Result:**\n- No red tree T (each red component has n-1 < n vertices)\n- No blue Kₘ (blue graph is (m-1)-partite, containing no Kₘ)\n\n**ramsey_extremal_exists:** Proves this construction exists.",
+    "mathContext": "Extremal constructions are essential for proving Ramsey number lower bounds - they show you can't do better.",
+    "significance": "key",
+    "relatedConcepts": ["Extremal constructions", "Lower bound proofs", "Partition arguments"]
   },
   {
-    "id": "ann-550-asymptotic",
+    "id": "ann-e550-asymptotic",
     "proofId": "erdos-550",
-    "range": { "startLine": 247, "endLine": 253 },
+    "range": { "startLine": 247, "endLine": 258 },
     "type": "theorem",
     "title": "Asymptotic Behavior",
-    "content": "R(T_n, Kₘ) ~ (m-1)n as n → ∞.",
-    "significance": "key"
+    "content": "**asymptotic_behavior:**\n\nFor fixed m and trees T_n on n vertices:\n$$R(T_n, K_m) \\sim (m-1) \\cdot n \\quad \\text{as } n \\to \\infty$$\n\n**Meaning:** The ratio R(T_n, Kₘ)/n approaches m-1 as n grows.\n\n**leading_coefficient:** The exact leading coefficient is m-1 (from Chvátal).\n\n**Implication:** For large trees, the Ramsey number is essentially linear in the tree size, with slope m-1.",
+    "mathContext": "Asymptotic analysis often provides insight when exact formulas are unknown or complex.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic analysis", "Big-O notation", "Limiting behavior"]
+  },
+  {
+    "id": "ann-e550-summary",
+    "proofId": "erdos-550",
+    "range": { "startLine": 262, "endLine": 283 },
+    "type": "concept",
+    "title": "Summary and Key Sorries",
+    "content": "**Summary Block:**\n\nThis formalization captures Erdős Problem #550:\n- **Status:** OPEN (the main conjecture)\n- **Chvátal's exact result:** R(T, Kₘ) = (m-1)(n-1)+1\n- **The conjecture:** Extends to multipartite G via χ(G)\n\n**Key sorries requiring proof:**\n\n1. `chvatal` - The foundational exact theorem\n2. `chvatal_upper` / `chvatal_lower` - The two directions\n3. `bipartite_case` - Bounds for K_{m,m}\n4. `burr_conjecture` - Linear bound for bounded-degree trees\n5. `probabilistic_lower` - Basic lower bound\n6. `asymptotic_behavior` - Limiting behavior\n\n**Axiom:** `erdos_conjecture_open` - The main open conjecture",
+    "significance": "key",
+    "relatedConcepts": ["Summary", "Sorry tracking", "Open problems"]
   }
 ]
