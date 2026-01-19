@@ -1,1 +1,152 @@
-[]
+[
+  {
+    "id": "erdos-310-ann-1",
+    "proofId": "erdos-310",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "Unit Fraction Sum",
+    "content": "The sum of unit fractions 1/n over a finite set S. This is the core object of study - we want to find subsets where this sum equals a 'simple' rational.",
+    "mathContext": "unitFractionSum S = Σ_{n∈S} 1/n",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-2",
+    "proofId": "erdos-310",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "α-Dense Subset",
+    "content": "A set A is α-dense in {1,...,N} if it contains at least αN elements. This density condition is the key hypothesis - we need A to be 'large enough' relative to N.",
+    "mathContext": "|A| ≥ αN where A ⊆ {1,...,N}",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-3",
+    "proofId": "erdos-310",
+    "range": { "startLine": 62, "endLine": 63 },
+    "type": "definition",
+    "title": "Simple Rational",
+    "content": "A rational a/b is 'simple' with bound B if a ≤ b (so it's at most 1) and the denominator b ≤ B. The goal is to find such rationals as unit fraction sums.",
+    "mathContext": "a ≤ b and b ≤ B",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-310-ann-4",
+    "proofId": "erdos-310",
+    "range": { "startLine": 82, "endLine": 82 },
+    "type": "definition",
+    "title": "Bound Function",
+    "content": "The bound on denominators depends on α: B(α) = ⌈exp(1/α)⌉. This captures the 'O_α(1)' in Erdős's statement - the bound depends only on α, not on N.",
+    "mathContext": "B(α) = ⌈e^{1/α}⌉",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-5",
+    "proofId": "erdos-310",
+    "range": { "startLine": 89, "endLine": 93 },
+    "type": "definition",
+    "title": "Erdős #310 Conjecture",
+    "content": "The original conjecture: for any α > 0 and N ≥ 1, if A is α-dense in {1,...,N}, then A contains a subset with a simple unit fraction sum. This asks whether density alone guarantees 'rich' structure.",
+    "mathContext": "∀α>0, ∀N≥1, ∀A α-dense ⟹ ∃S⊆A with simple sum",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-6",
+    "proofId": "erdos-310",
+    "range": { "startLine": 106, "endLine": 111 },
+    "type": "axiom",
+    "title": "Bloom's Theorem (2021)",
+    "content": "Bloom proved that dense sets contain subsets whose unit fraction sum is close to 1 (within 1/2). This is the key ingredient - it guarantees a sum in the interval [1/2, 3/2].",
+    "mathContext": "|Σ_{n∈S} 1/n - 1| ≤ 1/2",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-7",
+    "proofId": "erdos-310",
+    "range": { "startLine": 116, "endLine": 122 },
+    "type": "theorem",
+    "title": "Bloom Implies Rational Bound",
+    "content": "Bloom's theorem immediately gives us a subset with sum in [1/2, 3/2]. Any such rational has denominator at most 2 (in lowest terms), which is quite simple!",
+    "mathContext": "1/2 ≤ Σ_{n∈S} 1/n ≤ 3/2",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-310-ann-8",
+    "proofId": "erdos-310",
+    "range": { "startLine": 135, "endLine": 141 },
+    "type": "axiom",
+    "title": "Liu-Sawhney Theorem (2024)",
+    "content": "The precise quantitative version: for (log N)^{-1/7} ≤ α ≤ 1/2, there exists S with a/b = Σ 1/n where b ≤ exp(10/α). This gives explicit control over the denominator.",
+    "mathContext": "b ≤ exp(10/α) when (log N)^{-1/7} ≤ α ≤ 1/2",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-9",
+    "proofId": "erdos-310",
+    "range": { "startLine": 146, "endLine": 152 },
+    "type": "axiom",
+    "title": "Sharpness of Bound",
+    "content": "The exponential dependence exp(O(1/α)) cannot be improved. For any constant C, there exist examples where the minimum denominator exceeds exp(C/α). This shows the result is optimal.",
+    "mathContext": "∀C>0, ∃ example with min denominator > exp(C/α)",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-310-ann-10",
+    "proofId": "erdos-310",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "axiom",
+    "title": "Main Result: Erdős #310 Solved",
+    "content": "The main theorem asserting that the answer to Erdős #310 is YES. Every α-dense set contains a subset with simple unit fraction sum, where 'simple' means denominator at most exp(O(1/α)).",
+    "mathContext": "erdos_310: HasSimpleUnitFractionSum A (boundFunction α)",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-11",
+    "proofId": "erdos-310",
+    "range": { "startLine": 172, "endLine": 176 },
+    "type": "theorem",
+    "title": "The Answer is YES",
+    "content": "The final answer: Erdős's conjecture is true. This theorem states that for all α > 0, the conjecture erdos_310_conjecture α holds.",
+    "mathContext": "∀α>0, erdos_310_conjecture α",
+    "significance": "central"
+  },
+  {
+    "id": "erdos-310-ann-12",
+    "proofId": "erdos-310",
+    "range": { "startLine": 194, "endLine": 197 },
+    "type": "theorem",
+    "title": "Simple Example: 1/2",
+    "content": "The simplest example: S = {2} gives unitFractionSum = 1/2, which is a simple rational. This shows the definition works as expected.",
+    "mathContext": "unitFractionSum {2} = 1/2",
+    "significance": "example"
+  },
+  {
+    "id": "erdos-310-ann-13",
+    "proofId": "erdos-310",
+    "range": { "startLine": 202, "endLine": 204 },
+    "type": "theorem",
+    "title": "Classic Example: 1/2 + 1/3 + 1/6 = 1",
+    "content": "The famous Egyptian fraction identity: 1/2 + 1/3 + 1/6 = 1. This shows that 1 can be written as a sum of three distinct unit fractions - a result known since antiquity.",
+    "mathContext": "unitFractionSum {2,3,6} = 1",
+    "significance": "example"
+  },
+  {
+    "id": "erdos-310-ann-14",
+    "proofId": "erdos-310",
+    "range": { "startLine": 215, "endLine": 216 },
+    "type": "definition",
+    "title": "Egyptian Fraction",
+    "content": "An Egyptian fraction representation is a sum of distinct unit fractions. The ancient Egyptians used this system exclusively for representing fractions.",
+    "mathContext": "0 ∉ S (all denominators positive and distinct)",
+    "significance": "historical"
+  },
+  {
+    "id": "erdos-310-ann-15",
+    "proofId": "erdos-310",
+    "range": { "startLine": 222, "endLine": 224 },
+    "type": "axiom",
+    "title": "Every Positive Rational is Egyptian",
+    "content": "A classical result: every positive rational can be written as a sum of distinct unit fractions. This is not directly related to #310 but provides important context.",
+    "mathContext": "∀r>0, ∃S with 0∉S and Σ_{n∈S} 1/n = r",
+    "significance": "historical"
+  }
+]

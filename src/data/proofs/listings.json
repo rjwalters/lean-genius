@@ -5384,17 +5384,22 @@
   },
   {
     "id": "erdos-310",
-    "title": "Erdős Problem #310",
+    "title": "Erdős Problem #310: Unit Fractions with Bounded Denominator",
     "slug": "erdos-310",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Is it true that for any ... with ... there exists some ... such that\\[{b}=\\sum_{n\\in S}{n}\\]with ...?\n\n\n\nLiu...",
-    "status": "pending",
+    "description": "For any α-dense subset A of {1,...,N}, there exists a subset S whose unit fraction sum equals a/b with a ≤ b = O_α(1). Solved by Liu-Sawhney (2024) building on Bloom (2021).",
+    "status": "enhanced",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "density",
+      "combinatorics"
     ],
     "erdosNumber": 310,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 15
   },
   {
     "id": "erdos-314",
