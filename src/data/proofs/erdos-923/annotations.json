@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-e923-header",
+    "proofId": "erdos-923",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #923: Triangle-Free Subgraphs with High χ**\n\nFor every k, is there f(k) such that χ(G) ≥ f(k) implies G has a triangle-free subgraph with χ ≥ k?\n\n**Answer:** YES (Rödl 1977)\n\nThe threshold f(k) is a tower of 2s of height ~k.",
+    "mathContext": "This problem connects chromatic number theory with Ramsey theory. It asks whether chromatic complexity must spread beyond complete subgraphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Chromatic number", "Triangle-free", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e923-chromatic",
+    "proofId": "erdos-923",
+    "range": { "startLine": 51, "endLine": 58 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber G:** χ(G) = min{k : G is k-colorable}\n\nThe chromatic number is the minimum number of colors needed to properly color vertices (no adjacent vertices share a color).",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Proper coloring"]
+  },
+  {
+    "id": "ann-e923-high-chromatic",
+    "proofId": "erdos-923",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "definition",
+    "title": "High Chromatic Number",
+    "content": "**HasChromaticNumberAtLeast G k:** χ(G) ≥ k\n\nA graph has chromatic number at least k if it requires k or more colors.",
+    "significance": "supporting",
+    "relatedConcepts": ["Chromatic number", "Lower bound"]
+  },
+  {
+    "id": "ann-e923-triangle",
+    "proofId": "erdos-923",
+    "range": { "startLine": 77, "endLine": 91 },
+    "type": "definition",
+    "title": "Triangle-Free",
+    "content": "**IsTriangleFree G:** G contains no triangle (K₃).\n\nA graph is triangle-free if no three vertices are pairwise adjacent. This is a key structural constraint.",
+    "significance": "critical",
+    "relatedConcepts": ["Triangle", "K₃", "Forbidden subgraph"]
+  },
+  {
+    "id": "ann-e923-empty",
+    "proofId": "erdos-923",
+    "range": { "startLine": 92, "endLine": 101 },
+    "type": "theorem",
+    "title": "Empty Graph Triangle-Free",
+    "content": "**emptyGraph_triangleFree:** The empty graph ⊥ is triangle-free.\n\nTrivially, a graph with no edges has no triangles.",
+    "significance": "supporting",
+    "relatedConcepts": ["Empty graph", "Basic property"]
+  },
+  {
+    "id": "ann-e923-spanning",
+    "proofId": "erdos-923",
+    "range": { "startLine": 106, "endLine": 112 },
+    "type": "definition",
+    "title": "Spanning Subgraph",
+    "content": "**IsSpanningSubgraph H G:** H is a spanning subgraph if V(H) = V(G) and E(H) ⊆ E(G).\n\nSpanning subgraphs keep all vertices but may remove edges.",
+    "significance": "key",
+    "relatedConcepts": ["Subgraph", "Edge deletion"]
+  },
+  {
+    "id": "ann-e923-mycielski",
+    "proofId": "erdos-923",
+    "range": { "startLine": 133, "endLine": 142 },
+    "type": "axiom",
+    "title": "Mycielski Construction",
+    "content": "**mycielski_triangle_free_high_chromatic:**\n\nFor every k, there exists a triangle-free graph with χ ≥ k.\n\nMycielski (1955) proved this via an iterative construction: M₁ = K₂, and Mₙ₊₁ adds n+1 new vertices.",
+    "mathContext": "The Mycielski graphs show triangle-free doesn't imply low chromatic number. M_k has χ(M_k) = k.",
+    "significance": "key",
+    "relatedConcepts": ["Mycielski graphs", "Construction"]
+  },
+  {
+    "id": "ann-e923-rodl",
+    "proofId": "erdos-923",
+    "range": { "startLine": 157, "endLine": 171 },
+    "type": "axiom",
+    "title": "Rödl's Theorem",
+    "content": "**rodl_1977:** For every k, ∃ f(k) such that:\n\nχ(G) ≥ f(k) ⟹ G has a triangle-free spanning subgraph H with χ(H) ≥ k.\n\nThis is the main result solving Erdős Problem #923.",
+    "mathContext": "Published in Proc. Amer. Math. Soc. 64 (1977), 370-371.",
+    "significance": "critical",
+    "relatedConcepts": ["Main theorem", "Affirmative answer"]
+  },
+  {
+    "id": "ann-e923-true",
+    "proofId": "erdos-923",
+    "range": { "startLine": 172, "endLine": 185 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**erdos_923_true:** The answer to Erdős Problem #923 is YES.\n\nDirectly follows from Rödl's theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Solved", "Affirmative"]
+  },
+  {
+    "id": "ann-e923-tower",
+    "proofId": "erdos-923",
+    "range": { "startLine": 190, "endLine": 198 },
+    "type": "definition",
+    "title": "Tower Function",
+    "content": "**towerFunction k:** Defined recursively:\n- tower(0) = 1\n- tower(n+1) = 2^tower(n)\n\nThis gives 1, 2, 4, 16, 65536, 2^65536, ...",
+    "mathContext": "Tower functions grow extremely fast—faster than any fixed iteration of exponentiation.",
+    "significance": "key",
+    "relatedConcepts": ["Tower of exponentials", "Ackermann function"]
+  },
+  {
+    "id": "ann-e923-bound",
+    "proofId": "erdos-923",
+    "range": { "startLine": 199, "endLine": 212 },
+    "type": "axiom",
+    "title": "Tower Bound",
+    "content": "**rodl_bound:** f(k) ≤ tower(O(k)).\n\nRödl showed the threshold function is bounded by a tower of constant times k.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bound", "Tower function"]
+  },
+  {
+    "id": "ann-e923-general",
+    "proofId": "erdos-923",
+    "range": { "startLine": 223, "endLine": 250 },
+    "type": "axiom",
+    "title": "H-Free Generalization",
+    "content": "**rodl_general_bipartite:** For any bipartite graph H:\n\n∃ f_H(k) such that χ(G) ≥ f_H(k) ⟹ G has H-free subgraph with χ ≥ k.\n\nThis generalizes from triangle-free to any bipartite forbidden subgraph.",
+    "mathContext": "Triangles are non-bipartite (odd cycle), but the argument extends when H is bipartite.",
+    "significance": "key",
+    "relatedConcepts": ["Generalization", "H-free", "Problem #108"]
+  },
+  {
+    "id": "ann-e923-summary",
+    "proofId": "erdos-923",
+    "range": { "startLine": 274, "endLine": 302 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_923_summary:**\n\n1. Problem is SOLVED (YES)\n2. Proved by Rödl (1977)\n3. Threshold is tower-type\n\n**Key insight:** High chromatic number forces triangle-free subgraphs with moderately high chromatic number.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Solved"]
+  }
+]
