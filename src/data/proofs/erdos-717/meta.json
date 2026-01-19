@@ -1,33 +1,163 @@
 {
   "id": "erdos-717",
-  "title": "Erdős Problem #717",
+  "title": "Erdős Problem #717: Chromatic Number and Clique Subdivisions",
   "slug": "erdos-717",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with chromatic number ... and let ... be the maximal ... such that ... contains a subdivis...",
+  "description": "Is χ(G) ≤ C · (n^{1/2}/log n) · σ(G) for all n-vertex graphs? YES - Fox, Lee, Sudakov (2013) proved this tight bound matching the Erdős-Fajtlowicz lower bound.",
   "meta": {
-    "author": "Unknown",
+    "author": "Hajós (conjecture), Dirac (1952), Catlin (1974), Erdős-Fajtlowicz (1981), Fox-Lee-Sudakov (2013)",
     "sourceUrl": "https://erdosproblems.com/717",
-    "date": "",
-    "status": "pending",
+    "date": "2013",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos717Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "subdivisions",
+      "hajos-conjecture",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 717,
     "erdosUrl": "https://erdosproblems.com/717",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definition",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Graph coloring",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber axiom: minimum colors for proper coloring",
+      "completeGraph definition: K_k graph",
+      "hasSubdivision definition: topological minor relation",
+      "subdivisionNumber axiom: max k with K_k subdivision",
+      "hajosConjecture definition: χ(G) ≤ σ(G)",
+      "dirac_theorem axiom: Hajós holds for χ = 4",
+      "catlin_counterexamples axiom: Hajós fails for χ ≥ 7",
+      "erdos_fajtlowicz_lower_bound axiom: χ ≫ (√n/log n) · σ",
+      "isAsymptoticallyBounded definition: O-notation",
+      "erdos717Question, erdos717QuestionUniversal definitions",
+      "fox_lee_sudakov_theorem axiom: main result",
+      "erdos717_answer theorem: YES answer",
+      "hadwiger_conjecture, subdivision_minor_relation, kostochka_thomason axioms",
+      "erdos_717_summary theorem: combines all results",
+      "erdos_717 theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #717 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices with chromatic number $\\chi(G)$ and let $\\sigma(G)$ be the maximal $k$ such that $G$ contains a subdivision of $K_k$. Is it true that\\[\\chi(G) \\ll \\frac{n^{1/2}}{\\log n}\\sigma(G)?\\]\n\n\n\nHaj\\'{o}s originally conjectured that $\\chi(G)\\leq \\sigma(G)$, which was proved by Dirac \\cite{Di52} when $\\chi(G)=4$. Catlin \\cite{Ca74} disproved Haj\\'{o}s' conjecture for all $\\chi(G)\\geq 7$, and Erd\\H{o}s and Fajtlowicz \\cite{ErFa81} disproved it in a strong form, showing that in fact for almost all graphs on $n$ vertices,\\[\\chi(G) \\gg \\frac{n^{1/2}}{\\log n}\\sigma(G).\\]The answer is yes, proved by Fox, Lee, and Sudakov \\cite{FLS13}.\n\n\n\n\nReferences\n\n\n[Ca74] Catlin, Paul A., Subgraphs of graphs. I. Discrete Math. (1974), 225-233.\n\n[Di52] Dirac, G. A., A property of {$4$}-chromatic graphs and some remarks on\ncritical graphs. J. London Math. Soc. (1952), 85-92.\n\n[ErFa81] Erd\\H{o}s, Paul and Fajtlowicz, Siemion, On the conjecture of Haj\\'{o}s. Combinatorica (1981), 141-143.\n\n[FLS13] Fox, Jacob and Lee, Choongbum and Sudakov, Benny, Chromatic number, clique subdivisions, and the conjectures of\nHaj\\'{o}s and Erd\\H{o}s-Fajtlowicz. Combinatorica (2013), 181-197.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #717**\n\nThis problem concerns the relationship between chromatic number and clique subdivisions.\n\n**Key History:**\n- Hajós (1961): Conjectured χ(G) ≤ σ(G)\n- Dirac (1952): Proved Hajós for χ = 4\n- Catlin (1974): Disproved Hajós for χ ≥ 7\n- Erdős-Fajtlowicz (1981): Strong disproof - χ/σ can be Ω(√n/log n)\n- Fox-Lee-Sudakov (2013): Proved χ/σ is O(√n/log n)\n\n**The Setting:**\nσ(G) is the max k such that G contains a subdivision of K_k.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs there a constant C such that for all graphs G on n vertices:\nχ(G) ≤ C · (n^{1/2} / log n) · σ(G)?\n\n**Answer: YES**\n\nFox, Lee, and Sudakov (2013) proved this upper bound, matching the Erdős-Fajtlowicz lower bound.\n\n**Key insight:** The ratio χ(G)/σ(G) is Θ(√n/log n) for typical graphs.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Chromatic Number:** chromaticNumber G (axiomatized)\n\n2. **Subdivision Number:** σ(G) = max k with K_k subdivision\n\n3. **Key Results:**\n   - dirac_theorem: Hajós holds for χ = 4\n   - catlin_counterexamples: Hajós fails for χ ≥ 7\n   - erdos_fajtlowicz_lower_bound: χ ≥ c · (√n/log n) · σ\n   - fox_lee_sudakov_theorem: χ ≤ C · (√n/log n) · σ\n\n4. **Main Question:** erdos717QuestionUniversal",
+    "keyInsights": [
+      "**Hajós Conjecture:** χ ≤ σ is FALSE for k ≥ 7",
+      "**Dirac:** Hajós holds for 4-chromatic graphs",
+      "**Catlin:** Counterexamples exist for all χ ≥ 7",
+      "**Erdős-Fajtlowicz:** Random graphs give χ/σ ≈ √n/log n",
+      "**Fox-Lee-Sudakov:** Upper bound χ ≤ C · (√n/log n) · σ",
+      "**Tight Bound:** The ratio χ/σ is Θ(√n/log n)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "chromaticNumber axiom and properties",
+      "startLine": 43,
+      "endLine": 67
+    },
+    {
+      "id": "clique-subdivisions",
+      "title": "Clique Subdivisions",
+      "summary": "completeGraph, hasSubdivision, subdivisionNumber",
+      "startLine": 69,
+      "endLine": 111
+    },
+    {
+      "id": "hajos-conjecture",
+      "title": "Hajós Conjecture",
+      "summary": "hajosConjecture, dirac_theorem, catlin_counterexamples",
+      "startLine": 113,
+      "endLine": 143
+    },
+    {
+      "id": "erdos-fajtlowicz",
+      "title": "Erdős-Fajtlowicz Strong Disproof",
+      "summary": "randomGraph, erdos_fajtlowicz_lower_bound",
+      "startLine": 145,
+      "endLine": 172
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "isAsymptoticallyBounded, erdos717Question",
+      "startLine": 174,
+      "endLine": 200
+    },
+    {
+      "id": "fox-lee-sudakov",
+      "title": "Fox-Lee-Sudakov Theorem",
+      "summary": "fox_lee_sudakov_theorem, erdos717_answer",
+      "startLine": 202,
+      "endLine": 222
+    },
+    {
+      "id": "tight-bound",
+      "title": "Tight Bound",
+      "summary": "tight_bound axiom",
+      "startLine": 224,
+      "endLine": 238
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "hadwiger_conjecture, subdivision_minor_relation, kostochka_thomason",
+      "startLine": 240,
+      "endLine": 272
+    },
+    {
+      "id": "clique-minor",
+      "title": "Clique Minor Conjecture",
+      "summary": "bollobas_catlin_erdos_conjecture, subdivision_from_minor",
+      "startLine": 274,
+      "endLine": 292
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_717_summary, erdos_717 main theorem",
+      "startLine": 294,
+      "endLine": 327
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #717 asks whether χ(G) ≤ C · (√n/log n) · σ(G) for all n-vertex graphs. Fox, Lee, and Sudakov (2013) proved YES, matching the Erdős-Fajtlowicz lower bound. This resolves the question of how much larger χ(G) can be compared to σ(G): the ratio is Θ(√n/log n).",
+    "implications": "**Connections and Impact**\n\n1. **Hajós Conjecture:** Decisively refuted; best possible replacement found\n\n2. **Hadwiger Conjecture:** Still open; uses minors instead of subdivisions\n\n3. **Graph Coloring:** Tight bounds on χ vs structural parameters\n\n4. **Random Graphs:** Extremal behavior achieved by random graphs\n\n5. **Topological Graph Theory:** Relationship between subdivisions and minors",
+    "openQuestions": [
+      "Optimal constant in Fox-Lee-Sudakov bound",
+      "Hadwiger conjecture for k ≥ 7",
+      "Exact determination of χ/σ ratio for specific graph families",
+      "Algorithmic aspects of finding clique subdivisions",
+      "Extensions to hypergraphs"
+    ]
   }
 }
