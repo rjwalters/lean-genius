@@ -1,1 +1,174 @@
-[]
+[
+  {
+    "id": "ann-e207-header",
+    "proofId": "erdos-207",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #207: High-Girth Steiner Triple Systems**\n\nFor g≥2, do STS(n) with girth ≥g exist for large admissible n?\n\n**Answer:** YES (Kwan-Sah-Sawhney-Simkin 2022)\n\nA Steiner triple system is a collection of triples where each pair appears in exactly one triple. The girth condition prevents tight edge configurations.",
+    "mathContext": "Solved in 2022 using probabilistic combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["Steiner systems", "Hypergraphs", "Design theory"]
+  },
+  {
+    "id": "ann-e207-hypergraph3",
+    "proofId": "erdos-207",
+    "range": { "startLine": 41, "endLine": 47 },
+    "type": "definition",
+    "title": "3-Uniform Hypergraph",
+    "content": "**Hypergraph3:**\n\nA collection of 3-element subsets (edges) of a vertex set.\n\n```lean\nstructure Hypergraph3 (V : Type*) [Fintype V] where\n  edges : Finset (Finset V)\n  uniform : ∀ e ∈ edges, e.card = 3\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-sts",
+    "proofId": "erdos-207",
+    "range": { "startLine": 56, "endLine": 63 },
+    "type": "definition",
+    "title": "Steiner Triple System",
+    "content": "**IsSteinerTripleSystem:**\n\nEvery pair of distinct vertices is contained in exactly one edge.\n\n```lean\ndef IsSteinerTripleSystem {V : Type*} [Fintype V] [DecidableEq V]\n    (H : Hypergraph3 V) : Prop :=\n  ∀ a b : V, a ≠ b → ∃! e ∈ H.edges, edgeContainsPair e a b\n```",
+    "mathContext": "The defining property of Steiner triple systems.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-vertexspan",
+    "proofId": "erdos-207",
+    "range": { "startLine": 69, "endLine": 74 },
+    "type": "definition",
+    "title": "Vertex Span",
+    "content": "**vertexSpan:**\n\nThe number of distinct vertices in a collection of edges.\n\n```lean\ndef vertexSpan {V : Type*} [DecidableEq V] (edges : Finset (Finset V)) : ℕ :=\n  (edges.biUnion id).card\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e207-girth",
+    "proofId": "erdos-207",
+    "range": { "startLine": 76, "endLine": 83 },
+    "type": "definition",
+    "title": "High-Girth Property",
+    "content": "**HasGirthAtLeast:**\n\nAny j edges (2≤j≤g) must span at least j+3 vertices.\n\n```lean\ndef HasGirthAtLeast {V : Type*} [Fintype V] [DecidableEq V]\n    (H : Hypergraph3 V) (g : ℕ) : Prop :=\n  ∀ S : Finset (Finset V), S ⊆ H.edges → 2 ≤ S.card → S.card ≤ g →\n    vertexSpan S ≥ S.card + 3\n```",
+    "mathContext": "The central girth condition in the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-why-j3",
+    "proofId": "erdos-207",
+    "range": { "startLine": 85, "endLine": 94 },
+    "type": "definition",
+    "title": "Why j+3?",
+    "content": "**girthExplanation:**\n\n- Single edge: 3 vertices\n- Two edges share ≤1 vertex in STS → span ≥5 = 2+3\n- j+3 generalizes: prevents edges from overlapping too much\n- Ensures no \"short cycles\" in hypergraph structure",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e207-admissible",
+    "proofId": "erdos-207",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "definition",
+    "title": "Admissible Order",
+    "content": "**IsAdmissible:**\n\nn is admissible for STS if n ≡ 1 or 3 (mod 6).\n\n```lean\ndef IsAdmissible (n : ℕ) : Prop :=\n  n % 6 = 1 ∨ n % 6 = 3\n```\n\nThis is the necessary and sufficient condition for STS existence.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-kirkman",
+    "proofId": "erdos-207",
+    "range": { "startLine": 107, "endLine": 114 },
+    "type": "axiom",
+    "title": "Kirkman's Theorem (1847)",
+    "content": "**kirkman_theorem:**\n\nAn STS(n) exists if and only if n ≡ 1, 3 (mod 6).\n\nThis classical result from 1847 establishes when Steiner triple systems can exist.",
+    "mathContext": "One of the oldest results in combinatorial design theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-conjecture",
+    "proofId": "erdos-207",
+    "range": { "startLine": 130, "endLine": 138 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**erdos207Conjecture:**\n\nFor any g ≥ 2, there exists N(g) such that for all admissible n ≥ N(g), there exists an STS(n) with girth at least g.\n\n```lean\ndef erdos207Conjecture : Prop :=\n  ∀ g : ℕ, g ≥ 2 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N → IsAdmissible n →\n    ∃ (V : Type) ... IsSteinerTripleSystem H ∧ HasGirthAtLeast H g\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-ksss",
+    "proofId": "erdos-207",
+    "range": { "startLine": 144, "endLine": 151 },
+    "type": "axiom",
+    "title": "KSSS Theorem (2022)",
+    "content": "**kwan_sah_sawhney_simkin_2022:**\n\nThe Erdős conjecture on high-girth STS is TRUE.\n\nProved in arXiv:2201.04554 using random greedy construction with spread measure analysis.",
+    "mathContext": "The solution to Erdős Problem #207.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-main",
+    "proofId": "erdos-207",
+    "range": { "startLine": 153, "endLine": 157 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_207:**\n\n```lean\ntheorem erdos_207 : erdos207Conjecture :=\n  kwan_sah_sawhney_simkin_2022\n```\n\nDirect from the KSSS theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e207-girth2",
+    "proofId": "erdos-207",
+    "range": { "startLine": 163, "endLine": 171 },
+    "type": "theorem",
+    "title": "Girth 2 (Trivial)",
+    "content": "**sts_has_girth_at_least_2:**\n\nAny STS has girth at least 2.\n\nTwo edges in an STS share at most 1 vertex, so they span at least 5 vertices.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e207-pasch",
+    "proofId": "erdos-207",
+    "range": { "startLine": 173, "endLine": 182 },
+    "type": "definition",
+    "title": "Pasch Configuration",
+    "content": "**IsPaschConfiguration:**\n\n4 triples on 6 vertices forming a specific pattern:\n{abc, ade, bdf, cef}\n\nThis is the obstacle to girth 3 in STS.",
+    "mathContext": "Named after Moritz Pasch, related to projective geometry.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e207-antipasch",
+    "proofId": "erdos-207",
+    "range": { "startLine": 189, "endLine": 196 },
+    "type": "axiom",
+    "title": "Anti-Pasch STS",
+    "content": "**anti_pasch_sts_exist:**\n\nFor n ≥ 7 admissible, there exists an STS(n) avoiding Pasch configurations.\n\nAnti-Pasch STS were known before the general KSSS result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e207-random",
+    "proofId": "erdos-207",
+    "range": { "startLine": 202, "endLine": 211 },
+    "type": "axiom",
+    "title": "Random Construction",
+    "content": "**ksss_random_construction:**\n\nThe KSSS proof method:\n1. Order pairs randomly\n2. Greedily add triples avoiding forbidden configurations\n3. Show positive probability of success\n\nKey tools: Rödl nibble method, spread measure, concentration.",
+    "mathContext": "Probabilistic combinatorics technique.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e207-resolvable",
+    "proofId": "erdos-207",
+    "range": { "startLine": 224, "endLine": 232 },
+    "type": "definition",
+    "title": "Resolvable STS",
+    "content": "**IsResolvable:**\n\nAn STS is resolvable if its triples can be partitioned into parallel classes (each class partitions the vertex set).\n\nRelated to scheduling problems.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e207-kirkman-schoolgirl",
+    "proofId": "erdos-207",
+    "range": { "startLine": 234, "endLine": 243 },
+    "type": "definition",
+    "title": "Kirkman Schoolgirl Problem",
+    "content": "**kirkmanSchoolgirlProblem:**\n\nCan 15 schoolgirls walk in groups of 3 for 7 days without any pair together twice?\n\nYES - this requires a resolvable STS(15).",
+    "mathContext": "Classic 1850 recreational mathematics problem.",
+    "significance": "supporting",
+    "relatedConcepts": ["Scheduling", "Resolvable designs"]
+  },
+  {
+    "id": "ann-e207-summary",
+    "proofId": "erdos-207",
+    "range": { "startLine": 249, "endLine": 274 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_207_summary:**\n\n1. High-girth STS exist for all admissible n ≥ N(g)\n2. Proved by KSSS (2022)\n3. Method: Random greedy + spread measure\n4. Special case: Anti-Pasch (girth 3) known earlier\n5. Kirkman's condition necessary\n\nStatus: SOLVED",
+    "significance": "critical"
+  }
+]
