@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "id": "ann-e924-header",
+    "proofId": "erdos-924",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #924: Folkman-Nešetřil-Rödl Theorem**\n\nFor k ≥ 2 and l ≥ 3, does there exist a K_{l+1}-free graph G such that every k-coloring of G's edges contains a monochromatic K_l?\n\n**Answer:** YES (Folkman 1970 for k=2, Nešetřil-Rödl 1976 general)\n\nSuch graphs are called **Folkman graphs**.",
+    "mathContext": "This problem lies at the intersection of Ramsey theory and graph coloring, showing that Ramsey-type forcing can occur without dense substructures.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Graph coloring", "Folkman numbers", "Cliques"]
+  },
+  {
+    "id": "ann-e924-clique-size",
+    "proofId": "erdos-924",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "definition",
+    "title": "Clique of Size n",
+    "content": "**IsCliqueOfSize:**\n\nA graph G contains a clique of size n if there exists a set S of n vertices where every pair is adjacent.\n\nIn Mathlib, this builds on SimpleGraph.IsClique.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-clique-free",
+    "proofId": "erdos-924",
+    "range": { "startLine": 55, "endLine": 60 },
+    "type": "definition",
+    "title": "K_n-Free Graph",
+    "content": "**IsCliqueFree:**\n\nA graph G is K_n-free if it contains no clique of size n.\n\nFor Folkman graphs with parameter l, we require K_{l+1}-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-edge-coloring",
+    "proofId": "erdos-924",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "definition",
+    "title": "Edge k-Coloring",
+    "content": "**EdgeColoring:**\n\nAn assignment of colors from {0, 1, ..., k-1} to each edge of G.\n\nFormally: G.edgeSet → Fin k",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-mono-subgraph",
+    "proofId": "erdos-924",
+    "range": { "startLine": 82, "endLine": 96 },
+    "type": "definition",
+    "title": "Monochromatic Subgraph",
+    "content": "**MonochromaticSubgraph:**\n\nFor a coloring χ and color c, the subgraph consisting of edges colored c.\n\nThis is the \"color class\" for color c.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-mono-clique",
+    "proofId": "erdos-924",
+    "range": { "startLine": 98, "endLine": 104 },
+    "type": "definition",
+    "title": "Monochromatic Clique",
+    "content": "**HasMonochromaticClique:**\n\nA coloring has a monochromatic K_l if some color class contains a clique of size l.\n\nThis is what Ramsey theory guarantees for large enough graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-ramsey-prop",
+    "proofId": "erdos-924",
+    "range": { "startLine": 110, "endLine": 117 },
+    "type": "definition",
+    "title": "Ramsey Property",
+    "content": "**HasRamseyProperty:**\n\nG has the k-Ramsey property for K_l if EVERY k-coloring of G's edges contains a monochromatic K_l.\n\nComplete graphs K_n have this property for large n (classical Ramsey).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e924-erdos-hajnal",
+    "proofId": "erdos-924",
+    "range": { "startLine": 119, "endLine": 125 },
+    "type": "definition",
+    "title": "Erdős-Hajnal Question",
+    "content": "**ErdosHajnalQuestion:**\n\nThe main problem: Does there exist a K_{l+1}-free graph with the k-Ramsey property for K_l?\n\nCombines two competing constraints: avoiding large cliques while forcing monochromatic cliques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e924-folkman-graph",
+    "proofId": "erdos-924",
+    "range": { "startLine": 131, "endLine": 138 },
+    "type": "definition",
+    "title": "Folkman Graph",
+    "content": "**IsFolkmanGraph:**\n\nA graph satisfying both:\n1. K_{l+1}-free (no clique of size l+1)\n2. Every k-coloring has monochromatic K_l\n\nNamed after Jon Folkman who first constructed such graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e924-folkman-number",
+    "proofId": "erdos-924",
+    "range": { "startLine": 140, "endLine": 145 },
+    "type": "definition",
+    "title": "Folkman Number",
+    "content": "**FolkmanNumber:**\n\nf(l; k) is the minimum number of vertices in a Folkman graph for parameters l and k.\n\nComputing exact Folkman numbers is a challenging open problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-folkman-1970",
+    "proofId": "erdos-924",
+    "range": { "startLine": 151, "endLine": 157 },
+    "type": "axiom",
+    "title": "Folkman's Theorem (1970)",
+    "content": "**folkman_1970:**\n\nFor k = 2 and any l ≥ 3, Folkman graphs exist.\n\nFolkman's proof used \"shift graphs\" - a clever construction based on containment relations.\n\nPublished in SIAM J. Appl. Math. (1970).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e924-nesetril-rodl",
+    "proofId": "erdos-924",
+    "range": { "startLine": 159, "endLine": 165 },
+    "type": "axiom",
+    "title": "Nešetřil-Rödl Theorem (1976)",
+    "content": "**nesetril_rodl_1976:**\n\nFor ANY k ≥ 2 and l ≥ 3, Folkman graphs exist.\n\nThis completely solves the Erdős-Hajnal question. The proof uses the Hales-Jewett theorem and partite constructions.\n\nPublished in J. Combinatorial Theory Ser. B (1976).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e924-f32",
+    "proofId": "erdos-924",
+    "range": { "startLine": 171, "endLine": 180 },
+    "type": "concept",
+    "title": "The Simplest Case f(3; 2)",
+    "content": "**f(3; 2):**\n\nThe minimum vertices for a K_4-free graph where every 2-coloring contains a monochromatic triangle.\n\nThis is the most studied Folkman number, with f(3; 2) = 786.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-ramsey-compare",
+    "proofId": "erdos-924",
+    "range": { "startLine": 202, "endLine": 220 },
+    "type": "concept",
+    "title": "Comparison with Ramsey Numbers",
+    "content": "**Key Insight:**\n\nComplete graphs K_n trivially have the Ramsey property (just by being large enough).\n\nFolkman graphs achieve the same Ramsey property while AVOIDING large cliques.\n\nThis shows Ramsey-type forcing doesn't require dense substructures.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-hales-jewett",
+    "proofId": "erdos-924",
+    "range": { "startLine": 226, "endLine": 231 },
+    "type": "concept",
+    "title": "Hales-Jewett Method",
+    "content": "**Proof Technique:**\n\nNešetřil-Rödl proof uses the Hales-Jewett theorem about combinatorial lines in high-dimensional cubes.\n\nThis connects Folkman graphs to deep results in Ramsey theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-shift-graphs",
+    "proofId": "erdos-924",
+    "range": { "startLine": 240, "endLine": 245 },
+    "type": "concept",
+    "title": "Shift Graph Construction",
+    "content": "**Folkman's Original Construction:**\n\nShift graphs have vertices as sets, with adjacency based on containment.\n\nThis clever construction controls clique sizes while maintaining Ramsey properties.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e924-main",
+    "proofId": "erdos-924",
+    "range": { "startLine": 306, "endLine": 310 },
+    "type": "theorem",
+    "title": "Erdős Problem #924: SOLVED",
+    "content": "**erdos_924:**\n\nComplete solution: For all k ≥ 2 and l ≥ 3, there exists a K_{l+1}-free graph G such that every k-coloring of G's edges contains monochromatic K_l.\n\nThis establishes the existence of Folkman graphs for all valid parameters.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e924-summary",
+    "proofId": "erdos-924",
+    "range": { "startLine": 272, "endLine": 304 },
+    "type": "theorem",
+    "title": "Complete Summary",
+    "content": "**erdos_924_summary:**\n\n1. **Question:** K_{l+1}-free graph with k-Ramsey property for K_l?\n2. **Folkman (1970):** YES for k = 2\n3. **Nešetřil-Rödl (1976):** YES for all k ≥ 2\n\n**Key:** Ramsey forcing without dense substructures.",
+    "significance": "critical"
+  }
+]
