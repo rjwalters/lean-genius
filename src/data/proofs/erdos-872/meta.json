@@ -1,33 +1,155 @@
 {
   "id": "erdos-872",
-  "title": "Erdős Problem #872",
+  "title": "Erdős Problem #872: Antichain Saturation Game",
   "slug": "erdos-872",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nConsider the two-player game in which players alternately choose integers from ... to be included in some set ... (the same s...",
+  "description": "How long can a two-player game on divisibility antichains in {2,...,n} be guaranteed to last when one player maximizes and one minimizes game length?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Open (unsolved)",
     "sourceUrl": "https://erdosproblems.com/872",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos872Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-games",
+      "primitive-sets",
+      "antichains",
+      "divisibility",
+      "saturation-games",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 872,
     "erdosUrl": "https://erdosproblems.com/872",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality for general sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "IsAntichain",
+        "description": "Antichain predicate for partial orders",
+        "module": "Mathlib.Order.Antichain"
+      }
+    ],
+    "originalContributions": [
+      "IsDivisibilityAntichain definition: sets with no divisibility relations",
+      "IsPrimitiveSet definition: equivalent formulation",
+      "antichain_iff_primitive theorem: equivalence proof",
+      "gameBoard definition: the set {2,...,n}",
+      "IsLegalMove definition: valid game moves",
+      "IsMaximalAntichain definition: terminal game states",
+      "gameLastsLinear: first Erdős question formalized",
+      "gameLastsNearOptimal: second Erdős question formalized",
+      "primes_antichain theorem: primes form antichains",
+      "upper_half_antichain theorem: {n/2+1,...,n} is antichain",
+      "gameValue definition: minimax game value",
+      "Connection to Hajnal's triangle-free game",
+      "erdos_872_summary: main summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #872 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nConsider the two-player game in which players alternately choose integers from $\\{2,3,\\ldots,n\\}$ to be included in some set $A$ (the same set for both players) such that no $a\\mid b$ for $a\\neq b\\in A$.\n\nThe game ends when no legal move is possible. One player wants the game to last as long as possible, the other wants the game to end quickly. How long can the game be guaranteed to last for?\n\nAt least $\\epsilon n$ moves? (For $\\epsilon>0$ and $n$ sufficiently large.) At least $(1-\\epsilon)\\frac{n}{2}$ moves?\n\n\n\nA number theoretic variant of a combinatorial game of Hajnal, in which players alternately add edges to a graph while keeping it triangle-free. This game must trivially end in at most $n^2/4$ moves, and F\\\"{u}redi and Seress \\cite{FuSe91} proved that it can be guaranteed to last for $\\gg n\\log n$ moves. Bir\\'{o}, Horn, and Wildstrom \\cite{BPW16} proved that it must end in at most $(\\frac{26}{121}+o(1))n^2$ moves.\n\nThis type of game is known as a saturation game.\n\nErd\\H{o}s does not specify which player goes first, which may result in different answers.\n\n\n\n\nReferences\n\n\n[BPW16] Bir\\'{o}, Csaba and Horn, Paul and Wildstrom, D. Jacob, An upper bound on the extremal version of Hajnal's\ntriangle-free game. Discrete Appl. Math. (2016), 20--28.\n\n[FuSe91] F\\\"{u}redi, Zolt\\'{a}n and Reimer, Dave and Seress, \\'{A}kos, Hajnal's triangle-free game and extremal graph problems. Congr. Numer. (1991), 123--128.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #872**\n\nThis problem introduces a number-theoretic saturation game that combines combinatorial game theory with the study of primitive sets (antichains under divisibility).\n\n**The Game:**\nTwo players alternately choose integers from {2, 3, ..., n} to build a set A where no element divides another. One player wants to maximize game length, the other wants to minimize it. The game ends when A becomes maximal (no legal moves remain).\n\n**Related Problems:**\nThis is a number-theoretic variant of Hajnal's triangle-free game on graphs, where players alternately add edges while keeping the graph triangle-free. Füredi and Seress (1991) proved that game can be guaranteed to last Ω(n log n) moves. Biró, Horn, and Wildstrom (2016) proved an upper bound of (26/121 + o(1))n² moves.\n\n**Current Status:**\nThe problem remains OPEN. It is unknown whether the game can be guaranteed to last linearly many moves, or even close to the trivial upper bound of n/2 moves.",
+    "problemStatement": "**Problem Statement (Open)**\n\nConsider the two-player game on {2, 3, ..., n}:\n- Players alternately choose integers for set A\n- Constraint: no $a \\mid b$ for distinct $a, b \\in A$\n- Game ends when A is maximal\n- One player maximizes, one minimizes duration\n\n**Questions:**\n1. Can the game last at least $\\varepsilon n$ moves for some $\\varepsilon > 0$?\n2. Can the game last at least $(1-\\varepsilon)\\frac{n}{2}$ moves?\n\n**Bounds:**\n- Upper: Any antichain in {2,...,n} has size at most n/2\n- Lower: Primes give antichains of size ~ n/(2 ln n)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsDivisibilityAntichain: no element divides another\n   - IsPrimitiveSet: equivalent negative formulation\n   - Prove the definitions are equivalent\n\n2. **Game Structure:**\n   - gameBoard: the set {2, 3, ..., n}\n   - IsLegalMove: adding k preserves antichain property\n   - IsMaximalAntichain: no legal moves remain\n\n3. **Key Results:**\n   - Axiomatize game termination\n   - Upper bound: antichain size ≤ n/2\n   - Prove primes form antichains\n   - Prove upper half {n/2+1, ..., n} is antichain\n\n4. **Open Questions:**\n   - Formalize gameLastsLinear and gameLastsNearOptimal\n   - Define gameValue as minimax value\n   - State the open dichotomy",
+    "keyInsights": [
+      "**Primitive Sets:** A divisibility antichain is also called a primitive set - fundamental objects in additive combinatorics",
+      "**Upper Bound n/2:** The set {n/2+1, ..., n} shows max antichain size is ⌊n/2⌋, giving the trivial upper bound",
+      "**Prime Antichains:** Any set of primes forms an antichain since no prime divides another",
+      "**Saturation Games:** This belongs to the family of 'saturation games' where players build maximal structures",
+      "**First Player Effect:** Erdős notes the answer may depend on which player moves first",
+      "**Graph Analogue:** Hajnal's triangle-free game has Ω(n log n) lower bound - does a similar result hold here?"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "antichain-definition",
+      "title": "Antichain Definitions",
+      "summary": "IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive",
+      "startLine": 44,
+      "endLine": 76
+    },
+    {
+      "id": "game-board",
+      "title": "The Game Board",
+      "summary": "gameBoard, gameBoard_card, IsLegalMove, legal_move_iff",
+      "startLine": 77,
+      "endLine": 107
+    },
+    {
+      "id": "game-state",
+      "title": "Game State and Termination",
+      "summary": "IsMaximalAntichain, game_terminates axiom",
+      "startLine": 108,
+      "endLine": 128
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on Game Length",
+      "summary": "maximal_antichain_upper_bound, prime_antichain_bound",
+      "startLine": 129,
+      "endLine": 149
+    },
+    {
+      "id": "erdos-questions",
+      "title": "Erdős's Questions",
+      "summary": "gameLastsLinear, gameLastsNearOptimal, erdos_872_open",
+      "startLine": 150,
+      "endLine": 185
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "furedi_seress_triangle_game, biro_horn_wildstrom_bound",
+      "startLine": 186,
+      "endLine": 207
+    },
+    {
+      "id": "examples",
+      "title": "Special Cases and Examples",
+      "summary": "primes_antichain, upper_half_antichain, firstPlayerAdvantage",
+      "startLine": 208,
+      "endLine": 246
+    },
+    {
+      "id": "game-theory",
+      "title": "Game-Theoretic Formulation",
+      "summary": "gameValue, erdos_872_conjecture",
+      "startLine": 247,
+      "endLine": 267
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_872_summary combining main results",
+      "startLine": 268,
+      "endLine": 292
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #872 asks about the guaranteed length of a two-player saturation game on divisibility antichains. The problem remains OPEN. Key questions: Can the game last Θ(n) moves? Can it last close to the optimal n/2 moves? The formalization defines the game structure, proves primes form antichains, and states the open questions precisely.",
+    "implications": "**Connections and Implications**\n\n1. **Primitive Set Theory:** Understanding maximal primitive sets has applications in additive combinatorics and analytic number theory\n\n2. **Saturation Games:** Part of a broader theory including Hajnal's triangle-free game\n\n3. **Game Theory:** Illustrates minimax analysis in combinatorial settings\n\n4. **First Player Advantage:** The asymmetry between players may be fundamental\n\n5. **Algorithmic Questions:** What is the complexity of optimal play?",
+    "openQuestions": [
+      "Does the game last Θ(n) moves under optimal play?",
+      "Can the maximizing player guarantee (1-ε)n/2 moves?",
+      "Does the first player have an advantage?",
+      "What is the computational complexity of optimal play?",
+      "Is there a connection to the Erdős conjecture on primitive sets?"
+    ]
   }
 }

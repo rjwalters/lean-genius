@@ -1,1 +1,202 @@
-[]
+[
+  {
+    "id": "ann-e872-header",
+    "proofId": "erdos-872",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #872: Antichain Saturation Game**\n\nA two-player game on {2, 3, ..., n} where players alternately choose integers to build a set A with no divisibility relations (no a | b for distinct a, b in A).\n\n**The Game:**\n- Players alternate choosing elements\n- Constraint: set must remain a divisibility antichain\n- Game ends when no legal move exists\n- One player maximizes, one minimizes duration\n\n**Status:** OPEN - The guaranteed game length is unknown.",
+    "mathContext": "This is a number-theoretic variant of saturation games, combining game theory with the study of primitive sets (antichains under divisibility).",
+    "significance": "critical",
+    "relatedConcepts": ["Saturation games", "Primitive sets", "Combinatorial game theory"]
+  },
+  {
+    "id": "ann-e872-antichain-def",
+    "proofId": "erdos-872",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "Divisibility Antichain",
+    "content": "**IsDivisibilityAntichain:**\n\nA set A of natural numbers where no distinct elements have a divisibility relation.\n\n```lean\ndef IsDivisibilityAntichain (A : Set N) : Prop :=\n  forall a b, a in A -> b in A -> a | b -> a = b\n```\n\nAlso called a **primitive set** in number theory. These are fundamental objects in additive combinatorics.",
+    "mathContext": "Primitive sets appear in Erdos's work on sum-free sets and have connections to the distribution of prime factors.",
+    "significance": "critical",
+    "relatedConcepts": ["Primitive sets", "Partial orders", "Antichains"]
+  },
+  {
+    "id": "ann-e872-primitive-set",
+    "proofId": "erdos-872",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "definition",
+    "title": "Primitive Set",
+    "content": "**IsPrimitiveSet:**\n\nEquivalent formulation using the negative statement.\n\n```lean\ndef IsPrimitiveSet (A : Set N) : Prop :=\n  forall a b, a in A -> b in A -> a != b -> not (a | b)\n```\n\nThis says: distinct elements never have divisibility.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-equivalence",
+    "proofId": "erdos-872",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "theorem",
+    "title": "Equivalence Theorem",
+    "content": "**antichain_iff_primitive:**\n\nThe two definitions are logically equivalent.\n\n```lean\ntheorem antichain_iff_primitive (A : Set N) :\n    IsDivisibilityAntichain A <-> IsPrimitiveSet A\n```\n\n**Proof idea:** Both say the same thing:\n- Antichain: divisibility implies equality\n- Primitive: inequality implies no divisibility\n\nThese are contrapositives.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-game-board",
+    "proofId": "erdos-872",
+    "range": { "startLine": 81, "endLine": 92 },
+    "type": "definition",
+    "title": "Game Board",
+    "content": "**gameBoard:**\n\nThe set {2, 3, ..., n} from which players choose elements.\n\n```lean\ndef gameBoard (n : N) : Set N := {k : N | 2 <= k and k <= n}\n```\n\n**Properties:**\n- Starts at 2 (not 1, since 1 divides everything)\n- Has n - 1 elements for n >= 2\n- All elements are potential antichain members",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-legal-move",
+    "proofId": "erdos-872",
+    "range": { "startLine": 94, "endLine": 106 },
+    "type": "definition",
+    "title": "Legal Move",
+    "content": "**IsLegalMove:**\n\nA move is legal if adding element k preserves the antichain property.\n\n```lean\ndef IsLegalMove (A : Set N) (k : N) : Prop :=\n  k not_in A and IsDivisibilityAntichain (A union {k})\n```\n\n**Equivalently:** k is legal iff:\n1. k is not already in A\n2. k doesn't divide any element of A\n3. No element of A divides k",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-maximal",
+    "proofId": "erdos-872",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "definition",
+    "title": "Maximal Antichain",
+    "content": "**IsMaximalAntichain:**\n\nAn antichain is maximal when no element from the board can be added.\n\n```lean\ndef IsMaximalAntichain (A : Set N) (board : Set N) : Prop :=\n  A subset board and IsDivisibilityAntichain A and\n  forall k in board, k not_in A -> not (IsDivisibilityAntichain (A union {k}))\n```\n\nThis is when the game terminates - no legal moves remain.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e872-termination",
+    "proofId": "erdos-872",
+    "range": { "startLine": 120, "endLine": 127 },
+    "type": "axiom",
+    "title": "Game Termination",
+    "content": "**game_terminates:**\n\nEvery sequence of legal moves eventually reaches a maximal antichain.\n\n```lean\naxiom game_terminates (n : N) (hn : n >= 2) :\n    forall A, A subset gameBoard n -> IsDivisibilityAntichain A ->\n    A.Finite ->\n    exists B, A subset B and IsMaximalAntichain B (gameBoard n)\n```\n\nThis is axiomatized because the game board is finite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-upper-bound",
+    "proofId": "erdos-872",
+    "range": { "startLine": 133, "endLine": 140 },
+    "type": "axiom",
+    "title": "Upper Bound n/2",
+    "content": "**maximal_antichain_upper_bound:**\n\nAny antichain in {2, ..., n} has at most n/2 elements.\n\n```lean\naxiom maximal_antichain_upper_bound (n : N) (hn : n >= 2) :\n    forall A, A subset gameBoard n -> IsDivisibilityAntichain A ->\n    A.ncard <= n / 2\n```\n\n**Why?** The set {n/2 + 1, ..., n} is a maximal antichain with floor(n/2) elements, and any antichain intersects each 'chain' 2, 4, 8, ... in at most one element.",
+    "mathContext": "This is the divisibility analogue of Dilworth's theorem for antichains in posets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e872-prime-bound",
+    "proofId": "erdos-872",
+    "range": { "startLine": 142, "endLine": 148 },
+    "type": "axiom",
+    "title": "Prime Antichain Bound",
+    "content": "**prime_antichain_bound:**\n\nThe primes in [n/2, n] form an antichain of size approximately n / (2 ln n).\n\n```lean\naxiom prime_antichain_bound (n : N) (hn : n >= 10) :\n    exists P, P subset gameBoard n and IsDivisibilityAntichain P and\n    (forall p in P, p.Prime) and P.ncard >= n / (4 * log n + 1)\n```\n\nThis gives a constructive lower bound on antichain sizes.",
+    "significance": "key",
+    "relatedConcepts": ["Prime number theorem", "Prime counting function"]
+  },
+  {
+    "id": "ann-e872-question-1",
+    "proofId": "erdos-872",
+    "range": { "startLine": 154, "endLine": 164 },
+    "type": "definition",
+    "title": "Question 1: Linear Duration",
+    "content": "**gameLastsLinear:**\n\nErdos's first question: Can the game be guaranteed to last at least epsilon * n moves?\n\n```lean\ndef gameLastsLinear : Prop :=\n  exists epsilon : Q, epsilon > 0 and exists N : N, forall n >= N,\n    exists strategy, True  -- Placeholder\n```\n\n**Open:** We don't know if such epsilon exists!",
+    "mathContext": "This asks whether the game has linear duration in the board size.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e872-question-2",
+    "proofId": "erdos-872",
+    "range": { "startLine": 166, "endLine": 174 },
+    "type": "definition",
+    "title": "Question 2: Near-Optimal Duration",
+    "content": "**gameLastsNearOptimal:**\n\nErdos's second question: Can the game last at least (1 - epsilon) * n/2 moves?\n\n```lean\ndef gameLastsNearOptimal : Prop :=\n  forall epsilon : Q, epsilon > 0 -> exists N : N, forall n >= N,\n    exists strategy, True  -- Placeholder\n```\n\nThis would be almost optimal since n/2 is the maximum antichain size.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e872-open",
+    "proofId": "erdos-872",
+    "range": { "startLine": 176, "endLine": 184 },
+    "type": "theorem",
+    "title": "Problem Status: OPEN",
+    "content": "**erdos_872_open:**\n\n```lean\ntheorem erdos_872_open : True := trivial\n```\n\nBoth of Erdos's questions remain open. We don't know:\n1. If the game can last Theta(n) moves\n2. If it can last near n/2 moves\n3. How the first player affects the outcome",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e872-furedi-seress",
+    "proofId": "erdos-872",
+    "range": { "startLine": 190, "endLine": 197 },
+    "type": "axiom",
+    "title": "Hajnal's Triangle-Free Game",
+    "content": "**furedi_seress_triangle_game:**\n\nIn the related triangle-free edge game on complete graphs, Furedi and Seress (1991) proved the game can last Omega(n log n) moves.\n\nThis is the main comparison point for Problem #872. Does a similar logarithmic factor appear for divisibility antichains?",
+    "mathContext": "Hajnal's game: players add edges to Kn keeping it triangle-free. The game ends at a maximal triangle-free graph.",
+    "significance": "key",
+    "relatedConcepts": ["Triangle-free graphs", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e872-biro-horn",
+    "proofId": "erdos-872",
+    "range": { "startLine": 199, "endLine": 206 },
+    "type": "axiom",
+    "title": "Triangle Game Upper Bound",
+    "content": "**biro_horn_wildstrom_bound:**\n\nBiro, Horn, and Wildstrom (2016) proved the triangle-free game ends in at most (26/121 + o(1))n^2 moves.\n\nThis gives tight bounds for the graph version, but the divisibility game remains mysterious.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e872-primes-antichain",
+    "proofId": "erdos-872",
+    "range": { "startLine": 212, "endLine": 222 },
+    "type": "theorem",
+    "title": "Primes Form Antichains",
+    "content": "**primes_antichain:**\n\nAny set of primes is automatically a divisibility antichain.\n\n```lean\ntheorem primes_antichain (P : Set N) (hP : forall p in P, p.Prime) :\n    IsDivisibilityAntichain P\n```\n\n**Proof:** If p | q for primes, then p = 1 or p = q. Since p is prime, p != 1, so p = q.\n\nThis is the most natural source of antichains!",
+    "significance": "critical",
+    "relatedConcepts": ["Prime numbers", "Fundamental theorem of arithmetic"]
+  },
+  {
+    "id": "ann-e872-upper-half",
+    "proofId": "erdos-872",
+    "range": { "startLine": 224, "endLine": 235 },
+    "type": "theorem",
+    "title": "Upper Half Antichain",
+    "content": "**upper_half_antichain:**\n\nThe set {n/2 + 1, ..., n} forms a divisibility antichain.\n\n```lean\ntheorem upper_half_antichain (n : N) (hn : n >= 4) :\n    IsDivisibilityAntichain {k : N | n / 2 + 1 <= k and k <= n}\n```\n\n**Why?** If a | b with a != b, then b >= 2a. But both a, b > n/2 means b >= 2a > n, contradiction.\n\nThis achieves the maximum size floor(n/2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-first-player",
+    "proofId": "erdos-872",
+    "range": { "startLine": 237, "endLine": 245 },
+    "type": "definition",
+    "title": "First Player Effect",
+    "content": "**firstPlayerAdvantage:**\n\nErdos notes the answer may depend on which player moves first.\n\n```lean\ndef firstPlayerAdvantage : Prop :=\n  exists n, exists A1 A2,\n    IsMaximalAntichain A1 (gameBoard n) and\n    IsMaximalAntichain A2 (gameBoard n) and\n    A1.ncard != A2.ncard\n```\n\nThis captures the asymmetry: different maximal antichains can have different sizes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-game-value",
+    "proofId": "erdos-872",
+    "range": { "startLine": 251, "endLine": 257 },
+    "type": "definition",
+    "title": "Game Value",
+    "content": "**gameValue:**\n\nThe minimax value - the guaranteed game length under optimal play.\n\n```lean\nnoncomputable def gameValue (n : N) : N := 0  -- Placeholder\n```\n\nThe true definition would compute the minimax tree, but this is computationally hard. The open problem is to determine the asymptotic behavior of gameValue(n).",
+    "mathContext": "This is the game-theoretic value - what outcome rational players achieve.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e872-conjecture",
+    "proofId": "erdos-872",
+    "range": { "startLine": 259, "endLine": 266 },
+    "type": "axiom",
+    "title": "Open Conjecture",
+    "content": "**erdos_872_conjecture:**\n\nThe main open problem: determine if gameValue(n) is linear or sublinear.\n\n```lean\naxiom erdos_872_conjecture :\n    (exists c : Q, c > 0 and forall n >= 10, gameValue n >= (c * n).floor) or\n    (forall epsilon > 0, exists N, forall n >= N, gameValue n <= (epsilon * n).ceil)\n```\n\nEither the game lasts Theta(n) moves, or it's o(n) - we don't know which!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e872-summary",
+    "proofId": "erdos-872",
+    "range": { "startLine": 272, "endLine": 289 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_872_summary:**\n\nCombines the established results:\n\n```lean\ntheorem erdos_872_summary :\n    (forall P, (forall p in P, p.Prime) -> IsDivisibilityAntichain P) and\n    True :=\n  ⟨primes_antichain, trivial⟩\n```\n\n**What we know:**\n1. Primes form antichains (proved)\n2. Max antichain size is n/2 (axiomatized)\n3. Game terminates (axiomatized)\n\n**What's open:**\n- Linear vs sublinear game duration\n- First player advantage",
+    "significance": "key"
+  }
+]
