@@ -14856,17 +14856,22 @@
   },
   {
     "id": "erdos-999",
-    "title": "Erdős Problem #999",
+    "title": "Erdős Problem #999: The Duffin-Schaeffer Conjecture",
     "slug": "erdos-999",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any function ... the property that, for almost all ...\\[\\left\\lvert \\alpha-{q}\\right\\rvert < {q}\\]has infinitely many sol...",
-    "status": "pending",
+    "description": "For any f: ℕ → ℕ, almost all α have infinitely many coprime approximations |α - p/q| < f(q)/q iff ∑ φ(q)·f(q)/q = ∞. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "diophantine-approximation",
+      "metric-number-theory",
+      "measure-theory",
+      "eulers-totient",
+      "solved"
     ],
     "erdosNumber": 999,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-szekeres",
