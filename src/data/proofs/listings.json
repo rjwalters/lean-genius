@@ -13267,17 +13267,24 @@
   },
   {
     "id": "erdos-874",
-    "title": "Erdős Problem #874",
+    "title": "Erdős Problem #874: Admissible Sets and Subset Sum Disjointness",
     "slug": "erdos-874",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size of the largest set ... such that the sets\\[S_r = \\{ a_1+\\cdots +a_r : a_1<\\cdots<a_r\\in A\\}\\]are disj...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is k(N) ~ 2√N where k(N) is the max size of A ⊆ {1,...,N} with disjoint subset sums S_r? PROVED by Deshouillers-Freiman (1999).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "extremal-set-theory",
+      "subset-sums",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 874,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 19
   },
   {
     "id": "erdos-876",

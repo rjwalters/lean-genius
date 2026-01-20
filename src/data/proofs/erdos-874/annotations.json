@@ -1,1 +1,193 @@
-[]
+[
+  {
+    "id": "ann-e874-header",
+    "proofId": "erdos-874",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #874: Admissible Sets**\n\nLet k(N) = max size of A such that subset sums S_r are disjoint for different r.\n\n**Question:** Is k(N) ~ 2 sqrt(N)?\n\n**Answer: YES** (Deshouillers-Freiman, 1999)\n\n**History:**\n- Straus (1966): 2 <= liminf <= limsup <= 4/sqrt(3)\n- ENS (1991): Upper bound sqrt(143/27)\n- Deshouillers-Freiman (1999): Proved the limit is 2",
+    "mathContext": "Admissible sets are also called B_2 sequences or Sidon-like sets in some contexts.",
+    "significance": "critical",
+    "relatedConcepts": ["Subset sums", "Extremal set theory", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e874-sumset",
+    "proofId": "erdos-874",
+    "range": { "startLine": 42, "endLine": 48 },
+    "type": "definition",
+    "title": "Sum Set S_r",
+    "content": "**sumSet(A, r):**\n\nThe set of all sums of exactly r distinct elements from A.\n\n```lean\ndef sumSet (A : Finset N) (r : N) : Set N :=\n  { s | exists B subseteq A, B.card = r and s = B.sum id }\n```\n\n**Example:** If A = {1, 2, 3}, then:\n- S_1 = {1, 2, 3}\n- S_2 = {3, 4, 5}\n- S_3 = {6}",
+    "significance": "critical",
+    "relatedConcepts": ["Subset sums", "Combinatorics"]
+  },
+  {
+    "id": "ann-e874-disjoint",
+    "proofId": "erdos-874",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Disjoint Sums Property",
+    "content": "**hasDisjointSums(A):**\n\nThe sum sets S_r and S_s are disjoint whenever r != s.\n\n**Key property:** Given a sum, you can uniquely determine how many elements produced it.\n\n**Non-example:** A = {1, 2, 3} is NOT admissible because S_1 intersect S_2 = {3}.",
+    "significance": "critical",
+    "relatedConcepts": ["Disjointness", "Unique decomposition"]
+  },
+  {
+    "id": "ann-e874-admissible",
+    "proofId": "erdos-874",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "Admissible Sets",
+    "content": "**Admissible(A):**\n\nA set is admissible if it has the disjoint sums property.\n\nStraus (1966) introduced this terminology.\n\n**Why 'admissible'?** These sets are 'allowed' for applications requiring unique sum decomposition.",
+    "significance": "critical",
+    "relatedConcepts": ["Straus", "Unique sums"]
+  },
+  {
+    "id": "ann-e874-bounded",
+    "proofId": "erdos-874",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "definition",
+    "title": "Bounded Admissible",
+    "content": "**BoundedAdmissible(A, N):**\n\nA is admissible and contained in {1, ..., N}.\n\nThis is the constraint for the extremal problem: maximize |A| among such sets.",
+    "significance": "key",
+    "relatedConcepts": ["Extremal problems"]
+  },
+  {
+    "id": "ann-e874-k-def",
+    "proofId": "erdos-874",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "definition",
+    "title": "The Function k(N)",
+    "content": "**k(N):**\n\nThe maximum size of an admissible subset of {1, ..., N}.\n\n```lean\nnoncomputable def k (N : N) : N :=\n  sup { |A| : A subseteq {1,...,N}, A is admissible }\n```\n\nThis is the central quantity of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal function", "Maximum"]
+  },
+  {
+    "id": "ann-e874-straus-construction",
+    "proofId": "erdos-874",
+    "range": { "startLine": 94, "endLine": 105 },
+    "type": "definition",
+    "title": "Straus's Construction",
+    "content": "**strausSet(N):**\n\nThe interval (N-k, N] intersect N is admissible for appropriate k.\n\n**Rule:**\n- If m^2 <= N < m^2 + m: use k = 2m - 1\n- If m^2 + m <= N < (m+1)^2: use k = 2m\n\n**Why it works:** Large consecutive integers have well-separated sum ranges.",
+    "mathContext": "This construction achieves the lower bound liminf k(N)/sqrt(N) >= 2.",
+    "significance": "key",
+    "relatedConcepts": ["Interval construction", "Lower bound"]
+  },
+  {
+    "id": "ann-e874-straus-lower",
+    "proofId": "erdos-874",
+    "range": { "startLine": 107, "endLine": 112 },
+    "type": "axiom",
+    "title": "Straus Lower Bound",
+    "content": "**straus_lower_bound:**\n\nliminf k(N)/sqrt(N) >= 2.\n\nProved via the interval construction.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bound", "liminf"]
+  },
+  {
+    "id": "ann-e874-straus-upper",
+    "proofId": "erdos-874",
+    "range": { "startLine": 114, "endLine": 119 },
+    "type": "axiom",
+    "title": "Straus Upper Bound",
+    "content": "**straus_upper_bound:**\n\nlimsup k(N)/sqrt(N) <= 4/sqrt(3) = 2.309...\n\nThis was the first upper bound, later improved by ENS.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bound", "limsup"]
+  },
+  {
+    "id": "ann-e874-straus-constant",
+    "proofId": "erdos-874",
+    "range": { "startLine": 121, "endLine": 129 },
+    "type": "definition",
+    "title": "Straus Constant 4/sqrt(3)",
+    "content": "**strausConstant = 4/sqrt(3) = 2.309...**\n\nThis was Straus's 1966 upper bound.\n\nThe gap between 2 (lower) and 2.309 (upper) motivated further research.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e874-ens-constant",
+    "proofId": "erdos-874",
+    "range": { "startLine": 135, "endLine": 139 },
+    "type": "definition",
+    "title": "ENS Constant",
+    "content": "**ensConstant = sqrt(143/27) = 2.301...**\n\nErdos-Nicolas-Sarkozy (1991) improved the upper bound.\n\nThe improvement from 2.309 to 2.301 narrowed the gap toward 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e874-ens-upper",
+    "proofId": "erdos-874",
+    "range": { "startLine": 141, "endLine": 146 },
+    "type": "axiom",
+    "title": "ENS Upper Bound (1991)",
+    "content": "**ens_upper_bound:**\n\nlimsup k(N)/sqrt(N) <= sqrt(143/27).\n\nThis 1991 result improved Straus's bound.",
+    "significance": "key",
+    "relatedConcepts": ["Erdos-Nicolas-Sarkozy"]
+  },
+  {
+    "id": "ann-e874-df-main",
+    "proofId": "erdos-874",
+    "range": { "startLine": 162, "endLine": 170 },
+    "type": "axiom",
+    "title": "Deshouillers-Freiman Main Theorem",
+    "content": "**deshouillers_freiman_main (1999):**\n\nFor all sufficiently large N, k(N) ~ 2 sqrt(N).\n\n```lean\naxiom deshouillers_freiman_main :\n    forall eps > 0, exists N_0, forall N >= N_0,\n      |k(N) / sqrt(N) - 2| < eps\n```\n\n**This resolves the problem!** The limit exists and equals 2.",
+    "mathContext": "The proof is technical, involving detailed analysis of subset sum structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Main theorem", "Resolution"]
+  },
+  {
+    "id": "ann-e874-limit",
+    "proofId": "erdos-874",
+    "range": { "startLine": 172, "endLine": 176 },
+    "type": "axiom",
+    "title": "The Limit is 2",
+    "content": "**k_limit_is_two:**\n\nlim_{N -> infinity} k(N)/sqrt(N) = 2.\n\nThis is the topological limit statement equivalent to the main theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Limit", "Convergence"]
+  },
+  {
+    "id": "ann-e874-optimal-interval",
+    "proofId": "erdos-874",
+    "range": { "startLine": 178, "endLine": 186 },
+    "type": "axiom",
+    "title": "Optimal Sets are Often Intervals",
+    "content": "**optimal_often_interval:**\n\nDeshouillers-Freiman showed that for infinitely many N, the optimal admissible set has the form (N-k, N] intersect N.\n\nThis justifies Straus's intuition that intervals are 'natural' admissible sets.",
+    "significance": "key",
+    "relatedConcepts": ["Interval optimality"]
+  },
+  {
+    "id": "ann-e874-example-n4",
+    "proofId": "erdos-874",
+    "range": { "startLine": 192, "endLine": 202 },
+    "type": "theorem",
+    "title": "Example: N = 4",
+    "content": "**example_N4_admissible:**\n\nFor N = 4, A = {3, 4} is admissible with |A| = 2.\n\n- S_1 = {3, 4}\n- S_2 = {7}\n\nThese are disjoint, so A is admissible.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e874-why-intervals",
+    "proofId": "erdos-874",
+    "range": { "startLine": 211, "endLine": 223 },
+    "type": "theorem",
+    "title": "Why Intervals Work",
+    "content": "**interval_intuition:**\n\nFor A = {N-k+1, ..., N}:\n- Min sum of r elements: r(N - k + (r+1)/2)\n- Max sum of (r-1) elements: (r-1)(N - (r-2)/2)\n\nFor k ~ 2 sqrt(N), these ranges separate, giving disjoint sums.",
+    "mathContext": "The arithmetic progression structure of intervals creates predictable sum ranges.",
+    "significance": "key",
+    "relatedConcepts": ["Sum range separation"]
+  },
+  {
+    "id": "ann-e874-main",
+    "proofId": "erdos-874",
+    "range": { "startLine": 286, "endLine": 292 },
+    "type": "theorem",
+    "title": "Main Result: erdos_874",
+    "content": "**erdos_874:**\n\n```lean\ntheorem erdos_874 :\n    Filter.Tendsto (fun N => k(N) / sqrt(N)) atTop (nhds 2)\n```\n\nThis states that k(N)/sqrt(N) converges to 2 as N -> infinity.\n\n**PROVED** by Deshouillers-Freiman (1999).",
+    "significance": "critical",
+    "relatedConcepts": ["Main theorem"]
+  },
+  {
+    "id": "ann-e874-answer",
+    "proofId": "erdos-874",
+    "range": { "startLine": 294, "endLine": 309 },
+    "type": "theorem",
+    "title": "The Answer: Conjecture is TRUE",
+    "content": "**erdos_874_answer:**\n\nFor any eps > 0 and large enough N:\n(2 - eps) sqrt(N) <= k(N) <= (2 + eps) sqrt(N).\n\nThis gives explicit bounds confirming k(N) ~ 2 sqrt(N).",
+    "significance": "critical",
+    "relatedConcepts": ["Explicit bounds", "Resolution"]
+  }
+]
