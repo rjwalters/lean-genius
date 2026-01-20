@@ -2,7 +2,7 @@
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
   "phase": "NEW",
-  "status": "blocked",
+  "status": "skipped",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -11,9 +11,17 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Euclid-Euler theorem for even perfect numbers (PerfectNumbers.lean)",
+      "σ(2^k) = 2^{k+1} - 1 (sigma_two_pow)",
+      "Amicable pair examples: (220, 284), (1184, 1210) (Erdos830Problem.lean)"
+    ],
+    "open": [
+      "Existence of odd perfect numbers (intractable - if exists, > 10^1500)",
+      "Infinitude of amicable pairs",
+      "Aliquot sequence termination"
+    ],
+    "goal": "SKIPPED - no tractable research targets beyond existing coverage"
   },
   "currentState": {
     "phase": "NEW",
@@ -29,9 +37,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Open for 2000+ years!",
+    "progressSummary": "SKIPPED: Fully covered by PerfectNumbers.lean (Euclid-Euler) and Erdos830Problem.lean (amicable pairs). No tractable new directions identified.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "PerfectNumbers.lean is complete (no sorries) - fully covers Euclid-Euler theorem",
+      "Erdos830Problem.lean covers amicable pairs with examples and open problem axioms",
+      "90+ files in proofs/Proofs use sigma/divisor - extensive coverage exists",
+      "Remaining open problems (odd perfect numbers) are mathematically intractable (>10^1500 if exists)",
+      "No tractable direction identified that would add value beyond existing coverage"
+    ],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
       "`Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors"
@@ -46,7 +60,8 @@
     "classical"
   ],
   "relatedProofs": [
-    "Relevance"
+    "PerfectNumbers",
+    "Erdos830Problem"
   ],
   "references": {
     "papers": [],
@@ -54,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T05:32:39.478Z",
-  "lastUpdate": "2026-01-01T05:32:39.478Z",
+  "lastUpdate": "2026-01-19T07:22:00.000Z",
   "significance": 5,
   "tractability": 9
 }
