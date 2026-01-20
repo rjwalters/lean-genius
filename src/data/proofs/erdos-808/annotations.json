@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-808-1",
+    "proofId": "erdos-808",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "definition",
+    "title": "Graph-Restricted Sumset",
+    "content": "A +_G A is the set of sums a + b where (a,b) is an edge in graph G. Unlike the usual A + A which includes all pairs, this only counts sums of adjacent vertices.",
+    "mathContext": "A +_G A = {a + b : (a,b) ∈ G}",
+    "significance": "The key object of study - how many distinct sums can edges produce?",
+    "relatedConcepts": ["sumset", "graph edge", "additive combinatorics"]
+  },
+  {
+    "id": "ann-808-2",
+    "proofId": "erdos-808",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "definition",
+    "title": "Graph-Restricted Product Set",
+    "content": "A ·_G A is the set of products a · b where (a,b) is an edge in G. Only products of adjacent vertices are counted, not all pairs.",
+    "mathContext": "A ·_G A = {a · b : (a,b) ∈ G}",
+    "significance": "The multiplicative analogue - the conjecture asks about the max of sumset and product set sizes.",
+    "relatedConcepts": ["product set", "multiplication", "sum-product phenomenon"]
+  },
+  {
+    "id": "ann-808-3",
+    "proofId": "erdos-808",
+    "range": { "startLine": 87, "endLine": 99 },
+    "type": "theorem",
+    "title": "The Original (False) Conjecture",
+    "content": "Erdős-Szemerédi conjectured: if G has ≥ n^{1+c} edges on a set of size n, then max(|A +_G A|, |A ·_G A|) ≥ n^{1+c-ε}. This says edge density transfers to output diversity.",
+    "mathContext": "|G| ≥ n^{1+c} ⟹ max(|A +_G A|, |A ·_G A|) ≥ n^{1+c-ε}",
+    "significance": "The central conjecture that turned out to be FALSE.",
+    "relatedConcepts": ["sum-product conjecture", "expansion", "edge density"]
+  },
+  {
+    "id": "ann-808-4",
+    "proofId": "erdos-808",
+    "range": { "startLine": 110, "endLine": 124 },
+    "type": "theorem",
+    "title": "ARS Counterexample",
+    "content": "Alon, Ruzsa, and Solymosi (2020) constructed sets A with n^{5/3} edges whose sumset and product set are only n^{4/3} in size. The gap of 1/3 in the exponent refutes the conjecture.",
+    "mathContext": "∃A,G: |G| ≈ n^{5/3}, max(|A +_G A|, |A ·_G A|) ≈ n^{4/3}",
+    "significance": "The counterexample shows arithmetic structure can defeat expansion.",
+    "relatedConcepts": ["counterexample", "arithmetic structure", "exponent gap"]
+  },
+  {
+    "id": "ann-808-5",
+    "proofId": "erdos-808",
+    "range": { "startLine": 126, "endLine": 133 },
+    "type": "theorem",
+    "title": "The Exponent Gap",
+    "content": "With n^{5/3} edges, the conjecture predicts n^{5/3-ε} outputs. The construction only gives n^{4/3}. The gap: 5/3 - 4/3 = 1/3 is substantial, showing the conjecture fails badly.",
+    "mathContext": "Gap = 5/3 - 4/3 = 1/3",
+    "significance": "Quantifies how badly the conjecture fails - not just by epsilon, but by a fixed power.",
+    "relatedConcepts": ["exponent", "gap", "quantitative failure"]
+  },
+  {
+    "id": "ann-808-6",
+    "proofId": "erdos-808",
+    "range": { "startLine": 139, "endLine": 150 },
+    "type": "theorem",
+    "title": "ARS Positive Bound",
+    "content": "Despite disproving the conjecture, ARS proved: max(|A +_G A|, |A ·_G A|) ≥ c · m^{3/2} · n^{-7/4}, where m = number of edges. This is a genuine lower bound.",
+    "mathContext": "max ≥ c · m^{3/2} · n^{-7/4}",
+    "significance": "Salvages something positive: more edges DO guarantee more outputs, just with different exponents.",
+    "relatedConcepts": ["positive result", "lower bound", "edge-output relation"]
+  },
+  {
+    "id": "ann-808-7",
+    "proofId": "erdos-808",
+    "range": { "startLine": 164, "endLine": 174 },
+    "type": "definition",
+    "title": "Classical Sum-Product Conjecture",
+    "content": "Problem 52 asks: for A ⊂ ℤ, is max(|A+A|, |A·A|) ≥ |A|^{2-ε}? This is the complete graph case of Problem 808 (G = A × A, all pairs).",
+    "mathContext": "max(|A+A|, |A·A|) ≥ |A|^{2-ε} (classical conjecture)",
+    "significance": "Problem 808 generalizes Problem 52. The failure of 808 shows sparse graphs behave very differently.",
+    "relatedConcepts": ["Problem 52", "complete graph", "Erdős-Szemerédi"]
+  },
+  {
+    "id": "ann-808-8",
+    "proofId": "erdos-808",
+    "range": { "startLine": 189, "endLine": 198 },
+    "type": "insight",
+    "title": "Arithmetic Structure",
+    "content": "The counterexample uses sets with arithmetic structure (like APs). For an arithmetic progression, |A + A| ≤ 2|A| - 1, very small. Structure allows many edges without many new sums.",
+    "mathContext": "AP: |A + A| ≤ 2|A| - 1",
+    "significance": "Explains how the counterexample works - arithmetic structure defeats sum-product expansion.",
+    "relatedConcepts": ["arithmetic progression", "structured sets", "small doubling"]
+  },
+  {
+    "id": "ann-808-9",
+    "proofId": "erdos-808",
+    "range": { "startLine": 200, "endLine": 207 },
+    "type": "insight",
+    "title": "Why Structure Helps",
+    "content": "Sets with additive structure have small sumsets. The ARS construction exploits this: choose A with structure, then G can have many edges while sumset stays small.",
+    "mathContext": "Structured A ⟹ small A + A despite many edges",
+    "significance": "The construction strategy that enables the counterexample.",
+    "relatedConcepts": ["small doubling", "Freiman's theorem", "additive structure"]
+  },
+  {
+    "id": "ann-808-10",
+    "proofId": "erdos-808",
+    "range": { "startLine": 242, "endLine": 250 },
+    "type": "insight",
+    "title": "Key Insight: Graph Structure Matters",
+    "content": "The fundamental lesson: graph structure changes sum-product behavior. Complete graphs (all pairs) give strong expansion. Sparse graphs with the 'right' structure can avoid expansion entirely.",
+    "mathContext": "Sparse structured G ≠ Complete graph behavior",
+    "significance": "Shows the sum-product phenomenon depends crucially on which pairs we consider, not just how many.",
+    "relatedConcepts": ["graph structure", "sparse vs dense", "expansion phenomenon"]
+  }
+]

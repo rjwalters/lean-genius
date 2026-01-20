@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "ann-e1133-header",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview: Polynomial Interpolation Bound",
+    "content": "**Erdos Problem #1133: OPEN**\n\nCan one always choose target values y_i for polynomial interpolation such that ANY approximating polynomial must become large somewhere in [-1,1]?\n\n**The setup:**\n- Given sample points x_1,...,x_n in [-1,1]\n- Choose target values y_1,...,y_n in [-1,1]\n- Consider polynomials P of degree < (1+epsilon)n matching >= (1-epsilon)n points\n\n**The question:** Can we force max |P(x)| > C for any such P?",
+    "mathContext": "This is about adversarial function approximation. The conjecture asks if we can always 'win' against any polynomial approximation scheme by clever choice of target values.",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial-interpolation", "approximation-theory", "Lagrange", "Chebyshev"]
+  },
+  {
+    "id": "ann-e1133-definitions",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 46, "endLine": 73 },
+    "type": "definition",
+    "title": "Basic Definitions",
+    "content": "**polyEval P x:** P.eval x - polynomial evaluation\n\n**maxNormOnInterval P:** sup_{x in [-1,1]} |P(x)| - the maximum norm on the interval\n\n**SamplePoints n:** Functions from Fin n to [-1,1] representing sample x values\n\n**TargetValues n:** Functions from Fin n to [-1,1] representing target y values",
+    "mathContext": "The maximum norm on [-1,1] is the key quantity. The conjecture asks if we can force this to exceed any constant C.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial-evaluation", "supremum", "interval"]
+  },
+  {
+    "id": "ann-e1133-interpolation",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 75, "endLine": 93 },
+    "type": "definition",
+    "title": "Interpolation Conditions",
+    "content": "**ApproximatelyInterpolates P x y epsilon:**\nP passes through at least (1-epsilon)n of the points (x_i, y_i)\n\nAllows some slack - not all points need to be matched exactly.\n\n**HasBoundedDegree P n epsilon:**\ndeg(P) < (1+epsilon)n\n\nThe polynomial has degree slightly less than (1+epsilon)n.",
+    "mathContext": "The epsilon parameter controls both the degree bound and the matching requirement. For epsilon = 0, this is exact Lagrange interpolation.",
+    "significance": "critical",
+    "relatedConcepts": ["approximate-interpolation", "degree-bound", "epsilon-slack"]
+  },
+  {
+    "id": "ann-e1133-conjecture",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 95, "endLine": 115 },
+    "type": "definition",
+    "title": "The Erdos Conjecture",
+    "content": "**ErdosConjecture1133:**\n\nFor all C > 0, there exists epsilon > 0 such that for large n:\nFor all sample points x_i in [-1,1],\nthere exist target values y_i in [-1,1] such that:\nfor all polynomials P with bounded degree and approximate interpolation,\nmax_{[-1,1]} |P| > C.\n\nThis is the formal statement with all quantifiers in the correct order.",
+    "mathContext": "The quantifier order matters: we get to CHOOSE y_i after seeing x_i, but before seeing P. This is an adversarial game.",
+    "significance": "critical",
+    "relatedConcepts": ["formal-statement", "quantifier-order", "adversarial"]
+  },
+  {
+    "id": "ann-e1133-related",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 117, "endLine": 137 },
+    "type": "axiom",
+    "title": "Erdos's Related Result (Known)",
+    "content": "**erdos_related_result:**\n\nFor any C > 0, there exists epsilon > 0 such that for large n:\nGiven any m = floor((1+epsilon)n) sample points x_i,\nthere EXISTS a polynomial P of degree n with:\n- |P(x_i)| <= 1 for all i\n- max |P(x)| > C\n\nThis is WEAKER: it asks for existence of P, not choice of y_i.",
+    "mathContext": "Erdos proved this weaker result. The conjecture reverses the quantifiers: instead of finding P, we need to choose y_i that work against all P.",
+    "significance": "critical",
+    "relatedConcepts": ["existence-result", "weaker-statement", "Erdos-1967"]
+  },
+  {
+    "id": "ann-e1133-lagrange",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 139, "endLine": 164 },
+    "type": "axiom",
+    "title": "Lagrange Interpolation",
+    "content": "**lagrange_interpolation:**\nGiven n distinct points, there is a unique polynomial of degree < n passing through all.\n\n**lagrange_divergence:**\nLagrange interpolation can diverge badly for uniformly spaced points.\nThe max norm can grow exponentially even for smooth functions (Runge's phenomenon).",
+    "mathContext": "Lagrange interpolation is the classical case (epsilon = 0). The divergence phenomenon motivates using better node distributions like Chebyshev nodes.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange-polynomial", "uniqueness", "Runge-phenomenon"]
+  },
+  {
+    "id": "ann-e1133-chebyshev",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 166, "endLine": 185 },
+    "type": "definition",
+    "title": "Chebyshev Nodes",
+    "content": "**chebyshevNodes n k:**\nx_k = cos(pi(2k+1)/(2n))\n\nThese are the optimal nodes for polynomial interpolation.\n\n**chebyshev_optimal:**\nIf P has degree n and |P(x_k)| <= 1 at all Chebyshev nodes, then max |P| <= 1.\n\nChebyshev nodes give the best possible control on the max norm.",
+    "mathContext": "Chebyshev nodes cluster near the endpoints of [-1,1]. They minimize the maximum interpolation error (Lebesgue constant).",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev-nodes", "optimal-nodes", "Lebesgue-constant"]
+  },
+  {
+    "id": "ann-e1133-difficulty",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 187, "endLine": 206 },
+    "type": "concept",
+    "title": "Why the Conjecture is Hard",
+    "content": "**Key Difficulty:**\n\n1. We must choose y_i values that work against ALL possible polynomials P\n\n2. Erdos couldn't prove this even for m = n (exact interpolation)\n\n3. The adversarial nature makes the problem fundamentally different from existence results\n\n4. Connection to approximation theory and game-theoretic complexity",
+    "mathContext": "The difficulty is the universal quantifier over P. We need y_i that force ANY approximating polynomial to be large.",
+    "significance": "key",
+    "relatedConcepts": ["adversarial", "universal-quantifier", "approximation-complexity"]
+  },
+  {
+    "id": "ann-e1133-summary",
+    "proofId": "erdos-1133",
+    "range": { "startLine": 208, "endLine": 251 },
+    "type": "theorem",
+    "title": "Summary and Main Results",
+    "content": "**erdos_1133_summary:**\n- The conjecture is well-formed\n- The related existence result is known\n\n**erdos_1133:** True (placeholder for open problem)\n\n**exact_interpolation_case:**\nFor epsilon = 0 (exact interpolation), Lagrange gives the unique polynomial of degree < n through all n points.\n\n**Status: OPEN**",
+    "mathContext": "The problem connects Lagrange interpolation, approximation theory, and game-theoretic aspects of function approximation.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "approximation-theory", "interpolation"]
+  }
+]

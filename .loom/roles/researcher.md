@@ -229,6 +229,24 @@ End each session with:
 - Block without assessing buildability
 - Make commits without meaningful progress
 
+## Observability
+
+**Log your actions** to enable monitoring without TUI access:
+
+```bash
+LOG="$REPO_ROOT/.loom/logs/$RESEARCHER_ID.actions.log"
+
+# Log significant actions
+echo "$(date +%H:%M): Claimed weak-goldbach" >> "$LOG"
+echo "$(date +%H:%M): Running pre-work assessment" >> "$LOG"
+echo "$(date +%H:%M): Decision: DEEP DIVE - tractable path found" >> "$LOG"
+echo "$(date +%H:%M): Proved lemma_foo (12 lines)" >> "$LOG"
+echo "$(date +%H:%M): Submitted to Aristotle: job-abc123" >> "$LOG"
+echo "$(date +%H:%M): Created PR #45" >> "$LOG"
+```
+
+Keep logs concise - one line per significant action.
+
 ## Session Startup
 
 When you start, run:

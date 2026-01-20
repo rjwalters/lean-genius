@@ -1,1 +1,131 @@
-[]
+[
+  {
+    "id": "ann-e999-header",
+    "proofId": "erdos-999",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #999: The Duffin-Schaeffer Conjecture**\n\nFor any f: ℕ → ℕ, these are equivalent:\n1. Almost all α have infinitely many coprime (p,q) with |α - p/q| < f(q)/q\n2. ∑ φ(q)·f(q)/q = ∞\n\n**Status:** SOLVED (Koukoulopoulos-Maynard, 2020)\n\nOne of the most celebrated results in metric number theory!",
+    "mathContext": "This was open for 79 years (1941-2020). It generalizes Khintchine's theorem to non-monotone approximation functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Diophantine approximation", "Euler's totient", "Borel-Cantelli lemma", "Metric number theory"]
+  },
+  {
+    "id": "ann-e999-euler-phi",
+    "proofId": "erdos-999",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "definition",
+    "title": "Euler's Totient Function",
+    "content": "**eulerPhi:** φ(n) = Nat.totient n\n\nCounts integers ≤ n coprime to n.\n\nThis appears in the Duffin-Schaeffer sum because φ(q)/q measures the 'density' of reduced fractions with denominator q.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e999-approximable",
+    "proofId": "erdos-999",
+    "range": { "startLine": 56, "endLine": 62 },
+    "type": "definition",
+    "title": "Approximability",
+    "content": "**IsApproximable α f q:**\n\n∃ coprime (p, q) with |α - p/q| < f(q)/q\n\n**IsInfinitelyApproximable α f:**\n\nApproximable for infinitely many q.\n\nThe coprimality condition (p,q)=1 is essential - it ensures we count each rational exactly once.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e999-ds-sum",
+    "proofId": "erdos-999",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "definition",
+    "title": "Duffin-Schaeffer Sum",
+    "content": "**DuffinSchaefferSum f N:**\n\n∑_{q=1}^N φ(q) · f(q) / q\n\n**SeriesDiverges f:** This sum → ∞ as N → ∞\n\nThis is the key quantity - divergence is equivalent to almost all approximability.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e999-almost-all",
+    "proofId": "erdos-999",
+    "range": { "startLine": 84, "endLine": 94 },
+    "type": "definition",
+    "title": "Almost All / Almost None",
+    "content": "**AlmostAll P:** Property P holds for Lebesgue-almost all α ∈ [0,1]\n\n**AlmostAllApproximable f:** Almost all α are infinitely f-approximable\n\n**AlmostNoneApproximable f:** Almost no α is infinitely f-approximable\n\nThe conjecture says: Divergence ↔ AlmostAllApproximable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e999-conjecture",
+    "proofId": "erdos-999",
+    "range": { "startLine": 100, "endLine": 102 },
+    "type": "definition",
+    "title": "The Duffin-Schaeffer Conjecture",
+    "content": "**DuffinSchaefferConjecture:**\n\n∀ f: ℕ → ℕ, SeriesDiverges f ↔ AlmostAllApproximable f\n\nThis equivalence characterizes exactly when 'typical' reals can be well-approximated by rationals with error function f.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e999-easy-direction",
+    "proofId": "erdos-999",
+    "range": { "startLine": 104, "endLine": 106 },
+    "type": "axiom",
+    "title": "Easy Direction",
+    "content": "**easy_direction:**\n\nAlmostAllApproximable f → SeriesDiverges f\n\nThis direction is 'easy' - it follows from the Borel-Cantelli lemma and measure-theoretic arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e999-hard-direction",
+    "proofId": "erdos-999",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "axiom",
+    "title": "Hard Direction",
+    "content": "**hard_direction:**\n\nSeriesDiverges f → AlmostAllApproximable f\n\nThis is the actual conjecture - it took 79 years to prove! The difficulty is that approximation sets for different q can overlap in complex ways.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e999-erdos-partial",
+    "proofId": "erdos-999",
+    "range": { "startLine": 116, "endLine": 122 },
+    "type": "axiom",
+    "title": "Erdős's Partial Result",
+    "content": "**ErdosCondition f:** ∃ C, ∀ q, f(q)·q ≤ C\n\n**erdos_bounded_case:** The conjecture holds when f·q is bounded.\n\nErdős proved this special case, which handles approximation functions that decay at least as fast as 1/q.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e999-km-2020",
+    "proofId": "erdos-999",
+    "range": { "startLine": 128, "endLine": 137 },
+    "type": "axiom",
+    "title": "Koukoulopoulos-Maynard (2020)",
+    "content": "**koukoulopoulos_maynard_2020:** DuffinSchaefferConjecture\n\nThe full conjecture proved after 79 years!\n\nDimitris Koukoulopoulos and James Maynard proved this in 2020, published in the Annals of Mathematics 192(1), 251-307.\n\nTheir proof uses sophisticated graph-theoretic arguments on the 'GCD graph'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e999-zero-one",
+    "proofId": "erdos-999",
+    "range": { "startLine": 147, "endLine": 159 },
+    "type": "theorem",
+    "title": "Zero-One Law",
+    "content": "**zero_one_law:**\n\nAlmostAllApproximable f ∨ AlmostNoneApproximable f\n\nFor any f, either almost all or almost no reals are infinitely approximable - no intermediate case!\n\nThis follows from the Duffin-Schaeffer theorem: divergence gives 'all', convergence gives 'none'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e999-khintchine",
+    "proofId": "erdos-999",
+    "range": { "startLine": 170, "endLine": 181 },
+    "type": "axiom",
+    "title": "Khintchine's Theorem (1924)",
+    "content": "**khintchine_theorem:**\n\nFor MONOTONE f: ∑ f(q)/q = ∞ ↔ AlmostAllApproximable f\n\nKhintchine proved this in 1924 - but required f to be monotone decreasing.\n\nDuffin-Schaeffer conjectured the extension to non-monotone f, replacing ∑ f(q)/q with ∑ φ(q)·f(q)/q.",
+    "mathContext": "The φ(q) factor is needed because without monotonicity, fractions can 'overlap' in complicated ways.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e999-gcd",
+    "proofId": "erdos-999",
+    "range": { "startLine": 187, "endLine": 193 },
+    "type": "axiom",
+    "title": "GCD Restriction",
+    "content": "**gcd_restriction_necessary:**\n\nThe coprimality condition (p,q) = 1 is essential!\n\n**Without it:** f(q) = 1 if q prime, 0 otherwise.\nThe series diverges but only primes contribute approximations.\n\nThe φ(q) factor exactly accounts for this: it counts reduced fractions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e999-summary",
+    "proofId": "erdos-999",
+    "range": { "startLine": 241, "endLine": 263 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_999_summary:**\n\n1. DuffinSchaefferConjecture holds (Koukoulopoulos-Maynard 2020)\n2. Both directions: SeriesDiverges ↔ AlmostAllApproximable\n3. Zero-one law: almost all or almost none\n\n**Status:** SOLVED after 79 years\n\nA landmark result in metric number theory.",
+    "significance": "critical"
+  }
+]
