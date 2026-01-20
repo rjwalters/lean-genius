@@ -1,33 +1,147 @@
 {
   "id": "erdos-865",
-  "title": "Erdős Problem #865",
+  "title": "Erdős Problem #865: Pairwise Sums in Dense Sets",
   "slug": "erdos-865",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists a constant ... such that, for all large ..., if ... has size at least ... then there are distinct ... such that ...",
+  "description": "If A ⊆ {1,...,N} has size ≥ (5/8)N + C, must there exist distinct a,b,c ∈ A with a+b, a+c, b+c ∈ A? The threshold 5/8 is conjectured optimal. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Sós, Choi, Szemerédi",
     "sourceUrl": "https://erdosproblems.com/865",
-    "date": "",
-    "status": "pending",
+    "date": "1975-",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos865Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sum-sets",
+      "density",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 865,
     "erdosUrl": "https://erdosproblems.com/865",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat.div",
+        "description": "Rational division",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Range of natural numbers",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "intervalSet: {1,...,N} as Finset",
+      "HasPairwiseSumTriple: ∃ distinct a,b,c with sums in A",
+      "HasSumPair: ∃ distinct a,b with a+b ∈ A",
+      "HasKPairwiseSums: k elements with all pairwise sums",
+      "threshold: f_k(N) threshold function",
+      "conjecturedThreshold: Erdős-Sós formula",
+      "k3_conjecture axiom: 5/8 conjecture",
+      "lowerBoundConstruction: [N/8,N/4] ∪ [N/2,N]",
+      "lower_bound_no_triple axiom: construction has no triple",
+      "choi_erdos_szemeredi_bound axiom: (2/3-ε)N upper bound",
+      "erdos_sos_conjecture axiom: general k conjecture",
+      "erdos_865 theorem: partial results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #865 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists a constant $C>0$ such that, for all large $N$, if $A\\subseteq \\{1,\\ldots,N\\}$ has size at least $\\frac{5}{8}N+C$ then there are distinct $a,b,c\\in A$ such that $a+b,a+c,b+c\\in A$.\n\n\n\nA problem of Erd\\H{o}s and S\\'{o}s (also earlier considered by Choi, Erd\\H{o}s, and Szemer\\'{e}di \\cite{CES75}, but Erd\\H{o}s had forgotten this). Taking all integers in $[N/8,N/4]$ and $[N/2,N]$ shows that $\\frac{5}{8}$ would be best possible here.\n\nIt is a classical folklore fact that if $A\\subseteq \\{1,\\ldots,2N\\}$ has size $\\geq N+2$ then there are distinct $a,b\\in A$ such that $a+b\\in A$, which establishes the $k=2$ case.\n\nIn general, one can define $f_k(N)$ to be minimal such that if $A\\subseteq \\{1,\\ldots,N\\}$ has size at least $f_k(N)$ then there are $k$ distinct $a_i\\in A$ such that all $\\binom{k}{2}$ pairwise sums are elements of $A$. Erd\\H{o}s and S\\'{o}s conjectured that\\[f_k(N)\\sim \\frac{1}{2}\\left(1+\\sum_{1\\leq r\\leq k-2}\\frac{1}{4^r}\\right) N,\\]and a similar example shows that this would be best possible.\n\nChoi, Erd\\H{o}s, and Szemer\\'{e}di \\cite{CES75} have proved that, for all $k\\geq 3$, there exists $\\epsilon_k>0$ such that (for large enough $N$)\\[f_k(N)\\leq \\left(\\frac{2}{3}-\\epsilon_k\\right)N.\\]\n\n\n\n\nReferences\n\n\n[CES75] Choi, S. L. G. and Erd\\H{o}s, P. and Szemer\\'{e}di, E., Some additive and multiplicative problems in number theory. Acta Arith. (1975), 37--50.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #865: Pairwise Sums in Dense Sets**\n\nThis problem asks about the minimum density required to guarantee three elements whose pairwise sums are all in the set.\n\n**Historical Development:**\n- **Choi, Erdős, Szemerédi (1975):** Proved f_k(N) ≤ (2/3 - ε_k)N for k ≥ 3\n- **Erdős and Sós:** Conjectured optimal thresholds\n- **Erdős:** Later forgot about the 1975 paper!\n\n**The Conjecture:**\nf_3(N) ~ (5/8)N, achieved by the construction [N/8, N/4] ∪ [N/2, N].\n\n**Status:** OPEN for the sharp 5/8 threshold.",
+    "problemStatement": "**Problem Statement (Open)**\n\nThere exists a constant $C > 0$ such that, for all large $N$, if $A \\subseteq \\{1,\\ldots,N\\}$ has size at least $\\frac{5}{8}N + C$ then there are distinct $a, b, c \\in A$ such that $a+b, a+c, b+c \\in A$.\n\n**The threshold 5/8 is conjectured optimal.**\n\n**General Conjecture (Erdős-Sós):**\n$$f_k(N) \\sim \\frac{1}{2}\\left(1 + \\sum_{r=1}^{k-2} \\frac{1}{4^r}\\right) N$$\n\n**Known:**\n- k=2: f_2(N) = N+2 (classical)\n- k≥3: f_k(N) ≤ (2/3 - ε_k)N (CES 1975)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Predicates:** HasPairwiseSumTriple, HasSumPair, HasKPairwiseSums\n\n2. **Threshold Function:** f_k(N) and conjectured formula\n\n3. **k=2 Case:** Classical folklore result\n\n4. **k=3 Conjecture:** 5/8 threshold axiom\n\n5. **Lower Bound:** [N/8, N/4] ∪ [N/2, N] construction\n\n6. **CES Upper Bound:** f_k(N) ≤ (2/3 - ε_k)N\n\n7. **Erdős-Sós Conjecture:** General formula",
+    "keyInsights": [
+      "**5/8 Threshold:** Conjectured optimal for k=3",
+      "**Lower Bound Construction:** [N/8, N/4] ∪ [N/2, N] has size ≈ 5N/8 with no triple",
+      "**Gap Argument:** Cross sums fall in the gap (N/4, N/2)",
+      "**Limit 2/3:** As k → ∞, threshold approaches 2/3",
+      "**CES Gap:** Known bound (2/3 - ε) is weaker than conjectured 5/8",
+      "**Connection to Sum-Free:** Complementary to sum-free set problems"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "intervalSet, HasPairwiseSumTriple, HasSumPair",
+      "startLine": 33,
+      "endLine": 67
+    },
+    {
+      "id": "threshold-functions",
+      "title": "Threshold Functions",
+      "summary": "threshold, conjecturedThreshold, k=3 value",
+      "startLine": 69,
+      "endLine": 98
+    },
+    {
+      "id": "k2-case",
+      "title": "The k=2 Case",
+      "summary": "Classical folklore result",
+      "startLine": 100,
+      "endLine": 122
+    },
+    {
+      "id": "k3-case",
+      "title": "The k=3 Case",
+      "summary": "5/8 conjecture, lower bound construction",
+      "startLine": 124,
+      "endLine": 171
+    },
+    {
+      "id": "general-conjecture",
+      "title": "General Conjecture",
+      "summary": "Erdős-Sós conjecture for all k",
+      "startLine": 173,
+      "endLine": 205
+    },
+    {
+      "id": "ces-bound",
+      "title": "CES Upper Bound",
+      "summary": "f_k(N) ≤ (2/3 - ε_k)N",
+      "startLine": 207,
+      "endLine": 229
+    },
+    {
+      "id": "why-5-8",
+      "title": "Why 5/8?",
+      "summary": "Geometric reasoning for the threshold",
+      "startLine": 231,
+      "endLine": 253
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Sum-free sets, Schur numbers",
+      "startLine": 255,
+      "endLine": 281
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_865 theorem, historical note",
+      "startLine": 283,
+      "endLine": 328
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #865 is OPEN. The conjecture states that |A| ≥ (5/8)N + C guarantees a pairwise sum triple. The lower bound construction [N/8, N/4] ∪ [N/2, N] shows 5/8 is optimal. Choi-Erdős-Szemerédi (1975) proved the weaker bound f_k(N) ≤ (2/3 - ε_k)N. The sharp 5/8 threshold remains unproven.",
+    "implications": "**Additive Combinatorics Significance**\n\n1. **Density vs. Structure:** How dense must a set be to contain structured configurations?\n\n2. **Gap Phenomenon:** The lower bound exploits gaps between intervals\n\n3. **General k:** The Erdős-Sós conjecture gives exact thresholds\n\n4. **Connection to Ramsey Theory:** Related to sum-free sets and Schur numbers",
+    "openQuestions": [
+      "Prove the 5/8 conjecture for k=3",
+      "Prove the Erdős-Sós conjecture for general k",
+      "Close the gap between 5/8 and 2/3 - ε",
+      "What is the exact value of ε_3 in the CES bound?"
+    ]
   }
 }
