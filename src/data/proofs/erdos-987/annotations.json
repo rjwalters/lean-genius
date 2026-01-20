@@ -1,1 +1,213 @@
-[]
+[
+  {
+    "id": "ann-e987-header",
+    "proofId": "erdos-987",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #987: Exponential Sums**\n\nFor sequence x₁,x₂,... ∈ (0,1), define Aₖ = limsup|∑e(kxⱼ)|.\n\n**Questions:**\n1. Is limsup Aₖ = ∞? YES (proved)\n2. Is Aₖ = o(k) possible? OPEN\n\n**Known:** √k ≤ Aₖ ≤ k infinitely often vs always",
+    "mathContext": "This problem connects exponential sums to discrepancy theory and uniform distribution.",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential sums", "Weyl sums", "Discrepancy", "Equidistribution"]
+  },
+  {
+    "id": "ann-e987-exp-func",
+    "proofId": "erdos-987",
+    "range": { "startLine": 43, "endLine": 50 },
+    "type": "definition",
+    "title": "The e(x) Function",
+    "content": "**e(x) = e^{2πix}:**\n\nMaps reals to the unit circle in ℂ.\n\n**Properties:**\n- |e(x)| = 1 always\n- e(x + 1) = e(x) (periodic)\n- e(x + y) = e(x) · e(y)\n\nFor x ∈ [0,1], e(x) traces the unit circle once.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-e-norm",
+    "proofId": "erdos-987",
+    "range": { "startLine": 52, "endLine": 66 },
+    "type": "theorem",
+    "title": "Properties of e(x)",
+    "content": "**e_norm and e_periodic:**\n\nTwo key properties:\n- |e(x)| = 1 for all x (unit circle)\n- e(x + 1) = e(x) (period 1)\n\nThese follow from e^{2πi} = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e987-partial-sum",
+    "proofId": "erdos-987",
+    "range": { "startLine": 68, "endLine": 75 },
+    "type": "definition",
+    "title": "Partial Exponential Sum",
+    "content": "**partialSum Sₙ(k) = ∑_{j=1}^n e(kxⱼ):**\n\nA sum of n unit vectors in the complex plane, each at angle 2πkxⱼ.\n\nThis is the core object of study - how do these vectors align or cancel?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-a-func",
+    "proofId": "erdos-987",
+    "range": { "startLine": 77, "endLine": 84 },
+    "type": "definition",
+    "title": "The Aₖ Function",
+    "content": "**A(x,k) = limsup_{n→∞} |Sₙ(k)|:**\n\nMeasures how large partial sums can get for the k-th harmonic.\n\nThis is the limsup (not sup), so we care about eventual behavior.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-unit-interval",
+    "proofId": "erdos-987",
+    "range": { "startLine": 92, "endLine": 97 },
+    "type": "definition",
+    "title": "Unit Interval Sequences",
+    "content": "**InUnitInterval:**\n\nThe constraint that xₙ ∈ (0,1) for all n ≥ 1.\n\nThis is the standard setting for equidistribution problems.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e987-erdos-1964",
+    "proofId": "erdos-987",
+    "range": { "startLine": 99, "endLine": 107 },
+    "type": "axiom",
+    "title": "Erdős 1964: Basic Unboundedness",
+    "content": "**erdos_1964_basic:**\n\nErdős showed it is 'easy to see' that:\n\nlimsup_{k→∞} (sup_n |Sₙ(k)|) = ∞\n\nFor any sequence, the supremum over n is unbounded as k grows.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-erdos-1965",
+    "proofId": "erdos-987",
+    "range": { "startLine": 109, "endLine": 116 },
+    "type": "axiom",
+    "title": "Erdős 1965: Log Bound",
+    "content": "**erdos_1965_log_bound:**\n\nErdős found a 'very easy' proof that Aₖ ≫ log k infinitely often.\n\nThis means: ∃ C > 0 such that for infinitely many k, Aₖ ≥ C·log(k).\n\nThis was the first quantitative lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-clunie-lower",
+    "proofId": "erdos-987",
+    "range": { "startLine": 124, "endLine": 131 },
+    "type": "axiom",
+    "title": "Clunie's √k Lower Bound",
+    "content": "**clunie_sqrt_bound (1967):**\n\nAₖ ≫ √k for infinitely many k.\n\nThis is a major improvement over log k. It means:\n∃ C > 0 such that for infinitely many k, Aₖ ≥ C·√k.\n\nTao independently proved the same result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-clunie-upper",
+    "proofId": "erdos-987",
+    "range": { "startLine": 133, "endLine": 140 },
+    "type": "axiom",
+    "title": "Clunie's Upper Construction",
+    "content": "**clunie_upper_construction:**\n\nThere exist sequences with Aₖ ≤ k for ALL k.\n\nThis shows that O(k) growth is achievable - the sums don't explode.\n\nThe question is: can we do better than O(k)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-tao",
+    "proofId": "erdos-987",
+    "range": { "startLine": 142, "endLine": 147 },
+    "type": "axiom",
+    "title": "Tao's Independent Proof",
+    "content": "**tao_sqrt_bound:**\n\nTao independently proved Aₖ ≫ √k infinitely often.\n\nTwo different proofs strengthens confidence in the result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-finite-distinct",
+    "proofId": "erdos-987",
+    "range": { "startLine": 155, "endLine": 160 },
+    "type": "definition",
+    "title": "Finitely Many Distinct Points",
+    "content": "**FinitelyManyDistinct:**\n\nThe sequence takes only finitely many distinct values.\n\nThis is a special case where stronger results hold.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e987-liu",
+    "proofId": "erdos-987",
+    "range": { "startLine": 162, "endLine": 169 },
+    "type": "axiom",
+    "title": "Liu's Finite Points Result",
+    "content": "**liu_finite_distinct (1969):**\n\nWith finitely many distinct points, for any ε > 0:\nAₖ ≫ k^{1-ε} infinitely often.\n\nThis is much stronger than √k - nearly linear growth!\n\nClunie observed: in this case, actually Aₖ = ∞ infinitely often.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-clunie-obs",
+    "proofId": "erdos-987",
+    "range": { "startLine": 171, "endLine": 178 },
+    "type": "axiom",
+    "title": "Clunie's Observation on Finite Points",
+    "content": "**clunie_observation_finite:**\n\nFor sequences with finitely many distinct values,\nAₖ can be arbitrarily large infinitely often.\n\nThis is even stronger than Liu's k^{1-ε} bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-sublinear",
+    "proofId": "erdos-987",
+    "range": { "startLine": 186, "endLine": 191 },
+    "type": "definition",
+    "title": "Sublinear Growth",
+    "content": "**SublinearGrowth:**\n\nAₖ = o(k) means Aₖ/k → 0 as k → ∞.\n\nIn other words: for any ε > 0, eventually Aₖ < εk.\n\nThis is strictly weaker than Aₖ ≤ Ck for fixed C.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-open",
+    "proofId": "erdos-987",
+    "range": { "startLine": 193, "endLine": 201 },
+    "type": "definition",
+    "title": "The Open Question",
+    "content": "**openQuestion:**\n\nIs there a sequence x with Aₖ = o(k)?\n\n**Known:**\n- NOT o(√k): Aₖ ≥ C√k infinitely often\n- IS O(k): ∃ sequences with Aₖ ≤ k\n\n**Open:** The gap between √k and k.\n\nCan we achieve o(k) but not o(√k)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-known-bounds",
+    "proofId": "erdos-987",
+    "range": { "startLine": 203, "endLine": 214 },
+    "type": "theorem",
+    "title": "Known Bounds Summary",
+    "content": "**known_bounds:**\n\nCombines Clunie's two key results:\n1. Lower: Aₖ ≥ C√k infinitely often\n2. Upper: ∃ sequences with Aₖ ≤ k\n\nThe proof is a direct application of the axioms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-random-walk",
+    "proofId": "erdos-987",
+    "range": { "startLine": 222, "endLine": 233 },
+    "type": "definition",
+    "title": "Random Walk Interpretation",
+    "content": "**Physical Intuition:**\n\nSₙ(k) = ∑e(kxⱼ) is a sum of n unit vectors.\n\n- If angles are 'random': expect |Sₙ| ~ √n (random walk)\n- If angles align: |Sₙ| could be ~ n\n\nThe Aₖ measures the worst-case alignment as n → ∞.",
+    "mathContext": "This connects to random walk theory and the central limit theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-weyl",
+    "proofId": "erdos-987",
+    "range": { "startLine": 235, "endLine": 245 },
+    "type": "axiom",
+    "title": "Weyl Sum Bound",
+    "content": "**weyl_sum_bound:**\n\nFor equidistributed sequences like {nα} (irrational α):\n\n|∑_{j=1}^n e(jθ)| ≤ csc(πθ/2) for θ ∉ ℤ.\n\nWeyl sums are the special case where xⱼ = jα.\n\nThese have good cancellation properties.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e987-discrepancy",
+    "proofId": "erdos-987",
+    "range": { "startLine": 253, "endLine": 259 },
+    "type": "definition",
+    "title": "Discrepancy",
+    "content": "**discrepancy:**\n\nMeasures how far a sequence deviates from uniform distribution.\n\nD_n = sup_{0≤a<b≤1} |#{j ≤ n : xⱼ ∈ [a,b)}/n - (b-a)|\n\nSmall discrepancy = well-distributed sequence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-erdos-turan",
+    "proofId": "erdos-987",
+    "range": { "startLine": 261, "endLine": 267 },
+    "type": "axiom",
+    "title": "Erdős-Turán Inequality",
+    "content": "**erdos_turan:**\n\nExponential sums control discrepancy:\n\nD_n ≤ 1/K + Σ_{k=1}^K |Sₙ(k)|/(k·n)\n\nSmall exponential sums → low discrepancy → good distribution.",
+    "mathContext": "This is a fundamental tool in discrepancy theory and uniform distribution mod 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e987-main",
+    "proofId": "erdos-987",
+    "range": { "startLine": 275, "endLine": 301 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_987:**\n\nSummary of what's known:\n\n1. Aₖ → ∞ for any sequence\n2. Aₖ ≥ C√k infinitely often\n3. ∃ sequences with Aₖ ≤ k always\n\n```lean\ntheorem erdos_987 :\n    (∀ x, Aₖ unbounded) ∧\n    (∀ x, Aₖ ≥ C√k i.o.) ∧\n    (∃ x, Aₖ ≤ k always)\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e987-gap",
+    "proofId": "erdos-987",
+    "range": { "startLine": 303, "endLine": 310 },
+    "type": "theorem",
+    "title": "The Gap",
+    "content": "**erdos_987_gap:**\n\nStatus: PARTIALLY OPEN\n\nWe know:\n- Lower: Aₖ is NOT o(√k)\n- Upper: Aₖ IS O(k) for some sequences\n\nOpen: Is o(k) achievable?",
+    "significance": "critical"
+  }
+]
