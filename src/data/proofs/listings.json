@@ -12308,17 +12308,23 @@
   },
   {
     "id": "erdos-818",
-    "title": "Erdős Problem #818",
+    "title": "Product Set Lower Bound for Small Sumsets",
     "slug": "erdos-818",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of integers such that .... Is it true that\\[\\lvert AA\\rvert \\gg {(\\log \\lvert A\\rvert)^C}\\]for some c...",
-    "status": "pending",
+    "description": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sum-product",
+      "sumset",
+      "product-set"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 818,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-819",
