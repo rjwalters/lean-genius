@@ -6718,17 +6718,24 @@
   },
   {
     "id": "erdos-403",
-    "title": "Erdős Problem #403",
+    "title": "Erdős Problem #403: Powers of 2 as Sums of Distinct Factorials",
     "slug": "erdos-403",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes the equation\\[2^m=a_1!+\\cdots+a_k!\\]with ... have only finitely many solutions?\n\n\n\nAsked by Burr and Erds. Frankl and Li...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does 2^m = a₁! + a₂! + ... + aₖ! (with distinct aᵢ) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "exponential-equations",
+      "diophantine",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 403,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 33
   },
   {
     "id": "erdos-405",
