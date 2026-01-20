@@ -14647,17 +14647,24 @@
   },
   {
     "id": "erdos-987",
-    "title": "Erdős Problem #987",
+    "title": "Erdős Problem #987: Exponential Sums and Sequence Discrepancy",
     "slug": "erdos-987",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence and let\\[A_k=\\limsup_{n\\to \\infty}\\left\\lvert \\sum_{j\\leq n} e(kx_j)\\right\\rvert,\\]where .......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For sequence x₁,x₂,... ∈ (0,1) and Aₖ = limsup|∑e(kxⱼ)|, is limsup Aₖ = ∞? Is Aₖ = o(k) possible? PARTIALLY OPEN: Proved Aₖ ≫ √k infinitely often; question of o(k) remains open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "exponential-sums",
+      "harmonic-analysis",
+      "discrepancy",
+      "uniform-distribution",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 987,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 23
   },
   {
     "id": "erdos-988",
