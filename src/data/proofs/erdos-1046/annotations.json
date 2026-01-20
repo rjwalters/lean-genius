@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "ann-1046-1",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1046: Lemniscate Containment**\n\n**Question:** For monic f ∈ ℂ[x], if E = {z : |f(z)| < 1} is connected, is E in a disc of radius 2?\n\n**Answer:** YES (Pommerenke 1959)\n\n**Status: SOLVED**",
+    "mathContext": "The set E is called a 'filled lemniscate' - the region where the polynomial is small.",
+    "significance": "critical",
+    "relatedConcepts": ["Complex analysis", "Lemniscates", "Polynomial geometry"]
+  },
+  {
+    "id": "ann-1046-2",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "Sublevel Set E",
+    "content": "**sublevelSet f:**\n\nE = {z ∈ ℂ : |f(z)| < 1}\n\nThis is the region where the polynomial magnitude is less than 1. The boundary {|f(z)| = 1} is the actual lemniscate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1046-3",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 101, "endLine": 102 },
+    "type": "definition",
+    "title": "Root Centroid",
+    "content": "**rootCentroid f:**\n\nThe average of the roots: (z₁ + z₂ + ... + zₙ) / n\n\nBy Vieta's formulas, this equals -aₙ₋₁/n for monic f = xⁿ + aₙ₋₁xⁿ⁻¹ + ...",
+    "mathContext": "The centroid is key: it becomes the center of the containing disc.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1046-4",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 119, "endLine": 120 },
+    "type": "definition",
+    "title": "Critical Points",
+    "content": "**criticalPoints f:**\n\nThe zeros of f', i.e., points where f has a local extremum.\n\nThese are where the derivative vanishes: {z : f'(z) = 0}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1046-5",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 126, "endLine": 127 },
+    "type": "theorem",
+    "title": "Connectivity Characterization",
+    "content": "**connectivity_characterization:**\n\nE is connected ⟺ E contains all zeros of f'\n\nThis beautiful result says the sublevel set is connected exactly when all critical points are 'inside' the lemniscate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1046-6",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 149, "endLine": 151 },
+    "type": "theorem",
+    "title": "Pommerenke's Theorem",
+    "content": "**pommerenke_theorem:**\n\nIf E is connected, then E ⊆ D(centroid, 2)\n\nThe sublevel set is contained in the closed disc of radius 2 centered at the root centroid (z₁+...+zₙ)/n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1046-7",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 197, "endLine": 200 },
+    "type": "theorem",
+    "title": "Width Counterexample",
+    "content": "**pommerenke_width_counterexample:**\n\nThe EHP width conjecture is FALSE.\n\nThere exist lemniscates with width > √3 · 2^{1/3} ≈ 2.18, exceeding the conjectured bound of 2.",
+    "mathContext": "While the disc containment holds, the width can exceed 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1046-8",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 237, "endLine": 239 },
+    "type": "theorem",
+    "title": "Diameter Bound",
+    "content": "**pommerenke_diameter_bound:**\n\nIf E is connected, then diameter(E) ≤ 2.\n\nThis is sharper than the diameter ≤ 4 implied by disc containment. Pommerenke proved the diameter is at most 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1046-9",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 249, "endLine": 250 },
+    "type": "definition",
+    "title": "Lemniscate",
+    "content": "**lemniscate f c:**\n\nThe level set {z : |f(z)| = c} for c > 0.\n\nClassically, for f(z) = z² - a², this gives the Lemniscate of Bernoulli - a figure-8 shaped curve.",
+    "significance": "supporting",
+    "relatedConcepts": ["Level sets", "Bernoulli lemniscate", "Algebraic curves"]
+  },
+  {
+    "id": "ann-1046-10",
+    "proofId": "erdos-1046",
+    "range": { "startLine": 271, "endLine": 284 },
+    "type": "theorem",
+    "title": "Summary: SOLVED",
+    "content": "**erdos_1046:**\n\n**STATUS: SOLVED** by Pommerenke (1959)\n\n**Key results:**\n1. YES - E ⊆ D(centroid, 2)\n2. Connected ⟺ contains critical points\n3. Diameter ≤ 2\n4. BUT width can exceed 2 (conjecture false)",
+    "significance": "critical"
+  }
+]

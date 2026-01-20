@@ -1,33 +1,108 @@
 {
   "id": "erdos-1046",
-  "title": "Erdős Problem #1046",
+  "title": "Lemniscate Containment in a Disc",
   "slug": "erdos-1046",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic polynomial and\\[E=\\{ z: \\lvert f(z)\\rvert <1\\}.\\]If ... is connected then is ... contained in a disc of ra...",
+  "description": "For monic f ∈ ℂ[x], if E = {z : |f(z)| < 1} is connected, is E in a disc of radius 2? YES (Pommerenke 1959). The center is the root centroid. But the width conjecture is FALSE.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Herzog-Piranian (1958), Pommerenke (1959)",
     "sourceUrl": "https://erdosproblems.com/1046",
-    "date": "",
-    "status": "pending",
+    "date": "1959",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1046Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "complex-analysis", "polynomials", "lemniscates", "geometry"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 1046,
     "erdosUrl": "https://erdosproblems.com/1046",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "Polynomial", "description": "Polynomial ring over ℂ", "module": "Mathlib.Algebra.Polynomial.Basic" },
+      { "theorem": "Complex.abs", "description": "Complex absolute value", "module": "Mathlib.Data.Complex.Basic" },
+      { "theorem": "IsConnected", "description": "Topological connectedness", "module": "Mathlib.Topology.Basic" },
+      { "theorem": "derivative", "description": "Polynomial derivative", "module": "Mathlib.Analysis.Complex.Polynomial.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of sublevel sets of polynomials",
+      "Definition of open/closed discs in ℂ",
+      "Root centroid definition using Vieta's formulas",
+      "Critical points characterization of connectivity",
+      "Pommerenke's theorem: E ⊆ D(centroid, 2)",
+      "Width conjecture counterexample",
+      "Diameter bound formalization"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1046 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[x]$ be a monic polynomial and\\[E=\\{ z: \\lvert f(z)\\rvert <1\\}.\\]If $E$ is connected then is $E$ contained in a disc of radius $2$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}, who also ask, if $\\{ z: \\lvert f(z)\\rvert\\leq 1\\}$ is connected, then what are the least possible diameter and greatest possible width of this set, and conjecture the answer is $2$ in both cases.\n\nTheir guess that the width is always at most $2$ is false, as Pommerenke \\cite{Po59} gave an example with width $>\\sqrt{3}2^{1/3}\\approx 2.18$.\n\nThe condition that $E$ is connected is equivalent to $E$ containing all zeros of $f'$.\n\nThe answer is yes, and in fact the centre of this disc can be taken to be $\\frac{z_1+\\cdots+z_n}{n}$, where the $z_i$ are the roots of $f$, as shown by Pommerenke \\cite{Po59}.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Po59] Pommerenke, Ch., On some problems by Erd\\H{o}s, Herzog and Piranian. Michigan Math. J. (1959), 221-225.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős, Herzog, and Piranian (1958) posed this question about lemniscates - the sublevel sets of polynomial magnitude. They conjectured both diameter ≤ 2 and width ≤ 2. Pommerenke (1959) proved the disc containment (answering YES) but showed the width conjecture is FALSE.",
+    "problemStatement": "Let f ∈ ℂ[x] be a monic polynomial and E = {z : |f(z)| < 1}. If E is connected, is E contained in a disc of radius 2?",
+    "proofStrategy": "The formalization defines sublevel sets, open/closed discs, and root centroids. Pommerenke's theorem is axiomatized: if E is connected, then E ⊆ D(centroid, 2). The width counterexample is also formalized.",
+    "keyInsights": [
+      "The answer is YES - E is contained in a disc of radius 2",
+      "The center of this disc can be the root centroid (z₁+...+zₙ)/n",
+      "E is connected ⟺ E contains all zeros of f'",
+      "The width conjecture is FALSE: width can exceed √3·2^{1/3} ≈ 2.18",
+      "The diameter is at most 2 (sharper than the 4 implied by disc containment)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 42,
+      "endLine": 84,
+      "summary": "Monic polynomials, sublevel sets, open/closed discs"
+    },
+    {
+      "id": "roots-centroid",
+      "title": "Roots and Centroid",
+      "startLine": 86,
+      "endLine": 109,
+      "summary": "Root multiset, centroid, Vieta's formulas"
+    },
+    {
+      "id": "connectivity",
+      "title": "Connectivity Characterization",
+      "startLine": 111,
+      "endLine": 127,
+      "summary": "E is connected ⟺ E contains critical points"
+    },
+    {
+      "id": "pommerenke-theorem",
+      "title": "Pommerenke's Theorem",
+      "startLine": 140,
+      "endLine": 172,
+      "summary": "Main result: E ⊆ D(centroid, 2)"
+    },
+    {
+      "id": "width-counterexample",
+      "title": "Width Counterexample",
+      "startLine": 174,
+      "endLine": 210,
+      "summary": "Width conjecture is FALSE"
+    },
+    {
+      "id": "diameter",
+      "title": "Diameter Bounds",
+      "startLine": 212,
+      "endLine": 239,
+      "summary": "Diameter ≤ 2 by Pommerenke"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 267,
+      "endLine": 309,
+      "summary": "Main results and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1046 is SOLVED: YES, if E = {z : |f(z)| < 1} is connected, then E is contained in a disc of radius 2 centered at the root centroid. However, the related width conjecture is FALSE (Pommerenke's counterexample).",
+    "implications": "This result shows the subtle geometry of polynomial sublevel sets. While they fit in a disc of radius 2, they can be elongated (width > 2). The connectivity condition is characterized by critical points.",
+    "openQuestions": [
+      "What is the sharp bound on width for connected sublevel sets?",
+      "How does the geometry depend on the degree of f?",
+      "What happens for non-monic polynomials?"
+    ]
   }
 }
