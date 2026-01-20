@@ -2125,17 +2125,22 @@
   },
   {
     "id": "erdos-1091",
-    "title": "Erdős Problem #1091",
+    "title": "Erdős Problem #1091: Odd Cycles with Diagonals in K₄-Free Graphs",
     "slug": "erdos-1091",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a ...-free graph with chromatic number .... Must ... contain an odd cycle with at least two diagonals?\n\nMore gener...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must a K₄-free graph with χ(G) = 4 contain an odd cycle with at least two diagonals? Answer: YES (Voss 1982). General f(r) question: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "odd-cycles",
+      "K4-free"
     ],
     "erdosNumber": 1091,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 25
   },
   {
     "id": "erdos-1095",
