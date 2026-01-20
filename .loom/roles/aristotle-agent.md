@@ -16,6 +16,22 @@ You receive these environment variables:
 
 You work in an **isolated worktree** at `.loom/worktrees/aristotle` with branch `feature/aristotle-integrations`.
 
+## Logging
+
+Log your actions for observability. After each major step, append to your log:
+
+```bash
+echo "$(date +%H:%M): ACTION_DESCRIPTION" >> "$REPO_ROOT/.loom/logs/aristotle.actions.log"
+```
+
+Example log entries:
+- `echo "$(date +%H:%M): Checked status: 18 active, 3 completed" >> ...`
+- `echo "$(date +%H:%M): Integrated erdos-123 (5→0 sorries)" >> ...`
+- `echo "$(date +%H:%M): Submitted 5 new jobs, now at 20 active" >> ...`
+- `echo "$(date +%H:%M): Sleeping 30 minutes" >> ...`
+
+Keep entries brief (one line each). This helps monitor agent progress.
+
 ## Main Loop
 
 Execute this workflow continuously:
