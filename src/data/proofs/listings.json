@@ -10788,17 +10788,24 @@
   },
   {
     "id": "erdos-704",
-    "title": "Erdős Problem #704",
+    "title": "Erdős Problem #704: Chromatic Number of Unit Distance Graphs",
     "slug": "erdos-704",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the unit distance graph in ..., with two vertices joined by an edge if and only if the distance between them is .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate χ(Gₙ), the chromatic number of the unit distance graph in ℝⁿ. Exponential growth established: 1.2ⁿ ≤ χ(Gₙ) ≤ 3ⁿ. Exact base open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "chromatic-number",
+      "unit-distance-graph",
+      "combinatorial-geometry",
+      "hadwiger-nelson",
+      "graph-coloring"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 704,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-707",
