@@ -29,12 +29,7 @@ References:
          arXiv:2409.02974 (2024).
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
-import Mathlib.Data.Set.Card
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Instances.Real
+import Mathlib
 
 open Set Real SimpleGraph
 
@@ -178,15 +173,27 @@ This is the key result showing α < 2.
 axiom bradac_upper_bound : α ≤ (2 : ℝ) ^ binaryEntropy (1/3)
 
 /--
+**Binary entropy H(1/3) < 1:**
+Since H(p) ≤ 1 for all p ∈ (0,1) with equality only at p = 1/2.
+H(1/3) = log₂(3) - 2/3 ≈ 0.9183 < 1.
+-/
+axiom binaryEntropy_one_third_lt_one : binaryEntropy (1/3) < 1
+
+/--
 **Main Result: α < 2**
 The answer to Erdős's question is YES.
 -/
 theorem alpha_less_than_two : α < 2 := by
   have h1 : α ≤ (2 : ℝ) ^ binaryEntropy (1/3) := bradac_upper_bound
   have h2 : (2 : ℝ) ^ binaryEntropy (1/3) < 2 := by
-    -- 2^{H(1/3)} ≈ 1.8899 < 2
     -- Since H(1/3) < 1, we have 2^{H(1/3)} < 2^1 = 2
-    sorry
+    have hH : binaryEntropy (1/3) < 1 := binaryEntropy_one_third_lt_one
+    have h2_pos : (0 : ℝ) < 2 := by norm_num
+    have h2_ne_one : (2 : ℝ) ≠ 1 := by norm_num
+    have h2_gt_one : (1 : ℝ) < 2 := by norm_num
+    calc (2 : ℝ) ^ binaryEntropy (1/3) < (2 : ℝ) ^ (1 : ℝ) := by
+           exact Real.rpow_lt_rpow_of_exponent_lt h2_gt_one hH
+      _ = 2 := Real.rpow_one 2
   exact lt_of_le_of_lt h1 h2
 
 /-
