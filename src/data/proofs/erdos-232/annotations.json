@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e232-header",
+    "proofId": "erdos-232",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #232: Density of Unit-Distance Avoiding Sets**\n\nFor measurable A ⊆ ℝ² with no two points at distance 1, what is max upper density m₁?\n\n**Question:** Is m₁ ≤ 1/4?\n\n**Answer:** YES. Ambrus et al. (2023) proved m₁ ≤ 0.247 < 1/4.\n\n**Status:** SOLVED",
+    "mathContext": "This connects to the Hadwiger-Nelson problem on the chromatic number of the plane.",
+    "significance": "critical",
+    "relatedConcepts": ["Unit distance graphs", "Lebesgue measure", "Chromatic number"]
+  },
+  {
+    "id": "ann-e232-unit-distance",
+    "proofId": "erdos-232",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "Unit Distance",
+    "content": "**IsUnitDistance:**\n\nTwo points p, q ∈ ℝ² are at unit distance if ‖p - q‖ = 1.\n\n```lean\ndef IsUnitDistance (p q : EuclideanSpace ℝ (Fin 2)) : Prop :=\n  euclideanDist p q = 1\n```\n\nThis is the fundamental predicate for the unit distance graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e232-free-set",
+    "proofId": "erdos-232",
+    "range": { "startLine": 68, "endLine": 91 },
+    "type": "definition",
+    "title": "Unit-Distance Free Sets",
+    "content": "**IsUnitDistanceFree:**\n\nA set A ⊆ ℝ² contains no two distinct points at distance 1.\n\n```lean\ndef IsUnitDistanceFree (A : Set (EuclideanSpace ℝ (Fin 2))) : Prop :=\n  ∀ p q, p ∈ A → q ∈ A → IsUnitDistance p q → p = q\n```\n\nEquivalently: distinct points in A never have distance 1. These sets are independent sets in the unit distance graph.",
+    "mathContext": "Unit-distance-free sets have maximum density m₁, the quantity Erdős asked about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e232-ball",
+    "proofId": "erdos-232",
+    "range": { "startLine": 97, "endLine": 109 },
+    "type": "definition",
+    "title": "Balls and Area",
+    "content": "**ballR:**\n\nThe closed ball of radius R centered at the origin.\n\n```lean\ndef ballR (R : ℝ) : Set (EuclideanSpace ℝ (Fin 2)) :=\n  closedBall 0 R\n```\n\n**Area:** λ(B_R) = π R² (Lebesgue measure).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e232-upper-density",
+    "proofId": "erdos-232",
+    "range": { "startLine": 115, "endLine": 135 },
+    "type": "definition",
+    "title": "Upper Density",
+    "content": "**upperDensity:**\n\nThe asymptotic density of a set A as R → ∞.\n\n$$\\overline{\\delta}(A) = \\limsup_{R \\to \\infty} \\frac{\\lambda(A \\cap B_R)}{\\lambda(B_R)}$$\n\nThis measures what fraction of the plane A occupies 'on average' at large scales. Always in [0, 1].",
+    "mathContext": "The lim sup handles sets with irregular structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e232-max-density",
+    "proofId": "erdos-232",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "definition",
+    "title": "Maximum Density m₁",
+    "content": "**maxDensity:**\n\nm₁ = sup{δ̄(A) : A is unit-distance-free and measurable}\n\n```lean\nnoncomputable def maxDensity : ℝ :=\n  sSup {d : ℝ | ∃ A, IsUnitDistanceFree A ∧ upperDensity A = d}\n```\n\nThis is the quantity Erdős asked about. The question: is m₁ ≤ 1/4?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e232-trivial",
+    "proofId": "erdos-232",
+    "range": { "startLine": 157, "endLine": 174 },
+    "type": "axiom",
+    "title": "Trivial Upper Bound",
+    "content": "**trivial_upper_bound:**\n\nm₁ ≤ 1/2.\n\n```lean\naxiom trivial_upper_bound : maxDensity ≤ 1 / 2\n```\n\n**Why?** For any unit vector u, sets A and A + u must be disjoint (otherwise two points at distance 1). This forces density ≤ 1/2.",
+    "mathContext": "This is the basic observation - beating 1/2 requires clever arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e232-hexagonal",
+    "proofId": "erdos-232",
+    "range": { "startLine": 180, "endLine": 186 },
+    "type": "axiom",
+    "title": "Hexagonal Lower Bound",
+    "content": "**hexagonal_lower_bound:**\n\nm₁ ≥ π/(8√3) ≈ 0.2267.\n\n```lean\naxiom hexagonal_lower_bound :\n    maxDensity ≥ Real.pi / (8 * Real.sqrt 3)\n```\n\nConstruction: Union of open discs of radius 1/2 at a suitably spaced hexagonal lattice. Each disc is unit-distance-free, and hexagonal packing is optimal.",
+    "mathContext": "The hexagonal lattice appears naturally in optimal packing problems.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e232-croft",
+    "proofId": "erdos-232",
+    "range": { "startLine": 188, "endLine": 193 },
+    "type": "axiom",
+    "title": "Croft's Improvement (1967)",
+    "content": "**croft_lower_bound:**\n\nm₁ ≥ 0.22936.\n\n```lean\naxiom croft_lower_bound :\n    maxDensity ≥ 0.22936\n```\n\nCroft refined the hexagonal construction to achieve a slightly higher density. Published in 'Incidence incidents' (1967).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e232-solution",
+    "proofId": "erdos-232",
+    "range": { "startLine": 199, "endLine": 227 },
+    "type": "axiom",
+    "title": "Ambrus et al. (2023)",
+    "content": "**ambrus_et_al_upper_bound:**\n\nm₁ ≤ 0.247.\n\n```lean\naxiom ambrus_et_al_upper_bound :\n    maxDensity ≤ 0.247\n```\n\nThis breakthrough result by Ambrus, Csiszárik, Matolcsi, Varga, and Zsámboki definitively answers Erdős's question: YES, m₁ ≤ 1/4 (in fact, strictly less).",
+    "mathContext": "Published in arXiv:2207.14179 (2023).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e232-answer",
+    "proofId": "erdos-232",
+    "range": { "startLine": 208, "endLine": 227 },
+    "type": "theorem",
+    "title": "Erdős's Question Answered",
+    "content": "**erdos_232_solution and erdos_232_quarter_bound:**\n\n```lean\ntheorem erdos_232_solution : maxDensity < 1 / 4 := by\n  calc maxDensity ≤ 0.247 := ambrus_et_al_upper_bound\n    _ < 1 / 4 := by norm_num\n\ntheorem erdos_232_quarter_bound : maxDensity ≤ 1 / 4 := ...\n```\n\nThe answer to Erdős's question 'Is m₁ ≤ 1/4?' is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e232-bounds",
+    "proofId": "erdos-232",
+    "range": { "startLine": 233, "endLine": 244 },
+    "type": "theorem",
+    "title": "Current Best Bounds",
+    "content": "**current_bounds:**\n\n0.22936 ≤ m₁ ≤ 0.247\n\n```lean\ntheorem current_bounds :\n    0.22936 ≤ maxDensity ∧ maxDensity ≤ 0.247 :=\n  ⟨croft_lower_bound, ambrus_et_al_upper_bound⟩\n```\n\nThe gap is only 0.01764. The exact value of m₁ remains unknown.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e232-examples",
+    "proofId": "erdos-232",
+    "range": { "startLine": 250, "endLine": 274 },
+    "type": "theorem",
+    "title": "Examples",
+    "content": "**Basic examples of unit-distance-free sets:**\n\n1. **Empty set:** Trivially unit-distance-free\n2. **Singletons:** One point has no pairs\n3. **Ball of radius 1/2:** Any two points have distance < 1\n\n```lean\ntheorem small_ball_unitDistanceFree (c : EuclideanSpace ℝ (Fin 2)) :\n    IsUnitDistanceFree (ball c (1/2 : ℝ))\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e232-chromatic",
+    "proofId": "erdos-232",
+    "range": { "startLine": 280, "endLine": 305 },
+    "type": "definition",
+    "title": "Connection to Chromatic Number",
+    "content": "**unitDistanceGraphAdj and chromatic_density_connection:**\n\nThe unit distance graph has vertices = ℝ² and edges between points at distance 1.\n\n```lean\ndef unitDistanceGraphAdj (p q : EuclideanSpace ℝ (Fin 2)) : Prop :=\n  IsUnitDistance p q\n```\n\nA unit-distance-free set is an independent set in this graph. If χ is the chromatic number (4 ≤ χ ≤ 7), then m₁ ≤ 1/χ is expected. Since m₁ ≤ 0.247 < 1/4, this is consistent with χ ≥ 5.",
+    "mathContext": "This is the Hadwiger-Nelson problem - finding χ(ℝ²).",
+    "significance": "key",
+    "relatedConcepts": ["Hadwiger-Nelson problem", "Graph coloring"]
+  },
+  {
+    "id": "ann-e232-summary",
+    "proofId": "erdos-232",
+    "range": { "startLine": 311, "endLine": 331 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_232_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_232_summary :\n    maxDensity ≤ 1 / 4 ∧\n    0.22936 ≤ maxDensity ∧ maxDensity ≤ 0.247\n```\n\n**Status:** SOLVED\n**Answer:** m₁ ≤ 0.247 < 1/4\n**Best bounds:** 0.22936 ≤ m₁ ≤ 0.247",
+    "significance": "key"
+  }
+]
