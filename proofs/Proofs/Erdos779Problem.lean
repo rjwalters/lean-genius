@@ -182,11 +182,22 @@ The heuristic argument for why the conjecture should be true:
 - This is "ridiculously small" as Cambie notes
 -/
 
+/-- Each prime is at least 2. -/
+lemma nthPrime_ge_two (k : ℕ) : nthPrime k ≥ 2 := by
+  simp only [nthPrime]
+  exact Nat.Prime.two_le (Nat.prime_nth_prime k)
+
 /-- The primorial grows very fast: roughly e^(n log n) by the prime number theorem. -/
 theorem primorial_growth_heuristic : ∀ n ≥ 1, primorial n ≥ 2^n := by
-  intro n _
-  -- For small n this is clear; for large n follows from PNT
-  sorry
+  intro n hn
+  -- Product of n terms each ≥ 2 is ≥ 2^n
+  simp only [primorial]
+  calc ∏ i ∈ range n, nthPrime i
+      ≥ ∏ _i ∈ range n, 2 := by
+        apply Finset.prod_le_prod
+        · intro i _; exact Nat.zero_le 2
+        · intro i _; exact nthPrime_ge_two i
+    _ = 2 ^ n := by simp [Finset.prod_const, Finset.card_range]
 
 /-
 ## Connection to Other Problems
