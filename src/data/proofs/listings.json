@@ -6523,17 +6523,24 @@
   },
   {
     "id": "erdos-378",
-    "title": "Erdős Problem #378",
+    "title": "Erdos Problem #378: Density of Squarefree Binomial Coefficients",
     "slug": "erdos-378",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does the density of integers ... for which ... is squarefree for at least ... values of ... exist? Is this density ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does the density of n for which C(n,k) is squarefree for at least r values of k exist and is it positive? YES to both, resolved via Granville-Ramare.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "squarefree",
+      "density",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 378,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 17
   },
   {
     "id": "erdos-379",
