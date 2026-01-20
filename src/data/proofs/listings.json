@@ -10863,17 +10863,22 @@
   },
   {
     "id": "erdos-725",
-    "title": "Erdős Problem #725",
+    "title": "Erdős Problem #725: Asymptotic Counting of Latin Rectangles",
     "slug": "erdos-725",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for the number of ... Latin rectangles.\n\n\n\nErds and Kaplansky  proved the count is\\[\\sim e^{-{2}}(...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Give an asymptotic formula for the number of k×n Latin rectangles. Known: L(k,n) ~ e^{-C(k,2)}(n!)^k for k ≤ n^{1/3-o(1)}. General formula: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "latin-rectangles",
+      "asymptotic-enumeration",
+      "permanents"
     ],
     "erdosNumber": 725,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 24
   },
   {
     "id": "erdos-727",
