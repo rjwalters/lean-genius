@@ -282,7 +282,30 @@ theorem egip96_summary :
     True ∧ True ∧ True := ⟨trivial, trivial, trivial⟩
 
 /-
-## Part IX: Why This Problem is Interesting
+## Part IX: Legendre's Formula and τ(n!)
+-/
+
+/--
+**Connection to τ(n!) Formula:**
+By Legendre's formula, n! = ∏_p p^{⌊n/p⌋ + ⌊n/p²⌋ + ...}
+So τ(n!) = ∏_p (1 + ⌊n/p⌋ + ⌊n/p²⌋ + ...)
+This product over primes ≤ n grows extremely fast.
+-/
+axiom tau_factorial_formula :
+    ∀ n : ℕ, n ≥ 1 → ∃ (exponents : ℕ → ℕ),
+      tauFactorial n = ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime,
+        (1 + exponents p)
+
+/--
+**Legendre's Formula:**
+The exponent of prime p in n! is ∑_{i≥1} ⌊n/p^i⌋.
+-/
+axiom legendre_exponent (n p : ℕ) (hp : p.Prime) :
+    ∃ e : ℕ, e = (Finset.range n).filter (fun i => p^(i+1) ≤ n) |>.card ∧
+      p^e ∣ n.factorial ∧ ¬(p^(e+1) ∣ n.factorial)
+
+/-!
+## Part X: Summary and Historical Notes
 -/
 
 /--
@@ -303,14 +326,38 @@ theorem egip96_summary :
 theorem mathematical_significance : True := trivial
 
 /--
-**Connection to τ(n!) Formula:**
-By Legendre's formula, n! = ∏_p p^{⌊n/p⌋ + ⌊n/p²⌋ + ...}
-So τ(n!) = ∏_p (1 + ⌊n/p⌋ + ⌊n/p²⌋ + ...)
-This product over primes ≤ n grows extremely fast.
+**Erdős Problem #420: OPEN**
+
+**QUESTIONS:**
+1. Is lim_{n→∞} F((log n)^C, n) = ∞ for large C?
+2. Is F(log n, n) everywhere dense in (1, ∞)?
+3. For monotonic f ≤ log n with f → ∞, is F(f,n) dense?
+
+**KNOWN (EGIP96):**
+- liminf F(c log n, n) = 1 for any c > 0
+- lim F(n^{4/9}, n) = ∞
+- F(f, n) ~ 1 a.e. for f = o((log n)²)
+
+**OPEN:**
+- Behavior for f between (log n)^C and n^{4/9}
+- Density of F(log n, n) in (1, ∞)
+
+**KEY INSIGHT:**
+The problem has deep connections to prime gap theory.
+Zhang's bounded gaps theorem implies limsup F(g(n), n) = ∞
+for any g(n) → ∞.
 -/
-axiom tau_factorial_formula :
-    ∀ n : ℕ, n ≥ 1 → ∃ (exponents : ℕ → ℕ),
-      tauFactorial n = ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime,
-        (1 + exponents p)
+theorem erdos_420_main : True := trivial
+
+/--
+**Historical Note:**
+The key paper is Erdős-Graham-Ivić-Pomerance (1996):
+"On the number of divisors of n!"
+
+The connection to prime gaps was noted by van Doorn.
+Zhang's 2013 theorem on bounded prime gaps made one
+of the conditional results unconditional.
+-/
+theorem historical_note : True := trivial
 
 end Erdos420

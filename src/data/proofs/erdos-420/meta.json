@@ -21,7 +21,7 @@
     "sorries": 0,
     "erdosNumber": 420,
     "erdosUrl": "https://erdosproblems.com/420",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
@@ -131,11 +131,18 @@
       "endLine": 282
     },
     {
-      "id": "significance",
-      "title": "Mathematical Significance",
-      "summary": "Why this problem is interesting, tau factorial formula",
+      "id": "legendre",
+      "title": "Legendre's Formula and τ(n!)",
+      "summary": "tau_factorial_formula, legendre_exponent",
       "startLine": 284,
-      "endLine": 316
+      "endLine": 302
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Historical Notes",
+      "summary": "mathematical_significance, erdos_420_main, historical_note",
+      "startLine": 304,
+      "endLine": 360
     }
   ],
   "conclusion": {
