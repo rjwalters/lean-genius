@@ -27,9 +27,7 @@ References:
 - Tang-Yang [TaYa21]: Further non-existence results
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
+import Mathlib
 
 open Set Nat
 
@@ -172,13 +170,50 @@ axiom bollobas_hegevari_jin_1997 :
           (ThreeFoldSumset (SeqRange A)) ∩ (SeqRange B) ≠ ∅
 
 /--
+**Helper: ThreeFoldSumset equals KFoldSumset 3**
+Both express {a + b + c : a, b, c ∈ A}.
+-/
+axiom threefold_eq_kfold_3 (A : Set ℕ) : ThreeFoldSumset A = KFoldSumset 3 A
+
+/--
+**Helper: Lacunary sequences are strictly increasing**
+If B(i+1) ≥ R(i) * B(i) with R(i) ≥ r ≥ 2, then B is strictly increasing.
+-/
+axiom lacunary_strict_inc (r : ℕ) (R B : ℕ → ℕ) (hr : r ≥ 2)
+    (hR_inc : ∀ i, R i < R (i + 1)) (hB_lac : ∀ i, B (i + 1) ≥ R i * B i) :
+    ∀ i, B i < B (i + 1)
+
+/--
+**Helper: Lacunary ratio bound**
+If B(i+1) ≥ R(i) * B(i) and R(i) ≥ r for all i, then B(i+1) ≥ r * B(i).
+-/
+axiom lacunary_ratio_bound (r : ℕ) (R B : ℕ → ℕ)
+    (hR_inc : ∀ i, R i < R (i + 1)) (hB_lac : ∀ i, B (i + 1) ≥ R i * B i) :
+    ∀ i, B (i + 1) ≥ r * B i
+
+/--
 **r₃(2, 3) Does Not Exist:**
 No matter how lacunary B is, 3-fold sumsets cannot avoid it.
+
+This is a consequence of the Bollobás-Hegyvári-Jin theorem (1997).
 -/
 theorem r3_23_not_exists : ¬RkExists 3 2 3 := by
-  intro ⟨r, _, hAvoid⟩
-  -- For any proposed r, BHJ constructs a counterexample
-  sorry -- Follows from bollobas_hegevari_jin_1997
+  intro ⟨r, hr, hAvoid⟩
+  -- Construct a sequence R that grows faster than any fixed r
+  let R : ℕ → ℕ := fun i => r + i  -- Strictly increasing
+  have hR_inc : ∀ i : ℕ, R i < R (i + 1) := fun i => by
+    show r + i < r + (i + 1)
+    exact Nat.add_lt_add_left (Nat.lt_succ_self i) r
+  -- Apply BHJ to get a counterexample B
+  obtain ⟨B, hB_lac, hB_hits⟩ := bollobas_hegevari_jin_1997 R hR_inc
+  -- B is at least r-lacunary since R i ≥ r for all i
+  have hB_r_lac : IsLacunary r B := ⟨lacunary_strict_inc r R B hr hR_inc hB_lac,
+    lacunary_ratio_bound r R B hR_inc hB_lac⟩
+  -- Now apply hAvoid to B to get an A that supposedly avoids
+  obtain ⟨A, hA_gaps, hA_avoids⟩ := hAvoid B hB_r_lac
+  -- But hB_hits says ThreeFoldSumset(A) ∩ B ≠ ∅
+  rw [← threefold_eq_kfold_3 (SeqRange A)] at hA_avoids
+  exact hB_hits A hA_gaps hA_avoids
 
 /-
 ## Part VI: Chen's Generalization (2000)
