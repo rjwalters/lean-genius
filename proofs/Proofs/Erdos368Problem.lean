@@ -139,7 +139,32 @@ theorem mahler_improves_polya :
   intro ⟨c, hc, N₀, hbound⟩
   intro M
   -- log log n → ∞, so eventually c · log log n > M
-  sorry
+  -- We need: c * log(log(n)) > M for large enough n
+  -- This means log(log(n)) > M/c, i.e., log(n) > exp(M/c), i.e., n > exp(exp(M/c))
+  have h_loglog_tendsto : Filter.Tendsto (fun n : ℕ => Real.log (Real.log n))
+      Filter.atTop Filter.atTop := by
+    apply Filter.Tendsto.comp Real.tendsto_log_atTop
+    apply Filter.Tendsto.comp Real.tendsto_log_atTop
+    exact tendsto_natCast_atTop_atTop
+  -- c * log(log(n)) → ∞ as n → ∞
+  have h_scaled_tendsto : Filter.Tendsto (fun n : ℕ => c * Real.log (Real.log n))
+      Filter.atTop Filter.atTop := by
+    exact Filter.Tendsto.const_mul_atTop hc h_loglog_tendsto
+  -- Get N₁ such that c * log(log(n)) > M for n ≥ N₁
+  have h_eventually : ∀ᶠ (n : ℕ) in Filter.atTop, c * Real.log (Real.log n) > M := by
+    exact h_scaled_tendsto.eventually_gt_atTop M
+  -- Extract concrete N₁ from eventually
+  obtain ⟨N₁, hN₁⟩ := h_eventually.exists_forall_of_atTop
+  -- Use max(N₀, N₁) to ensure both conditions hold
+  use max N₀ N₁
+  intro n hn
+  have hn₀ : n ≥ N₀ := le_of_max_le_left hn
+  have hn₁ : n ≥ N₁ := le_of_max_le_right hn
+  have hbound_n := hbound n hn₀
+  have hM_lt := hN₁ n hn₁
+  -- F n ≥ c * log(log(n)) > M
+  have hFn_gt : (F n : ℝ) > M := lt_of_lt_of_le hM_lt hbound_n
+  exact Nat.cast_lt.mp (by linarith : (M : ℝ) < F n)
 
 /-
 ## Part V: Schinzel's Upper Bound (1967)
@@ -221,8 +246,76 @@ theorem pasten_improves_mahler :
     (∃ c' : ℝ, c' > 0 ∧ ∃ N' : ℕ,
       ∀ n ≥ N', (F n : ℝ) ≥ c' * Real.log (Real.log n)) := by
   intro ⟨c, hc, N, hbound⟩
-  -- (log log n)² / (log log log n) > log log n for large n
-  sorry
+  -- Key insight: (log log n)² / (log log log n) ≥ (log log n) when log log n / log log log n ≥ 1
+  -- This holds for large n since log log n grows faster than log log log n
+
+  -- log log n → ∞
+  have h_loglog_tendsto : Filter.Tendsto (fun n : ℕ => Real.log (Real.log n))
+      Filter.atTop Filter.atTop := by
+    apply Filter.Tendsto.comp Real.tendsto_log_atTop
+    apply Filter.Tendsto.comp Real.tendsto_log_atTop
+    exact tendsto_natCast_atTop_atTop
+
+  -- log log log n → ∞ (but slower)
+  have h_logloglog_tendsto : Filter.Tendsto (fun n : ℕ => Real.log (Real.log (Real.log n)))
+      Filter.atTop Filter.atTop := by
+    apply Filter.Tendsto.comp Real.tendsto_log_atTop h_loglog_tendsto
+
+  -- Eventually log log n > 1 + log log log n
+  -- (which implies log log n / log log log n > 1 when log log log n > 0)
+  -- Key: log log log n → ∞, so eventually > 0 and < log log n
+  have h_eventually_ratio_ge_one : ∀ᶠ (n : ℕ) in Filter.atTop,
+      Real.log (Real.log n) / Real.log (Real.log (Real.log n)) > 1 ∧
+      Real.log (Real.log (Real.log n)) > 0 := by
+    -- Both log log n and log log log n tend to infinity
+    -- Their ratio log log n / log log log n also tends to infinity
+    -- So eventually ratio > 1 and log log log n > 0
+    have h_ratio_tendsto : Filter.Tendsto
+        (fun n : ℕ => Real.log (Real.log n) / Real.log (Real.log (Real.log n)))
+        Filter.atTop Filter.atTop := by
+      -- Use that x/log(x) → ∞ as x → ∞
+      -- and compose with log log n → ∞
+      sorry  -- This is a technical but provable limit
+    have h1 : ∀ᶠ (n : ℕ) in Filter.atTop,
+        Real.log (Real.log n) / Real.log (Real.log (Real.log n)) > 1 :=
+      h_ratio_tendsto.eventually_gt_atTop 1
+    have h2 : ∀ᶠ (n : ℕ) in Filter.atTop, Real.log (Real.log (Real.log n)) > 0 :=
+      h_logloglog_tendsto.eventually_gt_atTop 0
+    exact h1.and h2
+
+  -- Get N₁ such that ratio > 1 and log log log n > 0 for n ≥ N₁
+  obtain ⟨N₁, hN₁⟩ := h_eventually_ratio_ge_one.exists_forall_of_atTop
+
+  -- Use c as c' and max(N, N₁) as N'
+  refine ⟨c, hc, max N N₁, ?_⟩
+  intro n hn
+  have hn_N : n ≥ N := le_of_max_le_left hn
+  have hn_N₁ : n ≥ N₁ := le_of_max_le_right hn
+
+  have hbound_n := hbound n hn_N
+  obtain ⟨h_ratio_gt_one, h_pos⟩ := hN₁ n hn_N₁
+
+  -- From ratio > 1 and denominator > 0, we have log log n > 0
+  have h_loglog_pos : Real.log (Real.log n) > 0 := by
+    -- ratio = (log log n) / (log log log n) > 1 and log log log n > 0
+    -- So log log n > log log log n > 0
+    have h : Real.log (Real.log n) > Real.log (Real.log (Real.log n)) := by
+      calc Real.log (Real.log n)
+          = Real.log (Real.log n) / Real.log (Real.log (Real.log n)) * Real.log (Real.log (Real.log n)) := by
+            field_simp [ne_of_gt h_pos]
+        _ > 1 * Real.log (Real.log (Real.log n)) := by
+            apply mul_lt_mul_of_pos_right h_ratio_gt_one h_pos
+        _ = Real.log (Real.log (Real.log n)) := one_mul _
+    exact lt_trans h_pos h
+
+  -- Now: c * (log log n)² / (log log log n) = c * (log log n) * (log log n / log log log n)
+  --      > c * (log log n) * 1 = c * (log log n)
+  calc (F n : ℝ) ≥ c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n)) := hbound_n
+    _ = c * Real.log (Real.log n) * (Real.log (Real.log n) / Real.log (Real.log (Real.log n))) := by ring
+    _ ≥ c * Real.log (Real.log n) * 1 := by
+        apply mul_le_mul_of_nonneg_left (le_of_lt h_ratio_gt_one)
+        exact mul_nonneg (le_of_lt hc) (le_of_lt h_loglog_pos)
+    _ = c * Real.log (Real.log n) := by ring
 
 /-
 ## Part VIII: Concrete Examples
