@@ -8756,17 +8756,24 @@
   },
   {
     "id": "erdos-581",
-    "title": "Erdős Problem #581",
+    "title": "Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs",
     "slug": "erdos-581",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal ... such that a triangle-free graph on ... edges must contain a bipartite graph with ... edges. Determ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(m) be the maximal k such that every triangle-free graph with m edges contains a bipartite subgraph with k edges. Alon (1996) proved f(m) = m/2 + Θ(m^{4/5}).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "bipartite-graphs",
+      "triangle-free",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 581,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 22
   },
   {
     "id": "erdos-582",
