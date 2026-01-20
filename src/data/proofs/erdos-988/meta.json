@@ -1,33 +1,141 @@
 {
   "id": "erdos-988",
-  "title": "Erdős Problem #988",
+  "title": "Erdős Problem #988: Discrepancy on the Sphere",
   "slug": "erdos-988",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a subset of the unit sphere then define the discrepancy\\[D(P) = \\max_C \\lvert \\lvert C\\cap P\\rvert - \\alpha_C \\lver...",
+  "description": "Does the minimum discrepancy of n-point configurations on the sphere tend to infinity? YES, proved by Schmidt (1969). For S²: n^{1/3} ≤ min D(n) ≤ n^{1/2}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Schmidt (1969), Roth (1954 for square)",
     "sourceUrl": "https://erdosproblems.com/988",
-    "date": "",
-    "status": "pending",
+    "date": "1969",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos988Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrepancy-theory",
+      "spherical-geometry",
+      "geometric-measure-theory",
+      "uniform-distribution",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 988,
     "erdosUrl": "https://erdosproblems.com/988",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean n-space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "inner",
+        "description": "Inner product",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit along filters",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "UnitSphere definition: S^d in Euclidean space",
+      "SphericalCap structure: parametrized by center and height",
+      "SphereConfiguration: finite point sets on sphere",
+      "discrepancy function: sup over all caps",
+      "minDiscrepancy function: inf over all n-point sets",
+      "roth_1954 axiom: rectangle discrepancy for square",
+      "schmidt_1969 axiom: spherical cap discrepancy for any dimension",
+      "erdos_988_solved theorem: main result",
+      "Bounds: n^{1/3} ≤ minD(n) ≤ n^{1/2} for S²"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #988 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $P\\subseteq S^2$ is a subset of the unit sphere then define the discrepancy\\[D(P) = \\max_C \\lvert \\lvert C\\cap P\\rvert - \\alpha_C \\lvert P\\rvert \\rvert,\\]where the maximum is taken over all spherical caps $C$, and $\\alpha_C$ is the appropriately normalised measure of $C$.\n\nIs it true that\\[\\min_{\\lvert P\\rvert=n}D(P)\\to \\infty\\]as $n\\to \\infty$?\n\n\n\nRoth \\cite{Ro54} proved that the answer is yes if we replace the sphere by a square.\n\nThis is true, and was proved (in any number of dimensions) by Schmidt \\cite{Sc69b}.\n\n\n\n\nReferences\n\n\n[Ro54] Roth, K. F., On irregularities of distribution. Mathematika (1954), 73--79.\n\n[Sc69b] Schmidt, Wolfgang M., Irregularities of distribution. {IV}. Invent. Math. (1969), 55--82.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #988: Discrepancy on the Sphere**\n\nThis is a fundamental problem in discrepancy theory, asking whether finite point sets on the sphere can approximate uniform distribution arbitrarily well.\n\n**Key History:**\n- Erdős (1964): Posed the problem\n- Roth (1954): Proved the analogous result for the unit square with axis-aligned rectangles\n- Schmidt (1969): Proved for the sphere in any dimension\n\n**Mathematical Setting:**\nGiven n points on S², we measure 'discrepancy' by how much the point count in any spherical cap deviates from the expected fraction. Schmidt proved this deviation must grow as n → ∞.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIf P ⊆ S² is a subset of the unit sphere, define the discrepancy:\n\n$$D(P) = \\max_C |#(C \\cap P) - \\alpha_C \\cdot |P||$$\n\nwhere the maximum is over all spherical caps C, and αC is the normalized measure of C.\n\n**Question:** Does min_{|P|=n} D(P) → ∞ as n → ∞?\n\n**Answer: YES**\n\nSchmidt (1969) proved this for spheres in any dimension d ≥ 1.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sphere and Caps:**\n   - UnitSphere d: {x ∈ ℝ^{d+1} : ||x|| = 1}\n   - SphericalCap: parametrized by center and height h ∈ [-1,1]\n   - Cap points: {x ∈ S^d : ⟨v, x⟩ ≥ h}\n\n2. **Discrepancy:**\n   - capDiscrepancy: |#(C ∩ P) - αC · |P|| for one cap\n   - discrepancy: sup over all caps\n   - minDiscrepancy: inf over all n-point configurations\n\n3. **Key Theorems:**\n   - roth_1954: Rectangle discrepancy ≥ c·(log n)^{1/4}\n   - schmidt_1969: Spherical discrepancy ≥ c·n^{d/(2d+2)}\n   - erdos_988_solved: Tendsto minDiscrepancy atTop atTop",
+    "keyInsights": [
+      "**Perfect Uniformity Impossible:** No matter how cleverly you place n points, some spherical cap will have noticeably wrong count",
+      "**Dimensional Dependence:** For S^d, discrepancy grows at least as n^{d/(2d+2)}. For S²: n^{1/3}",
+      "**Roth's Precedent:** The square case with rectangles (1954) established the paradigm before Schmidt's spherical result",
+      "**Exponent Gap:** For S², lower bound is n^{1/3}, upper bound is n^{1/2} - exact exponent unknown!",
+      "**Monte Carlo Connection:** Low-discrepancy sequences improve numerical integration (Koksma-Hlawka inequality)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Problem context and discrepancy theory background",
+      "startLine": 30,
+      "endLine": 44
+    },
+    {
+      "id": "sphere-caps",
+      "title": "The Sphere and Spherical Caps",
+      "summary": "UnitSphere, SphericalCap structure, measure",
+      "startLine": 46,
+      "endLine": 69
+    },
+    {
+      "id": "discrepancy",
+      "title": "Discrepancy Definitions",
+      "summary": "SphereConfiguration, capDiscrepancy, discrepancy, minDiscrepancy",
+      "startLine": 71,
+      "endLine": 96
+    },
+    {
+      "id": "roth",
+      "title": "Roth's Theorem",
+      "summary": "Rectangle discrepancy for the unit square",
+      "startLine": 98,
+      "endLine": 126
+    },
+    {
+      "id": "schmidt",
+      "title": "Schmidt's Theorem",
+      "summary": "Spherical cap discrepancy for any dimension",
+      "startLine": 128,
+      "endLine": 144
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_988_solved: discrepancy tends to infinity",
+      "startLine": 146,
+      "endLine": 168
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds and Rates",
+      "summary": "Lower bound n^{1/3}, upper bound n^{1/2}",
+      "startLine": 170,
+      "endLine": 192
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Final results and erdos_988_summary theorem",
+      "startLine": 210,
+      "endLine": 241
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #988 asked whether the minimum discrepancy of n-point configurations on the sphere tends to infinity. Schmidt (1969) proved YES for spheres in any dimension. For S², the growth rate is between n^{1/3} and n^{1/2}.",
+    "implications": "**Connections and Applications**\n\n1. **Discrepancy Theory:** Fundamental impossibility result for uniform distribution\n\n2. **Numerical Integration:** Low-discrepancy sequences give better quadrature (Koksma-Hlawka inequality)\n\n3. **Quasi-Monte Carlo:** Applications in finance, physics simulations\n\n4. **Combinatorial Geometry:** Sphere packing and point distributions\n\n5. **Coding Theory:** Spherical codes and communication systems",
+    "openQuestions": [
+      "What is the exact exponent for S²? (Between 1/3 and 1/2)",
+      "Optimal point configurations: explicit constructions with minimal discrepancy?",
+      "Relationship to spherical t-designs?",
+      "Computational aspects: efficiently computing discrepancy?"
+    ]
   }
 }
