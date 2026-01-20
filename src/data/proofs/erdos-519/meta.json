@@ -1,33 +1,101 @@
 {
   "id": "erdos-519",
-  "title": "Erdős Problem #519",
+  "title": "Power Sums of Complex Numbers",
   "slug": "erdos-519",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with .... Must there exist an absolute constant ... such that\\[\\max_{1\\leq k\\leq n}\\left\\lvert \\sum_{i}z_i^k\\right\\rv...",
+  "description": "Turán's power sum problem: For z₁,...,zₙ ∈ ℂ with z₁=1, is there an absolute c>0 such that max_k |∑zᵢᵏ| > c? YES (Atkinson 1961). Best known: c > 1/2 (Biró 2000). Optimal ≈ 0.7.",
   "meta": {
-    "author": "Unknown",
+    "author": "Turán (problem), Atkinson (1961), Biró (1994, 2000)",
     "sourceUrl": "https://erdosproblems.com/519",
-    "date": "",
-    "status": "pending",
+    "date": "2000",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos519Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "complex-analysis", "power-sums", "turan"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 519,
     "erdosUrl": "https://erdosproblems.com/519",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "Complex", "description": "Complex numbers", "module": "Mathlib.Data.Complex.Basic" },
+      { "theorem": "Complex.abs", "description": "Complex absolute value", "module": "Mathlib.Data.Complex.Basic" },
+      { "theorem": "Complex.exp", "description": "Complex exponential for roots of unity", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex" },
+      { "theorem": "Finset.sum", "description": "Finite sums", "module": "Mathlib.Data.Finset.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of power sums",
+      "Maximum power sum definition",
+      "Turán's original question formalization",
+      "Atkinson's theorem: c = 1/6",
+      "Biró's improvements: c = 1/2, then c > 1/2",
+      "Roots of unity special case"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #519 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $z_1,\\ldots,z_n\\in \\mathbb{C}$ with $z_1=1$. Must there exist an absolute constant $c>0$ such that\\[\\max_{1\\leq k\\leq n}\\left\\lvert \\sum_{i}z_i^k\\right\\rvert>c?\\]\n\n\n\nA problem of Tur\\'{a}n, who proved that this maximum is $\\gg 1/n$. This was solved by Atkinson \\cite{At61b}, who showed that $c=1/6$ suffices. This has been improved by Bir\\'{o}, first to $c=1/2$ \\cite{Bi94}, and later to an absolute constant $c>1/2$ \\cite{Bi00}. Based on computational evidence it is likely that the optimal value of $c$ is $\\approx 0.7$.\n\nSee also [973].\n\n\n\n\nReferences\n\n\n[At61b] Atkinson, F. V., On sums of powers of complex numbers. Acta Math. Acad. Sci. Hungar. (1961), 185-188.\n\n[Bi00] Bir\\'{o}, Andr\\'{a}s, An improved estimate in a power sum problem of Tur\\'{a}n. Indag. Math. (N.S.) (2000), 343-358.\n\n[Bi94] Bir\\'{o}, A., On a problem of Tur\\'{a}n concerning sums of powers of complex numbers. Acta Math. Hungar. (1994), 209-216.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Turán, who proved the max is at least c/n. Atkinson (1961) first showed an absolute constant c = 1/6 works. Biró improved this to c = 1/2 (1994) and then c > 1/2 (2000). Computational evidence suggests the optimal c ≈ 0.7.",
+    "problemStatement": "Let z₁, ..., zₙ ∈ ℂ with z₁ = 1. Must there exist an absolute constant c > 0 such that max_{1 ≤ k ≤ n} |∑ᵢ zᵢᵏ| > c?",
+    "proofStrategy": "The formalization defines power sums, the maximum power sum, and the constraint z₁ = 1. Atkinson's and Biró's results are axiomatized. The trivial case n = 1 and roots of unity are analyzed.",
+    "keyInsights": [
+      "The answer is YES - an absolute constant exists",
+      "Turán's original bound c/n was not absolute",
+      "Atkinson first proved c = 1/6 works",
+      "Biró improved to c > 1/2",
+      "Optimal value is conjectured to be ≈ 0.7",
+      "The constraint z₁ = 1 prevents trivial solutions"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 41,
+      "endLine": 71,
+      "summary": "Power sum, magnitude, maximum, and z₁ = 1 constraint"
+    },
+    {
+      "id": "turan-result",
+      "title": "Turán's Original Result",
+      "startLine": 73,
+      "endLine": 94,
+      "summary": "Original c/n bound and the question"
+    },
+    {
+      "id": "atkinson",
+      "title": "Atkinson's Theorem",
+      "startLine": 96,
+      "endLine": 117,
+      "summary": "First absolute constant c = 1/6"
+    },
+    {
+      "id": "biro",
+      "title": "Biró's Improvements",
+      "startLine": 119,
+      "endLine": 148,
+      "summary": "Improved to c = 1/2 and then c > 1/2"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 181,
+      "endLine": 204,
+      "summary": "Roots of unity and their power sum behavior"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 253,
+      "endLine": 293,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #519 is SOLVED: YES, there exists an absolute constant c > 0 such that max_k |∑zᵢᵏ| > c whenever z₁ = 1. Best known: c > 1/2 (Biró 2000). The optimal value is conjectured to be ≈ 0.7.",
+    "implications": "This result shows that power sums of complex numbers with z₁ = 1 cannot all be small - some power k must give a sum bounded away from 0. It connects complex analysis to combinatorial number theory.",
+    "openQuestions": [
+      "What is the exact optimal value of c?",
+      "Is c = 0.7 the correct answer?",
+      "Can the gap between 1/2 and 0.7 be closed?"
+    ]
   }
 }

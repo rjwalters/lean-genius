@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "id": "ann-519-1",
+    "proofId": "erdos-519",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #519: Power Sums of Complex Numbers**\n\n**Question:** For z₁, ..., zₙ ∈ ℂ with z₁ = 1, is there an absolute constant c > 0 such that max_{1≤k≤n} |∑ᵢ zᵢᵏ| > c?\n\n**Answer: YES** (Atkinson 1961)\n\nBest known: c > 1/2 (Biró 2000). Optimal value is conjectured to be ≈ 0.7.",
+    "mathContext": "This is Turán's power sum problem. The key insight is that while individual power sums can cancel to nearly zero, not ALL power sums can be simultaneously small.",
+    "significance": "critical",
+    "relatedConcepts": ["Power sums", "Complex analysis", "Turán's problems"]
+  },
+  {
+    "id": "ann-519-2",
+    "proofId": "erdos-519",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "Power Sum Definition",
+    "content": "**powerSum z k:**\n\nThe k-th power sum S_k = ∑ᵢ zᵢᵏ.\n\nFor complex numbers z₁, ..., zₙ, this sum can exhibit cancellation when the zᵢ are distributed around the unit circle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-519-3",
+    "proofId": "erdos-519",
+    "range": { "startLine": 59, "endLine": 64 },
+    "type": "definition",
+    "title": "Maximum Power Sum",
+    "content": "**maxPowerSum n z:**\n\nM(z) = max_{1≤k≤n} |S_k(z)| = max_{1≤k≤n} |∑ᵢ zᵢᵏ|\n\nThis is the central quantity of interest. The question asks: how small can M(z) be if z₁ = 1?",
+    "mathContext": "The constraint z₁ = 1 is essential - without it, we could take all zᵢ = 0 and get M = 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-519-4",
+    "proofId": "erdos-519",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "definition",
+    "title": "The Constraint z₁ = 1",
+    "content": "**hasFirstOne z:**\n\nThe constraint z₁ = 1 ensures at least one term contributes 1ᵏ = 1 to each power sum.\n\nWithout this normalization, the problem would be trivial (all zero).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-519-5",
+    "proofId": "erdos-519",
+    "range": { "startLine": 77, "endLine": 85 },
+    "type": "theorem",
+    "title": "Turán's Original Bound",
+    "content": "**turan_bound:**\n\nTurán proved: max_k |S_k| ≫ c/n for some c > 0.\n\nThis was the first result, showing the maximum doesn't go to 0. But the bound c/n depends on n and is not absolute.",
+    "mathContext": "Turán's bound gets weaker as n grows. The problem asks: can we find a bound independent of n?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-519-6",
+    "proofId": "erdos-519",
+    "range": { "startLine": 96, "endLine": 117 },
+    "type": "theorem",
+    "title": "Atkinson's Theorem (1961)",
+    "content": "**atkinson_theorem:**\n\nFor all n ≥ 1 and all z with z₁ = 1: max_k |S_k| > 1/6\n\n**This was the breakthrough** - the first proof that an absolute constant c > 0 exists, independent of n.\n\nThe answer to Turán's question is YES.",
+    "mathContext": "Atkinson's proof used analytic techniques to show that power sums cannot all be small simultaneously.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-519-7",
+    "proofId": "erdos-519",
+    "range": { "startLine": 119, "endLine": 148 },
+    "type": "theorem",
+    "title": "Biró's Improvements",
+    "content": "**biro_1994 and biro_2000:**\n\nBiró (1994): Improved to c = 1/2\nBiró (2000): Further improved to c > 1/2\n\nThese represent the current best known bounds. The gap between 1/2 and the conjectured optimal ≈ 0.7 remains.",
+    "mathContext": "Biró's work refined Atkinson's techniques to extract better constants.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-519-8",
+    "proofId": "erdos-519",
+    "range": { "startLine": 158, "endLine": 162 },
+    "type": "theorem",
+    "title": "Trivial Case n = 1",
+    "content": "**trivial_case_n1:**\n\nWhen n = 1 and z₁ = 1, the power sum is always 1ᵏ = 1.\n\nThis is verified by direct calculation: S_k = 1^k = 1 for all k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-519-9",
+    "proofId": "erdos-519",
+    "range": { "startLine": 185, "endLine": 197 },
+    "type": "definition",
+    "title": "Roots of Unity",
+    "content": "**nthRootsOfUnity and roots_of_unity_sum:**\n\nFor n-th roots of unity ω₀, ..., ω_{n-1}:\n- S_k = 0 if n ∤ k\n- S_k = n if n | k\n\nRoots of unity show perfect cancellation for most k, but spike to n when k is a multiple of n.",
+    "mathContext": "This demonstrates that cancellation is possible, but the z₁ = 1 constraint doesn't apply to general roots of unity configurations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-519-10",
+    "proofId": "erdos-519",
+    "range": { "startLine": 253, "endLine": 293 },
+    "type": "theorem",
+    "title": "Summary: SOLVED",
+    "content": "**erdos_519 and erdos_519_summary:**\n\n**STATUS: SOLVED** (YES, such a constant exists)\n\n**Timeline:**\n- Turán: max ≫ c/n (not absolute)\n- Atkinson (1961): c = 1/6 works\n- Biró (1994): c = 1/2\n- Biró (2000): c > 1/2\n\n**Open:** What is the exact optimal c? Conjectured ≈ 0.7.",
+    "significance": "critical"
+  }
+]
