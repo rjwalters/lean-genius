@@ -121,7 +121,19 @@ def stsTripleCount (n : ℕ) : ℕ := n * (n - 1) / 6
 
 theorem sts_triple_count_formula (n : ℕ) (hn : IsAdmissible n) :
     6 ∣ n * (n - 1) := by
-  sorry
+  -- n ≡ 1 (mod 6) → n-1 ≡ 0 (mod 6) → 6 | n(n-1)
+  -- n ≡ 3 (mod 6) → n(n-1) ≡ 3·2 ≡ 6 ≡ 0 (mod 6)
+  rcases hn with h1 | h3
+  · -- Case n ≡ 1 (mod 6)
+    have hn1 : 6 ∣ (n - 1) := by
+      have : (n - 1) % 6 = 0 := by omega
+      exact Nat.dvd_of_mod_eq_zero this
+    exact Dvd.dvd.mul_left hn1 n
+  · -- Case n ≡ 3 (mod 6)
+    -- n ≡ 3 (mod 6), so n-1 ≡ 2 (mod 6)
+    -- n(n-1) ≡ 3·2 = 6 ≡ 0 (mod 6)
+    have : n * (n - 1) % 6 = 0 := by omega
+    exact Nat.dvd_of_mod_eq_zero this
 
 /-
 ## Part IV: The Erdős Conjecture
