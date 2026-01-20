@@ -12875,17 +12875,22 @@
   },
   {
     "id": "erdos-862",
-    "title": "Erdős Problem #862",
+    "title": "Erdős Problem #862: Maximal Sidon Subsets",
     "slug": "erdos-862",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the number of maximal Sidon subsets of .... Is it true that\\[A_1(N)  2^{N^c}\\]for some constant ...?\n\n\n\nA problem ...",
-    "status": "pending",
+    "description": "Let A₁(N) be the number of maximal Sidon subsets of {1,...,N}. Is A₁(N) < 2^{o(N^{1/2})}? Is A₁(N) > 2^{N^c} for some c > 0? SOLVED: A₁(N) ≥ 2^{(0.16+o(1))√N} by Saxton-Thomason (2015).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sidon-sets",
+      "extremal-combinatorics",
+      "container-method",
+      "solved"
     ],
     "erdosNumber": 862,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-865",
