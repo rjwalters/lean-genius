@@ -12621,17 +12621,23 @@
   },
   {
     "id": "erdos-842",
-    "title": "Erdős Problem #842",
+    "title": "3-Colorability of Triangle-Hamiltonian Graphs",
     "slug": "erdos-842",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices formed by taking ... vertex disjoint triangles and adding a Hamiltonian cycle (with all ne...",
-    "status": "pending",
+    "description": "Let G be a graph on 3n vertices formed by taking n vertex-disjoint triangles and adding a Hamiltonian cycle. Does G have chromatic number at most 3? Answer: YES (Fleischner-Stiebitz 1992).",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-coloring",
+      "chromatic-number",
+      "hamiltonian-cycle",
+      "triangle-graph"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 842,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-843",
