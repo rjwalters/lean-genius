@@ -2928,17 +2928,23 @@
   },
   {
     "id": "erdos-136",
-    "title": "Erdős Problem #136",
+    "title": "The Erdős-Gyárfás Function f(n,4,5)",
     "slug": "erdos-136",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest number of colours required to colour the edges of ... such that every ... contains at least 5 colours...",
-    "status": "pending",
+    "description": "Minimum colors to edge-color Kₙ so every K₄ has ≥5 colors among its 6 edges. Answer: f(n) ~ (5/6)n. Erdős-Gyárfás bounds: (5/6)(n-1) < f(n) < n. Resolved by Bennett et al. (2022).",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-coloring",
+      "complete-graphs",
+      "asymptotic"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 136,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-137",
