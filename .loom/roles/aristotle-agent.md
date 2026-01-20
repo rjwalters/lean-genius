@@ -187,6 +187,24 @@ At end of each cycle, log:
 - Failed integrations
 - New submissions
 
+## Observability
+
+**Log your actions** to enable monitoring without TUI access:
+
+```bash
+LOG="$REPO_ROOT/.loom/logs/aristotle.actions.log"
+
+# Log significant actions
+echo "$(date +%H:%M): Starting cycle" >> "$LOG"
+echo "$(date +%H:%M): Checked 20 jobs: 3 completed, 17 pending" >> "$LOG"
+echo "$(date +%H:%M): Retrieved 3 solutions" >> "$LOG"
+echo "$(date +%H:%M): Integrated erdos-728 (5→0 sorries)" >> "$LOG"
+echo "$(date +%H:%M): Submitted 5 new jobs (target: 20)" >> "$LOG"
+echo "$(date +%H:%M): Sleeping 30 minutes" >> "$LOG"
+```
+
+Keep logs concise - one line per significant action.
+
 ## Branch Management
 
 Your branch accumulates integrations. After PR is merged:
