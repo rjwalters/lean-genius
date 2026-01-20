@@ -171,13 +171,15 @@ theorem factor_1080 : 1080 = 2^3 * 3^3 * 5 := by native_decide
     Proof sketch: 1080 = 2³ × 3³ × 5, so the only prime factors are 2, 3, 5. -/
 theorem max_prime_1080_is_5 : ∀ p : ℕ, p.Prime → p ∣ 1080 → p ≤ 5 := by
   intro p hp hdiv
-  -- 1080 = 2³ × 3³ × 5, prime factors are {2, 3, 5}
-  have h2 : (2 : ℕ).Prime := Nat.prime_two
-  have h3 : (3 : ℕ).Prime := Nat.prime_three
-  have h5 : (5 : ℕ).Prime := Nat.prime_five
-  -- We need to show any prime dividing 1080 is ≤ 5
-  -- This requires checking the factorization
-  sorry
+  -- 1080 = 2³ × 3³ × 5 = 8 × 27 × 5
+  -- The prime factors of 1080 are exactly {2, 3, 5}
+  have h_pf : (1080 : ℕ).primeFactors = {2, 3, 5} := by native_decide
+  -- p divides 1080 and is prime, so p ∈ primeFactors of 1080
+  have hp_in : p ∈ (1080 : ℕ).primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hdiv, by omega⟩
+  rw [h_pf] at hp_in
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hp_in
+  -- p is 2, 3, or 5, all ≤ 5
+  rcases hp_in with rfl | rfl | rfl <;> omega
 
 /-- For n=28, i=5, j=14: the prime 5 ≥ 5 divides the gcd, satisfying the weak version.
     But there is NO prime p > 5 dividing the gcd (counterexample to strong version). -/
