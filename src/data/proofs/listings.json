@@ -10334,17 +10334,24 @@
   },
   {
     "id": "erdos-692",
-    "title": "Erdős Problem #692",
+    "title": "Erdős Problem #692: Unimodularity of Divisor Density",
     "slug": "erdos-692",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the density of the set of integers with exactly one divisor in .... Is ... unimodular for ... (i.e. increases unti...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let δ₁(n,m) be the density of integers with exactly one divisor in (n,m). Is δ₁(n,m) unimodal for m > n+1? DISPROVED by Cambie (2025) with explicit counterexamples showing superpolynomially many local maxima.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "density",
+      "unimodality",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 692,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 23
   },
   {
     "id": "erdos-694",
