@@ -1,33 +1,156 @@
 {
   "id": "erdos-339",
-  "title": "Erdős Problem #339",
+  "title": "Erdős Problem #339: Additive Bases and Distinct Element Sums",
   "slug": "erdos-339",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a basis of order .... Must the set of integers representable as the sum of exactly ... distinct elements from ... ...",
+  "description": "If A is a basis of order r, must sums of r DISTINCT elements have positive lower density? YES - proved by Hegyvári-Hennecart-Plagne (2003). Also: upper density is preserved.",
   "meta": {
-    "author": "Unknown",
+    "author": "Hegyvári, Hennecart, Plagne (2003)",
     "sourceUrl": "https://erdosproblems.com/339",
-    "date": "",
-    "status": "pending",
+    "date": "2003",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos339Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "density",
+      "additive-bases",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 339,
     "erdosUrl": "https://erdosproblems.com/339",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set",
+        "description": "Sets of natural numbers",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "liminf/limsup",
+        "description": "Limit inferior/superior for density",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Function.Injective",
+        "description": "Injectivity for distinct elements",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsBasisOfOrder definition: A is basis of order r",
+      "rSums definition: r-element sums (with repetition)",
+      "rDistinctSums definition: r distinct element sums",
+      "countingFunction, lowerDensity, upperDensity definitions",
+      "erdosConjecture1: basis → positive lower density",
+      "erdosGrahamConjecture2: upper density preservation",
+      "hegyvari_hennecart_plagne_1/2 axioms",
+      "distinct_subset_general theorem: distinct ⊆ general",
+      "IsSidonSet, IsBhSet definitions",
+      "erdos_339_solved, erdos_339_summary theorems"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #339 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a basis of order $r$. Must the set of integers representable as the sum of exactly $r$ distinct elements from $A$ have positive lower density?\n\n\n\nErd\\H{o}s and Graham also ask whether if the set of integers which are the sum of $r$ elements from $A$ has positive upper density then must the set of integers representable as the sum of exactly $r$ distinct elements have positive upper density?\n\nThe answer to both questions is yes, as proved by Hegyv\\'{a}ri, Hennecart, and Plagne \\cite{HHP03}.\n\n\n\n\nReferences\n\n\n[HHP03] Hegyv\\'ari, N. and Hennecart, F. and Plagne, A., A proof of two {E}rd\\H{o}s' conjectures on restricted addition\nand further results. J. Reine Angew. Math. (2003), 199--220.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #339: Additive Bases and Distinct Sums**\n\nThis problem explores the relationship between additive bases and 'restricted' representations using distinct elements.\n\n**Key History:**\n- Erdős-Graham (1980): Posed both conjectures in their monograph\n- Hegyvári-Hennecart-Plagne (2003): Proved both conjectures in J. Reine Angew. Math.\n\n**Mathematical Setting:**\nA set A ⊆ ℕ is a basis of order r if every large integer is a sum of r elements from A. The question is whether the 'restricted' sums (using r DISTINCT elements) also cover a positive fraction of integers.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A ⊆ ℕ be a basis of order r.\n\n**Question 1:** Must the set of sums of exactly r DISTINCT elements from A have positive lower density?\n\n**Question 2:** If r-sums (with repetition) have positive upper density, must r distinct sums also have positive upper density?\n\n**Answer: YES to both** - Hegyvári, Hennecart, Plagne (2003)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basis Definition:**\n   - IsBasisOfOrder A r: every large n = sum of r elements\n   - rSums: all r-element sums (repetition allowed)\n   - rDistinctSums: sums of r DISTINCT elements\n\n2. **Density Definitions:**\n   - countingFunction: |A ∩ [0,n]|\n   - lowerDensity, upperDensity via liminf/limsup\n\n3. **Main Results:**\n   - erdosConjecture1: IsBasisOfOrder → positive lower density\n   - erdosGrahamConjecture2: upper density preservation\n   - hegyvari_hennecart_plagne_1/2: both axiomatized as true",
+    "keyInsights": [
+      "**Subset but Dense:** rDistinctSums ⊆ rSums (fewer elements), yet density is preserved. This is counterintuitive!",
+      "**Perturbation Argument:** If n has a representation with repetition, a nearby m has a distinct representation.",
+      "**Two Conjectures:** The basis conjecture (lower density) and the density preservation conjecture (upper density) are both true.",
+      "**Application to Squares:** Since squares are a basis of order 4 (Lagrange), sums of 4 distinct squares have positive density.",
+      "**Connection to Sidon Sets:** Sidon sets have unique sum representations - the opposite extreme from bases."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Problem context and additive basis theory",
+      "startLine": 31,
+      "endLine": 40
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "IsBasisOfOrder, rSums, rDistinctSums",
+      "startLine": 42,
+      "endLine": 59
+    },
+    {
+      "id": "density",
+      "title": "Density Definitions",
+      "summary": "countingFunction, lowerDensity, upperDensity",
+      "startLine": 61,
+      "endLine": 83
+    },
+    {
+      "id": "conjecture1",
+      "title": "First Erdős Conjecture",
+      "summary": "Basis → positive lower density for distinct sums",
+      "startLine": 85,
+      "endLine": 97
+    },
+    {
+      "id": "conjecture2",
+      "title": "Second Erdős-Graham Conjecture",
+      "summary": "Upper density preservation",
+      "startLine": 99,
+      "endLine": 112
+    },
+    {
+      "id": "surprise",
+      "title": "Why This Is Surprising",
+      "summary": "distinct_subset_general, density_preservation",
+      "startLine": 114,
+      "endLine": 130
+    },
+    {
+      "id": "key-lemmas",
+      "title": "Key Lemmas",
+      "summary": "Arithmetic progression and perturbation arguments",
+      "startLine": 132,
+      "endLine": 149
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "r = 2 sumsets, squares example",
+      "startLine": 151,
+      "endLine": 200
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Sidon sets, B_h sets",
+      "startLine": 202,
+      "endLine": 216
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_339_solved, erdos_339_summary",
+      "startLine": 218,
+      "endLine": 253
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #339 asked whether distinct-element sums from a basis have positive density. Hegyvári-Hennecart-Plagne (2003) proved YES: both lower density for bases and upper density preservation hold. The key insight is that representations with repetition can be 'perturbed' to distinct representations.",
+    "implications": "**Connections and Applications**\n\n1. **Additive Combinatorics:** Shows robustness of additive structure under restrictions\n\n2. **Waring's Problem:** Applies to classical bases like squares (order 4), cubes (order 9)\n\n3. **Density Theory:** New techniques for transferring density between related sets\n\n4. **Combinatorial Number Theory:** Connections to Sidon sets and B_h sequences",
+    "openQuestions": [
+      "What is the optimal density constant? (How much density is lost?)",
+      "Does the result extend to other algebraic structures?",
+      "Effective bounds on the threshold N for the basis property?",
+      "Algorithmic aspects: efficiently finding distinct representations?"
+    ]
   }
 }

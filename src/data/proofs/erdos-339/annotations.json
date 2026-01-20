@@ -1,1 +1,140 @@
-[]
+[
+  {
+    "id": "ann-e339-header",
+    "proofId": "erdos-339",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #339: Additive Bases and Distinct Element Sums**\n\nLet A ⊆ ℕ be a basis of order r (every large integer is sum of r elements from A).\n\n**Question 1:** Must sums of r DISTINCT elements have positive lower density?\n\n**Question 2:** If r-sums have positive upper density, must r distinct sums also?\n\n**Answer: YES to both** - Hegyvári, Hennecart, Plagne (2003)\n\nThe key insight: representations with repetition can be 'perturbed' to distinct ones.",
+    "mathContext": "Published in J. Reine Angew. Math. (2003), pages 199-220. Originally posed by Erdős and Graham in their 1980 monograph.",
+    "significance": "critical",
+    "relatedConcepts": ["Additive bases", "Density", "Number theory"]
+  },
+  {
+    "id": "ann-e339-basis-def",
+    "proofId": "erdos-339",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "definition",
+    "title": "Basis of Order r",
+    "content": "**IsBasisOfOrder A r:**\n\nA set A ⊆ ℕ is a **basis of order r** if every sufficiently large integer can be written as the sum of exactly r elements from A (with repetition allowed).\n\n**Examples:**\n- Squares are a basis of order 4 (Lagrange's theorem)\n- Natural numbers ℕ are a basis of order 1\n- Primes are a basis of order 3 for large numbers (Vinogradov)\n\nFormalized as: ∃ N, ∀ n ≥ N, ∃ f : Fin r → ℕ with f(i) ∈ A and Σf(i) = n.",
+    "mathContext": "The notion of additive basis goes back to Waring's problem (1770). Order r means exactly r summands are needed.",
+    "significance": "critical",
+    "relatedConcepts": ["Waring's problem", "Lagrange's theorem"]
+  },
+  {
+    "id": "ann-e339-rsums",
+    "proofId": "erdos-339",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "r-Element Sums (rSums)",
+    "content": "**rSums A r:**\n\nThe set rA = {a₁ + a₂ + ... + aᵣ : aᵢ ∈ A} of all r-element sums, where elements may repeat.\n\nFor a basis of order r, this set contains all sufficiently large integers by definition.\n\nFormalized as: {n | ∃ f : Fin r → ℕ, (∀ i, f i ∈ A) ∧ (Σ f i) = n}",
+    "significance": "key",
+    "relatedConcepts": ["Sumsets", "Additive structure"]
+  },
+  {
+    "id": "ann-e339-distinct-sums",
+    "proofId": "erdos-339",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "definition",
+    "title": "r Distinct Element Sums",
+    "content": "**rDistinctSums A r:**\n\nThe **restricted** set of sums using r DISTINCT elements from A.\n\n{a₁ + a₂ + ... + aᵣ : aᵢ ∈ A, all aᵢ distinct}\n\nFormalized using Function.Injective f to ensure all summands are different.\n\n**The Key Question:** This is a subset of rSums (fewer elements), but does it still have positive density?",
+    "mathContext": "Also called the 'restricted sumset' in additive combinatorics literature.",
+    "significance": "critical",
+    "relatedConcepts": ["Restricted sums", "Injective functions"]
+  },
+  {
+    "id": "ann-e339-density",
+    "proofId": "erdos-339",
+    "range": { "startLine": 65, "endLine": 83 },
+    "type": "definition",
+    "title": "Density Definitions",
+    "content": "**Density measures for sets of integers:**\n\n- **countingFunction A n** = |{a ∈ A : a ≤ n}| counts elements up to n\n- **lowerDensity A** = liminf of |A ∩ [0,n]|/n (worst-case proportion)\n- **upperDensity A** = limsup of |A ∩ [0,n]|/n (best-case proportion)\n\nA set with positive lower density is genuinely 'thick' throughout - it contains a positive fraction of integers infinitely often.\n\nPositive upper density is weaker: the set is 'thick' along some subsequence.",
+    "mathContext": "Natural density = lim (if exists) = lower = upper. Asymptotic density theory is fundamental in additive combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic density", "Liminf/limsup"]
+  },
+  {
+    "id": "ann-e339-conjecture1",
+    "proofId": "erdos-339",
+    "range": { "startLine": 89, "endLine": 97 },
+    "type": "theorem",
+    "title": "First Erdős Conjecture",
+    "content": "**erdosConjecture1:**\n\nIf A is a basis of order r (r ≥ 2), then rDistinctSums A r has positive lower density.\n\n**Why surprising?** Restricting to distinct elements removes many sums. Intuitively, density could drop to zero.\n\n**Theorem (HHP 2003):** The conjecture is TRUE!\n\nThe axiom `hegyvari_hennecart_plagne_1` asserts this.",
+    "mathContext": "Conjectured by Erdős in the 1980 Erdős-Graham monograph on additive number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Positive density", "Basis theory"]
+  },
+  {
+    "id": "ann-e339-conjecture2",
+    "proofId": "erdos-339",
+    "range": { "startLine": 103, "endLine": 112 },
+    "type": "theorem",
+    "title": "Second Erdős-Graham Conjecture",
+    "content": "**erdosGrahamConjecture2:**\n\nIf rSums A r has positive upper density, then rDistinctSums A r also has positive upper density.\n\nThis is more general than Conjecture 1: it doesn't require A to be a full basis, just that the r-sums have positive density.\n\n**Theorem (HHP 2003):** Also TRUE!\n\nBoth conjectures proved in the same 2003 paper.",
+    "mathContext": "This 'density preservation' result shows that restricting to distinct sums cannot destroy density.",
+    "significance": "critical",
+    "relatedConcepts": ["Density preservation", "Upper density"]
+  },
+  {
+    "id": "ann-e339-subset",
+    "proofId": "erdos-339",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "theorem",
+    "title": "Distinct Sums Are a Subset",
+    "content": "**distinct_subset_general:**\n\n```lean\ntheorem distinct_subset_general (A : Set ℕ) (r : ℕ) :\n    rDistinctSums A r ⊆ rSums A r\n```\n\n**Observation:** Every sum of distinct elements is also a sum (trivially).\n\nThe proof just drops the injectivity constraint.\n\n**The surprise:** Despite being a strict subset, density is preserved!",
+    "significance": "key",
+    "relatedConcepts": ["Subset relations", "Proof by forgetting constraints"]
+  },
+  {
+    "id": "ann-e339-perturbation",
+    "proofId": "erdos-339",
+    "range": { "startLine": 144, "endLine": 149 },
+    "type": "lemma",
+    "title": "Perturbation Argument",
+    "content": "**perturbation_argument:**\n\nIf n ∈ rSums A r, then some m with |m - n| ≤ r² lies in rDistinctSums A r.\n\n**Key Idea:** If a representation uses repeated elements, we can 'perturb' them slightly (using nearby elements of A) to get distinct summands.\n\nThis is the heart of the proof: representations with repetition can always be converted to distinct representations nearby.",
+    "mathContext": "The bound r² comes from at most r elements to perturb, each by at most r positions.",
+    "significance": "critical",
+    "relatedConcepts": ["Perturbation methods", "Approximation"]
+  },
+  {
+    "id": "ann-e339-case-r2",
+    "proofId": "erdos-339",
+    "range": { "startLine": 155, "endLine": 176 },
+    "type": "theorem",
+    "title": "Special Case r = 2",
+    "content": "**case_r_equals_2 and case_r_equals_2_distinct:**\n\nFor r = 2:\n- rSums A 2 = A + A = {a + b : a, b ∈ A} (ordinary sumset)\n- rDistinctSums A 2 = A +̂ A = {a + b : a, b ∈ A, a ≠ b} (restricted sumset)\n\nThe theorem proves these characterizations explicitly.\n\n**Note:** The restricted sumset A +̂ A is also written Â + A in some literature.",
+    "significance": "key",
+    "relatedConcepts": ["Sumsets", "Restricted addition"]
+  },
+  {
+    "id": "ann-e339-squares",
+    "proofId": "erdos-339",
+    "range": { "startLine": 182, "endLine": 190 },
+    "type": "theorem",
+    "title": "Application to Squares",
+    "content": "**four_distinct_squares_dense:**\n\nSince squares form a basis of order 4 (Lagrange's theorem), the HHP result implies:\n\n**Sums of 4 DISTINCT squares have positive lower density.**\n\nConcrete application: a positive fraction of integers can be written as a² + b² + c² + d² with a, b, c, d all different.\n\nThis is a non-obvious consequence of the abstract theory.",
+    "mathContext": "Lagrange (1770) proved every positive integer is a sum of four squares. Here we require distinct squares.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's theorem", "Sum of squares"]
+  },
+  {
+    "id": "ann-e339-sidon",
+    "proofId": "erdos-339",
+    "range": { "startLine": 206, "endLine": 216 },
+    "type": "definition",
+    "title": "Related: Sidon Sets and Bₕ Sets",
+    "content": "**IsSidonSet and IsBhSet:**\n\n**Sidon sets:** All pairwise sums a + b (a ≤ b) are distinct.\n- These are very sparse (at most ~√n elements up to n)\n- The opposite extreme from dense bases\n\n**Bₕ sets:** Generalization - all h-element sums are distinct.\n\nThese connect to problems about unique representation, whereas Erdős 339 is about existence of distinct representations.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sidon sets", "Unique representations"]
+  },
+  {
+    "id": "ann-e339-summary",
+    "proofId": "erdos-339",
+    "range": { "startLine": 238, "endLine": 251 },
+    "type": "theorem",
+    "title": "Summary: Erdős Problem #339 SOLVED",
+    "content": "**erdos_339_solved and erdos_339_summary:**\n\nBoth Erdős conjectures are TRUE (HHP 2003):\n\n1. **Basis → Positive Density:** If A is basis of order r, then r distinct sums have positive lower density.\n\n2. **Density Preservation:** If r-sums have positive upper density, then r distinct sums do too.\n\n**Key Insight:** The perturbation argument shows representations transfer from general to distinct.\n\n**The surprise:** Fewer sums, same density!",
+    "significance": "critical",
+    "relatedConcepts": ["Solved problems", "Additive combinatorics"]
+  }
+]
