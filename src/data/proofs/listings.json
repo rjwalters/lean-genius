@@ -14644,17 +14644,24 @@
   },
   {
     "id": "erdos-955",
-    "title": "Erdős Problem #955",
+    "title": "Erdős Problem #955: Sum of Proper Divisors and Density",
     "slug": "erdos-955",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[s(n)=\\sigma(n)-n=\\sum_{}d\\]be the sum of proper divisors function.\n\nIf ... has density ... then ... must also have densi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A ⊂ ℕ has density 0, must s⁻¹(A) also have density 0, where s(n) is the sum of proper divisors? Proved for primes (Pollack), sums of two squares (Troupe), and sparse sets (PPT). General case OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-functions",
+      "density",
+      "arithmetic-functions",
+      "open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 955,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-956",
