@@ -1,33 +1,157 @@
 {
   "id": "erdos-256",
-  "title": "Erdős Problem #256",
+  "title": "Erdős Problem #256: Maxima of Products on the Unit Circle",
   "slug": "erdos-256",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be maximal such that for every ... we have\\[\\max_{\\lvert z\\rvert=1}\\left\\lvert \\prod_{i}(1-z^{a_i})\\right\\rve...",
+  "description": "Is log f(n) ≫ n^c for some c > 0, where f(n) = min over all a₁ ≤ ... ≤ aₙ of max_{|z|=1} |∏(1-z^{aᵢ})|? NO - Belov-Konyagin (1996) proved log f(n) ≪ (log n)⁴.",
   "meta": {
-    "author": "Unknown",
+    "author": "Belov-Konyagin (1996)",
     "sourceUrl": "https://erdosproblems.com/256",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos256Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "harmonic-analysis",
+      "unit-circle",
+      "products",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 256,
     "erdosUrl": "https://erdosproblems.com/256",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value on complex numbers",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Finite products",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "productPoly definition ∏ᵢ (1 - z^{aᵢ})",
+      "maxOnUnitCircle definition",
+      "f(n) definition as infimum over all sequences",
+      "ErdosQuestion256 statement: log f(n) ≫ n^c?",
+      "erdos_szekeres_lower axiom: f(n) > √(2n)",
+      "erdos_szekeres_growth axiom: lim f(n)^{1/n} = 1",
+      "atkinson_bound axiom: log f(n) ≪ n^{1/2} log n",
+      "odlyzko_bound axiom: log f(n) ≪ n^{1/3} (log n)^{4/3}",
+      "belov_konyagin_bound axiom: log f(n) ≪ (log n)⁴",
+      "erdos_256_answer theorem: ¬ErdosQuestion256",
+      "fDistinct definition for distinct exponents",
+      "bourgain_chang_bound axiom for f*(n)",
+      "chowlaMinimum definition (Problem #510 connection)",
+      "atkinson_chowla_connection axiom",
+      "product_at_root_of_unity theorem",
+      "primitive_root_lower_bound axiom",
+      "bounds_summary axiom"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #256 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 1$ and $f(n)$ be maximal such that for every $a_1\\leq \\cdots \\leq a_n\\in \\mathbb{N}$ we have\\[\\max_{\\lvert z\\rvert=1}\\left\\lvert \\prod_{i}(1-z^{a_i})\\right\\rvert\\geq f(n).\\]Estimate $f(n)$ - in particular, is it true that there exists some constant $c>0$ such that\\[\\log f(n) \\gg n^c?\\]\n\n\n\nErd\\H{o}s and Szekeres \\cite{ErSz59} proved that $\\lim f(n)^{1/n}=1$ and $f(n)>\\sqrt{2n}$. Erd\\H{o}s proved an upper bound of $\\log f(n) \\ll n^{1-c}$ for some constant $c>0$ with probabilistic methods. Atkinson \\cite{At61} showed that $\\log f(n) \\ll n^{1/2}\\log n$.\n\nThis was improved to\\[\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}\\]by Odlyzko \\cite{Od82}.\n\nIf we denote by $f^*(n)$ the analogous quantity with the assumption that $a_1<\\cdots<a_n$ then Bourgain and Chang \\cite{BoCh18} prove that\\[\\log f^*(n)\\ll (n\\log n)^{1/2}\\log\\log n.\\]Atkinson \\cite{At61} noted this is related to the Chowla cosine problem [510], in that if for any set of $n$ integers $A$ there exists $\\theta$ such that $\\sum_{n\\in A}\\cos(n\\theta) < -M_n$ then\\[\\log f^*(n) \\ll M_n \\log n.\\]The answer to the specific question asked is no - Belov and Konyagin \\cite{BeKo96} proved that\\[\\log f(n) \\ll (\\log n)^4.\\]\n\n\n\n\nReferences\n\n\n[At61] Atkinson, F. V., On a problem of Erd\\H{o}s and Szekeres. Canad. Math. Bull. (1961), 7-12.\n\n[BeKo96] Belov, A. S. and Konyagin, S. V., An estimate for the free term of a nonnegative trigonometric\npolynomial with integer coefficients. Mat. Zametki (1996), 627--629.\n\n[BoCh18] Bourgain, J. and Chang, Mei-Chu, On a paper of Erd\\\"{o}s and Szekeres. J. Anal. Math. (2018), 253-271.\n\n[ErSz59] Erd\\H{o}s, P. and Szekeres, G., On the product $\\Pi^n_{k=1}(1-z^ak)$. Acad. Serbe Sci. Publ. Inst. Math. (1959), 29-34.\n\n[Od82] Odlyzko, A. M., Minima of cosine sums and maxima of polynomials on the unit\ncircle. J. London Math. Soc. (2) (1982), 412-420.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about the growth rate of the minimum achievable maximum of products ∏(1-z^{aᵢ}) on the unit circle. Erdős and Szekeres (1959) initiated the study, proving f(n) > √(2n). The upper bounds were progressively improved by Erdős, Atkinson (1961), and Odlyzko (1982), culminating in the definitive answer by Belov-Konyagin (1996).",
+    "problemStatement": "**Question:** Let f(n) be the maximal value such that for every sequence a₁ ≤ ... ≤ aₙ ∈ ℕ, we have max_{|z|=1} |∏ᵢ(1-z^{aᵢ})| ≥ f(n). Is it true that log f(n) ≫ n^c for some c > 0?\n\n**Answer: NO** (Belov-Konyagin 1996)\n\nlog f(n) ≪ (log n)⁴, so f(n) grows only polylogarithmically.",
+    "proofStrategy": "We formalize:\n\n1. **Product polynomial:** P(z; a₁,...,aₙ) = ∏ᵢ(1-z^{aᵢ})\n2. **Maximum on circle:** M(a) = max_{|z|=1} |P(z;a)|\n3. **The function f(n):** f(n) = inf over all sequences of M(a)\n4. **Lower bound:** f(n) > √(2n) (Erdős-Szekeres)\n5. **Upper bound:** log f(n) ≤ C(log n)⁴ (Belov-Konyagin)\n6. **Answer:** NO - polynomial in log n, not n^c",
+    "keyInsights": [
+      "**Growth rate question:** The question is whether log f(n) grows polynomially in n or only polylogarithmically",
+      "**Timeline of bounds:** Upper bounds improved from n^{1-c} to n^{1/2} to n^{1/3} to (log n)⁴",
+      "**Belov-Konyagin breakthrough:** log f(n) ≪ (log n)⁴ is polynomial in log n, answering NO",
+      "**Distinct case:** For distinct exponents, Bourgain-Chang (2018) gave different bounds",
+      "**Chowla connection:** Related to cosine sum problem #510 via Atkinson's observation",
+      "**Roots of unity:** Primitive roots provide key evaluation points"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "productPoly, maxOnUnitCircle, f(n)",
+      "startLine": 39,
+      "endLine": 64
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős-Szekeres, Atkinson, Odlyzko bounds",
+      "startLine": 66,
+      "endLine": 103
+    },
+    {
+      "id": "question",
+      "title": "The Main Question",
+      "summary": "ErdosQuestion256 statement",
+      "startLine": 105,
+      "endLine": 116
+    },
+    {
+      "id": "answer",
+      "title": "The Answer",
+      "summary": "Belov-Konyagin bound, erdos_256_answer",
+      "startLine": 118,
+      "endLine": 139
+    },
+    {
+      "id": "distinct",
+      "title": "The Distinct Case",
+      "summary": "fDistinct, Bourgain-Chang bound",
+      "startLine": 141,
+      "endLine": 158
+    },
+    {
+      "id": "chowla",
+      "title": "Connection to Chowla Problem",
+      "summary": "chowlaMinimum, atkinson_chowla_connection",
+      "startLine": 160,
+      "endLine": 178
+    },
+    {
+      "id": "properties",
+      "title": "Properties of the Product",
+      "summary": "Roots of unity, lower bounds",
+      "startLine": 180,
+      "endLine": 200
+    },
+    {
+      "id": "summary-bounds",
+      "title": "Summary of Bounds",
+      "summary": "Timeline, gap between bounds",
+      "startLine": 202,
+      "endLine": 225
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_256, erdos_256_summary",
+      "startLine": 227,
+      "endLine": 262
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #256 asked whether log f(n) ≫ n^c for some c > 0, where f(n) measures the minimum achievable maximum of products ∏(1-z^{aᵢ}) on the unit circle. Belov and Konyagin (1996) proved the answer is NO: log f(n) ≪ (log n)⁴, meaning f(n) grows only polylogarithmically in n.",
+    "implications": "**Analysis Connections:**\n\n1. **Unit circle dynamics:** Products of (1-z^a) have rich structure on |z|=1.\n\n2. **Harmonic analysis:** Connected to cosine sum problems and trigonometric polynomials.\n\n3. **Bounds gap:** True growth between (1/2)log n and (log n)⁴ remains open.\n\n4. **Distinct case:** Different behavior when exponents must be distinct.",
+    "openQuestions": [
+      "What is the exact growth rate of log f(n) between log n and (log n)⁴?",
+      "Is f(n) = exp(Θ((log n)^α)) for some 1 ≤ α ≤ 4?",
+      "What is the optimal constant in Belov-Konyagin bound?",
+      "Analogues for products of (1 - z^a + z^{2a}) or higher order?"
+    ]
   }
 }

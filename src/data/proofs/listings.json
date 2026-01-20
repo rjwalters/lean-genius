@@ -4798,17 +4798,24 @@
   },
   {
     "id": "erdos-256",
-    "title": "Erdős Problem #256",
+    "title": "Erdős Problem #256: Maxima of Products on the Unit Circle",
     "slug": "erdos-256",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be maximal such that for every ... we have\\[\\max_{\\lvert z\\rvert=1}\\left\\lvert \\prod_{i}(1-z^{a_i})\\right\\rve...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is log f(n) ≫ n^c for some c > 0, where f(n) = min over all a₁ ≤ ... ≤ aₙ of max_{|z|=1} |∏(1-z^{aᵢ})|? NO - Belov-Konyagin (1996) proved log f(n) ≪ (log n)⁴.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "harmonic-analysis",
+      "unit-circle",
+      "products",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 256,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 11
   },
   {
     "id": "erdos-257",
