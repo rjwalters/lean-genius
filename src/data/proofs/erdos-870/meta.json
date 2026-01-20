@@ -1,33 +1,148 @@
 {
   "id": "erdos-870",
-  "title": "Erdős Problem #870",
+  "title": "Erdős Problem #870: Minimal Additive Bases",
   "slug": "erdos-870",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be an additive basis of order .... Does there exist a constant ... such that if ... for all large ... then .....",
+  "description": "For k ≥ 3, if A is an additive basis of order k with r(n) ≥ c log n for large n, must A contain a minimal basis of order k? Known for k = 2 (Erdős-Nathanson 1979). Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Nathanson (1979), Härtter (1956)",
     "sourceUrl": "https://erdosproblems.com/870",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos870Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "additive-bases",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 870,
     "erdosUrl": "https://erdosproblems.com/870",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set.card",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "AdditiveSet type alias for Set ℕ",
+      "KRepresentation structure for k-element sums",
+      "representationCount function r_k(A, n)",
+      "IsAdditiveBasis definition",
+      "IsEssential definition for essential elements",
+      "IsMinimalBasis definition",
+      "ContainsMinimalBasis definition",
+      "HasLogarithmicGrowth condition r(n) ≥ c log n",
+      "SatisfiesENCondition for k = 2",
+      "ErdosConjecture870 main conjecture",
+      "hartter_nathanson_existence axiom",
+      "erdos_nathanson_k2 axiom",
+      "waring_theorem axiom",
+      "IsSidonSet definition"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #870 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $A$ be an additive basis of order $k$. Does there exist a constant $c=c(k)>0$ such that if $r(n)\\geq c\\log n$ for all large $n$ then $A$ must contain a minimal basis of order $k$? (Here $r(n)$ counts the number of representations of $n$ as the sum of at most $k$ elements from $A$.)\n\n\n\nA question of Erd\\H{o}s and Nathanson \\cite{ErNa79}, who proved that this is true for $k=2$ if $1_A\\ast 1_A(n) > (\\log \\frac{4}{3})^{-1}\\log n$ for all large $n$.\n\nHärtter \\cite{Ha56} and Nathanson \\cite{Na74} proved that there exist additive bases which do not contain any minimal additive bases.\n\nSee also [868].\n\n\n\n\nReferences\n\n\n[ErNa79] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Systems of distinct representatives and minimal bases in\nadditive number theory. (1979), 89--107.\n\n[Ha56] H\\\"{a}rtter, Erich, Ein Beitrag zur {T}heorie der {M}inimalbasen. J. Reine Angew. Math. (1956), 170--204.\n\n[Na74] Nathanson, Melvyn B., Minimal bases and maximal nonbases in additive number theory. J. Number Theory (1974), 324--333.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about additive bases - sets A ⊆ ℕ where every large integer is a sum of at most k elements from A. A minimal basis has no proper subset that is also a basis. Erdős and Nathanson (1979) proved that for k = 2, if representations grow logarithmically, the basis contains a minimal basis. Härtter (1956) and Nathanson (1974) showed that without growth conditions, bases may contain no minimal bases.",
+    "problemStatement": "**Question:** For k ≥ 3, does there exist c = c(k) > 0 such that any additive basis A of order k with r(n) ≥ c log n for large n must contain a minimal basis of order k?\n\n**Status: OPEN**\n\nHere r(n) counts representations of n as sums of at most k elements from A.",
+    "proofStrategy": "We formalize:\n\n1. **AdditiveSet, KRepresentation:** Basic structures for additive number theory\n2. **IsAdditiveBasis:** Definition of basis of order k\n3. **IsMinimalBasis:** Basis where every element is essential\n4. **HasLogarithmicGrowth:** The key condition r(n) ≥ c log n\n5. **Known results:** Erdős-Nathanson for k = 2, Härtter-Nathanson counterexamples\n6. **Main conjecture:** ErdosConjecture870 for k ≥ 3",
+    "keyInsights": [
+      "**Additive basis:** Every large n is a sum of ≤ k elements from A",
+      "**Minimal basis:** No proper subset is also a basis",
+      "**The log threshold:** r(n) ≥ c log n forces structure",
+      "**k = 2 resolved:** Erdős-Nathanson 1979 proved the k = 2 case",
+      "**Counterexamples exist:** Without log growth, minimal bases may not exist",
+      "**k ≥ 3 is OPEN:** The problem remains unresolved for higher orders"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "AdditiveSet, KRepresentation, representationCount",
+      "startLine": 39,
+      "endLine": 66
+    },
+    {
+      "id": "basis-defs",
+      "title": "Basis Definitions",
+      "summary": "IsAdditiveBasis, IsEssential, IsMinimalBasis, ContainsMinimalBasis",
+      "startLine": 68,
+      "endLine": 95
+    },
+    {
+      "id": "growth-conditions",
+      "title": "Growth Conditions",
+      "summary": "HasLogarithmicGrowth, SatisfiesENCondition",
+      "startLine": 97,
+      "endLine": 114
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Härtter-Nathanson, Erdős-Nathanson theorems",
+      "startLine": 116,
+      "endLine": 144
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "summary": "ErdosConjecture870, FullConjecture",
+      "startLine": 146,
+      "endLine": 173
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "k = 2 case, weaker conjectures, classical bases",
+      "startLine": 175,
+      "endLine": 216
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "summary": "Subset inheritance, finite removal, threshold phenomenon",
+      "startLine": 218,
+      "endLine": 249
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "Problem #868, Sidon sets",
+      "startLine": 251,
+      "endLine": 278
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main results and open status",
+      "startLine": 280,
+      "endLine": 322
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #870 asks whether additive bases with logarithmic representation growth must contain minimal bases. For k = 2, Erdős-Nathanson (1979) proved this is true. For k ≥ 3, the problem remains OPEN. The problem highlights the interplay between representation density and structural properties of additive bases.",
+    "implications": "**Additive Number Theory Connections:**\n\n1. **Minimal substructures:** When do combinatorial objects contain irreducible components?\n\n2. **Representation density:** The log n threshold marks a phase transition.\n\n3. **Waring's problem:** K-th powers form bases - do they contain minimal bases?\n\n4. **Sidon sets:** Extreme sparsity in representations.\n\n5. **Structural additive combinatorics:** Understanding the anatomy of additive bases.",
+    "openQuestions": [
+      "Does ErdosConjecture870 hold for k = 3?",
+      "What is the optimal constant c(k)?",
+      "Can explicit constructions illuminate the problem?",
+      "Connections to probabilistic number theory?"
+    ]
   }
 }

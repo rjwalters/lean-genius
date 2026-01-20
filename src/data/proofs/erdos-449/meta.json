@@ -1,33 +1,106 @@
 {
   "id": "erdos-449",
-  "title": "Erdős Problem #449",
+  "title": "Close Divisor Pairs",
   "slug": "erdos-449",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... such that ... and ... and .... Is it true that, for every ...,\\[r(n) < \\epsilon \\tau(n)\\]for ...",
+  "description": "Erdős Problem #449 asks whether 'close' divisor pairs (d₁, d₂) with d₁ < d₂ < 2d₁ are rare compared to total divisors. Specifically: is r(n) < ε·τ(n) for almost all n? The answer is NO - for any K > 0, a positive density set has r(n) > K·τ(n).",
   "meta": {
-    "author": "Unknown",
+    "author": "Kevin Ford (observation)",
     "sourceUrl": "https://erdosproblems.com/449",
     "date": "",
-    "status": "pending",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos449Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "number-theory", "divisors", "density", "disproved"],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 449,
     "erdosUrl": "https://erdosproblems.com/449",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "Nat.divisors", "description": "Set of divisors of a natural number", "module": "Mathlib.Data.Nat.Divisors" },
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Finset.filter", "description": "Filtering finite sets by predicate", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Filter.Tendsto", "description": "Limit definition for filters", "module": "Mathlib.Order.Filter.Basic" },
+      { "theorem": "nhds", "description": "Neighborhood filter for topology", "module": "Mathlib.Topology.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of close divisor pair counting function r(n)",
+      "Formal statement of the (false) Erdős conjecture using natural density",
+      "Key inequality from Cauchy-Schwarz: r(n) + τ(n) ≥ τ(n)²/τ⁺(n)",
+      "Connection to Problem 448 formalized",
+      "Concrete example calculations (n=12)"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #449 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r(n)$ count the number of $d_1,d_2$ such that $d_1\\mid n$ and $d_2\\mid n$ and $d_1<d_2<2d_1$. Is it true that, for every $\\epsilon>0$,\\[r(n) < \\epsilon \\tau(n)\\]for almost all $n$, where $\\tau(n)$ is the number of divisors of $n$?\n\n\n\nThis is false - indeed, for any constant $K>0$ we have $r(n)>K\\tau(n)$ for a positive density set of $n$. Kevin Ford has observed this follows from the negative solution to [448]: the Cauchy-Schwarz inequality implies\\[r(n)+\\tau(n)\\geq \\tau(n)^2/\\tau^+(n)\\]where $\\tau^+(n)$ is as defined in [448], and the negative solution to [448] implies the right-hand side is at least $(K+1)\\tau(n)$ for a positive density set of $n$. (This argument is given for an essentially identical problem by Hall and Tenenbaum \\cite{HaTe88}, Section 4.6.)\n\nSee also [448].\n\n\n\n\nReferences\n\n\n[HaTe88] Hall, Richard R. and Tenenbaum, G\\'{e}rald, Divisors. (1988), xvi+167.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #449 investigates whether divisor pairs that are 'close' (within a factor of 2) are rare. The conjecture that such pairs become negligible was disproved by Kevin Ford, who connected it to Problem 448 about the τ⁺ function using Cauchy-Schwarz.",
+    "problemStatement": "Let r(n) count pairs (d₁, d₂) with d₁ | n, d₂ | n, and d₁ < d₂ < 2d₁. Is r(n) < ε·τ(n) for almost all n, for every ε > 0? Answer: NO. For any K > 0, there exists a positive density set of n with r(n) > K·τ(n).",
+    "proofStrategy": "The disproof uses Cauchy-Schwarz to establish r(n) + τ(n) ≥ τ(n)²/τ⁺(n), where τ⁺(n) counts divisors d with d² ≤ n. Problem 448's negative solution shows τ⁺(n) can be much smaller than τ(n) for positive density, making r(n) arbitrarily large relative to τ(n).",
+    "keyInsights": [
+      "Close divisor pairs are NOT rare - they can dominate the divisor count",
+      "The Cauchy-Schwarz inequality provides the key bound r(n) + τ(n) ≥ τ(n)²/τ⁺(n)",
+      "Connection to Problem 448: when τ⁺(n) << τ(n), close pairs must be abundant",
+      "For n = 12: τ(12) = 6, r(12) = 5, demonstrating close pairs can be common"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 46,
+      "endLine": 75,
+      "summary": "Defines τ(n), close divisor pairs, r(n), and τ⁺(n) functions"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "startLine": 76,
+      "endLine": 93,
+      "summary": "Formal statement of the (false) conjecture using natural density"
+    },
+    {
+      "id": "disproof",
+      "title": "The Disproof",
+      "startLine": 94,
+      "endLine": 113,
+      "summary": "Statement that the conjecture is false with quantified counterexamples"
+    },
+    {
+      "id": "key-inequality",
+      "title": "The Key Inequality",
+      "startLine": 114,
+      "endLine": 138,
+      "summary": "Cauchy-Schwarz inequality for divisors and connection to Problem 448"
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Small Values",
+      "startLine": 139,
+      "endLine": 161,
+      "summary": "Concrete calculations including n=12 and highly composite numbers"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 162,
+      "endLine": 182,
+      "summary": "Divisor distribution and Hall-Tenenbaum reference"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 183,
+      "endLine": 221,
+      "summary": "Main theorem statements and key insight"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #449 is DISPROVED. The conjecture that r(n) < ε·τ(n) for almost all n is FALSE. Kevin Ford showed that for any K > 0, a positive density set of n has r(n) > K·τ(n), using Cauchy-Schwarz and Problem 448.",
+    "implications": "Close divisor pairs are fundamentally common, not rare. This has implications for understanding divisor structure and multiplicative functions. The connection to Problem 448 shows how divisor 'clustering' affects pair statistics.",
+    "openQuestions": [
+      "What is the exact density of n with r(n) > K·τ(n) as a function of K?",
+      "How does r(n)/τ(n) grow for highly composite numbers?",
+      "Can the constants in the Cauchy-Schwarz bound be made explicit?"
+    ]
   }
 }

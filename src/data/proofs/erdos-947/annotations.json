@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-947-1",
+    "proofId": "erdos-947",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "definition",
+    "title": "Congruence Class",
+    "content": "The congruence class a (mod n) is the set of all integers x such that x ≡ a (mod n), or equivalently x % n = a % n. For example, 2 (mod 5) = {..., -8, -3, 2, 7, 12, 17, ...}.",
+    "mathContext": "a (mod n) = {x ∈ ℤ : x ≡ a (mod n)}",
+    "significance": "The building blocks of covering systems - each congruence class has natural density 1/n.",
+    "relatedConcepts": ["modular arithmetic", "residue classes", "density"]
+  },
+  {
+    "id": "ann-947-2",
+    "proofId": "erdos-947",
+    "range": { "startLine": 58, "endLine": 67 },
+    "type": "definition",
+    "title": "Covering System",
+    "content": "A covering system is a finite collection of congruence classes {aᵢ (mod nᵢ)} such that every integer is in at least one class. The moduli nᵢ need not be distinct.",
+    "mathContext": "∀x ∈ ℤ. ∃i. x ≡ aᵢ (mod nᵢ)",
+    "significance": "Covering systems generalize simple constructions like {even, odd} to systems with various moduli.",
+    "relatedConcepts": ["partition", "coverage", "modular systems"]
+  },
+  {
+    "id": "ann-947-3",
+    "proofId": "erdos-947",
+    "range": { "startLine": 69, "endLine": 74 },
+    "type": "definition",
+    "title": "Distinct Moduli",
+    "content": "A covering system has distinct moduli if no two congruence classes share the same modulus. This is a key constraint - without it, {0 (mod 2), 1 (mod 2)} trivially partitions ℤ.",
+    "mathContext": "∀i ≠ j. nᵢ ≠ nⱼ",
+    "significance": "The distinctness requirement is what makes exact covering impossible.",
+    "relatedConcepts": ["constraint", "distinctness", "modulus"]
+  },
+  {
+    "id": "ann-947-4",
+    "proofId": "erdos-947",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "definition",
+    "title": "Exact Covering System",
+    "content": "An exact covering system partitions ℤ: every integer satisfies exactly one congruence. This is equivalent to the congruence classes being pairwise disjoint.",
+    "mathContext": "∀x ∈ ℤ. ∃!i. x ≡ aᵢ (mod nᵢ)",
+    "significance": "The goal that turns out to be impossible with distinct moduli.",
+    "relatedConcepts": ["partition", "disjoint union", "unique membership"]
+  },
+  {
+    "id": "ann-947-5",
+    "proofId": "erdos-947",
+    "range": { "startLine": 87, "endLine": 98 },
+    "type": "theorem",
+    "title": "Density Argument",
+    "content": "The density of a (mod n) is 1/n - exactly 1/n of all integers are in this class. For an exact covering, the densities must sum to 1: Σ 1/nᵢ = 1.",
+    "mathContext": "density(a mod n) = 1/n; exact ⟹ Σᵢ 1/nᵢ = 1",
+    "significance": "The density constraint is necessary but not sufficient - it's part of what makes exact covering impossible.",
+    "relatedConcepts": ["natural density", "partition", "sum of reciprocals"]
+  },
+  {
+    "id": "ann-947-6",
+    "proofId": "erdos-947",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "theorem",
+    "title": "Main Theorem: No Exact Covering",
+    "content": "The Mirsky-Newman / Davenport-Rado theorem: There is no exact covering system with distinct moduli. You cannot partition ℤ using congruence classes with all different moduli.",
+    "mathContext": "¬∃{aᵢ (mod nᵢ)} with distinct nᵢ partitioning ℤ",
+    "significance": "The central impossibility result - one of the classic theorems about covering systems.",
+    "relatedConcepts": ["impossibility", "partition", "covering systems"]
+  },
+  {
+    "id": "ann-947-7",
+    "proofId": "erdos-947",
+    "range": { "startLine": 133, "endLine": 150 },
+    "type": "theorem",
+    "title": "Proof Ideas",
+    "content": "Two independent proofs: (1) Mirsky-Newman use generating functions Π(1-x^{nᵢ}); (2) Davenport-Rado use the LCM: the largest modulus must divide the LCM of the others, leading to contradiction.",
+    "mathContext": "nₖ | lcm(n₁,...,n_{k-1}) leads to contradiction",
+    "significance": "Both proofs exploit the multiplicative structure of moduli in different ways.",
+    "relatedConcepts": ["generating functions", "LCM", "divisibility"]
+  },
+  {
+    "id": "ann-947-8",
+    "proofId": "erdos-947",
+    "range": { "startLine": 166, "endLine": 182 },
+    "type": "example",
+    "title": "Ordinary Covering Systems Exist",
+    "content": "Unlike exact coverings, ordinary covering systems with distinct moduli DO exist. Example: {0 (mod 2), 0 (mod 3), 1 (mod 4), 5 (mod 6), 7 (mod 12)} covers all integers (with overlaps).",
+    "mathContext": "Example: moduli {2,3,4,6,12} cover ℤ with overlaps",
+    "significance": "Shows the contrast: covering (≥1) is possible, partitioning (=1) is not.",
+    "relatedConcepts": ["covering vs partition", "Erdős covering", "overlap"]
+  },
+  {
+    "id": "ann-947-9",
+    "proofId": "erdos-947",
+    "range": { "startLine": 184, "endLine": 198 },
+    "type": "example",
+    "title": "Exact Coverings with Repeated Moduli",
+    "content": "If we allow repeated moduli, exact coverings trivially exist: {0 (mod 2), 1 (mod 2)} partitions ℤ into even and odd. The distinctness requirement is essential.",
+    "mathContext": "{0 (mod 2), 1 (mod 2)} is an exact covering (repeated modulus 2)",
+    "significance": "Highlights that the distinctness constraint is what creates the impossibility.",
+    "relatedConcepts": ["repeated moduli", "trivial partition", "even/odd"]
+  },
+  {
+    "id": "ann-947-10",
+    "proofId": "erdos-947",
+    "range": { "startLine": 254, "endLine": 262 },
+    "type": "insight",
+    "title": "Key Insight: CRT Constraints",
+    "content": "The impossibility reflects deep constraints from the Chinese Remainder Theorem and the multiplicative structure of ℤ. The moduli must 'coordinate' in ways that distinct values cannot achieve.",
+    "mathContext": "CRT constrains how congruences can partition ℤ",
+    "significance": "The theorem connects covering systems to fundamental structure of modular arithmetic.",
+    "relatedConcepts": ["Chinese Remainder Theorem", "multiplicative structure", "coordination"]
+  }
+]

@@ -1,33 +1,114 @@
 {
   "id": "erdos-842",
-  "title": "Erdős Problem #842",
+  "title": "3-Colorability of Triangle-Hamiltonian Graphs",
   "slug": "erdos-842",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices formed by taking ... vertex disjoint triangles and adding a Hamiltonian cycle (with all ne...",
+  "description": "Let G be a graph on 3n vertices formed by taking n vertex-disjoint triangles and adding a Hamiltonian cycle. Does G have chromatic number at most 3? Answer: YES (Fleischner-Stiebitz 1992).",
   "meta": {
-    "author": "Unknown",
+    "author": "Fleischner and Stiebitz (1992)",
     "sourceUrl": "https://erdosproblems.com/842",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos842Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "graph-coloring", "chromatic-number", "hamiltonian-cycle", "triangle-graph"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 842,
     "erdosUrl": "https://erdosproblems.com/842",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Basic simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "SimpleGraph.Coloring", "description": "Graph colorings", "module": "Mathlib.Combinatorics.SimpleGraph.Coloring" },
+      { "theorem": "Fin", "description": "Finite types for vertices and colors", "module": "Mathlib.Data.Fin.Basic" },
+      { "theorem": "Nat.dvd_mul_right", "description": "Divisibility of 3n by 3", "module": "Mathlib.Data.Nat.Basic" }
+    ],
+    "originalContributions": [
+      "Formal definition of Triangle-Hamiltonian Graph construction",
+      "Definition of triangle index and position within triangle",
+      "Hamiltonian cycle edge predicate",
+      "Fleischner-Stiebitz theorem: χ(THG) = 3",
+      "Analysis of why cycle length divisibility by 3 is crucial",
+      "Special case analysis for n = 1 and n = 2"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #842 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $3n$ vertices formed by taking $n$ vertex disjoint triangles and adding a Hamiltonian cycle (with all new edges) between these vertices. Does $G$ have chromatic number at most $3$?\n\n\n\nThe answer is yes, proved by Fleischner and Stiebitz \\cite{FlSt92}.\n\n\n\n\nReferences\n\n\n[FlSt92] Fleischner, Herbert and Stiebitz, Michael, A solution to a colouring problem of P. Erd\\H{o}s. Discrete Math. (1992), 39--48.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and concerns the chromatic number of a natural graph construction. Given n vertex-disjoint triangles, we connect all 3n vertices with a Hamiltonian cycle. The question is whether 3 colors suffice. Fleischner and Stiebitz proved the answer is YES in their 1992 paper 'A solution to a colouring problem of P. Erdős' published in Discrete Mathematics.",
+    "problemStatement": "Let G be a graph on 3n vertices formed by taking n vertex-disjoint triangles and adding a Hamiltonian cycle (with all new edges) between these vertices. Does G have chromatic number at most 3?",
+    "proofStrategy": "The formalization defines the Triangle-Hamiltonian Graph (THG) construction precisely: vertices are organized into n triangles, and a Hamiltonian cycle connects consecutive vertices. The main theorem states χ(THG) = 3: the lower bound follows from containing K₃, and the upper bound (3-colorability) is the content of the Fleischner-Stiebitz theorem.",
+    "keyInsights": [
+      "K₃ has chromatic number 3, so any graph containing a triangle needs ≥3 colors",
+      "The cycle length 3n is divisible by 3, enabling a consistent cyclic coloring",
+      "The 3-coloring can be arranged to satisfy both triangle and cycle constraints",
+      "Maximum degree is 4 (2 from triangle + 2 from cycle), which is ≤ 5, so Brooks' theorem suggests 3-colorability is plausible",
+      "The positive answer shows the construction is 'flexible' enough for 3-coloring"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 46,
+      "endLine": 71,
+      "summary": "Triangle graph K₃ and its chromatic number"
+    },
+    {
+      "id": "graph-construction",
+      "title": "The Graph Construction",
+      "startLine": 73,
+      "endLine": 130,
+      "summary": "Triangle-Hamiltonian Graph: vertices, triangle index, Hamiltonian edges"
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "startLine": 132,
+      "endLine": 166,
+      "summary": "Fleischner-Stiebitz theorem: χ(THG) = 3"
+    },
+    {
+      "id": "proof-strategy",
+      "title": "Proof Strategy",
+      "startLine": 168,
+      "endLine": 199,
+      "summary": "Coloring strategy and why divisibility by 3 matters"
+    },
+    {
+      "id": "graph-properties",
+      "title": "Graph Properties",
+      "startLine": 201,
+      "endLine": 237,
+      "summary": "Vertex count, edge count, degree bounds"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 239,
+      "endLine": 262,
+      "summary": "Cases n=1 (K₃) and n=2 (6 vertices)"
+    },
+    {
+      "id": "historical-context",
+      "title": "Historical Context",
+      "startLine": 264,
+      "endLine": 282,
+      "summary": "Erdős's interest and significance of the result"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 284,
+      "endLine": 322,
+      "summary": "Main results: 3-colorable, χ = 3"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #842 asked whether the Triangle-Hamiltonian Graph (n disjoint triangles plus a Hamiltonian cycle) has chromatic number ≤ 3. The answer is YES: Fleischner and Stiebitz (1992) proved that such graphs are always 3-colorable. Since they contain triangles, the chromatic number is exactly 3.",
+    "implications": "This result shows that the Hamiltonian cycle constraint is compatible with the 3-coloring requirement from the triangles. The divisibility of vertex count by 3 is key to the construction.",
+    "openQuestions": [
+      "What happens if we add TWO Hamiltonian cycles to the triangles?",
+      "Can we characterize all ways to connect n triangles that preserve 3-colorability?",
+      "What is the minimum number of edges to add to n triangles to force χ > 3?"
+    ]
   }
 }

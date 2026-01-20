@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-e99-header",
+    "proofId": "erdos-99",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets**\n\nGiven n points in ℝ² with minimum distance 1, chosen to minimize diameter:\nMust large n force a unit equilateral triangle?\n\n**Status:** OPEN\n**Prize:** $100 (counterexample), $50 (proof)\n\nErdős offered MORE for a counterexample — he suspected it might be false!",
+    "mathContext": "Thue proved optimal 2D packing uses the triangular lattice. The conjecture asks if this global structure forces local triangular substructure.",
+    "significance": "critical",
+    "relatedConcepts": ["Triangular lattice", "Circle packing", "Thue's theorem", "Discrete geometry"]
+  },
+  {
+    "id": "ann-e99-plane",
+    "proofId": "erdos-99",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "The Euclidean Plane",
+    "content": "**Plane:** ℝ² = EuclideanSpace ℝ (Fin 2)\n\n**dist p q:** The Euclidean distance ‖p - q‖.\n\nThe natural setting for the packing problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e99-mindist",
+    "proofId": "erdos-99",
+    "range": { "startLine": 54, "endLine": 64 },
+    "type": "definition",
+    "title": "Minimum Pairwise Distance",
+    "content": "**minPairwiseDistance A:** The smallest distance between distinct points in A.\n\nThe constraint is minPairwiseDistance A ≥ 1.\n\nEquivalently: unit disks centered at points don't overlap.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e99-diameter",
+    "proofId": "erdos-99",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "definition",
+    "title": "Diameter",
+    "content": "**diameter A:** The largest distance between any two points in A.\n\nThe optimization goal: minimize diameter subject to min distance ≥ 1.\n\nThis forces efficient packing of points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e99-equilateral",
+    "proofId": "erdos-99",
+    "range": { "startLine": 86, "endLine": 93 },
+    "type": "definition",
+    "title": "Unit Equilateral Triangle",
+    "content": "**IsUnitEquilateralTriangle p q r:** All three pairwise distances equal 1.\n\ndist p q = dist q r = dist r p = 1\n\nThese are the fundamental building blocks of the triangular lattice.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e99-optimal",
+    "proofId": "erdos-99",
+    "range": { "startLine": 103, "endLine": 110 },
+    "type": "definition",
+    "title": "Optimal Configuration",
+    "content": "**IsOptimalConfiguration A:**\n\n1. HasMinDistanceOne A (min pairwise distance ≥ 1)\n2. HasMinimalDiameter A (smallest diameter among all such sets)\n\nThese are the configurations the conjecture asks about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e99-lattice",
+    "proofId": "erdos-99",
+    "range": { "startLine": 116, "endLine": 122 },
+    "type": "definition",
+    "title": "Triangular Lattice",
+    "content": "**TriangularLattice:** Points with coordinates (i + j/2, j√3/2) for i, j ∈ ℤ.\n\nBasis vectors: (1, 0) and (1/2, √3/2).\n\nThis is the optimal 2D packing lattice (Thue's theorem).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e99-lattice-triangle",
+    "proofId": "erdos-99",
+    "range": { "startLine": 131, "endLine": 143 },
+    "type": "theorem",
+    "title": "Lattice Contains Equilateral Triangles",
+    "content": "**triangular_lattice_has_equilateral:**\n\nAny three adjacent points in the triangular lattice form a unit equilateral triangle.\n\nThis is why the conjecture seems plausible: if configurations resemble the lattice, they should contain triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e99-thue",
+    "proofId": "erdos-99",
+    "range": { "startLine": 149, "endLine": 160 },
+    "type": "axiom",
+    "title": "Thue's Theorem",
+    "content": "**thue_optimal_packing:**\n\nThe densest packing of unit circles in ℝ² is the triangular (hexagonal) lattice.\n\nDensity = π/(2√3) ≈ 0.9069.\n\nConsequence: diameter-minimizing configurations should resemble the triangular lattice.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e99-n4",
+    "proofId": "erdos-99",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "axiom",
+    "title": "The n=4 Counterexample",
+    "content": "**case_n4_square:**\n\nFor n = 4, the square with vertices at distance 1 apart is optimal but contains NO unit equilateral triangle!\n\nThis shows the conjecture fails for small n and suggests counterexamples might exist for larger n too.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e99-conjecture",
+    "proofId": "erdos-99",
+    "range": { "startLine": 186, "endLine": 190 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**Erdos99Conjecture:**\n\n∃ N, ∀ n ≥ N, all optimal n-point configurations contain a unit equilateral triangle.\n\nThis is the main OPEN problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e99-stronger",
+    "proofId": "erdos-99",
+    "range": { "startLine": 192, "endLine": 196 },
+    "type": "definition",
+    "title": "Stronger Conjecture",
+    "content": "**StrongerConjecture:**\n\nFor all ε > 0, large optimal configurations have (1-ε)n points lying exactly on the triangular lattice.\n\nThis implies the main conjecture but is much stronger.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e99-prize",
+    "proofId": "erdos-99",
+    "range": { "startLine": 245, "endLine": 252 },
+    "type": "theorem",
+    "title": "Prize Asymmetry",
+    "content": "**prize_asymmetry:** prizeCounterexample > prizeProof\n\n$100 for counterexample vs $50 for proof.\n\nErdős offered MORE money for a counterexample — suggesting he believed the conjecture might be FALSE.\n\nSendov and Simonovits also doubted it.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e99-summary",
+    "proofId": "erdos-99",
+    "range": { "startLine": 268, "endLine": 286 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_99_summary:**\n\n1. The main conjecture asks about unit equilateral triangles in optimal configurations\n2. n = 4 square shows small cases can avoid triangles\n3. Prize: $100 counterexample, $50 proof\n\n**Status:** OPEN — prize unclaimed",
+    "significance": "critical"
+  }
+]
