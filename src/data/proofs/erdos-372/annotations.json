@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-e372-header",
+    "proofId": "erdos-372",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #372: Descending Largest Prime Factors**\n\nLet P(n) denote the largest prime factor of n. Are there infinitely many n such that P(n) > P(n+1) > P(n+2)?\n\n**Answer**: YES - proved by Balog (2001)\n\nThe problem was posed by Erdős and Pomerance in 1978. They proved the ascending case but the descending case remained open for 23 years.",
+    "mathContext": "P(n) denotes the largest prime dividing n. For example, P(30) = 5 since 30 = 2 × 3 × 5. The question asks about consecutive integers with strictly decreasing largest prime factors.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Analytic number theory", "Sieve methods"]
+  },
+  {
+    "id": "ann-e372-imports",
+    "proofId": "erdos-372",
+    "range": { "startLine": 19, "endLine": 27 },
+    "type": "definition",
+    "title": "Mathlib Imports",
+    "content": "**Required Mathlib modules:**\n\n- `Nat.Prime.Basic`: Basic prime number theory\n- `Nat.Factorization.Basic`: Prime factorization and primeFactors\n- `Filter.AtTopBot`: Filter theory for limits\n- `Topology.Instances.Nat`: Topology on natural numbers\n- `Data.Real.Basic`: Real number properties",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e372-lpf-def",
+    "proofId": "erdos-372",
+    "range": { "startLine": 33, "endLine": 43 },
+    "type": "definition",
+    "title": "Largest Prime Factor Definition",
+    "content": "**largestPrimeFactor(n):**\n\nThe largest prime factor of n, denoted P(n).\n\n```lean\nnoncomputable def largestPrimeFactor (n : ℕ) : ℕ :=\n  if n ≤ 1 then 1\n  else (n.primeFactors).max' ...\n```\n\nFor n > 1, this is the maximum element of the set of prime divisors. By convention, P(1) = 1.",
+    "mathContext": "We use Mathlib's primeFactors function which gives the set of prime divisors, then take the maximum. The function is noncomputable because Finset.max' requires a decidable nonemptiness proof.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Finset.max'"]
+  },
+  {
+    "id": "ann-e372-lpf-prime",
+    "proofId": "erdos-372",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "theorem",
+    "title": "P(n) is Prime",
+    "content": "**Theorem largestPrimeFactor_prime:**\n\nFor n > 1, P(n) is always a prime number.\n\nThis follows directly from the definition: P(n) is an element of n.primeFactors, and every element of primeFactors is prime.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e372-lpf-dvd",
+    "proofId": "erdos-372",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "theorem",
+    "title": "P(n) Divides n",
+    "content": "**Theorem largestPrimeFactor_dvd:**\n\nFor n > 1, P(n) divides n.\n\nSince P(n) ∈ n.primeFactors, and membership in primeFactors implies divisibility, this is immediate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e372-lpf-max",
+    "proofId": "erdos-372",
+    "range": { "startLine": 62, "endLine": 70 },
+    "type": "theorem",
+    "title": "P(n) is Maximal",
+    "content": "**Theorem prime_le_largestPrimeFactor:**\n\nFor any prime p dividing n, we have p ≤ P(n).\n\nThis is the defining property of the largest prime factor: it's larger than or equal to every prime divisor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e372-examples",
+    "proofId": "erdos-372",
+    "range": { "startLine": 72, "endLine": 92 },
+    "type": "definition",
+    "title": "Concrete Examples",
+    "content": "**Computed Examples:**\n\n- P(6) = 3 since 6 = 2 × 3\n- P(30) = 5 since 30 = 2 × 3 × 5\n- P(210) = 7 since 210 = 2 × 3 × 5 × 7\n\nThese are verified using `native_decide` which computes the actual values.",
+    "mathContext": "The number 210 = 2·3·5·7 is the primorial of 7 (product of all primes up to 7). These examples illustrate how P(n) extracts the largest prime from the factorization.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e372-descending",
+    "proofId": "erdos-372",
+    "range": { "startLine": 98, "endLine": 110 },
+    "type": "definition",
+    "title": "Descending Triple Property",
+    "content": "**isDescendingTriple(n):**\n\nA natural number n satisfies the descending triplet property if:\n\nP(n) > P(n+1) > P(n+2)\n\nThree consecutive integers have strictly decreasing largest prime factors.",
+    "mathContext": "This is the main property asked about in Problem #372. Finding such triplets is harder than finding ascending ones because large prime factors are relatively rare.",
+    "significance": "critical",
+    "relatedConcepts": ["Consecutive integers", "Prime factor distribution"]
+  },
+  {
+    "id": "ann-e372-ascending",
+    "proofId": "erdos-372",
+    "range": { "startLine": 116, "endLine": 131 },
+    "type": "axiom",
+    "title": "Erdős-Pomerance Ascending Theorem",
+    "content": "**Axiom erdos_pomerance_ascending:**\n\nThere are infinitely many n such that P(n) < P(n+1) < P(n+2).\n\nThis was proved by Erdős and Pomerance in their 1978 paper. The ascending case is easier because smooth numbers (numbers with small prime factors) are relatively common.",
+    "mathContext": "The proof uses the fact that if n is y-smooth (P(n) ≤ y) but n+1 has a large prime factor, we get P(n) < P(n+1). By choosing appropriate sequences, ascending chains can be constructed.",
+    "significance": "key",
+    "relatedConcepts": ["Smooth numbers", "Erdős-Pomerance (1978)"]
+  },
+  {
+    "id": "ann-e372-balog-quant",
+    "proofId": "erdos-372",
+    "range": { "startLine": 137, "endLine": 147 },
+    "type": "axiom",
+    "title": "Balog's Quantitative Bound",
+    "content": "**Axiom balog_quantitative:**\n\nThere exist constants c > 0 and x₀ such that for all x ≥ x₀:\n\n#{n ≤ x : P(n) > P(n+1) > P(n+2)} ≥ c·√x\n\nThis quantitative bound is the key technical result of Balog (2001).",
+    "mathContext": "The bound ≫ √x is sublinear (slower than linear growth) but still implies infinitely many solutions. Balog's proof uses sophisticated sieve techniques to construct these triplets.",
+    "significance": "critical",
+    "relatedConcepts": ["Sieve methods", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e372-balog-main",
+    "proofId": "erdos-372",
+    "range": { "startLine": 149, "endLine": 164 },
+    "type": "theorem",
+    "title": "Balog's Theorem",
+    "content": "**Theorem balog_descending_infinite:**\n\nThere are infinitely many n such that P(n) > P(n+1) > P(n+2).\n\nThis follows from the quantitative bound: since c·√x → ∞ as x → ∞, there must be infinitely many solutions.",
+    "mathContext": "The proof sketch: if only finitely many descending triplets existed, say M of them, then for large x we'd have count ≤ M. But c·√x eventually exceeds any fixed M, contradiction.",
+    "significance": "critical",
+    "relatedConcepts": ["Balog (2001)", "Infinite sets"]
+  },
+  {
+    "id": "ann-e372-density",
+    "proofId": "erdos-372",
+    "range": { "startLine": 170, "endLine": 181 },
+    "type": "definition",
+    "title": "Density Conjecture",
+    "content": "**balog_density_conjecture:**\n\nThe natural density of n with P(n) > P(n+1) > P(n+2) is exactly 1/6.\n\nThis remains OPEN.",
+    "mathContext": "There are 3! = 6 possible orderings of (P(n), P(n+1), P(n+2)). By symmetry (heuristically), each should occur with density 1/6. Proving this rigorously is a major open problem.",
+    "significance": "key",
+    "relatedConcepts": ["Natural density", "Symmetry arguments"]
+  },
+  {
+    "id": "ann-e372-smooth",
+    "proofId": "erdos-372",
+    "range": { "startLine": 193, "endLine": 198 },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "**isSmooth(n, y):**\n\nA number n is y-smooth if P(n) ≤ y, meaning all prime factors are at most y.\n\nSmooth numbers play a crucial role in understanding prime factor distributions.",
+    "mathContext": "The count of y-smooth numbers up to x is denoted Ψ(x, y). Understanding Ψ(x, y) is essential for Balog's sieve arguments. For example, x^(1/2)-smooth numbers up to x number roughly x^(1/2).",
+    "significance": "key",
+    "relatedConcepts": ["Smooth number counting", "Dickman function"]
+  },
+  {
+    "id": "ann-e372-main-thm",
+    "proofId": "erdos-372",
+    "range": { "startLine": 218, "endLine": 223 },
+    "type": "theorem",
+    "title": "Main Theorem (erdos_372)",
+    "content": "**Theorem erdos_372:**\n\nThere are infinitely many n such that P(n) > P(n+1) > P(n+2).\n\nThis is the answer to Erdős Problem #372: YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e372-open-density",
+    "proofId": "erdos-372",
+    "range": { "startLine": 229, "endLine": 233 },
+    "type": "definition",
+    "title": "Open Question: Exact Density",
+    "content": "**openQuestion_exactDensity:**\n\nIs the natural density of descending triplets exactly 1/6?\n\nBalog's lower bound ≫ √x/x → 0 doesn't establish a positive density, only infinitely many solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e372-open-chains",
+    "proofId": "erdos-372",
+    "range": { "startLine": 235, "endLine": 243 },
+    "type": "definition",
+    "title": "Open Question: Longer Chains",
+    "content": "**openQuestion_longerChains(k):**\n\nFor k ≥ 3, are there infinitely many n with:\nP(n) > P(n+1) > ... > P(n+k-1)?\n\nThe case k = 3 is solved (Balog). Longer chains are open.",
+    "mathContext": "As k increases, the probability heuristic gives density 1/k! for each ordering. For k = 4, this is 1/24 ≈ 4%. Proving existence becomes much harder.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e372-summary",
+    "proofId": "erdos-372",
+    "range": { "startLine": 255, "endLine": 270 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**Theorem erdos_372_summary:**\n\n1. Infinitely many n satisfy P(n) > P(n+1) > P(n+2) (Balog 2001)\n2. Infinitely many n satisfy P(n) < P(n+1) < P(n+2) (Erdős-Pomerance 1978)\n\nBoth monotone patterns occur infinitely often among consecutive integers.",
+    "significance": "critical"
+  }
+]
