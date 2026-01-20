@@ -1,33 +1,103 @@
 {
   "id": "erdos-1121",
-  "title": "Erdős Problem #1121",
+  "title": "Circle Covering Theorem",
   "slug": "erdos-1121",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are circles in ... with radii ... such that no line disjoint from all the circles divides them into two non-empty sets...",
+  "description": "If circles C₁,...,Cₙ with radii r₁,...,rₙ have no separating line, they can be covered by a circle of radius Σrᵢ. Proved by Goodman-Goodman (1945), generalizes to higher dimensions.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/1121",
     "date": "",
-    "status": "pending",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1121Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "geometry", "circles", "covering", "convexity"],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 1121,
     "erdosUrl": "https://erdosproblems.com/1121",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "Real.sqrt", "description": "Square root function", "module": "Mathlib.Data.Real.Basic" },
+      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
+      { "theorem": "Metric.ball", "description": "Metric balls for generalization", "module": "Mathlib.Topology.MetricSpace.Basic" }
+    ],
+    "originalContributions": [
+      "Lean definitions of Circle, Line, and geometric predicates",
+      "Formal statement of 'no separating line' condition",
+      "ErdosConjecture1121 and Goodman-Goodman theorem",
+      "Higher-dimensional generalization to balls in ℝⁿ"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1121 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $C_1,\\ldots,C_n$ are circles in $\\mathbb{R}^2$ with radii $r_1,\\ldots,r_n$ such that no line disjoint from all the circles divides them into two non-empty sets then the circles can be covered by a circle of radius $r=\\sum r_i$.\n\n\n\nThis was reported as a conjecture of Erd\\H{o}s in \\cite{GoGo45}.\n\nThis is true, and was proved by Goodman and Goodman \\cite{GoGo45} (whose proof also generalises to higher dimensions).\n\n\n\n\nReferences\n\n\n[GoGo45] Goodman, A. W. and Goodman, R. E., A circle covering theorem. Amer. Math. Monthly (1945), 494--498.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This conjecture was reported as posed by Erdős in the 1945 paper by Goodman and Goodman. They proved it in the same paper, showing that 'connected' configurations of circles can always be covered by a circle whose radius equals the sum of all individual radii.",
+    "problemStatement": "If C₁,...,Cₙ are circles in ℝ² with radii r₁,...,rₙ such that no line disjoint from all circles divides them into two non-empty sets, then all circles can be covered by a single circle of radius r = r₁ + ... + rₙ.",
+    "proofStrategy": "The formalization defines circles, lines, and the 'no separating line' condition precisely. The Goodman-Goodman theorem is stated as an axiom. The proof uses convex hull arguments.",
+    "keyInsights": [
+      "The 'no separating line' condition defines a connected configuration",
+      "The covering radius equals exactly the sum of radii",
+      "The result generalizes to balls in higher dimensions",
+      "Overlapping circles always satisfy the no-separating-line condition"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 38,
+      "endLine": 80,
+      "summary": "Definitions of Circle, Line, and containment predicates"
+    },
+    {
+      "id": "separating-line",
+      "title": "Separating Line Condition",
+      "startLine": 81,
+      "endLine": 120,
+      "summary": "Definition of separating lines and connected configurations"
+    },
+    {
+      "id": "covering",
+      "title": "Covering Circle",
+      "startLine": 121,
+      "endLine": 142,
+      "summary": "Definition of covering and sum of radii"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "startLine": 143,
+      "endLine": 164,
+      "summary": "Statement of the conjecture and Goodman-Goodman theorem"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 165,
+      "endLine": 194,
+      "summary": "Two circles case and overlapping circles"
+    },
+    {
+      "id": "higher-dim",
+      "title": "Higher Dimensional Generalization",
+      "startLine": 195,
+      "endLine": 216,
+      "summary": "Generalization to balls in ℝⁿ"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 217,
+      "endLine": 254,
+      "summary": "Main results and key insights"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1121 was proved by Goodman and Goodman in 1945. If circles form a 'connected' configuration (no separating line), they can be covered by a circle of radius equal to the sum of individual radii. This generalizes to higher dimensions.",
+    "implications": "This result has applications in computational geometry and covering problems. The characterization of 'no separating line' provides a useful criterion for geometric configurations.",
+    "openQuestions": [
+      "What is the optimal center for the covering circle?",
+      "Are there efficient algorithms to compute the covering?",
+      "How does the result extend to other convex shapes?"
+    ]
   }
 }

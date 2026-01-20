@@ -1,1 +1,229 @@
-[]
+[
+  {
+    "id": "ann-1091-header",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1091** asks: Must a K₄-free graph with χ(G) = 4 contain an odd cycle with at least two diagonals? The first question is SOLVED (Voss 1982). The general f(r) question remains OPEN.",
+    "mathContext": "A K₄-free graph contains no complete graph on 4 vertices. Despite being K₄-free, such graphs can have chromatic number 4 (needing 4 colors).",
+    "significance": "critical",
+    "relatedConcepts": ["K4-free", "chromatic-number", "odd-cycles", "graph-diagonals"]
+  },
+  {
+    "id": "ann-1091-cycle",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 40, "endLine": 48 },
+    "type": "definition",
+    "title": "Cycle",
+    "content": "A cycle is formalized as a list of distinct vertices where consecutive vertices are adjacent, plus a closing edge from last to first vertex. Length must be ≥ 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-isodd",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "Cycle.isOdd",
+    "content": "A cycle is odd if its length (number of vertices) is odd. Odd cycles are significant because they prevent bipartiteness.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-diagonal",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 53, "endLine": 61 },
+    "type": "definition",
+    "title": "Cycle.isDiagonal",
+    "content": "A diagonal of a cycle is an edge between two non-consecutive vertices. The definition checks that the vertices are in the cycle but not adjacent in the cyclic order.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-count",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 63, "endLine": 67 },
+    "type": "definition",
+    "title": "Cycle.diagonalCount",
+    "content": "Counts the number of diagonals by filtering all pairs (u,v) with u < v that satisfy isDiagonal. The ordering prevents double counting.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-k4free",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "IsK4Free",
+    "content": "A graph is K₄-free if it contains no clique of size 4, i.e., no 4 vertices that are all pairwise adjacent.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-chi",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "definition",
+    "title": "chromaticNumber",
+    "content": "The chromatic number χ(G) is the minimum number of colors needed to properly color the vertices (adjacent vertices get different colors).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-larson",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 83, "endLine": 87 },
+    "type": "axiom",
+    "title": "Larson's Theorem (1979)",
+    "content": "Every K₄-free graph with χ(G) ≥ 4 contains an odd cycle with at least one diagonal. This was the first major result on this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-bollobas",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 89, "endLine": 96 },
+    "type": "definition",
+    "title": "BollobasErdosAlternative",
+    "content": "The Bollobás-Erdős alternatives: if G is K₄-free with no odd cycle having a diagonal, then G is bipartite, has a cut vertex, or has a vertex of degree ≤ 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-beproof",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 98, "endLine": 103 },
+    "type": "axiom",
+    "title": "bollobas_erdos_conjecture",
+    "content": "Larson (1979) proved this stronger conjecture of Bollobás and Erdős, characterizing K₄-free graphs without odd cycles having diagonals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-voss",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 111, "endLine": 115 },
+    "type": "axiom",
+    "title": "Voss's Theorem (1982)",
+    "content": "Every K₄-free graph with χ(G) ≥ 4 contains an odd cycle with at least TWO diagonals. This is a significant strengthening of Larson's result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-implies",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 117, "endLine": 122 },
+    "type": "theorem",
+    "title": "voss_implies_larson",
+    "content": "Voss's theorem (≥2 diagonals) immediately implies Larson's theorem (≥1 diagonal). This is trivial since 2 ≥ 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1091-wheel",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 130, "endLine": 148 },
+    "type": "definition",
+    "title": "PentagonalWheel",
+    "content": "The pentagonal wheel: vertices 0-4 form a 5-cycle, vertex 5 is the center connected to all of 0-4. This graph is K₄-free with χ = 4 but every odd cycle has ≤ 2 diagonals.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-wheelk4",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 150, "endLine": 151 },
+    "type": "axiom",
+    "title": "pentagonal_wheel_K4_free",
+    "content": "The pentagonal wheel contains no K₄: no 4 vertices are mutually adjacent. The center is adjacent to all outer vertices, but outer vertices only form a 5-cycle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-wheelchi",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 153, "endLine": 154 },
+    "type": "axiom",
+    "title": "pentagonal_wheel_chi_4",
+    "content": "The pentagonal wheel has χ = 4: the outer 5-cycle needs 3 colors (odd cycle), and the center needs a 4th color since it's adjacent to all.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-wheelmax",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "axiom",
+    "title": "pentagonal_wheel_max_2_diagonals",
+    "content": "In the pentagonal wheel, every odd cycle has at most 2 diagonals. This provides an upper bound on what can be guaranteed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-not3",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 160, "endLine": 170 },
+    "type": "theorem",
+    "title": "three_diagonals_not_guaranteed",
+    "content": "Proof that 3 diagonals cannot be universally guaranteed: the pentagonal wheel is a counterexample satisfying all hypotheses but having ≤ 2 diagonals in every odd cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-local",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 178, "endLine": 182 },
+    "type": "definition",
+    "title": "IsLocallyColorable",
+    "content": "A graph is locally k-colorable up to size r if every induced subgraph on ≤ r vertices has χ ≤ k. This weakens the K₄-free condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-general",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 184, "endLine": 190 },
+    "type": "definition",
+    "title": "GeneralQuestion",
+    "content": "The OPEN general question: Does there exist f(r) → ∞ such that locally 3-colorable graphs with χ ≥ 4 have odd cycles with ≥ f(r) diagonals?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-open",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 192, "endLine": 193 },
+    "type": "axiom",
+    "title": "general_question_open",
+    "content": "The general f(r) question remains OPEN. This is the main unsolved part of Problem #1091.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-highchi",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 201, "endLine": 206 },
+    "type": "theorem",
+    "title": "K4_free_high_chi_possible",
+    "content": "K₄-free graphs CAN have high chromatic number. The pentagonal wheel witnesses K₄-free with χ = 4. This is non-trivial since one might expect small cliques to imply low χ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1091-mycielski",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 208, "endLine": 211 },
+    "type": "axiom",
+    "title": "mycielski_construction",
+    "content": "The Mycielski construction shows triangle-free graphs can have arbitrarily high χ. This contextualizes why K₄-free high-χ graphs exist.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1091-solved",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 217, "endLine": 222 },
+    "type": "theorem",
+    "title": "erdos_1091_first_question_solved",
+    "content": "Main result: The first question is SOLVED - every K₄-free graph with χ ≥ 4 has an odd cycle with at least 2 diagonals (Voss 1982).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-upper",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 224, "endLine": 229 },
+    "type": "theorem",
+    "title": "erdos_1091_upper_bound",
+    "content": "Upper bound: 3 diagonals CANNOT be universally guaranteed. The bound of 2 diagonals (Voss) is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1091-summary",
+    "proofId": "erdos-1091",
+    "range": { "startLine": 236, "endLine": 242 },
+    "type": "theorem",
+    "title": "erdos_1091_summary",
+    "content": "Summary: Original (1 diagonal) by Larson 1979, first question (2 diagonals) by Voss 1982, upper bound (not 3) by pentagonal wheel, general f(r) question OPEN.",
+    "significance": "critical"
+  }
+]

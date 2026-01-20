@@ -1,1 +1,176 @@
-[]
+[
+  {
+    "id": "ann-e870-header",
+    "proofId": "erdos-870",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #870: Minimal Additive Bases**\n\n**Question:** For k >= 3, if A is an additive basis of order k with r(n) >= c log n for large n, must A contain a minimal basis of order k?\n\n**Status: OPEN**\n\n**Known Results:**\n- k = 2: YES (Erdos-Nathanson 1979)\n- Without log growth: NO (Hartter 1956, Nathanson 1974)\n- k >= 3: UNKNOWN",
+    "mathContext": "This is an open problem in additive number theory about the structure of additive bases.",
+    "significance": "critical",
+    "relatedConcepts": ["Additive bases", "Minimal bases", "Representation functions"]
+  },
+  {
+    "id": "ann-e870-additive-set",
+    "proofId": "erdos-870",
+    "range": { "startLine": 43, "endLine": 47 },
+    "type": "definition",
+    "title": "Additive Set",
+    "content": "**AdditiveSet:**\n\nA subset of the natural numbers, A <= N.\n\n```lean\nabbrev AdditiveSet := Set N\n```\n\nThese are the building blocks for additive bases.",
+    "significance": "key",
+    "relatedConcepts": ["Natural numbers", "Subsets"]
+  },
+  {
+    "id": "ann-e870-k-rep",
+    "proofId": "erdos-870",
+    "range": { "startLine": 49, "endLine": 58 },
+    "type": "definition",
+    "title": "k-Representation",
+    "content": "**KRepresentation(A, k, n):**\n\nA way to write n as a sum of at most k elements from A (with repetition).\n\n```lean\nstructure KRepresentation (A : AdditiveSet) (k n : N) where\n  terms : Finset N\n  count : N -> N\n  sum_eq : (terms.sum count) = n\n  bound : terms.card <= k\n  subset : forall a in terms, a in A\n```\n\n**Example:** If A = {1, 2, 3} and k = 2, then 5 = 2 + 3 is a 2-representation.",
+    "significance": "key",
+    "relatedConcepts": ["Representations", "Partitions", "Sums"]
+  },
+  {
+    "id": "ann-e870-rep-count",
+    "proofId": "erdos-870",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "definition",
+    "title": "Representation Count",
+    "content": "**representationCount(A, k, n) = r_k(A, n):**\n\nThe number of ways to represent n as a sum of at most k elements from A.\n\n```lean\nnoncomputable def representationCount (A : AdditiveSet) (k n : N) : N :=\n  Nat.card { rep : KRepresentation A k n // True }\n```\n\nThis is the central function in the problem - we ask when r(n) >= c log n.",
+    "significance": "critical",
+    "relatedConcepts": ["Representation function", "Counting"]
+  },
+  {
+    "id": "ann-e870-basis",
+    "proofId": "erdos-870",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "definition",
+    "title": "Additive Basis of Order k",
+    "content": "**IsAdditiveBasis(A, k):**\n\nA set A is an additive basis of order k if every sufficiently large n can be represented as a sum of at most k elements from A.\n\n```lean\ndef IsAdditiveBasis (A : AdditiveSet) (k : N) : Prop :=\n  exists n_0, forall n >= n_0, representationCount A k n >= 1\n```\n\n**Examples:**\n- Natural numbers: basis of order 1\n- Squares: basis of order 4 (Lagrange)\n- Primes + 1: basis of order 3 (Vinogradov, almost)",
+    "significance": "critical",
+    "relatedConcepts": ["Waring's problem", "Goldbach conjecture"]
+  },
+  {
+    "id": "ann-e870-essential",
+    "proofId": "erdos-870",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "definition",
+    "title": "Essential Element",
+    "content": "**IsEssential(A, k, a):**\n\nAn element a in A is essential if removing it destroys the basis property.\n\n```lean\ndef IsEssential (A : AdditiveSet) (k : N) (a : N) : Prop :=\n  a in A and IsAdditiveBasis A k and not IsAdditiveBasis (A \\ {a}) k\n```\n\n**Intuition:** Essential elements are 'load-bearing' - they cannot be removed.",
+    "significance": "key",
+    "relatedConcepts": ["Irreducibility", "Minimality"]
+  },
+  {
+    "id": "ann-e870-minimal",
+    "proofId": "erdos-870",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "definition",
+    "title": "Minimal Additive Basis",
+    "content": "**IsMinimalBasis(A, k):**\n\nA basis where every element is essential - no proper subset is also a basis.\n\n```lean\ndef IsMinimalBasis (A : AdditiveSet) (k : N) : Prop :=\n  IsAdditiveBasis A k and forall a in A, IsEssential A k a\n```\n\n**Key property:** Minimal bases are 'irreducible' - they have no redundancy.",
+    "significance": "critical",
+    "relatedConcepts": ["Minimal sets", "Irreducibility"]
+  },
+  {
+    "id": "ann-e870-contains-minimal",
+    "proofId": "erdos-870",
+    "range": { "startLine": 90, "endLine": 95 },
+    "type": "definition",
+    "title": "Contains Minimal Basis",
+    "content": "**ContainsMinimalBasis(A, k):**\n\nA set A contains a minimal basis if some subset B <= A is a minimal basis of order k.\n\n```lean\ndef ContainsMinimalBasis (A : AdditiveSet) (k : N) : Prop :=\n  exists B, B <= A and IsMinimalBasis B k\n```\n\n**The central question:** When does a basis contain a minimal basis?",
+    "significance": "critical",
+    "relatedConcepts": ["Substructures", "Containment"]
+  },
+  {
+    "id": "ann-e870-log-growth",
+    "proofId": "erdos-870",
+    "range": { "startLine": 101, "endLine": 106 },
+    "type": "definition",
+    "title": "Logarithmic Growth Condition",
+    "content": "**HasLogarithmicGrowth(A, k, c):**\n\nThe condition r(n) >= c log n for all sufficiently large n.\n\n```lean\ndef HasLogarithmicGrowth (A : AdditiveSet) (k : N) (c : R) : Prop :=\n  c > 0 and exists n_0, forall n >= n_0, representationCount A k n >= c * log n\n```\n\n**Key insight:** This growth condition is the threshold that might force minimal bases to exist.",
+    "significance": "critical",
+    "relatedConcepts": ["Growth rates", "Thresholds"]
+  },
+  {
+    "id": "ann-e870-en-condition",
+    "proofId": "erdos-870",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "definition",
+    "title": "Erdos-Nathanson Condition",
+    "content": "**SatisfiesENCondition(A):**\n\nThe specific condition for k = 2: 1_A * 1_A(n) > (log 4/3)^{-1} log n.\n\n```lean\ndef SatisfiesENCondition (A : AdditiveSet) : Prop :=\n  exists n_0, forall n >= n_0,\n    representationCount A 2 n > (log (4/3))^{-1} * log n\n```\n\n**Significance:** This is the threshold proved by Erdos-Nathanson for k = 2.",
+    "significance": "key",
+    "relatedConcepts": ["Convolution", "Threshold constants"]
+  },
+  {
+    "id": "ann-e870-hartter",
+    "proofId": "erdos-870",
+    "range": { "startLine": 120, "endLine": 128 },
+    "type": "axiom",
+    "title": "Hartter-Nathanson Existence",
+    "content": "**hartter_nathanson_existence:**\n\nThere exist additive bases that contain NO minimal additive bases.\n\n```lean\naxiom hartter_nathanson_existence (k : N) (hk : k >= 2) :\n    exists A, IsAdditiveBasis A k and not ContainsMinimalBasis A k\n```\n\n**Significance:** This shows the problem is non-trivial - without growth conditions, minimal bases need not exist.\n\n**References:** Hartter (1956), Nathanson (1974)",
+    "mathContext": "These constructions are delicate - they produce bases with no irreducible core.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Constructions"]
+  },
+  {
+    "id": "ann-e870-en-k2",
+    "proofId": "erdos-870",
+    "range": { "startLine": 130, "endLine": 135 },
+    "type": "axiom",
+    "title": "Erdos-Nathanson (1979) for k = 2",
+    "content": "**erdos_nathanson_k2:**\n\nFor k = 2, if A satisfies the EN condition, then A contains a minimal basis.\n\n```lean\naxiom erdos_nathanson_k2 (A : AdditiveSet) :\n    IsAdditiveBasis A 2 -> SatisfiesENCondition A -> ContainsMinimalBasis A 2\n```\n\n**This is the main known result:** The k = 2 case is SOLVED.",
+    "mathContext": "Proved by Erdos and Nathanson in their 1979 paper.",
+    "significance": "critical",
+    "relatedConcepts": ["Sumsets", "Convolutions"]
+  },
+  {
+    "id": "ann-e870-conjecture",
+    "proofId": "erdos-870",
+    "range": { "startLine": 150, "endLine": 159 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**ErdosConjecture870(k):**\n\nFor k >= 3, does there exist c = c(k) > 0 such that any basis A with r(n) >= c log n contains a minimal basis?\n\n```lean\ndef ErdosConjecture870 (k : N) : Prop :=\n  k >= 3 ->\n  exists c > 0,\n    forall A, IsAdditiveBasis A k ->\n      HasLogarithmicGrowth A k c -> ContainsMinimalBasis A k\n```\n\n**Status: OPEN for all k >= 3**",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Higher orders"]
+  },
+  {
+    "id": "ann-e870-k2-resolved",
+    "proofId": "erdos-870",
+    "range": { "startLine": 179, "endLine": 186 },
+    "type": "theorem",
+    "title": "k = 2 Case Resolved",
+    "content": "**k2_case_resolved:**\n\nThe conjecture is vacuously true for k = 2 (since it requires k >= 3).\n\nThe actual k = 2 result is erdos_nathanson_k2 which gives the positive answer.",
+    "significance": "supporting",
+    "relatedConcepts": ["Vacuous truth", "Base case"]
+  },
+  {
+    "id": "ann-e870-waring",
+    "proofId": "erdos-870",
+    "range": { "startLine": 209, "endLine": 216 },
+    "type": "axiom",
+    "title": "Waring's Problem Connection",
+    "content": "**waring_theorem:**\n\nK-th powers form an additive basis of some order g(k).\n\n```lean\ndef KthPowers (k : N) : AdditiveSet := {n : N | exists m, n = m^k}\n\naxiom waring_theorem (k : N) (hk : k >= 1) :\n    exists g, IsAdditiveBasis (KthPowers k) g\n```\n\n**Classical result:** g(2) = 4, g(3) = 9, g(4) = 19, ...",
+    "mathContext": "Waring's problem was solved by Hilbert (1909), with bounds improved by many.",
+    "significance": "key",
+    "relatedConcepts": ["Waring's problem", "Power sums"]
+  },
+  {
+    "id": "ann-e870-sidon",
+    "proofId": "erdos-870",
+    "range": { "startLine": 265, "endLine": 271 },
+    "type": "definition",
+    "title": "Sidon Sets",
+    "content": "**IsSidonSet(A):**\n\nA set with unique pairwise sums - the opposite extreme from dense representations.\n\n```lean\ndef IsSidonSet (A : AdditiveSet) : Prop :=\n  forall a b c d in A, a + b = c + d -> {a, b} = {c, d}\n```\n\n**Connection:** Sidon sets have very sparse representations, the opposite of what Problem #870 considers.",
+    "significance": "supporting",
+    "relatedConcepts": ["B_2 sequences", "Sum-free sets"]
+  },
+  {
+    "id": "ann-e870-summary",
+    "proofId": "erdos-870",
+    "range": { "startLine": 280, "endLine": 322 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdos Problem #870: OPEN**\n\n**Question:** For k >= 3, if A is an additive basis with r(n) >= c log n, must A contain a minimal basis?\n\n**Known Results:**\n1. k = 2: YES (Erdos-Nathanson 1979)\n2. Without log growth: NO (Hartter-Nathanson)\n3. k >= 3: UNKNOWN\n\n**Key Insight:** The log n threshold marks a boundary between 'sparse' bases (which may lack minimal substructures) and 'dense' bases (which might be forced to have them).",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open problems"]
+  }
+]

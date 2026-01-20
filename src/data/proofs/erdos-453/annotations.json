@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e453-header",
+    "proofId": "erdos-453",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #453: Prime Products and Squares**\n\nIs it true that for all large n, there exists i < n with p_n² < p_{n+i}·p_{n-i}?\n\n**Answer:** NO.\n\n**History:**\n- Erdős-Straus: Conjectured YES\n- Selfridge: Conjectured NO\n- Pomerance (1979): Proved Selfridge correct\n\n**Key Insight:** Convex hull of (n, log p_n) has infinitely many vertices.\n\n**Status:** SOLVED",
+    "mathContext": "This uses the prime number graph and convex geometry to analyze prime products.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime number graph", "Convex hull", "Prime Number Theorem"]
+  },
+  {
+    "id": "ann-e453-nthprime",
+    "proofId": "erdos-453",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "The n-th Prime",
+    "content": "**nthPrime:**\n\np_n denotes the n-th prime (1-indexed: p_1=2, p_2=3, ...).\n\n```lean\nnoncomputable def nthPrime (n : ℕ) : ℕ :=\n  if n = 0 then 0 else Nat.Prime.nthPrime (n - 1)\n```\n\nThe prime sequence is fundamental to the problem statement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e453-erdos-straus",
+    "proofId": "erdos-453",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "definition",
+    "title": "Erdős-Straus Conjecture",
+    "content": "**ErdosStrausConjecture:**\n\nFor all large n, there exists i < n with p_n² < p_{n+i}·p_{n-i}.\n\n```lean\ndef ErdosStrausConjecture : Prop :=\n  ∃ N : ℕ, ∀ n ≥ N, ∃ i : ℕ, i < n ∧ i > 0 ∧\n    (nthPrime n : ℤ) ^ 2 < (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nErdős and Straus originally believed this was true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e453-selfridge",
+    "proofId": "erdos-453",
+    "range": { "startLine": 82, "endLine": 89 },
+    "type": "definition",
+    "title": "Selfridge's Conjecture",
+    "content": "**SelfridgeConjecture:**\n\nInfinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n.\n\n```lean\ndef SelfridgeConjecture : Prop :=\n  ∀ N : ℕ, ∃ n ≥ N,\n    ∀ i : ℕ, 0 < i → i < n →\n      (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nSelfridge disagreed with Erdős-Straus and was proved correct.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e453-exclusive",
+    "proofId": "erdos-453",
+    "range": { "startLine": 91, "endLine": 101 },
+    "type": "theorem",
+    "title": "Mutually Exclusive",
+    "content": "**conjectures_mutually_exclusive:**\n\nThe Erdős-Straus and Selfridge conjectures cannot both be true.\n\n```lean\ntheorem conjectures_mutually_exclusive :\n    ErdosStrausConjecture → ¬SelfridgeConjecture\n```\n\nIf all large n satisfy E-S, there cannot be infinitely many counterexamples.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e453-logprime",
+    "proofId": "erdos-453",
+    "range": { "startLine": 107, "endLine": 112 },
+    "type": "definition",
+    "title": "Log-Prime Function",
+    "content": "**logPrime:**\n\na_n = log p_n for the n-th prime.\n\n```lean\nnoncomputable def logPrime (n : ℕ) : ℝ :=\n  log (nthPrime n)\n```\n\nThe graph of (n, log p_n) is the prime number graph used in Pomerance's proof.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e453-ratio",
+    "proofId": "erdos-453",
+    "range": { "startLine": 114, "endLine": 120 },
+    "type": "axiom",
+    "title": "Ratio Tends to Zero",
+    "content": "**logPrime_ratio_tendsto_zero:**\n\nlog p_n / n → 0 as n → ∞.\n\n```lean\naxiom logPrime_ratio_tendsto_zero :\n    Filter.Tendsto (fun n => logPrime n / n) Filter.atTop (nhds 0)\n```\n\nThis follows from PNT: p_n ~ n log n, so log p_n ~ log n + log log n = o(n).",
+    "mathContext": "This asymptotic behavior is crucial for the convex hull argument.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e453-vertex",
+    "proofId": "erdos-453",
+    "range": { "startLine": 122, "endLine": 128 },
+    "type": "definition",
+    "title": "Convex Hull Vertex",
+    "content": "**IsConvexHullVertex:**\n\nA point (n, a_n) is on the upper convex hull boundary if 2·a_n > a_{n-i} + a_{n+i} for all i.\n\n```lean\ndef IsConvexHullVertex (a : ℕ → ℝ) (n : ℕ) : Prop :=\n  ∀ i : ℕ, 0 < i → i < n → 2 * a n > a (n - i) + a (n + i)\n```\n\nAt a vertex, the point lies above the line between neighbors.",
+    "mathContext": "Geometric characterization of points on the convex hull boundary.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e453-lemma",
+    "proofId": "erdos-453",
+    "range": { "startLine": 130, "endLine": 136 },
+    "type": "axiom",
+    "title": "Pomerance's Lemma",
+    "content": "**pomerance_convex_hull_lemma:**\n\nFor any sequence with a_n = o(n), there are infinitely many convex hull vertices.\n\n```lean\naxiom pomerance_convex_hull_lemma (a : ℕ → ℝ)\n    (h : Filter.Tendsto (fun n => a n / n) Filter.atTop (nhds 0)) :\n    ∀ N : ℕ, ∃ n ≥ N, IsConvexHullVertex a n\n```\n\nThe non-horizontal boundary is concave with infinitely many vertices.",
+    "mathContext": "This is the key geometric insight in Pomerance's short proof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e453-pomerance",
+    "proofId": "erdos-453",
+    "range": { "startLine": 152, "endLine": 159 },
+    "type": "axiom",
+    "title": "Pomerance (1979)",
+    "content": "**pomerance_1979:**\n\nInfinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n.\n\n```lean\naxiom pomerance_1979 :\n    ∀ N : ℕ, ∃ n ≥ N,\n      ∀ i : ℕ, 0 < i → i < n →\n        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nPublished in 'The prime number graph', Math. Comp. (1979).",
+    "mathContext": "The proof applies the convex hull lemma to a_n = log p_n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e453-selfridge-correct",
+    "proofId": "erdos-453",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "theorem",
+    "title": "Selfridge Was Correct",
+    "content": "**selfridge_correct:**\n\nSelfridge's conjecture is true.\n\n```lean\ntheorem selfridge_correct : SelfridgeConjecture := pomerance_1979\n```\n\nDirect application of Pomerance's result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e453-erdos-wrong",
+    "proofId": "erdos-453",
+    "range": { "startLine": 166, "endLine": 171 },
+    "type": "theorem",
+    "title": "Erdős-Straus Were Wrong",
+    "content": "**erdos_straus_wrong:**\n\nThe Erdős-Straus conjecture is false.\n\n```lean\ntheorem erdos_straus_wrong : ¬ErdosStrausConjecture := by\n  intro hES\n  exact conjectures_mutually_exclusive hES selfridge_correct\n```\n\nFollows from mutual exclusivity and Selfridge being correct.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e453-solution",
+    "proofId": "erdos-453",
+    "range": { "startLine": 177, "endLine": 188 },
+    "type": "theorem",
+    "title": "Erdős Problem #453: SOLVED",
+    "content": "**erdos_453_solution:**\n\nThe answer to Problem #453 is NO.\n\n```lean\ntheorem erdos_453_solution : ¬ErdosStrausConjecture :=\n  erdos_straus_wrong\n```\n\nIt is NOT true that for all large n, some i exists with p_n² < p_{n+i}·p_{n-i}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e453-summary",
+    "proofId": "erdos-453",
+    "range": { "startLine": 280, "endLine": 302 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_453_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_453_summary :\n    ¬ErdosStrausConjecture ∧ SelfridgeConjecture\n```\n\n**Key Results:**\n1. Erdős-Straus conjecture is FALSE\n2. Selfridge's counter-conjecture is TRUE\n3. Pomerance's proof uses convex hull geometry\n4. Problem A14 in Guy's UPINT\n\n**Status:** SOLVED",
+    "significance": "key"
+  }
+]
