@@ -1,33 +1,134 @@
 {
   "id": "erdos-739",
-  "title": "Erdős Problem #739",
+  "title": "Erdős Problem #739: Chromatic Numbers of Subgraphs (Infinite)",
   "slug": "erdos-739",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...G......< ...G......=\\aleph_0...2^{}<2^{}...<...=\\aleph_2...=\\aleph_1...=\\aleph_2...=\\aleph_1$.\n\nIt remains open wheth...",
+  "description": "If G has infinite chromatic number 𝔪, must G have subgraphs of all smaller infinite chromatic numbers? INDEPENDENT OF ZFC: YES under V=L (Shelah 1990), NO in some models (Komjáth 1988). Open under GCH.",
   "meta": {
-    "author": "Unknown",
+    "author": "Galvin (1973), Komjáth (1988), Shelah (1990)",
     "sourceUrl": "https://erdosproblems.com/739",
-    "date": "",
-    "status": "pending",
+    "date": "1990",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos739Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "graph-theory", "chromatic-number", "set-theory", "cardinals", "independence"],
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 739,
     "erdosUrl": "https://erdosproblems.com/739",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "independent",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Cardinal", "description": "Cardinal arithmetic", "module": "Mathlib.SetTheory.Cardinal.Basic" },
+      { "theorem": "aleph", "description": "Aleph cardinals", "module": "Mathlib.SetTheory.Cardinal.Basic" },
+      { "theorem": "SimpleGraph", "description": "Simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "Ordinal", "description": "Ordinal numbers", "module": "Mathlib.SetTheory.Ordinal.Basic" }
+    ],
+    "originalContributions": [
+      "chromaticNumber: cardinal-valued chromatic number for infinite graphs",
+      "GalvinProperty: subgraphs of all smaller infinite chromatic numbers exist",
+      "ErdosGalvinQuestion: universal property statement",
+      "galvin_countable_theorem: property holds for 𝔪 = ℵ₀",
+      "StrongGalvinProperty: induced subgraph variant",
+      "galvin_set_theory_implication: connection to 2^κ < 2^ν",
+      "KomjathCounterexample: counterexample in certain models",
+      "ShelahTheoremVL: YES under axiom of constructibility",
+      "GCH: generalized continuum hypothesis",
+      "MainOpenProblem: GCH implies property?"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #739 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathfrak{m}$ be an infinite cardinal and $G$ be a graph with chromatic number $\\mathfrak{m}$. Is it true that, for every infinite cardinal $\\mathfrak{n}< \\mathfrak{m}$, there exists a subgraph of $G$ with chromatic number $\\mathfrak{n}$?\n\n\n\nA question of Galvin \\cite{Ga73}, who proved that this is true with $\\mathfrak{m}=\\aleph_0$. Galvin also proved that the stronger version of this statement, in which the subgraph is induced, implies $2^{\\mathfrak{k}}<2^{\\mathfrak{n}}$ for all cardinals $\\mathfrak{k}<\\mathfrak{n}$.\n\nKomj\\'{a}th \\cite{Ko88b} proved it is consistent that\\[2^{\\aleph_0}=2^{\\aleph_1}=2^{\\aleph_2}=\\aleph_3\\]and that there exist graphs which fail this property (with $\\mathfrak{m}=\\aleph_2$ and $\\mathfrak{n}=\\aleph_1$).\n\nShelah \\cite{Sh90} proved that, assuming the axiom of constructibility, the answer is yes with $\\mathfrak{m}=\\aleph_2$ and $\\mathfrak{n}=\\aleph_1$.\n\nIt remains open whether the answer to this question is yes assuming the Generalized Continuum Hypothesis, for example.\n\n\n\n\nReferences\n\n\n[Ga73] Galvin, F., Chromatic numbers of subgraphs. Period. Math. Hungar. (1973), 117--119.\n\n[Ko88b] Komj\\'ath, P\\'{e}ter, Consistency results on infinite graphs. Israel J. Math. (1988), 285--294.\n\n[Sh90] Shelah, Saharon, Incompactness for chromatic numbers of graphs. (1990), 361--371.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem, originating with Galvin (1973), asks whether graphs with infinite chromatic number 𝔪 must have subgraphs of all smaller infinite chromatic numbers. Galvin proved the countable case. The problem became set-theoretically interesting when Komjáth (1988) showed counterexamples exist in certain models, and Shelah (1990) proved the property holds under V=L. It remains open under GCH.",
+    "problemStatement": "**Problem Statement (SET-THEORETIC INDEPENDENCE)**\n\nLet 𝔪 be an infinite cardinal and G a graph with χ(G) = 𝔪.\n\n**Question:** For every infinite cardinal 𝔫 < 𝔪, must G have a subgraph with χ = 𝔫?\n\n**Answer:** INDEPENDENT OF ZFC\n- YES under V=L (Shelah 1990)\n- NO in some models (Komjáth 1988)\n- OPEN under GCH",
+    "proofStrategy": "The formalization defines chromatic number for infinite graphs using cardinals. Galvin's theorem for ℵ₀ is axiomatized. The induced subgraph variant and its set-theoretic implications are formalized. Komjáth's consistency result and Shelah's V=L theorem are stated. The open question under GCH is highlighted.",
+    "keyInsights": [
+      "**Galvin (1973):** YES for 𝔪 = ℵ₀ (finite chromatic subgraphs)",
+      "**Induced Variant:** Implies 2^κ < 2^ν for κ < ν (strong set-theory)",
+      "**Komjáth (1988):** Counterexamples with 𝔪 = ℵ₂, 𝔫 = ℵ₁ in some models",
+      "**Shelah (1990):** YES under V=L for 𝔪 = ℵ₂, 𝔫 = ℵ₁",
+      "**Independence:** Answer depends on model of set theory",
+      "**Open:** Does GCH imply YES?",
+      "**Deep Connection:** Combinatorics meets foundations of mathematics"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 47,
+      "endLine": 80,
+      "summary": "Chromatic number for infinite graphs, subgraph property"
+    },
+    {
+      "id": "galvin-question",
+      "title": "Galvin's Question",
+      "startLine": 82,
+      "endLine": 101,
+      "summary": "Main question formulation"
+    },
+    {
+      "id": "galvin-countable",
+      "title": "Galvin's Theorem (ℵ₀)",
+      "startLine": 102,
+      "endLine": 126,
+      "summary": "Property holds for countable chromatic number"
+    },
+    {
+      "id": "induced-variant",
+      "title": "Induced Subgraph Variant",
+      "startLine": 127,
+      "endLine": 154,
+      "summary": "Stronger version and set-theoretic implications"
+    },
+    {
+      "id": "komjath",
+      "title": "Komjáth's Consistency Result",
+      "startLine": 155,
+      "endLine": 189,
+      "summary": "Counterexamples exist in certain models"
+    },
+    {
+      "id": "shelah",
+      "title": "Shelah's Result under V=L",
+      "startLine": 190,
+      "endLine": 213,
+      "summary": "YES under axiom of constructibility"
+    },
+    {
+      "id": "gch",
+      "title": "The GCH Question",
+      "startLine": 214,
+      "endLine": 240,
+      "summary": "Open question under GCH"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 241,
+      "endLine": 273,
+      "summary": "Cases ℵ₀, ℵ₁, ℵ₂"
+    },
+    {
+      "id": "independence",
+      "title": "Why Independence?",
+      "startLine": 274,
+      "endLine": 302,
+      "summary": "Connection to cardinal arithmetic"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 303,
+      "endLine": 354,
+      "summary": "Main results and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #739 exhibits SET-THEORETIC INDEPENDENCE. Whether graphs with chromatic number 𝔪 have subgraphs of all smaller infinite chromatic numbers depends on the model of set theory. Galvin proved the countable case. Komjáth showed counterexamples exist in models where continuum function collapses. Shelah proved YES under V=L. The question under GCH remains open.",
+    "implications": "This problem reveals deep connections between infinite combinatorics and set theory. Questions that seem purely graph-theoretic can depend on the foundations of mathematics. The independence phenomenon shows limits of what can be proved in standard set theory.",
+    "openQuestions": [
+      "Does GCH imply the property holds for all graphs?",
+      "What happens for other large cardinal axioms?",
+      "Can we characterize exactly which models satisfy the property?"
+    ]
   }
 }
