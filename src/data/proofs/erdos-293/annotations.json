@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-293-1",
+    "proofId": "erdos-293",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "definition",
+    "title": "Egyptian Fraction Decomposition",
+    "content": "An Egyptian fraction decomposition of 1 with k terms is a set of k distinct positive integers {n₁, n₂, ..., nₖ} such that 1/n₁ + 1/n₂ + ... + 1/nₖ = 1. The classic example with 3 terms is 1 = 1/2 + 1/3 + 1/6.",
+    "mathContext": "1 = Σᵢ 1/nᵢ where n₁ < n₂ < ... < nₖ",
+    "significance": "Egyptian fractions date back to ancient Egypt (Rhind papyrus). Every positive rational has an Egyptian fraction representation.",
+    "relatedConcepts": ["unit fractions", "Rhind papyrus", "rational representation"]
+  },
+  {
+    "id": "ann-293-2",
+    "proofId": "erdos-293",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "definition",
+    "title": "The Function v(k)",
+    "content": "v(k) is the minimal positive integer that does NOT appear as any denominator in ANY k-term Egyptian fraction decomposition of 1. It measures how 'complete' the set of usable denominators is.",
+    "mathContext": "v(k) = min{m : m not in any k-term decomposition of 1}",
+    "significance": "The central function of the problem - understanding its growth reveals deep structure about Egyptian fractions.",
+    "relatedConcepts": ["missing denominator", "extremal function", "coverage"]
+  },
+  {
+    "id": "ann-293-3",
+    "proofId": "erdos-293",
+    "range": { "startLine": 88, "endLine": 96 },
+    "type": "definition",
+    "title": "The Vardi Sequence",
+    "content": "The Vardi sequence is defined by u₁ = 1, uᵢ₊₁ = uᵢ(uᵢ + 1). This gives 1, 2, 6, 42, 1806, 3263442, ... The sequence grows doubly exponentially and bounds denominators in Egyptian fractions.",
+    "mathContext": "u₁ = 1, uₙ₊₁ = uₙ(uₙ + 1)",
+    "significance": "The Vardi sequence provides the key upper bound on maximum denominators in k-term decompositions.",
+    "relatedConcepts": ["Sylvester sequence", "doubly exponential growth", "recurrence relations"]
+  },
+  {
+    "id": "ann-293-4",
+    "proofId": "erdos-293",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "definition",
+    "title": "The Vardi Constant",
+    "content": "The Vardi constant c₀ = lim_{n→∞} uₙ^{1/2^n} ≈ 1.26408473530530... This constant appears in the asymptotic upper bound for v(k).",
+    "mathContext": "c₀ = lim uₙ^{1/2^n} ≈ 1.26408",
+    "significance": "A fundamental constant in the theory of Egyptian fractions that quantifies the growth of the Vardi sequence.",
+    "relatedConcepts": ["mathematical constant", "limit of sequence", "asymptotic analysis"]
+  },
+  {
+    "id": "ann-293-5",
+    "proofId": "erdos-293",
+    "range": { "startLine": 125, "endLine": 130 },
+    "type": "theorem",
+    "title": "Bleicher-Erdős Lower Bound",
+    "content": "Bleicher and Erdős (1975) proved that v(k) ≥ c·k! for some constant c > 0. This factorial lower bound was the best known for decades.",
+    "mathContext": "v(k) ≥ c · k!",
+    "significance": "The first significant lower bound, showing v(k) grows at least factorially.",
+    "relatedConcepts": ["factorial growth", "lower bound", "historical result"]
+  },
+  {
+    "id": "ann-293-6",
+    "proofId": "erdos-293",
+    "range": { "startLine": 132, "endLine": 139 },
+    "type": "theorem",
+    "title": "van Doorn-Tang Lower Bound",
+    "content": "van Doorn and Tang (2025) proved v(k) ≥ e^{ck²} for some c > 0. This is a significant improvement over the factorial bound, showing exponential growth in k².",
+    "mathContext": "v(k) ≥ e^{ck²}",
+    "significance": "A major recent breakthrough, dramatically improving the lower bound and narrowing the gap to the upper bound.",
+    "relatedConcepts": ["exponential growth", "recent progress", "improved bounds"]
+  },
+  {
+    "id": "ann-293-7",
+    "proofId": "erdos-293",
+    "range": { "startLine": 145, "endLine": 152 },
+    "type": "theorem",
+    "title": "Elementary Upper Bound",
+    "content": "An elementary argument shows v(k) ≤ k · c₀^{2^k}, where c₀ is the Vardi constant. This is doubly exponential in k.",
+    "mathContext": "v(k) ≤ k · c₀^{2^k}",
+    "significance": "The best known upper bound, showing v(k) can't grow faster than doubly exponential.",
+    "relatedConcepts": ["upper bound", "doubly exponential", "Vardi constant"]
+  },
+  {
+    "id": "ann-293-8",
+    "proofId": "erdos-293",
+    "range": { "startLine": 167, "endLine": 183 },
+    "type": "theorem",
+    "title": "Erdős's Conjectures",
+    "content": "Erdős conjectured v(k) grows doubly exponentially. The weak form: v(k) ≥ e^{e^{c√k}}. The strong form: v(k) ≥ e^{e^{ck}}. Either would be a major result.",
+    "mathContext": "Conjectured: v(k) ≥ e^{e^{c√k}} or v(k) ≥ e^{e^{ck}}",
+    "significance": "If true, the strong conjecture would nearly close the gap with the upper bound.",
+    "relatedConcepts": ["doubly exponential", "conjecture", "asymptotic behavior"]
+  },
+  {
+    "id": "ann-293-9",
+    "proofId": "erdos-293",
+    "range": { "startLine": 213, "endLine": 218 },
+    "type": "example",
+    "title": "Small Value: v(3) = 4",
+    "content": "For k = 3, the only decomposition is 1 = 1/2 + 1/3 + 1/6. The denominators used are {2, 3, 6}, so v(3) = 4 (the first missing integer). There are no 1-term or 2-term decompositions.",
+    "mathContext": "v(3) = 4; only decomposition: 1/2 + 1/3 + 1/6 = 1",
+    "significance": "Concrete example showing how v(k) is computed for small cases.",
+    "relatedConcepts": ["small cases", "explicit computation", "unique decomposition"]
+  },
+  {
+    "id": "ann-293-10",
+    "proofId": "erdos-293",
+    "range": { "startLine": 280, "endLine": 288 },
+    "type": "insight",
+    "title": "The Enormous Gap",
+    "content": "The gap between lower bound (e^{k²}) and upper bound (e^{2^k}) is one of the largest in combinatorics. For k = 10: lower ≈ e^{100}, upper ≈ e^{1024}. Closing this gap is the main challenge.",
+    "mathContext": "Current bounds: e^{k²} ≤ v(k) ≤ k·c₀^{2^k}",
+    "significance": "Illustrates how little we understand about which denominators can appear in Egyptian fraction decompositions.",
+    "relatedConcepts": ["bounds gap", "open problem", "growth rate"]
+  }
+]
