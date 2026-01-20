@@ -1,33 +1,149 @@
 {
   "id": "erdos-1067",
-  "title": "Erdős Problem #1067",
+  "title": "Erdős Problem #1067: Infinitely Connected Subgraphs with Chromatic Number ℵ₁",
   "slug": "erdos-1067",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number ... contain an infinitely connected subgraph with chromatic number ...?\n\n\n\nA question ...",
+  "description": "Does every graph with χ = ℵ₁ contain an infinitely connected subgraph with χ = ℵ₁? DISPROVED by Soukup (2015), Bowler-Pitz (2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal (1966 question), Komjáth (2013), Soukup (2015), Bowler-Pitz (2024)",
     "sourceUrl": "https://erdosproblems.com/1067",
-    "date": "",
-    "status": "pending",
+    "date": "2015",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1067Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "infinite-graphs",
+      "set-theory",
+      "connectivity",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1067,
     "erdosUrl": "https://erdosproblems.com/1067",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "Aleph cardinals ℵ₀, ℵ₁, ...",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber definition for infinite graphs",
+      "hasAleph1ChromaticNumber definition",
+      "PathInGraph structure for paths in graphs",
+      "DisjointPaths and PairwiseDisjoint definitions",
+      "InfinitelyManyDisjointPaths definition",
+      "InfinitelyConnected definition for graphs",
+      "InfinitelyEdgeConnected variant definition",
+      "IsSubgraph and ErdosHajnalQuestion definitions",
+      "komjath_consistency_2013 axiom",
+      "soukup_counterexample_2015 axiom (main result)",
+      "bowler_pitz_counterexample_2024 axiom (simpler)",
+      "thomassen_edge_counterexample_2017 axiom",
+      "hasAleph1Vertices definition",
+      "erdos_1067 and erdos_1067_answer main theorems"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1067 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number $\\aleph_1$ contain an infinitely connected subgraph with chromatic number $\\aleph_1$?\n\n\n\nA question of Erd\\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.\n\nKomj\\'{a}th \\cite{Ko13} proved that it is consistent that the answer is no. This was improved by Soukup \\cite{So15}, who constructed a counterexample using no extra set-theoretical assumptions. A simpler elementary example was given by Bowler and Pitz \\cite{BoPi24}.\n\nThomassen \\cite{Th17} constructed a counterexample to the version which asks for infinite edge-connectivity (that is, to disconnect the graph requires deleting infinitely many edges).\n\nIn \\cite{ErHa66} Erd\\H{o}s and Hajnal asked the same question under the additional assumption that the graph has $\\aleph_1$ many vertices. Komj\\'{a}th \\cite{Ko13} proved that the answer is independent of ZFC.\n\nSee also [1068].\n\n\n\n\nReferences\n\n\n[BoPi24] N. Bowler and M. Pitz, A note on uncountably chromatic graphs. arXiv:2402.05984 (2024).\n\n[ErHa66] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of graphs and set-systems. Acta Math. Acad. Sci. Hungar. (1966), 61-99.\n\n[Ko13] Komj\\'ath, P\\'{e}ter, A note on chromatic number and connectivity of infinite\ngraphs. Israel J. Math. (2013), 499--506.\n\n[So15] Soukup, D\\'aniel T., Trees, ladders and graphs. J. Combin. Theory Ser. B (2015), 96--116.\n\n[Th17] Thomassen, Carsten, Infinitely connected subgraphs in graphs of uncountable\nchromatic number. Combinatorica (2017), 785--793.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Hajnal (1966) connecting chromatic number and infinite connectivity. A graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths. The question asked whether graphs with uncountable chromatic number (ℵ₁) must contain infinitely connected subgraphs of the same chromatic number.\n\nKomjáth (2013) showed consistency of a counterexample. Soukup (2015) constructed an actual counterexample in ZFC. Bowler-Pitz (2024) gave a simpler elementary construction.",
+    "problemStatement": "**Question:** Does every graph with chromatic number ℵ₁ contain an infinitely connected subgraph with chromatic number ℵ₁?\n\n**Answer: NO** (Counterexamples exist)\n\nSoukup (2015) and Bowler-Pitz (2024) constructed graphs G with:\n- χ(G) = ℵ₁\n- Every infinitely connected subgraph H has χ(H) < ℵ₁",
+    "proofStrategy": "The formalization defines:\n\n1. **InfinitelyConnected:** Any two vertices connected by infinitely many disjoint paths\n\n2. **hasAleph1ChromaticNumber:** Chromatic number equals ℵ₁\n\n3. **ErdosHajnalQuestion:** The conjecture as a proposition\n\nWe axiomatize the counterexamples:\n- Komjáth (2013): Consistency result\n- Soukup (2015): ZFC counterexample\n- Bowler-Pitz (2024): Elementary counterexample\n- Thomassen (2017): Edge-connectivity variant",
+    "keyInsights": [
+      "**Infinite connectivity is strong:** Requiring infinitely many disjoint paths is a very restrictive condition.",
+      "**Chromatic number and connectivity are independent:** High chromatic number doesn't force high connectivity.",
+      "**Construction idea:** Build graphs where the chromatic bottleneck is in 'thin' parts that can't support infinite connectivity.",
+      "**ZFC independence (ℵ₁ vertices variant):** For graphs with exactly ℵ₁ vertices, the answer depends on set-theoretic assumptions.",
+      "**Edge variant also false:** Thomassen showed the edge-connectivity version is also disproved."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-definitions",
+      "title": "Basic Graph Definitions",
+      "summary": "chromaticNumber, hasAleph1ChromaticNumber",
+      "startLine": 36,
+      "endLine": 53
+    },
+    {
+      "id": "infinite-connectivity",
+      "title": "Infinite Connectivity",
+      "summary": "PathInGraph, DisjointPaths, InfinitelyConnected definitions",
+      "startLine": 55,
+      "endLine": 98
+    },
+    {
+      "id": "edge-connectivity",
+      "title": "Edge Connectivity Variant",
+      "summary": "InfinitelyEdgeConnected definition",
+      "startLine": 100,
+      "endLine": 110
+    },
+    {
+      "id": "subgraph",
+      "title": "Subgraph Relations",
+      "summary": "IsSubgraph, ErdosHajnalQuestion",
+      "startLine": 112,
+      "endLine": 130
+    },
+    {
+      "id": "counterexamples",
+      "title": "Main Results - Counterexamples",
+      "summary": "Komjáth, Soukup, Bowler-Pitz, Thomassen axioms",
+      "startLine": 132,
+      "endLine": 175
+    },
+    {
+      "id": "aleph1-vertices",
+      "title": "Variant with ℵ₁ Vertices",
+      "summary": "hasAleph1Vertices, independence result",
+      "startLine": 177,
+      "endLine": 195
+    },
+    {
+      "id": "observations",
+      "title": "Key Observations",
+      "summary": "Why counterexamples exist, construction ideas",
+      "startLine": 197,
+      "endLine": 230
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Connection to Problem #1068, Erdős-Hajnal original",
+      "startLine": 232,
+      "endLine": 246
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1067, erdos_1067_elementary, erdos_1067_answer theorems",
+      "startLine": 248,
+      "endLine": 302
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1067 asked whether graphs with chromatic number ℵ₁ must contain infinitely connected subgraphs of the same chromatic number. The answer is NO - counterexamples were constructed by Soukup (2015) and simplified by Bowler-Pitz (2024). The key insight is that chromatic number and infinite connectivity are largely independent properties.",
+    "implications": "**Graph Theory and Set Theory Connections:**\n\n1. **Independence Results:** For restricted variants, the answer depends on set-theoretic axioms.\n\n2. **Chromatic vs Connectivity:** These fundamental graph properties don't constrain each other as strongly as expected.\n\n3. **Infinite Graph Theory:** Extends classical results to uncountable settings.\n\n4. **Construction Techniques:** The counterexamples use sophisticated graph constructions.\n\n5. **Edge Variant:** Thomassen's edge-connectivity counterexample shows the pattern is robust.",
+    "openQuestions": [
+      "Characterize graphs where the property DOES hold",
+      "What additional assumptions force the property?",
+      "Quantitative bounds on chromatic number of infinitely connected subgraphs",
+      "Higher cardinals: what about ℵ₂ or larger?"
+    ]
   }
 }
