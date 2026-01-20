@@ -11510,17 +11510,21 @@
   },
   {
     "id": "erdos-764",
-    "title": "Erdős Problem #764",
+    "title": "Erdős Problem #764: 3-Fold Convolution Linear Error",
     "slug": "erdos-764",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can there exist some constant ... such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nThe case of ... i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can ∑_{n≤N} 1_A * 1_A * 1_A(n) = cN + O(1) for some A ⊆ ℕ and c > 0? Answer: NO (Vaughan 1972).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "analytic-number-theory",
+      "convolutions"
     ],
     "erdosNumber": 764,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 5,
+    "annotationCount": 22
   },
   {
     "id": "erdos-765",
