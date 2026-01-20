@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-84-1",
+    "proofId": "erdos-84",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #84: Counting Cycle Sets**\n\n**Setup:** The cycle set of a graph G is the set of cycle lengths occurring in G.\n\n**Question:** How many distinct cycle sets are there for n-vertex graphs?\n\n**Status:**\n- Part 1 (f(n) = o(2^n)): SOLVED\n- Part 2 (f(n)/2^{n/2} → ∞): OPEN",
+    "mathContext": "f(n) counts achievable cycle sets. Not all subsets of {3,...,n} are achievable - there are structural constraints.",
+    "significance": "critical",
+    "relatedConcepts": ["Cycle enumeration", "Extremal graph theory", "Asymptotic counting"]
+  },
+  {
+    "id": "ann-84-2",
+    "proofId": "erdos-84",
+    "range": { "startLine": 55, "endLine": 68 },
+    "type": "definition",
+    "title": "Cycle Set",
+    "content": "**cycleSet G:**\n\nThe set of all cycle lengths that occur in graph G.\n\n**Example:**\n- K₅ (complete): {3, 4, 5}\n- C₆ (6-cycle): {6}\n- Path: ∅\n\nThis is always contained in {3, ..., n} for an n-vertex graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-84-3",
+    "proofId": "erdos-84",
+    "range": { "startLine": 70, "endLine": 87 },
+    "type": "definition",
+    "title": "Achievable Cycle Sets and f(n)",
+    "content": "**isAchievableCycleSet n A:**\n\nA subset A ⊆ {3,...,n} is achievable if some n-vertex graph has cycle set exactly A.\n\n**f(n):**\n\nThe count of achievable cycle sets.\n\n**Key Question:** Not all 2^{n-2} subsets are achievable - how many are?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-84-4",
+    "proofId": "erdos-84",
+    "range": { "startLine": 100, "endLine": 119 },
+    "type": "axiom",
+    "title": "Erdős-Faudree Bounds",
+    "content": "**erdos_faudree_bounds:**\n\n2^{n/2} < f(n) ≤ 2^{n-2}\n\n**Lower bound:** Construction shows at least 2^{n/2} cycle sets are achievable.\n\n**Upper bound:** Trivial - at most 2^{n-2} subsets of {3,...,n}.\n\nThe gap between these bounds is the heart of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-84-5",
+    "proofId": "erdos-84",
+    "range": { "startLine": 138, "endLine": 153 },
+    "type": "axiom",
+    "title": "Verstraëte's Theorem",
+    "content": "**verstraete_theorem (2004):**\n\nf(n) ≪ 2^{n - n^{1/10}}\n\n**Implication:** f(n) = o(2^n), solving Part 1.\n\n**Key insight:** Cycle sets have structural constraints - certain combinations of cycle lengths are impossible.\n\nThis was the first proof that f(n) grows strictly slower than 2^n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-84-6",
+    "proofId": "erdos-84",
+    "range": { "startLine": 157, "endLine": 174 },
+    "type": "axiom",
+    "title": "Nenadov's Improvement",
+    "content": "**nenadov_theorem (2025):**\n\nf(n) ≪ 2^{n - n^{1/2 - o(1)}}\n\n**Improvement:** Exponent went from 1/10 to nearly 1/2.\n\nThis is a major improvement - the savings in the exponent went from n^{0.1} to almost n^{0.5}.\n\n**Note:** This is recent research (2025), showing the problem is actively studied.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-84-7",
+    "proofId": "erdos-84",
+    "range": { "startLine": 179, "endLine": 195 },
+    "type": "definition",
+    "title": "Part 2: The Open Question",
+    "content": "**part2_statement:**\n\nDoes f(n)/2^{n/2} → ∞ as n → ∞?\n\n**STATUS: OPEN**\n\nThis asks: is the lower bound 2^{n/2} far from tight?\n\nIf true, it means f(n) grows strictly faster than 2^{n/2}, improving Erdős-Faudree.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-84-8",
+    "proofId": "erdos-84",
+    "range": { "startLine": 200, "endLine": 225 },
+    "type": "definition",
+    "title": "The Limit Question",
+    "content": "**limit_exists:**\n\nDoes lim_{n→∞} f(n)^{1/n} exist?\n\n**If it exists, call it L:**\n- L ≥ √2 (from lower bound)\n- L ≤ 2 (from upper bound)\n\n**STATUS: OPEN**\n\nDetermining whether this limit exists, and its value, would completely characterize the growth rate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-84-9",
+    "proofId": "erdos-84",
+    "range": { "startLine": 230, "endLine": 247 },
+    "type": "axiom",
+    "title": "Structural Constraints",
+    "content": "**structural_constraint:**\n\nThere exist subsets A ⊆ {3,...,n} that are NOT achievable cycle sets.\n\n**Why?** Certain cycle lengths force or forbid others:\n- Having a triangle might force other cycle lengths\n- Some combinations are geometrically impossible\n\nThis is why f(n) < 2^{n-2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-84-10",
+    "proofId": "erdos-84",
+    "range": { "startLine": 311, "endLine": 345 },
+    "type": "theorem",
+    "title": "Summary: PARTIALLY SOLVED",
+    "content": "**erdos_84:**\n\n**STATUS:** PARTIALLY SOLVED\n\n**Part 1 (SOLVED):** f(n) = o(2^n)\n- Verstraëte (2004): f(n) ≪ 2^{n - n^{1/10}}\n- Nenadov (2025): f(n) ≪ 2^{n - n^{1/2-o(1)}}\n\n**Part 2 (OPEN):** Does f(n)/2^{n/2} → ∞?\n\n**Limit (OPEN):** Does lim f(n)^{1/n} exist?\n\n**Current Gap:** 2^{n/2} < f(n) ≪ 2^{n - √n}",
+    "significance": "critical"
+  }
+]

@@ -12911,19 +12911,20 @@
     "title": "Erdős Problem #84: Counting Cycle Sets",
     "slug": "erdos-84",
     "description": "How many distinct 'cycle sets' can graphs on n vertices have? The count f(n) lies between 2^{n/2} and 2^{n-2}. Verstraëte proved f(n) = o(2^n), but the second part showing f(n)/2^{n/2} → ∞ remains open.",
-    "status": "pending",
-    "badge": "mathlib",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
+      "erdos",
       "graph-theory",
       "cycles",
-      "erdos",
       "counting",
-      "extremal-combinatorics",
-      "partially-open"
+      "extremal-combinatorics"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 84,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-840",

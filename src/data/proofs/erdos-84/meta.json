@@ -7,54 +7,121 @@
     "author": "Erdős & Faudree (conjecture), Verstraëte (2004), Nenadov (2025)",
     "sourceUrl": "https://erdosproblems.com/84",
     "date": "2004",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos84Problem.lean",
-    "tags": [
-      "graph-theory",
-      "cycles",
-      "erdos",
-      "counting",
-      "extremal-combinatorics",
-      "partially-open"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "graph-theory", "cycles", "counting", "extremal-combinatorics"],
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 84,
     "erdosUrl": "https://erdosproblems.com/84",
     "erdosProblemStatus": "open",
-    "relatedProblems": []
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Simple graph type", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "SimpleGraph.Walk", "description": "Walks and paths in graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting" },
+      { "theorem": "Finset.range", "description": "Finite range sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Real.rpow", "description": "Real power function", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+    ],
+    "originalContributions": [
+      "validCycleLengths: the set {3, 4, ..., n}",
+      "cycleSet: cycle lengths in a graph",
+      "isAchievableCycleSet: which sets can be realized",
+      "f: the cycle set count function",
+      "isLittleO: little-o asymptotic notation",
+      "verstraete_theorem: f(n) ≪ 2^{n - n^{1/10}}",
+      "nenadov_theorem: f(n) ≪ 2^{n - n^{1/2 - o(1)}}",
+      "part2_statement: f(n)/2^{n/2} → ∞ (open)"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "**What Cycle Lengths Can a Graph Have?**\n\nEvery graph has a 'cycle set' - the set of lengths of cycles it contains. For a graph on n vertices, this is a subset of {3, 4, ..., n}. But not every subset is achievable! This problem asks: how many distinct cycle sets are possible?\n\n**The Bounds**: Erdős and Faudree established 2^{n/2} < f(n) ≤ 2^{n-2}, where f(n) counts achievable cycle sets. The upper bound 2^{n-2} is trivial (subsets of {3,...,n}), but the lower bound requires construction.\n\n**The Two-Part Problem**:\n1. Prove f(n) = o(2^n) - SOLVED by Verstraëte (2004)\n2. Prove f(n)/2^{n/2} → ∞ - OPEN\n\n**Recent Progress**: Nenadov (2025) improved the upper bound to f(n) ≪ 2^{n - n^{1/2-o(1)}}, a significant improvement over Verstraëte's 2^{n - n^{1/10}}.",
-    "problemStatement": "**Problem Statement**\n\nThe cycle set of a graph G on n vertices is A ⊆ {3,...,n} where ℓ ∈ A iff G contains a cycle of length ℓ. Let f(n) count the number of possible cycle sets.\n\n**Part 1**: Prove that f(n) = o(2^n)\n**Status**: SOLVED (Verstraëte 2004)\n\n**Part 2**: Prove that f(n)/2^{n/2} → ∞\n**Status**: OPEN\n\n**Known Bounds**:\n- Lower: f(n) > 2^{n/2} (Erdős-Faudree)\n- Upper: f(n) ≤ 2^{n-2} (trivial)\n- Upper: f(n) ≪ 2^{n - n^{1/2-o(1)}} (Nenadov 2025)\n\n**Related Question**: Does lim f(n)^{1/n} exist?",
-    "proofStrategy": "**Known Techniques**\n\n**For Part 1 (Solved)**:\nVerstraëte's proof shows that cycle sets have structural constraints. Not all subsets of {3,...,n} can be cycle sets - there are 'forbidden patterns' of cycle lengths.\n\n**Upper Bound Improvements**:\n1. Verstraëte (2004): f(n) ≪ 2^{n - n^{1/10}}\n2. Nenadov (2025): f(n) ≪ 2^{n - n^{1/2-o(1)}}\n\n**The Gap**: The gap between 2^{n/2} and 2^{n - √n} is still enormous. The true growth rate of f(n) remains unknown.\n\n**For Part 2 (Open)**:\nTo prove f(n)/2^{n/2} → ∞, one must construct more cycle sets than the 2^{n/2} lower bound suggests. This requires understanding which subsets are achievable.",
+    "historicalContext": "This problem concerns the 'cycle set' of a graph - the set of lengths of cycles that occur. Erdős and Faudree asked how many distinct cycle sets are achievable for graphs on n vertices. They established bounds 2^{n/2} < f(n) ≤ 2^{n-2}.\n\nVerstraëte (2004) solved Part 1 by showing f(n) = o(2^n), with the bound f(n) ≪ 2^{n - n^{1/10}}. This proves that not all subsets of {3,...,n} can be cycle sets. Nenadov (2025) dramatically improved this to f(n) ≪ 2^{n - n^{1/2-o(1)}}.\n\nPart 2 - whether f(n)/2^{n/2} → ∞ - remains open, as does the question of whether lim f(n)^{1/n} exists.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nThe cycle set of a graph G on n vertices is A ⊆ {3,...,n} where ℓ ∈ A iff G contains a cycle of length ℓ. Let f(n) count the number of achievable cycle sets.\n\n**Part 1:** Prove f(n) = o(2^n)\n**Status:** SOLVED (Verstraëte 2004)\n\n**Part 2:** Prove f(n)/2^{n/2} → ∞\n**Status:** OPEN\n\n**Known Bounds:**\n- Lower: f(n) > 2^{n/2} (Erdős-Faudree)\n- Upper: f(n) ≪ 2^{n - n^{1/2-o(1)}} (Nenadov 2025)",
+    "proofStrategy": "The formalization defines cycle sets and the counting function f(n). Verstraëte's theorem is axiomatized for Part 1, along with Nenadov's improved bound. We formalize both parts of the problem statement, marking Part 2 as open. The key insight - that structural constraints limit achievable cycle sets - is captured through the structural_constraint axiom.",
     "keyInsights": [
-      "Not every subset of {3,...,n} is a valid cycle set - there are structural constraints",
-      "Part 1 (solved) shows f(n) grows slower than 2^n",
-      "Part 2 (open) asks whether f(n) grows faster than 2^{n/2}",
-      "Nenadov's 2025 improvement is very recent - the problem is actively studied",
-      "The exponent in 2^{n - n^α} has improved from α=1/10 to α≈1/2",
-      "The limit lim f(n)^{1/n} may not exist or may require new techniques to determine"
+      "**Cycle Set:** The set of cycle lengths occurring in a graph",
+      "**f(n):** Counts achievable cycle sets for n-vertex graphs",
+      "**Erdős-Faudree:** 2^{n/2} < f(n) ≤ 2^{n-2}",
+      "**Part 1 (Solved):** f(n) = o(2^n) via Verstraëte",
+      "**Nenadov (2025):** f(n) ≪ 2^{n - n^{1/2-o(1)}}",
+      "**Part 2 (Open):** Does f(n)/2^{n/2} → ∞?",
+      "**Key Insight:** Not all subsets are achievable cycle sets"
     ]
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 38,
-      "endLine": 39,
-      "summary": "The current proof is a placeholder (erdos_84 : True). Part 1 is solved; Part 2 remains open."
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 49,
+      "endLine": 87,
+      "summary": "Valid cycle lengths, cycle sets, achievable sets, and f(n)"
+    },
+    {
+      "id": "erdos-faudree",
+      "title": "Erdős-Faudree Bounds",
+      "startLine": 88,
+      "endLine": 119,
+      "summary": "The initial bounds 2^{n/2} < f(n) ≤ 2^{n-2}"
+    },
+    {
+      "id": "part1-solved",
+      "title": "Part 1 - SOLVED",
+      "startLine": 120,
+      "endLine": 153,
+      "summary": "Verstraëte's theorem proving f(n) = o(2^n)"
+    },
+    {
+      "id": "nenadov",
+      "title": "Nenadov's Improvement",
+      "startLine": 154,
+      "endLine": 174,
+      "summary": "Best known bound f(n) ≪ 2^{n - n^{1/2-o(1)}}"
+    },
+    {
+      "id": "part2-open",
+      "title": "Part 2 - OPEN",
+      "startLine": 175,
+      "endLine": 195,
+      "summary": "The open question: Does f(n)/2^{n/2} → ∞?"
+    },
+    {
+      "id": "limit",
+      "title": "The Limit Question",
+      "startLine": 196,
+      "endLine": 225,
+      "summary": "Does lim f(n)^{1/n} exist?"
+    },
+    {
+      "id": "structural",
+      "title": "Structural Results",
+      "startLine": 226,
+      "endLine": 247,
+      "summary": "Not all subsets are achievable cycle sets"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 248,
+      "endLine": 292,
+      "summary": "Complete graph, cycle graph, path graph, and small values"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 293,
+      "endLine": 345,
+      "summary": "Main theorem and historical note"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #84 asks about the count f(n) of distinct cycle sets for n-vertex graphs. Part 1 (f(n) = o(2^n)) was solved by Verstraëte (2004), with Nenadov (2025) giving the best upper bound f(n) ≪ 2^{n - n^{1/2-o(1)}}. Part 2 (f(n)/2^{n/2} → ∞) remains OPEN.",
-    "implications": "**Theoretical Significance**\n\n1. **Graph Structure**: Reveals constraints on which cycle length combinations are achievable\n\n2. **Extremal Combinatorics**: Connects cycle structure to counting problems\n\n3. **Entropy**: The gap between 2^{n/2} and 2^n represents 'structural entropy' of cycle sets\n\n4. **Active Research**: Nenadov's 2025 result shows this is a currently active area",
+    "summary": "Erdős Problem #84 is PARTIALLY SOLVED. Part 1 (f(n) = o(2^n)) was solved by Verstraëte (2004), with Nenadov (2025) giving the best known bound f(n) ≪ 2^{n - n^{1/2-o(1)}}. Part 2 (f(n)/2^{n/2} → ∞) remains OPEN.",
+    "implications": "This problem reveals deep structure in graph theory: not all subsets of {3,...,n} can be the set of cycle lengths of a graph. The progression of upper bounds shows active research. Understanding achievable cycle sets connects to extremal graph theory and structural graph theory.",
     "openQuestions": [
       "Prove or disprove: f(n)/2^{n/2} → ∞ (Part 2)",
       "Does lim f(n)^{1/n} exist? If so, what is its value?",
       "Can the Nenadov upper bound be further improved?",
-      "Characterize which subsets of {3,...,n} are valid cycle sets",
-      "What is the structure of the 'forbidden' cycle set patterns?"
+      "Characterize exactly which subsets are valid cycle sets",
+      "What structural constraints govern achievable cycle sets?"
     ]
   }
 }
