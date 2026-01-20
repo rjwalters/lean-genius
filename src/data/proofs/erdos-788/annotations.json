@@ -1,1 +1,96 @@
-[]
+[
+  {
+    "id": "ann-788-1",
+    "proofId": "erdos-788",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #788: Sum-Free Subsets in Intervals**\n\n**Question:** Estimate f(n) where f(n) is maximal such that for all B ⊂ (2n,4n), there exists C ⊂ (n,2n) sum-free w.r.t. B with |C| + |B| ≥ f(n).\n\n**Conjecture (Choi):** f(n) ≤ n^{1/2+o(1)}\n\n**Known:** n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}\n\n**STATUS: OPEN**",
+    "mathContext": "This is a problem about finding sets C in (n, 2n) such that no two distinct elements sum to something in a forbidden set B ⊂ (2n, 4n).",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Sidon sets", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-788-2",
+    "proofId": "erdos-788",
+    "range": { "startLine": 53, "endLine": 66 },
+    "type": "definition",
+    "title": "Interval Definitions",
+    "content": "**lowerInterval and upperInterval:**\n\n- (n, 2n) ∩ ℕ: natural numbers strictly between n and 2n\n- (2n, 4n) ∩ ℕ: natural numbers strictly between 2n and 4n\n\nKey observation: if c₁, c₂ ∈ (n, 2n), then c₁ + c₂ ∈ (2n, 4n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-788-3",
+    "proofId": "erdos-788",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "definition",
+    "title": "Sum-Free with Respect to B",
+    "content": "**isSumFreeWithResp C B:**\n\nC is sum-free with respect to B if no two distinct elements c₁, c₂ ∈ C have c₁ + c₂ ∈ B.\n\nThis is NOT the same as C being sum-free - we only forbid sums that land in B.",
+    "mathContext": "Unlike classical sum-free sets, here we only avoid specific forbidden sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-788-4",
+    "proofId": "erdos-788",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**f n:**\n\nf(n) = max k such that ∀ B ⊆ (2n, 4n), ∃ C ⊆ (n, 2n) sum-free w.r.t. B with |C| + |B| ≥ k.\n\nThis captures the \"guaranteed combined size\" regardless of how B is chosen.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-788-5",
+    "proofId": "erdos-788",
+    "range": { "startLine": 127, "endLine": 139 },
+    "type": "theorem",
+    "title": "Choi's Results (1971)",
+    "content": "**choi_upper_bound and choiConjecture:**\n\nChoi proved: f(n) ≪ n^{3/4}\n\nChoi conjectured: f(n) ≤ n^{1/2+o(1)}\n\nThis was the first bound on f(n) and remains the motivating conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-788-6",
+    "proofId": "erdos-788",
+    "range": { "startLine": 145, "endLine": 175 },
+    "type": "theorem",
+    "title": "Adenwalla's Lower Bound",
+    "content": "**adenwalla_lower_bound and Sidon sets:**\n\nf(n) ≫ n^{1/2} via a simple construction using Sidon sets.\n\n**Sidon set:** A set where all pairwise sums are distinct.\n\nA Sidon set of size ~√n has only ~n distinct sums, leaving room in (2n, 4n) for B.",
+    "mathContext": "Sidon sets control which sums appear, enabling the lower bound construction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-788-7",
+    "proofId": "erdos-788",
+    "range": { "startLine": 199, "endLine": 205 },
+    "type": "theorem",
+    "title": "BSS Bound (2000)",
+    "content": "**bss_bound:**\n\nf(n) ≪ (n log n)^{2/3}\n\nThis is the best known upper bound, proved by Baltz, Schoen, and Srivastav using probabilistic methods and connections to strongly sum-free sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-788-8",
+    "proofId": "erdos-788",
+    "range": { "startLine": 226, "endLine": 245 },
+    "type": "theorem",
+    "title": "Current Bounds",
+    "content": "**current_bounds and the_gap:**\n\n**Lower:** f(n) ≫ n^{1/2} (Adenwalla)\n**Upper:** f(n) ≪ (n log n)^{2/3} (BSS 2000)\n\n**The Gap:** The exponent is between 1/2 and 2/3. Choi's conjecture says it should be 1/2 + o(1).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-788-9",
+    "proofId": "erdos-788",
+    "range": { "startLine": 251, "endLine": 256 },
+    "type": "definition",
+    "title": "Classical Sum-Free Sets",
+    "content": "**isSumFree S:**\n\nA set S is sum-free if a + b ∉ S for all a, b ∈ S.\n\nThis problem generalizes: instead of avoiding all sums landing in S, we avoid sums landing in a prescribed set B.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-788-10",
+    "proofId": "erdos-788",
+    "range": { "startLine": 315, "endLine": 356 },
+    "type": "theorem",
+    "title": "Summary: OPEN",
+    "content": "**erdos_788 and erdos_788_summary:**\n\n**STATUS: OPEN**\n\n**Timeline:**\n- Choi (1971): f(n) ≪ n^{3/4}, conjecture f(n) ≤ n^{1/2+o(1)}\n- Adenwalla: f(n) ≫ n^{1/2}\n- Hunter: f(n) ≪ n^{2/3+o(1)}\n- BSS (2000): f(n) ≪ (n log n)^{2/3}\n\n**Gap:** Between n^{1/2} and (n log n)^{2/3}.",
+    "significance": "critical"
+  }
+]
