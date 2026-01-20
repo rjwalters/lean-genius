@@ -13525,17 +13525,22 @@
   },
   {
     "id": "erdos-903",
-    "title": "Erdős Problem #903",
+    "title": "Erdős Problem #903: Block Designs and the de Bruijn-Erdős Gap",
     "slug": "erdos-903",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... for some prime power ..., and let ... be a block design (so that every pair ... is contained in exactly one ...).\n\nIs...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n = p² + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t ≥ n + p. Proved by Erdős-Fowler-Sós-Wilson (1985).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "block-designs",
+      "finite-geometry",
+      "projective-planes"
     ],
     "erdosNumber": 903,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 25
   },
   {
     "id": "erdos-904",
