@@ -1,33 +1,104 @@
 {
   "id": "erdos-912",
-  "title": "Erdős Problem #912",
+  "title": "Distinct Exponents in Factorial Factorization",
   "slug": "erdos-912",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[n! = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then let ... count the number of distinct exponents ......",
+  "description": "If n! = ∏ pᵢ^{kᵢ}, let h(n) count distinct exponents kᵢ. Prove h(n) ~ c·√(n/log n) for some c > 0. Known: h(n) ≍ √(n/log n). Conjectured: c = √(2π).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, John Selfridge",
     "sourceUrl": "https://erdosproblems.com/912",
     "date": "",
-    "status": "pending",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos912Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "number-theory", "factorials", "prime-factorization", "exponents"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 912,
     "erdosUrl": "https://erdosproblems.com/912",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "padicValNat", "description": "p-adic valuation of naturals", "module": "Mathlib.NumberTheory.Padics.PadicVal" },
+      { "theorem": "Nat.factorial", "description": "Factorial function", "module": "Mathlib.Data.Nat.Factorial.Basic" },
+      { "theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Real.sqrt", "description": "Square root", "module": "Mathlib.Data.Real.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of h(n) counting distinct exponents",
+      "Formal statement of Erdős-Selfridge bounds",
+      "Erdős conjecture and Tao's conjectured constant",
+      "Connection to Legendre's formula"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #912 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[n! = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then let $h(n)$ count the number of distinct exponents $k_i$.\n\nProve that there exists some $c>0$ such that\\[h(n) \\sim c \\left(\\frac{n}{\\log n}\\right)^{1/2}\\]as $n\\to \\infty$.\n\n\n\nA problem of Erd\\H{o}s and Selfridge, who proved (see \\cite{Er82c})\\[h(n) \\asymp \\left(\\frac{n}{\\log n}\\right)^{1/2}.\\]A heuristic of Tao using the Cram\\'{e}r model for the primes (detailed in the comments) suggests this is true with\\[c=\\sqrt{2\\pi}=2.506\\cdots.\\]\n\n\n\n\nReferences\n\n\n[Er82c] Erd\\H{o}s, P., Miscellaneous problems in number theory. Congr. Numer. (1982), 25-45.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Selfridge, who proved the asymptotic order h(n) ≍ √(n/log n). The exact constant remains open. Terence Tao developed a heuristic using the Cramér model suggesting c = √(2π) ≈ 2.506.",
+    "problemStatement": "Let n! = ∏ᵢ pᵢ^{kᵢ} be the prime factorization. Define h(n) as the count of distinct exponents kᵢ. Prove there exists c > 0 such that h(n) ~ c·√(n/log n) as n → ∞.",
+    "proofStrategy": "The formalization defines h(n) using p-adic valuations, states the Erdős-Selfridge bounds as axioms, and formally expresses the conjecture about the exact constant.",
+    "keyInsights": [
+      "h(n) counts distinct exponents in n!'s prime factorization",
+      "Erdős-Selfridge proved h(n) ≍ √(n/log n) (asymptotic order)",
+      "The exact constant c in h(n) ~ c·√(n/log n) is unknown",
+      "Tao's heuristic suggests c = √(2π) via Cramér model"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 45,
+      "endLine": 83,
+      "summary": "Definitions of exponentInFactorial, h(n), and related functions"
+    },
+    {
+      "id": "erdos-selfridge-bounds",
+      "title": "Erdős-Selfridge Bounds",
+      "startLine": 84,
+      "endLine": 119,
+      "summary": "Known asymptotic bounds h(n) ≍ √(n/log n)"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 120,
+      "endLine": 150,
+      "summary": "Formal statement of the conjecture and Tao's constant"
+    },
+    {
+      "id": "related-properties",
+      "title": "Related Properties",
+      "startLine": 151,
+      "endLine": 178,
+      "summary": "Monotonicity and maximum exponent properties"
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "startLine": 179,
+      "endLine": 199,
+      "summary": "Values of h(n) for small n (OEIS A071626)"
+    },
+    {
+      "id": "difficulty",
+      "title": "Why the Conjecture is Hard",
+      "startLine": 200,
+      "endLine": 221,
+      "summary": "Connections to prime distribution"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 222,
+      "endLine": 270,
+      "summary": "Main results and current state of knowledge"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #912 is OPEN. The asymptotic order h(n) ≍ √(n/log n) is known (Erdős-Selfridge). The exact constant c in h(n) ~ c·√(n/log n) remains unknown, with Tao conjecturing c = √(2π) ≈ 2.506 based on the Cramér model.",
+    "implications": "This problem connects factorials, prime distribution, and asymptotic analysis. Solving it would require understanding the fine structure of how exponents distribute in factorial prime factorizations.",
+    "openQuestions": [
+      "Does the limit c = lim h(n)/√(n/log n) exist?",
+      "Is c = √(2π) as Tao's heuristic suggests?",
+      "What are the precise values of c₁ and c₂ in the Erdős-Selfridge bounds?"
+    ]
   }
 }

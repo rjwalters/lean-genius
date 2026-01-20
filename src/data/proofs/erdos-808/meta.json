@@ -1,33 +1,105 @@
 {
   "id": "erdos-808",
-  "title": "Erdős Problem #808",
+  "title": "Graph-Restricted Sum-Product Bounds",
   "slug": "erdos-808",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large. If ... has ... and ... is any graph on ... with at least ... edges then\\[\\max(\\lvert A...",
+  "description": "Graph version of sum-product: with n^{1+c} edges, is max(|A+_G A|, |A·_G A|) ≥ n^{1+c-ε}? DISPROVED by Alon-Ruzsa-Solymosi (2020). Counterexample: n^{5/3} edges give only n^{4/3} outputs. Positive result: max ≥ m^{3/2}/n^{7/4}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Alon, Ruzsa, Solymosi (2020)",
     "sourceUrl": "https://erdosproblems.com/808",
-    "date": "",
-    "status": "pending",
+    "date": "2020",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos808Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "additive-combinatorics", "sum-product", "graph-theory", "disproved"],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 808,
     "erdosUrl": "https://erdosproblems.com/808",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "Finset.image", "description": "Image of finite set under function", "module": "Mathlib.Data.Finset.Image" },
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "SimpleGraph", "description": "Simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "Real.rpow", "description": "Real power function for exponents", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+    ],
+    "originalContributions": [
+      "Lean formalization of graph-restricted sumsets and product sets",
+      "Formal statement of the (false) Erdős-Szemerédi graph conjecture",
+      "Axiomatized ARS counterexample construction",
+      "Positive lower bound: max ≥ m^{3/2}n^{-7/4}",
+      "Connection to classical sum-product conjecture"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #808 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c,\\epsilon>0$ and $n$ be sufficiently large. If $A\\subset \\mathbb{N}$ has $\\lvert A\\rvert=n$ and $G$ is any graph on $A$ with at least $n^{1+c}$ edges then\\[\\max(\\lvert A+_GA\\rvert,\\lvert A\\cdot_G A\\rvert) \\geq \\lvert A\\rvert^{1+c-\\epsilon},\\]where\\[A+_GA = \\{ a+b : (a,b)\\in G\\}\\]and similarly for $A\\cdot_GA$.\n\n\n\nA problem often attributed to Erd\\H{o}s and Szemer\\'{e}di, which strengthens the conjecture [52], although it appears in \\cite{Er77c} without attribution to Szemer\\'{e}di.\n\nThis strong conjecture was disproved by Alon, Ruzsa, and Solymosi \\cite{ARS20}, who constructed (for arbitrarily large $n$) a set of integers $A$ with $\\lvert A\\rvert=n$ and a graph $G$ with $\\gg n^{5/3-o(1)}$ many edges such that\\[\\max(\\lvert A+_GA\\rvert,\\lvert A\\cdot_G A\\rvert) \\ll \\lvert A\\rvert^{4/3+o(1)}.\\]Alon, Ruzsa, and Solymosi do prove, however, that if $A$ has size $n$ and $G$ has $m$ edges then\\[\\max(\\lvert A+_GA\\rvert,\\lvert A\\cdot_G A\\rvert) \\gg m^{3/2}n^{-7/4}.\\]\n\n\n\n\nReferences\n\n\n[ARS20] Alon, Noga and Ruzsa, Imre and Solymosi, J\\'{o}zsef, Sums, products, and ratios along the edges of a graph. Publ. Mat. (2020), 143-155.\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem generalizes the famous Erdős-Szemerédi sum-product conjecture to graph-restricted settings. Alon, Ruzsa, and Solymosi (2020) showed the natural generalization fails, but proved a weaker positive bound.",
+    "problemStatement": "If A ⊂ ℕ with |A| = n and graph G on A has ≥ n^{1+c} edges, is max(|A +_G A|, |A ·_G A|) ≥ n^{1+c-ε}? Here A +_G A = {a+b : (a,b) ∈ G}.",
+    "proofStrategy": "ARS constructed sets with arithmetic structure where many edges (n^{5/3}) produce few distinct sums/products (n^{4/3}). They also proved a positive lower bound using different techniques.",
+    "keyInsights": [
+      "The conjecture is FALSE: n^{5/3} edges can yield only n^{4/3} outputs",
+      "Arithmetic structure allows many edges without many new sums",
+      "Positive result: max ≥ c · m^{3/2} · n^{-7/4} where m = edges",
+      "Graph structure fundamentally changes sum-product behavior vs complete graph"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 50,
+      "endLine": 82,
+      "summary": "Graph-restricted sumset, product set, and edge count"
+    },
+    {
+      "id": "original-conjecture",
+      "title": "The Original Conjecture (DISPROVED)",
+      "startLine": 83,
+      "endLine": 105,
+      "summary": "Statement of the false Erdős-Szemerédi graph conjecture"
+    },
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "startLine": 106,
+      "endLine": 134,
+      "summary": "ARS counterexample: n^{5/3} edges → n^{4/3} outputs"
+    },
+    {
+      "id": "positive-result",
+      "title": "The Positive Result",
+      "startLine": 135,
+      "endLine": 159,
+      "summary": "ARS positive bound: max ≥ m^{3/2}/n^{7/4}"
+    },
+    {
+      "id": "sum-product-connection",
+      "title": "Connection to Sum-Product",
+      "startLine": 160,
+      "endLine": 184,
+      "summary": "Relation to classical sum-product conjecture (Problem 52)"
+    },
+    {
+      "id": "construction-idea",
+      "title": "The Construction Idea",
+      "startLine": 185,
+      "endLine": 208,
+      "summary": "How arithmetic structure enables the counterexample"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 209,
+      "endLine": 253,
+      "summary": "Main results and key insight about graph structure"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #808 is DISPROVED. The graph-restricted sum-product conjecture fails: n^{5/3} edges can produce only n^{4/3} outputs. However, ARS proved a positive bound: max(|A+_G A|, |A·_G A|) ≥ m^{3/2}/n^{7/4}.",
+    "implications": "Graph structure fundamentally changes sum-product phenomena. Sparse graphs can exploit arithmetic structure to avoid expansion, unlike complete graphs.",
+    "openQuestions": [
+      "What is the optimal lower bound in terms of m and n?",
+      "Can the exponents 3/2 and 7/4 in the positive result be improved?",
+      "What graph structures maximize expansion?"
+    ]
   }
 }

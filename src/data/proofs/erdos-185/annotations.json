@@ -1,1 +1,222 @@
-[]
+[
+  {
+    "id": "ann-e185-header",
+    "proofId": "erdos-185",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #185: Cap Sets in {0,1,2}^n**\n\n**Question:** Is f₃(n) = o(3^n)?\n\n**Answer: YES** (Furstenberg-Katznelson 1991)\n\nThe density Hales-Jewett theorem implies cap sets have density → 0.\n\n**Later Progress:** Ellenberg-Gijswijt (2016) proved f₃(n) ≤ c^n with c < 3.",
+    "mathContext": "f₃(n) = max size of subset of {0,1,2}^n with no three collinear points.",
+    "significance": "critical",
+    "relatedConcepts": ["Cap sets", "Density Hales-Jewett", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e185-ternary-hypercube",
+    "proofId": "erdos-185",
+    "range": { "startLine": 39, "endLine": 43 },
+    "type": "definition",
+    "title": "Ternary Hypercube",
+    "content": "**TernaryHypercube(n):**\n\nThe set {0,1,2}^n represented as functions Fin n → ZMod 3.\n\n```lean\nabbrev TernaryHypercube (n : ℕ) := Fin n → ZMod 3\n```\n\nThis is the space where cap sets live.",
+    "significance": "critical",
+    "relatedConcepts": ["ZMod 3", "Function types"]
+  },
+  {
+    "id": "ann-e185-hypercube-card",
+    "proofId": "erdos-185",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "theorem",
+    "title": "Hypercube Cardinality",
+    "content": "**hypercube_card:** |{0,1,2}^n| = 3^n.\n\n```lean\ntheorem hypercube_card (n : ℕ) :\n    Fintype.card (TernaryHypercube n) = 3^n\n```\n\nThis is a basic counting result - each of n coordinates has 3 choices.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype.card", "Cardinality"]
+  },
+  {
+    "id": "ann-e185-online",
+    "proofId": "erdos-185",
+    "range": { "startLine": 57, "endLine": 63 },
+    "type": "definition",
+    "title": "Collinearity (OnLine)",
+    "content": "**OnLine(x, y, z):**\n\nThree points are on a line if x + z = 2y componentwise in ZMod 3.\n\n```lean\ndef OnLine (x y z : TernaryHypercube n) : Prop :=\n  ∀ i : Fin n, x i + z i = 2 * y i\n```\n\nEquivalently, y is the \"midpoint\" of x and z in the ternary cube.\n\n**Key insight:** This generalizes arithmetic progressions.",
+    "mathContext": "In ZMod 3: if x + z = 2y then {x, y, z} forms a line with y as middle point.",
+    "significance": "critical",
+    "relatedConcepts": ["Arithmetic progressions", "Midpoints", "ZMod arithmetic"]
+  },
+  {
+    "id": "ann-e185-combinatorial-line",
+    "proofId": "erdos-185",
+    "range": { "startLine": 65, "endLine": 81 },
+    "type": "definition",
+    "title": "Combinatorial Line",
+    "content": "**CombinatorialLine:**\n\nA line parameterized by which coordinates vary (taking values 0, 1, 2) vs which are fixed.\n\n```lean\nstructure CombinatorialLine (n : ℕ) where\n  varying : Finset (Fin n)    -- Coordinates that vary\n  fixed : Fin n → ZMod 3      -- Values for non-varying\n  nonempty : varying.Nonempty -- At least one varies\n```\n\nThis is the structure used in the Hales-Jewett theorem.",
+    "mathContext": "A combinatorial line has exactly 3 points, obtained by setting varying coordinates to 0, 1, or 2.",
+    "significance": "critical",
+    "relatedConcepts": ["Hales-Jewett theorem", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e185-is-cap-set",
+    "proofId": "erdos-185",
+    "range": { "startLine": 87, "endLine": 93 },
+    "type": "definition",
+    "title": "Cap Set Definition",
+    "content": "**IsCapSet(S):**\n\nA cap set is a subset of {0,1,2}^n with no three collinear points.\n\n```lean\ndef IsCapSet (S : Finset (TernaryHypercube n)) : Prop :=\n  ∀ x y z, x ∈ S → y ∈ S → z ∈ S →\n    x ≠ y → y ≠ z → x ≠ z → ¬OnLine x y z\n```\n\nThis is the central object of study.",
+    "significance": "critical",
+    "relatedConcepts": ["Line-free sets", "Finite geometry"]
+  },
+  {
+    "id": "ann-e185-cap-set-combinatorial",
+    "proofId": "erdos-185",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "definition",
+    "title": "Cap Set (Combinatorial Version)",
+    "content": "**IsCapSetCombinatorial(S):**\n\nNo combinatorial line is contained in S.\n\n```lean\ndef IsCapSetCombinatorial (S : Finset (TernaryHypercube n)) : Prop :=\n  ∀ L : CombinatorialLine n, ¬(L.points ⊆ S)\n```\n\nThis is equivalent to IsCapSet but formulated for Hales-Jewett.",
+    "significance": "key",
+    "relatedConcepts": ["IsCapSet", "Equivalence"]
+  },
+  {
+    "id": "ann-e185-f3",
+    "proofId": "erdos-185",
+    "range": { "startLine": 102, "endLine": 107 },
+    "type": "definition",
+    "title": "The f₃(n) Function",
+    "content": "**f3(n):**\n\nThe maximum size of a cap set in {0,1,2}^n.\n\n```lean\nnoncomputable def f3 (n : ℕ) : ℕ :=\n  sSup { S.card | S : Finset (TernaryHypercube n) // IsCapSet S }\n```\n\nThis is the central function in the problem.",
+    "mathContext": "The problem asks: is f₃(n) = o(3^n)?",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal combinatorics", "Maximum sets"]
+  },
+  {
+    "id": "ann-e185-r3",
+    "proofId": "erdos-185",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "definition",
+    "title": "R₃(N) - AP-Free Sets",
+    "content": "**R3(N):**\n\nMax size of AP-free subset of {1,...,N}.\n\n```lean\nnoncomputable def R3 (N : ℕ) : ℕ :=\n  sSup { S.card | S : Finset ℕ // (∀ x ∈ S, x ≤ N) ∧\n    ∀ a d, d > 0 → a ∈ S → a + d ∈ S → a + 2*d ∈ S → False }\n```\n\nAP-free sets embed into cap sets via ternary representation.",
+    "significance": "key",
+    "relatedConcepts": ["Arithmetic progressions", "Szemerédi's theorem"]
+  },
+  {
+    "id": "ann-e185-f3-geq-r3",
+    "proofId": "erdos-185",
+    "range": { "startLine": 121, "endLine": 128 },
+    "type": "axiom",
+    "title": "Lower Bound: f₃(n) ≥ R₃(3^n)",
+    "content": "**f3_geq_R3:** f₃(n) ≥ R₃(3^n).\n\nThe embedding {1,...,3^n} ↪ {0,1,2}^n via ternary representation maps AP-free sets to cap sets.\n\nThis shows cap sets are at least as hard as AP-free sets.",
+    "mathContext": "Lines in {0,1,2}^n generalize 3-term APs in ℤ.",
+    "significance": "key",
+    "relatedConcepts": ["Ternary representation", "Embedding"]
+  },
+  {
+    "id": "ann-e185-moser-lower",
+    "proofId": "erdos-185",
+    "range": { "startLine": 134, "endLine": 141 },
+    "type": "axiom",
+    "title": "Moser's Lower Bound",
+    "content": "**moser_lower_bound:** f₃(n) ≫ 3^n/√n.\n\nMore precisely: ∃ c > 0, ∀ n ≥ 1, f₃(n) ≥ c · 3^n/√n.\n\nThis shows cap sets can be quite large - density only decays as 1/√n.",
+    "mathContext": "The Moser construction achieves this bound.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bounds", "Moser's construction"]
+  },
+  {
+    "id": "ann-e185-moser-set",
+    "proofId": "erdos-185",
+    "range": { "startLine": 143, "endLine": 150 },
+    "type": "definition",
+    "title": "Moser's Construction",
+    "content": "**moserSet(n):**\n\nPoints with coordinate sum ≡ 0 or 1 (mod 3).\n\n```lean\ndef moserSet (n : ℕ) : Finset (TernaryHypercube n) :=\n  Finset.univ.filter (fun x =>\n    (Finset.univ.sum x) = 0 ∨ (Finset.univ.sum x) = 1)\n```\n\nThis forms a large cap set achieving Moser's lower bound.",
+    "mathContext": "If x + z = 2y (line condition), then sum(x) + sum(z) = 2·sum(y). For points with sum ≡ 0 or 1, this is impossible.",
+    "significance": "key",
+    "relatedConcepts": ["Explicit construction", "Coordinate sums"]
+  },
+  {
+    "id": "ann-e185-density-hj",
+    "proofId": "erdos-185",
+    "range": { "startLine": 156, "endLine": 164 },
+    "type": "axiom",
+    "title": "Density Hales-Jewett Theorem",
+    "content": "**density_hales_jewett (Furstenberg-Katznelson 1991):**\n\nFor any δ > 0 and k ≥ 3, for large enough n, any subset of [k]^n with density ≥ δ contains a combinatorial line.\n\nThis is a deep result in Ramsey theory, proved using ergodic methods.\n\n**Implication:** Cap sets must have vanishing density.",
+    "mathContext": "A landmark result that implies f₃(n)/3^n → 0.",
+    "significance": "critical",
+    "relatedConcepts": ["Furstenberg-Katznelson", "Ergodic theory", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e185-f3-little-o",
+    "proofId": "erdos-185",
+    "range": { "startLine": 166, "endLine": 171 },
+    "type": "axiom",
+    "title": "Main Result: f₃(n) = o(3^n)",
+    "content": "**f3_is_little_o:** (λ n, f₃(n)) =o[atTop] (λ n, 3^n).\n\nThis is the answer to Erdős Problem #185: **YES**.\n\nThe density Hales-Jewett theorem implies cap sets have density → 0.",
+    "mathContext": "For any ε > 0, eventually f₃(n) < ε · 3^n.",
+    "significance": "critical",
+    "relatedConcepts": ["Little-o notation", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e185-density-zero",
+    "proofId": "erdos-185",
+    "range": { "startLine": 173, "endLine": 178 },
+    "type": "axiom",
+    "title": "Density → 0",
+    "content": "**f3_density_tends_to_zero:** f₃(n)/3^n → 0 as n → ∞.\n\nEquivalent formulation of the main result.\n\nCap set density vanishes in the limit.",
+    "significance": "key",
+    "relatedConcepts": ["Limit", "Tendsto"]
+  },
+  {
+    "id": "ann-e185-meshulam",
+    "proofId": "erdos-185",
+    "range": { "startLine": 184, "endLine": 189 },
+    "type": "axiom",
+    "title": "Meshulam Upper Bound (1995)",
+    "content": "**meshulam_upper_bound:** f₃(n) ≤ 3^n/n for n ≥ 1.\n\nAn explicit quantitative upper bound, improving on the qualitative Hales-Jewett result.\n\nThis was the best bound before Ellenberg-Gijswijt.",
+    "significance": "key",
+    "relatedConcepts": ["Explicit bounds", "Fourier methods"]
+  },
+  {
+    "id": "ann-e185-ellenberg-gijswijt",
+    "proofId": "erdos-185",
+    "range": { "startLine": 191, "endLine": 199 },
+    "type": "axiom",
+    "title": "Ellenberg-Gijswijt (2016)",
+    "content": "**ellenberg_gijswijt_2016:** f₃(n) ≤ c^n with c < 3 (c ≈ 2.756).\n\nA major breakthrough using the polynomial method (slice rank).\n\nThis shows cap sets grow exponentially slower than the ambient space.",
+    "mathContext": "The constant c ≈ 2.756 comes from optimizing the slice rank argument.",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial method", "Slice rank", "Croot-Lev-Pach"]
+  },
+  {
+    "id": "ann-e185-examples",
+    "proofId": "erdos-185",
+    "range": { "startLine": 207, "endLine": 234 },
+    "type": "theorem",
+    "title": "Small Values of f₃(n)",
+    "content": "**Known values (OEIS A003142):**\n\n- f₃(1) = 2 (any 2 of {0,1,2})\n- f₃(2) = 4 (e.g., {00,01,10,12})\n- f₃(3) = 9\n- f₃(4) = 20\n\nThese are exact values computed by exhaustive search.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A003142", "Exact computation"]
+  },
+  {
+    "id": "ann-e185-main-theorem",
+    "proofId": "erdos-185",
+    "range": { "startLine": 256, "endLine": 260 },
+    "type": "theorem",
+    "title": "Main Theorem: erdos_185",
+    "content": "**erdos_185:** f₃(n) = o(3^n).\n\n```lean\ntheorem erdos_185 : (fun n => (f3 n : ℝ)) =o[atTop] (fun n => (3 : ℝ)^n) :=\n  f3_is_little_o\n```\n\n**Answer to Erdős #185: YES**",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Erdős problem"]
+  },
+  {
+    "id": "ann-e185-answer",
+    "proofId": "erdos-185",
+    "range": { "startLine": 269, "endLine": 285 },
+    "type": "theorem",
+    "title": "The Answer is YES",
+    "content": "**erdos_185_answer:** ∀ ε > 0, ∃ n₀, ∀ n ≥ n₀, f₃(n) < ε · 3^n.\n\nThis unpacks the little-o statement into an explicit form.\n\nFor any desired error bound ε, eventually all cap sets have relative density < ε.",
+    "significance": "critical",
+    "relatedConcepts": ["Epsilon-delta", "Eventually"]
+  },
+  {
+    "id": "ann-e185-summary",
+    "proofId": "erdos-185",
+    "range": { "startLine": 236, "endLine": 254 },
+    "type": "concept",
+    "title": "Summary",
+    "content": "**Erdős Problem #185: SOLVED**\n\n**Timeline:**\n1. Moser: Posed problem; showed f₃(n) ≫ 3^n/√n\n2. Furstenberg-Katznelson (1991): Density Hales-Jewett → YES\n3. Meshulam (1995): f₃(n) ≤ 3^n/n\n4. Ellenberg-Gijswijt (2016): f₃(n) ≤ c^n, c < 3\n\n**Open:** What is lim sup f₃(n)^{1/n}?",
+    "significance": "critical",
+    "relatedConcepts": ["History", "Open questions"]
+  }
+]

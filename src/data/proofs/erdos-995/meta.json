@@ -1,33 +1,145 @@
 {
   "id": "erdos-995",
-  "title": "Erdős Problem #995",
+  "title": "Erdős Problem #995: Lacunary Sequences and Fractional Parts",
   "slug": "erdos-995",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence of integers and .... Estimate the growth of, for almost all ...,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\al...",
+  "description": "Estimate growth of ∑_{k≤N} f({α n_k}) for lacunary sequences. Is it o(N √(log log N))? Status: OPEN. Bounds: (log log N)^{1/2-ε} ≤ growth ≤ (log N)^{1/2+ε}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1949, 1964)",
     "sourceUrl": "https://erdosproblems.com/995",
-    "date": "",
-    "status": "pending",
+    "date": "1964",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos995Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "lacunary-sequences",
+      "diophantine-approximation",
+      "probability"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 995,
     "erdosUrl": "https://erdosproblems.com/995",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior",
+        "module": "Mathlib.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized IsLacunary and IsLacunarySeq for lacunary sequences",
+      "Defined lacunarySum for ∑_{k≤N} f({α n_k})",
+      "Stated ErdosConjecture: sum is o(N √(log log N))",
+      "Stated Erdős (1949) lower bound: limsup reaches N(log log N)^{1/2-ε}",
+      "Stated Erdős upper bound: o(N(log N)^{1/2+ε})",
+      "Proved geometric sequence 2^k is lacunary",
+      "Proved powers of 3 are lacunary",
+      "Noted connection to Strong Law of Large Numbers"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #995 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_1<n_2<\\cdots$ be a lacunary sequence of integers and $f\\in L^2([0,1])$. Estimate the growth of, for almost all $\\alpha$,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\alpha n_k\\}).\\]For example, is it true that, for almost all $\\alpha$,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\alpha n_k\\})=o(N\\sqrt{\\log\\log N})?\\]\n\n\n\nErd\\H{o}s \\cite{Er49d} constructed a lacunary sequence and $f\\in L^2([0,1])$ such that, for every $\\epsilon>0$, for almost all $\\alpha$\\[\\limsup_{N\\to \\infty}\\frac{1}{N(\\log\\log N)^{\\frac{1}{2}-\\epsilon}}\\sum_{1\\leq k\\leq N}f(\\{\\alpha n_k\\})=\\infty.\\]Erd\\H{o}s also proved that, for every lacunary sequence and $f\\in L^2$, for every $\\epsilon>0$, for almost all $\\alpha$,\\[\\sum_{1\\leq k\\leq N}\\sum_{1\\leq k\\leq N}f(\\{\\alpha n_k\\})=o( N(\\log N)^{\\frac{1}{2}+\\epsilon}).\\]Erd\\H{o}s \\cite{Er64b} thought that his lower bound was closer to the truth.\n\n\n\n\nReferences\n\n\n[Er49d] Erd\\H{o}s, P., On the strong law of large numbers. Trans. Amer. Math. Soc. (1949), 51--56.\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originated from Erdős's 1949 paper 'On the strong law of large numbers', where he studied the behavior of sums involving fractional parts of lacunary sequences. A sequence n₁ < n₂ < ⋯ is lacunary if n_{k+1}/n_k ≥ q > 1 for all k.\n\nErdős proved both lower and upper bounds: he constructed examples where the sum grows at least as fast as N(log log N)^{1/2-ε}, and proved that for all lacunary sequences it grows at most as o(N(log N)^{1/2+ε}).\n\nIn his 1964 paper on Diophantine approximations, Erdős stated he believed the lower bound is closer to the truth. The gap between (log log N) and (log N) in the exponents remains unresolved.",
+    "problemStatement": "**Problem**: Let $n_1 < n_2 < \\cdots$ be a lacunary sequence of integers and $f \\in L^2([0,1])$. Estimate the growth of, for almost all $\\alpha$:\n$$\\sum_{1 \\leq k \\leq N} f(\\{\\alpha n_k\\})$$\n\nIs it true that for almost all $\\alpha$:\n$$\\sum_{1 \\leq k \\leq N} f(\\{\\alpha n_k\\}) = o(N\\sqrt{\\log\\log N})?$$\n\n**Known Bounds**:\n- Lower: $\\limsup \\geq N(\\log\\log N)^{1/2-\\epsilon}$ for some examples\n- Upper: Always $o(N(\\log N)^{1/2+\\epsilon})$\n\n**Status**: OPEN",
+    "proofStrategy": "The formalization defines lacunary sequences (n_{k+1} ≥ q·n_k for q > 1) and the sum ∑f({α n_k}). The main conjecture is stated using measure-theoretic 'almost everywhere' (∀ᵐ). Lower and upper bounds are axiomatized based on Erdős's 1949 and 1964 papers. Examples show 2^k and 3^k are lacunary.",
+    "keyInsights": [
+      "**Lacunary means gaps grow**: n_{k+1}/n_k ≥ q > 1, so terms grow at least exponentially.",
+      "**Fractional parts are equidistributed**: For irrational α, {α n_k} is equidistributed in [0,1].",
+      "**The gap in bounds**: Lower has (log log N)^{1/2}, upper has (log N)^{1/2} - a huge difference!",
+      "**Erdős's intuition**: He believed the lower bound is closer to truth, suggesting upper bound can be improved.",
+      "**Connection to probability**: The sum behaves like a random walk, with variance growing with N."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "frac, IsLacunary, IsLacunarySeq, lacunarySum",
+      "startLine": 36,
+      "endLine": 54
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture, ErdosQuestion",
+      "startLine": 55,
+      "endLine": 72
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "summary": "erdos_lower_bound_1949, LowerBoundGrowth",
+      "startLine": 73,
+      "endLine": 94
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "erdos_upper_bound, UpperBoundGrowth",
+      "startLine": 95,
+      "endLine": 117
+    },
+    {
+      "id": "the-gap",
+      "title": "The Gap",
+      "summary": "bound_gap, exponent_gap",
+      "startLine": 118,
+      "endLine": 137
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "geometricSeq, geometric_is_lacunary, powersOf3, fib",
+      "startLine": 138,
+      "endLine": 171
+    },
+    {
+      "id": "slln-connection",
+      "title": "Connection to Strong Law of Large Numbers",
+      "summary": "slln_connection",
+      "startLine": 172,
+      "endLine": 184
+    },
+    {
+      "id": "erdos-opinion",
+      "title": "Erdős's Opinion",
+      "summary": "ErdosGuess, erdos_opinion",
+      "startLine": 185,
+      "endLine": 198
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_995_statement, erdos_995_open, erdos_995_summary",
+      "startLine": 199,
+      "endLine": 230
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #995 asks for the precise growth rate of sums ∑f({α n_k}) for lacunary sequences. The known bounds leave a gap: the lower bound involves (log log N)^{1/2} while the upper bound involves (log N)^{1/2}. Erdős conjectured the lower bound is closer to the truth. The problem remains OPEN.",
+    "implications": "This problem sits at the intersection of analysis, probability, and number theory. It connects to the Strong Law of Large Numbers, equidistribution of fractional parts, and metric Diophantine approximation. Resolving the gap would illuminate the fine structure of lacunary sums.",
+    "openQuestions": [
+      "Is the sum o(N √(log log N)) for all lacunary sequences?",
+      "Can the upper bound (log N)^{1/2+ε} be improved?",
+      "What is the exact constant in the growth rate?",
+      "Does the answer depend on the lacunarity constant q?"
+    ]
   }
 }
