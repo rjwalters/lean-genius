@@ -14786,17 +14786,22 @@
   },
   {
     "id": "erdos-995",
-    "title": "Erdős Problem #995",
+    "title": "Erdős Problem #995: Lacunary Sequences and Fractional Parts",
     "slug": "erdos-995",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence of integers and .... Estimate the growth of, for almost all ...,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\al...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate growth of ∑_{k≤N} f({α n_k}) for lacunary sequences. Is it o(N √(log log N))? Status: OPEN. Bounds: (log log N)^{1/2-ε} ≤ growth ≤ (log N)^{1/2+ε}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "lacunary-sequences",
+      "diophantine-approximation",
+      "probability"
     ],
     "erdosNumber": 995,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 18
   },
   {
     "id": "erdos-996",
