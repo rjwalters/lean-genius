@@ -13812,17 +13812,23 @@
   },
   {
     "id": "erdos-905",
-    "title": "Erdős Problem #905",
+    "title": "Edge-Triangle Multiplicity Above Turán",
     "slug": "erdos-905",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEvery graph with ... vertices and ... edges contains an edge which is in at least ... triangles.\n\n\n\nA conjecture of Bollob\\'{...",
-    "status": "pending",
+    "description": "Every graph with n vertices and > n²/4 edges contains an edge which is in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "triangles",
+      "turan"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 905,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-906",
