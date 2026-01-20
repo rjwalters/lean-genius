@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "Consecutive Product",
+    "content": "The product m(m+1)(m+2)···(m+k-1) of k consecutive integers starting at m. This is the fundamental object - we ask: what is the smallest m making this divisible by n?",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "definition",
+    "title": "The Function t_k(n)",
+    "content": "t_k(n) is the least m ≥ 1 such that n divides the product of k consecutive integers starting at m. This is the central object of the problem. For primes p, t₂(p) = p - 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 86, "endLine": 87 },
+    "type": "theorem",
+    "title": "t₂(p) = p - 1 for Primes",
+    "content": "For any prime p, t₂(p) = p - 1 because p divides (p-1)·p but p doesn't divide m(m+1) for any m < p-1. This is the key fact giving the lower bound on Σ t₂(n).",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "Σ_{n≤x} t₂(n) ≫ x²/log x. This follows from the Prime Number Theorem: there are ~x/log x primes up to x, each contributing t₂(p) = p - 1 ≈ p to the sum.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "theorem",
+    "title": "Erdős-Hall Upper Bound (1978)",
+    "content": "Erdős and Hall proved Σ t₂(n) ≪ (log log log x / log log x)x². This triple-log factor shows the sum grows much slower than x², confirming Erdős's original o(x²) conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "conjecture",
+    "title": "Erdős-Hall Conjecture",
+    "content": "The conjecture states Σ t₂(n) = o(x²/(log x)^c) for any c < log 2. This is stronger than the proven bound. The threshold log 2 ≈ 0.693 is optimal since primes give Ω(x²/log x).",
+    "significance": "important"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 190, "endLine": 193 },
+    "type": "conjecture",
+    "title": "Hierarchy Conjecture",
+    "content": "For k ≥ 2, is Σ t_{k+1}(n) = o(Σ t_k(n))? This asks whether longer products make divisibility easier. Intuitively yes, but a proof remains OPEN.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 209, "endLine": 210 },
+    "type": "theorem",
+    "title": "Factorial Special Case t_{n-1}(n!)",
+    "content": "t_{n-1}(n!) = 2 because 2·3·4···n = n! is divisible by n!. This is the minimal case - we need exactly n-1 consecutive integers to cover all prime factors of n!.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 250, "endLine": 250 },
+    "type": "theorem",
+    "title": "Selfridge Result for n = 10",
+    "content": "Erdős, Hall, and Selfridge proved that for n = 10, the strict decrease property holds: t_k(10!) < t_{k-1}(10!) - 1 for all 1 ≤ k < 10. Whether this holds for infinitely many n is open.",
+    "significance": "helpful"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 332, "endLine": 336 },
+    "type": "summary",
+    "title": "Main Result: erdos_394",
+    "content": "The main theorem states the Erdős-Hall upper bound: Σ t₂(n) ≪ (log log log x / log log x)x². Two questions remain open: (1) can we achieve x²/(log x)^c? and (2) does Σ t_{k+1} = o(Σ t_k)?",
+    "significance": "essential"
+  }
+]
