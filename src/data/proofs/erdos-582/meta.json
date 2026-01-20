@@ -1,34 +1,161 @@
 {
   "id": "erdos-582",
-  "title": "Erdős Problem #582",
+  "title": "Erdos Problem #582: Folkman Numbers and K4-Free Ramsey Graphs",
   "slug": "erdos-582",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a graph ... which contains no ..., and yet any ...-colouring of the edges produces a monochromatic ...?\n\n\n\nE...",
+  "description": "Does there exist a K4-free graph where every 2-coloring of edges contains a monochromatic triangle? YES - proved by Folkman (1970).",
   "meta": {
-    "author": "Unknown",
+    "author": "Folkman (1970 existence), Dudek-Rodl (2008 current bound)",
     "sourceUrl": "https://erdosproblems.com/582",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos582Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "folkman-numbers",
+      "combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 582,
     "erdosUrl": "https://erdosproblems.com/582",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type for undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Predicate for cliques in graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "completeGraph",
+        "description": "Complete graph on n vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "K function: complete graph definition",
+      "hasClique: clique existence predicate",
+      "isKFree: K_n-free graph predicate",
+      "EdgeColoring: 2-coloring of graph edges",
+      "monochromaticSubgraph: subgraph of single color",
+      "hasRamseyProperty: every coloring has monochromatic K3",
+      "isFolkmanGraph: K4-free with Ramsey property",
+      "folkmanNumber_2_3_4: the specific Folkman number",
+      "folkman_existence axiom: main existence result",
+      "folkman_bounds: 19 <= f(2,3,4) <= 941",
+      "Historical bound timeline from 1970-2008",
+      "Connection to classical Ramsey theory"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #582 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a graph $G$ which contains no $K_4$, and yet any $2$-colouring of the edges produces a monochromatic $K_3$?\n\n\n\nErd\\H{o}s and Hajnal \\cite{ErHa67} first asked for the existence of any such graph. Existence was proved by Folkman \\cite{Fo70}, but with very poor quantitative bounds. (As a result these quantities are often called Folkman numbers.) Let this particular Folkman number be denoted by $N$.\n\nFrankl and R\\\"{o}dl \\cite{FrRo86} proved $N\\leq 7\\times 10^{11}$, which Spencer \\cite{Sp88} improved to $\\leq 3\\times 10^{9}$. This resolved the challenge of Erd\\H{o}s \\cite{Er75d} to find such a graph with less than $10^{10}$ vertices.\n\nLu \\cite{Lu07} proved $N\\leq 9697$ vertices. The current record is due to Dudek and R\\\"{o}dl \\cite{DuRo08} who proved $N\\leq 941$ vertices. For further information we refer to a paper of Radziszowski and Xu \\cite{RaXu07}, who prove that $N\\geq 19$ and speculate that $N\\leq 127$.\n\nSee also the entry in the graphs problem collection and [924] for the general case.\n\n\n\n\nReferences\n\n\n[DuRo08] Dudek, Andrzej and R\\\"{o}dl, Vojt\\vEch, On the Folkman number {$f(2,3,4)$}. Experiment. Math. (2008), 63-67.\n\n[Er75d] Erd\\H{o}s, Paul, Problems and results on finite and infinite graphs. Recent advances in graph theory (Proc. Second\nCzechoslovak Sympos., Prague, 1974) (1975), 183-192. (loose errata).\n\n[ErHa67] Erd\\H{o}s, P. and Hajnal, A., Research Problem 2.5. J. Comb. Theory (1967).\n\n[Fo70] Folkman, Jon, Graphs with monochromatic complete subgraphs in every edge\ncoloring. SIAM J. Appl. Math. (1970), 19-24.\n\n[FrRo86] Frankl, P. and R\\\"{o}dl, V., Large triangle-free subgraphs in graphs without {$K_4$}. Graphs Combin. (1986), 135-144.\n\n[Lu07] Lu, Linyuan, Explicit construction of small Folkman graphs. SIAM J. Discrete Math. (2007), 1053-1060.\n\n[RaXu07] Radziszowski, Stanis\\l aw P. and Xu, Xiaodong, On the most wanted Folkman graph. Geombinatorics (2007), 367-381.\n\n[Sp88] Spencer, Joel, Three hundred million points suffice. J. Combin. Theory Ser. A (1988), 210-217.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #582: The Folkman Number**\n\nThis problem was first posed by Erdos and Hajnal in 1967 and asks a fundamental question in Ramsey theory: can we have a graph that avoids K4 (no 4-clique) yet still forces monochromatic triangles in every 2-coloring of its edges?\n\n**Historical Timeline:**\n- 1967: Erdos-Hajnal pose the question\n- 1970: Folkman proves existence (with astronomical bounds)\n- 1986: Frankl-Rodl prove f(2,3,4) <= 7x10^11\n- 1988: Spencer proves <= 3x10^9, winning Erdos's $100 prize\n- 2007: Lu gives explicit construction with <= 9697 vertices\n- 2008: Dudek-Rodl prove <= 941 (current record)\n\nThe number f(2,3,4), called the Folkman number, remains one of the most studied parameters in extremal graph theory.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nDoes there exist a graph $G$ which contains no $K_4$, and yet any 2-colouring of the edges produces a monochromatic $K_3$?\n\n**Answer: YES**\n\nFolkman (1970) proved such graphs exist. The minimum number of vertices is the Folkman number $f(2,3,4)$.\n\n**Current Bounds:**\n$$19 \\leq f(2,3,4) \\leq 941$$\n\nRadziszowski and Xu (2007) conjecture that $f(2,3,4) \\leq 127$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Use Mathlib's SimpleGraph for basic graph structure\n\n2. **Cliques:** Define hasClique and isKFree using Mathlib's IsClique\n\n3. **Edge Colorings:** Define 2-colorings as functions from edges to Bool\n\n4. **Ramsey Property:** A graph has the property if every coloring has a monochromatic triangle\n\n5. **Folkman Graph:** Combine K4-free and Ramsey property\n\n6. **Main Theorem:** Axiomatize Folkman's existence result and subsequent bounds",
+    "keyInsights": [
+      "**The Paradox:** A K4-free graph seems 'sparse', yet can still force monochromatic triangles",
+      "**Folkman Numbers:** f(r,k,n) = min vertices in K_n-free graph where r-colorings have monochromatic K_k",
+      "**f(2,3,3) = infinity:** If G is triangle-free, no coloring can have a monochromatic triangle!",
+      "**Prize History:** Erdos offered $100 for a construction with < 10^10 vertices; Spencer claimed it in 1988",
+      "**Gap Remains:** Current bounds 19-941 leave significant room; exact value unknown",
+      "**Explicit vs Probabilistic:** Lu's 9697-vertex construction is explicit; smaller bounds use probabilistic methods"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Graph Definitions",
+      "summary": "Complete graphs, cliques, and K_n-free predicate",
+      "startLine": 42,
+      "endLine": 70
+    },
+    {
+      "id": "edge-colorings",
+      "title": "Edge Colorings and Ramsey Property",
+      "summary": "EdgeColoring type, monochromatic subgraphs, Ramsey property",
+      "startLine": 72,
+      "endLine": 111
+    },
+    {
+      "id": "folkman-numbers",
+      "title": "Folkman Numbers",
+      "summary": "isFolkmanGraph predicate, folkmanNumber_2_3_4 definition",
+      "startLine": 113,
+      "endLine": 137
+    },
+    {
+      "id": "existence-theorem",
+      "title": "Main Existence Theorem",
+      "summary": "folkman_existence axiom, erdos_582 theorem",
+      "startLine": 139,
+      "endLine": 163
+    },
+    {
+      "id": "quantitative-bounds",
+      "title": "Quantitative Bounds",
+      "summary": "Lower bound 19, upper bound 941, Spencer's bound",
+      "startLine": 165,
+      "endLine": 198
+    },
+    {
+      "id": "historical-timeline",
+      "title": "Historical Bounds Timeline",
+      "summary": "Frankl-Rodl, Lu bounds, improvement sequence",
+      "startLine": 200,
+      "endLine": 232
+    },
+    {
+      "id": "ramsey-context",
+      "title": "Ramsey Theory Context",
+      "summary": "R(3,3) = 6, connection to classical Ramsey numbers",
+      "startLine": 234,
+      "endLine": 254
+    },
+    {
+      "id": "related-folkman",
+      "title": "Related Folkman Numbers",
+      "summary": "General f(r,k,n), f(2,3,3) = infinity",
+      "startLine": 256,
+      "endLine": 281
+    },
+    {
+      "id": "computational",
+      "title": "Computational Approaches",
+      "summary": "Lu's explicit construction, Dudek-Rodl computer search",
+      "startLine": 283,
+      "endLine": 301
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_582_summary, $100 challenge resolved, conjecture",
+      "startLine": 303,
+      "endLine": 337
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #582 asked whether there exists a K4-free graph where every 2-coloring of edges contains a monochromatic triangle. Folkman (1970) proved YES - such graphs exist. The minimum number of vertices f(2,3,4) satisfies 19 <= f(2,3,4) <= 941, with the upper bound due to Dudek-Rodl (2008). Spencer (1988) resolved Erdos's $100 challenge by finding a construction with < 10^10 vertices.",
+    "implications": "**Connections and Implications**\n\n1. **Ramsey Theory:** Folkman numbers generalize Ramsey numbers with forbidden subgraph constraints\n\n2. **Extremal Graph Theory:** Shows sparse graphs can still have strong Ramsey properties\n\n3. **Probabilistic Method:** Early upper bounds used probabilistic existence proofs\n\n4. **Explicit Constructions:** Lu's algebraic construction demonstrates concrete examples\n\n5. **Computational Complexity:** Finding exact Folkman numbers is computationally hard",
+    "openQuestions": [
+      "What is the exact value of f(2,3,4)?",
+      "Is the Radziszowski-Xu conjecture f(2,3,4) <= 127 true?",
+      "Can the lower bound 19 be improved?",
+      "What are the Folkman numbers f(2,k,k+1) for larger k?",
+      "Are there polynomial-time algorithms to verify Folkman graph properties?"
+    ]
   }
 }
