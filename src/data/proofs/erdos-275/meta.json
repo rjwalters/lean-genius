@@ -1,33 +1,47 @@
 {
   "id": "erdos-275",
-  "title": "Erdős Problem #275",
+  "title": "Erdős Problem #275: Covering Congruences",
   "slug": "erdos-275",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf a finite system of ... congruences ... (the ... are not necessarily distinct) covers ... consecutive integers then it cove...",
+  "description": "If r congruences {aᵢ (mod nᵢ)} cover 2^r consecutive integers, they cover all integers. This bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't suffice.",
   "meta": {
-    "author": "Unknown",
+    "author": "Selfridge, Crittenden-Vanden Eynden",
     "sourceUrl": "https://erdosproblems.com/275",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos275Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "congruences",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "solved",
     "sorries": 0,
     "erdosNumber": 275,
     "erdosUrl": "https://erdosproblems.com/275",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #275 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf a finite system of $r$ congruences $\\{ a_i\\pmod{n_i} : 1\\leq i\\leq r\\}$ (the $n_i$ are not necessarily distinct) covers $2^r$ consecutive integers then it covers all integers.\n\n\n\nThis is best possible as the system $2^{i-1}\\pmod{2^i}$ shows. This was proved indepedently by Selfridge and Crittenden and Vanden Eynden \\cite{CrVE70}.\n\n\n\n\nReferences\n\n\n[CrVE70] Crittenden, R. B. and Vanden Eynden, C. L., Any $n$ arithmetic progressions covering the first $2^n$ integers cover all integers. Proc. Amer. Math. Soc. (1970), 475-481.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns 'covering systems' - finite collections of congruence classes that cover all integers. Erdős pioneered the study of such systems. The question asks: how many consecutive integers must r congruence classes cover to guarantee they cover all integers? The answer is exactly 2^r, proved independently by Selfridge and by Crittenden-Vanden Eynden in 1970.",
+    "problemStatement": "If a finite system of r congruences {aᵢ (mod nᵢ) : 1 ≤ i ≤ r} covers 2^r consecutive integers, then it covers all integers.\n\n**This bound is tight:** The system {2^(i-1) (mod 2^i) : 1 ≤ i ≤ r} covers exactly the integers NOT divisible by 2^r, showing that 2^r - 1 consecutive integers don't suffice.",
+    "proofStrategy": "The formalization defines:\n1. Congruence classes as sets of integers\n2. Covering systems as finite collections of such classes\n3. The main theorem: 2^r consecutive integers suffice\n4. The optimal example showing tightness\n\nThe proof (axiomatized) uses induction on the structure of moduli mod 2.",
+    "keyInsights": [
+      "2^r consecutive integers suffice for r congruences to cover all ℤ",
+      "The bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't work",
+      "Binary representation intuition: all r-bit patterns appear in 2^r consecutive integers",
+      "Independently proved by Selfridge and Crittenden-Vanden Eynden (1970)",
+      "Related to covering systems - a fundamental topic in combinatorial number theory"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #275 is SOLVED. If r congruence classes cover 2^r consecutive integers, they cover all integers. The bound 2^r is optimal, as shown by the example {2^(i-1) (mod 2^i) : 1 ≤ i ≤ r} which needs exactly 2^r consecutive integers.",
+    "implications": "This result characterizes the threshold for finite covering by congruence classes. It shows that the exponential bound 2^r, rather than any polynomial, is the critical threshold.",
+    "openQuestions": [
+      "Does there exist a covering system with all distinct odd moduli? (Erdős's $1000 problem)",
+      "What are the minimal covering systems for small r?",
+      "How do these results extend to other algebraic structures?"
+    ]
   }
 }
