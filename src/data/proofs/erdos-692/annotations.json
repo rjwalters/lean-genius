@@ -1,1 +1,212 @@
-[]
+[
+  {
+    "id": "ann-e692-header",
+    "proofId": "erdos-692",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #692: Divisor Density Unimodality**\n\nLet δ₁(n,m) = density of integers with exactly one divisor in (n,m).\n\n**Question:** Is δ₁(n,m) unimodal in m?\n\n**Answer:** NO! Cambie (2025) disproved with explicit counterexamples.\n\nThe sequence δ₁(3,6) > δ₁(3,7) < δ₁(3,8) shows non-monotonicity.",
+    "mathContext": "This problem connects divisor theory to sequence monotonicity and density functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Asymptotic density", "Unimodality", "Number theory"]
+  },
+  {
+    "id": "ann-e692-divisors-interval",
+    "proofId": "erdos-692",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "definition",
+    "title": "Divisors in Interval",
+    "content": "**divisorsInInterval(k, n, m):**\n\nCounts divisors of k in the open interval (n, m).\n\nThis is the core building block for the density function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-exactly-one",
+    "proofId": "erdos-692",
+    "range": { "startLine": 56, "endLine": 61 },
+    "type": "definition",
+    "title": "Exactly One Divisor",
+    "content": "**hasExactlyOneDivisor:**\n\nTrue when k has exactly one divisor in (n, m).\n\nThis is the predicate we count to compute δ₁.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e692-count",
+    "proofId": "erdos-692",
+    "range": { "startLine": 63, "endLine": 68 },
+    "type": "definition",
+    "title": "Count Function",
+    "content": "**countWithOneDivisor:**\n\nCounts integers ≤ N with exactly one divisor in (n, m).\n\nThe density is the limit of this count divided by N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e692-delta1",
+    "proofId": "erdos-692",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "definition",
+    "title": "The δ₁ Function",
+    "content": "**delta1(n, m) = limsup (count/N):**\n\nThe asymptotic density of integers with exactly one divisor in (n, m).\n\nDefined via limit superior to ensure existence.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-erdos-bound",
+    "proofId": "erdos-692",
+    "range": { "startLine": 87, "endLine": 94 },
+    "type": "axiom",
+    "title": "Erdős's Upper Bound",
+    "content": "**erdos_delta1_bound:**\n\nδ₁(n,m) ≪ 1/(log n)^c for some c > 0.\n\nThis shows the density is small for large n - the first quantitative result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e692-ford",
+    "proofId": "erdos-692",
+    "range": { "startLine": 102, "endLine": 111 },
+    "type": "axiom",
+    "title": "Ford's Sharper Bounds",
+    "content": "**ford_2008_bounds:**\n\nFord (2008) gave refined bounds for various ranges of n and m.\n\nRef: 'The distribution of integers with a divisor in a given interval'\nAnn. of Math. (2) (2008), 367-433.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e692-unimodal",
+    "proofId": "erdos-692",
+    "range": { "startLine": 119, "endLine": 127 },
+    "type": "definition",
+    "title": "Unimodal Definition",
+    "content": "**IsUnimodal:**\n\nA sequence is unimodal if it increases to a peak then decreases.\n\n∃ peak such that f↑ on [start, peak] and f↓ on [peak, ∞).\n\nErdős asked: is δ₁(n,·) unimodal?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-question",
+    "proofId": "erdos-692",
+    "range": { "startLine": 129, "endLine": 134 },
+    "type": "definition",
+    "title": "Erdős's Question",
+    "content": "**erdosUnimodalityQuestion:**\n\nFor fixed n, is m ↦ δ₁(n,m) unimodal for m > n+1?\n\nThis is the original question from Oberwolfach 1986.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-cambie-values",
+    "proofId": "erdos-692",
+    "range": { "startLine": 142, "endLine": 157 },
+    "type": "axiom",
+    "title": "Cambie's Counterexample Values",
+    "content": "**cambie_n3_values:**\n\nFor n = 3:\n- δ₁(3,6) = 0.35\n- δ₁(3,7) ≈ 0.33\n- δ₁(3,8) ≈ 0.3619\n\n**Key:** 0.35 > 0.33 < 0.3619\n\nThe sequence decreases then increases - NOT unimodal!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-disproof",
+    "proofId": "erdos-692",
+    "range": { "startLine": 159, "endLine": 167 },
+    "type": "theorem",
+    "title": "Cambie Disproves Unimodality",
+    "content": "**cambie_disproves_unimodality:**\n\nThere exists n such that δ₁(n,·) is NOT unimodal.\n\nIn fact, n = 3 suffices: the computed values show non-monotonicity on both sides of any purported peak.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-n3",
+    "proofId": "erdos-692",
+    "range": { "startLine": 169, "endLine": 173 },
+    "type": "axiom",
+    "title": "Non-Unimodality for n=3",
+    "content": "**cambie_n3_not_unimodal:**\n\nSpecifically, δ₁(3, m) fails to be unimodal.\n\nThis is the explicit counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-n2",
+    "proofId": "erdos-692",
+    "range": { "startLine": 175, "endLine": 179 },
+    "type": "axiom",
+    "title": "Also Fails for n=2",
+    "content": "**cambie_n2_not_unimodal:**\n\nUnimodality also fails for n = 2.\n\nEven the smallest interesting cases are counterexamples!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e692-local-max",
+    "proofId": "erdos-692",
+    "range": { "startLine": 187, "endLine": 192 },
+    "type": "definition",
+    "title": "Local Maximum",
+    "content": "**IsLocalMaximum:**\n\nm is a local maximum if f(m) ≥ f(m-1) and f(m) ≥ f(m+1).\n\nCambie counted these to prove wild oscillation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e692-count-maxima",
+    "proofId": "erdos-692",
+    "range": { "startLine": 194, "endLine": 199 },
+    "type": "definition",
+    "title": "Count Local Maxima",
+    "content": "**countLocalMaxima:**\n\nCounts local maxima in a range.\n\nCambie proved this count grows superpolynomially.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e692-superpoly",
+    "proofId": "erdos-692",
+    "range": { "startLine": 201, "endLine": 207 },
+    "type": "definition",
+    "title": "Superpolynomial Growth",
+    "content": "**SuperpolynomialGrowth:**\n\ng(n) grows faster than any polynomial.\n\n∀ k, eventually g(n) > n^k.\n\nThis captures 'wildly oscillatory' behavior.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e692-superpoly-maxima",
+    "proofId": "erdos-692",
+    "range": { "startLine": 209, "endLine": 217 },
+    "type": "axiom",
+    "title": "Superpolynomially Many Maxima",
+    "content": "**cambie_superpolynomial_maxima:**\n\nFor fixed n, δ₁(n,m) has superpolynomially many local maxima.\n\nThis is much stronger than just failing unimodality - the sequence is wildly oscillatory, not just 'almost' unimodal.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-related",
+    "proofId": "erdos-692",
+    "range": { "startLine": 225, "endLine": 230 },
+    "type": "axiom",
+    "title": "Connection to Problem 446",
+    "content": "**related_to_erdos_446:**\n\nProblem 446 concerns related divisor distribution questions.\n\nThe problems share similar techniques and insights.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e692-ford-dist",
+    "proofId": "erdos-692",
+    "range": { "startLine": 232, "endLine": 239 },
+    "type": "definition",
+    "title": "Ford's Distribution Function",
+    "content": "**fordDistribution:**\n\nH(x, y, z) = #{n ≤ x : n has a divisor in (y, z)}\n\nFord studied this extensively, providing context for δ₁.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e692-oscillation",
+    "proofId": "erdos-692",
+    "range": { "startLine": 247, "endLine": 257 },
+    "type": "definition",
+    "title": "Why Unimodality Fails",
+    "content": "**Physical Intuition:**\n\nAs m increases:\n1. More divisors can fit in (n,m) → more candidates\n2. More likely to have multiple divisors → fewer with exactly 1\n\nThese competing effects create oscillations.",
+    "mathContext": "The tension between interval size and divisor multiplicity drives non-monotonic behavior.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e692-main",
+    "proofId": "erdos-692",
+    "range": { "startLine": 265, "endLine": 292 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_692:**\n\nCombines the key results:\n\n1. Upper bound: δ₁(n,m) ≪ 1/(log n)^c\n2. Unimodality: FALSE (disproved by Cambie)\n\nStatus: DISPROVED after 39 years (1986-2025)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-status",
+    "proofId": "erdos-692",
+    "range": { "startLine": 294, "endLine": 300 },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "**erdos_692_status:**\n\nThe original question is definitively answered: NO.\n\nδ₁(n,m) is NOT unimodal for n = 3 (and n = 2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e692-duration",
+    "proofId": "erdos-692",
+    "range": { "startLine": 302, "endLine": 307 },
+    "type": "theorem",
+    "title": "Historical Note",
+    "content": "**problem_duration:**\n\nAsked by Erdős at Oberwolfach in 1986.\nResolved by Cambie in 2025.\n\n39 years open!",
+    "significance": "supporting"
+  }
+]

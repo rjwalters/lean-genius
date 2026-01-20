@@ -1,1 +1,197 @@
-[]
+[
+  {
+    "id": "ann-e765-header",
+    "proofId": "erdos-765",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #765: Asymptotic Formula for ex(n; C₄)**\n\nThis problem asks for the growth rate of ex(n; C₄), the maximum number of edges in an n-vertex graph with no 4-cycle.\n\n**Answer**: ex(n; C₄) ~ (1/2)n^{3/2}\n\nThe problem was solved through contributions from Erdős-Klein (1938), Reiman (1958), Erdős-Rényi-Brown, and Füredi (1983).",
+    "mathContext": "The extremal function ex(n; H) counts the maximum edges avoiding a subgraph H. For C₄ (the 4-cycle), this connects to projective geometry and Sidon sets.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal graph theory", "Turán numbers", "Projective planes"]
+  },
+  {
+    "id": "ann-e765-four-cycle",
+    "proofId": "erdos-765",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "4-Cycle Definition",
+    "content": "**hasFourCycle:**\n\nA 4-cycle (C₄) consists of four distinct vertices v₁, v₂, v₃, v₄ with edges:\n- v₁ — v₂ — v₃ — v₄ — v₁\n\nAlso called a quadrilateral or square in graph theory.",
+    "mathContext": "The 4-cycle is the smallest even cycle. Its avoidance gives extremal graphs with n^{3/2} edges, unlike odd cycles where ex(n;C_{2k+1}) = Θ(n²).",
+    "significance": "critical",
+    "relatedConcepts": ["Graph cycles", "Forbidden subgraphs", "Bipartite graphs"]
+  },
+  {
+    "id": "ann-e765-c4-free",
+    "proofId": "erdos-765",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "C₄-Free Graph",
+    "content": "**isFourCycleFree:**\n\nA graph is C₄-free if it contains no 4-cycle as a subgraph.\n\nEquivalently: no two vertices have more than one common neighbor.",
+    "mathContext": "C₄-free graphs form a hereditary graph class closed under taking subgraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e765-ex-c4",
+    "proofId": "erdos-765",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "Extremal Function ex(n; C₄)",
+    "content": "**ex_C4(n):**\n\nThe maximum number of edges in an n-vertex C₄-free graph.\n\nThis is a Turán-type extremal function, the central object of Problem #765.",
+    "mathContext": "Unlike ex(n; K_r) which grows as Θ(n²), forbidding even cycles gives subquadratic growth. For C₄, we get exactly Θ(n^{3/2}).",
+    "significance": "critical",
+    "relatedConcepts": ["Turán number", "Extremal function", "Zarankiewicz problem"]
+  },
+  {
+    "id": "ann-e765-existence",
+    "proofId": "erdos-765",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "axiom",
+    "title": "Existence of Extremal Graphs",
+    "content": "**Axiom ex_C4_exists:**\n\nFor every n, there exists a C₄-free graph on n vertices achieving the maximum edge count.\n\nThis is guaranteed by compactness of the finite graph space.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e765-erdos-klein",
+    "proofId": "erdos-765",
+    "range": { "startLine": 89, "endLine": 90 },
+    "type": "axiom",
+    "title": "Erdős-Klein Upper Bound (1938)",
+    "content": "**Axiom erdos_klein_upper:**\n\nex(n; C₄) = O(n^{3/2})\n\nThis was the first upper bound, establishing the order of magnitude. Erdős discovered this while studying B₂ sequences in 1936.",
+    "mathContext": "The proof uses a double counting argument: if G has m edges, the number of paths of length 2 is at least m²/n. If G is C₄-free, this is at most n(n-1)/2.",
+    "significance": "critical",
+    "relatedConcepts": ["Double counting", "Cauchy-Schwarz", "Path counting"]
+  },
+  {
+    "id": "ann-e765-reiman",
+    "proofId": "erdos-765",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "axiom",
+    "title": "Reiman's Bounds (1958)",
+    "content": "**Axiom reiman_bounds:**\n\n1/(2√2) ≤ lim ex(n;C₄)/n^{3/2} ≤ 1/2\n\nReiman refined the constant, showing the limit exists and lies in [0.354, 0.5].",
+    "mathContext": "Reiman's upper bound uses eigenvalue methods. The limit equals exactly 1/2, achieved by projective plane constructions.",
+    "significance": "critical",
+    "relatedConcepts": ["Spectral graph theory", "Eigenvalue bounds"]
+  },
+  {
+    "id": "ann-e765-projective-plane",
+    "proofId": "erdos-765",
+    "range": { "startLine": 109, "endLine": 118 },
+    "type": "definition",
+    "title": "Projective Plane Construction",
+    "content": "**projectivePlaneVertices(q) = q² + q + 1**\n\nFor q a prime power, the projective plane PG(2,q) has:\n- q² + q + 1 points\n- q² + q + 1 lines\n- Each point on q + 1 lines\n- Each line through q + 1 points\n\nThe incidence graph is bipartite with (q+1)² edges per point-line pair, giving (1/2)q(q+1)² total edges.",
+    "mathContext": "Projective planes exist exactly when q is a prime power. The incidence graph is C₄-free because any two points determine a unique line.",
+    "significance": "critical",
+    "relatedConcepts": ["Projective geometry", "Incidence structures", "Finite fields"]
+  },
+  {
+    "id": "ann-e765-asymptotic-ratio",
+    "proofId": "erdos-765",
+    "range": { "startLine": 128, "endLine": 129 },
+    "type": "definition",
+    "title": "Asymptotic Ratio",
+    "content": "**asymptotic_ratio(n) = ex(n;C₄) / n^{3/2}**\n\nThe ratio that converges to 1/2 as n → ∞.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e765-main-formula",
+    "proofId": "erdos-765",
+    "range": { "startLine": 140, "endLine": 142 },
+    "type": "axiom",
+    "title": "Main Asymptotic Formula",
+    "content": "**Axiom asymptotic_formula:**\n\nlim_{n→∞} ex(n;C₄) / n^{3/2} = 1/2\n\nThis is the central result of Problem #765, combining Reiman's upper bound with the Erdős-Rényi-Brown construction.",
+    "mathContext": "The limit is achieved along the subsequence n = q² + q + 1 for prime powers q, where projective planes provide exact matching bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic analysis", "Extremal limits"]
+  },
+  {
+    "id": "ann-e765-main-theorem",
+    "proofId": "erdos-765",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "theorem",
+    "title": "Main Theorem (erdos_765)",
+    "content": "**Theorem erdos_765:**\n\nFor all ε > 0, there exists N such that for n ≥ N:\n|ex(n;C₄)/n^{3/2} - 1/2| < ε\n\nThis is the formal statement that ex(n;C₄) ~ (1/2)n^{3/2}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e765-furedi",
+    "proofId": "erdos-765",
+    "range": { "startLine": 163, "endLine": 166 },
+    "type": "axiom",
+    "title": "Füredi's Exact Result (1983)",
+    "content": "**Axiom furedi_exact:**\n\nFor q > 13 a prime power and n = q² + q + 1:\nex(n; C₄) = (1/2)q(q+1)²\n\nThis gives exact values for infinitely many n, not just asymptotic bounds.",
+    "mathContext": "Füredi proved that the projective plane construction is exactly optimal for large q. The gap for q ≤ 13 is due to small cases where better constructions may exist.",
+    "significance": "critical",
+    "relatedConcepts": ["Exact extremal results", "Finite projective planes"]
+  },
+  {
+    "id": "ann-e765-erdos-refined",
+    "proofId": "erdos-765",
+    "range": { "startLine": 176, "endLine": 178 },
+    "type": "axiom",
+    "title": "Erdős's Refined Upper Bound (1975)",
+    "content": "**Axiom erdos_refined_upper:**\n\nex(n; C₄) ≤ (1/2)n^{3/2} + (1/4)n + O(n^{1/2})\n\nThis improves the leading constant with explicit lower-order terms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e765-conjecture",
+    "proofId": "erdos-765",
+    "range": { "startLine": 184, "endLine": 186 },
+    "type": "definition",
+    "title": "Erdős's Conjecture (Disproved)",
+    "content": "**erdos_conjecture:**\n\nErdős conjectured ex(n;C₄) = (1/2)n^{3/2} + (1/4)n + O(√n).\n\nHe admitted having 'limited evidence' and would accept O(n) error.",
+    "mathContext": "This conjecture about lower-order terms was open for decades. Erdős was cautious, noting the lack of strong evidence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e765-ma-yang",
+    "proofId": "erdos-765",
+    "range": { "startLine": 193, "endLine": 196 },
+    "type": "axiom",
+    "title": "Ma-Yang Disproof (2023)",
+    "content": "**Axiom ma_yang_disproof:**\n\nErdős's conjecture is FALSE. Ma and Yang (2023) proved that for a positive density of n:\nex(n;C₄) ≤ (1/2)n^{3/2} + (1/4 - c)n\n\nThe coefficient 1/4 can be improved!",
+    "mathContext": "This recent result shows the exact coefficient of n in the expansion remains open. The constant c > 0 is explicit in their paper.",
+    "significance": "critical",
+    "relatedConcepts": ["Recent progress", "Lower-order terms"]
+  },
+  {
+    "id": "ann-e765-historical-note",
+    "proofId": "erdos-765",
+    "range": { "startLine": 202, "endLine": 212 },
+    "type": "concept",
+    "title": "Historical Connection to B₂ Sequences",
+    "content": "**Historical Note:**\n\nErdős first proved ex(n;C₄) ≪ n^{3/2} in 1936 while studying Problem #425 about B₂ sequences. This predates Turán's work by 5 years!\n\nErdős wrote: 'Being struck by a curious blindness... I did not extend the problem from C₄ to other graphs and thus missed founding an interesting and fruitful new branch of graph theory.'",
+    "mathContext": "The connection: a C₄-free bipartite graph corresponds to a B₂ set (Sidon set) where all pairwise sums are distinct.",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "B₂ sequences", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e765-b2-sequence",
+    "proofId": "erdos-765",
+    "range": { "startLine": 222, "endLine": 224 },
+    "type": "definition",
+    "title": "B₂ Sequences (Sidon Sets)",
+    "content": "**is_B2_sequence:**\n\nA set A ⊆ ℕ is a B₂ sequence if all pairwise sums a + b (a ≤ b) are distinct.\n\nEquivalently: a + b = c + d implies {a,b} = {c,d}.",
+    "mathContext": "B₂ sets of size n have elements ≤ n² + o(n²). The C₄-free condition ensures at most one common neighbor, analogous to the B₂ uniqueness condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e765-fano-plane",
+    "proofId": "erdos-765",
+    "range": { "startLine": 242, "endLine": 245 },
+    "type": "theorem",
+    "title": "Fano Plane Example",
+    "content": "**Theorem fano_plane_example:**\n\nprojectivePlaneVertices(2) = 7\n\nThe Fano plane PG(2,2) has 7 points and 7 lines. Its incidence graph has 7 vertices and achieves ex(7;C₄).",
+    "mathContext": "The Fano plane is the smallest projective plane, with parameters q = 2. It's the unique (7,3,1)-design.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e765-summary",
+    "proofId": "erdos-765",
+    "range": { "startLine": 258, "endLine": 265 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**Theorem erdos_765_summary:**\n\nCombines the main results:\n1. ex(n;C₄) ~ (1/2)n^{3/2} (the asymptotic formula)\n2. projectivePlaneVertices(2) = 7 (concrete example)\n\nProblem #765 is SOLVED.",
+    "significance": "critical"
+  }
+]

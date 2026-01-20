@@ -1,33 +1,181 @@
 {
   "id": "erdos-232",
-  "title": "Erdős Problem #232",
+  "title": "Erdős Problem #232: Density of Unit-Distance Avoiding Sets",
   "slug": "erdos-232",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... we define the upper density as\\[(A)=\\limsup_{R\\to \\infty}{\\lambda(B_R)},\\]where ... is the Lebesgue measure and ... i...",
+  "description": "What is the maximum upper density of a measurable set in ℝ² with no two points at distance 1? Is m₁ ≤ 1/4? SOLVED: Yes, m₁ ≤ 0.247 < 1/4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Moser (1966), Ambrus et al. (2023)",
     "sourceUrl": "https://erdosproblems.com/232",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos232Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "measure-theory",
+      "unit-distance-graphs",
+      "density"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 232,
     "erdosUrl": "https://erdosproblems.com/232",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean n-space as inner product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Metric.closedBall",
+        "description": "Closed balls in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The constant π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "euclideanDist definition: distance in ℝ²",
+      "IsUnitDistance definition: points at distance exactly 1",
+      "IsUnitDistanceFree definition: no unit distance pairs",
+      "unitDistanceFree_iff theorem: equivalent formulations",
+      "ballR definition: closed ball of radius R",
+      "upperDensity definition: asymptotic density",
+      "maxDensity definition: supremum over unit-distance-free sets",
+      "trivial_upper_bound axiom: m₁ ≤ 1/2",
+      "hexagonal_lower_bound axiom: π/(8√3) construction",
+      "croft_lower_bound axiom: 0.22936 (Croft 1967)",
+      "ambrus_et_al_upper_bound axiom: 0.247 (2023)",
+      "erdos_232_solution theorem: m₁ < 1/4",
+      "unitDistanceGraphAdj definition: unit distance graph",
+      "chromatic_density_connection: relation to chromatic number"
+    ],
+    "relatedProblems": [
+      {
+        "id": "hadwiger-nelson",
+        "relationship": "Chromatic number of the plane problem"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #232 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $A\\subset \\mathbb{R}^2$ we define the upper density as\\[\\overline{\\delta}(A)=\\limsup_{R\\to \\infty}\\frac{\\lambda(A \\cap B_R)}{\\lambda(B_R)},\\]where $\\lambda$ is the Lebesgue measure and $B_R$ is the ball of radius $R$.\n\nEstimate\\[m_1=\\sup \\overline{\\delta}(A),\\]where $A$ ranges over all measurable subsets of $\\mathbb{R}^2$ without two points distance $1$ apart. In particular, is $m_1\\leq 1/4$?\n\n\n\nA question of Moser \\cite{Mo66}. A lower bound of $m_1\\geq \\pi/8\\sqrt{3}\\approx 0.2267$ is given by taking the union of open circular discs of radius $1/2$ at a regular hexagonal lattice suitably spaced apart. Croft \\cite{Cr67} gives a small improvement of $m_1\\geq 0.22936$.\n\nThe trivial upper bound is $m_1\\leq 1/2$, since for any unit vector $u$ the sets $A$ and $A+u$ must be disjoint. Erd\\H{o}s' question was solved by Ambrus, Csisz\\'{a}rik, Matolcsi, Varga, and Zs\\'{a}mboki \\cite{ACMVZ23} who proved that $m_1\\leq 0.247$.\n\n\n\n\nReferences\n\n\n[ACMVZ23] G. Ambrus, A. Csisz\\'{a}rik, M. Matolcsi, D. Varga, and P. Zs\\'{a}mboki, The density of planar sets avoiding unit distances. arXiv:2207.14179 (2023).\n\n[Cr67] H. T. Croft, Incidence incidents. Eureka (1967), 22-26.\n\n[Mo66] L. Moser, Poorly formulated unsolved problems of combinatorial geometry. Mimeographed (1966).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Moser's Problem on Unit-Distance-Avoiding Sets**\n\nThis problem was posed by Leo Moser in 1966 as part of his 'poorly formulated unsolved problems of combinatorial geometry.'\n\n**The Question:** For a measurable set A ⊆ ℝ² with no two points at distance 1, what is the maximum upper density m₁ = sup δ̄(A)? In particular, is m₁ ≤ 1/4?\n\n**Progress:**\n- Trivial bound: m₁ ≤ 1/2 (A and A+u disjoint for unit u)\n- Hexagonal construction: m₁ ≥ π/(8√3) ≈ 0.2267\n- Croft (1967): Improved to m₁ ≥ 0.22936\n- Ambrus-Csiszárik-Matolcsi-Varga-Zsámboki (2023): Proved m₁ ≤ 0.247\n\n**Current Status:** SOLVED. The answer to Erdős's question is YES: m₁ ≤ 0.247 < 1/4.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nFor $A \\subset \\mathbb{R}^2$ define the upper density:\n$$\\overline{\\delta}(A) = \\limsup_{R \\to \\infty} \\frac{\\lambda(A \\cap B_R)}{\\lambda(B_R)}$$\n\nwhere $\\lambda$ is Lebesgue measure and $B_R$ is the ball of radius $R$.\n\nEstimate $m_1 = \\sup \\overline{\\delta}(A)$ over all measurable $A$ with no two points at distance 1.\n\n**Question:** Is $m_1 \\leq 1/4$?\n\n**Answer:** YES. $m_1 \\leq 0.247 < 1/4$ (Ambrus et al., 2023).\n\n**Current Best Bounds:**\n$$0.22936 \\leq m_1 \\leq 0.247$$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Euclidean Setup:**\n   - euclideanDist: distance function in ℝ²\n   - IsUnitDistance: predicate for distance = 1\n   - IsUnitDistanceFree: no unit distance pairs\n\n2. **Measure Theory:**\n   - ballR: closed ball of radius R\n   - upperDensity: lim sup of density ratio\n   - maxDensity: supremum over unit-distance-free sets\n\n3. **Bounds:**\n   - trivial_upper_bound: m₁ ≤ 1/2\n   - hexagonal_lower_bound: m₁ ≥ π/(8√3)\n   - croft_lower_bound: m₁ ≥ 0.22936\n   - ambrus_et_al_upper_bound: m₁ ≤ 0.247\n\n4. **Main Result:**\n   - erdos_232_solution: m₁ < 1/4\n   - erdos_232_quarter_bound: m₁ ≤ 1/4\n\n5. **Connections:**\n   - unitDistanceGraphAdj: unit distance graph\n   - chromatic_density_connection: relation to χ(ℝ²)",
+    "keyInsights": [
+      "**Translation Argument:** A and A+u disjoint for unit u gives m₁ ≤ 1/2",
+      "**Hexagonal Packing:** Discs of radius 1/2 on hexagonal lattice give m₁ ≥ π/(8√3)",
+      "**Croft's Refinement:** Modified construction improves to 0.22936",
+      "**2023 Breakthrough:** Ambrus et al. proved m₁ ≤ 0.247 using new techniques",
+      "**Chromatic Connection:** Unit-distance-free sets are independent sets in the unit distance graph",
+      "**Gap Remains:** The exact value of m₁ is still unknown (within ~0.018)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "euclideanDist, IsUnitDistance",
+      "startLine": 46,
+      "endLine": 62
+    },
+    {
+      "id": "unit-distance-free",
+      "title": "Unit-Distance Avoiding Sets",
+      "summary": "IsUnitDistanceFree, IsUnitDistanceFree', unitDistanceFree_iff",
+      "startLine": 64,
+      "endLine": 91
+    },
+    {
+      "id": "balls-measure",
+      "title": "Balls and Lebesgue Measure",
+      "summary": "ballR, lebesgue_ball_area",
+      "startLine": 93,
+      "endLine": 109
+    },
+    {
+      "id": "upper-density",
+      "title": "Upper Density",
+      "summary": "upperDensity, upperDensity_bounds, upperDensity_mono",
+      "startLine": 111,
+      "endLine": 135
+    },
+    {
+      "id": "max-density",
+      "title": "Maximum Density m₁",
+      "summary": "maxDensity, maxDensity_bounded",
+      "startLine": 137,
+      "endLine": 151
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Trivial Upper Bound",
+      "summary": "trivial_upper_bound, translation_disjoint",
+      "startLine": 153,
+      "endLine": 174
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds (Constructions)",
+      "summary": "hexagonal_lower_bound, croft_lower_bound",
+      "startLine": 176,
+      "endLine": 193
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "ambrus_et_al_upper_bound, erdos_232_solution, erdos_232_quarter_bound",
+      "startLine": 195,
+      "endLine": 227
+    },
+    {
+      "id": "bounds-summary",
+      "title": "Current Bounds Summary",
+      "summary": "current_bounds, bounds_gap",
+      "startLine": 229,
+      "endLine": 244
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "empty_unitDistanceFree, singleton_unitDistanceFree, small_ball_unitDistanceFree",
+      "startLine": 246,
+      "endLine": 274
+    },
+    {
+      "id": "chromatic-connection",
+      "title": "Connection to Chromatic Number",
+      "summary": "unitDistanceGraphAdj, unitDistanceFree_is_independent, chromatic_density_connection",
+      "startLine": 276,
+      "endLine": 305
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_232_summary combining main results",
+      "startLine": 307,
+      "endLine": 333
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #232 asks whether the maximum upper density m₁ of unit-distance-free sets in ℝ² satisfies m₁ ≤ 1/4. The problem is SOLVED: Ambrus et al. (2023) proved m₁ ≤ 0.247 < 1/4. Combined with Croft's lower bound of 0.22936, we have tight bounds on m₁.",
+    "implications": "**Connections and Implications**\n\n1. **Hadwiger-Nelson Problem:** Unit-distance-free sets are independent sets in the unit distance graph whose chromatic number χ satisfies 5 ≤ χ ≤ 7\n\n2. **Packing Theory:** The hexagonal construction shows optimal circle packing applies here\n\n3. **Measure Theory:** Connects combinatorial geometry with Lebesgue measure\n\n4. **Asymptotic Density:** The lim sup formulation captures large-scale behavior\n\n5. **Open Gap:** The exact value of m₁ (within 0.22936 to 0.247) remains unknown",
+    "openQuestions": [
+      "What is the exact value of m₁?",
+      "What is the optimal construction achieving m₁?",
+      "Can the upper bound 0.247 be improved?",
+      "What are the optimal constructions in higher dimensions?",
+      "How does m₁ relate to the chromatic number of the plane?"
+    ]
   }
 }

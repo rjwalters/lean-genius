@@ -1,1 +1,301 @@
-[]
+[
+  {
+    "id": "ann-e403-header",
+    "proofId": "erdos-403",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #403: Powers of 2 as Factorial Sums**\n\nDoes 2^m = a₁! + a₂! + ... + aₖ! (distinct aᵢ) have finitely many solutions?\n\n**Answer:** YES (Lin/Frankl 1976)\n\n**Maximal Solution:** 2^7 = 2! + 3! + 5! = 128",
+    "mathContext": "This connects number theory, factorial growth, and p-adic analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["Factorials", "Exponential equations", "2-adic valuation", "Diophantine equations"]
+  },
+  {
+    "id": "ann-e403-sumfact",
+    "proofId": "erdos-403",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "Sum of Factorials",
+    "content": "**sumFactorials(S):**\n\nΣₐ∈S a! - the sum of factorials of elements in a finite set S.\n\nThis is the core quantity we're studying.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-powertwo",
+    "proofId": "erdos-403",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "definition",
+    "title": "Power of 2 Representation",
+    "content": "**IsPowerOfTwoFactorialSum(m):**\n\n∃S: sumFactorials(S) = 2^m with S nonempty.\n\nThe central predicate: when can a power of 2 be written as a factorial sum?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-primepower",
+    "proofId": "erdos-403",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "definition",
+    "title": "Prime Power Representation",
+    "content": "**IsPrimePowerFactorialSum(p, m):**\n\nGeneralizes to any prime p: when does p^m equal a factorial sum?\n\nLin's work also addresses p = 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-solm1",
+    "proofId": "erdos-403",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "theorem",
+    "title": "Solution m=1",
+    "content": "**solution_m1:**\n\n2^1 = 2 = 2!\n\nThe simplest nontrivial solution.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-solm7",
+    "proofId": "erdos-403",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "theorem",
+    "title": "Maximal Solution m=7",
+    "content": "**solution_m7:**\n\n2^7 = 128 = 2! + 3! + 5! = 2 + 6 + 120\n\nVerified by native_decide. This is the LARGEST solution!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-elements",
+    "proofId": "erdos-403",
+    "range": { "startLine": 88, "endLine": 97 },
+    "type": "theorem",
+    "title": "Maximal Solution Elements",
+    "content": "**maximal_solution_elements:**\n\n2! = 2, 3! = 6, 5! = 120\n\n2 + 6 + 120 = 128 = 2^7",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-solexp",
+    "proofId": "erdos-403",
+    "range": { "startLine": 105, "endLine": 110 },
+    "type": "definition",
+    "title": "Solution Exponents",
+    "content": "**solutionExponents:**\n\n{1, 2, 3, 4, 5, 6, 7} - candidate exponents for solutions.\n\nNot all have solutions; Lin proved m ≤ 7 for any solution.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-lin",
+    "proofId": "erdos-403",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "axiom",
+    "title": "Lin's Finiteness Theorem",
+    "content": "**lin_theorem_finiteness:**\n\n∀m: IsPowerOfTwoFactorialSum(m) → m ≤ 7\n\nThe main result: all solutions have exponent at most 7!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-finite",
+    "proofId": "erdos-403",
+    "range": { "startLine": 120, "endLine": 128 },
+    "type": "theorem",
+    "title": "Finite Solution Set",
+    "content": "**solution_set_finite:**\n\nThe set {m | IsPowerOfTwoFactorialSum(m)} is finite.\n\nCorollary of Lin's m ≤ 7 bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-twoval",
+    "proofId": "erdos-403",
+    "range": { "startLine": 136, "endLine": 141 },
+    "type": "definition",
+    "title": "2-adic Valuation",
+    "content": "**twoAdicValuation(n):**\n\nThe largest k such that 2^k divides n.\n\nKey tool for Lin's stronger bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-lin254",
+    "proofId": "erdos-403",
+    "range": { "startLine": 143, "endLine": 151 },
+    "type": "axiom",
+    "title": "Lin's 2-adic Bound",
+    "content": "**lin_two_adic_bound:**\n\nIf 2 ∈ S, then twoAdicValuation(sumFactorials(S)) ≤ 254.\n\nThis technical result implies the finiteness theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-twobound",
+    "proofId": "erdos-403",
+    "range": { "startLine": 153, "endLine": 161 },
+    "type": "theorem",
+    "title": "Power of 2 Bound",
+    "content": "**power_of_two_bound:**\n\nIf 2^m = sumFactorials(S) with 2 ∈ S, then m ≤ 254.\n\nWeaker than Lin's m ≤ 7, but follows from 2-adic analysis.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-threesol",
+    "proofId": "erdos-403",
+    "range": { "startLine": 169, "endLine": 173 },
+    "type": "definition",
+    "title": "Solutions for Powers of 3",
+    "content": "**threeExponentSolutions:**\n\n{0, 1, 2, 3, 6} - exactly the m with 3^m = factorial sum.\n\nLin completely classified this case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-3m0",
+    "proofId": "erdos-403",
+    "range": { "startLine": 175, "endLine": 179 },
+    "type": "theorem",
+    "title": "3^0 Solution",
+    "content": "**three_solution_m0:**\n\n3^0 = 1 = 1!\n\nThe trivial solution.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-3m1",
+    "proofId": "erdos-403",
+    "range": { "startLine": 181, "endLine": 185 },
+    "type": "theorem",
+    "title": "3^1 Solution",
+    "content": "**three_solution_m1:**\n\n3^1 = 3 = 1! + 2! = 1 + 2",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-3m2",
+    "proofId": "erdos-403",
+    "range": { "startLine": 187, "endLine": 191 },
+    "type": "theorem",
+    "title": "3^2 Solution",
+    "content": "**three_solution_m2:**\n\n3^2 = 9 = 1! + 2! + 3! = 1 + 2 + 6",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-3m3",
+    "proofId": "erdos-403",
+    "range": { "startLine": 193, "endLine": 197 },
+    "type": "theorem",
+    "title": "3^3 Solution",
+    "content": "**three_solution_m3:**\n\n3^3 = 27 = 1! + 2! + 4! = 1 + 2 + 24",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-3m6",
+    "proofId": "erdos-403",
+    "range": { "startLine": 199, "endLine": 203 },
+    "type": "theorem",
+    "title": "3^6 Solution",
+    "content": "**three_solution_m6:**\n\n3^6 = 729 = 1! + 2! + 3! + 6! = 1 + 2 + 6 + 720",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-lin3",
+    "proofId": "erdos-403",
+    "range": { "startLine": 205, "endLine": 210 },
+    "type": "axiom",
+    "title": "Lin's Theorem for Powers of 3",
+    "content": "**lin_theorem_powers_of_three:**\n\n3^m = factorial sum ⟺ m ∈ {0, 1, 2, 3, 6}\n\nExactly 5 solutions, completely enumerated.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-growth",
+    "proofId": "erdos-403",
+    "range": { "startLine": 218, "endLine": 223 },
+    "type": "axiom",
+    "title": "Factorial Dominates Exponential",
+    "content": "**factorial_dominates_exponential:**\n\n∀c ∃N: ∀a≥N, a! > 2^(a+c)\n\nFactorial growth eventually beats any exponential.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-fewterms",
+    "proofId": "erdos-403",
+    "range": { "startLine": 225, "endLine": 233 },
+    "type": "theorem",
+    "title": "Few Terms in Solution",
+    "content": "**few_terms_in_solution:**\n\nIf 2^m = sumFactorials(S) and max(S) ≥ 8, then |S| ≤ 8.\n\nLarge factorials can't combine to form powers of 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-maxelem",
+    "proofId": "erdos-403",
+    "range": { "startLine": 235, "endLine": 243 },
+    "type": "theorem",
+    "title": "Maximum Element Bound",
+    "content": "**max_element_bound:**\n\nIf 2^m = sumFactorials(S), then max(S) ≤ 13.\n\n14! is too large to usefully participate.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-maxprime",
+    "proofId": "erdos-403",
+    "range": { "startLine": 251, "endLine": 260 },
+    "type": "definition",
+    "title": "Maximum Prime Power Divisibility",
+    "content": "**maxPrimePowerDiv(a, p):**\n\nf(a,p) = max k such that p^k divides some factorial sum containing a!.\n\nThis is Problem 404's f(a,p) function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-f22",
+    "proofId": "erdos-403",
+    "range": { "startLine": 262, "endLine": 267 },
+    "type": "axiom",
+    "title": "Lin's f(2,2) Bound",
+    "content": "**lin_f22_bound:**\n\nf(2,2) ≤ 254\n\nThe maximum power of 2 dividing a factorial sum containing 2!.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e403-p404",
+    "proofId": "erdos-403",
+    "range": { "startLine": 269, "endLine": 277 },
+    "type": "theorem",
+    "title": "Problem 404 Connection",
+    "content": "**problem_404_generalizes_403:**\n\nProblem 403 is a special case of Problem 404.\n\nf(a,p) bounds generalize the finiteness result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-check1",
+    "proofId": "erdos-403",
+    "range": { "startLine": 285, "endLine": 289 },
+    "type": "theorem",
+    "title": "Check m=1",
+    "content": "**check_m1:**\n\nIsPowerOfTwoFactorialSum(1) via {2}.\n\n2^1 = 2 = 2!",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-check2",
+    "proofId": "erdos-403",
+    "range": { "startLine": 291, "endLine": 295 },
+    "type": "theorem",
+    "title": "Check m=2",
+    "content": "**check_m2:**\n\nIsPowerOfTwoFactorialSum(2) via {0, 1, 2}.\n\n2^2 = 4 = 0! + 1! + 2! = 1 + 1 + 2",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-check3",
+    "proofId": "erdos-403",
+    "range": { "startLine": 297, "endLine": 301 },
+    "type": "theorem",
+    "title": "Check m=3",
+    "content": "**check_m3:**\n\nIsPowerOfTwoFactorialSum(3) via {0, 1, 3}.\n\n2^3 = 8 = 0! + 1! + 3! = 1 + 1 + 6",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-check7",
+    "proofId": "erdos-403",
+    "range": { "startLine": 311, "endLine": 316 },
+    "type": "theorem",
+    "title": "Check m=7",
+    "content": "**check_m7:**\n\nIsPowerOfTwoFactorialSum(7) via {2, 3, 5}.\n\n2^7 = 128 = 2! + 3! + 5! (maximum!)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-main",
+    "proofId": "erdos-403",
+    "range": { "startLine": 324, "endLine": 347 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_403:**\n\n1. IsPowerOfTwoFactorialSum(7) - maximal solution exists\n2. ∀m: IsPowerOfTwoFactorialSum(m) → m ≤ 7 - all bounded\n\nCombines existence and finiteness.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e403-hist",
+    "proofId": "erdos-403",
+    "range": { "startLine": 349, "endLine": 358 },
+    "type": "theorem",
+    "title": "Historical Note",
+    "content": "**historical_note:**\n\nAsked by Burr and Erdős.\n\nSolved by:\n- P. Frankl (independently)\n- S. Lin (Bell Labs, 1976)",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e403-related3",
+    "proofId": "erdos-403",
+    "range": { "startLine": 360, "endLine": 372 },
+    "type": "theorem",
+    "title": "Related Powers of 3 Result",
+    "content": "**related_powers_of_three:**\n\n∀m ∈ {0,1,2,3,6}: IsPrimePowerFactorialSum(3, m)\n\nAll 5 solutions for powers of 3 are verified.",
+    "significance": "key"
+  }
+]

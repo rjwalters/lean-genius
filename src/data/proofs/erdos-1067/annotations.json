@@ -1,1 +1,177 @@
-[]
+[
+  {
+    "id": "ann-e1067-header",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #1067: Infinitely Connected Subgraphs**\n\n**Question:** Does every graph with chromatic number aleph_1 contain an infinitely connected subgraph with chromatic number aleph_1?\n\n**Answer: NO** (Counterexamples exist)\n\n**Key results:**\n- Komjath (2013): Consistency of counterexample\n- Soukup (2015): Counterexample in ZFC\n- Bowler-Pitz (2024): Simpler elementary counterexample\n- Thomassen (2017): Edge-connectivity variant also false",
+    "mathContext": "A graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.",
+    "significance": "critical",
+    "relatedConcepts": ["Chromatic number", "Infinite graphs", "Connectivity"]
+  },
+  {
+    "id": "ann-e1067-chromatic",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 40, "endLine": 46 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber(G):**\n\nThe minimum number of colors needed to properly color a graph.\n\nFor infinite graphs, this is a cardinal number.\n\n**Proper coloring:** Adjacent vertices have different colors.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Cardinals"]
+  },
+  {
+    "id": "ann-e1067-aleph1",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "definition",
+    "title": "Chromatic Number aleph_1",
+    "content": "**hasAleph1ChromaticNumber(G):**\n\nThe graph G has chromatic number aleph_1 (the first uncountable cardinal).\n\nThis means:\n- G cannot be colored with countably many colors\n- G can be colored with aleph_1 many colors",
+    "mathContext": "aleph_1 is the cardinality of the set of countable ordinals.",
+    "significance": "critical",
+    "relatedConcepts": ["Aleph numbers", "Uncountable sets"]
+  },
+  {
+    "id": "ann-e1067-path",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 59, "endLine": 66 },
+    "type": "definition",
+    "title": "Path in Graph",
+    "content": "**PathInGraph:**\n\nA finite sequence of vertices where consecutive vertices are adjacent.\n\n```lean\nstructure PathInGraph (G : SimpleGraph V) where\n  vertices : List V\n  isPath : forall i, G.Adj vertices[i] vertices[i+1]\n```",
+    "significance": "key",
+    "relatedConcepts": ["Graph walks", "Connectivity"]
+  },
+  {
+    "id": "ann-e1067-disjoint",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 68, "endLine": 82 },
+    "type": "definition",
+    "title": "Disjoint Paths",
+    "content": "**DisjointPaths(p1, p2):**\n\nTwo paths are disjoint if they share no internal vertices.\n\n**PairwiseDisjoint(paths):**\nA collection of paths is pairwise disjoint.\n\nEndpoints may be shared (for paths between same vertices), but no internal vertices overlap.",
+    "significance": "key",
+    "relatedConcepts": ["Menger's theorem", "Path systems"]
+  },
+  {
+    "id": "ann-e1067-infinitely-many",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 84, "endLine": 91 },
+    "type": "definition",
+    "title": "Infinitely Many Disjoint Paths",
+    "content": "**InfinitelyManyDisjointPaths(G, u, v):**\n\nThere exist infinitely many pairwise disjoint paths from u to v in G.\n\nThis is a very strong connectivity requirement - not just one path, but infinitely many that don't share internal vertices.",
+    "significance": "key",
+    "relatedConcepts": ["Path multiplicity", "Strong connectivity"]
+  },
+  {
+    "id": "ann-e1067-infinitely-connected",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "definition",
+    "title": "Infinitely Connected",
+    "content": "**InfinitelyConnected(G):**\n\nA graph is infinitely connected if ANY two vertices are connected by infinitely many pairwise disjoint paths.\n\n```lean\ndef InfinitelyConnected (G : SimpleGraph V) : Prop :=\n  forall u v, u != v -> InfinitelyManyDisjointPaths G u v\n```\n\nThis is the key property in the Erdos-Hajnal question.",
+    "mathContext": "By Menger's theorem, this is related to having infinite vertex connectivity.",
+    "significance": "critical",
+    "relatedConcepts": ["Menger's theorem", "Vertex connectivity"]
+  },
+  {
+    "id": "ann-e1067-edge-connected",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 104, "endLine": 110 },
+    "type": "definition",
+    "title": "Infinitely Edge-Connected",
+    "content": "**InfinitelyEdgeConnected(G):**\n\nTo disconnect the graph requires deleting infinitely many edges.\n\nThis is a weaker notion than infinitely connected (vertex version).\n\nThomassen (2017) constructed a counterexample for this variant too.",
+    "significance": "key",
+    "relatedConcepts": ["Edge connectivity", "Thomassen's result"]
+  },
+  {
+    "id": "ann-e1067-erdos-hajnal",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 123, "endLine": 130 },
+    "type": "definition",
+    "title": "The Erdos-Hajnal Question",
+    "content": "**ErdosHajnalQuestion(G):**\n\nDoes G with chi(G) = aleph_1 contain an infinitely connected subgraph H with chi(H) = aleph_1?\n\nThis formalizes the original 1966 question.\n\n**The answer is NO** - counterexamples exist.",
+    "significance": "critical",
+    "relatedConcepts": ["Original question", "1966"]
+  },
+  {
+    "id": "ann-e1067-komjath",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 136, "endLine": 145 },
+    "type": "axiom",
+    "title": "Komjath's Consistency Result (2013)",
+    "content": "**komjath_consistency_2013:**\n\nIt is consistent with ZFC that a counterexample exists.\n\nThis was the first breakthrough - showing the answer isn't necessarily YES.\n\nFor the variant with aleph_1 vertices, Komjath proved independence from ZFC.",
+    "significance": "key",
+    "relatedConcepts": ["ZFC consistency", "Independence results"]
+  },
+  {
+    "id": "ann-e1067-soukup",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 147, "endLine": 155 },
+    "type": "axiom",
+    "title": "Soukup's Counterexample (2015)",
+    "content": "**soukup_counterexample_2015:**\n\nA counterexample exists in ZFC without extra assumptions.\n\nSoukup constructed a graph G with:\n- chi(G) = aleph_1\n- Every infinitely connected subgraph H has chi(H) < aleph_1\n\n**This definitively answers the question: NO**",
+    "mathContext": "The construction uses 'ladders' of trees that force chromatic separation.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "ZFC counterexample"]
+  },
+  {
+    "id": "ann-e1067-bowler-pitz",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 157, "endLine": 165 },
+    "type": "axiom",
+    "title": "Bowler-Pitz Simpler Counterexample (2024)",
+    "content": "**bowler_pitz_counterexample_2024:**\n\nAn elementary counterexample, simpler than Soukup's construction.\n\nTheir 2024 paper (arXiv:2402.05984) provides a more accessible construction using only basic graph theory.\n\nThis makes the result easier to understand and verify.",
+    "significance": "key",
+    "relatedConcepts": ["Elementary proof", "2024"]
+  },
+  {
+    "id": "ann-e1067-thomassen",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 167, "endLine": 175 },
+    "type": "axiom",
+    "title": "Thomassen's Edge-Connectivity Counterexample (2017)",
+    "content": "**thomassen_edge_counterexample_2017:**\n\nFor the edge-connectivity variant, a counterexample also exists.\n\nEven the weaker requirement of 'infinitely edge-connected' (needing infinitely many edge deletions to disconnect) doesn't suffice.\n\nThis shows the phenomenon is robust across different connectivity notions.",
+    "significance": "key",
+    "relatedConcepts": ["Edge connectivity", "Robustness"]
+  },
+  {
+    "id": "ann-e1067-aleph1-vertices",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 181, "endLine": 195 },
+    "type": "axiom",
+    "title": "Variant: aleph_1 Vertices",
+    "content": "**hasAleph1Vertices(V) and komjath_independence:**\n\nFor graphs with exactly aleph_1 many vertices, Komjath proved the answer is INDEPENDENT of ZFC.\n\nThis means:\n- Some models of ZFC have counterexamples\n- Other models have the property hold\n- Neither can be proved from ZFC alone",
+    "mathContext": "This is a striking example of set-theoretic independence in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["ZFC independence", "Set theory"]
+  },
+  {
+    "id": "ann-e1067-insight",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 201, "endLine": 211 },
+    "type": "theorem",
+    "title": "Key Insight",
+    "content": "**counterexample_insight:**\n\nChromatic number and infinite connectivity are somewhat independent properties.\n\nOne can construct graphs where:\n1. chi(G) = aleph_1 (uncountable chromatic number)\n2. Any infinitely connected subgraph has chi <= aleph_0\n\nThe 'bottleneck' for chromatic number is in parts that can't support infinite connectivity.",
+    "significance": "key",
+    "relatedConcepts": ["Independence of properties"]
+  },
+  {
+    "id": "ann-e1067-main",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 270, "endLine": 278 },
+    "type": "theorem",
+    "title": "Main Result: erdos_1067",
+    "content": "**erdos_1067:**\n\nThere exists a graph G with chi(G) = aleph_1 such that every infinitely connected subgraph H has chi(H) < aleph_1.\n\n```lean\ntheorem erdos_1067 : exists G, hasAleph1ChromaticNumber G and\n  forall H, IsSubgraph H G -> InfinitelyConnected H ->\n    not(hasAleph1ChromaticNumber H)\n```\n\n**This DISPROVES the Erdos-Hajnal conjecture.**",
+    "significance": "critical",
+    "relatedConcepts": ["Main theorem", "Disproof"]
+  },
+  {
+    "id": "ann-e1067-answer",
+    "proofId": "erdos-1067",
+    "range": { "startLine": 290, "endLine": 300 },
+    "type": "theorem",
+    "title": "The Answer: NO",
+    "content": "**erdos_1067_answer:**\n\nExplicitly states the conjecture is FALSE.\n\n```lean\ntheorem erdos_1067_answer :\n    not(forall G, hasAleph1ChromaticNumber G ->\n      exists H, IsSubgraph H G and InfinitelyConnected H and\n        hasAleph1ChromaticNumber H)\n```\n\nThe Erdos-Hajnal question from 1966 is definitively answered in the negative.",
+    "significance": "critical",
+    "relatedConcepts": ["Final answer", "Disproof"]
+  }
+]
