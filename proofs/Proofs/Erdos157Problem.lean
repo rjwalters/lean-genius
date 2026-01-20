@@ -150,6 +150,15 @@ def exampleSidonSet : Finset ℕ := {1, 2, 5, 11}
     Note: The original set {1, 2, 5, 10, 11, 13} was NOT Sidon since 1+11 = 2+10 = 12.
     Aristotle proof search discovered this bug. -/
 theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ) := by
-  sorry
+  -- The set {1, 2, 5, 11} has all pairwise sums distinct:
+  -- 1+1=2, 1+2=3, 1+5=6, 1+11=12, 2+2=4, 2+5=7, 2+11=13, 5+5=10, 5+11=16, 11+11=22
+  intro a b c d ha hb hc hd hab hcd hsum
+  simp only [exampleSidonSet, Finset.coe_insert, Finset.coe_singleton,
+             Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb hc hd
+  rcases ha with rfl | rfl | rfl | rfl <;>
+  rcases hb with rfl | rfl | rfl | rfl <;>
+  rcases hc with rfl | rfl | rfl | rfl <;>
+  rcases hd with rfl | rfl | rfl | rfl <;>
+  omega
 
 end Erdos157
