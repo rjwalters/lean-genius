@@ -9325,17 +9325,22 @@
   },
   {
     "id": "erdos-600",
-    "title": "Erdős Problem #600",
+    "title": "Edge-Triangle Containment Thresholds",
     "slug": "erdos-600",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every graph on ... vertices with at least ... edges, each edge contained in at least one triangl...",
-    "status": "pending",
+    "description": "Let e(n,r) be the minimal number of edges such that every graph on n vertices with at least e(n,r) edges, where each edge is in at least one triangle, must have some edge in at least r triangles. Questions: (1) Does e(n,r+1) - e(n,r) → ∞? (2) Does e(n,r+1)/e(n,r) → 1?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "extremal-graph-theory",
+      "triangle-counting"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 600,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-601",
