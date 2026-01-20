@@ -16,11 +16,47 @@
       "measure-theory",
       "farey-fractions"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 5,
     "erdosNumber": 1001,
     "erdosUrl": "https://erdosproblems.com/1001",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure on ℝ",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter convergence for limits",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Int.gcd",
+        "description": "Greatest common divisor for integers",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The mathematical constant π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of isApproximable predicate for Diophantine approximation",
+      "Definition of approximationSet and measure S(N,A,c)",
+      "Axiomatization of Erdős-Szüsz-Turán explicit formula",
+      "Axiomatization of Kesten-Sós limit existence theorem",
+      "Formalization of EST regime condition",
+      "Connection to Farey fraction asymptotics"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős, Szüsz, and Turán posed this problem in 1958, proving the explicit formula f(A,c) = 12A log(c)/π² in a specific regime. Kesten and Sós (1966) proved the limit always exists. Boca (2008) and Xiong-Zaharescu (2006) provided alternative explicit proofs using Farey fractions and continued fractions respectively.",

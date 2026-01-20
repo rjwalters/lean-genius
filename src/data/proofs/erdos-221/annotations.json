@@ -1,1 +1,149 @@
-[]
+[
+  {
+    "id": "ann-e221-header",
+    "proofId": "erdos-221",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #221: Additive Complements with Powers of 2**\n\nIs there a sparse set A such that A + {2^k} covers all large integers?\n\nMore precisely: |A ∩ {1,...,N}| ≪ N/log N and every large n = 2^k + a.\n\n**Status:** SOLVED (Ruzsa, 1972)\n\nRuzsa's construction uses powers of 5 and primitive roots.",
+    "mathContext": "This connects additive combinatorics to multiplicative number theory via primitive roots.",
+    "significance": "critical",
+    "relatedConcepts": ["Additive complements", "Powers of 2", "Primitive roots", "Sparse sets"]
+  },
+  {
+    "id": "ann-e221-powers-of-two",
+    "proofId": "erdos-221",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Powers of Two",
+    "content": "**PowersOfTwo:** { n | ∃ k, n = 2^k } = {1, 2, 4, 8, 16, ...}\n\nThis exponentially sparse set is what A must 'complement'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e221-additive-complement",
+    "proofId": "erdos-221",
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "definition",
+    "title": "Additive Complement",
+    "content": "**IsAdditiveComplementForLarge:**\n\nA complements B if every large n can be written as a + b.\n\n∃ N₀, ∀ n ≥ N₀, ∃ a ∈ A, ∃ b ∈ B, n = a + b\n\nThis is a 'sumset covering' condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-counting",
+    "proofId": "erdos-221",
+    "range": { "startLine": 65, "endLine": 72 },
+    "type": "definition",
+    "title": "Counting Function and Density",
+    "content": "**countingFunction A N:** |A ∩ {1,...,N}|\n\n**HasDensityNOverLogN:** ∃ C, countingFunction A N ≤ C · N/log N\n\nThe challenge is achieving this sparse density while still complementing powers of 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-lorentz-density",
+    "proofId": "erdos-221",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "definition",
+    "title": "Lorentz Density",
+    "content": "**HasLorentzDensity:**\n\n|A ∩ {1,...,N}| ≪ N · (log log N / log N)\n\nThis weaker bound was achieved by Lorentz (1954) - the first positive result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e221-conjecture",
+    "proofId": "erdos-221",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "**Erdos221Conjecture:**\n\n∃ A, IsComplementToPowersOfTwo A ∧ HasDensityNOverLogN A\n\nCan we find a complement with optimal sparsity N/log N?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-lorentz",
+    "proofId": "erdos-221",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "axiom",
+    "title": "Lorentz 1954",
+    "content": "**lorentz_1954:**\n\nThere exists a complement with density O(N log log N / log N).\n\nThis was the first positive answer, but not optimal. Published in 'On a problem of additive number theory.'",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e221-ruzsa-constant",
+    "proofId": "erdos-221",
+    "range": { "startLine": 105, "endLine": 106 },
+    "type": "definition",
+    "title": "Ruzsa's Constant",
+    "content": "**ruzsaConstant:** C = 1/(5 · log 2) ≈ 0.288\n\nThis specific constant makes the construction work - van Doorn verified this in comments on erdosproblems.com.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e221-ruzsa-set",
+    "proofId": "erdos-221",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "definition",
+    "title": "Ruzsa's Set",
+    "content": "**RuzsaCoreSet:** { 5^n · m : m ≥ 1 and 5^n ≥ C log m }\n\n**RuzsaSet:** RuzsaCoreSet + {0, 1}\n\nThe '+{0,1}' handles parity issues. The constraint 5^n ≥ C log m ensures sparsity while powers of 5 enable coverage.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-primitive-root",
+    "proofId": "erdos-221",
+    "range": { "startLine": 116, "endLine": 119 },
+    "type": "axiom",
+    "title": "2 is a Primitive Root mod 5^n",
+    "content": "**two_primitive_root_mod_five_power:**\n\nFor all n ≥ 1, 2 is a primitive root modulo 5^n.\n\nThis means ord_{5^n}(2) = φ(5^n) = 4 · 5^{n-1}.\n\nThe powers of 2 cycle through ALL residues coprime to 5^n.",
+    "mathContext": "This is the key algebraic fact enabling Ruzsa's construction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-ruzsa-theorem",
+    "proofId": "erdos-221",
+    "range": { "startLine": 127, "endLine": 130 },
+    "type": "theorem",
+    "title": "Ruzsa's Theorem (1972)",
+    "content": "**ruzsa_1972:** Erdos221Conjecture\n\nRuzsa's set is a complement to powers of 2 with density O(N/log N).\n\nThis solved Problem #221: the answer is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-answer",
+    "proofId": "erdos-221",
+    "range": { "startLine": 136, "endLine": 137 },
+    "type": "theorem",
+    "title": "Problem #221 Answer",
+    "content": "**erdos_221_answer:** Erdos221Conjecture\n\nThe answer to Erdős Problem #221 is YES.\n\nSparse additive complements to powers of 2 exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-exact-complement",
+    "proofId": "erdos-221",
+    "range": { "startLine": 143, "endLine": 148 },
+    "type": "axiom",
+    "title": "Ruzsa 2001: Exact Complement",
+    "content": "**ruzsa_2001_exact_complement:**\n\nThere exists a complement with asymptotically optimal density:\n\n|A ∩ {1,...,N}| ~ N / log₂ N as N → ∞\n\nThis is an 'exact' additive complement - achieving the precise optimal density.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e221-lower-bound",
+    "proofId": "erdos-221",
+    "range": { "startLine": 154, "endLine": 158 },
+    "type": "axiom",
+    "title": "Density Lower Bound",
+    "content": "**density_lower_bound:**\n\nAny complement must have |A ∩ {1,...,N}| ≥ c · N/log N.\n\nThis shows N/log N is optimal from below - no sparser complement exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e221-optimality",
+    "proofId": "erdos-221",
+    "range": { "startLine": 160, "endLine": 168 },
+    "type": "theorem",
+    "title": "Optimality",
+    "content": "**optimal_density:**\n\nThe density N/log N is tight from both sides:\n\n1. Upper bound: Ruzsa's construction achieves O(N/log N)\n2. Lower bound: Any complement needs Ω(N/log N)\n\nSo the answer to 'how sparse?' is: exactly N/log N up to constants.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e221-summary",
+    "proofId": "erdos-221",
+    "range": { "startLine": 219, "endLine": 253 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_221_summary:**\n\n1. The conjecture is TRUE (Ruzsa 1972)\n2. Ruzsa's set works: complement + sparse\n3. Exact optimal complement exists (Ruzsa 2001)\n\n**Status:** SOLVED\n\nKey: 2 is a primitive root mod 5^n enables the construction.",
+    "significance": "critical"
+  }
+]

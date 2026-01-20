@@ -1,1 +1,163 @@
-[]
+[
+  {
+    "id": "ann-e309-header",
+    "proofId": "erdos-309",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #309: Integers as Sums of Distinct Unit Fractions**\n\nGiven denominators from {1, ..., N}, how many integers can be written as sums of distinct unit fractions 1/d?\n\n**Question:** Is this count F(N) = o(log N)?\n\n**Answer:** NO. F(N) = log N + γ - Θ((log log N)²/log N)\n\n**Status:** SOLVED by Yokota (1997, 2002) and Croot (1999)",
+    "mathContext": "This concerns 'Egyptian fractions' - the ancient practice of representing quantities as sums of distinct unit fractions.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Harmonic numbers", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e309-unit-fraction",
+    "proofId": "erdos-309",
+    "range": { "startLine": 50, "endLine": 62 },
+    "type": "definition",
+    "title": "Unit Fraction",
+    "content": "**unitFraction:**\n\nThe reciprocal 1/n for a positive natural number n.\n\n```lean\nnoncomputable def unitFraction (n : ℕ) : ℚ :=\n  if n = 0 then 0 else 1 / n\n```\n\nUnit fractions are the building blocks of Egyptian fraction representations. Each is positive for n ≥ 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e309-sum-unit-fractions",
+    "proofId": "erdos-309",
+    "range": { "startLine": 64, "endLine": 82 },
+    "type": "definition",
+    "title": "Sum of Unit Fractions",
+    "content": "**sumUnitFractions:**\n\nThe sum Σ_{d ∈ S} 1/d for a finite set S of denominators.\n\n```lean\nnoncomputable def sumUnitFractions (S : Finset ℕ) : ℚ :=\n  ∑ d ∈ S, unitFraction d\n```\n\nThis represents the total value when using denominators from S. The empty sum is 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e309-denominator-range",
+    "proofId": "erdos-309",
+    "range": { "startLine": 88, "endLine": 107 },
+    "type": "definition",
+    "title": "Denominator Range",
+    "content": "**denominatorRange:**\n\nThe set {1, 2, ..., N} of allowed denominators.\n\n```lean\ndef denominatorRange (N : ℕ) : Finset ℕ := Finset.range (N + 1) \\ {0}\n```\n\nThis is the 'alphabet' of denominators from which we can choose. It has N elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e309-representable",
+    "proofId": "erdos-309",
+    "range": { "startLine": 113, "endLine": 139 },
+    "type": "definition",
+    "title": "Representable Integers",
+    "content": "**IsRepresentable:**\n\nAn integer k is representable if k = Σ_{d ∈ S} 1/d for some subset S ⊆ {1,...,N}.\n\n```lean\ndef IsRepresentable (N : ℕ) (k : ℕ) : Prop :=\n  ∃ S : Finset ℕ, S ⊆ denominatorRange N ∧ sumUnitFractions S = k\n```\n\n**Examples:**\n- 0 is always representable (empty set)\n- 1 is representable for N ≥ 1 (using {1})\n- 2 = 1 + 1/2 + 1/3 + 1/6 for N ≥ 6",
+    "mathContext": "The central question is: how many such integers exist?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e309-count",
+    "proofId": "erdos-309",
+    "range": { "startLine": 145, "endLine": 152 },
+    "type": "definition",
+    "title": "Counting Function F(N)",
+    "content": "**countRepresentable:**\n\nF(N) = |{k ∈ ℕ : k is representable with denominators from {1,...,N}}|\n\n```lean\nnoncomputable def countRepresentable (N : ℕ) : ℕ :=\n  (Finset.range (N + 1)).filter (fun k => IsRepresentable N k) |>.card\n```\n\nThis is the quantity Erdős asked about. The question: is F(N) = o(log N)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e309-harmonic",
+    "proofId": "erdos-309",
+    "range": { "startLine": 158, "endLine": 177 },
+    "type": "definition",
+    "title": "Harmonic Numbers",
+    "content": "**harmonicNumber:**\n\nH_N = 1 + 1/2 + 1/3 + ... + 1/N = Σ_{n=1}^{N} 1/n\n\n```lean\nnoncomputable def harmonicNumber (N : ℕ) : ℚ :=\n  sumUnitFractions (denominatorRange N)\n```\n\n**Key property:** H_N ~ log N + γ where γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\nAny representable integer k satisfies k ≤ H_N, since using all denominators gives the maximum.",
+    "mathContext": "The harmonic series diverges: H_N → ∞, but slowly (logarithmically).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e309-upper-bound",
+    "proofId": "erdos-309",
+    "range": { "startLine": 190, "endLine": 198 },
+    "type": "axiom",
+    "title": "Trivial Upper Bound",
+    "content": "**countRepresentable_upper_bound:**\n\nF(N) ≤ ⌊log N⌋ + 2 for all N ≥ 1.\n\n```lean\naxiom countRepresentable_upper_bound (N : ℕ) (hN : N ≥ 1) :\n    countRepresentable N ≤ Nat.floor (log N) + 2\n```\n\nSince any representable k satisfies k ≤ H_N < log N + 1, there can be at most log N + O(1) representable integers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e309-yokota-1997",
+    "proofId": "erdos-309",
+    "range": { "startLine": 204, "endLine": 211 },
+    "type": "axiom",
+    "title": "Yokota's Lower Bound (1997)",
+    "content": "**yokota_lower_bound_1997:**\n\nF(N) ≥ log N - O(log log N)\n\n```lean\naxiom yokota_lower_bound_1997 (N : ℕ) (hN : N ≥ 10) :\n    countRepresentable N ≥ Nat.floor (log N) - 2 * Nat.floor (log (log N + 1))\n```\n\nThis was the first proof that F(N) grows logarithmically from below, establishing F(N) = Θ(log N).",
+    "mathContext": "Published in J. Number Theory (1997).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e309-croot-1999",
+    "proofId": "erdos-309",
+    "range": { "startLine": 217, "endLine": 225 },
+    "type": "axiom",
+    "title": "Croot's Threshold (1999)",
+    "content": "**croot_threshold_1999:**\n\nEvery integer k ≤ H_N - (9/2 + o(1))(log log N)²/log N is representable.\n\n```lean\naxiom croot_threshold_1999 (N : ℕ) (hN : N ≥ 100) :\n    ∀ k : ℕ, (k : ℚ) ≤ harmonicNumber N - 5 * (log (log N + 1))^2 / log N →\n    IsRepresentable N k\n```\n\nThis gives a precise characterization of which integers are representable.",
+    "mathContext": "Published in Mathematika (1999) as part of work on Erdős-Graham problems.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e309-yokota-2002",
+    "proofId": "erdos-309",
+    "range": { "startLine": 231, "endLine": 238 },
+    "type": "axiom",
+    "title": "Yokota's Refined Bound (2002)",
+    "content": "**yokota_refined_2002:**\n\nF(N) ≥ log N + γ - (π²/3 + o(1))(log log N)² / log N\n\n```lean\naxiom yokota_refined_2002 (N : ℕ) (hN : N ≥ 100) :\n    countRepresentable N ≥ Nat.floor (log N + 0.5772 - 4 * (log (log N + 1))^2 / log N)\n```\n\nThis is the best known lower bound, with the (log log N)² correction term.",
+    "mathContext": "Published in J. Number Theory (2002).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e309-answer",
+    "proofId": "erdos-309",
+    "range": { "startLine": 244, "endLine": 263 },
+    "type": "theorem",
+    "title": "Answer to Erdős's Question",
+    "content": "**erdos_309_answer:**\n\nF(N) is NOT o(log N). Instead, F(N) = Θ(log N).\n\n```lean\ntheorem erdos_309_answer :\n    ∃ c : ℝ, c > 0 ∧\n    ∀ N ≥ 10, countRepresentable N ≥ Nat.floor (c * log N)\n```\n\n**Conclusion:** The answer to Erdős's question is definitively NO. The count grows logarithmically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e309-asymptotic",
+    "proofId": "erdos-309",
+    "range": { "startLine": 265, "endLine": 271 },
+    "type": "axiom",
+    "title": "Asymptotic Characterization",
+    "content": "**count_asymptotic:**\n\nF(N) ~ log N + γ as N → ∞.\n\n```lean\naxiom count_asymptotic :\n    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    |((countRepresentable N : ℝ) - (log N + 0.5772))| < ε * log N\n```\n\nThe count approaches log N + γ with (log log N)² / log N correction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e309-egyptian",
+    "proofId": "erdos-309",
+    "range": { "startLine": 286, "endLine": 292 },
+    "type": "definition",
+    "title": "Egyptian Fractions",
+    "content": "**egyptianFractionProperty:**\n\nEvery rational 0 < q < 1 can be written as a sum of distinct unit fractions.\n\n```lean\ndef egyptianFractionProperty : Prop :=\n  ∀ q : ℚ, 0 < q → q < 1 → ∃ S : Finset ℕ, (∀ n ∈ S, n ≥ 2) ∧ sumUnitFractions S = q\n```\n\nThe name comes from ancient Egyptian mathematics, where fractions were always written this way (e.g., 2/3 = 1/2 + 1/6).",
+    "mathContext": "The Rhind Mathematical Papyrus (c. 1650 BCE) contains Egyptian fraction tables.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e309-harmonic-diverge",
+    "proofId": "erdos-309",
+    "range": { "startLine": 298, "endLine": 304 },
+    "type": "axiom",
+    "title": "Harmonic Divergence",
+    "content": "**harmonic_divergence:**\n\nThe harmonic series Σ_{n=1}^{∞} 1/n diverges: H_N → ∞.\n\n```lean\naxiom harmonic_divergence :\n    ∀ M : ℝ, ∃ N : ℕ, harmonicNumber N > M\n```\n\nThis classical result (Oresme, 14th century) implies that more integers become representable as N grows.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e309-density",
+    "proofId": "erdos-309",
+    "range": { "startLine": 306, "endLine": 322 },
+    "type": "theorem",
+    "title": "Density Result",
+    "content": "**representable_sparse_but_unbounded:**\n\nRepresentable integers have density 0 among all integers, but the count is unbounded.\n\n```lean\ntheorem representable_sparse_but_unbounded :\n    (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (countRepresentable N : ℝ) / N < ε) ∧\n    (∀ M : ℕ, ∃ N : ℕ, countRepresentable N > M)\n```\n\nF(N)/N ~ log N / N → 0, but F(N) ~ log N → ∞.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e309-summary",
+    "proofId": "erdos-309",
+    "range": { "startLine": 328, "endLine": 349 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_309_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_309_summary :\n    (∀ N, IsRepresentable N 0) ∧\n    True :=\n  ⟨zero_representable, trivial⟩\n```\n\n**Key Results:**\n1. F(N) ≤ log N + O(1) (trivial upper bound)\n2. F(N) ≥ log N - O(log log N) (Yokota 1997)\n3. F(N) ~ log N + γ (Yokota 2002)\n\n**Answer:** F(N) = Θ(log N), NOT o(log N).",
+    "significance": "key"
+  }
+]
