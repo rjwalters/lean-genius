@@ -1,1 +1,184 @@
-[]
+[
+  {
+    "id": "ann-223-header",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #223 (Vázsonyi's Conjecture) asks: how many pairs of points can be at distance 1 (the diameter) in an n-point set with diameter 1? The answer varies dramatically by dimension.",
+    "mathContext": "For d ≥ 2 and n ≥ 2, define f_d(n) = max number of diameter pairs. The key result: f₂(n) = n, f₃(n) = 2n-2, f_d(n) ~ cn² for d ≥ 4.",
+    "significance": "critical",
+    "relatedConcepts": ["diameter", "point configuration", "extremal geometry"]
+  },
+  {
+    "id": "ann-223-pointconfig",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A **PointConfig d n** is a function Fin n → EuclideanSpace ℝ (Fin d), representing n points in d-dimensional Euclidean space.",
+    "mathContext": "Using EuclideanSpace from Mathlib provides the standard inner product structure and distance function on ℝ^d.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace", "Fin", "function type"]
+  },
+  {
+    "id": "ann-223-diameter",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Diameter Function",
+    "content": "The **diameter** of a configuration is the supremum of pairwise distances: diam(A) = sup{dist(Aᵢ, Aⱼ) : i, j}.",
+    "mathContext": "Using ⨆ (iSup) captures the maximum. For finite sets this is achieved, giving the actual maximum distance.",
+    "significance": "key",
+    "relatedConcepts": ["supremum", "metric space", "pairwise distance"]
+  },
+  {
+    "id": "ann-223-diameterPairs",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Diameter Pairs Count",
+    "content": "**diameterPairs A** counts pairs {i, j} with i < j where dist(Aᵢ, Aⱼ) equals the diameter. This is the central quantity we maximize.",
+    "mathContext": "We filter pairs with distance exactly equal to the maximum, then count. The i < j constraint avoids double counting.",
+    "significance": "critical",
+    "relatedConcepts": ["cardinality", "filter", "ordered pairs"]
+  },
+  {
+    "id": "ann-223-f-function",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "The Function f_d(n)",
+    "content": "**f d n** is the maximum number of diameter pairs over all n-point configurations with diameter 1 in ℝ^d. This is the function Erdős asked us to estimate.",
+    "mathContext": "Using ⨆ (supremum) over configurations satisfying hasDiameterExactly A 1 ensures we consider exactly the valid configurations.",
+    "significance": "critical",
+    "relatedConcepts": ["supremum", "extremal problem", "constraint"]
+  },
+  {
+    "id": "ann-223-hopf-pannwitz",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 90,
+      "endLine": 93
+    },
+    "type": "axiom",
+    "title": "Hopf-Pannwitz Theorem (1934)",
+    "content": "In 2D, **f₂(n) = n** exactly. The regular n-gon inscribed in a unit circle achieves this bound, and no configuration can do better.",
+    "mathContext": "Each vertex of a regular n-gon is at the diameter distance from the opposite vertex (or two opposite vertices for even n). This gives n diameter pairs.",
+    "significance": "critical",
+    "relatedConcepts": ["regular polygon", "2D geometry", "extremal configuration"]
+  },
+  {
+    "id": "ann-223-three-dimensional",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 112,
+      "endLine": 115
+    },
+    "type": "axiom",
+    "title": "3D Case (1956-57)",
+    "content": "In 3D, **f₃(n) = 2n - 2**. Proved independently by Grünbaum, Heppes, and Strasziewicz.",
+    "mathContext": "The construction: take two regular (n-1)-gons in perpendicular planes sharing one vertex. This gives 2(n-1) = 2n-2 diameter pairs.",
+    "significance": "critical",
+    "relatedConcepts": ["3D geometry", "independent discovery", "two polygons"]
+  },
+  {
+    "id": "ann-223-erdos-1960",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 131,
+      "endLine": 136
+    },
+    "type": "axiom",
+    "title": "Erdős 1960: Higher Dimensions",
+    "content": "For d ≥ 4, **f_d(n) grows quadratically** in n. The coefficient is (p-1)/(2p) where p = ⌊d/2⌋. This is a phase transition!",
+    "mathContext": "The constraint on diameter pairs relaxes dramatically in dimension 4+. Cross-polytope-like constructions achieve quadratic density.",
+    "significance": "critical",
+    "relatedConcepts": ["quadratic growth", "phase transition", "dimension 4"]
+  },
+  {
+    "id": "ann-223-coefficient",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 138,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "Leading Coefficient",
+    "content": "The **leadingCoefficient d** = (p-1)/(2p) where p = ⌊d/2⌋. For d=4: 1/4, d=6: 1/3, approaching 1/2 as d → ∞.",
+    "mathContext": "This determines the asymptotic density of diameter pairs. As dimension increases, we can pack more diameter pairs.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic coefficient", "floor function", "limit"]
+  },
+  {
+    "id": "ann-223-swanepoel",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 152,
+      "endLine": 155
+    },
+    "type": "axiom",
+    "title": "Swanepoel's Complete Solution (2009)",
+    "content": "Swanepoel gave **exact formulas** for f_d(n) for all sufficiently large n and characterized all extremal configurations.",
+    "mathContext": "For d ≥ 4 and n ≥ N(d), we know precisely f_d(n), not just asymptotics. The extremal configurations are also explicitly described.",
+    "significance": "critical",
+    "relatedConcepts": ["exact formula", "extremal configuration", "complete solution"]
+  },
+  {
+    "id": "ann-223-diameterGraph",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 197,
+      "endLine": 207
+    },
+    "type": "definition",
+    "title": "Diameter Graph",
+    "content": "The **diameterGraph** is a SimpleGraph where vertices are points and edges connect diameter pairs. Its structure reveals dimensional constraints.",
+    "mathContext": "In 2D, max degree 2 (each point can be in at most 2 diameter pairs). In 3D, still linear structure. In 4D+, much richer.",
+    "significance": "key",
+    "relatedConcepts": ["SimpleGraph", "graph structure", "degree bound"]
+  },
+  {
+    "id": "ann-223-4d-coefficient",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 168,
+      "endLine": 172
+    },
+    "type": "theorem",
+    "title": "Four-Dimensional Coefficient",
+    "content": "For d = 4: **leadingCoefficient 4 = 1/4**. Since p = 2, we get (2-1)/(2·2) = 1/4.",
+    "mathContext": "This means f₄(n) ≈ n²/4 for large n. About 1/4 of all pairs can be at the diameter distance!",
+    "significance": "key",
+    "relatedConcepts": ["dimension 4", "explicit calculation", "quarter of pairs"]
+  },
+  {
+    "id": "ann-223-summary",
+    "proofId": "erdos-223",
+    "range": {
+      "startLine": 255,
+      "endLine": 270
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_223_summary** packages all three cases: 2D (f = n), 3D (f = 2n-2), and 4D+ (f ≥ cn²).",
+    "mathContext": "The conjunction shows the complete solution across all dimensions, demonstrating the phase transition at d = 4.",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "all dimensions", "phase transition"]
+  }
+]
