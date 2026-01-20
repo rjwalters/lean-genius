@@ -1,33 +1,146 @@
 {
   "id": "erdos-692",
-  "title": "Erdős Problem #692",
+  "title": "Erdős Problem #692: Unimodularity of Divisor Density",
   "slug": "erdos-692",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the density of the set of integers with exactly one divisor in .... Is ... unimodular for ... (i.e. increases unti...",
+  "description": "Let δ₁(n,m) be the density of integers with exactly one divisor in (n,m). Is δ₁(n,m) unimodal for m > n+1? DISPROVED by Cambie (2025) with explicit counterexamples showing superpolynomially many local maxima.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Ford, Cambie",
     "sourceUrl": "https://erdosproblems.com/692",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos692Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "density",
+      "unimodality",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 692,
     "erdosUrl": "https://erdosproblems.com/692",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior in filters",
+        "module": "Mathlib.Topology.Instances.Real"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "divisorsInInterval: count divisors in (n,m)",
+      "countWithOneDivisor: count integers with exactly one divisor",
+      "delta1: density function δ₁(n,m) via limsup",
+      "IsUnimodal: definition of unimodal sequence",
+      "erdosUnimodalityQuestion: Erdős's original question",
+      "erdos_delta1_bound axiom: Erdős's upper bound",
+      "ford_2008_bounds axiom: Ford's sharper bounds",
+      "cambie_n3_values axiom: counterexample values",
+      "cambie_n3_not_unimodal axiom: disproof for n=3",
+      "cambie_superpolynomial_maxima axiom: wildly oscillatory behavior",
+      "erdos_692 theorem: main summary combining results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #692 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta_1(n,m)$ be the density of the set of integers with exactly one divisor in $(n,m)$. Is $\\delta_1(n,m)$ unimodular for $m>n+1$ (i.e. increases until some $m$ then decreases thereafter)? For fixed $n$, where does $\\delta_1(n,m)$ achieve its maximum?\n\n\n\nThis was asked by Erd\\H{o}s in 1986 at Oberwolfach.\n\nErd\\H{o}s proved that\\[\\delta_1(n,m) \\ll \\frac{1}{(\\log n)^c}\\]for all $m$, for some constant $c>0$. Sharper bounds (for various ranges of $n$ and $m$) were given by Ford \\cite{Fo08}.\n\nCambie has calculated that unimodularity fails even for $n=2$ and $n=3$. For example,\\[\\delta_1(3,6)= 0.35\\quad \\delta_1(3,7)\\approx 0.33\\quad \\delta_1(3,8)\\approx 0.3619.\\]Furthermore, Cambie \\cite{Ca25} has shown that, for fixed $n$, the sequence $\\delta_1(n,m)$ has superpolynomially many local maxima $m$.\n\nSee also [446].\n\n\n\n\nReferences\n\n\n[Ca25] S. Cambie, Resolution of Erd\\H{o}s' problems about unimodularity. arXiv:2501.10333 (2025).\n\n[Fo08] Ford, Kevin, The distribution of integers with a divisor in a given\ninterval. Ann. of Math. (2) (2008), 367-433.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #692: Divisor Density Unimodality**\n\nThis problem concerns the density δ₁(n,m) of integers with exactly one divisor in the interval (n,m). Erdős asked whether this density is unimodal in m.\n\n**Historical Development:**\n- **Erdős (1986)**: Posed the question at Oberwolfach, proved δ₁(n,m) ≪ 1/(log n)^c\n- **Ford (2008)**: \"The distribution of integers with a divisor in a given interval\" - sharper bounds for various ranges\n- **Cambie (2025)**: DISPROVED unimodality with explicit counterexamples\n\n**The Resolution:**\nCambie computed:\n- δ₁(3,6) = 0.35\n- δ₁(3,7) ≈ 0.33\n- δ₁(3,8) ≈ 0.3619\n\nThis shows decrease-then-increase, violating unimodality. Moreover, Cambie proved the sequence has superpolynomially many local maxima!",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\delta_1(n,m)$ be the density of integers with exactly one divisor in $(n,m)$.\n\n**Original Question (Erdős 1986):**\nIs $\\delta_1(n,m)$ unimodal for $m > n + 1$? That is, does it increase then decrease?\n\n**Answer: NO**\n\n**Cambie's Counterexample (2025):**\nFor $n = 3$:\n- $\\delta_1(3,6) = 0.35$\n- $\\delta_1(3,7) \\approx 0.33$\n- $\\delta_1(3,8) \\approx 0.3619$\n\nThe sequence **decreases then increases**, refuting unimodality.\n\n**Stronger Result:** The sequence has superpolynomially many local maxima.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** divisorsInInterval counts divisors in (n,m), delta1 is the density via limsup\n\n2. **Erdős's Bound:** Axiomatize δ₁(n,m) ≪ 1/(log n)^c\n\n3. **Ford's Bounds:** State the 2008 refinements\n\n4. **Unimodality:** Define IsUnimodal predicate\n\n5. **Cambie's Disproof:** Axiomatize the counterexample values and the negation\n\n6. **Superpolynomial Maxima:** Formalize the stronger oscillation result",
+    "keyInsights": [
+      "**Explicit Counterexample:** δ₁(3,6) > δ₁(3,7) < δ₁(3,8) shows non-monotonicity",
+      "**Small Values Suffice:** Unimodality fails even for n = 2 and n = 3",
+      "**Superpolynomial Oscillation:** Not just a few exceptions - infinitely many local maxima grow superpolynomially",
+      "**Competing Effects:** More divisors can fit in (n,m) but also more likely to have multiple divisors",
+      "**39-Year Problem:** Asked in 1986, resolved in 2025",
+      "**Connection to Problem 446:** Related to general divisor distribution questions"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "divisorsInInterval, countWithOneDivisor, delta1",
+      "startLine": 43,
+      "endLine": 79
+    },
+    {
+      "id": "erdos-bound",
+      "title": "Erdős's Upper Bound",
+      "summary": "δ₁(n,m) ≪ 1/(log n)^c",
+      "startLine": 81,
+      "endLine": 94
+    },
+    {
+      "id": "ford-bounds",
+      "title": "Ford's Sharper Bounds",
+      "summary": "2008 refinements for various ranges",
+      "startLine": 96,
+      "endLine": 111
+    },
+    {
+      "id": "unimodality-definition",
+      "title": "Unimodularity Definition",
+      "summary": "IsUnimodal predicate and Erdős's question",
+      "startLine": 113,
+      "endLine": 134
+    },
+    {
+      "id": "cambie-counterexample",
+      "title": "Cambie's Counterexample",
+      "summary": "Explicit values showing unimodality fails",
+      "startLine": 136,
+      "endLine": 179
+    },
+    {
+      "id": "superpolynomial-maxima",
+      "title": "Superpolynomial Local Maxima",
+      "summary": "Cambie's stronger oscillation result",
+      "startLine": 181,
+      "endLine": 217
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "Connection to Problem 446 and Ford's work",
+      "startLine": 219,
+      "endLine": 239
+    },
+    {
+      "id": "physical-interpretation",
+      "title": "Physical Interpretation",
+      "summary": "Why competing effects cause oscillation",
+      "startLine": 241,
+      "endLine": 257
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_692 theorem combining all results",
+      "startLine": 259,
+      "endLine": 307
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #692 is DISPROVED. The density δ₁(n,m) of integers with exactly one divisor in (n,m) is NOT unimodal in m. Cambie (2025) provided explicit counterexamples for n = 2, 3 and proved the sequence has superpolynomially many local maxima. The problem remained open for 39 years (1986-2025).",
+    "implications": "**Number-Theoretic Significance**\n\n1. **Divisor Distribution:** The behavior of divisor counts in intervals is more complex than expected\n\n2. **Oscillatory Phenomena:** The superpolynomial maxima show wild oscillation, not gradual decay\n\n3. **Computational Verification:** Cambie's resolution combined computation with theoretical analysis\n\n4. **Related Problems:** Provides insight into the general question of how integers distribute divisors",
+    "openQuestions": [
+      "What is the exact growth rate of the number of local maxima?",
+      "For which specific n (if any) is δ₁(n,m) 'almost' unimodal?",
+      "What is the structure of the local maxima locations?",
+      "How do Ford's bounds relate to the oscillation structure?"
+    ]
   }
 }

@@ -1,1 +1,194 @@
-[]
+[
+  {
+    "id": "ann-e967-header",
+    "proofId": "erdos-967",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #967: Zeros of Generalized Dirichlet Sums**\n\nFor integers 1 < a₁ < a₂ < ... with ∑(1/aᵢ) < ∞, is it true that 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all real t?\n\n**Answer**: NO - The Erdős-Ingham conjecture is FALSE.\n\nYip (2025) proved counterexamples exist for any nonzero t. The finite sequence case remains open.",
+    "mathContext": "The sum 1 + ∑ₖ 1/aₖ^(1+it) is a generalized Dirichlet series with complex exponent 1+it. The oscillatory factor a^(it) = e^(it·log(a)) is key to the existence of zeros.",
+    "significance": "critical",
+    "relatedConcepts": ["Dirichlet series", "Complex analysis", "Tauberian theorems"]
+  },
+  {
+    "id": "ann-e967-integer-seq",
+    "proofId": "erdos-967",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "Integer Sequence Structure",
+    "content": "**IntegerSequence:**\n\nA strictly increasing sequence of integers greater than 1.\n\n```lean\nstructure IntegerSequence where\n  seq : ℕ → ℕ\n  strictly_increasing : ∀ n, seq n < seq (n + 1)\n  all_greater_than_one : ∀ n, seq n > 1\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e967-convergent",
+    "proofId": "erdos-967",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Convergent Reciprocal Sum",
+    "content": "**hasConvergentReciprocalSum:**\n\nA sequence satisfies ∑(1/aᵢ) < ∞.\n\nThis ensures the Dirichlet series converges absolutely, making the generalized sum well-defined.",
+    "mathContext": "Convergence is essential - without it, the infinite sum may not exist. Examples: {2,3,4,...} doesn't converge, but {2,4,8,...} does.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e967-complex-pow",
+    "proofId": "erdos-967",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "definition",
+    "title": "Complex Power a^(1+it)",
+    "content": "**complexPow(a, t) = a^(1+it):**\n\na^(1+it) = a · a^(it) = a · e^(it·log(a))\n\nThe factor a^(it) = cos(t·log(a)) + i·sin(t·log(a)) oscillates on the unit circle.",
+    "mathContext": "This oscillatory behavior is what enables zeros to exist. Different a values give different oscillation frequencies t·log(a).",
+    "significance": "critical",
+    "relatedConcepts": ["Complex exponential", "Unit circle", "Logarithm"]
+  },
+  {
+    "id": "ann-e967-reciprocal-pow",
+    "proofId": "erdos-967",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "definition",
+    "title": "Reciprocal Power Term",
+    "content": "**reciprocalPow(a, t) = 1/a^(1+it):**\n\nThe term in the generalized Dirichlet sum. Has magnitude 1/a and phase -t·log(a).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e967-dirichlet-sum",
+    "proofId": "erdos-967",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "definition",
+    "title": "Generalized Dirichlet Sum",
+    "content": "**generalizedDirichletSum(a, t) = 1 + ∑ₖ 1/aₖ^(1+it):**\n\nThe central object of Problem #967. The conjecture asked if this is always nonzero.",
+    "mathContext": "At t = 0, this reduces to 1 + ∑ₖ 1/aₖ > 1. For t ≠ 0, the oscillating terms can potentially sum to -1.",
+    "significance": "critical",
+    "relatedConcepts": ["Dirichlet series", "Series summation"]
+  },
+  {
+    "id": "ann-e967-conjecture",
+    "proofId": "erdos-967",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "definition",
+    "title": "The Erdős-Ingham Conjecture",
+    "content": "**erdosInghamConjecture:**\n\nFor any convergent sequence a and any real t, 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0.\n\nThis conjecture from 1964 was disproved by Yip in 2025.",
+    "mathContext": "The conjecture was motivated by Tauberian theory: if true, it would imply certain asymptotic results for functional equations.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős-Ingham (1964)", "Tauberian theorems"]
+  },
+  {
+    "id": "ann-e967-finite-conj",
+    "proofId": "erdos-967",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "definition",
+    "title": "Finite Sequence Conjecture",
+    "content": "**finiteSequenceConjecture:**\n\nDoes 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 hold for all FINITE sequences?\n\nThis remains OPEN even after Yip's work.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e967-sum235",
+    "proofId": "erdos-967",
+    "range": { "startLine": 106, "endLine": 107 },
+    "type": "definition",
+    "title": "The {2, 3, 5} Case",
+    "content": "**sum235(t) = 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it):**\n\nThe simplest case Erdős and Ingham could not decide. Whether this equals zero for some t is still unknown.",
+    "mathContext": "This case connects to the Four Exponentials conjecture in transcendence theory. If 4EC holds, sum235(t) ≠ 0 for all t.",
+    "significance": "critical",
+    "relatedConcepts": ["Four Exponentials conjecture", "Transcendence theory"]
+  },
+  {
+    "id": "ann-e967-four-exp",
+    "proofId": "erdos-967",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "axiom",
+    "title": "Connection to Four Exponentials",
+    "content": "**four_exponentials_implies_235_nonzero:**\n\nIf the Four Exponentials conjecture holds, then sum235(t) ≠ 0 for all t.\n\nThis deep connection was noted on MathOverflow.",
+    "mathContext": "The 4EC concerns algebraic independence of logarithms. It implies constraints on when 2^z + 3^z + 5^z can vanish.",
+    "significance": "key",
+    "relatedConcepts": ["Schanuel's conjecture", "Algebraic independence"]
+  },
+  {
+    "id": "ann-e967-tauberian",
+    "proofId": "erdos-967",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "definition",
+    "title": "Tauberian Equivalence",
+    "content": "**tauberianEquivalence:**\n\nErdős-Ingham (1964) proved: the no-zeros condition is equivalent to a Tauberian result.\n\nIf f(x) + ∑ₖ f(x/aₖ) = (1 + ∑ₖ 1/aₖ + o(1))x, does f(x) = (1+o(1))x?",
+    "mathContext": "This connection motivated the original problem. The zeros of the Dirichlet sum obstruct the Tauberian implication.",
+    "significance": "key",
+    "relatedConcepts": ["Tauberian theorems", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e967-yip",
+    "proofId": "erdos-967",
+    "range": { "startLine": 144, "endLine": 147 },
+    "type": "axiom",
+    "title": "Yip's Theorem (2025)",
+    "content": "**Axiom yip_counterexample:**\n\nFor any real t ≠ 0, there EXISTS a sequence a with ∑(1/aᵢ) < ∞ such that 1 + ∑ₖ 1/aₖ^(1+it) = 0.\n\nThis DISPROVES the Erdős-Ingham conjecture after 60 years.",
+    "mathContext": "Yip's construction (arXiv:2512.16528) builds different sequences for each t. The key insight is exploiting the oscillatory phases.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexample construction", "Complex analysis"]
+  },
+  {
+    "id": "ann-e967-conj-false",
+    "proofId": "erdos-967",
+    "range": { "startLine": 153, "endLine": 160 },
+    "type": "theorem",
+    "title": "The Conjecture is FALSE",
+    "content": "**Theorem erdosInghamConjecture_false:**\n\n¬erdosInghamConjecture\n\n**Proof**: Take any t ≠ 0 (say t = 1). By Yip's theorem, there exists a sequence a where the sum equals 0. But the conjecture claims the sum is never 0. Contradiction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e967-main",
+    "proofId": "erdos-967",
+    "range": { "startLine": 166, "endLine": 166 },
+    "type": "theorem",
+    "title": "Main Theorem (erdos_967)",
+    "content": "**Theorem erdos_967:**\n\n¬erdosInghamConjecture\n\nThe answer to Erdős Problem #967 is NO - the conjecture is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e967-open",
+    "proofId": "erdos-967",
+    "range": { "startLine": 177, "endLine": 177 },
+    "type": "definition",
+    "title": "Open Question: Finite Case",
+    "content": "**openQuestion_finiteCase:**\n\nDoes the conjecture hold for FINITE sequences?\n\nYip's counterexamples are infinite sequences. The finite case, including {2,3,5}, remains unsolved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e967-t-dependent",
+    "proofId": "erdos-967",
+    "range": { "startLine": 184, "endLine": 188 },
+    "type": "theorem",
+    "title": "T-Dependence of Counterexamples",
+    "content": "**Theorem yip_construction_t_dependent:**\n\nFor each t ≠ 0, Yip constructs a DIFFERENT counterexample sequence.\n\nNo single sequence works for all t simultaneously - the construction is inherently t-dependent.",
+    "mathContext": "This raises the question: can there be a 'universal' counterexample? The structure of Yip's construction suggests probably not.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e967-t-zero",
+    "proofId": "erdos-967",
+    "range": { "startLine": 199, "endLine": 201 },
+    "type": "theorem",
+    "title": "t = 0 Is Special",
+    "content": "**Theorem sum_positive_at_zero:**\n\nAt t = 0, the sum is real: 1 + ∑ₖ 1/aₖ > 1 > 0.\n\nThe conjecture trivially holds at t = 0 - only nonzero t can produce zeros.",
+    "mathContext": "When t = 0, all terms are positive real numbers, so the sum is strictly greater than 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e967-oscillation",
+    "proofId": "erdos-967",
+    "range": { "startLine": 208, "endLine": 208 },
+    "type": "concept",
+    "title": "Oscillatory Behavior",
+    "content": "**Oscillation for t ≠ 0:**\n\nThe terms 1/aₖ^(1+it) = (1/aₖ)·e^(-it·log(aₖ)) rotate around the origin.\n\nBy choosing aₖ carefully, these oscillating terms can sum to exactly -1, giving a zero.",
+    "mathContext": "This is the key mechanism behind Yip's construction. Different aₖ values give different angular velocities t·log(aₖ) on the unit circle.",
+    "significance": "key",
+    "relatedConcepts": ["Phase cancellation", "Constructive interference"]
+  },
+  {
+    "id": "ann-e967-summary",
+    "proofId": "erdos-967",
+    "range": { "startLine": 221, "endLine": 228 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**Theorem erdos_967_summary:**\n\n1. The Erdős-Ingham conjecture (1964) is FALSE for infinite sequences\n2. Yip (2025) provided counterexamples for every nonzero t\n3. The finite sequence case remains OPEN\n4. The {2,3,5} case connects to the Four Exponentials conjecture",
+    "significance": "critical"
+  }
+]

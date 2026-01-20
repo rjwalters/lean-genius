@@ -1,33 +1,148 @@
 {
   "id": "erdos-185",
-  "title": "Erdős Problem #185",
+  "title": "Erdős Problem #185: Cap Sets in {0,1,2}^n",
   "slug": "erdos-185",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of a subset of ... which contains no three points on a line. Is it true that ...?\n\n\n\nOriginally c...",
+  "description": "Is f₃(n) = o(3^n) where f₃(n) is the max cap set in {0,1,2}^n? YES - Proved via density Hales-Jewett (Furstenberg-Katznelson 1991).",
   "meta": {
-    "author": "Unknown",
+    "author": "Moser (original), Furstenberg-Katznelson (1991 solution), Ellenberg-Gijswijt (2016 bound)",
     "sourceUrl": "https://erdosproblems.com/185",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos185Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "cap-sets",
+      "hales-jewett",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 185,
     "erdosUrl": "https://erdosproblems.com/185",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "TernaryHypercube definition: {0,1,2}^n",
+      "OnLine definition for collinearity in ternary cube",
+      "CombinatorialLine structure for Hales-Jewett",
+      "IsCapSet and IsCapSetCombinatorial definitions",
+      "f3(n) function: max cap set size",
+      "R3(N) definition for AP-free sets",
+      "f3_geq_R3 axiom: connection to APs",
+      "moser_lower_bound axiom: f₃(n) ≫ 3^n/√n",
+      "moserSet construction",
+      "density_hales_jewett axiom",
+      "f3_is_little_o axiom: main result",
+      "meshulam_upper_bound axiom: f₃(n) ≤ 3^n/n",
+      "ellenberg_gijswijt_2016 axiom: f₃(n) ≤ c^n with c < 3",
+      "Small value axioms: f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #185 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_3(n)$ be the maximal size of a subset of $\\{0,1,2\\}^n$ which contains no three points on a line. Is it true that $f_3(n)=o(3^n)$?\n\n\n\nOriginally considered by Moser. It is trivial that $f_3(n)\\geq R_3(3^n)$, the maximal size of a subset of $\\{1,\\ldots,3^n\\}$ without a three-term arithmetic progression. Moser showed that\\[f_3(n) \\gg \\frac{3^n}{\\sqrt{n}}.\\]The answer is yes, which is a corollary of the density Hales-Jewett theorem, proved by Furstenberg and Katznelson \\cite{FuKa91}.\n\n\n\n\nReferences\n\n\n[FuKa91] Furstenberg, H. and Katznelson, Y., A density version of the Hales-Jewett Theorem. Journal d'Analyse Math\\'{e}matique (1991), 64-119.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about cap sets - subsets of {0,1,2}^n with no three collinear points (where x + z = 2y). Moser posed the question and showed f₃(n) ≫ 3^n/√n. The density Hales-Jewett theorem, proved by Furstenberg-Katznelson (1991), implies f₃(n) = o(3^n). More recently, Ellenberg-Gijswijt (2016) proved f₃(n) ≤ c^n for c < 3, a major breakthrough.",
+    "problemStatement": "**Question:** Is f₃(n) = o(3^n)?\n\n**Answer: YES** (Furstenberg-Katznelson 1991)\n\nLet f₃(n) = max size of a subset of {0,1,2}^n with no three collinear points.\n\nThe density Hales-Jewett theorem implies cap sets have density → 0.",
+    "proofStrategy": "The formalization defines:\n\n1. **TernaryHypercube:** {0,1,2}^n as Fin n → ZMod 3\n2. **OnLine:** Collinearity via x + z = 2y\n3. **CombinatorialLine:** Lines in Hales-Jewett sense\n4. **IsCapSet:** No three collinear points\n5. **f3(n):** Maximum cap set size\n\nWe axiomatize the density Hales-Jewett theorem and derive f₃(n) = o(3^n).",
+    "keyInsights": [
+      "**Lines generalize APs:** In {0,1,2}^n, lines correspond to arithmetic progressions in certain embeddings.",
+      "**Density Hales-Jewett:** Any dense subset contains a combinatorial line, so cap sets have vanishing density.",
+      "**Moser's construction:** Points with coordinate sum ≡ 0 or 1 (mod 3) form large cap sets.",
+      "**Ellenberg-Gijswijt breakthrough:** Used polynomial method to show f₃(n) ≤ c^n with c < 3.",
+      "**OEIS A003142:** Records known values of f₃(n)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "TernaryHypercube, hypercube_card",
+      "startLine": 35,
+      "endLine": 51
+    },
+    {
+      "id": "lines",
+      "title": "Lines in {0,1,2}^n",
+      "summary": "OnLine, CombinatorialLine definitions",
+      "startLine": 53,
+      "endLine": 81
+    },
+    {
+      "id": "cap-sets",
+      "title": "Cap Sets",
+      "summary": "IsCapSet, IsCapSetCombinatorial, f3(n)",
+      "startLine": 83,
+      "endLine": 107
+    },
+    {
+      "id": "ap-connection",
+      "title": "Connection to APs",
+      "summary": "R3(N), f3 ≥ R3 lower bound",
+      "startLine": 109,
+      "endLine": 128
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "Moser's lower bound, Moser's construction",
+      "startLine": 130,
+      "endLine": 150
+    },
+    {
+      "id": "hales-jewett",
+      "title": "Density Hales-Jewett",
+      "summary": "Main theorem and corollary f₃(n) = o(3^n)",
+      "startLine": 152,
+      "endLine": 178
+    },
+    {
+      "id": "recent-progress",
+      "title": "Recent Progress",
+      "summary": "Meshulam (1995), Ellenberg-Gijswijt (2016)",
+      "startLine": 180,
+      "endLine": 205
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20",
+      "startLine": 207,
+      "endLine": 234
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_185, erdos_185_density, erdos_185_answer theorems",
+      "startLine": 236,
+      "endLine": 287
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #185 asked whether f₃(n) = o(3^n), where f₃(n) is the maximum cap set in {0,1,2}^n. The answer is YES, proved as a corollary of the density Hales-Jewett theorem (Furstenberg-Katznelson 1991). More recent work by Ellenberg-Gijswijt (2016) showed f₃(n) ≤ c^n with c < 3, a major quantitative improvement.",
+    "implications": "**Additive Combinatorics Connections:**\n\n1. **Cap Set Problem:** Central problem in finite geometry and coding theory.\n\n2. **Hales-Jewett Theorem:** Fundamental result in Ramsey theory.\n\n3. **Polynomial Method:** Ellenberg-Gijswijt's proof revolutionized the field.\n\n4. **Sunflower Conjecture:** Cap set bounds have implications for other problems.\n\n5. **Coding Theory:** Cap sets relate to error-correcting codes over F₃.",
+    "openQuestions": [
+      "What is the exact value of lim sup f₃(n)^{1/n}?",
+      "Optimal lower bounds for f₃(n)?",
+      "Analogous questions for {0,1,...,k-1}^n",
+      "Explicit constructions achieving near-optimal bounds"
+    ]
   }
 }

@@ -1,12 +1,25 @@
 [
   {
+    "id": "ann-1001-header",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1001: Diophantine Approximation Density**\n\nLet S(N, A, c) measure α ∈ (0,1) with |α - x/y| < A/y² for some N ≤ y ≤ cN, gcd(x,y)=1.\n\n**Question**: Does lim_{N→∞} S(N, A, c) exist?\n\n**Answer**: YES (Kesten-Sós 1966), with explicit formula f(A,c) = 12A log(c)/π² in the EST regime.",
+    "mathContext": "This is a metric number theory problem: what fraction of real numbers can be well-approximated by rationals with denominators in a specific range? The answer involves Lebesgue measure and connects to the distribution of Farey fractions.",
+    "significance": "critical",
+    "relatedConcepts": ["Diophantine approximation", "Lebesgue measure", "Farey fractions"]
+  },
+  {
     "id": "ann-1001-approx",
     "proofId": "erdos-1001",
     "range": { "startLine": 39, "endLine": 41 },
     "type": "definition",
     "title": "isApproximable",
-    "content": "α is (A,y)-approximable if |α - x/y| < A/y² for some coprime x.",
-    "significance": "critical"
+    "content": "**isApproximable(A, y, α):**\n\nA real α is (A, y)-approximable if there exists a coprime integer x such that:\n\n|α - x/y| < A/y²\n\nThis is the Diophantine approximation inequality with quality parameter A.",
+    "mathContext": "The threshold A/y² comes from Dirichlet's theorem: for any α, there exist infinitely many p/q with |α - p/q| < 1/q². Setting A < 1 makes the condition more restrictive.",
+    "significance": "critical",
+    "relatedConcepts": ["Dirichlet approximation theorem", "Coprime pairs"]
   },
   {
     "id": "ann-1001-set",
@@ -14,8 +27,10 @@
     "range": { "startLine": 43, "endLine": 45 },
     "type": "definition",
     "title": "Approximation Set",
-    "content": "Set of α ∈ (0,1) approximable by some y in [N, cN].",
-    "significance": "critical"
+    "content": "**approximationSet(N, A, c):**\n\nThe set of α ∈ (0,1) that can be approximated by some rational x/y where:\n- N ≤ y ≤ cN (denominator in a specific range)\n- gcd(x, y) = 1 (reduced fraction)\n- |α - x/y| < A/y² (approximation quality)",
+    "mathContext": "By restricting to denominators in [N, cN], we study how approximability changes with the \"scale\" of denominators. The parameter c controls the width of this window.",
+    "significance": "critical",
+    "relatedConcepts": ["Rational approximation", "Measure theory"]
   },
   {
     "id": "ann-1001-S",
@@ -23,16 +38,17 @@
     "range": { "startLine": 47, "endLine": 49 },
     "type": "definition",
     "title": "S(N, A, c)",
-    "content": "Lebesgue measure of the approximation set.",
+    "content": "**S(N, A, c):**\n\nThe Lebesgue measure of the approximation set.\n\n```lean\nnoncomputable def S (N : ℕ) (A c : ℝ) : ℝ :=\n  (volume (approximationSet N A c)).toReal\n```\n\nThis is the key quantity: what fraction of (0,1) is approximable?",
+    "mathContext": "S(N, A, c) is always between 0 and 1 since it's the measure of a subset of (0,1). The main question is whether this converges as N → ∞.",
     "significance": "critical"
   },
   {
     "id": "ann-1001-bounds",
     "proofId": "erdos-1001",
-    "range": { "startLine": 57, "endLine": 60 },
+    "range": { "startLine": 57, "endLine": 70 },
     "type": "theorem",
-    "title": "S Bounds",
-    "content": "0 ≤ S(N,A,c) ≤ 1 for all valid parameters.",
+    "title": "Basic Properties of S",
+    "content": "**Basic Properties:**\n\n1. S(N, A, c) ∈ [0, 1] for valid parameters\n2. S is monotone increasing in A (larger A ⟹ more approximable points)\n3. S is monotone increasing in c (larger c ⟹ wider denominator range)",
     "significance": "key"
   },
   {
@@ -40,9 +56,11 @@
     "proofId": "erdos-1001",
     "range": { "startLine": 78, "endLine": 80 },
     "type": "definition",
-    "title": "Limit Function f",
-    "content": "f(A,c) = 12A log(c)/π², the explicit limiting density.",
-    "significance": "critical"
+    "title": "Limit Function f(A, c)",
+    "content": "**f(A, c) = 12A log(c) / π²:**\n\nThe conjectured (and proved) limiting density in the EST regime.\n\n```lean\nnoncomputable def f (A c : ℝ) : ℝ :=\n  12 * A * log c / π^2\n```",
+    "mathContext": "The factor 12/π² ≈ 1.216 comes from the density of coprime pairs. The log(c) factor reflects the logarithmic measure of the denominator range [N, cN].",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's totient function", "Coprime density"]
   },
   {
     "id": "ann-1001-exists",
@@ -50,7 +68,7 @@
     "range": { "startLine": 82, "endLine": 84 },
     "type": "definition",
     "title": "Limit Exists",
-    "content": "The main question: does lim S(N,A,c) exist?",
+    "content": "**limitExists(A, c):**\n\nThe central question: does lim_{N→∞} S(N, A, c) exist?\n\nThis is formalized using filter convergence:\n\n```lean\ndef limitExists (A c : ℝ) : Prop :=\n  ∃ L : ℝ, Tendsto (fun N => S N A c) atTop (nhds L)\n```",
     "significance": "critical"
   },
   {
@@ -59,35 +77,42 @@
     "range": { "startLine": 92, "endLine": 94 },
     "type": "definition",
     "title": "EST Regime",
-    "content": "The regime 0 < A < c/(1+c²) where explicit formula holds.",
-    "significance": "key"
+    "content": "**inESTRegime(A, c):**\n\nThe regime where the explicit formula holds:\n\n0 < A < c/(1 + c²)\n\nOutside this regime, the formula may differ due to boundary effects in the approximation set.",
+    "mathContext": "The condition A < c/(1+c²) ensures that approximation intervals for different rationals don't overlap too much. When A is too large, double-counting complicates the analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Overlap conditions", "Measure theory"]
   },
   {
     "id": "ann-1001-est",
     "proofId": "erdos-1001",
-    "range": { "startLine": 98, "endLine": 100 },
+    "range": { "startLine": 96, "endLine": 106 },
     "type": "axiom",
-    "title": "Erdős-Szüsz-Turán (1958)",
-    "content": "In EST regime, S(N,A,c) → f(A,c) = 12A log(c)/π².",
-    "significance": "critical"
+    "title": "Erdős-Szüsz-Turán Theorem (1958)",
+    "content": "**Axiom erdos_szusz_turan:**\n\nIn the EST regime (0 < A < c/(1+c²)):\n\nlim_{N→∞} S(N, A, c) = f(A, c) = 12A log(c) / π²\n\nThis explicit formula was the main achievement of the 1958 paper.",
+    "mathContext": "The proof uses careful counting of Farey fractions and their spacing properties. The π² appears because the density of coprime pairs (m,n) with m ≤ n is 6/π².",
+    "significance": "critical",
+    "relatedConcepts": ["Farey fractions", "Coprime counting", "Euler's product"]
   },
   {
     "id": "ann-1001-bounded",
     "proofId": "erdos-1001",
     "range": { "startLine": 114, "endLine": 116 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "EST Boundedness",
-    "content": "If min(A,c) > 10, S stays bounded away from 0 and 1.",
+    "content": "**Axiom est_boundedness:**\n\nIf min(A, c) > 10, then S(N, A, c) stays bounded away from both 0 and 1:\n\n∃ ε > 0, ∀ N ≥ 1: ε < S(N, A, c) < 1 - ε\n\nThe approximation set is neither too sparse nor too dense.",
+    "mathContext": "This uniform bound is important for applications. When parameters are large enough, the measure stabilizes within a proper subinterval of [0, 1].",
     "significance": "key"
   },
   {
     "id": "ann-1001-kesten",
     "proofId": "erdos-1001",
-    "range": { "startLine": 125, "endLine": 127 },
-    "type": "theorem",
-    "title": "Kesten-Sós (1966)",
-    "content": "The limit exists for all valid A, c.",
-    "significance": "critical"
+    "range": { "startLine": 125, "endLine": 139 },
+    "type": "axiom",
+    "title": "Kesten-Sós Theorem (1966)",
+    "content": "**Axiom kesten_sos:**\n\nFor all valid parameters A > 0, c > 1, the limit exists:\n\n∃ L : ℝ, lim_{N→∞} S(N, A, c) = L\n\nThis was a major generalization: the limit exists even outside the EST regime where no explicit formula is known.",
+    "mathContext": "Kesten and Sós used ergodic theory and equidistribution results. Their method doesn't compute the limit explicitly but proves its existence via compactness arguments.",
+    "significance": "critical",
+    "relatedConcepts": ["Ergodic theory", "Equidistribution"]
   },
   {
     "id": "ann-1001-value",
@@ -95,16 +120,16 @@
     "range": { "startLine": 129, "endLine": 133 },
     "type": "definition",
     "title": "Limit Value",
-    "content": "The limiting value (exists by Kesten-Sós).",
+    "content": "**limitValue(A, c):**\n\nThe limiting value of S(N, A, c) as N → ∞, which exists by the Kesten-Sós theorem.\n\nDefined using Classical.choose to extract the witness from the existence proof.",
     "significance": "key"
   },
   {
     "id": "ann-1001-boca",
     "proofId": "erdos-1001",
-    "range": { "startLine": 148, "endLine": 150 },
+    "range": { "startLine": 148, "endLine": 157 },
     "type": "definition",
-    "title": "Boca Method",
-    "content": "Alternative proof using Farey fractions (2008).",
+    "title": "Alternative Proofs",
+    "content": "**Alternative Approaches:**\n\n1. **Boca (2008):** Uses Farey fractions and geometry of numbers\n2. **Xiong-Zaharescu (2006):** Uses continued fraction theory\n\nBoth provide independent proofs of limit existence with more explicit methods.",
     "significance": "supporting"
   },
   {
@@ -113,16 +138,19 @@
     "range": { "startLine": 165, "endLine": 167 },
     "type": "definition",
     "title": "Farey Fractions",
-    "content": "Rationals p/q with 0 ≤ p ≤ q ≤ n and gcd(p,q) = 1.",
-    "significance": "key"
+    "content": "**FareyFraction(n):**\n\nFarey fractions of order n are rationals p/q with:\n- 0 ≤ p ≤ q ≤ n\n- gcd(p, q) = 1\n\nThe key asymptotic: |F_n| ~ 3n²/π²",
+    "mathContext": "Farey fractions are fundamental in Diophantine approximation. Their count involves π² because it relates to the density of coprime pairs, which is 6/π² = 1/ζ(2).",
+    "significance": "key",
+    "relatedConcepts": ["Riemann zeta function", "Coprime pairs"]
   },
   {
     "id": "ann-1001-farey-count",
     "proofId": "erdos-1001",
     "range": { "startLine": 169, "endLine": 171 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Farey Asymptotics",
-    "content": "|F_n| ~ 3n²/π², explaining the π² in EST formula.",
+    "content": "**Axiom farey_count_asymptotic:**\n\n|F_n| / n² → 3/π² as n → ∞\n\nThis explains why π² appears in the EST formula. The constant 3/π² ≈ 0.304.",
+    "mathContext": "The count of Farey fractions is related to Euler's totient function: |F_n| = 1 + Σ_{k=1}^n φ(k). The sum Σφ(k)/k² converges to 3/π².",
     "significance": "key"
   },
   {
@@ -131,7 +159,29 @@
     "range": { "startLine": 173, "endLine": 177 },
     "type": "theorem",
     "title": "π² Explanation",
-    "content": "f(1, e) = 12/π², showing the Farey connection.",
-    "significance": "supporting"
+    "content": "**Theorem est_pi_squared_explanation:**\n\nf(1, e) = 12/π²\n\nSetting A = 1 and c = e reveals the fundamental constant 12/π² ≈ 1.216.\n\nThis comes from:\n- 3/π² (Farey fraction density)\n- Factor of 4 from symmetry and normalization",
+    "mathContext": "The appearance of π² is ubiquitous in problems involving coprime counting. It traces back to ζ(2) = π²/6, first computed by Euler in 1734.",
+    "significance": "key",
+    "relatedConcepts": ["Basel problem", "ζ(2)"]
+  },
+  {
+    "id": "ann-1001-khinchin",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 185, "endLine": 192 },
+    "type": "concept",
+    "title": "Khinchin Connection",
+    "content": "**Khinchin's Theorem:**\n\nFor decreasing ψ(q), the set of α with infinitely many |α - p/q| < ψ(q)/q has measure 0 or 1 depending on whether Σψ(q) converges or diverges.\n\nThe EST problem is a \"windowed\" version: restricting denominators to [N, cN] instead of all q.",
+    "mathContext": "Khinchin's theorem is a 0-1 law in metric Diophantine approximation. The EST problem refines this by asking about finite windows of denominators.",
+    "significance": "key",
+    "relatedConcepts": ["Khinchin's theorem", "Metric Diophantine approximation", "0-1 laws"]
+  },
+  {
+    "id": "ann-1001-summary",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 210, "endLine": 235 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Problem #1001 Summary:**\n\n1. **Question:** Does lim S(N, A, c) exist?\n2. **Answer:** YES (Kesten-Sós 1966)\n3. **Explicit Formula:** f(A, c) = 12A log(c)/π² in EST regime\n4. **Key Connection:** π² comes from Farey fraction asymptotics\n5. **Multiple Proofs:** EST (1958), Kesten-Sós (1966), Boca (2008), Xiong-Zaharescu (2006)",
+    "significance": "critical"
   }
 ]

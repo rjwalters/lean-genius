@@ -1,33 +1,136 @@
 {
   "id": "erdos-965",
-  "title": "Erdős Problem #965",
+  "title": "Erdős Problem #965: Monochromatic Sums in 2-Colorings of ℝ",
   "slug": "erdos-965",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any ...-colouring of $...A\\subseteq ...\\aleph_1...a+b...a\\neq b...a,b\\in A$ are the same colour?\n\n\n\nIn  ...",
+  "description": "Is it true that for any 2-coloring of ℝ, there exists an uncountable set A with cardinality ℵ₁ such that all pairwise sums a+b are monochromatic? Answer: NO (Erdős 1975, Komjáth 2016).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1975 claim), Komjáth (2016 unconditional proof)",
     "sourceUrl": "https://erdosproblems.com/965",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos965Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "set-theory",
+      "cardinals",
+      "colorings",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 965,
     "erdosUrl": "https://erdosproblems.com/965",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic and comparison",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "The aleph function for transfinite cardinals",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "continuum",
+        "description": "The cardinality of the continuum",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Set.Countable",
+        "description": "Countable sets predicate",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "TwoColoring: 2-coloring of real numbers",
+      "PairwiseSums: set of sums a+b for distinct a,b in A",
+      "IsMonochromatic: all elements same color",
+      "HasCardinalityAleph1: set has cardinality ℵ₁",
+      "ErdosConjecture965: the original conjecture",
+      "counterexample_exists: existence of bad coloring",
+      "erdos_965_disproved: main theorem",
+      "KSums: generalized k-sums",
+      "hindman_leader_strauss_ch: stronger result under CH",
+      "komjath_unconditional: proof without CH",
+      "countable_vs_uncountable: contrast theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #965 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any $2$-colouring of $\\mathbb{R}$, there is a set $A\\subseteq \\mathbb{R}$ of cardinality $\\aleph_1$ such that all sums $a+b$ with $a\\neq b$ and $a,b\\in A$ are the same colour?\n\n\n\nIn \\cite{Er75b} Erd\\H{o}s reports that 'using the methods of our paper with Hajnal and Rado' he could prove that this is false assuming the continuum hypothesis.\n\n\n\n\nReferences\n\n\n[Er75b] Erd\\H{o}s, Paul, Problems and results in combinatorial number theory. Journ\\'{e}es Arithm\\'{e}tiques de Bordeaux (Conf., Univ. Bordeaux, Bordeaux, 1974) (1975), 295-310.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #965: A Failed Ramsey Property**\n\nThis problem asks whether the Ramsey property for sums extends to uncountable sets. For countable infinite sets, we can always find a set with monochromatic pairwise sums. Erdős asked: does this extend to sets of cardinality ℵ₁?\n\n**Timeline:**\n- 1975: Erdős reports in [Er75b] that he proved this false assuming CH, using methods from his work with Hajnal and Rado\n- 2016: Komjáth proves the result without assuming CH\n- 2016: Soukup and Weiss independently prove the unconditional result\n- 2017: Hindman, Leader, and Strauss prove the stronger k-sum version under CH\n\nThe problem reveals a fundamental boundary in Ramsey theory at the transition from countable to uncountable.",
+    "problemStatement": "**Question:**\n\nIs it true that for any 2-coloring of $\\mathbb{R}$, there exists a set $A \\subseteq \\mathbb{R}$ with cardinality $\\aleph_1$ such that all sums $a+b$ (where $a \\neq b$ and $a,b \\in A$) are the same color?\n\n**Answer:** NO\n\n**The Counterexample:**\n\nThere exists a 2-coloring of $\\mathbb{R}$ such that for ANY uncountable set $A$, the pairwise sums are NOT monochromatic.\n\n**Key Point:** The Ramsey property holds for countable sets but fails at $\\aleph_1$.",
+    "proofStrategy": "**Formalization Approach:**\n\n1. **Basic Definitions:** Define 2-colorings, pairwise sums, and monochromaticity\n\n2. **Cardinal Arithmetic:** Use Mathlib's cardinal infrastructure for ℵ₁ and the continuum\n\n3. **The Conjecture:** State that every 2-coloring admits an uncountable monochromatic-sums set\n\n4. **Counterexample:** Axiomatize the existence of a bad coloring (Komjáth 2016)\n\n5. **Main Theorem:** Prove the conjecture false by contradiction\n\n6. **Extensions:** State stronger results (k-sums, CH independence)",
+    "keyInsights": [
+      "**Countable vs Uncountable:** Ramsey property holds for countable sets but fails at ℵ₁",
+      "**CH Independence:** Erdős originally used CH but Komjáth proved it unconditionally",
+      "**k-Sums Generalization:** Hindman-Leader-Strauss showed failure extends to all k-sums",
+      "**Partition Calculus:** Uses techniques from Erdős-Hajnal-Rado infinite combinatorics",
+      "**Sharp Boundary:** This identifies exactly where the Ramsey property breaks down"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "2-colorings, pairwise sums, monochromaticity, cardinality ℵ₁",
+      "startLine": 38,
+      "endLine": 74
+    },
+    {
+      "id": "original-conjecture",
+      "title": "The Original Conjecture",
+      "summary": "Statement of Erdős Conjecture #965",
+      "startLine": 76,
+      "endLine": 87
+    },
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "summary": "Existence of bad coloring, main disproof theorem",
+      "startLine": 89,
+      "endLine": 113
+    },
+    {
+      "id": "stronger-results",
+      "title": "Stronger Results",
+      "summary": "k-sums, Hindman-Leader-Strauss, Komjáth unconditional",
+      "startLine": 115,
+      "endLine": 153
+    },
+    {
+      "id": "ramsey-properties",
+      "title": "Related Ramsey Properties",
+      "summary": "Countable sets succeed, contrast theorem",
+      "startLine": 155,
+      "endLine": 180
+    },
+    {
+      "id": "partition-calculus",
+      "title": "Partition Calculus",
+      "summary": "Connection to Erdős-Hajnal-Rado methods",
+      "startLine": 182,
+      "endLine": 200
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main results combined, final answer NO",
+      "startLine": 202,
+      "endLine": 242
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #965 asked whether any 2-coloring of ℝ admits an uncountable set with monochromatic pairwise sums. The answer is NO: there exist 2-colorings where no uncountable set has this property. Erdős proved this under CH in 1975; Komjáth (2016) and Soukup-Weiss proved it unconditionally.",
+    "implications": "**Significance:**\n\n1. **Ramsey Boundary:** Identifies the exact cardinality where the sum-Ramsey property fails\n\n2. **Set-Theoretic Independence:** Shows initial CH dependence but ultimate unconditional result\n\n3. **Partition Calculus:** Demonstrates power of Erdős-Hajnal-Rado techniques\n\n4. **Infinite Combinatorics:** Contributes to understanding of uncountable Ramsey theory",
+    "openQuestions": [
+      "What is the exact structure of counterexample colorings?",
+      "Can we characterize all colorings that avoid uncountable monochromatic-sum sets?",
+      "How do these results extend to other number systems (ℂ, p-adics)?",
+      "What happens for cardinals larger than ℵ₁?"
+    ]
   }
 }
