@@ -10626,17 +10626,24 @@
   },
   {
     "id": "erdos-683",
-    "title": "Erdős Problem #683",
+    "title": "Erdős Problem #683: Largest Prime Divisor of Binomial Coefficients",
     "slug": "erdos-683",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... the largest prime divisor of ..., say ..., satisfies\\[P\\left({k}\\right)\\geq \\min(n-k+1, k^{1+c}...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For 1 ≤ k ≤ n, is P(C(n,k)) ≥ min(n-k+1, k^{1+c}) for some c > 0? Sylvester-Schur (1892/1929) proved P(C(n,k)) > k. Erdős (1955) improved this to P(C(n,k)) ≫ k log k. The full conjecture remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "binomial-coefficients",
+      "prime-divisors",
+      "open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 683,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 3,
+    "annotationCount": 10
   },
   {
     "id": "erdos-69",
