@@ -1,33 +1,146 @@
 {
   "id": "erdos-531",
-  "title": "Erdős Problem #531",
+  "title": "Erdős Problem #531: Folkman's Theorem - Monochromatic Subset Sums",
   "slug": "erdos-531",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that if we two-colour ... there is a set ... of size ... such that all subset sums ... (for ....",
+  "description": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) ≥ 2^{2^{k-1}/k}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Balogh-Eberhard-Narayanan-Treglown-Wagner (2017 lower bound), Folkman (existence)",
     "sourceUrl": "https://erdosproblems.com/531",
-    "date": "",
-    "status": "pending",
+    "date": "2017",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos531Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "colorings",
+      "subset-sums",
+      "folkman-theorem",
+      "combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 531,
     "erdosUrl": "https://erdosproblems.com/531",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset of a finite set",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Infimum of a set",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Coloring definition: two-coloring of naturals",
+      "SubsetSums definition: all non-empty subset sums",
+      "MonochromaticSubsetSums definition: all sums same color",
+      "ExistsMonochromaticSet definition: N guarantees k-set with monochromatic sums",
+      "F function: minimum N for given k",
+      "folkman_theorem axiom: existence of F(k)",
+      "erdos_spencer_1989 axiom: F(k) ≥ 2^{ck²/log k}",
+      "balogh_2017 axiom: F(k) ≥ 2^{2^{k-1}/k}",
+      "Small cases F(1), F(2), F(3)",
+      "folkman_from_rado axiom: connection to Rado's theorem",
+      "erdos_531 theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #531 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(k)$ be the minimal $N$ such that if we two-colour $\\{1,\\ldots,N\\}$ there is a set $A$ of size $k$ such that all subset sums $\\sum_{a\\in S}a$ (for $\\emptyset\\neq S\\subseteq A$) are monochromatic. Estimate $F(k)$.\n\n\n\nThe existence of $F(k)$ was established by Sanders and Folkman, and it also follows from Rado's theorem. It is commonly known as Folkman's theorem.\n\nErd\\H{o}s and Spencer \\cite{ErSp89} proved that\\[F(k) \\geq 2^{ck^2/\\log k}\\]for some constant $c>0$. Balogh, Eberhrad, Narayanan, Treglown, and Wagner \\cite{BENTW17} have improved this to\\[F(k) \\geq 2^{2^{k-1}/k}.\\]\n\n\n\n\nReferences\n\n\n[BENTW17] Balogh, J\\'{o}zsef and Eberhard, Sean and Narayanan, Bhargav and Treglown, Andrew and Wagner, Adam Zsolt, An improved lower bound for Folkman's theorem. Bull. Lond. Math. Soc. (2017), 745-747.\n\n[ErSp89] Erd\\H{o}s, Paul and Spencer, Joel, Monochromatic sumsets. J. Combin. Theory Ser. A (1989), 162-163.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #531: Folkman's Theorem**\n\nThis problem asks about the quantitative aspects of Folkman's theorem, a fundamental result in Ramsey theory.\n\n**Key History:**\n- Sanders and Folkman (1960s): Proved the existence of F(k)\n- Rado's theorem (1933): Provides an alternative proof via partition regularity\n- Erdős-Spencer (1989): First non-trivial lower bound F(k) ≥ 2^{ck²/log k}\n- Balogh et al. (2017): Improved to F(k) ≥ 2^{2^{k-1}/k}\n\n**Mathematical Setting:**\nThe function F(k) is the Folkman number: the minimum N such that any 2-coloring of {1,...,N} contains a k-element subset where all 2^k - 1 non-empty subset sums are monochromatic.",
+    "problemStatement": "**Problem Statement (Bounds Established, Exact Growth Open)**\n\nLet F(k) be the minimal N such that if we two-colour {1,...,N}, there is a set A of size k such that all subset sums (for non-empty subsets) are monochromatic. Estimate F(k).\n\n**Known Results:**\n$$F(k) \\geq 2^{2^{k-1}/k}$$\n\nBalogh-Eberhard-Narayanan-Treglown-Wagner (2017) proved this doubly-exponential lower bound, improving on Erdős-Spencer (1989).\n\nThe upper bound (from Folkman's existence proof) is much larger, leaving a huge gap.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: ℕ → Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k ≥ 1)\n   - erdos_spencer_1989: F(k) ≥ 2^{ck²/log k}\n   - balogh_2017: F(k) ≥ 2^{2^{k-1}/k}\n\n3. **Small Cases:** F(1) = 1, F(2) = 3, F(3) ≥ 11\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
+    "keyInsights": [
+      "**Folkman's Theorem:** Any 2-coloring of sufficiently large {1,...,N} contains a k-set with monochromatic subset sums",
+      "**Doubly Exponential:** F(k) ≥ 2^{2^{k-1}/k} shows very fast growth",
+      "**Ramsey Connection:** Related to Schur numbers (x+y=z) and Rado's theorem",
+      "**Subset Sum Structure:** 2^k - 1 non-empty subsets create complex coloring constraints",
+      "**Gap Problem:** Huge gap between known lower and upper bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Problem Overview",
+      "summary": "Header documentation with problem statement and status",
+      "startLine": 1,
+      "endLine": 12
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Setup",
+      "summary": "Mathlib imports for finsets, powersets, and combinatorics",
+      "startLine": 14,
+      "endLine": 21
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "Coloring, SubsetSums, MonochromaticSubsetSums, F(k)",
+      "startLine": 23,
+      "endLine": 62
+    },
+    {
+      "id": "folkman-theorem",
+      "title": "Folkman's Theorem",
+      "summary": "Existence axiom and well-definedness of F(k)",
+      "startLine": 64,
+      "endLine": 78
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Erdős-Spencer 1989 and Balogh et al. 2017 bounds",
+      "startLine": 80,
+      "endLine": 96
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "F(1), F(2), F(3) values and bounds",
+      "startLine": 98,
+      "endLine": 113
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Tower-type upper bound from Folkman's proof",
+      "startLine": 115,
+      "endLine": 125
+    },
+    {
+      "id": "rado-connection",
+      "title": "Connection to Rado's Theorem",
+      "summary": "How Folkman follows from Rado's partition regularity",
+      "startLine": 127,
+      "endLine": 146
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "Summary theorem and erdos_531 main result",
+      "startLine": 148,
+      "endLine": 187
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #531 asks to estimate F(k), the Folkman number for monochromatic subset sums. Folkman's theorem guarantees F(k) is finite for all k. The best known lower bound is F(k) ≥ 2^{2^{k-1}/k} (Balogh et al. 2017), showing doubly-exponential growth. The exact growth rate remains open.",
+    "implications": "**Connections and Applications**\n\n1. **Ramsey Theory:** Generalizes Schur numbers to subset sums\n\n2. **Rado's Theorem:** Special case of partition regularity\n\n3. **Additive Combinatorics:** Structure of sum-free sets and colorings\n\n4. **Extremal Combinatorics:** Tower-type bounds in combinatorial problems\n\n5. **Computational Complexity:** Computing F(k) for small k is very hard",
+    "openQuestions": [
+      "Determine the exact growth rate of F(k)",
+      "Close the gap between lower and upper bounds",
+      "Compute exact values F(k) for small k (k ≥ 4)",
+      "Extend to r-colorings (r > 2)",
+      "Understand the structure of extremal colorings"
+    ]
   }
 }
