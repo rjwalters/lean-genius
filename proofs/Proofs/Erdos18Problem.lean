@@ -32,7 +32,18 @@
   - OEIS A005153
 -/
 
-import Mathlib
+import Mathlib.Data.Nat.Divisors
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Sum
+import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Topology.Order.Basic
+import Mathlib.Order.Filter.Basic
+import Mathlib.Data.Rat.Basic
 
 open Set Finset Function Nat
 

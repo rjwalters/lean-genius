@@ -1,1 +1,283 @@
-[]
+[
+  {
+    "id": "ann-e271-header",
+    "proofId": "erdos-271",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #271: Stanley Sequences**\n\nFor n, define A(n) greedily avoiding 3-APs.\n\n**Questions:**\n1. Explicit formulas?\n2. Growth rates?\n\n**Status:** PARTIALLY OPEN",
+    "mathContext": "Connects to additive combinatorics and base representations.",
+    "significance": "critical",
+    "relatedConcepts": ["Arithmetic progressions", "Greedy algorithms", "Szemerédi's theorem", "Base representations"]
+  },
+  {
+    "id": "ann-e271-threeap",
+    "proofId": "erdos-271",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Three-term AP",
+    "content": "**IsThreeAP(a, b, c):**\n\na < b < c with 2b = a + c.\n\nThe middle term is the average of the outer terms.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-apfree",
+    "proofId": "erdos-271",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "definition",
+    "title": "AP-Free Set",
+    "content": "**IsAPFree(S):**\n\nNo three elements of S form a 3-term AP.\n\nStanley sequences are maximal AP-free sets built greedily.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-apfreealt",
+    "proofId": "erdos-271",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "definition",
+    "title": "AP-Free (Alternative)",
+    "content": "**IsAPFree'(S):**\n\nFor a < b < c in S: 2b ≠ a + c.\n\nMore explicit formulation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e271-nextelement",
+    "proofId": "erdos-271",
+    "range": { "startLine": 74, "endLine": 82 },
+    "type": "definition",
+    "title": "Next Stanley Element",
+    "content": "**nextStanleyElement(S, start):**\n\nFind smallest m ≥ start keeping S ∪ {m} AP-free.\n\nThe core of the greedy construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-stanley",
+    "proofId": "erdos-271",
+    "range": { "startLine": 84, "endLine": 93 },
+    "type": "definition",
+    "title": "Stanley Sequence",
+    "content": "**stanleySequence(n):**\n\na₀ = 0, a₁ = n, then greedy AP-avoidance.\n\nThe central object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-increasing",
+    "proofId": "erdos-271",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "axiom",
+    "title": "Strictly Increasing",
+    "content": "**stanley_strictly_increasing:**\n\n∀k: stanleySequence(n, k) < stanleySequence(n, k+1)\n\nStanley sequences are always strictly increasing.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-apfreeseq",
+    "proofId": "erdos-271",
+    "range": { "startLine": 102, "endLine": 107 },
+    "type": "axiom",
+    "title": "Sequence is AP-Free",
+    "content": "**stanley_ap_free:**\n\nAll initial segments of Stanley sequences are AP-free.\n\nThe defining property preserved by construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-hasdigit2",
+    "proofId": "erdos-271",
+    "range": { "startLine": 115, "endLine": 120 },
+    "type": "definition",
+    "title": "Has Digit 2 in Base 3",
+    "content": "**hasDigit2InBase3(n):**\n\n∃k: (n / 3^k) mod 3 = 2\n\nChecks if base-3 expansion contains digit 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-nodigit2",
+    "proofId": "erdos-271",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "definition",
+    "title": "No Digit 2 in Base 3",
+    "content": "**noDigit2InBase3(n):**\n\nBase-3 expansion uses only digits 0 and 1.\n\nThese are exactly the elements of A(1)!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-a1char",
+    "proofId": "erdos-271",
+    "range": { "startLine": 128, "endLine": 133 },
+    "type": "axiom",
+    "title": "A(1) Characterization",
+    "content": "**a1_characterization:**\n\nn ∈ A(1) ⟺ noDigit2InBase3(n)\n\nThe fundamental explicit formula for A(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-a1elem",
+    "proofId": "erdos-271",
+    "range": { "startLine": 135, "endLine": 146 },
+    "type": "theorem",
+    "title": "A(1) Elements",
+    "content": "**a1_elements:**\n\nFirst elements: 0, 1, 3, 4, 9, 10, 12, 13, 27, ...\n\nThese are sums of distinct powers of 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-a1growth",
+    "proofId": "erdos-271",
+    "range": { "startLine": 148, "endLine": 156 },
+    "type": "axiom",
+    "title": "A(1) Growth Rate",
+    "content": "**a1_growth_rate:**\n\naₖ ~ k^(log₂3) ≈ k^1.585\n\nThe 'nice' growth rate achieved by A(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-os3k",
+    "proofId": "erdos-271",
+    "range": { "startLine": 164, "endLine": 170 },
+    "type": "axiom",
+    "title": "A(3^k) Characterization",
+    "content": "**odlyzko_stanley_power_of_3:**\n\nSimilar base-3 characterization exists for A(3^k).\n\nGeneralizes the A(1) result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-os23k",
+    "proofId": "erdos-271",
+    "range": { "startLine": 172, "endLine": 178 },
+    "type": "axiom",
+    "title": "A(2·3^k) Characterization",
+    "content": "**odlyzko_stanley_twice_power_of_3:**\n\nSimilar characterization for A(2·3^k).\n\nAnother family with explicit formulas.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-log2of3",
+    "proofId": "erdos-271",
+    "range": { "startLine": 186, "endLine": 190 },
+    "type": "definition",
+    "title": "Log Base 2 of 3",
+    "content": "**log2of3:**\n\nlog₂(3) = ln(3)/ln(2) ≈ 1.585\n\nThe growth exponent for 'nice' Stanley sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-polygrowth",
+    "proofId": "erdos-271",
+    "range": { "startLine": 192, "endLine": 200 },
+    "type": "definition",
+    "title": "Polynomial Growth",
+    "content": "**hasPolynomialGrowth(n):**\n\naₖ ~ k^(log₂3) asymptotically.\n\nFirst conjectured growth type.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-quadlog",
+    "proofId": "erdos-271",
+    "range": { "startLine": 202, "endLine": 210 },
+    "type": "definition",
+    "title": "Quadratic-Log Growth",
+    "content": "**hasQuadraticLogGrowth(n):**\n\naₖ ~ k²/log k asymptotically.\n\nSecond conjectured growth type.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-dichotomy",
+    "proofId": "erdos-271",
+    "range": { "startLine": 212, "endLine": 220 },
+    "type": "axiom",
+    "title": "Dichotomy Conjecture",
+    "content": "**odlyzko_stanley_dichotomy_conjecture:**\n\nEvery A(n) has either polynomial or quadratic-log growth.\n\nThe main OPEN conjecture!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-a4",
+    "proofId": "erdos-271",
+    "range": { "startLine": 222, "endLine": 227 },
+    "type": "axiom",
+    "title": "A(4) Conjecture",
+    "content": "**lindhurst_a4_conjecture:**\n\nA(4) has quadratic-log growth (OEIS A005487).\n\nComputational evidence from Lindhurst (1990).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-moy",
+    "proofId": "erdos-271",
+    "range": { "startLine": 235, "endLine": 242 },
+    "type": "axiom",
+    "title": "Moy's Upper Bound",
+    "content": "**moy_upper_bound:**\n\n∀ε>0: aₖ ≤ (1/2 + ε)k² for large k.\n\nProven upper bound from 2011.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-vds",
+    "proofId": "erdos-271",
+    "range": { "startLine": 244, "endLine": 249 },
+    "type": "axiom",
+    "title": "Explicit Upper Bound",
+    "content": "**van_doorn_sothanaphan_explicit:**\n\naₖ ≤ (k-1)(k+2)/2 + n for all k ≥ 0.\n\nFully explicit, no 'eventually' qualifier.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-quadbound",
+    "proofId": "erdos-271",
+    "range": { "startLine": 251, "endLine": 258 },
+    "type": "theorem",
+    "title": "Quadratic Upper Bound",
+    "content": "**quadratic_upper_bound:**\n\naₖ ≤ k²/2 + k + n = O(k²).\n\nSimplified form of the explicit bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e271-a1vals",
+    "proofId": "erdos-271",
+    "range": { "startLine": 266, "endLine": 270 },
+    "type": "definition",
+    "title": "A(1) Values",
+    "content": "**a1_known:**\n\n[0, 1, 3, 4, 9, 10, 12, 13, 27, 28, 30, 31]\n\nOEIS A003278. Sums of distinct powers of 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e271-a2vals",
+    "proofId": "erdos-271",
+    "range": { "startLine": 272, "endLine": 276 },
+    "type": "definition",
+    "title": "A(2) Values",
+    "content": "**a2_known:**\n\n[0, 2, 3, 5, 6, 8, 11, 14, 17, 20]\n\nOEIS A033157.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e271-a4vals",
+    "proofId": "erdos-271",
+    "range": { "startLine": 278, "endLine": 283 },
+    "type": "definition",
+    "title": "A(4) Values",
+    "content": "**a4_known:**\n\n[0, 4, 5, 6, 8, 9, 10, 11, 13]\n\nOEIS A005487. Conjectured quadratic-log growth.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e271-sumfree",
+    "proofId": "erdos-271",
+    "range": { "startLine": 291, "endLine": 297 },
+    "type": "definition",
+    "title": "Sum-Free Sets",
+    "content": "**IsSumFree(S):**\n\nNo a + b = c with a, b, c ∈ S.\n\nRelated but different from AP-free.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e271-apneqsf",
+    "proofId": "erdos-271",
+    "range": { "startLine": 299, "endLine": 312 },
+    "type": "theorem",
+    "title": "AP-Free ≠ Sum-Free",
+    "content": "**ap_free_neq_sum_free:**\n\n{1, 2, 4} is AP-free but not sum-free.\n\nThe conditions are distinct.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e271-main",
+    "proofId": "erdos-271",
+    "range": { "startLine": 320, "endLine": 347 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_271:**\n\n1. A(1) has explicit base-3 characterization\n2. Upper bound aₖ ≤ (k-1)(k+2)/2 + n holds\n\nCombines known results.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e271-hist",
+    "proofId": "erdos-271",
+    "range": { "startLine": 349, "endLine": 356 },
+    "type": "theorem",
+    "title": "Historical Timeline",
+    "content": "**historical_timeline:**\n\n- 1978: Odlyzko-Stanley characterizations and conjecture\n- 1990: Lindhurst computational evidence\n- 2011: Moy's upper bound",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e271-open",
+    "proofId": "erdos-271",
+    "range": { "startLine": 358, "endLine": 362 },
+    "type": "theorem",
+    "title": "Open Problem",
+    "content": "**dichotomy_is_open:**\n\nThe Odlyzko-Stanley dichotomy conjecture remains OPEN.\n\nProving or disproving it is the main challenge.",
+    "significance": "critical"
+  }
+]

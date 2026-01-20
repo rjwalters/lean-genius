@@ -2952,17 +2952,23 @@
   },
   {
     "id": "erdos-136",
-    "title": "Erdős Problem #136",
+    "title": "The Erdős-Gyárfás Function f(n,4,5)",
     "slug": "erdos-136",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest number of colours required to colour the edges of ... such that every ... contains at least 5 colours...",
-    "status": "pending",
+    "description": "Minimum colors to edge-color Kₙ so every K₄ has ≥5 colors among its 6 edges. Answer: f(n) ~ (5/6)n. Erdős-Gyárfás bounds: (5/6)(n-1) < f(n) < n. Resolved by Bennett et al. (2022).",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-coloring",
+      "complete-graphs",
+      "asymptotic"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 136,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-137",
@@ -3616,8 +3622,8 @@
     "id": "erdos-18",
     "title": "Erdős Problem #18: Practical Numbers",
     "slug": "erdos-18",
-    "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m.",
-    "status": "formalized",
+    "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
@@ -3626,8 +3632,10 @@
       "divisor-sums",
       "open-problem"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 18,
-    "sorries": 1,
+    "mathlibCount": 6,
+    "sorries": 0,
     "annotationCount": 18
   },
   {
@@ -5039,17 +5047,24 @@
   },
   {
     "id": "erdos-271",
-    "title": "Erdős Problem #271",
+    "title": "Erdős Problem #271: Stanley Sequences",
     "slug": "erdos-271",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ..., let ... be the infinite sequence with ... and ..., and for ... we define ... as the least integer such that ther...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any n, define the greedy AP-free sequence A(n) starting 0, n. Can the aₖ be explicitly determined? How fast do they grow? Partial results exist but the general problem is OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "arithmetic-progressions",
+      "sequences",
+      "greedy-algorithms",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 271,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 31
   },
   {
     "id": "erdos-272",
@@ -6800,17 +6815,24 @@
   },
   {
     "id": "erdos-403",
-    "title": "Erdős Problem #403",
+    "title": "Erdős Problem #403: Powers of 2 as Sums of Distinct Factorials",
     "slug": "erdos-403",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes the equation\\[2^m=a_1!+\\cdots+a_k!\\]with ... have only finitely many solutions?\n\n\n\nAsked by Burr and Erds. Frankl and Li...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does 2^m = a₁! + a₂! + ... + aₖ! (with distinct aᵢ) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "exponential-equations",
+      "diophantine",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 403,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 33
   },
   {
     "id": "erdos-405",
@@ -7334,17 +7356,24 @@
   },
   {
     "id": "erdos-447",
-    "title": "Erdős Problem #447",
+    "title": "Erdős Problem #447: Union-Free Collections of Sets",
     "slug": "erdos-447",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large can a union-free collection $...[n]...A\\cup B=C...A,B,C\\in ...\\lvert \\rvert =o(2^n)...\\lvert \\rvert=o(2^n)...A\\subs...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How large can a union-free collection ℱ of subsets of [n] be (no A ∪ B = C with distinct A, B, C ∈ ℱ)? Kleitman (1971) proved |ℱ| < (1+o(1)) C(n, ⌊n/2⌋).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "extremal-combinatorics",
+      "sperner-theory",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 447,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 26
   },
   {
     "id": "erdos-448",
@@ -8798,17 +8827,24 @@
   },
   {
     "id": "erdos-581",
-    "title": "Erdős Problem #581",
+    "title": "Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs",
     "slug": "erdos-581",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal ... such that a triangle-free graph on ... edges must contain a bipartite graph with ... edges. Determ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(m) be the maximal k such that every triangle-free graph with m edges contains a bipartite subgraph with k edges. Alon (1996) proved f(m) = m/2 + Θ(m^{4/5}).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "bipartite-graphs",
+      "triangle-free",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 581,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 22
   },
   {
     "id": "erdos-582",
@@ -10426,17 +10462,24 @@
   },
   {
     "id": "erdos-692",
-    "title": "Erdős Problem #692",
+    "title": "Erdős Problem #692: Unimodularity of Divisor Density",
     "slug": "erdos-692",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the density of the set of integers with exactly one divisor in .... Is ... unimodular for ... (i.e. increases unti...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let δ₁(n,m) be the density of integers with exactly one divisor in (n,m). Is δ₁(n,m) unimodal for m > n+1? DISPROVED by Cambie (2025) with explicit counterexamples showing superpolynomially many local maxima.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "density",
+      "unimodality",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 692,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 23
   },
   {
     "id": "erdos-694",
@@ -11548,17 +11591,21 @@
   },
   {
     "id": "erdos-764",
-    "title": "Erdős Problem #764",
+    "title": "Erdős Problem #764: 3-Fold Convolution Linear Error",
     "slug": "erdos-764",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can there exist some constant ... such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nThe case of ... i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can ∑_{n≤N} 1_A * 1_A * 1_A(n) = cN + O(1) for some A ⊆ ℕ and c > 0? Answer: NO (Vaughan 1972).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "analytic-number-theory",
+      "convolutions"
     ],
     "erdosNumber": 764,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 5,
+    "annotationCount": 22
   },
   {
     "id": "erdos-765",
@@ -12749,17 +12796,23 @@
   },
   {
     "id": "erdos-842",
-    "title": "Erdős Problem #842",
+    "title": "3-Colorability of Triangle-Hamiltonian Graphs",
     "slug": "erdos-842",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices formed by taking ... vertex disjoint triangles and adding a Hamiltonian cycle (with all ne...",
-    "status": "pending",
+    "description": "Let G be a graph on 3n vertices formed by taking n vertex-disjoint triangles and adding a Hamiltonian cycle. Does G have chromatic number at most 3? Answer: YES (Fleischner-Stiebitz 1992).",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-coloring",
+      "chromatic-number",
+      "hamiltonian-cycle",
+      "triangle-graph"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 842,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-843",
@@ -13032,17 +13085,24 @@
   },
   {
     "id": "erdos-865",
-    "title": "Erdős Problem #865",
+    "title": "Erdős Problem #865: Pairwise Sums in Dense Sets",
     "slug": "erdos-865",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists a constant ... such that, for all large ..., if ... has size at least ... then there are distinct ... such that ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A ⊆ {1,...,N} has size ≥ (5/8)N + C, must there exist distinct a,b,c ∈ A with a+b, a+c, b+c ∈ A? The threshold 5/8 is conjectured optimal. Status: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sum-sets",
+      "density",
+      "open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 865,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 26
   },
   {
     "id": "erdos-866",
@@ -13580,17 +13640,22 @@
   },
   {
     "id": "erdos-903",
-    "title": "Erdős Problem #903",
+    "title": "Erdős Problem #903: Block Designs and the de Bruijn-Erdős Gap",
     "slug": "erdos-903",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... for some prime power ..., and let ... be a block design (so that every pair ... is contained in exactly one ...).\n\nIs...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n = p² + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t ≥ n + p. Proved by Erdős-Fowler-Sós-Wilson (1985).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "block-designs",
+      "finite-geometry",
+      "projective-planes"
     ],
     "erdosNumber": 903,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 25
   },
   {
     "id": "erdos-904",
@@ -14823,17 +14888,24 @@
   },
   {
     "id": "erdos-987",
-    "title": "Erdős Problem #987",
+    "title": "Erdős Problem #987: Exponential Sums and Sequence Discrepancy",
     "slug": "erdos-987",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence and let\\[A_k=\\limsup_{n\\to \\infty}\\left\\lvert \\sum_{j\\leq n} e(kx_j)\\right\\rvert,\\]where .......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For sequence x₁,x₂,... ∈ (0,1) and Aₖ = limsup|∑e(kxⱼ)|, is limsup Aₖ = ∞? Is Aₖ = o(k) possible? PARTIALLY OPEN: Proved Aₖ ≫ √k infinitely often; question of o(k) remains open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "exponential-sums",
+      "harmonic-analysis",
+      "discrepancy",
+      "uniform-distribution",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 987,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 23
   },
   {
     "id": "erdos-988",

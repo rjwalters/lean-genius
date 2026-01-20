@@ -1,33 +1,146 @@
 {
   "id": "erdos-581",
-  "title": "Erdős Problem #581",
+  "title": "Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs",
   "slug": "erdos-581",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal ... such that a triangle-free graph on ... edges must contain a bipartite graph with ... edges. Determ...",
+  "description": "Let f(m) be the maximal k such that every triangle-free graph with m edges contains a bipartite subgraph with k edges. Alon (1996) proved f(m) = m/2 + Θ(m^{4/5}).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Alon",
     "sourceUrl": "https://erdosproblems.com/581",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos581Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "bipartite-graphs",
+      "triangle-free",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 581,
     "erdosUrl": "https://erdosproblems.com/581",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Adj",
+        "description": "Graph adjacency relation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Finite edge set of a graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "IsTriangleFree definition: no K₃ subgraph",
+      "IsBipartite definition: vertex 2-partition",
+      "edgeCount: finite edge count",
+      "f function: guaranteed bipartite edges",
+      "half_edges_bipartite axiom: trivial m/2 bound",
+      "alon_upper_bound axiom: f(m) ≤ m/2 + c₂·m^{4/5}",
+      "alon_lower_bound axiom: f(m) ≥ m/2 + c₁·m^{4/5}",
+      "ThetaBound definition: big-Theta notation",
+      "alon_main_theorem: f(m) - m/2 = Θ(m^{4/5})",
+      "mantel_theorem axiom: ex(n, K₃) ≤ n²/4",
+      "erdos_581 theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #581 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(m)$ be the maximal $k$ such that a triangle-free graph on $m$ edges must contain a bipartite graph with $k$ edges. Determine $f(m)$.\n\n\n\nResolved by Alon \\cite{Al96}, who showed that there exist constants $c_1,c_2>0$ such that\\[\\frac{m}{2}+c_1m^{4/5}\\leq f(m)\\leq \\frac{m}{2}+c_2m^{4/5}.\\]See also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Al96] Alon, Noga, Bipartite subgraphs. Combinatorica (1996), 301-311.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #581: Bipartite Subgraphs**\n\nThis problem asks: how many edges can we guarantee in a bipartite subgraph of any triangle-free graph?\n\n**Background:**\n- Any graph with m edges has a bipartite subgraph with at least m/2 edges (trivial)\n- The question is: does triangle-freeness help?\n\n**Resolution (Alon 1996):**\nYes! Alon proved:\n  m/2 + c₁·m^{4/5} ≤ f(m) ≤ m/2 + c₂·m^{4/5}\n\nTriangle-free graphs are 'more bipartite' by Θ(m^{4/5}) edges.\n\n**Reference:**\nAlon, Noga. 'Bipartite subgraphs.' Combinatorica 16 (1996): 301-311.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $f(m)$ be the maximum $k$ such that every triangle-free graph with $m$ edges contains a bipartite subgraph with at least $k$ edges.\n\n**Question:** Determine $f(m)$.\n\n**Answer (Alon 1996):**\n$$f(m) = \\frac{m}{2} + \\Theta(m^{4/5})$$\n\nMore precisely, there exist constants $c_1, c_2 > 0$ such that:\n$$\\frac{m}{2} + c_1 m^{4/5} \\leq f(m) \\leq \\frac{m}{2} + c_2 m^{4/5}$$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** IsTriangleFree, IsBipartite predicates\n\n2. **Function f:** Define as the infimum over triangle-free graphs\n\n3. **Trivial Bound:** State that any graph has m/2 bipartite edges\n\n4. **Alon's Bounds:** Axiomatize both upper and lower bounds\n\n5. **Theta Notation:** Define ThetaBound for precise asymptotic statement\n\n6. **Related Results:** Include Mantel's theorem and KST bound",
+    "keyInsights": [
+      "**Trivial Bound:** Any graph has a bipartite subgraph with ≥ m/2 edges",
+      "**Triangle-Free Bonus:** These graphs give Θ(m^{4/5}) extra edges",
+      "**The Exponent 4/5:** Arises from extremal graph theory structure",
+      "**Matching Bounds:** Both upper and lower bounds have the same exponent",
+      "**Connection to Mantel:** Triangle-free graphs have ≤ n²/4 edges",
+      "**Probabilistic Methods:** Alon used probabilistic and algebraic techniques"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsTriangleFree, IsBipartite, edgeCount, IsSubgraph",
+      "startLine": 33,
+      "endLine": 69
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(m)",
+      "summary": "maxBipartiteEdges, f definition",
+      "startLine": 71,
+      "endLine": 94
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "half_edges_bipartite: any graph has m/2 bipartite edges",
+      "startLine": 96,
+      "endLine": 119
+    },
+    {
+      "id": "alon-upper",
+      "title": "Alon's Upper Bound",
+      "summary": "f(m) ≤ m/2 + c₂·m^{4/5}",
+      "startLine": 121,
+      "endLine": 148
+    },
+    {
+      "id": "alon-lower",
+      "title": "Alon's Lower Bound",
+      "summary": "f(m) ≥ m/2 + c₁·m^{4/5}",
+      "startLine": 150,
+      "endLine": 177
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Characterization",
+      "summary": "ThetaBound definition, main theorem",
+      "startLine": 179,
+      "endLine": 203
+    },
+    {
+      "id": "exponent",
+      "title": "Understanding the Exponent",
+      "summary": "Why 4/5? Connection to graph structure",
+      "startLine": 205,
+      "endLine": 234
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Mantel's theorem, Kővári-Sós-Turán",
+      "startLine": 236,
+      "endLine": 260
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_581 theorem combining bounds",
+      "startLine": 262,
+      "endLine": 307
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #581 is SOLVED. Alon (1996) determined f(m) = m/2 + Θ(m^{4/5}), where f(m) is the guaranteed bipartite subgraph size in any triangle-free graph with m edges. This shows triangle-free graphs are 'more bipartite' than general graphs by a factor of m^{4/5}.",
+    "implications": "**Graph-Theoretic Significance**\n\n1. **Structural Property:** Triangle-free graphs have inherent bipartite-like structure\n\n2. **Extremal Graph Theory:** Connects to Turán-type problems\n\n3. **Probabilistic Methods:** Alon's proof showcases powerful probabilistic techniques\n\n4. **Tight Bounds:** Both upper and lower bounds match, giving precise asymptotics",
+    "openQuestions": [
+      "What are explicit values for c₁ and c₂?",
+      "Does a similar result hold for K₄-free graphs?",
+      "What is f(m) for graphs with other forbidden subgraphs?",
+      "Can the constants be computed algorithmically?"
+    ]
   }
 }

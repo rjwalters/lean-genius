@@ -1,33 +1,137 @@
 {
   "id": "erdos-764",
-  "title": "Erdős Problem #764",
+  "title": "Erdős Problem #764: 3-Fold Convolution Linear Error",
   "slug": "erdos-764",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can there exist some constant ... such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nThe case of ... i...",
+  "description": "Can ∑_{n≤N} 1_A * 1_A * 1_A(n) = cN + O(1) for some A ⊆ ℕ and c > 0? Answer: NO (Vaughan 1972).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Vaughan (1972)",
     "sourceUrl": "https://erdosproblems.com/764",
-    "date": "",
-    "status": "pending",
+    "date": "1972",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos764Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "analytic-number-theory",
+      "convolutions"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 764,
     "erdosUrl": "https://erdosproblems.com/764",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formalized conv2 and conv3 (2-fold and 3-fold convolutions)",
+      "Defined IsLinearBounded: f(N) = cN + O(1)",
+      "Defined IsLinearVaughan: f(N) = cN + o(N^{1/4}/(log N)^{1/2})",
+      "Stated Erdős-Fuchs theorem (1956) for 2-fold convolutions",
+      "Stated Vaughan's theorem (1972) for 3-fold convolutions",
+      "Stated h-fold generalization",
+      "Connected to Problem #763 (2-fold case)",
+      "Stated Montgomery-Vaughan refinement (1990)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #764 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$. Can there exist some constant $c>0$ such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nThe case of $1_A\\ast 1_A(n)$ is the subject of [763].\n\nThe answer is no, proved in a strong form by Vaughan \\cite{Va72}, who showed that in fact\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+o\\left(\\frac{N^{1/4}}{(\\log N)^{1/2}}\\right)\\]is impossible. Vaughan proves a more general result that applies to any $h$-fold convolution, with different main terms permitted.\n\n\n\n\nReferences\n\n\n[Va72] Vaughan, R. C., On the addition of sequences of integers. J. Number Theory (1972), 1--16.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem is a natural generalization of the Erdős-Fuchs theorem (1956, Problem #763). While Erdős-Fuchs showed that the 2-fold convolution sum ∑ 1_A * 1_A cannot be cN + O(1), Erdős asked whether the same holds for 3-fold convolutions.\n\nVaughan (1972) proved that the answer is NO in a strong form: even the weaker bound cN + o(N^{1/4}/(log N)^{1/2}) is impossible. His proof technique applies to any h-fold convolution, not just h = 3.\n\nMontgomery and Vaughan (1990) later refined the Erdős-Fuchs result to show that o(N^{1/4}) is impossible, and the 1/4 exponent is essentially best possible.",
+    "problemStatement": "**Problem**: Let $A \\subseteq \\mathbb{N}$. Can there exist some constant $c > 0$ such that\n$$\\sum_{n \\leq N} 1_A * 1_A * 1_A(n) = cN + O(1)?$$\n\n**Answer**: NO\n\n**Vaughan's Theorem** (1972): Even the weaker bound\n$$\\sum_{n \\leq N} 1_A * 1_A * 1_A(n) = cN + o\\left(\\frac{N^{1/4}}{(\\log N)^{1/2}}\\right)$$\nis impossible. This generalizes to any h-fold convolution with h ≥ 2.",
+    "proofStrategy": "The formalization defines h-fold convolutions as counting functions for representations of integers as sums of h elements from A. The key properties are IsLinearBounded (bounded error) and IsLinearVaughan (the precise error bound). Vaughan's theorem is axiomatized, along with the earlier Erdős-Fuchs result for context.",
+    "keyInsights": [
+      "**Convolution counts representations**: (1_A * 1_A * 1_A)(n) counts ways to write n = a + b + c with a, b, c ∈ A.",
+      "**Error cannot be bounded**: No matter what set A you choose, the cumulative sum cannot grow like cN + O(1).",
+      "**The 1/4 exponent**: The error must exceed N^{1/4}/(log N)^{1/2} infinitely often. This is nearly tight.",
+      "**Generalizes to h-fold**: Vaughan's argument works for any h ≥ 2, not just h = 2 or h = 3.",
+      "**Error oscillates**: The error term must be both large positive and large negative infinitely often."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "charFun, conv2, conv3, convH, sumConv2, sumConv3",
+      "startLine": 29,
+      "endLine": 59
+    },
+    {
+      "id": "linear-growth",
+      "title": "Linear Growth Properties",
+      "summary": "IsLinearBounded, IsLinearLittleO, IsLinearVaughan",
+      "startLine": 60,
+      "endLine": 78
+    },
+    {
+      "id": "erdos-fuchs",
+      "title": "Erdős-Fuchs Theorem",
+      "summary": "erdos_fuchs_theorem, erdos_fuchs_corollary (2-fold case)",
+      "startLine": 79,
+      "endLine": 101
+    },
+    {
+      "id": "vaughan-theorem",
+      "title": "Vaughan's Theorem",
+      "summary": "vaughan_3fold_theorem, vaughan_corollary, vaughan_hfold_theorem",
+      "startLine": 102,
+      "endLine": 125
+    },
+    {
+      "id": "error-bounds",
+      "title": "Error Lower Bounds",
+      "summary": "ErrorOscillates, error_oscillation",
+      "startLine": 126,
+      "endLine": 141
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Special Cases",
+      "summary": "conv3_zero_singleton, conv3_naturals, Squares",
+      "startLine": 142,
+      "endLine": 163
+    },
+    {
+      "id": "refinements",
+      "title": "Connection to #763 and Refinements",
+      "summary": "montgomery_vaughan_refinement, quarter_exponent_tight",
+      "startLine": 164,
+      "endLine": 179
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_764_statement, erdos_764_answer, erdos_764_summary",
+      "startLine": 180,
+      "endLine": 215
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #764 asks whether the 3-fold convolution sum can have bounded error: ∑ 1_A * 1_A * 1_A = cN + O(1). Vaughan (1972) proved the answer is NO, and even the weaker bound o(N^{1/4}/(log N)^{1/2}) is impossible. This generalizes the Erdős-Fuchs theorem (1956) for 2-fold convolutions.",
+    "implications": "This result shows fundamental limits on how 'regular' the representation function for sums can be. Even for carefully chosen sets A, the number of ways to represent n as a + b + c fluctuates significantly. The 1/4 exponent is essentially best possible, connecting to deep results in analytic number theory.",
+    "openQuestions": [
+      "Is the 1/4 exponent exactly tight for 3-fold convolutions?",
+      "What is the optimal constant in front of N^{1/4}?",
+      "Can the error distribution be characterized more precisely?",
+      "What happens for convolutions with different weights?"
+    ]
   }
 }
