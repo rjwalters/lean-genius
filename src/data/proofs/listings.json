@@ -4991,17 +4991,24 @@
   },
   {
     "id": "erdos-271",
-    "title": "Erdős Problem #271",
+    "title": "Erdős Problem #271: Stanley Sequences",
     "slug": "erdos-271",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ..., let ... be the infinite sequence with ... and ..., and for ... we define ... as the least integer such that ther...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any n, define the greedy AP-free sequence A(n) starting 0, n. Can the aₖ be explicitly determined? How fast do they grow? Partial results exist but the general problem is OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "arithmetic-progressions",
+      "sequences",
+      "greedy-algorithms",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 271,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 31
   },
   {
     "id": "erdos-272",
