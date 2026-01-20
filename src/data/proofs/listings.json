@@ -11646,17 +11646,23 @@
   },
   {
     "id": "erdos-765",
-    "title": "Erdős Problem #765",
+    "title": "Erdős Problem #765: Asymptotic Formula for ex(n; C₄)",
     "slug": "erdos-765",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for ....\n\n\n\nErds and Klein  proved .... Reiman  proved\\[{2}\\leq \\lim (n;C_4)}{n^{3/2}}\\leq {2}.\\]E...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine an asymptotic formula for ex(n; C₄), the maximum number of edges in an n-vertex graph with no 4-cycle. Answer: ex(n; C₄) ~ (1/2)n^{3/2}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "projective-planes",
+      "solved"
     ],
     "erdosNumber": 765,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 19
   },
   {
     "id": "erdos-766",
