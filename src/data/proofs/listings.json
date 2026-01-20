@@ -5847,17 +5847,21 @@
   },
   {
     "id": "erdos-336",
-    "title": "Erdős Problem #336",
+    "title": "Erdős Problem #336: Additive Bases and Exact Order",
     "slug": "erdos-336",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let ... be the maximal finite ... such that there exists a basis ... of order ... (so every large integer is the sum ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Find lim h(r)/r² where h(r) is the maximal exact order of a basis of order r. Known: 1/3 ≤ lim ≤ 1/2. Status: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "bases"
     ],
     "erdosNumber": 336,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 28
   },
   {
     "id": "erdos-337",
