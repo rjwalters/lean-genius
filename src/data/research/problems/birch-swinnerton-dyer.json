@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 2,
-    "focus": "Added concrete curve examples and computations",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,23 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added concrete elliptic curve examples with verified discriminant and j-invariant computations. Proved BSD_Weak for specific curves using rank 0 theorem. Added classical congruent number cases.",
-    "builtItems": [
-      "proofs/Proofs/BirchSwinnertonDyer.lean: curveMinusX definition and properties (lines 671-698)",
-      "proofs/Proofs/BirchSwinnertonDyer.lean: curveJZero definition and properties (lines 700-720)",
-      "proofs/Proofs/BirchSwinnertonDyer.lean: cremona11a1 definition (lines 721-740)",
-      "proofs/Proofs/BirchSwinnertonDyer.lean: BSD_curveMinusX, BSD_curveJZero, BSD_cremona11a1 theorems (lines 747-763)",
-      "proofs/Proofs/BirchSwinnertonDyer.lean: Congruent number curve discriminant/j-invariant proofs (lines 632-660)",
-      "proofs/Proofs/BirchSwinnertonDyer.lean: Classical congruent number axioms (lines 765-800)"
-    ],
-    "insights": [
-      "Added concrete elliptic curve examples: curveMinusX (y² = x³ - x), curveJZero (y² = x³ - 432), cremona11a1",
-      "Proved discriminant and j-invariant theorems for specific curves with norm_num",
-      "Added congruent number curve discriminant and j-invariant proofs",
-      "Documented classical congruent number cases (1,2,3 not congruent; 5,6,7 congruent)",
-      "BSD holds for specific curves as consequence of rank 0 theorem",
-      "j-invariant 108 (not 1728) for curves with CM by ℤ[i]"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [
       "Torsion subgroup",
       "Mordell-Weil",
@@ -75,7 +61,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-01-19T22:50:00Z",
+  "lastUpdate": "2026-01-01T21:55:27.886Z",
   "significance": 10,
   "tractability": 1
 }
