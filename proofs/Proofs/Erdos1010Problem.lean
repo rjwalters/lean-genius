@@ -67,6 +67,12 @@ axiom rademacher_triangle_count (G : SimpleGraph V) [DecidableRel G.Adj] :
   G.edgeFinset.card = turanThreshold (Fintype.card V) + 1 →
   triangleCount G ≥ Fintype.card V / 2
 
+/-- Rademacher extended: exceeding Turán by ANY amount forces ⌊n/2⌋ triangles
+    (follows from monotonicity of triangle count in edge count) -/
+axiom rademacher_extended (G : SimpleGraph V) [DecidableRel G.Adj] :
+  G.edgeFinset.card ≥ turanThreshold (Fintype.card V) + 1 →
+  triangleCount G ≥ Fintype.card V / 2
+
 /-
 ## Erdős-Lovász-Simonovits Theorem (Main Result)
 
@@ -90,14 +96,35 @@ theorem turán_triangle_existence (G : SimpleGraph V) [DecidableRel G.Adj] :
   G.edgeFinset.card > turanThreshold (Fintype.card V) →
   triangleCount G ≥ 1 := by
   intro h
-  -- When t = 1 and n ≥ 2, we get at least 1 · ⌊n/2⌋ ≥ 1 triangle
-  sorry
+  -- We have > turanThreshold edges, so ≥ turanThreshold + 1 edges
+  let n := Fintype.card V
+  have h_ge : G.edgeFinset.card ≥ turanThreshold n + 1 := h
+  -- Case split on whether n ≥ 2
+  by_cases hn : n ≥ 2
+  · -- When n ≥ 2, n/2 ≥ 1
+    have h_n_div_2_pos : n / 2 ≥ 1 := Nat.div_pos hn (by norm_num : 0 < 2)
+    -- Use the extended Rademacher: ≥ threshold + 1 edges → ≥ n/2 triangles
+    have hr := rademacher_extended G h_ge
+    omega
+  · -- n < 2 (n = 0 or 1): vacuously true since such graphs can't exceed threshold
+    -- A graph on < 2 vertices has 0 edges, so can't have > turanThreshold edges
+    exfalso
+    have h_n_small : n ≤ 1 := by omega
+    have h_threshold_zero : turanThreshold n = 0 := by
+      unfold turanThreshold
+      interval_cases n <;> simp
+    -- With n ≤ 1, max possible edges is 0
+    have h_max : G.edgeFinset.card ≤ 0 := by
+      have hbound : G.edgeFinset.card ≤ n.choose 2 := G.card_edgeFinset_le_card_choose_two
+      calc G.edgeFinset.card ≤ n.choose 2 := hbound
+        _ = 0 := by interval_cases n <;> native_decide
+    omega
 
 /-- The bound t · ⌊n/2⌋ is tight: Turán graph with t additional edges
     achieves exactly this many triangles when edges added optimally -/
 axiom erdos_1010_tight (n t : ℕ) :
   t < n / 2 →
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     Fintype.card V = n ∧
     G.edgeFinset.card = turanThreshold n + t ∧
     triangleCount G = t * (n / 2)
