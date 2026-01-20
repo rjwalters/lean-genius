@@ -173,7 +173,14 @@ theorem carmichael_not_prime_power (n : ℕ) (h : IsCarmichael n) :
     ¬∃ p k : ℕ, p.Prime ∧ k ≥ 1 ∧ n = p^k := by
   intro ⟨p, k, hp, hk, hn⟩
   have h3 := carmichael_at_least_3_primes n h
-  sorry -- n = p^k has only 1 prime factor
+  -- n = p^k has exactly 1 prime factor, but Carmichael numbers need ≥ 3
+  have hk_pos : k ≠ 0 := Nat.one_le_iff_ne_zero.mp hk
+  have hfactors : n.primeFactors.card = 1 := by
+    rw [hn]
+    -- primeFactors of p^k is {p} when p is prime and k ≥ 0
+    rw [Nat.primeFactors_prime_pow hk_pos hp]
+    simp
+  omega
 
 /-- Carmichael numbers are odd (except there are no even ones > 2) -/
 axiom carmichael_odd :
