@@ -2125,17 +2125,22 @@
   },
   {
     "id": "erdos-1091",
-    "title": "Erdős Problem #1091",
+    "title": "Erdős Problem #1091: Odd Cycles with Diagonals in K₄-Free Graphs",
     "slug": "erdos-1091",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a ...-free graph with chromatic number .... Must ... contain an odd cycle with at least two diagonals?\n\nMore gener...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must a K₄-free graph with χ(G) = 4 contain an odd cycle with at least two diagonals? Answer: YES (Voss 1982). General f(r) question: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "odd-cycles",
+      "K4-free"
     ],
     "erdosNumber": 1091,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 25
   },
   {
     "id": "erdos-1095",
@@ -3637,17 +3642,24 @@
   },
   {
     "id": "erdos-185",
-    "title": "Erdős Problem #185",
+    "title": "Erdős Problem #185: Cap Sets in {0,1,2}^n",
     "slug": "erdos-185",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of a subset of ... which contains no three points on a line. Is it true that ...?\n\n\n\nOriginally c...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is f₃(n) = o(3^n) where f₃(n) is the max cap set in {0,1,2}^n? YES - Proved via density Hales-Jewett (Furstenberg-Katznelson 1991).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "cap-sets",
+      "hales-jewett",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 185,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 21
   },
   {
     "id": "erdos-186",
@@ -5847,17 +5859,21 @@
   },
   {
     "id": "erdos-336",
-    "title": "Erdős Problem #336",
+    "title": "Erdős Problem #336: Additive Bases and Exact Order",
     "slug": "erdos-336",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let ... be the maximal finite ... such that there exists a basis ... of order ... (so every large integer is the sum ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Find lim h(r)/r² where h(r) is the maximal exact order of a basis of order r. Known: 1/3 ≤ lim ≤ 1/2. Status: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "bases"
     ],
     "erdosNumber": 336,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 28
   },
   {
     "id": "erdos-337",
@@ -6461,17 +6477,24 @@
   },
   {
     "id": "erdos-381",
-    "title": "Erdős Problem #381",
+    "title": "Erdős Problem #381: Counting Highly Composite Numbers",
     "slug": "erdos-381",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA number ... is highly composite if ... for all ..., where ... counts the number of divisors of .... Let ... count the number...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is Q(x) ≫_k (log x)^k for every k, where Q(x) counts highly composite numbers up to x? DISPROVED by Nicolas (1971) - Q(x) has polynomial growth in log x.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-functions",
+      "highly-composite",
+      "counting-functions",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 381,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 16
   },
   {
     "id": "erdos-384",
@@ -9660,8 +9683,8 @@
     "title": "Erdős #637: Distinct Degrees in Induced Subgraphs",
     "slug": "erdos-637",
     "description": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
-    "status": "formalized",
-    "badge": "wip",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -9670,7 +9693,7 @@
     ],
     "erdosNumber": 637,
     "sorries": 10,
-    "annotationCount": 14
+    "annotationCount": 15
   },
   {
     "id": "erdos-639",
@@ -10870,17 +10893,22 @@
   },
   {
     "id": "erdos-725",
-    "title": "Erdős Problem #725",
+    "title": "Erdős Problem #725: Asymptotic Counting of Latin Rectangles",
     "slug": "erdos-725",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for the number of ... Latin rectangles.\n\n\n\nErds and Kaplansky  proved the count is\\[\\sim e^{-{2}}(...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Give an asymptotic formula for the number of k×n Latin rectangles. Known: L(k,n) ~ e^{-C(k,2)}(n!)^k for k ≤ n^{1/3-o(1)}. General formula: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "latin-rectangles",
+      "asymptotic-enumeration",
+      "permanents"
     ],
     "erdosNumber": 725,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 24
   },
   {
     "id": "erdos-727",
@@ -12315,17 +12343,23 @@
   },
   {
     "id": "erdos-818",
-    "title": "Erdős Problem #818",
+    "title": "Product Set Lower Bound for Small Sumsets",
     "slug": "erdos-818",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of integers such that .... Is it true that\\[\\lvert AA\\rvert \\gg {(\\log \\lvert A\\rvert)^C}\\]for some c...",
-    "status": "pending",
+    "description": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sum-product",
+      "sumset",
+      "product-set"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 818,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-819",
@@ -12628,17 +12662,23 @@
   },
   {
     "id": "erdos-842",
-    "title": "Erdős Problem #842",
+    "title": "3-Colorability of Triangle-Hamiltonian Graphs",
     "slug": "erdos-842",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices formed by taking ... vertex disjoint triangles and adding a Hamiltonian cycle (with all ne...",
-    "status": "pending",
+    "description": "Let G be a graph on 3n vertices formed by taking n vertex-disjoint triangles and adding a Hamiltonian cycle. Does G have chromatic number at most 3? Answer: YES (Fleischner-Stiebitz 1992).",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-coloring",
+      "chromatic-number",
+      "hamiltonian-cycle",
+      "triangle-graph"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 842,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-843",
@@ -12882,17 +12922,22 @@
   },
   {
     "id": "erdos-862",
-    "title": "Erdős Problem #862",
+    "title": "Erdős Problem #862: Maximal Sidon Subsets",
     "slug": "erdos-862",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the number of maximal Sidon subsets of .... Is it true that\\[A_1(N)  2^{N^c}\\]for some constant ...?\n\n\n\nA problem ...",
-    "status": "pending",
+    "description": "Let A₁(N) be the number of maximal Sidon subsets of {1,...,N}. Is A₁(N) < 2^{o(N^{1/2})}? Is A₁(N) > 2^{N^c} for some c > 0? SOLVED: A₁(N) ≥ 2^{(0.16+o(1))√N} by Saxton-Thomason (2015).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sidon-sets",
+      "extremal-combinatorics",
+      "container-method",
+      "solved"
     ],
     "erdosNumber": 862,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-865",
@@ -14793,17 +14838,22 @@
   },
   {
     "id": "erdos-995",
-    "title": "Erdős Problem #995",
+    "title": "Erdős Problem #995: Lacunary Sequences and Fractional Parts",
     "slug": "erdos-995",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence of integers and .... Estimate the growth of, for almost all ...,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\al...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate growth of ∑_{k≤N} f({α n_k}) for lacunary sequences. Is it o(N √(log log N))? Status: OPEN. Bounds: (log log N)^{1/2-ε} ≤ growth ≤ (log N)^{1/2+ε}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "lacunary-sequences",
+      "diophantine-approximation",
+      "probability"
     ],
     "erdosNumber": 995,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 18
   },
   {
     "id": "erdos-996",
@@ -14863,17 +14913,22 @@
   },
   {
     "id": "erdos-999",
-    "title": "Erdős Problem #999",
+    "title": "Erdős Problem #999: The Duffin-Schaeffer Conjecture",
     "slug": "erdos-999",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any function ... the property that, for almost all ...\\[\\left\\lvert \\alpha-{q}\\right\\rvert < {q}\\]has infinitely many sol...",
-    "status": "pending",
+    "description": "For any f: ℕ → ℕ, almost all α have infinitely many coprime approximations |α - p/q| < f(q)/q iff ∑ φ(q)·f(q)/q = ∞. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "diophantine-approximation",
+      "metric-number-theory",
+      "measure-theory",
+      "eulers-totient",
+      "solved"
     ],
     "erdosNumber": 999,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-szekeres",

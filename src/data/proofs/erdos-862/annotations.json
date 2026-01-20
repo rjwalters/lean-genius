@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "ann-e862-header",
+    "proofId": "erdos-862",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #862: Maximal Sidon Subsets**\n\nLet A₁(N) = number of maximal Sidon subsets of {1,...,N}.\n\nTwo questions:\n1. Is A₁(N) < 2^{o(N^{1/2})}?\n2. Is A₁(N) > 2^{N^c} for some c > 0?\n\n**Answers:**\n- Q1: NO (the lower bound refutes this)\n- Q2: YES, with A₁(N) ≥ 2^{(0.16+o(1))√N}\n\n**Status:** SOLVED (Saxton-Thomason, 2015)",
+    "mathContext": "A Sidon set is where all pairwise sums are distinct. Maximal means no element can be added while preserving this property.",
+    "significance": "critical",
+    "relatedConcepts": ["Sidon sets", "B₂ sequences", "Hypergraph containers", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e862-sidon-def",
+    "proofId": "erdos-862",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "**IsSidonSet S:** All pairwise sums are distinct.\n\na + b = c + d implies {a,b} = {c,d}\n\nAlso called B₂ sequences. Named after Simon Sidon who studied them in 1932.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-maximal",
+    "proofId": "erdos-862",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "definition",
+    "title": "Maximal Sidon Set",
+    "content": "**IsMaximalSidonSet N S:**\n\n1. S is a Sidon subset of {1,...,N}\n2. No element of {1,...,N}\\S can be added while keeping Sidon property\n\nEvery Sidon set is contained in some maximal Sidon set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-counting",
+    "proofId": "erdos-862",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "definition",
+    "title": "Counting Functions",
+    "content": "**A₁(N):** Number of maximal Sidon subsets of {1,...,N}\n\n**A(N):** Number of all Sidon subsets of {1,...,N}\n\nThe key relationship: A(N) ≤ A₁(N) · (subsets per maximal)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-f-asymptotic",
+    "proofId": "erdos-862",
+    "range": { "startLine": 87, "endLine": 99 },
+    "type": "axiom",
+    "title": "Largest Sidon Set Size",
+    "content": "**f(N):** Maximum size of Sidon subset of {1,...,N}\n\n**Classical result:** f(N) ~ √N\n\nMore precisely: (1 - ε)√N ≤ f(N) ≤ (1 + ε)√N for large N.\n\nProved using constructions from finite projective planes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e862-questions",
+    "proofId": "erdos-862",
+    "range": { "startLine": 105, "endLine": 113 },
+    "type": "definition",
+    "title": "Cameron-Erdős Questions",
+    "content": "**Question 1:** Is A₁(N) < 2^{o(N^{1/2})}?\n\n(Is the growth subexponential in √N?)\n\n**Question 2:** Is A₁(N) > 2^{N^c} for some c > 0?\n\n(Is there a polynomial lower bound in the exponent?)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-saxton-thomason",
+    "proofId": "erdos-862",
+    "range": { "startLine": 119, "endLine": 122 },
+    "type": "axiom",
+    "title": "Saxton-Thomason Lower Bound",
+    "content": "**saxton_thomason_lower_bound:**\n\nA(N) ≥ 2^{(1.16+o(1))√N}\n\nThe number of all Sidon sets is at least exponential in √N with constant 1.16.\n\nThis is the key ingredient from their 2015 paper using hypergraph containers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-subsets-bound",
+    "proofId": "erdos-862",
+    "range": { "startLine": 124, "endLine": 129 },
+    "type": "axiom",
+    "title": "Subsets per Maximal",
+    "content": "**maximal_sidon_subsets_bound:**\n\nEach maximal Sidon set M has ≤ 2^{(1+o(1))√N} Sidon subsets.\n\nSince |M| ≤ (1+o(1))√N, the number of subsets is at most 2^{|M|} ≤ 2^{(1+o(1))√N}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e862-main-result",
+    "proofId": "erdos-862",
+    "range": { "startLine": 145, "endLine": 148 },
+    "type": "axiom",
+    "title": "Main Theorem",
+    "content": "**erdos_862_main:**\n\nA₁(N) ≥ 2^{(0.16+o(1))√N}\n\n**Derivation:**\n- A(N) ≥ 2^{1.16√N} (Saxton-Thomason)\n- Each maximal has ≤ 2^{1·√N} Sidon subsets\n- A₁(N) ≥ A(N) / 2^{√N} ≥ 2^{(1.16-1)√N} = 2^{0.16√N}",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-q2-positive",
+    "proofId": "erdos-862",
+    "range": { "startLine": 150, "endLine": 157 },
+    "type": "theorem",
+    "title": "Question 2: YES",
+    "content": "**question2_positive:** CameronErdosQuestion2\n\nYES, A₁(N) > 2^{N^c} for c ≈ 0.1.\n\nSince √N > N^{0.1} for large N, the bound 2^{0.16√N} gives the answer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-q1-negative",
+    "proofId": "erdos-862",
+    "range": { "startLine": 175, "endLine": 182 },
+    "type": "theorem",
+    "title": "Question 1: NO",
+    "content": "**question1_negative:** ¬CameronErdosQuestion1\n\nNO, A₁(N) is NOT < 2^{o(√N)}.\n\nThe lower bound A₁(N) ≥ 2^{0.16√N} shows A₁(N) grows at least as fast as 2^{c√N} for c = 0.16.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e862-containers",
+    "proofId": "erdos-862",
+    "range": { "startLine": 188, "endLine": 200 },
+    "type": "axiom",
+    "title": "Hypergraph Container Method",
+    "content": "**container_method & sidon_as_independent_set:**\n\nKey technique from Saxton-Thomason (2015).\n\n**Idea:**\n1. View Sidon sets as independent sets in hypergraph H\n2. H has vertex set {1,...,N}, edges {a,b,c,d} where a+b=c+d\n3. Container lemma: all independent sets lie in few 'containers'\n4. Count containers to bound number of Sidon sets",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e862-problem-861",
+    "proofId": "erdos-862",
+    "range": { "startLine": 206, "endLine": 218 },
+    "type": "axiom",
+    "title": "Connection to Problem 861",
+    "content": "**problem_861_bounds & connection_861_862:**\n\nProblem 861 asks about A(N), all Sidon sets.\n\n**Bounds:**\n- Lower: A(N) ≥ 2^{1.16·f(N)} (Saxton-Thomason)\n- Upper: A(N) ≤ 2^{6.442·f(N)} (Kohayakawa et al.)\n\nThe problems are tightly connected via the subset relationship.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e862-bh-sets",
+    "proofId": "erdos-862",
+    "range": { "startLine": 250, "endLine": 258 },
+    "type": "definition",
+    "title": "B_h Sequences",
+    "content": "**IsBhSet h S:** Generalizes Sidon sets to h-wise sums.\n\nAll h-tuples with the same sum must be identical (as multisets).\n\nSidon sets = B₂ sets. Counting maximal B_h sets for h > 2 remains open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e862-summary",
+    "proofId": "erdos-862",
+    "range": { "startLine": 270, "endLine": 293 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_862_summary:**\n\n1. Question 2: YES, A₁(N) > 2^{N^c}\n2. Question 1: NO, A₁(N) is NOT < 2^{o(√N)}\n3. Precise bound: A₁(N) ≥ 2^{(0.16+o(1))√N}\n\n**Status:** SOLVED by Saxton-Thomason (2015)\n\nA landmark application of the hypergraph container method.",
+    "significance": "critical"
+  }
+]

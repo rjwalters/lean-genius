@@ -1,33 +1,83 @@
 {
   "id": "erdos-980",
-  "title": "Erdős Problem #980",
+  "title": "Erdős Problem #980: Sum of Least k-th Power Nonresidues",
   "slug": "erdos-980",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... denote the least ...th power nonresidue of .... Is it true that\\[\\sum_{p<x} n_k(p)\\sim c_k {\\log x}\\]for some...",
+  "description": "For k ≥ 2, let n_k(p) denote the least k-th power nonresidue modulo prime p. Is it true that Σ_{p<x} n_k(p) ~ c_k · x/log x for some constant c_k > 0? SOLVED: Yes, proved by Erdős (1961) for k=2 and Elliott (1967) for all k ≥ 2.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/980",
-    "date": "",
-    "status": "pending",
+    "date": "1961",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos980Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "power-residues",
+      "primes",
+      "asymptotic-analysis"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 5,
     "erdosNumber": 980,
     "erdosUrl": "https://erdosproblems.com/980",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #980 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $n_k(p)$ denote the least $k$th power nonresidue of $p$. Is it true that\\[\\sum_{p<x} n_k(p)\\sim c_k \\frac{x}{\\log x}\\]for some constant $c_k>0$?\n\n\n\nErd\\H{o}s \\cite{Er61e} proved this when $k=2$, with\\[c_2=\\sum_{k=1}^\\infty \\frac{p_k}{2^k}.\\]The general case was proved by Elliott \\cite{El67b}.\n\n\n\n\nReferences\n\n\n[El67b] Elliott, P. D. T. A., A problem of {E}rd\\H{o}s concerning power residue sums. Acta Arith. (1967/68), 131--149.\n\n[Er61e] Erd\\H{o}s, P\\'al, Remarks on number theory. {I}. Mat. Lapok (1961), 10--17.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the distribution of k-th power nonresidues among primes. Erdős posed the question in 1961 and proved the quadratic case (k=2) himself, establishing that the sum of least quadratic nonresidues grows like c₂ · x/log x where c₂ = Σ p_j/2^j ≈ 3.67. The general case for all k ≥ 2 was resolved by P.D.T.A. Elliott in 1967.",
+    "problemStatement": "Let k ≥ 2 and n_k(p) denote the least k-th power nonresidue of prime p. Is it true that Σ_{p<x} n_k(p) ~ c_k · x/log x for some constant c_k > 0?",
+    "proofStrategy": "The formalization defines k-th power residues and nonresidues, the least nonresidue function n_k(p), and the sum S_k(x) = Σ_{p<x} n_k(p). Erdős's 1961 result for k=2 and Elliott's 1967 generalization are stated as axioms, with the main theorem showing existence of the positive constant c_k for all k ≥ 2.",
+    "keyInsights": [
+      "The least k-th power nonresidue n_k(p) is well-defined for primes p > k",
+      "The constant c₂ = Σ_{j≥1} p_j/2^j where p_j is the j-th prime, converging to approximately 3.67",
+      "The average value of n_k(p) over primes p < x is roughly c_k · log x",
+      "Vinogradov's bound shows n(p) = O(p^{1/(4√e)+ε}) unconditionally",
+      "Under GRH, the least quadratic nonresidue satisfies n(p) = O((log p)²)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "power-residues",
+      "title": "Power Residues and Nonresidues",
+      "startLine": 42,
+      "endLine": 103,
+      "summary": "Definitions of k-th power residues and nonresidues, the least nonresidue function, and bounds"
+    },
+    {
+      "id": "sum-function",
+      "title": "The Sum Function S_k(x)",
+      "startLine": 105,
+      "endLine": 121,
+      "summary": "Definition and properties of the sum of least k-th power nonresidues over primes"
+    },
+    {
+      "id": "constants",
+      "title": "The Constants c_k",
+      "startLine": 123,
+      "endLine": 158,
+      "summary": "The positive constants c_k appearing in the asymptotic formula, with explicit c₂"
+    },
+    {
+      "id": "erdos-1961",
+      "title": "Erdős's Result (1961)",
+      "startLine": 160,
+      "endLine": 182,
+      "summary": "The quadratic case k=2 with explicit constant c₂ = Σ p_j/2^j"
+    },
+    {
+      "id": "elliott-1967",
+      "title": "Elliott's Generalization (1967)",
+      "startLine": 184,
+      "endLine": 214,
+      "summary": "Extension to all k ≥ 2, completing the solution of Problem #980"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #980 is SOLVED. The conjecture is true: for all k ≥ 2, the sum Σ_{p<x} n_k(p) ~ c_k · x/log x with c_k > 0. Erdős proved the k=2 case in 1961 with the explicit constant c₂ = Σ p_j/2^j. Elliott completed the solution in 1967 by proving the general case for all k ≥ 2.",
+    "implications": "The result shows that on average, the least k-th power nonresidue among primes p < x grows like c_k · log x. This connects to character sum estimates and the distribution of power residue symbols.",
+    "openQuestions": [
+      "What are the exact values of c_k for k > 2?",
+      "Can the error term in the asymptotic be improved?",
+      "How does the distribution of individual n_k(p) values compare to the average?"
+    ]
   }
 }
