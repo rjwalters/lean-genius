@@ -81,7 +81,35 @@ theorem one_squarefull : IsSquarefull 1 := by
 -/
 theorem prime_power_squarefull (p : ℕ) (hp : p.Prime) (k : ℕ) :
     IsSquarefull (p^k) ↔ k ≥ 2 ∨ k = 0 := by
-  sorry
+  constructor
+  · -- Forward direction: IsSquarefull (p^k) → k ≥ 2 ∨ k = 0
+    intro ⟨hpos, hdiv⟩
+    by_contra h
+    push_neg at h
+    obtain ⟨hk_lt_2, hk_ne_0⟩ := h
+    interval_cases k
+    -- k = 1: p^1 = p, and p | p but p^2 ∤ p
+    specialize hdiv p hp (dvd_refl p)
+    simp at hdiv
+    have : p^2 > p := Nat.pow_lt_pow_right hp.one_lt (by omega : 1 < 2)
+    omega
+  · -- Backward direction: k ≥ 2 ∨ k = 0 → IsSquarefull (p^k)
+    intro hk
+    constructor
+    · -- p^k > 0
+      exact Nat.pos_pow_of_pos k hp.pos
+    · -- For any prime q with q | p^k, we have q^2 | p^k
+      intro q hq hdvd
+      -- The only prime dividing p^k is p itself
+      have hq_eq_p : q = p := by
+        have : q ∣ p := (Nat.Prime.dvd_prime_iff_eq hq hp).mp (hq.dvd_of_dvd_pow hdvd)
+        exact this.antisymm (hq.dvd_of_dvd_pow hdvd |> fun h => (Nat.Prime.dvd_prime_iff_eq hq hp).mp (hq.dvd_of_dvd_pow h))
+      subst hq_eq_p
+      rcases hk with hk | hk
+      · -- k ≥ 2: p^2 | p^k
+        exact Nat.pow_dvd_pow p hk
+      · -- k = 0: p | p^0 = 1 is false, contradiction
+        simp [hk] at hdvd
 
 /--
 **Small squarefull numbers:**
@@ -231,8 +259,15 @@ meaning A(x) grows faster than expected.
 -/
 theorem alpha_less_than_half : alpha < 1/2 := by
   unfold alpha
-  -- α = 1 - 2^(-1/3) ≈ 0.206 < 0.5
-  sorry
+  -- Need to show: 1 - 2^(-1/3) < 1/2
+  -- Equivalently: 1/2 < 2^(-1/3)
+  -- Equivalently: 2^(-1) < 2^(-1/3)
+  -- Which holds since -1 < -1/3 and 2 > 1
+  have h1 : (2 : ℝ)^(-(1/3 : ℝ)) > 1/2 := by
+    rw [show (1 : ℝ)/2 = 2^(-(1 : ℝ)) by norm_num]
+    apply Real.rpow_lt_rpow_left_of_exponent (by norm_num : (1 : ℝ) < 2)
+    norm_num
+  linarith
 
 /-
 ## Part VII: Why the Conjecture Failed
