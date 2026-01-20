@@ -1,33 +1,117 @@
 {
   "id": "erdos-291",
-  "title": "Erdős Problem #291",
+  "title": "Erdős Problem #291: Harmonic Number Divisibility",
   "slug": "erdos-291",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be the least common multiple of ... and ... by\\[\\sum_{1\\leq k\\leq n}{k}={L_n}.\\]Is it true that ......",
+  "description": "Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur infinitely often, where H_n = a_n/L_n? Part 2 trivially YES; Part 1 OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Steinerberger, Shiu (2016), Wu-Yan (2022)",
     "sourceUrl": "https://erdosproblems.com/291",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos291Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "number-theory", "harmonic-numbers", "divisibility", "wolstenholme"],
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 291,
     "erdosUrl": "https://erdosproblems.com/291",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Nat.gcd", "description": "GCD of natural numbers", "module": "Mathlib.Data.Nat.GCD.Basic" },
+      { "theorem": "Rat", "description": "Rational number type", "module": "Mathlib.Data.Rat.Basic" },
+      { "theorem": "Finset.sum", "description": "Sum over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" }
+    ],
+    "originalContributions": [
+      "L n: LCM of 1 to n",
+      "H n: Harmonic number as rational",
+      "a n: Numerator when H_n written over L_n",
+      "harmonicGCD: gcd(a_n, L_n)",
+      "question_part1/part2: Formal problem statements",
+      "steinerberger_criterion: Leading digit p-1 implies p divides gcd",
+      "wolstenholme_theorem: H_{p-1} numerator divisible by p²",
+      "divisibility_characterization: Complete criterion",
+      "wu_yan_conditional: Schanuel implies density 1"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #291 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 1$ and define $L_n$ to be the least common multiple of $\\{1,\\ldots,n\\}$ and $a_n$ by\\[\\sum_{1\\leq k\\leq n}\\frac{1}{k}=\\frac{a_n}{L_n}.\\]Is it true that $(a_n,L_n)=1$ and $(a_n,L_n)>1$ both occur for infinitely many $n$?\n\n\n\nSteinerberger has observed that the answer to the second question is trivially yes: for example, any $n$ which begins with a $2$ in base $3$ has $3\\mid (a_n,L_n)$.\n\nMore generally, if the leading digit of $n$ in base $p$ is $p-1$ then $p\\mid (a_n,L_n)$. There is in fact a necessary and sufficient condition: a prime $p\\leq n$ divides $(a_n,L_n)$ if and only if $p$ divides the numerator of $1+\\cdots+\\frac{1}{k}$, where $k$ is the leading digit of $n$ in base $p$. This can be seen by writing\\[a_n = \\frac{L_n}{1}+\\cdots+\\frac{L_n}{n}\\]and observing that the right-hand side is congruent to $1+\\cdots+1/k$ modulo $p$. (The previous claim about $p-1$ follows immediately from Wolstenholme's theorem.)\n\nThis leads to a heuristic prediction (see for example a preprint of Shiu \\cite{Sh16}) of $\\asymp\\frac{x}{\\log x}$ for the number of $n\\in [1,x]$ such that $(a_n,L_n)=1$. In particular, there should be infinitely many $n$, but the set of such $n$ should have density zero. Unfortunately this heuristic is difficult to turn into a proof.\n\nWu and Yan \\cite{WuYa22} have proved, conditional on $\\frac{1}{\\log p}$ being linearly independent over $\\mathbb{Q}$ for any finite collection of primes $p$ (itself a consequence of Schanuel's conjecture), that the set of $n$ for which $(a_n,L_n)>1$ has upper density $1$.\n\n\n\n\nReferences\n\n\n[Sh16] P. Shiu, The denominators of harmonic numbers. arXiv:1607.02863 (2016).\n\n[WuYa22] Wu, Bing-Ling and Yan, Xiao-Hui, On the denominators of harmonic numbers. {IV}. C. R. Math. Acad. Sci. Paris (2022), 53--57.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The harmonic numbers H_n = 1 + 1/2 + ... + 1/n have been studied since antiquity. When written as a_n/L_n where L_n = lcm(1,...,n), the GCD of numerator and denominator reveals surprising patterns.\n\nWolstenholme's theorem (1862) shows that p² | numerator of H_{p-1} for primes p ≥ 5. Steinerberger observed this implies Part 2 trivially. Shiu (2016) gave heuristics suggesting Part 1 is true with density 0. Wu-Yan (2022) showed conditionally on Schanuel's conjecture that the density of gcd > 1 is 1.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet L_n = lcm{1,...,n} and a_n be defined by H_n = a_n/L_n.\n\n**Question:** Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur for infinitely many n?\n\n**Results:**\n- Part 2 (gcd > 1): Trivially YES (Steinerberger)\n- Part 1 (gcd = 1): OPEN\n  - Heuristic: ~x/log(x) such n up to x\n  - Conditional: density of gcd > 1 is 1 (Wu-Yan)",
+    "proofStrategy": "The formalization defines harmonic numbers as rationals and extracts the numerator a_n when written over L_n. The divisibility characterization relates p | gcd(a_n, L_n) to the leading digit of n in base p. Wolstenholme's theorem provides the key connection. Part 2 follows trivially; Part 1 requires transcendence theory.",
+    "keyInsights": [
+      "**Wolstenholme (1862):** p² | numerator of H_{p-1} for p ≥ 5",
+      "**Characterization:** p | gcd(a_n, L_n) iff p | (numerator of H_k) where k = leading digit in base p",
+      "**Part 2 trivial:** Leading digit p-1 occurs infinitely often",
+      "**Part 1 hard:** Requires understanding correlations across primes",
+      "**Heuristic:** ~x/log(x) values n ≤ x have gcd = 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 45,
+      "endLine": 72,
+      "summary": "L_n, H_n, a_n, harmonicGCD definitions"
+    },
+    {
+      "id": "problem-statement",
+      "title": "The Problem Statement",
+      "startLine": 74,
+      "endLine": 96,
+      "summary": "question_part1, question_part2, erdos291Statement"
+    },
+    {
+      "id": "part2-easy",
+      "title": "Part 2 is Easy",
+      "startLine": 98,
+      "endLine": 122,
+      "summary": "Steinerberger criterion and trivial proof"
+    },
+    {
+      "id": "wolstenholme",
+      "title": "Wolstenholme's Theorem",
+      "startLine": 124,
+      "endLine": 143,
+      "summary": "Classical result on H_{p-1}"
+    },
+    {
+      "id": "characterization",
+      "title": "Divisibility Characterization",
+      "startLine": 145,
+      "endLine": 157,
+      "summary": "Complete criterion via leading digits"
+    },
+    {
+      "id": "heuristic",
+      "title": "Heuristic and Density",
+      "startLine": 159,
+      "endLine": 188,
+      "summary": "Shiu's prediction ~x/log(x)"
+    },
+    {
+      "id": "conditional",
+      "title": "Conditional Results",
+      "startLine": 190,
+      "endLine": 220,
+      "summary": "Wu-Yan theorem under Schanuel"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 258,
+      "endLine": 301,
+      "summary": "Main results and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #291 is OPEN. Part 2 (infinitely many n with gcd > 1) is trivially true via Wolstenholme's theorem and the Steinerberger criterion. Part 1 (infinitely many n with gcd = 1) remains open, though heuristics suggest it is true with ~x/log(x) such n up to x. Wu-Yan proved conditionally that the density of gcd > 1 is 1.",
+    "implications": "This problem connects harmonic numbers to transcendence theory via Schanuel's conjecture. The difficulty lies in understanding correlations between the base-p representations of n for different primes p.",
+    "openQuestions": [
+      "Are there infinitely many n with gcd(a_n, L_n) = 1?",
+      "What is the exact asymptotic for the count of such n?",
+      "Can the heuristic be made rigorous without Schanuel?",
+      "What is the distribution of gcd(a_n, L_n) values?"
+    ]
   }
 }
