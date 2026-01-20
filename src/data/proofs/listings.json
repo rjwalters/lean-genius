@@ -3160,17 +3160,24 @@
   },
   {
     "id": "erdos-146",
-    "title": "Erdős Problem #146",
+    "title": "Erdős Problem #146: Turán Numbers for Bipartite r-Degenerate Graphs",
     "slug": "erdos-146",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is bipartite and is ...-degenerate, that is, every induced subgraph of ... has minimum degree ..., then\\[(n;H) \\ll n^{...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If H is bipartite and r-degenerate, is ex(n;H) ≪ n^{2-1/r}? OPEN even for r=2. Best known: n^{2-1/4r} (AKS 2003). Prize: $500.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "Turán-numbers",
+      "bipartite-graphs",
+      "degeneracy",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 146,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-147",

@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-146-1",
+    "proofId": "erdos-146",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #146: Turán Numbers for Bipartite r-Degenerate Graphs**\n\n**Conjecture:** If H is bipartite and r-degenerate, then ex(n;H) ≪ n^{2-1/r}.\n\n**Status:** OPEN (even for r = 2!)\n\n**Prize:** $500\n\n**Best Known:** n^{2-1/4r} by Alon-Krivelevich-Sudakov (2003)",
+    "mathContext": "The Turán number ex(n;H) is the maximum edges in an n-vertex H-free graph. The conjecture relates it to degeneracy, a local structural property.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán numbers", "Degeneracy", "Extremal graph theory", "Bipartite graphs"]
+  },
+  {
+    "id": "ann-146-2",
+    "proofId": "erdos-146",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "definition",
+    "title": "r-Degenerate Graph",
+    "content": "**IsRDegenerate:**\n\nA graph is r-degenerate if every induced subgraph has minimum degree ≤ r.\n\n**Equivalent:** Vertices can be ordered so each has ≤ r neighbors among later vertices.\n\n**Examples:** Trees are 1-degenerate, planar graphs are 5-degenerate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-146-3",
+    "proofId": "erdos-146",
+    "range": { "startLine": 62, "endLine": 71 },
+    "type": "definition",
+    "title": "Turán Number",
+    "content": "**turanNumber ex(n; H):**\n\nThe maximum number of edges in an n-vertex graph that contains no copy of H as a subgraph.\n\n**Classic Result:** ex(n; K_r) = (1 - 1/(r-1))n²/2 (Turán's theorem)\n\n**For bipartite H:** ex(n; H) = o(n²) by Kővári-Sós-Turán.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-146-4",
+    "proofId": "erdos-146",
+    "range": { "startLine": 83, "endLine": 93 },
+    "type": "definition",
+    "title": "The Erdős-Simonovits Conjecture",
+    "content": "**ErdosSimonovitsConjecture (1984):**\n\nFor bipartite r-degenerate H:\nex(n; H) ≪ n^{2-1/r}\n\n**Meaning:** The extremal exponent depends ONLY on r, not on other structure of H.\n\n**Significance:** Would give a complete classification of bipartite Turán numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-146-5",
+    "proofId": "erdos-146",
+    "range": { "startLine": 104, "endLine": 114 },
+    "type": "axiom",
+    "title": "AKS Theorem (2003)",
+    "content": "**Alon-Krivelevich-Sudakov:**\n\nFor bipartite r-degenerate H:\nex(n; H) ≪ n^{2-1/4r}\n\n**Note:** This is weaker than the conjecture by a factor of 4 in the exponent.\n\n**Method:** Uses dependent random choice technique.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-146-6",
+    "proofId": "erdos-146",
+    "range": { "startLine": 115, "endLine": 129 },
+    "type": "axiom",
+    "title": "AKS Special Case",
+    "content": "**Full Bound for Bounded-Side-Degree:**\n\nWhen H is bipartite with max degree r in one side of the bipartition, the full bound ex(n;H) ≪ n^{2-1/r} holds.\n\n**This includes:** K_{r,s} for any s ≥ r.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-146-7",
+    "proofId": "erdos-146",
+    "range": { "startLine": 142, "endLine": 155 },
+    "type": "theorem",
+    "title": "Gap Between Bounds",
+    "content": "**aks_weaker_than_conjecture:**\n\nFor all r ≥ 1: 2 - 1/r < 2 - 1/4r\n\n**For r = 2:**\n- Conjecture: n^{3/2} = n^{1.5}\n- AKS: n^{15/8} = n^{1.875}\n\n**The gap is substantial and represents a major open problem.**",
+    "significance": "key"
+  },
+  {
+    "id": "ann-146-8",
+    "proofId": "erdos-146",
+    "range": { "startLine": 160, "endLine": 184 },
+    "type": "definition",
+    "title": "Complete Bipartite Graphs",
+    "content": "**completeBipartiteGraph K_{r,s}:**\n\nVertices split into sets of size r and s, with all edges between them.\n\n**Key Property:** K_{r,s} is r-degenerate (when r ≤ s).\n\n**Kővári-Sós-Turán:** ex(n; K_{r,s}) = Θ(n^{2-1/r}) - the conjecture holds!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-146-9",
+    "proofId": "erdos-146",
+    "range": { "startLine": 197, "endLine": 217 },
+    "type": "theorem",
+    "title": "The r = 2 Case",
+    "content": "**Even r = 2 is Open:**\n\nFor 2-degenerate bipartite graphs:\n- Conjecture: ex(n;H) ≪ n^{3/2}\n- AKS: ex(n;H) ≪ n^{15/8}\n\n**Example:** C_4 (4-cycle) is 2-degenerate.\nex(n; C_4) = Θ(n^{3/2}) is known (Bondy-Simonovits).\n\nSo the conjecture holds for some 2-degenerate graphs, but not all are understood.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-146-10",
+    "proofId": "erdos-146",
+    "range": { "startLine": 271, "endLine": 298 },
+    "type": "theorem",
+    "title": "Summary: OPEN",
+    "content": "**Erdős Problem #146:**\n\n**STATUS:** OPEN ($500 prize)\n\n**Conjecture:** ex(n;H) ≪ n^{2-1/r} for bipartite r-degenerate H\n\n**Best Known:** n^{2-1/4r} (AKS 2003)\n\n**Special Cases:** Proved for K_{r,s} and bounded-side-degree\n\n**Key Insight:** Local structure (degeneracy) should determine global extremal behavior, but proving this remains elusive.",
+    "significance": "critical"
+  }
+]
