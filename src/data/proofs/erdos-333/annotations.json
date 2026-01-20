@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "id": "ann-e333-header",
+    "proofId": "erdos-333",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #333: Sparse Sumset Bases**\n\n**Question:** Let A <= N have density zero. Does there exist B such that A <= B+B and |B cap [1,N]| = o(sqrt(N))?\n\n**Answer: NO** (Erdos-Newman 1977)\n\n**Positive cases:** Squares work\n**Negative:** General zero-density sets may require |B| ~ sqrt(N)\n\nThe negative answer was implicit in Erdos-Newman Theorem 2 but overlooked.",
+    "mathContext": "This problem explores the limits of sumset covering for sparse sets.",
+    "significance": "critical",
+    "relatedConcepts": ["Sumsets", "Natural density", "Covering problems"]
+  },
+  {
+    "id": "ann-e333-counting",
+    "proofId": "erdos-333",
+    "range": { "startLine": 45, "endLine": 53 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "**countingFunction(A, N):**\n\nThe number of elements of A up to N.\n\n```lean\nnoncomputable def countingFunction (A : Set N) (N : N) : N :=\n  (Finset.filter (. in A) (Finset.range (N + 1))).card\n```\n\n**Notation:** Often written A(N) or |A cap [1,N]|.",
+    "significance": "key",
+    "relatedConcepts": ["Cardinality", "Density"]
+  },
+  {
+    "id": "ann-e333-density",
+    "proofId": "erdos-333",
+    "range": { "startLine": 55, "endLine": 66 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "**hasNaturalDensity(A, d), hasZeroDensity(A):**\n\nThe natural density of A is lim_{N->inf} A(N)/N if it exists.\n\n```lean\ndef hasZeroDensity (A : Set N) : Prop :=\n  hasNaturalDensity A 0\n```\n\n**Examples:**\n- Squares: density 0 (A(N) ~ sqrt(N))\n- Primes: density 0 (A(N) ~ N/log N)\n- Even numbers: density 1/2",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic density", "Little-o notation"]
+  },
+  {
+    "id": "ann-e333-sumset",
+    "proofId": "erdos-333",
+    "range": { "startLine": 68, "endLine": 73 },
+    "type": "definition",
+    "title": "Sumset B + B",
+    "content": "**sumset(B) = B + B:**\n\nThe set of all pairwise sums from B.\n\n```lean\ndef sumset (B : Set N) : Set N :=\n  {n : N | exists b1 b2, b1 in B and b2 in B and n = b1 + b2}\n```\n\n**Key property:** |B+B| <= |B|^2, with equality for Sidon sets.",
+    "significance": "critical",
+    "relatedConcepts": ["Additive combinatorics", "Sidon sets"]
+  },
+  {
+    "id": "ann-e333-covering",
+    "proofId": "erdos-333",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "definition",
+    "title": "Sumset Covering",
+    "content": "**isCoveredBySumset(A, B):**\n\nA is covered by B+B if every element of A is a sum of two elements from B.\n\n```lean\ndef isCoveredBySumset (A B : Set N) : Prop :=\n  A <= sumset B\n```\n\n**Question:** How sparse can B be while still covering A?",
+    "significance": "key",
+    "relatedConcepts": ["Covering", "Representation"]
+  },
+  {
+    "id": "ann-e333-subsqrt",
+    "proofId": "erdos-333",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "definition",
+    "title": "Sub-sqrt Growth",
+    "content": "**hasSubsqrtGrowth(B):**\n\nThe condition |B cap [1,N]| = o(sqrt(N)).\n\n```lean\ndef hasSubsqrtGrowth (B : Set N) : Prop :=\n  (fun N => countingFunction B N) =o[atTop] (fun N => sqrt N)\n```\n\n**Meaning:** B is 'exceptionally sparse' - sparser than sqrt(N).",
+    "significance": "critical",
+    "relatedConcepts": ["Little-o", "Sparse sets"]
+  },
+  {
+    "id": "ann-e333-conjecture",
+    "proofId": "erdos-333",
+    "range": { "startLine": 96, "endLine": 104 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**ErdosConjecture333:**\n\nFor any zero-density A, does there exist B with A <= B+B and |B| = o(sqrt(N))?\n\n```lean\ndef ErdosConjecture333 : Prop :=\n  forall A, hasZeroDensity A ->\n    exists B, isCoveredBySumset A B and hasSubsqrtGrowth B\n```\n\n**Status: DISPROVED**",
+    "significance": "critical",
+    "relatedConcepts": ["Erdos problems", "Sumset bases"]
+  },
+  {
+    "id": "ann-e333-bound",
+    "proofId": "erdos-333",
+    "range": { "startLine": 110, "endLine": 118 },
+    "type": "axiom",
+    "title": "Sumset Counting Bound",
+    "content": "**sumset_counting_bound:**\n\nIf |B cap [1,N]| <= f(N), then |B+B cap [1,2N]| <= f(N)^2.\n\n```lean\naxiom sumset_counting_bound (B : Set N) (f : N -> R) :\n    (forall N, countingFunction B N <= f N) ->\n    forall N, countingFunction (sumset B) (2*N) <= (f N)^2\n```\n\n**Key implication:** Sparse B implies sparse B+B.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bounds", "Sumset size"]
+  },
+  {
+    "id": "ann-e333-counterexample",
+    "proofId": "erdos-333",
+    "range": { "startLine": 128, "endLine": 137 },
+    "type": "axiom",
+    "title": "Existence of Counterexample",
+    "content": "**existence_of_counterexample:**\n\nThere exist zero-density sets A where any covering B must have |B| >> sqrt(N).\n\n```lean\naxiom existence_of_counterexample :\n    exists A, hasZeroDensity A and\n      forall B, isCoveredBySumset A B -> not hasSubsqrtGrowth B\n```\n\n**Significance:** This disproves the conjecture.",
+    "mathContext": "Follows from Erdos-Newman 1977, Theorem 2.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Lower bounds"]
+  },
+  {
+    "id": "ann-e333-false",
+    "proofId": "erdos-333",
+    "range": { "startLine": 139, "endLine": 146 },
+    "type": "theorem",
+    "title": "The Conjecture is FALSE",
+    "content": "**erdos_333_false:**\n\nErdos Conjecture #333 is DISPROVED.\n\n```lean\ntheorem erdos_333_false : not ErdosConjecture333 := by\n  intro h\n  obtain <A, hA_density, hA_counter> := existence_of_counterexample\n  obtain <B, hcover, hsparse> := h A hA_density\n  exact hA_counter B hcover hsparse\n```\n\n**The proof:** Apply the counterexample to contradict the conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof", "Contradiction"]
+  },
+  {
+    "id": "ann-e333-squares",
+    "proofId": "erdos-333",
+    "range": { "startLine": 152, "endLine": 170 },
+    "type": "axiom",
+    "title": "Squares: A Positive Case",
+    "content": "**squares, erdos_newman_squares:**\n\nFor A = perfect squares, there EXISTS a sparse B with A <= B+B.\n\n```lean\ndef squares : Set N := {n : N | exists k, n = k^2}\n\naxiom erdos_newman_squares :\n    exists B, isCoveredBySumset squares B and hasSubsqrtGrowth B\n```\n\n**Erdos-Newman 1977:** This is a positive special case!",
+    "mathContext": "The construction uses sophisticated number-theoretic techniques.",
+    "significance": "key",
+    "relatedConcepts": ["Perfect squares", "Special cases"]
+  },
+  {
+    "id": "ann-e333-polynomial-gaps",
+    "proofId": "erdos-333",
+    "range": { "startLine": 172, "endLine": 181 },
+    "type": "axiom",
+    "title": "Polynomial Gaps",
+    "content": "**hasPolynomialGaps, polynomial_gap_positive:**\n\nSets with large gaps between consecutive elements admit sparse sumset bases.\n\n```lean\ndef hasPolynomialGaps (A : Set N) (alpha : R) : Prop :=\n  alpha > 1 and forall n in A, forall m in A, n < m -> m - n >= n^(1/alpha)\n```\n\n**Result:** If gaps grow polynomially with exponent alpha > 2, sparse bases exist.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gap conditions", "Lacunary sequences"]
+  },
+  {
+    "id": "ann-e333-lower-bound",
+    "proofId": "erdos-333",
+    "range": { "startLine": 187, "endLine": 194 },
+    "type": "axiom",
+    "title": "Covering Lower Bound",
+    "content": "**covering_lower_bound:**\n\nIf A <= B+B, then |B|^2 >= |A|.\n\n```lean\naxiom covering_lower_bound (A B : Set N) (N : N) :\n    isCoveredBySumset A B ->\n    (countingFunction B N)^2 >= countingFunction A (2*N)\n```\n\n**Implication:** Dense A forces large B.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bounds", "Covering requirements"]
+  },
+  {
+    "id": "ann-e333-sidon",
+    "proofId": "erdos-333",
+    "range": { "startLine": 228, "endLine": 238 },
+    "type": "definition",
+    "title": "Sidon Sets",
+    "content": "**isSidonSet(B):**\n\nA set where all pairwise sums are distinct.\n\n```lean\ndef isSidonSet (B : Set N) : Prop :=\n  forall a b c d in B, a <= b -> c <= d -> a + b = c + d -> (a = c and b = d)\n```\n\n**Growth:** Sidon sets have |B cap [1,N]| = O(sqrt(N)).\n**Sumset:** |B+B| = |B|^2/2 + |B|/2 exactly.",
+    "significance": "supporting",
+    "relatedConcepts": ["B2 sequences", "Distinct sums"]
+  },
+  {
+    "id": "ann-e333-theorem2",
+    "proofId": "erdos-333",
+    "range": { "startLine": 263, "endLine": 272 },
+    "type": "axiom",
+    "title": "Erdos-Newman Theorem 2",
+    "content": "**erdos_newman_theorem2:**\n\nThere exist zero-density sets where any covering B has |B| >= c*sqrt(N) infinitely often.\n\n```lean\naxiom erdos_newman_theorem2 :\n    exists A, hasZeroDensity A and\n      exists c > 0,\n        forall B, isCoveredBySumset A B ->\n          exists^f N in atTop, countingFunction B N >= c * sqrt N\n```\n\n**Key:** This implies the negative answer to Problem #333.",
+    "mathContext": "From 'Bases for Sets of Integers' (1977).",
+    "significance": "critical",
+    "relatedConcepts": ["Erdos-Newman paper", "Overlooked implications"]
+  },
+  {
+    "id": "ann-e333-summary",
+    "proofId": "erdos-333",
+    "range": { "startLine": 274, "endLine": 314 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdos Problem #333: DISPROVED**\n\n**Question:** For any zero-density A, does there exist B with A <= B+B and |B| = o(sqrt(N))?\n\n**Answer: NO**\n\n**Positive cases:**\n- Squares (Erdos-Newman 1977)\n- Sets with polynomial gaps (alpha > 2)\n\n**Negative:** General zero-density sets may require |B| ~ sqrt(N).\n\n**Key insight:** Zero density alone is too weak - some sets are 'barely sparse'.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Disproved conjectures"]
+  }
+]

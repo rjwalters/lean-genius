@@ -1,33 +1,83 @@
 {
   "id": "erdos-858",
-  "title": "Erdős Problem #858",
+  "title": "Erdős Problem #858: Avoiding Multiplicative Relations with Large Prime Factors",
   "slug": "erdos-858",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that there is no solution to ... with ... and the smallest prime factor of ... is .... Estimate the maximum o...",
+  "description": "For A ⊆ {1,...,N} with no at=b where a,b ∈ A and smallest prime factor of t > a, estimate max (1/log N) Σ_{n∈A} 1/n. SOLVED: The maximum is o(1) as N → ∞, proved by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/858",
-    "date": "",
-    "status": "pending",
+    "date": "1966",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos858Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primitive-sets",
+      "multiplicative-structure",
+      "density"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 858,
     "erdosUrl": "https://erdosproblems.com/858",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #858 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\{1,\\ldots,N\\}$ be such that there is no solution to $at=b$ with $a,b\\in A$ and the smallest prime factor of $t$ is $>a$. Estimate the maximum of\\[\\frac{1}{\\log N}\\sum_{n\\in A}\\frac{1}{n}.\\]\n\n\n\nAlexander \\cite{Al66} and Erd\\H{o}s, S\\'{a}rk\\\"{o}zi, and Szemer\\'{e}di \\cite{ESS68} proved that this maximum is $o(1)$ (as $N\\to \\infty$). This condition on $A$ is a weaker form of the usual primitive condition. If $A$ is primitive then Behrend \\cite{Be35} proved\\[\\frac{1}{\\log N}\\sum_{n\\in A}\\frac{1}{n}\\ll \\frac{1}{\\sqrt{\\log\\log N}}.\\]An example of such a set $A$ is the set of all integers in $[N^{1/2},N]$ divisible by some prime $>N^{1/2}$.\n\nSee also [143].\n\n\n\n\nReferences\n\n\n[Al66] Alexander, Ralph, Density and multiplicative structure of sets of integers. Acta Arith. (1966/67), 321--332.\n\n[Be35] Behrend, F., On sequences of numbers not divisible by another. London Math. Soc. Journal (1935), 42-45.\n\n[ESS68] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozi, A. and Szemer\\'{e}di, E., On the solvability of certain equations in sequences of\npositive upper logarithmic density. J. London Math. Soc. (1968), 71--78.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns sets avoiding certain multiplicative relations. The condition is a weakening of the primitive set condition (where no element divides another). Alexander (1966) and independently Erdős-Sárközi-Szemerédi (1968) proved the weighted reciprocal sum vanishes asymptotically. For the stronger primitive condition, Behrend (1935) showed a faster rate of decay.",
+    "problemStatement": "Let A ⊆ {1, ..., N} be such that there is no solution to at = b with a, b ∈ A and the smallest prime factor of t is > a. Estimate the maximum of (1/log N) · Σ_{n ∈ A} 1/n.",
+    "proofStrategy": "The formalization defines the multiplicative condition (no at=b with spf(t) > a), primitive sets, and the weighted reciprocal sum. Alexander's and Erdős-Sárközi-Szemerédi's results are stated as axioms showing the maximum is o(1). Behrend's bound for primitive sets is included for comparison.",
+    "keyInsights": [
+      "The condition spf(t) > a is weaker than primitivity (a ∤ b)",
+      "Primitive sets satisfy this condition automatically",
+      "The weighted sum (1/log N) Σ 1/n = o(1) for sets satisfying the condition",
+      "For primitive sets, Behrend showed the stronger bound O(1/√(log log N))",
+      "Example: integers in [√N, N] divisible by primes > √N satisfy the condition"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "prime-factor",
+      "title": "Smallest Prime Factor",
+      "startLine": 44,
+      "endLine": 77,
+      "summary": "Definition and properties of the smallest prime factor function"
+    },
+    {
+      "id": "condition",
+      "title": "The Multiplicative Condition",
+      "startLine": 79,
+      "endLine": 104,
+      "summary": "Definition of sets avoiding at=b with spf(t) > a"
+    },
+    {
+      "id": "primitive",
+      "title": "Primitive Sets",
+      "startLine": 106,
+      "endLine": 129,
+      "summary": "Definition and proof that primitive sets satisfy the condition"
+    },
+    {
+      "id": "sums",
+      "title": "Weighted Reciprocal Sum",
+      "startLine": 131,
+      "endLine": 187,
+      "summary": "Definition of (1/log N) Σ 1/n and basic bounds"
+    },
+    {
+      "id": "solution",
+      "title": "Solution: o(1) Bound",
+      "startLine": 189,
+      "endLine": 298,
+      "summary": "Alexander (1966) and Erdős-Sárközi-Szemerédi (1968) results"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #858 is SOLVED. For A ⊆ {1,...,N} satisfying the multiplicative condition (no at=b with spf(t) > a), the maximum of (1/log N) Σ_{n∈A} 1/n is o(1). This was proved independently by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
+    "implications": "The result shows that sets avoiding multiplicative relations with large prime factors are sparse in a specific sense. This relates to the study of primitive sets and multiplicative number theory.",
+    "openQuestions": [
+      "What is the precise rate of decay of the maximum?",
+      "Can the gap between this o(1) bound and Behrend's O(1/√(log log N)) be characterized?",
+      "What is the structure of extremal sets achieving near-maximum sums?"
+    ]
   }
 }
