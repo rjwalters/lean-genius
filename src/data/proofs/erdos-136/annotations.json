@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-136-1",
+    "proofId": "erdos-136",
+    "range": { "startLine": 55, "endLine": 59 },
+    "type": "definition",
+    "title": "Edge Coloring of Kₙ",
+    "content": "An edge coloring assigns colors to all edges of the complete graph Kₙ. Here we represent it as a function from pairs of vertices to colors. For n vertices, Kₙ has C(n,2) = n(n-1)/2 edges.",
+    "mathContext": "EdgeColoring n k := Fin n → Fin n → Fin k",
+    "significance": "The fundamental object of study - we want to find the minimum k (colors) satisfying the K₄ constraint.",
+    "relatedConcepts": ["complete graph", "graph coloring", "chromatic index"]
+  },
+  {
+    "id": "ann-136-2",
+    "proofId": "erdos-136",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "Valid Edge Coloring",
+    "content": "A valid edge coloring is symmetric: the color of edge {i,j} is the same whether we query c(i,j) or c(j,i). This ensures the coloring is well-defined on undirected edges.",
+    "mathContext": "isValidColoring c := ∀ i j, i ≠ j → c i j = c j i",
+    "significance": "Ensures our function representation correctly models edge coloring of an undirected graph.",
+    "relatedConcepts": ["symmetry", "undirected graph", "edge coloring"]
+  },
+  {
+    "id": "ann-136-3",
+    "proofId": "erdos-136",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "definition",
+    "title": "Colors in a K₄",
+    "content": "Given 4 vertices forming a K₄, we collect all 6 edge colors into a finite set. The constraint requires this set to have cardinality at least 5, meaning at most one color can repeat among the 6 edges.",
+    "mathContext": "colorsInK4 c v = {c(v₀,v₁), c(v₀,v₂), c(v₀,v₃), c(v₁,v₂), c(v₁,v₃), c(v₂,v₃)}",
+    "significance": "The core constraint: every K₄ must have 'almost rainbow' edges - at least 5 of 6 edges distinctly colored.",
+    "relatedConcepts": ["K₄ subgraph", "rainbow coloring", "edge diversity"]
+  },
+  {
+    "id": "ann-136-4",
+    "proofId": "erdos-136",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "The K₄ Constraint",
+    "content": "The property hasAtLeast5ColorsInEveryK4 requires that for EVERY choice of 4 distinct vertices in the graph, the induced K₄ has at least 5 different colors. This is a global constraint.",
+    "mathContext": "∀ v : Fin 4 → Fin n, Injective v → |colorsInK4 c v| ≥ 5",
+    "significance": "This constraint captures Erdős's question: how few colors suffice while ensuring every K₄ is almost rainbow?",
+    "relatedConcepts": ["Ramsey theory", "local constraint", "clique coloring"]
+  },
+  {
+    "id": "ann-136-5",
+    "proofId": "erdos-136",
+    "range": { "startLine": 95, "endLine": 99 },
+    "type": "definition",
+    "title": "The Erdős-Gyárfás Function f(n)",
+    "content": "f(n) = f(n,4,5) is the minimum number of colors needed. It's defined as the smallest k such that a valid k-coloring of Kₙ exists with every K₄ having ≥5 colors. The 'sorry' indicates this minimum exists (trivially, n colors work).",
+    "mathContext": "f(n) = min{k : ∃ valid k-coloring with K₄ constraint}",
+    "significance": "The central function of the problem - Erdős asked to determine its asymptotic behavior.",
+    "relatedConcepts": ["minimum coloring", "extremal function", "Ramsey function"]
+  },
+  {
+    "id": "ann-136-6",
+    "proofId": "erdos-136",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "theorem",
+    "title": "Erdős-Gyárfás Bounds",
+    "content": "The original 1997 bounds: f(n) > (5/6)(n-1) and f(n) < n. The lower bound shows you need at least about 5n/6 colors. The upper bound shows n-1 colors always suffice (but this is loose).",
+    "mathContext": "(5/6)(n-1) < f(n) < n for n ≥ 4",
+    "significance": "These bounds established the problem and suggested f(n) ~ (5/6)n, which Erdős conjectured was correct.",
+    "relatedConcepts": ["asymptotic bounds", "extremal combinatorics", "Erdős conjecture"]
+  },
+  {
+    "id": "ann-136-7",
+    "proofId": "erdos-136",
+    "range": { "startLine": 135, "endLine": 136 },
+    "type": "theorem",
+    "title": "The 2022 Resolution",
+    "content": "Bennett, Cushman, Dudek, and Pralat proved f(n)/n → 5/6 as n → ∞. This confirms Erdős's intuition that the lower bound is asymptotically tight. The limit is expressed via Filter.Tendsto to nhds(5/6).",
+    "mathContext": "lim_{n→∞} f(n)/n = 5/6",
+    "significance": "This resolves Problem #136: the Erdős-Gyárfás function has asymptotic 5n/6.",
+    "relatedConcepts": ["asymptotic analysis", "limit", "Erdős resolution"]
+  },
+  {
+    "id": "ann-136-8",
+    "proofId": "erdos-136",
+    "range": { "startLine": 164, "endLine": 172 },
+    "type": "insight",
+    "title": "Why 5/6?",
+    "content": "The constant 5/6 = 1 - 1/6 arises naturally: K₄ has C(4,2) = 6 edges, and we require ≥5 colors. So exactly one 'defect' (repeated color) is allowed per K₄. The fraction 5/6 reflects this one-sixth tolerance.",
+    "mathContext": "K₄ has 6 edges, require 5 colors ⟹ ratio 5/6",
+    "significance": "Beautiful connection between the constraint (5 of 6 edges distinct) and the asymptotic constant 5/6.",
+    "relatedConcepts": ["combinatorial constants", "edge counting", "natural emergence"]
+  },
+  {
+    "id": "ann-136-9",
+    "proofId": "erdos-136",
+    "range": { "startLine": 191, "endLine": 193 },
+    "type": "insight",
+    "title": "Joos-Mubayi Approach",
+    "content": "Joos and Mubayi found an independent, shorter proof using hypergraph matchings. The edge-coloring problem translates to finding certain matchings in a hypergraph derived from the coloring structure.",
+    "mathContext": "Alternative proof via hypergraph matching theory",
+    "significance": "Shows deep connections between graph coloring and hypergraph theory.",
+    "relatedConcepts": ["hypergraph", "matching theory", "proof techniques"]
+  },
+  {
+    "id": "ann-136-10",
+    "proofId": "erdos-136",
+    "range": { "startLine": 247, "endLine": 253 },
+    "type": "theorem",
+    "title": "Complete Summary",
+    "content": "The summary theorem combines all results: asymptotic f(n)/n → 5/6, plus the original bounds (5/6)(n-1) < f(n) < n. Erdős Problem #136 is SOLVED with answer f(n) ~ (5/6)n.",
+    "mathContext": "f(n) ~ (5/6)n confirmed by Bennett et al. (2022) and Joos-Mubayi (2022)",
+    "significance": "Complete resolution of a 25-year-old conjecture, confirming Erdős's intuition about the lower bound.",
+    "relatedConcepts": ["problem resolution", "Erdős legacy", "graph coloring asymptotics"]
+  }
+]
