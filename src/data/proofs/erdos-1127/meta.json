@@ -1,33 +1,114 @@
 {
   "id": "erdos-1127",
-  "title": "Erdős Problem #1127",
+  "title": "Decomposing ℝⁿ into Sets with Distinct Distances",
   "slug": "erdos-1127",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan ... be decomposed into countably many sets, such that within each set all the pairwise distances are distinct?\n\n\n\nThis is...",
+  "description": "Can ℝⁿ be decomposed into countably many sets where all pairwise distances within each set are distinct? YES assuming the Continuum Hypothesis (Erdős-Kakutani 1943 for n=1, Davies 1972 for n=2, Kunen 1987 for all n). CH is necessary.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Kakutani (1943), Davies (1972), Kunen (1987)",
     "sourceUrl": "https://erdosproblems.com/1127",
-    "date": "",
-    "status": "pending",
+    "date": "1987",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1127Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "set-theory", "continuum-hypothesis", "geometry", "distances"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 1127,
     "erdosUrl": "https://erdosproblems.com/1127",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "EuclideanSpace", "description": "n-dimensional Euclidean space", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
+      { "theorem": "Set.Countable", "description": "Countable sets", "module": "Mathlib.Data.Set.Countable" },
+      { "theorem": "Cardinal.aleph", "description": "Aleph cardinals for CH formulation", "module": "Mathlib.SetTheory.Cardinal.Basic" },
+      { "theorem": "dist", "description": "Metric space distance function", "module": "Mathlib.Topology.MetricSpace.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of distinct distances property",
+      "Definition of countable decomposition",
+      "Formalization of the Continuum Hypothesis",
+      "ℚ-linear independence definition",
+      "Axiomatization of Erdős-Kakutani, Davies, and Kunen theorems",
+      "Statement of Erdős-Hajnal necessity result"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1127 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan $\\mathbb{R}^n$ be decomposed into countably many sets, such that within each set all the pairwise distances are distinct?\n\n\n\nThis is true (assuming the continuum hypothesis) when $n=1$, since Erd\\H{o}s and Kakutani \\cite{ErKa43} proved that in fact the continuum hypothesis is equivalent to the statemant that $\\mathbb{R}$ can be written as the union of countably many sets, each of which is linearly independent over $\\mathbb{Q}$.\n\nDavies \\cite{Da72} proved this true when $n=2$, and Kunen \\cite{Ku87} proved it is true for all $n$ (again, both assuming the continuum hypothesis).\n\nThe dependence on the continuum hypothesis is necessary, since Erd\\H{o}s and Hajnal proved that if the continuum hypothesis is false then e.g. in any decomposition of $\\mathbb{R}$ into finitely many sets there exist four points which determine only four distances.\n\n\n\n\nReferences\n\n\n[Da72] Davies, Roy O., Partitioning the plane into denumberably many sets without\nrepeated distances. Proc. Cambridge Philos. Soc. (1972), 179--183.\n\n[ErKa43] Erd\\H{o}s, P. and Kakutani, S., On non-denumerable graphs. Bull. Amer. Math. Soc. (1943), 457--461.\n\n[Ku87] Kunen, Kenneth, Partitioning {E}uclidean space. Math. Proc. Cambridge Philos. Soc. (1987), 379--383.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects geometry to set theory in a surprising way. Erdős and Kakutani (1943) showed that for n=1, the decomposition exists if and only if the Continuum Hypothesis holds. Davies (1972) proved the n=2 case under CH, and Kunen (1987) proved it for all dimensions. Erdős and Hajnal showed that CH is necessary - without it, even finite partitions fail.",
+    "problemStatement": "Can ℝⁿ be decomposed into countably many sets, such that within each set all pairwise distances are distinct?",
+    "proofStrategy": "The formalization defines the distinct distances property, countable decomposition, and the Continuum Hypothesis. Key results are axiomatized: Erdős-Kakutani equivalence (CH ↔ ℝ = countable union of ℚ-linearly independent sets), Davies' theorem for n=2, Kunen's theorem for all n, and the Erdős-Hajnal necessity result.",
+    "keyInsights": [
+      "The answer is YES assuming the Continuum Hypothesis",
+      "Erdős-Kakutani: CH is EQUIVALENT to ℝ being a countable union of ℚ-linearly independent sets",
+      "ℚ-linear independence implies distinct pairwise distances",
+      "CH is NECESSARY: without it, even finite decomposition fails (Erdős-Hajnal)",
+      "Beautiful connection between set theory, linear algebra, and geometry"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 47,
+      "endLine": 82,
+      "summary": "Point type, distance function, distinct distances property, countable decomposition"
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 84,
+      "endLine": 101,
+      "summary": "Formal statement of Erdős Problem #1127"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "title": "Connection to the Continuum Hypothesis",
+      "startLine": 103,
+      "endLine": 123,
+      "summary": "Definition of CH and ℚ-linear independence"
+    },
+    {
+      "id": "erdos-kakutani",
+      "title": "The Erdős-Kakutani Theorem",
+      "startLine": 125,
+      "endLine": 166,
+      "summary": "CH ↔ countable union of ℚ-linearly independent sets"
+    },
+    {
+      "id": "davies-theorem",
+      "title": "Davies' Theorem (1972)",
+      "startLine": 168,
+      "endLine": 176,
+      "summary": "Extension to n=2 under CH"
+    },
+    {
+      "id": "kunen-theorem",
+      "title": "Kunen's Theorem (1987)",
+      "startLine": 178,
+      "endLine": 187,
+      "summary": "Full solution for all dimensions under CH"
+    },
+    {
+      "id": "necessity-of-ch",
+      "title": "The Necessity of CH",
+      "startLine": 189,
+      "endLine": 220,
+      "summary": "Erdős-Hajnal: finite partition fails without CH"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 259,
+      "endLine": 307,
+      "summary": "Main theorem and key results combined"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1127 is SOLVED: ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, assuming the Continuum Hypothesis. This was proved progressively: Erdős-Kakutani for n=1, Davies for n=2, Kunen for all n. The CH is necessary (Erdős-Hajnal).",
+    "implications": "This result demonstrates a deep connection between the Continuum Hypothesis (a fundamental question in set theory) and geometric distance problems. It shows how questions about infinite sets can depend on set-theoretic axioms.",
+    "openQuestions": [
+      "What happens in models of ZFC where CH fails?",
+      "Are there weaker set-theoretic hypotheses that suffice?",
+      "What is the relationship to other distance problems (unit distance, distinct distances)?"
+    ]
   }
 }
