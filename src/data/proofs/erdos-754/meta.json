@@ -1,33 +1,143 @@
 {
   "id": "erdos-754",
-  "title": "Erdős Problem #754",
+  "title": "Erdős Problem #754: Favorite Distances in Four Dimensions",
   "slug": "erdos-754",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists a set ... of ... points in ... in which every ... has at least ... points in ... eq...",
+  "description": "In n points in ℝ⁴, each point can have at most n/2 + O(1) equidistant neighbors. Proved by Swanepoel (2013) after initial bounds by Avis-Erdős-Pach (1988).",
   "meta": {
-    "author": "Unknown",
+    "author": "Swanepoel (2013)",
     "sourceUrl": "https://erdosproblems.com/754",
-    "date": "",
-    "status": "pending",
+    "date": "2013",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos754Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "distances",
+      "high-dimensional",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 754,
     "erdosUrl": "https://erdosproblems.com/754",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝⁿ for point configurations",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets for equidistant points",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "PointConfig: point configuration in ℝᵈ",
+      "equidistantSet: set of points at given distance",
+      "favoriteCount: max count at any distance",
+      "f: the function f_d(n) for dimension d",
+      "avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2",
+      "swanepoel_2013: favorite distance pairs bound",
+      "swanepoel_erdos_754: f(n) ≤ n/2 + O(1)",
+      "erdos_754_solved: combining bounds",
+      "Construction descriptions: Clifford torus, cross-polytope"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #754 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^4$ in which every $x\\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\nIs it true that $f(n)\\leq \\frac{n}{2}+O(1)$?\n\n\n\nAvis, Erd\\H{o}s, and Pach \\cite{AEP88} proved that\\[\\frac{n}{2}+2 \\leq f(n) \\leq (1+o(1))\\frac{n}{2}.\\]This was proved by Swanepoel \\cite{Sw13}, who in fact proved more generally that, in any finite set $A\\subset \\mathbb{R}^4$ of size $n$ and any choice of distance $d(x)$ for each $x\\in A$,\\[\\sum_{x\\in A}\\sum_{y\\in A}1_{\\lvert x-y\\rvert =d(x)}\\leq \\tfrac{1}{2}n^2+O(n),\\]and proved similar results for finite point sets in higher dimensional space.\n\n\n\n\nReferences\n\n\n[AEP88] Avis, David and Erd\\H{o}s, Paul and Pach, J\\'anos, Repeated distances in space. Graphs Combin. (1988), 207--217.\n\n[Sw13] Swanepoel, Konrad J., Favorite distances in high dimensions. (2013), 499--519.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #754: Favorite Distances in ℝ⁴**\n\nThis problem asks about 'favorite distances' - the maximum number of points equidistant from a given point in a configuration.\n\n**Key History:**\n- Erdős (1994): Posed the problem about ℝ⁴\n- Avis-Erdős-Pach (1988): Proved n/2 + 2 ≤ f(n) ≤ (1+o(1))n/2\n- Swanepoel (2013): Completed the solution with f(n) = n/2 + O(1)",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) be maximal such that there exists a set A of n points in ℝ⁴ where every x ∈ A has at least f(n) points equidistant from x.\n\n**Question:** Is f(n) ≤ n/2 + O(1)?\n\n**Answer: YES** - Swanepoel (2013)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:**\n   - PointConfig: configurations in ℝᵈ\n   - equidistantSet: points at given distance\n   - favoriteCount: maximum over distances\n   - f: the extremal function\n\n2. **Bounds:**\n   - avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2\n   - swanepoel_erdos_754: f(n) ≤ n/2 + O(1)\n\n3. **Stronger Result:**\n   - swanepoel_2013: bound on favorite distance pairs\n   - Applies to arbitrary distance assignments",
+    "keyInsights": [
+      "**Dimension 4 Is Special:** The problem specifically asks about ℝ⁴ because the geometry changes from ℝ³. Higher dimensions have similar bounds.",
+      "**Clifford Torus Construction:** Taking n/2 points on each of two orthogonal circles achieves f(n) ≥ n/2 - points on different circles are equidistant.",
+      "**Favorite Distance Pairs:** Swanepoel's stronger result bounds Σ 1_{|x-y|=d(x)} ≤ (1/2)n² + O(n) for ANY distance assignment d(x).",
+      "**Tight Bounds:** The answer is f(n) = n/2 + Θ(1), determined up to an additive constant.",
+      "**Sphere Intersections:** In ℝ⁴, two 3-spheres generically intersect in a 2-sphere, giving rich equidistance structure."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Favorite distances problem setup",
+      "startLine": 30,
+      "endLine": 38
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "PointConfig, equidistantSet, favoriteCount",
+      "startLine": 40,
+      "endLine": 62
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "summary": "f_d(n) definition, minFavoriteCount",
+      "startLine": 64,
+      "endLine": 74
+    },
+    {
+      "id": "four-dim",
+      "title": "Four-Dimensional Case",
+      "summary": "Avis-Erdős-Pach bounds (1988)",
+      "startLine": 76,
+      "endLine": 86
+    },
+    {
+      "id": "swanepoel",
+      "title": "Swanepoel's Theorem",
+      "summary": "2013 solution, favorite distance pairs",
+      "startLine": 88,
+      "endLine": 118
+    },
+    {
+      "id": "higher-dim",
+      "title": "Higher Dimensions",
+      "summary": "Generalizations to d ≥ 4",
+      "startLine": 120,
+      "endLine": 133
+    },
+    {
+      "id": "geometry",
+      "title": "Why ℝ⁴ Is Special",
+      "summary": "Dimensional phenomena",
+      "startLine": 135,
+      "endLine": 152
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "summary": "Clifford torus, cross-polytope",
+      "startLine": 154,
+      "endLine": 170
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_754_solved, erdos_754_summary",
+      "startLine": 185,
+      "endLine": 217
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #754 asked whether f(n) ≤ n/2 + O(1) for 'favorite distances' in ℝ⁴. Swanepoel (2013) proved YES, completing the picture started by Avis-Erdős-Pach (1988). The tight answer is f(n) = n/2 + Θ(1).",
+    "implications": "**Connections and Applications**\n\n1. **Combinatorial Geometry:** Fundamental result about distance structure in high dimensions\n\n2. **Related to Problem 223:** Maximum diameter pairs - another distance extremal problem\n\n3. **Unit Distance Problem:** Different question but same spirit: counting distance occurrences\n\n4. **Higher Dimensions:** Swanepoel extended to all d ≥ 4 with analogous bounds",
+    "openQuestions": [
+      "Exact value of the additive constant in f(n) = n/2 + O(1)?",
+      "Structure of extremal configurations achieving f(n)?",
+      "Analogous problems for other distance constraints?",
+      "Lower dimensional cases (d ≤ 3) have different answers - what are they exactly?"
+    ]
   }
 }
