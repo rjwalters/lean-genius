@@ -7252,17 +7252,24 @@
   },
   {
     "id": "erdos-447",
-    "title": "Erdős Problem #447",
+    "title": "Erdős Problem #447: Union-Free Collections of Sets",
     "slug": "erdos-447",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large can a union-free collection $...[n]...A\\cup B=C...A,B,C\\in ...\\lvert \\rvert =o(2^n)...\\lvert \\rvert=o(2^n)...A\\subs...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How large can a union-free collection ℱ of subsets of [n] be (no A ∪ B = C with distinct A, B, C ∈ ℱ)? Kleitman (1971) proved |ℱ| < (1+o(1)) C(n, ⌊n/2⌋).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "extremal-combinatorics",
+      "sperner-theory",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 447,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 26
   },
   {
     "id": "erdos-448",
