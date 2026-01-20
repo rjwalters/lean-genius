@@ -128,12 +128,20 @@ def spectralGap : ℝ := 4 * Real.pi^2
 theorem spectralGap_pos : 0 < spectralGap := by unfold spectralGap; positivity
 
 
-/-- **Axiom: Spectral Gap Value**
-    4π² ≈ 39.48 > 39. Requires tighter π bounds than Mathlib's pi_gt_three provides.
-    Need π > 3.12, verifiable with interval arithmetic. -/
-axiom spectralGap_val_axiom : spectralGap > 39
-
-theorem spectralGap_val : spectralGap > 39 := spectralGap_val_axiom
+/-- **PROVED: Spectral Gap Value**
+    4π² ≈ 39.48 > 39. Uses Mathlib's pi_gt_d2 (π > 3.14).
+    Previously an axiom, now fully proven. -/
+theorem spectralGap_val : spectralGap > 39 := by
+  unfold spectralGap
+  have hpi : Real.pi > 3.14 := Real.pi_gt_d2
+  have hpi_sq : Real.pi^2 > 3.14^2 := by
+    apply sq_lt_sq'
+    · linarith
+    · linarith
+  calc 4 * Real.pi^2 > 4 * 3.14^2 := by nlinarith [sq_nonneg Real.pi]
+    _ = 4 * 9.8596 := by norm_num
+    _ = 39.4384 := by norm_num
+    _ > 39 := by norm_num
 
 
 /-- Faber-Krahn constant: c_FK = (1 - e⁻²)·π²/4 ≈ 2.11 -/
@@ -156,22 +164,69 @@ def κ : ℝ := 4
 theorem κ_pos : 0 < κ := by norm_num [κ]
 
 
-/-- **Axiom: Key Numerical Inequality**
-    κ·c_FK = 4·(1-e⁻²)·π²/4 = (1-e⁻²)·π² ≈ 0.865·9.87 ≈ 8.5 > 2.
-    Requires interval arithmetic (polyrith or norm_num extensions). -/
-axiom key_numerical_inequality_axiom : κ * c_FK > 2
+/-! ### Helper lemmas for numerical bounds -/
 
-/-- THE KEY NUMERICAL INEQUALITY: κ·c_FK > 2 -/
-theorem key_numerical_inequality : κ * c_FK > 2 := key_numerical_inequality_axiom
+/-- **PROVED: exp(-2) < 0.1354**
+    Using exp(-1) < 0.3678794412 from Mathlib's exp_neg_one_lt_d9.
+    exp(-2) = exp(-1)² < 0.3678794412² ≈ 0.1353 < 0.1354. -/
+theorem exp_neg_two_lt : Real.exp (-2) < 0.1354 := by
+  have h1 : Real.exp (-2) = Real.exp (-1) * Real.exp (-1) := by
+    rw [← Real.exp_add]; ring_nf
+  rw [h1]
+  have h2 : Real.exp (-1) < 0.3678794412 := Real.exp_neg_one_lt_d9
+  have h_pos : Real.exp (-1) > 0 := Real.exp_pos _
+  have h3 : (0.3678794412 : ℝ)^2 < 0.1354 := by norm_num
+  calc Real.exp (-1) * Real.exp (-1)
+      = Real.exp (-1)^2 := by ring
+    _ < (0.3678794412)^2 := by
+        apply sq_lt_sq'
+        · linarith
+        · exact h2
+    _ < 0.1354 := h3
 
 
-/-- **Axiom: Stronger Numerical Bound**
-    κ·c_FK = (1-e⁻²)·π² ≈ 0.865·9.87 ≈ 8.54 > 8.
-    Requires tight numerical bounds on exp(-2) ≈ 0.135 and π² ≈ 9.87. -/
-axiom kappa_cFK_gt_8_axiom : κ * c_FK > 8
+/-- **PROVED: 1 - exp(-2) > 0.8646** -/
+theorem one_minus_exp_neg_two_gt : 1 - Real.exp (-2) > 0.8646 := by
+  have h := exp_neg_two_lt
+  linarith
 
-/-- Stronger bound: κ·c_FK > 8 (critical inequality for regularity argument) -/
-theorem kappa_cFK_gt_8 : κ * c_FK > 8 := kappa_cFK_gt_8_axiom
+
+/-- **PROVED: Key Numerical Inequality**
+    κ·c_FK = (1-e⁻²)·π² > 0.8646 × 9.8596 > 8.52 > 2
+    Previously an axiom, now fully proven using Mathlib bounds. -/
+theorem key_numerical_inequality : κ * c_FK > 2 := by
+  unfold κ c_FK
+  have h1 : 4 * ((1 - Real.exp (-2)) * Real.pi^2 / 4) = (1 - Real.exp (-2)) * Real.pi^2 := by ring
+  rw [h1]
+  have h_exp : 1 - Real.exp (-2) > 0.8646 := one_minus_exp_neg_two_gt
+  have hpi : Real.pi > 3.14 := Real.pi_gt_d2
+  have hpi_sq : Real.pi^2 > 3.14^2 := by
+    apply sq_lt_sq'
+    · linarith
+    · linarith
+  have h_val : (3.14 : ℝ)^2 = 9.8596 := by norm_num
+  have hpi_sq' : Real.pi^2 > 9.8596 := by linarith [h_val]
+  have h_prod : (0.8646 : ℝ) * 9.8596 > 2 := by norm_num
+  nlinarith [sq_nonneg Real.pi]
+
+
+/-- **PROVED: Stronger Numerical Bound**
+    κ·c_FK = (1-e⁻²)·π² > 0.8646 × 9.8596 > 8.52 > 8
+    Previously an axiom, now fully proven using Mathlib bounds. -/
+theorem kappa_cFK_gt_8 : κ * c_FK > 8 := by
+  unfold κ c_FK
+  have h1 : 4 * ((1 - Real.exp (-2)) * Real.pi^2 / 4) = (1 - Real.exp (-2)) * Real.pi^2 := by ring
+  rw [h1]
+  have h_exp : 1 - Real.exp (-2) > 0.8646 := one_minus_exp_neg_two_gt
+  have hpi : Real.pi > 3.14 := Real.pi_gt_d2
+  have hpi_sq : Real.pi^2 > 3.14^2 := by
+    apply sq_lt_sq'
+    · linarith
+    · linarith
+  have h_val : (3.14 : ℝ)^2 = 9.8596 := by norm_num
+  have hpi_sq' : Real.pi^2 > 9.8596 := by linarith [h_val]
+  have h_prod : (0.8646 : ℝ) * 9.8596 > 8 := by norm_num
+  nlinarith [sq_nonneg Real.pi]
 
 
 /-- Depletion coefficient is negative -/
