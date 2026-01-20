@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-337-1",
+    "proofId": "erdos-337",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #337: Additive Bases and Sumset Growth**\n\n**Setup:** A ⊆ ℕ is an additive basis with |A ∩ [1,N]| = o(N) (sparse).\n\n**Question:** Does |A+A ∩ [1,N]| / |A ∩ [1,N]| → ∞?\n\n**Answer:** NO (Turjányi 1984)",
+    "mathContext": "The sumset A+A = {a+b : a,b ∈ A}. The question asks if sparse bases have fast-growing sumsets.",
+    "significance": "critical",
+    "relatedConcepts": ["Additive bases", "Sumsets", "Asymptotic density"]
+  },
+  {
+    "id": "ann-337-2",
+    "proofId": "erdos-337",
+    "range": { "startLine": 47, "endLine": 67 },
+    "type": "definition",
+    "title": "Counting and Sparse Sets",
+    "content": "**countingFunction A N:**\n|A ∩ {1, ..., N}|\n\n**isSparse A:**\ncountingFunction A N = o(N)\n\nA sparse set has sublinear growth - asymptotically 0% density.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-337-3",
+    "proofId": "erdos-337",
+    "range": { "startLine": 68, "endLine": 88 },
+    "type": "definition",
+    "title": "Sumsets",
+    "content": "**sumset A:**\nA + A = {a + b : a, b ∈ A}\n\n**hFoldSumset h A:**\nhA = sums of h elements from A\n\nExamples:\n- 2A = A + A\n- 3A = A + A + A",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-337-4",
+    "proofId": "erdos-337",
+    "range": { "startLine": 93, "endLine": 106 },
+    "type": "definition",
+    "title": "Additive Bases",
+    "content": "**isAdditiveBasis h A:**\n\nA is an additive basis of order h if every sufficiently large n can be written as a sum of at most h elements from A.\n\n**Example:** Squares are a basis of order 4 (Lagrange's four-square theorem).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-337-5",
+    "proofId": "erdos-337",
+    "range": { "startLine": 111, "endLine": 128 },
+    "type": "axiom",
+    "title": "Turjányi's Counterexample",
+    "content": "**turjanyi_counterexample (1984):**\n\nThere exists a sparse additive basis A where:\n\n|A+A ∩ [1,N]| / |A ∩ [1,N]| ≤ C for all N\n\nThe ratio stays bounded! This disproves Erdős's conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-337-6",
+    "proofId": "erdos-337",
+    "range": { "startLine": 129, "endLine": 144 },
+    "type": "theorem",
+    "title": "The Conjecture is FALSE",
+    "content": "**erdos_conjecture_false:**\n\n¬erdosConjecture\n\n**Proof:** Turjányi's counterexample has bounded ratio C. If the conjecture were true with M = C+1, we'd get a contradiction.\n\nThe proof by contradiction is complete in Lean.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-337-7",
+    "proofId": "erdos-337",
+    "range": { "startLine": 149, "endLine": 164 },
+    "type": "axiom",
+    "title": "Ruzsa-Turjányi Generalization",
+    "content": "**ruzsa_turjanyi_generalization (1985):**\n\nThe generalized conjecture for hA (h ≥ 2) is also FALSE.\n\n|hA ∩ [1,N]| / |A ∩ [1,N]| → ∞ fails for all h ≥ 2.\n\nThe counterexample construction extends to arbitrary sumsets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-337-8",
+    "proofId": "erdos-337",
+    "range": { "startLine": 169, "endLine": 182 },
+    "type": "axiom",
+    "title": "Positive Result: Scaled Version",
+    "content": "**ruzsa_turjanyi_positive:**\n\nFor sparse additive bases:\n\n|A+A+A ∩ [1,3N]| / |A ∩ [1,N]| → ∞\n\nThe scaled interval [1,3N] makes the 3-fold sumset version TRUE.\n\nThe scaling factor matches the number of summands.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-337-9",
+    "proofId": "erdos-337",
+    "range": { "startLine": 187, "endLine": 202 },
+    "type": "definition",
+    "title": "Open Conjecture",
+    "content": "**scaledConjecture (OPEN):**\n\nDoes |A+A ∩ [1,2N]| / |A ∩ [1,N]| → ∞?\n\n**STATUS: OPEN**\n\nRuzsa and Turjányi conjectured this scaled version might be true.\n\nThe factor 2 matches 2-fold sumset A+A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-337-10",
+    "proofId": "erdos-337",
+    "range": { "startLine": 289, "endLine": 318 },
+    "type": "theorem",
+    "title": "Summary: SOLVED (NO)",
+    "content": "**erdos_337:**\n\n**STATUS:** SOLVED (Answer: NO)\n\n**Original Conjecture:** FALSE (Turjányi 1984)\n\n**Generalization to hA:** Also FALSE (Ruzsa-Turjányi 1985)\n\n**Positive Result:** |A+A+A ∩ [1,3N]| version TRUE\n\n**Still Open:** |A+A ∩ [1,2N]| version\n\n**Key Insight:** Sumsets can have many collisions, limiting growth.",
+    "significance": "critical"
+  }
+]

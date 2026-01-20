@@ -1,33 +1,132 @@
 {
   "id": "erdos-337",
-  "title": "Erdős Problem #337",
+  "title": "Erdős Problem #337: Additive Bases and Sumset Growth",
   "slug": "erdos-337",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis (of any finite order) such that .... Is it true that\\[\\lim_{N\\to \\infty}\\rvert}{\\lvert A\\cap \\{1...",
+  "description": "For sparse additive bases A, is |A+A ∩ [1,N]| / |A ∩ [1,N]| → ∞? Answer: NO (Turjányi 1984). Generalized to h-fold sumsets by Ruzsa-Turjányi.",
   "meta": {
-    "author": "Unknown",
+    "author": "Turjányi (1984), Ruzsa-Turjányi (1985)",
     "sourceUrl": "https://erdosproblems.com/337",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos337Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
+    "tags": ["erdos", "additive-combinatorics", "sumsets", "additive-bases", "number-theory"],
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 337,
     "erdosUrl": "https://erdosproblems.com/337",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
+      { "theorem": "Set", "description": "Basic set operations", "module": "Mathlib.Data.Set.Basic" },
+      { "theorem": "Finset.range", "description": "Finite ranges for counting", "module": "Mathlib.Data.Finset.Basic" }
+    ],
+    "originalContributions": [
+      "countingFunction: |A ∩ [1,N]|",
+      "isLittleO: little-o asymptotic notation",
+      "isSparse: sets with o(N) elements",
+      "sumset: A + A pairwise sums",
+      "hFoldSumset: h-fold sumsets",
+      "isAdditiveBasis: additive basis definition",
+      "erdosConjecture: the disproved conjecture",
+      "turjanyi_counterexample: witness to falsity",
+      "ruzsa_turjanyi_positive: scaled 3-fold version is true"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #337 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be an additive basis (of any finite order) such that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert=o(N)$. Is it true that\\[\\lim_{N\\to \\infty}\\frac{\\lvert (A+A)\\cap \\{1,\\ldots,N\\}\\rvert}{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}=\\infty?\\]\n\n\n\nThe answer is no, and a counterexample was provided by Turj\\'{a}nyi \\cite{Tu84}. This was generalised (to the replacement of $A+A$ by the $h$-fold sumset $hA$ for any $h\\geq 2$) by Ruzsa and Turj\\'{a}nyi \\cite{RT85}. Ruzsa and Turj\\'{a}nyi do prove (under the same hypotheses) that\\[\\lim_{N\\to \\infty}\\frac{\\lvert (A+A+A)\\cap \\{1,\\ldots,3N\\}\\rvert}{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}=\\infty,\\]and conjecture that the same should be true with $(A+A)\\cap \\{1,\\ldots,2N\\}$ in the numerator.\n\n\n\n\nReferences\n\n\n[RT85] Ruzsa, I. Z. and Turj\\'{a}nyi, S., A note on additive bases of integers. Publ. Math. Debrecen (1985), 101-104.\n\n[Tu84] Turj\\'{a}nyi, S., A note on basis sequences. Topics in classical number theory, Vol. I, II (Budapest, 1981) (1984), 1571-1576.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the relationship between an additive basis and its sumset. Erdős asked whether sparse additive bases must have sumsets that grow faster than the original set. Turjányi (1984) provided a surprising counterexample, showing the answer is NO. Ruzsa and Turjányi (1985) generalized this to h-fold sumsets and proved a related positive result for scaled intervals.",
+    "problemStatement": "**Problem Statement (SOLVED: NO)**\n\nLet A ⊆ ℕ be an additive basis of any finite order with |A ∩ [1,N]| = o(N).\n\n**Question:** Is it true that\n|A+A ∩ [1,N]| / |A ∩ [1,N]| → ∞?\n\n**Answer:** NO (Turjányi 1984)\n\n**Related:**\n- Generalization to hA also fails (Ruzsa-Turjányi)\n- But |A+A+A ∩ [1,3N]| / |A ∩ [1,N]| → ∞ IS true\n- Open: Does |A+A ∩ [1,2N]| / |A ∩ [1,N]| → ∞?",
+    "proofStrategy": "The formalization defines additive bases, sparse sets, and sumsets. Turjányi's counterexample is axiomatized as a witness showing the conjecture is false. The proof that the conjecture is false follows by contradiction: the counterexample has bounded ratio, contradicting the claimed unbounded growth. Ruzsa-Turjányi's generalization and positive result are also formalized.",
+    "keyInsights": [
+      "**Sumset:** A + A = {a + b : a, b ∈ A}",
+      "**Sparse:** |A ∩ [1,N]| = o(N) means sublinear growth",
+      "**Additive Basis:** Every large n is a sum of h elements from A",
+      "**Turjányi (1984):** Counterexample shows ratio can be bounded",
+      "**Ruzsa-Turjányi:** Extended to hA for any h ≥ 2",
+      "**Positive Result:** |A+A+A ∩ [1,3N]| / |A ∩ [1,N]| → ∞ IS true",
+      "**Key Insight:** Sumsets can have many collisions, limiting growth"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 88,
+      "summary": "Counting function, little-o, sparse sets, sumsets"
+    },
+    {
+      "id": "additive-bases",
+      "title": "Additive Bases",
+      "startLine": 89,
+      "endLine": 106,
+      "summary": "Additive basis of order h and finite order bases"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (DISPROVED)",
+      "startLine": 107,
+      "endLine": 144,
+      "summary": "The Erdős conjecture and Turjányi's counterexample"
+    },
+    {
+      "id": "generalization",
+      "title": "Ruzsa-Turjányi Generalization",
+      "startLine": 145,
+      "endLine": 164,
+      "summary": "Generalization to h-fold sumsets also fails"
+    },
+    {
+      "id": "positive-result",
+      "title": "Related Positive Result",
+      "startLine": 165,
+      "endLine": 182,
+      "summary": "Scaled 3-fold version |A+A+A ∩ [1,3N]| is true"
+    },
+    {
+      "id": "open-conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 183,
+      "endLine": 202,
+      "summary": "Ruzsa-Turjányi conjecture about |A+A ∩ [1,2N]|"
+    },
+    {
+      "id": "intuition",
+      "title": "Why the Conjecture Fails",
+      "startLine": 203,
+      "endLine": 226,
+      "summary": "Sumset collisions limit growth"
+    },
+    {
+      "id": "plunnecke",
+      "title": "Plünnecke-Ruzsa Context",
+      "startLine": 227,
+      "endLine": 248,
+      "summary": "Upper bounds vs lower bounds for sumsets"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 249,
+      "endLine": 267,
+      "summary": "Powers of 2 (not basis), squares (basis of order 4)"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 268,
+      "endLine": 318,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #337 is SOLVED with answer NO. Sparse additive bases need not have sumsets that grow faster than the original set. Turjányi provided a counterexample, and Ruzsa-Turjányi extended this to h-fold sumsets while proving a positive result for scaled intervals.",
+    "implications": "The result reveals that sparsity alone doesn't guarantee sumset growth in additive combinatorics. The refined Ruzsa-Turjányi conjecture about scaled intervals remains open and represents the current frontier of this problem.",
+    "openQuestions": [
+      "Does |A+A ∩ [1,2N]| / |A ∩ [1,N]| → ∞ for sparse additive bases? (Ruzsa-Turjányi conjecture)",
+      "What is the structure of Turjányi's counterexample?",
+      "What is the optimal scaling factor for a positive result?"
+    ]
   }
 }
