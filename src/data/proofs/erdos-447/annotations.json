@@ -1,1 +1,238 @@
-[]
+[
+  {
+    "id": "ann-e447-header",
+    "proofId": "erdos-447",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #447: Union-Free Collections**\n\nA collection ℱ is union-free if no A ∪ B = C for distinct A, B, C ∈ ℱ.\n\n**Question:** How large can ℱ be?\n\n**Answer (Kleitman 1971):**\n|ℱ| < (1+o(1)) C(n, ⌊n/2⌋)\n\nThe middle layer achieves this bound.",
+    "mathContext": "This connects extremal set theory to Sperner's theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Sperner's theorem", "Antichains", "Set families", "Binomial coefficients"]
+  },
+  {
+    "id": "ann-e447-groundset",
+    "proofId": "erdos-447",
+    "range": { "startLine": 41, "endLine": 45 },
+    "type": "definition",
+    "title": "Ground Set",
+    "content": "**GroundSet(n):**\n\n[n] = {0, 1, ..., n-1} represented as Finset (Fin n).\n\nThe universe from which we form subsets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-powerset",
+    "proofId": "erdos-447",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "Power Set",
+    "content": "**powerSet(n):**\n\nThe collection of ALL subsets of [n].\n\nHas size 2ⁿ - we want union-free families much smaller than this.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-unionfree",
+    "proofId": "erdos-447",
+    "range": { "startLine": 54, "endLine": 64 },
+    "type": "definition",
+    "title": "Union-Free Collection",
+    "content": "**IsUnionFree:**\n\nNo three distinct sets A, B, C ∈ ℱ satisfy A ∪ B = C.\n\nEquivalently: no set in ℱ is the union of two other distinct sets in ℱ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e447-unionfree-alt",
+    "proofId": "erdos-447",
+    "range": { "startLine": 66, "endLine": 73 },
+    "type": "definition",
+    "title": "Alternative Definition",
+    "content": "**IsUnionFree':**\n\nSymmetric version: no three distinct sets have one being the union of the other two.\n\nAll permutations are forbidden.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-middle",
+    "proofId": "erdos-447",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "definition",
+    "title": "Middle Layer",
+    "content": "**middleLayer(n):**\n\nAll subsets of [n] of size exactly ⌊n/2⌋.\n\nThis is the key construction for achieving the optimal bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e447-middle-uf",
+    "proofId": "erdos-447",
+    "range": { "startLine": 88, "endLine": 100 },
+    "type": "theorem",
+    "title": "Middle Layer is Union-Free",
+    "content": "**middleLayer_union_free:**\n\nSets of equal size cannot have one be the union of two others.\n\nIf |A| = |B| = |C| and A ∪ B = C, then A ⊆ C and B ⊆ C implies |C| ≥ max(|A|, |B|) with equality only if A = B.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-binomial",
+    "proofId": "erdos-447",
+    "range": { "startLine": 102, "endLine": 106 },
+    "type": "definition",
+    "title": "Middle Binomial",
+    "content": "**middleBinomial(n):**\n\nC(n, ⌊n/2⌋) - the largest binomial coefficient.\n\nThis is the Sperner bound and the optimal union-free size.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e447-sperner",
+    "proofId": "erdos-447",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "axiom",
+    "title": "Sperner's Theorem",
+    "content": "**sperner_theorem:**\n\nAny antichain in 2^[n] has size ≤ C(n, ⌊n/2⌋).\n\nUnion-free families relate closely to antichains.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-littleo",
+    "proofId": "erdos-447",
+    "range": { "startLine": 122, "endLine": 127 },
+    "type": "definition",
+    "title": "Little-o Notation",
+    "content": "**IsLittleO:**\n\nf(n) = o(g(n)) means f(n)/g(n) → 0 as n → ∞.\n\nUsed to state that union-free families are o(2ⁿ).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-maxsize",
+    "proofId": "erdos-447",
+    "range": { "startLine": 129, "endLine": 134 },
+    "type": "definition",
+    "title": "Maximum Union-Free Size",
+    "content": "**maxUnionFreeSize(n):**\n\nThe maximum |ℱ| over all union-free ℱ ⊆ 2^[n].\n\nThis is the function we want to bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e447-sarkozy",
+    "proofId": "erdos-447",
+    "range": { "startLine": 142, "endLine": 150 },
+    "type": "axiom",
+    "title": "Sárközy-Szemerédi Bound",
+    "content": "**sarkozy_szemeredi_bound:**\n\nmaxUnionFreeSize(n) = o(2ⁿ)\n\nThis was reported by Erdős in 1965 but the proof was unpublished.\nSuperseded by Kleitman's stronger result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-asymp",
+    "proofId": "erdos-447",
+    "range": { "startLine": 158, "endLine": 165 },
+    "type": "definition",
+    "title": "Asymptotic Equivalence",
+    "content": "**AsymptoticTo:**\n\nf(n) ~ g(n) means f(n)/g(n) → 1.\n\nUsed to express tight bounds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-asymp-upper",
+    "proofId": "erdos-447",
+    "range": { "startLine": 167, "endLine": 172 },
+    "type": "definition",
+    "title": "Asymptotic Upper Bound",
+    "content": "**AsymptoticUpperBound:**\n\nf(n) < (1+o(1))g(n) means f(n)/g(n) → 1 from above.\n\nKleitman proved this for maxUnionFreeSize.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-kleitman",
+    "proofId": "erdos-447",
+    "range": { "startLine": 174, "endLine": 181 },
+    "type": "axiom",
+    "title": "Kleitman's Theorem",
+    "content": "**kleitman_theorem:**\n\nmaxUnionFreeSize(n) < (1+o(1)) · C(n, ⌊n/2⌋)\n\nThis is the optimal bound - matched by the middle layer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e447-kleitman-ref",
+    "proofId": "erdos-447",
+    "range": { "startLine": 183, "endLine": 188 },
+    "type": "theorem",
+    "title": "Kleitman Reference",
+    "content": "**kleitman_reference:**\n\n'Collections of subsets containing no two sets and their union'\nProceedings of the LA Meeting AMS (1971), 153-155.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-middle-card",
+    "proofId": "erdos-447",
+    "range": { "startLine": 196, "endLine": 201 },
+    "type": "theorem",
+    "title": "Middle Layer Size",
+    "content": "**middleLayer_card:**\n\n|middleLayer(n)| = C(n, ⌊n/2⌋)\n\nThe middle layer achieves the Sperner bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-lower",
+    "proofId": "erdos-447",
+    "range": { "startLine": 203, "endLine": 211 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "**lower_bound:**\n\nmaxUnionFreeSize(n) ≥ C(n, ⌊n/2⌋)\n\nAchieved by the middle layer (union-free by size argument).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-tight",
+    "proofId": "erdos-447",
+    "range": { "startLine": 213, "endLine": 220 },
+    "type": "theorem",
+    "title": "Tightness",
+    "content": "**bound_tight:**\n\nmaxUnionFreeSize(n) ~ C(n, ⌊n/2⌋)\n\nUpper and lower bounds match asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e447-lcm",
+    "proofId": "erdos-447",
+    "range": { "startLine": 228, "endLine": 237 },
+    "type": "definition",
+    "title": "LCM Representation",
+    "content": "**lcmRepresentation:**\n\nDistinct a, b, c ∈ A with lcm(a,b) = c.\n\nThe union-free bound implies these exist infinitely often in positive density sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-density",
+    "proofId": "erdos-447",
+    "range": { "startLine": 239, "endLine": 245 },
+    "type": "definition",
+    "title": "Positive Density",
+    "content": "**hasPositiveDensity:**\n\nA ⊂ ℕ has positive density if liminf |A ∩ [1,n]|/n > 0.\n\nSets with positive density have rich structure.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-p487",
+    "proofId": "erdos-447",
+    "range": { "startLine": 247, "endLine": 256 },
+    "type": "axiom",
+    "title": "Connection to Problem 487",
+    "content": "**problem_487_from_447:**\n\nIf A ⊂ ℕ has positive density, then infinitely many a, b, c ∈ A satisfy lcm(a,b) = c.\n\nThis follows from the union-free bound via encoding.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e447-kunion",
+    "proofId": "erdos-447",
+    "range": { "startLine": 264, "endLine": 271 },
+    "type": "definition",
+    "title": "k-Union-Free",
+    "content": "**IsKUnionFree:**\n\nNo set is the union of k other distinct sets in the collection.\n\nGeneralizes 2-union-free.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-strong",
+    "proofId": "erdos-447",
+    "range": { "startLine": 273, "endLine": 281 },
+    "type": "definition",
+    "title": "Strong Union-Free",
+    "content": "**IsStrongUnionFree:**\n\nNo set is the union of ANY number of other sets in ℱ.\n\nThis is Problem 1023 - much stronger than 2-union-free.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e447-main",
+    "proofId": "erdos-447",
+    "range": { "startLine": 289, "endLine": 312 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_447:**\n\nCombines both bounds:\n1. Upper: |ℱ| < (1+o(1)) C(n, ⌊n/2⌋) (Kleitman)\n2. Lower: |ℱ| ≥ C(n, ⌊n/2⌋) (middle layer)\n\nStatus: SOLVED (Kleitman 1971)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e447-timeline",
+    "proofId": "erdos-447",
+    "range": { "startLine": 314, "endLine": 320 },
+    "type": "theorem",
+    "title": "Historical Timeline",
+    "content": "**historical_timeline:**\n\n- Erdős posed the problem\n- Sárközy & Szemerédi: o(2ⁿ) (1965, unpublished)\n- Kleitman: (1+o(1))C(n,n/2) (1971)",
+    "significance": "supporting"
+  }
+]

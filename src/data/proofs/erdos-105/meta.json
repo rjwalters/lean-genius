@@ -44,7 +44,64 @@
       "$50 prize was awarded for the disproof"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Point, Line, Line.contains, Line.isRich, Line.unblocked",
+      "startLine": 45,
+      "endLine": 70
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Purdy Conjecture",
+      "summary": "NonCollinear, ErdosPurdyConjecture",
+      "startLine": 72,
+      "endLine": 88
+    },
+    {
+      "id": "disproof",
+      "title": "The Disproof",
+      "summary": "xichuan_counterexample, erdos_105_disproved",
+      "startLine": 90,
+      "endLine": 116
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "hickerson_n_minus_2, beck_szemeredi_trotter_positive",
+      "startLine": 118,
+      "endLine": 140
+    },
+    {
+      "id": "szemeredi-trotter",
+      "title": "Szemerédi-Trotter Theorem",
+      "summary": "incidenceCount, szemeredi_trotter, many_rich_lines_exist",
+      "startLine": 142,
+      "endLine": 167
+    },
+    {
+      "id": "threshold",
+      "title": "Threshold Function",
+      "summary": "thresholdFunction, threshold_lower_bound, threshold_upper_bound",
+      "startLine": 169,
+      "endLine": 184
+    },
+    {
+      "id": "open-problems",
+      "title": "Open Problems",
+      "summary": "openProblem_n_minus_4, openProblem_exact_threshold, openProblem_optimal_constant",
+      "startLine": 186,
+      "endLine": 206
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_105_summary, historical notes",
+      "startLine": 208,
+      "endLine": 250
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #105 (Erdős-Purdy conjecture) asked whether n-3 obstacle points can block all rich lines through n points. DISPROVED by Xichuan with explicit counterexamples. The exact threshold between cn and n-3 where the statement transitions from true to false remains open.",
     "implications": "**Theoretical Significance**\n\n1. **Incidence Geometry**: Reveals limits of 'rich line' existence theorems\n\n2. **Szemerédi-Trotter**: The constant in cn is important - near-linear obstacles can block\n\n3. **Combinatorial Geometry**: Shows careful constructions can defeat natural conjectures\n\n4. **Open Threshold**: The exact transition point is an interesting structural question",

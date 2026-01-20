@@ -4,10 +4,10 @@
   "slug": "erdos-99",
   "description": "Must n points with min distance 1 and minimal diameter contain a unit equilateral triangle for large n? Erdős offered $100 for a counterexample but only $50 for a proof. The problem remains OPEN.",
   "meta": {
-    "author": "Erdős (conjecture), Thue (optimal packing)",
+    "author": "Erdős (conjecture), Thue (optimal packing), Bezdek-Fodor (small cases)",
     "sourceUrl": "https://erdosproblems.com/99",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos99Problem.lean",
     "tags": [
       "discrete-geometry",
@@ -15,10 +15,11 @@
       "erdos",
       "equilateral-triangles",
       "open-problem",
-      "triangular-lattice"
+      "triangular-lattice",
+      "thue"
     ],
     "badge": "open",
-    "sorries": 1,
+    "sorries": 3,
     "erdosNumber": 99,
     "erdosUrl": "https://erdosproblems.com/99",
     "erdosProblemStatus": "open",
@@ -46,11 +47,67 @@
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 34,
-      "endLine": 35,
-      "summary": "The current proof is a placeholder (erdos_99 : True). This is an OPEN problem about equilateral triangles in optimal point packings."
+      "id": "geometric-definitions",
+      "title": "Basic Geometric Definitions",
+      "startLine": 43,
+      "endLine": 76,
+      "summary": "Defines the Euclidean plane, distance function, minimum pairwise distance, and diameter of point sets."
+    },
+    {
+      "id": "equilateral-triangles",
+      "title": "Unit Distance and Equilateral Triangles",
+      "startLine": 78,
+      "endLine": 93,
+      "summary": "Defines unit equilateral triangles and when a point set contains one."
+    },
+    {
+      "id": "optimal-configurations",
+      "title": "Optimal Point Configurations",
+      "startLine": 95,
+      "endLine": 110,
+      "summary": "Defines valid configurations (min distance 1) and optimal configurations (minimal diameter)."
+    },
+    {
+      "id": "triangular-lattice",
+      "title": "The Triangular Lattice",
+      "startLine": 112,
+      "endLine": 143,
+      "summary": "Defines the triangular lattice and proves it contains unit equilateral triangles."
+    },
+    {
+      "id": "thue-theorem",
+      "title": "Thue's Theorem Context",
+      "startLine": 145,
+      "endLine": 160,
+      "summary": "Thue's optimal packing theorem and its implications for diameter-minimizing configurations."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 162,
+      "endLine": 180,
+      "summary": "Analysis of n=3, n=4 (square counterexample), and Bezdek-Fodor results."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "startLine": 182,
+      "endLine": 203,
+      "summary": "States Erdős Problem #99 and the stronger conjecture about lattice points."
+    },
+    {
+      "id": "evidence",
+      "title": "Evidence For and Against",
+      "startLine": 205,
+      "endLine": 220,
+      "summary": "Arguments supporting and opposing the conjecture."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 264,
+      "endLine": 288,
+      "summary": "Full summary of the problem status and prize structure."
     }
   ],
   "conclusion": {
