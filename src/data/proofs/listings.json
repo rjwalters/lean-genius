@@ -3642,17 +3642,24 @@
   },
   {
     "id": "erdos-185",
-    "title": "Erdős Problem #185",
+    "title": "Erdős Problem #185: Cap Sets in {0,1,2}^n",
     "slug": "erdos-185",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of a subset of ... which contains no three points on a line. Is it true that ...?\n\n\n\nOriginally c...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is f₃(n) = o(3^n) where f₃(n) is the max cap set in {0,1,2}^n? YES - Proved via density Hales-Jewett (Furstenberg-Katznelson 1991).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "cap-sets",
+      "hales-jewett",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 185,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 21
   },
   {
     "id": "erdos-186",
