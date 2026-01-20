@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 52, "endLine": 53 },
+    "type": "definition",
+    "title": "Unit Fraction Sum",
+    "content": "The unit fraction sum Σ_{n∈S} 1/n computes the sum of reciprocals for a finite set S of positive integers. This is the fundamental object in the problem - we want subsets where this sum never equals exactly 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "definition",
+    "title": "Unit Sum-Free Sets",
+    "content": "A set A is unit sum-free if no nonempty subset S ⊆ A has unit fractions summing to exactly 1. The challenge is to find the largest such A within {1,...,N}. Note that this is a very restrictive condition since 1 has many Egyptian fraction representations.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "definition",
+    "title": "The Maximum Function A(N)",
+    "content": "A(N) is the maximum cardinality of a unit sum-free subset of {1,...,N}. This is the quantity Erdős asked to estimate. The answer turns out to be A(N) = (1 - 1/e + o(1))N ≈ 0.632N.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 87, "endLine": 88 },
+    "type": "conjecture",
+    "title": "Erdős-Graham Conjecture (DISPROVED)",
+    "content": "Erdős and Graham (1980) conjectured A(N) = (1 + o(1))N, meaning almost all integers could be included while avoiding sum = 1. This was a natural but incorrect guess - they underestimated how constraining the condition is.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 95, "endLine": 96 },
+    "type": "theorem",
+    "title": "Croot's Theorem (2003)",
+    "content": "Croot proved the existence of c < 1 such that A(N) < cN for all large N. This disproved the Erdős-Graham conjecture by showing a positive fraction of integers must be excluded. The key insight was that large sets inevitably contain subsets summing to 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "A(N) ≥ (1 - 1/e + o(1))N comes from including only integers n > e (small unit fractions). Since each 1/n < 1/e, no finite subset can sum to exactly 1. This 'trivial' bound turns out to be asymptotically optimal!",
+    "significance": "important"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "theorem",
+    "title": "Liu-Sawhney Theorem (2024)",
+    "content": "Liu and Sawhney proved A(N) = (1 - 1/e + o(1))N, determining the exact asymptotic. This shows the trivial lower bound is optimal - one cannot do better than density 1 - 1/e ≈ 0.632. The problem took 44 years to solve (1980-2024).",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 164, "endLine": 164 },
+    "type": "definition",
+    "title": "The Optimal Density 1 - 1/e",
+    "content": "The constant 1 - 1/e ≈ 0.6321205588... is the asymptotic density of maximum unit sum-free sets. The appearance of e is natural: it relates to the harmonic series Σ 1/n ≈ ln(N) and optimal exclusion patterns.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 235, "endLine": 236 },
+    "type": "definition",
+    "title": "Egyptian Fraction Connection",
+    "content": "Egyptian fractions are sums of distinct unit fractions. Every positive rational has such a representation. The fact that 1 has many representations (like 1/2+1/3+1/6) makes avoiding sum = 1 difficult, explaining why we can only achieve density 0.632.",
+    "significance": "helpful"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 339, "endLine": 342 },
+    "type": "summary",
+    "title": "Main Result: erdos_300",
+    "content": "The main theorem states A(N)/N → 1 - 1/e as N → ∞. This completely resolves Erdős Problem #300. The Erdős-Graham conjecture was wrong, and the 'trivial' lower bound is actually the truth. About 63.2% of integers can be included in a maximum unit sum-free set.",
+    "significance": "essential"
+  }
+]

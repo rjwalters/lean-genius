@@ -5562,17 +5562,24 @@
   },
   {
     "id": "erdos-300",
-    "title": "Erdős Problem #300",
+    "title": "Erdős Problem #300: Maximum Subsets Avoiding Unit Fraction Sum 1",
     "slug": "erdos-300",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the maximal cardinality of ... such that ... for all .... Estimate ....\n\n\n\nErds and Graham believe the answer ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A(N) be the max size of A ⊆ {1,...,N} with no subset summing to 1 via unit fractions. SOLVED: A(N) = (1 - 1/e + o(1))N (Liu-Sawhney 2024). Erdős-Graham conjecture A(N) ≈ N disproved by Croot (2003).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "subset-sums",
+      "combinatorics",
+      "egyptian-fractions"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 300,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-302",
