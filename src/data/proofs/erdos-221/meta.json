@@ -1,16 +1,21 @@
 {
   "id": "erdos-221",
-  "title": "Erdős Problem #221",
+  "title": "Erdős Problem #221: Additive Complements with Powers of 2",
   "slug": "erdos-221",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a set ... such that, for all large ...,\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\ll N/\\log N\\]and such that every large in...",
+  "description": "Is there a set A ⊆ ℕ with |A ∩ {1,...,N}| ≪ N/log N such that every large integer can be written as 2^k + a for some k ≥ 0 and a ∈ A? SOLVED: YES, by Ruzsa (1972) using an ingenious construction based on powers of 5.",
   "meta": {
-    "author": "Unknown",
+    "author": "Lorentz (1954), Ruzsa (1972, 2001)",
     "sourceUrl": "https://erdosproblems.com/221",
-    "date": "",
-    "status": "pending",
+    "date": "1972",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos221Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-number-theory",
+      "additive-complements",
+      "powers-of-2",
+      "primitive-roots",
+      "solved"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +24,91 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #221 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a set $A\\subset\\mathbb{N}$ such that, for all large $N$,\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\ll N/\\log N\\]and such that every large integer can be written as $2^k+a$ for some $k\\geq 0$ and $a\\in A$?\n\n\n\nLorentz \\cite{Lo54} proved there is such a set with, for all large $N$,\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\ll \\frac{\\log\\log N}{\\log N}N\\]The answer is yes, proved by Ruzsa \\cite{Ru72}. Ruzsa's construction is ingeniously simple:\\[A = \\{ 5^nm : m\\geq 1\\textrm{ and }5^n\\geq C\\log m\\}+\\{0,1\\}\\]for some small absolute constant $C>0$ (van Doorn explains why $C=(5\\log 2)^{-1}$ works in the comments). That every large integer is of the form $2^k+a$ for some $a\\in A$ is a consequence of the fact that $2$ is a primitive root of $5^n$ for all $n\\geq 1$.\n\nIn \\cite{Ru01} Ruzsa constructs an asymptotically best possible answer to this question (a so-called 'exact additive complement'); that is, there is such a set $A$ with\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\sim \\frac{N}{\\log_2N}\\]as $N\\to \\infty$.\n\n\n\n\nReferences\n\n\n[Lo54] Lorentz, G. G., On a problem of additive number theory. Proc. Amer. Math. Soc. (1954), 838-841.\n\n[Ru01] Ruzsa, Imre Z., Additive completion of lacunary sequences. Combinatorica (2001), 279-291.\n\n[Ru72] Ruzsa, Jr., I., On a problem of P. Erd\\H{o}s. Canad. Math. Bull. (1972), 309-310.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about additive complements to the exponentially sparse set of powers of 2. Lorentz (1954) first showed such complements exist with density O(N log log N / log N). Ruzsa (1972) achieved the optimal bound O(N / log N) with an elegant construction using powers of 5, exploiting the fact that 2 is a primitive root mod 5^n. In 2001, Ruzsa refined this to construct an 'exact' complement with asymptotically optimal density N / log₂ N.",
+    "problemStatement": "Is there a set A ⊆ ℕ such that: (1) |A ∩ {1,...,N}| ≪ N/log N for all large N, and (2) every large integer can be written as 2^k + a for some k ≥ 0 and a ∈ A?",
+    "proofStrategy": "Ruzsa's construction: A = { 5^n · m : m ≥ 1 and 5^n ≥ C log m } + {0, 1} where C = 1/(5 log 2). The key insight is that 2 is a primitive root modulo 5^n for all n ≥ 1, meaning powers of 2 cover all residues coprime to 5^n. This ensures every large integer has the required representation while the constraint 5^n ≥ C log m keeps A sparse.",
+    "keyInsights": [
+      "2 is a primitive root modulo 5^n for all n ≥ 1 - this is the key algebraic fact",
+      "Powers of 2 cover all residues coprime to 5^n, enabling the coverage",
+      "The condition 5^n ≥ C log m ensures sparsity O(N/log N)",
+      "Lorentz's 1954 result was the first positive answer but not optimal",
+      "Ruzsa's 2001 'exact complement' achieves asymptotic density N/log₂ N",
+      "The density N/log N is optimal up to constants - a lower bound also exists"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 59,
+      "summary": "Defines powers of 2, additive complements, and the main property."
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions",
+      "startLine": 61,
+      "endLine": 83,
+      "summary": "Defines counting function and various density bounds (N/log N, Lorentz, optimal)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Problem Statement",
+      "startLine": 85,
+      "endLine": 91,
+      "summary": "States Erdős Problem #221 as a formal conjecture."
+    },
+    {
+      "id": "lorentz-1954",
+      "title": "Lorentz's Result (1954)",
+      "startLine": 93,
+      "endLine": 99,
+      "summary": "The first positive result with weaker density bound."
+    },
+    {
+      "id": "ruzsa-construction",
+      "title": "Ruzsa's Construction (1972)",
+      "startLine": 101,
+      "endLine": 130,
+      "summary": "Defines Ruzsa's set using powers of 5 and proves the main theorem."
+    },
+    {
+      "id": "optimal-construction",
+      "title": "Ruzsa's Optimal Construction (2001)",
+      "startLine": 139,
+      "endLine": 148,
+      "summary": "The exact additive complement achieving asymptotic density N/log₂ N."
+    },
+    {
+      "id": "optimality",
+      "title": "Why N/log N is Optimal",
+      "startLine": 150,
+      "endLine": 168,
+      "summary": "Shows the density bound is tight from both directions."
+    },
+    {
+      "id": "primitive-roots",
+      "title": "Connection to Primitive Roots",
+      "startLine": 170,
+      "endLine": 184,
+      "summary": "Explains why 2 being a primitive root mod 5^n is crucial."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 215,
+      "endLine": 255,
+      "summary": "Complete summary and main theorem statements."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #221 is SOLVED. The answer is YES: Ruzsa (1972) constructed a set A with |A ∩ {1,...,N}| = O(N/log N) such that every large integer is 2^k + a for some k ≥ 0 and a ∈ A. The construction uses A = { 5^n · m : 5^n ≥ C log m } + {0,1}, exploiting that 2 is a primitive root mod 5^n. Ruzsa (2001) later achieved the asymptotically optimal density N/log₂ N.",
+    "implications": "This result reveals deep connections between additive combinatorics and multiplicative number theory (primitive roots). It shows that even very sparse sets can 'complement' the powers of 2 to cover all integers.",
+    "openQuestions": [
+      "Find explicit constants for the density bounds",
+      "Generalize to other bases (powers of g instead of 2)",
+      "What is the exact constant in the asymptotic N/log₂ N?",
+      "Study the structure of all optimal complements"
+    ]
   }
 }

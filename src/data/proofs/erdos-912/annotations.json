@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-e912-header",
+    "proofId": "erdos-912",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview: Distinct Exponents in n!",
+    "content": "**Erdős Problem #912: OPEN**\n\nIf n! = ∏ pᵢ^{kᵢ}, let h(n) count distinct exponents kᵢ.\n\n**Question:** Does h(n) ~ c·√(n/log n) for some c > 0?\n\n**Known:** h(n) ≍ √(n/log n) (Erdős-Selfridge)\n**Conjectured:** c = √(2π) ≈ 2.506 (Tao)",
+    "mathContext": "This problem connects factorial prime factorization with asymptotic analysis. The exponent of p in n! is given by Legendre's formula.",
+    "significance": "critical",
+    "relatedConcepts": ["factorials", "prime-factorization", "Legendre-formula", "asymptotic"]
+  },
+  {
+    "id": "ann-e912-exponent",
+    "proofId": "erdos-912",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "definition",
+    "title": "Exponent in Factorial",
+    "content": "**exponentInFactorial p n:**\n\nThe p-adic valuation of n!, i.e., the exponent kᵢ where p^{kᵢ} || n!.\n\nComputed via Legendre's formula: ∑ⱼ floor(n/p^j).",
+    "mathContext": "For prime p, this counts how many times p divides n!. It equals ∑_{j≥1} floor(n/p^j).",
+    "significance": "key",
+    "relatedConcepts": ["p-adic-valuation", "Legendre-formula"]
+  },
+  {
+    "id": "ann-e912-h",
+    "proofId": "erdos-912",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "definition",
+    "title": "The Function h(n)",
+    "content": "**h(n):**\n\nThe number of distinct values among the exponents kᵢ in n! = ∏ pᵢ^{kᵢ}.\n\nThis measures the 'diversity' of exponents in the prime factorization.",
+    "mathContext": "For example, 10! = 2^8 · 3^4 · 5^2 · 7^1, so the exponents are {8,4,2,1} and h(10) = 4.",
+    "significance": "critical",
+    "relatedConcepts": ["distinct-values", "prime-factorization"]
+  },
+  {
+    "id": "ann-e912-lower",
+    "proofId": "erdos-912",
+    "range": { "startLine": 88, "endLine": 95 },
+    "type": "axiom",
+    "title": "Erdős-Selfridge Lower Bound",
+    "content": "**erdos_selfridge_lower_bound:**\n\nh(n) ≥ c₁ · √(n/log n) for some c₁ > 0 and large n.\n\nFrom [Er82c], Congr. Numer. (1982).",
+    "mathContext": "This establishes that h(n) grows at least as fast as √(n/log n).",
+    "significance": "critical",
+    "relatedConcepts": ["lower-bound", "asymptotic"]
+  },
+  {
+    "id": "ann-e912-upper",
+    "proofId": "erdos-912",
+    "range": { "startLine": 97, "endLine": 104 },
+    "type": "axiom",
+    "title": "Erdős-Selfridge Upper Bound",
+    "content": "**erdos_selfridge_upper_bound:**\n\nh(n) ≤ c₂ · √(n/log n) for some c₂ > 0 and large n.\n\nTogether with the lower bound: h(n) ≍ √(n/log n).",
+    "mathContext": "This shows h(n) doesn't grow faster than √(n/log n). Combined: the asymptotic order is known.",
+    "significance": "critical",
+    "relatedConcepts": ["upper-bound", "asymptotic"]
+  },
+  {
+    "id": "ann-e912-conjecture",
+    "proofId": "erdos-912",
+    "range": { "startLine": 124, "endLine": 133 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**ErdosConjecture912:**\n\n∃ c > 0 such that h(n)/√(n/log n) → c as n → ∞.\n\nThis is stronger than the known bounds: it asks for a specific limit.",
+    "mathContext": "The conjecture asks not just for asymptotic order but for a precise limiting constant.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "limit", "asymptotic"]
+  },
+  {
+    "id": "ann-e912-tao",
+    "proofId": "erdos-912",
+    "range": { "startLine": 135, "endLine": 149 },
+    "type": "definition",
+    "title": "Tao's Conjectured Constant",
+    "content": "**taoConstant:**\n\nc = √(2π) ≈ 2.506...\n\nBased on Cramér's random model for prime distribution.",
+    "mathContext": "Tao's heuristic uses the Cramér model, which treats primes as random with density 1/log n. This gives probabilistic predictions that often match reality.",
+    "significance": "critical",
+    "relatedConcepts": ["Tao", "Cramer-model", "heuristic"]
+  },
+  {
+    "id": "ann-e912-monotone",
+    "proofId": "erdos-912",
+    "range": { "startLine": 155, "endLine": 163 },
+    "type": "theorem",
+    "title": "Exponent Monotonicity",
+    "content": "**exponent_monotone:**\n\nFor fixed prime p: m ≤ n implies the exponent of p in m! ≤ exponent in n!.\n\nProved using Mathlib's padicValNat.factorial_le_factorial.",
+    "mathContext": "This is intuitive: n! = n · (n-1)!, so the exponent of any prime can only increase or stay the same.",
+    "significance": "key",
+    "relatedConcepts": ["monotonicity", "factorial"]
+  },
+  {
+    "id": "ann-e912-small",
+    "proofId": "erdos-912",
+    "range": { "startLine": 183, "endLine": 198 },
+    "type": "axiom",
+    "title": "Small Values of h(n)",
+    "content": "**h_small_values / h_sequence_prefix:**\n\n- h(1) = 0, h(2) = 1, h(3) = 1, h(4) = 2\n- h(10) = 3, h(20) = 4, h(100) ≥ 7\n\nSequence: OEIS A071626",
+    "mathContext": "These concrete values help verify the definition and illustrate the slow growth of h(n).",
+    "significance": "key",
+    "relatedConcepts": ["OEIS", "sequence", "small-values"]
+  },
+  {
+    "id": "ann-e912-summary",
+    "proofId": "erdos-912",
+    "range": { "startLine": 226, "endLine": 251 },
+    "type": "theorem",
+    "title": "Summary of Results",
+    "content": "**erdos_912_summary:**\n\n- Known: h(n) ≍ √(n/log n) (Erdős-Selfridge)\n- Open: Does h(n) ~ c·√(n/log n) for specific c?\n- Conjecture: c = √(2π) (Tao)",
+    "mathContext": "The gap between knowing the asymptotic order and proving the exact constant is a common situation in analytic number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "open-problem", "asymptotic"]
+  }
+]

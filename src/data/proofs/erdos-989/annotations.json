@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-989-1",
+    "proofId": "erdos-989",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #989 asks about the circle discrepancy function f(r) = max_C |#(A∩C) - πr²| for an infinite sequence A ⊂ ℝ². Two questions: (1) Is f(r) unbounded for every A? (2) How fast does f(r) grow? Beck (1987) completely solved this: f(r) ≫ √r universally, and ∃A with f(r) ≪ √(r log r). STATUS: SOLVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-989-2",
+    "proofId": "erdos-989",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Points in the Plane",
+    "content": "Points are represented as elements of EuclideanSpace ℝ (Fin 2), Mathlib's standard type for ℝ². This provides the full machinery of metric spaces, inner products, and affine geometry needed for circle geometry.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-989-3",
+    "proofId": "erdos-989",
+    "range": { "startLine": 50, "endLine": 53 },
+    "type": "definition",
+    "title": "Circle Structure",
+    "content": "A circle is defined by its center point and positive radius. The positivity requirement (radius > 0) ensures we have genuine geometric objects, not degenerate points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-4",
+    "proofId": "erdos-989",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Circle Disk",
+    "content": "The disk of a circle is the closed ball: all points within distance ≤ radius from the center. This is what we count points inside - the filled-in region, not just the boundary.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-5",
+    "proofId": "erdos-989",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "definition",
+    "title": "Circle Area",
+    "content": "The area of a circle with radius r is πr². This is the 'expected' count of points in a circle if the sequence had uniform density 1. Discrepancy measures deviation from this expectation.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-6",
+    "proofId": "erdos-989",
+    "range": { "startLine": 64, "endLine": 65 },
+    "type": "definition",
+    "title": "Point Sequence",
+    "content": "A PointSequence is a function ℕ → Point, representing an infinite sequence of points z₁, z₂, z₃, ... in the plane. We study how uniformly such sequences can be distributed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-7",
+    "proofId": "erdos-989",
+    "range": { "startLine": 71, "endLine": 74 },
+    "type": "definition",
+    "title": "Point Count in Circle",
+    "content": "countInCircle A C n counts how many of the first n points of sequence A lie inside circle C's disk. This is the finite approximation to the infinite count we're interested in.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-8",
+    "proofId": "erdos-989",
+    "range": { "startLine": 76, "endLine": 79 },
+    "type": "definition",
+    "title": "Local Discrepancy",
+    "content": "The local discrepancy D(A, C, n) = |count - πr²| measures how far the actual count in circle C deviates from the expected count. The global discrepancy maximizes this over all circles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-9",
+    "proofId": "erdos-989",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "definition",
+    "title": "Circle Discrepancy Function",
+    "content": "The main object of study: f(r) = sup over all circles of radius r and all prefix lengths n of the local discrepancy. This captures the worst-case deviation for circles of a fixed radius.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-989-10",
+    "proofId": "erdos-989",
+    "range": { "startLine": 90, "endLine": 101 },
+    "type": "axiom",
+    "title": "Beck's Lower Bound",
+    "content": "The central lower bound: for EVERY sequence A, f(r) ≥ c√r for some universal c > 0 and large r. No matter how cleverly you place points, discrepancy grows at least like √r. This uses Fourier analysis and Bessel function asymptotics.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-989-11",
+    "proofId": "erdos-989",
+    "range": { "startLine": 103, "endLine": 128 },
+    "type": "theorem",
+    "title": "Discrepancy is Unbounded",
+    "content": "Corollary of Beck's lower bound: f(r) → ∞ for every sequence. This answers Erdős's first question: YES, discrepancy is always unbounded. The proof chooses r large enough that c√r exceeds any given M.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-989-12",
+    "proofId": "erdos-989",
+    "range": { "startLine": 132, "endLine": 144 },
+    "type": "axiom",
+    "title": "Beck's Upper Bound",
+    "content": "The existence result: there EXISTS a sequence A achieving f(r) ≤ C√(r log r). Beck's probabilistic construction (perturbed lattice) achieves near-optimal discrepancy. The log factor comes from union bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-989-13",
+    "proofId": "erdos-989",
+    "range": { "startLine": 146, "endLine": 149 },
+    "type": "definition",
+    "title": "Beck's Optimal Sequence",
+    "content": "Using Classical.choose, we extract the witness sequence from Beck's existence theorem. This is the sequence achieving near-optimal √(r log r) discrepancy, constructed via probabilistic methods.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-989-14",
+    "proofId": "erdos-989",
+    "range": { "startLine": 153, "endLine": 182 },
+    "type": "theorem",
+    "title": "Complete Solution",
+    "content": "The main theorem combining all results: (1) discrepancy is unbounded for all A, (2) universal lower bound √r, (3) existence of near-optimal sequence with √(r log r). This completely answers Erdős's questions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-989-15",
+    "proofId": "erdos-989",
+    "range": { "startLine": 186, "endLine": 200 },
+    "type": "concept",
+    "title": "Discrepancy Theory Context",
+    "content": "Circle discrepancy fits into the broader theory of measuring uniform distribution. Different test set families (boxes, half-planes, circles, convex sets) give different discrepancy problems. Beck's work is foundational here.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-16",
+    "proofId": "erdos-989",
+    "range": { "startLine": 202, "endLine": 207 },
+    "type": "definition",
+    "title": "General Circle Discrepancy",
+    "content": "The discrepancy over ALL circles (not just fixed radius) gives a stronger measure of non-uniformity. This connects to the full family of geometric discrepancy problems.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-989-17",
+    "proofId": "erdos-989",
+    "range": { "startLine": 211, "endLine": 225 },
+    "type": "axiom",
+    "title": "Fourier Analysis Technique",
+    "content": "Beck's lower bound proof uses: (1) Fourier transforms of disk indicators, (2) Bessel function J₁ in the transform, (3) Parseval's identity relating discrepancy to Fourier coefficients, (4) J₁(x) ~ 1/√x asymptotics giving √r growth.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-18",
+    "proofId": "erdos-989",
+    "range": { "startLine": 227, "endLine": 238 },
+    "type": "axiom",
+    "title": "Probabilistic Construction",
+    "content": "Beck's upper bound construction: (1) Start with ℤ² lattice, (2) Add small random perturbations, (3) Expected discrepancy is √(r log r), (4) The log comes from union bound over O(r²) circle positions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-19",
+    "proofId": "erdos-989",
+    "range": { "startLine": 242, "endLine": 253 },
+    "type": "concept",
+    "title": "The Logarithmic Gap",
+    "content": "Major open problem: Beck's bounds give c√r ≤ f(r) ≤ C√(r log r). Is the log factor necessary? This gap is one of the central unsolved questions in geometric discrepancy theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-989-20",
+    "proofId": "erdos-989",
+    "range": { "startLine": 255, "endLine": 265 },
+    "type": "concept",
+    "title": "Explicit Constructions",
+    "content": "Open problem: Beck's optimal sequence is probabilistic. Can we give an explicit deterministic construction achieving √(r log r)? Lattice constructions give worse bounds; no explicit optimal construction is known.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-989-21",
+    "proofId": "erdos-989",
+    "range": { "startLine": 267, "endLine": 276 },
+    "type": "concept",
+    "title": "Higher Dimensions",
+    "content": "Open problem: For balls in ℝ^d, expect f(r) ~ r^{(d-1)/2} from surface area considerations. The dimension dependence is understood but logarithmic factors remain open in all dimensions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-989-22",
+    "proofId": "erdos-989",
+    "range": { "startLine": 280, "endLine": 290 },
+    "type": "axiom",
+    "title": "Schmidt's Classical Discrepancy",
+    "content": "Related result: For axis-aligned boxes in [0,1]^d, Schmidt generalized Roth's lower bound to D(N) ≥ c(log N)^{d/2}. Circles behave differently due to curved boundaries - √r vs polylog.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-989-23",
+    "proofId": "erdos-989",
+    "range": { "startLine": 292, "endLine": 302 },
+    "type": "axiom",
+    "title": "Alexander's Half-Plane Discrepancy",
+    "content": "Comparison: Half-planes have discrepancy r^{1/4}, much smaller than circles (√r). The curved boundary of circles can 'trap' points more effectively, leading to higher unavoidable discrepancy.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-989-24",
+    "proofId": "erdos-989",
+    "range": { "startLine": 306, "endLine": 339 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "Complete summary of Erdős Problem #989: (1) f(r) unbounded for all A - YES, (2) optimal growth Θ̃(√r), (3) lower bound via Fourier/Bessel, (4) upper bound via probabilistic perturbation. Foundational result in geometric discrepancy.",
+    "significance": "critical"
+  }
+]

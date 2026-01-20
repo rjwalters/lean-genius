@@ -1,33 +1,187 @@
 {
   "id": "erdos-309",
-  "title": "Erdős Problem #309",
+  "title": "Erdős Problem #309: Integers as Sums of Distinct Unit Fractions",
   "slug": "erdos-309",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many integers can be written as the sum of distinct unit fractions with denominators from ...? Are there ... suc...",
+  "description": "How many integers can be written as sums of distinct unit fractions with denominators from {1,...,N}? Answer: Θ(log N) such integers, answering Erdős's question negatively.",
   "meta": {
-    "author": "Unknown",
+    "author": "Yokota (1997, 2002), Croot (1999)",
     "sourceUrl": "https://erdosproblems.com/309",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos309Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "harmonic-numbers",
+      "asymptotic-analysis"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 309,
     "erdosUrl": "https://erdosproblems.com/309",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite ranges of naturals",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat.div",
+        "description": "Rational number division",
+        "module": "Mathlib.Data.Rat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unitFraction definition: 1/n for positive n",
+      "sumUnitFractions definition: sum of unit fractions over a set",
+      "denominatorRange definition: {1, ..., N}",
+      "IsRepresentable definition: integers writable as unit fraction sums",
+      "countRepresentable definition: F(N) counting function",
+      "harmonicNumber definition: H_N = 1 + 1/2 + ... + 1/N",
+      "yokota_lower_bound_1997 axiom: F(N) ≥ log N - O(log log N)",
+      "croot_threshold_1999 axiom: exact threshold for representability",
+      "yokota_refined_2002 axiom: tight bounds with (log log N)² term",
+      "erdos_309_answer theorem: F(N) = Θ(log N), not o(log N)",
+      "representable_sparse_but_unbounded theorem: density result",
+      "erdos_309_summary: main result compilation"
+    ],
+    "relatedProblems": [
+      {
+        "id": "egyptian-fractions",
+        "relationship": "General theory of Egyptian fraction representations"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #309 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. How many integers can be written as the sum of distinct unit fractions with denominators from $\\{1,\\ldots,N\\}$? Are there $o(\\log N)$ such integers?\n\n\n\nIf the number of such integers is $N(n)$ then it is trivial that $N(n)\\leq \\log n+O(1)$. Yokota \\cite{Yo97} proved that $N(n)\\geq \\log n-O(\\log\\log n)$.\n\nCroot \\cite{Cr99} proved that every integer at most\\[\\leq \\sum_{n\\leq N}\\frac{1}{n}-(\\tfrac{9}{2}+o(1))\\frac{(\\log\\log N)^2}{\\log N}\\]can be so represented.\n\nIf $F(N)$ counts the number of integers which can be represented in this fashion, then the current best lower bound known is\\[F(N) \\geq \\log N+\\gamma -\\left(\\frac{\\pi^2}{3}+o(1)\\right)\\frac{(\\log\\log N)^2}{\\log N}\\]due to Yokota \\cite{Yo02}.\n\n\n\n\nReferences\n\n\n[Cr99] Croot, III, Ernest S., On some questions of Erd\\H{o}s and Graham about Egyptian fractions. Mathematika (1999), 359-372.\n\n[Yo02] Yokota, Hisashi, On the number of integers representable as sums of unit\nfractions. {III}. J. Number Theory (2002), 351--372.\n\n[Yo97] Yokota, Hisashi, On number of integers representable as a sum of unit\nfractions. {II}. J. Number Theory (1997), 162--169.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Egyptian Fractions and Erdős's Question**\n\nThis problem concerns a fundamental question about **Egyptian fractions** - sums of distinct unit fractions 1/n. The ancient Egyptians represented all fractions this way.\n\n**The Question:** Given denominators from {1, ..., N}, how many integers can be represented as such sums? Specifically, is this count o(log N) (sublogarithmic)?\n\n**The Answer:** NO. The count F(N) grows like log N + γ, where γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\n**Key Contributors:**\n- Yokota (1997): First logarithmic lower bound\n- Croot (1999): Exact threshold for representability\n- Yokota (2002): Refined bounds with (log log N)² correction\n\n**The harmonic number H_N = 1 + 1/2 + ... + 1/N ~ log N + γ** is central to understanding this problem, as representable integers are bounded by H_N.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $N \\geq 1$. Define $F(N)$ as the count of integers expressible as sums of distinct unit fractions with denominators from $\\{1, \\ldots, N\\}$.\n\n**Question:** Is $F(N) = o(\\log N)$?\n\n**Answer:** NO.\n\n**Precise Result:**\n$$F(N) = \\log N + \\gamma - \\Theta\\left(\\frac{(\\log\\log N)^2}{\\log N}\\right)$$\n\nwhere $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant.\n\n**Bounds:**\n- Upper: $F(N) \\leq \\log N + O(1)$ (trivial, from $k \\leq H_N$)\n- Lower: $F(N) \\geq \\log N + \\gamma - O((\\log\\log N)^2/\\log N)$ (Yokota 2002)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Unit Fractions:**\n   - unitFraction(n) = 1/n for positive n\n   - sumUnitFractions(S) = Σ_{d ∈ S} 1/d\n\n2. **Representability:**\n   - denominatorRange(N) = {1, ..., N}\n   - IsRepresentable(N, k): k = Σ_{d ∈ S} 1/d for some S ⊆ {1,...,N}\n   - countRepresentable(N) = F(N)\n\n3. **Harmonic Numbers:**\n   - harmonicNumber(N) = H_N = Σ_{n=1}^{N} 1/n\n   - H_N ~ log N + γ (Euler-Mascheroni)\n\n4. **Main Results (Axiomatized):**\n   - Trivial upper bound: F(N) ≤ ⌊log N⌋ + 2\n   - Yokota (1997): F(N) ≥ log N - O(log log N)\n   - Croot (1999): Exact threshold characterization\n   - Yokota (2002): Tight bounds\n\n5. **Answer:**\n   - erdos_309_answer: F(N) = Θ(log N), NOT o(log N)",
+    "keyInsights": [
+      "**Egyptian Fractions:** Ancient mathematical concept - all fractions as sums of distinct 1/n",
+      "**Harmonic Connection:** Representable integers k satisfy k ≤ H_N ~ log N + γ",
+      "**Logarithmic Growth:** F(N) = Θ(log N), definitively NOT o(log N)",
+      "**Yokota's Refinement:** The (log log N)²/log N correction term is crucial",
+      "**Croot's Characterization:** Precise threshold for which integers are representable",
+      "**Density Zero:** The set of representable integers is sparse (F(N)/N → 0) but unbounded"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "unit-fractions",
+      "title": "Unit Fractions",
+      "summary": "unitFraction, sumUnitFractions, sumUnitFractions_empty",
+      "startLine": 46,
+      "endLine": 82
+    },
+    {
+      "id": "denominator-range",
+      "title": "Denominator Range",
+      "summary": "denominatorRange, mem_denominatorRange, denominatorRange_card",
+      "startLine": 84,
+      "endLine": 107
+    },
+    {
+      "id": "representable-integers",
+      "title": "Representable Integers",
+      "summary": "IsRepresentable, zero_representable, one_representable",
+      "startLine": 109,
+      "endLine": 139
+    },
+    {
+      "id": "counting",
+      "title": "Counting Function",
+      "summary": "countRepresentable definition",
+      "startLine": 141,
+      "endLine": 152
+    },
+    {
+      "id": "harmonic-numbers",
+      "title": "Harmonic Numbers",
+      "summary": "harmonicNumber, harmonicNumber_one, max_representable_le_harmonic",
+      "startLine": 154,
+      "endLine": 177
+    },
+    {
+      "id": "asymptotic-bounds",
+      "title": "Asymptotic Bounds",
+      "summary": "harmonic_log_asymptotic, countRepresentable_upper_bound",
+      "startLine": 179,
+      "endLine": 198
+    },
+    {
+      "id": "yokota-1997",
+      "title": "Yokota's Lower Bound (1997)",
+      "summary": "yokota_lower_bound_1997 axiom",
+      "startLine": 200,
+      "endLine": 211
+    },
+    {
+      "id": "croot-1999",
+      "title": "Croot's Threshold (1999)",
+      "summary": "croot_threshold_1999 axiom",
+      "startLine": 213,
+      "endLine": 225
+    },
+    {
+      "id": "yokota-2002",
+      "title": "Yokota's Refined Bound (2002)",
+      "summary": "yokota_refined_2002 axiom",
+      "startLine": 227,
+      "endLine": 238
+    },
+    {
+      "id": "main-result",
+      "title": "Answer to Erdős's Question",
+      "summary": "erdos_309_answer theorem, count_asymptotic",
+      "startLine": 240,
+      "endLine": 271
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "N=6 example, egyptianFractionProperty",
+      "startLine": 273,
+      "endLine": 292
+    },
+    {
+      "id": "harmonic-series",
+      "title": "Connection to Harmonic Series",
+      "summary": "harmonic_divergence, representable_sparse_but_unbounded",
+      "startLine": 294,
+      "endLine": 322
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_309_summary combining main results",
+      "startLine": 324,
+      "endLine": 351
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #309 asks whether the count F(N) of integers representable as sums of distinct unit fractions from {1,...,N} is o(log N). The answer is definitively NO: F(N) = log N + γ - Θ((log log N)²/log N). This was established through work by Yokota (1997, 2002) and Croot (1999).",
+    "implications": "**Connections and Implications**\n\n1. **Egyptian Mathematics:** Validates the historical importance of unit fraction representations\n\n2. **Harmonic Series:** Deep connection between representability and H_N ~ log N + γ\n\n3. **Asymptotic Analysis:** The (log log N)² correction term shows subtle structure\n\n4. **Density Results:** Representable integers are sparse (density 0) but unbounded\n\n5. **Greedy Algorithm:** Related to algorithms for finding Egyptian fraction representations",
+    "openQuestions": [
+      "Can the (log log N)² correction term be improved further?",
+      "What is the exact coefficient of the correction term?",
+      "Which specific integers near H_N are representable?",
+      "How does the greedy algorithm perform for unit fraction sums?",
+      "Are there connections to other Erdős problems about unit fractions?"
+    ]
   }
 }

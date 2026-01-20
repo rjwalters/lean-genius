@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-e1121-header",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview: Circle Covering",
+    "content": "**Erdős Problem #1121: SOLVED**\n\nIf circles C₁,...,Cₙ in ℝ² with radii r₁,...,rₙ have no separating line, they can be covered by a circle of radius r = Σrᵢ.\n\n**Proved by:** Goodman and Goodman (1945)\n**Generalizes to:** Higher dimensions (balls in ℝⁿ)",
+    "mathContext": "This is a beautiful geometric covering theorem. The 'no separating line' condition captures when circles form a 'connected' cluster.",
+    "significance": "critical",
+    "relatedConcepts": ["covering", "circles", "convexity", "separating-hyperplane"]
+  },
+  {
+    "id": "ann-e1121-circle",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "definition",
+    "title": "Circle Structure",
+    "content": "**Circle:**\n\nA circle in ℝ² with:\n- center: (x, y) ∈ ℝ²\n- radius: r > 0",
+    "mathContext": "We work with closed disks: a circle 'contains' all points at distance ≤ r from the center.",
+    "significance": "key",
+    "relatedConcepts": ["disk", "Euclidean-geometry"]
+  },
+  {
+    "id": "ann-e1121-line",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 51, "endLine": 59 },
+    "type": "definition",
+    "title": "Line Structure",
+    "content": "**Line:**\n\nRepresented as {(x,y) : ax + by = c} with (a,b) ≠ (0,0).\n\nThis is the implicit form of a line in the plane.",
+    "mathContext": "Lines are the separating objects. We check if a line can divide circles into two non-empty groups.",
+    "significance": "key",
+    "relatedConcepts": ["linear-equation", "plane-geometry"]
+  },
+  {
+    "id": "ann-e1121-separating",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 100, "endLine": 119 },
+    "type": "definition",
+    "title": "Separating Line and Connected Configuration",
+    "content": "**HasSeparatingLine / IsConnectedConfiguration:**\n\nA separating line is disjoint from all circles AND divides them into two non-empty groups.\n\nA 'connected configuration' has NO such separating line.",
+    "mathContext": "This is the key condition of the theorem. Intuitively, circles that can't be separated are 'clustered together'.",
+    "significance": "critical",
+    "relatedConcepts": ["separation", "connected", "cluster"]
+  },
+  {
+    "id": "ann-e1121-covers",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 125, "endLine": 141 },
+    "type": "definition",
+    "title": "Covering and Sum of Radii",
+    "content": "**Circle.covers / sumOfRadii:**\n\nC₁ covers C₂ if every point in C₂ is also in C₁.\n\nThe sum of radii is Σᵢ rᵢ = r₁ + r₂ + ... + rₙ.",
+    "mathContext": "The theorem says the covering circle has radius EXACTLY the sum, not just an upper bound.",
+    "significance": "critical",
+    "relatedConcepts": ["covering", "containment", "sum"]
+  },
+  {
+    "id": "ann-e1121-conjecture",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 147, "endLine": 157 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**ErdosConjecture1121:**\n\nFor any connected configuration of circles,\n∃ covering circle C with radius = Σrᵢ.",
+    "mathContext": "The conjecture precisely captures the statement: no separating line ⟹ sum-radius covering exists.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "covering-theorem"]
+  },
+  {
+    "id": "ann-e1121-goodman",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 159, "endLine": 163 },
+    "type": "axiom",
+    "title": "Goodman-Goodman Theorem",
+    "content": "**goodman_goodman_theorem:**\n\nThe Erdős conjecture is TRUE.\n\nProved in Amer. Math. Monthly (1945), 494-498.",
+    "mathContext": "The proof uses geometric arguments about convex hulls and the configuration of circle centers.",
+    "significance": "critical",
+    "relatedConcepts": ["theorem", "Goodman", "1945"]
+  },
+  {
+    "id": "ann-e1121-overlap",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 180, "endLine": 193 },
+    "type": "definition",
+    "title": "Overlapping Circles",
+    "content": "**CirclesOverlap / overlap_implies_connected:**\n\nCircles overlap if distance between centers ≤ sum of radii.\n\nIf all pairs overlap, no separating line exists.",
+    "mathContext": "Overlapping is a sufficient (but not necessary) condition for 'connected configuration'.",
+    "significance": "key",
+    "relatedConcepts": ["overlap", "intersection", "sufficient-condition"]
+  },
+  {
+    "id": "ann-e1121-higher-dim",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 199, "endLine": 215 },
+    "type": "axiom",
+    "title": "Higher Dimensional Generalization",
+    "content": "**Ball / goodman_goodman_higher_dim:**\n\nThe theorem extends to balls in ℝⁿ:\n- Replace 'line' with 'hyperplane'\n- Replace 'circle' with 'ball'",
+    "mathContext": "The Goodman-Goodman proof naturally generalizes. This is noted in their original paper.",
+    "significance": "key",
+    "relatedConcepts": ["higher-dimensions", "balls", "hyperplanes"]
+  },
+  {
+    "id": "ann-e1121-summary",
+    "proofId": "erdos-1121",
+    "range": { "startLine": 221, "endLine": 252 },
+    "type": "theorem",
+    "title": "Summary of Results",
+    "content": "**erdos_1121_summary:**\n\nThe Erdős conjecture is TRUE (Goodman-Goodman, 1945):\n- Connected circle configurations can be covered\n- Covering radius = sum of radii\n- Generalizes to higher dimensions",
+    "mathContext": "This is a complete resolution of the problem with a beautiful geometric proof.",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "solved", "geometry"]
+  }
+]
