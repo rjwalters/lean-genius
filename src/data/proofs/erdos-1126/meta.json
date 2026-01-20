@@ -1,33 +1,133 @@
 {
   "id": "erdos-1126",
-  "title": "Erdős Problem #1126",
+  "title": "Erdős Problem #1126: Almost Additive Functions",
   "slug": "erdos-1126",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[f(x+y)=f(x)+f(y)\\]for almost all ... then there exists a function ... such that\\[g(x+y)=g(x)+g(y)\\]for all ... such that ...",
+  "description": "If f(x+y) = f(x) + f(y) for almost all x,y ∈ ℝ, then there exists g with g(x+y) = g(x) + g(y) for ALL x,y and f = g a.e. Proved by de Bruijn (1966) and Jurkat (1965).",
   "meta": {
-    "author": "Unknown",
+    "author": "de Bruijn (1966), Jurkat (1965)",
     "sourceUrl": "https://erdosproblems.com/1126",
-    "date": "",
-    "status": "pending",
+    "date": "1965",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1126Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
+    "tags": ["erdos", "analysis", "functional-equations", "measure-theory", "cauchy-equation", "solved"],
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1126,
     "erdosUrl": "https://erdosproblems.com/1126",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Real", "description": "Real numbers", "module": "Mathlib.Data.Real.Basic" },
+      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" },
+      { "theorem": "Continuous", "description": "Continuous functions", "module": "Mathlib.Topology.Basic" },
+      { "theorem": "Measurable", "description": "Measurable functions", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" }
+    ],
+    "originalContributions": [
+      "IsAdditive: Cauchy's functional equation f(x+y) = f(x) + f(y)",
+      "ae_holds: Property holds almost everywhere",
+      "ae_pairs: Property holds for almost all pairs",
+      "IsAlmostAdditive: f(x+y) = f(x) + f(y) for a.e. pairs",
+      "ae_eq: Functions equal a.e.",
+      "de_bruijn_jurkat_theorem: Main result",
+      "additive_ae_unique: Uniqueness of correction",
+      "continuous_additive_is_linear: Classical result",
+      "wild_additive_exist: AC gives discontinuous additive functions",
+      "measurable_additive_is_linear: Measurability implies linearity"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1126 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[f(x+y)=f(x)+f(y)\\]for almost all $x,y\\in \\mathbb{R}$ then there exists a function $g$ such that\\[g(x+y)=g(x)+g(y)\\]for all $x,y\\in\\mathbb{R}$ such that $f(x)=g(x)$ for almost all $x$.\n\n\n\nProved independently by de Bruijn \\cite{dB66} and Jurkat \\cite{Ju65}.\n\n\n\n\nReferences\n\n\n[Ju65] Jurkat, Wolfgang B., On {C}auchy's functional equation. Proc. Amer. Math. Soc. (1965), 683--686.\n\n[dB66] de Bruijn, N. G., On almost additive functions. Colloq. Math. (1966), 59--63.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Cauchy (1821) showed continuous additive functions are linear. Hamel (1905) used AC to construct wild discontinuous additive functions. Erdős (1960) asked about almost additive functions - those satisfying the equation except on a null set. De Bruijn (1966) and Jurkat (1965) independently proved that almost-additivity can always be 'repaired'.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIf f(x+y) = f(x) + f(y) for almost all x,y ∈ ℝ (i.e., except on a null set in ℝ²), then there exists a function g such that:\n1. g(x+y) = g(x) + g(y) for ALL x,y ∈ ℝ\n2. f(x) = g(x) for almost all x\n\nThe correction g is unique among additive functions.",
+    "proofStrategy": "The formalization defines additive and almost-additive functions via measure theory. The de Bruijn-Jurkat theorem is axiomatized. Uniqueness follows from the fact that an additive function zero a.e. is identically zero. Wild additive functions and measurability results are included for context.",
+    "keyInsights": [
+      "**Almost a.e. ⟹ Truly:** Almost-additivity can be repaired",
+      "**Uniqueness:** The corrected g is unique among additive functions",
+      "**Wild Functions:** Without regularity, additive functions can be pathological",
+      "**Measurability ⟹ Linear:** Lebesgue measurable additive ⟹ linear",
+      "**Stability:** This is a stability theorem for functional equations",
+      "**Historical:** Cauchy → Hamel → Erdős → de Bruijn/Jurkat"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cauchy",
+      "title": "Cauchy's Functional Equation",
+      "startLine": 38,
+      "endLine": 73,
+      "summary": "IsAdditive, basic properties, continuous case"
+    },
+    {
+      "id": "almost-additive",
+      "title": "Almost Additive Functions",
+      "startLine": 75,
+      "endLine": 107,
+      "summary": "ae_holds, ae_pairs, IsAlmostAdditive, ae_eq"
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 109,
+      "endLine": 133,
+      "summary": "de_bruijn_jurkat_theorem"
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness",
+      "startLine": 135,
+      "endLine": 152,
+      "summary": "additive_ae_unique, additive_zero_ae"
+    },
+    {
+      "id": "construction",
+      "title": "Construction of g",
+      "startLine": 154,
+      "endLine": 173,
+      "summary": "Limit construction, good points approach"
+    },
+    {
+      "id": "wild",
+      "title": "Wild Additive Functions",
+      "startLine": 175,
+      "endLine": 203,
+      "summary": "Existence via AC, Hamel basis, measurability"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 205,
+      "endLine": 228,
+      "summary": "Higher dimensions, general groups, stability"
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 230,
+      "endLine": 246,
+      "summary": "Probability, harmonic analysis"
+    },
+    {
+      "id": "history",
+      "title": "Historical Context",
+      "startLine": 248,
+      "endLine": 269,
+      "summary": "Cauchy, Hamel, Erdős timeline"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 271,
+      "endLine": 317,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1126 is SOLVED. De Bruijn (1966) and Jurkat (1965) independently proved that almost additive functions can be corrected to truly additive functions agreeing a.e. The correction is unique among additive functions. This is a foundational stability result for Cauchy's functional equation.",
+    "implications": "The theorem shows that measure-theoretic 'defects' in additivity can always be repaired. This has applications in probability theory, harmonic analysis, and the general study of functional equation stability.",
+    "openQuestions": [
+      "Explicit bounds on the exceptional set",
+      "Quantitative versions of the stability",
+      "Extensions to more general functional equations"
+    ]
   }
 }
