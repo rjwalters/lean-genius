@@ -1,33 +1,153 @@
 {
   "id": "erdos-769",
-  "title": "Erdős Problem #769",
+  "title": "Erdős Problem #769: Cube Dissection into Homothetic Cubes",
   "slug": "erdos-769",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that if ... then the ...-dimensional unit cube can be decomposed into ... homothetic ...-dimensional ...",
+  "description": "Let c(n) be minimal such that for k ≥ c(n), the n-dimensional unit cube can be decomposed into k homothetic cubes. Is c(n) ≫ n^n? OPEN: Lower bound 2^{n+1}-1, upper bound O(n^{n+1}).",
   "meta": {
-    "author": "Unknown",
+    "author": "Hadwiger, Burgess-Erdős, Connor-Marmorino",
     "sourceUrl": "https://erdosproblems.com/769",
-    "date": "",
-    "status": "pending",
+    "date": "2018",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos769Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "dissection",
+      "cube-packing",
+      "homothety",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 769,
     "erdosUrl": "https://erdosproblems.com/769",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Find minimal natural satisfying predicate",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "CanDecomposeCubeIntoKCubes: decomposability predicate",
+      "cubeDissectionNumber: c(n) function definition",
+      "hadwiger_lower_bound axiom: c(n) ≥ 2^n + 2^{n-1}",
+      "connor_marmorino_lower axiom: c(n) ≥ 2^{n+1} - 1 for n ≥ 3",
+      "burgess_erdos_upper axiom: c(n) ≪ n^{n+1}",
+      "connor_marmorino_upper_prime axiom: c(n) ≤ 1.8n^{n+1} if n+1 prime",
+      "connor_marmorino_upper_composite axiom: c(n) ≤ e²n^n otherwise",
+      "erdosConjecture definition: c(n) > n^n when n+1 prime",
+      "gap_statement theorem: lower vs upper bound comparison",
+      "erdos_769 theorem: main result combining bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #769 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c(n)$ be minimal such that if $k\\geq c(n)$ then the $n$-dimensional unit cube can be decomposed into $k$ homothetic $n$-dimensional cubes. Give good bounds for $c(n)$ - in particular, is it true that $c(n) \\gg n^n$?\n\n\n\nA problem first investigated by Hadwiger, who proved the lower bound\\[c(n) \\geq 2^n+2^{n-1}.\\]It is easy to see that $c(2)=6$. Meier conjectured $c(3)=48$. Burgess and Erd\\H{o}s \\cite{Er74b} proved\\[c(n) \\ll n^{n+1}.\\]Erd\\H{o}s wrote 'I am certain that if $n+1$ is a prime then $c(n)>n^n$.'\n\nHudelson \\cite{Hu98} proved that if $(2^n-1,3^n-1)=1$ then $c(n) < 6^n$, and in general $c(n) \\ll (2n)^{n-1}$. Connor and Marmorino \\cite{CoMa18} proved that\\[c(n) \\geq 2^{n+1}-1\\]for all $n\\geq 3$,\\[c(n) \\leq 1.8n^{n+1}\\]if $n+1$ is prime, and\\[c(n) \\leq e^2n^n\\]otherwise.\n\n\n\n\nReferences\n\n\n[CoMa18] Connor, Peter and Marmorino, Phillip, Decomposing cubes into smaller cubes. J. Geom. (2018), Paper No. 19, 11.\n\n[Er74b] Erd\\H{o}s, P., Remarks on some problems in number theory. Math. Balkanica (1974), 197-202.\n\n[Hu98] Hudelson, Matthew, Dissecting {$d$}-cubes into smaller {$d$}-cubes. J. Combin. Theory Ser. A (1998), 190--200.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #769: Cube Dissection**\n\nThis problem concerns decomposing an n-dimensional unit cube into k smaller homothetic (scaled but not rotated) cubes. The function c(n) is the threshold beyond which any k cubes suffice.\n\n**Historical Development:**\n- **Hadwiger**: First investigated this problem, proving c(n) ≥ 2^n + 2^{n-1}.\n- **c(2) = 6**: Known exactly - a square cannot be decomposed into 2, 3, 4, or 5 smaller squares.\n- **Meier**: Conjectured c(3) = 48 (still unproven).\n- **Burgess-Erdős (1974)**: Proved c(n) ≪ n^{n+1}.\n- **Hudelson (1998)**: Improved bounds under divisibility conditions.\n- **Connor-Marmorino (2018)**: Best known lower bound c(n) ≥ 2^{n+1} - 1 and refined upper bounds.\n\n**Mathematical Setting:**\nThe problem sits at the intersection of combinatorial geometry, packing problems, and number theory. The key constraint is that beyond volume (Σ side^n = 1), the cubes must actually pack geometrically.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $c(n)$ be the minimal integer such that if $k \\geq c(n)$, then the $n$-dimensional unit cube can be decomposed into $k$ homothetic $n$-dimensional cubes.\n\n**Question:** Give good bounds for $c(n)$. In particular, is it true that $c(n) \\gg n^n$?\n\n**Known Bounds:**\n- **Lower:** $c(n) \\geq 2^{n+1} - 1$ for $n \\geq 3$ (Connor-Marmorino 2018)\n- **Upper:** $c(n) \\leq e^2 n^n$ or $c(n) \\leq 1.8 n^{n+1}$ (Connor-Marmorino 2018)\n\n**Erdős's Conjecture:** If $n+1$ is prime, then $c(n) > n^n$.\n\n**Status:** OPEN - the gap between exponential lower bound and super-exponential upper bound remains unresolved.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define CanDecomposeCubeIntoKCubes predicate and cubeDissectionNumber function.\n\n2. **2D Case:** State that c(2) = 6 (impossible for k = 2,3,4,5).\n\n3. **Lower Bounds:** Axiomatize Hadwiger's bound and Connor-Marmorino's improvement.\n\n4. **Upper Bounds:** Axiomatize Burgess-Erdős, Hudelson, and Connor-Marmorino bounds.\n\n5. **Conjecture:** Define Erdős's conjecture that c(n) > n^n when n+1 is prime.\n\n6. **Gap Analysis:** Theorem showing the current state: exponential lower vs super-exponential upper.",
+    "keyInsights": [
+      "**c(2) = 6:** The 2D case is completely solved - a square cannot be split into 2,3,4, or 5 squares",
+      "**Exponential Lower Bound:** Connor-Marmorino proved c(n) ≥ 2^{n+1} - 1, exponential in n",
+      "**Super-Exponential Upper Bound:** c(n) is at most O(n^n) or O(n^{n+1}) depending on whether n+1 is prime",
+      "**Huge Gap:** The gap between 2^n and n^n grows rapidly - the main question asks which is closer to the truth",
+      "**Packing vs Volume:** The constraint is not just volume (Σ aᵢⁿ = 1) but geometric packing",
+      "**Connection to Number Theory:** The upper bounds depend on primality of n+1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "CanDecomposeCubeIntoKCubes predicate and cubeDissectionNumber function",
+      "startLine": 32,
+      "endLine": 65
+    },
+    {
+      "id": "dimension-2",
+      "title": "The Dimension 2 Case",
+      "summary": "c(2) = 6: impossible for k = 2,3,4,5; achievable for k = 6",
+      "startLine": 67,
+      "endLine": 90
+    },
+    {
+      "id": "hadwiger",
+      "title": "Hadwiger's Lower Bound",
+      "summary": "c(n) ≥ 2^n + 2^{n-1} = 3·2^{n-1}",
+      "startLine": 92,
+      "endLine": 115
+    },
+    {
+      "id": "connor-marmorino-lower",
+      "title": "Connor-Marmorino Lower Bound",
+      "summary": "c(n) ≥ 2^{n+1} - 1 for n ≥ 3, improving Hadwiger",
+      "startLine": 117,
+      "endLine": 140
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Burgess-Erdős, Hudelson, Connor-Marmorino upper bounds",
+      "startLine": 142,
+      "endLine": 185
+    },
+    {
+      "id": "erdos-conjecture",
+      "title": "Erdős's Conjecture",
+      "summary": "c(n) > n^n when n+1 is prime; main open question",
+      "startLine": 187,
+      "endLine": 210
+    },
+    {
+      "id": "gap-analysis",
+      "title": "The Gap",
+      "summary": "Current state: exponential lower vs super-exponential upper",
+      "startLine": 212,
+      "endLine": 240
+    },
+    {
+      "id": "geometric-perspective",
+      "title": "Geometric Perspective",
+      "summary": "Volume constraint vs packing constraint",
+      "startLine": 242,
+      "endLine": 270
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Squaring the square, perfect cubed cubes",
+      "startLine": 272,
+      "endLine": 300
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_769 theorem combining all known bounds",
+      "startLine": 302,
+      "endLine": 335
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #769 remains open. We know c(2) = 6 exactly, and have bounds 2^{n+1} - 1 ≤ c(n) ≤ O(n^{n+1}) for n ≥ 3. The main question asks whether c(n) ≫ n^n, with Erdős believing c(n) > n^n when n+1 is prime. The gap between exponential and super-exponential growth is the central mystery.",
+    "implications": "**Geometric and Combinatorial Significance**\n\n1. **Packing Theory:** Understanding cube dissections reveals fundamental constraints in geometric packing.\n\n2. **Dimension Dependence:** The function c(n) captures how geometric constraints become more restrictive in higher dimensions.\n\n3. **Number-Theoretic Connections:** The dependence on whether n+1 is prime suggests deep connections to number theory.\n\n4. **Related to Squaring Problems:** Connects to classical problems like squaring the square and perfect dissections.",
+    "openQuestions": [
+      "Is c(n) ≫ n^n? (The main question)",
+      "Is c(n) > n^n when n+1 is prime? (Erdős's conjecture)",
+      "What is c(3) exactly? (Meier conjectured 48)",
+      "Can the Connor-Marmorino lower bound be improved?",
+      "What is the exact growth rate of c(n)?"
+    ]
   }
 }

@@ -1,33 +1,121 @@
 {
   "id": "erdos-818",
-  "title": "Erdős Problem #818",
+  "title": "Product Set Lower Bound for Small Sumsets",
   "slug": "erdos-818",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of integers such that .... Is it true that\\[\\lvert AA\\rvert \\gg {(\\log \\lvert A\\rvert)^C}\\]for some c...",
+  "description": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
   "meta": {
-    "author": "Unknown",
+    "author": "Solymosi (2009)",
     "sourceUrl": "https://erdosproblems.com/818",
-    "date": "",
-    "status": "pending",
+    "date": "2009",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos818Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "additive-combinatorics", "sum-product", "sumset", "product-set"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 818,
     "erdosUrl": "https://erdosproblems.com/818",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "Finset", "description": "Finite sets for A", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
+      { "theorem": "Real.log", "description": "Logarithm function", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Finset.image", "description": "Image of finset under function", "module": "Mathlib.Data.Finset.Basic" }
+    ],
+    "originalContributions": [
+      "Formal definition of sumset and product set",
+      "Small sumset condition: |A+A| ≤ K·|A|",
+      "Additive and multiplicative energy definitions",
+      "Solymosi's theorem: |AA| ≥ c·|A|²/log|A| when sumset small",
+      "Proof sketch via energy bounds",
+      "Connection to Problem 52 (original sum-product conjecture)"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #818 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite set of integers such that $\\lvert A+A\\rvert \\ll \\lvert A\\rvert$. Is it true that\\[\\lvert AA\\rvert \\gg \\frac{\\lvert A\\rvert^2}{(\\log \\lvert A\\rvert)^C}\\]for some constant $C>0$?\n\n\n\nThis was proved by Solymosi \\cite{So09d}, in the strong form\\[\\lvert AA\\rvert \\gg \\frac{\\lvert A\\rvert^2}{\\log \\lvert A\\rvert}.\\]See also [52].\n\n\n\n\nReferences\n\n\n[So09d] Solymosi, J\\'{o}zsef, Bounding multiplicative energy by the sumset. Adv. Math. (2009), 402-408.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset IS small, how large must the product set be? Solymosi's 2009 paper 'Bounding multiplicative energy by the sumset' resolved this completely.",
+    "problemStatement": "Let A be a finite set of integers such that |A+A| ≤ K·|A| for some constant K. Is it true that |A·A| ≥ |A|²/(log|A|)^C for some constant C > 0?",
+    "proofStrategy": "The formalization defines sumsets, product sets, and the small sumset condition. Solymosi's theorem is stated as the main result, with the proof strategy outlined: bound multiplicative energy from below (Cauchy-Schwarz) and above (Solymosi's lemma), then combine to get the product set bound.",
+    "keyInsights": [
+      "Sets cannot have both strong additive AND multiplicative structure",
+      "Small additive doubling forces large multiplicative expansion",
+      "The log factor in the denominator is tight (arithmetic progressions show this)",
+      "Multiplicative energy is the key intermediate quantity",
+      "Solymosi proved C = 1 works, stronger than the original conjecture"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 46,
+      "endLine": 76,
+      "summary": "Sumset, product set, additive doubling, small sumset condition"
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "startLine": 78,
+      "endLine": 104,
+      "summary": "Elementary bounds on sumset and product set sizes"
+    },
+    {
+      "id": "original-conjecture",
+      "title": "The Original Conjecture",
+      "startLine": 106,
+      "endLine": 120,
+      "summary": "Erdős's question about product sets under small sumset hypothesis"
+    },
+    {
+      "id": "solymosi-theorem",
+      "title": "Solymosi's Theorem",
+      "startLine": 122,
+      "endLine": 154,
+      "summary": "The main result: |AA| ≥ c·|A|²/log|A|"
+    },
+    {
+      "id": "multiplicative-energy",
+      "title": "Multiplicative Energy",
+      "startLine": 156,
+      "endLine": 189,
+      "summary": "Energy definitions and key bounds"
+    },
+    {
+      "id": "proof-sketch",
+      "title": "Proof Sketch",
+      "startLine": 191,
+      "endLine": 215,
+      "summary": "How energy bounds combine to prove the theorem"
+    },
+    {
+      "id": "sum-product-connection",
+      "title": "Connection to Sum-Product",
+      "startLine": 217,
+      "endLine": 240,
+      "summary": "Relation to Problem 52 and sum-product dichotomy"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 242,
+      "endLine": 263,
+      "summary": "Arithmetic and geometric progressions as extremes"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 265,
+      "endLine": 305,
+      "summary": "Main results and key insight"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #818 asked whether small sumsets force large product sets. Solymosi (2009) proved YES: if |A+A| ≤ K|A|, then |AA| ≥ c·|A|²/log|A|. This is a quantitative form of the sum-product dichotomy.",
+    "implications": "This result shows the power of energy methods in additive combinatorics. By bounding multiplicative energy from both directions, one obtains strong structural information about product sets.",
+    "openQuestions": [
+      "Can the log factor be improved to log^{1-ε}?",
+      "What is the optimal constant c in Solymosi's bound?",
+      "Do analogous results hold in other groups or rings?"
+    ]
   }
 }

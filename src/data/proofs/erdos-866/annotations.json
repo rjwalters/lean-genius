@@ -1,1 +1,209 @@
-[]
+[
+  {
+    "id": "ann-866-1",
+    "proofId": "erdos-866",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #866 studies threshold functions for pairwise sums. For k ≥ 3, define g_k(N) as the minimal value such that A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) contains all (k choose 2) pairwise sums of some integers b₁,...,b_k. The goal is to estimate g_k(N). STATUS: PARTIALLY SOLVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-2",
+    "proofId": "erdos-866",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "The Interval",
+    "content": "The interval {1, 2, ..., 2N} is the ambient set from which we draw elements. Defined as range(2N+1) filtered to exclude 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-866-3",
+    "proofId": "erdos-866",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "Pairwise Sums Condition",
+    "content": "HasAllPairwiseSums A b means for all i < j, we have b_i + b_j ∈ A. This is the key combinatorial condition - all (k choose 2) pairwise sums must land in A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-4",
+    "proofId": "erdos-866",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "definition",
+    "title": "Threshold Condition",
+    "content": "PairwiseSumCondition k N g states: if A ⊆ {1,...,2N} with |A| ≥ N + g, then integers b₁,...,b_k exist with all pairwise sums in A. The function g_k(N) is the minimal such g.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-5",
+    "proofId": "erdos-866",
+    "range": { "startLine": 58, "endLine": 65 },
+    "type": "definition",
+    "title": "The Threshold Function g",
+    "content": "g(k, N) is defined as the minimal natural number m for which PairwiseSumCondition k N m holds. This uses Nat.find to extract the minimal witness.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-6",
+    "proofId": "erdos-866",
+    "range": { "startLine": 69, "endLine": 74 },
+    "type": "axiom",
+    "title": "g₃ Exact Value",
+    "content": "Choi-Erdős-Szemerédi proved g₃(N) = 2 exactly. If A has ≥ N+2 elements, we can find b₁, b₂, b₃ with all three pairwise sums in A. This is the simplest non-trivial case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-7",
+    "proofId": "erdos-866",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "theorem",
+    "title": "g₃ Lower Bound",
+    "content": "The lower bound g₃(N) ≥ 2 comes from odd numbers: the set of odd integers in {1,...,2N} has N elements, but no three integers can have all pairwise sums odd (since odd + odd = even).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-8",
+    "proofId": "erdos-866",
+    "range": { "startLine": 85, "endLine": 89 },
+    "type": "axiom",
+    "title": "g₄ Bounded",
+    "content": "g₄(N) is bounded by an absolute constant C independent of N. This is a surprising result - the threshold doesn't grow with N for k=4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-9",
+    "proofId": "erdos-866",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "axiom",
+    "title": "van Doorn's Bound",
+    "content": "van Doorn proved g₄(N) ≤ 2032, the current best explicit bound. The exact value of g₄(N) remains unknown.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-10",
+    "proofId": "erdos-866",
+    "range": { "startLine": 99, "endLine": 106 },
+    "type": "axiom",
+    "title": "g₅ Asymptotic",
+    "content": "g₅(N) ≍ log N: there exist constants c₁, c₂ > 0 such that c₁ log N ≤ g₅(N) ≤ c₂ log N for large N. This is the first case with unbounded growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-11",
+    "proofId": "erdos-866",
+    "range": { "startLine": 108, "endLine": 115 },
+    "type": "theorem",
+    "title": "g₅ Lower Construction",
+    "content": "The lower bound g₅(N) ≥ c log N comes from a clever construction: odd integers plus powers of 2. This set has about N + log₂ N elements but avoids the 5-element pairwise sums condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-12",
+    "proofId": "erdos-866",
+    "range": { "startLine": 119, "endLine": 126 },
+    "type": "axiom",
+    "title": "g₆ Asymptotic",
+    "content": "g₆(N) ≍ √N: there exist constants c₁, c₂ > 0 such that c₁√N ≤ g₆(N) ≤ c₂√N for large N. The transition to polynomial growth happens at k=6.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-13",
+    "proofId": "erdos-866",
+    "range": { "startLine": 130, "endLine": 139 },
+    "type": "axiom",
+    "title": "General Upper Bound",
+    "content": "For all k ≥ 3: g_k(N) ≪_k N^{1-2^{-k}}. The exponent 1 - 2^{-k} approaches 1 as k → ∞, so the bound approaches N for large k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-14",
+    "proofId": "erdos-866",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "definition",
+    "title": "Upper Exponent",
+    "content": "upperExponent(k) = 1 - 2^{-k} is the exponent in the general upper bound. It increases with k: 1/2, 3/4, 7/8, 15/16, ... approaching 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-15",
+    "proofId": "erdos-866",
+    "range": { "startLine": 154, "endLine": 161 },
+    "type": "axiom",
+    "title": "General Lower Bound",
+    "content": "For any ε > 0, if k is large enough: g_k(N) > N^{1-ε}. This shows the threshold approaches N for large k - you need almost all of {1,...,2N}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-16",
+    "proofId": "erdos-866",
+    "range": { "startLine": 163, "endLine": 172 },
+    "type": "theorem",
+    "title": "Threshold Approaches N",
+    "content": "For any c < 1, there exists k₀ such that for k ≥ k₀ and large N: g_k(N) > N^c. This formalizes that the threshold grows toward N as k increases.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-17",
+    "proofId": "erdos-866",
+    "range": { "startLine": 176, "endLine": 178 },
+    "type": "definition",
+    "title": "Odd Numbers Construction",
+    "content": "oddNumbers(N) is the set of odd integers in {1,...,2N}. This fundamental construction has exactly N elements and avoids the pairwise sums condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-18",
+    "proofId": "erdos-866",
+    "range": { "startLine": 180, "endLine": 182 },
+    "type": "theorem",
+    "title": "Odd Numbers Cardinality",
+    "content": "The odd numbers in {1,...,2N} have cardinality exactly N (the numbers 1, 3, 5, ..., 2N-1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-866-19",
+    "proofId": "erdos-866",
+    "range": { "startLine": 184, "endLine": 191 },
+    "type": "theorem",
+    "title": "Odd Numbers Avoid Triple",
+    "content": "No three integers b₁, b₂, b₃ have all pairwise sums odd. Among any three integers, at least two have the same parity, so their sum is even.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-20",
+    "proofId": "erdos-866",
+    "range": { "startLine": 199, "endLine": 215 },
+    "type": "concept",
+    "title": "Summary Table",
+    "content": "Complete table of known bounds: k=3: exact 2; k=4: bounded ≤2032; k=5: Θ(log N); k=6: Θ(√N); general k: between N^{1-ε} and N^{1-2^{-k}}. The gap widens for intermediate k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-866-21",
+    "proofId": "erdos-866",
+    "range": { "startLine": 219, "endLine": 223 },
+    "type": "concept",
+    "title": "Open: g₄ Exact",
+    "content": "Open problem: determine g₄(N) exactly. Known: 0 ≤ g₄(N) ≤ 2032. Is it constant? What is the exact value?",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-866-22",
+    "proofId": "erdos-866",
+    "range": { "startLine": 232, "endLine": 240 },
+    "type": "concept",
+    "title": "Open: Large k Gap",
+    "content": "Open problem: close the gap for large k. Upper bound is N^{1-2^{-k}}, lower bound is N^{1-ε} for any ε>0. These don't match - finding the correct exponent is open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-866-23",
+    "proofId": "erdos-866",
+    "range": { "startLine": 252, "endLine": 275 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "Complete summary: g_k(N) threshold for pairwise sums is well understood for small k (3,4,5,6) but has gaps for large k. Growth transitions: constant → log → √N → nearly linear as k increases.",
+    "significance": "critical"
+  }
+]
