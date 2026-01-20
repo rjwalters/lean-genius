@@ -1,1 +1,221 @@
-[]
+[
+  {
+    "id": "ann-e1129-header",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #1129: Optimal Lagrange Interpolation Nodes**\n\nThe problem asks: given n interpolation nodes in [-1,1], which choice minimizes the Lebesgue constant?\n\n**Key Results:**\n- Optimal nodes exist (Kilgore-Cheney 1976)\n- Characterized by equal-height property (Kilgore 1977)\n- Unique for canonical configurations (de Boor-Pinkus 1978)\n- Asymptotic bounds: (2/pi) log n - O(1) <= Lambda <= (2/pi) log n + O(1)\n\n**Status:** SOLVED",
+    "mathContext": "The Lebesgue constant measures how much polynomial interpolation can amplify errors. This is fundamental to numerical analysis and approximation theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Lagrange interpolation", "Lebesgue constant", "Chebyshev polynomials", "Approximation theory"]
+  },
+  {
+    "id": "ann-e1129-lagrange-basis",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 49, "endLine": 62 },
+    "type": "definition",
+    "title": "Lagrange Fundamental Function",
+    "content": "**LagrangeBasis** l_k(x):\n\nGiven distinct nodes x_1,...,x_n, the k-th Lagrange basis polynomial is:\n$$l_k(x) = \\frac{\\prod_{i \\neq k}(x - x_i)}{\\prod_{i \\neq k}(x_k - x_i)}$$\n\n**Key Properties:**\n- l_k(x_k) = 1 (equals 1 at its own node)\n- l_k(x_i) = 0 for i != k (equals 0 at other nodes)\n- deg(l_k) = n - 1\n\n**Use:** Any polynomial of degree <= n-1 can be written as P(x) = sum y_k * l_k(x).",
+    "mathContext": "Named after Joseph-Louis Lagrange (1736-1813), these form the canonical basis for polynomial interpolation.",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial interpolation", "Vandermonde matrix", "Cardinal functions"]
+  },
+  {
+    "id": "ann-e1129-distinct-nodes",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 63, "endLine": 76 },
+    "type": "definition",
+    "title": "Node Constraints",
+    "content": "**DistinctNodes:**\nAll interpolation nodes must be distinct to avoid division by zero in the Lagrange formula.\n\n**NodesInInterval:**\nFor this problem, all nodes must lie in [-1, 1]. This is the standard interval for Chebyshev theory.\n\n```lean\ndef DistinctNodes (nodes : Fin n -> R) : Prop :=\n  forall i j, i != j -> nodes i != nodes j\n\ndef NodesInInterval (nodes : Fin n -> R) : Prop :=\n  forall i, -1 <= nodes i and nodes i <= 1\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1129-lebesgue-function",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 83, "endLine": 90 },
+    "type": "definition",
+    "title": "Lebesgue Function",
+    "content": "**LebesgueFunction** lambda(x):\n\nThe sum of absolute values of Lagrange basis functions at point x:\n$$\\lambda(x) = \\sum_k |l_k(x)|$$\n\nThis measures how much a point x 'sees' all the interpolation nodes. At each node x_k, we have lambda(x_k) = 1.",
+    "mathContext": "The Lebesgue function oscillates between local minima (near 1 at nodes) and local maxima (between nodes).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1129-lebesgue-constant",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 91, "endLine": 100 },
+    "type": "definition",
+    "title": "Lebesgue Constant",
+    "content": "**LebesgueConstant** Lambda:\n\nThe supremum of the Lebesgue function over [-1, 1]:\n$$\\Lambda = \\sup_{x \\in [-1,1]} \\lambda(x) = \\sup_{x \\in [-1,1]} \\sum_k |l_k(x)|$$\n\n**Significance:**\nIf f is any continuous function and P is its interpolating polynomial:\n$$\\|f - P\\|_\\infty \\leq (1 + \\Lambda) \\cdot E_n(f)$$\nwhere E_n(f) is the best polynomial approximation error.\n\nSmaller Lambda = better-conditioned interpolation.",
+    "mathContext": "Named after Henri Lebesgue. This constant controls the stability of polynomial interpolation.",
+    "significance": "critical",
+    "relatedConcepts": ["Operator norm", "Condition number", "Best approximation"]
+  },
+  {
+    "id": "ann-e1129-chebyshev-nodes",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 107, "endLine": 128 },
+    "type": "definition",
+    "title": "Chebyshev Nodes",
+    "content": "**ChebyshevNodes:**\n\nThe n roots of the n-th Chebyshev polynomial T_n:\n$$x_k = \\cos\\left(\\frac{(2k-1)\\pi}{2n}\\right), \\quad k = 1, \\ldots, n$$\n\n**Key Property:**\nThese nodes cluster near the endpoints +/- 1, which counteracts the Runge phenomenon and minimizes interpolation error.\n\n**Lebesgue Constant:**\nChebyshev nodes achieve Lambda ~ (2/pi) log n, which is asymptotically optimal.",
+    "mathContext": "Named after Pafnuty Chebyshev (1821-1894). Chebyshev polynomials have the minimax property: they deviate least from zero among all monic polynomials.",
+    "significance": "critical",
+    "relatedConcepts": ["Chebyshev polynomials", "Minimax approximation", "Spectral methods"]
+  },
+  {
+    "id": "ann-e1129-faber-bound",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 135, "endLine": 146 },
+    "type": "axiom",
+    "title": "Faber's Lower Bound",
+    "content": "**faber_lower_bound (1914):**\n\nFor any choice of n nodes in [-1, 1]:\n$$\\Lambda(x_1,\\ldots,x_n) \\gg \\log n$$\n\nThis was a fundamental negative result: no interpolation scheme can achieve bounded Lebesgue constant as n -> infinity.\n\n**Implication:** Polynomial interpolation on large node sets is inherently ill-conditioned.",
+    "mathContext": "Georg Faber (1877-1966) proved this impossibility result, showing that polynomial interpolation has intrinsic limitations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1129-erdos-bound",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 147, "endLine": 158 },
+    "type": "axiom",
+    "title": "Erdos Lower Bound",
+    "content": "**erdos_lower_bound (1961):**\n\nThe sharp lower bound with exact constant:\n$$\\Lambda(x_1,\\ldots,x_n) \\geq \\frac{2}{\\pi} \\log n - O(1)$$\n\nThis improved earlier bounds by Bernstein (1931) who showed Lambda > (2/pi - o(1)) log n.\n\n**Statement:**\n```lean\naxiom erdos_lower_bound :\n    exists C, forall n nodes, NodesInInterval nodes -> DistinctNodes nodes -> n > 0 ->\n    LebesgueConstant nodes >= (2 / pi) * log n - C\n```",
+    "mathContext": "Erdos achieved the sharp constant 2/pi, which matches the upper bound from Chebyshev nodes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1129-chebyshev-upper",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 159, "endLine": 169 },
+    "type": "axiom",
+    "title": "Chebyshev Upper Bound",
+    "content": "**chebyshev_upper_bound:**\n\nChebyshev nodes achieve the optimal asymptotic:\n$$\\Lambda(\\text{Chebyshev}) \\leq \\frac{2}{\\pi} \\log n + O(1)$$\n\nCombined with Erdos's lower bound, this shows Chebyshev nodes are asymptotically optimal:\n$$(2/\\pi) \\log n - O(1) \\leq \\Lambda_{\\text{opt}} \\leq (2/\\pi) \\log n + O(1)$$\n\nThe constant 2/pi ~ 0.6366 is the best possible.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1129-equal-height",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 184, "endLine": 193 },
+    "type": "definition",
+    "title": "Equal-Height Property",
+    "content": "**EqualHeightProperty:**\n\nOptimal nodes are characterized by 'equioscillation': the subinterval maxima of the Lebesgue function are all equal.\n\nFor sorted nodes x_1 < x_2 < ... < x_n with x_0 = -1 and x_{n+1} = 1:\n$$\\max_{x \\in [x_i, x_{i+1}]} \\sum_k |l_k(x)|$$\nare the same for all intervals.\n\nErdos conjectured this characterization, and Kilgore proved it in 1977.",
+    "mathContext": "This is analogous to the equioscillation theorem in Chebyshev approximation theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Equioscillation", "Chebyshev approximation", "Remez algorithm"]
+  },
+  {
+    "id": "ann-e1129-kilgore-cheney",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 194, "endLine": 202 },
+    "type": "axiom",
+    "title": "Kilgore-Cheney Existence",
+    "content": "**kilgore_cheney_existence (1976):**\n\nThere exist interpolation nodes that minimize the Lebesgue constant.\n\n```lean\naxiom kilgore_cheney_existence (n : N) (hn : n > 0) :\n    exists nodes, NodesInInterval nodes and DistinctNodes nodes and\n    forall nodes', NodesInInterval nodes' -> DistinctNodes nodes' ->\n    LebesgueConstant nodes <= LebesgueConstant nodes'\n```\n\nThe proof uses compactness and continuity arguments.",
+    "mathContext": "T.A. Kilgore and E.W. Cheney proved existence using topological methods, without constructing the minimizer explicitly.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1129-kilgore-char",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 203, "endLine": 212 },
+    "type": "axiom",
+    "title": "Kilgore's Characterization",
+    "content": "**kilgore_characterization (1977):**\n\nOptimal nodes are characterized by the equal-height property.\n\nIf nodes minimize the Lebesgue constant, then the subinterval maxima are all equal.\n\nConversely, if nodes have equal subinterval maxima, they are optimal.\n\nThis provides a theoretical characterization but not a practical algorithm.",
+    "mathContext": "Kilgore's paper in SIAM J. Numer. Anal. established this equivalence, confirming Erdos's conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1129-deboor-pinkus",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 213, "endLine": 225 },
+    "type": "axiom",
+    "title": "de Boor-Pinkus Uniqueness",
+    "content": "**de_boor_pinkus_uniqueness (1978):**\n\nFor canonical configurations (endpoints fixed at +/- 1, symmetric about 0), the minimizer is unique.\n\n**Canonical:** nodes with x_1 = -1, x_n = 1, and x_i = -x_{n+1-i} (symmetric).\n\nDe Boor and Pinkus proved that among all canonical configurations, there is exactly one that minimizes Lambda.",
+    "mathContext": "Carl de Boor and Allan Pinkus strengthened the existence theorem to uniqueness for the natural symmetric case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1129-optimal-n2",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 232, "endLine": 242 },
+    "type": "theorem",
+    "title": "Optimal Nodes for n=2",
+    "content": "**optimal_n2:**\n\nFor n = 2, the optimal nodes are {-1, 1} with Lambda = 1.\n\nThis is trivial: with only two nodes at the endpoints, the Lagrange basis functions are:\n- l_1(x) = (x - 1) / (-1 - 1) = (1 - x) / 2\n- l_2(x) = (x + 1) / (1 + 1) = (1 + x) / 2\n\nThen |l_1(x)| + |l_2(x)| = (1-x)/2 + (1+x)/2 = 1 for all x in [-1, 1].",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1129-optimal-n3",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 243, "endLine": 254 },
+    "type": "theorem",
+    "title": "Optimal Nodes for n=3",
+    "content": "**optimal_n3 (Bernstein 1931):**\n\nFor n = 3, the optimal nodes are {-1, 0, 1} with Lambda = 5/4 = 1.25.\n\nThe Lebesgue function achieves its maximum at x = +/- 1/sqrt(2), where Lambda(+/- 1/sqrt(2)) = 5/4.\n\nBernstein proved this as part of his study of interpolation bounds.",
+    "mathContext": "Sergei Bernstein (1880-1968) was a pioneer in approximation theory who proved many fundamental results.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1129-optimal-n4",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 255, "endLine": 267 },
+    "type": "axiom",
+    "title": "Optimal Nodes for n=4",
+    "content": "**optimal_n4_exists (Rack-Vajda 2015):**\n\nFor n = 4, the optimal canonical nodes are {-1, -t, t, 1} where:\n- t ~ 0.4177 is an explicit algebraic constant\n- Lambda ~ 1.4229\n\nThe value t is a root of a specific polynomial equation derived from the equal-height condition.\n\nThis was only determined in 2015, showing how difficult explicit solutions are.",
+    "mathContext": "For n >= 5, the optimal nodes are not known explicitly, though numerical approximations exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1129-complex-lebesgue",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 274, "endLine": 282 },
+    "type": "definition",
+    "title": "Complex Lebesgue Constant",
+    "content": "**ComplexLebesgueConstant:**\n\nFor nodes z_1,...,z_n on the unit circle |z| = 1, the complex Lebesgue constant is:\n$$\\Lambda = \\max_{|z|=1} \\sum_k |l_k(z)|$$\n\nThis is the natural extension of the real problem to the complex setting.",
+    "mathContext": "Erdos posed this variant in 1967, suggesting that uniformly spaced nodes (roots of unity) should be optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1129-roots-unity",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 283, "endLine": 289 },
+    "type": "definition",
+    "title": "Roots of Unity",
+    "content": "**RootsOfUnity:**\n\nThe n-th roots of unity: omega_k = e^(2*pi*i*k/n) for k = 0, ..., n-1.\n\nThese are uniformly spaced on the unit circle, separated by angle 2*pi/n.\n\n```lean\ndef RootsOfUnity (n : N) (hn : n > 0) (k : Fin n) : C :=\n  Complex.exp (2 * pi * I * k / n)\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1129-brutman",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 290, "endLine": 305 },
+    "type": "axiom",
+    "title": "Brutman's Theorems",
+    "content": "**brutman_odd (1980) and brutman_pinkus_even (1980):**\n\nFor both odd and even n, the n-th roots of unity minimize the complex Lebesgue constant.\n\n- Brutman proved the odd case in SIAM J. Numer. Anal.\n- Brutman and Pinkus proved the even case separately\n\nThis confirms Erdos's conjecture that 'it seems certain' roots of unity are optimal.",
+    "mathContext": "L. Brutman and A. Pinkus completed the resolution of Erdos's complex conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1129-complex-conjecture",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 306, "endLine": 317 },
+    "type": "theorem",
+    "title": "Erdos's Complex Conjecture: PROVED",
+    "content": "**erdos_complex_conjecture:**\n\nFor all n, roots of unity minimize the complex Lebesgue constant.\n\n```lean\ntheorem erdos_complex_conjecture (n : N) (hn : n > 0) :\n    forall nodes, (forall k, |nodes k| = 1) ->\n    ComplexLebesgueConstant (RootsOfUnity n hn) <= ComplexLebesgueConstant nodes\n```\n\nThe proof cases on whether n is even or odd, applying the appropriate theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1129-main",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 324, "endLine": 354 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_1129:**\n\nThe complete answer to Erdos Problem #1129:\n\n1. **Existence:** Optimal nodes exist for any n (Kilgore-Cheney)\n2. **Bounds:** For any nodes, (2/pi) log n - O(1) <= Lambda\n3. **Achievability:** Chebyshev nodes achieve Lambda <= (2/pi) log n + O(1)\n\n```lean\ntheorem erdos_1129 (n : N) (hn : n > 0) :\n    (exists nodes, ... optimal ...) and\n    (exists C1 C2, ... bounds ...)\n```",
+    "mathContext": "This combines decades of work from Faber (1914) through de Boor-Pinkus (1978).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1129-summary",
+    "proofId": "erdos-1129",
+    "range": { "startLine": 355, "endLine": 374 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1129_summary:**\n\nCombines all results:\n\n1. For any n > 0, optimal interpolation nodes exist in [-1, 1]\n2. For any n > 0, roots of unity are optimal on the unit circle\n\n```lean\ntheorem erdos_1129_summary :\n    (forall n > 0, optimal nodes exist) and\n    (forall n > 0, roots of unity are optimal for complex case)\n```\n\nThe answer to Erdos's question is complete.",
+    "significance": "key"
+  }
+]
