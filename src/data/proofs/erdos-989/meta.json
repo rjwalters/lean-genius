@@ -1,33 +1,168 @@
 {
   "id": "erdos-989",
-  "title": "Erdős Problem #989",
+  "title": "Erdős Problem #989: Circle Discrepancy",
   "slug": "erdos-989",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is an infinite sequence then let\\[f(r)=\\max_C \\left\\lvert \\lvert A\\cap C\\rvert-\\pi r^2\\right\\rvert,\\]where the maximum...",
+  "description": "For an infinite sequence A ⊂ ℝ², define f(r) = max_C |#(A∩C) - πr²| over circles of radius r. Beck (1987) proved f(r) ≫ r^{1/2} for all A (lower bound), and ∃A with f(r) ≪ (r log r)^{1/2} (upper bound). The optimal growth is Θ̃(√r).",
   "meta": {
-    "author": "Unknown",
+    "author": "Beck, József",
     "sourceUrl": "https://erdosproblems.com/989",
-    "date": "",
-    "status": "pending",
+    "date": "1987",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos989Problem.lean",
     "tags": [
+      "discrepancy-theory",
+      "geometric-discrepancy",
+      "circles",
+      "distribution",
+      "fourier-analysis",
       "erdos"
     ],
-    "badge": "mathlib",
+    "badge": "solved",
     "sorries": 0,
     "erdosNumber": 989,
     "erdosUrl": "https://erdosproblems.com/989",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Type for points in ℝ²",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The constant π for circle area calculations",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pi.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function for √r bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function for disk membership",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "iSup",
+        "description": "Supremum for defining discrepancy",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of circle discrepancy function f(r)",
+      "Statement and structure of Beck's lower bound theorem",
+      "Statement and structure of Beck's upper bound theorem",
+      "Proof that discrepancy is unbounded for all sequences",
+      "Connection to broader discrepancy theory",
+      "Formalization of open problems about logarithmic gap"
+    ],
+    "relatedProblems": [
+      {
+        "id": "roth-discrepancy",
+        "relationship": "Roth's theorem on classical box discrepancy"
+      },
+      {
+        "id": "szemeredi-trotter",
+        "relationship": "Incidence bounds related to geometric discrepancy"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #989 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A=\\{z_1,z_2,\\ldots \\}\\in \\mathbb{R}^2$ is an infinite sequence then let\\[f(r)=\\max_C \\left\\lvert \\lvert A\\cap C\\rvert-\\pi r^2\\right\\rvert,\\]where the maximum is taken over all circles $C$ of radius $r$.\n\nIs $f(r)$ unbounded for every $A$? How fast does $f(r)$ grow?\n\n\n\nThis was settled by Beck \\cite{Be87}, who proved that\\[f(r) \\gg r^{1/2}\\]for all $A$, and there exists $A$ such that\\[f(r) \\ll (r\\log r)^{1/2}.\\]\n\n\n\n\nReferences\n\n\n[Be87] Beck, J\\'ozsef, Irregularities of distribution. {I}. Acta Math. (1987), 1--49.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Circle Discrepancy and Uniform Distribution**\n\nThis problem asks fundamental questions about how uniformly an infinite sequence of points can be distributed in the plane with respect to circles.\n\nFor a sequence A = {z₁, z₂, ...} ⊂ ℝ², define the circle discrepancy function:\n  f(r) = max_C |#(A ∩ C) - πr²|\nwhere the maximum is over all circles C of radius r.\n\nThe expected count in a circle of radius r (if points had density 1) is πr². The discrepancy measures the worst deviation from this expectation.\n\n**Beck's Complete Solution (1987)**\n\nBeck settled this problem in his landmark paper 'Irregularities of distribution I' (Acta Math. 1987):\n\n1. **Lower Bound (Universal)**: For ALL sequences A, f(r) ≫ r^{1/2}\n   - No matter how carefully you place points, discrepancy grows at least like √r\n   - Proof uses Fourier analysis and properties of Bessel functions\n\n2. **Upper Bound (Existence)**: There EXISTS a sequence A with f(r) ≪ (r log r)^{1/2}\n   - Uses probabilistic construction (perturbed lattice)\n   - The log factor comes from union bounds over circles\n\nThis shows the optimal growth rate is Θ̃(√r), with an open question about whether the logarithmic factor is necessary.",
+    "problemStatement": "**Problem Statement**\n\nLet A = {z₁, z₂, ...} ⊂ ℝ² be an infinite sequence of points. Define\n  f(r) = max_C |#(A ∩ C) - πr²|\nwhere the maximum is over all circles C of radius r.\n\n**Questions:**\n1. Is f(r) unbounded for every A?\n2. How fast does f(r) grow?\n\n**Answer (Beck 1987):**\n1. YES - f(r) is unbounded for every A\n2. The optimal growth rate is Θ̃(√r):\n   - Universal lower bound: f(r) ≥ c·√r for all A\n   - Existence upper bound: ∃A with f(r) ≤ C·√(r log r)\n\n**Status:** SOLVED",
+    "proofStrategy": "**Beck's Approach**\n\n**Lower Bound (Fourier Analysis):**\n1. Express circle indicators via their Fourier transforms\n2. The Fourier transform of a disk involves Bessel functions J₁\n3. Key property: |J₁(x)| ~ 1/√x for large x\n4. Apply Parseval to relate discrepancy to Fourier coefficients\n5. The Bessel asymptotics force √r growth\n\n**Upper Bound (Probabilistic Construction):**\n1. Start with the integer lattice ℤ² (density 1)\n2. Perturb each lattice point by a small random displacement\n3. Expected discrepancy is √(r log r)\n4. The log factor comes from union bound over O(r²) possible circle positions\n5. Use concentration to show the construction works with high probability\n\n**Why √r is Natural:**\n- A circle of radius r has circumference 2πr\n- Points near the boundary can be in or out\n- Fluctuations of order √(boundary length) = √r",
+    "keyInsights": [
+      "f(r) is unbounded for EVERY sequence A - discrepancy is unavoidable",
+      "The optimal growth rate is Θ̃(√r) - both lower and upper bounds match (up to logs)",
+      "Lower bound: Fourier analysis + Bessel function asymptotics",
+      "Upper bound: Probabilistic lattice perturbation construction",
+      "The logarithmic gap (√r vs √(r log r)) is a major open problem",
+      "Circles have higher discrepancy than half-planes (√r vs r^{1/4})",
+      "This is foundational work in geometric discrepancy theory"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Point, Circle, Circle.disk, circleArea",
+      "startLine": 44,
+      "endLine": 60
+    },
+    {
+      "id": "discrepancy-definitions",
+      "title": "Point Sequences and Discrepancy",
+      "summary": "PointSequence, countInCircle, localDiscrepancy, circleDiscrepancy",
+      "startLine": 62,
+      "endLine": 86
+    },
+    {
+      "id": "lower-bound",
+      "title": "Beck's Lower Bound",
+      "summary": "beck_lower_bound axiom, discrepancy_unbounded theorem",
+      "startLine": 88,
+      "endLine": 128
+    },
+    {
+      "id": "upper-bound",
+      "title": "Beck's Upper Bound",
+      "summary": "beck_upper_bound axiom, beckOptimalSequence",
+      "startLine": 130,
+      "endLine": 149
+    },
+    {
+      "id": "complete-answer",
+      "title": "The Complete Answer",
+      "summary": "erdos_989_solved theorem combining all results",
+      "startLine": 151,
+      "endLine": 182
+    },
+    {
+      "id": "discrepancy-theory",
+      "title": "Connection to Discrepancy Theory",
+      "summary": "allCircles, generalCircleDiscrepancy, context in broader theory",
+      "startLine": 184,
+      "endLine": 207
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Proof Techniques",
+      "summary": "fourier_analysis_lower_bound, probabilistic_upper_bound_construction",
+      "startLine": 209,
+      "endLine": 238
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "summary": "Logarithmic gap, explicit constructions, higher dimensions",
+      "startLine": 240,
+      "endLine": 276
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "schmidt_classical_discrepancy, alexander_halfplane_discrepancy",
+      "startLine": 278,
+      "endLine": 302
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_989_summary theorem, complete overview",
+      "startLine": 304,
+      "endLine": 341
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #989 asked whether the circle discrepancy f(r) is unbounded and how fast it grows. Beck (1987) completely settled this: f(r) ≫ √r for ALL sequences (using Fourier/Bessel analysis), and ∃ sequence with f(r) ≪ √(r log r) (using probabilistic construction). The optimal rate is Θ̃(√r).",
+    "implications": "**Theoretical Significance**\n\n1. **Discrepancy Theory**: Foundational result showing limits of uniform distribution for circles\n\n2. **Fourier Methods**: Demonstrates power of harmonic analysis in discrete geometry\n\n3. **Probabilistic Method**: Optimal constructions often require randomization\n\n4. **Natural Bounds**: The √r growth comes from circle circumference fluctuations\n\n5. **Comparison**: Circles (√r) have higher discrepancy than half-planes (r^{1/4})",
+    "openQuestions": [
+      "Is the logarithmic factor necessary? Is the lower bound actually Ω(√(r log r))?",
+      "Can we give explicit deterministic constructions achieving √(r log r)?",
+      "What is the optimal discrepancy for balls in higher dimensions ℝ^d?",
+      "Are there natural sequences (lattice-based) achieving near-optimal discrepancy?",
+      "What about discrepancy for other families of sets (ellipses, convex sets)?"
+    ]
   }
 }

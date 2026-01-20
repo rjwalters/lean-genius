@@ -1,1 +1,229 @@
-[]
+[
+  {
+    "id": "ann-903-header",
+    "proofId": "erdos-903",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #903** asks: for n = p² + p + 1 with p a prime power, if a block design has t > n blocks, must t ≥ n + p? The answer is YES, proved by Erdős-Fowler-Sós-Wilson (1985).",
+    "mathContext": "This problem connects combinatorics (block designs) with finite geometry (projective planes). The de Bruijn-Erdős theorem provides the base case t ≥ n.",
+    "significance": "critical",
+    "relatedConcepts": ["block-designs", "projective-planes", "de-bruijn-erdos", "finite-geometry"]
+  },
+  {
+    "id": "ann-903-blockdesign",
+    "proofId": "erdos-903",
+    "range": { "startLine": 37, "endLine": 46 },
+    "type": "definition",
+    "title": "BlockDesign",
+    "content": "A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block. This is the 2-(n, k, 1) design property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-numblocks",
+    "proofId": "erdos-903",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "numBlocks",
+    "content": "The number of blocks t in a design, computed as the cardinality of the blocks Finset.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-primepower",
+    "proofId": "erdos-903",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "IsPrimePower",
+    "content": "A natural number q is a prime power if q = p^k for some prime p and k ≥ 1. Prime powers are exactly the orders for which projective planes are known to exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-projsize",
+    "proofId": "erdos-903",
+    "range": { "startLine": 60, "endLine": 63 },
+    "type": "definition",
+    "title": "IsProjectivePlaneSize",
+    "content": "n has projective plane size if n = q² + q + 1 for some prime power q. These are the values 7, 13, 21, 31, 57, 73, ...",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-debruijn",
+    "proofId": "erdos-903",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "axiom",
+    "title": "de Bruijn-Erdős Theorem",
+    "content": "Every block design on n points has at least n blocks. This fundamental 1948 result provides the lower bound t ≥ n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-minimal",
+    "proofId": "erdos-903",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "definition",
+    "title": "IsMinimalDesign",
+    "content": "A design is minimal if it achieves exactly t = n blocks. Projective planes are the primary examples of minimal designs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-uniform",
+    "proofId": "erdos-903",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "axiom",
+    "title": "Minimal Design Uniformity",
+    "content": "In a minimal design (t = n), all blocks have the same size k. This is a consequence of the de Bruijn-Erdős equality case analysis.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-903-projplane",
+    "proofId": "erdos-903",
+    "range": { "startLine": 88, "endLine": 99 },
+    "type": "definition",
+    "title": "ProjectivePlane",
+    "content": "A projective plane of order q has q² + q + 1 points and q² + q + 1 lines, with each line containing q + 1 points. Every two points determine a unique line.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-toblockdesign",
+    "proofId": "erdos-903",
+    "range": { "startLine": 100, "endLine": 106 },
+    "type": "definition",
+    "title": "toBlockDesign",
+    "content": "A projective plane of order q naturally gives a block design on n = q² + q + 1 points, where lines become blocks.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-projminimal",
+    "proofId": "erdos-903",
+    "range": { "startLine": 107, "endLine": 111 },
+    "type": "theorem",
+    "title": "projective_plane_minimal",
+    "content": "Projective planes achieve the minimum t = n. This shows the de Bruijn-Erdős bound is tight for projective plane sizes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-erdossos",
+    "proofId": "erdos-903",
+    "range": { "startLine": 118, "endLine": 124 },
+    "type": "theorem",
+    "title": "erdos_sos_theorem",
+    "content": "The main conjecture of Erdős and Sós: if t > n then t ≥ n + p. This creates a 'gap' of forbidden values (n, n+p).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-efsw",
+    "proofId": "erdos-903",
+    "range": { "startLine": 125, "endLine": 129 },
+    "type": "axiom",
+    "title": "EFSW 1985",
+    "content": "Erdős-Fowler-Sós-Wilson (1985) proved the Erdős-Sós conjecture: for a block design on p² + p + 1 points, t > n implies t ≥ n + p.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-strong",
+    "proofId": "erdos-903",
+    "range": { "startLine": 130, "endLine": 138 },
+    "type": "axiom",
+    "title": "EFSW Strong Bound",
+    "content": "Unless the design comes from a 'broken' projective plane, the gap is even larger: t ≥ n + 1.148p. Breaking a line means replacing one (q+1)-point line with q+1 singleton blocks.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-achievable",
+    "proofId": "erdos-903",
+    "range": { "startLine": 145, "endLine": 148 },
+    "type": "definition",
+    "title": "achievableBlocks",
+    "content": "The set of values t that can be achieved by some block design on p² + p + 1 points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-nachievable",
+    "proofId": "erdos-903",
+    "range": { "startLine": 149, "endLine": 152 },
+    "type": "axiom",
+    "title": "n_achievable",
+    "content": "t = n is always achievable via the projective plane construction.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-903-gap",
+    "proofId": "erdos-903",
+    "range": { "startLine": 153, "endLine": 157 },
+    "type": "axiom",
+    "title": "gap_theorem",
+    "content": "Values in the open interval (n, n+p) are NOT achievable. This is the 'gap' in the de Bruijn-Erdős bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-firstabove",
+    "proofId": "erdos-903",
+    "range": { "startLine": 158, "endLine": 165 },
+    "type": "theorem",
+    "title": "first_above_n",
+    "content": "The first achievable value above n is at least n + p. Proved by contradiction using gap_theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-examples",
+    "proofId": "erdos-903",
+    "range": { "startLine": 170, "endLine": 181 },
+    "type": "example",
+    "title": "Concrete Examples",
+    "content": "For p=2: n=7, gap is (7,9). For p=3: n=13, gap is (13,16). For p=4: n=21, gap is (21,25). For p=5: n=31, gap is (31,36).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-903-2design",
+    "proofId": "erdos-903",
+    "range": { "startLine": 186, "endLine": 190 },
+    "type": "definition",
+    "title": "Is2Design",
+    "content": "A 2-(v, k, 1) design is a block design where every block has exactly k elements. This is a uniform or regular block design.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-fisher",
+    "proofId": "erdos-903",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "axiom",
+    "title": "Fisher's Inequality",
+    "content": "For 2-designs with k ≥ 2, the number of blocks b ≥ v (number of points). This is equivalent to de Bruijn-Erdős for uniform designs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-903-dbfromfisher",
+    "proofId": "erdos-903",
+    "range": { "startLine": 196, "endLine": 201 },
+    "type": "theorem",
+    "title": "de_bruijn_erdos_from_fisher",
+    "content": "For uniform block designs, de Bruijn-Erdős follows directly from Fisher's inequality.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-903-statement",
+    "proofId": "erdos-903",
+    "range": { "startLine": 206, "endLine": 236 },
+    "type": "theorem",
+    "title": "erdos_903_statement",
+    "content": "Main theorem combining: (1) de Bruijn-Erdős: t ≥ n, (2) projective plane achieves t = n, (3) Erdős-Sós: t > n implies t ≥ n + p.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-answer",
+    "proofId": "erdos-903",
+    "range": { "startLine": 237, "endLine": 239 },
+    "type": "theorem",
+    "title": "erdos_903_answer",
+    "content": "The answer to Erdős Problem #903 is YES: if t > n then t ≥ n + p.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-903-summary",
+    "proofId": "erdos-903",
+    "range": { "startLine": 240, "endLine": 246 },
+    "type": "theorem",
+    "title": "erdos_903_summary",
+    "content": "Summary: 1948 de Bruijn-Erdős proved t ≥ n. 1985 EFSW proved t > n implies t ≥ n + p. Stronger: t ≥ n + 1.148p unless broken projective plane.",
+    "significance": "critical"
+  }
+]

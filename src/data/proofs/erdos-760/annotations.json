@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "id": "ann-e760-header",
+    "proofId": "erdos-760",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #760: Cochromatic Number of Subgraphs**\n\nIf G has chromatic number χ(G) = m, must G contain a subgraph H with ζ(H) ≫ m / log m?\n\n**Status:** SOLVED (YES)\n\n**Solution:** Alon-Krivelevich-Sudakov (1997)\n\nThe bound is tight - complete graphs achieve it.",
+    "mathContext": "Connects chromatic number, cochromatic number, and Ramsey theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Chromatic number", "Cochromatic number", "Ramsey theory", "Homogeneous sets"]
+  },
+  {
+    "id": "ann-e760-indep",
+    "proofId": "erdos-760",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "**IsIndependentSet(G, S):**\n\nA set S is independent if no two vertices in S are adjacent.\n\nIn a proper coloring, each color class is an independent set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-clique",
+    "proofId": "erdos-760",
+    "range": { "startLine": 56, "endLine": 61 },
+    "type": "definition",
+    "title": "Clique",
+    "content": "**IsClique(G, S):**\n\nA set S is a clique if every pair of distinct vertices in S is adjacent.\n\nCliques are the 'opposite' of independent sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-homog",
+    "proofId": "erdos-760",
+    "range": { "startLine": 63, "endLine": 69 },
+    "type": "definition",
+    "title": "Homogeneous Set",
+    "content": "**IsHomogeneous(G, S):**\n\nA set is homogeneous if it's either a clique OR an independent set.\n\nThis is the key concept for cochromatic colorings - color classes must be homogeneous.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e760-chromatic",
+    "proofId": "erdos-760",
+    "range": { "startLine": 79, "endLine": 88 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber(G):**\n\nχ(G) = minimum number of colors for a proper coloring.\n\nEach color class must be an independent set (no adjacent vertices share a color).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-cochromatic",
+    "proofId": "erdos-760",
+    "range": { "startLine": 97, "endLine": 111 },
+    "type": "definition",
+    "title": "Cochromatic Number",
+    "content": "**cochromaticNumber(G):**\n\nζ(G) = minimum colors where each color class is homogeneous (clique or independent set).\n\n**Key property:** ζ(G) ≤ χ(G) always, since independent sets are homogeneous.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e760-cochrom-le",
+    "proofId": "erdos-760",
+    "range": { "startLine": 119, "endLine": 125 },
+    "type": "theorem",
+    "title": "Cochromatic ≤ Chromatic",
+    "content": "**cochromatic_le_chromatic:**\n\nζ(G) ≤ χ(G) for all graphs G.\n\nEvery proper coloring is also a cochromatic coloring (independent sets are homogeneous).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-complete",
+    "proofId": "erdos-760",
+    "range": { "startLine": 127, "endLine": 148 },
+    "type": "theorem",
+    "title": "Complete Graph Bounds",
+    "content": "**Complete graphs show tightness:**\n\nFor Kₘ: χ(Kₘ) = m but ζ(Kₘ) = O(log m)\n\nThis means subgraphs H can only achieve ζ(H) ~ m / log m at best.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-erdosgimbel",
+    "proofId": "erdos-760",
+    "range": { "startLine": 156, "endLine": 167 },
+    "type": "axiom",
+    "title": "Erdős-Gimbel Theorem (1993)",
+    "content": "**erdos_gimbel_theorem:**\n\nIf χ(G) = m, then G has subgraph H with ζ(H) ≥ c · √(m / log m).\n\nThis was the first bound, weaker than the eventual solution.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-aks",
+    "proofId": "erdos-760",
+    "range": { "startLine": 183, "endLine": 208 },
+    "type": "axiom",
+    "title": "Alon-Krivelevich-Sudakov Theorem (1997)",
+    "content": "**aks_theorem:**\n\nIf χ(G) = m, then G has subgraph H with ζ(H) ≥ c · m / log m.\n\n**This solves Erdős Problem #760!**\n\nThe bound is optimal - complete graphs achieve it.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e760-solved",
+    "proofId": "erdos-760",
+    "range": { "startLine": 198, "endLine": 208 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**erdos_760_solved:**\n\nThe answer to Erdős Problem #760 is YES.\n\nEvery graph with χ(G) = m contains a subgraph with ζ(H) ≫ m / log m.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e760-ramsey",
+    "proofId": "erdos-760",
+    "range": { "startLine": 216, "endLine": 237 },
+    "type": "axiom",
+    "title": "Ramsey-Type Argument",
+    "content": "**ramsey_for_cochromatic:**\n\nAny graph on n vertices has a homogeneous set of size ~ log n.\n\n**Proof technique:**\n1. Find homogeneous set S\n2. Remove S and recurse\n3. Build H from the decomposition",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-clique-cover",
+    "proofId": "erdos-760",
+    "range": { "startLine": 245, "endLine": 260 },
+    "type": "definition",
+    "title": "Clique Cover Number",
+    "content": "**cliqueCoverNumber(G):**\n\nMinimum cliques needed to cover all vertices.\n\nEquals χ(Gᶜ) - the chromatic number of the complement.\n\nRelation: ζ(G) ≤ min(χ(G), cliqueCoverNumber(G))",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e760-ramsey-num",
+    "proofId": "erdos-760",
+    "range": { "startLine": 262, "endLine": 271 },
+    "type": "axiom",
+    "title": "Ramsey Number Connection",
+    "content": "**ramsey_number_bound:**\n\nR(k,k) ≤ 4^k, so any n-vertex graph has homogeneous set of size log₄(n).\n\nThis logarithmic bound is why we lose a log factor in the main theorem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e760-tight",
+    "proofId": "erdos-760",
+    "range": { "startLine": 279, "endLine": 299 },
+    "type": "theorem",
+    "title": "Tightness of Bound",
+    "content": "**Why m / log m is optimal:**\n\n1. Complete graphs: χ(Kₘ) = m, ζ(Kₘ) = O(log m)\n2. Ramsey gives only log-sized homogeneous sets\n3. Therefore ζ(H) can't exceed cm / log m\n\nThe AKS bound is the best possible!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e760-main",
+    "proofId": "erdos-760",
+    "range": { "startLine": 330, "endLine": 367 },
+    "type": "theorem",
+    "title": "Main Result Summary",
+    "content": "**erdos_760:**\n\n**Status:** SOLVED\n\n**Result:** ∃c > 0: χ(G) = m ⟹ G has subgraph H with ζ(H) ≥ cm / log m\n\n**Timeline:**\n- 1993: Erdős-Gimbel prove √(m / log m)\n- 1997: AKS prove optimal m / log m",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e760-historical",
+    "proofId": "erdos-760",
+    "range": { "startLine": 369, "endLine": 375 },
+    "type": "theorem",
+    "title": "Historical Note",
+    "content": "**historical_note:**\n\nThe improvement from √(m / log m) to m / log m required new Ramsey-theoretic techniques.\n\nThis showcases how extremal graph theory benefits from combinatorial methods.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e760-open",
+    "proofId": "erdos-760",
+    "range": { "startLine": 377, "endLine": 382 },
+    "type": "theorem",
+    "title": "Open Direction",
+    "content": "**open_direction:**\n\nWhat is the exact optimal constant c in ζ(H) ≥ cm / log m?\n\nCurrent proofs give small constants; the best value remains unknown.",
+    "significance": "supporting"
+  }
+]

@@ -1,33 +1,132 @@
 {
   "id": "erdos-336",
-  "title": "Erdős Problem #336",
+  "title": "Erdős Problem #336: Additive Bases and Exact Order",
   "slug": "erdos-336",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let ... be the maximal finite ... such that there exists a basis ... of order ... (so every large integer is the sum ...",
+  "description": "Find lim h(r)/r² where h(r) is the maximal exact order of a basis of order r. Known: 1/3 ≤ lim ≤ 1/2. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (1980), Grekos (1988), Nash (1993), Plagne (2004)",
     "sourceUrl": "https://erdosproblems.com/336",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos336Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "bases"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 336,
     "erdosUrl": "https://erdosproblems.com/336",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum in ordered sets",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "Multiset",
+        "description": "Multisets for sums with repetition",
+        "module": "Mathlib.Data.Multiset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized IsBasis (order r) and HasExactOrder (exact order k)",
+      "Defined h(r) as supremum of achievable exact orders",
+      "Stated Erdős-Graham (1980) bounds: 1/4 ≤ lim ≤ 5/4",
+      "Stated Grekos (1988) lower bound: 1/3",
+      "Stated Nash (1993) upper bound: 1/2",
+      "Stated specific values: h(2) = 4, h(3) = 7, 10 ≤ h(4) ≤ 11",
+      "Formalized Erdős-Graham example where order ≠ exact order",
+      "Stated characterization: exact order exists iff differences coprime"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #336 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $r\\geq 2$ let $h(r)$ be the maximal finite $k$ such that there exists a basis $A\\subseteq \\mathbb{N}$ of order $r$ (so every large integer is the sum of at most $r$ integers from $A$) and exact order $k$ (so every large integer is the sum of exactly $k$ integers from $A$).\n\nFind the value of\\[\\lim_r \\frac{h(r)}{r^2}.\\]\n\n\n\nA simple example of the order of a basis differing from the exact order is given by $A=\\cup_{k\\geq 0}(2^{2k},2^{2k+1}]$, which has order $2$ but exact order $3$.\n\nErd\\H{o}s and Graham \\cite{ErGr80b} have shown that a basis $A$ has an exact order if and only if $a_2-a_1,a_3-a_2,a_4-a_3,\\ldots$ are coprime. They also proved that\\[\\frac{1}{4}\\leq \\lim_r \\frac{h(r)}{r^2}\\leq \\frac{5}{4}.\\]The best bounds known for the limit are\\[\\frac{1}{3}\\leq \\lim_r \\frac{h(r)}{r^2}\\leq \\frac{1}{2},\\]the lower bound originally due to Grekos \\cite{Gr88} and the upper bound to Nash \\cite{Na93}. Improved bounds in the lower order terms were given by Plagne \\cite{Pl04}.\n\nErd\\H{o}s and Graham \\cite{ErGr80b} showed $h(2)=4$. Nash \\cite{Na93} showed $h(3)=7$. The value of $h(4)$ is unknown, but it is known \\cite{Pl04} that $10\\leq h(4)\\leq 11$.\n\n\n\n\nReferences\n\n\n[ErGr80b] Erd\\H{o}s, P. and Graham, R. L., On bases with an exact order. Acta Arith. (1980), 201-207.\n\n[Gr88] Grekos, Georges, Sur l'ordre d'une base additive. ([1988?]), Exp. No. 31, 13.\n\n[Na93] Nash, John C. M., Some applications of a theorem of {M}. {K}neser. J. Number Theory (1993), 1--8.\n\n[Pl04] Plagne, Alain, \\`A{} propos de la fonction {$X$} d'{E}rd\\H{o}s et {G}raham. Ann. Inst. Fourier (Grenoble) (2004), 1717--1767.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was introduced by Erdős and Graham in their 1980 paper 'On bases with an exact order'. A set A ⊆ ℕ is a basis of order r if every large integer can be written as a sum of at most r elements from A. It has exact order k if every large integer is a sum of exactly k elements.\n\nOrder and exact order can differ: the example A = ∪_{k≥0}(2^{2k}, 2^{2k+1}] has order 2 but exact order 3. The function h(r) measures the maximum achievable exact order for a basis of order r.\n\nErdős-Graham proved 1/4 ≤ lim h(r)/r² ≤ 5/4. Grekos (1988) improved the lower bound to 1/3, and Nash (1993) improved the upper bound to 1/2. Plagne (2004) refined the lower-order terms. The exact value of the limit remains unknown.",
+    "problemStatement": "**Problem**: For r ≥ 2, let h(r) be the maximal finite k such that there exists a basis A ⊆ ℕ of order r and exact order k.\n\nFind the value of $\\lim_{r \\to \\infty} \\frac{h(r)}{r^2}$.\n\n**Known Bounds**: $\\frac{1}{3} \\leq \\lim \\frac{h(r)}{r^2} \\leq \\frac{1}{2}$\n\n**Specific Values**:\n- h(2) = 4\n- h(3) = 7\n- 10 ≤ h(4) ≤ 11\n\n**Status**: OPEN",
+    "proofStrategy": "The formalization defines IsBasis and HasExactOrder using Finsets and Multisets for representing sums. The function h(r) is defined as the supremum of achievable exact orders. Known bounds from the literature are stated as axioms. The Erdős-Graham example demonstrates that order and exact order can differ.",
+    "keyInsights": [
+      "**Order vs exact order**: Order r means ≤ r summands, exact order k means exactly k summands.",
+      "**They can differ**: The example (2^{2k}, 2^{2k+1}] has order 2 but exact order 3.",
+      "**Quadratic growth**: h(r) grows like r², with coefficient in [1/3, 1/2].",
+      "**Characterization**: A has exact order iff consecutive differences are coprime.",
+      "**Known values converge**: h(2)/4 = 1, h(3)/9 ≈ 0.78, suggesting limit < 1."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsBasis, HasExactOrder, HasOrderAndExactOrder, h",
+      "startLine": 35,
+      "endLine": 58
+    },
+    {
+      "id": "limit-question",
+      "title": "The Limit Question",
+      "summary": "LimitExists, limitValue",
+      "startLine": 59,
+      "endLine": 70
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "erdos_graham bounds, grekos_lower_1988, nash_upper_1993, current_bounds",
+      "startLine": 71,
+      "endLine": 96
+    },
+    {
+      "id": "specific-values",
+      "title": "Specific Values",
+      "summary": "h_2, h_3, h_4 bounds, ratio examples",
+      "startLine": 97,
+      "endLine": 119
+    },
+    {
+      "id": "order-differ",
+      "title": "Order vs Exact Order",
+      "summary": "erdosGrahamExample, example_order_2, example_exact_order_3, order_exact_order_differ",
+      "startLine": 120,
+      "endLine": 141
+    },
+    {
+      "id": "characterization",
+      "title": "Characterization",
+      "summary": "consecutiveDiffs, erdos_graham_characterization",
+      "startLine": 142,
+      "endLine": 158
+    },
+    {
+      "id": "quadratic-growth",
+      "title": "Why Quadratic Growth?",
+      "summary": "quadratic_growth_intuition, plagne_refinement_2004",
+      "startLine": 159,
+      "endLine": 172
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_336_statement, erdos_336_open, erdos_336_summary",
+      "startLine": 173,
+      "endLine": 207
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #336 asks for the limit of h(r)/r², where h(r) is the maximum exact order achievable by a basis of order r. The current best bounds are 1/3 ≤ lim ≤ 1/2. Specific values h(2) = 4, h(3) = 7 are known. The exact limit remains OPEN.",
+    "implications": "This problem connects additive combinatorics to the structure of representation functions. The difference between 'at most r' and 'exactly k' summands reveals subtle properties of additive bases. The quadratic scaling of h(r) with r² is a natural phenomenon in additive number theory.",
+    "openQuestions": [
+      "What is the exact value of lim h(r)/r²?",
+      "Is the limit 1/3, 1/2, or something in between?",
+      "What is the exact value of h(4)?",
+      "Can the lower bound 1/3 be improved?"
+    ]
   }
 }

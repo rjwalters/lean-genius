@@ -1,33 +1,173 @@
 {
   "id": "erdos-886",
-  "title": "Erdős Problem #886",
+  "title": "Erdős Problem #886: Divisors Near the Square Root (Ruzsa's Conjecture)",
   "slug": "erdos-886",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that, for all large ..., the number of divisors of ... in ... is ...?\n\n\n\nErds attributes this conjecture ...",
+  "description": "For ε > 0, is the count of divisors of n in the interval (√n, √n + n^{1/2-ε}) bounded by O_ε(1)? An open problem about divisor clustering attributed to Ruzsa.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ruzsa (conjecture), Open (unsolved)",
     "sourceUrl": "https://erdosproblems.com/886",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos886Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "distribution-of-divisors",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 886,
     "erdosUrl": "https://erdosproblems.com/886",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function on reals",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "divisorsOf definition: divisors of n",
+      "divisorCount definition: τ(n)",
+      "criticalInterval definition: (√n, √n + n^{1/2-ε})",
+      "intervalWidth definition: n^{1/2-ε}",
+      "divisorsInInterval definition: divisors in (a, b)",
+      "divisorsNearSqrt definition: count of divisors near √n",
+      "ruzsaConjecture definition: formal statement",
+      "erdos_rosenfeld_four_divisors axiom: Erdős-Rosenfeld result",
+      "factorDifferenceSet definition: differences between divisors",
+      "localDivisorDensity definition: density measure",
+      "ruzsaConjectureAlt definition: equivalent formulation",
+      "trivial_bound theorem: upper bound by τ(n)",
+      "erdos_886_summary: main summary theorem"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-887",
+        "relationship": "Related problem about divisor distribution"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #886 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$. Is it true that, for all large $n$, the number of divisors of $n$ in $(n^{1/2},n^{1/2}+n^{1/2-\\epsilon})$ is $O_\\epsilon(1)$?\n\n\n\nErd\\H{o}s attributes this conjecture to Ruzsa. Erd\\H{o}s and Rosenfeld \\cite{ErRo97} proved that there are infinitely many $n$ such that there are four divisors of $n$ in $(n^{1/2},n^{1/2}+n^{1/4})$.\n\nSee also [887].\n\n\n\n\nReferences\n\n\n[ErRo97] Erd\\H{o}s, Paul and Rosenfeld, Moshe, The factor-difference set of integers. Acta Arith. (1997), 353--359.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Ruzsa's Conjecture**\n\nThis problem is attributed by Erdős to Imre Z. Ruzsa, a Hungarian mathematician known for work in additive combinatorics and number theory.\n\n**The Question:** Given ε > 0, is there a constant C_ε such that for all sufficiently large n, the number of divisors of n lying in the narrow interval (√n, √n + n^{1/2-ε}) is at most C_ε?\n\n**Why It's Hard:** The interval shrinks relative to √n as n grows (since n^{1/2-ε} / √n = n^{-ε} → 0). Can divisors 'pile up' in this shrinking window?\n\n**Known Result:** Erdős and Rosenfeld (1997) showed there are infinitely many n with four divisors in (√n, √n + n^{1/4}). This uses ε = 1/4, giving a wider interval.\n\n**Current Status:** OPEN. The problem is considered tractable by some researchers.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $\\varepsilon > 0$. Is it true that, for all large $n$, the number of divisors of $n$ in $(\\sqrt{n}, \\sqrt{n} + n^{1/2-\\varepsilon})$ is $O_\\varepsilon(1)$?\n\n**Interpretation:** As n grows, the interval (√n, √n + n^{1/2-ε}) becomes relatively narrower (width n^{-ε} times √n). The conjecture asks whether only boundedly many divisors can fit in this shrinking window.\n\n**Contrast with Erdős-Rosenfeld:** For ε = 1/4 (giving interval width n^{1/4}), infinitely many n have at least 4 divisors there. The conjecture asks about arbitrarily small ε.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Basics:**\n   - divisorsOf(n): the set n.divisors from Mathlib\n   - divisorCount(n): τ(n) = |divisors|\n\n2. **The Critical Interval:**\n   - criticalInterval: (√n, √n + n^{1/2-ε})\n   - intervalWidth: n^{1/2-ε}\n   - divisorsInInterval: filter divisors by range\n   - divisorsNearSqrt: count in critical interval\n\n3. **The Conjecture:**\n   - ruzsaConjecture: ∀ε > 0, ∃C_ε, ∀large n, count ≤ C_ε\n   - ruzsaConjectureAlt: equivalent density formulation\n\n4. **Known Results:**\n   - Erdős-Rosenfeld: infinitely many n with 4 divisors in (√n, √n + n^{1/4})\n   - Trivial bound: count ≤ τ(n)\n\n5. **Related Concepts:**\n   - factorDifferenceSet: differences between divisors\n   - localDivisorDensity: count / interval width",
+    "keyInsights": [
+      "**Shrinking Window:** The interval (√n, √n + n^{1/2-ε}) shrinks relative to √n as n grows",
+      "**Divisor Clustering:** Can divisors 'cluster' near √n in this narrow band?",
+      "**Erdős-Rosenfeld (1997):** For ε = 1/4, infinitely many n have ≥ 4 divisors in the interval",
+      "**Attributed to Ruzsa:** Imre Z. Ruzsa, Hungarian additive combinatorialist",
+      "**Related to #887:** Companion problem about divisor distribution",
+      "**Factor-Difference Set:** The spacing between divisors is key to understanding clustering"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "divisors",
+      "title": "Divisors of n",
+      "summary": "divisorsOf, divisorCount, divisorCount_pos",
+      "startLine": 38,
+      "endLine": 58
+    },
+    {
+      "id": "critical-interval",
+      "title": "The Interval Near √n",
+      "summary": "criticalInterval, intervalWidth, intervalWidth_sublinear",
+      "startLine": 60,
+      "endLine": 84
+    },
+    {
+      "id": "divisors-in-interval",
+      "title": "Divisors in the Critical Interval",
+      "summary": "divisorsInInterval, divisorsNearSqrt",
+      "startLine": 86,
+      "endLine": 102
+    },
+    {
+      "id": "conjecture",
+      "title": "Ruzsa's Conjecture",
+      "summary": "ruzsaConjecture definition, erdos_886_open",
+      "startLine": 104,
+      "endLine": 125
+    },
+    {
+      "id": "erdos-rosenfeld",
+      "title": "Erdős-Rosenfeld Result",
+      "summary": "erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms",
+      "startLine": 127,
+      "endLine": 148
+    },
+    {
+      "id": "factor-difference",
+      "title": "Factor-Difference Set",
+      "summary": "factorDifferenceSet definition and properties",
+      "startLine": 150,
+      "endLine": 169
+    },
+    {
+      "id": "density",
+      "title": "Divisor Density Near √n",
+      "summary": "localDivisorDensity, ruzsaConjectureAlt, conjecture_equivalence",
+      "startLine": 171,
+      "endLine": 195
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "isHighlyComposite, square_example",
+      "startLine": 197,
+      "endLine": 218
+    },
+    {
+      "id": "connection-887",
+      "title": "Connection to Problem #887",
+      "summary": "related_to_887 axiom",
+      "startLine": 220,
+      "endLine": 230
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds and Partial Results",
+      "summary": "trivial_bound, divisor_count_bound",
+      "startLine": 232,
+      "endLine": 250
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_886_summary combining main results",
+      "startLine": 252,
+      "endLine": 279
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #886 asks whether divisors of n can cluster in the narrow interval (√n, √n + n^{1/2-ε}). The conjecture, attributed to Ruzsa, asserts that only O_ε(1) divisors can fit there. The problem remains OPEN. Erdős-Rosenfeld (1997) showed that for ε = 1/4 (wider interval), infinitely many n have at least 4 divisors in the interval.",
+    "implications": "**Connections and Implications**\n\n1. **Divisor Distribution:** Understanding how divisors cluster near √n reveals structure in multiplication\n\n2. **Factor-Difference Set:** Related to the Erdős-Rosenfeld paper on factor differences\n\n3. **Analytic Number Theory:** Connects to estimates on divisor counting functions\n\n4. **Problem #887:** Companion problem asks related questions\n\n5. **Additive Combinatorics:** Ruzsa's involvement suggests connections to additive structure",
+    "openQuestions": [
+      "Is Ruzsa's conjecture true for any ε > 0?",
+      "What is the maximum number of divisors possible in (√n, √n + n^{1/2-ε})?",
+      "For which ε values can unbounded clustering occur?",
+      "What is the structure of n achieving maximal divisor count near √n?",
+      "How does the answer depend on the prime factorization of n?"
+    ]
   }
 }
