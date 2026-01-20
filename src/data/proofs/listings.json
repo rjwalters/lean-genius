@@ -9442,17 +9442,23 @@
   },
   {
     "id": "erdos-619",
-    "title": "Erdős Problem #619",
+    "title": "Erdős Problem #619: Decreasing Diameter of Triangle-Free Graphs",
     "slug": "erdos-619",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph ... let ... be the smallest number of edges that need to be added to ... so that it has diameter .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does there exist c > 0 such that h₄(G) < (1-c)n for triangle-free graphs G? Known: h₃ ≤ n, h₅ ≤ (n-1)/2. Status: OPEN.",
+    "status": "complete",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "diameter",
+      "triangle-free",
+      "extremal-graph-theory"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 619,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 5,
+    "annotationCount": 16
   },
   {
     "id": "erdos-62",
