@@ -1,33 +1,141 @@
 {
   "id": "erdos-725",
-  "title": "Erdős Problem #725",
+  "title": "Erdős Problem #725: Asymptotic Counting of Latin Rectangles",
   "slug": "erdos-725",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for the number of ... Latin rectangles.\n\n\n\nErds and Kaplansky  proved the count is\\[\\sim e^{-{2}}(...",
+  "description": "Give an asymptotic formula for the number of k×n Latin rectangles. Known: L(k,n) ~ e^{-C(k,2)}(n!)^k for k ≤ n^{1/3-o(1)}. General formula: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Kaplansky (1946), Yamamoto (1951), Godsil-McKay (1990)",
     "sourceUrl": "https://erdosproblems.com/725",
-    "date": "",
-    "status": "pending",
+    "date": "1946",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos725Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "latin-rectangles",
+      "asymptotic-enumeration",
+      "permanents"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 725,
     "erdosUrl": "https://erdosproblems.com/725",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Equiv.Perm",
+        "description": "Permutations for permanents",
+        "module": "Mathlib.GroupTheory.Perm.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized LatinRectangle structure with row_perm and col_injective",
+      "Defined L(k,n) as count of Latin rectangles",
+      "Defined ErdosKaplanskyFormula: e^{-C(k,2)}(n!)^k",
+      "Formalized InEKRegime: k = o((log n)^{3/2-ε})",
+      "Formalized InYamamotoRegime: k ≤ n^{1/3-o(1)}",
+      "Stated erdos_kaplansky_1946 and yamamoto_1951 axioms",
+      "Defined permanent for matrix connection",
+      "Stated Godsil-McKay bounds using permanents",
+      "Stated exact values: L(1,n) = n!, L(2,n) = n! · D(n)",
+      "Formalized GeneralAsymptotic and ExtendedConjecture (OPEN)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #725 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for the number of $k\\times n$ Latin rectangles.\n\n\n\nErd\\H{o}s and Kaplansky \\cite{ErKa46} proved the count is\\[\\sim e^{-\\binom{k}{2}}(n!)^k\\]when $k=o((\\log n)^{3/2-\\epsilon})$. Yamamoto \\cite{Ya51} extended this to $k\\leq n^{1/3-o(1)}$.\n\nThe count of such Latin rectangles is A001009 in the OEIS.\n\n\n\n\nReferences\n\n\n[ErKa46] Erd\\\"{o}s, Paul and Kaplansky, Irving, The asymptotic number of Latin rectangles. Amer. J. Math. (1946), 230-236.\n\n[Ya51] Yamamoto, Koichi, On the asymptotic number of Latin rectangles. Jpn. J. Math. (1951), 113-119.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A k×n Latin rectangle is a k×n array filled with n symbols such that each symbol appears exactly once per row and at most once per column. When k = n, this is a Latin square.\n\nErdős and Kaplansky (1946) proved the asymptotic formula L(k,n) ~ e^{-C(k,2)}(n!)^k when k = o((log n)^{3/2-ε}). The key insight is that as rows are added, they must avoid collisions in columns, and the probability of collision is approximately e^{-k/n} per new row.\n\nYamamoto (1951) extended the regime to k ≤ n^{1/3-o(1)}. Godsil and McKay (1990) connected the problem to matrix permanents, giving bounds in terms of the permanent of the all-ones matrix.\n\nThe general formula for k proportional to n remains OPEN. The OEIS sequence A001009 contains computed values.",
+    "problemStatement": "**Problem**: Give an asymptotic formula for L(k,n), the number of k×n Latin rectangles.\n\n**Known Results**:\n- Erdős-Kaplansky (1946): $L(k,n) \\sim e^{-\\binom{k}{2}} (n!)^k$ when $k = o((\\log n)^{3/2-\\varepsilon})$\n- Yamamoto (1951): Extended to $k \\leq n^{1/3-o(1)}$\n- Godsil-McKay (1990): Bounds via permanents\n\n**Exact Values**:\n- L(1,n) = n!\n- L(2,n) = n! · D(n) where D(n) = derangements\n\n**Open Question**: Find asymptotic formula for k = Θ(n) or k = Θ(n^α) with α > 1/3.",
+    "proofStrategy": "The formalization defines LatinRectangle as a structure with row permutation and column injection properties. L(k,n) counts these structures. The Erdős-Kaplansky formula is expressed using Real.exp and factorial. The regimes are formalized as conditions on k(n). Known bounds and exact values are stated as axioms.",
+    "keyInsights": [
+      "**Permutation counting**: First row is any of n! permutations; subsequent rows are constrained.",
+      "**Derangement factor**: L(2,n) = n! · D(n) captures the column-no-repeat constraint.",
+      "**e^{-C(k,2)} factor**: Accounts for ~k(k-1)/2 expected column collisions to avoid.",
+      "**Yamamoto extension**: Pushed the validity regime from (log n)^{3/2} to n^{1/3}.",
+      "**Permanent connection**: L(k,n) relates to permanent of specific 0-1 matrices.",
+      "**OEIS A001009**: Provides computed values for verification."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "LatinRectangle, LatinSquare, L, factorial, choose2",
+      "startLine": 33,
+      "endLine": 59
+    },
+    {
+      "id": "erdos-kaplansky",
+      "title": "The Erdős-Kaplansky Formula",
+      "summary": "ErdosKaplanskyFormula, InEKRegime, erdos_kaplansky_1946",
+      "startLine": 61,
+      "endLine": 81
+    },
+    {
+      "id": "yamamoto",
+      "title": "Yamamoto's Extension",
+      "summary": "InYamamotoRegime, yamamoto_1951",
+      "startLine": 83,
+      "endLine": 98
+    },
+    {
+      "id": "permanents",
+      "title": "Permanent Methods",
+      "summary": "permanent, L_as_permanent, godsil_mckay_bounds",
+      "startLine": 100,
+      "endLine": 119
+    },
+    {
+      "id": "exact-values",
+      "title": "Known Exact Values",
+      "summary": "L_1_n, derangements, L_2_n, L_n_n_upper, oeis_A001009",
+      "startLine": 121,
+      "endLine": 142
+    },
+    {
+      "id": "connections",
+      "title": "Connections and Applications",
+      "summary": "latin_rectangle_coloring, van_der_waerden, orthogonal_latin_squares",
+      "startLine": 144,
+      "endLine": 163
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "summary": "GeneralAsymptotic, general_formula_open, ExtendedConjecture",
+      "startLine": 165,
+      "endLine": 185
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_kaplansky_regime, yamamoto_regime, erdos_725_summary, erdos_725_status",
+      "startLine": 187,
+      "endLine": 222
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #725 asks for an asymptotic formula for L(k,n), the number of k×n Latin rectangles. The Erdős-Kaplansky formula L(k,n) ~ e^{-C(k,2)}(n!)^k is known to hold for k ≤ n^{1/3-o(1)} (Yamamoto 1951). The general formula for larger k remains OPEN.",
+    "implications": "Latin rectangles connect to permanents of 0-1 matrices, graph colorings, and the study of Latin squares (the k = n case). The problem also relates to random regular bipartite graphs and the permanent conjecture.",
+    "openQuestions": [
+      "Does the Erdős-Kaplansky formula hold for k = Θ(n)?",
+      "What is the asymptotic when k is a constant fraction of n?",
+      "Can the permanent bounds be sharpened for specific regimes?",
+      "What is the behavior in the 'transition' regime around k ≈ n^{1/3}?"
+    ]
   }
 }

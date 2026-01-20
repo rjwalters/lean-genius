@@ -1,1 +1,220 @@
-[]
+[
+  {
+    "id": "ann-725-header",
+    "proofId": "erdos-725",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #725** asks for an asymptotic formula for the number of k×n Latin rectangles. The Erdős-Kaplansky formula L(k,n) ~ e^{-C(k,2)}(n!)^k holds for k ≤ n^{1/3-o(1)}. General case: OPEN.",
+    "mathContext": "A Latin rectangle is a k×n array with n symbols where each row is a permutation and columns have no repeats.",
+    "significance": "critical",
+    "relatedConcepts": ["latin-squares", "permanents", "derangements", "asymptotic-enumeration"]
+  },
+  {
+    "id": "ann-725-latin",
+    "proofId": "erdos-725",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "LatinRectangle",
+    "content": "A k×n Latin rectangle has entries forming a k×n array where each row is a bijection (permutation) of Fin n, and each column is injective (no repeats). When k = n, this is a Latin square.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-square",
+    "proofId": "erdos-725",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "LatinSquare",
+    "content": "A Latin square is a Latin rectangle with k = n: an n×n array where each symbol appears exactly once per row and column.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-L",
+    "proofId": "erdos-725",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "L(k,n)",
+    "content": "L(k,n) counts the number of k×n Latin rectangles. Computed as the cardinality of functions satisfying row bijection and column injection properties.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-choose2",
+    "proofId": "erdos-725",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "definition",
+    "title": "choose2",
+    "content": "C(k,2) = k(k-1)/2, the binomial coefficient 'k choose 2'. Appears in the exponent e^{-C(k,2)} of the Erdős-Kaplansky formula.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-725-formula",
+    "proofId": "erdos-725",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "definition",
+    "title": "ErdosKaplanskyFormula",
+    "content": "The Erdős-Kaplansky formula: e^{-C(k,2)} · (n!)^k. The (n!)^k factor counts unconstrained row permutations; e^{-C(k,2)} corrects for column collisions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-regime1",
+    "proofId": "erdos-725",
+    "range": { "startLine": 72, "endLine": 75 },
+    "type": "definition",
+    "title": "InEKRegime",
+    "content": "The Erdős-Kaplansky regime: k = o((log n)^{3/2-ε}). For sequences k(n) satisfying this, the formula L(k,n) ~ e^{-C(k,2)}(n!)^k holds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-ek",
+    "proofId": "erdos-725",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "axiom",
+    "title": "Erdős-Kaplansky (1946)",
+    "content": "The 1946 theorem: for k = o((log n)^{3/2-ε}), L(k,n)/[e^{-C(k,2)}(n!)^k] → 1 as n → ∞. This was the first asymptotic result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-regime2",
+    "proofId": "erdos-725",
+    "range": { "startLine": 89, "endLine": 93 },
+    "type": "definition",
+    "title": "InYamamotoRegime",
+    "content": "The Yamamoto regime: k ≤ n^{1/3-o(1)}. This is a significant extension of the Erdős-Kaplansky regime from (log n)^{3/2} to n^{1/3}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-yamamoto",
+    "proofId": "erdos-725",
+    "range": { "startLine": 95, "endLine": 98 },
+    "type": "axiom",
+    "title": "Yamamoto (1951)",
+    "content": "Yamamoto extended the Erdős-Kaplansky formula to k ≤ n^{1/3-o(1)}. The same formula e^{-C(k,2)}(n!)^k still gives the asymptotic.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-perm",
+    "proofId": "erdos-725",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "definition",
+    "title": "permanent",
+    "content": "The permanent of a matrix: perm(A) = Σ_σ Π_i A[i,σ(i)], summed over all permutations. Unlike determinant, all terms are positive.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-asperm",
+    "proofId": "erdos-725",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "axiom",
+    "title": "L_as_permanent",
+    "content": "L(k,n) can be expressed as a permanent of a specific 0-1 matrix. This connects Latin rectangle counting to the theory of permanents.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-gm",
+    "proofId": "erdos-725",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "axiom",
+    "title": "Godsil-McKay (1990)",
+    "content": "Godsil and McKay gave bounds c₁ · EKFormula ≤ L(k,n) ≤ c₂ · EKFormula using permanent techniques. This works beyond the Yamamoto regime.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-l1",
+    "proofId": "erdos-725",
+    "range": { "startLine": 127, "endLine": 128 },
+    "type": "axiom",
+    "title": "L(1,n) = n!",
+    "content": "With one row, any permutation works and columns trivially have no repeats. So L(1,n) = n! exactly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-derangements",
+    "proofId": "erdos-725",
+    "range": { "startLine": 130, "endLine": 133 },
+    "type": "definition",
+    "title": "derangements",
+    "content": "D(n) = number of derangements (permutations with no fixed points). D(n) ~ n!/e. Used in L(2,n) = n! · D(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-l2",
+    "proofId": "erdos-725",
+    "range": { "startLine": 135, "endLine": 135 },
+    "type": "axiom",
+    "title": "L(2,n) = n! · D(n)",
+    "content": "For 2 rows: first row is any permutation (n!), second must be a derangement of the first (D(n) choices). So L(2,n) = n! · D(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-oeis",
+    "proofId": "erdos-725",
+    "range": { "startLine": 141, "endLine": 142 },
+    "type": "axiom",
+    "title": "OEIS A001009",
+    "content": "The OEIS sequence A001009 contains computed values of L(k,n). Example: L(3,4) = 3456. Useful for verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-725-coloring",
+    "proofId": "erdos-725",
+    "range": { "startLine": 148, "endLine": 152 },
+    "type": "axiom",
+    "title": "Graph Coloring Connection",
+    "content": "L(k,n) equals the number of proper edge colorings of K_{k,n} with n colors such that no vertex has two edges of the same color.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-725-vdw",
+    "proofId": "erdos-725",
+    "range": { "startLine": 154, "endLine": 157 },
+    "type": "axiom",
+    "title": "van der Waerden Connection",
+    "content": "The van der Waerden permanent conjecture (proved 1981) provides lower bounds on permanents, giving lower bounds on L(k,n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-725-general",
+    "proofId": "erdos-725",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "definition",
+    "title": "GeneralAsymptotic",
+    "content": "The OPEN general question: find an asymptotic formula f(k,n) such that L(k,n)/f(k,n) → 1 for all k ≤ n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-open",
+    "proofId": "erdos-725",
+    "range": { "startLine": 176, "endLine": 177 },
+    "type": "axiom",
+    "title": "general_formula_open",
+    "content": "The general formula beyond k = n^{1/3} remains OPEN. The Erdős-Kaplansky form may still apply but is unproven.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-conjecture",
+    "proofId": "erdos-725",
+    "range": { "startLine": 179, "endLine": 185 },
+    "type": "definition",
+    "title": "ExtendedConjecture",
+    "content": "Conjecture: the formula e^{-C(k,2)}(n!)^k holds whenever k/n → c for some 0 < c < 1. This is stronger than currently known.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-725-summary",
+    "proofId": "erdos-725",
+    "range": { "startLine": 204, "endLine": 214 },
+    "type": "theorem",
+    "title": "erdos_725_summary",
+    "content": "Summary: L(1,n) = n! is exact. Erdős-Kaplansky works for k = o((log n)^{3/2-ε}). Yamamoto extended to k ≤ n^{1/3-o(1)}. General case OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-725-status",
+    "proofId": "erdos-725",
+    "range": { "startLine": 216, "endLine": 220 },
+    "type": "theorem",
+    "title": "erdos_725_status",
+    "content": "Problem status: Known for k ≤ n^{1/3-o(1)}. Open for k = Θ(n) or k = Θ(n^α) with α > 1/3. The 'transition regime' behavior is unknown.",
+    "significance": "critical"
+  }
+]
