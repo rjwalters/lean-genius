@@ -71,8 +71,21 @@ theorem F_mono {a : ℕ → ℕ} {X : ℝ} {k₁ k₂ : ℕ} (h : k₁ ≤ k₂)
   intro i hi
   simp only [Set.mem_setOf_eq] at hi ⊢
   have hdvd := consecutiveLcm_mono h (a := a) (i := i)
-  -- LCM grows as we add more terms
-  sorry
+  -- If k₁ ≤ k₂ then consecutiveLcm a i k₁ | consecutiveLcm a i k₂
+  -- So consecutiveLcm a i k₁ ≤ consecutiveLcm a i k₂
+  -- If consecutiveLcm a i k₂ < X then consecutiveLcm a i k₁ < X
+  have hle : consecutiveLcm a i k₁ ≤ consecutiveLcm a i k₂ := Nat.le_of_dvd (by
+    -- Need to show consecutiveLcm a i k₂ > 0
+    -- The LCM is positive because each term a(i+m) is positive
+    unfold consecutiveLcm
+    apply Nat.pos_of_ne_zero
+    intro h0
+    -- If lcm = 0, then some element is 0
+    have := Finset.lcm_eq_zero_iff.mp h0
+    obtain ⟨m, _, hm⟩ := this
+    exact Nat.not_lt_zero _ (hm ▸ hpos (i + m))) hdvd
+  calc (consecutiveLcm a i k₁ : ℝ) ≤ consecutiveLcm a i k₂ := by exact_mod_cast hle
+    _ < X := hi
 
 /-
 ## Main Conjecture (OPEN)
@@ -135,12 +148,13 @@ example : consecutiveLcm (fun j => 2^j) 3 2 = 2^4 := by native_decide
 Since 2^i | 2^(i+1), the LCM equals the larger term. -/
 theorem consecutiveLcm_powers_of_two (i : ℕ) :
     consecutiveLcm (fun j => 2^j) i 2 = 2^(i+1) := by
-  -- Verified computationally for small i; general case follows from 2^i | 2^(i+1)
-  cases i with
-  | zero => native_decide
-  | succ n =>
-    induction n with
-    | zero => native_decide
-    | succ m _ => sorry -- Pattern continues: lcm(2^(m+2), 2^(m+3)) = 2^(m+3)
+  -- For k = 2, consecutiveLcm computes lcm of {2^i, 2^(i+1)}
+  -- Since 2^i | 2^(i+1), the lcm equals 2^(i+1)
+  unfold consecutiveLcm
+  have hrange : Finset.range 2 = {0, 1} := by decide
+  rw [hrange]
+  simp only [Finset.lcm_insert, Finset.lcm_singleton, add_zero, Nat.add_one, normalize_eq]
+  -- Now we have Nat.lcm (2^i) (2^(i+1)) = 2^(i+1)
+  exact Nat.lcm_eq_right (Nat.pow_dvd_pow 2 (Nat.le_succ i))
 
 end Erdos873
