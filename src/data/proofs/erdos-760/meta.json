@@ -1,33 +1,48 @@
 {
   "id": "erdos-760",
-  "title": "Erdős Problem #760",
+  "title": "Erdős Problem #760: Cochromatic Number of Subgraphs",
   "slug": "erdos-760",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of ..., denoted by ..., is the minimum number of colours needed to colour the vertices of ... such tha...",
+  "description": "If G is a graph with chromatic number χ(G) = m, must G contain a subgraph H with cochromatic number ζ(H) ≫ m / log m? YES, proved by Alon-Krivelevich-Sudakov (1997).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős & Gimbel (problem), Alon-Krivelevich-Sudakov (solution)",
     "sourceUrl": "https://erdosproblems.com/760",
-    "date": "",
-    "status": "pending",
+    "date": "1997",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos760Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cochromatic-number",
+      "ramsey-theory",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "solved",
     "sorries": 0,
     "erdosNumber": 760,
     "erdosUrl": "https://erdosproblems.com/760",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #760 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph.\n\nIf $G$ is a graph with chromatic number $\\chi(G)=m$ then must $G$ contain a subgraph $H$ with\\[\\zeta(H) \\gg \\frac{m}{\\log m}?\\]\n\n\n\nA problem of Erd\\H{o}s and Gimbel, who proved that there must exist a subgraph $H$ with\\[\\zeta(H) \\gg \\left(\\frac{m}{\\log m}\\right)^{1/2}.\\]The proposed bound would be best possible, as shown by taking $G$ to be a complete graph.\n\nThe answer is yes, proved by Alon, Krivelevich, and Sudakov \\cite{AKS97}.\n\n\n\n\nReferences\n\n\n[AKS97] Alon, Noga and Krivelevich, Michael and Sudakov, Benny, Subgraphs with a large cochromatic number. J. Graph Theory (1997), 295-297.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erdős and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound √(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques.",
+    "problemStatement": "If G is a graph with chromatic number χ(G) = m, must G contain a subgraph H with ζ(H) ≫ m / log m?\n\n**Answer:** YES (Alon-Krivelevich-Sudakov 1997)\n\nThe bound m / log m is optimal - complete graphs achieve it.",
+    "proofStrategy": "The solution uses Ramsey-theoretic methods:\n\n1. **Homogeneous sets from Ramsey theory:** Any graph on n vertices has a homogeneous set (clique or independent set) of size ~ log n.\n\n2. **Recursive decomposition:** Find a large homogeneous set, remove it, and recurse.\n\n3. **The key bound:** The cochromatic number of the subgraph built this way is ≥ cm / log m.\n\n4. **Tightness:** Complete graphs show the bound is best possible.",
+    "keyInsights": [
+      "Cochromatic number allows cliques OR independent sets as color classes",
+      "ζ(G) ≤ χ(G) always holds (proper colorings are cochromatic)",
+      "Ramsey theory gives logarithmic-sized homogeneous sets",
+      "The bound m / log m is tight - achieved by complete graphs",
+      "Improvement from √(m/log m) to m/log m required new recursive techniques"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #760 is SOLVED. Every graph with chromatic number m contains a subgraph with cochromatic number at least cm / log m for some constant c > 0. This was proved by Alon, Krivelevich, and Sudakov (1997), improving Erdős-Gimbel's earlier √(m / log m) bound.",
+    "implications": "The result shows a fundamental relationship between chromatic and cochromatic numbers: high chromatic number forces high cochromatic number in some subgraph. The logarithmic loss is unavoidable due to Ramsey-theoretic limitations.",
+    "openQuestions": [
+      "What is the optimal constant c in ζ(H) ≥ cm / log m?",
+      "Can the result be strengthened for special graph classes?",
+      "What is the computational complexity of finding the optimal subgraph H?"
+    ]
   }
 }

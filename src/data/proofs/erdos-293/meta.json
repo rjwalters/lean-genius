@@ -1,33 +1,105 @@
 {
   "id": "erdos-293",
-  "title": "Erdős Problem #293",
+  "title": "Missing Denominators in Egyptian Fraction Decompositions",
   "slug": "erdos-293",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the minimal integer which does not appear as some ... in a solution to\\[1={n_1}+\\cdots+{n_k}\\]with ......",
+  "description": "Let v(k) be the smallest integer not appearing in any k-term Egyptian fraction decomposition of 1. Current bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}. The gap between these bounds is enormous.",
   "meta": {
-    "author": "Unknown",
+    "author": "Bleicher-Erdős (1975), van Doorn-Tang (2025)",
     "sourceUrl": "https://erdosproblems.com/293",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos293Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "number-theory", "egyptian-fractions", "unit-fractions", "extremal"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 293,
     "erdosUrl": "https://erdosproblems.com/293",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
+      { "theorem": "Nat.factorial", "description": "Factorial function", "module": "Mathlib.Data.Nat.Factorial.Basic" },
+      { "theorem": "Real.exp", "description": "Exponential function", "module": "Mathlib.Analysis.SpecialFunctions.Exp" },
+      { "theorem": "Rat", "description": "Rational numbers", "module": "Mathlib.Data.Rat.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of Egyptian fraction decompositions",
+      "Definition of v(k) as the missing denominator function",
+      "Vardi sequence and constant formalization",
+      "Formal statements of Bleicher-Erdős and van Doorn-Tang bounds",
+      "Both weak (√k) and strong (k) conjectures stated"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #293 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 1$ and let $v(k)$ be the minimal integer which does not appear as some $n_i$ in a solution to\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]with $1\\leq n_1<\\cdots <n_k$. Estimate the growth of $v(k)$.\n\n\n\nResults of Bleicher and Erd\\H{o}s \\cite{BlEr75} imply $v(k) \\gg k!$. It may be that $v(k)$ grows doubly exponentially in $\\sqrt{k}$ or even $k$.\n\nAn elementary inductive argument shows that $n_k\\leq ku_k$ where $u_1=1$ and $u_{i+1}=u_i(u_i+1)$, and hence\\[v(k) \\leq kc_0^{2^k},\\]where\\[c_0=\\lim_n u_n^{1/2^n}=1.26408\\cdots\\]is the 'Vardi constant' (small improvements on this are possible as in [148]).\n\nvan Doorn and Tang \\cite{vDTa25b} have proved that\\[v(k)\\geq e^{ck^2}\\]for some constant $c>0$, and noted a close connection to [304]. In particular, if $N(b)\\ll \\log\\log b$ as in [304] then it is likely the methods of \\cite{vDTa25b} prove $v(k) \\geq e^{e^{ck}}$ for some $c>0$.\n\n\n\n\nReferences\n\n\n[BlEr75] Bleicher, M. N. and Erd\\H{o}s, P., The number of distinct subsums of $\\sum \\sb{1}\\spN\\,1/i$. Math. Comp. (1975), 29-42.\n\n[vDTa25b] W. van Doorn and Q. Tang, The smallest denominator not contained in a unit fraction decomposition of 1 with fixed length. arXiv:2512.22083 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Egyptian fractions (sums of distinct unit fractions) have been studied since antiquity. Erdős asked how fast v(k) grows - the smallest denominator that never appears in a k-term decomposition of 1. Recent work by van Doorn and Tang (2025) significantly improved the lower bound.",
+    "problemStatement": "Let k ≥ 1 and let v(k) be the minimal integer not appearing in any solution to 1 = 1/n₁ + ... + 1/nₖ with distinct n₁ < ... < nₖ. Estimate the growth of v(k).",
+    "proofStrategy": "The formalization defines Egyptian fraction decompositions, the function v(k), and the Vardi sequence. Both lower bounds (factorial, then e^{k²}) and upper bounds (doubly exponential) are stated as axioms.",
+    "keyInsights": [
+      "The Vardi sequence uₙ = uₙ₋₁(uₙ₋₁ + 1) controls the upper bound",
+      "The Vardi constant c₀ ≈ 1.26408 appears in the asymptotic bound",
+      "Van Doorn-Tang (2025) improved the lower bound from k! to e^{ck²}",
+      "The gap between bounds (e^{k²} vs e^{2^k}) is enormous"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 51,
+      "endLine": 83,
+      "summary": "Egyptian fraction decompositions, appearsInDecomp, and v(k)"
+    },
+    {
+      "id": "vardi-constant",
+      "title": "The Vardi Constant",
+      "startLine": 84,
+      "endLine": 120,
+      "summary": "The Vardi sequence and constant c₀ ≈ 1.26408"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 121,
+      "endLine": 140,
+      "summary": "Bleicher-Erdős (k!) and van Doorn-Tang (e^{ck²})"
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 141,
+      "endLine": 162,
+      "summary": "Elementary bound v(k) ≤ k · c₀^{2^k}"
+    },
+    {
+      "id": "conjectures",
+      "title": "Conjectures",
+      "startLine": 163,
+      "endLine": 193,
+      "summary": "Weak (e^{e^{c√k}}) and strong (e^{e^{ck}}) conjectures"
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values and Examples",
+      "startLine": 194,
+      "endLine": 229,
+      "summary": "Values v(1)=2, v(2)=2, v(3)=4 and greedy algorithm"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 246,
+      "endLine": 291,
+      "summary": "Main theorem statements and key insight about the gap"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #293 is OPEN. The function v(k) counts the smallest missing denominator in k-term Egyptian fraction decompositions of 1. Current best bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}, with an enormous gap between them.",
+    "implications": "Understanding v(k) requires deep insight into which denominators can participate in Egyptian fraction decompositions. The connection to Problem 304 suggests the true growth may be doubly exponential.",
+    "openQuestions": [
+      "Does v(k) grow doubly exponentially in k?",
+      "Can the lower bound be improved to e^{e^{ck}} using Problem 304?",
+      "What are the exact values of v(k) for small k?"
+    ]
   }
 }

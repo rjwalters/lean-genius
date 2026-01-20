@@ -1,1 +1,203 @@
-[]
+[
+  {
+    "id": "ann-e581-header",
+    "proofId": "erdos-581",
+    "range": { "startLine": 1, "endLine": 19 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs**\n\nLet f(m) = guaranteed bipartite edges in any triangle-free graph with m edges.\n\n**Question:** Determine f(m).\n\n**Answer (Alon 1996):**\nf(m) = m/2 + Θ(m^{4/5})\n\nTriangle-free graphs are 'more bipartite' than arbitrary graphs.",
+    "mathContext": "This connects extremal graph theory to probabilistic methods.",
+    "significance": "critical",
+    "relatedConcepts": ["Triangle-free graphs", "Bipartite graphs", "Extremal combinatorics", "Turán theory"]
+  },
+  {
+    "id": "ann-e581-triangle-free",
+    "proofId": "erdos-581",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "**IsTriangleFree:**\n\nA graph G is triangle-free if no three vertices form a complete triangle (K₃).\n\nFormally: ∀ a b c, ¬(Adj(a,b) ∧ Adj(b,c) ∧ Adj(a,c))",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e581-bipartite",
+    "proofId": "erdos-581",
+    "range": { "startLine": 47, "endLine": 54 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "**IsBipartite:**\n\nA graph is bipartite if vertices partition into two sets with all edges between them.\n\nV = A ∪ B with A ∩ B = ∅ and all edges go A ↔ B.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e581-edge-count",
+    "proofId": "erdos-581",
+    "range": { "startLine": 56, "endLine": 62 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "**edgeCount:**\n\nNumber of edges in a finite graph.\n\nUsed to parameterize the problem by m edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e581-subgraph",
+    "proofId": "erdos-581",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "definition",
+    "title": "Subgraph",
+    "content": "**IsSubgraph:**\n\nH is a subgraph of G if every edge of H is an edge of G.\n\n∀ v w, H.Adj v w → G.Adj v w",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e581-max-bipartite",
+    "proofId": "erdos-581",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "Maximum Bipartite Edges",
+    "content": "**maxBipartiteEdges:**\n\nMaximum number of edges in any bipartite subgraph of G.\n\nThis is what we want to lower-bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e581-f-func",
+    "proofId": "erdos-581",
+    "range": { "startLine": 85, "endLine": 94 },
+    "type": "definition",
+    "title": "The Function f(m)",
+    "content": "**f(m):**\n\nMinimum over all triangle-free graphs G with m edges of maxBipartiteEdges(G).\n\nThis is the guaranteed bipartite subgraph size - the worst-case best bipartite subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e581-half",
+    "proofId": "erdos-581",
+    "range": { "startLine": 102, "endLine": 111 },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "**half_edges_bipartite:**\n\nEvery graph has a bipartite subgraph with ≥ m/2 edges.\n\n**Proof:** Random 2-coloring has expected m/2 bichromatic edges.\n\nThis is the baseline - triangle-freeness should help.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e581-motivation",
+    "proofId": "erdos-581",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "definition",
+    "title": "Problem Motivation",
+    "content": "**motivation:**\n\nThe trivial bound f(m) ≥ m/2 holds for ALL graphs.\n\n**Question:** Does triangle-freeness give us MORE than m/2?\n\n**Answer:** Yes, by Θ(m^{4/5})!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e581-upper",
+    "proofId": "erdos-581",
+    "range": { "startLine": 127, "endLine": 136 },
+    "type": "axiom",
+    "title": "Alon's Upper Bound",
+    "content": "**alon_upper_bound:**\n\n∃ c₂ > 0 such that f(m) ≤ m/2 + c₂·m^{4/5}\n\nThis comes from constructing triangle-free graphs where the maximum bipartite subgraph is bounded.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e581-c2",
+    "proofId": "erdos-581",
+    "range": { "startLine": 138, "endLine": 148 },
+    "type": "definition",
+    "title": "Upper Bound Constant",
+    "content": "**c₂:**\n\nThe constant in the upper bound.\n\nc₂_positive proves c₂ > 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e581-lower",
+    "proofId": "erdos-581",
+    "range": { "startLine": 156, "endLine": 165 },
+    "type": "axiom",
+    "title": "Alon's Lower Bound",
+    "content": "**alon_lower_bound:**\n\n∃ c₁ > 0 such that f(m) ≥ m/2 + c₁·m^{4/5}\n\nTriangle-free graphs MUST have bipartite subgraphs significantly larger than m/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e581-c1",
+    "proofId": "erdos-581",
+    "range": { "startLine": 167, "endLine": 177 },
+    "type": "definition",
+    "title": "Lower Bound Constant",
+    "content": "**c₁:**\n\nThe constant in the lower bound.\n\nc₁_positive proves c₁ > 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e581-theta",
+    "proofId": "erdos-581",
+    "range": { "startLine": 185, "endLine": 193 },
+    "type": "definition",
+    "title": "Theta Notation",
+    "content": "**ThetaBound:**\n\nf(m) = m/2 + Θ(g(m)) means:\n∃ c₁, c₂ > 0 such that c₁·g(m) ≤ f(m) - m/2 ≤ c₂·g(m)\n\nThe deviation from m/2 is precisely of order g(m).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e581-main-thm",
+    "proofId": "erdos-581",
+    "range": { "startLine": 195, "endLine": 203 },
+    "type": "theorem",
+    "title": "Alon's Main Theorem",
+    "content": "**alon_main_theorem:**\n\nf(m) - m/2 = Θ(m^{4/5})\n\nBoth upper and lower bounds match, giving tight asymptotics.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e581-exponent",
+    "proofId": "erdos-581",
+    "range": { "startLine": 211, "endLine": 222 },
+    "type": "definition",
+    "title": "The Exponent 4/5",
+    "content": "**Why 4/5?**\n\nThis exponent arises from:\n1. Triangle-free structure (Mantel: ≤ n²/4 edges)\n2. Ramsey-theoretic considerations\n3. Probabilistic decomposition arguments\n\nIt's not obvious why 4/5 - this is a deep result.",
+    "mathContext": "The interplay between forbidden subgraphs and bipartiteness creates this specific exponent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e581-general",
+    "proofId": "erdos-581",
+    "range": { "startLine": 224, "endLine": 234 },
+    "type": "axiom",
+    "title": "General Graph Bound",
+    "content": "**general_graph_bound:**\n\nFor any graph G, ∃ bipartite H ⊆ G with 2·|E(H)| ≥ |E(G)|.\n\nThis is the m/2 bound for arbitrary graphs - triangle-freeness gives the extra m^{4/5}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e581-mantel",
+    "proofId": "erdos-581",
+    "range": { "startLine": 242, "endLine": 250 },
+    "type": "axiom",
+    "title": "Mantel's Theorem",
+    "content": "**mantel_theorem:**\n\nA triangle-free graph on n vertices has ≤ n²/4 edges.\n\nThis classical 1907 result constrains triangle-free graph structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e581-kst",
+    "proofId": "erdos-581",
+    "range": { "startLine": 252, "endLine": 260 },
+    "type": "axiom",
+    "title": "Kővári-Sós-Turán Theorem",
+    "content": "**KST_bound:**\n\nBipartite Turán bounds constrain triangle-free graphs.\n\n|E(G)| ≤ (1/2)n^{3/2} + (1/4)n\n\nThis helps explain the 4/5 exponent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e581-main",
+    "proofId": "erdos-581",
+    "range": { "startLine": 268, "endLine": 292 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_581:**\n\nCombines both bounds:\n1. Lower: f(m) ≥ m/2 + c₁·m^{4/5}\n2. Upper: f(m) ≤ m/2 + c₂·m^{4/5}\n\nStatus: SOLVED by Alon (1996)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e581-historical",
+    "proofId": "erdos-581",
+    "range": { "startLine": 294, "endLine": 300 },
+    "type": "theorem",
+    "title": "Historical Note",
+    "content": "**historical_note:**\n\nAlon's proof used sophisticated probabilistic and algebraic methods.\n\nCombinatorica 16 (1996): 301-311.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e581-ref",
+    "proofId": "erdos-581",
+    "range": { "startLine": 302, "endLine": 307 },
+    "type": "theorem",
+    "title": "Reference",
+    "content": "**Reference:**\n\nAlon, Noga. 'Bipartite subgraphs.'\nCombinatorica 16 (1996): 301-311.",
+    "significance": "supporting"
+  }
+]
