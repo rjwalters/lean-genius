@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Random ±1 Polynomial",
+    "content": "f_n(z) = Σ_{k=0}^n εₖ z^k where each εₖ is independently uniform on {-1, 1}. These are also called Littlewood polynomials. The question asks about the number of real roots.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 61, "endLine": 62 },
+    "type": "definition",
+    "title": "Real Root Count Rₙ",
+    "content": "Rₙ counts the number of distinct real roots of the random polynomial f_n(z). The expected value E[Rₙ] is known, but Erdős asks about almost sure convergence of Rₙ/log n.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 80, "endLine": 80 },
+    "type": "definition",
+    "title": "The Kac Constant 2/π",
+    "content": "2/π ≈ 0.6366 is the fundamental constant in random polynomial root counting. It appears in Kac's integral formula and the Erdős-Offord theorem. For roots in [-1,1], the constant is 1/π.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "theorem",
+    "title": "Erdős-Offord Theorem (1956)",
+    "content": "The expected number of real roots is E[Rₙ] = (2/π + o(1))log n. This is convergence in expectation, but Erdős asked whether the stronger almost sure convergence holds.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 128, "endLine": 131 },
+    "type": "conjecture",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "Erdős conjectured that almost surely lim_{n→∞} Rₙ/log n = 2/π. This is stronger than expectation convergence - it says almost every coefficient sequence exhibits this behavior, not just on average.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 161, "endLine": 163 },
+    "type": "theorem",
+    "title": "Do's Theorem (2024)",
+    "content": "Do proved that for roots in [-1,1], almost surely lim Rₙ[-1,1]/log n = 1/π. This is the first a.s. result for this problem, handling half the roots. The other half (outside [-1,1]) remains open.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 185, "endLine": 188 },
+    "type": "theorem",
+    "title": "Kac's Integral Formula",
+    "content": "Kac's formula expresses E[Rₙ] as an integral of the root density ρ_n(x). The density is approximately 1/(π|1-x²|^{1/2}) near x = ±1, which integrates to give the log n growth.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 215, "endLine": 217 },
+    "type": "insight",
+    "title": "{0,1} vs {-1,1} Coefficients",
+    "content": "For coefficients uniform on {0,1} instead of {-1,1}, the constant becomes 1/π instead of 2/π. Erdős's original 1961 formulation was ambiguous about which coefficient set was intended.",
+    "significance": "helpful"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 244, "endLine": 247 },
+    "type": "insight",
+    "title": "Complex Root Distribution",
+    "content": "A degree n polynomial has n roots total. Only O(log n) are real; the rest (≈ n) are complex. Complex roots of random ±1 polynomials cluster near the unit circle |z| = 1.",
+    "significance": "helpful"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 289, "endLine": 308 },
+    "type": "summary",
+    "title": "Main Result: PARTIALLY SOLVED",
+    "content": "Erdős Problem #521 is partially solved. The expectation E[Rₙ]/log n → 2/π is proven (1956). Do (2024) proved the a.s. limit 1/π for roots in [-1,1]. The full a.s. convergence Rₙ/log n → 2/π remains OPEN.",
+    "significance": "essential"
+  }
+]
