@@ -6466,17 +6466,24 @@
   },
   {
     "id": "erdos-381",
-    "title": "Erdős Problem #381",
+    "title": "Erdős Problem #381: Counting Highly Composite Numbers",
     "slug": "erdos-381",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA number ... is highly composite if ... for all ..., where ... counts the number of divisors of .... Let ... count the number...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is Q(x) ≫_k (log x)^k for every k, where Q(x) counts highly composite numbers up to x? DISPROVED by Nicolas (1971) - Q(x) has polynomial growth in log x.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-functions",
+      "highly-composite",
+      "counting-functions",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 381,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 16
   },
   {
     "id": "erdos-384",
