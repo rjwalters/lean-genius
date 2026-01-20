@@ -16,11 +16,47 @@
       "combinatorics",
       "stars"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 3,
     "erdosNumber": 561,
     "erdosUrl": "https://erdosproblems.com/561",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Basic natural number operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Simple graph definitions and basic operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite sets and basic operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "List.Basic",
+        "description": "List operations including sum and replicate",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Star structure: formal representation of K_{1,n} star graphs",
+      "StarUnion structure: disjoint unions of stars with leaf count lists",
+      "EdgeColoring type: 2-colorings for Ramsey theory",
+      "hasRamseyProperty predicate: Ramsey property for star unions",
+      "sizeRamseyNumber definition: size Ramsey number R̂(F₁,F₂)",
+      "indexSumPairs and maxForIndexSum: formula computation helpers",
+      "conjecturedFormula: the Erdős conjecture formula",
+      "befrs78_theorem axiom: BEFRS78 result for uniform case",
+      "uniform_case theorem: application of BEFRS78",
+      "sizeRamsey_lower_bound theorem: lower bound R̂ ≥ max edges",
+      "erdos_561 theorem: main result for uniform star unions"
+    ]
   },
   "overview": {
     "historicalContext": "Size Ramsey numbers, introduced by Erdős and others in the 1970s, measure the minimum number of edges (rather than vertices) needed in a host graph H to guarantee a monochromatic copy of G in any 2-coloring. For sparse graphs like stars, size Ramsey numbers can be much smaller than the quadratic bound from classical Ramsey numbers. This problem asks for an exact formula for unions of stars, which are among the simplest non-trivial graph families.",

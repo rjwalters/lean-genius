@@ -8649,7 +8649,7 @@
     "slug": "erdos-561",
     "description": "For unions of stars F₁ = ∪_{i≤s} K_{1,nᵢ} and F₂ = ∪_{j≤t} K_{1,mⱼ}, prove that the size Ramsey number R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i + j = k}. The uniform case (all nᵢ equal, all mⱼ equal) was proven by Burr-Erdős-Faudree-Rousseau-Schelp (1978).",
     "status": "partial",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "ramsey-theory",
@@ -8658,8 +8658,9 @@
       "stars"
     ],
     "erdosNumber": 561,
+    "mathlibCount": 4,
     "sorries": 3,
-    "annotationCount": 19
+    "annotationCount": 20
   },
   {
     "id": "erdos-564",
