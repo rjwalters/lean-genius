@@ -12307,17 +12307,23 @@
   },
   {
     "id": "erdos-796",
-    "title": "Erdős Problem #796",
+    "title": "Erdős Problem #796: Second-Order Terms for g_k(n)",
     "slug": "erdos-796",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the largest possible size of ... such that every ... has ... solutions to ... with ....\n\nIs it true th...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For g_k(n) = max |A| with A ⊆ {1,...,n} having < k representations per integer, is g₃(n) = (log log n / log n)n + (c+o(1))n/(log n)² for some c? First-order known, second-order OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "multiplicative-representation",
+      "asymptotics",
+      "open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 796,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-797",
