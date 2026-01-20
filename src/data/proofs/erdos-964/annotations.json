@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-e964-header",
+    "proofId": "erdos-964",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #964: Divisor Function Ratios**\n\n**Question:** Is {tau(n+1)/tau(n) : n >= 1} dense in (0, infinity)?\n\n**Answer: YES** (Eberhard 2025)\n\n**Even stronger:** ALL positive rationals p/q appear as tau(n+1)/tau(n).\n\nThis was known conditionally under prime k-tuple conjecture; Eberhard proved it unconditionally.",
+    "mathContext": "A recent result in analytic number theory about the divisor function.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Density", "Rationals"]
+  },
+  {
+    "id": "ann-e964-tau",
+    "proofId": "erdos-964",
+    "range": { "startLine": 44, "endLine": 49 },
+    "type": "definition",
+    "title": "Divisor Function",
+    "content": "**tau(n):**\n\nThe number of positive divisors of n.\n\n```lean\ndef tau (n : N) : N :=\n  (Nat.divisors n).card\n```\n\n**Examples:**\n- tau(1) = 1\n- tau(p) = 2 for prime p\n- tau(p^k) = k+1\n- tau(12) = 6",
+    "significance": "critical",
+    "relatedConcepts": ["Divisors", "Arithmetic functions"]
+  },
+  {
+    "id": "ann-e964-properties",
+    "proofId": "erdos-964",
+    "range": { "startLine": 51, "endLine": 71 },
+    "type": "theorem",
+    "title": "Basic Properties of tau",
+    "content": "**tau_one, tau_prime, tau_prime_power, tau_multiplicative:**\n\n- tau(1) = 1\n- tau(p) = 2 for prime p\n- tau(p^k) = k + 1\n- tau(mn) = tau(m)*tau(n) when gcd(m,n) = 1\n\n**Multiplicativity:** The key property enabling the proof.",
+    "significance": "key",
+    "relatedConcepts": ["Multiplicative functions", "Prime powers"]
+  },
+  {
+    "id": "ann-e964-ratio",
+    "proofId": "erdos-964",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "definition",
+    "title": "Divisor Ratio",
+    "content": "**divisorRatio(n) = tau(n+1)/tau(n):**\n\nThe ratio of divisor counts for consecutive integers.\n\n```lean\nnoncomputable def divisorRatio (n : N) : R :=\n  if tau n != 0 then (tau (n + 1) : R) / (tau n : R) else 0\n```\n\n**Question:** What values can this ratio take?",
+    "significance": "critical",
+    "relatedConcepts": ["Consecutive integers", "Ratios"]
+  },
+  {
+    "id": "ann-e964-ratioset",
+    "proofId": "erdos-964",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "definition",
+    "title": "Ratio Set",
+    "content": "**ratioSet:**\n\nThe set of all values tau(n+1)/tau(n) for n >= 1.\n\n```lean\nnoncomputable def ratioSet : Set R :=\n  {r : R | exists n >= 1, divisorRatio n = r}\n```\n\n**Main question:** Is this set dense in (0, infinity)?",
+    "significance": "key",
+    "relatedConcepts": ["Image sets", "Value sets"]
+  },
+  {
+    "id": "ann-e964-dense",
+    "proofId": "erdos-964",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "definition",
+    "title": "Dense in Positives",
+    "content": "**isDenseInPositives(S):**\n\nS is everywhere dense in (0, infinity) if for any r > 0 and eps > 0, there exists s in S with |s - r| < eps.\n\n```lean\ndef isDenseInPositives (S : Set R) : Prop :=\n  forall r > 0, forall eps > 0, exists s in S, |s - r| < eps\n```\n\n**Equivalent:** closure(S) contains (0, infinity).",
+    "significance": "key",
+    "relatedConcepts": ["Density", "Topology"]
+  },
+  {
+    "id": "ann-e964-conjecture",
+    "proofId": "erdos-964",
+    "range": { "startLine": 102, "endLine": 107 },
+    "type": "definition",
+    "title": "The Erdos Conjecture",
+    "content": "**ErdosConjecture964:**\n\nIs ratioSet dense in (0, infinity)?\n\n```lean\ndef ErdosConjecture964 : Prop :=\n  isDenseInPositives ratioSet\n```\n\n**Status: PROVED** by Eberhard (2025).",
+    "significance": "critical",
+    "relatedConcepts": ["Erdos problems", "Density conjectures"]
+  },
+  {
+    "id": "ann-e964-eberhard",
+    "proofId": "erdos-964",
+    "range": { "startLine": 113, "endLine": 118 },
+    "type": "axiom",
+    "title": "Eberhard's Theorem (2025)",
+    "content": "**eberhard_theorem:**\n\nALL positive rationals p/q appear as tau(n+1)/tau(n).\n\n```lean\naxiom eberhard_theorem :\n    forall p q >= 1, exists n >= 1, tau(n+1) * q = tau(n) * p\n```\n\n**Significance:** This is stronger than density - every rational is achieved exactly!\n\n**Reference:** arXiv:2505.00727 (2025)",
+    "mathContext": "A very recent result from 2025.",
+    "significance": "critical",
+    "relatedConcepts": ["Eberhard", "2025", "Rationals"]
+  },
+  {
+    "id": "ann-e964-true",
+    "proofId": "erdos-964",
+    "range": { "startLine": 142, "endLine": 153 },
+    "type": "theorem",
+    "title": "The Conjecture is TRUE",
+    "content": "**erdos_964_true:**\n\nThe density conjecture follows from Eberhard's theorem.\n\n```lean\ntheorem erdos_964_true : ErdosConjecture964 := by\n  intro r hr eps heps\n  -- Rationals are dense in (0, infinity)\n  -- All rationals are in ratioSet by Eberhard\n  -- Therefore ratioSet is dense\n```\n\n**Logic:** rationals dense + all rationals achieved = density.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Proof"]
+  },
+  {
+    "id": "ann-e964-examples",
+    "proofId": "erdos-964",
+    "range": { "startLine": 159, "endLine": 181 },
+    "type": "theorem",
+    "title": "Examples",
+    "content": "**Small examples of divisor ratios:**\n\n- tau(2)/tau(1) = 2/1 = 2\n- tau(3)/tau(2) = 2/2 = 1\n- tau(4)/tau(3) = 3/2\n- tau(5)/tau(4) = 2/3\n- tau(6)/tau(5) = 4/2 = 2\n\n**Variety:** Even small n give diverse ratios.",
+    "significance": "supporting",
+    "relatedConcepts": ["Examples", "Small cases"]
+  },
+  {
+    "id": "ann-e964-extreme",
+    "proofId": "erdos-964",
+    "range": { "startLine": 183, "endLine": 195 },
+    "type": "axiom",
+    "title": "Extreme Ratios",
+    "content": "**small_ratios_exist, large_ratios_exist:**\n\nThe ratio tau(n+1)/tau(n) can be arbitrarily small or arbitrarily large.\n\n```lean\naxiom small_ratios_exist : forall eps > 0, exists n >= 1, divisorRatio n < eps\naxiom large_ratios_exist : forall M, exists n >= 1, divisorRatio n > M\n```\n\n**Intuition:** Choose n = 2^k - 1 (many divisors) followed by 2^k (few divisors), or vice versa.",
+    "significance": "supporting",
+    "relatedConcepts": ["Extreme values", "Unbounded"]
+  },
+  {
+    "id": "ann-e964-ktuple",
+    "proofId": "erdos-964",
+    "range": { "startLine": 201, "endLine": 216 },
+    "type": "definition",
+    "title": "Prime k-Tuple Conjecture",
+    "content": "**PrimeKTupleConjecture:**\n\nFor any admissible k-tuple, there are infinitely many n where all n + h_i are prime.\n\n```lean\ndef PrimeKTupleConjecture : Prop :=\n  forall k, forall h : Fin k -> N,\n    (admissible h) -> exists^f n, forall i, Prime (n + h i)\n```\n\n**Connection:** This conjecture would imply density, but Eberhard's proof is unconditional.",
+    "mathContext": "A major open problem in number theory.",
+    "significance": "key",
+    "relatedConcepts": ["Twin primes", "Hardy-Littlewood"]
+  },
+  {
+    "id": "ann-e964-allrationals",
+    "proofId": "erdos-964",
+    "range": { "startLine": 229, "endLine": 247 },
+    "type": "definition",
+    "title": "All Rationals Appear",
+    "content": "**AllRationalsAppear:**\n\nEvery positive rational p/q is achieved as tau(n+1)/tau(n).\n\n```lean\ndef AllRationalsAppear : Prop :=\n  forall p q >= 1,\n    exists n >= 1, divisorRatio n = (p : R) / q\n```\n\n**Significance:** Stronger than density - exact representation of all rationals.",
+    "significance": "key",
+    "relatedConcepts": ["Surjectivity", "Exact values"]
+  },
+  {
+    "id": "ann-e964-average",
+    "proofId": "erdos-964",
+    "range": { "startLine": 258, "endLine": 270 },
+    "type": "axiom",
+    "title": "Average Ratio",
+    "content": "**average_ratio_is_one:**\n\nThe average value of tau(n+1)/tau(n) is 1.\n\n```lean\naxiom average_ratio_is_one :\n    Tendsto averageRatio atTop (nhds 1)\n```\n\n**Intuition:** On average, tau(n+1) ~ tau(n).",
+    "significance": "supporting",
+    "relatedConcepts": ["Averages", "Asymptotics"]
+  },
+  {
+    "id": "ann-e964-summary",
+    "proofId": "erdos-964",
+    "range": { "startLine": 283, "endLine": 311 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdos Problem #964: SOLVED**\n\n**Question:** Is {tau(n+1)/tau(n)} dense in (0, infinity)?\n\n**Answer: YES** (Eberhard 2025)\n\n**Stronger:** ALL positive rationals appear.\n\n**Key insight:** Consecutive integers can be chosen so their divisor counts have any prescribed ratio.\n\n**Related:** Problem #946, prime k-tuple conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Solved problems"]
+  }
+]

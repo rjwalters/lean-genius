@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e980-header",
+    "proofId": "erdos-980",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #980: Sum of Least k-th Power Nonresidues**\n\nFor k ≥ 2, let n_k(p) denote the least k-th power nonresidue modulo prime p.\n\n**Question:** Is Σ_{p<x} n_k(p) ~ c_k · x/log x for some constant c_k > 0?\n\n**Answer:** YES.\n\n**History:**\n- Erdős (1961): Proved the case k=2 with c₂ = Σ p_j/2^j\n- Elliott (1967): Proved the general case for all k ≥ 2\n\n**Status:** SOLVED",
+    "mathContext": "This problem connects prime distribution, power residue symbols, and character sum estimates.",
+    "significance": "critical",
+    "relatedConcepts": ["Power residues", "Quadratic nonresidues", "Character sums", "Prime distribution"]
+  },
+  {
+    "id": "ann-e980-power-residue",
+    "proofId": "erdos-980",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "k-th Power Residue",
+    "content": "**IsPowerResidue:**\n\nAn integer a is a k-th power residue mod p if a ≡ b^k (mod p) for some b.\n\n```lean\ndef IsPowerResidue (k : ℕ) (p a : ℕ) : Prop :=\n  ∃ b : ℕ, b ^ k % p = a % p\n```\n\nFor k=2, these are quadratic residues. For k=3, cubic residues, etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e980-power-nonresidue",
+    "proofId": "erdos-980",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "definition",
+    "title": "k-th Power Nonresidue",
+    "content": "**IsPowerNonresidue:**\n\nAn integer a is a k-th power nonresidue mod p if it's not a k-th power residue and a ≢ 0 (mod p).\n\n```lean\ndef IsPowerNonresidue (k : ℕ) (p a : ℕ) : Prop :=\n  ¬IsPowerResidue k p a ∧ a % p ≠ 0\n```\n\nThe condition a % p ≠ 0 excludes multiples of p.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e980-quadratic-case",
+    "proofId": "erdos-980",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "theorem",
+    "title": "Quadratic Case",
+    "content": "**quadratic_case:**\n\nFor k=2, IsPowerNonresidue specializes to quadratic nonresidues.\n\n```lean\ntheorem quadratic_case (p a : ℕ) :\n    IsPowerNonresidue 2 p a ↔ (¬∃ b, b ^ 2 % p = a % p) ∧ a % p ≠ 0\n```\n\nQuadratic residues/nonresidues are characterized by the Legendre symbol.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e980-least-nonresidue",
+    "proofId": "erdos-980",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "definition",
+    "title": "Least Power Nonresidue",
+    "content": "**leastPowerNonresidue:**\n\nn_k(p) = min{a ≥ 1 : a is a k-th power nonresidue mod p}\n\n```lean\nnoncomputable def leastPowerNonresidue (k p : ℕ) : ℕ :=\n  if h : ∃ a : ℕ, a ≥ 1 ∧ IsPowerNonresidue k p a then\n    Nat.find h\n  else\n    0\n```\n\nThis is the central quantity in Erdős's problem.",
+    "mathContext": "The least quadratic nonresidue sequence starts: 2, 2, 3, 2, 2, 5, 2, 3, 2, ... for primes 3, 5, 7, 11, 13, 17, 19, 23, 29, ...",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e980-vinogradov",
+    "proofId": "erdos-980",
+    "range": { "startLine": 88, "endLine": 94 },
+    "type": "axiom",
+    "title": "Vinogradov's Bound",
+    "content": "**vinogradov_bound:**\n\nFor the least quadratic nonresidue n(p), we have n(p) = O(p^{1/(4√e) + ε}).\n\n```lean\naxiom vinogradov_bound (ε : ℝ) (hε : ε > 0) :\n    ∃ C : ℝ, C > 0 ∧\n    ∀ p : ℕ, p.Prime → p > 2 →\n    (leastPowerNonresidue 2 p : ℝ) ≤ C * (p : ℝ) ^ (1 / (4 * Real.exp 1).sqrt + ε)\n```\n\nThis classical result bounds how large the least nonresidue can be.",
+    "mathContext": "The exponent 1/(4√e) ≈ 0.1516 was a breakthrough using character sum estimates.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e980-grh-bound",
+    "proofId": "erdos-980",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "axiom",
+    "title": "GRH Bound",
+    "content": "**grh_bound:**\n\nAssuming GRH, the least quadratic nonresidue n(p) = O((log p)²).\n\n```lean\naxiom grh_bound :\n    ∃ C : ℝ, C > 0 ∧\n    ∀ p : ℕ, p.Prime → p > 2 →\n    (leastPowerNonresidue 2 p : ℝ) ≤ C * (log p) ^ 2\n```\n\nThe Generalized Riemann Hypothesis implies much tighter bounds.",
+    "mathContext": "Conditionally, the least nonresidue is very small compared to p.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e980-sum-function",
+    "proofId": "erdos-980",
+    "range": { "startLine": 109, "endLine": 114 },
+    "type": "definition",
+    "title": "Sum of Least Nonresidues",
+    "content": "**sumLeastNonresidues:**\n\nS_k(x) = Σ_{p < x, p prime} n_k(p)\n\n```lean\nnoncomputable def sumLeastNonresidues (k : ℕ) (x : ℝ) : ℝ :=\n  ∑ p ∈ (Finset.range ⌊x⌋₊).filter Nat.Prime, (leastPowerNonresidue k p : ℝ)\n```\n\nThis sum over primes p < x is the main object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e980-constant-c2",
+    "proofId": "erdos-980",
+    "range": { "startLine": 127, "endLine": 144 },
+    "type": "definition",
+    "title": "The Constant c₂",
+    "content": "**c_2:**\n\nc₂ = Σ_{j=1}^∞ p_j / 2^j where p_j is the j-th prime.\n\n```lean\nnoncomputable def c_2 : ℝ :=\n  ∑' j : ℕ, (Nat.Prime.nthPrime j : ℝ) / 2 ^ (j + 1)\n```\n\n**Computation:**\n- p₁ = 2, p₂ = 3, p₃ = 5, p₄ = 7, ...\n- c₂ = 2/2 + 3/4 + 5/8 + 7/16 + ... ≈ 3.67\n\nThis explicit formula is a key result of Erdős (1961).",
+    "mathContext": "The constant c₂ satisfies 3.5 < c₂ < 4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e980-erdos-1961",
+    "proofId": "erdos-980",
+    "range": { "startLine": 164, "endLine": 173 },
+    "type": "axiom",
+    "title": "Erdős's Result (1961)",
+    "content": "**erdos_1961_quadratic:**\n\nΣ_{p < x} n_2(p) ~ c₂ · x / log x\n\n```lean\naxiom erdos_1961_quadratic :\n    ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,\n    |sumLeastNonresidues 2 x - c_2 * x / log x| < ε * x / log x\n```\n\nErdős proved this for k=2 with the explicit constant c₂ = Σ p_j/2^j.",
+    "mathContext": "Published in 'Remarks on number theory I', Mat. Lapok (1961), 10-17.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e980-elliott-1967",
+    "proofId": "erdos-980",
+    "range": { "startLine": 188, "endLine": 198 },
+    "type": "axiom",
+    "title": "Elliott's Generalization (1967)",
+    "content": "**elliott_1967_general:**\n\nFor all k ≥ 2: Σ_{p < x} n_k(p) ~ c_k · x / log x\n\n```lean\naxiom elliott_1967_general (k : ℕ) (hk : k ≥ 2) :\n    ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,\n    |sumLeastNonresidues k x - c_k k * x / log x| < ε * x / log x\n```\n\nElliott extended Erdős's result to all k ≥ 2, completely solving the problem.",
+    "mathContext": "Published in Acta Arithmetica (1967/68), 131-149.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e980-solution",
+    "proofId": "erdos-980",
+    "range": { "startLine": 200, "endLine": 214 },
+    "type": "theorem",
+    "title": "Erdős Problem #980: SOLVED",
+    "content": "**erdos_980_solution:**\n\nThe conjecture is true: for k ≥ 2, Σ_{p < x} n_k(p) ~ c_k · x / log x with c_k > 0.\n\n```lean\ntheorem erdos_980_solution (k : ℕ) (hk : k ≥ 2) :\n    ∃ c : ℝ, c > 0 ∧\n    ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,\n    |sumLeastNonresidues k x - c * x / log x| < ε * x / log x := by\n  use c_k k\n  constructor\n  · exact c_k_positive k hk\n  · exact elliott_1967_general k hk\n```\n\nThe proof combines the positivity of c_k with Elliott's asymptotic result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e980-average",
+    "proofId": "erdos-980",
+    "range": { "startLine": 219, "endLine": 230 },
+    "type": "axiom",
+    "title": "Average Interpretation",
+    "content": "**average_interpretation:**\n\nThe average value of n_k(p) over primes p < x is roughly c_k · log x.\n\n```lean\naxiom average_interpretation (k : ℕ) (hk : k ≥ 2) :\n    ∀ ε > 0, ∃ x₀ : ℝ, ∀ x ≥ x₀,\n    let avg := sumLeastNonresidues k x / (x / log x) / log x\n    |avg - c_k k| < ε\n```\n\nSince π(x) ~ x/log x, dividing the sum by π(x) gives average n_k(p) ~ c_k · log x.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e980-n2-equals-2",
+    "proofId": "erdos-980",
+    "range": { "startLine": 250, "endLine": 258 },
+    "type": "theorem",
+    "title": "n₂(p) = 2 Often",
+    "content": "**n_2_equals_2_often:**\n\nThe least quadratic nonresidue is 2 for infinitely many primes.\n\n```lean\ntheorem n_2_equals_2_often :\n    ∃ S : Set ℕ, S.Infinite ∧\n    ∀ p ∈ S, p.Prime ∧ leastPowerNonresidue 2 p = 2\n```\n\nThis happens when 2 is a QNR mod p, i.e., when p ≡ 3, 5 (mod 8).",
+    "mathContext": "By quadratic reciprocity, 2 is a QNR iff p ≡ ±3 (mod 8).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e980-summary",
+    "proofId": "erdos-980",
+    "range": { "startLine": 289, "endLine": 313 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_980_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_980_summary :\n    (∃ c : ℝ, c > 0 ∧ c = c_2) ∧\n    (∀ k ≥ 2, c_k k > 0) := by\n  constructor\n  · use c_2; exact ⟨c_2_positive, rfl⟩\n  · intro k hk; exact c_k_positive k hk\n```\n\n**Key Results:**\n1. Erdős (1961): k=2 case with explicit c₂\n2. Elliott (1967): All k ≥ 2\n3. c₂ = Σ p_j/2^j ≈ 3.67\n4. Average n_k(p) ~ c_k · log x\n\n**Status:** SOLVED",
+    "significance": "key"
+  }
+]

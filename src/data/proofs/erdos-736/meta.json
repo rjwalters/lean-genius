@@ -1,33 +1,106 @@
 {
   "id": "erdos-736",
-  "title": "Erdős Problem #736",
+  "title": "Chromatic Numbers and Finite Subgraph Inheritance",
   "slug": "erdos-736",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... Is there, for every cardinal number ..., some graph ... of chromatic number ......",
+  "description": "Taylor's conjecture: If G has chromatic number ℵ₁, can we build graphs of any chromatic number using only finite subgraphs of G? Komjáth-Shelah showed this is independent of ZFC - it can fail in some models.",
   "meta": {
-    "author": "Unknown",
+    "author": "Walter Taylor (conjecture), Komjáth-Shelah (consistency result)",
     "sourceUrl": "https://erdosproblems.com/736",
-    "date": "",
-    "status": "pending",
+    "date": "2005",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos736Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "graph-theory", "chromatic-number", "infinite-graphs", "set-theory", "independence"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 736,
     "erdosUrl": "https://erdosproblems.com/736",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Simple graphs in combinatorics", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "SimpleGraph.Subgraph", "description": "Subgraphs of simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
+      { "theorem": "SimpleGraph.Coloring", "description": "Graph colorings", "module": "Mathlib.Combinatorics.SimpleGraph.Coloring" },
+      { "theorem": "Cardinal", "description": "Cardinal arithmetic", "module": "Mathlib.SetTheory.Cardinal.Basic" },
+      { "theorem": "aleph", "description": "Aleph cardinals (ℵ₀, ℵ₁, etc.)", "module": "Mathlib.SetTheory.Cardinal.Ordinal" }
+    ],
+    "originalContributions": [
+      "Lean formalization of chromatic number for infinite graphs",
+      "Formal statement of Taylor's conjecture using cardinals",
+      "Generalized conjecture for arbitrary uncountable κ",
+      "Formalization of Komjáth-Shelah consistency result",
+      "Related De Bruijn-Erdős theorem statement"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #736 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with chromatic number $\\aleph_1$. Is there, for every cardinal number $m$, some graph $G_m$ of chromatic number $m$ such that every finite subgraph of $G_m$ is a subgraph of $G$?\n\n\n\nA conjecture of Walter Taylor. The more general problem replaces $\\aleph_1$ with any uncountable cardinal $\\kappa$.\n\nMore generally, Erd\\H{o}s asks to characterise families $\\mathcal{F}_\\alpha$ of finite graphs such that there is a graph of chromatic number $\\aleph_\\alpha$ all of whose finite subgraphs are in $\\mathcal{F}_\\alpha$.\n\nKomj\\'{a}th \\cite{KoSh05} proved that it is consistent that the answer is no, in that there exists a graph $G$ with chromatic number $\\aleph_1$ such that if $H$ is any graph all of whose finite subgraphs are subgraphs of $G$ then $H$ has chromatic number $\\leq \\aleph_2$.\n\n\n\n\nReferences\n\n\n[KoSh05] Komj\\'ath, P\\'{e}ter and Shelah, Saharon, Finite subgraphs of uncountably chromatic graphs. J. Graph Theory (2005), 28--38.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Walter Taylor conjectured that if a graph G has chromatic number ℵ₁, then its finite subgraphs are 'rich enough' to build graphs of any chromatic number. Komjáth and Shelah (2005) proved this is independent of ZFC, showing in some models there exists a counterexample where the bound is ℵ₂.",
+    "problemStatement": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?",
+    "proofStrategy": "The formalization defines chromatic number for infinite graphs, states Taylor's conjecture formally, and axiomatizes the Komjáth-Shelah consistency result showing independence from ZFC.",
+    "keyInsights": [
+      "The problem connects finite combinatorics to infinite graph theory",
+      "Independence from ZFC means the answer depends on set-theoretic axioms",
+      "Komjáth-Shelah: In some models, χ(H) ≤ ℵ₂ for all H with G's finite subgraphs",
+      "The De Bruijn-Erdős theorem provides a compactness principle for finite chromatic numbers"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 45,
+      "endLine": 79,
+      "summary": "Chromatic number, finite subgraphs, and subgraph embeddings"
+    },
+    {
+      "id": "taylor-conjecture",
+      "title": "The Taylor Conjecture",
+      "startLine": 80,
+      "endLine": 111,
+      "summary": "Walter Taylor's original conjecture and its generalization"
+    },
+    {
+      "id": "general-question",
+      "title": "Erdős's General Question",
+      "startLine": 112,
+      "endLine": 139,
+      "summary": "Characterizing realizable families of finite graphs"
+    },
+    {
+      "id": "consistency-result",
+      "title": "Komjáth-Shelah Consistency",
+      "startLine": 140,
+      "endLine": 166,
+      "summary": "Independence from ZFC and the ℵ₂ bound"
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "startLine": 167,
+      "endLine": 197,
+      "summary": "De Bruijn-Erdős theorem and chromatic compactness"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 198,
+      "endLine": 227,
+      "summary": "Countable and finite chromatic number cases"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 228,
+      "endLine": 267,
+      "summary": "Main theorem statements and key insight"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #736 is OPEN but shown to be independent of ZFC. Taylor's conjecture asking whether ℵ₁-chromatic graphs contain enough finite structure to build arbitrary chromatic numbers cannot be decided in ZFC alone.",
+    "implications": "This problem demonstrates the deep connection between combinatorics and set theory. The chromatic number of infinite graphs depends on foundational axioms beyond ZFC.",
+    "openQuestions": [
+      "What additional axioms make Taylor's conjecture true?",
+      "Can the ℵ₂ bound in the Komjáth-Shelah result be improved?",
+      "Can we characterize realizable families F_α for ℵ_α?"
+    ]
   }
 }

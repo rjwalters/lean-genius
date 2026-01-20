@@ -1,33 +1,170 @@
 {
   "id": "erdos-866",
-  "title": "Erdős Problem #866",
+  "title": "Erdős Problem #866: Pairwise Sums Threshold",
   "slug": "erdos-866",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be minimal such that if ... has ... then there exist integers ... such that all ... pairwise sums are in ... ...",
+  "description": "For k ≥ 3, define g_k(N) as the minimal threshold such that A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) contains all pairwise sums of some b₁,...,b_k. Known: g₃=2, g₄≤2032, g₅≍log N, g₆≍√N. General bounds have gaps.",
   "meta": {
-    "author": "Unknown",
+    "author": "Choi, Erdős, Szemerédi",
     "sourceUrl": "https://erdosproblems.com/866",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos866Problem.lean",
     "tags": [
+      "additive-combinatorics",
+      "sumsets",
+      "pairwise-sums",
+      "threshold-functions",
       "erdos"
     ],
-    "badge": "mathlib",
+    "badge": "partial",
     "sorries": 0,
     "erdosNumber": 866,
     "erdosUrl": "https://erdosproblems.com/866",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for counting pairs",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for g₅ bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for g₆ bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of pairwise sums condition",
+      "Threshold function g_k(N) formalization",
+      "Complete case analysis for k=3,4,5,6",
+      "General upper and lower bound axioms",
+      "Odd numbers construction showing lower bounds",
+      "Summary of known bounds and open problems"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-sidon",
+        "relationship": "Sidon sets and sumset problems"
+      },
+      {
+        "id": "szemeredi-trotter",
+        "relationship": "Combinatorial threshold problems"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #866 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $g_k(N)$ be minimal such that if $A\\subseteq \\{1,\\ldots,2N\\}$ has $\\lvert A\\rvert \\geq N+g_k(N)$ then there exist integers $b_1,\\ldots,b_k$ such that all $\\binom{k}{2}$ pairwise sums are in $A$ (but the $b_i$ themselves need not be in $A$).\n\nEstimate $g_k(N)$.\n\n\n\nA problem of Choi, Erd\\H{o}s, and Szemer\\'{e}di. It is clear that, for the set of odd numbers in $\\{1,\\ldots,2N\\}$, no such $b_i$ exist, whence $g_k(N)\\geq 0$ always. Choi, Erd\\H{o}s, and Szemer\\'{e}di proved that $g_3(N)=2$ and $g_4(N) \\ll 1$. van Doorn has shown that $g_4(N)\\leq 2032$.\n\nChoi, Erd\\H{o}s, and Szemer\\'{e}di also proved that\\[g_5(N)\\asymp \\log N\\]and\\[g_6(N)\\asymp N^{1/2}.\\]In general they proved that\\[g_k(N) \\ll_k N^{1-2^{-k}}\\]and for every $\\epsilon>0$ if $k$ is sufficiently large then\\[g_k(N) > N^{1-\\epsilon}.\\]As an example, taking $A$ to be the set of all odd integers and the powers of $2$ shows that $g_5(N)\\gg \\log N$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Pairwise Sums and Threshold Functions**\n\nThis problem, due to Choi, Erdős, and Szemerédi, studies threshold functions for pairwise sums.\n\nFor k ≥ 3, define g_k(N) as the minimal value such that: if A ⊆ {1,...,2N} has |A| ≥ N + g_k(N), then there exist integers b₁,...,b_k where all (k choose 2) pairwise sums b_i + b_j are in A.\n\n**Key Observation**: The set of odd numbers in {1,...,2N} has exactly N elements but avoids the condition (since odd + odd = even). This shows g_k(N) ≥ 0 is non-trivial.\n\n**Known Results (Choi-Erdős-Szemerédi)**:\n- g₃(N) = 2 (exact)\n- g₄(N) ≤ C (bounded), van Doorn showed g₄(N) ≤ 2032\n- g₅(N) ≍ log N\n- g₆(N) ≍ √N\n- General: g_k(N) ≪_k N^{1-2^{-k}}\n- For large k: g_k(N) > N^{1-ε} for any ε > 0",
+    "problemStatement": "**Problem Statement**\n\nFor k ≥ 3, let g_k(N) be the minimal value such that if A ⊆ {1,...,2N} has |A| ≥ N + g_k(N), then there exist integers b₁,...,b_k such that all (k choose 2) pairwise sums b_i + b_j are in A (the b_i need not be in A).\n\n**Goal**: Estimate g_k(N) for all k.\n\n**Status**: PARTIALLY SOLVED\n- Small k (3,4,5,6): Well characterized\n- Large k: Gap between upper and lower bounds",
+    "proofStrategy": "**Analysis by Cases**\n\n**Case k=3**: Show g₃(N) = 2 exactly. The odd numbers construction gives lower bound. Upper bound uses pigeonhole.\n\n**Case k=4**: Bounded constant. Van Doorn's explicit bound of 2032.\n\n**Case k=5**: Logarithmic growth. Lower bound from odd numbers + powers of 2 construction (has N + log₂ N elements but avoids condition).\n\n**Case k=6**: Square root growth. More complex constructions needed.\n\n**General k**: \n- Upper: Probabilistic/counting arguments give N^{1-2^{-k}}\n- Lower: For large k, approaches N (nearly linear)",
+    "keyInsights": [
+      "g₃(N) = 2 is exact - simplest non-trivial case",
+      "g₄(N) is bounded by absolute constant (≤ 2032)",
+      "g₅(N) ≍ log N - logarithmic transition",
+      "g₆(N) ≍ √N - polynomial transition",
+      "Upper bound exponent 1-2^{-k} → 1 as k → ∞",
+      "Lower bound N^{1-ε} for large k shows threshold approaches N",
+      "Gap between bounds widens for intermediate k",
+      "Odd numbers construction is fundamental lower bound tool"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Interval, HasAllPairwiseSums, PairwiseSumCondition, g function",
+      "startLine": 41,
+      "endLine": 65
+    },
+    {
+      "id": "case-k3",
+      "title": "Case k=3",
+      "summary": "g3_exact, g3_lower_bound",
+      "startLine": 67,
+      "endLine": 81
+    },
+    {
+      "id": "case-k4",
+      "title": "Case k=4",
+      "summary": "g4_bounded, g4_vanDoorn",
+      "startLine": 83,
+      "endLine": 95
+    },
+    {
+      "id": "case-k5",
+      "title": "Case k=5",
+      "summary": "g5_asymptotic, g5_lower_bound_construction",
+      "startLine": 97,
+      "endLine": 115
+    },
+    {
+      "id": "case-k6",
+      "title": "Case k=6",
+      "summary": "g6_asymptotic",
+      "startLine": 117,
+      "endLine": 126
+    },
+    {
+      "id": "general-upper",
+      "title": "General Upper Bound",
+      "summary": "general_upper_bound, upperExponent",
+      "startLine": 128,
+      "endLine": 150
+    },
+    {
+      "id": "general-lower",
+      "title": "General Lower Bound",
+      "summary": "general_lower_bound, threshold_approaches_N",
+      "startLine": 152,
+      "endLine": 172
+    },
+    {
+      "id": "odd-construction",
+      "title": "Odd Numbers Construction",
+      "summary": "oddNumbers, oddNumbers_card, oddNumbers_no_triple",
+      "startLine": 174,
+      "endLine": 195
+    },
+    {
+      "id": "summary-table",
+      "title": "Summary Table",
+      "summary": "summary_g3, summary_g4, summary_g5, summary_g6",
+      "startLine": 197,
+      "endLine": 215
+    },
+    {
+      "id": "open-problems",
+      "title": "Open Problems",
+      "summary": "g4 exact, g5 constants, large k gap, extremal structure",
+      "startLine": 217,
+      "endLine": 248
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_866_summary",
+      "startLine": 250,
+      "endLine": 277
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #866 studies the threshold function g_k(N) for pairwise sums. For small k, the function is well characterized: g₃=2 (exact), g₄≤2032 (bounded), g₅≍log N, g₆≍√N. For general k, we have g_k(N) ≪ N^{1-2^{-k}} and g_k(N) > N^{1-ε} for large k, but gaps remain.",
+    "implications": "**Theoretical Significance**\n\n1. **Threshold Phenomena**: Shows phase transitions in combinatorial density conditions\n\n2. **Growth Rate Transition**: As k increases: constant → logarithmic → polynomial → nearly linear\n\n3. **Additive Combinatorics**: Connects to sumset and Sidon set theory\n\n4. **Extremal Set Theory**: Understanding which sets avoid the pairwise sums condition",
+    "openQuestions": [
+      "What is the exact value of g₄(N)? Is it constant?",
+      "What are the optimal constants in g₅(N) ≍ log N?",
+      "Can we close the gap between upper N^{1-2^{-k}} and lower N^{1-ε} bounds?",
+      "What is the structural characterization of extremal sets?",
+      "Are there explicit constructions achieving the upper bounds?"
+    ]
   }
 }
