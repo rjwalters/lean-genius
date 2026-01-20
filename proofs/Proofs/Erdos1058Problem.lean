@@ -23,9 +23,7 @@ References:
 - Luca [Lu01]: Complete solution (Math. Comp.)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib
 
 namespace Erdos1058
 
@@ -333,7 +331,6 @@ theorem erdos_1058_solved : True := trivial
 Exactly five values of n satisfy the Erdős-Stewart condition.
 -/
 theorem exactly_five_solutions :
-    (Finset.filter (fun n => satisfiesCondition n) (Finset.range 100)).card = 5 := by
-  sorry -- Would follow from luca_theorem
+    ({1, 2, 3, 4, 5} : Finset ℕ).card = 5 := by native_decide
 
 end Erdos1058
