@@ -1,1 +1,174 @@
-[]
+[
+  {
+    "id": "ann-e378-header",
+    "proofId": "erdos-378",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #378: Squarefree Binomial Coefficients**\n\nThis problem asks about the density of integers n for which C(n,k) is squarefree for at least r values of k.\n\n**Questions:**\n1. Does this density exist?\n2. Is this density positive?\n\n**Answer: YES to both**\n\nResolved by Granville-Ramare (1996), observed by Aggarwal-Cambie.",
+    "mathContext": "A number is squarefree if no prime squared divides it. For example, 6 = 2*3 is squarefree, but 12 = 4*3 is not.",
+    "significance": "critical",
+    "relatedConcepts": ["Squarefree numbers", "Binomial coefficients", "Natural density"]
+  },
+  {
+    "id": "ann-e378-squarefree",
+    "proofId": "erdos-378",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "definition",
+    "title": "Squarefree Definition",
+    "content": "**Squarefree(n):**\n\nA positive integer n is squarefree if no prime squared divides n.\n\n**Definition:**\n```lean\ndef Squarefree (n : N) : Prop :=\n  forall p, p.Prime -> not(p * p | n)\n```\n\n**Examples:**\n- 1, 2, 3, 5, 6, 7, 10 are squarefree\n- 4, 8, 9, 12, 16 are NOT squarefree",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Divisibility"]
+  },
+  {
+    "id": "ann-e378-squarefree-examples",
+    "proofId": "erdos-378",
+    "range": { "startLine": 51, "endLine": 81 },
+    "type": "theorem",
+    "title": "Squarefree Examples",
+    "content": "**Verified examples:**\n\n- squarefree_one: 1 is squarefree (no prime squared divides 1)\n- squarefree_six: 6 = 2*3 is squarefree (axiom)\n- not_squarefree_four: 4 = 2^2 is NOT squarefree\n- not_squarefree_twelve: 12 = 4*3 is NOT squarefree\n\n**Proof for 4:** We show 2*2 divides 4, contradicting the definition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e378-binomial-squarefree",
+    "proofId": "erdos-378",
+    "range": { "startLine": 87, "endLine": 92 },
+    "type": "definition",
+    "title": "Squarefree Binomial Coefficient",
+    "content": "**BinomialSquarefree(n, k):**\n\nC(n,k) is squarefree.\n\n```lean\ndef BinomialSquarefree (n k : N) : Prop :=\n  Squarefree (n.choose k)\n```\n\nThis is the key property we're counting in Pascal's triangle rows.",
+    "significance": "critical",
+    "relatedConcepts": ["Binomial coefficients", "Pascal's triangle"]
+  },
+  {
+    "id": "ann-e378-count",
+    "proofId": "erdos-378",
+    "range": { "startLine": 94, "endLine": 106 },
+    "type": "definition",
+    "title": "Squarefree Count",
+    "content": "**squarefreeCount(n):**\n\nThe number of k in [1, n-1] for which C(n,k) is squarefree.\n\n**hasAtLeastSquarefree(n, r):**\nTrue when squarefreeCount(n) >= r.\n\nThis is the quantity whose density we study.",
+    "significance": "critical",
+    "relatedConcepts": ["Counting", "Row analysis"]
+  },
+  {
+    "id": "ann-e378-density",
+    "proofId": "erdos-378",
+    "range": { "startLine": 112, "endLine": 125 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "**NaturalDensity(S, d):**\n\nThe set S has density d if:\nlim_{N->inf} |S intersect [1,N]| / N = d\n\n**HasDensity(S):**\nTrue when the limit exists.\n\n**Formalization:**\nFor all epsilon > 0, there exists N_0 such that for N >= N_0,\nthe ratio is within epsilon of d.",
+    "mathContext": "Natural density captures the \"proportion\" of integers in a set. Not all sets have a density.",
+    "significance": "key",
+    "relatedConcepts": ["Limits", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e378-erdos-graham",
+    "proofId": "erdos-378",
+    "range": { "startLine": 131, "endLine": 147 },
+    "type": "axiom",
+    "title": "Erdos-Graham Preliminary Results",
+    "content": "**Two key observations by Erdos and Graham:**\n\n1. **erdos_graham_sparse:** For fixed large k, the density of n with C(n,k) squarefree is o_k(1) - approaches 0 as k grows.\n\n2. **erdos_graham_infinite_bad:** Infinitely many n have NO squarefree binomial coefficients (all C(n,k) have a prime squared divisor).\n\nThey expected the set of such bad n has positive density (confirmed).",
+    "significance": "key",
+    "relatedConcepts": ["Preliminary results", "Sparsity"]
+  },
+  {
+    "id": "ann-e378-exactly",
+    "proofId": "erdos-378",
+    "range": { "startLine": 153, "endLine": 158 },
+    "type": "definition",
+    "title": "Exactly 2m+2 Squarefree",
+    "content": "**exactlySquarefree(m):**\n\nThe set of n where squarefreeCount(n) = 2m + 2.\n\n**Why 2m + 2?**\nDue to the symmetry C(n,k) = C(n,n-k), squarefree counts come in pairs. The formula 2m + 2 captures this pairing.\n\nGranville-Ramare showed each of these sets has a well-defined density.",
+    "significance": "critical",
+    "relatedConcepts": ["Symmetry", "Partitioning"]
+  },
+  {
+    "id": "ann-e378-granville-ramare",
+    "proofId": "erdos-378",
+    "range": { "startLine": 160, "endLine": 187 },
+    "type": "axiom",
+    "title": "Granville-Ramare Results (1996)",
+    "content": "**The key technical results:**\n\n1. **granville_ramare_density_exists:** For each m, the set exactlySquarefree(m) has a density.\n\n2. **eta(m):** Define eta_m as this density.\n\n3. **eta_is_density:** eta_m is indeed the density.\n\n4. **eta_positive:** For all m, eta_m > 0.\n\n**Reference:** \"Explicit bounds on exponential sums and the scarcity of squarefree binomial coefficients\", Mathematika 1996.",
+    "mathContext": "The proof uses sophisticated analytic number theory - bounds on exponential sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Analytic number theory", "Exponential sums"]
+  },
+  {
+    "id": "ann-e378-atleast",
+    "proofId": "erdos-378",
+    "range": { "startLine": 193, "endLine": 197 },
+    "type": "definition",
+    "title": "At Least r Squarefree",
+    "content": "**atLeastSquarefree(r):**\n\nThe set of n with squarefreeCount(n) >= r.\n\nThis is exactly the set whose density the original problem asks about.",
+    "significance": "key",
+    "relatedConcepts": ["Main question"]
+  },
+  {
+    "id": "ann-e378-complement",
+    "proofId": "erdos-378",
+    "range": { "startLine": 199, "endLine": 212 },
+    "type": "axiom",
+    "title": "Complement Decomposition",
+    "content": "**The key formula:**\n\nThe complement {n : squarefreeCount(n) < r} decomposes as:\n\nunion of exactlySquarefree(m) for 2m + 2 < r\n\n**Density formula:**\ndensity of complement = sum of eta_m for 0 <= m <= (r-1)/2\n\nTherefore:\ndensity of atLeastSquarefree(r) = 1 - sum of eta_m",
+    "mathContext": "This uses the fact that the exactlySquarefree sets partition the integers.",
+    "significance": "critical",
+    "relatedConcepts": ["Complement", "Partition"]
+  },
+  {
+    "id": "ann-e378-main-density",
+    "proofId": "erdos-378",
+    "range": { "startLine": 214, "endLine": 226 },
+    "type": "theorem",
+    "title": "Density Exists",
+    "content": "**erdos_378_density_exists:**\n\nFor any r, the set atLeastSquarefree(r) has a natural density.\n\n**Proof idea:**\nThe complement has density (sum of finitely many eta_m). Taking 1 - that gives the density of the original set.",
+    "significance": "critical",
+    "relatedConcepts": ["Existence", "Complement"]
+  },
+  {
+    "id": "ann-e378-main-positive",
+    "proofId": "erdos-378",
+    "range": { "startLine": 228, "endLine": 244 },
+    "type": "theorem",
+    "title": "Density is Positive",
+    "content": "**erdos_378_density_positive:**\n\nFor any r, the density of atLeastSquarefree(r) is positive.\n\n**Proof idea:**\nThe complement density is sum of eta_m for m <= (r-1)/2. Since eta_{(r-1)/2 + 1} > 0 and is NOT in this sum, the complement doesn't cover everything. Hence 1 - sum > 0.",
+    "significance": "critical",
+    "relatedConcepts": ["Positivity", "Key argument"]
+  },
+  {
+    "id": "ann-e378-example-C21",
+    "proofId": "erdos-378",
+    "range": { "startLine": 250, "endLine": 257 },
+    "type": "theorem",
+    "title": "Example: C(2,1) = 2",
+    "content": "**example_C_2_1:**\n\nC(2,1) = 2 is squarefree.\n\n**Verification:** 2 is prime, so no prime squared divides it.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e378-example-C63",
+    "proofId": "erdos-378",
+    "range": { "startLine": 264, "endLine": 273 },
+    "type": "theorem",
+    "title": "Example: C(6,3) = 20",
+    "content": "**example_C_6_3_not_squarefree:**\n\nC(6,3) = 20 = 4 * 5 = 2^2 * 5 is NOT squarefree.\n\n**Proof:** We verify 4 = 2^2 divides 20, so 20 fails the squarefree condition.",
+    "significance": "key",
+    "relatedConcepts": ["Counterexample"]
+  },
+  {
+    "id": "ann-e378-symmetry",
+    "proofId": "erdos-378",
+    "range": { "startLine": 287, "endLine": 294 },
+    "type": "theorem",
+    "title": "Symmetry of Squarefree Status",
+    "content": "**binomial_squarefree_symm:**\n\nC(n,k) is squarefree iff C(n, n-k) is squarefree.\n\n**Proof:** Uses C(n,k) = C(n, n-k).\n\n**Consequence:** Squarefree binomials come in pairs (except possibly k = n/2 when n is even).",
+    "significance": "key",
+    "relatedConcepts": ["Symmetry", "Pairing"]
+  },
+  {
+    "id": "ann-e378-summary",
+    "proofId": "erdos-378",
+    "range": { "startLine": 308, "endLine": 328 },
+    "type": "theorem",
+    "title": "Erdos Problem #378: Main Result",
+    "content": "**erdos_378:**\n\nCombines both answers:\n1. For all r, HasDensity(atLeastSquarefree r)\n2. For all r, the density is positive\n\n**The formula:**\ndensity = 1 - sum_{0 <= m <= (r-1)/2} eta_m\n\n**Contributors:**\n- Granville-Ramare: Technical density results\n- Aggarwal-Cambie: Observed the connection",
+    "significance": "critical",
+    "relatedConcepts": ["Main theorem", "Resolution"]
+  }
+]

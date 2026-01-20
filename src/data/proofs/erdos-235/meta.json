@@ -1,33 +1,153 @@
 {
   "id": "erdos-235",
-  "title": "Erdős Problem #235",
+  "title": "Erdős Problem #235: Gaps Between Coprime Integers",
   "slug": "erdos-235",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the integers ... which are relatively prime to .... Then, for any ..., the limit\\[\\leq c {\\phi(N_k)} : 2\\l...",
+  "description": "Do gaps between integers coprime to Nₖ = 2·3·...·pₖ have a limiting distribution? YES - Hooley (1965) proved f(c) = 1 - e^{-c} (exponential distribution).",
   "meta": {
-    "author": "Unknown",
+    "author": "Hooley (1965)",
     "sourceUrl": "https://erdosproblems.com/235",
-    "date": "",
-    "status": "pending",
+    "date": "1965",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos235Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primorials",
+      "gap-distribution",
+      "exponential-distribution",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 235,
     "erdosUrl": "https://erdosproblems.com/235",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits via filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "nthPrime and primorial definitions",
+      "primorialTotient = φ(Nₖ)",
+      "coprimeSet and coprimeSequence definitions",
+      "gapSequence, averageGap, normalizedGap",
+      "gapDistribution function f_k(c)",
+      "ErdosConjecture235 statement",
+      "exponentialCDF = 1 - e^{-c}",
+      "hooley_theorem axiom",
+      "erdos_235_proved theorem",
+      "hooley_uniform and hooley_error_term axioms",
+      "jacobsthal function",
+      "mertens_third axiom"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #235 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N_k=2\\cdot 3\\cdots p_k$ and $\\{a_1<a_2<\\cdots <a_{\\phi(N_k)}\\}$ be the integers $<N_k$ which are relatively prime to $N_k$. Then, for any $c\\geq 0$, the limit\\[\\frac{\\#\\{ a_i-a_{i-1}\\leq c \\frac{N_k}{\\phi(N_k)} : 2\\leq i\\leq \\phi(N_k)\\}}{\\phi(N_k)}\\]exists and is a continuous function of $c$.\n\n\n\nSolved by Hooley \\cite{Ho65}, who proved that these gaps have an exponential distribution: that is, if $f(c)$ is the function in question, then\\[f(c)=(1+o(1))(1-e^{-c})\\](where the $o(1)$ goes to $0$ uniformly as $k\\to \\infty$).\n\n\n\n\nReferences\n\n\n[Ho65] Hooley, Christopher, On the difference between consecutive numbers prime to $n$.\n{II}. Publ. Math. Debrecen (1965), 39--49.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős asked whether the gaps between consecutive integers coprime to primorials Nₖ = 2·3·...·pₖ have a limiting distribution. Hooley (1965) proved that when normalized by the average gap Nₖ/φ(Nₖ), the gaps follow an exponential distribution with parameter 1.",
+    "problemStatement": "**Question:** Let Nₖ = 2·3·...·pₖ and {a₁ < a₂ < ... < a_{φ(Nₖ)}} be integers < Nₖ coprime to Nₖ. For c ≥ 0, does the limit of #{gaps ≤ c·avg}/φ(Nₖ) exist as k → ∞?\n\n**Answer: YES** (Hooley 1965)\n\nf(c) = 1 - e^{-c} (exponential CDF)",
+    "proofStrategy": "We formalize:\n\n1. **Primorials and totients:** Nₖ = ∏pᵢ, φ(Nₖ) = ∏(pᵢ-1)\n2. **Coprime sequences:** a₁ < a₂ < ... < a_{φ(Nₖ)}\n3. **Gap distribution:** f_k(c) = #{gaps ≤ c·avg}/φ(Nₖ)\n4. **Hooley's theorem:** f_k(c) → 1 - e^{-c}\n5. **Connections:** Mertens' theorem, Jacobsthal function",
+    "keyInsights": [
+      "**Primorial:** Nₖ = 2·3·5·...·pₖ (product of first k primes)",
+      "**Average gap:** Nₖ/φ(Nₖ) ~ e^γ·log(pₖ) by Mertens",
+      "**Exponential distribution:** Normalized gaps follow f(c) = 1 - e^{-c}",
+      "**Memoryless property:** Exponential is the unique memoryless distribution",
+      "**Uniform convergence:** Error is O(1/log k)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "primorials",
+      "title": "Primorials and Totients",
+      "summary": "nthPrime, primorial, primorialTotient",
+      "startLine": 42,
+      "endLine": 79
+    },
+    {
+      "id": "coprime-sequences",
+      "title": "Coprime Sequences",
+      "summary": "coprimeSet, coprimeSequence, first_coprime",
+      "startLine": 81,
+      "endLine": 112
+    },
+    {
+      "id": "gap-distribution",
+      "title": "Gap Distribution",
+      "summary": "gapSequence, averageGap, gapDistribution",
+      "startLine": 114,
+      "endLine": 151
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "ErdosConjecture235",
+      "startLine": 153,
+      "endLine": 165
+    },
+    {
+      "id": "hooley",
+      "title": "Hooley's Theorem",
+      "summary": "exponentialCDF, hooley_theorem, erdos_235_proved",
+      "startLine": 167,
+      "endLine": 199
+    },
+    {
+      "id": "properties",
+      "title": "Distribution Properties",
+      "summary": "distribution_at_zero, median_gap",
+      "startLine": 201,
+      "endLine": 232
+    },
+    {
+      "id": "stronger",
+      "title": "Stronger Results",
+      "summary": "hooley_uniform, hooley_error_term",
+      "startLine": 234,
+      "endLine": 252
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "max_gap_bound, jacobsthal",
+      "startLine": 254,
+      "endLine": 279
+    },
+    {
+      "id": "mertens",
+      "title": "Mertens' Theorem",
+      "summary": "eulerGamma, mertens_third, average_gap_asymptotic",
+      "startLine": 281,
+      "endLine": 303
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_235, erdos_235_answer",
+      "startLine": 305,
+      "endLine": 335
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #235 asked whether gaps between integers coprime to primorials have a limiting distribution. Hooley (1965) proved the answer is YES, with f(c) = 1 - e^{-c} (exponential distribution). This connects to Mertens' theorem via the average gap asymptotics.",
+    "implications": "**Number Theory Connections:**\n\n1. **Primorial structure:** Coprimes to Nₖ form a well-studied sequence.\n\n2. **Mertens' theorem:** Provides the average gap asymptotics via φ(Nₖ)/Nₖ.\n\n3. **Jacobsthal function:** Maximum gaps are of independent interest.\n\n4. **Sieve methods:** Techniques from prime gap theory apply here.\n\n5. **Probabilistic interpretation:** Normalized gaps behave like exponential random variables.",
+    "openQuestions": [
+      "Higher moments of the gap distribution?",
+      "Correlations between consecutive gaps?",
+      "Analogues for other moduli beyond primorials?",
+      "Connections to random matrix theory?"
+    ]
   }
 }

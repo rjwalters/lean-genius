@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-e619-header",
+    "proofId": "erdos-619",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #619: Decreasing Diameter of Triangle-Free Graphs**\n\n**Question (OPEN):** Does there exist c > 0 such that h_4(G) < (1-c)n for all connected triangle-free graphs G on n vertices?\n\n**Known bounds:**\n- h_3(G) <= n\n- h_4(G) <= ? (OPEN)\n- h_5(G) <= (n-1)/2\n\n**Key constraint:** Graph must remain triangle-free after adding edges.",
+    "mathContext": "h_r(G) = min edges to add to achieve diameter r while staying triangle-free.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph diameter", "Triangle-free graphs", "Edge augmentation"]
+  },
+  {
+    "id": "ann-e619-triangle-free",
+    "proofId": "erdos-619",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "**TriangleFree(G):**\n\nA graph with no triangles (K_3 subgraphs).\n\n```lean\ndef TriangleFree (G : SimpleGraph V) : Prop :=\n  forall a b c, G.Adj a b -> G.Adj b c -> G.Adj c a -> False\n```\n\n**Examples:** Paths, cycles (length >= 4), bipartite graphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Forbidden subgraphs", "Bipartite graphs"]
+  },
+  {
+    "id": "ann-e619-diameter",
+    "proofId": "erdos-619",
+    "range": { "startLine": 46, "endLine": 64 },
+    "type": "definition",
+    "title": "Graph Diameter",
+    "content": "**diameter(G):**\n\nThe maximum distance between any two vertices in G.\n\n**HasDiameter(G, r):** diameter(G) = r exactly.\n\n**HasDiameterAtMost(G, r):** diameter(G) <= r.\n\nThe problem asks about achieving small diameter (4) with few edge additions.",
+    "significance": "critical",
+    "relatedConcepts": ["Distance", "Connectivity"]
+  },
+  {
+    "id": "ann-e619-add-edges",
+    "proofId": "erdos-619",
+    "range": { "startLine": 70, "endLine": 85 },
+    "type": "definition",
+    "title": "Edge Addition",
+    "content": "**addEdges(G, E):**\n\nThe graph G' obtained by adding edges E to G.\n\n```lean\ndef addEdges (G : SimpleGraph V) (E : Set (Sym2 V)) : SimpleGraph V\n```\n\nThe key constraint is that G' must remain triangle-free.",
+    "significance": "key",
+    "relatedConcepts": ["Graph augmentation", "Edge set"]
+  },
+  {
+    "id": "ann-e619-h-function",
+    "proofId": "erdos-619",
+    "range": { "startLine": 87, "endLine": 101 },
+    "type": "definition",
+    "title": "The h Function",
+    "content": "**h(G, r):**\n\nThe minimum number of edges to add to G to achieve diameter r while preserving triangle-freeness.\n\n```lean\nnoncomputable def h (G : SimpleGraph V) (r : N) : N :=\n  sInf { n | exists E, E.card = n and TriangleFree(addEdges G E) and\n    HasDiameterAtMost(addEdges G E) r }\n```\n\nThis is the central function of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Minimum augmentation", "Optimization"]
+  },
+  {
+    "id": "ann-e619-h3",
+    "proofId": "erdos-619",
+    "range": { "startLine": 107, "endLine": 122 },
+    "type": "axiom",
+    "title": "h_3(G) Bounds",
+    "content": "**h3_upper_bound:** h_3(G) <= n for any connected triangle-free G.\n\n**h3_lower_bound:** There exist G with h_3(G) >= n - c.\n\nThis shows h_3 is roughly tight at n edges.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bound", "Lower bound"]
+  },
+  {
+    "id": "ann-e619-h5",
+    "proofId": "erdos-619",
+    "range": { "startLine": 124, "endLine": 130 },
+    "type": "axiom",
+    "title": "h_5(G) Upper Bound",
+    "content": "**h5_upper_bound:** h_5(G) <= (n-1)/2.\n\nMuch fewer edges suffice for diameter 5 compared to diameter 3.\n\nThe big question is what happens at diameter 4.",
+    "significance": "key",
+    "relatedConcepts": ["Diameter 5", "Improvement"]
+  },
+  {
+    "id": "ann-e619-question",
+    "proofId": "erdos-619",
+    "range": { "startLine": 136, "endLine": 145 },
+    "type": "definition",
+    "title": "The Erdos Question (OPEN)",
+    "content": "**erdos_619_question:**\n\nDoes there exist c > 0 such that h_4(G) < (1-c)n for all connected triangle-free G on n vertices?\n\nThis asks: can we always save a constant fraction of n edges for diameter 4?\n\n**Status: OPEN** - Neither proved nor disproved.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problem", "Diameter 4"]
+  },
+  {
+    "id": "ann-e619-open",
+    "proofId": "erdos-619",
+    "range": { "startLine": 147, "endLine": 153 },
+    "type": "axiom",
+    "title": "Question is Open",
+    "content": "**erdos_619_open:**\n\nThe question remains unresolved.\n\nWe know h_3 needs ~n edges and h_5 needs ~n/2 edges, but h_4 is mysterious.",
+    "significance": "key",
+    "relatedConcepts": ["Open status"]
+  },
+  {
+    "id": "ann-e619-without-constraint",
+    "proofId": "erdos-619",
+    "range": { "startLine": 169, "endLine": 176 },
+    "type": "axiom",
+    "title": "Without Triangle-Free Constraint",
+    "content": "**without_triangle_free_constraint (Alon-Gyarfas-Ruszinko 2000):**\n\nWhen triangles are allowed, n/2 edges always suffice for diameter 4.\n\nThis shows the triangle-free constraint makes the problem much harder - we can't just apply the general result.",
+    "mathContext": "The triangle-free requirement fundamentally changes the problem's nature.",
+    "significance": "key",
+    "relatedConcepts": ["Comparison", "General graphs"]
+  },
+  {
+    "id": "ann-e619-path",
+    "proofId": "erdos-619",
+    "range": { "startLine": 191, "endLine": 211 },
+    "type": "definition",
+    "title": "Path Graph Example",
+    "content": "**pathGraph(n):**\n\nThe path on n vertices: v_0 - v_1 - ... - v_{n-1}.\n\n- Always triangle-free\n- Has diameter n-1\n- A natural test case for h_r bounds",
+    "significance": "supporting",
+    "relatedConcepts": ["Basic examples", "Long diameter"]
+  },
+  {
+    "id": "ann-e619-cycle",
+    "proofId": "erdos-619",
+    "range": { "startLine": 213, "endLine": 226 },
+    "type": "definition",
+    "title": "Cycle Graph Example",
+    "content": "**cycleGraph(n):**\n\nThe cycle on n vertices.\n\n- Triangle-free for n >= 4\n- Has diameter floor(n/2)\n- Another key test case",
+    "significance": "supporting",
+    "relatedConcepts": ["Cycle graphs", "Moderate diameter"]
+  },
+  {
+    "id": "ann-e619-monotone",
+    "proofId": "erdos-619",
+    "range": { "startLine": 232, "endLine": 239 },
+    "type": "theorem",
+    "title": "h_r Monotonicity",
+    "content": "**h_monotone:** h(G, r) >= h(G, r+1).\n\nLarger target diameter is easier to achieve - you need at least as many edges for smaller diameter.\n\nThis gives h_3 >= h_4 >= h_5.",
+    "significance": "key",
+    "relatedConcepts": ["Monotonicity", "Ordering"]
+  },
+  {
+    "id": "ann-e619-gap",
+    "proofId": "erdos-619",
+    "range": { "startLine": 241, "endLine": 249 },
+    "type": "theorem",
+    "title": "The h_4 Gap",
+    "content": "**h4_gap:**\n\nWe know:\n- h_3(G) <= n (needs ~n edges)\n- h_4(G) <= ? (OPEN)\n- h_5(G) <= (n-1)/2 (needs ~n/2 edges)\n\nThe h_4 case is the gap in our understanding.",
+    "significance": "key",
+    "relatedConcepts": ["Gap", "Unknown bound"]
+  },
+  {
+    "id": "ann-e619-partial",
+    "proofId": "erdos-619",
+    "range": { "startLine": 295, "endLine": 304 },
+    "type": "theorem",
+    "title": "Partial Results",
+    "content": "**erdos_619_partial_results:**\n\nFor any connected triangle-free G on n vertices:\n- h(G, 3) <= n\n- h(G, 5) <= (n-1)/2\n\nThese are the known bounds from Erdos-Gyarfas-Ruszinko (1998).",
+    "significance": "key",
+    "relatedConcepts": ["Known results", "Combined theorem"]
+  },
+  {
+    "id": "ann-e619-summary",
+    "proofId": "erdos-619",
+    "range": { "startLine": 267, "endLine": 287 },
+    "type": "concept",
+    "title": "Summary",
+    "content": "**Erdos Problem #619: OPEN**\n\n**The question:** Is h_4(G) < (1-c)n for some c > 0?\n\n**What we know:**\n- h_3 needs ~n edges\n- h_5 needs ~n/2 edges\n- Without triangle-free: n/2 suffices for diameter 4\n- With triangle-free: the answer for diameter 4 is unknown",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open status"]
+  }
+]

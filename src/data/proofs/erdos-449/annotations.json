@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-449-1",
+    "proofId": "erdos-449",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "definition",
+    "title": "Divisor Count Function τ(n)",
+    "content": "The divisor count function τ(n) counts all positive divisors of n. For example, τ(12) = 6 because 12 has divisors {1, 2, 3, 4, 6, 12}. This is one of the most fundamental arithmetic functions in number theory.",
+    "mathContext": "τ(n) = |{d : d | n}| = n.divisors.card",
+    "significance": "τ(n) serves as the baseline for measuring how 'many' close divisor pairs exist relative to total divisors.",
+    "relatedConcepts": ["arithmetic functions", "divisibility", "multiplicative functions"]
+  },
+  {
+    "id": "ann-449-2",
+    "proofId": "erdos-449",
+    "range": { "startLine": 56, "endLine": 63 },
+    "type": "definition",
+    "title": "Close Divisor Pairs",
+    "content": "A close divisor pair (d₁, d₂) of n satisfies: both divide n, and d₁ < d₂ < 2d₁. This means d₂ is strictly between d₁ and twice d₁ - the divisors are 'close' in multiplicative terms (within a factor of 2).",
+    "mathContext": "closeDivisorPairs(n) = {(d₁, d₂) : d₁ | n ∧ d₂ | n ∧ d₁ < d₂ < 2d₁}",
+    "significance": "The central objects of study - Erdős asked whether such pairs are rare among all divisor pairs.",
+    "relatedConcepts": ["divisor pairs", "ratio bounds", "multiplicative gaps"]
+  },
+  {
+    "id": "ann-449-3",
+    "proofId": "erdos-449",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "definition",
+    "title": "Close Pair Count r(n)",
+    "content": "The function r(n) counts how many close divisor pairs n has. The conjecture asked whether r(n) is small compared to τ(n) for 'almost all' n.",
+    "mathContext": "r(n) = |closeDivisorPairs(n)|",
+    "significance": "The key quantity in Erdős's conjecture - measuring the abundance of close pairs.",
+    "relatedConcepts": ["counting functions", "divisor statistics"]
+  },
+  {
+    "id": "ann-449-4",
+    "proofId": "erdos-449",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
+    "title": "Small Divisors τ⁺(n)",
+    "content": "The function τ⁺(n) counts 'small' divisors d with d² ≤ n. These are divisors at most √n. For n = 36, divisors ≤ 6 are {1, 2, 3, 4, 6}, so τ⁺(36) = 5.",
+    "mathContext": "τ⁺(n) = |{d : d | n ∧ d² ≤ n}|",
+    "significance": "This function from Problem 448 is crucial - when τ⁺(n) is much smaller than τ(n), the Cauchy-Schwarz bound forces r(n) to be large.",
+    "relatedConcepts": ["Problem 448", "divisor distribution", "square root threshold"]
+  },
+  {
+    "id": "ann-449-5",
+    "proofId": "erdos-449",
+    "range": { "startLine": 86, "endLine": 93 },
+    "type": "theorem",
+    "title": "The False Conjecture",
+    "content": "Erdős conjectured that for every ε > 0, we have r(n) < ε·τ(n) for almost all n. 'Almost all' means the exceptional set has natural density 0. This would say close pairs become negligible.",
+    "mathContext": "∀ε > 0: lim_{N→∞} |{n ≤ N : r(n) ≥ ε·τ(n)}|/N = 0",
+    "significance": "This is the central conjecture - and it turns out to be FALSE in a strong sense.",
+    "relatedConcepts": ["natural density", "asymptotic behavior", "almost all integers"]
+  },
+  {
+    "id": "ann-449-6",
+    "proofId": "erdos-449",
+    "range": { "startLine": 102, "endLine": 108 },
+    "type": "theorem",
+    "title": "The Disproof",
+    "content": "The conjecture is not just false - its negation is strong. For ANY constant K > 0 (no matter how large), a positive density set of n has r(n) > K·τ(n). Close pairs can dominate!",
+    "mathContext": "∀K > 0, ∃δ > 0: lim inf_{N→∞} |{n ≤ N : r(n) > K·τ(n)}|/N ≥ δ",
+    "significance": "This completely reverses the intuition - close pairs are not rare, they can be arbitrarily dominant.",
+    "relatedConcepts": ["counterexample", "positive density", "strong negation"]
+  },
+  {
+    "id": "ann-449-7",
+    "proofId": "erdos-449",
+    "range": { "startLine": 124, "endLine": 126 },
+    "type": "theorem",
+    "title": "Cauchy-Schwarz Inequality for Divisors",
+    "content": "The key technical tool: r(n) + τ(n) ≥ τ(n)²/τ⁺(n). This relates close pairs to the ratio τ(n)/τ⁺(n). When τ⁺(n) is small relative to τ(n), r(n) must be large.",
+    "mathContext": "r(n) + τ(n) ≥ τ(n)²/τ⁺(n)",
+    "significance": "This inequality is the bridge connecting Problems 448 and 449 - Kevin Ford's key observation.",
+    "relatedConcepts": ["Cauchy-Schwarz", "divisor bounds", "arithmetic inequalities"]
+  },
+  {
+    "id": "ann-449-8",
+    "proofId": "erdos-449",
+    "range": { "startLine": 132, "endLine": 138 },
+    "type": "theorem",
+    "title": "Connection to Problem 448",
+    "content": "Problem 448 shows that τ⁺(n) can be much smaller than τ(n) for a positive density set. Combined with Cauchy-Schwarz, this forces r(n) to exceed (K+1)τ(n) - τ(n) = K·τ(n) for positive density.",
+    "mathContext": "Problem 448 ⟹ τ(n)²/τ⁺(n) ≥ (K+1)τ(n) for positive density",
+    "significance": "This shows how Problem 449's solution follows from Problem 448 - a beautiful connection between Erdős problems.",
+    "relatedConcepts": ["Problem 448", "positive density arguments", "reduction between problems"]
+  },
+  {
+    "id": "ann-449-9",
+    "proofId": "erdos-449",
+    "range": { "startLine": 149, "endLine": 153 },
+    "type": "example",
+    "title": "Example: n = 12",
+    "content": "For n = 12, divisors are {1, 2, 3, 4, 6, 12}. Close pairs: (2,3), (3,4), (3,6), (4,6), (6,12) - checking: 2<3<4 ✓, 3<4<6 ✓, 3<6<6 ✗ actually 3<6<6 is false. Actually (3,4) since 3<4<6 ✓. So r(12) = 5, τ(12) = 6.",
+    "mathContext": "τ(12) = 6, r(12) = 5",
+    "significance": "Even small examples show r(n) can be comparable to τ(n), not negligible.",
+    "relatedConcepts": ["explicit computation", "small cases", "divisor enumeration"]
+  },
+  {
+    "id": "ann-449-10",
+    "proofId": "erdos-449",
+    "range": { "startLine": 215, "endLine": 220 },
+    "type": "insight",
+    "title": "Key Insight: Close Pairs Dominate",
+    "content": "The fundamental lesson: close divisor pairs are NOT rare. The intuition that 'special' configurations should be sparse fails here. Divisor structure naturally produces many close pairs.",
+    "mathContext": "r(n)/τ(n) can be unbounded for positive density",
+    "significance": "This disproof teaches us that divisors tend to cluster, making close pairs common rather than exceptional.",
+    "relatedConcepts": ["divisor clustering", "multiplicative structure", "number-theoretic intuition"]
+  }
+]

@@ -1,33 +1,155 @@
 {
   "id": "erdos-378",
-  "title": "Erdős Problem #378",
+  "title": "Erdos Problem #378: Density of Squarefree Binomial Coefficients",
   "slug": "erdos-378",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does the density of integers ... for which ... is squarefree for at least ... values of ... exist? Is this density ....",
+  "description": "Does the density of n for which C(n,k) is squarefree for at least r values of k exist and is it positive? YES to both, resolved via Granville-Ramare.",
   "meta": {
-    "author": "Unknown",
+    "author": "Granville-Ramare (1996), Aggarwal-Cambie (observation)",
     "sourceUrl": "https://erdosproblems.com/378",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos378Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "squarefree",
+      "density",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 378,
     "erdosUrl": "https://erdosproblems.com/378",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type for densities",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Squarefree definition: no prime squared divides n",
+      "squarefree_one theorem: 1 is squarefree",
+      "not_squarefree_four theorem: 4 is not squarefree",
+      "not_squarefree_twelve theorem: 12 is not squarefree",
+      "BinomialSquarefree definition: C(n,k) is squarefree",
+      "squarefreeCount definition: count of squarefree binomials in row n",
+      "NaturalDensity definition: limit definition of density",
+      "HasDensity definition: existence of density",
+      "erdos_graham_sparse axiom: density is o_k(1) for large k",
+      "erdos_graham_infinite_bad axiom: infinitely many bad n",
+      "exactlySquarefree definition: n with exactly 2m+2 squarefree binomials",
+      "granville_ramare_density_exists axiom: main technical result",
+      "eta definition: density of exactlySquarefree m",
+      "eta_positive axiom: densities are positive",
+      "atLeastSquarefree definition: set for the main question",
+      "erdos_378_density_exists theorem: density exists",
+      "erdos_378_density_positive theorem: density is positive",
+      "binomial_squarefree_symm theorem: symmetry of squarefree property",
+      "erdos_378 theorem: main combined result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #378 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 0$. Does the density of integers $n$ for which $\\binom{n}{k}$ is squarefree for at least $r$ values of $1\\leq k<n$ exist? Is this density $>0$?\n\n\n\nErd\\H{o}s and Graham state they can prove that, for $k$ fixed and large, the density of $n$ such that $\\binom{n}{k}$ is squarefree is $o_k(1)$. They can also prove that there are infinitely many $n$ such that $\\binom{n}{k}$ is not squarefree for $1\\leq k<n$, and expect that the density of such $n$ is positive.\n\nAggarwal and Cambie have observed this problem is resolved by the results of Granville and Ramar\\'{e} \\cite{GrRa96}, who in particular show that the density of the set of those $n$ such that $\\binom{n}{k}$ is squarefree for exactly $2m+2$ many values of $k$ exists. If this density is $\\eta_m$, then the density in the original question is simply\\[1-\\sum_{0\\leq m\\leq \\frac{r-1}{2}}\\eta_m.\\]This density is positive since $\\eta_{r+1}>0$.\n\n\n\n\nReferences\n\n\n[GrRa96] Granville, Andrew and Ramar\\'{e}, Olivier, Explicit bounds on exponential sums and the scarcity of\nsquarefree binomial coefficients. Mathematika (1996), 73--107.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #378**\n\nThis problem concerns the distribution of squarefree binomial coefficients in Pascal's triangle.\n\n**The Question:**\nFor a given r >= 0, does the density of integers n such that C(n,k) is squarefree for at least r values of 1 <= k < n exist? Is this density positive?\n\n**Resolution:**\nGranville and Ramare (1996) proved that the density eta_m of n having exactly 2m+2 squarefree binomial coefficients exists for each m. Aggarwal and Cambie observed that this resolves Erdos's question: the desired density is 1 - sum of eta_m for small m, which is positive.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $r \\geq 0$. Does the density of integers $n$ for which $\\binom{n}{k}$ is squarefree for at least $r$ values of $1 \\leq k < n$ exist? Is this density $> 0$?\n\n**Answer: YES to both**\n\nThe density is $1 - \\sum_{0 \\leq m \\leq (r-1)/2} \\eta_m$, where $\\eta_m$ is the density of $n$ with exactly $2m+2$ squarefree binomial coefficients.\n\nThis density is positive since $\\eta_{r+1} > 0$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefree:** Define as no prime squared dividing n\n\n2. **Counting:** Define squarefreeCount(n) for binomials in row n\n\n3. **Natural Density:** Define via limit definition\n\n4. **Erdos-Graham Results:** Axiomatize preliminary results\n\n5. **Granville-Ramare:** Axiomatize key density result for exactlySquarefree(m)\n\n6. **Main Theorems:** Derive density existence and positivity from decomposition\n\n7. **Examples:** Verify specific binomial coefficients",
+    "keyInsights": [
+      "**Squarefree Binomials are Sparse:** For large k, density of squarefree C(n,k) is o(1)",
+      "**Symmetry:** C(n,k) = C(n,n-k) gives paired squarefree entries",
+      "**Density Formula:** 1 - sum of eta_m gives the answer",
+      "**Positive Densities:** Each eta_m > 0 is crucial for positivity",
+      "**Pascal's Triangle:** Squarefree patterns depend on prime factorization",
+      "**Granville-Ramare Key:** Technical bounds on exponential sums"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "squarefree",
+      "title": "Squarefree Numbers",
+      "summary": "Squarefree definition, examples (1, 6), non-examples (4, 12)",
+      "startLine": 39,
+      "endLine": 81
+    },
+    {
+      "id": "binomial-squarefree",
+      "title": "Squarefree Binomial Coefficients",
+      "summary": "BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree definitions",
+      "startLine": 83,
+      "endLine": 106
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "summary": "NaturalDensity limit definition, HasDensity existence predicate",
+      "startLine": 108,
+      "endLine": 125
+    },
+    {
+      "id": "erdos-graham",
+      "title": "Erdos-Graham Preliminary Results",
+      "summary": "Sparsity for large k, infinitely many bad n",
+      "startLine": 127,
+      "endLine": 147
+    },
+    {
+      "id": "granville-ramare",
+      "title": "Granville-Ramare Results (1996)",
+      "summary": "exactlySquarefree, density exists, eta definition, eta positive",
+      "startLine": 149,
+      "endLine": 187
+    },
+    {
+      "id": "main-results",
+      "title": "Main Result - Resolution",
+      "summary": "atLeastSquarefree, complement decomposition, density theorems",
+      "startLine": 189,
+      "endLine": 244
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "summary": "C(2,1), C(4,2), C(6,3) squarefree status",
+      "startLine": 246,
+      "endLine": 273
+    },
+    {
+      "id": "pascal",
+      "title": "Connection to Pascal's Triangle",
+      "summary": "PascalRow, symmetry theorem, even count pattern",
+      "startLine": 275,
+      "endLine": 302
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_378 and erdos_378_answer main theorems",
+      "startLine": 304,
+      "endLine": 340
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #378 asked whether the density of n with C(n,k) squarefree for at least r values of k exists and is positive. Both answers are YES. Granville and Ramare (1996) proved that the density of n with exactly 2m+2 squarefree binomials exists, and Aggarwal-Cambie observed this resolves the original question via a complement formula.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Pascal's Triangle Structure:** Squarefree entries reveal prime factorization patterns\n\n2. **Density Theory:** Sophisticated analytic techniques (exponential sums) needed\n\n3. **Binomial Divisibility:** Deep connections to Kummer's theorem and carries in addition\n\n4. **Asymptotic Behavior:** For most n, few binomials are squarefree\n\n5. **Counting Problems:** Framework for analyzing arithmetic properties of combinatorial objects",
+    "openQuestions": [
+      "Explicit values of the densities eta_m",
+      "Distribution of squarefree count within rows of Pascal's triangle",
+      "Generalization to higher power-free binomial coefficients",
+      "Computational aspects of detecting squarefree binomials efficiently",
+      "Connections to other multiplicative properties of binomial coefficients"
+    ]
   }
 }

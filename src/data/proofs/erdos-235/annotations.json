@@ -1,1 +1,165 @@
-[]
+[
+  {
+    "id": "ann-e235-header",
+    "proofId": "erdos-235",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #235: Gaps Between Coprime Integers**\n\n**Question:** Do gaps between integers coprime to N_k = 2*3*...*p_k have a limiting distribution as k -> infinity?\n\n**Answer: YES** (Hooley 1965)\n\nf(c) = 1 - e^{-c} (exponential distribution)\n\nThe gaps, when normalized by average gap N_k/phi(N_k), follow exponential(1).",
+    "mathContext": "This connects primorial structure to classical probability distributions.",
+    "significance": "critical",
+    "relatedConcepts": ["Primorials", "Euler's totient", "Exponential distribution"]
+  },
+  {
+    "id": "ann-e235-primorial",
+    "proofId": "erdos-235",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "definition",
+    "title": "Primorial",
+    "content": "**primorial(k) = N_k:**\n\nThe product of the first k primes.\n\n```lean\nnoncomputable def primorial (k : N) : N :=\n  (Finset.range k).prod (fun i => nthPrime (i + 1))\n```\n\n**Examples:**\n- N_1 = 2\n- N_2 = 6\n- N_3 = 30\n- N_4 = 210",
+    "significance": "key",
+    "relatedConcepts": ["Primes", "Products"]
+  },
+  {
+    "id": "ann-e235-totient",
+    "proofId": "erdos-235",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "definition",
+    "title": "Primorial Totient",
+    "content": "**primorialTotient(k) = phi(N_k):**\n\nEuler's totient of the primorial.\n\n```lean\nnoncomputable def primorialTotient (k : N) : N :=\n  Nat.totient (primorial k)\n```\n\n**Formula:** phi(p1*...*pk) = (p1-1)*...*(pk-1)\n\n**Examples:**\n- phi(2) = 1\n- phi(6) = 2\n- phi(30) = 8",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient", "Multiplicativity"]
+  },
+  {
+    "id": "ann-e235-coprime-set",
+    "proofId": "erdos-235",
+    "range": { "startLine": 85, "endLine": 98 },
+    "type": "definition",
+    "title": "Coprime Set",
+    "content": "**coprimeSet(k):**\n\nIntegers < N_k that are coprime to N_k.\n\n```lean\ndef coprimeSet (k : N) : Finset N :=\n  Finset.filter (fun a => Nat.Coprime a (primorial k)) (Finset.range (primorial k))\n```\n\n**Property:** |coprimeSet(k)| = phi(N_k)\n\nThese are the 'totatives' of N_k.",
+    "significance": "key",
+    "relatedConcepts": ["Coprimality", "Totatives"]
+  },
+  {
+    "id": "ann-e235-gap-sequence",
+    "proofId": "erdos-235",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "definition",
+    "title": "Gap Sequence",
+    "content": "**gapSequence(k):**\n\nThe sequence of gaps g_i = a_i - a_{i-1} between consecutive coprimes.\n\n```lean\nnoncomputable def gapSequence (k : N) : List N :=\n  (coprimeSequence k).zipWith (fun a b => b - a) ((coprimeSequence k).tail)\n```\n\n**Total:** Sum of gaps = N_k (the sequence wraps around mod N_k).",
+    "significance": "critical",
+    "relatedConcepts": ["Consecutive differences", "Gap statistics"]
+  },
+  {
+    "id": "ann-e235-average-gap",
+    "proofId": "erdos-235",
+    "range": { "startLine": 125, "endLine": 137 },
+    "type": "definition",
+    "title": "Average Gap",
+    "content": "**averageGap(k) = N_k / phi(N_k):**\n\nThe mean gap between consecutive coprimes.\n\n```lean\nnoncomputable def averageGap (k : N) : R :=\n  (primorial k : R) / (primorialTotient k : R)\n```\n\n**Asymptotics:** averageGap(k) ~ e^gamma * log(p_k) by Mertens' theorem.\n\nwhere gamma = 0.5772... is Euler-Mascheroni constant.",
+    "significance": "critical",
+    "relatedConcepts": ["Mean", "Mertens' theorem"]
+  },
+  {
+    "id": "ann-e235-distribution",
+    "proofId": "erdos-235",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "definition",
+    "title": "Gap Distribution Function",
+    "content": "**gapDistribution(k, c) = f_k(c):**\n\nThe fraction of gaps <= c * (average gap).\n\n```lean\nnoncomputable def gapDistribution (k : N) (c : R) : R :=\n  (countSmallGaps k c : R) / (primorialTotient k : R)\n```\n\n**Key question:** Does f_k(c) converge as k -> infinity?",
+    "significance": "critical",
+    "relatedConcepts": ["CDF", "Empirical distribution"]
+  },
+  {
+    "id": "ann-e235-conjecture",
+    "proofId": "erdos-235",
+    "range": { "startLine": 157, "endLine": 165 },
+    "type": "definition",
+    "title": "The Erdos Conjecture",
+    "content": "**ErdosConjecture235:**\n\nThe limit of f_k(c) exists for all c >= 0 and is continuous.\n\n```lean\ndef ErdosConjecture235 : Prop :=\n  exists f, Continuous f and\n    forall c >= 0, Tendsto (fun k => gapDistribution k c) atTop (nhds (f c))\n```\n\n**Status: PROVED by Hooley (1965)**",
+    "significance": "critical",
+    "relatedConcepts": ["Limiting distribution", "Continuity"]
+  },
+  {
+    "id": "ann-e235-exponential",
+    "proofId": "erdos-235",
+    "range": { "startLine": 171, "endLine": 176 },
+    "type": "definition",
+    "title": "Exponential CDF",
+    "content": "**exponentialCDF(c) = 1 - e^{-c}:**\n\nThe CDF of the exponential(1) distribution.\n\n```lean\nnoncomputable def exponentialCDF (c : R) : R :=\n  if c < 0 then 0 else 1 - Real.exp (-c)\n```\n\n**Properties:**\n- f(0) = 0\n- f(infinity) = 1\n- f(ln 2) = 1/2 (median)",
+    "significance": "key",
+    "relatedConcepts": ["Exponential distribution", "Memoryless property"]
+  },
+  {
+    "id": "ann-e235-hooley",
+    "proofId": "erdos-235",
+    "range": { "startLine": 178, "endLine": 184 },
+    "type": "axiom",
+    "title": "Hooley's Theorem (1965)",
+    "content": "**hooley_theorem:**\n\nThe gap distribution converges to exponential(1).\n\n```lean\naxiom hooley_theorem :\n    forall c >= 0,\n      Tendsto (fun k => gapDistribution k c) atTop (nhds (exponentialCDF c))\n```\n\n**Reference:** Hooley, C. 'On the difference between consecutive numbers prime to n. II' (1965).",
+    "mathContext": "This is the main result solving Erdos #235.",
+    "significance": "critical",
+    "relatedConcepts": ["Hooley", "1965"]
+  },
+  {
+    "id": "ann-e235-proved",
+    "proofId": "erdos-235",
+    "range": { "startLine": 192, "endLine": 199 },
+    "type": "theorem",
+    "title": "Erdos #235 is PROVED",
+    "content": "**erdos_235_proved:**\n\nThe conjecture follows from Hooley's theorem.\n\n```lean\ntheorem erdos_235_proved : ErdosConjecture235 := by\n  use exponentialCDF\n  constructor\n  . exact exponential_cdf_continuous\n  . exact hooley_theorem\n```\n\nThe limiting distribution exists and is continuous.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Solution"]
+  },
+  {
+    "id": "ann-e235-uniform",
+    "proofId": "erdos-235",
+    "range": { "startLine": 238, "endLine": 244 },
+    "type": "axiom",
+    "title": "Uniform Convergence",
+    "content": "**hooley_uniform:**\n\nThe convergence is uniform on compact intervals.\n\n```lean\naxiom hooley_uniform (a b : R) (hab : a <= b) :\n    forall eps > 0, exists K, forall k >= K, forall c in [a, b],\n      |gapDistribution k c - exponentialCDF c| < eps\n```\n\n**Significance:** Stronger than pointwise convergence.",
+    "significance": "key",
+    "relatedConcepts": ["Uniform convergence", "Compact sets"]
+  },
+  {
+    "id": "ann-e235-error",
+    "proofId": "erdos-235",
+    "range": { "startLine": 246, "endLine": 252 },
+    "type": "axiom",
+    "title": "Error Term",
+    "content": "**hooley_error_term:**\n\nThe error is O(1/log k).\n\n```lean\naxiom hooley_error_term :\n    exists C > 0, forall k >= 2, forall c >= 0,\n      |gapDistribution k c - exponentialCDF c| <= C / log k\n```\n\n**Rate:** The convergence is relatively fast.",
+    "significance": "supporting",
+    "relatedConcepts": ["Error bounds", "Rate of convergence"]
+  },
+  {
+    "id": "ann-e235-jacobsthal",
+    "proofId": "erdos-235",
+    "range": { "startLine": 266, "endLine": 275 },
+    "type": "definition",
+    "title": "Jacobsthal Function",
+    "content": "**jacobsthal(n):**\n\nThe maximum gap between consecutive integers coprime to n.\n\n```lean\nnoncomputable def jacobsthal (n : N) : N :=\n  let seq := (Finset.filter (fun a => Nat.Coprime a n) (Finset.range n)).sort (<= .)\n  (seq.zipWith (fun a b => b - a) seq.tail).foldl max 0\n```\n\n**Bound:** j(N_k) <= p_k * log(p_k)",
+    "significance": "supporting",
+    "relatedConcepts": ["Maximum gap", "Jacobsthal"]
+  },
+  {
+    "id": "ann-e235-mertens",
+    "proofId": "erdos-235",
+    "range": { "startLine": 286, "endLine": 295 },
+    "type": "axiom",
+    "title": "Mertens' Third Theorem",
+    "content": "**mertens_third:**\n\nProduct of (1 - 1/p) over primes p <= x is ~ e^{-gamma}/log(x).\n\n```lean\naxiom mertens_third :\n    Tendsto (fun k => phi(N_k)/N_k * log(p_k))\n      atTop (nhds (exp(-gamma)))\n```\n\n**Connection:** This gives the average gap asymptotics.\n\ngamma = 0.5772... (Euler-Mascheroni constant)",
+    "mathContext": "Classical result in analytic number theory.",
+    "significance": "key",
+    "relatedConcepts": ["Mertens", "Euler-Mascheroni"]
+  },
+  {
+    "id": "ann-e235-summary",
+    "proofId": "erdos-235",
+    "range": { "startLine": 305, "endLine": 335 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdos Problem #235: SOLVED**\n\n**Question:** Do gaps between coprimes to primorials have a limiting distribution?\n\n**Answer: YES**\n\nf(c) = 1 - e^{-c}\n\n**Solved by:** Hooley (1965)\n\n**Key insights:**\n1. Normalize by average gap N_k/phi(N_k)\n2. Gaps -> exponential(1) distribution\n3. Connected to Mertens' theorem",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Solved problems"]
+  }
+]

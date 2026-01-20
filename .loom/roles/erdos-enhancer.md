@@ -346,6 +346,23 @@ Compare every entry to the exemplar: `src/data/proofs/erdos-48/`
 - Commit without verifying build
 - Work on already-completed stubs
 
+## Observability
+
+**Log your actions** to enable monitoring without TUI access:
+
+```bash
+LOG="$REPO_ROOT/.loom/logs/$ENHANCER_ID.actions.log"
+
+# Log significant actions
+echo "$(date +%H:%M): Claimed erdos-867" >> "$LOG"
+echo "$(date +%H:%M): Rewrote Lean proof (45 lines)" >> "$LOG"
+echo "$(date +%H:%M): Build succeeded" >> "$LOG"
+echo "$(date +%H:%M): Created PR #123" >> "$LOG"
+echo "$(date +%H:%M): Completed erdos-867, claiming next" >> "$LOG"
+```
+
+Keep logs concise - one line per significant action.
+
 ## Session Startup
 
 When you start, run:
