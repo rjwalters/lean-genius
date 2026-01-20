@@ -1,1 +1,96 @@
-[]
+[
+  {
+    "id": "ann-809-1",
+    "proofId": "erdos-809",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #809: Rainbow Colorings of Odd Cycles**\n\n**Question:** For k ≥ 3, is F_k(n) ~ n²/8?\n\nWhere F_k(n) = min r s.t. some graph on n vertices with ⌊n²/4⌋+1 edges can be r-colored with all C_{2k+1} rainbow.\n\n**Known:** F_k(n) ≫ n² (Burr-Erdős-Graham-Sós)\n\n**STATUS: OPEN**",
+    "mathContext": "This connects Turán-type extremal graph theory with rainbow coloring theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán's theorem", "Rainbow colorings", "Anti-Ramsey theory"]
+  },
+  {
+    "id": "ann-809-2",
+    "proofId": "erdos-809",
+    "range": { "startLine": 58, "endLine": 62 },
+    "type": "definition",
+    "title": "Turán Threshold",
+    "content": "**turanThreshold n:**\n\n⌊n²/4⌋ + 1 edges - just above the Turán threshold for bipartite graphs.\n\nBy Turán's theorem, any graph with more than ⌊n²/4⌋ edges must contain an odd cycle.",
+    "mathContext": "This is the critical edge density where odd cycles are guaranteed to exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-809-3",
+    "proofId": "erdos-809",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "**EdgeColoring n G r:**\n\nAn assignment of colors from {0, ..., r-1} to the edges of G.\n\nThe goal is to find the minimum r that allows a valid coloring.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-809-4",
+    "proofId": "erdos-809",
+    "range": { "startLine": 81, "endLine": 87 },
+    "type": "definition",
+    "title": "Rainbow Coloring",
+    "content": "**isRainbowOn c edges:**\n\nA coloring is rainbow on a set of edges if all edges have distinct colors.\n\nThe number of colors used equals the number of edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-809-5",
+    "proofId": "erdos-809",
+    "range": { "startLine": 89, "endLine": 103 },
+    "type": "definition",
+    "title": "Cycle Structure",
+    "content": "**Cycle n G m:**\n\nA cycle of length m in graph G: a sequence v₀, v₁, ..., v_{m-1}, v₀ where:\n- Consecutive vertices are adjacent\n- Non-consecutive vertices are distinct\n\nOdd cycles C_{2k+1} are the key structures here.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-809-6",
+    "proofId": "erdos-809",
+    "range": { "startLine": 133, "endLine": 141 },
+    "type": "definition",
+    "title": "The Function F_k(n)",
+    "content": "**F k n:**\n\nF_k(n) = minimal r such that ∃ graph G on n vertices with ⌊n²/4⌋+1 edges admitting an r-coloring where every C_{2k+1} is rainbow.\n\nThis is the central quantity to estimate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-809-7",
+    "proofId": "erdos-809",
+    "range": { "startLine": 156, "endLine": 163 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "**mainConjecture:**\n\nF_k(n) ~ n²/8 for k ≥ 3.\n\nThis means lim_{n→∞} F_k(n) / (n²/8) = 1.\n\nThe constant 1/8 is exactly half of the Turán threshold constant 1/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-809-8",
+    "proofId": "erdos-809",
+    "range": { "startLine": 177, "endLine": 183 },
+    "type": "theorem",
+    "title": "BEGS Lower Bound",
+    "content": "**begs_lower_bound:**\n\nBurr-Erdős-Graham-Sós proved: F_k(n) ≫ n²\n\ni.e., F_k(n) ≥ c·n² for some absolute constant c > 0.\n\nThis establishes that F_k(n) grows quadratically.",
+    "mathContext": "The lower bound shows the conjecture is about determining the exact constant, not the growth rate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-809-9",
+    "proofId": "erdos-809",
+    "range": { "startLine": 199, "endLine": 216 },
+    "type": "theorem",
+    "title": "Turán's Theorem",
+    "content": "**turan_theorem and threshold_significance:**\n\nTurán's theorem: A graph with > ⌊n²/4⌋ edges contains an odd cycle.\n\nAt the threshold ⌊n²/4⌋ + 1 edges:\n- Odd cycles are guaranteed to exist\n- The graph is close to bipartite\n- This is the critical regime for the problem",
+    "significance": "key"
+  },
+  {
+    "id": "ann-809-10",
+    "proofId": "erdos-809",
+    "range": { "startLine": 318, "endLine": 363 },
+    "type": "theorem",
+    "title": "Summary: OPEN",
+    "content": "**erdos_809 and erdos_809_summary:**\n\n**STATUS: OPEN**\n\n**Conjecture:** F_k(n) ~ n²/8\n\n**Known bounds:**\n- Lower: F_k(n) ≫ n² (BEGS)\n- Upper: F_k(n) ≤ ⌊n²/4⌋ + 1 (trivial)\n\n**The gap:** The conjecture says the constant is 1/8, but only quadratic growth is proven.",
+    "significance": "critical"
+  }
+]

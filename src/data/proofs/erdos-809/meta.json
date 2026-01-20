@@ -1,33 +1,101 @@
 {
   "id": "erdos-809",
-  "title": "Erdős Problem #809",
+  "title": "Rainbow Colorings of Odd Cycles",
   "slug": "erdos-809",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be the minimal ... such that there is a graph ... on ... vertices with ... many edges such that the...",
+  "description": "For k≥3, define F_k(n) = min r s.t. some graph on n vertices with ⌊n²/4⌋+1 edges can be r-colored with all C_{2k+1} rainbow. Conjecture: F_k(n) ~ n²/8. Known: F_k(n) ≫ n². OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Burr, Erdős, Graham, Sós",
     "sourceUrl": "https://erdosproblems.com/809",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos809Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "extremal-graph-theory", "rainbow-colorings", "odd-cycles", "turan", "open-problem"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 5,
     "erdosNumber": 809,
     "erdosUrl": "https://erdosproblems.com/809",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "Finset", "description": "Finite sets for vertices", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" }
+    ],
+    "originalContributions": [
+      "Lean formalization of edge colorings and rainbow property",
+      "Cycle structure definition in graphs",
+      "Function F_k(n) formalization",
+      "Main conjecture F_k(n) ~ n²/8",
+      "Burr-Erdős-Graham-Sós lower bound axiomatized",
+      "Turán threshold significance",
+      "Connection to anti-Ramsey theory"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #809 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and define $F_k(n)$ to be the minimal $r$ such that there is a graph $G$ on $n$ vertices with $\\lfloor n^2/4\\rfloor+1$ many edges such that the edges can be $r$-coloured so that every subgraph isomorphic to $C_{2k+1}$ has no colour repeating on the edges.\n\nIs it true that\\[F_k(n)\\sim n^2/8?\\]\n\n\n\nA problem of Burr, Erd\\H{o}s, Graham, and S\\'{o}s, who proved that\\[F_k(n)\\gg n^2.\\]See also [810].\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Burr, Erdős, Graham, and Sós. They proved F_k(n) ≫ n², establishing a quadratic lower bound. The conjecture that F_k(n) ~ n²/8 remains open. The problem connects Turán-type extremal graph theory with rainbow coloring theory.",
+    "problemStatement": "For k ≥ 3, define F_k(n) as the minimal r such that there exists a graph G on n vertices with ⌊n²/4⌋ + 1 edges where the edges can be r-colored so that every C_{2k+1} subgraph is rainbow (no color repeats). Is F_k(n) ~ n²/8?",
+    "proofStrategy": "The formalization defines graphs, edge colorings, cycles, and the rainbow property. The function F_k(n) is formalized, along with the main conjecture. The Burr-Erdős-Graham-Sós lower bound is axiomatized.",
+    "keyInsights": [
+      "⌊n²/4⌋ + 1 edges is just above Turán's threshold for odd cycles",
+      "The conjecture predicts F_k(n) ~ n²/8, exactly half of Turán threshold",
+      "The known lower bound F_k(n) ≫ n² establishes quadratic growth",
+      "Related to anti-Ramsey theory and rainbow structures",
+      "Problem #810 is a companion problem with related constraints"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 41,
+      "endLine": 75,
+      "summary": "Graphs, edge counts, Turán threshold, edge colorings"
+    },
+    {
+      "id": "rainbow-property",
+      "title": "Rainbow Property",
+      "startLine": 77,
+      "endLine": 112,
+      "summary": "Rainbow colorings and cycle structures"
+    },
+    {
+      "id": "function-f",
+      "title": "The Function F_k(n)",
+      "startLine": 114,
+      "endLine": 150,
+      "summary": "Definition of F_k(n) and valid graphs"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 152,
+      "endLine": 171,
+      "summary": "Main conjecture F_k(n) ~ n²/8"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Known Lower Bound",
+      "startLine": 173,
+      "endLine": 193,
+      "summary": "Burr-Erdős-Graham-Sós quadratic lower bound"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 318,
+      "endLine": 363,
+      "summary": "Main results and open status"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #809 remains OPEN. The conjecture F_k(n) ~ n²/8 is unresolved. Known: F_k(n) ≫ n² (Burr-Erdős-Graham-Sós).",
+    "implications": "This problem connects extremal graph theory with rainbow coloring theory. Understanding F_k(n) would reveal deep connections between graph density and chromatic structure.",
+    "openQuestions": [
+      "Prove or disprove F_k(n) ~ n²/8",
+      "Determine the exact constant in F_k(n) = c·n² + o(n²)",
+      "Find explicit constructions achieving near-optimal colorings",
+      "Understand the dependence on k"
+    ]
   }
 }
