@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "ann-1098-1",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1098: Non-Commuting Graphs of Groups**\n\n**Question:** If Γ(G) (non-commuting graph) has no infinite clique, is there a finite bound on clique sizes?\n\n**Answer: YES** (Neumann 1976)\n\n**Key Result:** No infinite clique ⟺ Z(G) has finite index. Bound = [G : Z(G)].",
+    "mathContext": "This problem connects group theory (center, index) with graph theory (clique number).",
+    "significance": "critical",
+    "relatedConcepts": ["Center of a group", "Clique number", "Subgroup index"]
+  },
+  {
+    "id": "ann-1098-2",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 46, "endLine": 56 },
+    "type": "definition",
+    "title": "Non-Commuting Relation",
+    "content": "**nonCommuting g h:**\n\nTwo elements g, h ∈ G do not commute if gh ≠ hg.\n\nThis is a symmetric relation (if g doesn't commute with h, then h doesn't commute with g).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1098-3",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 66, "endLine": 78 },
+    "type": "definition",
+    "title": "Center of a Group",
+    "content": "**Subgroup.center G:**\n\nZ(G) = {g ∈ G | gh = hg for all h ∈ G}\n\nThe center consists of elements that commute with everything. Central elements form no edges in Γ(G).",
+    "mathContext": "The center is always a normal subgroup, and its index determines clique size bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1098-4",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 84, "endLine": 93 },
+    "type": "definition",
+    "title": "Non-Commuting Graph",
+    "content": "**NonCommGraph G:**\n\nΓ(G) has:\n- Vertices: elements of G\n- Edges: between g and h if gh ≠ hg\n\nThis is an undirected graph (symmetric, irreflexive relation).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1098-5",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 95, "endLine": 121 },
+    "type": "definition",
+    "title": "Cliques and Clique Number",
+    "content": "**isClique S and hasFiniteCliqueNumber:**\n\nA clique is a set S where every distinct pair doesn't commute.\n\n**hasFiniteCliqueNumber:** ∃ n, all cliques have size ≤ n.\n\n**noInfiniteClique:** Every clique is finite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1098-6",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 127, "endLine": 139 },
+    "type": "definition",
+    "title": "Finite Index Center",
+    "content": "**centerHasFiniteIndex G:**\n\n[G : Z(G)] < ∞, i.e., Z(G) has finite index in G.\n\nThis is equivalent to having finitely many cosets of Z(G).",
+    "mathContext": "The key insight is that clique size is bounded by the number of cosets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1098-7",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 145, "endLine": 158 },
+    "type": "theorem",
+    "title": "Neumann's Theorem (1976)",
+    "content": "**neumann_theorem and neumann_bound:**\n\n**Equivalence:** Γ(G) has no infinite clique ⟺ Z(G) has finite index.\n\n**Bound:** If [G : Z(G)] = n, then every clique has size ≤ n.\n\nThis completely solves Erdős' question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1098-8",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 180, "endLine": 204 },
+    "type": "theorem",
+    "title": "Coset Structure",
+    "content": "**same_coset_commute and clique_different_cosets:**\n\n**Key insight:** If g and h are in the same coset of Z(G), they commute!\n\nBecause g⁻¹h ∈ Z(G) means g⁻¹h commutes with g, so gh = hg.\n\nThus clique members must be in different cosets, giving the bound.",
+    "mathContext": "This is the heart of the proof - the coset structure forces the bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1098-9",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 210, "endLine": 227 },
+    "type": "theorem",
+    "title": "Abelian Groups",
+    "content": "**abelian_no_edges:**\n\nIf G is abelian, Z(G) = G, so Γ(G) has no edges at all.\n\n**infinite_clique_example:**\n\nNon-abelian groups can have infinite cliques (e.g., free groups).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1098-10",
+    "proofId": "erdos-1098",
+    "range": { "startLine": 290, "endLine": 323 },
+    "type": "theorem",
+    "title": "Summary: SOLVED",
+    "content": "**erdos_1098 and erdos_1098_summary:**\n\n**STATUS: SOLVED** (Neumann 1976)\n\n**Answer:** YES - if no infinite clique, then cliques are uniformly bounded.\n\n**The bound:** Clique size ≤ [G : Z(G)].\n\n**Equivalence:** No infinite clique ⟺ finite index center.",
+    "significance": "critical"
+  }
+]
