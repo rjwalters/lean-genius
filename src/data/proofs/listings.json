@@ -12889,17 +12889,24 @@
   },
   {
     "id": "erdos-865",
-    "title": "Erdős Problem #865",
+    "title": "Erdős Problem #865: Pairwise Sums in Dense Sets",
     "slug": "erdos-865",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists a constant ... such that, for all large ..., if ... has size at least ... then there are distinct ... such that ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A ⊆ {1,...,N} has size ≥ (5/8)N + C, must there exist distinct a,b,c ∈ A with a+b, a+c, b+c ∈ A? The threshold 5/8 is conjectured optimal. Status: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sum-sets",
+      "density",
+      "open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 865,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 26
   },
   {
     "id": "erdos-866",
