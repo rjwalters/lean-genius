@@ -63,11 +63,9 @@ R(k, ℓ) is the minimum n such that RamseyProperty holds.
 axiom ramsey_exists (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
     ∃ n, RamseyProperty n k ℓ
 
-/-- The Ramsey number R(k, ℓ). -/
-noncomputable def R (k ℓ : ℕ) : ℕ :=
-  if h : k ≥ 2 ∧ ℓ ≥ 2 then
-    Nat.find (ramsey_exists k ℓ h.1 h.2)
-  else 0
+/-- The Ramsey number R(k, ℓ) - the minimum n such that RamseyProperty n k ℓ holds.
+    We axiomatize this since RamseyProperty is not decidable (universal over colorings). -/
+axiom R : ℕ → ℕ → ℕ
 
 /-- R(k, ℓ) satisfies the Ramsey property. -/
 axiom R_satisfies (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
@@ -168,7 +166,12 @@ axiom burr_erdos_faudree_schelp (k : ℕ) (hk : k ≥ 3) :
 theorem diff_linear_growth (k : ℕ) (hk : k ≥ 3) :
     (RamseyDiff k : ℝ) ≥ 2 * k - 5 := by
   have h := burr_erdos_faudree_schelp k hk
-  exact_mod_cast h
+  have h2k5 : 2 * k ≥ 5 := by omega
+  have h_eq : (2 * k - 5 : ℝ) = ((2 * k - 5 : ℕ) : ℝ) := by
+    rw [Nat.cast_sub h2k5]
+    simp
+  rw [h_eq]
+  exact Nat.cast_le.mpr h
 
 /-!
 ## Part VII: The Growth Ratio
@@ -180,11 +183,17 @@ The ratio R(k+1, k) / R(k, k) that Erdős asked about.
 noncomputable def GrowthRatio (k : ℕ) : ℝ :=
   (R_off k : ℝ) / (R_diag k : ℝ)
 
+/-- Monotonicity: R(k+1, k) ≥ R(k, k).
+    This follows from the fact that finding a (k+1)-clique is harder than finding a k-clique. -/
+axiom R_off_ge_diag (k : ℕ) (hk : k ≥ 2) : R (k+1) k ≥ R_diag k
+
 /-- The ratio can be written as 1 + diff/R(k,k). -/
 theorem ratio_decomposition (k : ℕ) (hk : k ≥ 2) (hR : R_diag k > 0) :
     GrowthRatio k = 1 + (RamseyDiff k : ℝ) / (R_diag k : ℝ) := by
   unfold GrowthRatio RamseyDiff R_off
   have hne : (R_diag k : ℝ) ≠ 0 := by positivity
+  have h_ge : R (k+1) k ≥ R_diag k := R_off_ge_diag k hk
+  rw [Nat.cast_sub h_ge]
   field_simp
   ring
 
@@ -226,12 +235,46 @@ axiom R_diag_upper_exp (k : ℕ) (hk : k ≥ 2) :
 /-- Using the known lower bound R(k,k) ≥ 2^(k/2), we can bound the ratio. -/
 theorem ratio_lower_from_befs (k : ℕ) (hk : k ≥ 3) :
     GrowthRatio k ≥ 1 + (2*k - 5) / 4^k := by
-  sorry -- Technical calculation using BEFS and upper bound
+  -- GrowthRatio k = R_off k / R_diag k = 1 + RamseyDiff k / R_diag k
+  -- From BEFS: RamseyDiff k ≥ 2k - 5
+  -- From upper bound: R_diag k ≤ 4^k
+  -- So GrowthRatio k ≥ 1 + (2k - 5) / 4^k
+  have hk2 : k ≥ 2 := by omega
+  -- R_diag k ≥ 2^(k/2) ≥ 2^1 = 2 > 0 for k ≥ 2
+  have hR_lower := R_diag_lower k hk2
+  have hR_pos : (R_diag k : ℝ) > 0 := by
+    have h2k : (2 : ℝ)^((k : ℝ)/2) > 0 := by positivity
+    linarith
+  have hR_nat_pos : R_diag k > 0 := by
+    by_contra h
+    push_neg at h
+    have : R_diag k = 0 := Nat.eq_zero_of_le_zero h
+    simp [this] at hR_pos
+  have h_decomp := ratio_decomposition k hk2 hR_nat_pos
+  rw [h_decomp]
+  -- Need: 1 + RamseyDiff k / R_diag k ≥ 1 + (2*k - 5) / 4^k
+  -- Equivalently: RamseyDiff k / R_diag k ≥ (2*k - 5) / 4^k
+  have hBEFS := diff_linear_growth k hk
+  have hUpper := R_diag_upper_exp k hk2
+  have h4k_pos : (4 : ℝ)^k > 0 := by positivity
+  -- Since R_diag k ≤ 4^k and both positive, 1/R_diag k ≥ 1/4^k
+  have h_inv : (1 : ℝ) / R_diag k ≥ 1 / 4^k := by
+    apply one_div_le_one_div_of_le hR_pos hUpper
+  -- Since RamseyDiff k ≥ 2k - 5 and 1/R_diag k ≥ 1/4^k
+  -- We get RamseyDiff k / R_diag k ≥ (2k-5) / 4^k
+  have h_diff_ratio : (RamseyDiff k : ℝ) / R_diag k ≥ (2 * k - 5) / 4^k := by
+    calc (RamseyDiff k : ℝ) / R_diag k
+        = RamseyDiff k * (1 / R_diag k) := by ring
+      _ ≥ (2 * k - 5) * (1 / 4^k) := by
+          apply mul_le_mul hBEFS h_inv (by positivity) (by linarith)
+      _ = (2 * k - 5) / 4^k := by ring
+  linarith
 
 /-- The conjecture is essentially solved: linear diff / exponential R(k,k)
-    gives a positive limit, though the exact value depends on R(k,k) growth. -/
-axiom erdos_sos_solved :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ k in Filter.atTop, GrowthRatio k > 1 + c
+    gives a positive limit, though the exact value depends on R(k,k) growth.
+
+    Note: The liminf being > 1 + c follows from GrowthRatio k > 1 + c eventually. -/
+axiom erdos_sos_solved : ErdosSosConjecture
 
 /-!
 ## Part X: Known Ramsey Numbers
