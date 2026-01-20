@@ -7,6 +7,7 @@
         status status-enhancers status-research status-aristotle \
         build test lint \
         enhance research aristotle aristotle-loop \
+        continue pause stop signals \
         prune
 
 # Default target
@@ -36,7 +37,12 @@ help:
 	@echo "  make enhance N=3      - Launch N parallel enhancer agents"
 	@echo "  make research N=2     - Launch N parallel research agents"
 	@echo "  make aristotle        - Launch Aristotle queue management agent"
-	@echo "  make aristotle-stop   - Stop Aristotle agent"
+	@echo ""
+	@echo "Signals:"
+	@echo "  make continue         - Signal all agents to continue work"
+	@echo "  make pause            - Signal all agents to pause"
+	@echo "  make stop             - Signal all agents to stop gracefully"
+	@echo "  make signals          - Show current signal status"
 	@echo ""
 	@echo "Options:"
 	@echo "  DEEP=1    - Enable deep cleaning (worktrees, branches, logs)"
@@ -147,3 +153,19 @@ aristotle-attach:
 
 aristotle-logs:
 	./scripts/aristotle/launch-agent.sh --logs
+
+# ============================================================================
+# Signal management targets
+# ============================================================================
+
+continue:
+	@./scripts/agents/signal.sh continue
+
+pause:
+	@./scripts/agents/signal.sh pause
+
+stop:
+	@./scripts/agents/signal.sh stop
+
+signals:
+	@./scripts/agents/signal.sh status

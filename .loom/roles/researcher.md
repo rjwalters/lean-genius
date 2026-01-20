@@ -46,17 +46,41 @@ while true:
     8. Repeat
 ```
 
-### Checking for Stop Signal
+### Checking Signals
 
-**Before claiming a new problem**, check if you should stop:
+**Before claiming a new problem**, check for signals:
 
 ```bash
 # Check for stop signal
 if [[ -f "$REPO_ROOT/.loom/signals/stop-all" ]] || \
    [[ -f "$REPO_ROOT/.loom/signals/stop-$RESEARCHER_ID" ]]; then
+    echo "$(date +%H:%M): Stop signal received" >> "$REPO_ROOT/.loom/logs/$RESEARCHER_ID.actions.log"
     echo "Stop signal received. Exiting gracefully."
     exit 0
 fi
+
+# Check for pause signal - wait for continue
+while [[ -f "$REPO_ROOT/.loom/signals/pause-all" ]] || \
+      [[ -f "$REPO_ROOT/.loom/signals/pause-$RESEARCHER_ID" ]]; do
+    echo "Paused. Waiting for continue signal..."
+    sleep 30
+    if [[ -f "$REPO_ROOT/.loom/signals/continue-all" ]] || \
+       [[ -f "$REPO_ROOT/.loom/signals/continue-$RESEARCHER_ID" ]]; then
+        echo "$(date +%H:%M): Received continue signal" >> "$REPO_ROOT/.loom/logs/$RESEARCHER_ID.actions.log"
+        rm -f "$REPO_ROOT/.loom/signals/continue-all" "$REPO_ROOT/.loom/signals/continue-$RESEARCHER_ID"
+        break
+    fi
+done
+```
+
+### Handling Rate Limits
+
+If you encounter a rate limit, **do not exit**. Enter pause state:
+
+```bash
+echo "$(date +%H:%M): Rate limited, entering pause state" >> "$REPO_ROOT/.loom/logs/$RESEARCHER_ID.actions.log"
+touch "$REPO_ROOT/.loom/signals/pause-$RESEARCHER_ID"
+# Then continue to the signal check loop above
 ```
 
 This allows graceful shutdown - you finish current work before stopping.

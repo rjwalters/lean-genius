@@ -47,15 +47,30 @@ while true:
     7. Repeat
 ```
 
-### Step 1: Check for Stop Signal
+### Step 1: Check Signals
 
 ```bash
-if [[ -f "$REPO_ROOT/.loom/signals/stop-aristotle" ]]; then
+# Check for stop signal
+if [[ -f "$REPO_ROOT/.loom/signals/stop-aristotle" ]] || \
+   [[ -f "$REPO_ROOT/.loom/signals/stop-all" ]]; then
+    echo "$(date +%H:%M): Stop signal received" >> "$REPO_ROOT/.loom/logs/aristotle.actions.log"
     echo "Stop signal received. Finishing current work..."
-    # Complete any pending integrations
-    # Push and create final PR if needed
     exit 0
 fi
+
+# Check for pause signal - wait for continue
+while [[ -f "$REPO_ROOT/.loom/signals/pause-aristotle" ]] || \
+      [[ -f "$REPO_ROOT/.loom/signals/pause-all" ]]; do
+    echo "Paused. Waiting for continue signal..."
+    sleep 60
+    if [[ -f "$REPO_ROOT/.loom/signals/continue-aristotle" ]] || \
+       [[ -f "$REPO_ROOT/.loom/signals/continue-all" ]]; then
+        echo "$(date +%H:%M): Received continue signal" >> "$REPO_ROOT/.loom/logs/aristotle.actions.log"
+        rm -f "$REPO_ROOT/.loom/signals/continue-aristotle" "$REPO_ROOT/.loom/signals/continue-all"
+        rm -f "$REPO_ROOT/.loom/signals/pause-aristotle" "$REPO_ROOT/.loom/signals/pause-all"
+        break
+    fi
+done
 ```
 
 ### Step 2: Check Job Status
