@@ -100,10 +100,35 @@ def primeFactorsOfProduct (n : ℕ) : Finset ℕ :=
 
 theorem F_eq_card (n : ℕ) : F n = (primeFactorsOfProduct n).card := rfl
 
+/-- Helper: primeFactors of a product contains primeFactors of each factor. -/
+lemma primeFactors_prod_subset_left (a b : ℕ) (ha : a ≠ 0) (hb : b ≠ 0) :
+    a.primeFactors ⊆ (a * b).primeFactors := by
+  intro p hp
+  rw [Nat.mem_primeFactors] at hp ⊢
+  exact ⟨hp.1, dvd_mul_of_dvd_left hp.2.1 b, mul_ne_zero ha hb⟩
+
 /-- F is monotone: adding more factors can only increase primes. -/
 theorem F_mono : Monotone F := by
   intro m n hmn
-  sorry -- Requires showing primeFactors of product grows
+  unfold F
+  apply Finset.card_le_card
+  -- Need to show primeFactors (partitionProduct m) ⊆ primeFactors (partitionProduct n)
+  -- The key is that partitionProduct n = partitionProduct m * (extra factors)
+  rcases Nat.eq_or_lt_of_le hmn with rfl | hlt
+  · rfl  -- m = n, trivial
+  · -- m < n: partitionProduct n = partitionProduct m * (product from m+1 to n)
+    have hm_pos : partitionProduct m ≠ 0 := (partitionProduct_pos m).ne'
+    have hn_pos : partitionProduct n ≠ 0 := (partitionProduct_pos n).ne'
+    -- We need to show the divisibility relationship
+    have h_dvd : partitionProduct m ∣ partitionProduct n := by
+      unfold partitionProduct
+      apply Finset.prod_dvd_prod_of_subset
+      intro k hk
+      simp only [Finset.mem_Icc] at hk ⊢
+      omega
+    intro p hp
+    rw [Nat.mem_primeFactors] at hp ⊢
+    exact ⟨hp.1, Nat.dvd_trans hp.2.1 h_dvd, hn_pos⟩
 
 /-! ## Part IV: Known Results -/
 
