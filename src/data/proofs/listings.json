@@ -8919,17 +8919,23 @@
   },
   {
     "id": "erdos-578",
-    "title": "Erdős Problem #578",
+    "title": "Erdős Problem #578: Hypercubes in Random Graphs",
     "slug": "erdos-578",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a random graph on ... vertices, including each edge with probability ..., then ... almost surely contains a copy of...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If G is a random graph on 2^d vertices with edge probability 1/2, does G almost surely contain Q_d? Answer: YES (Riordan 2000). Threshold p > 1/4 suffices, and copies are normally distributed.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "random-graphs",
+      "hypercubes",
+      "probabilistic-combinatorics",
+      "graph-theory"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 578,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-58",

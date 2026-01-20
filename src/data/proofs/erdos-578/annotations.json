@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-578-1",
+    "proofId": "erdos-578",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #578: Hypercubes in Random Graphs**\n\n**Setup:** Q_d is the d-dimensional hypercube with 2^d vertices and d·2^{d-1} edges.\n\n**Question:** If G is a random graph G(2^d, 1/2), does G almost surely contain Q_d?\n\n**Answer:** YES (Riordan 2000), and even p > 1/4 suffices!",
+    "mathContext": "This is a fundamental question in probabilistic combinatorics: when does a random graph contain specific structured subgraphs?",
+    "significance": "critical",
+    "relatedConcepts": ["Random graphs", "Hypercubes", "Probabilistic combinatorics", "Subgraph containment"]
+  },
+  {
+    "id": "ann-578-2",
+    "proofId": "erdos-578",
+    "range": { "startLine": 43, "endLine": 74 },
+    "type": "definition",
+    "title": "Hypercube Q_d",
+    "content": "**The d-dimensional Hypercube:**\n\n- **Vertices:** 2^d (can be viewed as binary strings of length d)\n- **Edges:** d·2^{d-1} (vertices connected if they differ in exactly one bit)\n\n**Examples:**\n- Q_1: 2 vertices, 1 edge (line segment)\n- Q_2: 4 vertices, 4 edges (square)\n- Q_3: 8 vertices, 12 edges (cube)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-578-3",
+    "proofId": "erdos-578",
+    "range": { "startLine": 79, "endLine": 108 },
+    "type": "definition",
+    "title": "Random Graph G(n,p)",
+    "content": "**Erdős-Rényi Random Graph Model:**\n\nG(n, p) is a random graph on n vertices where each possible edge appears independently with probability p.\n\n**Key Property:** Each of the C(n,2) potential edges is included with probability p, independently.\n\n**For this problem:** We use n = 2^d vertices (same as hypercube) and study various p.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-578-4",
+    "proofId": "erdos-578",
+    "range": { "startLine": 113, "endLine": 125 },
+    "type": "definition",
+    "title": "Almost Surely",
+    "content": "**Almost Sure Events:**\n\nAn event happens 'almost surely' if its probability tends to 1 as the parameter (here d) goes to infinity.\n\nFormally: P(event) → 1 as d → ∞.\n\n**In this context:** G(2^d, p) almost surely contains Q_d means the probability of containment → 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-578-5",
+    "proofId": "erdos-578",
+    "range": { "startLine": 130, "endLine": 137 },
+    "type": "theorem",
+    "title": "Erdős-Bollobás Conjecture",
+    "content": "**The Original Conjecture:**\n\nG(2^d, 1/2) almost surely contains Q_d.\n\n**Intuition:** With edge probability 1/2 and the 'right' number of vertices (2^d), a random graph should be dense enough to contain a hypercube.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-578-6",
+    "proofId": "erdos-578",
+    "range": { "startLine": 142, "endLine": 161 },
+    "type": "axiom",
+    "title": "Riordan's Theorem (2000)",
+    "content": "**Riordan's Solution:**\n\nFor any edge probability p > 1/4, the random graph G(2^d, p) almost surely contains a copy of Q_d.\n\n**Key Point:** This is STRONGER than the original conjecture!\n- Original: p = 1/2\n- Riordan: p > 1/4 suffices\n\nThe threshold 1/4 is essentially optimal.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-578-7",
+    "proofId": "erdos-578",
+    "range": { "startLine": 166, "endLine": 178 },
+    "type": "theorem",
+    "title": "Normal Distribution of Copies",
+    "content": "**Distributional Result:**\n\nRiordan didn't just prove existence - he showed the NUMBER of Q_d copies is asymptotically normally distributed.\n\n**Significance:** This gives much more precise information than just 'at least one copy exists'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-578-8",
+    "proofId": "erdos-578",
+    "range": { "startLine": 183, "endLine": 198 },
+    "type": "theorem",
+    "title": "Threshold Optimality",
+    "content": "**Why p = 1/4 is Special:**\n\nThe threshold p = 1/4 is essentially optimal:\n- For p > 1/4: Q_d appears almost surely\n- For p < 1/4: Q_d likely does NOT appear\n\n**Heuristic:** The expected number of Q_d copies changes dramatically around p = 1/4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-578-9",
+    "proofId": "erdos-578",
+    "range": { "startLine": 203, "endLine": 227 },
+    "type": "definition",
+    "title": "Hypercube Properties",
+    "content": "**Structural Properties of Q_d:**\n\n- **Bipartite:** Vertices split by Hamming weight parity\n- **d-Regular:** Every vertex has exactly d neighbors\n- **Automorphisms:** |Aut(Q_d)| = d! · 2^d\n  - d! from permuting coordinates\n  - 2^d from flipping individual coordinates",
+    "significance": "key"
+  },
+  {
+    "id": "ann-578-10",
+    "proofId": "erdos-578",
+    "range": { "startLine": 262, "endLine": 289 },
+    "type": "theorem",
+    "title": "Summary: SOLVED",
+    "content": "**Erdős Problem #578:**\n\n**STATUS:** SOLVED (YES)\n\n**Conjecture:** G(2^d, 1/2) contains Q_d almost surely\n\n**Solution:** Riordan (2000) proved this for any p > 1/4\n\n**Extra:** Number of copies is normally distributed\n\n**Key Insight:** Random graphs with moderate edge density almost surely contain hypercubes. The threshold p = 1/4 is surprisingly low.",
+    "significance": "critical"
+  }
+]
