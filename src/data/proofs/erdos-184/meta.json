@@ -1,33 +1,108 @@
 {
   "id": "erdos-184",
-  "title": "Erdős Problem #184",
+  "title": "Graph Decomposition into Cycles and Edges",
   "slug": "erdos-184",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAny graph on ... vertices can be decomposed into ... many edge-disjoint cycles and edges.\n\n\n\nConjectured by Erds and Gallai, ...",
+  "description": "The Erdős-Gallai Conjecture: Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. OPEN. Best known: O(n log* n) by Bucić-Montgomery (2022). Lower bound: (1+c)n from K_{3,n-3}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Gallai (conjecture), Bucić-Montgomery (2022), Conlon-Fox-Sudakov (2014)",
     "sourceUrl": "https://erdosproblems.com/184",
-    "date": "",
-    "status": "pending",
+    "date": "2022",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos184Problem.lean",
-    "tags": [
-      "erdos"
-    ],
+    "tags": ["erdos", "graph-theory", "cycles", "decomposition", "iterated-logarithm"],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 184,
     "erdosUrl": "https://erdosproblems.com/184",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Simple graphs in Mathlib", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "SimpleGraph.Subgraph", "description": "Subgraph theory", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
+      { "theorem": "Sym2", "description": "Unordered pairs for edges", "module": "Mathlib.Data.Sym.Sym2" },
+      { "theorem": "Real.log", "description": "Logarithm for bounds", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of cycle and edge decomposition",
+      "Definition of decomposition number",
+      "Statement of Erdős-Gallai conjecture",
+      "Axiomatization of Bucić-Montgomery O(n log* n) bound",
+      "Formalization of iterated logarithm log*",
+      "Dense graph result (Conlon-Fox-Sudakov)",
+      "Lower bound from bipartite graph K_{3,n-3}"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #184 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAny graph on $n$ vertices can be decomposed into $O(n)$ many edge-disjoint cycles and edges.\n\n\n\nConjectured by Erd\\H{o}s and Gallai, who proved that $O(n\\log n)$ many cycles and edges suffices. The graph $K_{3,n-3}$ shows that at least $(1+c)n$ many cycles and edges are required, for some constant $c>0$. In \\cite{Er71} Erd\\H{o}s suggests that only $n-1$ many cycles and edges are required if we do not require them to be edge-disjoint.\n\nThe best bound available is due to Buci\\'{c} and Montgomery \\cite{BM22}, who prove that $O(n\\log^*n)$ many cycles and edges suffice, where $\\log^*$ is the iterated logarithm function.\n\nConlon, Fox, and Sudakov \\cite{CFS14} proved that $O_\\epsilon(n)$ cycles and edges suffice if $G$ has minimum degree at least $\\epsilon n$, for any $\\epsilon>0$.\n\nSee also [583] for an analogous problem decomposing into paths, and [1017] for decomposing into complete graphs.\n\n\n\n\nReferences\n\n\n[BM22] Buci\\'C, M. and Montgomery, R., Towards the Erd\\H{o}s-Gallai Cycle Decomposition Conjecture. arXiv:2211.07689 (2022).\n\n[CFS14] Conlon, David and Fox, Jacob and Sudakov, Benny, Cycle packing. Random Structures Algorithms (2014), 608-626.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Gallai conjectured in 1966 that O(n) cycles and edges suffice to decompose any graph. They proved O(n log n). Progress continued with Conlon-Fox-Sudakov (2014) solving the dense case and Bucić-Montgomery (2022) achieving O(n log* n), tantalizingly close to linear.",
+    "problemStatement": "Any graph on n vertices can be decomposed into O(n) many edge-disjoint cycles and edges.",
+    "proofStrategy": "The formalization defines cycles, edges, and valid decompositions. Key bounds are axiomatized: original O(n log n), current best O(n log* n), the (1+c)n lower bound, and the dense graph result.",
+    "keyInsights": [
+      "O(n) is conjectured but O(n log* n) is the best known",
+      "log* n grows incredibly slowly: log*(10^{10^{10}}) ≈ 5",
+      "K_{3,n-3} shows the constant must be > 1",
+      "Dense graphs (min degree ≥ εn) satisfy O(n)",
+      "Non-disjoint case: n-1 pieces suffice"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 81,
+      "summary": "Graph, cycle, and edge definitions"
+    },
+    {
+      "id": "decomposition",
+      "title": "Decomposition",
+      "startLine": 82,
+      "endLine": 121,
+      "summary": "Decomposition pieces, validity, and decomposition number"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Gallai Conjecture",
+      "startLine": 123,
+      "endLine": 133,
+      "summary": "Statement of the O(n) conjecture"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 135,
+      "endLine": 174,
+      "summary": "O(n log n), O(n log* n), and lower bound"
+    },
+    {
+      "id": "dense-graphs",
+      "title": "Dense Graph Result",
+      "startLine": 176,
+      "endLine": 194,
+      "summary": "Conlon-Fox-Sudakov: O(n) for minimum degree ≥ εn"
+    },
+    {
+      "id": "non-disjoint",
+      "title": "Non-Disjoint Case",
+      "startLine": 196,
+      "endLine": 220,
+      "summary": "n-1 pieces suffice without edge-disjointness"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 266,
+      "endLine": 316,
+      "summary": "Main theorem and key insight about log*"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #184 remains OPEN. The Erdős-Gallai conjecture that O(n) cycles and edges suffice is unresolved. Best known: O(n log* n) by Bucić-Montgomery (2022), which is 'almost' linear since log* grows incredibly slowly.",
+    "implications": "The gap between (1+c)n and O(n log* n) is tiny but closing it is surprisingly hard. The iterated logarithm log* is so slow that O(n log* n) is essentially linear for all practical purposes.",
+    "openQuestions": [
+      "Does O(n) suffice for all graphs?",
+      "Can the Bucić-Montgomery bound be improved to O(n)?",
+      "What is the exact constant in the lower bound (1+c)n?"
+    ]
   }
 }
