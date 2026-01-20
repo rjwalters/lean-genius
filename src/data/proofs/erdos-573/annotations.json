@@ -1,1 +1,96 @@
-[]
+[
+  {
+    "id": "ann-573-1",
+    "proofId": "erdos-573",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #573: Extremal Numbers for {C₃, C₄}-free Graphs**\n\n**Question:** Is ex(n; {C₃, C₄}) ~ (n/2)^(3/2)?\n\n**Status: OPEN**\n\nThe extremal function ex(n; F) counts the maximum edges in an n-vertex graph avoiding all subgraphs in F. This problem asks about forbidding both triangles and 4-cycles.",
+    "mathContext": "Part of Turán-type extremal graph theory, connecting to the celebrated Kővári-Sós-Turán theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal graph theory", "Turán number", "Kővári-Sós-Turán"]
+  },
+  {
+    "id": "ann-573-2",
+    "proofId": "erdos-573",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "definition",
+    "title": "Triangle-Free Predicate",
+    "content": "**isTriangleFree G:**\n\nA graph G is triangle-free if no three vertices form a complete subgraph K₃.\n\nFormally: ∀ a b c, ¬(G.Adj a b ∧ G.Adj b c ∧ G.Adj c a).\n\nTriangle-free graphs include all bipartite graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-573-3",
+    "proofId": "erdos-573",
+    "range": { "startLine": 65, "endLine": 71 },
+    "type": "definition",
+    "title": "C₄-Free Predicate",
+    "content": "**isC4Free G:**\n\nA graph G is C₄-free if it contains no 4-cycle.\n\nFormally: for any four distinct vertices a, b, c, d, we don't have a-b-c-d-a forming a cycle.\n\nC₄-free graphs are central to the Kővári-Sós-Turán theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-573-4",
+    "proofId": "erdos-573",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "definition",
+    "title": "Extremal Function ex(n; {C₃, C₄})",
+    "content": "**exC3C4 n:**\n\nThe maximum number of edges in an n-vertex graph that is both triangle-free and C₄-free.\n\nThis is defined as a supremum over all valid graphs.",
+    "mathContext": "The extremal function is a fundamental object in Turán-type problems.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-573-5",
+    "proofId": "erdos-573",
+    "range": { "startLine": 122, "endLine": 129 },
+    "type": "axiom",
+    "title": "Kővári-Sós-Turán Theorem",
+    "content": "**kovari_sos_turan:**\n\nex(n; C₄) ≤ (1/2)n^(3/2) + (1/4)n\n\nThis 1954 theorem gives the asymptotically tight upper bound for C₄-free graphs. The matching lower bound comes from projective plane constructions.",
+    "mathContext": "One of the cornerstones of extremal graph theory, proving ex(n; K_{s,t}) = O(n^{2-1/s}).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-573-6",
+    "proofId": "erdos-573",
+    "range": { "startLine": 156, "endLine": 165 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**erdos573Conjecture:**\n\nex(n; {C₃, C₄}) ~ (n/2)^(3/2) as n → ∞.\n\nThis is formalized as: for all ε > 0, there exists N such that for n ≥ N,\n|ex(n; {C₃, C₄}) - (n/2)^(3/2)| ≤ ε · n^(3/2).\n\nThe problem asks if this conjecture is true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-573-7",
+    "proofId": "erdos-573",
+    "range": { "startLine": 183, "endLine": 193 },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "**exC3C4_upper_bound:**\n\nex(n; {C₃, C₄}) ≤ (1/2)n^(3/2) + (1/4)n.\n\nThis follows from:\n1. ex(n; {C₃, C₄}) ≤ ex(n; C₄) (more restrictions = fewer edges)\n2. ex(n; C₄) ≤ (1/2)n^(3/2) + O(n) by KST",
+    "significance": "key"
+  },
+  {
+    "id": "ann-573-8",
+    "proofId": "erdos-573",
+    "range": { "startLine": 195, "endLine": 201 },
+    "type": "axiom",
+    "title": "Lower Bound",
+    "content": "**exC3C4_lower_bound:**\n\nThere exists c > 0 such that ex(n; {C₃, C₄}) ≥ c · n^(3/2).\n\nConstructions using incidence graphs of projective planes achieve near-optimal bounds. These are bipartite (hence triangle-free) and C₄-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-573-9",
+    "proofId": "erdos-573",
+    "range": { "startLine": 249, "endLine": 269 },
+    "type": "concept",
+    "title": "The Asymptotic Gap",
+    "content": "**Why This Matters:**\n\n- KST gives ex(n; C₄) ~ (1/2)n^(3/2)\n- The conjecture claims ex(n; {C₃, C₄}) ~ (n/2)^(3/2) = (1/2√2)n^(3/2)\n- The gap is a factor of √2 ≈ 1.41\n\nThe question is whether adding the triangle-free constraint reduces the leading constant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-573-10",
+    "proofId": "erdos-573",
+    "range": { "startLine": 275, "endLine": 315 },
+    "type": "theorem",
+    "title": "Summary: OPEN",
+    "content": "**erdos_573 and erdos_573_summary:**\n\n**STATUS: OPEN**\n\nThe problem cannot be resolved by finite computation - it concerns asymptotic behavior.\n\n**What we know:**\n- Upper bound from KST\n- Lower bound from constructions\n- The exact constant remains unknown",
+    "significance": "critical"
+  }
+]
