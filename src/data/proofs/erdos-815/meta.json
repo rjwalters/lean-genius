@@ -36,7 +36,64 @@
       "The number 23 is the smallest odd k where their construction works"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "minDegree, IsDegree3Critical, vertexCount, edgeCount",
+      "startLine": 52,
+      "endLine": 75
+    },
+    {
+      "id": "cycles",
+      "title": "Cycles",
+      "summary": "HasCycleOfLength, ContainsCk",
+      "startLine": 76,
+      "endLine": 86
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Hajnal Conjecture",
+      "summary": "ErdosHajnalConjecture definition",
+      "startLine": 87,
+      "endLine": 98
+    },
+    {
+      "id": "positive-results",
+      "title": "Known Positive Results",
+      "summary": "efgs_short_cycles, efgs_long_cycle, efgs_upper_bound, erdos_hajnal_small_k",
+      "startLine": 99,
+      "endLine": 137
+    },
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "summary": "narins_pokrovskiy_szabo, erdos_815_disproved",
+      "startLine": 138,
+      "endLine": 165
+    },
+    {
+      "id": "open-problems",
+      "title": "What Remains Open",
+      "summary": "evenKConjecture, even_k_open",
+      "startLine": 166,
+      "endLine": 181
+    },
+    {
+      "id": "explanation",
+      "title": "Why Degree 3 Critical?",
+      "summary": "critical_explanation, construction_idea",
+      "startLine": 182,
+      "endLine": 220
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_815_summary",
+      "startLine": 221,
+      "endLine": 250
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #815 is DISPROVED. The Erdős-Hajnal conjecture that degree 3 critical graphs must contain all cycle lengths k ≥ 3 is false. Narins, Pokrovskiy, and Szabó constructed arbitrarily large such graphs with no C_23. However, such graphs do always contain C_3, C_4, and C_5.",
     "implications": "The result shows that while degree 3 critical graphs have rich local cycle structure (short cycles always exist), global constraints (avoiding a specific longer cycle) can be achieved through careful construction. This separates the 'short cycle' and 'arbitrary cycle' behaviors.",

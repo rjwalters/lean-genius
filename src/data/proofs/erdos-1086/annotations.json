@@ -1,1 +1,256 @@
-[]
+[
+  {
+    "id": "ann-1086-header",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1086** asks: given n points in ℝ², what is the maximum number of triangles that can all have the same area? Best bounds: n² log log n ≪ g(n) ≪ n^{20/9}.",
+    "mathContext": "This is a fundamental problem in combinatorial geometry, connecting to incidence theorems and extremal set theory.",
+    "significance": "critical",
+    "relatedConcepts": ["incidence-geometry", "Szemerédi-Trotter", "extremal-combinatorics"]
+  },
+  {
+    "id": "ann-1086-point2d",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Point2D",
+    "content": "A point in the Euclidean plane ℝ², represented as EuclideanSpace ℝ (Fin 2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-coords",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 47, "endLine": 51 },
+    "type": "definition",
+    "title": "Coordinate Extraction",
+    "content": "Helper functions to extract x and y coordinates from a Point2D.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-trianglearea",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "definition",
+    "title": "triangleArea",
+    "content": "Area of triangle ABC using the shoelace formula: Area = ½|x_A(y_B - y_C) + x_B(y_C - y_A) + x_C(y_A - y_B)|",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1086-triangle",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 58, "endLine": 69 },
+    "type": "definition",
+    "title": "Triangle Structure",
+    "content": "A triangle as three distinct points A, B, C with distinctness proofs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-counttriangles",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "definition",
+    "title": "countTrianglesWithArea",
+    "content": "Count of unordered triples {A, B, C} ⊆ S with triangleArea = α.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-maxtriangles",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "definition",
+    "title": "maxTrianglesWithSameArea",
+    "content": "Maximum over all areas α of countTrianglesWithArea S α.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-g",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "g(n)",
+    "content": "The function g(n): supremum over all n-point sets S of maxTrianglesWithSameArea(S). This is what the problem asks us to bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1086-lower",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "axiom",
+    "title": "Lower Bound",
+    "content": "n² log log n ≪ g(n) — Erdős-Purdy (1971). Achieved by grid points.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1086-upper1971",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "axiom",
+    "title": "Original Upper Bound",
+    "content": "g(n) ≪ n^{5/2} — Erdős-Purdy (1971). First upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-upper2017",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "axiom",
+    "title": "Best Upper Bound",
+    "content": "g(n) ≪ n^{20/9} — Raz-Sharir (2017). Current best upper bound (≈ n^{2.222}).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1086-bestexp",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 109, "endLine": 110 },
+    "type": "definition",
+    "title": "Best Exponent",
+    "content": "20/9 ≈ 2.222 is the exponent in the current best upper bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-conjecture",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "axiom",
+    "title": "Erdős-Purdy Conjecture",
+    "content": "Conjectured: g(n) = Θ(n² polylog(n)), closer to the lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-gdim",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 123, "endLine": 126 },
+    "type": "definition",
+    "title": "g_dim",
+    "content": "Generalization g_d^r(n) for r-simplices in ℝ^d.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-g2",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 128, "endLine": 131 },
+    "type": "theorem",
+    "title": "g2_is_g",
+    "content": "g_2^2(n) = g(n) — the original problem is the 2D triangle case.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-g32",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 133, "endLine": 139 },
+    "type": "axiom",
+    "title": "3D Bounds",
+    "content": "g_3^2(n) ≪ n^{8/3} (Erdős-Purdy), improved to n^{2.4286} (DST 2009).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-g62",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 141, "endLine": 143 },
+    "type": "axiom",
+    "title": "6D Lower Bound",
+    "content": "g_6^2(n) ≫ n³ — Erdős-Purdy (1971).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-purdy",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "axiom",
+    "title": "Purdy Bound",
+    "content": "g_4^2(n) ≤ g_5^2(n) ≪ n^{3-c} for some c > 0 — Purdy (1974).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-oppenheim",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 149, "endLine": 151 },
+    "type": "axiom",
+    "title": "Oppenheim-Lenz",
+    "content": "g_{2k+2}^k(n) ≥ cn^{k+1} — construction by Oppenheim using Lenz.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-highdimconj",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 153, "endLine": 156 },
+    "type": "axiom",
+    "title": "High-Dim Conjecture",
+    "content": "Conjectured: Oppenheim-Lenz is optimal, g_{2k+2}^k(n) = Θ(n^{k+1}).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-threepoints",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 162, "endLine": 165 },
+    "type": "theorem",
+    "title": "Three Points",
+    "content": "g(3) = 1 — three points form exactly one triangle.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-collinear",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 167, "endLine": 170 },
+    "type": "axiom",
+    "title": "Collinear Degenerate",
+    "content": "Collinear points form only degenerate (area 0) triangles.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1086-grid",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 172, "endLine": 174 },
+    "type": "axiom",
+    "title": "Grid Lower Bound",
+    "content": "A √n × √n grid achieves g(n) ≥ n²/8.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-incidence",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 180, "endLine": 184 },
+    "type": "axiom",
+    "title": "Incidence Reduction",
+    "content": "The problem reduces to counting point-curve incidences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-szemeredi",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 186, "endLine": 190 },
+    "type": "axiom",
+    "title": "Szemerédi-Trotter",
+    "content": "Upper bounds use the Szemerédi-Trotter incidence theorem and generalizations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1086-statement",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 196, "endLine": 204 },
+    "type": "theorem",
+    "title": "erdos_1086_statement",
+    "content": "Main theorem: n² log log n ≪ g(n) ≪ n^{20/9} for n ≥ 16.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1086-open",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 206, "endLine": 210 },
+    "type": "theorem",
+    "title": "erdos_1086_open",
+    "content": "The problem is OPEN. The gap between n² log log n and n^{20/9} remains.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1086-summary",
+    "proofId": "erdos-1086",
+    "range": { "startLine": 212, "endLine": 218 },
+    "type": "theorem",
+    "title": "erdos_1086_summary",
+    "content": "Summary: 1971 bounds, 2017 improvement, higher-dim generalizations, Szemerédi-Trotter connection.",
+    "significance": "critical"
+  }
+]

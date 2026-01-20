@@ -1,33 +1,140 @@
 {
   "id": "erdos-964",
-  "title": "Erdős Problem #964",
+  "title": "Erdős Problem #964: Divisor Function Ratios",
   "slug": "erdos-964",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of divisors of .... Is the sequence\\[{\\tau(n)}\\]everywhere dense in ...?\n\n\n\nThis follows easily from...",
+  "description": "Is {τ(n+1)/τ(n) : n ≥ 1} dense in (0, ∞)? YES - Eberhard (2025) proved all positive rationals appear as such ratios.",
   "meta": {
-    "author": "Unknown",
+    "author": "Eberhard (2025)",
     "sourceUrl": "https://erdosproblems.com/964",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos964Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "density",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 6,
     "erdosNumber": 964,
     "erdosUrl": "https://erdosproblems.com/964",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Set.Icc",
+        "description": "Closed intervals",
+        "module": "Mathlib.Order.Interval.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "tau definition via Nat.divisors.card",
+      "tau_one, tau_prime, tau_prime_power theorems",
+      "tau_multiplicative theorem",
+      "divisorRatio definition τ(n+1)/τ(n)",
+      "ratioSet definition",
+      "isDenseInPositives definition",
+      "ErdosConjecture964 statement",
+      "eberhard_theorem axiom",
+      "rationals_in_ratio_set theorem",
+      "erdos_964_true theorem",
+      "AllRationalsAppear definition",
+      "PrimeKTupleConjecture definition"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #964 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\tau(n)$ count the number of divisors of $n$. Is the sequence\\[\\frac{\\tau(n+1)}{\\tau(n)}\\]everywhere dense in $(0,\\infty)$?\n\n\n\nThis follows easily from the generalised prime $k$-tuple conjecture. Eberhard \\cite{Eb25} has proved this unconditionally, and in fact proved that all positive rationals can be written as such a ratio.\n\nSee also [946].\n\n\n\n\nReferences\n\n\n[Eb25] S. Eberhard, Ratios of consecutive values of the divisor function. arXiv:2505.00727 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks whether consecutive divisor function values can have any prescribed ratio. The prime k-tuple conjecture would imply YES, but Eberhard (2025) proved it unconditionally. In fact, Eberhard proved the stronger result that ALL positive rationals appear as τ(n+1)/τ(n).",
+    "problemStatement": "**Question:** Is {τ(n+1)/τ(n) : n ≥ 1} everywhere dense in (0, ∞)?\n\n**Answer: YES** (Eberhard 2025)\n\nEven stronger: ALL positive rationals p/q appear as τ(n+1)/τ(n).",
+    "proofStrategy": "We formalize:\n\n1. **Divisor function:** τ(n) = number of divisors\n2. **Divisor ratio:** divisorRatio(n) = τ(n+1)/τ(n)\n3. **Density:** isDenseInPositives via ε-δ\n4. **Eberhard's theorem:** All rationals appear\n5. **Main result:** Density follows from rationals being dense",
+    "keyInsights": [
+      "**τ(n) is multiplicative:** τ(mn) = τ(m)τ(n) for coprime m, n",
+      "**Ratios vary wildly:** τ(n+1)/τ(n) can be very small or very large",
+      "**Unconditional proof:** Eberhard proved this without prime k-tuple conjecture",
+      "**All rationals appear:** The stronger result that every p/q is achieved",
+      "**Related to #946:** Part of a family of divisor function problems"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "divisor-function",
+      "title": "The Divisor Function",
+      "summary": "tau definition and basic properties",
+      "startLine": 40,
+      "endLine": 71
+    },
+    {
+      "id": "ratios",
+      "title": "Ratios of Consecutive Values",
+      "summary": "divisorRatio, ratioSet definitions",
+      "startLine": 73,
+      "endLine": 89
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "isDenseInPositives, ErdosConjecture964",
+      "startLine": 91,
+      "endLine": 107
+    },
+    {
+      "id": "eberhard",
+      "title": "Eberhard's Theorem",
+      "summary": "Main theorem and proof",
+      "startLine": 109,
+      "endLine": 153
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Small examples and special cases",
+      "startLine": 155,
+      "endLine": 195
+    },
+    {
+      "id": "ktuple",
+      "title": "Prime k-Tuple Connection",
+      "summary": "Conditional result",
+      "startLine": 197,
+      "endLine": 223
+    },
+    {
+      "id": "stronger",
+      "title": "Stronger Results",
+      "summary": "AllRationalsAppear",
+      "startLine": 225,
+      "endLine": 252
+    },
+    {
+      "id": "statistics",
+      "title": "Statistics",
+      "summary": "averageRatio, distribution",
+      "startLine": 254,
+      "endLine": 281
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_964, erdos_964_answer",
+      "startLine": 283,
+      "endLine": 311
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #964 asked whether divisor function ratios τ(n+1)/τ(n) are dense in (0, ∞). Eberhard (2025) proved YES unconditionally, and even showed that ALL positive rationals appear as such ratios.",
+    "implications": "**Number Theory Connections:**\n\n1. **Divisor function structure:** The divisor function has rich multiplicative properties.\n\n2. **Prime k-tuple conjecture:** Would imply the result, but Eberhard found an unconditional proof.\n\n3. **Consecutive integers:** Their factorizations are 'independent' enough for density.\n\n4. **Arithmetic sequences:** Related questions about divisors in progressions.",
+    "openQuestions": [
+      "What is the smallest n achieving τ(n+1)/τ(n) = p/q?",
+      "Distribution of ratios: what is the 'typical' ratio?",
+      "Higher consecutive ratios: τ(n+k)/τ(n)?",
+      "Analogues for other arithmetic functions"
+    ]
   }
 }

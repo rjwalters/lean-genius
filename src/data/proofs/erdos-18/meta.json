@@ -2,12 +2,12 @@
   "id": "erdos-18",
   "title": "Erdős Problem #18: Practical Numbers",
   "slug": "erdos-18",
-  "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m.",
+  "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
   "meta": {
-    "author": "Srinivasan, Stewart, Sierpiński, Vose",
+    "author": "Srinivasan (1948), Stewart-Sierpiński (1954-55), Vose (1985)",
     "sourceUrl": "https://erdosproblems.com/18",
     "date": "1948",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos18Problem.lean",
     "tags": [
       "erdos",
@@ -17,34 +17,192 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 18,
     "erdosUrl": "https://erdosproblems.com/18",
     "erdosProblemStatus": "open",
-    "erdosPrizeValue": "$250"
-  },
-  "overview": {
-    "historicalContext": "Practical numbers were introduced by Srinivasan (1948). Stewart and Sierpiński (1954-55) gave a complete characterization via prime factorization. Erdős showed h(n!) < n, and Vose (1985) proved infinitely many m have h(m) = O(√log m). The question of whether h(n!) is subpolynomial remains open.",
-    "problemStatement": "A positive integer m is practical if every integer 1 ≤ k < m can be expressed as a sum of distinct divisors of m. Let h(m) be the minimum number of divisors needed. Is h(n!) < n^ε for all ε > 0 (subpolynomial)? Or even h(n!) < (log n)^O(1) (polylogarithmic)?",
-    "proofStrategy": "The formalization defines practical numbers, proves small cases (1, 2 verified), and axiomatizes key theorems: Stewart-Sierpiński characterization, Erdős's bound h(n!) < n, Vose's polylog bound for special m. Also includes practical Goldbach (proven!) and practical twins (infinite!).",
-    "keyInsights": [
-      "Practical numbers were used by Fibonacci (1202) for Egyptian fractions",
-      "All factorials and primorials are practical (closure under multiplication)",
-      "Practical Goldbach is PROVEN: every even n is sum of two practical numbers",
-      "Practical twin conjecture is PROVEN: infinitely many (p, p+2) both practical",
-      "Density of practical numbers is 0, but computing h(m) is hard",
-      "Gap between known bounds: h(n!) < n (Erdős) vs h(m) = O(√log m) for some m (Vose)"
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits of functions",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsPractical definition: m >= 1 and every k < m is sum of distinct divisors",
+      "IsRepresentable definition for divisor subset sums",
+      "one_practical theorem: 1 is practical (verified)",
+      "two_practical theorem: 2 is practical (verified)",
+      "powers_of_two_practical axiom: all 2^n are practical",
+      "three_not_practical, five_not_practical axioms",
+      "stewart_sierpinski_characterization axiom (simplified)",
+      "h(m) function definition for minimum divisors needed",
+      "erdos_factorial_bound axiom: h(n!) < n",
+      "vose_bound axiom: infinitely many m with h(m) <= C*sqrt(log m)",
+      "conjecture_part1: h(m) < (log log m)^O(1) for infinitely many m?",
+      "conjecture_part2_weak: h(n!) < n^o(1)?",
+      "conjecture_part2_strong: h(n!) < (log n)^O(1)?",
+      "practical_density_zero axiom: density of practical numbers is 0",
+      "practical_count_asymptotic axiom: count <= Cx/(log x)^delta",
+      "factorials_practical axiom: all n! are practical",
+      "primorials_practical axiom: all primorials are practical",
+      "practical_goldbach axiom: every even n is sum of two practical numbers",
+      "practical_twins_infinite axiom: infinitely many (p, p+2) both practical",
+      "fibonacci_connection axiom: link to Egyptian fractions",
+      "knownPracticalNumbers: first 17 practical numbers (OEIS A005153)"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "Practical numbers were introduced by Srinivasan in 1948. The name reflects their 'practical' use: if m is practical, any weight k < m can be measured using denominations 1, d_2, d_3, ... where each d_i divides m. Stewart (1954) and Sierpinski (1955) independently characterized practical numbers via prime factorization: m is practical iff m=1 or m=2^a * p_2^{a_2} * ... * p_k^{a_k} where each prime p_i <= sigma(m/p_i^{a_i})+1.\n\nErdos studied practical numbers extensively, proving their density is 0 and showing h(n!) < n. Vose (1985) improved this for special numbers, showing infinitely many m have h(m) = O(sqrt(log m)). The main conjecture asks whether h(n!) can be subpolynomial in n.",
+    "problemStatement": "**Definition:** A positive integer m is **practical** if every integer 1 <= k < m can be expressed as a sum of distinct divisors of m.\n\n**Function h(m):** The minimum number of divisors of m needed so that every k < m is representable.\n\n**Questions:**\n1. Are there infinitely many practical m where h(m) < (log log m)^{O(1)}?\n2. Is h(n!) < n^{o(1)}? (Prize: $250)\n3. Even stronger: is h(n!) < (log n)^{O(1)}?",
+    "proofStrategy": "We formalize:\n\n1. **Core definitions:** IsPractical, IsRepresentable, h(m), PracticalNumbers\n2. **Small examples:** Prove 1, 2 are practical; axiomatize 4, 6, 12, powers of 2\n3. **Non-examples:** 3 and 5 are not practical\n4. **Characterization:** Stewart-Sierpinski theorem (simplified)\n5. **Bounds:** Erdos's h(n!) < n, Vose's h(m) <= C*sqrt(log m)\n6. **Main conjectures:** Both weak and strong forms\n7. **Related results:** Practical Goldbach, practical twins, density bounds\n8. **Egyptian fractions:** Fibonacci's historical connection",
+    "keyInsights": [
+      "**Practical = divisor completeness:** Every k < m is a subset sum of divisors of m",
+      "**Powers of 2 are practical:** Binary representation using {1, 2, 4, ..., 2^n}",
+      "**Stewart-Sierpinski criterion:** Efficient test via prime factorization and sigma function",
+      "**Practical Goldbach (PROVEN):** Every even n is sum of two practical numbers",
+      "**Practical twins (PROVEN):** Unlike twin primes, infinitely many (p, p+2) both practical",
+      "**The h(m) question:** How few divisors suffice? Known: h(n!) < n (Erdos), h(m) <= C*sqrt(log m) for some m (Vose)",
+      "**Why hard:** Finding minimum representing subset is computationally difficult; factorials have special structure"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Divisor Operations",
+      "summary": "divisors, divisorSubsetSum, IsRepresentable",
+      "startLine": 52,
+      "endLine": 63
+    },
+    {
+      "id": "practical",
+      "title": "Practical Numbers Definition",
+      "summary": "IsPractical, PracticalNumbers",
+      "startLine": 65,
+      "endLine": 77
+    },
+    {
+      "id": "examples",
+      "title": "Basic Examples",
+      "summary": "1, 2 practical (proved); 4, 6, 12, powers of 2 (axioms)",
+      "startLine": 79,
+      "endLine": 112
+    },
+    {
+      "id": "non-practical",
+      "title": "Non-Practical Numbers",
+      "summary": "3 and 5 are not practical",
+      "startLine": 114,
+      "endLine": 120
+    },
+    {
+      "id": "characterization",
+      "title": "Stewart-Sierpinski Characterization",
+      "summary": "Efficient test via prime factorization",
+      "startLine": 122,
+      "endLine": 140
+    },
+    {
+      "id": "h-function",
+      "title": "The h(m) Function",
+      "summary": "Minimum divisors needed for representation",
+      "startLine": 142,
+      "endLine": 154
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds on h(m)",
+      "summary": "Erdos h(n!) < n, Vose h(m) <= C*sqrt(log m)",
+      "startLine": 156,
+      "endLine": 175
+    },
+    {
+      "id": "conjectures",
+      "title": "The Main Conjectures",
+      "summary": "conjecture_part1, conjecture_part2_weak, conjecture_part2_strong",
+      "startLine": 177,
+      "endLine": 204
+    },
+    {
+      "id": "density",
+      "title": "Density of Practical Numbers",
+      "summary": "practicalCount, density zero, asymptotic bound",
+      "startLine": 206,
+      "endLine": 229
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Practical Numbers",
+      "summary": "Closure, factorials, primorials practical",
+      "startLine": 231,
+      "endLine": 242
+    },
+    {
+      "id": "goldbach",
+      "title": "Goldbach-Type Results",
+      "summary": "Practical Goldbach (proven!), practical twins (infinite!)",
+      "startLine": 244,
+      "endLine": 262
+    },
+    {
+      "id": "egyptian",
+      "title": "Connection to Egyptian Fractions",
+      "summary": "Fibonacci's 1202 use of practical numbers",
+      "startLine": 264,
+      "endLine": 275
+    },
+    {
+      "id": "oeis",
+      "title": "The OEIS Sequence",
+      "summary": "First 17 practical numbers (A005153)",
+      "startLine": 277,
+      "endLine": 284
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Why Hard",
+      "summary": "Open problem, $250 prize, difficulty explanation",
+      "startLine": 286,
+      "endLine": 336
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #18 remains OPEN with a $250 prize. The formalization covers practical number theory including the Stewart-Sierpiński characterization, Erdős's bound h(n!) < n, Vose's polylog construction, and proven analogs of Goldbach and twin prime conjectures for practical numbers.",
-    "implications": "Resolving whether h(n!) is subpolynomial requires understanding the fine structure of factorial divisors. The problem connects number theory, combinatorial optimization (subset sums), and extremal set theory.",
+    "summary": "Erdos Problem #18 remains OPEN with a $250 prize. The formalization covers the complete theory of practical numbers: definition, characterization via Stewart-Sierpinski, density bounds, and the main conjectures about h(n!). Notably, practical numbers satisfy proven analogues of Goldbach's conjecture and the twin prime conjecture.",
+    "implications": "**Connections:**\n\n1. **Subset sum problems:** h(m) relates to finding minimum generating sets for [1, m-1]\n\n2. **Divisor structure:** Understanding h(n!) requires deep knowledge of factorial divisors\n\n3. **Egyptian fractions:** Practical numbers connect to ancient fractional representation\n\n4. **Additive combinatorics:** Practical Goldbach and twins show divisor-based numbers are well-distributed",
     "openQuestions": [
-      "Is h(n!) < n^o(1) (subpolynomial)?",
-      "Is h(n!) < (log n)^O(1) (polylogarithmic)?",
+      "Is h(n!) < n^o(1)? (Main conjecture, $250 prize)",
+      "Is h(n!) < (log n)^O(1)? (Stronger form)",
       "Are there infinitely many m with h(m) < (log log m)^O(1)?",
-      "What is the optimal asymptotic for practical number density?"
+      "What is the exact asymptotic density of practical numbers?",
+      "Can the Stewart-Sierpinski criterion be improved for computing h(m)?"
     ]
   }
 }

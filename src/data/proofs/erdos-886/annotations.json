@@ -1,1 +1,162 @@
-[]
+[
+  {
+    "id": "ann-e886-header",
+    "proofId": "erdos-886",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #886: Divisors Near the Square Root**\n\nRuzsa's Conjecture: For epsilon > 0, is the number of divisors of n in the interval (sqrt(n), sqrt(n) + n^{1/2-epsilon}) bounded by O_epsilon(1)?\n\n**Status:** OPEN\n\n**Attribution:** Erdos attributes this conjecture to Imre Z. Ruzsa.\n\n**Known Result:** Erdos-Rosenfeld (1997) showed infinitely many n have 4 divisors in (sqrt(n), sqrt(n) + n^{1/4}).",
+    "mathContext": "The problem asks whether divisors can 'cluster' near sqrt(n) in a shrinking window.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Distribution of divisors", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e886-divisors",
+    "proofId": "erdos-886",
+    "range": { "startLine": 42, "endLine": 52 },
+    "type": "definition",
+    "title": "Divisors of n",
+    "content": "**divisorsOf and divisorCount:**\n\n```lean\ndef divisorsOf (n : N) : Finset N := n.divisors\ndef divisorCount (n : N) : N := (divisorsOf n).card\n```\n\ndivisorsOf(n) is the set of positive divisors of n.\ndivisorCount(n) = tau(n) = |divisors| is the divisor counting function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e886-critical-interval",
+    "proofId": "erdos-886",
+    "range": { "startLine": 64, "endLine": 77 },
+    "type": "definition",
+    "title": "The Critical Interval",
+    "content": "**criticalInterval and intervalWidth:**\n\n```lean\nnoncomputable def criticalInterval (n : N) (epsilon : R) : Set R :=\n  {x : R | sqrt n < x and x < sqrt n + n^(1/2 - epsilon)}\n\nnoncomputable def intervalWidth (n : N) (epsilon : R) : R :=\n  n^(1/2 - epsilon)\n```\n\nThe interval (sqrt(n), sqrt(n) + n^{1/2-epsilon}) is where we count divisors.\n\n**Key property:** The width n^{1/2-epsilon} shrinks relative to sqrt(n) as n grows, since n^{1/2-epsilon} / sqrt(n) = n^{-epsilon} -> 0.",
+    "mathContext": "This shrinking window is what makes the problem hard - can divisors pile up?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e886-sublinear",
+    "proofId": "erdos-886",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "axiom",
+    "title": "Interval Width is Sublinear",
+    "content": "**intervalWidth_sublinear:**\n\nFor large n, the interval width is o(sqrt(n)).\n\n```lean\naxiom intervalWidth_sublinear (epsilon : R) (h : epsilon > 0) :\n    forall C > 0, exists N, forall n >= N,\n      intervalWidth n epsilon < C * sqrt n\n```\n\nThis says n^{1/2-epsilon} grows slower than sqrt(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e886-divisors-in-interval",
+    "proofId": "erdos-886",
+    "range": { "startLine": 90, "endLine": 102 },
+    "type": "definition",
+    "title": "Counting Divisors in the Interval",
+    "content": "**divisorsInInterval and divisorsNearSqrt:**\n\n```lean\ndef divisorsInInterval (n : N) (a b : R) : Finset N :=\n  (divisorsOf n).filter (fun d => a < d and d < b)\n\nnoncomputable def divisorsNearSqrt (n : N) (epsilon : R) : N :=\n  (divisorsInInterval n (sqrt n) (sqrt n + intervalWidth n epsilon)).card\n```\n\ndivisorsNearSqrt(n, epsilon) counts how many divisors of n lie in the critical interval.",
+    "mathContext": "This is the quantity Ruzsa's conjecture bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e886-conjecture",
+    "proofId": "erdos-886",
+    "range": { "startLine": 108, "endLine": 119 },
+    "type": "definition",
+    "title": "Ruzsa's Conjecture",
+    "content": "**ruzsaConjecture:**\n\nFor all epsilon > 0, there exists C_epsilon such that for all large n, divisorsNearSqrt(n, epsilon) <= C_epsilon.\n\n```lean\ndef ruzsaConjecture : Prop :=\n  forall epsilon > 0,\n    exists C > 0,\n      exists N, forall n >= N,\n        divisorsNearSqrt n epsilon <= C\n```\n\nIn asymptotic notation: divisorsNearSqrt(n, epsilon) = O_epsilon(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e886-open",
+    "proofId": "erdos-886",
+    "range": { "startLine": 121, "endLine": 125 },
+    "type": "theorem",
+    "title": "Problem Status: OPEN",
+    "content": "**erdos_886_open:**\n\n```lean\ntheorem erdos_886_open : True := trivial\n```\n\nThe conjecture remains unresolved. We don't know if divisors can cluster unboundedly near sqrt(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e886-erdos-rosenfeld",
+    "proofId": "erdos-886",
+    "range": { "startLine": 131, "endLine": 148 },
+    "type": "axiom",
+    "title": "Erdos-Rosenfeld Result",
+    "content": "**erdos_rosenfeld_four_divisors:**\n\nThere are infinitely many n with four divisors in (sqrt(n), sqrt(n) + n^{1/4}).\n\n```lean\naxiom erdos_rosenfeld_four_divisors :\n    exists S : Set N, S.Infinite and\n      forall n in S, divisorsNearSqrt n (1/4) >= 4\n```\n\n**Note:** This uses epsilon = 1/4, giving a wider interval than the conjecture. It shows divisors CAN cluster, but for a specific (larger) epsilon.",
+    "mathContext": "Published in Acta Arithmetica (1997) in the paper 'The factor-difference set of integers'.",
+    "significance": "key",
+    "relatedConcepts": ["Factor-difference set"]
+  },
+  {
+    "id": "ann-e886-factor-diff",
+    "proofId": "erdos-886",
+    "range": { "startLine": 154, "endLine": 169 },
+    "type": "definition",
+    "title": "Factor-Difference Set",
+    "content": "**factorDifferenceSet:**\n\nThe set {d - d' : d, d' | n, d > d'} of differences between divisors.\n\n```lean\ndef factorDifferenceSet (n : N) : Finset Z :=\n  (divisorsOf n).product (divisorsOf n)\n    |>.filter (fun (d, d') => d > d')\n    |>.image (fun (d, d') => d - d')\n```\n\nThis captures spacing between divisors - if divisors cluster, their differences are small.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e886-density",
+    "proofId": "erdos-886",
+    "range": { "startLine": 175, "endLine": 189 },
+    "type": "definition",
+    "title": "Local Divisor Density",
+    "content": "**localDivisorDensity and ruzsaConjectureAlt:**\n\n```lean\nnoncomputable def localDivisorDensity (n : N) (epsilon : R) : R :=\n  (divisorsNearSqrt n epsilon : R) / intervalWidth n epsilon\n\ndef ruzsaConjectureAlt : Prop :=\n  forall epsilon > 0, forall delta > 0,\n    exists N, forall n >= N,\n      localDivisorDensity n epsilon < delta\n```\n\nThe density formulation says the 'density' of divisors near sqrt(n) goes to 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e886-equivalence",
+    "proofId": "erdos-886",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "axiom",
+    "title": "Conjecture Equivalence",
+    "content": "**conjecture_equivalence:**\n\n```lean\naxiom conjecture_equivalence :\n    ruzsaConjecture <-> ruzsaConjectureAlt\n```\n\nThe bounded count and vanishing density formulations are equivalent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e886-highly-composite",
+    "proofId": "erdos-886",
+    "range": { "startLine": 201, "endLine": 207 },
+    "type": "definition",
+    "title": "Highly Composite Numbers",
+    "content": "**isHighlyComposite:**\n\n```lean\ndef isHighlyComposite (n : N) : Prop :=\n  forall m : N, m < n -> divisorCount m < divisorCount n\n```\n\nHighly composite numbers (like 12, 24, 60, 120, ...) have many divisors, but they tend to be spread out rather than clustered near sqrt(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e886-squares",
+    "proofId": "erdos-886",
+    "range": { "startLine": 209, "endLine": 218 },
+    "type": "theorem",
+    "title": "Square Numbers",
+    "content": "**square_example:**\n\nFor n = m^2, the divisor m = sqrt(n) is exactly on the boundary.\n\n```lean\ntheorem square_example (m : N) (hm : m >= 2) :\n    m | (m * m) and (m * m : R).sqrt = m\n```\n\nThe interval (m, m + m^{1-2epsilon}) then contains d if m < d < m + m^{1-2epsilon}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e886-connection-887",
+    "proofId": "erdos-886",
+    "range": { "startLine": 224, "endLine": 230 },
+    "type": "axiom",
+    "title": "Connection to Problem #887",
+    "content": "**related_to_887:**\n\nProblem #887 asks a related question about divisor distribution. The two problems are closely linked.\n\nBoth explore how divisors are distributed relative to sqrt(n).",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdos Problem #887"]
+  },
+  {
+    "id": "ann-e886-trivial-bound",
+    "proofId": "erdos-886",
+    "range": { "startLine": 236, "endLine": 243 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "**trivial_bound:**\n\nThe number of divisors in ANY interval is at most tau(n).\n\n```lean\ntheorem trivial_bound (n : N) (epsilon : R) (h : epsilon > 0) (hn : n >= 1) :\n    divisorsNearSqrt n epsilon <= divisorCount n\n```\n\nThis follows immediately from card_filter_le.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e886-divisor-bound",
+    "proofId": "erdos-886",
+    "range": { "startLine": 245, "endLine": 250 },
+    "type": "axiom",
+    "title": "Divisor Count Bound",
+    "content": "**divisor_count_bound:**\n\ntau(n) <= 2 * sqrt(n) for all n >= 1.\n\n```lean\naxiom divisor_count_bound (n : N) (hn : n >= 1) :\n    (divisorCount n : R) <= 2 * sqrt n\n```\n\nThis classical bound shows divisors can't be too numerous overall.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e886-summary",
+    "proofId": "erdos-886",
+    "range": { "startLine": 256, "endLine": 276 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_886_summary:**\n\nCombines the main results:\n\n```lean\ntheorem erdos_886_summary :\n    True and\n    (forall n epsilon, epsilon > 0 -> n >= 1 ->\n      divisorsNearSqrt n epsilon <= divisorCount n)\n```\n\n**What we know:**\n1. The problem is OPEN\n2. Trivial bound: count <= tau(n)\n3. Erdos-Rosenfeld: 4 divisors can occur for epsilon = 1/4\n\n**What's unknown:**\n- Does the bounded count hold for all epsilon > 0?",
+    "significance": "key"
+  }
+]

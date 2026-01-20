@@ -1,1 +1,283 @@
-[]
+[
+  {
+    "id": "ann-e1066-header",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1066: Independence Number of Unit Distance Graphs**\n\nFor n points in ℝ² with minimum distance 1, connected by edges at distance exactly 1, what is g(n) = guaranteed independent set size?\n\n**Status:** OPEN\n\n**Current Bounds:** (8/31)n ≤ g(n) ≤ (5/16)n",
+    "mathContext": "Connects graph theory, planar graphs, the Four Colour Theorem, and discrete geometry.",
+    "significance": "critical",
+    "relatedConcepts": ["Unit distance graphs", "Planar graphs", "Independent sets", "Four Colour Theorem", "Discrete geometry"]
+  },
+  {
+    "id": "ann-e1066-point2d",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "Point in the Plane",
+    "content": "**Point2D:**\n\nA point in ℝ², represented as EuclideanSpace ℝ (Fin 2).\n\nThis is the basic building block for unit distance graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-dist",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "**dist(p, q):**\n\nEuclidean distance √(‖p - q‖²) between two points.\n\nUsed to define both the minimum distance constraint and unit distance edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-pointset",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "definition",
+    "title": "Unit Distance Point Set",
+    "content": "**UnitDistancePointSet:**\n\nA structure containing:\n- points: Fin n → Point2D (n labeled points)\n- min_dist: ∀ i ≠ j, dist(pᵢ, pⱼ) ≥ 1\n\nThis is the input to the problem: n points in ℝ² with pairwise distance at least 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-edge",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "definition",
+    "title": "Unit Distance Edge",
+    "content": "**unitDistanceEdge(P, i, j):**\n\nPoints i and j are connected by an edge iff:\n- i ≠ j\n- dist(pᵢ, pⱼ) = 1 exactly\n\nThis defines the graph structure on our point set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-indep",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "**IsIndependentSet(P, S):**\n\nA set S of vertices is independent if no two vertices in S are at distance exactly 1.\n\nEquivalently: no edges within S in the unit distance graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-indepnum",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 78, "endLine": 83 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "**independenceNumber(P):**\n\nThe size of the largest independent set in the unit distance graph.\n\nα(G) in standard graph theory notation.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-gn",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 91, "endLine": 98 },
+    "type": "definition",
+    "title": "The Function g(n)",
+    "content": "**g(n):**\n\nThe maximum k such that EVERY unit distance point set on n points has an independent set of size at least k.\n\nThis is the infimum over all configurations - the worst-case guarantee.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-glimit",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 100, "endLine": 106 },
+    "type": "definition",
+    "title": "Asymptotic Density",
+    "content": "**gLimit:**\n\nlim_{n→∞} g(n)/n - the asymptotic density of the guaranteed independent set.\n\nCurrently known to be in [8/31, 5/16] ≈ [0.258, 0.3125].",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-planar",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 114, "endLine": 119 },
+    "type": "axiom",
+    "title": "Planarity of Unit Distance Graphs",
+    "content": "**unit_distance_planar:**\n\nUnit distance graphs with minimum distance 1 are always planar.\n\n**Why?** If two edges crossed, the four endpoints would form a configuration where some pair is forced closer than distance 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-pollack",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 121, "endLine": 127 },
+    "type": "axiom",
+    "title": "Pollack's Lower Bound (1985)",
+    "content": "**pollack_lower_bound:**\n\ng(n) ≥ n/4 for all n ≥ 1.\n\n**Proof:** The Four Colour Theorem implies planar graphs are 4-colorable, so the largest color class has size ≥ n/4, and any color class is independent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-csizmadia",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 129, "endLine": 134 },
+    "type": "axiom",
+    "title": "Csizmadia's Improvement (1998)",
+    "content": "**csizmadia_lower_bound:**\n\ng(n) ≥ (9/35)n ≈ 0.257n\n\nImproved over Pollack's n/4 = 0.25n using geometric arguments about the structure of unit distance graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-swanepoel",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 136, "endLine": 142 },
+    "type": "axiom",
+    "title": "Swanepoel's Lower Bound (2002)",
+    "content": "**swanepoel_lower_bound:**\n\ng(n) ≥ (8/31)n ≈ 0.258n\n\n**Current best lower bound!**\n\nSlightly improves Csizmadia's 9/35 ≈ 0.257.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-lowercomp",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 144, "endLine": 150 },
+    "type": "theorem",
+    "title": "Lower Bounds Comparison",
+    "content": "**lower_bounds_comparison:**\n\n1/4 < 9/35 < 8/31\n\n0.250 < 0.257 < 0.258\n\nShows the progression of lower bound improvements.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1066-erdosconj",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 158, "endLine": 162 },
+    "type": "definition",
+    "title": "Erdős's Initial Conjecture",
+    "content": "**erdos_initial_conjecture:**\n\nErdős thought g(n) = n/3 ≈ 0.333n.\n\nThis was later **disproved** by constructions showing g(n) < n/3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-chungraham",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 164, "endLine": 169 },
+    "type": "axiom",
+    "title": "Chung-Graham-Pach Upper Bound",
+    "content": "**chung_graham_pach_upper_bound:**\n\ng(n) ≤ (6/19)n ≈ 0.316n\n\nDisproved Erdős's conjecture g(n) = n/3 ≈ 0.333n by explicit construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-pachtoth",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 171, "endLine": 177 },
+    "type": "axiom",
+    "title": "Pach-Tóth Upper Bound (1996)",
+    "content": "**pach_toth_upper_bound:**\n\ng(n) ≤ (5/16)n = 0.3125n\n\n**Current best upper bound!**\n\nImproves over Chung-Graham-Pach's 6/19 ≈ 0.316.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-uppercomp",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 179, "endLine": 185 },
+    "type": "theorem",
+    "title": "Upper Bounds Comparison",
+    "content": "**upper_bounds_comparison:**\n\n5/16 < 6/19 < 1/3\n\n0.3125 < 0.316 < 0.333\n\nShows the progression of upper bound improvements.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1066-currentbest",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 193, "endLine": 200 },
+    "type": "theorem",
+    "title": "Current Best Bounds",
+    "content": "**current_best_bounds:**\n\n(8/31) < (5/16)\n\n0.258 < 0.3125\n\nConfirms the lower bound is below the upper bound (non-trivial!).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-gap",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 202, "endLine": 209 },
+    "type": "theorem",
+    "title": "Gap Between Bounds",
+    "content": "**bound_gap:**\n\n5/16 - 8/31 = 27/496 ≈ 0.054\n\nThe true value of lim g(n)/n lies somewhere in an interval of width about 5.4% of n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-current",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 211, "endLine": 217 },
+    "type": "axiom",
+    "title": "Combined Current Knowledge",
+    "content": "**current_knowledge:**\n\n(8/31)n ≤ g(n) ≤ (5/16)n for all n ≥ 1.\n\nThe complete state of the art, combining Swanepoel's lower bound and Pach-Tóth's upper bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-gd",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 225, "endLine": 232 },
+    "type": "definition",
+    "title": "Higher Dimensional Generalization",
+    "content": "**g_d(n):**\n\nFor n points in ℝ^d with minimum distance 1, the minimum number of points guaranteed to have pairwise distance > 1.\n\nGeneralizes g(n) = g_2(n) to arbitrary dimension.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-higherdim",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 234, "endLine": 241 },
+    "type": "axiom",
+    "title": "Higher Dimension Question",
+    "content": "**erdos_higher_dimension_question:**\n\nIs g_d(n) ≫ n/d in general?\n\nErdős asked whether the independent set size scales as n/d in dimension d.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-higherupper",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 243, "endLine": 249 },
+    "type": "axiom",
+    "title": "Higher Dimension Upper Bound",
+    "content": "**higher_dimension_upper_bound:**\n\ng_d(n) ≪ n/d is trivial.\n\n**Construction:** Widely spaced unit simplices (d+1 points each, all at distance 1) give independent set at most n/(d+1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1066-pach",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 257, "endLine": 263 },
+    "type": "axiom",
+    "title": "Pach's Observation",
+    "content": "**pach_simple_four_coloring:**\n\nFor unit distance graphs, the Four Colour Theorem can be proved by a simple induction.\n\nThe full power of the Four Colour Theorem is not needed!",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1066-planarity",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 265, "endLine": 271 },
+    "type": "axiom",
+    "title": "Planarity Intuition",
+    "content": "**planarity_intuition:**\n\nIf points have minimum distance 1 and edges connect distance-1 pairs, then edges cannot cross.\n\n**Reason:** Crossing edges would force their endpoints into a configuration with some pair at distance < 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1066-related1070",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 279, "endLine": 284 },
+    "type": "theorem",
+    "title": "Related Problem 1070",
+    "content": "**related_to_1070:**\n\nProblem 1070 asks for the general independence number of unit distance graphs (without the minimum distance constraint).\n\nRelated but different from the guaranteed size in Problem 1066.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1066-chromatic",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 286, "endLine": 292 },
+    "type": "axiom",
+    "title": "Chromatic Number Bound",
+    "content": "**chromatic_number_bound:**\n\nχ(G) ≤ 4 for unit distance graphs (since they're planar).\n\nThe tight bound for general unit distance graphs (without minimum distance 1) is still open!",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1066-main",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 300, "endLine": 328 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_1066:**\n\nCombines the two verified facts:\n1. (8/31) < (5/16) - lower bound is below upper bound\n2. (5/16) - (8/31) = 27/496 - the gap is precisely 27/496\n\nThe problem remains OPEN to close this gap.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1066-timeline",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 330, "endLine": 339 },
+    "type": "theorem",
+    "title": "Historical Timeline",
+    "content": "**historical_timeline:**\n\n- Erdős: Conjectured g(n) = n/3\n- Pollack (1985): g(n) ≥ n/4 (Four Colour Theorem)\n- Chung-Graham, Pach: g(n) ≤ 6n/19 (disproved n/3)\n- Pach-Tóth (1996): g(n) ≤ 5n/16 (current best upper)\n- Csizmadia (1998): g(n) ≥ 9n/35\n- Swanepoel (2002): g(n) ≥ 8n/31 (current best lower)",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1066-open",
+    "proofId": "erdos-1066",
+    "range": { "startLine": 341, "endLine": 346 },
+    "type": "theorem",
+    "title": "Open Problem",
+    "content": "**main_open_problem:**\n\nDetermine lim g(n)/n exactly.\n\nCurrently: 8/31 ≤ lim g(n)/n ≤ 5/16.\n\nClosing this gap is the main open challenge.",
+    "significance": "critical"
+  }
+]
