@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-184-1",
+    "proofId": "erdos-184",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #184: Graph Decomposition into Cycles and Edges**\n\n**Conjecture:** Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges.\n\n**Status: OPEN**\n\n**Best Known:** O(n log* n) by Bucić-Montgomery (2022)",
+    "mathContext": "The Erdős-Gallai conjecture asks for linear decomposition complexity.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph decomposition", "Cycle packing", "Iterated logarithm"]
+  },
+  {
+    "id": "ann-184-2",
+    "proofId": "erdos-184",
+    "range": { "startLine": 65, "endLine": 71 },
+    "type": "definition",
+    "title": "Cycle Definition",
+    "content": "**Cycle G:**\n\nA cycle in graph G is a sequence of ≥3 distinct vertices v₁, v₂, ..., vₖ where consecutive vertices are adjacent and vₖ is adjacent to v₁.\n\nCycles are the primary building blocks for decomposition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-184-3",
+    "proofId": "erdos-184",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "definition",
+    "title": "Valid Decomposition",
+    "content": "**IsValidDecomposition pieces:**\n\nA decomposition is valid if:\n1. Every edge of G is covered by some piece\n2. The pieces are edge-disjoint (no edge in two pieces)\n\nThis is an edge partition into cycles and isolated edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-184-4",
+    "proofId": "erdos-184",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "definition",
+    "title": "Erdős-Gallai Conjecture",
+    "content": "**ErdosGallaiConjecture:**\n\n∃ C > 0, ∀ graphs G on n vertices: decompNumber(G) ≤ C·n\n\nThis asserts that the decomposition number grows at most linearly in n.",
+    "mathContext": "The conjecture is that the constant C exists (independent of G).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-184-5",
+    "proofId": "erdos-184",
+    "range": { "startLine": 143, "endLine": 146 },
+    "type": "theorem",
+    "title": "Original Erdős-Gallai Bound",
+    "content": "**erdos_gallai_original_bound:**\n\nO(n log n) pieces suffice for any graph on n vertices.\n\nThis was the first upper bound, proved along with the conjecture statement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-184-6",
+    "proofId": "erdos-184",
+    "range": { "startLine": 152, "endLine": 156 },
+    "type": "theorem",
+    "title": "Lower Bound from K_{3,n-3}",
+    "content": "**lower_bound_from_bipartite:**\n\nThe complete bipartite graph K_{3,n-3} requires at least (1+c)n pieces for some c > 0.\n\nThis shows the constant in O(n) must be > 1 if the conjecture is true.",
+    "mathContext": "K_{3,n-3} has 3(n-3) = 3n-9 edges, creating many short paths.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-184-7",
+    "proofId": "erdos-184",
+    "range": { "startLine": 162, "endLine": 165 },
+    "type": "definition",
+    "title": "The Iterated Logarithm log*",
+    "content": "**logStar n:**\n\nlog*(n) = 0 if n ≤ 1, else 1 + log*(log₂(n))\n\nThis function grows INCREDIBLY slowly:\n- log*(2) = 1\n- log*(4) = 2\n- log*(16) = 3\n- log*(65536) = 4\n- log*(2^65536) = 5\n\nFor any practical n, log*(n) ≤ 5.",
+    "mathContext": "The inverse is the tower function: tower(5) = 2^{2^{2^{2^2}}} ≈ 10^{19728}",
+    "significance": "critical",
+    "relatedConcepts": ["Ackermann function", "Inverse Ackermann", "Tower function"]
+  },
+  {
+    "id": "ann-184-8",
+    "proofId": "erdos-184",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "theorem",
+    "title": "Bucić-Montgomery Bound (2022)",
+    "content": "**bucic_montgomery_bound:**\n\nO(n log* n) pieces suffice for any graph on n vertices.\n\nThis is the current best upper bound, tantalizingly close to linear since log* is essentially constant for all practical purposes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-184-9",
+    "proofId": "erdos-184",
+    "range": { "startLine": 190, "endLine": 194 },
+    "type": "theorem",
+    "title": "Conlon-Fox-Sudakov (2014)",
+    "content": "**conlon_fox_sudakov:**\n\nFor any ε > 0, if G has minimum degree ≥ εn, then O(n) pieces suffice.\n\nThe dense case is solved! Only sparse graphs remain for the full conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-184-10",
+    "proofId": "erdos-184",
+    "range": { "startLine": 270, "endLine": 286 },
+    "type": "theorem",
+    "title": "Summary: OPEN",
+    "content": "**erdos_184:**\n\n**STATUS: OPEN**\n\n**Known bounds:**\n- Upper: O(n log* n) [Bucić-Montgomery 2022]\n- Lower: (1+c)n [from K_{3,n-3}]\n- Dense case: O(n) [CFS 2014]\n\nThe gap is tiny (log* is essentially constant) but closing it is hard.",
+    "significance": "critical"
+  }
+]
