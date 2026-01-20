@@ -1,33 +1,153 @@
 {
   "id": "erdos-372",
-  "title": "Erdős Problem #372",
+  "title": "Erdős Problem #372: Descending Largest Prime Factors",
   "slug": "erdos-372",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest prime factor of .... There are infinitely many ... such that ....\n\n\n\n\n\nConjectured by Erds and Pom...",
+  "description": "Let P(n) denote the largest prime factor of n. Are there infinitely many n such that P(n) > P(n+1) > P(n+2)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Antal Balog (2001)",
     "sourceUrl": "https://erdosproblems.com/372",
-    "date": "",
-    "status": "pending",
+    "date": "2001",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos372Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 372,
     "erdosUrl": "https://erdosproblems.com/372",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate and basic properties",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.max'",
+        "description": "Maximum element of a nonempty finite set",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter convergence for limits",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of largestPrimeFactor using primeFactors.max'",
+      "Formalization of isDescendingTriple and isAscendingTriple",
+      "Axiomatization of Balog's quantitative bound ≫ √x",
+      "Axiomatization of Erdős-Pomerance ascending result",
+      "Statement of Balog's density conjecture (1/6)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #372 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P(n)$ denote the largest prime factor of $n$. There are infinitely many $n$ such that $P(n)>P(n+1)>P(n+2)$.\n\n\n\n\n\nConjectured by Erd\\H{o}s and Pomerance \\cite{ErPo78}, who proved the analogous result for $P(n)<P(n+1)<P(n+2)$. Solved by Balog \\cite{Ba01}, who proved that this is true for $\\gg \\sqrt{x}$ many $n\\leq x$ (for all large $x$). Balog suggests the natural conjecture that the density of such $n$ is $1/6$. A generalised form of this conjecture was presented by De Koninck and Doyon \\cite{DeDo11}.\n\n\n\n\nReferences\n\n\n[Ba01] Balog, A., On triplets with descending largest prime factors. Studia Sci. Math. Hungar. (2001), 45-50.\n\n[DeDo11] De Koninck, Jean-Marie and Doyon, Nicolas, On the distance between smooth numbers. Integers (2011), A25, 22.\n\n[ErPo78] Erd\\H{o}s, Paul and Pomerance, Carl, On the largest prime factors of {$n$} and {$n+1$}. Aequationes Math. (1978), 311-321.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Paul Erdős and Carl Pomerance in their influential 1978 paper on largest prime factors of consecutive integers. They noted a fundamental asymmetry: while they could prove infinitely many ascending triplets exist (P(n) < P(n+1) < P(n+2)), the descending case remained elusive.\n\nThe difficulty lies in the nature of prime factors. Large primes tend to be \"rare\" divisors, so finding three consecutive integers with strictly decreasing largest prime factors requires careful analysis. The ascending case is easier because smooth numbers (numbers with only small prime factors) are relatively common, and transitioning from smooth to rough is natural.\n\nAntal Balog resolved the conjecture in 2001 using sophisticated sieve methods. His proof established not just existence but a quantitative lower bound: at least c√x such triplets exist up to x. This sparked further research into the exact density, which Balog conjectured to be 1/6 based on symmetry arguments.",
+    "problemStatement": "Let $P(n)$ denote the largest prime factor of $n$.\n\n**Conjecture (Erdős-Pomerance, 1978):** There are infinitely many $n$ such that\n$$P(n) > P(n+1) > P(n+2)$$\n\n**Answer:** YES\n\n**Theorem (Balog, 2001):** For all sufficiently large $x$,\n$$\\#\\{n \\leq x : P(n) > P(n+1) > P(n+2)\\} \\gg \\sqrt{x}$$\n\n**Open:** Is the natural density of such $n$ exactly $\\frac{1}{6}$?",
+    "proofStrategy": "We formalize the largest prime factor function P(n) using Mathlib's primeFactors and prove basic properties. The main results are axiomatized:\n\n1. **Erdős-Pomerance (1978):** The ascending case P(n) < P(n+1) < P(n+2) has infinitely many solutions.\n\n2. **Balog's Quantitative Bound:** There exist constants c > 0 and x₀ such that for x ≥ x₀, at least c√x integers n ≤ x satisfy P(n) > P(n+1) > P(n+2).\n\n3. **Main Theorem:** From the quantitative bound (which grows without bound), infinitely many descending triplets exist.\n\nThe axioms are necessary because Balog's proof uses deep sieve-theoretic techniques that are not yet formalized in Mathlib.",
+    "keyInsights": [
+      "**Largest Prime Factor:** P(n) is the maximum element of n's prime factorization. We use Mathlib's primeFactors.max' for a clean definition.",
+      "**Asymmetry:** The ascending case (P(n) < P(n+1) < P(n+2)) was proved in 1978, but the descending case took 23 more years to resolve.",
+      "**Quantitative Bound:** Balog proved #{n ≤ x : descending} ≫ √x, which is sublinear but still implies infinitely many solutions.",
+      "**Density Conjecture:** By symmetry, each of the 6 orderings of (P(n), P(n+1), P(n+2)) should occur with density 1/6.",
+      "**Smooth Numbers:** A number n is y-smooth if P(n) ≤ y. The distribution of smooth numbers is key to understanding consecutive prime factor behavior."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "largest-prime-factor",
+      "title": "Largest Prime Factor",
+      "summary": "Definition of P(n) and basic properties",
+      "startLine": 29,
+      "endLine": 70
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete computations of P(6), P(30), P(210)",
+      "startLine": 72,
+      "endLine": 92
+    },
+    {
+      "id": "descending-triplet",
+      "title": "Descending Triplet Property",
+      "summary": "Definition of descending and ascending triplets",
+      "startLine": 94,
+      "endLine": 110
+    },
+    {
+      "id": "erdos-pomerance",
+      "title": "Erdős-Pomerance Ascending Case",
+      "summary": "The 1978 result for ascending triplets",
+      "startLine": 112,
+      "endLine": 131
+    },
+    {
+      "id": "balog-theorem",
+      "title": "Balog's Theorem",
+      "summary": "The 2001 resolution of the descending case",
+      "startLine": 133,
+      "endLine": 164
+    },
+    {
+      "id": "density-conjecture",
+      "title": "Density Conjecture",
+      "summary": "Balog's conjecture that density is 1/6",
+      "startLine": 166,
+      "endLine": 187
+    },
+    {
+      "id": "smooth-numbers",
+      "title": "Smooth Numbers",
+      "summary": "Connection to smooth number theory",
+      "startLine": 189,
+      "endLine": 212
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "The main result: infinitely many descending triplets",
+      "startLine": 214,
+      "endLine": 223
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "summary": "Remaining open problems",
+      "startLine": 225,
+      "endLine": 249
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete summary of results",
+      "startLine": 251,
+      "endLine": 272
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalized Erdős Problem #372, which asks whether infinitely many n satisfy P(n) > P(n+1) > P(n+2). Balog's 2001 theorem provides a quantitative affirmative answer: at least c√x such triplets exist up to x.",
+    "implications": "This result complements the 1978 Erdős-Pomerance theorem on ascending triplets, establishing that both monotone patterns occur infinitely often. The conjectured density of 1/6 suggests remarkable symmetry in the distribution of largest prime factors among consecutive integers.",
+    "openQuestions": [
+      "Is the natural density of descending triplets exactly 1/6?",
+      "Are there infinitely many n with P(n) > P(n+1) > P(n+2) > P(n+3)?",
+      "Can effective constants be computed for Balog's bound?",
+      "What is the smallest n with P(n) > P(n+1) > P(n+2)?"
+    ]
   }
 }
