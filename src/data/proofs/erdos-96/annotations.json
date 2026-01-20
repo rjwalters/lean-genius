@@ -1,1 +1,95 @@
-[]
+[
+  {
+    "id": "ann-96-1",
+    "proofId": "erdos-96",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #96: Unit Distances in Convex Polygons**\n\n**Conjecture:** In a convex n-gon, there are O(n) pairs at unit distance.\n\n**Status: OPEN**\n\n**Best bounds:** Upper O(n log n), Lower 2n-7",
+    "mathContext": "The convexity constraint should limit unit distances more than the general O(n^{4/3}) bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Unit distance problem", "Convex geometry", "Discrete geometry"]
+  },
+  {
+    "id": "ann-96-2",
+    "proofId": "erdos-96",
+    "range": { "startLine": 65, "endLine": 65 },
+    "type": "definition",
+    "title": "Unit Distance",
+    "content": "**IsUnitDistance p q:**\n\nTwo points are at unit distance if dist(p, q) = 1.\n\nWe count how many pairs in a convex polygon satisfy this.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-96-3",
+    "proofId": "erdos-96",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "definition",
+    "title": "Convex Position",
+    "content": "**inConvexPosition A:**\n\nA set is in convex position if no point lies in the convex hull of the others.\n\nEquivalently, every point is on the boundary of the convex hull.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-96-4",
+    "proofId": "erdos-96",
+    "range": { "startLine": 116, "endLine": 118 },
+    "type": "definition",
+    "title": "Erdős-Moser Conjecture",
+    "content": "**ErdosMoserConjecture:**\n\n∃ C, ∀ convex n-gons A: unitDistanceCount(A) ≤ C·n\n\nThis is the main O(n) conjecture.",
+    "mathContext": "The conjecture says the constant C is independent of the polygon.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-96-5",
+    "proofId": "erdos-96",
+    "range": { "startLine": 124, "endLine": 126 },
+    "type": "definition",
+    "title": "Erdős-Fishburn Conjecture",
+    "content": "**ErdosFishburnConjecture:**\n\nThe maximum is exactly 2n (not just O(n)).\n\nThis is a stronger, more precise form of the conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-96-6",
+    "proofId": "erdos-96",
+    "range": { "startLine": 136, "endLine": 138 },
+    "type": "theorem",
+    "title": "Füredi's Bound (1990)",
+    "content": "**furedi_bound:**\n\nO(n log n) unit distance pairs in a convex n-gon.\n\nThe first major progress on the problem, but still has a log factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-96-7",
+    "proofId": "erdos-96",
+    "range": { "startLine": 144, "endLine": 146 },
+    "type": "theorem",
+    "title": "Aggarwal's Bound (2015)",
+    "content": "**aggarwal_bound:**\n\nn log₂n + 4n unit distance pairs (current best upper bound).\n\nImproved constants but still has the log factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-96-8",
+    "proofId": "erdos-96",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "theorem",
+    "title": "Edelsbrunner-Hajnal Construction",
+    "content": "**edelsbrunner_hajnal_construction:**\n\nThere exist convex n-gons with 2n - 7 unit distance pairs.\n\nThis is the best known lower bound, suggesting 2n may be the answer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-96-9",
+    "proofId": "erdos-96",
+    "range": { "startLine": 203, "endLine": 205 },
+    "type": "definition",
+    "title": "Sum Conjecture",
+    "content": "**ErdosSumConjecture:**\n\nFor a convex n-gon A with g(x) = equidistant pairs from x:\n∑_{x ∈ A} g(x) < 4n\n\nAnother related open conjecture by Erdős.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-96-10",
+    "proofId": "erdos-96",
+    "range": { "startLine": 293, "endLine": 308 },
+    "type": "theorem",
+    "title": "Summary: OPEN",
+    "content": "**erdos_96:**\n\n**STATUS: OPEN**\n\n**Known bounds:**\n- Upper: n log₂n + 4n (Aggarwal 2015)\n- Lower: 2n - 7 (Edelsbrunner-Hajnal 1991)\n\n**The Gap:** Between O(n log n) and O(n). Removing the log factor is the challenge.",
+    "significance": "critical"
+  }
+]

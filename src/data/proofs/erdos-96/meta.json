@@ -1,75 +1,101 @@
 {
   "id": "erdos-96",
-  "title": "Erdős Problem #96: Unit Distances in Convex Polygons",
+  "title": "Unit Distances in Convex Polygons",
   "slug": "erdos-96",
-  "description": "In a convex n-gon, are there only O(n) pairs of vertices at unit distance? Conjectured by Erdős and Moser, the best upper bound is n log n + O(n) (Aggarwal 2015), while 2n-7 is achievable. The conjecture remains OPEN.",
+  "description": "In a convex n-gon, are there only O(n) pairs at unit distance? Conjectured by Erdős-Moser. Best upper: n log n (Aggarwal 2015), lower: 2n-7 (Edelsbrunner-Hajnal 1991). OPEN.",
   "meta": {
-    "author": "Erdős & Moser (conjecture), Füredi (1990), Aggarwal (2015)",
+    "author": "Erdős-Moser (conjecture), Füredi (1990), Aggarwal (2015)",
     "sourceUrl": "https://erdosproblems.com/96",
-    "date": "",
-    "status": "pending",
+    "date": "2015",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos96Problem.lean",
-    "tags": [
-      "discrete-geometry",
-      "unit-distances",
-      "erdos",
-      "convex-polygons",
-      "open-problem",
-      "combinatorial-geometry"
-    ],
-    "badge": "open",
+    "tags": ["erdos", "discrete-geometry", "unit-distances", "convex-polygons", "open-problem"],
+    "badge": "mathlib",
     "sorries": 1,
     "erdosNumber": 96,
     "erdosUrl": "https://erdosproblems.com/96",
     "erdosProblemStatus": "open",
-    "relatedProblems": [
-      {
-        "id": "erdos-97",
-        "relationship": "A positive answer to #97 would imply this conjecture"
-      },
-      {
-        "id": "erdos-90",
-        "relationship": "Related unit distance problem"
-      },
-      {
-        "id": "erdos-93",
-        "relationship": "Distinct distances in convex polygons (solved)"
-      }
-    ]
+    "mathlib_version": "v4.x",
+    "mathlibDependencies": [
+      { "theorem": "EuclideanSpace", "description": "2D Euclidean space for points", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
+      { "theorem": "convexHull", "description": "Convex hull for position definition", "module": "Mathlib.Analysis.Convex.Hull" },
+      { "theorem": "Finset", "description": "Finite sets of points", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "dist", "description": "Distance function", "module": "Mathlib.Topology.MetricSpace.Basic" }
+    ],
+    "originalContributions": [
+      "Lean formalization of unit distance pairs",
+      "Convex position and convex polygon definitions",
+      "Erdős-Moser and Erdős-Fishburn conjectures",
+      "Füredi and Aggarwal upper bounds axiomatized",
+      "Edelsbrunner-Hajnal lower bound construction",
+      "Related sum conjecture formalization"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "**Unit Distances in Convex Position**\n\nHow many pairs of vertices in a convex n-gon can be at the same distance (say, distance 1)? Unlike the general unit distance problem, convexity should severely restrict repeated distances.\n\n**The Conjecture**: Erdős and Moser conjectured that the answer is O(n). The stronger form (Erdős-Fishburn) claims the maximum is exactly 2n.\n\n**Progress on Upper Bounds**:\n- Füredi (1990): O(n log n)\n- Brass-Pach (2001): Simplified proof of O(n log n)\n- Aggarwal (2015): n log₂n + 4n (current best)\n\n**Lower Bound Construction**: Edelsbrunner and Hajnal (1991) constructed convex n-gons with 2n-7 unit distance pairs, disproving an earlier conjecture of 5n/3 + O(1).\n\n**The Gap**: Between 2n-7 (achievable) and n log n (upper bound). Closing this gap to prove O(n) remains open.",
-    "problemStatement": "**Problem Statement**\n\nIf n points in ℝ² form a convex polygon, prove there are O(n) pairs at distance 1 apart.\n\n**Stronger Conjecture (Erdős-Fishburn)**: The maximum is exactly 2n.\n\n**Current Bounds**:\n- Upper: n log₂n + 4n (Aggarwal 2015)\n- Lower: 2n - 7 (Edelsbrunner-Hajnal 1991)\n\n**Status**: OPEN\n\n**Related Conjecture**: Let g(x) count points equidistant from x in the set A. Erdős conjectured ∑_{x∈A} g(x) < 4n. The Edelsbrunner-Hajnal construction shows ∑g(x) > 4n - O(1) is possible.",
-    "proofStrategy": "**Approaches and Partial Results**\n\n**Füredi's O(n log n) Bound (1990)**:\n1. Use properties of convex curves\n2. A unit circle can intersect a convex n-gon boundary in at most 2 arcs\n3. Counting argument via forbidden subconfigurations\n\n**Aggarwal's Improvement (2015)**:\n1. More careful analysis of the Füredi approach\n2. Improved constants in the counting argument\n3. Achieved n log₂n + 4n\n\n**Why O(n) is Hard**:\n- The log factor comes from nested distance relationships\n- Convexity constraints are difficult to fully exploit\n- The problem relates to #97 (general equidistant pairs in convex position)\n\n**Edelsbrunner-Hajnal Construction**:\n- Carefully placed points on a circle\n- Achieves 2n-7 unit distances\n- Suggests 2n might be the true answer",
+    "historicalContext": "Erdős and Moser conjectured that a convex n-gon has O(n) unit distance pairs. Despite progress from O(n log n) bounds, the conjecture remains open. The gap between the O(n log n) upper bound and the 2n-7 lower bound is the main challenge.",
+    "problemStatement": "If n points in ℝ² form a convex polygon, prove there are O(n) pairs at distance 1 apart.",
+    "proofStrategy": "The formalization defines unit distance pairs, convex position, and the main conjectures. Known bounds are axiomatized: Füredi's O(n log n), Aggarwal's improvement, and the Edelsbrunner-Hajnal lower bound.",
     "keyInsights": [
       "Convexity should restrict unit distances to O(n), but proving this is hard",
-      "Best upper bound n log n still has a log factor gap from the conjectured O(n)",
+      "Best upper bound O(n log n) still has a log factor gap",
       "Lower bound 2n-7 suggests the true answer might be exactly 2n",
-      "Earlier conjecture of 5n/3 was disproved by Edelsbrunner-Hajnal",
-      "A positive answer to #97 would imply this conjecture",
-      "The related sum conjecture ∑g(x) < 4n is also open",
-      "Progress has been slow since Aggarwal's 2015 improvement"
+      "Earlier conjecture of 5n/3 was disproved",
+      "Connection to Problem #97 (general equidistant pairs)"
     ]
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 34,
-      "endLine": 35,
-      "summary": "The current proof is a placeholder (erdos_96 : True). This is an OPEN problem - proving O(n) unit distances in convex polygons remains unsolved."
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 45,
+      "endLine": 79,
+      "summary": "Point type, distance, unit distance pairs"
+    },
+    {
+      "id": "convex-position",
+      "title": "Convex Position",
+      "startLine": 81,
+      "endLine": 106,
+      "summary": "Convex position and convex polygon definitions"
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős-Moser Conjecture",
+      "startLine": 108,
+      "endLine": 126,
+      "summary": "Main conjecture and Erdős-Fishburn stronger form"
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 128,
+      "endLine": 154,
+      "summary": "Füredi's O(n log n), Aggarwal's improvement"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound Construction",
+      "startLine": 156,
+      "endLine": 185,
+      "summary": "Edelsbrunner-Hajnal 2n-7 construction"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 289,
+      "endLine": 339,
+      "summary": "Main results and the gap between bounds"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #96 conjectures that a convex n-gon has at most O(n) pairs of vertices at unit distance. Despite progress from O(n log n) bounds by Füredi (1990) and Aggarwal (2015), the conjecture remains OPEN. The best lower bound 2n-7 suggests the true answer may be exactly 2n.",
-    "implications": "**Theoretical Significance**\n\n1. **Convex Geometry**: Tests the power of convexity to restrict combinatorial structure\n\n2. **Unit Distance Problem**: Special case of the general unit distance problem with convexity constraint\n\n3. **Extremal Combinatorics**: The gap between n log n and 2n represents a fundamental barrier\n\n4. **Connection to #97**: Understanding this problem may unlock the more general equidistant conjecture",
+    "summary": "Erdős Problem #96 remains OPEN. The conjecture that a convex n-gon has O(n) unit distance pairs is unproved. Best known: upper O(n log n), lower 2n-7. The log factor is the barrier.",
+    "implications": "This problem tests whether convexity can reduce the unit distance problem from the general O(n^{4/3}) bound to linear. It connects discrete geometry with convex combinatorics.",
     "openQuestions": [
-      "Prove the upper bound O(n) (the main conjecture)",
-      "Prove the stronger bound of exactly 2n (Erdős-Fishburn)",
-      "Improve the upper bound below n log n",
-      "Prove ∑g(x) < 4n for the equidistant sum conjecture",
-      "Characterize convex polygons achieving the maximum",
-      "What is the relationship between #96 and #97?"
+      "Prove the O(n) upper bound (main conjecture)",
+      "Prove the exact bound of 2n (Erdős-Fishburn)",
+      "Remove the log factor from the upper bound",
+      "Prove the sum conjecture ∑g(x) < 4n"
     ]
   }
 }
