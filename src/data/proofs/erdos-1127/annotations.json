@@ -1,1 +1,100 @@
-[]
+[
+  {
+    "id": "ann-1127-1",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1127: Decomposing ℝⁿ into Sets with Distinct Distances**\n\n**Question:** Can ℝⁿ be decomposed into countably many sets where all pairwise distances within each set are distinct?\n\n**Answer:** YES, assuming the Continuum Hypothesis.\n\n**Status: SOLVED** with conditions (CH required)",
+    "mathContext": "The problem connects geometry (distance) to set theory (Continuum Hypothesis) in a deep way.",
+    "significance": "critical",
+    "relatedConcepts": ["Continuum Hypothesis", "Set theory", "Distance geometry"]
+  },
+  {
+    "id": "ann-1127-2",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "definition",
+    "title": "Distinct Distances Property",
+    "content": "**HasDistinctDistances S:**\n\nA set S has the distinct distances property if every two distinct pairs of points have different distances.\n\nFormally: If {p₁, p₂} ≠ {p₃, p₄} are pairs in S, then dist(p₁, p₂) ≠ dist(p₃, p₄).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1127-3",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "definition",
+    "title": "Countable Decomposition",
+    "content": "**CountableDecomposition X P:**\n\nA set X admits a countable decomposition with property P if X can be written as a disjoint union ⋃ᵢ Sᵢ where each Sᵢ satisfies P.\n\nThe key question: can this be done with P = HasDistinctDistances?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1127-4",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 111, "endLine": 112 },
+    "type": "definition",
+    "title": "The Continuum Hypothesis",
+    "content": "**ContinuumHypothesis:**\n\nThe assertion that |ℝ| = ℵ₁, i.e., the cardinality of the reals equals the first uncountable cardinal.\n\nThis is independent of ZFC - neither provable nor disprovable from standard axioms.",
+    "mathContext": "Cardinal.mk ℝ = Cardinal.aleph 1",
+    "significance": "critical",
+    "relatedConcepts": ["Cardinal numbers", "ZFC", "Independence"]
+  },
+  {
+    "id": "ann-1127-5",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "definition",
+    "title": "ℚ-Linear Independence",
+    "content": "**IsQLinearlyIndependent S:**\n\nA set S ⊆ ℝ is ℚ-linearly independent if no finite nontrivial linear combination over ℚ equals zero.\n\nEquivalently: the elements of S are 'algebraically unrelated' over the rationals.",
+    "mathContext": "For any distinct x₁,...,xₙ ∈ S and rationals a₁,...,aₙ, if Σaᵢxᵢ = 0 then all aᵢ = 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1127-6",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 135, "endLine": 139 },
+    "type": "theorem",
+    "title": "Erdős-Kakutani Theorem (1943)",
+    "content": "**erdos_kakutani_equivalence:**\n\nThe Continuum Hypothesis is EQUIVALENT to the statement:\n'ℝ can be written as a countable union of ℚ-linearly independent sets.'\n\nThis is a remarkable characterization of CH in terms of linear algebra!",
+    "mathContext": "CH ↔ ∃(S : ℕ → Set ℝ), (∀i, IsQLinearlyIndependent (S i)) ∧ (⋃i, S i) = univ",
+    "significance": "critical",
+    "relatedConcepts": ["CH characterization", "Linear algebra", "Decomposition"]
+  },
+  {
+    "id": "ann-1127-7",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 172, "endLine": 176 },
+    "type": "theorem",
+    "title": "Davies' Theorem (1972)",
+    "content": "**davies_theorem:**\n\nAssuming CH, ℝ² can be decomposed into countably many sets with distinct pairwise distances.\n\nThis extended Erdős-Kakutani from dimension 1 to dimension 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1127-8",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 183, "endLine": 187 },
+    "type": "theorem",
+    "title": "Kunen's Theorem (1987)",
+    "content": "**kunen_theorem:**\n\nAssuming CH, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for ALL dimensions n.\n\nThis completely solves the problem under CH.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1127-9",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 198, "endLine": 207 },
+    "type": "theorem",
+    "title": "Erdős-Hajnal Necessity",
+    "content": "**erdos_hajnal_necessity:**\n\nIf CH is FALSE, then for any finite partition of ℝ, there exist 4 points in one piece determining at most 4 distinct distances (instead of the required 6).\n\nThis shows CH is NECESSARY for the decomposition to work.",
+    "mathContext": "¬CH → finite partitions fail the distinct distances property",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1127-10",
+    "proofId": "erdos-1127",
+    "range": { "startLine": 284, "endLine": 286 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_1127:**\n\nCH → ∀n, Erdos1127Question' n\n\nAssuming the Continuum Hypothesis, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for every dimension n.\n\nThis follows immediately from Kunen's theorem.",
+    "significance": "critical"
+  }
+]
