@@ -15,6 +15,21 @@ You receive these environment variables:
 
 You work in an **isolated worktree** with your own branch (e.g., `feature/enhancer-1`).
 
+## Logging
+
+Log your actions for observability. After each major step, append to your log:
+
+```bash
+echo "$(date +%H:%M): ACTION_DESCRIPTION" >> "$REPO_ROOT/.loom/logs/$ENHANCER_ID.actions.log"
+```
+
+Example log entries:
+- `echo "$(date +%H:%M): Claimed erdos-867" >> ...`
+- `echo "$(date +%H:%M): Enhanced erdos-867, created PR #123" >> ...`
+- `echo "$(date +%H:%M): Completed erdos-867" >> ...`
+
+Keep entries brief (one line each). This helps monitor agent progress.
+
 ## Main Loop
 
 Execute this workflow continuously:
