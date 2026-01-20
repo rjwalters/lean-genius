@@ -1,13 +1,13 @@
 {
   "id": "erdos-735",
-  "title": "Erdős Problem #735",
+  "title": "Erdős Problem #735: Magic Configurations",
   "slug": "erdos-735",
   "description": "Characterize point configurations admitting positive weights with equal sums on all lines (magic configurations).",
   "meta": {
     "author": "Ackerman, Buchin, Knauer, Pinchasi, Rote",
     "sourceUrl": "https://erdosproblems.com/735",
     "date": "2008",
-    "status": "solved",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos735Problem.lean",
     "tags": [
       "erdos",
@@ -16,11 +16,25 @@
       "incidence-geometry",
       "characterization"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 13,
     "erdosNumber": 735,
     "erdosUrl": "https://erdosproblems.com/735",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "EuclideanSpace", "description": "Euclidean plane ℝ²", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
+      { "theorem": "AffineSubspace", "description": "Lines in affine space", "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace" },
+      { "theorem": "Finset", "description": "Finite sets of points", "module": "Mathlib.Data.Finset.Basic" }
+    ],
+    "originalContributions": [
+      "PointConfig: Finset of points in ℝ²",
+      "Weighting: Positive real weights on points",
+      "IsMagic: Configuration admits equal-sum weighting",
+      "IsCollinear, IsGeneralPosition, IsNearPencil, IsIncenterConfig",
+      "magic_classification: Murty's conjecture is TRUE"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
     "historicalContext": "Murty conjectured that only four types of point configurations in the plane can admit positive weights making all line sums equal. Such configurations are called 'magic'. The conjecture was proved in 2008, completing the classification of magic configurations.",
