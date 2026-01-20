@@ -2662,17 +2662,26 @@
   },
   {
     "id": "erdos-1129",
-    "title": "Erdős Problem #1129",
+    "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
     "slug": "erdos-1129",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nDescribe which choice of ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Which choice of interpolation nodes x₁,...,xₙ in [-1,1] minimizes the Lebesgue constant Λ = max Σ|l_k(x)|? SOLVED: Optimal nodes exist, are characterized by equal subinterval maxima, and achieve Λ ~ (2/π) log n.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "approximation-theory",
+      "interpolation",
+      "lagrange-interpolation",
+      "lebesgue-constant",
+      "chebyshev-polynomials",
+      "numerical-analysis",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 1129,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 22
   },
   {
     "id": "erdos-113",
