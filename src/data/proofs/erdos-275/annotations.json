@@ -1,1 +1,193 @@
-[]
+[
+  {
+    "id": "ann-e275-header",
+    "proofId": "erdos-275",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #275: Covering Congruences**\n\nIf r congruences cover 2^r consecutive integers, they cover all integers.\n\n**Status:** SOLVED (1970)\n\n**Solvers:** Selfridge (independently), Crittenden-Vanden Eynden\n\nThe bound 2^r is tight.",
+    "mathContext": "Covering systems are fundamental in combinatorial number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Congruences", "Covering systems", "Modular arithmetic"]
+  },
+  {
+    "id": "ann-e275-congclass",
+    "proofId": "erdos-275",
+    "range": { "startLine": 36, "endLine": 42 },
+    "type": "definition",
+    "title": "Congruence Class",
+    "content": "**CongruenceClass(a, n):**\n\nThe set {x ∈ ℤ : x ≡ a (mod n)} of all integers congruent to a modulo n.\n\nThis is the arithmetic progression a, a±n, a±2n, ...",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e275-covering",
+    "proofId": "erdos-275",
+    "range": { "startLine": 57, "endLine": 65 },
+    "type": "definition",
+    "title": "Covering System",
+    "content": "**CoveringSystem:**\n\nA structure containing:\n- size: number of congruence classes\n- residues: the aᵢ values\n- moduli: the nᵢ values (positive)\n\nRepresents {aᵢ (mod nᵢ) : 1 ≤ i ≤ r}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e275-iscovered",
+    "proofId": "erdos-275",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "definition",
+    "title": "Is Covered",
+    "content": "**IsCovered(C, x):**\n\nInteger x is covered by system C if x belongs to at least one of the congruence classes in C.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e275-coversall",
+    "proofId": "erdos-275",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "definition",
+    "title": "Covers All",
+    "content": "**CoversAll(C):**\n\nThe system C is a complete covering system - every integer is covered.\n\nThis is the goal: when does finite data imply infinite coverage?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e275-consec",
+    "proofId": "erdos-275",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "definition",
+    "title": "Consecutive Integers",
+    "content": "**ConsecutiveIntegers(a, n):**\n\nThe set {a, a+1, ..., a+n-1} of n consecutive integers starting at a.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e275-main",
+    "proofId": "erdos-275",
+    "range": { "startLine": 101, "endLine": 108 },
+    "type": "axiom",
+    "title": "Main Theorem",
+    "content": "**erdos_275_theorem:**\n\nIf r congruence classes cover 2^r consecutive integers, they cover all integers.\n\n**This is the central result of Problem #275!**",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e275-cve",
+    "proofId": "erdos-275",
+    "range": { "startLine": 110, "endLine": 119 },
+    "type": "axiom",
+    "title": "Crittenden-Vanden Eynden",
+    "content": "**crittenden_vanden_eynden:**\n\nAlternative formulation: r arithmetic progressions covering {0, ..., 2^r-1} cover all integers.\n\nPublished in Proc. AMS (1970).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e275-optimal",
+    "proofId": "erdos-275",
+    "range": { "startLine": 127, "endLine": 138 },
+    "type": "definition",
+    "title": "Optimal Example",
+    "content": "**OptimalExample(r):**\n\nThe system {2^(i-1) (mod 2^i) : 1 ≤ i ≤ r}.\n\nCovers x iff x has a 1 in some bit position 1 through r.\n\nMisses exactly the multiples of 2^r (all first r bits are 0).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e275-coverage",
+    "proofId": "erdos-275",
+    "range": { "startLine": 140, "endLine": 145 },
+    "type": "axiom",
+    "title": "Optimal Example Coverage",
+    "content": "**optimal_example_coverage:**\n\nx is covered by OptimalExample(r) ⟺ 2^r ∤ x\n\nCovers everything except multiples of 2^r.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e275-tight",
+    "proofId": "erdos-275",
+    "range": { "startLine": 147, "endLine": 155 },
+    "type": "axiom",
+    "title": "Tightness",
+    "content": "**not_covered_2r_minus_1:**\n\nThere exists a system of r classes covering 2^r - 1 consecutive integers but NOT all integers.\n\nShows the bound 2^r is exactly tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e275-pigeonhole",
+    "proofId": "erdos-275",
+    "range": { "startLine": 172, "endLine": 179 },
+    "type": "theorem",
+    "title": "Pigeonhole Intuition",
+    "content": "**pigeonhole_intuition:**\n\nWith r classes and 2^r integers, binary representation ensures every pattern of 'hits' is represented.\n\nIf covering holds for all patterns, it extends to all ℤ.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e275-period",
+    "proofId": "erdos-275",
+    "range": { "startLine": 181, "endLine": 189 },
+    "type": "theorem",
+    "title": "Period Argument",
+    "content": "**period_argument:**\n\nCongruence classes are periodic. The remarkable fact is that 2^r consecutive integers suffice regardless of the specific moduli nᵢ.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e275-binary",
+    "proofId": "erdos-275",
+    "range": { "startLine": 191, "endLine": 199 },
+    "type": "theorem",
+    "title": "Binary Connection",
+    "content": "**binary_connection:**\n\n2^r consecutive integers represent all r-bit patterns.\n\nAny integer shares its low r bits with some element of {0, ..., 2^r-1}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e275-proof",
+    "proofId": "erdos-275",
+    "range": { "startLine": 221, "endLine": 230 },
+    "type": "axiom",
+    "title": "Proof Method",
+    "content": "**crittenden_vanden_eynden_proof:**\n\nThe proof uses induction on the structure of moduli mod 2:\n1. Consider classes with even vs odd moduli\n2. Track coverage through parity analysis\n3. Base case and inductive step use binary structure",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e275-iscoveringsys",
+    "proofId": "erdos-275",
+    "range": { "startLine": 238, "endLine": 244 },
+    "type": "definition",
+    "title": "Is Covering System",
+    "content": "**IsCoveringSystem(C):**\n\nC is a covering system iff CoversAll(C).\n\nThe study of such systems was pioneered by Erdős.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e275-minodd",
+    "proofId": "erdos-275",
+    "range": { "startLine": 246, "endLine": 252 },
+    "type": "axiom",
+    "title": "Minimum Odd Modulus Problem",
+    "content": "**minimum_odd_modulus_problem:**\n\nDoes there exist a covering system with all distinct odd moduli?\n\n**Erdős offered $1000 for this problem!**\n\nStatus: Still OPEN.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e275-exactly",
+    "proofId": "erdos-275",
+    "range": { "startLine": 254, "endLine": 261 },
+    "type": "definition",
+    "title": "Exactly Covering",
+    "content": "**IsExactlyCovering(C, k):**\n\nEvery integer is covered exactly k times.\n\nFor k=1, these are 'disjoint covering systems' - partitions of ℤ by congruence classes.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e275-summary",
+    "proofId": "erdos-275",
+    "range": { "startLine": 267, "endLine": 299 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_275:**\n\nCombines both parts:\n1. Main theorem: 2^r consecutive ⟹ all integers\n2. Tightness: 2^r - 1 consecutive ⟹ NOT all integers\n\n**Status:** SOLVED (1970)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e275-timeline",
+    "proofId": "erdos-275",
+    "range": { "startLine": 301, "endLine": 307 },
+    "type": "theorem",
+    "title": "Historical Timeline",
+    "content": "**historical_timeline:**\n\n- 1965: Erdős poses the problem\n- 1970: Selfridge solves (unpublished)\n- 1970: Crittenden-Vanden Eynden publish in Proc. AMS",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e275-open",
+    "proofId": "erdos-275",
+    "range": { "startLine": 309, "endLine": 314 },
+    "type": "theorem",
+    "title": "Open Problem",
+    "content": "**open_problem:**\n\nErdős's $1000 problem: covering system with all distinct odd moduli?\n\nRemains one of the famous open problems in number theory.",
+    "significance": "key"
+  }
+]

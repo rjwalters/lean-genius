@@ -5136,17 +5136,21 @@
   },
   {
     "id": "erdos-275",
-    "title": "Erdős Problem #275",
+    "title": "Erdős Problem #275: Covering Congruences",
     "slug": "erdos-275",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf a finite system of ... congruences ... (the ... are not necessarily distinct) covers ... consecutive integers then it cove...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If r congruences {aᵢ (mod nᵢ)} cover 2^r consecutive integers, they cover all integers. This bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't suffice.",
+    "status": "complete",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "congruences",
+      "solved"
     ],
     "erdosNumber": 275,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 21
   },
   {
     "id": "erdos-277",
