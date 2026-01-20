@@ -3598,8 +3598,8 @@
     "id": "erdos-18",
     "title": "Erdős Problem #18: Practical Numbers",
     "slug": "erdos-18",
-    "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m.",
-    "status": "formalized",
+    "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
@@ -3608,8 +3608,10 @@
       "divisor-sums",
       "open-problem"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 18,
-    "sorries": 1,
+    "mathlibCount": 6,
+    "sorries": 0,
     "annotationCount": 18
   },
   {
