@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "definition",
+    "title": "Chromatic Number (Infinite Graphs)",
+    "content": "For infinite graphs, the chromatic number is a cardinal - the minimum cardinality of colors needed for a proper coloring. This generalizes finite chromatic number to transfinite cardinals like ℵ₀, ℵ₁, ℵ₂, etc.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "definition",
+    "title": "Galvin Property",
+    "content": "A graph G has the Galvin property if for every infinite cardinal 𝔫 < χ(G), there exists a subgraph with chromatic number exactly 𝔫. This is the central property Erdős asked about.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "theorem",
+    "title": "Galvin's Countable Theorem (1973)",
+    "content": "Galvin proved that for graphs with χ(G) = ℵ₀, subgraphs of all finite chromatic numbers exist. This is the only case where the property is provable in ZFC without additional set-theoretic assumptions.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 151, "endLine": 153 },
+    "type": "theorem",
+    "title": "Galvin's Set-Theoretic Implication",
+    "content": "Galvin observed that if the induced subgraph version held universally, it would imply 2^κ < 2^ν for all κ < ν. This connects the graph-theoretic question to deep questions in cardinal arithmetic.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 165, "endLine": 169 },
+    "type": "theorem",
+    "title": "Komjáth's Consistency Result (1988)",
+    "content": "Komjáth showed that in certain models of ZFC (where 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃), there exist graphs with χ = ℵ₂ that have NO subgraph with χ = ℵ₁. This proves the property is not provable in ZFC.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 199, "endLine": 203 },
+    "type": "theorem",
+    "title": "Shelah's Constructibility Result (1990)",
+    "content": "Shelah proved that under V=L (the axiom of constructibility), graphs with χ = ℵ₂ DO have subgraphs with χ = ℵ₁. Combined with Komjáth's result, this establishes set-theoretic independence.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 222, "endLine": 223 },
+    "type": "definition",
+    "title": "Generalized Continuum Hypothesis",
+    "content": "GCH states that for all infinite κ, 2^κ = κ⁺ (successor cardinal). It's unknown whether GCH implies the Galvin property holds. This is the main remaining open question about this problem.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 278, "endLine": 284 },
+    "type": "insight",
+    "title": "Why Set-Theoretic Independence?",
+    "content": "The independence arises because chromatic numbers connect to cardinal arithmetic. Different models of set theory have different continuum functions, which affects which subgraphs can exist. This is a deep example of how combinatorics depends on foundations.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 287, "endLine": 292 },
+    "type": "insight",
+    "title": "Compactness Failure",
+    "content": "For finite graphs, compactness arguments help find substructures. For infinite graphs, compactness fails in this context - we cannot argue from local to global. This failure enables the independence phenomenon.",
+    "significance": "helpful"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 321, "endLine": 344 },
+    "type": "summary",
+    "title": "Main Result: Set-Theoretic Independence",
+    "content": "Erdős Problem #739 is INDEPENDENT of ZFC. YES in some models (V=L), NO in others (Komjáth's models). The countable case (ℵ₀) is provable. The GCH case remains open. This showcases the deep interplay between combinatorics and set theory.",
+    "significance": "essential"
+  }
+]

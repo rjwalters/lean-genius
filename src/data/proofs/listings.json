@@ -11397,17 +11397,24 @@
   },
   {
     "id": "erdos-739",
-    "title": "Erdős Problem #739",
+    "title": "Erdős Problem #739: Chromatic Numbers of Subgraphs (Infinite)",
     "slug": "erdos-739",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...G......< ...G......=\\aleph_0...2^{}<2^{}...<...=\\aleph_2...=\\aleph_1...=\\aleph_2...=\\aleph_1$.\n\nIt remains open wheth...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If G has infinite chromatic number 𝔪, must G have subgraphs of all smaller infinite chromatic numbers? INDEPENDENT OF ZFC: YES under V=L (Shelah 1990), NO in some models (Komjáth 1988). Open under GCH.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "set-theory",
+      "cardinals",
+      "independence"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 739,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-74",
