@@ -1,33 +1,132 @@
 {
   "id": "erdos-796",
-  "title": "Erdős Problem #796",
+  "title": "Erdős Problem #796: Second-Order Terms for g_k(n)",
   "slug": "erdos-796",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the largest possible size of ... such that every ... has ... solutions to ... with ....\n\nIs it true th...",
+  "description": "For g_k(n) = max |A| with A ⊆ {1,...,n} having < k representations per integer, is g₃(n) = (log log n / log n)n + (c+o(1))n/(log n)² for some c? First-order known, second-order OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1964, 1969)",
     "sourceUrl": "https://erdosproblems.com/796",
-    "date": "",
-    "status": "pending",
+    "date": "1964",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos796Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "number-theory", "multiplicative-representation", "asymptotics", "open"],
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 796,
     "erdosUrl": "https://erdosproblems.com/796",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Filter.atTop", "description": "Asymptotic statements", "module": "Mathlib.Order.Filter.Basic" }
+    ],
+    "originalContributions": [
+      "IsProductRep: a₁ < a₂ and a₁·a₂ = m",
+      "repCount: Count of representations from A",
+      "IsBoundedRep: Every m has < k representations",
+      "g: The function g_k(n)",
+      "omega_count: Integers with r distinct primes",
+      "erdos_1964_main: First-order asymptotics",
+      "E3: Second-order error term",
+      "erdosConjecture796: Main conjecture (OPEN)",
+      "IsNearOptimal3: Near-optimal sets",
+      "divisor_connection: τ(m) bound"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #796 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and let $g_k(n)$ be the largest possible size of $A\\subseteq \\{1,\\ldots,n\\}$ such that every $m$ has $<k$ solutions to $m=a_1a_2$ with $a_1<a_2\\in A$.\n\nIs it true that\\[g_3(n)=\\frac{\\log\\log n}{\\log n}n+(c+o(1))\\frac{n}{(\\log n)^2}\\]for some constant $c$?\n\n\n\nErd\\H{o}s \\cite{Er64d} proved that if $2^{r-1}<k\\leq 2^r$ then\\[g_k(n) \\sim \\frac{(\\log\\log n)^{r-1}}{(r-1)!\\log n}n\\](which is the asymptotic count of those integers $\\leq n$ with $r$ distinct prime factors).\n\nIn particular the asymptotics of $g_k(n)$ are known; in \\cite{Er69b} Erd\\H{o}s discussed the second order terms, and this question is implicit (especially when compared to the explicit question [425] he asked on several occasions). For $k=3$ he could prove the existence of some $0<c_1\\leq c_2$ such that\\[\\frac{\\log\\log n}{\\log n}n+c_1\\frac{n}{(\\log n)^2}\\leq g_3(n)\\leq \\frac{\\log\\log n}{\\log n}n+c_2\\frac{n}{(\\log n)^2}.\\]The special case $k=2$ is the subject of [425].\n\n\n\n\nReferences\n\n\n[Er64d] P. Erd\\H{o}s, On the multiplicative representation of integers. Israel Journal of Mathematics (1964).\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős (1964) established the first-order asymptotics for g_k(n), showing it matches the count of integers with r prime factors where 2^{r-1} < k ≤ 2^r. In 1969, he discussed second-order terms and established bounds c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)² but the exact constant remains unknown.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet g_k(n) = max{|A| : A ⊆ {1,...,n}, every m has < k representations m = a₁a₂ with a₁ < a₂ ∈ A}.\n\n**Question:** Is g₃(n) = (log log n / log n)·n + (c + o(1))·n/(log n)² for some constant c?\n\n**Known:**\n- First-order: g₃(n) ~ (log log n / log n)·n\n- Bounds: c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)²\n\n**Open:** Exact value of c (if it exists)",
+    "proofStrategy": "The formalization defines g_k(n) via optimization over finite subsets. Erdős's 1964 theorem on first-order asymptotics is axiomatized using the pattern involving integers with r prime factors. The second-order error E₃(n) is defined, bounds are stated, and the main conjecture is formulated.",
+    "keyInsights": [
+      "**Erdős 1964:** g_k(n) ~ (log log n)^{r-1}/(r-1)! · n/log n for 2^{r-1} < k ≤ 2^r",
+      "**k = 3 Case:** r = 2, so g₃(n) ~ (log log n / log n)·n",
+      "**Second-Order Bounds:** Error is Θ(n/(log n)²)",
+      "**Optimal Sets:** Related to integers with 2 prime factors",
+      "**Divisor Connection:** τ(m) controls representation count",
+      "**Problem #425:** Handles k = 2 case (primes)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 39,
+      "endLine": 69,
+      "summary": "IsProductRep, repCount, IsBoundedRep, IsValidSubset"
+    },
+    {
+      "id": "g-function",
+      "title": "The g_k(n) Function",
+      "startLine": 71,
+      "endLine": 88,
+      "summary": "Definition and well-definedness of g"
+    },
+    {
+      "id": "first-order",
+      "title": "First-Order Asymptotics",
+      "startLine": 90,
+      "endLine": 122,
+      "summary": "omega_count, erdos_1964_main"
+    },
+    {
+      "id": "k3-case",
+      "title": "The k = 3 Case",
+      "startLine": 124,
+      "endLine": 141,
+      "summary": "g3_first_order derivation"
+    },
+    {
+      "id": "second-order",
+      "title": "Second-Order Terms",
+      "startLine": 143,
+      "endLine": 177,
+      "summary": "E3, E3_bounded, erdosConjecture796"
+    },
+    {
+      "id": "k2-case",
+      "title": "The k = 2 Case",
+      "startLine": 179,
+      "endLine": 196,
+      "summary": "g2_asymptotic, Problem #425 connection"
+    },
+    {
+      "id": "optimal-sets",
+      "title": "Optimal Sets",
+      "startLine": 198,
+      "endLine": 217,
+      "summary": "IsNearOptimal3, optimal_sets_structure"
+    },
+    {
+      "id": "higher-k",
+      "title": "Higher k Values",
+      "startLine": 219,
+      "endLine": 236,
+      "summary": "General pattern explanation"
+    },
+    {
+      "id": "multiplicative",
+      "title": "Multiplicative Structure",
+      "startLine": 238,
+      "endLine": 257,
+      "summary": "divisor_connection, prime_power_reps"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 259,
+      "endLine": 309,
+      "summary": "Main results and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #796 is OPEN. The first-order asymptotics for g_k(n) are fully established by Erdős (1964). For k = 3, bounds on the second-order error term are known, but the question of whether E₃(n)/(n/(log n)²) converges to a constant c remains open.",
+    "implications": "This problem exemplifies the challenge of determining 'second-order' terms in asymptotic expansions. The answer would reveal finer structure in the distribution of integers with given factorization properties.",
+    "openQuestions": [
+      "Does E₃(n)/(n/(log n)²) converge?",
+      "What is the exact value of c if it exists?",
+      "Similar questions for g_k with k > 3"
+    ]
   }
 }

@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Product Representation",
+    "content": "A representation of m is a pair (a₁, a₂) with a₁ < a₂ and a₁·a₂ = m. The problem asks about sets where each m has few such representations.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "The Function g_k(n)",
+    "content": "g_k(n) is the maximum size of A ⊆ {1,...,n} such that every integer m has fewer than k representations m = a₁a₂ with a₁ < a₂ both in A.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 110, "endLine": 122 },
+    "type": "theorem",
+    "title": "Erdős 1964 Main Theorem",
+    "content": "For 2^{r-1} < k ≤ 2^r, g_k(n) ~ ((log log n)^{r-1} / (r-1)!) · n/log n. This matches the count of integers with r prime factors, connecting the problem to prime factorization.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 128, "endLine": 141 },
+    "type": "theorem",
+    "title": "First-Order for k = 3",
+    "content": "Since 2 < 3 ≤ 4, we have r = 2, giving g₃(n) ~ (log log n / log n)·n. This is the leading term; the question asks about the next term.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 152, "endLine": 153 },
+    "type": "definition",
+    "title": "Second-Order Error E₃(n)",
+    "content": "E₃(n) = g₃(n) - (log log n / log n)·n is the error after removing the first-order term. The question is whether E₃(n) ~ c·n/(log n)² for some c.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 159, "endLine": 163 },
+    "type": "theorem",
+    "title": "Bounds on E₃(n)",
+    "content": "Erdős (1969) proved c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)² for some 0 < c₁ ≤ c₂. So the second-order term is Θ(n/(log n)²), but the exact constant is unknown.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 169, "endLine": 171 },
+    "type": "conjecture",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "Erdős asked: does E₃(n)/(n/(log n)²) converge to some constant c? If yes, what is c? This remains OPEN - we don't even know if the limit exists.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 188, "endLine": 190 },
+    "type": "insight",
+    "title": "Connection to k = 2",
+    "content": "For k = 2, g₂(n) ~ n/log n resembles the Prime Number Theorem. Problem #425 asks about second-order terms for g₂(n), which is related but distinct.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 247, "endLine": 249 },
+    "type": "insight",
+    "title": "Divisor Function Connection",
+    "content": "If τ(m) ≤ 2k-1 (m has few divisors), then m automatically has < k representations. Numbers with many divisors are the 'dangerous' ones for the constraint.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 278, "endLine": 298 },
+    "type": "summary",
+    "title": "Main Result: erdos_796",
+    "content": "OPEN problem on second-order asymptotics. First-order g₃(n) ~ (log log n / log n)n is known (1964). Bounds on E₃(n) are known (1969). Whether E₃(n)/(n/(log n)²) converges to a constant c is OPEN.",
+    "significance": "essential"
+  }
+]
