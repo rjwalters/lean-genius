@@ -1,1 +1,126 @@
-[]
+[
+  {
+    "id": "ann-e360-header",
+    "proofId": "erdos-360",
+    "range": { "startLine": 1, "endLine": 13 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #360: Partition Sum-Free Classes**\n\nThe problem asks: What is the minimum number of classes f(n) needed to partition {1,...,n-1} such that n cannot be expressed as a sum of distinct elements from any single class?\n\n**Answer:** f(n) ≍ n^{1/3}(n/φ(n)) / (log n)^{1/3}(log log n)^{2/3}\n\nThis was determined up to a multiplicative constant by Conlon, Fox, and Pham in 2021.",
+    "mathContext": "This is a problem in additive combinatorics about partitions avoiding specific sum patterns, with connections to Ramsey theory and sum-free sets.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Partition problems", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e360-nsum-free",
+    "proofId": "erdos-360",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "n-Sum-Free Sets",
+    "content": "**IsNSumFree(n, S):**\n\nA set S ⊆ {1,...,n-1} is **n-sum-free** if no subset of distinct elements from S sums to exactly n.\n\n**Definition:**\n```lean\ndef IsNSumFree (n : ℕ) (S : Finset ℕ) : Prop :=\n  ∀ T : Finset ℕ, T ⊆ S → T.sum id ≠ n\n```\n\n**Examples:**\n- {1} is 2-sum-free (single element can't sum to 2)\n- {2, 3} is 4-sum-free (2+3=5≠4, and neither alone equals 4)\n- {1, 3} is NOT 4-sum-free (1+3=4)",
+    "significance": "critical",
+    "relatedConcepts": ["Subset sums", "Sum-free sets"]
+  },
+  {
+    "id": "ann-e360-valid-partition",
+    "proofId": "erdos-360",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "definition",
+    "title": "Valid Partitions",
+    "content": "**IsValidPartition(n, parts):**\n\nA valid partition of {1,...,n-1} must satisfy four conditions:\n\n1. **Elements from correct range:** All elements are in {1,...,n-1}\n2. **Disjointness:** Parts don't overlap\n3. **Coverage:** Every element 1 to n-1 is in some part\n4. **n-sum-free:** Each part avoids having subsets sum to n\n\nThis captures the combinatorial structure of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Partitions", "Covering", "Disjoint sets"]
+  },
+  {
+    "id": "ann-e360-f-definition",
+    "proofId": "erdos-360",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**f(n) = minimum valid partition size:**\n\n```lean\nnoncomputable def f (n : ℕ) : ℕ := sInf (ValidPartitionSizes n)\n```\n\nThis takes the infimum (minimum) over all valid partition sizes. The function is noncomputable because finding the minimum partition is computationally hard (related to NP-complete problems).\n\n**The central question:** How does f(n) grow as n → ∞?",
+    "significance": "critical",
+    "relatedConcepts": ["Infimum", "Optimization", "Complexity"]
+  },
+  {
+    "id": "ann-e360-alon-erdos",
+    "proofId": "erdos-360",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "axiom",
+    "title": "Alon-Erdős (1996)",
+    "content": "**First Bounds on f(n):**\n\nAlon and Erdős proved f(n) = n^{1/3+o(1)}, with explicit bounds:\n\n$$\\frac{n^{1/3}}{(\\log n)^{4/3}} \\ll f(n) \\ll \\frac{n^{1/3}}{(\\log n)^{1/3}}(\\log\\log n)^{1/3}$$\n\n**Significance:** This established the cube-root growth rate as the correct order of magnitude.\n\n**Reference:** Alon, N. and Erdős, P., \"Sure monochromatic subset sums\", Acta Arith. (1996), 269-272.",
+    "mathContext": "The proof uses probabilistic methods and bounds on subset sums in random colorings.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic bounds", "Probabilistic method"]
+  },
+  {
+    "id": "ann-e360-vu",
+    "proofId": "erdos-360",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "axiom",
+    "title": "Vu (2007)",
+    "content": "**Improved Lower Bound:**\n\n$$f(n) \\gg \\frac{n^{1/3}}{\\log n}$$\n\nVu improved the lower bound from n^{1/3}/(log n)^{4/3} to n^{1/3}/log n, closing the gap between upper and lower bounds.\n\n**Reference:** Vu, V.H., \"Some new results on subset sums\", J. Number Theory (2007), 229-233.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bounds", "Number theory"]
+  },
+  {
+    "id": "ann-e360-cfp",
+    "proofId": "erdos-360",
+    "range": { "startLine": 97, "endLine": 104 },
+    "type": "axiom",
+    "title": "Conlon-Fox-Pham (2021)",
+    "content": "**Exact Order of Growth:**\n\n$$f(n) \\asymp \\frac{n^{1/3}(n/\\phi(n))}{(\\log n)^{1/3}(\\log\\log n)^{2/3}}$$\n\nThis determines f(n) up to a multiplicative constant. The factor n/φ(n) (where φ is Euler's totient) captures how the arithmetic structure of n affects the partition problem.\n\n**Reference:** Conlon, D., Fox, J., and Pham, H.T., \"Subset sums, completeness and colorings\", arXiv:2104.14766 (2021).\n\n**This resolves Erdős Problem #360.**",
+    "mathContext": "The totient factor arises because numbers with many small prime divisors have more arithmetic constraints on subset sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's totient", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e360-cube-root",
+    "proofId": "erdos-360",
+    "range": { "startLine": 106, "endLine": 120 },
+    "type": "concept",
+    "title": "Why Cube-Root Growth?",
+    "content": "**Intuition for n^{1/3}:**\n\nIf a class contains elements up to size ~n^{1/3}, then choosing 3 such elements can easily sum to n. This gives a rough lower bound of n^{1/3} classes.\n\n**The n/φ(n) Factor:**\n\nWhen n has many small prime factors:\n- φ(n) is much smaller than n\n- n/φ(n) becomes large\n- More arithmetic progressions with common factors create sum constraints\n- More partitions are needed\n\n**Example:** For primorials (products of first k primes), n/φ(n) ~ log log n.",
+    "significance": "key",
+    "relatedConcepts": ["Greedy bounds", "Totient function", "Primorials"]
+  },
+  {
+    "id": "ann-e360-prime-ratio",
+    "proofId": "erdos-360",
+    "range": { "startLine": 122, "endLine": 127 },
+    "type": "theorem",
+    "title": "Prime Totient Ratio",
+    "content": "**prime_totient_ratio:**\n\nFor a prime p, φ(p) = p - 1, so:\n\n$$\\frac{p}{\\phi(p)} = \\frac{p}{p-1} \\approx 1$$\n\nThis means for prime n, the n/φ(n) factor contributes little to f(n). The complexity comes from composite n with many factors.",
+    "significance": "supporting",
+    "relatedConcepts": ["Prime numbers", "Totient function"]
+  },
+  {
+    "id": "ann-e360-small-cases",
+    "proofId": "erdos-360",
+    "range": { "startLine": 135, "endLine": 152 },
+    "type": "theorem",
+    "title": "Small Cases",
+    "content": "**Explicit Values:**\n\n- **f(2) = 1:** {1} is 2-sum-free (single element can't sum to 2)\n- **f(3) = 1:** {1,2} needs careful analysis - subsets are ∅, {1}, {2}, {1,2} with sums 0, 1, 2, 3\n- **f(4) = 2:** Need 2 classes because {1,3} sums to 4\n\nThese small cases illustrate the basic structure of the problem before asymptotic behavior dominates.",
+    "significance": "supporting",
+    "relatedConcepts": ["Base cases", "Verification"]
+  },
+  {
+    "id": "ann-e360-connections",
+    "proofId": "erdos-360",
+    "range": { "startLine": 154, "endLine": 164 },
+    "type": "concept",
+    "title": "Connections to Related Problems",
+    "content": "**Related Problems:**\n\n1. **Sum-free sets:** Sets where no element is a sum of two others (x + y ≠ z)\n\n2. **Schur numbers:** Minimum k such that {1,...,n} can be k-colored avoiding monochromatic x + y = z\n\n3. **Complete sequences:** Sequences where every sufficiently large n is representable as a sum\n\n4. **Subset sum problem:** NP-complete decision problem\n\nThe logarithmic correction terms (log n)^{1/3}(log log n)^{2/3} reflect deep analytic structure.",
+    "significance": "key",
+    "relatedConcepts": ["Schur numbers", "NP-completeness", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e360-main-result",
+    "proofId": "erdos-360",
+    "range": { "startLine": 166, "endLine": 185 },
+    "type": "theorem",
+    "title": "Main Result: Problem Solved",
+    "content": "**erdos_360_solved:**\n\nThe theorem confirms that Problem #360 is resolved by showing:\n\n$$c_1 \\cdot \\frac{n^{1/3}}{(\\log n)^{1/3}} \\leq f(n) \\leq c_2 \\cdot \\frac{n^{1/3}}{(\\log n)^{1/3}}$$\n\nfor positive constants c₁, c₂ and sufficiently large n.\n\nThis follows from the Conlon-Fox-Pham result by observing that:\n- n/φ(n) ≥ 1 always\n- (log log n)^{2/3} grows slowly\n\nThe full characterization includes the n/φ(n) factor which captures arithmetic structure.",
+    "mathContext": "The simplified bound omits the n/φ(n) and (log log n) factors for clarity, but the full result includes them.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic equivalence", "Order of growth"]
+  }
+]

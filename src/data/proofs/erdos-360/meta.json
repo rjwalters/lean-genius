@@ -1,33 +1,142 @@
 {
   "id": "erdos-360",
-  "title": "Erdős Problem #360",
+  "title": "Erdős Problem #360: Partition Sum-Free Classes",
   "slug": "erdos-360",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that ... can be partitioned into ... classes so that ... cannot be expressed as a sum of distinct ele...",
+  "description": "Determine the growth rate of f(n), the minimum number of classes to partition {1,...,n-1} so n is not a sum of distinct elements from any class. Solved: f(n) ≍ n^{1/3}(n/φ(n)) / (log n)^{1/3}(log log n)^{2/3}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Conlon-Fox-Pham (2021 solution), Alon-Erdős (1996 bounds)",
     "sourceUrl": "https://erdosproblems.com/360",
-    "date": "",
-    "status": "pending",
+    "date": "2021",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos360Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "partition",
+      "sum-free-sets",
+      "ramsey-theory",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 360,
     "erdosUrl": "https://erdosproblems.com/360",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Infimum of a set",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsNSumFree definition: set with no subset summing to n",
+      "IsValidPartition definition: valid n-sum-free partition of {1,...,n-1}",
+      "f function: minimum partition size",
+      "alon_erdos_1996 axiom: initial n^{1/3+o(1)} bounds",
+      "vu_2007 axiom: improved lower bound n^{1/3}/log n",
+      "conlon_fox_pham_2021 axiom: exact order of growth",
+      "prime_totient_ratio theorem: φ(p) = p-1",
+      "Small cases f(2), f(3), f(4)",
+      "erdos_360_solved theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #360 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that $\\{1,\\ldots,n-1\\}$ can be partitioned into $f(n)$ classes so that $n$ cannot be expressed as a sum of distinct elements from the same class. How fast does $f(n)$ grow?\n\n\n\nAlon and Erd\\H{o}s \\cite{AlEr96} proved that $f(n) = n^{1/3+o(1)}$, and more precisely\\[\\frac{n^{1/3}}{(\\log n)^{4/3}}\\ll f(n) \\ll \\frac{n^{1/3}}{(\\log n)^{1/3}}(\\log\\log n)^{1/3}.\\]Vu \\cite{Vu07} improved the lower bound to\\[f(n) \\gg \\frac{n^{1/3}}{\\log n}.\\]Conlon, Fox, and Pham \\cite{CFP21} determined the order of growth of $f(n)$ up to a multiplicative constant, proving\\[f(n) \\asymp \\frac{n^{1/3}(n/\\phi(n))}{(\\log n)^{1/3}(\\log\\log n)^{2/3}}.\\]\n\n\n\n\nReferences\n\n\n[AlEr96] Alon, Noga and Erd\\H{o}s, Paul, Sure monochromatic subset sums. Acta Arith. (1996), 269-272.\n\n[CFP21] Conlon, D. and Fox, J. and Pham, H. T., Subset sums, completeness and colorings. arXiv:2104.14766 (2021).\n\n[Vu07] Vu, Van H., Some new results on subset sums. J. Number Theory (2007), 229-233.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #360**\n\nThis problem asks about partitioning integers to avoid subset sums, a fundamental question in additive combinatorics with connections to Ramsey theory.\n\n**Key History:**\n- Erdős and Graham (1980): Original problem in \"Old and new problems and results in combinatorial number theory\"\n- Alon-Erdős (1996): Proved f(n) = n^{1/3+o(1)}, establishing cube-root growth\n- Vu (2007): Improved lower bound to n^{1/3}/log n\n- Conlon-Fox-Pham (2021): Determined exact order up to constants\n\n**Mathematical Setting:**\nGiven n, we want to partition {1,2,...,n-1} into the minimum number of classes such that no class contains distinct elements summing to n. This is a Ramsey-type problem about avoiding specific additive structures.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) be minimal such that {1,...,n-1} can be partitioned into f(n) classes so that n cannot be expressed as a sum of distinct elements from the same class. How fast does f(n) grow?\n\n**Answer:**\n$$f(n) \\asymp \\frac{n^{1/3}(n/\\phi(n))}{(\\log n)^{1/3}(\\log\\log n)^{2/3}}$$\n\nConlon, Fox, and Pham (2021) determined the order of growth up to a multiplicative constant, resolving the problem.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsNSumFree: predicate for sets avoiding n as a subset sum\n   - IsValidPartition: valid partition of {1,...,n-1}\n   - f(n): minimum partition size using sInf\n\n2. **Historical Results as Axioms:**\n   - Alon-Erdős 1996: initial bounds n^{1/3}/(log n)^{4/3} to n^{1/3}/(log n)^{1/3}(log log n)^{1/3}\n   - Vu 2007: lower bound n^{1/3}/log n\n   - Conlon-Fox-Pham 2021: exact order with φ(n) factor\n\n3. **Key Insights:**\n   - Cube-root growth from greedy argument (3 elements of size ~n^{1/3} sum to ~n)\n   - n/φ(n) factor captures arithmetic structure\n\n4. **Small Cases:** f(2)=1, f(3)=1, f(4)=2",
+    "keyInsights": [
+      "**Cube-root Growth:** f(n) ~ n^{1/3} because choosing 3 elements of size ~n^{1/3} easily sums to n",
+      "**Totient Factor:** n/φ(n) captures how arithmetic structure affects the problem; highly composite n need more classes",
+      "**Sum-free Connection:** Related to classical sum-free sets where x+y≠z within the set",
+      "**Logarithmic Corrections:** The (log n)^{1/3}(log log n)^{2/3} factor requires deep analytic methods",
+      "**Ramsey-theoretic:** A coloring/partition problem avoiding specific additive patterns"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Problem Overview",
+      "summary": "Header documentation explaining the problem and its solution",
+      "startLine": 1,
+      "endLine": 13
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Setup",
+      "summary": "Mathlib imports for sets, reals, logarithms, and totient",
+      "startLine": 15,
+      "endLine": 23
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "IsNSumFree, IsValidPartition, ValidPartitionSizes, and f(n)",
+      "startLine": 25,
+      "endLine": 65
+    },
+    {
+      "id": "historical-results",
+      "title": "Historical Results",
+      "summary": "Axioms for Alon-Erdős 1996, Vu 2007, and Conlon-Fox-Pham 2021",
+      "startLine": 67,
+      "endLine": 104
+    },
+    {
+      "id": "key-observations",
+      "title": "Key Observations",
+      "summary": "Why n^{1/3} and role of n/φ(n)",
+      "startLine": 106,
+      "endLine": 133
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "Computing f(2), f(3), f(4) directly",
+      "startLine": 135,
+      "endLine": 152
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Related Problems",
+      "summary": "Links to sum-free sets, Schur numbers, complete sequences",
+      "startLine": 154,
+      "endLine": 164
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_360_solved theorem showing problem is resolved",
+      "startLine": 166,
+      "endLine": 187
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #360 asked how fast f(n) grows, where f(n) is the minimum partition of {1,...,n-1} avoiding n as a subset sum in each class. The answer is f(n) ≍ n^{1/3}(n/φ(n)) / (log n)^{1/3}(log log n)^{2/3}, determined by Conlon, Fox, and Pham in 2021.",
+    "implications": "**Connections and Applications**\n\n1. **Additive Combinatorics:** Understanding partition problems with sum constraints\n\n2. **Ramsey Theory:** Related to Schur numbers and monochromatic solutions\n\n3. **Subset Sum Problems:** Fundamental NP-complete problem connections\n\n4. **Analytic Number Theory:** The logarithmic factors require sophisticated estimates\n\n5. **Totient Function:** The appearance of φ(n) shows how multiplicative structure matters",
+    "openQuestions": [
+      "Determining the exact constants c₁ and c₂ in the asymptotic formula",
+      "Understanding the distribution of f(n) for specific classes of n",
+      "Generalizations to other forbidden sum patterns",
+      "Algorithmic aspects: efficiently constructing optimal partitions",
+      "Higher-dimensional analogues with multivariate sums"
+    ]
   }
 }
