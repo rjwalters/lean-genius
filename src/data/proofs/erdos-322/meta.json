@@ -1,33 +1,117 @@
 {
   "id": "erdos-322",
-  "title": "Erdős Problem #322",
+  "title": "Erdős Problem #322: Representations as Sums of k-th Powers",
   "slug": "erdos-322",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the set of ...th powers. What is the order of growth of ..., i.e. the number of representations of ... as ...",
+  "description": "Does r_k(n) > n^c for infinitely many n, where r_k(n) counts representations of n as sum of k k-th powers? k=3: YES (Mahler 1936). k≥4: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Mahler (1936 for k=3), Erdős-Chowla (1936 lower bounds)",
     "sourceUrl": "https://erdosproblems.com/322",
-    "date": "",
-    "status": "pending",
+    "date": "1936",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos322Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "number-theory", "waring", "additive-combinatorics", "hypothesis-k"],
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 322,
     "erdosUrl": "https://erdosproblems.com/322",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Nat.pow", "description": "Power function for naturals", "module": "Mathlib.Data.Nat.Basic" },
+      { "theorem": "Finset.range", "description": "Finite range sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Real.log", "description": "Logarithm function", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Real.rpow", "description": "Real power function", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+    ],
+    "originalContributions": [
+      "kthPowers definition: set of k-th powers",
+      "representationCount: r_k(n) counting representations",
+      "hypothesisK: Hardy-Littlewood conjecture formalized",
+      "hypothesisK_fails: negation as polynomial lower bound",
+      "mahler_theorem: r_3(n) ≫ n^{1/12} for infinitely many n",
+      "erdos_chowla_bound: r_k(n) ≫ n^{c/log log n}",
+      "hypothesisKStar: weaker squared sum bound",
+      "waring_connection: link to Waring's problem"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #322 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $A\\subset \\mathbb{N}$ be the set of $k$th powers. What is the order of growth of $1_A^{(k)}(n)$, i.e. the number of representations of $n$ as the sum of $k$ many $k$th powers? Does there exist some $c>0$ and infinitely many $n$ such that\\[1_A^{(k)}(n) >n^c?\\]\n\n\n\nConnected to Waring's problem. The famous Hypothesis $K$ of Hardy and Littlewood was that $1_A^{(k)}(n)\\leq n^{o(1)}$, but this was disproved by Mahler \\cite{Ma36} for $k=3$, who constructed infinitely many $n$ such that\\[1_A^{(3)}(n)\\gg n^{1/12}\\](where $A$ is the set of cubes). Erd\\H{o}s believed Hypothesis $K$ fails for all $k\\geq 4$, but this is unknown. Hardy and Littlewood made the weaker Hypothesis $K^*$ that for all $N$ and $\\epsilon>0$\\[\\sum_{n\\leq N}1_A^{(k)}(n)^2 \\ll_\\epsilon N^{1+\\epsilon}.\\]Erd\\H{o}s and Graham remark: 'This is probably true but no doubt very deep. However, it would suffice for most applications.'\n\nIndependently Erd\\H{o}s \\cite{Er36} and Chowla proved that for all $k\\geq 3$ and infinitely many $n$\\[1_A^{(k)}(n) \\gg n^{c/\\log\\log n}\\]for some constant $c>0$ (depending on $k$). In \\cite{Er65b} Erd\\H{o}s claims an unpublished proof that, if $B$ is the set of $k$th powers of any set of positive density, then\\[\\limsup 1_B^{(k)}(n)=\\infty.\\]This is discussed in problem D4 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er36] Erd\\\"{o}s, Paul, On the Representation of an Integer as the Sum of k k-th\nPowers. J. London Math. Soc. (1936), 133-136.\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ma36] Mahler, Kurt, Note on Hypothesis K of Hardy and Littlewood. J. London Math. Soc. (1936), 136-138.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects to the classical theory of Waring's problem and the Hardy-Littlewood circle method. Hardy and Littlewood conjectured Hypothesis K: that r_k(n) = n^{o(1)} for k ≥ 3, meaning representations grow slower than any polynomial.\n\nMahler (1936) sensationally disproved this for cubes, showing r_3(n) ≫ n^{1/12} for infinitely many n. Erdős believed Hypothesis K fails for all k ≥ 4, but this remains open. Independently, Erdős and Chowla proved a weaker bound r_k(n) ≫ n^{c/log log n} for all k ≥ 3.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet k ≥ 3 and let r_k(n) be the number of representations of n as a sum of k many k-th powers.\n\n**Question:** Does there exist c > 0 with r_k(n) > n^c for infinitely many n?\n\n**Results:**\n- k = 3: YES, c = 1/12 works (Mahler 1936)\n- k ≥ 4: OPEN (Erdős conjectured YES)\n- Weaker: r_k(n) ≫ n^{c/log log n} for all k ≥ 3 (Erdős-Chowla)",
+    "proofStrategy": "The formalization defines the representation count r_k(n) and formalizes Hypothesis K and its negation. Mahler's theorem is axiomatized for k = 3. The Erdős-Chowla bound gives a weaker lower bound valid for all k. We also formalize Hypothesis K* (squared sum bound) which is probably true but unproven.",
+    "keyInsights": [
+      "**Hypothesis K:** r_k(n) ≤ n^{o(1)} (Hardy-Littlewood conjecture)",
+      "**Mahler (1936):** Disproved for cubes with r_3(n) ≫ n^{1/12}",
+      "**k ≥ 4:** Status unknown - Erdős believed K fails",
+      "**Erdős-Chowla:** Weaker r_k(n) ≫ n^{c/log log n} for all k ≥ 3",
+      "**Hypothesis K*:** Σ r_k(n)² ≪ N^{1+ε} (probably true, very deep)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 66,
+      "summary": "k-th powers set and representation count r_k(n)"
+    },
+    {
+      "id": "hypothesis-k",
+      "title": "Hypothesis K",
+      "startLine": 68,
+      "endLine": 86,
+      "summary": "Hardy-Littlewood conjecture and its negation"
+    },
+    {
+      "id": "mahler",
+      "title": "Mahler's Theorem",
+      "startLine": 88,
+      "endLine": 126,
+      "summary": "Hypothesis K fails for k=3 with c=1/12"
+    },
+    {
+      "id": "k-geq-4",
+      "title": "Status for k ≥ 4",
+      "startLine": 128,
+      "endLine": 144,
+      "summary": "Open problem - Erdős conjectured K fails"
+    },
+    {
+      "id": "erdos-chowla",
+      "title": "Erdős-Chowla Bound",
+      "startLine": 146,
+      "endLine": 160,
+      "summary": "Weaker lower bound valid for all k ≥ 3"
+    },
+    {
+      "id": "hypothesis-k-star",
+      "title": "Hypothesis K*",
+      "startLine": 162,
+      "endLine": 185,
+      "summary": "Weaker conjecture on squared sums"
+    },
+    {
+      "id": "waring",
+      "title": "Waring's Problem Connection",
+      "startLine": 206,
+      "endLine": 232,
+      "summary": "Relationship to classical Waring problem"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 234,
+      "endLine": 289,
+      "summary": "Main results and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #322 is PARTIALLY SOLVED. For k=3 (cubes), Mahler (1936) proved that Hypothesis K fails with r_3(n) ≫ n^{1/12} for infinitely many n. For k ≥ 4, whether Hypothesis K fails remains OPEN, though Erdős conjectured it does. The Erdős-Chowla bound provides a weaker result valid for all k ≥ 3.",
+    "implications": "This problem is central to additive number theory and connects to Waring's problem and the Hardy-Littlewood circle method. Understanding the growth of representation counts reveals deep structure in how integers can be expressed as sums of powers.",
+    "openQuestions": [
+      "Does Hypothesis K fail for k = 4? (Erdős conjectured YES)",
+      "What is the optimal exponent c for each k?",
+      "Is Hypothesis K* true?",
+      "Characterize n with exceptionally many representations"
+    ]
   }
 }

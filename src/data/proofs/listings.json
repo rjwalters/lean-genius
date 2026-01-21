@@ -5833,17 +5833,23 @@
   },
   {
     "id": "erdos-322",
-    "title": "Erdős Problem #322",
+    "title": "Erdős Problem #322: Representations as Sums of k-th Powers",
     "slug": "erdos-322",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the set of ...th powers. What is the order of growth of ..., i.e. the number of representations of ... as ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does r_k(n) > n^c for infinitely many n, where r_k(n) counts representations of n as sum of k k-th powers? k=3: YES (Mahler 1936). k≥4: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "waring",
+      "additive-combinatorics",
+      "hypothesis-k"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 322,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-325",
