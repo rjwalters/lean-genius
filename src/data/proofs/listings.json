@@ -6026,17 +6026,23 @@
   },
   {
     "id": "erdos-337",
-    "title": "Erdős Problem #337",
+    "title": "Erdős Problem #337: Additive Bases and Sumset Growth",
     "slug": "erdos-337",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis (of any finite order) such that .... Is it true that\\[\\lim_{N\\to \\infty}\\rvert}{\\lvert A\\cap \\{1...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For sparse additive bases A, is |A+A ∩ [1,N]| / |A ∩ [1,N]| → ∞? Answer: NO (Turjányi 1984). Generalized to h-fold sumsets by Ruzsa-Turjányi.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "additive-bases",
+      "number-theory"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 337,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-338",
