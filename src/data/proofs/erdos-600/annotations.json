@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "definition",
+    "title": "Graph Structure",
+    "content": "A simple graph on n vertices is represented by its edge set, which is a subset of Fin n × Fin n. The structure enforces two key properties: symmetry (if (u,v) is an edge, so is (v,u)) and irreflexivity (no self-loops). This is a standard representation for undirected graphs in formal mathematics.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "The edge count divides the cardinality of the edge set by 2 because undirected edges are stored as ordered pairs: both (u,v) and (v,u) are in the edge set for each undirected edge {u,v}. This gives the standard definition of |E(G)|.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "Triangle Predicate",
+    "content": "A triangle in G is a set of three distinct vertices {u, v, w} such that all three edges (u,v), (v,w), (u,w) are present. The distinctness conditions u ≠ v, v ≠ w, u ≠ w ensure we have a proper 3-clique, not a degenerate case.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 72, "endLine": 73 },
+    "type": "definition",
+    "title": "Triangle Count for an Edge",
+    "content": "triangleCount G u v counts how many triangles contain the edge {u,v}. This is computed by counting vertices w such that {u,v,w} forms a triangle. This measure is central to the problem: we ask when some edge must be in many triangles.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "definition",
+    "title": "The e(n,r) Function",
+    "content": "e(n,r) is defined as the infimum of all thresholds m such that: every graph on n vertices with ≥ m edges, where all edges are triangle-covered, must have some edge in ≥ r triangles. This captures the minimum edge count forcing high triangle-multiplicity.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 130, "endLine": 131 },
+    "type": "theorem",
+    "title": "Ruzsa-Szemerédi (1978)",
+    "content": "For any fixed r ≥ 2, e(n,r) = o(n²). This means the threshold grows subquadratically in n. The proof uses the triangle removal lemma, which states that graphs with few triangles can be made triangle-free by removing few edges. This is a deep result in extremal combinatorics.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 165, "endLine": 166 },
+    "type": "conjecture",
+    "title": "Question 1 (OPEN)",
+    "content": "Does e(n, r+1) - e(n, r) → ∞ as n → ∞? This asks whether requiring one more triangle per edge increases the threshold by an amount that grows unboundedly. Intuitively, more triangles should require more edges, but the question is whether this gap is bounded or not.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 190, "endLine": 192 },
+    "type": "conjecture",
+    "title": "Question 2 (OPEN)",
+    "content": "Does e(n, r+1) / e(n, r) → 1 as n → ∞? This asks whether consecutive thresholds are asymptotically equivalent. If true, despite absolute differences potentially growing, the relative increase would vanish. Combined with Question 1, this would mean differences → ∞ but relative differences → 0.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 216, "endLine": 224 },
+    "type": "theorem",
+    "title": "Monotonicity Properties",
+    "content": "e(n,r) is monotone in both arguments: e(n,r) ≤ e(n,r+1) (requiring more triangles per edge needs more edges) and e(n,r) ≤ e(n+1,r) (more vertices allow more edges before forcing high triangle-multiplicity). These follow from the definition but are important structural properties.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 266, "endLine": 274 },
+    "type": "theorem",
+    "title": "Known Bounds",
+    "content": "Upper bound: e(n,r) ≤ C_r · n²/log n for some constant C_r (improvement over Ruzsa-Szemerédi). Lower bound: e(n,r) ≥ c_r · n^{2-o(1)}, showing the threshold is close to quadratic. The gap between these bounds leaves room for the questions about fine structure.",
+    "significance": "important"
+  }
+]
