@@ -1,1 +1,212 @@
-[]
+[
+  {
+    "id": "ann-974-header",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #974 asks: if power sums sₖ = Σ zᵢᵏ have infinitely many (n-1)-tuples of consecutive zeros, must the zᵢ be nth roots of unity? **YES** — proved by Tijdeman (1966).",
+    "mathContext": "For complex z₁, ..., zₙ with z₁ = 1, the power sums encode algebraic structure. The vanishing of n-1 consecutive sums is a rigid constraint related to Newton's identities.",
+    "significance": "critical",
+    "relatedConcepts": ["power sums", "roots of unity", "Newton's identities"]
+  },
+  {
+    "id": "ann-974-configuration",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Configuration Type",
+    "content": "A **Configuration n** is a function Fin n → ℂ, representing n complex numbers indexed by 0, 1, ..., n-1.",
+    "mathContext": "Using Fin n ensures exactly n elements. The function type allows clean summation syntax via BigOperators.",
+    "significance": "key",
+    "relatedConcepts": ["Fin", "function type", "indexed family"]
+  },
+  {
+    "id": "ann-974-powersum",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 47,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Power Sum Function",
+    "content": "The **power sum** sₖ = Σᵢ zᵢᵏ sums the kth powers of all configuration elements. These are the central objects of study.",
+    "mathContext": "Power sums form a basis for symmetric polynomials. Via Newton's identities, they determine elementary symmetric functions and thus the minimal polynomial.",
+    "significance": "critical",
+    "relatedConcepts": ["symmetric functions", "Newton's identities", "BigOperators"]
+  },
+  {
+    "id": "ann-974-rootofunity",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "nth Root of Unity",
+    "content": "**nthRootOfUnity n j** = e(j/n) = exp(2πij/n) gives the jth of the n equally-spaced points on the unit circle.",
+    "mathContext": "The nth roots of unity satisfy xⁿ = 1 and are ζ, ζ², ..., ζⁿ = 1 where ζ = exp(2πi/n) is primitive. They form a cyclic group of order n.",
+    "significance": "critical",
+    "relatedConcepts": ["Complex.exp", "unit circle", "cyclic group"]
+  },
+  {
+    "id": "ann-974-powersumproperty",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "type": "axiom",
+    "title": "Power Sum of Roots of Unity",
+    "content": "For the nth roots of unity: sₖ = n if n divides k, else sₖ = 0. This geometric series property is fundamental.",
+    "mathContext": "When n ∤ k, the sum Σⱼ ζʲᵏ = (1 - ζⁿᵏ)/(1 - ζᵏ) = 0 since ζⁿ = 1 but ζᵏ ≠ 1. When n | k, each term is 1.",
+    "significance": "critical",
+    "relatedConcepts": ["geometric series", "divisibility", "cyclotomic"]
+  },
+  {
+    "id": "ann-974-zerotuple",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Consecutive Zero Tuple",
+    "content": "**consecutiveZeroTuple z k** means (sₖ, sₖ₊₁, ..., sₖ₊ₙ₋₂) are all zero — an (n-1)-tuple of consecutive vanishing power sums.",
+    "mathContext": "Why n-1? Because n power sums (s₁, ..., sₙ) determine the characteristic polynomial via Newton's identities. Having n-1 zeros is nearly maximal constraint.",
+    "significance": "key",
+    "relatedConcepts": ["power sum vanishing", "polynomial constraint"]
+  },
+  {
+    "id": "ann-974-infinitelymany",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 81,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Infinitely Many Zero Tuples",
+    "content": "**hasInfinitelyManyZeroTuples z** means for any N, there exists k > N with a zero (n-1)-tuple starting at k.",
+    "mathContext": "This infinite condition seems strong, but Tijdeman showed even TWO such tuples suffice to force the roots-of-unity conclusion!",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic condition", "infinite family"]
+  },
+  {
+    "id": "ann-974-essentially",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 104,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Essentially Roots of Unity",
+    "content": "**isEssentiallyRootsOfUnity z** means z is a permutation of the nth roots of unity. 'Essentially' allows reordering since power sums are symmetric.",
+    "mathContext": "Power sums are symmetric functions: Σ zᵢᵏ is unchanged if we permute the zᵢ. So we can only determine the configuration up to permutation.",
+    "significance": "key",
+    "relatedConcepts": ["permutation", "bijection", "symmetric function"]
+  },
+  {
+    "id": "ann-974-twopolygons",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 109,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "Two Regular Polygons",
+    "content": "For even n, **isTwoRegularPolygons z** allows the zᵢ to be vertices of two regular (n/2)-gons with the same circumscribed circle centered at origin.",
+    "mathContext": "When n is even, there's more flexibility: two rotated copies of (n/2)-gons give the same power sums as the n roots of unity for many k values.",
+    "significance": "key",
+    "relatedConcepts": ["even n case", "regular polygon", "rotation symmetry"]
+  },
+  {
+    "id": "ann-974-turan",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "axiom",
+    "title": "Turán's Conjecture",
+    "content": "**turan_conjecture**: If infinitely many (n-1)-tuples of consecutive power sums vanish, then z is essentially roots of unity. This is the original problem statement.",
+    "mathContext": "Turán posed this conjecture connecting the analytic condition (power sum zeros) to the algebraic conclusion (roots of unity).",
+    "significance": "critical",
+    "relatedConcepts": ["Turán", "conjecture", "main statement"]
+  },
+  {
+    "id": "ann-974-tijdeman-odd",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 123,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Tijdeman's Theorem (Odd n)",
+    "content": "**tijdeman_1966_odd**: For odd n ≥ 3, just TWO distinct (n-1)-tuples of consecutive zeros suffice to conclude z is exactly the nth roots of unity.",
+    "mathContext": "This is far stronger than Turán's conjecture: finitely many (just 2!) tuples suffice. For odd n, the characterization is exact — no 'essentially' needed.",
+    "significance": "critical",
+    "relatedConcepts": ["Tijdeman", "odd case", "strong form"]
+  },
+  {
+    "id": "ann-974-tijdeman-even",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 134,
+      "endLine": 140
+    },
+    "type": "axiom",
+    "title": "Tijdeman's Theorem (Even n)",
+    "content": "**tijdeman_1966_even**: For even n ≥ 4, two distinct zero tuples imply z forms two regular (n/2)-gons. This is the complete characterization.",
+    "mathContext": "The even case has extra flexibility from the Z₂ symmetry: rotating one (n/2)-gon by π gives another valid configuration with same power sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Tijdeman", "even case", "two polygons"]
+  },
+  {
+    "id": "ann-974-mainresult",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 154,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Main Result: erdos_974_solved",
+    "content": "**Erdős Problem #974: SOLVED (YES)**. If infinitely many (n-1)-tuples of consecutive power sums vanish, then z is essentially roots of unity.",
+    "mathContext": "The theorem wraps turan_conjecture with a clean interface. The proof is immediate from the axiom.",
+    "significance": "critical",
+    "relatedConcepts": ["main theorem", "resolution", "Erdős"]
+  },
+  {
+    "id": "ann-974-newton",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 181,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Newton's Identities Connection",
+    "content": "Newton's identities relate power sums to elementary symmetric polynomials: k·eₖ = Σⱼ (-1)^(j-1) eₖ₋ⱼ pⱼ. This algebraic structure underlies the result.",
+    "mathContext": "If z₁, ..., zₙ are roots of P(x) = xⁿ - e₁xⁿ⁻¹ + ... + (-1)ⁿeₙ, then the power sums determine the eᵢ. Consecutive zeros heavily constrain the polynomial.",
+    "significance": "key",
+    "relatedConcepts": ["Newton's identities", "elementary symmetric", "characteristic polynomial"]
+  },
+  {
+    "id": "ann-974-summary",
+    "proofId": "erdos-974",
+    "range": {
+      "startLine": 235,
+      "endLine": 249
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_974_summary** packages both the main result (Turán's conjecture) and Tijdeman's strengthening for odd n into a single statement.",
+    "mathContext": "The conjunction shows both the original problem (infinitely many) and the surprising strengthening (just 2 tuples for odd n).",
+    "significance": "key",
+    "relatedConcepts": ["summary", "conjunction", "both results"]
+  }
+]

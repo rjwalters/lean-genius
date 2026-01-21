@@ -1,33 +1,148 @@
 {
   "id": "erdos-974",
-  "title": "Erdős Problem #974",
+  "title": "Erdős Problem #974: Power Sums and Roots of Unity",
   "slug": "erdos-974",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence such that .... Suppose that the sequence of\\[s_k=\\sum_{1\\leq i\\leq n}z_i^k\\]contains infinitely many .....",
+  "description": "If power sums sₖ = Σ zᵢᵏ have infinitely many (n-1)-tuples of consecutive zeros, then the zᵢ are essentially nth roots of unity. Proved by Tijdeman (1966) in a stronger form.",
   "meta": {
-    "author": "Unknown",
+    "author": "Tijdeman (1966), conjecture by Turán",
     "sourceUrl": "https://erdosproblems.com/974",
-    "date": "",
-    "status": "pending",
+    "date": "1966",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos974Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "roots-of-unity",
+      "power-sums",
+      "algebra",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 974,
     "erdosUrl": "https://erdosproblems.com/974",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential function",
+        "module": "Mathlib.Data.Complex.Exponential"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for indexing",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation notation",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Function.Bijective",
+        "description": "Bijection for permutations",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Configuration type: Fin n → ℂ for n complex numbers",
+      "powerSum function: sₖ = Σ zᵢᵏ",
+      "nthRootOfUnity: e(j/n) = exp(2πij/n)",
+      "consecutiveZeroTuple predicate",
+      "isEssentiallyRootsOfUnity characterization",
+      "isTwoRegularPolygons for even n case",
+      "turan_conjecture axiom: main statement",
+      "tijdeman_1966_odd/even axioms: stronger form",
+      "erdos_974_solved theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #974 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $z_1,\\ldots,z_n\\in \\mathbb{C}$ be a sequence such that $z_1=1$. Suppose that the sequence of\\[s_k=\\sum_{1\\leq i\\leq n}z_i^k\\]contains infinitely many $(n-1)$-tuples of consecutive values of $s_k$ which are all $0$. Then (essentially)\\[z_j=e(j/n),\\]where $e(x)=e^{2\\pi ix}$.\n\n\n\nA conjecture of Tur\\'{a}n. Erd\\H{o}s speculates that this may be true if there are two distinct $(n-1)$-tuples of consecutive values of $s_k$ which are $0$. He does not elaborate on what the 'essentially' may mean precisely.\n\nThis is true (in the stronger form with only two such tuples) - in fact if $n$ is odd then the $z_i$ must be exactly the $n$th roots of unity, and if $n$ is even they must be the vertices of two regular $(n/2)$-gons with the same circumscribed circle centred at the origin. This was first proved by Tijdeman \\cite{Ti66}. An independent proof of this was given in the comments section by Hu, Tang, and Zhang.\n\n\n\n\nReferences\n\n\n[Ti66] Tijdeman, R., On a conjecture of {T}ur\\'an and {E}rd\\H{o}s. Indag. Math. (1966), 374--383.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #974: Power Sums and Roots of Unity**\n\nThis elegant problem connects complex analysis with algebra through power sums. It originates from a conjecture by Turán, with Erdős posing a stronger version.\n\n**Key History:**\n- Turán: Original conjecture about infinitely many zero tuples\n- Erdős: Speculated that TWO such tuples might suffice\n- Tijdeman (1966): Proved the strong form in full generality\n- Hu, Tang, Zhang: Independent proof via comments\n\n**Mathematical Setting:**\nGiven z₁, ..., zₙ ∈ ℂ with z₁ = 1, the power sums sₖ = Σ zᵢᵏ encode algebraic information about the configuration. The question asks: when can many consecutive power sums vanish?",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet z₁, ..., zₙ ∈ ℂ with z₁ = 1. Define power sums:\n$$s_k = \\sum_{i=1}^{n} z_i^k$$\n\n**Conjecture (Turán):** If infinitely many (n-1)-tuples of consecutive sₖ are all 0, then essentially:\n$$z_j = e(j/n) = e^{2\\pi i j/n}$$\n\n**Answer: YES**\n\nTijdeman (1966) proved a stronger result: only TWO distinct (n-1)-tuples suffice!",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Configuration Definition:**\n   - Configuration n := Fin n → ℂ (n complex numbers)\n   - powerSum: the kth power sum sₖ\n   - nthRootOfUnity: exp(2πij/n)\n\n2. **Zero Tuple Predicates:**\n   - consecutiveZeroTuple: (sₖ, ..., sₖ₊ₙ₋₂) all zero\n   - hasInfinitelyManyZeroTuples: arbitrarily large starting indices\n\n3. **Main Theorems:**\n   - turan_conjecture: infinitely many → roots of unity\n   - tijdeman_1966_odd: 2 tuples suffice for odd n\n   - tijdeman_1966_even: 2 tuples give two (n/2)-gons for even n\n   - erdos_974_solved: wraps the main result",
+    "keyInsights": [
+      "**Newton's Identities Connection:** Power sums relate to elementary symmetric polynomials via Newton's formulas. Consecutive zeros severely constrain the characteristic polynomial.",
+      "**Why n-1 Tuples?** A configuration of n points is determined by n complex numbers. Power sums up to sₙ determine the elementary symmetric functions, hence the minimal polynomial.",
+      "**Roots of Unity Property:** For ζ = nth root of unity, sₖ = n if n|k, else sₖ = 0. So any n-1 consecutive sums starting away from multiples of n are zero.",
+      "**The 'Essentially' Qualifier:** Power sums are symmetric — permuting the zᵢ doesn't change sₖ. For even n, two rotated (n/2)-gons also work.",
+      "**Stronger Than Expected:** Erdős speculated 2 tuples might suffice. Tijdeman proved this, showing the constraint is remarkably rigid."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Problem context and power sum theory",
+      "startLine": 30,
+      "endLine": 38
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Configuration, powerSum, nthRootOfUnity",
+      "startLine": 40,
+      "endLine": 61
+    },
+    {
+      "id": "power-sum-props",
+      "title": "Power Sum Properties",
+      "summary": "Properties for roots of unity, zero tuples",
+      "startLine": 63,
+      "endLine": 83
+    },
+    {
+      "id": "constraint",
+      "title": "Configuration Constraint",
+      "summary": "hasFirstElementOne predicate",
+      "startLine": 85,
+      "endLine": 98
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems (Tijdeman 1966)",
+      "summary": "turan_conjecture, tijdeman_1966_odd/even axioms",
+      "startLine": 100,
+      "endLine": 140
+    },
+    {
+      "id": "resolution",
+      "title": "Problem Resolution",
+      "summary": "erdos_974_solved theorem",
+      "startLine": 142,
+      "endLine": 158
+    },
+    {
+      "id": "converse",
+      "title": "Converse Direction",
+      "summary": "Roots of unity DO have the zero-tuple property",
+      "startLine": 160,
+      "endLine": 175
+    },
+    {
+      "id": "newton",
+      "title": "Connection to Newton's Identities",
+      "summary": "Algebraic foundation of the result",
+      "startLine": 177,
+      "endLine": 193
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Final results and erdos_974_summary",
+      "startLine": 215,
+      "endLine": 250
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #974 asked whether configurations with infinitely many (n-1)-tuples of consecutive zero power sums must be roots of unity. Tijdeman (1966) proved YES, and showed only TWO such tuples suffice. The characterization depends on n's parity.",
+    "implications": "**Connections and Applications**\n\n1. **Polynomial Theory:** Via Newton's identities, power sums determine the minimal polynomial of the configuration\n\n2. **Algebraic Geometry:** Roots of unity appear as special points on algebraic varieties\n\n3. **Signal Processing:** Power sums relate to discrete Fourier transforms\n\n4. **Number Theory:** Deep connections to cyclotomic fields and Galois theory\n\n5. **Symmetric Functions:** Power sums form a basis for symmetric polynomials",
+    "openQuestions": [
+      "Can one tuple suffice for some special n?",
+      "Quantitative versions: how close to roots of unity with k zeros?",
+      "Analogues for other symmetric functions?",
+      "Algorithmic aspects: efficiently testing the zero-tuple condition?"
+    ]
   }
 }
