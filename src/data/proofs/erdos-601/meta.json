@@ -20,7 +20,44 @@
     "erdosNumber": 601,
     "erdosUrl": "https://erdosproblems.com/601",
     "erdosProblemStatus": "open",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal.Basic",
+        "description": "Basic ordinal operations and properties",
+        "module": "Mathlib.SetTheory.Ordinal.Basic"
+      },
+      {
+        "theorem": "Ordinal.Arithmetic",
+        "description": "Ordinal arithmetic including exponentiation",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.Basic",
+        "description": "Cardinal numbers and operations",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Simple graph definitions and operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of OrdinalGraph type for graphs on ordinal vertex sets",
+      "Formalization of HasInfinitePath predicate",
+      "Definition of IsIndependent and HasOrderType",
+      "Formalization of PropertyP for ordinal graphs",
+      "Definition of the critical ordinal ω₁^{ω+2}",
+      "Axiomatization of Erdős-Hajnal-Milner theorem (1970)",
+      "Axiomatization of CriticalCaseConjecture",
+      "Formalization of Martin's Axiom connection",
+      "Axiomatization of Larson's theorem (1990)",
+      "Ordinal hierarchy lemmas",
+      "Definition of independenceNumber for graphs",
+      "Formalization of GeneralConjecture with $500 prize"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Milner (1970) established that P(α) holds for all α < ω₁^{ω+2}. Larson (1990) extended this to α < 2^{ℵ₀} under Martin's Axiom. The critical case α = ω₁^{ω+2} and the general conjecture remain open with prize money offered.",
