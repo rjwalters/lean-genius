@@ -45,12 +45,19 @@
       }
     ],
     "originalContributions": [
-      "Formalized HasInverse and HasInversePairInInterval predicates",
-      "Stated Heilbronn's unpublished result for c close to 1",
-      "Captured Heath-Brown (2000): proved for c > 3/4 using Kloosterman sums",
-      "Defined Kloosterman sum and stated Weil bound |K| ≤ 2√p",
-      "Explained heuristic: threshold c = 1/2 from expected pair count"
-    ]
+      "HasInverse: Definition of multiplicative inverse pairs mod p",
+      "HasInversePairInInterval: Inverse pairs in short intervals (n, n+p^c)",
+      "MainConjecture: Statement for all c > 1/2",
+      "StrongConjecture: c = 1/2 is the exact threshold",
+      "heilbronn_unpublished: Axiom for c close to 1",
+      "KloostermanSum: Definition K(m,n;p) = Σₓ e^{2πi(mx + nx⁻¹)/p}",
+      "weil_bound: Axiom |K(m,n;p)| ≤ 2√p",
+      "heath_brown_2000: Axiom for c > 3/4",
+      "heath_brown_threshold: Theorem establishing c₀ = 3/4",
+      "heuristic_pairs: Expected L²/p pairs in length-L interval",
+      "erdos_445_statement: Combined Heilbronn + Heath-Brown + gap"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
     "historicalContext": "This problem concerns finding multiplicative inverse pairs (a, b with ab ≡ 1 mod p) within short intervals. The question is: how short can the interval (n, n + p^c) be while still guaranteeing such a pair exists?\n\nHeilbronn proved the result for c sufficiently close to 1 (unpublished). The breakthrough came from Heath-Brown (2000), who used Kloosterman sums and the Weil bound |K(m,n;p)| ≤ 2√p to prove the result for all c > 3/4.\n\nThe heuristic argument suggests c = 1/2 is the true threshold: an interval of length L contains roughly L²/p inverse pairs, so L = p^{1/2} gives ~1 pair on average.",
