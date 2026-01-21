@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-1078-1",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1078: Minimum Degree for K_r in r-Partite Graphs**\n\n**Setup:** r-partite graph with n vertices in each of r parts.\n\n**Question:** If min degree ≥ (r - 3/2 - o(1))n, must G contain K_r?\n\n**Answer:** YES (Haxell 2001)\n\n**Sharp:** (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋ (Haxell-Szabó 2006)",
+    "mathContext": "This connects minimum degree conditions to forcing complete subgraphs in multipartite graphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Minimum degree", "Multipartite graphs", "Transversals", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-1078-2",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 46, "endLine": 58 },
+    "type": "definition",
+    "title": "r-Partite Graph",
+    "content": "**RPartiteGraph:**\n\nA structure with:\n- r parts, each a Finset of size n\n- Parts are disjoint and cover all vertices\n- Edges only between different parts\n\n**Key property:** No edges within a part (each part is independent).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1078-3",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "definition",
+    "title": "Contains K_r",
+    "content": "**ContainsKr:**\n\nThe graph contains K_r = complete graph on r vertices, with exactly one vertex from each part.\n\nFormally: ∃ f : Fin r → vertices such that:\n- f(i) ∈ part i for all i\n- f(i) and f(j) are adjacent for all i ≠ j",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1078-4",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 79, "endLine": 87 },
+    "type": "definition",
+    "title": "BES Conjecture",
+    "content": "**Bollobás-Erdős-Szemerédi Conjecture (1975):**\n\nIf min degree ≥ (r - 3/2)n - O(1), then G contains K_r.\n\n**Key insight:** The threshold (r - 3/2) involves a half-integer, suggesting parity plays a role.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1078-5",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 102, "endLine": 110 },
+    "type": "axiom",
+    "title": "Haxell's Theorem (2001)",
+    "content": "**Haxell's Proof:**\n\nThe BES conjecture is TRUE.\n\n**Method:** Used connections to list coloring (vertex coloring from lists).\n\n**Significance:** Resolved a 25+ year old conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1078-6",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 129, "endLine": 146 },
+    "type": "definition",
+    "title": "Sharp Threshold Formula",
+    "content": "**sharpThreshold (Haxell-Szabó 2006):**\n\n(r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋\n\n**Meaning:**\n- s = ⌊r/2⌋ captures parity of r\n- Ceiling function gives exact discrete threshold\n- Asymptotically ≈ (r - 3/2)n",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1078-7",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 159, "endLine": 184 },
+    "type": "theorem",
+    "title": "Special Cases",
+    "content": "**Computing sharpThreshold for small r:**\n\n- **r = 2:** Threshold ≈ 0 (any edge is K_2)\n- **r = 3:** Threshold = n (need edges to both other parts)\n- **r = 4:** Threshold = 3n - ⌈2n/3⌉\n\nThese match the (r - 3/2)n asymptotic up to O(1).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1078-8",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 207, "endLine": 216 },
+    "type": "definition",
+    "title": "Independent Transversal",
+    "content": "**IsIndependentTransversal:**\n\nA selection T = {t_1, ..., t_r} with one vertex from each part, such that no two selected vertices are adjacent.\n\n**Connection:** K_r exists iff the complement has no independent transversal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1078-9",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 236, "endLine": 254 },
+    "type": "theorem",
+    "title": "Why r - 3/2",
+    "content": "**Intuition for the Threshold:**\n\n- Need edges to all r-1 other parts\n- Naive threshold: (r-1)n\n- Parity trick saves ~n/2 per part\n- Net: (r-1)n - n/2 = (r - 3/2)n\n\nThe extremal construction uses subtle parity arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1078-10",
+    "proofId": "erdos-1078",
+    "range": { "startLine": 273, "endLine": 299 },
+    "type": "theorem",
+    "title": "Summary: SOLVED",
+    "content": "**Erdős Problem #1078:**\n\n**STATUS:** SOLVED\n\n**Conjecture:** min degree (r-3/2-o(1))n ⇒ K_r exists\n\n**Proof:** Haxell (2001)\n\n**Sharp:** (r-1)n - ⌈sn/(2s-1)⌉ (Haxell-Szabó 2006)\n\n**Best Possible:** BES showed r-3/2 is tight\n\n**Key Insight:** Parity and transversal theory are essential.",
+    "significance": "critical"
+  }
+]

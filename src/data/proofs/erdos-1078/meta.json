@@ -1,33 +1,125 @@
 {
   "id": "erdos-1078",
-  "title": "Erdős Problem #1078",
+  "title": "Erdős Problem #1078: Minimum Degree for K_r in r-Partite Graphs",
   "slug": "erdos-1078",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an ...-partite graph with ... vertices in each part. If ... has minimum degree ... then ... must contain a ....\n\n\n...",
+  "description": "In r-partite graphs with n vertices per part, min degree ≥ (r-3/2-o(1))n implies K_r exists. SOLVED by Haxell (2001). Sharp threshold by Haxell-Szabó (2006).",
   "meta": {
-    "author": "Unknown",
+    "author": "BES (1975 conjecture), Haxell (2001 proof), Haxell-Szabó (2006 sharp)",
     "sourceUrl": "https://erdosproblems.com/1078",
-    "date": "",
-    "status": "pending",
+    "date": "2001",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1078Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "extremal-graph-theory", "multipartite-graphs", "minimum-degree", "cliques"],
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 1078,
     "erdosUrl": "https://erdosproblems.com/1078",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Basic graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
+      { "theorem": "Real", "description": "Real numbers for thresholds", "module": "Mathlib.Data.Real.Basic" }
+    ],
+    "originalContributions": [
+      "RPartiteGraph: structure with r parts of size n",
+      "minDegree: minimum degree definition",
+      "ContainsKr: complete r-clique with one vertex per part",
+      "BESConjecture: (r-3/2)n threshold conjecture",
+      "haxell_theorem: proof of the conjecture",
+      "sharpThreshold: (r-1)n - ⌈sn/(2s-1)⌉ formula",
+      "haxell_szabo_theorem: sharp threshold result",
+      "IsIndependentTransversal: transversal connection",
+      "asymptotic_threshold: O(1) error term corollary"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1078 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be an $r$-partite graph with $n$ vertices in each part. If $G$ has minimum degree $\\geq (r-\\frac{3}{2}-o(1))n$ then $G$ must contain a $K_r$.\n\n\n\nA conjecture of Bollob\\'{a}s, Erd\\H{o}s, and Szemer\\'{e}di \\cite{BES75b}, who proved that $r-\\frac{3}{2}$ would be the best possible here.\n\nThis is true, and was proved by Haxell \\cite{Ha01}. The sharp threshold of\\[(r-1)n-\\left\\lceil \\frac{sn}{2s-1}\\right\\rceil\\]where $s=\\lfloor r/2\\rfloor$ was proved by Haxell and Szab\\'{o} \\cite{HaSz06}.\n\n\n\n\nReferences\n\n\n[BES75b] Bollob\\'as, B. and Erd\\H{o}s, P. and Szemer\\'{e}di, E., On complete subgraphs of {$r$}-chromatic graphs. Discrete Math. (1975), 97--107.\n\n[Ha01] Haxell, P. E., A note on vertex list colouring. Combin. Probab. Comput. (2001), 345--347.\n\n[HaSz06] Haxell, Penny and Szab\\'o, Tibor, Odd independent transversals are odd. Combin. Probab. Comput. (2006), 193--211.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Bollobás, Erdős, and Szemerédi (1975) conjectured that in r-partite graphs with n vertices per part, minimum degree ≥ (r-3/2-o(1))n forces a K_r. They also showed this threshold is best possible. Haxell (2001) proved the conjecture using connections to list coloring. Haxell and Szabó (2006) determined the exact sharp threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet G be an r-partite graph with n vertices in each part.\n\n**Question:** If G has minimum degree ≥ (r - 3/2 - o(1))n, must G contain K_r?\n\n**Answer:** YES (Haxell 2001)\n\n**Sharp Threshold:** (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋ (Haxell-Szabó 2006)\n\n**Best Possible:** r - 3/2 cannot be improved (BES 1975)",
+    "proofStrategy": "The formalization defines r-partite graphs as structures with r parts of equal size. The BES conjecture is stated precisely, and Haxell's theorem is axiomatized as its proof. The Haxell-Szabó sharp threshold is formalized. Special cases (r=2,3,4) are computed, and the connection to independent transversals is explored.",
+    "keyInsights": [
+      "**r-Partite Graph:** Vertices split into r independent parts of size n",
+      "**K_r:** Complete subgraph with one vertex from each part",
+      "**BES Threshold:** (r - 3/2)n is the asymptotic threshold",
+      "**Haxell (2001):** Proved the conjecture via list coloring",
+      "**Sharp Formula:** (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋",
+      "**Transversal Connection:** K_r ↔ no independent transversal in complement",
+      "**Parity Trick:** Savings of n/2 per part via parity arguments"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 74,
+      "summary": "RPartiteGraph structure, minDegree, ContainsKr"
+    },
+    {
+      "id": "bes-conjecture",
+      "title": "The BES Conjecture",
+      "startLine": 75,
+      "endLine": 97,
+      "summary": "Original conjecture and threshold tightness"
+    },
+    {
+      "id": "haxell",
+      "title": "Haxell's Theorem (2001)",
+      "startLine": 98,
+      "endLine": 124,
+      "summary": "Proof of BES conjecture"
+    },
+    {
+      "id": "sharp-threshold",
+      "title": "Sharp Threshold (Haxell-Szabó 2006)",
+      "startLine": 125,
+      "endLine": 154,
+      "summary": "(r-1)n - ⌈sn/(2s-1)⌉ exact threshold"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 155,
+      "endLine": 184,
+      "summary": "r = 2, 3, 4 cases computed"
+    },
+    {
+      "id": "comparison",
+      "title": "Asymptotic Agreement",
+      "startLine": 185,
+      "endLine": 202,
+      "summary": "Sharp threshold ≈ (r-3/2)n asymptotically"
+    },
+    {
+      "id": "transversals",
+      "title": "Connection to Transversals",
+      "startLine": 203,
+      "endLine": 231,
+      "summary": "K_r ↔ no independent transversal in complement"
+    },
+    {
+      "id": "intuition",
+      "title": "Why r - 3/2",
+      "startLine": 232,
+      "endLine": 254,
+      "summary": "Parity savings explanation"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 255,
+      "endLine": 299,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1078 is SOLVED. The BES conjecture that min degree (r-3/2-o(1))n forces K_r in r-partite graphs was proved by Haxell (2001). Haxell-Szabó (2006) gave the exact sharp threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋. The threshold r-3/2 is best possible.",
+    "implications": "This result connects minimum degree conditions to transversal theory and list coloring. The sharp formula involving floor and ceiling functions reveals the importance of parity in extremal problems.",
+    "openQuestions": [
+      "What about non-balanced r-partite graphs (different part sizes)?",
+      "How does the threshold change for spanning subgraphs?",
+      "What are effective algorithms to find K_r above the threshold?"
+    ]
   }
 }
