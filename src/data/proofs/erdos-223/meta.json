@@ -1,33 +1,156 @@
 {
   "id": "erdos-223",
-  "title": "Erdős Problem #223",
+  "title": "Erdős Problem #223: Maximum Diameter Pairs (Vázsonyi's Conjecture)",
   "slug": "erdos-223",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be maximal such that there exists some set of ... points ..., with diameter ..., in which the distan...",
+  "description": "How many pairs of points can realize the diameter in an n-point configuration? f₂(n)=n, f₃(n)=2n-2, and f_d(n)~cn² for d≥4. Fully solved by Hopf-Pannwitz (1934), Grünbaum/Heppes/Strasziewicz (1956-57), Erdős (1960), and Swanepoel (2009).",
   "meta": {
-    "author": "Unknown",
+    "author": "Hopf-Pannwitz (1934), Grünbaum/Heppes/Strasziewicz (1956-57), Erdős (1960), Swanepoel (2009)",
     "sourceUrl": "https://erdosproblems.com/223",
-    "date": "",
-    "status": "pending",
+    "date": "1934-2009",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos223Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "diameter-graphs",
+      "extremal-problems",
+      "discrete-geometry",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 223,
     "erdosUrl": "https://erdosproblems.com/223",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean d-dimensional space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for point configurations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs for diameter graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "PointConfig definition: Fin n → EuclideanSpace ℝ (Fin d)",
+      "diameter and diameterPairs functions",
+      "f function: max diameter pairs for dimension d, size n",
+      "hopf_pannwitz_1934 axiom: f₂(n) = n",
+      "three_dimensional_case axiom: f₃(n) = 2n - 2",
+      "erdos_1960 axiom: quadratic growth for d ≥ 4",
+      "leadingCoefficient function: (p-1)/(2p)",
+      "swanepoel_2009 axiom: exact formulas",
+      "diameterGraph structure",
+      "erdos_223_summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #223 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d\\geq 2$ and $n\\geq 2$. Let $f_d(n)$ be maximal such that there exists some set of $n$ points $A\\subseteq \\mathbb{R}^d$, with diameter $1$, in which the distance 1 occurs between $f_d(n)$ many pairs of points in $A$. Estimate $f_d(n)$.\n\n\n\nIn \\cite{Er46b} Erd\\H{o}s says this was a conjecture of V\\'{a}zsonyi.\n{UL}\n{LI}Hopf and Pannwitz \\cite{HoPa34} proved $f_2(n)=n$ (with an elegant simple proof described by Erd\\H{o}s in \\cite{Er46b}).{/LI}\n{LI}Gr\\\"{u}nbaum \\cite{Gr56}, Heppes \\cite{He56}, and Strasziewicz \\cite{St57} independently showed that $f_3(n)=2n-2$.{/LI}\n{LI}Erd\\H{o}s \\cite{Er60b} proved that, for $d\\geq 4$, $f_d(n)=(\\frac{p-1}{2p}+o(1))n^2$ where $p=\\lfloor d/2\\rfloor$.{/LI}\n{LI}Swanepoel \\cite{Sw09} gave, for all $d\\geq 4$, an exact description of $f_d(n)$ for all $n$ sufficiently large depending on $d$, and also gave the extremal configurations.{/LI}\n{/UL}\n\nSee also [132], and [1084] for the analogous problem with minimal distance $1$.\n\n\n\n\nReferences\n\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[Er60b] Erd\\H{o}s, P., On sets of distances of {$n$} points in {E}uclidean space. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1960), 165--169.\n\n[Gr56] Gruenbaum, B., A proof of {V}azonyi's conjecture. Bull. Res. Council Israel. Sect. A (1956), 77--78.\n\n[He56] Heppes, A., Beweis einer Vermutung von A. V\\\"Azsonyi. Aca Math. Acad. Sci. Hungar. (1956), 463-466.\n\n[HoPa34] Hopf, H. and Pannwitz, E., Aufgabe 167. Jber. Deutsch. Math. Verein. (1934), 114.\n\n[St57] Straszewicz, S., Sur un probl\\`eme g\\'{e}om\\'{e}trique de {P}. {E}rd\\\"os. Bull. Acad. Polon. Sci. Cl. III. (1957), 39--40, IV--V.\n\n[Sw09] Swanepoel, Konrad J., Unit distances and diameters in {E}uclidean spaces. Discrete Comput. Geom. (2009), 1--27.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #223: Maximum Diameter Pairs**\n\nThis problem, originally a conjecture of Vázsonyi, asks: in an n-point set with diameter 1, how many pairs can be at distance exactly 1?\n\n**Key History:**\n- Vázsonyi: Original conjecture\n- Hopf-Pannwitz (1934): Solved 2D case, f₂(n) = n\n- Grünbaum, Heppes, Strasziewicz (1956-57): Independently solved 3D, f₃(n) = 2n-2\n- Erdős (1960): Showed quadratic growth for d ≥ 4\n- Swanepoel (2009): Complete characterization with extremal configurations\n\n**Dimensional Transition:**\nThe most striking feature is the phase transition at d = 4: linear growth in 2D/3D becomes quadratic in 4D+.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet d ≥ 2 and n ≥ 2. Define f_d(n) as the maximum number of pairs at distance 1 in any n-point set A ⊆ ℝ^d with diameter 1.\n\n**Estimate f_d(n).**\n\n**Solution:**\n- d = 2: f₂(n) = n (regular polygon is extremal)\n- d = 3: f₃(n) = 2n - 2 (two polygons sharing a vertex)\n- d ≥ 4: f_d(n) = ((p-1)/(2p) + o(1))n² where p = ⌊d/2⌋",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Configuration Setup:**\n   - PointConfig: Fin n → EuclideanSpace ℝ (Fin d)\n   - diameter: max pairwise distance\n   - diameterPairs: count of pairs at diameter distance\n\n2. **The Function f:**\n   - f d n: supremum of diameter pairs over valid configurations\n\n3. **Dimensional Cases:**\n   - hopf_pannwitz_1934: f 2 n = n\n   - three_dimensional_case: f 3 n = 2n - 2\n   - erdos_1960: quadratic bounds for d ≥ 4\n\n4. **Geometric Structure:**\n   - diameterGraph: SimpleGraph representing diameter pairs\n   - leadingCoefficient: (p-1)/(2p) for dimension d",
+    "keyInsights": [
+      "**Phase Transition at d=4:** The jump from linear to quadratic growth is fundamental. In low dimensions, diameter pairs are constrained; in high dimensions, they can be densely packed.",
+      "**Extremal Configurations:** In 2D, the regular polygon is optimal. In 3D, two regular polygons sharing a vertex. In 4D+, cross-polytope-like constructions.",
+      "**Diameter Graph Structure:** Viewing diameter pairs as edges reveals the constraint: in 2D, max degree 2; in 3D, still restricted; in 4D+, much freer.",
+      "**The Coefficient (p-1)/(2p):** For p = ⌊d/2⌋, this approaches 1/2 as d → ∞. So asymptotically, we can have almost n²/4 diameter pairs.",
+      "**Swanepoel's Completion:** The 2009 paper gave exact formulas and explicit extremal configurations for all d ≥ 4 and large n."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Problem context and dimensional behavior",
+      "startLine": 32,
+      "endLine": 44
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "PointConfig, diameter, diameterPairs",
+      "startLine": 46,
+      "endLine": 75
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f_d(n)",
+      "summary": "Maximum diameter pairs definition",
+      "startLine": 77,
+      "endLine": 84
+    },
+    {
+      "id": "two-dimensional",
+      "title": "Two-Dimensional Case",
+      "summary": "Hopf-Pannwitz 1934: f₂(n) = n",
+      "startLine": 86,
+      "endLine": 106
+    },
+    {
+      "id": "three-dimensional",
+      "title": "Three-Dimensional Case",
+      "summary": "Grünbaum/Heppes/Strasziewicz: f₃(n) = 2n-2",
+      "startLine": 108,
+      "endLine": 125
+    },
+    {
+      "id": "higher-dimensional",
+      "title": "Higher Dimensions (Erdős 1960)",
+      "summary": "Quadratic growth for d ≥ 4",
+      "startLine": 127,
+      "endLine": 146
+    },
+    {
+      "id": "swanepoel",
+      "title": "Swanepoel's Complete Solution",
+      "summary": "Exact formulas and extremal configurations",
+      "startLine": 148,
+      "endLine": 162
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Bounds",
+      "summary": "Coefficient calculations for d = 4, 5, 6",
+      "startLine": 164,
+      "endLine": 191
+    },
+    {
+      "id": "diameter-graph",
+      "title": "Geometric Interpretation",
+      "summary": "diameterGraph structure",
+      "startLine": 193,
+      "endLine": 223
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_223_summary theorem",
+      "startLine": 235,
+      "endLine": 270
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #223 asked for the maximum number of diameter pairs f_d(n) in n-point configurations. The answer depends dramatically on dimension: f₂(n) = n, f₃(n) = 2n - 2, and f_d(n) ~ cn² for d ≥ 4. This phase transition is one of the most striking phenomena in discrete geometry.",
+    "implications": "**Connections and Applications**\n\n1. **Discrete Geometry:** Fundamental extremal problem about point configurations\n\n2. **Graph Theory:** Diameter graphs have constrained structure in low dimensions\n\n3. **Convex Geometry:** Related to diameter problems for convex bodies\n\n4. **Coding Theory:** Connections to spherical codes and kissing numbers\n\n5. **Computational Geometry:** Algorithms for computing diameter graphs",
+    "openQuestions": [
+      "Exact formulas for small n in each dimension?",
+      "Characterization of all extremal configurations?",
+      "Analogues for other distance problems (unit distance, minimum distance)?",
+      "Algorithmic complexity of computing f_d(n)?"
+    ]
   }
 }
