@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Cauchy's Functional Equation",
+    "content": "The equation f(x+y) = f(x) + f(y) for all x,y ∈ ℝ. Functions satisfying this are called 'additive'. The simplest examples are f(x) = cx for any constant c.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 99, "endLine": 100 },
+    "type": "definition",
+    "title": "Almost Additive Function",
+    "content": "A function f is almost additive if f(x+y) = f(x) + f(y) for almost all pairs (x,y) ∈ ℝ², meaning the equation fails only on a null set in ℝ² (Lebesgue measure zero).",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 122, "endLine": 124 },
+    "type": "theorem",
+    "title": "de Bruijn-Jurkat Theorem",
+    "content": "The main result: If f is almost additive, there exists a truly additive g with f = g almost everywhere. The 'defects' in almost-additivity can always be repaired by changing f on a null set!",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "theorem",
+    "title": "Uniqueness of Correction",
+    "content": "If g₁ and g₂ are both additive and equal a.e., then g₁ = g₂ everywhere. This follows from: an additive function that is zero a.e. must be identically zero.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 66, "endLine": 73 },
+    "type": "theorem",
+    "title": "Continuous Additive ⟹ Linear",
+    "content": "Cauchy's classical result (1821): If f is additive AND continuous, then f(x) = cx for some constant c. Without continuity, additive functions can be extremely pathological.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 185, "endLine": 186 },
+    "type": "insight",
+    "title": "Wild Additive Functions",
+    "content": "Using the Axiom of Choice, one can construct additive functions that are discontinuous everywhere, unbounded on every interval, and whose graph is dense in ℝ². These 'wild' functions use Hamel bases.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 201, "endLine": 203 },
+    "type": "theorem",
+    "title": "Measurable Additive ⟹ Linear",
+    "content": "If f is additive and Lebesgue measurable, then f(x) = cx. Wild additive functions are necessarily non-measurable. This is why measurability/continuity assumptions are often needed.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 223, "endLine": 228 },
+    "type": "insight",
+    "title": "Stability Interpretation",
+    "content": "This theorem is a 'stability' result: approximate solutions (in the measure-theoretic sense) to Cauchy's equation can be corrected to exact solutions. Similar stability questions arise throughout functional equations.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 259, "endLine": 263 },
+    "type": "insight",
+    "title": "Hamel (1905)",
+    "content": "Hamel constructed discontinuous additive functions using a 'Hamel basis' - a basis for ℝ as a vector space over ℚ. Any additive function is determined by its values on such a basis, allowing pathological choices.",
+    "significance": "helpful"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 287, "endLine": 305 },
+    "type": "summary",
+    "title": "Main Result: erdos_1126",
+    "content": "SOLVED by de Bruijn (1966) and Jurkat (1965) independently. Almost-additive functions can always be corrected to truly additive ones a.e. The correction is unique. This is a foundational result in functional equation stability.",
+    "significance": "essential"
+  }
+]

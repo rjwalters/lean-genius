@@ -2664,17 +2664,24 @@
   },
   {
     "id": "erdos-1126",
-    "title": "Erdős Problem #1126",
+    "title": "Erdős Problem #1126: Almost Additive Functions",
     "slug": "erdos-1126",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[f(x+y)=f(x)+f(y)\\]for almost all ... then there exists a function ... such that\\[g(x+y)=g(x)+g(y)\\]for all ... such that ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If f(x+y) = f(x) + f(y) for almost all x,y ∈ ℝ, then there exists g with g(x+y) = g(x) + g(y) for ALL x,y and f = g a.e. Proved by de Bruijn (1966) and Jurkat (1965).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "functional-equations",
+      "measure-theory",
+      "cauchy-equation",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 1126,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-1127",
