@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "ann-322-1",
+    "proofId": "erdos-322",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #322: Representations as Sums of k-th Powers**\n\n**Question:** Does r_k(n) > n^c for infinitely many n?\n\n**Status:** PARTIALLY SOLVED\n- k = 3: YES, Mahler (1936) proved c = 1/12 works\n- k ≥ 4: OPEN\n\nConnected to Waring's problem and the Hardy-Littlewood Hypothesis K.",
+    "mathContext": "r_k(n) counts representations n = x₁^k + x₂^k + ... + x_k^k. Hypothesis K predicted r_k(n) = n^{o(1)}.",
+    "significance": "critical",
+    "relatedConcepts": ["Waring's problem", "Hypothesis K", "Additive number theory"]
+  },
+  {
+    "id": "ann-322-2",
+    "proofId": "erdos-322",
+    "range": { "startLine": 48, "endLine": 52 },
+    "type": "definition",
+    "title": "k-th Powers",
+    "content": "**kthPowers k:**\n\nThe set of k-th powers: {n | n = m^k for some m ∈ ℕ}.\n\nExamples:\n- k = 2: {0, 1, 4, 9, 16, ...} (squares)\n- k = 3: {0, 1, 8, 27, 64, ...} (cubes)",
+    "significance": "key"
+  },
+  {
+    "id": "ann-322-3",
+    "proofId": "erdos-322",
+    "range": { "startLine": 54, "endLine": 61 },
+    "type": "definition",
+    "title": "Representation Count r_k(n)",
+    "content": "**representationCount k n:**\n\nThe number of ways to write n as a sum of exactly k many k-th powers:\n\nn = x₁^k + x₂^k + ... + x_k^k\n\nThis is the central function studied in the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-322-4",
+    "proofId": "erdos-322",
+    "range": { "startLine": 72, "endLine": 79 },
+    "type": "definition",
+    "title": "Hypothesis K",
+    "content": "**hypothesisK k:**\n\nHardy-Littlewood Hypothesis K: r_k(n) = n^{o(1)} for k ≥ 3.\n\nFormalized as: ∀ ε > 0, ∃ N, ∀ n ≥ N, r_k(n) < n^ε.\n\nThis would mean representations grow slower than any polynomial.",
+    "mathContext": "Proposed in the 1920s as part of the Partitio Numerorum program.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-322-5",
+    "proofId": "erdos-322",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "definition",
+    "title": "Hypothesis K Fails",
+    "content": "**hypothesisK_fails k:**\n\nThe negation: ∃ c > 0, ∀ N, ∃ n ≥ N with r_k(n) > n^c.\n\nThis means infinitely many n have polynomial lower bound on representations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-322-6",
+    "proofId": "erdos-322",
+    "range": { "startLine": 92, "endLine": 102 },
+    "type": "axiom",
+    "title": "Mahler's Theorem (1936)",
+    "content": "**mahler_theorem:**\n\nHypothesis K is FALSE for k = 3 (cubes).\n\nThere exist infinitely many n with r_3(n) ≫ n^{1/12}.\n\nThis sensationally disproved the Hardy-Littlewood conjecture for cubes.",
+    "mathContext": "Mahler's proof uses algebraic number theory and properties of cubic forms.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-322-7",
+    "proofId": "erdos-322",
+    "range": { "startLine": 132, "endLine": 137 },
+    "type": "definition",
+    "title": "k ≥ 4 Status",
+    "content": "**erdos_conjecture_k4:**\n\nErdős conjectured Hypothesis K fails for ALL k ≥ 4.\n\n**STATUS: OPEN**\n\nWhether r_k(n) > n^c for infinitely many n when k ≥ 4 is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-322-8",
+    "proofId": "erdos-322",
+    "range": { "startLine": 150, "endLine": 160 },
+    "type": "axiom",
+    "title": "Erdős-Chowla Bound",
+    "content": "**erdos_chowla_bound:**\n\nFor all k ≥ 3, there exist infinitely many n with:\n\nr_k(n) ≫ n^{c/log log n}\n\nThis is WEAKER than disproving Hypothesis K (needs polynomial bound).\n\nIndependently proved by Erdős and Chowla in 1936.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-322-9",
+    "proofId": "erdos-322",
+    "range": { "startLine": 166, "endLine": 177 },
+    "type": "definition",
+    "title": "Hypothesis K*",
+    "content": "**hypothesisKStar k:**\n\nHardy-Littlewood's weaker conjecture:\n\nΣ_{n≤N} r_k(n)² ≪ N^{1+ε} for all ε > 0.\n\nErdős-Graham: 'Probably true but no doubt very deep. Would suffice for most applications.'",
+    "mathContext": "K* allows polynomial spikes in individual r_k(n), controlling only the average.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-322-10",
+    "proofId": "erdos-322",
+    "range": { "startLine": 264, "endLine": 289 },
+    "type": "theorem",
+    "title": "Summary: PARTIALLY SOLVED",
+    "content": "**erdos_322:**\n\n**STATUS:** PARTIALLY SOLVED\n\n**SOLVED (k=3):** Hypothesis K fails with c = 1/12 (Mahler)\n\n**OPEN (k≥4):** Erdős conjectured K fails but unproven\n\n**KNOWN for all k≥3:** Weaker Erdős-Chowla bound\n\n**CONJECTURED:** Hypothesis K* probably true",
+    "significance": "critical"
+  }
+]
