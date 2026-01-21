@@ -1,33 +1,133 @@
 {
   "id": "erdos-436",
-  "title": "Erdős Problem #436",
+  "title": "Erdős Problem #436: Consecutive kth Power Residues",
   "slug": "erdos-436",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a prime and ... then let ... be the minimal ... such that ... are all ...th power residues modulo .... Let\\[\\Lambda...",
+  "description": "For prime p and k,m ≥ 2, let r(k,m,p) be the minimal r such that r,...,r+m-1 are kth power residues mod p. Let Λ(k,m) = lim sup r(k,m,p). Hildebrand (1991) proved Λ(k,2) finite for all k. Λ(k,3) for odd k ≥ 5 remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Lehmer-Lehmer (1962), Hildebrand (1991), Graham (1964)",
     "sourceUrl": "https://erdosproblems.com/436",
-    "date": "",
-    "status": "pending",
+    "date": "1962",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos436Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "number-theory", "power-residues", "analytic-number-theory", "partially-open"],
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 436,
     "erdosUrl": "https://erdosproblems.com/436",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Nat.Prime", "description": "Prime numbers", "module": "Mathlib.Data.Nat.Prime.Basic" },
+      { "theorem": "ZMod", "description": "Integers mod n", "module": "Mathlib.Data.ZMod.Basic" },
+      { "theorem": "Filter.atTop", "description": "For lim sup", "module": "Mathlib.Order.Filter.Basic" }
+    ],
+    "originalContributions": [
+      "IsKthPowerResidue: x^k ≡ r (mod p)",
+      "AreConsecutiveKthResidues: m consecutive residues",
+      "minConsecKthResidues: r(k,m,p) function",
+      "LambdaFinite: Finiteness of Λ(k,m)",
+      "Lambda: The Λ(k,m) value",
+      "hildebrand_theorem: Λ(k,2) finite for all k",
+      "graham_theorem: Λ(k,m) = ∞ for m ≥ 4",
+      "lambda_even_3_infinite: Λ(k,3) = ∞ for even k",
+      "erdos436Question2: Open question for odd k",
+      "Known values: Λ(2,2)=9 through Λ(7,2)=1649375"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #436 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $p$ is a prime and $k,m\\geq 2$ then let $r(k,m,p)$ be the minimal $r$ such that $r,r+1,\\ldots,r+m-1$ are all $k$th power residues modulo $p$. Let\\[\\Lambda(k,m)=\\limsup_{p\\to \\infty} r(k,m,p).\\]Is it true that $\\Lambda(k,2)$ is finite for all $k$? Is $\\Lambda(k,3)$ finite for all odd $k$? How large are they?\n\n\n\nAsked by Lehmer and Lehmer \\cite{LeLe62}, who note that for example $\\Lambda(2,2)=9$ - indeed, $9$ is always a quadratic residue, and if $10$ isn't then either $2$ or $5$ is, and hence at least one of $1,2$ or $4,5$ or $9,10$ is a consecutive pair of quadratic residues (and similarly there are infinitely many $p$ for which there are no consecutive quadratic residues below $9,10$).\n\nA similar argument of Dunton \\cite{Du65} proves $\\Lambda(3,2)=77$, and Bierstedt and Mills \\cite{BiMi63} proved $\\Lambda(4,2)=1224$. Lehmer and Lehmer proved that $\\Lambda(k,3)=\\infty$ for all even $k$ and $\\Lambda(k,4)=\\infty$ for all $k\\leq 1048909$.\n\nLehmer, Lehmer, and Mills \\cite{LLM63} proved $\\Lambda(5,2)=7888$ and $\\Lambda(6,2)=202124$. Brillhart, Lehmer, and Lehmer \\cite{BLL64} proved $\\Lambda(7,2)=1649375$. Lehmer, Lehmer, Mills, and Selfridge \\cite{LLMS62} proved that $\\Lambda(3,3)=23532$.\n\nGraham \\cite{Gr64g} proved that $\\Lambda(k,l)=\\infty$ for all $k\\geq 2$ and $l\\geq 4$.\n\nHildebrand \\cite{Hi91} resolved the first question, proving that $\\Lambda(k,2)$ is finite for all $k$: in other words, for any $k\\geq 2$, if $p$ is sufficiently large then there exists a pair of consecutive $k$th power residues modulo $p$ in $[1,O_k(1)]$.\n\nThe remaining questions are to examine whether $\\Lambda(k,3)$ is finite for all odd $k\\geq 5$, and the growth rate of $\\Lambda(k,2)$ and $\\Lambda(k,3)$ as functions of $k$.\n\n\n\n\nReferences\n\n\n[BLL64] Brillhart, John and Lehmer, D. H. and Lehmer, Emma, Bounds for pairs of consecutive seventh and higher power\nresidues. Math. Comp. (1964), 397--407.\n\n[BiMi63] Bierstedt, R. G. and Mills, W. H., On the bound for a pair of consecutive quartic residues of a\nprime. Proc. Amer. Math. Soc. (1963), 628--632.\n\n[Du65] Dunton, M., Bounds for pairs of cubic residues. Proc. Amer. Math. Soc. (1965), 330--332.\n\n[Gr64g] Graham, R. L., On quadruples of consecutive {$k$}th power residues. Proc. Amer. Math. Soc. (1964), 196--197.\n\n[Hi91] Hildebrand, Adolf, On consecutive {$k$}th power residues. II. Michigan Math. J. (1991), 241-253.\n\n[LLM63] Lehmer, D. H. and Lehmer, Emma and Mills, W. H., Pairs of consecutive power residues. Canadian J. Math. (1963), 172--177.\n\n[LLMS62] Lehmer, D. H. and Lehmer, E. and Mills, W. H. and Selfridge,\nJ. L., Machine proof of a theorem on cubic residues. Math. Comp. (1962), 407--415.\n\n[LeLe62] Lehmer, D. H. and Lehmer, Emma, On runs of residues. Proc. Amer. Math. Soc. (1962), 102-106.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "D.H. Lehmer and Emma Lehmer initiated this problem in 1962 with their paper 'On runs of residues'. They showed Λ(2,2)=9 with an elegant argument. Extensive computations in the 1960s by Dunton, Bierstedt, Mills, Brillhart, and Selfridge found exact values through k=7. Hildebrand's 1991 theorem using character sums and the large sieve resolved Question 1. Graham (1964) proved the m≥4 case is always infinite.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nFor prime p and k, m ≥ 2, let r(k,m,p) = min{r : r,...,r+m-1 are kth power residues mod p}.\nDefine Λ(k,m) = lim sup_{p→∞} r(k,m,p).\n\n**Questions:**\n1. Is Λ(k,2) finite for all k? [SOLVED: YES - Hildebrand 1991]\n2. Is Λ(k,3) finite for all odd k? [OPEN]\n3. What is the growth rate of Λ(k,m)? [PARTIAL]",
+    "proofStrategy": "The formalization defines kth power residues and consecutive runs. The Λ(k,m) function captures lim sup behavior. Hildebrand's theorem, Graham's theorem, and the Lehmer-Lehmer parity result for m=3 are axiomatized. Exact computed values are recorded.",
+    "keyInsights": [
+      "**Λ(2,2)=9:** Elegant proof using 9=3² always QR and 10=2·5 structure",
+      "**Hildebrand 1991:** Λ(k,2) finite for all k using analytic methods",
+      "**Graham 1964:** Λ(k,m) = ∞ for m ≥ 4",
+      "**Parity Dichotomy:** Λ(k,3) = ∞ for even k, unknown for odd k ≥ 5",
+      "**Rapid Growth:** 9, 77, 1224, 7888, 202124, 1649375...",
+      "**Machine Proofs:** 1960s computations found exact values"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Power Residue Definitions",
+      "startLine": 45,
+      "endLine": 67,
+      "summary": "kth power residues, consecutive runs"
+    },
+    {
+      "id": "r-function",
+      "title": "The r(k,m,p) Function",
+      "startLine": 69,
+      "endLine": 87,
+      "summary": "Minimal consecutive run function"
+    },
+    {
+      "id": "lambda-function",
+      "title": "The Λ(k,m) Function",
+      "startLine": 89,
+      "endLine": 109,
+      "summary": "LambdaFinite, Lambda definitions"
+    },
+    {
+      "id": "known-values",
+      "title": "Known Exact Values",
+      "startLine": 111,
+      "endLine": 151,
+      "summary": "Λ(2,2)=9 through Λ(7,2)=1649375"
+    },
+    {
+      "id": "hildebrand",
+      "title": "Hildebrand's Theorem",
+      "startLine": 153,
+      "endLine": 171,
+      "summary": "Λ(k,2) finite for all k (1991)"
+    },
+    {
+      "id": "m3-case",
+      "title": "The m = 3 Case",
+      "startLine": 173,
+      "endLine": 205,
+      "summary": "Λ(3,3)=23532, parity dichotomy, open question"
+    },
+    {
+      "id": "graham",
+      "title": "Graham's Theorem",
+      "startLine": 207,
+      "endLine": 230,
+      "summary": "Λ(k,m) = ∞ for m ≥ 4"
+    },
+    {
+      "id": "quadratic",
+      "title": "Quadratic Residue Case",
+      "startLine": 232,
+      "endLine": 254,
+      "summary": "Elegant proof of Λ(2,2) ≤ 9"
+    },
+    {
+      "id": "growth",
+      "title": "Growth Rate Questions",
+      "startLine": 256,
+      "endLine": 280,
+      "summary": "Super-polynomial growth conjectured"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 282,
+      "endLine": 331,
+      "summary": "Main theorems and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #436 is PARTIALLY SOLVED. Question 1 (Λ(k,2) finite) was resolved by Hildebrand (1991). Question 2 (Λ(k,3) for odd k) remains OPEN for k ≥ 5, with only Λ(3,3)=23532 known. The Lehmers showed Λ(k,3)=∞ for even k. Graham proved Λ(k,m)=∞ for m≥4. Exact values are known for k ≤ 7 (m=2).",
+    "implications": "This problem reveals deep structure in the distribution of power residues among consecutive integers. The parity dichotomy for m=3 and the threshold at m=4 show how run length fundamentally affects residue behavior.",
+    "openQuestions": [
+      "Is Λ(k,3) finite for odd k ≥ 5?",
+      "What is the growth rate of Λ(k,2)?",
+      "Compute Λ(8,2), Λ(9,2), etc.",
+      "Determine Λ(5,3), Λ(7,3)"
+    ]
   }
 }

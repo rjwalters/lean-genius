@@ -7304,17 +7304,23 @@
   },
   {
     "id": "erdos-436",
-    "title": "Erdős Problem #436",
+    "title": "Erdős Problem #436: Consecutive kth Power Residues",
     "slug": "erdos-436",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a prime and ... then let ... be the minimal ... such that ... are all ...th power residues modulo .... Let\\[\\Lambda...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For prime p and k,m ≥ 2, let r(k,m,p) be the minimal r such that r,...,r+m-1 are kth power residues mod p. Let Λ(k,m) = lim sup r(k,m,p). Hildebrand (1991) proved Λ(k,2) finite for all k. Λ(k,3) for odd k ≥ 5 remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "power-residues",
+      "analytic-number-theory",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 436,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-437",
