@@ -1,33 +1,148 @@
 {
   "id": "erdos-315",
-  "title": "Erdős Problem #315",
+  "title": "Erdős Problem #315: Sylvester's Sequence and the Vardi Constant",
   "slug": "erdos-315",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be any other sequence with .... Is it true that\\[\\liminf a_n^{1/2^n}<\\lim u_n^{1/2^n}=c_0=1.264085\\c...",
+  "description": "For Sylvester's sequence u_n with Σ 1/u_n = 1, is lim u_n^{1/2^n} = c₀ ≈ 1.264 the maximum growth rate among all such sequences? YES - proved by Kamio and Li-Tang (2025).",
   "meta": {
-    "author": "Unknown",
+    "author": "Kamio (2025), Li-Tang (2025)",
     "sourceUrl": "https://erdosproblems.com/315",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos315Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sequences",
+      "egyptian-fractions",
+      "asymptotic-analysis",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 315,
     "erdosUrl": "https://erdosproblems.com/315",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Tendsto",
+        "description": "Convergence of sequences via filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "liminf",
+        "description": "Limit inferior for growth rates",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotonic functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for fractional powers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "sylvester: definition of Sylvester's sequence",
+      "sylvester_strictMono, sylvester_ge_two: proved properties",
+      "sylvester_identity: u_{n+1} - 1 = u_n(u_n - 1)",
+      "vardiConstant: c₀ ≈ 1.264085",
+      "EgyptianSequence: structure for sequences with Σ 1/a_n = 1",
+      "growthRate: liminf a_n^{1/2^n}",
+      "erdosGrahamConjecture: Sylvester is maximal",
+      "kamio_li_tang_2025: axiom asserting proof",
+      "sylvester_double_exponential: proved from limit"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #315 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u_1=2$ and $u_{n+1}=u_n^2-u_n+1$. Let $a_1<a_2<\\cdots $ be any other sequence with $\\sum \\frac{1}{a_k}=1$. Is it true that\\[\\liminf a_n^{1/2^n}<\\lim u_n^{1/2^n}=c_0=1.264085\\cdots?\\]\n\n\n\n$c_0$ is called the Vardi constant and the sequence $u_n$ is Sylvester's sequence.\n\nIn \\cite{ErGr80} this problem is stated with the sequence $u_1=1$ and $u_{n+1}=u_n(u_n+1)$, but Quanyu Tang has pointed out this is probably an error (since with that choice we do not have $\\sum \\frac{1}{u_n}=1$). This question with Sylvester's sequence is the most natural interpretation of what they meant to ask.\n\nThis is true, and was proved independently by Kamio \\cite{Ka25} and Li and Tang \\cite{LiTa25}.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Ka25] Y. Kamio, Asymptotic analysis of infinite decompositions of a unit fraction into unit fractions. arXiv:2503.02317 (2025).\n\n[LiTa25] Z. Li and Q. Tang, On a conjecture of Erd\\H{o}s and Graham about the Sylvester's sequence. arXiv:2503.12277 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #315: Sylvester's Sequence**\n\nSylvester's sequence (OEIS A000058) is: 2, 3, 7, 43, 1807, 3263443, ...\n\nIt arises from the greedy algorithm for Egyptian fractions and satisfies the remarkable property that Σ 1/u_n = 1.\n\n**Key History:**\n- Sylvester (1880): Introduced the sequence\n- Erdős-Graham (1980): Posed the growth rate conjecture\n- Quanyu Tang: Identified error in original formulation\n- Kamio (2025), Li-Tang (2025): Independently proved the conjecture",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet u₁ = 2, u_{n+1} = u_n² - u_n + 1 (Sylvester's sequence).\n\nFor any other strictly increasing sequence a₁ < a₂ < ... with Σ 1/a_k = 1:\n\n**Question:** Is liminf a_n^{1/2^n} < lim u_n^{1/2^n} = c₀ ≈ 1.264085?\n\n**Answer: YES** - Kamio (2025), Li-Tang (2025)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sylvester's Sequence:**\n   - sylvester: recursive definition\n   - Proved: strict monotonicity, all terms ≥ 2\n   - Key identity: u_{n+1} - 1 = u_n(u_n - 1)\n\n2. **The Vardi Constant:**\n   - vardiConstant: c₀ = lim u_n^{1/2^n}\n   - Axiomatized bounds: 1.264 < c₀ < 1.265\n\n3. **Egyptian Sequences:**\n   - EgyptianSequence: structure for sequences summing to 1\n   - growthRate: liminf measure of growth\n\n4. **Main Result:**\n   - erdosGrahamConjecture: Sylvester is maximal\n   - kamio_li_tang_2025: axiom for the proof",
+    "keyInsights": [
+      "**Greedy Optimality:** Sylvester's sequence arises from always taking the largest unit fraction not exceeding the remainder. This greedy choice turns out to be globally optimal!",
+      "**Double Exponential Growth:** u_n ~ c₀^{2^n}, so the growth is doubly exponential - tower of exponents.",
+      "**The Vardi Constant:** c₀ ≈ 1.264085... is a transcendental number with deep connections to dynamics and continued fractions.",
+      "**Historical Error:** The original 1980 formulation had u₁ = 1, which doesn't give Σ 1/u_n = 1. Corrected by Quanyu Tang.",
+      "**Recent Solution:** This problem was open for 45 years until independently solved in 2025 by Kamio in Japan and Li-Tang in China."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Egyptian fractions and the greedy algorithm",
+      "startLine": 32,
+      "endLine": 46
+    },
+    {
+      "id": "sylvester",
+      "title": "Sylvester's Sequence",
+      "summary": "Definition and basic properties",
+      "startLine": 48,
+      "endLine": 97
+    },
+    {
+      "id": "egyptian",
+      "title": "Egyptian Fraction Property",
+      "summary": "Sum equals 1, telescoping",
+      "startLine": 99,
+      "endLine": 124
+    },
+    {
+      "id": "vardi",
+      "title": "The Vardi Constant",
+      "summary": "c₀ ≈ 1.264085 definition and properties",
+      "startLine": 126,
+      "endLine": 141
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "EgyptianSequence structure, growthRate, statement",
+      "startLine": 143,
+      "endLine": 172
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "Kamio and Li-Tang (2025)",
+      "startLine": 174,
+      "endLine": 185
+    },
+    {
+      "id": "special",
+      "title": "Why Sylvester Is Special",
+      "summary": "Greedy property, double exponential",
+      "startLine": 187,
+      "endLine": 209
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Erdős-Straus, odd greedy, OEIS",
+      "startLine": 211,
+      "endLine": 232
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_315_solved, erdos_315_summary",
+      "startLine": 234,
+      "endLine": 259
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #315 asked whether Sylvester's sequence has the maximum asymptotic growth rate among all sequences (a_n) with Σ 1/a_n = 1. Kamio and Li-Tang (2025) independently proved YES: the Vardi constant c₀ ≈ 1.264085 is the supremum of liminf a_n^{1/2^n}.",
+    "implications": "**Connections and Applications**\n\n1. **Egyptian Fractions:** Provides optimal bounds for representations of 1\n\n2. **Dynamical Systems:** The Vardi constant appears in iteration dynamics\n\n3. **Number Theory:** Connects to transcendence theory and continued fractions\n\n4. **Algorithmic Aspects:** Validates greedy approach for this optimization",
+    "openQuestions": [
+      "What is the exact value of the Vardi constant (closed form)?",
+      "Analogous problems for Egyptian representations of other rationals?",
+      "Connections to the Erdős-Straus conjecture (4/n = 1/a + 1/b + 1/c)?",
+      "Effective bounds: how fast does the liminf approach c₀?"
+    ]
   }
 }
