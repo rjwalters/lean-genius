@@ -1,1 +1,126 @@
-[]
+[
+  {
+    "id": "ann-e531-header",
+    "proofId": "erdos-531",
+    "range": { "startLine": 1, "endLine": 12 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #531: Folkman's Theorem**\n\nThe problem asks to estimate F(k), the minimal N such that any 2-coloring of {1,...,N} contains a k-element set where all non-empty subset sums are monochromatic.\n\n**Status:** Bounds established, exact growth rate open\n- Lower bound: F(k) ≥ 2^{2^{k-1}/k} (Balogh et al. 2017)\n- Upper bound: F(k) exists (Folkman's theorem)\n\nThe gap between bounds is enormous.",
+    "mathContext": "This is a fundamental problem in Ramsey theory, generalizing Schur numbers to subset sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Folkman's theorem", "Ramsey theory", "Subset sums"]
+  },
+  {
+    "id": "ann-e531-coloring",
+    "proofId": "erdos-531",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Two-Colorings",
+    "content": "**Coloring:**\n\nA two-coloring assigns each natural number one of two colors (represented as Bool).\n\n```lean\ndef Coloring := ℕ → Bool\n```\n\nThe problem asks about unavoidable monochromatic patterns in any such coloring.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e531-subset-sums",
+    "proofId": "erdos-531",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Subset Sums",
+    "content": "**SubsetSums(A):**\n\nThe set of all non-empty subset sums of a finite set A.\n\n```lean\ndef SubsetSums (A : Finset ℕ) : Finset ℕ :=\n  (A.powerset.filter (· ≠ ∅)).image (Finset.sum · id)\n```\n\n**Example:** For A = {1, 2}, SubsetSums(A) = {1, 2, 3}\n- 1 from {1}\n- 2 from {2}\n- 3 from {1, 2}\n\nFor k elements, there are 2^k - 1 non-empty subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["Powerset", "Subset sum problem"]
+  },
+  {
+    "id": "ann-e531-monochromatic",
+    "proofId": "erdos-531",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Monochromatic Subset Sums",
+    "content": "**MonochromaticSubsetSums(c, A):**\n\nAll subset sums of A have the same color under coloring c.\n\n```lean\ndef MonochromaticSubsetSums (c : Coloring) (A : Finset ℕ) : Prop :=\n  ∃ col : Bool, ∀ s ∈ SubsetSums A, c s = col\n```\n\nThis is the key property Folkman's theorem guarantees.",
+    "significance": "critical",
+    "relatedConcepts": ["Monochromatic patterns", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e531-f-definition",
+    "proofId": "erdos-531",
+    "range": { "startLine": 58, "endLine": 62 },
+    "type": "definition",
+    "title": "The Folkman Number F(k)",
+    "content": "**F(k) = minimum N guaranteeing monochromatic k-set:**\n\n```lean\nnoncomputable def F (k : ℕ) : ℕ := sInf (ValidN k)\n```\n\nF(k) is the smallest N such that ANY 2-coloring of {1,...,N} contains some k-element set with all subset sums the same color.\n\nFolkman's theorem says F(k) is always finite.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey numbers", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e531-folkman",
+    "proofId": "erdos-531",
+    "range": { "startLine": 72, "endLine": 78 },
+    "type": "axiom",
+    "title": "Folkman's Theorem",
+    "content": "**folkman_theorem:**\n\nFor all k ≥ 1, there exists N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums.\n\n```lean\naxiom folkman_theorem :\n  ∀ k : ℕ, k ≥ 1 → ∃ N : ℕ, ExistsMonochromaticSet N k\n```\n\nThis can be derived from Rado's theorem on partition regularity of linear systems.",
+    "mathContext": "Originally proved by Sanders and Folkman in the 1960s.",
+    "significance": "critical",
+    "relatedConcepts": ["Rado's theorem", "Partition regularity"]
+  },
+  {
+    "id": "ann-e531-erdos-spencer",
+    "proofId": "erdos-531",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "axiom",
+    "title": "Erdős-Spencer Lower Bound (1989)",
+    "content": "**erdos_spencer_1989:**\n\nFirst non-trivial lower bound:\n$$F(k) \\geq 2^{ck^2/\\log k}$$\n\nfor some constant c > 0.\n\nThis shows F(k) grows at least exponentially in k²/log k, much faster than polynomial.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bounds", "Probabilistic method"]
+  },
+  {
+    "id": "ann-e531-balogh",
+    "proofId": "erdos-531",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "axiom",
+    "title": "Balogh et al. (2017)",
+    "content": "**balogh_2017:**\n\nImproved lower bound:\n$$F(k) \\geq 2^{2^{k-1}/k}$$\n\nThis is **doubly exponential** in k! Even for small k, F(k) is astronomically large.\n\n**Reference:** Balogh, Eberhard, Narayanan, Treglown, Wagner, \"An improved lower bound for Folkman's theorem\", Bull. Lond. Math. Soc. (2017).",
+    "mathContext": "The proof uses inductive construction exploiting multiplicative structure of subset sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Doubly exponential", "Tower functions"]
+  },
+  {
+    "id": "ann-e531-small-cases",
+    "proofId": "erdos-531",
+    "range": { "startLine": 104, "endLine": 113 },
+    "type": "theorem",
+    "title": "Small Cases",
+    "content": "**Explicit Values:**\n\n- **F(1) = 1:** Any single element has exactly one subset sum (itself), trivially monochromatic\n- **F(2) = 3:** In {1,2,3}, any 2-coloring forces {a,b,a+b} monochromatic\n- **F(3) ≥ 11:** The 3-element case requires at least 11 elements\n\nEven F(3) is only known as a lower bound - exact computation is very hard.",
+    "significance": "supporting",
+    "relatedConcepts": ["Base cases", "Computational complexity"]
+  },
+  {
+    "id": "ann-e531-upper-bound",
+    "proofId": "erdos-531",
+    "range": { "startLine": 122, "endLine": 125 },
+    "type": "axiom",
+    "title": "Upper Bounds",
+    "content": "**folkman_upper_bound:**\n\nThe original upper bound from Folkman's proof is at least tower-type (iterated exponentials).\n\nThe huge gap between 2^{2^{k-1}/k} (lower) and tower(k) (upper) is the main open question.",
+    "significance": "key",
+    "relatedConcepts": ["Tower functions", "Ackermann function"]
+  },
+  {
+    "id": "ann-e531-rado",
+    "proofId": "erdos-531",
+    "range": { "startLine": 140, "endLine": 146 },
+    "type": "axiom",
+    "title": "Connection to Rado's Theorem",
+    "content": "**folkman_from_rado:**\n\nFolkman's theorem follows from Rado's theorem (1933) on partition regularity.\n\nThe system of equations:\n- For each non-empty S ⊆ {1,...,k}: Σᵢ∈S xᵢ = yₛ\n\nRado's theorem guarantees monochromatic solutions exist for any finite coloring.\n\nThis gives existence but with weak (tower-type) bounds.",
+    "mathContext": "Rado's theorem characterizes which linear systems have monochromatic solutions in any finite coloring.",
+    "significance": "key",
+    "relatedConcepts": ["Rado's theorem", "Partition regularity", "Linear systems"]
+  },
+  {
+    "id": "ann-e531-main-result",
+    "proofId": "erdos-531",
+    "range": { "startLine": 182, "endLine": 185 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_531:**\n\n```lean\ntheorem erdos_531 :\n    ∀ k : ℕ, k ≥ 1 → (ValidN k).Nonempty :=\n  fun k hk => folkman_theorem k hk\n```\n\nThe main theorem confirms that for every k, the set of valid N values is non-empty, meaning F(k) exists and is finite.\n\nCombined with balogh_2017, we know F(k) ≥ 2^{2^{k-1}/k} for all k ≥ 1.",
+    "significance": "critical",
+    "relatedConcepts": ["Folkman numbers", "Existence theorems"]
+  }
+]

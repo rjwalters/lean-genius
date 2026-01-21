@@ -8306,17 +8306,24 @@
   },
   {
     "id": "erdos-531",
-    "title": "Erdős Problem #531",
+    "title": "Erdős Problem #531: Folkman's Theorem - Monochromatic Subset Sums",
     "slug": "erdos-531",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that if we two-colour ... there is a set ... of size ... such that all subset sums ... (for ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) ≥ 2^{2^{k-1}/k}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "colorings",
+      "subset-sums",
+      "folkman-theorem",
+      "combinatorics"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 531,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-532",
