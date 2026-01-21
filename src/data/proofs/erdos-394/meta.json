@@ -1,33 +1,135 @@
 {
   "id": "erdos-394",
-  "title": "Erdős Problem #394",
+  "title": "Erdős Problem #394: Divisibility by Consecutive Integer Products",
   "slug": "erdos-394",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least ... such that\\[n\\mid m(m+1)(m+2)\\cdots (m+k-1).\\]Is it true that\\[\\sum_{n\\leq x}t_2(n)\\ll {(\\log x)^...",
+  "description": "Let t_k(n) be the least m with n | m(m+1)···(m+k-1). Erdős-Hall (1978) proved Σ t₂(n) ≪ (log log log x / log log x)x². Questions about x²/(log x)^c bounds and hierarchy Σ t_{k+1} = o(Σ t_k) remain OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hall (1978), Erdős-Graham (1980), Selfridge",
     "sourceUrl": "https://erdosproblems.com/394",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos394Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "number-theory", "divisibility", "consecutive-integers", "asymptotics", "partially-open"],
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 394,
     "erdosUrl": "https://erdosproblems.com/394",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Nat.Prime", "description": "Prime numbers", "module": "Mathlib.Data.Nat.Prime.Basic" },
+      { "theorem": "Nat.factorial", "description": "Factorial function", "module": "Mathlib.Data.Nat.Factorial.Basic" },
+      { "theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Finset.sum", "description": "Finite sums", "module": "Mathlib.Algebra.BigOperators.Group.Finset" }
+    ],
+    "originalContributions": [
+      "consecutiveProduct: m(m+1)···(m+k-1)",
+      "t: the function t_k(n)",
+      "divides_consecutive: divisibility predicate",
+      "t2_of_prime: t₂(p) = p - 1 for primes",
+      "S: sum function Σ t_k(n)",
+      "trivial_lower_bound: x²/log x",
+      "erdos_hall_upper_bound: (log log log x / log log x)x²",
+      "erdos_hall_conjecture: o(x²/(log x)^c) for c < log 2",
+      "hierarchy_conjecture: Σ t_{k+1} = o(Σ t_k)",
+      "strict_decrease_property: factorial special case",
+      "selfridge_n_10: verified for n = 10"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #394 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t_k(n)$ denote the least $m$ such that\\[n\\mid m(m+1)(m+2)\\cdots (m+k-1).\\]Is it true that\\[\\sum_{n\\leq x}t_2(n)\\ll \\frac{x^2}{(\\log x)^c}\\]for some $c>0$?\n\nIs it true that, for $k\\geq 2$,\\[\\sum_{n\\leq x}t_{k+1}(n) =o\\left(\\sum_{n\\leq x}t_k(n)\\right)?\\]\n\n\n\nIn \\cite{ErGr80} they mention a conjecture of Erd\\H{o}s that the sum is $o(x^2)$. This was proved by Erd\\H{o}s and Hall \\cite{ErHa78}, who proved that in fact\\[\\sum_{n\\leq x}t_2(n)\\ll \\frac{\\log\\log\\log x}{\\log\\log x}x^2.\\]Erd\\H{o}s and Hall conjecture that the sum is $o(x^2/(\\log x)^c)$ for any $c<\\log 2$.\n\nSince $t_2(p)=p-1$ for prime $p$ it is trivial that\\[\\sum_{n\\leq x}t_2(n)\\gg \\frac{x^2}{\\log x}.\\]Erd\\H{o}s and Hall \\cite{ErHa78} also note that $t_{n-1}(n!)=2$ and $t_{n-2}(n!)\\ll n$, which $n=2^r$ shows is the best possible. They ask about the behaviour of $t_{n-3}(n!)$ and also ask ask whether, for infinitely many $n$,\\[t_k(n!)< t_{k-1}(n!)-1\\]for all $1\\leq k<n$. They proved (with Selfridge) that this holds for $n=10$.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[ErHa78] Erd\\H{o}s, P. and Hall, R. R., On some unconventional problems on the divisors of integers. J. Austral. Math. Soc. Ser. A (1978), 479--485.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem studies the function t_k(n) = least m such that n divides the product of k consecutive integers starting at m. Erdős conjectured Σ t₂(n) = o(x²). Erdős and Hall (1978) proved a stronger bound with triple-log factors. They also studied factorial special cases with Selfridge. Two main questions remain open.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED / OPEN)**\n\nLet t_k(n) = least m ≥ 1 such that n | m(m+1)(m+2)···(m+k-1).\n\n**Question 1:** Is Σ_{n≤x} t₂(n) ≪ x²/(log x)^c for some c > 0?\n\n**Question 2:** For k ≥ 2, is Σ_{n≤x} t_{k+1}(n) = o(Σ_{n≤x} t_k(n))?\n\n**Known:** Erdős-Hall (1978): Σ t₂(n) ≪ (log log log x / log log x)x²\n\n**Lower bound:** Σ t₂(n) ≫ x²/log x (from primes, t₂(p) = p-1)",
+    "proofStrategy": "The formalization defines t_k(n) and the sum S_k(x). The trivial lower bound from primes is stated. Erdős-Hall's upper bound with triple-log is axiomatized. The hierarchy conjecture and factorial special cases are formalized. The Selfridge result for n=10 is included.",
+    "keyInsights": [
+      "**t₂(p) = p - 1:** For primes, need to start at p-1 to get p in the product",
+      "**Lower Bound:** Primes give Σ t₂(n) ≫ x²/log x",
+      "**Erdős-Hall (1978):** Σ t₂(n) ≪ (log log log x / log log x)x²",
+      "**Conjecture:** Σ t₂(n) = o(x²/(log x)^c) for 0 < c < log 2",
+      "**Factorial Special:** t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n",
+      "**Selfridge (n=10):** Strict decrease property verified"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 38,
+      "endLine": 63,
+      "summary": "consecutiveProduct, t_k(n), divides_consecutive"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties of t_k",
+      "startLine": 65,
+      "endLine": 95,
+      "summary": "Well-definedness, t₂(p) = p - 1 for primes"
+    },
+    {
+      "id": "sum-t2",
+      "title": "The Sum Σ t₂(n)",
+      "startLine": 97,
+      "endLine": 124,
+      "summary": "Sum function S, trivial lower bound, original conjecture"
+    },
+    {
+      "id": "erdos-hall",
+      "title": "Erdős-Hall Theorem (1978)",
+      "startLine": 126,
+      "endLine": 147,
+      "summary": "(log log log x / log log x)x² upper bound"
+    },
+    {
+      "id": "erdos-hall-conjecture",
+      "title": "Erdős-Hall Conjecture",
+      "startLine": 149,
+      "endLine": 178,
+      "summary": "o(x²/(log x)^c) for c < log 2"
+    },
+    {
+      "id": "hierarchy",
+      "title": "The Hierarchy Question",
+      "startLine": 180,
+      "endLine": 199,
+      "summary": "Σ t_{k+1} = o(Σ t_k)?"
+    },
+    {
+      "id": "factorials",
+      "title": "Special Cases (Factorials)",
+      "startLine": 201,
+      "endLine": 231,
+      "summary": "t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n"
+    },
+    {
+      "id": "selfridge",
+      "title": "The Selfridge Result",
+      "startLine": 233,
+      "endLine": 258,
+      "summary": "Strict decrease property, n = 10 case"
+    },
+    {
+      "id": "connections",
+      "title": "Why This is Interesting",
+      "startLine": 260,
+      "endLine": 287,
+      "summary": "Factorial divisibility, probabilistic intuition, smooth numbers"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 289,
+      "endLine": 345,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #394 is PARTIALLY SOLVED with key questions OPEN. Erdős-Hall (1978) proved Σ t₂(n) ≪ (log log log x / log log x)x², confirming Erdős's o(x²) conjecture. The stronger conjecture o(x²/(log x)^c) for c < log 2 and the hierarchy conjecture remain open. Special factorial cases are understood.",
+    "implications": "This problem connects divisibility theory with asymptotic analysis. The appearance of triple-log factors shows how slowly the sum grows compared to trivial estimates. The lower bound from primes (t₂(p) = p-1) is fundamental.",
+    "openQuestions": [
+      "Prove or disprove: Σ t₂(n) ≪ x²/(log x)^c for some c > 0",
+      "Determine the optimal c in the Erdős-Hall conjecture",
+      "Prove the hierarchy: Σ t_{k+1}(n) = o(Σ t_k(n))",
+      "Study t_{n-3}(n!) and related factorial questions"
+    ]
   }
 }

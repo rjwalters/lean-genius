@@ -6816,17 +6816,24 @@
   },
   {
     "id": "erdos-394",
-    "title": "Erdős Problem #394",
+    "title": "Erdős Problem #394: Divisibility by Consecutive Integer Products",
     "slug": "erdos-394",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least ... such that\\[n\\mid m(m+1)(m+2)\\cdots (m+k-1).\\]Is it true that\\[\\sum_{n\\leq x}t_2(n)\\ll {(\\log x)^...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let t_k(n) be the least m with n | m(m+1)···(m+k-1). Erdős-Hall (1978) proved Σ t₂(n) ≪ (log log log x / log log x)x². Questions about x²/(log x)^c bounds and hierarchy Σ t_{k+1} = o(Σ t_k) remain OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "consecutive-integers",
+      "asymptotics",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 394,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 10
   },
   {
     "id": "erdos-395",
