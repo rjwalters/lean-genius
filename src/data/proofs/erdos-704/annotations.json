@@ -1,1 +1,116 @@
-[]
+[
+  {
+    "id": "ann-e704-header",
+    "proofId": "erdos-704",
+    "range": { "startLine": 1, "endLine": 13 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #704: Chromatic Number of Unit Distance Graphs**\n\nEstimate χ(Gₙ), the chromatic number of the unit distance graph in ℝⁿ.\n\n**Status:** Partially solved - exponential growth established\n- Lower bound: χ(Gₙ) ≥ (1+o(1))·1.2ⁿ (Frankl-Wilson, 1981)\n- Upper bound: χ(Gₙ) ≤ (3+o(1))ⁿ (Larman-Rogers, 1972)\n\n**Open:** Does lim χ(Gₙ)^{1/n} exist? What is its value?",
+    "mathContext": "This generalizes the famous Hadwiger-Nelson problem to higher dimensions.",
+    "significance": "critical",
+    "relatedConcepts": ["Hadwiger-Nelson problem", "Graph coloring", "Combinatorial geometry"]
+  },
+  {
+    "id": "ann-e704-graph-def",
+    "proofId": "erdos-704",
+    "range": { "startLine": 35, "endLine": 46 },
+    "type": "definition",
+    "title": "Unit Distance Graph",
+    "content": "**UnitDistanceGraph(n):**\n\nThe graph Gₙ on all points in ℝⁿ where two points are adjacent iff their distance equals exactly 1.\n\n```lean\ndef UnitDistanceGraph (n : ℕ) : SimpleGraph (EuclideanSpace ℝ (Fin n)) where\n  Adj x y := ‖x - y‖ = 1 ∧ x ≠ y\n```\n\nThis is an infinite graph with uncountably many vertices!",
+    "mathContext": "The graph has the symmetry group of Euclidean space: rotations and translations preserve adjacency.",
+    "significance": "critical",
+    "relatedConcepts": ["SimpleGraph", "EuclideanSpace", "Metric spaces"]
+  },
+  {
+    "id": "ann-e704-chi-def",
+    "proofId": "erdos-704",
+    "range": { "startLine": 48, "endLine": 51 },
+    "type": "definition",
+    "title": "Chromatic Number χ(Gₙ)",
+    "content": "**chi(n):**\n\nThe chromatic number χ(Gₙ) = minimum number of colors to color all points of ℝⁿ so that no two points at distance 1 have the same color.\n\n```lean\nnoncomputable def chi (n : ℕ) : ℕ := (UnitDistanceGraph n).chromaticNumber\n```\n\nFor an infinite graph, this is still well-defined as the minimum over all valid colorings.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Chromatic number"]
+  },
+  {
+    "id": "ann-e704-frankl-wilson",
+    "proofId": "erdos-704",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "axiom",
+    "title": "Frankl-Wilson Lower Bound (1981)",
+    "content": "**frankl_wilson_1981:**\n\nχ(Gₙ) ≥ (1+o(1))·1.2ⁿ\n\nThis proves exponential growth with base at least 1.2.\n\n**Reference:** Frankl, P. and Wilson, R. M., \"Intersection theorems with geometric consequences\", Combinatorica (1981).",
+    "mathContext": "The proof uses algebraic combinatorics: analyzing set systems with restricted intersection sizes leads to chromatic number bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["Intersection theorems", "Algebraic combinatorics"]
+  },
+  {
+    "id": "ann-e704-larman-rogers",
+    "proofId": "erdos-704",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "axiom",
+    "title": "Larman-Rogers Upper Bound (1972)",
+    "content": "**larman_rogers_1972:**\n\nχ(Gₙ) ≤ (3+o(1))ⁿ\n\nThis uses lattice tilings: partition ℝⁿ using Voronoi cells of the Aₙ lattice, where each cell has diameter < 1.\n\n**Reference:** Larman, D. G. and Rogers, C. A., \"The realization of distances within sets in Euclidean space\", Mathematika (1972).",
+    "significance": "critical",
+    "relatedConcepts": ["Lattices", "Voronoi cells", "Tilings"]
+  },
+  {
+    "id": "ann-e704-conjectured",
+    "proofId": "erdos-704",
+    "range": { "startLine": 93, "endLine": 94 },
+    "type": "definition",
+    "title": "Conjectured Base",
+    "content": "**conjecturedBase:**\n\nLarman and Rogers conjecture: χ(Gₙ) ≈ (2^{3/2})ⁿ ≈ 2.828ⁿ\n\nThis is between the known bounds of 1.2 and 3.\n\nThe factor 2^{3/2} = 2√2 arises from geometric considerations.",
+    "significance": "key",
+    "relatedConcepts": ["Conjectures", "Exponential bases"]
+  },
+  {
+    "id": "ann-e704-de-grey",
+    "proofId": "erdos-704",
+    "range": { "startLine": 108, "endLine": 109 },
+    "type": "axiom",
+    "title": "de Grey's Breakthrough (2018)",
+    "content": "**de_grey_2018:**\n\nχ(G₂) ≥ 5\n\nAubrey de Grey constructed a 1581-vertex unit distance graph requiring 5 colors, improving the 70-year-old lower bound of 4.\n\nThis was later reduced to 509 vertices by others.",
+    "mathContext": "A major breakthrough in the Hadwiger-Nelson problem, found by an amateur mathematician using computer search.",
+    "significance": "critical",
+    "relatedConcepts": ["Hadwiger-Nelson", "Moser spindle", "Computer-assisted proofs"]
+  },
+  {
+    "id": "ann-e704-hadwiger-nelson",
+    "proofId": "erdos-704",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "theorem",
+    "title": "Hadwiger-Nelson Bounds",
+    "content": "**hadwiger_nelson_bounds:**\n\n5 ≤ χ(G₂) ≤ 7\n\nThe plane chromatic number is 5, 6, or 7. After 70+ years, the exact value is unknown!\n\n- Lower bound 5: de Grey's graph (2018)\n- Upper bound 7: Hexagonal tiling",
+    "significance": "critical",
+    "relatedConcepts": ["Plane coloring", "Hexagonal tilings"]
+  },
+  {
+    "id": "ann-e704-limit",
+    "proofId": "erdos-704",
+    "range": { "startLine": 127, "endLine": 128 },
+    "type": "definition",
+    "title": "Chromatic Limit",
+    "content": "**chromaticLimit:**\n\nlim_{n→∞} χ(Gₙ)^{1/n}\n\nIf this limit exists, it equals the exponential base of χ(Gₙ).\n\nThe known bounds show: 1.2 ≤ chromaticLimit ≤ 3\n\n**Open:** Does this limit even exist?",
+    "significance": "key",
+    "relatedConcepts": ["Limits", "Exponential growth"]
+  },
+  {
+    "id": "ann-e704-techniques",
+    "proofId": "erdos-704",
+    "range": { "startLine": 144, "endLine": 159 },
+    "type": "concept",
+    "title": "Proof Techniques",
+    "content": "**Lower Bound (Frankl-Wilson):**\n1. Consider ±1 vectors with n/2 ones\n2. Analyze distances: √2 or 2\n3. Apply intersection theorems to bound independent sets\n4. Get χ(Gₙ) ≥ 1.2ⁿ\n\n**Upper Bound (Larman-Rogers):**\n1. Use the Aₙ lattice\n2. Voronoi cells have diameter < 1\n3. Color by cell membership\n4. Get χ(Gₙ) ≤ 3ⁿ",
+    "significance": "key",
+    "relatedConcepts": ["Intersection theorems", "Lattices", "Voronoi diagrams"]
+  },
+  {
+    "id": "ann-e704-main-result",
+    "proofId": "erdos-704",
+    "range": { "startLine": 161, "endLine": 165 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_704_solved:**\n\nCombines both bounds:\n- ∀ε>0: χ(Gₙ) ≥ (1-ε)·1.2ⁿ for large n\n- ∀ε>0: χ(Gₙ) ≤ (3+ε)ⁿ for large n\n\nThis establishes exponential growth, resolving part of the problem.\n\nThe exact base remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential bounds", "Asymptotic analysis"]
+  }
+]
