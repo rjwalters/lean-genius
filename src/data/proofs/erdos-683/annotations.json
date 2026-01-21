@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Largest Prime Divisor P(n)",
+    "content": "P(n) is the largest prime dividing n. For example, P(30) = 5 since 30 = 2·3·5. This is the central object of study - we want to understand how large P(C(n,k)) can be.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "definition",
+    "title": "P(C(n,k)) for Binomials",
+    "content": "The largest prime divisor of the binomial coefficient C(n,k) = n!/(k!(n-k)!). The question asks: how large must this prime be in terms of n and k?",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 84, "endLine": 94 },
+    "type": "theorem",
+    "title": "Sylvester-Schur Theorem",
+    "content": "For k ≤ n/2, P(C(n,k)) > k. This foundational result from 1892/1929 says the binomial coefficient always has a 'large' prime divisor exceeding k. The proof uses properties of products of consecutive integers.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 116, "endLine": 125 },
+    "type": "theorem",
+    "title": "Erdős 1955 Improvement",
+    "content": "P(C(n,k)) ≫ k log k for k ≤ n/2. This is a significant strengthening of Sylvester-Schur - the prime divisor exceeds not just k, but c·k·log k for some constant c > 0.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 140, "endLine": 147 },
+    "type": "conjecture",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "Erdős conjectured P(C(n,k)) ≥ min(n-k+1, k^{1+c}) for some c > 0. The minimum captures two regimes: near k=n/2 use n-k+1, for small k use k^{1+c}. This remains OPEN.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "theorem",
+    "title": "Erdős 1979 Belief",
+    "content": "Erdős wrote it 'seems certain' that for ANY c > 0, we have P(C(n,k)) > k^{1+c} with only finitely many exceptions (depending on c). This is even stronger than the main conjecture.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 170, "endLine": 181 },
+    "type": "insight",
+    "title": "Prime Gap Heuristic",
+    "content": "Standard prime gap heuristics suggest P(C(n,k)) > e^{c√k}, which is much stronger than k^{1+c}. This 'stretched exponential' growth would far exceed polynomial bounds.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 224, "endLine": 225 },
+    "type": "definition",
+    "title": "Consecutive Products",
+    "content": "The numerator of C(n,k) = (n-k+1)(n-k+2)···n / k! is a product of k consecutive integers. Understanding prime factors of such products is key to the problem.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 227, "endLine": 233 },
+    "type": "theorem",
+    "title": "Bertrand's Postulate Connection",
+    "content": "Bertrand's postulate (Chebyshev's theorem) says there's a prime between n and 2n. This implies P(C(2n,n)) > n for the central binomial coefficient - a special case of Sylvester-Schur.",
+    "significance": "helpful"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 301, "endLine": 320 },
+    "type": "summary",
+    "title": "Main Result: erdos_683",
+    "content": "The main theorem summarizes: Sylvester-Schur gives P(C(n,k)) > k (proven), Erdős improved to ≫ k log k (proven), the conjecture min(n-k+1, k^{1+c}) remains OPEN. Problem 961 is equivalent.",
+    "significance": "essential"
+  }
+]

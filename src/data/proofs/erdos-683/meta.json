@@ -1,33 +1,134 @@
 {
   "id": "erdos-683",
-  "title": "Erdős Problem #683",
+  "title": "Erdős Problem #683: Largest Prime Divisor of Binomial Coefficients",
   "slug": "erdos-683",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... the largest prime divisor of ..., say ..., satisfies\\[P\\left({k}\\right)\\geq \\min(n-k+1, k^{1+c}...",
+  "description": "For 1 ≤ k ≤ n, is P(C(n,k)) ≥ min(n-k+1, k^{1+c}) for some c > 0? Sylvester-Schur (1892/1929) proved P(C(n,k)) > k. Erdős (1955) improved this to P(C(n,k)) ≫ k log k. The full conjecture remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Sylvester (1892), Schur (1929), Erdős (1934, 1955, 1979)",
     "sourceUrl": "https://erdosproblems.com/683",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos683Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "number-theory", "primes", "binomial-coefficients", "prime-divisors", "open"],
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 683,
     "erdosUrl": "https://erdosproblems.com/683",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Nat.choose", "description": "Binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic" },
+      { "theorem": "Nat.Prime", "description": "Prime numbers", "module": "Mathlib.Data.Nat.Prime.Basic" },
+      { "theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Real.rpow", "description": "Real exponentiation", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" },
+      { "theorem": "Finset.prod", "description": "Finite products", "module": "Mathlib.Algebra.BigOperators.Group.Finset" }
+    ],
+    "originalContributions": [
+      "largestPrimeDivisor: P(n) is the largest prime dividing n",
+      "P: Largest prime divisor of C(n,k)",
+      "sylvester_schur: P(C(n,k)) > k for k ≤ n/2",
+      "erdos_1955_bound: P(C(n,k)) ≥ c·k·log k",
+      "erdosConjecture683: The main open conjecture",
+      "erdos_1979_belief: k^{1+c} bound with finite exceptions",
+      "prime_gap_heuristic: e^{c√k} heuristic bound",
+      "consecutiveProduct: Product of k consecutive integers",
+      "bertrand_for_central: P(C(2n,n)) > n",
+      "central_binom_bound: P(C(2k,k)) > (4/3)k"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #683 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $1\\leq k\\leq n$ the largest prime divisor of $\\binom{n}{k}$, say $P(\\binom{n}{k})$, satisfies\\[P\\left(\\binom{n}{k}\\right)\\geq \\min(n-k+1, k^{1+c})\\]for some constant $c>0$?\n\n\n\nA theorem of Sylvester and Schur (see \\cite{Er34}) states that $P(\\binom{n}{k})>k$ if $k\\leq n/2$. Erd\\H{o}s \\cite{Er55d} proved that there exists some $c>0$ such that, whenever $k\\leq n/2$,\\[P\\left(\\binom{n}{k}\\right)\\gg k\\log k.\\]Erd\\H{o}s \\cite{Er79d} writes it 'seems certain' that this holds for every $c>0$, with only a finite number of exceptions (depending on $c$). Standard heuristics on prime gaps suggest that the largest prime divisor of $\\binom{n}{k}$ is, for $k\\leq n/2$, in fact\\[>e^{c\\sqrt{k}}\\]for some constant $c>0$.\n\nThis is essentially equivalent to [961].\n\n\n\n\nReferences\n\n\n[Er34] Erd\\H{o}s, Paul, A {T}heorem of {S}ylvester and {S}chur. J. London Math. Soc. (1934), 282--288.\n\n[Er55d] Erd\\H{o}s, P., On consecutive integers. Nieuw Arch. Wisk. (3) (1955), 124--128.\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Sylvester (1892) and Schur (1929) proved that for k ≤ n/2, the binomial coefficient C(n,k) has a prime divisor exceeding k. Erdős improved this in 1934 and 1955, showing P(C(n,k)) ≫ k log k. In 1979, Erdős conjectured the stronger bound P(C(n,k)) ≥ min(n-k+1, k^{1+c}), which remains open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor every 1 ≤ k ≤ n, is there a constant c > 0 such that:\n  P(C(n,k)) ≥ min(n - k + 1, k^{1+c})\n\nwhere P(m) denotes the largest prime divisor of m?\n\n**Known:**\n- P(C(n,k)) > k for k ≤ n/2 (Sylvester-Schur)\n- P(C(n,k)) ≫ k log k (Erdős 1955)\n\n**Believed:**\n- For any c > 0, P(C(n,k)) > k^{1+c} with finitely many exceptions",
+    "proofStrategy": "The formalization defines the largest prime divisor function P and applies it to binomial coefficients. The Sylvester-Schur theorem and Erdős's 1955 improvement are axiomatized. The main conjecture is stated but marked as open. Connections to products of consecutive integers and Bertrand's postulate are explored.",
+    "keyInsights": [
+      "**Sylvester-Schur:** P(C(n,k)) > k is the foundation",
+      "**Erdős 1955:** P(C(n,k)) ≫ k log k is a significant improvement",
+      "**The Conjecture:** min(n-k+1, k^{1+c}) captures two regimes",
+      "**Heuristic:** Prime gap statistics suggest e^{c√k}",
+      "**Consecutive Products:** C(n,k) numerator is (n-k+1)···n",
+      "**Bertrand Connection:** Implies P(C(2n,n)) > n"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 41,
+      "endLine": 78,
+      "summary": "Largest prime divisor P(n), P(C(n,k)) for binomials"
+    },
+    {
+      "id": "sylvester-schur",
+      "title": "Sylvester-Schur Theorem",
+      "startLine": 80,
+      "endLine": 110,
+      "summary": "P(C(n,k)) > k for k ≤ n/2"
+    },
+    {
+      "id": "erdos-1955",
+      "title": "Erdős's 1955 Improvement",
+      "startLine": 112,
+      "endLine": 134,
+      "summary": "P(C(n,k)) ≫ k log k"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 136,
+      "endLine": 164,
+      "summary": "erdosConjecture683: min(n-k+1, k^{1+c}) bound (OPEN)"
+    },
+    {
+      "id": "heuristics",
+      "title": "Heuristic Bounds",
+      "startLine": 166,
+      "endLine": 191,
+      "summary": "Prime gap heuristic: e^{c√k}"
+    },
+    {
+      "id": "min-bound",
+      "title": "The min(n-k+1, k^{1+c}) Bound",
+      "startLine": 193,
+      "endLine": 213,
+      "summary": "Why the minimum of two terms"
+    },
+    {
+      "id": "consecutive",
+      "title": "Products of Consecutive Integers",
+      "startLine": 215,
+      "endLine": 241,
+      "summary": "Connection to C(n,k) numerator, Bertrand's postulate"
+    },
+    {
+      "id": "specific-cases",
+      "title": "Specific Cases",
+      "startLine": 243,
+      "endLine": 263,
+      "summary": "Central binomial, small k cases"
+    },
+    {
+      "id": "related-961",
+      "title": "Related Problem 961",
+      "startLine": 265,
+      "endLine": 280,
+      "summary": "Equivalence to Problem 961"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 282,
+      "endLine": 331,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #683 remains OPEN. The Sylvester-Schur theorem establishes P(C(n,k)) > k, and Erdős (1955) improved this to P(C(n,k)) ≫ k log k. The conjectured bound P(C(n,k)) ≥ min(n-k+1, k^{1+c}) for some c > 0 is still unproven, though Erdős believed it holds with only finitely many exceptions for any c > 0.",
+    "implications": "This problem connects the prime factorization of binomial coefficients to the distribution of primes in products of consecutive integers. Progress would illuminate the structure of factorial-type numbers and their prime divisors.",
+    "openQuestions": [
+      "Prove the main conjecture for some c > 0",
+      "Determine optimal value of c in the bound",
+      "Prove the heuristic e^{c√k} bound"
+    ]
   }
 }
