@@ -1,34 +1,128 @@
 {
   "id": "erdos-146",
-  "title": "Erdős Problem #146",
+  "title": "Erdős Problem #146: Turán Numbers for Bipartite r-Degenerate Graphs",
   "slug": "erdos-146",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is bipartite and is ...-degenerate, that is, every induced subgraph of ... has minimum degree ..., then\\[(n;H) \\ll n^{...",
+  "description": "If H is bipartite and r-degenerate, is ex(n;H) ≪ n^{2-1/r}? OPEN even for r=2. Best known: n^{2-1/4r} (AKS 2003). Prize: $500.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Simonovits (1984 conjecture), Alon-Krivelevich-Sudakov (2003 partial)",
     "sourceUrl": "https://erdosproblems.com/146",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos146Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
+    "tags": ["erdos", "extremal-graph-theory", "Turán-numbers", "bipartite-graphs", "degeneracy", "open-problem"],
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 146,
     "erdosUrl": "https://erdosproblems.com/146",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Basic graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "SimpleGraph.Subgraph", "description": "Subgraph and induced subgraph", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
+      { "theorem": "Real", "description": "Real numbers for exponents", "module": "Mathlib.Data.Real.Basic" }
+    ],
+    "originalContributions": [
+      "IsRDegenerate: r-degeneracy definition via induced subgraph minimum degree",
+      "turanNumber: extremal number ex(n;H) definition",
+      "IsAsymptoticallyBounded: O(n^α) asymptotic notation",
+      "ErdosSimonovitsConjecture: main conjecture statement",
+      "aks_theorem: n^{2-1/4r} partial result",
+      "MaxDegreeOneSide: special case condition",
+      "aks_special_case: full bound for degree-restricted case",
+      "completeBipartiteGraph: explicit K_{r,s} construction",
+      "kovari_sos_turan: known result for complete bipartite",
+      "aks_weaker_than_conjecture: gap between bounds theorem"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #146 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $H$ is bipartite and is $r$-degenerate, that is, every induced subgraph of $H$ has minimum degree $\\leq r$, then\\[\\mathrm{ex}(n;H) \\ll n^{2-1/r}.\\]\n\n\n\nConjectured by Erd\\H{o}s and Simonovits \\cite{ErSi84}. Open even for $r=2$. Alon, Krivelevich, and Sudakov \\cite{AKS03} have proved\\[\\mathrm{ex}(n;H) \\ll n^{2-1/4r}.\\]They also prove the full Erd\\H{o}s-Simonovits conjectured bound if $H$ is bipartite and the maximum degree in one side of the bipartition is $r$.\n\nSee also [113] and [147].\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[AKS03] Alon, Noga and Krivelevich, Michael and Sudakov, Benny, Tur\\'{a}n numbers of bipartite graphs and related\nRamsey-type questions. Combin. Probab. Comput. (2003), 477-494.\n\n[ErSi84] Erd\\H{o}s, P. and Simonovits, M., Cube-supersaturated graphs and related problems. Progress in graph theory (Waterloo, Ont., 1982) (1984), 203-218.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Simonovits (1984) conjectured that the Turán number for bipartite r-degenerate graphs H satisfies ex(n;H) ≪ n^{2-1/r}. A graph is r-degenerate if every induced subgraph has minimum degree ≤ r. This conjecture predicts that degeneracy alone determines the extremal exponent. Despite decades of work, the conjecture remains OPEN even for r=2. Erdős offered $500 for its resolution.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\n**Conjecture (Erdős-Simonovits 1984):** If H is bipartite and r-degenerate, then\n$$\\mathrm{ex}(n; H) \\ll n^{2-1/r}$$\n\n**Status:** OPEN (even for r = 2!)\n\n**Prize:** $500\n\n**Best Known (AKS 2003):**\n$$\\mathrm{ex}(n; H) \\ll n^{2-1/4r}$$\n\n**Special Case:** Full bound holds when max degree in one side = r",
+    "proofStrategy": "The formalization defines r-degeneracy, Turán numbers, and asymptotic bounds. The Erdős-Simonovits conjecture is stated precisely. The AKS partial result is axiomatized, along with the special case where max degree constraint holds. Key examples (complete bipartite graphs, cycles) are included, and the gap between known and conjectured bounds is verified.",
+    "keyInsights": [
+      "**r-Degenerate:** Every induced subgraph has a vertex of degree ≤ r",
+      "**Turán Number:** ex(n;H) = max edges in n-vertex H-free graph",
+      "**Conjecture:** Exponent 2-1/r depends only on degeneracy r",
+      "**AKS 2003:** Best known is n^{2-1/4r} (weaker by factor of 4)",
+      "**Kővári-Sós-Turán:** Complete bipartite K_{r,s} achieves n^{2-1/r}",
+      "**Even r=2 is open:** Gap between n^{3/2} and n^{15/8}",
+      "**$500 prize:** Reflects difficulty and importance"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 71,
+      "summary": "IsRDegenerate, IsBipartite, turanNumber"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Simonovits Conjecture",
+      "startLine": 72,
+      "endLine": 99,
+      "summary": "Main conjecture: ex(n;H) ≪ n^{2-1/r}"
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "startLine": 100,
+      "endLine": 129,
+      "summary": "AKS theorem: n^{2-1/4r}, special case for bounded degree"
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison of Bounds",
+      "startLine": 130,
+      "endLine": 155,
+      "summary": "Gap analysis: n^{2-1/r} vs n^{2-1/4r}"
+    },
+    {
+      "id": "examples",
+      "title": "Examples of r-Degenerate Graphs",
+      "startLine": 156,
+      "endLine": 192,
+      "summary": "Complete bipartite K_{r,s}, even cycles, Kővári-Sós-Turán"
+    },
+    {
+      "id": "r2-case",
+      "title": "The r = 2 Case",
+      "startLine": 193,
+      "endLine": 217,
+      "summary": "Even simplest case open; C_4 example"
+    },
+    {
+      "id": "difficulty",
+      "title": "Why the Problem is Hard",
+      "startLine": 218,
+      "endLine": 238,
+      "summary": "Local vs global conditions, known approaches"
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 239,
+      "endLine": 254,
+      "summary": "Problems #113 and #147"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 255,
+      "endLine": 298,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #146 conjectures that bipartite r-degenerate graphs H satisfy ex(n;H) ≪ n^{2-1/r}. The problem remains OPEN even for r=2, with a $500 prize. The best known bound is n^{2-1/4r} by Alon-Krivelevich-Sudakov (2003). The conjecture holds for complete bipartite graphs (Kővári-Sós-Turán) and when max degree on one side is bounded.",
+    "implications": "This problem connects local graph structure (degeneracy) to global extremal behavior (Turán numbers). Its resolution would advance extremal graph theory significantly and likely require new techniques beyond current probabilistic methods.",
+    "openQuestions": [
+      "Can the AKS bound be improved beyond n^{2-1/4r}?",
+      "Is there a counterexample to the full conjecture?",
+      "What special cases beyond bounded-side-degree satisfy the bound?",
+      "How do algebraic methods extend beyond complete bipartite graphs?"
+    ]
   }
 }
