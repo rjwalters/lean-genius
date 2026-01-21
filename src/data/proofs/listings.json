@@ -4831,17 +4831,23 @@
   },
   {
     "id": "erdos-255",
-    "title": "Erdős Problem #255",
+    "title": "Erdős Problem #255: Discrepancy of Sequences in [0,1]",
     "slug": "erdos-255",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence, and define the discrepancy\\[D_N(I) = \\#\\{ n\\leq N : z_n\\in I\\} - N\\lvert I\\rvert.\\]Must ther...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any sequence in [0,1], must some interval have unbounded discrepancy? YES (Schmidt 1968). Tijdeman-Wagner (1980) proved discrepancy ≫ log N for almost all intervals.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrepancy-theory",
+      "sequences",
+      "distribution-mod-1",
+      "number-theory"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 255,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-256",

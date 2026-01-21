@@ -1,33 +1,132 @@
 {
   "id": "erdos-255",
-  "title": "Erdős Problem #255",
+  "title": "Erdős Problem #255: Discrepancy of Sequences in [0,1]",
   "slug": "erdos-255",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence, and define the discrepancy\\[D_N(I) = \\#\\{ n\\leq N : z_n\\in I\\} - N\\lvert I\\rvert.\\]Must ther...",
+  "description": "For any sequence in [0,1], must some interval have unbounded discrepancy? YES (Schmidt 1968). Tijdeman-Wagner (1980) proved discrepancy ≫ log N for almost all intervals.",
   "meta": {
-    "author": "Unknown",
+    "author": "Schmidt (1968, 1972), Tijdeman-Wagner (1980)",
     "sourceUrl": "https://erdosproblems.com/255",
-    "date": "",
-    "status": "pending",
+    "date": "1968",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos255Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "discrepancy-theory", "sequences", "distribution-mod-1", "number-theory"],
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 255,
     "erdosUrl": "https://erdosproblems.com/255",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Set.Icc", "description": "Closed intervals", "module": "Mathlib.Data.Set.Basic" },
+      { "theorem": "Set.Countable", "description": "Countable sets", "module": "Mathlib.Data.Set.Countable" },
+      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" },
+      { "theorem": "Real.log", "description": "Logarithm function", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" }
+    ],
+    "originalContributions": [
+      "IsSequenceInUnitInterval: sequences in [0,1]",
+      "countInInterval: counting function for discrepancy",
+      "discrepancy: D_N(I) = count - N·|I|",
+      "hasUnboundedDiscrepancy: limsup |D_N| = ∞",
+      "erdosQuestion: main problem statement",
+      "schmidt_theorem_1968: affirmative answer",
+      "schmidt_theorem_1972: uncountably many intervals",
+      "tijdeman_wagner_theorem: logarithmic bound",
+      "starDiscrepancy: sup over all intervals"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #255 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $z_1,z_2,\\ldots \\in [0,1]$ be an infinite sequence, and define the discrepancy\\[D_N(I) = \\#\\{ n\\leq N : z_n\\in I\\} - N\\lvert I\\rvert.\\]Must there exist some interval $I\\subseteq [0,1]$ such that\\[\\limsup_{N\\to \\infty}\\lvert D_N(I)\\rvert =\\infty?\\]\n\n\n\nThe answer is yes, as proved by Schmidt \\cite{Sc68}, who later showed \\cite{Sc72} that in fact this is true for all but countably many intervals of the shape $[0,x]$.\n\nEssentially the best possible result was proved by Tijdeman and Wagner \\cite{TiWa80}, who proved that, for almost all intervals of the shape $[0,x)$, we have\\[\\limsup_{N\\to \\infty}\\frac{\\lvert D_N([0,x))\\rvert}{\\log N}\\gg 1.\\]\n\n\n\n\nReferences\n\n\n[Sc68] Schmidt, Wolfgang M., Irregularities of distribution. Quart. J. Math. Oxford Ser. (2) (1968), 181-191.\n\n[Sc72] Schmidt, Wolfgang M., Irregularities of distribution. VI. Compositio Math. (1972), 63-74.\n\n[TiWa80] Tijdeman, R. and Wagner, G., A sequence has almost nowhere small discrepancy. Monatsh. Math. (1980), 315-329.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns discrepancy theory - measuring how far a sequence deviates from uniform distribution. Erdős asked in the early 1960s whether every sequence in [0,1] must have unbounded discrepancy for some interval. Schmidt (1968) proved YES, and strengthened it (1972) to uncountably many intervals. Tijdeman-Wagner (1980) showed the optimal logarithmic bound.",
+    "problemStatement": "**Problem Statement (SOLVED: YES)**\n\nLet z₁, z₂, ... ∈ [0,1] be an infinite sequence. Define discrepancy:\n  D_N(I) = #{n ≤ N : zₙ ∈ I} - N·|I|\n\n**Question:** Must there exist some interval I ⊆ [0,1] such that\n  limsup |D_N(I)| = ∞?\n\n**Answer:** YES (Schmidt 1968)\n\n**Optimal:** Discrepancy ≫ log N for almost all intervals (Tijdeman-Wagner 1980)",
+    "proofStrategy": "The formalization defines discrepancy and the main question. Schmidt's theorem is axiomatized as the affirmative answer. We also formalize the strengthening (uncountably many intervals), Tijdeman-Wagner's logarithmic bound, and van der Corput's matching upper bound showing optimality.",
+    "keyInsights": [
+      "**Discrepancy:** D_N(I) measures deviation from uniform distribution",
+      "**Schmidt (1968):** Some interval must have unbounded discrepancy",
+      "**Schmidt (1972):** All but countably many [0,x] have unbounded discrepancy",
+      "**Tijdeman-Wagner (1980):** |D_N| ≫ log N for almost all intervals",
+      "**Van der Corput:** |D_N| = O(log N) is achievable - log N is optimal",
+      "**Star Discrepancy:** D*_N = sup over all intervals → ∞"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 85,
+      "summary": "Sequences in [0,1], counting function, discrepancy"
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 86,
+      "endLine": 104,
+      "summary": "Unbounded discrepancy and Erdős's question"
+    },
+    {
+      "id": "schmidt-1968",
+      "title": "Schmidt's Theorem (1968)",
+      "startLine": 105,
+      "endLine": 134,
+      "summary": "Affirmative answer - some interval has unbounded discrepancy"
+    },
+    {
+      "id": "schmidt-1972",
+      "title": "Schmidt's Strengthening (1972)",
+      "startLine": 135,
+      "endLine": 152,
+      "summary": "Uncountably many intervals have unbounded discrepancy"
+    },
+    {
+      "id": "tijdeman-wagner",
+      "title": "Tijdeman-Wagner Theorem (1980)",
+      "startLine": 153,
+      "endLine": 174,
+      "summary": "Logarithmic lower bound for almost all intervals"
+    },
+    {
+      "id": "optimality",
+      "title": "Why This is Optimal",
+      "startLine": 175,
+      "endLine": 194,
+      "summary": "Van der Corput sequence achieves log N upper bound"
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "startLine": 195,
+      "endLine": 220,
+      "summary": "Uniform distribution, Weyl's theorem, Diophantine approximation"
+    },
+    {
+      "id": "star-discrepancy",
+      "title": "Star Discrepancy",
+      "startLine": 221,
+      "endLine": 239,
+      "summary": "Supremum over all intervals also unbounded"
+    },
+    {
+      "id": "history",
+      "title": "Historical Context",
+      "startLine": 240,
+      "endLine": 254,
+      "summary": "Timeline from Weyl (1916) to Tijdeman-Wagner (1980)"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 255,
+      "endLine": 300,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #255 is SOLVED with answer YES. For any sequence in [0,1], some interval must have unbounded discrepancy (Schmidt 1968). This holds for uncountably many intervals (Schmidt 1972), with discrepancy ≫ log N for almost all (Tijdeman-Wagner 1980). The logarithmic bound is optimal.",
+    "implications": "This result is fundamental in discrepancy theory with applications to quasi-Monte Carlo integration, numerical analysis, and computational number theory. It shows that no sequence can be 'too uniformly distributed' - irregularities must occur.",
+    "openQuestions": [
+      "What are the precise constants in the logarithmic bounds?",
+      "How do multi-dimensional generalizations behave?",
+      "What is the discrepancy for specific number-theoretic sequences?"
+    ]
   }
 }

@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-255-1",
+    "proofId": "erdos-255",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #255: Discrepancy of Sequences**\n\n**Setup:** z₁, z₂, ... ∈ [0,1] is any infinite sequence.\nDiscrepancy D_N(I) = #{n ≤ N : zₙ ∈ I} - N·|I|\n\n**Question:** Must some interval have unbounded discrepancy?\n\n**Answer:** YES (Schmidt 1968)",
+    "mathContext": "Discrepancy measures how far the empirical distribution deviates from uniform. A perfectly uniform sequence would have D_N = 0.",
+    "significance": "critical",
+    "relatedConcepts": ["Uniform distribution", "Quasi-Monte Carlo", "Weyl's theorem"]
+  },
+  {
+    "id": "ann-255-2",
+    "proofId": "erdos-255",
+    "range": { "startLine": 70, "endLine": 85 },
+    "type": "definition",
+    "title": "Discrepancy",
+    "content": "**discrepancy z a b N:**\n\nD_N([a,b]) = #{n ≤ N : zₙ ∈ [a,b]} - N·(b-a)\n\n**Interpretation:**\n- D_N > 0: Too many points in the interval\n- D_N < 0: Too few points in the interval\n- D_N = 0: Exactly the expected number",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-255-3",
+    "proofId": "erdos-255",
+    "range": { "startLine": 90, "endLine": 104 },
+    "type": "definition",
+    "title": "Unbounded Discrepancy",
+    "content": "**hasUnboundedDiscrepancy z a b:**\n\nlimsup_{N→∞} |D_N([a,b])| = ∞\n\nFor any bound M, there exists N with |D_N| > M.\n\n**erdosQuestion:** Does every sequence have such an interval?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-255-4",
+    "proofId": "erdos-255",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "axiom",
+    "title": "Schmidt's Theorem (1968)",
+    "content": "**schmidt_theorem_1968:**\n\nFor ANY sequence in [0,1], there EXISTS an interval I with unbounded discrepancy.\n\nThis answers Erdős's question affirmatively. No sequence can have bounded discrepancy on ALL intervals.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-255-5",
+    "proofId": "erdos-255",
+    "range": { "startLine": 118, "endLine": 134 },
+    "type": "theorem",
+    "title": "No Uniform Bound",
+    "content": "**no_uniformly_bounded_discrepancy:**\n\nThere is NO sequence with bounded discrepancy on all intervals.\n\n**Proof:** By contradiction using Schmidt's theorem. If a sequence had bounded discrepancy everywhere, Schmidt would give an interval violating this.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-255-6",
+    "proofId": "erdos-255",
+    "range": { "startLine": 139, "endLine": 152 },
+    "type": "axiom",
+    "title": "Schmidt's Strengthening (1972)",
+    "content": "**schmidt_theorem_1972:**\n\nFor any sequence, ALL but COUNTABLY MANY intervals [0,x] have unbounded discrepancy.\n\n**Implication:** Uncountably many intervals have unbounded discrepancy. The 'bad' intervals are rare.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-255-7",
+    "proofId": "erdos-255",
+    "range": { "startLine": 157, "endLine": 174 },
+    "type": "axiom",
+    "title": "Tijdeman-Wagner Theorem",
+    "content": "**tijdeman_wagner_theorem (1980):**\n\nFor almost all x ∈ [0,1]:\nlimsup |D_N([0,x))| / log N ≫ 1\n\nThe discrepancy grows at least logarithmically for almost every interval.\n\nThis is the optimal result!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-255-8",
+    "proofId": "erdos-255",
+    "range": { "startLine": 179, "endLine": 194 },
+    "type": "axiom",
+    "title": "Optimality: Van der Corput",
+    "content": "**van_der_corput_sequence_exists:**\n\nThere exists a sequence where |D_N([0,x))| = O(log N) for ALL x.\n\n**Implication:** Tijdeman-Wagner's log N lower bound is OPTIMAL.\n\nThe van der Corput sequence achieves the best possible discrepancy bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-255-9",
+    "proofId": "erdos-255",
+    "range": { "startLine": 199, "endLine": 220 },
+    "type": "definition",
+    "title": "Connections",
+    "content": "**isUniformlyDistributed z:**\n\nD_N([0,x))/N → 0 for all x.\n\n**Weyl's Theorem:** (nα) mod 1 is uniformly distributed iff α is irrational.\n\n**Note:** Even uniformly distributed sequences have UNBOUNDED |D_N|!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-255-10",
+    "proofId": "erdos-255",
+    "range": { "startLine": 273, "endLine": 300 },
+    "type": "theorem",
+    "title": "Summary: SOLVED (YES)",
+    "content": "**erdos_255:**\n\n**STATUS:** SOLVED (Answer: YES)\n\n**Schmidt (1968):** Some interval has unbounded discrepancy\n\n**Schmidt (1972):** Uncountably many intervals\n\n**Tijdeman-Wagner (1980):** |D_N| ≫ log N for almost all intervals\n\n**Van der Corput:** |D_N| = O(log N) is achievable\n\n**Conclusion:** Logarithmic growth is optimal",
+    "significance": "critical"
+  }
+]
