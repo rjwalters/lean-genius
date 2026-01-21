@@ -8821,17 +8821,23 @@
   },
   {
     "id": "erdos-573",
-    "title": "Erdős Problem #573",
+    "title": "Erdős Problem #573: Extremal Numbers for {C₃, C₄}-free Graphs",
     "slug": "erdos-573",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[(n;\\{C_3,C_4\\})\\sim (n/2)^{3/2}?\\]\n\n\n\nA problem of Erds and Simonovits, who proved that\\[(n;\\{C_4,C_5\\})=(n/...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is ex(n; {C₃, C₄}) ~ (n/2)^(3/2)? OPEN. Asks whether forbidding triangles along with 4-cycles gives asymptotic (n/2)^(3/2).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "turan",
+      "forbidden-cycles",
+      "open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 573,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-576",
