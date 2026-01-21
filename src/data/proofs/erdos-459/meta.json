@@ -1,33 +1,150 @@
 {
   "id": "erdos-459",
-  "title": "Erdős Problem #459",
+  "title": "Erdős Problem #459: Estimate f(u) - Smooth Number Gaps",
   "slug": "erdos-459",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that no ... is composed entirely of primes dividing .... Estimate ....\n\n\n\nAn equivalent defin...",
+  "description": "Let f(u) be the largest v such that no m ∈ (u,v) is smooth with respect to u. Estimate f(u). Solved: trivial bounds u+2 ≤ f(u) ≤ u², with f(p) = p² for primes and f(n) = (1+o(1))n for almost all n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (1980), Cambie (observations)",
     "sourceUrl": "https://erdosproblems.com/459",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos459Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "prime-factorization",
+      "asymptotic-density",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 459,
     "erdosUrl": "https://erdosproblems.com/459",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Prime factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit along filters for asymptotic statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "ComposedOfPrimesDividing definition: smooth numbers w.r.t. a base",
+      "IsSmooth definition: prime factors contained in another number's factors",
+      "f function: the smallest smooth number > u",
+      "f_lower_bound axiom: f(u) ≥ u + 2",
+      "f_upper_bound axiom: f(u) ≤ u²",
+      "f_prime axiom: f(p) = p² for primes",
+      "f_minimal_case axiom: f(2^k - 2) = 2^k",
+      "f_almost_all_linear axiom: f(n) = (1+o(1))n for almost all n",
+      "irregular_growth theorem: infinitely many minimal and maximal cases",
+      "erdos_459_solved theorem: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #459 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(u)$ be the largest $v$ such that no $m\\in (u,v)$ is composed entirely of primes dividing $uv$. Estimate $f(u)$.\n\n\n\nAn equivalent definition is that $v$ is the smallest number $>u$ such that all prime factors of $v$ are factors of $u$. In particular, we trivially have\\[u+2\\leq f(u)\\leq u^2.\\]Cambie has noted that when $u=p$ is a prime, $f(p)=p^2$, and if $u$ is even then $f(u)\\leq 2^k$, where $2^k$ is the smallest power of $2$ which is $>u$. In particular, $f(u)=u+2$ whenever $u=2^k-2$ for $k\\geq 2$.\n\nIn particular the function $f(u)$ does not exhibit any regular growth, since there are infinitely many $u$ such that $f(u)=u+2$ and infinitely many $u$ such that $f(u)=u^2$. Cambie can also show that $f(n)=(1+o(1))n$ for almost all $n$. It is not clear what kind of estimates Erd\\H{o}s and Graham had in mind. Since Cambie's observations seem to settle the most obvious questions, I will mark this as solved.\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #459: Smooth Number Gaps**\n\nThis problem from Erdős-Graham (1980) asks to estimate f(u), where f(u) is the largest v such that no integer in (u, v) is 'smooth' with respect to u (i.e., composed only of primes dividing u).\n\n**Key History:**\n- Erdős-Graham (1980): Original problem in 'Old and new problems and results in combinatorial number theory'\n- Cambie (recent): Comprehensive observations settling the main questions\n- OEIS A289280: Sequence of f(n) values\n\n**Mathematical Setting:**\nA number m is 'smooth' with respect to n if all prime factors of m divide n. The function f(u) captures the gap until the next such smooth number after u.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(u) be the largest v such that no m ∈ (u, v) is composed entirely of primes dividing uv.\n\nEquivalently: f(u) is the smallest v > u with primeFactors(v) ⊆ primeFactors(u).\n\n**Bounds:**\n- Trivial: u + 2 ≤ f(u) ≤ u²\n- f(p) = p² for prime p\n- f(u) ≤ 2^k when u is even\n- f(2^k - 2) = 2^k (minimal cases)\n- f(n) = (1 + o(1))n for almost all n\n\n**Key Insight:** The function has highly irregular growth - infinitely many u with f(u) = u + 2 and infinitely many with f(u) = u².",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - ComposedOfPrimesDividing: smooth number predicate\n   - IsSmooth: primeFactors(m) ⊆ primeFactors(n)\n   - f(u): smallest v > u with IsSmooth v u\n\n2. **Bounds as Axioms:**\n   - f_lower_bound: f(u) ≥ u + 2 (u + 1 always has new prime factor)\n   - f_upper_bound: f(u) ≤ u² (u² has same prime factors as u)\n\n3. **Special Cases (Cambie):**\n   - f_prime: f(p) = p² for primes\n   - f_minimal_case: f(2^k - 2) = 2^k\n   - f_almost_all_linear: almost-sure linear growth\n\n4. **Main Result:** irregular_growth shows both extremes occur infinitely often",
+    "keyInsights": [
+      "**Trivial Bounds:** u + 2 ≤ f(u) ≤ u² because u + 1 always has a new prime, but u² always has the same primes as u",
+      "**Prime Case:** For prime p, the only smooth numbers are powers of p, so f(p) = p² is the first > p",
+      "**Minimal Growth:** f(2^k - 2) = 2^k because 2^k = (2^k - 2) + 2 and 2^k is smooth w.r.t. any even number",
+      "**Almost-Sure Linear:** For 'almost all' n (density 1), f(n) = (1 + o(1))n - growth is linear on average",
+      "**Irregular Growth:** Infinitely many cases of both minimal (u+2) and maximal (u²) growth - no regular pattern"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Problem context and function behavior",
+      "startLine": 31,
+      "endLine": 42
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "ComposedOfPrimesDividing, IsSmooth, primeDivisors",
+      "startLine": 44,
+      "endLine": 70
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(u)",
+      "summary": "Definition of f and alternative characterization",
+      "startLine": 72,
+      "endLine": 106
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "Lower bound u+2 and upper bound u²",
+      "startLine": 108,
+      "endLine": 122
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases (Cambie)",
+      "summary": "f(p) = p², even numbers, and minimal cases",
+      "startLine": 124,
+      "endLine": 139
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Behavior",
+      "summary": "f(n) = (1+o(1))n for almost all n",
+      "startLine": 141,
+      "endLine": 158
+    },
+    {
+      "id": "irregular-growth",
+      "title": "Irregular Growth Patterns",
+      "summary": "Infinitely many minimal and maximal cases",
+      "startLine": 160,
+      "endLine": 175
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Specific values f(2), f(3), f(6), f(14)",
+      "startLine": 177,
+      "endLine": 192
+    },
+    {
+      "id": "main-result",
+      "title": "The Resolution",
+      "summary": "erdos_459_solved theorem",
+      "startLine": 194,
+      "endLine": 231
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #459 asked to estimate f(u), the gap until the next smooth number. Cambie's observations provide a complete picture: trivial bounds u+2 ≤ f(u) ≤ u², exact values for primes (f(p) = p²) and special even numbers, and the crucial insight that f(n) = (1+o(1))n for almost all n while exhibiting highly irregular growth for specific families.",
+    "implications": "**Connections and Applications**\n\n1. **Smooth Number Theory:** Understanding gaps in smooth numbers is fundamental to algorithms in computational number theory\n\n2. **Factoring Algorithms:** Smooth numbers are central to the quadratic sieve and number field sieve\n\n3. **Additive Combinatorics:** The function captures structure in multiplicative number theory\n\n4. **Asymptotic Density:** The 'almost all' result connects to probabilistic number theory\n\n5. **OEIS A289280:** The sequence documents computational verification",
+    "openQuestions": [
+      "What is the exact distribution of f(n)/n for random n?",
+      "Can we characterize all u with f(u) = u + 2 beyond powers of 2 minus 2?",
+      "What is the precise error term in f(n) = (1+o(1))n?",
+      "Are there efficient algorithms to compute f(u) for large u?",
+      "How does f(u) behave for highly composite numbers?"
+    ]
   }
 }
