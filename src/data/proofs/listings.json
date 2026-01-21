@@ -4970,17 +4970,23 @@
   },
   {
     "id": "erdos-262",
-    "title": "Erdős Problem #262",
+    "title": "Erdős Problem #262: Irrationality Sequences",
     "slug": "erdos-262",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... is a sequence of integers such that for all integer sequences ... with ... the sum\\[\\sum_{n=1}^\\infty {t_na_n}\\]i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How slowly can an 'irrationality sequence' grow? The sequence must satisfy limsup (log₂ log₂ a_n)/n ≥ 1 (Hančl 1991). Example: 2^{2^n} works; n! fails.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "irrationality",
+      "transcendence",
+      "number-theory",
+      "infinite-series"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 262,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-263",
