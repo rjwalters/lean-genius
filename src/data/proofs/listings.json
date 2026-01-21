@@ -8234,17 +8234,24 @@
   },
   {
     "id": "erdos-521",
-    "title": "Erdős Problem #521",
+    "title": "Erdős Problem #521: Real Roots of Random ±1 Polynomials",
     "slug": "erdos-521",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be independently uniformly chosen at random from .... If ... counts the number of real roots of ... then is it true t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For random ±1 polynomials, is Rₙ/log n → 2/π almost surely? Erdős-Offord (1956) proved E[Rₙ] = (2/π + o(1))log n. Do (2024) proved a.s. limit 1/π for roots in [-1,1]. Full a.s. convergence remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "random-polynomials",
+      "real-roots",
+      "almost-sure-convergence",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 521,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-522",

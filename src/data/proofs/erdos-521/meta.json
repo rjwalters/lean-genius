@@ -1,33 +1,133 @@
 {
   "id": "erdos-521",
-  "title": "Erdős Problem #521",
+  "title": "Erdős Problem #521: Real Roots of Random ±1 Polynomials",
   "slug": "erdos-521",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be independently uniformly chosen at random from .... If ... counts the number of real roots of ... then is it true t...",
+  "description": "For random ±1 polynomials, is Rₙ/log n → 2/π almost surely? Erdős-Offord (1956) proved E[Rₙ] = (2/π + o(1))log n. Do (2024) proved a.s. limit 1/π for roots in [-1,1]. Full a.s. convergence remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Offord (1956), Kac (1943), Do (2024)",
     "sourceUrl": "https://erdosproblems.com/521",
-    "date": "",
-    "status": "pending",
+    "date": "1956",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos521Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "probability", "random-polynomials", "real-roots", "almost-sure-convergence", "partially-open"],
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 521,
     "erdosUrl": "https://erdosproblems.com/521",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Real.pi", "description": "The constant π", "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic" },
+      { "theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Finset.sum", "description": "Finite sums for polynomial definition", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
+      { "theorem": "Filter.atTop", "description": "Asymptotic statements", "module": "Mathlib.Order.Filter.Basic" }
+    ],
+    "originalContributions": [
+      "RandomPlusMinus1Polynomial: f_n(z) = Σ εₖ z^k",
+      "IsValidCoeffSeq: each coefficient is ±1",
+      "realRootCount: Rₙ counts real roots",
+      "realRootCountInUnit: Rₙ[-1,1] for interval",
+      "kacConstant: 2/π ≈ 0.6366",
+      "halfKacConstant: 1/π ≈ 0.3183",
+      "erdos_offord_expectation: E[Rₙ] = (2/π + o(1))log n",
+      "erdosConjecture: a.s. Rₙ/log n → 2/π",
+      "do_theorem_2024: a.s. Rₙ[-1,1]/log n → 1/π",
+      "kac_formula: integral formula for expected roots"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #521 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $(\\epsilon_k)_{k\\geq 0}$ be independently uniformly chosen at random from $\\{-1,1\\}$. If $R_n$ counts the number of real roots of $f_n(z)=\\sum_{0\\leq k\\leq n}\\epsilon_k z^k$ then is it true that, almost surely,\\[\\lim_{n\\to \\infty}\\frac{R_n}{\\log n}=\\frac{2}{\\pi}?\\]\n\n\n\nErd\\H{o}s and Offord \\cite{EO56} showed that the number of real roots of a random degree $n$ polynomial with $\\pm 1$ coefficients is $(\\frac{2}{\\pi}+o(1))\\log n$.\n\nIt is ambiguous in \\cite{Er61} whether Erd\\H{o}s intended the coefficients to be uniformly chosen from $\\{-1,1\\}$ or $\\{0,1\\}$. In the latter case, the constant $\\frac{2}{\\pi}$ should be $\\frac{1}{\\pi}$ (see the discussion in the comments).\n\nIn the case of $\\{-1,1\\}$ Do \\cite{Do24} proved that, if $R_n[-1,1]$ counts the number of roots in $[-1,1]$, then, almost surely,\\[\\lim_{n\\to \\infty}\\frac{R_n[-1,1]}{\\log n}=\\frac{1}{\\pi}.\\]See also [522].\n\n\n\n\nReferences\n\n\n[Do24] Y. Do, A strong law of large numbers for real roots of random polynomials. arXiv:2403.06353 (2024).\n\n[EO56] Erd\\\"{o}s, Paul and Offord, A. C., On the number of real roots of a random algebraic equation. Proc. London Math. Soc. (3) (1956), 139-160.\n\n[Er61] Erd\\H{o}s, Paul, Some unsolved problems. Magyar Tud. Akad. Mat. Kutat\\'{o} Int. K\\\"{o}zl. (1961), 221-254.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Kac (1943) first computed expected real roots of random polynomials using an integral formula. Erdős and Offord (1956) extended this to ±1 coefficients, showing E[Rₙ] = (2/π + o(1))log n. Erdős asked whether this holds almost surely, not just in expectation. Do (2024) proved the a.s. result for roots in [-1,1], but the full problem remains open.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED / OPEN)**\n\nLet (εₖ) be i.i.d. uniform on {-1, 1}. If Rₙ counts real roots of f_n(z) = Σ_{k=0}^n εₖ z^k, is it true that almost surely:\n  lim_{n→∞} Rₙ/log n = 2/π?\n\n**Known:** E[Rₙ] = (2/π + o(1))log n (Erdős-Offord 1956)\n\n**Partial:** A.s. lim Rₙ[-1,1]/log n = 1/π (Do 2024)\n\n**Open:** Full a.s. convergence Rₙ/log n → 2/π",
+    "proofStrategy": "The formalization defines random ±1 polynomials and the root counting functions. The Kac constant 2/π is defined. Erdős-Offord's expectation result and variance bound are axiomatized. Do's 2024 partial result for roots in [-1,1] is stated. Kac's integral formula explains the origin of 2/π.",
+    "keyInsights": [
+      "**Kac Constant:** 2/π ≈ 0.6366 appears in root counting",
+      "**Expectation Known:** E[Rₙ] = (2/π + o(1))log n (Erdős-Offord)",
+      "**A.S. vs Expectation:** A.s. convergence is harder than expectation",
+      "**Do's Partial Result:** A.s. Rₙ[-1,1]/log n → 1/π for roots in [-1,1]",
+      "**Root Density:** Roots cluster near x = ±1, giving log n growth",
+      "**{0,1} vs {-1,1}:** Different coefficient sets give different constants"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 39,
+      "endLine": 70,
+      "summary": "Random polynomial, valid coefficients, root counts"
+    },
+    {
+      "id": "kac-constant",
+      "title": "The Kac Constant 2/π",
+      "startLine": 72,
+      "endLine": 94,
+      "summary": "kacConstant, halfKacConstant, numerical values"
+    },
+    {
+      "id": "erdos-offord",
+      "title": "Erdős-Offord Theorem (1956)",
+      "startLine": 96,
+      "endLine": 118,
+      "summary": "Expected number of real roots, variance bound"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 120,
+      "endLine": 148,
+      "summary": "A.s. Rₙ/log n → 2/π (OPEN)"
+    },
+    {
+      "id": "do-theorem",
+      "title": "Do's Theorem (2024)",
+      "startLine": 150,
+      "endLine": 173,
+      "summary": "A.s. result for roots in [-1,1]"
+    },
+    {
+      "id": "kac-formula",
+      "title": "Kac's Integral Formula",
+      "startLine": 175,
+      "endLine": 204,
+      "summary": "Why 2/π appears"
+    },
+    {
+      "id": "zero-one-case",
+      "title": "The {0,1} Case",
+      "startLine": 206,
+      "endLine": 223,
+      "summary": "Different coefficient sets"
+    },
+    {
+      "id": "complex-roots",
+      "title": "Complex Roots",
+      "startLine": 225,
+      "endLine": 247,
+      "summary": "Most roots are complex, near unit circle"
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "startLine": 249,
+      "endLine": 271,
+      "summary": "Littlewood polynomials, Barker sequences"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 273,
+      "endLine": 317,
+      "summary": "Main theorem and historical note"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #521 is PARTIALLY SOLVED with the main question OPEN. Erdős-Offord (1956) proved E[Rₙ] = (2/π + o(1))log n. Do (2024) proved the almost sure version for roots in [-1,1], giving Rₙ[-1,1]/log n → 1/π. The full almost sure convergence Rₙ/log n → 2/π remains open.",
+    "implications": "This problem connects probability theory with polynomial algebra. The constant 2/π comes from Kac's integral formula. The difficulty lies in controlling root count fluctuations - expectation doesn't guarantee almost sure convergence.",
+    "openQuestions": [
+      "Prove a.s. Rₙ/log n → 2/π for all real roots",
+      "Handle roots outside [-1,1] with a.s. convergence",
+      "Extend Do's method to the full real line"
+    ]
   }
 }
