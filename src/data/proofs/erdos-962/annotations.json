@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "ann-1",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "Largest Prime Factor",
+    "content": "lpf(n) returns the largest prime dividing n, or 0 if n ≤ 1. This function is key for expressing that a number has a 'large' prime factor. For example, lpf(15) = 5, lpf(24) = 3.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-2",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "definition",
+    "title": "HasLargePrimeFactor",
+    "content": "A number n has a large prime factor (relative to k) if some prime p > k divides n. This is the central property: we want intervals where ALL integers satisfy this.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-3",
+    "range": { "startLine": 71, "endLine": 72 },
+    "type": "definition",
+    "title": "IsValidInterval",
+    "content": "An interval {m+1,...,m+k} is 'valid' if every integer in it has a prime factor exceeding k. These are the intervals we're counting to define k(n).",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-4",
+    "range": { "startLine": 81, "endLine": 82 },
+    "type": "definition",
+    "title": "The k(n) Function",
+    "content": "k(n) = sup{k : ∃ m ≤ n, IsValidInterval m k}. This is the main object of study: the longest valid interval we can find with starting point at most n.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 126, "endLine": 128 },
+    "type": "theorem",
+    "title": "Erdős's Lower Bound (1965)",
+    "content": "Erdős proved k(n) ≫_ε exp((log n)^{1/2-ε}). He used sieve methods to show that for many starting points m, small primes 'miss' long intervals. This was the first non-trivial lower bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-6",
+    "range": { "startLine": 147, "endLine": 150 },
+    "type": "theorem",
+    "title": "Tang's Improved Lower Bound",
+    "content": "Tang proved k(n) ≥ exp((1/√2-o(1))√(log n · log log n)). The constant 1/√2 ≈ 0.707 improves on Erdős's original bound and represents the current best lower bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-7",
+    "range": { "startLine": 176, "endLine": 177 },
+    "type": "theorem",
+    "title": "Tao's Upper Bound",
+    "content": "Tao proved k(n) ≤ (1+o(1))√n using a simple pigeonhole argument. If k > √n, then among primes p ≤ k, some prime must divide two numbers in {m+1,...,m+k}, violating validity. This was the first non-trivial upper bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-8",
+    "range": { "startLine": 205, "endLine": 206 },
+    "type": "conjecture",
+    "title": "Erdős's Subpolynomial Conjecture",
+    "content": "Erdős conjectured k(n) = o(n^ε) for all ε > 0. This asks whether k(n) grows slower than any polynomial. Despite Tao's √n bound, this remains OPEN since √n = n^{1/2} is still polynomial.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-9",
+    "range": { "startLine": 265, "endLine": 266 },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "A number is y-smooth if all its prime factors are ≤ y. The k(n) problem is equivalent to finding the longest interval of non-k-smooth numbers. This connects to the well-studied density of smooth numbers.",
+    "significance": "important"
+  },
+  {
+    "id": "ann-10",
+    "range": { "startLine": 237, "endLine": 241 },
+    "type": "theorem",
+    "title": "The Bounds Gap",
+    "content": "The gap between known bounds is enormous: lower bound is subpolynomial (exp(√(log n log log n))), while upper bound is polynomial (√n). Closing this gap is the main open problem.",
+    "significance": "important"
+  }
+]

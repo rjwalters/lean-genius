@@ -14758,17 +14758,23 @@
   },
   {
     "id": "erdos-962",
-    "title": "Erdős Problem #962",
+    "title": "Consecutive Integers with Large Prime Divisors",
     "slug": "erdos-962",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal ... such that there exists ... such that each of the integers\\[m+1,\\ldots,m+k\\]are divisible by at lea...",
-    "status": "pending",
+    "description": "Let k(n) be the maximal k such that there exists m ≤ n where each of m+1,...,m+k is divisible by at least one prime > k. Estimate k(n). Known bounds: exp(c√(log n log log n)) ≤ k(n) ≤ (1+o(1))√n.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "consecutive-integers",
+      "divisibility"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 962,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-964",

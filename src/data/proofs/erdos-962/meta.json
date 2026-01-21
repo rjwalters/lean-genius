@@ -1,33 +1,160 @@
 {
   "id": "erdos-962",
-  "title": "Erdős Problem #962",
+  "title": "Consecutive Integers with Large Prime Divisors",
   "slug": "erdos-962",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal ... such that there exists ... such that each of the integers\\[m+1,\\ldots,m+k\\]are divisible by at lea...",
+  "description": "Let k(n) be the maximal k such that there exists m ≤ n where each of m+1,...,m+k is divisible by at least one prime > k. Estimate k(n). Known bounds: exp(c√(log n log log n)) ≤ k(n) ≤ (1+o(1))√n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Terence Tao, Tang",
     "sourceUrl": "https://erdosproblems.com/962",
-    "date": "",
-    "status": "pending",
+    "date": "1965",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos962Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "consecutive-integers",
+      "divisibility"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 962,
     "erdosUrl": "https://erdosproblems.com/962",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Basic natural number operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Prime.Basic",
+        "description": "Prime number definitions and properties",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Factorization.Basic",
+        "description": "Factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Log.Basic",
+        "description": "Logarithm function for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filters for eventual properties",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of largest prime factor (lpf) function",
+      "Formalization of HasLargePrimeFactor predicate",
+      "Definition of IsValidInterval for consecutive integers",
+      "Formalization of the k(n) function via supremum",
+      "Axiomatization of Erdős's original lower bound (1965)",
+      "Axiomatization of Tang's improved lower bound",
+      "Definition of Tang's constant 1/√2",
+      "Axiomatization of Tao's upper bound",
+      "Formalization of Tao's pigeonhole argument sketch",
+      "Definition of Erdős's subpolynomial conjecture",
+      "Formalization of smooth numbers and their connection",
+      "Theorems connecting bounds and conjectures"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #962 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k(n)$ be the maximal $k$ such that there exists $m\\leq n$ such that each of the integers\\[m+1,\\ldots,m+k\\]are divisible by at least one prime $>k$. Estimate $k(n)$.\n\n\n\nErd\\H{o}s \\cite{Er65} wrote it is 'not hard to prove' that\\[k(n)\\gg_\\epsilon \\exp((\\log n)^{1/2-\\epsilon})\\]and it 'seems likely' that $k(n)=o(n^\\epsilon)$, but had no non-trivial upper bound for $k(n)$.\n\nIt is not clear what he meant by a non-trivial bound for this problem, but Tao in the comments has given a simple argument proving $k(n) \\leq (1+o(1))n^{1/2}$.\n\nTang has proved a lower bound of\\[k(n)\\geq \\exp\\left(\\left(\\frac{1}{\\sqrt{2}}-o(1)\\right)\\sqrt{\\log n\\log\\log n}\\right).\\]\n\n\n\n\nReferences\n\n\n[Er65] Erd\\H{o}s, P., Extremal problems in number theory. Proc. Sympos. Pure Math., Vol. VIII (1965), 181-189.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1965 at a symposium on extremal problems in number theory. The problem asks about the longest intervals where all integers have a 'large' prime factor. Tao provided the first non-trivial upper bound via a simple pigeonhole argument, while Tang improved Erdős's original lower bound.",
+    "problemStatement": "Let k(n) be the maximal k such that there exists m ≤ n where each of m+1, ..., m+k is divisible by at least one prime greater than k. Estimate k(n).",
+    "proofStrategy": "The formalization defines the k(n) function, establishes basic properties like monotonicity, then axiomatizes the known bounds: Tang's lower bound exp((1/√2-o(1))√(log n log log n)) and Tao's upper bound (1+o(1))√n. The conjecture k(n) = o(n^ε) remains open.",
+    "keyInsights": [
+      "k(n) measures the longest 'large prime factor' interval below n",
+      "Lower bound uses sieve methods to avoid small primes",
+      "Upper bound uses pigeonhole: if k > √n, some small prime divides two nearby integers",
+      "The gap between bounds is enormous (subpolynomial vs polynomial)",
+      "Connection to smooth numbers: non-smooth integers avoid small prime factors"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 38,
+      "endLine": 61,
+      "summary": "Defines largest prime factor lpf(n) and HasLargePrimeFactor predicate."
+    },
+    {
+      "id": "k-function",
+      "title": "Part II: The k(n) Function",
+      "startLine": 63,
+      "endLine": 89,
+      "summary": "Defines IsValidInterval and the k_func(n) as supremum of valid interval lengths."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Part III: Basic Properties",
+      "startLine": 91,
+      "endLine": 114,
+      "summary": "Monotonicity, positivity, and small values of k(n)."
+    },
+    {
+      "id": "erdos-lower",
+      "title": "Part IV: Erdős's Lower Bound",
+      "startLine": 116,
+      "endLine": 135,
+      "summary": "Axiomatizes k(n) ≫_ε exp((log n)^{1/2-ε}) from 1965."
+    },
+    {
+      "id": "tang-lower",
+      "title": "Part V: Tang's Improved Lower Bound",
+      "startLine": 137,
+      "endLine": 164,
+      "summary": "Axiomatizes k(n) ≥ exp((1/√2-o(1))√(log n log log n))."
+    },
+    {
+      "id": "tao-upper",
+      "title": "Part VI: Tao's Upper Bound",
+      "startLine": 166,
+      "endLine": 193,
+      "summary": "Axiomatizes k(n) ≤ (1+o(1))√n with pigeonhole argument sketch."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part VII: Erdős's Conjecture",
+      "startLine": 195,
+      "endLine": 224,
+      "summary": "Formalizes conjecture k(n) = o(n^ε) for all ε > 0 (OPEN)."
+    },
+    {
+      "id": "gap",
+      "title": "Part VIII: The Gap Between Bounds",
+      "startLine": 226,
+      "endLine": 255,
+      "summary": "Discusses the enormous gap: subpolynomial vs √n."
+    },
+    {
+      "id": "smooth",
+      "title": "Part IX: Smooth Numbers Connection",
+      "startLine": 257,
+      "endLine": 288,
+      "summary": "Reformulates k(n) in terms of non-smooth number intervals."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 290,
+      "endLine": 327,
+      "summary": "Problem solved for bounds, conjecture remains open."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #962 asks for estimates of k(n), the longest interval below n where all integers have a large prime factor. Tang's lower bound and Tao's upper bound bracket k(n), but the gap is enormous. Erdős's conjecture that k(n) = o(n^ε) remains open.",
+    "implications": "The problem connects prime distribution with divisibility patterns of consecutive integers. Resolution would illuminate how primes are distributed relative to intervals of integers.",
+    "openQuestions": [
+      "Is k(n) = o(n^ε) for all ε > 0? (Erdős's conjecture)",
+      "Can the gap between √(log n log log n) and √n be closed?",
+      "What is the true order of magnitude of k(n)?"
+    ]
   }
 }
