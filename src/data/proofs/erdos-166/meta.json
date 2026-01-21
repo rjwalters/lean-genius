@@ -21,7 +21,28 @@
     "erdosNumber": 166,
     "erdosUrl": "https://erdosproblems.com/166",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$250"
+    "erdosPrizeValue": "$250",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset", "description": "Finite sets for clique representation", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Sym2", "description": "Unordered pairs for edges", "module": "Mathlib.Data.Sym.Sym2" },
+      { "theorem": "Real", "description": "Real numbers for asymptotic bounds", "module": "Mathlib.Data.Real.Basic" },
+      { "theorem": "sInf", "description": "Set infimum for Ramsey definition", "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic" }
+    ],
+    "originalContributions": [
+      "RamseyNumber: Definition of R(s,t) via edge colorings",
+      "ramsey_symmetric: Proof of R(s,t) = R(t,s)",
+      "ramsey_one_left: Proof of R(1,t) = 1",
+      "ramsey_two_left: Proof of R(2,t) = t",
+      "spencer_lower_bound: Spencer 1977 bound (k log k)^{5/2}",
+      "aks_upper_bound: AKS 1980 bound k³/(log k)²",
+      "mattheus_verstraete: Solution k³/(log k)⁴",
+      "Erdos166Statement: Formal problem statement",
+      "erdos_166_solved: Proof the problem is solved",
+      "current_bounds: Combined upper and lower bounds",
+      "logarithmic_gap: Analysis of remaining gap"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
     "historicalContext": "Erdős offered $250 for proving that R(4,k) grows like k³ up to polylogarithmic factors. For 43 years (1980-2023), the gap between Spencer's lower bound (k log k)^{5/2} and the Ajtai-Komlós-Szemerédi upper bound k³/(log k)² remained open. This was finally resolved by Mattheus and Verstraete in 2023 using algebraic constructions from finite geometry.",
@@ -80,17 +101,45 @@
     },
     {
       "id": "section-7",
-      "title": "Main Theorem (SOLVED)",
+      "title": "Erdős's Conjecture (SOLVED)",
       "startLine": 257,
       "endLine": 294,
-      "summary": "Formalizes and proves Erdős Problem #166 is solved, establishing current best bounds."
+      "summary": "Formalizes Erdős166Statement, proves erdos_166_solved, establishes current_bounds."
     },
     {
       "id": "section-8",
-      "title": "Summary and Status",
+      "title": "Related Problems and Generalizations",
+      "startLine": 295,
+      "endLine": 326,
+      "summary": "General R(s,k), Ramsey multiplicity, hypergraph and multicolor Ramsey numbers."
+    },
+    {
+      "id": "section-9",
+      "title": "Techniques in Ramsey Theory",
+      "startLine": 327,
+      "endLine": 358,
+      "summary": "Probabilistic method, algebraic constructions, stepping-up lemma, Turán connection."
+    },
+    {
+      "id": "section-10",
+      "title": "The Prize Story",
+      "startLine": 359,
+      "endLine": 376,
+      "summary": "The $250 Erdős prize and how it was collected by Mattheus-Verstraete."
+    },
+    {
+      "id": "section-11",
+      "title": "Open Questions",
+      "startLine": 377,
+      "endLine": 401,
+      "summary": "Exact exponent, general s ≥ 5, explicit constructions."
+    },
+    {
+      "id": "section-12",
+      "title": "Summary",
       "startLine": 402,
       "endLine": 461,
-      "summary": "Complete summary stating the problem was solved by Mattheus-Verstraete in 2023 with the $250 prize."
+      "summary": "Complete summary with erdos_166_status and logarithmic_gap theorems."
     }
   ],
   "conclusion": {
