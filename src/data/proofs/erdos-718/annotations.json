@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e718-subdivision-def",
+    "proofId": "erdos-718",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "definition",
+    "title": "Subdivision of Kᵣ",
+    "content": "**IsSubdivisionOfKr** G r:\n\nA **subdivision** of the complete graph Kᵣ consists of r \"branch vertices\" and internally vertex-disjoint paths connecting all pairs.\n\n**Definition:**\n```lean\ndef IsSubdivisionOfKr (G : SimpleGraph V) (r : ℕ) : Prop :=\n  ∃ (S : Finset V), S.card = r ∧\n    ∀ u v : V, u ∈ S → v ∈ S → u ≠ v →\n      ∃ (path : List V), path connects u to v with interior not in S\n```\n\nThis is also called a **topological Kᵣ** or **TKᵣ**.",
+    "mathContext": "Subdivisions are key objects in topological graph theory, preserving the essential structure of a graph while replacing edges with paths.",
+    "significance": "critical",
+    "relatedConcepts": ["Complete graphs", "Topological graphs", "Graph minors"]
+  },
+  {
+    "id": "ann-e718-mader-conjecture",
+    "proofId": "erdos-718",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "definition",
+    "title": "The Erdős-Hajnal-Mader Conjecture",
+    "content": "**MaderConjecture:**\n\nThere exists a universal constant C > 0 such that any graph on n vertices with at least Cr²n edges must contain a subdivision of Kᵣ.\n\n**Definition:**\n```lean\ndef MaderConjecture : Prop :=\n  ∃ C : ℝ, C > 0 ∧\n    ∀ n r : ℕ, n ≥ r → r ≥ 2 →\n      ∀ G : SimpleGraph (Fin n),\n        G.edgeFinset.card ≥ (C * r^2 * n : ℝ).toNat →\n          ContainsSubdivisionOfKr (Fin n) G r\n```\n\nThis conjectures a **quadratic** dependence on r.",
+    "mathContext": "This conjecture dramatically improves Mader's exponential bound to a quadratic one, which is optimal.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e718-dirac-1960",
+    "proofId": "erdos-718",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "axiom",
+    "title": "Dirac's Theorem (1960)",
+    "content": "**dirac_1960:**\n\nEvery graph on n vertices with at least 2n-2 edges contains a subdivision of K₄.\n\n**Statement:**\n```lean\naxiom dirac_1960 :\n  ∀ n : ℕ, n ≥ 4 →\n    ∀ G : SimpleGraph (Fin n),\n      G.edgeFinset.card ≥ 2 * n - 2 →\n        ContainsSubdivisionOfKr (Fin n) G 4\n```\n\nDirac also conjectured 3n-5 edges forces K₅ subdivision.",
+    "mathContext": "This initiated the systematic study of edge thresholds for topological cliques.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e718-mader-1967",
+    "proofId": "erdos-718",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "axiom",
+    "title": "Mader's Exponential Bound (1967)",
+    "content": "**mader_1967:**\n\n2^{r choose 2} · n edges suffices to force a Kᵣ subdivision.\n\n**Statement:**\n```lean\naxiom mader_1967 :\n  ∀ n r : ℕ, n ≥ r → r ≥ 2 →\n    ∀ G : SimpleGraph (Fin n),\n      G.edgeFinset.card ≥ 2^(r * (r - 1) / 2) * n →\n        ContainsSubdivisionOfKr (Fin n) G r\n```\n\nThis exponential bound stood for nearly 30 years.",
+    "mathContext": "The first general result, showing thresholds exist for all r, but far from optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e718-komlos-szemeredi",
+    "proofId": "erdos-718",
+    "range": { "startLine": 94, "endLine": 95 },
+    "type": "axiom",
+    "title": "Komlós-Szemerédi Resolution (1996)",
+    "content": "**komlos_szemeredi_1996:**\n\nThe Mader Conjecture is true.\n\n```lean\naxiom komlos_szemeredi_1996 : MaderConjecture\n```\n\nTheir paper \"Topological cliques in graphs II\" proved that Cr²n edges suffices for a Kᵣ subdivision, using sophisticated probabilistic and extremal methods.",
+    "mathContext": "One of the landmark results in extremal graph theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e718-bollobas-thomason",
+    "proofId": "erdos-718",
+    "range": { "startLine": 97, "endLine": 98 },
+    "type": "axiom",
+    "title": "Bollobás-Thomason Alternative Proof (1996)",
+    "content": "**bollobas_thomason_1996:**\n\nIndependent proof that MaderConjecture holds.\n\n```lean\naxiom bollobas_thomason_1996 : MaderConjecture\n```\n\nTheir paper \"Highly linked graphs\" proved the same result using different methods, and also characterized when graphs are k-linked.",
+    "mathContext": "Two independent proofs in the same year using different techniques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e718-main-theorem",
+    "proofId": "erdos-718",
+    "range": { "startLine": 107, "endLine": 108 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**mader_conjecture_true:**\n\n```lean\ntheorem mader_conjecture_true : MaderConjecture :=\n  komlos_szemeredi_1996\n```\n\nThe Mader Conjecture is true, as proved by Komlós-Szemerédi.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e718-edge-bound",
+    "proofId": "erdos-718",
+    "range": { "startLine": 110, "endLine": 113 },
+    "type": "definition",
+    "title": "Edge Bound Function",
+    "content": "**EdgeBoundForKrSubdivision:**\n\nThe function giving the edge threshold for Kᵣ subdivisions.\n\n```lean\ndef EdgeBoundForKrSubdivision (r : ℕ) : ℕ → ℕ :=\n  fun n => (C_const * r^2 * n).toNat\n  where C_const : ℝ := 1  -- Placeholder\n```\n\nThe actual constant C from the proofs is not explicitly determined.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e718-k-linked",
+    "proofId": "erdos-718",
+    "range": { "startLine": 123, "endLine": 129 },
+    "type": "definition",
+    "title": "k-Linked Graphs",
+    "content": "**IsKLinked:**\n\nA graph is **k-linked** if any 2k terminals can be connected by k vertex-disjoint paths.\n\n```lean\ndef IsKLinked (G : SimpleGraph V) (k : ℕ) : Prop :=\n  ∀ (terminals : Finset V), terminals.card = 2 * k →\n    ∃ (paths : Fin k → List V), ...\n```\n\nBollobás-Thomason characterized when graphs are highly linked.",
+    "mathContext": "A strong connectivity property related to subdivision existence.",
+    "significance": "key",
+    "relatedConcepts": ["Connectivity", "Disjoint paths", "Menger's theorem"]
+  },
+  {
+    "id": "ann-e718-dense-linked",
+    "proofId": "erdos-718",
+    "range": { "startLine": 131, "endLine": 137 },
+    "type": "axiom",
+    "title": "Dense Graphs Are Highly Linked",
+    "content": "**dense_graphs_linked:**\n\nGraphs with Ckn edges are k-linked.\n\n```lean\naxiom dense_graphs_linked :\n  ∃ C : ℝ, C > 0 ∧\n    ∀ n k : ℕ, n ≥ 2 * k →\n      ∀ G : SimpleGraph (Fin n),\n        G.edgeFinset.card ≥ (C * k * n : ℝ).toNat →\n          IsKLinked (Fin n) G k\n```",
+    "mathContext": "The key lemma in Bollobás-Thomason's proof of the Mader conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e718-minor-def",
+    "proofId": "erdos-718",
+    "range": { "startLine": 146, "endLine": 149 },
+    "type": "definition",
+    "title": "Graph Minors",
+    "content": "**IsMinorOf:**\n\nH is a minor of G if H can be obtained from G by:\n- Edge deletion\n- Vertex deletion\n- Edge contraction\n\nSubdivisions are stronger: every subdivision gives a minor, but not conversely.",
+    "mathContext": "The Graph Minor Theorem (Robertson-Seymour) is one of the deepest results in graph theory.",
+    "significance": "supporting",
+    "relatedConcepts": ["Graph Minor Theorem", "Wagner's theorem", "Kuratowski's theorem"]
+  },
+  {
+    "id": "ann-e718-hadwiger",
+    "proofId": "erdos-718",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "axiom",
+    "title": "Hadwiger's Conjecture",
+    "content": "**hadwiger_conjecture:**\n\nIf χ(G) ≥ r, then G contains Kᵣ as a minor.\n\n```lean\naxiom hadwiger_conjecture (G : SimpleGraph V) (r : ℕ) :\n  -- G.chromaticNumber ≥ r → has Kᵣ minor\n  True  -- Famous open problem\n```\n\nOne of the most important open problems in graph theory.",
+    "mathContext": "The Komlós-Szemerédi result helps prove special cases of Hadwiger's conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["Chromatic number", "Graph coloring", "Four color theorem"]
+  },
+  {
+    "id": "ann-e718-erdos-solved",
+    "proofId": "erdos-718",
+    "range": { "startLine": 173, "endLine": 181 },
+    "type": "theorem",
+    "title": "Erdős Problem #718: SOLVED",
+    "content": "**erdos_718_solved:**\n\n```lean\ntheorem erdos_718_solved : MaderConjecture :=\n  komlos_szemeredi_1996\n```\n\nThe answer to Erdős's question is **YES**: there exists C > 0 such that Cr²n edges forces a Kᵣ subdivision.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e718-summary",
+    "proofId": "erdos-718",
+    "range": { "startLine": 184, "endLine": 194 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_718_summary:**\n\nCombines the main result with historical context:\n\n```lean\ntheorem erdos_718_summary :\n    MaderConjecture ∧\n    (∀ n r : ℕ, n ≥ r → r ≥ 2 →\n      ∀ G : SimpleGraph (Fin n),\n        G.edgeFinset.card ≥ 2^(r * (r - 1) / 2) * n →\n          ContainsSubdivisionOfKr (Fin n) G r)\n```\n\nShows both the optimal quadratic bound and the earlier exponential bound.",
+    "significance": "key"
+  }
+]
