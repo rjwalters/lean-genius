@@ -1,1 +1,125 @@
-[]
+[
+  {
+    "id": "ann-e754-header",
+    "proofId": "erdos-754",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #754: Favorite Distances in ℝ⁴**\n\nFor n points in ℝ⁴, what's the maximum k such that EVERY point has at least k equidistant neighbors?\n\n**Question:** Is f(n) ≤ n/2 + O(1)?\n\n**Answer: YES** - Swanepoel (2013)\n\nSwanepoel's stronger result: Σ 1_{|x-y|=d(x)} ≤ (1/2)n² + O(n) for any distance assignment d(x).",
+    "mathContext": "Avis-Erdős-Pach (1988) gave initial bounds; Swanepoel (2013) completed the solution.",
+    "significance": "critical",
+    "relatedConcepts": ["Combinatorial geometry", "Distance extremal problems"]
+  },
+  {
+    "id": "ann-e754-point-config",
+    "proofId": "erdos-754",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "**PointConfig d n:**\n\nA configuration of n points in d-dimensional Euclidean space: Fin n → EuclideanSpace ℝ (Fin d).\n\nThis represents any arrangement of n labeled points in ℝᵈ.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace", "Finite configurations"]
+  },
+  {
+    "id": "ann-e754-equidistant",
+    "proofId": "erdos-754",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Equidistant Set",
+    "content": "**equidistantSet A x r:**\n\nThe set of points y ≠ x with |A(x) - A(y)| = r.\n\nThis captures 'all points at distance r from x' in the configuration.",
+    "significance": "key",
+    "relatedConcepts": ["Spheres", "Distance relations"]
+  },
+  {
+    "id": "ann-e754-favorite-count",
+    "proofId": "erdos-754",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "Favorite Count",
+    "content": "**favoriteCount A x:**\n\nThe maximum over all distances r of |equidistantSet A x r|.\n\nThis is the largest number of points equidistant from x at any single distance - the 'favorite distance' achieves this count.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal values", "Distance counting"]
+  },
+  {
+    "id": "ann-e754-function-f",
+    "proofId": "erdos-754",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**f d n:**\n\nThe maximum over all n-point configurations A in ℝᵈ of (minimum over x of favoriteCount A x).\n\nIn words: f(n) is the largest k such that some configuration has EVERY point with at least k equidistant neighbors.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal functions", "Minimax"]
+  },
+  {
+    "id": "ann-e754-aep-lower",
+    "proofId": "erdos-754",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "axiom",
+    "title": "Avis-Erdős-Pach Lower Bound",
+    "content": "**avis_erdos_pach_lower_bound:**\n\nf(n) ≥ n/2 + 2 for n ≥ 4 in ℝ⁴.\n\n**Construction:** Use the Clifford torus - place n/2 points on each of two orthogonal circles. Points on different circles are all equidistant!",
+    "mathContext": "From 'Repeated distances in space', Graphs Combin. (1988).",
+    "significance": "critical",
+    "relatedConcepts": ["Clifford torus", "Lower bounds"]
+  },
+  {
+    "id": "ann-e754-distance-assign",
+    "proofId": "erdos-754",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "definition",
+    "title": "Distance Assignment",
+    "content": "**DistanceAssignment n:**\n\nA function Fin n → ℝ assigning a 'favorite distance' d(x) to each point x.\n\nSwanepoel's result is stronger because it applies to ANY such assignment, not just the optimal one.",
+    "significance": "key",
+    "relatedConcepts": ["Function assignment", "Generalization"]
+  },
+  {
+    "id": "ann-e754-swanepoel-main",
+    "proofId": "erdos-754",
+    "range": { "startLine": 101, "endLine": 106 },
+    "type": "axiom",
+    "title": "Swanepoel's Main Theorem",
+    "content": "**swanepoel_2013:**\n\nFor any configuration A and distance assignment d:\n\nΣ_{x,y} 1_{|x-y|=d(x)} ≤ (1/2)n² + O(n)\n\nThe total count of 'favorite distance pairs' is at most quadratic with leading coefficient 1/2.",
+    "mathContext": "From 'Favorite distances in high dimensions' (2013).",
+    "significance": "critical",
+    "relatedConcepts": ["Pair counting", "Upper bounds"]
+  },
+  {
+    "id": "ann-e754-swanepoel-answer",
+    "proofId": "erdos-754",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "axiom",
+    "title": "Swanepoel Solves Erdős 754",
+    "content": "**swanepoel_erdos_754:**\n\nf(n) ≤ n/2 + O(1) for ℝ⁴.\n\nThis answers Erdős's question affirmatively. Combined with the lower bound, we get f(n) = n/2 + Θ(1).",
+    "significance": "critical",
+    "relatedConcepts": ["Problem solution", "Tight bounds"]
+  },
+  {
+    "id": "ann-e754-solved",
+    "proofId": "erdos-754",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**erdos_754_solved:**\n\nCombines the bounds: ∃ C₁ C₂, n/2 + C₁ ≤ f(n) ≤ n/2 + C₂.\n\n**Proof:** Uses avis_erdos_pach_lower_bound (C₁ = 2) and swanepoel_erdos_754 (get C₂).\n\nThe answer is f(n) = n/2 + Θ(1) - determined up to an additive constant.",
+    "significance": "critical",
+    "relatedConcepts": ["Combining bounds", "Asymptotic equality"]
+  },
+  {
+    "id": "ann-e754-clifford",
+    "proofId": "erdos-754",
+    "range": { "startLine": 158, "endLine": 163 },
+    "type": "definition",
+    "title": "Clifford Torus Construction",
+    "content": "**cliffordTorusConstruction:**\n\nThe Clifford torus is S¹ × S¹ ⊂ ℝ⁴. Key property: points on two orthogonal circles have constant pairwise distance.\n\n**Construction:** Take n/2 points on each circle. Each point has n/2 equidistant neighbors (those on the other circle). This achieves f(n) ≥ n/2.",
+    "significance": "key",
+    "relatedConcepts": ["Clifford torus", "Extremal constructions"]
+  },
+  {
+    "id": "ann-e754-summary",
+    "proofId": "erdos-754",
+    "range": { "startLine": 207, "endLine": 216 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_754_summary:**\n\nTwo parts:\n1. Lower bound: ∀ n ≥ 4, f(n) ≥ n/2 + 2\n2. Upper bound: ∀ n ≥ 4, ∃ C, f(n) ≤ n/2 + C\n\nThe function f(n) for 'favorite distances' in ℝ⁴ grows exactly as n/2 + O(1).",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Summary"]
+  }
+]
