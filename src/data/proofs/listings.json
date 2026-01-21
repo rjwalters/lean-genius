@@ -5334,17 +5334,23 @@
   },
   {
     "id": "erdos-291",
-    "title": "Erdős Problem #291",
+    "title": "Erdős Problem #291: Harmonic Number Divisibility",
     "slug": "erdos-291",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be the least common multiple of ... and ... by\\[\\sum_{1\\leq k\\leq n}{k}={L_n}.\\]Is it true that ......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur infinitely often, where H_n = a_n/L_n? Part 2 trivially YES; Part 1 OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "harmonic-numbers",
+      "divisibility",
+      "wolstenholme"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 291,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-292",

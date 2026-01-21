@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-291-1",
+    "proofId": "erdos-291",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #291: Harmonic Number Divisibility**\n\n**Setup:** H_n = a_n/L_n where L_n = lcm{1,...,n}\n\n**Question:** Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur infinitely often?\n\n**Status:** Part 2 trivially YES; Part 1 OPEN",
+    "mathContext": "H_n = 1 + 1/2 + ... + 1/n is the n-th harmonic number. The GCD behavior is controlled by Wolstenholme's theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Harmonic numbers", "Wolstenholme's theorem", "Schanuel's conjecture"]
+  },
+  {
+    "id": "ann-291-2",
+    "proofId": "erdos-291",
+    "range": { "startLine": 49, "endLine": 59 },
+    "type": "definition",
+    "title": "L_n and H_n",
+    "content": "**L n:** lcm(1, 2, ..., n) - the least common multiple\n\n**H n:** The n-th harmonic number as a rational:\nH_n = Σ_{k=1}^n 1/k\n\nExample: H_4 = 1 + 1/2 + 1/3 + 1/4 = 25/12",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-291-3",
+    "proofId": "erdos-291",
+    "range": { "startLine": 61, "endLine": 72 },
+    "type": "definition",
+    "title": "Numerator a_n and GCD",
+    "content": "**a n:** The numerator when H_n is written with denominator L_n:\na_n = H_n · L_n (as integer)\n\n**harmonicGCD n:** gcd(a_n, L_n)\n\nThis is the quantity we're studying.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-291-4",
+    "proofId": "erdos-291",
+    "range": { "startLine": 78, "endLine": 96 },
+    "type": "definition",
+    "title": "The Two Questions",
+    "content": "**question_part1:** Are there infinitely many n with gcd = 1?\n\n**question_part2:** Are there infinitely many n with gcd > 1?\n\n**erdos291Statement:** Both hold.\n\nPart 2 is trivially YES; Part 1 is OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-291-5",
+    "proofId": "erdos-291",
+    "range": { "startLine": 108, "endLine": 116 },
+    "type": "axiom",
+    "title": "Steinerberger Criterion",
+    "content": "**steinerberger_criterion:**\n\nIf n has leading digit p-1 in base p, then p | gcd(a_n, L_n).\n\n**Example:** If n starts with 2 in base 3, then 3 | gcd.\n\nThis makes Part 2 trivially true - such n exist for infinitely many primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-291-6",
+    "proofId": "erdos-291",
+    "range": { "startLine": 128, "endLine": 136 },
+    "type": "axiom",
+    "title": "Wolstenholme's Theorem",
+    "content": "**wolstenholme_theorem:**\n\nFor prime p ≥ 5:\n1 + 1/2 + ... + 1/(p-1) ≡ 0 (mod p²)\n\nMore precisely: p² | numerator of H_{p-1}.\n\nThis classical 1862 result underlies the Steinerberger criterion.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-291-7",
+    "proofId": "erdos-291",
+    "range": { "startLine": 149, "endLine": 157 },
+    "type": "axiom",
+    "title": "Full Characterization",
+    "content": "**divisibility_characterization:**\n\nFor prime p ≤ n:\np | gcd(a_n, L_n) ⟺ p | (numerator of H_k)\nwhere k = leading digit of n in base p.\n\nThis reduces the problem to understanding H_1, H_2, ..., H_{p-1}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-291-8",
+    "proofId": "erdos-291",
+    "range": { "startLine": 170, "endLine": 180 },
+    "type": "axiom",
+    "title": "Shiu Heuristic",
+    "content": "**shiu_heuristic:**\n\nPrediction: #{n ≤ x : gcd(a_n, L_n) = 1} ~ x/log(x)\n\n**Implications:**\n1. Infinitely many n with gcd = 1 (Part 1 YES)\n2. But the density is 0\n\nTurning this into a proof is the hard part.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-291-9",
+    "proofId": "erdos-291",
+    "range": { "startLine": 212, "endLine": 220 },
+    "type": "axiom",
+    "title": "Wu-Yan Conditional Result",
+    "content": "**wu_yan_conditional:**\n\nAssuming Schanuel's conjecture (or log-prime independence):\n\nThe upper density of {n : gcd(a_n, L_n) > 1} = 1.\n\nThis means 'almost all' n have gcd > 1, but doesn't resolve Part 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-291-10",
+    "proofId": "erdos-291",
+    "range": { "startLine": 276, "endLine": 292 },
+    "type": "theorem",
+    "title": "Summary: OPEN",
+    "content": "**erdos_291:**\n\n**STATUS:** OPEN (Part 1); Part 2 trivially YES\n\n**Part 2 (gcd > 1):** YES via Steinerberger/Wolstenholme\n\n**Part 1 (gcd = 1):** OPEN\n- Heuristically YES with ~x/log(x) such n\n- Wu-Yan: conditional on Schanuel, density of gcd > 1 is 1\n- But infinitely many gcd = 1 unproven",
+    "significance": "critical"
+  }
+]
