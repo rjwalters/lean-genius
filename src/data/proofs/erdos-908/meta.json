@@ -1,33 +1,153 @@
 {
   "id": "erdos-908",
-  "title": "Erdős Problem #908",
+  "title": "Erdős Problem #908: Functions with Measurable Differences",
   "slug": "erdos-908",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that ... is measurable for every .... Is it true that\\[f=g+h+r\\]where ... is continuous, ... is additive (so ...",
+  "description": "If f : ℝ → ℝ has measurable differences (f(x+h) - f(x) is measurable for all h > 0), can f be decomposed as f = g + h + r where g is continuous, h is additive, and r is rigid? SOLVED: YES (Laczkovich, 1980).",
   "meta": {
-    "author": "Unknown",
+    "author": "de Bruijn-Erdős (conjecture), Laczkovich (1980 solution)",
     "sourceUrl": "https://erdosproblems.com/908",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos908Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "measure-theory",
+      "additive-functions",
+      "functional-equations",
+      "decomposition-theorems",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 908,
     "erdosUrl": "https://erdosproblems.com/908",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Measurable",
+        "description": "Measurability predicate for functions",
+        "module": "Mathlib.MeasureTheory.Function.AEMeasurableOrder"
+      },
+      {
+        "theorem": "volume",
+        "description": "Lebesgue measure on ℝ",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Continuous",
+        "description": "Continuity predicate",
+        "module": "Mathlib.Topology.Algebra.ContinuousAffineMap"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Almost everywhere statements",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasMeasurableDifferences definition",
+      "IsAdditive definition for additive functions",
+      "IsRigid definition (a.e. constant on translates)",
+      "additive_zero theorem (h(0) = 0)",
+      "additive_neg theorem (h(-x) = -h(x))",
+      "additive_linear_over_rationals axiom",
+      "discontinuous_additive_exists axiom (via Hamel bases)",
+      "continuous_additive_characterization axiom",
+      "rigid_continuous_is_constant axiom",
+      "rigid_has_measurable_differences axiom",
+      "laczkovich_decomposition axiom (main theorem)",
+      "decomposition_uniqueness axiom",
+      "measurable_decomposition axiom (special case)",
+      "continuous_has_measurable_differences theorem",
+      "additive_has_measurable_differences theorem",
+      "erdos_907_related definition and connection",
+      "DifferenceClosed definition (de Bruijn formulation)",
+      "de_bruijn_erdos_conjecture theorem",
+      "erdos_908_summary comprehensive theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #908 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{R}\\to \\mathbb{R}$ be such that $f(x+h)-f(x)$ is measurable for every $h>0$. Is it true that\\[f=g+h+r\\]where $g$ is continuous, $h$ is additive (so $h(x+y)=h(x)+h(y)$), and $r(x+h)-r(x)=0$ for every $h$ and almost all (depending on $h$) $x$?\n\n\n\nA conjecture of de Bruijn and Erd\\H{o}s. Answered in the affirmative by Laczkovich \\cite{La80}.\n\nSee also [907].\n\n\n\n\nReferences\n\n\n[La80] Laczkovich, M., Functions with measurable differences. Acta Math. Acad. Sci. Hungar. (1980), 217--235.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #908: Functions with Measurable Differences**\n\nThis problem arose from the collaboration between de Bruijn and Erdős in the 1950s on functional equations. They conjectured a structure theorem for functions whose differences are measurable.\n\n**Historical Timeline:**\n- 1951: de Bruijn studied functions whose differences belong to given classes\n- 1950s: de Bruijn-Erdős conjecture formulated\n- 1980: Laczkovich proved the conjecture affirmatively\n\n**The Key Question:** The condition that f(x+h) - f(x) is measurable for all h > 0 is weaker than f itself being measurable. What structure must such f have?\n\n**Related:** See Erdős Problem #907 on additive functions.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f : ℝ → ℝ be such that f(x+h) - f(x) is Lebesgue measurable for every h > 0.\n\nIs it true that f = g + h + r where:\n- g is continuous\n- h is additive (h(x+y) = h(x) + h(y))\n- r is \"rigid\": r(x+h) - r(x) = 0 for every h and almost all (depending on h) x\n\n**Answer: YES** (Laczkovich, 1980)\n\nThe decomposition exists and is essentially unique. The additive part h may be discontinuous (constructed via Hamel basis), which explains how a function with measurable differences can fail to be measurable itself.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** HasMeasurableDifferences, IsAdditive, IsRigid\n\n2. **Additive Function Properties:** Prove h(0)=0, h(-x)=-h(x); axiomatize linearity over ℚ and existence of discontinuous additive functions\n\n3. **Laczkovich's Theorem:** Axiomatize the main decomposition theorem\n\n4. **Uniqueness:** Axiomatize essential uniqueness of decomposition\n\n5. **Special Cases:** When f is measurable, h can be taken to be 0\n\n6. **Verification:** Prove continuous and additive functions satisfy the hypothesis",
+    "keyInsights": [
+      "**The Decomposition:** Every function with measurable differences splits into continuous + additive + rigid parts",
+      "**Additive Functions:** May be discontinuous (via Hamel bases) and non-measurable",
+      "**Rigid Functions:** Satisfy r(x+h) = r(x) for a.e. x, but the null set depends on h",
+      "**Measurable Case:** If f is measurable, the additive part vanishes",
+      "**de Bruijn's Perspective:** Which function classes are 'difference closed'?"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "HasMeasurableDifferences, IsAdditive, IsRigid definitions",
+      "startLine": 49,
+      "endLine": 65
+    },
+    {
+      "id": "additive-properties",
+      "title": "Properties of Additive Functions",
+      "summary": "additive_zero, additive_neg theorems; linearity and discontinuity axioms",
+      "startLine": 67,
+      "endLine": 95
+    },
+    {
+      "id": "rigid-properties",
+      "title": "Properties of Rigid Functions",
+      "summary": "rigid_continuous_is_constant, rigid_has_measurable_differences",
+      "startLine": 97,
+      "endLine": 108
+    },
+    {
+      "id": "decomposition-theorem",
+      "title": "The Decomposition Theorem",
+      "summary": "laczkovich_decomposition axiom - the main result",
+      "startLine": 110,
+      "endLine": 143
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "measurable_decomposition, continuous/additive verification theorems",
+      "startLine": 145,
+      "endLine": 181
+    },
+    {
+      "id": "related-problems",
+      "title": "Connection to Related Problems",
+      "summary": "erdos_907_related definition and connection",
+      "startLine": 183,
+      "endLine": 197
+    },
+    {
+      "id": "de-bruijn",
+      "title": "The de Bruijn Perspective",
+      "summary": "DifferenceClosed definition and measurable_difference_closed axiom",
+      "startLine": 199,
+      "endLine": 215
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_908_solved, de_bruijn_erdos_conjecture, erdos_908_summary theorems",
+      "startLine": 217,
+      "endLine": 261
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #908 asked whether functions with measurable differences can be decomposed into continuous, additive, and rigid parts. Laczkovich (1980) proved this affirmatively, resolving the de Bruijn-Erdős conjecture. The result explains how non-measurability can arise from measurable differences: through the additive (Hamel function) component.",
+    "implications": "**Analysis and Measure Theory Connections**\n\n1. **Functional Equations:** Part of the rich theory connecting additive functions and measurability\n\n2. **Hamel Functions:** Discontinuous additive functions (via Axiom of Choice) are central to the story\n\n3. **de Bruijn's Program:** Understanding which function classes are 'difference closed'\n\n4. **Related Problems:** Erdős #907 studies when additive functions must be continuous\n\n5. **Measure Theory:** Deep connections between measurability and algebraic structure",
+    "openQuestions": [
+      "Effective versions of the decomposition?",
+      "Analogues for other difference conditions?",
+      "Higher-dimensional generalizations?",
+      "Connections to descriptive set theory?",
+      "Computational aspects of the decomposition?"
+    ]
   }
 }
