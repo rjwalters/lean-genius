@@ -2,7 +2,7 @@
   "slug": "birch-swinnerton-dyer",
   "title": "Birch and Swinnerton-Dyer Conjecture",
   "phase": "NEW",
-  "status": "blocked",
+  "status": "surveyed",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -29,19 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: BirchSwinnertonDyer.lean is comprehensive (754 lines). Has 25 axioms for deep results. File is well-structured with Parts I-XII covering all key aspects. No tractable proof work - conjecture is open.",
+    "builtItems": [
+      "BirchSwinnertonDyer.lean - Full axiomatization (754 lines)",
+      "congruentNumberCurve example with proved discriminant_ne_zero"
+    ],
+    "insights": [
+      "File has 25 axioms representing: deep theorems (Mordell-Weil, modularity), definitions requiring missing infra (L-functions), and the open conjecture itself",
+      "Proven cases (rank 0, rank 1, CM) are axiomatized with detailed comments",
+      "congruentNumberCurve already has proved discriminant_ne_zero via positivity",
+      "Main blocker: Mathlib lacks L-functions for elliptic curves",
+      "Secondary blocker: Computing E(Q) rank requires descent methods not in Mathlib"
+    ],
     "mathlibGaps": [
       "Torsion subgroup",
       "Mordell-Weil",
       "L-functions"
     ],
     "nextSteps": [
-      "Basic Properties of E(Q)",
-      "Weak BSD Statement",
-      "Specific Curve Verification",
-      "Modularity Connection"
+      "Monitor Mathlib for L-function infrastructure",
+      "Add more concrete curve examples with proved discriminant",
+      "Consider torsion computations for specific curves when Mathlib supports it"
     ],
     "markdown": "# Knowledge Base: Birch and Swinnerton-Dyer Conjecture\n\n## The Problem\n\nThe Birch and Swinnerton-Dyer (BSD) Conjecture connects the algebraic structure of elliptic curves to the analytic properties of their L-functions. It's one of the deepest unsolved problems in number theory.\n\n### Core Statement\n\n> For an elliptic curve E over Q, the rank of the Mordell-Weil group E(Q) equals the order of vanishing of L(E, s) at s = 1.\n\nIn symbols: rank(E(Q)) = ord_{s=1} L(E, s)\n\n### Why It Matters\n\n1. **Rational Points**: Predicts exactly how many independent rational points exist on an elliptic curve\n2. **Computational**: Verified for millions of curves, provides practical predictions\n3. **L-functions**: Central example of the Langlands philosophy\n4. **Cryptography**: Elliptic curve cryptography relies on these structures\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1901 | Poincaré | Asked about rational points on curves |\n| 1922 | Mordell | Proved E(Q) is finitely generated |\n| 1965 | Birch, Swinnerton-Dyer | Formulated the conjecture via computer experiments |\n| 1977 | Coates-Wiles | Proved BSD for CM curves with L(E,1) ≠ 0 |\n| 1995 | Wiles | Proved modularity (key for BSD progress) |\n| 2001 | Taylor et al. | More cases of BSD |\n\nThe conjecture emerged from early computer calculations at Cambridge in the 1960s.\n\n## What This Means\n\n### The Algebraic Side: E(Q)\n\nAn elliptic curve E over Q is a smooth cubic curve like y² = x³ + ax + b. The rational points E(Q) form a finitely generated abelian group:\n\nE(Q) ≅ Z^r × (torsion)\n\nThe **rank** r tells us how many independent rational points of infinite order exist.\n\n### The Analytic Side: L(E, s)\n\nThe L-function L(E, s) encodes information about how E reduces modulo primes. It's defined by an Euler product for Re(s) > 3/2 and has analytic continuation to all of C.\n\n### The Connection\n\nBSD says these completely different objects encode the same information:\n- rank(E(Q)) = 0 ⟺ L(E, 1) ≠ 0\n- rank(E(Q)) = 1 ⟺ L(E, 1) = 0, L'(E, 1) ≠ 0\n- And so on...\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Elliptic curves | ✅ | Well-developed |\n| Group structure | ✅ | E(K) is a group |\n| Torsion subgroup | ⚠️ Partial | Some results |\n| Mordell-Weil | ⚠️ Partial | Finite generation |\n| L-functions | ❌ | Not available |\n\n### Tractable Partial Work\n\n1. **Basic Properties of E(Q)**\n   - Torsion subgroup computations\n   - Group law implementations\n\n2. **Weak BSD Statement**\n   - Axiomatize L(E, 1) = 0 ⟺ rank > 0\n   - Prove consequences assuming BSD\n\n3. **Specific Curve Verification**\n   - For E: y² = x³ - x, verify rank = 0 and L(E,1) ≠ 0\n   - For E: y² = x³ - 4x, verify rank = 1\n\n4. **Modularity Connection**\n   - State that E is modular (Wiles et al.)\n   - Connect modular forms to L-functions\n\n## Formalization Challenges\n\n### Primary Blocker: L-functions\n\nDefining L(E, s) requires:\n1. **Reduction types** - Good, multiplicative, additive reduction mod p\n2. **a_p coefficients** - #E(F_p) = p + 1 - a_p\n3. **Euler product** - L(E, s) = ∏_p (1 - a_p p^{-s} + p^{1-2s})^{-1}\n4. **Analytic continuation** - Extending past Re(s) = 3/2\n\n### Secondary Blocker: Full Mordell-Weil\n\nComputing ranks requires:\n- Height pairings\n- Descent methods\n- Tate-Shafarevich group analysis\n\n## The Full BSD Formula\n\nThe complete conjecture predicts not just the rank, but also:\n\nL^(r)(E, 1) / r! = (Ω · Reg · ∏ c_p · |Sha|) / |E(Q)_tors|²\n\nWhere:\n- Ω = real period\n- Reg = regulator (determinant of height pairing)\n- c_p = Tamagawa numbers\n- Sha = Tate-Shafarevich group\n- E(Q)_tors = torsion subgroup\n\n## Key References\n\n- Birch, B., Swinnerton-Dyer, H.P.F. (1965). \"Notes on elliptic curves II\"\n- Silverman, J. (1986). \"The Arithmetic of Elliptic Curves\"\n- Wiles, A. (1995). \"Modular elliptic curves and Fermat's Last Theorem\"\n- Gross, B., Zagier, D. (1986). \"Heegner points and derivatives of L-series\"\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Requires L-functions for elliptic curves\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Elliptic curves | Yes | 2026-01-01 |\n| Mordell-Weil | Partial | 2026-01-01 |\n| E-L-functions | No | 2026-01-01 |\n| Modularity | No | 2026-01-01 |\n\n**Path Forward**:\n1. State BSD as an axiom with well-defined terms\n2. Prove consequences of BSD for specific curves\n3. Build verification framework for computational checks\n\n**Next Scout**: Track Mathlib elliptic curve and L-function development\n"
   },
@@ -53,7 +61,7 @@
     "open-conjecture"
   ],
   "relatedProofs": [
-    "Relevance"
+    "BirchSwinnertonDyer"
   ],
   "references": {
     "papers": [],
@@ -61,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-01-01T21:55:27.886Z",
+  "lastUpdate": "2026-01-22T19:45:00.000Z",
   "significance": 10,
   "tractability": 1
 }
