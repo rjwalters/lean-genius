@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 4 axioms total (session 2: growth_unbounded using Archimedean property). Reduced axiom count from 44 to 40.",
+    "progressSummary": "PROGRESS: Proved 5 axioms total (session 4: capacity_vanishes using Real.continuous_rpow_const). Reduced axiom count from 44 to 39.",
     "builtItems": [
       "NavierStokes.lean: 1702 lines, 0 sorries, comprehensive formalization",
       "3D Conditional theorem: global_regularity_complete (depends on 5 physical axioms)",
@@ -48,7 +48,8 @@
       "Proved θcrit_lt_099 in NavierStokes.lean (replaced axiom)",
       "Proved A_spectral_gt_one in NavierStokes.lean (replaced axiom)",
       "Proved criticalThreshold_approx in NavierStokes.lean (replaced axiom)",
-      "Proved growth_unbounded in NavierStokes.lean (replaced axiom with Archimedean proof)"
+      "Proved growth_unbounded in NavierStokes.lean (replaced axiom with Archimedean proof)",
+      "Proved capacity_vanishes in NavierStokes.lean (R^(2-d) → 0 as R → 0⁺ for d < 2)"
     ],
     "insights": [
       "3D problem is mathematically OPEN - Category D axiom represents actual unknown",
@@ -59,14 +60,16 @@
       "Builds successfully with Docker (no memory issues)",
       "Mathlib now has pi_gt_d2 (π > 3.14) and exp_neg_one_lt_d9 (e^-1 < 0.3679) which enable proving numerical bounds",
       "exp(-2) < 0.1354 via exp(-2) = exp(-1)² < 0.3679² ≈ 0.1353",
-      "The file has 0 sorries, 44 axioms (down from 47), 67 theorems, 1702 lines",
+      "The file has 0 sorries, 39 axioms (down from 44), comprehensive formalization",
       "Sobolev inequality (Gagliardo-Nirenberg-Sobolev) is now in Mathlib, opening path for further infrastructure",
       "2D Navier-Stokes formalization complete with global existence and uniqueness theorems",
       "θcrit_lt_099: κ_gaussian = 1-exp(-2) < 1, so θcrit = κ_gaussian/2 < 0.5 < 0.99",
       "A_spectral_gt_one: π²/8 > 1 follows from π > 3.14 (pi_gt_d2), so π² > 9.8596 > 8",
       "criticalThreshold_approx: 2/π² < 0.21 follows from π² > 9.8596, so 2/π² < 2/9.8596 ≈ 0.203",
       "growth_unbounded: linear growth is unbounded - proved using exists_nat_gt (Archimedean property)",
-      "Key insight: div_lt_iff₀ converts division inequality to multiplication form for nlinarith"
+      "Key insight: div_lt_iff₀ converts division inequality to multiplication form for nlinarith",
+      "capacity_vanishes: R^(2-d) → 0 uses Real.continuous_rpow_const + Real.zero_rpow + nhdsWithin_le_nhds",
+      "Three numerical axioms (key_inequality_full, θcrit_cFK_gt_1, depletion_constant_neg) appear to have incorrect bounds based on definitions - not used in proofs"
     ],
     "mathlibGaps": [
       "Full Sobolev space theory W^{k,p}(Omega) - only H^s via Fourier transform exists",
@@ -114,7 +117,7 @@
     ]
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-01-22T19:39:47Z",
+  "lastUpdate": "2026-01-22T20:04:17Z",
   "significance": 10,
   "tractability": 1
 }
