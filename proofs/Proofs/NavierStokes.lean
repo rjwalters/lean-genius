@@ -2,6 +2,7 @@ import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.Monotone
+import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -1561,17 +1562,54 @@ theorem enstrophy_decreasing_2d (sol : NSSolution2D) :
   exact sol.enstrophy_identity_2d t ht
 
 
-/-- **Axiom: Enstrophy Bounded 2D**
-    E' = -2νP ≤ 0 since ν > 0 and P ≥ 0.
-    Therefore E is monotone decreasing.
-    Requires Convex.monotoneOn_of_deriv_nonpos (Mathlib API may have changed). -/
-axiom enstrophy_bounded_2d_axiom (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0
+/-- The derivative of E is nonpositive on (0, T).
+    This follows from E' = -2νP where ν > 0 and P ≥ 0. -/
+theorem E_deriv_nonpos_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) :
+    deriv sol.E t ≤ 0 := by
+  have h_deriv : HasDerivAt sol.E (-2 * sol.ν * sol.P t) t :=
+    sol.enstrophy_identity_2d t ht
+  rw [h_deriv.deriv]
+  have hν : 0 < sol.ν := sol.ν_pos
+  have hP : 0 ≤ sol.P t := sol.P_nonneg t ht
+  linarith [mul_nonneg (le_of_lt hν) hP]
 
-/-- In 2D, E(t) ≤ E(0) for all time -/
+/-- E is differentiable on (0, T). -/
+theorem E_differentiable_interior_2d (sol : NSSolution2D) :
+    DifferentiableOn ℝ sol.E (Ioo 0 sol.T) := by
+  intro t ht
+  have h := sol.enstrophy_identity_2d t ht
+  exact h.differentiableAt.differentiableWithinAt
+
+/-- E is antitone (monotone decreasing) on [0, T].
+    This is the key result: since E' ≤ 0, E is decreasing.
+    Uses `antitoneOn_of_deriv_nonpos` from Mathlib. -/
+theorem E_antitone_2d (sol : NSSolution2D) : AntitoneOn sol.E (Icc 0 sol.T) := by
+  apply antitoneOn_of_deriv_nonpos
+  · exact convex_Icc 0 sol.T
+  · exact sol.E_cont
+  · rw [interior_Icc]
+    exact E_differentiable_interior_2d sol
+  · rw [interior_Icc]
+    intro t ht
+    exact E_deriv_nonpos_2d sol t ht
+
+/-- **PROVEN: Enstrophy Bounded 2D**
+    E(t) ≤ E(0) for all t ∈ (0, T).
+
+    This was previously an axiom. Now proven using:
+    - E' = -2νP ≤ 0 (since ν > 0, P ≥ 0)
+    - `antitoneOn_of_deriv_nonpos` from Mathlib.Analysis.Calculus.MeanValue
+
+    The argument: E is continuous on [0,T], differentiable on (0,T),
+    and E' ≤ 0 on (0,T), therefore E is antitone (decreasing) on [0,T].
+    Since 0 ≤ t, we have E(t) ≤ E(0). -/
 theorem enstrophy_bounded_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0 :=
-  enstrophy_bounded_2d_axiom sol t ht hE0
+    (_hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0 := by
+  have h_antitone := E_antitone_2d sol
+  apply h_antitone
+  · exact left_mem_Icc.mpr (le_of_lt sol.T_pos)
+  · exact Ioo_subset_Icc_self ht
+  · exact le_of_lt (mem_Ioo.mp ht).1
 
 
 /-- **Axiom: 2D Global Existence**
