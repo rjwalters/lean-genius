@@ -1,29 +1,46 @@
 {
   "id": "erdos-174",
-  "title": "Erdős Problem #174",
+  "title": "Erdős Problem #174: Euclidean Ramsey Sets",
   "slug": "erdos-174",
-  "description": "Characterize the Ramsey sets in Euclidean space—finite configurations that always contain monochromatic copies under any coloring.",
+  "description": "Characterize which finite sets in ℝⁿ are Ramsey: guaranteed to contain monochromatic copies under any k-coloring of high-dimensional space. Known: Ramsey implies spherical. OPEN: Is every spherical set Ramsey?",
   "meta": {
-    "author": "Erdős, Graham, Montgomery, Rothschild, Spencer, Straus",
+    "author": "Erdős, Graham, Montgomery, Rothschild, Spencer, Straus (1973)",
     "sourceUrl": "https://erdosproblems.com/174",
     "date": "1973",
-    "status": "open",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos174Problem.lean",
     "tags": [
       "erdos",
       "ramsey-theory",
       "euclidean-geometry",
       "combinatorics",
-      "characterization"
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 14,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 174,
     "erdosUrl": "https://erdosproblems.com/174",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      { "theorem": "EuclideanSpace", "description": "Euclidean space type", "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist" },
+      { "theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "dist", "description": "Distance function", "module": "Mathlib.Topology.MetricSpace.Basic" }
+    ],
+    "originalContributions": [
+      "IsRamsey definition formalizing the Euclidean Ramsey property",
+      "IsSpherical definition for sets on sphere surfaces",
+      "ramsey_implies_spherical axiom (EGMRSS 1973)",
+      "Graham's conjecture formalization",
+      "Leader-Russell-Walters subtransitivity conjecture",
+      "Known Ramsey families: rectangles, simplices, trapezoids, regular polygons",
+      "Non-Ramsey criterion via non-sphericity",
+      "Ramsey dimension bounds"
+    ],
+    "dateAdded": "2026-01-22"
   },
   "overview": {
-    "historicalContext": "Euclidean Ramsey theory was founded by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in 1973. The theory asks which geometric configurations have the Ramsey property: no matter how you color high-dimensional space, you can always find a monochromatic copy. This extends classical combinatorial Ramsey theory into the geometric realm.",
+    "historicalContext": "**Erdős Problem #174: Euclidean Ramsey Sets**\n\nEuclidean Ramsey theory was founded by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The theory extends classical combinatorial Ramsey theory into the geometric realm: which finite point configurations are guaranteed to appear monochromatically in any coloring of high-dimensional Euclidean space?\n\n**Key Developments:**\n- EGMRSS (1973): Proved the necessary condition—every Ramsey set must be spherical (all points equidistant from some center)\n- Frankl-Rödl (1990): All non-degenerate simplices are Ramsey\n- Kříž (1991-92): Regular polygons, polyhedra, and trapezoids are Ramsey\n- Leader-Russell-Walters (2012): Proposed subtransitivity as the characterizing property\n\n**The Open Problem:**\nThe characterization question remains unsolved. Graham conjectures that every spherical set is Ramsey. The LRW conjecture offers an algebraic alternative: Ramsey iff subtransitive. Neither has been proved or disproved.",
     "problemStatement": "A finite set A ⊂ ℝⁿ is called Ramsey if, for any k ≥ 1, there exists d = d(A,k) such that in any k-coloring of ℝᵈ there exists a monochromatic congruent copy of A. Characterize the Ramsey sets in ℝⁿ.",
     "proofStrategy": "The necessary condition (spherical) is proved via a contrapositive argument using distance-based colorings. The sufficient direction (characterizing which spherical sets are Ramsey) remains open, with Graham's conjecture and the Leader-Russell-Walters subtransitivity conjecture as the main candidates.",
     "keyInsights": [
