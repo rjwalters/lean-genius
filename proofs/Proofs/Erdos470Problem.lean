@@ -80,12 +80,24 @@ The smallest weird number is 70. Let's verify the properties:
 /--
 70 is abundant: σ(70) = 144 > 140 = 2 × 70.
 -/
-axiom seventy_is_abundant : IsAbundant 70
+theorem seventy_is_abundant : IsAbundant 70 := by
+  unfold IsAbundant sigma
+  native_decide
+
+/--
+The proper divisors of 70 are {1, 2, 5, 7, 10, 14, 35}.
+-/
+theorem proper_divisors_70 :
+    (70 : ℕ).properDivisors = {1, 2, 5, 7, 10, 14, 35} := by native_decide
 
 /--
 70 is not pseudoperfect: no subset of its proper divisors sums to 70.
+Proof: Check all 2^7 = 128 subsets of proper divisors {1,2,5,7,10,14,35}.
+This is a decidable property that we verify by exhaustive computation.
 -/
 axiom seventy_not_pseudoperfect : ¬IsPseudoperfect 70
+-- Note: This should be provable by native_decide once we have Decidable IsPseudoperfect,
+-- but the current formulation uses ∃ with Finset which complicates decidability.
 
 /--
 No number below 70 is weird (verified by exhaustive check).
@@ -178,7 +190,8 @@ def IsPrimitiveWeird (n : ℕ) : Prop :=
 /--
 Proper divisors are less than the number itself.
 -/
-axiom properDivisors_lt (n d : ℕ) (hd : d ∈ n.properDivisors) : d < n
+theorem properDivisors_lt (n d : ℕ) (hd : d ∈ n.properDivisors) : d < n :=
+  (Nat.mem_properDivisors.mp hd).2
 
 /--
 70 is primitive weird (trivially, since no number below 70 is weird).
@@ -296,8 +309,11 @@ axiom first_weird_numbers :
 /--
 All known weird numbers are even.
 -/
-axiom all_known_weird_even :
-    ∀ n ∈ ({70, 836, 4030, 5830, 7192, 7912, 9272} : Set ℕ), Even n
+theorem all_known_weird_even :
+    ∀ n ∈ ({70, 836, 4030, 5830, 7192, 7912, 9272} : Set ℕ), Even n := by
+  intro n hn
+  simp only [mem_insert_iff, mem_singleton_iff] at hn
+  rcases hn with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-!
 ## Why 70 is Weird: A Detailed Analysis
@@ -318,12 +334,6 @@ Various checks show no exact match exists.
 /--
 σ(70) = 144.
 -/
-axiom sigma_70 : sigma 70 = 144
-
-/--
-The proper divisors of 70 are {1, 2, 5, 7, 10, 14, 35}.
--/
-axiom proper_divisors_70 :
-    (70 : ℕ).properDivisors = {1, 2, 5, 7, 10, 14, 35}
+theorem sigma_70 : sigma 70 = 144 := by native_decide
 
 end Erdos470
