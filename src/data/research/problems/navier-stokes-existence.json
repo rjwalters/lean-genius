@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 numerical axioms (spectralGap_val, key_numerical_inequality, kappa_cFK_gt_8) using Mathlib pi and exp bounds. Comprehensive formalization with 0 sorries, 44 axioms, 67 theorems, 1702 lines.",
+    "progressSummary": "PROGRESS: Proved 3 numerical axioms using Mathlib bounds (θcrit_lt_099, A_spectral_gt_one, criticalThreshold_approx). Reduced axiom count from 44 to 41.",
     "builtItems": [
       "NavierStokes.lean: 1702 lines, 0 sorries, comprehensive formalization",
       "3D Conditional theorem: global_regularity_complete (depends on 5 physical axioms)",
@@ -44,7 +44,10 @@
       "proofs/Proofs/NavierStokes.lean:172 - exp_neg_two_lt helper lemma",
       "proofs/Proofs/NavierStokes.lean:188 - one_minus_exp_neg_two_gt helper lemma",
       "proofs/Proofs/NavierStokes.lean:197 - key_numerical_inequality theorem (was axiom)",
-      "proofs/Proofs/NavierStokes.lean:216 - kappa_cFK_gt_8 theorem (was axiom)"
+      "proofs/Proofs/NavierStokes.lean:216 - kappa_cFK_gt_8 theorem (was axiom)",
+      "Proved θcrit_lt_099 in NavierStokes.lean (replaced axiom)",
+      "Proved A_spectral_gt_one in NavierStokes.lean (replaced axiom)",
+      "Proved criticalThreshold_approx in NavierStokes.lean (replaced axiom)"
     ],
     "insights": [
       "3D problem is mathematically OPEN - Category D axiom represents actual unknown",
@@ -57,7 +60,10 @@
       "exp(-2) < 0.1354 via exp(-2) = exp(-1)² < 0.3679² ≈ 0.1353",
       "The file has 0 sorries, 44 axioms (down from 47), 67 theorems, 1702 lines",
       "Sobolev inequality (Gagliardo-Nirenberg-Sobolev) is now in Mathlib, opening path for further infrastructure",
-      "2D Navier-Stokes formalization complete with global existence and uniqueness theorems"
+      "2D Navier-Stokes formalization complete with global existence and uniqueness theorems",
+      "θcrit_lt_099: κ_gaussian = 1-exp(-2) < 1, so θcrit = κ_gaussian/2 < 0.5 < 0.99",
+      "A_spectral_gt_one: π²/8 > 1 follows from π > 3.14 (pi_gt_d2), so π² > 9.8596 > 8",
+      "criticalThreshold_approx: 2/π² < 0.21 follows from π² > 9.8596, so 2/π² < 2/9.8596 ≈ 0.203"
     ],
     "mathlibGaps": [
       "Full Sobolev space theory W^{k,p}(Omega) - only H^s via Fourier transform exists",
@@ -105,7 +111,7 @@
     ]
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-01-20T05:52:00Z",
+  "lastUpdate": "2026-01-22T19:27:50Z",
   "significance": 10,
   "tractability": 1
 }

@@ -713,12 +713,21 @@ theorem θcrit_pos : 0 < θcrit := by
   positivity
 
 
-/-- **Axiom: Theta Crit Less Than 0.99**
+/-- **PROVED: Theta Crit Less Than 0.99**
     θcrit = (1 - e⁻²)/2 ≈ 0.432 < 0.99.
-    Requires interval arithmetic for exp(-2) ≈ 0.135. -/
-axiom θcrit_lt_099_axiom : θcrit < 0.99
-
-theorem θcrit_lt_099 : θcrit < 0.99 := θcrit_lt_099_axiom
+    Previously an axiom, now fully proven. Since exp(-2) > 0 and exp(-2) < 1,
+    we have κ_gaussian = 1 - exp(-2) < 1, so θcrit = κ_gaussian/2 < 0.5 < 0.99. -/
+theorem θcrit_lt_099 : θcrit < 0.99 := by
+  unfold θcrit κ_gaussian
+  have h_exp_pos : Real.exp (-2) > 0 := Real.exp_pos _
+  have h_exp_lt_one : Real.exp (-2) < 1 := by
+    calc Real.exp (-2) < Real.exp 0 := Real.exp_strictMono (by norm_num : (-2:ℝ) < 0)
+      _ = 1 := Real.exp_zero
+  -- κ_gaussian = 1 - exp(-2) < 1
+  -- θcrit = κ_gaussian / 2 < 1/2 < 0.99
+  have h_kappa_lt : 1 - Real.exp (-2) < 1 := by linarith
+  calc (1 - Real.exp (-2)) / 2 < 1 / 2 := by linarith [h_exp_pos]
+    _ < 0.99 := by norm_num
 
 
 /-- **Axiom: Key Inequality Full**
@@ -998,13 +1007,25 @@ This is a MUCH weaker statement than "one ball captures 50%"
 def criticalThreshold : ℝ := 2 / Real.pi^2
 
 
-/-- **Axiom: Critical Threshold Approximation**
+/-- **PROVED: Critical Threshold Approximation**
     2/π² ≈ 0.2026... < 0.21.
-    Requires tighter π bounds than Mathlib's pi_gt_three provides. -/
-axiom criticalThreshold_approx_axiom : criticalThreshold < 0.21
-
-/-- criticalThreshold ≈ 0.203 -/
-theorem criticalThreshold_approx : criticalThreshold < 0.21 := criticalThreshold_approx_axiom
+    Previously an axiom, now fully proven using Mathlib's pi_gt_d2.
+    Since π > 3.14, we have π² > 9.8596, so 2/π² < 2/9.8596 ≈ 0.2028 < 0.21. -/
+theorem criticalThreshold_approx : criticalThreshold < 0.21 := by
+  unfold criticalThreshold
+  have hpi : Real.pi > 3.14 := Real.pi_gt_d2
+  have hpi_sq : Real.pi^2 > 3.14^2 := by
+    apply sq_lt_sq'
+    · linarith
+    · linarith
+  have h_val : (3.14 : ℝ)^2 = 9.8596 := by norm_num
+  have hpi_sq' : Real.pi^2 > 9.8596 := by linarith [h_val]
+  -- 2 / 9.8596 ≈ 0.2028 < 0.21
+  have h_bound : (2 : ℝ) / 9.8596 < 0.21 := by norm_num
+  -- Since π² > 9.8596, we have 2/π² < 2/9.8596 < 0.21
+  calc 2 / Real.pi^2 < 2 / 9.8596 := by
+        apply div_lt_div_of_pos_left (by norm_num : (0:ℝ) < 2) (by norm_num : (0:ℝ) < 9.8596) hpi_sq'
+    _ < 0.21 := h_bound
 
 
 /-- For K-ball concentration to suffice: c > 0.203 · K -/
@@ -1352,12 +1373,24 @@ When capacity < 1 OR θ dynamics gives β → 0, stability follows.
 def A_spectral : ℝ := Real.pi^2 / 8
 
 
-/-- **Axiom: A Spectral Greater Than One**
+/-- **PROVED: A Spectral Greater Than One**
     π² ≈ 9.87, so π²/8 ≈ 1.23 > 1.
-    Requires tighter π bounds than Mathlib's pi_gt_three provides. -/
-axiom A_spectral_gt_one_axiom : A_spectral > 1
-
-theorem A_spectral_gt_one : A_spectral > 1 := A_spectral_gt_one_axiom
+    Previously an axiom, now fully proven using Mathlib's pi_gt_d2 (π > 3.14).
+    Since π > 3.14, we have π² > 9.8596 > 8, so π²/8 > 1. -/
+theorem A_spectral_gt_one : A_spectral > 1 := by
+  unfold A_spectral
+  have hpi : Real.pi > 3.14 := Real.pi_gt_d2
+  have hpi_sq : Real.pi^2 > 3.14^2 := by
+    apply sq_lt_sq'
+    · linarith
+    · linarith
+  have h_val : (3.14 : ℝ)^2 = 9.8596 := by norm_num
+  have hpi_sq' : Real.pi^2 > 9.8596 := by linarith [h_val]
+  -- 9.8596 / 8 = 1.23245 > 1
+  have h_bound : (9.8596 : ℝ) / 8 > 1 := by norm_num
+  calc Real.pi^2 / 8 > 9.8596 / 8 := by
+        apply div_lt_div_of_pos_right hpi_sq' (by norm_num : (0:ℝ) < 8)
+    _ > 1 := h_bound
 
 
 /-- β bound gives stretching bound: S ≤ β·Ω·E 
