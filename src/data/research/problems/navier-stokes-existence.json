@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 numerical axioms using Mathlib bounds (θcrit_lt_099, A_spectral_gt_one, criticalThreshold_approx). Reduced axiom count from 44 to 41.",
+    "progressSummary": "PROGRESS: Proved 4 axioms total (session 2: growth_unbounded using Archimedean property). Reduced axiom count from 44 to 40.",
     "builtItems": [
       "NavierStokes.lean: 1702 lines, 0 sorries, comprehensive formalization",
       "3D Conditional theorem: global_regularity_complete (depends on 5 physical axioms)",
@@ -47,7 +47,8 @@
       "proofs/Proofs/NavierStokes.lean:216 - kappa_cFK_gt_8 theorem (was axiom)",
       "Proved θcrit_lt_099 in NavierStokes.lean (replaced axiom)",
       "Proved A_spectral_gt_one in NavierStokes.lean (replaced axiom)",
-      "Proved criticalThreshold_approx in NavierStokes.lean (replaced axiom)"
+      "Proved criticalThreshold_approx in NavierStokes.lean (replaced axiom)",
+      "Proved growth_unbounded in NavierStokes.lean (replaced axiom with Archimedean proof)"
     ],
     "insights": [
       "3D problem is mathematically OPEN - Category D axiom represents actual unknown",
@@ -63,7 +64,9 @@
       "2D Navier-Stokes formalization complete with global existence and uniqueness theorems",
       "θcrit_lt_099: κ_gaussian = 1-exp(-2) < 1, so θcrit = κ_gaussian/2 < 0.5 < 0.99",
       "A_spectral_gt_one: π²/8 > 1 follows from π > 3.14 (pi_gt_d2), so π² > 9.8596 > 8",
-      "criticalThreshold_approx: 2/π² < 0.21 follows from π² > 9.8596, so 2/π² < 2/9.8596 ≈ 0.203"
+      "criticalThreshold_approx: 2/π² < 0.21 follows from π² > 9.8596, so 2/π² < 2/9.8596 ≈ 0.203",
+      "growth_unbounded: linear growth is unbounded - proved using exists_nat_gt (Archimedean property)",
+      "Key insight: div_lt_iff₀ converts division inequality to multiplication form for nlinarith"
     ],
     "mathlibGaps": [
       "Full Sobolev space theory W^{k,p}(Omega) - only H^s via Fourier transform exists",
@@ -111,7 +114,7 @@
     ]
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-01-22T19:27:50Z",
+  "lastUpdate": "2026-01-22T19:39:47Z",
   "significance": 10,
   "tractability": 1
 }
