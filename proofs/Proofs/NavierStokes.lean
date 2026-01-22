@@ -365,16 +365,40 @@ theorem backward_growth_rate (v : AncientSolution) (τ : ℝ) (hτ : τ ≥ 0) :
     _ = 2 * (spectralGap - v.C_S) * v.E τ := by ring
 
 
-/-- **Axiom: Ancient E Monotone**
-    E is monotone increasing in backward time since dE/dτ ≥ 2(spectralGap - C_S)E ≥ 0.
-    Requires Convex.monotoneOn_of_deriv_nonneg (Mathlib API may have changed). -/
-axiom ancient_E_monotone_axiom (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0 ≤ τ₁) (h12 : τ₁ ≤ τ₂) :
-    v.E τ₁ ≤ v.E τ₂
-
-/-- Key lemma: E is monotone increasing in backward time -/
+/-- **PROVED: Ancient E Monotone**
+    E is monotone increasing in backward time since dE/dτ = 2D - 2S ≥ 2(spectralGap - C_S)E > 0.
+    Proof uses Convex.monotoneOn_of_deriv_nonneg on [0, ∞). -/
 theorem ancient_E_monotone (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0 ≤ τ₁) (h12 : τ₁ ≤ τ₂) :
-    v.E τ₁ ≤ v.E τ₂ :=
-  ancient_E_monotone_axiom v τ₁ τ₂ hτ₁ h12
+    v.E τ₁ ≤ v.E τ₂ := by
+  -- Domain [0, ∞) is convex
+  have hD_convex : Convex ℝ (Ici 0) := convex_Ici 0
+  -- E is continuous on [0, ∞)
+  have hE_cont : ContinuousOn v.E (Ici 0) := v.E_cont.continuousOn
+  -- E is differentiable on interior (0, ∞)
+  have hE_diff : DifferentiableOn ℝ v.E (interior (Ici 0)) := by
+    rw [interior_Ici]
+    intro τ hτ
+    have hτ' : τ ≥ 0 := le_of_lt hτ
+    exact (v.E_diff τ hτ').differentiableAt.differentiableWithinAt
+  -- E' = 2D - 2S ≥ 0 on (0, ∞)
+  have hE'_nonneg : ∀ τ ∈ interior (Ici 0), 0 ≤ deriv v.E τ := by
+    rw [interior_Ici]
+    intro τ hτ
+    have hτ' : τ ≥ 0 := le_of_lt hτ
+    have hderiv := v.E_diff τ hτ'
+    rw [hderiv.deriv]
+    -- E' = 2D - 2S ≥ 2(spectralGap·E - C_S·E) = 2(spectralGap - C_S)·E > 0
+    have hD := v.spectral_gap τ hτ'
+    have hS := v.stretching_bound τ hτ'
+    have hE_pos := v.E_pos τ hτ'
+    have hgap : v.C_S < spectralGap := v.C_S_lt_spectralGap
+    -- 2D - 2S ≥ 2(spectralGap·E) - 2(C_S·E) = 2(spectralGap - C_S)·E ≥ 0
+    nlinarith [hE_pos.le, hgap, hD, hS]
+  -- E is monotone on [0, ∞)
+  have hE_mono : MonotoneOn v.E (Ici 0) :=
+    hD_convex.monotoneOn_of_deriv_nonneg hE_cont hE_diff hE'_nonneg
+  -- Apply monotone: τ₁ ≤ τ₂ with both ≥ 0 implies E(τ₁) ≤ E(τ₂)
+  exact hE_mono hτ₁ (hτ₁.trans h12) h12
 
 
 /-- **Axiom: Liouville Bounded Ancient**
