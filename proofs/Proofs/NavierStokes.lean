@@ -1245,16 +1245,27 @@ def timescale_ratio (α T t : ℝ) : ℝ := (T - t) ^ (α - 1)
 def theta_error_bound (α T t : ℝ) : ℝ := (T - t) ^ (α - 1)
 
 
-/-- **Axiom: Timescale Separation**
+/-- **PROVED: Timescale Separation**
     For α > 1, (T-t)^{α-1} → 0 as t → T.
-    Standard result: power function with positive exponent vanishes at 0. -/
-axiom timescale_separation_axiom (α T : ℝ) (hα : α > 1) (hT : T > 0) :
-    ∀ ε > 0, ∃ t₀ < T, ∀ t, t₀ < t → t < T → timescale_ratio α T t < ε
-
-/-- Timescale separation for Type II (α > 1) -/
-theorem timescale_separation (α T : ℝ) (hα : α > 1) (hT : T > 0) :
-    ∀ ε > 0, ∃ t₀ < T, ∀ t, t₀ < t → t < T → timescale_ratio α T t < ε :=
-  timescale_separation_axiom α T hα hT
+    Proof uses explicit construction: t₀ = T - ε^(1/(α-1)), then (T-t)^{α-1} < ε. -/
+theorem timescale_separation (α T : ℝ) (hα : α > 1) (_hT : T > 0) :
+    ∀ ε > 0, ∃ t₀ < T, ∀ t, t₀ < t → t < T → timescale_ratio α T t < ε := by
+  intro ε hε
+  have hexp : α - 1 > 0 := by linarith
+  use T - ε^(1/(α-1))
+  constructor
+  · simp only [sub_lt_self_iff]; exact rpow_pos_of_pos hε _
+  · intro t ht_lower ht_upper
+    simp only [timescale_ratio]
+    have h_pos : T - t > 0 := by linarith
+    have h_lt : T - t < ε^(1/(α-1)) := by linarith
+    calc (T - t)^(α - 1)
+        < (ε^(1/(α-1)))^(α - 1) := by
+          apply rpow_lt_rpow (le_of_lt h_pos) h_lt hexp
+      _ = ε := by
+          rw [← rpow_mul (le_of_lt hε)]
+          have h : (1 : ℝ) / (α - 1) * (α - 1) = 1 := by field_simp
+          rw [h, rpow_one]
 
 
 /-- θ error bound vanishes for Type II (α > 1) [PROVED] -/
