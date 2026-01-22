@@ -10758,17 +10758,23 @@
   },
   {
     "id": "erdos-696",
-    "title": "Erdős Problem #696",
+    "title": "Erdős Problem #696: Chains of Prime Divisors with Congruence Conditions",
     "slug": "erdos-696",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that there is a sequence of primes ... all dividing ... with .... Let ... be the largest ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let h(n) = max length of prime chain p₁ < ... < pₗ dividing n with pᵢ₊₁ ≡ 1 (mod pᵢ). Let H(n) use divisors. Estimate these functions. PARTIALLY SOLVED: h(n) → ∞ almost always (van Doorn). Ratio question open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-divisors",
+      "congruences",
+      "iterated-logarithm",
+      "partially-solved"
     ],
     "erdosNumber": 696,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-697",
