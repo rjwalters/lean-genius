@@ -4,6 +4,7 @@ import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.Monotone
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -1188,16 +1189,27 @@ structure CKNData (sol : NSSolution) where
 def capacity (R d : ℝ) : ℝ := R^(2 - d)
 
 
-/-- **Axiom: Capacity Vanishes**
+/-- **PROVED: Capacity Vanishes**
     R^{2-d} → 0 as R → 0⁺ when 2-d > 0.
-    Standard limit result for power functions. -/
-axiom capacity_vanishes_axiom (d : ℝ) (hd : d < 2) :
-    Tendsto (fun R => capacity R d) (nhdsWithin 0 (Ioi 0)) (nhds 0)
-
-/-- KEY LEMMA: d < 2 implies capacity → 0 as R → 0 -/
+    Proof uses continuity of rpow and Real.zero_rpow for positive exponent. -/
 theorem capacity_vanishes (d : ℝ) (hd : d < 2) :
-    Tendsto (fun R => capacity R d) (nhdsWithin 0 (Ioi 0)) (nhds 0) :=
-  capacity_vanishes_axiom d hd
+    Tendsto (fun R => capacity R d) (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+  unfold capacity
+  -- exponent e = 2 - d > 0
+  have he_pos : 2 - d > 0 := by linarith
+  have he_nonneg : 2 - d ≥ 0 := by linarith
+  have he_ne : 2 - d ≠ 0 := by linarith
+  -- 0^e = 0 for e ≠ 0
+  have h_zero : (0 : ℝ) ^ (2 - d) = 0 := Real.zero_rpow he_ne
+  -- x ↦ x^e is continuous for e ≥ 0 (Real.continuous_rpow_const)
+  have hcont : Continuous (fun x : ℝ => x ^ (2 - d)) :=
+    Real.continuous_rpow_const he_nonneg
+  -- Continuous at 0 means Tendsto at nhds
+  have htend : Tendsto (fun x : ℝ => x ^ (2 - d)) (nhds 0) (nhds ((0 : ℝ) ^ (2 - d))) :=
+    hcont.tendsto 0
+  rw [h_zero] at htend
+  -- Restriction from nhds to nhdsWithin
+  exact htend.mono_left nhdsWithin_le_nhds
 
 
 /-- CKN gives d ≤ 1 < 2, so capacity always vanishes -/
