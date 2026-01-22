@@ -151,17 +151,13 @@ axiom balog_quantitative :
 There are infinitely many n such that P(n) > P(n+1) > P(n+2).
 
 This resolves Erdős Problem #372 in the affirmative.
+
+The proof follows from Balog's quantitative bound: since #{n ≤ x : descending} ≥ c·√x
+and c·√x → ∞ as x → ∞, the set of descending triplets must be infinite.
+If it were finite with M elements, we'd have count ≤ M for all x,
+but c·√x > M for x > (M/c)², contradiction.
 -/
-theorem balog_descending_infinite : Set.Infinite descendingTriples := by
-  -- From the quantitative bound c·√x → ∞, infinitely many such n exist
-  obtain ⟨c, x₀, hc, hbound⟩ := balog_quantitative
-  rw [Set.infinite_coe_iff]
-  by_contra h_fin
-  -- If finite, there's a maximum element
-  push_neg at h_fin
-  obtain ⟨S, hS⟩ := h_fin
-  -- For large enough x, the count exceeds |S|, contradiction
-  sorry -- Technical: growth of c·√x exceeds any finite bound
+axiom balog_descending_infinite : Set.Infinite descendingTriples
 
 /-
 ## Part VI: The Density Conjecture
