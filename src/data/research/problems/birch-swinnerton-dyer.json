@@ -1,63 +1,86 @@
 {
   "slug": "birch-swinnerton-dyer",
   "title": "Birch and Swinnerton-Dyer Conjecture",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "complete",
   "tier": "S",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "∀ E : EllipticCurveQ, algebraicRank E = analyticRank E",
     "plain": "MILLENNIUM PRIZE: rank(E(ℚ)) = ord_{s=1} L(E,s).",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects arithmetic (rational points) to analysis (L-functions)",
+      "Central to modern number theory and Langlands philosophy",
+      "Applications to cryptography via elliptic curve cryptography"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Rank 0 case: L(E,1) ≠ 0 implies rank = 0 (Kolyvagin 1990)",
+      "Rank 1 case: L(E,1) = 0, L'(E,1) ≠ 0 implies rank = 1 (Gross-Zagier + Kolyvagin)",
+      "CM case with L(E,1) ≠ 0 (Coates-Wiles 1977)",
+      "Parity conjecture (Dokchitser-Dokchitser 2011)"
+    ],
+    "open": [
+      "General BSD for rank ≥ 2",
+      "Finiteness of Sha (Tate-Shafarevich group)",
+      "Leading coefficient formula"
+    ],
+    "goal": "Formalize the statement and proven cases; cannot prove general BSD"
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T23:37:00.000Z",
+    "iteration": 3,
+    "focus": "Mathlib integration and infrastructure assessment",
+    "blockers": [
+      "L-functions for elliptic curves not in Mathlib",
+      "Mordell-Weil theorem only partially formalized"
+    ],
+    "nextAction": "Track Mathlib L-series development for elliptic curves",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY COMPLETE: Comprehensive 750-line formalization exists with 26 axioms, 0 sorries. Statement of weak and strong BSD, proven cases (rank 0, rank 1, CM), Gross-Zagier formula, computational evidence documented. OPEN MILLENNIUM PRIZE PROBLEM - formalization is complete to extent possible. Minor cleanup: fixed deprecated imports and linter warnings (2026-01-19).",
+    "progressSummary": "SURVEYED: Added Mathlib WeierstrassCurve integration (3 new theorems). File has comprehensive 750+ line structure with 26 axioms. OPEN MILLENNIUM PRIZE - formalization complete to extent possible.",
     "builtItems": [
+      "toWeierstrassCurve: Convert EllipticCurveQ to Mathlib's WeierstrassCurve (NEW)",
+      "toWeierstrassCurve_discriminant: Proves discriminant formula matches Mathlib (NEW)",
+      "toWeierstrassCurve_isElliptic: Proves our curves satisfy Mathlib's EC condition (NEW)",
       "Fixed deprecated import: Mathlib.NumberTheory.ArithmeticFunction -> split modules",
-      "Fixed deprecated import: Mathlib.Data.Complex.ExponentialBounds -> Mathlib.Analysis.Complex.ExponentialBounds",
-      "Fixed unused simp args in congruentNumberCurve discriminant proof",
-      "Fixed unused variable warning in modularity_theorem axiom"
+      "Fixed deprecated import: Mathlib.Data.Complex.ExponentialBounds -> Mathlib.Analysis.Complex.ExponentialBounds"
     ],
     "insights": [
-      "BirchSwinnertonDyer.lean already has comprehensive 750-line formalization with proper Mathlib imports",
-      "File uses 26 axioms appropriately - this is correct for an OPEN Millennium Prize problem",
-      "Zero sorries - formalization is as complete as possible for unsolved mathematics",
-      "Proven cases documented: rank 0 (Kolyvagin 1990), rank 1 (Gross-Zagier + Kolyvagin), CM curves (Coates-Wiles 1977)",
-      "Full BSD formula components: real period, regulator, Sha, Tamagawa numbers, torsion all axiomatized",
-      "Congruent number curve defined as concrete example with proper discriminant proof"
+      "Mathlib has WeierstrassCurve with group law on affine points (v4.26.0)",
+      "Mathlib has LSeries for Dirichlet characters but NOT for elliptic curves - MAJOR GAP",
+      "Our short Weierstrass form (y² = x³ + ax + b) correctly embeds into Mathlib's general form",
+      "Discriminant formula Δ = -16(4a³ + 27b²) matches Mathlib's computation",
+      "The rank 0 and rank 1 cases are PROVEN theorems (axiomatized in our file)",
+      "General BSD for rank ≥ 2 is OPEN - no known proof approach"
     ],
     "mathlibGaps": [
-      "Torsion subgroup",
-      "Mordell-Weil",
-      "L-functions"
+      "Elliptic curve L-functions (MAJOR GAP)",
+      "Mordell-Weil rank computation",
+      "Tate-Shafarevich group",
+      "Heegner points"
     ],
     "nextSteps": [
-      "Basic Properties of E(Q)",
-      "Weak BSD Statement",
-      "Specific Curve Verification",
-      "Modularity Connection"
+      "Monitor Mathlib for elliptic curve L-function development",
+      "Add more specific curve examples with computed properties",
+      "Track Mathlib 5.0 for potential elliptic curve infrastructure"
     ],
-    "markdown": "# Knowledge Base: Birch and Swinnerton-Dyer Conjecture\n\n## The Problem\n\nThe Birch and Swinnerton-Dyer (BSD) Conjecture connects the algebraic structure of elliptic curves to the analytic properties of their L-functions. It's one of the deepest unsolved problems in number theory.\n\n### Core Statement\n\n> For an elliptic curve E over Q, the rank of the Mordell-Weil group E(Q) equals the order of vanishing of L(E, s) at s = 1.\n\nIn symbols: rank(E(Q)) = ord_{s=1} L(E, s)\n\n### Why It Matters\n\n1. **Rational Points**: Predicts exactly how many independent rational points exist on an elliptic curve\n2. **Computational**: Verified for millions of curves, provides practical predictions\n3. **L-functions**: Central example of the Langlands philosophy\n4. **Cryptography**: Elliptic curve cryptography relies on these structures\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1901 | Poincaré | Asked about rational points on curves |\n| 1922 | Mordell | Proved E(Q) is finitely generated |\n| 1965 | Birch, Swinnerton-Dyer | Formulated the conjecture via computer experiments |\n| 1977 | Coates-Wiles | Proved BSD for CM curves with L(E,1) ≠ 0 |\n| 1995 | Wiles | Proved modularity (key for BSD progress) |\n| 2001 | Taylor et al. | More cases of BSD |\n\nThe conjecture emerged from early computer calculations at Cambridge in the 1960s.\n\n## What This Means\n\n### The Algebraic Side: E(Q)\n\nAn elliptic curve E over Q is a smooth cubic curve like y² = x³ + ax + b. The rational points E(Q) form a finitely generated abelian group:\n\nE(Q) ≅ Z^r × (torsion)\n\nThe **rank** r tells us how many independent rational points of infinite order exist.\n\n### The Analytic Side: L(E, s)\n\nThe L-function L(E, s) encodes information about how E reduces modulo primes. It's defined by an Euler product for Re(s) > 3/2 and has analytic continuation to all of C.\n\n### The Connection\n\nBSD says these completely different objects encode the same information:\n- rank(E(Q)) = 0 ⟺ L(E, 1) ≠ 0\n- rank(E(Q)) = 1 ⟺ L(E, 1) = 0, L'(E, 1) ≠ 0\n- And so on...\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Elliptic curves | ✅ | Well-developed |\n| Group structure | ✅ | E(K) is a group |\n| Torsion subgroup | ⚠️ Partial | Some results |\n| Mordell-Weil | ⚠️ Partial | Finite generation |\n| L-functions | ❌ | Not available |\n\n### Tractable Partial Work\n\n1. **Basic Properties of E(Q)**\n   - Torsion subgroup computations\n   - Group law implementations\n\n2. **Weak BSD Statement**\n   - Axiomatize L(E, 1) = 0 ⟺ rank > 0\n   - Prove consequences assuming BSD\n\n3. **Specific Curve Verification**\n   - For E: y² = x³ - x, verify rank = 0 and L(E,1) ≠ 0\n   - For E: y² = x³ - 4x, verify rank = 1\n\n4. **Modularity Connection**\n   - State that E is modular (Wiles et al.)\n   - Connect modular forms to L-functions\n\n## Formalization Challenges\n\n### Primary Blocker: L-functions\n\nDefining L(E, s) requires:\n1. **Reduction types** - Good, multiplicative, additive reduction mod p\n2. **a_p coefficients** - #E(F_p) = p + 1 - a_p\n3. **Euler product** - L(E, s) = ∏_p (1 - a_p p^{-s} + p^{1-2s})^{-1}\n4. **Analytic continuation** - Extending past Re(s) = 3/2\n\n### Secondary Blocker: Full Mordell-Weil\n\nComputing ranks requires:\n- Height pairings\n- Descent methods\n- Tate-Shafarevich group analysis\n\n## The Full BSD Formula\n\nThe complete conjecture predicts not just the rank, but also:\n\nL^(r)(E, 1) / r! = (Ω · Reg · ∏ c_p · |Sha|) / |E(Q)_tors|²\n\nWhere:\n- Ω = real period\n- Reg = regulator (determinant of height pairing)\n- c_p = Tamagawa numbers\n- Sha = Tate-Shafarevich group\n- E(Q)_tors = torsion subgroup\n\n## Key References\n\n- Birch, B., Swinnerton-Dyer, H.P.F. (1965). \"Notes on elliptic curves II\"\n- Silverman, J. (1986). \"The Arithmetic of Elliptic Curves\"\n- Wiles, A. (1995). \"Modular elliptic curves and Fermat's Last Theorem\"\n- Gross, B., Zagier, D. (1986). \"Heegner points and derivatives of L-series\"\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Requires L-functions for elliptic curves\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Elliptic curves | Yes | 2026-01-01 |\n| Mordell-Weil | Partial | 2026-01-01 |\n| E-L-functions | No | 2026-01-01 |\n| Modularity | No | 2026-01-01 |\n\n**Path Forward**:\n1. State BSD as an axiom with well-defined terms\n2. Prove consequences of BSD for specific curves\n3. Build verification framework for computational checks\n\n**Next Scout**: Track Mathlib elliptic curve and L-function development\n"
+    "markdown": "# Knowledge Base: Birch and Swinnerton-Dyer Conjecture\n\n## Current Status: SURVEYED (2026-01-22)\n\n**Key Finding**: BSD is an OPEN MILLENNIUM PRIZE PROBLEM. Our formalization correctly structures the problem and axiomatizes proven cases.\n\n## Recent Work (2026-01-22)\n\nAdded Mathlib integration:\n- `toWeierstrassCurve`: Converts our `EllipticCurveQ` to Mathlib's `WeierstrassCurve`\n- `toWeierstrassCurve_discriminant`: Discriminant formula matches Mathlib\n- `toWeierstrassCurve_isElliptic`: Our curves satisfy Mathlib's EC condition\n\n## Mathlib Status (v4.26.0)\n\n| Component | Mathlib Status | Notes |\n|-----------|---------------|-------|\n| WeierstrassCurve | ✅ Complete | General Weierstrass form |\n| Affine points | ✅ Complete | Point type with group law |\n| Discriminant | ✅ Complete | Standard formulas |\n| j-invariant | ✅ Complete | Invariant under isomorphism |\n| LSeries (Dirichlet) | ✅ Complete | For Dirichlet characters |\n| LSeries (elliptic curves) | ❌ Missing | MAJOR BLOCKER |\n| Mordell-Weil | ⚠️ Partial | No rank computation |\n| Heegner points | ❌ Missing | Needed for rank 1 case |\n\n## What We Proved vs Axiomatized\n\n### Actually Proved\n- `toWeierstrassCurve_discriminant`: Discriminant matches (NEW)\n- `toWeierstrassCurve_isElliptic`: EC condition satisfied (NEW)\n- `congruentNumberCurve_discriminant`: 64n⁶ formula\n- `congruentNumberCurve_jInvariant`: j = 108\n- `BSD_curveMinusX`, `BSD_curveJZero`, `BSD_cremona11a1` (from axioms)\n\n### Axiomatized (PROVEN theorems in mathematics)\n- `mordell_weil_theorem`: E(ℚ) is finitely generated\n- `BSD_rank_zero_axiom`: Kolyvagin's theorem\n- `BSD_rank_one_axiom`: Gross-Zagier + Kolyvagin\n- `modularity_theorem`: Wiles et al.\n\n### Axiomatized (definitions requiring infrastructure)\n- `LFunction_axiom`: L-function values\n- `algebraicRank_axiom`: Rank of E(ℚ)\n- `analyticRank_axiom`: Order of vanishing\n\n## Why BSD Cannot Be Proven Via Formalization\n\n1. **It's an open conjecture**: No mathematician has proved general BSD\n2. **Missing mathematics**: We don't know HOW to prove it for rank ≥ 2\n3. **Kolyvagin's methods**: Only work for rank 0 and 1\n4. **Higher rank obstruction**: No analogue of Heegner points\n\n## References\n\n- [Clay Problem Statement](https://www.claymath.org/millennium-problems/birch-and-swinnerton-dyer-conjecture)\n- [Mathlib EllipticCurve docs](https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicGeometry/EllipticCurve/Weierstrass.html)\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Mathlib Integration",
+      "status": "completed",
+      "description": "Connect EllipticCurveQ to Mathlib's WeierstrassCurve structure"
+    }
+  ],
   "tags": [
     "millennium-prize",
     "number-theory",
@@ -65,15 +88,26 @@
     "open-conjecture"
   ],
   "relatedProofs": [
-    "Relevance"
+    "FermatsLastTheorem"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Birch-Swinnerton-Dyer (1965) Notes on elliptic curves II",
+      "Gross-Zagier (1986) Heegner points and derivatives of L-series",
+      "Kolyvagin (1990) Euler systems"
+    ],
+    "urls": [
+      "https://www.claymath.org/millennium-problems/birch-and-swinnerton-dyer-conjecture",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicGeometry/EllipticCurve/Weierstrass.html"
+    ],
+    "mathlib": [
+      "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass",
+      "Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Point",
+      "Mathlib.NumberTheory.LSeries.Basic"
+    ]
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-01-19T16:25:00Z",
+  "lastUpdate": "2026-01-22T23:37:00.000Z",
   "significance": 10,
   "tractability": 1
 }
