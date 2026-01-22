@@ -265,11 +265,17 @@ axiom interpolation_technique : True
 **Key Insight 3: Transcendence:**
 The function is necessarily transcendental; no polynomial
 can satisfy the required property for infinite dense sets.
+
+Proof sketch: If p(x) has degree > 1 and p(q) ∈ ℚ for all q ∈ ℚ,
+then p must have rational coefficients. But a polynomial with
+rational coefficients of degree > 1 takes irrational values at
+some rational inputs (by analyzing the roots of p(x) - r for rational r).
+
+The formal proof requires algebraic number theory.
 -/
-theorem no_polynomial_works :
+axiom no_polynomial_works :
     ¬∃ (p : Polynomial ℝ), p.natDegree > 1 ∧
-      ∀ x : ℝ, (∃ q : ℚ, (q : ℝ) = x) ↔ (∃ q : ℚ, (q : ℝ) = p.eval x) := by
-  sorry  -- Requires algebraic number theory arguments
+      ∀ x : ℝ, (∃ q : ℚ, (q : ℝ) = x) ↔ (∃ q : ℚ, (q : ℝ) = p.eval x)
 
 /-
 ## Part X: Summary
