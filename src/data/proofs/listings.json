@@ -7005,17 +7005,23 @@
   },
   {
     "id": "erdos-433",
-    "title": "Erdős Problem #433",
+    "title": "Erdős Problem #433: Maximum Frobenius Numbers",
     "slug": "erdos-433",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a finite set then let ... denote the greatest integer which is not expressible as a finite sum of elements from ......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For g(k,n) = max{G(A) : A ⊆ {1,...,n}, |A| = k, gcd(A) = 1}, prove that g(k,n) ~ n²/(k-1). SOLVED by Dixmier (1990) who gave precise bounds.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "frobenius-number",
+      "numerical-semigroups",
+      "extremal-combinatorics",
+      "solved"
     ],
     "erdosNumber": 433,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-434",
