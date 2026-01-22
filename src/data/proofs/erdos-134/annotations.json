@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "header-comment",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 33 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #134 asks about extending triangle-free graphs with bounded degree to diameter-2 graphs. SOLVED by Alon with O(n^{2-ε}) edges, stronger than the original δn² conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "has-triangle",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": { "startLine": 51, "endLine": 56 },
+    "title": "Triangle in a Graph",
+    "content": "Three vertices u, v, w form a triangle (K₃) if all three edges u-v, v-w, u-w exist. This is the forbidden subgraph in triangle-free graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "triangle-free",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": { "startLine": 58, "endLine": 63 },
+    "title": "Triangle-Free Graph",
+    "content": "A graph is triangle-free if it contains no K₃ subgraph. This is the main constraint that must be preserved when extending to diameter 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "max-degree",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": { "startLine": 72, "endLine": 77 },
+    "title": "Maximum Degree",
+    "content": "maxDegree(G) is the maximum number of neighbors any vertex has. The conjecture requires max degree < n^{1/2-ε}.",
+    "significance": "critical"
+  },
+  {
+    "id": "diameter-2",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": { "startLine": 87, "endLine": 92 },
+    "title": "Diameter at Most 2",
+    "content": "A graph has diameter 2 if any two distinct vertices are connected by a path of length at most 2. Equivalent to every non-adjacent pair having a common neighbor.",
+    "significance": "critical"
+  },
+  {
+    "id": "extendable",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": { "startLine": 119, "endLine": 128 },
+    "title": "Extendable to Diameter 2",
+    "content": "extendableToDiameter2WithBudget(G, k) means G can be extended to a triangle-free diameter-2 graph by adding at most k edges. This is the main property studied.",
+    "significance": "critical"
+  },
+  {
+    "id": "conjecture",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": { "startLine": 134, "endLine": 147 },
+    "title": "Erdős-Gyárfás Conjecture",
+    "content": "The main conjecture: for any ε, δ > 0 and large n, triangle-free graphs with max degree < n^{1/2-ε} can be extended to diameter-2 triangle-free by adding ≤ δn² edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "weak-result",
+    "proofId": "erdos-134",
+    "type": "theorem",
+    "range": { "startLine": 153, "endLine": 167 },
+    "title": "Erdős-Gyárfás Weak Result",
+    "content": "Original result: the conjecture holds when max degree ≪ log n / log log n. This is much weaker than the full conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "simonovits",
+    "proofId": "erdos-134",
+    "type": "theorem",
+    "range": { "startLine": 169, "endLine": 183 },
+    "title": "Simonovits Counterexample",
+    "content": "For large enough C, there exist triangle-free graphs with max degree ≤ C√n that cannot be extended to diameter-2 triangle-free with o(n²) edges. Shows 1/2 is the critical exponent.",
+    "significance": "critical"
+  },
+  {
+    "id": "alon-theorem",
+    "proofId": "erdos-134",
+    "type": "theorem",
+    "range": { "startLine": 189, "endLine": 206 },
+    "title": "Alon's Theorem",
+    "content": "For any ε > 0 and large n, triangle-free graphs with max degree < n^{1/2-ε} can be extended to diameter-2 triangle-free with O(n^{2-ε}) edges. MUCH stronger than the original conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "implies-conjecture",
+    "proofId": "erdos-134",
+    "type": "theorem",
+    "range": { "startLine": 208, "endLine": 213 },
+    "title": "Alon Implies Conjecture",
+    "content": "Since O(n^{2-ε}) ≤ δn² for large n (as n^{-ε} → 0), Alon's result implies the original Erdős-Gyárfás conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "critical-exponent",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": { "startLine": 219, "endLine": 227 },
+    "title": "Critical Exponent 1/2",
+    "content": "The exponent 1/2 is critical: below 1/2-ε extension is possible with o(n²) edges (Alon), but at 1/2 with large constant, extension may need Ω(n²) edges (Simonovits).",
+    "significance": "key"
+  },
+  {
+    "id": "common-neighbor",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": { "startLine": 242, "endLine": 249 },
+    "title": "Common Neighbor Property",
+    "content": "A graph has the common neighbor property if every pair of non-adjacent vertices has a common neighbor. For connected graphs, this is equivalent to diameter 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "erdos-134",
+    "type": "theorem",
+    "range": { "startLine": 280, "endLine": 316 },
+    "title": "Main Result",
+    "content": "erdos_134_main: The Erdős-Gyárfás conjecture is true (from Alon's theorem), with the stronger quantitative bound O(n^{2-ε}) edges.",
+    "significance": "critical"
+  }
+]
