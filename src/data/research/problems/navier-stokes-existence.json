@@ -1,8 +1,8 @@
 {
   "slug": "navier-stokes-existence",
   "title": "Navier-Stokes Existence and Smoothness",
-  "phase": "SURVEYED",
-  "status": "surveyed",
+  "phase": "NEW",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,65 +16,31 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-01-19T16:25:00.000Z",
-    "iteration": 2,
-    "focus": "Survey complete - comprehensive formalization verified",
-    "blockers": [
-      "Category D axiom (finite bubble concentration) represents mathematical unknown",
-      "2D axioms could theoretically be reduced with Sobolev infrastructure"
-    ],
-    "nextAction": "Monitor Mathlib for Sobolev space completion; focus on 2D case in 2d-navier-stokes project",
+    "phase": "NEW",
+    "since": "2026-01-01T21:55:27.888Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 numerical axioms (spectralGap_val, key_numerical_inequality, kappa_cFK_gt_8) using Mathlib pi and exp bounds. Comprehensive formalization with 0 sorries, 44 axioms, 67 theorems, 1702 lines.",
-    "builtItems": [
-      "NavierStokes.lean: 1702 lines, 0 sorries, comprehensive formalization",
-      "3D Conditional theorem: global_regularity_complete (depends on 5 physical axioms)",
-      "2D Complete theorem: navier_stokes_2d_solved (enstrophy monotonicity)",
-      "ESS backward uniqueness theorem for ancient solutions",
-      "Type I blowup exclusion",
-      "Axiom catalog with clear documentation (Categories A-D)",
-      "proofs/Proofs/NavierStokes.lean:134 - spectralGap_val theorem (was axiom)",
-      "proofs/Proofs/NavierStokes.lean:172 - exp_neg_two_lt helper lemma",
-      "proofs/Proofs/NavierStokes.lean:188 - one_minus_exp_neg_two_gt helper lemma",
-      "proofs/Proofs/NavierStokes.lean:197 - key_numerical_inequality theorem (was axiom)",
-      "proofs/Proofs/NavierStokes.lean:216 - kappa_cFK_gt_8 theorem (was axiom)"
-    ],
-    "insights": [
-      "3D problem is mathematically OPEN - Category D axiom represents actual unknown",
-      "2D case is PROVEN mathematically but axiomatized here due to missing Sobolev infrastructure",
-      "118 axioms categorized: A (measure-theoretic), B (published PDE), C (physical), D (conjectures)",
-      "File correctly models state of mathematical knowledge as of 2025",
-      "Key gap is finite bubble concentration conjecture - not formalizable until mathematically resolved",
-      "Builds successfully with Docker (no memory issues)",
-      "Mathlib now has pi_gt_d2 (π > 3.14) and exp_neg_one_lt_d9 (e^-1 < 0.3679) which enable proving numerical bounds",
-      "exp(-2) < 0.1354 via exp(-2) = exp(-1)² < 0.3679² ≈ 0.1353",
-      "The file has 0 sorries, 44 axioms (down from 47), 67 theorems, 1702 lines",
-      "Sobolev inequality (Gagliardo-Nirenberg-Sobolev) is now in Mathlib, opening path for further infrastructure",
-      "2D Navier-Stokes formalization complete with global existence and uniqueness theorems"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [
-      "Full Sobolev space theory W^{k,p}(Omega) - only H^s via Fourier transform exists",
-      "Weak derivatives formalism",
-      "Sobolev embeddings and trace theorems",
-      "Aubin-Lions compactness lemma",
-      "Rellich-Kondrachov compactness",
-      "Variational formulations for PDEs",
-      "Parabolic PDE theory (heat equation estimates)",
-      "Divergence-free function spaces",
-      "Galerkin approximation framework"
+      "Sobolev spaces",
+      "PDEs"
     ],
     "nextSteps": [
-      "Prove more numerical axioms using Mathlib bounds",
-      "Build Sobolev space infrastructure using new Mathlib GNS inequality",
-      "Formalize 2D energy estimates to eliminate enstrophy_bounded_2d_axiom",
-      "Consider Aristotle submission for measure-theoretic axioms"
+      "2D Navier-Stokes",
+      "Stokes Equations",
+      "Leray Solutions",
+      "Partial Regularity"
     ],
     "markdown": "# Knowledge Base: Navier-Stokes Existence and Smoothness\n\n## The Problem\n\nThe Navier-Stokes problem asks whether smooth, physically reasonable solutions exist for all time for the equations governing fluid flow in three dimensions.\n\n### Core Statement\n\n> In 3D, prove global existence and smoothness of Navier-Stokes solutions for all smooth initial data, or provide a counterexample showing finite-time blowup.\n\nThe equations describe how velocity and pressure of a fluid evolve:\n\n∂u/∂t + (u·∇)u = ν∆u - ∇p + f\n∇·u = 0\n\nwhere u is velocity, p is pressure, ν is viscosity, and f is external force.\n\n### Why It Matters\n\n1. **Fluid Dynamics**: Governs everything from weather to blood flow\n2. **Engineering**: Aircraft design, turbulence modeling, oceanography\n3. **Physics**: Fundamental understanding of fluids\n4. **Turbulence**: Connected to one of the last major unsolved physics problems\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1822 | Navier | Derived equations with molecular assumptions |\n| 1845 | Stokes | Rigorous continuum derivation |\n| 1934 | Leray | Weak solutions exist globally |\n| 1962 | Ladyzhenskaya | 2D global regularity |\n| 1977 | Scheffer | Partial regularity results |\n| 1982 | Caffarelli-Kohn-Nirenberg | Singular set has dimension ≤ 1 |\n\nThe 3D problem remains open despite 90+ years of effort since Leray.\n\n## The Key Difficulty: 3D vs 2D\n\n### 2D: Solved!\n\nIn 2D, global smooth solutions exist. Key facts:\n- Vorticity ω = curl(u) satisfies a nice transport equation\n- Enstrophy ∫|ω|² is bounded for all time\n- No vortex stretching term\n- Global regularity follows from energy estimates\n\n### 3D: Open\n\nIn 3D, the vortex stretching term (ω·∇)u can potentially cause:\n- Vorticity concentration\n- Energy cascade to small scales\n- Possible finite-time singularity\n\nThe Ladyzhenskaya inequality ||u||_4 ≤ C||u||_{H¹}^{3/4}||u||_2^{1/4} only works in 2D.\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Vector calculus | ✅ | div, curl, grad |\n| Sobolev spaces | ⚠️ Limited | Basic definitions |\n| PDEs | ⚠️ Limited | Linear theory |\n| Lebesgue spaces | ✅ | Well-developed |\n| Functional analysis | ✅ | Strong foundation |\n\n### Tractable Partial Work\n\n1. **2D Navier-Stokes** (see 2d-navier-stokes project)\n   - Global existence IS known\n   - Would be a major formalization achievement\n   - ~3000-5000 lines estimated\n\n2. **Stokes Equations** (linear case)\n   - ∆u = ∇p, ∇·u = 0\n   - Linear theory, more tractable\n   - Foundation for full N-S\n\n3. **Leray Solutions** (weak solutions)\n   - Energy inequality\n   - Existence without uniqueness\n   - Fundamental theory\n\n4. **Partial Regularity**\n   - Caffarelli-Kohn-Nirenberg\n   - Singular set is small (dimension ≤ 1)\n\n## Formalization Challenges\n\n### Primary Blocker: Advanced PDE Infrastructure\n\nFormalizing even 2D N-S requires:\n\n1. **Sobolev Spaces** (~1000 lines)\n   - H^s spaces on domains\n   - Trace theorems\n   - Embeddings\n\n2. **Energy Methods** (~1500 lines)\n   - A priori estimates\n   - Weak formulations\n   - Galerkin approximations\n\n3. **Regularity Theory** (~2000 lines)\n   - Bootstrapping\n   - Schauder estimates\n   - Maximum principles\n\n### The 3D-Specific Challenges\n\n3D uniquely requires handling:\n- **Enstrophy growth**: ∫|∇u|² can grow in 3D\n- **Vortex stretching**: (ω·∇)u term\n- **Critical scaling**: Equations are borderline in 3D\n\n## Current State of Knowledge\n\n### What's Known\n\n- **Weak solutions exist** (Leray 1934)\n- **Strong solutions exist locally** (Fujita-Kato)\n- **Small data ⟹ global existence** (for ||u₀|| small)\n- **Partial regularity** (singularities rare)\n- **Unique for 2D** and for small 3D data\n\n### What's Open\n\n- Do 3D solutions stay smooth forever?\n- Do finite-time singularities exist?\n- If blowup occurs, what does it look like?\n\n## Related Work\n\n| File | Relevance |\n|------|-----------|\n| `2d-navier-stokes` | The tractable 2D case |\n\n## Key References\n\n- Leray, J. (1934). \"Sur le mouvement d'un liquide visqueux\"\n- Ladyzhenskaya, O. (1969). \"The Mathematical Theory of Viscous Incompressible Flow\"\n- Caffarelli, L., Kohn, R., Nirenberg, L. (1982). \"Partial regularity\"\n- Constantin, P., Foias, C. (1988). \"Navier-Stokes Equations\"\n- Fefferman, C. (2006). \"Existence and Smoothness of the Navier-Stokes Equation\" (Clay Problem Statement)\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Heavy PDE/analysis infrastructure required\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Basic PDEs | Yes | 2026-01-01 |\n| Sobolev spaces | Limited | 2026-01-01 |\n| Navier-Stokes | No | 2026-01-01 |\n| Fluid mechanics | No | 2026-01-01 |\n\n**Path Forward**:\n1. Build Sobolev space infrastructure\n2. Formalize 2D Navier-Stokes (known result)\n3. Add partial regularity for 3D weak solutions\n4. State the Millennium Problem precisely\n\n**Related Active Work**: `2d-navier-stokes` attempts the tractable 2D case\n\n**Next Scout**: Check Mathlib PDE development; 2D case is the near-term goal\n"
   },
@@ -89,23 +55,12 @@
     "Relevance"
   ],
   "references": {
-    "papers": [
-      "Doll 2025 - Formalizing Schwartz functions and tempered distributions (arXiv:2510.24060)",
-      "van Doorn & Macbeth 2024 - Gagliardo-Nirenberg-Sobolev Inequality (ITP 2024)",
-      "Fefferman 2006 - Clay Millennium Problem Statement"
-    ],
-    "urls": [
-      "https://arxiv.org/abs/2510.24060",
-      "https://github.com/lean-dojo/LeanMillenniumPrizeProblems",
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/FunctionalSpaces/SobolevInequality.html"
-    ],
-    "mathlib": [
-      "Analysis.Distribution.SchwartzSpace",
-      "Analysis.FunctionalSpaces.SobolevInequality"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-01-20T05:52:00Z",
+  "lastUpdate": "2026-01-01T21:55:27.888Z",
   "significance": 10,
   "tractability": 1
 }

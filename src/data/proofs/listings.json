@@ -4307,17 +4307,24 @@
   },
   {
     "id": "erdos-223",
-    "title": "Erdős Problem #223",
+    "title": "Erdős Problem #223: Maximum Diameter Pairs (Vázsonyi's Conjecture)",
     "slug": "erdos-223",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be maximal such that there exists some set of ... points ..., with diameter ..., in which the distan...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How many pairs of points can realize the diameter in an n-point configuration? f₂(n)=n, f₃(n)=2n-2, and f_d(n)~cn² for d≥4. Fully solved by Hopf-Pannwitz (1934), Grünbaum/Heppes/Strasziewicz (1956-57), Erdős (1960), and Swanepoel (2009).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "diameter-graphs",
+      "extremal-problems",
+      "discrete-geometry",
+      "solved"
     ],
+    "dateAdded": "2026-01-20",
     "erdosNumber": 223,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-224",
@@ -5794,17 +5801,24 @@
   },
   {
     "id": "erdos-315",
-    "title": "Erdős Problem #315",
+    "title": "Erdős Problem #315: Sylvester's Sequence and the Vardi Constant",
     "slug": "erdos-315",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be any other sequence with .... Is it true that\\[\\liminf a_n^{1/2^n}<\\lim u_n^{1/2^n}=c_0=1.264085\\c...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For Sylvester's sequence u_n with Σ 1/u_n = 1, is lim u_n^{1/2^n} = c₀ ≈ 1.264 the maximum growth rate among all such sequences? YES - proved by Kamio and Li-Tang (2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sequences",
+      "egyptian-fractions",
+      "asymptotic-analysis",
+      "solved"
     ],
+    "dateAdded": "2026-01-20",
     "erdosNumber": 315,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-316",
@@ -6101,17 +6115,24 @@
   },
   {
     "id": "erdos-339",
-    "title": "Erdős Problem #339",
+    "title": "Erdős Problem #339: Additive Bases and Distinct Element Sums",
     "slug": "erdos-339",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a basis of order .... Must the set of integers representable as the sum of exactly ... distinct elements from ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A is a basis of order r, must sums of r DISTINCT elements have positive lower density? YES - proved by Hegyvári-Hennecart-Plagne (2003). Also: upper density is preserved.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "density",
+      "additive-bases",
+      "solved"
     ],
+    "dateAdded": "2026-01-20",
     "erdosNumber": 339,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-34",
@@ -7499,6 +7520,7 @@
       "kloosterman-sums",
       "exponential-sums"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 445,
     "mathlibCount": 4,
     "sorries": 4,
@@ -7686,17 +7708,24 @@
   },
   {
     "id": "erdos-459",
-    "title": "Erdős Problem #459",
+    "title": "Erdős Problem #459: Estimate f(u) - Smooth Number Gaps",
     "slug": "erdos-459",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that no ... is composed entirely of primes dividing .... Estimate ....\n\n\n\nAn equivalent defin...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(u) be the largest v such that no m ∈ (u,v) is smooth with respect to u. Estimate f(u). Solved: trivial bounds u+2 ≤ f(u) ≤ u², with f(p) = p² for primes and f(n) = (1+o(1))n for almost all n.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "prime-factorization",
+      "asymptotic-density",
+      "solved"
     ],
+    "dateAdded": "2026-01-20",
     "erdosNumber": 459,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-464",
@@ -11115,17 +11144,25 @@
   },
   {
     "id": "erdos-718",
-    "title": "Erdős Problem #718",
+    "title": "Erdős Problem #718: Subdivisions of Complete Graphs",
     "slug": "erdos-718",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some constant ... such that any graph on ... vertices with ... edges contains a subdivision of ...?\n\n\n\nA conjecture ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there a constant C > 0 such that any graph on n vertices with ≥ Cr²n edges contains a subdivision of Kᵣ? Yes, proved independently by Komlós-Szemerédi and Bollobás-Thomason in 1996.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "subdivisions",
+      "topological-graphs",
+      "complete-graphs",
+      "mader-conjecture",
+      "solved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 718,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-72",
@@ -11657,17 +11694,24 @@
   },
   {
     "id": "erdos-754",
-    "title": "Erdős Problem #754",
+    "title": "Erdős Problem #754: Favorite Distances in Four Dimensions",
     "slug": "erdos-754",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists a set ... of ... points in ... in which every ... has at least ... points in ... eq...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "In n points in ℝ⁴, each point can have at most n/2 + O(1) equidistant neighbors. Proved by Swanepoel (2013) after initial bounds by Avis-Erdős-Pach (1988).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "distances",
+      "high-dimensional",
+      "solved"
     ],
+    "dateAdded": "2026-01-20",
     "erdosNumber": 754,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-755",
@@ -14978,17 +15022,24 @@
   },
   {
     "id": "erdos-974",
-    "title": "Erdős Problem #974",
+    "title": "Erdős Problem #974: Power Sums and Roots of Unity",
     "slug": "erdos-974",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence such that .... Suppose that the sequence of\\[s_k=\\sum_{1\\leq i\\leq n}z_i^k\\]contains infinitely many .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If power sums sₖ = Σ zᵢᵏ have infinitely many (n-1)-tuples of consecutive zeros, then the zᵢ are essentially nth roots of unity. Proved by Tijdeman (1966) in a stronger form.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "roots-of-unity",
+      "power-sums",
+      "algebra",
+      "solved"
     ],
+    "dateAdded": "2026-01-20",
     "erdosNumber": 974,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-975",
@@ -15237,17 +15288,24 @@
   },
   {
     "id": "erdos-988",
-    "title": "Erdős Problem #988",
+    "title": "Erdős Problem #988: Discrepancy on the Sphere",
     "slug": "erdos-988",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a subset of the unit sphere then define the discrepancy\\[D(P) = \\max_C \\lvert \\lvert C\\cap P\\rvert - \\alpha_C \\lver...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does the minimum discrepancy of n-point configurations on the sphere tend to infinity? YES, proved by Schmidt (1969). For S²: n^{1/3} ≤ min D(n) ≤ n^{1/2}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrepancy-theory",
+      "spherical-geometry",
+      "geometric-measure-theory",
+      "uniform-distribution",
+      "solved"
     ],
+    "dateAdded": "2026-01-20",
     "erdosNumber": 988,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 14
   },
   {
     "id": "erdos-989",

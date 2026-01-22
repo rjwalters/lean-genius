@@ -2,7 +2,7 @@
   "slug": "birch-swinnerton-dyer",
   "title": "Birch and Swinnerton-Dyer Conjecture",
   "phase": "NEW",
-  "status": "complete",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
+    "phase": "NEW",
     "since": "2026-01-01T21:55:27.887Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,21 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY COMPLETE: Comprehensive 750-line formalization exists with 26 axioms, 0 sorries. Statement of weak and strong BSD, proven cases (rank 0, rank 1, CM), Gross-Zagier formula, computational evidence documented. OPEN MILLENNIUM PRIZE PROBLEM - formalization is complete to extent possible. Minor cleanup: fixed deprecated imports and linter warnings (2026-01-19).",
-    "builtItems": [
-      "Fixed deprecated import: Mathlib.NumberTheory.ArithmeticFunction -> split modules",
-      "Fixed deprecated import: Mathlib.Data.Complex.ExponentialBounds -> Mathlib.Analysis.Complex.ExponentialBounds",
-      "Fixed unused simp args in congruentNumberCurve discriminant proof",
-      "Fixed unused variable warning in modularity_theorem axiom"
-    ],
-    "insights": [
-      "BirchSwinnertonDyer.lean already has comprehensive 750-line formalization with proper Mathlib imports",
-      "File uses 26 axioms appropriately - this is correct for an OPEN Millennium Prize problem",
-      "Zero sorries - formalization is as complete as possible for unsolved mathematics",
-      "Proven cases documented: rank 0 (Kolyvagin 1990), rank 1 (Gross-Zagier + Kolyvagin), CM curves (Coates-Wiles 1977)",
-      "Full BSD formula components: real period, regulator, Sha, Tamagawa numbers, torsion all axiomatized",
-      "Congruent number curve defined as concrete example with proper discriminant proof"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [
       "Torsion subgroup",
       "Mordell-Weil",
@@ -73,7 +61,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-01-19T16:25:00Z",
+  "lastUpdate": "2026-01-01T21:55:27.886Z",
   "significance": 10,
   "tractability": 1
 }
