@@ -1683,17 +1683,38 @@ theorem enstrophy_decreasing_2d (sol : NSSolution2D) :
   exact sol.enstrophy_identity_2d t ht
 
 
-/-- **Axiom: Enstrophy Bounded 2D**
+/-- **PROVED: Enstrophy Bounded 2D**
     E' = -2νP ≤ 0 since ν > 0 and P ≥ 0.
-    Therefore E is monotone decreasing.
-    Requires Convex.monotoneOn_of_deriv_nonpos (Mathlib API may have changed). -/
-axiom enstrophy_bounded_2d_axiom (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0
-
-/-- In 2D, E(t) ≤ E(0) for all time -/
+    Therefore E is antitone (monotone decreasing), so E(t) ≤ E(0).
+    Proof uses Convex.antitoneOn_of_deriv_nonpos. -/
 theorem enstrophy_bounded_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0 :=
-  enstrophy_bounded_2d_axiom sol t ht hE0
+    (_hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0 := by
+  -- The domain [0, T] is convex
+  have hD_convex : Convex ℝ (Icc 0 sol.T) := convex_Icc 0 sol.T
+  -- E is continuous on [0, T]
+  have hE_cont : ContinuousOn sol.E (Icc 0 sol.T) := sol.E_cont
+  -- E is differentiable on the interior (0, T)
+  have hE_diff : DifferentiableOn ℝ sol.E (interior (Icc 0 sol.T)) := by
+    rw [interior_Icc]
+    intro s hs
+    exact (sol.enstrophy_identity_2d s hs).differentiableAt.differentiableWithinAt
+  -- The derivative E' = -2νP ≤ 0 on (0, T)
+  have hE'_nonpos : ∀ s ∈ interior (Icc 0 sol.T), deriv sol.E s ≤ 0 := by
+    rw [interior_Icc]
+    intro s hs
+    have hderiv := sol.enstrophy_identity_2d s hs
+    rw [hderiv.deriv]
+    have hν : sol.ν > 0 := sol.ν_pos
+    have hP : sol.P s ≥ 0 := sol.P_nonneg s hs
+    nlinarith
+  -- E is antitone on [0, T]
+  have hE_antitone : AntitoneOn sol.E (Icc 0 sol.T) :=
+    hD_convex.antitoneOn_of_deriv_nonpos hE_cont hE_diff hE'_nonpos
+  -- Apply antitone: 0 ≤ t and t < T, so E(t) ≤ E(0)
+  have h0_mem : (0 : ℝ) ∈ Icc 0 sol.T := by simp [le_of_lt sol.T_pos]
+  have ht_mem : t ∈ Icc 0 sol.T := Ioo_subset_Icc_self ht
+  have h0_le_t : (0 : ℝ) ≤ t := le_of_lt ht.1
+  exact hE_antitone h0_mem ht_mem h0_le_t
 
 
 /-- **Axiom: 2D Global Existence**
