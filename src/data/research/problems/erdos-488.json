@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T03:37:39.479Z",
+    "phase": "SURVEYED",
+    "since": "2026-01-23T16:45:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized conjecture and proved constant optimality",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Study inclusion-exclusion structure",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized density of multiples conjecture. Proved the constant 2 is optimal (limit theorem). Problem is OPEN.",
+    "builtItems": [
+      "proofs/Proofs/Erdos488Problem.lean - Main formalization (~180 lines)",
+      "divisibilitySet, divisibilitySetUpTo definitions",
+      "countMultiples, density definitions",
+      "erdos_488_conjecture statement",
+      "ratio_limit_is_two theorem (PROVED)",
+      "singleton_count, singleton_density (structure)",
+      "count_upper_bound (inclusion-exclusion bound)"
+    ],
+    "insights": [
+      "B = {n ≥ 1 : a|n for some a ∈ A} is the divisibility set",
+      "Density d(n) = |B ∩ [1,n]| / n",
+      "Conjecture: m > n ≥ max(A) implies d(m) < 2·d(n)",
+      "Optimality: A={a}, n=2a-1, m=2a gives ratio (2a-1)/a → 2",
+      "For A={a}, countMultiples = ⌊n/a⌋",
+      "For A={a,b}, inclusion-exclusion gives count formula",
+      "Historical note: Er61 had a typo with a∤n instead of a|n"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove singleton_count and optimality_example",
+      "Study inclusion-exclusion for general finite A",
+      "Investigate Cambie's counterexample for alternate version"
+    ],
     "markdown": "# Erdős #488 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite set and\\[B=\\{ n \\geq 1 : a\\mid n\\textrm{ for some }a\\in A\\}.\\]Is it true that, for every $m>n\\geq \\max(A)$,\\[\\frac{\\lvert B\\cap [1,m]\\rvert }{m}< 2\\frac{\\lvert B\\cap [1,n]\\rvert}{n}?\\]\n\n\n\nThe constant $2$ would be the best possible here, as witnessed by taking $A=\\{a\\}$, $n=2a-1$, and $m=2a$.\n\nThis problem is also discussed in problem E5 of Guy's collection \\cite{Gu04}.\n\nIn \\cite{Er61} this problem is as stated above, but with $a\\mid n$ in the definition of $B$ replaced by $a\\nmid n$. This is most likely a typo (especially since the problem is also given as stated above in \\cite{Er66}). There have been several counterexamples given for this alternate problem. Cambie has observed that, if $A$ is the set of primes bounded above by $n$, and $m=2n$, then\\[\\frac{\\lvert B\\cap [1,m]\\rvert }{m}=\\frac{\\pi(2n)-\\pi(n)+1}{2n}\\sim \\frac{1}{2\\log n}\\]while\\[\\frac{\\lvert B\\cap [1,n]\\rvert}{n}=\\frac{1}{n}.\\]Further concrete counterexamples, found by Alexeev and Aristotle, are given in the comments section.\n\n\n\n\nReferences\n\n\n[Er61] Erd\\H{o}s, Paul, Some unsolved problems. Magyar Tud. Akad. Mat. Kutat\\'{o} Int. K\\\"{o}zl. (1961), 221-254.\n\n[Er66] Erd\\H{o}s, P\\'al, Remarks on number theory. {V}. {E}xtremal problems in number\ntheory. {II}. Mat. Lapok (1966), 135--155.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #487\n- Problem #489\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n- Er61\n- Er66\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],
