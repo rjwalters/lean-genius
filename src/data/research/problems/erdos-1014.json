@@ -11,17 +11,24 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "R(3,k) ~ c·k²/log k for c ∈ [1/2, 1]",
+      "Trivial: R(k,l+1) ≤ 2·R(k,l)",
+      "Diagonal bounds: 2 ≤ liminf/limsup ≤ 4"
+    ],
+    "open": [
+      "lim R(k,l+1)/R(k,l) = 1 for all k ≥ 3?",
+      "Even k=3 case is open!"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T13:43:13.293Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T19:22:00.000Z",
+    "iteration": 2,
+    "focus": "Formalized ratio limit conjecture",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Study connection to asymptotic formulas",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +36,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized Ramsey ratio limit conjecture. Showed connection to asymptotic formulas but noted error terms prevent direct proof.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1014Problem.lean - Main formalization (~180 lines)",
+      "ramseyNumber axiom",
+      "ramseyRatio definition",
+      "mainConjecture, mainConjectureAlt definitions",
+      "conjecture_equiv theorem (equivalence)",
+      "ratio_k3_bound theorem",
+      "diagonalRatio, diagonalConjecture for #1030"
+    ],
+    "insights": [
+      "Conjecture: lim R(k,l+1)/R(k,l) = 1 for fixed k ≥ 3",
+      "Open even for k=3 despite knowing R(3,l) asymptotics!",
+      "If R(k,l) ~ f(l), then f(l+1)/f(l) → 1 suggests conjecture",
+      "But ~ hides error terms that prevent rigorous proof",
+      "For k=3: recurrence gives R(3,l+1) ≤ (l+1) + R(3,l)",
+      "Related #1030: diagonal ratio R(n+1,n+1)/R(n,n) → √2·e?",
+      "Diagonal bounds: 2 ≤ ratio ≤ 4"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove ratio_k3_bound",
+      "Connect to Kim's lower bound method",
+      "Study error terms in R(3,k) asymptotics"
+    ],
     "markdown": "# Erdős #1014 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(k,l)$ be the Ramsey number, so the minimal $n$ such that every graph on at least $n$ vertices contains either a $K_k$ or an independent set on $l$ vertices.\n\nProve, for fixed $k\\geq 3$, that\\[\\lim_{l\\to \\infty}\\frac{R(k,l+1)}{R(k,l)}=1.\\]\n\n\n\nThis is open even for $k=3$.\n\nSee also [544] for other behaviour of $R(3,k)$, and [1030] for the diagonal version of this question.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #544\n- Problem #1030\n- Problem #1013\n- Problem #1015\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #9\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
