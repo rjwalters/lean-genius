@@ -367,8 +367,17 @@ Even stronger: For "most" sets A, B can be much sparser.
 noncomputable def OptimalBDensity (A : Set ℕ) : ℝ :=
   sInf { d : ℝ | ∃ B : Set ℕ, HasDensity B d ∧ CoversAllButFinitely A B }
 
-/-- Density is always non-negative (technical lemma). -/
-axiom density_nonneg (B : Set ℕ) (d : ℝ) (hd : HasDensity B d) : d ≥ 0
+/-- Density is always non-negative (technical lemma).
+
+**Proof**: Density is the limit of ratios |B ∩ [1,N]| / N, which are all non-negative.
+The limit of non-negative values is non-negative. -/
+theorem density_nonneg (B : Set ℕ) (d : ℝ) (hd : HasDensity B d) : d ≥ 0 := by
+  unfold HasDensity at hd
+  -- The ratio countingFn B N / N is always ≥ 0
+  have h_nonneg : ∀ N : ℕ, (countingFn B N : ℝ) / N ≥ 0 := fun N =>
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  -- Use ge_of_tendsto: limit of f(n) ≥ 0 when f(n) ≥ 0 for all n
+  exact ge_of_tendsto hd (univ_mem' h_nonneg)
 
 /-- For any infinite A, the optimal B-density is 0. -/
 theorem optimal_B_density_zero (A : Set ℕ) (hA : A.Infinite) :
@@ -458,9 +467,70 @@ theorem coverage_requires_density (A B : Set ℕ) :
 def IsAsymptoticBasis (A : Set ℕ) (h : ℕ) : Prop :=
   ∃ N₀ : ℕ, ∀ n ≥ N₀, ∃ (as : Fin h → ℕ), (∀ i, as i ∈ A) ∧ n = ∑ i, as i
 
-/-- If A +ₛ B covers cofinitely, then A ∪ B is an asymptotic basis of order 2. -/
-axiom sumset_covers_implies_basis (A B : Set ℕ) :
-    CoversAllButFinitely A B → IsAsymptoticBasis (A ∪ B) 2
+/-- If A +ₛ B covers cofinitely, then A ∪ B is an asymptotic basis of order 2.
+
+**Proof**: If n ∈ A + B, then n = a + b for some a ∈ A ⊆ A ∪ B and b ∈ B ⊆ A ∪ B.
+The set of exceptions is finite, so there exists N₀ above which all n are covered. -/
+theorem sumset_covers_implies_basis (A B : Set ℕ) :
+    CoversAllButFinitely A B → IsAsymptoticBasis (A ∪ B) 2 := by
+  intro hcover
+  unfold CoversAllButFinitely at hcover
+  unfold IsAsymptoticBasis
+  -- The complement of A +ₛ B intersected with positive integers is finite
+  -- Therefore, there exists a maximum element N₀ in this finite set
+  by_cases h_empty : (Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0}) = ∅
+  · -- If empty, then every positive integer is in A +ₛ B
+    use 1
+    intro n hn
+    have h_in : n ∈ (A +ₛ B) := by
+      by_contra h_not
+      have : n ∈ Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0} := by
+        simp only [Set.mem_inter_iff, Set.mem_diff, Set.mem_univ, Set.mem_setOf_eq, true_and]
+        exact ⟨h_not, Nat.lt_of_lt_of_le Nat.zero_lt_one hn⟩
+      rw [h_empty] at this
+      exact this
+    unfold Sumset at h_in
+    simp only [Set.mem_setOf_eq] at h_in
+    obtain ⟨a, ha, b, hb, hab⟩ := h_in
+    -- Construct the function Fin 2 → ℕ that gives a and b
+    use ![a, b]
+    constructor
+    · intro i
+      fin_cases i
+      · simp only [Set.mem_union]; left; exact ha
+      · simp only [Set.mem_union]; right; exact hb
+    · simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+      exact hab
+  · -- The complement is nonempty and finite, so it has a maximum
+    push_neg at h_empty
+    obtain ⟨m, hm⟩ := h_empty
+    have hfin := hcover
+    -- Get the maximum element of the finite nonempty set
+    have hsup := Set.Finite.bddAbove hfin
+    have hne : (Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0}).Nonempty := ⟨m, hm⟩
+    obtain ⟨N₀, hN₀⟩ := hsup
+    -- For all n > N₀, n is in A +ₛ B
+    use N₀ + 1
+    intro n hn
+    have h_in : n ∈ (A +ₛ B) := by
+      by_contra h_not
+      have hn_pos : n > 0 := by omega
+      have hmem : n ∈ Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0} := by
+        simp only [Set.mem_inter_iff, Set.mem_diff, Set.mem_univ, Set.mem_setOf_eq, true_and]
+        exact ⟨h_not, hn_pos⟩
+      have hle := hN₀ hmem
+      omega
+    unfold Sumset at h_in
+    simp only [Set.mem_setOf_eq] at h_in
+    obtain ⟨a, ha, b, hb, hab⟩ := h_in
+    use ![a, b]
+    constructor
+    · intro i
+      fin_cases i
+      · simp only [Set.mem_union]; left; exact ha
+      · simp only [Set.mem_union]; right; exact hb
+    · simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+      exact hab
 
 /-- Erdős Problem #31 shows: any infinite A becomes an asymptotic basis of
     order 2 when augmented with a density-0 set. -/
