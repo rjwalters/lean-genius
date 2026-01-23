@@ -5521,17 +5521,23 @@
   },
   {
     "id": "erdos-292",
-    "title": "Erdős Problem #292",
+    "title": "Erdős Problem #292: Egyptian Fractions Summing to 1",
     "slug": "erdos-292",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of ... such that there exist ... with .... Explore .... In particular, does ... have density ...?\n\n\n\nStrau...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A be the set of n such that there exist 1 ≤ m₁ < ... < mₖ = n with Σ(1/mᵢ) = 1. Does A have density 1? YES (Martin 2000).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "density",
+      "unit-fractions"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 292,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 12
   },
   {
     "id": "erdos-293",
@@ -6103,16 +6109,20 @@
     "title": "Erdős Problem #328: Partitioning Sets with Bounded Representation Function",
     "slug": "erdos-328",
     "description": "Can sets A with bounded convolution r_A ≤ C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Nešetřil-Rödl 1985).",
-    "status": "pending",
-    "badge": "mathlib",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
       "sidon-sets",
       "ramsey-theory",
-      "representation-function"
+      "representation-function",
+      "partition",
+      "disproof"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 328,
+    "mathlibCount": 2,
     "sorries": 1,
     "annotationCount": 18
   },
@@ -6245,17 +6255,21 @@
   },
   {
     "id": "erdos-338",
-    "title": "Erdős Problem #338",
+    "title": "Erdős Problem #338: Restricted Order of Additive Bases",
     "slug": "erdos-338",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe restricted order of a basis is the least integer ... (if it exists) such that every large integer is the sum of at most ....",
-    "status": "pending",
+    "description": "What are the necessary and sufficient conditions for an additive basis to have a restricted order? Can the restricted order be bounded in terms of the order? When does restricted order equal order?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-bases",
+      "restricted-order",
+      "combinatorics"
     ],
     "erdosNumber": 338,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 22
   },
   {
     "id": "erdos-339",
@@ -7597,17 +7611,25 @@
   },
   {
     "id": "erdos-439",
-    "title": "Erdős Problem #439",
+    "title": "Erdős Problem #439: Monochromatic Solutions to x + y = z²",
     "slug": "erdos-439",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, in any finite colouring of the integers, there must be two integers ... of the same colour such that ... is ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "In any finite coloring of the integers, must there be distinct x ≠ y of the same color with x + y a perfect square? SOLVED by Khalfalah-Szemerédi (2006): YES.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "ramsey-theory",
+      "partition-regularity",
+      "colorings",
+      "chromatic-number",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 439,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 1,
+    "annotationCount": 17
   },
   {
     "id": "erdos-44",
@@ -11588,17 +11610,24 @@
   },
   {
     "id": "erdos-722",
-    "title": "Erdős Problem #722",
+    "title": "Erdős Problem #722: Existence of Steiner Systems",
     "slug": "erdos-722",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large in terms of ... and .... Does there always exist a block ... design (or Steiner system ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do Steiner systems S(r,k,n) exist for large n when divisibility conditions are met? SOLVED by Keevash (2014) using randomized algebraic construction.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "design-theory",
+      "steiner-systems",
+      "block-designs",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 722,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-723",
@@ -12054,31 +12083,43 @@
   },
   {
     "id": "erdos-752",
-    "title": "Erdős Problem #752",
+    "title": "Erdős Problem #752: Cycle Lengths in High-Girth Graphs",
     "slug": "erdos-752",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with minimum degree ... and girth ... (i.e. ... contains no cycles of length ...). Must there be ... many ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let G be a graph with minimum degree k and girth > 2s. Must there be ≫ k^s many distinct cycle lengths in G? Answer: YES (Sudakov-Verstraëte 2008).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycles",
+      "girth",
+      "extremal-combinatorics",
+      "degree-bounds"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 752,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 16
   },
   {
     "id": "erdos-753",
-    "title": "Erdős Problem #753",
+    "title": "Erdős Problem #753: List Chromatic Number of Graph and Complement",
     "slug": "erdos-753",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number ... is defined to be the minimal ... such that for any assignment of a list of ... colours to each ...",
-    "status": "pending",
+    "description": "Does there exist some constant c > 0 such that χ_L(G) + χ_L(G^c) > n^{1/2+c} for every graph G on n vertices? Answer: NO (Alon 1992) - counterexamples exist with χ_L(G) + χ_L(G^c) ≤ O((n log n)^{1/2}).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "list-coloring",
+      "chromatic-number",
+      "complement-graph",
+      "probabilistic-method"
     ],
     "erdosNumber": 753,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 18
   },
   {
     "id": "erdos-754",
@@ -14214,17 +14255,23 @@
   },
   {
     "id": "erdos-887",
-    "title": "Erdős Problem #887",
+    "title": "Erdős Problem #887: Divisors in Short Intervals Near √n",
     "slug": "erdos-887",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an absolute constant ... such that, for every ..., if ... is sufficiently large then ... has at most ... divisors in...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there an absolute constant K such that for every C > 0 and sufficiently large n, n has at most K divisors in (√n, √n + C·n^{1/4})? Status: OPEN (partial results for perfect squares).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "analytic-number-theory",
+      "short-intervals"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 887,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-888",

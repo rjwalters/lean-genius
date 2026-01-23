@@ -1,8 +1,8 @@
 {
   "slug": "erdos-31",
   "title": "Erdos #31",
-  "phase": "PROGRESS",
-  "status": "progress",
+  "phase": "ACT",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -18,34 +18,26 @@
   "currentState": {
     "phase": "EXPLORATION",
     "since": "2026-01-14T00:00:00Z",
-    "iteration": 3,
-    "focus": "5 axioms remain: primes_density_zero, lorentz_theorem, lorentz_B_bound, primes_have_sparse_complement, lorentz_strengthened",
+    "iteration": 2,
+    "focus": "Helper lemmas proved. 7 axioms remain for deep results.",
     "activeApproach": "Full formalization with axiomatized main theorem (Lorentz 1954).",
     "blockers": [
-      "Remaining 5 axioms are deep mathematical results"
+      "None - remaining axioms are \"deep\" mathematical results:"
     ],
     "nextAction": "Consider submitting to Aristotle for prime density proof, or accept axioms as published results.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 7 to 5 by proving density_nonneg and sumset_covers_implies_basis",
-    "builtItems": [
-      "Proved density_nonneg theorem (was axiom)",
-      "Proved sumset_covers_implies_basis theorem (was axiom)"
-    ],
-    "insights": [
-      "density_nonneg: Density is always non-negative - limit of non-negative ratios",
-      "sumset_covers_implies_basis: If A+B covers cofinitely, A ∪ B is asymptotic basis of order 2"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider proving primes_density_zero using prime number theorem from Mathlib"
-    ],
-    "markdown": "# Erdos #31 - Knowledge Base\n\n## Problem Statement\n\nGiven any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.\n\n## Status\n\n**Erdos Database Status**: SOLVED (Lorentz 1954)\n\n**Tractability Score**: 7/10\n**Aristotle Suitable**: Potentially (known proof to formalize)\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| density_nonneg | PROVED | Density is always non-negative |\n| sumset_covers_implies_basis | PROVED | If A+B covers cofinitely, A ∪ B is basis of order 2 |\n| primes_density_zero | AXIOM | Primes have density 0 |\n| lorentz_theorem | AXIOM | Main theorem (Lorentz 1954) |\n| lorentz_B_bound | AXIOM | B has O(N/log N) elements |\n| primes_have_sparse_complement | AXIOM | Primes have sparse complement |\n| lorentz_strengthened | AXIOM | Strengthened version |\n\n## Sessions\n\n### Session 2026-01-22\n\n**Focus**: Prove remaining provable axioms\n**Outcome**:\n- Proved `density_nonneg` using Filter.eventually and ge_of_tendsto\n- Proved `sumset_covers_implies_basis` by constructing explicit Fin 2 → ℕ functions\n- File now has 5 axioms (down from 7)\n**Key Techniques**:\n- Used `univ_mem'` for eventually_of_forall equivalent\n- Used `Fin.sum_univ_two` for sum over Fin 2\n- Used `Set.Finite.bddAbove` for maximum of finite sets\n**Next**: 5 axioms remain - these are deep mathematical results\n\n---\n\n*Last updated: 2026-01-22*\n"
+    "nextSteps": [],
+    "markdown": "# Erdos #31 - Knowledge Base\n\n## Problem Statement\n\nGiven any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.\n\n## Status\n\n**Erdos Database Status**: SOLVED (Lorentz 1954)\n\n**Tractability Score**: 7/10\n**Aristotle Suitable**: Potentially (known proof to formalize)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| countingFn | def | Counting function |A ∩ {1,...,N}| | Erdos31Problem.lean:31 |\n| HasDensity | def | A set has density d | Erdos31Problem.lean:35 |\n| HasDensityZero | def | A set has density 0 | Erdos31Problem.lean:39 |\n| upperDensity | def | Upper density via limsup | Erdos31Problem.lean:42 |\n| Sumset | def | A + B sumset | Erdos31Problem.lean:51 |\n| CoversCofinite | def | A + B covers cofinite set | Erdos31Problem.lean:56 |\n| CoversAllButFinitely | def | A + B omits only finitely many | Erdos31Problem.lean:60 |\n| Erdos31Statement | def | Main theorem statement | Erdos31Problem.lean:87 |\n| OptimalBDensity | def | Optimal density for complement | Erdos31Problem.lean:133 |\n| IsAsymptoticBasis | def | Asymptotic additive basis | Erdos31Problem.lean:171 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| powers_of_2_in_Icc_eq | PROVED | Bijection: powers of 2 in [1,N] = image of {0,...,log₂N} |\n| powers_of_2_count_bound | PROVED | Count of powers of 2 ≤ log₂N + 1 |\n| squares_in_Icc_eq | PROVED | Bijection: squares in [1,N] = image of {1,...,√N} |\n| squares_count_bound | PROVED | Count of squares ≤ √N + 1 |\n| tendsto_sqrt_inv | PROVED | (√N + 1)/N → 0 as N → ∞ |\n| tendsto_log_inv | PROVED | (log₂N + 1)/N → 0 as N → ∞ |\n| powers_of_2_density_zero | PROVED | Powers of 2 have density 0 |\n| squares_density_zero | PROVED | Squares have density 0 |\n| primes_density_zero | AXIOM | Primes have density 0 |\n| lorentz_theorem | AXIOM | Main theorem (Lorentz 1954) |\n| lorentz_B_bound | AXIOM | B has O(N/log N) elements |\n| primes_have_sparse_complement | AXIOM | Primes have sparse complement |\n| optimal_B_density_zero | AXIOM | Optimal B-density is 0 |\n| lorentz_strengthened | AXIOM | Strengthened version |\n| infinite_set_augmentable | AXIOM | Connection to additive bases |\n\n## Insights\n\n1. **Lorentz Construction**: Build B iteratively to fill gaps left by A\n2. **Density Trade-off**: Sparse A needs denser B; dense A allows sparser B\n3. **Optimal Bound**: |B ∩ [1,N]| = O(N/log N) is essentially optimal\n4. **Additive Basis Connection**: A ∪ B becomes an asymptotic basis of order 2\n\n## Tags\n\n- erdos\n- additive-combinatorics\n- density\n- sumsets\n\n## Related Problems\n\n- Problem #221 (similar questions about density)\n\n## References\n\n- Lorentz, G.G. (1954): \"On a problem of additive number theory\"\n\n## Sessions\n\n### Session 2026-01-14\n\n**Focus**: Initial formalization\n**Outcome**: Complete formalization with 210+ lines, 5 axioms, 6 sorries\n**Next**: Submit HARD sorries to Aristotle for proof search\n\n### Session 2026-01-16\n\n**Focus**: Prove counting bound lemmas\n**Outcome**:\n- Proved `powers_of_2_count_bound` using bijection with {0,...,log₂N}\n- Proved `squares_count_bound` using bijection with {1,...,√N}\n- Proved density-zero results for powers of 2 and squares\n- File now has 499 lines, 7 axioms, 0 sorries\n**Key Techniques**:\n- Used `Set.ncard_image_le` for counting images of finite sets\n- Used `Nat.log_mono_right` and `Nat.pow_log_le_self` for log bounds\n- Used `Nat.le_sqrt` and `Nat.sqrt_le_self` for sqrt bounds\n**Next**: Remaining 7 axioms are \"deep\" results (Lorentz 1954 theorem, prime density)\n\n---\n\n*Last updated: 2026-01-16*\n"
   },
   "approaches": [],
   "tags": [
@@ -63,7 +55,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T00:00:00.000Z",
-  "lastUpdate": "2026-01-22T00:00:00.000Z",
+  "lastUpdate": "2026-01-14T00:00:00.000Z",
   "significance": 7,
   "tractability": 7
 }

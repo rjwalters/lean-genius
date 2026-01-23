@@ -1,101 +1,52 @@
 {
   "slug": "erdos-1120",
   "title": "Erdős #1120",
-  "phase": "SURVEYED",
-  "status": "surveyed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $f \\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$, all of whose roots satisfy $|z| \\leq 1$. Let $E = \\{ z : |f(z)| \\leq 1 \\}$. What is the shortest length of a path in $E$ joining $z=0$ to $|z|=1$?",
-    "plain": "Given a monic polynomial with all roots in the unit disk, consider the sublevel set E where |f(z)| <= 1. What is the minimum arc length of a path from the origin to the unit circle that stays within E?",
-    "whyMatters": [
-      "Connects polynomial root distribution to geometry of sublevel sets",
-      "Related to lemniscate geometry in complex analysis",
-      "Bounds on path length depend on polynomial degree in unknown ways"
-    ]
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$, all of whose roots satisfy $\\lvert z\\rvert\\leq 1$. Let\\[E= \\{ z : \\lvert f(z)\\rvert \\leq 1\\}.\\]What is the shortest length of a path in $E$ joining $z=0$ to $\\lvert z\\rvert =1$?\n\n\n\nThis is Problem 4.22 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s. In \\cite{Ha74} it is reported that Clunie and Netanyahu (personal communication) showed that a path always exists which joins $z=0$ to $\\lvert z\\rvert=1$ in $A$.\n\nErd\\H{o}s wrote 'presumably this tends to infinity with $n$, but not too fast'.\n\nThe trivial lower bound for the length of this path is $1$, which is achieved for $f(z)=z^n$. The interesting side of this question is what the worst case behaviour is (as a function of $n$).\n\nSee also [1041].\n\n\n\n\nReferences\n\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "A path always exists from z=0 to |z|=1 in E (Clunie-Netanyahu)",
-      "Trivial lower bound is 1 (achieved by f(z) = z^n)",
-      "For f(z) = z^n, the sublevel set E is exactly the unit disk"
-    ],
-    "open": [
-      "What is the worst-case path length as a function of n?",
-      "Does the minimum path length tend to infinity with n?",
-      "If so, what is the growth rate?"
-    ],
-    "goal": "Determine the asymptotic behavior of the minimum path length as n -> infinity"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-01-22T02:30:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T15:45:30.817Z",
     "iteration": 1,
-    "focus": "Survey of formalization requirements and Mathlib infrastructure",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Build infrastructure for paths in sublevel sets if desired",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Identified Mathlib infrastructure. Complex polynomials and monic polynomials are well-supported. Arc length is available via BoundedVariation (eVariationOn). Sublevel sets require basic preimage machinery. Problem is OPEN so cannot be proved, but statement can be formalized.",
+    "progressSummary": "",
     "builtItems": [],
-    "insights": [
-      "Mathlib has eVariationOn in Mathlib.Topology.EMetricSpace.BoundedVariation for arc length",
-      "Complex polynomials available via Mathlib.Analysis.Complex.Polynomial.Basic",
-      "Monic polynomials are a type class with good support",
-      "Sublevel set E = f^{-1}({z : |z| <= 1}) uses standard preimage",
-      "Related problem #1041 asks about paths between roots (same machinery needed)",
-      "The problem is explicitly OPEN - no known answer for worst-case behavior"
-    ],
-    "mathlibGaps": [
-      "No dedicated 'Path' type for continuous paths in metric spaces with arc length",
-      "Need to connect BoundedVariation theory to sublevel set paths",
-      "Polynomial sublevel set connectivity theory not formalized"
-    ],
-    "nextSteps": [
-      "Consider formalizing the problem statement as a Lean4 theorem",
-      "Define path type as continuous function [0,1] -> \\mathbb{C}",
-      "Use eVariationOn for arc length measurement",
-      "State existence result (Clunie-Netanyahu) as axiom for now"
-    ],
-    "markdown": "# Erdős #1120 - Knowledge Base\n\n## Problem Statement\n\nLet $f \\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$ with all roots satisfying $|z| \\leq 1$.\nDefine the sublevel set $E = \\{ z : |f(z)| \\leq 1 \\}$.\n\n**Question**: What is the shortest arc length of a path in $E$ joining $z=0$ to $|z|=1$?\n\n## Known Results\n\n- **Path existence**: Clunie and Netanyahu showed a path always exists\n- **Lower bound**: Trivial lower bound is 1 (achieved by $f(z) = z^n$)\n- **Open question**: What is the worst-case path length as a function of $n$?\n- **Erdős conjecture**: \"Presumably this tends to infinity with $n$, but not too fast\"\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No (problem is open)\n\n## Mathlib Infrastructure Survey\n\n### Available\n- `Polynomial \\mathbb{C}` - Complex polynomials\n- `Monic` type class - Monic polynomial properties\n- `eVariationOn` - Arc length via bounded variation\n- Preimage operations for sublevel sets\n\n### Missing/Needed\n- Dedicated 'Path in metric space' type\n- Theorems connecting polynomial sublevel sets to path existence\n- Lemniscate geometry results\n\n## Formalization Strategy\n\n1. Define polynomial sublevel set using preimage\n2. Use continuous function `[0,1] -> \\mathbb{C}` for paths\n3. Arc length via `eVariationOn`\n4. State Clunie-Netanyahu existence as axiom\n5. Define the optimization problem\n\n## Related Problems\n\n- **#1041**: Paths connecting roots inside sublevel set (same machinery)\n\n## References\n\n- [Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155-180.\n\n---\n\n*Surveyed 2026-01-22 by researcher-2*\n"
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1120 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$, all of whose roots satisfy $\\lvert z\\rvert\\leq 1$. Let\\[E= \\{ z : \\lvert f(z)\\rvert \\leq 1\\}.\\]What is the shortest length of a path in $E$ joining $z=0$ to $\\lvert z\\rvert =1$?\n\n\n\nThis is Problem 4.22 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s. In \\cite{Ha74} it is reported that Clunie and Netanyahu (personal communication) showed that a path always exists which joins $z=0$ to $\\lvert z\\rvert=1$ in $A$.\n\nErd\\H{o}s wrote 'presumably this tends to infinity with $n$, but not too fast'.\n\nThe trivial lower bound for the length of this path is $1$, which is achieved for $f(z)=z^n$. The interesting side of this question is what the worst case behaviour is (as a function of $n$).\n\nSee also [1041].\n\n\n\n\nReferences\n\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1041\n- Problem #1119\n- Problem #1121\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Ha74\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Formalize problem statement",
-      "status": "identified",
-      "description": "State the problem in Lean4 using Polynomial, Monic, preimage for sublevel sets, and eVariationOn for arc length"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "complex-analysis",
-    "polynomial-sublevel-sets",
-    "arc-length"
+    "erdos"
   ],
   "relatedProofs": [
     "Relevance"
   ],
   "references": {
-    "papers": [
-      {
-        "citation": "Hayman, W. K., Research problems in function theory: new problems. (1974), 155-180",
-        "key": "Ha74"
-      }
-    ],
-    "urls": [
-      "https://www.erdosproblems.com/1120",
-      "https://www.erdosproblems.com/1041"
-    ],
-    "mathlib": [
-      "Mathlib.Analysis.Complex.Polynomial.Basic",
-      "Mathlib.Topology.EMetricSpace.BoundedVariation",
-      "Mathlib.Algebra.Polynomial.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T15:45:30.818Z",
   "significance": 6,

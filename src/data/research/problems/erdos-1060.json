@@ -1,107 +1,52 @@
 {
   "slug": "erdos-1060",
   "title": "Erdős #1060",
-  "phase": "PROGRESS",
-  "status": "progress",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(1/\\log\\log n)}$? Perhaps even $\\leq (\\log n)^{O(1)}$?",
-    "plain": "Count how many k satisfy k times (sum of divisors of k) equals n. How slowly does this count grow with n?",
-    "whyMatters": [
-      "Natural question about the equation k·σ(k) = n",
-      "Connects multiplicative number theory to counting problems",
-      "Two levels of conjecture: weak (subpolynomial) and strong (polylogarithmic)"
-    ]
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "f(n) is finite for all n > 0 (since k·σ(k) ≥ k)",
-      "Specific values computable: f(1)=1, g(2)=6, g(3)=12, g(6)=72",
-      "For prime p: g(p) = p(p+1)"
-    ],
-    "open": [
-      "Is f(n) ≤ n^{o(1/log log n)}?",
-      "Is f(n) ≤ (log n)^{O(1)}?",
-      "What are the typical and extreme values of f(n)?"
-    ],
-    "goal": "Prove upper bounds on f(n)"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-01-22T03:15:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T14:31:40.058Z",
     "iteration": 1,
-    "focus": "Created initial Lean formalization with definitions and structure",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Complete sorries for finiteness and basic theorems",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created comprehensive Lean formalization in Erdos1060Problem.lean. Defined σ(k), g(k)=k·σ(k), f(n) counting function, proved finiteness of solution sets, stated both weak and strong conjectures, and computed examples.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1060Problem.lean - Full problem formalization (150+ lines)",
-      "sigma definition - sum of divisors via Nat.divisors",
-      "g(k) = k·σ(k) - the product function",
-      "f(n) - counting function via Set.ncard",
-      "solutionSet_finite - finiteness theorem (with sorry)",
-      "Examples: g(2)=6, g(3)=12, g(5)=30, g(6)=72, g(7)=56"
-    ],
-    "insights": [
-      "Solution set is finite because k·σ(k) ≥ k (σ(k) ≥ 1)",
-      "For prime p: g(p) = p(p+1) gives sparse coverage",
-      "OEIS A327153 contains the sequence of n with f(n) > 0",
-      "Two levels of conjecture: weak n^{o(1/log log n)} and strong (log n)^{O(1)}",
-      "Strong infrastructure exists via Nat.divisors and ArithmeticFunction.sigma"
-    ],
-    "mathlibGaps": [
-      "Need careful handling of log log n in Lean",
-      "o(·) and O(·) notation not directly supported - need explicit formulation"
-    ],
-    "nextSteps": [
-      "Complete solutionSet_finite proof",
-      "Complete f_of_one proof",
-      "Consider computing more values for f(n)",
-      "Research literature on this problem for bounds"
-    ],
-    "markdown": "# Erdős #1060 - Knowledge Base\n\n## Problem Statement\n\nLet $f(n)$ count solutions to $k\\cdot\\sigma(k) = n$.\n\n**Questions:**\n1. Is $f(n) \\leq n^{o(1/\\log\\log n)}$? (Weak conjecture)\n2. Is $f(n) \\leq (\\log n)^{O(1)}$? (Strong conjecture)\n\n## Key Functions\n\n- $\\sigma(k)$ = sum of all divisors of $k$\n- $g(k) = k \\cdot \\sigma(k)$ = the product function\n- $f(n)$ = count of $k$ with $g(k) = n$\n\n## Examples\n\n| k | σ(k) | g(k) = k·σ(k) |\n|---|------|---------------|\n| 1 | 1 | 1 |\n| 2 | 3 | 6 |\n| 3 | 4 | 12 |\n| 5 | 6 | 30 |\n| 6 | 12 | 72 |\n| 7 | 8 | 56 |\n\n## Formalization Progress\n\nCreated `proofs/Proofs/Erdos1060Problem.lean` with:\n- Sum of divisors σ(k) definition\n- Product function g(k) = k·σ(k)\n- Counting function f(n)\n- Finiteness theorem for solution sets\n- Both conjectures stated as axioms\n- OEIS A327153 connection\n- Several computed examples\n\n## Status\n\n**Erdős Database Status**: OPEN (Problem B11 in Guy's collection)\n**Formalization Status**: PARTIAL - definitions complete, some sorries remain\n\n## References\n\n- Guy, R. K., Unsolved Problems in Number Theory (2004), Problem B11\n- OEIS A327153\n\n---\n\n*Research session 2026-01-22 by researcher-2*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1060 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1059\n- Problem #1061\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Direct formalization",
-      "status": "in-progress",
-      "description": "Define σ(k), g(k)=k·σ(k), f(n) counting function, state conjectures"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "divisor-functions",
-    "counting"
+    "erdos"
   ],
   "relatedProofs": [
-    "Erdos830Problem.lean (amicable pairs using σ)",
-    "Erdos252Problem.lean (divisor power sums)",
-    "PerfectNumbers.lean (σ usage)"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      {
-        "citation": "Guy, R. K., Unsolved problems in number theory (2004), Problem B11",
-        "key": "Gu04"
-      }
-    ],
-    "urls": [
-      "https://www.erdosproblems.com/1060",
-      "https://oeis.org/A327153"
-    ],
-    "mathlib": [
-      "Mathlib.NumberTheory.Divisors",
-      "Mathlib.NumberTheory.ArithmeticFunction"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T14:31:40.058Z",
   "significance": 7,
