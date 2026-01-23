@@ -8,6 +8,7 @@
         build test lint \
         enhance research aristotle aristotle-loop \
         deploy deployer deployer-stop deployer-attach deployer-logs deployer-status \
+        restart-all restart-research restart-deployer restart-aristotle restart-enhancers \
         continue pause stop signals \
         prune
 
@@ -53,7 +54,14 @@ help:
 	@echo "  make stop             - Signal all agents to stop gracefully"
 	@echo "  make signals          - Show current signal status"
 	@echo ""
-	@echo "Options:"
+	@echo "Restart (relaunch stopped agents):"
+	@echo "  make restart-all      - Restart all stopped agents"
+	@echo "  make restart-research - Restart research agents if stopped"
+	@echo "  make restart-deployer - Restart deployer if stopped"
+	@echo "  make restart-aristotle - Restart aristotle if stopped"
+	@echo "  make restart-enhancers - Restart enhancer agents if stopped"
+	@echo ""
+	@echo "Options:
 	@echo "  DEEP=1    - Enable deep cleaning (worktrees, branches, logs)"
 	@echo "  FORCE=1   - Non-interactive mode"
 	@echo "  DRY=1     - Dry-run mode (show what would be done)"
@@ -206,3 +214,47 @@ stop:
 
 signals:
 	@./scripts/agents/signal.sh status
+
+# ============================================================================
+# Restart targets (relaunch stopped agents)
+# ============================================================================
+
+# Restart all stopped agents
+restart-all: restart-deployer restart-aristotle restart-research restart-enhancers
+	@echo "All agents checked and restarted if needed."
+
+# Restart research agents if not running
+restart-research:
+	@if ! tmux has-session -t researcher-1 2>/dev/null; then \
+		echo "Restarting research agents..."; \
+		RESEARCHER_WAIT_INTERVAL=$(WAIT) ./scripts/research/parallel-research.sh $(N); \
+	else \
+		echo "Research agents already running."; \
+	fi
+
+# Restart deployer if not running
+restart-deployer:
+	@if ! tmux has-session -t deployer 2>/dev/null; then \
+		echo "Restarting deployer..."; \
+		DEPLOYER_INTERVAL=$(INTERVAL) ./scripts/deploy/launch-agent.sh; \
+	else \
+		echo "Deployer already running."; \
+	fi
+
+# Restart aristotle if not running
+restart-aristotle:
+	@if ! tmux has-session -t aristotle-agent 2>/dev/null; then \
+		echo "Restarting aristotle..."; \
+		ARISTOTLE_TARGET=$(TARGET) ARISTOTLE_INTERVAL=$(INTERVAL) ./scripts/aristotle/launch-agent.sh; \
+	else \
+		echo "Aristotle already running."; \
+	fi
+
+# Restart enhancers if not running (checks enhancer-1 as proxy)
+restart-enhancers:
+	@if ! tmux has-session -t erdos-enhancer-1 2>/dev/null; then \
+		echo "Restarting enhancer agents..."; \
+		./scripts/erdos/parallel-enhance.sh $(N); \
+	else \
+		echo "Enhancer agents already running."; \
+	fi
