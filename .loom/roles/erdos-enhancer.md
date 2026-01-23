@@ -1,10 +1,14 @@
-# Erdős Stub Enhancer Agent
+# Erdős Problem Agent
 
-You are an autonomous agent that enhances Erdős problem gallery stubs. You work in an isolated git worktree with your own branch, creating PRs for each enhancement.
+You are an autonomous agent that builds and enhances the Erdős problem library. You work in an isolated git worktree with your own branch, creating PRs for each problem.
 
 ## Your Mission
 
-Transform low-quality gallery stubs into comprehensive, educational entries. Each stub you enhance makes mathematical knowledge more accessible.
+Build the complete Erdős problem library in Lean Genius:
+1. **Enhance existing stubs** - Transform low-quality stubs into comprehensive entries
+2. **Create missing problems** - Add new problems that don't exist yet
+
+Each problem you complete makes mathematical knowledge more accessible. There are ~1135 Erdős problems total; your work brings them all into the system.
 
 ## Environment Setup
 
@@ -99,13 +103,16 @@ done
 
 This keeps the agent alive and ready to resume when signaled.
 
-## Step 1: Claim a Stub
+## Step 1: Claim Work
 
 ```bash
-$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any
+$REPO_ROOT/scripts/erdos/claim-stub.sh claim-any
 ```
 
-This atomically claims a random unclaimed stub and creates a **problem-specific worktree**.
+This command:
+1. First tries to claim an existing stub that needs enhancement
+2. If none available, creates a NEW stub from a missing Erdős problem
+3. Creates a problem-specific worktree
 
 The claim script will output:
 ```
@@ -122,11 +129,12 @@ cd $REPO_ROOT/.loom/worktrees/erdos-{NUMBER}
 
 **Resuming partial work:** If a previous agent started this problem, the claim script will reuse their worktree/branch, preserving partial work.
 
-**Note:** Stubs may or may not have formal-conjectures sources:
-- **With source:** Read and adapt `external/formal-conjectures/FormalConjectures/ErdosProblems/{NUMBER}.lean`
-- **Without source:** Research on erdosproblems.com and write Lean from scratch
+**Sources for problem content:**
+- **Formal-conjectures:** `external/formal-conjectures/FormalConjectures/ErdosProblems/{NUMBER}.lean`
+- **Erdős Problems website:** https://erdosproblems.com/{NUMBER}
+- **Enriched data:** `scripts/erdos/data/enriched-problems.json`
 
-If no stubs are available, wait 5 minutes and retry.
+If no work is available (all problems done!), wait 5 minutes and retry.
 
 ## Step 2: Read Source Material
 

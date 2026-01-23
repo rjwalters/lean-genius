@@ -5,6 +5,9 @@
 # Usage:
 #   ./claim-stub.sh claim <erdos-number>     # Claim a specific stub
 #   ./claim-stub.sh claim-random             # Claim a random unclaimed stub
+#   ./claim-stub.sh claim-random-any         # Claim any stub (including unsourced)
+#   ./claim-stub.sh claim-missing            # Create and claim a missing problem
+#   ./claim-stub.sh claim-any                # Try existing, then create missing
 #   ./claim-stub.sh release <erdos-number>   # Release a claimed stub
 #   ./claim-stub.sh complete <erdos-number>  # Mark as completed and release
 #   ./claim-stub.sh status                   # Show all claims
@@ -359,6 +362,45 @@ cleanup_claims() {
     fi
 }
 
+# Claim a missing problem (create stub and claim it)
+claim_missing_stub() {
+    local CREATE_STUB_SCRIPT="$REPO_ROOT/scripts/erdos/create-stub.sh"
+
+    # Get a random missing problem number
+    local missing_num
+    missing_num=$("$CREATE_STUB_SCRIPT" --random-missing 2>/dev/null)
+
+    if [[ -z "$missing_num" ]]; then
+        echo "No missing problems available" >&2
+        return 1
+    fi
+
+    echo "Selected missing problem: erdos-$missing_num"
+
+    # Create the stub
+    echo "Creating stub..."
+    if ! "$CREATE_STUB_SCRIPT" "$missing_num"; then
+        echo "Error: Failed to create stub for erdos-$missing_num" >&2
+        return 1
+    fi
+
+    # Now claim it
+    claim_stub "$missing_num"
+}
+
+# Claim any available work (existing stub OR create missing)
+claim_any_work() {
+    # First try to claim an existing stub
+    if claim_random_stub "true" 2>/dev/null; then
+        return 0
+    fi
+
+    echo "No existing stubs available, creating from missing problems..."
+
+    # Fall back to creating a missing stub
+    claim_missing_stub
+}
+
 # Extend a claim (renew TTL)
 extend_claim() {
     local erdos_number="$1"
@@ -402,6 +444,12 @@ case "${1:-help}" in
     claim-random-any)
         claim_random_stub "true"
         ;;
+    claim-missing)
+        claim_missing_stub
+        ;;
+    claim-any)
+        claim_any_work
+        ;;
     release)
         if [[ -z "${2:-}" ]]; then
             echo "Usage: $0 release <erdos-number>" >&2
@@ -439,6 +487,8 @@ Commands:
   claim <erdos-number>    Claim a specific stub
   claim-random            Claim a random stub with formal-conjectures source
   claim-random-any        Claim a random stub (including unsourced)
+  claim-missing           Create and claim a random MISSING problem
+  claim-any               Try existing stubs first, then create missing if none
   release <erdos-number>  Release a claimed stub
   complete <erdos-number> Mark as completed and release
   extend <erdos-number>   Extend claim TTL
