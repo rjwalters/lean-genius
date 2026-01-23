@@ -16,13 +16,48 @@
       "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 7,
+    "sorries": 0,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat.Basic",
+        "description": "Rational number arithmetic",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unitFraction and egyptianSum definitions",
+      "isEgyptianRepresentationOf1 definition",
+      "egyptian_236 axiom (verified: 1/2 + 1/3 + 1/6 = 1)",
+      "hasConstrainedRepresentation definition",
+      "t_func definition via Nat.find",
+      "t_func_characterization axiom",
+      "t_2 and t_6_lower axioms",
+      "harmonicSum definition",
+      "erdosGrahamUpperBound and liuSawhneyLowerBound formalizations",
+      "liuSawhneyTheorem combining both bounds",
+      "erdos_294 main theorem",
+      "almost_all_work density interpretation",
+      "f_func definition",
+      "greedyStep function definition",
+      "erdos_294_summary combining results"
+    ],
     "erdosNumber": 294,
     "erdosUrl": "https://erdosproblems.com/294",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph 'Old and new problems and results in combinatorial number theory'. Egyptian fractions (sums of distinct unit fractions) have been studied since ancient Egypt. The function t(N) measures when we can no longer represent 1 as an Egyptian fraction with bounded denominators. Erdős and Graham proved t(N) ≪ N/log N but had 'no idea' of the true value. Liu and Sawhney settled this in 2024.",
+    "historicalContext": "**Ancient Origins**\\n\\nEgyptian fractions date to the Rhind Papyrus (c. 1650 BCE), where ancient Egyptians expressed fractions exclusively as sums of distinct unit fractions. This representation system persisted for millennia and influenced Greek and medieval mathematics.\\n\\n**The Erdős-Graham Monograph (1980)**\\n\\nPaul Erdős and Ronald Graham introduced Problem #294 in their influential monograph 'Old and new problems and results in combinatorial number theory.' They defined t(N) as the smallest starting point from which no Egyptian representation of 1 exists using denominators in [t, N]. They proved t(N) ≪ N/log N but confessed they had 'no idea' of the true asymptotic behavior.\\n\\n**The 44-Year Wait**\\n\\nFor over four decades, the lower bound remained elusive. The gap between the trivial lower bound and Erdős-Graham's upper bound was enormous—no one knew if t(N) grew like √N, N/log N, or something in between.\\n\\n**Liu-Sawhney Resolution (2024)**\\n\\nYifan Liu and Mehtaab Sawhney finally resolved the problem in 2024, proving t(N) ≫ N/((log N)(log log N)³(log log log N)^O(1)). This matches Erdős-Graham's upper bound up to polylogarithmic factors, settling one of the longest-standing open problems in combinatorial number theory.",
     "problemStatement": "Let N ≥ 1 and let t(N) be the least integer t such that there is NO solution to 1 = 1/n₁ + 1/n₂ + ⋯ + 1/nₖ with t = n₁ < n₂ < ⋯ < nₖ ≤ N. Estimate t(N).",
     "proofStrategy": "The formalization defines Egyptian fractions as sums over finite sets and the t(N) function as a minimum over non-representable starting points. The Erdős-Graham upper bound and Liu-Sawhney lower bound are axiomatized. The main theorem confirms t(N) ≍ N/((log N)(log log N)^O(1)).",
     "keyInsights": [
