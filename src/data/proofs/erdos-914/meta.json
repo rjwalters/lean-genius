@@ -1,33 +1,139 @@
 {
   "id": "erdos-914",
-  "title": "Erdős Problem #914",
+  "title": "Erdős Problem #914: Hajnal-Szemerédi Theorem (Vertex-Disjoint Cliques)",
   "slug": "erdos-914",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Every graph with ... vertices and minimum degree at least ... contains ... vertex disjoint copies of ....\n\n\n...",
+  "description": "Every graph on rm vertices with minimum degree ≥ m(r-1) contains m vertex-disjoint copies of K_r. SOLVED by Hajnal-Szemerédi (1970).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (conjecture), Hajnal-Szemerédi (proof 1970)",
     "sourceUrl": "https://erdosproblems.com/914",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos914Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "clique-factors",
+      "minimum-degree",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 914,
     "erdosUrl": "https://erdosproblems.com/914",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definitions and degree",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Clique predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.degree",
+        "description": "Vertex degree",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Degree"
+      }
+    ],
+    "originalContributions": [
+      "minDegree definition for SimpleGraph",
+      "IsRClique definition (r-clique)",
+      "AreVertexDisjoint definition for clique collections",
+      "HasMDisjointRCliques definition (m vertex-disjoint K_r's)",
+      "HasPerfectKrFactor definition",
+      "Dirac's theorem axiom (r=2 case)",
+      "Corrádi-Hajnal theorem axiom (r=3 case)",
+      "Hajnal-Szemerédi main theorem axiomatization",
+      "Tightness of degree condition",
+      "Kierstead-Kostochka proof approach",
+      "Alon-Yuster and KSS generalizations"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #914 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and $m\\geq 1$. Every graph with $rm$ vertices and minimum degree at least $m(r-1)$ contains $m$ vertex disjoint copies of $K_r$.\n\n\n\nWhen $r=2$ this follows from Dirac's theorem. Corr\\'{a}di and Hajnal \\cite{CoHa63} proved this when $r=3$. Hajnal and Szemer\\'{e}di \\cite{HaSz70} proved this for all $r\\geq 4$.\n\n\n\n\nReferences\n\n\n[CoHa63] Corradi, K. and Hajnal, A., On the maximal number of independent circuits in a graph. Acta Math. Acad. Sci. Hungar. (1963), 423--439.\n\n[HaSz70] Hajnal, A. and Szemer\\'{e}di, E., Proof of a conjecture of {P}. {E}rd\\H{o}s. (1970), 601--623.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #914: Hajnal-Szemerédi Theorem**\n\nThis problem asks when a graph contains many vertex-disjoint cliques. It's one of the most important results in extremal graph theory about spanning substructures.\n\n**Historical Development:**\n- **r = 2:** Follows from Dirac's theorem (1952) on Hamiltonian cycles\n- **r = 3:** Proved by Corrádi and Hajnal (1963) for triangles\n- **r ≥ 4:** Proved by Hajnal and Szemerédi (1970) in a landmark paper\n- **2008:** Kierstead-Kostochka gave a shorter proof via equitable colorings\n- **2010:** Polynomial-time algorithm found (O(n^5))",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet r ≥ 2 and m ≥ 1. Every graph with rm vertices and minimum degree at least m(r-1) contains m vertex-disjoint copies of K_r.\n\n**Solution (Hajnal-Szemerédi 1970):**\nYES! The conjecture is true. The minimum degree condition δ(G) ≥ m(r-1) guarantees the existence of m vertex-disjoint r-cliques.\n\n**Equivalent Form:**\nA graph G on n vertices with δ(G) ≥ (1 - 1/r)n has a perfect K_r-factor when r divides n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Setup:** Use Mathlib's SimpleGraph with minimum degree definition.\n\n2. **Clique Definitions:** Define r-cliques and vertex-disjoint clique collections.\n\n3. **Special Cases:** Axiomatize Dirac (r=2) and Corrádi-Hajnal (r=3).\n\n4. **Main Theorem:** Axiomatize Hajnal-Szemerédi for general r.\n\n5. **Tightness:** Show the minimum degree condition is optimal.\n\n6. **Generalizations:** State Alon-Yuster and KSS theorems.",
+    "keyInsights": [
+      "**Minimum Degree Threshold:** δ(G) ≥ m(r-1) = (1 - 1/r)n is exactly the right condition",
+      "**Tightness:** The bound is tight - examples exist with one fewer degree and no K_r-factor",
+      "**Spanning Structure:** Unlike Turán, this forces SPANNING structures, not just subgraphs",
+      "**Equitable Colorings:** Modern proofs use the connection to graph colorings",
+      "**Algorithmic:** Polynomial-time algorithms exist to find the clique factor",
+      "**Generalizations:** Extends to perfect H-factors for any graph H (Alon-Yuster, KSS)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "Complete graphs and minimum degree",
+      "startLine": 43,
+      "endLine": 63
+    },
+    {
+      "id": "cliques",
+      "title": "Cliques and Clique Covers",
+      "summary": "r-cliques, vertex-disjoint collections, K_r-factors",
+      "startLine": 64,
+      "endLine": 101
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Dirac (r=2), Corrádi-Hajnal (r=3)",
+      "startLine": 102,
+      "endLine": 134
+    },
+    {
+      "id": "main-theorem",
+      "title": "Hajnal-Szemerédi Theorem",
+      "summary": "Main result for all r ≥ 2",
+      "startLine": 135,
+      "endLine": 172
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness",
+      "summary": "Degree condition is optimal",
+      "startLine": 173,
+      "endLine": 197
+    },
+    {
+      "id": "proof-approaches",
+      "title": "Proof Approaches",
+      "summary": "Original proof and Kierstead-Kostochka",
+      "startLine": 198,
+      "endLine": 222
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "Alon-Yuster, KSS theorems",
+      "startLine": 223,
+      "endLine": 240
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and impact",
+      "startLine": 259,
+      "endLine": 305
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #914 asks whether every graph on rm vertices with minimum degree ≥ m(r-1) contains m vertex-disjoint K_r's. Hajnal and Szemerédi (1970) proved this is TRUE, extending earlier work by Corrádi-Hajnal (1963) for triangles. The result is fundamental in extremal graph theory.",
+    "implications": "**Implications**\n\n1. **Spanning Structures:** High minimum degree forces not just subgraphs but spanning structures.\n\n2. **Extremal Graph Theory:** Establishes tight thresholds for clique factors.\n\n3. **Algorithmic Applications:** Efficient algorithms exist for finding clique factors.\n\n4. **Generalizations:** Led to comprehensive theory of graph factors (KSS theorem).",
+    "openQuestions": [
+      "What is the smallest minimum degree for perfect H-factors for other graphs H?",
+      "Can the algorithm be improved below O(n^5)?",
+      "What about weighted or directed versions?",
+      "Fractional and approximate versions of the theorem?"
+    ]
   }
 }
