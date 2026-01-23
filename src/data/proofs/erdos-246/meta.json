@@ -1,33 +1,164 @@
 {
   "id": "erdos-246",
-  "title": "Erdős Problem #246",
+  "title": "Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}",
   "slug": "erdos-246",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... The set ... is complete - that is, every large integer is the sum of distinct integers of the form ... with ....\n\n\n\n...",
+  "description": "Let (a, b) = 1. The set {a^k b^l : k, l ≥ 0} is complete — every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/246",
-    "date": "",
-    "status": "pending",
+    "date": "1959",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos246Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "complete-sequences",
+      "additive-combinatorics",
+      "exponential-sequences"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 246,
     "erdosUrl": "https://erdosproblems.com/246",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sums over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "powerSet definition: {a^k b^l : k, l ≥ 0} for coprime a, b",
+      "isComplete definition: every large n is sum of distinct elements",
+      "isCompleteFrom definition: completeness from threshold N₀",
+      "birch_theorem axiom: coprime power sets are complete",
+      "birch_threshold_exists axiom: explicit threshold exists",
+      "two_three_complete theorem: {2^k 3^l} is complete",
+      "cassels_general axiom: logarithmic density implies completeness",
+      "powerSetBoundedL definition: power set with bounded exponent l",
+      "davenport_bounded_l axiom: completeness with bounded l",
+      "davenport_uniform axiom: uniform bound on l",
+      "hegyvari_bound axiom: quadruple exponential bound (2000)",
+      "fang_chen_bound axiom: triply exponential bound (2017)",
+      "yu_large_summands axiom: representation with large elements (2024)",
+      "fibonacci definition and zeckendorf_completeness axiom",
+      "powersOfTwo definition and completeness theorem",
+      "completeness_criterion axiom: general criterion",
+      "single_powers_not_complete axiom: powers of a ≥ 3 not complete",
+      "non_representable_density axiom: positive density of missing integers",
+      "powerSetUpTo definition and power_set_counting axiom",
+      "reciprocal_sum_bound axiom: sum of reciprocals bound",
+      "numRepresentations definition and sparse_representations axiom",
+      "greedyRepresentation definition and greedy_eventually_works axiom"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #246 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $(a,b)=1$. The set $\\{a^kb^l: k,l\\geq 0\\}$ is complete - that is, every large integer is the sum of distinct integers of the form $a^kb^l$ with $k,l\\geq 0$.\n\n\n\nProved by Birch \\cite{Bi59}. This also follows from a later more general result of Cassels \\cite{Ca60} (see [254]).\n\nDavenport observed in \\cite{Bi59} that this is still true even with $l\\ll_{a,b}1$. Hegyv\\'{a}ri \\cite{He00b} gave an explicit upper bound for this threshold (which is quadruple exponential in $a$ and $b$). This was improved to triply exponential by Fang and Chen \\cite{FaCh17}.\n\nYu \\cite{Yu24} showed that one can write any large $n$ as the sum of distinct integers of this form, all of which are $> n/(\\log n)^{1+o(1)}$.\n\n\n\n\nReferences\n\n\n[Bi59] Birch, B. J., Note on a problem of Erd\\H{o}s. Proc. Cambridge Philos. Soc. (1959), 370-373.\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.\n\n[FaCh17] Fang, Jin-Hui and Chen, Yong-Gao, A quantitative form of the {E}rd\\H{o}s-{B}irch theorem. Acta Arith. (2017), 301--311.\n\n[He00b] Hegyv\\'ari, N., On the completeness of an exponential type sequence. Acta Math. Hungar. (2000), 127--135.\n\n[Yu24] Yu, Wang-Xing, On the representation of an exponential type sequence. Publ. Math. Debrecen (2024), 253--261.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #246** asks about complete sequences — sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyvári (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $(a, b) = 1$ with $a, b \\geq 2$. Is the set $\\{a^k b^l : k, l \\geq 0\\}$ complete?\n\nA set S is **complete** if every sufficiently large integer can be written as a sum of distinct elements from S.\n\n**Answer:** YES (Birch 1959)\n\n**Key Examples:**\n- {2^k · 3^l} is complete: elements are 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...\n- Every large n = sum of distinct elements from this set\n\n**Extensions:**\n- Works even with l bounded (Davenport)\n- Explicit bounds: O(2^{2^{2^{max(a,b)}}}) by Fang-Chen\n- Large summands suffice: all > n/(log n)^{1+o(1)} (Yu 2024)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** Define powerSet(a,b) and completeness property.\n\n2. **Main Theorem:** Axiomatize Birch's result that coprime power sets are complete.\n\n3. **Generalizations:** Include Cassels' general criterion, Davenport's observation, and quantitative bounds.\n\n4. **Contrasts:** Show single-base powers (a ≥ 3) are not complete.\n\n5. **Related Sequences:** Fibonacci (Zeckendorf), powers of 2 (binary).\n\n6. **Algorithms:** Greedy representation eventually works.",
+    "keyInsights": [
+      "**Logarithmic Density:** powerSet(a,b) has ~(log N)² elements up to N, which is enough for completeness.",
+      "**Coprimality Essential:** gcd(a,b) = 1 ensures distinct products a^k · b^l have distinct prime factorizations.",
+      "**Contrast with Single Base:** Powers of 3 alone (3, 9, 27, 81, ...) are NOT complete — many gaps exist.",
+      "**Bounded Exponents:** Remarkably, only finitely many values of l are needed (Davenport).",
+      "**Quantitative Bounds:** The threshold drops from quadruple exponential (Hegyvári) to triply exponential (Fang-Chen).",
+      "**Large Summands:** Yu (2024) shows we can avoid small summands entirely."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Power sets and completeness property",
+      "startLine": 45,
+      "endLine": 70
+    },
+    {
+      "id": "birch-theorem",
+      "title": "Birch's Theorem (1959)",
+      "summary": "Main result: coprime power sets are complete",
+      "startLine": 72,
+      "endLine": 91
+    },
+    {
+      "id": "cassels-generalization",
+      "title": "Cassels' Generalization",
+      "summary": "Logarithmic density criterion",
+      "startLine": 93,
+      "endLine": 108
+    },
+    {
+      "id": "davenport-observation",
+      "title": "Davenport's Observation",
+      "summary": "Bounded l suffices",
+      "startLine": 110,
+      "endLine": 126
+    },
+    {
+      "id": "quantitative-bounds",
+      "title": "Quantitative Bounds",
+      "summary": "Hegyvári and Fang-Chen bounds",
+      "startLine": 128,
+      "endLine": 142
+    },
+    {
+      "id": "yu-result",
+      "title": "Yu's Result (2024)",
+      "summary": "Large summands suffice",
+      "startLine": 144,
+      "endLine": 154
+    },
+    {
+      "id": "related-sequences",
+      "title": "Related Complete Sequences",
+      "summary": "Fibonacci, powers of 2",
+      "startLine": 156,
+      "endLine": 183
+    },
+    {
+      "id": "non-complete",
+      "title": "Non-Complete Sequences",
+      "summary": "Single-base powers not complete",
+      "startLine": 185,
+      "endLine": 201
+    },
+    {
+      "id": "structure",
+      "title": "Structure of Power Sets",
+      "summary": "Counting and reciprocal sums",
+      "startLine": 212,
+      "endLine": 246
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and key insights",
+      "startLine": 266,
+      "endLine": 294
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #246 asks whether {a^k b^l : gcd(a,b) = 1, k,l ≥ 0} is a complete sequence. Birch (1959) proved YES: every sufficiently large integer is a sum of distinct elements from this set. Extensions include Cassels' general criterion, Davenport's bounded-l observation, and explicit bounds by Hegyvári and Fang-Chen.",
+    "implications": "**Implications for Additive Combinatorics**\n\n1. **Complete Sequences:** Characterizes which multiplicatively-generated sets are complete.\n\n2. **Density Threshold:** Logarithmic density suffices for completeness (Cassels criterion).\n\n3. **Bounded Parameters:** Finite restrictions on parameters don't break completeness.\n\n4. **Algorithmic Aspects:** Greedy algorithms eventually produce valid representations.\n\n5. **Contrast Principle:** Single-base powers lack the diversity needed for completeness.",
+    "openQuestions": [
+      "What is the optimal bound on l in terms of a and b?",
+      "Can the triply exponential bound of Fang-Chen be improved?",
+      "What is the exact threshold N₀ for small values of a, b?",
+      "Algorithmic question: fastest way to compute representation?",
+      "Connection to Problem 254 and other completeness problems?"
+    ]
   }
 }
