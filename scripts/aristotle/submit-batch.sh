@@ -83,9 +83,9 @@ submit_file() {
         return 0
     fi
 
-    # Use aristotlelib to submit
+    # Use aristotlelib to submit (prove-from-file is the new command)
     local output
-    output=$(uvx --from aristotlelib aristotle submit "$file" --no-wait 2>&1) || {
+    output=$(uvx --from aristotlelib aristotle prove-from-file "$file" --no-wait 2>&1) || {
         echo -e "  ${RED}Failed:${NC} $output"
         return 1
     }
