@@ -85,7 +85,7 @@
   {
     "id": "ann-84-10",
     "proofId": "erdos-84",
-    "range": { "startLine": 311, "endLine": 345 },
+    "range": { "startLine": 297, "endLine": 342 },
     "type": "theorem",
     "title": "Summary: PARTIALLY SOLVED",
     "content": "**erdos_84:**\n\n**STATUS:** PARTIALLY SOLVED\n\n**Part 1 (SOLVED):** f(n) = o(2^n)\n- Verstraëte (2004): f(n) ≪ 2^{n - n^{1/10}}\n- Nenadov (2025): f(n) ≪ 2^{n - n^{1/2-o(1)}}\n\n**Part 2 (OPEN):** Does f(n)/2^{n/2} → ∞?\n\n**Limit (OPEN):** Does lim f(n)^{1/n} exist?\n\n**Current Gap:** 2^{n/2} < f(n) ≪ 2^{n - √n}",
