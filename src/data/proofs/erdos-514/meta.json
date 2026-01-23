@@ -1,33 +1,159 @@
 {
   "id": "erdos-514",
-  "title": "Erdős Problem #514",
+  "title": "Erdős Problem #514: Growth of Entire Functions Along Paths",
   "slug": "erdos-514",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function. Does there exist a path ... so that, for every ...,\\[\\lvert f(z)/z^n\\rvert \\to \\infty\\]as ... ...",
+  "description": "For a transcendental entire function f(z), does there exist a path L such that |f(z)/z^n| → ∞ as z → ∞ along L for every n? Part 1 proved by Boas (unpublished); parts 2 and 3 remain open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Boas (unpublished, Part 1), Erdős (problem)",
     "sourceUrl": "https://erdosproblems.com/514",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos514Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "growth-rates",
+      "maximum-modulus",
+      "partially-solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 514,
     "erdosUrl": "https://erdosproblems.com/514",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "DifferentiableAt",
+        "description": "Differentiability at a point",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value on complex numbers",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Tendsto",
+        "description": "Limit definition via filters",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      }
+    ],
+    "originalContributions": [
+      "IsEntire definition: entire functions via DifferentiableAt",
+      "maxModulus definition: M(r) = sup|f(z)| for |z| = r",
+      "IsTranscendental definition: entire functions dominating all polynomials",
+      "IsPathToInfinity definition: continuous curves escaping to infinity",
+      "HasSuperPolynomialGrowth definition: |f(γ(t))/γ(t)^n| → ∞ for all n",
+      "boas_existence axiom: path with super-polynomial growth exists",
+      "erdos_514_part1 theorem: formalizes Boas's result",
+      "DominatesMaxModulusPower definition: faster than M(r)^ε growth",
+      "Examples: exponential and sine functions",
+      "Connection to Wiman-Valiron theory",
+      "erdos_514_summary: comprehensive status summary"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #514 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be an entire function. Does there exist a path $L$ so that, for every $n$,\\[\\lvert f(z)/z^n\\rvert \\to \\infty\\]as $z\\to \\infty$ along $L$?\n\nCan the length of this path be estimated in terms of $M(r)=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$? Does there exist a path along which $\\lvert f(z)\\rvert$ tends to $\\infty$ faster than a fixed function of $M(r)$ (such that $M(r)^\\epsilon$)?\n\n\n\nBoas (unpublished) has proved the first part, that such a path must exist.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #514**\n\nThis problem explores the growth behavior of transcendental entire functions along paths to infinity in the complex plane.\n\n**Key History:**\n- Erdős posed this problem in [Er61, p.249] and [Er82e]\n- The problem has three parts, addressing different aspects of growth along paths\n- Boas (unpublished) proved Part 1: such a path always exists\n- Parts 2 and 3 remain open, concerning path length estimates and M(r)^ε growth\n\n**Mathematical Setting:**\n- An entire function is one that is analytic on all of ℂ\n- A transcendental entire function grows faster than any polynomial\n- M(r) = max_{|z|=r}|f(z)| is the maximum modulus function\n- The problem asks about the existence of special paths along which growth is exceptionally fast",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet f(z) be a transcendental entire function.\n\n**Part 1:** Does there exist a path L such that for every n, |f(z)/z^n| → ∞ as z → ∞ along L?\n\n**Answer: YES** (Boas, unpublished)\n\n**Part 2:** Can the length of this path be estimated in terms of M(r)?\n\n**Status: OPEN**\n\n**Part 3:** Does there exist a path along which |f(z)| grows faster than M(r)^ε for any fixed ε > 0?\n\n**Status: OPEN**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire via DifferentiableAt at every point\n\n2. **Maximum Modulus:** Define M(r) as supremum over circles of radius r\n\n3. **Transcendental Functions:** Define as entire functions dominating all polynomial growth\n\n4. **Paths to Infinity:** Define as continuous curves with |γ(t)| → ∞\n\n5. **Super-Polynomial Growth:** Define HasSuperPolynomialGrowth for paths where |f(γ(t))/γ(t)^n| → ∞ for all n\n\n6. **Boas's Result:** Axiomatize existence of such path for transcendental functions\n\n7. **Open Problems:** Mark Parts 2 and 3 as open with placeholder axioms\n\n8. **Examples:** Include exponential and sine as classical transcendental entire functions",
+    "keyInsights": [
+      "**Entire Functions:** A function f : ℂ → ℂ is entire if it is differentiable at every point, having a globally convergent Taylor series",
+      "**Transcendental vs Polynomial:** Transcendental entire functions (like e^z, sin z) grow faster than any polynomial at infinity",
+      "**Maximum Modulus M(r):** Captures the largest value of |f| on circles, fundamental in complex analysis",
+      "**Boas's Insight:** For any transcendental f, there is a path (not just points) where f dominates all polynomials simultaneously",
+      "**Wiman-Valiron Theory:** Near maximum modulus points, f behaves like z^ν(r) where ν(r) → ∞",
+      "**Open Questions:** Path length estimates and faster-than-M^ε growth remain unresolved"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "complex-foundations",
+      "title": "Complex Analysis Foundations",
+      "summary": "IsEntire, maxModulus, DominatesPolynomial, IsTranscendental definitions",
+      "startLine": 39,
+      "endLine": 88
+    },
+    {
+      "id": "paths-to-infinity",
+      "title": "Paths to Infinity",
+      "summary": "IsPathToInfinity, pathImage, radialPath definitions",
+      "startLine": 89,
+      "endLine": 117
+    },
+    {
+      "id": "boas-result",
+      "title": "The Boas Result",
+      "summary": "HasSuperPolynomialGrowth, boas_existence axiom, erdos_514_part1 theorem",
+      "startLine": 118,
+      "endLine": 153
+    },
+    {
+      "id": "path-length",
+      "title": "Path Length Estimates",
+      "summary": "pathLengthUpTo, Part 2 open problem",
+      "startLine": 154,
+      "endLine": 180
+    },
+    {
+      "id": "faster-growth",
+      "title": "Faster Than M(r)^ε Growth",
+      "summary": "DominatesMaxModulusPower, Part 3 open problem",
+      "startLine": 181,
+      "endLine": 206
+    },
+    {
+      "id": "examples",
+      "title": "Examples of Entire Functions",
+      "summary": "expFunction, sinFunction, maxModulus_exp",
+      "startLine": 207,
+      "endLine": 240
+    },
+    {
+      "id": "growth-orders",
+      "title": "Growth Orders",
+      "summary": "orderOfGrowth definition, exp_has_order_one",
+      "startLine": 241,
+      "endLine": 261
+    },
+    {
+      "id": "wiman-valiron",
+      "title": "Connection to Wiman-Valiron Theory",
+      "summary": "centralIndex, wiman_valiron_intuition",
+      "startLine": 262,
+      "endLine": 287
+    },
+    {
+      "id": "max-modulus-props",
+      "title": "Properties of Maximum Modulus",
+      "summary": "maxModulus_monotone, maxModulus_ge_origin, maxModulus_tendsto_infinity",
+      "startLine": 288,
+      "endLine": 305
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_514_summary, key_insight",
+      "startLine": 306,
+      "endLine": 348
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #514 asks three questions about the growth of transcendental entire functions along paths to infinity. Part 1 (existence of a path where |f(z)/z^n| → ∞ for all n) was proved by Boas (unpublished). Parts 2 (path length estimates) and 3 (faster than M(r)^ε growth) remain open. The formalization defines entire functions, transcendental functions, paths to infinity, and the relevant growth conditions, then axiomatizes Boas's result.",
+    "implications": "**Complex Analysis Connections**\n\n1. **Maximum Modulus Principle:** M(r) is non-decreasing, relating to the geometry of level curves\n\n2. **Wiman-Valiron Theory:** The behavior of f near its maximum modulus points explains why super-polynomial paths exist\n\n3. **Growth Orders:** The order ρ = lim sup (log log M(r))/(log r) classifies entire functions by growth rate\n\n4. **Path Selection:** The existence proof is non-constructive; explicit path constructions would be valuable\n\n5. **Geometric Measure:** Part 2 connects function theory to curve lengths, a rare interface",
+    "openQuestions": [
+      "Can the path length in Part 2 be bounded by a function of M(r)?",
+      "Does a path exist with |f(z)| growing faster than M(r)^ε (Part 3)?",
+      "Can Boas's path be made explicit for specific functions like e^z?",
+      "What is the relationship between path selection and the order of f?",
+      "How does the central index ν(r) determine optimal path properties?"
+    ]
   }
 }

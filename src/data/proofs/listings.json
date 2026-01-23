@@ -8207,17 +8207,24 @@
   },
   {
     "id": "erdos-514",
-    "title": "Erdős Problem #514",
+    "title": "Erdős Problem #514: Growth of Entire Functions Along Paths",
     "slug": "erdos-514",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function. Does there exist a path ... so that, for every ...,\\[\\lvert f(z)/z^n\\rvert \\to \\infty\\]as ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a transcendental entire function f(z), does there exist a path L such that |f(z)/z^n| → ∞ as z → ∞ along L for every n? Part 1 proved by Boas (unpublished); parts 2 and 3 remain open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "growth-rates",
+      "maximum-modulus",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 514,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-515",
