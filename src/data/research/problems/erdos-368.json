@@ -1,0 +1,127 @@
+{
+  "slug": "erdos-368",
+  "title": "Erdős #368: Largest Prime Factor of n(n+1)",
+  "phase": "FORMALIZED",
+  "status": "progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "F(n) ≫ (log n)² where F(n) = gpf(n(n+1))",
+    "plain": "How large must F(n), the largest prime factor of n(n+1), be? Conjectured to be Θ((log n)²).",
+    "whyMatters": [
+      "Classic problem on prime factors of polynomial values",
+      "Connected to ABC conjecture",
+      "Pasten (2024) achieved major breakthrough: F(n) ≫ (log log n)²/(log log log n)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "F(n) → ∞ (Pólya 1918)",
+      "F(n) ≫ log log n (Mahler 1935)",
+      "F(n) ≫ (log log n)²/(log log log n) (Pasten 2024)",
+      "Infinitely often: F(n) ≤ n^(O(1/log log log n)) (Schinzel 1967)"
+    ],
+    "open": [
+      "Main conjecture: F(n) ≫ (log n)² for all n",
+      "Matching upper: infinitely often F(n) < (log n)^(2+ε)"
+    ],
+    "goal": "Close gap between current (log log n)² and conjectured (log n)²"
+  },
+  "currentState": {
+    "phase": "FORMALIZED",
+    "since": "2026-01-23T00:00:00Z",
+    "iteration": 1,
+    "focus": "478-line formalization with full bound hierarchy and ABC connection",
+    "activeApproach": "Axiomatize known bounds, prove implications between them",
+    "blockers": [
+      "Gap between proven (log log n)² and conjectured (log n)²"
+    ],
+    "nextAction": "Eliminate sorry in pasten_improves_mahler limit argument",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "FORMALIZED: 478-line file covering full bound hierarchy from Pólya to Pasten. Concrete examples F(1)-F(8) proved by native_decide. ABC connection formalized.",
+    "builtItems": [
+      "largestPrimeFactor: gpf(n) definition (Erdos368Problem.lean:50)",
+      "F: F(n) = gpf(n(n+1)) (Erdos368Problem.lean:61)",
+      "product_ge_two: n(n+1) ≥ 2 for n ≥ 1 (PROVED, Erdos368Problem.lean:66)",
+      "consecutive_coprime: gcd(n, n+1) = 1 (PROVED, Erdos368Problem.lean:80)",
+      "primeFactors_product_coprime: factorization of n(n+1) (AXIOM, Erdos368Problem.lean:87)",
+      "F_eq_max: F(n) = max(gpf(n), gpf(n+1)) (AXIOM, Erdos368Problem.lean:93)",
+      "polya_theorem: F(n) → ∞ (AXIOM, Erdos368Problem.lean:107)",
+      "F_unbounded: F is unbounded (PROVED, Erdos368Problem.lean:112)",
+      "mahler_bound: F(n) ≫ log log n (AXIOM, Erdos368Problem.lean:129)",
+      "mahler_improves_polya: Mahler implies Pólya (PROVED, Erdos368Problem.lean:136)",
+      "schinzel_upper: infinitely often F(n) small (AXIOM, Erdos368Problem.lean:179)",
+      "isSmooth: B-smooth number predicate (Erdos368Problem.lean:189)",
+      "erdos_lower_conjecture: F(n) ≫ (log n)² (Erdos368Problem.lean:210)",
+      "erdos_upper_conjecture: infinitely often F(n) < (log n)^(2+ε) (Erdos368Problem.lean:220)",
+      "pasten_bound: F(n) ≫ (log log n)²/(log log log n) (AXIOM, Erdos368Problem.lean:235)",
+      "pasten_improves_mahler: Pasten implies Mahler (PROVED with 1 sorry, Erdos368Problem.lean:243)",
+      "F_one through F_eight: concrete values (PROVED by native_decide, Erdos368Problem.lean:327-364)",
+      "F_small_values: combined F(1)-F(8) (PROVED, Erdos368Problem.lean:370)",
+      "P_squared_plus_one: gpf(n²+1) variant (Erdos368Problem.lean:384)",
+      "pasten_squared_plus_one: Pasten's main result (AXIOM, Erdos368Problem.lean:391)",
+      "radical: rad(n) = product of distinct primes (Erdos368Problem.lean:408)",
+      "abc_implies_strong_bound: ABC ⟹ F(n) ≫ (log n)^(1-ε) (AXIOM, Erdos368Problem.lean:414)",
+      "erdos_368_summary: combined theorem (PROVED, Erdos368Problem.lean:460)"
+    ],
+    "insights": [
+      "Bound hierarchy: Pólya → Mahler → Pasten, each strictly improves previous",
+      "Pasten's 2024 breakthrough: (log log n)² term, major advance toward (log n)² conjecture",
+      "Schinzel's upper bound shows F(n) cannot always be polynomial in n",
+      "Consecutive integers are coprime, so F(n) = max(gpf(n), gpf(n+1))",
+      "ABC conjecture would imply much stronger bounds",
+      "Concrete values: F(8) = 3 shows F can be 'small' (72 = 2³·3²)",
+      "Related variant P(n²+1) studied by Pasten with same bounds"
+    ],
+    "mathlibGaps": [
+      "Need x/log(x) → ∞ limit for pasten_improves_mahler"
+    ],
+    "nextSteps": [
+      "Prove the limit sorry in pasten_improves_mahler",
+      "Prove primeFactors_product_coprime from coprimality",
+      "Consider computational verification of more F(n) values"
+    ],
+    "markdown": "# Erdős #368 - Largest Prime Factor of n(n+1)\n\n## Problem Statement\n\nLet F(n) be the largest prime factor of n(n+1). How large must F(n) be?\n\n## Status\n\n**Erdős Database Status**: PARTIALLY SOLVED\n\n**Formalization**: 478 lines\n\n## Timeline of Lower Bounds\n\n| Year | Result | Bound |\n|------|--------|-------|\n| 1918 | Pólya | F(n) → ∞ |\n| 1935 | Mahler | F(n) ≫ log log n |\n| 2024 | Pasten | F(n) ≫ (log log n)²/(log log log n) |\n| Conj | Erdős | F(n) ≫ (log n)² |\n\n## Concrete Values\n\n| n | n(n+1) | F(n) |\n|---|--------|------|\n| 1 | 2 | 2 |\n| 2 | 6 | 3 |\n| 3 | 12 | 3 |\n| 4 | 20 | 5 |\n| 5 | 30 | 5 |\n| 6 | 42 | 7 |\n| 7 | 56 | 7 |\n| 8 | 72 | 3 |\n\n(OEIS A074399)\n\n---\n\n*Formalized 2026-01-23*\n"
+  },
+  "approaches": [
+    {
+      "name": "Full bound hierarchy formalization",
+      "status": "successful",
+      "description": "Axiomatized all known bounds, proved implications between them, computed concrete examples"
+    }
+  ],
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-factors",
+    "analytic-number-theory",
+    "abc-conjecture"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [
+      "Pólya (1918) 'Zur arithmetischen Untersuchung der Polynome'",
+      "Mahler (1935) 'Über den grössten Primteiler spezieller Polynome'",
+      "Schinzel (1967) 'On two theorems of Gelfond'",
+      "Pasten (2024) 'The largest prime factor of n²+1'"
+    ],
+    "urls": [
+      "https://erdosproblems.com/368",
+      "https://oeis.org/A074399"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ]
+  },
+  "started": "2026-01-23T00:00:00Z",
+  "lastUpdate": "2026-01-23T00:00:00Z",
+  "significance": 8,
+  "tractability": 6
+}
