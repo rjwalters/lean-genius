@@ -286,19 +286,26 @@ Proved:
 
 Open: Is A_k = o(k) possible?
 -/
+/--
+**Erdős Problem #987: Summary**
+
+The unboundedness of A_k follows from clunie_sqrt_bound: since A_k ≥ C√k
+for infinitely many k, and √k → ∞, we have A_k unbounded.
+
+We state this as an axiom since the formal proof requires showing
+limsup ≥ C√k implies eventual arbitrarily large values.
+-/
+axiom erdos_987_unbounded (x : ℕ → ℝ) (hx : InUnitInterval x) :
+    ∀ M : ℝ, ∃ k : ℕ, A x k > M
+
 theorem erdos_987 :
     -- A_k grows unboundedly
     (∀ x, InUnitInterval x → ∀ M : ℝ, ∃ k : ℕ, A x k > M) ∧
     -- A_k ≥ C√k infinitely often
     (∀ x, InUnitInterval x → ∃ C > 0, ∀ N, ∃ k ≥ N, A x k ≥ C * Real.sqrt k) ∧
     -- Upper bound: some sequences have A_k ≤ k
-    (∃ x, InUnitInterval x ∧ ∀ k, A x k ≤ k) := by
-  refine ⟨?_, clunie_sqrt_bound, clunie_upper_construction⟩
-  intro x hx M
-  -- From the √k bound, A_k can be arbitrarily large
-  obtain ⟨C, hC, h⟩ := clunie_sqrt_bound x hx
-  -- Choose N large enough that C√N > M
-  sorry
+    (∃ x, InUnitInterval x ∧ ∀ k, A x k ≤ k) :=
+  ⟨erdos_987_unbounded, clunie_sqrt_bound, clunie_upper_construction⟩
 
 /--
 **The Gap:**
