@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T11:43:50.650Z",
+    "phase": "SURVEYED",
+    "since": "2026-01-23T17:10:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized smooth integers in prime gaps",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Cross-reference with DeepMind formalization",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized smooth integers in prime gaps. Problem is OPEN - Tao called it 'difficult'.",
+    "builtItems": [
+      "proofs/Proofs/Erdos932Problem.lean - Main formalization (~180 lines)",
+      "isSmooth n B - B-smoothness definition",
+      "primeGap r - the r-th prime gap",
+      "isGapSmooth n r - in interval and gap-smooth",
+      "gapSmoothCount r - count of gap-smooth integers",
+      "hasTwoSmooth r, hasOneSmooth r - properties",
+      "erdos_932_conjecture statement"
+    ],
+    "insights": [
+      "Need n to be g_r-smooth where g_r = p_{r+1} - p_r",
+      "Erdős proved: density of r with ≥1 such n is 0",
+      "Conjecture: infinitely many r have ≥2 such n",
+      "Already formalized by Google DeepMind",
+      "Tao marked as 'difficult'",
+      "OEIS A387864 related",
+      "Example: p_r=89, p_{r+1}=97, gap=8, 90 and 96 are 8-smooth"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Compare with DeepMind formalization",
+      "Verify example computationally",
+      "Study prime gap distribution"
+    ],
     "markdown": "# Erdős #932 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p_k$ denote the $k$th prime. For infinitely many $r$ there are at least two integers $p_r<n<p_{r+1}$ all of whose prime factors are $<p_{r+1}-p_r$.\n\n\n\nErd\\H{o}s thought this was true but that there are very few such $r$. He could show that the density of $r$ such that at least one such $n$ exist is $0$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #931\n- Problem #933\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
