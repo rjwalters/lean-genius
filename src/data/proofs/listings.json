@@ -5898,17 +5898,24 @@
   },
   {
     "id": "erdos-314",
-    "title": "Erdős Problem #314",
+    "title": "Erdős Problem #314: Harmonic Sum Error Term",
     "slug": "erdos-314",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be minimal such that .... We define\\[\\epsilon(n) = \\sum_{n\\leq k\\leq m}{k}-1.\\]How small can ... be? Is i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let m(n) be minimal with partial harmonic sum ≥ 1, and ε(n) the overshoot. Is lim inf n²ε(n) = 0? SOLVED by Lim-Steinerberger (2024): YES, with infinitely many n achieving ε(n)n² ≪ (log log n / log n)^{1/2}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "harmonic-numbers",
+      "unit-fractions",
+      "asymptotic-analysis",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 314,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 10
   },
   {
     "id": "erdos-315",

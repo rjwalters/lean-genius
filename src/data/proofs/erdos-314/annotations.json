@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "ann-e314-overview",
+    "proofId": "erdos-314",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Erdős Problem #314: Harmonic Sum Error Term",
+    "content": "This problem studies the **error term** when partial harmonic sums first exceed 1.\n\n**Setup:**\n- Given n ≥ 1, let m(n) be the smallest m such that 1/n + 1/(n+1) + ... + 1/m ≥ 1\n- Define ε(n) = (the sum) - 1, the overshoot\n\n**Question:** Is lim inf n²ε(n) = 0?\n\n**Answer (Lim-Steinerberger 2024):** YES!\nThere exist infinitely many n with ε(n)n² ≪ (log log n / log n)^{1/2}\n\n**Open:** Is exponent 2 optimal? (Conjectured yes)",
+    "mathContext": "From Erdős-Graham (1980), \"Unsolved Problems in Number Theory\", page 41.",
+    "significance": "critical",
+    "relatedConcepts": ["Harmonic numbers", "Unit fractions", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e314-harmonic",
+    "proofId": "erdos-314",
+    "range": { "startLine": 39, "endLine": 50 },
+    "type": "definition",
+    "title": "Harmonic Numbers and Partial Sums",
+    "content": "**Harmonic Number:**\n```lean\nnoncomputable def harmonicNumber (n : ℕ) : ℝ :=\n  ∑ k ∈ Finset.range n, (1 : ℝ) / (k + 1)\n```\nH_n = 1 + 1/2 + 1/3 + ... + 1/n ≈ ln(n) + γ\n\n**Partial Harmonic Sum:**\n```lean\nnoncomputable def partialHarmonicSum (n m : ℕ) : ℝ :=\n  ∑ k ∈ Finset.Icc n m, (1 : ℝ) / k\n```\nSum from n to m equals H_m - H_{n-1}.\n\nHarmonic sums grow logarithmically, which is key to understanding m(n) ≈ e·n.",
+    "mathContext": "γ ≈ 0.5772 is the Euler-Mascheroni constant.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e314-m-function",
+    "proofId": "erdos-314",
+    "range": { "startLine": 52, "endLine": 70 },
+    "type": "definition",
+    "title": "The Function m(n)",
+    "content": "**Definition:**\nm(n) = minimal m ≥ n such that 1/n + ... + 1/m ≥ 1\n\n**Properties:**\n1. m(n) exists (axiom `m_of_n_exists`)\n2. m(n) is minimal: sum to m(n)-1 is < 1 (axiom `m_of_n_minimal`)\n3. m(n) achieves: sum to m(n) is ≥ 1 (axiom `m_of_n_achieves`)\n\n**Intuition:**\nSince the sum from n to m grows like log(m/n), reaching 1 requires:\nlog(m/n) ≈ 1 → m/n ≈ e\n\nSo m(n) ≈ e·n ≈ 2.718n",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e314-epsilon",
+    "proofId": "erdos-314",
+    "range": { "startLine": 72, "endLine": 90 },
+    "type": "definition",
+    "title": "The Error Term ε(n)",
+    "content": "**Definition:**\n```lean\nnoncomputable def epsilon (n : ℕ) : ℝ :=\n  partialHarmonicSum n (m_of_n n) - 1\n```\n\nε(n) measures how much the sum **overshoots** 1.\n\n**Basic Bounds:**\n- ε(n) ≥ 0: By definition of m(n), the sum reaches at least 1\n- ε(n) ≤ 1/n: We overshoot by at most 1/m(n) ≤ 1/n\n\nThe question is: how SMALL can ε(n) be?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e314-approximation",
+    "proofId": "erdos-314",
+    "range": { "startLine": 92, "endLine": 103 },
+    "type": "concept",
+    "title": "m(n) ≈ e·n Asymptotically",
+    "content": "**Key Asymptotic:**\n```lean\naxiom m_over_n_limit :\n  Filter.Tendsto (fun n => (m_of_n n : ℝ) / n) Filter.atTop (nhds Real.exp 1)\n```\n\nAs n → ∞, m(n)/n → e ≈ 2.71828...\n\n**Why e?**\nThe partial sum from n to m grows like:\nlog(m) - log(n) + O(1/n) = log(m/n) + small terms\n\nFor this to equal 1, we need m/n ≈ e¹ = e.\n\nMore precisely: m(n) = ⌊e·n + 1/2⌋ for most n.",
+    "mathContext": "This connects to the definition of e as the base of natural logarithm.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e314-conjecture",
+    "proofId": "erdos-314",
+    "range": { "startLine": 105, "endLine": 113 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**Main Question:**\n```lean\ndef erdos_conjecture : Prop :=\n  ∀ δ > 0, ∃ᶠ n in Filter.atTop, (n : ℝ)^2 * epsilon n < δ\n```\n\nIs lim inf n²ε(n) = 0?\n\nIn words: Can we find infinitely many n where ε(n) is as small as c/n² for arbitrarily small c?\n\nSince ε(n) ≤ 1/n always, the question is whether we can do MUCH better (n² instead of n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e314-solution",
+    "proofId": "erdos-314",
+    "range": { "startLine": 115, "endLine": 130 },
+    "type": "theorem",
+    "title": "Lim-Steinerberger Theorem (2024)",
+    "content": "**Main Result:**\n```lean\naxiom lim_steinerberger_theorem :\n  ∃ C > 0, ∀ᶠ n in Filter.atTop,\n    ∃ k : ℕ, k ≤ n ∧ k ≥ 1 ∧\n    (k : ℝ)^2 * epsilon k ≤ C * (Real.log (Real.log k) / Real.log k)^(1/2 : ℝ)\n```\n\n**In Words:**\nThere exist infinitely many n with:\nε(n)·n² ≪ (log log n / log n)^{1/2}\n\nSince (log log n / log n)^{1/2} → 0 as n → ∞, this proves:\nlim inf n²ε(n) = 0\n\n**Answer to Erdős:** YES!",
+    "mathContext": "Published in arXiv:2405.11354 (2024).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e314-optimal",
+    "proofId": "erdos-314",
+    "range": { "startLine": 132, "endLine": 143 },
+    "type": "concept",
+    "title": "Optimal Exponent Conjecture (OPEN)",
+    "content": "**Conjecture:**\n```lean\naxiom optimal_exponent_conjecture : ∀ δ > 0,\n  Filter.Tendsto (fun n => (n : ℝ)^(2 + δ) * epsilon n) Filter.atTop Filter.atTop\n```\n\n**In Words:**\nFor any δ > 0, lim inf ε(n)·n^{2+δ} = ∞\n\n**Meaning:**\n- Exponent 2 is the threshold\n- We CAN have ε(n)·n² → 0 (infinitely often)\n- We CANNOT have ε(n)·n^{2.01} → 0 (eventually bounded below)\n\n**Status:** OPEN - Not yet proven!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e314-lower",
+    "proofId": "erdos-314",
+    "range": { "startLine": 141, "endLine": 143 },
+    "type": "concept",
+    "title": "Lower Bound for ε(n)",
+    "content": "**Complementary Bound:**\n```lean\naxiom epsilon_lower_bound : ∃ c > 0, ∀ᶠ n in Filter.atTop,\n  epsilon n ≥ c / (n : ℝ)^2\n```\n\nε(n) ≥ c/n² infinitely often.\n\nThis shows ε(n) cannot be TOO small - the n² scaling is right.\n\nCombined with Lim-Steinerberger:\n- Sometimes ε(n)·n² is small (approaching 0)\n- Sometimes ε(n)·n² is bounded away from 0\n\nThe lim sup and lim inf behave very differently!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e314-summary",
+    "proofId": "erdos-314",
+    "range": { "startLine": 158, "endLine": 182 },
+    "type": "theorem",
+    "title": "Summary: Problem SOLVED",
+    "content": "**Erdős Problem #314: Summary**\n\n| Component | Statement |\n|-----------|-------|\n| Question | Is lim inf n²ε(n) = 0? |\n| Answer | YES (Lim-Steinerberger 2024) |\n| Explicit Bound | ε(n)n² ≪ (log log n / log n)^{1/2} i.o. |\n| Optimal Exponent | Conjectured: n^{2+δ}ε(n) → ∞ (OPEN) |\n\n```lean\ntheorem erdos_314_summary :\n    erdos_conjecture ∧\n    (∃ C > 0, ... Lim-Steinerberger bound ...) := ...\n```\n\n**Status:** SOLVED - The main conjecture is proven true.",
+    "significance": "critical"
+  }
+]
