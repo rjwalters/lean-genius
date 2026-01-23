@@ -1,33 +1,156 @@
 {
   "id": "erdos-992",
-  "title": "Erdős Problem #992",
+  "title": "Erdős Problem #992: Discrepancy of Sequences mod 1",
   "slug": "erdos-992",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers. Is it true that, for almost all ..., the discrepancy\\[D(N)=\\max_{I\\subseteq [0,1...",
+  "description": "For integer sequence x₁ < x₂ < ⋯, is D(N) ≪ √N·(log N)^{o(1)} for almost all α? Known: D(N) ≪ √N·(log N)^{3/2} (Baker 1981). Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Koksma, Cassels, Baker",
     "sourceUrl": "https://erdosproblems.com/992",
-    "date": "",
-    "status": "pending",
+    "date": "1949-1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos992Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "discrepancy",
+      "uniform-distribution",
+      "almost-all",
+      "metric-number-theory"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for √N bound",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for discrepancy bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.ae",
+        "description": "Almost everywhere for almost all α",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering for counting in intervals",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "StrictlyIncreasingSeq definition",
+      "frac (fractional part) definition",
+      "countInInterval for counting {αxₙ} ∈ I",
+      "discrepancy D(N) definition via supremum",
+      "erdos_koksma_cassels axiom ((log N)^{5/2} bound)",
+      "baker_1981 axiom ((log N)^{3/2} bound)",
+      "Lacunary sequence definition",
+      "erdos_gal_lacunary axiom (log log bound for lacunary)",
+      "conjecture_log_subpolynomial formulation",
+      "conjecture_loglog_polynomial formulation",
+      "lower_bound_sqrt (√N is necessary)",
+      "Connection to Weyl's criterion, Erdős-Turán inequality",
+      "naturalSeq and powersOfTwo examples",
+      "erdos_992_statement main theorem"
+    ],
     "erdosNumber": 992,
     "erdosUrl": "https://erdosproblems.com/992",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #992 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1<x_2<\\cdots$ be an infinite sequence of integers. Is it true that, for almost all $\\alpha \\in [0,1]$, the discrepancy\\[D(N)=\\max_{I\\subseteq [0,1]} \\lvert \\#\\{ n\\leq N : \\{ \\alpha x_n\\}\\in I\\} - \\lvert I\\rvert N\\rvert\\]satisfies\\[D(N) \\ll N^{1/2}(\\log N)^{o(1)}?\\]Or even\\[D(N)\\ll N^{1/2}(\\log\\log N)^{O(1)}?\\]\n\n\n\nErd\\H{o}s and Koksma \\cite{ErKo49} and Cassels \\cite{Ca50} independently proved that, for any sequence $x_i$ and almost all $\\alpha$, the discrepancy satisfies\\[D(N)\\ll N^{1/2}(\\log N)^{5/2+o(1)}.\\]Baker \\cite{Ba81} improved this to\\[D(N)\\ll N^{1/2}(\\log N)^{3/2+o(1)}.\\]Erd\\H{o}s and G\\'{a}l (unpublished) proved $D(N) \\ll N^{1/2}(\\log\\log N)^{O(1)}$ for almost all $\\alpha$ if the sequence is lacunary - that is, $x_{i+1}/x_i > \\lambda>1$ for all $i$.\n\n\n\n\nReferences\n\n\n[Ba81] No reference found.\n\n\n[Ca50] Cassels, J. W. S., Some metrical theorems of {D}iophantine approximation. {III}. Proc. Cambridge Philos. Soc. (1950), 219--225.\n\n[ErKo49] Erd\\H{o}s, P. and Koksma, J. F., On the uniform distribution modulo {$1$} of sequences\n{$(f(n,\\theta))$}. Nederl. Akad. Wetensch., Proc. (1949), 851--854 = Indagationes Math. 11, 299--302.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Discrepancy Problem**\\n\\nThe discrepancy D(N) measures how far the sequence {αxₙ} deviates from uniform distribution on [0,1]. For any interval I ⊆ [0,1], we compare the count of fractional parts landing in I to the expected count |I|·N.\\n\\n**Early Results (1949-1950)**\\n\\nErdős-Koksma and Cassels independently proved D(N) ≪ √N·(log N)^{5/2+o(1)} for almost all α. This was a breakthrough establishing that typical multipliers give good distribution.\\n\\n**Baker's Improvement (1981)**\\n\\nBaker reduced the logarithmic exponent from 5/2 to 3/2, proving D(N) ≪ √N·(log N)^{3/2+o(1)}. This remains the best known bound for general sequences.\\n\\n**Lacunary Case (Erdős-Gál)**\\n\\nFor lacunary sequences where xₙ₊₁/xₙ > λ > 1, Erdős and Gál proved the much stronger bound D(N) ≪ √N·(log log N)^{O(1)}. This suggests the conjecture might be true.\\n\\n**The Open Question**\\n\\nCan we achieve D(N) ≪ √N·(log N)^{o(1)} or even √N·(log log N)^{O(1)} for all sequences? The gap from (log N)^{3/2} to o(1) is substantial.",
+    "problemStatement": "Let x₁ < x₂ < ⋯ be an infinite sequence of integers. Is it true that, for almost all α ∈ [0,1], the discrepancy D(N) = max_{I ⊆ [0,1]} |#{n ≤ N : {αxₙ} ∈ I} - |I|·N| satisfies D(N) ≪ N^{1/2}(log N)^{o(1)}? Or even D(N) ≪ N^{1/2}(log log N)^{O(1)}?",
+    "proofStrategy": "We formalize discrepancy through StrictlyIncreasingSeq, frac, countInInterval, and the discrepancy function. Known bounds are stated as axioms: erdos_koksma_cassels, baker_1981, and erdos_gal_lacunary for the special case. The conjectures are formulated precisely. The main theorem erdos_992_statement combines Baker's bound for general sequences with the stronger lacunary bound.",
+    "keyInsights": [
+      "D(N) measures deviation from uniform distribution of {αxₙ}",
+      "The √N factor is necessary (cannot do better in general)",
+      "Current best: D(N) ≪ √N·(log N)^{3/2} (Baker 1981)",
+      "Lacunary sequences achieve D(N) ≪ √N·(log log N)^k",
+      "Conjectured: Can drop to (log N)^{o(1)} for all sequences",
+      "Gap between (log N)^{3/2} and o(1) is substantial",
+      "Almost all α means measure-theoretic statement",
+      "Related to Weyl's criterion and exponential sums"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Sequences and fractional parts",
+      "startLine": 39,
+      "endLine": 53
+    },
+    {
+      "id": "discrepancy",
+      "title": "Discrepancy Definition",
+      "summary": "D(N) via supremum over intervals",
+      "startLine": 55,
+      "endLine": 73
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős-Koksma, Cassels, Baker",
+      "startLine": 75,
+      "endLine": 92
+    },
+    {
+      "id": "lacunary",
+      "title": "Lacunary Sequences",
+      "summary": "Erdős-Gál stronger bound",
+      "startLine": 94,
+      "endLine": 107
+    },
+    {
+      "id": "conjectures",
+      "title": "Main Conjectures",
+      "summary": "Subpolynomial and loglog conjectures",
+      "startLine": 109,
+      "endLine": 130
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "√N is necessary",
+      "startLine": 132,
+      "endLine": 144
+    },
+    {
+      "id": "connections",
+      "title": "Uniform Distribution",
+      "summary": "Weyl, Erdős-Turán, Van der Corput",
+      "startLine": 146,
+      "endLine": 160
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Natural numbers and powers of 2",
+      "startLine": 162,
+      "endLine": 184
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and status",
+      "startLine": 212,
+      "endLine": 258
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #992 asks whether discrepancy D(N) for {αxₙ} can be bounded by √N·(log N)^{o(1)} for almost all α. Baker (1981) proved √N·(log N)^{3/2}. For lacunary sequences, Erdős-Gál achieved √N·(log log N)^{O(1)}. The general case remains open.",
+    "implications": "Resolving this would reveal the fine structure of uniform distribution for integer sequences. The gap between logarithmic polynomial and subpolynomial bounds is fundamental to understanding metric number theory.",
+    "openQuestions": [
+      "Can D(N) ≪ √N·(log N)^{o(1)} be achieved for all sequences?",
+      "Is D(N) ≪ √N·(log log N)^{O(1)} the truth?",
+      "What is the optimal exponent for Baker's bound?",
+      "How do arithmetic properties of x_n affect discrepancy?",
+      "Can new exponential sum estimates improve the bounds?"
+    ]
   }
 }
