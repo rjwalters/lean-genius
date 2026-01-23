@@ -1,33 +1,129 @@
 {
   "id": "erdos-1125",
-  "title": "Erdős Problem #1125",
+  "title": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity",
   "slug": "erdos-1125",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that\\[2f(x) \\leq f(x+h)+f(x+2h)\\]for every ... and .... Must ... be monotonic?\n\n\n\nA problem of Kemperman , wh...",
+  "description": "If f : ℝ → ℝ satisfies 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0, must f be monotonic? Laczkovich (1984) proved YES unconditionally.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kemperman (posed), Laczkovich (1984 resolution)",
     "sourceUrl": "https://erdosproblems.com/1125",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1125Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "functional-equations",
+      "monotonicity",
+      "convexity",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1125,
     "erdosUrl": "https://erdosproblems.com/1125",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Monotone",
+        "description": "Monotonicity definitions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "satisfiesKemperman f: the functional inequality 2f(x) ≤ f(x+h) + f(x+2h)",
+      "satisfiesKempermanAlt: alternative formulation",
+      "kemperman_equiv: equivalence of formulations",
+      "isMonotonic f: non-decreasing or non-increasing",
+      "kemperman_1969 axiom: YES if f is measurable",
+      "laczkovich_1984 axiom: YES unconditionally",
+      "kemperman_interpretation theorem: prevents local maxima",
+      "constant_satisfies, linear_satisfies, square_satisfies: examples"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1125 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{R}\\to \\mathbb{R}$ be such that\\[2f(x) \\leq f(x+h)+f(x+2h)\\]for every $x\\in \\mathbb{R}$ and $h>0$. Must $f$ be monotonic?\n\n\n\nA problem of Kemperman \\cite{Ke69}, who proved it is true if $f$ is measurable. Erd\\H{o}s \\cite{Er81b} wrote 'if it were my problem I would offer \\$500 for it'.\n\nThis was solved by Laczkovich \\cite{La84}.\n\n\n\n\nReferences\n\n\n[Er81b] Erd\\H{o}s, P., My Scottish Book 'Problems'. The Scottish Book (1981), 27-35 (page numbers are given for the 2nd edition of The Scottish Book).\n\n[Ke69] Kemperman, J. H. B., On the regularity of generalized convex functions. Trans. Amer. Math. Soc. (1969), 69--93.\n\n[La84] Laczkovich, M., On {K}emperman's inequality {$2f(x)\\leq f(x+h)+f(x+2h)$}. Colloq. Math. (1984), 109--115.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1125**\n\nThis problem originates from functional analysis and the study of generalized convexity. The inequality 2f(x) ≤ f(x+h) + f(x+2h) is a one-sided discrete convexity condition.\n\n**History:**\n- Kemperman (1969) posed the problem and proved YES if f is measurable\n- Erdős included it in his Scottish Book problems, writing \"if it were my problem I would offer $500 for it\"\n- Laczkovich (1984) proved YES unconditionally - no measurability needed\n\n**Context:** Non-measurable functions can have exotic properties (e.g., additive non-linear functions via Axiom of Choice). The surprise is that Kemperman's inequality is strong enough to force monotonicity even without measurability.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f : ℝ → ℝ satisfy\n  2f(x) ≤ f(x+h) + f(x+2h)\nfor every x ∈ ℝ and h > 0.\n\n**Question:** Must f be monotonic?\n\n**Kemperman (1969):** YES if f is measurable.\n\n**Laczkovich (1984):** YES unconditionally.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Kemperman Inequality:** Define satisfiesKemperman f as the functional inequality\n\n2. **Monotonicity:** Define isMonotonic as non-decreasing OR non-increasing\n\n3. **Equivalent Formulation:** Show 2f(x) ≤ f(x+h) + f(x+2h) is equivalent to bounding jumps\n\n4. **Main Results:**\n   - Kemperman 1969: measurable case as axiom\n   - Laczkovich 1984: general case as axiom\n\n5. **Examples:** Constants, linear functions, x² all satisfy the inequality\n\n**Why Axioms:** Laczkovich's proof uses subtle order-theoretic and combinatorial arguments beyond current Mathlib.",
+    "keyInsights": [
+      "**One-Sided Convexity:** The inequality 2f(x) ≤ f(x+h) + f(x+2h) is like midpoint convexity but one-sided.",
+      "**No Local Maxima:** The condition prevents f from having certain local maximum patterns.",
+      "**Measurability Not Needed:** Surprisingly, the algebraic constraint forces monotonicity even for pathological functions.",
+      "**Erdős's Estimate:** Erdős valued this problem at $500, indicating its difficulty and importance.",
+      "**Laczkovich's Method:** Uses combinatorial and order-theoretic arguments rather than measure theory."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "kemperman",
+      "title": "The Kemperman Inequality",
+      "summary": "Definition and equivalent formulation",
+      "startLine": 39,
+      "endLine": 56
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "summary": "Non-decreasing, non-increasing, and monotonic",
+      "startLine": 58,
+      "endLine": 74
+    },
+    {
+      "id": "question",
+      "title": "The Main Question",
+      "summary": "Does Kemperman imply monotonic?",
+      "startLine": 76,
+      "endLine": 88
+    },
+    {
+      "id": "kemperman-1969",
+      "title": "Kemperman's Result",
+      "summary": "YES if measurable (1969)",
+      "startLine": 90,
+      "endLine": 105
+    },
+    {
+      "id": "laczkovich",
+      "title": "Laczkovich's Theorem",
+      "summary": "YES unconditionally (1984)",
+      "startLine": 107,
+      "endLine": 125
+    },
+    {
+      "id": "interpretation",
+      "title": "Interpretation",
+      "summary": "Connection to convexity",
+      "startLine": 127,
+      "endLine": 147
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Functions satisfying Kemperman",
+      "startLine": 149,
+      "endLine": 172
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and resolution",
+      "startLine": 196,
+      "endLine": 220
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1125 was solved by Laczkovich in 1984. If f : ℝ → ℝ satisfies 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0, then f must be monotonic - no measurability assumption needed. This resolved a problem Erdős valued at $500.",
+    "implications": "The result shows that certain functional inequalities have stronger consequences than expected. Even without assuming regularity (measurability), the algebraic constraint forces global structure (monotonicity).",
+    "openQuestions": [
+      "What other functional inequalities force monotonicity?",
+      "Can Laczkovich's techniques be extended to other convexity-like conditions?",
+      "What is the structure of the set of functions satisfying Kemperman's inequality?"
+    ]
   }
 }
