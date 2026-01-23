@@ -4,6 +4,7 @@ import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.Monotone
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -264,16 +265,27 @@ theorem backward_growth (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) (
   nlinarith
 
 
-/-- **Axiom: Growth Unbounded**
+/-- **PROVED: Growth Unbounded**
     Standard result: linear growth in n eventually exceeds any M.
-    For any M, ∃ n such that E₀·(1 + n·spectralGap·h) > M. -/
-axiom growth_unbounded_axiom (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) :
-    ∀ M : ℝ, ∃ n : ℕ, E₀ * (1 + n * (spectralGap * h)) > M
-
-/-- Growth exceeds any bound for large n -/
+    For any M, ∃ n such that E₀·(1 + n·spectralGap·h) > M.
+    Previously an axiom, now fully proven using the Archimedean property. -/
 theorem growth_unbounded (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) :
-    ∀ M : ℝ, ∃ n : ℕ, E₀ * (1 + n * (spectralGap * h)) > M :=
-  growth_unbounded_axiom E₀ hE₀ h hh
+    ∀ M : ℝ, ∃ n : ℕ, E₀ * (1 + n * (spectralGap * h)) > M := by
+  intro M
+  -- Let c = spectralGap * h > 0
+  have hc : spectralGap * h > 0 := mul_pos spectralGap_pos hh
+  have hEc : E₀ * (spectralGap * h) > 0 := mul_pos hE₀ hc
+  -- Find n such that n > (M - E₀) / (E₀ * (spectralGap * h))
+  obtain ⟨n, hn⟩ := exists_nat_gt ((M - E₀) / (E₀ * (spectralGap * h)))
+  use n
+  -- hn: (M - E₀) / (E₀ * (spectralGap * h)) < n
+  -- Rewrite: (M - E₀) < n * (E₀ * (spectralGap * h))
+  have h3 : M - E₀ < ↑n * (E₀ * (spectralGap * h)) := by
+    have h2 : (M - E₀) / (E₀ * (spectralGap * h)) < ↑n := hn
+    rwa [div_lt_iff₀ hEc] at h2
+  -- Goal: E₀ * (1 + n * (spectralGap * h)) > M
+  -- Which equals: E₀ + n * E₀ * (spectralGap * h) > M
+  nlinarith [hE₀, hEc, h3]
 
 
 /-- **Axiom: Exponential Dominates Polynomial**
@@ -353,16 +365,40 @@ theorem backward_growth_rate (v : AncientSolution) (τ : ℝ) (hτ : τ ≥ 0) :
     _ = 2 * (spectralGap - v.C_S) * v.E τ := by ring
 
 
-/-- **Axiom: Ancient E Monotone**
-    E is monotone increasing in backward time since dE/dτ ≥ 2(spectralGap - C_S)E ≥ 0.
-    Requires Convex.monotoneOn_of_deriv_nonneg (Mathlib API may have changed). -/
-axiom ancient_E_monotone_axiom (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0 ≤ τ₁) (h12 : τ₁ ≤ τ₂) :
-    v.E τ₁ ≤ v.E τ₂
-
-/-- Key lemma: E is monotone increasing in backward time -/
+/-- **PROVED: Ancient E Monotone**
+    E is monotone increasing in backward time since dE/dτ = 2D - 2S ≥ 2(spectralGap - C_S)E > 0.
+    Proof uses Convex.monotoneOn_of_deriv_nonneg on [0, ∞). -/
 theorem ancient_E_monotone (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0 ≤ τ₁) (h12 : τ₁ ≤ τ₂) :
-    v.E τ₁ ≤ v.E τ₂ :=
-  ancient_E_monotone_axiom v τ₁ τ₂ hτ₁ h12
+    v.E τ₁ ≤ v.E τ₂ := by
+  -- Domain [0, ∞) is convex
+  have hD_convex : Convex ℝ (Ici 0) := convex_Ici 0
+  -- E is continuous on [0, ∞)
+  have hE_cont : ContinuousOn v.E (Ici 0) := v.E_cont.continuousOn
+  -- E is differentiable on interior (0, ∞)
+  have hE_diff : DifferentiableOn ℝ v.E (interior (Ici 0)) := by
+    rw [interior_Ici]
+    intro τ hτ
+    have hτ' : τ ≥ 0 := le_of_lt hτ
+    exact (v.E_diff τ hτ').differentiableAt.differentiableWithinAt
+  -- E' = 2D - 2S ≥ 0 on (0, ∞)
+  have hE'_nonneg : ∀ τ ∈ interior (Ici 0), 0 ≤ deriv v.E τ := by
+    rw [interior_Ici]
+    intro τ hτ
+    have hτ' : τ ≥ 0 := le_of_lt hτ
+    have hderiv := v.E_diff τ hτ'
+    rw [hderiv.deriv]
+    -- E' = 2D - 2S ≥ 2(spectralGap·E - C_S·E) = 2(spectralGap - C_S)·E > 0
+    have hD := v.spectral_gap τ hτ'
+    have hS := v.stretching_bound τ hτ'
+    have hE_pos := v.E_pos τ hτ'
+    have hgap : v.C_S < spectralGap := v.C_S_lt_spectralGap
+    -- 2D - 2S ≥ 2(spectralGap·E) - 2(C_S·E) = 2(spectralGap - C_S)·E ≥ 0
+    nlinarith [hE_pos.le, hgap, hD, hS]
+  -- E is monotone on [0, ∞)
+  have hE_mono : MonotoneOn v.E (Ici 0) :=
+    hD_convex.monotoneOn_of_deriv_nonneg hE_cont hE_diff hE'_nonneg
+  -- Apply monotone: τ₁ ≤ τ₂ with both ≥ 0 implies E(τ₁) ≤ E(τ₂)
+  exact hE_mono hτ₁ (hτ₁.trans h12) h12
 
 
 /-- **Axiom: Liouville Bounded Ancient**
@@ -713,12 +749,21 @@ theorem θcrit_pos : 0 < θcrit := by
   positivity
 
 
-/-- **Axiom: Theta Crit Less Than 0.99**
+/-- **PROVED: Theta Crit Less Than 0.99**
     θcrit = (1 - e⁻²)/2 ≈ 0.432 < 0.99.
-    Requires interval arithmetic for exp(-2) ≈ 0.135. -/
-axiom θcrit_lt_099_axiom : θcrit < 0.99
-
-theorem θcrit_lt_099 : θcrit < 0.99 := θcrit_lt_099_axiom
+    Previously an axiom, now fully proven. Since exp(-2) > 0 and exp(-2) < 1,
+    we have κ_gaussian = 1 - exp(-2) < 1, so θcrit = κ_gaussian/2 < 0.5 < 0.99. -/
+theorem θcrit_lt_099 : θcrit < 0.99 := by
+  unfold θcrit κ_gaussian
+  have h_exp_pos : Real.exp (-2) > 0 := Real.exp_pos _
+  have h_exp_lt_one : Real.exp (-2) < 1 := by
+    calc Real.exp (-2) < Real.exp 0 := Real.exp_strictMono (by norm_num : (-2:ℝ) < 0)
+      _ = 1 := Real.exp_zero
+  -- κ_gaussian = 1 - exp(-2) < 1
+  -- θcrit = κ_gaussian / 2 < 1/2 < 0.99
+  have h_kappa_lt : 1 - Real.exp (-2) < 1 := by linarith
+  calc (1 - Real.exp (-2)) / 2 < 1 / 2 := by linarith [h_exp_pos]
+    _ < 0.99 := by norm_num
 
 
 /-- **Axiom: Key Inequality Full**
@@ -998,13 +1043,25 @@ This is a MUCH weaker statement than "one ball captures 50%"
 def criticalThreshold : ℝ := 2 / Real.pi^2
 
 
-/-- **Axiom: Critical Threshold Approximation**
+/-- **PROVED: Critical Threshold Approximation**
     2/π² ≈ 0.2026... < 0.21.
-    Requires tighter π bounds than Mathlib's pi_gt_three provides. -/
-axiom criticalThreshold_approx_axiom : criticalThreshold < 0.21
-
-/-- criticalThreshold ≈ 0.203 -/
-theorem criticalThreshold_approx : criticalThreshold < 0.21 := criticalThreshold_approx_axiom
+    Previously an axiom, now fully proven using Mathlib's pi_gt_d2.
+    Since π > 3.14, we have π² > 9.8596, so 2/π² < 2/9.8596 ≈ 0.2028 < 0.21. -/
+theorem criticalThreshold_approx : criticalThreshold < 0.21 := by
+  unfold criticalThreshold
+  have hpi : Real.pi > 3.14 := Real.pi_gt_d2
+  have hpi_sq : Real.pi^2 > 3.14^2 := by
+    apply sq_lt_sq'
+    · linarith
+    · linarith
+  have h_val : (3.14 : ℝ)^2 = 9.8596 := by norm_num
+  have hpi_sq' : Real.pi^2 > 9.8596 := by linarith [h_val]
+  -- 2 / 9.8596 ≈ 0.2028 < 0.21
+  have h_bound : (2 : ℝ) / 9.8596 < 0.21 := by norm_num
+  -- Since π² > 9.8596, we have 2/π² < 2/9.8596 < 0.21
+  calc 2 / Real.pi^2 < 2 / 9.8596 := by
+        apply div_lt_div_of_pos_left (by norm_num : (0:ℝ) < 2) (by norm_num : (0:ℝ) < 9.8596) hpi_sq'
+    _ < 0.21 := h_bound
 
 
 /-- For K-ball concentration to suffice: c > 0.203 · K -/
@@ -1156,16 +1213,27 @@ structure CKNData (sol : NSSolution) where
 def capacity (R d : ℝ) : ℝ := R^(2 - d)
 
 
-/-- **Axiom: Capacity Vanishes**
+/-- **PROVED: Capacity Vanishes**
     R^{2-d} → 0 as R → 0⁺ when 2-d > 0.
-    Standard limit result for power functions. -/
-axiom capacity_vanishes_axiom (d : ℝ) (hd : d < 2) :
-    Tendsto (fun R => capacity R d) (nhdsWithin 0 (Ioi 0)) (nhds 0)
-
-/-- KEY LEMMA: d < 2 implies capacity → 0 as R → 0 -/
+    Proof uses continuity of rpow and Real.zero_rpow for positive exponent. -/
 theorem capacity_vanishes (d : ℝ) (hd : d < 2) :
-    Tendsto (fun R => capacity R d) (nhdsWithin 0 (Ioi 0)) (nhds 0) :=
-  capacity_vanishes_axiom d hd
+    Tendsto (fun R => capacity R d) (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+  unfold capacity
+  -- exponent e = 2 - d > 0
+  have he_pos : 2 - d > 0 := by linarith
+  have he_nonneg : 2 - d ≥ 0 := by linarith
+  have he_ne : 2 - d ≠ 0 := by linarith
+  -- 0^e = 0 for e ≠ 0
+  have h_zero : (0 : ℝ) ^ (2 - d) = 0 := Real.zero_rpow he_ne
+  -- x ↦ x^e is continuous for e ≥ 0 (Real.continuous_rpow_const)
+  have hcont : Continuous (fun x : ℝ => x ^ (2 - d)) :=
+    Real.continuous_rpow_const he_nonneg
+  -- Continuous at 0 means Tendsto at nhds
+  have htend : Tendsto (fun x : ℝ => x ^ (2 - d)) (nhds 0) (nhds ((0 : ℝ) ^ (2 - d))) :=
+    hcont.tendsto 0
+  rw [h_zero] at htend
+  -- Restriction from nhds to nhdsWithin
+  exact htend.mono_left nhdsWithin_le_nhds
 
 
 /-- CKN gives d ≤ 1 < 2, so capacity always vanishes -/
@@ -1201,16 +1269,27 @@ def timescale_ratio (α T t : ℝ) : ℝ := (T - t) ^ (α - 1)
 def theta_error_bound (α T t : ℝ) : ℝ := (T - t) ^ (α - 1)
 
 
-/-- **Axiom: Timescale Separation**
+/-- **PROVED: Timescale Separation**
     For α > 1, (T-t)^{α-1} → 0 as t → T.
-    Standard result: power function with positive exponent vanishes at 0. -/
-axiom timescale_separation_axiom (α T : ℝ) (hα : α > 1) (hT : T > 0) :
-    ∀ ε > 0, ∃ t₀ < T, ∀ t, t₀ < t → t < T → timescale_ratio α T t < ε
-
-/-- Timescale separation for Type II (α > 1) -/
-theorem timescale_separation (α T : ℝ) (hα : α > 1) (hT : T > 0) :
-    ∀ ε > 0, ∃ t₀ < T, ∀ t, t₀ < t → t < T → timescale_ratio α T t < ε :=
-  timescale_separation_axiom α T hα hT
+    Proof uses explicit construction: t₀ = T - ε^(1/(α-1)), then (T-t)^{α-1} < ε. -/
+theorem timescale_separation (α T : ℝ) (hα : α > 1) (_hT : T > 0) :
+    ∀ ε > 0, ∃ t₀ < T, ∀ t, t₀ < t → t < T → timescale_ratio α T t < ε := by
+  intro ε hε
+  have hexp : α - 1 > 0 := by linarith
+  use T - ε^(1/(α-1))
+  constructor
+  · simp only [sub_lt_self_iff]; exact rpow_pos_of_pos hε _
+  · intro t ht_lower ht_upper
+    simp only [timescale_ratio]
+    have h_pos : T - t > 0 := by linarith
+    have h_lt : T - t < ε^(1/(α-1)) := by linarith
+    calc (T - t)^(α - 1)
+        < (ε^(1/(α-1)))^(α - 1) := by
+          apply rpow_lt_rpow (le_of_lt h_pos) h_lt hexp
+      _ = ε := by
+          rw [← rpow_mul (le_of_lt hε)]
+          have h : (1 : ℝ) / (α - 1) * (α - 1) = 1 := by field_simp
+          rw [h, rpow_one]
 
 
 /-- θ error bound vanishes for Type II (α > 1) [PROVED] -/
@@ -1352,12 +1431,24 @@ When capacity < 1 OR θ dynamics gives β → 0, stability follows.
 def A_spectral : ℝ := Real.pi^2 / 8
 
 
-/-- **Axiom: A Spectral Greater Than One**
+/-- **PROVED: A Spectral Greater Than One**
     π² ≈ 9.87, so π²/8 ≈ 1.23 > 1.
-    Requires tighter π bounds than Mathlib's pi_gt_three provides. -/
-axiom A_spectral_gt_one_axiom : A_spectral > 1
-
-theorem A_spectral_gt_one : A_spectral > 1 := A_spectral_gt_one_axiom
+    Previously an axiom, now fully proven using Mathlib's pi_gt_d2 (π > 3.14).
+    Since π > 3.14, we have π² > 9.8596 > 8, so π²/8 > 1. -/
+theorem A_spectral_gt_one : A_spectral > 1 := by
+  unfold A_spectral
+  have hpi : Real.pi > 3.14 := Real.pi_gt_d2
+  have hpi_sq : Real.pi^2 > 3.14^2 := by
+    apply sq_lt_sq'
+    · linarith
+    · linarith
+  have h_val : (3.14 : ℝ)^2 = 9.8596 := by norm_num
+  have hpi_sq' : Real.pi^2 > 9.8596 := by linarith [h_val]
+  -- 9.8596 / 8 = 1.23245 > 1
+  have h_bound : (9.8596 : ℝ) / 8 > 1 := by norm_num
+  calc Real.pi^2 / 8 > 9.8596 / 8 := by
+        apply div_lt_div_of_pos_right hpi_sq' (by norm_num : (0:ℝ) < 8)
+    _ > 1 := h_bound
 
 
 /-- β bound gives stretching bound: S ≤ β·Ω·E 
@@ -1616,17 +1707,38 @@ theorem enstrophy_decreasing_2d (sol : NSSolution2D) :
   exact sol.enstrophy_identity_2d t ht
 
 
-/-- **Axiom: Enstrophy Bounded 2D**
+/-- **PROVED: Enstrophy Bounded 2D**
     E' = -2νP ≤ 0 since ν > 0 and P ≥ 0.
-    Therefore E is monotone decreasing.
-    Requires Convex.monotoneOn_of_deriv_nonpos (Mathlib API may have changed). -/
-axiom enstrophy_bounded_2d_axiom (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0
-
-/-- In 2D, E(t) ≤ E(0) for all time -/
+    Therefore E is antitone (monotone decreasing), so E(t) ≤ E(0).
+    Proof uses Convex.antitoneOn_of_deriv_nonpos. -/
 theorem enstrophy_bounded_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0 :=
-  enstrophy_bounded_2d_axiom sol t ht hE0
+    (_hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0 := by
+  -- The domain [0, T] is convex
+  have hD_convex : Convex ℝ (Icc 0 sol.T) := convex_Icc 0 sol.T
+  -- E is continuous on [0, T]
+  have hE_cont : ContinuousOn sol.E (Icc 0 sol.T) := sol.E_cont
+  -- E is differentiable on the interior (0, T)
+  have hE_diff : DifferentiableOn ℝ sol.E (interior (Icc 0 sol.T)) := by
+    rw [interior_Icc]
+    intro s hs
+    exact (sol.enstrophy_identity_2d s hs).differentiableAt.differentiableWithinAt
+  -- The derivative E' = -2νP ≤ 0 on (0, T)
+  have hE'_nonpos : ∀ s ∈ interior (Icc 0 sol.T), deriv sol.E s ≤ 0 := by
+    rw [interior_Icc]
+    intro s hs
+    have hderiv := sol.enstrophy_identity_2d s hs
+    rw [hderiv.deriv]
+    have hν : sol.ν > 0 := sol.ν_pos
+    have hP : sol.P s ≥ 0 := sol.P_nonneg s hs
+    nlinarith
+  -- E is antitone on [0, T]
+  have hE_antitone : AntitoneOn sol.E (Icc 0 sol.T) :=
+    hD_convex.antitoneOn_of_deriv_nonpos hE_cont hE_diff hE'_nonpos
+  -- Apply antitone: 0 ≤ t and t < T, so E(t) ≤ E(0)
+  have h0_mem : (0 : ℝ) ∈ Icc 0 sol.T := by simp [le_of_lt sol.T_pos]
+  have ht_mem : t ∈ Icc 0 sol.T := Ioo_subset_Icc_self ht
+  have h0_le_t : (0 : ℝ) ≤ t := le_of_lt ht.1
+  exact hE_antitone h0_mem ht_mem h0_le_t
 
 
 /-- **Axiom: 2D Global Existence**
