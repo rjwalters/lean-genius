@@ -11,15 +11,21 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "p_r sequence: 2, 13, 37, 73, 1021...",
+      "Class r primes ≤ n: at most n^o(1)"
+    ],
+    "open": [
+      "Infinitely many primes in each class?",
+      "p_r^(1/r) → ∞ or bounded?"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T14:31:40.057Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Classification formalized, conjectures stated",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +35,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized prime classification and both competing conjectures about p_r^(1/r).",
+    "builtItems": [
+      "proofs/Proofs/Erdos1055Problem.lean - Main formalization (180+ lines)",
+      "PrimeClass inductive definition",
+      "IsClass1 predicate",
+      "classOf function",
+      "p(r) sequence definition",
+      "erdosConjecture, selfridgeConjecture statements",
+      "conjectures_exclusive theorem",
+      "PrimeClassMinus variant for p-1"
+    ],
+    "insights": [
+      "Erdős-Selfridge prime classification based on factors of p+1",
+      "Class 1: prime p where p+1 only has factors 2 and 3",
+      "Class r: p+1 factors in class ≤ r-1, with max exactly r-1",
+      "Sequence p_r (least class r prime): 2, 13, 37, 73, 1021 (OEIS A005113)",
+      "Erdős conjecture: p_r^(1/r) → ∞",
+      "Selfridge conjecture: p_r^(1/r) bounded",
+      "Known: class r primes ≤ n count at most n^o(1)",
+      "Variant exists with p-1 instead of p+1"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove class1_2 and class1_5 theorems fully",
+      "Verify more values in p_r sequence",
+      "Prove uniqueness of classification"
+    ],
     "markdown": "# Erdős #1055 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1054\n- Problem #1056\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
