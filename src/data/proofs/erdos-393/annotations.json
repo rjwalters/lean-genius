@@ -1,1 +1,167 @@
-[]
+[
+  {
+    "id": "erdos-393-intro",
+    "proofId": "erdos-393",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 29 },
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #393: Factorial Factorization Span**\n\nLet f(n) = minimal m ≥ 1 such that n! = a₁ · ... · aₜ with a₁ < ... < aₜ = a₁ + m.\n\nThe function f(n) measures the minimum 'span' (max - min) when writing n! as a product of distinct increasing integers.\n\n**Key question:** What is the behavior of f(n)? Does it tend to infinity?",
+    "mathContext": "This connects factorial structure to Diophantine equations. The constraint aₜ = a₁ + m forces the factors to have a specific span.",
+    "significance": "critical",
+    "relatedConcepts": ["Factorials", "Factorizations", "Diophantine equations", "ABC conjecture"]
+  },
+  {
+    "id": "erdos-393-factorization",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 47 },
+    "title": "Factorization Definition",
+    "content": "**IsFactorization n factors:**\n\nA factorization of n is a list of positive integers whose product equals n.\n\nConditions:\n- factors.prod = n\n- All factors are ≥ 1\n\nThis captures the basic notion of multiplicative decomposition.",
+    "mathContext": "We work with lists rather than multisets to maintain ordering, which is essential for the span constraint.",
+    "significance": "key",
+    "relatedConcepts": ["Products", "Divisibility", "Multiplicative decomposition"]
+  },
+  {
+    "id": "erdos-393-span",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 53, "endLine": 57 },
+    "title": "Span Definition",
+    "content": "**span factors:**\n\nThe span of a list is the difference between its maximum and minimum elements.\n\nFor a non-empty list [a₁, ..., aₜ]: span = aₜ - a₁ (when sorted).\n\nThis measures how 'spread out' the factors are.",
+    "mathContext": "The span constraint is what makes this problem interesting - without it, any factorization would work.",
+    "significance": "key",
+    "relatedConcepts": ["Range", "Max-min", "Spread"]
+  },
+  {
+    "id": "erdos-393-f-function",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 71, "endLine": 73 },
+    "title": "The f(n) Function",
+    "content": "**f(n) Definition:**\n\nf(n) is the minimal m such that n! can be written as a product of distinct increasing integers with span exactly m.\n\nThis is the central object of Problem #393.",
+    "mathContext": "f(n) exists for all n ≥ 1 since the trivial factorization 1 · 2 · ... · n works.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal functions", "Minimum span", "Factorial structure"]
+  },
+  {
+    "id": "erdos-393-consecutive",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 84, "endLine": 86 },
+    "title": "Product of Consecutive Integers",
+    "content": "**IsProductOfConsecutive n:**\n\nn! = k(k+1) for some k ≥ 1.\n\nThis is the special case where f(n) = 1 - the smallest possible span.\n\n**Example:** 3! = 6 = 2 · 3 (two consecutive integers).\n\nErdős and Graham asked: Is this true for infinitely many n?",
+    "mathContext": "The equation x(x+1) = n! is a Pell-like Diophantine equation with factorial parameter.",
+    "significance": "critical",
+    "relatedConcepts": ["Consecutive integers", "Pell equations", "Diophantine equations"]
+  },
+  {
+    "id": "erdos-393-infinitely-many",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 97, "endLine": 102 },
+    "title": "Infinitely Many Consecutive",
+    "content": "**InfinitelyManyConsecutive:**\n\nFor all N, there exists n > N with f(n) = 1.\n\n**Status:** OPEN\n\nErdős and Graham explicitly noted they didn't know if this holds. It's one of the central open questions.",
+    "mathContext": "This would mean x(x+1) = n! has solutions for infinitely many n - a major Diophantine statement.",
+    "significance": "critical",
+    "relatedConcepts": ["Infinite solutions", "Open problems", "Diophantine finiteness"]
+  },
+  {
+    "id": "erdos-393-counting",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 108, "endLine": 110 },
+    "title": "Counting Function F_m(N)",
+    "content": "**F(m, N):**\n\nThe count of n ≤ N with f(n) = m.\n\nF_m(N) = #{n ≤ N : f(n) = m}\n\nThis allows density analysis: how often does f(n) take the value m?",
+    "mathContext": "Counting functions are standard tools in analytic number theory for studying distribution of arithmetic functions.",
+    "significance": "key",
+    "relatedConcepts": ["Counting functions", "Density", "Distribution"]
+  },
+  {
+    "id": "erdos-393-berend-osgood",
+    "proofId": "erdos-393",
+    "type": "axiom",
+    "range": { "startLine": 112, "endLine": 114 },
+    "title": "Berend-Osgood Theorem (1992)",
+    "content": "**berend_osgood_1992:**\n\nFor each fixed m ≥ 1: F_m(N) = o(N).\n\nThis means the density of n with f(n) = m is 0.\n\n**Interpretation:** For any specific span m, 'most' n have f(n) ≠ m.",
+    "mathContext": "The o(N) statement means F_m(N)/N → 0 as N → ∞. This is a strong density result.",
+    "significance": "critical",
+    "relatedConcepts": ["Density zero", "Little-o notation", "Asymptotic density"]
+  },
+  {
+    "id": "erdos-393-bpz",
+    "proofId": "erdos-393",
+    "type": "axiom",
+    "range": { "startLine": 116, "endLine": 118 },
+    "title": "BPZ Power Saving (2023)",
+    "content": "**bpz_2023:**\n\nF_m(N) ≪_m N^{33/34} for all m ≥ 1.\n\nThis is a 'power saving' over the trivial bound N:\n\n33/34 ≈ 0.971 < 1\n\nBui-Pratt-Zaharescu achieved this using advanced exponential sum techniques.",
+    "mathContext": "Power savings (improving N to N^θ with θ < 1) are major achievements in analytic number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Power saving", "Exponential sums", "Analytic methods"]
+  },
+  {
+    "id": "erdos-393-abc",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 127, "endLine": 131 },
+    "title": "ABC Conjecture",
+    "content": "**ABCConjecture:**\n\nFor all ε > 0, there exists K such that for coprime a + b = c:\n\nc ≤ K · rad(abc)^{1+ε}\n\nwhere rad(n) is the product of distinct prime factors of n.\n\nThis is one of the most important open conjectures in number theory.",
+    "mathContext": "The ABC conjecture implies many deep results, including Fermat's Last Theorem and bounds on solutions to various Diophantine equations.",
+    "significance": "critical",
+    "relatedConcepts": ["Radical", "Coprimality", "Diophantine implications"]
+  },
+  {
+    "id": "erdos-393-luca",
+    "proofId": "erdos-393",
+    "type": "axiom",
+    "range": { "startLine": 136, "endLine": 138 },
+    "title": "Luca's Conditional Result (2002)",
+    "content": "**luca_2002:**\n\nAssuming ABC Conjecture: f(n) → ∞ as n → ∞.\n\nThis means the minimal span must grow without bound - you can't keep finding tightly-packed factorizations.\n\n**Note:** This is conditional; the unconditional statement remains open.",
+    "mathContext": "Luca's proof uses the ABC conjecture to bound solutions to P(x) = n! where P is a polynomial.",
+    "significance": "critical",
+    "relatedConcepts": ["Conditional results", "ABC applications", "Divergence"]
+  },
+  {
+    "id": "erdos-393-diophantine",
+    "proofId": "erdos-393",
+    "type": "definition",
+    "range": { "startLine": 169, "endLine": 183 },
+    "title": "Connection to Diophantine Equations",
+    "content": "**Related Problems:**\n\n1. **P(x) = n!:** When does a polynomial evaluated at some integer equal a factorial?\n\n2. **x(x+1) = n!:** The f(n) = 1 case - when is n! a product of two consecutive integers?\n\n3. **Brocard's Problem:** n! + 1 = m² - only known solutions: n = 4, 5, 7.\n\nThese are all notoriously difficult Diophantine problems involving factorials.",
+    "mathContext": "Factorial-polynomial equations are connected to the deep structure of factorials and their prime factorization.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial equations", "Brocard's problem", "Factorial equations"]
+  },
+  {
+    "id": "erdos-393-density-zero",
+    "proofId": "erdos-393",
+    "type": "theorem",
+    "range": { "startLine": 204, "endLine": 207 },
+    "title": "Density Zero Theorem",
+    "content": "**density_zero:**\n\nFor each fixed m ≥ 1, the set {n : f(n) = m} has natural density 0.\n\n**Proof:** Direct application of berend_osgood_1992.\n\n**Consequence:** If f(n) → ∞, then each value is achieved 'rarely' in a density sense.",
+    "mathContext": "This doesn't say the sets are finite - just that they have density 0.",
+    "significance": "key",
+    "relatedConcepts": ["Natural density", "Density arguments", "Sparse sets"]
+  },
+  {
+    "id": "erdos-393-main-theorem",
+    "proofId": "erdos-393",
+    "type": "theorem",
+    "range": { "startLine": 220, "endLine": 228 },
+    "title": "Main Theorem",
+    "content": "**erdos_393:**\n\nComplete status of Problem #393:\n\n1. **Density:** F_m(N) = o(N) for each fixed m (Berend-Osgood 1992)\n2. **Power Saving:** F_m(N) ≪ N^{33/34} (BPZ 2023)\n3. **Conditional:** f(n) → ∞ assuming ABC (Luca 2002)\n\n**Open:** Does f(n) → ∞ unconditionally? Is f(n) = 1 infinitely often?",
+    "mathContext": "The theorem combines the known results to give a complete picture of current knowledge.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem resolution", "Combined results", "Open questions"]
+  },
+  {
+    "id": "erdos-393-summary",
+    "proofId": "erdos-393",
+    "type": "context",
+    "range": { "startLine": 230, "endLine": 237 },
+    "title": "Summary",
+    "content": "**Erdős Problem #393: Status**\n\n**Known:**\n- Each value of f(n) has density 0\n- F_m(N) has power saving N^{33/34}\n- f(n) → ∞ assuming ABC\n\n**Open:**\n- Does f(n) → ∞ unconditionally?\n- Is f(n) = 1 infinitely often?\n\nThe problem exemplifies deep connections between factorials, density, and the ABC conjecture.",
+    "mathContext": "The remaining open questions are closely tied to major unsolved problems in number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem status", "Open questions", "Future directions"]
+  }
+]
