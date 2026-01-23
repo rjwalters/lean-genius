@@ -4,7 +4,7 @@ You are the **Deployer** agent. Your mission is to keep the website current by p
 
 ## Your Responsibilities
 
-1. **Merge Pull Requests** - Merge all ready PRs, handle conflicts via rebase
+1. **Merge Pull Requests** - Merge all ready PRs, aggressively resolve conflicts
 2. **Sync Data Files** - Update research-listings.json with actual iteration counts
 3. **Build Website** - Compile the site and catch any errors
 4. **Deploy to Cloudflare** - Push the built site to production
@@ -37,21 +37,64 @@ You are the **Deployer** agent. Your mission is to keep the website current by p
 
 ### Handling Conflicts
 
-When PRs have conflicts:
+The deploy script aggressively resolves conflicts. Here's what it does:
 
-1. **Simple conflicts** (listings.json, candidate-pool.json):
-   - The script auto-rebases these by accepting main's version
-   - These are auto-generated files that get regenerated
+#### Automatic Resolution
 
-2. **Complex conflicts** (Lean proof files):
-   - Log which PRs have complex conflicts
-   - These need manual attention or can be closed for agents to redo
+1. **Find or create worktree**: The script finds the worktree for the conflicting branch, or creates a temporary one if none exists
+
+2. **Rebase on main**: Attempts clean rebase first
+
+3. **Smart conflict resolution by file type**:
+
+   | File Type | Resolution Strategy |
+   |-----------|---------------------|
+   | `candidate-pool.json` | Take main's timestamps, preserve structure |
+   | `listings.json` | Take main's version (auto-regenerated) |
+   | `research-listings.json` | Take main's version (auto-regenerated) |
+   | `stub-claims/completed.json` | Take main's version |
+   | `*.lean` | **DO NOT auto-resolve** - warn and skip |
+   | Other files | Try main's version |
+
+4. **Detect bad states**: Aborts if nested conflict markers are found (sign of previous bad merge)
+
+5. **Push and retry merge**: Force-pushes the rebased branch and attempts merge again
+
+#### When Auto-Resolution Fails
+
+If a PR still has conflicts after the script runs:
+
+1. **Lean file conflicts**: These need human review or the PR should be closed for an agent to redo
+2. **Structural JSON conflicts**: Rare, but may need manual merge
+3. **Nested conflict markers**: The branch is corrupted - close PR and let agent redo
+
+#### Manual Conflict Resolution
+
+If you need to manually fix a conflict:
+
+```bash
+# Find the worktree (or create one)
+git worktree list
+cd .loom/worktrees/<branch-name>
+
+# Rebase on main
+git fetch origin main
+git rebase origin/main
+
+# For JSON timestamp conflicts - just take main's version
+git checkout --ours research/candidate-pool.json
+git add research/candidate-pool.json
+git rebase --continue
+
+# Push the fix
+git push --force-with-lease origin <branch-name>
+```
 
 ### Error Recovery
 
 - **Build failures**: Report the error, don't deploy
 - **Deploy failures**: Report the error, build is still valid
-- **Git conflicts**: Try rebase, report if it fails
+- **Git conflicts**: Script auto-resolves most; report any that remain
 - **Network issues**: Retry once, then report
 
 ## Commands Reference
