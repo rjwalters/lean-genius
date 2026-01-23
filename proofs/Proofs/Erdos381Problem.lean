@@ -96,19 +96,45 @@ theorem two_highly_composite : IsHighlyComposite 2 := by
 **4 is highly composite:**
 τ(4) = 3, and τ(m) < 3 for m = 1, 2, 3.
 -/
-axiom four_highly_composite : IsHighlyComposite 4
+theorem four_highly_composite : IsHighlyComposite 4 := by
+  constructor
+  · omega
+  · intro m hm hmlt
+    interval_cases m <;> simp [tau]
 
 /--
 **6 is highly composite:**
 τ(6) = 4, and τ(m) < 4 for m < 6.
 -/
-axiom six_highly_composite : IsHighlyComposite 6
+theorem six_highly_composite : IsHighlyComposite 6 := by
+  constructor
+  · omega
+  · intro m hm hmlt
+    interval_cases m <;> simp [tau]
 
 /--
 **12 is highly composite:**
 τ(12) = 6, the first number with 6 divisors.
 -/
-axiom twelve_highly_composite : IsHighlyComposite 12
+theorem twelve_highly_composite : IsHighlyComposite 12 := by
+  constructor
+  · omega
+  · intro m hm hmlt
+    interval_cases m <;> simp [tau]
+
+/--
+**Divisor counts for small numbers:**
+Computational verification of τ values.
+-/
+example : tau 1 = 1 := by native_decide
+example : tau 2 = 2 := by native_decide
+example : tau 3 = 2 := by native_decide
+example : tau 4 = 3 := by native_decide
+example : tau 5 = 2 := by native_decide
+example : tau 6 = 4 := by native_decide
+example : tau 12 = 6 := by native_decide
+example : tau 24 = 8 := by native_decide
+example : tau 36 = 9 := by native_decide
 
 /--
 **First several highly composite numbers:**

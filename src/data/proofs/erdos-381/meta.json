@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "erdosNumber": 381,
     "erdosUrl": "https://erdosproblems.com/381",
     "erdosProblemStatus": "solved",
@@ -51,11 +51,12 @@
       "erdos_question_false theorem: disproof",
       "Q_bounds combined asymptotic bounds",
       "IsSuperiorHighlyComposite definition",
-      "Proofs: one_highly_composite, two_highly_composite"
+      "Proofs: one_highly_composite, two_highly_composite, four_highly_composite, six_highly_composite, twelve_highly_composite",
+      "Computational verification: tau values for small n via native_decide"
     ]
   },
   "overview": {
-    "historicalContext": "Ramanujan (1915) initiated the study of highly composite numbers in one of his most substantial papers. Erdős (1944) proved Q(x) ≫ (log x)^{1+c} and asked if Q(x) grows faster than any power of log x. Nicolas (1971) disproved this by showing Q(x) ≪ (log x)^C for some constant C.",
+    "historicalContext": "**Ramanujan's Foundation (1915)**\n\nSrinivasa Ramanujan initiated the systematic study of highly composite numbers in his 1915 paper \"Highly Composite Numbers,\" one of his most substantial works at 52 pages. He provided a complete characterization of these numbers: if n = 2^{a₁}·3^{a₂}·...·p^{a_k}, then n is highly composite iff the exponents are non-increasing (a₁ ≥ a₂ ≥ ... ≥ a_k ≥ 1). This structural insight remains fundamental.\n\n**Erdős's Counting Question (1944)**\n\nPaul Erdős turned attention to how many highly composite numbers exist up to x. He proved Q(x) ≫ (log x)^{1+c} for some c > 0, showing they are more common than a naive analysis suggests. His 1944 paper \"On highly composite and similar numbers\" posed the natural question: does Q(x) grow faster than ANY fixed power of log x?\n\n**Nicolas's Resolution (1971)**\n\nJean-Louis Nicolas definitively answered NO. In \"Répartition des nombres hautement composés de Ramanujan,\" he proved Q(x) ≪ (log x)^C for an absolute constant C ≈ 1.71. This polynomial upper bound in log x directly contradicts growth faster than all powers, settling Erdős's question in the negative.",
     "problemStatement": "**Question (Erdős):** Let Q(x) count highly composite numbers (numbers with more divisors than any smaller number) up to x. Is it true that Q(x) ≫_k (log x)^k for every k ≥ 1?\n\n**Answer: NO** (Nicolas 1971)\n\nNicolas proved Q(x) ≪ (log x)^C, showing the count grows only polynomially in log x.",
     "proofStrategy": "The formalization defines:\n\n1. **tau(n):** Divisor counting function\n2. **IsHighlyComposite:** n has more divisors than all smaller numbers\n3. **Q(x):** Count of highly composite numbers up to x\n4. **erdos_question:** The conjecture Q(x) ≫_k (log x)^k for all k\n\nWe axiomatize Erdős's lower bound and Nicolas's upper bound, then prove the question is false.",
     "keyInsights": [
@@ -77,58 +78,65 @@
     {
       "id": "examples",
       "title": "Small Highly Composite Numbers",
-      "summary": "1, 2, 4, 6, 12 are HC; OEIS A002182",
+      "summary": "1, 2, 4, 6, 12 are HC; divisor counts; OEIS A002182",
       "startLine": 70,
-      "endLine": 117
+      "endLine": 143
     },
     {
       "id": "erdos-lower",
       "title": "Erdős's Lower Bound (1944)",
       "summary": "Q(x) ≫ (log x)^{1+c} for some c > 0",
-      "startLine": 119,
-      "endLine": 142
+      "startLine": 145,
+      "endLine": 168
     },
     {
       "id": "question",
       "title": "The Erdős Question",
       "summary": "Is Q(x) ≫_k (log x)^k for all k?",
-      "startLine": 144,
-      "endLine": 164
+      "startLine": 170,
+      "endLine": 190
     },
     {
       "id": "nicolas",
       "title": "Nicolas's Disproof (1971)",
       "summary": "Q(x) ≪ (log x)^C disproves the conjecture",
-      "startLine": 166,
-      "endLine": 202
+      "startLine": 192,
+      "endLine": 228
     },
     {
       "id": "bounds",
       "title": "Tight Bounds",
       "summary": "(log x)^{1+c} ≪ Q(x) ≪ (log x)^C",
-      "startLine": 204,
-      "endLine": 226
+      "startLine": 230,
+      "endLine": 252
     },
     {
       "id": "structure",
       "title": "Structure of HC Numbers",
       "summary": "Prime factorization properties, superior HC numbers",
-      "startLine": 228,
-      "endLine": 255
+      "startLine": 254,
+      "endLine": 281
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison with Other Sequences",
+      "summary": "HC vs primes, highly abundant numbers",
+      "startLine": 283,
+      "endLine": 304
     },
     {
       "id": "history",
       "title": "Historical Context",
       "summary": "Ramanujan (1915), Erdős (1944), Nicolas (1971)",
-      "startLine": 280,
-      "endLine": 301
+      "startLine": 306,
+      "endLine": 327
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Summary and Main Results",
       "summary": "erdos_381 theorem: the conjecture is FALSE",
-      "startLine": 303,
-      "endLine": 351
+      "startLine": 329,
+      "endLine": 377
     }
   ],
   "conclusion": {

@@ -2,7 +2,7 @@
   {
     "id": "ann-e381-header",
     "proofId": "erdos-381",
-    "range": { "startLine": 1, "endLine": 24 },
+    "range": { "startLine": 1, "endLine": 25 },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #381: Counting Highly Composite Numbers**\n\n**Question:** Is Q(x) ≫_k (log x)^k for every k ≥ 1, where Q(x) counts highly composite numbers up to x?\n\n**Answer: NO** (Nicolas 1971)\n\nNicolas proved Q(x) ≪ (log x)^C, showing polynomial growth in log x.",
@@ -62,9 +62,49 @@
     "relatedConcepts": ["Small examples"]
   },
   {
+    "id": "ann-e381-four-hc",
+    "proofId": "erdos-381",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "theorem",
+    "title": "4 is Highly Composite",
+    "content": "**four_highly_composite:** 4 ∈ HC.\n\nτ(4) = 3 > τ(m) for m = 1, 2, 3.\n\nDivisors of 4: {1, 2, 4}. Note 3 is skipped (τ(3) = 2 < 3).",
+    "significance": "supporting",
+    "relatedConcepts": ["Small examples", "HC gaps"]
+  },
+  {
+    "id": "ann-e381-six-hc",
+    "proofId": "erdos-381",
+    "range": { "startLine": 105, "endLine": 113 },
+    "type": "theorem",
+    "title": "6 is Highly Composite",
+    "content": "**six_highly_composite:** 6 ∈ HC.\n\nτ(6) = 4 > τ(m) for m < 6.\n\nDivisors of 6: {1, 2, 3, 6}. 5 is skipped (τ(5) = 2 < 4).",
+    "significance": "supporting",
+    "relatedConcepts": ["Small examples"]
+  },
+  {
+    "id": "ann-e381-twelve-hc",
+    "proofId": "erdos-381",
+    "range": { "startLine": 115, "endLine": 123 },
+    "type": "theorem",
+    "title": "12 is Highly Composite",
+    "content": "**twelve_highly_composite:** 12 ∈ HC.\n\nτ(12) = 6, the first number with 6 divisors.\n\nDivisors of 12: {1, 2, 3, 4, 6, 12}. A big jump from 6!",
+    "significance": "key",
+    "relatedConcepts": ["Small examples", "Divisor records"]
+  },
+  {
+    "id": "ann-e381-tau-examples",
+    "proofId": "erdos-381",
+    "range": { "startLine": 125, "endLine": 137 },
+    "type": "theorem",
+    "title": "Divisor Counts Verified",
+    "content": "**Computational verification of τ values:**\n\nUsing `native_decide` to verify:\n- τ(1) = 1, τ(2) = 2, τ(3) = 2\n- τ(4) = 3, τ(5) = 2, τ(6) = 4\n- τ(12) = 6, τ(24) = 8, τ(36) = 9\n\nThese confirm which numbers are highly composite.",
+    "significance": "supporting",
+    "relatedConcepts": ["Computational verification", "native_decide"]
+  },
+  {
     "id": "ann-e381-first-hc",
     "proofId": "erdos-381",
-    "range": { "startLine": 113, "endLine": 117 },
+    "range": { "startLine": 139, "endLine": 143 },
     "type": "definition",
     "title": "First Highly Composite Numbers",
     "content": "**first_HC:** [1, 2, 4, 6, 12, 24, 36, 48, 60, 120, 180, 240, 360, 720, 840]\n\nFrom OEIS A002182. Note the gaps grow rapidly.",
@@ -74,18 +114,18 @@
   {
     "id": "ann-e381-erdos-lower",
     "proofId": "erdos-381",
-    "range": { "startLine": 123, "endLine": 132 },
+    "range": { "startLine": 149, "endLine": 158 },
     "type": "axiom",
     "title": "Erdős's Lower Bound (1944)",
     "content": "**erdos_lower_bound:** Q(x) ≫ (log x)^{1+c} for some c > 0.\n\nErdős proved this in his 1944 paper \"On highly composite numbers\".\n\nThe count grows faster than log x, but still subpolynomially in x.",
-    "mathContext": "This shows HC numbers are more common than primes (π(x) ~ x/log x).",
+    "mathContext": "This lower bound shows HC numbers are more common than one might expect from their sparse appearance.",
     "significance": "critical",
     "relatedConcepts": ["Lower bounds", "Erdős 1944"]
   },
   {
     "id": "ann-e381-question",
     "proofId": "erdos-381",
-    "range": { "startLine": 148, "endLine": 156 },
+    "range": { "startLine": 174, "endLine": 182 },
     "type": "definition",
     "title": "The Erdős Question",
     "content": "**erdos_question:**\n\nIs Q(x) ≫_k (log x)^k for every k ≥ 1?\n\n```lean\ndef erdos_question : Prop :=\n  ∀ k : ℕ, k ≥ 1 → ∃ C : ℝ, C > 0 ∧\n    ∀ᶠ x in atTop, (Q x : ℝ) ≥ C * (Real.log x)^k\n```\n\nDoes Q(x) grow faster than ANY power of log x?",
@@ -95,7 +135,7 @@
   {
     "id": "ann-e381-nicolas",
     "proofId": "erdos-381",
-    "range": { "startLine": 170, "endLine": 178 },
+    "range": { "startLine": 196, "endLine": 204 },
     "type": "axiom",
     "title": "Nicolas's Upper Bound (1971)",
     "content": "**nicolas_upper_bound:** Q(x) ≪ (log x)^C for some constant C > 0.\n\nNicolas proved this in \"Répartition des nombres hautement composés de Ramanujan\" (1971).\n\nThis DISPROVES Erdős's question - Q(x) has bounded polynomial growth in log x.",
@@ -106,7 +146,7 @@
   {
     "id": "ann-e381-false",
     "proofId": "erdos-381",
-    "range": { "startLine": 191, "endLine": 202 },
+    "range": { "startLine": 217, "endLine": 228 },
     "type": "theorem",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_question_false:** ¬erdos_question.\n\nNicolas's upper bound contradicts the existence of arbitrarily fast growth.\n\nIf Q(x) ≤ K(log x)^C, then Q(x) cannot be ≥ c(log x)^k for k > C.",
@@ -116,7 +156,7 @@
   {
     "id": "ann-e381-bounds",
     "proofId": "erdos-381",
-    "range": { "startLine": 208, "endLine": 218 },
+    "range": { "startLine": 234, "endLine": 244 },
     "type": "theorem",
     "title": "Combined Bounds",
     "content": "**Q_bounds:** (log x)^{1+c} ≪ Q(x) ≪ (log x)^C.\n\nErdős's lower bound and Nicolas's upper bound together pin down the growth rate:\n- Lower: Q(x) ≥ K₁(log x)^{1+c}\n- Upper: Q(x) ≤ K₂(log x)^C\n\nSo Q(x) ~ (log x)^α for some 1 + c ≤ α ≤ C.",
@@ -126,7 +166,7 @@
   {
     "id": "ann-e381-superior",
     "proofId": "erdos-381",
-    "range": { "startLine": 248, "endLine": 255 },
+    "range": { "startLine": 274, "endLine": 281 },
     "type": "definition",
     "title": "Superior Highly Composite Numbers",
     "content": "**IsSuperiorHighlyComposite(n):**\n\nn is superior highly composite if τ(n)/n^ε > τ(m)/m^ε for all m ≠ n and some ε > 0.\n\nA stronger condition than highly composite. SHC numbers are even sparser.",
@@ -135,19 +175,29 @@
     "relatedConcepts": ["Superior highly composite", "Optimization"]
   },
   {
+    "id": "ann-e381-comparison",
+    "proofId": "erdos-381",
+    "range": { "startLine": 287, "endLine": 304 },
+    "type": "concept",
+    "title": "Comparison with Other Sequences",
+    "content": "**How HC numbers compare:**\n\n**vs Primes:** π(x) ~ x/log x grows MUCH faster than Q(x) ~ (log x)^α. Primes are common; HC numbers are rare.\n\n**vs Highly Abundant:** Numbers where σ(n) > σ(m) for all m < n. These are denser than HC numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["Prime counting", "Highly abundant"]
+  },
+  {
     "id": "ann-e381-ramanujan",
     "proofId": "erdos-381",
-    "range": { "startLine": 284, "endLine": 289 },
+    "range": { "startLine": 310, "endLine": 315 },
     "type": "axiom",
     "title": "Ramanujan (1915)",
-    "content": "**ramanujan_1915:**\n\n\"Highly Composite Numbers\" was one of Ramanujan's most substantial papers.\n\nHe initiated the systematic study of these numbers and gave structural characterizations.",
+    "content": "**ramanujan_1915:**\n\n\"Highly Composite Numbers\" was one of Ramanujan's most substantial papers (52 pages).\n\nHe initiated the systematic study of these numbers and gave structural characterizations.",
     "significance": "supporting",
     "relatedConcepts": ["History", "Ramanujan"]
   },
   {
     "id": "ann-e381-main",
     "proofId": "erdos-381",
-    "range": { "startLine": 329, "endLine": 332 },
+    "range": { "startLine": 355, "endLine": 358 },
     "type": "theorem",
     "title": "Main Result: erdos_381",
     "content": "**erdos_381:** ¬erdos_question.\n\n```lean\ntheorem erdos_381 : ¬erdos_question := erdos_question_false\n```\n\n**The conjecture is FALSE** - Q(x) does NOT grow faster than every power of log x.",
@@ -157,7 +207,7 @@
   {
     "id": "ann-e381-summary",
     "proofId": "erdos-381",
-    "range": { "startLine": 303, "endLine": 327 },
+    "range": { "startLine": 329, "endLine": 353 },
     "type": "concept",
     "title": "Summary",
     "content": "**Erdős Problem #381: DISPROVED**\n\n**Question:** Is Q(x) ≫_k (log x)^k for every k ≥ 1?\n\n**Answer:** NO (Nicolas 1971)\n\n**What we know:**\n- Lower: Q(x) ≫ (log x)^{1+c} (Erdős 1944)\n- Upper: Q(x) ≪ (log x)^C (Nicolas 1971)\n\n**Key insight:** Highly composite numbers are quite sparse - their count grows only polynomially in log x.",
