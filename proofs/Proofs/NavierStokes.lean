@@ -547,18 +547,56 @@ theorem E'_nonpos_of_stable (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T
     _ = 0 := by ring
 
 
-/-- **Axiom: E Bounded After Stability**
-    E' ≤ 0 on (t₀, T) by stability, so E is nonincreasing.
-    Requires Convex.monotoneOn_of_deriv_nonpos (Mathlib API may have changed). -/
-axiom E_bounded_after_axiom (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T)
-    (h_stable : ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t) :
-    ∀ t ∈ Ioo t₀ sol.T, sol.E t ≤ sol.E t₀
+/-- E is continuous on [t₀, T] (restriction of continuity on [0, T]). -/
+theorem E_cont_Icc_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T) :
+    ContinuousOn sol.E (Icc t₀ sol.T) := by
+  apply sol.E_cont.mono
+  intro x hx
+  constructor
+  · exact le_trans (le_of_lt (mem_Ioo.mp ht₀).1) hx.1
+  · exact hx.2
 
-/-- E bounded after stability -/
-theorem E_bounded_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T)
+/-- E is differentiable on (t₀, T). -/
+theorem E_differentiable_Ioo_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T) :
+    DifferentiableOn ℝ sol.E (Ioo t₀ sol.T) := by
+  intro t ht
+  have h_in_main : t ∈ Ioo 0 sol.T := ⟨lt_trans (mem_Ioo.mp ht₀).1 (mem_Ioo.mp ht).1, (mem_Ioo.mp ht).2⟩
+  exact (sol.E_diff t h_in_main).differentiableAt.differentiableWithinAt
+
+/-- E is antitone on [t₀, T] under stability.
+    Uses `antitoneOn_of_deriv_nonpos` from Mathlib. -/
+theorem E_antitone_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T)
     (h_stable : ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t) :
-    ∀ t ∈ Ioo t₀ sol.T, sol.E t ≤ sol.E t₀ :=
-  E_bounded_after_axiom sol t₀ ht₀ h_stable
+    AntitoneOn sol.E (Icc t₀ sol.T) := by
+  apply antitoneOn_of_deriv_nonpos
+  · exact convex_Icc t₀ sol.T
+  · exact E_cont_Icc_after sol t₀ ht₀
+  · rw [interior_Icc]
+    exact E_differentiable_Ioo_after sol t₀ ht₀
+  · rw [interior_Icc]
+    intro t ht
+    have h_in_main : t ∈ Ioo 0 sol.T := ⟨lt_trans (mem_Ioo.mp ht₀).1 (mem_Ioo.mp ht).1, (mem_Ioo.mp ht).2⟩
+    have h_deriv := sol.E_diff t h_in_main
+    rw [h_deriv.deriv, sol.enstrophy_identity t h_in_main]
+    linarith [h_stable t ht]
+
+/-- **PROVEN: E Bounded After Stability**
+    E' ≤ 0 on (t₀, T) by stability, so E is nonincreasing.
+
+    This was previously an axiom. Now proven using:
+    - E' = 2S - 2νP ≤ 0 (under stability S ≤ νP)
+    - `antitoneOn_of_deriv_nonpos` from Mathlib.Analysis.Calculus.MeanValue
+
+    The argument: E is continuous on [t₀,T], differentiable on (t₀,T),
+    and E' ≤ 0 on (t₀,T) under stability, therefore E is antitone on [t₀,T]. -/
+theorem E_bounded_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T)
+    (h_stable : ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t)
+    (t : ℝ) (ht : t ∈ Ioo t₀ sol.T) : sol.E t ≤ sol.E t₀ := by
+  have h_antitone := E_antitone_after sol t₀ ht₀ h_stable
+  apply h_antitone
+  · exact left_mem_Icc.mpr (le_of_lt (mem_Ioo.mp ht₀).2)
+  · exact Ioo_subset_Icc_self ht
+  · exact le_of_lt (mem_Ioo.mp ht).1
 
 
 /-- **Axiom: Type II No Blowup**

@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-01-22T23:55:00Z",
-    "iteration": 4,
-    "focus": "Eliminated 2 axioms using monotoneOn lemmas from Mathlib",
+    "since": "2026-01-23T00:00:00Z",
+    "iteration": 5,
+    "focus": "Eliminated 3 axioms total using monotoneOn/antitoneOn lemmas",
     "blockers": [],
-    "nextAction": "Apply same pattern to E_bounded_after_axiom in 3D section",
+    "nextAction": "Review remaining axioms for tractable proofs",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (enstrophy_bounded_2d_axiom, ancient_E_monotone_axiom) using monotoneOn/antitoneOn lemmas from Mathlib.Analysis.Calculus.MeanValue. File now has 45 axioms (was 47). Pattern: show E continuous on domain, differentiable on interior, derivative sign on interior → apply monotoneOn_of_deriv_* theorem.",
+    "progressSummary": "PROGRESS: Eliminated 3 axioms (enstrophy_bounded_2d, ancient_E_monotone, E_bounded_after) using monotoneOn/antitoneOn lemmas from Mathlib. File now has 44 axioms (was 47 at start). Consistent pattern: show E continuous on domain, differentiable on interior, derivative sign on interior → apply monotoneOn/antitoneOn_of_deriv_* theorem.",
     "builtItems": [
       "proofs/Proofs/NavierStokes.lean - comprehensive NS infrastructure (existing)",
       "2D global existence/uniqueness theorems (axiomatized, structure in place)",
@@ -42,7 +42,11 @@
       "ancient_E_monotone theorem - PROVEN using monotoneOn_of_deriv_nonneg (was axiom)",
       "ancient_E_deriv_nonneg - shows E derivative ≥ 0 from spectralGap > C_S",
       "ancient_E_differentiable_Ioi - shows E differentiable on (0,∞)",
-      "ancient_E_monotone_Ici - shows E is monotone on [0,∞)"
+      "ancient_E_monotone_Ici - shows E is monotone on [0,∞)",
+      "E_bounded_after theorem - PROVEN using antitoneOn_of_deriv_nonpos (was axiom)",
+      "E_cont_Icc_after - shows E continuous on [t₀,T]",
+      "E_differentiable_Ioo_after - shows E differentiable on (t₀,T)",
+      "E_antitone_after - shows E is antitone on [t₀,T] under stability"
     ],
     "insights": [
       "NavierStokes.lean exists with 1703 lines: 0 sorries, 44 axioms - excellent infrastructure",
@@ -59,7 +63,10 @@
       "Same pattern works for monotone increasing: use monotoneOn_of_deriv_nonneg",
       "interior_Ici = Ioi for real line (unbounded intervals)",
       "convex_Ici available in Mathlib for unbounded intervals",
-      "Pattern successfully applied to both 2D (decreasing) and ancient (increasing) cases"
+      "Pattern successfully applied to both 2D (decreasing) and ancient (increasing) cases",
+      "Pattern works with partial domains [t₀,T] not just [0,T] or [0,∞)",
+      "interior_Icc = Ioo for bounded intervals",
+      "Stability condition S ≤ νP gives E derivative ≤ 0 via enstrophy_identity"
     ],
     "mathlibGaps": [
       "antitoneOn_of_deriv_nonpos API works well - no adjustment needed",
