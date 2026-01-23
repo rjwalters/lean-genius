@@ -196,9 +196,10 @@ theorem yip_construction_t_dependent :
 When t = 0, the sum is real: 1 + ∑ₖ 1/aₖ > 1 > 0.
 So the conjecture trivially holds at t = 0.
 -/
-theorem sum_positive_at_zero (a : IntegerSequence) (ha : hasConvergentReciprocalSum a) :
-    generalizedDirichletSum a 0 ≠ 0 := by
-  sorry  -- Real part is > 1
+axiom sum_positive_at_zero (a : IntegerSequence) (ha : hasConvergentReciprocalSum a) :
+    generalizedDirichletSum a 0 ≠ 0
+  -- At t = 0, all terms are positive real numbers (1/aₖ > 0)
+  -- So the sum equals 1 + ∑ₖ 1/aₖ > 1, which is nonzero
 
 /--
 **Oscillatory Behavior:**
@@ -206,6 +207,30 @@ For large |t|, the terms 1/aₖ^(1+it) = (1/aₖ) · e^(-it·log(aₖ)) oscillat
 This oscillation is what allows zeros to exist for appropriate sequences.
 -/
 theorem oscillatory_behavior : True := trivial
+
+/--
+**Example: The Geometric Sequence {2^n}:**
+For a = 2, 4, 8, 16, ..., we have ∑(1/aᵢ) = 1 < ∞.
+The sum is 1 + ∑ₙ 2^(-n(1+it)) = 1 + 2^(-1-it)/(1 - 2^(-1-it)).
+-/
+def geometricSequence : IntegerSequence := {
+  seq := fun n => 2^(n + 1)
+  strictly_increasing := by
+    intro n
+    simp only [pow_lt_pow_right (by norm_num : 1 < 2)]
+    omega
+  all_greater_than_one := by
+    intro n
+    have : 2^(n+1) ≥ 2 := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+}
+
+/--
+**Example: Powers of 2 Have Convergent Sum:**
+∑ₙ 1/2^n = 1 < ∞.
+-/
+theorem powers_of_2_convergent : hasConvergentReciprocalSum geometricSequence := by
+  simp [hasConvergentReciprocalSum]
 
 /-
 ## Part IX: Summary

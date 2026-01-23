@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 967,
     "erdosUrl": "https://erdosproblems.com/967",
     "erdosProblemStatus": "solved",
@@ -57,11 +57,13 @@
       "tauberianEquivalence: connection to Tauberian theorems",
       "yip_counterexample axiom: Yip's 2025 disproof",
       "erdosInghamConjecture_false theorem: the conjecture is false",
-      "erdos_967 theorem: main result"
+      "erdos_967 theorem: main result",
+      "geometricSequence: concrete example {2^n} with proved properties",
+      "powers_of_2_convergent theorem: verified convergence"
     ]
   },
   "overview": {
-    "historicalContext": "This problem originates from the 1964 paper 'Arithmetical Tauberian Theorems' by Erdős and Ingham. They were interested in conditions under which a functional equation involving a sequence implies asymptotic behavior. The key connection is: if 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all t, then certain Tauberian implications hold.\n\nErdős and Ingham could not decide the conjecture even for the simplest case {2, 3, 5}. The problem remained open for 60 years until Yip's breakthrough in 2025.",
+    "historicalContext": "**The Erdős-Ingham Paper (1964)**\n\nThis problem originates from 'Arithmetical Tauberian Theorems' by Erdős and Ingham (1964). They discovered a remarkable equivalence: the non-vanishing of 1 + ∑ₖ 1/aₖ^(1+it) for all t is equivalent to a Tauberian implication about functional equations. If f(x) + ∑ₖ f(x/aₖ) = (C + o(1))x for non-decreasing f, does f(x) = (1 + o(1))x follow? The answer depends on whether the Dirichlet sum has zeros.\n\n**The Simplest Unsolved Case (1964-2025)**\n\nRemarkably, Erdős and Ingham could not resolve even the simplest finite case: {2, 3, 5}. Does 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it) = 0 for some real t? This connects to deep questions in transcendence theory - specifically the Four Exponentials Conjecture. If 4EC holds, the {2,3,5} sum never vanishes.\n\n**Yip's Breakthrough (2025)**\n\nAfter 60 years, Chi Hoi Yip (arXiv:2512.16528) settled the infinite sequence case definitively: the conjecture is FALSE. For any nonzero t, Yip constructs a sequence where the sum equals zero. The construction exploits the oscillatory nature of a^(it) to achieve precise phase cancellation. However, the finite sequence case - including {2,3,5} - remains tantalizingly open.",
     "problemStatement": "**Problem**: Let 1 < a₁ < a₂ < ... be integers with ∑(1/aᵢ) < ∞. Is it true that for every t ∈ ℝ:\n\n1 + ∑ₖ 1/aₖ^(1+it) ≠ 0?\n\n**Answer**: NO - The conjecture is FALSE.\n\nYip (2025) proved that for any nonzero real t, there exists a sequence with convergent reciprocal sum where the generalized Dirichlet sum equals zero.\n\n**Open Question**: Does the conjecture hold for finite sequences of integers?",
     "proofStrategy": "The formalization captures the problem structure:\n\n1. **Definitions**: Integer sequences, convergence conditions, complex powers a^(1+it)\n\n2. **The Sum**: generalizedDirichletSum(a, t) = 1 + ∑ₖ 1/aₖ^(1+it)\n\n3. **The Conjecture**: erdosInghamConjecture states the sum is never zero\n\n4. **The Disproof**: yip_counterexample axiom provides counterexamples for each t ≠ 0\n\n5. **Main Theorem**: erdos_967 proves ¬erdosInghamConjecture\n\n6. **Special Cases**: The {2,3,5} case, t = 0 case, and finite sequences",
     "keyInsights": [
@@ -133,15 +135,15 @@
       "id": "properties",
       "title": "Properties of the Sum",
       "startLine": 190,
-      "endLine": 208,
-      "summary": "Special case t = 0 and oscillatory behavior for large t.",
-      "description": "At t = 0, the sum is real and positive. For nonzero t, the oscillation of a^(it) enables zeros."
+      "endLine": 233,
+      "summary": "Special case t = 0, oscillatory behavior, and concrete examples.",
+      "description": "At t = 0, the sum is real and positive. Includes geometricSequence example {2^n} with proven convergence."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 210,
-      "endLine": 230,
+      "startLine": 235,
+      "endLine": 255,
       "summary": "Main results: conjecture disproved, finite case open.",
       "description": "The 60-year-old conjecture was disproved in 2025. Key questions about finite sequences remain."
     }

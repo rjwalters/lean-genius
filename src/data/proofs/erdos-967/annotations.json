@@ -174,7 +174,7 @@
   {
     "id": "ann-e967-oscillation",
     "proofId": "erdos-967",
-    "range": { "startLine": 208, "endLine": 208 },
+    "range": { "startLine": 204, "endLine": 209 },
     "type": "concept",
     "title": "Oscillatory Behavior",
     "content": "**Oscillation for t ≠ 0:**\n\nThe terms 1/aₖ^(1+it) = (1/aₖ)·e^(-it·log(aₖ)) rotate around the origin.\n\nBy choosing aₖ carefully, these oscillating terms can sum to exactly -1, giving a zero.",
@@ -183,9 +183,28 @@
     "relatedConcepts": ["Phase cancellation", "Constructive interference"]
   },
   {
+    "id": "ann-e967-geometric",
+    "proofId": "erdos-967",
+    "range": { "startLine": 211, "endLine": 226 },
+    "type": "definition",
+    "title": "Geometric Sequence Example",
+    "content": "**geometricSequence = {2, 4, 8, 16, ...}:**\n\nA concrete IntegerSequence where seq(n) = 2^(n+1).\n\nThis sequence has convergent reciprocal sum: ∑(1/2^n) = 1 < ∞.",
+    "mathContext": "Provides a constructive example of an IntegerSequence satisfying the convergence condition. The sum 1 + ∑ 2^(-n(1+it)) has a closed form in terms of geometric series.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e967-pow2-convergent",
+    "proofId": "erdos-967",
+    "range": { "startLine": 228, "endLine": 233 },
+    "type": "theorem",
+    "title": "Powers of 2 Convergent",
+    "content": "**Theorem powers_of_2_convergent:**\n\nhasConvergentReciprocalSum geometricSequence\n\nVerifies that {2, 4, 8, ...} satisfies the convergence condition required by the problem.",
+    "significance": "supporting"
+  },
+  {
     "id": "ann-e967-summary",
     "proofId": "erdos-967",
-    "range": { "startLine": 221, "endLine": 228 },
+    "range": { "startLine": 246, "endLine": 253 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**Theorem erdos_967_summary:**\n\n1. The Erdős-Ingham conjecture (1964) is FALSE for infinite sequences\n2. Yip (2025) provided counterexamples for every nonzero t\n3. The finite sequence case remains OPEN\n4. The {2,3,5} case connects to the Four Exponentials conjecture",
