@@ -1,33 +1,129 @@
 {
   "id": "erdos-395",
-  "title": "Erdős Problem #395",
+  "title": "Erdős Problem #395: Reverse Littlewood-Offord Problem",
   "slug": "erdos-395",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... with ... then is it true that the probability that\\[\\lvert \\epsilon_1z_1+\\cdots+\\epsilon_nz_n\\rvert \\leq ,\\]where ... ...",
+  "description": "For unit complex vectors, is P(|ε₁z₁ + ... + εₙzₙ| ≤ √2) ≥ c/n? YES (HJNS 2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (posed), He-Juškevičius-Narayanan-Spiro (2024 proof)",
     "sourceUrl": "https://erdosproblems.com/395",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos395Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "complex-analysis",
+      "littlewood-offord",
+      "random-signs",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 395,
     "erdosUrl": "https://erdosproblems.com/395",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value of complex numbers",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for counting",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for the √2 threshold",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "isUnitVector z: |zᵢ| = 1 for all i",
+      "isSignVector ε: εᵢ ∈ {-1, 1}",
+      "signedSum z ε: ε₁z₁ + ... + εₙzₙ",
+      "signedSumAbs z ε: |signedSum|",
+      "probSmallSum z: probability |sum| ≤ √2",
+      "erdos_original_question: threshold 1 (false)",
+      "erdos_395_question: threshold √2 (true)",
+      "carnielli_carolino_counterexample: z₁=1, zₖ=i",
+      "hjns_2024 axiom: main theorem",
+      "extremal_example: optimal 1/n construction"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #395 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $z_1,\\ldots,z_n\\in \\mathbb{C}$ with $\\lvert z_i\\rvert=1$ then is it true that the probability that\\[\\lvert \\epsilon_1z_1+\\cdots+\\epsilon_nz_n\\rvert \\leq \\sqrt{2},\\]where $\\epsilon_i\\in \\{-1,1\\}$ uniformly at random, is $\\gg 1/n$?\n\n\n\nA reverse Littlewood-Offord problem. Erd\\H{o}s originally asked this with $\\sqrt{2}$ replaced by $1$, but Carnielli and Carolino \\cite{CaCa11} observed that this is false, choosing $z_1=1$ and $z_k=i$ for $2\\leq k\\leq n$, where $n$ is even, since then the sum is at least $\\sqrt{2}$ always.\n\nSolved in the affirmative by He, Ju\\v{s}kevi\\v{c}ius, Narayanan, and Spiro \\cite{HJNS24}. The bound of $1/n$ is the best possible, as shown by taking $z_k=1$ for $1\\leq k\\leq n/2$ and $z_k=i$ otherwise.\n\nSee also [498].\n\n\n\n\nReferences\n\n\n[CaCa11] Carnielli, Walter and Carolino, Pietro K., Adjusting a conjecture of Erd\\H{o}s. Contrib. Discrete Math. (2011), 154--159.\n\n[HJNS24] X. He, T. Ju\\v{s}kevi\\vCius, B. Narayanan, and S. Spiro, The Reverse Littlewood-Offord problem of Erd\\H{o}s. arXiv:2408.11034 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #395**\n\nThis is the \"reverse Littlewood-Offord problem.\"\n\n**History:**\n- Erdős originally asked with threshold 1 instead of √2\n- Carnielli and Carolino (2011) found a counterexample showing threshold 1 fails\n- The revised problem (threshold √2) became the true question\n- He, Juškevičius, Narayanan, and Spiro (2024) proved YES\n\n**Context:**\n- Classical Littlewood-Offord (1943): upper bound on how often sums hit a point\n- This problem asks for a lower bound on how often sums stay near 0\n- The bound 1/n is optimal",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIf z₁, ..., zₙ ∈ ℂ with |zᵢ| = 1, is the probability that\n\n|ε₁z₁ + ... + εₙzₙ| ≤ √2\n\n(where εᵢ ∈ {-1, 1} uniformly at random) at least c/n for some absolute constant c > 0?\n\n**Original (Erdős):** Threshold 1 — FALSE (Carnielli-Carolino 2011)\n\n**Revised:** Threshold √2 — TRUE (HJNS 2024)\n\nThe bound 1/n is optimal.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Complex Vectors:** Use Fin n → ℂ for vectors\n\n2. **Key Definitions:**\n   - isUnitVector: |zᵢ| = 1\n   - signedSum: ε₁z₁ + ... + εₙzₙ\n   - probSmallSum: P(|sum| ≤ √2)\n\n3. **Counterexample:**\n   - carnielli_carolino_counterexample: shows threshold 1 fails\n   - For z₁ = 1, zₖ = i, every sum has |sum| ≥ √2\n\n4. **Main Results:**\n   - hjns_2024: P(|sum| ≤ √2) ≥ c/n for all unit vectors\n   - extremal_example_tight: 1/n rate is optimal\n\n**Why Axioms:** The HJNS proof uses Fourier analysis and concentration inequalities.",
+    "keyInsights": [
+      "**√2 is Threshold:** The counterexample shows < √2 can have probability 0; √2 always has ≥ c/n.",
+      "**Reverse Direction:** Classical L-O bounds probability FROM ABOVE; this bounds FROM BELOW.",
+      "**Optimal Rate:** The 1/n rate cannot be improved (extremal example achieves it).",
+      "**Geometry Matters:** The extremal example has half real (1) and half imaginary (i) components.",
+      "**Recent Result:** Solved only in 2024 by HJNS, showing it was a hard problem."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Unit vectors and sign sums",
+      "startLine": 48,
+      "endLine": 68
+    },
+    {
+      "id": "probability",
+      "title": "Probability Question",
+      "summary": "Counting small sums",
+      "startLine": 70,
+      "endLine": 82
+    },
+    {
+      "id": "original-false",
+      "title": "Original Question (False)",
+      "summary": "Threshold 1 counterexample",
+      "startLine": 84,
+      "endLine": 109
+    },
+    {
+      "id": "revised-true",
+      "title": "Revised Question (True)",
+      "summary": "HJNS 2024 theorem",
+      "startLine": 111,
+      "endLine": 137
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality",
+      "summary": "1/n rate is tight",
+      "startLine": 139,
+      "endLine": 157
+    },
+    {
+      "id": "littlewood-offord",
+      "title": "Littlewood-Offord Connection",
+      "summary": "Classical vs reverse",
+      "startLine": 159,
+      "endLine": 201
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and resolution",
+      "startLine": 203,
+      "endLine": 231
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #395 was solved by He, Juškevičius, Narayanan, and Spiro in 2024. For any unit complex vectors z₁, ..., zₙ, the probability that a random sign sum |ε₁z₁ + ... + εₙzₙ| ≤ √2 is at least c/n. The threshold √2 is crucial (threshold 1 fails), and the 1/n rate is optimal.",
+    "implications": "The result completes the picture of Littlewood-Offord type problems: the classical result gives an upper bound on concentration at any point, while this reverse version gives a lower bound on concentration near zero. This connects probability, complex analysis, and combinatorics.",
+    "openQuestions": [
+      "What is the exact value of the optimal constant c?",
+      "Does a similar result hold for higher-dimensional vectors?",
+      "See Problem #498 for related questions."
+    ]
   }
 }
