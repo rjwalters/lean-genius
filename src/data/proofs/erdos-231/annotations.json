@@ -1,1 +1,220 @@
-[]
+[
+  {
+    "id": "ann-231-header",
+    "proofId": "erdos-231",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #231**\n\nMust a string of length 2^k - 1 over k letters contain an abelian square?\n\n**Status:** DISPROVED (Keränen 1992)\n\nFor k ≥ 4, the answer is NO - abelian-square-free strings exist.",
+    "mathContext": "Abelian squares are a central concept in combinatorics on words.",
+    "significance": "critical",
+    "relatedConcepts": ["Abelian square", "Combinatorics on words", "String avoidance"]
+  },
+  {
+    "id": "ann-231-parikh",
+    "proofId": "erdos-231",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Parikh Vector",
+    "content": "**parikhVector w:**\n\nThe function mapping each character a to its count in w.\n\nTwo words have the same Parikh vector iff one is a permutation of the other.",
+    "mathContext": "Named after R. J. Parikh, who introduced it in formal language theory.",
+    "significance": "key",
+    "relatedConcepts": ["Character count", "Permutation", "Word equivalence"]
+  },
+  {
+    "id": "ann-231-abelianeq",
+    "proofId": "erdos-231",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "Abelian Equivalence",
+    "content": "**abelianEquiv x y:**\n\nx and y have the same Parikh vector.\n\nEquivalently, y is a permutation of x.",
+    "significance": "key",
+    "relatedConcepts": ["Parikh vector", "Commutative closure"]
+  },
+  {
+    "id": "ann-231-absquare",
+    "proofId": "erdos-231",
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "definition",
+    "title": "Abelian Square",
+    "content": "**isAbelianSquare w:**\n\nw = xy where x and y have the same Parikh vector.\n\nExample: \"abba\" = \"ab\" + \"ba\" is an abelian square.",
+    "mathContext": "A generalization of squares (xx) to permutation equivalence.",
+    "significance": "critical",
+    "relatedConcepts": ["Square", "Permutation", "Consecutive blocks"]
+  },
+  {
+    "id": "ann-231-contains",
+    "proofId": "erdos-231",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "Contains Abelian Square",
+    "content": "**containsAbelianSquare w:**\n\nw has a factor (consecutive subword) that is an abelian square.\n\nThis is what Erdős asked about.",
+    "significance": "critical",
+    "relatedConcepts": ["Factor", "Subword", "Avoidance"]
+  },
+  {
+    "id": "ann-231-asfree",
+    "proofId": "erdos-231",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "definition",
+    "title": "Abelian-Square-Free",
+    "content": "**isAbelianSquareFree w:**\n\nw contains no abelian squares.\n\nThis is a stronger property than being squarefree.",
+    "significance": "critical",
+    "relatedConcepts": ["Avoidance", "Pattern-free"]
+  },
+  {
+    "id": "ann-231-square",
+    "proofId": "erdos-231",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "definition",
+    "title": "Square",
+    "content": "**isSquare w:**\n\nw = xx for some nonempty x.\n\nA square is an exact repetition; abelian squares are more general.",
+    "significance": "key",
+    "relatedConcepts": ["Repetition", "Pattern"]
+  },
+  {
+    "id": "ann-231-hierarchy",
+    "proofId": "erdos-231",
+    "range": { "startLine": 91, "endLine": 103 },
+    "type": "theorem",
+    "title": "Avoidance Hierarchy",
+    "content": "**square_is_abelian_square, abelian_square_free_implies_squarefree:**\n\nEvery square is an abelian square.\n\nSo abelian-square-free ⟹ squarefree.",
+    "mathContext": "This hierarchy is fundamental in combinatorics on words.",
+    "significance": "key",
+    "relatedConcepts": ["Hierarchy", "Implication", "Pattern avoidance"]
+  },
+  {
+    "id": "ann-231-question",
+    "proofId": "erdos-231",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "definition",
+    "title": "Erdős's Question",
+    "content": "**erdos_231_question k:**\n\nFor strings of length 2^k - 1 over k letters, must the string contain an abelian square?\n\nErdős conjectured YES, but this was disproved for k ≥ 4.",
+    "significance": "critical",
+    "relatedConcepts": ["Main question", "Conjecture"]
+  },
+  {
+    "id": "ann-231-thue",
+    "proofId": "erdos-231",
+    "range": { "startLine": 124, "endLine": 127 },
+    "type": "axiom",
+    "title": "Thue's Theorem",
+    "content": "**thue_squarefree:**\n\nArbitrarily long squarefree strings exist over 3 letters.\n\n(In fact, infinite squarefree strings exist.)",
+    "mathContext": "Thue proved this in the early 1900s, founding the field.",
+    "significance": "key",
+    "relatedConcepts": ["Thue", "Squarefree", "3 letters"]
+  },
+  {
+    "id": "ann-231-3notenough",
+    "proofId": "erdos-231",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "axiom",
+    "title": "3 Letters Not Enough",
+    "content": "**three_letters_not_enough:**\n\nFor abelian-square-free, 3 letters are NOT enough.\n\nAll sufficiently long strings over 3 letters contain abelian squares.",
+    "significance": "key",
+    "relatedConcepts": ["Lower bound", "Alphabet size"]
+  },
+  {
+    "id": "ann-231-keranen",
+    "proofId": "erdos-231",
+    "range": { "startLine": 139, "endLine": 145 },
+    "type": "axiom",
+    "title": "Keränen's Construction",
+    "content": "**keranen_1992:**\n\nFor every n, there exists an abelian-square-free string of length n over 4 letters.\n\nEquivalently, infinite abelian-square-free strings exist over {1,2,3,4}.",
+    "mathContext": "Published in ICALP 1992, pp. 41-52.",
+    "significance": "critical",
+    "relatedConcepts": ["Keränen 1992", "Infinite string", "4 letters"]
+  },
+  {
+    "id": "ann-231-morphism",
+    "proofId": "erdos-231",
+    "range": { "startLine": 147, "endLine": 155 },
+    "type": "axiom",
+    "title": "Keränen Morphism",
+    "content": "**keranen_morphism:**\n\nThere exists a morphism μ : Σ → Σ* where |μ(a)| = 85 for each letter a.\n\nApplying μ preserves abelian-square-freeness.",
+    "mathContext": "The 85-letter morphism is the heart of Keränen's construction.",
+    "significance": "key",
+    "relatedConcepts": ["Morphism", "Substitution", "85 letters"]
+  },
+  {
+    "id": "ann-231-disproved",
+    "proofId": "erdos-231",
+    "range": { "startLine": 163, "endLine": 179 },
+    "type": "axiom",
+    "title": "Conjecture Disproved",
+    "content": "**erdos_231_disproved:**\n\nFor k ≥ 4, Erdős's conjecture is FALSE.\n\nStrings of length 2^k - 1 over k letters CAN avoid abelian squares.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof", "k ≥ 4"]
+  },
+  {
+    "id": "ann-231-k2",
+    "proofId": "erdos-231",
+    "range": { "startLine": 185, "endLine": 189 },
+    "type": "theorem",
+    "title": "k = 2 Case",
+    "content": "**k_equals_2_abelian_square:**\n\nFor k = 2 (binary alphabet), all strings of length ≥ 4 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["Binary", "Small k"]
+  },
+  {
+    "id": "ann-231-k3",
+    "proofId": "erdos-231",
+    "range": { "startLine": 191, "endLine": 193 },
+    "type": "axiom",
+    "title": "k = 3 Case",
+    "content": "**k_equals_3_contains:**\n\nFor k = 3, all strings of length 7 = 2³ - 1 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 3.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ternary", "Small k"]
+  },
+  {
+    "id": "ann-231-example",
+    "proofId": "erdos-231",
+    "range": { "startLine": 205, "endLine": 214 },
+    "type": "theorem",
+    "title": "Example: abba",
+    "content": "**example: isAbelianSquare ['a', 'b', 'b', 'a']:**\n\n\"abba\" = \"ab\" + \"ba\" where \"ba\" is a permutation of \"ab\".\n\nSo \"abba\" is an abelian square.",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete example", "Verification"]
+  },
+  {
+    "id": "ann-231-counterex",
+    "proofId": "erdos-231",
+    "range": { "startLine": 216, "endLine": 223 },
+    "type": "definition",
+    "title": "Counterexample",
+    "content": "**counterexample_k4:**\n\nThe string 1213121412132124 (length 16 = 2^4) is abelian-square-free.\n\nThis shows Erdős's conjecture fails for k = 4.",
+    "mathContext": "Mentioned by Erdős as evidence against his original conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["Counterexample", "k = 4"]
+  },
+  {
+    "id": "ann-231-192",
+    "proofId": "erdos-231",
+    "range": { "startLine": 229, "endLine": 234 },
+    "type": "theorem",
+    "title": "Connection to #192",
+    "content": "**connection_to_192:**\n\nProblem #192 asks about infinite abelian-square-free sequences.\n\nKeränen's result answers both problems.",
+    "significance": "supporting",
+    "relatedConcepts": ["Problem #192", "Related problems"]
+  },
+  {
+    "id": "ann-231-summary",
+    "proofId": "erdos-231",
+    "range": { "startLine": 254, "endLine": 257 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_231_summary:**\n\nErdős's conjecture was disproved for k ≥ 4.\n\nThe Keränen construction provides infinite counterexamples.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Summary"]
+  },
+  {
+    "id": "ann-231-solved",
+    "proofId": "erdos-231",
+    "range": { "startLine": 259, "endLine": 260 },
+    "type": "theorem",
+    "title": "Problem Resolved",
+    "content": "**erdos_231_resolved:**\n\nErdős Problem #231 was completely resolved by Keränen in 1992.",
+    "significance": "supporting",
+    "relatedConcepts": ["Resolved", "1992"]
+  }
+]
