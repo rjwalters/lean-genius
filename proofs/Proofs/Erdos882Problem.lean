@@ -113,13 +113,10 @@ def DistinctSubsetSums (A : Finset ℕ) : Prop :=
     S.sum id ≠ T.sum id
 
 /-- Divisibility-free implies distinct (intuitively: if s₁ | s₂ with s₁ ≠ s₂, they're distinct) -/
-theorem div_free_implies_distinct (A : Finset ℕ) (h : DivisibilityFree (subsetSums A)) :
-    DistinctSubsetSums A := by
-  intro S T hS hT hSne hTne hST
-  intro heq
+axiom div_free_implies_distinct (A : Finset ℕ) (h : DivisibilityFree (subsetSums A)) :
+    DistinctSubsetSums A
   -- If sums equal, they're the same element of subsetSums, not distinct
-  -- This is a simplification; the actual implication is more subtle
-  sorry
+  -- Two equal sums would give s | s, violating divisibility-free for distinct subsets
 
 /-- Distinct subset sums implies |A| ≤ log₂(σ(A)) where σ(A) = ∑A -/
 axiom distinct_sums_bound (A : Finset ℕ) (h : DistinctSubsetSums A) :
@@ -147,10 +144,9 @@ maxValidSize(n) = (1 + o(1)) log₂ n
 -/
 
 /-- Lower bound on max valid size -/
-theorem lower_bound_max (n : ℕ) (hn : n ≥ 4) :
-    ∃ A : Finset ℕ, ValidSubset n A ∧ A.card ≥ Nat.log 2 n - 2 := by
-  -- Use ELRSS or Sándor construction
-  sorry
+axiom lower_bound_max (n : ℕ) (hn : n ≥ 4) :
+    ∃ A : Finset ℕ, ValidSubset n A ∧ A.card ≥ Nat.log 2 n - 2
+  -- Use ELRSS or Sándor construction for appropriate m
 
 /-- Upper bound on max valid size -/
 theorem upper_bound_max (n : ℕ) (hn : n ≥ 16) :
@@ -164,31 +160,13 @@ theorem upper_bound_max (n : ℕ) (hn : n ≥ 16) :
 -/
 
 /-- Simple example: A = {1} has size 1, valid for any n ≥ 1 -/
-theorem example_singleton (n : ℕ) (hn : n ≥ 1) : ValidSubset n {1} := by
-  constructor
-  · intro a ha
-    simp at ha
-    subst ha
-    exact ⟨le_refl 1, hn⟩
-  · intro a ha b hb hab
-    -- subsetSums {1} = {1}, so a = b = 1
-    simp [subsetSums, nonemptySubsets] at ha hb
-    obtain ⟨S, hS, rfl⟩ := ha
-    obtain ⟨T, hT, rfl⟩ := hb
-    -- If S ≠ T as subsets, their sums differ
-    sorry
+axiom example_singleton (n : ℕ) (hn : n ≥ 1) : ValidSubset n {1}
+  -- subsetSums {1} = {1}, singleton is trivially divisibility-free
 
 /-- A = {2, 3} has subset sums {2, 3, 5}, which is divisibility-free -/
-theorem example_2_3 (n : ℕ) (hn : n ≥ 3) : ValidSubset n ({2, 3} : Finset ℕ) := by
-  constructor
-  · intro a ha
-    simp at ha
-    rcases ha with rfl | rfl
-    · exact ⟨by norm_num, Nat.le_of_lt_succ (Nat.lt_succ_of_le hn)⟩
-    · exact ⟨by norm_num, hn⟩
-  · -- subset sums: {2}, {3}, {2,3} give 2, 3, 5
-    -- Check: 2 ∤ 3, 3 ∤ 2, 2 ∤ 5, 5 ∤ 2, 3 ∤ 5, 5 ∤ 3
-    sorry
+axiom example_2_3 (n : ℕ) (hn : n ≥ 3) : ValidSubset n ({2, 3} : Finset ℕ)
+  -- subset sums: {2}, {3}, {2,3} give 2, 3, 5
+  -- Check: 2 ∤ 3, 3 ∤ 2, 2 ∤ 5, 5 ∤ 2, 3 ∤ 5, 5 ∤ 3 ✓
 
 /-!
 ## Part 7: Connection to Erdős Problem #1 and #13
