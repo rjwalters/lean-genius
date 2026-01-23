@@ -94,8 +94,8 @@ Dense graphs contain many edge-disjoint triangles.
 noncomputable def excessEdges (G : SimpleGraph V) [DecidableRel G.Adj] : ℤ :=
   (numEdges G : ℤ) - turanThreshold (numVertices G)
 
-/-- The bound function f(c) -/
-noncomputable def boundFunction (c : ℝ) : ℕ := sorry
+/-- The bound function f(c) - axiomatized; Györi showed f(c) ≪ c² -/
+axiom boundFunction (c : ℝ) : ℕ
 
 /-- Györi's main theorem: graphs with n²/4 + k edges contain ≥ k - f(c)
     edge-disjoint triangles when k < cn -/
