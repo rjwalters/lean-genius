@@ -1,33 +1,109 @@
 {
   "id": "erdos-819",
-  "title": "Erdős Problem #819",
+  "title": "Erdős Problem #819: Sumsets of √N-Sized Sets",
   "slug": "erdos-819",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists ... with ... such that .... Estimate ....\n\n\n\nErds and Freud  proved\\[\\left({8}-o(1)...",
+  "description": "Let f(N) be maximal such that there exists A ⊆ {1,...,N} with |A| = ⌊√N⌋ such that |(A+A) ∩ [1,N]| = f(N). Estimate f(N).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, R. Freud",
     "sourceUrl": "https://erdosproblems.com/819",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos819Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sumsets"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 5,
     "erdosNumber": 819,
     "erdosUrl": "https://erdosproblems.com/819",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #819 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(N)$ be maximal such that there exists $A\\subseteq \\{1,\\ldots,N\\}$ with $\\lvert A\\rvert=\\lfloor N^{1/2}\\rfloor$ such that $\\lvert (A+A)\\cap [1,N]\\rvert=f(N)$. Estimate $f(N)$.\n\n\n\nErd\\H{o}s and Freud \\cite{ErFr91} proved\\[\\left(\\frac{3}{8}-o(1)\\right)N \\leq f(N) \\leq \\left(\\frac{1}{2}+o(1)\\right)N,\\]and note that it is closely connected to the size of the largest quasi-Sidon set (see [840]).\n\n\n\n\nReferences\n\n\n[ErFr91] Erd\\H{o}s, P. and Freud, R., On sums of a {S}idon-sequence. J. Number Theory (1991), 196--205.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #819 was studied by Erdős and Freud in 1991. They established that for sets A ⊆ [1,N] of size √N, the maximum size of the restricted sumset (A+A) ∩ [1,N] lies between (3/8 - o(1))N and (1/2 + o(1))N. The problem is closely connected to quasi-Sidon sets (Problem #840).",
+    "problemStatement": "Let f(N) be maximal such that there exists A ⊆ {1,...,N} with |A| = ⌊√N⌋ such that |(A+A) ∩ [1,N]| = f(N). Estimate f(N).\n\nErdős and Freud proved: (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N",
+    "proofStrategy": "We formalize the key definitions (sumsets, restricted sumsets, admissible sets) and state the Erdős-Freud bounds as axioms. The proof explores the gap between 0.375N and 0.5N that remains open.",
+    "keyInsights": [
+      "√N is a critical threshold - sets of this size have non-trivial sumset structure",
+      "The lower bound 3N/8 is achieved by carefully constructed sets avoiding too much additive structure",
+      "The upper bound N/2 comes from the constraint that sums must land in [1,N]",
+      "Connection to quasi-Sidon sets provides structural insight"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sumsets",
+      "title": "Sumsets",
+      "startLine": 41,
+      "endLine": 57,
+      "summary": "Definitions of sumset A+A and restricted sumset (A+A) ∩ [1,N]."
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function f(N)",
+      "startLine": 59,
+      "endLine": 97,
+      "summary": "Definition of admissible sets (A ⊆ [1,N] with |A| = √N) and f(N) as the maximum restricted sumset size."
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "startLine": 99,
+      "endLine": 115,
+      "summary": "Basic bounds: f(N) ≤ N and f(N) ≥ √N."
+    },
+    {
+      "id": "erdos-freud-bounds",
+      "title": "Erdős-Freud Bounds",
+      "startLine": 117,
+      "endLine": 168,
+      "summary": "The main result: (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N from the 1991 paper."
+    },
+    {
+      "id": "construction-arguments",
+      "title": "Construction and Arguments",
+      "startLine": 170,
+      "endLine": 193,
+      "summary": "Intuition behind the lower bound construction and upper bound counting argument."
+    },
+    {
+      "id": "quasi-sidon",
+      "title": "Connection to Quasi-Sidon Sets",
+      "startLine": 195,
+      "endLine": 217,
+      "summary": "Link to Problem #840 on quasi-Sidon sets where sum coincidences are limited."
+    },
+    {
+      "id": "extremal-examples",
+      "title": "Extremal Examples",
+      "startLine": 219,
+      "endLine": 245,
+      "summary": "Analysis of arithmetic progressions and random-like sets as extremal candidates."
+    },
+    {
+      "id": "the-gap",
+      "title": "The Gap",
+      "startLine": 247,
+      "endLine": 269,
+      "summary": "The open question: the gap of N/8 between the known bounds."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 271,
+      "endLine": 311,
+      "summary": "Complete summary of the OPEN problem with combined bounds theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #819 remains OPEN. Erdős and Freud (1991) established bounds (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N for the maximum restricted sumset size of √N-sized sets in [1,N]. The gap of N/8 between bounds has not been closed.",
+    "implications": "Understanding f(N) would illuminate the fundamental trade-off between set size and sumset coverage in additive combinatorics. The connection to quasi-Sidon sets suggests structural constraints on extremal configurations.",
+    "openQuestions": [
+      "What is the true asymptotic constant c where f(N) ~ cN?",
+      "Can the lower bound 3/8 be improved?",
+      "Can the upper bound 1/2 be improved?",
+      "What structural properties do extremal sets have?"
+    ]
   }
 }

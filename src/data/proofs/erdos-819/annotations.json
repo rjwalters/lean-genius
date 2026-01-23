@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-819-overview",
+    "proofId": "erdos-819",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #819** asks: For a set A ⊆ [1,N] of size √N, what is the maximum size of the restricted sumset (A+A) ∩ [1,N]?\n\n**The Setup:**\n- A has exactly ⌊√N⌋ elements from [1,N]\n- We look at pairwise sums a+b that stay within [1,N]\n- f(N) = maximum such count over all valid A\n\n**Known Bounds (Erdős-Freud 1991):**\n(3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N\n\n**Status:** The gap between 0.375N and 0.5N is OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-sumset",
+    "proofId": "erdos-819",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "sumset",
+    "content": "**Sumset A + A:**\n\nThe set of all pairwise sums {a + b : a, b ∈ A}.\n\n```lean\ndef sumset (A : Finset ℕ) : Finset ℕ :=\n  (A ×ˢ A).image (fun p => p.1 + p.2)\n```\n\nIf |A| = k, then |A+A| ranges from 2k-1 (arithmetic progression) to k(k+1)/2 (Sidon set).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-restricted",
+    "proofId": "erdos-819",
+    "range": { "startLine": 52, "endLine": 57 },
+    "type": "definition",
+    "title": "restrictedSumset",
+    "content": "**Restricted Sumset (A+A) ∩ [1,N]:**\n\nOnly counts sums that land in the original interval [1,N].\n\nSince elements of A are in [1,N], sums range from 2 to 2N, but we only care about those ≤ N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-admissible",
+    "proofId": "erdos-819",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "definition",
+    "title": "IsAdmissible",
+    "content": "**Admissible Set:**\n\nA set A is admissible if:\n1. A ⊆ {1, ..., N}\n2. |A| = ⌊√N⌋\n\nThe √N threshold is crucial - it's the size where sumset behavior becomes interesting without trivially filling [1,N].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-f",
+    "proofId": "erdos-819",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "definition",
+    "title": "f(N)",
+    "content": "**The function f(N):**\n\nf(N) = max { |(A+A) ∩ [1,N]| : A admissible }\n\nThis is the maximum restricted sumset size achievable by any √N-sized subset of [1,N].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-trivial-upper",
+    "proofId": "erdos-819",
+    "range": { "startLine": 103, "endLine": 108 },
+    "type": "theorem",
+    "title": "f(N) ≤ N",
+    "content": "**Trivial Upper Bound:**\n\nf(N) ≤ N because (A+A) ∩ [1,N] is a subset of [1,N].\n\nThis is far from tight - the interesting upper bound is N/2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-819-ef-lower",
+    "proofId": "erdos-819",
+    "range": { "startLine": 121, "endLine": 130 },
+    "type": "axiom",
+    "title": "Erdős-Freud Lower Bound",
+    "content": "**Lower Bound: f(N) ≥ (3/8 - o(1))N**\n\nErdős and Freud (1991) constructed sets achieving this bound.\n\nThe construction uses sets that:\n- Avoid too much additive structure\n- Still generate many distinct sums in [1,N]\n- Use arithmetic progressions with carefully chosen parameters",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-ef-upper",
+    "proofId": "erdos-819",
+    "range": { "startLine": 132, "endLine": 141 },
+    "type": "axiom",
+    "title": "Erdős-Freud Upper Bound",
+    "content": "**Upper Bound: f(N) ≤ (1/2 + o(1))N**\n\nNo √N-sized set can have restricted sumset larger than N/2.\n\n**Key insight:** Sums a+b range from 2 to 2N, but only half land in [1,N]. This geometric constraint limits coverage.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-combined",
+    "proofId": "erdos-819",
+    "range": { "startLine": 143, "endLine": 156 },
+    "type": "theorem",
+    "title": "erdos_freud_bounds",
+    "content": "**Combined Bounds:**\n\nFor any ε > 0, for sufficiently large N:\n(3/8 - ε)N ≤ f(N) ≤ (1/2 + ε)N\n\nThis theorem combines both axioms to show the asymptotic bounds hold simultaneously.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-coefficients",
+    "proofId": "erdos-819",
+    "range": { "startLine": 158, "endLine": 168 },
+    "type": "theorem",
+    "title": "coefficients_gap",
+    "content": "**The Asymptotic Constants:**\n\n- Lower coefficient: 3/8 = 0.375\n- Upper coefficient: 1/2 = 0.5\n- Gap: 1/8 = 0.125\n\nClosing this 12.5% gap is the open problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-819-quasi-sidon",
+    "proofId": "erdos-819",
+    "range": { "startLine": 199, "endLine": 208 },
+    "type": "definition",
+    "title": "IsQuasiSidon",
+    "content": "**Quasi-Sidon Sets:**\n\nA Sidon set has all pairwise sums distinct. A quasi-Sidon set allows few sum coincidences.\n\nFor quasi-Sidon A: |A+A| ≈ |A|²/2 ≈ N/2 (since |A| = √N).\n\nSee Problem #840 for the connection.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-819-problem840",
+    "proofId": "erdos-819",
+    "range": { "startLine": 210, "endLine": 217 },
+    "type": "axiom",
+    "title": "Problem #840 Connection",
+    "content": "**Link to Problem #840:**\n\nThe largest quasi-Sidon set in [1,N] is closely related to f(N).\n\nIf A is quasi-Sidon, its sumset is nearly as large as possible, suggesting the upper bound 1/2 might be close to tight.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-819-ap",
+    "proofId": "erdos-819",
+    "range": { "startLine": 223, "endLine": 231 },
+    "type": "theorem",
+    "title": "arithmetic_progression_sumset",
+    "content": "**Arithmetic Progressions:**\n\nFor A = {1, 2, ..., k}: |A+A| = 2k-1 sums.\n\nWith k = √N: only ~2√N sums, far from optimal.\n\nAPs have too much additive structure - their sums overlap heavily.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-819-gap",
+    "proofId": "erdos-819",
+    "range": { "startLine": 251, "endLine": 262 },
+    "type": "theorem",
+    "title": "gap_is_eighth",
+    "content": "**The Gap:**\n\nboundGap = 1/2 - 3/8 = 1/8\n\nThe gap is 12.5% of N. Finding the true asymptotic constant somewhere in [0.375, 0.5] is OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-true-constant",
+    "proofId": "erdos-819",
+    "range": { "startLine": 264, "endLine": 269 },
+    "type": "definition",
+    "title": "trueConstant",
+    "content": "**The Unknown:**\n\nWhat is the true constant c where f(N) ~ cN?\n\nIs it 3/8? Is it 1/2? Something in between?\n\nThis is marked as `sorry` - the answer is unknown!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-819-summary",
+    "proofId": "erdos-819",
+    "range": { "startLine": 275, "endLine": 303 },
+    "type": "theorem",
+    "title": "erdos_819_summary",
+    "content": "**Complete Summary:**\n\nErdős Problem #819 is **OPEN**.\n\n**QUESTION:** Estimate f(N) = max |(A+A) ∩ [1,N]| for |A| = √N.\n\n**KNOWN:** 0.375N ≤ f(N) ≤ 0.5N (asymptotically)\n\n**GAP:** N/8 (12.5%)\n\n**KEY INSIGHT:** √N is the critical threshold where sumset structure becomes non-trivial.",
+    "significance": "critical"
+  }
+]
