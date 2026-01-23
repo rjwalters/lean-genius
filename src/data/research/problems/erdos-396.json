@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T02:35:40.568Z",
+    "phase": "SURVEYED",
+    "since": "2026-01-23T16:50:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized with Catalan connection proved",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Verify specific OEIS values",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized falling factorial divides central binomial. Proved (n+1)|C(2n,n). Problem is OPEN.",
+    "builtItems": [
+      "proofs/Proofs/Erdos396Problem.lean - Main formalization (~180 lines)",
+      "fallingFactorial, centralBinom, catalan definitions",
+      "hasProperty n k - divisibility condition",
+      "erdos_396_conjecture statement",
+      "succ_dvd_centralBinom theorem (PROVED)",
+      "pomerance_infinitely_many, pomerance_density_bound (axioms)",
+      "OEIS A375077 minimal n values"
+    ],
+    "insights": [
+      "Falling factorial n(n-1)...(n-k) = n!/(n-k-1)!",
+      "C(2n,n) = (2n)! / (n!)² is the central binomial",
+      "Catalan: C_n = C(2n,n)/(n+1) is always integer",
+      "Pomerance 2014: infinitely many n for each k",
+      "Upper density of valid n is < 1/3",
+      "Rising factorial version has density 1",
+      "OEIS A375077: min n for k=0,1,2 is 2,14,33"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Verify case_k1_n4 or find correct minimal n",
+      "Study p-adic valuation approach",
+      "Connect to Kummer's theorem on binomial divisibility"
+    ],
     "markdown": "# Erdős #396 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $k$ there exists $n$ such that\\[\\prod_{0\\leq i\\leq k}(n-i) \\mid \\binom{2n}{n}?\\]\n\n\n\nErd\\H{o}s and Graham write that $n+1$ always divides $\\binom{2n}{n}$ (indeed $\\frac{1}{n+1}\\binom{2n}{n}$ is the $n$th Catalan number), but it is quite rare that $n$ divides $\\binom{2n}{n}$.\n\nPomerance \\cite{Po14} has shown that for any $k\\geq 0$ there are infinitely many $n$ such that $n-k\\mid\\binom{2n}{n}$, although the set of such $n$ has upper density $<1/3$. Pomerance also shows that the set of $n$ such that\\[\\prod_{1\\leq i\\leq k}(n+i)\\mid \\binom{2n}{n}\\]has density $1$.\n\nThe smallest $n$ for each $k$ are listed as A375077 on the OEIS.\n\n\n\n\nReferences\n\n\n[Po14] Pomerance, C., Divisors of the middle binomial coefficient. American Mathematical Monthly (2014).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #3\n- Problem #395\n- Problem #397\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Po14\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],
