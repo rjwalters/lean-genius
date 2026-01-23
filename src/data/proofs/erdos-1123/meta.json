@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Stanisław Ulam",
     "sourceUrl": "https://erdosproblems.com/1123",
     "date": "1984",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1123Problem.lean",
     "tags": [
       "erdos",
@@ -16,12 +16,59 @@
       "density",
       "continuum-hypothesis"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1123,
     "erdosUrl": "https://erdosproblems.com/1123",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.symmDiff",
+        "description": "Symmetric difference of sets",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "BooleanAlgebra",
+        "description": "Boolean algebra structure",
+        "module": "Mathlib.Order.BooleanAlgebra"
+      },
+      {
+        "theorem": "Quotient",
+        "description": "Quotient type construction",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "naturalDensity definition: |A ∩ {1,...,n}|/n limit",
+      "hasDensityZero definition: density zero condition",
+      "logDensity definition: (1/log n)·Σ_{k∈A, k≤n} 1/k limit",
+      "hasLogDensityZero definition: log-density zero condition",
+      "density_zero_implies_log_density_zero axiom: d(A)=0 ⟹ δ(A)=0",
+      "log_density_ideal_strictly_larger axiom: I₁ ⊊ I₂",
+      "B1 definition: P(ℕ)/I₁ quotient Boolean algebra",
+      "B2 definition: P(ℕ)/I₂ quotient Boolean algebra",
+      "B1_is_boolean_algebra and B2_is_boolean_algebra axioms",
+      "erdos_ulam_question definition: isomorphism question",
+      "erdos_ulam_lost_proof axiom: historical note on lost proof",
+      "finite_quotient_different axiom: P(ℕ)/Fin differs from B₁, B₂",
+      "just_krawczyk_theorem_CH axiom: isomorphism under CH (1984)",
+      "just_krawczyk_technique axiom: back-and-forth method",
+      "independence_from_ZFC axiom: question is ZFC-independent",
+      "I1_properties and I2_properties axioms: ideal properties",
+      "ideal_key_difference axiom: δ=0 but d undefined possible",
+      "continuum_hypothesis axiom: CH statement",
+      "CH_classification axiom: CH enables classification",
+      "without_CH_complexity axiom: non-CH models more complex",
+      "P_omega_mod_fin axiom: finite quotient comparison",
+      "other_quotient_algebras axiom: related algebras",
+      "classification_problem axiom: broader classification",
+      "erdos_ulam_collaboration axiom: 1943-44 Madison visit",
+      "the_lost_proof axiom: proof forgotten and never recovered",
+      "erdos_prize axiom: $100 prize offer"
+    ]
   },
   "overview": {
     "historicalContext": "This problem arose from Erdős's visit to Ulam in Madison, Wisconsin in 1943-44. They believed they had proved non-isomorphism, but the proof was 'lost' and never reconstructed. Erdős wrote: 'The proof is gone and nobody can prove it.' He offered $100 for a resolution. Just and Krawczyk (1984) proved that under the Continuum Hypothesis, the algebras ARE isomorphic - a surprising positive answer to a question posed negatively.",
