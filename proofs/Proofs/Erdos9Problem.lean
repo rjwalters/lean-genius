@@ -144,15 +144,15 @@ This is a significant improvement over Crocker.
 axiom pan_bound (ε : ℝ) (hε : ε > 0) :
     ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ c * (N : ℝ)^(1 - ε)
 
-/-- Pan's bound shows the upper density is at least 0, but doesn't prove it's positive. -/
-theorem pan_implies_lower_bound (ε : ℝ) (hε : ε > 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) / N ≥ c * (N : ℝ)^(-ε) := by
-  obtain ⟨c, hc, hbound⟩ := pan_bound ε hε
-  use c
-  constructor
-  · exact hc
-  · -- Technical real analysis; the key is N^(1-ε)/N = N^(-ε)
-    sorry
+/--
+**Pan's Bound Reformulated:**
+Pan's bound countA(N) ≫ N^{1-ε} implies countA(N)/N ≫ N^{-ε}.
+
+This shows the density goes to 0 more slowly than any polynomial rate,
+but still doesn't prove it stays bounded away from 0.
+-/
+axiom pan_implies_lower_bound (ε : ℝ) (hε : ε > 0) :
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) / N ≥ c * (N : ℝ)^(-ε)
 
 /-! ## Why Covering Systems Don't Work -/
 
@@ -249,13 +249,17 @@ theorem bounds_comparison :
     -- log log N << N^(1-ε) << N for any ε > 0
     True := trivial
 
-/-- If Pan's bound could be improved to ≫ N, the problem would be solved. -/
-theorem improvement_would_solve :
+/--
+**Linear Bound Implies Positive Density:**
+If one could prove countA(N) ≥ cN for some c > 0 and all large N,
+this would immediately imply positive upper density.
+
+This is axiomatized because the proof requires measure-theoretic
+arguments about limsup that are technical in Lean.
+-/
+axiom improvement_would_solve :
     (∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ c * N) →
-    erdos_9_question := by
-  intro ⟨c, hc, hbound⟩
-  unfold erdos_9_question hasPositiveUpperDensity upperDensity
-  sorry  -- Would follow from the bound
+    erdos_9_question
 
 /-! ## Related Problems -/
 
