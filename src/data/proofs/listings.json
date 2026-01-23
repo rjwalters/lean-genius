@@ -11341,17 +11341,24 @@
   },
   {
     "id": "erdos-708",
-    "title": "Erdős Problem #708",
+    "title": "Erdős Problem #708: Divisibility of Products by Consecutive Integers",
     "slug": "erdos-708",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... with ... and any set ... of ... consecutive integers there exists some ... with ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B ⊆ I with |B| = g(n) has product divisible by the product of A. Is g(n) ≤ (2 + o(1))n?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "products",
+      "consecutive-integers",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 708,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-709",
