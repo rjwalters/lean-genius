@@ -13365,17 +13365,22 @@
   },
   {
     "id": "erdos-927",
-    "title": "Erdős Problem #927",
+    "title": "Erdős Problem #927: Distinct Clique Sizes in Graphs",
     "slug": "erdos-927",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum number of different sizes of cliques that can occur in a graph on ... vertices. Estimate ... - in part...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) be the maximum number of distinct clique sizes in a graph on n vertices. Is g(n) = n - log₂n - log*(n) + O(1)? Answer: NO.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cliques",
+      "extremal-combinatorics",
+      "disproved",
+      "solved"
     ],
     "erdosNumber": 927,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-928",
