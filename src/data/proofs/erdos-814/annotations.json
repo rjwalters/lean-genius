@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-e814-header",
+    "proofId": "erdos-814",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs**\n\nThis problem asks a natural question in extremal graph theory: if a graph has many edges, must it contain a relatively small induced subgraph where every vertex has high degree?\n\nMore precisely: given parameters k and n, and a graph with n vertices and at least (k-1)(n-k+2) + C(k-2,2) + 1 edges, does there exist a constant cₖ > 0 such that we can always find an induced subgraph on at most (1-cₖ)n vertices with minimum degree at least k?\n\nThe answer is YES, proved by Lisa Sauermann in 2019.",
+    "mathContext": "The edge threshold formula (k-1)(n-k+2) + C(k-2,2) + 1 is carefully chosen. C(k-2,2) is the binomial coefficient 'k-2 choose 2'. This threshold is tight: graphs with exactly one fewer edge can be constructed that avoid the desired property.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal-graph-theory", "minimum-degree", "induced-subgraphs"]
+  },
+  {
+    "id": "ann-e814-imports",
+    "proofId": "erdos-814",
+    "range": { "startLine": 35, "endLine": 44 },
+    "type": "supporting",
+    "title": "Imports and Setup",
+    "content": "**Mathlib Dependencies**\n\nThe formalization uses Mathlib's graph theory library:\n- `SimpleGraph.Basic`: Core simple graph definitions\n- `SimpleGraph.Subgraph`: Induced subgraph structures\n- `SimpleGraph.Finite`: Finiteness properties for graphs\n- `Finset.Card`: Cardinality of finite sets\n- `Nat.Choose.Basic`: Binomial coefficients for the edge threshold",
+    "mathContext": "SimpleGraph V represents an undirected graph without self-loops or multi-edges on vertex type V. The degree of a vertex is the number of adjacent vertices.",
+    "significance": "supporting",
+    "relatedConcepts": ["simple-graphs", "finset", "binomial-coefficients"]
+  },
+  {
+    "id": "ann-e814-edge-threshold",
+    "proofId": "erdos-814",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "Edge Threshold Definition",
+    "content": "**The Critical Edge Count**\n\nThe edge threshold is defined as:\n\nedgeThreshold(k, n) = (k-1)(n-k+2) + C(k-2, 2) + 1\n\nThis is the minimum number of edges that forces the existence of a small minimum-degree-k subgraph. Graphs with exactly this many minus one edges can be constructed to avoid the property, showing the bound is tight.",
+    "mathContext": "For k=3, this simplifies to 2(n-1)+1 = 2n-1 edges. For k=2, it gives n+1 edges. The binomial coefficient C(k-2,2) accounts for a complete graph on k-2 vertices that can absorb excess edges.",
+    "significance": "critical",
+    "relatedConcepts": ["edge-density", "extremal-functions", "binomial-coefficients"]
+  },
+  {
+    "id": "ann-e814-sauermann-constant",
+    "proofId": "erdos-814",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "axiom",
+    "title": "Sauermann's Constant",
+    "content": "**The Constant cₖ**\n\nSauermann's theorem guarantees the existence of a constant cₖ with two properties:\n1. cₖ > 0 (the subgraph is strictly smaller than the original)\n2. cₖ · k³ ≥ 1 (the constant is at least of order 1/k³)\n\nThis means for k=3, we get cₖ ≥ 1/27; for k=10, we get cₖ ≥ 1/1000.",
+    "mathContext": "The notation cₖ ≫ 1/k³ means cₖ is asymptotically at least 1/k³ as k grows. Sauermann's proof uses probabilistic and algebraic methods to achieve this bound.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic-notation", "constant-bounds", "probabilistic-method"]
+  },
+  {
+    "id": "ann-e814-efrs-bound",
+    "proofId": "erdos-814",
+    "range": { "startLine": 87, "endLine": 102 },
+    "type": "axiom",
+    "title": "Original EFRS Bound (1990)",
+    "content": "**The First Quantitative Result**\n\nErdős, Faudree, Rousseau, and Schelp proved in 1990 that a subgraph exists with at most n - cₖ√n vertices. This was the first result giving an explicit savings over n vertices.\n\nWhile this doesn't achieve the full conjecture (savings of cn), it established the framework and showed the conjecture was plausible.",
+    "mathContext": "The √n savings means for a graph on n=10000 vertices, the subgraph has at most n - c·100 vertices. The improvement to n/log(n) and then cn represents significant advances in technique.",
+    "significance": "key",
+    "relatedConcepts": ["historical-progress", "extremal-bounds", "sqrt-savings"]
+  },
+  {
+    "id": "ann-e814-mns-bound",
+    "proofId": "erdos-814",
+    "range": { "startLine": 104, "endLine": 118 },
+    "type": "axiom",
+    "title": "Mousset-Noever-Skorić Improvement (2017)",
+    "content": "**Improved to n/log(n) Savings**\n\nIn 2017, Mousset, Noever, and Skorić improved the bound to n - cₖ·n/log(n) vertices. This was a significant step toward the full conjecture.\n\nThe savings of n/log(n) is much larger than √n for large n: for n = 10⁶, we get savings of about 10⁶/20 = 50,000 vs √10⁶ = 1000.",
+    "mathContext": "The improvement uses refined probabilistic arguments. The log factor comes from careful analysis of degree distributions in random-like substructures of the graph.",
+    "significance": "key",
+    "relatedConcepts": ["logarithmic-bounds", "probabilistic-method", "degree-distribution"]
+  },
+  {
+    "id": "ann-e814-main-theorem",
+    "proofId": "erdos-814",
+    "range": { "startLine": 126, "endLine": 167 },
+    "type": "theorem",
+    "title": "Sauermann's Theorem and Main Result",
+    "content": "**The Full Resolution (2019)**\n\nSauermann's theorem axiom states that for any graph exceeding the edge threshold, there exists a subgraph S with:\n1. |S| ≤ (1-c)n vertices (strictly smaller by a constant fraction)\n2. |S| ≥ k vertices (large enough to have meaningful degree)\n3. Every vertex in S has at least k neighbors within S\n\nThe erdos_814 theorem then packages this as the positive answer to Erdős's original question.",
+    "mathContext": "The proof derives erdos_814 from sauermann_constant and sauermann_theorem. It shows the existence of the desired constant c for each k ≥ 2, then applies the structure theorem to any sufficiently dense graph.",
+    "significance": "critical",
+    "relatedConcepts": ["main-result", "induced-subgraphs", "minimum-degree"]
+  },
+  {
+    "id": "ann-e814-threshold-k3",
+    "proofId": "erdos-814",
+    "range": { "startLine": 175, "endLine": 182 },
+    "type": "theorem",
+    "title": "Edge Threshold for k=3",
+    "content": "**The k=3 Case**\n\nFor k=3, the edge threshold simplifies to 2(n-1)+1 = 2n-1 edges.\n\nThis is proved by direct computation: (3-1)(n-3+2) + C(3-2,2) + 1 = 2(n-1) + 0 + 1 = 2n-1.\n\nThe case k=3 was the original problem studied by Erdős and Hajnal.",
+    "mathContext": "The proof uses Lean's `omega` tactic for arithmetic after simplifying the binomial coefficient C(1,2) = 0.",
+    "significance": "key",
+    "relatedConcepts": ["special-cases", "binomial-simplification", "erdos-hajnal"]
+  },
+  {
+    "id": "ann-e814-extremal",
+    "proofId": "erdos-814",
+    "range": { "startLine": 192, "endLine": 204 },
+    "type": "axiom",
+    "title": "Extremal Construction",
+    "content": "**Tightness of the Bound**\n\nThe EFRS paper constructs explicit graphs with exactly edgeThreshold(k,n) - 1 edges that avoid minimum-degree-k subgraphs on fewer than (1-ε)n vertices for any ε > 0.\n\nThis shows the edge threshold is optimal: one fewer edge allows counterexamples.",
+    "mathContext": "The extremal construction typically uses a union of complete bipartite graphs or star graphs, carefully balanced to maximize edges while maintaining low minimum degree in all small subgraphs.",
+    "significance": "key",
+    "relatedConcepts": ["extremal-constructions", "tightness", "counterexamples"]
+  },
+  {
+    "id": "ann-e814-erdos-hajnal",
+    "proofId": "erdos-814",
+    "range": { "startLine": 212, "endLine": 239 },
+    "type": "theorem",
+    "title": "Erdős-Hajnal k=3 Case",
+    "content": "**The Original Problem**\n\nThe case k=3 was posed by Erdős and Hajnal before the general conjecture. It asks: does every graph with 2n-1 edges contain a small subgraph where every vertex has degree at least 3?\n\nThis theorem shows the k=3 case follows from the general result erdos_814.",
+    "mathContext": "The proof instantiates erdos_814 with k=3, then uses edgeThreshold_three to convert between the simplified edge count 2(n-1)+1 and the general threshold formula.",
+    "significance": "key",
+    "relatedConcepts": ["special-cases", "historical-origin", "degree-three"]
+  },
+  {
+    "id": "ann-e814-handshaking",
+    "proofId": "erdos-814",
+    "range": { "startLine": 247, "endLine": 253 },
+    "type": "axiom",
+    "title": "Handshaking Lemma",
+    "content": "**Sum of Degrees = 2 × Edges**\n\nThe handshaking lemma is a fundamental result: the sum of all vertex degrees equals twice the number of edges. This is because each edge contributes 1 to the degree of each of its two endpoints.\n\nThis is axiomatized here but is provable in Mathlib for finite graphs.",
+    "mathContext": "For a graph G: Σᵥ deg(v) = 2|E(G)|. This is used in degree-counting arguments to show that high edge density forces high-degree vertices.",
+    "significance": "supporting",
+    "relatedConcepts": ["degree-sum", "double-counting", "graph-basics"]
+  },
+  {
+    "id": "ann-e814-high-degree",
+    "proofId": "erdos-814",
+    "range": { "startLine": 255, "endLine": 273 },
+    "type": "theorem",
+    "title": "High Degree Vertices Exist",
+    "content": "**Degree Averaging Argument**\n\nIf a graph has at least kn/2 edges, then some vertex must have degree at least k. This follows from the handshaking lemma: if all degrees were less than k, the sum would be less than kn, contradicting the edge count.\n\nThis is a standard pigeonhole argument in extremal graph theory.",
+    "mathContext": "The proof uses proof by contradiction: assuming all degrees are less than k leads to Σᵥ deg(v) < kn, but handshaking gives Σᵥ deg(v) = 2|E| ≥ kn, a contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": ["pigeonhole-principle", "degree-averaging", "extremal-arguments"]
+  },
+  {
+    "id": "ann-e814-summary",
+    "proofId": "erdos-814",
+    "range": { "startLine": 279, "endLine": 319 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**Complete Answer to Erdős #814**\n\nThe final theorems summarize the complete resolution:\n\n- erdos_814_summary: For all k ≥ 2, the constant cₖ exists with the required properties\n- erdos_814_answer: Confirms the answer is YES for every k\n\nThis fully resolves the 1990 conjecture of Erdős, Faudree, Rousseau, and Schelp.",
+    "mathContext": "The summary theorem combines all the key results: existence of cₖ, the asymptotic bound cₖ ≫ 1/k³, and the subgraph existence guarantee. This provides a complete formalization of the mathematical statement.",
+    "significance": "critical",
+    "relatedConcepts": ["main-theorem", "complete-resolution", "conjecture-proof"]
+  }
+]
