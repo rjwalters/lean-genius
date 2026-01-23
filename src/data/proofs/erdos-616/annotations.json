@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-616-1",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #616 asks: for r-uniform hypergraphs, what is the best t(r) such that local covering implies global covering?\n\n**The Setup:**\n- r-uniform hypergraph: every edge has exactly r vertices\n- Covering number τ(G): minimum vertices needed to hit all edges\n- Local condition: every subgraph on ≤ 3r-3 vertices has τ ≤ 1\n\n**Known Bounds (Erdős-Hajnal-Tuza 1991):**\n(3/16)r + 7/8 ≤ t(r) ≤ (1/5)r\n\n**Status:** The gap between 0.1875r and 0.2r is OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-616-2",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 46,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph",
+    "content": "**UniformHypergraph:**\n\nA structure representing an r-uniform hypergraph - a collection of edges where each edge is an r-element set of vertices.\n\n```lean\nstructure UniformHypergraph (V : Type*) (r : ℕ) where\n  edges : Set (Finset V)\n  uniform : ∀ e ∈ edges, e.card = r\n```\n\n**Examples:**\n- r = 2: ordinary graphs (edges are pairs)\n- r = 3: triple systems\n- r ≥ 3: the focus of this problem",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-616-3",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 55,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Covering Number τ(G)",
+    "content": "**IsCoveringSet and coveringNumber:**\n\nA covering set (or transversal) S must intersect every edge - at least one vertex of S belongs to each edge.\n\nThe covering number τ(G) is the minimum size of such a set.\n\n**Intuition:** If edges are tasks and vertices are resources, τ(G) is the minimum resources needed so every task gets at least one resource.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-616-4",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 70,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Induced Subhypergraph",
+    "content": "**inducedSubhypergraph:**\n\nThe hypergraph induced on vertex set W contains only edges that lie entirely within W.\n\nThis is crucial for the local condition: we look at small induced subhypergraphs (≤ 3r-3 vertices) and require each to have τ ≤ 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-616-5",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 85,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Local Covering Condition",
+    "content": "**HasLocalCoveringBound:**\n\nThe local condition τ(G') ≤ 1 for subgraphs G' on ≤ 3r-3 vertices.\n\n**What does τ ≤ 1 mean?** There exists a single vertex that covers all edges - equivalently, all edges share a common vertex.\n\n**The threshold 3r-3:** Chosen so that small subhypergraphs can have multiple edges (at least 2 disjoint r-edges require 2r vertices), making the condition non-trivial.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-616-6",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 108,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**ErdosProblem616:**\n\n```lean\ndef ErdosProblem616 (r : ℕ) (t : ℕ) : Prop :=\n  r ≥ 3 →\n  ∀ (V : Type*) [Fintype V] (G : UniformHypergraph V r),\n    HasLocalCoveringBound G (localThreshold r) →\n    coveringNumber G ≤ t\n```\n\nThe question: What is the optimal t = t(r)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-616-7",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 130,
+      "endLine": 154
+    },
+    "type": "axiom",
+    "title": "Erdős-Hajnal-Tuza Bounds",
+    "content": "**eht_lower_bound and eht_upper_bound:**\n\nThe 1991 paper established:\n\n**Lower bound:** t(r) ≥ (3/16)r + 7/8\n- Achieved by explicit constructions\n- Shows the optimal t grows at least this fast\n\n**Upper bound:** t(r) ≤ (1/5)r\n- Every hypergraph satisfying the local condition has τ ≤ r/5\n\n**The gap:** 3/16 = 0.1875 vs 1/5 = 0.2 - only ~7% difference asymptotically, but closing it is hard.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-616-8",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 156,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "Coefficient Bounds",
+    "content": "**coefficient_bounds:**\n\nA simple verification that 3/16 ≤ 1/5.\n\n```lean\ntheorem coefficient_bounds :\n    lowerCoefficient ≤ upperCoefficient := by\n  unfold lowerCoefficient upperCoefficient\n  norm_num\n```\n\nThis confirms the known bounds are consistent (the lower bound doesn't exceed the upper bound).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-616-9",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 198,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Why 3r-3?",
+    "content": "**The threshold 3r-3:**\n\nThis specific value arises from extremal considerations:\n\n- Two disjoint r-edges need 2r vertices\n- The condition τ ≤ 1 becomes non-trivial when multiple edges exist\n- 3r-3 is the minimal threshold where interesting structure can occur\n\n**Connection to sunflowers:** A sunflower is edges sharing a common 'core'. The condition τ ≤ 1 enforces sunflower-like local structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-616-10",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 225,
+      "endLine": 248
+    },
+    "type": "theorem",
+    "title": "Kernel Characterization",
+    "content": "**tau_one_iff_kernel:**\n\nτ(G) ≤ 1 is equivalent to having a 'kernel' vertex v ∈ every edge.\n\n```lean\ntheorem tau_one_iff_kernel {V : Type*} [Fintype V] {r : ℕ}\n    (G : UniformHypergraph V r) :\n    (∃ v : V, IsCoveringSet G {v}) ↔ HasKernel G\n```\n\nThis formalizes: 'covering with one vertex' = 'all edges share a common point'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-616-11",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 254,
+      "endLine": 267
+    },
+    "type": "concept",
+    "title": "Fractional Relaxation",
+    "content": "**Fractional covering number τ*(G):**\n\nThe LP relaxation allows fractional vertex weights (not just 0/1).\n\nWe always have τ*(G) ≤ τ(G), and the 'integrality gap' measures how much rounding costs.\n\nUnderstanding τ* can give insights into the structure of optimal integer solutions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-616-12",
+    "proofId": "erdos-616",
+    "range": {
+      "startLine": 273,
+      "endLine": 316
+    },
+    "type": "theorem",
+    "title": "Status Summary",
+    "content": "**erdos_616_summary:**\n\nErdős Problem #616 is **OPEN**.\n\n**QUESTION:** Find optimal t(r) where local τ ≤ 1 implies global τ ≤ t.\n\n**KNOWN:**\n- Lower: (3/16)r + 7/8 ≤ t(r) [constructions exist]\n- Upper: t(r) ≤ (1/5)r [covering argument]\n\n**OPEN:** Close the gap between coefficients 0.1875 and 0.2.\n\n**KEY INSIGHTS:**\n1. Local condition = small pieces have common vertex\n2. Question = how does local structure bound global complexity?\n3. Related to Helly-type theorems and sunflower lemmas",
+    "significance": "critical"
+  }
+]
