@@ -11248,17 +11248,24 @@
   },
   {
     "id": "erdos-710",
-    "title": "Erdős Problem #710",
+    "title": "Erdős Problem #710: Minimal Interval for Divisibility Matching",
     "slug": "erdos-710",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in ... there exist distinct integers ... such that ... for all .... Obtain an asymptotic formula...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k|aₖ for all k. Obtain an asymptotic formula for f(n). Known bounds differ by √(log log n) factor; exact asymptotics remain OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "asymptotic-analysis",
+      "combinatorics",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 710,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-711",
