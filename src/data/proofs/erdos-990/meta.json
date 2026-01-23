@@ -1,33 +1,173 @@
 {
   "id": "erdos-990",
-  "title": "Erdős Problem #990",
+  "title": "Erdős Problem #990: Polynomial Root Distribution and the Erdős-Turán Inequality",
   "slug": "erdos-990",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a polynomial. Is it true that, if ... has roots ... with corresponding arguments ..., then for all intervals ...\\[...",
+  "description": "For a complex polynomial f with d roots having arguments θ₁,...,θ_d, is the discrepancy |#{θᵢ ∈ I} - |I|d/(2π)| bounded by O(√(n log M)) where n is the sparsity? Classical Erdős-Turán (1950) proved this with d, the sparse case remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Turán (1950), Ganelius (1954), Soundararajan (2019)",
     "sourceUrl": "https://erdosproblems.com/990",
-    "date": "",
+    "date": "1950-2021",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos990Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "polynomials",
+      "equidistribution",
+      "discrepancy",
+      "complex-analysis"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 990,
     "erdosUrl": "https://erdosproblems.com/990",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.arg",
+        "description": "Argument of a complex number",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Polynomial.Basic",
+        "description": "Polynomial definitions",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "ComplexPoly definition: coefficient sequence representation",
+      "nonzeroCoeffCount definition: sparsity of polynomial",
+      "mahlerM definition: the normalization factor in Erdős-Turán",
+      "rootsInInterval definition: counting roots by argument",
+      "discrepancy definition: deviation from uniform distribution",
+      "maxDiscrepancy definition: supremum over all intervals",
+      "erdos_turan_classical axiom: the 1950 result",
+      "sparseConjecture definition: the open problem",
+      "sparse_improves_dense theorem: n ≤ d+1",
+      "sharp_erdos_turan axiom: optimal constant exists",
+      "erdelyi_one_sided axiom: one-sided improvement"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #990 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f=a_0+\\cdots+a_dx^d\\in \\mathbb{C}[x]$ be a polynomial. Is it true that, if $f$ has roots $z_1,\\ldots,z_d$ with corresponding arguments $\\theta_1,\\ldots,\\theta_d\\in [0,2\\pi]$, then for all intervals $I\\subseteq [0,2\\pi]$\\[\\left\\lvert (\\# \\theta_i \\in I) - \\frac{\\lvert I\\rvert}{2\\pi}d\\right\\rvert \\ll \\left(n\\log M\\right)^{1/2},\\]where $n$ is the number of non-zero coefficients of $f$ and\\[M=\\frac{\\lvert a_0\\rvert+\\cdots +\\lvert a_d\\rvert}{(\\lvert a_0\\rvert\\lvert a_d\\rvert)^{1/2}}.\\]\n\n\n\nErd\\H{o}s and Tur\\'{a}n \\cite{ErTu50} proved such an upper bound with $n$ replaced by $d$.\n\n\n\n\nReferences\n\n\n[ErTu50] Erd\\H{o}s, P. and Tur\\'an, P., On the distribution of roots of polynomials. Ann. of Math. (2) (1950), 105--119.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #990** concerns the angular distribution of polynomial roots, a fundamental topic connecting complex analysis, number theory, and probability.\n\n**Historical Development:**\n- **Erdős-Turán (1950):** Proved that polynomial roots cannot cluster too much in any angular sector. The discrepancy is O(√(d log M)) where d is the degree.\n- **Ganelius (1954):** Improved the constant in the Erdős-Turán bound.\n- **Mignotte (1992):** Further refinements of the constant.\n- **Soundararajan (2019):** Connected the problem to Hilbert transforms and Fourier analysis.\n- **Steinerberger et al. (2021):** Proved the sharp Erdős-Turán inequality, determining the optimal constant.\n\n**The Open Question:** Can the bound be improved for sparse polynomials by replacing the degree d with the number of nonzero coefficients n? For x^d - 1, we have n = 2 but d can be arbitrarily large.",
+    "problemStatement": "**Problem Statement**\n\nLet $f = a_0 + a_1 x + \\cdots + a_d x^d \\in \\mathbb{C}[x]$ be a polynomial with roots $z_1, \\ldots, z_d$ having arguments $\\theta_1, \\ldots, \\theta_d \\in [0, 2\\pi]$.\n\n**Question:** Is it true that for all intervals $I \\subseteq [0, 2\\pi]$:\n$$\\left| \\#\\{\\theta_i \\in I\\} - \\frac{|I|}{2\\pi} d \\right| \\ll \\sqrt{n \\log M}$$\n\nwhere $n$ is the number of nonzero coefficients and\n$$M = \\frac{|a_0| + \\cdots + |a_d|}{\\sqrt{|a_0||a_d|}}$$\n\n**Known Result (Erdős-Turán 1950):** This holds with $n$ replaced by $d$ (the degree).\n\n**Status:** OPEN for the sparse case. The classical result with degree $d$ is PROVED.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** ComplexPoly, nonzeroCoeffCount (sparsity), mahlerM (normalization)\n\n2. **Root Counting:** rootsInInterval, expectedCount, discrepancy, maxDiscrepancy\n\n3. **Classical Result:** Axiomatize Erdős-Turán (1950) with degree d\n\n4. **Sparse Conjecture:** Define as replacing d with n (sparsity)\n\n5. **Supporting Results:** Ganelius improvement, sharp constant, Erdélyi one-sided version\n\n6. **Special Cases:** Roots of unity, Littlewood polynomials",
+    "keyInsights": [
+      "**Discrepancy Bounds:** The Erdős-Turán inequality quantifies how far polynomial roots can deviate from uniform distribution on the unit circle. The bound √(d log M) is essentially optimal.",
+      "**Sparsity vs Degree:** A sparse polynomial like x^d - 1 has degree d but only 2 nonzero coefficients. The open question asks if sparsity, not degree, controls root distribution.",
+      "**Mahler Measure Connection:** The quantity M = (|a₀|+...+|aₐ|)/√(|a₀||aₐ|) measures coefficient concentration. For monic polynomials with |a₀| = |aₐ| = 1, we have M ≥ 2.",
+      "**Sharp Constant:** After 70 years, the optimal constant in Erdős-Turán was determined (Steinerberger et al. 2021), using connections to Hilbert transforms.",
+      "**One-Sided Improvement:** Erdélyi proved a subtle one-sided version: roots can't concentrate too much above the expected count in any sector.",
+      "**Applications:** The inequality applies to random matrix eigenvalue distribution, numerical interpolation nodes, and zeros of L-functions."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "ComplexPoly, nonzeroCoeffCount, argument function",
+      "startLine": 36,
+      "endLine": 55
+    },
+    {
+      "id": "mahler",
+      "title": "The Mahler Measure",
+      "summary": "Definition of M and its basic properties",
+      "startLine": 57,
+      "endLine": 77
+    },
+    {
+      "id": "discrepancy",
+      "title": "Root Counting and Discrepancy",
+      "summary": "rootsInInterval, expectedCount, discrepancy, maxDiscrepancy",
+      "startLine": 79,
+      "endLine": 106
+    },
+    {
+      "id": "classical",
+      "title": "Classical Erdős-Turán (1950)",
+      "summary": "The original bound with degree d and subsequent improvements",
+      "startLine": 108,
+      "endLine": 129
+    },
+    {
+      "id": "sparse",
+      "title": "The Sparse Conjecture",
+      "summary": "The open question: can d be replaced with sparsity n?",
+      "startLine": 131,
+      "endLine": 151
+    },
+    {
+      "id": "sharp",
+      "title": "Sharp Constant",
+      "summary": "Soundararajan's work and the optimal constant",
+      "startLine": 153,
+      "endLine": 169
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "summary": "Roots of unity, random polynomials, Littlewood polynomials",
+      "startLine": 171,
+      "endLine": 192
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "Extensions to Jordan curves and potential theory",
+      "startLine": 194,
+      "endLine": 210
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "summary": "Interpolation, random matrices, L-functions",
+      "startLine": 212,
+      "endLine": 228
+    },
+    {
+      "id": "lower",
+      "title": "Lower Bounds",
+      "summary": "The Erdős-Turán bound is essentially tight",
+      "startLine": 230,
+      "endLine": 244
+    },
+    {
+      "id": "one-sided",
+      "title": "One-Sided Improvements",
+      "summary": "Erdélyi's refinement and Totik-Varjú corollary",
+      "startLine": 246,
+      "endLine": 261
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status: classical proved, sparse case open",
+      "startLine": 263,
+      "endLine": 291
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #990 asks whether polynomial root distribution can be controlled by sparsity rather than degree. The classical Erdős-Turán inequality (1950) bounds discrepancy by O(√(d log M)) where d is degree. The question whether d can be replaced by n (number of nonzero coefficients) remains OPEN. The sharp constant in the classical inequality was determined in 2021.",
+    "implications": "**Implications for Analysis and Number Theory**\n\n1. **Polynomial Root Theory:** Understanding root distribution is fundamental to complex analysis and approximation theory.\n\n2. **Sparse Polynomials:** If the conjecture is true, sparse polynomials would have much better root equidistribution than their degree suggests.\n\n3. **Random Matrix Theory:** The inequality applies to characteristic polynomials, controlling eigenvalue angular distribution.\n\n4. **Numerical Analysis:** Polynomial interpolation node selection benefits from equidistribution bounds.\n\n5. **Number Theory:** Connections to zeros of L-functions and the Riemann hypothesis via polynomial approximations.",
+    "openQuestions": [
+      "Can the bound O(√(d log M)) be improved to O(√(n log M)) where n is sparsity?",
+      "What is the sharp constant for specific polynomial families (Littlewood, random)?",
+      "Can the sparse conjecture be proved for trinomials (n = 3)?",
+      "What is the exact relationship between sparsity and root clustering?",
+      "Are there probabilistic versions with better constants for random sparse polynomials?"
+    ]
   }
 }
