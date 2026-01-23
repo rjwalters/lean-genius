@@ -1,33 +1,110 @@
 {
   "id": "erdos-732",
-  "title": "Erdős Problem #732",
+  "title": "Erdős Problem #732: Block-Compatible Sequences",
   "slug": "erdos-732",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence ... block-compatible if there is a pairwise balanced block design ... such that ... for .... (A pairwise bloc...",
+  "description": "A sequence 1 < X₁ ≤ X₂ ≤ ... ≤ Xₘ ≤ n is block-compatible if there exists a pairwise balanced block design A₁, ..., Aₘ ⊆ {1, ..., n} with |Aᵢ| = Xᵢ. Question 1: Characterize block-compatible sequences. Question 2: Count them.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Noga Alon",
     "sourceUrl": "https://erdosproblems.com/732",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "partially-solved",
     "proofRepoPath": "Proofs/Erdos732Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "block-designs",
+      "enumeration"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 732,
     "erdosUrl": "https://erdosproblems.com/732",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #732 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence $1< X_1\\leq \\cdots \\leq X_m\\leq n$ block-compatible if there is a pairwise balanced block design $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that $\\lvert A_i\\rvert=X_i$ for $1\\leq i\\leq m$. (A pairwise block design means that every pair in $\\{1,\\ldots,n\\}$ is contained in exactly one of the $A_i$.)\n\nAre there necessary and sufficient conditions for $(X_i)$ to be block-compatible?\n\nIs there some constant $c>0$ such that for all large $n$ there are\\[\\geq \\exp(c n^{1/2}\\log n)\\]many block-compatible sequences for $\\{1,\\ldots,n\\}$?\n\n\n\nErd\\H{o}s noted that a trivial necessary condition is $\\sum_i \\binom{X_i}{2}=\\binom{n}{2}$, but wasn't sure if there would be a reasonable necessary and sufficient condition.\n\nHe could prove that there are\\[\\leq \\exp(O(n^{1/2}\\log n))\\]many block-compatible sequences for $\\{1,\\ldots,n\\}$.\n\nAlon has proved there are at least\\[2^{(\\frac{1}{2}+o(1))n^{1/2}\\log n}\\]many sequences which are block-compatible for $n$.\nSee also [733].\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1981. A pairwise balanced block design (PBD) partitions all pairs from {1,...,n} into blocks. The sequence of block sizes determines many properties. Alon proved the counting question, but characterization remains open.",
+    "problemStatement": "Call a sequence 1 < X₁ ≤ X₂ ≤ ... ≤ Xₘ ≤ n block-compatible if there is a pairwise balanced block design A₁,...,Aₘ ⊆ {1,...,n} with |Aᵢ| = Xᵢ. Q1: Are there necessary and sufficient conditions? Q2: Is there c > 0 such that there are ≥ exp(c·√n·log n) block-compatible sequences?",
+    "proofStrategy": "The pair-counting condition Σ C(Xᵢ,2) = C(n,2) is necessary but not sufficient. For counting, Erdős proved the upper bound and Alon proved the matching lower bound, resolving Q2 affirmatively.",
+    "keyInsights": [
+      "Pair-counting is necessary: each pair must be covered exactly once",
+      "Pair-counting is NOT sufficient: some sequences satisfying it have no PBD",
+      "Erdős upper bound: B(n) ≤ exp(O(√n·log n))",
+      "Alon lower bound: B(n) ≥ 2^((1/2+o(1))√n·log n)",
+      "Q2 is SOLVED, Q1 (characterization) remains OPEN"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 74,
+      "summary": "Definitions of Block, Pair, pairsCoveredBy, and IsPBD (pairwise balanced block design)."
+    },
+    {
+      "id": "block-compatible",
+      "title": "Block-Compatible Sequences",
+      "startLine": 75,
+      "endLine": 97,
+      "summary": "Definition of block-compatible sequences and well-formed sequences."
+    },
+    {
+      "id": "necessary",
+      "title": "Necessary Conditions",
+      "startLine": 98,
+      "endLine": 125,
+      "summary": "The pair-counting condition Σ C(Xᵢ,2) = C(n,2) is necessary for block-compatibility."
+    },
+    {
+      "id": "characterization",
+      "title": "Question 1 - Characterization",
+      "startLine": 126,
+      "endLine": 153,
+      "summary": "Question 1 asks for necessary and sufficient conditions. No simple characterization is known."
+    },
+    {
+      "id": "counting",
+      "title": "Question 2 - Counting",
+      "startLine": 154,
+      "endLine": 202,
+      "summary": "Erdős's upper bound and Alon's lower bound establish B(n) ≈ 2^((1/2+o(1))√n·log n). Q2 is SOLVED."
+    },
+    {
+      "id": "asymptotic",
+      "title": "The Asymptotic Gap",
+      "startLine": 203,
+      "endLine": 234,
+      "summary": "The asymptotic constant c ≥ 1/2 by Alon's result."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 235,
+      "endLine": 280,
+      "summary": "Concrete examples for n = 3, 4, 6 showing block-compatible sequences."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 281,
+      "endLine": 297,
+      "summary": "Connection to Problem #733 and Steiner systems."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 298,
+      "endLine": 333,
+      "summary": "Complete summary: Q2 SOLVED by Alon, Q1 characterization remains OPEN."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #732 is PARTIALLY SOLVED. Question 2 (counting) is resolved by Alon's lower bound matching Erdős's upper bound. Question 1 (characterization of block-compatible sequences) remains open - the pair-counting condition is necessary but not sufficient.",
+    "implications": "The exponential count of block-compatible sequences suggests rich combinatorial structure in PBDs. The lack of a simple characterization indicates the problem's inherent complexity.",
+    "openQuestions": [
+      "What are necessary and sufficient conditions for block-compatibility?",
+      "Can the asymptotic constant be determined exactly?",
+      "What is the structure of 'hard' sequences that satisfy pair-counting but aren't block-compatible?"
+    ]
   }
 }

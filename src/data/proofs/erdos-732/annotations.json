@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-732-overview",
+    "proofId": "erdos-732",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #732:**\n\nA sequence 1 < X₁ ≤ ... ≤ Xₘ ≤ n is *block-compatible* if there exists a pairwise balanced block design (PBD) with block sizes X₁, ..., Xₘ.\n\n**Two Questions:**\n1. Are there necessary and sufficient conditions for block-compatibility?\n2. Is there c > 0 such that B(n) ≥ exp(c·√n·log n)?\n\n**Status:** Q2 SOLVED by Alon, Q1 OPEN",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-732-block",
+    "proofId": "erdos-732",
+    "range": { "startLine": 47, "endLine": 51 },
+    "type": "definition",
+    "title": "Block",
+    "content": "**Block Definition:**\n\nA block is simply a subset of {1, ..., n}.\n\nIn a PBD, blocks partition the set of all pairs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-732-pbd",
+    "proofId": "erdos-732",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "definition",
+    "title": "IsPBD",
+    "content": "**Pairwise Balanced Block Design:**\n\nA PBD is a collection of blocks A₁, ..., Aₘ ⊆ {1,...,n} such that every pair {i,j} is contained in exactly one block Aₖ.\n\nThis is the key structural constraint.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-732-compatible",
+    "proofId": "erdos-732",
+    "range": { "startLine": 79, "endLine": 88 },
+    "type": "definition",
+    "title": "IsBlockCompatible",
+    "content": "**Block-Compatible Sequence:**\n\nA sequence Xs = [X₁, ..., Xₘ] is block-compatible for n if there exists a PBD on {1,...,n} whose block sizes (in order) equal Xs.\n\nThis links sequences to combinatorial designs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-732-paircount",
+    "proofId": "erdos-732",
+    "range": { "startLine": 102, "endLine": 108 },
+    "type": "definition",
+    "title": "PairCountCondition",
+    "content": "**Pair-Counting Condition:**\n\nΣᵢ C(Xᵢ, 2) = C(n, 2)\n\nEach block of size k covers C(k,2) pairs. Since all C(n,2) pairs must be covered exactly once, this sum must equal the total.\n\nThis is NECESSARY but NOT SUFFICIENT.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-732-necessary",
+    "proofId": "erdos-732",
+    "range": { "startLine": 109, "endLine": 116 },
+    "type": "theorem",
+    "title": "pair_count_necessary",
+    "content": "**Necessity Theorem:**\n\nIf Xs is block-compatible for n, then Xs satisfies the pair-counting condition.\n\n**Proof idea:** Each pair is covered exactly once, so total pair-coverage equals total pairs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-732-hard",
+    "proofId": "erdos-732",
+    "range": { "startLine": 150, "endLine": 153 },
+    "type": "axiom",
+    "title": "characterization_hard",
+    "content": "**No Simple Characterization:**\n\nThere exist sequences satisfying pair-counting that are NOT block-compatible.\n\nThis shows pair-counting is not sufficient, and finding a complete characterization is subtle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-732-counting",
+    "proofId": "erdos-732",
+    "range": { "startLine": 158, "endLine": 165 },
+    "type": "definition",
+    "title": "B",
+    "content": "**Counting Function:**\n\nB(n) = number of block-compatible sequences for n.\n\nThis is the central quantity for Question 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-732-upper",
+    "proofId": "erdos-732",
+    "range": { "startLine": 167, "endLine": 174 },
+    "type": "axiom",
+    "title": "erdos_upper_bound",
+    "content": "**Erdős's Upper Bound:**\n\nB(n) ≤ exp(O(√n · log n))\n\nErdős proved there cannot be too many block-compatible sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-732-lower",
+    "proofId": "erdos-732",
+    "range": { "startLine": 176, "endLine": 183 },
+    "type": "axiom",
+    "title": "alon_lower_bound",
+    "content": "**Alon's Lower Bound:**\n\nB(n) ≥ 2^((1/2 + o(1))√n · log n)\n\nAlon showed exponentially many sequences ARE block-compatible.\n\nThis SOLVES Question 2 affirmatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-732-solved",
+    "proofId": "erdos-732",
+    "range": { "startLine": 185, "endLine": 202 },
+    "type": "theorem",
+    "title": "question_2_solved",
+    "content": "**Question 2: SOLVED**\n\nThere exists c > 0 such that B(n) ≥ exp(c·√n·log n) for large n.\n\n**Proof:** Take c = (1/3)·ln(2). By Alon's bound with ε = 1/6:\nB(n) ≥ 2^((1/3)√n·log n) = exp((1/3)·ln(2)·√n·log n)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-732-asymptotic",
+    "proofId": "erdos-732",
+    "range": { "startLine": 214, "endLine": 220 },
+    "type": "concept",
+    "title": "AsymptoticConstant",
+    "content": "**The Asymptotic:**\n\nB(n) = 2^((c + o(1))√n · log n)\n\nAlon shows c ≥ 1/2, Erdős shows c ≤ O(1).\n\nThe exact constant may not be determined.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-732-example3",
+    "proofId": "erdos-732",
+    "range": { "startLine": 240, "endLine": 250 },
+    "type": "example",
+    "title": "Example n=3",
+    "content": "**n = 3 Example:**\n\nThe only PBD on {1,2,3} is the single block {1,2,3}.\n\nBlock-compatible sequence: [3]\n\nC(3,2) = 3 pairs, all covered by one block.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-732-example4",
+    "proofId": "erdos-732",
+    "range": { "startLine": 251, "endLine": 269 },
+    "type": "example",
+    "title": "Example n=4",
+    "content": "**n = 4 Example:**\n\nC(4,2) = 6 pairs needed.\n\nPossible block-compatible sequences:\n- [4]: Single block, C(4,2) = 6 ✓\n- [2,2,2,2,2,2]: Six pairs, 6×C(2,2) = 6×1 = 6 ✓\n\nBoth satisfy pair-counting.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-732-steiner",
+    "proofId": "erdos-732",
+    "range": { "startLine": 291, "endLine": 297 },
+    "type": "concept",
+    "title": "Steiner Systems",
+    "content": "**Connection to Steiner Systems:**\n\nA Steiner system S(2, k, n) is a PBD where ALL blocks have the same size k.\n\nThese are very constrained and exist only for special parameters.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-732-summary",
+    "proofId": "erdos-732",
+    "range": { "startLine": 302, "endLine": 327 },
+    "type": "theorem",
+    "title": "erdos_732_summary",
+    "content": "**Complete Summary:**\n\n**QUESTION 1:** Characterize block-compatible sequences.\n- STATUS: OPEN\n- Pair-counting is necessary but not sufficient\n\n**QUESTION 2:** Is B(n) ≥ exp(c·√n·log n)?\n- STATUS: SOLVED by Alon\n- B(n) ≈ 2^((1/2+o(1))√n·log n)\n\n**KEY INSIGHT:** Exponentially many block-compatible sequences exist, but identifying which specific sequences work remains hard.",
+    "significance": "critical"
+  }
+]
