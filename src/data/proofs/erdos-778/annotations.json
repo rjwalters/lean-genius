@@ -1,1 +1,121 @@
-[]
+[
+  {
+    "id": "ann-e778-header",
+    "proofId": "erdos-778",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #778: Clique-Building Games**\n\nAlice and Bob play on K_n, alternating coloring edges. Three game variants with different winning conditions.\n\n**Status:** OPEN (partial results by Malekshahian-Spiro 2024)\n\n**Erdos believed:** Bob should always win for n >= 3.",
+    "mathContext": "This connects combinatorial game theory to Ramsey theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Combinatorial games", "Ramsey theory", "Graph coloring", "Cliques"]
+  },
+  {
+    "id": "ann-e778-edge-color",
+    "proofId": "erdos-778",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "**EdgeColor:**\n\nThree possible states for each edge:\n- Red (Alice's color)\n- Blue (Bob's color)\n- Uncolored (not yet claimed)",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e778-game-state",
+    "proofId": "erdos-778",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "Game State",
+    "content": "**GameState:**\n\nA function assigning colors to each pair of vertices in K_n.\n\nThis represents the current board position in the game.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e778-kn",
+    "proofId": "erdos-778",
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "definition",
+    "title": "Complete Graph K_n",
+    "content": "**Kn:**\n\nThe complete graph on n vertices where every pair is adjacent.\n\nHas n(n-1)/2 edges, all of which will be colored by game's end.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e778-subgraphs",
+    "proofId": "erdos-778",
+    "range": { "startLine": 68, "endLine": 78 },
+    "type": "definition",
+    "title": "Colored Subgraphs",
+    "content": "**redSubgraph, blueSubgraph:**\n\nThe subgraphs induced by edges of each color.\n\nAt game's end, every edge is in exactly one of these subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e778-three-games",
+    "proofId": "erdos-778",
+    "range": { "startLine": 110, "endLine": 123 },
+    "type": "definition",
+    "title": "The Three Games",
+    "content": "**Three Variants:**\n\n1. **Clique Game:** Alice wins if max red clique > max blue clique\n2. **Modified Game:** Bob colors 2 edges per turn; wins if his max clique > Alice's\n3. **Degree Game:** Alice wins if max red degree > max blue degree",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e778-strategies",
+    "proofId": "erdos-778",
+    "range": { "startLine": 131, "endLine": 147 },
+    "type": "definition",
+    "title": "Strategies",
+    "content": "**AliceStrategy, BobStrategy:**\n\nA strategy is a function from game state to edge choice.\n\n**BobHasWinningStrategy:** Exists a Bob strategy that beats all Alice strategies.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e778-erdos-conjecture",
+    "proofId": "erdos-778",
+    "range": { "startLine": 155, "endLine": 157 },
+    "type": "definition",
+    "title": "Erdos's Conjecture",
+    "content": "**ErdosConjecture:**\n\nBob has a winning strategy for ALL n >= 3.\n\nThis is what Erdos believed, but it remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e778-ms-density",
+    "proofId": "erdos-778",
+    "range": { "startLine": 159, "endLine": 162 },
+    "type": "axiom",
+    "title": "Density Result",
+    "content": "**malekshahian_spiro_density_clique:**\n\nThe set of n where Bob wins has natural density >= 3/4.\n\nThis means Bob wins for 'most' values of n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e778-ms-periodicity",
+    "proofId": "erdos-778",
+    "range": { "startLine": 164, "endLine": 169 },
+    "type": "axiom",
+    "title": "Periodicity Result",
+    "content": "**malekshahian_spiro_alice_n_bob_n123:**\n\nIf Alice wins at n, then Bob wins at n+1, n+2, and n+3.\n\nThis 'recovery' property explains why Bob wins with high density.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e778-no-consecutive",
+    "proofId": "erdos-778",
+    "range": { "startLine": 190, "endLine": 199 },
+    "type": "theorem",
+    "title": "No Four Consecutive Wins",
+    "content": "**alice_no_three_consecutive:**\n\nAlice cannot win at 4 consecutive values of n.\n\nIf she wins at n, Bob wins at n+1, n+2, n+3, so she loses at least one.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e778-open",
+    "proofId": "erdos-778",
+    "range": { "startLine": 207, "endLine": 215 },
+    "type": "definition",
+    "title": "Open Questions",
+    "content": "**The Open Questions:**\n\n1. Does Bob win for ALL n >= 3? (Main question)\n2. Modified game: Does Bob win for n > 3?\n3. Degree game: Who wins in general?\n\nThese remain OPEN despite the partial results.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e778-main",
+    "proofId": "erdos-778",
+    "range": { "startLine": 236, "endLine": 245 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_778_status:**\n\nSummarizes what's known:\n- Density >= 3/4 for clique game\n- Density >= 2/3 for degree game\n\nBut the complete answer is still open.",
+    "significance": "critical"
+  }
+]
