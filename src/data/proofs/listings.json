@@ -7863,17 +7863,23 @@
   },
   {
     "id": "erdos-476",
-    "title": "Erdős Problem #476",
+    "title": "Erdős Problem #476: The Erdős-Heilbronn Conjecture",
     "slug": "erdos-476",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let\\[AA = \\{ a+b : a\\neq b \\in A\\}.\\]Is it true that\\[\\lvert AA\\rvert \\geq \\min(2\\lvert A\\rvert-3,p)?\\]\n\n\n\nA questio...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For A ⊆ 𝔽ₚ, is |A +̂ A| ≥ min(2|A| - 3, p) where A +̂ A denotes sums of distinct pairs? YES, proved by da Silva-Hamidoune (1994).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "finite-fields",
+      "sumsets",
+      "polynomial-method",
+      "solved"
     ],
     "erdosNumber": 476,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-479",
