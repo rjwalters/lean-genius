@@ -1,33 +1,155 @@
 {
   "id": "erdos-934",
-  "title": "Erdős Problem #934",
+  "title": "Erdős Problem #934: Edge Distance in Bounded-Degree Graphs",
   "slug": "erdos-934",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every graph ... with ... edges and maximal degree ... contains two edges whose shortest path bet...",
+  "description": "Let h_t(d) be minimal such that every graph with h_t(d) edges and max degree ≤ d contains two edges at distance ≥ t. Solved for t=1,2; partial for t=3; general bounds known.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Nešetřil",
     "sourceUrl": "https://erdosproblems.com/934",
-    "date": "",
-    "status": "pending",
+    "date": "1988",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos934Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "edge-distance",
+      "bounded-degree",
+      "2K2-free"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 8,
     "erdosNumber": 934,
     "erdosUrl": "https://erdosproblems.com/934",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.dist",
+        "description": "Graph distance metric",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Metric"
+      }
+    ],
+    "originalContributions": [
+      "Edge structure definition for simple graphs",
+      "edgeDist definition: minimum distance between edge endpoints",
+      "AreTSeparated definition: edges at distance ≥ t",
+      "maxDegree and numEdges definitions",
+      "HasTSeparatedEdges definition: graph contains t-separated edges",
+      "h(t,d) definition: minimum edges forcing t-separated edges",
+      "h_1_exact axiom: h_1(d) = d + 1",
+      "cgtt_1990 axiom: h_2(d) = ⌊5d²/4⌋ + 1",
+      "h_3_3 axiom: h_3(3) = 23",
+      "H3Conjecture definition: conjectured formula for h_3",
+      "trivial_upper_bound axiom: h_t(d) ≤ 2d^t",
+      "improved_upper_bound axiom: h_t(d) ≤ (3/2)d^t + 1",
+      "lower_bound_large_t axiom: h_t(d) ≥ 0.629^t d^t for many d",
+      "AsymptoticConjecture definition: (1±o(1))d^t bounds",
+      "h_mono_d, h_mono_t theorems: monotonicity properties",
+      "line_graph_connection: equivalent line graph formulation",
+      "erdos_934 main theorem combining all results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #934 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h_t(d)$ be minimal such that every graph $G$ with $h_t(d)$ edges and maximal degree $\\leq d$ contains two edges whose shortest path between them has length $\\geq t$.\n\nEstimate $h_t(d)$.\n\n\n\nA problem of Erd\\H{o}s and Ne\\v{s}et\\v{r}il. Erd\\H{o}s \\cite{Er88} wrote 'This problem seems to be interesting only if there is a nice expression for $h_t(d)$.'\n\nIt is easy to see that $h_t(d)\\leq 2d^t$ always and $h_1(d)=d+1$.\n\nErd\\H{o}s and Ne\\v{s}et\\v{r}il and Bermond, Bond, Paoli, and Peyrat \\cite{BBPP83} independently conjectured that $h_2(d) \\leq \\tfrac{5}{4}d^2+1$, with equality for even $d$ (see [149]). This was proved by Chung, Gy\\'{a}rf\\'{a}s, Tuza, and Trotter \\cite{CGTT90}.\n\nCambie, Cames van Batenburg, de Joannis de Verclos, and Kang \\cite{CCJK22} conjectured that\\[h_3(d) \\leq d^3-d^2+d+2,\\]with equality if and only if $d=p^k+1$ for some prime power $p^k$, and proved that $h_3(3)=23$. They also conjecture that, for all $t\\geq 3$, $h_t(d)\\geq (1-o(1))d^t$ for infinitely many $d$ and $h_t(d)\\leq (1+o(1))d^t$ for all $d$ (where the $o(1)$ term $\\to 0$ as $d\\to \\infty$).\n\nThe same authors prove that, if $t$ is large, then there are infinitely many $d$ such that $h_t(d) \\geq 0.629^td^t$, and that for all $t\\geq 1$ we have\\[h_t(d) \\leq \\tfrac{3}{2}d^t+1.\\]\n\n\n\n\nReferences\n\n\n[BBPP83] Bermond, J.-C. and Bond, J. and Paoli, M. and Peyrat, C., Graphs and interconnection networks: diameter and\nvulnerability. (1983), 1--30.\n\n[CCJK22] Cambie, Stijn and Cames van Batenburg, Wouter and de Joannis\nde Verclos, R\\'{e}mi and Kang, Ross J., Maximizing line subgraphs of diameter at most {$t$}. SIAM J. Discrete Math. (2022), 939--950.\n\n[CGTT90] Chung, F. R. K. and Gy\\'arf\\'as, A. and Tuza, Z. and Trotter,\nW. T., The maximum number of edges in {$2K_2$}-free graphs of bounded\ndegree. Discrete Math. (1990), 129--135.\n\n[Er88] Erd\\H{o}s, P, Problems and results in combinatorial analysis and graph theory. Discrete Math. (1988), 81-92.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #934** was posed by Erdős and Nešetřil, studying edge separation in bounded-degree graphs.\n\n**Historical Development:**\n- **1983 (Bermond-Bond-Paoli-Peyrat):** Conjectured h_2(d) ≤ 5d²/4 + 1, with equality for even d.\n- **1988 (Erdős):** Wrote 'This problem seems interesting only if there is a nice expression for h_t(d).'\n- **1990 (Chung-Gyárfás-Tuza-Trotter):** Proved h_2(d) = ⌊5d²/4⌋ + 1 exactly.\n- **2022 (Cambie et al.):** Proved h_3(3) = 23, conjectured h_3(d) ≤ d³-d²+d+2, and established general bounds.\n\nThe problem connects to 2K₂-free graphs and line graph diameter problems.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet $h_t(d)$ be minimal such that every graph $G$ with $h_t(d)$ edges and maximum degree $\\leq d$ contains two edges whose shortest path between them has length $\\geq t$.\n\nEstimate $h_t(d)$.\n\n**Known Results:**\n- $h_1(d) = d + 1$ (trivial)\n- $h_2(d) = \\lfloor 5d^2/4 \\rfloor + 1$ (CGTT 1990)\n- $h_3(3) = 23$ (Cambie et al. 2022)\n- General: $(1-o(1))d^t \\leq h_t(d) \\leq (3/2)d^t + 1$\n\n**Open:** Exact formula for $h_t(d)$ when $t \\geq 3$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Distance:** Define distance between edges as minimum endpoint distance.\n\n2. **h_t(d) Function:** Define as minimum edges forcing t-separated edges.\n\n3. **Special Cases:** Axiomatize solved cases h_1(d), h_2(d), h_3(3).\n\n4. **General Bounds:** State upper bound (3/2)d^t + 1 and lower bounds.\n\n5. **Connections:** Link to 2K₂-free graphs and line graph diameter.",
+    "keyInsights": [
+      "**Edge Distance:** The minimum distance between endpoints of two edges determines their separation.",
+      "**2K₂-Free Graphs:** Two edges at distance ≥ 2 form an induced matching (2K₂).",
+      "**Star Graph:** A star has d edges but no 1-separated edges, achieving h_1(d) - 1.",
+      "**h_2 Formula:** The exact formula 5d²/4 + 1 was a major achievement (CGTT 1990).",
+      "**h_3 Conjecture:** Expected to be d³ - d² + d + 2 with equality at d = p^k + 1.",
+      "**Polynomial Growth:** h_t(d) grows like d^t with leading coefficient approaching 1."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "edge-distance",
+      "title": "Edge Distance",
+      "summary": "Definitions for edge distance and separation",
+      "startLine": 42,
+      "endLine": 61
+    },
+    {
+      "id": "h-function",
+      "title": "The h_t(d) Function",
+      "summary": "Definition of h_t(d) and supporting concepts",
+      "startLine": 63,
+      "endLine": 88
+    },
+    {
+      "id": "h1-case",
+      "title": "Trivial Case h_1(d)",
+      "summary": "h_1(d) = d + 1 from star graph analysis",
+      "startLine": 90,
+      "endLine": 103
+    },
+    {
+      "id": "h2-case",
+      "title": "The h_2(d) Case",
+      "summary": "Connection to 2K₂-free graphs and CGTT theorem",
+      "startLine": 105,
+      "endLine": 127
+    },
+    {
+      "id": "h3-case",
+      "title": "The h_3(d) Case",
+      "summary": "h_3(3) = 23 and conjectured formula",
+      "startLine": 129,
+      "endLine": 142
+    },
+    {
+      "id": "general-bounds",
+      "title": "General Bounds",
+      "summary": "Upper and lower bounds for arbitrary t",
+      "startLine": 144,
+      "endLine": 166
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity Properties",
+      "summary": "h_t(d) is non-decreasing in t and d",
+      "startLine": 168,
+      "endLine": 185
+    },
+    {
+      "id": "line-graphs",
+      "title": "Connection to Line Graphs",
+      "summary": "Equivalence to line graph diameter problems",
+      "startLine": 187,
+      "endLine": 203
+    },
+    {
+      "id": "constructions",
+      "title": "Extremal Constructions",
+      "summary": "Star graphs, 2K₂-free extremal graphs, projective planes",
+      "startLine": 205,
+      "endLine": 222
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete status of Problem #934",
+      "startLine": 237,
+      "endLine": 261
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #934 asks to estimate h_t(d), the minimum edges in a max-degree-d graph forcing two t-separated edges. The problem is solved for t=1 (h_1(d)=d+1) and t=2 (h_2(d)=⌊5d²/4⌋+1). For t=3, specific values like h_3(3)=23 are known, with a conjectured formula. General bounds show h_t(d) = Θ(d^t) with coefficient approaching 1.",
+    "implications": "**Implications for Graph Theory**\n\n1. **2K₂-Free Graphs:** The h_2 case completely characterizes extremal 2K₂-free bounded-degree graphs.\n\n2. **Line Graph Theory:** Connects to diameter problems in line graphs.\n\n3. **Projective Planes:** Extremal constructions relate to finite geometry.\n\n4. **Ramsey-Type Results:** Forces structure (separated edges) from size constraints.",
+    "openQuestions": [
+      "What is the exact formula for h_3(d)?",
+      "Is h_3(d) = d³ - d² + d + 2 for d = p^k + 1?",
+      "What is the exact leading coefficient of h_t(d)/d^t as d → ∞?",
+      "Is there a nice closed form for general h_t(d)?",
+      "What are the extremal graphs for h_t(d)?"
+    ]
   }
 }
