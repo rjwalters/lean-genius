@@ -1,33 +1,168 @@
 {
   "id": "erdos-302",
-  "title": "Erdős Problem #302",
+  "title": "Erdős Problem #302: Unit Fraction Sum-Free Sets",
   "slug": "erdos-302",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest ... such that there are no solutions to\\[{a}= {b}+{c}\\]with distinct ...?\n\nEstimate .... I...",
+  "description": "Let f(N) be the largest subset of {1,...,N} with no solution to 1/a = 1/b + 1/c. Is f(N) = (1/2+o(1))N? Answer: NO. Known: 5/8 ≤ lim f(N)/N ≤ 9/10. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Stijn Cambie, Wouter van Doorn",
     "sourceUrl": "https://erdosproblems.com/302",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos302Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "extremal-combinatorics",
+      "sum-free-sets",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 8,
     "erdosNumber": 302,
     "erdosUrl": "https://erdosproblems.com/302",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite sets for subsets of [1,N]",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat.Basic",
+        "description": "Rational numbers for unit fractions",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Algebra.Order.Field.Basic",
+        "description": "Ordered field operations for rationals",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "UnitFractionSum definition: 1/a = 1/b + 1/c equation",
+      "unit_fraction_equiv theorem: equivalent form bc = a(b+c)",
+      "IsUnitFractionSumFree definition: no three distinct elements satisfy the equation",
+      "f(N) definition: maximum size of sum-free subset",
+      "oddIntegers definition: odd integers in [1,N]",
+      "odd_integers_sum_free theorem: odd integers avoid solutions",
+      "upperHalf definition: integers in [N/2, N]",
+      "upper_half_sum_free theorem: upper half avoids solutions",
+      "basic_lower_bound axiom: f(N) ≥ (1/2+o(1))N",
+      "cambie_set definition: Cambie's construction",
+      "cambie_lower_bound axiom: f(N) ≥ (5/8+o(1))N",
+      "van_doorn_upper_bound axiom: f(N) ≤ (9/10+o(1))N",
+      "original_question definition: is f(N) = (1/2+o(1))N?",
+      "original_question_false theorem: the answer is NO",
+      "HasDoubling definition: contains n and 2n",
+      "doubling_threshold axiom: large sets contain doublings",
+      "coloring_version definition: 2-coloring avoiding monochromatic solutions",
+      "brown_rodl_coloring axiom: coloring version solved",
+      "standard_pattern theorem: 1/n = 1/(n+1) + 1/(n(n+1))",
+      "erdos_302 theorem: complete status combining all bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #302 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(N)$ be the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there are no solutions to\\[\\frac{1}{a}= \\frac{1}{b}+\\frac{1}{c}\\]with distinct $a,b,c\\in A$?\n\nEstimate $f(N)$. In particular, is $f(N)=(\\tfrac{1}{2}+o(1))N$?\n\n\n\n\nThe colouring version of this is [303], which was solved by Brown and R\\\"{o}dl \\cite{BrRo91}. One can take either $A$ to be all odd integers in $[1,N]$ or all integers in $[N/2,N]$ to show $f(N)\\geq (1/2+o(1))N$.\n\nWouter van Doorn has proved (see this note) that\\[f(N) \\leq (9/10+o(1))N.\\]Stijn Cambie has observed that\\[f(N)\\geq (5/8+o(1))N,\\]taking $A$ to be all odd integers $\\leq N/4$ and all integers in $[N/2,N]$.\n\nStijn Cambie has also observed that, if we allow $b=c$, then there is a solution to this equation when $\\lvert A\\rvert \\geq (\\tfrac{2}{3}+o(1))N$, since then there must exist some $n,2n\\in A$.\n\nSee also [301] and [327].\n\n\n\n\nReferences\n\n\n[BrRo91] Brown, Tom C. and R\\\"{o}dl, Voijtech, Monochromatic solutions to equations with unit fractions. Bull. Austral. Math. Soc. (1991), 387-392.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Unit Fraction Sum-Free Sets**\n\nErdős Problem #302 asks about the largest subset A of {1,...,N} containing no solution to 1/a = 1/b + 1/c with distinct a, b, c.\n\n**Historical Development:**\n- **Original question:** Is f(N) = (1/2+o(1))N?\n- **Basic constructions:** Odd integers or [N/2, N] give f(N) ≥ (1/2)N\n- **Cambie:** Improved to f(N) ≥ (5/8+o(1))N\n- **van Doorn:** Proved f(N) ≤ (9/10+o(1))N\n\nThe exact limiting density remains open, known to be in [5/8, 9/10].",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $f(N)$ be the size of the largest $A \\subseteq \\{1,\\ldots,N\\}$ such that there are no solutions to\n$$\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$$\nwith distinct $a, b, c \\in A$.\n\nEstimate $f(N)$. In particular, is $f(N) = (\\tfrac{1}{2}+o(1))N$?\n\n**Answer:** NO, the original conjecture is false.\n\n**Known bounds:** $\\frac{5}{8} \\leq \\liminf \\frac{f(N)}{N} \\leq \\limsup \\frac{f(N)}{N} \\leq \\frac{9}{10}$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Equation Definition:** Define UnitFractionSum for 1/a = 1/b + 1/c\n\n2. **Sum-Free Property:** Define IsUnitFractionSumFree for sets avoiding solutions\n\n3. **Function f(N):** Maximum size of sum-free subset of {1,...,N}\n\n4. **Lower Bounds:** Axiomatize constructions (odd integers, Cambie's set)\n\n5. **Upper Bound:** Axiomatize van Doorn's result\n\n6. **Original Question:** State and refute f(N) = (1/2+o(1))N\n\n7. **Related Results:** Coloring version (Brown-Rödl), doubling observation",
+    "keyInsights": [
+      "**Original conjecture is false:** f(N) > (1/2+o(1))N since f(N) ≥ (5/8+o(1))N",
+      "**Odd integers work:** If a, b, c odd and 1/a = 1/b + 1/c, then bc = a(b+c), but bc is odd while a(b+c) is even",
+      "**Upper half works:** Elements in [N/2, N] have 1/a ≤ 2/N, so 1/b + 1/c ≥ 4/N cannot equal 1/a",
+      "**Cambie's combination:** Odd integers ≤ N/4 plus [N/2, N] gives 5N/8 elements",
+      "**Standard pattern:** 1/n = 1/(n+1) + 1/(n(n+1)) gives many solutions",
+      "**Coloring version solved:** Brown-Rödl showed 2-coloring always works"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 33,
+      "endLine": 52,
+      "summary": "Unit fraction equation and sum-free property."
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(N)",
+      "startLine": 54,
+      "endLine": 65,
+      "summary": "Maximum size of unit-fraction-sum-free subset."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bound Constructions",
+      "startLine": 67,
+      "endLine": 109,
+      "summary": "Odd integers, upper half, Cambie's construction."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound (van Doorn)",
+      "startLine": 111,
+      "endLine": 124,
+      "summary": "f(N) ≤ (9/10+o(1))N."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 126,
+      "endLine": 148,
+      "summary": "Original question is FALSE."
+    },
+    {
+      "id": "doubling",
+      "title": "Related Observation (Cambie)",
+      "startLine": 150,
+      "endLine": 174,
+      "summary": "Allowing b = c gives 2/3 threshold."
+    },
+    {
+      "id": "coloring",
+      "title": "The Coloring Version",
+      "startLine": 176,
+      "endLine": 190,
+      "summary": "Brown-Rödl solved Problem #303."
+    },
+    {
+      "id": "algebra",
+      "title": "Algebraic Structure",
+      "startLine": 192,
+      "endLine": 209,
+      "summary": "Equivalent forms and solution constraints."
+    },
+    {
+      "id": "examples",
+      "title": "Examples of Solutions",
+      "startLine": 211,
+      "endLine": 230,
+      "summary": "Explicit solutions and standard pattern."
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "startLine": 250,
+      "endLine": 274,
+      "summary": "Combined theorem and open status."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #302 asks to estimate f(N), the maximum size of A ⊆ {1,...,N} with no solution to 1/a = 1/b + 1/c. The original conjecture f(N) = (1/2+o(1))N is FALSE. Current bounds: 5/8 ≤ lim f(N)/N ≤ 9/10. The exact value remains OPEN.",
+    "implications": "**Connections to Number Theory**\n\n1. **Unit fractions:** Ancient Egyptian representation of fractions\n\n2. **Sum-free sets:** Connection to classical additive combinatorics\n\n3. **Density problems:** How large can structured sets be?\n\n4. **Coloring theory:** Ramsey-type questions for equations\n\n5. **Algorithmic aspects:** Finding optimal constructions",
+    "openQuestions": [
+      "What is the exact value of lim f(N)/N?",
+      "Is the limit closer to 5/8 or 9/10?",
+      "Can van Doorn's upper bound be improved?",
+      "Is there a construction better than Cambie's?",
+      "What happens for other unit fraction equations?"
+    ]
   }
 }
