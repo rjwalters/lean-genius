@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-446-header",
+    "proofId": "erdos-446",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #446**\n\nLet δ(n) = density of integers with a divisor in (n, 2n).\n\n**Part 1:** δ(n) ≍ 1/((log n)^α (log log n)^{3/2}) where α ≈ 0.08607\n\n**Part 2:** Is δ₁(n) = o(δ(n))? NO - Ford disproved this in 2008.\n\n**Status:** SOLVED (Ford 2008)",
+    "mathContext": "A 74-year problem from Besicovitch (1934) to Ford (2008), resolved through deep analytic number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Asymptotic density", "Number theory"]
+  },
+  {
+    "id": "ann-446-has-divisor",
+    "proofId": "erdos-446",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "Divisor in Interval",
+    "content": "**hasDivisorInInterval m n:**\n\nThe integer m has a divisor d in the open interval (n, 2n).\n\n**Definition:** ∃ d : ℕ, n < d ∧ d < 2n ∧ d | m\n\nThis is the central predicate for the problem.",
+    "mathContext": "The interval (n, 2n) contains exactly n-1 integers: n+1, n+2, ..., 2n-1.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Interval", "Open interval"]
+  },
+  {
+    "id": "ann-446-delta",
+    "proofId": "erdos-446",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "definition",
+    "title": "Density Function δ(n)",
+    "content": "**delta n:**\n\nThe asymptotic density of integers divisible by some d ∈ (n, 2n).\n\nδ(n) = lim_{N→∞} |{m ≤ N : ∃d ∈ (n, 2n), d | m}| / N\n\nThis limit exists by standard density arguments.",
+    "mathContext": "Asymptotic density measures how common a property is among all integers.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic density", "Natural density", "Limit"]
+  },
+  {
+    "id": "ann-446-divisor-count",
+    "proofId": "erdos-446",
+    "range": { "startLine": 66, "endLine": 77 },
+    "type": "definition",
+    "title": "Divisor Count",
+    "content": "**divisorCount m n:**\n\nThe number of divisors of m in the interval (n, 2n).\n\n**Definition:** Filter divisors d with n < d < 2n and count.\n\nThis is used to define δᵣ(n) - density with exactly r such divisors.",
+    "mathContext": "Counting divisors in intervals is fundamental to the Erdős-Ford theory.",
+    "significance": "key",
+    "relatedConcepts": ["Divisor function", "Counting", "Finset"]
+  },
+  {
+    "id": "ann-446-delta-r",
+    "proofId": "erdos-446",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "definition",
+    "title": "Density δᵣ(n)",
+    "content": "**deltaR n r:**\n\nThe density of integers with exactly r divisors in (n, 2n).\n\nδᵣ(n) = lim_{N→∞} |{m ≤ N : divisorCount(m, n) = r}| / N\n\nErdős asked if δ₁(n) = o(δ(n)). Ford showed this is FALSE.",
+    "mathContext": "The decomposition δ(n) = Σᵣ δᵣ(n) gives insight into divisor distribution.",
+    "significance": "critical",
+    "relatedConcepts": ["Decomposition", "Exactly r divisors"]
+  },
+  {
+    "id": "ann-446-alpha",
+    "proofId": "erdos-446",
+    "range": { "startLine": 90, "endLine": 96 },
+    "type": "definition",
+    "title": "The Constant α",
+    "content": "**alpha:**\n\nα = 1 - (1 + log log 2) / log 2 ≈ 0.08607\n\nThis constant appears in the asymptotic δ(n) ≍ 1/(log n)^α.\n\nIt's defined explicitly using nested logarithms.",
+    "mathContext": "The appearance of log log 2 reflects deep structure in divisor distribution. This constant also appears in related problems.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős constant", "Nested logarithm", "Number-theoretic constant"]
+  },
+  {
+    "id": "ann-446-alpha-value",
+    "proofId": "erdos-446",
+    "range": { "startLine": 98, "endLine": 101 },
+    "type": "axiom",
+    "title": "Numerical Value of α",
+    "content": "**alpha_value:**\n\n0.086 < α < 0.087\n\nThe constant α ≈ 0.08607 is small but positive, meaning δ(n) decays slowly (like 1/(log n)^{0.086}).",
+    "mathContext": "The small exponent explains why δ(n) → 0 so slowly.",
+    "significance": "key",
+    "relatedConcepts": ["Numerical bounds", "Slow decay"]
+  },
+  {
+    "id": "ann-446-besicovitch",
+    "proofId": "erdos-446",
+    "range": { "startLine": 107, "endLine": 113 },
+    "type": "axiom",
+    "title": "Besicovitch (1934)",
+    "content": "**besicovitch_1934:**\n\nliminf δ(n) = 0\n\nThe density can get arbitrarily small along subsequences. This was the first result on this problem.\n\nPublished in Math. Annalen.",
+    "mathContext": "Besicovitch's result showed δ(n) is not bounded away from 0, initiating the study.",
+    "significance": "key",
+    "relatedConcepts": ["Limit inferior", "Subsequence", "1934"]
+  },
+  {
+    "id": "ann-446-erdos-1935",
+    "proofId": "erdos-446",
+    "range": { "startLine": 115, "endLine": 121 },
+    "type": "axiom",
+    "title": "Erdős (1935)",
+    "content": "**erdos_1935:**\n\nδ(n) = o(1)\n\nThe density tends to 0 as n → ∞. This strengthens Besicovitch from liminf to full limit.\n\nPublished in J. London Math. Soc.",
+    "mathContext": "Erdős was 22 when he proved this, establishing the basic decay of δ(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Little-o notation", "Limit", "1935"]
+  },
+  {
+    "id": "ann-446-erdos-1960",
+    "proofId": "erdos-446",
+    "range": { "startLine": 123, "endLine": 131 },
+    "type": "axiom",
+    "title": "Erdős (1960)",
+    "content": "**erdos_1960:**\n\nδ(n) = (log n)^{-α + o(1)}\n\nFirst quantitative bound with the correct exponent α. The error term o(1) was later refined to the log-log factor.\n\nPublished in Russian (Vestnik Leningrad. Univ.).",
+    "mathContext": "This result pinned down the correct power of log n, leaving only the secondary terms.",
+    "significance": "critical",
+    "relatedConcepts": ["Quantitative bound", "Correct exponent", "1960"]
+  },
+  {
+    "id": "ann-446-ford-main",
+    "proofId": "erdos-446",
+    "range": { "startLine": 137, "endLine": 145 },
+    "type": "axiom",
+    "title": "Ford's Asymptotic (2008)",
+    "content": "**ford_2008_main:**\n\nδ(n) ≍ 1 / ((log n)^α (log log n)^{3/2})\n\nThe exact growth rate, up to multiplicative constants:\n∃ c, C > 0 such that c·f(n) ≤ δ(n) ≤ C·f(n)\nwhere f(n) = 1/((log n)^α (log log n)^{3/2})\n\nPublished in Ann. of Math.",
+    "mathContext": "Ford's 2008 paper in the Annals of Mathematics completely resolved the first question.",
+    "significance": "critical",
+    "relatedConcepts": ["Exact asymptotic", "Annals of Mathematics", "Ford 2008"]
+  },
+  {
+    "id": "ann-446-ford-disproof",
+    "proofId": "erdos-446",
+    "range": { "startLine": 147, "endLine": 153 },
+    "type": "axiom",
+    "title": "Ford's Disproof (2008)",
+    "content": "**ford_2008_disproof:**\n\nδ₁(n) is NOT o(δ(n))!\n\nErdős conjectured that integers with exactly one divisor in (n, 2n) are negligible. Ford proved this is FALSE:\n\n∃ c > 0: δ₁(n) ≥ c · δ(n) for all large n.",
+    "mathContext": "This disproof shows the divisor count is concentrated, not spread out.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof", "Counter-intuitive", "Concentration"]
+  },
+  {
+    "id": "ann-446-ford-general",
+    "proofId": "erdos-446",
+    "range": { "startLine": 155, "endLine": 162 },
+    "type": "axiom",
+    "title": "Ford's Generalization",
+    "content": "**ford_2008_general:**\n\nFor each r ≥ 1: δᵣ(n) ≫ᵣ δ(n)\n\nIntegers with exactly r divisors in (n, 2n) have density comparable to the total density.\n\nThe implicit constant depends on r.",
+    "mathContext": "This generalizes the disproof: no single divisor count dominates.",
+    "significance": "key",
+    "relatedConcepts": ["Generalization", "Comparable density"]
+  },
+  {
+    "id": "ann-446-erdos-doubt",
+    "proofId": "erdos-446",
+    "range": { "startLine": 168, "endLine": 174 },
+    "type": "concept",
+    "title": "Erdős's Doubt (1986)",
+    "content": "**erdos_doubt_1986:**\n\nAt Oberwolfach in 1986, Erdős said he was \"quite sure\" that δ₁(n) = o(δ(n)), but noted that \"recent results of Tenenbaum throw some doubt on this.\"\n\nHis intuition to doubt was correct - Ford disproved it 22 years later.",
+    "mathContext": "Erdős's self-doubt shows the depth of his mathematical intuition.",
+    "significance": "supporting",
+    "relatedConcepts": ["Oberwolfach", "Intuition", "Self-doubt"]
+  },
+  {
+    "id": "ann-446-tenenbaum",
+    "proofId": "erdos-446",
+    "range": { "startLine": 176, "endLine": 181 },
+    "type": "axiom",
+    "title": "Tenenbaum (1984)",
+    "content": "**tenenbaum_1984:**\n\nRefined Erdős's 1960 estimates, providing more precise bounds that hinted at the eventual disproof.\n\nPublished in Compositio Math.",
+    "mathContext": "Tenenbaum's work was the \"recent results\" that gave Erdős doubt.",
+    "significance": "supporting",
+    "relatedConcepts": ["Refinement", "Compositio", "1984"]
+  },
+  {
+    "id": "ann-446-prime-example",
+    "proofId": "erdos-446",
+    "range": { "startLine": 209, "endLine": 220 },
+    "type": "theorem",
+    "title": "Primes Have No Divisor",
+    "content": "**prime_no_divisor:**\n\nIf p > 2n is prime, then p has no divisors in (n, 2n).\n\n**Proof:** The only divisors of prime p are 1 and p. Since n < d < 2n < p, neither 1 nor p is in the interval.",
+    "mathContext": "This shows primes larger than 2n are not counted in δ(n).",
+    "significance": "key",
+    "relatedConcepts": ["Prime", "Divisor characterization"]
+  },
+  {
+    "id": "ann-446-summary",
+    "proofId": "erdos-446",
+    "range": { "startLine": 240, "endLine": 266 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_446_summary:**\n\nCombines all main results:\n\n**Part 1:** δ(n) ≍ 1/((log n)^α (log log n)^{3/2})\nwhere α ≈ 0.08607\n\n**Part 2:** δ₁(n) ≥ c · δ(n) (NOT o(δ(n)))\n\n**Timeline:**\n1934: Besicovitch (liminf = 0)\n1935: Erdős (o(1))\n1960: Erdős (correct exponent)\n1984: Tenenbaum (refinement)\n2008: Ford (complete resolution)",
+    "mathContext": "This theorem bundles the 74-year resolution of Problem #446.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Timeline", "Complete resolution"]
+  },
+  {
+    "id": "ann-446-solved",
+    "proofId": "erdos-446",
+    "range": { "startLine": 268, "endLine": 272 },
+    "type": "theorem",
+    "title": "Problem Resolved",
+    "content": "**erdos_446_solved:**\n\nErdős Problem #446 was completely resolved by Kevin Ford in 2008.\n\nBoth the growth rate question and the secondary conjecture were answered.",
+    "mathContext": "Ford's 2008 Annals paper is a landmark in analytic number theory.",
+    "significance": "supporting",
+    "relatedConcepts": ["Resolved", "Ford 2008", "Annals of Mathematics"]
+  }
+]
