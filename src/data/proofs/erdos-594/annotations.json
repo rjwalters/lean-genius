@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e594-header",
+    "proofId": "erdos-594",
+    "range": {"startLine": 1, "endLine": 30},
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #594: Graphs with Chromatic Number ≥ ℵ₁ and Odd Cycles**\n\nThis problem sits at the intersection of graph theory and set theory.\n\n**Question:** Does every graph G with chromatic number ≥ ℵ₁ contain all sufficiently large odd cycles?\n\n**Answer:** YES (Erdős-Hajnal-Shelah, 1974)\n\n**Historical Note:**\n- Erdős and Hajnal first proved this for χ ≥ ℵ₂\n- Shelah helped improve the threshold to ℵ₁\n- Thomassen (1983) strengthened it further",
+    "mathContext": "χ(G) ≥ ℵ₁ ⟹ ∃N₀, ∀ odd n ≥ N₀, G contains cycle of length n",
+    "significance": "critical",
+    "relatedConcepts": ["chromatic number", "uncountable cardinals", "odd cycles", "infinite graphs"]
+  },
+  {
+    "id": "ann-e594-cardinals",
+    "proofId": "erdos-594",
+    "range": {"startLine": 43, "endLine": 61},
+    "type": "definition",
+    "title": "Cardinal Numbers",
+    "content": "**The Aleph Cardinals**\n\n```lean\nabbrev aleph0 : Cardinal := Cardinal.aleph 0  -- ℵ₀\nabbrev aleph1 : Cardinal := Cardinal.aleph 1  -- ℵ₁\nabbrev aleph2 : Cardinal := Cardinal.aleph 2  -- ℵ₂\n```\n\n**Key Properties:**\n- ℵ₀ is the cardinality of ℕ (countably infinite)\n- ℵ₁ is the first uncountable cardinal\n- ℵ₂ is the second uncountable cardinal\n- We have the strict chain: ℵ₀ < ℵ₁ < ℵ₂\n\nThese cardinals are essential for stating the problem about infinite chromatic numbers.",
+    "mathContext": "ℵ₀ < ℵ₁ < ℵ₂ (Cardinal.aleph_lt_aleph)",
+    "significance": "key",
+    "relatedConcepts": ["cardinals", "set theory", "countability", "aleph numbers"]
+  },
+  {
+    "id": "ann-e594-colorable",
+    "proofId": "erdos-594",
+    "range": {"startLine": 69, "endLine": 78},
+    "type": "definition",
+    "title": "Graph Colorability",
+    "content": "**Colorability for Infinite Graphs**\n\n```lean\ndef IsColorable (G : SimpleGraph V) (κ : Cardinal) : Prop :=\n  ∃ (C : Type*) (_ : #C = κ), Nonempty (G.Coloring C)\n```\n\nA graph is **κ-colorable** if there exists a proper coloring using at most κ colors.\n\nFor infinite graphs, κ can be any cardinal, including uncountable ones like ℵ₁.\n\n**Proper Coloring:** Adjacent vertices must have different colors.",
+    "mathContext": "G is κ-colorable ⟺ ∃ coloring with |colors| = κ",
+    "significance": "key",
+    "relatedConcepts": ["proper coloring", "chromatic number", "SimpleGraph.Coloring"]
+  },
+  {
+    "id": "ann-e594-chromatic",
+    "proofId": "erdos-594",
+    "range": {"startLine": 80, "endLine": 86},
+    "type": "definition",
+    "title": "Large Chromatic Number",
+    "content": "**Chromatic Number ≥ κ**\n\n```lean\ndef hasLargeChromaticNumber (G : SimpleGraph V) (κ : Cardinal) : Prop :=\n  ∀ λ < κ, ¬IsColorable G λ\n```\n\nA graph has chromatic number at least κ if it cannot be properly colored with fewer than κ colors.\n\n**Key Threshold:** The problem asks about graphs with χ ≥ ℵ₁ (first uncountable cardinal).",
+    "mathContext": "χ(G) ≥ κ ⟺ G is not (< κ)-colorable",
+    "significance": "critical",
+    "relatedConcepts": ["chromatic number", "graph coloring", "uncountable"]
+  },
+  {
+    "id": "ann-e594-cycle",
+    "proofId": "erdos-594",
+    "range": {"startLine": 93, "endLine": 98},
+    "type": "definition",
+    "title": "Cycles of Given Length",
+    "content": "**Cycle of Length n**\n\n```lean\ndef hasCycleOfLength (G : SimpleGraph V) (n : ℕ) : Prop :=\n  n ≥ 3 ∧ ∃ (vertices : Fin n → V),\n    Function.Injective vertices ∧\n    (∀ i, G.Adj (vertices i) (vertices ⟨(i.val + 1) % n, ...⟩))\n```\n\nA cycle is a sequence of n distinct vertices where:\n- Consecutive vertices are adjacent\n- The last vertex is adjacent to the first (wrap-around)\n- Minimum length is 3 (triangle)",
+    "mathContext": "n ≥ 3 with v₁ - v₂ - ... - vₙ - v₁",
+    "significance": "key",
+    "relatedConcepts": ["cycles", "paths", "graphs", "odd cycles"]
+  },
+  {
+    "id": "ann-e594-large-odd",
+    "proofId": "erdos-594",
+    "range": {"startLine": 104, "endLine": 107},
+    "type": "definition",
+    "title": "All Large Odd Cycles",
+    "content": "**Contains All Sufficiently Large Odd Cycles**\n\n```lean\ndef containsAllLargeOddCycles (G : SimpleGraph V) : Prop :=\n  ∃ N₀ : ℕ, ∀ n : ℕ, Odd n → n ≥ N₀ → hasCycleOfLength G n\n```\n\nA graph has this property if there exists a threshold N₀ such that for every odd integer n ≥ N₀, the graph contains a cycle of length n.\n\n**Key:** The threshold N₀ can depend on the graph - different graphs may have different minimum odd cycle lengths.",
+    "mathContext": "∃ N₀, ∀ odd n ≥ N₀, G contains Cₙ",
+    "significance": "critical",
+    "relatedConcepts": ["odd cycles", "cycle spectrum", "eventual containment"]
+  },
+  {
+    "id": "ann-e594-main",
+    "proofId": "erdos-594",
+    "range": {"startLine": 120, "endLine": 138},
+    "type": "axiom",
+    "title": "Erdős-Hajnal-Shelah Theorem",
+    "content": "**The Main Theorem (1974)**\n\n```lean\naxiom erdos_hajnal_shelah (V : Type*) (G : SimpleGraph V) :\n    hasLargeChromaticNumber G aleph1 → containsAllLargeOddCycles G\n\ntheorem erdos_594 (V : Type*) (G : SimpleGraph V)\n    (h : hasLargeChromaticNumber G aleph1) :\n    containsAllLargeOddCycles G :=\n  erdos_hajnal_shelah V G h\n```\n\n**Statement:** Every graph with chromatic number ≥ ℵ₁ contains all sufficiently large odd cycles.\n\n**Reference:** Erdős, Hajnal, and Shelah, \"On some general properties of chromatic numbers\", Topics in topology (1974), 243-255.",
+    "mathContext": "χ(G) ≥ ℵ₁ ⟹ G contains all large odd cycles",
+    "significance": "critical",
+    "relatedConcepts": ["solved problem", "1974 result", "infinite graphs"]
+  },
+  {
+    "id": "ann-e594-optimal",
+    "proofId": "erdos-594",
+    "range": {"startLine": 142, "endLine": 163},
+    "type": "theorem",
+    "title": "Optimality of ℵ₁",
+    "content": "**ℵ₁ is the Optimal Threshold**\n\n```lean\naxiom countable_chromatic_insufficient :\n    ∃ (V : Type*) (G : SimpleGraph V),\n      hasLargeChromaticNumber G aleph0 ∧ ¬containsAllLargeOddCycles G\n```\n\n**Key Point:** Graphs with countable chromatic number (χ = ℵ₀) do NOT necessarily contain all large odd cycles.\n\nThis shows ℵ₁ is the tight threshold - you cannot weaken the hypothesis to ℵ₀.",
+    "mathContext": "ℵ₀ is insufficient, ℵ₁ is necessary",
+    "significance": "key",
+    "relatedConcepts": ["optimality", "threshold", "counterexamples"]
+  },
+  {
+    "id": "ann-e594-bipartite",
+    "proofId": "erdos-594",
+    "range": {"startLine": 167, "endLine": 176},
+    "type": "axiom",
+    "title": "Bipartite Subgraph Containment",
+    "content": "**Contains All Finite Bipartite Graphs**\n\n```lean\naxiom contains_all_finite_bipartite (V : Type*) (G : SimpleGraph V) :\n    hasLargeChromaticNumber G aleph1 →\n    ∀ (W : Type*) [Fintype W] (H : SimpleGraph W), H.IsBipartite →\n      ∃ f : W → V, ∀ v w : W, H.Adj v w → G.Adj (f v) (f w)\n```\n\nErdős noted that graphs with χ ≥ ℵ₁ also contain all finite bipartite graphs as subgraphs.\n\n**Note:** Bipartite graphs have no odd cycles, so this is a different (easier) property.",
+    "mathContext": "χ(G) ≥ ℵ₁ ⟹ G contains all finite bipartite graphs",
+    "significance": "key",
+    "relatedConcepts": ["bipartite graphs", "2-colorable", "subgraph containment"]
+  },
+  {
+    "id": "ann-e594-thomassen",
+    "proofId": "erdos-594",
+    "range": {"startLine": 204, "endLine": 211},
+    "type": "axiom",
+    "title": "Thomassen's Strengthening (1983)",
+    "content": "**Cycles Through Any Edge**\n\n```lean\naxiom thomassen_1983 (V : Type*) (G : SimpleGraph V) (v w : V) :\n    hasLargeChromaticNumber G aleph1 → G.Adj v w →\n    ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → hasCycleThroughEdge G v w n\n```\n\n**Thomassen (1983):** For any edge e in a graph with χ ≥ ℵ₁, all sufficiently large cycles pass through e.\n\nThis is a significant strengthening of the Erdős-Hajnal-Shelah result and solves Problem #737.",
+    "mathContext": "∀ edge e, ∃ N₀, ∀ n ≥ N₀, cycle of length n through e exists",
+    "significance": "key",
+    "relatedConcepts": ["Problem #737", "edge-specific cycles", "1983 result"]
+  },
+  {
+    "id": "ann-e594-trianglefree",
+    "proofId": "erdos-594",
+    "range": {"startLine": 178, "endLine": 189},
+    "type": "concept",
+    "title": "Triangle-Free Graphs",
+    "content": "**High Chromatic Number Without Triangles**\n\n```lean\ndef isTriangleFree (G : SimpleGraph V) : Prop :=\n  ¬hasCycleOfLength G 3\n\naxiom mycielski_type_construction :\n    ∀ κ : Cardinal, ∃ (V : Type*) (G : SimpleGraph V),\n      isTriangleFree G ∧ hasLargeChromaticNumber G κ\n```\n\nTriangle-free graphs can still have arbitrarily large (even uncountable) chromatic number.\n\n**Mycielski Construction:** Builds triangle-free graphs with arbitrarily high chromatic number.\n\nFor such graphs, the theorem still applies: they contain all odd cycles ≥ 5.",
+    "mathContext": "∃ triangle-free graphs with χ ≥ ℵ₁",
+    "significance": "supporting",
+    "relatedConcepts": ["triangle-free", "Mycielski construction", "girth"]
+  },
+  {
+    "id": "ann-e594-summary",
+    "proofId": "erdos-594",
+    "range": {"startLine": 239, "endLine": 272},
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #594: Complete Summary**\n\n```lean\ntheorem erdos_594_summary (V : Type*) (G : SimpleGraph V)\n    (h : hasLargeChromaticNumber G aleph1) :\n    containsAllLargeOddCycles G ∧\n    (∀ (W : Type*) [Fintype W] (H : SimpleGraph W), H.IsBipartite →\n      ∃ f : W → V, ∀ v w : W, H.Adj v w → G.Adj (f v) (f w))\n```\n\n**STATUS: SOLVED (1974)**\n\n**Question:** χ(G) ≥ ℵ₁ ⟹ all large odd cycles?\n**Answer:** YES\n\n**Key Results:**\n1. Erdős-Hajnal: Proved for ℵ₂\n2. Erdős-Hajnal-Shelah: Proved for ℵ₁ (optimal)\n3. Thomassen: Cycles pass through any given edge",
+    "mathContext": "Complete characterization for χ ≥ ℵ₁",
+    "significance": "critical",
+    "relatedConcepts": ["solved problems", "infinite graph theory", "set-theoretic methods"]
+  }
+]
