@@ -1,33 +1,91 @@
 {
   "id": "erdos-526",
-  "title": "Erdős Problem #526",
+  "title": "Erdős Problem #526: Circle Coverage by Random Arcs (Dvoretzky's Problem)",
   "slug": "erdos-526",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... and .... Find a necessary and sufficient condition on the ... such that, if we choose (independently and uni...",
+  "description": "Given arc lengths a_n → 0 with Σa_n = ∞, when do random arcs cover the unit circle with probability 1? Shepp (1972) proved the necessary and sufficient condition is Σ exp(a_1+...+a_n)/n² = ∞.",
   "meta": {
-    "author": "Unknown",
+    "author": "Dvoretzky, A.",
     "sourceUrl": "https://erdosproblems.com/526",
-    "date": "",
-    "status": "pending",
+    "date": "1956",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos526Problem.lean",
     "tags": [
-      "erdos"
+      "probability",
+      "random-covering",
+      "geometric-probability",
+      "circle",
+      "arcs"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 526,
     "erdosUrl": "https://erdosproblems.com/526",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "solvedBy": "L. A. Shepp",
+    "solvedYear": 1972,
+    "mathlibDependencies": [
+      "Real.exp",
+      "Real.log",
+      "Filter.Tendsto",
+      "Summable",
+      "Set.Ico",
+      "BigOperators"
+    ],
+    "originalContributions": [
+      "UnitCircle and Arc definitions",
+      "ArcSequence structure with conditions",
+      "partialSum formalization",
+      "SheppCriterion predicate",
+      "CoversWithProbOne definition",
+      "superCriticalSeq and subCriticalSeq constructions",
+      "criticalSeq at 1/n boundary",
+      "Shepp's theorem axiomatization",
+      "Harmonic series and Basel problem references",
+      "Euler-Mascheroni constant bound",
+      "Main theorem combining all results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #526 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n\\geq 0$ with $a_n\\to 0$ and $\\sum a_n=\\infty$. Find a necessary and sufficient condition on the $a_n$ such that, if we choose (independently and uniformly) random arcs on the unit circle of length $a_n$, then all the circle is covered with probability $1$.\n\n\n\nA problem of Dvoretzky \\cite{Dv56}. It is easy to see that (under the given conditions alone) almost all the circle is covered with probability $1$.\n\nKahane \\cite{Ka59} showed that $a_n=\\frac{1+c}{n}$ with $c>0$ has this property, which Erd\\H{o}s (unpublished) improved to $a_n=\\frac{1}{n}$. Erd\\H{o}s also showed that $a_n=\\frac{1-c}{n}$ with $c>0$ does not have this property.\n\nSolved by Shepp \\cite{Sh72}, who showed that a necessary and sufficient condition is that\\[\\sum_n \\frac{e^{a_1+\\cdots+a_n}}{n^2}=\\infty.\\]\n\n\n\n\nReferences\n\n\n[Dv56] Dvoretzky, Aryeh, On covering a circle by randomly placed arcs. Proc. Nat. Acad. Sci. U.S.A. (1956), 199-203.\n\n[Ka59] Kahane, Jean-Pierre, Sur le recouvrement d'un cercle par des arcs dispos\\'{e}s au\nhasard. C. R. Acad. Sci. Paris (1959), 184-186.\n\n[Sh72] Shepp, L. A., Covering the circle with random arcs. Israel J. Math. (1972), 328-345.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Dvoretzky posed this problem in 1956, asking for a characterization of when random arcs on a circle provide complete coverage. Kahane (1959) showed a_n = (1+c)/n covers with probability 1. Erdős (unpublished) proved a_n = 1/n is the critical case: it covers, but a_n = (1-c)/n fails. Shepp (1972) gave the complete answer via the elegant criterion Σ exp(S_n)/n² = ∞, where S_n is the partial sum of arc lengths.",
+    "problemStatement": "Let a_n ≥ 0 with a_n → 0 and Σa_n = ∞. Find a necessary and sufficient condition on the a_n such that random arcs of lengths a_n, placed uniformly and independently on the unit circle, cover the entire circle with probability 1.",
+    "proofStrategy": "Shepp used Poisson process techniques to analyze the expected number of uncovered points. The key insight is that at a_n = 1/n, the partial sum S_n grows like log n, making exp(S_n)/n² ~ 1/n, which barely diverges. Below 1/n, the sum converges and coverage fails.",
+    "keyInsights": [
+      "Shepp's criterion: Σ exp(a_1+...+a_n)/n² = ∞",
+      "Critical boundary at a_n = 1/n",
+      "Harmonic series growth: H_n ~ log n + γ",
+      "exp(log n)/n² = 1/n, which diverges",
+      "Connection to Poisson processes and renewal theory"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Basic Setup",
+      "description": "Unit circle, arcs, and arc sequence conditions"
+    },
+    {
+      "title": "Shepp's Criterion",
+      "description": "The sum Σ exp(S_n)/n² characterization"
+    },
+    {
+      "title": "Critical Cases",
+      "description": "Boundary at a_n = 1/n and near cases"
+    },
+    {
+      "title": "Verification",
+      "description": "Checking Shepp's criterion for special sequences"
+    },
+    {
+      "title": "Poisson Connection",
+      "description": "Proof techniques via Poisson processes"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Shepp (1972) solved Dvoretzky's random arc covering problem: random arcs of lengths a_n cover the circle with probability 1 iff Σ exp(a_1+...+a_n)/n² = ∞. The critical case a_n = 1/n just barely succeeds.",
+    "implications": "The result connects probability theory, geometric measure, and the fine structure of divergent series. It shows how the harmonic series growth log n creates a precise phase transition in random covering problems.",
+    "openQuestions": [
+      "Higher-dimensional generalizations",
+      "Non-uniform arc placement distributions",
+      "Rate of convergence to full coverage"
+    ]
   }
 }
