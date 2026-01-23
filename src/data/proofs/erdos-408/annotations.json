@@ -1,1 +1,192 @@
-[]
+[
+  {
+    "id": "ann-e408-overview",
+    "proofId": "erdos-408",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #408: Iterated Totient Function**\n\nDefine f(n) = min{k : φₖ(n) = 1}, where φₖ is the k-fold iteration of Euler's totient.\n\n**Questions:**\n1. Does f(n)/log(n) have a distribution function?\n2. Is f(n)/log(n) almost always constant?\n3. What is P(φₖ(n)) when k ≈ log(log(n))?\n\n**Status:** OPEN (conditional results under Elliott-Halberstam)",
+    "mathContext": "The iterated totient f(n) measures how many times φ must be applied to reach 1. This connects multiplicative number theory to probabilistic distribution questions.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's totient", "Distribution functions", "Elliott-Halberstam conjecture"]
+  },
+  {
+    "id": "ann-e408-iterated-totient",
+    "proofId": "erdos-408",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "definition",
+    "title": "Iterated Totient φₖ(n)",
+    "content": "**iteratedTotient k n:**\n\nThe k-fold iteration of Euler's totient:\n- φ₀(n) = n\n- φ₁(n) = φ(n)\n- φₖ(n) = φ(φₖ₋₁(n))\n\nSince φ(m) < m for m > 1, iteration always terminates at 1.",
+    "significance": "critical",
+    "leanSymbol": "iteratedTotient"
+  },
+  {
+    "id": "ann-e408-iteration-length",
+    "proofId": "erdos-408",
+    "range": { "startLine": 78, "endLine": 91 },
+    "type": "definition",
+    "title": "Iteration Length f(n)",
+    "content": "**iterationLength n:**\n\nf(n) = min{k : φₖ(n) = 1}\n\nThe minimum number of totient iterations to reach 1.\n\n**Examples:**\n- f(2) = 1 (φ(2) = 1)\n- f(3) = 2 (φ(3) = 2, φ(2) = 1)\n- f(5) = 3 (φ(5) = 4, φ(4) = 2, φ(2) = 1)\n\nThis is OEIS sequence A049108.",
+    "significance": "critical",
+    "leanSymbol": "iterationLength"
+  },
+  {
+    "id": "ann-e408-pillai-lower",
+    "proofId": "erdos-408",
+    "range": { "startLine": 111, "endLine": 118 },
+    "type": "axiom",
+    "title": "Pillai's Lower Bound (1929)",
+    "content": "**pillai_lower_bound:**\n\nFor sufficiently large n: f(n) > log₃(n)\n\nThis means the iteration length grows at least as fast as logarithm base 3.",
+    "significance": "key",
+    "leanSymbol": "pillai_lower_bound"
+  },
+  {
+    "id": "ann-e408-pillai-upper",
+    "proofId": "erdos-408",
+    "range": { "startLine": 120, "endLine": 127 },
+    "type": "axiom",
+    "title": "Pillai's Upper Bound (1929)",
+    "content": "**pillai_upper_bound:**\n\nFor sufficiently large n: f(n) < log₂(n)\n\nCombined with the lower bound: log₃(n) < f(n) < log₂(n).\n\nThis pins down the order of magnitude: f(n) ~ c·log(n).",
+    "significance": "key",
+    "leanSymbol": "pillai_upper_bound"
+  },
+  {
+    "id": "ann-e408-pillai-theorem",
+    "proofId": "erdos-408",
+    "range": { "startLine": 129, "endLine": 143 },
+    "type": "theorem",
+    "title": "Pillai's Bounds Combined",
+    "content": "**pillai_bounds:**\n\nFor large n: log₃(n) < f(n) < log₂(n)\n\n**Proof:** Combines lower and upper bounds by taking N = max(N₁, N₂).\n\n**Significance:** Establishes that f(n)/log(n) is bounded between 1/log(3) ≈ 0.91 and 1/log(2) ≈ 1.44.",
+    "significance": "critical",
+    "leanSymbol": "pillai_bounds"
+  },
+  {
+    "id": "ann-e408-ess-mult",
+    "proofId": "erdos-408",
+    "range": { "startLine": 151, "endLine": 158 },
+    "type": "definition",
+    "title": "Essentially Multiplicative",
+    "content": "**EssentiallyMultiplicative:**\n\nA function g is essentially multiplicative if:\ng(mn) = g(m) + g(n) + O(1) for coprime m, n.\n\nThe error is bounded by some constant C, uniformly for all coprime pairs.",
+    "significance": "key",
+    "leanSymbol": "EssentiallyMultiplicative"
+  },
+  {
+    "id": "ann-e408-shapiro",
+    "proofId": "erdos-408",
+    "range": { "startLine": 160, "endLine": 166 },
+    "type": "axiom",
+    "title": "Shapiro's Theorem (1950)",
+    "content": "**shapiro_multiplicativity:**\n\nThe iteration length f(n) is essentially multiplicative.\n\nFor coprime m, n: f(mn) ≈ f(m) + f(n) (with bounded error).\n\nThis structural result shows f behaves 'additively' on products.",
+    "significance": "critical",
+    "leanSymbol": "shapiro_multiplicativity"
+  },
+  {
+    "id": "ann-e408-distribution",
+    "proofId": "erdos-408",
+    "range": { "startLine": 174, "endLine": 187 },
+    "type": "definition",
+    "title": "Distribution Function",
+    "content": "**HasDistributionFunction:**\n\nA function g has a distribution function if for all α:\nlim_{x→∞} (1/x) · |{n ≤ x : g(n)/log(n) ≤ α}| exists.\n\n**question1:** Does f(n)/log(n) have such a distribution?\n\nIntuitively: does the normalized function have a well-defined probability distribution?",
+    "significance": "key",
+    "leanSymbol": "question1"
+  },
+  {
+    "id": "ann-e408-constant",
+    "proofId": "erdos-408",
+    "range": { "startLine": 195, "endLine": 208 },
+    "type": "definition",
+    "title": "Almost Always Constant",
+    "content": "**AlmostAlwaysConstant:**\n\ng(n)/log(n) → c for almost all n (density 1).\n\n**question2:** Is f(n)/log(n) almost always constant?\n\nIf YES, this would mean f(n)/log(n) concentrates around a single value for 'most' n.",
+    "significance": "key",
+    "leanSymbol": "question2"
+  },
+  {
+    "id": "ann-e408-elliott",
+    "proofId": "erdos-408",
+    "range": { "startLine": 216, "endLine": 220 },
+    "type": "axiom",
+    "title": "Elliott-Halberstam Conjecture",
+    "content": "**ElliottHalberstam:**\n\nA strong form of the Bombieri-Vinogradov theorem about primes in arithmetic progressions.\n\nThis is a major open conjecture in analytic number theory, stronger than what is currently proven.",
+    "significance": "key",
+    "leanSymbol": "ElliottHalberstam"
+  },
+  {
+    "id": "ann-e408-egps",
+    "proofId": "erdos-408",
+    "range": { "startLine": 222, "endLine": 233 },
+    "type": "axiom",
+    "title": "EGPS Conditional Theorem (1990)",
+    "content": "**egps_conditional:**\n\nAssuming Elliott-Halberstam: both Question 1 and Question 2 have answer YES.\n\n**Authors:** Erdős, Granville, Pomerance, and Spiro (1990)\n\nThe limiting constant is 1/log(2) ≈ 1.4427.\n\nThis is a landmark conditional result in multiplicative number theory.",
+    "significance": "critical",
+    "leanSymbol": "egps_conditional"
+  },
+  {
+    "id": "ann-e408-limiting",
+    "proofId": "erdos-408",
+    "range": { "startLine": 235, "endLine": 245 },
+    "type": "axiom",
+    "title": "The Limiting Constant",
+    "content": "**limiting_constant:**\n\nConditionally: f(n)/log(n) → 1/log(2) ≈ 1.4427 for almost all n.\n\nThis is remarkably close to (but distinct from) 1/log(3) ≈ 0.91 and 1/log(2) ≈ 1.44 from Pillai's bounds.",
+    "significance": "key",
+    "leanSymbol": "limiting_constant"
+  },
+  {
+    "id": "ann-e408-prime-factor",
+    "proofId": "erdos-408",
+    "range": { "startLine": 253, "endLine": 262 },
+    "type": "definition",
+    "title": "Largest Prime Factor",
+    "content": "**largestPrimeFactor:**\n\nP(n) = max{p : p prime and p | n}, with P(1) = 1.\n\nThe third question asks about P(φₖ(n)) when k ≈ log(log(n)).\n\nConjecture: P(φₖ(n)) ≤ n^o(1) for almost all n when k → ∞.",
+    "significance": "key",
+    "leanSymbol": "largestPrimeFactor"
+  },
+  {
+    "id": "ann-e408-examples",
+    "proofId": "erdos-408",
+    "range": { "startLine": 295, "endLine": 317 },
+    "type": "theorem",
+    "title": "Small Examples",
+    "content": "**Verified totient computations:**\n\n- φ(2) = 1 → f(2) = 1\n- φ(3) = 2, φ(2) = 1 → f(3) = 2\n- φ(4) = 2, φ(2) = 1 → f(4) = 2\n- φ(5) = 4, φ(4) = 2, φ(2) = 1 → f(5) = 3\n- φ(6) = 2, φ(2) = 1 → f(6) = 2\n- φ(7) = 6, φ(6) = 2, φ(2) = 1 → f(7) = 3\n\nSequence: 1, 2, 2, 3, 2, 3, ... (OEIS A049108)",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e408-powers",
+    "proofId": "erdos-408",
+    "range": { "startLine": 331, "endLine": 337 },
+    "type": "axiom",
+    "title": "Powers of 2",
+    "content": "**f_power_of_two:**\n\nf(2^k) = k for all k ≥ 1.\n\nSince φ(2^j) = 2^{j-1}, iteration reduces the exponent by 1 each step.\n\nThis gives exact values along the power-of-2 sequence.",
+    "significance": "supporting",
+    "leanSymbol": "f_power_of_two"
+  },
+  {
+    "id": "ann-e408-primes",
+    "proofId": "erdos-408",
+    "range": { "startLine": 339, "endLine": 345 },
+    "type": "axiom",
+    "title": "Primes",
+    "content": "**f_prime:**\n\nFor prime p: f(p) = f(p-1) + 1.\n\nSince φ(p) = p - 1 for primes, iteration 'jumps down' to p-1.\n\nThis recursive structure helps compute f for specific primes.",
+    "significance": "supporting",
+    "leanSymbol": "f_prime"
+  },
+  {
+    "id": "ann-e408-summary",
+    "proofId": "erdos-408",
+    "range": { "startLine": 367, "endLine": 378 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_408_summary:**\n\nCombines all main results:\n1. Pillai bounds exist\n2. f is essentially multiplicative (Shapiro)\n3. EGPS: Conditional YES to Q1 and Q2\n\nThis captures the current state of knowledge on Problem #408.",
+    "significance": "critical",
+    "leanSymbol": "erdos_408_summary"
+  },
+  {
+    "id": "ann-e408-main",
+    "proofId": "erdos-408",
+    "range": { "startLine": 380, "endLine": 391 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_408:**\n\n1. f(n) is well-defined: f(n) ≥ 1 for n ≥ 2\n2. Conditional answer: Elliott-Halberstam → YES to Q1 and Q2\n\n**Status:** OPEN unconditionally, but conditionally resolved.\n\nThis formalizes the current state of Erdős Problem #408.",
+    "significance": "critical",
+    "leanSymbol": "erdos_408"
+  }
+]
