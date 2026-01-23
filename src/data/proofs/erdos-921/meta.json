@@ -4,9 +4,9 @@
   "slug": "erdos-921",
   "description": "For k ≥ 4, let f_k(n) be the largest m such that there exists an n-vertex graph with χ = k where all odd cycles have length > m. SOLVED: f_k(n) ≍ n^{1/(k-2)} by Kierstead-Szemerédi-Trotter (1984).",
   "meta": {
-    "author": "Erdős, Gallai, Kierstead, Szemerédi, Trotter",
+    "author": "Kierstead-Szemerédi-Trotter (1984 proof), Erdős-Gallai (problem)",
     "sourceUrl": "https://erdosproblems.com/921",
-    "date": "1963-1984",
+    "date": "1984",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos921Problem.lean",
     "tags": [
@@ -14,24 +14,59 @@
       "graph-theory",
       "chromatic-number",
       "cycle-girth",
-      "extremal-graph-theory"
+      "extremal-graph-theory",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 921,
     "erdosUrl": "https://erdosproblems.com/921",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Basic graph definitions and properties",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function for fractional exponents",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Graph structure definition with adjacency, symmetry, and looplessness",
+      "chromaticNumber definition: minimum k for proper k-coloring",
+      "isOddCycle predicate for odd-length cycles",
+      "oddGirth definition: length of shortest odd cycle",
+      "f(k,n) axiom: maximum odd girth in k-chromatic n-vertex graphs",
+      "erdos_gallai_conjecture formalization: f_k(n) ≍ n^{1/(k-2)}",
+      "kierstead_szemeredi_trotter axiom: complete resolution for all k ≥ 4",
+      "gallai_lower_bound axiom: f_4(n) ≥ c√n (1963)",
+      "erdos_upper_bound axiom: f_4(n) ≤ C√n (unpublished)",
+      "k4_case theorem: f_4(n) ≍ √n (constructive proof from bounds)",
+      "general_lower_bound and general_upper_bound axioms for k ≥ 4",
+      "erdos_921_status theorem: main result combining all components"
+    ]
   },
   "overview": {
-    "historicalContext": "A question of Erdős and Gallai about the interplay between chromatic number and odd cycle structure. Gallai proved the lower bound for k = 4 in 1963, showing graphs can have chromatic number 4 with large odd girth. Erdős proved the matching upper bound (unpublished). The full conjecture for all k ≥ 4 was resolved by Kierstead, Szemerédi, and Trotter in 1984.",
-    "problemStatement": "Let k ≥ 4 and let f_k(n) be the largest m such that there exists a graph on n vertices with chromatic number k in which every odd cycle has length > m. Is f_k(n) ≍ n^{1/(k-2)}?",
-    "proofStrategy": "The formalization defines the function f_k(n), states the asymptotic conjecture, and presents the Kierstead-Szemerédi-Trotter theorem. The k = 4 case is shown explicitly with Gallai's lower bound and Erdős's upper bound. The exponent 1/(k-2) captures the precise trade-off between chromatic number and odd girth.",
+    "historicalContext": "**Erdős Problem #921**\n\nThis problem, posed jointly by Erdős and Gallai, explores the fundamental tension between a graph's chromatic number and its odd cycle structure.\n\n**Key History:**\n- **Gallai (1963):** Initiated the study by proving f_4(n) ≫ n^{1/2}, constructing explicit 4-chromatic graphs with large odd girth\n- **Erdős (unpublished):** Proved the matching upper bound f_4(n) ≪ n^{1/2}, showing the k=4 case is completely characterized\n- **Kierstead-Szemerédi-Trotter (1984):** Resolved the full conjecture for all k ≥ 4, proving f_k(n) ≍ n^{1/(k-2)}\n\n**Mathematical Significance:**\nThe result quantifies a deep principle: high chromatic number forces short odd cycles. A bipartite graph (χ = 2) has no odd cycles at all. As chromatic number increases, some odd cycles must appear, and this problem determines exactly how short they must be.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet k ≥ 4 and let f_k(n) be the largest m such that there exists a graph on n vertices with chromatic number k in which every odd cycle has length > m.\n\n**Conjecture:** f_k(n) ≍ n^{1/(k-2)}\n\n**Answer: YES**\n\nKierstead, Szemerédi, and Trotter (1984) proved that for all k ≥ 4:\n- Lower bound: f_k(n) ≥ c_k · n^{1/(k-2)} for some c_k > 0\n- Upper bound: f_k(n) ≤ C_k · n^{1/(k-2)} for some C_k > 0",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define graph structure with adjacency, symmetry, and looplessness\n\n2. **Key Concepts:**\n   - Chromatic number χ(G): minimum k for proper k-coloring\n   - Odd girth: length of shortest odd cycle (or ∞ for bipartite)\n   - f(k,n): maximum odd girth - 1 among k-chromatic n-vertex graphs\n\n3. **Conjecture Formalization:** The Erdős-Gallai conjecture expressed as existence of constants c₁, c₂\n\n4. **Main Results:**\n   - Kierstead-Szemerédi-Trotter theorem (axiom): conjecture holds for all k ≥ 4\n   - Constructive k=4 case from Gallai and Erdős bounds\n\n5. **Why Axioms:** The proof requires deep results in extremal graph theory and regularity methods beyond current Mathlib scope",
     "keyInsights": [
-      "Higher chromatic number forces shorter odd cycles",
-      "The exponent 1/(k-2) captures the tension precisely",
-      "k = 4 gives exponent 1/2, k = 5 gives 1/3, etc.",
-      "Explicit constructions give lower bounds",
-      "Extremal graph theory and regularity give upper bounds"
+      "**Bipartite = No Odd Cycles:** A graph is 2-colorable iff it has no odd cycles, so χ ≥ 3 forces odd cycles",
+      "**Exponent Formula:** For chromatic number k, the critical exponent is 1/(k-2): k=4 gives 1/2, k=5 gives 1/3, k=6 gives 1/4",
+      "**The Trade-off:** High χ 'wants' dense structure with short cycles; large odd girth 'wants' no short odd cycles",
+      "**Constructions vs Bounds:** Lower bounds use explicit probabilistic constructions; upper bounds use extremal counting arguments",
+      "**Regularity Method:** Szemerédi's regularity lemma is key to the upper bound proof - Szemerédi was a coauthor!",
+      "**Local Chromatic Number:** The proof uses local chromatic number to bound global structure"
     ]
   },
   "sections": [
