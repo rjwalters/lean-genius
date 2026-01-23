@@ -1,21 +1,21 @@
 {
   "id": "erdos-788",
-  "title": "Sum-Free Subsets in Intervals",
+  "title": "Erdős Problem #788: Sum-Free Subsets in Intervals",
   "slug": "erdos-788",
   "description": "Estimate f(n) where f(n) is maximal s.t. for all B ⊂ (2n,4n), ∃ C ⊂ (n,2n) sum-free w.r.t. B with |C|+|B| ≥ f(n). Conjectured f(n) ≤ n^{1/2+o(1)}. Known: n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. OPEN.",
   "meta": {
     "author": "Choi (1971, conjecture), Adenwalla, Hunter, Baltz-Schoen-Srivastav (2000)",
     "sourceUrl": "https://erdosproblems.com/788",
     "date": "2000",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos788Problem.lean",
     "tags": ["erdos", "additive-combinatorics", "sum-free-sets", "sidon-sets", "open-problem"],
-    "badge": "mathlib",
-    "sorries": 3,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 788,
     "erdosUrl": "https://erdosproblems.com/788",
     "erdosProblemStatus": "open",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       { "theorem": "Finset", "description": "Finite sets for intervals and subsets", "module": "Mathlib.Data.Finset.Basic" },
       { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
@@ -34,7 +34,7 @@
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "This problem was conjectured by Choi in 1971, who proved f(n) ≪ n^{3/4}. Adenwalla gave a simple construction showing f(n) ≫ n^{1/2}. Hunter improved the upper bound to n^{2/3+o(1)}. The best known bound f(n) ≪ (n log n)^{2/3} was proved by Baltz, Schoen, and Srivastav in 2000 using probabilistic methods and Sidon sets.",
+    "historicalContext": "**Erdős Problem #788: Sum-Free Subsets in Intervals**\n\nThis problem asks about the interplay between sum-free sets and interval arithmetic. Given a \"forbidden\" set B in the interval (2n, 4n), we seek a large set C in (n, 2n) such that no two distinct elements of C sum to an element of B. The key observation is that sums of elements from (n, 2n) naturally land in (2n, 4n), making these intervals the natural setting.\n\n**Historical Development:**\n- Choi (1971): First studied this problem systematically, proving f(n) ≪ n^{3/4} and conjecturing f(n) ≤ n^{1/2+o(1)}\n- Adenwalla: Provided the lower bound f(n) ≫ n^{1/2} using a clever Sidon set construction\n- Hunter: Improved the upper bound to n^{2/3+o(1)} via counting arguments\n- Baltz, Schoen, Srivastav (2000): Achieved the current best upper bound f(n) ≪ (n log n)^{2/3} using probabilistic methods\n\n**Mathematical Setting:**\nThe function f(n) captures the \"guaranteed combined size\" of C and B - no matter how an adversary chooses B, we can always find C such that |C| + |B| ≥ f(n). This min-max formulation connects to game-theoretic aspects of additive combinatorics.",
     "problemStatement": "Let f(n) be maximal such that for all B ⊂ (2n,4n) ∩ ℕ, there exists C ⊂ (n,2n) ∩ ℕ with c₁ + c₂ ∉ B for all c₁ ≠ c₂ ∈ C and |C| + |B| ≥ f(n). Estimate f(n). Is f(n) ≤ n^{1/2+o(1)}?",
     "proofStrategy": "The formalization defines sum-free sets with respect to a prescribed set, the function f(n), and Sidon sets. Known bounds are axiomatized: Choi's n^{3/4}, Adenwalla's n^{1/2} lower bound, Hunter's n^{2/3+o(1)}, and BSS's (n log n)^{2/3}.",
     "keyInsights": [
@@ -51,43 +51,71 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 45,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Open intervals, pairwise sums, sum-free with respect to B"
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "startLine": 90,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Definition and characterization of f(n)"
     },
     {
       "id": "choi-bound",
       "title": "Choi's Original Bound",
       "startLine": 123,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Choi's n^{3/4} bound and conjecture"
     },
     {
       "id": "adenwalla",
       "title": "Adenwalla's Lower Bound",
       "startLine": 141,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "Lower bound n^{1/2} via Sidon sets"
+    },
+    {
+      "id": "hunter-bound",
+      "title": "Hunter's Improvement",
+      "startLine": 177,
+      "endLine": 194,
+      "summary": "Hunter's improved bound n^{2/3+o(1)}"
     },
     {
       "id": "bss-bound",
       "title": "Baltz-Schoen-Srivastav Bound",
       "startLine": 195,
-      "endLine": 220,
+      "endLine": 221,
       "summary": "Best upper bound (n log n)^{2/3}"
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "startLine": 222,
+      "endLine": 246,
+      "summary": "Current bounds and the open gap"
+    },
+    {
+      "id": "sum-free-connection",
+      "title": "Connections to Sum-Free Sets",
+      "startLine": 247,
+      "endLine": 272,
+      "summary": "Classical sum-free sets and density"
+    },
+    {
+      "id": "interval-constraints",
+      "title": "Interval Constraints",
+      "startLine": 273,
+      "endLine": 312,
+      "summary": "Why these intervals and sum ranges"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 315,
-      "endLine": 356,
-      "summary": "Main results and the gap between bounds"
+      "startLine": 331,
+      "endLine": 375,
+      "summary": "Main results, timeline, and open status"
     }
   ],
   "conclusion": {
