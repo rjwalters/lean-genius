@@ -37,11 +37,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Formalized hypercube Q_n, minimum degree condition, and main conjecture about containing Q_n in dense graphs.",
+    "progressSummary": "SURVEYED: Proved hypercube_regular (n-regularity) and complete_contains_hypercube. Formalized conjecture and all basic properties.",
     "builtItems": [
-      "proofs/Proofs/Erdos1035Problem.lean - Main formalization (~180 lines)",
+      "proofs/Proofs/Erdos1035Problem.lean - Main formalization (~240 lines)",
       "hypercube definition (Adj iff differ in 1 coordinate)",
-      "hypercube_card theorem",
+      "hypercube_card theorem (PROVED)",
+      "hypercube_regular theorem (PROVED): Q_n is n-regular",
+      "complete_contains_hypercube theorem (PROVED): K_{2^n} contains Q_n",
       "ContainsSubgraph, ContainsHypercube definitions",
       "minDegree, HasMinDegree definitions",
       "mainConjecture statement",
@@ -50,6 +52,8 @@
     "insights": [
       "Q_n = {0,1}^n with adjacency iff Hamming distance 1",
       "Q_n is n-regular with 2^(n-1)·n edges",
+      "Regularity proof: bijection between neighbors and coordinates",
+      "Embedding proof: use Fintype.equivOfCardEq for (Fin n → Bool) ≃ Fin 2^n",
       "Conjecture: ∃ c>0 such that min deg > (1-c)·2^n → contains Q_n",
       "If false, two alternative questions proposed by Erdős",
       "Related to problem #576 (edge extremal for Q_n)",
@@ -58,7 +62,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove hypercube_regular",
+      "Prove hypercube_edge_count",
       "Research known partial results on the conjecture",
       "Study problem #576 for edge version"
     ],
