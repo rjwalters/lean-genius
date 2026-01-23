@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "erdos-887-intro",
+    "proofId": "erdos-887",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 27 },
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #887: Divisors in Short Intervals Near √n**\n\nIs there a universal constant K such that for every C > 0 and large n, n has at most K divisors in (√n, √n + C·n^{1/4})?\n\n**Status:** OPEN (partial results known)\n\n**Key Question:** Is 4 the maximum? Erdős-Rosenfeld showed 4 is achievable infinitely often.",
+    "mathContext": "This problem concerns the distribution of divisors near √n. The interval width n^{1/4} is critical: smaller intervals have at most 2 divisors, larger intervals have unbounded divisors.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Square root", "Short intervals", "Analytic number theory"]
+  },
+  {
+    "id": "erdos-887-divisors",
+    "proofId": "erdos-887",
+    "type": "definition",
+    "range": { "startLine": 42, "endLine": 47 },
+    "title": "Divisors and τ(n)",
+    "content": "**divisors n:**\n\nThe set of all positive integers d such that d | n.\n\n**tau n = τ(n):**\n\nThe divisor function: number of divisors of n. Known to satisfy τ(n) ≪ n^ε for any ε > 0.",
+    "mathContext": "The divisor function τ(n) is a fundamental multiplicative function. For prime p, τ(p) = 2.",
+    "significance": "key",
+    "relatedConcepts": ["Divisibility", "Multiplicative functions", "Number of divisors"]
+  },
+  {
+    "id": "erdos-887-interval",
+    "proofId": "erdos-887",
+    "type": "definition",
+    "range": { "startLine": 49, "endLine": 55 },
+    "title": "Divisors in Intervals",
+    "content": "**divisorsInInterval n a b:**\n\nDivisors of n that lie in the interval [a, b].\n\n**countDivisorsInInterval n a b:**\n\nThe count of divisors in the interval. This is what we want to bound.",
+    "mathContext": "Counting divisors in short intervals is a classical problem in analytic number theory with connections to sieve methods.",
+    "significance": "key",
+    "relatedConcepts": ["Interval arithmetic", "Counting functions", "Sieve theory"]
+  },
+  {
+    "id": "erdos-887-conjecture",
+    "proofId": "erdos-887",
+    "type": "definition",
+    "range": { "startLine": 69, "endLine": 79 },
+    "title": "The Erdős-Rosenfeld Conjecture",
+    "content": "**ErdosRosenfeldConjecture:**\n\nThere exists a universal constant K such that for all C > 0 and sufficiently large n:\n\nn has at most K divisors in (√n, √n + C·n^{1/4})\n\nThe strong form: K is independent of both C and n.\n\n**WeakErdosRosenfeld:** The weaker version where K may depend on C.",
+    "mathContext": "The conjecture's power is that K is absolute - the same bound works for any interval width C·n^{1/4}.",
+    "significance": "critical",
+    "relatedConcepts": ["Universal constants", "Uniform bounds", "Extremal problems"]
+  },
+  {
+    "id": "erdos-887-four-divisors",
+    "proofId": "erdos-887",
+    "type": "axiom",
+    "range": { "startLine": 85, "endLine": 88 },
+    "title": "Four Divisors are Achievable",
+    "content": "**erdos_rosenfeld_four_divisors:**\n\nErdős and Rosenfeld (1997) proved that infinitely many n have exactly 4 divisors in (√n, √n + n^{1/4}).\n\n**Construction:** Using products of 4 carefully chosen primes p₁ < p₂ < p₃ < p₄ such that p₁p₂, p₁p₃, p₁p₄, p₂p₃ are all near √n.",
+    "mathContext": "This establishes that if K exists, then K ≥ 4. The question is whether K = 4 suffices.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Constructive examples", "Prime products"]
+  },
+  {
+    "id": "erdos-887-perfect-squares",
+    "proofId": "erdos-887",
+    "type": "axiom",
+    "range": { "startLine": 104, "endLine": 110 },
+    "title": "Chan's Perfect Square Bound",
+    "content": "**chan_perfect_square_bound:**\n\nTsz Ho Chan (2013) proved that every perfect square n = k² has at most 5 divisors in the interval (√n - c·n^{1/4}, √n + c·n^{1/4}).\n\nThe bound is 5 (not 4) because √n = k is itself a divisor of a perfect square.\n\nThis resolves the conjecture for perfect squares with K = 5.",
+    "mathContext": "Perfect squares are a special case because √n is an integer divisor. The symmetric interval around √n captures this.",
+    "significance": "critical",
+    "relatedConcepts": ["Perfect squares", "Special cases", "Partial solutions"]
+  },
+  {
+    "id": "erdos-887-sqrt-divisor",
+    "proofId": "erdos-887",
+    "type": "theorem",
+    "range": { "startLine": 112, "endLine": 116 },
+    "title": "Perfect Square Has √n as Divisor",
+    "content": "**perfect_square_has_sqrt_divisor:**\n\nIf n is a perfect square (n = k²), then k divides n and k² = n.\n\nThis is why perfect squares can have an extra divisor in the interval: √n itself is a divisor.",
+    "mathContext": "A basic observation but important for understanding why the perfect square bound is 5 instead of 4.",
+    "significance": "key",
+    "relatedConcepts": ["Divisibility", "Square roots", "Integer divisors"]
+  },
+  {
+    "id": "erdos-887-motivation",
+    "proofId": "erdos-887",
+    "type": "context",
+    "range": { "startLine": 122, "endLine": 138 },
+    "title": "Why This Problem is Interesting",
+    "content": "**Connections:**\n\n1. **Divisor Clustering:** Divisors of n tend to cluster near √n (half are below, half above).\n\n2. **Multiplication Table:** Related to how often integers appear as products in the n × n multiplication table.\n\n3. **Anatomy of Integers:** Understanding divisor distribution reveals typical integer structure.\n\nThe problem lies at the intersection of multiplicative and additive number theory.",
+    "mathContext": "The 'middle' divisors near √n are particularly important for understanding factorizations and prime structure.",
+    "significance": "key",
+    "relatedConcepts": ["Divisor distribution", "Multiplication table", "Integer anatomy"]
+  },
+  {
+    "id": "erdos-887-bounds",
+    "proofId": "erdos-887",
+    "type": "axiom",
+    "range": { "startLine": 144, "endLine": 156 },
+    "title": "Related Divisor Bounds",
+    "content": "**divisor_bound_epsilon:**\n\nτ(n) ≪ n^ε for any ε > 0. The divisor function grows very slowly.\n\n**average_divisor_count:**\n\nThe average of τ(n) for n ≤ x is approximately log x.\n\nThese bounds provide context: total divisors are few, so near √n they must be even sparser.",
+    "mathContext": "Classical results in analytic number theory. The Dirichlet divisor problem concerns improving the error term in the average.",
+    "significance": "key",
+    "relatedConcepts": ["Divisor bounds", "Average order", "Dirichlet divisor problem"]
+  },
+  {
+    "id": "erdos-887-heuristics",
+    "proofId": "erdos-887",
+    "type": "context",
+    "range": { "startLine": 162, "endLine": 181 },
+    "title": "Heuristics for the Problem",
+    "content": "**Why K might exist:**\n\nIf d₁ < d₂ < ... < dₖ are divisors of n in the interval, then n/dᵢ are also divisors. Near √n, pairs (d, n/d) create constraints.\n\n**Why 4 might be special:**\n\nWith 4 divisors near √n, we get 4 complementary divisors n/dᵢ also near √n. More divisors would require increasingly rare arithmetic coincidences.",
+    "mathContext": "The pairing d ↔ n/d is fundamental: these pairs lie symmetrically around √n.",
+    "significance": "key",
+    "relatedConcepts": ["Complementary divisors", "Divisor pairs", "Arithmetic coincidences"]
+  },
+  {
+    "id": "erdos-887-variations",
+    "proofId": "erdos-887",
+    "type": "definition",
+    "range": { "startLine": 187, "endLine": 205 },
+    "title": "Interval Variations",
+    "content": "**divisorsNearSqrtAlpha n C α:**\n\nDivisors in (√n, √n + C·n^α) for general exponent α.\n\n**Critical Behavior:**\n- α > 1/2: No bound possible (interval grows faster than √n)\n- α = 1/4: The critical case (Erdős-Rosenfeld)\n- α < 1/4: At most 2 divisors (only d and n/d can be close)\n\nThe exponent 1/4 is special: it's the boundary between bounded and unbounded behavior.",
+    "mathContext": "Phase transitions in divisor behavior occur at specific exponents. The 1/4 exponent is the critical threshold.",
+    "significance": "critical",
+    "relatedConcepts": ["Critical exponents", "Phase transitions", "Threshold behavior"]
+  },
+  {
+    "id": "erdos-887-computational",
+    "proofId": "erdos-887",
+    "type": "context",
+    "range": { "startLine": 211, "endLine": 220 },
+    "title": "Computational Evidence",
+    "content": "**computational_evidence:**\n\nExtensive computational searches have not found any n with more than 4 divisors in the Erdős-Rosenfeld interval (for C = 1).\n\n**examples_are_sparse:**\n\nNumbers achieving exactly 4 divisors are infinite but rare. They occur with density roughly x^{1/2+ε}?",
+    "mathContext": "Computational evidence strongly supports K = 4, but no proof exists for the general case.",
+    "significance": "key",
+    "relatedConcepts": ["Computational search", "Density of special numbers", "Experimental mathematics"]
+  },
+  {
+    "id": "erdos-887-summary",
+    "proofId": "erdos-887",
+    "type": "theorem",
+    "range": { "startLine": 234, "endLine": 249 },
+    "title": "Problem Summary",
+    "content": "**erdos_887_known:**\n\n**What we know:**\n1. Perfect squares: at most 5 divisors (Chan 2013)\n2. Lower bound: 4 is achieved infinitely often (Erdős-Rosenfeld 1997)\n3. General case: Unknown if K exists\n4. Conjecture: K = 4 suffices\n\n**erdos_887_open:**\n\nThe Erdős-Rosenfeld conjecture remains OPEN in the general case. Perfect squares are fully resolved.",
+    "mathContext": "A clean partial resolution for perfect squares, with the general case remaining an important open problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem status", "Partial results", "Open problems"]
+  }
+]
