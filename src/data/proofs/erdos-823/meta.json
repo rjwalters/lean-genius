@@ -24,12 +24,30 @@
     "solvedBy": "Paul Pollack",
     "solvedYear": 2015,
     "mathlibDependencies": [
-      "ArithmeticFunction.sigma",
-      "ArithmeticFunction.totient",
-      "Filter.Tendsto",
-      "Topology.atTop",
-      "Finset.filter",
-      "Set.ncard"
+      {
+        "theorem": "ArithmeticFunction.sigma",
+        "description": "The sum of divisors function σ(n)"
+      },
+      {
+        "theorem": "ArithmeticFunction.totient",
+        "description": "Euler's totient function φ(n)"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence of sequences via filters"
+      },
+      {
+        "theorem": "Topology.atTop",
+        "description": "The at-infinity filter for sequences"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicates"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Natural-valued cardinality for sets"
+      }
     ],
     "originalContributions": [
       "sigma function formalization",
@@ -58,28 +76,46 @@
   },
   "sections": [
     {
+      "id": "divisor-basics",
       "title": "Sum of Divisors Basics",
-      "description": "Definitions and properties of σ(n)"
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Definitions and properties of σ(n)"
     },
     {
+      "id": "main-problem",
       "title": "The Main Problem",
-      "description": "σ-pairs and convergent sequences"
+      "startLine": 51,
+      "endLine": 100,
+      "summary": "σ-pairs and convergent sequences"
     },
     {
+      "id": "pollack-theorem",
       "title": "Pollack's Theorem",
-      "description": "Resolution for all α ≥ 1"
+      "startLine": 101,
+      "endLine": 150,
+      "summary": "Resolution for all α ≥ 1"
     },
     {
+      "id": "sigma-pairs",
       "title": "Examples of σ-pairs",
-      "description": "Concrete pairs with equal σ values"
+      "startLine": 151,
+      "endLine": 200,
+      "summary": "Concrete pairs with equal σ values"
     },
     {
+      "id": "totient-analogy",
       "title": "Euler Totient Analogy",
-      "description": "The 'easy' φ case noted by Erdős"
+      "startLine": 201,
+      "endLine": 250,
+      "summary": "The 'easy' φ case noted by Erdős"
     },
     {
+      "id": "fiber-properties",
       "title": "Fiber Properties",
-      "description": "Structure of preimages under σ"
+      "startLine": 251,
+      "endLine": 300,
+      "summary": "Structure of preimages under σ"
     }
   ],
   "conclusion": {

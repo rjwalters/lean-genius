@@ -24,12 +24,30 @@
     "solvedBy": "L. A. Shepp",
     "solvedYear": 1972,
     "mathlibDependencies": [
-      "Real.exp",
-      "Real.log",
-      "Filter.Tendsto",
-      "Summable",
-      "Set.Ico",
-      "BigOperators"
+      {
+        "theorem": "Real.exp",
+        "description": "The exponential function on reals"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "The natural logarithm function"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence of sequences via filters"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Predicate for summable sequences"
+      },
+      {
+        "theorem": "Set.Ico",
+        "description": "Half-open interval [a, b) as a set"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Sum and product notation over finite sets"
+      }
     ],
     "originalContributions": [
       "UnitCircle and Arc definitions",
@@ -59,24 +77,39 @@
   },
   "sections": [
     {
+      "id": "basic-setup",
       "title": "Basic Setup",
-      "description": "Unit circle, arcs, and arc sequence conditions"
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Unit circle, arcs, and arc sequence conditions"
     },
     {
+      "id": "shepp-criterion",
       "title": "Shepp's Criterion",
-      "description": "The sum Σ exp(S_n)/n² characterization"
+      "startLine": 51,
+      "endLine": 100,
+      "summary": "The sum Σ exp(S_n)/n² characterization"
     },
     {
+      "id": "critical-cases",
       "title": "Critical Cases",
-      "description": "Boundary at a_n = 1/n and near cases"
+      "startLine": 101,
+      "endLine": 150,
+      "summary": "Boundary at a_n = 1/n and near cases"
     },
     {
+      "id": "verification",
       "title": "Verification",
-      "description": "Checking Shepp's criterion for special sequences"
+      "startLine": 151,
+      "endLine": 200,
+      "summary": "Checking Shepp's criterion for special sequences"
     },
     {
+      "id": "poisson-connection",
       "title": "Poisson Connection",
-      "description": "Proof techniques via Poisson processes"
+      "startLine": 201,
+      "endLine": 250,
+      "summary": "Proof techniques via Poisson processes"
     }
   ],
   "conclusion": {
