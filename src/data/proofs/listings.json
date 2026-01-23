@@ -13818,17 +13818,23 @@
   },
   {
     "id": "erdos-967",
-    "title": "Erdős Problem #967",
+    "title": "Erdős Problem #967: Zeros of Generalized Dirichlet Sums",
     "slug": "erdos-967",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that .... Is it true that, for every ...,\\[1+\\sum_{k}{a_k^{1+it}}\\neq 0?\\]\n\n\n\nA questi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For integers 1 < a₁ < a₂ < ... with ∑(1/aᵢ) < ∞, is 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all t ∈ ℝ? Answer: NO - disproved by Yip (2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "complex-analysis",
+      "dirichlet-series",
+      "tauberian-theorems",
+      "disproved"
     ],
     "erdosNumber": 967,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 21
   },
   {
     "id": "erdos-968",
