@@ -1,16 +1,19 @@
 {
   "id": "erdos-1114",
-  "title": "Erdős Problem #1114",
+  "title": "Erdős Problem #1114: Monotonicity of Critical Point Gaps",
   "slug": "erdos-1114",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a polynomial of degree ... whose roots ... are all real and form an arithmetic progression.\n\nThe differences betwe...",
+  "description": "For a polynomial f with real roots in arithmetic progression, the gaps between consecutive critical points of f' increase outward from the midpoint.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, E. Bálint",
     "sourceUrl": "https://erdosproblems.com/1114",
-    "date": "",
-    "status": "pending",
+    "date": "1960",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos1114Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "polynomials",
+      "analysis",
+      "critical-points"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +22,88 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1114 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(x)\\in \\mathbb{R}[x]$ be a polynomial of degree $n$ whose roots $\\{a_0<\\cdots<a_n\\}$ are all real and form an arithmetic progression.\n\nThe differences between consecutive zeros of $f'(x)$, beginning from the midpoint of $(a_0,a_m)$ towards the endpoints, are monotonically increasing.\n\n\n\nAll the zeros of $f'(x)$ are all distinct real numbers in $(a_0,a_m)$ by Rolle's theorem.\n\nThis was proved by Balint \\cite{Ba60b}. Balint gives no source for the conjecture - presumably it was from Erd\\H{o}s in personal communication. Some generalisations of this were given by Lorch \\cite{Lo76}.\n\n\n\n\nReferences\n\n\n[Ba60b] B\\'alint, Elem\\'{e}r, Proof of a conjecture of {P}. {E}rd\\H{o}s. Mat. Lapok (1960), 33--40.\n\n[Lo76] Lorch, L., Some monotonicity properties of polynomials with equally\nspaced zeros. Acta Math. Acad. Sci. Hungar. (1976), 293--300.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This was a conjecture of Erdős communicated personally to Bálint. Bálint proved it in 1960. Lorch (1976) gave generalizations to higher derivatives and other polynomial families.",
+    "problemStatement": "Let f(x) ∈ ℝ[x] be a polynomial of degree n whose roots form an arithmetic progression a₀ < a₁ < ... < aₙ. Then the gaps between consecutive critical points of f'(x), measured from the midpoint outward, are monotonically increasing.",
+    "proofStrategy": "The proof uses the special symmetry of polynomials with evenly spaced roots. By Rolle's theorem, f' has n critical points between the n+1 roots. The key insight involves convexity arguments showing that gaps increase away from the center.",
+    "keyInsights": [
+      "By Rolle's theorem, f' has exactly n critical points in (a₀, aₙ)",
+      "The polynomial with AP roots has symmetry about its center",
+      "Critical points cluster toward the center, making outer gaps larger",
+      "Convexity of auxiliary functions establishes the monotonicity"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup",
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "Definition of arithmetic progression roots and polynomials with AP roots."
+    },
+    {
+      "id": "critical-points",
+      "title": "Critical Points",
+      "startLine": 60,
+      "endLine": 80,
+      "summary": "Rolle's theorem gives n critical points between n+1 roots."
+    },
+    {
+      "id": "gaps",
+      "title": "The Gaps",
+      "startLine": 82,
+      "endLine": 105,
+      "summary": "Definitions of gaps, midpoint, and distance from midpoint."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 107,
+      "endLine": 138,
+      "summary": "Bálint's theorem: gaps increase outward from midpoint."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 140,
+      "endLine": 169,
+      "summary": "Cases n = 2, 3, 4 with explicit gap properties."
+    },
+    {
+      "id": "proof-ideas",
+      "title": "Proof Ideas",
+      "startLine": 171,
+      "endLine": 199,
+      "summary": "Symmetry, derivative structure, and convexity arguments."
+    },
+    {
+      "id": "generalizations",
+      "title": "Lorch's Generalizations",
+      "startLine": 201,
+      "endLine": 217,
+      "summary": "Extensions to higher derivatives and related polynomials."
+    },
+    {
+      "id": "examples",
+      "title": "Explicit Examples",
+      "startLine": 219,
+      "endLine": 240,
+      "summary": "Concrete examples with quartic and quintic polynomials."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 242,
+      "endLine": 270,
+      "summary": "Complete summary of the SOLVED problem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1114 is SOLVED. Bálint (1960) proved that for polynomials with evenly spaced roots, the gaps between consecutive critical points increase as one moves from the midpoint toward the endpoints.",
+    "implications": "This result reveals structure in the critical points of polynomials with arithmetic progression roots. It connects root distribution to derivative behavior in a precise way.",
+    "openQuestions": [
+      "Can the result be extended to polynomials with geometric progression roots?",
+      "What is the exact formula for the critical point locations?",
+      "Are there analogous results for complex roots?"
+    ]
   }
 }
