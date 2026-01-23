@@ -1,33 +1,139 @@
 {
   "id": "erdos-594",
-  "title": "Erdős Problem #594",
+  "title": "Erdős Problem #594: Graphs with Chromatic Number ≥ ℵ₁ and Odd Cycles",
   "slug": "erdos-594",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph ... with chromatic number ... contain all sufficiently large odd cycles?\n\n\n\nA problem of Erds and Hajnal (wh...",
+  "description": "Does every graph with chromatic number ≥ ℵ₁ contain all sufficiently large odd cycles? YES - proved by Erdős, Hajnal, and Shelah (1974).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal-Shelah (1974 proof), Erdős-Hajnal (problem)",
     "sourceUrl": "https://erdosproblems.com/594",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos594Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "set-theory",
+      "infinite-graphs",
+      "cycles",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 594,
     "erdosUrl": "https://erdosproblems.com/594",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "Aleph cardinals ℵ₀, ℵ₁, ℵ₂, ...",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Graph colorings",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      }
+    ],
+    "originalContributions": [
+      "Cardinal definitions: aleph0, aleph1, aleph2",
+      "IsColorable: graph colorability with cardinal colors",
+      "chromaticNumber: minimum coloring cardinal",
+      "hasLargeChromaticNumber: chromatic number ≥ κ predicate",
+      "hasCycleOfLength: cycle of specific length",
+      "containsAllLargeOddCycles: eventual odd cycle containment",
+      "erdos_hajnal_aleph2: partial result for χ ≥ ℵ₂",
+      "erdos_hajnal_shelah: main theorem for χ ≥ ℵ₁",
+      "aleph1_is_optimal: threshold optimality",
+      "thomassen_1983: strengthening with cycles through edges"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #594 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph $G$ with chromatic number $\\geq \\aleph_1$ contain all sufficiently large odd cycles?\n\n\n\nA problem of Erd\\H{o}s and Hajnal (who proved this for chromatic number $\\geq \\aleph_2$). This was proved by Erd\\H{o}s, Hajnal, and Shelah \\cite{EHS74}.\n\nSee also [593] and [737].\n\n\n\n\nReferences\n\n\n[EHS74] Erd\\H{o}s, P. and Hajnal, A. and Shelah, S., On some general properties of chromatic numbers. Topics in topology (Proc. Colloq., Keszthely, 1972) (1974), 243-255.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #594**\n\nThis problem connects graph theory with set theory through the study of infinite chromatic numbers.\n\n**History:**\n- Erdős and Hajnal posed the problem and proved it for graphs with χ ≥ ℵ₂\n- Erdős, Hajnal, and Shelah (1974) proved the full result for χ ≥ ℵ₁\n- Thomassen (1983) strengthened the result to show cycles pass through any given edge\n\n**Key Context:**\n- Relates to Problem #593 (hypergraph characterization, $500 prize, OPEN)\n- Relates to Problem #737 (cycles through edges, SOLVED by Thomassen)\n- Part of Erdős and Hajnal's systematic study of infinite chromatic numbers",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nDoes every graph $G$ with chromatic number $\\geq \\aleph_1$ contain all sufficiently large odd cycles?\n\n**Answer:** YES\n\n**More precisely:** For any graph $G$ with $\\chi(G) \\geq \\aleph_1$, there exists $N_0$ such that for all odd $n \\geq N_0$, $G$ contains a cycle of length $n$.\n\n**Note:** Erdős and Hajnal first proved this for $\\chi(G) \\geq \\aleph_2$. The improvement to $\\aleph_1$ is the main content of this problem.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cardinals:** Define ℵ₀, ℵ₁, ℵ₂ using Mathlib's Cardinal.aleph\n\n2. **Chromatic Number:** Define colorability and chromatic number for infinite graphs\n\n3. **Cycles:** Define hasCycleOfLength and containsAllLargeOddCycles\n\n4. **Main Results:**\n   - erdos_hajnal_aleph2: partial result\n   - erdos_hajnal_shelah: full theorem\n   - aleph1_is_optimal: threshold optimality\n\n5. **Extensions:** Thomassen's strengthening about cycles through edges",
+    "keyInsights": [
+      "**Uncountable Threshold:** ℵ₁ (first uncountable cardinal) is the critical threshold",
+      "**Optimality:** ℵ₀ is insufficient - counterexamples exist",
+      "**Structural Richness:** Uncountable chromatic number forces rich cycle structure",
+      "**Bipartite Containment:** Such graphs also contain all finite bipartite graphs",
+      "**Thomassen Strengthening:** Cycles can be found through any specified edge",
+      "**Triangle-Free Graphs:** Can have arbitrarily large chromatic number but still satisfy the theorem for odd cycles ≥ 5"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cardinals",
+      "title": "Cardinal Background",
+      "summary": "Definitions of ℵ₀, ℵ₁, ℵ₂",
+      "startLine": 43,
+      "endLine": 61
+    },
+    {
+      "id": "chromatic",
+      "title": "Chromatic Number",
+      "summary": "IsColorable, chromaticNumber, hasLargeChromaticNumber",
+      "startLine": 63,
+      "endLine": 86
+    },
+    {
+      "id": "cycles",
+      "title": "Cycles in Graphs",
+      "summary": "hasCycleOfLength, containsAllLargeOddCycles",
+      "startLine": 88,
+      "endLine": 107
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Results",
+      "summary": "erdos_hajnal_shelah axiom, erdos_594 theorem",
+      "startLine": 109,
+      "endLine": 138
+    },
+    {
+      "id": "optimality",
+      "title": "Threshold Optimality",
+      "summary": "countable_chromatic_insufficient, aleph1_is_optimal",
+      "startLine": 140,
+      "endLine": 163
+    },
+    {
+      "id": "related",
+      "title": "Related Properties",
+      "summary": "Bipartite containment, triangle-free graphs",
+      "startLine": 165,
+      "endLine": 189
+    },
+    {
+      "id": "thomassen",
+      "title": "Thomassen's Strengthening",
+      "summary": "hasCycleThroughEdge, thomassen_1983",
+      "startLine": 191,
+      "endLine": 211
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_594_summary, final status",
+      "startLine": 239,
+      "endLine": 272
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #594 is SOLVED. Every graph with chromatic number ≥ ℵ₁ contains all sufficiently large odd cycles. This was proved by Erdős, Hajnal, and Shelah in 1974, improving their earlier result for ℵ₂. The threshold ℵ₁ is optimal - graphs with countable chromatic number need not have this property.",
+    "implications": "**Graph Theory Connections**\n\n1. **Infinite Chromatic Numbers:** Understanding when infinite chromatic number forces substructures\n\n2. **Cycle Structure:** Rich connectivity in uncountably-chromatic graphs\n\n3. **Set-Theoretic Methods:** Cardinal arithmetic in graph theory\n\n4. **Hypergraph Extensions:** Problem #593 asks the analogous question for 3-uniform hypergraphs ($500 prize, OPEN)\n\n5. **Edge-Specific Cycles:** Thomassen (1983) showed cycles pass through any given edge",
+    "openQuestions": [
+      "Problem #593: Characterize 3-uniform hypergraphs appearing in all χ > ℵ₀ hypergraphs ($500)",
+      "Can the threshold N₀ be bounded uniformly in terms of graph invariants?",
+      "What is the exact relationship between girth and the threshold N₀?",
+      "Do similar results hold for even cycles?"
+    ]
   }
 }
