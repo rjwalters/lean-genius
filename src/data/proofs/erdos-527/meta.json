@@ -1,33 +1,149 @@
 {
   "id": "erdos-527",
-  "title": "Erdős Problem #527",
+  "title": "Erdős Problem #527: Convergence of Random Power Series on Unit Circle",
   "slug": "erdos-527",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that ... and .... Is it true that, for almost all ..., there exists some ... with ... (depending on the choic...",
+  "description": "For aₙ with ∑|aₙ|² = ∞ and |aₙ| = o(1/√n), does ∑ εₙaₙzⁿ converge for some |z| = 1 for almost all sign choices? SOLVED: YES, and the convergence set has Hausdorff dimension 1 (Michelen-Sawhney 2025).",
   "meta": {
-    "author": "Unknown",
+    "author": "Michelen-Sawhney (2025)",
     "sourceUrl": "https://erdosproblems.com/527",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos527Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "power-series",
+      "random",
+      "unit-circle",
+      "hausdorff-dimension",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 527,
     "erdosUrl": "https://erdosproblems.com/527",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value for unit circle",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for o(1/√n) condition",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "MeasureTheory",
+        "description": "Probability measures for random signs",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "dimH",
+        "description": "Hausdorff dimension",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDimension"
+      }
+    ],
+    "originalContributions": [
+      "unitCircle, littleO_sqrt, divergentSquares definitions",
+      "randomPowerSeries and convergesAt predicates",
+      "almostAllSigns probabilistic quantifier",
+      "convergenceSet definition",
+      "michelen_sawhney_2025 main theorem axiom",
+      "hausdorff_dimension_one stronger result",
+      "dvoretzky_erdos_1959 classical result",
+      "Connection to Rademacher series and Khintchine inequality"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #527 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n\\in \\mathbb{R}$ be such that $\\sum_n \\lvert a_n\\rvert^2=\\infty$ and $\\lvert a_n\\rvert=o(1/\\sqrt{n})$. Is it true that, for almost all $\\epsilon_n=\\pm 1$, there exists some $z$ with $\\lvert z\\rvert=1$ (depending on the choice of signs) such that\\[\\sum_n \\epsilon_n a_n z^n\\]converges?\n\n\n\nIt is unclear to me whether Erd\\H{o}s also intended to assume that $\\lvert a_{n+1}\\rvert\\leq \\lvert a_n\\rvert$.\n\nIt is 'well known' that, for almost all $\\epsilon_n=\\pm 1$, the series diverges for almost all $\\lvert z\\rvert=1$ (assuming only $\\sum \\lvert a_n\\rvert^2=\\infty$).\n\nDvoretzky and Erd\\H{o}s \\cite{DE59} showed that if $\\lvert a_n\\rvert >c/\\sqrt{n}$ then, for almost all $\\epsilon_n=\\pm 1$, the series diverges for all $\\lvert z\\rvert=1$.\n\nThis is true, and was proved by Michelen and Sawhney \\cite{MiSa25}, who in fact proved that the set of such $z$ has Hausdorff dimension $1$.\n\n\n\n\nReferences\n\n\n[DE59] Dvoretzky, A. and Erd\\H{o}s, P., Divergence of random power series. Michigan Math. J. (1959), 343-347.\n\n[MiSa25] No reference found.\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #527** asks about convergence of random power series on the unit circle.\n\n**Historical Development:**\n- **1959:** Dvoretzky-Erdős show |aₙ| > c/√n implies divergence everywhere for a.e. signs\n- **Classical:** For ∑|aₙ|² = ∞, divergence is typical for a.e. z and a.e. signs\n- **2025:** Michelen-Sawhney prove that with |aₙ| = o(1/√n), convergence occurs on a set of Hausdorff dimension 1\n\n**Key Surprise:** Despite divergence being 'almost everywhere' in both senses, there is still a geometrically rich set of convergence points.",
+    "problemStatement": "**Problem Statement**\n\nLet $a_n \\in \\mathbb{R}$ be such that $\\sum_n |a_n|^2 = \\infty$ and $|a_n| = o(1/\\sqrt{n})$.\n\nIs it true that, for almost all choices of $\\epsilon_n = \\pm 1$, there exists some $z$ with $|z| = 1$ such that $\\sum_n \\epsilon_n a_n z^n$ converges?\n\n**Answer:** YES. Moreover, the set of such $z$ has Hausdorff dimension 1.\n\n**Status:** SOLVED by Michelen-Sawhney (2025)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** unitCircle, littleO_sqrt, divergentSquares, randomPowerSeries\n\n2. **Probabilistic Setup:** signMeasure, almostAllSigns\n\n3. **Classical Results:** divergence_typical, dvoretzky_erdos_1959\n\n4. **Main Result:** michelen_sawhney_2025, hausdorff_dimension_one\n\n5. **Examples:** Sequences satisfying/violating the conditions\n\n6. **Connections:** Rademacher series, Khintchine inequality",
+    "keyInsights": [
+      "**Divergence is Typical:** For a.e. signs, the series diverges for a.e. points on the unit circle. This is 'well known'.",
+      "**Dvoretzky-Erdős (1959):** If |aₙ| > c/√n, divergence is complete - no convergence anywhere for a.e. signs.",
+      "**The Gap Matters:** The condition |aₙ| = o(1/√n) is precisely what allows a convergence set to exist.",
+      "**Dimension 1:** The convergence set is 'as big as possible' in Hausdorff dimension while having measure zero.",
+      "**Uncountable Convergence:** The set is uncountable but of measure zero - a fractal-like structure.",
+      "**Recent Resolution:** This problem from Erdős was solved only in 2025 by Michelen and Sawhney."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "unitCircle, littleO_sqrt, divergentSquares, randomPowerSeries",
+      "startLine": 32,
+      "endLine": 58
+    },
+    {
+      "id": "probability",
+      "title": "The Probabilistic Setup",
+      "summary": "signMeasure, almostAllSigns",
+      "startLine": 60,
+      "endLine": 74
+    },
+    {
+      "id": "divergence",
+      "title": "Known Results on Divergence",
+      "summary": "divergence_typical, dvoretzky_erdos_1959",
+      "startLine": 76,
+      "endLine": 90
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result (Michelen-Sawhney 2025)",
+      "summary": "michelen_sawhney_2025, hausdorff_dimension_one",
+      "startLine": 92,
+      "endLine": 110
+    },
+    {
+      "id": "boundary",
+      "title": "Boundary of Conditions",
+      "summary": "What happens at |aₙ| = Θ(1/√n)",
+      "startLine": 112,
+      "endLine": 129
+    },
+    {
+      "id": "hausdorff",
+      "title": "Hausdorff Dimension",
+      "summary": "dimension_one_meaning, measure_zero, uncountable",
+      "startLine": 131,
+      "endLine": 154
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete coefficient sequences",
+      "startLine": 156,
+      "endLine": 177
+    },
+    {
+      "id": "rademacher",
+      "title": "Connection to Rademacher Series",
+      "summary": "Khintchine inequality, random trig polys",
+      "startLine": 179,
+      "endLine": 195
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status: SOLVED",
+      "startLine": 251,
+      "endLine": 272
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #527 asks whether random power series ∑ εₙaₙzⁿ with ∑|aₙ|² = ∞ and |aₙ| = o(1/√n) converge somewhere on the unit circle for almost all sign choices. Michelen-Sawhney (2025) proved YES, with the convergence set having Hausdorff dimension 1.",
+    "implications": "**Implications for Analysis**\n\n1. **Random Series Theory:** Extends our understanding of when random series can converge.\n\n2. **Fractal Geometry:** The dimension-1 result connects to fractal analysis.\n\n3. **Harmonic Analysis:** Related to random Fourier series and trigonometric polynomials.\n\n4. **Function Theory:** Implications for natural boundaries of power series.",
+    "openQuestions": [
+      "What is the exact structure of the convergence set?",
+      "What happens at the boundary case |aₙ| = c/√n for different values of c?",
+      "Can the Hausdorff dimension be computed explicitly for specific sequences?",
+      "What about higher moments - does ∑|aₙ|^p < ∞ for p > 2 help?"
+    ]
   }
 }

@@ -1,1 +1,103 @@
-[]
+[
+  {
+    "id": "ann-e527-overview",
+    "proofId": "erdos-527",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #527: Random Power Series Convergence**\n\nFor ∑|aₙ|² = ∞ and |aₙ| = o(1/√n), does ∑ εₙaₙzⁿ converge for some |z| = 1?\n\n**Status:** SOLVED (Michelen-Sawhney 2025)\n**Answer:** YES, and the convergence set has Hausdorff dimension 1",
+    "mathContext": "Random signs εₙ = ±1 are chosen uniformly at random. The question is about convergence on the unit circle.",
+    "significance": "critical",
+    "relatedConcepts": ["Power series", "Random series", "Hausdorff dimension", "Unit circle"]
+  },
+  {
+    "id": "ann-e527-littleo",
+    "proofId": "erdos-527",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "The Little-o Condition",
+    "content": "**littleO_sqrt a:** |aₙ| = o(1/√n)\n\nFor all ε > 0, eventually |aₙ| < ε/√n.\n\nThis is the key condition that allows convergence to exist.",
+    "significance": "critical",
+    "leanSymbol": "littleO_sqrt"
+  },
+  {
+    "id": "ann-e527-divergent",
+    "proofId": "erdos-527",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Divergent Squares",
+    "content": "**divergentSquares a:** ∑|aₙ|² = ∞\n\nThe coefficients decay slowly enough that the series has unbounded L² norm.\n\nThis forces the series to typically diverge.",
+    "significance": "key",
+    "leanSymbol": "divergentSquares"
+  },
+  {
+    "id": "ann-e527-convergenceset",
+    "proofId": "erdos-527",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "definition",
+    "title": "The Convergence Set",
+    "content": "**convergenceSet a ε:** The set of z ∈ S¹ where ∑ εₙaₙzⁿ converges.\n\nThis set depends on both the coefficients a and the sign choice ε.",
+    "significance": "key",
+    "leanSymbol": "convergenceSet"
+  },
+  {
+    "id": "ann-e527-main",
+    "proofId": "erdos-527",
+    "range": { "startLine": 102, "endLine": 105 },
+    "type": "axiom",
+    "title": "Michelen-Sawhney (2025)",
+    "content": "**michelen_sawhney_2025:** For a.e. sign choice, the convergence set is nonempty.\n\nThis answers Erdős's question in the affirmative. The condition |aₙ| = o(1/√n) is essential.",
+    "significance": "critical",
+    "leanSymbol": "michelen_sawhney_2025"
+  },
+  {
+    "id": "ann-e527-dimension",
+    "proofId": "erdos-527",
+    "range": { "startLine": 107, "endLine": 110 },
+    "type": "axiom",
+    "title": "Hausdorff Dimension 1",
+    "content": "**hausdorff_dimension_one:** The convergence set has Hausdorff dimension 1.\n\nThis is the strongest possible result - the set is as 'thick' as the circle itself geometrically, while having measure zero.",
+    "significance": "critical",
+    "leanSymbol": "hausdorff_dimension_one"
+  },
+  {
+    "id": "ann-e527-dvoretzky",
+    "proofId": "erdos-527",
+    "range": { "startLine": 87, "endLine": 90 },
+    "type": "axiom",
+    "title": "Dvoretzky-Erdős (1959)",
+    "content": "**dvoretzky_erdos_1959:** If |aₙ| > c/√n, the series diverges EVERYWHERE on S¹ for a.e. signs.\n\nThis shows the condition |aₙ| = o(1/√n) is necessary for any convergence.",
+    "significance": "key",
+    "leanSymbol": "dvoretzky_erdos_1959"
+  },
+  {
+    "id": "ann-e527-typical",
+    "proofId": "erdos-527",
+    "range": { "startLine": 82, "endLine": 85 },
+    "type": "axiom",
+    "title": "Divergence is Typical",
+    "content": "**divergence_typical:** For a.e. signs and a.e. z ∈ S¹, the series diverges.\n\nThis is 'well known' - divergence dominates in a measure-theoretic sense.",
+    "significance": "key",
+    "leanSymbol": "divergence_typical"
+  },
+  {
+    "id": "ann-e527-uncountable",
+    "proofId": "erdos-527",
+    "range": { "startLine": 145, "endLine": 154 },
+    "type": "axiom",
+    "title": "Structure of Convergence Set",
+    "content": "**Properties of the convergence set:**\n\n- Hausdorff dimension 1\n- Measure zero\n- Uncountable\n\nA fractal-like set: geometrically large but measure-theoretically small.",
+    "significance": "key",
+    "leanSymbol": "convergence_set_uncountable"
+  },
+  {
+    "id": "ann-e527-summary",
+    "proofId": "erdos-527",
+    "range": { "startLine": 257, "endLine": 270 },
+    "type": "theorem",
+    "title": "Main Result Summary",
+    "content": "**erdos_527_main and erdos_527_strong:** Complete answer to Erdős's question.\n\nFor coefficients with ∑|aₙ|² = ∞ and |aₙ| = o(1/√n):\n- A.e. sign choices have nonempty convergence set\n- This set has Hausdorff dimension 1\n\nStatus: SOLVED",
+    "significance": "critical",
+    "leanSymbol": "erdos_527_main"
+  }
+]
