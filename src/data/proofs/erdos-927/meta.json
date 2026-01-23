@@ -1,33 +1,96 @@
 {
   "id": "erdos-927",
-  "title": "Erdős Problem #927",
+  "title": "Erdős Problem #927: Distinct Clique Sizes in Graphs",
   "slug": "erdos-927",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum number of different sizes of cliques that can occur in a graph on ... vertices. Estimate ... - in part...",
+  "description": "Let g(n) be the maximum number of distinct clique sizes in a graph on n vertices. Is g(n) = n - log₂n - log*(n) + O(1)? Answer: NO.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, J. Spencer, J. W. Moon, L. Moser",
     "sourceUrl": "https://erdosproblems.com/927",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos927Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cliques",
+      "extremal-combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 927,
     "erdosUrl": "https://erdosproblems.com/927",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #927 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be the maximum number of different sizes of cliques that can occur in a graph on $n$ vertices. Estimate $g(n)$ - in particular, is it true that\\[g(n)=n-\\log_2n-\\log_*(n)+O(1),\\]where $\\log_*(n)$ is the number of iterated logarithms such that $\\log\\cdots \\log n <1$.\n\n\n\nA quantity first considered by Moon and Moser \\cite{MoMo65}, who proved\\[n-\\log_2n-2\\log\\log n<g(n)\\leq n-\\lfloor \\log_2 n\\rfloor.\\]Erd\\H{o}s \\cite{Er66b} improved the lower bound to\\[n-\\log_2 n-\\log_*(n)-O(1)<g(n)\\]and conjectured this was the correct order of magnitude.\n\nThis was disproved by Spencer \\cite{Sp71}, who proved that in fact\\[g(n) > n-\\log_2 n-O(1).\\]See also [775].\n\n\n\n\nReferences\n\n\n[Er66b] Erd\\H{o}s, P., On cliques in graphs. Israel J. Math. (1966), 233--234.\n\n[MoMo65] Moon, J. W. and Moser, L., On cliques in graphs. Israel J. Math. (1965), 23-28.\n\n[Sp71] Spencer, J. H., On cliques in graphs. Israel J. Math. (1971), 419-421.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Moon and Moser (1965) initiated the study of g(n), proving n - log₂n - 2log log n < g(n) ≤ n - ⌊log₂n⌋. Erdős (1966) improved the lower bound to involve log*(n) and conjectured this was tight. Spencer (1971) disproved the conjecture by showing g(n) > n - log₂n - O(1), eliminating the need for log*(n).",
+    "problemStatement": "Let g(n) be the maximum number of different sizes of cliques that can occur in a graph on n vertices. Is it true that g(n) = n - log₂n - log*(n) + O(1)?",
+    "proofStrategy": "The formalization defines cliques and the function g(n). Moon-Moser bounds and Erdős's conjecture are stated. Spencer's theorem is axiomatized showing the conjecture is false - the correct asymptotic is g(n) = n - log₂n - Θ(1).",
+    "keyInsights": [
+      "g(n) = max distinct clique sizes over all graphs on n vertices",
+      "Moon-Moser (1965): n - log₂n - 2log log n < g(n) ≤ n - ⌊log₂n⌋",
+      "Erdős's conjecture: g(n) = n - log₂n - log*(n) + O(1) was WRONG",
+      "Spencer (1971): g(n) > n - log₂n - O(1) (no log* needed)",
+      "Correct asymptotic: g(n) = n - log₂n - Θ(1)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 64,
+      "summary": "Cliques, clique sizes, and the cliqueSizes set"
+    },
+    {
+      "id": "g-function",
+      "title": "The Function g(n)",
+      "startLine": 65,
+      "endLine": 94,
+      "summary": "Definition of g(n) and trivial bounds"
+    },
+    {
+      "id": "moon-moser",
+      "title": "Moon-Moser Bounds",
+      "startLine": 95,
+      "endLine": 112,
+      "summary": "Original 1965 upper and lower bounds"
+    },
+    {
+      "id": "log-star",
+      "title": "The Iterated Logarithm",
+      "startLine": 113,
+      "endLine": 139,
+      "summary": "Definition and properties of log*(n)"
+    },
+    {
+      "id": "erdos-conjecture",
+      "title": "Erdős's Conjecture",
+      "startLine": 140,
+      "endLine": 162,
+      "summary": "Erdős's improved bound and false conjecture"
+    },
+    {
+      "id": "spencer",
+      "title": "Spencer's Disproof",
+      "startLine": 163,
+      "endLine": 194,
+      "summary": "Spencer (1971) disproved the conjecture"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 260,
+      "endLine": 297,
+      "summary": "Complete summary: conjecture FALSE, g(n) = n - log₂n - Θ(1)"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #927 is SOLVED. The conjecture g(n) = n - log₂n - log*(n) + O(1) is FALSE. Spencer (1971) proved g(n) > n - log₂n - O(1), showing the iterated logarithm term is unnecessary. The correct asymptotic is g(n) = n - log₂n - Θ(1).",
+    "implications": "The gap between achievable and impossible clique size sets is precisely characterized up to a constant. The iterated logarithm, while natural from Erdős's analysis, is not needed.",
+    "openQuestions": [
+      "What is the exact constant in g(n) = n - log₂n - C?",
+      "What is the extremal graph structure achieving g(n)?",
+      "Are there simpler constructions than Spencer's?"
+    ]
   }
 }
