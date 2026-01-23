@@ -11,17 +11,25 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "Deficiency ≥ 1 implies n ≤ O(2^k·√k) [ELS93]",
+      "58 examples with deficiency 1 for n ≤ 10^5",
+      "8 with deficiency 2, 6 with deficiency 3",
+      "Record: C(284,28) has deficiency 9"
+    ],
+    "open": [
+      "Infinitely many deficiency 1?",
+      "Finitely many deficiency > 1?"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T14:52:37.979Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T19:12:00.000Z",
+    "iteration": 2,
+    "focus": "Formalized with all known examples",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Verify examples computationally",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +37,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized deficiency of binomial coefficients with k-smoothness. Documented all known examples from ELS88.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1093Problem.lean - Main formalization (~200 lines)",
+      "IsSmooth definition (k-smooth numbers)",
+      "DeficiencyDefined predicate",
+      "deficiency function",
+      "HasDeficiency structure",
+      "deficiency1Examples, deficiency2Examples, deficiency3Examples lists",
+      "conjecture1, conjecture2 statements",
+      "deficiency_bound axiom"
+    ],
+    "insights": [
+      "k-smooth: all prime factors ≤ k",
+      "Deficiency = count of k-smooth values in n, n-1, ..., n-k+1",
+      "Undefined if C(n,k) divisible by some prime ≤ k",
+      "C(7,3)=35: only 6 is 3-smooth among 7,6,5 → deficiency 1",
+      "C(284,28): deficiency 9 is the record",
+      "Bound: deficiency ≥ 1 → n ≤ O(2^k·√k)",
+      "Conditional finiteness result by Barreto"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Implement deficiency computation",
+      "Verify C(7,3) has deficiency 1",
+      "Study connection to problem #1094"
+    ],
     "markdown": "# Erdős #1093 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $n\\geq 2k$ we define the deficiency of $\\binom{n}{k}$ as follows. If $\\binom{n}{k}$ is divisible by a prime $p\\leq k$ then the deficiency is undefined. Otherwise, the deficiency is the number of $0\\leq i<k$ such that $n-i$ is $k$-smooth, that is, divisible only by primes $\\leq k$.\n\nAre there infinitely many binomial coefficients with deficiency $1$? Are there only finitely many with deficiency $>1$?\n\n\n\nA problem of Erd\\H{o}s, Lacampagne, and Selfridge \\cite{ELS88}, that was also asked in the 1986 problem session of West Coast Number Theory (as reported here).\n\nIn \\cite{ELS93} they prove that if the deficiency exists and is $\\geq 1$ then $n\\ll 2^k\\sqrt{k}$.\n\nThe following examples are either from \\cite{ELS88} or here. The following have deficiency $1$ (there are $58$ examples with $n\\leq 10^5$):\\[\\binom{7}{3},\\binom{13}{4},\\binom{14}{4},\\binom{23}{5},\\binom{62}{6},\\binom{94}{10},\\binom{95}{10}.\\]The examples which follow are the only known examples with deficiency $>1$. The following have deficiency $2$:\\[\\binom{44}{8},\\binom{74}{10},\\binom{174}{12},\\binom{239}{14},\\binom{5179}{27},\\binom{8413}{28},\\binom{8414}{28},\\binom{96622}{42}.\\]The following have deficiency $3$:\\[\\binom{46}{10},\\binom{47}{10},\\binom{241}{16},\\binom{2105}{25},\\binom{1119}{27},\\binom{6459}{33}.\\]The following has deficiency $4$:\\[\\binom{47}{11}.\\]The following has deficiency $9$:\\[\\binom{284}{28}.\\]See also [384] and [1094].\n\nBarreto in the comments has given a positive answer to the second question, conditional on two (strong) conjectures.\n\n\n\n\nReferences\n\n\n[ELS88] Erd\\H{o}s, P. and Lacampagne, C. B. and Selfridge, J. L., Prime factors of binomial coefficients and related problems. Acta Arith. (1988), 507--523.\n\n[ELS93] Erd\\H{o}s, P. and Lacampagne, C. B. and Selfridge, J. L., Estimates of the least prime factor of a binomial coefficient. Math. Comp. (1993), 215--224.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #384\n- Problem #1094\n- Problem #1092\n- Problem #39\n- Problem #1\n\n## References\n\n- ELS88\n- ELS93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
