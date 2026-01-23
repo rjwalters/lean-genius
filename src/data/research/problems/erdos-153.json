@@ -1,7 +1,7 @@
 {
   "slug": "erdos-153",
   "title": "Erdős #153",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-12T09:56:05.235Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Conjecture formalized. Divergence of avg squared gap is OPEN.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized average squared gap conjecture. Reuses Sidon infrastructure from Erdos340. Problem is OPEN.",
+    "builtItems": [
+      "proofs/Proofs/Erdos153Problem.lean: sumsetList for sorted sumset",
+      "proofs/Proofs/Erdos153Problem.lean: gaps function for consecutive differences",
+      "proofs/Proofs/Erdos153Problem.lean: avgSquaredGap definition",
+      "proofs/Proofs/Erdos153Problem.lean: erdos_153_conjecture statement",
+      "proofs/Proofs/Erdos153Problem.lean: erdos_153_infinite for infinite version"
+    ],
+    "insights": [
+      "For Sidon set A, |A+A| = |A|(|A|+1)/2 (all sums distinct)",
+      "Average squared gap measures irregularity/variance of gap distribution",
+      "Erdős-Sárközy-Sós: A+A cannot have Ω(√N) consecutive integers → gaps exist",
+      "Conjecture: avg squared gap → ∞ as |A| → ∞",
+      "Related to infinite Sidon sets (similar question for prefixes)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove sidon_sumset_card from Sidon property",
+      "Connect to Erdős-Sárközy-Sós result",
+      "Study gap distribution in greedy Sidon sequence (data from Erdos340)"
+    ],
     "markdown": "# Erdős #153 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite Sidon set and $A+A=\\{s_1<\\cdots<s_t\\}$. Is it true that\\[\\frac{1}{t}\\sum_{1\\leq i<t}(s_{i+1}-s_i)^2 \\to \\infty\\]as $\\lvert A\\rvert\\to \\infty$?\n\n\n\nA similar problem can be asked for infinite Sidon sets.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #152\n- Problem #154\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS94\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],
