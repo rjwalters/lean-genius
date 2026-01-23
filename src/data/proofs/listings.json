@@ -13578,17 +13578,23 @@
   },
   {
     "id": "erdos-876",
-    "title": "Erdős Problem #876",
+    "title": "Erdős Problem #876: Sum-Free Sets and Gap Growth",
     "slug": "erdos-876",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sum-free set - that is, there are no solutions to\\[a=b_1+\\cdots+b_r\\]with .... How small can ... be? I...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For an infinite sum-free set A = {a₁ < a₂ < ⋯}, how small can gaps aₙ₊₁ - aₙ be? Graham showed n^{1+o(1)} is achievable; whether gaps < n is possible remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sum-free-sets",
+      "additive-number-theory",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 876,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 12
   },
   {
     "id": "erdos-877",
