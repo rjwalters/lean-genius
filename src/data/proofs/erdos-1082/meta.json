@@ -1,33 +1,146 @@
 {
   "id": "erdos-1082",
-  "title": "Erdős Problem #1082",
+  "title": "Erdős Problem #1082: Distinct Distances in General Position",
   "slug": "erdos-1082",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points with no three on a line. Does ... determine at least ... distinct distances? In fact, must the...",
+  "description": "Let A ⊂ ℝ² be n points with no three collinear. Does A determine ≥ n/2 distinct distances? The stronger form (single point with n/2 distances) was disproved by Xichuan.",
   "meta": {
-    "author": "Unknown",
+    "author": "Szemerédi (n/3 bound), Xichuan (counterexample)",
     "sourceUrl": "https://erdosproblems.com/1082",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1082Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "distinct-distances",
+      "incidence-geometry",
+      "general-position",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1082,
     "erdosUrl": "https://erdosproblems.com/1082",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ^n",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root on reals",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of a finite set under a function",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Point2D as EuclideanSpace ℝ (Fin 2)",
+      "dist' Euclidean distance function",
+      "areCollinear predicate using cross-product formula",
+      "inGeneralPosition: no three collinear",
+      "distinctDistances: set of all pairwise distances",
+      "distancesFromPoint and numDistancesFromPoint",
+      "Conjecture1 and Conjecture2 formal statements",
+      "szemeredi_n_over_3 axiom: n/3 bound",
+      "xichuan_counterexample axiom: 42-point construction",
+      "conjecture2_false theorem: disproof of stronger form",
+      "erdos_1082_status summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1082 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a set of $n$ points with no three on a line. Does $A$ determine at least $\\lfloor n/2\\rfloor$ distinct distances? In fact, must there exist a single point from which there are at least $\\lfloor n/2\\rfloor$ distinct distances?\n\n\n\nA conjecture of Szemer\\'{e}di, who proved this with $n/2$ replaced by $n/3$. More generally, Szemer\\'{e}di gave a simple proof that if there are no $k$ points on a line then some point determines $\\gg n/k$ distinct distances (a weak inverse result to the distinct distance problem [89]).\n\nThis is a stronger form of [93]. The second question is a stronger form of [982].\n\nSzemer\\'{e}di's proof is unpublished, but given in \\cite{Er75f}.\n\nIn \\cite{Er75f} Erd\\H{o}s asks whether, given $n$ points in $\\mathbb{R}^3$ with no three on a line, do they determine $\\gg n$ distances? Altman proved the answer is yes if the points form the vertices of a convex polyhedron (see [660] for a stronger form of this), and Szemer\\'{e}di proved the answer is yes if there are no four points on a plane.\n\nThe stronger second question has been answered negatively by Xichuan in the comments, who gave a set of $42$ points in $\\mathbb{R}^2$, with no three on a line, such that each point determines only $20$ distinct distances.\n\n\n\n\nReferences\n\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1082: Distinct Distances in General Position**\n\nThis problem originates from combinatorial geometry and explores how many distinct distances must be determined by points in general position (no three collinear).\n\n**Historical Timeline:**\n- **Szemerédi (~1975):** Proved the n/3 bound - points in general position determine at least n/3 distinct distances. This was unpublished but cited in Erdős's 1975 paper. Szemerédi also proved that if no k points are collinear, some point determines ≫ n/k distances.\n- **Erdős (1975):** Conjectured the n/2 bound in \"On some problems of elementary and combinatorial geometry.\"\n- **Xichuan (2020s):** Provided a counterexample to the stronger form: 42 points where each point sees only 20 distinct distances.\n\nThe problem connects to the famous Erdős distinct distances problem, which Guth-Katz resolved in 2015 with an Ω(n/log n) bound.",
+    "problemStatement": "**Problem Statement (Partially Resolved)**\n\nLet $A \\subset \\mathbb{R}^2$ be a set of $n$ points with no three collinear.\n\n**Question 1:** Does $A$ determine at least $\\lfloor n/2 \\rfloor$ distinct distances?\n\n**Question 2 (Stronger):** Must there exist a single point from which there are at least $\\lfloor n/2 \\rfloor$ distinct distances?\n\n**Current Status:**\n- Question 1: OPEN\n- Question 2: DISPROVED by Xichuan\n\n**Known Bounds:**\n- Lower: $\\geq n/3$ distinct distances (Szemerédi)\n- Xichuan's counterexample: 42 points, each seeing only 20 distances (< 21 = ⌊42/2⌋)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometric Setup:** Define Point2D, distance functions, and collinearity using the cross-product determinant formula.\n\n2. **General Position:** Define inGeneralPosition as no three points collinear.\n\n3. **Distance Counting:** Define distinctDistances (all pairs) and distancesFromPoint (from one point).\n\n4. **The Conjectures:** Formally state both conjectures as propositions.\n\n5. **Main Results:**\n   - Axiomatize Szemerédi's n/3 bound\n   - Axiomatize Xichuan's counterexample\n   - Prove Conjecture2 is false using the counterexample\n\n6. **Summary:** Combine into erdos_1082_status theorem.",
+    "keyInsights": [
+      "**General Position:** No three points collinear forces a 'spread' that limits distance repetition",
+      "**Szemerédi's Bound:** At least n/3 distinct distances guaranteed - the best proven lower bound",
+      "**Conjecture Gap:** The gap between n/3 (proven) and n/2 (conjectured) remains open",
+      "**Xichuan's Counterexample:** 42 points, each with only 20 distances, kills the single-point form",
+      "**Connection to Distinct Distances:** Related to Erdős #89, solved by Guth-Katz with Ω(n/log n)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "points-distances",
+      "title": "Points and Distances in ℝ²",
+      "summary": "Point2D type, coordinate extraction, distance functions",
+      "startLine": 38,
+      "endLine": 58
+    },
+    {
+      "id": "general-position",
+      "title": "General Position",
+      "summary": "areCollinear predicate and inGeneralPosition definition",
+      "startLine": 59,
+      "endLine": 70
+    },
+    {
+      "id": "counting-distances",
+      "title": "Counting Distinct Distances",
+      "summary": "distinctDistances, distancesFromPoint, numDistancesFromPoint",
+      "startLine": 71,
+      "endLine": 86
+    },
+    {
+      "id": "szemeredi",
+      "title": "Szemerédi's Theorem",
+      "summary": "The n/3 bound and the inverse result for no k collinear",
+      "startLine": 87,
+      "endLine": 107
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjectures",
+      "summary": "Conjecture1 (total) and Conjecture2 (single point) formal definitions",
+      "startLine": 108,
+      "endLine": 128
+    },
+    {
+      "id": "counterexample",
+      "title": "Xichuan's Counterexample",
+      "summary": "The 42-point construction disproving Conjecture2",
+      "startLine": 129,
+      "endLine": 155
+    },
+    {
+      "id": "open-problem",
+      "title": "The Remaining Open Problem",
+      "summary": "erdos_1082_status theorem summarizing current state",
+      "startLine": 156,
+      "endLine": 177
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "Guth-Katz, 3D generalizations",
+      "startLine": 178,
+      "endLine": 209
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Final summary theorem",
+      "startLine": 234,
+      "endLine": 260
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1082 asks whether n points in general position determine at least n/2 distinct distances. Szemerédi proved n/3 is achievable. The stronger form (single point with n/2 distances) was disproved by Xichuan with a 42-point counterexample. The total distance conjecture (n/2) remains open.",
+    "implications": "**Implications**\n\n1. **Geometry-Combinatorics Interface:** The problem bridges discrete geometry and extremal combinatorics.\n\n2. **Counterexample Construction:** Xichuan's 42-point example shows sophisticated symmetric constructions can evade distance bounds.\n\n3. **Open Territory:** The gap between n/3 (proven) and n/2 (conjectured) is a fertile area for research.\n\n4. **Higher Dimensions:** The 3D analogues have different behavior depending on convexity and planarity conditions.",
+    "openQuestions": [
+      "Does every n-point set in general position determine at least n/2 distinct distances?",
+      "What is the optimal constant c such that general position implies cn distinct distances?",
+      "Can Xichuan's construction be extended or improved?",
+      "What is the structure of minimal-distance configurations in general position?",
+      "Can the gap between n/3 and n/2 be closed in either direction?"
+    ]
   }
 }
