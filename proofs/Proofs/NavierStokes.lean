@@ -165,22 +165,77 @@ def κ : ℝ := 4
 theorem κ_pos : 0 < κ := by norm_num [κ]
 
 
-/-- **Axiom: Key Numerical Inequality**
-    κ·c_FK = 4·(1-e⁻²)·π²/4 = (1-e⁻²)·π² ≈ 0.865·9.87 ≈ 8.5 > 2.
-    Requires interval arithmetic (polyrith or norm_num extensions). -/
-axiom key_numerical_inequality_axiom : κ * c_FK > 2
+/-- **PROVEN: exp(-2) < 0.14**
+    Uses exp(1) > 2.7182818283 from Mathlib, so exp(2) > 7.389, so exp(-2) < 0.136 < 0.14. -/
+theorem exp_neg_two_lt : Real.exp (-2) < 0.14 := by
+  have h1 : Real.exp (-2) = 1 / Real.exp 2 := by
+    rw [Real.exp_neg, inv_eq_one_div]
+  rw [h1]
+  have h2 : Real.exp 2 = Real.exp 1 * Real.exp 1 := by
+    rw [← Real.exp_add]
+    norm_num
+  rw [h2]
+  have he : (2.7182818283 : ℝ) < Real.exp 1 := Real.exp_one_gt_d9
+  have h_exp_sq : (2.7182818283 : ℝ) * 2.7182818283 < Real.exp 1 * Real.exp 1 := by
+    apply mul_lt_mul he (le_of_lt he)
+    · norm_num
+    · linarith [Real.exp_pos (1:ℝ)]
+  have h_bound : (7.389 : ℝ) < 2.7182818283 * 2.7182818283 := by norm_num
+  have h4 : (7.389 : ℝ) < Real.exp 1 * Real.exp 1 := lt_trans h_bound h_exp_sq
+  have h5 : 1 / (Real.exp 1 * Real.exp 1) < 1 / (7.389 : ℝ) := by
+    apply div_lt_div_of_pos_left
+    · norm_num
+    · norm_num
+    · exact h4
+  have h6 : (1 : ℝ) / 7.389 < 0.14 := by norm_num
+  linarith
 
-/-- THE KEY NUMERICAL INEQUALITY: κ·c_FK > 2 -/
-theorem key_numerical_inequality : κ * c_FK > 2 := key_numerical_inequality_axiom
+/-- Helper: 1 - e⁻² > 0.86 -/
+theorem one_minus_exp_neg_two_gt : 1 - Real.exp (-2) > 0.86 := by
+  have h := exp_neg_two_lt
+  linarith
 
 
-/-- **Axiom: Stronger Numerical Bound**
-    κ·c_FK = (1-e⁻²)·π² ≈ 0.865·9.87 ≈ 8.54 > 8.
-    Requires tight numerical bounds on exp(-2) ≈ 0.135 and π² ≈ 9.87. -/
-axiom kappa_cFK_gt_8_axiom : κ * c_FK > 8
+/-- **PROVEN: Key Numerical Inequality**
+    κ·c_FK = 4·(1-e⁻²)·π²/4 = (1-e⁻²)·π² > 0.86·9.8596 > 8.47 > 2. -/
+theorem key_numerical_inequality : κ * c_FK > 2 := by
+  unfold κ c_FK
+  have h1 : 1 - Real.exp (-2) > 0.86 := one_minus_exp_neg_two_gt
+  have h_pi : 3.14 < Real.pi := Real.pi_gt_d2
+  have h_pi_sq : (9.8596 : ℝ) < Real.pi ^ 2 := by
+    have h2 : (3.14 : ℝ) ^ 2 < Real.pi ^ 2 := by
+      apply sq_lt_sq'
+      · linarith [Real.pi_pos]
+      · exact h_pi
+    have : (3.14 : ℝ) ^ 2 = 9.8596 := by norm_num
+    linarith
+  have h_eq : 4 * ((1 - Real.exp (-2)) * Real.pi ^ 2 / 4) = (1 - Real.exp (-2)) * Real.pi ^ 2 := by
+    ring
+  rw [h_eq]
+  have h_prod : (0.86 : ℝ) * 9.8596 > 2 := by norm_num
+  calc (1 - Real.exp (-2)) * Real.pi ^ 2 > 0.86 * 9.8596 := by nlinarith [h1, h_pi_sq]
+    _ > 2 := h_prod
 
-/-- Stronger bound: κ·c_FK > 8 (critical inequality for regularity argument) -/
-theorem kappa_cFK_gt_8 : κ * c_FK > 8 := kappa_cFK_gt_8_axiom
+
+/-- **PROVEN: Stronger Numerical Bound**
+    κ·c_FK = (1-e⁻²)·π² > 0.86·9.8596 = 8.479... > 8. -/
+theorem kappa_cFK_gt_8 : κ * c_FK > 8 := by
+  unfold κ c_FK
+  have h1 : 1 - Real.exp (-2) > 0.86 := one_minus_exp_neg_two_gt
+  have h_pi : 3.14 < Real.pi := Real.pi_gt_d2
+  have h_pi_sq : (9.8596 : ℝ) < Real.pi ^ 2 := by
+    have h2 : (3.14 : ℝ) ^ 2 < Real.pi ^ 2 := by
+      apply sq_lt_sq'
+      · linarith [Real.pi_pos]
+      · exact h_pi
+    have : (3.14 : ℝ) ^ 2 = 9.8596 := by norm_num
+    linarith
+  have h_eq : 4 * ((1 - Real.exp (-2)) * Real.pi ^ 2 / 4) = (1 - Real.exp (-2)) * Real.pi ^ 2 := by
+    ring
+  rw [h_eq]
+  have h_prod : (0.86 : ℝ) * 9.8596 > 8 := by norm_num
+  calc (1 - Real.exp (-2)) * Real.pi ^ 2 > 0.86 * 9.8596 := by nlinarith [h1, h_pi_sq]
+    _ > 8 := h_prod
 
 
 /-- Depletion coefficient is negative -/
