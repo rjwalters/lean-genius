@@ -1,62 +1,39 @@
 {
   "slug": "erdos-100",
   "title": "Erdős #100: Point Sets with Restricted Distances",
-  "phase": "ACT",
+  "phase": "NEW",
   "status": "active",
-  "tier": "B",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∃ c > 0, ∀ A : Finset Point, hasRestrictedDistances A → diameter A ≥ c * A.card",
-    "plain": "For n points in R² with pairwise distances ≥ 1 and any two distinct distances differing by ≥ 1, must the diameter be ≫ n?",
-    "whyMatters": ["Connects to discrete geometry and distinct distances problem", "Related to Guth-Katz work on Erdős distinct distances"]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Erdős #100: Point Sets with Restricted Distances.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Kanold: diameter ≥ n^(3/4)",
-      "Guth-Katz: diameter ≥ c·n/log n"
-    ],
-    "open": [
-      "Does diameter grow linearly with n?"
-    ],
-    "goal": "Prove or disprove diameter ≫ n"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-18",
+    "phase": "NEW",
+    "since": "2026-01-23T08:04:56.539Z",
     "iteration": 1,
-    "focus": "Infrastructure lemmas for diameter bounds",
-    "activeApproach": "Formalize basic diameter properties, then tackle harder bounds",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Prove distinct_distances_le_diameter",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 5 lemmas/theorems: diameter_ge_one, diameter_achieved, unit_graph_min_distance, dist_le_diameter, restricted_dist_is_nat. Remaining sorries: distinct_distances_le_diameter (HARD), lattice constructions.",
-    "builtItems": [
-      "diameter_ge_one: Lower bound diameter ≥ 1 for sets with ≥ 2 points (Erdos100Problem.lean:217)",
-      "diameter_achieved: Diameter is achieved by some pair of points (Erdos100Problem.lean:235)",
-      "unit_graph_min_distance: Unit distance graph characterizes min-distance pairs (Erdos100Problem.lean:267)",
-      "dist_le_diameter: All pairwise distances ≤ diameter (Erdos100Problem.lean:156)",
-      "restricted_dist_is_nat: Distances are natural numbers in [1, floor(diameter)] (Erdos100Problem.lean:166)"
-    ],
-    "insights": [
-      "Diameter defined via nested Finset.sup' requires careful handling of nonemptiness proofs",
-      "The restricted distance condition (integer distances) implies distinct_distances ≤ floor(diameter)",
-      "Connection to Guth-Katz distinct distances problem provides n/log n bound",
-      "Unit graph characterization is immediate from definition - no deep math required",
-      "distinct_distances_le_diameter is HARD: needs finset injection argument from reals to nats"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove distinct_distances_le_diameter: need to show image of distance function injects into Finset.Icc 1 (floor diameter)",
-      "Complete lattice point constructions for explicit examples",
-      "Consider submitting remaining HARD sorries to Aristotle"
-    ],
-    "markdown": ""
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -65,22 +42,16 @@
     "distinct-distances",
     "open"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
-    "papers": [
-      "Guth-Katz 2015 (distinct distances)",
-      "Kanold (n^3/4 bound)",
-      "Piepmeyer (9-point construction)"
-    ],
-    "urls": [
-      "https://erdosproblems.com/100"
-    ],
-    "mathlib": [
-      "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.Combinatorics.SimpleGraph.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2026-01-18T00:00:00.000Z",
+  "started": "2026-01-23T08:04:56.538Z",
+  "lastUpdate": "2026-01-23T08:04:56.539Z",
   "significance": 7,
   "tractability": 5
 }

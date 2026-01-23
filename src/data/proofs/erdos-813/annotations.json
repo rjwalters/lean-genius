@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "erdos-813-intro",
+    "proofId": "erdos-813",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 28 },
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #813: Triangles in Every 7-Vertex Set**\n\nLet h(n) be minimal such that every graph on n vertices where every 7-vertex set contains a triangle must contain a clique of size h(n).\n\n**Question:** Do constants c₁, c₂ > 0 exist such that n^{1/3+c₁} ≪ h(n) ≪ n^{1/2-c₂}?\n\n**Status:** OPEN with significant progress.",
+    "mathContext": "This is a Ramsey-type problem connecting local density (triangles in small sets) to global structure (clique size).",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Cliques", "Local density", "Extremal graph theory"]
+  },
+  {
+    "id": "erdos-813-triangle-def",
+    "proofId": "erdos-813",
+    "type": "definition",
+    "range": { "startLine": 51, "endLine": 62 },
+    "title": "Triangle and Local Condition",
+    "content": "**HasTriangle G v₁ v₂ v₃:**\n\nA triangle K₃ exists on vertices v₁, v₂, v₃ if all three pairs are adjacent.\n\n**Every7SetHasTriangle G:**\n\nEvery subset of 7 vertices contains at least one triangle. This is the key local density condition.",
+    "mathContext": "The number 7 is significant: R(3,3) = 6, so every 6-vertex set has a triangle or independent triple. Requiring triangle in every 7-set is stronger.",
+    "significance": "critical",
+    "relatedConcepts": ["K₃", "Ramsey R(3,3)", "Local density"]
+  },
+  {
+    "id": "erdos-813-clique-def",
+    "proofId": "erdos-813",
+    "type": "definition",
+    "range": { "startLine": 68, "endLine": 78 },
+    "title": "Cliques",
+    "content": "**IsClique G S:**\n\nS is a clique if every pair of distinct vertices in S is adjacent.\n\n**cliqueNumber G:**\n\nThe maximum size of a clique in G. This is the global structure we want to understand.",
+    "mathContext": "The clique number ω(G) is a fundamental graph invariant. Finding large cliques is computationally hard (NP-complete).",
+    "significance": "critical",
+    "relatedConcepts": ["Clique number", "Complete subgraph", "NP-completeness"]
+  },
+  {
+    "id": "erdos-813-function-h",
+    "proofId": "erdos-813",
+    "type": "definition",
+    "range": { "startLine": 84, "endLine": 92 },
+    "title": "The Function h(n)",
+    "content": "**h(n):**\n\nThe minimum clique size guaranteed in any graph on n vertices where every 7-vertex set contains a triangle.\n\n**SatisfiesH n h:**\n\nEvery such graph has a clique of size at least h.",
+    "mathContext": "This is a minimum over a class of graphs, then maximum over all graphs in that class - a classic extremal problem formulation.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal function", "Guaranteed structure", "Min-max"]
+  },
+  {
+    "id": "erdos-813-erdos-hajnal",
+    "proofId": "erdos-813",
+    "type": "axiom",
+    "range": { "startLine": 98, "endLine": 113 },
+    "title": "Erdős-Hajnal Bounds",
+    "content": "**erdos_hajnal_lower_bound:**\n\nh(n) ≫ n^{1/3} - there exist graphs with every 7-set having a triangle but clique number only ~n^{1/3}.\n\n**erdos_hajnal_upper_bound:**\n\nh(n) ≪ n^{1/2} - every such graph has clique at least ~n^{1/2}.\n\n**Combined:** n^{1/3} ≪ h(n) ≪ n^{1/2}",
+    "mathContext": "The exponent gap [1/3, 1/2] was the original state of knowledge. Closing this gap is the main challenge.",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial bounds", "Exponent gap", "Original bounds"]
+  },
+  {
+    "id": "erdos-813-bucic-sudakov",
+    "proofId": "erdos-813",
+    "type": "axiom",
+    "range": { "startLine": 119, "endLine": 131 },
+    "title": "Bucić-Sudakov Improvement (2023)",
+    "content": "**bucic_sudakov_lower_bound:**\n\nh(n) ≫ n^{5/12-o(1)}\n\nThis improves the lower bound exponent from 1/3 ≈ 0.333 to 5/12 ≈ 0.417.\n\n**five_twelfths_better:** 5/12 > 1/3\n\n**exponent_gap:** 1/2 - 5/12 = 1/12",
+    "mathContext": "Bucić and Sudakov (2023) used sophisticated algebraic and probabilistic methods. The gap is now [5/12, 1/2].",
+    "significance": "critical",
+    "relatedConcepts": ["Recent progress", "Algebraic constructions", "Improved bounds"]
+  },
+  {
+    "id": "erdos-813-conjecture",
+    "proofId": "erdos-813",
+    "type": "definition",
+    "range": { "startLine": 137, "endLine": 144 },
+    "title": "The Main Conjecture",
+    "content": "**ErdosConjecture813:**\n\nDo constants c₁, c₂ > 0 exist such that:\n- h(n) ≥ c₁ · n^{1/3+c₁} (improved lower)\n- h(n) ≤ c₂ · n^{1/2-c₂} (improved upper)\n\nThis asks whether the exponents can be strictly improved from 1/3 and 1/2.",
+    "mathContext": "The conjecture remains open. Even small improvements in the exponents would be significant.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problem", "Exponent improvement", "Tight bounds"]
+  },
+  {
+    "id": "erdos-813-why-seven",
+    "proofId": "erdos-813",
+    "type": "axiom",
+    "range": { "startLine": 174, "endLine": 179 },
+    "title": "Why 7?",
+    "content": "**why_seven:**\n\nThe number 7 is significant because R(3,3) = 6.\n\nIn any 6-vertex graph, there's either a triangle or an independent set of 3 vertices. Requiring a triangle in every 7-set forces more structure than just having dense graphs.",
+    "mathContext": "R(3,3) = 6 is the first non-trivial Ramsey number. The constraint \"triangle in every 7-set\" goes just beyond this threshold.",
+    "significance": "key",
+    "relatedConcepts": ["R(3,3) = 6", "Ramsey threshold", "Structural forcing"]
+  },
+  {
+    "id": "erdos-813-techniques",
+    "proofId": "erdos-813",
+    "type": "axiom",
+    "range": { "startLine": 190, "endLine": 206 },
+    "title": "Proof Techniques",
+    "content": "**Lower bound (probabilistic):** Random constructions show graphs exist with small cliques but many local triangles.\n\n**Upper bound (Turán-type):** High local density forces many edges, which by Turán-type arguments forces large cliques.\n\n**5/12 improvement (algebraic):** Bucić-Sudakov use polynomial/algebraic graph constructions.",
+    "mathContext": "The interplay of probabilistic and algebraic methods is characteristic of modern extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Probabilistic method", "Turán theory", "Algebraic constructions"]
+  },
+  {
+    "id": "erdos-813-summary",
+    "proofId": "erdos-813",
+    "type": "theorem",
+    "range": { "startLine": 230, "endLine": 256 },
+    "title": "Summary",
+    "content": "**erdos_813_summary:**\n\n- h(n) = minimum clique size when every 7-set has a triangle\n- Known: n^{1/3} ≪ h(n) ≪ n^{1/2} (Erdős-Hajnal)\n- Improved: h(n) ≫ n^{5/12-o(1)} (Bucić-Sudakov 2023)\n- Open: Can exponents 1/3+ε and 1/2-ε be achieved?\n\n**Status:** OPEN with significant progress.",
+    "mathContext": "The problem illustrates how local density conditions constrain global structure, a central theme in extremal graph theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Current state", "Open problem", "Progress summary"]
+  }
+]

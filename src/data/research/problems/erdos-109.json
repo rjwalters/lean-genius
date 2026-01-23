@@ -1,76 +1,41 @@
 {
   "slug": "erdos-109",
   "title": "Erdős #109: The Erdős Sumset Conjecture",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
-    "formal": "Any A ⊆ ℕ of positive upper density contains a sumset B + C where both B and C are infinite.",
-    "plain": "Sets of positive upper density contain infinite sumsets",
-    "whyMatters": [
-      "Fundamental connection between density and additive structure",
-      "Resolved a longstanding Erdős conjecture",
-      "Uses sophisticated ergodic theory techniques"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Erdős #109: The Erdős Sumset Conjecture.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Main theorem proved by Moreira-Richter-Robertson (2019)",
-      "Published in Annals of Mathematics"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Formalize definitions and state main result"
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-01-14T21:00:00Z",
+    "phase": "NEW",
+    "since": "2026-01-23T08:04:56.540Z",
     "iteration": 1,
-    "focus": "Complete formalization with core definitions",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Submit remaining sorries to Aristotle",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Formalized Erdős Sumset Conjecture. Main theorem axiomatized (MRR 2019). Includes density definitions, sumset definition, consequences, and example for even numbers.",
-    "builtItems": [
-      "countingFn: A → ℕ counting function (Erdos109Problem.lean:34)",
-      "upperDensity: upper density of a set (Erdos109Problem.lean:38)",
-      "lowerDensity: lower density of a set (Erdos109Problem.lean:46)",
-      "HasPositiveUpperDensity: positive upper density predicate (Erdos109Problem.lean:42)",
-      "Sumset: B + C sumset definition (Erdos109Problem.lean:70)",
-      "ErdosSumsetConjecture: main conjecture statement (Erdos109Problem.lean:96)",
-      "moreira_richter_robertson: main theorem axiom (Erdos109Problem.lean:107)",
-      "sumset_infinite_implies_superset_infinite: consequence (Erdos109Problem.lean:121)",
-      "posUpperDensity_infinite: corollary (Erdos109Problem.lean:143)",
-      "even_sumset_example: concrete example (Erdos109Problem.lean:186)"
-    ],
-    "insights": [
-      "Sets of positive density are 'additively rich' - they must contain structured infinite sumsets",
-      "The proof uses ergodic theory and Furstenberg correspondence",
-      "This is distinct from Szemerédi's theorem (arithmetic progressions)",
-      "The result connects density (an analytic concept) with additive structure (a combinatorial concept)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove lowerDensity_le_upperDensity (liminf ≤ limsup)",
-      "Prove sumset_infinite_implies_superset_infinite helper lemma",
-      "Prove even_sumset_example infinite sets",
-      "Prove even_has_pos_density"
-    ],
-    "markdown": "# Erdős #109 - The Erdős Sumset Conjecture\n\n## Problem Statement\n\nAny A ⊆ ℕ of positive upper density contains a sumset B + C where both B and C are infinite.\n\n## Status\n\n**Erdős Database Status**: SOLVED (Moreira-Richter-Robertson 2019)\n\n**Formalization**: COMPLETE (2026-01-14)\n\n## Sessions\n\n### Session 2026-01-14 - Initial Formalization\n\n**Mode**: FRESH\n**Outcome**: Completed full formalization\n\n#### What I Did\n- Created comprehensive formalization of Erdős Sumset Conjecture\n- Defined counting function, upper/lower density\n- Defined sumset B + C\n- Stated main conjecture and axiomatized MRR theorem\n- Added consequences and examples\n- Verified build succeeds with expected sorries\n\n#### Key Findings\n- Main theorem requires deep ergodic theory - appropriate to axiomatize\n- Core definitions formalize cleanly in Lean 4 + Mathlib\n- Good example: even numbers form an infinite sumset\n\n#### Files Modified\n- proofs/Proofs/Erdos109Problem.lean (expanded from 48 to 240+ lines)\n\n#### Next Steps\n- Submit remaining sorries to Aristotle if desired\n- The main theorem (MRR) cannot be proven by Aristotle (original research)\n\n---\n\n*Generated 2026-01-14*\n"
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Axiomatize main theorem",
-      "status": "successful",
-      "description": "Axiomatize the Moreira-Richter-Robertson theorem since it requires deep ergodic theory"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "erdos",
     "solved",
@@ -80,18 +45,15 @@
     "ergodic-theory"
   ],
   "relatedProofs": [
-    "Erdos656Problem"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      "Moreira, Richter, Robertson (2019) 'A proof of a sumset conjecture of Erdős' Ann. of Math. 189(2):605-652"
-    ],
-    "urls": [
-      "https://erdosproblems.com/109"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
-  "started": "2026-01-14T20:00:00Z",
+  "started": "2026-01-23T08:04:56.540Z",
+  "lastUpdate": "2026-01-23T08:04:56.540Z",
   "significance": 8,
   "tractability": 7
 }
