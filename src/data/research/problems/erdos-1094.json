@@ -11,15 +11,21 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "14 specific exceptions are verified computationally",
+      "The bound holds for most tested cases"
+    ],
+    "open": [
+      "No other exceptions beyond the 14",
+      "Stronger bounds (sqrt, log) conjectures"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T15:31:24.881Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Conjecture formalized with exceptions",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +35,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "SURVEYED: Formalized main conjecture with 14 known exceptions. Connected to Problems #384 and #1095.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1094Problem.lean - Main formalization (200+ lines)",
+      "lpf (least prime factor) definition and properties",
+      "bound function: max(n/k, k)",
+      "ELS1988Conjecture with 14 exceptions",
+      "SelfridgeConjecture, GuyConjecture formulations",
+      "SqrtConjecture, Bound13Conjecture, LogConjecture (stronger versions)",
+      "Verified exception_7_3 via native_decide"
+    ],
+    "insights": [
+      "Conjecture: lpf(C(n,k)) ≤ max(n/k, k) for n ≥ 2k with 14 exceptions",
+      "The 14 exceptions are: C(7,3), C(13,4), C(23,5), C(14,4), C(44,8), C(46,10), C(47,10), C(47,11), C(62,6), C(74,10), C(94,10), C(95,10), C(241,16), C(284,28)",
+      "Selfridge conjecture: holds for n ≥ k²-1 except C(62,6)",
+      "Stronger conjectures: lpf ≤ max(n/k, √k) or max(n/k, 13) or max(n/k, O(log k))",
+      "Related to Problem #384 (SOLVED) and #1095 (Erdős-Selfridge function)",
+      "Leverages infrastructure from Erdos1095Problem.lean (smallestPrimeFactor, etc.)",
+      "Exceptions relate to binomial coefficients with high deficiency"
+    ],
+    "mathlibGaps": [
+      "Need Nat.minFac properties for lpf proofs"
+    ],
+    "nextSteps": [
+      "Verify all 14 exceptions computationally",
+      "Prove lpf_prime and lpf_lt_of_composite lemmas",
+      "Connect more deeply to Problem #1095 infrastructure"
+    ],
     "markdown": "# Erdős #1094 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor all $n\\geq 2k$ the least prime factor of $\\binom{n}{k}$ is $\\leq \\max(n/k,k)$, with only finitely many exceptions.\n\n\n\nA stronger form of [384] that appears in a paper of Erd\\H{o}s, Lacampagne, and Selfridge \\cite{ELS88}. Erd\\H{o}s observed that the least prime factor is always $\\leq n/k$ provided $n$ is sufficiently large depending on $k$. Selfridge \\cite{Se77} further conjectured that this always happens if $n\\geq k^2-1$, except $\\binom{62}{6}$.\n\nThe threshold $g(k)$ below which $\\binom{n}{k}$ is guaranteed to be divisible by a prime $\\leq k$ is the subject of [1095].\n\nMore precisely, in \\cite{ELS88} they conjecture that if $n\\geq 2k$ then the least prime factor of $\\binom{n}{k}$ is $\\leq \\max(n/k,k)$ with the following $14$ exceptions:\\[\\binom{7}{3},\\binom{13}{4},\\binom{23}{5},\\binom{14}{4},\\binom{44}{8},\\binom{46}{10},\\binom{47}{10},\\]\\[\\binom{47}{11},\\binom{62}{6},\\binom{74}{10},\\binom{94}{10},\\binom{95}{10},\\binom{241}{16},\\binom{284}{28}.\\]They also suggest the stronger conjecture that, with a finite number of exceptions, the least prime factor is $\\leq \\max(n/k,\\sqrt{k})$, or perhaps even $\\leq \\max(n/k,O(\\log k))$. Indeed, in \\cite{ELS93} they provide some further computational evidence, and point out it is consistent with what they know that in fact this holds with $\\leq \\max(n/k,13)$, with only $12$ exceptions.\n\nDiscussed in problem B31 and B33 of Guy's collection \\cite{Gu04} - there Guy credits Selfridge with the conjecture that if $n> 17.125k$ then $\\binom{n}{k}$ has a prime factor $p\\leq n/k$.\n\nThis is related to [1093], in that the only counterexamples to this conjecture can occur from $\\binom{n}{k}$ with deficiency $\\geq 1$.\n\nThere is an interesting discussion about this problem on MathOverflow.\n\n\n\n\nReferences\n\n\n[ELS88] Erd\\H{o}s, P. and Lacampagne, C. B. and Selfridge, J. L., Prime factors of binomial coefficients and related problems. Acta Arith. (1988), 507--523.\n\n[ELS93] Erd\\H{o}s, P. and Lacampagne, C. B. and Selfridge, J. L., Estimates of the least prime factor of a binomial coefficient. Math. Comp. (1993), 215--224.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Se77] J. L. Selfridge, Some problems on the prime factors of consecutive integers. Notices Amer. Math. Soc. (1977), A456-457.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #384\n- Problem #1095\n- Problem #1093\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #25\n\n## References\n\n- ELS88\n- ELS93\n- Se77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
