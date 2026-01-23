@@ -4841,17 +4841,23 @@
   },
   {
     "id": "erdos-246",
-    "title": "Erdős Problem #246",
+    "title": "Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}",
     "slug": "erdos-246",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... The set ... is complete - that is, every large integer is the sum of distinct integers of the form ... with ....\n\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let (a, b) = 1. The set {a^k b^l : k, l ≥ 0} is complete — every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "complete-sequences",
+      "additive-combinatorics",
+      "exponential-sequences"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 246,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 13
   },
   {
     "id": "erdos-247",
