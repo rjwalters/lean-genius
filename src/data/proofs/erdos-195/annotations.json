@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-195-overview",
+    "proofId": "erdos-195",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #195:**\n\nWhat is the largest k such that every permutation of ℤ has a k-term monotone arithmetic progression?\n\n**Known Bounds:**\n- k ≤ 4 (Adenwalla 2022)\n- k ≥ 3 (believed)\n\n**Status:** OPEN - the gap between 3 and 4 is unresolved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-195-permutation",
+    "proofId": "erdos-195",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "IsPermutation",
+    "content": "**Permutation of ℤ:**\n\nA bijection f : ℤ → ℤ.\n\nThis represents arranging all integers in a sequence (possibly doubly-infinite).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-195-ap",
+    "proofId": "erdos-195",
+    "range": { "startLine": 53, "endLine": 59 },
+    "type": "definition",
+    "title": "IsArithmeticProgression",
+    "content": "**Arithmetic Progression:**\n\nx₁, x₂, ..., xₖ where consecutive differences are constant: xᵢ₊₁ - xᵢ = d.\n\nExamples: (2, 5, 8), (10, 7, 4, 1), (3, 3, 3)",
+    "significance": "key"
+  },
+  {
+    "id": "ann-195-map",
+    "proofId": "erdos-195",
+    "range": { "startLine": 68, "endLine": 78 },
+    "type": "definition",
+    "title": "IsMonotoneAP",
+    "content": "**Monotone Arithmetic Progression (MAP):**\n\nAn AP x₁ < x₂ < ... < xₖ that appears in increasing order in the permutation.\n\nBoth conditions must hold:\n1. Values form an AP\n2. Their positions in the permutation are increasing",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-195-hasmap",
+    "proofId": "erdos-195",
+    "range": { "startLine": 80, "endLine": 92 },
+    "type": "definition",
+    "title": "HasMAP and AvoidsMAP",
+    "content": "**Has/Avoids k-MAP:**\n\nHasMAP f k: The permutation f contains a k-term MAP.\n\nAvoidsMAP f k: The permutation f has no k-term MAP.\n\nThe goal is to find the largest k where no permutation avoids k-MAPs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-195-kz",
+    "proofId": "erdos-195",
+    "range": { "startLine": 109, "endLine": 114 },
+    "type": "definition",
+    "title": "kZ",
+    "content": "**k(ℤ):**\n\nThe largest k such that every permutation of ℤ has a k-term MAP.\n\nThis is the answer we seek. Currently: 3 ≤ k(ℤ) ≤ 4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-195-geneson",
+    "proofId": "erdos-195",
+    "range": { "startLine": 120, "endLine": 125 },
+    "type": "axiom",
+    "title": "Geneson (2019)",
+    "content": "**Geneson's Upper Bound:**\n\nk ≤ 5: There exists a permutation of ℤ avoiding 6-term MAPs.\n\nThis was the first non-trivial upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-195-adenwalla",
+    "proofId": "erdos-195",
+    "range": { "startLine": 127, "endLine": 132 },
+    "type": "axiom",
+    "title": "Adenwalla (2022)",
+    "content": "**Adenwalla's Improvement:**\n\nk ≤ 4: There exists a permutation of ℤ avoiding 5-term MAPs.\n\nThis is the current best upper bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-195-lower",
+    "proofId": "erdos-195",
+    "range": { "startLine": 145, "endLine": 151 },
+    "type": "axiom",
+    "title": "Lower Bound",
+    "content": "**Lower Bound:**\n\nEvery permutation of ℤ has a 3-term MAP.\n\nThis needs verification - showing all permutations have 3-MAPs is non-trivial.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-195-gap",
+    "proofId": "erdos-195",
+    "range": { "startLine": 164, "endLine": 176 },
+    "type": "theorem",
+    "title": "current_bounds",
+    "content": "**The Open Gap:**\n\n3 ≤ k(ℤ) ≤ 4\n\nIs k = 3 or k = 4?\n\nThis is the core open question of Problem #195.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-195-constructions",
+    "proofId": "erdos-195",
+    "range": { "startLine": 182, "endLine": 197 },
+    "type": "axiom",
+    "title": "Construction Ideas",
+    "content": "**Geneson & Adenwalla Constructions:**\n\nBoth use clever interlacing of positive and negative integers.\n\nThe idea: alternate blocks in ways that break long APs from being monotone.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-195-finite",
+    "proofId": "erdos-195",
+    "range": { "startLine": 203, "endLine": 210 },
+    "type": "definition",
+    "title": "FiniteVersion",
+    "content": "**Finite Version (Problem #194):**\n\nFor permutations of {1, ..., n}, similar questions apply.\n\nThe finite case is related but distinct from the infinite case.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-195-es",
+    "proofId": "erdos-195",
+    "range": { "startLine": 221, "endLine": 229 },
+    "type": "axiom",
+    "title": "Erdős-Szekeres Connection",
+    "content": "**Erdős-Szekeres Theorem:**\n\nAny sequence of n² + 1 distinct numbers has a monotone subsequence of length n + 1.\n\nThis guarantees long monotone subsequences, but the AP constraint is much stronger.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-195-identity",
+    "proofId": "erdos-195",
+    "range": { "startLine": 260, "endLine": 267 },
+    "type": "definition",
+    "title": "identityPerm",
+    "content": "**Identity Permutation:**\n\nf(n) = n: Every AP is automatically monotone.\n\nThis trivially has all k-MAPs for any k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-195-summary",
+    "proofId": "erdos-195",
+    "range": { "startLine": 286, "endLine": 308 },
+    "type": "theorem",
+    "title": "erdos_195_summary",
+    "content": "**Complete Summary:**\n\nErdős Problem #195 is **OPEN**.\n\n**QUESTION:** Largest k where every permutation of ℤ has a k-MAP?\n\n**KNOWN:** 3 ≤ k ≤ 4\n\n**GAP:** Is k = 3 or k = 4?\n\n**KEY RESULTS:**\n- Geneson (2019): k ≤ 5\n- Adenwalla (2022): k ≤ 4",
+    "significance": "critical"
+  }
+]
