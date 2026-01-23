@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-1125-header",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1125**\n\nIf f : ℝ → ℝ satisfies 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0, must f be monotonic?\n\n**Status:** SOLVED (Laczkovich 1984)\n\nErdős wrote \"if it were my problem I would offer $500 for it.\"",
+    "mathContext": "A functional inequality problem connecting one-sided convexity to monotonicity.",
+    "significance": "critical",
+    "relatedConcepts": ["Functional inequality", "Monotonicity", "Convexity"]
+  },
+  {
+    "id": "ann-1125-kemperman",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Kemperman Inequality",
+    "content": "**satisfiesKemperman f:**\n\n∀x ∈ ℝ, ∀h > 0: 2f(x) ≤ f(x+h) + f(x+2h)\n\nThis is a one-sided discrete convexity condition.",
+    "mathContext": "Compare to midpoint convexity: f((x+y)/2) ≤ (f(x)+f(y))/2.",
+    "significance": "critical",
+    "relatedConcepts": ["Convexity", "Functional equation", "Inequality"]
+  },
+  {
+    "id": "ann-1125-alt",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Alternative Formulation",
+    "content": "**satisfiesKempermanAlt f:**\n\nf(x) - f(x+h) ≤ f(x+h) - f(x+2h)\n\nThe \"jump down\" from x to x+h is bounded by the \"jump up\" from x+h to x+2h.",
+    "significance": "key",
+    "relatedConcepts": ["Difference", "Jump", "Bound"]
+  },
+  {
+    "id": "ann-1125-equiv",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "theorem",
+    "title": "Equivalence",
+    "content": "**kemperman_equiv:**\n\nThe two formulations are algebraically equivalent.\n\n2f(x) ≤ f(x+h) + f(x+2h) ↔ f(x) - f(x+h) ≤ f(x+h) - f(x+2h)",
+    "significance": "key",
+    "relatedConcepts": ["Equivalence", "Reformulation"]
+  },
+  {
+    "id": "ann-1125-nondec",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "Non-Decreasing",
+    "content": "**isNonDecreasing f:**\n\n∀x ≤ y: f(x) ≤ f(y)\n\nThe function doesn't decrease as the argument increases.",
+    "significance": "key",
+    "relatedConcepts": ["Monotone increasing", "Order-preserving"]
+  },
+  {
+    "id": "ann-1125-noninc",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "definition",
+    "title": "Non-Increasing",
+    "content": "**isNonIncreasing f:**\n\n∀x ≤ y: f(y) ≤ f(x)\n\nThe function doesn't increase as the argument increases.",
+    "significance": "key",
+    "relatedConcepts": ["Monotone decreasing", "Order-reversing"]
+  },
+  {
+    "id": "ann-1125-monotonic",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "definition",
+    "title": "Monotonic",
+    "content": "**isMonotonic f:**\n\nisNonDecreasing f ∨ isNonIncreasing f\n\nThe function is either always going up or always going down.",
+    "significance": "critical",
+    "relatedConcepts": ["Monotonicity", "Either/or"]
+  },
+  {
+    "id": "ann-1125-question",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 80, "endLine": 88 },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**kemperman_question:**\n\nDoes satisfiesKemperman(f) imply isMonotonic(f)?\n\nThis is what Erdős Problem #1125 asks.",
+    "significance": "critical",
+    "relatedConcepts": ["Implication", "Main conjecture"]
+  },
+  {
+    "id": "ann-1125-measurable",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "definition",
+    "title": "Measurability",
+    "content": "**IsMeasurable f:**\n\nf is Lebesgue measurable.\n\nMeasurable functions cannot be too pathological - they respect the measure structure of ℝ.",
+    "mathContext": "Non-measurable functions require the Axiom of Choice to construct.",
+    "significance": "supporting",
+    "relatedConcepts": ["Measure theory", "Regularity"]
+  },
+  {
+    "id": "ann-1125-kemperman1969",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 99, "endLine": 105 },
+    "type": "axiom",
+    "title": "Kemperman's Theorem (1969)",
+    "content": "**kemperman_1969:**\n\nIf f satisfies Kemperman's inequality AND f is measurable, then f is monotonic.\n\nThis was the partial result before Laczkovich.",
+    "mathContext": "Published in Trans. Amer. Math. Soc., 1969.",
+    "significance": "key",
+    "relatedConcepts": ["Kemperman 1969", "Measurable case"]
+  },
+  {
+    "id": "ann-1125-laczkovich",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 111, "endLine": 121 },
+    "type": "axiom",
+    "title": "Laczkovich's Theorem (1984)",
+    "content": "**laczkovich_1984:**\n\nIf f : ℝ → ℝ satisfies 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0, then f is monotonic.\n\nNO MEASURABILITY ASSUMPTION NEEDED.\n\nThis completely resolves Erdős Problem #1125.",
+    "mathContext": "Published in Colloq. Math., 1984, pp. 109-115.",
+    "significance": "critical",
+    "relatedConcepts": ["Laczkovich 1984", "Full resolution"]
+  },
+  {
+    "id": "ann-1125-resolved",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "theorem",
+    "title": "Question Resolved",
+    "content": "**kemperman_question_resolved:**\n\nLaczkovich's theorem directly implies the Kemperman question is TRUE.\n\nThe main result follows immediately from the axiom.",
+    "significance": "key",
+    "relatedConcepts": ["Resolved", "Direct consequence"]
+  },
+  {
+    "id": "ann-1125-interpretation",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 131, "endLine": 138 },
+    "type": "theorem",
+    "title": "Interpretation",
+    "content": "**kemperman_interpretation:**\n\nThe inequality bounds how much f can \"jump down\" then \"jump up\":\n\nf(x) - f(x+h) ≤ f(x+2h) - f(x+h)\n\nThis prevents certain oscillation patterns.",
+    "mathContext": "The key insight is that this bounds local oscillations.",
+    "significance": "key",
+    "relatedConcepts": ["Oscillation", "Local behavior"]
+  },
+  {
+    "id": "ann-1125-constant",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 153, "endLine": 156 },
+    "type": "theorem",
+    "title": "Constants Satisfy",
+    "content": "**constant_satisfies:**\n\nConstant functions f(x) = c satisfy Kemperman's inequality.\n\nProof: 2c ≤ c + c = 2c. ✓",
+    "significance": "supporting",
+    "relatedConcepts": ["Constant", "Trivial example"]
+  },
+  {
+    "id": "ann-1125-linear",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "theorem",
+    "title": "Linear Functions Satisfy",
+    "content": "**linear_satisfies:**\n\nLinear functions f(x) = ax + b satisfy Kemperman's inequality.\n\nProof: 2(ax + b) = 2ax + 2b ≤ (a(x+h) + b) + (a(x+2h) + b) = 2ax + 3ah + 2b for h > 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["Linear", "Basic example"]
+  },
+  {
+    "id": "ann-1125-square",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 168, "endLine": 172 },
+    "type": "theorem",
+    "title": "x² Satisfies",
+    "content": "**square_satisfies:**\n\nf(x) = x² satisfies Kemperman's inequality.\n\nProof: 2x² ≤ (x+h)² + (x+2h)² = 2x² + 6xh + 5h² for h > 0. ✓",
+    "mathContext": "Convex functions satisfy the inequality.",
+    "significance": "supporting",
+    "relatedConcepts": ["Quadratic", "Convex example"]
+  },
+  {
+    "id": "ann-1125-nonmeas",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 181, "endLine": 187 },
+    "type": "theorem",
+    "title": "Non-Measurable Context",
+    "content": "**non_measurable_context:**\n\nNon-measurable functions can be very pathological. For example, there exist additive functions f(x+y) = f(x) + f(y) that are not linear.\n\nKemperman's inequality turns out to be strong enough to force monotonicity anyway.",
+    "mathContext": "Such pathological functions require the Axiom of Choice.",
+    "significance": "supporting",
+    "relatedConcepts": ["Pathological", "Axiom of Choice"]
+  },
+  {
+    "id": "ann-1125-summary",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 214, "endLine": 217 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1125_summary:**\n\nKemperman's inequality implies monotonicity.\n\nThis combines all components into the main result.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Resolution"]
+  },
+  {
+    "id": "ann-1125-solved",
+    "proofId": "erdos-1125",
+    "range": { "startLine": 219, "endLine": 220 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**erdos_1125_solved:**\n\nErdős Problem #1125 was completely resolved by Laczkovich in 1984.",
+    "significance": "supporting",
+    "relatedConcepts": ["Solved", "1984"]
+  }
+]
