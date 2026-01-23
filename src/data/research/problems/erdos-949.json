@@ -16,24 +16,47 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T12:22:36.005Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Problem formalized; main conjecture OPEN; Sidon variant solved",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "SURVEYED: Created Lean formalization of sum-free sets in ℝ, Sidon sets, sumset operation, and main conjecture. Axiomatized AlphaProof result for Sidon variant. Main conjecture remains OPEN.",
+    "builtItems": [
+      "IsSumFreeReal and IsSumFreeReal' definitions (Erdos949Problem.lean:40-47)",
+      "sumFreeReal_iff equivalence theorem (Erdos949Problem.lean:50-56)",
+      "IsSidonReal definition (Erdos949Problem.lean:65-68)",
+      "sumset operation and mem_sumset (Erdos949Problem.lean:78-85)",
+      "mainConjecture and weakerConjecture (Erdos949Problem.lean:93-102)",
+      "sidonVariant and alphaproof_sidon_result axiom (Erdos949Problem.lean:110-118)",
+      "empty_case trivial theorem (Erdos949Problem.lean:126-134)"
+    ],
+    "insights": [
+      "Main conjecture is OPEN - asks if sum-free S implies continuum-sized A with A+A in complement",
+      "AlphaProof proved the Sidon variant positively (Dillies report)",
+      "Sidon sets are more structured than general sum-free sets",
+      "Reduction from main conjecture to Sidon variant does not work directly",
+      "Not every sum-free set contains a large Sidon subset",
+      "Related to problems #948, #950",
+      "Not Aristotle-suitable: requires proving OPEN conjecture"
+    ],
+    "mathlibGaps": [
+      "Cardinal.mk_univ_real may need verification",
+      "Sidon sets in ℝ not standard in Mathlib"
+    ],
+    "nextSteps": [
+      "Could try to formalize the AlphaProof construction for Sidon variant",
+      "Explore specific sum-free sets as counterexamples",
+      "Connect to problems #948 and #950"
+    ],
     "markdown": "# Erdős #949 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?\n\n\n\nErd\\H{o}s suggests that if the answer is no one could consider the variant where we assume that $S$ is Sidon (i.e. all $a+b$ with $a,b\\in S$ are distinct, aside from the trivial coincidences).\n\nIn the comments Dillies gives a positive proof of this, found by AlphaProof: in other words, if $S\\subset \\mathbb{R}$ is a Sidon set then there exists $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #948\n- Problem #950\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
