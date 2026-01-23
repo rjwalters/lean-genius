@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "header-comment",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 36 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #908 asks about functions with measurable differences. The de Bruijn-Erdős conjecture posited that such functions decompose as f = g + h + r (continuous + additive + rigid). Laczkovich (1980) proved this affirmatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "measurable-diff-def",
+    "proofId": "erdos-908",
+    "type": "definition",
+    "range": { "startLine": 53, "endLine": 56 },
+    "title": "Measurable Differences",
+    "content": "A function f : ℝ → ℝ has measurable differences if for every h > 0, the difference function x ↦ f(x + h) - f(x) is Lebesgue measurable. This is weaker than f itself being measurable.",
+    "significance": "critical"
+  },
+  {
+    "id": "additive-def",
+    "proofId": "erdos-908",
+    "type": "definition",
+    "range": { "startLine": 58, "endLine": 60 },
+    "title": "Additive Functions",
+    "content": "An additive function satisfies h(x + y) = h(x) + h(y) for all x, y. Such functions are linear over ℚ but may be discontinuous (via Hamel bases).",
+    "significance": "critical"
+  },
+  {
+    "id": "rigid-def",
+    "proofId": "erdos-908",
+    "type": "definition",
+    "range": { "startLine": 62, "endLine": 65 },
+    "title": "Rigid Functions",
+    "content": "A function r is 'rigid' if r(x+h) = r(x) for almost all x (where the null set may depend on h). Such functions are a.e. constant on every translate.",
+    "significance": "critical"
+  },
+  {
+    "id": "additive-zero",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 71, "endLine": 75 },
+    "title": "Additive Functions at Zero",
+    "content": "Every additive function maps 0 to 0. Proof: h(0) = h(0+0) = h(0) + h(0), so h(0) = 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "additive-neg",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 77, "endLine": 82 },
+    "title": "Additive Functions and Negation",
+    "content": "For additive functions, h(-x) = -h(x). Proof: h(0) = h(x + (-x)) = h(x) + h(-x), so h(-x) = -h(x).",
+    "significance": "supporting"
+  },
+  {
+    "id": "discontinuous-exists",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": { "startLine": 88, "endLine": 91 },
+    "title": "Discontinuous Additive Functions",
+    "content": "Using the Axiom of Choice to construct a Hamel basis for ℝ over ℚ, one can build discontinuous additive functions. These are nowhere continuous and non-measurable.",
+    "significance": "key"
+  },
+  {
+    "id": "laczkovich-main",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 113, "endLine": 128 },
+    "title": "Laczkovich Decomposition",
+    "content": "The main theorem (Laczkovich 1980): Any function with measurable differences decomposes as f = g + h + r where g is continuous, h is additive, and r is rigid. This resolves the de Bruijn-Erdős conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "uniqueness",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 130, "endLine": 143 },
+    "title": "Decomposition Uniqueness",
+    "content": "The decomposition is essentially unique: g is unique up to a linear function, and r is unique up to a.e. equivalence.",
+    "significance": "key"
+  },
+  {
+    "id": "measurable-special",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 149, "endLine": 155 },
+    "title": "Measurable Functions Special Case",
+    "content": "If f itself is measurable (not just its differences), then the additive part h can be taken to be 0, giving f = g + r.",
+    "significance": "key"
+  },
+  {
+    "id": "continuous-verification",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 167, "endLine": 171 },
+    "title": "Continuous Functions Verification",
+    "content": "Continuous functions trivially have measurable differences since the difference of continuous functions is continuous, hence measurable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "additive-verification",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 173, "endLine": 181 },
+    "title": "Additive Functions Verification",
+    "content": "Additive functions have measurable differences because f(x+h) - f(x) = f(h), which is constant and hence measurable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-907-connection",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": { "startLine": 187, "endLine": 197 },
+    "title": "Connection to Erdős #907",
+    "content": "Erdős Problem #907 asks when additive functions must be continuous. This is related because Problem 908 uses additive functions as building blocks.",
+    "significance": "supporting"
+  },
+  {
+    "id": "de-bruijn-perspective",
+    "proofId": "erdos-908",
+    "type": "definition",
+    "range": { "startLine": 203, "endLine": 215 },
+    "title": "Difference Closed Classes",
+    "content": "de Bruijn's formulation: Which function classes C satisfy 'if f(x+h) - f(x) ∈ C for all h, then f decomposes into nice parts'? The class of measurable functions is difference closed.",
+    "significance": "key"
+  },
+  {
+    "id": "main-summary",
+    "proofId": "erdos-908",
+    "type": "theorem",
+    "range": { "startLine": 251, "endLine": 261 },
+    "title": "Complete Summary",
+    "content": "Comprehensive summary theorem combining the decomposition theorem with verifications that continuous and additive functions satisfy the hypothesis.",
+    "significance": "critical"
+  }
+]
