@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "header-comment",
+    "proofId": "erdos-210",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 31 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #210 asks about ordinary lines - lines through exactly 2 points. The function f(n) = minimum ordinary lines for n non-collinear points. Green-Tao (2013) showed f(n) ≥ n/2 for large even n (tight).",
+    "significance": "critical"
+  },
+  {
+    "id": "collinear-def",
+    "proofId": "erdos-210",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 56 },
+    "title": "Collinearity",
+    "content": "Three points are collinear if one is a linear combination of the other two (lies on the line through them).",
+    "significance": "key"
+  },
+  {
+    "id": "not-all-collinear",
+    "proofId": "erdos-210",
+    "type": "definition",
+    "range": { "startLine": 63, "endLine": 66 },
+    "title": "Not All Collinear",
+    "content": "A point set is 'not all collinear' if there exist three non-collinear points. This is the standing assumption throughout.",
+    "significance": "key"
+  },
+  {
+    "id": "line-struct",
+    "proofId": "erdos-210",
+    "type": "definition",
+    "range": { "startLine": 72, "endLine": 76 },
+    "title": "Line Structure",
+    "content": "A line is defined by two distinct points. This gives a canonical representation for lines in the plane.",
+    "significance": "key"
+  },
+  {
+    "id": "ordinary-line",
+    "proofId": "erdos-210",
+    "type": "definition",
+    "range": { "startLine": 82, "endLine": 85 },
+    "title": "Ordinary Line",
+    "content": "An ordinary line is one containing exactly 2 points from the set - no third point lies on it. This is the central concept of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "function-f",
+    "proofId": "erdos-210",
+    "type": "definition",
+    "range": { "startLine": 96, "endLine": 104 },
+    "title": "The Function f(n)",
+    "content": "f(n) = minimum number of ordinary lines over all configurations of n points not all collinear. The main question: how does f(n) grow?",
+    "significance": "critical"
+  },
+  {
+    "id": "sylvester-gallai",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 110, "endLine": 120 },
+    "title": "Sylvester-Gallai Theorem",
+    "content": "Any finite non-collinear point set has at least one ordinary line. Conjectured by Sylvester (1893), rediscovered by Erdős (1933), proved by Gallai (1944). Proof: minimize point-to-line distance.",
+    "significance": "critical"
+  },
+  {
+    "id": "f-ge-one",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 122, "endLine": 123 },
+    "title": "f(n) ≥ 1",
+    "content": "Immediate consequence of Sylvester-Gallai: every non-collinear configuration has at least one ordinary line.",
+    "significance": "key"
+  },
+  {
+    "id": "motzkin",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 131, "endLine": 137 },
+    "title": "Motzkin's Theorem",
+    "content": "Motzkin (1951): f(n) → ∞ as n → ∞. This answered the first part of Erdős's question - yes, ordinary lines grow without bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "kelly-moser",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 148, "endLine": 152 },
+    "title": "Kelly-Moser Bound",
+    "content": "Kelly-Moser (1958): f(n) ≥ 3n/7 for all n. This is tight for n = 7 (the Fano plane configuration).",
+    "significance": "key"
+  },
+  {
+    "id": "csima-sawyer",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 154, "endLine": 157 },
+    "title": "Csima-Sawyer Bound",
+    "content": "Csima-Sawyer (1993): f(n) ≥ 6n/13 for n ≥ 8. Improved Kelly-Moser for larger n.",
+    "significance": "key"
+  },
+  {
+    "id": "green-tao-even",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 163, "endLine": 169 },
+    "title": "Green-Tao (Even n)",
+    "content": "Green-Tao (2013): f(n) ≥ n/2 for sufficiently large even n. This is TIGHT - achieved by Böröczky configurations. Uses additive combinatorics.",
+    "significance": "critical"
+  },
+  {
+    "id": "green-tao-odd",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 171, "endLine": 173 },
+    "title": "Green-Tao (Odd n)",
+    "content": "Green-Tao (2013): f(n) ≥ 3⌊n/4⌋ for sufficiently large odd n. Surprisingly, odd n has a better bound than even n!",
+    "significance": "critical"
+  },
+  {
+    "id": "boroczyky",
+    "proofId": "erdos-210",
+    "type": "definition",
+    "range": { "startLine": 184, "endLine": 191 },
+    "title": "Böröczky Configuration",
+    "content": "The extremal configuration for even n: n/2 points on a circle and n/2 points 'at infinity' (projectively transformed). Achieves exactly n/2 ordinary lines.",
+    "significance": "key"
+  },
+  {
+    "id": "small-values",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 194, "endLine": 200 },
+    "title": "Small n Values",
+    "content": "Exact values: f(3)=3, f(4)=3, f(5)=4, f(6)=3, f(7)=3. The f(7)=3 is achieved by the Fano plane configuration.",
+    "significance": "supporting"
+  },
+  {
+    "id": "structure-theorem",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 213, "endLine": 217 },
+    "title": "Structure Theorem",
+    "content": "Green-Tao: Sets with fewer than n/2 ordinary lines must lie (mostly) on a cubic curve. Algebraic structure emerges from extremality.",
+    "significance": "key"
+  },
+  {
+    "id": "main-summary",
+    "proofId": "erdos-210",
+    "type": "theorem",
+    "range": { "startLine": 244, "endLine": 253 },
+    "title": "Main Result",
+    "content": "Comprehensive theorem: Sylvester-Gallai (f≥1), Motzkin (f→∞), and Green-Tao (f≥n/2 for large even n) combined.",
+    "significance": "critical"
+  }
+]
