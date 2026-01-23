@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "header-comment",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 29 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #525 asks about the minimum modulus m(f) = min_{|z|=1} |f(z)| for Littlewood polynomials (±1 coefficients). Complete resolution: m(f) ≈ n^{-1/2} with explicit limiting distribution (Cook-Nguyen 2021).",
+    "significance": "critical"
+  },
+  {
+    "id": "littlewood-def",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": { "startLine": 47, "endLine": 49 },
+    "title": "Littlewood Polynomials",
+    "content": "A Littlewood polynomial has all coefficients in {-1, +1}. These are also called flat polynomials or Rademacher polynomials.",
+    "significance": "critical"
+  },
+  {
+    "id": "unit-circle",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": { "startLine": 59, "endLine": 60 },
+    "title": "Unit Circle",
+    "content": "The unit circle {z ∈ ℂ : |z| = 1} is the domain on which we study the minimum modulus.",
+    "significance": "key"
+  },
+  {
+    "id": "min-modulus",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": { "startLine": 62, "endLine": 64 },
+    "title": "Minimum Modulus",
+    "content": "m(f) = min_{|z|=1} |f(z)| - the smallest absolute value of the polynomial on the unit circle. This is the central quantity of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "almost-all-small",
+    "proofId": "erdos-525",
+    "type": "theorem",
+    "range": { "startLine": 78, "endLine": 82 },
+    "title": "Almost All Have m(f) < 1",
+    "content": "All except o(2^n) Littlewood polynomials of degree n have m(f) < 1. This answers the first question affirmatively.",
+    "significance": "key"
+  },
+  {
+    "id": "littlewood-conjecture",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": { "startLine": 88, "endLine": 92 },
+    "title": "Littlewood's Conjecture",
+    "content": "Littlewood (1966) conjectured m(f) → 0 in probability as n → ∞. That is, for any ε > 0, almost all polynomials have m(f) < ε.",
+    "significance": "critical"
+  },
+  {
+    "id": "kashin-theorem",
+    "proofId": "erdos-525",
+    "type": "theorem",
+    "range": { "startLine": 94, "endLine": 95 },
+    "title": "Kashin's Theorem",
+    "content": "Kashin (1987): Littlewood's conjecture is TRUE. The minimum modulus tends to 0 in probability.",
+    "significance": "critical"
+  },
+  {
+    "id": "konyagin-bound",
+    "proofId": "erdos-525",
+    "type": "theorem",
+    "range": { "startLine": 101, "endLine": 105 },
+    "title": "Konyagin's Upper Bound",
+    "content": "Konyagin (1994): m(f) ≤ n^{-1/2+o(1)} almost surely. This gives the correct order of magnitude - the minimum modulus decays like 1/√n.",
+    "significance": "critical"
+  },
+  {
+    "id": "konyagin-tight",
+    "proofId": "erdos-525",
+    "type": "theorem",
+    "range": { "startLine": 107, "endLine": 110 },
+    "title": "Exponent -1/2 is Tight",
+    "content": "The exponent -1/2 cannot be improved - the minimum modulus is typically Θ(n^{-1/2}).",
+    "significance": "key"
+  },
+  {
+    "id": "konyagin-schlag",
+    "proofId": "erdos-525",
+    "type": "theorem",
+    "range": { "startLine": 116, "endLine": 120 },
+    "title": "Konyagin-Schlag Lower Tail",
+    "content": "Konyagin-Schlag (1999): The lower tail is thin. P(m(f) ≤ εn^{-1/2}) ≪ ε. Very few polynomials have unusually small minimum modulus.",
+    "significance": "key"
+  },
+  {
+    "id": "cook-nguyen-lambda",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": { "startLine": 126, "endLine": 127 },
+    "title": "Cook-Nguyen Constant λ",
+    "content": "The explicit constant λ appearing in the limiting distribution. Its value can be computed from the theory.",
+    "significance": "key"
+  },
+  {
+    "id": "cook-nguyen-distribution",
+    "proofId": "erdos-525",
+    "type": "theorem",
+    "range": { "startLine": 129, "endLine": 137 },
+    "title": "Cook-Nguyen Distribution",
+    "content": "Cook-Nguyen (2021): The exact limiting distribution is lim P(m(f) > εn^{-1/2}) = e^{-ελ}. This is a remarkable universality result - the distribution is the same for any ±1 coefficient scheme.",
+    "significance": "critical"
+  },
+  {
+    "id": "rudin-shapiro",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": { "startLine": 143, "endLine": 151 },
+    "title": "Rudin-Shapiro Polynomials",
+    "content": "Special Littlewood polynomials defined by a recurrence. They have flat modulus - |p(z)| ≤ √(2n) on the unit circle.",
+    "significance": "supporting"
+  },
+  {
+    "id": "mahler-measure",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": { "startLine": 165, "endLine": 168 },
+    "title": "Mahler Measure",
+    "content": "M(p) = exp(∫ log|p(e^{2πit})| dt) - the geometric mean of |p| on the unit circle. Related to m(p) and connects to Lehmer's problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "lehmer-question",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": { "startLine": 175, "endLine": 177 },
+    "title": "Lehmer's Problem",
+    "content": "Is there a Littlewood polynomial with M(p) < 1? This is related to Lehmer's conjecture on polynomial heights.",
+    "significance": "supporting"
+  },
+  {
+    "id": "main-summary",
+    "proofId": "erdos-525",
+    "type": "theorem",
+    "range": { "startLine": 202, "endLine": 220 },
+    "title": "Complete Solution",
+    "content": "Summary theorem: Littlewood's conjecture is true (Kashin), the correct exponent is -1/2 (Konyagin), and the exact limiting distribution is e^{-ελ} (Cook-Nguyen).",
+    "significance": "critical"
+  }
+]
