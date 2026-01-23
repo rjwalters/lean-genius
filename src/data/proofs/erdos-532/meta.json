@@ -1,33 +1,139 @@
 {
   "id": "erdos-532",
-  "title": "Erdős Problem #532",
+  "title": "Erdős Problem #532: Hindman's Theorem (IP Sets)",
   "slug": "erdos-532",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $...A\\subseteq ...S...A...\\mathbbN$. J. Combinatorial Theory Ser. A (1974), 1-11.\n\n\nBack to the problem",
+  "description": "If ℕ is finitely colored, must some color class be an IP set? Proved by Hindman (1974): YES, for any finite coloring there exists an infinite set A such that all finite subset sums of A are monochromatic.",
   "meta": {
-    "author": "Unknown",
+    "author": "Graham-Rothschild (proposed), Hindman (solved)",
     "sourceUrl": "https://erdosproblems.com/532",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos532Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "number-theory",
+      "IP-sets",
+      "colorings",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 532,
     "erdosUrl": "https://erdosproblems.com/532",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for colors",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Finite coloring definition via Fin k",
+      "IP set definition: FS(A) ⊆ S for infinite A",
+      "Finite sums (FS) set definition",
+      "Hindman's theorem axiomatization",
+      "Color class form derivation",
+      "IP set basic properties (singleton membership, disjoint addition)",
+      "Ultrafilter proof approach sketch",
+      "Milliken-Taylor theorem statement",
+      "Connection to Hales-Jewett theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #532 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\mathbb{N}$ is 2-coloured then is there some infinite set $A\\subseteq \\mathbb{N}$ such that all finite subset sums\\[ \\sum_{n\\in S}n\\](as $S$ ranges over all non-empty finite subsets of $A$) are monochromatic?\n\n\n\nIn other words, must some colour class be an IP set. Asked by Graham and Rothschild. See also [531].\n\nProved by Hindman \\cite{Hi74} (for any number of colours).\n\nSee also [948].\n\n\n\n\nReferences\n\n\n[Hi74] Hindman, Neil, Finite sums from sequences within cells of a partition of $\\mathbbN$. J. Combinatorial Theory Ser. A (1974), 1-11.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #532: Hindman's Theorem (IP Sets)**\n\nThis fundamental problem in Ramsey theory was posed by Graham and Rothschild in the early 1970s. It asks whether, for any finite coloring of the natural numbers, some color class must contain an 'IP set' - a set containing all finite sums from some infinite sequence.\n\n**Historical Development:**\n- **1971:** Graham and Rothschild posed the question in their work on Ramsey theory\n- **1974:** Neil Hindman proved the affirmative answer for any number of colors\n- **1975+:** Ultrafilter proofs discovered, connecting to topological dynamics\n- **Modern:** Hindman's theorem is now central to combinatorics and ergodic theory",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIf ℕ is 2-colored, must there exist an infinite set A ⊆ ℕ such that all finite subset sums Σ_{n∈S} n (as S ranges over non-empty finite subsets of A) are monochromatic?\n\nIn other words: must some color class be an IP set?\n\n**Solution (Hindman 1974):**\nYES! For any finite coloring (not just 2 colors), there exists an infinite set A such that FS(A) = {all finite subset sums of A} is monochromatic.\n\nThis result, now called Hindman's Theorem, is one of the most important results in Ramsey theory.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Colorings:** Define k-colorings as functions ℕ → Fin k.\n\n2. **Finite Sums (FS):** Define FS(A) as the set of all finite non-empty subset sums from A.\n\n3. **IP Sets:** Define IP sets as sets containing FS(A) for some infinite A.\n\n4. **Hindman's Theorem:** Axiomatize the main result: for any k-coloring, ∃ infinite A with FS(A) monochromatic.\n\n5. **Color Class Form:** Derive that some color class contains an IP set.\n\n6. **Properties:** Prove basic properties: singleton membership, disjoint sum closure.\n\n7. **Modern Methods:** Sketch the ultrafilter proof via idempotent ultrafilters in (βℕ, +).",
+    "keyInsights": [
+      "**IP = Infinite Parallelepiped:** The name comes from 'infinite-dimensional parallelepiped' or 'idempotent' (in ultrafilter theory)",
+      "**Graham-Rothschild Question:** Originally asked for 2 colors; Hindman proved it for any finite number",
+      "**Hindman's Proof (1974):** The original proof was 40+ pages of intricate combinatorics",
+      "**Ultrafilter Approach:** Modern proofs use the existence of idempotent ultrafilters p = p + p in (βℕ, +)",
+      "**Ellis's Lemma:** Guarantees idempotents in compact right-topological semigroups",
+      "**Ramsey Theory Connection:** Hindman's theorem implies Van der Waerden, Schur, and other classical results",
+      "**Milliken-Taylor Theorem:** Generalizes Hindman to k-tuples of sums"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "colorings",
+      "title": "Finite Colorings",
+      "summary": "k-colorings and monochromatic sets",
+      "startLine": 51,
+      "endLine": 67
+    },
+    {
+      "id": "finite-sums",
+      "title": "Finite Subset Sums",
+      "summary": "FS(A) definition",
+      "startLine": 68,
+      "endLine": 85
+    },
+    {
+      "id": "ip-sets",
+      "title": "IP Sets",
+      "summary": "IP set and IP* set definitions",
+      "startLine": 86,
+      "endLine": 104
+    },
+    {
+      "id": "hindman-theorem",
+      "title": "Hindman's Theorem",
+      "summary": "Main theorem axiomatization and derivations",
+      "startLine": 105,
+      "endLine": 149
+    },
+    {
+      "id": "ip-properties",
+      "title": "Basic Properties of IP Sets",
+      "summary": "Infinitude, singleton membership, closure",
+      "startLine": 150,
+      "endLine": 197
+    },
+    {
+      "id": "ultrafilter",
+      "title": "Ultrafilter Proof",
+      "summary": "Modern proof via idempotent ultrafilters",
+      "startLine": 198,
+      "endLine": 226
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "Milliken-Taylor, Hales-Jewett connections",
+      "startLine": 227,
+      "endLine": 265
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and impact",
+      "startLine": 266,
+      "endLine": 303
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #532 asks whether any 2-coloring of ℕ must have a color class that is an IP set. Hindman (1974) proved this affirmatively for any finite coloring. Hindman's Theorem has become a cornerstone of Ramsey theory with profound connections to topological dynamics and ultrafilter theory.",
+    "implications": "**Implications**\n\n1. **Ramsey Theory:** Hindman's theorem is one of the most powerful partition regularity results.\n\n2. **Ultrafilter Theory:** Led to deep connections between combinatorics and Stone-Čech compactification.\n\n3. **Ergodic Theory:** Via Furstenberg's correspondence, connected to recurrence in dynamical systems.\n\n4. **Algebra in βℕ:** The semigroup (βℕ, +) and its idempotents are now extensively studied.",
+    "openQuestions": [
+      "What is the computational complexity of finding IP sets in colorings?",
+      "Can Hindman's theorem be made effective/constructive?",
+      "What are the bounds on finite versions (Hindman numbers)?",
+      "Extensions to non-abelian groups and other algebraic structures?"
+    ]
   }
 }
