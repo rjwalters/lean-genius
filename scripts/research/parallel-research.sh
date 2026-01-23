@@ -93,6 +93,7 @@ create_prompt_file() {
     local agent_num="$1"
     local worktree_path="$WORKTREES_DIR/researcher-$agent_num"
     local prompt_file="$LOGS_DIR/researcher-$agent_num-prompt.md"
+    local wait_interval="${RESEARCHER_WAIT_INTERVAL:-15}"
 
     cat > "$prompt_file" << EOF
 # Research Agent Instructions
@@ -105,21 +106,13 @@ You are **researcher-$agent_num**. Your mission is to make meaningful progress o
 - REPO_ROOT: $REPO_ROOT
 - WORKTREE: $worktree_path
 - CLAIM_TTL: 90 (minutes)
+- WAIT_INTERVAL: $wait_interval (minutes, when no work available)
 
-## Your Workflow
+## Your Workflow (Continuous Loop)
 
-1. **Check for stop signal** before each iteration
-2. **Check Aristotle results** for any completed proofs
-3. **Claim a problem** using: \`$REPO_ROOT/scripts/research/claim-problem.sh claim-random\`
-4. **Run one research iteration** following the research methodology
-5. **Commit and push** your progress
-6. **Create a PR** with your findings
-7. **Update problem status** and release claim
-8. **Repeat**
+Run this loop continuously until stopped:
 
-## Stop Signal Check
-
-Before claiming each new problem:
+### Step 1: Check for stop signal
 \`\`\`bash
 if [[ -f "$REPO_ROOT/.loom/signals/stop-all" ]] || \\
    [[ -f "$REPO_ROOT/.loom/signals/stop-researcher-$agent_num" ]]; then
@@ -127,6 +120,31 @@ if [[ -f "$REPO_ROOT/.loom/signals/stop-all" ]] || \\
     exit 0
 fi
 \`\`\`
+
+### Step 2: Try to claim a problem
+\`\`\`bash
+cd $worktree_path
+CLAIM_OUTPUT=\$($REPO_ROOT/scripts/research/claim-problem.sh claim-random 2>&1)
+echo "\$CLAIM_OUTPUT"
+\`\`\`
+
+### Step 3: If no problem available, WAIT and RETRY
+If the claim output says "No pending problems" or fails:
+\`\`\`bash
+echo "No problems available. Waiting $wait_interval minutes before retry..."
+sleep ${wait_interval}m
+# Then go back to Step 1
+\`\`\`
+
+**IMPORTANT**: Do NOT exit when no work is available. Wait and retry!
+
+### Step 4: If claim succeeded, do research
+1. Run one research iteration following the research methodology
+2. Commit and push your progress
+3. Create/update a PR with your findings
+4. Update problem status and release claim
+
+### Step 5: Repeat from Step 1
 
 ## Working Directory
 
@@ -151,12 +169,21 @@ $REPO_ROOT/scripts/research/claim-problem.sh update <problem-id> <status>
 $REPO_ROOT/scripts/research/claim-problem.sh release <problem-id>
 \`\`\`
 
+## Error Recovery
+
+If you encounter errors (API limits, network issues, etc.):
+1. Log the error
+2. Wait $wait_interval minutes
+3. Resume from Step 1
+
+Do NOT exit on transient errors. Only exit on stop signals.
+
 ## Start Now
 
 Begin by:
 1. Reading the researcher role: \`cat $REPO_ROOT/.loom/roles/researcher.md\`
 2. Checking current status: \`$REPO_ROOT/scripts/research/claim-problem.sh status\`
-3. Starting your research loop
+3. Starting your continuous research loop
 
 Good luck, researcher-$agent_num!
 EOF
@@ -192,6 +219,7 @@ launch_agent() {
 # Launch multiple agents
 launch_agents() {
     local count="${1:-2}"
+    local wait_interval="${RESEARCHER_WAIT_INTERVAL:-15}"
 
     # Validate count
     if [[ $count -lt 1 || $count -gt 5 ]]; then
@@ -209,6 +237,7 @@ launch_agents() {
     git pull origin main 2>/dev/null || true
 
     print_info "Launching $count research agents with isolated worktrees..."
+    print_info "Wait interval when no work: $wait_interval minutes"
     echo ""
 
     for i in $(seq 1 "$count"); do
@@ -222,6 +251,7 @@ launch_agents() {
     echo "  - Its own worktree in .loom/worktrees/researcher-N"
     echo "  - Its own branch: feature/researcher-N"
     echo "  - Creates PRs for research progress"
+    echo "  - Waits $wait_interval min when no work available (loops, doesn't exit)"
     echo ""
     echo "Commands:"
     echo "  ./scripts/research/parallel-research.sh --status        Show agent status"
@@ -412,12 +442,16 @@ Usage:
   ./parallel-research.sh --attach N         Attach to agent N's tmux session
   ./parallel-research.sh --help             Show this help
 
+Environment Variables:
+  RESEARCHER_WAIT_INTERVAL  Minutes to wait when no work available (default: 15)
+
 How it works:
   1. Each agent gets its own worktree: .loom/worktrees/researcher-N
   2. Each agent works on its own branch: feature/researcher-N
   3. Agents claim problems atomically (knowledge-prioritized)
   4. Each agent: claim → research → commit → push → create PR → repeat
-  5. PRs can be reviewed and merged independently
+  5. When no work available, agents WAIT and RETRY (don't exit)
+  6. PRs can be reviewed and merged independently
 
 Examples:
   ./parallel-research.sh              # Launch 2 agents (default)
@@ -425,6 +459,7 @@ Examples:
   ./parallel-research.sh --status     # Check progress
   ./parallel-research.sh --attach 1   # Watch agent 1 work
   ./parallel-research.sh --graceful-stop  # Stop after current work
+  RESEARCHER_WAIT_INTERVAL=30 ./parallel-research.sh 2  # Custom wait interval
 
 Monitoring:
   # Check claim status

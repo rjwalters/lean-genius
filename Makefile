@@ -36,7 +36,7 @@ help:
 	@echo ""
 	@echo "Agents:"
 	@echo "  make enhance N=3      - Launch N parallel enhancer agents"
-	@echo "  make research N=2     - Launch N parallel research agents"
+	@echo "  make research N=2     - Launch N parallel research agents (WAIT=15 for retry interval)"
 	@echo "  make aristotle        - Launch Aristotle queue management agent"
 	@echo ""
 	@echo "Deploy:"
@@ -143,8 +143,11 @@ N ?= 3
 enhance:
 	./scripts/erdos/parallel-enhance.sh $(N)
 
+# WAIT defaults to 15 minutes (when no work available)
+WAIT ?= 15
+
 research:
-	./scripts/research/parallel-research.sh $(N)
+	RESEARCHER_WAIT_INTERVAL=$(WAIT) ./scripts/research/parallel-research.sh $(N)
 
 # Aristotle agent (maintains ~20 active proof search jobs)
 # TARGET defaults to 20, INTERVAL defaults to 30 minutes
