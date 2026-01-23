@@ -1,7 +1,7 @@
 {
   "slug": "erdos-162",
   "title": "Erdős #162",
-  "phase": "NEW",
+  "phase": "SURVEY",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,24 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T09:56:05.236Z",
+    "phase": "SURVEY",
+    "since": "2026-01-23T07:45:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Formalization framework complete. Problem is OPEN - asks for exact asymptotic constant.",
+    "blockers": ["Main conjecture is OPEN - cannot prove existence of limit c_alpha"],
+    "nextAction": "Explore connections to #161 solution; consider if probabilistic bounds can be tightened.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "SURVEY: Created comprehensive Lean formalization Erdos162Problem.lean. This is the graph case (t=2) of Problem #161 (hypergraphs). Key infrastructure reused from #161. Problem asks for exact asymptotic constant c_alpha in F(n,alpha) ~ c_alpha log n.",
+    "builtItems": ["Created proofs/Proofs/Erdos162Problem.lean with complete type-checked definitions", "Defined EdgeColoring, colorCount, IsBalanced, F(n,alpha) function", "Proved colorCount_sum theorem (edges split perfectly between colors)", "Stated main theorems: lower_bound, upper_bound, F_theta_log, erdos_162_conjecture"],
+    "insights": ["Problem #162 is exactly Problem #161 specialized to t=2 (graphs vs hypergraphs)", "Known bounds c1 log n < F(n,alpha) < c2 log n come from probabilistic method", "Key open question: does the exact limit c_alpha = lim F(n,alpha)/log n exist?", "At alpha=0 this relates to classical Ramsey numbers R(k,k)", "As alpha approaches 1/2, F(n,alpha) approaches 2 (trivial bound)"],
+    "mathlibGaps": ["No direct formalization of graph Ramsey numbers in Mathlib", "Probabilistic method tooling (Chernoff bounds) not readily available"],
+    "nextSteps": ["Prove the colorCount properties more fully", "Connect to Problem #161 via formal specialization", "Explore Conlon-Fox-Sudakov methods from #161 solution"],
     "markdown": "# Erdős #162 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha>0$ and $n\\geq 1$. Let $F(n,\\alpha)$ be the largest $k$ such that there exists some 2-colouring of the edges of $K_n$ in which any induced subgraph $H$ on at least $k$ vertices contains more than $\\alpha\\binom{\\lvert H\\rvert}{2}$ many edges of each colour.\n\nProve that for every fixed $0\\leq \\alpha \\leq 1/2$, as $n\\to\\infty$,\\[F(n,\\alpha)\\sim c_\\alpha \\log n\\]for some constant $c_\\alpha$.\n\n\n\nIt is easy to show with the probabilistic method that there exist $c_1(\\alpha),c_2(\\alpha)$ such that\\[c_1(\\alpha)\\log n < F(n,\\alpha) < c_2(\\alpha)\\log n.\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #161\n- Problem #163\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],
