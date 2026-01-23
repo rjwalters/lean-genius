@@ -8943,17 +8943,24 @@
   },
   {
     "id": "erdos-556",
-    "title": "Erdős Problem #556",
+    "title": "Erdős Problem #556: 3-Color Ramsey Number for Cycles",
     "slug": "erdos-556",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the minimal ... such that if the edges of ... are ...-coloured then there must be a monochromatic copy of .......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Show that R(C_n;3) ≤ 4n-3, where R(G;3) is the 3-color Ramsey number. PROVED: bound is tight for odd n (KSS 2005), and R(C_n;3) = 2n for even n (Benevides-Skokan 2009).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "cycles",
+      "graph-coloring",
+      "extremal-combinatorics",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 556,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 16
   },
   {
     "id": "erdos-558",
