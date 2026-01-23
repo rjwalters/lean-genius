@@ -1,1 +1,171 @@
-[]
+[
+  {
+    "id": "ann-e514-header",
+    "proofId": "erdos-514",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #514: Growth of Entire Functions Along Paths**\n\nThis problem asks three related questions about transcendental entire functions f(z):\n\n1. Does there exist a path L where |f(z)/z^n| → ∞ as z → ∞ for every n?\n2. Can we estimate the length of this path using M(r) = max|f(z)| on |z|=r?\n3. Does a path exist where |f(z)| grows faster than M(r)^ε?\n\n**Status:**\n- Part 1: SOLVED by Boas (unpublished)\n- Parts 2, 3: OPEN",
+    "mathContext": "The problem bridges function theory (growth of analytic functions) with geometric measure theory (path lengths). It asks whether the 'fast growth' of transcendental functions can be captured along curves, not just sequences of points.",
+    "significance": "critical",
+    "relatedConcepts": ["Entire functions", "Maximum modulus", "Transcendental functions", "Complex analysis"]
+  },
+  {
+    "id": "ann-e514-entire",
+    "proofId": "erdos-514",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Entire Functions",
+    "content": "**IsEntire f:**\n\nA function f : ℂ → ℂ is entire if it is differentiable at every point in the complex plane.\n\n**Definition:**\n```lean\ndef IsEntire (f : ℂ → ℂ) : Prop :=\n  ∀ z : ℂ, DifferentiableAt ℂ f z\n```\n\n**Examples:**\n- e^z, sin(z), cos(z) are entire\n- 1/z is NOT entire (singularity at 0)\n- Polynomials are entire",
+    "mathContext": "Entire functions have power series that converge on all of ℂ. The class includes all polynomials plus 'transcendental' functions with infinitely many nonzero Taylor coefficients.",
+    "significance": "critical",
+    "relatedConcepts": ["Analytic functions", "Taylor series", "Complex differentiability"]
+  },
+  {
+    "id": "ann-e514-maxmodulus",
+    "proofId": "erdos-514",
+    "range": { "startLine": 53, "endLine": 63 },
+    "type": "definition",
+    "title": "Maximum Modulus Function",
+    "content": "**maxModulus f r** (written M[f, r]):\n\nThe maximum value of |f(z)| on the circle |z| = r.\n\n**Definition:**\n```lean\ndef maxModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=\n  sSup {y : ℝ | ∃ z : ℂ, Complex.abs z = r ∧ y = Complex.abs (f z)}\n```\n\n**Key property:** For entire f, M(r) is non-decreasing in r (Maximum Modulus Principle).",
+    "mathContext": "M(r) captures the 'size' of an entire function at radius r. For transcendental functions, M(r) → ∞ as r → ∞, and the rate of growth classifies the function.",
+    "significance": "critical",
+    "relatedConcepts": ["Maximum modulus principle", "Growth rates", "Level curves"]
+  },
+  {
+    "id": "ann-e514-transcendental",
+    "proofId": "erdos-514",
+    "range": { "startLine": 80, "endLine": 88 },
+    "type": "definition",
+    "title": "Transcendental Entire Functions",
+    "content": "**IsTranscendental f:**\n\nAn entire function that dominates every polynomial as z → ∞.\n\n**Definition:**\n```lean\ndef IsTranscendental (f : ℂ → ℂ) : Prop :=\n  IsEntire f ∧ ∀ n : ℕ, ∃ R : ℝ, R > 0 ∧\n    ∃ z : ℂ, Complex.abs z > R ∧ Complex.abs (f z) > Complex.abs z ^ (n + 1)\n```\n\n**Examples:** e^z, sin(z), cos(z), e^(e^z)\n**Non-examples:** Any polynomial p(z)",
+    "mathContext": "Transcendental entire functions have infinitely many nonzero Taylor coefficients. They form the 'interesting' case for this problem since polynomials have |f(z)/z^n| → 0 or constant for large n.",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial functions", "Taylor coefficients", "Liouville numbers"]
+  },
+  {
+    "id": "ann-e514-path-to-infinity",
+    "proofId": "erdos-514",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "definition",
+    "title": "Paths to Infinity",
+    "content": "**IsPathToInfinity γ:**\n\nA continuous curve γ : ℝ → ℂ that escapes to infinity.\n\n**Definition:**\n```lean\ndef IsPathToInfinity (γ : ℝ → ℂ) : Prop :=\n  Continuous γ ∧ Tendsto (fun t => Complex.abs (γ t)) atTop atTop\n```\n\n**Examples:**\n- Radial path: γ(t) = t (positive real axis)\n- Spiral: γ(t) = t · e^(it)\n- Any ray from origin",
+    "mathContext": "The key constraint is continuity: we want a connected curve, not just a sequence of isolated points. This makes the problem harder than finding arbitrarily large |f(z)|.",
+    "significance": "key",
+    "relatedConcepts": ["Continuous curves", "Filters", "Limits at infinity"]
+  },
+  {
+    "id": "ann-e514-super-polynomial",
+    "proofId": "erdos-514",
+    "range": { "startLine": 127, "endLine": 134 },
+    "type": "definition",
+    "title": "Super-Polynomial Growth",
+    "content": "**HasSuperPolynomialGrowth f γ:**\n\nA path γ where f dominates ALL polynomials simultaneously.\n\n**Definition:**\n```lean\ndef HasSuperPolynomialGrowth (f : ℂ → ℂ) (γ : ℝ → ℂ) : Prop :=\n  ∀ n : ℕ, Tendsto (fun t =>\n    Complex.abs (f (γ t)) / Complex.abs (γ t) ^ n) atTop atTop\n```\n\nThis means: for every polynomial degree n, the ratio |f(γ(t))|/|γ(t)|^n → ∞.",
+    "mathContext": "This is a remarkably strong condition: one path works for ALL n. The Boas result says such paths always exist for transcendental functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial domination", "Asymptotic analysis", "Growth rates"]
+  },
+  {
+    "id": "ann-e514-boas",
+    "proofId": "erdos-514",
+    "range": { "startLine": 136, "endLine": 152 },
+    "type": "axiom",
+    "title": "Boas's Theorem",
+    "content": "**boas_existence:**\n\nEvery transcendental entire function has a path to infinity with super-polynomial growth.\n\n**Statement:**\n```lean\naxiom boas_existence (f : ℂ → ℂ) (hf : IsTranscendental f) :\n    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ\n```\n\n**Note:** This is Boas's unpublished result resolving Part 1 of Erdős #514.",
+    "mathContext": "The proof likely uses Wiman-Valiron theory: near maximum modulus points, f behaves like z^ν where ν → ∞, suggesting a path through these points.",
+    "significance": "critical",
+    "relatedConcepts": ["Wiman-Valiron theory", "Maximum modulus points", "Central index"]
+  },
+  {
+    "id": "ann-e514-part1",
+    "proofId": "erdos-514",
+    "range": { "startLine": 146, "endLine": 152 },
+    "type": "theorem",
+    "title": "Erdős #514 Part 1: SOLVED",
+    "content": "**erdos_514_part1:**\n\n```lean\ntheorem erdos_514_part1 (f : ℂ → ℂ) (hf : IsTranscendental f) :\n    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=\n  boas_existence f hf\n```\n\nThe answer to Part 1 is YES: such a path always exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e514-part2-open",
+    "proofId": "erdos-514",
+    "range": { "startLine": 154, "endLine": 179 },
+    "type": "concept",
+    "title": "Part 2: Path Length Estimates (OPEN)",
+    "content": "**Open Problem:**\n\nCan we bound the arc length of the path γ (from Boas's theorem) in terms of M(r)?\n\n**Conjectured form:**\nlength(γ ∩ {|z| ≤ r}) ≤ Φ(M(r))\n\nfor some function Φ depending on the maximum modulus.\n\n**Why this matters:** It would give a quantitative version of Boas's existence result, relating the geometric complexity of the path to the analytic growth of f.",
+    "mathContext": "This bridges function theory with geometric measure theory. Arc length estimates would reveal how 'complicated' the path must be to achieve super-polynomial growth.",
+    "significance": "key",
+    "relatedConcepts": ["Arc length", "Geometric measure theory", "Quantitative bounds"]
+  },
+  {
+    "id": "ann-e514-max-modulus-power",
+    "proofId": "erdos-514",
+    "range": { "startLine": 190, "endLine": 198 },
+    "type": "definition",
+    "title": "M(r)^ε-Dominating Growth",
+    "content": "**DominatesMaxModulusPower f γ:**\n\nA path where f grows faster than ANY power of M(r).\n\n**Definition:**\n```lean\ndef DominatesMaxModulusPower (f : ℂ → ℂ) (γ : ℝ → ℂ) : Prop :=\n  ∀ ε : ℝ, ε > 0 →\n    Tendsto (fun t =>\n      Complex.abs (f (γ t)) / (maxModulus f (Complex.abs (γ t))) ^ ε) atTop atTop\n```\n\nThis asks: is |f(γ(t))| / M(|γ(t)|)^ε → ∞ for all ε > 0?",
+    "mathContext": "This is even stronger than super-polynomial growth. Since M(r) already captures the maximum of |f| at radius r, asking for faster-than-M^ε growth is asking for exceptional points.",
+    "significance": "key",
+    "relatedConcepts": ["Maximum modulus", "Exceptional sets", "Density of values"]
+  },
+  {
+    "id": "ann-e514-part3-open",
+    "proofId": "erdos-514",
+    "range": { "startLine": 200, "endLine": 205 },
+    "type": "concept",
+    "title": "Part 3: Faster Than M^ε (OPEN)",
+    "content": "**Open Problem:**\n\nDoes there exist a path γ for every transcendental f such that |f(γ(t))| grows faster than M(|γ(t)|)^ε for any ε > 0?\n\n**Status:** OPEN\n\nThis would be remarkable: the path would find points where f is exceptionally large even compared to its maximum modulus at that radius.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e514-exponential",
+    "proofId": "erdos-514",
+    "range": { "startLine": 213, "endLine": 239 },
+    "type": "definition",
+    "title": "Example: Exponential Function",
+    "content": "**expFunction = Complex.exp**\n\nThe exponential e^z is the prototypical transcendental entire function.\n\n**Key properties:**\n- |e^z| = e^(Re z), so M(r) = e^r (maximum on positive real axis)\n- Growth order ρ = 1\n- Along Re(z) = r: |e^z| = e^r = M(r) — achieves maximum\n- Along Im(z) = r: |e^z| = 1 — bounded!\n\nFor e^z, the positive real axis is a natural candidate for Boas's path.",
+    "mathContext": "The exponential illustrates why the problem is interesting: |e^z|/|z|^n → ∞ along the positive real axis, but stays bounded along the imaginary axis.",
+    "significance": "supporting",
+    "relatedConcepts": ["Order of growth", "Maximum modulus", "Real and imaginary axes"]
+  },
+  {
+    "id": "ann-e514-wiman-valiron",
+    "proofId": "erdos-514",
+    "range": { "startLine": 262, "endLine": 286 },
+    "type": "concept",
+    "title": "Wiman-Valiron Theory",
+    "content": "**Connection to Wiman-Valiron Theory:**\n\nThis theory studies entire functions near their maximum modulus points.\n\n**Central Index ν(r):** The index of the largest term in the Taylor series at radius r.\n\n**Key insight:** Near the point z_r where |f(z_r)| = M(r), the function f behaves approximately like z^ν(r).\n\nFor transcendental f, ν(r) → ∞ as r → ∞, so the 'local polynomial degree' increases without bound.\n\nThis suggests the Boas path: connect maximum modulus points as r → ∞.",
+    "mathContext": "Wiman-Valiron theory provides the analytic machinery for understanding why super-polynomial growth paths exist: the function 'looks like' increasingly high-degree polynomials at large radii.",
+    "significance": "key",
+    "relatedConcepts": ["Taylor series", "Central index", "Local polynomial approximation"]
+  },
+  {
+    "id": "ann-e514-max-modulus-props",
+    "proofId": "erdos-514",
+    "range": { "startLine": 288, "endLine": 304 },
+    "type": "axiom",
+    "title": "Properties of M(r)",
+    "content": "**Key properties of the maximum modulus function:**\n\n1. **Monotonicity:** M(r) is non-decreasing for entire f\n   (Maximum Modulus Principle)\n\n2. **Lower bound:** M(r) ≥ |f(0)| for all r ≥ 0\n\n3. **Transcendental growth:** For transcendental f, M(r) → ∞\n\n**Axioms:**\n- maxModulus_monotone\n- maxModulus_ge_origin\n- maxModulus_tendsto_infinity",
+    "significance": "supporting",
+    "relatedConcepts": ["Maximum modulus principle", "Monotone functions", "Limits"]
+  },
+  {
+    "id": "ann-e514-summary",
+    "proofId": "erdos-514",
+    "range": { "startLine": 310, "endLine": 331 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_514_summary:**\n\nCombines all main results:\n\n```lean\ntheorem erdos_514_summary :\n    (∀ f : ℂ → ℂ, IsTranscendental f →\n      ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ) ∧\n    True\n```\n\n**Status:**\n- Part 1: SOLVED (Boas) — formalized as erdos_514_part1\n- Parts 2, 3: OPEN — marked with placeholder axioms",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e514-key-insight",
+    "proofId": "erdos-514",
+    "range": { "startLine": 333, "endLine": 348 },
+    "type": "axiom",
+    "title": "Key Insight",
+    "content": "**key_insight:**\n\nThe crucial difference between sequences and paths:\n\n- **Easy:** For transcendental f, there exist points z_n with |z_n| → ∞ and |f(z_n)|/|z_n|^n → ∞ for each fixed n.\n\n- **Hard (Boas):** There exists a continuous PATH γ achieving this for ALL n simultaneously.\n\nThe continuity constraint is what makes the problem interesting. Isolated exceptional points are easy to find; connecting them into a path requires careful construction.",
+    "mathContext": "This is the 'aha moment' of the problem: the challenge is geometric (finding a connected curve), not just analytic (finding large values).",
+    "significance": "critical",
+    "relatedConcepts": ["Continuity", "Path connectedness", "Exceptional sets"]
+  }
+]
