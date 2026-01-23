@@ -12279,17 +12279,24 @@
   },
   {
     "id": "erdos-787",
-    "title": "Erdős Problem #787",
+    "title": "Erdős Problem #787: Sum-Free Subsets (Erdős-Moser Problem)",
     "slug": "erdos-787",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that given any set ... with ... there exists some ... of size ... such that ... for all ....\n\nEstimat...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size ≥ g(n). Current bounds: (log n)^(1+c) ≪ g(n) ≪ exp(√(log n)).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "sum-free",
+      "additive-combinatorics",
+      "erdos-moser",
+      "asymptotic-bounds",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 787,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-788",

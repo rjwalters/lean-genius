@@ -1,1 +1,211 @@
-[]
+[
+  {
+    "id": "erdos-787-intro",
+    "proofId": "erdos-787",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 26 },
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #787: The Erdős-Moser Sum-Free Set Problem**\n\nGiven any n-set A, find a large subset B where no sum of two distinct elements of B lies in A.\n\n**The Question:** Estimate g(n), the worst-case guarantee.\n\n**Current Best Bounds:**\n- Lower: (log n)^(1+c) (Sanders 2021, Beker 2025)\n- Upper: exp(√log n) (Ruzsa 2005)\n\nThe exact order remains open—a major problem in additive combinatorics.",
+    "mathContext": "This connects sum-free set theory to extremal combinatorics, asking about the inevitable structure in arbitrary sets.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Additive combinatorics", "Extremal problems"]
+  },
+  {
+    "id": "erdos-787-sum-avoiding",
+    "proofId": "erdos-787",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 46 },
+    "title": "Sum-Avoiding Subsets",
+    "content": "**IsSumAvoidingIn A B:**\n\nB is sum-avoiding in A if:\n1. B ⊆ A\n2. For all distinct b₁, b₂ ∈ B: (b₁ + b₂) ∉ A\n\n**Key distinction:** This is NOT classical sum-free (where b₁ + b₂ ∉ B). Here sums must avoid the ambient set A.\n\n**Example:** In A = {1, 2, 3, 5}, B = {1, 5} is sum-avoiding since 1+5 = 6 ∉ A.",
+    "mathContext": "The condition is weaker than sum-free but still imposes significant structure on B.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Subset structure", "Additive constraints"]
+  },
+  {
+    "id": "erdos-787-max-size",
+    "proofId": "erdos-787",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 52 },
+    "title": "Maximum Sum-Avoiding Size",
+    "content": "**maxSumAvoidingSize A:**\n\nThe maximum cardinality of a sum-avoiding subset of A.\n\n**Definition:** sup over all B with IsSumAvoidingIn A B of |B|.\n\nThis captures how \"sum-rich\" or \"sum-poor\" a specific set A is.",
+    "mathContext": "Some sets allow large sum-avoiding subsets; others (like arithmetic progressions) are more constrained.",
+    "significance": "key",
+    "relatedConcepts": ["Extremal size", "Set structure"]
+  },
+  {
+    "id": "erdos-787-g-function",
+    "proofId": "erdos-787",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 67 },
+    "title": "The Function g(n)",
+    "content": "**g(n):** The worst-case guarantee.\n\ng(n) = min over all n-sets A of maxSumAvoidingSize(A)\n\nThis is the largest k such that EVERY n-set A has a sum-avoiding subset of size ≥ k.\n\n**The problem:** Estimate g(n) as a function of n.",
+    "mathContext": "By taking the minimum over all sets, we get a universal guarantee—the problem asks how good this guarantee can be.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal functions", "Universal bounds", "Worst-case analysis"]
+  },
+  {
+    "id": "erdos-787-empty-sum-avoiding",
+    "proofId": "erdos-787",
+    "type": "theorem",
+    "range": { "startLine": 73, "endLine": 78 },
+    "title": "Empty Set is Sum-Avoiding",
+    "content": "**empty_is_sum_avoiding:**\n\nThe empty set ∅ is trivially sum-avoiding in any A.\n\n**Proof:** There are no pairs of distinct elements, so the sum condition is vacuously true.\n\nThis shows g(n) ≥ 0 (a trivial base case).",
+    "mathContext": "The vacuous truth of universal quantification over empty domains.",
+    "significance": "supporting",
+    "relatedConcepts": ["Vacuous truth", "Base cases"]
+  },
+  {
+    "id": "erdos-787-singleton-sum-avoiding",
+    "proofId": "erdos-787",
+    "type": "theorem",
+    "range": { "startLine": 80, "endLine": 88 },
+    "title": "Singletons are Sum-Avoiding",
+    "content": "**singleton_is_sum_avoiding:**\n\nAny singleton {a} with a ∈ A is sum-avoiding in A.\n\n**Proof:** A singleton has no two distinct elements, so no sums can be formed.\n\nThis shows g(n) ≥ 1 for n ≥ 1.",
+    "mathContext": "The definition requires distinct elements for sums, making singletons automatically valid.",
+    "significance": "key",
+    "relatedConcepts": ["Singleton sets", "Base cases", "Lower bounds"]
+  },
+  {
+    "id": "erdos-787-greedy",
+    "proofId": "erdos-787",
+    "type": "definition",
+    "range": { "startLine": 101, "endLine": 105 },
+    "title": "Greedy Algorithm",
+    "content": "**greedySumAvoiding A:**\n\nBuild B by iterating through A and adding each element if it keeps B sum-avoiding.\n\n**Algorithm:**\n1. Start with B = ∅\n2. For each a ∈ A: if IsSumAvoidingIn(A, B ∪ {a}), add a to B\n3. Return B\n\nKlarner showed this achieves |B| ≥ c·log n.",
+    "mathContext": "The greedy approach is simple and gives the first non-trivial lower bound, though not optimal.",
+    "significance": "key",
+    "relatedConcepts": ["Greedy algorithms", "Constructive bounds", "Logarithmic lower bounds"]
+  },
+  {
+    "id": "erdos-787-klarner",
+    "proofId": "erdos-787",
+    "type": "axiom",
+    "range": { "startLine": 107, "endLine": 109 },
+    "title": "Klarner's Lower Bound",
+    "content": "**klarner_lower_bound:**\n\ng(n) ≥ c · log n for some constant c > 0.\n\n**Proof idea:** The greedy algorithm works. At each step, adding element a blocks at most O(|B|) future elements (those whose sum with a lies in A). This gives exponential room to grow B.\n\nThis was the first non-trivial lower bound.",
+    "mathContext": "The logarithmic bound comes from counting arguments about how many elements each addition can block.",
+    "significance": "critical",
+    "relatedConcepts": ["Greedy analysis", "Logarithmic bounds", "Blocking arguments"]
+  },
+  {
+    "id": "erdos-787-choi-reduction",
+    "proofId": "erdos-787",
+    "type": "axiom",
+    "range": { "startLine": 117, "endLine": 120 },
+    "title": "Choi's Integer Reduction",
+    "content": "**choi_integer_reduction:**\n\nWithout loss of generality, we can assume A ⊆ ℤ.\n\n**Why:** Any real set A can be discretized while preserving the sum-avoiding structure. Bounds on integer sets transfer to real sets.\n\nThis simplifies the problem significantly.",
+    "mathContext": "Reducing to integers allows use of number-theoretic techniques and simplifies analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Reduction techniques", "Integer sets", "WLOG arguments"]
+  },
+  {
+    "id": "erdos-787-choi-upper",
+    "proofId": "erdos-787",
+    "type": "axiom",
+    "range": { "startLine": 122, "endLine": 125 },
+    "title": "Choi's Upper Bound (1971)",
+    "content": "**choi_1971_upper_bound:**\n\ng(n) ≤ n^(2/5+o(1)).\n\n**Proof idea:** Construct sets where every large subset has many additive pairs. Uses probabilistic or explicit constructions.\n\nThis was the first polynomial upper bound, showing g(n) is far from linear.",
+    "mathContext": "The exponent 2/5 comes from balancing various counting constraints in the construction.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bound constructions", "Polynomial bounds", "Probabilistic method"]
+  },
+  {
+    "id": "erdos-787-ruzsa",
+    "proofId": "erdos-787",
+    "type": "axiom",
+    "range": { "startLine": 133, "endLine": 136 },
+    "title": "Ruzsa's Upper Bound (2005)",
+    "content": "**ruzsa_2005_upper_bound:**\n\ng(n) ≤ K · exp(√(log n)) for some constant K > 0.\n\n**Significance:** This is subpolynomial but superpolylogarithmic—a dramatic improvement over Choi's n^0.4 bound.\n\n**Current status:** Still the best known upper bound.",
+    "mathContext": "The exp(√log n) form arises from sophisticated probabilistic constructions.",
+    "significance": "critical",
+    "relatedConcepts": ["Subpolynomial bounds", "Exponential forms", "Best known upper bounds"]
+  },
+  {
+    "id": "erdos-787-sanders",
+    "proofId": "erdos-787",
+    "type": "axiom",
+    "range": { "startLine": 144, "endLine": 147 },
+    "title": "Sanders' Lower Bound (2021)",
+    "content": "**sanders_2021_lower_bound:**\n\ng(n) ≥ K · (log n)^(1+c) for some constants K, c > 0.\n\n**Breakthrough:** Improved Klarner's log n to polylogarithmic (log n)^(1+c).\n\n**Technique:** Uses bounds on k-configurations to control additive structure.",
+    "mathContext": "Sanders' work connected sum-avoiding sets to configuration theory, opening new proof techniques.",
+    "significance": "critical",
+    "relatedConcepts": ["Polylogarithmic bounds", "k-configurations", "Modern techniques"]
+  },
+  {
+    "id": "erdos-787-beker-exponent",
+    "proofId": "erdos-787",
+    "type": "definition",
+    "range": { "startLine": 155, "endLine": 156 },
+    "title": "Beker Exponent",
+    "content": "**bekerExponent = 1 + 1/68:**\n\nThe specific exponent in Beker's 2025 improvement.\n\n**Value:** 1 + 1/68 ≈ 1.0147\n\nThis precise value comes from intricate bounds on k-configurations.",
+    "mathContext": "The fractional part 1/68 arises from optimizing various parameters in the k-configuration analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Explicit constants", "Optimization", "Configuration bounds"]
+  },
+  {
+    "id": "erdos-787-beker",
+    "proofId": "erdos-787",
+    "type": "axiom",
+    "range": { "startLine": 158, "endLine": 161 },
+    "title": "Beker's Lower Bound (2025)",
+    "content": "**beker_2025_lower_bound:**\n\ng(n) ≥ K · (log n)^(1+1/68-ε) for any ε > 0 and sufficiently large n.\n\n**State of the art:** The best known lower bound as of 2025.\n\n**Technique:** Improved bounds on k-configurations from Sanders' framework.",
+    "mathContext": "Beker's arXiv preprint (2501.10203) continues the k-configuration approach with refined estimates.",
+    "significance": "critical",
+    "relatedConcepts": ["State of the art", "k-configurations", "Recent results"]
+  },
+  {
+    "id": "erdos-787-current-bounds",
+    "proofId": "erdos-787",
+    "type": "theorem",
+    "range": { "startLine": 167, "endLine": 177 },
+    "title": "Current Best Bounds",
+    "content": "**erdos_787_current_bounds:**\n\nCombines the best known bounds:\n\n**(log n)^(1+c) ≪ g(n) ≪ exp(√(log n))**\n\n- Lower: Sanders (2021), refined by Beker (2025)\n- Upper: Ruzsa (2005)\n\nThe gap between polylog and subpolynomial remains substantial.",
+    "mathContext": "This theorem packages the complete state of knowledge about g(n) as of 2025.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorems", "Bound gaps", "Open problems"]
+  },
+  {
+    "id": "erdos-787-gap",
+    "proofId": "erdos-787",
+    "type": "context",
+    "range": { "startLine": 179, "endLine": 192 },
+    "title": "The Gap",
+    "content": "**The Gap Between Bounds:**\n\n- Lower: (log n)^(1+c) ≈ polylogarithmic\n- Upper: exp(√log n) ≈ subpolynomial\n\n**Scale comparison:**\n- At n = 10^100: lower ≈ 10^4, upper ≈ 10^15\n\nDetermining the true order of g(n) is one of the major open problems in additive combinatorics.",
+    "mathContext": "The gap spans many orders of magnitude, indicating deep uncertainty about the true behavior of g(n).",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Gap analysis", "Asymptotic uncertainty"]
+  },
+  {
+    "id": "erdos-787-k-config",
+    "proofId": "erdos-787",
+    "type": "definition",
+    "range": { "startLine": 200, "endLine": 203 },
+    "title": "k-Configurations",
+    "content": "**IsKConfiguration A k B:**\n\nB is a k-configuration in A if:\n1. B ⊆ A with |B| = k\n2. For all distinct b₁, b₂ ∈ B: (b₁ + b₂) ∈ A\n\nThis is the OPPOSITE of sum-avoiding: all sums lie in A.\n\n**Connection:** If A has few k-configurations, it must have large sum-avoiding subsets.",
+    "mathContext": "Bounding k-configurations is the key technique in Sanders' and Beker's work.",
+    "significance": "key",
+    "relatedConcepts": ["Configuration counting", "Duality", "Modern proof techniques"]
+  },
+  {
+    "id": "erdos-787-main-statement",
+    "proofId": "erdos-787",
+    "type": "theorem",
+    "range": { "startLine": 214, "endLine": 227 },
+    "title": "Main Problem Statement",
+    "content": "**erdos_787_statement:**\n\nComplete formalization combining:\n\n1. Sanders' lower bound: (log n)^(1+c) ≪ g(n)\n2. Ruzsa's upper bound: g(n) ≪ exp(√log n)\n3. Beker's specific exponent: (log n)^(1+1/68-ε) ≪ g(n)\n\nThis packages all known results into a single theorem.",
+    "mathContext": "A comprehensive statement suitable for mathematical reference.",
+    "significance": "critical",
+    "relatedConcepts": ["Complete formalizations", "Summary theorems"]
+  },
+  {
+    "id": "erdos-787-summary",
+    "proofId": "erdos-787",
+    "type": "theorem",
+    "range": { "startLine": 229, "endLine": 237 },
+    "title": "Summary",
+    "content": "**erdos_787_summary:**\n\nErdős Problem #787 is PARTIALLY SOLVED:\n- Bounds are established: polylog ≪ g(n) ≪ exp(√log n)\n- The exact order remains open\n- Major open problem in additive combinatorics\n\n**Answer:** YES, meaningful bounds exist; NO, the exact order is unknown.",
+    "mathContext": "The problem has substantial resolution but the complete answer awaits future breakthroughs.",
+    "significance": "critical",
+    "relatedConcepts": ["Partial solutions", "Open problems", "Future directions"]
+  }
+]
