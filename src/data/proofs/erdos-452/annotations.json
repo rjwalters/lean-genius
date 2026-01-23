@@ -1,1 +1,231 @@
-[]
+[
+  {
+    "id": "ann-e452-overview",
+    "proofId": "erdos-452",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #452: Largest Interval with ω(n) > log log n**\n\nLet ω(n) count distinct prime factors. What is the largest interval I ⊆ [x,2x] where ω(n) > log log n for all n ∈ I?\n\nKnown: |I| ≥ log x/(log log x)². Open: Can we achieve (log x)^k?\n\nStatus: OPEN",
+    "mathContext": "Analytic number theory: prime factor distribution, Hardy-Ramanujan, Erdős-Kac.",
+    "significance": "critical",
+    "relatedConcepts": ["Hardy-Ramanujan theorem", "Erdős-Kac theorem", "Chinese Remainder Theorem"]
+  },
+  {
+    "id": "ann-e452-omega",
+    "proofId": "erdos-452",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "omega ω(n)",
+    "content": "**omega n:** The count of distinct prime factors of n.\n\nExamples:\n- ω(1) = 0\n- ω(6) = 2 (primes 2, 3)\n- ω(30) = 3 (primes 2, 3, 5)\n\nThis is the \"small omega\" function, not counting multiplicity.",
+    "significance": "critical",
+    "leanSymbol": "omega"
+  },
+  {
+    "id": "ann-e452-condition",
+    "proofId": "erdos-452",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Satisfies Condition",
+    "content": "**satisfiesCondition n:** ω(n) > log log n.\n\nBy Erdős (1937), exactly half of all integers satisfy this.\n\nFor n = 30: ω(30) = 3 > log log 30 ≈ 1.22 ✓",
+    "significance": "critical",
+    "leanSymbol": "satisfiesCondition"
+  },
+  {
+    "id": "ann-e452-interval",
+    "proofId": "erdos-452",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "Valid Interval",
+    "content": "**validInterval x a b:** An interval [a,b] ⊆ [x,2x] where ALL elements satisfy ω(n) > log log n.\n\n**intervalLength a b:** The length b - a + 1.\n\nThe question: how long can such intervals be?",
+    "significance": "critical",
+    "leanSymbol": "validInterval"
+  },
+  {
+    "id": "ann-e452-hardyramanujan",
+    "proofId": "erdos-452",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "axiom",
+    "title": "Hardy-Ramanujan Theorem",
+    "content": "**hardy_ramanujan:**\n\nFor almost all n: ω(n) ≈ log log n.\n\nMore precisely: |ω(n) - log log n| < ε · log log n for almost all n.",
+    "significance": "critical",
+    "leanSymbol": "hardy_ramanujan"
+  },
+  {
+    "id": "ann-e452-erdoskac",
+    "proofId": "erdos-452",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "axiom",
+    "title": "Erdős-Kac Theorem",
+    "content": "**erdos_kac_theorem:**\n\n(ω(n) - log log n) / √(log log n) → Normal(0,1).\n\nThe number of prime factors has a Gaussian distribution!",
+    "significance": "critical",
+    "leanSymbol": "erdos_kac_theorem"
+  },
+  {
+    "id": "ann-e452-density",
+    "proofId": "erdos-452",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "axiom",
+    "title": "Erdős 1937 Density",
+    "content": "**erdos_1937_density:**\n\nThe density of {n : ω(n) > log log n} is exactly 1/2.\n\nThis follows from Erdős-Kac: P(Normal > 0) = 1/2.",
+    "significance": "critical",
+    "leanSymbol": "erdos_1937_density"
+  },
+  {
+    "id": "ann-e452-crt",
+    "proofId": "erdos-452",
+    "range": { "startLine": 85, "endLine": 89 },
+    "type": "axiom",
+    "title": "CRT Lower Bound",
+    "content": "**crt_lower_bound:**\n\nThere exist valid intervals with |I| ≥ (1+o(1)) · log x / (log log x)².\n\nConstruction: Find intervals where all elements are divisible by many small primes.",
+    "significance": "critical",
+    "leanSymbol": "crt_lower_bound"
+  },
+  {
+    "id": "ann-e452-crtidea",
+    "proofId": "erdos-452",
+    "range": { "startLine": 91, "endLine": 94 },
+    "type": "axiom",
+    "title": "CRT Construction Idea",
+    "content": "**crt_construction_idea:**\n\nIf n is divisible by primorial P = 2·3·5·...·p, then ω(n) ≥ π(p).\n\nUse CRT to find consecutive multiples of P in [x, 2x].",
+    "significance": "key",
+    "leanSymbol": "crt_construction_idea"
+  },
+  {
+    "id": "ann-e452-max",
+    "proofId": "erdos-452",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "definition",
+    "title": "Maximum Valid Interval Length",
+    "content": "**maxValidIntervalLength x:** The maximum length of a valid interval in [x, 2x].\n\nThis is the central quantity the problem asks about.",
+    "significance": "key",
+    "leanSymbol": "maxValidIntervalLength"
+  },
+  {
+    "id": "ann-e452-conjecture",
+    "proofId": "erdos-452",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "axiom",
+    "title": "Polynomial Length Conjecture",
+    "content": "**conjecture_polynomial_length:**\n\nFor any k, there exist valid intervals of length ≥ (log x)^k.\n\nThis is a major open conjecture—the gap between log x/(log log x)² and (log x)^k is huge.",
+    "significance": "critical",
+    "leanSymbol": "conjecture_polynomial_length"
+  },
+  {
+    "id": "ann-e452-primeconstraint",
+    "proofId": "erdos-452",
+    "range": { "startLine": 123, "endLine": 126 },
+    "type": "axiom",
+    "title": "Prime Gap Constraint",
+    "content": "**prime_gap_constraint:**\n\nPrimes p > 16 fail the condition: ω(p) = 1 < log log p.\n\nSo valid intervals in [x, 2x] must avoid all primes—they can only exist in prime gaps!",
+    "significance": "critical",
+    "leanSymbol": "prime_gap_constraint"
+  },
+  {
+    "id": "ann-e452-primesfail",
+    "proofId": "erdos-452",
+    "range": { "startLine": 128, "endLine": 131 },
+    "type": "theorem",
+    "title": "Primes Fail Condition",
+    "content": "**primes_fail_condition:**\n\nFor primes p > 16: ω(p) = 1 but log log p > 1.\n\nSince e^e ≈ 15.15, primes above 16 have log log p > 1 > ω(p).",
+    "significance": "key",
+    "leanSymbol": "primes_fail_condition"
+  },
+  {
+    "id": "ann-e452-primorial",
+    "proofId": "erdos-452",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "definition",
+    "title": "Primorial",
+    "content": "**primorial n:** The product of all primes ≤ n.\n\n2# = 2, 3# = 6, 5# = 30, 7# = 210, ...\n\nω(n#) = π(n) = number of primes ≤ n.",
+    "significance": "key",
+    "leanSymbol": "primorial"
+  },
+  {
+    "id": "ann-e452-omegaprimorial",
+    "proofId": "erdos-452",
+    "range": { "startLine": 149, "endLine": 152 },
+    "type": "theorem",
+    "title": "Omega of Primorial",
+    "content": "**omega_primorial:**\n\nω(n#) = #{primes ≤ n} = π(n).\n\nThe primorial is the \"most efficient\" way to have many prime factors.",
+    "significance": "key",
+    "leanSymbol": "omega_primorial"
+  },
+  {
+    "id": "ann-e452-examples",
+    "proofId": "erdos-452",
+    "range": { "startLine": 163, "endLine": 177 },
+    "type": "theorem",
+    "title": "Small Examples",
+    "content": "**Examples of ω(n):**\n\n- ω(1) = 0\n- ω(2) = 1\n- ω(6) = 2\n- ω(30) = 3\n- ω(210) = 4\n\nThese illustrate how ω grows with primorial divisibility.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e452-example30",
+    "proofId": "erdos-452",
+    "range": { "startLine": 179, "endLine": 181 },
+    "type": "theorem",
+    "title": "Example: 30 Satisfies",
+    "content": "**example_30_satisfies:**\n\nω(30) = 3 > log log 30 ≈ 1.22.\n\nSo 30 satisfies the condition. It's divisible by 2, 3, and 5.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e452-consecutive",
+    "proofId": "erdos-452",
+    "range": { "startLine": 187, "endLine": 189 },
+    "type": "axiom",
+    "title": "Consecutive Integers with Many Factors",
+    "content": "**consecutive_many_factors:**\n\nFor any k and L, there exist L consecutive integers each with ω ≥ k.\n\nThis is related to the CRT construction.",
+    "significance": "key",
+    "leanSymbol": "consecutive_many_factors"
+  },
+  {
+    "id": "ann-e452-bigomega",
+    "proofId": "erdos-452",
+    "range": { "startLine": 216, "endLine": 217 },
+    "type": "definition",
+    "title": "Big Omega Ω(n)",
+    "content": "**bigOmega n:** Count of prime factors WITH multiplicity.\n\nΩ(12) = 3 (2²·3 = three factors)\nω(12) = 2 (only primes 2, 3)\n\nAlways ω(n) ≤ Ω(n).",
+    "significance": "key",
+    "leanSymbol": "bigOmega"
+  },
+  {
+    "id": "ann-e452-radical",
+    "proofId": "erdos-452",
+    "range": { "startLine": 227, "endLine": 228 },
+    "type": "definition",
+    "title": "Radical rad(n)",
+    "content": "**radical n:** Product of distinct prime factors.\n\nrad(12) = 6, rad(18) = 6, rad(30) = 30.\n\nω(n) = ω(rad(n)) always.",
+    "significance": "supporting",
+    "leanSymbol": "radical"
+  },
+  {
+    "id": "ann-e452-known",
+    "proofId": "erdos-452",
+    "range": { "startLine": 241, "endLine": 244 },
+    "type": "axiom",
+    "title": "Known Lower Bound",
+    "content": "**known_lower_bound:**\n\nValid intervals of length ≥ log x / (log log x)² exist.\n\nThis is established, but the question is: can we do much better?",
+    "significance": "critical",
+    "leanSymbol": "known_lower_bound"
+  },
+  {
+    "id": "ann-e452-summary",
+    "proofId": "erdos-452",
+    "range": { "startLine": 262, "endLine": 268 },
+    "type": "theorem",
+    "title": "Main Summary",
+    "content": "**erdos_452_summary:**\n\n1. Density of {n : ω(n) > log log n} is 1/2 (Erdős 1937)\n2. Valid intervals of length ≥ log x/(log log x)² exist (CRT)\n3. Primes obstruct: no large prime in valid interval\n4. Open: Can we achieve (log x)^k for any k?",
+    "significance": "critical",
+    "leanSymbol": "erdos_452_summary"
+  },
+  {
+    "id": "ann-e452-main",
+    "proofId": "erdos-452",
+    "range": { "startLine": 270, "endLine": 271 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_452:**\n\nErdős Problem #452 remains OPEN.\n\nThe exact growth rate of the maximum valid interval length is unknown.",
+    "significance": "critical",
+    "leanSymbol": "erdos_452"
+  }
+]
