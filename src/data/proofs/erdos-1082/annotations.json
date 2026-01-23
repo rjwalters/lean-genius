@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "ann-e1082-header",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #1082: Distinct Distances in General Position**\n\nLet A subset of R^2 be n points with no three collinear.\n\n**Two Questions:**\n1. Does A determine at least n/2 distinct distances?\n2. Must some point see at least n/2 distinct distances?\n\n**Status:**\n- Question 1: OPEN\n- Question 2: DISPROVED (Xichuan's 42-point counterexample)\n\n**Known:** Szemeredi proved at least n/3 distinct distances exist.",
+    "mathContext": "This problem bridges combinatorial geometry and the famous distinct distances problem solved by Guth-Katz in 2015.",
+    "significance": "critical",
+    "relatedConcepts": ["Distinct distances", "General position", "Incidence geometry"]
+  },
+  {
+    "id": "ann-e1082-point2d",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 42, "endLine": 57 },
+    "type": "definition",
+    "title": "Points and Distances",
+    "content": "**Point2D, distSq, dist':**\n\nPoints in R^2 are represented as EuclideanSpace R (Fin 2).\n\n**Distance functions:**\n- distSq(p, q) = (p.x - q.x)^2 + (p.y - q.y)^2\n- dist'(p, q) = sqrt(distSq(p, q))\n\nUsing squared distance avoids sqrt complications in some contexts.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1082-collinear",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 63, "endLine": 69 },
+    "type": "definition",
+    "title": "Collinearity and General Position",
+    "content": "**areCollinear, inGeneralPosition:**\n\nThree points p, q, r are collinear iff the cross-product is zero:\n(q.x - p.x)(r.y - p.y) = (r.x - p.x)(q.y - p.y)\n\n**General Position:** A point set is in general position if no three points are collinear.\n\nThis is stronger than 'no four points on a circle' or 'convex position'.",
+    "mathContext": "The cross-product formula is the determinant condition for collinearity.",
+    "significance": "critical",
+    "relatedConcepts": ["Cross product", "Determinant", "General position"]
+  },
+  {
+    "id": "ann-e1082-distinct-distances",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 75, "endLine": 85 },
+    "type": "definition",
+    "title": "Counting Distances",
+    "content": "**distinctDistances, distancesFromPoint, numDistancesFromPoint:**\n\n- distinctDistances(S) = set of all pairwise distances in S\n- distancesFromPoint(p, S) = distances from p to all other points in S\n- numDistancesFromPoint(p, S) = cardinality of distancesFromPoint\n\nThe two conjectures differ: total distinct distances vs. single-point view.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1082-szemeredi",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 91, "endLine": 106 },
+    "type": "axiom",
+    "title": "Szemeredi's n/3 Bound",
+    "content": "**szemeredi_n_over_3:**\n\nIf S has n points in general position, then S determines at least n/3 distinct distances.\n\n**Stronger result:** If no k points are collinear, some point determines >> n/k distances.\n\nThis was unpublished but cited in Erdos's 1975 paper. It's the best proven lower bound for the total distances question.",
+    "mathContext": "Szemeredi's proof uses incidence geometry and careful counting arguments.",
+    "significance": "critical",
+    "relatedConcepts": ["Incidence geometry", "Distinct distances"]
+  },
+  {
+    "id": "ann-e1082-conjecture1",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "definition",
+    "title": "Conjecture 1: Total Distances",
+    "content": "**Conjecture1:**\n\nIf S has n points in general position, then S determines at least n/2 distinct distances.\n\nThis is OPEN. The gap between n/3 (proven) and n/2 (conjectured) is significant.\n\nNote: This is weaker than Conjecture 2 - total distances could be n/2 even if no single point achieves it.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1082-conjecture2",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 120, "endLine": 127 },
+    "type": "definition",
+    "title": "Conjecture 2: Single Point",
+    "content": "**Conjecture2:**\n\nIf S has n points in general position, then some point determines at least n/2 distinct distances to other points.\n\nThis is a STRONGER form: it implies Conjecture 1.\n\nStatus: DISPROVED by Xichuan's counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1082-xichuan",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 133, "endLine": 142 },
+    "type": "axiom",
+    "title": "Xichuan's Counterexample",
+    "content": "**xichuan_counterexample:**\n\nThere exist 42 points in R^2 with no three collinear, such that every point determines only 20 distinct distances.\n\nSince 20 < 21 = floor(42/2), this disproves Conjecture 2.\n\nThe construction uses symmetric patterns that repeat distances while maintaining general position.",
+    "mathContext": "Finding such constructions is highly non-trivial and requires sophisticated geometric design.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Symmetric point sets"]
+  },
+  {
+    "id": "ann-e1082-false",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 144, "endLine": 154 },
+    "type": "theorem",
+    "title": "Conjecture 2 is False",
+    "content": "**conjecture2_false:**\n\n```lean\ntheorem conjecture2_false : not Conjecture2\n```\n\n**Proof idea:**\n1. Assume Conjecture2\n2. Apply to Xichuan's 42-point set\n3. Get a point p with at least 21 distances\n4. But Xichuan says every point has at most 20\n5. Contradiction via omega\n\nThis is a formal disproof using the axiomatized counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1082-status",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 169, "endLine": 176 },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "**erdos_1082_status:**\n\nCombines the current state of knowledge:\n1. Szemeredi's n/3 bound is proven\n2. Conjecture 2 (single point n/2) is FALSE\n3. Conjecture 1 (total n/2) remains OPEN\n\nThe problem represents a gap in our understanding of distance patterns.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1082-guth-katz",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 182, "endLine": 191 },
+    "type": "axiom",
+    "title": "Connection to Guth-Katz",
+    "content": "**guth_katz_distinct_distances:**\n\nThe famous Erdos distinct distances problem asks: what is the minimum number of distinct distances determined by n points in R^2?\n\n**Answer (Guth-Katz 2015):** Omega(n / log n) distinct distances.\n\nProblem #1082 asks a related question: what happens when we add the general position constraint?",
+    "mathContext": "Guth-Katz used algebraic topology and polynomial partitioning - a breakthrough result.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial partitioning", "Incidence bounds"]
+  },
+  {
+    "id": "ann-e1082-3d",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 193, "endLine": 208 },
+    "type": "axiom",
+    "title": "3D Generalizations",
+    "content": "**3D Extensions:**\n\nErdos asked: Given n points in R^3 with no three collinear, do they determine >> n distances?\n\n**Known results:**\n- YES for convex polyhedra vertices (Altman)\n- YES if no four points are coplanar (Szemeredi)\n\nThe 3D problem has different behavior depending on geometric constraints.",
+    "significance": "supporting",
+    "relatedConcepts": ["Higher dimensions", "Convex position"]
+  },
+  {
+    "id": "ann-e1082-gap",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 224, "endLine": 232 },
+    "type": "theorem",
+    "title": "The 42-Point Gap",
+    "content": "**counterexample_gap:**\n\nShows explicitly that Xichuan's 42 points satisfy:\n- Every point has < 21 = floor(42/2) distances\n\nThe gap 20 < 21 is tight - the counterexample is minimally failing the conjecture.\n\nFinding the minimum n with such a counterexample is an interesting question.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1082-summary",
+    "proofId": "erdos-1082",
+    "range": { "startLine": 250, "endLine": 258 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1082_summary:**\n\nFinal statement:\n1. Szemeredi's n/3 bound holds\n2. Conjecture 2 is false\n3. Conjecture 1 (total n/2 distances) remains open\n\nThe problem represents the boundary of our knowledge about distance patterns in general position point sets.",
+    "significance": "critical"
+  }
+]
