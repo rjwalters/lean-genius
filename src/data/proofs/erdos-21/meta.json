@@ -2,47 +2,146 @@
   "id": "erdos-21",
   "title": "Erdős Problem #21: Covering Intersecting Families",
   "slug": "erdos-21",
-  "description": "Let f(n) be minimal such that there is an intersecting family of n-sets covering all (n-1)-sets. Is f(n) = O(n)?",
+  "description": "Let f(n) be the minimum size of an intersecting family of n-sets that covers all (n-1)-sets. Is f(n) = O(n)? SOLVED by Kahn (1994): YES.",
   "meta": {
-    "author": "Erdős, Lovász",
+    "author": "Erdős-Lovász (conjecture 1975), Kahn (proof 1994)",
     "sourceUrl": "https://erdosproblems.com/21",
-    "date": "1975",
+    "date": "1994",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos21Problem.lean",
     "tags": [
       "erdos",
       "combinatorics",
       "set-theory",
-      "intersecting-families"
+      "intersecting-families",
+      "projective-planes",
+      "probabilistic-method",
+      "solved"
     ],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 21,
     "erdosUrl": "https://erdosproblems.com/21",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
-  },
-  "overview": {
-    "historicalContext": "Conjectured by Erdős and Lovász in 1975. They proved (8/3)n - 3 ≤ f(n) ≤ O(n^(3/2) log n). Kahn improved the upper bound to n log n in 1992, then proved the linear bound f(n) = O(n) in 1994, resolving the conjecture.",
-    "problemStatement": "Let $f(n)$ be minimal such that there exists an intersecting family $\\mathcal{F}$ of $n$-sets with $|\\mathcal{F}| = f(n)$ such that every set $S$ with $|S| \\leq n-1$ is disjoint from at least one $A \\in \\mathcal{F}$. Is $f(n) = O(n)$?",
-    "proofStrategy": "Kahn's 1994 proof uses probabilistic selection from projective planes: (1) Take a projective plane of order n-1 (when n-1 is a prime power), (2) Randomly select lines, (3) Show that with positive probability O(n) lines suffice to cover all (n-1)-sets.",
-    "keyInsights": [
-      "An intersecting family has all pairs sharing at least one element",
-      "The covering condition forces the family to be 'spread out'",
-      "Projective planes provide optimal constructions when n-1 is a prime power",
-      "Lower bound (8/3)n uses counting arguments",
-      "The exact constant is conjectured to be 3 (i.e., f(n) = 3n + O(1))"
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for families",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsIntersecting definition for set families",
+      "CoversSmallSets definition for covering property",
+      "IsUniform definition for uniform families",
+      "CoveringFamily structure combining all conditions",
+      "f(n) function axiomatization",
+      "Known exact values f(1)-f(5)",
+      "Erdős-Lovász lower bound (8/3)n - 3",
+      "Kahn 1992 upper bound n log n",
+      "Kahn 1994 linear bound (main theorem)",
+      "ErdosLovaszConjecture statement and resolution",
+      "ExactBoundConjecture f(n) = 3n + O(1)",
+      "ProjectivePlane structure",
+      "IsSunflower definition",
+      "Generalized f_k(n) problem"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "**Erdős Problem #21: Covering Intersecting Families**\n\nThis $500 prize problem was conjectured by Erdős and Lovász in 1975 and asked whether an intersecting family of n-sets that covers all (n-1)-sets can have size O(n).\n\n**Historical Development:**\n- **1975:** Erdős-Lovász proved (8/3)n - 3 ≤ f(n) ≤ O(n^{3/2} log n)\n- **1992:** Kahn improved upper bound to f(n) ≤ O(n log n)\n- **1994:** Kahn proved f(n) = O(n), winning the $500 prize\n- **2014:** Tripathi computed f(3)=6, f(4)=9\n- **2021:** Barát-Wanless computed f(5)=13",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet f(n) be minimal such that there is an intersecting family F of n-sets (so A ∩ B ≠ ∅ for all A, B ∈ F) with |F| = f(n) such that every set S with |S| ≤ n-1 is disjoint from at least one A ∈ F.\n\nIs it true that f(n) ≪ n?\n\n**Solution (Kahn 1994):**\nYES! f(n) = O(n). The proof uses probabilistic selection from projective planes.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define intersecting families, covering property, uniform families.\n\n2. **CoveringFamily Structure:** Combine all conditions into a structure.\n\n3. **Function f(n):** Axiomatize as the minimum family size.\n\n4. **Known Values:** Axiomatize f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13.\n\n5. **Bounds:** State Erdős-Lovász lower bound and Kahn's upper bounds.\n\n6. **Main Theorem:** Kahn 1994 f(n) = O(n).\n\n7. **Projective Planes:** Define structure and role in constructions.\n\n8. **Generalizations:** f_k(n) covering (n-k)-sets.",
+    "keyInsights": [
+      "**Intersecting Family:** All pairs of sets must share an element",
+      "**Covering Property:** Every small set is disjoint from some family member",
+      "**Lower Bound (8/3)n:** Counting argument on coverage capacity",
+      "**Projective Planes:** Provide optimal constructions when n-1 is prime power",
+      "**Kahn's Method:** Probabilistic selection of O(n) lines covers all (n-1)-sets",
+      "**Conjectured Exact Bound:** f(n) = 3n + O(1)",
+      "**Known Values:** f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Intersecting families, covering property, uniform families",
+      "startLine": 40,
+      "endLine": 76
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "summary": "Definition and basic properties",
+      "startLine": 78,
+      "endLine": 96
+    },
+    {
+      "id": "known-values",
+      "title": "Known Exact Values",
+      "summary": "f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13",
+      "startLine": 98,
+      "endLine": 124
+    },
+    {
+      "id": "lower-bound",
+      "title": "Erdős-Lovász Lower Bound",
+      "summary": "f(n) ≥ (8/3)n - 3",
+      "startLine": 126,
+      "endLine": 145
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds and Resolution",
+      "summary": "From n^{3/2} log n to n log n to O(n)",
+      "startLine": 147,
+      "endLine": 186
+    },
+    {
+      "id": "projective-planes",
+      "title": "Projective Planes",
+      "summary": "Construction technique",
+      "startLine": 204,
+      "endLine": 232
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Covering Families",
+      "summary": "Intersection structure, sunflowers",
+      "startLine": 234,
+      "endLine": 265
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "f_k(n) covering (n-k)-sets",
+      "startLine": 280,
+      "endLine": 300
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main results",
+      "startLine": 302,
+      "endLine": 333
+    }
+  ],
   "conclusion": {
-    "summary": "Kahn (1994) proved f(n) = O(n), resolving the Erdős-Lovász conjecture. The exact bound is conjectured to be f(n) = 3n + O(1), but the gap between the lower bound (8/3)n and this conjecture remains open.",
-    "implications": "The solution demonstrates the power of probabilistic methods in combinatorics and connects intersecting families to projective geometry.",
+    "summary": "Erdős Problem #21 asked whether an intersecting family of n-sets that covers all (n-1)-sets can have size O(n). Kahn (1994) proved YES, winning the $500 prize. The exact bound is conjectured to be f(n) = 3n + O(1).",
+    "implications": "**Implications**\n\n1. **Probabilistic Combinatorics:** Kahn's proof demonstrates the power of probabilistic methods.\n\n2. **Projective Geometry:** Connections between set families and finite geometry.\n\n3. **Covering Codes:** Applications to covering designs and codes.\n\n4. **Gap Problem:** The gap between lower bound (8/3)n and conjectured 3n remains.",
     "openQuestions": [
       "Determine the exact leading constant: is f(n) = 3n + O(1)?",
       "Compute f(6) exactly (currently 13 ≤ f(6) ≤ 18)",
-      "Prove or disprove f(n) ≤ 3n for all n",
-      "Extend to f_k(n) covering (n-k)-sets"
+      "Study f_k(n) for k ≥ 2",
+      "Algorithmic aspects: efficiently construct optimal families?"
     ]
   }
 }
