@@ -16,24 +16,47 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-14T21:07:11.724Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Problem formalized; known constructions stated; OPEN",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "SURVEYED: Created Lean formalization of unit distance graphs with girth constraints. Defined UnitDistanceGraph, HasGirthAtLeast, chromatic number. Axiomatized known constructions (Moser, O'Donnell, Chilakamarri, Wormald). OPEN problem.",
+    "builtItems": [
+      "UnitDistanceGraph structure (Erdos705Problem.lean:35-42)",
+      "HasGirthAtLeast definition (Erdos705Problem.lean:52-54)",
+      "IsKColorable and chromaticNumber (Erdos705Problem.lean:67-72)",
+      "mainConjecture statement (Erdos705Problem.lean:80-83)",
+      "moser_spindle_exists, odonnell_exists, chilakamarri_exists, wormald_exists axioms (Erdos705Problem.lean:96-120)",
+      "no_small_k_works theorem (Erdos705Problem.lean:123-127)",
+      "de_grey_lower_bound and upper_bound_7 axioms (Erdos705Problem.lean:137-143)"
+    ],
+    "insights": [
+      "Problem is OPEN - does high girth imply χ ≤ 3?",
+      "k ≤ 5 does NOT work (Wormald: girth 5, χ = 4)",
+      "χ = 4 with girth 3: Moser spindle (7 vertices)",
+      "χ = 4 with girth 4: Chilakamarri (47 vertices, smallest)",
+      "χ = 4 with girth 5: Wormald (6448 vertices)",
+      "Related to Hadwiger-Nelson: χ(ℝ²) ∈ [5,7]",
+      "Not Aristotle-suitable: requires proving OPEN conjecture"
+    ],
+    "mathlibGaps": [
+      "SimpleGraph.Walk.IsCycle may need verification",
+      "Unit distance graph not standard in Mathlib"
+    ],
+    "nextSteps": [
+      "Search for χ = 4 unit distance graph with girth 6",
+      "Explore connection to probabilistic methods",
+      "Consider algebraic constructions"
+    ],
     "markdown": "# Erdős #705 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a finite unit distance graph in $\\mathbb{R}^2$ (i.e. the vertices are a finite collection of points in $\\mathbb{R}^2$ and there is an edge between two points if and only if the distance between them is $1$).\n\nIs there some $k$ such that if $G$ has girth $\\geq k$ (i.e. $G$ contains no cycles of length $<k$) then $\\chi(G)\\leq 3$?\n\n\n\nThe maximal value of $\\chi(G)$ (without a girth condition) is the Hadwiger-Nelson problem. There are unit distance graphs (e.g. the Moser spindle) with $\\chi(G)=4$ of girth $3$. de Grey \\cite{dG18} has constructed a unit distance graph $G$ with $\\chi(G)=5$. (I do not know what the largest girth achieved is by these recent constructions.)\n\nWormald \\cite{Wo79} has constructed a unit distance graph with $\\chi(G)=4$ and girth $5$, with $6448$ vertices. O'Donnell \\cite{OD94} has constructed a unit distance graph with $\\chi(G)=4$ and girth $4$, with $56$ vertices. Chilakamarri \\cite{Ch95} has constructed an infinite family of unit distance graphs with $\\chi(G)=4$ and girth $4$, the smallest of which has $47$ vertices.\n\n\nSee also [508], [704], and [706].\n\n\n\n\nReferences\n\n\n[Ch95] Chilakamarri, Kiran B., A {$4$}-chromatic unit-distance graph with no triangles. Geombinatorics (1995), 64-76.\n\n[OD94] O'Donnell, Paul, A triangle-free {$4$}-chromatic graph in the plane. Geombinatorics (1994), 23-29.\n\n[Wo79] Wormald, Nicholas, A {$4$}-chromatic graph with a special plane drawing. J. Austral. Math. Soc. Ser. A (1979), 1-8.\n\n[dG18] de Grey, Aubrey D. N. J., The chromatic number of the plane is at least 5. Geombinatorics (2018), 18-31.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #508\n- Problem #704\n- Problem #706\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Wo79\n- OD94\n- Ch95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "approaches": [],
