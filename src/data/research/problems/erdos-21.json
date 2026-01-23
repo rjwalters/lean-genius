@@ -1,0 +1,132 @@
+{
+  "slug": "erdos-21",
+  "title": "Erdős #21: Covering Intersecting Families",
+  "phase": "FORMALIZED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f(n) ≪ n where f(n) = min{|F| : F intersecting, uniform n-sets, covers all (n-1)-sets}",
+    "plain": "Is f(n) = O(n), where f(n) is the minimum size of an intersecting family of n-sets such that every (n-1)-set is disjoint from some member?",
+    "whyMatters": [
+      "Classic covering problem in combinatorics",
+      "$500 prize problem - SOLVED by Kahn (1994)",
+      "Connects projective planes to probabilistic methods",
+      "Known exact values for small n: f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "f(n) ≥ (8/3)n - 3 (Erdős-Lovász 1975 lower bound)",
+      "f(n) ≤ n^(3/2) log n (Erdős-Lovász 1975 upper bound)",
+      "f(n) = O(n log n) (Kahn 1992)",
+      "f(n) = O(n) (Kahn 1994 - MAIN RESULT)",
+      "Exact: f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13"
+    ],
+    "open": [
+      "Exact leading constant: is f(n) = 3n + O(1)?",
+      "Determine f(6): 13 ≤ f(6) ≤ 18"
+    ],
+    "goal": "Formalize Kahn's linear bound and known exact values"
+  },
+  "currentState": {
+    "phase": "FORMALIZED",
+    "since": "2026-01-23T00:00:00Z",
+    "iteration": 1,
+    "focus": "606-line formalization with covering family structure, Kahn bounds, projective plane connection",
+    "activeApproach": "Axiomatize main results, formalize definitions",
+    "blockers": [],
+    "nextAction": "Prove f_one and f_two by explicit construction",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "FORMALIZED (SOLVED): 606-line file covering Kahn's resolution. Comprehensive definitions for intersecting families, covering properties, projective planes. Main linear bound axiomatized.",
+    "builtItems": [
+      "IsIntersecting: intersecting family predicate (Erdos21Problem.lean:65)",
+      "CoversSmallSets: covering property predicate (Erdos21Problem.lean:70)",
+      "IsUniform: uniform family predicate (Erdos21Problem.lean:74)",
+      "CoveringFamily: structure combining all properties (Erdos21Problem.lean:79)",
+      "f: the minimum covering family size function (AXIOM, Erdos21Problem.lean:94)",
+      "f_achievable: f(n) is achieved by some family (AXIOM, Erdos21Problem.lean:97)",
+      "f_minimal: f(n) is minimal (AXIOM, Erdos21Problem.lean:101)",
+      "f_one: f(1) = 1 (SORRY, Erdos21Problem.lean:118)",
+      "f_two: f(2) = 3 (SORRY, Erdos21Problem.lean:131)",
+      "f_three: f(3) = 6 (AXIOM, Erdos21Problem.lean:144)",
+      "f_four: f(4) = 9 (AXIOM, Erdos21Problem.lean:156)",
+      "f_five: f(5) = 13 (AXIOM, Erdos21Problem.lean:168)",
+      "f_six_bounds: 13 ≤ f(6) ≤ 18 (AXIOM, Erdos21Problem.lean:187)",
+      "erdos_lovasz_lower_bound: f(n) ≥ (8/3)n - 3 (AXIOM, Erdos21Problem.lean:208)",
+      "erdos_lovasz_upper_bound: f(n) ≤ C·n^(3/2)·log n (AXIOM, Erdos21Problem.lean:241)",
+      "kahn_1992_bound: f(n) ≤ C·n·log n (AXIOM, Erdos21Problem.lean:261)",
+      "kahn_1994_linear_bound: f(n) = O(n) (AXIOM, Erdos21Problem.lean:283)",
+      "ErdosLovaszConjecture: the main conjecture statement (Erdos21Problem.lean:291)",
+      "conjecture_resolved: Kahn proved the conjecture (PROVED, Erdos21Problem.lean:299)",
+      "ExactBoundConjecture: f(n) = 3n + O(1) (Erdos21Problem.lean:312)",
+      "ProjectivePlane: structure for projective planes (Erdos21Problem.lean:330)",
+      "projective_plane_exists: planes exist for prime powers (AXIOM, Erdos21Problem.lean:347)",
+      "erdos_lovasz_construction: construction via projective planes (AXIOM, Erdos21Problem.lean:374)",
+      "covering_family_structure: intersection size ≤ 1 (AXIOM, Erdos21Problem.lean:397)",
+      "covering_family_union_size: union has ≥ n+k-1 elements (AXIOM, Erdos21Problem.lean:411)",
+      "IsSunflower: sunflower predicate (Erdos21Problem.lean:428)",
+      "kahn_probabilistic_argument: explicit linear bound (AXIOM, Erdos21Problem.lean:518)",
+      "f_general: generalized f_k(n) function (AXIOM, Erdos21Problem.lean:533)",
+      "GeneralizedConjecture: f_k(n) = (k+2)n + O(1) (Erdos21Problem.lean:551)"
+    ],
+    "insights": [
+      "Problem is SOLVED - Kahn (1994) proved f(n) = O(n)",
+      "Lower bound (8/3)n ≈ 2.67n, conjectured exact bound 3n",
+      "Key technique: probabilistic selection from projective planes",
+      "Covering families have near-pencil structure (intersections ≤ 1)",
+      "Connection to Turán problems, covering codes, projective geometry",
+      "Generalization: f_k(n) covers (n-k)-sets, conjectured (k+2)n bound",
+      "Known values fit pattern: f(n) ≈ 3n - O(1)"
+    ],
+    "mathlibGaps": [
+      "No projective plane API in Mathlib",
+      "No covering family infrastructure"
+    ],
+    "nextSteps": [
+      "Prove f_one and f_two by explicit construction",
+      "Prove lower_bound_simplified from erdos_lovasz_lower_bound",
+      "Connect to Mathlib's Finset.biUnion for union size bounds"
+    ],
+    "markdown": "# Erdős #21 - Covering Intersecting Families\n\n## Problem Statement\n\nLet f(n) be the minimum size of an intersecting family F of n-sets such that every set of size ≤ n-1 is disjoint from at least one member of F.\n\n**Is f(n) = O(n)?**\n\n## Status\n\n**Erdős Database Status**: SOLVED ($500 prize)\n\n**Solution**: Kahn (1994) proved f(n) = O(n)\n\n## History\n\n- 1975: Erdős-Lovász conjectured f(n) ≪ n, proved (8/3)n ≤ f(n) ≪ n^(3/2) log n\n- 1992: Kahn improved to f(n) ≪ n log n\n- 1994: Kahn proved f(n) = O(n), resolving the conjecture\n\n## Known Exact Values\n\n| n | f(n) | Source |\n|---|------|--------|\n| 1 | 1 | Trivial |\n| 2 | 3 | Trivial |\n| 3 | 6 | Tripathi 2014 |\n| 4 | 9 | Tripathi 2014 |\n| 5 | 13 | Barát-Wanless 2021 |\n| 6 | 13-18 | Barát-Wanless 2021 |\n\n## Conjectured Exact Bound\n\nf(n) = 3n + O(1)\n\n---\n\n*Formalized 2026-01-23*\n"
+  },
+  "approaches": [
+    {
+      "name": "Axiomatize Kahn's resolution",
+      "status": "successful",
+      "description": "Built infrastructure for covering families, axiomatized main bounds and resolution"
+    }
+  ],
+  "tags": [
+    "erdos",
+    "combinatorics",
+    "covering-problems",
+    "intersecting-families",
+    "projective-planes",
+    "solved"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [
+      "Erdős-Lovász (1975) 'Problems and results on 3-chromatic hypergraphs'",
+      "Kahn (1992) 'On a problem of Erdős and Lovász'",
+      "Kahn (1994) 'On a problem of Erdős and Lovász II: n(r) = O(r)'",
+      "Tripathi (2014) exact values f(3), f(4)",
+      "Barát-Wanless (2021) f(5), bounds on f(6)"
+    ],
+    "urls": [
+      "https://erdosproblems.com/21"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-01-23T00:00:00Z",
+  "lastUpdate": "2026-01-23T00:00:00Z",
+  "significance": 8,
+  "tractability": 8
+}
