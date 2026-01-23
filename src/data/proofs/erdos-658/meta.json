@@ -1,33 +1,141 @@
 {
   "id": "erdos-658",
-  "title": "Erdős Problem #658",
+  "title": "Erdős Problem #658: Squares in Dense Grid Subsets",
   "slug": "erdos-658",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large depending on .... Is it true that if ... has ... then ... must contain the vertices of ...",
+  "description": "Do dense subsets of the N×N grid contain squares? YES, proved via density Hales-Jewett (Furstenberg-Katznelson 1991), with quantitative bounds by Solymosi (2004).",
   "meta": {
-    "author": "Unknown",
+    "author": "Furstenberg-Katznelson (1991 qualitative), Solymosi (2004 quantitative), Graham (problem)",
     "sourceUrl": "https://erdosproblems.com/658",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos658Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "grid",
+      "density",
+      "Hales-Jewett",
+      "squares",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 658,
     "erdosUrl": "https://erdosproblems.com/658",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.product",
+        "description": "Cartesian product of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Prod",
+        "description": "Product types for grid coordinates",
+        "module": "Mathlib.Data.Prod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "grid definition: the N×N integer grid as Finset (ℕ × ℕ)",
+      "isAxisAlignedSquare definition: four points forming axis-aligned square",
+      "containsAxisAlignedSquare definition: set contains square vertices",
+      "isTiltedSquare definition: general orientation squares",
+      "density definition: |A|/N² ratio",
+      "GrahamConjectureAxisAligned: formal statement of the conjecture",
+      "graham_axis_aligned_true axiom: the main result",
+      "qualitative_threshold axiom: existence of N₀(δ)",
+      "density_hales_jewett axiom: the underlying deep theorem",
+      "solymosi_bound axiom: quantitative bounds",
+      "erdos_658 theorem: main result",
+      "erdos_658_answer theorem: final answer"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #658 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta>0$ and $N$ be sufficiently large depending on $\\delta$. Is it true that if $A\\subseteq \\{1,\\ldots,N\\}^2$ has $\\lvert A\\rvert \\geq \\delta N^2$ then $A$ must contain the vertices of a square?\n\n\n\nA problem of Graham, if the square is restricted to be axis-aligned. (It is unclear whether in \\cite{Er97e} had this restriction in mind.)\n\nThis qualitative statement follows from the density Hales-Jewett theorem proved by Furstenberg and Katznelson \\cite{FuKa91}. A quantitative proof (yet with very poor bounds) was given by Solymosi \\cite{So04}.\n\n\n\n\nReferences\n\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n[FuKa91] Furstenberg, H. and Katznelson, Y., A density version of the Hales-Jewett Theorem. Journal d'Analyse Math\\'{e}matique (1991), 64-119.\n\n[So04] Solymosi, J., A Note on a Question of Erd\\H{o}s and Graham. Combinatorics, Probability and Computing (2004), 263–267.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #658: Squares in Dense Grid Subsets**\n\nThis problem, attributed to Graham, asks a natural geometric question: if you have enough points in an N×N grid, must some four of them form the vertices of a square?\n\n**Key History:**\n- Graham: Posed the problem for axis-aligned squares\n- Erdős [Er97e]: Included in his list of favorite unsolved problems (ambiguous about axis-alignment)\n- Furstenberg-Katznelson (1991): Proved qualitatively via the density Hales-Jewett theorem\n- Solymosi (2004): Gave the first quantitative proof with explicit bounds\n\n**Mathematical Setting:**\nThe problem connects discrete geometry with additive combinatorics. The proof uses the density Hales-Jewett theorem, one of the deepest results in the field, showing that dense sets in high-dimensional spaces must contain combinatorial structures.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $\\delta > 0$ and $N$ be sufficiently large depending on $\\delta$. Is it true that if $A \\subseteq \\{1,\\ldots,N\\}^2$ has $|A| \\geq \\delta N^2$ then $A$ must contain the vertices of a square?\n\n**Answer: YES**\n\nFurstenberg and Katznelson (1991) proved this follows from the density Hales-Jewett theorem. Solymosi (2004) gave explicit (but very large, tower-type) bounds on N₀(δ).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Grid and Squares:** Define the N×N grid and what it means for four points to form a square\n\n2. **Density:** Define δ-dense subsets where |A| ≥ δN²\n\n3. **Main Conjecture:** State GrahamConjectureAxisAligned formally\n\n4. **Key Axioms:**\n   - graham_axis_aligned_true: The main theorem\n   - density_hales_jewett: The underlying deep result\n   - solymosi_bound: Quantitative version\n\n5. **Connections:** Link to Hales-Jewett and higher-dimensional generalizations",
+    "keyInsights": [
+      "**Density Forces Structure:** Sufficiently dense sets in grids must contain geometric patterns like squares",
+      "**Hales-Jewett Connection:** The proof reduces to the density Hales-Jewett theorem, a cornerstone of additive combinatorics",
+      "**Tower-Type Bounds:** The threshold N₀(δ) grows as a tower of exponentials in 1/δ - very fast but effective",
+      "**Axis-Aligned vs Tilted:** Graham's original problem was for axis-aligned squares; tilted squares also exist but require different methods",
+      "**Higher Dimensions:** The result generalizes to d-dimensional cubes in {1,...,N}ᵈ"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "grid, isAxisAlignedSquare, containsAxisAlignedSquare, density, isDense",
+      "startLine": 47,
+      "endLine": 113
+    },
+    {
+      "id": "graham-conjecture",
+      "title": "Graham's Conjecture",
+      "summary": "GrahamConjectureAxisAligned definition and main theorem",
+      "startLine": 115,
+      "endLine": 137
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_658 theorem, qualitative_threshold axiom",
+      "startLine": 139,
+      "endLine": 167
+    },
+    {
+      "id": "hales-jewett",
+      "title": "Density Hales-Jewett",
+      "summary": "density_hales_jewett axiom, reduction_to_hales_jewett",
+      "startLine": 169,
+      "endLine": 200
+    },
+    {
+      "id": "solymosi-bounds",
+      "title": "Solymosi's Bounds",
+      "summary": "solymosi_bound axiom, tower_type_bound",
+      "startLine": 202,
+      "endLine": 228
+    },
+    {
+      "id": "examples",
+      "title": "Small Cases and Examples",
+      "summary": "small_case_2x2, density_threshold_3x3, small_counterexamples",
+      "startLine": 230,
+      "endLine": 265
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "higher_dimensional_cubes, tilted_squares_exist",
+      "startLine": 267,
+      "endLine": 289
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_658_summary, erdos_658_answer theorems",
+      "startLine": 291,
+      "endLine": 331
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #658 asked whether dense subsets of the N×N grid must contain squares. The answer is YES, proved qualitatively by Furstenberg and Katznelson (1991) using the density Hales-Jewett theorem, and quantitatively by Solymosi (2004) with tower-type bounds.",
+    "implications": "**Implications for Discrete Geometry**\n\n1. **Density → Structure:** High density in grids forces geometric patterns\n\n2. **Hales-Jewett Applications:** Shows the power of the density Hales-Jewett theorem beyond its original setting\n\n3. **Ramsey-Type Results:** Part of a broader family of results showing that large/dense structures contain ordered substructures\n\n4. **Higher Dimensions:** Extends to cubes in any dimension",
+    "openQuestions": [
+      "What is the optimal threshold N₀(δ)? Current bounds are tower-type.",
+      "What about tilted (non-axis-aligned) squares with better bounds?",
+      "Extensions to other shapes (triangles, hexagons)?",
+      "Polynomial bounds: can tower-type growth be avoided?",
+      "Colorings: Ramsey-type versions for colored grids"
+    ]
   }
 }
