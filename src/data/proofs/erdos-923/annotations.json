@@ -104,9 +104,19 @@
     "relatedConcepts": ["Tower of exponentials", "Ackermann function"]
   },
   {
+    "id": "ann-e923-tower-examples",
+    "proofId": "erdos-923",
+    "range": { "startLine": 200, "endLine": 208 },
+    "type": "theorem",
+    "title": "Tower Function Values",
+    "content": "**Computational verification:**\n- tower(0) = 1\n- tower(1) = 2\n- tower(2) = 4\n- tower(3) = 16\n- tower(4) = 65536\n\nVerified by rfl and native_decide.",
+    "mathContext": "Tower(5) would be 2^65536, a number with ~20,000 digits!",
+    "significance": "supporting"
+  },
+  {
     "id": "ann-e923-bound",
     "proofId": "erdos-923",
-    "range": { "startLine": 199, "endLine": 212 },
+    "range": { "startLine": 210, "endLine": 223 },
     "type": "axiom",
     "title": "Tower Bound",
     "content": "**rodl_bound:** f(k) ≤ tower(O(k)).\n\nRödl showed the threshold function is bounded by a tower of constant times k.",
@@ -116,7 +126,7 @@
   {
     "id": "ann-e923-general",
     "proofId": "erdos-923",
-    "range": { "startLine": 223, "endLine": 250 },
+    "range": { "startLine": 233, "endLine": 260 },
     "type": "axiom",
     "title": "H-Free Generalization",
     "content": "**rodl_general_bipartite:** For any bipartite graph H:\n\n∃ f_H(k) such that χ(G) ≥ f_H(k) ⟹ G has H-free subgraph with χ ≥ k.\n\nThis generalizes from triangle-free to any bipartite forbidden subgraph.",
@@ -127,7 +137,7 @@
   {
     "id": "ann-e923-summary",
     "proofId": "erdos-923",
-    "range": { "startLine": 274, "endLine": 302 },
+    "range": { "startLine": 284, "endLine": 312 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_923_summary:**\n\n1. Problem is SOLVED (YES)\n2. Proved by Rödl (1977)\n3. Threshold is tower-type\n\n**Key insight:** High chromatic number forces triangle-free subgraphs with moderately high chromatic number.",
