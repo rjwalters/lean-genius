@@ -1,1 +1,103 @@
-[]
+[
+  {
+    "id": "ann-81-1",
+    "proofId": "erdos-81",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #81: Clique Partitions of Chordal Graphs**\n\n**Question:** For a chordal graph G on n vertices, can its edges be partitioned into n²/6 + O(n) cliques?\n\n**Status:** OPEN\n\n**Gap:** Current bounds are (1/4 - ε)n² (upper) vs n²/6 (lower).",
+    "mathContext": "Chordal graphs have no induced cycles > 3. The clique partition number measures how efficiently edges can be grouped into complete subgraphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Chordal graphs", "Clique partitions", "Split graphs", "Perfect elimination ordering"]
+  },
+  {
+    "id": "ann-81-2",
+    "proofId": "erdos-81",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "Chordal Graph",
+    "content": "**IsChordal G:**\n\nA graph is chordal if it has no induced cycles of length > 3.\n\n**Equivalently:** Every cycle of length ≥ 4 has a chord (an edge between non-adjacent cycle vertices).\n\n**Examples:**\n- Trees: chordal (no cycles at all)\n- Complete graphs: chordal\n- Cycles C_k for k ≥ 4: NOT chordal",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-81-3",
+    "proofId": "erdos-81",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "definition",
+    "title": "Clique Partition",
+    "content": "**CliquePartition G:**\n\nA partition of all edges into disjoint cliques.\n\n**Requirements:**\n1. Each set is a clique (complete subgraph)\n2. Every edge is in exactly one clique\n\nThe clique partition number is the minimum number of cliques needed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-81-4",
+    "proofId": "erdos-81",
+    "range": { "startLine": 107, "endLine": 113 },
+    "type": "definition",
+    "title": "Split Graph",
+    "content": "**IsSplitGraph G:**\n\nA graph where vertices partition into:\n- K: a clique (all pairwise adjacent)\n- I: an independent set (no edges within)\n\nSplit graphs are chordal - they have no induced cycles ≥ 4.\n\nThe extremal construction for Problem #81 is a split graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-81-5",
+    "proofId": "erdos-81",
+    "range": { "startLine": 129, "endLine": 135 },
+    "type": "axiom",
+    "title": "Extremal Construction",
+    "content": "**extremal_construction_exists:**\n\nFor any n, there exists a chordal graph needing ≥ n²/6 cliques.\n\n**Construction:**\n- Take K_{n/3} (complete graph on n/3 vertices)\n- Add 2n/3 isolated vertices\n- Connect every K_{n/3} vertex to every isolated vertex\n\nThis split graph requires ~n²/6 cliques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-81-6",
+    "proofId": "erdos-81",
+    "range": { "startLine": 158, "endLine": 160 },
+    "type": "axiom",
+    "title": "Erdős-Ordman-Zalcstein Upper Bound",
+    "content": "**erdos_ordman_zalcstein (1993):**\n\nEvery chordal graph on n vertices has a clique partition with ≤ (1/4 - ε)n² cliques.\n\n**Note:** The ε is very small but positive.\n\n**Gap:** 1/4 ≈ 0.25 vs 1/6 ≈ 0.167 (factor ~1.5)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-81-7",
+    "proofId": "erdos-81",
+    "range": { "startLine": 166, "endLine": 168 },
+    "type": "axiom",
+    "title": "Chen-Erdős-Ordman Split Graph Bound",
+    "content": "**chen_erdos_ordman_split (1994):**\n\nEvery split graph on n vertices needs ≤ 3n²/16 + O(n) cliques.\n\n**Note:** 3/16 = 0.1875, which is between 1/6 ≈ 0.167 (conjectured) and 1/4 ≈ 0.25 (general chordal).\n\nSince the extremal construction is a split graph, this is already close to optimal for that case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-81-8",
+    "proofId": "erdos-81",
+    "range": { "startLine": 178, "endLine": 182 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**erdos_81_conjecture:**\n\nEvery chordal graph on n vertices can have its edges partitioned into ≤ n²/6 + O(n) cliques.\n\n**If true:** The extremal split graph construction is essentially tight.\n\n**Status:** OPEN - neither proved nor disproved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-81-9",
+    "proofId": "erdos-81",
+    "range": { "startLine": 226, "endLine": 228 },
+    "type": "definition",
+    "title": "Simplicial Vertex",
+    "content": "**IsSimplicial G v:**\n\nA vertex v is simplicial if its neighbors form a clique.\n\n**Example:** In a complete graph, every vertex is simplicial.\n\nSimplicial vertices are key to the perfect elimination ordering characterization of chordal graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-81-10",
+    "proofId": "erdos-81",
+    "range": { "startLine": 243, "endLine": 245 },
+    "type": "axiom",
+    "title": "Chordal ↔ Perfect Elimination Ordering",
+    "content": "**chordal_iff_peo:**\n\nA graph is chordal if and only if it has a perfect elimination ordering.\n\n**PEO:** An ordering where each vertex is simplicial in the induced subgraph of remaining vertices.\n\nThis gives a polynomial-time recognition algorithm for chordal graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-81-11",
+    "proofId": "erdos-81",
+    "range": { "startLine": 322, "endLine": 323 },
+    "type": "theorem",
+    "title": "Main Theorem: OPEN",
+    "content": "**erdos_81:**\n\n**STATUS:** OPEN\n\n**QUESTION:** Can every chordal graph on n vertices have edges partitioned into n²/6 + O(n) cliques?\n\n**BOUNDS:**\n- Lower: n²/6 (extremal split graph)\n- Upper: (1/4 - ε)n² (Erdős-Ordman-Zalcstein)\n- Split graphs: 3n²/16 (Chen-Erdős-Ordman)\n\n**KEY INSIGHT:** The extremal example is a split graph, suggesting they may be the hardest case.",
+    "significance": "critical"
+  }
+]

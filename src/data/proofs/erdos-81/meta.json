@@ -7,7 +7,7 @@
     "author": "Erdős, Ordman & Zalcstein (1993)",
     "sourceUrl": "https://erdosproblems.com/81",
     "date": "1993",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos81Problem.lean",
     "tags": [
       "graph-theory",
@@ -17,7 +17,7 @@
       "split-graphs",
       "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 81,
     "erdosUrl": "https://erdosproblems.com/81",
@@ -44,11 +44,60 @@
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 34,
-      "endLine": 35,
-      "summary": "The current proof is a placeholder (erdos_81 : True). This is an OPEN problem about clique partition bounds."
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 46,
+      "endLine": 97,
+      "summary": "Induced cycles, chordal graphs, cliques, and clique partitions"
+    },
+    {
+      "id": "split-graphs",
+      "title": "Split Graphs",
+      "startLine": 98,
+      "endLine": 119,
+      "summary": "Split graphs definition and their chordal property"
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Construction",
+      "startLine": 120,
+      "endLine": 148,
+      "summary": "The lower bound construction showing n²/6 is necessary"
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 149,
+      "endLine": 168,
+      "summary": "Erdős-Ordman-Zalcstein and Chen-Erdős-Ordman bounds"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 169,
+      "endLine": 214,
+      "summary": "The open problem statement and gap analysis"
+    },
+    {
+      "id": "peo",
+      "title": "Perfect Elimination Ordering",
+      "startLine": 215,
+      "endLine": 245,
+      "summary": "Characterization of chordal graphs via PEO"
+    },
+    {
+      "id": "computational",
+      "title": "Computational Aspects",
+      "startLine": 246,
+      "endLine": 266,
+      "summary": "Algorithm complexity for clique partitions"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 291,
+      "endLine": 324,
+      "summary": "Main theorem and status"
     }
   ],
   "conclusion": {
