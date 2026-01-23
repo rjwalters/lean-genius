@@ -19,7 +19,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 111,
     "erdosUrl": "https://erdosproblems.com/111",
     "erdosProblemStatus": "open",
@@ -44,7 +44,12 @@
       {
         "theorem": "Cardinal.aleph",
         "description": "Aleph cardinals (ℵ₀, ℵ₁, etc.)",
-        "module": "Mathlib.SetTheory.Cardinal.Basic"
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function for real exponents",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
     "originalContributions": [
@@ -81,78 +86,78 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Bipartite graphs and edge sets",
-      "startLine": 37,
-      "endLine": 58
+      "startLine": 38,
+      "endLine": 61
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion to Bipartiteness",
-      "summary": "edgesToRemoveForBipartite and edgeDeletionFunction h_G",
-      "startLine": 60,
-      "endLine": 100
+      "summary": "edgesToRemoveForBipartite and edgeDeletionFunction h_G (axiomatized)",
+      "startLine": 63,
+      "endLine": 91
     },
     {
       "id": "chromatic-number",
       "title": "Chromatic Number",
-      "summary": "IsProperColoring, IsKColorable, chromaticNumber",
-      "startLine": 102,
-      "endLine": 136
+      "summary": "IsProperColoring, IsKColorable, chromaticNumber (axiomatized)",
+      "startLine": 93,
+      "endLine": 124
     },
     {
       "id": "infinite-chromatic",
       "title": "Infinite Chromatic Number",
-      "summary": "cardinalChromaticNumber, hasAleph1ChromaticNumber",
-      "startLine": 137,
-      "endLine": 156
+      "summary": "cardinalChromaticNumber (axiomatized), hasAleph1ChromaticNumber",
+      "startLine": 126,
+      "endLine": 145
     },
     {
       "id": "odd-cycles",
       "title": "Odd Cycles and Bipartiteness",
-      "summary": "hasOddCycle, bipartite_iff_no_odd_cycle",
-      "startLine": 158,
-      "endLine": 178
+      "summary": "hasOddCycle, bipartite_iff_no_odd_cycle axiom",
+      "startLine": 147,
+      "endLine": 168
     },
     {
       "id": "vertex-disjoint-cycles",
       "title": "Vertex-Disjoint Odd Cycles",
       "summary": "hasVertexDisjointOddCycles, ehs_lower_bound, h_at_least_linear",
-      "startLine": 180,
-      "endLine": 217
+      "startLine": 170,
+      "endLine": 207
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound Construction",
       "summary": "ehs_upper_bound axiom",
-      "startLine": 219,
-      "endLine": 236
+      "startLine": 209,
+      "endLine": 226
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
-      "summary": "erdosConjecture111",
-      "startLine": 238,
-      "endLine": 256
+      "summary": "erdosConjecture111 definition",
+      "startLine": 228,
+      "endLine": 246
     },
     {
       "id": "main-question",
       "title": "The Main Open Question",
       "summary": "erdos111_question, erdos_111_status",
-      "startLine": 258,
-      "endLine": 281
+      "startLine": 248,
+      "endLine": 271
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "connection_to_74, finite_complete_graph_bound",
-      "startLine": 283,
-      "endLine": 309
+      "startLine": 273,
+      "endLine": 299
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_111_summary theorem combining known bounds",
-      "startLine": 311,
-      "endLine": 346
+      "startLine": 301,
+      "endLine": 335
     }
   ],
   "conclusion": {

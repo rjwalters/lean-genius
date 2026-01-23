@@ -751,7 +751,7 @@
     "slug": "erdos-1001",
     "description": "Let S(N,A,c) measure α ∈ (0,1) with |α - x/y| < A/y² for some N ≤ y ≤ cN, gcd(x,y)=1. Does lim S(N,A,c) exist? YES (Kesten-Sós). Formula: f(A,c) = 12A log(c)/π² in EST regime.",
     "status": "formalized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -760,8 +760,9 @@
       "farey-fractions"
     ],
     "erdosNumber": 1001,
+    "mathlibCount": 5,
     "sorries": 5,
-    "annotationCount": 15
+    "annotationCount": 18
   },
   {
     "id": "erdos-1002",
@@ -2028,17 +2029,22 @@
   },
   {
     "id": "erdos-1086",
-    "title": "Erdős Problem #1086",
+    "title": "Erdős Problem #1086: Triangles of Equal Area",
     "slug": "erdos-1086",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that any set of ... points in ... contains the vertices of at most ... many triangles with the same a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) be the maximum number of triangles with the same area determined by n points in ℝ². Best bounds: n² log log n ≪ g(n) ≪ n^{20/9}. Status: OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "incidence-geometry",
+      "triangles"
     ],
     "erdosNumber": 1086,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 28
   },
   {
     "id": "erdos-1087",
@@ -2416,9 +2422,9 @@
     ],
     "dateAdded": "2026-01-18",
     "erdosNumber": 111,
-    "mathlibCount": 4,
-    "sorries": 1,
-    "annotationCount": 14
+    "mathlibCount": 5,
+    "sorries": 0,
+    "annotationCount": 15
   },
   {
     "id": "erdos-1110",
@@ -4434,17 +4440,23 @@
   },
   {
     "id": "erdos-232",
-    "title": "Erdős Problem #232",
+    "title": "Erdős Problem #232: Density of Unit-Distance Avoiding Sets",
     "slug": "erdos-232",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... we define the upper density as\\[(A)=\\limsup_{R\\to \\infty}{\\lambda(B_R)},\\]where ... is the Lebesgue measure and ... i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the maximum upper density of a measurable set in ℝ² with no two points at distance 1? Is m₁ ≤ 1/4? SOLVED: Yes, m₁ ≤ 0.247 < 1/4.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "measure-theory",
+      "unit-distance-graphs",
+      "density"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 232,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-233",
@@ -5638,17 +5650,24 @@
   },
   {
     "id": "erdos-309",
-    "title": "Erdős Problem #309",
+    "title": "Erdős Problem #309: Integers as Sums of Distinct Unit Fractions",
     "slug": "erdos-309",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many integers can be written as the sum of distinct unit fractions with denominators from ...? Are there ... suc...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How many integers can be written as sums of distinct unit fractions with denominators from {1,...,N}? Answer: Θ(log N) such integers, answering Erdős's question negatively.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "harmonic-numbers",
+      "asymptotic-analysis"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 309,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-31",
@@ -6439,17 +6458,21 @@
   },
   {
     "id": "erdos-372",
-    "title": "Erdős Problem #372",
+    "title": "Erdős Problem #372: Descending Largest Prime Factors",
     "slug": "erdos-372",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest prime factor of .... There are infinitely many ... such that ....\n\n\n\n\n\nConjectured by Erds and Pom...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let P(n) denote the largest prime factor of n. Are there infinitely many n such that P(n) > P(n+1) > P(n+2)?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "analytic-number-theory"
     ],
     "erdosNumber": 372,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 1,
+    "annotationCount": 17
   },
   {
     "id": "erdos-373",
@@ -8739,15 +8762,18 @@
     "slug": "erdos-571",
     "description": "Is every rational α ∈ [1,2) a Turán exponent? Does there exist a bipartite graph G with ex(n;G) ≍ n^α for each such α? OPEN. Bukh-Conlon solved the finite family variant.",
     "status": "complete",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "extremal-graph-theory",
       "turan-theory",
-      "bipartite-graphs"
+      "bipartite-graphs",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 571,
-    "sorries": 14,
+    "mathlibCount": 3,
+    "sorries": 0,
     "annotationCount": 15
   },
   {
@@ -13464,17 +13490,23 @@
   },
   {
     "id": "erdos-886",
-    "title": "Erdős Problem #886",
+    "title": "Erdős Problem #886: Divisors Near the Square Root (Ruzsa's Conjecture)",
     "slug": "erdos-886",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that, for all large ..., the number of divisors of ... in ... is ...?\n\n\n\nErds attributes this conjecture ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For ε > 0, is the count of divisors of n in the interval (√n, √n + n^{1/2-ε}) bounded by O_ε(1)? An open problem about divisor clustering attributed to Ruzsa.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "distribution-of-divisors",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 886,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-887",
@@ -14545,17 +14577,24 @@
   },
   {
     "id": "erdos-965",
-    "title": "Erdős Problem #965",
+    "title": "Erdős Problem #965: Monochromatic Sums in 2-Colorings of ℝ",
     "slug": "erdos-965",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any ...-colouring of $...A\\subseteq ...\\aleph_1...a+b...a\\neq b...a,b\\in A$ are the same colour?\n\n\n\nIn  ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that for any 2-coloring of ℝ, there exists an uncountable set A with cardinality ℵ₁ such that all pairwise sums a+b are monochromatic? Answer: NO (Erdős 1975, Komjáth 2016).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "set-theory",
+      "cardinals",
+      "colorings",
+      "disproved"
     ],
+    "dateAdded": "2026-01-19",
     "erdosNumber": 965,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-966",
@@ -14573,17 +14612,23 @@
   },
   {
     "id": "erdos-967",
-    "title": "Erdős Problem #967",
+    "title": "Erdős Problem #967: Zeros of Generalized Dirichlet Sums",
     "slug": "erdos-967",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that .... Is it true that, for every ...,\\[1+\\sum_{k}{a_k^{1+it}}\\neq 0?\\]\n\n\n\nA questi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For integers 1 < a₁ < a₂ < ... with ∑(1/aᵢ) < ∞, is 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all t ∈ ℝ? Answer: NO - disproved by Yip (2025).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "complex-analysis",
+      "dirichlet-series",
+      "tauberian-theorems",
+      "disproved"
     ],
     "erdosNumber": 967,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-968",
