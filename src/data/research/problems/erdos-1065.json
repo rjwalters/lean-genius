@@ -11,17 +11,23 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "Form 1 examples: 3, 5, 7, 11, 13 (verified in Lean)",
+      "Non-examples: 17 (2^4), 19 (2·3²) proved in Lean"
+    ],
+    "open": [
+      "Infinitely many primes p = 2^k·q + 1?",
+      "Infinitely many primes p = 2^k·3^l·q + 1?"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T14:38:41.571Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T19:08:00.000Z",
+    "iteration": 2,
+    "focus": "Formalized with verified examples",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Search literature for partial results",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +35,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized both forms (2^k·q+1 and 2^k·3^l·q+1). Proved examples and non-examples with interval_cases.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1065Problem.lean - Main formalization (~180 lines)",
+      "HasForm1, HasForm2 definitions",
+      "conjecture1, conjecture2 statements",
+      "form1_3, form1_5, form1_7, form1_11, form1_13 theorems",
+      "not_form1_17, not_form1_19 theorems (proved!)",
+      "form2_19 theorem"
+    ],
+    "insights": [
+      "Form 1: p-1 = 2^k·q where q is odd prime (single odd prime factor)",
+      "Form 2: p-1 = 2^k·3^l·q (allows power of 3 as well)",
+      "17 fails form 1: 17-1 = 16 = 2^4 (no odd prime)",
+      "19 fails form 1: 19-1 = 18 = 2·3² (3 appears with power 2)",
+      "19 has form 2: 19-1 = 2·3·3 = 2^1·3^1·3",
+      "Form 2 is strictly more general (includes form 1 with l=0)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Compute density of form 1 primes",
+      "Research sieve methods for these problems",
+      "Study connection to Sophie Germain primes"
+    ],
     "markdown": "# Erdős #1065 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many primes $p$ such that $p=2^kq+1$ for some prime $q$ and $k\\geq 0$? Or $p=2^k3^lq+1$?\n\n\n\nThis is mentioned in problem B46 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1064\n- Problem #1066\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
