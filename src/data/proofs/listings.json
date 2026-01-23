@@ -12240,17 +12240,24 @@
   },
   {
     "id": "erdos-766",
-    "title": "Erdős Problem #766",
+    "title": "Erdős Problem #766: Extremal Numbers and Graph Density",
     "slug": "erdos-766",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... ranges over all graphs with ... vertices and ... edges.\n\nGive good estimates for ... in the range .... For...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n;k,l) = min ex(n;G) over graphs G with k vertices and l edges. Estimate f(n;k,l) for k < l ≤ k²/4. Is f strictly monotone in l? OPEN. Dirac-Erdős: f(n;k,⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "combinatorics",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 766,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 10
   },
   {
     "id": "erdos-767",
