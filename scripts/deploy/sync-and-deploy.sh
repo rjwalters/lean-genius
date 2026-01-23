@@ -165,40 +165,115 @@ merge_prs() {
             continue
         fi
 
-        # Find worktree for this branch
-        local worktree_name=$(echo "$branch" | sed 's/feature\///' | sed 's/-enhance//')
-        local worktree_path="$REPO_ROOT/.loom/worktrees/$worktree_name"
-
-        if [[ -d "$worktree_path" ]]; then
-            (
-                cd "$worktree_path"
-                git stash 2>/dev/null || true
-                git fetch origin main
-                if git rebase origin/main 2>/dev/null; then
-                    # Rebase succeeded
-                    git push --force-with-lease origin "$branch" 2>/dev/null || true
-                else
-                    # Try accepting theirs for common conflict files
-                    git checkout --theirs research/candidate-pool.json 2>/dev/null || true
-                    git checkout --theirs src/data/proofs/listings.json 2>/dev/null || true
-                    git checkout --theirs research/stub-claims/completed.json 2>/dev/null || true
-                    git checkout --theirs src/data/research/research-listings.json 2>/dev/null || true
-                    git add -A
-                    GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort 2>/dev/null || true
-                    git push --force-with-lease origin "$branch" 2>/dev/null || true
-                fi
-            )
-
-            # Try merging again after rebase
-            sleep 2
-            echo -n "  #$pr (after rebase): "
-            if gh pr merge "$pr" --squash 2>/dev/null; then
-                echo "merged"
-                ((merged++))
-            else
-                echo "still conflicting"
-                ((failed++))
+        # Find worktree by checking which one has this branch
+        local worktree_path=""
+        while IFS= read -r line; do
+            local wt_path=$(echo "$line" | cut -d' ' -f1)
+            local wt_branch=$(echo "$line" | grep -o '\[.*\]' | tr -d '[]')
+            if [[ "$wt_branch" == "$branch" ]]; then
+                worktree_path="$wt_path"
+                break
             fi
+        done < <(git worktree list)
+
+        # If no worktree found, create a temporary one
+        local temp_worktree=false
+        if [[ -z "$worktree_path" ]]; then
+            worktree_path="$REPO_ROOT/.loom/worktrees/temp-rebase-$$"
+            print_info "Creating temporary worktree for rebase..."
+            git fetch origin "$branch"
+            git worktree add "$worktree_path" "origin/$branch" --detach 2>/dev/null || {
+                print_warning "Could not create worktree for #$pr"
+                ((failed++))
+                continue
+            }
+            (cd "$worktree_path" && git checkout -B "$branch" "origin/$branch")
+            temp_worktree=true
+        fi
+
+        (
+            cd "$worktree_path"
+            git stash 2>/dev/null || true
+            git fetch origin main
+            git fetch origin "$branch"
+            git reset --hard "origin/$branch" 2>/dev/null || true
+
+            if git rebase origin/main 2>/dev/null; then
+                # Rebase succeeded cleanly
+                git push --force-with-lease origin "$branch" 2>/dev/null || true
+            else
+                # Handle conflicts intelligently
+                resolve_conflicts() {
+                    local resolved=true
+                    for conflict_file in $(git diff --name-only --diff-filter=U); do
+                        case "$conflict_file" in
+                            research/candidate-pool.json|src/data/proofs/listings.json|research/stub-claims/completed.json|src/data/research/research-listings.json)
+                                # For auto-generated JSON files, check if conflict is just timestamps
+                                if grep -q "last_updated\|lastUpdate" "$conflict_file" 2>/dev/null; then
+                                    # Remove conflict markers, keep HEAD (main) version of timestamps
+                                    # but preserve structure from the PR
+                                    git checkout --ours "$conflict_file" 2>/dev/null || {
+                                        # If --ours fails, manually strip conflict markers
+                                        if grep -q "^<<<<<<<" "$conflict_file"; then
+                                            # Take everything except the conflicting lines from the other side
+                                            sed -i.bak '/^<<<<<<</,/^=======/d; /^>>>>>>>/d' "$conflict_file"
+                                            rm -f "$conflict_file.bak"
+                                        fi
+                                    }
+                                    git add "$conflict_file"
+                                else
+                                    # Non-timestamp conflict in JSON - take ours (main wins for these files)
+                                    git checkout --ours "$conflict_file" 2>/dev/null && git add "$conflict_file"
+                                fi
+                                ;;
+                            *.lean)
+                                # Lean files need careful handling - don't auto-resolve
+                                print_warning "  Lean file conflict: $conflict_file (needs manual review)"
+                                resolved=false
+                                ;;
+                            *)
+                                # Other files - try ours first
+                                git checkout --ours "$conflict_file" 2>/dev/null && git add "$conflict_file" || resolved=false
+                                ;;
+                        esac
+                    done
+                    $resolved
+                }
+
+                if resolve_conflicts; then
+                    # Check for nested conflict markers (bad previous merge)
+                    if grep -rq "^<<<<<<<.*\n.*^<<<<<<" . 2>/dev/null; then
+                        print_warning "  Nested conflict markers detected, aborting"
+                        git rebase --abort 2>/dev/null || true
+                    else
+                        GIT_EDITOR=true git rebase --continue 2>/dev/null || {
+                            # If continue fails, try once more after resolving any new conflicts
+                            resolve_conflicts && GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort 2>/dev/null || true
+                        }
+                        git push --force-with-lease origin "$branch" 2>/dev/null || true
+                    fi
+                else
+                    print_warning "  Could not auto-resolve all conflicts"
+                    git rebase --abort 2>/dev/null || true
+                fi
+            fi
+        )
+
+        # Clean up temporary worktree
+        if $temp_worktree; then
+            git worktree remove "$worktree_path" --force 2>/dev/null || true
+        fi
+
+        # Try merging again after rebase
+        sleep 3
+        local new_status=$(gh pr view "$pr" --json mergeable --jq '.mergeable' 2>/dev/null || echo "UNKNOWN")
+        echo -n "  #$pr (after rebase): "
+        if [[ "$new_status" == "MERGEABLE" ]] && gh pr merge "$pr" --squash 2>/dev/null; then
+            echo "merged"
+            ((merged++))
+        else
+            echo "still conflicting ($new_status)"
+            ((failed++))
         fi
     done
 
