@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-876-1",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #876 asks about **sum-free sets** and how small the gaps between consecutive elements can be.\n\n**The Question:** If A = {a₁ < a₂ < ⋯} is an infinite sum-free set (no element equals a sum of distinct smaller elements), is it possible that aₙ₊₁ - aₙ < n?\n\n**Status:** PARTIALLY SOLVED / OPEN\n\n**Key Results:**\n- Graham: Gaps can be < n^{1+ε} for any ε > 0\n- Whether gaps can be linear (< n) remains OPEN",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-876-2",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 49,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Sum-Free Set (Erdős Definition)",
+    "content": "**IsSumFreeErdos:**\n\nA set A ⊂ ℕ is sum-free in Erdős's sense if no element a ∈ A can be written as a sum b₁ + b₂ + ⋯ + bᵣ of distinct smaller elements bᵢ ∈ A.\n\n**Key Point:** This is STRONGER than the classical 'sum-free' condition (no x + y = z). Here we forbid ANY sum of distinct predecessors, not just pairs.\n\n**Example:** {1, 2, 4, 8, 16, ...} (powers of 2) is sum-free because 2ⁿ cannot equal a sum of smaller distinct powers of 2 (by binary representation uniqueness).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-876-3",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 61,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Classical Sum-Free Definition",
+    "content": "**IsSumFreeClassical:**\n\nThe classical definition: no a, b, c ∈ A with a + b = c.\n\nThis is WEAKER than Erdős's definition - it only forbids two-element sums, while Erdős forbids sums of any number of distinct elements.\n\nThe theorem `erdos_implies_classical` shows that Erdős sum-free implies classical sum-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-876-4",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 84,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Gap Sequences and Bounds",
+    "content": "**Gap Definitions:**\n\n- `IsIncreasingEnumeration`: a sequence a₁ < a₂ < ⋯\n- `gap a n = aₙ₊₁ - aₙ`: the n-th gap\n- `HasGapBound a f`: all gaps satisfy aₙ₊₁ - aₙ < f(n)\n- `HasLinearGapBound a`: the critical condition aₙ₊₁ - aₙ < n\n\n**The Central Question:** Can we achieve HasLinearGapBound for an infinite sum-free set? This is Erdős's open question #876.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-876-5",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 117,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "Erdős Question #876 Formalized",
+    "content": "**ErdosQuestion876:**\n\n```lean\ndef ErdosQuestion876 : Prop :=\n  ∃ (a : ℕ → ℕ), IsIncreasingEnumeration a ∧\n    IsSumFreeErdos (Set.range a) ∧\n    HasLinearGapBound a\n```\n\nThis is the formal statement of the main open question: Does there exist an infinite sum-free set with gaps growing slower than linearly?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-876-6",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 126,
+      "endLine": 137
+    },
+    "type": "theorem",
+    "title": "Graham's Result",
+    "content": "**graham_result:**\n\nFor any ε > 0, there exists a sum-free set with gaps < n^{1+ε} eventually.\n\nThis is the best known positive result - we can get arbitrarily close to linear gaps, but haven't achieved them.\n\n**Significance:** Shows that 'almost linear' gaps are achievable, suggesting the full linear case might be true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-876-7",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 142,
+      "endLine": 161
+    },
+    "type": "theorem",
+    "title": "Density Results",
+    "content": "**Erdős (1962):** Sum-free sets have asymptotic density zero.\n\n**Łuczak-Schoen (2000):**\n- Upper bound: |A ∩ [1,N]| ≪ √(N log N)\n- Lower bound: There exists A with |A ∩ [1,N]| ≫ √N / √(log N)^{1/2+o(1)}\n\nThese bounds show sum-free sets are 'thin' but not too thin - their counting function grows like √(N log N).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-876-8",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 176,
+      "endLine": 194
+    },
+    "type": "theorem",
+    "title": "Deshouillers-Erdős-Melfi Growth Rate",
+    "content": "**dem_growth (1999):**\n\nThere exists a sum-free set with aₙ ~ n^{3+o(1)}.\n\n**The exponent 3:** This cubic growth rate is related to the density bounds - if |A ∩ [1,N]| ~ √N, then the n-th element should be roughly n²-ish. The extra factor comes from logarithmic corrections.\n\n**Connection:** The growth rate aₙ ~ n³ and density ~ N^{1/2} are dual views of the same structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-876-9",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 196,
+      "endLine": 226
+    },
+    "type": "theorem",
+    "title": "Reciprocal Sum Bounds",
+    "content": "**Reciprocal Sum Question:** What is max Σ_{n∈A} 1/n over all sum-free sets?\n\n**Results:**\n- Erdős: Σ 1/n < 100 (original bound)\n- Sullivan: Σ 1/n < 4 (improved bound)\n- Sullivan's Conjecture: The maximum is slightly > 2\n\n**Why this matters:** The convergence of Σ 1/n implies sum-free sets can't be 'too dense'. The exact supremum reveals deep structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-876-10",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 230,
+      "endLine": 247
+    },
+    "type": "theorem",
+    "title": "Powers of 2 Example",
+    "content": "**powers_of_two_sumfree:**\n\nThe set {2^n : n ∈ ℕ} = {1, 2, 4, 8, 16, ...} is sum-free.\n\n**Proof idea:** By uniqueness of binary representation, 2ⁿ cannot equal any sum of distinct smaller powers of 2 (since that sum would have binary expansion using only bits 0 through n-1).\n\n**As a baseline:** Powers of 2 give gaps 2^{n+1} - 2^n = 2^n, which grow exponentially - much larger than linear. So this example doesn't help with the main question.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-876-11",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 249,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Connections to Other Areas",
+    "content": "**Related Structures:**\n\n- **Sidon sets:** All pairwise sums distinct. Different from sum-free but related in spirit.\n- **B_h sequences:** No h-fold sum repeated. Sum-free is like B_∞.\n\n**Problem #790:** See also Erdős Problem #790 for related questions about sum-free sets.\n\nThese connections place the problem in the broader context of additive combinatorics.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-876-12",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 267,
+      "endLine": 308
+    },
+    "type": "theorem",
+    "title": "Status Summary",
+    "content": "**erdos_876_summary:**\n\nErdős Problem #876 is **PARTIALLY SOLVED**.\n\n**QUESTION 1:** How small can gaps aₙ₊₁ - aₙ be?\n**ANSWER:** At least n^{1+o(1)} (Graham). Possibly linear (OPEN).\n\n**QUESTION 2:** Is aₙ₊₁ - aₙ < n possible?\n**ANSWER:** OPEN\n\n**QUESTION 3:** What is max Σ 1/n?\n**ANSWER:** Between 2 and 4 (Sullivan conjectures ~2)\n\n**Key Results:**\n1. Sum-free sets have density zero (Erdős 1962)\n2. Counting function ~ √(N log N) (Łuczak-Schoen 2000)\n3. Growth rate aₙ ~ n^{3+o(1)} achievable (DEM 1999)\n4. Gap bound aₙ₊₁ - aₙ < n^{1+ε} achievable (Graham)",
+    "significance": "critical"
+  }
+]
