@@ -1,0 +1,128 @@
+{
+  "slug": "erdos-48",
+  "title": "Erdős #48: Infinitely Many φ(n) = σ(m) Pairs",
+  "phase": "FORMALIZED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∃ infinitely many pairs (n, m) with φ(n) = σ(m)",
+    "plain": "Are there infinitely many integers n, m such that φ(n) = σ(m)?",
+    "whyMatters": [
+      "Classic number theory problem connecting totient and divisor functions",
+      "Would follow from twin prime conjecture",
+      "SOLVED by Ford-Luca-Pomerance (2010) with quantitative bounds"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "YES - infinitely many pairs exist (Ford-Luca-Pomerance 2010)",
+      "Count ≥ exp((log log x)^c) common values up to x",
+      "Improved to exp((log log x)^ω(x)) by Garaev (2011)",
+      "Twin primes (p, p+2) give pairs via φ(p+2) = σ(p)"
+    ],
+    "open": [],
+    "goal": "Problem is solved - formalize the result"
+  },
+  "currentState": {
+    "phase": "FORMALIZED",
+    "since": "2026-01-23T00:00:00Z",
+    "iteration": 1,
+    "focus": "471-line formalization with verified examples and twin prime connection",
+    "activeApproach": "Axiomatize main theorem, prove concrete examples by native_decide",
+    "blockers": [],
+    "nextAction": "Consider proving sumDivisors_prime from divisor enumeration",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "FORMALIZED (SOLVED): 471-line file with Ford-Luca-Pomerance theorem, 5 verified example pairs, twin prime connection, and multiplicativity properties.",
+    "builtItems": [
+      "sumDivisors: σ(n) definition (Erdos48Problem.lean:55)",
+      "totientSigmaPairs: pairs with φ(n) = σ(m) (Erdos48Problem.lean:109)",
+      "commonValues: values that are both φ(n) and σ(m) (Erdos48Problem.lean:116)",
+      "sumDivisors_one: σ(1) = 1 (PROVED, Erdos48Problem.lean:76)",
+      "totient_one: φ(1) = 1 (PROVED, Erdos48Problem.lean:89)",
+      "totient_prime: φ(p) = p - 1 (PROVED, Erdos48Problem.lean:92)",
+      "commonValues_iff: characterization (PROVED, Erdos48Problem.lean:122)",
+      "sumDivisors_three: σ(3) = 4 (PROVED, Erdos48Problem.lean:137)",
+      "pair_5_3: (5, 3) is a pair (PROVED, Erdos48Problem.lean:145)",
+      "pair_2_1: (2, 1) is a pair (PROVED, Erdos48Problem.lean:158)",
+      "pair_7_5: (7, 5) is a pair (PROVED, Erdos48Problem.lean:180)",
+      "pair_13_11: (13, 11) is a pair (PROVED, Erdos48Problem.lean:193)",
+      "pair_13_6: (13, 6) is a pair (PROVED, Erdos48Problem.lean:211)",
+      "ford_luca_pomerance: infinitely many pairs (AXIOM, Erdos48Problem.lean:228)",
+      "erdos_48: main theorem (PROVED from axiom, Erdos48Problem.lean:234)",
+      "commonValues_infinite: infinitely many common values (AXIOM, Erdos48Problem.lean:240)",
+      "garaev_improvement: density improvement (AXIOM, Erdos48Problem.lean:256)",
+      "twin_prime_gives_pair: twin primes give pairs (PROVED, Erdos48Problem.lean:276)",
+      "twin_prime_implies_erdos_48: twin prime conjecture ⟹ Erdős 48 (AXIOM, Erdos48Problem.lean:290)",
+      "prime_pair_condition: when prime pairs work (PROVED, Erdos48Problem.lean:303)",
+      "isSophieGermain: Sophie Germain prime predicate (Erdos48Problem.lean:320)",
+      "isPerfect: perfect number predicate (Erdos48Problem.lean:327)",
+      "six_is_perfect: 6 is perfect (PROVED, Erdos48Problem.lean:330)",
+      "totientRange / sigmaRange: value sets (Erdos48Problem.lean:342-348)",
+      "commonValues_eq_inter: intersection characterization (PROVED, Erdos48Problem.lean:353)",
+      "one_is_common: 1 is common value (PROVED, Erdos48Problem.lean:361)",
+      "four_is_common: 4 is common value (PROVED, Erdos48Problem.lean:372)",
+      "six_is_common: 6 is common value (PROVED, Erdos48Problem.lean:383)",
+      "twelve_is_common: 12 is common value (PROVED, Erdos48Problem.lean:394)",
+      "sumDivisors_multiplicative: σ is multiplicative (AXIOM, Erdos48Problem.lean:409)",
+      "totient_multiplicative: φ is multiplicative (PROVED, Erdos48Problem.lean:418)",
+      "at_least_five_pairs: 5 concrete pairs (PROVED, Erdos48Problem.lean:457)"
+    ],
+    "insights": [
+      "Problem SOLVED by Ford-Luca-Pomerance (2010)",
+      "Twin primes (p, p+2) give pairs: φ(p+2) = p+1 = σ(p)",
+      "Twin prime conjecture would immediately imply this result",
+      "Both φ and σ are multiplicative - useful for constructing pairs",
+      "Common values include: 1, 4, 6, 12, ...",
+      "Garaev (2011) improved density bounds with slowly growing function",
+      "Perfect numbers connect: σ(n) = 2n when n is perfect"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove sumDivisors_prime from divisor enumeration",
+      "Prove sumDivisors_gt/ge from divisor properties",
+      "Consider more concrete pair verifications"
+    ],
+    "markdown": "# Erdős #48 - Infinitely Many φ(n) = σ(m) Pairs\n\n## Problem Statement\n\nAre there infinitely many integers n, m such that φ(n) = σ(m)?\n\n## Status\n\n**Erdős Database Status**: SOLVED\n\n**Solution**: Ford-Luca-Pomerance (2010) proved YES\n\n## Verified Example Pairs\n\n| n | m | φ(n) = σ(m) |\n|---|---|-------------|\n| 2 | 1 | 1 |\n| 5 | 3 | 4 |\n| 7 | 5 | 6 |\n| 13 | 11 | 12 |\n| 13 | 6 | 12 |\n\n## Twin Prime Connection\n\nIf p and p+2 are both prime:\n- φ(p+2) = (p+2) - 1 = p + 1\n- σ(p) = 1 + p = p + 1\n\nSo (p+2, p) is a φ-σ pair!\n\nThe twin prime conjecture would immediately imply this result.\n\n---\n\n*Formalized 2026-01-23*\n"
+  },
+  "approaches": [
+    {
+      "name": "Axiomatize main theorem with verified examples",
+      "status": "successful",
+      "description": "Ford-Luca-Pomerance theorem axiomatized, 5 pairs verified by native_decide"
+    }
+  ],
+  "tags": [
+    "erdos",
+    "number-theory",
+    "totient",
+    "divisor-sum",
+    "twin-primes",
+    "solved"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [
+      "Ford, Luca, Pomerance (2010) 'Common values of the arithmetic functions φ and σ'",
+      "Garaev (2011) improved density estimates",
+      "Guy 'Unsolved Problems in Number Theory' B38"
+    ],
+    "urls": [
+      "https://erdosproblems.com/48"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.NumberTheory.Divisors"
+    ]
+  },
+  "started": "2026-01-23T00:00:00Z",
+  "lastUpdate": "2026-01-23T00:00:00Z",
+  "significance": 7,
+  "tractability": 8
+}
