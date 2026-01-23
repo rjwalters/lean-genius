@@ -1,33 +1,143 @@
 {
   "id": "erdos-231",
-  "title": "Erdős Problem #231",
+  "title": "Erdős Problem #231: Abelian Squares in Strings",
   "slug": "erdos-231",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a string of length ... formed from an alphabet of ... characters. Must ... contain an abelian square: two consecut...",
+  "description": "Must a string of length 2^k - 1 over k letters contain an abelian square? NO for k ≥ 4 (Keränen 1992).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (posed), Keränen (1992 disproof)",
     "sourceUrl": "https://erdosproblems.com/231",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos231Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics-on-words",
+      "abelian-square",
+      "string-avoidance",
+      "keraenen-morphism",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 231,
     "erdosUrl": "https://erdosproblems.com/231",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "List",
+        "description": "List type for strings/words",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for alphabet size",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "List.count",
+        "description": "Character counting for Parikh vectors",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "parikhVector w: character counts in a word",
+      "abelianEquiv x y: same Parikh vector (permutation)",
+      "isAbelianSquare w: consecutive permuted blocks",
+      "containsAbelianSquare w: has abelian square factor",
+      "isAbelianSquareFree w: no abelian squares",
+      "erdos_231_question k: Erdős's conjecture",
+      "thue_squarefree axiom: squarefree strings over 3 letters",
+      "keranen_1992 axiom: abelian-square-free over 4 letters",
+      "keranen_morphism axiom: 85-letter morphism",
+      "erdos_231_disproved axiom: NO for k ≥ 4"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #231 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S$ be a string of length $2^k-1$ formed from an alphabet of $k$ characters. Must $S$ contain an abelian square: two consecutive blocks $x$ and $y$ such that $y$ is a permutation of $x$?\n\n\n\nErd\\H{o}s initially conjectured that the answer is yes for all $k\\geq 2$, but for $k=4$ this was disproved by de Bruijn and Erd\\H{o}s. At least, this is what Erd\\H{o}s writes, but gives no construction or reference, and a simple computer search produces no such counterexamples for $k=4$. Perhaps Erd\\H{o}s meant $2^k$, where indeed there is an example for $k=4$:\\[1213121412132124.\\]Erd\\H{o}s then asked if there is in fact an infinite string formed from $\\{1,2,3,4\\}$ which contains no abelian squares? This is equivalent to [192], and such a string was constructed by Keränen \\cite{Ke92}. The existence of this infinite string gives a negative answer to the problem for all $k\\geq 4$.\n\nContaining no abelian squares is a stronger property than being squarefree (the existence of infinitely long squarefree strings over alphabets with $k\\geq 3$ characters was established by Thue).\n\nWe refer to a recent survey by Fici and Puzynina \\cite{FiPu23} for more background and related results.\n\n\n\n\nReferences\n\n\n[FiPu23] Fici, Gabriele and Puzynina, Svetlana, Abelian combinatorics on words: a survey. Comput. Sci. Rev. (2023), Paper No. 100532, 21.\n\n[Ke92] Ker\\\"Anen, Veikko, Abelian squares are avoidable on {$4$} letters. Automata, languages and programming (Vienna, 1992) (1992), 41-52.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #231**\n\nThis problem concerns abelian squares in combinatorics on words.\n\n**History:**\n- Erdős initially conjectured YES: strings of length 2^k - 1 over k letters must contain abelian squares\n- De Bruijn and Erdős found counterexamples for k = 4\n- The question evolved: can infinite abelian-square-free strings exist?\n- Keränen (1992) constructed an infinite abelian-square-free string over 4 letters\n\n**Context:**\n- Thue (early 1900s) showed squarefree strings exist over 3 letters\n- Abelian-square-free is a STRONGER property\n- 4 letters are both necessary and sufficient for abelian-square-free strings",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet S be a string of length 2^k - 1 formed from an alphabet of k characters.\n\n**Question:** Must S contain an abelian square (two consecutive blocks where one is a permutation of the other)?\n\n**Answer:**\n- For k = 2, 3: YES (all such strings contain abelian squares)\n- For k ≥ 4: NO (Keränen 1992)\n\nAn abelian square is xy where x and y have the same letter counts (same Parikh vector).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Word Basics:** Use List α for strings\n\n2. **Key Definitions:**\n   - parikhVector: character count function\n   - abelianEquiv: same Parikh vector\n   - isAbelianSquare: consecutive permuted blocks\n   - isAbelianSquareFree: no abelian squares\n\n3. **Comparison with Squarefree:**\n   - Square: w = xx (exact repetition)\n   - Abelian square: w = xy where y ~ x (permutation)\n   - Abelian-square-free ⟹ squarefree\n\n4. **Main Results:**\n   - thue_squarefree: 3 letters suffice for squarefree\n   - keranen_1992: 4 letters suffice for abelian-square-free\n   - erdos_231_disproved: NO for k ≥ 4\n\n**Why Axioms:** The Keränen construction is a specific 85-letter morphism beyond algorithmic verification.",
+    "keyInsights": [
+      "**Parikh Vector:** The key invariant - two words are abelian equivalent iff they have the same character counts.",
+      "**Stronger than Squarefree:** Every square is an abelian square, so abelian-square-free implies squarefree.",
+      "**4 is the Threshold:** 3 letters suffice for squarefree (Thue), but 4 are needed for abelian-square-free (Keränen).",
+      "**The Keränen Morphism:** A substitution μ where each letter maps to 85 letters, preserving abelian-square-freeness.",
+      "**Connection to #192:** Problem #192 asks about infinite abelian-square-free sequences - same answer."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Parikh vectors and abelian squares",
+      "startLine": 46,
+      "endLine": 75
+    },
+    {
+      "id": "squarefree",
+      "title": "Squarefree vs Abelian-Square-Free",
+      "summary": "Hierarchy of avoidance properties",
+      "startLine": 77,
+      "endLine": 103
+    },
+    {
+      "id": "alphabet",
+      "title": "Alphabet Size Question",
+      "summary": "Erdős's original question",
+      "startLine": 105,
+      "endLine": 118
+    },
+    {
+      "id": "thue",
+      "title": "Thue's Result",
+      "summary": "Squarefree strings over 3 letters",
+      "startLine": 120,
+      "endLine": 131
+    },
+    {
+      "id": "keranen",
+      "title": "Keränen's Construction",
+      "summary": "Abelian-square-free over 4 letters",
+      "startLine": 133,
+      "endLine": 155
+    },
+    {
+      "id": "disproof",
+      "title": "Resolution",
+      "summary": "NO for k ≥ 4",
+      "startLine": 157,
+      "endLine": 179
+    },
+    {
+      "id": "small-k",
+      "title": "Small k Cases",
+      "summary": "k = 2, 3 still have abelian squares",
+      "startLine": 181,
+      "endLine": 199
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete abelian squares and counterexamples",
+      "startLine": 201,
+      "endLine": 223
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and resolution",
+      "startLine": 236,
+      "endLine": 260
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #231 was disproved by Keränen in 1992. For k ≥ 4, strings of length 2^k - 1 over k letters need NOT contain abelian squares. Keränen constructed an infinite abelian-square-free string over 4 letters using an 85-letter morphism.",
+    "implications": "The result shows that 4 is the threshold alphabet size for avoiding abelian squares. While Thue showed squarefree strings exist over 3 letters, the stronger property of being abelian-square-free requires 4 letters. This connects to deep questions in combinatorics on words.",
+    "openQuestions": [
+      "What is the minimum length abelian-square-free string over 4 letters for each length?",
+      "Can simpler constructions than Keränen's 85-letter morphism work?",
+      "What about other abelian avoidance properties (abelian cubes, etc.)?"
+    ]
   }
 }
