@@ -1,7 +1,7 @@
 {
   "slug": "erdos-389",
   "title": "Erdős #389",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-13T01:10:23.917Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Problem formalized with OEIS data. Existence for all n is OPEN.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized consecutive products divisibility problem. OEIS A375071 data integrated. Problem is OPEN.",
+    "builtItems": [
+      "proofs/Proofs/Erdos389Problem.lean: consecutiveProduct definition",
+      "proofs/Proofs/Erdos389Problem.lean: divides_blocks predicate",
+      "proofs/Proofs/Erdos389Problem.lean: validK and minimalK (OEIS A375071)",
+      "proofs/Proofs/Erdos389Problem.lean: erdos_389_conjecture statement",
+      "proofs/Proofs/Erdos389Problem.lean: verified examples for n=1,2,3"
+    ],
+    "insights": [
+      "Question: does n(n+1)⋯(n+k-1) | (n+k)⋯(n+2k-1) for some k?",
+      "OEIS A375071 gives minimal k for n=1..18: 1,1,5,4,207,206,2475,...",
+      "Pattern: consecutive odd-indexed terms often differ by 1",
+      "Condition reduces to p-adic valuation comparisons for all primes",
+      "Minimal k can grow very large (k=207 for n=4)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Study p-adic valuation structure of consecutive products",
+      "Investigate the differ-by-1 pattern in OEIS data",
+      "Connect to Legendre formula for factorial valuations"
+    ],
     "markdown": "# Erdős #389 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #390\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],
