@@ -1,1 +1,103 @@
-[]
+[
+  {
+    "id": "ann-206-1",
+    "proofId": "erdos-206",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #206: Eventually Greedy Egyptian Fractions**\n\n**Setup:** For x > 0, let R_n(x) be the best underapproximation using n distinct unit fractions (1/m₁ + ... + 1/mₙ < x).\n\n**Question:** For almost all x, do best underapproximations eventually follow greedy choices?\n\n**Answer:** NO (Kovač 2024)\n\nThe set of eventually greedy x has Lebesgue measure ZERO.",
+    "mathContext": "This connects approximation theory, measure theory, and Diophantine approximation. The greedy algorithm's failure for generic numbers reveals deep structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Greedy algorithms", "Measure theory", "Diophantine approximation"]
+  },
+  {
+    "id": "ann-206-2",
+    "proofId": "erdos-206",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Egyptian Fraction",
+    "content": "**EgyptianFraction S:**\n\nThe sum of unit fractions with denominators from S:\n∑_{m ∈ S} 1/m\n\n**Examples:**\n- {2, 3, 7} → 1/2 + 1/3 + 1/7 = 41/42\n- {3, 4, 5} → 1/3 + 1/4 + 1/5 = 47/60\n\nThese are ancient representations dating to Egyptian papyri.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-206-3",
+    "proofId": "erdos-206",
+    "range": { "startLine": 81, "endLine": 82 },
+    "type": "axiom",
+    "title": "Best Underapproximation R_n(x)",
+    "content": "**R n x:**\n\nThe maximum sum of n distinct unit fractions that stays below x.\n\n**Formally:** R_n(x) = max { ∑ 1/mᵢ : distinct mᵢ, sum < x }\n\n**Example:** R_1(1) = 1/2 (largest unit fraction < 1)\n\nThis function encodes optimal approximation with a fixed number of terms.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-206-4",
+    "proofId": "erdos-206",
+    "range": { "startLine": 114, "endLine": 119 },
+    "type": "definition",
+    "title": "Eventually Greedy Property",
+    "content": "**EventuallyGreedy x:**\n\nx is eventually greedy if ∃N such that ∀n ≥ N:\n  R_{n+1}(x) = R_n(x) + 1/m\nwhere m is the smallest valid denominator (greedy choice).\n\n**Intuition:** After some point, the optimal strategy coincides with the simple greedy approach.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-206-5",
+    "proofId": "erdos-206",
+    "range": { "startLine": 134, "endLine": 135 },
+    "type": "axiom",
+    "title": "Curtiss's Theorem (1922)",
+    "content": "**curtiss_theorem:**\n\nx = 1 is eventually greedy.\n\nThe best underapproximations to 1 by Egyptian fractions eventually follow greedy choices.\n\nThis was the first positive result, showing the conjecture holds for the most natural case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-206-6",
+    "proofId": "erdos-206",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "axiom",
+    "title": "Erdős's Theorem (1950)",
+    "content": "**erdos_unit_fractions:**\n\nFor all positive integers m, x = 1/m is eventually greedy.\n\nThis extends Curtiss's result to all unit fractions, a natural family of targets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-206-7",
+    "proofId": "erdos-206",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "axiom",
+    "title": "Nathanson's Theorem (2023)",
+    "content": "**nathanson_theorem:**\n\nIf a | b+1, then a/b is eventually greedy.\n\n**Examples:**\n- 1/2 (1 | 3) ✓\n- 2/5 (2 | 6) ✓\n- 3/8 (3 | 9) ✓\n\nThis identifies a structural condition for eventual greedy behavior.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-206-8",
+    "proofId": "erdos-206",
+    "range": { "startLine": 169, "endLine": 171 },
+    "type": "axiom",
+    "title": "Kovač's Theorem (2024) - Main Result",
+    "content": "**kovac_theorem:**\n\nmeasure(EventuallyGreedySet) = 0\n\n**Translation:** The set of x that are eventually greedy has Lebesgue measure zero.\n\n**Impact:** This DISPROVES the Erdős conjecture - almost all numbers are NOT eventually greedy.\n\nDescribed as 'as false as possible' - the conjecture fails in the strongest measure-theoretic sense.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-206-9",
+    "proofId": "erdos-206",
+    "range": { "startLine": 198, "endLine": 200 },
+    "type": "definition",
+    "title": "Open Question: All Rationals",
+    "content": "**all_rationals_eventually_greedy:**\n\nIs every positive rational x eventually greedy?\n\n**Known:** True for x = 1/m, and x = a/b when a|b+1\n\n**Unknown:** General rationals like 2/7, 5/11, etc.\n\nThis remains one of the main open problems after Kovač's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-206-10",
+    "proofId": "erdos-206",
+    "range": { "startLine": 227, "endLine": 230 },
+    "type": "axiom",
+    "title": "The 11/24 Example",
+    "content": "**counterexample_finite:**\n\nGreedy can fail at finite steps:\n\nR_1(11/24) = 1/3 ≈ 0.333\nR_2(11/24) = 1/4 + 1/5 = 0.45\n\nIf greedy continued: 1/3 + 1/? would need 1/? < 11/24 - 1/3 = 3/24\nSo greedy would give 1/3 + 1/9, but 1/4 + 1/5 = 0.45 > 1/3 + 1/9 ≈ 0.44\n\nThis shows optimal ≠ greedy at step 2 for 11/24.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-206-11",
+    "proofId": "erdos-206",
+    "range": { "startLine": 300, "endLine": 301 },
+    "type": "theorem",
+    "title": "Main Theorem: SOLVED (Disproved)",
+    "content": "**erdos_206:**\n\nmeasure(EventuallyGreedySet) = 0\n\n**Erdős Problem #206: SOLVED**\n\n**Question:** For almost all x, are best underapproximations eventually greedy?\n\n**Answer:** NO\n\n**Paradox:** Almost all x are not greedy, yet no explicit example is known.\n\nThe measure-zero result means greedy behavior is exceptional, not typical.",
+    "significance": "critical"
+  }
+]
