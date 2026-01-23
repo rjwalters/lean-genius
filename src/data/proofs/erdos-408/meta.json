@@ -1,33 +1,156 @@
 {
   "id": "erdos-408",
-  "title": "Erdős Problem #408",
+  "title": "Erdős Problem #408: Iterated Totient Function",
   "slug": "erdos-408",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Euler totient function and ... be the iterated ... function, so that ... and .... Let\\[f(n) = \\min \\{ k : \\phi...",
+  "description": "Does f(n)/log(n) have a distribution function, where f(n) is the number of iterations of Euler's totient needed to reach 1? EGPS (1990) proved YES conditionally on Elliott-Halberstam.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Granville-Pomerance-Spiro (1990)",
     "sourceUrl": "https://erdosproblems.com/408",
-    "date": "",
-    "status": "pending",
+    "date": "1990",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos408Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient",
+      "iteration",
+      "distribution",
+      "elliott-halberstam"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 408,
     "erdosUrl": "https://erdosproblems.com/408",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural logarithm to given base",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "iteratedTotient: k-fold iteration of Euler's totient",
+      "iterationLength: f(n) = min{k : φₖ(n) = 1}",
+      "Pillai bounds: log₃(n) < f(n) < log₂(n)",
+      "EssentiallyMultiplicative: Shapiro's property",
+      "HasDistributionFunction and AlmostAlwaysConstant definitions",
+      "EGPS conditional theorem on Elliott-Halberstam",
+      "largestPrimeFactor and Question 3",
+      "Verified totient computations for small n"
+    ],
+    "dateAdded": "2026-01-22"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #408 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\phi(n)$ be the Euler totient function and $\\phi_k(n)$ be the iterated $\\phi$ function, so that $\\phi_1(n)=\\phi(n)$ and $\\phi_k(n)=\\phi(\\phi_{k-1}(n))$. Let\\[f(n) = \\min \\{ k : \\phi_k(n)=1\\}.\\]Does $f(n)/\\log n$ have a distribution function? Is $f(n)/\\log n$ almost always constant? What can be said about the largest prime factor of $\\phi_k(n)$ when, say, $k=\\log\\log n$?\n\n\n\nPillai \\cite{Pi29} was the first to investigate this function, and proved\\[\\log_3 n < f(n) < \\log_2 n\\]for all large $n$. Shapiro \\cite{Sh50} proved that $f(n)$ is essentially multiplicative.\n\nErd\\H{o}s, Granville, Pomerance, and Spiro \\cite{EGPS90} have proved that the answer to the first two questions is yes, conditional on a form of the Elliott-Halberstam conjecture.\n\nIt is likely true that, if $k\\to \\infty$ however slowly with $n$, then for almost all $n$ the largest prime factor of $\\phi_k(n)$ is $\\leq n^{o(1)}$.\n\nThis is discussed in problem B41 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[EGPS90] Erd\\H{o}s, P. and Granville, A. and Pomerance, C. and Spiro, C., On the normal behavior of the iterates of some arithmetic functions. Analytic number theory (Allerton Park, IL, 1989) (1990), 165-204.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Pi29] Pillai, S. Sivasankaranarayana, On some functions connected with {$\\phi(n)$}. Bull. Amer. Math. Soc. (1929), 832-836.\n\n[Sh50] Shapiro, Harold N., On the iterates of a certain class of arithmetic functions. Comm. Pure Appl. Math. (1950), 259-272.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #408 concerns the iterated totient function f(n), which counts how many times Euler's totient φ must be applied to n before reaching 1. Since φ(n) < n for n > 1, iteration always terminates.\n\nPillai (1929) was the first to study f(n), establishing that log₃(n) < f(n) < log₂(n) for large n. This pins down the order of magnitude: f(n) grows logarithmically.\n\nShapiro (1950) proved that f(n) is 'essentially multiplicative,' meaning f(mn) ≈ f(m) + f(n) for coprime m, n. This structural result helps understand how f behaves on products.\n\nThe breakthrough came from Erdős, Granville, Pomerance, and Spiro (1990), who proved conditional on the Elliott-Halberstam conjecture that: (1) f(n)/log(n) has a distribution function, and (2) f(n)/log(n) is almost always equal to 1/log(2) ≈ 1.4427. The problem remains open unconditionally.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $\\phi_k(n)$ denote the $k$-fold iterate of Euler's totient function, and define\n$$f(n) = \\min\\{k : \\phi_k(n) = 1\\}.$$\n\n**Questions:**\n1. Does $f(n)/\\log n$ have a distribution function?\n2. Is $f(n)/\\log n$ almost always constant?\n3. What is the largest prime factor of $\\phi_k(n)$ when $k \\approx \\log\\log n$?\n\n**Known Results:**\n- Pillai (1929): $\\log_3 n < f(n) < \\log_2 n$ for large $n$\n- Shapiro (1950): $f$ is essentially multiplicative\n- EGPS (1990): Conditional on Elliott-Halberstam, YES to Q1 and Q2 with limiting constant $1/\\log 2 \\approx 1.4427$\n\n**Status:** OPEN (requires Elliott-Halberstam conjecture)",
+    "proofStrategy": "The formalization defines the iterated totient φₖ(n) recursively and introduces f(n) as the minimum k reaching 1. Key axioms capture: (1) Pillai's 1929 bounds relating f(n) to logarithms base 2 and 3, (2) Shapiro's essentially multiplicative property, (3) the EGPS conditional theorem. The distribution function and 'almost always constant' concepts are defined formally. Small examples verify totient computations using native_decide.",
+    "keyInsights": [
+      "**Iteration length**: f(n) counts steps to reach 1. Since φ(n) < n for n > 1, f(n) is always finite.",
+      "**Pillai bounds**: log₃(n) < f(n) < log₂(n) shows f(n) ~ c·log(n) for some constant c.",
+      "**Essentially multiplicative**: f(mn) ≈ f(m) + f(n) for coprime m, n (with bounded error).",
+      "**Conditional answer**: Under Elliott-Halberstam, f(n)/log(n) → 1/log(2) ≈ 1.4427 for almost all n.",
+      "**Powers of 2**: f(2^k) = k exactly, since φ(2^j) = 2^{j-1}."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "iterated-totient",
+      "title": "Iterated Totient Function",
+      "summary": "Definition of φₖ(n) and basic properties",
+      "startLine": 40,
+      "endLine": 68
+    },
+    {
+      "id": "iteration-length",
+      "title": "The Iteration Length f(n)",
+      "summary": "Definition of f(n) = min{k : φₖ(n) = 1}",
+      "startLine": 70,
+      "endLine": 103
+    },
+    {
+      "id": "pillai-bounds",
+      "title": "Pillai's Bounds (1929)",
+      "summary": "log₃(n) < f(n) < log₂(n)",
+      "startLine": 105,
+      "endLine": 143
+    },
+    {
+      "id": "shapiro",
+      "title": "Shapiro's Multiplicativity (1950)",
+      "summary": "EssentiallyMultiplicative definition and theorem",
+      "startLine": 145,
+      "endLine": 166
+    },
+    {
+      "id": "distribution",
+      "title": "Distribution Function Question",
+      "summary": "Question 1: Does f(n)/log(n) have a distribution?",
+      "startLine": 168,
+      "endLine": 187
+    },
+    {
+      "id": "almost-constant",
+      "title": "Almost Always Constant Question",
+      "summary": "Question 2: Is f(n)/log(n) almost always constant?",
+      "startLine": 189,
+      "endLine": 208
+    },
+    {
+      "id": "egps",
+      "title": "EGPS Theorem (1990)",
+      "summary": "Conditional YES under Elliott-Halberstam",
+      "startLine": 210,
+      "endLine": 245
+    },
+    {
+      "id": "prime-factor",
+      "title": "Largest Prime Factor Question",
+      "summary": "Question 3: P(φₖ(n)) when k ≈ log(log(n))",
+      "startLine": 247,
+      "endLine": 289
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "Verified computations for f(2) through f(7)",
+      "startLine": 291,
+      "endLine": 317
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Monotonicity, powers of 2, primes",
+      "startLine": 319,
+      "endLine": 345
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_408_summary and erdos_408 main theorems",
+      "startLine": 347,
+      "endLine": 393
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #408 asks three questions about the iterated totient function f(n). The main questions (Q1 and Q2) were answered conditionally by Erdős, Granville, Pomerance, and Spiro in 1990: assuming the Elliott-Halberstam conjecture, f(n)/log(n) has a distribution function and is almost always equal to 1/log(2). The problem remains open unconditionally.",
+    "implications": "This problem connects number theory to probability theory and analytic methods. The Elliott-Halberstam conjecture, if proven, would resolve not only this problem but many others in analytic number theory. The essentially multiplicative nature of f(n) reflects deep structure in how the totient function interacts with prime factorization.",
+    "openQuestions": [
+      "Can Q1 and Q2 be resolved unconditionally (without Elliott-Halberstam)?",
+      "What is the exact distribution function for f(n)/log(n)?",
+      "What is the largest prime factor of φₖ(n) for intermediate k?",
+      "What is the variance of f(n)/log(n) around the mean 1/log(2)?"
+    ]
   }
 }

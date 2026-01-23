@@ -7055,17 +7055,24 @@
   },
   {
     "id": "erdos-408",
-    "title": "Erdős Problem #408",
+    "title": "Erdős Problem #408: Iterated Totient Function",
     "slug": "erdos-408",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Euler totient function and ... be the iterated ... function, so that ... and .... Let\\[f(n) = \\min \\{ k : \\phi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does f(n)/log(n) have a distribution function, where f(n) is the number of iterations of Euler's totient needed to reach 1? EGPS (1990) proved YES conditionally on Elliott-Halberstam.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient",
+      "iteration",
+      "distribution",
+      "elliott-halberstam"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 408,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-41",
