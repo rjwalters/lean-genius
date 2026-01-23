@@ -1,1 +1,90 @@
-[]
+[
+  {
+    "id": "ann-e958-header",
+    "proofId": "erdos-958",
+    "range": {"startLine": 1, "endLine": 24},
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #958: Distance Multiplicities (SOLVED 2025)**\n\nThis problem asks about characterizing point configurations by their distance patterns.\n\n**Question:** For n points in ℝ², if there are exactly n-1 distinct distances with multiplicities {n-1, ..., 1}, must the points be equidistant on a line or circle?\n\n**Answer:** NO - Erdős correctly predicted other configurations exist.\n\n**Counterexample (Clemen-Dumitrescu-Liu 2025):**\nTake n-1 equidistant points on a short arc of a unit circle, plus the center.",
+    "mathContext": "k=n-1 distances, multiplicities {n-1,...,1} ⟹ line/circle?",
+    "significance": "critical",
+    "relatedConcepts": ["distance geometry", "point configurations", "multiplicities"]
+  },
+  {
+    "id": "ann-e958-distances",
+    "proofId": "erdos-958",
+    "range": {"startLine": 34, "endLine": 72},
+    "type": "definition",
+    "title": "Distance Framework",
+    "content": "**Distance Sets and Multiplicities**\n\n```lean\nabbrev Point := EuclideanSpace ℝ (Fin 2)\n\nnoncomputable def distanceSet (A : Finset Point) : Finset ℝ :=\n  (A.product A).image fun pq => dist pq.1 pq.2\n\nnoncomputable def multiplicity (A : Finset Point) (d : ℝ) : ℕ :=\n  ((A.product A).filter fun pq => dist pq.1 pq.2 = d).card\n```\n\n- **distanceSet:** All distinct pairwise distances\n- **multiplicity:** How many ordered pairs have distance d\n- **multiplicityMultiset:** The multiset {f(d₁), f(d₂), ...}",
+    "mathContext": "distanceSet A = {||p-q|| : p,q ∈ A}, f(d) = |{(p,q) : ||p-q||=d}|",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace", "Finset.product", "Finset.image"]
+  },
+  {
+    "id": "ann-e958-configs",
+    "proofId": "erdos-958",
+    "range": {"startLine": 74, "endLine": 103},
+    "type": "definition",
+    "title": "Standard Configurations",
+    "content": "**Equidistant Points on Lines and Circles**\n\n```lean\ndef isEquidistantLine (A : Finset Point) (n : ℕ) : Prop :=\n  A.card = n ∧ ∃ (p₀ v : Point), v ≠ 0 ∧\n    ∀ p ∈ A, ∃ t : ℝ, p = p₀ + t • v\n\ndef isEquidistantCircle (A : Finset Point) (n : ℕ) : Prop :=\n  A.card = n ∧ ∃ (center : Point) (r : ℝ), r > 0 ∧\n    ∀ p ∈ A, dist p center = r\n```\n\nThese \"standard configurations\" are known to satisfy the special distance pattern.",
+    "mathContext": "n equally spaced points on a line or circle",
+    "significance": "key",
+    "relatedConcepts": ["collinearity", "concyclic points", "regular polygons"]
+  },
+  {
+    "id": "ann-e958-pattern",
+    "proofId": "erdos-958",
+    "range": {"startLine": 105, "endLine": 127},
+    "type": "definition",
+    "title": "The Special Pattern",
+    "content": "**Special Multiplicity Pattern**\n\n```lean\ndef hasSpecialPattern (A : Finset Point) : Prop :=\n  let n := A.card\n  (distanceSet A).card = n - 1 ∧\n  multiplicityMultiset A = Multiset.range (n - 1) + 1\n```\n\nA set has \"special pattern\" if:\n1. Exactly n-1 distinct distances (k = n-1)\n2. Multiplicities are exactly {1, 2, 3, ..., n-1}\n\n**The Question:** Does this pattern uniquely characterize lines/circles?",
+    "mathContext": "|{distances}| = n-1, {multiplicities} = {1,2,...,n-1}",
+    "significance": "critical",
+    "relatedConcepts": ["multiplicity patterns", "characterization", "uniqueness"]
+  },
+  {
+    "id": "ann-e958-conjecture",
+    "proofId": "erdos-958",
+    "range": {"startLine": 121, "endLine": 127},
+    "type": "definition",
+    "title": "The FALSE Conjecture",
+    "content": "**Original Conjecture (DISPROVED)**\n\n```lean\ndef OriginalConjecture : Prop :=\n  ∀ A : Finset Point, A.card ≥ 3 →\n    (hasSpecialPattern A ↔ isStandardConfig A)\n```\n\nThis says: A set has special pattern ⟺ it's equidistant on a line or circle.\n\n**STATUS: FALSE** - Erdős predicted this, and Clemen-Dumitrescu-Liu proved it in 2025.",
+    "mathContext": "hasSpecialPattern ⟺ isStandardConfig is FALSE",
+    "significance": "critical",
+    "relatedConcepts": ["characterization theorems", "counterexamples", "disproof"]
+  },
+  {
+    "id": "ann-e958-counterexample",
+    "proofId": "erdos-958",
+    "range": {"startLine": 129, "endLine": 170},
+    "type": "axiom",
+    "title": "The Counterexample",
+    "content": "**Arc Plus Center Configuration**\n\n```lean\ndef isArcPlusCenter (A : Finset Point) (n : ℕ) : Prop :=\n  n ≥ 3 ∧ A.card = n ∧\n  ∃ (center : Point) (arc : Finset Point),\n    arc.card = n - 1 ∧ center ∈ A ∧ arc ⊆ A ∧\n    (∀ p ∈ arc, dist p center = 1)\n```\n\n**Construction:**\n- Take n-1 equidistant points on a short arc of a unit circle\n- Add the center of the circle\n- Total: n points\n\n**Key Property:** This satisfies hasSpecialPattern but is NOT isStandardConfig!",
+    "mathContext": "Arc points at distance 1 from center, varied arc-to-arc distances",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "arc", "unit circle", "center"]
+  },
+  {
+    "id": "ann-e958-proof",
+    "proofId": "erdos-958",
+    "range": {"startLine": 154, "endLine": 170},
+    "type": "axiom",
+    "title": "Clemen-Dumitrescu-Liu Theorem",
+    "content": "**The 2025 Disproof**\n\n```lean\naxiom clemen_dumitrescu_liu :\n  ∀ n : ℕ, n ≥ 4 →\n    ∃ A : Finset Point,\n      isArcPlusCenter A n ∧\n      hasSpecialPattern A ∧\n      ¬isStandardConfig A\n\naxiom conjecture_disproved : ¬OriginalConjecture\n```\n\n**Reference:** F. Clemen, A. Dumitrescu, D. Liu, \"On multiplicities of interpoint distances\", arXiv:2505.04283 (2025)\n\nThis recent result confirmed Erdős's intuition that other configurations exist.",
+    "mathContext": "For n ≥ 4, arc+center works as counterexample",
+    "significance": "critical",
+    "relatedConcepts": ["recent mathematics", "2025 result", "arXiv"]
+  },
+  {
+    "id": "ann-e958-summary",
+    "proofId": "erdos-958",
+    "range": {"startLine": 235, "endLine": 269},
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #958: Complete Summary**\n\n```lean\ntheorem erdos_958_summary :\n    ¬OriginalConjecture ∧\n    (∀ n : ℕ, n ≥ 4 → ∃ A : Finset Point,\n      isArcPlusCenter A n ∧ hasSpecialPattern A ∧ ¬isStandardConfig A)\n```\n\n**STATUS: SOLVED (2025)**\n\n**Question:** Does special pattern characterize lines/circles?\n**Answer:** NO\n\n**Erdős's Intuition:** He predicted other configurations exist - correct!\n**Proof:** Clemen-Dumitrescu-Liu found arc+center counterexamples",
+    "mathContext": "Characterization is FALSE, new config family found",
+    "significance": "critical",
+    "relatedConcepts": ["solved problems", "Erdős intuition", "counterexamples"]
+  }
+]
