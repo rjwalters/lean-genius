@@ -4,35 +4,77 @@
   "slug": "erdos-625",
   "description": "For G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely? The cochromatic number ζ(G) allows color classes to be cliques or independent sets. Heckel/Steiner (2024) proved the difference is unbounded. Prize: $1000 (false) / $100 (true).",
   "meta": {
-    "author": "Paul Erdős, John Gimbel, Heckel, Steiner",
+    "author": "Erdős-Gimbel (1989 problem), Heckel-Steiner (2024 progress)",
     "sourceUrl": "https://erdosproblems.com/625",
     "date": "1989-2024",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos625Problem.lean",
     "tags": [
       "erdos",
       "graph-theory",
       "random-graphs",
-      "coloring"
+      "coloring",
+      "open-problem",
+      "prize"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 20,
     "erdosNumber": 625,
     "erdosUrl": "https://erdosproblems.com/625",
     "erdosProblemStatus": "open",
-    "erdosPrizeValue": "$1000/$100"
+    "erdosPrizeValue": "$1000/$100",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Basic graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Graph coloring definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "ProbabilityMassFunction",
+        "description": "Probability mass functions for random graphs",
+        "module": "Mathlib.Probability.ProbabilityMassFunction.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsCochromaticClass definition: color class induces complete or empty graph",
+      "CochromaticColoring structure: all classes are cochromatic",
+      "cochromaticNumber definition: minimum cochromatic colors ζ(G)",
+      "cochromatic_le_chromatic: ζ(G) ≤ χ(G)",
+      "cochromatic_eq_complement: ζ(G) = ζ(Gᶜ) symmetry",
+      "RandomGraph and ErdosRenyi: G(n, 1/2) model",
+      "AlmostSurely predicate for random graph properties",
+      "bollobas_upper_bound: χ(G) ≤ (1+o(1))n/(2 log₂ n) a.s.",
+      "MainQuestion: χ(G) - ζ(G) → ∞ a.s.?",
+      "heckel_steiner_unbounded: difference is unbounded (2024)",
+      "HeckelConjecture: χ - ζ ≈ n/(log n)³",
+      "cliqueNumber and independenceNumber definitions",
+      "chromatic_concentration and cochromatic_concentration",
+      "PrizeValue: $1000 (false) / $100 (true)"
+    ]
   },
   "overview": {
-    "historicalContext": "Proposed by Erdős and Gimbel at a random graph conference in Poznań, Poland (1989). The cochromatic number generalizes proper coloring by allowing cliques as well as independent sets as color classes. Recent breakthroughs by Heckel and Steiner (2024) have shown the difference χ - ζ grows unboundedly.",
-    "problemStatement": "The cochromatic number ζ(G) is the minimum colors where each class induces a complete or empty graph. For random G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely? Known: n/(2 log₂ n) ≤ ζ(G) ≤ χ(G) ≤ (1+o(1))n/(2 log₂ n). Heckel conjecture: χ - ζ ≈ n/(log n)³.",
-    "proofStrategy": "We formalize cochromatic colorings, the random graph model G(n, 1/2), Bollobás's bounds, the Heckel-Steiner unboundedness result, Heckel's conjecture, and connections to clique/independence numbers. The formalization includes concentration inequalities and special graph classes.",
+    "historicalContext": "**Erdős Problem #625**\n\nProposed by Erdős and Gimbel at a random graph conference in Poznań, Poland (1989). The cochromatic number generalizes proper coloring by allowing color classes to induce either complete graphs (cliques) or empty graphs (independent sets).\n\n**Prize Structure:**\nErdős offered $100 for a proof that χ - ζ → ∞ almost surely, and $1000 for a proof of the opposite. He later remarked to Gimbel that \"$1000 was perhaps too much\" - suggesting he believed the affirmative answer is correct.\n\n**Recent Progress (2024):**\nHeckel and independently Steiner proved that χ(G) - ζ(G) is unbounded with high probability. Heckel further conjectured χ - ζ ≈ n/(log n)³ and proved χ - ζ ≥ n^{1-ε} for roughly 95% of all n. Despite this progress, the main question remains OPEN.",
+    "problemStatement": "**Problem Statement (Open)**\n\nThe cochromatic number ζ(G) is the minimum number of colors needed such that each color class induces either a complete graph or an empty graph.\n\nFor random G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely as n → ∞?\n\n**Known Bounds:**\n- n/(2 log₂ n) ≤ ζ(G) ≤ χ(G) ≤ (1+o(1))n/(2 log₂ n) a.s.\n- The difference χ - ζ is unbounded (Heckel/Steiner 2024)\n- χ - ζ ≥ n^{1-ε} for ~95% of n\n\n**Prize: $1000 for FALSE, $100 for TRUE**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cochromatic Definitions:** IsCochromaticClass, CochromaticColoring, cochromaticNumber\n\n2. **Basic Properties:**\n   - ζ(G) ≤ χ(G) (every proper coloring is cochromatic)\n   - ζ(G) = ζ(Gᶜ) (complement symmetry)\n\n3. **Random Graph Model:**\n   - RandomGraph structure for G(n, p)\n   - AlmostSurely predicate for a.s. properties\n\n4. **Known Bounds:**\n   - Bollobás (1988): χ(G) ≤ (1+o(1))n/(2 log₂ n)\n   - Clique/independence bounds: ω, α ≈ 2 log₂ n\n\n5. **Recent Results:**\n   - Heckel-Steiner unboundedness theorem\n   - Heckel's conjecture and density results\n\n6. **Why Axioms:** The main question is OPEN and requires measure-theoretic probability theory beyond current Mathlib",
     "keyInsights": [
-      "ζ(G) ≤ χ(G) always",
-      "ζ(G) = ζ(Gᶜ) by symmetry",
-      "Bollobás (1988): χ(G) ≤ (1+o(1))n/(2 log₂ n) a.s.",
-      "Heckel/Steiner (2024): Difference is unbounded w.h.p.",
-      "Heckel conjecture: χ - ζ ≈ n/(log n)³",
-      "χ - ζ ≥ n^{1-ε} for ~95% of n (Heckel 2024c)"
+      "**Cochromatic Relaxation:** ζ(G) ≤ χ(G) because independent sets are allowed in both, but cochromatic also allows cliques",
+      "**Complement Symmetry:** ζ(G) = ζ(Gᶜ) since swapping cliques ↔ independent sets preserves cochromatic colorings",
+      "**Bollobás Bound (1988):** χ(G) ≤ (1+o(1))n/(2 log₂ n) almost surely for G(n, 1/2)",
+      "**Heckel-Steiner Breakthrough (2024):** χ - ζ is unbounded with high probability - major progress!",
+      "**Heckel's Conjecture:** χ - ζ ≈ n/(log n)³ asymptotically",
+      "**Density Result (2024):** χ - ζ ≥ n^{1-ε} for approximately 95% of all n"
     ]
   },
   "sections": [
