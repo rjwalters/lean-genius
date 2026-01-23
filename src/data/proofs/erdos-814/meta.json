@@ -1,33 +1,138 @@
 {
   "id": "erdos-814",
-  "title": "Erdős Problem #814",
+  "title": "Erdős Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs",
   "slug": "erdos-814",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be a graph with ... vertices and\\[(k-1)(n-k+2)+{2}+1\\]edges. Does there exist some ... such that ... must con...",
+  "description": "For k ≥ 2, does every dense graph contain a small induced subgraph with minimum degree k? YES, proved by Sauermann (2019).",
   "meta": {
-    "author": "Unknown",
+    "author": "Sauermann (2019 proof), Erdős-Faudree-Rousseau-Schelp (1990 conjecture)",
     "sourceUrl": "https://erdosproblems.com/814",
-    "date": "",
-    "status": "pending",
+    "date": "2019",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos814Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "minimum-degree",
+      "induced-subgraphs",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 814,
     "erdosUrl": "https://erdosproblems.com/814",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure from Mathlib",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Subgraph",
+        "description": "Subgraph definitions and properties",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "edgeThreshold definition: the critical edge count (k-1)(n-k+2) + C(k-2,2) + 1",
+      "minDegree definition: minimum degree over all vertices",
+      "sauermann_constant axiom: existence of cₖ ≫ 1/k³",
+      "efrs_original_bound axiom: original 1990 bound with √n savings",
+      "mns_bound axiom: 2017 improvement with n/log(n) savings",
+      "sauermann_theorem axiom: full 2019 resolution",
+      "erdos_814 theorem: main result restated",
+      "edgeThreshold_three theorem: k=3 threshold computation",
+      "edgeThreshold_two theorem: k=2 threshold computation",
+      "erdos_hajnal_case theorem: original k=3 case",
+      "high_degree_exists theorem: degree averaging argument",
+      "erdos_814_summary theorem: comprehensive summary"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #814 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $G$ be a graph with $n\\geq k-1$ vertices and\\[(k-1)(n-k+2)+\\binom{k-2}{2}+1\\]edges. Does there exist some $c_k>0$ such that $G$ must contain an induced subgraph on at most $(1-c_k)n$ vertices with minimum degree at least $k$?\n\n\n\nThe case $k=3$ was a problem of Erd\\H{o}s and Hajnal \\cite{Er91}. The question for general $k$ was a conjecture of Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS90}, who proved that such a subgraph exists with at most $n-c_k\\sqrt{n}$ vertices. Mousset, Noever, and Skori\\'{c} \\cite{MNS17} improved this to\\[n-c_k\\frac{n}{\\log n}.\\]The full conjecture was proved by Sauermann \\cite{Sa19}, who proved this with $c_k \\gg 1/k^3$.\n\n\n\n\nReferences\n\n\n[EFRS90] Erd\\H{o}s, P. and Faudree, R. J. and Rousseau, C. C. and\nSchelp, R. H., Subgraphs of minimal degree {$k$}. Discrete Math. (1990), 53--58.\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n[MNS17] Mousset, Frank and Noever, Andreas and \\v Skori\\'c, Nemanja, Smaller subgraphs of minimum degree {$k$}. Electron. J. Combin. (2017), Paper No. 4.9, 8.\n\n[Sa19] Sauermann, Lisa, A proof of a conjecture of Erd\\H{o}s, Faudree, {R}ousseau\nand {S}chelp on subgraphs of minimum degree {$k$}. J. Combin. Theory Ser. B (2019), 36--75.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #814: Minimum Degree Subgraphs**\n\nThis problem concerns a fundamental question in extremal graph theory: given a dense graph, can we always find a small induced subgraph with high minimum degree?\n\n**Key History:**\n- Erdős and Hajnal [Er91]: Studied the case k=3 as a standalone problem\n- Erdős, Faudree, Rousseau, Schelp (1990): Formulated the general conjecture and proved the first quantitative bound of n - cₖ√n vertices\n- Mousset, Noever, Skorić (2017): Improved to n - cₖ·n/log(n) vertices\n- Sauermann (2019): Fully resolved the conjecture with cₖ ≫ 1/k³\n\n**Mathematical Setting:**\nThe edge threshold (k-1)(n-k+2) + C(k-2,2) + 1 is precisely chosen. Graphs with fewer edges can be constructed to avoid the desired subgraph, showing the bound is tight. The conjecture asks whether exceeding this threshold by even one edge forces a small minimum-degree-k subgraph.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $k \\geq 2$ and $G$ be a graph with $n \\geq k-1$ vertices and\n$$(k-1)(n-k+2) + \\binom{k-2}{2} + 1$$\nedges. Does there exist some $c_k > 0$ such that $G$ must contain an induced subgraph on at most $(1-c_k)n$ vertices with minimum degree at least $k$?\n\n**Answer: YES**\n\nSauermann (2019) proved the conjecture with $c_k \\gg 1/k^3$. This means for any $k$, there exists a constant $c_k$ of order at least $1/k^3$ such that every sufficiently dense graph contains a proper induced subgraph with minimum degree $k$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Threshold:** Define the critical edge count using binomial coefficients from Mathlib\n\n2. **Key Axioms:**\n   - sauermann_constant: Existence of cₖ with the right asymptotic behavior\n   - sauermann_theorem: The main result about induced subgraphs\n   - Historical bounds: efrs_original_bound and mns_bound\n\n3. **Main Theorem:** erdos_814 states that for every k ≥ 2, the desired constant exists\n\n4. **Special Cases:** Explicit analysis of k=2 and k=3 cases\n\n5. **Auxiliary Results:** Handshaking lemma and degree averaging arguments",
+    "keyInsights": [
+      "**Edge Threshold Significance:** The formula (k-1)(n-k+2) + C(k-2,2) + 1 is tight - graphs with one fewer edge can avoid the conclusion",
+      "**Progressive Improvement:** The savings went from √n (1990) to n/log(n) (2017) to cn (2019)",
+      "**Constant Bounds:** Sauermann showed cₖ ≫ 1/k³, meaning the subgraph can be a constant fraction smaller",
+      "**k=3 Origin:** The case k=3 (minimum degree 3 subgraphs) was the original Erdős-Hajnal problem",
+      "**Extremal Constructions:** The tightness comes from explicit graph constructions that barely avoid the property"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "edgeThreshold, minDegree, subgraphFraction, sauermann_constant",
+      "startLine": 46,
+      "endLine": 79
+    },
+    {
+      "id": "historical-bounds",
+      "title": "Historical Progression",
+      "summary": "efrs_original_bound (1990), mns_bound (2017) showing improvement over time",
+      "startLine": 81,
+      "endLine": 118
+    },
+    {
+      "id": "sauermann-theorem",
+      "title": "Sauermann's Theorem",
+      "summary": "sauermann_theorem axiom and erdos_814 main theorem",
+      "startLine": 120,
+      "endLine": 167
+    },
+    {
+      "id": "threshold-analysis",
+      "title": "Edge Threshold Analysis",
+      "summary": "edgeThreshold_three, edgeThreshold_two, extremal_construction",
+      "startLine": 169,
+      "endLine": 204
+    },
+    {
+      "id": "erdos-hajnal",
+      "title": "Erdős-Hajnal k=3 Case",
+      "summary": "The original case with k=3 that started the investigation",
+      "startLine": 206,
+      "endLine": 239
+    },
+    {
+      "id": "degree-bounds",
+      "title": "Degree Bounds and Density",
+      "summary": "handshaking lemma, high_degree_exists theorem",
+      "startLine": 241,
+      "endLine": 273
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_814_summary, erdos_814_answer theorems",
+      "startLine": 275,
+      "endLine": 319
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #814 asked whether dense graphs must contain small induced subgraphs with high minimum degree. The answer is YES, fully proved by Lisa Sauermann in 2019. For any k ≥ 2, there exists cₖ > 0 (with cₖ ≫ 1/k³) such that any graph exceeding the edge threshold contains an induced subgraph on at most (1-cₖ)n vertices with minimum degree k.",
+    "implications": "**Implications for Extremal Graph Theory**\n\n1. **Density vs Structure:** Sufficiently dense graphs necessarily contain structured induced subgraphs\n\n2. **Tight Bounds:** The edge threshold is optimal - one fewer edge allows counterexamples\n\n3. **Quantitative Extremal Theory:** The progression from √n to n/log(n) to cn savings shows refinement of probabilistic and algebraic methods\n\n4. **Connections to Ramsey Theory:** Related to questions about guaranteed substructures in large graphs",
+    "openQuestions": [
+      "Optimal value of cₖ for each specific k",
+      "Extensions to hypergraphs or directed graphs",
+      "Algorithmic aspects: efficiently finding the subgraph",
+      "Generalizations with other degree constraints",
+      "Connections to graph coloring and chromatic number"
+    ]
   }
 }
