@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e419-overview",
+    "proofId": "erdos-419",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)**\n\nWhat is the set of limit points of the ratio τ((n+1)!)/τ(n!)?\n\n**Status:** SOLVED (1996)\n**Answer:** {1} ∪ {1 + 1/k : k ≥ 1} = {1, 2, 3/2, 4/3, 5/4, ...}",
+    "mathContext": "τ(n) = divisor function = number of positive divisors of n.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Factorial", "Limit points", "p-adic valuation"]
+  },
+  {
+    "id": "ann-e419-tau",
+    "proofId": "erdos-419",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "Divisor Function τ",
+    "content": "**tau n:** The divisor function τ(n) counts the number of positive divisors of n.\n\nτ(n) = |{d : d | n}|\n\nFor example: τ(12) = 6 since 12 has divisors 1, 2, 3, 4, 6, 12.",
+    "significance": "key",
+    "leanSymbol": "tau"
+  },
+  {
+    "id": "ann-e419-ratio",
+    "proofId": "erdos-419",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "definition",
+    "title": "The Factorial Divisor Ratio",
+    "content": "**factorialDivisorRatio n:** The ratio τ((n+1)!)/τ(n!).\n\nThis measures how much the divisor count of n! increases when we multiply by n+1.",
+    "significance": "critical",
+    "leanSymbol": "factorialDivisorRatio"
+  },
+  {
+    "id": "ann-e419-legendre",
+    "proofId": "erdos-419",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "axiom",
+    "title": "Legendre's Formula",
+    "content": "**legendre_formula:** vₚ(n!) = ∑_{i≥1} ⌊n/p^i⌋\n\nThe p-adic valuation of n! (highest power of p dividing n!) is the sum of floor(n/p^i) for all i.\n\nThis gives vₚ(n!) ≈ n/(p-1), so large primes divide n! with small exponent.",
+    "significance": "key",
+    "leanSymbol": "legendre_formula"
+  },
+  {
+    "id": "ann-e419-ratio-formula",
+    "proofId": "erdos-419",
+    "range": { "startLine": 70, "endLine": 74 },
+    "type": "axiom",
+    "title": "The Ratio Product Formula",
+    "content": "**ratio_product_formula:** τ((n+1)!)/τ(n!) = ∏_{p|n+1} (1 + vₚ(n+1)/(vₚ(n!)+1))\n\nThe ratio is a product over primes dividing n+1. Each factor measures how much the exponent of p increases.",
+    "significance": "critical",
+    "leanSymbol": "ratio_product_formula"
+  },
+  {
+    "id": "ann-e419-large-prime",
+    "proofId": "erdos-419",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "axiom",
+    "title": "At Most One Large Prime",
+    "content": "**at_most_one_large_prime:** At most one prime p | n+1 satisfies p > n^(2/3).\n\nIf n+1 = pk with p > n^(2/3), then k < n^(1/3) so k is 'small'. This prime dominates the ratio.",
+    "significance": "key",
+    "leanSymbol": "at_most_one_large_prime"
+  },
+  {
+    "id": "ann-e419-small-primes",
+    "proofId": "erdos-419",
+    "range": { "startLine": 100, "endLine": 113 },
+    "type": "axiom",
+    "title": "Small Primes Contribute ≈ 1",
+    "content": "**small_primes_contribution:** Primes p ≤ n^(2/3) contribute (1 + o(1)) to the ratio.\n\nFor small primes, vₚ(n!) is large (≈ n/p), so vₚ(n+1)/(vₚ(n!)+1) is small.\n\nThe product over all small primes is close to 1.",
+    "significance": "key",
+    "leanSymbol": "small_primes_contribution"
+  },
+  {
+    "id": "ann-e419-large-contribution",
+    "proofId": "erdos-419",
+    "range": { "startLine": 126, "endLine": 131 },
+    "type": "axiom",
+    "title": "Large Prime Contributes 1 + 1/k",
+    "content": "**large_prime_contribution:** If p > n^(2/3) divides n+1 = pk, the contribution is ≈ 1 + 1/k.\n\nFor large primes, vₚ(n+1) = 1 (since p² > n+1), and the contribution simplifies to 1 + 1/(vₚ(n!)+1) ≈ 1 + 1/k.",
+    "significance": "critical",
+    "leanSymbol": "large_prime_contribution"
+  },
+  {
+    "id": "ann-e419-limitset",
+    "proofId": "erdos-419",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "definition",
+    "title": "The Limit Point Set",
+    "content": "**limitPointSet:** {1} ∪ {1 + 1/k : k ≥ 1}\n\nThis is the complete set of limit points: 1, 2, 3/2, 4/3, 5/4, 6/5, ...\n\nThe sequence 1 + 1/k converges to 1, which is also a limit point.",
+    "significance": "critical",
+    "leanSymbol": "limitPointSet"
+  },
+  {
+    "id": "ann-e419-examples",
+    "proofId": "erdos-419",
+    "range": { "startLine": 172, "endLine": 187 },
+    "type": "theorem",
+    "title": "Concrete Examples",
+    "content": "**Examples of each limit point:**\n\n- **Ratio ≈ 2:** When n+1 is prime (n+1 = p×1), ratio ≈ 1 + 1/1 = 2\n- **Ratio ≈ 3/2:** When n+1 = 2p for large prime p, ratio ≈ 1 + 1/2\n- **Ratio ≈ 4/3:** When n+1 = 3p for large prime p, ratio ≈ 1 + 1/3\n- **Ratio ≈ 1:** When n+1 is highly composite (many small primes)",
+    "significance": "supporting",
+    "leanSymbol": "example_prime"
+  },
+  {
+    "id": "ann-e419-sawhney",
+    "proofId": "erdos-419",
+    "range": { "startLine": 202, "endLine": 217 },
+    "type": "theorem",
+    "title": "Sawhney's Characterization",
+    "content": "**sawhney_characterization:** The limit points are EXACTLY limitPointSet.\n\nThis is an if-and-only-if statement: x is a limit point ⟺ x ∈ {1} ∪ {1 + 1/k : k ≥ 1}.\n\nThe proof combines small/large prime analysis with density arguments.",
+    "significance": "critical",
+    "leanSymbol": "sawhney_characterization"
+  },
+  {
+    "id": "ann-e419-summary",
+    "proofId": "erdos-419",
+    "range": { "startLine": 280, "endLine": 301 },
+    "type": "theorem",
+    "title": "Summary and Main Result",
+    "content": "**erdos_419:** SOLVED\n\nThe limit points of τ((n+1)!)/τ(n!) are exactly {1, 2, 3/2, 4/3, 5/4, ...}.\n\nProved by Erdős-Graham-Ivić-Pomerance (1996), independently rediscovered by Sawhney.",
+    "significance": "critical",
+    "leanSymbol": "erdos_419"
+  }
+]

@@ -1,33 +1,155 @@
 {
   "id": "erdos-419",
-  "title": "Erdős Problem #419",
+  "title": "Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)",
   "slug": "erdos-419",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... counts the number of divisors of ..., then what is the set of limit points of\\[{\\tau(n!)}?\\]\n\n\n\nErds and Graham noted ...",
+  "description": "What is the set of limit points of τ((n+1)!)/τ(n!)? SOLVED: The limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1} = {1, 2, 3/2, 4/3, 5/4, ...}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham-Ivić-Pomerance (1996), Sawhney (rediscovery)",
     "sourceUrl": "https://erdosproblems.com/419",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos419Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "factorial",
+      "limit-points",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 419,
     "erdosUrl": "https://erdosproblems.com/419",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisor set",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "ArithmeticFunction",
+        "description": "Arithmetic functions including τ",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      }
+    ],
+    "originalContributions": [
+      "tau definition as divisor count",
+      "factorialDivisorRatio definition",
+      "padicValFactorial for Legendre's formula",
+      "limitPointSet definition: {1} ∪ {1 + 1/k : k ≥ 1}",
+      "ratio_product_formula axiom",
+      "small_primes_contribution and large_prime_contribution analysis",
+      "sawhney_characterization theorem",
+      "Concrete examples: prime, twice-prime, thrice-prime cases"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #419 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\tau(n)$ counts the number of divisors of $n$, then what is the set of limit points of\\[\\frac{\\tau((n+1)!)}{\\tau(n!)}?\\]\n\n\n\nErd\\H{o}s and Graham noted that any number of the shape $1+1/k$ for $k\\geq 1$ is a limit point (and thus so too is $1$), but knew of no others.\n\nMehtaab Sawhney has shared the following simple argument that proves that the above limit points are in fact the only ones.\n\nIf $v_p(m)$ is the largest $k$ such that $p^k\\mid m$ then $\\tau(m)=\\prod_p (v_p(m)+1)$ and so\\[\\frac{\\tau((n+1)!)}{\\tau(n!)} = \\prod_{p|n+1}\\left(1+\\frac{v_p(n+1)}{v_p(n!)+1}\\right).\\]Note that $v_p(n!)\\geq n/p$, and furthermore $n+1$ has $<\\log n$ prime divisors, each of which satisfy $v_p(n+1)<\\log n$. It follows that the contribution from $p\\leq n^{2/3}$ is at most\\[\\left(1+\\frac{\\log n}{n^{1/3}}\\right)^{\\log n}\\leq 1+o(1).\\]There is at most one $p\\mid n+1$ with $p\\geq n^{2/3}$ which (if present) contributes exactly\\[\\left(1+\\frac{1}{\\frac{n+1}{p}}\\right).\\]We have proved the claim, since these two facts combined show that the ratio in question is either $1+o(1)$ or $1+1/k+o(1)$, the latter occurring if $n+1=pk$ for some $p>n^{2/3}$.\n\nAfter receiving Sawhney's argument I found that this had already been proved, with essentially the same argument, by Erd\\H{o}s, Graham, Ivi\\'{c}, and Pomerance \\cite{EGIP96}.\n\n\n\n\n\n\nReferences\n\n\n[EGIP96] Erd\\H{o}s, Paul and Graham, S. W. and Ivi\\'c, Aleksandar and\nPomerance, Carl, On the number of divisors of {$n!$}. (1996), 337--355.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #419** asks about the limit points of the ratio τ((n+1)!)/τ(n!), where τ is the divisor function.\n\n**Historical Development:**\n- **1980:** Erdős and Graham pose the problem, noting 1 + 1/k are limit points\n- **1996:** Erdős-Graham-Ivić-Pomerance prove these are the ONLY limit points\n- **Later:** Mehtaab Sawhney independently rediscovers the elegant argument\n\n**Key Insight:** The ratio depends on the prime factorization of n+1. If n+1 = pk where p is a large prime, the ratio is approximately 1 + 1/k.",
+    "problemStatement": "**Problem Statement**\n\nIf $\\tau(n)$ counts the number of divisors of $n$, what is the set of limit points of\n$$\\frac{\\tau((n+1)!)}{\\tau(n!)}?$$\n\n**Answer:** The limit points are exactly $\\{1\\} \\cup \\{1 + 1/k : k \\geq 1\\}$\n\nThis equals $\\{1, 2, 3/2, 4/3, 5/4, 6/5, \\ldots\\}$.\n\n**Status:** SOLVED (Erdős-Graham-Ivić-Pomerance 1996)",
+    "proofStrategy": "**Proof Strategy (Sawhney's Argument)**\n\n1. **Ratio Formula:** τ((n+1)!)/τ(n!) = ∏_{p|n+1} (1 + vₚ(n+1)/(vₚ(n!)+1))\n\n2. **Small Primes:** For p ≤ n^(2/3), the contribution is ≈ 1 since vₚ(n!) is large\n\n3. **Large Primes:** At most one prime p | n+1 with p > n^(2/3). If n+1 = pk, this contributes 1 + 1/k\n\n4. **Dichotomy:** The ratio is either ≈ 1 or ≈ 1 + 1/k for some k\n\n5. **Limit Points:** Both cases occur infinitely often, giving exactly the stated set",
+    "keyInsights": [
+      "**Multiplicativity:** τ(n) = ∏ₚ (vₚ(n) + 1), so the ratio is a product over primes dividing n+1.",
+      "**Legendre's Formula:** vₚ(n!) ≈ n/p, making small prime contributions negligible.",
+      "**Large Prime Dominance:** If p > n^(2/3) divides n+1, it appears with exponent 1 and dominates the ratio.",
+      "**n+1 = pk Pattern:** When n+1 = pk for large prime p, the ratio is approximately 1 + 1/k.",
+      "**Highly Composite Numbers:** When n+1 has only small prime factors, the ratio is close to 1.",
+      "**Elegant Resolution:** The same simple argument was discovered independently by Sawhney decades after the original proof."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "tau, factorialDivisorRatio",
+      "startLine": 33,
+      "endLine": 50
+    },
+    {
+      "id": "ratio-formula",
+      "title": "The Ratio Formula",
+      "summary": "Legendre's formula, product over prime factors",
+      "startLine": 52,
+      "endLine": 74
+    },
+    {
+      "id": "prime-bounds",
+      "title": "Prime Factorization Bounds",
+      "summary": "Number of prime divisors, p-adic valuation bounds",
+      "startLine": 76,
+      "endLine": 92
+    },
+    {
+      "id": "small-primes",
+      "title": "Small Primes Contribution",
+      "summary": "Primes p ≤ n^(2/3) contribute ≈ 1",
+      "startLine": 94,
+      "endLine": 113
+    },
+    {
+      "id": "large-primes",
+      "title": "Large Prime Contribution",
+      "summary": "n+1 = pk gives contribution 1 + 1/k",
+      "startLine": 115,
+      "endLine": 135
+    },
+    {
+      "id": "limit-points",
+      "title": "The Set of Limit Points",
+      "summary": "limitPointSet = {1} ∪ {1 + 1/k : k ≥ 1}",
+      "startLine": 137,
+      "endLine": 164
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Prime, twice-prime, thrice-prime, highly composite cases",
+      "startLine": 166,
+      "endLine": 187
+    },
+    {
+      "id": "proof-structure",
+      "title": "The Proof Structure",
+      "summary": "ratio_decomposition, sawhney_characterization",
+      "startLine": 189,
+      "endLine": 217
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotics of τ(n!)",
+      "summary": "Growth rate, log asymptotic",
+      "startLine": 219,
+      "endLine": 236
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status: SOLVED",
+      "startLine": 274,
+      "endLine": 303
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #419 asks for the limit points of τ((n+1)!)/τ(n!). The answer, proved by Erdős-Graham-Ivić-Pomerance (1996), is that the limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1}. This follows from the observation that the ratio is dominated by large prime factors of n+1.",
+    "implications": "**Implications for Number Theory**\n\n1. **Divisor Function:** Reveals subtle structure in how τ(n!) grows with n.\n\n2. **Prime Distribution:** Connected to primes in arithmetic progressions and the form pk.\n\n3. **Factorial Arithmetic:** Part of a broader study of arithmetic properties of factorials.\n\n4. **Analytic Number Theory:** Uses p-adic valuations and asymptotic analysis.",
+    "openQuestions": [
+      "What are the limit points of τ((n+k)!)/τ(n!) for fixed k > 1?",
+      "What about σ((n+1)!)/σ(n!) for the sum-of-divisors function?",
+      "How do the limit points change for other multiplicative functions?",
+      "What is the distribution of ratios among the possible limit points?"
+    ]
   }
 }
