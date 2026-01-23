@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-823-sigma",
+    "proofId": "erdos-823",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Sum of Divisors",
+    "content": "σ(n) = sum of all divisors of n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-823-multiplicative",
+    "proofId": "erdos-823",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "theorem",
+    "title": "Multiplicativity",
+    "content": "σ(mn) = σ(m)σ(n) for coprime m, n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-823-sigmapair",
+    "proofId": "erdos-823",
+    "range": { "startLine": 71, "endLine": 72 },
+    "type": "definition",
+    "title": "IsSigmaPair",
+    "content": "Pair (n,m) with σ(n) = σ(m).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-823-converging",
+    "proofId": "erdos-823",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "definition",
+    "title": "SigmaSequenceConvergingTo",
+    "content": "Sequences with equal σ values and ratio → α.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-823-pollack",
+    "proofId": "erdos-823",
+    "range": { "startLine": 86, "endLine": 92 },
+    "type": "theorem",
+    "title": "Pollack 2015",
+    "content": "For all α ≥ 1, such sequences exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-823-solved",
+    "proofId": "erdos-823",
+    "range": { "startLine": 94, "endLine": 99 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Erdős #823 solved affirmatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-823-example1415",
+    "proofId": "erdos-823",
+    "range": { "startLine": 107, "endLine": 117 },
+    "type": "example",
+    "title": "σ(14) = σ(15)",
+    "content": "Both equal 24, ratio 14/15 ≈ 0.93.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-823-phi",
+    "proofId": "erdos-823",
+    "range": { "startLine": 137, "endLine": 138 },
+    "type": "definition",
+    "title": "Euler Totient",
+    "content": "φ(n) counts integers coprime to n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-823-phieasy",
+    "proofId": "erdos-823",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "theorem",
+    "title": "Erdos Phi Remark",
+    "content": "Analogous φ result is 'easy to prove'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-823-fiber",
+    "proofId": "erdos-823",
+    "range": { "startLine": 164, "endLine": 165 },
+    "type": "definition",
+    "title": "sigmaFiber",
+    "content": "σ⁻¹(m) = {n : σ(n) = m}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-823-largefibers",
+    "proofId": "erdos-823",
+    "range": { "startLine": 170, "endLine": 172 },
+    "type": "theorem",
+    "title": "Large Fibers",
+    "content": "Fibers can be arbitrarily large.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-823-perfect",
+    "proofId": "erdos-823",
+    "range": { "startLine": 206, "endLine": 210 },
+    "type": "example",
+    "title": "Perfect Numbers",
+    "content": "σ(6) = 12, σ(28) = 56 (both satisfy σ(n) = 2n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-823-main",
+    "proofId": "erdos-823",
+    "range": { "startLine": 260, "endLine": 274 },
+    "type": "theorem",
+    "title": "Complete Statement",
+    "content": "Main theorem + φ analogy + solved status.",
+    "significance": "critical"
+  }
+]

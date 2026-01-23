@@ -1,33 +1,94 @@
 {
   "id": "erdos-823",
-  "title": "Erdős Problem #823",
+  "title": "Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio",
   "slug": "erdos-823",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there a sequence of integers ... such that ... and ... for all ..., where ... is the sum of divisors function?\n\n\n...",
+  "description": "Given α ≥ 1, does there exist a sequence of integers n_k, m_k such that σ(n_k) = σ(m_k) and n_k/m_k → α? Solved affirmatively by Pollack (2015).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, P.",
     "sourceUrl": "https://erdosproblems.com/823",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos823Problem.lean",
     "tags": [
-      "erdos"
+      "number-theory",
+      "sum-of-divisors",
+      "sequences",
+      "limits",
+      "arithmetic-functions"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 823,
     "erdosUrl": "https://erdosproblems.com/823",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "solvedBy": "Paul Pollack",
+    "solvedYear": 2015,
+    "mathlibDependencies": [
+      "ArithmeticFunction.sigma",
+      "ArithmeticFunction.totient",
+      "Filter.Tendsto",
+      "Topology.atTop",
+      "Finset.filter",
+      "Set.ncard"
+    ],
+    "originalContributions": [
+      "sigma function formalization",
+      "IsSigmaPair definition",
+      "SigmaSequenceConvergingTo predicate",
+      "Pollack's 2015 theorem axiomatization",
+      "sigma-pair examples (14-15, 206-210, 957-958)",
+      "Euler totient analogy formalization",
+      "sigmaFiber definition and properties",
+      "Density results for sigma values",
+      "Perfect number examples",
+      "Main theorem combining all results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #823 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha\\geq 1$. Is there a sequence of integers $n_k,m_k$ such that $n_k/m_k\\to \\alpha$ and $\\sigma(n_k)=\\sigma(m_k)$ for all $k\\geq 1$, where $\\sigma$ is the sum of divisors function?\n\n\n\nErd\\H{o}s \\cite{Er74b} writes it is 'easy to prove the analogous result for $\\phi(n)$'.\n\nThe answer is yes, proved by Pollack \\cite{Po15b}.\n\n\n\n\nReferences\n\n\n[Er74b] Erd\\H{o}s, P., Remarks on some problems in number theory. Math. Balkanica (1974), 197-202.\n\n[Po15b] Pollack, Paul, Remarks on fibers of the sum-of-divisors function. (2015), 305-320.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks whether the sum-of-divisors function σ has enough flexibility to produce sequences with equal values at any prescribed ratio limit. Erdős posed this in 1974, noting the analogous result for Euler's totient φ(n) is 'easy to prove.' The σ case proved more challenging, requiring sophisticated analysis of the fibers of σ. Paul Pollack resolved it affirmatively in 2015, demonstrating that for any α ≥ 1, one can construct sequences n_k, m_k with σ(n_k) = σ(m_k) and n_k/m_k → α. The proof leverages the multiplicativity of σ and the rich structure of prime factorizations.",
+    "problemStatement": "Let α ≥ 1. Is there a sequence of integers n_k, m_k such that n_k/m_k → α and σ(n_k) = σ(m_k) for all k ≥ 1, where σ is the sum of divisors function?",
+    "proofStrategy": "Pollack's approach uses careful construction via multiplicativity of σ and properties of prime factorizations. The key observation is that σ-pairs (numbers with equal σ values) are abundant enough to approximate any ratio. Examples like σ(14) = σ(15) = 24 show that consecutive integers can have equal σ values, providing flexibility for ratio approximation.",
+    "keyInsights": [
+      "σ-pairs are surprisingly common (σ(14) = σ(15), σ(206) = σ(210))",
+      "The multiplicativity σ(mn) = σ(m)σ(n) for coprime m,n enables constructions",
+      "Fibers σ⁻¹(m) can be arbitrarily large",
+      "The analogous φ result is 'easy' due to even more abundant φ-pairs",
+      "Many even numbers are achieved as σ values"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Sum of Divisors Basics",
+      "description": "Definitions and properties of σ(n)"
+    },
+    {
+      "title": "The Main Problem",
+      "description": "σ-pairs and convergent sequences"
+    },
+    {
+      "title": "Pollack's Theorem",
+      "description": "Resolution for all α ≥ 1"
+    },
+    {
+      "title": "Examples of σ-pairs",
+      "description": "Concrete pairs with equal σ values"
+    },
+    {
+      "title": "Euler Totient Analogy",
+      "description": "The 'easy' φ case noted by Erdős"
+    },
+    {
+      "title": "Fiber Properties",
+      "description": "Structure of preimages under σ"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #823 was solved affirmatively by Paul Pollack in 2015. For any α ≥ 1, there exist sequences n_k, m_k with σ(n_k) = σ(m_k) and n_k/m_k → α. The proof uses the multiplicativity of σ and abundance of σ-pairs to construct appropriate sequences.",
+    "implications": "The result reveals deep structure in the value distribution of the sum-of-divisors function. It shows that despite σ being determined by prime factorizations, there is enough flexibility to achieve any asymptotic ratio between pairs with equal σ values.",
+    "openQuestions": [
+      "Rate of convergence: How fast can n_k/m_k approach α?",
+      "Explicit constructions for specific α values",
+      "Analogous questions for other multiplicative functions"
+    ]
   }
 }
