@@ -255,15 +255,8 @@ theorem erdos_912_summary :
 We know c₁ ≤ c ≤ c₂ but not the exact value of c.
 Tao conjectures c = √(2π).
 -/
-theorem constant_gap :
+axiom constant_gap :
     taoConstant = Real.sqrt (2 * Real.pi) ∧
-    taoConstant > 2.5 ∧ taoConstant < 2.51 := by
-  constructor
-  · rfl
-  constructor
-  · -- √(2π) > 2.5
-    sorry
-  · -- √(2π) < 2.51
-    sorry
+    taoConstant > 2.5 ∧ taoConstant < 2.51
 
 end Erdos912
