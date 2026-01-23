@@ -5710,17 +5710,23 @@
   },
   {
     "id": "erdos-308",
-    "title": "Erdős Problem #308",
+    "title": "Erdős Problem #308: Representable Integers via Unit Fractions",
     "slug": "erdos-308",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the smallest integer not representable as the sum of distinct unit fractions with denominators from ...? Is ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What integers can be written as sums of distinct unit fractions 1/1 + 1/2 + ... with denominators ≤ N? Croot (1999) proved the representable set is contiguous and f(N) ≈ ⌊H_N⌋.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "harmonic"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 308,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 17
   },
   {
     "id": "erdos-309",
