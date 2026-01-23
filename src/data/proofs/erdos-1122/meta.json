@@ -1,33 +1,90 @@
 {
   "id": "erdos-1122",
-  "title": "Erdős Problem #1122",
+  "title": "Erdős Problem #1122: Additive Functions and Monotonicity Defects",
   "slug": "erdos-1122",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive function (i.e. ... whenever ...). Let\\[A=\\{ n \\geq 1: f(n+1)< f(n)\\}.\\]If ... then must ... for some ....",
+  "description": "Let f: ℕ → ℝ be additive. If the set A = {n : f(n+1) < f(n)} has |A ∩ [1,X]| = o(X), must f(n) = c·log(n)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/1122",
-    "date": "",
-    "status": "pending",
+    "date": "1946",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1122Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-functions",
+      "analytic-number-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 1122,
     "erdosUrl": "https://erdosproblems.com/1122",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1122 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{N}\\to \\mathbb{R}$ be an additive function (i.e. $f(ab)=f(a)+f(b)$ whenever $(a,b)=1$). Let\\[A=\\{ n \\geq 1: f(n+1)< f(n)\\}.\\]If $\\lvert A\\cap [1,X]\\rvert =o(X)$ then must $f(n)=c\\log n$ for some $c\\in \\mathbb{R}$?\n\n\n\nErd\\H{o}s proved that $f(n)=c\\log n$ for some $c\\in\\mathbb{R}$ if $A$ is empty, or if $f(n+1)-f(n)=o(1)$.\n\nPartial progress was made by Mangerel \\cite{Ma22}, who proved that this is true if\\[\\lvert A\\cap [1,X]\\rvert \\ll \\frac{X}{(\\log X)^{2+c}}\\]for some $c>0$, and if $g(p)$ does not have very large values (in a certain technical sense).\n\nSee also [491].\n\n\n\n\nReferences\n\n\n[Ma22] Mangerel, Alexander P., Additive functions in short intervals, gaps and a conjecture\nof {E}rd\\H{o}s. Ramanujan J. (2022), 1023--1090.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from Erdős's 1946 work on additive functions. An additive function f satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. The canonical example is f(n) = c·log(n). Erdős proved that if f is strictly increasing (no defects), or if increments f(n+1) - f(n) → 0, then f must be logarithmic. The conjecture asks whether merely having sparse defects (o(X) of them up to X) suffices. Mangerel made significant progress in 2022, proving the result when defects are O(X/(log X)^{2+c}).",
+    "problemStatement": "Let f: ℕ → ℝ be an additive function (f(ab) = f(a) + f(b) when gcd(a,b) = 1). Define A = {n ≥ 1 : f(n+1) < f(n)} as the monotonicity defect set. If |A ∩ [1,X]| = o(X), must f(n) = c·log(n) for some c ∈ ℝ?",
+    "proofStrategy": "The formalization defines additive functions, the defect set, and little-o density conditions. Known results are axiomatized: Erdős's theorems for empty defects and vanishing increments, and Mangerel's 2022 theorem for stronger density bounds. The main conjecture is stated and marked as open. Examples include log(n) (has empty defect) and ω(n) (prime factors function, additive but not logarithmic).",
+    "keyInsights": [
+      "Additive functions are determined by values on prime powers",
+      "log(n) is the unique (up to scaling) completely additive monotone function",
+      "Empty defect ⊂ Mangerel density ⊂ o(X) defects forms a strict hierarchy",
+      "The gap between Mangerel's result and the conjecture remains open",
+      "Related to Problem #491 on additive functions in short intervals"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-additive",
+      "title": "Additive Functions",
+      "startLine": 40,
+      "endLine": 74,
+      "summary": "Defines additive and completely additive functions"
+    },
+    {
+      "id": "sec-defect-set",
+      "title": "Monotonicity Defect Set",
+      "startLine": 75,
+      "endLine": 115,
+      "summary": "Defines the defect set A and counting functions"
+    },
+    {
+      "id": "sec-logarithmic",
+      "title": "Logarithmic Form",
+      "startLine": 116,
+      "endLine": 146,
+      "summary": "Characterizes f(n) = c·log(n) functions"
+    },
+    {
+      "id": "sec-erdos-results",
+      "title": "Erdős's Known Results",
+      "startLine": 147,
+      "endLine": 169,
+      "summary": "Axiomatizes Erdős's theorems for special cases"
+    },
+    {
+      "id": "sec-mangerel",
+      "title": "Mangerel's Progress",
+      "startLine": 170,
+      "endLine": 198,
+      "summary": "Formalizes the 2022 partial result"
+    },
+    {
+      "id": "sec-conjecture",
+      "title": "The Conjecture",
+      "startLine": 199,
+      "endLine": 215,
+      "summary": "States the main open conjecture"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Problem #1122 remains OPEN. Erdős proved f = c·log for empty defect sets and vanishing increments. Mangerel (2022) extended to O(X/(log X)^{2+c}) defects with bounded prime values. The full conjecture for o(X) defects is unresolved.",
+    "implications": "A positive answer would characterize logarithmic functions among additive functions by a weak monotonicity property, connecting multiplicative number theory to real analysis.",
+    "openQuestions": [
+      "Does |A ∩ [1,X]| = o(X) imply f = c·log for all additive f?",
+      "Can Mangerel's density bound be weakened?",
+      "Is the bounded prime values condition necessary?",
+      "What is the relationship to Problem #491?"
+    ]
   }
 }
