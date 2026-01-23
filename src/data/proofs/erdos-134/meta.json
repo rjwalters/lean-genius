@@ -1,33 +1,144 @@
 {
   "id": "erdos-134",
-  "title": "Erdős Problem #134",
+  "title": "Erdős Problem #134: Triangle-Free Graphs with Diameter 2",
   "slug": "erdos-134",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large in terms of ... and .... Let ... be a triangle-free graph on ... vertices with maximum ...",
+  "description": "Can a triangle-free graph G on n vertices with max degree < n^{1/2-ε} be extended to a triangle-free diameter-2 graph by adding at most δn² edges? SOLVED: YES (Alon proved O(n^{2-ε}) edges suffice).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Gyárfás (conjecture), Alon (solution)",
     "sourceUrl": "https://erdosproblems.com/134",
-    "date": "",
-    "status": "pending",
+    "date": "2001",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos134Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "diameter",
+      "triangle-free",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 134,
     "erdosUrl": "https://erdosproblems.com/134",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Walk",
+        "description": "Walks and paths in graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for degree bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "HasTriangle and IsTriangleFree definitions",
+      "vertexDegree and maxDegree functions",
+      "hasDiameter2 definition via path lengths",
+      "isSupergraph and addedEdges for graph extension",
+      "extendableToDiameter2WithBudget predicate",
+      "erdosGyarfasConjecture formal statement",
+      "erdos_gyarfas_weak axiom (original weak result)",
+      "simonovits_counterexample axiom (counterexample at 1/2)",
+      "alon_theorem axiom (O(n^{2-ε}) bound)",
+      "alon_implies_conjecture axiom",
+      "commonNeighborProperty characterization",
+      "diameter2_equiv equivalence axiom"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #134 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon,\\delta>0$ and $n$ be sufficiently large in terms of $\\epsilon$ and $\\delta$. Let $G$ be a triangle-free graph on $n$ vertices with maximum degree $<n^{1/2-\\epsilon}$.\n\nCan $G$ be made into a triangle-free graph with diameter $2$ by adding at most $\\delta n^2$ edges?\n\n\n\nAsked by Erd\\H{o}s and Gy\\'{a}rf\\'{a}s, who proved that this is the case when $G$ has maximum degree $\\ll \\log n/\\log\\log n$. A construction of Simonovits shows that this conjecture is false if we just have maximum degree $\\leq Cn^{1/2}$, for some large enough $C$.\n\nIn this note Alon solves this problem in a strong form, in particular proving that a triangle-free graph on $n$ vertices with maximum degree $<n^{1/2-\\epsilon}$ can be made into a triangle-free graph with diameter $2$ by adding at most $O(n^{2-\\epsilon})$ edges.\n\nSee also [618].\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #134: Triangle-Free Graphs with Diameter 2**\n\nThis problem was posed by Erdős and Gyárfás, who initially proved the result for graphs with maximum degree ≪ log n / log log n. The question asks whether triangle-free graphs with max degree below n^{1/2-ε} can be extended to diameter-2 graphs (where any two vertices are at distance ≤ 2) while remaining triangle-free, using few additional edges.\n\n**Key Historical Results:**\n- Erdős-Gyárfás: Proved for max degree ≪ log n / log log n\n- Simonovits: Showed counterexample at max degree Cn^{1/2} for large C\n- Alon: Solved in strong form with O(n^{2-ε}) edges",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet ε, δ > 0 and n be sufficiently large. Let G be a triangle-free graph on n vertices with maximum degree < n^{1/2-ε}.\n\n**Question:** Can G be made into a triangle-free graph with diameter 2 by adding at most δn² edges?\n\n**Answer:** YES\n\n**Stronger Result (Alon):** Only O(n^{2-ε}) edges are needed, which is much smaller than δn² for large n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define HasTriangle, IsTriangleFree using SimpleGraph\n\n2. **Degree Bounds:** Define vertexDegree and maxDegree\n\n3. **Diameter Property:** Define hasDiameter2 via path lengths\n\n4. **Extension Problem:** Define extendableToDiameter2WithBudget\n\n5. **The Conjecture:** Formalize erdosGyarfasConjecture\n\n6. **Historical Results:** Axiomatize Erdős-Gyárfás weak result, Simonovits counterexample\n\n7. **Alon's Theorem:** Axiomatize the O(n^{2-ε}) bound\n\n8. **Main Theorem:** Derive the conjecture from Alon's theorem",
+    "keyInsights": [
+      "**Critical Exponent 1/2:** The threshold n^{1/2} is sharp - below it (with ε gap) the extension works, at it the problem may fail",
+      "**Simonovits Counterexample:** Shows that exactly at max degree Cn^{1/2}, extension may require Ω(n²) edges",
+      "**Alon's Improvement:** The O(n^{2-ε}) bound is much stronger than δn² and shows quantitative improvement",
+      "**Diameter 2 Characterization:** Equivalent to every non-adjacent pair having a common neighbor",
+      "**Triangle-Free Constraint:** The requirement that the extension remain triangle-free is essential"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Graph Definitions",
+      "summary": "HasTriangle, IsTriangleFree, vertexDegree, maxDegree, hasDiameter2",
+      "startLine": 47,
+      "endLine": 99
+    },
+    {
+      "id": "graph-extension",
+      "title": "Graph Extension",
+      "summary": "isSupergraph, addedEdges, extendableToDiameter2WithBudget",
+      "startLine": 101,
+      "endLine": 128
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdosGyarfasConjecture formal statement",
+      "startLine": 130,
+      "endLine": 147
+    },
+    {
+      "id": "historical-results",
+      "title": "Historical Results",
+      "summary": "Erdős-Gyárfás weak result, Simonovits counterexample",
+      "startLine": 149,
+      "endLine": 183
+    },
+    {
+      "id": "alon-theorem",
+      "title": "Alon's Theorem",
+      "summary": "The O(n^{2-ε}) solution and its implications",
+      "startLine": 185,
+      "endLine": 213
+    },
+    {
+      "id": "critical-exponent",
+      "title": "The Critical Exponent",
+      "summary": "Why 1/2 is the threshold",
+      "startLine": 215,
+      "endLine": 236
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "summary": "commonNeighborProperty, diameter2_equiv",
+      "startLine": 238,
+      "endLine": 256
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_134_solved, erdos_134_main theorems",
+      "startLine": 276,
+      "endLine": 317
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #134 is completely solved. Alon proved that triangle-free graphs with max degree < n^{1/2-ε} can be extended to triangle-free diameter-2 graphs by adding only O(n^{2-ε}) edges, which is much stronger than the original conjecture asking for δn² edges.",
+    "implications": "**Graph Theory Connections**\n\n1. **Extremal Graph Theory:** Relates to bounds on edge density in structured graphs\n\n2. **Ramsey Theory:** Triangle-free graphs appear in Ramsey problems\n\n3. **Network Design:** Diameter-2 property ensures any two nodes communicate via at most one intermediate\n\n4. **Probabilistic Method:** Alon's proof likely uses probabilistic techniques",
+    "openQuestions": [
+      "Is the O(n^{2-ε}) bound tight?",
+      "Can the extension be constructed explicitly?",
+      "What about diameter k > 2?",
+      "Extensions to K_r-free graphs for r > 3?"
+    ]
   }
 }
