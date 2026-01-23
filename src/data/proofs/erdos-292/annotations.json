@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "erdos-292-intro",
+    "proofId": "erdos-292",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 27 },
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #292: Egyptian Fractions Summing to 1**\n\nLet A be the set of n such that there exist 1 ≤ m₁ < ... < mₖ = n with Σ(1/mᵢ) = 1.\n\nDoes A have density 1?\n\n**Answer:** YES (Martin 2000)\n\nThe set A contains almost all integers; its complement B consists of small multiples of prime powers.",
+    "mathContext": "Egyptian fractions are sums of distinct unit fractions. They were used by ancient Egyptians and have been studied extensively in number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Unit fractions", "Natural density", "Prime powers"]
+  },
+  {
+    "id": "erdos-292-egyptian-def",
+    "proofId": "erdos-292",
+    "type": "definition",
+    "range": { "startLine": 42, "endLine": 52 },
+    "title": "Egyptian Fractions and Set A",
+    "content": "**EgyptianFraction S r:**\n\nA finite set S of distinct positive integers whose reciprocals sum to r.\n\n**setA:**\n\nThe set of n ∈ ℕ such that there exists an Egyptian fraction summing to 1 with maximum denominator n.\n\nExample: 6 ∈ A because 1/2 + 1/3 + 1/6 = 1.",
+    "mathContext": "The set A captures which integers can appear as the 'last' denominator in a unit fraction decomposition of 1.",
+    "significance": "critical",
+    "relatedConcepts": ["Unit fractions", "Largest denominator", "Sum to 1"]
+  },
+  {
+    "id": "erdos-292-straus",
+    "proofId": "erdos-292",
+    "type": "axiom",
+    "range": { "startLine": 90, "endLine": 102 },
+    "title": "Straus's Multiplication Closure",
+    "content": "**straus_multiplication_closure:**\n\nIf n, m ∈ A then nm ∈ A.\n\n**Proof Idea:** If Σ 1/aᵢ = 1 (max aₖ = n) and Σ 1/bⱼ = 1 (max bₗ = m), then we can construct an Egyptian fraction with max denominator nm using products aᵢ·bⱼ.\n\nThis closure property is key to understanding the structure of A.",
+    "mathContext": "Straus's observation shows A is a multiplicative set, which helps explain why A is dense.",
+    "significance": "critical",
+    "relatedConcepts": ["Multiplicative closure", "Structural properties", "Straus"]
+  },
+  {
+    "id": "erdos-292-prime-powers",
+    "proofId": "erdos-292",
+    "type": "axiom",
+    "range": { "startLine": 108, "endLine": 131 },
+    "title": "Prime Powers Not in A",
+    "content": "**prime_powers_not_in_A:**\n\nNo prime power p^k (k ≥ 1) is in A.\n\n**Why:** If p^k ∈ A, then in the sum Σ 1/mᵢ = 1 with max = p^k, the denominator p^k must contribute 1/p^k. But the remaining fractions must sum to (p^k - 1)/p^k, and the constraints on p-divisibility make this impossible.\n\n**Corollary:** All primes are excluded from A.",
+    "mathContext": "This is the key structural constraint on A: prime powers cannot be max denominators.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime powers", "Exclusion", "p-adic constraints"]
+  },
+  {
+    "id": "erdos-292-specific-exclusions",
+    "proofId": "erdos-292",
+    "type": "theorem",
+    "range": { "startLine": 116, "endLine": 131 },
+    "title": "Specific Exclusions",
+    "content": "**two_not_in_A:** 2 = 2¹ ∉ A\n**four_not_in_A:** 4 = 2² ∉ A\n**primes_not_in_A:** All primes p ∉ A\n\nThese follow from the general prime power exclusion theorem. Since p = p¹ is a prime power, all primes are excluded.",
+    "mathContext": "These specific cases illustrate the prime power exclusion rule.",
+    "significance": "key",
+    "relatedConcepts": ["Prime exclusion", "Power of 2", "Specific cases"]
+  },
+  {
+    "id": "erdos-292-doubling",
+    "proofId": "erdos-292",
+    "type": "axiom",
+    "range": { "startLine": 137, "endLine": 144 },
+    "title": "Doubling Property",
+    "content": "**doubling_in_A:**\n\nIf n ∈ A (with n > 1) then 2n ∈ A.\n\n**Observation by van Doorn:** If Σ 1/mᵢ = 1, then 1/2 + Σ 1/(2mᵢ) = 1/2 + 1/2 = 1.\n\nThis shows A grows by doubling existing elements.",
+    "mathContext": "The doubling property provides another way to generate new elements of A from existing ones.",
+    "significance": "key",
+    "relatedConcepts": ["Doubling", "van Doorn", "Growth of A"]
+  },
+  {
+    "id": "erdos-292-complement",
+    "proofId": "erdos-292",
+    "type": "definition",
+    "range": { "startLine": 150, "endLine": 165 },
+    "title": "The Complement Set B",
+    "content": "**setB = ℕ \\ A:**\n\nThe complement of A consists of integers that cannot be the max denominator in an Egyptian fraction summing to 1.\n\n**B_characterization:** Every n ∈ B is a small multiple of a prime power: n = c·p^k with c < p^k.\n\n**martin_B_density:** |B ∩ [1,x]|/x ~ (log log x)/(log x)\n\nSince (log log x)/(log x) → 0, the set B has density 0.",
+    "mathContext": "Martin's characterization of B shows it consists essentially of small multiples of prime powers.",
+    "significance": "critical",
+    "relatedConcepts": ["Complement", "Density", "Small multiples of prime powers"]
+  },
+  {
+    "id": "erdos-292-natural-density",
+    "proofId": "erdos-292",
+    "type": "definition",
+    "range": { "startLine": 171, "endLine": 175 },
+    "title": "Natural Density",
+    "content": "**hasNaturalDensity S d:**\n\nA set S ⊆ ℕ has natural density d if:\n\nlim_{n→∞} |S ∩ [1,n]| / n = d\n\nFor A, the density is 1. For B, the density is 0.",
+    "mathContext": "Natural density measures the 'proportion' of integers in a set. It's a standard notion in analytic number theory.",
+    "significance": "key",
+    "relatedConcepts": ["Natural density", "Asymptotic density", "Limits"]
+  },
+  {
+    "id": "erdos-292-martin-theorem",
+    "proofId": "erdos-292",
+    "type": "axiom",
+    "range": { "startLine": 177, "endLine": 184 },
+    "title": "Martin's Main Theorem",
+    "content": "**martin_main_theorem:**\n\nThe set A has natural density 1.\n\n**Proof:** Martin (2000) proved that B has density ~ (log log x)/(log x), which tends to 0. Therefore A = ℕ \\ B has density 1.\n\nThis completely resolves the question: almost all integers are in A.",
+    "mathContext": "Martin's paper 'Denser Egyptian fractions' (Acta Arith. 2000) gives the complete answer.",
+    "significance": "critical",
+    "relatedConcepts": ["Density 1", "Martin 2000", "Complete resolution"]
+  },
+  {
+    "id": "erdos-292-small-examples",
+    "proofId": "erdos-292",
+    "type": "axiom",
+    "range": { "startLine": 190, "endLine": 200 },
+    "title": "Small Examples",
+    "content": "**Elements of B (not in A):** 2, 3, 4, 5, 7, 8, 9, 11, 13, 16, 17, 19, ...\n\nThese are prime powers and their small multiples.\n\n**Elements of A:** 1, 6, 10, 12, 14, 15, 18, 20, ...\n\nThese are products of small primes (avoiding prime powers).\n\n**six_smallest_in_A:** 6 is the smallest element of A greater than 1.",
+    "mathContext": "The concrete examples illustrate the pattern: prime powers out, products of distinct primes in.",
+    "significance": "key",
+    "relatedConcepts": ["Concrete examples", "Prime powers", "Products"]
+  },
+  {
+    "id": "erdos-292-erdos-straus",
+    "proofId": "erdos-292",
+    "type": "definition",
+    "range": { "startLine": 206, "endLine": 212 },
+    "title": "Erdős-Straus Conjecture",
+    "content": "**erdosStrausConjecture:**\n\nFor all n ≥ 2, 4/n = 1/a + 1/b + 1/c for some positive integers a, b, c.\n\nThis is a famous open problem about Egyptian fractions. It asks if every fraction 4/n has a 3-term Egyptian representation.\n\nThis is related but different from Problem #292.",
+    "mathContext": "The Erdős-Straus conjecture is one of the most famous open problems about Egyptian fractions, verified for n up to 10^17.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-Straus conjecture", "Open problem", "Egyptian fractions"]
+  },
+  {
+    "id": "erdos-292-summary",
+    "proofId": "erdos-292",
+    "type": "theorem",
+    "range": { "startLine": 224, "endLine": 241 },
+    "title": "Summary",
+    "content": "**erdos_292:**\n\nThe set A of integers that can be max denominators in Egyptian fractions summing to 1 has natural density 1.\n\n**Key Facts:**\n- A is closed under multiplication (Straus)\n- A excludes all prime powers\n- B = ℕ \\ A has density ~ (log log x)/(log x) (Martin)\n- Therefore A has density 1\n\nThe problem is completely SOLVED by Martin (2000).",
+    "mathContext": "A complete resolution combining structural results (Straus, prime power exclusion) with density analysis (Martin).",
+    "significance": "critical",
+    "relatedConcepts": ["Complete solution", "Density 1", "Martin 2000"]
+  }
+]
