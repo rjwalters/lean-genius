@@ -90,7 +90,7 @@ structure RandomGraph where
 **The Standard Random Graph for Q_d:**
 G(2^d, 1/2)
 -/
-def standardRandomGraph (d : ℕ) : RandomGraph where
+noncomputable def standardRandomGraph (d : ℕ) : RandomGraph where
   n := 2^d
   p := 1/2
   hp_nonneg := by norm_num
