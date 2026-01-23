@@ -1,33 +1,154 @@
 {
   "id": "erdos-393",
-  "title": "Erdős Problem #393",
+  "title": "Erdős Problem #393: Factorial Factorization Span",
   "slug": "erdos-393",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the minimal ... such that\\[n! = a_1\\cdots a_t\\]with .... What is the behaviour of ...?\n\n\n\nErds and Graham writ...",
+  "description": "Let f(n) = minimal m such that n! = a₁·...·aₜ with a₁ < ... < aₜ = a₁ + m. Study the behavior of f(n). Known: F_m(N) = o(N), conditional f(n) → ∞.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham",
     "sourceUrl": "https://erdosproblems.com/393",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos393Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "diophantine-equations",
+      "ABC-conjecture",
+      "density-results"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 8,
     "erdosNumber": 393,
     "erdosUrl": "https://erdosproblems.com/393",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsFactorization definition: list whose product equals n",
+      "IsStrictlyIncreasing definition: chain of strict inequalities",
+      "span definition: max - min of a list",
+      "IsValidFactorization definition: valid n! factorization with span m",
+      "f(n) definition: minimal span of a valid factorization",
+      "IsProductOfConsecutive definition: n! = k(k+1)",
+      "InfinitelyManyConsecutive definition: open question about f(n)=1",
+      "F(m,N) definition: counting function #{n ≤ N : f(n) = m}",
+      "berend_osgood_1992 axiom: F_m(N) = o(N)",
+      "bpz_2023 axiom: F_m(N) ≪ N^{33/34}",
+      "ABCConjecture definition: radical form",
+      "luca_2002 axiom: ABC implies f(n) → ∞",
+      "PolynomialFactorialEquation definition: P(x) = n!",
+      "BrocardProblem definition: n! + 1 = m²",
+      "density_zero theorem: each m has density 0",
+      "erdos_393 main theorem combining results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #393 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ denote the minimal $m\\geq 1$ such that\\[n! = a_1\\cdots a_t\\]with $a_1<\\cdots <a_t=a_1+m$. What is the behaviour of $f(n)$?\n\n\n\nErd\\H{o}s and Graham write that they do not even know whether $f(n)=1$ infinitely often (i.e. whether a factorial is the product of two consecutive integers infinitely often).\n\nLet $F_m(N)$ count the number of $n\\leq N$ such that $f(n)=m$. Berend and Osgood \\cite{BeOs92} proved that, for each fixed $m$, $F_m(N)=o(N)$. Bui, Pratt, and Zaharescu \\cite{BPZ23} have shown that\\[F_m(N)\\ll_m N^{33/34}.\\]A result of Luca \\cite{Lu02} implies that $f(n)\\to \\infty$ as $n\\to \\infty$, conditional on the ABC conjecture.\n\n\n\n\nReferences\n\n\n[BPZ23] Bui, Hung M. and Pratt, Kyle and Zaharescu, Alexandru, Power savings for counting solutions to polynomial-factorial\nequations. Adv. Math. (2023), Paper No. 109021, 32.\n\n[BeOs92] Berend, Daniel and Osgood, Charles F., On the equation {$P(x)=n!$} and a question of {E}rd\\H{o}s. J. Number Theory (1992), 189--193.\n\n[Lu02] Luca, Florian, The {D}iophantine equation {$P(x)=n!$} and a result of {M}.\n{O}verholt. Glas. Mat. Ser. III (2002), 269--273.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #393** concerns how factorials can be expressed as products of distinct integers.\n\n**Historical Development:**\n- **Erdős-Graham:** Posed the question, noted they didn't even know if f(n) = 1 infinitely often.\n- **1992 (Berend-Osgood):** Proved F_m(N) = o(N) for each fixed m.\n- **2002 (Luca):** Showed f(n) → ∞ conditionally on ABC conjecture.\n- **2023 (Bui-Pratt-Zaharescu):** Proved power saving F_m(N) ≪ N^{33/34}.\n\nThe problem connects to polynomial-factorial equations and the ABC conjecture.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet $f(n)$ denote the minimal $m \\geq 1$ such that\n$$n! = a_1 \\cdot a_2 \\cdot \\ldots \\cdot a_t$$\nwith $a_1 < a_2 < \\ldots < a_t = a_1 + m$.\n\nWhat is the behaviour of $f(n)$?\n\n**Known Results:**\n- $f(n) = 1$ iff $n! = k(k+1)$ for some $k$ (unknown if infinitely often)\n- $F_m(N) = o(N)$ for each fixed $m$ (Berend-Osgood 1992)\n- $F_m(N) \\ll_m N^{33/34}$ (BPZ 2023)\n- $f(n) \\to \\infty$ as $n \\to \\infty$, conditional on ABC (Luca 2002)\n\n**Open:** Does $f(n) \\to \\infty$ unconditionally? Is $f(n) = 1$ infinitely often?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Factorization Setup:** Define valid factorizations with span constraint.\n\n2. **f(n) Function:** Define as minimum span over all valid factorizations.\n\n3. **Counting Function:** Define F_m(N) counting n ≤ N with f(n) = m.\n\n4. **Density Results:** Axiomatize Berend-Osgood (o(N)) and BPZ (N^{33/34}).\n\n5. **ABC Connection:** State Luca's conditional result.",
+    "keyInsights": [
+      "**Span Measures Spread:** f(n) quantifies how spread the factors must be in any factorization of n!.",
+      "**Consecutive Case:** f(n) = 1 means n! = k(k+1), a very special Diophantine equation.",
+      "**Density Zero:** For each fixed m, the set {n : f(n) = m} has density 0.",
+      "**Power Saving:** The exponent 33/34 is a non-trivial improvement over the trivial bound.",
+      "**ABC Implies Divergence:** Luca's conditional result shows deep number theory is needed.",
+      "**Brocard Connection:** Related to n! + 1 = m² (only known for n = 4, 5, 7)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "factorizations",
+      "title": "Factorial Factorizations",
+      "summary": "Definitions for factorizations, increasing sequences, span",
+      "startLine": 41,
+      "endLine": 65
+    },
+    {
+      "id": "f-function",
+      "title": "The f(n) Function",
+      "summary": "Definition of f(n) as minimal span",
+      "startLine": 67,
+      "endLine": 78
+    },
+    {
+      "id": "consecutive-case",
+      "title": "The f(n) = 1 Case",
+      "summary": "When n! = k(k+1) for consecutive integers",
+      "startLine": 80,
+      "endLine": 102
+    },
+    {
+      "id": "counting-function",
+      "title": "The Counting Function F_m(N)",
+      "summary": "Counting n ≤ N with f(n) = m",
+      "startLine": 104,
+      "endLine": 121
+    },
+    {
+      "id": "abc-conditional",
+      "title": "f(n) → ∞ Conditional on ABC",
+      "summary": "Luca's result assuming ABC conjecture",
+      "startLine": 123,
+      "endLine": 145
+    },
+    {
+      "id": "bounds",
+      "title": "Lower Bounds on f(n)",
+      "summary": "Basic bounds on the f(n) function",
+      "startLine": 147,
+      "endLine": 163
+    },
+    {
+      "id": "diophantine",
+      "title": "Connection to Diophantine Equations",
+      "summary": "P(x) = n! and Brocard's problem",
+      "startLine": 165,
+      "endLine": 183
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "summary": "Known values of f(n) for small n",
+      "startLine": 185,
+      "endLine": 198
+    },
+    {
+      "id": "density",
+      "title": "Density Results",
+      "summary": "Density zero and sparse values theorems",
+      "startLine": 200,
+      "endLine": 214
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete status of Problem #393",
+      "startLine": 216,
+      "endLine": 237
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #393 studies f(n), the minimal span of a strictly increasing factorization of n!. Key results: F_m(N) = o(N) for each fixed m (Berend-Osgood), F_m(N) ≪ N^{33/34} (BPZ 2023), and f(n) → ∞ conditional on ABC (Luca). Whether f(n) = 1 infinitely often remains open.",
+    "implications": "**Implications for Number Theory**\n\n1. **Factorial Structure:** Reveals constraints on how factorials can be written as products.\n\n2. **ABC Conjecture:** Shows connections to deep conjectures in number theory.\n\n3. **Diophantine Equations:** Relates to polynomial-factorial equations P(x) = n!.\n\n4. **Density Theory:** Demonstrates sophisticated density arguments in analytic number theory.",
+    "openQuestions": [
+      "Does f(n) → ∞ unconditionally (without ABC)?",
+      "Is f(n) = 1 for infinitely many n?",
+      "Can the exponent 33/34 in F_m(N) ≪ N^{33/34} be improved?",
+      "What is the growth rate of f(n)?",
+      "Are there explicit constructions showing f(n) is large?"
+    ]
   }
 }
