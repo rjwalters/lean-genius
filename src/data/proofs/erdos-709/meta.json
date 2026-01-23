@@ -1,33 +1,163 @@
 {
   "id": "erdos-709",
-  "title": "Erdős Problem #709",
+  "title": "Erdős Problem #709: Divisibility in Intervals",
   "slug": "erdos-709",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, for any ... of size ..., in any interval ... of ... consecutive integers there exist distinct ....",
+  "description": "Find tight bounds for f(n), the minimal function such that any interval of f(n)·max(A) consecutive integers contains distinct multiples of each element of A. Known: (log n)^c ≪ f(n) ≪ √n. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Surányi",
     "sourceUrl": "https://erdosproblems.com/709",
-    "date": "",
-    "status": "pending",
+    "date": "1959",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos709Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "intervals",
+      "covering-problems"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.dvd_mul_right",
+        "description": "Divisibility for constructing multiples",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for lower bound expression",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for upper bound expression",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "ValidSet definition (A ⊆ [2,∞))",
+      "Interval structure for consecutive integers",
+      "Covering structure with assignment, in_interval, divides, injective",
+      "HasCovering predicate",
+      "f function axiom (minimal interval multiplier)",
+      "f_sufficient axiom (sufficiency of f(n)·max(A))",
+      "lower_bound_log axiom ((log n)^c lower bound)",
+      "upper_bound_sqrt axiom (√n upper bound)",
+      "erdos_suranyi_1959 theorem combining bounds",
+      "f_one, f_two_bound for small cases",
+      "f_monotone property",
+      "Connection to Problem 708 (g(n) function)",
+      "conjecture_growth_rate formulation",
+      "Computational examples with native_decide",
+      "erdos_709_statement main theorem"
+    ],
     "erdosNumber": 709,
     "erdosUrl": "https://erdosproblems.com/709",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #709 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that, for any $A=\\{a_1,\\ldots,a_n\\}\\subseteq [2,\\infty)\\cap\\mathbb{N}$ of size $n$, in any interval $I$ of $f(n)\\max(A)$ consecutive integers there exist distinct $x_1,\\ldots,x_n\\in I$ such that $a_i\\mid x_i$.\n\nObtain good bounds for $f(n)$, or even an asymptotic formula.\n\n\n\nA problem of Erd\\H{o}s and Sur\\'{a}nyi \\cite{ErSu59}, who proved\\[(\\log n)^c \\ll f(n) \\ll n^{1/2}\\]for some constant $c>0$.\n\nSee also [708].\n\n\n\n\nReferences\n\n\n[ErSu59] Erd\\H{o}s, P\\'{a}l and Sur\\'{a}nyi, J\\'{a}nos, Bemerkungen zu einer Aufgabe eines mathematischen\n{W}ettbewerbs. Mat. Lapok (1959), 39-48.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Interval Covering Problem**\\n\\nErdős and Surányi posed this problem in their 1959 paper on a mathematical competition problem. The question asks: given a set A of n positive integers ≥ 2, how long must an interval be to guarantee we can find n distinct multiples (one for each element of A)?\\n\\n**The Function f(n)**\\n\\nf(n) is defined as the minimal k such that any interval of k·max(A) consecutive integers contains distinct x₁,...,xₙ with aᵢ | xᵢ. The factor max(A) normalizes for the size of elements.\\n\\n**Erdős-Surányi Bounds (1959)**\\n\\nThey proved (log n)^c ≪ f(n) ≪ √n for some constant c > 0. The lower bound uses probabilistic arguments with prime sets, while the upper bound uses greedy covering.\\n\\n**The Gap**\\n\\nThe gap between (log n)^c and √n is substantial. For n = 10^6, this is roughly the difference between 10^2 and 10^3. Closing this gap remains open.\\n\\n**Related Problem 708**\\n\\nProblem 708 asks a related question about the size of a covering subset B rather than interval length. The two problems share techniques from divisibility theory and covering arguments.",
+    "problemStatement": "Let f(n) be minimal such that, for any A = {a₁,...,aₙ} ⊆ [2,∞) ∩ ℕ of size n, in any interval I of f(n)·max(A) consecutive integers there exist distinct x₁,...,xₙ ∈ I such that aᵢ | xᵢ. Obtain good bounds for f(n), or even an asymptotic formula.",
+    "proofStrategy": "We formalize the problem by defining ValidSet, Interval, and Covering structures. The function f(n) is axiomatized with its key properties. We state the Erdős-Surányi bounds as axioms: lower_bound_log gives (log n)^c and upper_bound_sqrt gives √n. The main theorem erdos_709_statement combines these. We include computational examples showing √100 = 10 and √10000 = 100 to illustrate the upper bound scale.",
+    "keyInsights": [
+      "f(n) measures interval length relative to max(A) needed for covering",
+      "Lower bound (log n)^c comes from prime set constructions",
+      "Upper bound √n comes from greedy covering arguments",
+      "The gap between (log n)^c and √n is significant",
+      "f is monotone: larger sets need longer intervals",
+      "Special case f(1) = 1 is trivial",
+      "Related to Problem 708 which asks about subset size instead",
+      "Chinese Remainder Theorem underlies the lower bound analysis"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "ValidSet, maxElem, Interval structures",
+      "startLine": 40,
+      "endLine": 60
+    },
+    {
+      "id": "covering",
+      "title": "The Covering Property",
+      "summary": "Covering structure and HasCovering predicate",
+      "startLine": 62,
+      "endLine": 77
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(n)",
+      "summary": "f definition and sufficiency axioms",
+      "startLine": 79,
+      "endLine": 99
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős-Surányi 1959 bounds",
+      "startLine": 101,
+      "endLine": 119
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "f(1) = 1, f(2) ≤ 2",
+      "startLine": 121,
+      "endLine": 129
+    },
+    {
+      "id": "properties",
+      "title": "Properties of f",
+      "summary": "Monotonicity and logarithmic growth",
+      "startLine": 131,
+      "endLine": 139
+    },
+    {
+      "id": "problem-708",
+      "title": "Connection to Problem 708",
+      "summary": "Related g(n) function",
+      "startLine": 141,
+      "endLine": 158
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "summary": "Conjecture about true growth rate",
+      "startLine": 160,
+      "endLine": 188
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Computational illustrations",
+      "startLine": 190,
+      "endLine": 210
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and status",
+      "startLine": 212,
+      "endLine": 248
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #709 asks for tight bounds on f(n), the minimal multiplier such that intervals of length f(n)·max(A) always contain distinct multiples covering any n-element set A. Erdős-Surányi proved (log n)^c ≪ f(n) ≪ √n in 1959. The true growth rate remains unknown.",
+    "implications": "Understanding f(n) would illuminate the structure of divisibility patterns in intervals. This has connections to the Chinese Remainder Theorem, covering problems, and the distribution of multiples.",
+    "openQuestions": [
+      "What is the true asymptotic growth rate of f(n)?",
+      "Is f(n) ~ (log n)^c for some c > 1?",
+      "Is f(n) ~ n^α for some 0 < α < 1/2?",
+      "Can probabilistic methods improve the bounds?",
+      "What is the exact relationship between f(n) and g(n) from Problem 708?"
+    ]
   }
 }

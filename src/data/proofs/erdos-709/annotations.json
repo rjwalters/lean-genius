@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-709-validset",
+    "proofId": "erdos-709",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "ValidSet",
+    "content": "A finite set of positive integers, all at least 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-709-interval",
+    "proofId": "erdos-709",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "definition",
+    "title": "Interval",
+    "content": "An interval of consecutive integers [start, start+length-1].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-709-covering",
+    "proofId": "erdos-709",
+    "range": { "startLine": 68, "endLine": 77 },
+    "type": "definition",
+    "title": "Covering",
+    "content": "Assignment of distinct xi in I to each ai in A with ai | xi.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-709-f",
+    "proofId": "erdos-709",
+    "range": { "startLine": 93, "endLine": 99 },
+    "type": "definition",
+    "title": "f Function",
+    "content": "f(n) = minimal k such that f(n)*max(A) suffices for covering.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-709-lower",
+    "proofId": "erdos-709",
+    "range": { "startLine": 105, "endLine": 108 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "f(n) >= (log n)^c for some c > 0 (Erdos-Suranyi 1959).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-709-upper",
+    "proofId": "erdos-709",
+    "range": { "startLine": 110, "endLine": 113 },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "f(n) <= C*sqrt(n) for some C > 0 (Erdos-Suranyi 1959).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-709-combined",
+    "proofId": "erdos-709",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "theorem",
+    "title": "Erdos-Suranyi 1959",
+    "content": "Combined bounds: (log n)^c << f(n) << sqrt(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-709-f1",
+    "proofId": "erdos-709",
+    "range": { "startLine": 125, "endLine": 126 },
+    "type": "theorem",
+    "title": "f(1) = 1",
+    "content": "Trivial case: any interval of max(A) contains a multiple.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-709-monotone",
+    "proofId": "erdos-709",
+    "range": { "startLine": 135, "endLine": 136 },
+    "type": "theorem",
+    "title": "Monotonicity",
+    "content": "f is monotone: larger sets need longer intervals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-709-g",
+    "proofId": "erdos-709",
+    "range": { "startLine": 145, "endLine": 153 },
+    "type": "definition",
+    "title": "Problem 708 g(n)",
+    "content": "Related function g(n) for subset size instead of interval length.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-709-conjecture",
+    "proofId": "erdos-709",
+    "range": { "startLine": 164, "endLine": 172 },
+    "type": "definition",
+    "title": "Growth Rate Conjecture",
+    "content": "True growth rate unknown: (log n)^c, n^alpha, or sqrt(n)/(log n)^beta?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-709-example",
+    "proofId": "erdos-709",
+    "range": { "startLine": 194, "endLine": 202 },
+    "type": "example",
+    "title": "Divisibility Example",
+    "content": "Any interval of length 2 contains a multiple of 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-709-sqrt",
+    "proofId": "erdos-709",
+    "range": { "startLine": 207, "endLine": 210 },
+    "type": "example",
+    "title": "Square Root Examples",
+    "content": "sqrt(100) = 10, sqrt(10000) = 100 for bound illustration.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-709-main",
+    "proofId": "erdos-709",
+    "range": { "startLine": 237, "endLine": 244 },
+    "type": "theorem",
+    "title": "Main Statement",
+    "content": "Combines lower bound, upper bound, and open status.",
+    "significance": "critical"
+  }
+]
