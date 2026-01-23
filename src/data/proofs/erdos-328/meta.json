@@ -7,20 +7,58 @@
     "author": "Paul Erdős, Donald Newman",
     "sourceUrl": "https://erdosproblems.com/328",
     "date": "1985",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos328Problem.lean",
     "tags": [
       "erdos",
       "additive-combinatorics",
       "sidon-sets",
       "ramsey-theory",
-      "representation-function"
+      "representation-function",
+      "partition",
+      "disproof"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 328,
     "erdosUrl": "https://erdosproblems.com/328",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set",
+        "description": "Set operations and membership",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets and cardinality",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "representationFunction definition: r_A(n) counting ordered pairs summing to n",
+      "rA definition: alternative representation function on Finsets",
+      "hasBoundedConvolution definition: r_A(n) ≤ C for all n",
+      "isSidonSet definition: all pairwise sums distinct (B₂ sets)",
+      "isBhSet definition: B_h sets generalization",
+      "sidon_bounded_convolution axiom: Sidon sets have r_A ≤ 2",
+      "isPartition definition: formal partition of a set",
+      "hasStrictlySmaller definition: partition pieces with r < C",
+      "erdos_newman_question definition: formal statement of the conjecture",
+      "erdos_C3_counterexample axiom: Erdős (1980) case C = 3",
+      "erdos_C4_counterexample axiom: Erdős (1980) case C = 4",
+      "nesetril_rodl_theorem axiom: complete negative answer for all C",
+      "erdos_newman_disproved theorem: the conjecture is false",
+      "nesetril_rodl_strong axiom: even allowing t to depend on A",
+      "sidon_case axiom: even Sidon sets cannot be reduced",
+      "hasUniqueSums definition: r_A(n) ≤ 1 for all n",
+      "unique_sums_hereditary axiom: unique sums closed under subsets",
+      "isSumFree definition: sum-free sets",
+      "density_bound axiom: density considerations for bounded convolution",
+      "erdos_328_status theorem: complete disproof statement"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was asked by Erdős and Newman. Erdős (1980) first showed the answer is NO for C = 3, 4 and infinitely many other values of C. Nešetřil and Rödl (1985) gave the complete negative answer: NO for ALL C, even when the number of partition pieces is allowed to depend on A itself. The proof uses Ramsey-theoretic methods.",
