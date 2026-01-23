@@ -1,33 +1,123 @@
 {
   "id": "erdos-737",
-  "title": "Erdős Problem #737",
+  "title": "Erdős Problem #737: Edge in All Large Cycles",
   "slug": "erdos-737",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... Must there exist an edge ... such that, for all large ..., ... contains a cycle...",
+  "description": "Let G have chromatic number ℵ₁. Must there exist an edge e in cycles of all large lengths? YES (Thomassen 1983).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal-Shelah (posed), Thomassen (1983 resolution)",
     "sourceUrl": "https://erdosproblems.com/737",
-    "date": "",
-    "status": "pending",
+    "date": "1983",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos737Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "infinite-graphs",
+      "cycles",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 737,
     "erdosUrl": "https://erdosproblems.com/737",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "Aleph cardinals for ℵ₁",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber G: chromatic number definition",
+      "hasChromaticNumberAleph1 G: χ(G) = ℵ₁",
+      "hasCycleOfLength G n: cycle existence",
+      "edgeInCycleOfLength G e n: edge in cycle of length n",
+      "edgeInAllLargeCycles G e N: edge in all large cycles",
+      "existsEdgeInAllLargeCycles G: main property",
+      "erdos_hajnal_shelah_1974 axiom: all large cycles exist",
+      "thomassen_1983 axiom: edge in all large cycles",
+      "isUniversalCycleEdge: edge characterization"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #737 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with chromatic number $\\aleph_1$. Must there exist an edge $e$ such that, for all large $n$, $G$ contains a cycle of length $n$ containing $e$?\n\n\n\nA problem of Erd\\H{o}s, Hajnal, and Shelah \\cite{EHS74}, who proved that $G$ must contain all sufficiently large cycles (see [594]).\n\nThis is true, and was proved by Thomassen \\cite{Th83}.\n\n\n\n\n\nReferences\n\n\n[EHS74] Erd\\H{o}s, P. and Hajnal, A. and Shelah, S., On some general properties of chromatic numbers. Topics in topology (Proc. Colloq., Keszthely, 1972) (1974), 243-255.\n\n[Th83] Thomassen, Carsten, Cycles in graphs of uncountable chromatic number. Combinatorica (1983), 133--134.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #737**\n\nThis problem connects the chromatic number of infinite graphs to their cycle structure.\n\n**History:**\n- Erdős, Hajnal, and Shelah (1974) posed the problem and proved that graphs with χ(G) = ℵ₁ contain all sufficiently large cycles\n- They asked whether the cycles could all pass through a single edge\n- Thomassen (1983) proved YES in a short paper in Combinatorica\n\n**Context:** The uncountable chromatic number ℵ₁ is a critical threshold. Finite or countably infinite chromatic number doesn't give this strong cycle property.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet G be a graph with chromatic number ℵ₁.\n\n**Question:** Must there exist an edge e such that, for all large n, G contains a cycle of length n containing e?\n\n**EHS (1974):** Proved G contains all large cycles.\n\n**Thomassen (1983):** Proved YES - such an edge exists.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Use SimpleGraph from Mathlib\n\n2. **Cardinal Numbers:** Use Cardinal.aleph for ℵ₁\n\n3. **Cycle Definitions:**\n   - hasCycleOfLength: cycle existence\n   - edgeInCycleOfLength: edge in specific cycle\n   - edgeInAllLargeCycles: edge in all large cycles\n\n4. **Main Results:**\n   - EHS 1974: all large cycles exist\n   - Thomassen 1983: edge in all large cycles\n\n**Why Axioms:** The proofs involve sophisticated infinite graph theory beyond current Mathlib.",
+    "keyInsights": [
+      "**Uncountable Threshold:** ℵ₁ is the critical chromatic number for this property.",
+      "**Routing Property:** Not just any cycles, but cycles through a specific edge.",
+      "**Strengthening EHS:** Thomassen's result strengthens the EHS existence result.",
+      "**Infinite Graph Theory:** This connects to deep results about uncountable structures.",
+      "**De Bruijn-Erdős:** Finite subgraphs determine chromatic number, explaining why ℵ₁ matters."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Graph Concepts",
+      "summary": "Chromatic number and ℵ₁",
+      "startLine": 37,
+      "endLine": 55
+    },
+    {
+      "id": "cycles",
+      "title": "Cycles and Edges",
+      "summary": "Cycle and edge-in-cycle definitions",
+      "startLine": 57,
+      "endLine": 77
+    },
+    {
+      "id": "ehs",
+      "title": "Erdős-Hajnal-Shelah Result",
+      "summary": "All large cycles exist (1974)",
+      "startLine": 79,
+      "endLine": 91
+    },
+    {
+      "id": "thomassen",
+      "title": "Thomassen's Theorem",
+      "summary": "Edge in all large cycles (1983)",
+      "startLine": 93,
+      "endLine": 113
+    },
+    {
+      "id": "threshold",
+      "title": "Why ℵ₁ Matters",
+      "summary": "Critical threshold",
+      "startLine": 115,
+      "endLine": 135
+    },
+    {
+      "id": "structure",
+      "title": "Structural Properties",
+      "summary": "Pancyclic and routing",
+      "startLine": 137,
+      "endLine": 158
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and resolution",
+      "startLine": 197,
+      "endLine": 222
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #737 was solved by Thomassen in 1983. If a graph G has chromatic number ℵ₁, then there exists an edge e such that G contains a cycle of length n through e for all sufficiently large n. This strengthens the EHS result that such graphs contain all large cycles.",
+    "implications": "The result shows that uncountable chromatic number forces very strong cycle structure. Not only do all large cycles exist, but they can be 'routed' through a single edge. This connects chromatic theory to cycle theory in infinite graphs.",
+    "openQuestions": [
+      "How many edges have the 'all large cycles' property?",
+      "What is the minimum N such that the edge is in all cycles of length ≥ N?",
+      "Do similar results hold for larger cardinal numbers?"
+    ]
   }
 }
