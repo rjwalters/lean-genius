@@ -4461,17 +4461,21 @@
   },
   {
     "id": "erdos-230",
-    "title": "Erdős Problem #230",
+    "title": "Erdős Problem #230: Ultraflat Polynomials on the Unit Circle",
     "slug": "erdos-230",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... for some ... with ... for .... Does there exist a constant ... such that, for ..., we have\\[\\max_{\\lvert z\\rvert=1}\\l...",
-    "status": "pending",
+    "description": "For unimodular polynomials P(z) = Σ a_k z^k with |a_k| = 1, does max_{|z|=1} |P(z)| ≥ (1+c)√n for some c > 0? ANSWER: NO. Kahane (1980) constructed 'ultraflat' polynomials achieving (1+o(1))√n.",
+    "status": "axiom-dependent",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "polynomials",
+      "harmonic-analysis",
+      "ultraflat"
     ],
     "erdosNumber": 230,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 12
   },
   {
     "id": "erdos-231",
