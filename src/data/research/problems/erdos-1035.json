@@ -11,17 +11,25 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "Q_n has 2^n vertices, n-regular",
+      "Q_n has 2^(n-1)·n edges",
+      "Complete graph on 2^n vertices contains Q_n"
+    ],
+    "open": [
+      "Main conjecture: ∃ c>0 for min degree threshold",
+      "If false: find smallest m>2^n that works",
+      "If false: find u_n for 2^n - u_n threshold"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T13:59:18.137Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T19:04:00.000Z",
+    "iteration": 2,
+    "focus": "Formalized conjecture and hypercube",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Study known partial results",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +37,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized hypercube Q_n, minimum degree condition, and main conjecture about containing Q_n in dense graphs.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1035Problem.lean - Main formalization (~180 lines)",
+      "hypercube definition (Adj iff differ in 1 coordinate)",
+      "hypercube_card theorem",
+      "ContainsSubgraph, ContainsHypercube definitions",
+      "minDegree, HasMinDegree definitions",
+      "mainConjecture statement",
+      "question1, question2 for fallback problems"
+    ],
+    "insights": [
+      "Q_n = {0,1}^n with adjacency iff Hamming distance 1",
+      "Q_n is n-regular with 2^(n-1)·n edges",
+      "Conjecture: ∃ c>0 such that min deg > (1-c)·2^n → contains Q_n",
+      "If false, two alternative questions proposed by Erdős",
+      "Related to problem #576 (edge extremal for Q_n)",
+      "Complete graph trivially contains Q_n",
+      "Lower bound: min degree 2^(n-1) may not suffice"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove hypercube_regular",
+      "Research known partial results on the conjecture",
+      "Study problem #576 for edge version"
+    ],
     "markdown": "# Erdős #1035 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant $c>0$ such that every graph on $2^n$ vertices with minimum degree $>(1-c)2^n$ contains the $n$-dimensional hypercube $Q_n$?\n\n\n\nErd\\H{o}s \\cite{Er93} says 'if the conjecture is false, two related problems could be asked':\n{UL}\n{LI}Determine or estimate the smallest $m>2^n$ such that every graph on $m$ vertices with minimum degree $>(1-c)2^n$ contains a $Q_n$, and {/LI}\n{LI}For which $u_n$ is it true that every graph on $2^n$ vertices with minimum degree $>2^n-u_n$ contains a $Q_n$.{/LI}\n{/UL}\n\nSee also [576] for the extremal number of edges that guarantee a $Q_n$.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #576\n- Problem #1034\n- Problem #1036\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #6\n\n## References\n\n- Er93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
