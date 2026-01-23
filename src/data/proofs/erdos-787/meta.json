@@ -1,33 +1,176 @@
 {
   "id": "erdos-787",
-  "title": "Erdős Problem #787",
+  "title": "Erdős Problem #787: Sum-Free Subsets (Erdős-Moser Problem)",
   "slug": "erdos-787",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that given any set ... with ... there exists some ... of size ... such that ... for all ....\n\nEstimat...",
+  "description": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size ≥ g(n). Current bounds: (log n)^(1+c) ≪ g(n) ≪ exp(√(log n)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Moser (problem), Klarner, Choi, Ruzsa, Sanders, Beker (bounds)",
     "sourceUrl": "https://erdosproblems.com/787",
-    "date": "",
-    "status": "pending",
+    "date": "1971-2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos787Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "sum-free",
+      "additive-combinatorics",
+      "erdos-moser",
+      "asymptotic-bounds",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 787,
     "erdosUrl": "https://erdosproblems.com/787",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power set of finite sets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for upper bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for Ruzsa's bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "IsSumAvoidingIn definition: B ⊆ A with b₁+b₂ ∉ A for distinct b₁,b₂ ∈ B",
+      "maxSumAvoidingSize definition: maximum size of sum-avoiding subset",
+      "g definition: worst-case guarantee for n-sets",
+      "HasSumAvoidingSubset predicate",
+      "empty_is_sum_avoiding theorem: empty set is trivially sum-avoiding",
+      "singleton_is_sum_avoiding theorem: singletons are sum-avoiding",
+      "greedySumAvoiding definition: greedy construction algorithm",
+      "klarner_lower_bound axiom: g(n) ≫ log n",
+      "choi_1971_upper_bound axiom: g(n) ≪ n^(2/5+o(1))",
+      "ruzsa_2005_upper_bound axiom: g(n) ≪ exp(√log n)",
+      "sanders_2021_lower_bound axiom: (log n)^(1+c) ≪ g(n)",
+      "bekerExponent definition: 1 + 1/68",
+      "beker_2025_lower_bound axiom: (log n)^(1+1/68+o(1)) ≪ g(n)",
+      "IsKConfiguration definition: k-configurations for advanced bounds",
+      "erdos_787_current_bounds theorem: combining all bounds",
+      "erdos_787_statement theorem: complete formalization"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #787 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be maximal such that given any set $A\\subset \\mathbb{R}$ with $\\lvert A\\rvert=n$ there exists some $B\\subseteq A$ of size $\\lvert B\\rvert\\geq g(n)$ such that $b_1+b_2\\not\\in A$ for all $b_1\\neq b_2\\in B$.\n\nEstimate $g(n)$.\n\n\n\nThis function was considered by Erd\\H{o}s and Moser. Choi observed that, without loss of generality, one can assume that $A\\subset \\mathbb{Z}$.\n\nKlarner proved $g(n) \\gg \\log n$ (indeed, a greedy construction suffices). Choi \\cite{Ch71} proved $g(n) \\ll n^{2/5+o(1)}$. The current best bounds known are\\[(\\log n)^{1+c} \\ll g(n) \\ll \\exp(\\sqrt{\\log n})\\]for some constant $c>0$, the lower bound due to Sanders \\cite{Sa21} and the upper bound due to Ruzsa \\cite{Ru05}. Beker \\cite{Be25} has proved\\[(\\log n)^{1+\\tfrac{1}{68}+o(1)} \\ll g(n).\\]\n\n\n\n\nReferences\n\n\n[Be25] A. Beker, The Erd\\H{o}s-Moser sum-free set problem via improved bounds for $k$-configurations. arXiv:2501.10203 (2025).\n\n[Ch71] Choi, S. L. G., On a combinatorial problem in number theory. Proc. London Math. Soc. (3) (1971), 629-642.\n\n[Ru05] Ruzsa, Imre Z., Sum-avoiding subsets. Ramanujan J. (2005), 77-82.\n\n[Sa21] Sanders, Tom, The Erd\\H{o}s-Moser sum-free set problem. Canad. J. Math. (2021), 63-107.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Erdős-Moser Sum-Free Set Problem**\n\nThis classic problem in additive combinatorics asks: given any n-element set A, how large a subset B can we guarantee to find such that no sum of two distinct elements of B lies in A?\n\n**Key History:**\n- **Erdős and Moser**: Originally formulated the problem\n- **Choi (1971)**: Observed WLOG we can assume A ⊆ ℤ; proved g(n) ≪ n^(2/5+o(1))\n- **Klarner**: Proved g(n) ≫ log n using greedy algorithm\n- **Ruzsa (2005)**: Improved upper bound to exp(√log n)\n- **Sanders (2021)**: Proved (log n)^(1+c) lower bound for some c > 0\n- **Beker (2025)**: Improved to (log n)^(1+1/68+o(1))\n\nThe exact order of g(n) remains one of the major open problems in additive combinatorics.",
+    "problemStatement": "**Problem Statement**\n\nLet $g(n)$ be maximal such that given any set $A \\subset \\mathbb{R}$ with $|A| = n$, there exists some $B \\subseteq A$ of size $|B| \\geq g(n)$ such that $b_1 + b_2 \\notin A$ for all $b_1 \\neq b_2 \\in B$.\n\nEstimate $g(n)$.\n\n**Current Best Bounds:**\n$$(\\log n)^{1+c} \\ll g(n) \\ll \\exp(\\sqrt{\\log n})$$\n\nfor some constant $c > 0$. Beker's 2025 result gives $c \\geq 1/68$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define sum-avoiding subsets via IsSumAvoidingIn predicate\n\n2. **The Function g(n):** Define as worst-case guarantee over all n-sets\n\n3. **Basic Results:** Prove empty and singleton sets are sum-avoiding\n\n4. **Historical Bounds:** Axiomatize bounds from Klarner, Choi, Ruzsa, Sanders, Beker\n\n5. **k-Configurations:** Define the structure used in modern proofs\n\n6. **Main Results:** Combine bounds into comprehensive statements",
+    "keyInsights": [
+      "**Sum-Avoiding vs Sum-Free:** B is sum-avoiding in A if sums stay outside A (different from classical sum-free)",
+      "**WLOG Integer Sets:** Choi showed we can assume A ⊆ ℤ without losing generality",
+      "**Greedy Works:** Klarner's greedy algorithm achieves logarithmic lower bound",
+      "**The Gap:** Current bounds have a large gap: polylog vs subpolynomial",
+      "**k-Configurations:** Modern improvements (Sanders, Beker) use k-configuration bounds",
+      "**Beker Exponent:** The specific value 1 + 1/68 comes from intricate combinatorial analysis"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 38,
+      "endLine": 67,
+      "summary": "Defines IsSumAvoidingIn predicate, maxSumAvoidingSize, the function g(n), and HasSumAvoidingSubset."
+    },
+    {
+      "id": "trivial-cases",
+      "title": "Trivial Cases and Basic Properties",
+      "startLine": 69,
+      "endLine": 93,
+      "summary": "Proves empty_is_sum_avoiding and singleton_is_sum_avoiding theorems."
+    },
+    {
+      "id": "klarner-lower",
+      "title": "Klarner's Lower Bound",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "Greedy algorithm definition and klarner_lower_bound axiom: g(n) ≫ log n."
+    },
+    {
+      "id": "choi-upper",
+      "title": "Choi's Upper Bound (1971)",
+      "startLine": 111,
+      "endLine": 125,
+      "summary": "Integer reduction and Choi's bound g(n) ≪ n^(2/5+o(1))."
+    },
+    {
+      "id": "ruzsa-upper",
+      "title": "Ruzsa's Upper Bound (2005)",
+      "startLine": 127,
+      "endLine": 136,
+      "summary": "Ruzsa's improved upper bound g(n) ≪ exp(√log n)."
+    },
+    {
+      "id": "sanders-lower",
+      "title": "Sanders' Lower Bound (2021)",
+      "startLine": 138,
+      "endLine": 147,
+      "summary": "Sanders' polylogarithmic lower bound (log n)^(1+c) ≪ g(n)."
+    },
+    {
+      "id": "beker-lower",
+      "title": "Beker's Lower Bound (2025)",
+      "startLine": 149,
+      "endLine": 161,
+      "summary": "Beker's specific exponent 1 + 1/68 and improved lower bound."
+    },
+    {
+      "id": "current-bounds",
+      "title": "Current Best Bounds Summary",
+      "startLine": 163,
+      "endLine": 177,
+      "summary": "The erdos_787_current_bounds theorem combining all results."
+    },
+    {
+      "id": "the-gap",
+      "title": "The Gap",
+      "startLine": 179,
+      "endLine": 192,
+      "summary": "Discussion of the gap between polylog and subpolynomial bounds."
+    },
+    {
+      "id": "k-configurations",
+      "title": "Connection to k-configurations",
+      "startLine": 194,
+      "endLine": 208,
+      "summary": "Definition of k-configurations used in modern proofs."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Problem Statement",
+      "startLine": 210,
+      "endLine": 239,
+      "summary": "Complete formalization with erdos_787_statement and summary theorems."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #787 (the Erdős-Moser sum-free set problem) asks to estimate g(n), the worst-case size of a sum-avoiding subset in any n-set. The current best bounds are (log n)^(1+c) ≪ g(n) ≪ exp(√log n), with Beker (2025) establishing c ≥ 1/68. The exact order of g(n) remains a major open problem.",
+    "implications": "**Connections and Implications**\n\n1. **Additive Combinatorics:** A fundamental problem connecting sum-free sets to set structure\n\n2. **Ramsey Theory:** Related to avoiding additive structure in subsets\n\n3. **k-Configurations:** Modern techniques use intricate configuration counting\n\n4. **Computational Aspects:** The greedy algorithm is simple but optimal only to log factor",
+    "openQuestions": [
+      "What is the true order of g(n)?",
+      "Is g(n) closer to the lower bound (polylog) or upper bound (subpolynomial)?",
+      "Can the Beker exponent 1 + 1/68 be improved?",
+      "Are there polynomial-time algorithms achieving near-optimal sum-avoiding subsets?",
+      "What is the relationship to classical sum-free set problems?"
+    ]
   }
 }
