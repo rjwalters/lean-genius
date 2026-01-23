@@ -1,33 +1,124 @@
 {
   "id": "erdos-722",
-  "title": "Erdős Problem #722",
+  "title": "Erdős Problem #722: Existence of Steiner Systems",
   "slug": "erdos-722",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large in terms of ... and .... Does there always exist a block ... design (or Steiner system ...",
+  "description": "Do Steiner systems S(r,k,n) exist for large n when divisibility conditions are met? SOLVED by Keevash (2014) using randomized algebraic construction.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kirkman (1847), Hanani (1961), Wilson (1972), Keevash (2014 resolution)",
     "sourceUrl": "https://erdosproblems.com/722",
-    "date": "",
-    "status": "pending",
+    "date": "2014",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos722Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "design-theory",
+      "steiner-systems",
+      "block-designs",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 722,
     "erdosUrl": "https://erdosproblems.com/722",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset", "description": "Finite sets for blocks", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Nat.choose", "description": "Binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic" },
+      { "theorem": "Finset.Powerset", "description": "Subsets", "module": "Mathlib.Data.Finset.Powerset" }
+    ],
+    "originalContributions": [
+      "SteinerSystem: structure for S(r,k,n) block designs",
+      "DivisibilityConditions: necessary conditions formalized",
+      "keevash_theorem: general existence theorem (2014)",
+      "wilson_theorem_r2: r=2 case (1972)",
+      "kirkman_triple_systems: S(2,3,n) characterization",
+      "fano_plane_divisibility: verified divisibility for S(2,3,7)",
+      "IsPacking, IsCovering: related concepts"
+    ],
+    "dateAdded": "2026-01-22"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #722 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k>r$ and $n$ be sufficiently large in terms of $k$ and $r$. Does there always exist a block $r-(n,k,1)$ design (or Steiner system with parameters $(n,k,r)$), provided the trivial necessary divisibility conditions $\\binom{k-i}{r-i}\\mid \\binom{n-i}{r-i}$ are satisfied for every $0\\leq i<r$?\n\nThat is, can one find a family of $\\binom{n}{k}\\binom{k}{r}^{-1}$ many subsets of $\\{1,\\ldots,n\\}$, all of size $k$, such that any $A\\subseteq \\{1,\\ldots,n\\}$ of size $r$ is contained in exactly one set in the family?\n\n\n\nThis was proved for $(r,k)$ by:\n{UL}\n{LI}Kirkman for $(2,3)$;{/LI}\n{LI}Hanani \\cite{Ha61} for $(3,4)$, $(2,4)$, and $(2,5)$;{/LI}\n{LI}Wilson \\cite{Wi72} for $(2,k)$ for any $k$;{/LI}\n{LI}Keevash \\cite{Ke14} for all $(r,k)$.\n{/UL}\n\n\n\n\nReferences\n\n\n[Ha61] Hanani, Haim, The existence and construction of balanced incomplete block\ndesigns. Ann. Math. Statist. (1961), 361-386.\n\n[Ke14] P. Keevash, The existence of designs. arXiv:1401.3665 (2014).\n\n[Wi72] Wilson, Richard M., An existence theory for pairwise balanced designs. {II}. The\nstructure of {PBD}-closed sets and the existence conjectures. J. Combinatorial Theory Ser. A (1972), 246-273.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Steiner systems are fundamental objects in combinatorial design theory. The existence question was progressively solved: Kirkman (1847) for S(2,3,n), Hanani (1961) for several cases, Wilson (1972) for all S(2,k,n), and finally Keevash (2014) for the general case S(r,k,n). Keevash's breakthrough used a novel 'randomized algebraic construction' combining probabilistic and algebraic methods.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet k > r and n be sufficiently large. Does there always exist a Steiner system S(r,k,n) when the divisibility conditions are satisfied?\n\n**Divisibility Conditions:** For 0 ≤ i < r:\n  binom(k-i, r-i) | binom(n-i, r-i)\n\n**Answer:** YES (Keevash 2014)\n\nA Steiner system S(r,k,n) is a collection of k-subsets (blocks) such that every r-subset appears in exactly one block.",
+    "proofStrategy": "The formalization defines Steiner systems as structures with blocks satisfying size and coverage properties. Divisibility conditions are formalized. Historical results (Kirkman, Hanani, Wilson) are axiomatized, and Keevash's theorem gives the general solution. Small examples verify divisibility for S(2,3,7) and S(2,3,9).",
+    "keyInsights": [
+      "**Steiner System S(r,k,n):** k-blocks covering each r-subset exactly once",
+      "**Divisibility Conditions:** Necessary for block counts to work out",
+      "**Fano Plane:** S(2,3,7) - the smallest Steiner triple system",
+      "**Kirkman (1847):** S(2,3,n) exists iff n ≡ 1,3 (mod 6), n ≥ 7",
+      "**Wilson (1972):** Resolved all S(2,k,n) cases",
+      "**Keevash (2014):** General existence for all S(r,k,n)",
+      "**Randomized Algebraic Construction:** Key innovation in Keevash's proof"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 49,
+      "endLine": 91,
+      "summary": "Steiner system structure, block size, coverage"
+    },
+    {
+      "id": "divisibility",
+      "title": "Divisibility Conditions",
+      "startLine": 92,
+      "endLine": 127,
+      "summary": "Necessary conditions for existence"
+    },
+    {
+      "id": "classical",
+      "title": "Classical Examples",
+      "startLine": 128,
+      "endLine": 163,
+      "summary": "Kirkman, Hanani, Fano plane"
+    },
+    {
+      "id": "wilson",
+      "title": "Wilson's Theorem (1972)",
+      "startLine": 164,
+      "endLine": 186,
+      "summary": "Solution for r = 2"
+    },
+    {
+      "id": "keevash",
+      "title": "Keevash's Theorem (2014)",
+      "startLine": 187,
+      "endLine": 235,
+      "summary": "General solution"
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "startLine": 236,
+      "endLine": 264,
+      "summary": "Fano plane and S(2,3,9) divisibility"
+    },
+    {
+      "id": "related",
+      "title": "Related Concepts",
+      "startLine": 265,
+      "endLine": 291,
+      "summary": "Resolvable designs, packing, covering"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 292,
+      "endLine": 324,
+      "summary": "Main results"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #722 is SOLVED. Keevash (2014) proved that Steiner systems S(r,k,n) exist for all sufficiently large n satisfying the divisibility conditions. This resolved a century-old problem in combinatorial design theory, building on work by Kirkman, Hanani, and Wilson.",
+    "implications": "The result completes the existence theory for block designs. Keevash's randomized algebraic construction introduced new techniques combining probabilistic and algebraic methods, influencing subsequent work in combinatorics.",
+    "openQuestions": [
+      "What is the smallest N₀(r,k) such that S(r,k,n) exists for all n ≥ N₀?",
+      "How many non-isomorphic Steiner systems exist for given parameters?",
+      "What is the complexity of constructing Steiner systems explicitly?",
+      "Can Keevash's methods extend to more general design problems?"
+    ]
   }
 }

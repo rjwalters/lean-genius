@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-e722-header",
+    "proofId": "erdos-722",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #722: Existence of Steiner Systems**\n\nA Steiner system S(r,k,n) is a collection of k-subsets (blocks) such that every r-subset appears in exactly one block.\n\n**Question:** Do these exist for large n when divisibility conditions are met?\n\n**Answer:** YES (Keevash 2014)\n\nHistorical progress: Kirkman (1847) → Hanani (1961) → Wilson (1972) → Keevash (2014)",
+    "mathContext": "Block designs are fundamental structures in combinatorics with applications in coding theory, experiment design, and cryptography.",
+    "significance": "critical",
+    "relatedConcepts": ["Block designs", "Combinatorial designs", "Fano plane", "Kirkman's schoolgirl problem"]
+  },
+  {
+    "id": "ann-e722-steiner-def",
+    "proofId": "erdos-722",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "definition",
+    "title": "Steiner System Structure",
+    "content": "**SteinerSystem r k n:**\n\nA structure containing:\n- blocks: a finite set of k-subsets\n- block_size: every block has exactly k elements\n- covers_once: every r-subset is in exactly one block\n\nNotation: S(r,k,n) or r-(n,k,1) design",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e722-divisibility",
+    "proofId": "erdos-722",
+    "range": { "startLine": 103, "endLine": 104 },
+    "type": "definition",
+    "title": "Divisibility Conditions",
+    "content": "**DivisibilityConditions r k n:**\n\nFor all 0 ≤ i < r:\n  binom(k-i, r-i) | binom(n-i, r-i)\n\nThese are NECESSARY for existence. Keevash proved they are also SUFFICIENT for large n.",
+    "mathContext": "The divisibility conditions ensure that block counts work out to integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e722-kirkman",
+    "proofId": "erdos-722",
+    "range": { "startLine": 138, "endLine": 140 },
+    "type": "axiom",
+    "title": "Kirkman's Triple Systems",
+    "content": "**Kirkman (1847):**\n\nS(2,3,n) exists iff n ≡ 1 or 3 (mod 6) and n ≥ 7.\n\nThe famous 'Kirkman schoolgirl problem' asks for a resolvable S(2,3,15).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e722-fano",
+    "proofId": "erdos-722",
+    "range": { "startLine": 147, "endLine": 147 },
+    "type": "axiom",
+    "title": "Fano Plane",
+    "content": "**The Fano Plane S(2,3,7):**\n\nThe smallest Steiner triple system:\n- 7 points (vertices)\n- 7 blocks (lines)\n- Each line has 3 points\n- Every pair of points is on exactly one line\n\nBlocks: {1,2,3}, {1,4,5}, {1,6,7}, {2,4,6}, {2,5,7}, {3,4,7}, {3,5,6}",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e722-hanani",
+    "proofId": "erdos-722",
+    "range": { "startLine": 153, "endLine": 162 },
+    "type": "axiom",
+    "title": "Hanani's Results (1961)",
+    "content": "**Hanani (1961):**\n\nCharacterized existence for:\n- S(3,4,n): exists for n ≡ 2,4 (mod 6), n ≥ 4\n- S(2,4,n): exists under certain mod 12 conditions\n- S(2,5,n): exists under certain conditions\n\nThese were major stepping stones toward the general solution.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e722-wilson",
+    "proofId": "erdos-722",
+    "range": { "startLine": 175, "endLine": 177 },
+    "type": "axiom",
+    "title": "Wilson's Theorem (1972)",
+    "content": "**Wilson (1972):**\n\nFor r = 2, Steiner systems S(2,k,n) exist for all sufficiently large n satisfying divisibility conditions.\n\nThis resolved the r = 2 case completely, establishing the pairwise balanced design existence theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e722-keevash",
+    "proofId": "erdos-722",
+    "range": { "startLine": 198, "endLine": 200 },
+    "type": "axiom",
+    "title": "Keevash's Theorem (2014)",
+    "content": "**Keevash (2014):**\n\nFor ALL r < k, Steiner systems S(r,k,n) exist for sufficiently large n when divisibility conditions are satisfied.\n\nThis is the COMPLETE SOLUTION to the existence problem.\n\nMethod: Randomized algebraic construction combining probabilistic and algebraic techniques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e722-solved",
+    "proofId": "erdos-722",
+    "range": { "startLine": 208, "endLine": 211 },
+    "type": "theorem",
+    "title": "Problem #722 Solved",
+    "content": "**erdos_722_solved:**\n\nThe answer is YES: for n sufficiently large, Steiner systems exist whenever divisibility conditions are met.\n\nThis follows directly from Keevash's theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e722-method",
+    "proofId": "erdos-722",
+    "range": { "startLine": 217, "endLine": 234 },
+    "type": "concept",
+    "title": "Keevash's Method",
+    "content": "**Randomized Algebraic Construction:**\n\nKeevash's breakthrough combined:\n1. **Random greedy algorithms:** For partial designs\n2. **Algebraic nibble methods:** Iterative refinement\n3. **Absorbing methods:** Completion of partial designs\n\nThe key innovation was using algebraic structures to guide the random construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e722-fano-div",
+    "proofId": "erdos-722",
+    "range": { "startLine": 245, "endLine": 253 },
+    "type": "theorem",
+    "title": "Fano Plane Divisibility",
+    "content": "**fano_plane_divisibility:**\n\nVerifies S(2,3,7) satisfies divisibility conditions:\n- i=0: binom(3,2) = 3 divides binom(7,2) = 21 ✓\n- i=1: binom(2,1) = 2 divides binom(6,1) = 6 ✓\n\nThis is a concrete computational verification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e722-packing",
+    "proofId": "erdos-722",
+    "range": { "startLine": 284, "endLine": 290 },
+    "type": "definition",
+    "title": "Packing vs Covering",
+    "content": "**Related Concepts:**\n\n- **Packing:** Every r-set in AT MOST one block\n- **Covering:** Every r-set in AT LEAST one block\n- **Steiner system:** EXACTLY one (both packing and covering)\n\nSteiner systems are the perfect balance between packing and covering.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e722-summary",
+    "proofId": "erdos-722",
+    "range": { "startLine": 299, "endLine": 314 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_722_summary:**\n\n1. Keevash's general theorem holds\n2. Wilson's theorem for r = 2\n3. Fano plane exists\n\n**STATUS: SOLVED**\n\nThe century-old existence problem for Steiner systems is now completely resolved.",
+    "significance": "critical"
+  }
+]
