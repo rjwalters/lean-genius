@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-338-001",
+    "proofId": "erdos-338",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Additive Basis of Order h",
+    "content": "A set A ⊆ ℕ is an additive basis of order h if every sufficiently large integer n can be expressed as a sum of at most h elements from A (with repetition allowed). The representation uses Multiset to allow repeated summands. This is the standard definition of Schnirelmann-Erdős.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-338-002",
+    "proofId": "erdos-338",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "definition",
+    "title": "Exact Order of a Basis",
+    "content": "The exact order h is achieved when the basis is of order h but NOT of order h-1. This captures the minimal number of summands needed - h is tight, not just an upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-003",
+    "proofId": "erdos-338",
+    "range": { "startLine": 67, "endLine": 68 },
+    "type": "definition",
+    "title": "Restricted Representation",
+    "content": "A restricted representation uses a Finset instead of Multiset - each element can only appear once. The sum uses Finset.sum id since elements are distinct natural numbers. This is the key constraint that distinguishes restricted order from regular order.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-338-004",
+    "proofId": "erdos-338",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "definition",
+    "title": "Restricted Order",
+    "content": "The restricted order t requires every sufficiently large integer to be representable as a sum of at most t DISTINCT elements. The key difference from regular order is using Finset (distinct elements) instead of Multiset (allows repetition). Not all bases have finite restricted order.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-338-005",
+    "proofId": "erdos-338",
+    "range": { "startLine": 83, "endLine": 84 },
+    "type": "definition",
+    "title": "Has Finite Restricted Order",
+    "content": "A basis has finite restricted order if there exists SOME finite t that works. This is an existence predicate - not all bases have this property. Bateman showed bases of order h ≥ 3 can fail to have finite restricted order.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-006",
+    "proofId": "erdos-338",
+    "range": { "startLine": 103, "endLine": 104 },
+    "type": "definition",
+    "title": "Bateman's Example Set",
+    "content": "The set A = {1} ∪ {x > 0 : h | x} consists of 1 and all positive multiples of h. For h = 3, this is {1, 3, 6, 9, 12, ...}. It forms a basis of order h but has no finite restricted order.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-007",
+    "proofId": "erdos-338",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "theorem",
+    "title": "Bateman's Observation",
+    "content": "The theorem combines both properties of Bateman's set: it IS a basis of order h, but it has NO finite restricted order. This shows that finite restricted order is not automatic for bases of order h ≥ 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-338-008",
+    "proofId": "erdos-338",
+    "range": { "startLine": 127, "endLine": 128 },
+    "type": "concept",
+    "title": "Kelly's Theorem (1957)",
+    "content": "Kelly proved that EVERY basis of order 2 has restricted order at most 4. This is the best known upper bound for order-2 bases. Kelly conjectured the bound should be 3, but this was later disproved by Hennecart.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-338-009",
+    "proofId": "erdos-338",
+    "range": { "startLine": 134, "endLine": 135 },
+    "type": "definition",
+    "title": "Kelly's Conjecture",
+    "content": "Kelly conjectured that every order-2 basis has restricted order at most 3 (not just 4). This was formulated as: for all A, if IsBasisOfOrder A 2 then HasRestrictedOrder A 3. The conjecture stood for nearly 50 years before being disproved.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-010",
+    "proofId": "erdos-338",
+    "range": { "startLine": 163, "endLine": 167 },
+    "type": "theorem",
+    "title": "Hennecart Disproves Kelly",
+    "content": "The proof shows Kelly's conjecture is false by contradiction: if the conjecture held, Hennecart's basis (which is order 2) would have restricted order ≤ 3, but it has restricted order exactly 4. This is a classic counterexample proof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-338-011",
+    "proofId": "erdos-338",
+    "range": { "startLine": 173, "endLine": 174 },
+    "type": "definition",
+    "title": "Perfect Squares Set",
+    "content": "The set of perfect squares {0, 1, 4, 9, 16, 25, ...} where each n = k² for some k. By Lagrange's four-squares theorem, this set has order 4 (every positive integer is a sum of 4 squares). Pall showed the restricted order is 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-012",
+    "proofId": "erdos-338",
+    "range": { "startLine": 176, "endLine": 177 },
+    "type": "definition",
+    "title": "Triangular Numbers Set",
+    "content": "The triangular numbers T_k = k(k+1)/2 are {0, 1, 3, 6, 10, 15, 21, ...}. Gauss's 'Eureka' theorem shows these have order 3. Schinzel proved the restricted order is also 3 - one of the rare cases where order equals restricted order.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-013",
+    "proofId": "erdos-338",
+    "range": { "startLine": 205, "endLine": 207 },
+    "type": "theorem",
+    "title": "Triangular Numbers: Equal Orders",
+    "content": "Triangular numbers provide an example where order = restricted order = 3. This is significant because it shows the gap between order and restricted order can be zero for some natural sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-014",
+    "proofId": "erdos-338",
+    "range": { "startLine": 210, "endLine": 213 },
+    "type": "theorem",
+    "title": "Squares: Different Orders",
+    "content": "Squares have order 4 (Lagrange) but restricted order 5 (Pall). The gap of 1 shows that even for classical sets, order and restricted order can differ. The distinction is that without repetition, one more term may be needed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-015",
+    "proofId": "erdos-338",
+    "range": { "startLine": 223, "endLine": 225 },
+    "type": "concept",
+    "title": "HHP Exponential Lower Bound",
+    "content": "Hegyvári, Hennecart, and Plagne (2007) showed that for order k ≥ 2, there exist bases with restricted order at least 2^{k-2} + k - 1. This is EXPONENTIAL in k, showing the gap can grow very large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-338-016",
+    "proofId": "erdos-338",
+    "range": { "startLine": 228, "endLine": 236 },
+    "type": "theorem",
+    "title": "Exponential Gap Theorem",
+    "content": "This theorem reformulates the HHP bound: for any restricted order t that works for the constructed basis, we must have t ≥ 2^{k-2} + k - 1. The proof uses contraposition: if t were smaller, the HHP axiom would give a contradiction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-017",
+    "proofId": "erdos-338",
+    "range": { "startLine": 246, "endLine": 247 },
+    "type": "definition",
+    "title": "Open Question 1: Existence Conditions",
+    "content": "The first open question asks for a characterization P such that HasFiniteRestrictedOrder A ↔ P A. What property of a basis guarantees (or prevents) the existence of a finite restricted order?",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-338-018",
+    "proofId": "erdos-338",
+    "range": { "startLine": 253, "endLine": 256 },
+    "type": "definition",
+    "title": "Open Question 2: Bounding",
+    "content": "Can we bound restricted order in terms of order? This asks for a function f such that restricted order ≤ f(order) whenever restricted order exists. The HHP bound shows if f exists, it must grow at least exponentially.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-338-019",
+    "proofId": "erdos-338",
+    "range": { "startLine": 270, "endLine": 271 },
+    "type": "definition",
+    "title": "Robust Basis",
+    "content": "A basis A is 'robust' of order h if A \\ F remains a basis of order h for ALL finite sets F. This removes any finite set of elements and the remainder is still a basis of the same order. The open question asks if robustness implies finite restricted order.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-020",
+    "proofId": "erdos-338",
+    "range": { "startLine": 284, "endLine": 297 },
+    "type": "theorem",
+    "title": "Restricted Implies Regular",
+    "content": "If A has restricted order t, then A has (regular) order t. The proof converts the Finset representation to a Multiset by taking s.val. Since distinct sums are a special case of sums with repetition, restricted order bounds regular order from above.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-338-021",
+    "proofId": "erdos-338",
+    "range": { "startLine": 312, "endLine": 318 },
+    "type": "theorem",
+    "title": "Monotonicity of Restricted Order",
+    "content": "If HasRestrictedOrder A t holds, then HasRestrictedOrder A (t+1) also holds. The proof uses the same representation s but notes s.card ≤ t implies s.card ≤ t+1. This shows restricted order is upward closed.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-338-022",
+    "proofId": "erdos-338",
+    "range": { "startLine": 349, "endLine": 359 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "The summary combines four key results: (1) Kelly's theorem holds, (2) Kelly's conjecture is false, (3) squares have order 4 and restricted order 5, (4) triangular numbers have both orders equal to 3. This provides a snapshot of the known landscape.",
+    "significance": "critical"
+  }
+]

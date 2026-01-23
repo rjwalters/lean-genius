@@ -1,33 +1,112 @@
 {
   "id": "erdos-338",
-  "title": "Erdős Problem #338",
+  "title": "Erdős Problem #338: Restricted Order of Additive Bases",
   "slug": "erdos-338",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe restricted order of a basis is the least integer ... (if it exists) such that every large integer is the sum of at most ....",
+  "description": "What are the necessary and sufficient conditions for an additive basis to have a restricted order? Can the restricted order be bounded in terms of the order? When does restricted order equal order?",
   "meta": {
-    "author": "Unknown",
+    "author": "Kelly, Hennecart, Hegyvári, Plagne",
     "sourceUrl": "https://erdosproblems.com/338",
-    "date": "",
-    "status": "pending",
+    "date": "1957-2007",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos338Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-bases",
+      "restricted-order",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 338,
     "erdosUrl": "https://erdosproblems.com/338",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #338 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe restricted order of a basis is the least integer $t$ (if it exists) such that every large integer is the sum of at most $t$ distinct summands from $A$. What are necessary and sufficient conditions that this exists? Can it be bounded (when it exists) in terms of the order of the basis? What are necessary and sufficient conditions that this is equal to the order of the basis?\n\n\n\nBateman has observed that for $h\\geq 3$ there is a basis of order $h$ with no restricted order, taking\\[A=\\{1\\}\\cup \\{x>0 : h\\mid x\\}.\\]Kelly \\cite{Ke57} has shown that any basis of order $2$ has restricted order at most $4$ and conjectured it always has restricted order at most $3$ (which he proved under the additional assumption that the basis has positive lower density). Kelly's conjecture was disproved by Hennecart \\cite{He05}, who constructed a basis of order $2$ with restricted order $4$.\n\nThe set of squares has order $4$ and restricted order $5$ (see \\cite{Pa33}) and the set of triangular numbers has order $3$ and restricted order $3$ (see \\cite{Sc54}).\n\nIs it true that if $A\\backslash F$ is a basis for all finite sets $F$ then $A$ must have a restricted order? What if they are all bases of the same order?\n\nHegyv\\'{a}ri, Hennecart, and Plagne \\cite{HHP07} have shown that for all $k\\geq2$ there exists a basis of order $k$ which has restricted order at least\\[2^{k-2}+k-1.\\]\n\n\n\n\nReferences\n\n\n[HHP07] Hegyv\\'ari, Norbert and Hennecart, Fran\\c cois and Plagne,\nAlain, Answer to a question by {B}urr and {E}rd\\H{o}s on restricted\naddition, and related results. Combin. Probab. Comput. (2007), 747--756.\n\n[He05] Hennecart, Fran\\c cois, On the restricted order of asymptotic bases of order two. Ramanujan J. (2005), 123--130.\n\n[Ke57] Kelly, John B., Restricted bases. Amer. J. Math. (1957), 258-264.\n\n[Pa33] Pall, Gordon, On Sums of Squares. Amer. Math. Monthly (1933), 10-18.\n\n[Sc54] Schinzel, A., Sur la d\\'{e}composition des nombres naturels en sommes de nombres triangulaires distincts. Bull. Acad. Polon. Sci. Cl. III. (1954), 409-410.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The study of additive bases is a central topic in additive number theory. The order of a basis is the minimum number of summands needed to represent all sufficiently large integers. The restricted order is similar but requires DISTINCT summands. This problem, posed by Erdős, explores the relationship between these two concepts. Kelly (1957) initiated the study by proving that order-2 bases have restricted order at most 4 and conjectured the bound is 3. Hennecart (2005) disproved Kelly's conjecture by constructing an order-2 basis with restricted order exactly 4. Hegyvári, Hennecart, and Plagne (2007) showed the gap between order and restricted order can grow exponentially.",
+    "problemStatement": "The restricted order of a basis is the least integer t (if it exists) such that every sufficiently large integer is the sum of at most t distinct summands from A. The problem asks: (1) What are necessary and sufficient conditions for restricted order to exist? (2) Can restricted order be bounded in terms of order? (3) When does restricted order equal order? (4) If A \\ F is a basis for all finite F, must A have restricted order?",
+    "proofStrategy": "The formalization defines additive basis of order h (using multisets for representations with repetition) and restricted order (using finite sets for distinct summands). Key results are axiomatized: Bateman's observation (order ≥ 3 doesn't guarantee finite restricted order), Kelly's theorem (order 2 implies restricted order ≤ 4), Hennecart's counterexample, and the HHP exponential lower bound. Classical examples include squares (order 4, restricted 5) and triangular numbers (order = restricted = 3). Basic properties like monotonicity and the implication from restricted to regular order are proved.",
+    "keyInsights": [
+      "Order allows repetitions (multisets); restricted order requires distinct elements (finite sets)",
+      "Bateman's example A = {1} ∪ {x : h | x} shows order h ≥ 3 doesn't imply finite restricted order",
+      "Kelly proved order 2 implies restricted order ≤ 4; his conjecture of ≤ 3 was disproved",
+      "The gap between order and restricted order can grow exponentially: at least 2^{k-2} + k - 1 for order k",
+      "Triangular numbers have equal order and restricted order; squares have order 4 but restricted order 5"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 92,
+      "summary": "Defines additive basis of order h, exact order, restricted representations, restricted order, and finite restricted order."
+    },
+    {
+      "id": "bateman",
+      "title": "Bateman's Observation",
+      "startLine": 94,
+      "endLine": 117,
+      "summary": "Bateman's example showing order h ≥ 3 doesn't guarantee finite restricted order: A = {1} ∪ {x : h | x}."
+    },
+    {
+      "id": "kelly",
+      "title": "Kelly's Results (1957)",
+      "startLine": 119,
+      "endLine": 144,
+      "summary": "Kelly's theorem (order 2 implies restricted order ≤ 4) and his disproved conjecture (≤ 3)."
+    },
+    {
+      "id": "hennecart",
+      "title": "Hennecart's Counterexample (2005)",
+      "startLine": 146,
+      "endLine": 167,
+      "summary": "Hennecart constructed an order-2 basis with restricted order exactly 4, disproving Kelly's conjecture."
+    },
+    {
+      "id": "examples",
+      "title": "Classical Examples",
+      "startLine": 169,
+      "endLine": 213,
+      "summary": "Squares (order 4, restricted 5) and triangular numbers (order = restricted = 3)."
+    },
+    {
+      "id": "hhp",
+      "title": "HHP Lower Bound (2007)",
+      "startLine": 215,
+      "endLine": 236,
+      "summary": "For order k ≥ 2, restricted order can be at least 2^{k-2} + k - 1 (exponential gap)."
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "startLine": 238,
+      "endLine": 274,
+      "summary": "The four main open questions: existence conditions, bounding, equality conditions, and robustness."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 276,
+      "endLine": 318,
+      "summary": "Properties: restricted implies regular order, order ≤ restricted order, and monotonicity."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 320,
+      "endLine": 361,
+      "summary": "Summary theorem combining Kelly's theorem, the false conjecture, and classical examples."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #338 remains OPEN. The main questions about characterizing when restricted order exists, bounding it in terms of order, and when they are equal are unsolved. Key partial results include: Kelly's bound of 4 for order-2 bases, Hennecart's counterexample to Kelly's conjecture of 3, Bateman's example showing order ≥ 3 doesn't guarantee finite restricted order, and the HHP exponential lower bound.",
+    "implications": "The gap between order and restricted order reveals the fundamental difference between representations allowing repetitions and those requiring distinctness. The exponential gap in the HHP lower bound suggests there may be no polynomial bound on restricted order in terms of order. The problem connects to questions about robustness of additive bases.",
+    "openQuestions": [
+      "What are necessary and sufficient conditions for a basis to have finite restricted order?",
+      "Can restricted order be bounded by a function of order (for bases that have restricted order)?",
+      "What characterizes bases where order equals restricted order?",
+      "If A \\ F is a basis for all finite F, must A have restricted order?"
+    ]
   }
 }
