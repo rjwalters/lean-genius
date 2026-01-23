@@ -1,33 +1,165 @@
 {
   "id": "erdos-443",
-  "title": "Erdős Problem #443",
+  "title": "Erdős Problem #443: Common Products k(m-k) and l(n-l)",
   "slug": "erdos-443",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is\\[\\# \\{ k(m-k) : 1\\leq k\\leq m/2\\} \\cap \\{ l(n-l) : 1\\leq l\\leq n/2\\}?\\]Can it be arbitrarily large? Is it .....",
+  "description": "For m,n ≥ 1, how large can the intersection |{k(m-k) : 1≤k≤m/2} ∩ {l(n-l) : 1≤l≤n/2}| be? Can it be arbitrarily large? Is it ≤(mn)^{o(1)}? YES to both - proved by Hegyvári (2025) and Cambie.",
   "meta": {
-    "author": "Unknown",
+    "author": "Hegyvári (2025), Cambie (unpublished)",
     "sourceUrl": "https://erdosproblems.com/443",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos443Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "arithmetic-progressions",
+      "combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 8,
     "erdosNumber": 443,
     "erdosUrl": "https://erdosproblems.com/443",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.range",
+        "description": "Range of natural numbers",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "productValue definition: k * (m - k)",
+      "productSet definition: set A_m of all such products",
+      "commonProducts definition: intersection A_m ∩ B_n",
+      "commonProductCount definition: cardinality of intersection",
+      "sameProduct definition: the Diophantine equation",
+      "hegyvari_upper_bound axiom: |A_m ∩ B_n| ≤ m^{O(1/log log m)}",
+      "arbitrarily_large_intersection axiom: every size s is achieved",
+      "subpolynomial_bound axiom: (mn)^{o(1)} bound",
+      "product_as_squares axiom: reformulation via difference of squares",
+      "intersection_unbounded theorem: corollary from axioms"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #443 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $m,n\\geq 1$. What is\\[\\# \\{ k(m-k) : 1\\leq k\\leq m/2\\} \\cap \\{ l(n-l) : 1\\leq l\\leq n/2\\}?\\]Can it be arbitrarily large? Is it $\\leq (mn)^{o(1)}$ for all sufficiently large $m,n$?\n\n\n\nThis was solved independently by Hegyv\\'{a}ri \\cite{He25} and Cambie (unpublished), who show that if $m>n$ then the set in question has size\\[\\leq m^{O(1/\\log\\log m)},\\]and that for any integer $s$ there exist infinitely many pairs $(m,n)$ such that the set in question has size $s$.\n\n\n\n\nReferences\n\n\n[He25] N. Hegyv\\'{a}ri, An elementary question of Erd\\H{o}s and Graham. arXiv:2503.24201 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #443** appears in the Erdős-Graham book (1980, p.88). It asks about the intersection of two natural sets of products. Given integers m and n, the set A_m = {k(m-k) : 1 ≤ k ≤ m/2} consists of products of complementary parts of m. The question asks how large the intersection A_m ∩ B_n can be.\n\n**Historical Development:**\n- **Erdős-Graham (1980):** Posed the problem in their influential book on combinatorial number theory\n- **Hegyvári (2025):** Proved that |A_m ∩ B_n| ≤ m^{O(1/log log m)} when m > n\n- **Cambie (unpublished):** Independently obtained similar results\n\n**Key Insight:** The products k(m-k) can be written as (m/2)² - (k - m/2)², expressing them as differences of squares. This reformulation connects the problem to Diophantine equations and quadratic forms.",
+    "problemStatement": "**Problem Statement**\n\nFor integers $m, n \\geq 1$, define:\n$$A_m = \\{ k(m-k) : 1 \\leq k \\leq m/2 \\}$$\n$$B_n = \\{ l(n-l) : 1 \\leq l \\leq n/2 \\}$$\n\n**Questions:**\n1. Can $|A_m \\cap B_n|$ be arbitrarily large?\n2. Is $|A_m \\cap B_n| \\leq (mn)^{o(1)}$ for all sufficiently large $m, n$?\n\n**Answer:** YES to both!\n1. For any integer $s$, infinitely many pairs $(m,n)$ achieve $|A_m \\cap B_n| = s$\n2. When $m > n$, we have $|A_m \\cap B_n| \\leq m^{O(1/\\log\\log m)}$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** productValue, productSet, commonProducts, commonProductCount\n\n2. **Diophantine Reformulation:** k(m-k) = l(n-l) as a quadratic Diophantine equation\n\n3. **Main Results:** Axiomatize Hegyvári's upper bound and the achievability result\n\n4. **Proof Technique:** The bound uses sieve methods and divisibility constraints\n\n5. **Growth Analysis:** The exponent O(1/log log m) tends to 0, giving subpolynomial growth",
+    "keyInsights": [
+      "**Difference of Squares:** k(m-k) = (m/2)² - (k - m/2)² when m is even. This reformulation makes the problem about matching quadratic forms.",
+      "**Diophantine Connection:** Finding common products means solving k(m-k) = l(n-l), a system that can be analyzed via factorization and divisibility.",
+      "**Subpolynomial Growth:** The bound m^{O(1/log log m)} is subpolynomial—it grows slower than any power m^ε but faster than any polylog.",
+      "**Unbounded Intersection:** Despite the upper bound, every finite size is achieved by infinitely many pairs, showing the bound is essentially tight.",
+      "**Sieve Methods:** Hegyvári's proof uses sieve techniques to count solutions with specific divisibility properties.",
+      "**Erdős-Graham Legacy:** This problem exemplifies their style: simple to state, deep to analyze, connecting number theory and combinatorics."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Definition of productValue, productSet, commonProducts, and commonProductCount",
+      "startLine": 37,
+      "endLine": 60
+    },
+    {
+      "id": "properties",
+      "title": "Elementary Properties",
+      "summary": "Basic facts: maximum at k=m/2, symmetry, bounds",
+      "startLine": 62,
+      "endLine": 89
+    },
+    {
+      "id": "size",
+      "title": "Size of A_m",
+      "summary": "A_m has approximately m/2 elements",
+      "startLine": 91,
+      "endLine": 105
+    },
+    {
+      "id": "diophantine",
+      "title": "The Diophantine Equation",
+      "summary": "Reformulating k(m-k) = l(n-l) as a quadratic equation",
+      "startLine": 107,
+      "endLine": 126
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results - Hegyvári (2025)",
+      "summary": "The key bounds: m^{O(1/log log m)} upper and achievability",
+      "startLine": 128,
+      "endLine": 152
+    },
+    {
+      "id": "examples",
+      "title": "Special Cases and Examples",
+      "summary": "Concrete computations for small m, n",
+      "startLine": 154,
+      "endLine": 176
+    },
+    {
+      "id": "quadratic",
+      "title": "Relation to Quadratic Residues",
+      "summary": "Connection to squares and difference of squares",
+      "startLine": 178,
+      "endLine": 190
+    },
+    {
+      "id": "arithmetic",
+      "title": "Connection to Arithmetic Progressions",
+      "summary": "Interpretation via sums of arithmetic progressions",
+      "startLine": 192,
+      "endLine": 203
+    },
+    {
+      "id": "growth",
+      "title": "Growth Rate Analysis",
+      "summary": "The exponent 1/log log m tends to zero",
+      "startLine": 205,
+      "endLine": 218
+    },
+    {
+      "id": "technique",
+      "title": "Proof Technique",
+      "summary": "Hegyvári's approach using divisibility and sieves",
+      "startLine": 220,
+      "endLine": 232
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Comparison with binomial coefficients and other common-value problems",
+      "startLine": 234,
+      "endLine": 246
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem combining both results",
+      "startLine": 248,
+      "endLine": 269
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #443 asks whether the intersection of product sets A_m ∩ B_n can be arbitrarily large and whether it's bounded by (mn)^{o(1)}. Both questions were answered affirmatively by Hegyvári (2025) and Cambie. The intersection can achieve any finite size, but is always bounded by m^{O(1/log log m)}.",
+    "implications": "**Implications for Number Theory**\n\n1. **Subpolynomial Bounds:** The bound m^{O(1/log log m)} represents a rarely-seen growth rate—between polynomial and polylogarithmic.\n\n2. **Diophantine Equations:** The problem reduces to understanding solutions of quadratic Diophantine equations, a classical topic with modern applications.\n\n3. **Sieve Theory:** Hegyvári's proof demonstrates the power of sieve methods in combinatorial number theory.\n\n4. **Erdős-Graham Problems:** This illustrates how seemingly simple questions about intersections can require deep techniques.",
+    "openQuestions": [
+      "What is the exact asymptotic for the maximum of |A_m ∩ B_n| over all n < m?",
+      "Can the constant C in m^{C/log log m} be made explicit?",
+      "What is the distribution of |A_m ∩ B_n| for random pairs (m,n)?",
+      "Are there structural characterizations of pairs (m,n) with large intersection?"
+    ]
   }
 }
