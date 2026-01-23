@@ -11,15 +11,22 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "Specific small cases (1-27, powers of 2, etc.)",
+      "Computationally verified for n < 2^68",
+      "Tao 2019: almost all orbits bounded"
+    ],
+    "open": [
+      "The full Collatz conjecture for all n ≥ 1",
+      "Determining if any non-trivial cycles exist"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T15:52:59.262Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Documented as intractable",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +36,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "SURVEYED: Documented as intractable per Erdős. Infrastructure exists but cannot help with unsolved conjecture.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1135Problem.lean - Survey file (170 lines)",
+      "Historical context and Erdős quote documentation",
+      "Tao 2019 partial result noted as axiom",
+      "Computational verification range documented",
+      "Connection to existing CollatzStructured.lean infrastructure"
+    ],
+    "insights": [
+      "This is the COLLATZ CONJECTURE - one of the most famous unsolved problems",
+      "Erdős called it hopeless: Mathematics may not be ready for such problems",
+      "NOT originally due to Erdős - devised by Collatz before 1952",
+      "The $500 prize story is informal (Lagarias 1983 conversation)",
+      "Tao (2019) proved almost all orbits attain almost bounded values",
+      "Computationally verified for n < 2^68 (about 3×10^20)",
+      "CollatzStructured.lean already has basic infrastructure (ReachesOne, etc.)",
+      "Related to Problem #1134 (Klarner density problem)"
+    ],
+    "mathlibGaps": [
+      "Not relevant - problem is mathematically unsolved, not missing Mathlib"
+    ],
+    "nextSteps": [
+      "No actionable next steps - problem is fundamentally unsolved",
+      "Could verify more specific cases via native_decide",
+      "Could formalize Tao 2019 statistical result (complex)"
+    ],
     "markdown": "# Erdős #1135 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDefine $f:\\mathbb{N}\\to \\mathbb{N}$ by $f(n)=n/2$ if $n$ is even and $f(n)=\\frac{3n+1}{2}$ if $n$ is odd.\n\nGiven any integer $m\\geq 1$ does there exist $k\\geq 1$ such that $f^{(k)}(m)=1$?\n\n\n\nThe infamous Collatz conjecture. For a detailed discussion of the history and theory surrounding this problem we refer to the overview by Lagarias \\cite{La10}.\n\nThis is not a problem due to Erd\\H{o}s; it was first devised by Collatz before 1952. Erd\\H{o}s referred to this problem on several occasions as 'hopeless'. As Lagarias \\cite{La16} notes, the closest Erd\\H{o}s ever came to working on problems of this nature is the theorem described in the remarks to [1134].\n\nIt is often claimed that Erd\\H{o}s offered \\$500 for a solution to this problem; this claim originated in a survey article by Lagarias \\cite{La85}.\n\nLagarias reported, in personal communication, that this came from a conversation he had with Erd\\H{o}s and Graham around 1983, in which Graham asked Erd\\H{o}s to make an estimate of what value Erd\\H{o}s would put the problem on his prize scale, to which Erd\\H{o}s replied \\$500. Therefore, strictly speaking, Erd\\H{o}s never offered \\$500 specifically as a prize, but we include this prize value here for comparing those problems which Erd\\H{o}s rated as 'prize problems'.\n\nThis is Problem E16 in Guy's collection \\cite{Gu04}, in which Guy quotes Erd\\H{o}s as saying \"Mathematics may not be ready for such problems\".\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[La10] Lagarias, Jeffrey C., The {$3x+1$} problem: an overview. (2010), 3--29.\n\n[La16] Lagarias, Jeffrey C., Erd\\H os, {K}larner, and the {$3x+1$} problem. Amer. Math. Monthly (2016), 753--776.\n\n[La85] Lagarias, Jeffrey C., The {$3x+1$} problem and its generalizations. Amer. Math. Monthly (1985), 3--23.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #1134\n- Problem #39\n- Problem #1\n\n## References\n\n- La85\n- La16\n- La10\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
