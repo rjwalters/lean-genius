@@ -1,33 +1,154 @@
 {
   "id": "erdos-384",
-  "title": "Erdős Problem #384",
+  "title": "Erdős Problem #384: Prime Divisors of Binomial Coefficients",
   "slug": "erdos-384",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... then ... is divisible by a prime ... (except ...).\n\n\n\nA conjecture of Erds and Selfridge. Proved by Ecklund , who made...",
+  "description": "If 1 < k < n-1 then C(n,k) is divisible by a prime p < n/2. SOLVED by Ecklund (1969). The only exception is C(7,3) = 35 = 5 × 7.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Selfridge, solved by Ecklund (1969)",
     "sourceUrl": "https://erdosproblems.com/384",
-    "date": "",
-    "status": "pending",
+    "date": "1969",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos384Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-divisors",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 384,
     "erdosUrl": "https://erdosproblems.com/384",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.minFac",
+        "description": "Smallest prime factor",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "primorial",
+        "description": "Product of primes up to n",
+        "module": "Mathlib.NumberTheory.Primorial"
+      }
+    ],
+    "originalContributions": [
+      "hasSmallPrimeDivisor predicate",
+      "isException predicate for (7,3) and (7,4)",
+      "ecklund_1969 axiom stating the main result",
+      "Verification of small cases (C(5,2), C(6,2), C(6,3))",
+      "choose_7_3_no_small_prime: formal proof of the exception",
+      "ecklundStrongConjecture and selfridgeConjecture definitions",
+      "Connection to Kummer's theorem",
+      "Edge case analysis for k=1 and k=n-1"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #384 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $1<k<n-1$ then $\\binom{n}{k}$ is divisible by a prime $p<n/2$ (except $\\binom{7}{3}=5\\cdot 7$).\n\n\n\nA conjecture of Erd\\H{o}s and Selfridge. Proved by Ecklund \\cite{Ec69}, who made the stronger conjecture that whenever $n>k^2$ the binomial coefficient $\\binom{n}{k}$ is divisible by a prime $p<n/k$. They have proved the weaker inequality $p\\ll n/k^c$ for some constant $c>0$.\n\nDiscussed in problem B31 and B33 of Guy's collection \\cite{Gu04} - there Guy credits Selfridge with the conjecture that if $n> 17.125k$ then $\\binom{n}{k}$ has a prime factor $p\\leq n/k$.\n\nStronger forms of this conjecture are [1094] and [1095].\n\n\n\n\nReferences\n\n\n[Ec69] Ecklund, Jr., E. F., On prime divisors of the binomial coefficient. Pacific J. Math. (1969), 267-270.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #384** concerns prime divisors of binomial coefficients. It was conjectured by Erdős and Selfridge in the 1960s and proved by Ecklund in 1969.\n\n**Historical Development:**\n- **1960s:** Erdős and Selfridge conjecture that C(n,k) has a 'small' prime divisor\n- **1969:** Ecklund proves the n/2 bound with the unique exception C(7,3)\n- **Later:** Stronger conjectures about n/k bounds remain partially open\n- **2004:** Guy documents related conjectures in 'Unsolved Problems in Number Theory'\n\n**The Exception:** C(7,3) = 35 = 5 × 7 is the only case where both prime factors are ≥ n/2. This is because 5 > 3.5 and 7 > 3.5.",
+    "problemStatement": "**Problem Statement**\n\nLet $1 < k < n-1$. Is $\\binom{n}{k}$ divisible by a prime $p < n/2$?\n\n**Answer:** YES, with exactly one exception: $\\binom{7}{3} = 35 = 5 \\times 7$.\n\n**Status:** SOLVED by Ecklund (1969)\n\n**Stronger Conjectures (Open):**\n- If $n > k^2$ then $\\binom{n}{k}$ has a prime divisor $p < n/k$\n- Selfridge: If $n > 17.125k$ then $\\binom{n}{k}$ has a prime divisor $p \\leq n/k$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Predicates:** hasSmallPrimeDivisor, isException\n\n2. **The Exception:** Formal verification that C(7,3) = 35 has no prime < 4\n\n3. **Main Theorem:** ecklund_1969 as an axiom\n\n4. **Small Cases:** Concrete verification for C(5,2), C(6,2), C(6,3)\n\n5. **Stronger Conjectures:** Definitions of open conjectures\n\n6. **Connections:** Kummer's theorem, primorial, central binomials",
+    "keyInsights": [
+      "**Unique Exception:** C(7,3) = 35 = 5 × 7 is the only binomial coefficient with 1 < k < n-1 where all prime factors are ≥ n/2.",
+      "**Why n/2?** A prime p > n/2 can divide C(n,k) at most once (by Legendre's formula). Having TWO such primes is extremely rare.",
+      "**Kummer's Theorem:** The exponent of p in C(n,k) equals carries when adding k and n-k in base p. This explains why large primes rarely divide binomial coefficients.",
+      "**Central Binomials:** C(2n,n) always has a prime in (n, 2n] by Bertrand's postulate - a related but different phenomenon.",
+      "**Stronger Bounds:** The n/k bound is conjectured but only partially proved. The gap between n/2 and n/k remains mysterious.",
+      "**Pascal's Triangle:** Modular patterns in Pascal's triangle (Lucas' theorem) are deeply connected to prime divisibility of binomials."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "primeDiv, minPrimeDivisor, hasSmallPrimeDivisor",
+      "startLine": 30,
+      "endLine": 57
+    },
+    {
+      "id": "exception",
+      "title": "The Unique Exception",
+      "summary": "C(7,3) = 35 = 5 × 7, formal verification",
+      "startLine": 59,
+      "endLine": 89
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem (Ecklund 1969)",
+      "summary": "ecklund_1969 axiom, equivalent formulations",
+      "startLine": 91,
+      "endLine": 109
+    },
+    {
+      "id": "stronger",
+      "title": "Stronger Conjectures",
+      "summary": "ecklundStrongConjecture, selfridgeConjecture, partial bounds",
+      "startLine": 111,
+      "endLine": 133
+    },
+    {
+      "id": "kummer",
+      "title": "Kummer's Theorem Connection",
+      "summary": "Carries in base-p addition, large prime bound",
+      "startLine": 135,
+      "endLine": 151
+    },
+    {
+      "id": "edge-cases",
+      "title": "Edge Cases",
+      "summary": "k = 1 and k = n-1 boundary cases",
+      "startLine": 153,
+      "endLine": 175
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases Verification",
+      "summary": "Concrete proofs for n ≤ 6",
+      "startLine": 177,
+      "endLine": 213
+    },
+    {
+      "id": "primorial",
+      "title": "Primorial Connection",
+      "summary": "primorial, central binomial primes",
+      "startLine": 215,
+      "endLine": 226
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Problems #1094, #1095, Guy's collection",
+      "startLine": 242,
+      "endLine": 258
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status: SOLVED",
+      "startLine": 278,
+      "endLine": 292
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #384 asks whether every binomial coefficient C(n,k) with 1 < k < n-1 has a prime divisor less than n/2. Ecklund (1969) proved this is true with exactly one exception: C(7,3) = 35 = 5 × 7. Stronger conjectures about n/k bounds remain open.",
+    "implications": "**Implications for Number Theory**\n\n1. **Binomial Divisibility:** Establishes fundamental structure of prime factorization in Pascal's triangle.\n\n2. **Algorithmic:** Provides bounds on prime factors useful for computing binomial coefficients modularly.\n\n3. **Catalan Numbers:** Implications for prime divisors of C_n = C(2n,n)/(n+1).\n\n4. **Combinatorics:** Related to smoothness of binomial coefficients in cryptography and algorithm analysis.",
+    "openQuestions": [
+      "Is C(n,k) divisible by a prime < n/k when n > k²? (Ecklund's stronger conjecture)",
+      "Is C(n,k) divisible by a prime ≤ n/k when n > 17.125k? (Selfridge's conjecture)",
+      "What is the optimal constant c such that C(n,k) has a prime ≤ n/k^c?",
+      "How do prime divisors of binomial coefficients distribute asymptotically?"
+    ]
   }
 }
