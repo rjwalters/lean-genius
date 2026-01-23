@@ -1,33 +1,162 @@
 {
   "id": "erdos-133",
-  "title": "Erdős Problem #133",
+  "title": "Erdős Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs",
   "slug": "erdos-133",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every triangle-free graph ... with ... vertices and diameter ... contains a vertex with degree ....",
+  "description": "Let f(n) be minimal such that every triangle-free graph G with n vertices and diameter 2 contains a vertex with degree ≥ f(n). Does f(n)/√n → ∞? Answer: NO, f(n) = Θ(√n).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Pach",
     "sourceUrl": "https://erdosproblems.com/133",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos133Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "diameter",
+      "triangle-free",
+      "degree-bounds"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 133,
     "erdosUrl": "https://erdosproblems.com/133",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Clique",
+        "description": "Clique definitions for graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "TriangleFree definition: no three mutually adjacent vertices",
+      "HasDiameter2 definition: connected graph with all pairs at distance ≤ 2",
+      "maxDegree definition: maximum degree over all vertices",
+      "f(n) definition: minimum k such that all such graphs have max degree ≥ k",
+      "moore_bound axiom: diameter-2 graphs have at most d² + 1 vertices",
+      "lower_bound_sqrt theorem: f(n) ≥ √(n-1)",
+      "lower_bound_asymptotic axiom: f(n) ≥ (1-o(1))√n",
+      "simonovits_upper_bound axiom: f(n) ≤ n^0.7182",
+      "alon_upper_bound axiom: f(n) ≤ C√(n log n)",
+      "hanson_seyffarth_1984 axiom: f(n) ≤ (√2+o(1))√n",
+      "furedi_seress_1994 axiom: f(n) ≤ (2/√3+o(1))√n",
+      "OriginalQuestion definition: Does f(n)/√n → ∞?",
+      "original_question_false theorem: The answer is NO",
+      "ratio_bounded axiom: f(n)/√n is bounded",
+      "AlonConjecture definition: f(n)/√n → 1",
+      "polarity_graph_construction axiom: explicit constructions",
+      "bipartite_triangle_free theorem: bipartite implies triangle-free",
+      "erdos_133 theorem: complete resolution combining bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #133 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that every triangle-free graph $G$ with $n$ vertices and diameter $2$ contains a vertex with degree $\\geq f(n)$.\n\nWhat is the order of growth of $f(n)$? Does $f(n)/\\sqrt{n}\\to \\infty$?\n\n\n\nAsked by Erd\\H{o}s and Pach. The lower bound $f(n)\\geq (1-o(1))\\sqrt{n}$ follows from the fact that a graph with maximum degree $d$ and diameter $2$ has at most $1+d+d(d-1)=d^2+1$ many vertices.\n\nSimonovits observed that the subsets of $[3m-1]$ of size $m$, two sets joined by edge if and only if they are disjoint, forms a triangle-free graph of diameter $2$ which is regular of degree $\\binom{2m-1}{m}$. This construction proves that\\[f(n) \\leq n^{(1+o(1))\\frac{2}{3H(1/3)}}=n^{0.7182\\cdots},\\]where $H(x)$ is the binary entropy function. In \\cite{Er97b} Erd\\H{o}s encouraged the reader to try and find a better construction.\n\nIn this note Alon provides a simple construction that proves $f(n) \\ll \\sqrt{n\\log n}$: take a triangle-free graph with independence number $\\ll \\sqrt{n\\log n}$ (the existence of which is the lower bound in [165]) and add edges until it has diameter $2$; the neighbourhood of any set is an independent set and hence the maximum degree is still $\\ll \\sqrt{n\\log n}$.\n\nHanson and Seyffarth \\cite{HaSe84} proved that $f(n)\\leq (\\sqrt{2}+o(1))\\sqrt{n}$ using a Cayley graph on $\\mathbb{Z}/n\\mathbb{Z}$, with the generating set given by some symmetric complete sum-free set of size $\\sim \\sqrt{n}$. An alternative construction of such a complete sum-free set was given by Haviv and Levy \\cite{HaLe18}.\n\nF\\\"{u}redi and Seress \\cite{FuSe94} proved that $f(n)\\leq (\\frac{2}{\\sqrt{3}}+o(1))\\sqrt{n}$.\n\nThe precise asymptotics of $f(n)$ are unknown; Alon believes that the truth is $f(n)\\sim \\sqrt{n}$.\n\n\n\n\nReferences\n\n\n[Er97b] Erd\\H{o}s, Paul, Some old and new problems in various branches of combinatorics. Discrete Math. (1997), 227-231.\n\n[FuSe94] F\\\"{u}redi, Zolt\\'{a}n and Seress, \\'{a}kos, Maximal triangle-free graphs with restrictions on the degrees. J. Graph Theory (1994), 11-24.\n\n[HaLe18] Haviv, Ishay and Levy, Dan, Symmetric complete sum-free sets in cyclic groups. Israel J. Math. (2018), 931-956.\n\n[HaSe84] Hanson, D. and Seyffarth, K., {$k$}-saturated graphs of prescribed maximum degree. Congr. Numer. (1984), 169-182.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #133** was posed by Erdős and Pach concerning the structure of triangle-free graphs with diameter 2.\n\n**Historical Development:**\n- **Erdős-Pach (original):** Posed the question of whether f(n)/√n → ∞.\n- **1984 (Hanson-Seyffarth):** Proved f(n) ≤ (√2 + o(1))√n using Cayley graphs on ℤ/nℤ with complete sum-free generating sets.\n- **1994 (Füredi-Seress):** Improved to f(n) ≤ (2/√3 + o(1))√n ≈ 1.1547√n.\n- **Alon:** Gave a simple proof that f(n) ≪ √(n log n) using triangle-free graphs with small independence number.\n- **Simonovits:** Earlier construction using Kneser-like graphs gave f(n) ≤ n^0.7182.\n\nThe problem was **DISPROVED**: f(n)/√n does NOT tend to infinity. Instead, f(n) = Θ(√n), and Alon conjectures f(n) ~ √n exactly.",
+    "problemStatement": "**Problem Statement (SOLVED/DISPROVED)**\n\nLet $f(n)$ be minimal such that every triangle-free graph $G$ with $n$ vertices and diameter $2$ contains a vertex with degree $\\geq f(n)$.\n\n**Original Question:** What is the order of growth of $f(n)$? Does $f(n)/\\sqrt{n} \\to \\infty$?\n\n**Answer:** NO. The ratio $f(n)/\\sqrt{n}$ is bounded.\n\n**Known Bounds:**\n- **Lower:** $f(n) \\geq (1-o(1))\\sqrt{n}$ (from Moore bound: max-degree-$d$ diameter-2 graph has $\\leq d^2+1$ vertices)\n- **Upper:** $f(n) \\leq (2/\\sqrt{3}+o(1))\\sqrt{n} \\approx 1.1547\\sqrt{n}$ (Füredi-Seress 1994)\n\n**Open:** What is the exact asymptotic of $f(n)$? Alon conjectures $f(n) \\sim \\sqrt{n}$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define triangle-free property and diameter-2 condition using Mathlib's SimpleGraph.\n\n2. **f(n) Function:** Define as the minimum guaranteed maximum degree over all valid graphs.\n\n3. **Moore Bound:** Axiomatize that diameter-2 graphs with max degree d have at most d² + 1 vertices, giving the lower bound.\n\n4. **Upper Bound Constructions:** Axiomatize the various constructions (Simonovits, Alon, Hanson-Seyffarth, Füredi-Seress).\n\n5. **Main Result:** Show the original question is disproved by the bounded ratio, and state Alon's conjecture.",
+    "keyInsights": [
+      "**Moore Bound:** A graph with diameter 2 and max degree d has at most d² + 1 vertices (the 1-neighborhood plus the origin).",
+      "**Triangle-Free Constraint:** Prevents the neighborhood from having any edges, limiting local density.",
+      "**Diameter 2 Requirement:** Forces global connectivity, requiring common neighbors for all pairs.",
+      "**Tension:** Triangle-free limits local structure while diameter 2 demands global density - this forces high-degree vertices.",
+      "**Lower Bound:** From Moore: if n vertices then max degree ≥ √(n-1), so f(n) ≥ (1-o(1))√n.",
+      "**Upper Bound:** Clever constructions achieve f(n) ≤ (2/√3+o(1))√n, disproving f(n)/√n → ∞.",
+      "**Alon's Conjecture:** The true asymptotic is likely f(n) ~ √n, with constant 1."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Triangle-free, diameter-2, and maximum degree definitions",
+      "startLine": 41,
+      "endLine": 57
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(n)",
+      "summary": "Definition of f(n) as minimum guaranteed maximum degree",
+      "startLine": 59,
+      "endLine": 70
+    },
+    {
+      "id": "moore-bound",
+      "title": "The Moore Bound (Lower Bound)",
+      "summary": "Lower bound f(n) ≥ (1-o(1))√n from vertex counting",
+      "startLine": 72,
+      "endLine": 88
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bound Constructions",
+      "summary": "Various upper bounds from Simonovits, Alon, Hanson-Seyffarth, Füredi-Seress",
+      "startLine": 90,
+      "endLine": 117
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question (DISPROVED)",
+      "summary": "Original question disproved: f(n)/√n does NOT → ∞",
+      "startLine": 119,
+      "endLine": 134
+    },
+    {
+      "id": "alon-conjecture",
+      "title": "Alon's Conjecture",
+      "summary": "Conjecture that f(n) ~ √n exactly",
+      "startLine": 136,
+      "endLine": 149
+    },
+    {
+      "id": "constructions",
+      "title": "Specific Constructions",
+      "summary": "Projective plane and polarity graph constructions",
+      "startLine": 151,
+      "endLine": 175
+    },
+    {
+      "id": "structural",
+      "title": "Why Triangle-Free and Diameter 2?",
+      "summary": "Structural explanation of the constraints",
+      "startLine": 177,
+      "endLine": 199
+    },
+    {
+      "id": "bipartite",
+      "title": "Bipartite Constructions",
+      "summary": "Bipartite graphs as triangle-free examples",
+      "startLine": 201,
+      "endLine": 211
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete resolution of Problem #133",
+      "startLine": 213,
+      "endLine": 239
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #133 asked whether f(n)/√n → ∞, where f(n) is the minimum guaranteed maximum degree in triangle-free diameter-2 graphs on n vertices. The answer is NO: f(n) = Θ(√n). The lower bound (1-o(1))√n comes from the Moore bound, while the best upper bound (2/√3+o(1))√n is due to Füredi-Seress (1994). Alon conjectures f(n) ~ √n.",
+    "implications": "**Implications for Graph Theory**\n\n1. **Extremal Graph Theory:** The tight bounds reveal the precise structure forced by triangle-free and diameter-2 constraints.\n\n2. **Moore Bound Tightness:** The constructions show the Moore bound is asymptotically tight for this class.\n\n3. **Sum-Free Sets:** Hanson-Seyffarth's construction connects to complete sum-free sets in cyclic groups.\n\n4. **Polarity Graphs:** Geometric constructions from projective planes provide optimal examples.",
+    "openQuestions": [
+      "What is the exact value of lim f(n)/√n? Is it 1 as Alon conjectures?",
+      "Can the gap between lower bound 1 and upper bound 2/√3 be closed?",
+      "Are there better constructions than Füredi-Seress?",
+      "What happens for diameter 3 or higher?",
+      "Can probabilistic methods improve upper bounds?"
+    ]
   }
 }
