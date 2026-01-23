@@ -1,33 +1,116 @@
 {
   "id": "erdos-195",
-  "title": "Erdős Problem #195",
+  "title": "Erdős Problem #195: Monotone Arithmetic Progressions in Permutations",
   "slug": "erdos-195",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest ... such that in any permutation of $...k...x_1<\\cdots<x_k...k\\leq 5...k\\leq 4$.\n\nSee also [194] and [196...",
+  "description": "What is the largest k such that in any permutation of ℤ there must exist a monotone k-term arithmetic progression x₁ < x₂ < ... < xₖ?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, R. Graham",
     "sourceUrl": "https://erdosproblems.com/195",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos195Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "permutations",
+      "arithmetic-progressions",
+      "Ramsey-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 195,
     "erdosUrl": "https://erdosproblems.com/195",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #195 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest $k$ such that in any permutation of $\\mathbb{Z}$ there must exist a monotone $k$-term arithmetic progression $x_1<\\cdots<x_k$?\n\n\n\nGeneson \\cite{Ge19} proved that $k\\leq 5$. Adenwalla \\cite{Ad22} proved that $k\\leq 4$.\n\nSee also [194] and [196].\n\n\n\n\nReferences\n\n\n[Ad22] Adenwalla, S., Avoiding Monotone Arithmetic Progressions in Permutations of Integers. arXiv:2211.04451 (2022).\n\n[Ge19] Geneson, Jesse, Forbidden arithmetic progressions in permutations of subsets\nof the integers. Discrete Math. (2019), 1489-1491.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Graham around 1979-1980. Geneson (2019) proved k ≤ 5, and Adenwalla (2022) improved this to k ≤ 4. The exact value of k remains unknown.",
+    "problemStatement": "What is the largest k such that in any permutation of ℤ there must exist a monotone k-term arithmetic progression x₁ < x₂ < ... < xₖ?\n\nKnown: 3 ≤ k ≤ 4. The exact value is OPEN.",
+    "proofStrategy": "We formalize the definition of monotone arithmetic progressions (MAPs) in permutations, state the upper bounds from Geneson and Adenwalla, and explore the gap between known bounds.",
+    "keyInsights": [
+      "A MAP requires both arithmetic progression structure AND monotone ordering in the permutation",
+      "The upper bound k ≤ 4 comes from explicit constructions avoiding 5-term MAPs",
+      "The lower bound is harder - must show every permutation has 3-MAPs (or 4-MAPs)",
+      "The infinite nature of ℤ makes both directions challenging"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 42,
+      "endLine": 92,
+      "summary": "Permutations, arithmetic progressions, monotone APs, and avoidance."
+    },
+    {
+      "id": "problem",
+      "title": "The Problem",
+      "startLine": 94,
+      "endLine": 114,
+      "summary": "The question about largest unavoidable MAP length k(ℤ)."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 116,
+      "endLine": 139,
+      "summary": "Geneson (k ≤ 5) and Adenwalla (k ≤ 4) results."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 141,
+      "endLine": 158,
+      "summary": "Every permutation has 3-term MAPs (believed)."
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "startLine": 160,
+      "endLine": 176,
+      "summary": "The open question: is k = 3 or k = 4?"
+    },
+    {
+      "id": "constructions",
+      "title": "Construction Ideas",
+      "startLine": 178,
+      "endLine": 197,
+      "summary": "Geneson and Adenwalla construction approaches."
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "startLine": 199,
+      "endLine": 229,
+      "summary": "Finite versions, symmetry, and Erdős-Szekeres connection."
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Is Hard",
+      "startLine": 231,
+      "endLine": 254,
+      "summary": "The challenges of working with infinite permutations."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 256,
+      "endLine": 280,
+      "summary": "Identity, reversal, and interlacing permutations."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 282,
+      "endLine": 316,
+      "summary": "Complete summary of the OPEN problem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #195 remains OPEN. The largest k such that every permutation of ℤ contains a k-term monotone arithmetic progression satisfies 3 ≤ k ≤ 4, but the exact value is unknown.",
+    "implications": "This problem connects permutation patterns to arithmetic structure. Resolving it would advance understanding of unavoidable patterns in infinite combinatorial structures.",
+    "openQuestions": [
+      "Is k = 3 or k = 4?",
+      "Can the construction be improved to avoid 4-term MAPs?",
+      "Does every permutation of ℤ have a 4-term MAP?"
+    ]
   }
 }
