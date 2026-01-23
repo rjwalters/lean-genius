@@ -1,33 +1,152 @@
 {
   "id": "erdos-565",
-  "title": "Erdős Problem #565",
+  "title": "Erdős Problem #565: Induced Ramsey Numbers",
   "slug": "erdos-565",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the induced Ramsey number: the minimal ... such that there is a graph ... on ... vertices such that any ...-colour...",
+  "description": "Is R*(G) ≤ 2^{O(n)} for any graph G on n vertices, where R*(G) is the induced Ramsey number? SOLVED by Aragão, Campos, Dahia, Filipe, and Marciano (2025): YES!",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rödl (proposed), Aragão et al. (solved)",
     "sourceUrl": "https://erdosproblems.com/565",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos565Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "extremal-combinatorics",
+      "induced-subgraphs",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 565,
     "erdosUrl": "https://erdosproblems.com/565",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for bound expressions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Exponential bounds 2^{O(n)}",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Induced subgraph and induced copy definitions",
+      "Edge coloring formalization (Red/Blue)",
+      "Induced Ramsey property definition",
+      "Induced Ramsey number R*(G) definition",
+      "Existence theorem axiomatization (Deuber, EHP, Rödl)",
+      "Historical bounds: KPR (1998), CFS (2012)",
+      "Main theorem: Aragão et al. 2025 (2^{O(n)} bound)",
+      "Comparison with ordinary Ramsey numbers",
+      "Lower bound showing tightness"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #565 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R^*(G)$ be the induced Ramsey number: the minimal $m$ such that there is a graph $H$ on $m$ vertices such that any $2$-colouring of the edges of $H$ contains an induced monochromatic copy of $G$.\n\nIs it true that\\[R^*(G) \\leq 2^{O(n)}\\]for any graph $G$ on $n$ vertices?\n\n\n\nA problem of Erd\\H{o}s and R\\\"{o}dl. Even the existence of $R^*(G)$ is not obvious, but was proved independently by Deuber \\cite{De75}, Erd\\H{o}s, Hajnal, and P\\'{o}sa \\cite{EHP75}, and R\\\"{o}dl \\cite{Ro73}.\n\nR\\\"{o}dl \\cite{Ro73} proved this when $G$ is bipartite. Kohayakawa, Pr\\\"{o}mel, and R\\\"{o}dl \\cite{KPR98} have proved that\\[R^*(G) < 2^{O(n(\\log n)^2)}.\\]An alternative (and more explicit) proof was given by Fox and Sudakov \\cite{FoSu08}. Conlon, Fox, and Sudakov \\cite{CFS12} have improved this to\\[R^*(G) < 2^{O(n\\log n)}.\\]This is true, and an upper bound of\\[R^*(G) < 2^{O(n)}\\]was proved by Arag\\~{a}o, Campos, Dahia, Filipe, and Marciano \\cite{ACDFM25}.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ACDFM25] L. Aragao, M. Campos, G. Dahia, R. Filipe, and J. P. Marciano, An exponential upper bound for induced Ramsey numbers. arXiv:2509.22629 (2025).\n\n[CFS12] Conlon, David and Fox, Jacob and Sudakov, Benny, On two problems in graph Ramsey theory. Combinatorica (2012), 513-535.\n\n[De75] Deuber, W., Generalizations of Ramsey's theorem. Infinite and finite sets (Colloq., Keszthely, 1973;\ndedicated to P. Erd\\H{o}s on his 60th birthday), Vols.\nI, II, III (1975), 323-332.\n\n[EHP75] Erd\\H{o}s, P. and Hajnal, A. and P\\'{o}sa, L., Strong embeddings of graphs into colored graphs. Infinite and finite sets (Colloq., Keszthely, 1973;\ndedicated to P. Erd\\H{o}s on his 60th birthday), Vols.\nI, II, III (1975), 585-595.\n\n[FoSu08] Fox, Jacob and Sudakov, Benny, Induced Ramsey-type theorems. Adv. Math. (2008), 1771-1800.\n\n[KPR98] Kohayakawa, Y. and Pr\\\"{o}mel, H. J. and R\\\"{o}dl, V., Induced Ramsey numbers. Combinatorica (1998), 373-404.\n\n[Ro73] R\\\"{o}dl, V., The dimension of a graph and generalized Ramsey theorems. thesis (1973).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #565: Induced Ramsey Numbers**\n\nThis problem was posed by Erdős and Rödl. Unlike ordinary Ramsey numbers where we seek any monochromatic copy, induced Ramsey numbers require finding monochromatic INDUCED subgraphs - a much harder constraint.\n\n**Historical Progress:**\n- **1973:** Rödl proved exponential bounds for bipartite graphs\n- **1975:** Existence proved independently by Deuber, and Erdős-Hajnal-Pósa\n- **1998:** Kohayakawa-Prömel-Rödl: 2^{O(n(log n)²)}\n- **2008:** Fox-Sudakov: Alternative proof\n- **2012:** Conlon-Fox-Sudakov: 2^{O(n log n)}\n- **2025:** Aragão et al.: 2^{O(n)} - SOLVES the problem!",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet R*(G) be the induced Ramsey number: the minimal m such that there exists a graph H on m vertices where any 2-coloring of H's edges contains a monochromatic induced copy of G.\n\n**Question:** Is R*(G) ≤ 2^{O(n)} for all graphs G on n vertices?\n\n**Solution (Aragão et al. 2025):**\nYES! There exists a constant C > 0 such that R*(G) ≤ 2^{Cn} for all n-vertex graphs G.\n\nThis resolves a long-standing conjecture with a 50+ year history.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Setup:** Define simple graphs using Mathlib's SimpleGraph.\n\n2. **Induced Subgraphs:** Formalize when H contains an induced copy of G.\n\n3. **Edge Colorings:** Define 2-colorings and monochromatic structures.\n\n4. **Induced Ramsey Number:** Define R*(G) as an infimum.\n\n5. **Existence:** Axiomatize that R*(G) is finite for all G.\n\n6. **Historical Bounds:** State progressively improving bounds.\n\n7. **Main Theorem:** The Aragão et al. 2^{O(n)} upper bound.\n\n8. **Tightness:** Show matching exponential lower bounds exist.",
+    "keyInsights": [
+      "**Induced vs Ordinary:** R*(G) requires monochromatic INDUCED copies - much harder than ordinary Ramsey",
+      "**Non-trivial Existence:** Even showing R*(G) is finite was a major result (1973-75)",
+      "**50+ Year Problem:** From existence to optimal bounds took over 50 years",
+      "**Progressive Improvements:** 2^{O(n(log n)²)} → 2^{O(n log n)} → 2^{O(n)}",
+      "**Tightness:** The 2^{O(n)} bound is essentially optimal - matching lower bounds exist",
+      "**Probabilistic Methods:** Modern proofs use sophisticated probabilistic techniques",
+      "**Not in K_n:** Unlike ordinary Ramsey, H need not be complete for induced Ramsey"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "Simple graphs and vertex counting",
+      "startLine": 51,
+      "endLine": 66
+    },
+    {
+      "id": "induced-subgraphs",
+      "title": "Induced Subgraphs",
+      "summary": "Induced subgraph and induced copy definitions",
+      "startLine": 67,
+      "endLine": 90
+    },
+    {
+      "id": "edge-colorings",
+      "title": "Edge Colorings",
+      "summary": "2-colorings and monochromatic structures",
+      "startLine": 91,
+      "endLine": 122
+    },
+    {
+      "id": "induced-ramsey",
+      "title": "Induced Ramsey Numbers",
+      "summary": "R*(G) definition and induced Ramsey property",
+      "startLine": 123,
+      "endLine": 144
+    },
+    {
+      "id": "existence",
+      "title": "Existence of R*(G)",
+      "summary": "Finiteness proved by Deuber, EHP, Rödl",
+      "startLine": 145,
+      "endLine": 165
+    },
+    {
+      "id": "historical-bounds",
+      "title": "Historical Bounds",
+      "summary": "KPR 1998 and CFS 2012 improvements",
+      "startLine": 166,
+      "endLine": 198
+    },
+    {
+      "id": "solution",
+      "title": "The Solution - Aragão et al. (2025)",
+      "summary": "R*(G) ≤ 2^{O(n)} resolves the problem",
+      "startLine": 199,
+      "endLine": 225
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison with Ordinary Ramsey",
+      "summary": "R*(G) ≥ R(G) with potentially large gaps",
+      "startLine": 226,
+      "endLine": 256
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Exponential lower bounds and tightness",
+      "startLine": 257,
+      "endLine": 280
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and key results",
+      "startLine": 281,
+      "endLine": 318
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #565 asks whether induced Ramsey numbers grow at most exponentially: R*(G) ≤ 2^{O(n)}. After 50+ years of progress - from proving existence to successive improvements - Aragão, Campos, Dahia, Filipe, and Marciano (2025) achieved the optimal exponential bound, resolving the problem completely.",
+    "implications": "**Implications**\n\n1. **Ramsey Theory:** Completes a major chapter in induced Ramsey theory.\n\n2. **Exponential Bounds:** Confirms that the induced constraint adds at most a constant factor to the exponent.\n\n3. **Probabilistic Combinatorics:** Demonstrates power of modern probabilistic methods.\n\n4. **Host Graph Structure:** Shows that non-complete hosts can achieve optimal bounds.",
+    "openQuestions": [
+      "What is the optimal constant C in R*(G) ≤ 2^{Cn}?",
+      "Can specific graph families achieve better bounds?",
+      "What about higher-color induced Ramsey numbers?",
+      "Can the proof be made more constructive?"
+    ]
   }
 }
