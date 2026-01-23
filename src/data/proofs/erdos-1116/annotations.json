@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-e1116-header",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1116: Extreme Value Distribution**\n\nFor an entire function f, let n(r, a) count solutions to f(z) = a in |z| < r.\n\n**Question:** Does there exist f such that for every a ≠ b,\nlim sup_{r → ∞} n(r, a)/n(r, b) = ∞?\n\n**Answer: YES** (Gol'dberg 1978, Toppila 1976)\n\nThis is surprising because Nevanlinna theory says values are typically taken with equal frequency on average.",
+    "mathContext": "This problem is in the field of Nevanlinna theory / value distribution theory, studying how entire and meromorphic functions take values.",
+    "significance": "critical",
+    "relatedConcepts": ["Nevanlinna theory", "Entire functions", "Value distribution", "Counting function"]
+  },
+  {
+    "id": "ann-e1116-entire",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 59, "endLine": 64 },
+    "type": "definition",
+    "title": "Entire Functions",
+    "content": "**IsEntire f:**\n\nA function f : ℂ → ℂ is entire if it is differentiable everywhere.\n\n**Definition:**\n```lean\ndef IsEntire (f : ℂ → ℂ) : Prop :=\n  ∀ z : ℂ, DifferentiableAt ℂ f z\n```\n\n**Examples:** e^z, sin z, cos z, polynomials\n**Non-examples:** 1/z (pole at 0), tan z (poles at π/2 + nπ)",
+    "mathContext": "Entire functions have globally convergent Taylor series. They form the 'nicest' class of complex functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Complex differentiability", "Taylor series", "Meromorphic functions"]
+  },
+  {
+    "id": "ann-e1116-counting",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 91, "endLine": 104 },
+    "type": "definition",
+    "title": "The Counting Function",
+    "content": "**countingFunction f a r** (written n(f, r, a)):\n\nThe number of solutions to f(z) = a in the disc |z| < r.\n\n**Definition:**\n```lean\ndef countingFunction (f : ℂ → ℂ) (a : ℂ) (r : ℝ) : ℕ :=\n  if h : (aPoints f a ∩ {z | Complex.abs z < r}).Finite\n  then h.toFinset.card\n  else 0\n```\n\n**Examples:**\n- n(e^z, r, 0) = 0 (e^z never equals 0)\n- n(z², r, 1) = 2 for r > 1 (roots at ±1)",
+    "mathContext": "The counting function is the fundamental object in value distribution theory. It measures how often f takes a given value.",
+    "significance": "critical",
+    "relatedConcepts": ["a-points", "Zeros", "Multiplicity"]
+  },
+  {
+    "id": "ann-e1116-unbounded-ratio",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 113, "endLine": 123 },
+    "type": "definition",
+    "title": "Unbounded Ratio Property",
+    "content": "**HasUnboundedRatio f a b:**\n\nThe ratio n(r, a)/n(r, b) is unbounded as r → ∞.\n\n**Definition:**\n```lean\ndef HasUnboundedRatio (f : ℂ → ℂ) (a b : ℂ) : Prop :=\n  ∀ M : ℝ, M > 0 → ∀ R : ℝ, R > 0 →\n    ∃ r > R, n(f, r, a) > M * n(f, r, b)\n```\n\nThis means: for any M, there exist arbitrarily large r with n(r,a)/n(r,b) > M.",
+    "mathContext": "This captures lim sup = ∞ in a constructive way: we can always find r making the ratio arbitrarily large.",
+    "significance": "key",
+    "relatedConcepts": ["Limsup", "Asymptotic behavior", "Ratio comparison"]
+  },
+  {
+    "id": "ann-e1116-extreme",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 125, "endLine": 135 },
+    "type": "definition",
+    "title": "Extreme Value Distribution",
+    "content": "**HasExtremeValueDistribution f:**\n\nFor ALL pairs a ≠ b, BOTH ratios n(r,a)/n(r,b) AND n(r,b)/n(r,a) are unbounded.\n\n**Definition:**\n```lean\ndef HasExtremeValueDistribution (f : ℂ → ℂ) : Prop :=\n  ∀ a b : ℂ, a ≠ b →\n    HasUnboundedRatio f a b ∧ HasUnboundedRatio f b a\n```\n\nThis is an extremely strong condition - no value is 'typical'.",
+    "mathContext": "This property says the counting functions oscillate wildly relative to each other, with neither dominating.",
+    "significance": "critical",
+    "relatedConcepts": ["Value distribution", "Oscillation", "Equidistribution"]
+  },
+  {
+    "id": "ann-e1116-goldberg-toppila",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 143, "endLine": 151 },
+    "type": "axiom",
+    "title": "Gol'dberg-Toppila Theorem",
+    "content": "**goldberg_toppila_existence:**\n\nThere exist entire functions with extreme value distribution.\n\n**Statement:**\n```lean\naxiom goldberg_toppila_existence :\n    ∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f\n```\n\nThis was proved independently by Gol'dberg (1978) and Toppila (1976).",
+    "mathContext": "The construction uses lacunary series and carefully placed zeros to create wild oscillations in the counting functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Lacunary series", "Weierstrass products", "Constructive proofs"]
+  },
+  {
+    "id": "ann-e1116-main",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 153, "endLine": 159 },
+    "type": "theorem",
+    "title": "Erdős #1116: SOLVED",
+    "content": "**erdos_1116:**\n\n```lean\ntheorem erdos_1116 :\n    ∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f :=\n  goldberg_toppila_existence\n```\n\nThe answer to Erdős's question is YES: such entire functions exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1116-deficiency",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 181, "endLine": 195 },
+    "type": "definition",
+    "title": "Nevanlinna Deficiency",
+    "content": "**deficiency f a:**\n\nMeasures how much f 'avoids' the value a.\n\nδ(a) = lim inf_{r → ∞} (1 - N(r, a) / T(r))\n\n**Key theorem (Nevanlinna):**\n- δ(a) ≤ 1 for all a\n- ∑_a δ(a) ≤ 2 (deficiency sum)\n\nThis means: at most 2 values can be 'exceptional'.",
+    "mathContext": "Nevanlinna's deficiency relation is a deep result showing that entire functions take most values with roughly equal frequency on average.",
+    "significance": "key",
+    "relatedConcepts": ["Nevanlinna theory", "Second main theorem", "Exceptional values"]
+  },
+  {
+    "id": "ann-e1116-surprise",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 213, "endLine": 228 },
+    "type": "axiom",
+    "title": "The Key Insight",
+    "content": "**oscillation_key_insight:**\n\nEven though N(r, a) ∼ N(r, b) on average (both ∼ T(r)), the un-integrated counting function n(r, a) can oscillate wildly!\n\nThe Gol'dberg-Toppila construction exploits this:\n- n(r, a) is sometimes much larger than n(r, b)\n- n(r, b) is sometimes much larger than n(r, a)\n- But the integrals N(r, a) and N(r, b) still satisfy Nevanlinna bounds\n\nPointwise behavior (n) vs average behavior (N) can be very different.",
+    "mathContext": "This is the 'aha moment': integration smooths out oscillations, so n can oscillate wildly while N remains controlled.",
+    "significance": "critical",
+    "relatedConcepts": ["Integration", "Smoothing", "Oscillations vs averages"]
+  },
+  {
+    "id": "ann-e1116-lacunary",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 244, "endLine": 257 },
+    "type": "definition",
+    "title": "Lacunary Series",
+    "content": "**IsLacunarySeries:**\n\nA power series with large gaps between nonzero terms:\nf(z) = Σ_{n ∈ S} a_n z^n where n_{k+1}/n_k → ∞.\n\n**Definition:**\n```lean\ndef IsLacunarySeries (coeffs : ℕ → ℂ) (support : Set ℕ) : Prop :=\n  (∀ n ∉ support, coeffs n = 0) ∧\n  (∀ m n ∈ support, m < n → gaps grow)\n```\n\nLacunary series have special properties that make them useful for constructions.",
+    "mathContext": "Lacunary series (like Σz^(2^n)) have gaps that grow geometrically, giving better control over value distribution.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gap series", "Hadamard gaps", "Power series"]
+  },
+  {
+    "id": "ann-e1116-exp-not-extreme",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 271, "endLine": 280 },
+    "type": "axiom",
+    "title": "Non-example: Exponential",
+    "content": "**exp_not_extreme:**\n\ne^z does NOT have extreme value distribution.\n\n**Why:** e^z has no zeros, so n(r, 0) = 0 for all r.\nBut n(r, 1) ~ r/π (roots at 2πik).\nSo 0 is a 'special' value - the ratio n(r,1)/n(r,0) is undefined (division by zero).",
+    "mathContext": "The exponential is the classic example of a function with an exceptional value (0 has deficiency 1).",
+    "significance": "supporting",
+    "relatedConcepts": ["Exceptional values", "Picard's theorem", "Deficiency"]
+  },
+  {
+    "id": "ann-e1116-summary",
+    "proofId": "erdos-1116",
+    "range": { "startLine": 298, "endLine": 318 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1116_summary:**\n\nCombines the main results:\n\n```lean\ntheorem erdos_1116_summary :\n    (∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f) ∧\n    ¬ HasExtremeValueDistribution expFunction\n```\n\n- Such functions exist (Gol'dberg-Toppila)\n- But the exponential is NOT such a function",
+    "significance": "key"
+  }
+]

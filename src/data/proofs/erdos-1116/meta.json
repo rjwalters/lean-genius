@@ -1,33 +1,153 @@
 {
   "id": "erdos-1116",
-  "title": "Erdős Problem #1116",
+  "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
   "slug": "erdos-1116",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a meromorphic function ... let ... count the number of roots of ... in the disc .... Does there exist a meromorphic (or e...",
+  "description": "Does there exist an entire function f such that for every a ≠ b, lim sup n(r,a)/n(r,b) = ∞? YES - proved by Gol'dberg (1978) and Toppila (1976) who constructed such functions.",
   "meta": {
-    "author": "Unknown",
+    "author": "Gol'dberg (1978), Toppila (1976)",
     "sourceUrl": "https://erdosproblems.com/1116",
-    "date": "",
-    "status": "pending",
+    "date": "1976-1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1116Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "nevanlinna-theory",
+      "value-distribution",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1116,
     "erdosUrl": "https://erdosproblems.com/1116",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "DifferentiableAt",
+        "description": "Differentiability at a point",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value on complex numbers",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsMeromorphic definition: meromorphic functions with isolated poles",
+      "IsEntire definition: entire functions via DifferentiableAt",
+      "aPoints definition: set of a-points {z | f(z) = a}",
+      "countingFunction definition: n(r, a) counting a-points",
+      "HasUnboundedRatio definition: lim sup n(r,a)/n(r,b) = ∞",
+      "HasExtremeValueDistribution definition: all pairs have unbounded ratios",
+      "goldberg_toppila_existence axiom: constructive existence",
+      "erdos_1116 theorem: main result",
+      "Nevanlinna theory context: deficiency, characteristic function",
+      "oscillation_key_insight: n vs N behavior",
+      "IsLacunarySeries, WeierstrassProduct definitions",
+      "exp_not_extreme, polynomial_not_extreme: non-examples"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1116 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a meromorphic function $f$ let $n(r,a)$ count the number of roots of $f(z)=a$ in the disc $\\lvert z\\rvert <r$. Does there exist a meromorphic (or entire) $f$ such that for every $a\\neq b$\\[\\limsup_{r\\to \\infty}\\frac{n(r,a)}{n(r,b)}=\\infty?\\]\n\n\n\nThis is Problem 1.25 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nGol'dberg \\cite{Go78} and Toppila \\cite{To76} have constructed entire functions with this property.\n\n\n\n\nReferences\n\n\n[Go78] Gol\\cprime dberg, A. A., Counting functions of sequences of {$a$}-points for entire\nfunctions. Sibirsk. Mat. \\v Z. (1978), 28--36, 236.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[To76] Toppila, Sakari, On the counting function for the {$a$}-values of a meromorphic\nfunction. Ann. Acad. Sci. Fenn. Ser. A I Math. (1976), 565--572.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1116**\n\nThis problem explores extreme behavior in the value distribution of entire functions, a fundamental topic in complex analysis.\n\n**Key History:**\n- Problem 1.25 in Hayman [Ha74], attributed to Erdős\n- Gol'dberg [Go78]: \"Counting functions of sequences of a-points for entire functions\" - constructed entire functions with extreme value distribution\n- Toppila [To76]: \"On the counting function for the a-values of a meromorphic function\" - independent construction\n\n**Mathematical Setting:**\n- n(r, a) = number of solutions to f(z) = a in |z| < r\n- Question: Can n(r, a)/n(r, b) be unbounded for ALL pairs a ≠ b?\n- Surprising because Nevanlinna theory says values are typically taken with equal frequency on average",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nFor a meromorphic function f, let n(r, a) count the number of roots of f(z) = a in the disc |z| < r.\n\nDoes there exist a meromorphic (or entire) f such that for every a ≠ b,\nlim sup_{r → ∞} n(r, a)/n(r, b) = ∞?\n\n**Answer: YES**\n\nGol'dberg (1978) and Toppila (1976) independently constructed entire functions with this extreme property.\n\n**Key Insight:** The counting function n(r, a) can oscillate wildly while still satisfying Nevanlinna's bounds on the integrated function N(r, a).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Meromorphic Functions:** Define IsMeromorphic and IsEntire\n\n2. **Counting Function:** Define aPoints and countingFunction n(r, a)\n\n3. **Extreme Property:** Define HasUnboundedRatio and HasExtremeValueDistribution\n\n4. **Main Result:** Axiomatize Gol'dberg-Toppila existence theorem\n\n5. **Nevanlinna Context:** Define characteristic, integratedCounting, deficiency\n\n6. **Key Insight:** Axiomatize oscillation behavior (n vs N)\n\n7. **Construction Tools:** Define IsLacunarySeries, WeierstrassProduct\n\n8. **Non-examples:** Show exponential and polynomials don't have this property",
+    "keyInsights": [
+      "**Counting Function:** n(r, a) counts solutions to f(z) = a in |z| < r, measuring pointwise behavior",
+      "**Extreme Property:** For ALL pairs a ≠ b, the ratio n(r,a)/n(r,b) is unbounded in both directions",
+      "**Nevanlinna Surprise:** Average behavior (via N = ∫n/t dt) is controlled, but pointwise n can oscillate wildly",
+      "**Construction Method:** Lacunary series and Weierstrass products place zeros at carefully chosen locations",
+      "**Non-examples:** Exponential (0 is special) and polynomials (finite degree) don't have this property",
+      "**Deficiency Sum:** ∑ δ(a) ≤ 2, so most values are taken equally often on average"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "meromorphic-functions",
+      "title": "Meromorphic Functions and Value Distribution",
+      "summary": "IsMeromorphic, IsEntire, entire_is_meromorphic",
+      "startLine": 40,
+      "endLine": 77
+    },
+    {
+      "id": "counting-function",
+      "title": "The Counting Function",
+      "summary": "aPoints, countingFunction definitions",
+      "startLine": 78,
+      "endLine": 105
+    },
+    {
+      "id": "problem-statement",
+      "title": "The Problem Statement",
+      "summary": "HasUnboundedRatio, HasExtremeValueDistribution definitions",
+      "startLine": 106,
+      "endLine": 136
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "goldberg_toppila_existence axiom, erdos_1116 theorem",
+      "startLine": 137,
+      "endLine": 160
+    },
+    {
+      "id": "nevanlinna-theory",
+      "title": "Nevanlinna Theory Context",
+      "summary": "characteristic, integratedCounting, deficiency, nevanlinna_deficiency_sum",
+      "startLine": 161,
+      "endLine": 196
+    },
+    {
+      "id": "surprising",
+      "title": "Why This is Surprising",
+      "summary": "first_main_theorem_heuristic, oscillation_key_insight",
+      "startLine": 197,
+      "endLine": 229
+    },
+    {
+      "id": "construction",
+      "title": "Construction Sketch",
+      "summary": "IsLacunarySeries, WeierstrassProduct definitions",
+      "startLine": 230,
+      "endLine": 265
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Non-examples",
+      "summary": "expFunction, exp_not_extreme, polynomial_not_extreme",
+      "startLine": 266,
+      "endLine": 290
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_1116_summary, keyInsightStatement",
+      "startLine": 291,
+      "endLine": 320
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1116 asks whether there exists an entire function f such that for every a ≠ b, the ratio n(r,a)/n(r,b) is unbounded. Gol'dberg (1978) and Toppila (1976) proved YES by constructing such functions. This is surprising because Nevanlinna theory says values are typically taken with roughly equal frequency on average. The key insight is that the pointwise counting function n(r,a) can oscillate wildly while the integrated function N(r,a) remains bounded.",
+    "implications": "**Complex Analysis Connections**\n\n1. **Nevanlinna Theory:** The deficiency sum ∑δ(a) ≤ 2 controls average behavior but not oscillations\n\n2. **Value Distribution:** Entire functions can have extremely irregular value distribution despite global constraints\n\n3. **Pointwise vs Average:** The difference between n(r,a) and N(r,a) = ∫n/t dt allows for wild oscillations\n\n4. **Construction Techniques:** Lacunary series and Weierstrass products are powerful tools for building pathological examples\n\n5. **Zeros vs a-Points:** The structure of a-points {z : f(z) = a} can differ dramatically for different a",
+    "openQuestions": [
+      "Can the construction be made explicit with computable growth bounds?",
+      "What is the minimum growth rate of entire functions with extreme value distribution?",
+      "How does the order of f relate to the strength of the oscillations?",
+      "Are there meromorphic (non-entire) examples with different behavior?",
+      "What constraints on the deficiency set {a : δ(a) > 0} are compatible with extreme value distribution?"
+    ]
   }
 }
