@@ -1,1 +1,208 @@
-[]
+[
+  {
+    "id": "ann-e443-overview",
+    "proofId": "erdos-443",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #443: Common Products k(m-k) and l(n-l)**\n\nFor m, n ≥ 1, consider the product sets:\n- A_m = { k(m-k) : 1 ≤ k ≤ m/2 }\n- B_n = { l(n-l) : 1 ≤ l ≤ n/2 }\n\nQuestions: Can |A_m ∩ B_n| be arbitrarily large? Is it ≤ (mn)^{o(1)}?\n\nBoth answered YES by Hegyvári (2025) and Cambie.",
+    "mathContext": "Number theory: Diophantine equations, quadratic forms, sieve methods.",
+    "significance": "critical",
+    "relatedConcepts": ["Difference of squares", "Sieve methods", "Subpolynomial growth"]
+  },
+  {
+    "id": "ann-e443-productvalue",
+    "proofId": "erdos-443",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Product Value",
+    "content": "**productValue m k:** The product k(m-k).\n\nFor fixed m, this function is:\n- Zero at k = 0 and k = m\n- Maximized at k = m/2\n- Symmetric: k(m-k) = (m-k)(m-(m-k))",
+    "significance": "critical",
+    "leanSymbol": "productValue"
+  },
+  {
+    "id": "ann-e443-productset",
+    "proofId": "erdos-443",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Product Set A_m",
+    "content": "**productSet m:** The set A_m = { k(m-k) : 1 ≤ k ≤ m/2 }.\n\nExamples:\n- A_4 = {3, 4} (from k=1,2)\n- A_6 = {5, 8, 9} (from k=1,2,3)\n\nA_m has approximately m/2 elements.",
+    "significance": "critical",
+    "leanSymbol": "productSet"
+  },
+  {
+    "id": "ann-e443-commonproducts",
+    "proofId": "erdos-443",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "definition",
+    "title": "Common Products",
+    "content": "**commonProducts m n:** The intersection A_m ∩ B_n.\n\n**commonProductCount m n:** The cardinality |A_m ∩ B_n|.\n\nThis is the central quantity we're bounding.",
+    "significance": "critical",
+    "leanSymbol": "commonProducts"
+  },
+  {
+    "id": "ann-e443-maxhalf",
+    "proofId": "erdos-443",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "theorem",
+    "title": "Maximum at k = m/2",
+    "content": "**product_max_at_half:**\n\nk(m-k) is maximized when k = m/2.\n\nThis is because k(m-k) = (m/2)² - (k - m/2)², a difference of squares that's maximized when the subtracted term is zero.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e443-endpoints",
+    "proofId": "erdos-443",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "theorem",
+    "title": "Zero at Endpoints",
+    "content": "**product_zero_endpoints:**\n\nk(m-k) = 0 when k = 0 or k = m.\n\nThis is why we restrict to 1 ≤ k ≤ m/2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e443-symmetric",
+    "proofId": "erdos-443",
+    "range": { "startLine": 86, "endLine": 89 },
+    "type": "theorem",
+    "title": "Symmetry",
+    "content": "**product_symmetric:**\n\nk(m-k) = (m-k)(m-(m-k)) = (m-k)·k\n\nThis symmetry about m/2 is why we only need k ≤ m/2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e443-sameproduct",
+    "proofId": "erdos-443",
+    "range": { "startLine": 113, "endLine": 121 },
+    "type": "definition",
+    "title": "Same Product (Diophantine Equation)",
+    "content": "**sameProduct m n k l:** The equation k(m-k) = l(n-l).\n\nFinding common products means solving this Diophantine equation.\n\nEquivalently: km - k² = ln - l²",
+    "significance": "critical",
+    "leanSymbol": "sameProduct"
+  },
+  {
+    "id": "ann-e443-squares",
+    "proofId": "erdos-443",
+    "range": { "startLine": 123, "endLine": 126 },
+    "type": "axiom",
+    "title": "Difference of Squares Form",
+    "content": "**product_as_squares:**\n\nk(m-k) = l(n-l) ⟺ m² - (2k-m)² = n² - (2l-n)²\n\nThis reformulation connects to quadratic forms and helps in counting solutions.",
+    "significance": "key",
+    "leanSymbol": "product_as_squares"
+  },
+  {
+    "id": "ann-e443-hegyvari",
+    "proofId": "erdos-443",
+    "range": { "startLine": 134, "endLine": 136 },
+    "type": "axiom",
+    "title": "Hegyvári's Upper Bound (2025)",
+    "content": "**hegyvari_upper_bound:**\n\nWhen m > n: |A_m ∩ B_n| ≤ m^{O(1/log log m)}\n\nThis is the key upper bound. The exponent 1/log log m → 0 very slowly, giving subpolynomial growth.",
+    "significance": "critical",
+    "leanSymbol": "hegyvari_upper_bound"
+  },
+  {
+    "id": "ann-e443-subpoly",
+    "proofId": "erdos-443",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "axiom",
+    "title": "Subpolynomial Bound",
+    "content": "**subpolynomial_bound:**\n\nFor all ε > 0, eventually |A_m ∩ B_n| ≤ (mn)^ε.\n\nThis answers Erdős's second question affirmatively: the bound is (mn)^{o(1)}.",
+    "significance": "critical",
+    "leanSymbol": "subpolynomial_bound"
+  },
+  {
+    "id": "ann-e443-arbitrarily",
+    "proofId": "erdos-443",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "axiom",
+    "title": "Arbitrarily Large Intersection",
+    "content": "**arbitrarily_large_intersection:**\n\nFor any integer s, infinitely many pairs (m,n) achieve |A_m ∩ B_n| = s.\n\nThis answers Erdős's first question: YES, the intersection can be arbitrarily large.",
+    "significance": "critical",
+    "leanSymbol": "arbitrarily_large_intersection"
+  },
+  {
+    "id": "ann-e443-unbounded",
+    "proofId": "erdos-443",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "theorem",
+    "title": "Intersection Unbounded",
+    "content": "**intersection_unbounded:**\n\nFor all s, there exist m, n with s ≤ |A_m ∩ B_n|.\n\nCorollary of arbitrarily_large_intersection: the intersection is unbounded.",
+    "significance": "key",
+    "leanSymbol": "intersection_unbounded"
+  },
+  {
+    "id": "ann-e443-self",
+    "proofId": "erdos-443",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "theorem",
+    "title": "Self-Intersection",
+    "content": "**common_self:**\n\nA_m ∩ A_m = A_m.\n\nThe trivial case m = n: the intersection equals the full set.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e443-examples",
+    "proofId": "erdos-443",
+    "range": { "startLine": 163, "endLine": 168 },
+    "type": "theorem",
+    "title": "Concrete Examples",
+    "content": "**Examples:**\n\nproductValue 4 1 = 3, productValue 4 2 = 4\nproductValue 6 1 = 5, productValue 6 2 = 8, productValue 6 3 = 9\n\nSo A_4 = {3, 4} and A_6 = {5, 8, 9}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e443-diffsquares",
+    "proofId": "erdos-443",
+    "range": { "startLine": 184, "endLine": 186 },
+    "type": "axiom",
+    "title": "Product as Difference of Squares",
+    "content": "**product_difference_of_squares:**\n\nWhen m is even: k(m-k) = (m/2)² - (k - m/2)²\n\nThis algebraic identity connects products to quadratic forms.",
+    "significance": "key",
+    "leanSymbol": "product_difference_of_squares"
+  },
+  {
+    "id": "ann-e443-triangular",
+    "proofId": "erdos-443",
+    "range": { "startLine": 198, "endLine": 199 },
+    "type": "definition",
+    "title": "Triangular Numbers",
+    "content": "**triangularNumber m:** m(m-1)/2 = 1 + 2 + ... + (m-1)\n\nThe products k(m-k) are related to partial sums of arithmetic progressions.",
+    "significance": "supporting",
+    "leanSymbol": "triangularNumber"
+  },
+  {
+    "id": "ann-e443-exponent",
+    "proofId": "erdos-443",
+    "range": { "startLine": 211, "endLine": 213 },
+    "type": "axiom",
+    "title": "Exponent Tends to Zero",
+    "content": "**exponent_tends_to_zero:**\n\n1/(log log m) → 0 as m → ∞.\n\nThis is why m^{O(1/log log m)} is subpolynomial: the exponent shrinks to zero.",
+    "significance": "key",
+    "leanSymbol": "exponent_tends_to_zero"
+  },
+  {
+    "id": "ann-e443-divisibility",
+    "proofId": "erdos-443",
+    "range": { "startLine": 226, "endLine": 228 },
+    "type": "axiom",
+    "title": "Divisibility Constraint",
+    "content": "**divisibility_constraint:**\n\nIf k(m-k) = l(n-l), then k | ln or (n-l) | (m-k).\n\nHegyvári uses such constraints with sieve methods to bound the count.",
+    "significance": "key",
+    "leanSymbol": "divisibility_constraint"
+  },
+  {
+    "id": "ann-e443-summary",
+    "proofId": "erdos-443",
+    "range": { "startLine": 254, "endLine": 264 },
+    "type": "theorem",
+    "title": "Main Summary",
+    "content": "**erdos_443_summary:**\n\n1. ∀ s, ∃ m,n: s ≤ |A_m ∩ B_n| (arbitrarily large)\n2. ∀ ε > 0, eventually |A_m ∩ B_n| ≤ (mn)^ε (subpolynomial)\n\nBoth questions answered affirmatively.",
+    "significance": "critical",
+    "leanSymbol": "erdos_443_summary"
+  },
+  {
+    "id": "ann-e443-main",
+    "proofId": "erdos-443",
+    "range": { "startLine": 266, "endLine": 267 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_443:**\n\nErdős Problem #443 is SOLVED.\n\nHegyvári (2025) and Cambie answered both questions about common products.",
+    "significance": "critical",
+    "leanSymbol": "erdos_443"
+  }
+]
