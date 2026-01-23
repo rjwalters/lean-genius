@@ -1,8 +1,8 @@
 {
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
-  "phase": "NEW",
-  "status": "blocked",
+  "phase": "SKIPPED",
+  "status": "skipped",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SKIPPED",
     "since": "2026-01-01T05:32:39.478Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Open for 2000+ years!",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SKIPPED: Covered by PerfectNumbers.lean which has 0 sorries and complete Euclid-Euler theorem.",
+    "builtItems": [
+      "proofs/Proofs/PerfectNumbers.lean - complete Euclid-Euler theorem",
+      "Mathlib Archive.Wiedijk100Theorems.PerfectNumbers - foundation"
+    ],
+    "insights": [
+      "PerfectNumbers.lean has 0 sorries and imports Archive.Wiedijk100Theorems.PerfectNumbers",
+      "Complete formalization: perfect_iff_divisor_sum, euclid_perfect_numbers, euler_even_perfect, even_perfect_iff",
+      "Concrete examples verified: 6, 28, 496, 8128 all proven perfect",
+      "No additional work needed for sum-of-divisors properties - all covered"
+    ],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
       "`Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors"
@@ -54,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T05:32:39.478Z",
-  "lastUpdate": "2026-01-01T05:32:39.478Z",
+  "lastUpdate": "2026-01-20T06:12:00Z",
   "significance": 5,
   "tractability": 9
 }

@@ -1,54 +1,106 @@
 {
   "slug": "erdos-28",
-  "title": "Erdős #28",
-  "phase": "NEW",
+  "title": "Erdős #28 - Erdős-Turán Conjecture on Additive Bases",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "If $A\\subseteq \\mathbb{N}$ is such that $A+A$ contains all but finitely many integers then $\\limsup 1_A\\ast 1_A(n)=\\infty$. Conjectured by Erdős and Turán. They also suggest the stronger conjecture that $\\limsup 1_A\\ast 1_A(n)/\\log n>0$. Another stronger conjecture would be that the hypothesis $\\lvert A\\cap [1,N]\\rvert \\gg N^{1/2}$ for all large $N$ suffices. Erdős and Sárközy conjectured the stronger version that if $A=\\{a_1[40]. This is discussed in problem C9 of Guy's collection [Gu04]. Vi...",
-    "whyMatters": []
+    "formal": "erdos_turan_weak : ∀ A : Set ℕ, IsAsymptoticBasis A → ∀ k : ℕ, ∃ n : ℕ, repFunc A n > k",
+    "plain": "If A ⊆ ℕ is such that A+A contains all but finitely many integers, then the representation function r_A(n) = |{(a,b) ∈ A×A : a+b=n}| is unbounded: lim sup r_A(n) = ∞. Prize: $500.",
+    "whyMatters": [
+      "Fundamental question in additive combinatorics",
+      "$500 prize problem - one of Erdős's most famous conjectures",
+      "Connects Sidon sets (bounded representations) with additive bases (coverage)"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Existing formalization defines repFunc, sumset, IsAsymptoticBasis",
+      "Proved equivalence of two basis definitions (finite complement vs threshold)",
+      "Proved repFunc_pos_of_mem_sumset: membership implies positive representation",
+      "Proved sidon_repFunc_bounded: Sidon sets have r_A(n) ≤ 2",
+      "Proved evens_repFunc and nat_repFunc: explicit representation counts"
+    ],
+    "open": [
+      "Main conjecture (erdos_turan_weak): representation unbounded for bases",
+      "Strong conjecture: lim sup r_A(n) / log(n) > 0",
+      "sidon_not_basis: infinite Sidon sets cannot be asymptotic bases (axiom)"
+    ],
+    "goal": "The main conjecture is OPEN with $500 prize. Focus on supporting infrastructure."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T06:42:02.929Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T05:11:00Z",
+    "iteration": 2,
+    "focus": "Document formalization requirements for sidon_not_basis proof",
+    "blockers": [
+      "sidon_not_basis requires tight Erdős-Turán density bound √N + O(N^{1/4})",
+      "Current bound √(2N) + 1 is insufficient for density argument"
+    ],
+    "nextAction": "Prove sidon_upper_bound (tight density) in Erdos340GreedySidon.lean",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #28 - Knowledge Base\n\n## Problem Statement\n\nIf $A\\subseteq \\mathbb{N}$ is such that $A+A$ contains all but finitely many integers then $\\limsup 1_A\\ast 1_A(n)=\\infty$. Conjectured by Erdős and Turán. They also suggest the stronger conjecture that $\\limsup 1_A\\ast 1_A(n)/\\log n>0$. Another stronger conjecture would be that the hypothesis $\\lvert A\\cap [1,N]\\rvert \\gg N^{1/2}$ for all large $N$ suffices. Erdős and Sárközy conjectured the stronger version that if $A=\\{a_1[40]. This is discussed in problem C9 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 18 November 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #40\n- Problem #27\n- Problem #29\n- Problem #39\n- Problem #1\n\n## References\n\n- ErTu41\n- Er56\n- Er57\n- Er59\n- Er61\n- Er65\n- Er65b\n- Er69\n- Er70c\n- Er73\n- Er77c\n- ErGr80\n- Er81\n- Er85c\n- Er89d\n- Er90\n- Er94b\n- Er95\n- Er97c\n- Er97f\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "progressSummary": "SURVEYED: Excellent existing formalization. Documented why sidon_not_basis proof requires tighter density bound than currently available.",
+    "builtItems": [
+      "Enhanced documentation for sidon_not_basis axiom explaining proof requirements"
+    ],
+    "insights": [
+      "The √(2N) density bound gives sumset size ≈ N, insufficient for contradiction",
+      "The √N + O(N^{1/4}) bound gives sumset size ≈ N/2, enabling contradiction",
+      "The tight bound uses sum-counting (A+A ⊆ [2,2N]) not difference-counting",
+      "Key prerequisite: prove sidon_upper_bound in Erdos340GreedySidon.lean (~100 lines)",
+      "After tight bound: sidon_not_basis follows with ~100 more lines"
+    ],
+    "mathlibGaps": [
+      "No tight Sidon density bound √N + O(N^{1/4}) in Mathlib",
+      "Need Finset pointwise addition infrastructure for sumset proofs"
+    ],
+    "nextSteps": [
+      "Prove sidon_upper_bound in Erdos340GreedySidon.lean using sum-counting",
+      "Then prove sidon_not_basis using the tight density bound",
+      "Consider Grekos/Borwein lower bounds (r_A(n) ≥ 6/8 infinitely often)"
+    ],
+    "markdown": "# Erdős #28 - Erdős-Turán Conjecture\n\n## Problem Statement\n\nIf A ⊆ ℕ is an asymptotic basis of order 2 (A+A covers all large integers), then the representation function r_A(n) is unbounded.\n\n**Prize**: $500\n**Status**: OPEN\n\n## Formalization Status\n\n### Completed\n- `repFunc`: representation function r_A(n)\n- `sumset`: A + A definition\n- `IsAsymptoticBasis`: basis definition with equivalence proof\n- `sidon_repFunc_bounded`: Sidon sets have bounded representations\n- `evens_repFunc`, `nat_repFunc`: explicit computation examples\n\n### Key Axiom: sidon_not_basis\n\nThis axiom states infinite Sidon sets cannot be asymptotic bases.\n\n**Why not proved**: Requires the tight Erdős-Turán density bound |A ∩ [1,N]| ≤ √N + O(N^{1/4}).\n\nThe weaker bound √(2N) + 1 (proved in Erdos340) gives:\n- Sumset size ≈ N + O(√N)\n- Interval [N₀, N] has ≈ N elements\n- No contradiction!\n\nThe tight bound gives:\n- Sumset size ≈ N/2 + O(N^{3/4})\n- Interval [N₀, N] has ≈ N elements\n- Contradiction: N/2 < N\n\n## Next Steps\n\n1. Prove tight Sidon density in Erdos340GreedySidon.lean (~100 lines)\n2. Use it to prove sidon_not_basis (~100 lines)\n\n## References\n\n- Erdős-Turán (1941): Original conjecture\n- Grekos et al. (2003): r_A(n) ≥ 6 infinitely often\n- Borwein et al.: r_A(n) ≥ 8 infinitely often\n- Guy's UPINT Problem C9\n\n---\n*Research session: 2026-01-22 by researcher-2*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Density Argument for sidon_not_basis",
+      "description": "Use Sidon density bound to show sumset too small for basis",
+      "status": "blocked",
+      "blockedReason": "Requires tight √N + O(N^{1/4}) bound, not the weaker √(2N) bound"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "additive-combinatorics",
+    "sidon-sets",
+    "prize-problem",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos340GreedySidon.lean (sidon_upper_bound_weak proved, sidon_upper_bound axiom)",
+    "Erdos28AdditiveBases.lean (main formalization)"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős-Turán (1941): On a problem of Sidon in additive number theory",
+      "Grekos et al. (2003): Lower bounds for representation functions"
+    ],
+    "urls": [
+      "https://www.erdosproblems.com/28"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Finset.Card"
+    ]
   },
   "started": "2026-01-12T06:42:02.929Z",
-  "significance": 6,
+  "significance": 8,
   "tractability": 4
 }

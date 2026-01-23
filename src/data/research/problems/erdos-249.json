@@ -1,54 +1,96 @@
 {
   "slug": "erdos-249",
-  "title": "Erdős #249",
-  "phase": "NEW",
+  "title": "Erdős #249 - Irrationality of Sum of φ(n)/2^n",
+  "phase": "SURVEYED",
   "status": "active",
-  "tier": "A",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_n \\frac{\\phi(n)}{2^n}\\]irrational? Here $\\phi$ is the Euler totient function.\n\n\n\nThe decimal expansion of this sum is A256936 on the OEIS.\n\n\nBack to the problem",
-    "plain": "Forum",
-    "whyMatters": []
+    "formal": "erdos_249 : Prop := Irrational (∑' n, (Nat.totient n : ℝ) / 2^n)",
+    "plain": "Is ∑_{n=1}^∞ φ(n)/2^n irrational? Here φ is Euler's totient function.",
+    "whyMatters": [
+      "Questions irrationality of a naturally defined series",
+      "Combines number-theoretic function φ with geometric convergence",
+      "Related to other Erdős irrationality problems"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The series converges absolutely (φ(n)/2^n ≤ n/2^n)",
+      "The sum is positive and bounded (0 < sum ≤ 2)",
+      "Numerical value ≈ 1.3240... (OEIS A256936)"
+    ],
+    "open": [
+      "Main conjecture: Is the sum irrational?",
+      "If irrational, what is its irrationality measure?"
+    ],
+    "goal": "The main conjecture is OPEN. Formalization provides axiomatization of known bounds."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T22:27:32.550Z",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T21:45:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Created basic formalization with series definition and bounds",
+    "blockers": [
+      "Main conjecture is OPEN - no proof of irrationality known"
+    ],
+    "nextAction": "No further work unless progress on OPEN problem",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #249 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_n \\frac{\\phi(n)}{2^n}\\]irrational? Here $\\phi$ is the Euler totient function.\n\n\n\nThe decimal expansion of this sum is A256936 on the OEIS.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #248\n- Problem #250\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "progressSummary": "SURVEYED: Created Lean formalization defining the series and stating the OPEN irrationality conjecture.",
+    "builtItems": [
+      "Erdos249Problem.lean - 162 lines, 3 axioms, 0 sorries"
+    ],
+    "insights": [
+      "Series uses Nat.totient from Mathlib (well-developed API)",
+      "Convergence follows from φ(n) ≤ n and summability of n/2^n",
+      "Irrational type from Mathlib.NumberTheory.Real.Irrational",
+      "Term values: termFn(1) = 1/2, termFn(2) = 1/4, termFn(3) = 1/4"
+    ],
+    "mathlibGaps": [
+      "No general irrationality machinery for series of this form"
+    ],
+    "nextSteps": [
+      "Problem is OPEN - await mathematical progress",
+      "Could potentially prove convergence axiom from Mathlib"
+    ],
+    "markdown": "# Erdős #249 - Irrationality of Totient Sum\n\n## Problem Statement\n\nIs ∑_{n=1}^∞ φ(n)/2^n irrational?\n\n**Status**: OPEN\n\n## Formalization\n\nCreated `Erdos249Problem.lean` with:\n- Definition of termFn(n) = φ(n)/2^n\n- Definition of totientPowerSum = ∑' n, termFn n\n- Term computations: termFn_one, termFn_two\n- Axiomatized bounds and summability\n- Formal statement of the OPEN conjecture\n\n## Key Definitions\n\n```lean\nnoncomputable def termFn (n : ℕ) : ℝ :=\n  (Nat.totient n : ℝ) / (2 ^ n : ℝ)\n\nnoncomputable def totientPowerSum : ℝ :=\n  ∑' n, termFn n\n\ndef erdos_249 : Prop := Irrational totientPowerSum\n```\n\n## Numerical Information\n\nThe decimal expansion is OEIS sequence A256936 ≈ 1.3240...\n\n---\n*Research session: 2026-01-22 by researcher-2*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Axiomatization of series properties",
+      "description": "Axiomatize summability and bounds, state OPEN conjecture",
+      "status": "completed"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "irrationality",
+    "totient",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos249Problem.lean (new formalization)",
+    "EulerTotient.lean (totient infrastructure)"
   ],
   "references": {
     "papers": [],
-    "urls": [],
-    "mathlib": []
+    "urls": [
+      "https://www.erdosproblems.com/249",
+      "https://oeis.org/A256936"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.NumberTheory.Real.Irrational"
+    ]
   },
   "started": "2026-01-12T22:27:32.550Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 2
 }
