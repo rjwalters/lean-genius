@@ -354,24 +354,59 @@ axiom sidon_density_bound (A : Finset ℕ) (hS : IsSidon (A : Set ℕ)) (N : ℕ
 
 /-- **Axiom: Sidon sets are NOT asymptotic bases.**
 
-Mathematical argument:
-- Sidon sets satisfy |A ∩ [1,N]| ≤ √(2N) + 1 (density bound - proved as sidon_upper_bound_weak)
-- The sumset A+A of A ∩ [1,N] has at most |A|(|A|+1)/2 elements
-  (since a+b = c+d implies {a,b} = {c,d} for Sidon sets)
-- This gives |(A+A) ∩ [2, 2N]| ≤ (√(2N)+1)(√(2N)+2)/2 ≈ N + O(√N)
-- But an asymptotic basis must cover all n ≥ N₀, requiring ~2N elements in [N₀, 2N]
-- This density gap means A+A misses infinitely many integers
+## Mathematical Background
 
-**Proof status**: This is a HARD result (known mathematics, needs formalization).
+This is a fundamental structural result showing the tension between:
+- **Sidon property**: bounded representations (r_A(n) ≤ 2)
+- **Basis property**: cover all large integers (A + A ⊇ [N₀, ∞))
 
-The full proof would require (~150 lines):
-1. Define A_N := A ∩ [1,N] as Finset
-2. Show |A_N + A_N| ≤ |A_N|(|A_N|+1)/2 (Sidon property gives injective sum map)
-3. Show A_N + A_N ⊆ [2, 2N], so |(A+A) ∩ [2,2N]| ≤ (√(2N)+1)(√(2N)+2)/2
-4. For asymptotic basis: ∃ N₀, ∀ n ≥ N₀, n ∈ A+A
-5. Derive contradiction: [N₀, 2N] has N-N₀+1 ≈ N elements, but sumset has ≈ N/2
+## Proof Outline
 
-This requires careful handling of Set vs Finset, asymptotics, and filter eventually. -/
+### Key Insight: The Erdős-Turán Density Bound is Critical
+
+The argument requires the **tight** Erdős-Turán bound: |A ∩ [1,N]| ≤ √N + O(N^{1/4}).
+
+With this bound:
+- Sidon sumset size = |A_N|(|A_N|+1)/2 ≈ N/2 + O(N^{3/4})
+- Interval [N₀, N] has N - N₀ + 1 ≈ N elements (for N >> N₀)
+- Since N/2 < N, we get a contradiction
+
+### Why the √(2N) Bound is Insufficient
+
+The weaker bound |A ∩ [1,N]| ≤ √(2N) + 1 (proved in Erdos340GreedySidon.lean) gives:
+- Sumset size ≤ (√(2N)+1)(√(2N)+2)/2 ≈ N + 1.5√(2N)
+- This is ≥ N - N₀ + 1, so no direct contradiction!
+
+### The Tight Bound Approach
+
+The proper Erdős-Turán bound uses **sum-counting** rather than difference-counting:
+1. For A ⊆ [1, N], consider the sumset A + A ⊆ [2, 2N]
+2. For Sidon sets, |A + A| = |A|(|A|+1)/2 (sums are distinct)
+3. Since A + A ⊆ [2, 2N], we have |A|(|A|+1)/2 ≤ 2N - 1
+4. This gives |A| ≤ √(4N) - 1 + O(1) = 2√N + O(1)
+5. Refinement via the Erdős-Turán analysis gives √N + O(N^{1/4})
+
+### Formalization Gap
+
+To prove this theorem, we need:
+1. **Prove tight Sidon density bound** (~100 lines): |A ∩ [1,N]| ≤ √N + c·N^{1/4}
+2. **Set up Finset ↔ Set infrastructure** for truncations
+3. **Handle the contradiction argument** with explicit N choice
+
+The main technical challenge is proving the tight density bound. The weaker √(2N)
+bound uses differences, while the tight bound requires counting sums.
+
+## References
+
+- Erdős-Turán (1941): Original conjecture and density bounds
+- Erdos340GreedySidon.lean: sidon_upper_bound_weak (√(2N) bound, PROVED)
+- Erdos340GreedySidon.lean: sidon_upper_bound (√N + O(N^{1/4}) bound, AXIOM)
+
+## Status
+
+**HARD**: Known mathematics, needs ~200 lines of formalization.
+The key prerequisite is proving sidon_upper_bound in Erdos340GreedySidon.lean.
+-/
 axiom sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     ¬IsAsymptoticBasis A
 
