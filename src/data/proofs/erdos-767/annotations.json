@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-767-graph",
+    "proofId": "erdos-767",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "Simple graph on vertex set Fin n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-767-edgecount",
+    "proofId": "erdos-767",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Number of edges via edgeFinset.card.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-767-cycle",
+    "proofId": "erdos-767",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "IsCycle",
+    "content": "Closed path with distinct vertices, length >= 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-767-chord",
+    "proofId": "erdos-767",
+    "range": { "startLine": 53, "endLine": 59 },
+    "type": "definition",
+    "title": "IsChord",
+    "content": "Edge between non-adjacent vertices on a cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-767-chordsincident",
+    "proofId": "erdos-767",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "definition",
+    "title": "chordsIncidentTo",
+    "content": "Count of chords incident to a vertex on cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-767-avoids",
+    "proofId": "erdos-767",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "AvoidsCycleWithKChords",
+    "content": "Graph has no cycle with k chords at a vertex.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-767-gk",
+    "proofId": "erdos-767",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "definition",
+    "title": "g_k Function",
+    "content": "Max edges in n-vertex graph avoiding k-chord cycles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-767-czipszer",
+    "proofId": "erdos-767",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "theorem",
+    "title": "Czipszer Upper Bound",
+    "content": "g_k(n) <= (k+1)n for all k, n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-767-erdos-lower",
+    "proofId": "erdos-767",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "theorem",
+    "title": "Erdos Lower Bound",
+    "content": "g_k(n) >= (k+1)n - (k+1)^2 via construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-767-posa",
+    "proofId": "erdos-767",
+    "range": { "startLine": 107, "endLine": 109 },
+    "type": "theorem",
+    "title": "Posa k=1 Case",
+    "content": "g_1(n) = 2n - 4 for n >= 4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-767-jiang",
+    "proofId": "erdos-767",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "theorem",
+    "title": "Jiang 2004 Resolution",
+    "content": "g_k(n) = (k+1)n - (k+1)^2 for n >= 3k+3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-767-solved",
+    "proofId": "erdos-767",
+    "range": { "startLine": 127, "endLine": 131 },
+    "type": "theorem",
+    "title": "Conjecture Resolved",
+    "content": "Erdos 767 SOLVED by Jiang's theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-767-formula",
+    "proofId": "erdos-767",
+    "range": { "startLine": 137, "endLine": 142 },
+    "type": "theorem",
+    "title": "Formula Factored",
+    "content": "(k+1)n - (k+1)^2 = (k+1)(n-k-1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-767-main",
+    "proofId": "erdos-767",
+    "range": { "startLine": 218, "endLine": 228 },
+    "type": "theorem",
+    "title": "Main Statement",
+    "content": "Jiang + Czipszer + Erdos bounds combined.",
+    "significance": "critical"
+  }
+]
