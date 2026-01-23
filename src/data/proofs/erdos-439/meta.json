@@ -1,33 +1,136 @@
 {
   "id": "erdos-439",
-  "title": "Erdős Problem #439",
+  "title": "Erdős Problem #439: Monochromatic Solutions to x + y = z²",
   "slug": "erdos-439",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, in any finite colouring of the integers, there must be two integers ... of the same colour such that ... is ...",
+  "description": "In any finite coloring of the integers, must there be distinct x ≠ y of the same color with x + y a perfect square? SOLVED by Khalfalah-Szemerédi (2006): YES.",
   "meta": {
-    "author": "Unknown",
+    "author": "Roth-Erdős-Sárközy-Sós (problem), Khalfalah-Szemerédi (proof 2006)",
     "sourceUrl": "https://erdosproblems.com/439",
-    "date": "",
-    "status": "pending",
+    "date": "2006",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos439Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "ramsey-theory",
+      "partition-regularity",
+      "colorings",
+      "chromatic-number",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 439,
     "erdosUrl": "https://erdosproblems.com/439",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for square graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for colorings",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "FiniteColoring definition via Fin k",
+      "IsPerfectSquare and SumIsSquare definitions",
+      "HasMonochromaticSquarePair definition",
+      "squareGraph SimpleGraph definition",
+      "HasInfiniteChromaticNumber definition",
+      "ESS 1989 partial results axiomatization",
+      "Khalfalah-Szemerédi main theorem axiomatization",
+      "Polynomial generalization (PolyIsEvenSomewhere)",
+      "k-th power generalization",
+      "kthPowerGraph definition",
+      "Related Problem #438 connection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #439 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, in any finite colouring of the integers, there must be two integers $x\\neq y$ of the same colour such that $x+y$ is a square? What about a $k$th power?\n\n\n\nA question of Roth, Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS89} (according to some reports, although in \\cite{Er80c} Erd\\H{o}s claims this arose in a conversation with Silverman in 1977). Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS89} proved this for $2$ or $3$ colours.\n\nIn other words, if $G$ is the infinite graph on $\\mathbb{N}$ where we connect $m,n$ by an edge if and only if $n+m$ is a square, then is the chromatic number of $G$ equal to $\\aleph_0$?\n\nThis is true, as proved by Khalfalah and Szemer\\'{e}di \\cite{KhSz06}, who in fact prove the general result with $x+y=z^2$ replaced by $x+y=f(z)$ for any non-constant $f(z)\\in \\mathbb{Z}[z]$ such that $2\\mid f(z)$ for some $z\\in \\mathbb{Z}$.\n\nSee also [438].\n\n\n\n\nReferences\n\n\n[ESS89] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and S\\'{o}s, V. T., On a conjecture of {R}oth and some related problems. I. (1989), 47--59.\n\n[Er80c] Erd\\H{o}s, Paul, Nine little known problems in combinatorial number theory. Normat (1980), 155-164, 180.\n\n[KhSz06] Khalfalah, Ayman and Szemer\\'{e}di, Endre, On the number of monochromatic solutions of {$x+y=z^2$}. Combin. Probab. Comput. (2006), 213-227.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #439: Monochromatic Square Sums**\n\nThis problem asks about partition regularity of the equation x + y = z². It connects number theory with Ramsey theory via chromatic numbers of infinite graphs.\n\n**Historical Development:**\n- **1977:** Erdős-Silverman conversation (origin)\n- **1989:** Erdős-Sárközy-Sós proved for 2 or 3 colors\n- **2006:** Khalfalah-Szemerédi proved for all finite colorings\n\n**Graph Interpretation:** The square graph G on ℕ where m ~ n iff m + n is a square has χ(G) = ℵ₀.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIs it true that, in any finite coloring of the integers, there must be two distinct integers x ≠ y of the same color such that x + y is a perfect square? What about a k-th power?\n\n**Solution (Khalfalah-Szemerédi 2006):**\nYES! For any finite k-coloring, such monochromatic pairs exist.\n\n**Generalization:** Works for any non-constant polynomial f(z) ∈ ℤ[z] with 2 | f(z) for some z.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Colorings:** Define k-colorings as functions ℤ → Fin k.\n\n2. **Square Sums:** Define SumIsSquare predicate.\n\n3. **Monochromatic Pairs:** Define HasMonochromaticSquarePair.\n\n4. **Square Graph:** Define as SimpleGraph where m ~ n iff m + n is a square.\n\n5. **Partial Results:** Axiomatize ESS 1989 for 2 and 3 colors.\n\n6. **Main Theorem:** Axiomatize Khalfalah-Szemerédi for all k.\n\n7. **Generalizations:** Extend to polynomials and k-th powers.",
+    "keyInsights": [
+      "**Partition Regularity:** The equation x + y = z² is partition regular",
+      "**Graph Formulation:** Equivalent to infinite chromatic number of square graph",
+      "**ESS Partial Results:** 2 and 3 colors were known before the full solution",
+      "**Polynomial Generalization:** Works for f(z) where 2 | f(z) for some z",
+      "**k-th Powers:** Extends to sums being k-th powers for any k ≥ 2",
+      "**Density Arguments:** Proof uses counting solutions in intervals",
+      "**Related Problem #438:** x - y = z² (difference is square)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Colorings, perfect squares, monochromatic pairs",
+      "startLine": 38,
+      "endLine": 67
+    },
+    {
+      "id": "square-graph",
+      "title": "The Square Graph",
+      "summary": "Graph where m ~ n iff m + n is a square",
+      "startLine": 69,
+      "endLine": 91
+    },
+    {
+      "id": "ess-1989",
+      "title": "ESS Partial Results (1989)",
+      "summary": "2 and 3 colors",
+      "startLine": 93,
+      "endLine": 109
+    },
+    {
+      "id": "main-theorem",
+      "title": "Khalfalah-Szemerédi Theorem",
+      "summary": "Main result for all finite colorings",
+      "startLine": 111,
+      "endLine": 134
+    },
+    {
+      "id": "polynomial-generalization",
+      "title": "Polynomial Generalization",
+      "summary": "x + y = f(z) for polynomials",
+      "startLine": 136,
+      "endLine": 162
+    },
+    {
+      "id": "kth-powers",
+      "title": "k-th Powers",
+      "summary": "Sums being k-th powers",
+      "startLine": 164,
+      "endLine": 195
+    },
+    {
+      "id": "graph-perspective",
+      "title": "Graph Perspective",
+      "summary": "k-th power graphs",
+      "startLine": 197,
+      "endLine": 222
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main results",
+      "startLine": 259,
+      "endLine": 293
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #439 asks whether any finite coloring of ℤ has distinct x ≠ y of the same color with x + y a perfect square. Khalfalah-Szemerédi (2006) proved YES, showing the square graph has infinite chromatic number. This generalizes to any polynomial f(z) with 2 | f(z) for some z.",
+    "implications": "**Implications**\n\n1. **Ramsey Theory:** The equation x + y = z² is partition regular.\n\n2. **Graph Coloring:** Square and power graphs have infinite chromatic number.\n\n3. **Number Theory:** Deep connections between arithmetic and combinatorics.\n\n4. **Generalizations:** Opens study of partition regularity for polynomial equations.",
+    "openQuestions": [
+      "Effective bounds on the interval needed to find monochromatic pairs?",
+      "What about x + y = f(z) for other functions f?",
+      "Quantitative bounds on the number of solutions?",
+      "Higher-dimensional generalizations (x + y + z = w²)?"
+    ]
   }
 }
