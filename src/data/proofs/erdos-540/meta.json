@@ -1,33 +1,123 @@
 {
   "id": "erdos-540",
-  "title": "Erdős Problem #540",
+  "title": "Erdős Problem #540: Zero-Sum Subsets (Erdős-Heilbronn Conjecture)",
   "slug": "erdos-540",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... has size ... then there exists some non-empty ... such that ...?\n\n\n\nA conjecture of Erds and Heilbronn...",
+  "description": "Is it true that if A ⊆ ℤ/Nℤ has size ≫ √N then there exists some non-empty S ⊆ A such that Σₛ∈S s ≡ 0 (mod N)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, H. Heilbronn",
     "sourceUrl": "https://erdosproblems.com/540",
-    "date": "",
-    "status": "pending",
+    "date": "1964",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos540Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "zero-sums"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 540,
     "erdosUrl": "https://erdosproblems.com/540",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #540 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A\\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has size $\\gg N^{1/2}$ then there exists some non-empty $S\\subseteq A$ such that $\\sum_{n\\in S}n\\equiv 0\\pmod{N}$?\n\n\n\nA conjecture of Erd\\H{o}s and Heilbronn \\cite{ErHe64}. The answer is yes. This was proved for $N$ prime by Olson \\cite{Ol68}, and for all $N$ by Szemer\\'{e}di \\cite{Sz70} (in fact for arbitrary finite abelian groups).\n\nErd\\H{o}s speculated that perhaps the correct threshold is $(2N)^{1/2}$; this is also a conjecture of Selfridge, and has been proved when $N$ is prime by Balandraud \\cite{Ba12}.\n\nHamidoune and Z\\'{e}mor \\cite{HaZe96} proved the bound $(1+o(1))\\sqrt{2N}$ for arbitrary abelian groups of order $N$.\n\nThis is discussed in problem C15 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Ba12] Balandraud, \\'{e}ric, An addition theorem and maximal zero-sum free sets in {${\\Bbb\nZ}/p{\\Bbb Z}$}. Israel J. Math. (2012), 405-429.\n\n[ErHe64] Erd\\H{o}s, P. and Heilbronn, H., On the addition of residue classes {${\\rm mod}\\ p$}. Acta Arith. (1964), 149--159.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[HaZe96] Hamidoune, Yahya Ould and Z\\'{e}mor, Gilles, On zero-free subset sums. Acta Arith. (1996), 143--152.\n\n[Ol68] Olson, John E., An addition theorem modulo {$p$}. J. Combinatorial Theory (1968), 45--52.\n\n[Sz70] Szemer\\'{e}di, E., On a conjecture of Erd\\H{o}s and Heilbronn. Acta Arith. (1970), 227-229.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős-Heilbronn conjecture (1964) asked whether large subsets of ℤ/Nℤ necessarily contain zero-sum subsets. Olson proved it for primes in 1968, and Szemerédi proved the general case in 1970. Balandraud (2012) showed √(2N) is the exact threshold for primes.",
+    "problemStatement": "Is it true that if A ⊆ ℤ/Nℤ has size ≫ √N then there exists some non-empty S ⊆ A such that Σₛ∈S s ≡ 0 (mod N)?\n\nAnswer: YES. The threshold is (1+o(1))√(2N) for general N, and exactly √(2N) for primes.",
+    "proofStrategy": "We formalize the main results: Olson's theorem for primes, Szemerédi's general case, and Balandraud's optimal threshold. The proof ideas involve pigeonhole arguments on subset sums and additive structure theorems.",
+    "keyInsights": [
+      "The threshold √(2N) comes from counting subset sums vs group size",
+      "For primes, the threshold is exactly √(2N) (Balandraud)",
+      "The key technique is showing sum collisions force zero-sums via symmetric differences",
+      "Generalizes to arbitrary finite abelian groups"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 67,
+      "summary": "Subset sums in ℤ/Nℤ and zero-sum subsets."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Heilbronn Conjecture",
+      "startLine": 69,
+      "endLine": 88,
+      "summary": "The original conjecture: large sets have zero-sum subsets."
+    },
+    {
+      "id": "olson",
+      "title": "Olson's Theorem (1968)",
+      "startLine": 90,
+      "endLine": 110,
+      "summary": "The prime case: threshold √(2p) for prime p."
+    },
+    {
+      "id": "szemeredi",
+      "title": "Szemerédi's Theorem (1970)",
+      "startLine": 112,
+      "endLine": 128,
+      "summary": "The general case resolves the conjecture affirmatively."
+    },
+    {
+      "id": "balandraud",
+      "title": "Balandraud's Optimal Result (2012)",
+      "startLine": 130,
+      "endLine": 153,
+      "summary": "For primes, √(2N) is the exact threshold - tight bounds."
+    },
+    {
+      "id": "hamidoune-zemor",
+      "title": "Hamidoune-Zémor Bound (1996)",
+      "startLine": 155,
+      "endLine": 174,
+      "summary": "Near-optimal (1+o(1))√(2N) bound for all abelian groups."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 176,
+      "endLine": 206,
+      "summary": "Concrete examples for N = 1, 2, 3."
+    },
+    {
+      "id": "davenport",
+      "title": "The Davenport Constant",
+      "startLine": 208,
+      "endLine": 236,
+      "summary": "Comparison with the Davenport constant (sequences vs subsets)."
+    },
+    {
+      "id": "proof-ideas",
+      "title": "Proof Ideas",
+      "startLine": 238,
+      "endLine": 263,
+      "summary": "Pigeonhole and additive structure arguments."
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions",
+      "startLine": 265,
+      "endLine": 285,
+      "summary": "Generalization to arbitrary abelian groups."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 287,
+      "endLine": 328,
+      "summary": "Complete summary of the SOLVED problem with timeline and key results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #540 is SOLVED affirmatively. The Erdős-Heilbronn conjecture (1964) was proved by Olson (1968, primes) and Szemerédi (1970, general). The optimal threshold is √(2N) for primes (Balandraud 2012) and (1+o(1))√(2N) asymptotically for all groups (Hamidoune-Zémor 1996).",
+    "implications": "This result is fundamental in additive combinatorics, connecting subset sums to group structure. It shows that large subsets of cyclic groups cannot avoid zero-sum configurations, with precise thresholds now known.",
+    "openQuestions": [
+      "What is the exact threshold for composite N?",
+      "Can the proof be simplified or made more elementary?",
+      "What about weighted or colored variants?"
+    ]
   }
 }

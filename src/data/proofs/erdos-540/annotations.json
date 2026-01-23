@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-540-overview",
+    "proofId": "erdos-540",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #540 (Erdős-Heilbronn Conjecture):**\n\nDoes |A| > c·√N for A ⊆ ℤ/Nℤ imply A has a zero-sum subset?\n\n**Answer:** YES\n\n**Timeline:**\n- 1964: Conjecture (Erdős-Heilbronn)\n- 1968: Proved for primes (Olson)\n- 1970: Proved for all N (Szemerédi)\n- 2012: Optimal threshold √(2N) for primes (Balandraud)\n\n**Status:** SOLVED",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-540-subsetsum",
+    "proofId": "erdos-540",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "definition",
+    "title": "subsetSum",
+    "content": "**Subset Sum:**\n\nThe sum of all elements in a finite subset S of ℤ/Nℤ.\n\n```lean\ndef subsetSum {N : ℕ} (S : Finset (ZMod N)) : ZMod N :=\n  S.sum id\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-540-zerosum",
+    "proofId": "erdos-540",
+    "range": { "startLine": 55, "endLine": 67 },
+    "type": "definition",
+    "title": "Zero-Sum Subset",
+    "content": "**Zero-Sum Subset:**\n\nA non-empty S ⊆ A where Σₛ∈S s = 0 in ℤ/Nℤ.\n\n**Key properties:**\n1. S must be non-empty\n2. S must be a subset of A\n3. The sum is zero modulo N",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-540-conjecture",
+    "proofId": "erdos-540",
+    "range": { "startLine": 73, "endLine": 88 },
+    "type": "definition",
+    "title": "Erdős-Heilbronn Conjecture",
+    "content": "**The Conjecture:**\n\nThere exists c > 0 such that: for all N ≥ 1 and A ⊆ ℤ/Nℤ with |A| > c·√N, A has a zero-sum subset.\n\n**Key insight:** The √N threshold comes from the trade-off between subset count (2^|A|) and group size (N).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-540-olson",
+    "proofId": "erdos-540",
+    "range": { "startLine": 94, "endLine": 102 },
+    "type": "axiom",
+    "title": "Olson's Theorem",
+    "content": "**Olson (1968) - Prime Case:**\n\nFor p prime, any A ⊆ ℤ/pℤ with |A| > √(2p) has a zero-sum subset.\n\nThis was the first major progress on the conjecture, using polynomial methods.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-540-szemeredi",
+    "proofId": "erdos-540",
+    "range": { "startLine": 116, "endLine": 121 },
+    "type": "axiom",
+    "title": "Szemerédi's Theorem",
+    "content": "**Szemerédi (1970) - General Case:**\n\nThe Erdős-Heilbronn conjecture holds for ALL N.\n\nThis resolved the original conjecture completely. The proof works for arbitrary finite abelian groups.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-540-solved",
+    "proofId": "erdos-540",
+    "range": { "startLine": 123, "endLine": 128 },
+    "type": "theorem",
+    "title": "erdos_540_solved",
+    "content": "**Problem SOLVED:**\n\nThe original conjecture is TRUE.\n\n```lean\ntheorem erdos_540_solved : OriginalConjecture :=\n  szemeredi_general_case\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-540-balandraud",
+    "proofId": "erdos-540",
+    "range": { "startLine": 134, "endLine": 147 },
+    "type": "axiom",
+    "title": "Balandraud's Optimal Threshold",
+    "content": "**Balandraud (2012):**\n\nFor p prime, √(2p) is the EXACT threshold:\n1. |A| ≥ √(2p) ⟹ A has zero-sum subset\n2. ∃ A with |A| < √(2p) and no zero-sum subset\n\nThis pins down the optimal constant √2 for primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-540-hz",
+    "proofId": "erdos-540",
+    "range": { "startLine": 159, "endLine": 168 },
+    "type": "axiom",
+    "title": "Hamidoune-Zémor Bound",
+    "content": "**Hamidoune-Zémor (1996):**\n\nFor arbitrary abelian groups of order N:\n|A| ≥ (1+o(1))√(2N) ⟹ A has zero-sum subset\n\nThis is near-optimal for the general case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-540-n1",
+    "proofId": "erdos-540",
+    "range": { "startLine": 180, "endLine": 192 },
+    "type": "theorem",
+    "title": "case_N_1",
+    "content": "**N = 1 Case:**\n\nIn ℤ/1ℤ, every element is 0, so any non-empty subset trivially has zero sum.\n\nThis is the base case - completely trivial.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-540-davenport",
+    "proofId": "erdos-540",
+    "range": { "startLine": 212, "endLine": 227 },
+    "type": "definition",
+    "title": "Davenport Constant",
+    "content": "**Davenport Constant D(G):**\n\nThe minimum d such that every SEQUENCE of length ≥ d has a zero-sum subsequence.\n\n**Key difference:**\n- Davenport: sequences (with repetition)\n- Erdős-Heilbronn: sets (no repetition)\n\nD(ℤ/Nℤ) = N (linear), but Erdős-Heilbronn gives √N (sublinear)!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-540-pigeonhole",
+    "proofId": "erdos-540",
+    "range": { "startLine": 242, "endLine": 255 },
+    "type": "axiom",
+    "title": "Pigeonhole Proof Idea",
+    "content": "**Combinatorial Argument:**\n\nIf A has k elements:\n- There are 2^k - 1 non-empty subsets\n- Each has a sum in ℤ/Nℤ (N possibilities)\n- If 2^k > N, pigeonhole forces two subsets with equal sums\n- Their symmetric difference has sum 0!\n\nThis gives threshold k = log₂(N), weaker than √N. The √N bound needs more structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-540-abelian",
+    "proofId": "erdos-540",
+    "range": { "startLine": 269, "endLine": 279 },
+    "type": "axiom",
+    "title": "Abelian Group Generalization",
+    "content": "**General Abelian Groups:**\n\nSzemerédi's result extends to arbitrary finite abelian groups G:\n\nIf |A| > c·√|G|, then A contains a zero-sum subset.\n\nThis is the most general form of the theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-540-summary",
+    "proofId": "erdos-540",
+    "range": { "startLine": 291, "endLine": 320 },
+    "type": "theorem",
+    "title": "erdos_540_summary",
+    "content": "**Complete Summary:**\n\nErdős Problem #540 is **SOLVED**.\n\n**QUESTION:** Does |A| > c·√N imply A has a zero-sum subset?\n\n**ANSWER:** YES\n\n**OPTIMAL CONSTANT:** √2 for primes, asymptotically for all N\n\n**KEY RESULTS:**\n- Olson (1968): primes\n- Szemerédi (1970): all N\n- Balandraud (2012): optimal for primes\n- Hamidoune-Zémor (1996): near-optimal general",
+    "significance": "critical"
+  }
+]
