@@ -1,33 +1,119 @@
 {
   "id": "erdos-206",
-  "title": "Erdős Problem #206",
+  "title": "Erdős Problem #206: Eventually Greedy Egyptian Fractions",
   "slug": "erdos-206",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a real number. For any ... let\\[R_n(x) = \\sum_{i=1}^n{m_i}<x\\]be the maximal sum of ... distinct unit fractions wh...",
+  "description": "Are the best underapproximations by Egyptian fractions eventually constructed greedily for almost all x? Disproved by Kovač (2024): the set of eventually greedy numbers has Lebesgue measure zero.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kovač (2024), Curtiss (1922), Erdős (1950), Nathanson (2023), Chu (2023)",
     "sourceUrl": "https://erdosproblems.com/206",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos206Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
+    "tags": ["erdos", "number-theory", "egyptian-fractions", "measure-theory", "diophantine-approximation"],
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 206,
     "erdosUrl": "https://erdosproblems.com/206",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure on ℝ", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" },
+      { "theorem": "Set.Ioi", "description": "Open interval (a, ∞)", "module": "Mathlib.Data.Real.Basic" }
+    ],
+    "originalContributions": [
+      "EgyptianFraction: sum of distinct unit fractions",
+      "R: best n-term underapproximation function",
+      "EventuallyGreedy: the eventually greedy property",
+      "EventuallyGreedySet: the set of eventually greedy numbers",
+      "kovac_theorem: measure of EventuallyGreedySet is zero",
+      "curtiss_theorem: x=1 is eventually greedy",
+      "erdos_unit_fractions: x=1/m is eventually greedy",
+      "nathanson_theorem: a/b is greedy when a|b+1"
+    ],
+    "dateAdded": "2026-01-22"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #206 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x>0$ be a real number. For any $n\\geq 1$ let\\[R_n(x) = \\sum_{i=1}^n\\frac{1}{m_i}<x\\]be the maximal sum of $n$ distinct unit fractions which is $<x$.\n\nIs it true that, for almost all $x$, for sufficiently large $n$, we have\\[R_{n+1}(x)=R_n(x)+\\frac{1}{m},\\]where $m$ is minimal such that $m$ does not appear in $R_n(x)$ and the right-hand side is $<x$? (That is, are the best underapproximations eventually always constructed in a 'greedy' fashion?)\n\n\n\nErd\\H{o}s and Graham write it is 'not difficult' to construct irrational $x$ such that this fails (although give no proof or reference, and it seems to still be an open problem to actually construct some such irrational $x$). Curtiss \\cite{Cu22} showed that this is true for $x=1$ and Erd\\H{o}s \\cite{Er50b} showed it is true for all $x=1/m$ with $m\\geq 1$. Nathanson \\cite{Na23} has shown it is true for $x=a/b$ when $a\\mid b+1$ and Chu \\cite{Ch23b} has shown it is true for a larger class of rationals; it is still unknown whether this is true for all rational $x>0$.\n\nWithout the 'eventually' condition this can fail for some rational $x$ (although Erd\\H{o}s \\cite{Er50b} showed it holds without the eventually for rationals of the form $1/m$). For example\\[R_1(\\tfrac{11}{24})=\\frac{1}{3}\\]but\\[R_2(\\tfrac{11}{24})=\\frac{1}{4}+\\frac{1}{5}.\\]Kova\\v{c} \\cite{Ko24b} has proved that this is false - in fact as false as possible: the set of $x\\in (0,\\infty)$ for which the best underapproximations are eventually 'greedy' has Lebesgue measure zero. (It remains an open problem to give any explicit example of a number which is not eventually greedy, despite the fact that almost all numbers have this property.)\n\nSee also [282].\n\n\n\n\nReferences\n\n\n[Ch23b] H. V. Chu, A threshold for the best two-term underapproximation by Egyptian fractions. arXiv:2306.12564 (2023).\n\n[Cu22] Curtiss, D. R., On Kellogg's Diophantine Problem. Amer. Math. Monthly (1922), 380-387.\n\n[Er50b] Erd\\\"{o}s, P\\'{a}l, On a Diophantine equation. Mat. Lapok (1950), 192-210.\n\n[Ko24b] Kova\\vC, V., On eventually greedy best underapproximations by Egyptian fractions. arXiv:2406.07218 (2024).\n\n[Na23] M. Nathanson, Underapproximation by Egyptian fractions. J. Number Theory (2023), 208-234.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns Egyptian fractions - sums of distinct unit fractions like 1/2 + 1/3 + 1/7. For a real x > 0, let R_n(x) be the best underapproximation using n distinct unit fractions. The 'greedy' algorithm adds the largest possible unit fraction at each step.\n\nErdős asked: for almost all x, do the best underapproximations eventually become greedy? Curtiss (1922) and Erdős (1950) showed specific cases where this holds. Nathanson (2023) and Chu (2023) extended to classes of rationals.\n\nKovač (2024) provided the definitive answer: NO. The set of eventually greedy numbers has Lebesgue measure ZERO - almost all numbers are NOT eventually greedy. Remarkably, no explicit non-greedy example has been constructed.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $R_n(x)$ be the maximum sum of $n$ distinct unit fractions less than $x$.\n\n**Question:** For almost all $x > 0$, is it true that for sufficiently large $n$:\n$$R_{n+1}(x) = R_n(x) + \\frac{1}{m}$$\nwhere $m$ is the greedy choice (smallest valid denominator)?\n\n**Answer:** NO (Kovač 2024)\n\nThe set of $x$ with this property has Lebesgue measure zero.",
+    "proofStrategy": "The formalization defines Egyptian fractions as sums over finite sets of denominators. The best underapproximation R_n(x) is axiomatized. The eventually greedy property captures when greedy choices eventually dominate. Kovač's theorem is the main result: measure(EventuallyGreedySet) = 0. Positive results for specific classes (Curtiss, Erdős, Nathanson, Chu) are also included.",
+    "keyInsights": [
+      "**Egyptian Fraction:** Sum of distinct unit fractions 1/m₁ + ... + 1/mₙ",
+      "**R_n(x):** Best n-term underapproximation to x",
+      "**Eventually Greedy:** R_{n+1}(x) = R_n(x) + 1/(greedy m) for large n",
+      "**Kovač (2024):** measure(EventuallyGreedySet) = 0",
+      "**Paradox:** Almost all x are not greedy, but no explicit example exists",
+      "**Open:** Are all rationals eventually greedy?",
+      "**Example:** R_2(11/24) = 1/4 + 1/5 ≠ R_1(11/24) + 1/m (not greedy at step 2)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 57,
+      "endLine": 94,
+      "summary": "Egyptian fractions, valid denominators, and R_n(x)"
+    },
+    {
+      "id": "greedy-property",
+      "title": "The Greedy Property",
+      "startLine": 95,
+      "endLine": 125,
+      "summary": "Eventually greedy definition and the set of greedy numbers"
+    },
+    {
+      "id": "positive-results",
+      "title": "Positive Results",
+      "startLine": 126,
+      "endLine": 156,
+      "summary": "Curtiss, Erdős, Nathanson, and Chu theorems"
+    },
+    {
+      "id": "kovac-main",
+      "title": "Kovač's Theorem",
+      "startLine": 157,
+      "endLine": 188,
+      "summary": "The main result: measure zero"
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "startLine": 189,
+      "endLine": 215,
+      "summary": "All rationals? Explicit non-greedy example?"
+    },
+    {
+      "id": "examples",
+      "title": "Special Cases and Examples",
+      "startLine": 216,
+      "endLine": 239,
+      "summary": "The 11/24 counterexample at finite steps"
+    },
+    {
+      "id": "egyptian-fractions",
+      "title": "Egyptian Fractions",
+      "startLine": 240,
+      "endLine": 261,
+      "summary": "Connection to Egyptian fraction theory"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 262,
+      "endLine": 301,
+      "summary": "Main theorem and final statement"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #206 is SOLVED (Disproved). Kovač (2024) proved that the set of x for which best underapproximations are eventually greedy has Lebesgue measure zero. This is 'as false as possible' - almost all numbers are NOT eventually greedy.",
+    "implications": "This result reveals a striking dichotomy: specific structured numbers (rationals of certain forms) are eventually greedy, but the generic case is not. The measure-zero nature means greedy behavior is exceptional, not typical. The open problem of constructing an explicit non-greedy number highlights the gap between existence and construction in mathematics.",
+    "openQuestions": [
+      "Are all positive rationals eventually greedy?",
+      "Construct an explicit irrational that is not eventually greedy",
+      "What is the structure of EventuallyGreedySet? Is it dense?",
+      "For non-greedy x, how often does greedy fail?",
+      "See also: Erdős Problem #282"
+    ]
   }
 }
