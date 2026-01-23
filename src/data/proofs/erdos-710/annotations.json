@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e710-header",
+    "proofId": "erdos-710",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #710: Minimal Interval for Divisibility Matching**\n\nGiven n, find the minimal interval length f(n) such that (n, n+f(n)) contains distinct integers a₁,...,aₙ with k | aₖ for all k.\n\n**Known Bounds (Erdős-Pomerance 1980):**\n- Lower: (2/√e + o(1)) · n · √(log n / log log n)\n- Upper: (1.7398... + o(1)) · n · √(log n)\n\n**Status:** OPEN - exact asymptotics unknown\n\n**Prize:** 2000 rupees (~$78 in 1992)",
+    "mathContext": "This problem combines divisibility constraints with interval combinatorics. The gap between upper and lower bounds (a factor of √(log log n)) is the key mystery.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Asymptotic analysis", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e710-valid-selection",
+    "proofId": "erdos-710",
+    "range": { "startLine": 48, "endLine": 59 },
+    "type": "definition",
+    "title": "Valid Selection",
+    "content": "**IsValidSelection n start len a:**\n\nA function a : Fin n → ℕ is a valid selection if:\n1. All values a(k) are in the interval (start, start + len)\n2. All values are pairwise distinct\n3. For each k, we have (k+1) | a(k) (1-indexed)\n\n**Definition:**\n```lean\ndef IsValidSelection (n start len : ℕ) (a : Fin n → ℕ) : Prop :=\n  (∀ k, start < a k ∧ a k < start + len) ∧\n  (∀ i j, a i = a j → i = j) ∧\n  (∀ k, (k.val + 1) ∣ a k)\n```",
+    "mathContext": "This captures the divisibility matching condition: each position k must be assigned a distinct integer divisible by k.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Injective functions", "Interval constraints"]
+  },
+  {
+    "id": "ann-e710-minimal-length",
+    "proofId": "erdos-710",
+    "range": { "startLine": 69, "endLine": 88 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**minimalIntervalLength n** (written f(n)):\n\nThe minimal length L such that the interval (n, n+L) admits a valid n-selection.\n\n**Definition:**\n```lean\nnoncomputable def minimalIntervalLength (n : ℕ) : ℕ :=\n  Nat.find (selection_exists_large n)\n```\n\nThe function f(n) is the central object of the problem: determine its asymptotic growth.",
+    "mathContext": "This is a well-defined function since for large enough intervals, valid selections always exist (e.g., take L = n² and use multiples 2n, 2·(floor(n/2)+1), etc.).",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.find", "Existence theorems", "Minimal elements"]
+  },
+  {
+    "id": "ann-e710-multiples",
+    "proofId": "erdos-710",
+    "range": { "startLine": 91, "endLine": 108 },
+    "type": "definition",
+    "title": "Multiples in Interval",
+    "content": "**multiplesInInterval d a b:**\n\nCount of multiples of d in the interval (a, b).\n\n**Definition:**\n```lean\ndef multiplesInInterval (d a b : ℕ) : ℕ :=\n  (b / d) - (a / d)\n```\n\n**Key property:** In interval (n, n+L), there are about L/k multiples of k.\nAs k grows, this count shrinks - making the constraint harder to satisfy.",
+    "mathContext": "This counting function is central to the heuristic analysis: the k-th slot has ~L/k candidates, so large k provides the tightest constraints.",
+    "significance": "key",
+    "relatedConcepts": ["Floor function", "Counting multiples", "Pigeonhole principle"]
+  },
+  {
+    "id": "ann-e710-lower-bound",
+    "proofId": "erdos-710",
+    "range": { "startLine": 115, "endLine": 124 },
+    "type": "axiom",
+    "title": "Erdős-Pomerance Lower Bound",
+    "content": "**erdos_pomerance_lower_bound:**\n\nf(n) ≥ (2/√e + o(1)) · n · √(log n / log log n)\n\n**Statement:**\n```lean\naxiom erdos_pomerance_lower_bound :\n    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,\n      (f(n) : ℝ) ≥ (2/√e - ε) * n * √(log n / log log n)\n```\n\nThe constant 2/√e ≈ 1.2131... comes from a probabilistic counting argument.",
+    "mathContext": "The lower bound has an extra factor of 1/√(log log n) compared to the upper bound, creating the gap that makes this problem hard.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic bounds", "Probabilistic method", "Counting arguments"]
+  },
+  {
+    "id": "ann-e710-upper-bound",
+    "proofId": "erdos-710",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "axiom",
+    "title": "Erdős-Pomerance Upper Bound",
+    "content": "**erdos_pomerance_upper_bound:**\n\nf(n) ≤ (1.7398... + o(1)) · n · √(log n)\n\n**Statement:**\n```lean\naxiom erdos_pomerance_upper_bound :\n    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,\n      (f(n) : ℝ) ≤ (1.7398 + ε) * n * √(log n)\n```\n\nThe constant 1.7398... comes from an explicit construction.",
+    "mathContext": "The upper bound is achieved by a specific algorithm for assigning integers to positions, balancing the need for distinct values with divisibility constraints.",
+    "significance": "critical",
+    "relatedConcepts": ["Constructive bounds", "Greedy algorithms", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-e710-bounds-gap",
+    "proofId": "erdos-710",
+    "range": { "startLine": 136, "endLine": 145 },
+    "type": "axiom",
+    "title": "Gap Between Bounds",
+    "content": "**bounds_gap:**\n\nThe lower bound has √(log n / log log n), the upper has √(log n).\n\nThese differ by a factor of √(log log n), which grows very slowly but is unbounded.\n\n**Statement:**\n```lean\naxiom bounds_gap :\n    ∀ n ≥ 3, √(log n / log log n) < √(log n)\n```",
+    "mathContext": "The √(log log n) gap is small (about 1.5 for n = 10^100) but mathematically significant. Closing this gap would solve the problem.",
+    "significance": "key",
+    "relatedConcepts": ["Iterated logarithms", "Slow-growing functions", "Gap analysis"]
+  },
+  {
+    "id": "ann-e710-open-problem",
+    "proofId": "erdos-710",
+    "range": { "startLine": 153, "endLine": 174 },
+    "type": "axiom",
+    "title": "Erdős #710: OPEN",
+    "content": "**erdos_710_open:**\n\nThe problem asks for an explicit asymptotic formula: f(n) ~ C · n · g(n) for some constant C and function g(n).\n\n**Three possibilities:**\n1. f(n) ~ C · n · √(log n) (upper bound is tight)\n2. f(n) ~ C · n · √(log n / log log n) (lower bound is tight)\n3. Something in between\n\n**Prize:** 2000 rupees (~$78 in 1992)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e710-example-n1",
+    "proofId": "erdos-710",
+    "range": { "startLine": 182, "endLine": 196 },
+    "type": "theorem",
+    "title": "Example: n = 1",
+    "content": "**example_n1:**\n\nFor n = 1, we need one integer a₁ in (1, 1+f(1)) with 1 | a₁.\n\nSince every integer is divisible by 1, we just need any integer > 1.\n\nf(1) = 1 works: use a₁ = 2.\n\n```lean\ntheorem example_n1 : IntervalAdmitsSelection 1 1 2\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e710-example-n2",
+    "proofId": "erdos-710",
+    "range": { "startLine": 198, "endLine": 212 },
+    "type": "theorem",
+    "title": "Example: n = 2",
+    "content": "**example_n2:**\n\nFor n = 2, we need distinct a₁, a₂ in (2, 2+f(2)) with:\n- 1 | a₁ (anything works)\n- 2 | a₂ (must be even)\n\nf(2) = 2 works: use a₁ = 3, a₂ = 4.\n\n```lean\ntheorem example_n2 : IntervalAdmitsSelection 2 2 3\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e710-example-n3",
+    "proofId": "erdos-710",
+    "range": { "startLine": 214, "endLine": 228 },
+    "type": "theorem",
+    "title": "Example: n = 3",
+    "content": "**example_n3:**\n\nFor n = 3, we need distinct a₁, a₂, a₃ in (3, 3+f(3)) with:\n- 1 | a₁ (anything)\n- 2 | a₂ (even)\n- 3 | a₃ (multiple of 3)\n\nf(3) = 3 works: use a₁ = 5, a₂ = 4, a₃ = 6.\n\nNote: 6 is both even and divisible by 3, so we assign it to position 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e710-constraint-density",
+    "proofId": "erdos-710",
+    "range": { "startLine": 236, "endLine": 250 },
+    "type": "definition",
+    "title": "Constraint Density Analysis",
+    "content": "**constraintDensity:**\n\nFor the k-th slot, the density of valid candidates is ~L/k.\n\n**Analysis:**\n- Slot 1: ~L candidates (everything)\n- Slot 2: ~L/2 candidates (even numbers)\n- ...\n- Slot n: ~L/n candidates (multiples of n)\n\n**Key insight:** The n-th slot is the hardest constraint. We need at least one multiple of n in the interval, which requires L ≈ n as a minimum.",
+    "mathContext": "This heuristic explains why f(n) must grow at least linearly with n: the constraint for position n alone requires the interval to be long enough to contain a multiple of n.",
+    "significance": "key",
+    "relatedConcepts": ["Density", "Sparsity", "Bottleneck analysis"]
+  },
+  {
+    "id": "ann-e710-greedy",
+    "proofId": "erdos-710",
+    "range": { "startLine": 271, "endLine": 289 },
+    "type": "theorem",
+    "title": "Greedy Algorithm Insight",
+    "content": "**smallest_multiple_bound:**\n\nFor each k, the smallest multiple of k greater than n is at most n + k.\n\n**Statement:**\n```lean\ntheorem smallest_multiple_bound (n k : ℕ) (hk : k > 0) :\n    ∃ m : ℕ, n < m ∧ m ≤ n + k ∧ k ∣ m\n```\n\n**Greedy approach:** Assign a₁ = n+1, then a₂ = smallest even > n+1 not yet used, etc.\n\nThis gives an upper bound on f(n) but is not optimal.",
+    "mathContext": "The greedy algorithm is the simplest constructive approach. The true minimum f(n) is achieved by a more clever assignment that balances constraints.",
+    "significance": "key",
+    "relatedConcepts": ["Greedy algorithms", "Constructive proofs", "Upper bounds"]
+  },
+  {
+    "id": "ann-e710-summary",
+    "proofId": "erdos-710",
+    "range": { "startLine": 307, "endLine": 341 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_710_summary:**\n\nCombines all main results:\n\n```lean\ntheorem erdos_710_summary :\n    -- Lower bound established\n    (∀ ε > 0, ∃ N, ∀ n ≥ N,\n      (2/√e - ε) * n * √(log n / log log n) ≤ f(n)) ∧\n    -- Upper bound established  \n    (∀ ε > 0, ∃ N, ∀ n ≥ N,\n      f(n) ≤ (1.7398 + ε) * n * √(log n)) ∧\n    -- Small examples verified\n    IntervalAdmitsSelection 1 1 2 ∧\n    IntervalAdmitsSelection 2 2 3 ∧\n    IntervalAdmitsSelection 3 3 4\n```\n\n**Status:** Bounds known, exact asymptotics OPEN.",
+    "significance": "key"
+  }
+]
