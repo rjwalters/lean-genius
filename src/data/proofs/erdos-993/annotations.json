@@ -1,1 +1,192 @@
-[]
+[
+  {
+    "id": "ann-e993-overview",
+    "proofId": "erdos-993",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #993: Unimodal Independent Sets in Trees**\n\nThe sequence (i_0, i_1, i_2, ...) where i_k counts independent sets of size k is unimodal for trees/forests (increases then decreases).\n\nContrasts with general graphs where ANY pattern is achievable (AEMS 1987).",
+    "mathContext": "Graph theory: independent sets, unimodality, polynomial methods.",
+    "significance": "critical",
+    "relatedConcepts": ["Independence polynomial", "Real-rootedness", "Log-concavity"]
+  },
+  {
+    "id": "ann-e993-indepset",
+    "proofId": "erdos-993",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "**IsIndependentSet S:** No edges between any two vertices in S.\n\nS is independent ⟺ ∀ u, v ∈ S, u ≠ v → ¬(u ~ v)\n\nIndependent sets are also called stable sets.",
+    "significance": "critical",
+    "leanSymbol": "IsIndependentSet"
+  },
+  {
+    "id": "ann-e993-indepcount",
+    "proofId": "erdos-993",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Independent Set Count",
+    "content": "**indepCount k:** i_k(G) = number of independent sets of size k in G.\n\ni_0(G) = 1 (empty set)\ni_1(G) = |V| (all singletons)\ni_k(G) = 0 for k > α(G)",
+    "significance": "critical",
+    "leanSymbol": "indepCount"
+  },
+  {
+    "id": "ann-e993-indeppoly",
+    "proofId": "erdos-993",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "Independence Polynomial",
+    "content": "**independencePolynomial:** I(G, x) = Σ_k i_k(G) · x^k\n\nThe generating function for independent set counts. Real-rootedness of this polynomial implies unimodality of coefficients.",
+    "significance": "key",
+    "leanSymbol": "independencePolynomial"
+  },
+  {
+    "id": "ann-e993-unimodal",
+    "proofId": "erdos-993",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "Unimodal Sequence",
+    "content": "**IsUnimodal f n:** The sequence f(0), f(1), ..., f(n) increases then decreases.\n\nFormally: ∃ m ≤ n such that:\n- f(0) ≤ f(1) ≤ ... ≤ f(m)\n- f(m) ≥ f(m+1) ≥ ... ≥ f(n)",
+    "significance": "critical",
+    "leanSymbol": "IsUnimodal"
+  },
+  {
+    "id": "ann-e993-tree",
+    "proofId": "erdos-993",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "definition",
+    "title": "Tree",
+    "content": "**IsTree G:** G is connected and acyclic.\n\nEquivalently: connected graph with |V| - 1 edges, or unique path between any two vertices.",
+    "significance": "key",
+    "leanSymbol": "IsTree"
+  },
+  {
+    "id": "ann-e993-forest",
+    "proofId": "erdos-993",
+    "range": { "startLine": 88, "endLine": 90 },
+    "type": "definition",
+    "title": "Forest",
+    "content": "**IsForest G:** G is acyclic (may be disconnected).\n\nA forest is a disjoint union of trees. Every tree is a forest.",
+    "significance": "key",
+    "leanSymbol": "IsForest"
+  },
+  {
+    "id": "ann-e993-treeuni",
+    "proofId": "erdos-993",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "axiom",
+    "title": "Trees are Unimodal",
+    "content": "**tree_unimodal:**\n\nFor any tree T, the sequence (i_0(T), i_1(T), ...) is unimodal.\n\nThis is the main result of Erdős Problem #993.",
+    "significance": "critical",
+    "leanSymbol": "tree_unimodal"
+  },
+  {
+    "id": "ann-e993-forestuni",
+    "proofId": "erdos-993",
+    "range": { "startLine": 109, "endLine": 111 },
+    "type": "axiom",
+    "title": "Forests are Unimodal",
+    "content": "**forest_unimodal:**\n\nFor any forest F, the independent set sequence is unimodal.\n\nSince a forest is a disjoint union of trees, this follows from the tree case.",
+    "significance": "critical",
+    "leanSymbol": "forest_unimodal"
+  },
+  {
+    "id": "ann-e993-counter",
+    "proofId": "erdos-993",
+    "range": { "startLine": 131, "endLine": 134 },
+    "type": "axiom",
+    "title": "General Graphs Not Unimodal",
+    "content": "**general_graph_not_unimodal:**\n\nThere exist graphs whose independent set sequence is NOT unimodal.\n\nIn fact, AEMS (1987) showed every pattern is achievable.",
+    "significance": "critical",
+    "leanSymbol": "general_graph_not_unimodal"
+  },
+  {
+    "id": "ann-e993-matching",
+    "proofId": "erdos-993",
+    "range": { "startLine": 149, "endLine": 152 },
+    "type": "definition",
+    "title": "Matching",
+    "content": "**IsMatching M:** A set of edges with no shared vertices.\n\nThe matching sequence (m_0, m_1, ...) counts matchings by size.",
+    "significance": "key",
+    "leanSymbol": "IsMatching"
+  },
+  {
+    "id": "ann-e993-schwenk",
+    "proofId": "erdos-993",
+    "range": { "startLine": 158, "endLine": 160 },
+    "type": "axiom",
+    "title": "Schwenk's Theorem (1981)",
+    "content": "**schwenk_matching_unimodal:**\n\nThe matching sequence is unimodal for ANY graph.\n\nContrasts with independent sets, which are only unimodal for special classes like trees.",
+    "significance": "critical",
+    "leanSymbol": "schwenk_matching_unimodal"
+  },
+  {
+    "id": "ann-e993-realroots",
+    "proofId": "erdos-993",
+    "range": { "startLine": 178, "endLine": 180 },
+    "type": "axiom",
+    "title": "Trees Have Real Roots",
+    "content": "**tree_indep_poly_real_roots:**\n\nThe independence polynomial of a tree has all REAL roots.\n\nThis algebraic property is the key to proving unimodality.",
+    "significance": "critical",
+    "leanSymbol": "tree_indep_poly_real_roots"
+  },
+  {
+    "id": "ann-e993-path3",
+    "proofId": "erdos-993",
+    "range": { "startLine": 201, "endLine": 203 },
+    "type": "theorem",
+    "title": "Path P_3 Example",
+    "content": "**path3_unimodal:**\n\nFor P_3 (three vertices in a line):\ni_0 = 1, i_1 = 3, i_2 = 1\n\nSequence: 1 ≤ 3 ≥ 1 ✓ unimodal",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e993-logconcave",
+    "proofId": "erdos-993",
+    "range": { "startLine": 219, "endLine": 221 },
+    "type": "definition",
+    "title": "Log-Concavity",
+    "content": "**IsLogConcave f n:** i_k² ≥ i_{k-1} · i_{k+1} for all k.\n\nLog-concavity is STRONGER than unimodality. For positive sequences, log-concave ⟹ unimodal.",
+    "significance": "key",
+    "leanSymbol": "IsLogConcave"
+  },
+  {
+    "id": "ann-e993-fib",
+    "proofId": "erdos-993",
+    "range": { "startLine": 300, "endLine": 304 },
+    "type": "definition",
+    "title": "Fibonacci Numbers",
+    "content": "**fib n:** The Fibonacci sequence (0, 1, 1, 2, 3, 5, 8, ...).\n\nFor path graphs P_n, the total number of independent sets is F_{n+2}.",
+    "significance": "supporting",
+    "leanSymbol": "fib"
+  },
+  {
+    "id": "ann-e993-alpha",
+    "proofId": "erdos-993",
+    "range": { "startLine": 279, "endLine": 281 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "**independenceNumber G:** α(G) = max{|S| : S is independent}\n\nFor k > α(G), we have i_k(G) = 0. The peak of the unimodal sequence is ≤ α(G).",
+    "significance": "key",
+    "leanSymbol": "independenceNumber"
+  },
+  {
+    "id": "ann-e993-summary",
+    "proofId": "erdos-993",
+    "range": { "startLine": 340, "endLine": 353 },
+    "type": "theorem",
+    "title": "Main Summary",
+    "content": "**erdos_993_summary:**\n\n- Trees: YES, unimodal ✓\n- Forests: YES, unimodal ✓\n- General graphs: NO, any pattern possible\n\nProved using real-rootedness of independence polynomial.",
+    "significance": "critical",
+    "leanSymbol": "erdos_993_summary"
+  },
+  {
+    "id": "ann-e993-main",
+    "proofId": "erdos-993",
+    "range": { "startLine": 355, "endLine": 356 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_993:**\n\nErdős Problem #993 is SOLVED.\n\nThe independent set sequence of any tree or forest is unimodal.",
+    "significance": "critical",
+    "leanSymbol": "erdos_993"
+  }
+]

@@ -1,33 +1,176 @@
 {
   "id": "erdos-993",
-  "title": "Erdős Problem #993",
+  "title": "Erdős Problem #993: Unimodal Independent Set Sequences in Trees",
   "slug": "erdos-993",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe independent set sequence of any tree or forest is unimodal.\n\nIn other words, if ... counts the number of independent sets...",
+  "description": "Is the independent set sequence of any tree or forest unimodal? YES! If i_k(T) counts independent sets of size k, the sequence i_0, i_1, i_2, ... increases then decreases. Contrasts with general graphs where any pattern is achievable.",
   "meta": {
-    "author": "Unknown",
+    "author": "Alavi-Erdős-Malde-Schwenk (1987 question), solved subsequently",
     "sourceUrl": "https://erdosproblems.com/993",
-    "date": "",
-    "status": "pending",
+    "date": "1987+",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos993Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "independent-sets",
+      "unimodality",
+      "trees",
+      "combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 993,
     "erdosUrl": "https://erdosproblems.com/993",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type for trees",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power sets for counting independent sets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Polynomial",
+        "description": "Independence polynomial representation",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsIndependentSet definition: no edges between vertices",
+      "indepCount definition: number of independent sets of size k",
+      "independencePolynomial definition: generating function",
+      "IsUnimodal definition: increases then decreases",
+      "HasUnimodalIndepSequence definition: for graphs",
+      "IsAcyclic, IsTree, IsForest definitions",
+      "tree_unimodal axiom: main result for trees",
+      "forest_unimodal axiom: extension to forests",
+      "general_graph_not_unimodal axiom: counterexamples exist",
+      "schwenk_matching_unimodal axiom: matchings always unimodal",
+      "IsLogConcave definition: stronger than unimodality",
+      "independenceNumber definition: α(G)",
+      "erdos_993_summary theorem: complete summary"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #993 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe independent set sequence of any tree or forest is unimodal.\n\nIn other words, if $i_k(G)$ counts the number of independent sets of vertices of size $k$ in a graph $G$, and $T$ is any tree or forest, then for some $m\\geq 0$\n$$i_{0}(T)\\leq i_{1}(T)\\leq\\cdots\\leq i_{m}(T)\\geq i_{m+1}(T)\\geq i_{m+2}(T)\\geq\\cdots.$$\n\n\n\nA question of Alavi, Erd\\H{o}s, Malde, and Schwenk \\cite{AEMS87}, who showed that this is false for general graphs $G$ (in fact every possible pattern of inequalities is achieved by some graph).\n\nThe sequence which counts the number of independent sets of edges of a given size was proved to be unimodal (for any graph) by Schwenk \\cite{Sc81}. In \\cite{AEMS87} they also ask whether every possible unimodal pattern of inequalities is achieved by some graph.\n\n\n\n\nReferences\n\n\n[AEMS87] No reference found.\n\n\n[Sc81] Schwenk, Allen J., On unimodal sequences of graphical invariants. J. Combin. Theory Ser. B (1981), 247--250.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #993** was posed by Alavi, Erdős, Malde, and Schwenk in their 1987 paper. They showed that for general graphs, the independent set sequence can have ANY pattern of increases and decreases. They asked whether trees have unimodal sequences.\n\n**Historical Development:**\n- **Schwenk (1981):** Proved the MATCHING sequence is unimodal for any graph\n- **AEMS (1987):** Showed general graph independent set sequences can be non-unimodal; posed the tree question\n- **Solution:** The tree case was proved affirmatively using polynomial techniques\n\n**Key Insight:** The proof uses the fact that the independence polynomial of a tree has all real roots, which implies unimodality of coefficients.",
+    "problemStatement": "**Problem Statement**\n\nLet $i_k(G)$ count the number of independent sets of size $k$ in a graph $G$.\n\n**Question:** For any tree or forest $T$, is the sequence $(i_0(T), i_1(T), i_2(T), \\ldots)$ unimodal?\n\nThat is, does there exist $m \\geq 0$ such that:\n$$i_0(T) \\leq i_1(T) \\leq \\cdots \\leq i_m(T) \\geq i_{m+1}(T) \\geq \\cdots$$\n\n**Answer:** YES! The sequence is unimodal for all trees and forests.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** IsIndependentSet, indepCount, independencePolynomial, IsUnimodal\n\n2. **Tree/Forest Structure:** IsAcyclic, IsTree, IsForest definitions\n\n3. **Main Theorem:** Axiomatize that trees/forests have unimodal sequences\n\n4. **Counterexamples:** General graphs can have any pattern\n\n5. **Proof Technique:** Real-rootedness of independence polynomial implies unimodality\n\n6. **Related Results:** Schwenk's matching unimodality, log-concavity",
+    "keyInsights": [
+      "**Trees are Special:** Their independence polynomial has all real roots, forcing unimodality.",
+      "**General Graphs Wild:** AEMS (1987) showed every possible pattern of inequalities is achievable by some graph.",
+      "**Matching vs Independent Set:** Schwenk proved matching sequences are ALWAYS unimodal (any graph), but independent sets are only unimodal for special graph classes.",
+      "**Real Roots → Unimodal:** A fundamental theorem: polynomials with non-negative coefficients and all real roots have unimodal coefficient sequences.",
+      "**Log-Concavity:** A stronger property where i_k² ≥ i_{k-1} · i_{k+1}. Trees may also satisfy this.",
+      "**Fibonacci Connection:** For path graphs P_n, the total number of independent sets equals the Fibonacci number F_{n+2}."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "independent-sets",
+      "title": "Independent Sets in Graphs",
+      "summary": "Definition of independent sets and counting function i_k(G)",
+      "startLine": 35,
+      "endLine": 54
+    },
+    {
+      "id": "unimodality",
+      "title": "Unimodality",
+      "summary": "Definition of unimodal sequences and HasUnimodalIndepSequence",
+      "startLine": 56,
+      "endLine": 72
+    },
+    {
+      "id": "trees-forests",
+      "title": "Trees and Forests",
+      "summary": "Definitions of acyclic graphs, trees, and forests",
+      "startLine": 74,
+      "endLine": 97
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "summary": "Trees and forests have unimodal independent set sequences",
+      "startLine": 99,
+      "endLine": 123
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "summary": "General graphs can have any pattern",
+      "startLine": 125,
+      "endLine": 141
+    },
+    {
+      "id": "schwenk",
+      "title": "Schwenk's Matching Theorem",
+      "summary": "Matching sequences are always unimodal",
+      "startLine": 143,
+      "endLine": 160
+    },
+    {
+      "id": "proof-technique",
+      "title": "Proof Techniques",
+      "summary": "Real-rootedness of independence polynomial",
+      "startLine": 162,
+      "endLine": 187
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "Path and star graphs verify unimodality",
+      "startLine": 189,
+      "endLine": 211
+    },
+    {
+      "id": "log-concavity",
+      "title": "Log-Concavity",
+      "summary": "A stronger property than unimodality",
+      "startLine": 213,
+      "endLine": 231
+    },
+    {
+      "id": "recursions",
+      "title": "Recursions for Trees",
+      "summary": "Leaf removal recursion and basic counts",
+      "startLine": 253,
+      "endLine": 271
+    },
+    {
+      "id": "independence-number",
+      "title": "Independence Number",
+      "summary": "Maximum independent set size α(G)",
+      "startLine": 273,
+      "endLine": 292
+    },
+    {
+      "id": "fibonacci",
+      "title": "Fibonacci Connection",
+      "summary": "Path graphs and Fibonacci numbers",
+      "startLine": 294,
+      "endLine": 315
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and final answer",
+      "startLine": 333,
+      "endLine": 356
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #993 asks whether the independent set sequence of trees and forests is unimodal. The answer is YES. This contrasts sharply with general graphs, where AEMS (1987) showed every pattern is achievable. The proof uses real-rootedness of the independence polynomial.",
+    "implications": "**Implications for Graph Theory**\n\n1. **Tree Structure:** Trees have special algebraic properties (real-rooted polynomials).\n\n2. **General vs Special:** Many graph properties become tractable when restricted to trees.\n\n3. **Polynomial Methods:** Real-rootedness is a powerful tool for proving unimodality.\n\n4. **Algorithm Design:** Unimodality helps in optimization over independent sets.",
+    "openQuestions": [
+      "Is the independent set sequence of a tree log-concave (stronger than unimodal)?",
+      "Which other graph classes have unimodal independent set sequences?",
+      "What is the exact location of the mode (peak) in terms of tree structure?",
+      "Can the real-rootedness proof be made more elementary?"
+    ]
   }
 }
