@@ -6276,17 +6276,23 @@
   },
   {
     "id": "erdos-353",
-    "title": "Erdős Problem #353",
+    "title": "Erdős Problem #353: Geometric Configurations in Sets of Infinite Measure",
     "slug": "erdos-353",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a measurable set with infinite measure. Must ... contain the vertices of an isosceles trapezoid of area ...? What ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kovač 2023).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometric-measure-theory",
+      "euclidean-geometry",
+      "configurations",
+      "infinite-measure",
+      "solved"
     ],
     "erdosNumber": 353,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-354",

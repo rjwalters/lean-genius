@@ -1,33 +1,149 @@
 {
   "id": "erdos-353",
-  "title": "Erdős Problem #353",
+  "title": "Erdős Problem #353: Geometric Configurations in Sets of Infinite Measure",
   "slug": "erdos-353",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a measurable set with infinite measure. Must ... contain the vertices of an isosceles trapezoid of area ...? What ...",
+  "description": "Let A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kovač 2023).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Mauldin, Kovač (2023), Koizumi (2025)",
     "sourceUrl": "https://erdosproblems.com/353",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos353Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometric-measure-theory",
+      "euclidean-geometry",
+      "configurations",
+      "infinite-measure",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 353,
     "erdosUrl": "https://erdosproblems.com/353",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean n-space",
+        "module": "Mathlib.Geometry.Euclidean.Basic"
+      },
+      {
+        "theorem": "inner",
+        "description": "Inner product for right angle detection",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasInfiniteMeasure predicate for plane sets",
+      "triangleArea and quadrilateralArea definitions",
+      "IsIsoscelesTriangle, IsRightTriangle, IsIsoscelesTrapezoid predicates",
+      "IsCyclicQuadrilateral and IsParallelogram definitions",
+      "HasCongruentSides for polygons",
+      "Configuration existence predicates (HasTriangleWithArea, etc.)",
+      "Koizumi's three main theorems as axioms",
+      "Kovač's parallelogram counterexample axiom",
+      "Kovač-Predojević cyclic quadrilateral theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #353 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{R}^2$ be a measurable set with infinite measure. Must $A$ contain the vertices of an isosceles trapezoid of area $1$? What about an isosceles triangle, or a right-angled triangle, or a cyclic quadrilateral, or a polygon with congruent sides?\n\n\n\nErd\\H{o}s and Mauldin (unpublished) claim that this is true for trapezoids in general, but fails for parallelograms (a construction showing this fails for parallelograms was provided by Kova\\v{c}) \\cite{Ko23}.\n\nKova\\v{c} and Predojevi\\'{c} \\cite{KoPr24} have proved that this is true for cyclic quadrilaterals - that is, every set with infinite measure contains four distinct points on a circle such that the quadrilateral determined by these four points has area $1$. They also prove that there exists a set of infinite measure such that every convex polygon with congruent sides and all vertices in the set has area $<1$.\n\nKoizumi \\cite{Ko25} has resolved this question, proving that any set with infinite measure must contain the vertices of an isosceles trapezoid, an isosceles triangle, and a right-angled triangle, all of area $1$.\n\n\n\n\nReferences\n\n\n[Ko23] Kova\\vC, V., Coloring and density theorems for configurations of a given volume. arXiv:2309.09973 (2023).\n\n[Ko25] J. Koizumi, Isosceles trapezoids of unit area with vertices in sets of infinite planar measure. arXiv:2501.01914 (2025).\n\n[KoPr24] Kova\\vC, V. and B. Predojevi\\'C, Polygons of unit area with vertices in sets of infinite planar measure. arXiv:2412.11725 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #353**\n\nThis problem explores what geometric configurations must appear in sets of infinite measure in the plane.\n\n**Key History:**\n- Erdős-Mauldin (unpublished): Claimed true for trapezoids\n- Kovač (2023): Proved trapezoids work; showed parallelograms can fail\n- Kovač-Predojević (2024): Proved cyclic quadrilaterals; congruent sides counterexample\n- Koizumi (2025): Complete resolution for isosceles trapezoids, triangles, and right triangles\n\n**Mathematical Setting:**\nThe problem connects geometric measure theory with combinatorial geometry. Infinite measure ensures sufficient point density to guarantee configurations.",
+    "problemStatement": "**Problem Statement**\n\nLet $A \\subseteq \\mathbb{R}^2$ be a measurable set with infinite Lebesgue measure.\n\nMust $A$ contain the vertices of:\n1. An isosceles trapezoid of area 1?\n2. An isosceles triangle of area 1?\n3. A right-angled triangle of area 1?\n4. A cyclic quadrilateral of area 1?\n5. A polygon with congruent sides of area 1?\n\n**Answers:**\n- Isosceles trapezoid: **YES** (Koizumi 2025)\n- Isosceles triangle: **YES** (Koizumi 2025)\n- Right-angled triangle: **YES** (Koizumi 2025)\n- Cyclic quadrilateral: **YES** (Kovač-Predojević 2024)\n- Parallelogram: **NO** (Kovač 2023)\n- Congruent-sided polygon: **NOT ALWAYS** (Kovač-Predojević 2024)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Measure Setup:** Define HasInfiniteMeasure using Lebesgue measure\n\n2. **Geometric Predicates:** Define triangleArea, quadrilateralArea, and shape predicates\n\n3. **Configuration Existence:** Predicates for shapes with vertices in A of given area\n\n4. **Main Theorems:** State Koizumi's results as axioms\n\n5. **Counterexamples:** Kovač's parallelogram and congruent sides results\n\n6. **Scaling:** Show area can be any positive value, not just 1",
+    "keyInsights": [
+      "**Infinite Measure is Key:** Ensures enough points exist to form configurations",
+      "**Parallelograms are Special:** Two parallel pairs give more constraints than one",
+      "**Trapezoids Work:** One parallel pair is weak enough to guarantee existence",
+      "**Density Argument:** Infinite measure implies positive density in many regions",
+      "**Recent Resolution:** All main questions answered in 2023-2025"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "HasInfiniteMeasure, triangleArea, quadrilateralArea",
+      "startLine": 40,
+      "endLine": 67
+    },
+    {
+      "id": "geometric-configurations",
+      "title": "Geometric Configurations",
+      "summary": "Isosceles triangle, right triangle, trapezoid, parallelogram, cyclic quadrilateral",
+      "startLine": 69,
+      "endLine": 129
+    },
+    {
+      "id": "existence-predicates",
+      "title": "Configuration Existence",
+      "summary": "HasTriangleWithArea and related predicates",
+      "startLine": 131,
+      "endLine": 184
+    },
+    {
+      "id": "koizumi",
+      "title": "Koizumi's Theorems (2025)",
+      "summary": "Isosceles trapezoid, triangle, and right triangle existence",
+      "startLine": 186,
+      "endLine": 215
+    },
+    {
+      "id": "kovac",
+      "title": "Kovač Results (2023-2024)",
+      "summary": "Trapezoids, parallelogram counterexample, cyclic quadrilaterals",
+      "startLine": 217,
+      "endLine": 254
+    },
+    {
+      "id": "congruent-sides",
+      "title": "Congruent Sides Result",
+      "summary": "Counterexample for congruent-sided polygons",
+      "startLine": 256,
+      "endLine": 272
+    },
+    {
+      "id": "infinite-measure",
+      "title": "Why Infinite Measure Matters",
+      "summary": "Finite measure fails; density arguments",
+      "startLine": 274,
+      "endLine": 293
+    },
+    {
+      "id": "scaling",
+      "title": "Scaling Properties",
+      "summary": "Configurations of any positive area exist",
+      "startLine": 295,
+      "endLine": 318
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "Erdős distance problem, Ramsey theory",
+      "startLine": 320,
+      "endLine": 336
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main results and status theorem",
+      "startLine": 338,
+      "endLine": 393
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #353 asks about geometric configurations in sets of infinite measure. Koizumi (2025) proved that isosceles trapezoids, isosceles triangles, and right triangles of area 1 must exist. Kovač showed parallelograms can fail, revealing a fundamental distinction.",
+    "implications": "**Mathematical Connections**\n\n1. **Geometric Measure Theory:** Lebesgue measure and density properties\n\n2. **Combinatorial Geometry:** Configuration existence in point sets\n\n3. **Erdős Distance Problem:** Related questions about point configurations\n\n4. **Ramsey Theory:** Large sets contain structured subsets\n\n5. **Discrete Geometry:** Unit area problems and geometric density",
+    "openQuestions": [
+      "Characterize all shapes that must appear in infinite measure sets",
+      "What is the minimum measure needed to guarantee a given configuration?",
+      "Extension to higher dimensions",
+      "Quantitative bounds on configuration density"
+    ]
   }
 }
