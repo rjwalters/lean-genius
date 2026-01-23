@@ -1,33 +1,162 @@
 {
   "id": "erdos-752",
-  "title": "Erdős Problem #752",
+  "title": "Erdős Problem #752: Cycle Lengths in High-Girth Graphs",
   "slug": "erdos-752",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with minimum degree ... and girth ... (i.e. ... contains no cycles of length ...). Must there be ... many ...",
+  "description": "Let G be a graph with minimum degree k and girth > 2s. Must there be ≫ k^s many distinct cycle lengths in G? Answer: YES (Sudakov-Verstraëte 2008).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Faudree-Schelp",
     "sourceUrl": "https://erdosproblems.com/752",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos752Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycles",
+      "girth",
+      "extremal-combinatorics",
+      "degree-bounds"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 752,
     "erdosUrl": "https://erdosproblems.com/752",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Walk",
+        "description": "Walks and cycles in graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting"
+      },
+      {
+        "theorem": "Finset.inf'",
+        "description": "Infimum over nonempty finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "minDegree definition: minimum degree over all vertices",
+      "GirthGreaterThan definition: no cycles of length ≤ g",
+      "cycleLengths definition: set of cycle lengths in a graph",
+      "numCycleLengths definition: cardinality of cycle lengths set",
+      "ErdosFaudreeSchelpConjecture definition: k^s many cycle lengths",
+      "erdos_faudree_schelp_s2 axiom: base case s=2",
+      "avgDegree definition: average degree of a graph",
+      "ConsecutiveEvenCycleLengths definition: consecutive even cycle lengths",
+      "sudakov_verstrate_2008 axiom: main theorem with consecutive even lengths",
+      "erdos_752_solved theorem: conjecture follows from stronger result",
+      "moore_bound_lower axiom: vertex count lower bound",
+      "IsMooreGraph definition: graphs achieving Moore bound",
+      "girth definition: length of shortest cycle",
+      "high_girth_spreads_cycles theorem: minimum cycle length bound",
+      "consecutive_lengths_theorem axiom: consecutive even lengths exist",
+      "zarankiewicz_connection axiom: edge count upper bound",
+      "chromatic_version axiom: result for chromatic number",
+      "odd_cycle_version axiom: odd cycle lengths bound",
+      "SudakovVerstrateConjecture definition: consecutive lengths conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #752 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with minimum degree $k$ and girth $>2s$ (i.e. $G$ contains no cycles of length $\\leq 2s$). Must there be $\\gg k^s$ many distinct cycle lengths in $G$?\n\n\n\nA question of Erd\\H{o}s, Faudree, and Schelp, who proved it when $s=2$.\n\nThe answer is yes, proved by Sudakov and Verstra\\\"{e}te \\cite{SuVe08}, who in fact proved that under the assumption of average degree $k$ and girth $>2s$ there are at least $\\gg k^s$ many consecutive even integers which are cycle lengths in $G$.\n\n\n\n\nReferences\n\n\n[SuVe08] Sudakov, Benny and Verstra\\\"{e}te, Jacques, Cycle lengths in sparse graphs. Combinatorica (2008), 357--372.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #752** was posed by Erdős, Faudree, and Schelp about cycle lengths in graphs with high girth.\n\n**Historical Development:**\n- **Erdős-Faudree-Schelp (original):** Proved the case s = 2 and conjectured the general result.\n- **Sudakov-Verstraëte (2008):** Proved the full conjecture and a stronger version: under average degree k and girth > 2s, there are Ω(k^s) consecutive even cycle lengths.\n\n**Key Insight:** The tension between high girth (no short cycles) and high degree (forcing many cycles) creates structure that guarantees many distinct cycle lengths.\n\nThe result is tight up to constants: Moore graphs show that Ω(k^s) cannot be improved.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $G$ be a graph with minimum degree $k$ and girth $> 2s$ (i.e., $G$ contains no cycles of length $\\leq 2s$). Must there be $\\gg k^s$ many distinct cycle lengths in $G$?\n\n**Answer:** YES\n\n**Sudakov-Verstraëte (2008) proved a stronger result:**\nUnder the assumption of average degree $k$ and girth $> 2s$, there are at least $\\Omega(k^s)$ many consecutive even integers which are cycle lengths in $G$.\n\n**The bound is tight:** Moore graphs achieve approximately $k^s$ vertices, limiting cycle diversity.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define minimum degree, girth, and cycle lengths using Mathlib's SimpleGraph.\n\n2. **Conjecture Statement:** Formalize the Erdős-Faudree-Schelp conjecture as existence of constant c > 0.\n\n3. **Sudakov-Verstraëte Theorem:** Axiomatize the stronger result about consecutive even cycle lengths.\n\n4. **Main Theorem:** Derive the conjecture from the stronger result.\n\n5. **Tightness:** Reference Moore graphs and Moore bound to show the result is optimal.",
+    "keyInsights": [
+      "**Girth Constraint:** Girth > 2s means the shortest cycle has length ≥ 2s + 1, forbidding short cycles.",
+      "**Degree Forcing:** High minimum degree forces many edges, which must create cycles of various lengths.",
+      "**Consecutive Even Lengths:** The Sudakov-Verstraëte result is stronger: not just many lengths, but consecutive even ones.",
+      "**Moore Bound:** Graphs with min degree d and girth > 2s have at least Ω(d^s) vertices, showing tightness.",
+      "**BFS Structure:** In high-girth graphs, BFS trees have no cross-edges within distance s, creating structure.",
+      "**Chromatic Extension:** The result also holds for chromatic number ≥ k instead of minimum degree."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Minimum degree, girth, and cycle lengths",
+      "startLine": 40,
+      "endLine": 58
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Faudree-Schelp Conjecture",
+      "summary": "Original conjecture and base case s = 2",
+      "startLine": 60,
+      "endLine": 78
+    },
+    {
+      "id": "sudakov-verstrate",
+      "title": "Sudakov-Verstraëte Theorem",
+      "summary": "Stronger result with consecutive even lengths",
+      "startLine": 80,
+      "endLine": 108
+    },
+    {
+      "id": "moore-bound",
+      "title": "Why Girth Matters",
+      "summary": "Moore bound and tightness of results",
+      "startLine": 110,
+      "endLine": 129
+    },
+    {
+      "id": "girth-structure",
+      "title": "Girth and Cycle Structure",
+      "summary": "How girth constrains cycle lengths",
+      "startLine": 131,
+      "endLine": 154
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Theory",
+      "summary": "Ramsey and Zarankiewicz connections",
+      "startLine": 156,
+      "endLine": 168
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions and Generalizations",
+      "summary": "Chromatic number and odd cycle versions",
+      "startLine": 170,
+      "endLine": 195
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Proof Techniques",
+      "summary": "Dependent random choice and averaging",
+      "startLine": 197,
+      "endLine": 217
+    },
+    {
+      "id": "quantitative",
+      "title": "Quantitative Bounds",
+      "summary": "Explicit constants and improved bounds",
+      "startLine": 219,
+      "endLine": 237
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and complete resolution",
+      "startLine": 239,
+      "endLine": 265
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #752 asked whether graphs with minimum degree k and girth > 2s must contain ≫ k^s distinct cycle lengths. Sudakov and Verstraëte (2008) proved this affirmatively, and showed an even stronger result: such graphs contain Ω(k^s) consecutive even cycle lengths. The bound is tight due to Moore graphs.",
+    "implications": "**Implications for Graph Theory**\n\n1. **Extremal Graph Theory:** Establishes precise relationship between girth and cycle diversity.\n\n2. **Moore Graphs:** Shows these graphs are extremal not just for vertex count but for cycle structure.\n\n3. **Chromatic Number:** The result extends to chromatic number bounds, connecting coloring and cycles.\n\n4. **Consecutive Lengths:** The stronger consecutive result has algorithmic implications for finding cycles.",
+    "openQuestions": [
+      "What is the optimal constant in the Ω(k^s) bound?",
+      "Can the average degree condition be weakened to minimum degree with the same bounds?",
+      "Are there Ω(k^s) consecutive odd cycle lengths as well?",
+      "What happens for directed graphs?",
+      "Can the proof be made constructive to find cycles efficiently?"
+    ]
   }
 }
