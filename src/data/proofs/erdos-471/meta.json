@@ -1,33 +1,109 @@
 {
   "id": "erdos-471",
-  "title": "Erdős Problem #471",
+  "title": "Erdős Problem #471: Ulam's Prime Sequence Problem",
   "slug": "erdos-471",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven a finite set of primes ..., define a sequence of sets ... by letting ... be ... together with all primes formed by addi...",
+  "description": "Given a finite set of primes Q₀, define Qᵢ₊₁ = Qᵢ ∪ {primes that are sums of 3 distinct elements of Qᵢ}. Does there exist Q₀ such that Qᵢ becomes arbitrarily large?",
   "meta": {
-    "author": "Unknown",
+    "author": "Ulam, Erdős",
     "sourceUrl": "https://erdosproblems.com/471",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos471Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-numbers",
+      "additive-number-theory",
+      "Vinogradov"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 471,
     "erdosUrl": "https://erdosproblems.com/471",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #471 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven a finite set of primes $Q=Q_0$, define a sequence of sets $Q_i$ by letting $Q_{i+1}$ be $Q_i$ together with all primes formed by adding three distinct elements of $Q_i$. Is there some initial choice of $Q$ such that the $Q_i$ become arbitrarily large?\n\n\n\nA problem of Ulam. In particular, what about $Q=\\{3,5,7,11\\}$?\n\nMrazovi\\'{c} and Kova\\v{c}, and independently Alon, have observed that the existence of some valid choice of $Q$ follows easily from Vinogradov's theorem that every large odd integer is the sum of three distinct primes. In particular, there exists some $N$ such that every prime $>N$ is the sum of three distinct (smaller) primes. We may then take $Q_0$ to be the set of all primes $\\leq N$ (in which case all primes are eventually in some $Q_i$).\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Ulam and appears in Erdős-Graham (1980). The connection to Vinogradov's theorem was observed by Mrazović-Kovač and independently by Alon, resolving the problem affirmatively.",
+    "problemStatement": "Given a finite set of primes Q₀, define a sequence Qᵢ where Qᵢ₊₁ consists of Qᵢ plus all primes that are sums of three distinct elements of Qᵢ. Is there an initial Q₀ such that the sequence grows without bound?\n\nAnswer: YES. Taking Q₀ = {primes ≤ N} for Vinogradov's constant N ensures all primes appear.",
+    "proofStrategy": "By Vinogradov's theorem, every sufficiently large odd integer is the sum of three primes. This means every large prime can be written as a sum of three smaller primes. Starting with Q₀ containing all primes up to Vinogradov's threshold ensures all larger primes are eventually added.",
+    "keyInsights": [
+      "Vinogradov's theorem provides the key: large primes are sums of three smaller primes",
+      "Taking Q₀ = {primes ≤ N} for large N ensures all primes eventually appear",
+      "The sequence is monotone: Qᵢ ⊆ Qᵢ₊₁",
+      "The special case Q₀ = {3,5,7,11} likely also works (computational question)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 38,
+      "endLine": 72,
+      "summary": "The Q-closure operation and sequence Qᵢ."
+    },
+    {
+      "id": "question",
+      "title": "The Question",
+      "startLine": 74,
+      "endLine": 92,
+      "summary": "Ulam's question and its stronger form about all primes."
+    },
+    {
+      "id": "vinogradov",
+      "title": "Vinogradov's Theorem",
+      "startLine": 94,
+      "endLine": 127,
+      "summary": "The three primes theorem and its variants for distinct/smaller primes."
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "startLine": 129,
+      "endLine": 186,
+      "summary": "Construction of Q₀ from Vinogradov's constant and the main theorem."
+    },
+    {
+      "id": "special-case",
+      "title": "Special Case Q = {3,5,7,11}",
+      "startLine": 188,
+      "endLine": 235,
+      "summary": "Ulam's original example and verification that 19, 23 appear in Q₁."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of the Sequence",
+      "startLine": 237,
+      "endLine": 264,
+      "summary": "Monotonicity and prime-only membership of Qᵢ."
+    },
+    {
+      "id": "vinogradov-proof",
+      "title": "Why Vinogradov Works",
+      "startLine": 266,
+      "endLine": 287,
+      "summary": "The inductive argument showing all primes appear."
+    },
+    {
+      "id": "growth",
+      "title": "Growth Rate",
+      "startLine": 289,
+      "endLine": 312,
+      "summary": "Heuristics about how fast |Qᵢ| grows."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 314,
+      "endLine": 346,
+      "summary": "Complete summary of the SOLVED problem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #471 is SOLVED affirmatively. Vinogradov's theorem ensures that starting with Q₀ = {primes ≤ N} for suitable N, all primes eventually appear in the sequence Qᵢ, so the sequence grows without bound.",
+    "implications": "This connects a simple iterative process on prime sets to deep results in analytic number theory. The resolution shows that additive structure among primes is rich enough to generate all primes from a finite seed.",
+    "openQuestions": [
+      "Does Q₀ = {3,5,7,11} generate all odd primes?",
+      "How fast does |Qᵢ| grow as a function of i?",
+      "What is the smallest Q₀ that generates all primes?"
+    ]
   }
 }
