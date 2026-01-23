@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-992-seq",
+    "proofId": "erdos-992",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "StrictlyIncreasingSeq",
+    "content": "Infinite sequence with x(n) < x(n+1) for all n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-992-frac",
+    "proofId": "erdos-992",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Fractional Part",
+    "content": "frac(t) = t - floor(t), always in [0,1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-992-count",
+    "proofId": "erdos-992",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "definition",
+    "title": "countInInterval",
+    "content": "Count n <= N with {alpha*x_n} in [a,b).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-992-discrepancy",
+    "proofId": "erdos-992",
+    "range": { "startLine": 68, "endLine": 73 },
+    "type": "definition",
+    "title": "Discrepancy",
+    "content": "D(N) = max over I of |count - |I|*N|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-992-koksma",
+    "proofId": "erdos-992",
+    "range": { "startLine": 79, "endLine": 85 },
+    "type": "theorem",
+    "title": "Erdos-Koksma-Cassels",
+    "content": "D(N) << sqrt(N)*(log N)^{5/2} for almost all alpha (1949-50).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-992-baker",
+    "proofId": "erdos-992",
+    "range": { "startLine": 87, "endLine": 92 },
+    "type": "theorem",
+    "title": "Baker 1981",
+    "content": "D(N) << sqrt(N)*(log N)^{3/2} for almost all alpha.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-992-lacunary",
+    "proofId": "erdos-992",
+    "range": { "startLine": 98, "endLine": 107 },
+    "type": "theorem",
+    "title": "Lacunary Bound",
+    "content": "For lacunary x_n, D(N) << sqrt(N)*(log log N)^k (Erdos-Gal).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-992-conj1",
+    "proofId": "erdos-992",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "definition",
+    "title": "Subpolynomial Conjecture",
+    "content": "D(N) << sqrt(N)*(log N)^{o(1)} for all sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-992-conj2",
+    "proofId": "erdos-992",
+    "range": { "startLine": 121, "endLine": 127 },
+    "type": "definition",
+    "title": "Loglog Conjecture",
+    "content": "D(N) << sqrt(N)*(log log N)^{O(1)} for all sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-992-lower",
+    "proofId": "erdos-992",
+    "range": { "startLine": 136, "endLine": 141 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "sqrt(N) is necessary - cannot do better.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-992-weyl",
+    "proofId": "erdos-992",
+    "range": { "startLine": 150, "endLine": 160 },
+    "type": "definition",
+    "title": "Weyl Criterion",
+    "content": "Equidistribution iff exponential sums vanish.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-992-natural",
+    "proofId": "erdos-992",
+    "range": { "startLine": 166, "endLine": 169 },
+    "type": "example",
+    "title": "Natural Numbers",
+    "content": "x_n = n, strictly increasing sequence.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-992-powers",
+    "proofId": "erdos-992",
+    "range": { "startLine": 171, "endLine": 181 },
+    "type": "example",
+    "title": "Powers of 2",
+    "content": "x_n = 2^n, lacunary with lambda = 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-992-sqrt",
+    "proofId": "erdos-992",
+    "range": { "startLine": 183, "endLine": 184 },
+    "type": "example",
+    "title": "Numerical Example",
+    "content": "sqrt(1000000) = 1000 for bound scale.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-992-main",
+    "proofId": "erdos-992",
+    "range": { "startLine": 238, "endLine": 255 },
+    "type": "theorem",
+    "title": "Main Statement",
+    "content": "Baker bound + lacunary bound + open status.",
+    "significance": "critical"
+  }
+]
