@@ -15,14 +15,50 @@
       "ramsey-theory",
       "trees"
     ],
-    "badge": "wip",
-    "sorries": 12,
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Simple graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Clique",
+        "description": "Clique definitions for Ramsey theory",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Fintype.Basic",
+        "description": "Finite types for vertex sets",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsTree and IsPath definitions",
+      "CompleteMultipartite structure with sorted parts",
+      "completeGraphAsMultipartite and completeBipartite constructors",
+      "ramseyNumber definition via Nat.find",
+      "ramsey_exists axiom (Ramsey's theorem)",
+      "chvatal axiom (1977 exact result)",
+      "chvatal_upper and chvatal_lower corollaries",
+      "Chvátal formula computational examples (proved)",
+      "ConjecturedBound definition",
+      "ErdosConjecture formalization",
+      "bipartite_case, path_complete axioms",
+      "BurrConjecture definition and axiom",
+      "maxDegree, turanNumber definitions",
+      "probabilistic_lower, tree_embedding_lower axioms",
+      "RamseyExtremalGraph definition",
+      "asymptotic_behavior axiom"
+    ],
     "erdosNumber": 550,
     "erdosUrl": "https://erdosproblems.com/550",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem extends Chvátal's 1977 exact result R(T,Kₘ) = (m-1)(n-1)+1 to complete multipartite graphs. The conjecture proposes a recursive bound using the chromatic number χ(G) = k and the bipartite Ramsey number R(T,K_{m₁,m₂}). It appears as #16 in the Ramsey Theory problems collection.",
+    "historicalContext": "**Chvátal's Breakthrough (1977)**\\n\\nVáclav Chvátal proved one of the most elegant exact results in Ramsey theory: R(T, Kₘ) = (m-1)(n-1) + 1 for ANY tree T on n vertices. Unlike most Ramsey numbers which have only asymptotic bounds, this gives an exact closed formula. The proof uses a beautiful induction on tree structure.\\n\\n**Erdős's Generalization**\\n\\nErdős asked (Problem #550, circa 1985): can Chvátal's result extend to complete multipartite graphs? If G = K_{m₁,...,mₖ}, he conjectured R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1) + m₁. This bound is recursive—it uses the bipartite Ramsey number as a building block.\\n\\n**The Problem's Status**\\n\\nDespite partial progress on special cases (bounded-degree trees, paths, stars), the general conjecture remains OPEN. The difficulty lies in handling arbitrary multipartite structures beyond the bipartite case.\\n\\n**Related Results**\\n\\nBurr's conjecture (now proved) established linear bounds R(T, K₃) ≤ C·n for bounded-degree trees. The Gerencsér-Gyárfás theorem gives exact path-vs-path Ramsey numbers. These special cases inform but don't resolve the general problem.",
     "problemStatement": "Let m₁ ≤ ⋯ ≤ mₖ and n be sufficiently large. If T is a tree on n vertices and G is the complete multipartite graph K_{m₁,...,mₖ}, prove that R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁.",
     "proofStrategy": "We formalize trees, complete multipartite graphs, Ramsey numbers, Chvátal's theorem, the main conjecture, special cases (paths, stars, bounded degree), probabilistic lower bounds, extremal constructions, and asymptotic behavior.",
     "keyInsights": [
