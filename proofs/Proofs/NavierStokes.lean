@@ -299,16 +299,56 @@ theorem backward_growth_rate (v : AncientSolution) (τ : ℝ) (hτ : τ ≥ 0) :
     _ = 2 * (spectralGap - v.C_S) * v.E τ := by ring
 
 
-/-- **Axiom: Ancient E Monotone**
-    E is monotone increasing in backward time since dE/dτ ≥ 2(spectralGap - C_S)E ≥ 0.
-    Requires Convex.monotoneOn_of_deriv_nonneg (Mathlib API may have changed). -/
-axiom ancient_E_monotone_axiom (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0 ≤ τ₁) (h12 : τ₁ ≤ τ₂) :
-    v.E τ₁ ≤ v.E τ₂
+/-- The derivative of E is nonnegative on (0, ∞).
+    This follows from E' = 2D - 2S ≥ 2(spectralGap - C_S)E ≥ 0. -/
+theorem ancient_E_deriv_nonneg (v : AncientSolution) (τ : ℝ) (hτ : τ > 0) :
+    deriv v.E τ ≥ 0 := by
+  have h_deriv : HasDerivAt v.E (2 * v.D τ - 2 * v.S τ) τ := v.E_diff τ (le_of_lt hτ)
+  rw [h_deriv.deriv]
+  have h_spec := v.spectral_gap τ (le_of_lt hτ)
+  have h_stretch := v.stretching_bound τ (le_of_lt hτ)
+  have hE_pos := v.E_pos τ (le_of_lt hτ)
+  have h_gap : spectralGap - v.C_S > 0 := by linarith [v.C_S_lt_spectralGap]
+  calc 2 * v.D τ - 2 * v.S τ
+      ≥ 2 * (spectralGap * v.E τ) - 2 * (v.C_S * v.E τ) := by nlinarith
+    _ = 2 * (spectralGap - v.C_S) * v.E τ := by ring
+    _ ≥ 0 := by nlinarith [mul_pos h_gap hE_pos]
 
-/-- Key lemma: E is monotone increasing in backward time -/
+/-- E is differentiable on (0, ∞). -/
+theorem ancient_E_differentiable_Ioi (v : AncientSolution) :
+    DifferentiableOn ℝ v.E (Set.Ioi 0) := by
+  intro τ hτ
+  have h := v.E_diff τ (le_of_lt (Set.mem_Ioi.mp hτ))
+  exact h.differentiableAt.differentiableWithinAt
+
+/-- E is monotone on [0, ∞).
+    Uses `monotoneOn_of_deriv_nonneg` from Mathlib. -/
+theorem ancient_E_monotone_Ici (v : AncientSolution) : MonotoneOn v.E (Set.Ici 0) := by
+  apply monotoneOn_of_deriv_nonneg
+  · exact convex_Ici 0
+  · exact v.E_cont.continuousOn
+  · convert ancient_E_differentiable_Ioi v using 1
+    exact interior_Ici (a := (0:ℝ))
+  · rw [interior_Ici (a := (0:ℝ))]
+    intro τ hτ
+    exact ancient_E_deriv_nonneg v τ hτ
+
+/-- **PROVEN: Ancient E Monotone**
+    E is monotone increasing in backward time since dE/dτ ≥ 2(spectralGap - C_S)E ≥ 0.
+
+    This was previously an axiom. Now proven using:
+    - E' = 2D - 2S ≥ 2(spectralGap - C_S)E ≥ 0
+    - `monotoneOn_of_deriv_nonneg` from Mathlib.Analysis.Calculus.MeanValue
+
+    The argument: E is continuous on [0,∞), differentiable on (0,∞),
+    and E' ≥ 0 on (0,∞), therefore E is monotone on [0,∞). -/
 theorem ancient_E_monotone (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0 ≤ τ₁) (h12 : τ₁ ≤ τ₂) :
-    v.E τ₁ ≤ v.E τ₂ :=
-  ancient_E_monotone_axiom v τ₁ τ₂ hτ₁ h12
+    v.E τ₁ ≤ v.E τ₂ := by
+  have h_mono := ancient_E_monotone_Ici v
+  apply h_mono
+  · exact hτ₁
+  · exact le_trans hτ₁ h12
+  · exact h12
 
 
 /-- **Axiom: Liouville Bounded Ancient**
