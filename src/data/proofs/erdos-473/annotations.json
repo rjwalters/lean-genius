@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "header-comment",
+    "proofId": "erdos-473",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 30 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #473 asks for a permutation of positive integers where consecutive sums are always prime. SOLVED by Odlyzko. The greedy algorithm works but misses some primes (like 197) as sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "is-permutation",
+    "proofId": "erdos-473",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 50 },
+    "title": "Permutation of Positive Integers",
+    "content": "A bijection from ℕ+ to ℕ+. The sequence must include every positive integer exactly once.",
+    "significance": "key"
+  },
+  {
+    "id": "prime-sum-property",
+    "proofId": "erdos-473",
+    "type": "definition",
+    "range": { "startLine": 52, "endLine": 57 },
+    "title": "Prime Sum Property",
+    "content": "Every consecutive sum a_k + a_{k+1} is prime. This is the main constraint on the permutation.",
+    "significance": "critical"
+  },
+  {
+    "id": "segal-question",
+    "proofId": "erdos-473",
+    "type": "concept",
+    "range": { "startLine": 70, "endLine": 75 },
+    "title": "Segal's Question",
+    "content": "The main question: does there exist a permutation of positive integers with all consecutive sums prime?",
+    "significance": "critical"
+  },
+  {
+    "id": "odlyzko-theorem",
+    "proofId": "erdos-473",
+    "type": "theorem",
+    "range": { "startLine": 77, "endLine": 81 },
+    "title": "Odlyzko's Theorem",
+    "content": "There exists such a permutation. The answer to Segal's question is YES. Odlyzko's proof is unpublished.",
+    "significance": "critical"
+  },
+  {
+    "id": "greedy-seq",
+    "proofId": "erdos-473",
+    "type": "definition",
+    "range": { "startLine": 87, "endLine": 105 },
+    "title": "Greedy Sequence",
+    "content": "The greedy algorithm: a₁ = 1, a_{n+1} = min{x : a_n + x is prime and x not used}. Always produces prime sums by construction.",
+    "significance": "key"
+  },
+  {
+    "id": "greedy-prime-sums",
+    "proofId": "erdos-473",
+    "type": "theorem",
+    "range": { "startLine": 107, "endLine": 110 },
+    "title": "Greedy Has Prime Sums",
+    "content": "The greedy sequence satisfies the prime sum property by construction - each next element is chosen specifically to make the sum prime.",
+    "significance": "key"
+  },
+  {
+    "id": "greedy-covers-open",
+    "proofId": "erdos-473",
+    "type": "concept",
+    "range": { "startLine": 112, "endLine": 120 },
+    "title": "Greedy Coverage (OPEN)",
+    "content": "Does the greedy sequence include every positive integer? This remains an open question.",
+    "significance": "key"
+  },
+  {
+    "id": "van-doorn-197",
+    "proofId": "erdos-473",
+    "type": "theorem",
+    "range": { "startLine": 122, "endLine": 128 },
+    "title": "Van Doorn's Observation",
+    "content": "The prime 197 never appears as a consecutive sum in the greedy sequence. Not all primes appear as sums.",
+    "significance": "key"
+  },
+  {
+    "id": "finite-version",
+    "proofId": "erdos-473",
+    "type": "definition",
+    "range": { "startLine": 134, "endLine": 148 },
+    "title": "Finite Version",
+    "content": "For n ≥ 2, can {1,...,n} be arranged so consecutive sums are prime? Likely true for all n, confirmed for infinitely many.",
+    "significance": "key"
+  },
+  {
+    "id": "prime-sum-graph",
+    "proofId": "erdos-473",
+    "type": "definition",
+    "range": { "startLine": 161, "endLine": 170 },
+    "title": "Prime Sum Graph",
+    "content": "The graph where vertices are positive integers and edges connect i,j when i+j is prime. The problem asks for a Hamilton path in this graph.",
+    "significance": "key"
+  },
+  {
+    "id": "parity-constraint",
+    "proofId": "erdos-473",
+    "type": "theorem",
+    "range": { "startLine": 193, "endLine": 204 },
+    "title": "Parity Constraint",
+    "content": "For a + b to be an odd prime (> 2), exactly one of a, b must be even. This constrains the permutation structure significantly.",
+    "significance": "supporting"
+  },
+  {
+    "id": "greedy-initial",
+    "proofId": "erdos-473",
+    "type": "theorem",
+    "range": { "startLine": 222, "endLine": 232 },
+    "title": "Greedy Initial Values",
+    "content": "The greedy sequence begins: 1, 2, 3, 4, 7, 6, 5, 8, 9, ... with consecutive sums 3, 5, 7, 11, 13, 11, 13, 17, ...",
+    "significance": "supporting"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "erdos-473",
+    "type": "theorem",
+    "range": { "startLine": 255, "endLine": 271 },
+    "title": "Main Result",
+    "content": "erdos_473_main: Existence of prime sum permutation (Odlyzko), greedy has prime sums, 197 missing from greedy, finite version true infinitely often.",
+    "significance": "critical"
+  }
+]

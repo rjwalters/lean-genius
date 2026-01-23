@@ -1,33 +1,131 @@
 {
   "id": "erdos-473",
-  "title": "Erdős Problem #473",
+  "title": "Erdős Problem #473: Prime Sum Permutations",
   "slug": "erdos-473",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a permutation ... of the positive integers such that ... is always prime?\n\n\n\nAsked by Segal. The answer is yes, as s...",
+  "description": "Is there a permutation a₁, a₂, ... of positive integers such that a_k + a_{k+1} is always prime? SOLVED: YES (Odlyzko). Related: greedy algorithm doesn't produce all primes as sums (197 missing).",
   "meta": {
-    "author": "Unknown",
+    "author": "Segal (question), Odlyzko (solution)",
     "sourceUrl": "https://erdosproblems.com/473",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos473Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "permutations",
+      "additive-combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 473,
     "erdosUrl": "https://erdosproblems.com/473",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Function.Bijective",
+        "description": "Bijection predicate for permutations",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsPermutation definition for sequences",
+      "HasPrimeSumProperty definition",
+      "IsPrimeSumPermutation combining both",
+      "segalQuestion formal statement",
+      "odlyzko_theorem axiom (existence)",
+      "greedySeq axiomatization",
+      "van_doorn_197 axiom (197 missing from greedy sums)",
+      "IsFinitePrimeSumPermutation for finite version",
+      "finite_version_true_infinitely_often axiom",
+      "primeSumGraph definition (Hamilton path interpretation)",
+      "parity_constraint axiom"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #473 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a permutation $a_1,a_2,\\ldots$ of the positive integers such that $a_k+a_{k+1}$ is always prime?\n\n\n\nAsked by Segal. The answer is yes, as shown by Odlyzko (although no reference is given).\n\nWatts has suggested that perhaps the obvious greedy algorithm defines such a permutation - that is, let $a_1=1$ and let\\[a_{n+1}=\\min \\{ x : a_n+x\\textrm{ is prime and }x\\neq a_i\\textrm{ for }i\\leq n\\}.\\]In other words, do all positive integers occur as some such $a_n$? Do all primes occur as a sum?\n\nIn the comments van Doorn has noted that the answer to the latter question is no, since $197$ does not appear as a sum from such a greedy sequence.\n\nIn \\cite{ErGr80} they also note that Segal asked the finite version: is there, for all $n\\geq 2$, a permutation $a_1,\\ldots,a_n$ of $\\{1,\\ldots,n\\}$ such that $a_k+a_{k+1}$ is prime for $1\\leq k<n$. The answer is likely yes on probabilistic grounds, and is true for infinitely many $n$ (see this discussion).\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #473: Prime Sum Permutations**\n\nThis problem was posed by Segal and appears in Erdős-Graham (1980). It asks whether the positive integers can be arranged so that consecutive sums are always prime.\n\n**Key Results:**\n- Odlyzko proved such a permutation exists (unpublished)\n- The greedy algorithm produces a prime-sum sequence but may not cover all integers\n- Van Doorn observed that 197 never appears as a sum in the greedy sequence\n- The finite version (for {1,...,n}) is true for infinitely many n",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs there a permutation a₁, a₂, ... of the positive integers such that a_k + a_{k+1} is always prime?\n\n**Answer:** YES (Odlyzko)\n\n**Related Questions:**\n1. Does the greedy algorithm cover all integers? OPEN\n2. Does every prime appear as a sum? NO (197 doesn't)\n3. Finite version for all n ≥ 2? Likely yes",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** IsPermutation, HasPrimeSumProperty, IsPrimeSumPermutation\n\n2. **Main Question:** segalQuestion = existence of prime sum permutation\n\n3. **Odlyzko's Theorem:** Axiomatize the existence result\n\n4. **Greedy Algorithm:** Define and axiomatize its properties\n\n5. **Van Doorn's Observation:** 197 never appears as greedy sum\n\n6. **Finite Version:** True for infinitely many n\n\n7. **Hamilton Path:** Interpret as path in prime-sum graph",
+    "keyInsights": [
+      "**Hamilton Path View:** The problem asks for a Hamilton path in the graph where vertices are positive integers and edges connect pairs summing to a prime",
+      "**Parity Constraint:** For sum > 2 to be prime (odd), exactly one summand must be even",
+      "**Greedy Not Optimal:** The greedy sequence misses some primes (like 197) as sums",
+      "**Finite Version:** Probabilistically expected to work for all n ≥ 2",
+      "**Goldbach Connection:** Related to which pairs of integers sum to primes"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsPermutation, HasPrimeSumProperty, IsPrimeSumPermutation",
+      "startLine": 41,
+      "endLine": 64
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "segalQuestion and odlyzko_theorem",
+      "startLine": 66,
+      "endLine": 81
+    },
+    {
+      "id": "greedy-algorithm",
+      "title": "The Greedy Algorithm",
+      "summary": "greedySeq definition and properties",
+      "startLine": 83,
+      "endLine": 128
+    },
+    {
+      "id": "finite-version",
+      "title": "Finite Version",
+      "summary": "IsFinitePrimeSumPermutation and infinite family",
+      "startLine": 130,
+      "endLine": 155
+    },
+    {
+      "id": "connections",
+      "title": "Connections and Generalizations",
+      "summary": "Hamilton path, Goldbach, generalizations",
+      "startLine": 157,
+      "endLine": 187
+    },
+    {
+      "id": "properties",
+      "title": "Properties",
+      "summary": "Parity constraint, density considerations",
+      "startLine": 189,
+      "endLine": 216
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_473_solved, erdos_473_main",
+      "startLine": 234,
+      "endLine": 271
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #473 is solved: there exists a permutation of positive integers with all consecutive sums prime (Odlyzko). The greedy algorithm produces such a sequence but may not cover all integers and misses some primes as sums (like 197).",
+    "implications": "**Combinatorial Number Theory Connections**\n\n1. **Graph Theory:** Hamilton path problem in infinite graphs\n\n2. **Additive Combinatorics:** Which pairs sum to primes?\n\n3. **Goldbach Conjecture:** Related structural questions about prime sums\n\n4. **Algorithmic:** Greedy algorithms on infinite structures",
+    "openQuestions": [
+      "Does the greedy algorithm cover all positive integers?",
+      "For which n does the finite version work?",
+      "What's the density of primes appearing as greedy sums?",
+      "Extensions to other arithmetic conditions on consecutive sums?"
+    ]
   }
 }
