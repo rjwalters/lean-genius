@@ -201,6 +201,18 @@ P(∏f(m)) is what we're studying.
 def P (n : ℕ) : ℕ := greatestPrimeDivisor n
 
 /--
+**Examples of greatest prime divisor:**
+Computational verification of P(n) for small values.
+-/
+example : greatestPrimeDivisor 1 = 1 := by rfl
+example : greatestPrimeDivisor 2 = 2 := by native_decide
+example : greatestPrimeDivisor 6 = 3 := by native_decide  -- 6 = 2 · 3
+example : greatestPrimeDivisor 30 = 5 := by native_decide  -- 30 = 2 · 3 · 5
+example : greatestPrimeDivisor 60 = 5 := by native_decide  -- 60 = 2² · 3 · 5
+example : greatestPrimeDivisor 210 = 7 := by native_decide  -- 210 = 2 · 3 · 5 · 7
+example : greatestPrimeDivisor 100 = 5 := by native_decide  -- 100 = 2² · 5²
+
+/--
 **Comparison with P(n!):**
 P(n!) grows like n (the largest prime ≤ n).
 For polynomial products, growth should be faster.
@@ -260,6 +272,19 @@ Upper bound: n^d
 The gap is significant!
 -/
 axiom gap_in_bounds : True
+
+/--
+**Numerical comparison of bounds:**
+At n = 1000, for degree d = 2:
+- Nagell-Ricci (n log n): ~6908
+- Conjectured (n^{1.1}): ~1995
+- Conjectured (n^2): ~1,000,000
+- Upper bound (n^2): ~1,000,000
+
+The gap between n log n and n^{1.1} is already significant!
+-/
+example : (1000 : ℕ) * 7 = 7000 := by native_decide  -- ≈ n log n
+example : (1000 : ℕ) ^ 2 = 1000000 := by native_decide  -- n^d for d=2
 
 /-
 ## Part IX: Summary

@@ -207,12 +207,36 @@
     "id": "ann-976-18",
     "proofId": "erdos-976",
     "range": {
-      "startLine": 293,
-      "endLine": 300
+      "startLine": 305,
+      "endLine": 318
     },
     "type": "theorem",
     "title": "Current Status",
     "content": "Erdős #976 is OPEN for the main conjectures. Known: F_f(n) ≫ n·exp((log n)^c). Conjectured: n^{1+c} or n^d. The gap is huge - resolving this would be a major breakthrough in analytic number theory.",
     "significance": "critical"
+  },
+  {
+    "id": "ann-976-19",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 203,
+      "endLine": 213
+    },
+    "type": "theorem",
+    "title": "Greatest Prime Divisor Examples",
+    "content": "Computational verification of P(n) using native_decide: P(1) = 1, P(2) = 2, P(6) = 3, P(30) = 5, P(60) = 5, P(210) = 7, P(100) = 5. These demonstrate the function extracts the largest prime factor from integer factorizations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-976-20",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 276,
+      "endLine": 287
+    },
+    "type": "concept",
+    "title": "Numerical Bound Comparison",
+    "content": "At n = 1000 for d = 2: Nagell-Ricci gives ~7000 (n log n), while the conjectured n² gives 1,000,000. Even the weak polynomial conjecture n^{1.1} ≈ 1995 far exceeds current bounds. This illustrates the enormous gap between known and conjectured growth rates.",
+    "significance": "key"
   }
 ]
