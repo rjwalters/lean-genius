@@ -1,34 +1,148 @@
 {
   "id": "erdos-220",
-  "title": "Erdős Problem #220",
+  "title": "Erdős Problem #220: Squared Gaps Between Reduced Residues",
   "slug": "erdos-220",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and\\[A=\\{a_1<\\cdots <a_{\\phi(n)}\\}=\\{ 1\\leq m<n : (m,n)=1\\}.\\]Is it true that\\[ \\sum_{1\\leq k<\\phi(n)}(a_{k+1}-a_k)^2...",
+  "description": "For reduced residues a₁ < ⋯ < a_{φ(n)} mod n, is ∑(a_{k+1}-a_k)² ≪ n²/φ(n)? Montgomery-Vaughan (1986) proved YES, with general bound for any power γ ≥ 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Montgomery-Vaughan (1986 resolution)",
     "sourceUrl": "https://erdosproblems.com/220",
-    "date": "",
-    "status": "pending",
+    "date": "1986",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos220Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "reduced-residues",
+      "totient",
+      "gaps",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 220,
     "erdosUrl": "https://erdosproblems.com/220",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sort",
+        "description": "Sorting finite sets",
+        "module": "Mathlib.Data.Finset.Sort"
+      }
+    ],
+    "originalContributions": [
+      "reducedResidues n: set {m : 1 ≤ m < n, gcd(m,n) = 1}",
+      "sortedResidues n: reduced residues in increasing order",
+      "gap n k: difference a_{k+1} - a_k",
+      "sumGapPowers n γ: ∑(gap)^γ",
+      "sumSquaredGaps n: γ = 2 case",
+      "boundedSquaredGaps n: n²/φ(n)",
+      "montgomery_vaughan_squared axiom: main result",
+      "montgomery_vaughan_general axiom: generalization",
+      "jacobsthal n: maximum gap function"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #220 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 1$ and\\[A=\\{a_1<\\cdots <a_{\\phi(n)}\\}=\\{ 1\\leq m<n : (m,n)=1\\}.\\]Is it true that\\[ \\sum_{1\\leq k<\\phi(n)}(a_{k+1}-a_k)^2 \\ll \\frac{n^2}{\\phi(n)}?\\]\n\n\n\nThe answer is yes, as proved by Montgomery and Vaughan \\cite{MoVa86}, who in fact proved that for any $\\gamma\\geq 1$\\[ \\sum_{1\\leq k<\\phi(n)}(a_{k+1}-a_k)^\\gamma \\ll \\frac{n^\\gamma}{\\phi(n)^{\\gamma-1}}.\\]This general form was also asked by Erd\\H{o}s in \\cite{Er73}.\n\nThis is discussed in problem B40 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[MoVa86] Montgomery, H. L. and Vaughan, R. C., On the distribution of reduced residues. Ann. of Math. (2) (1986), 311-333.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 ≤ m < n with gcd(m,n) = 1, and there are φ(n) of them.\n\n**Background:**\n- Average gap is n/φ(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erdős asked if squared gaps sum to O(n²/φ(n))\n\n**History:**\n- Erdős posed the problem; $500 prize\n- The general γ ≥ 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n²/φ(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet n ≥ 1 and A = {a₁ < a₂ < ⋯ < a_{φ(n)}} be the reduced residues mod n.\n\n**Conjecture:** ∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)² ≪ n²/φ(n)\n\n**Resolution:** Montgomery-Vaughan (1986) proved YES.\n\n**Generalization:** For any γ ≥ 1,\n∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)^γ ≪ n^γ/φ(n)^{γ-1}",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Reduced Residues:** Filter Finset.range n by coprimality\n\n2. **Gap Structure:** Sort residues, compute consecutive differences\n\n3. **Sum of Powers:** Define sumGapPowers for general γ\n\n4. **Main Results:** Montgomery-Vaughan theorems as axioms\n\n5. **Special Cases:** Prime n (all gaps 1), power of 2 (tight bound)\n\n**Why Axioms:** The proof uses deep sieve methods and analysis beyond Mathlib.",
+    "keyInsights": [
+      "**Average Gap:** With φ(n) residues in [1,n-1], average gap is n/φ(n).",
+      "**Variance Control:** The theorem says gap variance is controlled - squared sum ≤ C times \"all gaps equal\" case.",
+      "**Tight for 2^k:** When n = 2^k, all gaps are 2, and bound is exactly matched.",
+      "**Jacobsthal's Function:** Maximum gap g(n) is related to prime gaps after sieving.",
+      "**General Powers:** The γ ≥ 1 generalization shows all power sums are controlled similarly."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "residues",
+      "title": "Reduced Residues",
+      "summary": "Definition and properties of reduced residues",
+      "startLine": 43,
+      "endLine": 65
+    },
+    {
+      "id": "gaps",
+      "title": "Gap Definitions",
+      "summary": "Gaps between consecutive residues",
+      "startLine": 67,
+      "endLine": 77
+    },
+    {
+      "id": "sums",
+      "title": "Sum of Powers",
+      "summary": "Sum of γ-th powers of gaps",
+      "startLine": 79,
+      "endLine": 89
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "Statement of the squared gaps conjecture",
+      "startLine": 91,
+      "endLine": 109
+    },
+    {
+      "id": "montgomery-vaughan",
+      "title": "Montgomery-Vaughan Theorem",
+      "summary": "The 1986 resolution",
+      "startLine": 111,
+      "endLine": 131
+    },
+    {
+      "id": "analysis",
+      "title": "Average Gap Analysis",
+      "summary": "Why the bound is natural",
+      "startLine": 133,
+      "endLine": 155
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "summary": "Prime n, power of 2, primorials",
+      "startLine": 157,
+      "endLine": 179
+    },
+    {
+      "id": "jacobsthal",
+      "title": "Maximum Gap",
+      "summary": "Jacobsthal's function",
+      "startLine": 181,
+      "endLine": 197
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and resolution",
+      "startLine": 212,
+      "endLine": 239
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #220 was solved by Montgomery and Vaughan in 1986. The sum of squared gaps between reduced residues is O(n²/φ(n)), and more generally ∑(gap)^γ ≪ n^γ/φ(n)^{γ-1} for all γ ≥ 1. This shows the distribution of gaps is well-controlled.",
+    "implications": "The result shows that despite the existence of large gaps (related to Jacobsthal's function), they are rare enough that power sums remain bounded. This connects to sieve theory and the distribution of primes.",
+    "openQuestions": [
+      "What are the best explicit constants in the O(·) bounds?",
+      "How does the gap distribution depend on the prime factorization of n?",
+      "Can the techniques extend to other arithmetic progressions?"
+    ]
   }
 }

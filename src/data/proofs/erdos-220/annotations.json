@@ -1,1 +1,203 @@
-[]
+[
+  {
+    "id": "ann-220-header",
+    "proofId": "erdos-220",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #220 ($500)**\n\nFor reduced residues a₁ < ⋯ < a_{φ(n)} mod n, is ∑(a_{k+1}-a_k)² ≪ n²/φ(n)?\n\n**Status:** SOLVED (Montgomery-Vaughan 1986)",
+    "mathContext": "Reduced residues are integers coprime to n. The problem asks if squared gaps are well-controlled.",
+    "significance": "critical",
+    "relatedConcepts": ["Reduced residues", "Euler totient", "Gap distribution"]
+  },
+  {
+    "id": "ann-220-residues",
+    "proofId": "erdos-220",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Reduced Residues",
+    "content": "**reducedResidues n:**\n\n{m : 1 ≤ m < n, gcd(m,n) = 1}\n\nThe set of integers in [1, n-1] that are coprime to n. Has exactly φ(n) elements.",
+    "mathContext": "These form a group under multiplication mod n.",
+    "significance": "critical",
+    "relatedConcepts": ["Coprimality", "Totient function", "Multiplicative group"]
+  },
+  {
+    "id": "ann-220-cardinality",
+    "proofId": "erdos-220",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "theorem",
+    "title": "Cardinality Equals φ(n)",
+    "content": "**card_reducedResidues:**\n\n|reducedResidues n| = φ(n)\n\nThis is essentially the definition of Euler's totient function.",
+    "significance": "key",
+    "relatedConcepts": ["Totient", "Cardinality"]
+  },
+  {
+    "id": "ann-220-sorted",
+    "proofId": "erdos-220",
+    "range": { "startLine": 59, "endLine": 65 },
+    "type": "definition",
+    "title": "Sorted Residues",
+    "content": "**sortedResidues n, a n k:**\n\nThe reduced residues sorted in increasing order, and the k-th element.\n\nWritten as a₁ < a₂ < ⋯ < a_{φ(n)}.",
+    "significance": "key",
+    "relatedConcepts": ["Sorting", "Indexing"]
+  },
+  {
+    "id": "ann-220-gap",
+    "proofId": "erdos-220",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "Gap Definition",
+    "content": "**gap n k:**\n\na_{k+1} - a_k\n\nThe difference between consecutive reduced residues.",
+    "mathContext": "Average gap is n/φ(n), but individual gaps can vary significantly.",
+    "significance": "critical",
+    "relatedConcepts": ["Consecutive elements", "Difference"]
+  },
+  {
+    "id": "ann-220-gaplist",
+    "proofId": "erdos-220",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "definition",
+    "title": "Gap List",
+    "content": "**gapList n:**\n\nThe list of all gaps [gap(0), gap(1), ..., gap(φ(n)-2)].\n\nThere are φ(n) - 1 gaps between φ(n) elements.",
+    "significance": "key",
+    "relatedConcepts": ["List", "All gaps"]
+  },
+  {
+    "id": "ann-220-sumpowers",
+    "proofId": "erdos-220",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "Sum of Gap Powers",
+    "content": "**sumGapPowers n γ:**\n\n∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)^γ\n\nThe sum of γ-th powers of all gaps.\n\n**sumSquaredGaps n** is the γ = 2 case.",
+    "mathContext": "The squared case (γ=2) was Erdős's original question.",
+    "significance": "critical",
+    "relatedConcepts": ["Power sum", "Sum of squares"]
+  },
+  {
+    "id": "ann-220-bound",
+    "proofId": "erdos-220",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "definition",
+    "title": "The Bound n²/φ(n)",
+    "content": "**boundedSquaredGaps n:**\n\nn² / φ(n)\n\nThis is the \"expected\" squared sum if all gaps were equal to average n/φ(n).",
+    "mathContext": "φ(n) gaps of size (n/φ(n)) each gives sum = φ(n) · (n/φ(n))² = n²/φ(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Expected value", "Average gap squared"]
+  },
+  {
+    "id": "ann-220-conjecture",
+    "proofId": "erdos-220",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "**erdos_220_conjecture:**\n\n∃C > 0: ∀n ≥ 1, ∑(gap)² ≤ C · n²/φ(n)\n\nThe squared gaps sum is at most a constant times the \"all-equal\" bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Big-O", "Asymptotic bound"]
+  },
+  {
+    "id": "ann-220-general",
+    "proofId": "erdos-220",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "definition",
+    "title": "General γ-Power Bound",
+    "content": "**erdos_220_general:**\n\nFor any γ ≥ 1: ∑(gap)^γ ≪ n^γ/φ(n)^{γ-1}\n\nThis generalizes from squares to arbitrary powers.",
+    "mathContext": "Erdős posed this general version in 1973.",
+    "significance": "key",
+    "relatedConcepts": ["Generalization", "Power sum bound"]
+  },
+  {
+    "id": "ann-220-mv-squared",
+    "proofId": "erdos-220",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "axiom",
+    "title": "Montgomery-Vaughan (Squares)",
+    "content": "**montgomery_vaughan_squared:**\n\n∃C > 0: ∀n ≥ 1, ∑(gap)² ≤ C · n²/φ(n)\n\nThe main result confirming Erdős's conjecture.",
+    "mathContext": "Published in Annals of Mathematics, 1986.",
+    "significance": "critical",
+    "relatedConcepts": ["Montgomery-Vaughan 1986", "Ann. of Math."]
+  },
+  {
+    "id": "ann-220-mv-general",
+    "proofId": "erdos-220",
+    "range": { "startLine": 124, "endLine": 131 },
+    "type": "axiom",
+    "title": "Montgomery-Vaughan (General)",
+    "content": "**montgomery_vaughan_general:**\n\nFor any γ ≥ 1: ∃C > 0: ∀n ≥ 1, ∑(gap)^γ ≤ C · n^γ/φ(n)^{γ-1}\n\nThe full generalization to all powers.",
+    "significance": "critical",
+    "relatedConcepts": ["General result", "All powers"]
+  },
+  {
+    "id": "ann-220-average",
+    "proofId": "erdos-220",
+    "range": { "startLine": 137, "endLine": 139 },
+    "type": "definition",
+    "title": "Average Gap",
+    "content": "**averageGap n:**\n\nn / φ(n)\n\nWith φ(n) residues spread over [1,n-1], average spacing is n/φ(n).",
+    "significance": "key",
+    "relatedConcepts": ["Average", "Expected spacing"]
+  },
+  {
+    "id": "ann-220-prime",
+    "proofId": "erdos-220",
+    "range": { "startLine": 161, "endLine": 166 },
+    "type": "theorem",
+    "title": "Prime Case",
+    "content": "**prime_case:**\n\nFor prime p, reduced residues are {1, 2, ..., p-1} with all gaps = 1.\n\nSum of squares = p - 2, bound = p²/(p-1) ≈ p. Bound holds easily.",
+    "mathContext": "Primes give the simplest case where all gaps are equal.",
+    "significance": "supporting",
+    "relatedConcepts": ["Prime", "Unit gaps"]
+  },
+  {
+    "id": "ann-220-power2",
+    "proofId": "erdos-220",
+    "range": { "startLine": 168, "endLine": 173 },
+    "type": "theorem",
+    "title": "Power of 2 Case",
+    "content": "**power_of_two_case:**\n\nFor n = 2^k, residues are {1, 3, 5, ..., 2^k - 1} with all gaps = 2.\n\nSum = 2^{k+1}, bound = 2^{k+1}. The bound is TIGHT here.",
+    "mathContext": "Powers of 2 show the bound is essentially optimal.",
+    "significance": "key",
+    "relatedConcepts": ["Power of 2", "Tight bound", "Odd numbers"]
+  },
+  {
+    "id": "ann-220-jacobsthal",
+    "proofId": "erdos-220",
+    "range": { "startLine": 185, "endLine": 187 },
+    "type": "definition",
+    "title": "Jacobsthal's Function",
+    "content": "**jacobsthal n:**\n\nmax{gap} = maximum gap between consecutive reduced residues.\n\nRelated to the smallest prime not dividing n.",
+    "mathContext": "Large gaps can occur but are rare enough not to dominate the sum.",
+    "significance": "key",
+    "relatedConcepts": ["Maximum gap", "Jacobsthal", "Sieve"]
+  },
+  {
+    "id": "ann-220-maxbound",
+    "proofId": "erdos-220",
+    "range": { "startLine": 189, "endLine": 191 },
+    "type": "axiom",
+    "title": "Maximum Gap Bound",
+    "content": "**maximum_gap_bound:**\n\nmax(gap) ≤ C · (n/φ(n)) · (log n)²\n\nThe maximum gap is at most average times a logarithmic factor.",
+    "significance": "supporting",
+    "relatedConcepts": ["Maximum", "Logarithmic factor"]
+  },
+  {
+    "id": "ann-220-summary",
+    "proofId": "erdos-220",
+    "range": { "startLine": 232, "endLine": 236 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_220_summary:**\n\nCombines all components: Montgomery-Vaughan proved the squared gaps conjecture.\n\n∑(gap)² ≪ n²/φ(n)",
+    "mathContext": "The theorem statement captures the complete resolution.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Resolution"]
+  },
+  {
+    "id": "ann-220-solved",
+    "proofId": "erdos-220",
+    "range": { "startLine": 238, "endLine": 239 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**erdos_220_solved:**\n\nErdős Problem #220 was completely resolved by Montgomery-Vaughan (1986).\n\nThe $500 prize problem is solved.",
+    "significance": "supporting",
+    "relatedConcepts": ["Solved", "Prize", "1986"]
+  }
+]
