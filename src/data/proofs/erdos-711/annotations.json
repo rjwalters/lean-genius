@@ -1,1 +1,177 @@
-[]
+[
+  {
+    "id": "ann-e711-header",
+    "proofId": "erdos-711",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #711: Divisibility Matching with Variable Starting Point**\n\nGeneralizes Problem #710 by varying the starting point m:\n\n1. max_m f(n,m) ≤ n^{1+o(1)} [OPEN]\n2. max_m(f(n,m) - f(n,n)) → ∞ [SOLVED by van Doorn 2026]\n\n**Prize:** 1000 rupees (~$78 in 1992)",
+    "mathContext": "This explores how the starting position of an interval affects the divisibility matching problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem #710", "Divisibility matching", "Asymptotic analysis", "Residue classes"]
+  },
+  {
+    "id": "ann-e711-valid-selection",
+    "proofId": "erdos-711",
+    "range": { "startLine": 49, "endLine": 60 },
+    "type": "definition",
+    "title": "Valid Selection",
+    "content": "**IsValidSelection n start len a:**\n\nSame as Problem #710: a function a : Fin n → ℕ is valid if:\n1. All values in (start, start + len)\n2. Pairwise distinct\n3. (k+1) | a(k) for all k\n\nThe key difference from #710: start can be any m, not just n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-fnm",
+    "proofId": "erdos-711",
+    "range": { "startLine": 80, "endLine": 87 },
+    "type": "definition",
+    "title": "The Two-Parameter Function",
+    "content": "**minimalIntervalLength(n, m)** = f(n,m):\n\nThe minimal length L such that (m, m+L) admits a valid n-selection.\n\nThis generalizes f(n) = f(n,n) from Problem #710 by allowing any starting point m.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-fnn",
+    "proofId": "erdos-711",
+    "range": { "startLine": 92, "endLine": 96 },
+    "type": "definition",
+    "title": "Connection to Problem #710",
+    "content": "**fnn(n)** = f(n,n):\n\nWhen m = n, we recover exactly the function f(n) from Problem #710.\n\nThis shows #711 is a strict generalization of #710.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e711-upper-bound",
+    "proofId": "erdos-711",
+    "range": { "startLine": 102, "endLine": 110 },
+    "type": "axiom",
+    "title": "Erdős-Pomerance Upper Bound",
+    "content": "**erdos_pomerance_upper_bound_711:**\n\nmax_m f(n,m) ≪ n^{3/2}\n\nThere exists C > 0 such that f(n,m) ≤ C·n^{3/2} for all n, m.\n\nThis is the best known bound for the maximum over all starting points.",
+    "mathContext": "Proved in Erdős-Pomerance 1980. The first conjecture asks to improve this to n^{1+o(1)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-first-conj",
+    "proofId": "erdos-711",
+    "range": { "startLine": 112, "endLine": 128 },
+    "type": "definition",
+    "title": "First Conjecture (OPEN)",
+    "content": "**firstConjecture:**\n\nmax_m f(n,m) ≤ n^{1+o(1)}\n\nFor any ε > 0, eventually f(n,m) ≤ n^{1+ε} for all m.\n\nThis would be a major improvement over the n^{3/2} bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-difference",
+    "proofId": "erdos-711",
+    "range": { "startLine": 142, "endLine": 147 },
+    "type": "definition",
+    "title": "Difference from f(n,n)",
+    "content": "**differenceFnm(n, m):**\n\nf(n,m) - f(n,n) as an integer.\n\nMeasures how much the starting point m affects the minimal interval length compared to the 'natural' choice m = n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e711-second-conj",
+    "proofId": "erdos-711",
+    "range": { "startLine": 149, "endLine": 158 },
+    "type": "definition",
+    "title": "Second Conjecture (SOLVED)",
+    "content": "**secondConjecture:**\n\nmax_m(f(n,m) - f(n,n)) → ∞ as n → ∞\n\nFor any K, eventually there exists m with f(n,m) - f(n,n) > K.\n\nSome starting points require significantly longer intervals!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-van-doorn",
+    "proofId": "erdos-711",
+    "range": { "startLine": 164, "endLine": 173 },
+    "type": "axiom",
+    "title": "van Doorn's Theorem (2026)",
+    "content": "**van_doorn_2026:**\n\nFor large n, ∃m such that f(n,m) - f(n,n) ≫ n·(log n / log log n)\n\nThis proves the second conjecture with a quantitative lower bound.\n\nPublished in Integers (2026), #A7.",
+    "mathContext": "van Doorn's bound shows the difference can be as large as the main term in Problem #710!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-solved",
+    "proofId": "erdos-711",
+    "range": { "startLine": 175, "endLine": 180 },
+    "type": "axiom",
+    "title": "Second Conjecture Resolved",
+    "content": "**second_conjecture_solved:**\n\nvan Doorn's theorem implies secondConjecture.\n\nFor large n, the quantitative bound exceeds any fixed K.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-why-m",
+    "proofId": "erdos-711",
+    "range": { "startLine": 186, "endLine": 200 },
+    "type": "concept",
+    "title": "Why Starting Point Matters",
+    "content": "**Intuition:**\n\nThe starting point m affects which multiples of k are available:\n- When m = n, multiples are 'aligned' in a specific way\n- For other m, alignment may be better or worse\n- The second conjecture says: for some m, it's significantly worse\n\nThe number of multiples of k in (m, m+L) depends on m mod k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e711-multiples",
+    "proofId": "erdos-711",
+    "range": { "startLine": 202, "endLine": 208 },
+    "type": "definition",
+    "title": "Multiples in Interval",
+    "content": "**multiplesInInterval(d, start, len):**\n\nNumber of multiples of d in (start, start+len).\n\n= (start+len)/d - start/d\n\nThis count varies with start mod d.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e711-residue",
+    "proofId": "erdos-711",
+    "range": { "startLine": 210, "endLine": 215 },
+    "type": "axiom",
+    "title": "Residue Class Effect",
+    "content": "**residue_class_effect:**\n\nmultiplesInInterval(k, m, L) ≤ L/k + 1\n\nStandard bound: any interval of length L has at most L/k + 1 multiples of k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e711-710-bounds",
+    "proofId": "erdos-711",
+    "range": { "startLine": 224, "endLine": 232 },
+    "type": "axiom",
+    "title": "Problem #710 Bounds",
+    "content": "**problem_710_bounds:**\n\nn·√(log n / log log n) ≪ f(n,n) ≪ n·√(log n)\n\nThe known bounds for the special case m = n (Problem #710).\n\nvan Doorn's bound shows f(n,m) - f(n,n) can be comparable to f(n,n) itself!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e711-ex-m2",
+    "proofId": "erdos-711",
+    "range": { "startLine": 250, "endLine": 264 },
+    "type": "theorem",
+    "title": "Example: n=2, m=2",
+    "content": "**example_n2_m2:**\n\nNeed a₁, a₂ in (2, 5) with 1|a₁, 2|a₂.\n\nSolution: a₁=3, a₂=4. So f(2,2) ≤ 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e711-ex-m3",
+    "proofId": "erdos-711",
+    "range": { "startLine": 266, "endLine": 280 },
+    "type": "theorem",
+    "title": "Example: n=2, m=3",
+    "content": "**example_n2_m3:**\n\nNeed a₁, a₂ in (3, 6) with 1|a₁, 2|a₂.\n\nSolution: a₁=5, a₂=4. So f(2,3) ≤ 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e711-ex-m1",
+    "proofId": "erdos-711",
+    "range": { "startLine": 282, "endLine": 296 },
+    "type": "theorem",
+    "title": "Example: n=2, m=1",
+    "content": "**example_n2_m1:**\n\nNeed a₁, a₂ in (1, 4) with 1|a₁, 2|a₂.\n\nSolution: a₁=3, a₂=2. So f(2,1) ≤ 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e711-summary",
+    "proofId": "erdos-711",
+    "range": { "startLine": 302, "endLine": 327 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**erdos_711_summary:**\n\n1. secondConjecture holds (van Doorn 2026)\n2. Upper bound max_m f(n,m) ≪ n^{3/2}\n3. van Doorn's quantitative bound\n\n**Status:**\n- Part 1 (n^{1+o(1)}): OPEN\n- Part 2 (divergence): SOLVED",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e711-open",
+    "proofId": "erdos-711",
+    "range": { "startLine": 336, "endLine": 340 },
+    "type": "definition",
+    "title": "Open Question",
+    "content": "**openQuestion:**\n\nfirstConjecture = max_m f(n,m) ≤ n^{1+o(1)}\n\nThis remains unproven. Improving the n^{3/2} bound would be significant progress.",
+    "significance": "critical"
+  }
+]

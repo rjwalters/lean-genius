@@ -1,34 +1,150 @@
 {
   "id": "erdos-711",
-  "title": "Erdős Problem #711",
+  "title": "Erdős Problem #711: Divisibility Matching with Variable Starting Point",
   "slug": "erdos-711",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in ... there exist distinct integers ... such that ... for all .... Prove that\\[\\max_m f(n,m) \\l...",
+  "description": "Let f(n,m) be minimal such that (m, m+f(n,m)) contains distinct a₁,...,aₙ with k|aₖ. Prove max_m f(n,m) ≤ n^{1+o(1)} [OPEN] and max_m(f(n,m)-f(n,n))→∞ [SOLVED by van Doorn 2026].",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Pomerance (1980), van Doorn (2026, second part)",
     "sourceUrl": "https://erdosproblems.com/711",
-    "date": "",
-    "status": "pending",
+    "date": "1980/2026",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos711Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "combinatorics",
+      "asymptotic-analysis",
+      "partially-solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 711,
     "erdosUrl": "https://erdosproblems.com/711",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$78"
+    "erdosProblemStatus": "partial",
+    "erdosPrizeValue": "1000 rupees (~$78 in 1992)",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.find",
+        "description": "Finding minimal witnesses",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite ordinal type",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm",
+        "module": "Mathlib.Algebra.Order.Floor"
+      }
+    ],
+    "originalContributions": [
+      "IsValidSelection: divisibility matching in arbitrary interval (m, m+L)",
+      "IntervalAdmitsSelection: existence of valid selection",
+      "minimalIntervalLength(n,m): the two-parameter function f(n,m)",
+      "fnn: connection to Problem #710's f(n) = f(n,n)",
+      "erdos_pomerance_upper_bound_711: max_m f(n,m) ≪ n^{3/2}",
+      "firstConjecture: max_m f(n,m) ≤ n^{1+o(1)} [OPEN]",
+      "secondConjecture: max_m(f(n,m)-f(n,n)) → ∞ [SOLVED]",
+      "van_doorn_2026: quantitative bound for second conjecture",
+      "second_conjecture_solved: van Doorn's resolution",
+      "differenceFnm: measuring dependence on starting point",
+      "multiplesInInterval, residue_class_effect: why m matters",
+      "problem_710_bounds: connection to related problem",
+      "Small examples: n=2 with m=1,2,3"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #711 from erdosproblems.com. Originally offered with a prize of $78.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n,m)$ be minimal such that in $(m,m+f(n,m))$ there exist distinct integers $a_1,\\ldots,a_n$ such that $k\\mid a_k$ for all $1\\leq k\\leq n$. Prove that\\[\\max_m f(n,m) \\leq n^{1+o(1)}\\]and that\\[\\max_m (f(n,m)-f(n,n))\\to \\infty.\\]\n\n\n\nA problem of Erd\\H{o}s and Pomerance \\cite{ErPo80}, who proved that\\[\\max_m f(n,m) \\ll n^{3/2}\\]and\\[n\\left(\\frac{\\log n}{\\log\\log n}\\right)^{1/2} \\ll f(n,n)\\ll n(\\log n)^{1/2}.\\]In \\cite{Er92c} Erd\\H{o}s offered 1000 rupees for a proof of either; for uniform comparison across prizes I have converted this using the 1992 exchange rates.\n\nvan Doorn \\cite{vD26} has provided an affirmative answer to the second question, proving that, for all large $n$, there exists $m=m(n)$ such that\\[f(n,m)-f(n,n) \\gg \\frac{\\log n}{\\log\\log n}n.\\]See also [710].\n\n\n\n\nReferences\n\n\n[Er92c] Erd\\\"{o}s, P., Some of my forgotten problems in number theory. Hardy-Ramanujan J. (1992), 34-50.\n\n[ErPo80] P. Erd\\H{o}s and C. Pomerance, Matching the natural numbers up to $n$ with distinct multiples of another interval. Indigationes Math. (1980), 147-151.\n\n[vD26] W. van Doorn, On the length of an interval that contains distinct multiples of the first $n$ positive integers. Integers (2026), #A7.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #711**\n\nThis problem generalizes Problem #710 by varying the starting point m of the interval. While #710 asks for the asymptotics of f(n) = f(n,n), this problem asks two questions:\n\n1. **First Conjecture (OPEN):** max_m f(n,m) ≤ n^{1+o(1)}\n2. **Second Conjecture (SOLVED):** max_m(f(n,m) - f(n,n)) → ∞\n\n**Key History:**\n- Erdős-Pomerance (1980): Established max_m f(n,m) ≪ n^{3/2}\n- Erdős [Er92c] (1992): Offered 1000 rupees for either part\n- van Doorn (2026): Proved second conjecture with bound f(n,m) - f(n,n) ≫ n·(log n / log log n)",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet f(n,m) be minimal such that in (m, m+f(n,m)) there exist distinct integers a₁,...,aₙ with k | aₖ for all k.\n\nProve:\n1. max_m f(n,m) ≤ n^{1+o(1)} [OPEN]\n2. max_m (f(n,m) - f(n,n)) → ∞ [SOLVED by van Doorn 2026]\n\n**Known:**\n- max_m f(n,m) ≪ n^{3/2} (Erdős-Pomerance 1980)\n- f(n,m) - f(n,n) ≫ n·(log n / log log n) for some m (van Doorn 2026)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Extend Problem #710 with two-parameter f(n,m)\n\n2. **Upper Bound:** Axiomatize Erdős-Pomerance n^{3/2} bound\n\n3. **First Conjecture:** Define n^{1+o(1)} bound as open problem\n\n4. **Second Conjecture:** Define divergence of max_m difference\n\n5. **van Doorn's Theorem:** Axiomatize quantitative resolution\n\n6. **Why m Matters:** Residue class effects on multiple distribution\n\n7. **Examples:** Verify for n=2 with different starting points m=1,2,3",
+    "keyInsights": [
+      "**Two-Parameter Function:** f(n,m) generalizes f(n) by varying starting point",
+      "**First Conjecture OPEN:** Can we improve n^{3/2} to n^{1+o(1)}?",
+      "**Second Conjecture SOLVED:** van Doorn (2026) proved divergence",
+      "**Quantitative Bound:** f(n,m) - f(n,n) ≫ n·(log n / log log n)",
+      "**Residue Classes:** Position of m affects availability of multiples",
+      "**Connection to #710:** f(n,n) recovers Problem #710's function f(n)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsValidSelection, IntervalAdmitsSelection for any starting point m",
+      "startLine": 43,
+      "endLine": 74
+    },
+    {
+      "id": "two-parameter",
+      "title": "The Two-Parameter Function",
+      "summary": "minimalIntervalLength(n,m), connection to Problem #710",
+      "startLine": 76,
+      "endLine": 96
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "Erdős-Pomerance n^{3/2} bound, first conjecture",
+      "startLine": 98,
+      "endLine": 128
+    },
+    {
+      "id": "dependence-on-m",
+      "title": "Dependence on Starting Point",
+      "summary": "differenceFnm, second conjecture definition",
+      "startLine": 130,
+      "endLine": 158
+    },
+    {
+      "id": "van-doorn",
+      "title": "van Doorn's Theorem (2026)",
+      "summary": "Resolution of second conjecture with quantitative bound",
+      "startLine": 160,
+      "endLine": 182
+    },
+    {
+      "id": "why-m-matters",
+      "title": "Why Does m Matter?",
+      "summary": "Residue class effects, multiplesInInterval",
+      "startLine": 184,
+      "endLine": 215
+    },
+    {
+      "id": "connection-710",
+      "title": "Connection to Problem #710",
+      "summary": "problem_710_bounds, van Doorn's result in context",
+      "startLine": 217,
+      "endLine": 242
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "n=2 with m=1,2,3 showing different starting points",
+      "startLine": 244,
+      "endLine": 294
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_711_summary, erdos_711_part2_solved, openQuestion",
+      "startLine": 296,
+      "endLine": 344
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #711 consists of two parts. The first (max_m f(n,m) ≤ n^{1+o(1)}) remains OPEN, though the weaker bound n^{3/2} is known. The second part (max_m(f(n,m)-f(n,n)) → ∞) was SOLVED by van Doorn in 2026, who proved the stronger bound f(n,m)-f(n,n) ≫ n·(log n/log log n) for some m.",
+    "implications": "**Number-Theoretic Significance**\n\n1. **Starting Point Matters:** The interval's starting position significantly affects the minimum length needed\n\n2. **Residue Class Effects:** The distribution of multiples depends on m mod k for each k\n\n3. **Connection to #710:** Understanding f(n,m) helps understand the special case f(n,n)\n\n4. **van Doorn's Contribution:** First proof that the dependence on m can be substantial\n\n5. **Open Problem:** The n^{1+o(1)} bound would be a major improvement",
+    "openQuestions": [
+      "Can max_m f(n,m) ≤ n^{1+o(1)} be proven?",
+      "What is the exact order of max_m f(n,m)?",
+      "For which m(n) is f(n,m) maximized?",
+      "Is the van Doorn bound n·(log n/log log n) optimal?",
+      "How does the structure of multiples affect the optimal m?"
+    ]
   }
 }
