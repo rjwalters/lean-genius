@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-652-point",
+    "proofId": "erdos-652",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Point",
+    "content": "A point in the plane as (x, y) coordinates.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-dist",
+    "proofId": "erdos-652",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Distance Function",
+    "content": "Euclidean distance between two points.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-pointset",
+    "proofId": "erdos-652",
+    "range": { "startLine": 54, "endLine": 55 },
+    "type": "definition",
+    "title": "PointSet",
+    "content": "A finite set of n points in the plane.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-distinctdist",
+    "proofId": "erdos-652",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "Distinct Distances",
+    "content": "Set of distinct distances from point i to all others.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-R",
+    "proofId": "erdos-652",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "R Function",
+    "content": "R(xi) = number of distinct distances from point i.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-Rk",
+    "proofId": "erdos-652",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "definition",
+    "title": "R_k Function",
+    "content": "The k-th smallest R value in a point set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-alphak",
+    "proofId": "erdos-652",
+    "range": { "startLine": 84, "endLine": 95 },
+    "type": "definition",
+    "title": "Alpha_k Constants",
+    "content": "Minimal alpha such that R_k < alpha*sqrt(n) is achievable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-alpha1",
+    "proofId": "erdos-652",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "theorem",
+    "title": "Alpha_1 = 0",
+    "content": "R(x1) = 1 achievable by placing all points on a circle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-652-product",
+    "proofId": "erdos-652",
+    "range": { "startLine": 107, "endLine": 110 },
+    "type": "theorem",
+    "title": "Product Bound",
+    "content": "R(x1)*R(x2) >> n: both cannot be small simultaneously.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-652-elekes",
+    "proofId": "erdos-652",
+    "range": { "startLine": 123, "endLine": 131 },
+    "type": "theorem",
+    "title": "Elekes Disproof",
+    "content": "For any k, there exist point sets with R_k << sqrt(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-mathialagan",
+    "proofId": "erdos-652",
+    "range": { "startLine": 139, "endLine": 152 },
+    "type": "theorem",
+    "title": "Mathialagan 2021",
+    "content": "R(xk) >> sqrt(kn) for k in range. Hence alpha_k -> infinity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-main",
+    "proofId": "erdos-652",
+    "range": { "startLine": 158, "endLine": 166 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "alpha_k -> infinity as k -> infinity. Answer: YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-652-polygon",
+    "proofId": "erdos-652",
+    "range": { "startLine": 174, "endLine": 177 },
+    "type": "example",
+    "title": "Regular Polygon",
+    "content": "Center of regular n-gon achieves R = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-652-grid",
+    "proofId": "erdos-652",
+    "range": { "startLine": 179, "endLine": 181 },
+    "type": "example",
+    "title": "Square Grid",
+    "content": "Grid points have R approximately sqrt(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-652-connection",
+    "proofId": "erdos-652",
+    "range": { "startLine": 189, "endLine": 194 },
+    "type": "theorem",
+    "title": "Distinct Distances",
+    "content": "Connection to Erdos distinct distances (Guth-Katz 2015).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-652-summary",
+    "proofId": "erdos-652",
+    "range": { "startLine": 222, "endLine": 224 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "alpha_k -> infinity. Solved by Mathialagan 2021.",
+    "significance": "critical"
+  }
+]

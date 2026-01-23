@@ -1,33 +1,152 @@
 {
   "id": "erdos-652",
-  "title": "Erdős Problem #652",
+  "title": "Erdős Problem #652: Distance Multiplicity Spectrum in Point Sets",
   "slug": "erdos-652",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ..., where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let ... be minimal such that, fo...",
+  "description": "Does αₖ → ∞ as k → ∞, where αₖ is the minimal constant such that R(xₖ) < αₖ√n is achievable? Answer: YES (Mathialagan 2021).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Elekes, Mathialagan",
     "sourceUrl": "https://erdosproblems.com/652",
-    "date": "",
-    "status": "pending",
+    "date": "2021",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos652Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "distinct-distances",
+      "point-sets"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root for distances",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of finite sets for distinct distances",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for counting",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Point and PointSet definitions",
+      "dist function for Euclidean distance",
+      "distinctDistances function",
+      "R function (distinct distance count from a point)",
+      "R_k function (k-th smallest R value)",
+      "alpha_k constants as axioms",
+      "alpha_1_zero axiom (R(x₁) = 1 achievable)",
+      "product_lower_bound axiom (R(x₁)·R(x₂) ≫ n)",
+      "elekes_disproof axiom (αₖ finite for all k)",
+      "mathialagan_2021 axiom (R(xₖ) ≫ √(kn))",
+      "alpha_k_lower_bound axiom (αₖ ≥ C√k)",
+      "alpha_k_unbounded axiom (αₖ → ∞)",
+      "erdos_652_solved theorem combining results",
+      "Connections to Erdős distinct distances problem"
+    ],
     "erdosNumber": 652,
     "erdosUrl": "https://erdosproblems.com/652",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #652 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ and let $R(x_i)=\\#\\{ \\lvert x_j-x_i\\rvert : j\\neq i\\}$, where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let $\\alpha_k$ be minimal such that, for all large enough $n$, there exists a set of $n$ points with $R(x_k)<\\alpha_kn^{1/2}$. Is it true that $\\alpha_k\\to \\infty$ as $k\\to \\infty$?\n\n\n\nIt is trivial that $R(x_1)=1$ is possible, and that $R(x_2) \\ll n^{1/2}$ is also possible, but we always have\\[R(x_1)R(x_2)\\gg n.\\]Erd\\H{o}s originally conjectured that $R(x_3)/n^{1/2}\\to \\infty$ as $n\\to \\infty$, but Elekes proved that for every $k$ and $n$ sufficiently large there exists some set of $n$ points with $R(x_k)\\ll_k n^{1/2}$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The R(xᵢ) Function**\\n\\nFor a point set in the plane, R(xᵢ) counts how many distinct distances emanate from point xᵢ to other points. This measures the 'distance complexity' at each point.\\n\\n**Erdős's Original Conjecture**\\n\\nErdős conjectured that R(x₃)/√n → ∞ as n → ∞, meaning even the third-smallest R value should grow faster than √n. This would imply αₖ → ∞ very quickly.\\n\\n**Elekes' Disproof**\\n\\nGyörgy Elekes dramatically disproved Erdős's conjecture using algebraic curve constructions. He showed that for ANY fixed k, there exist point sets where the k-th smallest R value is only O(√n). This means αₖ is finite for all k.\\n\\n**Mathialagan's Resolution (2021)**\\n\\nSahana Mathialagan proved the affirmative answer to the modified question: αₖ → ∞ as k → ∞. Specifically, αₖ ≥ C√k. Her proof uses polynomial partitioning methods from Guth-Katz and sophisticated incidence geometry.",
+    "problemStatement": "Let x₁,...,xₙ ∈ ℝ² and let R(xᵢ) = #{|xⱼ - xᵢ| : j ≠ i}. Order points so R(x₁) ≤ ⋯ ≤ R(xₙ). Define αₖ as the minimal constant such that R(xₖ) < αₖ√n is achievable for large n. Is αₖ → ∞ as k → ∞?",
+    "proofStrategy": "We formalize point sets, the R function counting distinct distances, and the αₖ constants. Key axioms include Elekes' disproof (αₖ finite), Mathialagan's theorem (αₖ ≥ C√k), and the product bound R(x₁)·R(x₂) ≫ n. The main result combines these to show αₖ → ∞.",
+    "keyInsights": [
+      "R(x₁) = 1 is achievable by placing all points equidistant from x₁",
+      "R(x₁)·R(x₂) ≫ n: the two smallest R values cannot both be small",
+      "Elekes disproved Erdős's stronger conjecture using algebraic curves",
+      "Mathialagan proved αₖ ≥ C√k using polynomial partitioning",
+      "The answer is YES: αₖ → ∞ as k → ∞"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Point sets, distances, and the R function",
+      "startLine": 41,
+      "endLine": 64
+    },
+    {
+      "id": "ordering",
+      "title": "Ordering by R Values",
+      "summary": "R_k function for k-th smallest R value",
+      "startLine": 66,
+      "endLine": 76
+    },
+    {
+      "id": "alpha-k",
+      "title": "The αₖ Constants",
+      "summary": "Definition and properties of αₖ",
+      "startLine": 78,
+      "endLine": 95
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "α₁ = 0 and product bound R(x₁)·R(x₂) ≫ n",
+      "startLine": 97,
+      "endLine": 115
+    },
+    {
+      "id": "elekes",
+      "title": "Elekes' Disproof",
+      "summary": "αₖ is finite for all k",
+      "startLine": 117,
+      "endLine": 132
+    },
+    {
+      "id": "mathialagan",
+      "title": "Mathialagan's Breakthrough",
+      "summary": "αₖ → ∞ as k → ∞",
+      "startLine": 134,
+      "endLine": 153
+    },
+    {
+      "id": "answer",
+      "title": "The Answer",
+      "summary": "Main theorem combining results",
+      "startLine": 155,
+      "endLine": 173
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Regular polygon and grid examples",
+      "startLine": 175,
+      "endLine": 189
+    },
+    {
+      "id": "connections",
+      "title": "Related Problems",
+      "summary": "Connection to distinct distances problem",
+      "startLine": 191,
+      "endLine": 207
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and techniques",
+      "startLine": 209,
+      "endLine": 232
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #652 asks whether αₖ → ∞ as k → ∞, where αₖ measures how small R(xₖ) can be relative to √n. Elekes showed αₖ is finite for each k, disproving Erdős's original conjecture. Mathialagan (2021) proved the affirmative answer: αₖ → ∞, with αₖ ≥ C√k.",
+    "implications": "This resolves a fundamental question about the 'spectrum' of distance multiplicities in point sets. While any fixed position in the R-ordering can have O(√n) distinct distances, the threshold constant must grow with k.",
+    "openQuestions": [
+      "What is the exact growth rate of αₖ?",
+      "Is αₖ ~ c√k for some explicit constant c?",
+      "Can the polynomial partitioning bound be improved?",
+      "What is the relationship to the unit distance problem?"
+    ]
   }
 }
