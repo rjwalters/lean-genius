@@ -911,7 +911,7 @@
       "solved"
     ],
     "erdosNumber": 1009,
-    "sorries": 1,
+    "sorries": 0,
     "annotationCount": 18
   },
   {
@@ -1431,17 +1431,22 @@
   },
   {
     "id": "erdos-1042",
-    "title": "Erdős Problem #1042",
+    "title": "Erdős Problem #1042: Connected Components of Polynomial Lemniscates",
     "slug": "erdos-1042",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a closed set of transfinite diameter ... which is not contained in any closed disc of radius ....\n\nIf ... with all...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For polynomials with roots in a closed set F ⊆ ℂ, how many connected components can the lemniscate {z : |f(z)| < 1} have? The answer depends on the transfinite diameter of F and its geometry. Solved by Ghosh-Ramachandran (2024).",
+    "status": "complete",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "complex-analysis",
+      "potential-theory",
+      "polynomials",
+      "erdos",
+      "lemniscates",
+      "transfinite-diameter"
     ],
     "erdosNumber": 1042,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 14
   },
   {
     "id": "erdos-1043",
@@ -1992,17 +1997,24 @@
   },
   {
     "id": "erdos-1082",
-    "title": "Erdős Problem #1082",
+    "title": "Erdős Problem #1082: Distinct Distances in General Position",
     "slug": "erdos-1082",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points with no three on a line. Does ... determine at least ... distinct distances? In fact, must the...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A ⊂ ℝ² be n points with no three collinear. Does A determine ≥ n/2 distinct distances? The stronger form (single point with n/2 distances) was disproved by Xichuan.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "distinct-distances",
+      "incidence-geometry",
+      "general-position",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 1082,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-1083",
@@ -2547,17 +2559,24 @@
   },
   {
     "id": "erdos-1116",
-    "title": "Erdős Problem #1116",
+    "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
     "slug": "erdos-1116",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a meromorphic function ... let ... count the number of roots of ... in the disc .... Does there exist a meromorphic (or e...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does there exist an entire function f such that for every a ≠ b, lim sup n(r,a)/n(r,b) = ∞? YES - proved by Gol'dberg (1978) and Toppila (1976) who constructed such functions.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "nevanlinna-theory",
+      "value-distribution",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 1116,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-1118",
@@ -2614,17 +2633,20 @@
   },
   {
     "id": "erdos-1122",
-    "title": "Erdős Problem #1122",
+    "title": "Erdős Problem #1122: Additive Functions and Monotonicity Defects",
     "slug": "erdos-1122",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive function (i.e. ... whenever ...). Let\\[A=\\{ n \\geq 1: f(n+1)< f(n)\\}.\\]If ... then must ... for some ....",
-    "status": "pending",
+    "description": "Let f: ℕ → ℝ be additive. If the set A = {n : f(n+1) < f(n)} has |A ∩ [1,X]| = o(X), must f(n) = c·log(n)?",
+    "status": "verified",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-functions",
+      "analytic-number-theory"
     ],
     "erdosNumber": 1122,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1123",
@@ -4035,17 +4057,23 @@
   },
   {
     "id": "erdos-206",
-    "title": "Erdős Problem #206",
+    "title": "Erdős Problem #206: Eventually Greedy Egyptian Fractions",
     "slug": "erdos-206",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a real number. For any ... let\\[R_n(x) = \\sum_{i=1}^n{m_i}<x\\]be the maximal sum of ... distinct unit fractions wh...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are the best underapproximations by Egyptian fractions eventually constructed greedily for almost all x? Disproved by Kovač (2024): the set of eventually greedy numbers has Lebesgue measure zero.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "measure-theory",
+      "diophantine-approximation"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 206,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-207",
@@ -8338,31 +8366,45 @@
   },
   {
     "id": "erdos-514",
-    "title": "Erdős Problem #514",
+    "title": "Erdős Problem #514: Growth of Entire Functions Along Paths",
     "slug": "erdos-514",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function. Does there exist a path ... so that, for every ...,\\[\\lvert f(z)/z^n\\rvert \\to \\infty\\]as ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a transcendental entire function f(z), does there exist a path L such that |f(z)/z^n| → ∞ as z → ∞ along L for every n? Part 1 proved by Boas (unpublished); parts 2 and 3 remain open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "growth-rates",
+      "maximum-modulus",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 514,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-515",
-    "title": "Erdős Problem #515",
+    "title": "Erdős Problem #515: Path Integrals of Inverse Entire Functions",
     "slug": "erdos-515",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function, not a polynomial. Does there exist a locally rectifiable path ... tending to infinity such tha...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For transcendental entire f, does there exist a path C → ∞ such that ∫_C |f|^{-λ} dz < ∞ for ALL λ > 0? SOLVED: YES by Lewis-Rossi-Weitsman (1984).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "path-integrals",
+      "subharmonic-functions",
+      "solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 515,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-516",
@@ -10936,8 +10978,8 @@
     "dateAdded": "2026-01-19",
     "erdosNumber": 683,
     "mathlibCount": 5,
-    "sorries": 3,
-    "annotationCount": 10
+    "sorries": 0,
+    "annotationCount": 15
   },
   {
     "id": "erdos-69",
@@ -12194,17 +12236,24 @@
   },
   {
     "id": "erdos-766",
-    "title": "Erdős Problem #766",
+    "title": "Erdős Problem #766: Extremal Numbers and Graph Density",
     "slug": "erdos-766",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... ranges over all graphs with ... vertices and ... edges.\n\nGive good estimates for ... in the range .... For...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n;k,l) = min ex(n;G) over graphs G with k vertices and l edges. Estimate f(n;k,l) for k < l ≤ k²/4. Is f strictly monotone in l? OPEN. Dirac-Erdős: f(n;k,⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "combinatorics",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 766,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 10
   },
   {
     "id": "erdos-767",
@@ -12368,17 +12417,24 @@
   },
   {
     "id": "erdos-778",
-    "title": "Erdős Problem #778",
+    "title": "Erdos Problem #778: Clique-Building Games on Complete Graphs",
     "slug": "erdos-778",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAlice and Bob play a game on the edges of ..., alternating colouring edges by red (Alice) and blue (Bob). Alice goes first, a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Alice and Bob alternate coloring edges of K_n (red/blue). Alice wins if her largest red clique exceeds any blue clique. Does Bob have a winning strategy for n >= 3? OPEN. Malekshahian-Spiro (2024) proved Bob wins with density >= 3/4.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-game-theory",
+      "graph-coloring",
+      "ramsey-theory",
+      "cliques",
+      "open"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 778,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 13
   },
   {
     "id": "erdos-779",
@@ -12499,17 +12555,24 @@
   },
   {
     "id": "erdos-787",
-    "title": "Erdős Problem #787",
+    "title": "Erdős Problem #787: Sum-Free Subsets (Erdős-Moser Problem)",
     "slug": "erdos-787",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that given any set ... with ... there exists some ... of size ... such that ... for all ....\n\nEstimat...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size ≥ g(n). Current bounds: (log n)^(1+c) ≪ g(n) ≪ exp(√(log n)).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "sum-free",
+      "additive-combinatorics",
+      "erdos-moser",
+      "asymptotic-bounds",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 787,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-788",
@@ -12944,8 +13007,8 @@
     "title": "Erdős Problem #81: Clique Partitions of Chordal Graphs",
     "slug": "erdos-81",
     "description": "Can every chordal graph (no induced cycles > 3) have its edges partitioned into n²/6 + O(n) cliques? The lower bound is achieved by specific constructions, but the upper bound remains open despite progress on split graphs.",
-    "status": "pending",
-    "badge": "mathlib",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "graph-theory",
       "chordal-graphs",
@@ -12956,7 +13019,7 @@
     ],
     "erdosNumber": 81,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-811",
@@ -13386,7 +13449,7 @@
     "dateAdded": "2026-01-19",
     "erdosNumber": 84,
     "mathlibCount": 4,
-    "sorries": 2,
+    "sorries": 0,
     "annotationCount": 10
   },
   {

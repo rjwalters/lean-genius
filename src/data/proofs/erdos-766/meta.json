@@ -1,33 +1,137 @@
 {
   "id": "erdos-766",
-  "title": "Erdős Problem #766",
+  "title": "Erdős Problem #766: Extremal Numbers and Graph Density",
   "slug": "erdos-766",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... ranges over all graphs with ... vertices and ... edges.\n\nGive good estimates for ... in the range .... For...",
+  "description": "Let f(n;k,l) = min ex(n;G) over graphs G with k vertices and l edges. Estimate f(n;k,l) for k < l ≤ k²/4. Is f strictly monotone in l? OPEN. Dirac-Erdős: f(n;k,⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1964)",
     "sourceUrl": "https://erdosproblems.com/766",
-    "date": "",
-    "status": "pending",
+    "date": "1964",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos766Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "combinatorics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 766,
     "erdosUrl": "https://erdosproblems.com/766",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definition",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Graph definitions: numEdges, containsSubgraph, isHFree",
+      "Turán number ex(n;H) definition",
+      "f(n;k,l) = min ex(n;G) over graphs with k vertices, l edges",
+      "Range of interest: k < l ≤ k²/4",
+      "Dirac-Erdős theorem axiomatization",
+      "Turán's theorem axiomatization",
+      "Monotonicity question formalization",
+      "Special cases: triangles, C₄, trees",
+      "Turán density connection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #766 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n;k,l)=\\min \\mathrm{ex}(n;G)$, where $G$ ranges over all graphs with $k$ vertices and $l$ edges.\n\nGive good estimates for $f(n;k,l)$ in the range $k<l\\leq k^2/4$. For fixed $k$ and large $n$ is $f(n;k,l)$ a strictly monotone function of $l$?\n\n\n\nDirac and Erd\\H{o}s proved independently that when $l=\\lfloor k^2/4\\rfloor+1$\\[f(n;k,l)\\leq \\lfloor n^2/4\\rfloor+1.\\]\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #766: Extremal Numbers and Graph Density**\n\nThis problem from extremal graph theory studies the function f(n;k,l), which takes the minimum Turán number over all graphs with fixed vertex and edge counts.\n\n**Background:**\n- **Turán's Theorem (1941):** ex(n; K_r) = (1 - 1/(r-1))n²/2 + O(n)\n- **Dirac-Erdős:** At the bipartite threshold (l = ⌊k²/4⌋ + 1), f drops to ≈ n²/4\n\nThe problem connects graph density to extremal numbers.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f(n; k, l) = min ex(n; G) where G ranges over graphs with k vertices and l edges.\n\n**Questions:**\n1. Give good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) strictly monotone in l for fixed k and large n?\n\n**Known (Dirac-Erdős):**\nWhen l = ⌊k²/4⌋ + 1: f(n; k, l) ≤ ⌊n²/4⌋ + 1\n\n**Status:** OPEN - Estimates and monotonicity unresolved.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graphs:** Define SimpleGraph, numEdges, containsSubgraph.\n\n2. **Turán Number:** ex(n; H) = max edges in H-free graph.\n\n3. **f(n;k,l):** Take infimum over graphs with k vertices, l edges.\n\n4. **Range:** k < l ≤ k²/4 (bipartite threshold).\n\n5. **Dirac-Erdős:** Axiomatize the threshold result.\n\n6. **Monotonicity:** Define the open question precisely.\n\n7. **Special Cases:** Triangles, cycles, complete bipartite graphs.",
+    "keyInsights": [
+      "**Turán Number:** ex(n;H) measures maximum edge density avoiding H",
+      "**Bipartite Threshold:** k²/4 edges is the complete bipartite density",
+      "**Dirac-Erdős:** Beyond bipartite, graphs contain triangles → ex drops",
+      "**Monotonicity Intuition:** More edges in forbidden graph → more allowed in host",
+      "**Special Case:** f(n;3,3) = ex(n;K₃) = ⌊n²/4⌋ (Turán's theorem)",
+      "**C₄ Anomaly:** ex(n;C₄) = Θ(n^{3/2}), much smaller than n²"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graphs",
+      "title": "Basic Graph Definitions",
+      "summary": "Graph, numEdges, containsSubgraph, isHFree",
+      "startLine": 41,
+      "endLine": 59
+    },
+    {
+      "id": "turan",
+      "title": "The Turán Number",
+      "summary": "ex(n;H) = max edges in H-free graph",
+      "startLine": 61,
+      "endLine": 69
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(n;k,l)",
+      "summary": "min ex over graphs with k vertices, l edges",
+      "startLine": 71,
+      "endLine": 83
+    },
+    {
+      "id": "range",
+      "title": "Range of Interest",
+      "summary": "k < l ≤ k²/4 (bipartite threshold)",
+      "startLine": 85,
+      "endLine": 94
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Dirac-Erdős and Turán's theorem",
+      "startLine": 96,
+      "endLine": 123
+    },
+    {
+      "id": "monotonicity",
+      "title": "The Monotonicity Question",
+      "summary": "Is f strictly increasing in l? (OPEN)",
+      "startLine": 125,
+      "endLine": 142
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Triangles, K₄, C₄",
+      "startLine": 163,
+      "endLine": 180
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main results and open questions",
+      "startLine": 197,
+      "endLine": 228
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #766 asks for estimates of f(n;k,l) = min ex(n;G) in the range k < l ≤ k²/4, and whether f is strictly monotone in l. The Dirac-Erdős theorem gives a key result at the bipartite threshold. The strict monotonicity question remains open.",
+    "implications": "**Implications**\n\n1. **Extremal Graph Theory:** Understanding the minimum Turán number over graph families.\n\n2. **Graph Density:** The bipartite threshold k²/4 is critical for structure.\n\n3. **Turán Problems:** Connects to the classical Turán theorem and its generalizations.\n\n4. **Forbidden Subgraphs:** How edge count of forbidden graphs affects extremal numbers.",
+    "openQuestions": [
+      "Give good estimates for f(n;k,l) when k < l ≤ k²/4",
+      "Is f(n;k,l) strictly monotone in l for fixed k and large n?",
+      "What is the behavior of f near the bipartite threshold?",
+      "How does f behave for specific graph families (trees, cycles, complete bipartite)?"
+    ]
   }
 }
