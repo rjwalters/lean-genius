@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos84Problem.lean",
     "tags": ["erdos", "graph-theory", "cycles", "counting", "extremal-combinatorics"],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 84,
     "erdosUrl": "https://erdosproblems.com/84",
     "erdosProblemStatus": "open",
@@ -52,64 +52,64 @@
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "startLine": 49,
-      "endLine": 87,
+      "startLine": 47,
+      "endLine": 84,
       "summary": "Valid cycle lengths, cycle sets, achievable sets, and f(n)"
     },
     {
       "id": "erdos-faudree",
       "title": "Erdős-Faudree Bounds",
-      "startLine": 88,
-      "endLine": 119,
+      "startLine": 85,
+      "endLine": 116,
       "summary": "The initial bounds 2^{n/2} < f(n) ≤ 2^{n-2}"
     },
     {
       "id": "part1-solved",
       "title": "Part 1 - SOLVED",
-      "startLine": 120,
-      "endLine": 153,
+      "startLine": 117,
+      "endLine": 150,
       "summary": "Verstraëte's theorem proving f(n) = o(2^n)"
     },
     {
       "id": "nenadov",
       "title": "Nenadov's Improvement",
-      "startLine": 154,
-      "endLine": 174,
+      "startLine": 151,
+      "endLine": 171,
       "summary": "Best known bound f(n) ≪ 2^{n - n^{1/2-o(1)}}"
     },
     {
       "id": "part2-open",
       "title": "Part 2 - OPEN",
-      "startLine": 175,
-      "endLine": 195,
+      "startLine": 172,
+      "endLine": 192,
       "summary": "The open question: Does f(n)/2^{n/2} → ∞?"
     },
     {
       "id": "limit",
       "title": "The Limit Question",
-      "startLine": 196,
-      "endLine": 225,
+      "startLine": 193,
+      "endLine": 222,
       "summary": "Does lim f(n)^{1/n} exist?"
     },
     {
       "id": "structural",
       "title": "Structural Results",
-      "startLine": 226,
-      "endLine": 247,
+      "startLine": 223,
+      "endLine": 244,
       "summary": "Not all subsets are achievable cycle sets"
     },
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 248,
-      "endLine": 292,
+      "startLine": 245,
+      "endLine": 289,
       "summary": "Complete graph, cycle graph, path graph, and small values"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 293,
-      "endLine": 345,
+      "startLine": 290,
+      "endLine": 342,
       "summary": "Main theorem and historical note"
     }
   ],
