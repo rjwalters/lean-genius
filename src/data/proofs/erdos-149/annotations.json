@@ -1,1 +1,203 @@
-[]
+[
+  {
+    "id": "ann-e149-overview",
+    "proofId": "erdos-149",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #149: Strong Chromatic Index Conjecture**\n\nIs χ'_s(G) ≤ (5/4)Δ² for all graphs G with max degree Δ?\n\n**Status:** OPEN\n**Best bound:** 1.772Δ² (Hurley-de Joannis de Verclos-Kang 2022)\n**Conjectured:** (5/4)Δ² = 1.25Δ²\n**Gap:** 0.522Δ²",
+    "mathContext": "Strong edge coloring: edges at distance ≤ 2 get different colors. χ'_s(G) = χ(L(G)²).",
+    "significance": "critical",
+    "relatedConcepts": ["Strong chromatic index", "Line graph", "Edge coloring", "Lovász Local Lemma"]
+  },
+  {
+    "id": "ann-e149-maxdegree",
+    "proofId": "erdos-149",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Maximum Degree",
+    "content": "**maxDegree G:** The maximum degree Δ of any vertex in G.\n\nmaxDegree G = sup_{v ∈ V} deg(v)\n\nThe conjecture bounds χ'_s in terms of Δ².",
+    "significance": "key",
+    "leanSymbol": "maxDegree"
+  },
+  {
+    "id": "ann-e149-distance2",
+    "proofId": "erdos-149",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "Edges at Distance 2",
+    "content": "**edgesAtDistance2 G e₁ e₂:** Two edges are at distance ≤ 2 if:\n- They share a vertex, OR\n- Both touch a common third vertex\n\nThis defines which edge pairs must get different colors in strong coloring.",
+    "significance": "critical",
+    "leanSymbol": "edgesAtDistance2"
+  },
+  {
+    "id": "ann-e149-strongcoloring",
+    "proofId": "erdos-149",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "definition",
+    "title": "Strong Edge Coloring",
+    "content": "**StrongEdgeColoring G:** A coloring of edges where edges at distance ≤ 2 get different colors.\n\nThis is more restrictive than ordinary edge coloring (where only adjacent edges must differ).",
+    "significance": "critical",
+    "leanSymbol": "StrongEdgeColoring"
+  },
+  {
+    "id": "ann-e149-strongindex",
+    "proofId": "erdos-149",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "definition",
+    "title": "Strong Chromatic Index",
+    "content": "**strongChromaticIndex G (χ'_s):** Minimum colors needed for a strong edge coloring.\n\nχ'_s(G) = min{k : G has a strong k-edge-coloring}\n\nThis equals χ(L(G)²), the chromatic number of the square of the line graph.",
+    "significance": "critical",
+    "leanSymbol": "strongChromaticIndex"
+  },
+  {
+    "id": "ann-e149-linegraph",
+    "proofId": "erdos-149",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "axiom",
+    "title": "Line Graph",
+    "content": "**lineGraph G:** The line graph L(G) has:\n- Vertices = edges of G\n- Two vertices adjacent iff the corresponding edges share an endpoint\n\nStrong edge coloring of G = proper vertex coloring of L(G)².",
+    "significance": "key",
+    "leanSymbol": "lineGraph"
+  },
+  {
+    "id": "ann-e149-conjecture",
+    "proofId": "erdos-149",
+    "range": { "startLine": 89, "endLine": 94 },
+    "type": "definition",
+    "title": "Erdős-Nešetřil Conjecture (1985)",
+    "content": "**ErdosNesetrilConjecture:**\n\nFor all graphs G with max degree Δ: χ'_s(G) ≤ (5/4)Δ²\n\nThis is the main open problem. If true, it would be tight (achieved by C₅ blow-up).",
+    "significance": "critical",
+    "leanSymbol": "ErdosNesetrilConjecture"
+  },
+  {
+    "id": "ann-e149-tight",
+    "proofId": "erdos-149",
+    "range": { "startLine": 96, "endLine": 107 },
+    "type": "axiom",
+    "title": "Tightness: C₅ Blow-up",
+    "content": "**conjecture_is_tight:**\n\nThe C₅ blow-up (replace each vertex of C₅ with Δ/2 vertices) achieves exactly (5/4)Δ².\n\nThis shows if the conjecture is true, the bound cannot be improved.",
+    "significance": "critical",
+    "leanSymbol": "conjecture_is_tight"
+  },
+  {
+    "id": "ann-e149-trivial",
+    "proofId": "erdos-149",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "axiom",
+    "title": "Trivial Bound",
+    "content": "**trivial_bound:**\n\nχ'_s(G) ≤ 2Δ² - 2Δ + 1 ≈ 2Δ²\n\nEach edge has at most 2(Δ-1) neighbors at distance 1 from each endpoint. Greedy coloring gives this bound.",
+    "significance": "supporting",
+    "leanSymbol": "trivial_bound"
+  },
+  {
+    "id": "ann-e149-molloy",
+    "proofId": "erdos-149",
+    "range": { "startLine": 120, "endLine": 125 },
+    "type": "axiom",
+    "title": "Molloy-Reed (1997)",
+    "content": "**molloy_reed_1997:**\n\nχ'_s(G) ≤ 1.998Δ² for large Δ.\n\nFirst to break the factor-2 barrier! Uses the probabilistic method with Lovász Local Lemma.",
+    "significance": "key",
+    "leanSymbol": "molloy_reed_1997"
+  },
+  {
+    "id": "ann-e149-bruhn",
+    "proofId": "erdos-149",
+    "range": { "startLine": 127, "endLine": 131 },
+    "type": "axiom",
+    "title": "Bruhn-Joos (2018)",
+    "content": "**bruhn_joos_2018:**\n\nχ'_s(G) ≤ 1.93Δ² for large Δ.\n\nImproved the constant using refined probabilistic techniques.",
+    "significance": "key",
+    "leanSymbol": "bruhn_joos_2018"
+  },
+  {
+    "id": "ann-e149-bonamy",
+    "proofId": "erdos-149",
+    "range": { "startLine": 133, "endLine": 137 },
+    "type": "axiom",
+    "title": "Bonamy-Perrett-Postle (2022)",
+    "content": "**bonamy_perrett_postle_2022:**\n\nχ'_s(G) ≤ 1.835Δ² for large Δ.\n\nUsed new techniques for coloring graphs with sparse neighborhoods.",
+    "significance": "key",
+    "leanSymbol": "bonamy_perrett_postle_2022"
+  },
+  {
+    "id": "ann-e149-hurley",
+    "proofId": "erdos-149",
+    "range": { "startLine": 139, "endLine": 144 },
+    "type": "axiom",
+    "title": "Hurley-de Joannis de Verclos-Kang (2022)",
+    "content": "**hurley_joannis_kang_2022:**\n\nχ'_s(G) ≤ 1.772Δ² for large Δ.\n\n**Current best bound!** Uses entropy compression and improved local density analysis.",
+    "significance": "critical",
+    "leanSymbol": "hurley_joannis_kang_2022"
+  },
+  {
+    "id": "ann-e149-gap",
+    "proofId": "erdos-149",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "theorem",
+    "title": "The Remaining Gap",
+    "content": "**current_gap:**\n\n1.772 - 1.25 = 0.522\n\nThe gap between best known bound and conjecture is still significant (about 42% of the conjectured bound).",
+    "significance": "key",
+    "leanSymbol": "current_gap"
+  },
+  {
+    "id": "ann-e149-c4free",
+    "proofId": "erdos-149",
+    "range": { "startLine": 156, "endLine": 163 },
+    "type": "axiom",
+    "title": "C₄-free Graphs (Mahdian)",
+    "content": "**mahdian_c4_free:**\n\nFor C₄-free graphs: χ'_s(G) ≤ (2+o(1))Δ²/log Δ\n\nMuch better than general graphs! The absence of 4-cycles allows significant improvement.",
+    "significance": "key",
+    "leanSymbol": "mahdian_c4_free"
+  },
+  {
+    "id": "ann-e149-clique",
+    "proofId": "erdos-149",
+    "range": { "startLine": 179, "endLine": 186 },
+    "type": "axiom",
+    "title": "Clique Number of L(G)²",
+    "content": "**cliqueNumber_LineSquare:**\n\nω(L(G)²) = largest clique in the square of the line graph.\n\nSince χ(H) ≥ ω(H), bounding ω(L(G)²) is a weaker problem than the full conjecture.\n\nEven ω(L(G)²) ≤ (5/4)Δ² is open for general graphs!",
+    "significance": "key",
+    "leanSymbol": "cliqueNumber_LineSquare"
+  },
+  {
+    "id": "ann-e149-cgtt",
+    "proofId": "erdos-149",
+    "range": { "startLine": 217, "endLine": 222 },
+    "type": "axiom",
+    "title": "Chung-Gyárfás-Tuza-Trotter (1990)",
+    "content": "**chung_gyarfas_tuza_trotter_1990:**\n\nIf |E(G)| ≥ (5/4)Δ², then G has two strongly independent edges.\n\nThis is the 'easier' version of the problem that Erdős-Nešetřil also asked. It was solved in 1990.",
+    "significance": "key",
+    "leanSymbol": "chung_gyarfas_tuza_trotter_1990"
+  },
+  {
+    "id": "ann-e149-induced",
+    "proofId": "erdos-149",
+    "range": { "startLine": 230, "endLine": 233 },
+    "type": "definition",
+    "title": "Induced Matching",
+    "content": "**IsInducedMatching G M:**\n\nA set M of edges is an induced matching if all pairs are strongly independent (no two edges at distance ≤ 2).\n\nχ'_s(G) = minimum number of induced matchings partitioning E(G).",
+    "significance": "key",
+    "leanSymbol": "IsInducedMatching"
+  },
+  {
+    "id": "ann-e149-summary",
+    "proofId": "erdos-149",
+    "range": { "startLine": 293, "endLine": 308 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**strong_chromatic_bounds_summary:**\n\nProgress timeline:\n- Trivial: ≤ 2Δ²\n- Molloy-Reed (1997): ≤ 1.998Δ²\n- Bruhn-Joos (2018): ≤ 1.93Δ²\n- Bonamy-Perrett-Postle (2022): ≤ 1.835Δ²\n- Hurley et al. (2022): ≤ 1.772Δ²\n- Conjecture: ≤ 1.25Δ²\n- Lower bound: (5/4)Δ² achievable",
+    "significance": "critical",
+    "leanSymbol": "strong_chromatic_bounds_summary"
+  },
+  {
+    "id": "ann-e149-main",
+    "proofId": "erdos-149",
+    "range": { "startLine": 310, "endLine": 311 },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "**erdos_149:**\n\nErdős Problem #149: Strong Chromatic Index Conjecture - OPEN\n\nThe gap between 1.772Δ² and (5/4)Δ² remains one of the major open problems in graph coloring theory.",
+    "significance": "critical",
+    "leanSymbol": "erdos_149"
+  }
+]
