@@ -55,7 +55,59 @@ theorem hypercube_card (n : ℕ) : Fintype.card (Fin n → Bool) = 2^n := by
 /-- Q_n is n-regular: every vertex has degree n. -/
 theorem hypercube_regular (n : ℕ) (v : Fin n → Bool) :
     (hypercube n).degree v = n := by
-  sorry
+  -- degree = |neighborFinset| = |{w : w differs from v in exactly 1 coord}|
+  -- There's a bijection between neighbors and Fin n: the coordinate that differs
+  rw [SimpleGraph.degree]
+  -- The neighbor finset consists of vertices differing in exactly one coordinate
+  -- We show there's a bijection with Fin n
+  have h : (hypercube n).neighborFinset v = Finset.univ.image (fun i => Function.update v i (!v i)) := by
+    ext w
+    simp only [SimpleGraph.mem_neighborFinset, hypercube, Function.update, Finset.mem_image,
+               Finset.mem_univ, true_and]
+    constructor
+    · -- If w is a neighbor, it differs in exactly one coordinate i
+      intro hadj
+      -- hadj says exactly one coord differs
+      have hone : (Finset.univ.filter fun i => v i ≠ w i).card = 1 := hadj
+      obtain ⟨i, hi, huniq⟩ := Finset.card_eq_one.mp hone
+      use i
+      ext j
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi
+      by_cases hji : j = i
+      · subst hji
+        simp [hi]
+      · have : v j = w j := by
+          by_contra h
+          have hj : j ∈ Finset.univ.filter (fun i => v i ≠ w i) := by simp [h]
+          have : j = i := huniq j hj
+          contradiction
+        simp [hji, this]
+    · -- If w = update v i (¬v i) for some i, then w differs in exactly one coord
+      rintro ⟨i, rfl⟩
+      have : (Finset.univ.filter fun j => v j ≠ (if j = i then !v i else v j)).card = 1 := by
+        have hsing : Finset.univ.filter (fun j => v j ≠ (if j = i then !v i else v j)) = {i} := by
+          ext j
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+          constructor
+          · intro h
+            by_contra hne
+            simp [hne] at h
+          · intro hji
+            subst hji
+            simp [Bool.not_eq_self]
+        rw [hsing, Finset.card_singleton]
+      convert this using 2
+      ext j
+      simp [Function.update_apply]
+  rw [h]
+  -- Now show |image of Fin n| = n
+  have hinj : Function.Injective (fun i => Function.update v i (!v i)) := by
+    intro i j hij
+    by_contra hne
+    have : Function.update v i (!v i) i = Function.update v j (!v j) i := by rw [hij]
+    simp [Function.update_same, Function.update_noteq hne] at this
+    exact Bool.not_eq_self (v i) this
+  rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
 
 /-
 ## Part II: Graph Containment
@@ -122,7 +174,32 @@ def question2 (n : ℕ) : ℕ :=
 /-- A complete graph on 2^n vertices contains Q_n. -/
 theorem complete_contains_hypercube (n : ℕ) :
     ContainsHypercube (⊤ : SimpleGraph (Fin (2^n))) n := by
-  sorry
+  -- The complete graph contains any graph on the same number of vertices
+  -- We need to embed (Fin n → Bool) into Fin (2^n)
+  unfold ContainsHypercube ContainsSubgraph
+  -- Use the equivalence (Fin n → Bool) ≃ Fin (2^n)
+  have hcard : Fintype.card (Fin n → Bool) = 2^n := hypercube_card n
+  -- Get an equivalence using Fintype.equivOfCardEq
+  have equiv : (Fin n → Bool) ≃ Fin (2^n) := by
+    exact Fintype.equivOfCardEq (by rw [hcard, Fintype.card_fin])
+  use equiv
+  constructor
+  · exact equiv.injective
+  · intro x y hxy
+    -- In the complete graph, all distinct vertices are adjacent
+    simp only [SimpleGraph.top_adj]
+    intro heq
+    -- If equiv x = equiv y, then x = y
+    have : x = y := equiv.injective heq
+    -- But x and y are adjacent in the hypercube, so x ≠ y
+    unfold hypercube at hxy
+    simp only at hxy
+    have hne : (Finset.univ.filter fun i => x i ≠ y i).card = 1 := hxy
+    have : x ≠ y := by
+      intro hxy'
+      subst hxy'
+      simp at hne
+    contradiction
 
 /-- Q_n has 2^(n-1)·n edges. -/
 theorem hypercube_edge_count (n : ℕ) (hn : n ≥ 1) :
