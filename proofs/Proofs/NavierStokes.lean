@@ -129,12 +129,20 @@ def spectralGap : ℝ := 4 * Real.pi^2
 theorem spectralGap_pos : 0 < spectralGap := by unfold spectralGap; positivity
 
 
-/-- **Axiom: Spectral Gap Value**
-    4π² ≈ 39.48 > 39. Requires tighter π bounds than Mathlib's pi_gt_three provides.
-    Need π > 3.12, verifiable with interval arithmetic. -/
-axiom spectralGap_val_axiom : spectralGap > 39
-
-theorem spectralGap_val : spectralGap > 39 := spectralGap_val_axiom
+/-- **PROVEN: Spectral Gap Value**
+    4π² ≈ 39.48 > 39. Uses pi_gt_d2 : 3.14 < π from Mathlib.
+    Then π² > 9.8596, so 4π² > 39.4384 > 39. -/
+theorem spectralGap_val : spectralGap > 39 := by
+  unfold spectralGap
+  have h1 : 3.14 < Real.pi := Real.pi_gt_d2
+  have h2 : (3.14 : ℝ) ^ 2 < Real.pi ^ 2 := by
+    apply sq_lt_sq'
+    · linarith [Real.pi_pos]
+    · exact h1
+  calc 4 * Real.pi ^ 2 > 4 * 3.14 ^ 2 := by linarith
+    _ = 4 * 9.8596 := by norm_num
+    _ = 39.4384 := by norm_num
+    _ > 39 := by norm_num
 
 
 /-- Faber-Krahn constant: c_FK = (1 - e⁻²)·π²/4 ≈ 2.11 -/
@@ -737,12 +745,19 @@ theorem θcrit_pos : 0 < θcrit := by
   positivity
 
 
-/-- **Axiom: Theta Crit Less Than 0.99**
-    θcrit = (1 - e⁻²)/2 ≈ 0.432 < 0.99.
-    Requires interval arithmetic for exp(-2) ≈ 0.135. -/
-axiom θcrit_lt_099_axiom : θcrit < 0.99
-
-theorem θcrit_lt_099 : θcrit < 0.99 := θcrit_lt_099_axiom
+/-- **PROVEN: Theta Crit Less Than 0.99**
+    θcrit = (1 - e⁻²)/2. Since e⁻² > 0, we have 1 - e⁻² < 1,
+    so θcrit < 1/2 = 0.5 < 0.99. -/
+theorem θcrit_lt_099 : θcrit < 0.99 := by
+  unfold θcrit κ_gaussian
+  have h1 : (0 : ℝ) < Real.exp (-2) := Real.exp_pos _
+  have h2 : 1 - Real.exp (-2) < 1 := by linarith
+  have h3 : (1 - Real.exp (-2)) / 2 < 1 / 2 := by
+    apply div_lt_div_of_pos_right h2
+    norm_num
+  calc (1 - Real.exp (-2)) / 2 < 1 / 2 := h3
+    _ = 0.5 := by norm_num
+    _ < 0.99 := by norm_num
 
 
 /-- **Axiom: Key Inequality Full**
@@ -1022,13 +1037,27 @@ This is a MUCH weaker statement than "one ball captures 50%"
 def criticalThreshold : ℝ := 2 / Real.pi^2
 
 
-/-- **Axiom: Critical Threshold Approximation**
-    2/π² ≈ 0.2026... < 0.21.
-    Requires tighter π bounds than Mathlib's pi_gt_three provides. -/
-axiom criticalThreshold_approx_axiom : criticalThreshold < 0.21
-
-/-- criticalThreshold ≈ 0.203 -/
-theorem criticalThreshold_approx : criticalThreshold < 0.21 := criticalThreshold_approx_axiom
+/-- **PROVEN: Critical Threshold Approximation**
+    2/π² ≈ 0.2026... < 0.21. Uses pi_gt_d2 : 3.14 < π from Mathlib.
+    Then π² > 9.8596, so 2/π² < 2/9.8596 < 0.21. -/
+theorem criticalThreshold_approx : criticalThreshold < 0.21 := by
+  unfold criticalThreshold
+  have h1 : 3.14 < Real.pi := Real.pi_gt_d2
+  have h2 : (3.14 : ℝ) ^ 2 < Real.pi ^ 2 := by
+    apply sq_lt_sq'
+    · linarith [Real.pi_pos]
+    · exact h1
+  have h3 : (3.14 : ℝ) ^ 2 = 9.8596 := by norm_num
+  have h4 : (9.8596 : ℝ) < Real.pi ^ 2 := by linarith
+  have hpi_pos : (0 : ℝ) < Real.pi ^ 2 := sq_pos_of_pos Real.pi_pos
+  have h5 : (0 : ℝ) < (9.8596 : ℝ) := by norm_num
+  have h6 : 2 / Real.pi ^ 2 < 2 / (9.8596 : ℝ) := by
+    apply div_lt_div_of_pos_left
+    · norm_num
+    · exact h5
+    · exact h4
+  have h7 : (2 : ℝ) / 9.8596 < 0.21 := by norm_num
+  linarith
 
 
 /-- For K-ball concentration to suffice: c > 0.203 · K -/
