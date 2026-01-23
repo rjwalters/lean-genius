@@ -19,17 +19,17 @@
     "phase": "PROGRESS",
     "since": "2026-01-23T00:00:00Z",
     "iteration": 8,
-    "focus": "Eliminated 10 axioms total (3 monotonicity + 6 numerical + 1 Archimedean)",
+    "focus": "Eliminated 11 axioms total (3 monotonicity + 6 numerical + 1 Archimedean + 1 asymptotic)",
     "blockers": ["key_inequality_full_axiom appears mathematically false - κ_gaussian * c_FK_full ≈ 1.84 < 2"],
     "nextAction": "Investigate exp_dominates_poly_axiom or remaining PDE axioms",
     "attemptCounts": {
-      "total": 8,
-      "currentApproach": 5,
+      "total": 9,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 10 axioms total. (1) Monotonicity: enstrophy_bounded_2d, ancient_E_monotone, E_bounded_after. (2) π bounds: spectralGap_val, θcrit_lt_099, criticalThreshold_approx, A_spectral_gt_one. (3) Exp+π combined: key_numerical_inequality, kappa_cFK_gt_8. (4) Archimedean: growth_unbounded. File now has 37 axioms (was 47). NOTE: key_inequality_full_axiom and θcrit_cFK_gt_1_axiom appear mathematically FALSE.",
+    "progressSummary": "PROGRESS: Eliminated 11 axioms total. (1) Monotonicity: enstrophy_bounded_2d, ancient_E_monotone, E_bounded_after. (2) π bounds: spectralGap_val, θcrit_lt_099, criticalThreshold_approx, A_spectral_gt_one. (3) Exp+π combined: key_numerical_inequality, kappa_cFK_gt_8. (4) Archimedean: growth_unbounded. (5) Asymptotics: exp_dominates_poly. File now has 36 axioms (was 47). NOTE: key_inequality_full_axiom and θcrit_cFK_gt_1_axiom appear mathematically FALSE.",
     "builtItems": [
       "proofs/Proofs/NavierStokes.lean - comprehensive NS infrastructure (existing)",
       "2D global existence/uniqueness theorems (axiomatized, structure in place)",
@@ -55,7 +55,8 @@
       "key_numerical_inequality theorem - PROVEN (was axiom)",
       "kappa_cFK_gt_8 theorem - PROVEN (was axiom)",
       "growth_unbounded theorem - PROVEN using exists_nat_gt (Archimedean property)",
-      "A_spectral_gt_one theorem - PROVEN using pi_gt_d2 (π²/8 > 1)"
+      "A_spectral_gt_one theorem - PROVEN using pi_gt_d2 (π²/8 > 1)",
+      "exp_dominates_poly theorem - PROVEN using isLittleO_rpow_exp_pos_mul_atTop (exponential dominates linear)"
     ],
     "insights": [
       "NavierStokes.lean exists with 1703 lines: 0 sorries, 44 axioms - excellent infrastructure",
@@ -89,7 +90,9 @@
       "These 'full' constants have a squaring error vs the original κ=4 constants which work",
       "38 axioms remain after 9 eliminations",
       "A_spectral = π²/8 ≈ 1.23 > 1 - uses same pi_gt_d2 pattern",
-      "37 axioms remain after 10 eliminations"
+      "37 axioms remain after 10 eliminations",
+      "isLittleO_rpow_exp_pos_mul_atTop : x^s = o(exp(bx)) for any s, b>0 - key asymptotic result",
+      "36 axioms remain after 11 eliminations"
     ],
     "mathlibGaps": [
       "antitoneOn_of_deriv_nonpos API works well - no adjustment needed",

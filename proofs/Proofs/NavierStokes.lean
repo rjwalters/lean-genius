@@ -110,7 +110,7 @@ set_option linter.unusedVariables false
 noncomputable section
 
 
-open MeasureTheory Real Set Filter Topology
+open MeasureTheory Real Set Filter Topology Asymptotics
 open scoped Topology BigOperators ENNReal
 
 
@@ -296,16 +296,71 @@ theorem growth_unbounded (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) 
   linarith
 
 
-/-- **Axiom: Exponential Dominates Polynomial**
+/-- **PROVEN: Exponential Dominates Polynomial**
     Standard calculus result: exp grows faster than any polynomial.
-    For any linear function Ax + B, exp(cx) eventually dominates. -/
-axiom exp_dominates_poly_axiom (c : ℝ) (hc : c > 0) :
-    ∀ A B : ℝ, ∃ x₀ > 0, ∀ x > x₀, Real.exp (c * x) > A * x + B
-
-/-- Exponential dominates polynomial -/
+    Uses isLittleO_rpow_exp_pos_mul_atTop from Mathlib. -/
 theorem exp_dominates_poly (c : ℝ) (hc : c > 0) :
-    ∀ A B : ℝ, ∃ x₀ > 0, ∀ x > x₀, Real.exp (c * x) > A * x + B :=
-  exp_dominates_poly_axiom c hc
+    ∀ A B : ℝ, ∃ x₀ > 0, ∀ x > x₀, Real.exp (c * x) > A * x + B := by
+  intro A B
+  -- exp(cx) eventually dominates x^1 by isLittleO_rpow_exp_pos_mul_atTop
+  have h_o : (fun x => x) =o[Filter.atTop] (fun x => Real.exp (c * x)) := by
+    have h := isLittleO_rpow_exp_pos_mul_atTop 1 hc
+    simp only [Real.rpow_one] at h
+    exact h
+  -- isLittleO means: ∀ ε > 0, eventually ‖x‖ ≤ ε * ‖exp(cx)‖
+  have h_pos : (0 : ℝ) < 1 / (2 * |A| + 2) := by positivity
+  rw [isLittleO_iff] at h_o
+  specialize h_o h_pos
+  -- exp tends to infinity
+  have h_exp_tends : Filter.Tendsto (fun x => Real.exp (c * x)) Filter.atTop Filter.atTop :=
+    Real.tendsto_exp_atTop.comp (Filter.tendsto_id.const_mul_atTop hc)
+  -- Eventually exp(cx) > 2 * |B| + 2
+  have h_B : ∀ᶠ x in Filter.atTop, Real.exp (c * x) > 2 * |B| + 2 := by
+    exact h_exp_tends.eventually_gt_atTop (2 * |B| + 2)
+  -- Eventually x > 0
+  have h_x_pos : ∀ᶠ x in Filter.atTop, (0 : ℝ) < x := Filter.eventually_gt_atTop 0
+  -- Combine all three conditions
+  have h_combined := h_o.and (h_B.and h_x_pos)
+  rw [Filter.Eventually, Filter.mem_atTop_sets] at h_combined
+  obtain ⟨x₀, hx₀⟩ := h_combined
+  use max x₀ 1
+  constructor
+  · linarith [le_max_right x₀ 1]
+  intro x hx
+  have hx₀_le : x₀ ≤ x := by linarith [le_max_left x₀ 1]
+  specialize hx₀ x hx₀_le
+  obtain ⟨h1, h2, h3⟩ := hx₀
+  have h_exp_pos : 0 < Real.exp (c * x) := Real.exp_pos _
+  -- In Real: ‖x‖ = |x| and ‖exp(cx)‖ = exp(cx) since exp > 0
+  simp only [Real.norm_eq_abs, abs_of_pos h3, abs_of_pos h_exp_pos] at h1
+  -- From h1: (2|A| + 2) * x ≤ exp(cx)
+  have h_key : (2 * |A| + 2) * x ≤ Real.exp (c * x) := by
+    have h8 : 2 * |A| + 2 > 0 := by positivity
+    calc (2 * |A| + 2) * x = (2 * |A| + 2) * x := rfl
+      _ ≤ (2 * |A| + 2) * (1 / (2 * |A| + 2) * Real.exp (c * x)) := by
+          apply mul_le_mul_of_nonneg_left h1 (le_of_lt h8)
+      _ = Real.exp (c * x) := by field_simp
+  -- So |A| * x ≤ exp(cx) / 2
+  have h4 : |A| * x ≤ Real.exp (c * x) / 2 := by
+    have h_ineq : 2 * |A| * x ≤ (2 * |A| + 2) * x := by
+      have hx_nn : 0 ≤ x := le_of_lt h3
+      nlinarith [abs_nonneg A]
+    calc |A| * x = (2 * |A| * x) / 2 := by ring
+      _ ≤ ((2 * |A| + 2) * x) / 2 := by linarith
+      _ ≤ Real.exp (c * x) / 2 := by linarith
+  -- A * x ≤ |A| * x ≤ exp(cx)/2
+  have h_Ax : A * x ≤ Real.exp (c * x) / 2 := by
+    calc A * x ≤ |A * x| := le_abs_self _
+      _ = |A| * |x| := abs_mul A x
+      _ = |A| * x := by rw [abs_of_pos h3]
+      _ ≤ Real.exp (c * x) / 2 := h4
+  -- B ≤ |B| < exp(cx)/2
+  have h_B_bound : B < Real.exp (c * x) / 2 := by
+    have h5 : (2 : ℝ) * |B| < Real.exp (c * x) := by linarith
+    calc B ≤ |B| := le_abs_self B
+      _ < Real.exp (c * x) / 2 := by linarith
+  -- Combine: A*x + B < exp(cx)/2 + exp(cx)/2 = exp(cx)
+  linarith
 
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
