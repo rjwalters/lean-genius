@@ -12341,17 +12341,23 @@
   },
   {
     "id": "erdos-791",
-    "title": "Erdős Problem #791",
+    "title": "Erdős Problem #791: Finite Additive 2-Bases",
     "slug": "erdos-791",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that there exists ... of size ... with .... Estimate .... In particular is it true that ...?\n\n\n\nSuch ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) be the minimal size of a set A ⊆ {0,...,n} such that {0,...,n} ⊆ A+A. Is g(n) ~ 2√n? NO - disproved by Mrose (1979).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "additive-bases",
+      "sumsets",
+      "disproved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 791,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-793",
