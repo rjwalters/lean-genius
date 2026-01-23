@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-1042-1",
+    "proofId": "erdos-1042",
+    "type": "definition",
+    "title": "Transfinite Diameter",
+    "content": "For a closed set F ⊆ ℂ, the transfinite diameter (logarithmic capacity) is ρ(F) = lim_{n→∞} sup (∏_{i<j} |zᵢ-zⱼ|)^{1/C(n,2)}.",
+    "range": { "startLine": 43, "endLine": 48 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-2",
+    "proofId": "erdos-1042",
+    "type": "axiom",
+    "title": "Disc Diameter",
+    "content": "The transfinite diameter of a disc of radius r is exactly r.",
+    "range": { "startLine": 56, "endLine": 61 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-1042-3",
+    "proofId": "erdos-1042",
+    "type": "axiom",
+    "title": "Interval Diameter",
+    "content": "The transfinite diameter of [-1,1] ⊆ ℂ is 1/2.",
+    "range": { "startLine": 63, "endLine": 67 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-1042-4",
+    "proofId": "erdos-1042",
+    "type": "definition",
+    "title": "Polynomial With Roots",
+    "content": "A monic polynomial f(z) = ∏ᵢ(z - zᵢ) where all roots zᵢ lie in F.",
+    "range": { "startLine": 73, "endLine": 80 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-1042-5",
+    "proofId": "erdos-1042",
+    "type": "definition",
+    "title": "Lemniscate",
+    "content": "For a polynomial f, the lemniscate is the sublevel set {z : |f(z)| < 1}.",
+    "range": { "startLine": 82, "endLine": 87 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-6",
+    "proofId": "erdos-1042",
+    "type": "definition",
+    "title": "Main Question 1",
+    "content": "For F with transfinite diameter 1 not contained in any disc of radius 1, can the lemniscate have n connected components?",
+    "range": { "startLine": 107, "endLine": 116 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-7",
+    "proofId": "erdos-1042",
+    "type": "definition",
+    "title": "Main Question 2",
+    "content": "For F with transfinite diameter < 1, must the lemniscate have at most (1-c)n connected components?",
+    "range": { "startLine": 118, "endLine": 126 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-8",
+    "proofId": "erdos-1042",
+    "type": "theorem",
+    "title": "EHP Result (1958)",
+    "content": "For the unit disc, the lemniscate can have n connected components. Example: f(z) = z^n + 1.",
+    "range": { "startLine": 132, "endLine": 140 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-9",
+    "proofId": "erdos-1042",
+    "type": "axiom",
+    "title": "GR Theorem 1",
+    "content": "If 0 < d < 1 (d = transfinite diameter of F), then the lemniscate has at most (1-c)n connected components for some c > 0.",
+    "range": { "startLine": 156, "endLine": 165 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-10",
+    "proofId": "erdos-1042",
+    "type": "axiom",
+    "title": "GR Theorem 2",
+    "content": "If d ≤ 1/4 and F is connected, then the lemniscate has only one connected component.",
+    "range": { "startLine": 167, "endLine": 175 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-11",
+    "proofId": "erdos-1042",
+    "type": "axiom",
+    "title": "GR Theorem 3",
+    "content": "There exist examples with transfinite diameter 1 such that the lemniscate can have n connected components for infinitely many n.",
+    "range": { "startLine": 177, "endLine": 184 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-12",
+    "proofId": "erdos-1042",
+    "type": "insight",
+    "title": "Key Counterexample",
+    "content": "The disc of radius 1/2 and interval [-1,1] both have transfinite diameter 1/2, but behave completely differently: the disc always gives 1 component, while the interval can give many.",
+    "range": { "startLine": 190, "endLine": 205 },
+    "significance": "high"
+  },
+  {
+    "id": "ann-1042-13",
+    "proofId": "erdos-1042",
+    "type": "theorem",
+    "title": "Main Question 2 True",
+    "content": "For transfinite diameter < 1, components are bounded by (1-c)n. This confirms the affirmative answer.",
+    "range": { "startLine": 211, "endLine": 217 },
+    "significance": "medium"
+  },
+  {
+    "id": "ann-1042-14",
+    "proofId": "erdos-1042",
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Erdős #1042 is SOLVED: the complete solution shows component counts depend on geometry, not just transfinite diameter.",
+    "range": { "startLine": 276, "endLine": 297 },
+    "significance": "high"
+  }
+]

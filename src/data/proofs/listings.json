@@ -1431,17 +1431,22 @@
   },
   {
     "id": "erdos-1042",
-    "title": "Erdős Problem #1042",
+    "title": "Erdős Problem #1042: Connected Components of Polynomial Lemniscates",
     "slug": "erdos-1042",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a closed set of transfinite diameter ... which is not contained in any closed disc of radius ....\n\nIf ... with all...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For polynomials with roots in a closed set F ⊆ ℂ, how many connected components can the lemniscate {z : |f(z)| < 1} have? The answer depends on the transfinite diameter of F and its geometry. Solved by Ghosh-Ramachandran (2024).",
+    "status": "complete",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "complex-analysis",
+      "potential-theory",
+      "polynomials",
+      "erdos",
+      "lemniscates",
+      "transfinite-diameter"
     ],
     "erdosNumber": 1042,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 14
   },
   {
     "id": "erdos-1043",
