@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-471-overview",
+    "proofId": "erdos-471",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #471 (Ulam's Problem):**\n\nGiven a finite set of primes Q₀, define Qᵢ₊₁ = Qᵢ ∪ {primes that are sums of 3 distinct elements of Qᵢ}.\n\n**Question:** Is there Q₀ such that |Qᵢ| → ∞?\n\n**Answer:** YES\n\nBy Vinogradov's theorem, taking Q₀ = {primes ≤ N} for large N ensures all primes eventually appear.\n\n**Status:** SOLVED",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-sumdef",
+    "proofId": "erdos-471",
+    "range": { "startLine": 42, "endLine": 50 },
+    "type": "definition",
+    "title": "IsSumOfThreeDistinctPrimes",
+    "content": "**Sum of three distinct primes:**\n\nn is a sum of three distinct primes from S if:\n∃ p, q, r ∈ S with p ≠ q ≠ r and n = p + q + r\n\nAll three must be prime and distinct.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-471-nextQ",
+    "proofId": "erdos-471",
+    "range": { "startLine": 52, "endLine": 57 },
+    "type": "definition",
+    "title": "nextQ",
+    "content": "**The Q-closure operation:**\n\nnextQ(Q) = Q ∪ {p prime : p = sum of 3 distinct elements of Q}\n\nThis adds all primes that can be formed as three-element sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-qseq",
+    "proofId": "erdos-471",
+    "range": { "startLine": 59, "endLine": 65 },
+    "type": "definition",
+    "title": "QSeq",
+    "content": "**The sequence Qᵢ:**\n\n- Q₀ = initial set\n- Qᵢ₊₁ = nextQ(Qᵢ)\n\nIteratively apply the closure operation.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-qlim",
+    "proofId": "erdos-471",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "definition",
+    "title": "QLim",
+    "content": "**The limit Q∞:**\n\nQ∞ = ⋃ᵢ Qᵢ\n\nThe set of all primes that eventually appear in the sequence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-471-ulam",
+    "proofId": "erdos-471",
+    "range": { "startLine": 78, "endLine": 84 },
+    "type": "definition",
+    "title": "UlamsQuestion",
+    "content": "**Ulam's Question:**\n\nDoes there exist a finite set of primes Q₀ such that |Qᵢ| → ∞?\n\nEquivalently: can we start with finitely many primes and generate arbitrarily many through three-element sums?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-vinogradov",
+    "proofId": "erdos-471",
+    "range": { "startLine": 98, "endLine": 105 },
+    "type": "axiom",
+    "title": "Vinogradov's Theorem",
+    "content": "**Vinogradov's Three Primes Theorem (1937):**\n\nEvery sufficiently large odd integer is the sum of three primes.\n\nThere exists N such that: n > N and n odd ⟹ n = p + q + r for primes p, q, r.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-vino-smaller",
+    "proofId": "erdos-471",
+    "range": { "startLine": 117, "endLine": 127 },
+    "type": "axiom",
+    "title": "Vinogradov for Smaller Primes",
+    "content": "**Key variant:**\n\nFor large primes p > N, there exist smaller primes q₁, q₂, q₃ < p such that p = q₁ + q₂ + q₃.\n\nThis is the crucial ingredient: large primes decompose into smaller ones!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-solution",
+    "proofId": "erdos-471",
+    "range": { "startLine": 133, "endLine": 139 },
+    "type": "definition",
+    "title": "vinogradovQ₀",
+    "content": "**The Solution:**\n\nTake Q₀ = {primes ≤ N} where N is Vinogradov's constant.\n\nThis finite set generates all primes: any prime > N is a sum of three smaller primes, which are either in Q₀ or added later.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-positive",
+    "proofId": "erdos-471",
+    "range": { "startLine": 160, "endLine": 173 },
+    "type": "theorem",
+    "title": "ulams_question_positive",
+    "content": "**Answer: YES**\n\nUlam's question has a positive answer.\n\nWith Q₀ = {primes ≤ N}, the sequence Qᵢ grows without bound, eventually containing all primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-stronger",
+    "proofId": "erdos-471",
+    "range": { "startLine": 175, "endLine": 186 },
+    "type": "theorem",
+    "title": "stronger_question_positive",
+    "content": "**Stronger Result:**\n\nNot only does |Qᵢ| → ∞, but Q∞ = {all primes}.\n\nEvery prime eventually appears in the sequence.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-471-ulam-example",
+    "proofId": "erdos-471",
+    "range": { "startLine": 192, "endLine": 196 },
+    "type": "definition",
+    "title": "ulamQ₀",
+    "content": "**Ulam's Original Example:**\n\nQ₀ = {3, 5, 7, 11}\n\nThis was Ulam's specific test case. Does this small seed generate all odd primes?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-471-q1-19",
+    "proofId": "erdos-471",
+    "range": { "startLine": 198, "endLine": 215 },
+    "type": "theorem",
+    "title": "Q1_contains_19",
+    "content": "**Q₁ contains 19:**\n\n3 + 5 + 11 = 19 (prime)\n\nSo 19 ∈ Q₁.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-471-q1-23",
+    "proofId": "erdos-471",
+    "range": { "startLine": 217, "endLine": 228 },
+    "type": "theorem",
+    "title": "Q1_contains_23",
+    "content": "**Q₁ contains 23:**\n\n5 + 7 + 11 = 23 (prime)\n\nSo 23 ∈ Q₁.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-471-monotone",
+    "proofId": "erdos-471",
+    "range": { "startLine": 241, "endLine": 250 },
+    "type": "theorem",
+    "title": "QSeq_monotone",
+    "content": "**Monotonicity:**\n\nQᵢ ⊆ Qᵢ₊₁ for all i.\n\nOnce a prime enters the sequence, it stays forever.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-471-primes-only",
+    "proofId": "erdos-471",
+    "range": { "startLine": 252, "endLine": 264 },
+    "type": "theorem",
+    "title": "QSeq_primes",
+    "content": "**Primes Only:**\n\nIf Q₀ contains only primes, then Qᵢ contains only primes for all i.\n\nThe closure operation preserves primality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-471-summary",
+    "proofId": "erdos-471",
+    "range": { "startLine": 318, "endLine": 338 },
+    "type": "theorem",
+    "title": "erdos_471_summary",
+    "content": "**Complete Summary:**\n\nErdős Problem #471 is **SOLVED**.\n\n**QUESTION:** Is there Q₀ such that |Qᵢ| → ∞?\n\n**ANSWER:** YES\n\n**KEY INSIGHT:** Vinogradov's theorem ensures large primes decompose into smaller ones.\n\n**CONTRIBUTORS:** Ulam (question), Mrazović-Kovač, Alon (resolution)",
+    "significance": "critical"
+  }
+]
