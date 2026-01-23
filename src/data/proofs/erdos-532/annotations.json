@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "coloring-def",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 55,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Finite Coloring",
+    "content": "A k-coloring of ℕ assigns one of k colors to each natural number. Formally, it's a function c : ℕ → Fin k. This is the standard setup for partition regularity problems in Ramsey theory. The original Graham-Rothschild question asked about 2-colorings, but Hindman's theorem works for any k ≥ 1.",
+    "significance": "core"
+  },
+  {
+    "id": "monochromatic-def",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 61,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Monochromatic Set",
+    "content": "A set S is monochromatic under coloring c if all elements of S receive the same color. This means ∃ color, ∀ n ∈ S, c(n) = color. Finding large monochromatic structures is the central goal of Ramsey theory.",
+    "significance": "core"
+  },
+  {
+    "id": "finite-sums-def",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 78,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Finite Sums FS(A)",
+    "content": "The finite sums of a set A, denoted FS(A), is the collection of all sums Σ_{n∈S} n where S ranges over non-empty finite subsets of A. For example, if A = {2, 3, 5}, then FS(A) includes 2, 3, 5, 2+3=5, 2+5=7, 3+5=8, and 2+3+5=10. When A is infinite, FS(A) is also infinite.",
+    "significance": "core"
+  },
+  {
+    "id": "ip-set-def",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "IP Set",
+    "content": "An IP set is a set that contains all finite sums from some infinite sequence. The name 'IP' stands for 'infinite-dimensional parallelepiped' or alternatively references 'idempotent' ultrafilters. Formally, S is an IP set if FS(A) ⊆ S for some infinite A. IP sets are central to additive combinatorics and have rich algebraic structure.",
+    "significance": "core"
+  },
+  {
+    "id": "hindman-theorem",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 109,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "Hindman's Theorem (1974)",
+    "content": "This is the main result: for any finite coloring of ℕ, there exists an infinite set A such that all finite subset sums of A are monochromatic. Hindman's original 1974 proof was over 40 pages of intricate combinatorial arguments. Modern proofs use ultrafilter methods, showing that idempotent ultrafilters in (βℕ, +) give a more elegant approach.",
+    "significance": "core"
+  },
+  {
+    "id": "color-class-form",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 121,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Color Class Form",
+    "content": "An equivalent formulation: for any finite coloring, some color class contains an IP set. This directly answers the Graham-Rothschild question. The proof derives this from the main Hindman theorem by observing that if FS(A) is monochromatic with color c, then FS(A) ⊆ {n | c(n) = color}, making that color class an IP set.",
+    "significance": "core"
+  },
+  {
+    "id": "erdos-532-answer",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 140,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Answer to Problem #532",
+    "content": "This theorem directly answers the original Erdős problem: for any 2-coloring of ℕ, some color class is an IP set. The proof is a simple application of Hindman's theorem with k=2. This was the original question posed by Graham and Rothschild, answered affirmatively by Hindman for any number of colors.",
+    "significance": "core"
+  },
+  {
+    "id": "singleton-property",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 164,
+      "endLine": 175
+    },
+    "type": "theorem",
+    "title": "Singleton in FS(A)",
+    "content": "Every element a ∈ A appears in FS(A) via the singleton sum {a}. This shows that A ⊆ FS(A) for any set A. It's one of the basic structural properties of finite sums, and implies that if FS(A) is monochromatic, then A itself is monochromatic.",
+    "significance": "standard"
+  },
+  {
+    "id": "ultrafilter-approach",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 202,
+      "endLine": 225
+    },
+    "type": "insight",
+    "title": "Ultrafilter Proof Method",
+    "content": "The modern approach to Hindman's theorem uses the Stone-Čech compactification βℕ with an extended addition operation. The key insight is that (βℕ, +) is a compact right-topological semigroup, so by Ellis's lemma, it contains idempotent elements p = p + p. Any set in such an idempotent ultrafilter is an IP set, and the ultra property ensures that for any partition, some cell belongs to p.",
+    "significance": "advanced"
+  },
+  {
+    "id": "summary-theorem",
+    "proofId": "erdos-532",
+    "range": {
+      "startLine": 270,
+      "endLine": 301
+    },
+    "type": "insight",
+    "title": "Problem Status Summary",
+    "content": "Erdős Problem #532 was SOLVED by Hindman in 1974. The result is now a cornerstone of Ramsey theory with three main proof approaches: (1) Hindman's original combinatorial induction, (2) ultrafilter/topological dynamics via idempotents in βℕ, and (3) derivation from the Hales-Jewett theorem. The theorem has profound implications in combinatorics, ergodic theory, and algebra.",
+    "significance": "standard"
+  }
+]
