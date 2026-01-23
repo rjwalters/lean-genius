@@ -14724,17 +14724,24 @@
   },
   {
     "id": "erdos-916",
-    "title": "Erdős Problem #916",
+    "title": "Erdős Problem #916: Graphs with Cycles and Triply Adjacent Vertices",
     "slug": "erdos-916",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with ... vertices and ... edges contain a cycle and another vertex adjacent to three vertices on the cycle?\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every graph with n vertices and 2n-2 edges contain a cycle and another vertex adjacent to three vertices on the cycle? YES, proved by Thomassen (1974).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graphs",
+      "cycles",
+      "subdivisions",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 916,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-917",
