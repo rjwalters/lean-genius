@@ -1,33 +1,149 @@
 {
   "id": "erdos-433",
-  "title": "Erdős Problem #433",
+  "title": "Erdős Problem #433: Maximum Frobenius Numbers",
   "slug": "erdos-433",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a finite set then let ... denote the greatest integer which is not expressible as a finite sum of elements from ......",
+  "description": "For g(k,n) = max{G(A) : A ⊆ {1,...,n}, |A| = k, gcd(A) = 1}, prove that g(k,n) ~ n²/(k-1). SOLVED by Dixmier (1990) who gave precise bounds.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (1972), Dixmier (1990)",
     "sourceUrl": "https://erdosproblems.com/433",
-    "date": "",
-    "status": "pending",
+    "date": "1972",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos433Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "frobenius-number",
+      "numerical-semigroups",
+      "extremal-combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 433,
     "erdosUrl": "https://erdosproblems.com/433",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.gcd",
+        "description": "GCD of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum for defining Frobenius number",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "NumericalSemigroup definition: set of representable integers",
+      "frobeniusNumber (G) definition: largest non-representable integer",
+      "IsCoprime predicate for sets",
+      "g(k,n) definition: max Frobenius over k-subsets of {1,...,n}",
+      "Sylvester-Frobenius formula axiom: G({a,b}) = ab - a - b",
+      "Dixmier's lower and upper bound axioms",
+      "AsymptoticFormula definition: g(k,n) ~ n²/(k-1)",
+      "Extremal set structure theorem",
+      "Gap counting and symmetry properties"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #433 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subset \\mathbb{N}$ is a finite set then let $G(A)$ denote the greatest integer which is not expressible as a finite sum of elements from $A$ (with repetitions allowed). Let\\[g(k,n)=\\max G(A)\\]where the maximum is taken over all $A\\subseteq \\{1,\\ldots,n\\}$ of size $\\lvert A\\rvert=k$ which has no common divisor. Is it true that\\[g(k,n)\\sim \\frac{n^2}{k-1}?\\]\n\n\n\nThis type of problem is associated with Frobenius (see also [434]). Erd\\H{o}s and Graham \\cite{ErGr72} proved $g(k,n)<2n^2/k$, and there are examples which show that\\[g(k,n) \\geq \\frac{n^2}{k-1}-5n\\]for $k\\geq 2$.\n\nThe problem is written as Erd\\H{o}s and Graham describe it, but presumably they had in mind the regime where $k$ is fixed and $n\\to \\infty$.\n\nThis is true, and was proved by Dixmier \\cite{Di90}, who proved that in fact, for all $2\\leq k<n$,\\[\\left\\lfloor\\frac{n-2}{k-1}\\right\\rfloor(n-k+1)-1\\leq g(k,n) \\leq \\left(\\left\\lfloor\\frac{n-1}{k-1}\\right\\rfloor-1\\right)n-1,\\]and determined $g(k,n)$ exactly when $k-1$ divides any of $n,n-1,n-2$.\n\n\n\n\nReferences\n\n\n[Di90] Dixmier, Jacques, Proof of a conjecture by {E}rd\\H{o}s and {G}raham concerning\nthe problem of {F}robenius. J. Number Theory (1990), 198--209.\n\n[ErGr72] Erd\\H{o}s, P. and Graham, R. L., On a linear diophantine problem of Frobenius. Acta Arith. (1972), 399-408.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #433**\n\nThis problem connects extremal combinatorics to the classical Frobenius number problem (also called the coin problem or money changing problem).\n\n**Key History:**\n- Sylvester-Frobenius (1884): G({a,b}) = ab - a - b for coprime a, b\n- Erdős-Graham (1972): First bounds g(k,n) < 2n²/k\n- Dixmier (1990): Proved exact asymptotic g(k,n) ~ n²/(k-1)\n\n**The Frobenius Problem:**\nGiven positive integers with gcd = 1, find the largest integer that cannot be represented as their non-negative linear combination. The \"Chicken McNugget\" problem is a famous example.",
+    "problemStatement": "**Problem Statement**\n\nLet $G(A)$ denote the **Frobenius number** of a finite set $A \\subset \\mathbb{N}$ - the largest integer not expressible as a sum $\\sum_{a \\in A} c_a \\cdot a$ with $c_a \\geq 0$.\n\nDefine:\n$$g(k,n) = \\max\\{G(A) : A \\subseteq \\{1,\\ldots,n\\}, |A| = k, \\gcd(A) = 1\\}$$\n\n**Question:** Is it true that $g(k,n) \\sim \\frac{n^2}{k-1}$ as $n \\to \\infty$ with $k$ fixed?\n\n**Answer:** YES (Dixmier, 1990)\n\nDixmier proved:\n$$\\left\\lfloor\\frac{n-2}{k-1}\\right\\rfloor(n-k+1) - 1 \\leq g(k,n) \\leq \\left(\\left\\lfloor\\frac{n-1}{k-1}\\right\\rfloor - 1\\right)n - 1$$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Frobenius Number:** Define G(A) as the supremum of non-representable integers\n\n2. **Sylvester-Frobenius:** State the classical formula G({a,b}) = ab - a - b\n\n3. **The Function g(k,n):** Maximum G over coprime k-subsets of {1,...,n}\n\n4. **Dixmier's Bounds:** State the precise lower and upper bounds\n\n5. **Asymptotic:** Define and axiomatize g(k,n) ~ n²/(k-1)\n\n6. **Examples:** Chicken McNugget theorem, small cases",
+    "keyInsights": [
+      "**Extremal Sets:** The maximizing sets are concentrated near {n-k+1, ..., n}",
+      "**Large Elements:** Larger generators create more gaps, increasing G(A)",
+      "**Sylvester-Frobenius:** The k=2 case has exact formula G({a,b}) = ab - a - b",
+      "**Gap Symmetry:** Gaps are symmetric around (G(A)+1)/2",
+      "**NP-Hardness:** For 3+ generators, computing G is NP-hard (Ramirez Alfonsin)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "frobenius-number",
+      "title": "The Frobenius Number",
+      "summary": "Definition of numerical semigroups and G(A)",
+      "startLine": 44,
+      "endLine": 66
+    },
+    {
+      "id": "fundamental-properties",
+      "title": "Fundamental Properties",
+      "summary": "Sylvester-Frobenius formula and examples",
+      "startLine": 68,
+      "endLine": 115
+    },
+    {
+      "id": "function-g",
+      "title": "The Function g(k, n)",
+      "summary": "Definition of g and coprimality condition",
+      "startLine": 117,
+      "endLine": 132
+    },
+    {
+      "id": "erdos-graham",
+      "title": "Erdős-Graham Bounds",
+      "summary": "Original 1972 bounds: g(k,n) < 2n²/k",
+      "startLine": 134,
+      "endLine": 155
+    },
+    {
+      "id": "dixmier",
+      "title": "Dixmier's Theorem",
+      "summary": "Precise bounds proving g(k,n) ~ n²/(k-1)",
+      "startLine": 157,
+      "endLine": 193
+    },
+    {
+      "id": "exact-values",
+      "title": "Exact Values",
+      "summary": "Special cases where exact formulas exist",
+      "startLine": 195,
+      "endLine": 214
+    },
+    {
+      "id": "extremal-sets",
+      "title": "Extremal Sets",
+      "summary": "Structure of sets achieving g(k,n)",
+      "startLine": 216,
+      "endLine": 235
+    },
+    {
+      "id": "classical-frobenius",
+      "title": "Classical Frobenius Problem",
+      "summary": "Chicken McNugget theorem and NP-hardness",
+      "startLine": 237,
+      "endLine": 265
+    },
+    {
+      "id": "gap-counting",
+      "title": "Counting Gaps",
+      "summary": "Number of gaps and symmetry properties",
+      "startLine": 267,
+      "endLine": 288
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main results and status theorem",
+      "startLine": 290,
+      "endLine": 335
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #433 asks about maximizing the Frobenius number over k-element coprime subsets of {1,...,n}. Dixmier (1990) proved g(k,n) ~ n²/(k-1), confirming the Erdős-Graham conjecture with precise bounds.",
+    "implications": "**Mathematical Connections**\n\n1. **Numerical Semigroups:** Foundation of commutative algebra\n\n2. **Coin Problem:** Practical applications in currency systems\n\n3. **Computational Complexity:** NP-hard for ≥3 generators\n\n4. **Algebraic Geometry:** Connection to Weierstrass semigroups\n\n5. **Related Problems:** See Erdős #434 for additional Frobenius questions",
+    "openQuestions": [
+      "Exact formula for g(k,n) when (k-1) does not divide n, n-1, or n-2",
+      "Average value of G(A) over random k-subsets",
+      "Distribution of Frobenius numbers in random numerical semigroups",
+      "Efficient algorithms for computing G(A) with many generators"
+    ]
   }
 }
