@@ -97,8 +97,22 @@ def RepEventuallyGe (A : Set ℕ) (t : ℕ) : Prop :=
 
 /-- RepTendsToInfty implies RepEventuallyGe for any t.
     Proof: If f(n) → ∞, then eventually f(n) ≥ t for any fixed t. -/
-axiom repTendsToInfty_implies_eventuallyGe (A : Set ℕ) (h : RepTendsToInfty A) :
-    ∀ t : ℕ, RepEventuallyGe A t
+theorem repTendsToInfty_implies_eventuallyGe (A : Set ℕ) (h : RepTendsToInfty A) :
+    ∀ t : ℕ, RepEventuallyGe A t := by
+  intro t
+  -- Unfold the definition of RepTendsToInfty and RepEventuallyGe
+  unfold RepTendsToInfty at h
+  unfold RepEventuallyGe
+  -- Extract the atTop characterization: ∀ b, ∃ N, ∀ n ≥ N, b ≤ f(n)
+  rw [Filter.tendsto_atTop_atTop] at h
+  -- Apply to t (cast to ℝ)
+  obtain ⟨N₀, hN₀⟩ := h (t : ℝ)
+  -- Build the witness
+  use N₀
+  intro n hn
+  -- We have (t : ℝ) ≤ (repFunc A n : ℝ), need repFunc A n ≥ t
+  have h_le : (t : ℝ) ≤ (repFunc A n : ℝ) := hN₀ n hn
+  exact Nat.cast_le.mp h_le
 
 /-! ## Partitions of Bases -/
 

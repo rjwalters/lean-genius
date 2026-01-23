@@ -1,41 +1,76 @@
 {
   "slug": "erdos-871",
   "title": "Erdős #871: Partitioning Additive Bases of Order 2",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "FORMALIZED",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #871: Partitioning Additive Bases of Order 2.",
-    "whyMatters": []
+    "formal": "Let A be an additive basis of order 2, and suppose r_A(n) → ∞ as n → ∞. Can A be partitioned into two disjoint additive bases of order 2?",
+    "plain": "If A is an additive basis of order 2 (meaning every sufficiently large integer can be written as a+b with a,b∈A), and the representation function r_A(n) (counting pairs summing to n) tends to infinity, can A always be split into two disjoint sets that are each still order-2 bases?",
+    "whyMatters": [
+      "Tests limits of partition properties for bases with unbounded representations",
+      "Bridges the gap between Erdős-Nathanson weak and strong conditions"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "erdos_871_disproved: ¬Erdos871Conjecture",
+      "basis2_equiv: IsAdditiveBasis2 A ↔ IsAdditiveBasis2' A",
+      "blocking_prevents_partition: HasBlockingProperty A → ¬CanPartitionIntoBases A",
+      "repTendsToInfty_implies_eventuallyGe: RepTendsToInfty A → ∀ t, RepEventuallyGe A t"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Formalization complete - conjecture disproved via axiomatized counterexample"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.547Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "FORMALIZED",
+    "since": "2026-01-23",
+    "iteration": 2,
+    "focus": "Formalization complete with proven theorems.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Complete. Additional work could prove axioms from literature.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Full formalization of Erdős #871 with 4 proven theorems. Main result erdos_871_disproved shows conjecture is false via Larsen counterexample (2026). Converted repTendsToInfty_implies_eventuallyGe from axiom to proven theorem using Filter.tendsto_atTop_atTop.",
+    "builtItems": [
+      "repFunc: representation function definition",
+      "sumset: A+A definition",
+      "IsAdditiveBasis2/IsAdditiveBasis2': equivalent basis definitions",
+      "RepTendsToInfty/RepEventuallyGe: growth conditions",
+      "CanPartitionIntoBases: partition property",
+      "HasBlockingProperty: blocking mechanism for non-partitionability",
+      "Erdos871Conjecture: formal statement of the conjecture",
+      "repTendsToInfty_implies_eventuallyGe: Filter theory lemma (PROVEN)",
+      "basis2_equiv: equivalence of basis definitions (PROVEN)",
+      "blocking_prevents_partition: blocking implies no partition (PROVEN)",
+      "erdos_871_disproved: main result (PROVEN from axioms)"
+    ],
+    "insights": [
+      "The conjecture is DISPROVED - Larsen (2026) extended Erdős-Nathanson construction",
+      "Key insight: r_A(n) → ∞ is not fast enough growth to guarantee partition",
+      "The gap lies between r_A(n) ≥ t (fixed t, counterexample exists) and r_A(n) > c log n (partition possible)",
+      "The blocking property can be maintained even as representations grow unboundedly",
+      "Filter.tendsto_atTop_atTop gives: ∀ b, ∃ N, ∀ n ≥ N, b ≤ f(n)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Potential: Prove erdos_nathanson_1989 from literature (lower priority)",
+      "Potential: Prove erdos_nathanson_positive from literature (lower priority)"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Counterexample formalization",
+      "status": "completed",
+      "description": "Formalize Larsen counterexample showing conjecture is false"
+    }
+  ],
   "tags": [
     "erdos",
     "disproved",
@@ -45,15 +80,22 @@
     "representation-function"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos871Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős, P. & Nathanson, M. (1989). Partitions of bases into disjoint unions of bases",
+      "Larsen, D. (2026). AI-assisted disproof of Erdős Problem #871"
+    ],
+    "urls": [
+      "https://erdosproblems.com/871"
+    ],
+    "mathlib": [
+      "Filter.tendsto_atTop_atTop"
+    ]
   },
   "started": "2026-01-23T08:04:56.547Z",
-  "lastUpdate": "2026-01-23T08:04:56.547Z",
+  "lastUpdate": "2026-01-23T18:25:00.000Z",
   "significance": 7,
   "tractability": 7
 }
