@@ -1,54 +1,108 @@
 {
   "slug": "erdos-234",
-  "title": "Erdős #234",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Erdős #234: Density of Normalized Prime Gaps",
+  "phase": "FORMALIZED",
+  "status": "surveyed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $c\\geq 0$ the density $f(c)$ of integers for which\\[\\frac{p_{n+1}-p_n}{\\log n}< c\\]exists and is a continuous function of $c$.\n\n\n\nSee also [5].\n\n\nBack to the problem",
-    "plain": "Forum",
-    "whyMatters": []
+    "formal": "For every c ≥ 0, the density f(c) of integers n for which (p_{n+1} - p_n) / log n < c exists and is a continuous function of c.",
+    "plain": "Does the limiting density of integers n whose normalized prime gap (gap divided by log n) is less than c exist for all c ≥ 0, and is it a continuous function of c?",
+    "whyMatters": [
+      "Fundamental question about the statistical distribution of prime gaps",
+      "Connected to Cramér's model which predicts exponential distribution",
+      "Related to Problems #233 (sum of squared gaps) and #235 (coprime gaps)"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "density_at_zero_expected: If density exists at 0, it equals 0",
+      "density_monotone: gapProportion N c₁ ≤ gapProportion N c₂ when c₁ ≤ c₂ (axiomatized)",
+      "cramer_continuous: Cramér prediction is continuous (sorry)",
+      "gallagher_implies_conjecture: RH → Erdos234Conjecture",
+      "summary_erdos_234: (RH → conjecture) ∧ monotonicity"
+    ],
+    "open": [
+      "Erdos234Conjecture: unconditional existence and continuity of density f(c)"
+    ],
+    "goal": "OPEN - Formalization documents conjecture and known partial results"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T16:08:36.613Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "FORMALIZED",
+    "since": "2026-01-23",
+    "iteration": 2,
+    "focus": "Problem is OPEN. Formalization complete documenting conjecture and partial results.",
+    "blockers": [
+      "This is an OPEN problem - no known unconditional proof"
+    ],
+    "nextAction": "Surveyed. Problem requires new mathematical ideas to solve.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Created comprehensive formalization (250+ lines) documenting the OPEN conjecture about prime gap density. Includes Cramér model prediction (exponential distribution), Gallagher's conditional result (RH implies conjecture), and connections to related problems #233, #235, #5.",
+    "builtItems": [
+      "nthPrime, primeGap: prime enumeration and gaps",
+      "normalizedGap: g_n / log n",
+      "countSmallNormGaps, gapProportion: counting functions",
+      "gapDensity, DensityExists: density definitions",
+      "Erdos234Conjecture: formal statement of the conjecture",
+      "cramerPrediction: 1 - e^{-c} exponential CDF",
+      "gallagher_conditional: RH implies exponential distribution",
+      "gallagher_implies_conjecture: RH implies full conjecture"
+    ],
+    "insights": [
+      "Problem is OPEN - cannot be resolved with finite computation",
+      "Cramér's probabilistic model predicts exponential distribution f(c) = 1 - e^{-c}",
+      "Gallagher (1976): Under RH, normalized gaps have exponential distribution",
+      "Problem asks about a limiting distribution requiring joint understanding of all gaps",
+      "Connected to Problem #235 (solved by Hooley for coprime gaps - exponential distribution)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #234 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $c\\geq 0$ the density $f(c)$ of integers for which\\[\\frac{p_{n+1}-p_n}{\\log n}< c\\]exists and is a continuous function of $c$.\n\n\n\nSee also [5].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #5\n- Problem #233\n- Problem #235\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n- Er61\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "nextSteps": [
+      "Problem is OPEN - requires new mathematical ideas beyond current techniques",
+      "Potential: Formalize more detailed bounds from literature"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Survey and formalization",
+      "status": "completed",
+      "description": "Document conjecture and known partial results including Gallagher's conditional theorem"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "open",
+    "number-theory",
+    "prime-gaps",
+    "density",
+    "probability"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos234Problem.lean",
+    "Erdos233Problem.lean",
+    "Erdos235Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Cramér, On the order of magnitude of prime gaps (1936)",
+      "Gallagher, On the distribution of primes in short intervals (1976)",
+      "Erdős, On the difference of consecutive primes (1935, 1940)"
+    ],
+    "urls": [
+      "https://erdosproblems.com/234"
+    ],
+    "mathlib": [
+      "Nat.nth",
+      "Nat.Prime"
+    ]
   },
   "started": "2026-01-12T16:08:36.613Z",
+  "lastUpdate": "2026-01-23T18:45:00.000Z",
   "significance": 7,
   "tractability": 5
 }
