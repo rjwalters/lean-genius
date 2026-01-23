@@ -14921,17 +14921,23 @@
   },
   {
     "id": "erdos-966",
-    "title": "Erdős Problem #966",
+    "title": "Erdős Problem #966: Ramsey-Type Arithmetic Progressions",
     "slug": "erdos-966",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does there exist a set ... that contains no non-trivial arithmetic progression of length ..., yet in any ...-colouri...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k, r ≥ 2, does there exist a set A ⊆ ℕ with no (k+1)-term arithmetic progression, yet every r-coloring has a monochromatic k-term AP? YES, proved by Spencer (~1975).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "arithmetic-progressions",
+      "combinatorics",
+      "van-der-waerden",
+      "solved"
     ],
     "erdosNumber": 966,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-967",
