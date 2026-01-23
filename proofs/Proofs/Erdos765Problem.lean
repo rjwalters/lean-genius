@@ -235,12 +235,41 @@ This shows not all C₄-free graphs achieve the extremal bound.
 theorem bipartite_example (n : ℕ) : True := trivial
 
 /--
-**Example: Projective Plane PG(2,2)**
+**Example: Projective Plane PG(2,2) - The Fano Plane**
 For q = 2: n = 7 vertices, ex(7; C₄) = 6 edges.
-This is the Fano plane.
+This is the Fano plane, the smallest projective plane.
 -/
 theorem fano_plane_example :
     projectivePlaneVertices 2 = 7 := by
+  simp [projectivePlaneVertices]
+  ring
+
+/--
+**Example: Projective Plane PG(2,3)**
+For q = 3: n = 13 vertices.
+This gives an extremal C₄-free graph with 13 vertices.
+-/
+theorem pg23_example :
+    projectivePlaneVertices 3 = 13 := by
+  simp [projectivePlaneVertices]
+  ring
+
+/--
+**Example: Projective Plane PG(2,4)**
+For q = 4: n = 21 vertices.
+Note: 4 = 2² is a prime power but not prime.
+-/
+theorem pg24_example :
+    projectivePlaneVertices 4 = 21 := by
+  simp [projectivePlaneVertices]
+  ring
+
+/--
+**Example: Projective Plane PG(2,5)**
+For q = 5: n = 31 vertices.
+-/
+theorem pg25_example :
+    projectivePlaneVertices 5 = 31 := by
   simp [projectivePlaneVertices]
   ring
 

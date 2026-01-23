@@ -59,11 +59,12 @@
       "erdos_refined_upper axiom: refined upper bound with lower order terms",
       "ma_yang_disproof axiom: disproof of Erdős's stronger conjecture",
       "is_B2_sequence: connection to Sidon sets",
-      "erdos_765 theorem: main asymptotic result"
+      "erdos_765 theorem: main asymptotic result",
+      "Proved examples: fano_plane_example, pg23_example, pg24_example, pg25_example"
     ]
   },
   "overview": {
-    "historicalContext": "The problem of determining ex(n; C₄) has a rich history spanning nearly a century. Erdős and Klein first established the order of magnitude n^{3/2} in 1938. Reiman refined the constant in 1958, proving that the limit of ex(n;C₄)/n^{3/2} lies between 1/(2√2) ≈ 0.354 and 1/2. The breakthrough came when Erdős-Rényi and independently Brown showed that projective plane incidence graphs achieve the upper bound. Füredi made this exact for large prime powers in 1983.\n\nRemarkably, Erdős first discovered the n^{3/2} bound in 1936 while studying number-theoretic B₂ sequences (Problem #425), predating Turán's systematic study of extremal numbers by five years. He later wrote of 'a curious blindness' that prevented him from generalizing to other graphs.",
+    "historicalContext": "**The Pre-Turán Era (1936-1938)**\n\nErdős first encountered this problem in 1936 while studying B₂ sequences (Sidon sets) in additive number theory - Problem #425 in his collection. He proved ex(n; C₄) = O(n^{3/2}) but did not immediately recognize its graph-theoretic significance. He later wrote with characteristic self-deprecation: 'Being struck by a curious blindness and lack of imagination, I did not at that time extend the problem from C₄ to other graphs and thus missed founding an interesting and fruitful new branch of graph theory.' Turán's systematic study of extremal numbers began in 1941, five years later.\n\n**The Race for the Exact Constant (1958-1983)**\n\nReiman (1958) proved that the limit L = lim ex(n;C₄)/n^{3/2} exists and satisfies 1/(2√2) ≤ L ≤ 1/2. The lower bound uses the Erdős-Rényi-Brown construction: the incidence graph of the projective plane PG(2,q) is C₄-free with (1/2)q(q+1)² edges. For n = q² + q + 1, this achieves ratio approaching 1/2. Füredi (1983) completed the picture by proving equality for q > 13.\n\n**Recent Developments: The Ma-Yang Breakthrough (2023)**\n\nErdős conjectured ex(n;C₄) = (1/2)n^{3/2} + (1/4)n + O(√n) but cautioned he had 'limited evidence.' Ma and Yang (2023) spectacularly disproved this by showing the coefficient 1/4 can be improved to 1/4 - c for some c > 0, for infinitely many n. The exact lower-order terms remain an active research area.",
     "problemStatement": "**Problem**: Give an asymptotic formula for ex(n; C₄), where ex(n; C₄) denotes the maximum number of edges in an n-vertex graph containing no 4-cycle (quadrilateral).\n\n**Answer**: ex(n; C₄) ~ (1/2)n^{3/2}\n\nMore precisely:\n- lim_{n→∞} ex(n;C₄)/n^{3/2} = 1/2\n- For n = q² + q + 1 (q prime power > 13): ex(n;C₄) = (1/2)q(q+1)² exactly\n- Erdős's refined conjecture ex(n;C₄) = (1/2)n^{3/2} + (1/4)n + O(√n) was DISPROVED by Ma-Yang (2023)",
     "proofStrategy": "The formalization establishes the asymptotic formula through several components:\n\n1. **Basic Definitions**: Define 4-cycles, C₄-free graphs, and the extremal function ex(n;C₄)\n\n2. **Upper Bounds**: Axiomatize Erdős-Klein's O(n^{3/2}) and Reiman's lim sup ≤ 1/2\n\n3. **Lower Bounds**: The projective plane construction PG(2,q) achieves (1/2)q(q+1)² edges\n\n4. **Asymptotic Limit**: Combine upper and lower bounds to establish lim = 1/2\n\n5. **Historical Context**: Include Füredi's exact result, Erdős's refined conjecture, and Ma-Yang's disproof",
     "keyInsights": [
@@ -135,15 +136,15 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 226,
-      "endLine": 245,
-      "summary": "Concrete examples including complete bipartite graphs and the Fano plane.",
-      "description": "The Fano plane PG(2,2) has 7 vertices and 6 edges, illustrating the projective plane construction."
+      "endLine": 274,
+      "summary": "Concrete examples: bipartite graphs, Fano plane PG(2,2), PG(2,3), PG(2,4), PG(2,5).",
+      "description": "Multiple projective plane examples prove projectivePlaneVertices formula for q = 2, 3, 4, 5 giving n = 7, 13, 21, 31."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 247,
-      "endLine": 267,
+      "startLine": 276,
+      "endLine": 296,
       "summary": "Consolidates the main results and their implications.",
       "description": "Problem #765 is SOLVED: ex(n;C₄) ~ (1/2)n^{3/2}, with exact values known for infinitely many n."
     }

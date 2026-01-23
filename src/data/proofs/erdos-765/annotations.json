@@ -178,17 +178,44 @@
   {
     "id": "ann-e765-fano-plane",
     "proofId": "erdos-765",
-    "range": { "startLine": 242, "endLine": 245 },
+    "range": { "startLine": 237, "endLine": 245 },
     "type": "theorem",
     "title": "Fano Plane Example",
     "content": "**Theorem fano_plane_example:**\n\nprojectivePlaneVertices(2) = 7\n\nThe Fano plane PG(2,2) has 7 points and 7 lines. Its incidence graph has 7 vertices and achieves ex(7;C₄).",
     "mathContext": "The Fano plane is the smallest projective plane, with parameters q = 2. It's the unique (7,3,1)-design.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e765-pg23",
+    "proofId": "erdos-765",
+    "range": { "startLine": 247, "endLine": 255 },
+    "type": "theorem",
+    "title": "PG(2,3) Example",
+    "content": "**Theorem pg23_example:**\n\nprojectivePlaneVertices(3) = 13\n\nThe projective plane PG(2,3) has 13 points and 13 lines.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e765-pg24",
+    "proofId": "erdos-765",
+    "range": { "startLine": 257, "endLine": 265 },
+    "type": "theorem",
+    "title": "PG(2,4) Example",
+    "content": "**Theorem pg24_example:**\n\nprojectivePlaneVertices(4) = 21\n\nNote: 4 = 2² is a prime power but not prime. Projective planes exist for all prime powers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e765-pg25",
+    "proofId": "erdos-765",
+    "range": { "startLine": 267, "endLine": 274 },
+    "type": "theorem",
+    "title": "PG(2,5) Example",
+    "content": "**Theorem pg25_example:**\n\nprojectivePlaneVertices(5) = 31\n\nFor q = 5, the projective plane has 31 vertices.",
     "significance": "supporting"
   },
   {
     "id": "ann-e765-summary",
     "proofId": "erdos-765",
-    "range": { "startLine": 258, "endLine": 265 },
+    "range": { "startLine": 287, "endLine": 294 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**Theorem erdos_765_summary:**\n\nCombines the main results:\n1. ex(n;C₄) ~ (1/2)n^{3/2} (the asymptotic formula)\n2. projectivePlaneVertices(2) = 7 (concrete example)\n\nProblem #765 is SOLVED.",
