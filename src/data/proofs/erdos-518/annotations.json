@@ -1,1 +1,193 @@
-[]
+[
+  {
+    "id": "ann-e518-header",
+    "proofId": "erdos-518",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #518: Monochromatic Path Covers**\n\nThe problem asks: In any two-coloring of the edges of K_n, do there exist √n monochromatic paths, all of the same color, covering all vertices?\n\n**Status:** SOLVED (Pokrovskiy-Versteegen-Williams 2024)\n\n**Answer:** YES - √n paths of the same color always suffice.\n\n**Key constraint:** All paths must be the same color (Red or Blue), not a mix.",
+    "mathContext": "This is a Ramsey-type covering problem. The complete graph K_n on n vertices has all possible edges. The challenge is covering vertices with few same-color paths.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Path covers", "Graph coloring", "Complete graphs"]
+  },
+  {
+    "id": "ann-e518-color",
+    "proofId": "erdos-518",
+    "range": { "startLine": 41, "endLine": 48 },
+    "type": "definition",
+    "title": "Color Type",
+    "content": "**Color:**\n\nAn inductive type with two constructors:\n- `Color.Red`\n- `Color.Blue`\n\nThis models the two colors available for edge coloring. The `deriving DecidableEq` clause enables decidable equality checking.",
+    "significance": "supporting",
+    "relatedConcepts": ["Inductive types", "Edge coloring"]
+  },
+  {
+    "id": "ann-e518-two-coloring",
+    "proofId": "erdos-518",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Two-Coloring",
+    "content": "**TwoColoring n:**\n\nA function assigning a color to each edge of K_n:\n\n`TwoColoring n := ∀ (i j : Fin n), i ≠ j → Color`\n\nFor each pair of distinct vertices i, j, the coloring tells us whether edge {i,j} is Red or Blue.\n\nNote: The coloring function takes an inequality proof to ensure we're only coloring actual edges (not loops).",
+    "mathContext": "In K_n, every pair of distinct vertices is connected by an edge. A two-coloring partitions these n(n-1)/2 edges into Red and Blue.",
+    "significance": "critical",
+    "relatedConcepts": ["Complete graphs", "Edge coloring"]
+  },
+  {
+    "id": "ann-e518-path",
+    "proofId": "erdos-518",
+    "range": { "startLine": 61, "endLine": 68 },
+    "type": "definition",
+    "title": "Path Structure",
+    "content": "**Path n:**\n\nA structure representing a path in a graph on Fin n vertices:\n\n```lean\nstructure Path (n : ℕ) where\n  vertices : List (Fin n)  -- ordered sequence of vertices\n  distinct : vertices.Nodup -- no repeated vertices\n  nonempty : vertices ≠ []  -- at least one vertex\n```\n\nA path visits a sequence of vertices without repetition. Consecutive vertices are implicitly adjacent (in K_n, all pairs are adjacent).",
+    "mathContext": "In graph theory, a path is a sequence v₁, v₂, ..., vₖ where each consecutive pair is connected by an edge and no vertex repeats.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph paths", "Vertex sequences"]
+  },
+  {
+    "id": "ann-e518-vertex-set",
+    "proofId": "erdos-518",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
+    "title": "Path Vertex Set",
+    "content": "**Path.vertexSet:**\n\nConverts a path's vertex list to a finite set:\n\n`p.vertexSet := p.vertices.toFinset`\n\nThis is used to check if paths are disjoint and if all vertices are covered.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finite sets", "Set conversion"]
+  },
+  {
+    "id": "ann-e518-monochromatic-path",
+    "proofId": "erdos-518",
+    "range": { "startLine": 88, "endLine": 95 },
+    "type": "definition",
+    "title": "Monochromatic Path",
+    "content": "**IsMonochromaticPath c p col:**\n\nA path p is monochromatic with color col under coloring c if every edge along the path has color col.\n\nFormally: for each consecutive pair (v, w) in the path, c v w = col.\n\nThis is the key constraint: we want paths where ALL edges are the same color, not just some.",
+    "mathContext": "In a red path, every edge is red. In a blue path, every edge is blue. This is stricter than just having 'mostly' one color.",
+    "significance": "critical",
+    "relatedConcepts": ["Edge colors", "Path properties"]
+  },
+  {
+    "id": "ann-e518-path-cover",
+    "proofId": "erdos-518",
+    "range": { "startLine": 115, "endLine": 123 },
+    "type": "definition",
+    "title": "Path Cover",
+    "content": "**PathCover n:**\n\nA structure representing a vertex cover by disjoint paths:\n\n```lean\nstructure PathCover (n : ℕ) where\n  paths : List (Path n)\n  disjoint : ∀ p q ∈ paths, p ≠ q → Disjoint p.vertexSet q.vertexSet\n  covers : ∀ (v : Fin n), ∃ p ∈ paths, v ∈ p.vertexSet\n```\n\n**Properties:**\n1. `disjoint`: No two different paths share a vertex\n2. `covers`: Every vertex appears in some path",
+    "mathContext": "A path cover partitions the vertex set into disjoint paths. The number of paths needed depends on the graph structure and any color constraints.",
+    "significance": "critical",
+    "relatedConcepts": ["Vertex partition", "Covering problems"]
+  },
+  {
+    "id": "ann-e518-monochromatic-cover",
+    "proofId": "erdos-518",
+    "range": { "startLine": 131, "endLine": 136 },
+    "type": "definition",
+    "title": "Monochromatic Cover",
+    "content": "**IsMonochromaticCover c cover col:**\n\nA path cover is monochromatic if ALL paths in the cover have the same color:\n\n`∀ p ∈ cover.paths, IsMonochromaticPath c p col`\n\nThis is the crucial constraint in the problem: we need same-color paths, not a mix of red and blue paths.",
+    "significance": "critical",
+    "relatedConcepts": ["Uniform coloring", "Cover constraints"]
+  },
+  {
+    "id": "ann-e518-gerencser-gyarfas",
+    "proofId": "erdos-518",
+    "range": { "startLine": 142, "endLine": 147 },
+    "type": "axiom",
+    "title": "Gerencsér-Gyárfás Theorem",
+    "content": "**gerencser_gyarfas (1967):**\n\n```lean\naxiom gerencser_gyarfas (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n) :\n    ∃ (cover : PathCover n), cover.size ≤ 2\n```\n\n**Two paths suffice if colors can differ!**\n\nThis classical result shows that any two-coloring of K_n can be covered by at most 2 vertex-disjoint paths (possibly one red, one blue).\n\nThe dramatic contrast: 2 paths (mixed colors) vs √n paths (same color).",
+    "mathContext": "Gerencsér and Gyárfás proved this in 1967 in 'On Ramsey-type problems'. It's one of the foundational results in path cover theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Classical results", "Mixed coloring"]
+  },
+  {
+    "id": "ann-e518-erdos-gyarfas-bound",
+    "proofId": "erdos-518",
+    "range": { "startLine": 149, "endLine": 156 },
+    "type": "axiom",
+    "title": "Erdős-Gyárfás Upper Bound",
+    "content": "**erdos_gyarfas_bound (1995):**\n\n```lean\naxiom erdos_gyarfas_bound (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n) :\n    ∃ (cover : PathCover n) (col : Color),\n      IsMonochromaticCover c cover col ∧\n      cover.size ≤ 2 * Nat.sqrt n\n```\n\n**2√n same-color paths always suffice.**\n\nThis was the best known upper bound before 2024, showing the problem is 'approximately' √n.",
+    "mathContext": "Erdős and Gyárfás proved this in 'Vertex covering with monochromatic paths' (Math. Pannon. 1995).",
+    "significance": "key",
+    "relatedConcepts": ["Upper bounds", "Historical progress"]
+  },
+  {
+    "id": "ann-e518-lower-bound",
+    "proofId": "erdos-518",
+    "range": { "startLine": 158, "endLine": 166 },
+    "type": "axiom",
+    "title": "Lower Bound",
+    "content": "**erdos_gyarfas_lower_bound (1995):**\n\nThere exist colorings requiring approximately √n same-color paths:\n\n```lean\naxiom erdos_gyarfas_lower_bound :\n    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∃ c : TwoColoring n,\n      ∀ (cover : PathCover n) (col : Color),\n        IsMonochromaticCover c cover col →\n        cover.size ≥ Nat.sqrt n - 1\n```\n\nThis shows √n is optimal - you can't always do better.",
+    "mathContext": "The lower bound construction uses adversarial colorings designed to force many paths.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Optimality"]
+  },
+  {
+    "id": "ann-e518-conjecture",
+    "proofId": "erdos-518",
+    "range": { "startLine": 172, "endLine": 181 },
+    "type": "definition",
+    "title": "The Erdős-Gyárfás Conjecture",
+    "content": "**ErdosGyarfasConjecture:**\n\n```lean\ndef ErdosGyarfasConjecture : Prop :=\n  ∀ (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n),\n    ∃ (cover : PathCover n) (col : Color),\n      IsMonochromaticCover c cover col ∧\n      cover.size ≤ Nat.sqrt n\n```\n\n**The conjecture:** √n same-color paths always suffice.\n\nThis bridges the gap between the 2√n upper bound and the √n lower bound.",
+    "mathContext": "The conjecture asked if the lower bound is achievable, i.e., is √n both necessary AND sufficient?",
+    "significance": "critical",
+    "relatedConcepts": ["Conjectures", "Optimal bounds"]
+  },
+  {
+    "id": "ann-e518-pvw-theorem",
+    "proofId": "erdos-518",
+    "range": { "startLine": 187, "endLine": 192 },
+    "type": "axiom",
+    "title": "Main Theorem (PVW 2024)",
+    "content": "**pokrovskiy_versteegen_williams:**\n\n```lean\naxiom pokrovskiy_versteegen_williams : ErdosGyarfasConjecture\n```\n\n**The Erdős-Gyárfás conjecture is TRUE!**\n\nPokrovskiy, Versteegen, and Williams proved in 2024 (arXiv:2409.03623) that √n same-color paths always suffice to cover any two-colored K_n.",
+    "mathContext": "This resolved a nearly 30-year-old conjecture, closing the gap between 2√n and √n.",
+    "significance": "critical",
+    "relatedConcepts": ["Resolution", "2024 result"]
+  },
+  {
+    "id": "ann-e518-conjecture-true",
+    "proofId": "erdos-518",
+    "range": { "startLine": 194, "endLine": 199 },
+    "type": "theorem",
+    "title": "Conjecture Confirmed",
+    "content": "**erdos_gyarfas_conjecture_true:**\n\n```lean\ntheorem erdos_gyarfas_conjecture_true : ErdosGyarfasConjecture :=\n  pokrovskiy_versteegen_williams\n```\n\nDirect assignment of the axiom to the conjecture type.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e518-main-result",
+    "proofId": "erdos-518",
+    "range": { "startLine": 201, "endLine": 208 },
+    "type": "theorem",
+    "title": "Explicit Main Result",
+    "content": "**main_result:**\n\n```lean\ntheorem main_result (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n) :\n    ∃ (cover : PathCover n) (col : Color),\n      IsMonochromaticCover c cover col ∧\n      cover.size ≤ Nat.sqrt n :=\n  erdos_gyarfas_conjecture_true n hn c\n```\n\nAn explicit statement that any coloring of K_n admits a √n same-color path cover.",
+    "significance": "key",
+    "relatedConcepts": ["Explicit statements", "Instantiation"]
+  },
+  {
+    "id": "ann-e518-tightness",
+    "proofId": "erdos-518",
+    "range": { "startLine": 214, "endLine": 229 },
+    "type": "theorem",
+    "title": "Bound Tightness",
+    "content": "**sqrt_bound_tight:**\n\nCombines the upper and lower bounds:\n\n1. **Upper bound:** √n paths always suffice (PVW 2024)\n2. **Lower bound:** √n - 1 paths may be necessary (EG 1995)\n\nThe proof pairs the two axioms: `⟨pokrovskiy_versteegen_williams, erdos_gyarfas_lower_bound⟩`\n\nThis establishes that √n is the correct answer up to lower-order terms.",
+    "mathContext": "The bound is 'tight' meaning no asymptotically better bound is possible.",
+    "significance": "critical",
+    "relatedConcepts": ["Tight bounds", "Optimality"]
+  },
+  {
+    "id": "ann-e518-color-matters",
+    "proofId": "erdos-518",
+    "range": { "startLine": 235, "endLine": 251 },
+    "type": "theorem",
+    "title": "Color Constraint Matters",
+    "content": "**color_matters:**\n\nDemonstrates the dramatic difference between:\n\n1. **Mixed colors:** 2 paths suffice (Gerencsér-Gyárfás)\n2. **Same color:** √n paths needed (Erdős-Gyárfás, PVW)\n\nThe same-color constraint transforms a constant (2) problem into a √n problem!",
+    "mathContext": "This highlights that the monochromatic constraint is not just a technicality - it fundamentally changes the problem's complexity.",
+    "significance": "key",
+    "relatedConcepts": ["Constraint analysis", "Problem variants"]
+  },
+  {
+    "id": "ann-e518-summary",
+    "proofId": "erdos-518",
+    "range": { "startLine": 257, "endLine": 281 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_518_summary:**\n\nCombines all results into a single theorem:\n\n1. **The conjecture is true:** ErdosGyarfasConjecture holds\n2. **Mixed colors:** 2 paths always suffice\n3. **Same color:** √n is essentially optimal (lower bound √n - 1)\n\n**Historical resolution:**\n- 1967: Gerencsér-Gyárfás (2 mixed paths)\n- 1995: Erdős-Gyárfás (2√n same-color, conjecture √n)\n- 2024: Pokrovskiy-Versteegen-Williams (√n confirmed)",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Historical timeline"]
+  }
+]

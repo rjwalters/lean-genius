@@ -1,33 +1,151 @@
 {
   "id": "erdos-518",
-  "title": "Erdős Problem #518",
+  "title": "Erdős Problem #518: Monochromatic Path Covers",
   "slug": "erdos-518",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, in any two-colouring of the edges of ..., there exist $...2...$ would be best possible here.\n\nSolved in the ...",
+  "description": "Can K_n with any two-coloring be covered by √n monochromatic paths of the same color? SOLVED: Yes (Pokrovskiy-Versteegen-Williams 2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Pokrovskiy-Versteegen-Williams (2024)",
     "sourceUrl": "https://erdosproblems.com/518",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos518Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "path-covers",
+      "monochromatic",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 518,
     "erdosUrl": "https://erdosproblems.com/518",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "List.Nodup",
+        "description": "Lists with no duplicate elements",
+        "module": "Mathlib.Data.List.Nodup"
+      },
+      {
+        "theorem": "Nat.sqrt",
+        "description": "Integer square root",
+        "module": "Mathlib.Data.Nat.Sqrt"
+      },
+      {
+        "theorem": "Finset.toFinset",
+        "description": "Convert lists to finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Color inductive type for edge coloring",
+      "TwoColoring: edge coloring of K_n",
+      "Path structure: vertex sequence with distinctness",
+      "PathCover structure: disjoint paths covering all vertices",
+      "IsMonochromaticPath: all edges same color",
+      "IsMonochromaticCover: all paths same color",
+      "ErdosGyarfasConjecture: √n same-color paths suffice",
+      "gerencser_gyarfas axiom: 2 mixed paths suffice (1967)",
+      "erdos_gyarfas_bound axiom: 2√n same-color paths suffice (1995)",
+      "pokrovskiy_versteegen_williams axiom: √n same-color paths suffice (2024)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #518 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, in any two-colouring of the edges of $K_n$, there exist $\\sqrt{n}$ monochromatic paths, all of the same colour, which cover all vertices?\n\n\n\nA problem of Erd\\H{o}s and Gy\\'{a}rf\\'{a}s. Gerencs\\'{e}r and Gy\\'{a}rf\\'{a}s \\cite{GeGy67} proved that, if the paths do not need to be of the same colour, then two paths suffice. Erd\\H{o}s and Gy\\'{a}rf\\'{a}s \\cite{ErGy95} proved that $2\\sqrt{n}$ vertices suffice, and observed that $\\sqrt{n}$ would be best possible here.\n\nSolved in the affirmative by Pokrovskiy, Versteegen, and Williams \\cite{PVW24}.\n\n\n\n\nReferences\n\n\n[ErGy95] Erd\\H{o}s, Paul and Gy\\'{a}rf\\'{a}s, Andr\\'{a}s, Vertex covering with monochromatic paths. Math. Pannon. (1995), 7--10.\n\n[GeGy67] Gerencs\\'{e}r, L. and Gy\\'arf\\'as, A., On {R}amsey-type problems. Ann. Univ. Sci. Budapest. E\\\"otv\\\"os Sect. Math. (1967), 167--170.\n\n[PVW24] A. Pokrovskiy, L. Versteegen, and E. Williams, A proof of a conjecture of Erd\\H{o}s and Gy\\'{a}rf\\'{a}s on monochromatic path covers. arXiv:2409.03623 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Gyárfás in 1995. They proved that 2√n monochromatic paths of the same color suffice and conjectured that √n is achievable. Earlier, Gerencsér and Gyárfás (1967) proved that just 2 paths suffice if colors can differ. The conjecture was finally resolved by Pokrovskiy, Versteegen, and Williams in 2024.",
+    "problemStatement": "**Conjecture (Erdős-Gyárfás 1995):**\nIn any two-colouring of the edges of K_n, there exist √n monochromatic paths, all of the same colour, which cover all vertices.\n\n**Answer:** YES (Pokrovskiy-Versteegen-Williams 2024)\n\nThe bound √n is essentially tight - there exist colorings requiring (√n - 1) paths.",
+    "proofStrategy": "The formalization defines two-colorings of complete graphs, paths, path covers, and monochromatic conditions. Classical results are axiomatized: Gerencsér-Gyárfás (2 mixed paths), Erdős-Gyárfás (2√n same-color paths), and the lower bound. The main result (PVW 2024) confirming √n paths suffice is axiomatized.",
+    "keyInsights": [
+      "**Mixed vs Same Color:** Huge difference - 2 paths vs √n paths needed",
+      "**The Constraint:** All paths must be the same color (Red or Blue)",
+      "**Tight Bound:** √n is optimal - lower bound exists requiring √n - 1 paths",
+      "**Complete Graph:** K_n has all possible edges, making path construction flexible",
+      "**Historical Arc:** 1967 (mixed colors) → 1995 (conjecture + 2√n) → 2024 (√n proved)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "two-coloring",
+      "title": "Two-Coloring of Complete Graphs",
+      "summary": "Color type and TwoColoring definition",
+      "startLine": 35,
+      "endLine": 55
+    },
+    {
+      "id": "paths",
+      "title": "Paths in Graphs",
+      "summary": "Path structure with vertices, vertexSet, and length",
+      "startLine": 57,
+      "endLine": 82
+    },
+    {
+      "id": "monochromatic-paths",
+      "title": "Monochromatic Paths",
+      "summary": "IsMonochromaticPath, IsRedPath, IsBluePath definitions",
+      "startLine": 84,
+      "endLine": 109
+    },
+    {
+      "id": "path-covers",
+      "title": "Path Covers",
+      "summary": "PathCover structure and IsMonochromaticCover definition",
+      "startLine": 111,
+      "endLine": 136
+    },
+    {
+      "id": "classical-results",
+      "title": "Classical Results",
+      "summary": "Gerencsér-Gyárfás, Erdős-Gyárfás bound and lower bound",
+      "startLine": 138,
+      "endLine": 166
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Gyárfás Conjecture",
+      "summary": "Statement of the √n conjecture",
+      "startLine": 168,
+      "endLine": 181
+    },
+    {
+      "id": "solution",
+      "title": "The Solution (PVW 2024)",
+      "summary": "Main theorem confirming the conjecture",
+      "startLine": 183,
+      "endLine": 208
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness of the Bound",
+      "summary": "Combining upper and lower bounds",
+      "startLine": 210,
+      "endLine": 229
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison with Two-Colored Cover",
+      "summary": "color_matters theorem contrasting mixed vs same color",
+      "startLine": 231,
+      "endLine": 251
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_518_summary combining all results",
+      "startLine": 253,
+      "endLine": 283
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #518 is SOLVED. Pokrovskiy, Versteegen, and Williams (2024) confirmed the Erdős-Gyárfás conjecture: any two-coloring of K_n can be covered by √n monochromatic paths of the same color. This bound is tight.",
+    "implications": "**What This Means:**\n\n1. The √n bound is achievable and optimal for same-color path covers\n2. There's a fundamental gap between mixed colors (2 paths) and same color (√n paths)\n3. The problem joins a rich tradition of Ramsey-type covering problems\n4. Techniques from the proof may apply to related path-covering questions",
+    "openQuestions": [
+      "What about k-colorings of K_n with k > 2?",
+      "Can similar bounds be achieved for cycle covers instead of path covers?",
+      "What if we require connected monochromatic subgraphs instead of paths?",
+      "Are there polynomial-time algorithms to find the optimal path cover?"
+    ]
   }
 }
