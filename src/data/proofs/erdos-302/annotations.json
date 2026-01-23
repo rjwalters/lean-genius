@@ -1,1 +1,178 @@
-[]
+[
+  {
+    "id": "erdos-302-intro",
+    "proofId": "erdos-302",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 24 },
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #302: Unit Fraction Sum-Free Sets**\n\nFind the largest A ⊆ {1,...,N} with no solution to 1/a = 1/b + 1/c.\n\n**Original Question:** Is f(N) = (1/2+o(1))N?\n\n**Answer:** NO - Cambie showed f(N) ≥ (5/8+o(1))N.\n\n**Current Bounds:**\n- Lower: f(N) ≥ (5/8+o(1))N (Cambie)\n- Upper: f(N) ≤ (9/10+o(1))N (van Doorn)\n\nStatus: OPEN - exact density unknown.",
+    "mathContext": "This is a density problem: how dense can a set be while avoiding a specific equation?",
+    "significance": "critical",
+    "relatedConcepts": ["Unit fractions", "Sum-free sets", "Density problems"]
+  },
+  {
+    "id": "erdos-302-unit-fraction",
+    "proofId": "erdos-302",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 41 },
+    "title": "Unit Fraction Sum",
+    "content": "**UnitFractionSum a b c:**\n\nThe equation 1/a = 1/b + 1/c with a, b, c > 0.\n\n**Equivalent Form:** bc = a(b + c)\n\nThis is the forbidden pattern we want to avoid in our set A.",
+    "mathContext": "Unit fractions (1/n) are fundamental in Egyptian mathematics and number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Diophantine equations", "Unit fractions"]
+  },
+  {
+    "id": "erdos-302-equiv",
+    "proofId": "erdos-302",
+    "type": "theorem",
+    "range": { "startLine": 43, "endLine": 46 },
+    "title": "Equivalent Form",
+    "content": "**unit_fraction_equiv:**\n\n1/a = 1/b + 1/c is equivalent to bc = a(b + c).\n\n**Proof idea:** Clear denominators: bc/(abc) = ac/(abc) + ab/(abc), giving bc = ac + ab = a(b+c).\n\nThis algebraic form is often easier to work with.",
+    "mathContext": "Converting between fraction and polynomial form reveals structural properties.",
+    "significance": "key",
+    "relatedConcepts": ["Clearing denominators", "Polynomial equations"]
+  },
+  {
+    "id": "erdos-302-sum-free",
+    "proofId": "erdos-302",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 52 },
+    "title": "Unit-Fraction-Sum-Free Sets",
+    "content": "**IsUnitFractionSumFree A:**\n\nA set A is unit-fraction-sum-free if no three distinct elements a, b, c ∈ A satisfy 1/a = 1/b + 1/c.\n\n**Key:** Elements must be DISTINCT - we don't count solutions like 1/2 = 1/4 + 1/4 where b = c.",
+    "mathContext": "This is analogous to classical sum-free sets that avoid a = b + c.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Forbidden configurations", "Extremal combinatorics"]
+  },
+  {
+    "id": "erdos-302-f-function",
+    "proofId": "erdos-302",
+    "type": "definition",
+    "range": { "startLine": 58, "endLine": 61 },
+    "title": "The Function f(N)",
+    "content": "**f(N):**\n\nThe maximum size of a unit-fraction-sum-free subset of {1,...,N}.\n\n**Formula:** max{|A| : A ⊆ {1,...,N} is sum-free}\n\nThis is the central quantity we want to estimate.",
+    "mathContext": "Extremal functions like f(N) measure the maximum size of sets with forbidden patterns.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal functions", "Maximum density", "Forbidden substructures"]
+  },
+  {
+    "id": "erdos-302-odd-integers",
+    "proofId": "erdos-302",
+    "type": "definition",
+    "range": { "startLine": 71, "endLine": 79 },
+    "title": "Odd Integers Construction",
+    "content": "**oddIntegers N:**\n\nThe set of odd integers in [1, N]: {1, 3, 5, 7, ...}\n\n**Size:** About N/2 elements.\n\n**Why it works:** If a, b, c are odd, then bc is odd but a(b+c) is even (sum of two odds). So bc ≠ a(b+c), meaning no solutions exist!",
+    "mathContext": "Parity arguments often give clean constructions in extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Parity arguments", "Modular arithmetic", "Basic constructions"]
+  },
+  {
+    "id": "erdos-302-upper-half",
+    "proofId": "erdos-302",
+    "type": "definition",
+    "range": { "startLine": 81, "endLine": 89 },
+    "title": "Upper Half Construction",
+    "content": "**upperHalf N:**\n\nThe integers in [N/2, N].\n\n**Size:** About N/2 elements.\n\n**Why it works:** If a, b, c ≥ N/2, then:\n- 1/a ≤ 2/N\n- 1/b + 1/c ≥ 4/N\n\nBut 2/N < 4/N, so 1/a ≠ 1/b + 1/c!",
+    "mathContext": "Size constraints on elements can force equations to be unsolvable.",
+    "significance": "key",
+    "relatedConcepts": ["Size arguments", "Interval constructions", "Lower bounds"]
+  },
+  {
+    "id": "erdos-302-cambie",
+    "proofId": "erdos-302",
+    "type": "axiom",
+    "range": { "startLine": 95, "endLine": 101 },
+    "title": "Cambie's Construction",
+    "content": "**cambie_set N:**\n\nOdd integers ≤ N/4 PLUS all integers in [N/2, N].\n\n**Size:** About N/8 + N/2 = 5N/8 elements.\n\n**Why it works:** The odd integers in [1, N/4] don't interact with [N/2, N] because if a ≤ N/4 and b, c ≥ N/2, size constraints prevent 1/a = 1/b + 1/c.",
+    "mathContext": "Cambie's clever combination of the two basic constructions improves the lower bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Combined constructions", "Non-overlapping ranges", "5/8 bound"]
+  },
+  {
+    "id": "erdos-302-van-doorn",
+    "proofId": "erdos-302",
+    "type": "axiom",
+    "range": { "startLine": 115, "endLine": 117 },
+    "title": "van Doorn's Upper Bound",
+    "content": "**van_doorn_upper_bound:**\n\nf(N) ≤ (9/10+o(1))N.\n\nThis shows we cannot have more than 90% of {1,...,N} in any sum-free set.\n\nThe proof uses structural arguments about which solutions must exist in large sets.",
+    "mathContext": "Upper bounds are typically harder than lower bounds - we must show NO construction works.",
+    "significance": "critical",
+    "relatedConcepts": ["Upper bounds", "Density limitations", "Structural arguments"]
+  },
+  {
+    "id": "erdos-302-original-question",
+    "proofId": "erdos-302",
+    "type": "definition",
+    "range": { "startLine": 132, "endLine": 142 },
+    "title": "The Original Question",
+    "content": "**original_question:**\n\nIs f(N) = (1/2+o(1))N?\n\n**Answer:** NO!\n\nCambie showed f(N) ≥ (5/8+o(1))N, and 5/8 > 1/2.\n\nSo the original conjecture underestimated how large sum-free sets can be.",
+    "mathContext": "The original 1/2 guess came from the basic constructions (odd integers or upper half).",
+    "significance": "critical",
+    "relatedConcepts": ["Disproved conjectures", "Original estimates"]
+  },
+  {
+    "id": "erdos-302-doubling",
+    "proofId": "erdos-302",
+    "type": "definition",
+    "range": { "startLine": 156, "endLine": 165 },
+    "title": "Doubling Observation",
+    "content": "**HasDoubling A:**\n\nA set contains n and 2n for some n.\n\n**Cambie's observation:** If |A| > (2/3)N, then A must contain some pair (n, 2n).\n\n**Why this matters:** 1/n = 1/(2n) + 1/(2n) is a solution with b = c. So allowing b = c gives a 2/3 density threshold.",
+    "mathContext": "The b = c case is structurally simpler but gives a different density bound.",
+    "significance": "key",
+    "relatedConcepts": ["Pigeonhole principle", "Density thresholds", "Special cases"]
+  },
+  {
+    "id": "erdos-302-coloring",
+    "proofId": "erdos-302",
+    "type": "axiom",
+    "range": { "startLine": 180, "endLine": 190 },
+    "title": "Coloring Version (Problem #303)",
+    "content": "**coloring_version N:**\n\nCan {1,...,N} be 2-colored with no monochromatic solution to 1/a = 1/b + 1/c?\n\n**Brown-Rödl (1991):** YES, for all N!\n\nThis is Problem #303, which is completely solved. The coloring version is easier than finding maximum sum-free sets.",
+    "mathContext": "Coloring versions of density problems are related but distinct questions.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "2-colorings", "Monochromatic structures"]
+  },
+  {
+    "id": "erdos-302-pattern",
+    "proofId": "erdos-302",
+    "type": "theorem",
+    "range": { "startLine": 227, "endLine": 230 },
+    "title": "Standard Solution Pattern",
+    "content": "**standard_pattern:**\n\n1/n = 1/(n+1) + 1/(n(n+1)) for all n > 0.\n\n**Verification:** 1/(n+1) + 1/(n(n+1)) = n/(n(n+1)) + 1/(n(n+1)) = (n+1)/(n(n+1)) = 1/n ✓\n\nThis shows solutions are plentiful - avoiding them requires careful construction.",
+    "mathContext": "This pattern generalizes 1/2 = 1/3 + 1/6, 1/3 = 1/4 + 1/12, etc.",
+    "significance": "key",
+    "relatedConcepts": ["Solution families", "Telescoping", "Egyptian fractions"]
+  },
+  {
+    "id": "erdos-302-examples",
+    "proofId": "erdos-302",
+    "type": "concept",
+    "range": { "startLine": 215, "endLine": 225 },
+    "title": "Examples of Solutions",
+    "content": "**Explicit solutions:**\n\n- 1/2 = 1/3 + 1/6\n- 1/3 = 1/4 + 1/12\n- 1/4 = 1/5 + 1/20\n- 1/6 = 1/12 + 1/12 (b = c case)\n\nThese show the equation 1/a = 1/b + 1/c has many solutions with small integers.",
+    "mathContext": "Understanding the solution set helps design constructions that avoid them.",
+    "significance": "supporting",
+    "relatedConcepts": ["Small examples", "Solution enumeration"]
+  },
+  {
+    "id": "erdos-302-main-theorem",
+    "proofId": "erdos-302",
+    "type": "theorem",
+    "range": { "startLine": 254, "endLine": 262 },
+    "title": "Main Theorem",
+    "content": "**erdos_302:**\n\nComplete status of Problem #302:\n\n1. f(N) ≥ (5/8+o(1))N (Cambie)\n2. f(N) ≤ (9/10+o(1))N (van Doorn)\n3. Original conjecture f(N) = (1/2+o(1))N is FALSE\n\nThe exact limiting density remains OPEN, known to be in [5/8, 9/10].",
+    "mathContext": "The problem is partially resolved - we know the answer is NOT 1/2, but the exact value is unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["Partial resolution", "Density bounds", "Open problem"]
+  },
+  {
+    "id": "erdos-302-summary",
+    "proofId": "erdos-302",
+    "type": "theorem",
+    "range": { "startLine": 264, "endLine": 272 },
+    "title": "Summary",
+    "content": "**erdos_302_summary:**\n\n**Erdős Problem #302: OPEN**\n\n**Question:** Estimate f(N), is f(N) = (1/2+o(1))N?\n\n**Answer:** NO, the limit is in [5/8, 9/10].\n\nThe gap between 0.625 and 0.9 remains to be closed.",
+    "mathContext": "The problem demonstrates how initial guesses can be wrong, and significant gaps can remain open.",
+    "significance": "critical",
+    "relatedConcepts": ["Final status", "Open problems", "Remaining gaps"]
+  }
+]
