@@ -1,33 +1,147 @@
 {
   "id": "erdos-778",
-  "title": "Erdős Problem #778",
+  "title": "Erdos Problem #778: Clique-Building Games on Complete Graphs",
   "slug": "erdos-778",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAlice and Bob play a game on the edges of ..., alternating colouring edges by red (Alice) and blue (Bob). Alice goes first, a...",
+  "description": "Alice and Bob alternate coloring edges of K_n (red/blue). Alice wins if her largest red clique exceeds any blue clique. Does Bob have a winning strategy for n >= 3? OPEN. Malekshahian-Spiro (2024) proved Bob wins with density >= 3/4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Malekshahian-Spiro (2024 partial results)",
     "sourceUrl": "https://erdosproblems.com/778",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos778Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-game-theory",
+      "graph-coloring",
+      "ramsey-theory",
+      "cliques",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 778,
     "erdosUrl": "https://erdosproblems.com/778",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure for K_n",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "IsClique",
+        "description": "Clique predicate for measuring largest cliques",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertices",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "EdgeColor inductive type: Red, Blue, Uncolored",
+      "GameState definition: edge coloring of K_n",
+      "Kn definition: complete graph on n vertices",
+      "redSubgraph, blueSubgraph definitions",
+      "aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame predicates",
+      "AliceStrategy, BobStrategy type definitions",
+      "BobHasWinningStrategy_CliqueGame, AliceHasWinningStrategy_CliqueGame definitions",
+      "ErdosConjecture: Bob wins for all n >= 3",
+      "malekshahian_spiro_density_clique: density >= 3/4",
+      "malekshahian_spiro_alice_n_bob_n123: Alice at n implies Bob at n+1,n+2,n+3",
+      "alice_no_three_consecutive theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #778 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAlice and Bob play a game on the edges of $K_n$, alternating colouring edges by red (Alice) and blue (Bob). Alice goes first, and wins if at the end the largest red clique is larger than any of the blue cliques.\n\nDoes Bob have a winning strategy for $n\\geq 3$? (Erd\\H{o}s believed the answer is yes.)\n\nIf we change the game so that Bob colours two edges after each edge that Alice colours, but now require Bob's largest clique to be strictly larger than Alice's, then does Bob have a winning strategy for $n>3$?\n\nFinally, consider the game when Alice wins if the maximum degree of the red subgraph is larger than the maximum degree of the blue subgraph. Who wins?\n\n\n\nMalekshahian and Spiro \\cite{MaSp24} have proved that, for the first game, the set of $n$ for which Bob wins has density at least $3/4$ - in fact they prove that if Alice wins at $n$ then Bob wins at $n+1,n+2,n+3$.\n\nSimilarly, for the third game they prove that the set of $n$ for which Bob wins has density at least $2/3$, and prove the stronger statement that if Alice wins at $n$ then Bob wins at $n+1,n+2$.\n\n\n\n\nReferences\n\n\n[MaSp24] Malekshahian, A. and Spiro, S., On a clique-building game of Erd\\H{o}s. arXiv:2410.18304 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #778: Clique-Building Games**\n\nThis problem concerns competitive edge-coloring games on complete graphs, a topic in combinatorial game theory related to Ramsey theory.\n\n**Three Game Variants:**\n1. **Clique Game:** Alice wins if max red clique > max blue clique\n2. **Modified Game:** Bob colors 2 edges per turn; wins if his max > Alice's\n3. **Degree Game:** Alice wins if max red degree > max blue degree\n\n**Recent Progress:**\nMalekshahian and Spiro (arXiv:2410.18304, 2024) proved significant partial results, showing Bob wins in most cases but the complete answer remains open.\n\n**Erdos's Belief:**\nErdos believed Bob should always have a winning strategy for the clique game when n >= 3.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nAlice and Bob play on $K_n$, alternating coloring edges red (Alice) and blue (Bob). Alice goes first.\n\n**Questions:**\n1. Does Bob have a winning strategy for $n \\geq 3$? (Main question)\n2. Modified: Bob colors 2 edges per turn. Does Bob win for $n > 3$?\n3. Degree variant: Who wins when comparing maximum degrees?\n\n**Known (Malekshahian-Spiro 2024):**\n- Clique game: Bob wins with density $\\geq 3/4$\n- If Alice wins at $n$, Bob wins at $n+1, n+2, n+3$\n- Degree game: Bob wins with density $\\geq 2/3$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Setup:** Define K_n using Mathlib's SimpleGraph\n\n2. **Game State:** EdgeColor inductive type with Red, Blue, Uncolored\n\n3. **Winning Conditions:** Define when Alice/Bob wins each game variant\n\n4. **Strategies:** Define strategy types as functions from state to edge choice\n\n5. **Main Results:** Axiomatize Malekshahian-Spiro theorems\n\n6. **Implications:** Derive consequences like alice_no_three_consecutive",
+    "keyInsights": [
+      "**Density Result:** Bob wins at least 3/4 of all n (Malekshahian-Spiro)",
+      "**Periodicity:** If Alice wins at n, Bob wins the next 3 values",
+      "**This implies:** Alice can never win 4 times in a row",
+      "**Erdos's Intuition:** Second player advantage in such games",
+      "**Connection to Ramsey:** Finding monochromatic cliques in edge-colored K_n",
+      "**Open:** Whether Bob ALWAYS wins remains unknown"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "EdgeColor, GameState, Kn, numEdges",
+      "startLine": 38,
+      "endLine": 60
+    },
+    {
+      "id": "clique-definitions",
+      "title": "Clique Definitions",
+      "summary": "redSubgraph, blueSubgraph, maxCliqueSize",
+      "startLine": 62,
+      "endLine": 83
+    },
+    {
+      "id": "game-rules",
+      "title": "Game Rules",
+      "summary": "isAliceTurn, uncoloredEdges, gameOver",
+      "startLine": 85,
+      "endLine": 102
+    },
+    {
+      "id": "three-games",
+      "title": "The Three Games",
+      "summary": "aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame",
+      "startLine": 104,
+      "endLine": 123
+    },
+    {
+      "id": "strategies",
+      "title": "Strategies",
+      "summary": "AliceStrategy, BobStrategy, winning strategy definitions",
+      "startLine": 125,
+      "endLine": 147
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results (2024)",
+      "summary": "Malekshahian-Spiro density and periodicity theorems",
+      "startLine": 149,
+      "endLine": 177
+    },
+    {
+      "id": "implications",
+      "title": "Implications",
+      "summary": "bob_wins_infinitely_often, alice_no_three_consecutive",
+      "startLine": 179,
+      "endLine": 199
+    },
+    {
+      "id": "open-questions",
+      "title": "The Open Question",
+      "summary": "openQuestion_clique, openQuestion_modified, openQuestion_degree",
+      "startLine": 201,
+      "endLine": 215
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_778_status, erdos_778 theorem",
+      "startLine": 217,
+      "endLine": 247
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #778 asks about clique-building games on K_n. The main question - does Bob always win for n >= 3? - remains OPEN. Malekshahian-Spiro (2024) proved significant partial results: Bob wins with density >= 3/4, and if Alice ever wins at n, Bob wins at n+1, n+2, n+3. This means Alice cannot win 4 times consecutively.",
+    "implications": "**Combinatorial Game Theory Connections**\n\n1. **Ramsey Theory:** Finding monochromatic structures in edge-colorings\n\n2. **Strategy Analysis:** Understanding winning/losing positions in perfect information games\n\n3. **Density Methods:** Using asymptotic density to measure 'how often' a player wins\n\n4. **Second Player Advantage:** Bob's structural advantage from responding",
+    "openQuestions": [
+      "Does Bob have a winning strategy for ALL n >= 3? (Main open question)",
+      "Does Bob have a winning strategy for the modified game when n > 3?",
+      "Who wins the degree game in general?",
+      "What is the exact set of n where Alice wins the clique game?",
+      "Can the density 3/4 bound be improved?"
+    ]
   }
 }
