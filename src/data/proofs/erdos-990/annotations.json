@@ -1,1 +1,233 @@
-[]
+[
+  {
+    "id": "ann-e990-overview",
+    "proofId": "erdos-990",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #990: Polynomial Root Distribution**\n\nFor polynomial f ∈ ℂ[x] with d roots having arguments θ₁,...,θ_d ∈ [0,2π], is the discrepancy:\n\n|#{θᵢ ∈ I} - |I|d/(2π)| ≪ √(n log M)\n\nwhere n = number of nonzero coefficients?\n\n**Status:** Classical Erdős-Turán (with d) PROVED; sparse case (with n) OPEN.",
+    "mathContext": "Complex analysis, equidistribution theory, polynomial root geometry.",
+    "significance": "critical",
+    "relatedConcepts": ["Discrepancy theory", "Equidistribution", "Mahler measure", "Hilbert transforms"]
+  },
+  {
+    "id": "ann-e990-complexpoly",
+    "proofId": "erdos-990",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Complex Polynomial",
+    "content": "**ComplexPoly d:** A polynomial of degree at most d represented as a coefficient sequence.\n\nf = a₀ + a₁x + ⋯ + aₐxᵈ where aᵢ ∈ ℂ.",
+    "significance": "key",
+    "leanSymbol": "ComplexPoly"
+  },
+  {
+    "id": "ann-e990-sparsity",
+    "proofId": "erdos-990",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Sparsity (Nonzero Coefficients)",
+    "content": "**nonzeroCoeffCount d p:** The number of nonzero coefficients in polynomial p.\n\nExamples:\n- x^d - 1 has sparsity 2\n- x^d + x^(d-1) + ... + x + 1 has sparsity d+1\n\nSparsity can be much smaller than degree.",
+    "significance": "critical",
+    "leanSymbol": "nonzeroCoeffCount"
+  },
+  {
+    "id": "ann-e990-argument",
+    "proofId": "erdos-990",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Complex Argument",
+    "content": "**argument z:** The angle θ ∈ [0, 2π) such that z = |z|e^{iθ}.\n\nFor a root z of polynomial f, the argument tells us where z lies on the unit circle (after radial projection).",
+    "significance": "key",
+    "leanSymbol": "argument"
+  },
+  {
+    "id": "ann-e990-mahler",
+    "proofId": "erdos-990",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "definition",
+    "title": "Mahler M Measure",
+    "content": "**mahlerM d p:** M = (|a₀| + |a₁| + ⋯ + |aₐ|) / √(|a₀||aₐ|)\n\nThis normalization factor appears in the Erdős-Turán bound. For monic polynomials with nonzero constant term, M ≥ 2.",
+    "significance": "critical",
+    "leanSymbol": "mahlerM"
+  },
+  {
+    "id": "ann-e990-rootset",
+    "proofId": "erdos-990",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "axiom",
+    "title": "Root Set",
+    "content": "**rootSet d p:** The set of d roots (counted with multiplicity) of polynomial p.\n\nBy the Fundamental Theorem of Algebra, a degree-d polynomial has exactly d complex roots.",
+    "significance": "key",
+    "leanSymbol": "rootSet"
+  },
+  {
+    "id": "ann-e990-rootsinterval",
+    "proofId": "erdos-990",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "definition",
+    "title": "Roots in Interval",
+    "content": "**rootsInInterval d p α β:** Count of roots with argument in [α, β].\n\nThis measures how many roots lie in the angular sector from angle α to β.",
+    "significance": "critical",
+    "leanSymbol": "rootsInInterval"
+  },
+  {
+    "id": "ann-e990-expected",
+    "proofId": "erdos-990",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "definition",
+    "title": "Expected Count",
+    "content": "**expectedCount d α β:** (β - α) · d / (2π)\n\nIf d roots were uniformly distributed around the circle, this is how many would fall in [α, β].",
+    "significance": "key",
+    "leanSymbol": "expectedCount"
+  },
+  {
+    "id": "ann-e990-discrepancy",
+    "proofId": "erdos-990",
+    "range": { "startLine": 100, "endLine": 102 },
+    "type": "definition",
+    "title": "Discrepancy",
+    "content": "**discrepancy d p α β:** |actual count - expected count|\n\nThe discrepancy measures how far the root distribution deviates from uniform. The Erdős-Turán inequality bounds this quantity.",
+    "significance": "critical",
+    "leanSymbol": "discrepancy"
+  },
+  {
+    "id": "ann-e990-maxdisc",
+    "proofId": "erdos-990",
+    "range": { "startLine": 104, "endLine": 106 },
+    "type": "definition",
+    "title": "Maximum Discrepancy",
+    "content": "**maxDiscrepancy d p:** sup over all intervals [α,β] of the discrepancy.\n\nThis is the worst-case deviation from uniform distribution over all possible angular sectors.",
+    "significance": "critical",
+    "leanSymbol": "maxDiscrepancy"
+  },
+  {
+    "id": "ann-e990-classical",
+    "proofId": "erdos-990",
+    "range": { "startLine": 114, "endLine": 117 },
+    "type": "axiom",
+    "title": "Classical Erdős-Turán (1950)",
+    "content": "**erdos_turan_classical:**\n\nmaxDiscrepancy(p) ≤ C · √(d · log M)\n\nThe original 1950 result: polynomial roots cannot cluster too much. The bound depends on degree d and the Mahler measure M.",
+    "significance": "critical",
+    "leanSymbol": "erdos_turan_classical"
+  },
+  {
+    "id": "ann-e990-ganelius",
+    "proofId": "erdos-990",
+    "range": { "startLine": 125, "endLine": 129 },
+    "type": "axiom",
+    "title": "Ganelius Improvement (1954)",
+    "content": "**ganelius_improvement:**\n\nThe constant C can be taken ≤ 8.\n\nGanelius improved the explicit constant in the Erdős-Turán inequality just 4 years after the original paper.",
+    "significance": "key",
+    "leanSymbol": "ganelius_improvement"
+  },
+  {
+    "id": "ann-e990-sparse",
+    "proofId": "erdos-990",
+    "range": { "startLine": 137, "endLine": 141 },
+    "type": "definition",
+    "title": "Sparse Conjecture (The Open Problem)",
+    "content": "**sparseConjecture:**\n\nmaxDiscrepancy(p) ≤ C · √(n · log M)\n\nwhere n = number of nonzero coefficients.\n\nThis is the OPEN question: can the degree d be replaced by the sparsity n?",
+    "significance": "critical",
+    "leanSymbol": "sparseConjecture"
+  },
+  {
+    "id": "ann-e990-improves",
+    "proofId": "erdos-990",
+    "range": { "startLine": 143, "endLine": 147 },
+    "type": "theorem",
+    "title": "Sparsity ≤ Degree + 1",
+    "content": "**sparse_improves_dense:**\n\nn ≤ d + 1 always.\n\nThe sparsity is at most degree + 1, so a sparse bound would always be at least as good as the classical bound.",
+    "significance": "key",
+    "leanSymbol": "sparse_improves_dense"
+  },
+  {
+    "id": "ann-e990-unity",
+    "proofId": "erdos-990",
+    "range": { "startLine": 149, "endLine": 151 },
+    "type": "axiom",
+    "title": "Unity Roots Are Sparse",
+    "content": "**unity_root_sparse:**\n\nx^d - 1 has only 2 nonzero coefficients but degree d.\n\nThis is the key example motivating the conjecture: roots of unity are perfectly equidistributed, and x^d - 1 is maximally sparse.",
+    "significance": "key",
+    "leanSymbol": "unity_root_sparse"
+  },
+  {
+    "id": "ann-e990-sharp",
+    "proofId": "erdos-990",
+    "range": { "startLine": 159, "endLine": 165 },
+    "type": "axiom",
+    "title": "Sharp Constant (2019-2021)",
+    "content": "**sharp_erdos_turan:**\n\nThere exists an optimal constant C_sharp such that any valid constant C satisfies C_sharp ≤ C.\n\nSoundararajan (2019) and subsequent work determined the exact optimal constant, ending 70 years of improvement attempts.",
+    "significance": "critical",
+    "leanSymbol": "sharp_erdos_turan"
+  },
+  {
+    "id": "ann-e990-hilbert",
+    "proofId": "erdos-990",
+    "range": { "startLine": 167, "endLine": 169 },
+    "type": "axiom",
+    "title": "Hilbert Transform Connection",
+    "content": "**hilbert_connection:**\n\nThe optimal constant is determined by an extremal problem involving Hilbert transforms and Fourier analysis.\n\nThis unexpected connection between polynomial root distribution and harmonic analysis was key to finding the sharp constant.",
+    "significance": "key",
+    "leanSymbol": "hilbert_connection"
+  },
+  {
+    "id": "ann-e990-unityuniform",
+    "proofId": "erdos-990",
+    "range": { "startLine": 177, "endLine": 180 },
+    "type": "axiom",
+    "title": "Roots of Unity: Uniform",
+    "content": "**unity_roots_uniform:**\n\nThe n-th roots of unity (roots of x^n - 1) are exactly uniformly distributed at angles 2πk/n.\n\nThis is the perfect case: discrepancy is at most 1 (due to integrality).",
+    "significance": "key",
+    "leanSymbol": "unity_roots_uniform"
+  },
+  {
+    "id": "ann-e990-littlewood",
+    "proofId": "erdos-990",
+    "range": { "startLine": 186, "endLine": 192 },
+    "type": "definition",
+    "title": "Littlewood Polynomials",
+    "content": "**isLittlewood d p:** All coefficients have absolute value 1 (or are zero).\n\nLittlewood polynomials (coefficients ±1) have special structure and their root distribution is intensively studied.",
+    "significance": "supporting",
+    "leanSymbol": "isLittlewood"
+  },
+  {
+    "id": "ann-e990-lowerbound",
+    "proofId": "erdos-990",
+    "range": { "startLine": 236, "endLine": 240 },
+    "type": "axiom",
+    "title": "Lower Bound Construction",
+    "content": "**lower_bound_construction:**\n\nFor every degree d, there exist polynomials with maxDiscrepancy ≥ (1/10)√d.\n\nThis shows the √d dependence in Erdős-Turán is necessary—it cannot be improved to o(√d).",
+    "significance": "key",
+    "leanSymbol": "lower_bound_construction"
+  },
+  {
+    "id": "ann-e990-erdelyi",
+    "proofId": "erdos-990",
+    "range": { "startLine": 252, "endLine": 257 },
+    "type": "axiom",
+    "title": "Erdélyi's One-Sided Improvement",
+    "content": "**erdelyi_one_sided:**\n\nThe actual count minus expected count (without absolute value) is ≤ C√(d log M).\n\nThis subtle one-sided version says roots can cluster below expectation but not too much above.",
+    "significance": "key",
+    "leanSymbol": "erdelyi_one_sided"
+  },
+  {
+    "id": "ann-e990-summary",
+    "proofId": "erdos-990",
+    "range": { "startLine": 276, "endLine": 286 },
+    "type": "theorem",
+    "title": "Status Summary",
+    "content": "**erdos_990_status:**\n\n1. Classical Erdős-Turán with degree d: PROVED\n2. Sparse conjecture with sparsity n: OPEN\n\nThe 1950 result is a cornerstone of polynomial root theory; the sparse version remains tantalizing.",
+    "significance": "critical",
+    "leanSymbol": "erdos_990_status"
+  },
+  {
+    "id": "ann-e990-main",
+    "proofId": "erdos-990",
+    "range": { "startLine": 288, "endLine": 289 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_990:**\n\nErdős Problem #990: Classical case PROVED, sparse case OPEN.\n\nThe question whether polynomial sparsity controls root equidistribution remains one of the elegant open problems in analysis.",
+    "significance": "critical",
+    "leanSymbol": "erdos_990"
+  }
+]
