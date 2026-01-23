@@ -1,1 +1,208 @@
-[]
+[
+  {
+    "id": "ann-981-header",
+    "proofId": "erdos-981",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #981**\n\nLet f_ε(p) be the smallest m such that |∑_{n≤N} (n/p)| < εN for all N ≥ m.\n\n**Conjecture:** ∑_{p<x} f_ε(p) ~ c_ε · x/log x\n\n**Status:** SOLVED (Elliott 1969)",
+    "mathContext": "The problem concerns character sums and their stabilization behavior.",
+    "significance": "critical",
+    "relatedConcepts": ["Character sums", "Legendre symbol", "Prime distribution"]
+  },
+  {
+    "id": "ann-981-legendre",
+    "proofId": "erdos-981",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Legendre Symbol",
+    "content": "**legendreInt n p:**\n\nThe Legendre symbol (n/p) as an integer:\n- +1 if n is a quadratic residue mod p\n- -1 if n is a quadratic non-residue mod p\n- 0 if p | n",
+    "mathContext": "The Legendre symbol is a multiplicative character that detects quadratic residues.",
+    "significance": "critical",
+    "relatedConcepts": ["Quadratic residue", "Multiplicative character", "Modular arithmetic"]
+  },
+  {
+    "id": "ann-981-charsum",
+    "proofId": "erdos-981",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Character Sum",
+    "content": "**characterSum N p:**\n\n∑_{n=0}^{N-1} (n/p)\n\nThe partial sum of Legendre symbols up to N. These sums exhibit cancellation because QRs and NQRs are equidistributed.",
+    "mathContext": "Character sums are central objects in analytic number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Partial sum", "Cancellation", "Analytic number theory"]
+  },
+  {
+    "id": "ann-981-bounded",
+    "proofId": "erdos-981",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Bounded From m",
+    "content": "**isBoundedFrom ε p m:**\n\nThe predicate that |characterSum N p| < εN for all N ≥ m.\n\nThis captures when the character sum becomes \"permanently small\" relative to N.",
+    "mathContext": "This is the stabilization condition that defines f_ε(p).",
+    "significance": "key",
+    "relatedConcepts": ["Stabilization", "Bound", "Eventually"]
+  },
+  {
+    "id": "ann-981-feps",
+    "proofId": "erdos-981",
+    "range": { "startLine": 70, "endLine": 74 },
+    "type": "definition",
+    "title": "Stabilization Threshold f_ε(p)",
+    "content": "**fEps ε p:**\n\nThe smallest m such that |∑_{n≤N} (n/p)| < εN for all N ≥ m.\n\nThis measures when character sum cancellation becomes reliable for prime p.",
+    "mathContext": "f_ε(p) quantifies how quickly the Legendre symbol \"settles down.\"",
+    "significance": "critical",
+    "relatedConcepts": ["Threshold", "Stabilization", "Infimum"]
+  },
+  {
+    "id": "ann-981-sumfeps",
+    "proofId": "erdos-981",
+    "range": { "startLine": 82, "endLine": 85 },
+    "type": "definition",
+    "title": "Sum Over Primes",
+    "content": "**sumFEps ε x:**\n\n∑_{p<x} f_ε(p)\n\nThe sum of stabilization thresholds over all primes less than x.",
+    "mathContext": "Averaging f_ε(p) over primes reveals the typical behavior.",
+    "significance": "key",
+    "relatedConcepts": ["Prime sum", "Average behavior"]
+  },
+  {
+    "id": "ann-981-asymptotic",
+    "proofId": "erdos-981",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "Asymptotic Function",
+    "content": "**asymptoticFunc x:**\n\nx / log x\n\nThis is the Prime Number Theorem form - the number of primes up to x is approximately x/log x.",
+    "mathContext": "The appearance of x/log x suggests deep connections to prime distribution.",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "Asymptotic", "Logarithm"]
+  },
+  {
+    "id": "ann-981-elliott",
+    "proofId": "erdos-981",
+    "range": { "startLine": 95, "endLine": 104 },
+    "type": "axiom",
+    "title": "Elliott's Theorem (1969)",
+    "content": "**elliott_1969:**\n\nFor any ε > 0, there exists c_ε > 0 such that\n  ∑_{p<x} f_ε(p) ~ c_ε · x/log x\n\nThis means the ratio sumFEps(ε, x) / (x/log x) converges to c_ε.",
+    "mathContext": "Elliott's 1969 paper in Indag. Math. completely resolved Erdős's conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic equivalence", "Elliott 1969", "Indag. Math."]
+  },
+  {
+    "id": "ann-981-elliott-quant",
+    "proofId": "erdos-981",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "axiom",
+    "title": "Quantitative Form",
+    "content": "**elliott_1969_quantitative:**\n\nFor any δ > 0, eventually |sumFEps(ε,x)/(x/log x) - c_ε| < δ.\n\nThis is the ε-δ formulation of asymptotic convergence.",
+    "significance": "key",
+    "relatedConcepts": ["Quantitative bound", "Convergence"]
+  },
+  {
+    "id": "ann-981-polya",
+    "proofId": "erdos-981",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "axiom",
+    "title": "Pólya-Vinogradov Inequality",
+    "content": "**polya_vinogradov:**\n\n|∑_{n≤N} (n/p)| ≤ √p · log p\n\nClassical bound showing character sums grow at most like √p log p.",
+    "mathContext": "Proved independently by Pólya and Vinogradov in 1918. This guarantees f_ε(p) is finite.",
+    "significance": "key",
+    "relatedConcepts": ["Pólya 1918", "Vinogradov 1918", "Character sum bound"]
+  },
+  {
+    "id": "ann-981-cancellation",
+    "proofId": "erdos-981",
+    "range": { "startLine": 120, "endLine": 123 },
+    "type": "axiom",
+    "title": "Square-Root Cancellation",
+    "content": "**character_sum_cancellation:**\n\nEventually |characterSum N p| ≤ √N · log N.\n\nCharacter sums exhibit \"square-root cancellation\" - they grow much slower than N.",
+    "mathContext": "This is the key phenomenon that makes stabilization possible.",
+    "significance": "key",
+    "relatedConcepts": ["Cancellation", "Square root", "Sublinear growth"]
+  },
+  {
+    "id": "ann-981-finite",
+    "proofId": "erdos-981",
+    "range": { "startLine": 125, "endLine": 128 },
+    "type": "axiom",
+    "title": "f_ε(p) is Finite",
+    "content": "**fEps_finite:**\n\nFor any ε > 0 and prime p, f_ε(p) exists (is finite).\n\nThe Pólya-Vinogradov bound implies the cancellation eventually dominates εN.",
+    "significance": "key",
+    "relatedConcepts": ["Well-defined", "Existence", "Finiteness"]
+  },
+  {
+    "id": "ann-981-burgess",
+    "proofId": "erdos-981",
+    "range": { "startLine": 142, "endLine": 145 },
+    "type": "axiom",
+    "title": "Burgess Bound (1962)",
+    "content": "**burgess_bound:**\n\nImproved bounds for short character sums:\n|∑_{n=N}^{N+H} (n/p)| ≤ C · H · p^{-1/(4r)}\n\nfor H ≥ p^{1/(4r) + 1/r}.",
+    "mathContext": "Burgess (1962) improved on Pólya-Vinogradov for short intervals, a major achievement.",
+    "significance": "supporting",
+    "relatedConcepts": ["Burgess 1962", "Short sums", "Improved bound"]
+  },
+  {
+    "id": "ann-981-qr",
+    "proofId": "erdos-981",
+    "range": { "startLine": 151, "endLine": 153 },
+    "type": "definition",
+    "title": "Quadratic Residue",
+    "content": "**isQuadraticResidue a p:**\n\na is a quadratic residue mod p if ∃x: x² ≡ a (mod p).\n\nExactly (p-1)/2 nonzero residue classes are QRs, and (p-1)/2 are NQRs.",
+    "mathContext": "The equidistribution of QRs and NQRs drives character sum cancellation.",
+    "significance": "supporting",
+    "relatedConcepts": ["Quadratic residue", "Non-residue", "Square"]
+  },
+  {
+    "id": "ann-981-complete",
+    "proofId": "erdos-981",
+    "range": { "startLine": 160, "endLine": 162 },
+    "type": "axiom",
+    "title": "Complete Sum is Zero",
+    "content": "**complete_sum_zero:**\n\n∑_{n=0}^{p-1} (n/p) = 0\n\nThe character sum over a complete period vanishes due to exact cancellation.",
+    "mathContext": "This is why partial sums can't grow arbitrarily - they reset every p terms.",
+    "significance": "key",
+    "relatedConcepts": ["Complete sum", "Period", "Cancellation"]
+  },
+  {
+    "id": "ann-981-alt",
+    "proofId": "erdos-981",
+    "range": { "startLine": 170, "endLine": 173 },
+    "type": "definition",
+    "title": "Alternative Formulation",
+    "content": "**fEpsAlt ε p:**\n\nSmallest m such that |characterSum m p| < εm.\n\nThis is a \"first-passage\" time (when does it first become small?) rather than \"eventual-time\" (when does it stay small?).",
+    "mathContext": "Tang and Zhang (2025) studied this alternative, which gives different asymptotics.",
+    "significance": "key",
+    "relatedConcepts": ["First-passage time", "Alternative definition"]
+  },
+  {
+    "id": "ann-981-tangzhang",
+    "proofId": "erdos-981",
+    "range": { "startLine": 175, "endLine": 179 },
+    "type": "axiom",
+    "title": "Tang-Zhang (2025)",
+    "content": "**tang_zhang_2025:**\n\nFor the alternative first-passage formulation, there also exists c' > 0 with\n∑_{p<x} fEpsAlt(ε,p) ~ c' · x/log x.",
+    "mathContext": "This recent result shows both formulations have PNT-form asymptotics.",
+    "significance": "supporting",
+    "relatedConcepts": ["Tang-Zhang 2025", "First-passage", "Recent result"]
+  },
+  {
+    "id": "ann-981-summary",
+    "proofId": "erdos-981",
+    "range": { "startLine": 204, "endLine": 209 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_981_summary:**\n\nFor any ε > 0, Elliott's theorem guarantees existence of c_ε > 0 with\n∑_{p<x} f_ε(p) ~ c_ε · x/log x.\n\nThis combines all the components into the main result.",
+    "mathContext": "The theorem statement captures the complete resolution of Erdős's conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Main result", "Resolution", "Summary"]
+  },
+  {
+    "id": "ann-981-solved",
+    "proofId": "erdos-981",
+    "range": { "startLine": 211, "endLine": 212 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**erdos_981_solved:**\n\nErdős Problem #981 was completely resolved by Elliott in 1969.\n\nThe conjecture about character sum stabilization thresholds is true.",
+    "significance": "supporting",
+    "relatedConcepts": ["Solved", "Elliott 1969", "Resolution"]
+  }
+]

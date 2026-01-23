@@ -1,33 +1,133 @@
 {
   "id": "erdos-981",
-  "title": "Erdős Problem #981",
+  "title": "Erdős Problem #981: Character Sum Stabilization Threshold",
   "slug": "erdos-981",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the smallest integer ... such that ... for all .... Prove that\\[\\sum_{p<x}f_\\epsilon(p)\\sim c_\\epsilon {\\l...",
+  "description": "For ε > 0, let f_ε(p) be the smallest m such that |∑_{n≤N}(n/p)| < εN for all N ≥ m. Elliott (1969) proved ∑_{p<x} f_ε(p) ~ c_ε · x/log x.",
   "meta": {
-    "author": "Unknown",
+    "author": "Elliott (1969 resolution)",
     "sourceUrl": "https://erdosproblems.com/981",
-    "date": "",
-    "status": "pending",
+    "date": "1969",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos981Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "character-sums",
+      "legendre-symbol",
+      "asymptotics",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 981,
     "erdosUrl": "https://erdosproblems.com/981",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym",
+        "description": "Legendre symbol for quadratic residues",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit convergence for asymptotics",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums for character sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for x/log x asymptotic",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "legendreInt: Legendre symbol as integer value",
+      "characterSum N p: ∑_{n≤N} (n/p) partial sum",
+      "isBoundedFrom ε p m: bound condition for stabilization",
+      "fEps ε p: stabilization threshold f_ε(p)",
+      "sumFEps ε x: sum over primes p < x",
+      "elliott_1969 axiom: main asymptotic result",
+      "polya_vinogradov axiom: character sum bounds",
+      "burgess_bound axiom: improved short sum bounds",
+      "tang_zhang_2025 axiom: alternative formulation result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #981 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$ and $f_\\epsilon(p)$ be the smallest integer $m$ such that $\\sum_{n\\leq N}\n\\left(\\frac{n}{p}\\right)<\\epsilon N$ for all $N\\geq m$. Prove that\\[\\sum_{p<x}f_\\epsilon(p)\\sim c_\\epsilon \\frac{x}{\\log x}\\]for some $c_\\epsilon>0$.\n\n\n\nThis was proved by Elliott \\cite{El69}.\n\nAn earlier version of this problem on this site misstated the problem, defining $f_\\epsilon(p)$ instead as the smallest integer $m$ such that $\\sum_{n\\leq m}\\binom{n}{p}<\\epsilon m$ (thus a 'first-time' problem rather than the 'eventual-time' problem given above). An asymptotic for this alternate definition of $f_\\epsilon$ was proved by Tang and Zhang \\cite{TaZh25}.\n\n\n\n\nReferences\n\n\n[El69] Elliott, P. D. T. A., A conjecture of {E}rd\\H{o}s concerning character sums. Indag. Math. (1969), 164--171.\n\n[TaZh25] Q. Tang and H. Zhang, Average first-passage times for character sums. (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #981**\n\nThis problem concerns the behavior of character sums - specifically the Legendre symbol (n/p). The Legendre symbol equals +1 if n is a quadratic residue mod p, -1 if it's a non-residue, and 0 if p|n.\n\n**Key Quantity:** f_ε(p) is the smallest m such that the partial sum |∑_{n≤N} (n/p)| stays below εN for all N ≥ m. This measures when the cancellation in character sums becomes \"permanently good.\"\n\n**History:**\n- The problem was posed by Erdős in [Er65b]\n- Elliott proved the conjecture in 1969 (Indag. Math.)\n- Tang and Zhang (2025) studied an alternative \"first-passage\" formulation\n\n**Context:** The Pólya-Vinogradov inequality (1918) bounds |∑_{n≤N} χ(n)| ≤ c√p log p. Burgess (1962) improved this for short sums. Elliott's result shows the average behavior of f_ε(p) follows the Prime Number Theorem form.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet ε > 0 and f_ε(p) be the smallest integer m such that\n  |∑_{n≤N} (n/p)| < εN for all N ≥ m\nwhere (n/p) is the Legendre symbol.\n\n**Conjecture:** ∑_{p<x} f_ε(p) ~ c_ε · x/log x for some c_ε > 0.\n\n**Resolution:** Elliott proved this in 1969.\n\n**Alternative Formulation:** Tang and Zhang (2025) studied f_ε(p) defined as the smallest m with |∑_{n≤m} (n/p)| < εm (first-passage rather than eventual-time).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Legendre Symbol:** Use Mathlib's legendreSym for (n/p)\n\n2. **Character Sums:** Define characterSum N p = ∑_{n≤N} (n/p)\n\n3. **Stabilization Threshold:** Define f_ε(p) via isBoundedFrom predicate\n\n4. **Main Asymptotic:** Elliott's theorem as axiom\n\n5. **Supporting Results:**\n   - Pólya-Vinogradov inequality\n   - Burgess bound for short sums\n   - Tang-Zhang alternative formulation\n\n**Why Axioms:** Elliott's proof uses deep analytic techniques beyond current Mathlib formalization.",
+    "keyInsights": [
+      "**Character Sum Cancellation:** The Legendre symbol values +1 and -1 are equidistributed, causing partial sums to exhibit cancellation.",
+      "**Stabilization:** f_ε(p) measures when this cancellation becomes reliable - when the partial sum stays small relative to N.",
+      "**PNT Form:** The asymptotic c_ε · x/log x mirrors the Prime Number Theorem, suggesting a deep connection.",
+      "**Pólya-Vinogradov:** The classical bound √p log p shows character sums grow sublinearly, guaranteeing f_ε(p) is finite.",
+      "**Alternative Formulation:** The \"first-passage\" vs \"eventual-time\" distinction creates different but related asymptotic problems."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "legendre",
+      "title": "The Legendre Symbol",
+      "summary": "Definition and properties of (n/p)",
+      "startLine": 42,
+      "endLine": 57
+    },
+    {
+      "id": "stabilization",
+      "title": "Stabilization Threshold",
+      "summary": "Definition of f_ε(p)",
+      "startLine": 59,
+      "endLine": 74
+    },
+    {
+      "id": "asymptotic",
+      "title": "Main Asymptotic",
+      "summary": "Sum of f_ε(p) over primes",
+      "startLine": 76,
+      "endLine": 89
+    },
+    {
+      "id": "elliott",
+      "title": "Elliott's Theorem",
+      "summary": "The 1969 resolution",
+      "startLine": 91,
+      "endLine": 109
+    },
+    {
+      "id": "bounds",
+      "title": "Classical Bounds",
+      "summary": "Pólya-Vinogradov and Burgess",
+      "startLine": 111,
+      "endLine": 145
+    },
+    {
+      "id": "alternative",
+      "title": "Alternative Formulation",
+      "summary": "Tang-Zhang (2025) first-passage version",
+      "startLine": 164,
+      "endLine": 179
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and resolution",
+      "startLine": 181,
+      "endLine": 212
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #981 was solved by Elliott in 1969. For any ε > 0, the sum ∑_{p<x} f_ε(p) is asymptotic to c_ε · x/log x, where f_ε(p) is the stabilization threshold for character sums. This result connects character sum cancellation to the Prime Number Theorem.",
+    "implications": "The result shows that on average, the stabilization threshold f_ε(p) behaves like a constant times the prime count. This connects several areas: character sums, quadratic residues, and prime distribution.",
+    "openQuestions": [
+      "What is the explicit value of c_ε as a function of ε?",
+      "How do the constants relate between the original and Tang-Zhang formulations?",
+      "Can the asymptotic be refined to include lower-order terms?"
+    ]
   }
 }
