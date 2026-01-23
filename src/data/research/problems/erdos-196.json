@@ -1,60 +1,127 @@
 {
   "slug": "erdos-196",
-  "title": "Erdos #196",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Erdős #196: Monotone 4-APs in Permutations",
+  "phase": "FORMALIZED",
+  "status": "progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\forall x : \\mathbb{N} \\to \\mathbb{N} \\text{ bijection}, \\exists i,j,k,l \\in \\mathbb{N}:\n(i < j < k < l \\lor i > j > k > l) \\land (x_j - x_i = x_k - x_j = x_l - x_k)",
+    "formal": "∀ x : ℕ ≃ ℕ, ∃ i,j,k,l : ℕ, (i < j < k < l ∨ i > j > k > l) ∧ IsAP4(x(i), x(j), x(k), x(l))",
     "plain": "Must every permutation of the natural numbers contain a monotone 4-term arithmetic progression?",
-    "whyMatters": []
+    "whyMatters": [
+      "k=4 is the critical boundary: k=3 proved (DEGS 1977), k=5 disproved",
+      "Connected to Erdős-Szekeres theorem on monotone subsequences",
+      "LeSaulnier-Vijay showed odd-CD case avoidable, reducing to even-CD case"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "k=3: Every permutation has monotone 3-AP (DEGS 1977)",
+      "k=5: There exists permutation avoiding monotone 5-AP (DEGS 1977)",
+      "Odd-CD 4-APs can be avoided (LeSaulnier-Vijay 2011)"
+    ],
+    "open": [
+      "Main conjecture: k=4 monotone 4-AP always exists",
+      "Can even-CD 4-APs be avoided?"
+    ],
+    "goal": "Prove even-CD 4-APs cannot be avoided, or find counterexample"
   },
   "currentState": {
-    "phase": "EXPLORATION",
-    "since": "2026-01-14T00:00:00Z",
-    "iteration": 1,
-    "focus": "Formalization complete. Problem is OPEN - k=4 threshold between proved k=3 and disproved k=5.",
-    "activeApproach": "Full formalization with axiomatized known results (DEGS 1977).",
+    "phase": "FORMALIZED",
+    "since": "2026-01-18T00:00:00Z",
+    "iteration": 3,
+    "focus": "511-line formalization with parity analysis and constraint propagation",
+    "activeApproach": "Prove via common difference parity - conjecture reduces to even-CD case",
     "blockers": [
-      "Problem is OPEN - no proof strategy available."
+      "Problem is OPEN - deep combinatorial result"
     ],
-    "nextAction": "Consider explicit DEGS counterexample construction for k=5.",
+    "nextAction": "Investigate whether LeSaulnier-Vijay construction creates even-CD 4-APs",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "FORMALIZED: 511-line file with comprehensive infrastructure. Conjecture proven equivalent to 'avoiding odd-CD 4-APs forces even-CD 4-APs'. All k=3 and k=5 results axiomatized. Extensive parity-based analysis with constraint propagation lemmas.",
+    "builtItems": [
+      "Permutation: ℕ ≃ ℕ bijection (Erdos196Problem.lean:33)",
+      "IsAP3/IsAP4/IsAP5: arithmetic progression predicates (Erdos196Problem.lean:50-75)",
+      "HasMonotone3AP/4AP/5AP: permutation has monotone k-AP (Erdos196Problem.lean:86-98)",
+      "Erdos196Conjecture: main conjecture statement (Erdos196Problem.lean:106)",
+      "ap4_iff_ap4': two AP4 definitions equivalent (PROVED, Erdos196Problem.lean:58)",
+      "conjecture_implies_3ap: 4-AP implies 3-AP (PROVED, Erdos196Problem.lean:124)",
+      "degs_3ap_theorem: every perm has 3-AP (AXIOM, Erdos196Problem.lean:113)",
+      "degs_5ap_counterexample: perm avoiding 5-AP exists (AXIOM, Erdos196Problem.lean:119)",
+      "erdos_szekeres_theorem: monotone subsequence theorem (AXIOM, Erdos196Problem.lean:194)",
+      "no_4ap_implies_nonextendable: avoiding 4-AP means 3-APs non-extendable (PROVED, Erdos196Problem.lean:224)",
+      "forbidden_value_constraint: 3-AP forbids specific values at later indices (PROVED, Erdos196Problem.lean:254)",
+      "IsAP3WithOddCD/EvenCD: parity predicates (Erdos196Problem.lean:305-318)",
+      "HasMonotone3APOddCD/4APOddCD/4APEvenCD: parity versions (Erdos196Problem.lean:321-333)",
+      "every_perm_has_3ap_odd_cd: LeSaulnier-Vijay (AXIOM, Erdos196Problem.lean:342)",
+      "exists_perm_avoiding_4ap_odd_cd: odd-CD avoidable (AXIOM, Erdos196Problem.lean:346)",
+      "conjecture_equiv_even_cd_forced: conjecture ⟺ even-CD forced (PROVED, Erdos196Problem.lean:362)",
+      "ap4_parity_dichotomy: every 4-AP has odd or even CD (PROVED, Erdos196Problem.lean:453)",
+      "forbidden_even_cd_extension: even-CD constraint forward (PROVED, Erdos196Problem.lean:412)",
+      "forbidden_even_cd_backward: even-CD constraint backward (PROVED, Erdos196Problem.lean:428)",
+      "Finite4APThreshold: finite threshold conjecture (Erdos196Problem.lean:470)",
+      "finite_threshold_implies_conjecture: compactness (SORRY, Erdos196Problem.lean:477)"
+    ],
+    "insights": [
+      "k=4 is critical boundary: k=3 proved, k=5 disproved by DEGS 1977",
+      "LeSaulnier-Vijay (2011): odd-CD 4-APs CAN be avoided - reduces conjecture to even-CD case",
+      "Conjecture ⟺ 'avoiding odd-CD 4-APs forces even-CD 4-APs'",
+      "Each 3-AP (a, a+d, a+2d) forbids value a+3d at all later indices",
+      "Non-extendability: if perm avoids 4-APs, every 3-AP is non-extendable",
+      "Erdős-Szekeres guarantees long monotone subsequences but not AP structure",
+      "If finite threshold exists, infinite case follows by compactness"
+    ],
+    "mathlibGaps": [
+      "No permutation AP infrastructure in Mathlib"
+    ],
+    "nextSteps": [
+      "Investigate whether LeSaulnier-Vijay construction creates even-CD 4-APs",
+      "Prove lower bound on 3-APs in permutations of [1,n]",
+      "Formalize density counting argument for constraint accumulation",
+      "Try to construct permutation avoiding even-CD 4-APs (potential counterexample)"
+    ],
     "markdown": "# Erdos #196 - Knowledge Base\n\n## Problem Statement\n\nMust every permutation of the natural numbers contain a monotone 4-term arithmetic progression?\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No (OPEN problem)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| Permutation | def | Bijection N -> N | Erdos196Problem.lean:33 |\n| IsAP3 | def | 3-term AP predicate | Erdos196Problem.lean:70 |\n| IsAP4 | def | 4-term AP predicate | Erdos196Problem.lean:50 |\n| IsAP5 | def | 5-term AP predicate | Erdos196Problem.lean:74 |\n| HasMonotone3AP | def | Permutation has monotone 3-AP | Erdos196Problem.lean:86 |\n| HasMonotone4AP | def | Permutation has monotone 4-AP | Erdos196Problem.lean:92 |\n| HasMonotone5AP | def | Permutation has monotone 5-AP | Erdos196Problem.lean:98 |\n| Erdos196Conjecture | def | Main conjecture statement | Erdos196Problem.lean:106 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| ap4_iff_ap4' | PROVED | Two AP4 definitions equivalent |\n| conjecture_implies_3ap | PROVED | 4-AP conjecture implies 3-AP theorem |\n| no_4ap_implies_nonextendable | PROVED | Avoiding 4-AP means all 3-APs non-extendable |\n| forbidden_value_constraint | PROVED | Each 3-AP forbids specific values at later indices |\n| degs_3ap_theorem | AXIOM | DEGS 1977: every perm has monotone 3-AP |\n| degs_5ap_counterexample | AXIOM | DEGS 1977: exists perm avoiding monotone 5-AP |\n| finite_3ap_threshold | AXIOM | Finite version threshold N <= 9 |\n| erdos_szekeres_theorem | AXIOM | Related monotone subsequence theorem |\n| finite_threshold_implies_conjecture | SORRY | If finite threshold exists, conjecture follows |\n\n## Key Definitions Added (Sessions 2026-01-18)\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| CanExtendForward | def | 3-AP can extend to 4-AP forward | Erdos196Problem.lean:207 |\n| CanExtendBackward | def | 3-AP can extend to 4-AP backward | Erdos196Problem.lean:213 |\n| IsNonExtendable3AP | def | 3-AP cannot be extended either way | Erdos196Problem.lean:218 |\n| ForbiddenForwardValue | def | Value forbidden at later indices | Erdos196Problem.lean:247 |\n| ForbiddenBackwardValue | def | Value forbidden at earlier indices | Erdos196Problem.lean:250 |\n| count3APs | def | Count 3-APs in finite permutation | Erdos196Problem.lean:282 |\n| DensityConjecture | def | Density argument conjecture | Erdos196Problem.lean:289 |\n| Finite4APThreshold | def | Finite threshold conjecture | Erdos196Problem.lean:465 |\n| IsAP3WithOddCD | def | 3-AP with odd common difference | Erdos196Problem.lean:305 |\n| IsAP3WithEvenCD | def | 3-AP with even common difference | Erdos196Problem.lean:309 |\n| IsAP4WithOddCD | def | 4-AP with odd common difference | Erdos196Problem.lean:313 |\n| IsAP4WithEvenCD | def | 4-AP with even common difference | Erdos196Problem.lean:317 |\n| HasMonotone3APOddCD | def | Perm has monotone 3-AP odd CD | Erdos196Problem.lean:321 |\n| HasMonotone4APOddCD | def | Perm has monotone 4-AP odd CD | Erdos196Problem.lean:326 |\n| HasMonotone4APEvenCD | def | Perm has monotone 4-AP even CD | Erdos196Problem.lean:331 |\n| HasMonotone3APEvenCD | def | Perm has monotone 3-AP even CD | Erdos196Problem.lean:406 |\n\n## Key Results Added (Session 2026-01-18 continued)\n\n| Name | Status | Description |\n|------|--------|-------------|\n| every_perm_has_3ap_odd_cd | AXIOM | LeSaulnier-Vijay: every perm has odd-CD 3-AP |\n| exists_perm_avoiding_4ap_odd_cd | AXIOM | LeSaulnier-Vijay: can avoid odd-CD 4-APs |\n| ap4_odd_cd_iff_ap3_odd_cd | PROVED | 4-AP has odd CD iff its 3-AP prefix has odd CD |\n| conjecture_equiv_even_cd_forced | PROVED | Conjecture ⟺ avoiding odd-CD 4-APs forces even-CD 4-APs |\n| forbidden_even_cd_extension | PROVED | Even-CD 3-APs forbid specific forward extensions |\n| forbidden_even_cd_backward | PROVED | Even-CD 3-APs forbid specific backward extensions |\n| ap4_parity_dichotomy | PROVED | Every 4-AP has either odd or even common difference |\n\n## Insights\n\n1. **Boundary Case**: k=4 is the critical threshold - k=3 proved, k=5 disproved\n2. **Implication Structure**: 4-AP conjecture would imply 3-AP theorem as corollary\n3. **DEGS Construction**: Counterexample for k=5 uses interleaving increasing/decreasing segments\n4. **Erdos-Szekeres Connection**: Guarantees long monotone subsequences but not AP structure\n5. **Non-Extendability**: If a permutation avoids 4-APs, every 3-AP must be non-extendable\n6. **Forbidden Values**: Each 3-AP (a, a+d, a+2d) forbids value a+3d at later indices\n7. **Density Approach**: Conjecture that forbidden value constraints accumulate to force 4-AP\n8. **Compactness**: If finite threshold exists for permutations of [1,n], infinite case follows\n9. **Common Difference Parity (NEW)**: The conjecture reduces to even-CD case - LeSaulnier-Vijay showed odd-CD 4-APs CAN be avoided\n10. **Critical Reformulation (NEW)**: Conjecture ⟺ \"avoiding odd-CD 4-APs forces even-CD 4-APs\"\n\n## Tags\n\n- erdos\n- combinatorics\n- permutations\n- arithmetic-progressions\n\n## Related Problems\n\n- Problem #194\n- Problem #195\n\n## References\n\n- Davis, Entringer, Graham, Simmons (1977): \"Monotone subsequences and arithmetic progressions\"\n\n## Sessions\n\n### Session 2026-01-14\n\n**Focus**: Initial formalization\n**Outcome**: Complete formalization with 230+ lines, 4 axioms for known results, 2 proved theorems\n**Next**: Consider explicit DEGS counterexample construction\n\n### Session 2026-01-18\n\n**Mode**: FRESH research iteration\n**Focus**: Creative mathematical work on this OPEN problem\n\n**What I Did**:\n- Researched DEGS 1977 paper and current state of problem\n- Confirmed k=4 is genuinely OPEN (not just unformalised)\n- Developed \"non-extendability\" framework for analyzing 4-AP avoiding permutations\n- Proved two new lemmas: `no_4ap_implies_nonextendable`, `forbidden_value_constraint`\n- Added 8 new definitions to support density argument approach\n- Formulated `Finite4APThreshold` and `DensityConjecture` as potential paths forward\n\n**Key Mathematical Insight**:\nIf π avoids all monotone 4-APs, then every 3-AP (a, a+d, a+2d) with increasing indices\n(i < j < k) forbids the value a+3d from appearing at ANY index > k. This constraint\ngrows with the number of 3-APs. Potential proof strategy:\n1. Show number of 3-APs grows as Θ(n²) or faster in any long permutation\n2. Each 3-AP creates a distinct forbidden value constraint\n3. Eventually constraints exceed available \"slots\", forcing contradiction\n\n**Files Modified**:\n- proofs/Proofs/Erdos196Problem.lean (expanded from 227 to 340+ lines)\n- research/problems/erdos-196/knowledge.md (this file)\n\n**Outcome**: PROGRESS - substantial new infrastructure for attacking this OPEN problem\n\n**Next Steps**:\n1. Prove lower bound on number of 3-APs in permutations of [1,n]\n2. Formalize the density counting argument\n3. Investigate computational search for finite threshold\n4. Consider alternative: try to construct 4-AP avoiding permutation\n\n**References Consulted**:\n- Davis et al. (1977) - Original DEGS paper\n- arXiv:1803.06334 - \"Forbidden arithmetic progressions in permutations\"\n- arXiv:2012.12339 - Recent improvements on k=5,6 case\n- Discrete Mathematics 2024 - \"Avoiding monotone APs in permutations of integers\"\n\n### Session 2026-01-18 (continued)\n\n**Mode**: REVISIT research iteration\n**Focus**: Common difference parity structure\n\n**What I Did**:\n- Researched LeSaulnier-Vijay (2011) results on common difference parity\n- Added full infrastructure for odd/even common difference analysis\n- Proved key theorem: conjecture is equivalent to \"avoiding odd-CD 4-APs forces even-CD 4-APs\"\n- Added 10 new definitions for parity-based analysis\n- Proved 5 new theorems including constraint propagation lemmas\n\n**Key Mathematical Insight**:\nLeSaulnier-Vijay (2011) showed:\n1. Every permutation of ℕ MUST contain a 3-term AP with ODD common difference\n2. There EXIST permutations of ℕ avoiding ALL 4-term APs with ODD common difference\n\nThis means odd-CD 4-APs can be avoided! The conjecture thus reduces to:\n**\"Can even-CD 4-APs also be avoided?\"**\n\nProved `conjecture_equiv_even_cd_forced`:\n```\nErdős196Conjecture ⟺ ∀ x, ¬HasMonotone4APOddCD x → HasMonotone4APEvenCD x\n```\n\n**Files Modified**:\n- proofs/Proofs/Erdos196Problem.lean (expanded to 505+ lines)\n- research/problems/erdos-196/knowledge.md (this file)\n\n**Outcome**: PROGRESS - identified that even-CD case is the critical remaining question\n\n**Next Steps**:\n1. Investigate whether even-CD 4-APs can be avoided (potential counterexample)\n2. Explore interaction between odd-CD 3-APs and even-CD 4-APs\n3. Consider whether LeSaulnier-Vijay construction creates even-CD 4-APs\n4. Try to prove constraint accumulation argument for even-CD case\n\n**References Consulted**:\n- LeSaulnier-Vijay (2011) - \"On permutations avoiding arithmetic progressions\"\n- arXiv:1004.1740 - Related constructions\n- Discrete Mathematics 2024 (Adenwalla) - Recent improvements\n\n---\n\n*Last updated: 2026-01-18*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Full formalization with parity analysis",
+      "status": "successful",
+      "description": "Built comprehensive infrastructure for k=3,4,5 cases with parity-based constraint analysis"
+    },
+    {
+      "name": "Common difference parity reduction",
+      "status": "in_progress",
+      "description": "Proved conjecture equivalent to 'avoiding odd-CD 4-APs forces even-CD 4-APs'"
+    }
+  ],
   "tags": [
     "erdos",
     "combinatorics",
     "permutations",
-    "arithmetic-progressions"
+    "arithmetic-progressions",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos194Problem",
+    "Erdos195Problem"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Davis-Entringer-Graham-Simmons (1977) 'Monotone subsequences and arithmetic progressions'",
+      "LeSaulnier-Vijay (2011) 'On permutations avoiding arithmetic progressions'"
+    ],
+    "urls": [
+      "https://erdosproblems.com/196"
+    ],
     "mathlib": []
   },
   "started": "2026-01-12T16:01:50.837Z",
+  "lastUpdate": "2026-01-23T00:00:00Z",
   "significance": 7,
   "tractability": 5
 }
