@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-789-sumrep",
+    "proofId": "erdos-789",
+    "range": { "startLine": 47, "endLine": 56 },
+    "type": "definition",
+    "title": "SumRep",
+    "content": "Sum representation: multiset of terms and their sum/length.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-789-sumlengthfree",
+    "proofId": "erdos-789",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "SumLengthFree",
+    "content": "Equal sums must have equal number of terms.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-789-h",
+    "proofId": "erdos-789",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "definition",
+    "title": "h Function",
+    "content": "h(n) = max |B| with B sum-length-free in any n-set A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-789-erdos-upper",
+    "proofId": "erdos-789",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "theorem",
+    "title": "Erdos Upper",
+    "content": "h(n) << n^{5/6} (Erdos 1962, first upper bound).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-789-straus",
+    "proofId": "erdos-789",
+    "range": { "startLine": 90, "endLine": 93 },
+    "type": "theorem",
+    "title": "Straus Bound",
+    "content": "h(n) << sqrt(n) (Straus 1966, best upper).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-789-erdos-lower",
+    "proofId": "erdos-789",
+    "range": { "startLine": 104, "endLine": 107 },
+    "type": "theorem",
+    "title": "Erdos Lower",
+    "content": "h(n) >> n^{1/3} (Erdos 1962, probabilistic).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-789-choi",
+    "proofId": "erdos-789",
+    "range": { "startLine": 109, "endLine": 112 },
+    "type": "theorem",
+    "title": "Erdos-Choi",
+    "content": "h(n) >> (n log n)^{1/3} (1974, best lower).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-789-combined",
+    "proofId": "erdos-789",
+    "range": { "startLine": 123, "endLine": 129 },
+    "type": "theorem",
+    "title": "Combined Bounds",
+    "content": "(n log n)^{1/3} << h(n) << sqrt(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-789-construction",
+    "proofId": "erdos-789",
+    "range": { "startLine": 138, "endLine": 142 },
+    "type": "definition",
+    "title": "Erdos Construction",
+    "content": "Use fractional parts {alpha*a} in small interval.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-789-sidon",
+    "proofId": "erdos-789",
+    "range": { "startLine": 151, "endLine": 158 },
+    "type": "definition",
+    "title": "Sidon Sets",
+    "content": "Sidon sets have distinct pairwise sums, hence sum-length-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-789-sqrt1000",
+    "proofId": "erdos-789",
+    "range": { "startLine": 200, "endLine": 200 },
+    "type": "example",
+    "title": "sqrt(1000)",
+    "content": "sqrt(1000) = 31, illustrating upper bound scale.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-789-sqrt1m",
+    "proofId": "erdos-789",
+    "range": { "startLine": 206, "endLine": 206 },
+    "type": "example",
+    "title": "sqrt(10^6)",
+    "content": "sqrt(1000000) = 1000, showing gap at large n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-789-main",
+    "proofId": "erdos-789",
+    "range": { "startLine": 260, "endLine": 269 },
+    "type": "theorem",
+    "title": "Main Statement",
+    "content": "Combines lower bound, upper bound, and open status.",
+    "significance": "critical"
+  }
+]
