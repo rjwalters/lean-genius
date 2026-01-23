@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-526-circle",
+    "proofId": "erdos-526",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "definition",
+    "title": "UnitCircle",
+    "content": "The interval [0,1) with wraparound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-526-arc",
+    "proofId": "erdos-526",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "definition",
+    "title": "Arc",
+    "content": "Arc of length a starting at position theta.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-526-arcseq",
+    "proofId": "erdos-526",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "ArcSequence",
+    "content": "Sequence with a_n >= 0, a_n -> 0, sum diverges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-526-partialsum",
+    "proofId": "erdos-526",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "partialSum",
+    "content": "S_n = a_1 + ... + a_n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-526-shepp-crit",
+    "proofId": "erdos-526",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "SheppCriterion",
+    "content": "Sum of exp(S_n)/n^2 diverges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-526-covers",
+    "proofId": "erdos-526",
+    "range": { "startLine": 82, "endLine": 85 },
+    "type": "definition",
+    "title": "CoversWithProbOne",
+    "content": "Full coverage with probability 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-526-shepp",
+    "proofId": "erdos-526",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "theorem",
+    "title": "Shepp 1972",
+    "content": "Coverage iff Shepp criterion holds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-526-supercrit",
+    "proofId": "erdos-526",
+    "range": { "startLine": 106, "endLine": 118 },
+    "type": "definition",
+    "title": "Supercritical Sequence",
+    "content": "a_n = (1+c)/n covers with prob 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-526-critical",
+    "proofId": "erdos-526",
+    "range": { "startLine": 120, "endLine": 128 },
+    "type": "definition",
+    "title": "Critical Sequence",
+    "content": "a_n = 1/n is the boundary case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-526-subcrit",
+    "proofId": "erdos-526",
+    "range": { "startLine": 130, "endLine": 139 },
+    "type": "definition",
+    "title": "Subcritical Sequence",
+    "content": "a_n = (1-c)/n does NOT cover.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-526-dvoretzky",
+    "proofId": "erdos-526",
+    "range": { "startLine": 165, "endLine": 168 },
+    "type": "theorem",
+    "title": "Dvoretzky 1956",
+    "content": "Almost all circle covered with prob 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-526-harmonic",
+    "proofId": "erdos-526",
+    "range": { "startLine": 222, "endLine": 225 },
+    "type": "theorem",
+    "title": "Harmonic Growth",
+    "content": "H_n ~ log n + gamma (Euler-Mascheroni).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-526-main",
+    "proofId": "erdos-526",
+    "range": { "startLine": 255, "endLine": 264 },
+    "type": "theorem",
+    "title": "Main Statement",
+    "content": "Shepp + critical case + solved status.",
+    "significance": "critical"
+  }
+]
