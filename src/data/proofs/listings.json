@@ -12212,15 +12212,18 @@
     "title": "Erdős Problem #784: Sieving Sets with Bounded Reciprocal Sums",
     "slug": "erdos-784",
     "description": "Given C > 0, does there exist c > 0 such that sets A with Σ 1/n ≤ C leave ≫ x/(log x)^c unsieved elements? Answer: YES for C ≤ 1, NO for C > 1.",
-    "status": "formalized",
-    "badge": "mathlib",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "sieve",
       "divisibility",
       "reciprocal-sums",
-      "number-theory"
+      "number-theory",
+      "asymptotic-analysis",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 784,
     "sorries": 3,
     "annotationCount": 18

@@ -4,23 +4,45 @@
   "slug": "erdos-784",
   "description": "Given C > 0, does there exist c > 0 such that sets A with Σ 1/n ≤ C leave ≫ x/(log x)^c unsieved elements? Answer: YES for C ≤ 1, NO for C > 1.",
   "meta": {
-    "author": "Ruzsa, Saias, Weingartner",
+    "author": "Ruzsa (1982), Saias (1998), Weingartner (2025)",
     "sourceUrl": "https://erdosproblems.com/784",
     "date": "1982-2025",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos784Problem.lean",
     "tags": [
       "erdos",
       "sieve",
       "divisibility",
       "reciprocal-sums",
-      "number-theory"
+      "number-theory",
+      "asymptotic-analysis",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 3,
     "erdosNumber": 784,
     "erdosUrl": "https://erdosproblems.com/784",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "originalContributions": [
+      "reciprocalSum definition: Σ 1/n for finite sets",
+      "sievedSet definition: elements not divisible by any a ∈ A",
+      "sievedCount definition: cardinality of sieved set",
+      "H_C definition: minimum sieved count over valid sets",
+      "HasPolynomialLogBound predicate: existence of c with H_C(x) ≫ x/(log x)^c",
+      "alpha definition: critical exponent e^{1-C}",
+      "ruzsa_1982_lower_bound axiom: H₁(x) ≥ K·x/log x",
+      "saias_1998_upper_bound axiom: H₁(x) ≤ K·x/log x",
+      "H_one_asymptotic theorem: combining bounds for H₁(x) ≍ x/log x",
+      "union_bound_small_C theorem: trivial case for C < 1",
+      "alpha_lt_one theorem: proves e^{1-C} < 1 for C > 1",
+      "ruzsa_negative_answer axiom: sublinear growth for C > 1",
+      "weingartner_2025 axiom: precise asymptotics with log factor",
+      "negative_answer_large_C theorem: NO for C > 1",
+      "erdos_784_complete_answer theorem: YES iff C ≤ 1",
+      "one_in_A_trivial theorem: excluding 1 from A"
+    ]
   },
   "overview": {
     "historicalContext": "This problem studies the interplay between reciprocal sums and sieving. Schinzel-Szekeres (1959) showed the polynomial bound is best possible. Ruzsa (1982) established the C = 1 lower bound and showed the answer is NO for C > 1. Saias (1998) proved the matching upper bound for C = 1. Weingartner (2025) gave precise asymptotics for all C, completing the picture.",
