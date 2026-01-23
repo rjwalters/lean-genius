@@ -11,17 +11,23 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "p=101 has property (verified in Lean)",
+      "p=211 has property (verified in Lean)"
+    ],
+    "open": [
+      "Infinitely many such primes?",
+      "Weaker variant also open"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T14:31:40.058Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T19:31:00.000Z",
+    "iteration": 2,
+    "focus": "Formalized and verified examples",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Search for more examples",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +35,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized property and verified p=101, p=211 examples. Stated main and weaker conjectures.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1059Problem.lean - Main formalization (~170 lines)",
+      "validK function",
+      "HasProperty definition",
+      "example_101, example_211 theorems (proved!)",
+      "mainConjecture statement",
+      "HasWeakProperty for Erdős's variant",
+      "weakerConjecture statement"
+    ],
+    "insights": [
+      "Property: p - k! composite for all 1 ≤ k! < p",
+      "Only ~log p values of k to check (k! grows fast)",
+      "p=101: check k=1,2,3,4 → 100,99,95,77 all composite",
+      "p=211: check k=1,2,3,4,5 → 210,209,205,187,91 all composite",
+      "Erdős's weaker variant: n in (l!, (l+1)!] with prime factors > l",
+      "p ≡ 1 (mod 6) helps: p-1 is even ≥ 6"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Computationally search for more examples",
+      "Study density heuristics",
+      "Investigate connection to Wilson's theorem"
+    ],
     "markdown": "# Erdős #1059 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\\leq k!<p$?\n\n\n\nA question of Erd\\H{o}s reported in problem A2 of Guy's collection \\cite{Gu04}.\n\nExamples are $p=101$ and $p=211$. Erd\\H{o}s suggested it may be easier to show that there are infinitely many $n$ such that, if $l!<n\\leq (l+1)!$, then all the prime factors of $n$ are $>l$, and all the numbers $n-k!$ are composite for $1\\leq k\\leq l$.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1058\n- Problem #1060\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
