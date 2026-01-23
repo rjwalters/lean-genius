@@ -11,15 +11,21 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "Lower: h(n) ≥ log₂(n-1) - 1 [Griffin 2013]",
+      "Upper: h(n) ≤ log₂n + log*n + O(1) [GKW 2016]"
+    ],
+    "open": [
+      "Is h(n) ≥ log₂n + log*n - O(1)?",
+      "Does h(n) - log₂n → ∞?"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T13:43:13.293Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Bounds formalized, gap is log*n",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +35,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized pancyclic graphs and h(n) bounds. Lower/upper bounds axiomatized, open question documented.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1016Problem.lean - Main formalization (170+ lines)",
+      "HasCycle, IsPancyclic, edgeCount definitions",
+      "h(n) function definition",
+      "griffin_lower_bound, gkw_upper_bound axioms",
+      "mainConjecture, weakerConjecture statements",
+      "complete_pancyclic, pancyclic_min_edges theorems"
+    ],
+    "insights": [
+      "h(n) = min excess edges for n-vertex pancyclic graph (contains all cycle lengths 3..n)",
+      "Griffin 2013: h(n) ≥ log₂(n-1) - 1 (lower bound proved)",
+      "George-Khodkar-Wallis 2016: h(n) ≤ log₂n + log*n + O(1) (upper bound proved)",
+      "Gap is the log*n term in lower bound",
+      "Erdős believed upper bound is tight but couldnt prove h(n) - log₂n → ∞",
+      "Main open: Is h(n) ≥ log₂n + log*n - O(1)?",
+      "Small values: h(3)=0, h(4)=1, h(5)=2, h(6)=2, h(7)=3, h(8)=3"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove complete_pancyclic theorem",
+      "Prove pancyclic_min_edges theorem",
+      "Implement iterated logarithm properly"
+    ],
     "markdown": "# Erdős #1016 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be minimal such that there is a graph on $n$ vertices with $n+h(n)$ edges which contains a cycle on $k$ vertices, for all $3\\leq k\\leq n$. Estimate $h(n)$. In particular, is it true that\\[h(n) \\geq \\log_2n+\\log_*n-O(1),\\]where $\\log_*n$ is the iterated logarithmic function?\n\n\n\nSuch graphs are called pancyclic. A problem of Bondy \\cite{Bo71}, who claimed a proof (without details) of\\[\\log_2(n-1)-1\\leq h(n) \\leq \\log_2n+\\log_*n+O(1).\\]Erd\\H{o}s \\cite{Er71} believed the upper bound is closer to the truth, but could not even prove $h(n)-\\log_2n\\to \\infty$.\n\nA proof of the above lower bound is provided by Griffin \\cite{Gr13}. The first published proof of the upper bound appears to be in Chapter 4.5 of George, Khodkar, and Wallis \\cite{GKW16}.\n\n\n\n\nReferences\n\n\n[Bo71] Bondy, J. A., Pancyclic graphs. {I}. J. Combinatorial Theory Ser. B (1971), 80--84.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[GKW16] George, John C. and Khodkar, Abdollah and Wallis, W. D., Pancyclic and bipancyclic graphs. (2016), xii+108.\n\n[Gr13] S. Griffin, Minimal Pancyclicity. arXiv:1312.0274 (2013).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1015\n- Problem #1017\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er71\n- Bo71\n- Gr13\n- GKW16\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
