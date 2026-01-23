@@ -1,33 +1,130 @@
 {
   "id": "erdos-762",
-  "title": "Erdős Problem #762",
+  "title": "Erdős Problem #762: Chromatic vs Cochromatic Number",
   "slug": "erdos-762",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of ..., denoted by ..., is the minimum number of colours needed to colour the vertices of ... such tha...",
+  "description": "Is χ(G) ≤ ζ(G) + 2 when G has no K₅ and ζ(G) ≥ 4? DISPROVED by Steiner (2024) who constructed a graph with ω=4, ζ=4, χ=7.",
   "meta": {
-    "author": "Unknown",
+    "author": "Steiner (2024)",
     "sourceUrl": "https://erdosproblems.com/762",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos762Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cochromatic-number",
+      "graph-coloring",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 762,
     "erdosUrl": "https://erdosproblems.com/762",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Clique",
+        "description": "Clique definitions for graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      }
+    ],
+    "originalContributions": [
+      "IsCochromaticColorClass: color class is clique or independent set",
+      "IsCochromaticColoring: cochromatic coloring definition",
+      "cochromaticNumber axiom: ζ(G) formalization",
+      "egs_conjecture: original Erdős-Gimbel-Straight conjecture",
+      "steiner_counterexample: graph with ω=4, ζ=4, χ=7",
+      "egs_conjecture_false: formal proof the conjecture is false",
+      "egs_general_theorem: general bounded gap result",
+      "proper_implies_cochromatic: proper colorings are cochromatic"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #762 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph.\n\nIs it true that if $G$ has no $K_5$ and $\\zeta(G)\\geq 4$ then $\\chi(G) \\leq \\zeta(G)+2$?\n\n\n\nA conjecture of Erd\\H{o}s, Gimbel, and Straight \\cite{EGS90}, who proved that for every $n>2$ there exists some $f(n)$ such that if $G$ contains no clique on $n$ vertices then $\\chi(G)\\leq \\zeta(G)+f(n)$.\n\nThis has been disproved by Steiner \\cite{St24b}, who constructed a graph $G$ with $\\omega(G)=4$, $\\zeta(G)=4$, and $\\chi(G)=7$.\n\n\n\n\nReferences\n\n\n[EGS90] Erd\\H{o}s, Paul and Gimbel, John and Straight, H. Joseph, Chromatic number versus cochromatic number in graphs with\nbounded clique number. European J. Combin. (1990), 235-240.\n\n[St24b] R. Steiner, On the difference between the chromatic and cochromatic number. arXiv:2408.02400 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The cochromatic number ζ(G) is the minimum colors needed where each color class induces either a complete graph or independent set. Erdős, Gimbel, and Straight (1990) conjectured that χ(G) ≤ ζ(G) + 2 for K₅-free graphs with ζ(G) ≥ 4. This was disproved by Steiner in 2024.",
+    "problemStatement": "**Conjecture (Erdős-Gimbel-Straight 1990):**\nIf G has no K₅ (ω(G) ≤ 4) and ζ(G) ≥ 4, then χ(G) ≤ ζ(G) + 2.\n\n**Answer:** NO (Steiner 2024)\n\n**Counterexample:** A graph G with ω(G) = 4, ζ(G) = 4, and χ(G) = 7.\nThis gives χ = 7 > 6 = ζ + 2, disproving the conjecture.",
+    "proofStrategy": "The formalization defines cochromatic coloring (each color class is a clique or independent set), states the EGS conjecture, axiomatizes Steiner's counterexample, and derives the falsity of the conjecture. The general bounded gap theorem (EGS 1990) is also formalized.",
+    "keyInsights": [
+      "**Cochromatic Number:** ζ(G) allows color classes to be cliques OR independent sets",
+      "**χ ≥ ζ Always:** Proper colorings are special cases of cochromatic colorings",
+      "**Steiner's Counterexample:** Graph with ω=4, ζ=4, χ=7 disproves +2 bound",
+      "**General Theorem Still True:** χ(G) - ζ(G) is bounded by some f(ω(G))",
+      "**Gap Can Be 3+:** Steiner showed the gap can exceed 2 for K₅-free graphs"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsProperColoring, chromaticNumber, cliqueNumber",
+      "startLine": 41,
+      "endLine": 64
+    },
+    {
+      "id": "cochromatic",
+      "title": "Cochromatic Coloring",
+      "summary": "IsCochromaticColorClass, IsCochromaticColoring, cochromaticNumber",
+      "startLine": 66,
+      "endLine": 99
+    },
+    {
+      "id": "relationship",
+      "title": "Relationship Between χ and ζ",
+      "summary": "proper_implies_cochromatic, chi_ge_zeta",
+      "startLine": 101,
+      "endLine": 122
+    },
+    {
+      "id": "conjecture",
+      "title": "The EGS Conjecture",
+      "summary": "egs_conjecture definition",
+      "startLine": 124,
+      "endLine": 138
+    },
+    {
+      "id": "counterexample",
+      "title": "Steiner's Counterexample",
+      "summary": "steiner_counterexample, egs_conjecture_false",
+      "startLine": 140,
+      "endLine": 170
+    },
+    {
+      "id": "general-theorem",
+      "title": "General EGS Theorem",
+      "summary": "egs_general_theorem, chi_zeta_gap_bounded",
+      "startLine": 172,
+      "endLine": 196
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "zeta_le_chi, steiner_gap_lower_bound",
+      "startLine": 198,
+      "endLine": 215
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_762_summary theorem",
+      "startLine": 217,
+      "endLine": 248
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #762 is DISPROVED. The conjecture that χ(G) ≤ ζ(G) + 2 for K₅-free graphs with ζ(G) ≥ 4 is false. Steiner (2024) constructed a counterexample with ω=4, ζ=4, and χ=7.",
+    "implications": "**What This Means:**\n\n1. The specific bound \"+2\" in the EGS conjecture was too optimistic\n2. The general bounded gap theorem (χ - ζ is bounded by f(ω)) remains true\n3. The optimal function f(n) for the gap remains an open question\n4. Cochromatic colorings are strictly more powerful than proper colorings",
+    "openQuestions": [
+      "What is the optimal function f(n) such that χ(G) ≤ ζ(G) + f(n) when ω(G) < n?",
+      "What is the maximum gap χ(G) - ζ(G) for K₅-free graphs?",
+      "Can the gap be arbitrarily large for fixed clique number?",
+      "What structural properties characterize graphs where χ = ζ?"
+    ]
   }
 }
