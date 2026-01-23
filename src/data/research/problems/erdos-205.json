@@ -1,79 +1,41 @@
 {
   "slug": "erdos-205",
   "title": "Erdős #205: Powers of 2 plus numbers with few prime factors",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
-    "formal": "∀ N₀ : ℕ, ∃ n ≥ N₀, ∀ k : ℕ, 2^k < n → Ω(n - 2^k) ≥ log log (n - 2^k)",
-    "plain": "Is it true that all sufficiently large n can be written as 2^k + m where Ω(m) < log log m?",
-    "whyMatters": [
-      "Connects additive structure (powers of 2) with multiplicative structure (prime factorizations)",
-      "Related to Romanoff's theorem on primes + powers of 2",
-      "Demonstrates covering system techniques in number theory"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Erdős #205: Powers of 2 plus numbers with few prime factors.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Romanoff (1934): Positive density of integers are 2^k + prime",
-      "Erdős: Positive density of odds cannot be 2^k + prime (covering systems)",
-      "Barreto-Leeham (2026): DISPROVED - counterexamples with Ω(n-2^k) ≥ c√(log n / log log n)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Formalize the counterexample structure"
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-01-14T00:00:00Z",
+    "phase": "NEW",
+    "since": "2026-01-23T08:04:56.542Z",
     "iteration": 1,
-    "focus": "Complete formalization with counterexample axiomatized",
-    "activeApproach": "Axiomatize known counterexample, formalize Ω function and conjecture statement",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Consider proving erdos_205_disproved using Aristotle",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Formalized Erdős #205 (DISPROVED). 185 lines of Lean. Main theorem erdos_205_disproved proved using axiomatized counterexample. One trivial sorry remains (m > e^e).",
-    "builtItems": [
-      "bigOmega: Ω function (prime factors with multiplicity) (Erdos205Problem.lean:39)",
-      "bigOmega_one: Ω(1) = 0 (Erdos205Problem.lean:43)",
-      "bigOmega_prime: Ω(p) = 1 for prime p (Erdos205Problem.lean:47)",
-      "HasSmallOmegaRep: predicate for 2^k + m with small Ω(m) (Erdos205Problem.lean:62)",
-      "Erdos205Conjecture: main conjecture statement (Erdos205Problem.lean:68)",
-      "minOmegaRemainder: minimum Ω over valid k (Erdos205Problem.lean:75)",
-      "thresholdFunction: √(log n / log log n) (Erdos205Problem.lean:84)",
-      "barreto_leeham_counterexample: axiom for counterexample existence (Erdos205Problem.lean:93)",
-      "erdos_205_disproved: negation of conjecture (Erdos205Problem.lean:98)",
-      "IsPowerPlusPrime: predicate for 2^k + p (Erdos205Problem.lean:115)",
-      "romanoff_positive_density: positive density of 2^k + prime (Erdos205Problem.lean:123)",
-      "erdos_covering_obstruction: positive density cannot be 2^k + prime (Erdos205Problem.lean:129)"
-    ],
-    "insights": [
-      "The conjecture is FALSE - counterexamples have Ω(n-2^k) ≥ c√(log n / log log n)",
-      "√(log n / log log n) >> log log n for large n, so counterexamples dominate",
-      "Uses covering system techniques similar to Erdős's work on 2^k + prime",
-      "Romanoff showed positive density CAN be 2^k + prime",
-      "Erdős showed positive density of odds CANNOT be 2^k + prime"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider proving erdos_205_disproved more explicitly",
-      "Could elaborate the counterexample construction"
-    ],
-    "markdown": "# Erdős #205 - Powers of 2 plus numbers with few prime factors\n\n## Problem Statement\n\nIs it true that all sufficiently large n can be written as 2^k + m where Ω(m) < log log m?\n\n## Status\n\n**Erdős Database Status**: DISPROVED (Barreto-Leeham 2026)\n\n**Formalization**: COMPLETE (2026-01-14)\n\n## Key Results\n\n### Counterexample\nThere exist infinitely many n such that for all k with 2^k < n:\nΩ(n - 2^k) ≥ c · √(log n / log log n)\n\nSince √(log n / log log n) >> log log n for large n, these n are counterexamples.\n\n### Related Results\n- Romanoff (1934): Positive density of integers are 2^k + prime\n- Erdős: Positive density of odd integers CANNOT be 2^k + prime\n\n## Sessions\n\n### Session 2026-01-14 - Initial Formalization\n\n**Mode**: REVISIT\n**Outcome**: Complete formalization\n\n#### What I Did\n- Defined Ω function (bigOmega) as length of prime factors list\n- Formalized conjecture statement and its negation\n- Axiomatized Barreto-Leeham counterexample\n- Added Romanoff and Erdős density theorems\n- Added average omega asymptotic and concentration bounds\n\n#### Key Findings\n- Problem was DISPROVED in January 2026\n- Counterexample uses sophisticated covering system techniques\n- Clean formalization possible with 1 sorry in main theorem\n\n#### Files Modified\n- proofs/Proofs/Erdos205Problem.lean (complete rewrite, ~185 lines)\n\n#### Next Steps\n- Submit sorry to Aristotle if desired\n- Theorem links axiom to conclusion\n\n---\n\n*Generated 2026-01-14*\n"
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Axiomatize counterexample",
-      "status": "successful",
-      "description": "Axiomatize the Barreto-Leeham counterexample since it uses deep covering system techniques"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "erdos",
     "disproved",
@@ -83,19 +45,15 @@
     "powers-of-2"
   ],
   "relatedProofs": [
-    "RomanoffTheorem"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      "Romanoff (1934): Sur quelques questions d'additive",
-      "Barreto-Leeham (2026): AI-assisted counterexample"
-    ],
-    "urls": [
-      "https://erdosproblems.com/205"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
-  "started": "2026-01-14T00:00:00Z",
+  "started": "2026-01-23T08:04:56.542Z",
+  "lastUpdate": "2026-01-23T08:04:56.542Z",
   "significance": 7,
   "tractability": 8
 }

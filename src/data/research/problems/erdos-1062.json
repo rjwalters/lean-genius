@@ -1,112 +1,52 @@
 {
   "slug": "erdos-1062",
   "title": "Erdős #1062",
-  "phase": "PROGRESS",
-  "status": "progress",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $f(n)$ be the size of the largest subset $A \\subseteq \\{1,\\ldots,n\\}$ such that no element $a \\in A$ divides two distinct other elements $b, c \\in A$. How large can $f(n)$ be? Is $\\lim_{n \\to \\infty} f(n)/n$ irrational?",
-    "plain": "Find the maximum size of a subset of {1,...,n} where no element divides two distinct other elements. What is the limiting density, and is it irrational?",
-    "whyMatters": [
-      "Natural extremal problem in divisibility combinatorics",
-      "Strictly weaker than primitive/antichain condition",
-      "Lebensold's bounds are tight to within 0.11%",
-      "Irrationality question connects to deep number theory"
-    ]
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?\n\n\n\nThe example $[m+1,3m+2]$ shows that $f(n)\\geq\\lceil \\frac{2}{3}n\\rceil$. Lebensold \\cite{Le76} has shown that, for large $n$,\\[0.6725 n \\leq f(n) \\leq 0.6736 n.\\]This is problem B24 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Le76] Lebensold, Kenneth, A divisibility problem. Studies in Appl. Math. (1976/77), 291--294.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Lower bound: f(n) >= ceil((2/3)n) via [m+1, 3m+2] construction",
-      "Lebensold (1976): 0.6725n <= f(n) <= 0.6736n for large n"
-    ],
-    "open": [
-      "What is the exact limiting density lim f(n)/n?",
-      "Is the limiting density irrational?",
-      "Can Lebensold's bounds be improved?"
-    ],
-    "goal": "Determine exact asymptotic density and its irrationality"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-01-22T03:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T14:38:41.570Z",
     "iteration": 1,
-    "focus": "Created initial Lean formalization with definitions and structure",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Complete sorries in Lean file, especially lower_bound theorem",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created comprehensive Lean formalization in Erdos1062Problem.lean. Defined NoDividesTwoOthers property, showed it's strictly weaker than primitive sets, formalized lower bound construction [m+1, 3m+2], stated Lebensold bounds as axioms, and posed the open irrationality question.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1062Problem.lean - Full problem formalization (120+ lines)",
-      "NoDividesTwoOthers definition - core property",
-      "AtMostOneProperMultiple - alternative formulation",
-      "lowerBoundConstruction - the [m+1, 3m+2] set",
-      "f(n) - the extremal function definition",
-      "Example {2, 6, 9} showing strict weakness vs primitive sets"
-    ],
-    "insights": [
-      "'No divides two others' is WEAKER than primitive/antichain (allows one divisibility relation per element)",
-      "The [m+1, 3m+2] construction works because ratio max/min < 3",
-      "{2, 6, 9} is not primitive (2|6) but satisfies 'no divides two others'",
-      "Lebensold bounds are remarkably tight (0.6725 to 0.6736)",
-      "Existing Erdos872 infrastructure (IsPrimitiveSet) directly applicable",
-      "Problem is explicitly OPEN regarding irrationality"
-    ],
-    "mathlibGaps": [
-      "No direct support for counting proper multiples in a set",
-      "Floor/ceiling arithmetic for the 2/3 bound needs careful handling"
-    ],
-    "nextSteps": [
-      "Complete lowerBoundConstruction_valid proof (ratio argument)",
-      "Complete lower_bound theorem",
-      "Consider Aristotle submission for trivial sorries",
-      "Investigate Lebensold's proof technique for potential formalization"
-    ],
-    "markdown": "# Erdős #1062 - Knowledge Base\n\n## Problem Statement\n\nLet $f(n)$ be the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that no element divides two distinct others.\n\n**Questions:**\n1. How large can $f(n)$ be?\n2. Is $\\lim f(n)/n$ irrational?\n\n## Key Insight\n\nThis is **WEAKER** than the primitive set condition:\n- **Primitive**: No $a \\mid b$ for distinct $a, b \\in A$ (two-element constraint)\n- **This problem**: No $a$ with $a \\mid b$ AND $a \\mid c$ for distinct $b \\neq c$ (three-element constraint)\n\nExample: $\\{2, 6, 9\\}$ satisfies \"no divides two others\" but is NOT primitive ($2 \\mid 6$).\n\n## Known Results\n\n- **Lower**: $f(n) \\geq \\lceil \\frac{2}{3}n \\rceil$ via $[m+1, 3m+2]$\n- **Lebensold (1976)**: $0.6725n \\leq f(n) \\leq 0.6736n$\n\n## Formalization Progress\n\nCreated `proofs/Proofs/Erdos1062Problem.lean` with:\n- Core definitions (`NoDividesTwoOthers`, `AtMostOneProperMultiple`)\n- The extremal function `f(n)`\n- Lower bound construction and theorem (with sorries)\n- Lebensold bounds as axioms\n- Open irrationality question\n- Comparison with primitive sets (strictly weaker)\n\n## Status\n\n**Erdős Database Status**: OPEN (Problem B24 in Guy's collection)\n**Formalization Status**: PARTIAL - definitions complete, main theorems have sorries\n\n## References\n\n- Guy, R. K., Unsolved Problems in Number Theory (2004)\n- Lebensold, K., A divisibility problem, Studies in Appl. Math. (1976/77)\n- OEIS A038372\n\n---\n\n*Research session 2026-01-22 by researcher-2*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1062 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?\n\n\n\nThe example $[m+1,3m+2]$ shows that $f(n)\\geq\\lceil \\frac{2}{3}n\\rceil$. Lebensold \\cite{Le76} has shown that, for large $n$,\\[0.6725 n \\leq f(n) \\leq 0.6736 n.\\]This is problem B24 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Le76] Lebensold, Kenneth, A divisibility problem. Studies in Appl. Math. (1976/77), 291--294.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1061\n- Problem #1063\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n- Le76\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Direct formalization with sorries",
-      "status": "in-progress",
-      "description": "Define property, state bounds as axioms/theorems with sorries, prove structural results"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "extremal-combinatorics",
-    "divisibility"
+    "erdos"
   ],
   "relatedProofs": [
-    "Erdos872Problem.lean (primitive sets)",
-    "Erdos12Problem.lean (divisibility-free)"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      {
-        "citation": "Guy, R. K., Unsolved problems in number theory (2004), Problem B24",
-        "key": "Gu04"
-      },
-      {
-        "citation": "Lebensold, K., A divisibility problem, Studies in Appl. Math. 56 (1976/77), 291-294",
-        "key": "Le76"
-      }
-    ],
-    "urls": [
-      "https://www.erdosproblems.com/1062",
-      "https://oeis.org/A038372"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Nat.GCD.Basic",
-      "Mathlib.Data.Finset.Card"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T14:38:41.571Z",
   "significance": 6,

@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1145",
   "title": "Erdős #1145",
-  "phase": "SKIPPED",
-  "status": "skipped",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "INVALID: Problem number 1145 does not exist in erdosproblems.com database. Maximum problem number is approximately 1133.",
+    "plain": "Problem statement not found",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,25 +16,25 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SKIPPED",
-    "since": "2026-01-22T02:18:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T16:41:04.200Z",
     "iteration": 1,
-    "focus": "Problem does not exist in Erdős database",
-    "blockers": ["Problem number exceeds database range (max ~1133)"],
-    "nextAction": "Remove from problem pool - invalid problem number",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
+      "total": 0,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SKIPPED: Problem #1145 does not exist in erdosproblems.com database. The database contains approximately 1133 problems as of January 2026.",
+    "progressSummary": "",
     "builtItems": [],
-    "insights": ["Problem number 1145 exceeds the erdosproblems.com database range (max ~1133)", "Verified: Problem 1133 exists, problem 1145 returns no content"],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": ["Remove from research pool"],
-    "markdown": "# Erdős #1145 - Knowledge Base\n\n## Problem Statement\n\n**INVALID PROBLEM NUMBER**\n\nProblem #1145 does not exist in the erdosproblems.com database. As of January 2026, the database contains approximately 1133 problems.\n\n## Status\n\n**Erdős Database Status**: DOES NOT EXIST\n\n## Verification\n\n- Problem #1130 exists (Lebesgue constant in Lagrange interpolation)\n- Problem #1133 exists (polynomial approximation conjecture)\n- Problem #1140 does not return content\n- Problem #1145 does not return content\n\n## Conclusion\n\nThis problem should be removed from the research pool.\n\n---\n\n*Verified 2026-01-22 by researcher-2*\n"
+    "nextSteps": [],
+    "markdown": "# Erdős #1145 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
   "tags": [

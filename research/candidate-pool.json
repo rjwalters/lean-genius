@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-01-23T07:42:56.453Z",
+  "last_updated": "2026-01-23T08:04:56.551Z",
   "source": "auto-generated from research/db/knowledge.db",
   "candidates": [
     {
@@ -24,7 +24,7 @@
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: rank(E(\u211a)) = ord_{s=1} L(E,s). | Stats: 3 open gaps",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: rank(E(ℚ)) = ord_{s=1} L(E,s). | Stats: 3 open gaps",
       "tags": [
         "millennium-prize",
         "number-theory",
@@ -67,7 +67,7 @@
       "significance": 5,
       "tractability": 9,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: ChineseRemainderConstructive.lean with existence/uniqueness, B\u00e9zout coefficients, explicit solution formula, Sunzi problem (23 mod 105), 3-moduli extension, RNS application.",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: ChineseRemainderConstructive.lean with existence/uniqueness, Bézout coefficients, explicit solution formula, Sunzi problem (23 mod 105), 3-moduli extension, RNS application.",
       "tags": [
         "number-theory",
         "algorithms",
@@ -90,7 +90,7 @@
     },
     {
       "id": "erdos-10",
-      "name": "Erd\u0151s #10",
+      "name": "Erdős #10",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -102,11 +102,11 @@
     },
     {
       "id": "erdos-10-prime-powers-of-2",
-      "name": "Erd\u0151s #10: Prime Plus Powers of 2",
+      "name": "Erdős #10: Prime Plus Powers of 2",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
-      "status": "pending",
+      "status": "completed",
       "notes": "",
       "tags": [
         "number-theory",
@@ -118,7 +118,7 @@
     },
     {
       "id": "erdos-100",
-      "name": "Erd\u0151s #100: Point Sets with Restricted Distances",
+      "name": "Erdős #100: Point Sets with Restricted Distances",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -133,7 +133,7 @@
     },
     {
       "id": "erdos-1013",
-      "name": "Erd\u0151s #1013",
+      "name": "Erdős #1013",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -145,7 +145,7 @@
     },
     {
       "id": "erdos-1014",
-      "name": "Erd\u0151s #1014",
+      "name": "Erdős #1014",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -157,7 +157,7 @@
     },
     {
       "id": "erdos-1016",
-      "name": "Erd\u0151s #1016",
+      "name": "Erdős #1016",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -169,7 +169,7 @@
     },
     {
       "id": "erdos-1032",
-      "name": "Erd\u0151s #1032",
+      "name": "Erdős #1032",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -181,7 +181,7 @@
     },
     {
       "id": "erdos-1035",
-      "name": "Erd\u0151s #1035",
+      "name": "Erdős #1035",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -193,7 +193,7 @@
     },
     {
       "id": "erdos-1051",
-      "name": "Erd\u0151s #1051",
+      "name": "Erdős #1051",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -205,7 +205,7 @@
     },
     {
       "id": "erdos-1052",
-      "name": "Erd\u0151s #1052",
+      "name": "Erdős #1052",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -217,7 +217,7 @@
     },
     {
       "id": "erdos-1053",
-      "name": "Erd\u0151s #1053",
+      "name": "Erdős #1053",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -229,7 +229,7 @@
     },
     {
       "id": "erdos-1055",
-      "name": "Erd\u0151s #1055",
+      "name": "Erdős #1055",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -241,7 +241,7 @@
     },
     {
       "id": "erdos-1056",
-      "name": "Erd\u0151s #1056",
+      "name": "Erdős #1056",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -253,7 +253,7 @@
     },
     {
       "id": "erdos-1059",
-      "name": "Erd\u0151s #1059",
+      "name": "Erdős #1059",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -265,7 +265,7 @@
     },
     {
       "id": "erdos-1060",
-      "name": "Erd\u0151s #1060",
+      "name": "Erdős #1060",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -277,7 +277,7 @@
     },
     {
       "id": "erdos-1061",
-      "name": "Erd\u0151s #1061",
+      "name": "Erdős #1061",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -289,7 +289,7 @@
     },
     {
       "id": "erdos-1062",
-      "name": "Erd\u0151s #1062",
+      "name": "Erdős #1062",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -301,7 +301,7 @@
     },
     {
       "id": "erdos-1063",
-      "name": "Erd\u0151s #1063",
+      "name": "Erdős #1063",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -313,7 +313,7 @@
     },
     {
       "id": "erdos-1065",
-      "name": "Erd\u0151s #1065",
+      "name": "Erdős #1065",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -325,7 +325,7 @@
     },
     {
       "id": "erdos-1068",
-      "name": "Erd\u0151s #1068",
+      "name": "Erdős #1068",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -337,7 +337,7 @@
     },
     {
       "id": "erdos-1071",
-      "name": "Erd\u0151s #1071",
+      "name": "Erdős #1071",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -349,7 +349,7 @@
     },
     {
       "id": "erdos-1072",
-      "name": "Erd\u0151s #1072",
+      "name": "Erdős #1072",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -361,7 +361,7 @@
     },
     {
       "id": "erdos-1073",
-      "name": "Erd\u0151s #1073",
+      "name": "Erdős #1073",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -373,7 +373,7 @@
     },
     {
       "id": "erdos-1084",
-      "name": "Erd\u0151s #1084",
+      "name": "Erdős #1084",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -385,7 +385,7 @@
     },
     {
       "id": "erdos-109",
-      "name": "Erd\u0151s #109: The Erd\u0151s Sumset Conjecture",
+      "name": "Erdős #109: The Erdős Sumset Conjecture",
       "tier": "A",
       "significance": 8,
       "tractability": 7,
@@ -402,7 +402,7 @@
     },
     {
       "id": "erdos-1092",
-      "name": "Erd\u0151s #1092",
+      "name": "Erdős #1092",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -414,7 +414,7 @@
     },
     {
       "id": "erdos-1093",
-      "name": "Erd\u0151s #1093",
+      "name": "Erdős #1093",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -426,7 +426,7 @@
     },
     {
       "id": "erdos-1094",
-      "name": "Erd\u0151s #1094",
+      "name": "Erdős #1094",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -438,7 +438,7 @@
     },
     {
       "id": "erdos-1097",
-      "name": "Erd\u0151s #1097",
+      "name": "Erdős #1097",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -450,7 +450,7 @@
     },
     {
       "id": "erdos-1103",
-      "name": "Erd\u0151s #1103",
+      "name": "Erdős #1103",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -462,7 +462,7 @@
     },
     {
       "id": "erdos-1104",
-      "name": "Erd\u0151s #1104",
+      "name": "Erdős #1104",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -474,7 +474,7 @@
     },
     {
       "id": "erdos-1105",
-      "name": "Erd\u0151s #1105",
+      "name": "Erdős #1105",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -486,7 +486,7 @@
     },
     {
       "id": "erdos-1117",
-      "name": "Erd\u0151s #1117",
+      "name": "Erdős #1117",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -498,7 +498,7 @@
     },
     {
       "id": "erdos-1120",
-      "name": "Erd\u0151s #1120",
+      "name": "Erdős #1120",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -510,7 +510,7 @@
     },
     {
       "id": "erdos-1130",
-      "name": "Erd\u0151s #1130",
+      "name": "Erdős #1130",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -522,7 +522,7 @@
     },
     {
       "id": "erdos-1135",
-      "name": "Erd\u0151s #1135",
+      "name": "Erdős #1135",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -534,7 +534,7 @@
     },
     {
       "id": "erdos-1136",
-      "name": "Erd\u0151s #1136",
+      "name": "Erdős #1136",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -546,7 +546,7 @@
     },
     {
       "id": "erdos-1137",
-      "name": "Erd\u0151s #1137",
+      "name": "Erdős #1137",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -558,7 +558,7 @@
     },
     {
       "id": "erdos-1138",
-      "name": "Erd\u0151s #1138",
+      "name": "Erdős #1138",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -570,7 +570,7 @@
     },
     {
       "id": "erdos-1140",
-      "name": "Erd\u0151s #1140",
+      "name": "Erdős #1140",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -582,7 +582,7 @@
     },
     {
       "id": "erdos-1141",
-      "name": "Erd\u0151s #1141",
+      "name": "Erdős #1141",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -594,7 +594,7 @@
     },
     {
       "id": "erdos-1142",
-      "name": "Erd\u0151s #1142",
+      "name": "Erdős #1142",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -606,7 +606,7 @@
     },
     {
       "id": "erdos-1143",
-      "name": "Erd\u0151s #1143",
+      "name": "Erdős #1143",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -618,7 +618,7 @@
     },
     {
       "id": "erdos-1144",
-      "name": "Erd\u0151s #1144",
+      "name": "Erdős #1144",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -630,7 +630,7 @@
     },
     {
       "id": "erdos-1145",
-      "name": "Erd\u0151s #1145",
+      "name": "Erdős #1145",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -642,7 +642,7 @@
     },
     {
       "id": "erdos-1146",
-      "name": "Erd\u0151s #1146",
+      "name": "Erdős #1146",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -654,7 +654,7 @@
     },
     {
       "id": "erdos-1147",
-      "name": "Erd\u0151s #1147",
+      "name": "Erdős #1147",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -666,7 +666,7 @@
     },
     {
       "id": "erdos-1148",
-      "name": "Erd\u0151s #1148",
+      "name": "Erdős #1148",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -678,7 +678,7 @@
     },
     {
       "id": "erdos-1149",
-      "name": "Erd\u0151s #1149",
+      "name": "Erdős #1149",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -690,7 +690,7 @@
     },
     {
       "id": "erdos-1150",
-      "name": "Erd\u0151s #1150",
+      "name": "Erdős #1150",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -702,7 +702,7 @@
     },
     {
       "id": "erdos-1151",
-      "name": "Erd\u0151s #1151",
+      "name": "Erdős #1151",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -714,7 +714,7 @@
     },
     {
       "id": "erdos-1152",
-      "name": "Erd\u0151s #1152",
+      "name": "Erdős #1152",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -726,7 +726,7 @@
     },
     {
       "id": "erdos-1153",
-      "name": "Erd\u0151s #1153",
+      "name": "Erdős #1153",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -738,7 +738,7 @@
     },
     {
       "id": "erdos-1154",
-      "name": "Erd\u0151s #1154",
+      "name": "Erdős #1154",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -750,7 +750,7 @@
     },
     {
       "id": "erdos-1155",
-      "name": "Erd\u0151s #1155",
+      "name": "Erdős #1155",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -762,7 +762,7 @@
     },
     {
       "id": "erdos-1156",
-      "name": "Erd\u0151s #1156",
+      "name": "Erdős #1156",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -774,7 +774,7 @@
     },
     {
       "id": "erdos-1157",
-      "name": "Erd\u0151s #1157",
+      "name": "Erdős #1157",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -786,7 +786,7 @@
     },
     {
       "id": "erdos-1158",
-      "name": "Erd\u0151s #1158",
+      "name": "Erdős #1158",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -798,7 +798,7 @@
     },
     {
       "id": "erdos-1159",
-      "name": "Erd\u0151s #1159",
+      "name": "Erdős #1159",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -810,7 +810,7 @@
     },
     {
       "id": "erdos-1160",
-      "name": "Erd\u0151s #1160",
+      "name": "Erdős #1160",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -822,7 +822,7 @@
     },
     {
       "id": "erdos-1161",
-      "name": "Erd\u0151s #1161",
+      "name": "Erdős #1161",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -834,7 +834,7 @@
     },
     {
       "id": "erdos-1162",
-      "name": "Erd\u0151s #1162",
+      "name": "Erdős #1162",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -846,7 +846,7 @@
     },
     {
       "id": "erdos-1163",
-      "name": "Erd\u0151s #1163",
+      "name": "Erdős #1163",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -858,7 +858,7 @@
     },
     {
       "id": "erdos-1164",
-      "name": "Erd\u0151s #1164",
+      "name": "Erdős #1164",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -870,7 +870,7 @@
     },
     {
       "id": "erdos-1165",
-      "name": "Erd\u0151s #1165",
+      "name": "Erdős #1165",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -882,7 +882,7 @@
     },
     {
       "id": "erdos-1166",
-      "name": "Erd\u0151s #1166",
+      "name": "Erdős #1166",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -894,7 +894,7 @@
     },
     {
       "id": "erdos-1167",
-      "name": "Erd\u0151s #1167",
+      "name": "Erdős #1167",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -906,7 +906,7 @@
     },
     {
       "id": "erdos-1168",
-      "name": "Erd\u0151s #1168",
+      "name": "Erdős #1168",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -918,7 +918,7 @@
     },
     {
       "id": "erdos-1169",
-      "name": "Erd\u0151s #1169",
+      "name": "Erdős #1169",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -930,7 +930,7 @@
     },
     {
       "id": "erdos-1170",
-      "name": "Erd\u0151s #1170",
+      "name": "Erdős #1170",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -942,7 +942,7 @@
     },
     {
       "id": "erdos-1171",
-      "name": "Erd\u0151s #1171",
+      "name": "Erdős #1171",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -954,7 +954,7 @@
     },
     {
       "id": "erdos-1172",
-      "name": "Erd\u0151s #1172",
+      "name": "Erdős #1172",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -966,7 +966,7 @@
     },
     {
       "id": "erdos-1173",
-      "name": "Erd\u0151s #1173",
+      "name": "Erdős #1173",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -978,7 +978,7 @@
     },
     {
       "id": "erdos-1174",
-      "name": "Erd\u0151s #1174",
+      "name": "Erdős #1174",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -990,7 +990,7 @@
     },
     {
       "id": "erdos-1175",
-      "name": "Erd\u0151s #1175",
+      "name": "Erdős #1175",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1002,7 +1002,7 @@
     },
     {
       "id": "erdos-1176",
-      "name": "Erd\u0151s #1176",
+      "name": "Erdős #1176",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1014,7 +1014,7 @@
     },
     {
       "id": "erdos-1177",
-      "name": "Erd\u0151s #1177",
+      "name": "Erdős #1177",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1026,7 +1026,7 @@
     },
     {
       "id": "erdos-1178",
-      "name": "Erd\u0151s #1178",
+      "name": "Erdős #1178",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1038,7 +1038,7 @@
     },
     {
       "id": "erdos-1179",
-      "name": "Erd\u0151s #1179",
+      "name": "Erdős #1179",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1050,7 +1050,7 @@
     },
     {
       "id": "erdos-1180",
-      "name": "Erd\u0151s #1180",
+      "name": "Erdős #1180",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1062,7 +1062,7 @@
     },
     {
       "id": "erdos-1183",
-      "name": "Erd\u0151s #1183",
+      "name": "Erdős #1183",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1074,7 +1074,7 @@
     },
     {
       "id": "erdos-1184",
-      "name": "Erd\u0151s #1184",
+      "name": "Erdős #1184",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1086,7 +1086,7 @@
     },
     {
       "id": "erdos-1185",
-      "name": "Erd\u0151s #1185",
+      "name": "Erdős #1185",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1098,7 +1098,7 @@
     },
     {
       "id": "erdos-1186",
-      "name": "Erd\u0151s #1186",
+      "name": "Erdős #1186",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1110,7 +1110,7 @@
     },
     {
       "id": "erdos-1187",
-      "name": "Erd\u0151s #1187",
+      "name": "Erdős #1187",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1122,7 +1122,7 @@
     },
     {
       "id": "erdos-1188",
-      "name": "Erd\u0151s #1188",
+      "name": "Erdős #1188",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1134,7 +1134,7 @@
     },
     {
       "id": "erdos-1189",
-      "name": "Erd\u0151s #1189",
+      "name": "Erdős #1189",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1146,7 +1146,7 @@
     },
     {
       "id": "erdos-1190",
-      "name": "Erd\u0151s #1190",
+      "name": "Erdős #1190",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1158,7 +1158,7 @@
     },
     {
       "id": "erdos-1191",
-      "name": "Erd\u0151s #1191",
+      "name": "Erdős #1191",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1170,7 +1170,7 @@
     },
     {
       "id": "erdos-1192",
-      "name": "Erd\u0151s #1192",
+      "name": "Erdős #1192",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1182,7 +1182,7 @@
     },
     {
       "id": "erdos-1193",
-      "name": "Erd\u0151s #1193",
+      "name": "Erdős #1193",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1194,7 +1194,7 @@
     },
     {
       "id": "erdos-1194",
-      "name": "Erd\u0151s #1194",
+      "name": "Erdős #1194",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1206,7 +1206,7 @@
     },
     {
       "id": "erdos-1195",
-      "name": "Erd\u0151s #1195",
+      "name": "Erdős #1195",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1218,7 +1218,7 @@
     },
     {
       "id": "erdos-1196",
-      "name": "Erd\u0151s #1196",
+      "name": "Erdős #1196",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1230,7 +1230,7 @@
     },
     {
       "id": "erdos-1197",
-      "name": "Erd\u0151s #1197",
+      "name": "Erdős #1197",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1242,7 +1242,7 @@
     },
     {
       "id": "erdos-1198",
-      "name": "Erd\u0151s #1198",
+      "name": "Erdős #1198",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1254,7 +1254,7 @@
     },
     {
       "id": "erdos-1199",
-      "name": "Erd\u0151s #1199",
+      "name": "Erdős #1199",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1266,7 +1266,7 @@
     },
     {
       "id": "erdos-12",
-      "name": "Erd\u0151s #12: Divisibility-Free Sets",
+      "name": "Erdős #12: Divisibility-Free Sets",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1280,7 +1280,7 @@
     },
     {
       "id": "erdos-1200",
-      "name": "Erd\u0151s #1200",
+      "name": "Erdős #1200",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1292,7 +1292,7 @@
     },
     {
       "id": "erdos-14",
-      "name": "Erd\u0151s #14",
+      "name": "Erdős #14",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1304,11 +1304,11 @@
     },
     {
       "id": "erdos-14-unique-sums",
-      "name": "Erd\u0151s #14: Unique Representation Sums",
+      "name": "Erdős #14: Unique Representation Sums",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
-      "status": "pending",
+      "status": "completed",
       "notes": "",
       "tags": [
         "number-theory",
@@ -1320,7 +1320,7 @@
     },
     {
       "id": "erdos-151",
-      "name": "Erd\u0151s #151",
+      "name": "Erdős #151",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1332,7 +1332,7 @@
     },
     {
       "id": "erdos-152",
-      "name": "Erd\u0151s #152",
+      "name": "Erdős #152",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1344,7 +1344,7 @@
     },
     {
       "id": "erdos-153",
-      "name": "Erd\u0151s #153",
+      "name": "Erdős #153",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1356,7 +1356,7 @@
     },
     {
       "id": "erdos-155",
-      "name": "Erd\u0151s #155",
+      "name": "Erdős #155",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1368,7 +1368,7 @@
     },
     {
       "id": "erdos-156",
-      "name": "Erd\u0151s #156",
+      "name": "Erdős #156",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1380,7 +1380,7 @@
     },
     {
       "id": "erdos-159",
-      "name": "Erd\u0151s #159",
+      "name": "Erdős #159",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1392,7 +1392,7 @@
     },
     {
       "id": "erdos-160",
-      "name": "Erd\u0151s #160",
+      "name": "Erdős #160",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1404,7 +1404,7 @@
     },
     {
       "id": "erdos-162",
-      "name": "Erd\u0151s #162",
+      "name": "Erdős #162",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1416,7 +1416,7 @@
     },
     {
       "id": "erdos-180",
-      "name": "Erd\u0151s #180",
+      "name": "Erdős #180",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1428,7 +1428,7 @@
     },
     {
       "id": "erdos-181",
-      "name": "Erd\u0151s #181",
+      "name": "Erdős #181",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1440,7 +1440,7 @@
     },
     {
       "id": "erdos-183",
-      "name": "Erd\u0151s #183",
+      "name": "Erdős #183",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -1452,7 +1452,7 @@
     },
     {
       "id": "erdos-190",
-      "name": "Erd\u0151s #190",
+      "name": "Erdős #190",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1464,7 +1464,7 @@
     },
     {
       "id": "erdos-193",
-      "name": "Erd\u0151s #193",
+      "name": "Erdős #193",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1491,7 +1491,7 @@
     },
     {
       "id": "erdos-197",
-      "name": "Erd\u0151s #197",
+      "name": "Erdős #197",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1503,7 +1503,7 @@
     },
     {
       "id": "erdos-200",
-      "name": "Erd\u0151s #200",
+      "name": "Erdős #200",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1515,7 +1515,7 @@
     },
     {
       "id": "erdos-201",
-      "name": "Erd\u0151s #201",
+      "name": "Erdős #201",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1527,7 +1527,7 @@
     },
     {
       "id": "erdos-203",
-      "name": "Erd\u0151s #203",
+      "name": "Erdős #203",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1539,7 +1539,7 @@
     },
     {
       "id": "erdos-205",
-      "name": "Erd\u0151s #205: Powers of 2 plus numbers with few prime factors",
+      "name": "Erdős #205: Powers of 2 plus numbers with few prime factors",
       "tier": "A",
       "significance": 7,
       "tractability": 8,
@@ -1556,7 +1556,7 @@
     },
     {
       "id": "erdos-218",
-      "name": "Erd\u0151s #218",
+      "name": "Erdős #218",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1568,7 +1568,7 @@
     },
     {
       "id": "erdos-234",
-      "name": "Erd\u0151s #234",
+      "name": "Erdős #234",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1580,7 +1580,7 @@
     },
     {
       "id": "erdos-238",
-      "name": "Erd\u0151s #238",
+      "name": "Erdős #238",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1592,7 +1592,7 @@
     },
     {
       "id": "erdos-241",
-      "name": "Erd\u0151s #241",
+      "name": "Erdős #241",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1604,7 +1604,7 @@
     },
     {
       "id": "erdos-249",
-      "name": "Erd\u0151s #249",
+      "name": "Erdős #249",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1616,7 +1616,7 @@
     },
     {
       "id": "erdos-25",
-      "name": "Erd\u0151s #25",
+      "name": "Erdős #25",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -1628,11 +1628,11 @@
     },
     {
       "id": "erdos-25-number-theory",
-      "name": "Erd\u0151s #25: Sequence Divisibility",
+      "name": "Erdős #25: Sequence Divisibility",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
-      "status": "pending",
+      "status": "completed",
       "notes": "",
       "tags": [
         "number-theory",
@@ -1643,7 +1643,7 @@
     },
     {
       "id": "erdos-261",
-      "name": "Erd\u0151s #261",
+      "name": "Erdős #261",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -1655,7 +1655,7 @@
     },
     {
       "id": "erdos-265",
-      "name": "Erd\u0151s #265",
+      "name": "Erdős #265",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1667,7 +1667,7 @@
     },
     {
       "id": "erdos-269",
-      "name": "Erd\u0151s #269",
+      "name": "Erdős #269",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1679,7 +1679,7 @@
     },
     {
       "id": "erdos-273",
-      "name": "Erd\u0151s #273",
+      "name": "Erdős #273",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1691,7 +1691,7 @@
     },
     {
       "id": "erdos-276",
-      "name": "Erd\u0151s #276",
+      "name": "Erdős #276",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1703,7 +1703,7 @@
     },
     {
       "id": "erdos-278",
-      "name": "Erd\u0151s #278",
+      "name": "Erdős #278",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1715,7 +1715,7 @@
     },
     {
       "id": "erdos-279",
-      "name": "Erd\u0151s #279",
+      "name": "Erdős #279",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1727,7 +1727,7 @@
     },
     {
       "id": "erdos-28",
-      "name": "Erd\u0151s #28",
+      "name": "Erdős #28",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1739,11 +1739,11 @@
     },
     {
       "id": "erdos-28-additive-bases",
-      "name": "Erd\u0151s #28: Erd\u0151s-Tur\u00e1n Additive Bases ($500)",
+      "name": "Erdős #28: Erdős-Turán Additive Bases ($500)",
       "tier": "A",
       "significance": 7,
       "tractability": 4,
-      "status": "pending",
+      "status": "completed",
       "notes": "",
       "tags": [
         "erdos",
@@ -1756,7 +1756,7 @@
     },
     {
       "id": "erdos-281",
-      "name": "Erd\u0151s #281",
+      "name": "Erdős #281",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1768,7 +1768,7 @@
     },
     {
       "id": "erdos-282",
-      "name": "Erd\u0151s #282",
+      "name": "Erdős #282",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -1780,7 +1780,7 @@
     },
     {
       "id": "erdos-288",
-      "name": "Erd\u0151s #288",
+      "name": "Erdős #288",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1792,7 +1792,7 @@
     },
     {
       "id": "erdos-289",
-      "name": "Erd\u0151s #289",
+      "name": "Erdős #289",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1804,7 +1804,7 @@
     },
     {
       "id": "erdos-301",
-      "name": "Erd\u0151s #301",
+      "name": "Erdős #301",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1831,7 +1831,7 @@
     },
     {
       "id": "erdos-311",
-      "name": "Erd\u0151s #311",
+      "name": "Erdős #311",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1843,7 +1843,7 @@
     },
     {
       "id": "erdos-312",
-      "name": "Erd\u0151s #312",
+      "name": "Erdős #312",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1855,7 +1855,7 @@
     },
     {
       "id": "erdos-313",
-      "name": "Erd\u0151s #313",
+      "name": "Erdős #313",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1867,7 +1867,7 @@
     },
     {
       "id": "erdos-317",
-      "name": "Erd\u0151s #317",
+      "name": "Erdős #317",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1879,7 +1879,7 @@
     },
     {
       "id": "erdos-319",
-      "name": "Erd\u0151s #319",
+      "name": "Erdős #319",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1891,7 +1891,7 @@
     },
     {
       "id": "erdos-321",
-      "name": "Erd\u0151s #321",
+      "name": "Erdős #321",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1903,7 +1903,7 @@
     },
     {
       "id": "erdos-323",
-      "name": "Erd\u0151s #323",
+      "name": "Erdős #323",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1915,7 +1915,7 @@
     },
     {
       "id": "erdos-324",
-      "name": "Erd\u0151s #324",
+      "name": "Erdős #324",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1927,7 +1927,7 @@
     },
     {
       "id": "erdos-327",
-      "name": "Erd\u0151s #327",
+      "name": "Erdős #327",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1939,7 +1939,7 @@
     },
     {
       "id": "erdos-330",
-      "name": "Erd\u0151s #330",
+      "name": "Erdős #330",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -1951,7 +1951,7 @@
     },
     {
       "id": "erdos-332",
-      "name": "Erd\u0151s #332",
+      "name": "Erdős #332",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1963,7 +1963,7 @@
     },
     {
       "id": "erdos-335",
-      "name": "Erd\u0151s #335",
+      "name": "Erdős #335",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -1975,7 +1975,7 @@
     },
     {
       "id": "erdos-340-greedy-sidon",
-      "name": "Erd\u0151s #340: Greedy Sidon Sequence Growth",
+      "name": "Erdős #340: Greedy Sidon Sequence Growth",
       "tier": "A",
       "significance": 8,
       "tractability": 1,
@@ -1992,7 +1992,7 @@
     },
     {
       "id": "erdos-341",
-      "name": "Erd\u0151s #341",
+      "name": "Erdős #341",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2004,7 +2004,7 @@
     },
     {
       "id": "erdos-342",
-      "name": "Erd\u0151s #342",
+      "name": "Erdős #342",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2016,7 +2016,7 @@
     },
     {
       "id": "erdos-345",
-      "name": "Erd\u0151s #345",
+      "name": "Erdős #345",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2028,7 +2028,7 @@
     },
     {
       "id": "erdos-346",
-      "name": "Erd\u0151s #346",
+      "name": "Erdős #346",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2040,7 +2040,7 @@
     },
     {
       "id": "erdos-347",
-      "name": "Erd\u0151s #347",
+      "name": "Erdős #347",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2052,7 +2052,7 @@
     },
     {
       "id": "erdos-348",
-      "name": "Erd\u0151s #348",
+      "name": "Erdős #348",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2064,7 +2064,7 @@
     },
     {
       "id": "erdos-349",
-      "name": "Erd\u0151s #349",
+      "name": "Erdős #349",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2076,7 +2076,7 @@
     },
     {
       "id": "erdos-358",
-      "name": "Erd\u0151s #358",
+      "name": "Erdős #358",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -2088,7 +2088,7 @@
     },
     {
       "id": "erdos-36",
-      "name": "Erd\u0151s #36",
+      "name": "Erdős #36",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2100,7 +2100,7 @@
     },
     {
       "id": "erdos-361",
-      "name": "Erd\u0151s #361",
+      "name": "Erdős #361",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2112,7 +2112,7 @@
     },
     {
       "id": "erdos-367",
-      "name": "Erd\u0151s #367",
+      "name": "Erdős #367",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2124,7 +2124,7 @@
     },
     {
       "id": "erdos-369",
-      "name": "Erd\u0151s #369",
+      "name": "Erdős #369",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2136,7 +2136,7 @@
     },
     {
       "id": "erdos-374",
-      "name": "Erd\u0151s #374",
+      "name": "Erdős #374",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2148,7 +2148,7 @@
     },
     {
       "id": "erdos-380",
-      "name": "Erd\u0151s #380",
+      "name": "Erdős #380",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2160,7 +2160,7 @@
     },
     {
       "id": "erdos-382",
-      "name": "Erd\u0151s #382",
+      "name": "Erdős #382",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2172,7 +2172,7 @@
     },
     {
       "id": "erdos-383",
-      "name": "Erd\u0151s #383",
+      "name": "Erdős #383",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2184,7 +2184,7 @@
     },
     {
       "id": "erdos-385",
-      "name": "Erd\u0151s #385",
+      "name": "Erdős #385",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2196,7 +2196,7 @@
     },
     {
       "id": "erdos-386",
-      "name": "Erd\u0151s #386",
+      "name": "Erdős #386",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2208,7 +2208,7 @@
     },
     {
       "id": "erdos-388",
-      "name": "Erd\u0151s #388",
+      "name": "Erdős #388",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2220,7 +2220,7 @@
     },
     {
       "id": "erdos-389",
-      "name": "Erd\u0151s #389",
+      "name": "Erdős #389",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2232,7 +2232,7 @@
     },
     {
       "id": "erdos-390",
-      "name": "Erd\u0151s #390",
+      "name": "Erdős #390",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2244,7 +2244,7 @@
     },
     {
       "id": "erdos-396",
-      "name": "Erd\u0151s #396",
+      "name": "Erdős #396",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2256,7 +2256,7 @@
     },
     {
       "id": "erdos-40",
-      "name": "Erd\u0151s #40",
+      "name": "Erdős #40",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2268,7 +2268,7 @@
     },
     {
       "id": "erdos-400",
-      "name": "Erd\u0151s #400",
+      "name": "Erdős #400",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2280,7 +2280,7 @@
     },
     {
       "id": "erdos-401",
-      "name": "Erd\u0151s #401: Factorial Divisibility with Prime Products",
+      "name": "Erdős #401: Factorial Divisibility with Prime Products",
       "tier": "A",
       "significance": 6,
       "tractability": 7,
@@ -2297,7 +2297,7 @@
     },
     {
       "id": "erdos-404",
-      "name": "Erd\u0151s #404",
+      "name": "Erdős #404",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2309,7 +2309,7 @@
     },
     {
       "id": "erdos-406",
-      "name": "Erd\u0151s #406",
+      "name": "Erdős #406",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2321,7 +2321,7 @@
     },
     {
       "id": "erdos-409",
-      "name": "Erd\u0151s #409",
+      "name": "Erdős #409",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2333,7 +2333,7 @@
     },
     {
       "id": "erdos-410",
-      "name": "Erd\u0151s #410",
+      "name": "Erdős #410",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2345,7 +2345,7 @@
     },
     {
       "id": "erdos-411",
-      "name": "Erd\u0151s #411",
+      "name": "Erdős #411",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -2357,7 +2357,7 @@
     },
     {
       "id": "erdos-413",
-      "name": "Erd\u0151s #413",
+      "name": "Erdős #413",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -2369,7 +2369,7 @@
     },
     {
       "id": "erdos-414",
-      "name": "Erd\u0151s #414",
+      "name": "Erdős #414",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2381,7 +2381,7 @@
     },
     {
       "id": "erdos-417",
-      "name": "Erd\u0151s #417",
+      "name": "Erdős #417",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2393,7 +2393,7 @@
     },
     {
       "id": "erdos-42",
-      "name": "Erd\u0151s #42",
+      "name": "Erdős #42",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2405,7 +2405,7 @@
     },
     {
       "id": "erdos-421",
-      "name": "Erd\u0151s #421",
+      "name": "Erdős #421",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2417,7 +2417,7 @@
     },
     {
       "id": "erdos-422",
-      "name": "Erd\u0151s #422",
+      "name": "Erdős #422",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2429,7 +2429,7 @@
     },
     {
       "id": "erdos-423",
-      "name": "Erd\u0151s #423",
+      "name": "Erdős #423",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2441,7 +2441,7 @@
     },
     {
       "id": "erdos-424",
-      "name": "Erd\u0151s #424",
+      "name": "Erdős #424",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2453,7 +2453,7 @@
     },
     {
       "id": "erdos-428",
-      "name": "Erd\u0151s #428",
+      "name": "Erdős #428",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2465,7 +2465,7 @@
     },
     {
       "id": "erdos-43",
-      "name": "Erd\u0151s #43",
+      "name": "Erdős #43",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2477,7 +2477,7 @@
     },
     {
       "id": "erdos-430",
-      "name": "Erd\u0151s #430",
+      "name": "Erdős #430",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2489,7 +2489,7 @@
     },
     {
       "id": "erdos-432",
-      "name": "Erd\u0151s #432",
+      "name": "Erdős #432",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2501,7 +2501,7 @@
     },
     {
       "id": "erdos-44",
-      "name": "Erd\u0151s #44",
+      "name": "Erdős #44",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2513,7 +2513,7 @@
     },
     {
       "id": "erdos-450",
-      "name": "Erd\u0151s #450",
+      "name": "Erdős #450",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2525,7 +2525,7 @@
     },
     {
       "id": "erdos-451",
-      "name": "Erd\u0151s #451",
+      "name": "Erdős #451",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2537,7 +2537,7 @@
     },
     {
       "id": "erdos-456",
-      "name": "Erd\u0151s #456",
+      "name": "Erdős #456",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2549,7 +2549,7 @@
     },
     {
       "id": "erdos-457",
-      "name": "Erd\u0151s #457",
+      "name": "Erdős #457",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2561,7 +2561,7 @@
     },
     {
       "id": "erdos-460",
-      "name": "Erd\u0151s #460",
+      "name": "Erdős #460",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2573,7 +2573,7 @@
     },
     {
       "id": "erdos-461",
-      "name": "Erd\u0151s #461",
+      "name": "Erdős #461",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2585,7 +2585,7 @@
     },
     {
       "id": "erdos-462",
-      "name": "Erd\u0151s #462",
+      "name": "Erdős #462",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2597,7 +2597,7 @@
     },
     {
       "id": "erdos-463",
-      "name": "Erd\u0151s #463",
+      "name": "Erdős #463",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2609,7 +2609,7 @@
     },
     {
       "id": "erdos-467",
-      "name": "Erd\u0151s #467",
+      "name": "Erdős #467",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2621,7 +2621,7 @@
     },
     {
       "id": "erdos-468",
-      "name": "Erd\u0151s #468",
+      "name": "Erdős #468",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2633,7 +2633,7 @@
     },
     {
       "id": "erdos-469",
-      "name": "Erd\u0151s #469",
+      "name": "Erdős #469",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2645,7 +2645,7 @@
     },
     {
       "id": "erdos-472",
-      "name": "Erd\u0151s #472",
+      "name": "Erdős #472",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2657,7 +2657,7 @@
     },
     {
       "id": "erdos-477",
-      "name": "Erd\u0151s #477",
+      "name": "Erdős #477",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2669,7 +2669,7 @@
     },
     {
       "id": "erdos-478",
-      "name": "Erd\u0151s #478",
+      "name": "Erdős #478",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -2681,7 +2681,7 @@
     },
     {
       "id": "erdos-483",
-      "name": "Erd\u0151s #483",
+      "name": "Erdős #483",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -2693,7 +2693,7 @@
     },
     {
       "id": "erdos-488",
-      "name": "Erd\u0151s #488",
+      "name": "Erdős #488",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2705,7 +2705,7 @@
     },
     {
       "id": "erdos-5",
-      "name": "Erd\u0151s #5",
+      "name": "Erdős #5",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -2717,11 +2717,11 @@
     },
     {
       "id": "erdos-5-prime-gaps",
-      "name": "Erd\u0151s #5: Prime Gap Limit Points",
+      "name": "Erdős #5: Prime Gap Limit Points",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
-      "status": "pending",
+      "status": "completed",
       "notes": "",
       "tags": [
         "number-theory",
@@ -2733,7 +2733,7 @@
     },
     {
       "id": "erdos-513",
-      "name": "Erd\u0151s #513",
+      "name": "Erdős #513",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2745,7 +2745,7 @@
     },
     {
       "id": "erdos-524",
-      "name": "Erd\u0151s #524",
+      "name": "Erdős #524",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2757,7 +2757,7 @@
     },
     {
       "id": "erdos-530",
-      "name": "Erd\u0151s #530",
+      "name": "Erdős #530",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -2769,7 +2769,7 @@
     },
     {
       "id": "erdos-533",
-      "name": "Erd\u0151s #533",
+      "name": "Erdős #533",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2781,7 +2781,7 @@
     },
     {
       "id": "erdos-536",
-      "name": "Erd\u0151s #536",
+      "name": "Erdős #536",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2793,7 +2793,7 @@
     },
     {
       "id": "erdos-538",
-      "name": "Erd\u0151s #538",
+      "name": "Erdős #538",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2805,7 +2805,7 @@
     },
     {
       "id": "erdos-544",
-      "name": "Erd\u0151s #544",
+      "name": "Erdős #544",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -2817,7 +2817,7 @@
     },
     {
       "id": "erdos-547",
-      "name": "Erd\u0151s #547 - Tree Ramsey Numbers",
+      "name": "Erdős #547 - Tree Ramsey Numbers",
       "tier": "A",
       "significance": 7,
       "tractability": 6,
@@ -2832,7 +2832,7 @@
     },
     {
       "id": "erdos-602",
-      "name": "Erd\u0151s #602",
+      "name": "Erdős #602",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2844,7 +2844,7 @@
     },
     {
       "id": "erdos-603",
-      "name": "Erd\u0151s #603",
+      "name": "Erdős #603",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2856,7 +2856,7 @@
     },
     {
       "id": "erdos-614",
-      "name": "Erd\u0151s #614",
+      "name": "Erdős #614",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2868,7 +2868,7 @@
     },
     {
       "id": "erdos-635",
-      "name": "Erd\u0151s #635",
+      "name": "Erdős #635",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2880,7 +2880,7 @@
     },
     {
       "id": "erdos-638",
-      "name": "Erd\u0151s #638",
+      "name": "Erdős #638",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2892,7 +2892,7 @@
     },
     {
       "id": "erdos-640",
-      "name": "Erd\u0151s #640",
+      "name": "Erdős #640",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2904,7 +2904,7 @@
     },
     {
       "id": "erdos-654",
-      "name": "Erd\u0151s #654",
+      "name": "Erdős #654",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2916,7 +2916,7 @@
     },
     {
       "id": "erdos-655",
-      "name": "Erd\u0151s #655",
+      "name": "Erdős #655",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2928,7 +2928,7 @@
     },
     {
       "id": "erdos-661",
-      "name": "Erd\u0151s #661",
+      "name": "Erdős #661",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2940,7 +2940,7 @@
     },
     {
       "id": "erdos-662",
-      "name": "Erd\u0151s #662",
+      "name": "Erdős #662",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -2952,7 +2952,7 @@
     },
     {
       "id": "erdos-663",
-      "name": "Erd\u0151s #663",
+      "name": "Erdős #663",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2964,7 +2964,7 @@
     },
     {
       "id": "erdos-667",
-      "name": "Erd\u0151s #667",
+      "name": "Erdős #667",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2976,7 +2976,7 @@
     },
     {
       "id": "erdos-668",
-      "name": "Erd\u0151s #668",
+      "name": "Erdős #668",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -2988,7 +2988,7 @@
     },
     {
       "id": "erdos-675",
-      "name": "Erd\u0151s #675",
+      "name": "Erdős #675",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3000,7 +3000,7 @@
     },
     {
       "id": "erdos-676",
-      "name": "Erd\u0151s #676",
+      "name": "Erdős #676",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3012,7 +3012,7 @@
     },
     {
       "id": "erdos-677",
-      "name": "Erd\u0151s #677",
+      "name": "Erdős #677",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3024,7 +3024,7 @@
     },
     {
       "id": "erdos-68",
-      "name": "Erd\u0151s #68",
+      "name": "Erdős #68",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3036,7 +3036,7 @@
     },
     {
       "id": "erdos-680",
-      "name": "Erd\u0151s #680",
+      "name": "Erdős #680",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3048,7 +3048,7 @@
     },
     {
       "id": "erdos-681",
-      "name": "Erd\u0151s #681",
+      "name": "Erdős #681",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3060,7 +3060,7 @@
     },
     {
       "id": "erdos-684",
-      "name": "Erd\u0151s #684",
+      "name": "Erdős #684",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3072,7 +3072,7 @@
     },
     {
       "id": "erdos-685",
-      "name": "Erd\u0151s #685",
+      "name": "Erdős #685",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3084,7 +3084,7 @@
     },
     {
       "id": "erdos-686",
-      "name": "Erd\u0151s #686",
+      "name": "Erdős #686",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3096,7 +3096,7 @@
     },
     {
       "id": "erdos-687",
-      "name": "Erd\u0151s #687",
+      "name": "Erdős #687",
       "tier": "A",
       "significance": 4,
       "tractability": 1,
@@ -3108,7 +3108,7 @@
     },
     {
       "id": "erdos-688",
-      "name": "Erd\u0151s #688",
+      "name": "Erdős #688",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3120,7 +3120,7 @@
     },
     {
       "id": "erdos-689",
-      "name": "Erd\u0151s #689",
+      "name": "Erdős #689",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3132,7 +3132,7 @@
     },
     {
       "id": "erdos-690",
-      "name": "Erd\u0151s #690",
+      "name": "Erdős #690",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3144,7 +3144,7 @@
     },
     {
       "id": "erdos-691",
-      "name": "Erd\u0151s #691",
+      "name": "Erdős #691",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -3156,7 +3156,7 @@
     },
     {
       "id": "erdos-693",
-      "name": "Erd\u0151s #693",
+      "name": "Erdős #693",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3168,7 +3168,7 @@
     },
     {
       "id": "erdos-695",
-      "name": "Erd\u0151s #695",
+      "name": "Erdős #695",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3180,7 +3180,7 @@
     },
     {
       "id": "erdos-700",
-      "name": "Erd\u0151s #700",
+      "name": "Erdős #700",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3192,7 +3192,7 @@
     },
     {
       "id": "erdos-705",
-      "name": "Erd\u0151s #705",
+      "name": "Erdős #705",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -3204,7 +3204,7 @@
     },
     {
       "id": "erdos-706",
-      "name": "Erd\u0151s #706",
+      "name": "Erdős #706",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3216,7 +3216,7 @@
     },
     {
       "id": "erdos-719",
-      "name": "Erd\u0151s #719",
+      "name": "Erdős #719",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3228,7 +3228,7 @@
     },
     {
       "id": "erdos-726",
-      "name": "Erd\u0151s #726",
+      "name": "Erdős #726",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3240,7 +3240,7 @@
     },
     {
       "id": "erdos-730",
-      "name": "Erd\u0151s #730",
+      "name": "Erdős #730",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3252,7 +3252,7 @@
     },
     {
       "id": "erdos-731",
-      "name": "Erd\u0151s #731",
+      "name": "Erdős #731",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3264,7 +3264,7 @@
     },
     {
       "id": "erdos-738",
-      "name": "Erd\u0151s #738",
+      "name": "Erdős #738",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3276,7 +3276,7 @@
     },
     {
       "id": "erdos-741",
-      "name": "Erd\u0151s #741",
+      "name": "Erdős #741",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3288,7 +3288,7 @@
     },
     {
       "id": "erdos-749",
-      "name": "Erd\u0151s #749",
+      "name": "Erdős #749",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3300,7 +3300,7 @@
     },
     {
       "id": "erdos-75",
-      "name": "Erd\u0151s #75",
+      "name": "Erdős #75",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3312,7 +3312,7 @@
     },
     {
       "id": "erdos-750",
-      "name": "Erd\u0151s #750",
+      "name": "Erdős #750",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3324,7 +3324,7 @@
     },
     {
       "id": "erdos-761",
-      "name": "Erd\u0151s #761",
+      "name": "Erdős #761",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3336,7 +3336,7 @@
     },
     {
       "id": "erdos-768",
-      "name": "Erd\u0151s #768",
+      "name": "Erdős #768",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3348,7 +3348,7 @@
     },
     {
       "id": "erdos-770",
-      "name": "Erd\u0151s #770",
+      "name": "Erdős #770",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3360,7 +3360,7 @@
     },
     {
       "id": "erdos-776",
-      "name": "Erd\u0151s #776",
+      "name": "Erdős #776",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3372,7 +3372,7 @@
     },
     {
       "id": "erdos-782",
-      "name": "Erd\u0151s #782",
+      "name": "Erdős #782",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3384,7 +3384,7 @@
     },
     {
       "id": "erdos-783",
-      "name": "Erd\u0151s #783",
+      "name": "Erdős #783",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3396,7 +3396,7 @@
     },
     {
       "id": "erdos-792",
-      "name": "Erd\u0151s #792",
+      "name": "Erdős #792",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3408,7 +3408,7 @@
     },
     {
       "id": "erdos-810",
-      "name": "Erd\u0151s #810",
+      "name": "Erdős #810",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3420,7 +3420,7 @@
     },
     {
       "id": "erdos-825",
-      "name": "Erd\u0151s #825",
+      "name": "Erdős #825",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3432,7 +3432,7 @@
     },
     {
       "id": "erdos-826",
-      "name": "Erd\u0151s #826",
+      "name": "Erdős #826",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3444,7 +3444,7 @@
     },
     {
       "id": "erdos-827",
-      "name": "Erd\u0151s #827",
+      "name": "Erdős #827",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3456,7 +3456,7 @@
     },
     {
       "id": "erdos-828",
-      "name": "Erd\u0151s #828",
+      "name": "Erdős #828",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3468,7 +3468,7 @@
     },
     {
       "id": "erdos-831",
-      "name": "Erd\u0151s #831",
+      "name": "Erdős #831",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3480,7 +3480,7 @@
     },
     {
       "id": "erdos-837",
-      "name": "Erd\u0151s #837",
+      "name": "Erdős #837",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3492,7 +3492,7 @@
     },
     {
       "id": "erdos-839",
-      "name": "Erd\u0151s #839",
+      "name": "Erdős #839",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3504,7 +3504,7 @@
     },
     {
       "id": "erdos-846",
-      "name": "Erd\u0151s #846",
+      "name": "Erdős #846",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3516,7 +3516,7 @@
     },
     {
       "id": "erdos-847",
-      "name": "Erd\u0151s #847",
+      "name": "Erdős #847",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3528,7 +3528,7 @@
     },
     {
       "id": "erdos-848",
-      "name": "Erd\u0151s #848",
+      "name": "Erdős #848",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3540,7 +3540,7 @@
     },
     {
       "id": "erdos-850",
-      "name": "Erd\u0151s #850",
+      "name": "Erdős #850",
       "tier": "A",
       "significance": 5,
       "tractability": 3,
@@ -3552,7 +3552,7 @@
     },
     {
       "id": "erdos-852",
-      "name": "Erd\u0151s #852",
+      "name": "Erdős #852",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3564,7 +3564,7 @@
     },
     {
       "id": "erdos-853",
-      "name": "Erd\u0151s #853",
+      "name": "Erdős #853",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3576,7 +3576,7 @@
     },
     {
       "id": "erdos-854",
-      "name": "Erd\u0151s #854",
+      "name": "Erdős #854",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3588,7 +3588,7 @@
     },
     {
       "id": "erdos-863",
-      "name": "Erd\u0151s #863",
+      "name": "Erdős #863",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3600,7 +3600,7 @@
     },
     {
       "id": "erdos-864",
-      "name": "Erd\u0151s #864",
+      "name": "Erdős #864",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3612,7 +3612,7 @@
     },
     {
       "id": "erdos-871",
-      "name": "Erd\u0151s #871: Partitioning Additive Bases of Order 2",
+      "name": "Erdős #871: Partitioning Additive Bases of Order 2",
       "tier": "A",
       "significance": 7,
       "tractability": 7,
@@ -3629,7 +3629,7 @@
     },
     {
       "id": "erdos-875",
-      "name": "Erd\u0151s #875",
+      "name": "Erdős #875",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3641,7 +3641,7 @@
     },
     {
       "id": "erdos-881",
-      "name": "Erd\u0151s #881",
+      "name": "Erdős #881",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3653,7 +3653,7 @@
     },
     {
       "id": "erdos-884",
-      "name": "Erd\u0151s #884",
+      "name": "Erdős #884",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3665,7 +3665,7 @@
     },
     {
       "id": "erdos-889",
-      "name": "Erd\u0151s #889",
+      "name": "Erdős #889",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3677,7 +3677,7 @@
     },
     {
       "id": "erdos-890",
-      "name": "Erd\u0151s #890",
+      "name": "Erdős #890",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3689,7 +3689,7 @@
     },
     {
       "id": "erdos-891",
-      "name": "Erd\u0151s #891",
+      "name": "Erdős #891",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3701,7 +3701,7 @@
     },
     {
       "id": "erdos-892",
-      "name": "Erd\u0151s #892",
+      "name": "Erdős #892",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3713,7 +3713,7 @@
     },
     {
       "id": "erdos-893",
-      "name": "Erd\u0151s #893",
+      "name": "Erdős #893",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3725,7 +3725,7 @@
     },
     {
       "id": "erdos-896",
-      "name": "Erd\u0151s #896",
+      "name": "Erdős #896",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3737,7 +3737,7 @@
     },
     {
       "id": "erdos-911",
-      "name": "Erd\u0151s #911",
+      "name": "Erdős #911",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3749,7 +3749,7 @@
     },
     {
       "id": "erdos-913",
-      "name": "Erd\u0151s #913",
+      "name": "Erdős #913",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3761,7 +3761,7 @@
     },
     {
       "id": "erdos-919",
-      "name": "Erd\u0151s #919",
+      "name": "Erdős #919",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3773,7 +3773,7 @@
     },
     {
       "id": "erdos-929",
-      "name": "Erd\u0151s #929",
+      "name": "Erdős #929",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3785,7 +3785,7 @@
     },
     {
       "id": "erdos-931",
-      "name": "Erd\u0151s #931",
+      "name": "Erdős #931",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3797,7 +3797,7 @@
     },
     {
       "id": "erdos-932",
-      "name": "Erd\u0151s #932",
+      "name": "Erdős #932",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3809,7 +3809,7 @@
     },
     {
       "id": "erdos-935",
-      "name": "Erd\u0151s #935",
+      "name": "Erdős #935",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3821,7 +3821,7 @@
     },
     {
       "id": "erdos-936",
-      "name": "Erd\u0151s #936",
+      "name": "Erdős #936",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3833,7 +3833,7 @@
     },
     {
       "id": "erdos-938",
-      "name": "Erd\u0151s #938",
+      "name": "Erdős #938",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3845,7 +3845,7 @@
     },
     {
       "id": "erdos-943",
-      "name": "Erd\u0151s #943",
+      "name": "Erdős #943",
       "tier": "A",
       "significance": 7,
       "tractability": 5,
@@ -3857,7 +3857,7 @@
     },
     {
       "id": "erdos-948",
-      "name": "Erd\u0151s #948",
+      "name": "Erdős #948",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3869,7 +3869,7 @@
     },
     {
       "id": "erdos-949",
-      "name": "Erd\u0151s #949",
+      "name": "Erdős #949",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3881,7 +3881,7 @@
     },
     {
       "id": "erdos-950",
-      "name": "Erd\u0151s #950",
+      "name": "Erdős #950",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3893,7 +3893,7 @@
     },
     {
       "id": "erdos-951",
-      "name": "Erd\u0151s #951",
+      "name": "Erdős #951",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3905,7 +3905,7 @@
     },
     {
       "id": "erdos-952",
-      "name": "Erd\u0151s #952",
+      "name": "Erdős #952",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "erdos-953",
-      "name": "Erd\u0151s #953",
+      "name": "Erdős #953",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3929,7 +3929,7 @@
     },
     {
       "id": "erdos-954",
-      "name": "Erd\u0151s #954",
+      "name": "Erdős #954",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3941,7 +3941,7 @@
     },
     {
       "id": "erdos-959",
-      "name": "Erd\u0151s #959",
+      "name": "Erdős #959",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3953,7 +3953,7 @@
     },
     {
       "id": "erdos-960",
-      "name": "Erd\u0151s #960",
+      "name": "Erdős #960",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3965,7 +3965,7 @@
     },
     {
       "id": "erdos-963",
-      "name": "Erd\u0151s #963",
+      "name": "Erdős #963",
       "tier": "A",
       "significance": 6,
       "tractability": 4,
@@ -3977,12 +3977,12 @@
     },
     {
       "id": "erdos-ko-rado",
-      "name": "Erd\u0151s-Ko-Rado Theorem",
+      "name": "Erdős-Ko-Rado Theorem",
       "tier": "B",
       "significance": 7,
       "tractability": 6,
       "status": "completed",
-      "notes": "COMPLETED: Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n \u2265 2k. | Stats: 7 items built, 3 open gaps",
+      "notes": "COMPLETED: Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n ≥ 2k. | Stats: 7 items built, 3 open gaps",
       "tags": [
         "combinatorics",
         "extremal",
@@ -4044,7 +4044,7 @@
     },
     {
       "id": "infinitude-primes-4k1",
-      "name": "Infinitely Many Primes \u2261 1 (mod 4)",
+      "name": "Infinitely Many Primes ≡ 1 (mod 4)",
       "tier": "B",
       "significance": 6,
       "tractability": 8,
@@ -4058,7 +4058,7 @@
     },
     {
       "id": "infinitude-primes-4k3",
-      "name": "Infinitely Many Primes \u2261 3 (mod 4)",
+      "name": "Infinitely Many Primes ≡ 3 (mod 4)",
       "tier": "B",
       "significance": 6,
       "tractability": 9,
@@ -4077,7 +4077,7 @@
       "significance": 6,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: KummerTheorem.lean proves \u03bd_p(C(n,k)) = #carries when adding k + (n-k) in base p. Uses Mathlib's Nat.Prime.multiplicity_choose. Includes Lucas theorem connection, Legendre formul",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: KummerTheorem.lean proves ν_p(C(n,k)) = #carries when adding k + (n-k) in base p. Uses Mathlib's Nat.Prime.multiplicity_choose. Includes Lucas theorem connection, Legendre formul",
       "tags": [
         "number-theory",
         "binomial",
@@ -4100,7 +4100,7 @@
     },
     {
       "id": "mobius-inversion",
-      "name": "M\u00f6bius Inversion Formula",
+      "name": "Möbius Inversion Formula",
       "tier": "B",
       "significance": 7,
       "tractability": 7,
@@ -4143,12 +4143,12 @@
     },
     {
       "id": "pnp-barriers",
-      "name": "P\u2260NP Barrier Formalization",
+      "name": "P≠NP Barrier Formalization",
       "tier": "B",
       "significance": 8,
       "tractability": 5,
       "status": "surveyed",
-      "notes": "SURVEYED: Formalize the three major barriers to proving P \u2260 NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson). | Stats: 25 sessions, 30+ items built in Session 25 (Kolmogorov complexity)",
+      "notes": "SURVEYED: Formalize the three major barriers to proving P ≠ NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson). | Stats: 25 sessions, 30+ items built in Session 25 (Kolmogorov complexity)",
       "tags": [
         "complexity",
         "impossibility",
@@ -4157,12 +4157,12 @@
     },
     {
       "id": "poincare-conjecture",
-      "name": "Poincar\u00e9 Conjecture",
+      "name": "Poincaré Conjecture",
       "tier": "S",
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S\u00b3. | Stats: 3 open gaps",
+      "notes": "SKIPPED: MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³. | Stats: 3 open gaps",
       "tags": [
         "millennium-prize",
         "topology",
@@ -4177,7 +4177,7 @@
       "significance": 7,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: Prove explicit bounds on \u03c0(x) and \u03b8(x) using Chebyshev's 1852 method. | Stats: 13 items built",
+      "notes": "COMPLETED: Prove explicit bounds on π(x) and θ(x) using Chebyshev's 1852 method. | Stats: 13 items built",
       "tags": [
         "number-theory",
         "analytic",
@@ -4191,7 +4191,7 @@
       "significance": 7,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: Proved \u03c0(2n) > \u03c0(n) from Bertrand. Stated p_n \u2264 2^n as axiom.",
+      "notes": "COMPLETED: COMPLETED: Proved π(2n) > π(n) from Bertrand. Stated p_n ≤ 2^n as axiom.",
       "tags": [
         "number-theory",
         "primes",
@@ -4205,7 +4205,7 @@
       "significance": 6,
       "tractability": 6,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: PrimitiveRoots.lean proves for prime p there are exactly \u03c6(p-1) primitive roots. Uses isCyclic_of_subgroup_isDomain to show (Z/pZ)* is cyclic, then IsCyclic.card_orderOf_eq_totie",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: PrimitiveRoots.lean proves for prime p there are exactly φ(p-1) primitive roots. Uses isCyclic_of_subgroup_isDomain to show (Z/pZ)* is cyclic, then IsCyclic.card_orderOf_eq_totie",
       "tags": [
         "number-theory",
         "group-theory",
@@ -4233,7 +4233,7 @@
       "significance": 8,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: SURVEYED: Session 6 (2026-01-01): Added Li's criterion (RH\u2194\u03bb\u2099\u22650), Riemann-von Mangoldt zero counting, completed zeta (xi function), \u03b6(6)/\u03b6(8) formulas. Session 5: Mathlib zeta infrastructur",
+      "notes": "COMPLETED: COMPLETED: SURVEYED: Session 6 (2026-01-01): Added Li's criterion (RH↔λₙ≥0), Riemann-von Mangoldt zero counting, completed zeta (xi function), ζ(6)/ζ(8) formulas. Session 5: Mathlib zeta infrastructur",
       "tags": [
         "number-theory",
         "analytic",
@@ -4247,7 +4247,7 @@
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: All non-trivial zeros of \u03b6(s) have Re(s)=1/2. | Stats: 4 items built, 4 open gaps",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2. | Stats: 4 items built, 4 open gaps",
       "tags": [
         "millennium-prize",
         "number-theory",
@@ -4262,7 +4262,7 @@
       "significance": 7,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly. General existence uses multicolor Ramsey axiom from RamseysTheorem.lean. ~335 lines, 1 sorry (edge coloring connection for r\u22653).",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly. General existence uses multicolor Ramsey axiom from RamseysTheorem.lean. ~335 lines, 1 sorry (edge coloring connection for r≥3).",
       "tags": [
         "combinatorics",
         "ramsey",
@@ -4276,7 +4276,7 @@
       "significance": 6,
       "tractability": 8,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: SophieGermain.lean with structure theorem (p>3 SG prime => p\u22615 mod 6), safe prime mod 12, 10 verified examples (2,3,5,11,23,29,41,53,83,89), non-examples, Cunningham chain 2\u21925\u219211",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: SophieGermain.lean with structure theorem (p>3 SG prime => p≡5 mod 6), safe prime mod 12, 10 verified examples (2,3,5,11,23,29,41,53,83,89), non-examples, Cunningham chain 2→5→11",
       "tags": [
         "number-theory",
         "primes",
@@ -4299,12 +4299,12 @@
     },
     {
       "id": "szemeredi-theorem",
-      "name": "Szemer\u00e9di's Theorem",
+      "name": "Szemerédi's Theorem",
       "tier": "A",
       "significance": 8,
       "tractability": 2,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED k=3: Roth's theorem proved via Mathlib's corners chain (Regularity\u2192Triangle Removal\u2192Corners\u2192Roth). Equivalence IsAPFree\u2194ThreeAPFree. k\u22654 still needs hypergraph regularity (axiom).",
+      "notes": "COMPLETED: COMPLETED: COMPLETED k=3: Roth's theorem proved via Mathlib's corners chain (Regularity→Triangle Removal→Corners→Roth). Equivalence IsAPFree↔ThreeAPFree. k≥4 still needs hypergraph regularity (axiom).",
       "tags": [
         "combinatorics",
         "additive",
@@ -4318,7 +4318,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "completed",
-      "notes": "IN-PROGRESS: All primes proved (\u2124[\u221a-2] for p\u22613, Fermat for p\u22611,5 mod 8). One axiom remains for composites. Lacks multiplicativity - needs Dirichlet Key Lemma with Minkowski.",
+      "notes": "IN-PROGRESS: All primes proved (ℤ[√-2] for p≡3, Fermat for p≡1,5 mod 8). One axiom remains for composites. Lacks multiplicativity - needs Dirichlet Key Lemma with Minkowski.",
       "tags": [
         "number-theory",
         "squares",
@@ -4374,7 +4374,7 @@
       "significance": 6,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: Computational verification for p=5,7,11,13. Babbage (mod p\u00b2) for p\u22653. Failure cases p=2,3. Full theorem + Babbage as axioms. Wolstenholme primes definition. Harmonic number conne",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: Computational verification for p=5,7,11,13. Babbage (mod p²) for p≥3. Failure cases p=2,3. Full theorem + Babbage as axioms. Wolstenholme primes definition. Harmonic number conne",
       "tags": [
         "number-theory",
         "binomial",
@@ -4388,7 +4388,7 @@
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R\u2074 and has positive mass gap. | Stats: 5 open gaps",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap. | Stats: 5 open gaps",
       "tags": [
         "millennium-prize",
         "mathematical-physics",
