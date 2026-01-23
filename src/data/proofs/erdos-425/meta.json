@@ -1,33 +1,148 @@
 {
   "id": "erdos-425",
-  "title": "Erdős Problem #425",
+  "title": "Erdős Problem #425: Multiplicative Sidon Sets",
   "slug": "erdos-425",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum possible size of a subset ... such that the products ... are distinct for all .... Is there a constant...",
+  "description": "Let F(n) be the maximum size of A ⊆ {1,...,n} such that all pairwise products ab (a < b) are distinct. Erdős proved π(n) + c₁·n^(3/4)·(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂·n^(3/4)·(log n)^(-3/2). The exact constant c (if it exists) is unknown. Alexander disproved the real version conjecture.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/425",
-    "date": "",
-    "status": "pending",
+    "date": "1968",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos425Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "sidon-sets",
+      "multiplicative-structure",
+      "prime-numbers"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 425,
     "erdosUrl": "https://erdosproblems.com/425",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtered finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsMultiplicativeSidon predicate for product-distinct sets",
+      "ProductSet definition for pairwise products",
+      "F(n) as supremum over multiplicative Sidon subsets",
+      "IsRMultiplicativeSidon for r-fold product distinctness",
+      "RealMultSidon for real number version",
+      "IsSidonSet for additive Sidon comparison",
+      "Erdős bounds axiom with n^(3/4)·(log n)^(-3/2) term",
+      "Alexander construction disproving real conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #425 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(n)$ be the maximum possible size of a subset $A\\subseteq\\{1,\\ldots,N\\}$ such that the products $ab$ are distinct for all $a<b$. Is there a constant $c$ such that\\[F(n)=\\pi(n)+(c+o(1))n^{3/4}(\\log n)^{-3/2}?\\]If $A\\subseteq \\{1,\\ldots,n\\}$ is such that all products $a_1\\cdots a_r$ are distinct for $a_1<\\cdots <a_r$ then is it true that\\[\\lvert A\\rvert \\leq \\pi(n)+O(n^{\\frac{r+1}{2r}})?\\]\n\n\n\nErd\\H{o}s \\cite{Er68} proved that there exist some constants $0<c_1\\leq c_2$ such that\\[\\pi(n)+c_1 n^{3/4}(\\log n)^{-3/2}\\leq F(n)\\leq \\pi(n)+c_2 n^{3/4}(\\log n)^{-3/2}.\\]This problem can also be considered in the real numbers: that is, what is the size of the the largest $A\\subset [1,x]$ such that for any distinct $a,b,c,d\\in A$ we have $\\lvert ab-cd\\rvert \\geq 1$? Erd\\H{o}s had conjectured (see \\cite{Er73} and \\cite{Er77c}) that $\\lvert A\\rvert=o(x)$.\n\nIn \\cite{ErGr80} Erd\\H{o}s and Graham report that Alexander had given a construction disproving this conjecture, establishing that $\\lvert A\\rvert\\gg x$ is possible. Alexander's construction is given in \\cite{Er80}, and we sketch a simplified version. Let $B\\subseteq [1,X^2]$ be a Sidon set of integers of size $\\gg X$ and\\[A=\\{ X e^{b/X^2} : b\\in B\\}.\\]It is easy to check that\\[\\lvert ab-cd\\rvert \\geq X^2\\lvert 1-e^{1/X^2}\\rvert \\gg 1\\]for distinct $a,b,c,d\\in A$, and (after rescaling $A$ by some constant factor) this produces a set of size $\\gg X$ with the desired property in the interval $[X,O(X)]$. Furthermore, a simple modification allows for $A$ to also be $1$-separated.\n\nIn \\cite{Er77c} Erd\\H{o}s considers a similar generalisation for sets of complex numbers or complex integers.\n\n\nSee also [490], [793], and [796].\n\n\n\n\nReferences\n\n\n[Er68] Erd\\H{o}s, P., On some applications of graph theory to number theoretic problems. Publ. Ramanujan Inst. (1968/69), 131-136.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Er80] Erd\\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #425**\n\nThis problem concerns multiplicative Sidon sets - sets where all pairwise products are distinct.\n\n**Key History:**\n- Erdős (1968): Established bounds π(n) + c₁·n^(3/4)·(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂·n^(3/4)·(log n)^(-3/2)\n- Erdős (1973, 1977): Proposed the real version conjecture (|A| = o(x))\n- Alexander (reported in Erdős-Graham 1980): Disproved real conjecture using Sidon set construction\n\n**Mathematical Context:**\nMultiplicative Sidon sets are the multiplicative analogue of classical (additive) Sidon sets. The set of primes is the natural core example.",
+    "problemStatement": "**Problem Statement**\n\nLet F(n) = max |A| where A ⊆ {1,...,n} and all products ab (a < b) are distinct.\n\n**Questions:**\n1. Is there a constant c such that F(n) = π(n) + (c + o(1))·n^(3/4)·(log n)^(-3/2)?\n2. For r-fold products, is |A| ≤ π(n) + O(n^((r+1)/(2r)))?\n\n**Real Version:**\nMax |A| for A ⊂ [1,x] with |ab - cd| ≥ 1?\n\n**Status:**\n- Integer version: Order of magnitude known, exact constant open\n- Real version: Erdős's o(x) conjecture is FALSE (Alexander)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** IsMultiplicativeSidon, ProductSet, F(n)\n\n2. **Prime Lower Bound:** Primes form multiplicative Sidon (unique factorization)\n\n3. **Erdős Bounds:** Axiomatize the n^(3/4)·(log n)^(-3/2) bounds\n\n4. **r-Generalization:** IsRMultiplicativeSidon for r-fold products\n\n5. **Real Version:** RealMultSidon and Alexander's counterexample\n\n6. **Sidon Connection:** Link to classical additive Sidon sets",
+    "keyInsights": [
+      "**Primes are Core:** Any large multiplicative Sidon set contains (almost) all primes",
+      "**Unique Factorization:** Primes form Sidon because pq = rs implies {p,q} = {r,s}",
+      "**n^(3/4) Term:** The extra elements beyond primes grow as n^(3/4)·(log n)^(-3/2)",
+      "**Real Version Fails:** Alexander showed linear-sized sets exist using exponential maps",
+      "**Sidon Connection:** Taking logs converts multiplicative to additive Sidon"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 77,
+      "summary": "IsMultiplicativeSidon, ProductSet, ordered pairs"
+    },
+    {
+      "id": "function-f",
+      "title": "The Function F(n)",
+      "startLine": 78,
+      "endLine": 116,
+      "summary": "F(n) definition, primes are Sidon, lower bound π(n)"
+    },
+    {
+      "id": "erdos-bounds",
+      "title": "Erdős's Bounds",
+      "startLine": 117,
+      "endLine": 152,
+      "summary": "The n^(3/4)·(log n)^(-3/2) bounds, main question open"
+    },
+    {
+      "id": "r-product",
+      "title": "r-Product Generalization",
+      "startLine": 153,
+      "endLine": 179,
+      "summary": "IsRMultiplicativeSidon, conjectured bounds for r-fold products"
+    },
+    {
+      "id": "real-version",
+      "title": "The Real Number Version",
+      "startLine": 180,
+      "endLine": 227,
+      "summary": "RealMultSidon, Erdős's false conjecture, Alexander's construction"
+    },
+    {
+      "id": "sidon-connection",
+      "title": "Connection to Additive Sidon Sets",
+      "startLine": 228,
+      "endLine": 255,
+      "summary": "IsSidonSet, logarithm conversion, classical bounds"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 256,
+      "endLine": 283,
+      "summary": "Problems 490, 793, 796; complex version"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 284,
+      "endLine": 318,
+      "summary": "Primes {2,3,5,7}, {1,2,3}, counterexample {1,2,3,6}"
+    },
+    {
+      "id": "upper-bound-ideas",
+      "title": "Upper Bound Ideas",
+      "startLine": 319,
+      "endLine": 347,
+      "summary": "Graph theory approach, counting arguments, tightness"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 348,
+      "endLine": 394,
+      "summary": "Complete status: bounds known, constant open, real version disproved"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #425 asks about multiplicative Sidon sets - subsets of {1,...,n} where all pairwise products are distinct. Erdős proved tight bounds up to constants: F(n) = π(n) + Θ(n^(3/4)·(log n)^(-3/2)). The exact constant is unknown. For the real version, Erdős's conjecture that max |A| = o(x) was disproved by Alexander using Sidon sets and exponential maps.",
+    "implications": "**Mathematical Connections**\n\n1. **Prime Number Theory:** π(n) as the dominant term\n\n2. **Additive Combinatorics:** Connection to classical Sidon sets\n\n3. **Graph Theory:** Product collision graphs\n\n4. **Analytic Number Theory:** The n^(3/4)·(log n)^(-3/2) secondary term\n\n5. **Exponential Maps:** Alexander's ingenious construction",
+    "openQuestions": [
+      "Does the constant c in F(n) = π(n) + (c + o(1))·n^(3/4)·(log n)^(-3/2) exist?",
+      "What is the correct bound for r-fold products?",
+      "What about complex multiplicative Sidon sets?",
+      "Can Alexander's construction be improved?"
+    ]
   }
 }

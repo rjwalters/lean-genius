@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-425-overview",
+    "proofId": "erdos-425",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #425: Multiplicative Sidon Sets**\n\nF(n) = max |A| for A ⊆ {1,...,n} with all products ab (a < b) distinct.\n\n**Question:** Is F(n) = π(n) + (c + o(1))·n^(3/4)·(log n)^(-3/2)?\n\n**Known:**\n- Erdős (1968): π(n) + c₁·term ≤ F(n) ≤ π(n) + c₂·term\n- Order of magnitude determined\n- Exact constant c is OPEN\n\n**Real version:** Erdős conjectured |A| = o(x) - DISPROVED by Alexander!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-425-mult-sidon",
+    "proofId": "erdos-425",
+    "range": { "startLine": 61, "endLine": 68 },
+    "type": "definition",
+    "title": "Multiplicative Sidon Set",
+    "content": "**IsMultiplicativeSidon A:**\n\nA set where all pairwise products ab (a < b) are distinct.\n\n```lean\ndef IsMultiplicativeSidon (A : Finset ℕ) : Prop :=\n  ∀ a b c d, a ∈ A → b ∈ A → c ∈ A → d ∈ A →\n    a < b → c < d → a * b = c * d → (a = c ∧ b = d)\n```\n\nEquivalent to: ab = cd ⟹ {a,b} = {c,d}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-425-function-f",
+    "proofId": "erdos-425",
+    "range": { "startLine": 82, "endLine": 92 },
+    "type": "definition",
+    "title": "F(n)",
+    "content": "**The Function F(n):**\n\nMaximum size of a multiplicative Sidon subset of {1, ..., n}.\n\n```lean\nnoncomputable def F (n : ℕ) : ℕ :=\n  Finset.sup' (filter IsMultiplicativeSidon ...) Finset.card\n```\n\nF(n) ≥ π(n) since primes are multiplicatively Sidon.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-425-primes-sidon",
+    "proofId": "erdos-425",
+    "range": { "startLine": 94, "endLine": 107 },
+    "type": "theorem",
+    "title": "Primes are Sidon",
+    "content": "**primes_are_sidon:**\n\nThe set of primes ≤ n is multiplicatively Sidon.\n\n**Proof idea:** By unique prime factorization!\nIf p₁·p₂ = q₁·q₂ with all primes and p₁ < p₂, q₁ < q₂,\nthen the multisets {p₁, p₂} and {q₁, q₂} are equal.\nSince both are ordered, p₁ = q₁ and p₂ = q₂.\n\nThis gives F(n) ≥ π(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-425-erdos-bounds",
+    "proofId": "erdos-425",
+    "range": { "startLine": 121, "endLine": 131 },
+    "type": "axiom",
+    "title": "Erdős's Bounds (1968)",
+    "content": "**erdos_bounds:**\n\nThere exist constants 0 < c₁ ≤ c₂ such that:\n\nπ(n) + c₁·n^(3/4)·(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂·n^(3/4)·(log n)^(-3/2)\n\n**Key insight:** Beyond primes, about n^(3/4)·(log n)^(-3/2) composites can be safely added without creating product collisions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-425-main-question",
+    "proofId": "erdos-425",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**MainQuestion:**\n\nDoes a constant c exist such that:\nF(n) = π(n) + (c + o(1))·n^(3/4)·(log n)^(-3/2)?\n\n**STATUS: OPEN**\n\nWe know the bounds exist with c₁, c₂, but whether they converge to a single c is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-425-r-product",
+    "proofId": "erdos-425",
+    "range": { "startLine": 157, "endLine": 178 },
+    "type": "definition",
+    "title": "r-Product Generalization",
+    "content": "**IsRMultiplicativeSidon A r:**\n\nAll r-fold products a₁···aᵣ (a₁ < ··· < aᵣ) are distinct.\n\n**Conjectured bound:**\n|A| ≤ π(n) + O(n^((r+1)/(2r)))\n\n- r = 2: O(n^(3/4))\n- r = 3: O(n^(2/3))\n- r → ∞: O(n^(1/2))\n\nAs r increases, the constraint becomes stricter.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-425-real-sidon",
+    "proofId": "erdos-425",
+    "range": { "startLine": 184, "endLine": 191 },
+    "type": "definition",
+    "title": "Real Multiplicative Sidon",
+    "content": "**RealMultSidon A:**\n\nA ⊂ [1, x] such that |ab - cd| ≥ 1 for all distinct pairs.\n\nThis is the real-number version of multiplicative Sidon - products don't need to be exactly distinct, just separated by at least 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-425-alexander",
+    "proofId": "erdos-425",
+    "range": { "startLine": 204, "endLine": 216 },
+    "type": "axiom",
+    "title": "Alexander's Construction",
+    "content": "**alexander_construction:**\n\nAlexander disproved Erdős's conjecture that max |A| = o(x).\n\n**Construction:**\n1. Take Sidon set B ⊆ [1, X²] with |B| ≫ X\n2. Let A = {X·e^(b/X²) : b ∈ B}\n3. Then |ab - cd| ≥ X²·|1 - e^(1/X²)| ≫ 1\n4. And |A| = |B| ≫ X\n\n**Result:** Sets of size Θ(x) exist, not o(x)!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-425-additive-sidon",
+    "proofId": "erdos-425",
+    "range": { "startLine": 232, "endLine": 238 },
+    "type": "definition",
+    "title": "Additive Sidon Sets",
+    "content": "**IsSidonSet S:**\n\nClassical (additive) Sidon set: all pairwise sums a + b (a ≤ b) are distinct.\n\n**Connection:** Taking logarithms converts multiplicative Sidon to 'almost' additive Sidon.\n\n**Classical bound:** Max |S| for additive Sidon in {1,...,n} is (1 + o(1))·√n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-425-example-primes",
+    "proofId": "erdos-425",
+    "range": { "startLine": 288, "endLine": 296 },
+    "type": "example",
+    "title": "Example: Primes",
+    "content": "**{2, 3, 5, 7} is multiplicative Sidon:**\n\nProducts: 2·3=6, 2·5=10, 2·7=14, 3·5=15, 3·7=21, 5·7=35\n\nAll six products are distinct!",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-425-counterexample",
+    "proofId": "erdos-425",
+    "range": { "startLine": 308, "endLine": 317 },
+    "type": "example",
+    "title": "Counterexample: {1,2,3,6}",
+    "content": "**{1, 2, 3, 6} is NOT multiplicative Sidon:**\n\n1·6 = 6 = 2·3\n\nTwo different pairs give the same product, violating the Sidon property.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-425-summary",
+    "proofId": "erdos-425",
+    "range": { "startLine": 352, "endLine": 388 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #425: Summary**\n\n**Integer Version:**\n- F(n) = π(n) + Θ(n^(3/4)·(log n)^(-3/2))\n- Bounds established by Erdős (1968)\n- Exact constant c is OPEN\n\n**Real Version:**\n- Erdős conjectured |A| = o(x)\n- Alexander DISPROVED this\n- Linear-sized sets exist!\n\n**Key Insight:** Primes form the core of any large multiplicative Sidon set.",
+    "significance": "critical"
+  }
+]
