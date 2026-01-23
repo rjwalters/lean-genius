@@ -1,1 +1,83 @@
-[]
+[
+  {
+    "id": "ann-927-overview",
+    "proofId": "erdos-927",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #927: Distinct Clique Sizes**\n\ng(n) = max distinct clique sizes in any graph on n vertices.\n\n**Conjecture:** g(n) = n - log₂n - log*(n) + O(1)\n\n**ANSWER: NO** - Spencer (1971) disproved it.\n\n**Correct:** g(n) = n - log₂n - Θ(1) (no log* needed)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-927-clique",
+    "proofId": "erdos-927",
+    "range": { "startLine": 44, "endLine": 56 },
+    "type": "definition",
+    "title": "Cliques",
+    "content": "**Clique Definitions:**\n\nA clique is a complete subgraph.\n\n```lean\ndef IsClique {V : Type*} (G : SimpleGraph V) (S : Set V) : Prop :=\n  ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v\n```\n\nHasCliqueOfSize G k means G contains a clique of exactly k vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-927-g",
+    "proofId": "erdos-927",
+    "range": { "startLine": 69, "endLine": 77 },
+    "type": "definition",
+    "title": "g(n)",
+    "content": "**The Function g(n):**\n\nMaximum number of different clique sizes achievable in any graph on n vertices.\n\n```lean\nnoncomputable def g (n : ℕ) : ℕ := ...\n```\n\nTrivially g(n) ≤ n since clique sizes are in {1, ..., n}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-927-moon-moser",
+    "proofId": "erdos-927",
+    "range": { "startLine": 99, "endLine": 111 },
+    "type": "axiom",
+    "title": "Moon-Moser Bounds",
+    "content": "**Moon-Moser (1965):**\n\nFirst bounds on g(n):\n\nn - log₂n - 2log log n < g(n) ≤ n - ⌊log₂n⌋\n\nThe upper bound is tight up to lower-order terms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-927-logstar",
+    "proofId": "erdos-927",
+    "range": { "startLine": 117, "endLine": 131 },
+    "type": "definition",
+    "title": "log*(n)",
+    "content": "**Iterated Logarithm:**\n\nlog*(n) = number of times log₂ must be applied until result < 1.\n\nlog*(2) = 1, log*(4) = 2, log*(16) = 3, log*(65536) = 4\n\nlog* grows EXTREMELY slowly - log*(n) ≤ 5 for all practical n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-927-conjecture",
+    "proofId": "erdos-927",
+    "range": { "startLine": 152, "endLine": 161 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**Erdős (1966):**\n\nConjectured g(n) = n - log₂n - log*(n) + O(1).\n\nThis would mean losing log*(n) clique sizes is unavoidable.\n\n**STATUS: FALSE**",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-927-spencer",
+    "proofId": "erdos-927",
+    "range": { "startLine": 167, "endLine": 183 },
+    "type": "axiom",
+    "title": "Spencer's Theorem",
+    "content": "**Spencer (1971):**\n\ng(n) > n - log₂n - C for constant C.\n\n```lean\naxiom spencer_theorem :\n    ∃ C : ℝ, C > 0 ∧\n      ∀ n : ℕ, n ≥ 2 →\n        (g n : ℝ) > n - Real.log n / Real.log 2 - C\n```\n\nThe log*(n) term is NOT needed!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-927-correct",
+    "proofId": "erdos-927",
+    "range": { "startLine": 185, "endLine": 194 },
+    "type": "definition",
+    "title": "Correct Asymptotic",
+    "content": "**The True Answer:**\n\ng(n) = n - log₂n - Θ(1)\n\nThe gap between upper and lower bounds is just a constant - the iterated logarithm plays no role.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-927-summary",
+    "proofId": "erdos-927",
+    "range": { "startLine": 264, "endLine": 290 },
+    "type": "theorem",
+    "title": "erdos_927_summary",
+    "content": "**Complete Summary:**\n\n**History:**\n1. Moon-Moser (1965): Initial bounds\n2. Erdős (1966): Conjectured log* loss\n3. Spencer (1971): DISPROVED - no log* needed\n\n**Conjecture:** g(n) = n - log₂n - log*(n) + O(1)\n**Answer:** FALSE\n\n**Correct:** g(n) = n - log₂n - Θ(1)",
+    "significance": "critical"
+  }
+]
