@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T22:42:54.055Z",
+    "phase": "SURVEYED",
+    "since": "2026-01-23T17:15:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized with Hickerson-Montgomery example verified",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Search for representations of 1",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized interval reciprocal sums. Verified Hickerson-Montgomery example for target 2. Problem is OPEN.",
+    "builtItems": [
+      "proofs/Proofs/Erdos289Problem.lean - Main formalization (~200 lines)",
+      "Interval structure with constraints",
+      "validIntervals - disjoint, non-adjacent, size ≥ 2",
+      "totalSum - sum of reciprocals over all intervals",
+      "erdos_289_conjecture statement",
+      "hmIntervals - Hickerson-Montgomery example",
+      "hmIntervals_valid, hmIntervals_sum (PROVED)"
+    ],
+    "insights": [
+      "Intervals must be distinct, non-overlapping, non-adjacent",
+      "Each interval must have size ≥ 2",
+      "intervalSum a b = H_b - H_{a-1} (harmonic sum difference)",
+      "HM example for 2: [2,7], [9,10], [17,18], [34,35], [84,85]",
+      "Original ErGr80 lacked distinctness (Kovac noted this)",
+      "Conjecture: for large k, k intervals can sum to exactly 1"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Computational search for small k representations of 1",
+      "Study harmonic sum decomposition constraints",
+      "Explore related unit fraction problems"
+    ],
     "markdown": "# Erdős #289 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all sufficiently large $k$, there exist finite intervals $I_1,\\ldots,I_k\\subset \\mathbb{N}$, distinct, not overlapping or adjacent, with $\\lvert I_i\\rvert \\geq 2$ for $1\\leq i\\leq k$ such that\\[1=\\sum_{i=1}^k \\sum_{n\\in I_i}\\frac{1}{n}?\\]\n\n\n\nErd\\H{o}s and Graham posed this in \\cite{ErGr80} without the stipulation the intervals be distinct, non-overlapping, or adjacent, but Kovac in the comments has provided a simple argument showing that it is easily possible without this restriction, and likely \\cite{ErGr80} just forgot to mention this natural restriction.\n\nAs an example representing $2$ rather than $1$, Hickerson and Montgomery, in the solution to AMS Monthly problem E2689 proposed by Hahn, found\\[2=\\sum_{i=1}^5 \\sum_{n\\in I_i}\\frac{1}{n}\\]where $I_1=[2,7]$, $I_2=[9,10]$, $I_3=[17,18]$, $I_4=[34,35]$, and $I_5=[84,85]$.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #288\n- Problem #290\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],
