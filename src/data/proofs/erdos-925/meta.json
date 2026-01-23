@@ -1,33 +1,129 @@
 {
   "id": "erdos-925",
-  "title": "Erdős Problem #925",
+  "title": "Erdős Problem #925: Independent Sets in Non-Ramsey Graphs",
   "slug": "erdos-925",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant ... such that, for all large ..., if ... is a graph on ... vertices which is not Ramsey for ... (i.e. the...",
+  "description": "Is there δ > 0 such that non-Ramsey graphs for K₃ on n vertices have independent sets of size ≫ n^(1/3+δ)? NO (Alon-Rödl 2005).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (posed), Alon-Rödl (2005 disproof)",
     "sourceUrl": "https://erdosproblems.com/925",
-    "date": "",
-    "status": "pending",
+    "date": "2005",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos925Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "independent-sets",
+      "multicolor-ramsey",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 925,
     "erdosUrl": "https://erdosproblems.com/925",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "IsCliqueFree",
+        "description": "Clique-free property for independent sets",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for Ramsey bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isNotRamseyForTriangle G: triangle-free 2-coloring exists",
+      "hasIndependentSetOfSize G k: independent set existence",
+      "independenceNumber G: α(G) definition",
+      "R_3_3 m: multicolor Ramsey number R(3,3,m)",
+      "erdos_925_conjecture: the disproved conjecture",
+      "erdos_925_ramsey_form: equivalent Ramsey formulation",
+      "alon_rodl_lower_bound axiom: R(3,3,m) ≥ m³/(log m)^(4+o(1))",
+      "alon_rodl_upper_bound axiom: R(3,3,m) ≤ m³(log log m)/(log m)²",
+      "sudakov_improvement axiom: removes log log factor",
+      "erdos_925_disproved axiom: conjecture is false"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #925 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant $\\delta>0$ such that, for all large $n$, if $G$ is a graph on $n$ vertices which is not Ramsey for $K_3$ (i.e. there exists a 2-colouring of the edges of $G$ with no monochromatic triangle) then $G$ contains an independent set of size $\\gg n^{1/3+\\delta}$?\n\n\n\nIt is easy to show that there exists an independent set of size $\\gg n^{1/3}$.\n\nIn other words, this question asks whether $R(3,3,m) \\ll m^{3-c}$ for some $c>0$. This was disproved by Alon and R\\\"{o}dl \\cite{AlRo05}, who proved that\\[\\frac{1}{(\\log m)^{4+o(1)}}m^3 \\ll R(3,3,m) \\ll \\frac{\\log\\log m}{(\\log m)^2}m^3.\\]As reported in \\cite{AlRo05} Sudakov has observed that the $\\log\\log m$ in the upper bound can be removed.\n\nSee also [553].\n\n\n\n\nReferences\n\n\n[AlRo05] Alon, Noga and R\\\"odl, Vojt\\v ech, Sharp bounds for some multicolor {R}amsey numbers. Combinatorica (2005), 125--141.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #925**\n\nThis problem connects Ramsey theory to independent set sizes.\n\n**History:**\n- Erdős posed this problem, probably in the 1960s-70s\n- The \"easy\" result: non-Ramsey graphs have independent sets of size Ω(n^(1/3))\n- The question: can we improve this to n^(1/3+δ) for some δ > 0?\n- Equivalently: is R(3,3,m) ≪ m^(3-c) for some c > 0?\n\n**Resolution (Alon-Rödl 2005):**\nThe answer is NO. They proved:\n- Lower bound: R(3,3,m) ≥ m³/(log m)^(4+o(1))\n- Upper bound: R(3,3,m) ≤ m³(log log m)/(log m)²\n\nSudakov later improved the upper bound by removing the log log factor.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nIs there a constant δ > 0 such that, for all large n, if G is a graph on n vertices which is not Ramsey for K₃ (i.e., there exists a 2-coloring of the edges with no monochromatic triangle), then G contains an independent set of size ≫ n^(1/3+δ)?\n\n**Known:** Independent sets of size ≫ n^(1/3) always exist (easy).\n\n**Equivalent Question:** Is R(3,3,m) ≪ m^(3-c) for some c > 0?\n\n**Answer:** NO (Alon-Rödl 2005)\n\nThe n^(1/3) bound cannot be improved to n^(1/3+δ).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Use SimpleGraph from Mathlib\n\n2. **Key Definitions:**\n   - isNotRamseyForTriangle: 2-coloring with no monochromatic K₃\n   - hasIndependentSetOfSize: independent set existence\n   - R_3_3: multicolor Ramsey number R(3,3,m)\n\n3. **The Conjecture:**\n   - erdos_925_conjecture: the original (false) conjecture\n   - erdos_925_ramsey_form: equivalent Ramsey formulation\n\n4. **Main Results:**\n   - alon_rodl_lower_bound: R(3,3,m) ≥ m³/(log m)^(4+o(1))\n   - alon_rodl_upper_bound: R(3,3,m) ≤ m³(log log m)/(log m)²\n   - sudakov_improvement: removes log log factor\n   - erdos_925_disproved: the conjecture is FALSE\n\n**Why Axioms:** The proofs involve probabilistic and algebraic methods beyond Mathlib.",
+    "keyInsights": [
+      "**Polynomial vs Polylog:** The question asks about polynomial improvement (n^δ), but the truth involves only polylogarithmic factors.",
+      "**Tight Bounds:** R(3,3,m) ~ m³/(log m)^Θ(1), neither m^(3-c) nor m³.",
+      "**Easy Lower Bound:** The n^(1/3) independent set bound is essentially optimal.",
+      "**Probabilistic Methods:** Alon-Rödl used sophisticated probabilistic constructions.",
+      "**Connection to #553:** Related Ramsey problems appear in Problem #553."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Graph Definitions",
+      "summary": "Non-Ramsey graphs and independent sets",
+      "startLine": 44,
+      "endLine": 68
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Numbers",
+      "summary": "R(3,3,m) definition and trivial bound",
+      "startLine": 70,
+      "endLine": 90
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "Erdős's original question",
+      "startLine": 92,
+      "endLine": 114
+    },
+    {
+      "id": "disproof",
+      "title": "Alon-Rödl Disproof",
+      "summary": "Sharp bounds on R(3,3,m)",
+      "startLine": 116,
+      "endLine": 149
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality of n^(1/3)",
+      "summary": "The trivial bound is tight",
+      "startLine": 151,
+      "endLine": 166
+    },
+    {
+      "id": "context",
+      "title": "Context",
+      "summary": "Related results and connections",
+      "startLine": 168,
+      "endLine": 215
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and resolution",
+      "startLine": 217,
+      "endLine": 241
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #925 was disproved by Alon and Rödl in 2005. The answer is NO: non-Ramsey graphs on n vertices need not have independent sets larger than ~n^(1/3). The multicolor Ramsey number R(3,3,m) grows like m³/polylog(m), not like m^(3-c) for any c > 0.",
+    "implications": "The result shows that the trivial n^(1/3) bound for independent sets in non-Ramsey graphs is essentially optimal. The precise bounds on R(3,3,m) involve only logarithmic factors, not polynomial improvements. This connects Ramsey theory to extremal graph theory.",
+    "openQuestions": [
+      "What is the exact exponent in (log m)^k for the Ramsey bounds?",
+      "Can similar tight bounds be proved for R(k,k,m) for k > 3?",
+      "See Problem #553 for related questions on Ramsey numbers."
+    ]
   }
 }
