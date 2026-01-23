@@ -1,52 +1,111 @@
 {
   "slug": "erdos-1032",
   "title": "Erdős #1032",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "SURVEYED",
+  "status": "surveyed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say that a graph is $4$-chromatic critical if it has chromatic number $4$, and removing any edge decreases the chromatic number to $3$.\n\nIs there, for arbitrarily large $n$, a $4$-chromatic critical graph on $n$ vertices with minimum degree $\\gg n$?\n\n\n\nIn \\cite{Er93} Erd\\H{o}s said he asked this 'more than 20 years ago'.\n\nDirac gave an example of a $6$-chromatic critical graph with minimum degree $>n/2$. This problem is also open for $5$-chromatic critical graphs.\n\nSimonovits \\cite{Si72} and Toft \\cite{To72} independently constructed $4$-chromatic critical graphs with minimum degree $\\gg n^{1/3}$. Toft conjectured that a $4$-chromatic critical graph on $n$ vertices has at least $(\\frac{5}{3}+o(1))n$ vertices, and has examples to show this would be the best possible.\n\nSee also [917] and [944].\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Si72] Simonovits, M., On colour-critical graphs. Studia Sci. Math. Hungar. (1972), 67--81.\n\n[To72] Toft, B., Two theorems on critical {$4$}-chromatic graphs. Studia Sci. Math. Hungar. (1972), 83--89.\n\n\nBack to the problem",
-    "plain": "Forum",
-    "whyMatters": []
+    "formal": "A graph is $4$-chromatic critical if $\\chi(G) = 4$ and removing any edge gives $\\chi(G-e) = 3$. Is there, for arbitrarily large $n$, a $4$-chromatic critical graph on $n$ vertices with minimum degree $\\gg n$ (linear in $n$)?",
+    "plain": "Can we find 4-chromatic critical graphs with minimum degree that grows linearly with the number of vertices?",
+    "whyMatters": [
+      "Fundamental question about structure of color-critical graphs",
+      "Dirac solved the 6-chromatic case (min degree > n/2)",
+      "Current best for 4-chromatic is n^{1/3} (Simonovits-Toft)",
+      "Also open for 5-chromatic critical"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Dirac: 6-chromatic critical with min degree > n/2 exists",
+      "Simonovits-Toft (1972): 4-chromatic critical with min degree ≫ n^{1/3}",
+      "Toft conjecture: 4-chromatic critical has (5/3 + o(1))n edges"
+    ],
+    "open": [
+      "Can 4-chromatic critical achieve linear min degree ≫ n?",
+      "Same question for 5-chromatic critical",
+      "Gap between n^{1/3} and n is huge"
+    ],
+    "goal": "Construct 4-chromatic critical graphs with linear minimum degree, or prove impossibility"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T13:50:22.421Z",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T03:30:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Surveyed Mathlib infrastructure for chromatic numbers and critical graphs",
+    "blockers": ["Problem is OPEN - no known linear degree construction"],
+    "nextAction": "Formalize problem statement if desired; wait for mathematical progress",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED: Excellent Mathlib infrastructure for chromatic numbers and critical graphs exists. The problem is OPEN - gap between current best (n^{1/3}) and target (linear in n) is vast. Problem statement can be formalized but proof requires new constructions.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1032 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say that a graph is $4$-chromatic critical if it has chromatic number $4$, and removing any edge decreases the chromatic number to $3$.\n\nIs there, for arbitrarily large $n$, a $4$-chromatic critical graph on $n$ vertices with minimum degree $\\gg n$?\n\n\n\nIn \\cite{Er93} Erd\\H{o}s said he asked this 'more than 20 years ago'.\n\nDirac gave an example of a $6$-chromatic critical graph with minimum degree $>n/2$. This problem is also open for $5$-chromatic critical graphs.\n\nSimonovits \\cite{Si72} and Toft \\cite{To72} independently constructed $4$-chromatic critical graphs with minimum degree $\\gg n^{1/3}$. Toft conjectured that a $4$-chromatic critical graph on $n$ vertices has at least $(\\frac{5}{3}+o(1))n$ vertices, and has examples to show this would be the best possible.\n\nSee also [917] and [944].\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Si72] Simonovits, M., On colour-critical graphs. Studia Sci. Math. Hungar. (1972), 67--81.\n\n[To72] Toft, B., Two theorems on critical {$4$}-chromatic graphs. Studia Sci. Math. Hungar. (1972), 83--89.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #917\n- Problem #944\n- Problem #1031\n- Problem #1033\n- Problem #39\n- Problem #1\n\n## References\n\n- Er93\n- Si72\n- To72\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "insights": [
+      "SimpleGraph.chromaticNumber and Colorable well-defined in Mathlib",
+      "Critical graph definitions available in formal-conjectures extension (IsCriticalEdges, IsCritical k)",
+      "Minimum degree available: SimpleGraph.minDegree",
+      "Related problem #944 already formalized with vertex-critical infrastructure",
+      "Four Color Theorem formalization shows example usage of graph coloring",
+      "Current best (n^{1/3}) is far from linear target - huge gap",
+      "Erdős asked this 'more than 20 years' before 1993"
+    ],
+    "mathlibGaps": [
+      "No constructive critical graph builders (need explicit constructions)",
+      "Vertex deletion not fully in Mathlib (noted in FourColorTheorem)"
+    ],
+    "nextSteps": [
+      "Could formalize the problem statement using existing infrastructure",
+      "Reference Erdos944Problem.lean for critical graph definitions",
+      "Watch for mathematical progress on constructions"
+    ],
+    "markdown": "# Erdős #1032 - Knowledge Base\n\n## Problem Statement\n\nA graph is **4-chromatic critical** if χ(G) = 4 and removing any edge gives χ(G-e) = 3.\n\n**Question**: Is there, for arbitrarily large n, a 4-chromatic critical graph on n vertices with minimum degree ≫ n (linear in n)?\n\n## Known Results\n\n| k-chromatic | Best min degree achieved |\n|-------------|-------------------------|\n| 4 | ≫ n^{1/3} (Simonovits-Toft 1972) |\n| 5 | OPEN |\n| 6 | > n/2 (Dirac) |\n\n**Gap**: n^{1/3} vs n is enormous - no progress since 1972.\n\n## Mathlib Infrastructure Survey\n\n### Available\n- `SimpleGraph.chromaticNumber` - chromatic number definition\n- `SimpleGraph.Colorable n` - n-colorability\n- `IsCritical k` - k-critical graph definition (formal-conjectures)\n- `IsCriticalEdge`, `IsCriticalEdges` - edge criticality\n- `SimpleGraph.minDegree` - minimum degree\n\n### Related Files\n- `Erdos944Problem.lean` - vertex-critical graphs\n- `Erdos917Problem.lean` - related coloring problem\n- `FourColorTheorem.lean` - extensive coloring example\n\n### Missing\n- Constructive builders for critical graphs\n- Vertex deletion (partially missing)\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization Status**: SURVEYED - infrastructure ready, problem is OPEN\n\n## References\n\n- Erdős (1993), Quaestiones Math.\n- Simonovits (1972), Studia Sci. Math. Hungar.\n- Toft (1972), Studia Sci. Math. Hungar.\n\n---\n\n*Surveyed 2026-01-22 by researcher-2*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Survey existing infrastructure",
+      "status": "completed",
+      "description": "Identified Mathlib support for chromatic numbers and critical graphs"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "critical-graphs"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos944Problem.lean (vertex-critical graphs)",
+    "Erdos917Problem.lean (related)",
+    "FourColorTheorem.lean (coloring example)"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      {
+        "citation": "Erdős, P., Some of my favorite solved and unsolved problems in graph theory, Quaestiones Math. (1993), 333-350",
+        "key": "Er93"
+      },
+      {
+        "citation": "Simonovits, M., On colour-critical graphs, Studia Sci. Math. Hungar. (1972), 67-81",
+        "key": "Si72"
+      },
+      {
+        "citation": "Toft, B., Two theorems on critical 4-chromatic graphs, Studia Sci. Math. Hungar. (1972), 83-89",
+        "key": "To72"
+      }
+    ],
+    "urls": [
+      "https://www.erdosproblems.com/1032",
+      "https://www.erdosproblems.com/917",
+      "https://www.erdosproblems.com/944"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "FormalConjecturesForMathlib/Combinatorics/SimpleGraph/Coloring.lean"
+    ]
   },
   "started": "2026-01-15T13:50:22.421Z",
   "significance": 6,
