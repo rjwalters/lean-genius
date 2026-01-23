@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e384-overview",
+    "proofId": "erdos-384",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #384: Prime Divisors of Binomial Coefficients**\n\nIs C(n,k) divisible by a prime p < n/2 for 1 < k < n-1?\n\n**Status:** SOLVED by Ecklund (1969)\n**Exception:** C(7,3) = 35 = 5 × 7 is the only case where all primes are ≥ n/2",
+    "mathContext": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) counts k-subsets of an n-set.",
+    "significance": "critical",
+    "relatedConcepts": ["Binomial coefficients", "Prime divisibility", "Kummer's theorem", "Pascal's triangle"]
+  },
+  {
+    "id": "ann-e384-hassmallprime",
+    "proofId": "erdos-384",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Small Prime Divisor Predicate",
+    "content": "**hasSmallPrimeDivisor n bound:** A number n has a prime divisor p with p < bound.\n\n∃ p, p.Prime ∧ p ∣ n ∧ p < bound\n\nThis formalizes the key property we're proving about binomial coefficients.",
+    "significance": "key",
+    "leanSymbol": "hasSmallPrimeDivisor"
+  },
+  {
+    "id": "ann-e384-exception",
+    "proofId": "erdos-384",
+    "range": { "startLine": 65, "endLine": 89 },
+    "type": "theorem",
+    "title": "The Unique Exception: C(7,3)",
+    "content": "**C(7,3) = 35 = 5 × 7** is the ONLY binomial coefficient with 1 < k < n-1 that has no prime divisor < n/2.\n\nWhy is this special?\n- 35 = 5 × 7\n- n/2 = 7/2 = 3.5\n- Both primes 5 and 7 are ≥ 4\n\nBy symmetry, C(7,4) = 35 is also an exception.",
+    "significance": "critical",
+    "leanSymbol": "choose_7_3_no_small_prime"
+  },
+  {
+    "id": "ann-e384-ecklund",
+    "proofId": "erdos-384",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "axiom",
+    "title": "Ecklund's Theorem (1969)",
+    "content": "**ecklund_1969:** For 1 < k < n-1, either:\n- C(n,k) has a prime divisor < n/2+1, OR\n- (n,k) ∈ {(7,3), (7,4)}\n\nThis is the main result of the problem, proved by Ecklund in 1969.",
+    "significance": "critical",
+    "leanSymbol": "ecklund_1969"
+  },
+  {
+    "id": "ann-e384-strong-conj",
+    "proofId": "erdos-384",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "definition",
+    "title": "Ecklund's Stronger Conjecture",
+    "content": "**ecklundStrongConjecture:** If n > k² then C(n,k) has a prime divisor < n/k.\n\nThis is a significant strengthening of the n/2 bound. Status: PARTIALLY PROVED.",
+    "significance": "key",
+    "leanSymbol": "ecklundStrongConjecture"
+  },
+  {
+    "id": "ann-e384-selfridge",
+    "proofId": "erdos-384",
+    "range": { "startLine": 130, "endLine": 133 },
+    "type": "definition",
+    "title": "Selfridge's Conjecture",
+    "content": "**selfridgeConjecture:** If n > 17.125k then C(n,k) has a prime divisor ≤ n/k.\n\nThe constant 17.125 appears mysteriously. This conjecture is credited to Selfridge in Guy's collection.",
+    "significance": "key",
+    "leanSymbol": "selfridgeConjecture"
+  },
+  {
+    "id": "ann-e384-kummer",
+    "proofId": "erdos-384",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "axiom",
+    "title": "Kummer's Theorem",
+    "content": "**kummer_theorem:** The exponent of prime p in C(n,k) equals the number of carries when adding k and n-k in base p.\n\nThis is the key tool for understanding prime divisibility of binomials. It explains why large primes rarely divide C(n,k) with high multiplicity.",
+    "significance": "key",
+    "leanSymbol": "kummer_theorem"
+  },
+  {
+    "id": "ann-e384-edge",
+    "proofId": "erdos-384",
+    "range": { "startLine": 159, "endLine": 175 },
+    "type": "theorem",
+    "title": "Edge Cases",
+    "content": "**Edge cases k=1 and k=n-1:**\n\n- C(n,1) = n has prime divisor minFac(n)\n- C(n,n-1) = n by symmetry\n\nThese boundary cases are trivial since n itself is the value.",
+    "significance": "supporting",
+    "leanSymbol": "choose_n_1_prime_divisor"
+  },
+  {
+    "id": "ann-e384-small",
+    "proofId": "erdos-384",
+    "range": { "startLine": 188, "endLine": 213 },
+    "type": "theorem",
+    "title": "Small Cases Verification",
+    "content": "**Concrete verification for small n:**\n\n- C(5,2) = 10 = 2 × 5, has prime 2 < 3\n- C(6,2) = 15 = 3 × 5, has prime 3 < 4\n- C(6,3) = 20 = 4 × 5, has prime 2 < 4\n\nAll small cases satisfy the theorem.",
+    "significance": "supporting",
+    "leanSymbol": "small_cases_verified"
+  },
+  {
+    "id": "ann-e384-central",
+    "proofId": "erdos-384",
+    "range": { "startLine": 224, "endLine": 226 },
+    "type": "axiom",
+    "title": "Central Binomial Primes",
+    "content": "**central_binomial_primes:** C(2n,n) always has a prime in (n, 2n].\n\nThis follows from Bertrand's postulate and is related to but distinct from the main problem.",
+    "significance": "key",
+    "leanSymbol": "central_binomial_primes"
+  },
+  {
+    "id": "ann-e384-related",
+    "proofId": "erdos-384",
+    "range": { "startLine": 248, "endLine": 258 },
+    "type": "axiom",
+    "title": "Related Problems",
+    "content": "**Connections to other Erdős problems:**\n\n- Problem #1094: Stronger version with different bounds\n- Problem #1095: Another strengthening\n- Guy's Problems B31, B33: Related questions in 'Unsolved Problems in Number Theory'",
+    "significance": "supporting",
+    "leanSymbol": "problem_1094_relation"
+  },
+  {
+    "id": "ann-e384-main",
+    "proofId": "erdos-384",
+    "range": { "startLine": 284, "endLine": 290 },
+    "type": "theorem",
+    "title": "Main Result Summary",
+    "content": "**erdos_384_main:** The complete statement of Ecklund's theorem.\n\nFor 1 < k < n-1, C(n,k) has a prime divisor < n/2+1, except for the unique exception C(7,3) = C(7,4) = 35.\n\nStatus: SOLVED",
+    "significance": "critical",
+    "leanSymbol": "erdos_384_main"
+  }
+]
