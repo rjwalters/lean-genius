@@ -1,33 +1,97 @@
 {
   "id": "erdos-365",
-  "title": "Erdős Problem #365",
+  "title": "Erdős Problem #365: Consecutive Powerful Numbers",
   "slug": "erdos-365",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDo all pairs of consecutive powerful numbers ... and ... come from solutions to Pell equations? In other words, must either ....",
+  "description": "Do all pairs of consecutive powerful numbers come from Pell equations? Must one be a square? Is the count O((log x)^O(1))?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Kurt Mahler, Solomon W. Golomb, David T. Walker",
     "sourceUrl": "https://erdosproblems.com/365",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "solved",
     "proofRepoPath": "Proofs/Erdos365Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "pell-equations",
+      "consecutive-integers"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 365,
     "erdosUrl": "https://erdosproblems.com/365",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #365 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDo all pairs of consecutive powerful numbers $n$ and $n+1$ come from solutions to Pell equations? In other words, must either $n$ or $n+1$ be a square?\n\nIs the number of such $n\\leq x$ bounded by $(\\log x)^{O(1)}$?\n\n\n\nErd\\H{o}s originally asked Mahler whether there are infinitely many pairs of consecutive powerful numbers, but Mahler immediately observed that the answer is yes from the infinitely many solutions to the Pell equation $x^2=2^3y^2+1$.\n\nThe list of $n$ such that $n$ and $n+1$ are both powerful is A060355 in the OEIS.\n\nThe answer to the first question is no: Golomb \\cite{Go70} observed that both $12167=23^3$ and $12168=2^33^213^2$ are powerful. Walker \\cite{Wa76} proved that the equation\\[7^3x^2=3^3y^2+1\\]has infinitely many solutions, giving infinitely many counterexamples.\n\nSee also [364].\n\nThis is discussed in problem B16 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Go70] Golomb, S. W., Powerful numbers. Amer. Math. Monthly (1970), 848-855.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Wa76] Walker, David T., Consecutive integer pairs of powerful numbers and related\nDiophantine equations. Fibonacci Quart. (1976), 111-116.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős asked Mahler if infinitely many consecutive powerful pairs exist. Mahler immediately showed yes via Pell equation x²-8y²=1. Erdős then asked if all such pairs come from Pell solutions. Golomb (1970) found the first counterexample: 12167=23³ and 12168=2³·3²·13². Walker (1976) proved infinitely many non-Pell counterexamples exist via 7³x²=3³y²+1.",
+    "problemStatement": "Q1: Do all pairs of consecutive powerful numbers n, n+1 come from Pell equations? Equivalently, must either n or n+1 be a square? Q2: Is the number of such n ≤ x bounded by (log x)^O(1)?",
+    "proofStrategy": "The formalization defines powerful numbers (p² | n for all primes p | n), proves basic properties, and records the counterexamples. Golomb's counterexample and Walker's infinite family are axiomatized. The Pell equation connection is formalized.",
+    "keyInsights": [
+      "Q1 is FALSE: Golomb found 12167=23³, 12168=2³·3²·13² (neither square)",
+      "Walker: infinitely many counterexamples via 7³x² = 3³y² + 1",
+      "Most pairs DO come from Pell equations, but not all",
+      "Q2 expected YES from Pell equation theory",
+      "OEIS A060355 lists consecutive powerful pairs"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "powerful",
+      "title": "Powerful Numbers",
+      "startLine": 40,
+      "endLine": 82,
+      "summary": "Definition and basic properties of powerful numbers"
+    },
+    {
+      "id": "consecutive",
+      "title": "Consecutive Powerful Numbers",
+      "startLine": 83,
+      "endLine": 114,
+      "summary": "Definition and first example (8,9)"
+    },
+    {
+      "id": "pell",
+      "title": "Pell Equation Connection",
+      "startLine": 115,
+      "endLine": 145,
+      "summary": "Mahler's observation and infinitely many Pell solutions"
+    },
+    {
+      "id": "question1",
+      "title": "Question 1 - Square Requirement",
+      "startLine": 146,
+      "endLine": 184,
+      "summary": "Q1 is FALSE - Golomb's counterexample"
+    },
+    {
+      "id": "walker",
+      "title": "Walker's Infinite Family",
+      "startLine": 185,
+      "endLine": 211,
+      "summary": "Infinitely many non-Pell counterexamples"
+    },
+    {
+      "id": "counting",
+      "title": "Question 2 - Counting",
+      "startLine": 212,
+      "endLine": 240,
+      "summary": "Counting consecutive powerful pairs up to x"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 287,
+      "endLine": 324,
+      "summary": "Complete summary: Q1 FALSE, Q2 expected YES"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #365 is SOLVED. Q1 (must one be a square?) is FALSE - Golomb found counterexample 12167, 12168 and Walker proved infinitely many exist. Q2 (polylogarithmic count) is expected YES from Pell equation theory.",
+    "implications": "Consecutive powerful pairs have rich structure beyond simple Pell equations. The variety of Pell-like equations (7³x² = 3³y² + 1, etc.) contribute additional pairs.",
+    "openQuestions": [
+      "What is the exact asymptotic count of consecutive powerful pairs?",
+      "What is the density of non-Pell counterexamples?",
+      "Are there other families of Pell-like equations giving consecutive powerful pairs?"
+    ]
   }
 }

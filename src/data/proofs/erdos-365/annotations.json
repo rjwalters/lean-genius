@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "ann-365-overview",
+    "proofId": "erdos-365",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #365: Consecutive Powerful Numbers**\n\n**Q1:** Must n or n+1 be a square when both are powerful?\n**ANSWER: NO** - Golomb's counterexample: 12167=23³, 12168=2³·3²·13²\n\n**Q2:** Is the count ≤ (log x)^O(1)?\n**Expected: YES** from Pell equation theory\n\n**Status:** SOLVED",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-365-powerful",
+    "proofId": "erdos-365",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "definition",
+    "title": "IsPowerful",
+    "content": "**Powerful Number:**\n\nn is powerful if p² | n for every prime p | n.\n\n```lean\ndef IsPowerful (n : ℕ) : Prop :=\n  n ≥ 1 ∧ ∀ p : ℕ, Nat.Prime p → p ∣ n → p^2 ∣ n\n```\n\nEquivalently, n = a²b³ for some a, b.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-365-consecutive",
+    "proofId": "erdos-365",
+    "range": { "startLine": 87, "endLine": 92 },
+    "type": "definition",
+    "title": "IsConsecutivePowerfulPair",
+    "content": "**Consecutive Powerful Pair:**\n\nBoth n and n+1 are powerful.\n\n```lean\ndef IsConsecutivePowerfulPair (n : ℕ) : Prop :=\n  IsPowerful n ∧ IsPowerful (n + 1)\n```\n\nExamples: 8 and 9, 288 and 289, ...",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-365-pell",
+    "proofId": "erdos-365",
+    "range": { "startLine": 119, "endLine": 124 },
+    "type": "definition",
+    "title": "IsPellSolution",
+    "content": "**Pell Equation:**\n\nx² - Dy² = 1 for non-square D > 0.\n\n```lean\ndef IsPellSolution (x y D : ℕ) : Prop :=\n  x^2 = D * y^2 + 1\n```\n\nMahler observed x² - 8y² = 1 gives consecutive powerful numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-365-mahler",
+    "proofId": "erdos-365",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "axiom",
+    "title": "Mahler's Observation",
+    "content": "**Mahler's Key Insight:**\n\nThe Pell equation x² = 8y² + 1 gives consecutive powerful pairs.\n\nFundamental solution: (3, 1) → 8·1 = 8 and 9.\n\nThis gives infinitely many consecutive powerful pairs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-365-q1-false",
+    "proofId": "erdos-365",
+    "range": { "startLine": 158, "endLine": 162 },
+    "type": "axiom",
+    "title": "question1_false",
+    "content": "**Question 1 is FALSE:**\n\nNot all consecutive powerful pairs come from Pell equations.\n\nNot all have one element being a perfect square.\n\nGolomb found the first counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-365-golomb",
+    "proofId": "erdos-365",
+    "range": { "startLine": 164, "endLine": 183 },
+    "type": "theorem",
+    "title": "Golomb's Counterexample",
+    "content": "**Golomb (1970):**\n\n12167 = 23³ (powerful, not a square)\n12168 = 2³ · 3² · 13² (powerful, not a square)\n\nBoth are powerful, neither is a perfect square.\n\nThis was the first counterexample to Q1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-365-walker",
+    "proofId": "erdos-365",
+    "range": { "startLine": 189, "endLine": 210 },
+    "type": "axiom",
+    "title": "Walker's Infinite Family",
+    "content": "**Walker (1976):**\n\nThe equation 7³x² = 3³y² + 1 has infinitely many solutions.\n\n```lean\ndef WalkerEquation (x y : ℕ) : Prop :=\n  7^3 * x^2 = 3^3 * y^2 + 1\n```\n\nEach solution gives a consecutive powerful pair where NEITHER is a square.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-365-counting",
+    "proofId": "erdos-365",
+    "range": { "startLine": 216, "endLine": 231 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "**Counting Question:**\n\nP(x) = |{n ≤ x : n and n+1 both powerful}|\n\n**Q2:** Is P(x) = O((log x)^C)?\n\nExpected YES: Pell equations have O((log x)^O(1)) solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-365-example-8-9",
+    "proofId": "erdos-365",
+    "range": { "startLine": 100, "endLine": 113 },
+    "type": "theorem",
+    "title": "example_8_9",
+    "content": "**First Example: 8 and 9**\n\n8 = 2³ is powerful (2² | 8)\n9 = 3² is powerful (perfect square)\n\nThis comes from Pell: 3² = 8·1² + 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-365-summary",
+    "proofId": "erdos-365",
+    "range": { "startLine": 291, "endLine": 317 },
+    "type": "theorem",
+    "title": "erdos_365_summary",
+    "content": "**Complete Summary:**\n\n**Q1:** Must n or n+1 be a square?\n- **NO** - Golomb: 12167, 12168\n- Walker: infinitely many counterexamples\n\n**Q2:** Is count ≤ (log x)^O(1)?\n- **Expected YES** from Pell theory\n\n**KEY INSIGHT:** Most pairs come from Pell equations, but exotic Pell-like equations (7³x² = 3³y² + 1) give additional pairs.",
+    "significance": "critical"
+  }
+]
