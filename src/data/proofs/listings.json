@@ -8129,17 +8129,24 @@
   },
   {
     "id": "erdos-511",
-    "title": "Erdős Problem #511",
+    "title": "Erdős Problem #511: Bounded Components of Polynomial Lemniscates",
     "slug": "erdos-511",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic polynomial of degree .... Is it true that, for every ..., the set\\[\\{ z\\in  : \\lvert f(z)\\rvert< 1\\}\\]has ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a monic polynomial f(z), is the number of connected components of {z : |f(z)| < 1} with diameter > c bounded independently of degree? NO - disproved by Pommerenke (1961).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "metric-geometry",
+      "disproved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 511,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 1,
+    "annotationCount": 14
   },
   {
     "id": "erdos-512",

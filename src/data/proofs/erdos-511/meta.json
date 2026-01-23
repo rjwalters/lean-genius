@@ -1,33 +1,149 @@
 {
   "id": "erdos-511",
-  "title": "Erdős Problem #511",
+  "title": "Erdős Problem #511: Bounded Components of Polynomial Lemniscates",
   "slug": "erdos-511",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic polynomial of degree .... Is it true that, for every ..., the set\\[\\{ z\\in  : \\lvert f(z)\\rvert< 1\\}\\]has ...",
+  "description": "For a monic polynomial f(z), is the number of connected components of {z : |f(z)| < 1} with diameter > c bounded independently of degree? NO - disproved by Pommerenke (1961).",
   "meta": {
-    "author": "Unknown",
+    "author": "Pommerenke (1961 disproof), Pólya (1928 upper bound)",
     "sourceUrl": "https://erdosproblems.com/511",
-    "date": "",
-    "status": "pending",
+    "date": "1961",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos511Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "metric-geometry",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 511,
     "erdosUrl": "https://erdosproblems.com/511",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value (modulus)",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Metric.diam",
+        "description": "Diameter of a set in a metric space",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "IsConnected",
+        "description": "Connected set predicate",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "Polynomial.Monic",
+        "description": "Monic polynomial predicate",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sublevelSet definition: {z : |f(z)| < r} for polynomial f",
+      "closedSublevelSet definition: {z : |f(z)| ≤ r}",
+      "polya_diameter_bound axiom: diameter ≤ 4 for all components",
+      "pommerenke_theorem axiom: arbitrarily many large components exist",
+      "rootsOfUnityPoly definition: z^n - 1",
+      "petal_structure axiom: geometry of z^n - 1 level sets",
+      "huang_theorem axiom: independent rediscovery",
+      "diameter_4_is_sharp axiom: optimality of Pólya's bound",
+      "erdos_511 theorem: main disproof result",
+      "erdos_511_answer theorem: negation of bounded components conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #511 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)\\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$. Is it true that, for every $c>1$, the set\\[\\{ z\\in \\mathbb{C} : \\lvert f(z)\\rvert< 1\\}\\]has at most $O_c(1)$ many connected components of diameter $>c$ (where the implied constant is in particular independent of $n$)?\n\n\n\nThis is Problem 4.9 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nA problem of Erd\\H{o}s, Herzog, and Piranien \\cite{EHP58}, who ask more generally whether\\[\\sum_C \\mathrm{diam}(C) \\leq n2^{1/n}\\]and\\[\\sum_{C}\\max(0, \\mathrm{diam}(C)-1)\\ll 1\\]for all such $f$, where $C$ ranges over the connected components of the set in question. The example $f(z)=z^n-1$ has $\\sum_C \\mathrm{diam}(C)=(1+o(1))n2^{1/n}$.\n\nThey also asked whether, if the roots of $f$ are all in the disc $\\{\\lvert z\\rvert\\leq 1\\}$, the total number of connected components with diameter $>1$ is absolutely bounded, but noted in an addendum that the answer is no: consider $z^n+1$ and move the zeros $e^{i\\pi/n}$ and $e^{-i\\pi/n}$ a short distance along the circle towards $1$. The set $\\{z: \\lvert f(z)\\rvert \\leq 1\\}$ for $f(z)=z^n+1$ looks like $n$ 'leaves' joined at $0$, and this moving of two roots makes $\\approx n/2$ of the leaves become disconnected at $0$. Each of the resulting components has diameter $>2^{1/n}-\\epsilon$, and hence there are $\\gg n$ components of diameter $>1$.\n\nIn \\cite{Er61} Erd\\H{o}s asks the weaker question given here, with the definition of the set altered so that $<1$ is replaced by $\\leq 1$.\n\nPommerenke \\cite{Po61} proved that the answer is no to most of these questions, by showing that, for any $0<d<4$ and $k\\geq 1$ there exist monic polynomials $f\\in \\mathbb{C}[x]$ such that $\\{z: \\lvert f(z)\\rvert\\leq 1\\}$ has at least $k$ connected components of diameter $\\geq d$.\n\nThis was independently proved by Huang \\cite{Hu25} (unaware of the previous work of Pommerenke). P\\'{o}lya \\cite{Po28} showed that $4$ is the best possible here, in that no connected component can have diameter $>4$.\n\nA picture of the set in question for $z^5-1$ is {IMAGE=511petals,here}.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Er61] Erd\\H{o}s, Paul, Some unsolved problems. Magyar Tud. Akad. Mat. Kutat\\'{o} Int. K\\\"{o}zl. (1961), 221-254.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Hu25] L. Huang, Many leminscates with large diameter. arXiv:2509.11597 (2025).\n\n[Po28] G. P\\'{o}lya, Beitrag zue Verallgemeinerung des Verzerrungssatzes auf mehrfach zusammenh\\\"{a}ngende Gebiete. S-B. Akad. Wiss. (1928), 228-232 and 280-282.\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #511: Polynomial Lemniscates**\n\nThis problem concerns the geometry of sublevel sets of complex polynomials, known as lemniscates. For a monic polynomial f(z) ∈ ℂ[z] of degree n, the set {z ∈ ℂ : |f(z)| < 1} forms an interesting geometric region whose shape depends on the roots of f.\n\n**Origins and Development:**\n- Erdős, Herzog, and Piranian (1958) posed the original questions about sums of diameters\n- This specific form appears as Problem 4.9 in Hayman (1974)\n- Erdős (1961) asked the weaker version formalized here\n\n**The Key Players:**\n- Pólya (1928): Proved no component can have diameter > 4\n- Pommerenke (1961): Disproved the bounded components conjecture\n- Huang (2025): Independent rediscovery of Pommerenke's result\n\nThe polynomial f(z) = z^n - 1 creates n 'petal'-shaped regions meeting at the origin, providing key examples.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $f(z) \\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$. Is it true that, for every $c > 1$, the set\n$$\\{z \\in \\mathbb{C} : |f(z)| < 1\\}$$\nhas at most $O_c(1)$ connected components of diameter $> c$, where the implied constant is independent of $n$?\n\n**Answer: NO**\n\nPommerenke (1961) proved that for any $0 < d < 4$ and any $k \\geq 1$, there exist monic polynomials such that the closed sublevel set $\\{z : |f(z)| \\leq 1\\}$ has at least $k$ connected components with diameter $\\geq d$.\n\nThe threshold 4 is optimal: Pólya (1928) proved no component can have diameter exceeding 4.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define sublevel sets and closed sublevel sets of polynomials\n\n2. **Pólya's Upper Bound:** Axiomatize the result that no component exceeds diameter 4\n\n3. **Pommerenke's Theorem:** Axiomatize that arbitrarily many components of any diameter < 4 exist\n\n4. **Main Theorem:** Derive the disproof from Pommerenke's theorem\n\n5. **z^n - 1 Example:** Formalize the petal structure and its properties\n\n6. **Optimality:** Show the threshold 4 is sharp (approached but not reached)\n\n7. **Negation:** Prove no bounding function can exist",
+    "keyInsights": [
+      "**Lemniscate Geometry:** The set {z : |f(z)| = r} is called a lemniscate; its interior can have complex topology",
+      "**Pólya's Barrier:** No matter the polynomial, every component has diameter ≤ 4 - this is an absolute bound",
+      "**Critical Threshold:** The value 4 is sharp: components can approach diameter 4 but never reach it",
+      "**Petal Structure:** For z^n - 1, the sublevel set has n 'petals' meeting at z = 0",
+      "**Root Perturbation:** Moving roots slightly can disconnect petals, creating many separate components",
+      "**Degree Independence Fails:** Unlike many polynomial bounds, this property does NOT hold uniformly in degree"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "sublevelSet, closedSublevelSet, isMonicPoly definitions",
+      "startLine": 52,
+      "endLine": 79
+    },
+    {
+      "id": "diameter-bounds",
+      "title": "Diameter Bounds",
+      "summary": "polya_diameter_bound axiom (≤ 4), components_below_4 axiom",
+      "startLine": 80,
+      "endLine": 112
+    },
+    {
+      "id": "pommerenke",
+      "title": "Pommerenke's Counterexample",
+      "summary": "pommerenke_theorem axiom, erdos_511 main theorem",
+      "startLine": 113,
+      "endLine": 162
+    },
+    {
+      "id": "roots-of-unity",
+      "title": "The Key Example z^n - 1",
+      "summary": "rootsOfUnityPoly definition, sum_diameters_rootsOfUnity axiom",
+      "startLine": 163,
+      "endLine": 196
+    },
+    {
+      "id": "petal-structure",
+      "title": "The Petal Structure",
+      "summary": "petal_structure axiom, perturbation_creates_components axiom",
+      "startLine": 197,
+      "endLine": 228
+    },
+    {
+      "id": "huang",
+      "title": "Huang's Independent Discovery",
+      "summary": "huang_theorem axiom (2025 rediscovery)",
+      "startLine": 229,
+      "endLine": 251
+    },
+    {
+      "id": "threshold-4",
+      "title": "The Critical Threshold at 4",
+      "summary": "diameter_4_is_sharp axiom, no_component_reaches_4 theorem",
+      "startLine": 252,
+      "endLine": 282
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Results",
+      "summary": "erdos_511_summary theorem, erdos_511_answer theorem",
+      "startLine": 283,
+      "endLine": 336
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #511 asked whether the number of large-diameter components of polynomial lemniscates is bounded independently of degree. The answer is NO, as proved by Pommerenke in 1961. For any diameter threshold d < 4, arbitrarily many components exceeding that threshold can exist. However, no component can ever exceed diameter 4 (Pólya, 1928), and this bound is sharp.",
+    "implications": "**Geometric Complexity of Polynomials**\n\n1. **No Uniform Bound:** The topology of lemniscates can be arbitrarily complex\n\n2. **Degree Matters:** Higher degree polynomials can have more large components\n\n3. **Sharp Threshold:** The value 4 marks a phase transition in possible geometries\n\n4. **Perturbation Sensitivity:** Small changes in roots can dramatically change connectivity\n\n5. **Metric vs Topological:** While components can't be too large, there can be many of them",
+    "openQuestions": [
+      "Explicit constructions achieving k components of diameter d for given k, d < 4",
+      "Rate of growth of number of large components as a function of degree",
+      "Characterization of polynomials achieving diameter close to 4",
+      "Similar questions for rational functions",
+      "Algorithmic computation of component diameters"
+    ]
   }
 }
