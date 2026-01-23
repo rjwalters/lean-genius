@@ -1,33 +1,136 @@
 {
   "id": "erdos-791",
-  "title": "Erdős Problem #791",
+  "title": "Erdős Problem #791: Finite Additive 2-Bases",
   "slug": "erdos-791",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that there exists ... of size ... with .... Estimate .... In particular is it true that ...?\n\n\n\nSuch ...",
+  "description": "Let g(n) be the minimal size of a set A ⊆ {0,...,n} such that {0,...,n} ⊆ A+A. Is g(n) ~ 2√n? NO - disproved by Mrose (1979).",
   "meta": {
-    "author": "Unknown",
+    "author": "Mrose (1979 disproof), Yu (2015), Kohonen (2017)",
     "sourceUrl": "https://erdosproblems.com/791",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos791Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "additive-bases",
+      "sumsets",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 791,
     "erdosUrl": "https://erdosproblems.com/791",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.range",
+        "description": "Range of natural numbers as a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.product",
+        "description": "Cartesian product of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of a finite set under a function",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Infimum of a set of natural numbers",
+        "module": "Mathlib.Order.Bounds.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sumset definition: A + A = {a + b : a, b ∈ A}",
+      "isAdditiveBasis predicate: A covers {0,...,n} via sumset",
+      "g(n) definition: minimum cardinality of a 2-basis",
+      "trivial_basis theorem: {0,...,n} is always a 2-basis",
+      "Rohrbach bounds axioms: 2n ≤ g(n)² ≤ 4n",
+      "Mrose disproof axiom: g(n)² ≤ 3.5n",
+      "Yu lower bound axiom: g(n)² ≥ 2.181n",
+      "Kohonen upper bound axiom: g(n)² ≤ 3.458n",
+      "erdos_791 theorem: main result with bounds",
+      "Small values: g(0)=1, g(1)=2, g(2)=2, g(3)=3"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #791 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be minimal such that there exists $A\\subseteq \\{0,\\ldots,n\\}$ of size $g(n)$ with $\\{0,\\ldots,n\\}\\subseteq A+A$. Estimate $g(n)$. In particular is it true that $g(n)\\sim 2n^{1/2}$?\n\n\n\nSuch a set is often called a finite additive $2$-basis. A problem of Rohrbach, who proved in \\cite{Ro37}\\[(2+c)n \\leq g(n)^2 \\leq 4n\\]for some small constant $c>0$. The current best-known bounds are\\[(2.181\\cdots+o(1))n\\leq g(n)^2 \\leq (3.458\\cdots+o(1))n.\\]The lower bound is due to Yu \\cite{Yu15}, and the upper bound is due to Kohonen \\cite{Ko17}. (The disproof of $g(n)\\sim 2n^{1/2}$ was accomplished by Mrose \\cite{Mr79}, who gave a construction implying $g(n)^2 \\leq \\frac{7}{2}n$.)\n\n\n\n\nReferences\n\n\n[Ko17] Kohonen, Jukka, An improved lower bound for finite additive 2-bases. J. Number Theory (2017), 518--524.\n\n[Mr79] Mrose, Arnulf, Untere {S}chranken f\\\"ur die {R}eichweiten von {E}xtremalbasen\nfester {O}rdnung. Abh. Math. Sem. Univ. Hamburg (1979), 118--124.\n\n[Ro37] Rohrbach, Hans, Ein {B}eitrag zur additiven {Z}ahlentheorie. Math. Z. (1937), 1--30.\n\n[Yu15] Yu, Gang, A new upper bound for finite additive {$h$}-bases. J. Number Theory (2015), 95--104.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #791: Finite Additive 2-Bases**\n\nThis problem originates from additive combinatorics and studies the efficiency of representing all integers in {0,...,n} as sums of two elements from a subset.\n\n**Historical Timeline:**\n- **Rohrbach (1937)**: Established the first bounds (2+c)n ≤ g(n)² ≤ 4n, showing g(n) is roughly √(2n) to 2√n.\n- **Erdős Conjecture**: Asked whether g(n) ~ 2√n asymptotically.\n- **Mrose (1979)**: Disproved the conjecture by constructing bases with g(n)² ≤ (7/2)n = 3.5n.\n- **Yu (2015)**: Improved the lower bound to (2.181...+o(1))n.\n- **Kohonen (2017)**: Improved the upper bound to (3.458...+o(1))n.\n\nThe problem connects to sumset theory, a central topic in additive combinatorics with applications to number theory and computer science.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $g(n)$ be the minimal size of a set $A \\subseteq \\{0,\\ldots,n\\}$ such that $\\{0,\\ldots,n\\} \\subseteq A+A$.\n\nEstimate $g(n)$. In particular, is it true that $g(n) \\sim 2n^{1/2}$?\n\n**Answer: NO**\n\nMrose (1979) disproved the conjecture by showing $g(n)^2 \\leq \\frac{7}{2}n$.\n\n**Current Best Bounds:**\n$(2.181\\ldots + o(1))n \\leq g(n)^2 \\leq (3.458\\ldots + o(1))n$\n\nThis means $1.477\\sqrt{n} \\lesssim g(n) \\lesssim 1.860\\sqrt{n}$, far from Erdős's conjectured $2\\sqrt{n}$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sumset Definition:** Define A+A as the image of A×A under addition.\n\n2. **Additive Basis:** A set A is a 2-basis for {0,...,n} if range(n+1) ⊆ sumset(A).\n\n3. **The Function g(n):** Define as the infimum of cardinalities of all 2-bases.\n\n4. **Bounds:** Axiomatize the key results:\n   - Rohrbach (1937): 2n ≤ g(n)² ≤ 4n\n   - Mrose (1979): g(n)² ≤ 3.5n (disproves g(n) ~ 2√n)\n   - Yu (2015): g(n)² ≥ 2.181n\n   - Kohonen (2017): g(n)² ≤ 3.458n\n\n5. **Main Theorem:** Combine to show the conjecture is false.",
+    "keyInsights": [
+      "**Additive 2-Basis:** A set A such that every k ∈ {0,...,n} can be written as a+b with a,b ∈ A",
+      "**Trivial Bound:** The set {0,1,...,n} is always a 2-basis with n+1 elements",
+      "**Optimal Size:** The minimum is roughly √(2n) to √(4n) elements",
+      "**Erdős's Conjecture:** That g(n) ~ 2√n (asymptotically equivalent to 2√n)",
+      "**Mrose's Disproof:** Constructed bases achieving g(n)² ≤ 3.5n < 4n, disproving the conjecture",
+      "**Modern Bounds:** Current knowledge: 2.181n ≤ g(n)² ≤ 3.458n"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sumset-definition",
+      "title": "Sumset and Additive Bases",
+      "summary": "Definition of sumset A+A and the isAdditiveBasis predicate",
+      "startLine": 50,
+      "endLine": 71
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Properties of additive bases: trivial basis, bounds on g(n)",
+      "startLine": 76,
+      "endLine": 106
+    },
+    {
+      "id": "rohrbach-bounds",
+      "title": "Rohrbach's Bounds (1937)",
+      "summary": "Initial bounds: 2n ≤ g(n)² ≤ 4n",
+      "startLine": 107,
+      "endLine": 128
+    },
+    {
+      "id": "mrose-disproof",
+      "title": "Mrose's Disproof (1979)",
+      "summary": "Construction showing g(n)² ≤ 3.5n, disproving g(n) ~ 2√n",
+      "startLine": 129,
+      "endLine": 153
+    },
+    {
+      "id": "modern-bounds",
+      "title": "Modern Bounds",
+      "summary": "Yu (2015) lower bound and Kohonen (2017) upper bound",
+      "startLine": 154,
+      "endLine": 188
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "summary": "Concrete values: g(0)=1, g(1)=2, g(2)=2, g(3)=3",
+      "startLine": 189,
+      "endLine": 216
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_791 theorem establishing bounds and disproving the conjecture",
+      "startLine": 235,
+      "endLine": 289
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #791 asked whether the minimum size g(n) of an additive 2-basis for {0,...,n} satisfies g(n) ~ 2√n. The answer is NO. Mrose (1979) disproved this by constructing bases with g(n)² ≤ 3.5n. The current best bounds are 2.181n ≤ g(n)² ≤ 3.458n (Yu 2015, Kohonen 2017).",
+    "implications": "**Significance**\n\n1. **Additive Combinatorics:** Shows the optimal construction of sumset representations is more efficient than naive bounds suggest.\n\n2. **Algorithmic Applications:** Additive bases are used in data structures and coding theory.\n\n3. **Open Problem:** The exact asymptotic constant for g(n)² is still unknown (between 2.181 and 3.458).\n\n4. **Connection to Other Problems:** Related to Sidon sets and B_h sequences.",
+    "openQuestions": [
+      "What is the exact asymptotic constant for g(n)²?",
+      "Can the gap between 2.181 and 3.458 be narrowed further?",
+      "What is the structure of optimal 2-bases?",
+      "Extension to h-bases: what are the bounds for general h?",
+      "Computational complexity of finding optimal bases"
+    ]
   }
 }
