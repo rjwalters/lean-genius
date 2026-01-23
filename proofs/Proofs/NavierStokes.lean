@@ -273,16 +273,27 @@ theorem backward_growth (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) (
   nlinarith
 
 
-/-- **Axiom: Growth Unbounded**
+/-- **PROVEN: Growth Unbounded**
     Standard result: linear growth in n eventually exceeds any M.
-    For any M, ∃ n such that E₀·(1 + n·spectralGap·h) > M. -/
-axiom growth_unbounded_axiom (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) :
-    ∀ M : ℝ, ∃ n : ℕ, E₀ * (1 + n * (spectralGap * h)) > M
-
-/-- Growth exceeds any bound for large n -/
+    Uses Archimedean property: for any r ∈ ℝ, ∃ n : ℕ with n > r. -/
 theorem growth_unbounded (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) :
-    ∀ M : ℝ, ∃ n : ℕ, E₀ * (1 + n * (spectralGap * h)) > M :=
-  growth_unbounded_axiom E₀ hE₀ h hh
+    ∀ M : ℝ, ∃ n : ℕ, E₀ * (1 + n * (spectralGap * h)) > M := by
+  intro M
+  have h_sg_pos : 0 < spectralGap := spectralGap_pos
+  have h_prod_pos : 0 < E₀ * (spectralGap * h) := mul_pos hE₀ (mul_pos h_sg_pos hh)
+  obtain ⟨n, hn⟩ := exists_nat_gt ((M - E₀) / (E₀ * (spectralGap * h)))
+  use n
+  have h_rearrange : E₀ * (1 + n * (spectralGap * h)) = E₀ + E₀ * n * (spectralGap * h) := by ring
+  rw [h_rearrange]
+  have h_ineq : E₀ * ↑n * (spectralGap * h) > M - E₀ := by
+    have h1 : (M - E₀) / (E₀ * (spectralGap * h)) < ↑n := hn
+    have h2 : (M - E₀) / (E₀ * (spectralGap * h)) * (E₀ * (spectralGap * h)) = M - E₀ := by field_simp
+    have h3 : ↑n * (E₀ * (spectralGap * h)) > (M - E₀) / (E₀ * (spectralGap * h)) * (E₀ * (spectralGap * h)) := by
+      gcongr
+    rw [h2] at h3
+    calc E₀ * ↑n * (spectralGap * h) = ↑n * (E₀ * (spectralGap * h)) := by ring
+      _ > M - E₀ := h3
+  linarith
 
 
 /-- **Axiom: Exponential Dominates Polynomial**
