@@ -1,1 +1,230 @@
-[]
+[
+  {
+    "id": "ann-e362-overview",
+    "proofId": "erdos-362",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #362: Subset Sum Concentration**\n\nFor a finite set A of size N and target t:\n- Q1: #{S ⊆ A : sum(S) = t} ≪ 2^N / N^(3/2)? YES\n- Q2: With |S| = l fixed: ≪ 2^N / N²? YES\n\nSolved by Sárközy-Szemerédi (1965) and Halász (1977).",
+    "mathContext": "Additive combinatorics: concentration functions, subset sums, and Fourier analysis on finite groups.",
+    "significance": "critical",
+    "relatedConcepts": ["Littlewood-Offord", "Concentration inequalities", "Subset sum"]
+  },
+  {
+    "id": "ann-e362-setsum",
+    "proofId": "erdos-362",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "Set Sum",
+    "content": "**setSum A:** The sum of all elements in a finite set A.\n\nsetSum {1, 2, 3} = 6\nsetSum {} = 0",
+    "significance": "key",
+    "leanSymbol": "setSum"
+  },
+  {
+    "id": "ann-e362-subsetswithsum",
+    "proofId": "erdos-362",
+    "range": { "startLine": 49, "endLine": 55 },
+    "type": "definition",
+    "title": "Subsets With Sum",
+    "content": "**subsetsWithSum A t:** All subsets S ⊆ A with sum(S) = t.\n\n**countSubsetsWithSum A t:** The cardinality |{S ⊆ A : sum(S) = t}|.\n\nThis is the central quantity of interest in the problem.",
+    "significance": "critical",
+    "leanSymbol": "subsetsWithSum"
+  },
+  {
+    "id": "ann-e362-concentration",
+    "proofId": "erdos-362",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "Concentration Function",
+    "content": "**concentrationFunction A:** max_t countSubsetsWithSum(A, t)\n\nThe maximum over all possible targets. This measures how 'peaked' the distribution of subset sums can be.",
+    "significance": "critical",
+    "leanSymbol": "concentrationFunction"
+  },
+  {
+    "id": "ann-e362-erdosmoser",
+    "proofId": "erdos-362",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "axiom",
+    "title": "Erdős-Moser (1965)",
+    "content": "**erdos_moser_1965_bound:**\n\ncountSubsetsWithSum(A, t) ≤ C · 2^N / N^(3/2) · (log N)^(3/2)\n\nThe first bound, with an extra logarithmic factor that was later removed.",
+    "significance": "key",
+    "leanSymbol": "erdos_moser_1965_bound"
+  },
+  {
+    "id": "ann-e362-sarkozy",
+    "proofId": "erdos-362",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "axiom",
+    "title": "Sárközy-Szemerédi (1965)",
+    "content": "**sarkozy_szemeredi_1965:**\n\ncountSubsetsWithSum(A, t) ≤ C · 2^N / N^(3/2)\n\nThe sharp bound answering Question 1 affirmatively. The log factor was removed using more refined Fourier analysis.",
+    "significance": "critical",
+    "leanSymbol": "sarkozy_szemeredi_1965"
+  },
+  {
+    "id": "ann-e362-tight",
+    "proofId": "erdos-362",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "axiom",
+    "title": "Bound is Tight",
+    "content": "**bound_tight_order:**\n\nThe 2^N / N^(3/2) bound is tight up to constants. There exist sets achieving this concentration.",
+    "significance": "key",
+    "leanSymbol": "bound_tight_order"
+  },
+  {
+    "id": "ann-e362-fixedcard",
+    "proofId": "erdos-362",
+    "range": { "startLine": 93, "endLine": 99 },
+    "type": "definition",
+    "title": "Fixed Cardinality",
+    "content": "**subsetsWithSumAndCard A t l:** Subsets S ⊆ A with sum(S) = t AND |S| = l.\n\nAdding the cardinality constraint gives a stronger bound.",
+    "significance": "key",
+    "leanSymbol": "subsetsWithSumAndCard"
+  },
+  {
+    "id": "ann-e362-halasz",
+    "proofId": "erdos-362",
+    "range": { "startLine": 101, "endLine": 105 },
+    "type": "axiom",
+    "title": "Halász (1977)",
+    "content": "**halasz_1977:**\n\ncountSubsetsWithSumAndCard(A, t, l) ≤ C · 2^N / N²\n\nWith fixed cardinality, the exponent improves from 3/2 to 2. The constant C is independent of l and t.",
+    "significance": "critical",
+    "leanSymbol": "halasz_1977"
+  },
+  {
+    "id": "ann-e362-symmetric",
+    "proofId": "erdos-362",
+    "range": { "startLine": 120, "endLine": 122 },
+    "type": "definition",
+    "title": "Symmetric Set",
+    "content": "**symmetricSet N:** {-⌊(N-1)/2⌋, ..., ⌊N/2⌋}\n\nThe set of N consecutive integers centered at 0. For N=5: {-2, -1, 0, 1, 2}.",
+    "significance": "key",
+    "leanSymbol": "symmetricSet"
+  },
+  {
+    "id": "ann-e362-stanley",
+    "proofId": "erdos-362",
+    "range": { "startLine": 124, "endLine": 128 },
+    "type": "axiom",
+    "title": "Stanley's Extremal Result (1980)",
+    "content": "**stanley_1980_extremal:**\n\nFor any set A and target t:\ncountSubsetsWithSum(A, t) ≤ countSubsetsWithSum(symmetricSet(|A|), 0)\n\nThe symmetric set centered at 0 maximizes concentration, achieved at target 0.",
+    "significance": "critical",
+    "leanSymbol": "stanley_1980_extremal"
+  },
+  {
+    "id": "ann-e362-lefschetz",
+    "proofId": "erdos-362",
+    "range": { "startLine": 135, "endLine": 139 },
+    "type": "theorem",
+    "title": "Hard Lefschetz Connection",
+    "content": "**stanley_uses_hard_lefschetz:**\n\nStanley's proof uses the hard Lefschetz theorem from algebraic geometry to establish the Sperner property for certain posets, which implies the extremal result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e362-mean",
+    "proofId": "erdos-362",
+    "range": { "startLine": 147, "endLine": 153 },
+    "type": "definition",
+    "title": "Mean and Variance",
+    "content": "**meanSum A:** (Σ_{x∈A} x) / 2\n**varianceSum A:** (Σ_{x∈A} x²) / 4\n\nFor random subsets (each element included w.p. 1/2), these are the mean and variance of the sum.",
+    "significance": "key",
+    "leanSymbol": "meanSum"
+  },
+  {
+    "id": "ann-e362-clt",
+    "proofId": "erdos-362",
+    "range": { "startLine": 155, "endLine": 165 },
+    "type": "axiom",
+    "title": "Local CLT",
+    "content": "**local_clt_subset_sums:**\n\nFor large |A|, the distribution of subset sums is approximately Gaussian:\n\ncountSubsetsWithSum(A, t) ≈ 2^|A| / √(2πσ²) · exp(-(t-μ)²/(2σ²))\n\nThis explains the N^(3/2) factor: the peak height is ~2^N / √σ², and σ² ~ N.",
+    "significance": "critical",
+    "leanSymbol": "local_clt_subset_sums"
+  },
+  {
+    "id": "ann-e362-lo",
+    "proofId": "erdos-362",
+    "range": { "startLine": 184, "endLine": 187 },
+    "type": "axiom",
+    "title": "Littlewood-Offord Theorem",
+    "content": "**erdos_littlewood_offord:**\n\nFor vectors v₁, ..., vₙ with |vᵢ| ≥ 1:\n#{ε ∈ {±1}ⁿ : |Σ εᵢvᵢ| ≤ 1} ≤ C(n, n/2) ≈ 2ⁿ/√n\n\nThis is the classical result on signed sums, related to subset sum concentration.",
+    "significance": "key",
+    "leanSymbol": "erdos_littlewood_offord"
+  },
+  {
+    "id": "ann-e362-gf",
+    "proofId": "erdos-362",
+    "range": { "startLine": 202, "endLine": 204 },
+    "type": "definition",
+    "title": "Generating Function",
+    "content": "**subsetSumGF A z:** ∏_{a∈A} (1 + z^a)\n\nThe coefficient of z^t gives countSubsetsWithSum(A, t). Fourier analysis on this generating function proves the concentration bounds.",
+    "significance": "key",
+    "leanSymbol": "subsetSumGF"
+  },
+  {
+    "id": "ann-e362-fourier",
+    "proofId": "erdos-362",
+    "range": { "startLine": 206, "endLine": 210 },
+    "type": "axiom",
+    "title": "Fourier Extraction",
+    "content": "**fourier_extraction:**\n\ncountSubsetsWithSum(A, t) = (1/2π) ∫₀^{2π} GF(e^{iθ}) · e^{-itθ} dθ\n\nThe count is extracted as a Fourier coefficient. Saddle point analysis gives the N^(-3/2) bound.",
+    "significance": "key",
+    "leanSymbol": "fourier_extraction"
+  },
+  {
+    "id": "ann-e362-multidim",
+    "proofId": "erdos-362",
+    "range": { "startLine": 233, "endLine": 238 },
+    "type": "axiom",
+    "title": "Multi-dimensional Bound",
+    "content": "**halasz_multi_dim:**\n\nFor d-dimensional vectors:\ncountVectorSubsetsWithSum(A, t) ≤ C · 2^|A| / |A|^{(d+1)/2}\n\nThe exponent grows with dimension: 3/2 for d=1, 2 for d=2, etc.",
+    "significance": "key",
+    "leanSymbol": "halasz_multi_dim"
+  },
+  {
+    "id": "ann-e362-np",
+    "proofId": "erdos-362",
+    "range": { "startLine": 246, "endLine": 250 },
+    "type": "axiom",
+    "title": "NP-Completeness",
+    "content": "**subset_sum_np_complete:**\n\nThe subset sum decision problem is NP-complete: given A and t, is there S ⊆ A with sum(S) = t?\n\nThe counting version can be done in pseudo-polynomial time via DP.",
+    "significance": "supporting",
+    "leanSymbol": "subset_sum_np_complete"
+  },
+  {
+    "id": "ann-e362-examples",
+    "proofId": "erdos-362",
+    "range": { "startLine": 329, "endLine": 340 },
+    "type": "theorem",
+    "title": "Small Examples",
+    "content": "**Examples for A = {1, 2, 3}:**\n\n- countSubsetsWithSum({1,2,3}, 0) = 1 (empty set)\n- countSubsetsWithSum({1,2,3}, 3) = 2 ({3} and {1,2})\n- countSubsetsWithSum({1,2,3}, 6) = 1 ({1,2,3})\n\nMaximum concentration is 2, achieved at t = 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e362-exponents",
+    "proofId": "erdos-362",
+    "range": { "startLine": 353, "endLine": 359 },
+    "type": "theorem",
+    "title": "Exponent Comparison",
+    "content": "**exponent_comparison:**\n\nQ1: 2^N / N^(3/2) - sum over all cardinalities\nQ2: 2^N / N² - fixed cardinality\n\nThe N^(1/2) difference: summing N terms each bounded by 2^N/N² would give 2^N/N, but most l contribute little, so we get N^(3/2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e362-summary",
+    "proofId": "erdos-362",
+    "range": { "startLine": 375, "endLine": 386 },
+    "type": "theorem",
+    "title": "Main Summary",
+    "content": "**erdos_362_summary:**\n\n- Q1: countSubsetsWithSum(A, t) ≤ C · 2^N / N^(3/2) ✓\n- Q2: countSubsetsWithSumAndCard(A, t, l) ≤ C · 2^N / N² ✓\n\nBoth questions answered affirmatively.",
+    "significance": "critical",
+    "leanSymbol": "erdos_362_summary"
+  },
+  {
+    "id": "ann-e362-main",
+    "proofId": "erdos-362",
+    "range": { "startLine": 388, "endLine": 389 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_362:**\n\nErdős Problem #362 is SOLVED.\n\nBoth concentration bounds were established by 1977.",
+    "significance": "critical",
+    "leanSymbol": "erdos_362"
+  }
+]

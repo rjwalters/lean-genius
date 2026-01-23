@@ -1,33 +1,175 @@
 {
   "id": "erdos-362",
-  "title": "Erdős Problem #362",
+  "title": "Erdős Problem #362: Subset Sum Concentration",
   "slug": "erdos-362",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of size .... Is it true that, for any fixed ..., there are\\[\\ll {N^{3/2}}\\]many ... such that ...?\n\nI...",
+  "description": "For a finite set A of size N, how many subsets can sum to a fixed value t? Sárközy-Szemerédi (1965) proved the bound 2^N / N^(3/2). With fixed cardinality, Halász (1977) proved 2^N / N². Stanley (1980) found the extremal set.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Moser (1965), Sárközy-Szemerédi (1965), Halász (1977), Stanley (1980)",
     "sourceUrl": "https://erdosproblems.com/362",
-    "date": "",
-    "status": "pending",
+    "date": "1965-1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos362Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "subset-sum",
+      "concentration",
+      "counting",
+      "fourier-analysis"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 362,
     "erdosUrl": "https://erdosproblems.com/362",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power set of finite sets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Finite sums and products",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for log factors",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "setSum definition: sum of elements in a finite set",
+      "subsetsWithSum definition: subsets summing to target t",
+      "countSubsetsWithSum definition: count of such subsets",
+      "concentrationFunction definition: max over all targets",
+      "subsetsWithSumAndCard definition: fixed cardinality variant",
+      "symmetricSet definition: {-⌊(N-1)/2⌋, ..., ⌊N/2⌋}",
+      "erdos_moser_1965_bound axiom: original bound with log factor",
+      "sarkozy_szemeredi_1965 axiom: sharp 2^N/N^(3/2) bound",
+      "halasz_1977 axiom: 2^N/N² bound with fixed cardinality",
+      "stanley_1980_extremal axiom: symmetric set maximizes",
+      "halasz_multi_dim axiom: d-dimensional generalization",
+      "erdos_362_summary theorem: main results combined"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #362 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a finite set of size $N$. Is it true that, for any fixed $t$, there are\\[\\ll \\frac{2^N}{N^{3/2}}\\]many $S\\subseteq A$ such that $\\sum_{n\\in S}n=t$?\n\nIf we further ask that $\\lvert S\\rvert=l$ (for any fixed $l$) then is the number of solutions\\[\\ll \\frac{2^N}{N^2},\\]with the implied constant independent of $l$ and $t$?\n\n\n\nErd\\H{o}s and Moser \\cite{Er65} proved the first bound with an additional factor of $(\\log n)^{3/2}$. This was removed by S\\'{a}rk\\\"{o}zy and Szemer\\'{e}di \\cite{SaSz65}, thereby answering the first question in the affirmative. Stanley \\cite{St80} has shown that this quantity is maximised when $A=\\{-\\lfloor \\frac{N-1}{2}\\rfloor,\\ldots,\\lfloor\\frac{N}{2}\\rfloor\\}$.\n\nThe second question was answered in the affirmative by Hal\\'{a}sz \\cite{Ha77}, as a consequence of a more general multi-dimensional result.\n\n\n\n\nReferences\n\n\n[Er65] Erd\\H{o}s, P., Extremal problems in number theory. Proc. Sympos. Pure Math., Vol. VIII (1965), 181-189.\n\n[Ha77] Hal\\'{a}sz, G., Estimates for the concentration function of combinatorial\nnumber theory and probability. Period. Math. Hungar. (1977), 197--211.\n\n[SaSz65] S\\'{a}rk\\\"{o}zi, A. and Szemer\\'{e}di, E., \\\"{U}ber ein Problem von Erd\\H{o}s und Moser. Acta Arith. (1965), 205-208.\n\n[St80] Stanley, Richard P., Weyl groups, the hard Lefschetz theorem, and the Sperner property. SIAM J. Algebraic Discrete Methods (1980), 168-184.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #362** is about the concentration function in additive combinatorics. Given a finite set A, how many of its subsets can sum to a fixed target t?\n\n**Historical Development:**\n- **Erdős-Moser (1965):** First proved a bound of O(2^N / N^(3/2) · (log N)^(3/2))\n- **Sárközy-Szemerédi (1965):** Removed the log factor, giving the sharp bound 2^N / N^(3/2)\n- **Halász (1977):** With fixed cardinality constraint, proved 2^N / N²\n- **Stanley (1980):** Using algebraic geometry (hard Lefschetz), showed the symmetric set centered at 0 maximizes concentration\n\n**Key Insight:** The Central Limit Theorem explains why concentration is ~2^N / N^(3/2): subset sums are approximately Gaussian with variance ~N, so the peak height is ~1/√N, giving N^(3/2) in the denominator.",
+    "problemStatement": "**Problem Statement**\n\nLet $A \\subseteq \\mathbb{N}$ be a finite set of size $N$.\n\n**Question 1:** Is it true that for any fixed $t$, there are\n$$\\ll \\frac{2^N}{N^{3/2}}$$\nsubsets $S \\subseteq A$ such that $\\sum_{n \\in S} n = t$?\n\n**Question 2:** If we further require $|S| = l$ (for any fixed $l$), is the number of solutions\n$$\\ll \\frac{2^N}{N^2}$$\nwith the implied constant independent of $l$ and $t$?\n\n**Answers:** YES to both!\n- Q1 solved by Sárközy-Szemerédi (1965)\n- Q2 solved by Halász (1977)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** setSum, subsetsWithSum, countSubsetsWithSum, concentrationFunction\n\n2. **Question 1:** Axiomatize Sárközy-Szemerédi's 2^N/N^(3/2) bound\n\n3. **Question 2:** Axiomatize Halász's 2^N/N² bound with fixed cardinality\n\n4. **Extremal Result:** Stanley's theorem that symmetric set maximizes\n\n5. **CLT Connection:** Explain the Gaussian approximation to subset sum distribution\n\n6. **Connections:** Littlewood-Offord problem, Fourier analysis, algorithmic aspects",
+    "keyInsights": [
+      "**Concentration Function:** The maximum number of subsets summing to any single value is O(2^N / N^(3/2)).",
+      "**Fixed Cardinality:** Adding the constraint |S| = l gives the stronger bound O(2^N / N²).",
+      "**Symmetric Set Optimal:** The set {-⌊(N-1)/2⌋, ..., ⌊N/2⌋} centered at 0 achieves maximum concentration.",
+      "**CLT Explanation:** Subset sums are approximately Gaussian with variance ~N³/12, explaining the N^(3/2) factor.",
+      "**Fourier Analysis:** The proof uses generating functions and saddle point analysis.",
+      "**Littlewood-Offord Connection:** Related to counting sign choices giving a sum in an interval.",
+      "**Multi-dimensional:** Halász's result generalizes to d dimensions with bound 2^N / N^((d+1)/2)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Subset Sum Definitions",
+      "summary": "setSum, subsetsWithSum, countSubsetsWithSum, concentrationFunction",
+      "startLine": 38,
+      "endLine": 60
+    },
+    {
+      "id": "question1",
+      "title": "Question 1: General Bound",
+      "summary": "Sárközy-Szemerédi's 2^N / N^(3/2) bound",
+      "startLine": 62,
+      "endLine": 84
+    },
+    {
+      "id": "question2",
+      "title": "Question 2: Fixed Cardinality",
+      "summary": "Halász's 2^N / N² bound with fixed |S| = l",
+      "startLine": 86,
+      "endLine": 112
+    },
+    {
+      "id": "stanley",
+      "title": "Stanley's Extremal Result",
+      "summary": "Symmetric set maximizes concentration via hard Lefschetz",
+      "startLine": 114,
+      "endLine": 139
+    },
+    {
+      "id": "clt",
+      "title": "Central Limit Perspective",
+      "summary": "Gaussian approximation explains the bounds",
+      "startLine": 141,
+      "endLine": 171
+    },
+    {
+      "id": "littlewood-offord",
+      "title": "Littlewood-Offord Connection",
+      "summary": "Related problem on signed sums",
+      "startLine": 173,
+      "endLine": 194
+    },
+    {
+      "id": "proof-sketch",
+      "title": "Proof Sketch",
+      "summary": "Fourier analysis and generating functions",
+      "startLine": 196,
+      "endLine": 216
+    },
+    {
+      "id": "multidim",
+      "title": "Multi-dimensional Generalization",
+      "summary": "Halász's theorem for vector sums",
+      "startLine": 218,
+      "endLine": 238
+    },
+    {
+      "id": "algorithmic",
+      "title": "Algorithmic Perspective",
+      "summary": "Connection to NP-complete subset sum problem",
+      "startLine": 240,
+      "endLine": 262
+    },
+    {
+      "id": "examples",
+      "title": "Explicit Examples",
+      "summary": "Small cases like {1, 2, 3}",
+      "startLine": 323,
+      "endLine": 345
+    },
+    {
+      "id": "exponents",
+      "title": "Comparison of Exponents",
+      "summary": "Why Q1 gives N^(-3/2) and Q2 gives N^(-2)",
+      "startLine": 347,
+      "endLine": 366
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem combining both answers",
+      "startLine": 368,
+      "endLine": 389
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #362 asks about concentration of subset sums. Both questions were answered affirmatively: for any finite set A of size N and target t, the number of subsets summing to t is O(2^N/N^(3/2)) (Sárközy-Szemerédi 1965), and with fixed cardinality O(2^N/N²) (Halász 1977). Stanley showed the symmetric set maximizes concentration using algebraic geometry.",
+    "implications": "**Implications for Combinatorics**\n\n1. **Concentration Inequalities:** Fundamental bounds on how concentrated subset sums can be.\n\n2. **Random Sums:** Most subset sums cluster near the mean, with Gaussian-like distribution.\n\n3. **Algorithmic Applications:** Bounds help design approximate counting algorithms.\n\n4. **Structural Implications:** High concentration implies arithmetic structure in the set.",
+    "openQuestions": [
+      "What is the exact constant in the 2^N/N^(3/2) bound?",
+      "Can the extremal result be proved without algebraic geometry?",
+      "What sets besides symmetric ones achieve near-optimal concentration?",
+      "How does concentration behave for weighted sums?",
+      "What are the optimal bounds in the multidimensional case?"
+    ]
   }
 }
