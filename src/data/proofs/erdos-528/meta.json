@@ -1,33 +1,166 @@
 {
   "id": "erdos-528",
-  "title": "Erdős Problem #528",
+  "title": "Erdős Problem #528: Connective Constant for Self-Avoiding Walks",
   "slug": "erdos-528",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of self-avoiding walks of ... steps (beginning at the origin) in ... (i.e. those walks which do not ...",
+  "description": "Let f(n,k) count n-step self-avoiding walks in ℤ^k. Determine C_k = lim f(n,k)^{1/n}. The limit EXISTS (Hammersley-Morton), bounds k ≤ C_k ≤ 2k-1, Kesten's asymptotic known, but exact closed forms remain OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Hammersley-Morton (1954), Kesten (1963), Jacobsen-Scullard-Guttmann (2016)",
     "sourceUrl": "https://erdosproblems.com/528",
-    "date": "",
-    "status": "pending",
+    "date": "1954-2016",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos528Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "probability",
+      "statistical-mechanics",
+      "self-avoiding-walks"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 528,
     "erdosUrl": "https://erdosproblems.com/528",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter convergence for limit definition",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for n^{1/n}",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for honeycomb constant",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "LatticePoint, Walk, areNeighbors definitions for SAWs",
+      "isSAW definition: self-avoiding walk predicate",
+      "sawCount axiom: counting function f(n,k)",
+      "submultiplicativity axiom: key to limit existence",
+      "limit_exists axiom (Hammersley-Morton 1954)",
+      "connectiveConstant definition: μ_k",
+      "trivial_bounds theorem: k ≤ μ_k ≤ 2k-1",
+      "kesten_asymptotic axiom: C_k = 2k-1 - 1/(2k) + O(1/k²)",
+      "conway_guttmann_lower, alm_upper for C_2 bounds",
+      "jsg_computation for C_2 = 2.6381585303279...",
+      "mu_honeycomb: exact value √(2+√2) from Duminil-Copin/Smirnov"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #528 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n,k)$ count the number of self-avoiding walks of $n$ steps (beginning at the origin) in $\\mathbb{Z}^k$ (i.e. those walks which do not intersect themselves). Determine\\[C_k=\\lim_{n\\to\\infty}f(n,k)^{1/n}.\\]\n\n\n\nThe constant $C_k$ is sometimes known as the connective constant. Hammersley and Morton \\cite{HM54} showed that this limit exists, and it is trivial that $k\\leq C_k\\leq 2k-1$.\n\nKesten \\cite{Ke63} proved that $C_k=2k-1-1/2k+O(1/k^2)$, and more precise asymptotics are given by Clisby, Liang, and Slade \\cite{CLS07}.\n\nConway and Guttmann \\cite{CG93} showed that $C_2\\geq 2.62$ and Alm \\cite{Al93} showed that $C_2\\leq 2.696$. Jacobsen, Scullard, and Guttmann \\cite{JSG16} have computed the first few decimal places of $C_2$, showing that\\[C_2 = 2.6381585303279\\cdots.\\]See also [529].\n\n\n\n\nReferences\n\n\n[Al93] Alm, Sven Erick, Upper bounds for the connective constant of self-avoiding\nwalks. Combin. Probab. Comput. (1993), 115-136.\n\n[CG93] Conway, A. R. and Guttmann, A. J., Lower bound on the connective constant for square lattice\nself-avoiding walks. J. Phys. A (1993), 3719-3724.\n\n[CLS07] Clisby, Nathan and Liang, Richard and Slade, Gordon, Self-avoiding walk enumeration via the lace expansion. J. Phys. A (2007), 10973-11017.\n\n[HM54] Hammersley, J. M. and Morton, K. W., Poor man's Monte Carlo. J. Roy. Statist. Soc. Ser. B (1954), 23-38; discussion 61-75.\n\n[JSG16] Jacobsen, Jesper Lykke and Scullard, Christian R. and\nGuttmann, Anthony J., On the growth constant for square-lattice self-avoiding walks. J. Phys. A (2016), 494004, 18.\n\n[Ke63] Kesten, Harry, On the number of self-avoiding walks. J. Mathematical Phys. (1963), 960-969.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #528** concerns the connective constant for self-avoiding walks (SAWs). A SAW is a path on a lattice that never revisits any vertex—this models polymers in chemistry and physics.\n\n**Historical Development:**\n- **Hammersley-Morton (1954):** Proved the limit C_k = lim f(n,k)^{1/n} exists using submultiplicativity\n- **Kesten (1963):** Proved the asymptotic C_k = 2k-1 - 1/(2k) + O(1/k²)\n- **Conway-Guttmann (1993):** Lower bound C_2 ≥ 2.62\n- **Alm (1993):** Upper bound C_2 ≤ 2.696\n- **Jacobsen-Scullard-Guttmann (2016):** High-precision C_2 = 2.6381585303279...\n- **Duminil-Copin-Smirnov (2012):** Exact honeycomb lattice value μ = √(2+√2)\n\n**Key Insight:** The SAW count f(n,k) is submultiplicative: f(m+n,k) ≤ f(m,k)·f(n,k). This implies the limit exists by Fekete's lemma.",
+    "problemStatement": "**Problem Statement**\n\nLet $f(n,k)$ count self-avoiding walks of $n$ steps starting at the origin in $\\mathbb{Z}^k$.\n\n**Question:** Determine the connective constant:\n$$C_k = \\lim_{n \\to \\infty} f(n,k)^{1/n}$$\n\n**Known Results:**\n- Limit exists (Hammersley-Morton 1954)\n- Bounds: $k \\leq C_k \\leq 2k-1$\n- Kesten's asymptotic: $C_k = 2k-1 - \\frac{1}{2k} + O(k^{-2})$\n- 2D value: $C_2 = 2.6381585303279...$ (numerical)\n\n**Status:** OPEN (exact closed form unknown)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **SAW Definition:** LatticePoint, Walk, areNeighbors, isSelfAvoiding, isSAW\n\n2. **Counting:** sawCount function f(n,k)\n\n3. **Limit Existence:** submultiplicativity → limit exists (Hammersley-Morton)\n\n4. **Connective Constant:** connectiveConstant μ_k\n\n5. **Bounds:** Trivial bounds k ≤ μ_k ≤ 2k-1, Kesten's asymptotic\n\n6. **2D Case:** Conway-Guttmann/Alm bounds, JSG high-precision\n\n7. **Honeycomb:** Exact value √(2+√2) (Duminil-Copin/Smirnov)",
+    "keyInsights": [
+      "**Submultiplicativity:** f(m+n,k) ≤ f(m,k)·f(n,k) implies the limit exists by Fekete's lemma.",
+      "**Trivial Bounds:** Lower k (can always step away from used vertices) and upper 2k-1 (at most 2k directions, one blocked).",
+      "**Kesten's Asymptotic:** For large k, C_k ≈ 2k-1, with correction -1/(2k).",
+      "**2D Mystery:** Despite 70+ years of study, no exact closed form for C_2 is known.",
+      "**Honeycomb Breakthrough:** Duminil-Copin and Smirnov (Fields Medal) proved μ_honeycomb = √(2+√2) exactly.",
+      "**Physical Applications:** SAWs model polymer chains; the critical exponent γ describes sub-exponential corrections."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "saw-definition",
+      "title": "Self-Avoiding Walks in ℤ^k",
+      "summary": "LatticePoint, Walk, areNeighbors, isSAW definitions",
+      "startLine": 37,
+      "endLine": 68
+    },
+    {
+      "id": "counting",
+      "title": "Counting SAWs",
+      "summary": "sawCount function f(n,k), basic values",
+      "startLine": 70,
+      "endLine": 90
+    },
+    {
+      "id": "limit-existence",
+      "title": "Submultiplicativity and Limit Existence",
+      "summary": "Hammersley-Morton theorem, connective constant definition",
+      "startLine": 92,
+      "endLine": 112
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "k ≤ C_k ≤ 2k-1",
+      "startLine": 114,
+      "endLine": 131
+    },
+    {
+      "id": "kesten",
+      "title": "Kesten's Asymptotic (1963)",
+      "summary": "C_k = 2k-1 - 1/(2k) + O(1/k²)",
+      "startLine": 133,
+      "endLine": 147
+    },
+    {
+      "id": "two-dimensional",
+      "title": "Two-Dimensional Case",
+      "summary": "C_2 bounds and high-precision value",
+      "startLine": 149,
+      "endLine": 170
+    },
+    {
+      "id": "higher-dimensions",
+      "title": "Higher Dimensions",
+      "summary": "Large k limit μ_k/k → 2",
+      "startLine": 172,
+      "endLine": 187
+    },
+    {
+      "id": "honeycomb",
+      "title": "Honeycomb Lattice",
+      "summary": "Exact value √(2+√2) by Duminil-Copin/Smirnov",
+      "startLine": 189,
+      "endLine": 205
+    },
+    {
+      "id": "conjectures",
+      "title": "Conjectures",
+      "summary": "Closed form and irrationality conjectures",
+      "startLine": 207,
+      "endLine": 222
+    },
+    {
+      "id": "enumeration",
+      "title": "SAW Enumeration",
+      "summary": "Exact counts for small n in 2D",
+      "startLine": 224,
+      "endLine": 241
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "summary": "Polymer modeling and critical exponents",
+      "startLine": 243,
+      "endLine": 258
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main results",
+      "startLine": 260,
+      "endLine": 286
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #528 asks to determine the connective constant C_k for self-avoiding walks. The limit EXISTS (Hammersley-Morton 1954), bounds k ≤ C_k ≤ 2k-1 are known, Kesten's asymptotic gives C_k ≈ 2k-1 for large k, and C_2 = 2.6381585... is known numerically. However, exact closed forms remain OPEN for all k.",
+    "implications": "**Implications for Mathematics and Physics**\n\n1. **Polymer Physics:** The connective constant governs the exponential growth of polymer configurations.\n\n2. **Combinatorics:** SAW enumeration is a deep combinatorial problem connected to lattice theory.\n\n3. **Statistical Mechanics:** Critical exponents relate to phase transitions and universality.\n\n4. **Algebraic Breakthrough:** The honeycomb lattice exact value by Duminil-Copin/Smirnov uses sophisticated conformal field theory.",
+    "openQuestions": [
+      "Is there a closed form for C_2 (the square lattice connective constant)?",
+      "Is C_k irrational for k ≥ 2?",
+      "What is the exact critical exponent γ for 2D SAWs?",
+      "Can the Duminil-Copin/Smirnov methods be extended to the square lattice?"
+    ]
   }
 }
