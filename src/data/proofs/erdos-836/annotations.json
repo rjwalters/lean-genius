@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-836-overview",
+    "proofId": "erdos-836",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #836: Intersecting 3-Chromatic Hypergraphs**\n\nLet G be an r-uniform hypergraph with chromatic number 3 where any two edges intersect.\n\n**Q1:** Must G have O(r²) vertices? **NO** - Alon's counterexample has ~4^r/√r\n\n**Q2:** Must two edges meet in ≫r vertices? **PARTIAL** - Erdős-Lovász proved ≫r/log r\n\n**Status:** SOLVED",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-836-hypergraph",
+    "proofId": "erdos-836",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "Hypergraph",
+    "content": "**Hypergraph Structure:**\n\nA hypergraph is a collection of edges (subsets) on a vertex set.\n\n```lean\nstructure Hypergraph (V : Type*) where\n  edges : Set (Set V)\n```\n\nUnlike graphs, edges can have more than 2 vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-836-uniform",
+    "proofId": "erdos-836",
+    "range": { "startLine": 52, "endLine": 57 },
+    "type": "definition",
+    "title": "r-Uniform",
+    "content": "**r-Uniform Hypergraph:**\n\nAll edges have exactly r vertices.\n\n```lean\ndef IsUniform (H : Hypergraph V) (r : ℕ) : Prop :=\n  ∀ e ∈ H.edges, (Set.toFinite e).toFinset.card = r\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-836-intersecting",
+    "proofId": "erdos-836",
+    "range": { "startLine": 59, "endLine": 64 },
+    "type": "definition",
+    "title": "Intersecting",
+    "content": "**Intersecting Hypergraph:**\n\nAny two edges share at least one vertex.\n\n```lean\ndef IsIntersecting (H : Hypergraph V) : Prop :=\n  ∀ e₁ ∈ H.edges, ∀ e₂ ∈ H.edges, (e₁ ∩ e₂).Nonempty\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-836-3chromatic",
+    "proofId": "erdos-836",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "3-Chromatic",
+    "content": "**3-Chromatic Hypergraph:**\n\nCan be properly 3-coloured (no monochromatic edge) but not 2-coloured.\n\n```lean\ndef IsThreeChromatic {V : Type*} (H : Hypergraph V) : Prop :=\n  (∃ c : V → Fin 3, IsProperColouring H 3 c) ∧\n  ¬(∃ c : V → Fin 2, IsProperColouring H 2 c)\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-836-question1",
+    "proofId": "erdos-836",
+    "range": { "startLine": 110, "endLine": 119 },
+    "type": "definition",
+    "title": "Question 1",
+    "content": "**Question 1: O(r²) Vertex Bound**\n\nDoes every r-uniform, intersecting, 3-chromatic hypergraph have O(r²) vertices?\n\n**ANSWER: NO**\n\nAlon's counterexample disproves this conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-836-question1-false",
+    "proofId": "erdos-836",
+    "range": { "startLine": 121, "endLine": 125 },
+    "type": "axiom",
+    "title": "question1_false",
+    "content": "**Question 1 is FALSE:**\n\n```lean\naxiom question1_false : ¬Question1\n```\n\nAlon provided a counterexample with exponentially many vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-836-alon",
+    "proofId": "erdos-836",
+    "range": { "startLine": 131, "endLine": 153 },
+    "type": "axiom",
+    "title": "Alon's Construction",
+    "content": "**Alon's Counterexample:**\n\n**Vertices:**\n- X: set of size 2r-2\n- Y: all partitions of X into two equal parts (size C(2r-2,r-1)/2)\n\n**Edges:**\n- All r-subsets of X\n- (r-1)-subsets of X with corresponding partition element from Y\n\n**Result:** ~4^r/√r vertices, exponentially larger than r².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-836-erdos-lovasz",
+    "proofId": "erdos-836",
+    "range": { "startLine": 182, "endLine": 194 },
+    "type": "axiom",
+    "title": "Erdős-Lovász Bound",
+    "content": "**Erdős-Lovász (1975):**\n\nTwo edges must meet in ≫ r/log r vertices.\n\n```lean\ndef ErdosLovaszBound (r : ℕ) : ℝ := r / Real.log r\n```\n\nThis is the best known lower bound. Whether it can be improved to r is open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-836-fano",
+    "proofId": "erdos-836",
+    "range": { "startLine": 200, "endLine": 212 },
+    "type": "concept",
+    "title": "Fano Plane",
+    "content": "**The Fano Plane:**\n\n- Projective plane of order 2\n- 7 points, 7 lines (edges)\n- Each line has 3 points (3-uniform)\n- 3-chromatic and intersecting\n\n**Key property:** No two lines share 2 = r-1 points; any two lines share exactly 1 point.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-836-chromatic-constraint",
+    "proofId": "erdos-836",
+    "range": { "startLine": 246, "endLine": 254 },
+    "type": "axiom",
+    "title": "Chromatic Constraint",
+    "content": "**Chromatic Number Matters:**\n\n- 2-chromatic + intersecting ⟹ star (all edges share one vertex)\n- 3-chromatic allows much more complex structure\n\nThis is why 3-chromatic hypergraphs can have exponentially many vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-836-r3",
+    "proofId": "erdos-836",
+    "range": { "startLine": 267, "endLine": 274 },
+    "type": "example",
+    "title": "r = 3 Case",
+    "content": "**Alon for r = 3:**\n\nX has 2·3-2 = 4 elements.\nY has C(4,2)/2 = 3 elements.\nTotal: 7 vertices.\n\nThis matches the Fano plane!",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-836-summary",
+    "proofId": "erdos-836",
+    "range": { "startLine": 290, "endLine": 319 },
+    "type": "theorem",
+    "title": "erdos_836_summary",
+    "content": "**Complete Summary:**\n\n**Q1:** Must G have O(r²) vertices?\n- **NO** - Alon's counterexample has ~4^r/√r\n\n**Q2:** Must two edges meet in ≫r vertices?\n- **PARTIAL** - Erdős-Lovász proved ≫r/log r\n- Open whether this is optimal\n\n**KEY EXAMPLES:**\n- Fano plane: extremal for r-1 intersection\n- Alon: exponential vertex count",
+    "significance": "critical"
+  }
+]
