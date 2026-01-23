@@ -1,33 +1,168 @@
 {
   "id": "erdos-149",
-  "title": "Erdős Problem #149",
+  "title": "Erdős Problem #149: Strong Chromatic Index Conjecture",
   "slug": "erdos-149",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with maximum degree .... Is ... the union of at most ... sets of strongly independent edges (sets such tha...",
+  "description": "Is χ'_s(G) ≤ (5/4)Δ² for all graphs G with maximum degree Δ? This asks if every graph can be strongly edge-colored using at most (5/4)Δ² colors. OPEN - best bound is 1.772Δ² (Hurley-de Joannis de Verclos-Kang 2022).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Nešetřil (1985), many contributors",
     "sourceUrl": "https://erdosproblems.com/149",
-    "date": "",
+    "date": "1985-2022",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos149Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "edge-coloring",
+      "chromatic-index",
+      "combinatorics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 149,
     "erdosUrl": "https://erdosproblems.com/149",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Simple graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets for max degree",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      }
+    ],
+    "originalContributions": [
+      "maxDegree definition for SimpleGraph",
+      "edgesAtDistance2 definition: edges at distance ≤ 2",
+      "StrongEdgeColoring structure",
+      "strongChromaticIndex definition",
+      "ErdosNesetrilConjecture definition",
+      "Progress timeline: trivial → Molloy-Reed → Bruhn-Joos → Bonamy-Perrett-Postle → Hurley et al.",
+      "conjecture_is_tight axiom: C₅ blow-up achieves (5/4)Δ²",
+      "cliqueNumber_LineSquare axiom and related bounds",
+      "StronglyIndependentEdges definition",
+      "IsInducedMatching definition",
+      "current_gap theorem: 1.772 - 1.25 = 0.522"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #149 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with maximum degree $\\Delta$. Is $G$ the union of at most $\\tfrac{5}{4}\\Delta^2$ sets of strongly independent edges (sets such that the induced subgraph is the union of vertex-disjoint edges)?\n\n\n\nAsked by Erd\\H{o}s and Ne\\v{s}et\\v{r}il in 1985 (see \\cite{FGST89}). This is equivalent to asking whether the chromatic number of the square of the line graph $L(G)^2$ is at most $\\frac{5}{4}\\Delta^2$.\n\nThis bound would be the best possible, as witnessed by a blowup of $C_5$. The minimum number of such sets required is sometimes called the strong chromatic index of $G$.\n\nThe weaker conjecture that there exists some $c>0$ such that $(2-c)\\Delta^2$ sets suffice was proved by Molloy and Reed \\cite{MoRe97}, who proved that $1.998\\Delta^2$ sets suffice (for $\\Delta$ sufficiently large). This was improved to $1.93\\Delta^2$ by Bruhn and Joos \\cite{BrJo18} and to $1.835\\Delta^2$ by Bonamy, Perrett, and Postle \\cite{BPP22}. The best bound currently available is\\[1.772\\Delta^2,\\]proved by Hurley, de Joannis de Verclos, and Kang \\cite{HJK22}. Mahdian has, in their Masters' thesis, proved an upper bound of $(2+o(1))\\frac{\\Delta^2}{\\log \\Delta}$ under the additional assumption that $G$ is $C_4$-free.\n\nErd\\H{o}s and Ne\\v{s}et\\v{r}il also asked the easier problem of whether $G$ containing at least $\\tfrac{5}{4}\\Delta^2$ many edges implies $G$ containing two strongly independent edges. This was proved by Chung, Gy\\'{a}rf\\'{a}s, Tuza, and Trotter \\cite{CGTT90}.\n\nIt is still open even whether the clique number of $L(G)^2$ at most $\\frac{5}{4}\\Delta^2$. Let $\\omega=\\omega(L(G)^2)$ be this clique number. \\'{S}leszy\\'{n}ska-Nowak \\cite{Sl15} proved $\\omega \\leq \\frac{3}{2}\\Delta^2$. Faron and Postle \\cite{FaPo19} proved $\\omega\\leq \\frac{4}{3}\\Delta^2$. Cames van Batenburg, Kang, and Pirot \\cite{CKP20} have proved $\\omega\\leq \\frac{5}{4}\\Delta^2$ under the additional assumption that $G$ is triangle-free (and $\\omega\\leq \\Delta^2$ if $G$ is $C_5$-free).\n\n\n\n\nReferences\n\n\n[BPP22] Bonamy, Marthe and Perrett, Thomas and Postle, Luke, Colouring graphs with sparse neighbourhoods: bounds and\napplications. J. Combin. Theory Ser. B (2022), 278-317.\n\n[BrJo18] Bruhn, Henning and Joos, Felix, A stronger bound for the strong chromatic index. Combin. Probab. Comput. (2018), 21-43.\n\n[CGTT90] Chung, F. R. K. and Gy\\'arf\\'as, A. and Tuza, Z. and Trotter,\nW. T., The maximum number of edges in {$2K_2$}-free graphs of bounded\ndegree. Discrete Math. (1990), 129--135.\n\n[CKP20] Cames van Batenburg, Wouter and Kang, Ross J. and Pirot,\nFran\\c cois, Strong cliques and forbidden cycles. Indag. Math. (N.S.) (2020), 64--82.\n\n[FGST89] Faudree, R. J. and Gy\\'{a}rf\\'{a}s, A. and Schelp, R. H. and Tuza,\nZs., Induced matchings in bipartite graphs. Discrete Math. (1989), 83-87.\n\n[FaPo19] Faron, Maxime and Postle, Luke, On the clique number of the square of a line graph and its\nrelation to maximum degree of the line graph. J. Graph Theory (2019), 261--274.\n\n[HJK22] Hurley, Eoin and de Joannis de Verclos, R\\'{e}mi and Kang, Ross\nJ., An improved procedure for colouring graphs of bounded local\ndensity. Adv. Comb. (2022), Paper No. 7, 33.\n\n[MoRe97] Molloy, Michael and Reed, Bruce, A bound on the strong chromatic index of a graph. J. Combin. Theory Ser. B (1997), 103-109.\n\n[Sl15] No reference found.\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #149** is the Erdős-Nešetřil conjecture on strong edge coloring, posed in 1985.\n\n**Historical Development:**\n- **1985:** Erdős and Nešetřil conjecture χ'_s(G) ≤ (5/4)Δ²\n- **1990:** Chung-Gyárfás-Tuza-Trotter prove the easier 'two edge' version\n- **1997:** Molloy-Reed break the factor-2 barrier with 1.998Δ²\n- **2018:** Bruhn-Joos improve to 1.93Δ²\n- **2022:** Bonamy-Perrett-Postle achieve 1.835Δ²\n- **2022:** Hurley-de Joannis de Verclos-Kang prove current best 1.772Δ²\n\n**Tightness:** The blow-up of C₅ achieves exactly (5/4)Δ², so if true, the conjecture is best possible.\n\n**Related Problems:** The clique number conjecture ω(L(G)²) ≤ (5/4)Δ² is weaker and also open for general graphs.",
+    "problemStatement": "**Problem Statement**\n\nLet $G$ be a graph with maximum degree $\\Delta$. Is $G$ the union of at most $(5/4)\\Delta^2$ sets of **strongly independent edges** (sets such that the induced subgraph is the union of vertex-disjoint edges)?\n\n**Equivalent Formulations:**\n1. Is the **strong chromatic index** $\\chi'_s(G) \\leq (5/4)\\Delta^2$?\n2. Is the chromatic number of $L(G)^2$ (square of the line graph) at most $(5/4)\\Delta^2$?\n\n**Status:** OPEN\n\n**Best Known Bounds:**\n- Upper: $\\chi'_s(G) \\leq 1.772\\Delta^2$ (Hurley-de Joannis de Verclos-Kang 2022)\n- Lower: $(5/4)\\Delta^2$ is achievable (blow-up of $C_5$)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** maxDegree, edgesAtDistance2, StrongEdgeColoring, strongChromaticIndex\n\n2. **The Conjecture:** ErdosNesetrilConjecture as χ'_s(G) ≤ (5/4)Δ²\n\n3. **Progress Timeline:** Axiomatize the sequence of improving bounds\n\n4. **Tightness:** C₅ blow-up construction achieves the conjectured bound\n\n5. **Related Problems:** Clique number of L(G)², strongly independent edge pairs\n\n6. **Special Cases:** Results for C₄-free, triangle-free, bipartite graphs",
+    "keyInsights": [
+      "**Strong Edge Coloring:** Two edges need different colors if they share a vertex OR both touch a common third vertex. This is much more restrictive than ordinary edge coloring.",
+      "**Line Graph Square:** χ'_s(G) = χ(L(G)²). The strong chromatic index is the chromatic number of the square of the line graph.",
+      "**The C₅ Blow-up:** Replace each vertex of C₅ with Δ/2 vertices to get a graph achieving exactly (5/4)Δ². This shows the conjecture, if true, is tight.",
+      "**Steady Progress:** The bound has improved from 2Δ² to 1.772Δ² over 25 years, but a significant gap to 1.25Δ² remains.",
+      "**Probabilistic Methods:** Best bounds use Lovász Local Lemma and entropy compression techniques.",
+      "**Special Classes:** Better bounds are known for C₄-free graphs ((2+o(1))Δ²/log Δ) and triangle-free graphs (clique number ≤ (5/4)Δ²)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "maxDegree, edgesAtDistance2, StrongEdgeColoring, strongChromaticIndex",
+      "startLine": 38,
+      "endLine": 65
+    },
+    {
+      "id": "line-graph",
+      "title": "Line Graph and Its Square",
+      "summary": "lineGraph, graphSquare, χ'_s = χ(L(G)²)",
+      "startLine": 67,
+      "endLine": 81
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Nešetřil Conjecture (1985)",
+      "summary": "ErdosNesetrilConjecture, tightness via C₅ blow-up",
+      "startLine": 83,
+      "endLine": 107
+    },
+    {
+      "id": "bounds",
+      "title": "Upper Bounds - Progress History",
+      "summary": "Timeline from 2Δ² to 1.772Δ²",
+      "startLine": 109,
+      "endLine": 148
+    },
+    {
+      "id": "special",
+      "title": "Special Graph Classes",
+      "summary": "C₄-free (Mahdian), bipartite bounds",
+      "startLine": 150,
+      "endLine": 171
+    },
+    {
+      "id": "clique",
+      "title": "Clique Number of L(G)²",
+      "summary": "ω(L(G)²) bounds: 3/2 → 4/3, triangle-free case",
+      "startLine": 173,
+      "endLine": 204
+    },
+    {
+      "id": "pairs",
+      "title": "Strongly Independent Edge Pairs",
+      "summary": "Chung-Gyárfás-Tuza-Trotter 1990",
+      "startLine": 206,
+      "endLine": 222
+    },
+    {
+      "id": "matchings",
+      "title": "Induced Matchings",
+      "summary": "IsInducedMatching, partition characterization",
+      "startLine": 224,
+      "endLine": 239
+    },
+    {
+      "id": "small",
+      "title": "Small Cases and Exact Values",
+      "summary": "Complete graphs, paths, cycles",
+      "startLine": 241,
+      "endLine": 257
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Method Approach",
+      "summary": "Lovász Local Lemma, entropy compression",
+      "startLine": 259,
+      "endLine": 271
+    },
+    {
+      "id": "algorithmic",
+      "title": "Algorithmic Aspects",
+      "summary": "NP-hardness, approximation algorithms",
+      "startLine": 273,
+      "endLine": 285
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status OPEN, gap 1.772 vs 1.25",
+      "startLine": 287,
+      "endLine": 313
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #149 (Erdős-Nešetřil Conjecture) asks whether every graph with max degree Δ has strong chromatic index at most (5/4)Δ². The conjecture remains OPEN. Best upper bound is 1.772Δ² (Hurley et al. 2022). The C₅ blow-up achieves the conjectured bound, showing it would be tight if true.",
+    "implications": "**Implications for Graph Theory**\n\n1. **Edge Coloring Theory:** Strong edge coloring is a natural generalization connecting ordinary edge coloring to distance-2 coloring.\n\n2. **Structural Graph Theory:** Understanding χ'_s reveals information about local graph structure around edges.\n\n3. **Probabilistic Combinatorics:** The problem has driven development of Local Lemma and entropy compression techniques.\n\n4. **Algorithmic Complexity:** While computing χ'_s is NP-hard, the bounds give efficient approximation algorithms.",
+    "openQuestions": [
+      "Is χ'_s(G) ≤ (5/4)Δ² for all graphs G? (The main conjecture)",
+      "Is ω(L(G)²) ≤ (5/4)Δ² for all graphs G? (The weaker clique version)",
+      "Can the bound be improved below 1.772Δ² with current techniques?",
+      "What is χ'_s for specific graph families (planar, bounded treewidth)?",
+      "Can the conjecture be proved for bipartite graphs?"
+    ]
   }
 }
