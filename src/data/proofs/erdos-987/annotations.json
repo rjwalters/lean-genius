@@ -195,7 +195,7 @@
   {
     "id": "ann-e987-main",
     "proofId": "erdos-987",
-    "range": { "startLine": 275, "endLine": 301 },
+    "range": { "startLine": 282, "endLine": 312 },
     "type": "theorem",
     "title": "Main Result",
     "content": "**erdos_987:**\n\nSummary of what's known:\n\n1. Aₖ → ∞ for any sequence\n2. Aₖ ≥ C√k infinitely often\n3. ∃ sequences with Aₖ ≤ k always\n\n```lean\ntheorem erdos_987 :\n    (∀ x, Aₖ unbounded) ∧\n    (∀ x, Aₖ ≥ C√k i.o.) ∧\n    (∃ x, Aₖ ≤ k always)\n```",
@@ -204,7 +204,7 @@
   {
     "id": "ann-e987-gap",
     "proofId": "erdos-987",
-    "range": { "startLine": 303, "endLine": 310 },
+    "range": { "startLine": 314, "endLine": 319 },
     "type": "theorem",
     "title": "The Gap",
     "content": "**erdos_987_gap:**\n\nStatus: PARTIALLY OPEN\n\nWe know:\n- Lower: Aₖ is NOT o(√k)\n- Upper: Aₖ IS O(k) for some sequences\n\nOpen: Is o(k) achievable?",
