@@ -1,1 +1,143 @@
-[]
+[
+  {
+    "id": "ann-e294-header",
+    "proofId": "erdos-294",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #294: Egyptian Fractions and t(N)**\n\nLet t(N) = min{t : no Egyptian representation of 1 exists with denominators in [t, N]}.\n\n**Question:** Estimate t(N).\n\n**Solution:**\n- Erdős-Graham (1980): t(N) ≪ N/log N\n- Liu-Sawhney (2024): t(N) ≫ N/((log N)(log log N)³...)\n\n**Status:** SOLVED",
+    "mathContext": "From the 1980 Erdős-Graham monograph.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Harmonic sums", "Unit fractions"]
+  },
+  {
+    "id": "ann-e294-unit-fraction",
+    "proofId": "erdos-294",
+    "range": { "startLine": 52, "endLine": 52 },
+    "type": "definition",
+    "title": "Unit Fraction",
+    "content": "**unitFraction:**\n\n1/n for positive integer n.\n\n```lean\ndef unitFraction (n : ℕ) : ℚ := 1 / n\n```\n\nUnit fractions are the building blocks of Egyptian fractions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e294-egyptian-sum",
+    "proofId": "erdos-294",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "definition",
+    "title": "Egyptian Sum",
+    "content": "**egyptianSum:**\n\n∑_{n ∈ S} 1/n for a finite set S.\n\n```lean\ndef egyptianSum (S : Finset ℕ) : ℚ :=\n  ∑ n ∈ S, unitFraction n\n```\n\nAn Egyptian fraction is a sum of distinct unit fractions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-rep-of-1",
+    "proofId": "erdos-294",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "Egyptian Representation of 1",
+    "content": "**isEgyptianRepresentationOf1:**\n\nA set S with egyptianSum(S) = 1.\n\n```lean\ndef isEgyptianRepresentationOf1 (S : Finset ℕ) : Prop :=\n  S.Nonempty ∧ (∀ n ∈ S, n ≥ 1) ∧ egyptianSum S = 1\n```\n\nExample: {2, 3, 6} since 1/2 + 1/3 + 1/6 = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-constrained",
+    "proofId": "erdos-294",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "definition",
+    "title": "Constrained Representation",
+    "content": "**hasConstrainedRepresentation:**\n\nCan we represent 1 using denominators only from [t, N]?\n\n```lean\ndef hasConstrainedRepresentation (t N : ℕ) : Prop :=\n  ∃ S : Finset ℕ, S.Nonempty ∧\n    (∀ n ∈ S, t ≤ n ∧ n ≤ N) ∧\n    egyptianSum S = 1\n```\n\nThis is the core question: which intervals [t, N] allow such representations?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-t-func",
+    "proofId": "erdos-294",
+    "range": { "startLine": 94, "endLine": 98 },
+    "type": "definition",
+    "title": "The t(N) Function",
+    "content": "**t_func:**\n\nt(N) = min{t : no representation of 1 exists in [t, N]}.\n\n```lean\nnoncomputable def t_func (N : ℕ) : ℕ :=\n  Nat.find (⟨N + 1, ...⟩ : ∃ t, ¬hasConstrainedRepresentation t N)\n```\n\nThis is the central object of Problem #294.",
+    "mathContext": "t(N)-1 is the last starting point that works.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-small-values",
+    "proofId": "erdos-294",
+    "range": { "startLine": 116, "endLine": 125 },
+    "type": "theorem",
+    "title": "Small Values of t(N)",
+    "content": "**t_2 and t_6_lower:**\n\n- t(2) = 2: Only {2} available, sum = 1/2 ≠ 1\n- t(6) > 2: {2, 3, 6} gives 1/2 + 1/3 + 1/6 = 1\n\nComputed values: t(2)=2, t(3)=2, t(4)=2, t(5)=2, t(6)=3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e294-harmonic",
+    "proofId": "erdos-294",
+    "range": { "startLine": 131, "endLine": 139 },
+    "type": "definition",
+    "title": "Harmonic Sum",
+    "content": "**harmonicSum:**\n\nH_N = ∑_{k=1}^N 1/k ≈ log(N) + γ.\n\n```lean\nnoncomputable def harmonicSum (N : ℕ) : ℚ :=\n  ∑ k ∈ Finset.range (N + 1), if k ≥ 1 then unitFraction k else 0\n```\n\nThe harmonic sum grows logarithmically, which connects to t(N)'s behavior.",
+    "mathContext": "γ ≈ 0.5772 is Euler's constant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e294-erdos-graham",
+    "proofId": "erdos-294",
+    "range": { "startLine": 151, "endLine": 155 },
+    "type": "axiom",
+    "title": "Erdős-Graham Upper Bound",
+    "content": "**erdos_graham_1980:**\n\nt(N) ≪ N/log N.\n\n```lean\ndef erdosGrahamUpperBound : Prop :=\n  ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    (t_func N : ℝ) ≤ C * N / Real.log N\n```\n\nFrom the 1980 monograph. They admitted no knowledge of the true order of t(N).",
+    "mathContext": "Erdős and Graham (1980)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-liu-sawhney-lower",
+    "proofId": "erdos-294",
+    "range": { "startLine": 173, "endLine": 176 },
+    "type": "definition",
+    "title": "Liu-Sawhney Lower Bound",
+    "content": "**liuSawhneyLowerBound:**\n\nt(N) ≫ N/((log N)(log log N)³(log log log N)^O(1)).\n\n```lean\ndef liuSawhneyLowerBound : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ∃ C : ℕ, ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    (t_func N : ℝ) ≥ c * N / ((Real.log N) * (Real.log (Real.log N))^3 * ...)\n```\n\nThis matches the upper bound up to polylog factors.",
+    "mathContext": "Liu-Sawhney arXiv:2404.07113 (2024)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-main-theorem",
+    "proofId": "erdos-294",
+    "range": { "startLine": 191, "endLine": 192 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_294:**\n\nt(N) ≍ N/((log N)(log log N)^O(1)).\n\n```lean\ntheorem erdos_294 : liuSawhneyTheorem :=\n  liu_sawhney_2024\n```\n\nThe Liu-Sawhney theorem resolves Problem #294.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-density",
+    "proofId": "erdos-294",
+    "range": { "startLine": 203, "endLine": 208 },
+    "type": "theorem",
+    "title": "Density Interpretation",
+    "content": "**almost_all_work:**\n\nAlmost all t ∈ [1, N] allow representations.\n\n```lean\ndef densityInterpretation : Prop :=\n  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    (N - t_func N : ℝ) / N > 1 - ε\n```\n\nThe 'bad' starting points form a sparse set of density ≈ log(N)/N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e294-greedy",
+    "proofId": "erdos-294",
+    "range": { "startLine": 254, "endLine": 255 },
+    "type": "axiom",
+    "title": "Greedy Algorithm",
+    "content": "**greedy_terminates:**\n\nThe greedy Egyptian fraction algorithm always terminates.\n\n```lean\naxiom greedy_terminates (q : ℚ) (hq : 0 < q ∧ q < 1) :\n    ∃ S : Finset ℕ, egyptianSum S = q\n```\n\nRepeatedly subtract the largest unit fraction ≤ q.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e294-summary",
+    "proofId": "erdos-294",
+    "range": { "startLine": 297, "endLine": 302 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_294_summary:**\n\n```lean\ntheorem erdos_294_summary :\n    erdosGrahamUpperBound ∧\n    liuSawhneyLowerBound := by\n  exact liu_sawhney_2024\n```\n\nCombines both bounds into the complete solution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e294-status",
+    "proofId": "erdos-294",
+    "range": { "startLine": 317, "endLine": 317 },
+    "type": "axiom",
+    "title": "Problem Status",
+    "content": "**erdos_294_status:**\n\n**SOLVED**\n\n- Upper bound: PROVED (Erdős-Graham 1980)\n- Lower bound: PROVED (Liu-Sawhney 2024)\n- Asymptotic: t(N) ≍ N/((log N)(log log N)^O(1))\n\nResolved up to polylogarithmic factors in 2024.",
+    "significance": "critical"
+  }
+]
