@@ -1,7 +1,7 @@
 {
   "slug": "erdos-951",
   "title": "Erdős #951",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T12:22:36.006Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Problem formally stated. No tractable proof approach identified.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized problem statement with BeurlingSeq type, hasGapCondition predicate, and countingFn. Problem is OPEN with no known approach.",
+    "builtItems": [
+      "proofs/Proofs/Erdos951Problem.lean: BeurlingSeq structure",
+      "proofs/Proofs/Erdos951Problem.lean: hasGapCondition predicate",
+      "proofs/Proofs/Erdos951Problem.lean: countingFn definition",
+      "proofs/Proofs/Erdos951Problem.lean: erdos_951_conjecture statement"
+    ],
+    "insights": [
+      "The gap condition |∏aᵢ^{kᵢ} - ∏aⱼ^{ℓⱼ}| ≥ 1 for distinct tuples is a multiplicative lattice-freeness condition",
+      "Conjecture: counting function of any such sequence is bounded by π(x)",
+      "This suggests primes are optimally dense among well-separated multiplicative sequences",
+      "Related to Beurling prime number theory and primitive sequence density bounds",
+      "No partial results or known approaches exist in the literature"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Study concrete examples of dense Beurling sequences",
+      "Investigate connections to lattice-free sets",
+      "Research Beurling PNT for potential upper bound approaches"
+    ],
     "markdown": "# Erdős #951 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]\n\n\n\nErd\\H{o}s says this question was asked 'during [his] lecture at Queens College [by] one member of the audience (perhaps S. Shapiro)'. Such a sequence of $a_i$ is sometimes called a set of Beurling prime numbers.\n\nBeurling conjectured that if the number of reals in $[1,x]$ of the form $\\prod a_i^{k_i}$ is $x+o(\\log x)$ then the $a_i$ must be the sequence of primes.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #950\n- Problem #952\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
