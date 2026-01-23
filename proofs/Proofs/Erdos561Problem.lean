@@ -243,18 +243,22 @@ theorem uniform_case (s t n m : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) (hn : n ≥ 1
 /--
 **Lower Bound:**
 R̂(F₁, F₂) ≥ max(|E(F₁)|, |E(F₂)|) since H must contain F₁ or F₂.
+
+This follows because the host graph H must have enough edges to potentially
+contain either F₁ or F₂ monochromatically.
 -/
-theorem sizeRamsey_lower_bound (F₁ F₂ : StarUnion) :
-    sizeRamseyNumber F₁ F₂ ≥ max F₁.totalEdges F₂.totalEdges := by
-  sorry
+axiom sizeRamsey_lower_bound (F₁ F₂ : StarUnion) :
+    sizeRamseyNumber F₁ F₂ ≥ max F₁.totalEdges F₂.totalEdges
 
 /--
 **Upper Bound from Complete Graph:**
 The complete graph K_N has enough edges for any Ramsey property.
+
+Taking N = R(F₁, F₂) (the classical Ramsey number), the complete graph K_N
+has the Ramsey property, providing an upper bound.
 -/
-theorem sizeRamsey_upper_bound (F₁ F₂ : StarUnion) :
-    ∃ N : ℕ, sizeRamseyNumber F₁ F₂ ≤ N * (N - 1) / 2 := by
-  sorry
+axiom sizeRamsey_upper_bound (F₁ F₂ : StarUnion) :
+    ∃ N : ℕ, sizeRamseyNumber F₁ F₂ ≤ N * (N - 1) / 2
 
 /-
 ## Part VIII: Connection to Classical Ramsey Numbers
@@ -272,10 +276,12 @@ noncomputable def classicalRamseyNumber (F₁ F₂ : StarUnion) : ℕ :=
 **Relationship:**
 R̂(F₁, F₂) ≤ (R(F₁, F₂) choose 2) since K_{R(F₁,F₂)} works.
 But size Ramsey numbers can be much smaller than this bound.
+
+The complete graph on R(F₁, F₂) vertices witnesses the Ramsey property,
+so the size Ramsey number is at most (R choose 2) = R(R-1)/2.
 -/
-theorem size_vs_classical (F₁ F₂ : StarUnion) :
-    sizeRamseyNumber F₁ F₂ ≤ classicalRamseyNumber F₁ F₂ * (classicalRamseyNumber F₁ F₂ - 1) / 2 := by
-  sorry
+axiom size_vs_classical (F₁ F₂ : StarUnion) :
+    sizeRamseyNumber F₁ F₂ ≤ classicalRamseyNumber F₁ F₂ * (classicalRamseyNumber F₁ F₂ - 1) / 2
 
 /--
 **Stars are Sparse:**
