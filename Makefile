@@ -7,6 +7,7 @@
         status status-enhancers status-research status-aristotle \
         build test lint \
         enhance research aristotle aristotle-loop \
+        deploy deployer deployer-stop deployer-attach deployer-logs deployer-status \
         continue pause stop signals \
         prune
 
@@ -37,6 +38,14 @@ help:
 	@echo "  make enhance N=3      - Launch N parallel enhancer agents"
 	@echo "  make research N=2     - Launch N parallel research agents"
 	@echo "  make aristotle        - Launch Aristotle queue management agent"
+	@echo ""
+	@echo "Deploy:"
+	@echo "  make deploy           - Run deploy pipeline once (merge PRs, sync, build, deploy)"
+	@echo "  make deployer         - Launch autonomous deployer agent (default 30min interval)"
+	@echo "  make deployer-stop    - Stop the deployer agent"
+	@echo "  make deployer-attach  - Attach to deployer session"
+	@echo "  make deployer-logs    - Tail deployer logs"
+	@echo "  make deployer-status  - Check deployer status"
 	@echo ""
 	@echo "Signals:"
 	@echo "  make continue         - Signal all agents to continue work"
@@ -153,6 +162,31 @@ aristotle-attach:
 
 aristotle-logs:
 	./scripts/aristotle/launch-agent.sh --logs
+
+# ============================================================================
+# Deploy targets
+# ============================================================================
+
+# Run deploy pipeline once (manual)
+deploy:
+	./scripts/deploy/sync-and-deploy.sh
+
+# Deployer agent (merges PRs, syncs data, builds, deploys)
+# INTERVAL defaults to 30 minutes
+deployer:
+	DEPLOYER_INTERVAL=$(INTERVAL) ./scripts/deploy/launch-agent.sh
+
+deployer-stop:
+	./scripts/deploy/launch-agent.sh --stop
+
+deployer-attach:
+	./scripts/deploy/launch-agent.sh --attach
+
+deployer-logs:
+	./scripts/deploy/launch-agent.sh --logs
+
+deployer-status:
+	./scripts/deploy/launch-agent.sh --status
 
 # ============================================================================
 # Signal management targets
