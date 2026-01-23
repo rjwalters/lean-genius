@@ -1,33 +1,91 @@
 {
   "id": "erdos-230",
-  "title": "Erdős Problem #230",
+  "title": "Erdős Problem #230: Ultraflat Polynomials on the Unit Circle",
   "slug": "erdos-230",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... for some ... with ... for .... Does there exist a constant ... such that, for ..., we have\\[\\max_{\\lvert z\\rvert=1}\\l...",
+  "description": "For unimodular polynomials P(z) = Σ a_k z^k with |a_k| = 1, does max_{|z|=1} |P(z)| ≥ (1+c)√n for some c > 0? ANSWER: NO. Kahane (1980) constructed 'ultraflat' polynomials achieving (1+o(1))√n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Newman (conjecture), Kahane (disproof, 1980), Bombieri-Bourgain (2009)",
     "sourceUrl": "https://erdosproblems.com/230",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "axiom-dependent",
     "proofRepoPath": "Proofs/Erdos230Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "polynomials",
+      "harmonic-analysis",
+      "ultraflat"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 230,
     "erdosUrl": "https://erdosproblems.com/230",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #230 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P(z)=\\sum_{1\\leq k\\leq n}a_kz^k$ for some $a_k\\in \\mathbb{C}$ with $\\lvert a_k\\rvert=1$ for $1\\leq k\\leq n$. Does there exist a constant $c>0$ such that, for $n\\geq 2$, we have\\[\\max_{\\lvert z\\rvert=1}\\lvert P(z)\\rvert \\geq (1+c)\\sqrt{n}?\\]\n\n\n\nThis is Problem 4.31 in \\cite{Ha74}, in which it is described as a conjecture of Erd\\H{o}s and Newman.\n\nThe lower bound of $\\sqrt{n}$ is trivial from Parseval's theorem. The answer is no (contrary to Erd\\H{o}s' initial guess). Kahane \\cite{Ka80} constructed 'ultraflat' polynomials $P(z)=\\sum a_kz^k$ with $\\lvert a_k\\rvert=1$ such that\\[P(z)=(1+o(1))\\sqrt{n}\\]uniformly for all $z\\in\\mathbb{C}$ with $\\lvert z\\rvert=1$, where the $o(1)$ term $\\to 0$ as $n\\to \\infty$.\n\nFor more details see the paper \\cite{BoBo09} of Bombieri and Bourgain and where Kahane's construction is improved to yield such a polynomial with\\[P(z)=\\sqrt{n}+O(n^{\\frac{7}{18}}(\\log n)^{O(1)})\\]for all $z\\in\\mathbb{C}$ with $\\lvert z\\rvert=1$.\n\n\nSee also [228].\n\n\n\n\nReferences\n\n\n[BoBo09] Bombieri, Enrico and Bourgain, Jean, On Kahane's ultraflat polynomials. J. Eur. Math. Soc. (JEMS) (2009), 627-703.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Ka80] Kahane, Jean-Pierre, Sur les polyn\\^{o}mes \\`a coefficients unimodulaires. Bull. London Math. Soc. (1980), 321-342.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Newman conjectured in 1957/1961 that for unimodular polynomials (all coefficients on the unit circle), the sup norm on the unit circle must exceed √n by a fixed multiplicative factor (1+c). This appeared as Problem 4.31 in Halberstam (1974). Surprisingly, Kahane (1980) disproved this by constructing 'ultraflat' polynomials where the sup norm is only (1+o(1))√n. Bombieri and Bourgain (2009) improved the error term to O(n^{7/18}).",
+    "problemStatement": "Let P(z) = Σ_{1≤k≤n} a_k z^k with |a_k| = 1 for all k. Does there exist c > 0 such that max_{|z|=1} |P(z)| ≥ (1+c)√n for all n ≥ 2?",
+    "proofStrategy": "The problem is DISPROVED. The formalization captures: (1) Unimodular polynomials and their evaluation, (2) The trivial √n lower bound from Parseval, (3) The false Erdős-Newman conjecture, (4) Kahane's ultraflat polynomial theorem showing the conjecture is false, (5) Bombieri-Bourgain's improved error bounds.",
+    "keyInsights": [
+      "Parseval gives trivial lower bound: max |P(z)| ≥ ‖P‖_2 = √n",
+      "Erdős conjectured max |P(z)| ≥ (1+c)√n - this is FALSE",
+      "Kahane (1980): Ultraflat polynomials exist with |P(z)| = (1+o(1))√n uniformly",
+      "Bombieri-Bourgain (2009): Error can be O(n^{7/18}) - still improving",
+      "Perfect flatness |P(z)| = √n is impossible (P would be constant)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "unimodular",
+      "title": "Unimodular Polynomials",
+      "summary": "UnimodularPolynomial structure and evaluation",
+      "startLine": 43,
+      "endLine": 67
+    },
+    {
+      "id": "parseval",
+      "title": "Parseval's Identity",
+      "summary": "L² norm equals √n, trivial lower bound",
+      "startLine": 69,
+      "endLine": 95
+    },
+    {
+      "id": "conjecture",
+      "title": "The False Conjecture",
+      "summary": "ErdosNewmanConjecture definition and falsehood",
+      "startLine": 97,
+      "endLine": 119
+    },
+    {
+      "id": "kahane",
+      "title": "Kahane's Ultraflat Polynomials",
+      "summary": "IsUltraflat definition and Kahane's theorem",
+      "startLine": 121,
+      "endLine": 155
+    },
+    {
+      "id": "bombieri-bourgain",
+      "title": "Bombieri-Bourgain Improvement",
+      "summary": "Error bound O(n^{7/18})",
+      "startLine": 173,
+      "endLine": 194
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main results: conjecture disproved",
+      "startLine": 256,
+      "endLine": 294
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #230 asked whether unimodular polynomials must have sup norm at least (1+c)√n for some universal c > 0. Kahane (1980) disproved this by constructing 'ultraflat' polynomials where the sup norm approaches √n arbitrarily closely. The problem is SOLVED (answer: NO).",
+    "implications": "Ultraflat polynomials are a surprising phenomenon in harmonic analysis. They show that unimodular polynomials can have remarkably uniform behavior on the unit circle. The Bombieri-Bourgain improvement to O(n^{7/18}) error suggests even flatter polynomials may exist.",
+    "openQuestions": [
+      "Can the error in ultraflat polynomials be reduced to O(1)?",
+      "What is the optimal error exponent (better than 7/18)?",
+      "Explicit constructions of ultraflat polynomials?",
+      "Similar questions for Littlewood polynomials (±1 coefficients)?"
+    ]
   }
 }

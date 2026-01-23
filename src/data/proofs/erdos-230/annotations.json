@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-230-1",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview: DISPROVED",
+    "content": "Erdős Problem #230 asked: for unimodular P(z) = Σ a_k z^k with |a_k| = 1, does max_{|z|=1} |P(z)| ≥ (1+c)√n for some universal c > 0?\n\n**ANSWER: NO** (Kahane 1980)\n\n**Key insight:** 'Ultraflat' polynomials exist where max |P(z)| = (1+o(1))√n, arbitrarily close to the Parseval lower bound √n.\n\nThis was a surprising disproof of Erdős's original conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-2",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Unimodular Polynomial",
+    "content": "**UnimodularPolynomial:**\n\nA polynomial P(z) = Σ a_k z^k where every coefficient a_k lies on the unit circle: |a_k| = 1.\n\n**Examples:** Random phases e^{iθ_k}, or ±1 (Littlewood polynomials).\n\nThe constraint |a_k| = 1 makes this a natural class to study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-3",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 62,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Sup Norm on Unit Circle",
+    "content": "**supNormOnCircle:**\n\n‖P‖_∞ = max_{|z|=1} |P(z)|\n\nThis is what we want to bound below. The question is: how close can it get to √n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-4",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Parseval's Identity",
+    "content": "**parseval_identity:**\n\nFor unimodular P of degree n:\n‖P‖_2² = Σ |a_k|² = n\n\nSo ‖P‖_2 = √n exactly. This gives the trivial lower bound ‖P‖_∞ ≥ √n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-5",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 101,
+      "endLine": 111
+    },
+    "type": "definition",
+    "title": "The False Conjecture",
+    "content": "**ErdosNewmanConjecture:**\n\n∃ c > 0 such that ∀ unimodular P: ‖P‖_∞ ≥ (1+c)√n\n\nErdős and Newman conjectured this in 1957/1961. They believed the sup norm must be bounded away from √n.\n\n**This is FALSE** - Kahane showed ultraflat polynomials exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-6",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 125,
+      "endLine": 133
+    },
+    "type": "definition",
+    "title": "Ultraflat Polynomial",
+    "content": "**IsUltraflat:**\n\nA polynomial is ε-ultraflat if:\n(1-ε)√n ≤ |P(z)| ≤ (1+ε)√n\n\nfor ALL |z| = 1. This means |P(z)| is nearly constant on the unit circle!\n\n'Ultra' flat because the ratio max/min → 1 as n → ∞.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-7",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 135,
+      "endLine": 142
+    },
+    "type": "axiom",
+    "title": "Kahane's Theorem (1980)",
+    "content": "**kahane_ultraflat:**\n\nFor any ε > 0 and large enough n, there exists an ε-ultraflat unimodular polynomial of degree n.\n\nThis is the key result that DISPROVES the Erdős-Newman conjecture. Ultraflat polynomials have sup norm approaching √n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-8",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 144,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Kahane Disproves Conjecture",
+    "content": "**kahane_disproves:**\n\n¬ErdosNewmanConjecture\n\n**Proof idea:** Given any c > 0, take ε = c/2 and use Kahane to get an ultraflat P with ‖P‖_∞ ≤ (1 + c/2)√n. This contradicts the conjecture which requires ‖P‖_∞ ≥ (1+c)√n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-230-9",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 166,
+      "endLine": 171
+    },
+    "type": "axiom",
+    "title": "Körner's Construction",
+    "content": "**korner_bounded:**\n\nKörner (1980) constructed unimodular polynomials with:\nc₁√n ≤ |P(z)| ≤ c₂√n\n\nThis showed bounded ratios were possible, a step toward ultraflat.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-230-10",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 177,
+      "endLine": 187
+    },
+    "type": "axiom",
+    "title": "Bombieri-Bourgain (2009)",
+    "content": "**bombieri_bourgain:**\n\nImproved Kahane's construction:\n|P(z)| = √n + O(n^{7/18} (log n)^{O(1)})\n\nThe error exponent 7/18 ≈ 0.389 is the current best. Whether O(1) error is achievable is unknown.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-230-11",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 209,
+      "endLine": 216
+    },
+    "type": "axiom",
+    "title": "Rudin-Shapiro Polynomials",
+    "content": "**rudin_shapiro:**\n\nA deterministic family with |P(z)| ≤ 2√n.\n\nThese aren't ultraflat (min can be small), but give sup norm control. They're a classical construction in harmonic analysis.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-230-12",
+    "proofId": "erdos-230",
+    "range": {
+      "startLine": 260,
+      "endLine": 286
+    },
+    "type": "theorem",
+    "title": "Summary: DISPROVED",
+    "content": "**erdos_230_summary:**\n\nErdős Problem #230 is **SOLVED (DISPROVED)**.\n\n**Question:** Does ‖P‖_∞ ≥ (1+c)√n for some c > 0?\n**Answer:** NO (Kahane 1980)\n\n**What we know:**\n1. Lower bound √n is tight (Parseval)\n2. Kahane: Ultraflat polynomials exist\n3. Bombieri-Bourgain: Error O(n^{7/18})\n\n**Open:** Can error be O(1)?",
+    "significance": "critical"
+  }
+]
