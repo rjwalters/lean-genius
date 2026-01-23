@@ -1,33 +1,141 @@
 {
   "id": "erdos-308",
-  "title": "Erdős Problem #308",
+  "title": "Erdős Problem #308: Representable Integers via Unit Fractions",
   "slug": "erdos-308",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the smallest integer not representable as the sum of distinct unit fractions with denominators from ...? Is ...",
+  "description": "What integers can be written as sums of distinct unit fractions 1/1 + 1/2 + ... with denominators ≤ N? Croot (1999) proved the representable set is contiguous and f(N) ≈ ⌊H_N⌋.",
   "meta": {
-    "author": "Unknown",
+    "author": "Croot (1999)",
     "sourceUrl": "https://erdosproblems.com/308",
-    "date": "",
-    "status": "pending",
+    "date": "1999",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos308Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "harmonic"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 308,
     "erdosUrl": "https://erdosproblems.com/308",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number type",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range {0,...,n-1}",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sumUnitFracs: Sum of unit fractions over a finite set",
+      "H: Harmonic number as rational",
+      "Representable: Definition of representability",
+      "RepresentableSet: Set of representable integers",
+      "f: Smallest non-representable integer",
+      "IsContiguous: Contiguity property",
+      "Croot's lower and upper bounds on f(N)",
+      "question2_yes: Contiguity holds for large N"
+    ],
+    "dateAdded": "2026-01-22"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #308 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. What is the smallest integer not representable as the sum of distinct unit fractions with denominators from $\\{1,\\ldots,N\\}$? Is it true that the set of integers representable as such has the shape $\\{1,\\ldots,m\\}$ for some $m$?\n\n\n\nThis was essentially solved by Croot \\cite{Cr99}, who proved that if $f(N)$ is the smallest integer not representable then\\[\\left\\lfloor\\sum_{n\\leq N}\\frac{1}{n}-\\frac{9}{2}(1+o(1))\\frac{(\\log\\log N)^2}{\\log N}\\right\\rfloor\\leq f(N)\\]and\\[f(N)\\leq \\left\\lfloor\\sum_{n\\leq N}\\frac{1}{n}-\\frac{1}{2}(1+o(1))\\frac{(\\log\\log N)^2}{\\log N}\\right\\rfloor.\\]It follows that, if $m_N=\\lfloor \\sum_{n\\leq N}\\frac{1}{n}\\rfloor$, then the set of integers representable is, for all $N$ sufficiently large, either $\\{1,\\ldots,m_N-1\\}$ or $\\{1,\\ldots,m_N\\}$.\n\n\n\n\nReferences\n\n\n[Cr99] Croot, III, Ernest S., On some questions of Erd\\H{o}s and Graham about Egyptian fractions. Mathematika (1999), 359-372.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #308 concerns Egyptian fractions with bounded denominators. Given N ≥ 1, we ask: which integers can be written as sums of distinct unit fractions 1/k where k ∈ {1,...,N}?\n\nThe maximum possible sum is H_N = 1 + 1/2 + ... + 1/N, the N-th harmonic number. Since H_N ~ ln(N) + γ (where γ is Euler's constant), we can represent integers up to about ln(N).\n\nCroot (1999) proved definitive bounds on f(N), the smallest non-representable integer. His key result shows f(N) = ⌊H_N⌋ - O((log log N)²/log N), with the coefficient in [1/2, 9/2]. This implies the representable set is {0, 1, ..., m} for some m close to ⌊H_N⌋.\n\nThe problem connects to Egyptian fraction theory, which dates back to ancient Egypt (Rhind Mathematical Papyrus, ~1650 BCE). Every positive rational has an Egyptian fraction representation, but bounded denominators create subtle constraints.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $N \\geq 1$. Consider sums of distinct unit fractions with denominators from $\\{1,\\ldots,N\\}$:\n$$S = \\sum_{k \\in T} \\frac{1}{k} \\text{ for some } T \\subseteq \\{1,\\ldots,N\\}$$\n\n**Questions:**\n1. What is $f(N)$, the smallest non-negative integer not representable as such a sum?\n2. Is the set of representable integers always contiguous: $\\{0, 1, \\ldots, m\\}$ for some $m$?\n\n**Answers (Croot 1999):**\n1. $\\lfloor H_N - \\frac{9}{2}\\frac{(\\log\\log N)^2}{\\log N}\\rfloor \\leq f(N) \\leq \\lfloor H_N - \\frac{1}{2}\\frac{(\\log\\log N)^2}{\\log N}\\rfloor$\n2. YES for sufficiently large $N$: representable set is $\\{0,\\ldots,\\lfloor H_N\\rfloor-1\\}$ or $\\{0,\\ldots,\\lfloor H_N\\rfloor\\}$",
+    "proofStrategy": "The formalization defines unit fractions, their sums, and the harmonic number H_N. Representability is expressed as the existence of a subset S ⊆ {1,...,N} whose unit fractions sum to the target integer. The key function f(N) gives the smallest non-representable integer. Croot's bounds are axiomatized, along with the contiguity result. Small examples illustrate the concepts.",
+    "keyInsights": [
+      "**Unit fractions**: 1/n for positive n. Egyptian fractions are sums of distinct unit fractions.",
+      "**Harmonic bound**: Max representable ≤ ⌊H_N⌋ since max sum is H_N = 1 + 1/2 + ... + 1/N.",
+      "**Croot's gap**: f(N) is ⌊H_N⌋ minus a correction term of order (log log N)²/log N.",
+      "**Contiguity**: Representable integers form {0,1,...,m} for some m (no gaps).",
+      "**Growth rate**: f(N) ~ ln(N), growing logarithmically."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "unitFrac, sumUnitFracs, H",
+      "startLine": 39,
+      "endLine": 67
+    },
+    {
+      "id": "representability",
+      "title": "Representability",
+      "summary": "Representable, RepresentableSet, f",
+      "startLine": 69,
+      "endLine": 102
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "one_representable, zero_representable, monotonicity",
+      "startLine": 104,
+      "endLine": 120
+    },
+    {
+      "id": "contiguity",
+      "title": "The Contiguity Question",
+      "summary": "IsContiguous, question2",
+      "startLine": 122,
+      "endLine": 139
+    },
+    {
+      "id": "croot-theorem",
+      "title": "Croot's Theorem (1999)",
+      "summary": "croot_lower_bound, croot_upper_bound, question2_yes",
+      "startLine": 141,
+      "endLine": 185
+    },
+    {
+      "id": "small-examples",
+      "title": "Small Examples",
+      "summary": "f(1)=2, f(2)=2, f(3)=2, f(6)=3",
+      "startLine": 187,
+      "endLine": 212
+    },
+    {
+      "id": "egyptian-fractions",
+      "title": "Connection to Egyptian Fractions",
+      "summary": "IsEgyptianFraction, greedy algorithm",
+      "startLine": 214,
+      "endLine": 239
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Behavior",
+      "summary": "harmonic_asymptotics, f_asymptotics, f_growth_rate",
+      "startLine": 241,
+      "endLine": 273
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_308_summary and erdos_308",
+      "startLine": 275,
+      "endLine": 315
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #308 asks which integers can be represented as sums of distinct unit fractions with denominators bounded by N. Croot (1999) proved that the smallest non-representable integer f(N) satisfies tight bounds around ⌊H_N⌋, and that the representable set is contiguous for large N.",
+    "implications": "This result connects harmonic numbers to representability questions in number theory. The second-order correction term (log log N)²/log N reveals subtle structure in how unit fractions combine. The contiguity result simplifies the problem: we only need to determine f(N), not check for gaps.",
+    "openQuestions": [
+      "What is the exact coefficient in the (log log N)²/log N correction term?",
+      "Is the representable set contiguous for ALL N, not just sufficiently large N?",
+      "What is the smallest N₀ for which contiguity is guaranteed?",
+      "What are efficient algorithms for computing f(N) exactly?"
+    ]
   }
 }

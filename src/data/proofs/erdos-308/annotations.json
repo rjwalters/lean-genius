@@ -1,1 +1,171 @@
-[]
+[
+  {
+    "id": "ann-e308-overview",
+    "proofId": "erdos-308",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #308: Unit Fractions**\n\nWhich integers can be written as sums of distinct unit fractions 1/k with k ≤ N?\n\n**Questions:**\n1. What is f(N), the smallest non-representable integer?\n2. Is the representable set always contiguous?\n\n**Answer (Croot 1999):** YES to both, with f(N) ≈ ⌊H_N⌋.",
+    "mathContext": "Egyptian fractions with bounded denominators. Connects to harmonic numbers and Erdős-Graham problems.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Harmonic numbers", "Unit fractions"]
+  },
+  {
+    "id": "ann-e308-unit-frac",
+    "proofId": "erdos-308",
+    "range": { "startLine": 45, "endLine": 49 },
+    "type": "definition",
+    "title": "Unit Fraction",
+    "content": "**unitFrac n:** 1/n for positive n.\n\nUnit fractions are the building blocks of Egyptian fraction representations. Ancient Egyptians used sums of distinct unit fractions to represent all positive rationals.",
+    "significance": "key",
+    "leanSymbol": "unitFrac"
+  },
+  {
+    "id": "ann-e308-sum",
+    "proofId": "erdos-308",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "definition",
+    "title": "Sum of Unit Fractions",
+    "content": "**sumUnitFracs S:** Σ_{n∈S} 1/n\n\nThe sum of unit fractions over a finite set of denominators. This is the key quantity for representability.",
+    "significance": "critical",
+    "leanSymbol": "sumUnitFracs"
+  },
+  {
+    "id": "ann-e308-harmonic",
+    "proofId": "erdos-308",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "definition",
+    "title": "Harmonic Number",
+    "content": "**H N:** H_N = 1 + 1/2 + ... + 1/N\n\nThe N-th harmonic number. This is the maximum possible sum using all denominators 1 to N.\n\nAsymptotics: H_N ~ ln(N) + γ where γ ≈ 0.5772 is Euler's constant.",
+    "significance": "critical",
+    "leanSymbol": "H"
+  },
+  {
+    "id": "ann-e308-representable",
+    "proofId": "erdos-308",
+    "range": { "startLine": 76, "endLine": 83 },
+    "type": "definition",
+    "title": "Representable",
+    "content": "**Representable N k:** Integer k can be written as a sum of distinct unit fractions with denominators from {1,...,N}.\n\n∃ S ⊆ {1,...,N} : Σ_{n∈S} 1/n = k",
+    "significance": "critical",
+    "leanSymbol": "Representable"
+  },
+  {
+    "id": "ann-e308-f",
+    "proofId": "erdos-308",
+    "range": { "startLine": 92, "endLine": 102 },
+    "type": "definition",
+    "title": "Smallest Non-Representable",
+    "content": "**f N:** min{k : k is not representable with denominators from {1,...,N}}\n\nThis is the central quantity of interest. Croot's theorem gives tight bounds on f(N).",
+    "significance": "critical",
+    "leanSymbol": "f"
+  },
+  {
+    "id": "ann-e308-one-rep",
+    "proofId": "erdos-308",
+    "range": { "startLine": 108, "endLine": 109 },
+    "type": "axiom",
+    "title": "1 is Representable",
+    "content": "**one_representable:** For N ≥ 1, the integer 1 is representable.\n\nProof: Use S = {1}, so Σ 1/n = 1/1 = 1.",
+    "significance": "supporting",
+    "leanSymbol": "one_representable"
+  },
+  {
+    "id": "ann-e308-contiguous",
+    "proofId": "erdos-308",
+    "range": { "startLine": 128, "endLine": 133 },
+    "type": "definition",
+    "title": "Contiguous Set",
+    "content": "**IsContiguous S:** The set S = {0, 1, ..., m} for some m.\n\nThe question is whether RepresentableSet N is always contiguous (no gaps).",
+    "significance": "key",
+    "leanSymbol": "IsContiguous"
+  },
+  {
+    "id": "ann-e308-croot-lower",
+    "proofId": "erdos-308",
+    "range": { "startLine": 147, "endLine": 156 },
+    "type": "axiom",
+    "title": "Croot's Lower Bound (1999)",
+    "content": "**croot_lower_bound:**\n\nf(N) ≥ ⌊H_N - (9/2 + o(1))(log log N)²/log N⌋\n\nThe second-order correction term is bounded by 9/2 times (log log N)²/log N.",
+    "significance": "critical",
+    "leanSymbol": "croot_lower_bound"
+  },
+  {
+    "id": "ann-e308-croot-upper",
+    "proofId": "erdos-308",
+    "range": { "startLine": 158, "endLine": 167 },
+    "type": "axiom",
+    "title": "Croot's Upper Bound (1999)",
+    "content": "**croot_upper_bound:**\n\nf(N) ≤ ⌊H_N - (1/2 + o(1))(log log N)²/log N⌋\n\nThe gap from H_N is at least 1/2 times the second-order term.",
+    "significance": "critical",
+    "leanSymbol": "croot_upper_bound"
+  },
+  {
+    "id": "ann-e308-croot-main",
+    "proofId": "erdos-308",
+    "range": { "startLine": 169, "endLine": 178 },
+    "type": "axiom",
+    "title": "Croot's Main Theorem",
+    "content": "**croot_main_theorem:**\n\nFor large N: f(N) ∈ {⌊H_N⌋ - 1, ⌊H_N⌋}\n\nThe representable set is either {0,...,⌊H_N⌋-1} or {0,...,⌊H_N⌋}.",
+    "significance": "critical",
+    "leanSymbol": "croot_main_theorem"
+  },
+  {
+    "id": "ann-e308-q2-yes",
+    "proofId": "erdos-308",
+    "range": { "startLine": 180, "endLine": 185 },
+    "type": "axiom",
+    "title": "Contiguity Holds",
+    "content": "**question2_yes:**\n\nFor sufficiently large N, the representable set IS contiguous.\n\nThis answers the second question: YES.",
+    "significance": "critical",
+    "leanSymbol": "question2_yes"
+  },
+  {
+    "id": "ann-e308-examples",
+    "proofId": "erdos-308",
+    "range": { "startLine": 200, "endLine": 212 },
+    "type": "theorem",
+    "title": "Small Examples",
+    "content": "**Small values of f:**\n\n- f(1) = 2: Can represent {0, 1} only\n- f(2) = 2: H_2 = 3/2, can still only get 0, 1 as integers\n- f(3) = 2: H_3 = 11/6 < 2\n- f(6) = 3: H_6 = 49/20 ≈ 2.45, can represent 0, 1, 2",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e308-egyptian",
+    "proofId": "erdos-308",
+    "range": { "startLine": 218, "endLine": 226 },
+    "type": "definition",
+    "title": "Egyptian Fractions",
+    "content": "**IsEgyptianFraction:**\n\nA sum of distinct unit fractions. Named after ancient Egyptian mathematics.\n\nEvery positive rational can be written as an Egyptian fraction (Fibonacci 1202), but the bounded-denominator case is more subtle.",
+    "significance": "key",
+    "leanSymbol": "IsEgyptianFraction"
+  },
+  {
+    "id": "ann-e308-asymptotics",
+    "proofId": "erdos-308",
+    "range": { "startLine": 245, "endLine": 273 },
+    "type": "axiom",
+    "title": "Asymptotic Behavior",
+    "content": "**Asymptotics:**\n\n- H_N ~ ln(N) + γ (Euler's constant)\n- f(N) ~ ⌊H_N⌋ with O((log log N)²/log N) correction\n- f(N)/ln(N) → 1 as N → ∞\n\nThe growth is logarithmic.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e308-summary",
+    "proofId": "erdos-308",
+    "range": { "startLine": 293, "endLine": 303 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_308_summary:**\n\nCombines:\n1. Croot's lower bound\n2. Croot's upper bound\n3. Contiguity for large N\n\nThe problem is fully resolved by Croot (1999).",
+    "significance": "critical",
+    "leanSymbol": "erdos_308_summary"
+  },
+  {
+    "id": "ann-e308-main",
+    "proofId": "erdos-308",
+    "range": { "startLine": 305, "endLine": 313 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_308:**\n\nErdős Problem #308 is SOLVED.\n\nThe representable set is contiguous for sufficiently large N, with f(N) determined by Croot's bounds.",
+    "significance": "critical",
+    "leanSymbol": "erdos_308"
+  }
+]
