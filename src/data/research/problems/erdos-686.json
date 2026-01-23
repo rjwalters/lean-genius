@@ -1,7 +1,7 @@
 {
   "slug": "erdos-686",
   "title": "Erdős #686",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-14T19:46:33.201Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Problem formalized with Representation structure. Answer is OPEN.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized ratio of consecutive products problem. Representation structure defined. Problem is OPEN.",
+    "builtItems": [
+      "proofs/Proofs/Erdos686Problem.lean: consecutiveProduct definition",
+      "proofs/Proofs/Erdos686Problem.lean: Representation structure",
+      "proofs/Proofs/Erdos686Problem.lean: erdos_686_conjecture statement",
+      "proofs/Proofs/Erdos686Problem.lean: representableSet for fixed n,k",
+      "proofs/Proofs/Erdos686Problem.lean: connection to binomial coefficients"
+    ],
+    "insights": [
+      "Ratio = (m+1)⋯(m+k) / (n+1)⋯(n+k) = C(m+k,k) / C(n+k,k)",
+      "Constraint m ≥ n + k ensures products are disjoint and ratio ≥ 1",
+      "Equivalent to asking about ratios of binomial coefficients",
+      "Related to Problem 677 on lcm of consecutive integers",
+      "Small cases (like N=6) can be verified: (3·4)/(1·2) = 6 with k=2"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Computational search for representations of small N",
+      "Study prime factorization constraints",
+      "Explore connection to Problem 677 on lcm"
+    ],
     "markdown": "# Erdős #686 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan every integer $N\\geq 2$ be written as\\[N=\\frac{\\prod_{1\\leq i\\leq k}(m+i)}{\\prod_{1\\leq i\\leq k}(n+i)}\\]for some $k\\geq 2$ and $m\\geq n+k$?\n\n\n\nIf $n$ and $k$ are fixed then can one say anything about the set of integers so represented?\n\nSee also [677].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #677\n- Problem #685\n- Problem #687\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "approaches": [],
