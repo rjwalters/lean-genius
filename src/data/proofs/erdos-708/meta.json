@@ -1,34 +1,148 @@
 {
   "id": "erdos-708",
-  "title": "Erdős Problem #708",
+  "title": "Erdős Problem #708: Divisibility of Products by Consecutive Integers",
   "slug": "erdos-708",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... with ... and any set ... of ... consecutive integers there exists some ... with ... ...",
+  "description": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B ⊆ I with |B| = g(n) has product divisible by the product of A. Is g(n) ≤ (2 + o(1))n?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Surányi (1959 problem and partial results), Gallai (early work)",
     "sourceUrl": "https://erdosproblems.com/708",
-    "date": "",
-    "status": "pending",
+    "date": "1959",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos708Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "products",
+      "consecutive-integers",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 708,
     "erdosUrl": "https://erdosproblems.com/708",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range of natural numbers",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Finding minimal satisfying element",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "setProduct: product of elements in a finite set",
+      "consecutiveSet: k, k+1, ..., k+len-1 as Finset",
+      "productDivides: divisibility predicate for products",
+      "validSubset: subset satisfying divisibility condition",
+      "g: the function g(n) via Nat.find",
+      "g_two axiom: g(2) = 2 (Gallai)",
+      "g_three axiom: g(3) = 4 (Erdős-Surányi)",
+      "erdos_suranyi_lower: lower bound g(n) ≥ (2-o(1))n",
+      "ErdosConjecture: the open problem g(n) ≤ (2+o(1))n",
+      "StrongerConjecture: possibly g(n) ≤ 2n",
+      "Related variant: interval length c_n"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #708 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be minimal such that for any $A\\subseteq [2,\\infty)\\cap \\mathbb{N}$ with $\\lvert A\\rvert =n$ and any set $I$ of $\\max(A)$ consecutive integers there exists some $B\\subseteq I$ with $\\lvert B\\rvert=g(n)$ such that\\[\\prod_{a\\in A} a \\mid \\prod_{b\\in B}b.\\]Is it true that\\[g(n) \\leq (2+o(1))n?\\]Or perhaps even $g(n)\\leq 2n$?\n\n\n\nA problem of Erd\\H{o}s and Sur\\'{a}nyi \\cite{ErSu59}, who proved that $g(n) \\geq (2-o(1))n$, and that $g(3)=4$. Their lower bound construction takes $A$ as the set of $p_ip_j$ for $i\\neq j$, where $p_1<\\cdots <p_\\ell$ is some set of primes such that $2p_1^2>p_\\ell^2$.\n\nGallai was the first to consider problems of this type, and observed that $g(2)=2$ and $g(3)\\geq 4$.\n\nIn \\cite{Er92c} Erd\\H{o}s offers '100 dollars or 1000 rupees', whichever is more, for a proof or disproof. (In 1992 1000 rupees was worth approximately \\$38.60.)\n\nErd\\H{o}s and Sur\\'{a}nyi similarly asked what is the smallest $c_n\\geq 1$ such that in any interval $I\\subset [0,\\infty)$ of length $c_n\\max(A)$ there exists some $B\\subseteq I\\cap \\mathbb{N}$ with $\\lvert B\\rvert=n$ such that\\[\\prod_{a\\in A} a \\mid \\prod_{b\\in B}b.\\]They prove $c_2=1$ and $c_3=\\sqrt{2}$, but have no good upper or lower bounds in general.\n\n\nSee also [709].\n\n\n\n\nReferences\n\n\n[Er92c] Erd\\\"{o}s, P., Some of my forgotten problems in number theory. Hardy-Ramanujan J. (1992), 34-50.\n\n[ErSu59] Erd\\H{o}s, P\\'{a}l and Sur\\'{a}nyi, J\\'{a}nos, Bemerkungen zu einer Aufgabe eines mathematischen\n{W}ettbewerbs. Mat. Lapok (1959), 39-48.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #708**\n\nThis problem about divisibility of products has a rich history spanning decades.\n\n**Key History:**\n- Gallai: First considered such problems, established g(2) = 2 and g(3) ≥ 4\n- Erdős-Surányi (1959): Proved g(n) ≥ (2 - o(1))n and computed g(3) = 4\n- Erdős (1992): Offered \"$100 or 1000 rupees, whichever is more\" for proof/disproof\n\n**Mathematical Setting:**\nThe problem asks: given n arbitrary integers ≥ 2, how many consecutive integers are needed to guarantee their product is divisible by the product of the n integers? The answer is the function g(n).",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $g(n)$ be minimal such that for any $A \\subseteq [2,\\infty) \\cap \\mathbb{N}$ with $|A| = n$ and any set $I$ of $\\max(A)$ consecutive integers, there exists $B \\subseteq I$ with $|B| = g(n)$ such that:\n$$\\prod_{a \\in A} a \\mid \\prod_{b \\in B} b$$\n\n**Question:** Is $g(n) \\leq (2 + o(1))n$? Or perhaps even $g(n) \\leq 2n$?\n\n**Known:**\n- $g(2) = 2$ (Gallai)\n- $g(3) = 4$ (Erdős-Surányi)\n- $g(n) \\geq (2 - o(1))n$ (lower bound)\n\n**Prize:** $100 (offered by Erdős)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define setProduct, consecutiveSet, productDivides\n\n2. **The Function g(n):** Define via Nat.find for minimal satisfying value\n\n3. **Known Values:** Axiomatize g(2) = 2 and g(3) = 4\n\n4. **Bounds:** State Erdős-Surányi lower bound as axiom\n\n5. **The Conjecture:** Define ErdosConjecture and StrongerConjecture\n\n6. **Related Variant:** The c_n problem for interval length",
+    "keyInsights": [
+      "**Key Function:** g(n) measures minimum consecutive integers needed for divisibility",
+      "**Lower Bound:** g(n) ≥ (2 - o(1))n proved via products of prime pairs",
+      "**Small Cases:** g(2) = 2, g(3) = 4 are exactly computed",
+      "**Open Question:** Is the upper bound g(n) ≤ (2 + o(1))n achievable?",
+      "**Prize Problem:** $100 reward offered by Erdős in 1992",
+      "**Construction:** Lower bound uses A = {p_i·p_j} for carefully chosen primes"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "setProduct, consecutiveSet, productDivides",
+      "startLine": 43,
+      "endLine": 63
+    },
+    {
+      "id": "g-function",
+      "title": "The Function g(n)",
+      "summary": "validSubset, g_exists axiom, g definition",
+      "startLine": 65,
+      "endLine": 102
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "summary": "g_two, g_three (Gallai and Erdős-Surányi)",
+      "startLine": 104,
+      "endLine": 118
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on g(n)",
+      "summary": "Trivial upper, Erdős-Surányi lower bound",
+      "startLine": 120,
+      "endLine": 145
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "ErdosConjecture, StrongerConjecture",
+      "startLine": 147,
+      "endLine": 166
+    },
+    {
+      "id": "variant",
+      "title": "Related Variant",
+      "summary": "Interval length c_n problem",
+      "startLine": 168,
+      "endLine": 184
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete examples for g(2) and g(3)",
+      "startLine": 186,
+      "endLine": 205
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This is Hard",
+      "summary": "Obstacles to solving the problem",
+      "startLine": 207,
+      "endLine": 228
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_708_summary, problem status",
+      "startLine": 230,
+      "endLine": 263
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #708 remains OPEN with a $100 prize. The problem asks whether g(n) ≤ (2 + o(1))n, where g(n) is the minimum number of consecutive integers needed to guarantee divisibility. Erdős-Surányi proved g(n) ≥ (2 - o(1))n, so if the conjecture is true, g(n) = (2 + o(1))n exactly.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Prime Factorization:** The problem deeply involves how prime factors distribute among consecutive integers\n\n2. **Extremal Combinatorics:** Finding optimal constructions for lower bounds\n\n3. **Product Divisibility:** Understanding when products of consecutive integers divide given products\n\n4. **Related Problems:** Connected to Problem 709 about interval length variants",
+    "openQuestions": [
+      "Is g(n) ≤ (2 + o(1))n? (THE main open question)",
+      "Is g(n) ≤ 2n exactly?",
+      "What is g(4)? g(5)?",
+      "Can the lower bound construction be improved?",
+      "What are the exact constants in the o(1) terms?"
+    ]
   }
 }
