@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "induced-subgraph-def",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 71,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "An induced subgraph G' of G on vertex set S contains exactly those edges of G with both endpoints in S - no more, no less. This is the key constraint that makes induced Ramsey theory harder than ordinary Ramsey: we must find a copy where both edges AND non-edges match the target graph.",
+    "significance": "core"
+  },
+  {
+    "id": "induced-copy-def",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 81,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Induced Copy via Embedding",
+    "content": "Graph H contains an induced copy of G if there's an injective map f: V(G) → V(H) such that u,v are adjacent in G if and only if f(u),f(v) are adjacent in H. The 'if and only if' (bidirectional) requirement distinguishes induced from ordinary copies.",
+    "significance": "core"
+  },
+  {
+    "id": "edge-coloring-def",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 95,
+      "endLine": 108
+    },
+    "type": "definition",
+    "title": "Edge Colorings",
+    "content": "A 2-edge-coloring assigns each edge of a graph either Red or Blue. We formalize this as a function from edges (represented as elements of Sym2 V with adjacency witnesses) to the EdgeColor type. The coloring induces a partition of edges into two color classes.",
+    "significance": "core"
+  },
+  {
+    "id": "induced-ramsey-property",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 127,
+      "endLine": 135
+    },
+    "type": "definition",
+    "title": "Induced Ramsey Property",
+    "content": "Graph H has the induced Ramsey property for G if EVERY 2-coloring of H's edges contains a monochromatic induced copy of G. This is a universal property - no matter how the adversary colors, the structure is guaranteed to appear.",
+    "significance": "core"
+  },
+  {
+    "id": "induced-ramsey-number-def",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 137,
+      "endLine": 143
+    },
+    "type": "definition",
+    "title": "Induced Ramsey Number R*(G)",
+    "content": "R*(G) is the minimal number of vertices m such that some graph H on m vertices has the induced Ramsey property for G. Note that H need not be complete - this is a key difference from ordinary Ramsey numbers where we always use K_m. The induced number is defined as an infimum over all valid m.",
+    "significance": "core"
+  },
+  {
+    "id": "existence-theorem",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 149,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Existence of R*(G)",
+    "content": "Unlike ordinary Ramsey numbers where existence follows easily from Ramsey's theorem, proving R*(G) exists is non-trivial. It was established independently by Deuber (1975), Erdős-Hajnal-Pósa (1975), and Rödl (1973). The key insight is that suitable 'universal' graphs exist that force induced copies.",
+    "significance": "core"
+  },
+  {
+    "id": "kpr-bound",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 181,
+      "endLine": 188
+    },
+    "type": "theorem",
+    "title": "Kohayakawa-Prömel-Rödl Bound (1998)",
+    "content": "The first general upper bound: R*(G) < 2^{O(n(log n)²)}. This quasi-polynomial bound showed that while induced Ramsey numbers grow faster than ordinary ones, they're still sub-exponential in some sense. The proof uses regularity methods and probabilistic arguments.",
+    "significance": "standard"
+  },
+  {
+    "id": "cfs-bound",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 190,
+      "endLine": 197
+    },
+    "type": "theorem",
+    "title": "Conlon-Fox-Sudakov Bound (2012)",
+    "content": "Improved to R*(G) < 2^{O(n log n)}, eliminating one logarithmic factor. This was a significant step toward the conjectured exponential bound. Their techniques combined probabilistic methods with careful structural analysis of the host graph.",
+    "significance": "standard"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 203,
+      "endLine": 224
+    },
+    "type": "theorem",
+    "title": "Aragão et al. Theorem (2025)",
+    "content": "The breakthrough: R*(G) ≤ 2^{O(n)} for ALL graphs G on n vertices! This resolves Erdős Problem #565 after 50+ years of incremental progress. The proof builds on previous techniques but introduces new ideas to eliminate the remaining logarithmic factor. The bound is essentially optimal since matching exponential lower bounds exist.",
+    "significance": "core"
+  },
+  {
+    "id": "tightness",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 270,
+      "endLine": 279
+    },
+    "type": "theorem",
+    "title": "Tightness of the Bound",
+    "content": "The 2^{O(n)} bound is essentially tight: there exist graphs G on n vertices with R*(G) ≥ 2^{cn} for some constant c > 0. This means the exponential growth is unavoidable - we can only optimize the constant in the exponent, not the exponential form itself.",
+    "significance": "core"
+  }
+]
