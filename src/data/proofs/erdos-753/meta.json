@@ -1,33 +1,112 @@
 {
   "id": "erdos-753",
-  "title": "Erdős Problem #753",
+  "title": "Erdős Problem #753: List Chromatic Number of Graph and Complement",
   "slug": "erdos-753",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number ... is defined to be the minimal ... such that for any assignment of a list of ... colours to each ...",
+  "description": "Does there exist some constant c > 0 such that χ_L(G) + χ_L(G^c) > n^{1/2+c} for every graph G on n vertices? Answer: NO (Alon 1992) - counterexamples exist with χ_L(G) + χ_L(G^c) ≤ O((n log n)^{1/2}).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Rubin, and Taylor",
     "sourceUrl": "https://erdosproblems.com/753",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos753Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "list-coloring",
+      "chromatic-number",
+      "complement-graph",
+      "probabilistic-method"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 753,
     "erdosUrl": "https://erdosproblems.com/753",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #753 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number $\\chi_L(G)$ is defined to be the minimal $k$ such that for any assignment of a list of $k$ colours to each vertex of $G$ (perhaps different lists for different vertices) a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours.\n\nDoes there exist some constant $c>0$ such that\\[\\chi_L(G)+\\chi_L(G^c)> n^{1/2+c}\\]for every graph $G$ on $n$ vertices (where $G^c$ is the complement of $G$)?\n\n\n\nA problem of Erd\\H{o}s, Rubin, and Taylor.\n\nThe answer is no: Alon \\cite{Al92} proved that, for every $n$, there exists a graph $G$ on $n$ vertices such that\\[\\chi_L(G)+\\chi_L(G^c)\\ll (n\\log n)^{1/2},\\]where the implied constant is absolute.\n\n\n\n\nReferences\n\n\n[Al92] Alon, Noga, Choice numbers of graphs: a probabilistic approach. Combin. Probab. Comput. (1992), 107-114.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from the work of Erdős, Rubin, and Taylor on list colorings of graphs. The list chromatic number χ_L(G) (also called choosability or choice number) is a fundamental graph parameter that generalizes the ordinary chromatic number. While every graph satisfies χ_L(G) ≥ χ(G), the list chromatic number can be strictly larger. The classical Nordhaus-Gaddum theorem (1956) shows that χ(G) + χ(G^c) ≥ 2√n for any graph G on n vertices. Erdős, Rubin, and Taylor asked whether a similar superlinear lower bound holds for the list chromatic number. Alon (1992) resolved this question negatively using the probabilistic method, showing that random graphs near the threshold p = 1/2 provide counterexamples where the sum is only O((n log n)^{1/2}).",
+    "problemStatement": "The list chromatic number χ_L(G) is defined to be the minimal k such that for any assignment of a list of k colours to each vertex of G (perhaps different lists for different vertices), a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours. Does there exist some constant c > 0 such that χ_L(G) + χ_L(G^c) > n^{1/2+c} for every graph G on n vertices (where G^c is the complement of G)?",
+    "proofStrategy": "The formalization defines list assignments, list colorings, and the list chromatic number (axiomatized). We define the complement graph and prove basic properties like the involution property (G^c)^c = G. The Erdős-Rubin-Taylor conjecture is formalized precisely, and Alon's counterexample is stated as an axiom: for every n ≥ 2, there exists a graph G on n vertices with χ_L(G) + χ_L(G^c) ≤ C·√(n log n) for some absolute constant C. The main theorem shows the conjecture is false by deriving a contradiction for large n where (n log n)^{1/2} < n^{1/2+c}. Related bounds (Nordhaus-Gaddum, greedy coloring) and choosability properties (bipartite examples, complete graphs, Galvin's theorem) are also formalized.",
+    "keyInsights": [
+      "List chromatic number generalizes chromatic number: for any k-list assignment, a proper coloring exists using colors from the lists",
+      "The complement graph G^c has edges exactly where G has non-edges (excluding loops)",
+      "Nordhaus-Gaddum bounds χ(G) + χ(G^c) ≥ 2√n, but the analogous bound fails for list chromatic number",
+      "The probabilistic method via random graphs G(n, 1/2) provides counterexamples where G ≈ G^c in structure",
+      "Alon's bound χ_L(G) + χ_L(G^c) ≤ O((n log n)^{1/2}) is essentially tight up to the logarithmic factor"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "list-coloring-defs",
+      "title": "List Coloring Definitions",
+      "startLine": 38,
+      "endLine": 86,
+      "summary": "Defines list assignments, k-list assignments, L-colorings, and k-choosability. The list chromatic number is axiomatized with existence and minimality properties."
+    },
+    {
+      "id": "complement-graph",
+      "title": "Complement Graph",
+      "startLine": 88,
+      "endLine": 117,
+      "summary": "Defines the complement graph G^c where edges exist between non-adjacent vertices. Proves the involution property (G^c)^c = G."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Rubin-Taylor Conjecture",
+      "startLine": 119,
+      "endLine": 132,
+      "summary": "Formalizes the conjecture: does there exist c > 0 such that χ_L(G) + χ_L(G^c) > n^{1/2+c} for all graphs G on n vertices?"
+    },
+    {
+      "id": "alon-counterexample",
+      "title": "Alon's Counterexample",
+      "startLine": 134,
+      "endLine": 161,
+      "summary": "States Alon's 1992 result as an axiom and proves the conjecture is false. For every n, graphs exist with χ_L(G) + χ_L(G^c) ≤ O((n log n)^{1/2})."
+    },
+    {
+      "id": "bounds-relations",
+      "title": "Bounds and Relations",
+      "startLine": 163,
+      "endLine": 188,
+      "summary": "Related bounds including χ_L(G) ≥ χ(G), trivial lower bounds, and the degree-plus-one upper bound."
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Construction",
+      "startLine": 190,
+      "endLine": 207,
+      "summary": "Documents Alon's probabilistic method construction using random graphs G(n, 1/2) where G and G^c have similar structure."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 209,
+      "endLine": 236,
+      "summary": "Nordhaus-Gaddum theorem for ordinary chromatic number and comparison showing list chromatic number can differ from chromatic number."
+    },
+    {
+      "id": "choosability-properties",
+      "title": "Choosability Properties",
+      "startLine": 238,
+      "endLine": 263,
+      "summary": "Examples: bipartite graphs not always 2-choosable, complete graph list chromatic number, and Galvin's theorem for complete bipartite graphs."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 265,
+      "endLine": 298,
+      "summary": "Summary theorem packaging the main results: the conjecture is false and Alon's counterexample provides the upper bound."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #753 is SOLVED/DISPROVED. Alon (1992) showed that the conjectured lower bound χ_L(G) + χ_L(G^c) > n^{1/2+c} fails: for every n, there exist graphs where the sum is only O((n log n)^{1/2}). The counterexamples come from random graphs near the threshold p = 1/2, where G and G^c have similar structure. This demonstrates that list chromatic number behaves fundamentally differently from ordinary chromatic number with respect to graph complements.",
+    "implications": "The result shows that Nordhaus-Gaddum type bounds do not extend to list chromatic numbers in the hoped-for way. It highlights the power of the probabilistic method in disproving graph-theoretic conjectures and reveals the special role of balanced random graphs.",
+    "openQuestions": [
+      "What is the exact constant in Alon's bound?",
+      "Can the logarithmic factor be removed, or is √(n log n) the correct order of magnitude?",
+      "What structural properties characterize graphs achieving the minimum sum χ_L(G) + χ_L(G^c)?"
+    ]
   }
 }
