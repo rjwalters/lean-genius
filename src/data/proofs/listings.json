@@ -9626,17 +9626,21 @@
   },
   {
     "id": "erdos-616",
-    "title": "Erdős Problem #616",
+    "title": "Erdős Problem #616: Covering Numbers of Hypergraphs",
     "slug": "erdos-616",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... For an ...-uniform hypergraph ... let ... denote the covering number (or transversal number), the minimum size of a ...",
-    "status": "pending",
+    "description": "Determine the best constant t(r) such that if every subgraph on ≤ 3r-3 vertices of an r-uniform hypergraph has covering number ≤ 1, then the global covering number is ≤ t(r). Erdős-Hajnal-Tuza proved (3/16)r ≤ t(r) ≤ (1/5)r but the exact coefficient remains OPEN.",
+    "status": "axiom-dependent",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraphs",
+      "covering-number",
+      "extremal-combinatorics",
+      "transversal"
     ],
     "erdosNumber": 616,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 12
   },
   {
     "id": "erdos-617",

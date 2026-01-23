@@ -1,33 +1,84 @@
 {
   "id": "erdos-616",
-  "title": "Erdős Problem #616",
+  "title": "Erdős Problem #616: Covering Numbers of Hypergraphs",
   "slug": "erdos-616",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... For an ...-uniform hypergraph ... let ... denote the covering number (or transversal number), the minimum size of a ...",
+  "description": "Determine the best constant t(r) such that if every subgraph on ≤ 3r-3 vertices of an r-uniform hypergraph has covering number ≤ 1, then the global covering number is ≤ t(r). Erdős-Hajnal-Tuza proved (3/16)r ≤ t(r) ≤ (1/5)r but the exact coefficient remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Hajnal, Tuza",
     "sourceUrl": "https://erdosproblems.com/616",
-    "date": "",
-    "status": "pending",
+    "date": "1991",
+    "status": "axiom-dependent",
     "proofRepoPath": "Proofs/Erdos616Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraphs",
+      "covering-number",
+      "extremal-combinatorics",
+      "transversal"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 616,
     "erdosUrl": "https://erdosproblems.com/616",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #616 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$. For an $r$-uniform hypergraph $G$ let $\\tau(G)$ denote the covering number (or transversal number), the minimum size of a set of vertices which includes at least one from each edge in $G$.\n\nDetermine the best possible $t$ such that, if $G$ is an $r$-uniform hypergraph $G$ where every subgraph $G'$ on at most $3r-3$ vertices has $\\tau(G')\\leq 1$, we have $\\tau(G)\\leq t$.\n\n\n\nErd\\H{o}s, Hajnal, and Tuza \\cite{EHT91} proved that this $t$ satisfies\\[\\frac{3}{16}r+\\frac{7}{8}\\leq t \\leq \\frac{1}{5}r.\\]\n\n\n\n\nReferences\n\n\n[EHT91] Erd\\H{o}s, Paul and Hajnal, Andr\\'{a}s and Tuza, Zsolt, Local constraints ensuring small representing sets. J. Combin. Theory Ser. A (1991), 78-84.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from Erdős's work on extremal hypergraph theory. The covering number (or transversal number) τ(G) is a fundamental parameter measuring how many vertices are needed to 'hit' every edge. The question asks: how does local structure (small subgraphs all having τ ≤ 1, meaning a common vertex) bound global covering number? Erdős, Hajnal, and Tuza established bounds in their 1991 paper 'Local constraints ensuring small representing sets' in J. Combinatorial Theory Series A. The problem belongs to the classical tradition of inferring global structure from local constraints.",
+    "problemStatement": "Let r ≥ 3. For an r-uniform hypergraph G, let τ(G) denote the covering number - the minimum size of a vertex set intersecting every edge. Determine the best t = t(r) such that: if every induced subhypergraph on at most 3r-3 vertices has τ ≤ 1 (equivalently, has a common vertex in all edges), then τ(G) ≤ t.",
+    "proofStrategy": "The problem remains open. The formalization captures the key definitions (r-uniform hypergraph, covering number, induced subhypergraph, local covering condition) and axiomatizes the known bounds from Erdős-Hajnal-Tuza (1991): lower bound (3/16)r + 7/8 via explicit constructions, upper bound (1/5)r via probabilistic or counting arguments. The gap between 3/16 ≈ 0.1875 and 1/5 = 0.2 remains the core open question.",
+    "keyInsights": [
+      "The condition τ(G') ≤ 1 for small G' means every small subhypergraph has a 'kernel' vertex covering all its edges",
+      "The threshold 3r-3 is chosen so that small subhypergraphs can have interesting structure (multiple edges)",
+      "The bounds 3/16 ≤ c ≤ 1/5 differ by only ~7% asymptotically, making progress difficult",
+      "The problem relates to Helly-type theorems and sunflower structures in hypergraphs",
+      "The lower bound comes from explicit constructions; the upper bound uses covering arguments"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypergraph-defs",
+      "title": "Hypergraph Definitions",
+      "summary": "r-uniform hypergraph, covering set, covering number",
+      "startLine": 42,
+      "endLine": 79
+    },
+    {
+      "id": "local-condition",
+      "title": "The Local Condition",
+      "summary": "Local covering bound and threshold 3r-3",
+      "startLine": 81,
+      "endLine": 102
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Erdős Problem #616 formalized",
+      "startLine": 104,
+      "endLine": 124
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős-Hajnal-Tuza 1991 bounds",
+      "startLine": 126,
+      "endLine": 168
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Status and key insights",
+      "startLine": 269,
+      "endLine": 316
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #616 asks for the optimal function t(r) bounding the covering number of r-uniform hypergraphs satisfying a local intersection condition. The known bounds (3/16)r ≤ t(r) ≤ (1/5)r leave a gap that remains open.",
+    "implications": "Understanding this relationship between local and global structure has implications for combinatorial optimization, set cover problems, and the general theory of hypergraph transversals. The problem exemplifies how tight bounds can be hard to obtain even when the asymptotic behavior is nearly pinned down.",
+    "openQuestions": [
+      "What is the exact asymptotic coefficient c where t(r) ~ cr?",
+      "Is the lower or upper bound closer to the truth?",
+      "Are there structural characterizations of extremal hypergraphs?",
+      "What happens for other threshold values (not 3r-3)?"
+    ]
   }
 }
