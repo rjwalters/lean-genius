@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-753-001",
+    "proofId": "erdos-753",
+    "range": { "startLine": 47, "endLine": 47 },
+    "type": "definition",
+    "title": "List Assignment",
+    "content": "A list assignment L assigns to each vertex v a set L(v) of available colors. Unlike ordinary coloring where all vertices share the same color palette, list coloring allows different vertices to have different available colors. This models real-world constraints where different elements may have different feasible options.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-753-002",
+    "proofId": "erdos-753",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "definition",
+    "title": "k-List Assignment",
+    "content": "A k-list assignment requires each vertex to have at least k colors available in its list. The condition uses Set.ncard for the cardinality of potentially infinite sets, though in practice the lists are finite. This definition is the basis for defining k-choosability.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-753-003",
+    "proofId": "erdos-753",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "L-Coloring",
+    "content": "An L-coloring is a proper vertex coloring where each vertex v receives a color from its list L(v). The two conditions are: (1) each vertex gets a color from its list, and (2) adjacent vertices get different colors. This generalizes ordinary proper coloring.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-753-004",
+    "proofId": "erdos-753",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "k-Choosable (List Chromatic Number)",
+    "content": "A graph is k-choosable if for EVERY k-list assignment L, there exists a proper L-coloring. This is a strong condition: the graph must be colorable no matter what lists are assigned, as long as each list has at least k colors. The list chromatic number χ_L(G) is the minimum such k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-753-005",
+    "proofId": "erdos-753",
+    "range": { "startLine": 78, "endLine": 86 },
+    "type": "concept",
+    "title": "List Chromatic Number Axioms",
+    "content": "The list chromatic number is axiomatized rather than computed, as determining choosability is NP-complete. Three axioms establish: (1) existence of χ_L(G), (2) G is χ_L(G)-choosable (the value is achieved), and (3) χ_L(G) is minimal (no smaller value works). This axiomatic approach is standard for complex combinatorial invariants in formal verification.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-753-006",
+    "proofId": "erdos-753",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "definition",
+    "title": "Complement Graph Definition",
+    "content": "The complement G^c has an edge between v and w if and only if v ≠ w AND G does NOT have an edge between them. The symmetry proof shows that if v ≠ w and ¬G.Adj v w, then w ≠ v and ¬G.Adj w v (using G.symm). The loopless proof uses that v ≠ v is false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-753-007",
+    "proofId": "erdos-753",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "theorem",
+    "title": "Complement Involution",
+    "content": "The complement operation is an involution: (G^c)^c = G. The proof uses extensionality (ext v w) and case analysis. If G.Adj v w, then v ≠ w (by ne_of_adj) and G^c doesn't have edge v-w, so (G^c)^c has the edge. If ¬G.Adj v w, we split on v = w: if equal, both sides have no edge (loopless); if v ≠ w, G^c has edge v-w so (G^c)^c doesn't.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-753-008",
+    "proofId": "erdos-753",
+    "range": { "startLine": 128, "endLine": 132 },
+    "type": "definition",
+    "title": "The Erdős-Rubin-Taylor Conjecture",
+    "content": "The conjecture asks: does there exist c > 0 such that χ_L(G) + χ_L(G^c) > n^{1/2+c} for ALL graphs G on n vertices? This would be a superlinear lower bound, stronger than the √n bound known for ordinary chromatic number. The quantifier structure is: ∃c > 0, ∀n ≥ 1, ∀G on n vertices, the inequality holds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-753-009",
+    "proofId": "erdos-753",
+    "range": { "startLine": 145, "endLine": 151 },
+    "type": "concept",
+    "title": "Alon's Counterexample (1992)",
+    "content": "Alon proved the conjecture FALSE by constructing counterexamples. For every n ≥ 2, there exists a graph G on n vertices where χ_L(G) + χ_L(G^c) ≤ C·√(n log n) for some absolute constant C. Since √(n log n) = o(n^{1/2+c}) for any c > 0, this contradicts the conjecture. The construction uses random graphs G(n, 1/2).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-753-010",
+    "proofId": "erdos-753",
+    "range": { "startLine": 156, "endLine": 161 },
+    "type": "theorem",
+    "title": "Conjecture is False",
+    "content": "The main theorem: ¬ERTConjecture. The proof extracts the conjectured constant c > 0 and Alon's constant C > 0, then derives a contradiction for sufficiently large n where C·√(n log n) < n^{1/2+c}. The sorry marks where the asymptotic analysis would be completed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-753-011",
+    "proofId": "erdos-753",
+    "range": { "startLine": 171, "endLine": 172 },
+    "type": "concept",
+    "title": "List vs Ordinary Chromatic Number",
+    "content": "χ_L(G) ≥ χ(G) always holds. Any k-coloring is an L-coloring for the constant list assignment L(v) = {1,...,k}. So if G is k-choosable, it's certainly k-colorable. The inequality can be strict: Voigt showed a planar graph that is 4-colorable but not 4-choosable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-753-012",
+    "proofId": "erdos-753",
+    "range": { "startLine": 177, "endLine": 181 },
+    "type": "concept",
+    "title": "Trivial Lower Bound",
+    "content": "There's a trivial lower bound χ_L(G) + χ_L(G^c) ≥ √n for most graphs. This comes from the fact that either G or G^c has a clique of size about √n (by Ramsey theory), and cliques require many colors for list coloring. Alon's upper bound shows this is nearly tight up to log factors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-753-013",
+    "proofId": "erdos-753",
+    "range": { "startLine": 199, "endLine": 207 },
+    "type": "insight",
+    "title": "Probabilistic Construction",
+    "content": "Alon's counterexample uses random graphs G(n, 1/2). At edge probability p = 1/2, the graph G and its complement G^c have the same distribution. This 'self-complementary' property means both have similar list chromatic numbers, roughly √(n log n)/2 each. The probabilistic method shows such graphs exist without explicit construction.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-753-014",
+    "proofId": "erdos-753",
+    "range": { "startLine": 217, "endLine": 219 },
+    "type": "concept",
+    "title": "Nordhaus-Gaddum Theorem",
+    "content": "The classical Nordhaus-Gaddum theorem (1956) states: 2√n ≤ χ(G) + χ(G^c) ≤ n + 1 for any graph G on n vertices. The lower bound motivated the Erdős-Rubin-Taylor conjecture, which asked if a similar bound holds for list chromatic number. Alon's result shows the answer is negative.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-753-015",
+    "proofId": "erdos-753",
+    "range": { "startLine": 246, "endLine": 249 },
+    "type": "insight",
+    "title": "Bipartite Not Always 2-Choosable",
+    "content": "A striking difference between χ and χ_L: all bipartite graphs are 2-colorable (χ = 2), but not all are 2-choosable. The complete bipartite graph K_{2,2} (a 4-cycle) is 2-colorable but not 2-choosable. With lists L(v₁) = L(v₃) = {1,2} and L(v₂) = L(v₄) = {2,3}, no proper L-coloring exists.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-753-016",
+    "proofId": "erdos-753",
+    "range": { "startLine": 255, "endLine": 256 },
+    "type": "concept",
+    "title": "Complete Graph List Chromatic Number",
+    "content": "For the complete graph K_n, we have χ_L(K_n) = χ(K_n) = n. Every vertex is adjacent to every other, so all n vertices need different colors. Any n colors suffice, and fewer don't, regardless of list assignments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-753-017",
+    "proofId": "erdos-753",
+    "range": { "startLine": 262, "endLine": 263 },
+    "type": "insight",
+    "title": "Galvin's Theorem",
+    "content": "Galvin's theorem gives the exact list chromatic number of complete bipartite graphs: χ_L(K_{n,n}) = 1 + ⌈log₂ n⌉. This is much smaller than 2n (the number of vertices) but larger than 2 (the ordinary chromatic number). It demonstrates the logarithmic gap that can exist between χ and χ_L.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-753-018",
+    "proofId": "erdos-753",
+    "range": { "startLine": 287, "endLine": 297 },
+    "type": "theorem",
+    "title": "Main Summary Theorem",
+    "content": "The final theorem packages the main results: (1) The Erdős-Rubin-Taylor conjecture is FALSE (¬ERTConjecture), and (2) Alon's counterexample provides graphs where χ_L(G) + χ_L(G^c) ≤ C·√(n log n). The proof combines conjecture_false with the alon_counterexample axiom.",
+    "significance": "critical"
+  }
+]
