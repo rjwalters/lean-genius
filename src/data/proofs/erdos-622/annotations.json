@@ -1,146 +1,194 @@
 [
   {
-    "id": "ann-622-regular",
+    "id": "regular-def",
     "proofId": "erdos-622",
-    "range": { "startLine": 35, "endLine": 36 },
+    "range": {
+      "startLine": 35,
+      "endLine": 36
+    },
     "type": "definition",
     "title": "d-Regular Graph",
-    "content": "A graph is d-regular if every vertex has degree d.",
-    "significance": "critical"
+    "content": "A graph is d-regular if every vertex has exactly degree d. This is a strong structural constraint: every vertex has the same local connectivity. Regular graphs are fundamental in algebraic graph theory, and many important graph families (complete graphs, hypercubes, Cayley graphs) are regular.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-ef",
+    "id": "erdos-faudree-def",
     "proofId": "erdos-622",
-    "range": { "startLine": 42, "endLine": 43 },
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
     "type": "definition",
     "title": "Erdős-Faudree Condition",
-    "content": "A graph with 2n vertices and degree n+1. The central object of study.",
-    "significance": "critical"
+    "content": "The Erdős-Faudree condition requires a graph to have exactly 2n vertices and be regular of degree n+1. This is a very specific density condition: each vertex is adjacent to slightly more than half the graph. This threshold is precisely where interesting cycle-spanning behavior emerges.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-cycle",
+    "id": "cycle-def",
     "proofId": "erdos-622",
-    "range": { "startLine": 48, "endLine": 50 },
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
     "type": "definition",
-    "title": "Cycle",
-    "content": "A closed walk with no repeated vertices, length ≥ 3.",
-    "significance": "key"
+    "title": "Graph Cycle",
+    "content": "A cycle is a closed walk with no repeated vertices (except the start/end). It must have length at least 3. Cycles are fundamental substructures in graphs, and their existence and enumeration are central to graph theory. Every vertex on a cycle has degree at least 2 within that cycle.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-spanned",
+    "id": "spanned-by-cycle-def",
     "proofId": "erdos-622",
-    "range": { "startLine": 53, "endLine": 54 },
+    "range": {
+      "startLine": 53,
+      "endLine": 54
+    },
     "type": "definition",
     "title": "Cycle-Spanned Subset",
-    "content": "A subset S is cycle-spanned if there's a cycle visiting exactly S.",
-    "significance": "critical"
+    "content": "A subset S is cycle-spanned if there exists a cycle whose vertex set is exactly S. This is more restrictive than just 'S contains a cycle' — the cycle must visit exactly the vertices of S and no others. This definition connects cycle theory to subset enumeration.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-count",
+    "id": "cycle-count-def",
     "proofId": "erdos-622",
-    "range": { "startLine": 57, "endLine": 58 },
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
     "type": "definition",
     "title": "Cycle-Spanned Count",
-    "content": "The number of subsets of vertices that are spanned by some cycle.",
-    "significance": "key"
+    "content": "The cycle-spanned count is the number of subsets of V that are spanned by some cycle. For a graph on 2n vertices, there are 2^{2n} total subsets. The main question asks what fraction of these can be cycle-spanned in Erdős-Faudree graphs.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-main",
+    "id": "main-theorem-def",
     "proofId": "erdos-622",
-    "range": { "startLine": 63, "endLine": 68 },
-    "type": "definition",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    },
+    "type": "theorem",
     "title": "Main Theorem Statement",
-    "content": "At least (1/2 - ε)2^{2n} subsets are cycle-spanned for large n.",
-    "significance": "critical"
+    "content": "The main theorem states that for any ε > 0, eventually (for large enough n), every Erdős-Faudree graph has at least (1/2 - ε)2^{2n} cycle-spanned subsets. The asymptotic notation (1/2 + o(1)) captures that the fraction approaches 1/2 as n grows.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-dkm",
+    "id": "dkm-2025",
     "proofId": "erdos-622",
-    "range": { "startLine": 71, "endLine": 72 },
+    "range": {
+      "startLine": 71,
+      "endLine": 72
+    },
     "type": "theorem",
-    "title": "Draganić-Keevash-Müyesser 2025",
-    "content": "The main theorem holds: ≥ (1/2 + o(1))2^{2n} cycle-spanned subsets.",
-    "significance": "critical"
+    "title": "Draganić-Keevash-Müyesser (2025)",
+    "content": "This theorem, proved in 2025 by Draganić, Keevash, and Müyesser, confirms the main result: Erdős-Faudree graphs have at least (1/2 + o(1))2^{2n} cycle-spanned subsets. This resolved the long-standing conjecture of Erdős and Faudree.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-tight",
+    "id": "tightness",
     "proofId": "erdos-622",
-    "range": { "startLine": 75, "endLine": 81 },
+    "range": {
+      "startLine": 75,
+      "endLine": 81
+    },
     "type": "theorem",
-    "title": "Tightness",
-    "content": "The bound is asymptotically tight: cannot exceed (1/2 + o(1))2^{2n}.",
-    "significance": "key"
+    "title": "Tightness of Bound",
+    "content": "The bound is asymptotically tight: there exist Erdős-Faudree graphs with at most (1/2 + ε)2^{2n} cycle-spanned subsets for arbitrarily small ε. This shows the 1/2 constant is optimal and cannot be improved to any larger value.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-erdos",
+    "id": "erdos-observation",
     "proofId": "erdos-622",
-    "range": { "startLine": 90, "endLine": 96 },
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
     "type": "theorem",
     "title": "Erdős's Observation",
-    "content": "At least (1/2 + o(1))2^{2n} sets are NOT on a cycle. 'Easy to see.'",
-    "significance": "key"
+    "content": "Erdős claimed it was 'easy to see' that at least (1/2 + o(1))2^{2n} subsets are NOT spanned by any cycle. The complementary directions — showing both that many subsets ARE and ARE NOT on cycles — together establish the half-half symmetry.",
+    "significance": "core"
   },
   {
-    "id": "ann-622-halfhalf",
+    "id": "half-half",
     "proofId": "erdos-622",
-    "range": { "startLine": 99, "endLine": 106 },
-    "type": "theorem",
+    "range": {
+      "startLine": 99,
+      "endLine": 106
+    },
+    "type": "insight",
     "title": "Half-Half Symmetry",
-    "content": "Both cycle and non-cycle sets comprise about half of all subsets.",
-    "significance": "key"
+    "content": "Combining the main theorem with Erdős's observation yields a remarkable symmetry: both cycle-spanned and non-cycle-spanned subsets comprise approximately half of all subsets. This 50-50 split is a surprising structural property of dense regular graphs.",
+    "significance": "standard"
   },
   {
-    "id": "ann-622-knn",
+    "id": "complete-bipartite",
     "proofId": "erdos-622",
-    "range": { "startLine": 111, "endLine": 117 },
+    "range": {
+      "startLine": 111,
+      "endLine": 117
+    },
     "type": "definition",
     "title": "Complete Bipartite K_{n,n}",
-    "content": "The complete bipartite graph with n vertices on each side.",
-    "significance": "key"
+    "content": "The complete bipartite graph K_{n,n} has 2n vertices split into two parts of size n, with edges connecting all pairs from different parts. It is n-regular (not (n+1)-regular), so it doesn't satisfy the Erdős-Faudree condition. It serves as a crucial counterexample.",
+    "significance": "standard"
   },
   {
-    "id": "ann-622-knnfew",
+    "id": "knn-few-cycles",
     "proofId": "erdos-622",
-    "range": { "startLine": 131, "endLine": 133 },
+    "range": {
+      "startLine": 131,
+      "endLine": 133
+    },
     "type": "theorem",
-    "title": "K_{n,n} Has Few Cycles",
-    "content": "K_{n,n} has only O(n!²) cycle-spanned subsets, not 2^{Θ(n)}.",
-    "significance": "key"
+    "title": "K_{n,n} Has Few Cycle-Spanned Sets",
+    "content": "K_{n,n} has only O(n!²) cycle-spanned subsets, vastly fewer than 2^{Θ(n)}. This is because all cycles in K_{n,n} must alternate between the two parts, severely restricting possible cycle structures. This shows the Erdős-Faudree bound fails for bipartite graphs.",
+    "significance": "standard"
   },
   {
-    "id": "ann-622-stars",
+    "id": "knn-stars",
     "proofId": "erdos-622",
-    "range": { "startLine": 138, "endLine": 145 },
+    "range": {
+      "startLine": 138,
+      "endLine": 145
+    },
     "type": "definition",
-    "title": "K_{n,n} with Stars",
-    "content": "K_{n,n} with spanning stars: minimum degree n+1 but not regular.",
-    "significance": "supporting"
+    "title": "K_{n,n} with Stars Counterexample",
+    "content": "Adding a spanning star to each part of K_{n,n} creates a graph with minimum degree n+1 (satisfying a degree condition) but still few cycle-spanned sets. This shows that regularity, not just minimum degree, is essential for the theorem.",
+    "significance": "standard"
   },
   {
-    "id": "ann-622-paley",
+    "id": "paley-graph",
     "proofId": "erdos-622",
-    "range": { "startLine": 160, "endLine": 163 },
+    "range": {
+      "startLine": 160,
+      "endLine": 163
+    },
     "type": "definition",
     "title": "Paley Graph",
-    "content": "Paley graphs are Erdős-Faudree graphs when q ≡ 1 (mod 4).",
-    "significance": "supporting"
+    "content": "A Paley graph is constructed from a prime power q ≡ 1 (mod 4): vertices are elements of F_q, and two vertices are adjacent if their difference is a quadratic residue. Paley graphs are (q-1)/2 regular and highly symmetric. For appropriate parameters, they satisfy the Erdős-Faudree condition.",
+    "significance": "advanced"
   },
   {
-    "id": "ann-622-ham",
+    "id": "hamiltonian-cycle",
     "proofId": "erdos-622",
-    "range": { "startLine": 184, "endLine": 185 },
+    "range": {
+      "startLine": 184,
+      "endLine": 185
+    },
     "type": "definition",
     "title": "Hamiltonian Cycle",
-    "content": "A cycle visiting all vertices. The unique maximal cycle-spanned set.",
-    "significance": "supporting"
+    "content": "A Hamiltonian cycle visits every vertex exactly once. It's the unique cycle-spanned subset equal to the entire vertex set. Erdős-Faudree graphs, being dense enough, always contain Hamiltonian cycles by Dirac's theorem (degree ≥ n/2 suffices for 2n vertices).",
+    "significance": "standard"
   },
   {
-    "id": "ann-622-hamexist",
+    "id": "edge-count",
     "proofId": "erdos-622",
-    "range": { "startLine": 192, "endLine": 196 },
+    "range": {
+      "startLine": 201,
+      "endLine": 205
+    },
     "type": "theorem",
-    "title": "Hamiltonian Existence",
-    "content": "Erdős-Faudree graphs have at least one Hamiltonian cycle.",
-    "significance": "supporting"
+    "title": "Edge Count",
+    "content": "An Erdős-Faudree graph on 2n vertices has exactly n(n+1) edges: 2n vertices of degree n+1 gives 2n(n+1) edge-endpoints, and dividing by 2 yields n(n+1) edges. This is slightly more than n² edges, making the graph dense.",
+    "significance": "standard"
   }
 ]
