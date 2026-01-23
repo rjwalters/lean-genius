@@ -68,6 +68,20 @@ create_worktree() {
 
     if [[ -d "$worktree_path" ]]; then
         print_info "Worktree already exists: $worktree_path"
+        # Rebase on main to keep branch up to date and prevent divergence
+        print_info "Rebasing on main to sync with latest changes..."
+        (
+            cd "$worktree_path"
+            git fetch origin main 2>/dev/null || true
+            git stash 2>/dev/null || true
+            if git rebase origin/main 2>/dev/null; then
+                print_success "Rebased successfully"
+            else
+                git rebase --abort 2>/dev/null || true
+                print_warning "Rebase had conflicts - continuing with current state"
+            fi
+            git stash pop 2>/dev/null || true
+        )
         return 0
     fi
 
