@@ -19,12 +19,43 @@
     ],
     "badge": "mathlib",
     "sorries": 0,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.Basic",
+        "description": "Prime number definitions and basic properties",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Polynomial.Basic",
+        "description": "Polynomial definitions over rings",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number definitions for bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isIrreducible definition for integer polynomials",
+      "greatestPrimeDivisor definition via Nat.factors",
+      "F_f function computing greatest prime divisor of polynomial products",
+      "nagell_ricci_bound axiom (n log n bound)",
+      "erdos_1952_bound axiom (iterated logarithm bound)",
+      "tenenbaum_bound axiom (exponential bound)",
+      "conjecture_polynomial_growth formalization",
+      "conjecture_degree_growth formalization",
+      "greatestPrimeDivisor computational examples (proved)",
+      "Numerical bound comparison examples",
+      "erdos_976_status corollary"
+    ],
     "erdosNumber": 976,
     "erdosUrl": "https://erdosproblems.com/976",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem concerns the distribution of prime factors in values of irreducible polynomials. Nagell and Ricci established the first bound in 1922, showing F_f(n) ≫ n log n. Erdős improved this in 1952 using sieve methods. The problem has connections to algebraic number theory through the splitting of primes in number fields. While Erdős claimed a stronger bound in 1965, the proof was never published and was later found to be flawed. Tenenbaum finally proved the bound F_f(n) ≫ n exp((log n)^c) in 1990, but the main polynomial growth conjectures remain open.",
+    "historicalContext": "**The Founding Result (1922)**\\n\\nTrygve Nagell and Giovanni Ricci independently established the first non-trivial lower bound in 1922: for any irreducible polynomial f of degree d ≥ 2, F_f(n) ≫ n log n. This showed that polynomial products must contain larger prime factors than typical integers of comparable size.\\n\\n**Erdős's Sieve Improvement (1952)**\\n\\nErdős applied his revolutionary sieve methods to this problem, proving F_f(n) ≫ n(log n)^{log log log n}. The iterated logarithm exponent—while growing slowly—was a genuine improvement. In 1965, Erdős claimed a much stronger bound (n exp((log n)^c)) but called the proof 'fairly complicated' and never published it. The proof was later found to be flawed.\\n\\n**The Resolution (1990)**\\n\\nGérald Tenenbaum finally proved Erdős's claimed bound rigorously in 1990 using sophisticated large sieve inequalities. The bound n·exp((log n)^c) grows faster than any polynomial in log n but slower than any power n^ε. Meanwhile, Erdős and Schinzel published a weaker bound the same year, apparently unaware of the earlier issues.\\n\\n**The Gap Remains (Present)**\\n\\nDespite Tenenbaum's breakthrough, an enormous gap persists between the known bound n·exp((log n)^c) and the conjectured polynomial growth n^{1+c} or n^d. This gap reflects deep mysteries about how prime factors distribute among polynomial values.",
     "problemStatement": "Let f ∈ ℤ[x] be an irreducible polynomial of degree d ≥ 2. Define F_f(n) = max{p prime : p | f(m) for some 1 ≤ m ≤ n}, equivalently the greatest prime divisor of ∏_{m=1}^n f(m). Question: Is F_f(n) ≫ n^{1+c} for some constant c > 0? Or even ≫ n^d?",
     "proofStrategy": "The formalization presents the known bounds as axioms and defines the main conjectures precisely. The Nagell-Ricci bound uses elementary methods. Erdős's 1952 improvement uses sieve techniques to count integers with large prime factors. Tenenbaum's proof employs sophisticated large sieve inequalities. The algebraic approach relates prime divisors of f(m) to prime splitting in the number field ℚ[x]/(f) via Chebotarev's density theorem.",
     "keyInsights": [
