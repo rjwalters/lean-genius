@@ -19,17 +19,17 @@
     "phase": "PROGRESS",
     "since": "2026-01-23T00:00:00Z",
     "iteration": 8,
-    "focus": "Eliminated 9 axioms total (3 monotonicity + 5 numerical + 1 Archimedean)",
+    "focus": "Eliminated 10 axioms total (3 monotonicity + 6 numerical + 1 Archimedean)",
     "blockers": ["key_inequality_full_axiom appears mathematically false - κ_gaussian * c_FK_full ≈ 1.84 < 2"],
-    "nextAction": "Investigate remaining numerical/PDE axioms",
+    "nextAction": "Investigate exp_dominates_poly_axiom or remaining PDE axioms",
     "attemptCounts": {
-      "total": 7,
-      "currentApproach": 4,
+      "total": 8,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 9 axioms total. (1) Monotonicity: enstrophy_bounded_2d, ancient_E_monotone, E_bounded_after. (2) π bounds: spectralGap_val, θcrit_lt_099, criticalThreshold_approx. (3) Exp+π combined: key_numerical_inequality, kappa_cFK_gt_8. (4) Archimedean: growth_unbounded. File now has 38 axioms (was 47). NOTE: key_inequality_full_axiom and θcrit_cFK_gt_1_axiom appear mathematically FALSE.",
+    "progressSummary": "PROGRESS: Eliminated 10 axioms total. (1) Monotonicity: enstrophy_bounded_2d, ancient_E_monotone, E_bounded_after. (2) π bounds: spectralGap_val, θcrit_lt_099, criticalThreshold_approx, A_spectral_gt_one. (3) Exp+π combined: key_numerical_inequality, kappa_cFK_gt_8. (4) Archimedean: growth_unbounded. File now has 37 axioms (was 47). NOTE: key_inequality_full_axiom and θcrit_cFK_gt_1_axiom appear mathematically FALSE.",
     "builtItems": [
       "proofs/Proofs/NavierStokes.lean - comprehensive NS infrastructure (existing)",
       "2D global existence/uniqueness theorems (axiomatized, structure in place)",
@@ -54,7 +54,8 @@
       "one_minus_exp_neg_two_gt - helper 1 - e⁻² > 0.86",
       "key_numerical_inequality theorem - PROVEN (was axiom)",
       "kappa_cFK_gt_8 theorem - PROVEN (was axiom)",
-      "growth_unbounded theorem - PROVEN using exists_nat_gt (Archimedean property)"
+      "growth_unbounded theorem - PROVEN using exists_nat_gt (Archimedean property)",
+      "A_spectral_gt_one theorem - PROVEN using pi_gt_d2 (π²/8 > 1)"
     ],
     "insights": [
       "NavierStokes.lean exists with 1703 lines: 0 sorries, 44 axioms - excellent infrastructure",
@@ -86,7 +87,9 @@
       "CRITICAL: key_inequality_full_axiom appears FALSE - κ_gaussian * c_FK_full = (1-e⁻²)² * π²/4 ≈ 1.84 < 2",
       "Similarly θcrit_cFK_gt_1_axiom FALSE - θcrit * c_FK_full ≈ 0.92 < 1",
       "These 'full' constants have a squaring error vs the original κ=4 constants which work",
-      "38 axioms remain after 9 eliminations"
+      "38 axioms remain after 9 eliminations",
+      "A_spectral = π²/8 ≈ 1.23 > 1 - uses same pi_gt_d2 pattern",
+      "37 axioms remain after 10 eliminations"
     ],
     "mathlibGaps": [
       "antitoneOn_of_deriv_nonpos API works well - no adjustment needed",

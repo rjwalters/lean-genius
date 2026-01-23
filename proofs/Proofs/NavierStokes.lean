@@ -1471,12 +1471,22 @@ When capacity < 1 OR θ dynamics gives β → 0, stability follows.
 def A_spectral : ℝ := Real.pi^2 / 8
 
 
-/-- **Axiom: A Spectral Greater Than One**
-    π² ≈ 9.87, so π²/8 ≈ 1.23 > 1.
-    Requires tighter π bounds than Mathlib's pi_gt_three provides. -/
-axiom A_spectral_gt_one_axiom : A_spectral > 1
-
-theorem A_spectral_gt_one : A_spectral > 1 := A_spectral_gt_one_axiom
+/-- **PROVEN: A Spectral Greater Than One**
+    π² ≈ 9.87 > 8, so π²/8 > 1. Uses pi_gt_d2. -/
+theorem A_spectral_gt_one : A_spectral > 1 := by
+  unfold A_spectral
+  have h_pi : 3.14 < Real.pi := Real.pi_gt_d2
+  have h_pi_sq : (3.14 : ℝ) ^ 2 < Real.pi ^ 2 := by
+    apply sq_lt_sq'
+    · linarith [Real.pi_pos]
+    · exact h_pi
+  have h1 : (9.8596 : ℝ) = 3.14 ^ 2 := by norm_num
+  have h2 : (9.8596 : ℝ) < Real.pi ^ 2 := by rw [h1]; exact h_pi_sq
+  have h3 : (8 : ℝ) < 9.8596 := by norm_num
+  have h4 : (8 : ℝ) < Real.pi ^ 2 := lt_trans h3 h2
+  have h_pos : (0 : ℝ) < 8 := by norm_num
+  calc Real.pi ^ 2 / 8 > 8 / 8 := by apply div_lt_div_of_pos_right h4 h_pos
+    _ = 1 := by norm_num
 
 
 /-- β bound gives stretching bound: S ≤ β·Ω·E 
