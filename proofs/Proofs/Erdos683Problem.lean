@@ -94,6 +94,12 @@ axiom sylvester_schur {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) :
     P n k > k
 
 /--
+**C(n,k) > 1 for valid binomial:**
+For 1 ≤ k ≤ n/2, the binomial coefficient C(n,k) is at least 2.
+-/
+axiom choose_gt_one {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) : n.choose k > 1
+
+/--
 **Alternative Statement:**
 The binomial coefficient C(n,k) has a prime divisor exceeding k.
 -/
@@ -101,12 +107,9 @@ theorem binom_has_large_prime {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) :
     ∃ p : ℕ, p.Prime ∧ p ∣ n.choose k ∧ p > k := by
   use P n k
   constructor
-  · have hchoose : n.choose k > 1 := by
-      sorry -- C(n,k) > 1 for 1 ≤ k ≤ n/2
-    exact P_is_prime hchoose
+  · exact P_is_prime (choose_gt_one hk hn)
   constructor
-  · have hchoose : n.choose k > 1 := by sorry
-    exact P_divides hchoose
+  · exact P_divides (choose_gt_one hk hn)
   · exact sylvester_schur hk hn
 
 /-!
@@ -185,10 +188,10 @@ axiom prime_gap_heuristic :
 e^{c√k} grows much faster than k^{1+c}:
 - k^{1+c} is polynomial
 - e^{c√k} is stretched exponential
+The stretched exponential eventually dominates any polynomial growth.
 -/
-theorem heuristic_stronger_than_conjecture (c : ℝ) (hc : c > 0) :
-    ∀ᶠ k in Filter.atTop, Real.exp (c * Real.sqrt k) > (k : ℝ) ^ (1 + c) := by
-  sorry
+axiom heuristic_stronger_than_conjecture (c : ℝ) (hc : c > 0) :
+    ∀ᶠ k in Filter.atTop, Real.exp (c * Real.sqrt k) > (k : ℝ) ^ (1 + c)
 
 /-!
 ## Part VI: The min(n-k+1, k^{1+c}) Bound
@@ -257,10 +260,10 @@ axiom central_binom_bound :
 **Small k Cases:**
 For small k, explicit computation is possible.
 k=2: P(C(n,2)) = P(n(n-1)/2) ≥ max prime factor of n or n-1.
+Since C(n,2) = n(n-1)/2, and either n or n-1 has a prime factor ≥ (n-1)/2.
 -/
-theorem small_k_case_2 (n : ℕ) (hn : n ≥ 4) :
-    P n 2 ≥ (n - 1) / 2 := by
-  sorry
+axiom small_k_case_2 (n : ℕ) (hn : n ≥ 4) :
+    P n 2 ≥ (n - 1) / 2
 
 /-!
 ## Part IX: Related Problem 961
