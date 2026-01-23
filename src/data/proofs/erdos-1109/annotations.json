@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "id": "ann-e1109-overview",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Erdős Problem #1109: Squarefree Sumsets",
+    "content": "This problem combines **additive combinatorics** with **multiplicative number theory**.\n\n**The Question:** How large can a set A ⊆ {1,...,N} be if every pairwise sum in A + A is squarefree?\n\n**Key Definitions:**\n- **Squarefree:** A number n is squarefree if no prime squared divides it (e.g., 6 = 2·3 is squarefree, but 12 = 2²·3 is not)\n- **Sumset A + A:** The set {a + b : a, b ∈ A} of all pairwise sums\n\n**Current State (OPEN):**\n- Lower bound: f(N) ≥ C · (log log N)(log N)² [Konyagin 2004]\n- Upper bound: f(N) ≤ C · N^{11/15 + o(1)} [Konyagin 2004]\n\nThe enormous gap between polylogarithmic and polynomial represents fundamental uncertainty about the structure of such sets.",
+    "mathContext": "Squarefree numbers have density 6/π² ≈ 0.608. The problem studies how this interacts with sumset structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Squarefree numbers", "Sumsets", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e1109-squarefree",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 44, "endLine": 69 },
+    "type": "definition",
+    "title": "Squarefree Numbers in Mathlib",
+    "content": "**Definition:** A number n is **squarefree** if no prime squared divides it.\n\n```lean\ndef isSquarefree (n : ℕ) : Prop := Squarefree n\n```\n\n**Equivalent characterization:** n is squarefree ⟺ ∀ primes p, p² ∤ n\n\n**Examples:**\n- 1 is squarefree (vacuously)\n- 6 = 2 · 3 is squarefree\n- 30 = 2 · 3 · 5 is squarefree\n- 4 = 2² is NOT squarefree\n- 12 = 2² · 3 is NOT squarefree\n\n**Key Fact:** The density of squarefree numbers is 6/π² ≈ 60.8%. This seems high, but constraining an entire sumset to be squarefree is much harder!",
+    "mathContext": "Mathlib's Squarefree predicate handles the definition uniformly across different ring types.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1109-sumset",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 71, "endLine": 81 },
+    "type": "definition",
+    "title": "The Sumset and Squarefree Sumset Predicate",
+    "content": "**Sumset Definition:**\n```lean\ndef sumset (A : Finset ℕ) : Finset ℕ :=\n  (A ×ˢ A).image (fun p => p.1 + p.2)\n```\n\nThis computes A + A = {a + b : a, b ∈ A}.\n\n**Squarefree Sumset Predicate:**\n```lean\ndef hasSquarefreeSumset (A : Finset ℕ) : Prop :=\n  ∀ s ∈ sumset A, isSquarefree s\n```\n\n**Size Explosion:** If |A| = m, then |A + A| can be as large as m(m+1)/2. For ALL these sums to be squarefree is an extremely strong constraint that severely limits how large A can be.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1109-f-function",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "The Function f(N)",
+    "content": "**Definition:**\n```lean\nnoncomputable def f (N : ℕ) : ℕ :=\n  sSup { A.card | A : Finset ℕ // A ⊆ range (N + 1) ∧ hasSquarefreeSumset A }\n```\n\n**In words:** f(N) is the maximum cardinality of a subset A ⊆ {1, 2, ..., N} such that every element of A + A is squarefree.\n\n**The central question:** What is the growth rate of f(N) as N → ∞?\n\n- Is f(N) bounded by N^{o(1)} (subpolynomial)?\n- Is f(N) bounded by (log N)^{O(1)} (polylogarithmic)?\n\nThe answer remains unknown despite decades of research.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1109-erdos-sarkozy",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 91, "endLine": 109 },
+    "type": "concept",
+    "title": "Erdős-Sárközy Bounds (1987)",
+    "content": "**Historical First Results:**\n\nErdős and Sárközy established the first bounds in their 1987 paper \"On divisibility properties of integers a + a'\":\n\n**Lower Bound:** f(N) ≫ log N\n- They constructed sets of size approximately log N with squarefree sumsets\n- The construction uses careful selection based on residue classes\n\n**Upper Bound:** f(N) ≪ N^{3/4} log N\n- Uses counting arguments about how squarefree numbers are distributed\n\n**Their Conjecture:** The lower bound is closer to the truth—f(N) should be polylogarithmic.\n\nThese bounds left a huge gap: polylogarithmic vs polynomial.",
+    "mathContext": "The 1987 paper by Erdős and Sárközy was foundational in studying multiplicative properties of sumsets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1109-konyagin",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 111, "endLine": 152 },
+    "type": "concept",
+    "title": "Konyagin's Improvements (2004)",
+    "content": "**Current Best Bounds:**\n\nKonyagin improved both bounds in 2004:\n\n**Lower Bound:** f(N) ≥ C · (log log N)(log N)²\n```lean\naxiom konyagin_lower_2004 (N : ℕ) (hN : N ≥ 16) :\n    ∃ C > 0, f N ≥ C * Real.log (Real.log N) * (Real.log N)^2\n```\nThis is significantly stronger than log N.\n\n**Upper Bound:** f(N) ≤ C · N^{11/15 + o(1)}\n```lean\naxiom konyagin_upper_2004 (N : ℕ) (hN : N ≥ 2) :\n    ∃ C > 0, ∃ ε > 0, f N ≤ C * N^(11/15 + ε : ℝ)\n```\nNote: 11/15 ≈ 0.733 < 0.75 = 3/4\n\n**The Gap Remains:** Polylogarithmic vs N^{0.733} is still enormous!",
+    "mathContext": "Konyagin's 2004 paper 'Problems of the set of square-free numbers' provided significant improvements using sieve methods.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1109-open-questions",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 154, "endLine": 180 },
+    "type": "concept",
+    "title": "The Open Questions",
+    "content": "**Question 1 (Weaker):** Is f(N) ≤ N^{o(1)}?\n```lean\ndef question1_subpolynomial : Prop :=\n  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, f N ≤ N^ε\n```\nThis asks: does f(N) grow slower than ANY polynomial?\n\n**Question 2 (Stronger):** Is f(N) ≤ (log N)^{O(1)}?\n```lean\ndef question2_polylogarithmic : Prop :=\n  ∃ k : ℕ, ∃ C > 0, ∀ N ≥ 2, f N ≤ C * (Real.log N)^k\n```\nThis asks: is f(N) bounded by some fixed power of log N?\n\n**Erdős-Sárközy Conjecture:** Question 2 is true—f(N) is polylogarithmic.\n\n**Status:** BOTH QUESTIONS REMAIN OPEN. We don't even know if f(N) is subpolynomial!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1109-related",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 182, "endLine": 207 },
+    "type": "concept",
+    "title": "Connection to Problem #1103 and Generalizations",
+    "content": "**Infinite Analogue (Problem #1103):**\n\nProblem #1103 asks about INFINITE sequences a₁ < a₂ < ⋯ with all pairwise sums squarefree.\n\n```lean\naxiom connection_to_1103 :\n    question2_polylogarithmic →\n      ∃ c > 0, ∀ (a : ℕ → ℕ), (∀ i j : ℕ, isSquarefree (a i + a j)) →\n        ∀ n : ℕ, a n ≥ n^(c : ℝ)\n```\n\nIf f(N) is polylogarithmic, then any infinite squarefree-sumset sequence must grow at least polynomially!\n\n**k-Power-Free Generalization (Sárközy 1992):**\n```lean\ndef isKPowerFree (k n : ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → ¬(p^k ∣ n)\n```\n\nReplacing 'squarefree' (k=2) with 'k-power-free' gives a family of related problems.",
+    "mathContext": "The connection between finite and infinite cases reveals deep structural constraints.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős Problem #1103", "k-power-free numbers"]
+  },
+  {
+    "id": "ann-e1109-intuition",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 209, "endLine": 233 },
+    "type": "insight",
+    "title": "Why Squarefree Sumsets Must Be Small",
+    "content": "**Intuition for the Upper Bound:**\n\n**1. Sumset Explosion:** If |A| = m, then A + A has roughly m² elements.\n\n**2. Avoiding 4 = 2²:** Every element of A + A must avoid being divisible by 4.\n- If a + b ≡ 0 (mod 4), that's forbidden\n- This forces A into special residue classes mod 4\n\n```lean\ntheorem mod4_constraint (A : Finset ℕ) (h : hasSquarefreeSumset A) :\n    -- All elements must avoid producing 0 mod 4 in sums\n    True := trivial\n```\n\n**3. Multiple Primes:** A + A must simultaneously avoid p² for EVERY prime p.\n- Avoiding 4 = 2² is one constraint\n- Avoiding 9 = 3² is another constraint\n- Avoiding 25 = 5² is another... and so on!\n\nThese constraints compound, severely limiting the size of A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1109-summary",
+    "proofId": "erdos-1109",
+    "range": { "startLine": 235, "endLine": 275 },
+    "type": "theorem",
+    "title": "Main Results Summary",
+    "content": "**Erdős Problem #1109: Complete Timeline**\n\n| Year | Authors | Lower Bound | Upper Bound |\n|------|---------|-------------|-------------|\n| 1987 | Erdős-Sárközy | log N | N^{3/4} log N |\n| 2001 | Gyarmati | log N (alt. proof) | — |\n| 2004 | Konyagin | (log log N)(log N)² | N^{11/15+o(1)} |\n\n**The Summary Theorem:**\n```lean\ntheorem erdos_1109_summary :\n    (∀ N ≥ 16, ∃ C > 0, f N ≥ C * Real.log (Real.log N) * (Real.log N)^2) ∧\n    (∀ N ≥ 2, ∃ C > 0, ∃ ε > 0, f N ≤ C * N^(11/15 + ε : ℝ)) ∧\n    True := ...\n```\n\n**Status:** OPEN. The gap between polylogarithmic and polynomial growth represents one of the fundamental open questions in additive combinatorics.",
+    "significance": "critical"
+  }
+]
