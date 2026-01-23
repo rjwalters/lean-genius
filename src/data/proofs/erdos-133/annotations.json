@@ -1,1 +1,189 @@
-[]
+[
+  {
+    "id": "erdos-133-intro",
+    "proofId": "erdos-133",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 29 },
+    "title": "Problem Introduction",
+    "content": "**Erdős Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs**\n\nLet f(n) be the minimum k such that every triangle-free graph with n vertices and diameter 2 has a vertex of degree ≥ k.\n\n**Original Question:** Does f(n)/√n → ∞?\n\n**Answer:** NO! The ratio is bounded: 1 ≤ lim inf f(n)/√n ≤ lim sup f(n)/√n ≤ 2/√3.\n\nThis was a **disproof** problem: Erdős and Pach suspected the answer might be yes, but constructions showed otherwise.",
+    "mathContext": "This problem lies at the intersection of extremal graph theory and the study of Moore graphs. The tension between local sparsity (triangle-free) and global density (diameter 2) creates interesting constraints.",
+    "significance": "critical",
+    "relatedConcepts": ["Triangle-free graphs", "Graph diameter", "Moore bound", "Extremal graph theory"]
+  },
+  {
+    "id": "erdos-133-triangle-free",
+    "proofId": "erdos-133",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 47 },
+    "title": "Triangle-Free Definition",
+    "content": "**TriangleFree G:**\n\nA graph G is triangle-free if there are no three vertices a, b, c that are mutually adjacent.\n\n**Formula:** ∀ a b c, G.Adj a b → G.Adj b c → G.Adj c a → False\n\nThis is a local sparsity condition: neighborhoods form independent sets.",
+    "mathContext": "Triangle-free graphs have been extensively studied since Mantel's theorem (1907). They have rich structure theory and connections to Ramsey theory.",
+    "significance": "key",
+    "relatedConcepts": ["Independent sets", "Mantel's theorem", "Turán graphs", "Ramsey numbers"]
+  },
+  {
+    "id": "erdos-133-diameter-2",
+    "proofId": "erdos-133",
+    "type": "definition",
+    "range": { "startLine": 49, "endLine": 52 },
+    "title": "Diameter 2 Definition",
+    "content": "**HasDiameter2 G:**\n\nA graph has diameter 2 if it is connected and any two non-adjacent vertices have a common neighbor.\n\n**Formula:** G.Connected ∧ ∀ u v, u ≠ v → G.Adj u v ∨ ∃ w, G.Adj u w ∧ G.Adj w v\n\nThis is a global density condition: the graph is 'small-world' - any two vertices are at most 2 steps apart.",
+    "mathContext": "Diameter-2 graphs are locally like complete graphs in terms of reachability. This strong connectivity requirement interacts interestingly with triangle-freeness.",
+    "significance": "key",
+    "relatedConcepts": ["Graph connectivity", "Eccentricity", "Small-world graphs", "Distance in graphs"]
+  },
+  {
+    "id": "erdos-133-f-def",
+    "proofId": "erdos-133",
+    "type": "definition",
+    "range": { "startLine": 63, "endLine": 70 },
+    "title": "The f(n) Function",
+    "content": "**f(n) Definition:**\n\nf(n) is the minimum k such that EVERY triangle-free diameter-2 graph on n vertices has a vertex of degree ≥ k.\n\n**Formally:** The greatest lower bound on maximum degrees over all such graphs.\n\nThis is a minimax quantity: we minimize over graphs, but look at maximum degree in each graph.",
+    "mathContext": "This type of extremal function is common in Ramsey-type problems: we ask for the worst case over a class of objects.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal functions", "Minimax", "Ramsey-type problems", "Guaranteed properties"]
+  },
+  {
+    "id": "erdos-133-moore-bound",
+    "proofId": "erdos-133",
+    "type": "axiom",
+    "range": { "startLine": 76, "endLine": 79 },
+    "title": "The Moore Bound",
+    "content": "**moore_bound:**\n\nA graph with diameter 2 and maximum degree d has at most d² + 1 vertices.\n\n**Proof Idea:** From any vertex v, we can reach:\n- v itself (1 vertex)\n- The neighbors of v (at most d vertices)\n- Vertices at distance 2 (at most d(d-1) vertices, since each neighbor has at most d-1 other neighbors)\n\nTotal: 1 + d + d(d-1) = d² + 1\n\nThis is the **Moore bound** for diameter 2.",
+    "mathContext": "Moore graphs are diameter-d regular graphs achieving the Moore bound exactly. For diameter 2, they exist only for degrees 2, 3, 7, and possibly 57.",
+    "significance": "critical",
+    "relatedConcepts": ["Moore graphs", "Cage graphs", "Degree-diameter problem", "Petersen graph"]
+  },
+  {
+    "id": "erdos-133-lower-bound",
+    "proofId": "erdos-133",
+    "type": "theorem",
+    "range": { "startLine": 81, "endLine": 88 },
+    "title": "Lower Bound from Moore",
+    "content": "**lower_bound_sqrt and lower_bound_asymptotic:**\n\nFrom the Moore bound: if a diameter-2 graph has n vertices and max degree d, then n ≤ d² + 1, so d ≥ √(n-1).\n\nSince f(n) is the minimum such d over all valid graphs:\n\n**f(n) ≥ (1 - o(1))√n**\n\nThis is asymptotically tight for the lower bound.",
+    "mathContext": "The lower bound is simple but fundamental. It comes from pure counting: you can't have many vertices if degrees are small.",
+    "significance": "key",
+    "relatedConcepts": ["Counting arguments", "Vertex counting", "Degree-vertex relationship"]
+  },
+  {
+    "id": "erdos-133-simonovits",
+    "proofId": "erdos-133",
+    "type": "axiom",
+    "range": { "startLine": 94, "endLine": 97 },
+    "title": "Simonovits Construction",
+    "content": "**simonovits_upper_bound:**\n\nSimonovits observed that subsets of [3m-1] of size m, with two sets adjacent iff disjoint, form a triangle-free diameter-2 graph.\n\n**Result:** f(n) ≤ n^(2/3H(1/3)) = n^0.7182...\n\nwhere H(x) = -x log x - (1-x) log(1-x) is the binary entropy.\n\nThis was the first sub-linear upper bound!",
+    "mathContext": "This Kneser-type construction uses combinatorial set systems. The binary entropy appears due to binomial coefficient asymptotics.",
+    "significance": "key",
+    "relatedConcepts": ["Kneser graphs", "Set systems", "Binary entropy", "Disjoint sets"]
+  },
+  {
+    "id": "erdos-133-alon",
+    "proofId": "erdos-133",
+    "type": "axiom",
+    "range": { "startLine": 99, "endLine": 102 },
+    "title": "Alon's Simple Construction",
+    "content": "**alon_upper_bound:**\n\nAlon gave a simple construction: take a triangle-free graph with independence number ≪ √(n log n), then add edges until it has diameter 2.\n\n**Key observation:** Neighborhoods are independent sets, so max degree ≤ independence number.\n\n**Result:** f(n) ≤ C√(n log n)\n\nThis elegant argument gives a near-optimal bound with minimal effort.",
+    "mathContext": "The construction uses probabilistic graphs: random triangle-free graphs have small independence numbers. The √log n factor is likely not necessary.",
+    "significance": "key",
+    "relatedConcepts": ["Independence number", "Probabilistic constructions", "Ramsey graphs", "Small independence"]
+  },
+  {
+    "id": "erdos-133-hanson-seyffarth",
+    "proofId": "erdos-133",
+    "type": "axiom",
+    "range": { "startLine": 104, "endLine": 107 },
+    "title": "Hanson-Seyffarth Bound (1984)",
+    "content": "**hanson_seyffarth_1984:**\n\nUsing Cayley graphs on ℤ/nℤ with symmetric complete sum-free generating sets of size ~√n:\n\n**Result:** f(n) ≤ (√2 + o(1))√n\n\nThis was the first O(√n) upper bound, matching the lower bound up to constants!\n\nThe constant √2 ≈ 1.414 was later improved by Füredi-Seress.",
+    "mathContext": "Complete sum-free sets S satisfy: S + S covers all non-zero elements. These sets have been independently studied in additive combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Cayley graphs", "Sum-free sets", "Cyclic groups", "Algebraic constructions"]
+  },
+  {
+    "id": "erdos-133-furedi-seress",
+    "proofId": "erdos-133",
+    "type": "axiom",
+    "range": { "startLine": 109, "endLine": 117 },
+    "title": "Füredi-Seress Bound (1994)",
+    "content": "**furedi_seress_1994:**\n\nThe current best upper bound:\n\n**f(n) ≤ (2/√3 + o(1))√n ≈ 1.1547√n**\n\nThis improves on Hanson-Seyffarth (√2 ≈ 1.414) by using more sophisticated geometric constructions.\n\n**furedi_seress_improves_hanson_seyffarth:**\n2/√3 < √2 (since 4/3 < 2)",
+    "mathContext": "The 2/√3 constant comes from optimal packing in certain geometric configurations. Whether this is the true constant remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["Geometric constructions", "Optimal packings", "Best known bounds", "Constant optimization"]
+  },
+  {
+    "id": "erdos-133-main-question",
+    "proofId": "erdos-133",
+    "type": "theorem",
+    "range": { "startLine": 123, "endLine": 134 },
+    "title": "Main Question: DISPROVED",
+    "content": "**OriginalQuestion and original_question_false:**\n\n**Question:** Does f(n)/√n → ∞?\n\n**Answer:** NO!\n\nThe upper bounds show f(n)/√n ≤ 2/√3 + o(1), so the ratio is bounded.\n\n**ratio_bounded:** There exists C > 0 such that f(n)/√n ≤ C for all n ≥ 2.\n\nThis completely answers Erdős's original question in the negative.",
+    "mathContext": "The disproof came from constructions, not impossibility arguments. Finding good constructions is often harder than proving lower bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof by construction", "Bounded ratios", "Asymptotic analysis", "Counter-examples"]
+  },
+  {
+    "id": "erdos-133-alon-conjecture",
+    "proofId": "erdos-133",
+    "type": "definition",
+    "range": { "startLine": 140, "endLine": 149 },
+    "title": "Alon's Conjecture",
+    "content": "**AlonConjecture:**\n\nAlon believes the true asymptotic is:\n\n**f(n) ~ √n** (i.e., f(n)/√n → 1)\n\nThis would mean the lower bound is asymptotically tight!\n\nCurrent state: 1 ≤ lim inf ≤ lim sup ≤ 2/√3 ≈ 1.155\n\nClosing this gap remains an open problem.",
+    "mathContext": "If Alon's conjecture is true, the Moore bound is asymptotically achieved. This would be quite surprising and beautiful.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic equivalence", "Open conjectures", "Gap problems", "Tight bounds"]
+  },
+  {
+    "id": "erdos-133-polarity",
+    "proofId": "erdos-133",
+    "type": "axiom",
+    "range": { "startLine": 163, "endLine": 175 },
+    "title": "Polarity Graph Constructions",
+    "content": "**polarity_graph_construction:**\n\nFor primes q ≡ 1 (mod 4), there exist polarity graphs on q² vertices that are:\n- Triangle-free\n- Diameter 2\n- Max degree ≤ q + 1\n\nSince q ≈ √n, this gives max degree ≈ √n.\n\n**construction_gives_upper_bound:** f(q²) ≤ q + 1",
+    "mathContext": "Polarity graphs come from projective planes. The condition q ≡ 1 (mod 4) ensures a self-conjugate polarity exists.",
+    "significance": "key",
+    "relatedConcepts": ["Projective planes", "Polarity", "Finite geometry", "Explicit constructions"]
+  },
+  {
+    "id": "erdos-133-tension",
+    "proofId": "erdos-133",
+    "type": "theorem",
+    "range": { "startLine": 181, "endLine": 199 },
+    "title": "Structural Tension",
+    "content": "**Why Triangle-Free and Diameter 2 Create Tension:**\n\n1. **Triangle-free:** No vertex has two neighbors that are also neighbors. Neighborhoods are independent sets.\n\n2. **Diameter 2:** Any two non-adjacent vertices have a common neighbor. This requires 'coverage' by neighborhoods.\n\n3. **Tension:** To cover all pairs with common neighbors while keeping neighborhoods independent, we need large neighborhoods → high degree.\n\nThis structural tension is why f(n) must grow, though only as √n.",
+    "mathContext": "Understanding this tension is key to both constructions and impossibility results. The constraints pull in opposite directions.",
+    "significance": "key",
+    "relatedConcepts": ["Structural graph theory", "Constraint interactions", "Local vs global", "Covering problems"]
+  },
+  {
+    "id": "erdos-133-bipartite",
+    "proofId": "erdos-133",
+    "type": "theorem",
+    "range": { "startLine": 205, "endLine": 211 },
+    "title": "Bipartite Constructions",
+    "content": "**bipartite_triangle_free:**\n\nBipartite graphs are automatically triangle-free (a triangle would need an odd cycle).\n\nMany constructions for Problem #133 use bipartite graphs:\n- Easier to ensure triangle-freeness\n- Can focus on achieving diameter 2\n- Incidence graphs of designs are bipartite",
+    "mathContext": "Bipartite graphs provide a natural setting for triangle-free constructions. The projective plane incidence graph is bipartite.",
+    "significance": "key",
+    "relatedConcepts": ["Bipartite graphs", "Two-colorable", "Incidence structures", "Design theory"]
+  },
+  {
+    "id": "erdos-133-main-theorem",
+    "proofId": "erdos-133",
+    "type": "theorem",
+    "range": { "startLine": 217, "endLine": 225 },
+    "title": "Main Theorem",
+    "content": "**erdos_133:**\n\nComplete resolution of Problem #133:\n\n1. **Disproved:** f(n)/√n does NOT → ∞\n2. **Lower bound:** f(n) ≥ (1 - o(1))√n (from Moore)\n3. **Upper bound:** f(n) ≤ (2/√3 + o(1))√n (Füredi-Seress 1994)\n\n**Conclusion:** f(n) = Θ(√n)\n\nThe exact constant remains unknown; Alon conjectures it's 1.",
+    "mathContext": "The theorem combines the lower bound from counting with the upper bound from constructions to give a complete Θ(√n) answer.",
+    "significance": "critical",
+    "relatedConcepts": ["Complete resolution", "Theta notation", "Asymptotic bounds", "Combined results"]
+  },
+  {
+    "id": "erdos-133-summary",
+    "proofId": "erdos-133",
+    "type": "context",
+    "range": { "startLine": 227, "endLine": 239 },
+    "title": "Summary",
+    "content": "**Erdős Problem #133: SOLVED (DISPROVED)**\n\n**Question:** Does f(n)/√n → ∞?\n**Answer:** NO\n\n**True Behavior:** f(n) = Θ(√n)\n\n**Best Known Bounds:**\n- Lower: (1 - o(1))√n\n- Upper: (2/√3 + o(1))√n ≈ 1.1547√n\n\n**Open:** Is lim f(n)/√n = 1? (Alon's conjecture)\n\nThe problem showcases the interplay between local constraints (triangle-free) and global structure (diameter 2).",
+    "mathContext": "This is a beautiful example of a 'disproof' problem where constructions resolved an extremal question Erdős posed.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem resolution", "Disproof", "Final answer", "Open refinements"]
+  }
+]
