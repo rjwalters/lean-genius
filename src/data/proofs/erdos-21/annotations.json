@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #21**: Let f(n) be minimal such that there exists an intersecting family F of n-sets covering all (n-1)-sets. Is f(n) = O(n)?\n\n**Status**: SOLVED ($500 prize)\n**Solver**: Kahn (1994)\n\n**Key terminology**:\n- **Intersecting family**: Any two sets share at least one element\n- **Covers**: Every set of size ≤ n-1 is disjoint from at least one family member",
     "mathContext": "This combines ideas from intersecting families (Erdős-Ko-Rado theorem) with covering properties from combinatorial geometry.",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "intersecting-families",
       "covering",
@@ -28,7 +28,7 @@
     "title": "Background on Covering Properties",
     "content": "**The covering condition** is surprisingly strong:\n\nEvery set S with |S| ≤ n-1 must be disjoint from at least one family member.\n\n**Why this matters**:\n- Forces the family to be 'spread out' enough\n- Can't concentrate sets in a small region\n- The minimum size f(n) measures this spread",
     "mathContext": "If S ⊆ A for all A ∈ F, then S witnesses non-coverage. The condition ensures no small set is contained in every family member.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "covering-codes",
       "combinatorial-geometry",
@@ -46,7 +46,7 @@
     "title": "Intersecting Family",
     "content": "**IsIntersecting F**: For all A, B ∈ F, we have A ∩ B ≠ ∅.\n\n```lean\ndef IsIntersecting (F : Finset (Finset α)) : Prop :=\n  ∀ A ∈ F, ∀ B ∈ F, (A ∩ B).Nonempty\n```\n\nAny two members share at least one element.",
     "mathContext": "Classic Erdős-Ko-Rado theory studies maximum intersecting families. Here we want MINIMUM size with an additional covering property.",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "erdos-ko-rado",
       "Nonempty",
@@ -64,7 +64,7 @@
     "title": "Covers Small Sets",
     "content": "**CoversSmallSets F n**: Every set S with |S| ≤ n-1 is disjoint from some A ∈ F.\n\n```lean\ndef CoversSmallSets (F : Finset (Finset α)) (n : ℕ) : Prop :=\n  ∀ S : Finset α, S.card ≤ n - 1 → ∃ A ∈ F, Disjoint A S\n```\n\nThis forces the family to 'reach everywhere'.",
     "mathContext": "The disjointness condition means A ∩ S = ∅. Equivalently, for every small S, there's a family member avoiding S entirely.",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "Disjoint",
       "covering-condition",
@@ -82,7 +82,7 @@
     "title": "Uniform Family",
     "content": "**IsUniform F n**: All sets in F have exactly n elements.\n\n```lean\ndef IsUniform (F : Finset (Finset α)) (n : ℕ) : Prop :=\n  ∀ A ∈ F, A.card = n\n```\n\nAlso called an n-uniform hypergraph.",
     "mathContext": "Uniformity simplifies the analysis. The covering condition for (n-1)-sets interacts cleanly with n-sets.",
-    "significance": "supporting",
+    "significance": "advanced",
     "relatedConcepts": [
       "hypergraph",
       "uniform-family",
@@ -100,7 +100,7 @@
     "title": "Covering Family Structure",
     "content": "**CoveringFamily α n k**: A valid (n, k)-covering family with:\n- `family`: The Finset of Finsets\n- `intersecting`: All pairs intersect\n- `uniform`: All members have size n\n- `covers`: Covers all (n-1)-sets\n- `size`: Exactly k members\n\nThis bundles all constraints into one structure.",
     "mathContext": "The structure pattern in Lean bundles data (the family) with proofs of properties. This is typical for mathematical objects with multiple constraints.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "structure",
       "bundled-type",
@@ -118,7 +118,7 @@
     "title": "The Function f(n)",
     "content": "**axiom f (n : ℕ) : ℕ**\n\nf(n) = minimum size of a covering intersecting family of n-sets.\n\n**Axiomatized properties**:\n- `f_achievable`: Some family achieves f(n)\n- `f_minimal`: No smaller family exists\n\nThe exact computation is complex, so we axiomatize the minimum.",
     "mathContext": "Axiomatizing f(n) rather than defining it constructively allows reasoning about its properties without computing exact values.",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "axiom",
       "extremal-function",
@@ -136,7 +136,7 @@
     "title": "Known Exact Values",
     "content": "**Computed values of f(n)**:\n\n| n | f(n) | Source |\n|---|------|--------|\n| 1 | 1 | trivial |\n| 2 | 3 | edges of triangle |\n| 3 | 6 | Tripathi 2014 |\n| 4 | 9 | Tripathi 2014 |\n| 5 | 13 | Barát-Wanless 2021 |\n| 6 | 13-18 | bounds only |\n\nThe values suggest f(n) ≈ 3n - O(1).",
     "mathContext": "f(2) = 3: Three edges {a,b}, {b,c}, {a,c} of a triangle form the optimal family. For n = 3, 4, 5, computer-assisted proofs were needed.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "exact-values",
       "computational-bounds",
@@ -154,7 +154,7 @@
     "title": "Erdős-Lovász Lower Bound (1975)",
     "content": "**axiom erdos_lovasz_lower_bound**: f(n) ≥ (8/3)n - 3\n\nThe lower bound (8/3)n ≈ 2.67n comes from a counting argument:\n\n1. Each element of the ground set appears in bounded many family members\n2. The covering condition requires enough 'spread'\n3. Combining gives f(n) ≥ (8/3)n - O(1)",
     "mathContext": "The coefficient 8/3 emerges from optimizing a double counting argument. It's between 2 and 3, consistent with known values.",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "lower-bound",
       "counting-argument",
@@ -172,7 +172,7 @@
     "title": "Erdős-Lovász Upper Bound (1975)",
     "content": "**axiom erdos_lovasz_upper_bound**: f(n) ≤ C · n^(3/2) · log n\n\nThe original upper bound used projective plane constructions:\n\n- Lines of a projective plane form an intersecting family\n- Selecting O(n^(3/2) log n) lines suffices for coverage\n- This was the state of the art for 17 years!",
     "mathContext": "Projective plane of order q has q²+q+1 lines, each with q+1 points. Taking n = q+1 gives natural constructions.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "upper-bound",
       "projective-plane",
@@ -190,7 +190,7 @@
     "title": "Kahn's First Improvement (1992)",
     "content": "**axiom kahn_1992_bound**: f(n) ≤ C · n · log n\n\nKahn improved the upper bound using probabilistic methods:\n\n- Randomly select lines from a projective plane\n- Expected number needed is O(n log n)\n- The log factor comes from coupon collector-type analysis",
     "mathContext": "The improvement from n^(3/2) log n to n log n is significant - nearly quadratic improvement in the polynomial factor.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "probabilistic-method",
       "coupon-collector",
@@ -208,7 +208,7 @@
     "title": "Kahn's Resolution (1994) - Main Result",
     "content": "**axiom kahn_1994_linear_bound**: f(n) ≤ C · n\n\n**This resolved the Erdős-Lovász conjecture!**\n\nKahn proved f(n) = O(n) using a refined probabilistic argument:\n1. More careful analysis of projective plane selection\n2. Eliminated the log factor\n3. The constant C is not optimal but finite\n\n**theorem conjecture_resolved : ErdosLovaszConjecture** ✓",
     "mathContext": "The $500 Erdős prize was won for this result. Combined with lower bound (8/3)n, we have f(n) = Θ(n).",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "resolution",
       "linear-bound",
@@ -226,7 +226,7 @@
     "title": "Conjectured Exact Bound",
     "content": "**ExactBoundConjecture**: f(n) = 3n + O(1)\n\nBased on known values:\n- f(2) = 3 = 3·2 - 3\n- f(3) = 6 = 3·3 - 3  \n- f(4) = 9 = 3·4 - 3\n- f(5) = 13 ≈ 3·5 - 2\n\nPattern suggests f(n) ≈ 3n - 3 or f(n) ≈ 3n - 2.\n\n**Still OPEN**: The exact leading constant!",
     "mathContext": "Gap between lower bound (8/3)n ≈ 2.67n and conjectured 3n is about 0.33n. Closing this gap is a major open problem.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "exact-bound",
       "open-conjecture",
@@ -244,7 +244,7 @@
     "title": "Projective Plane Structure",
     "content": "**structure ProjectivePlane (q : ℕ)** with:\n- `points`: Fin (q² + q + 1) - the point set\n- `lines`: Finset of point-sets - the line set\n- `line_size`: Each line has q + 1 points\n- `two_lines_meet`: Any two lines meet in exactly 1 point\n- `num_lines`: There are q² + q + 1 lines\n\nProjective planes exist when q is a prime power.",
     "mathContext": "PG(2, q) is the projective plane over F_q. Lines are intersecting (any two meet) and uniform (size q+1). Perfect for our construction!",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "projective-geometry",
       "finite-fields",
@@ -262,7 +262,7 @@
     "title": "Erdős-Lovász Construction",
     "content": "**axiom erdos_lovasz_construction**: When n-1 is a prime power, lines from PG(2, n-1) give a valid covering family.\n\nThe construction:\n1. Take projective plane of order n-1\n2. Lines have size (n-1)+1 = n ✓\n3. Lines form an intersecting family ✓\n4. Selecting appropriate lines covers all (n-1)-sets",
     "mathContext": "When n-1 is not a prime power, modifications are needed. The prime power case is the cleanest.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "explicit-construction",
       "prime-power-order",
@@ -280,7 +280,7 @@
     "title": "Covering Family Structure",
     "content": "**axiom covering_family_structure**: In a covering family, any two distinct members intersect in at most 1 element.\n\n|A ∩ B| ≤ 1 for A ≠ B\n\nThis is a strong structural constraint - the family is almost like a projective plane!",
     "mathContext": "Combined with intersecting (|A ∩ B| ≥ 1), we get |A ∩ B| = 1 for distinct members. This is the defining property of lines in a projective plane.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "near-pencil",
       "linear-space",
@@ -298,7 +298,7 @@
     "title": "Sunflowers",
     "content": "**IsSunflower F**: All pairwise intersections are the SAME set C (the kernel).\n\n```lean\ndef IsSunflower (F : Finset (Finset α)) : Prop :=\n  ∃ C : Finset α, ∀ A ∈ F, ∀ B ∈ F, A ≠ B → A ∩ B = C\n```\n\nSunflowers have a central 'kernel' with 'petals' around it.\n\n**Note**: Not all covering families are sunflowers!",
     "mathContext": "The Sunflower Lemma (Erdős-Rado) says large uniform families contain sunflowers. Covering families have similar but not identical structure.",
-    "significance": "supporting",
+    "significance": "advanced",
     "relatedConcepts": [
       "sunflower-lemma",
       "kernel",
@@ -316,7 +316,7 @@
     "title": "Why Kahn's Proof Works",
     "content": "**Kahn's probabilistic argument**:\n\n1. Start with projective plane PG(2, n-1)\n2. Randomly select lines with appropriate probability\n3. Show expected coverage is complete\n4. Expected number of lines needed is O(n)\n5. By probabilistic method, a good selection exists\n\n**axiom kahn_probabilistic_argument**: f(n) ≤ 10n when n-1 is prime power",
     "mathContext": "The constant 10 is not tight - Kahn's original proof gives a larger constant. The exact optimal constant is unknown.",
-    "significance": "key",
+    "significance": "standard",
     "relatedConcepts": [
       "probabilistic-method",
       "random-selection",
@@ -334,7 +334,7 @@
     "title": "Generalized Problem",
     "content": "**f_general k n**: Minimum size for covering all (n-k)-sets.\n\nThe original problem is f = f_general 1 (cover (n-1)-sets).\n\n**GeneralizedConjecture k**: f_k(n) = (k+2)n + O(1)\n\n| k | Conjectured leading coefficient |\n|---|----------------------------------|\n| 1 | 3 (original problem) |\n| 2 | 4 |\n| k | k + 2 |",
     "mathContext": "This generalization studies how the minimum grows as we require coverage of smaller sets. The pattern (k+2)n is based on limited data.",
-    "significance": "supporting",
+    "significance": "advanced",
     "relatedConcepts": [
       "generalization",
       "parametric-family",
@@ -352,7 +352,7 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #21: SOLVED** ($500 prize)\n\n**Main Question**: Is f(n) = O(n)? **YES** (Kahn 1994)\n\n**Bounds**:\n- Lower: (8/3)n - O(1) ≈ 2.67n (Erdős-Lovász 1975)\n- Upper: O(n) (Kahn 1994)\n\n**Known values**: f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13\n\n**Key technique**: Probabilistic selection from projective planes\n\n**Still open**: Is f(n) = 3n + O(1)?",
     "mathContext": "The asymptotic question is resolved, but the exact leading constant remains open. This is typical - existence proofs often precede exact bounds.",
-    "significance": "critical",
+    "significance": "core",
     "relatedConcepts": [
       "problem-status",
       "solved",

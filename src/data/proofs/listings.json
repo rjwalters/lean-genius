@@ -4155,17 +4155,22 @@
     "id": "erdos-21",
     "title": "Erdős Problem #21: Covering Intersecting Families",
     "slug": "erdos-21",
-    "description": "Let f(n) be minimal such that there is an intersecting family of n-sets covering all (n-1)-sets. Is f(n) = O(n)?",
+    "description": "Let f(n) be the minimum size of an intersecting family of n-sets that covers all (n-1)-sets. Is f(n) = O(n)? SOLVED by Kahn (1994): YES.",
     "status": "complete",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorics",
       "set-theory",
-      "intersecting-families"
+      "intersecting-families",
+      "projective-planes",
+      "probabilistic-method",
+      "solved"
     ],
+    "dateAdded": "2026-01-22",
     "erdosNumber": 21,
-    "sorries": 3,
+    "mathlibCount": 2,
+    "sorries": 1,
     "annotationCount": 20
   },
   {
