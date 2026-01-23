@@ -1,54 +1,101 @@
 {
   "slug": "erdos-25",
-  "title": "Erdős #25",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Erdős #25: Logarithmic Density of Residue-Avoiding Sets",
+  "phase": "FORMALIZED",
+  "status": "progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Let $n_1 View the LaTeX source",
-    "whyMatters": []
+    "formal": "Let n₁ < n₂ < ⋯ be integers with residues aᵢ (mod nᵢ). Let A = {n : ∀i, n < nᵢ ∨ n ≢ aᵢ (mod nᵢ)}. Must log-density(A) exist?",
+    "plain": "Given any sequence of moduli and residues, must the logarithmic density of the set avoiding those residues exist?",
+    "whyMatters": [
+      "Connects modular arithmetic to analytic density concepts",
+      "Logarithmic density is more robust than natural density",
+      "Related to the Davenport-Erdős theorem"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Logarithmic density of ℕ⁺ is 1",
+      "Logarithmic density of empty set is 0",
+      "Natural density implies log density (Cesàro-type argument)"
+    ],
+    "open": [
+      "Main conjecture: whether log density always exists for residue-avoiding sets"
+    ],
+    "goal": "Formalize definitions and state main conjecture"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T04:34:21.348Z",
+    "phase": "FORMALIZED",
+    "since": "2026-01-23T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Comprehensive formalization with log density infrastructure",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider proving more axioms or connecting to specific examples",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #25 - Knowledge Base\n\n## Problem Statement\n\nLet $n_1 View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #486\n- Problem #24\n- Problem #26\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "progressSummary": "FORMALIZED: Comprehensive 300-line file with log density definitions, residue-avoiding sets, main conjecture, and multiple proved lemmas.",
+    "builtItems": [
+      "harmonicSum: wrapper for Mathlib harmonic (Erdos25LogDensity.lean:52)",
+      "logWeightedCount: Σ 1/n for n ∈ A (Erdos25LogDensity.lean:82)",
+      "logDensityRatio: weighted count / log N (Erdos25LogDensity.lean:86)",
+      "HasLogDensity: predicate for log density existence (Erdos25LogDensity.lean:91)",
+      "upperLogDensity / lowerLogDensity: limsup/liminf (Erdos25LogDensity.lean:95-100)",
+      "residueAvoidingSet: main set construction (Erdos25LogDensity.lean:115)",
+      "erdos_25_positive / erdos_25_negative: conjecture statements (Erdos25LogDensity.lean:130-144)"
+    ],
+    "insights": [
+      "Log density is weaker than natural density - more sets have log density",
+      "The harmonic sum H_N ~ log N + γ is key to understanding log density",
+      "Residue-avoiding sets encode sieving information modularly",
+      "Davenport-Erdős theorem guarantees log density for multiples of sequences"
+    ],
+    "mathlibGaps": [
+      "No direct log density API in Mathlib",
+      "Need Filter.Tendsto_iff_limsup_liminf for hasLogDensity_iff_eq"
+    ],
+    "nextSteps": [
+      "Prove hasLogDensity_iff_eq (limsup = liminf characterization)",
+      "Prove logDensityRatio_bounded (asymptotic bounds)",
+      "Prove logDensity_evens and logDensity_odds"
+    ],
+    "markdown": "# Erdős #25 - Logarithmic Density of Residue-Avoiding Sets\n\n## Problem Statement\n\nLet n₁ < n₂ < ⋯ be an arbitrary sequence of integers, each with an associated residue class aᵢ (mod nᵢ). Let A be the set of integers n such that for every i either n < nᵢ or n ≢ aᵢ (mod nᵢ).\n\n**Must the logarithmic density of A exist?**\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Formalization**: COMPLETE (2026-01-23)\n\n## Key Definitions\n\n### Logarithmic Density\n\nFor A ⊆ ℕ, the **logarithmic density** is:\n\n```\nlim_{N→∞} (1/log N) · Σ_{n ∈ A, n ≤ N} (1/n)\n```\n\n### Residue-Avoiding Set\n\nGiven sequences {nᵢ} and {aᵢ}:\n\n```\nA = {n : ∀i, n < nᵢ ∨ n ≢ aᵢ (mod nᵢ)}\n```\n\n## What We Built\n\n### Proven Theorems\n\n1. `tendsto_harmonic_div_log`: H_N / log N → 1\n2. `logDensity_empty`: ∅ has log density 0\n3. `logWeightedCount_full`: weighted count of ℕ⁺ = H_N\n4. `logDensity_full`: ℕ⁺ has log density 1\n5. `erdos_25_dichotomy`: positive ↔ ¬negative\n\n### Axioms (with proof sketches)\n\n- `hasLogDensity_iff_eq`: log density exists iff upper = lower\n- `logDensityRatio_bounded`: 0 ≤ ratio ≤ 1 asymptotically\n- `upperLogDensity_mono`: A ⊆ B ⟹ upper(A) ≤ upper(B)\n- `logDensity_evens`: even numbers have log density 1/2\n- `naturalDensity_implies_logDensity`: natural → log density\n- `davenport_erdos`: multiples of any sequence have log density\n\n## References\n\n- Problem #486 (related structure)\n- Davenport-Erdős theorem on multiples\n\n---\n\n*Formalized 2026-01-23*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Infrastructure-first formalization",
+      "status": "successful",
+      "description": "Built log density API from scratch, then stated main conjecture"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "density",
+    "modular-arithmetic",
+    "harmonic-analysis"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos486Problem"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős (1995) - Er95"
+    ],
+    "urls": [
+      "https://erdosproblems.com/25"
+    ],
+    "mathlib": [
+      "NumberTheory.Harmonic.EulerMascheroni"
+    ]
   },
   "started": "2026-01-12T04:34:21.348Z",
+  "lastUpdate": "2026-01-23T00:00:00Z",
   "significance": 7,
   "tractability": 6
 }
