@@ -1,115 +1,211 @@
 [
   {
-    "id": "ann-e666-header",
+    "id": "ann-666-header",
     "proofId": "erdos-666",
     "range": { "startLine": 1, "endLine": 26 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #666: C₆ in Hypercube Subgraphs**\n\nQuestion: Does every ε-dense subgraph of Qₙ contain C₆?\n\n**Answer:** NO\n\n**Counterexamples:**\n- Chung (1992): 4-partition into C₆-free parts (ε = 1/4)\n- Conder (1993): 3-coloring (ε = 1/3)",
-    "mathContext": "The hypercube Qₙ has 2ⁿ vertices and n·2ⁿ⁻¹ edges.",
+    "content": "**Erdős Problem #666: C₆ in Hypercube Subgraphs**\n\n**Question:** Does every ε-dense subgraph of Qₙ contain C₆?\n\n**Answer:** NO (Disproved)\n\n**Counterexamples:**\n- Chung (1992): 4-partition into C₆-free parts (ε = 1/4)\n- Conder (1993): 3-coloring (ε = 1/3)\n\nThe hypercube has surprising structure allowing dense cycle-free subgraphs.",
+    "mathContext": "The hypercube Qₙ has 2ⁿ vertices and n·2ⁿ⁻¹ edges, with vertices adjacent iff they differ in exactly one binary coordinate.",
     "significance": "critical",
-    "relatedConcepts": ["Hypercube", "Cycles", "Edge partition"]
+    "relatedConcepts": ["Hypercube", "Cycles", "Edge partition", "Disproved conjecture"]
   },
   {
-    "id": "ann-e666-hypercube",
+    "id": "ann-666-hypercube-def",
     "proofId": "erdos-666",
-    "range": { "startLine": 40, "endLine": 67 },
+    "range": { "startLine": 40, "endLine": 48 },
     "type": "definition",
-    "title": "Hypercube Graph",
-    "content": "**Hypercube n:**\n\nVertices: Fin (2^n) (binary strings of length n)\n\nAdjacency: x ~ y iff popcount(x XOR y) = 1 (differ in exactly one bit)\n\n**Properties:**\n- |V| = 2ⁿ\n- |E| = n·2ⁿ⁻¹\n- n-regular",
+    "title": "Hypercube Graph Qₙ",
+    "content": "**Hypercube n:**\n\nThe n-dimensional hypercube graph.\n\n**Vertices:** Fin (2^n) - binary strings of length n\n\n**Adjacency:** x ~ y iff popcount(x XOR y) = 1\n\nTwo vertices are adjacent iff they differ in exactly one bit (Hamming distance 1).",
+    "mathContext": "The hypercube is a fundamental structure in coding theory, parallel computing, and combinatorics. It's vertex-transitive and edge-transitive.",
     "significance": "critical",
-    "relatedConcepts": ["Binary representation", "Hamming distance"]
+    "relatedConcepts": ["Binary representation", "Hamming distance", "XOR", "Regular graph"]
   },
   {
-    "id": "ann-e666-cycles",
+    "id": "ann-666-vertices-edges",
     "proofId": "erdos-666",
-    "range": { "startLine": 73, "endLine": 96 },
+    "range": { "startLine": 50, "endLine": 60 },
     "type": "definition",
-    "title": "Cycles in Graphs",
-    "content": "**HasCycle G k:**\n\nG contains a cycle of length k (injective sequence with cyclic adjacency).\n\n**Specific cycles:**\n- HasC4: 4-cycle (square)\n- HasC6: 6-cycle (hexagon)\n- HasC2k: even cycle of length 2k",
+    "title": "Hypercube Size",
+    "content": "**hypercubeVertices, hypercubeEdges:**\n\n- |V(Qₙ)| = 2ⁿ vertices\n- |E(Qₙ)| = n · 2ⁿ⁻¹ edges\n\n**Derivation:** Each vertex has degree n (can flip any of n bits). Total degree = n · 2ⁿ. Edges = (n · 2ⁿ)/2 = n · 2ⁿ⁻¹.",
+    "mathContext": "The edge count grows exponentially in n, making hypercube subgraph problems computationally challenging.",
     "significance": "key",
-    "relatedConcepts": ["Graph cycles", "Even cycles"]
+    "relatedConcepts": ["Vertex count", "Edge count", "Degree sum formula"]
   },
   {
-    "id": "ann-e666-dense",
+    "id": "ann-666-regular",
     "proofId": "erdos-666",
-    "range": { "startLine": 102, "endLine": 117 },
+    "range": { "startLine": 62, "endLine": 67 },
+    "type": "axiom",
+    "title": "Hypercube is n-Regular",
+    "content": "**hypercube_regular:**\n\nFor n ≥ 1, every vertex in Qₙ has degree exactly n.\n\n**Proof idea:** Each vertex (binary string) has exactly n neighbors - one for each bit position that can be flipped.",
+    "mathContext": "n-regularity is immediate from the XOR definition: flipping bit i gives a unique neighbor for each i ∈ {0,...,n-1}.",
+    "significance": "key",
+    "relatedConcepts": ["Regular graph", "Degree", "Vertex-transitive"]
+  },
+  {
+    "id": "ann-666-has-cycle",
+    "proofId": "erdos-666",
+    "range": { "startLine": 73, "endLine": 81 },
+    "type": "definition",
+    "title": "Cycle in Graph",
+    "content": "**HasCycle G k:**\n\nGraph G contains a cycle of length k.\n\n**Definition:** An injective function cycle : Fin k → V such that:\n- cycle i ~ cycle (i+1 mod k) for all i\n- k ≥ 3\n\nThe cycle visits k distinct vertices in order, returning to start.",
+    "mathContext": "Cycles are fundamental graph structures. Even cycles (C₄, C₆, ...) behave differently from odd cycles in bipartite contexts.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph cycle", "Injective sequence", "Cyclic adjacency"]
+  },
+  {
+    "id": "ann-666-specific-cycles",
+    "proofId": "erdos-666",
+    "range": { "startLine": 83, "endLine": 96 },
+    "type": "definition",
+    "title": "Specific Cycle Predicates",
+    "content": "**HasC4, HasC6, HasC2k:**\n\n- HasC4 G: G contains a 4-cycle (square)\n- HasC6 G: G contains a 6-cycle (hexagon)\n- HasC2k G k: G contains C_{2k} (even cycle of length 2k)\n\nThe problem focuses on C₆ but relates to a general question about C_{2k}.",
+    "mathContext": "Even cycles are particularly important in hypercubes - Qₙ is bipartite, so all cycles are even.",
+    "significance": "key",
+    "relatedConcepts": ["4-cycle", "6-cycle", "Even cycles", "Bipartite"]
+  },
+  {
+    "id": "ann-666-dense-subgraph",
+    "proofId": "erdos-666",
+    "range": { "startLine": 102, "endLine": 109 },
+    "type": "definition",
+    "title": "Dense Subgraph",
+    "content": "**DenseSubgraph G m:**\n\nA structure representing a subgraph H of G with at least m edges.\n\n**Fields:**\n- graph : SimpleGraph V\n- isSubgraph : H's edges are in G\n- edgeCount : |E(H)| ≥ m",
+    "mathContext": "Subgraph density is central to extremal graph theory - how many edges force a given structure?",
+    "significance": "key",
+    "relatedConcepts": ["Subgraph", "Edge count", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-666-epsilon-dense",
+    "proofId": "erdos-666",
+    "range": { "startLine": 111, "endLine": 117 },
     "type": "definition",
     "title": "ε-Dense Subgraph",
-    "content": "**EpsilonDenseSubgraph n ε H:**\n\nH is a subgraph of Qₙ with at least ε·n·2ⁿ⁻¹ edges.\n\nThis captures 'significant fraction' of hypercube edges.",
-    "significance": "key",
-    "relatedConcepts": ["Edge density", "Subgraph"]
+    "content": "**EpsilonDenseSubgraph n ε H:**\n\nH is ε-dense in Qₙ if |E(H)| ≥ ε · n · 2ⁿ⁻¹.\n\nThis captures 'H has at least ε-fraction of Qₙ's edges'.\n\nThe conjecture asked: for any ε > 0, do ε-dense subgraphs contain C₆?",
+    "mathContext": "The ε-density formulation makes the question scale-invariant as n grows.",
+    "significance": "critical",
+    "relatedConcepts": ["Edge density", "Fraction of edges", "Threshold"]
   },
   {
-    "id": "ann-e666-conjecture",
+    "id": "ann-666-conjecture",
     "proofId": "erdos-666",
-    "range": { "startLine": 123, "endLine": 140 },
+    "range": { "startLine": 123, "endLine": 131 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**ErdosConjecture:**\n\nFor all ε > 0, ∃ N such that for n ≥ N, every ε-dense subgraph of Qₙ contains C₆.\n\nThis would say: any fixed positive fraction of hypercube edges eventually forces a 6-cycle.\n\nThe conjecture is FALSE.",
+    "mathContext": "Erdős posed this in 1991, expecting it might be true based on random graph intuition.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős conjecture", "Threshold problem", "Extremal question"]
+  },
+  {
+    "id": "ann-666-conjecture-false",
+    "proofId": "erdos-666",
+    "range": { "startLine": 133, "endLine": 140 },
     "type": "theorem",
-    "title": "Erdős's Conjecture (Disproved)",
-    "content": "**ErdosConjecture, erdos_conjecture_false:**\n\nConjecture: For all ε > 0, sufficiently large n, ε-dense subgraphs of Qₙ contain C₆.\n\nThis is FALSE. Counterexample: ε = 1/4 via Chung's partition.",
+    "title": "Conjecture Disproved",
+    "content": "**erdos_conjecture_false:**\n\n¬ErdosConjecture\n\nThe conjecture is FALSE. With ε = 1/4, Chung's partition gives a counterexample: a subgraph with 1/4 of all edges but no C₆.\n\nConder's 3-coloring gives an even stronger counterexample with ε = 1/3.",
+    "mathContext": "The disproof shows hypercubes have unexpected structure allowing dense cycle-free subgraphs.",
     "significance": "critical",
-    "relatedConcepts": ["Disproved conjecture", "Counterexample"]
+    "relatedConcepts": ["Disproof", "Counterexample", "Chung 1992"]
   },
   {
-    "id": "ann-e666-chung",
+    "id": "ann-666-chung",
     "proofId": "erdos-666",
-    "range": { "startLine": 146, "endLine": 174 },
+    "range": { "startLine": 146, "endLine": 161 },
     "type": "axiom",
-    "title": "Chung's Result (1992)",
-    "content": "**chung_1992, chung_counterexample:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs, each C₆-free.\n\nEach part has ~1/4 of all edges but contains no 6-cycle.",
-    "mathContext": "Published in J. Graph Theory.",
+    "title": "Chung's Partition (1992)",
+    "content": "**chung_1992:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs H₁, H₂, H₃, H₄ such that:\n1. Each Hᵢ is a subgraph of Qₙ\n2. The Hᵢ partition Qₙ's edges (disjoint union)\n3. Each Hᵢ is C₆-free\n\nEach part has approximately n·2ⁿ⁻¹/4 edges - a 1/4 fraction.",
+    "mathContext": "Published in J. Graph Theory. The construction is explicit and algebraic, using properties of binary strings.",
     "significance": "critical",
-    "relatedConcepts": ["Edge partition", "Chung 1992"]
+    "relatedConcepts": ["Edge partition", "C₆-free", "Chung 1992", "4 colors"]
   },
   {
-    "id": "ann-e666-bdt",
+    "id": "ann-666-chung-counterexample",
+    "proofId": "erdos-666",
+    "range": { "startLine": 163, "endLine": 174 },
+    "type": "theorem",
+    "title": "Chung's Counterexample",
+    "content": "**chung_counterexample:**\n\nFor n ≥ 3, there exists H ⊆ Qₙ with ~1/4 of all edges and no C₆.\n\n**Construction:** Take H₁ from Chung's 4-partition.\n\nThis disproves ErdosConjecture with ε = 1/4.",
+    "mathContext": "The theorem follows immediately from the partition axiom by taking any one of the four parts.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexample", "1/4 fraction"]
+  },
+  {
+    "id": "ann-666-bdt",
     "proofId": "erdos-666",
     "range": { "startLine": 180, "endLine": 197 },
     "type": "axiom",
     "title": "Brouwer-Dejter-Thomassen (1993)",
-    "content": "**brouwer_dejter_thomassen_1993:**\n\nIndependently proved Qₙ can be 4-colored with no monochromatic C₄ or C₆.\n\nThis confirms and extends Chung's result.",
-    "mathContext": "Published in J. Algebraic Combin.",
+    "content": "**brouwer_dejter_thomassen_1993:**\n\nFor n ≥ 3, Qₙ's edges can be 4-colored such that:\n- The coloring is consistent (symmetric on each edge)\n- No color class contains C₄\n- No color class contains C₆\n\nThis independently confirms and extends Chung's result.",
+    "mathContext": "Published in J. Algebraic Combin. The algebraic approach uses group-theoretic properties of the hypercube.",
     "significance": "key",
-    "relatedConcepts": ["Edge coloring", "BDT 1993"]
+    "relatedConcepts": ["Edge coloring", "BDT 1993", "No C₄ or C₆"]
   },
   {
-    "id": "ann-e666-conder",
+    "id": "ann-666-conder",
     "proofId": "erdos-666",
-    "range": { "startLine": 203, "endLine": 231 },
+    "range": { "startLine": 203, "endLine": 218 },
     "type": "axiom",
     "title": "Conder's Improvement (1993)",
-    "content": "**conder_1993, conder_better_bound:**\n\nFor n ≥ 3, Qₙ edges can be 3-colored with no monochromatic C₄ or C₆.\n\nThis improves Chung/BDT: even denser C₆-free subgraphs exist (ε = 1/3).",
+    "content": "**conder_1993:**\n\nFor n ≥ 3, Qₙ's edges can be 3-colored with no monochromatic C₄ or C₆.\n\nThis improves Chung/BDT from 4 colors to 3!\n\n**Implication:** Subgraphs with 1/3 of all edges can be C₆-free.",
+    "mathContext": "Conder's construction is more sophisticated, showing the chromatic number for avoiding small even cycles is at most 3.",
     "significance": "key",
-    "relatedConcepts": ["Improved bound", "Conder 1993"]
+    "relatedConcepts": ["3-coloring", "Improved bound", "Conder 1993"]
   },
   {
-    "id": "ann-e666-generalized",
+    "id": "ann-666-conder-bound",
     "proofId": "erdos-666",
-    "range": { "startLine": 237, "endLine": 253 },
+    "range": { "startLine": 220, "endLine": 231 },
+    "type": "theorem",
+    "title": "ε = 1/3 Counterexample",
+    "content": "**conder_better_bound:**\n\nFor n ≥ 3, there exists H ⊆ Qₙ with ~1/3 of all edges and no C₆.\n\nThis is a stronger counterexample than Chung's ε = 1/4.\n\n**Open question:** Is 3 optimal, or can we do even better with 2 colors?",
+    "mathContext": "The gap between ε = 1/3 and ε = 1/2 remains unexplored.",
+    "significance": "key",
+    "relatedConcepts": ["Better bound", "1/3 fraction", "Open question"]
+  },
+  {
+    "id": "ann-666-generalized",
+    "proofId": "erdos-666",
+    "range": { "startLine": 237, "endLine": 248 },
     "type": "definition",
     "title": "Generalized Conjecture",
-    "content": "**GeneralizedConjecture:**\n\nFor k ≥ 3, ∃ c > 0, aₖ < 1 such that ≥ c·n^{aₖ}·2ⁿ edges forces C_{2k}.\n\nExpected: aₖ → 0 as k → ∞.\n\nThis remains OPEN.",
+    "content": "**GeneralizedConjecture:**\n\nFor k ≥ 3, ∃ c > 0 and aₖ < 1 such that subgraphs with ≥ c · n^{aₖ} · 2ⁿ edges contain C_{2k}.\n\n**Expected:** aₖ → 0 as k → ∞ (longer cycles need more edges).\n\nThis generalization to all even cycles remains OPEN.",
+    "mathContext": "The exponent aₖ captures how density threshold scales with cycle length.",
     "significance": "key",
-    "relatedConcepts": ["Open problem", "General cycles"]
+    "relatedConcepts": ["Open problem", "C_{2k}", "Threshold exponent"]
   },
   {
-    "id": "ann-e666-turan",
+    "id": "ann-666-generalized-open",
+    "proofId": "erdos-666",
+    "range": { "startLine": 250, "endLine": 253 },
+    "type": "axiom",
+    "title": "Generalized Question Open",
+    "content": "**generalized_conjecture_open:**\n\nThe generalized conjecture about C_{2k} thresholds remains unsolved.\n\nDetermining the exponents aₖ is a major open problem in extremal hypercube theory.",
+    "mathContext": "This connects to Turán-type problems in structured graphs.",
+    "significance": "supporting",
+    "relatedConcepts": ["Open problem", "Turán theory"]
+  },
+  {
+    "id": "ann-666-turan-c4",
     "proofId": "erdos-666",
     "range": { "startLine": 259, "endLine": 270 },
     "type": "axiom",
-    "title": "Turán-type for C₄",
-    "content": "**turan_c4_hypercube:**\n\nMax edges in C₄-free subgraph of Qₙ is Θ(√n · 2ⁿ).\n\nC₄ requires more edges than C₆ to force.",
+    "title": "Turán Number for C₄",
+    "content": "**turan_c4_hypercube:**\n\nThe maximum number of edges in a C₄-free subgraph of Qₙ is Θ(√n · 2ⁿ).\n\nThis is polynomial in n times 2ⁿ, unlike the constant fraction for C₆.\n\n**Comparison:**\n- C₄-free: ~√n · 2ⁿ edges (sublinear in n)\n- C₆-free: ~n · 2ⁿ⁻¹ / 3 edges (linear in n)",
+    "mathContext": "The different behaviors for C₄ and C₆ show the complexity of cycle thresholds in hypercubes.",
     "significance": "supporting",
-    "relatedConcepts": ["Turán numbers", "C₄ threshold"]
+    "relatedConcepts": ["Turán number", "C₄ threshold", "Extremal"]
   },
   {
-    "id": "ann-e666-summary",
+    "id": "ann-666-summary",
     "proofId": "erdos-666",
     "range": { "startLine": 276, "endLine": 305 },
     "type": "theorem",
     "title": "Problem Summary",
-    "content": "**erdos_666_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | ε-dense Qₙ subgraph ⊃ C₆? |\n| Answer | NO |\n| Chung (1992) | 4-partition, ε=1/4 counterexample |\n| Conder (1993) | 3-coloring, ε=1/3 counterexample |\n| Generalized | Open for C_{2k} |",
+    "content": "**erdos_666_summary:**\n\nCombines all main results:\n1. ErdosConjecture is FALSE\n2. Chung's 4-partition provides ε = 1/4 counterexample\n3. Generalized question remains open\n\n| Result | Year | Contribution |\n|--------|------|-------------|\n| Chung | 1992 | 4-partition, ε = 1/4 |\n| BDT | 1993 | Independent 4-coloring |\n| Conder | 1993 | 3-coloring, ε = 1/3 |",
+    "mathContext": "This theorem bundles the complete resolution of Problem #666.",
     "significance": "critical",
-    "relatedConcepts": ["Summary", "Resolution"]
+    "relatedConcepts": ["Summary", "Resolution", "Timeline"]
   }
 ]
