@@ -1,1 +1,113 @@
-[]
+[
+  {
+    "id": "ann-e780-overview",
+    "proofId": "erdos-780",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #780: Chromatic Number of Kneser Hypergraphs**\n\nIf n ≥ kr + (t-1)(k-1), any t-coloring of r-sets has k monochromatic disjoint edges.\n\n**Status:** SOLVED (Alon-Frankl-Lovász 1986)\n**Special case k=2:** Kneser's conjecture, proved by Lovász 1978",
+    "mathContext": "The Kneser hypergraph KG^r(n,k) has r-subsets as vertices and k-tuples of disjoint r-sets as edges.",
+    "significance": "critical",
+    "relatedConcepts": ["Kneser graph", "Chromatic number", "Borsuk-Ulam theorem", "Intersecting families"]
+  },
+  {
+    "id": "ann-e780-pairwise",
+    "proofId": "erdos-780",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Pairwise Disjoint Edges",
+    "content": "**PairwiseDisjoint:** A set of hyperedges is pairwise disjoint if no two share a vertex.\n\nThis forms a matching in the hypergraph. The problem asks for k such edges in one color.",
+    "significance": "key",
+    "leanSymbol": "PairwiseDisjoint"
+  },
+  {
+    "id": "ann-e780-threshold",
+    "proofId": "erdos-780",
+    "range": { "startLine": 84, "endLine": 85 },
+    "type": "definition",
+    "title": "The Threshold Function",
+    "content": "**threshold k r t:** n₀ = kr + (t-1)(k-1)\n\nThis is the exact threshold. For n ≥ n₀, a monochromatic k-matching exists. For n < n₀, a coloring avoiding it exists.",
+    "significance": "critical",
+    "leanSymbol": "threshold"
+  },
+  {
+    "id": "ann-e780-afl",
+    "proofId": "erdos-780",
+    "range": { "startLine": 87, "endLine": 92 },
+    "type": "axiom",
+    "title": "Alon-Frankl-Lovász (1986)",
+    "content": "**alon_frankl_lovasz_1986:** The main theorem.\n\nFor n ≥ kr + (t-1)(k-1), any t-coloring of the complete r-uniform hypergraph contains a monochromatic k-matching.\n\nProved using topological methods (Borsuk-Ulam theorem).",
+    "significance": "critical",
+    "leanSymbol": "alon_frankl_lovasz_1986"
+  },
+  {
+    "id": "ann-e780-tight",
+    "proofId": "erdos-780",
+    "range": { "startLine": 108, "endLine": 115 },
+    "type": "axiom",
+    "title": "Tightness Construction",
+    "content": "**tightness_construction:** The bound is optimal.\n\nFor n = kr - 1 + (t-1)(k-1), partition [n] = X₁ ∪ X₂ ∪ ... ∪ Xₜ where |X₁| = kr-1 and |Xᵢ| = k-1.\n\nColor by first non-empty intersection. This avoids k disjoint monochromatic edges.",
+    "significance": "key",
+    "leanSymbol": "tightness_construction"
+  },
+  {
+    "id": "ann-e780-kneser",
+    "proofId": "erdos-780",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "axiom",
+    "title": "Kneser's Conjecture (k=2)",
+    "content": "**kneser_conjecture:** χ(KG(n,r)) = n - 2r + 2 for n ≥ 2r.\n\nThis is the k=2 case of the general theorem. Conjectured by Kneser (1955), proved by Lovász (1978).\n\nExample: χ(KG(5,2)) = 3 (Petersen graph).",
+    "significance": "critical",
+    "leanSymbol": "kneser_conjecture"
+  },
+  {
+    "id": "ann-e780-lovasz",
+    "proofId": "erdos-780",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "axiom",
+    "title": "Lovász's Proof (1978)",
+    "content": "**lovasz_1978:** Revolutionary use of the Borsuk-Ulam theorem.\n\nThis was the first major application of algebraic topology to a combinatorial problem, establishing topological combinatorics as a field.",
+    "significance": "critical",
+    "leanSymbol": "lovasz_1978"
+  },
+  {
+    "id": "ann-e780-borsuk",
+    "proofId": "erdos-780",
+    "range": { "startLine": 151, "endLine": 153 },
+    "type": "axiom",
+    "title": "Borsuk-Ulam Theorem",
+    "content": "**borsuk_ulam_theorem:** No continuous antipodal map Sⁿ → Sⁿ⁻¹ exists.\n\nIf f: Sⁿ → ℝⁿ is continuous, then f(x) = f(-x) for some x.\n\nThis is the key topological tool in the proof.",
+    "significance": "key",
+    "leanSymbol": "borsuk_ulam_theorem"
+  },
+  {
+    "id": "ann-e780-petersen",
+    "proofId": "erdos-780",
+    "range": { "startLine": 223, "endLine": 224 },
+    "type": "axiom",
+    "title": "The Petersen Graph",
+    "content": "**petersen_chromatic:** KG(5,2) is the Petersen graph with χ = 3.\n\nVertices are 2-subsets of {1,2,3,4,5}. Adjacent if disjoint.\n\nThis is the most famous example of a Kneser graph.",
+    "significance": "supporting",
+    "leanSymbol": "petersen_chromatic"
+  },
+  {
+    "id": "ann-e780-ekr",
+    "proofId": "erdos-780",
+    "range": { "startLine": 191, "endLine": 193 },
+    "type": "axiom",
+    "title": "Erdős-Ko-Rado Connection",
+    "content": "**erdos_ko_rado:** Maximum intersecting family of r-subsets of [n] has size C(n-1,r-1) for n ≥ 2r.\n\nThis equals the independence number of the Kneser graph.\n\nIntersecting families are independent sets in KG(n,r).",
+    "significance": "key",
+    "leanSymbol": "erdos_ko_rado"
+  },
+  {
+    "id": "ann-e780-main",
+    "proofId": "erdos-780",
+    "range": { "startLine": 263, "endLine": 272 },
+    "type": "theorem",
+    "title": "Main Result Summary",
+    "content": "**erdos_780_main:** Complete statement of the Alon-Frankl-Lovász theorem.\n\nFor n ≥ kr + (t-1)(k-1), any t-coloring of r-subsets of [n] contains k pairwise disjoint subsets of the same color.\n\nStatus: SOLVED",
+    "significance": "critical",
+    "leanSymbol": "erdos_780_main"
+  }
+]
