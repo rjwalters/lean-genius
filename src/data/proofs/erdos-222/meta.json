@@ -1,33 +1,183 @@
 {
   "id": "erdos-222",
-  "title": "Erdős Problem #222",
+  "title": "Erdős Problem #222: Gaps Between Sums of Two Squares",
   "slug": "erdos-222",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the sequence of integers which are the sum of two squares. Explore the behaviour of (i.e. find good upper and lowe...",
+  "description": "Let n₁ < n₂ < ⋯ be the integers that are sums of two squares. What are the best bounds on consecutive gaps n_{k+1} - n_k? Erdős (1951) showed gaps can be Ω(log n / √(log log n)). Bambah-Chowla (1947) proved gaps are O(n^(1/4)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1951), Richards (1982), Bambah-Chowla (1947), Dietmann-Elsholtz-Kalmynin-Konyagin-Maynard (2022)",
     "sourceUrl": "https://erdosproblems.com/222",
-    "date": "",
-    "status": "pending",
+    "date": "1951-2022",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos222Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sums-of-squares",
+      "gaps",
+      "density",
+      "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 222,
     "erdosUrl": "https://erdosproblems.com/222",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SumTwoSquares",
+        "description": "Fermat's theorem on sums of two squares",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation for prime divisibility",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for growth rates",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsSumTwoSquares definition: n = a² + b² for integers a, b",
+      "IsPrime3Mod4 definition: primes congruent to 3 mod 4",
+      "nthSumTwoSquares definition: the k-th sum of two squares",
+      "gap definition: consecutive difference n_{k+1} - n_k",
+      "landauRamanujanConstant definition: density constant ≈ 0.7642",
+      "countSumTwoSquares definition: counting function",
+      "fermat_sum_two_squares_criterion axiom: characterization via prime factors",
+      "landau_density_theorem axiom: count ~ cx/√(log x)",
+      "erdos_1951_lower_bound axiom: gaps ≫ log n / √(log log n)",
+      "richards_1982_lower_bound axiom: limsup gap/log n ≥ 1/4",
+      "dekkm_2022_lower_bound axiom: limsup gap/log n ≥ 0.868",
+      "bambah_chowla_upper_bound axiom: gaps ≪ n^(1/4)",
+      "erdos_222_summary theorem: main bounds summary"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #222 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_1<n_2<\\cdots$ be the sequence of integers which are the sum of two squares. Explore the behaviour of (i.e. find good upper and lower bounds for) the consecutive differences $n_{k+1}-n_k$.\n\n\n\nErd\\H{o}s \\cite{Er51} proved that, for infinitely many $k$,\\[ n_{k+1}-n_k \\gg \\frac{\\log n_k}{\\sqrt{\\log\\log n_k}}.\\]Richards \\cite{Ri82} improved this to\\[\\limsup_{k\\to \\infty} \\frac{n_{k+1}-n_k}{\\log n_k} \\geq 1/4.\\]The constant $1/4$ here has been improved, most lately to $0.868\\cdots$ by Dietmann, Elsholtz, Kalmynin, Konyagin, and Maynard \\cite{DEKKM22}.\n\nThe best known upper bound is due to Bambah and Chowla \\cite{BaCh47}, who proved that\\[n_{k+1}-n_k \\ll n_k^{1/4}.\\]The differences are listed at A256435 on the OEIS.\n\n\n\n\nReferences\n\n\n[BaCh47] Bambah, R. P. and Chowla, S., On numbers which can be expressed as a sum of two squares. Proc. Nat. Inst. Sci. India (1947), 101-103.\n\n[DEKKM22] Dietmann, R. and Elsholtz, C. and Kaymynin, A. and Konyagin, S. and Maynard, J., Longer Gaps Between Values of Binary Quadratic Forms. International Mathematics Research Notices (2023), 10313–10349.\n\n[Er51] Erd\\\"{o}s, P., Some problems and results in elementary number theory. Publ. Math. Debrecen (1951), 103-109.\n\n[Ri82] Richards, Ian, On the gaps between numbers which are sums of two squares. Adv. in Math. (1982), 1-2.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #222** concerns the gaps between consecutive integers that can be expressed as sums of two squares. This connects classical number theory (Fermat's theorem) with modern analytic techniques.\n\n**Historical Development:**\n- **Fermat (1640):** Characterized which integers are sums of two squares\n- **Landau (1908):** Counted sums of two squares up to x as cx/√(log x)\n- **Bambah-Chowla (1947):** Proved the upper bound gap ≪ n^(1/4)\n- **Erdős (1951):** Showed infinitely many gaps are Ω(log n / √(log log n))\n- **Richards (1982):** Improved to limsup(gap/log n) ≥ 1/4\n- **DEKKM (2022):** Best current constant ≈ 0.868\n\n**Key Insight:** The 1/4 exponent in the upper bound reflects the 2-dimensional nature of the representation problem (a² + b²).",
+    "problemStatement": "**Problem Statement**\n\nLet $n_1 < n_2 < \\cdots$ be the sequence of integers which are sums of two squares:\n$$0, 1, 2, 4, 5, 8, 9, 10, 13, 16, 17, 18, 20, 25, \\ldots$$\n\n**Question:** Find good upper and lower bounds for the consecutive gaps $n_{k+1} - n_k$.\n\n**Results:**\n- **Lower bound:** For infinitely many $k$,\n$$n_{k+1} - n_k \\gg \\frac{\\log n_k}{\\sqrt{\\log\\log n_k}}$$\nwith $\\limsup \\frac{n_{k+1} - n_k}{\\log n_k} \\geq 0.868$\n\n- **Upper bound:** For all $k$,\n$$n_{k+1} - n_k \\ll n_k^{1/4}$$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define IsSumTwoSquares, the sequence {n_k}, and gap function.\n\n2. **Fermat's Criterion:** An integer n > 0 is a sum of two squares iff every prime p ≡ 3 (mod 4) divides n to an even power.\n\n3. **Density Result:** Landau's theorem gives the counting function ~ cx/√(log x).\n\n4. **Lower Bounds:** Axiomatize Erdős (1951), Richards (1982), and DEKKM (2022) results.\n\n5. **Upper Bound:** Axiomatize Bambah-Chowla (1947) result.\n\n6. **Connection to Primes:** Explain why gaps occur where primes ≡ 3 (mod 4) cluster.",
+    "keyInsights": [
+      "**Fermat's Two-Square Theorem:** n is a sum of two squares iff every prime p ≡ 3 (mod 4) appears to an even power in n's factorization.",
+      "**Density:** Sums of two squares have density ~ 1/√(log n), sparser than primes but denser than perfect squares.",
+      "**Upper Bound n^(1/4):** Comes from the geometric fact that lattice points on circles are well-distributed.",
+      "**Lower Bound:** Large gaps occur in intervals where all integers have odd powers of primes ≡ 3 (mod 4).",
+      "**Limsup Conjecture:** The true constant in limsup(gap/log n) is conjectured to be 1.",
+      "**Average vs Maximum:** Average gap is √(log n), but maximum gaps are much larger at Ω(log n).",
+      "**OEIS Sequences:** Gaps are A256435, sums of two squares are A001481."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sums-two-squares",
+      "title": "Sums of Two Squares",
+      "summary": "Definition and basic properties of integers representable as a² + b²",
+      "startLine": 37,
+      "endLine": 62
+    },
+    {
+      "id": "fermat-criterion",
+      "title": "Fermat's Criterion",
+      "summary": "Characterization: n is sum of two squares iff primes p ≡ 3 (mod 4) have even exponents",
+      "startLine": 64,
+      "endLine": 85
+    },
+    {
+      "id": "gap-function",
+      "title": "The Gap Function",
+      "summary": "Definitions of nthSumTwoSquares and gap between consecutive terms",
+      "startLine": 87,
+      "endLine": 101
+    },
+    {
+      "id": "density",
+      "title": "Density of Sums of Two Squares",
+      "summary": "Landau's theorem: count ~ cx/√(log x) with Landau-Ramanujan constant",
+      "startLine": 103,
+      "endLine": 121
+    },
+    {
+      "id": "erdos-lower",
+      "title": "Erdős's Lower Bound (1951)",
+      "summary": "Infinitely many gaps ≫ log n / √(log log n)",
+      "startLine": 123,
+      "endLine": 137
+    },
+    {
+      "id": "richards",
+      "title": "Richards's Improvement (1982)",
+      "summary": "limsup(gap/log n) ≥ 1/4",
+      "startLine": 139,
+      "endLine": 152
+    },
+    {
+      "id": "dekkm",
+      "title": "DEKKM (2022)",
+      "summary": "Latest improvement: limsup(gap/log n) ≥ 0.868",
+      "startLine": 154,
+      "endLine": 173
+    },
+    {
+      "id": "upper-bound",
+      "title": "Bambah-Chowla Upper Bound",
+      "summary": "All gaps are O(n^(1/4))",
+      "startLine": 175,
+      "endLine": 192
+    },
+    {
+      "id": "average-gap",
+      "title": "The Average Gap",
+      "summary": "Typical gap is √(log n), much smaller than maximal gaps",
+      "startLine": 194,
+      "endLine": 212
+    },
+    {
+      "id": "prime-connection",
+      "title": "Connection to Primes",
+      "summary": "Large gaps occur where primes ≡ 3 (mod 4) cluster",
+      "startLine": 214,
+      "endLine": 230
+    },
+    {
+      "id": "small-values",
+      "title": "Explicit Small Values",
+      "summary": "First gap of size 5 is between 20 and 25",
+      "startLine": 232,
+      "endLine": 268
+    },
+    {
+      "id": "heuristics",
+      "title": "Probabilistic Heuristics",
+      "summary": "Why limsup(gap/log n) = 1 is conjectured",
+      "startLine": 270,
+      "endLine": 305
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem combining lower and upper bounds",
+      "startLine": 307,
+      "endLine": 334
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #222 asks for bounds on gaps between consecutive sums of two squares. The problem is solved in the sense that good bounds exist: gaps are at most O(n^(1/4)) and infinitely often at least Ω(log n / √(log log n)). The limsup of gap/log n is at least 0.868 (DEKKM 2022), conjecturally 1. The characterization via Fermat's criterion (primes ≡ 3 mod 4 must have even exponents) explains the structure of gaps.",
+    "implications": "**Implications for Number Theory**\n\n1. **Local-Global Principle:** The structure of gaps reflects the distribution of primes in residue classes.\n\n2. **Analytic Methods:** Combining sieve methods with analytic techniques gives the best results.\n\n3. **Comparison with Primes:** Gaps in sums of two squares have polynomial upper bounds (n^(1/4)), contrasting with prime gaps.\n\n4. **Higher Dimensions:** Similar questions for sums of k squares have different character.",
+    "openQuestions": [
+      "Is limsup(gap/log n) exactly equal to 1?",
+      "Can the upper bound exponent 1/4 be improved?",
+      "What is the distribution of gaps (beyond limsup)?",
+      "How do gaps in sums of k squares behave for k > 2?",
+      "Can explicit constructions achieve the lower bound?"
+    ]
   }
 }
