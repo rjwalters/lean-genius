@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e511-header",
+    "proofId": "erdos-511",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "Problem Overview: Polynomial Lemniscates",
+    "content": "**Erdős Problem #511** asks about the geometry of sublevel sets of complex polynomials.\n\nFor a monic polynomial f(z) ∈ ℂ[z], the **lemniscate** is the curve {z : |f(z)| = 1}, and its interior {z : |f(z)| < 1} can consist of multiple connected components.\n\n**The Question:** Is the number of components with diameter > c bounded independently of the polynomial's degree?\n\n**The Answer:** NO! Pommerenke (1961) showed arbitrarily many large components can exist.\n\n**Key Constraint:** No component can have diameter > 4 (Pólya, 1928).",
+    "mathContext": "Lemniscates have been studied since antiquity. The Bernoulli lemniscate {z : |z² - 1| = 1} is a classical example with its characteristic figure-eight shape.",
+    "significance": "critical",
+    "relatedConcepts": ["Complex analysis", "Polynomial geometry", "Connected components", "Metric spaces"]
+  },
+  {
+    "id": "ann-e511-sublevel-set",
+    "proofId": "erdos-511",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "definition",
+    "title": "Sublevel Set (Open)",
+    "content": "**sublevelSet f r** is the set {z ∈ ℂ : |f(z)| < r}.\n\nThis is the **interior** of the lemniscate, the region where the polynomial's magnitude is strictly less than r.\n\n**Definition:**\n```lean\ndef sublevelSet (f : ℂ → ℂ) (r : ℝ) : Set ℂ :=\n  {z : ℂ | Complex.abs (f z) < r}\n```\n\nFor the standard case r = 1, this is the set of points 'inside' the unit lemniscate.",
+    "significance": "critical",
+    "relatedConcepts": ["Level sets", "Complex modulus", "Open sets"]
+  },
+  {
+    "id": "ann-e511-closed-sublevel",
+    "proofId": "erdos-511",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "definition",
+    "title": "Closed Sublevel Set",
+    "content": "**closedSublevelSet f r** is the set {z ∈ ℂ : |f(z)| ≤ r}.\n\nThis **includes** the lemniscate boundary itself.\n\n**Definition:**\n```lean\ndef closedSublevelSet (f : ℂ → ℂ) (r : ℝ) : Set ℂ :=\n  {z : ℂ | Complex.abs (f z) ≤ r}\n```\n\nPommerenke's theorem is stated for closed sublevel sets, which is the more natural setting for studying connected components.",
+    "significance": "key",
+    "relatedConcepts": ["Closed sets", "Compact sets", "Topology"]
+  },
+  {
+    "id": "ann-e511-polya-bound",
+    "proofId": "erdos-511",
+    "range": { "startLine": 86, "endLine": 96 },
+    "type": "axiom",
+    "title": "Pólya's Diameter Bound (1928)",
+    "content": "**polya_diameter_bound:**\n\nNo connected component of {z : |f(z)| ≤ 1} can have diameter greater than 4, regardless of the polynomial f.\n\n**Statement:**\n```lean\naxiom polya_diameter_bound :\n  ∀ (f : Polynomial ℂ), f.Monic → f.degree ≥ 1 →\n    ∀ (C : Set ℂ), C ⊆ closedSublevelSet ... 1 →\n      IsConnected C → Metric.diam C ≤ 4\n```\n\nThis is an **absolute upper bound** that holds for ALL monic polynomials of ANY degree. The constant 4 is optimal.",
+    "mathContext": "Pólya's proof uses conformal mapping techniques and properties of univalent functions.",
+    "significance": "critical",
+    "relatedConcepts": ["Metric diameter", "Conformal mapping", "Distortion theorems"]
+  },
+  {
+    "id": "ann-e511-pommerenke",
+    "proofId": "erdos-511",
+    "range": { "startLine": 119, "endLine": 135 },
+    "type": "axiom",
+    "title": "Pommerenke's Theorem (1961)",
+    "content": "**pommerenke_theorem:**\n\nFor any 0 < d < 4 and any k ≥ 1, there exist monic polynomials with at least k connected components of diameter ≥ d.\n\n**Statement:**\n```lean\naxiom pommerenke_theorem :\n  ∀ (d : ℝ), 0 < d → d < 4 →\n    ∀ (k : ℕ), k ≥ 1 →\n      ∃ (f : Polynomial ℂ), f.Monic ∧ ...\n```\n\nThis **disproves** Erdős's conjecture: the number of large components is NOT bounded independently of degree.",
+    "mathContext": "Pommerenke constructs explicit polynomials achieving these bounds, using perturbations of roots of unity.",
+    "significance": "critical",
+    "relatedConcepts": ["Counterexamples", "Polynomial construction", "Component counting"]
+  },
+  {
+    "id": "ann-e511-main-theorem",
+    "proofId": "erdos-511",
+    "range": { "startLine": 137, "endLine": 162 },
+    "type": "theorem",
+    "title": "Erdős Problem #511: DISPROVED",
+    "content": "**erdos_511:**\n\nThe main theorem proving Erdős's conjecture is false.\n\n**Statement:**\n```lean\ntheorem erdos_511 :\n    ∀ (c : ℝ), 1 < c → c < 4 →\n      ∀ (bound : ℕ), ∃ (f : Polynomial ℂ), f.Monic ∧\n        ∃ (components : Finset (Set ℂ)),\n          components.card > bound ∧ ...\n```\n\n**Meaning:** For any bound you propose, there exists a polynomial exceeding that bound in number of large components.\n\nThe proof derives this from Pommerenke's theorem by taking k = bound + 1.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproof", "Quantifier manipulation", "Unbounded families"]
+  },
+  {
+    "id": "ann-e511-roots-unity",
+    "proofId": "erdos-511",
+    "range": { "startLine": 169, "endLine": 174 },
+    "type": "definition",
+    "title": "Roots of Unity Polynomial",
+    "content": "**rootsOfUnityPoly n** is the polynomial z^n - 1.\n\n**Definition:**\n```lean\ndef rootsOfUnityPoly (n : ℕ) : Polynomial ℂ :=\n  Polynomial.X ^ n - 1\n```\n\nThis polynomial has exactly n roots: the n-th roots of unity e^(2πik/n) for k = 0, 1, ..., n-1.\n\nThe sublevel set {z : |z^n - 1| ≤ 1} has a beautiful 'petal' structure, with n leaf-shaped regions meeting at the origin.",
+    "significance": "key",
+    "relatedConcepts": ["Roots of unity", "Cyclotomic polynomials", "Symmetry"]
+  },
+  {
+    "id": "ann-e511-sum-diameters",
+    "proofId": "erdos-511",
+    "range": { "startLine": 183, "endLine": 195 },
+    "type": "axiom",
+    "title": "Sum of Diameters Bound",
+    "content": "**sum_diameters_rootsOfUnity:**\n\nFor f(z) = z^n - 1, the sum of component diameters is approximately n·2^(1/n).\n\nThis shows the Erdős-Herzog-Piranian bound Σ diam(C) ≤ n·2^(1/n) is essentially tight.\n\n**Why it matters:** The polynomial z^n - 1 achieves the conjectured upper bound on total diameter, making it a key extremal example.\n\nAs n → ∞, the sum 2^(1/n) → 2·n·1 = 2n, but actually 2^(1/n) → 1, so the sum approaches n.",
+    "significance": "key",
+    "relatedConcepts": ["Extremal problems", "Asymptotic analysis", "Tight bounds"]
+  },
+  {
+    "id": "ann-e511-petal-structure",
+    "proofId": "erdos-511",
+    "range": { "startLine": 203, "endLine": 214 },
+    "type": "axiom",
+    "title": "Petal Structure of z^n - 1",
+    "content": "**petal_structure:**\n\nFor z^n - 1, the sublevel set consists of n 'petal'-shaped regions, one centered at each n-th root of unity.\n\n**Key observation:** All petals meet at z = 0, making the entire sublevel set ONE connected component.\n\nThis is because |0^n - 1| = |-1| = 1 ≤ 1, so 0 is on the boundary, and each petal extends from its root toward the origin.\n\nThe petals are symmetric under rotation by 2π/n.",
+    "mathContext": "The petal geometry comes from the fact that |z^n - 1| is small when z^n ≈ 1, i.e., when z is close to an n-th root of unity.",
+    "significance": "key",
+    "relatedConcepts": ["Rotational symmetry", "Root location", "Connectivity"]
+  },
+  {
+    "id": "ann-e511-perturbation",
+    "proofId": "erdos-511",
+    "range": { "startLine": 216, "endLine": 227 },
+    "type": "axiom",
+    "title": "Root Perturbation Creates Components",
+    "content": "**perturbation_creates_components:**\n\nBy moving roots of z^n - 1 slightly, we can disconnect petals at the origin, creating many separate components.\n\n**Construction:** Move the roots e^(iπ/n) and e^(-iπ/n) slightly along the unit circle toward 1. This breaks the connection at z = 0 between approximately n/2 of the petals.\n\n**Result:** About n/2 petals become disconnected, each forming its own component with diameter > 2^(1/n) - ε.\n\nThis is the key insight behind Pommerenke's construction.",
+    "significance": "key",
+    "relatedConcepts": ["Stability", "Perturbation theory", "Bifurcation"]
+  },
+  {
+    "id": "ann-e511-huang",
+    "proofId": "erdos-511",
+    "range": { "startLine": 235, "endLine": 250 },
+    "type": "axiom",
+    "title": "Huang's Independent Discovery (2025)",
+    "content": "**huang_theorem:**\n\nIn 2025, Huang independently rediscovered Pommerenke's result, unaware of the 1961 paper.\n\nThis demonstrates:\n1. The problem remained interesting and non-obvious\n2. The construction is natural enough to be rediscovered\n3. Pommerenke's work was not as widely known as it should be\n\nHuang's paper 'Many lemniscates with large diameter' (arXiv:2509.11597) provides modern exposition of these ideas.",
+    "significance": "supporting",
+    "relatedConcepts": ["Rediscovery", "Mathematical history", "Literature"]
+  },
+  {
+    "id": "ann-e511-sharpness",
+    "proofId": "erdos-511",
+    "range": { "startLine": 258, "endLine": 268 },
+    "type": "axiom",
+    "title": "Sharpness of the Bound 4",
+    "content": "**diameter_4_is_sharp:**\n\nThe bound 4 in Pólya's theorem is optimal: for any ε > 0, there exist polynomials with a component of diameter > 4 - ε.\n\n**Statement:**\n```lean\naxiom diameter_4_is_sharp :\n  ∀ (ε : ℝ), ε > 0 →\n    ∃ (f : Polynomial ℂ), f.Monic ∧\n      ∃ (C : Set ℂ), ... Metric.diam C > 4 - ε\n```\n\nThe diameter approaches 4 as a limit but never reaches it. This makes 4 a true 'barrier' value.",
+    "significance": "key",
+    "relatedConcepts": ["Optimal bounds", "Extremal sequences", "Limits"]
+  },
+  {
+    "id": "ann-e511-summary",
+    "proofId": "erdos-511",
+    "range": { "startLine": 289, "endLine": 314 },
+    "type": "theorem",
+    "title": "Complete Summary",
+    "content": "**erdos_511_summary:**\n\nCombines both the negative result and the upper bound:\n\n1. **Conjecture FALSE:** For any c < 4, there exist polynomials with arbitrarily many components of diameter > c\n\n2. **Upper Bound:** No component ever exceeds diameter 4\n\n```lean\ntheorem erdos_511_summary :\n    (∀ c, 1 < c → c < 4 → ∀ bound, ∃ f, ...) ∧\n    (∀ f, f.Monic → ... → Metric.diam C ≤ 4)\n```\n\nThe complete picture: unbounded below 4, but capped at 4.",
+    "significance": "critical",
+    "relatedConcepts": ["Complete characterization", "Phase transitions", "Summary theorems"]
+  },
+  {
+    "id": "ann-e511-answer",
+    "proofId": "erdos-511",
+    "range": { "startLine": 316, "endLine": 335 },
+    "type": "theorem",
+    "title": "The Final Answer: No Bounding Function Exists",
+    "content": "**erdos_511_answer:**\n\nThere is NO function boundFn : ℝ → ℕ that bounds the number of components with diameter > c for all monic polynomials.\n\n**Statement:**\n```lean\ntheorem erdos_511_answer :\n    ¬(∃ (boundFn : ℝ → ℕ),\n        ∀ (c : ℝ), c > 1 → ...\n          components.card ≤ boundFn c)\n```\n\n**Proof:** By contradiction. If such a boundFn existed, taking c = 2 would give a bound B = boundFn 2. But Pommerenke's theorem provides a polynomial with > B components of diameter > 2. Contradiction.\n\nThis is the negation of Erdős's question in precise logical form.",
+    "significance": "critical",
+    "relatedConcepts": ["Proof by contradiction", "Existence negation", "Formal refutation"]
+  }
+]
