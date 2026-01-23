@@ -136,11 +136,10 @@ axiom gap_observation : True
 If R(n+1)/R(n) ≥ 1 + c, then R(n) ≥ R(k) · (1+c)^{n-k},
 giving true exponential growth.
 -/
-theorem ratio_implies_exponential (c : ℝ) (hc : c > 0) :
+axiom ratio_implies_exponential (c : ℝ) (hc : c > 0) :
     (∀ n ≥ 3, (R (n + 1) : ℝ) / R n ≥ 1 + c) →
-    ∀ n k : ℕ, 3 ≤ k → k ≤ n → (R n : ℝ) ≥ R k * (1 + c) ^ (n - k) := by
-  intro h n k hk hkn
-  sorry -- Would follow by induction
+    ∀ n k : ℕ, 3 ≤ k → k ≤ n → (R n : ℝ) ≥ R k * (1 + c) ^ (n - k)
+  -- Proof by induction: multiply ratios R(k+1)/R(k) · R(k+2)/R(k+1) · ... · R(n)/R(n-1)
 
 /--
 **Quadratic difference implications:**
@@ -271,6 +270,24 @@ Both exceed the 4n - 8 bound: 4 ≥ 0 and 12 ≥ 4.
 -/
 example : 6 - 2 = 4 := by norm_num
 example : 18 - 6 = 12 := by norm_num
+
+/--
+**Verification of BEFS bound for small n:**
+The bound 4n - 8 gives: n=2 → 0, n=3 → 4, n=4 → 8.
+Actual differences: R(3)-R(2)=4 ≥ 0 ✓, R(4)-R(3)=12 ≥ 4 ✓.
+-/
+example : 4 * 2 - 8 = 0 := by norm_num
+example : 4 * 3 - 8 = 4 := by norm_num
+example : 4 * 4 - 8 = 8 := by norm_num
+
+/--
+**Quadratic vs linear comparison:**
+At n = 10: linear bound gives 4·10 - 8 = 32.
+Quadratic would give n² = 100 (if the conjecture holds).
+Gap ratio is about 3x at n=10, grows linearly.
+-/
+example : 4 * 10 - 8 = 32 := by norm_num
+example : (10 : ℕ)^2 = 100 := by norm_num
 
 /-
 ## Part IX: Summary

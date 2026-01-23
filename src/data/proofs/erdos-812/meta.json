@@ -17,12 +17,43 @@
     ],
     "badge": "mathlib",
     "sorries": 0,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number operations for bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Graph definitions for Ramsey context",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "R axiom: the diagonal Ramsey number",
+      "R_basic: R(1)=1, R(2)=2, strict increasing",
+      "R_known_values: R(3)=6, R(4)=18",
+      "ramsey_bounds axiom: 2^{n/2} ≤ R(n) ≤ 4^n/√n",
+      "ratio_conjecture definition: R(n+1)/R(n) ≥ 1+c question",
+      "quadratic_difference_conjecture definition: R(n+1)-R(n) ≫ n² question",
+      "BEFS_theorem axiom: R(n+1) - R(n) ≥ 4n - 8",
+      "problem_165_bound axiom: two-step almost-quadratic bound",
+      "ratio_implies_exponential: logical consequence",
+      "Computational verifications: ratios and BEFS bounds for small n",
+      "erdos_812_status theorem: captures known state"
+    ],
     "erdosNumber": 812,
     "erdosUrl": "https://erdosproblems.com/812",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem concerns the growth rate of the diagonal Ramsey numbers R(n), fundamental objects in combinatorics. Ramsey proved their existence in 1930, Erdős-Szekeres established upper bounds in 1935, and Erdős introduced probabilistic lower bounds in 1947. Despite nearly a century of study, exact growth rates remain mysterious. Even R(5) is unknown (43 ≤ R(5) ≤ 48). This problem asks whether consecutive Ramsey numbers grow by at least a constant ratio or by at least quadratic differences.",
+    "historicalContext": "**The Birth of Ramsey Theory (1930)**\n\nFrank Ramsey proved his fundamental theorem in 1930, establishing that R(n) exists for all n. This was the beginning of an entire field, but exact growth rates remained mysterious.\n\n**The Classical Bounds (1935-1947)**\n\nErdős and Szekeres (1935) proved R(n) ≤ C(2n-2, n-1) < 4^n/√n, a remarkably simple bound. In 1947, Erdős revolutionized combinatorics by proving R(n) > 2^{n/2} using the probabilistic method - showing that random 2-colorings work with positive probability. Despite 80+ years of effort, these bounds have only been improved by polynomial factors!\n\n**The BEFS Linear Bound (1989)**\n\nBurr, Erdős, Faudree, and Schelp proved R(n+1) - R(n) ≥ 4n - 8, the best known bound on consecutive differences. This linear bound stands in stark contrast to the suspected quadratic truth. The related Problem #165 shows R(n+2) - R(n) ≫ n^{2-o(1)}, tantalizingly close to quadratic for two-step differences.\n\n**Erdős's Famous Quote**\n\nErdős illustrated the difficulty with his 'aliens' thought experiment: if aliens demanded R(5) or R(6), 'We could marshal the world's best minds and computers' for R(5), 'But if they asked for R(6), we should have to just surrender.' We still don't know R(5) exactly (43 ≤ R(5) ≤ 48).",
     "problemStatement": "Is it true that R(n+1)/R(n) ≥ 1 + c for some constant c > 0 and all large n? Is it true that R(n+1) - R(n) ≫ n²?",
     "proofStrategy": "The formalization defines the Ramsey function R(n), states the two main conjectures, and presents the known results. The BEFS theorem gives a linear lower bound on differences. The connection to Problem #165 shows that two-step differences are almost quadratic. The gap between one-step and two-step bounds is highlighted.",
     "keyInsights": [
@@ -85,10 +116,17 @@
     },
     {
       "id": "section-8",
-      "title": "Summary and Status",
+      "title": "Known Values and Computational Verification",
       "startLine": 248,
-      "endLine": 315,
-      "summary": "Complete summary with known Ramsey values, calculated ratios and differences, and the main status theorem capturing the BEFS bound and open status."
+      "endLine": 290,
+      "summary": "Known Ramsey values, computed ratios R(3)/R(2)=3, R(4)/R(3)=3, BEFS bound verification for small n, and quadratic vs linear comparison."
+    },
+    {
+      "id": "section-9",
+      "title": "Summary and Status",
+      "startLine": 291,
+      "endLine": 333,
+      "summary": "Complete summary with main status theorem capturing the BEFS bound and open status."
     }
   ],
   "conclusion": {

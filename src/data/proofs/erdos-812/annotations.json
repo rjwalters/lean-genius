@@ -207,8 +207,32 @@
     "id": "ann-812-18",
     "proofId": "erdos-812",
     "range": {
+      "startLine": 274,
+      "endLine": 277
+    },
+    "type": "concept",
+    "title": "BEFS Bound Verification",
+    "content": "Computational verification of BEFS bound 4n-8 for small n: n=2 → 0, n=3 → 4, n=4 → 8. Actual differences (4, 12) exceed these bounds, showing BEFS is satisfied with room to spare.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-812-19",
+    "proofId": "erdos-812",
+    "range": {
       "startLine": 279,
-      "endLine": 308
+      "endLine": 287
+    },
+    "type": "concept",
+    "title": "Quadratic vs Linear Gap",
+    "content": "At n=10: linear BEFS bound gives 32, quadratic would give 100. The gap ratio is about 3x at n=10 and grows linearly in n. This highlights the enormous distance between what we know and what we suspect.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-812-20",
+    "proofId": "erdos-812",
+    "range": {
+      "startLine": 296,
+      "endLine": 325
     },
     "type": "theorem",
     "title": "Problem Status",
