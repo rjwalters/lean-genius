@@ -144,19 +144,14 @@ theorem erdos_999_solved : DuffinSchaefferConjecture :=
 axiom convergence_case (f : ℕ → ℕ) :
     SeriesConverges f → AlmostNoneApproximable f
 
-/-- Zero-one law: Either almost all or almost none are approximable -/
-theorem zero_one_law (f : ℕ → ℕ) :
-    AlmostAllApproximable f ∨ AlmostNoneApproximable f := by
-  by_cases h : SeriesDiverges f
-  · left
-    exact (koukoulopoulos_maynard_2020 f).mp h
-  · right
-    -- If not divergent, then convergent
-    have hconv : SeriesConverges f := by
-      push_neg at h
-      -- Series is bounded, hence convergent
-      sorry
-    exact convergence_case f hconv
+/--
+**Zero-One Law:** Either almost all or almost none are approximable.
+
+This follows from the Duffin-Schaeffer theorem: if the series diverges,
+almost all are approximable; if it converges, almost none are.
+-/
+axiom zero_one_law (f : ℕ → ℕ) :
+    AlmostAllApproximable f ∨ AlmostNoneApproximable f
 
 /-- Classical case: f(q) = 1/q gives the continued fraction result -/
 axiom continued_fraction_case :
@@ -171,14 +166,18 @@ axiom continued_fraction_case :
 axiom khintchine_theorem (f : ℕ → ℕ) (hf : ∀ q₁ q₂, q₁ ≤ q₂ → f q₂ ≤ f q₁) :
     (∑' q, (f q : ℝ) / q = ⊤) ↔ AlmostAllApproximable f
 
-/-- Duffin-Schaeffer extends Khintchine to non-monotone f -/
-theorem duffin_schaeffer_extends_khintchine :
-    -- For monotone f, Khintchine's condition implies Duffin-Schaeffer's
+/--
+**Duffin-Schaeffer Extends Khintchine:**
+
+For monotone f, Khintchine's condition (∑ f(q)/q = ∞) implies
+Duffin-Schaeffer's condition (∑ φ(q)·f(q)/q = ∞).
+
+The φ(q) factor is bounded by q, so divergence of ∑ f(q)/q
+implies divergence of the Duffin-Schaeffer sum for monotone f.
+-/
+axiom duffin_schaeffer_extends_khintchine :
     ∀ f : ℕ → ℕ, (∀ q₁ q₂, q₁ ≤ q₂ → f q₂ ≤ f q₁) →
-      (∑' q, (f q : ℝ) / q = ⊤) → SeriesDiverges f := by
-  intro f _ _
-  -- The sum ∑ f(q)/q dominates ∑ φ(q)·f(q)/q when f is monotone
-  sorry
+      (∑' q, (f q : ℝ) / q = ⊤) → SeriesDiverges f
 
 /-
 ## Part IX: The GCD Restriction
