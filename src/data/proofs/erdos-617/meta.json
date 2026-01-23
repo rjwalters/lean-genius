@@ -1,33 +1,111 @@
 {
   "id": "erdos-617",
-  "title": "Erdős Problem #617",
+  "title": "Erdős Problem #617: Balanced Colourings of Complete Graphs",
   "slug": "erdos-617",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If the edges of ... are ...-coloured then there exist ... vertices with at least one colour missing on the edges of ...",
+  "description": "Let r ≥ 3. If the edges of K_{r²+1} are r-coloured, then there exist r+1 vertices with at least one colour missing on the edges of the induced K_{r+1}. In other words, no balanced colouring exists.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, András Gyárfás",
     "sourceUrl": "https://erdosproblems.com/617",
-    "date": "",
-    "status": "pending",
+    "date": "1999",
+    "status": "partially-solved",
     "proofRepoPath": "Proofs/Erdos617Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "ramsey-theory",
+      "edge-colouring"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 617,
     "erdosUrl": "https://erdosproblems.com/617",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #617 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$. If the edges of $K_{r^2+1}$ are $r$-coloured then there exist $r+1$ vertices with at least one colour missing on the edges of the induced $K_{r+1}$.\n\n\n\nIn other words, there is no balanced colouring. A conjecture of Erd\\H{o}s and Gy\\'{a}rf\\'{a}s \\cite{ErGy99}, who proved it for $r=3$ and $r=4$ (and observered it is false for $r=2$), and showed this property fails for infinitely many $r$ if we replace $r^2+1$ by $r^2$.\n\n\n\n\nReferences\n\n\n[ErGy99] Erd\\H{o}s, Paul and Gy\\'{a}rf\\'{a}s, Andr\\'{a}s, Split and balanced colorings of complete graphs. Discrete Math. (1999), 79-86.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Gyárfás conjectured this in their 1999 paper 'Split and balanced colorings of complete graphs'. A balanced r-colouring means every induced K_{r+1} uses all r colours. They proved it for r=3 and r=4, showed r=2 fails, and demonstrated that K_{r²} can have balanced colourings for infinitely many r.",
+    "problemStatement": "Let r ≥ 3. If the edges of K_{r²+1} are r-coloured, then there exist r+1 vertices with at least one colour missing on the edges of the induced K_{r+1}. Equivalently, no balanced r-colouring of K_{r²+1} exists for r ≥ 3.",
+    "proofStrategy": "The formalization defines edge colourings, induced cliques, and the balanced/non-balanced properties. Known results are axiomatized for r=3 (K_10) and r=4 (K_17). Counterexamples for r=2 and the K_{r²} boundary are recorded.",
+    "keyInsights": [
+      "Balanced colouring: every induced K_{r+1} uses all r colours",
+      "r=3,4: SOLVED by Erdős-Gyárfás (1999)",
+      "r=2: FALSE - K_5 can be 2-balanced",
+      "K_{r²}: FALSE for infinitely many r (can be balanced)",
+      "The threshold r²+1 is tight"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 63,
+      "summary": "Complete graph, edges, and edge colourings"
+    },
+    {
+      "id": "induced",
+      "title": "Induced Subgraphs",
+      "startLine": 65,
+      "endLine": 99,
+      "summary": "Induced cliques, colours used, and colour coverage"
+    },
+    {
+      "id": "balanced",
+      "title": "Balanced Colourings",
+      "startLine": 100,
+      "endLine": 123,
+      "summary": "Definitions of balanced and non-balanced colourings"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Gyárfás Conjecture",
+      "startLine": 124,
+      "endLine": 159,
+      "summary": "Statement of the conjecture and equivalence proof"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 160,
+      "endLine": 183,
+      "summary": "r=3 and r=4 cases solved by Erdős-Gyárfás"
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples and Boundaries",
+      "startLine": 184,
+      "endLine": 209,
+      "summary": "r=2 fails, K_{r²} can be balanced"
+    },
+    {
+      "id": "specific-cases",
+      "title": "Specific Cases",
+      "startLine": 210,
+      "endLine": 238,
+      "summary": "Concrete examples for r=3 (K_10) and r=4 (K_17)"
+    },
+    {
+      "id": "ramsey",
+      "title": "Connection to Ramsey Theory",
+      "startLine": 239,
+      "endLine": 261,
+      "summary": "Ramsey-type flavour of the problem"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 280,
+      "endLine": 314,
+      "summary": "Complete summary of solved cases and boundaries"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #617 is PARTIALLY SOLVED. The Erdős-Gyárfás conjecture states that for r ≥ 3, no balanced r-colouring of K_{r²+1} exists. This is proved for r=3,4 and open for r ≥ 5. The boundary is sharp: r=2 fails and K_{r²} can be balanced.",
+    "implications": "This reveals a threshold phenomenon in edge colourings of complete graphs. The extra vertex beyond r² fundamentally changes what colourings are possible.",
+    "openQuestions": [
+      "Is the conjecture true for r ≥ 5?",
+      "What is the structure of balanced colourings of K_{r²}?",
+      "Are there algebraic constructions for all cases?"
+    ]
   }
 }

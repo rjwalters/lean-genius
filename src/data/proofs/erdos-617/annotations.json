@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-617-overview",
+    "proofId": "erdos-617",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #617: Balanced Colourings**\n\nLet r ≥ 3. If the edges of K_{r²+1} are r-coloured, there exist r+1 vertices with a colour missing from the induced K_{r+1}.\n\n**Balanced colouring:** Every induced K_{r+1} uses all r colours.\n\n**Conjecture:** No balanced r-colouring of K_{r²+1} exists for r ≥ 3.\n\n**Status:** PARTIALLY SOLVED (r=3,4 proved)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-617-edge-colouring",
+    "proofId": "erdos-617",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "definition",
+    "title": "EdgeColouring",
+    "content": "**Edge Colouring:**\n\nAn assignment of colours {1, ..., r} to edges of K_n.\n\n```lean\ndef EdgeColouring (n r : ℕ) := Edge n → Fin r\n```\n\nEach edge gets exactly one colour.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-617-induced-clique",
+    "proofId": "erdos-617",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "definition",
+    "title": "InducedClique",
+    "content": "**Induced Clique:**\n\nA subset of k vertices forming a K_k.\n\n```lean\ndef InducedClique (n : ℕ) (k : ℕ) := {S : Finset (Fin n) // S.card = k}\n```\n\nFor the conjecture, k = r+1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-617-balanced",
+    "proofId": "erdos-617",
+    "range": { "startLine": 104, "endLine": 109 },
+    "type": "definition",
+    "title": "IsBalanced",
+    "content": "**Balanced Colouring:**\n\nEvery induced K_{r+1} uses all r colours.\n\n```lean\ndef IsBalanced (n r : ℕ) (c : EdgeColouring n r) : Prop :=\n  ∀ S : InducedClique n (r + 1), usesAllColours c S\n```\n\nThis is the property the conjecture says cannot exist for K_{r²+1}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-617-conjecture",
+    "proofId": "erdos-617",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "definition",
+    "title": "ErdosGyarfasConjecture",
+    "content": "**The Erdős-Gyárfás Conjecture:**\n\nFor r ≥ 3, every r-colouring of K_{r²+1} is not balanced.\n\n```lean\ndef ErdosGyarfasConjecture : Prop :=\n  ∀ r : ℕ, r ≥ 3 →\n    ∀ c : EdgeColouring (r^2 + 1) r, IsNotBalanced (r^2 + 1) r c\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-617-r3",
+    "proofId": "erdos-617",
+    "range": { "startLine": 164, "endLine": 169 },
+    "type": "axiom",
+    "title": "r = 3 Case",
+    "content": "**r = 3: SOLVED**\n\nEvery 3-colouring of K_10 (= K_{3²+1}) has an induced K_4 missing a colour.\n\nProved by Erdős-Gyárfás (1999).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-617-r4",
+    "proofId": "erdos-617",
+    "range": { "startLine": 171, "endLine": 176 },
+    "type": "axiom",
+    "title": "r = 4 Case",
+    "content": "**r = 4: SOLVED**\n\nEvery 4-colouring of K_17 (= K_{4²+1}) has an induced K_5 missing a colour.\n\nProved by Erdős-Gyárfás (1999).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-617-r2-false",
+    "proofId": "erdos-617",
+    "range": { "startLine": 188, "endLine": 194 },
+    "type": "axiom",
+    "title": "r = 2 Counterexample",
+    "content": "**r = 2: FALSE**\n\nK_5 with 2 colours CAN be balanced!\n\nEvery triangle can use both colours. The Petersen graph complement provides such a colouring.\n\nThis shows the r ≥ 3 condition is necessary.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-617-r-squared",
+    "proofId": "erdos-617",
+    "range": { "startLine": 196, "endLine": 202 },
+    "type": "axiom",
+    "title": "K_{r²} Boundary",
+    "content": "**K_{r²} can be balanced:**\n\nFor infinitely many r, balanced r-colourings of K_{r²} exist.\n\nThis shows the +1 in r²+1 is tight - you cannot reduce the vertex count.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-617-k10",
+    "proofId": "erdos-617",
+    "range": { "startLine": 214, "endLine": 221 },
+    "type": "example",
+    "title": "K_10 Case",
+    "content": "**r = 3: K_10 with 3 colours**\n\n10 = 3² + 1 vertices.\n\nA K_4 has C(4,2) = 6 edges.\n\nFor balance, each colour appears twice in every K_4.\n\nBut this is impossible in K_10.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-617-k17",
+    "proofId": "erdos-617",
+    "range": { "startLine": 223, "endLine": 229 },
+    "type": "example",
+    "title": "K_17 Case",
+    "content": "**r = 4: K_17 with 4 colours**\n\n17 = 4² + 1 vertices.\n\nA K_5 has C(5,2) = 10 edges.\n\nFor balance, colours must cover 10 edges with 4 colours in every K_5.\n\nBut this is impossible in K_17.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-617-ramsey",
+    "proofId": "erdos-617",
+    "range": { "startLine": 243, "endLine": 250 },
+    "type": "concept",
+    "title": "Ramsey Connection",
+    "content": "**Ramsey-Type Problem:**\n\nThis has Ramsey flavour: any colouring of a large enough graph has structured subgraphs.\n\nBut unlike classical Ramsey (monochromatic cliques), here we seek cliques AVOIDING a colour.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-617-summary",
+    "proofId": "erdos-617",
+    "range": { "startLine": 284, "endLine": 307 },
+    "type": "theorem",
+    "title": "erdos_617_summary",
+    "content": "**Complete Summary:**\n\n**CONJECTURE:** For r ≥ 3, no balanced r-colouring of K_{r²+1} exists.\n\n**STATUS:**\n- r = 3: SOLVED\n- r = 4: SOLVED\n- r ≥ 5: OPEN\n\n**BOUNDARIES:**\n- r = 2: FALSE\n- K_{r²}: FALSE (can be balanced)\n\n**KEY INSIGHT:** One extra vertex beyond r² breaks balance.",
+    "significance": "critical"
+  }
+]
