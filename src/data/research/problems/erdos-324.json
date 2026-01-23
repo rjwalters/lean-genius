@@ -1,13 +1,13 @@
 {
   "slug": "erdos-324",
   "title": "Erdős #324",
-  "phase": "NEW",
+  "phase": "FORMALIZED",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a polynomial $f(x)\\in\\mathbb{Z}[x]$ such that all the sums $f(a)+f(b)$ with $a<b$ nonnegative integers are distinct?\n\n\n\nErd\\H{o}s and Graham describe this problem as 'very annoying'. Probably $f(x)=x^5$ should work. The Lander, Parkin, and Selfridge conjecture would imply that $f(x)=x^n$ has this property for all $n\\geq 5$.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Does there exist f(x) ∈ ℤ[x] such that all sums f(a) + f(b) with a < b nonnegative integers are distinct?",
+    "plain": "Does a polynomial exist whose evaluations at pairs of nonnegative integers give distinct sums?",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T23:55:09.604Z",
+    "phase": "FORMALIZED",
+    "since": "2026-01-23T19:13:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Lean 4 formalization with distinct sums property, LPS conjecture connection, and small cases",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove sorries or submit to Aristotle",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Created Lean 4 formalization with HasDistinctSums property, polynomial evaluation, LPS conjecture connection, and proofs that x, x², x³, x⁴ all fail.",
+    "builtItems": ["proofs/Proofs/Erdos324Problem.lean"],
+    "insights": ["x fails: 0+3=1+2", "x² fails: 0²+5²=3²+4²=25", "x³ fails: 1³+12³=9³+10³=1729 (taxi)", "x⁴ fails: Euler counterexample", "LPS conjecture implies xⁿ works for n≥5"],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": ["Verify x⁵ computationally", "Connect to LPS conjecture formally"],
     "markdown": "# Erdős #324 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a polynomial $f(x)\\in\\mathbb{Z}[x]$ such that all the sums $f(a)+f(b)$ with $a<b$ nonnegative integers are distinct?\n\n\n\nErd\\H{o}s and Graham describe this problem as 'very annoying'. Probably $f(x)=x^5$ should work. The Lander, Parkin, and Selfridge conjecture would imply that $f(x)=x^n$ has this property for all $n\\geq 5$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #323\n- Problem #325\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],
