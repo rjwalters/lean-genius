@@ -11,17 +11,23 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
+    "proven": [
+      "AR(n, C_3) = n - 1 [ESS75]",
+      "Path formula for n ≥ c·k² [SiSo84]",
+      "Path formula announced for all n ≥ k ≥ 5 [Yuan 2021]"
+    ],
+    "open": [
+      "Cycle conjecture: AR(n, C_k) = ((k-2)/2 + 1/(k-1))n + O(1)?"
+    ],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T15:31:24.882Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEYED",
+    "since": "2026-01-22T19:18:00.000Z",
+    "iteration": 2,
+    "focus": "Formalized AR definition and conjectures",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Verify Yuan's path formula proof",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +35,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized anti-Ramsey numbers, cycle and path graphs, main conjectures for both.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1105Problem.lean - Main formalization (~200 lines)",
+      "EdgeColoring, numColors, IsRainbow, AvoidsRainbow definitions",
+      "AR function definition",
+      "cycle, path graph definitions",
+      "ar_triangle axiom",
+      "cycleConjecture statement",
+      "pathFormula function",
+      "yuan_path_formula axiom"
+    ],
+    "insights": [
+      "AR(n,G) = max colors for K_n edge-coloring without rainbow G",
+      "Rainbow = all edges have distinct colors",
+      "AR(n, C_3) = n-1: with n-1 colors, can avoid rainbow triangle",
+      "Cycle conjecture: AR(n, C_k) ~ ((k-2)/2 + 1/(k-1))n",
+      "Path formula involves binomial coefficients and ℓ = ⌊(k-1)/2⌋",
+      "ε = 1 if k odd, ε = 2 if k even in path formula",
+      "Yuan 2021 announced complete path formula proof"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove ar_triangle_upper and ar_triangle_lower",
+      "Check if Yuan's paper is published",
+      "Compute AR(n, C_4) for small n"
+    ],
     "markdown": "# Erdős #1105 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe anti-Ramsey number $\\mathrm{AR}(n,G)$ is the maximum possible number of colours in which the edges of $K_n$ can be coloured without creating a rainbow copy of $G$ (i.e. one in which all edges have different colours).\n\nLet $C_k$ be the cycle on $k$ vertices. Is it true that\\[\\mathrm{AR}(n,C_k)=\\left(\\frac{k-2}{2}+\\frac{1}{k-1}\\right)n+O(1)?\\]Let $P_k$ be the path on $k$ vertices and $\\ell=\\lfloor\\frac{k-1}{2}\\rfloor$. If $n\\geq k\\geq 5$ then is $\\mathrm{AR}(n,P_k)$ equal to\\[\\max\\left(\\binom{k-2}{2}+1, \\binom{\\ell-1}{2}+(\\ell-1)(n-\\ell+1)+\\epsilon\\right)\\]where $\\epsilon=1$ if $k$ is odd and $\\epsilon=2$ otherwise?\n\n\n\nA conjecture of Erd\\H{o}s, Simonovits, and S\\'{o}s \\cite{ESS75}, who gave a simple proof that $\\mathrm{AR}(n,C_3)=n-1$. In this paper they announced proofs of the claimed formula for $\\mathrm{AR}(n,P_k)$ for $n\\geq \\frac{5}{4}k+C$ for some large constant $C$, and also for all $n\\geq k$ if $k$ is sufficiently large, but these never appeared.\n\nSimonovits and S\\'{o}s \\cite{SiSo84} published a proof that the claimed formula for $\\mathrm{AR}(n,P_k)$ is true for $n\\geq ck^2$ for some constant $c>0$.\n\nA proof of the formula for $\\mathrm{AR}(n,P_k)$ for all $n\\geq k\\geq 5$ has been announced by Yuan \\cite{Yu21}\n\n\n\n\nReferences\n\n\n[ESS75] Erd\\H{o}s, P. and Simonovits, M. and S\\'os, V. T., Anti-{R}amsey theorems. (1975), 633--643.\n\n[SiSo84] Simonovits, Mikl\\'os and S\\'os, Vera T., On restricted colourings of {$K_n$}. Combinatorica (1984), 101--110.\n\n[Yu21] L.-T. Yuan, The anti-Ramsey number for paths. arXiv:2102.00807 (2021).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1104\n- Problem #1106\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS75\n- SiSo84\n- Yu21\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
