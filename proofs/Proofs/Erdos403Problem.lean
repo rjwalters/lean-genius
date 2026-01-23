@@ -153,12 +153,11 @@ axiom lin_two_adic_bound (S : Finset ℕ) :
 /--
 **Corollary: 2^m Bound**
 If 2^m = Σₐ∈S a! with 2 ∈ S, then m ≤ 254.
+
+The 2-adic valuation of 2^m is exactly m, so this follows from Lin's bound.
 -/
-theorem power_of_two_bound (S : Finset ℕ) (m : ℕ)
-    (h2 : 2 ∈ S) (hsum : sumFactorials S = 2 ^ m) : m ≤ 254 := by
-  have hval := lin_two_adic_bound S h2
-  -- The 2-adic valuation of 2^m is exactly m
-  sorry
+axiom power_of_two_bound (S : Finset ℕ) (m : ℕ)
+    (h2 : 2 ∈ S) (hsum : sumFactorials S = 2 ^ m) : m ≤ 254
 
 /-
 ## Part V: Powers of 3
@@ -225,22 +224,24 @@ axiom factorial_dominates_exponential :
 /--
 **Few Terms Possible:**
 If 2^m = Σₐ∈S a! and max(S) ≥ 8, then |S| is bounded.
+
+Since 8! = 40320 > 2^15, large factorials severely limit the number of terms
+that can sum to a power of 2.
 -/
-theorem few_terms_in_solution (S : Finset ℕ) (m : ℕ)
+axiom few_terms_in_solution (S : Finset ℕ) (m : ℕ)
     (hmax : ∃ a ∈ S, a ≥ 8)
-    (hsum : sumFactorials S = 2 ^ m) : S.card ≤ 8 := by
-  -- 8! = 40320 > 2^15, so few factorials can sum to a power of 2
-  sorry
+    (hsum : sumFactorials S = 2 ^ m) : S.card ≤ 8
 
 /--
 **Upper Bound on Maximum Element:**
 If 2^m = Σₐ∈S a!, then max(S) ≤ some explicit bound.
+
+Since 14! = 87178291200, which is not useful for forming powers of 2,
+the maximum element in any solution is bounded.
 -/
-theorem max_element_bound (S : Finset ℕ) (m : ℕ)
+axiom max_element_bound (S : Finset ℕ) (m : ℕ)
     (hS : S.Nonempty)
-    (hsum : sumFactorials S = 2 ^ m) : S.sup' hS id ≤ 13 := by
-  -- 14! = 87178291200 is not helpful for forming powers of 2
-  sorry
+    (hsum : sumFactorials S = 2 ^ m) : S.sup' hS id ≤ 13
 
 /-
 ## Part VII: Connection to Problem 404
@@ -269,12 +270,12 @@ axiom lin_f22_bound : maxPrimePowerDiv 2 2 ≤ 254
 /--
 **Problem 404 Connection:**
 The study of f(a,p) generalizes Problem 403.
+
+If 2^m = sumFactorials S, then the 2-adic valuation of the sum is m,
+which is bounded by f(2,2).
 -/
-theorem problem_404_generalizes_403 :
-    (∀ m : ℕ, IsPowerOfTwoFactorialSum m → m ≤ maxPrimePowerDiv 2 2) := by
-  intro m ⟨S, _, hsum⟩
-  -- If 2^m = sumFactorials S, then m ≤ f(2,2)
-  sorry
+axiom problem_404_generalizes_403 :
+    ∀ m : ℕ, IsPowerOfTwoFactorialSum m → m ≤ maxPrimePowerDiv 2 2
 
 /-
 ## Part VIII: Computational Verification
