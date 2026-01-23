@@ -1,33 +1,157 @@
 {
   "id": "erdos-178",
-  "title": "Erdős Problem #178",
+  "title": "Erdős Problem #178: Balancing Infinite Collections of Integer Sequences",
   "slug": "erdos-178",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite collection of infinite sets of integers, say .... Does there exist some ... such that\\[\\max_{m, 1\\leq ...",
+  "description": "Does there exist f : ℕ → {-1,1} such that the discrepancy over any d sequences is bounded independently of m? SOLVED (Beck 1981): YES, with bound O(d^(4+ε)) (Beck 2017).",
   "meta": {
-    "author": "Unknown",
+    "author": "Beck (1981, 2017)",
     "sourceUrl": "https://erdosproblems.com/178",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos178Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrepancy-theory",
+      "balancing",
+      "infinite-sequences",
+      "combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 178,
     "erdosUrl": "https://erdosproblems.com/178",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer arithmetic for signing functions",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite sets for partial sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set theory fundamentals",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Filter.AtTopBot",
+        "description": "Filters for asymptotic analysis",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "SigningFunction definition: function ℕ → ℤ",
+      "IsValidSigning definition: values restricted to {-1, 1}",
+      "InfiniteIntSeq definition: infinite sequence of integers",
+      "IsStrictlyIncreasing definition: strictly increasing sequences",
+      "SeqFamily definition: family of infinite integer sequences",
+      "partialSum definition: sum of f over first m elements of sequence",
+      "seqDiscrepancy definition: absolute value of partial sum",
+      "maxDiscrepancy definition: max discrepancy over d sequences and m prefixes",
+      "HasBoundedDiscrepancy definition: discrepancy bounded by constant C",
+      "ExistsBoundedSigning definition: existence of bounded signing for all d",
+      "beck_1981 axiom: bounded signing exists for any family",
+      "beck_uniform_bound axiom: bound depends only on d, not family",
+      "beck_2017 axiom: quantitative bound O(d^(4+ε))",
+      "spencer_connection axiom: relation to Spencer's theorem (finite case)",
+      "egz_connection axiom: relation to Erdős-Ginzburg-Ziv theorem",
+      "erdos_178 theorem: complete resolution combining Beck's results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #178 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A_1,A_2,\\ldots$ be an infinite collection of infinite sets of integers, say $A_i=\\{a_{i1}<a_{i2}<\\cdots\\}$. Does there exist some $f:\\mathbb{N}\\to\\{-1,1\\}$ such that\\[\\max_{m, 1\\leq i\\leq d} \\left\\lvert \\sum_{1\\leq j\\leq m} f(a_{ij})\\right\\rvert \\ll_d 1\\]for all $d\\geq 1$?\n\n\n\nErd\\H{o}s remarks 'it seems certain that the answer is affirmative'. This was solved by Beck \\cite{Be81}. Recently Beck \\cite{Be17} proved that one can replace $\\ll_d 1$ with $\\ll d^{4+\\epsilon}$ for any $\\epsilon>0$.\n\n\n\n\nReferences\n\n\n[Be17] Beck, J\\'{o}zsef, A discrepancy problem: balancing infinite dimensional vectors. Number theory-Diophantine problems, uniform distribution\nand applications (2017), 61-82.\n\n[Be81] Beck, J\\'{o}zsef, Balancing families of integer sequences. Combinatorica (1981), 209-216.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Discrepancy Theory and Sequence Balancing**\n\nErdős Problem #178 is a fundamental question in combinatorial discrepancy theory: can we assign ±1 values to integers in a way that balances arbitrary infinite families of sequences?\n\n**Historical Development:**\n- **Erdős:** Posed the problem, remarking 'it seems certain that the answer is affirmative'\n- **Beck (1981):** Proved the existence of such a signing (the answer is YES)\n- **Beck (2017):** Quantified the bound as O(d^(4+ε)) for any ε > 0\n\nThe problem connects to fundamental questions about how well structured sets can be balanced.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $A_1, A_2, \\ldots$ be an infinite collection of infinite sets of integers, say $A_i = \\{a_{i1} < a_{i2} < \\cdots\\}$.\n\nDoes there exist $f : \\mathbb{N} \\to \\{-1, 1\\}$ such that\n$$\\max_{m, 1 \\leq i \\leq d} \\left|\\sum_{1 \\leq j \\leq m} f(a_{ij})\\right| \\ll_d 1$$\nfor all $d \\geq 1$?\n\n**Answer:** YES (Beck, 1981)\n\n**Quantitative Bound:** The bound can be made $\\ll d^{4+\\varepsilon}$ for any $\\varepsilon > 0$ (Beck, 2017).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Signing Functions:** Define SigningFunction as ℕ → ℤ, with IsValidSigning ensuring values in {-1, 1}\n\n2. **Sequence Families:** Define InfiniteIntSeq and SeqFamily for collections of sequences\n\n3. **Discrepancy Measures:** Define partialSum, seqDiscrepancy, and maxDiscrepancy\n\n4. **Main Property:** Define HasBoundedDiscrepancy and ExistsBoundedSigning\n\n5. **Beck's Theorems:** Axiomatize Beck 1981 (existence) and Beck 2017 (quantitative bound)\n\n6. **Connections:** Note relations to Spencer's theorem and EGZ theorem",
+    "keyInsights": [
+      "**Uniform Bounds:** The key is that the bound depends only on d (number of sequences considered), not on m (prefix length) or the specific family",
+      "**Probabilistic Method Limitation:** Random signings give O(√m) discrepancy, but we need O_d(1) independent of m",
+      "**Beck's Contribution:** The proof uses sophisticated combinatorial techniques beyond simple probabilistic arguments",
+      "**Quantitative Progress:** From existential bound (1981) to explicit d^(4+ε) (2017) took 36 years",
+      "**Connection to Finite Case:** Relates to Spencer's theorem for finite set systems",
+      "**Erdős-Ginzburg-Ziv Connection:** Related to zero-sum problems in additive combinatorics"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 33,
+      "endLine": 54,
+      "summary": "Signing functions, sequences, and families."
+    },
+    {
+      "id": "discrepancy",
+      "title": "Discrepancy Measures",
+      "startLine": 55,
+      "endLine": 71,
+      "summary": "Partial sums, sequence discrepancy, and max discrepancy."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 72,
+      "endLine": 85,
+      "summary": "Bounded discrepancy property and the main question."
+    },
+    {
+      "id": "beck-1981",
+      "title": "Beck's Theorem (1981)",
+      "startLine": 86,
+      "endLine": 101,
+      "summary": "Existence of bounded signing for any family."
+    },
+    {
+      "id": "beck-2017",
+      "title": "Beck's Improvement (2017)",
+      "startLine": 102,
+      "endLine": 120,
+      "summary": "Quantitative bound d^(4+ε)."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Discrepancy Theory",
+      "startLine": 121,
+      "endLine": 144,
+      "summary": "Relations to Spencer's theorem and EGZ."
+    },
+    {
+      "id": "difficulty",
+      "title": "Why the Problem is Hard",
+      "startLine": 145,
+      "endLine": 162,
+      "summary": "Uniform bounds vs non-uniform, probabilistic limitations."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 163,
+      "endLine": 178,
+      "summary": "Number theory and combinatorics applications."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 179,
+      "endLine": 204,
+      "summary": "Complete resolution combining all results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #178 asked whether any infinite family of integer sequences can be balanced by a signing function with discrepancy bounded independently of the prefix length. Beck (1981) proved the answer is YES, and Beck (2017) showed the bound can be made O(d^(4+ε)) for any ε > 0.",
+    "implications": "**Implications for Discrepancy Theory**\n\n1. **Infinite vs Finite:** Extends Spencer's finite results to infinite families\n\n2. **Uniform Balancing:** Shows uniform balancing is achievable even for arbitrary families\n\n3. **Polynomial Bounds:** The d^(4+ε) bound shows polynomial growth in the number of sequences\n\n4. **Proof Techniques:** Demonstrates power of sophisticated combinatorial methods beyond probabilistic approach",
+    "openQuestions": [
+      "Can the exponent 4 be improved? Is it optimal?",
+      "What are explicit constructions achieving the bound?",
+      "How does the bound behave for specific structured families?",
+      "What are the connections to other discrepancy problems?",
+      "Can the techniques extend to higher-dimensional settings?"
+    ]
   }
 }
