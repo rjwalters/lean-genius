@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-474-1",
+    "proofId": "erdos-474",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #474 asks: Under what set-theoretic assumptions can ℝ² be 3-colored so every uncountable A has A² containing pairs of all colors? This is the partition relation 2^ℵ₀ → (ℵ₁)³₂. Posed in 1954 with a $100 prize.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-2",
+    "proofId": "erdos-474",
+    "range": { "startLine": 44, "endLine": 44 },
+    "type": "definition",
+    "title": "The Continuum",
+    "content": "continuum = 2^ℵ₀, the cardinality of the real numbers (and of the power set of ℕ). The Continuum Hypothesis asserts c = ℵ₁, but this is independent of ZFC.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-3",
+    "proofId": "erdos-474",
+    "range": { "startLine": 66, "endLine": 66 },
+    "type": "definition",
+    "title": "Three-Coloring",
+    "content": "ThreeColoring X = X → Fin 3 assigns each element one of three colors {0, 1, 2}. For pairs, we color X × X with three colors.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-474-4",
+    "proofId": "erdos-474",
+    "range": { "startLine": 72, "endLine": 73 },
+    "type": "definition",
+    "title": "Uncountable Set",
+    "content": "IsUncountable A means |A| ≥ ℵ₁. Equivalently, A cannot be put in bijection with ℕ. This is the threshold for 'large' sets in this problem.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-5",
+    "proofId": "erdos-474",
+    "range": { "startLine": 81, "endLine": 82 },
+    "type": "definition",
+    "title": "Contains All Color Pairs",
+    "content": "ContainsAllColorPairs χ A means for each color c ∈ {0,1,2}, there exist distinct a, b ∈ A with χ(a,b) = c. The set A's pairs 'see' every color.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-6",
+    "proofId": "erdos-474",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "definition",
+    "title": "Erdős Coloring Property",
+    "content": "ErdosColoringProperty X says ℝ² admits a 3-coloring where every uncountable set's pairs contain all colors. This is the main property under investigation.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-7",
+    "proofId": "erdos-474",
+    "range": { "startLine": 103, "endLine": 106 },
+    "type": "definition",
+    "title": "Partition Property",
+    "content": "PartitionProperty formalizes 2^ℵ₀ → (ℵ₁)³₂: every 3-coloring of pairs from the continuum has an uncountable monochromatic set. This is equivalent to the negation of ErdosColoringProperty.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-8",
+    "proofId": "erdos-474",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "theorem",
+    "title": "Sierpinski-Kurepa Theorem",
+    "content": "For 2 colors, the property ALWAYS holds: any 2-coloring of pairs from an uncountable set contains both colors. This was proved independently by Sierpinski and Kurepa.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-9",
+    "proofId": "erdos-474",
+    "range": { "startLine": 136, "endLine": 136 },
+    "type": "definition",
+    "title": "Continuum Hypothesis",
+    "content": "ContinuumHypothesis states c = ℵ₁, meaning 2^ℵ₀ equals the first uncountable cardinal. This is independent of ZFC (Gödel 1940, Cohen 1963).",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-10",
+    "proofId": "erdos-474",
+    "range": { "startLine": 143, "endLine": 146 },
+    "type": "theorem",
+    "title": "Erdős Under CH",
+    "content": "erdos_under_ch: If CH holds (c = ℵ₁), then the 3-color property holds. Every uncountable set's pairs contain all 3 colors. This shows CH has Ramsey-theoretic consequences.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-11",
+    "proofId": "erdos-474",
+    "range": { "startLine": 157, "endLine": 160 },
+    "type": "theorem",
+    "title": "Shelah Consistency",
+    "content": "shelah_consistency: It is consistent with ZFC that the property FAILS. There exist models of set theory with 'bad' 3-colorings. However, these models have very large continuum.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-12",
+    "proofId": "erdos-474",
+    "range": { "startLine": 167, "endLine": 169 },
+    "type": "insight",
+    "title": "Shelah's Large Continuum",
+    "content": "In Shelah's model where the property fails, the continuum c is much larger than ℵ₂. The exact size is not specified but exceeds any 'small' cardinal assumption.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-474-13",
+    "proofId": "erdos-474",
+    "range": { "startLine": 183, "endLine": 186 },
+    "type": "definition",
+    "title": "The Open Question",
+    "content": "OpenQuestion: Is a negative answer consistent with c = ℵ₂? This is the key remaining question. Can we have a 'bad' 3-coloring with only the second-smallest uncountable continuum?",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-14",
+    "proofId": "erdos-474",
+    "range": { "startLine": 194, "endLine": 196 },
+    "type": "insight",
+    "title": "The $100 Prize",
+    "content": "Erdős offered $100 for deciding what happens without assuming CH. The prize essentially asks for the minimal c where failure is consistent.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-474-15",
+    "proofId": "erdos-474",
+    "range": { "startLine": 207, "endLine": 210 },
+    "type": "definition",
+    "title": "Negative Partition",
+    "content": "NegativePartition defines 2^ℵ₀ ↛ (ℵ₁)³₂: there exists a 3-coloring where no uncountable set is monochromatic. This is what Shelah showed consistent.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-474-16",
+    "proofId": "erdos-474",
+    "range": { "startLine": 238, "endLine": 241 },
+    "type": "insight",
+    "title": "Why CH Helps",
+    "content": "Under CH, |ℝ| = ℵ₁, so a pigeonhole argument works: the continuum-many pairs can't avoid creating an ℵ₁-sized homogeneous set when only 3 colors are available.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-474-17",
+    "proofId": "erdos-474",
+    "range": { "startLine": 273, "endLine": 280 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "erdos_474_summary: Under CH the property holds, a negative answer is consistent with large c, and the 2-color case always works. The c = ℵ₂ case remains open.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-474-18",
+    "proofId": "erdos-474",
+    "range": { "startLine": 286, "endLine": 286 },
+    "type": "theorem",
+    "title": "Erdős 474 Status",
+    "content": "erdos_474: The problem remains OPEN. The full resolution without CH is unknown. The $100 prize awaits the determination of minimal c for consistency of failure.",
+    "significance": "high"
+  }
+]
