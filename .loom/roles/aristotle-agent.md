@@ -58,6 +58,15 @@ if [[ -f "$REPO_ROOT/.loom/signals/stop-aristotle" ]] || \
     exit 0
 fi
 
+# Check session usage limits
+throttle=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --throttle 2>/dev/null || echo "4")
+if [[ "$throttle" -ge 3 ]]; then
+    usage_info=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --human 2>/dev/null || echo "Unknown")
+    echo "$(date +%H:%M): Throttled (level $throttle) - $usage_info" >> "$REPO_ROOT/.loom/logs/aristotle.actions.log"
+    echo "Session usage high (throttle level $throttle). Pausing until reset."
+    exit 0
+fi
+
 # Check for pause signal - wait for continue
 while [[ -f "$REPO_ROOT/.loom/signals/pause-aristotle" ]] || \
       [[ -f "$REPO_ROOT/.loom/signals/pause-all" ]]; do
