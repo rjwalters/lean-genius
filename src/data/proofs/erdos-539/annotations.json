@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-539-gcdquot",
+    "proofId": "erdos-539",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "gcdQuotient",
+    "content": "The GCD-reduced quotient a / gcd(a, b).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-pos",
+    "proofId": "erdos-539",
+    "range": { "startLine": 42, "endLine": 48 },
+    "type": "theorem",
+    "title": "gcdQuotient_pos",
+    "content": "gcdQuotient is always positive for positive inputs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-539-isnat",
+    "proofId": "erdos-539",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "theorem",
+    "title": "gcdQuotient_is_nat",
+    "content": "gcdQuotient a b * gcd(a,b) = a.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-539-quotset",
+    "proofId": "erdos-539",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "gcdQuotientSet",
+    "content": "The set { a/gcd(a,b) : a,b ∈ A }.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-size",
+    "proofId": "erdos-539",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "gcdQuotientSize",
+    "content": "Cardinality of the quotient set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-539-h",
+    "proofId": "erdos-539",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "definition",
+    "title": "h",
+    "content": "h(n) = minimum quotient set size over n-sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-self",
+    "proofId": "erdos-539",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "theorem",
+    "title": "gcdQuotient_self",
+    "content": "gcdQuotient a a = 1 for a > 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-539-one",
+    "proofId": "erdos-539",
+    "range": { "startLine": 88, "endLine": 94 },
+    "type": "theorem",
+    "title": "one_in_quotient_set",
+    "content": "1 is always in the quotient set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-539-eslower",
+    "proofId": "erdos-539",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "theorem",
+    "title": "erdos_szemeredi_lower",
+    "content": "Erdős-Szemerédi: h(n) ≥ c·n^{1/2}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-esupper",
+    "proofId": "erdos-539",
+    "range": { "startLine": 107, "endLine": 113 },
+    "type": "theorem",
+    "title": "erdos_szemeredi_upper",
+    "content": "Erdős-Szemerédi: h(n) ≤ n^{1-c}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-esbounds",
+    "proofId": "erdos-539",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "definition",
+    "title": "ErdosSzemeredi_Bounds",
+    "content": "Combined: n^{1/2} ≪ h(n) ≪ n^{1-c}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-fl",
+    "proofId": "erdos-539",
+    "range": { "startLine": 124, "endLine": 130 },
+    "type": "theorem",
+    "title": "freiman_lev_upper",
+    "content": "Freiman-Lev: h(n) ≤ C·n^{2/3}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-improved",
+    "proofId": "erdos-539",
+    "range": { "startLine": 132, "endLine": 135 },
+    "type": "definition",
+    "title": "ImprovedBounds",
+    "content": "n^{1/2} ≪ h(n) ≪ n^{2/3}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-ap",
+    "proofId": "erdos-539",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "definition",
+    "title": "arithmeticProgression",
+    "content": "AP: {a, 2a, ..., na}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-539-gp",
+    "proofId": "erdos-539",
+    "range": { "startLine": 155, "endLine": 157 },
+    "type": "definition",
+    "title": "geometricProgression",
+    "content": "GP: {1, a, a², ..., a^{n-1}}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-539-gcdmat",
+    "proofId": "erdos-539",
+    "range": { "startLine": 167, "endLine": 169 },
+    "type": "definition",
+    "title": "gcdMatrix",
+    "content": "Matrix of GCD values.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-539-question",
+    "proofId": "erdos-539",
+    "range": { "startLine": 215, "endLine": 219 },
+    "type": "definition",
+    "title": "ErdosQuestion539",
+    "content": "What is the exact behavior of h(n)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-main",
+    "proofId": "erdos-539",
+    "range": { "startLine": 241, "endLine": 256 },
+    "type": "theorem",
+    "title": "erdos_539",
+    "content": "Main theorem: Erdős-Szemerédi bounds hold.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-539-bounds",
+    "proofId": "erdos-539",
+    "range": { "startLine": 258, "endLine": 271 },
+    "type": "theorem",
+    "title": "erdos_539_bounds",
+    "content": "n^{1/2} ≪ h(n) ≪ n^{2/3}.",
+    "significance": "critical"
+  }
+]
