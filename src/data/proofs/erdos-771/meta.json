@@ -1,33 +1,81 @@
 {
   "id": "erdos-771",
-  "title": "Erdős Problem #771",
+  "title": "Erdős Problem #771: Subsets Avoiding a Given Sum",
   "slug": "erdos-771",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that, for every ..., there exists some ... with ... such that ... for all ....\n\nIs it true that\\[f(n)...",
+  "description": "Let f(n) be maximal such that for every m ≥ 1, there exists S ⊆ {1,...,n} with |S| = f(n) where no subset of S sums to m. Is f(n) = (1/2+o(1))n/log n? SOLVED: YES (Erdős-Graham lower, Alon-Freiman upper).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (lower bound), Alon-Freiman (1988, upper bound)",
     "sourceUrl": "https://erdosproblems.com/771",
-    "date": "",
-    "status": "pending",
+    "date": "1988",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos771Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "subset-sums",
+      "primes",
+      "lcm",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 6,
     "erdosNumber": 771,
     "erdosUrl": "https://erdosproblems.com/771",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed interval for {1,...,n}",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic formula",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.lcm",
+        "description": "LCM of a finite set",
+        "module": "Mathlib.NumberTheory.Primorial"
+      }
+    ],
+    "originalContributions": [
+      "Icc_n, subsetSums: interval and subset sum definitions",
+      "AvoidSum, IsMAvoidingSet: avoiding a particular sum",
+      "maxAvoidingSize, f: the function f(n) from the problem",
+      "f_property, f_characterization: characterization of f",
+      "ErdosGrahamConjecture: formal statement",
+      "erdos_graham_lower_bound: prime multiples construction",
+      "primeMutliples, prime_multiples_avoid: construction lemmas",
+      "alon_freiman_upper_bound: LCM argument",
+      "lcm_up_to, lcm_estimate: LCM tools",
+      "erdos_graham_conjecture_true: main theorem",
+      "IsSumFree: connection to sum-free sets"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #771 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that, for every $m\\geq 1$, there exists some $S\\subseteq \\{1,\\ldots,n\\}$ with $\\lvert S\\rvert=f(n)$ such that $m\\neq \\sum_{a\\in A}a$ for all $A\\subseteq S$.\n\nIs it true that\\[f(n) = \\left(\\frac{1}{2}+o(1)\\right)\\frac{n}{\\log n}?\\]\n\n\n\nA conjecture of Erd\\H{o}s and Graham, who proved the lower bound\\[f(n)\\geq \\left(\\frac{1}{2}+o(1)\\right)\\frac{n}{\\log n}.\\]Their proof is to note that we can assume that $m< \\binom{n+1}{2}$ and then, for any $m$, take $S=\\{ kp : 1\\leq k<\\frac{n}{p}\\}$ where $p$ is the least prime that does not divide $m$ (so $p<(2+o(1))\\log n$).\n\nThe complementary bound\\[f(n) \\leq \\left(\\frac{1}{2}+o(1)\\right)\\frac{n}{\\log n}\\]was proved by Alon and Freiman \\cite{AlFr88}, who chose $m$ as the least common multiple of $\\{1,\\ldots,s\\}$ where $s$ is maximal such that $m\\leq \\frac{n^2}{20(\\log n)^2}$.\n\n\n\n\nReferences\n\n\n[AlFr88] Alon, N. and Freiman, G., On sums of subsets of a set of integers. Combinatorica (1988), 297-306.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #771 (Subsets Avoiding a Given Sum)**\n\n**Origin:**\nErdős and Graham conjectured that f(n) = (1/2+o(1))n/log n, where f(n) is the maximum size of a set S ⊆ {1,...,n} such that for any given m, no nonempty subset of S sums to m.\n\n**The Lower Bound (Erdős-Graham):**\nFor any m, take S = multiples of the smallest prime p not dividing m. Then p < (2+o(1))log n by the prime number theorem, giving |S| ≥ (1/2+o(1))n/log n.\n\n**The Upper Bound (Alon-Freiman 1988):**\nChoose m = lcm{1,...,s} where s is maximal such that m ≤ n²/(20(log n)²). Any S ⊆ {1,...,n} with |S| > (1/2+o(1))n/log n must have a nonempty subset summing to m.\n\n**Result:**\nThe conjecture is TRUE: f(n) = (1/2+o(1))n/log n exactly.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) be the maximum k such that for every m ≥ 1, there exists S ⊆ {1,...,n} with |S| = k such that no nonempty subset of S sums to m.\n\n**Question:** Is f(n) = (1/2 + o(1)) · n / log n?\n\n**Answer: YES**\n\n- Lower bound: Erdős-Graham using prime multiples\n- Upper bound: Alon-Freiman (1988) using LCM argument\n\nThe constant 1/2 is exact.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Setup:** Icc_n for {1,...,n}, subsetSums, AvoidSum\n\n2. **The Function f:** maxAvoidingSize, f(n) definition, f_property\n\n3. **The Conjecture:** ErdosGrahamConjecture formal statement\n\n4. **Lower Bound:** erdos_graham_lower_bound axiom, primeMutliples construction\n\n5. **Upper Bound:** alon_freiman_upper_bound axiom, lcm_up_to\n\n6. **Main Result:** erdos_graham_conjecture_true combining both bounds\n\n7. **Connections:** IsSumFree, sum-free set comparison",
+    "keyInsights": [
+      "**Prime Multiples:** Multiples of p not dividing m avoid m",
+      "**LCM Argument:** Large sets must hit some m = lcm{1,...,s}",
+      "**Exact Constant:** 1/2 is the precise leading coefficient",
+      "**vs Sum-Free:** m-avoiding allows larger sets than sum-free (n/2log n vs n/3)",
+      "**Bertrand's Postulate:** Guarantees small prime not dividing m"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #771 asks whether f(n) = (1/2+o(1))n/log n, where f(n) is the maximum size of a subset of {1,...,n} that can avoid any prescribed sum m. Erdős-Graham proved the lower bound using prime multiples, and Alon-Freiman (1988) proved the matching upper bound using an LCM argument. The conjecture is TRUE.",
+    "implications": "**Connections**\n\n1. **Prime Number Theory:** Uses prime density near log n\n\n2. **LCM Estimates:** lcm{1,...,s} ≈ e^s (prime number theorem)\n\n3. **Sum-Free Sets:** Related but different — avoiding specific m vs avoiding all a+b=c\n\n4. **Additive Combinatorics:** Part of broader study of subset sum problems",
+    "openQuestions": [
+      "What are explicit constants in the o(1) term?",
+      "What about avoiding multiple sums simultaneously?",
+      "How does the problem change for other base sets?",
+      "What is the computational complexity of finding optimal S?"
+    ]
   }
 }
