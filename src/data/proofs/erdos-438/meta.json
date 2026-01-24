@@ -1,33 +1,102 @@
 {
   "id": "erdos-438",
-  "title": "Erdős Problem #438",
+  "title": "Erdős Problem #438: Square-Free Sumsets",
   "slug": "erdos-438",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large can ... be if ... contains no square numbers?\n\n\n\nTaking all integers ... shows that ... is possible. This can be im...",
+  "description": "How large can A ⊆ {1,...,N} be if A+A contains no square numbers? The maximum density is exactly 11/32, achieved by a mod 32 construction (Massias) and proved tight by Khalfalah-Lodha-Szemerédi (2002).",
   "meta": {
-    "author": "Unknown",
+    "author": "Khalfalah-Lodha-Szemerédi (2002)",
     "sourceUrl": "https://erdosproblems.com/438",
-    "date": "",
-    "status": "pending",
+    "date": "2002",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos438Problem.lean",
     "tags": [
+      "number-theory",
+      "sumsets",
+      "squares",
+      "density",
       "erdos"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 438,
     "erdosUrl": "https://erdosproblems.com/438",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [
+      {
+        "id": "erdos-439",
+        "relationship": "Similar question for kth powers"
+      },
+      {
+        "id": "erdos-587",
+        "relationship": "Variant with A-A instead of A+A"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #438 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large can $A\\subseteq \\{1,\\ldots,N\\}$ be if $A+A$ contains no square numbers?\n\n\n\nTaking all integers $\\equiv 1\\pmod{3}$ shows that $\\lvert A\\rvert\\geq N/3$ is possible. This can be improved to $\\tfrac{11}{32}N$ by taking all integers $\\equiv 1,5,9,13,14,17,21,25,26,29,30\\pmod{32}$, as observed by Massias.\n\nLagarias, Odlyzko, and Shearer \\cite{LOS83} proved this is sharp for the modular version of the problem; that is, if $A\\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is such that $A+A$ contains no squares then $\\lvert A\\rvert\\leq \\tfrac{11}{32}N$. They also prove the general upper bound of $\\lvert A\\rvert\\leq 0.475N$ for the integer problem.\n\nIn fact $\\frac{11}{32}$ is sharp in general, as shown by Khalfalah, Lodha, and Szemer\\'{e}di \\cite{KLS02}, who proved that the maximal such $A$ satisfies $\\lvert A\\rvert\\leq (\\tfrac{11}{32}+o(1))N$.\n\nSee also [439] and [587].\n\n\n\n\nReferences\n\n\n[KLS02] Khalfalah, A. and Lodha, S. and Szemer\\'{e}di, E., Tight bound for the density of sequence of integers the sum of no two of which is a perfect square. Discrete Math. (2002), 243-255.\n\n[LOS83] Lagarias, J. C. and Odlyzko, A. M. and Shearer, J. B., On the density of sequences of integers the sum of no two of\nwhich is a square. II. General sequences. J. Combin. Theory Ser. A (1983), 123-139.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Avoiding Squares in Sumsets**\n\nThis problem asks for the maximum density of a set A ⊆ {1,...,N} such that no sum a+b with a,b ∈ A is a perfect square.\n\n**Simple Construction (mod 3)**: Take all n ≡ 1 (mod 3). Then a+b ≡ 2 (mod 3), but squares are only 0 or 1 mod 3. This gives density 1/3.\n\n**Massias's Improvement**: Take residues {1,5,9,13,14,17,21,25,26,29,30} mod 32. This gives density 11/32 ≈ 0.344, beating 1/3 ≈ 0.333.\n\n**Resolution**: Khalfalah-Lodha-Szemerédi (2002) proved 11/32 is optimal, using Szemerédi's regularity lemma.",
+    "problemStatement": "**Problem Statement**\n\nHow large can A ⊆ {1,...,N} be if A+A contains no square numbers?\n\n**Answer**: |A| = (11/32 + o(1))N\n\n**Lower Bound**: Massias construction achieves 11/32.\n\n**Upper Bound**: Khalfalah-Lodha-Szemerédi (2002) proved no set can exceed 11/32 + o(1).\n\n**Key**: 11/32 = 0.34375 is the exact asymptotic density.",
+    "proofStrategy": "**Proof Strategy**\n\n**Lower Bound (Massias Construction)**:\n1. Squares mod 32 are: 0, 1, 4, 9, 16, 17, 25 (7 values)\n2. Find maximal set R of residues such that for all a,b ∈ R, (a+b) mod 32 is not a square\n3. R = {1,5,9,13,14,17,21,25,26,29,30} works and has 11 elements\n4. Taking all n ≡ r (mod 32) for r ∈ R gives density 11/32\n\n**Upper Bound (KLS 2002)**:\n1. Lagarias-Odlyzko-Shearer (1983): |A| ≤ 0.475N using character sums\n2. For modular version (A ⊆ ℤ/Nℤ), LOS proved 11/32 is sharp\n3. KLS used Szemerédi regularity to transfer modular result to integers",
+    "keyInsights": [
+      "The maximum density is exactly 11/32 ≈ 0.344",
+      "Simple mod 3 construction gives 1/3, but mod 32 improves to 11/32",
+      "There are only 7 squares mod 32, constraining which residues work",
+      "11 residues mod 32 can avoid all square sums (Massias)",
+      "Szemerédi regularity transfers modular bounds to integer bounds",
+      "Related to Furstenberg-Sárközy theorem about difference sets"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "Defines IsSquare, sumset A+A, IsSquareFreeSumset, and the maximum density function."
+    },
+    {
+      "id": "mod3",
+      "title": "Simple mod 3 Construction",
+      "startLine": 65,
+      "endLine": 85,
+      "summary": "The basic construction: take n ≡ 1 (mod 3), achieving density 1/3."
+    },
+    {
+      "id": "massias",
+      "title": "Massias Construction (mod 32)",
+      "startLine": 87,
+      "endLine": 110,
+      "summary": "The improved construction using 11 residue classes mod 32, achieving density 11/32."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 112,
+      "endLine": 132,
+      "summary": "LOS bound (0.475N) and KLS tight bound (11/32 + o(1))N."
+    },
+    {
+      "id": "why-11-32",
+      "title": "Why 11/32?",
+      "startLine": 134,
+      "endLine": 153,
+      "summary": "Explains the 7 squares mod 32 and why 11 is the maximum residue count."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 208,
+      "endLine": 249,
+      "summary": "Complete characterization: density is exactly 11/32."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #438 asks for the maximum size of A ⊆ {1,...,N} with A+A square-free. The answer is |A| = (11/32 + o(1))N, achieved by the Massias construction and proved tight by Khalfalah-Lodha-Szemerédi (2002).",
+    "implications": "**Significance**\n\n1. **Additive Combinatorics**: Fundamental result about sumset structure\n\n2. **Density Problems**: Shows how modular constraints determine optimal density\n\n3. **Regularity Method**: Demonstrates power of Szemerédi regularity for transferring modular to integer results\n\n4. **Complete Resolution**: Both upper and lower bounds are tight (11/32)",
+    "openQuestions": [
+      "Exact formula for max|A| for small N (before asymptotics dominate)",
+      "Generalization to A+A avoiding kth powers (Problem #439)",
+      "Best bounds for A-A avoiding squares (Problem #587)",
+      "Quantitative bounds on the o(1) error term"
+    ]
   }
 }
