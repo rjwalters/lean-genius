@@ -1,0 +1,19 @@
+{
+  "problem_number": 246,
+  "title": "Completeness of {a^k b^l : k, l ≥ 0}",
+  "status": "solved",
+  "solvers": ["Birch (1959)"],
+  "source_url": "https://erdosproblems.com/246",
+  "overview": "Let (a, b) = 1. Is the set {a^k b^l : k, l ≥ 0} complete—that is, is every sufficiently large integer the sum of distinct integers of this form?",
+  "sections": [],
+  "conclusion": "YES - Birch (1959) proved completeness. Cassels (1960) gave a more general result. Davenport showed it holds with bounded l. Quantitative bounds: Hegyvári (2000) quadruple exponential, Fang-Chen (2017) triply exponential. Yu (2024) showed large n can use summands > n/(log n)^{1+o(1)}.",
+  "references": [
+    "Birch [Bi59] - Original proof of completeness",
+    "Cassels [Ca60] - More general result",
+    "Hegyvári [He00b] - Quadruple exponential bound",
+    "Fang-Chen [FaCh17] - Triply exponential bound",
+    "Yu [Yu24] - Large summands result"
+  ],
+  "related_problems": [254],
+  "tags": ["number-theory", "complete-sequences", "additive-combinatorics", "exponential-sequences", "solved"]
+}
