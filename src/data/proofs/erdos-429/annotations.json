@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-429-1",
+    "proofId": "erdos-429",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #429 asks whether sparse admissible sets must have a prime shift. Answer: NO (Weisenberg 2024). Even arbitrarily sparse sets avoiding one residue class mod p for each prime can fail to have any n with all n+a prime.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-2",
+    "proofId": "erdos-429",
+    "range": { "startLine": 54, "endLine": 55 },
+    "type": "definition",
+    "title": "Covers Residue",
+    "content": "CoversResidue A m r means some element a in A satisfies a mod m = r. This is the basic building block for admissibility.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-3",
+    "proofId": "erdos-429",
+    "range": { "startLine": 61, "endLine": 62 },
+    "type": "definition",
+    "title": "Covers All Residues",
+    "content": "CoversAllResidues A m means A has elements in every residue class mod m. Non-admissible sets cover all residues for some prime.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-4",
+    "proofId": "erdos-429",
+    "range": { "startLine": 69, "endLine": 70 },
+    "type": "definition",
+    "title": "Admissible Set",
+    "content": "IsAdmissible A means for every prime p, A avoids at least one residue class mod p. Such sets cannot be ruled out from prime shifts by simple mod p arguments.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-5",
+    "proofId": "erdos-429",
+    "range": { "startLine": 76, "endLine": 77 },
+    "type": "definition",
+    "title": "Avoided Residue",
+    "content": "AvoidedResidue A p r means no element of A is congruent to r mod p. Admissible sets have at least one avoided residue for each prime.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-6",
+    "proofId": "erdos-429",
+    "range": { "startLine": 119, "endLine": 120 },
+    "type": "definition",
+    "title": "All Primes in Shift",
+    "content": "AllPrimesInShift A n means for all a in A, n+a is prime. This is what we want for a 'prime shift'.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-7",
+    "proofId": "erdos-429",
+    "range": { "startLine": 126, "endLine": 127 },
+    "type": "definition",
+    "title": "Has Prime Shift",
+    "content": "HasPrimeShift A means there exists n such that all n+a are prime. The main question is whether sparse admissible sets have this property.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-8",
+    "proofId": "erdos-429",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "definition",
+    "title": "Zero Density",
+    "content": "HasZeroDensity A means |A cap [1,N]|/N tends to 0 as N tends to infinity. This captures 'sparse enough' in the problem statement.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-9",
+    "proofId": "erdos-429",
+    "range": { "startLine": 162, "endLine": 164 },
+    "type": "definition",
+    "title": "Lacunary Set",
+    "content": "IsLacunary means consecutive terms ratio grows without bound. This is an extremely strong sparsity condition.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-10",
+    "proofId": "erdos-429",
+    "range": { "startLine": 176, "endLine": 177 },
+    "type": "definition",
+    "title": "Erdos Conjecture 429",
+    "content": "ErdosConjecture429: sparse + admissible implies has prime shift. This is the statement that Weisenberg disproved.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-11",
+    "proofId": "erdos-429",
+    "range": { "startLine": 184, "endLine": 185 },
+    "type": "theorem",
+    "title": "Weisenberg's Theorem",
+    "content": "weisenberg_theorem: There exist zero-density admissible sets with no prime shift. This is the main counterexample result.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-12",
+    "proofId": "erdos-429",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "theorem",
+    "title": "Lacunary Counterexample",
+    "content": "weisenberg_lacunary: Even lacunary (extremely sparse) admissible sets can fail to have prime shifts. This strengthens the main result.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-13",
+    "proofId": "erdos-429",
+    "range": { "startLine": 200, "endLine": 203 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "erdos_429_disproved: The Erdos conjecture is false. Derives this from weisenberg_theorem.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-14",
+    "proofId": "erdos-429",
+    "range": { "startLine": 229, "endLine": 230 },
+    "type": "definition",
+    "title": "Covering System",
+    "content": "IsCoveringSystem: A set of congruences that covers all integers. Key technique in Weisenberg's construction.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-15",
+    "proofId": "erdos-429",
+    "range": { "startLine": 253, "endLine": 267 },
+    "type": "theorem",
+    "title": "Admissibility Necessary",
+    "content": "admissibility_necessary: If A has a prime shift, then A is admissible. This shows admissibility is a necessary condition.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-16",
+    "proofId": "erdos-429",
+    "range": { "startLine": 273, "endLine": 276 },
+    "type": "insight",
+    "title": "Prime Tuples Conjecture",
+    "content": "prime_tuples_conjecture: For finite admissible sets, conjecturally there are infinitely many prime shifts. Contrast with the infinite sparse case.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-429-17",
+    "proofId": "erdos-429",
+    "range": { "startLine": 344, "endLine": 351 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "erdos_429_summary: Combines the disproof, existence of counterexamples, and necessity of admissibility into a single statement.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-429-18",
+    "proofId": "erdos-429",
+    "range": { "startLine": 357, "endLine": 357 },
+    "type": "theorem",
+    "title": "Erdos 429 Status",
+    "content": "erdos_429: SOLVED with answer NO. Weisenberg (2024) disproved the conjecture by constructing counterexamples.",
+    "significance": "high"
+  }
+]
