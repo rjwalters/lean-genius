@@ -11,9 +11,14 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Lorentz 1954: Main theorem proven (asymptotic covering exists)",
+      "Powers of 2 have density 0 (fully proved)",
+      "Squares have density 0 (fully proved)",
+      "Counting lemmas for powers of 2 and squares (fully proved)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Fully formalize Lorentz 1954 theorem and related results"
   },
   "currentState": {
     "phase": "EXPLORATION",
@@ -32,30 +37,67 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ACTIVE: Erdos31Problem.lean (569 lines, 5 axioms, 0 sorries). Lorentz 1954 theorem axiomatized. Helper lemmas for density 0 of sparse sets fully proved.",
+    "builtItems": [
+      "Erdos31Problem.lean (569 lines, 5 axioms, 0 sorries)",
+      "countingFn: counting function |A ∩ {1,...,N}|",
+      "HasDensity, HasDensityZero definitions",
+      "upperDensity: via limsup",
+      "Sumset: A + B sumset definition",
+      "CoversCofinite, CoversAllButFinitely predicates",
+      "Erdos31Statement: main theorem statement",
+      "powers_of_2_count_bound (fully proved)",
+      "squares_count_bound (fully proved)",
+      "powers_of_2_density_zero (fully proved)",
+      "squares_density_zero (fully proved)",
+      "tendsto_sqrt_inv, tendsto_log_inv (limits proved)",
+      "IsAsymptoticBasis definition"
+    ],
+    "insights": [
+      "Problem status: SOLVED (Lorentz 1954)",
+      "5 axioms for deep results: primes_density_zero, lorentz_theorem, lorentz_B_bound, primes_have_sparse_complement, lorentz_strengthened",
+      "Lorentz Construction: Build B iteratively to fill gaps left by A",
+      "Density trade-off: Sparse A needs denser B; dense A allows sparser B",
+      "Optimal bound: |B ∩ [1,N]| = O(N/log N) is essentially optimal",
+      "Key techniques: Set.ncard_image_le, Nat.log_mono_right, Nat.le_sqrt for counting",
+      "Additive basis connection: A ∪ B becomes asymptotic basis of order 2"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Consider submitting to Aristotle for primes_density_zero proof",
+      "Accept remaining axioms as published mathematical results",
+      "Potential extension: prove lorentz_B_bound with more analysis"
+    ],
     "markdown": "# Erdos #31 - Knowledge Base\n\n## Problem Statement\n\nGiven any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.\n\n## Status\n\n**Erdos Database Status**: SOLVED (Lorentz 1954)\n\n**Tractability Score**: 7/10\n**Aristotle Suitable**: Potentially (known proof to formalize)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| countingFn | def | Counting function |A ∩ {1,...,N}| | Erdos31Problem.lean:31 |\n| HasDensity | def | A set has density d | Erdos31Problem.lean:35 |\n| HasDensityZero | def | A set has density 0 | Erdos31Problem.lean:39 |\n| upperDensity | def | Upper density via limsup | Erdos31Problem.lean:42 |\n| Sumset | def | A + B sumset | Erdos31Problem.lean:51 |\n| CoversCofinite | def | A + B covers cofinite set | Erdos31Problem.lean:56 |\n| CoversAllButFinitely | def | A + B omits only finitely many | Erdos31Problem.lean:60 |\n| Erdos31Statement | def | Main theorem statement | Erdos31Problem.lean:87 |\n| OptimalBDensity | def | Optimal density for complement | Erdos31Problem.lean:133 |\n| IsAsymptoticBasis | def | Asymptotic additive basis | Erdos31Problem.lean:171 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| powers_of_2_in_Icc_eq | PROVED | Bijection: powers of 2 in [1,N] = image of {0,...,log₂N} |\n| powers_of_2_count_bound | PROVED | Count of powers of 2 ≤ log₂N + 1 |\n| squares_in_Icc_eq | PROVED | Bijection: squares in [1,N] = image of {1,...,√N} |\n| squares_count_bound | PROVED | Count of squares ≤ √N + 1 |\n| tendsto_sqrt_inv | PROVED | (√N + 1)/N → 0 as N → ∞ |\n| tendsto_log_inv | PROVED | (log₂N + 1)/N → 0 as N → ∞ |\n| powers_of_2_density_zero | PROVED | Powers of 2 have density 0 |\n| squares_density_zero | PROVED | Squares have density 0 |\n| primes_density_zero | AXIOM | Primes have density 0 |\n| lorentz_theorem | AXIOM | Main theorem (Lorentz 1954) |\n| lorentz_B_bound | AXIOM | B has O(N/log N) elements |\n| primes_have_sparse_complement | AXIOM | Primes have sparse complement |\n| optimal_B_density_zero | AXIOM | Optimal B-density is 0 |\n| lorentz_strengthened | AXIOM | Strengthened version |\n| infinite_set_augmentable | AXIOM | Connection to additive bases |\n\n## Insights\n\n1. **Lorentz Construction**: Build B iteratively to fill gaps left by A\n2. **Density Trade-off**: Sparse A needs denser B; dense A allows sparser B\n3. **Optimal Bound**: |B ∩ [1,N]| = O(N/log N) is essentially optimal\n4. **Additive Basis Connection**: A ∪ B becomes an asymptotic basis of order 2\n\n## Tags\n\n- erdos\n- additive-combinatorics\n- density\n- sumsets\n\n## Related Problems\n\n- Problem #221 (similar questions about density)\n\n## References\n\n- Lorentz, G.G. (1954): \"On a problem of additive number theory\"\n\n## Sessions\n\n### Session 2026-01-14\n\n**Focus**: Initial formalization\n**Outcome**: Complete formalization with 210+ lines, 5 axioms, 6 sorries\n**Next**: Submit HARD sorries to Aristotle for proof search\n\n### Session 2026-01-16\n\n**Focus**: Prove counting bound lemmas\n**Outcome**:\n- Proved `powers_of_2_count_bound` using bijection with {0,...,log₂N}\n- Proved `squares_count_bound` using bijection with {1,...,√N}\n- Proved density-zero results for powers of 2 and squares\n- File now has 499 lines, 7 axioms, 0 sorries\n**Key Techniques**:\n- Used `Set.ncard_image_le` for counting images of finite sets\n- Used `Nat.log_mono_right` and `Nat.pow_log_le_self` for log bounds\n- Used `Nat.le_sqrt` and `Nat.sqrt_le_self` for sqrt bounds\n**Next**: Remaining 7 axioms are \"deep\" results (Lorentz 1954 theorem, prime density)\n\n---\n\n*Last updated: 2026-01-16*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Full formalization with Lorentz axiom",
+      "status": "completed",
+      "notes": "Main theorem axiomatized, helper lemmas fully proved"
+    }
+  ],
   "tags": [
     "erdos",
     "additive-combinatorics",
     "density",
-    "sumsets"
+    "sumsets",
+    "solved"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos31Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Lorentz, G.G. (1954): On a problem of additive number theory"
+    ],
+    "urls": [
+      "https://erdosproblems.com/31"
+    ],
     "mathlib": []
   },
   "started": "2026-01-14T00:00:00.000Z",
-  "lastUpdate": "2026-01-14T00:00:00.000Z",
+  "lastUpdate": "2026-01-24T17:10:00Z",
   "significance": 7,
   "tractability": 7
 }
