@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-771-iccn",
+    "proofId": "erdos-771",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Icc_n",
+    "content": "The set {1, ..., n}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-subsetsums",
+    "proofId": "erdos-771",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "subsetSums",
+    "content": "All nonempty subset sums of S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-avoidsum",
+    "proofId": "erdos-771",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "AvoidSum",
+    "content": "No subset of S sums to m.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-maxavoiding",
+    "proofId": "erdos-771",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "maxAvoidingSize",
+    "content": "Max size of m-avoiding set in {1,...,n}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-f",
+    "proofId": "erdos-771",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "definition",
+    "title": "f",
+    "content": "f(n): max k with m-avoiding set for all m.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-fprop",
+    "proofId": "erdos-771",
+    "range": { "startLine": 73, "endLine": 76 },
+    "type": "definition",
+    "title": "f_property",
+    "content": "Characterization of f(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-expected",
+    "proofId": "erdos-771",
+    "range": { "startLine": 87, "endLine": 90 },
+    "type": "definition",
+    "title": "expectedValue",
+    "content": "(1/2) · n / log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-conjecture",
+    "proofId": "erdos-771",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "definition",
+    "title": "ErdosGrahamConjecture",
+    "content": "f(n) = (1/2+o(1))n/log n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-lower",
+    "proofId": "erdos-771",
+    "range": { "startLine": 107, "endLine": 113 },
+    "type": "theorem",
+    "title": "erdos_graham_lower_bound",
+    "content": "f(n) ≥ (1/2-ε)n/log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-primes",
+    "proofId": "erdos-771",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "definition",
+    "title": "primeMutliples",
+    "content": "Multiples of prime p in {1,...,n}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-primeavoid",
+    "proofId": "erdos-771",
+    "range": { "startLine": 124, "endLine": 127 },
+    "type": "theorem",
+    "title": "prime_multiples_avoid",
+    "content": "Multiples of p not dividing m avoid m.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-upper",
+    "proofId": "erdos-771",
+    "range": { "startLine": 137, "endLine": 142 },
+    "type": "theorem",
+    "title": "alon_freiman_upper_bound",
+    "content": "f(n) ≤ (1/2+ε)n/log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-lcm",
+    "proofId": "erdos-771",
+    "range": { "startLine": 144, "endLine": 146 },
+    "type": "definition",
+    "title": "lcm_up_to",
+    "content": "lcm{1, ..., s}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-lcmest",
+    "proofId": "erdos-771",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "theorem",
+    "title": "lcm_estimate",
+    "content": "lcm{1,...,s} ≤ e^{2s}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-true",
+    "proofId": "erdos-771",
+    "range": { "startLine": 160, "endLine": 171 },
+    "type": "theorem",
+    "title": "erdos_graham_conjecture_true",
+    "content": "The conjecture is TRUE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-leading",
+    "proofId": "erdos-771",
+    "range": { "startLine": 186, "endLine": 189 },
+    "type": "theorem",
+    "title": "leading_constant",
+    "content": "f(n)/(n/log n) → 1/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-sumfree",
+    "proofId": "erdos-771",
+    "range": { "startLine": 214, "endLine": 216 },
+    "type": "definition",
+    "title": "IsSumFree",
+    "content": "No a+b=c in S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-771-main",
+    "proofId": "erdos-771",
+    "range": { "startLine": 246, "endLine": 246 },
+    "type": "theorem",
+    "title": "erdos_771",
+    "content": "Main theorem: conjecture is true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-771-solved",
+    "proofId": "erdos-771",
+    "range": { "startLine": 255, "endLine": 255 },
+    "type": "theorem",
+    "title": "erdos_771_solved",
+    "content": "Problem completely solved.",
+    "significance": "critical"
+  }
+]
