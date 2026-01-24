@@ -1,0 +1,17 @@
+{
+  "problem_number": 773,
+  "title": "Sidon Subsets of Perfect Squares",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/773",
+  "overview": "What is the size of the largest Sidon subset A ⊆ {1², 2², ..., N²}? Is it N^{1-o(1)}? A Sidon set has all pairwise sums distinct.",
+  "sections": [],
+  "conclusion": "OPEN - Lower bound: |A| ≥ c·N^{2/3} (Alon-Erdős 1985, Lefmann-Thiele 1995). Upper bound: |A| ≤ C·N/(log N)^{1/4} (using Landau's theorem on sums of two squares). The true growth rate remains unknown.",
+  "references": [
+    "Alon-Erdős [AlEr85] - Lower bound N^{2/3-o(1)}, upper bound N/(log N)^{1/4}",
+    "Lefmann-Thiele (1995) - Improved lower bound to N^{2/3}",
+    "Landau (1908) - Density of sums of two squares"
+  ],
+  "related_problems": [772, 774],
+  "tags": ["number-theory", "sidon-sets", "squares", "open"]
+}
