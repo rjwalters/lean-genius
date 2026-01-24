@@ -1,0 +1,19 @@
+{
+  "problem_number": 297,
+  "title": "Counting Egyptian Fraction Representations of 1",
+  "status": "solved",
+  "solvers": ["Steinerberger (2024)", "Liu-Sawhney (2024)", "Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (2024)"],
+  "source_url": "https://erdosproblems.com/297",
+  "overview": "How many A ⊆ {1,...,N} are there such that Σ_{n∈A} 1/n = 1? Is the count 2^{cN} for some c < 1, or does it grow like 2^{(1+o(1))N}?",
+  "sections": [],
+  "conclusion": "The count is 2^{(c+o(1))N} where c ≈ 0.91... (the Liu-Sawhney constant, defined via an integral equation). Three independent teams proved this within weeks of each other in 2024: Steinerberger (upper bound 2^{0.93N}), Liu-Sawhney (full asymptotic), and Conlon et al. (same asymptotic plus generalization to any rational target).",
+  "references": [
+    "Erdős-Graham [ErGr80, p.36] - Original problem",
+    "Steinerberger (arXiv:2403.17041) - Upper bound 2^{0.93N}",
+    "Liu-Sawhney (arXiv:2404.07113) - Full asymptotic 2^{(c+o(1))N}",
+    "Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (arXiv:2404.16016) - Independent proof and generalization",
+    "OEIS A092670 - Related sequence"
+  ],
+  "related_problems": [362],
+  "tags": ["number-theory", "egyptian-fractions", "counting", "combinatorics", "solved"]
+}
