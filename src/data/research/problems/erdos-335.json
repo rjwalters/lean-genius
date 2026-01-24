@@ -1,54 +1,104 @@
 {
   "slug": "erdos-335",
-  "title": "Erdős #335",
-  "phase": "NEW",
+  "title": "Erdős #335: Density Additivity Characterization",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]\n\n\n\nOne way this can happen is if there exists $\\theta>0$ such that\\[A=\\{ n>0 : \\{ n\\theta\\} \\in X_A\\}\\textrm{ and }B=\\{ n>0 : \\{n\\theta\\} \\in X_B\\}\\]where $\\{x\\}$ denotes the fractional part of $x$ and $X_A,X_B\\subseteq \\mathbb{R}/\\mathbb{Z}$ are such that $\\mu(X_A+X_B)=\\mu(X_A)+\\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?\n\n\nBack to the problem",
-    "plain": "Forum",
-    "whyMatters": []
+    "formal": "\\text{Characterize } A,B \\subseteq \\mathbb{N} \\text{ with } d(A), d(B) > 0 \\text{ and } d(A+B) = d(A) + d(B)",
+    "plain": "Characterize A, B ⊆ ℕ with positive density such that d(A+B) = d(A) + d(B).",
+    "whyMatters": [
+      "Density additivity is a strong structural constraint",
+      "Known examples arise from torus rotations"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Fractional part construction: A = {n : {nθ} ∈ X_A} gives examples",
+      "Plünnecke-Ruzsa: d(A+B) ≥ min(d(A)+d(B), 1) in general"
+    ],
+    "open": [
+      "Do ALL density-additive pairs arise from group rotations?",
+      "Are there exotic examples?"
+    ],
+    "goal": "Complete characterization of density-additive pairs"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T00:04:50.018Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-01-24T18:00:00Z",
+    "iteration": 2,
+    "focus": "Framework formalized with density, sumset, and fractional part construction.",
+    "blockers": [
+      "Problem is OPEN - characterization unknown"
+    ],
+    "nextAction": "Consider formalizing measure theory for torus constructions",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #335 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]\n\n\n\nOne way this can happen is if there exists $\\theta>0$ such that\\[A=\\{ n>0 : \\{ n\\theta\\} \\in X_A\\}\\textrm{ and }B=\\{ n>0 : \\{n\\theta\\} \\in X_B\\}\\]where $\\{x\\}$ denotes the fractional part of $x$ and $X_A,X_B\\subseteq \\mathbb{R}/\\mathbb{Z}$ are such that $\\mu(X_A+X_B)=\\mu(X_A)+\\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #334\n- Problem #336\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "progressSummary": "ACTIVE (OPEN): Erdos335Problem.lean (163 lines, 5 axioms, 0 sorries). Framework for density additivity characterization. Sumset and fractional part construction defined. Plünnecke-Ruzsa bound axiomatized. Full characterization is OPEN.",
+    "builtItems": [
+      "Erdos335Problem.lean (163 lines, 5 axioms, 0 sorries)",
+      "countingFn: |A ∩ [1,N]| counting function",
+      "density: asymptotic density via limUnder",
+      "HasPositiveDensity, DensityExists predicates",
+      "Sumset (+ₛ): A + B definition",
+      "DensityAdditive: d(A+B) = d(A) + d(B) condition",
+      "frac: fractional part function",
+      "FractionalPartSet: {n : {nθ} ∈ X}",
+      "MeasureAdditive (placeholder)",
+      "fractional_part_additive (AXIOM)",
+      "density_empty, density_le_one, density_nonneg (AXIOMS)",
+      "plunnecke_ruzsa_lower (AXIOM)",
+      "erdos_335: main conjecture (placeholder True)"
+    ],
+    "insights": [
+      "Status: OPEN - characterization unknown",
+      "Known examples: fractional parts of irrational rotations",
+      "Key property: exact additivity is very restrictive",
+      "Contrast: usually d(A+B) ≥ min(d(A)+d(B), 1)",
+      "Question: are there non-group-rotation examples?",
+      "MeasureAdditive needs full MeasureTheory formalization"
+    ],
+    "mathlibGaps": [
+      "MeasureTheory on torus ℝ/ℤ"
+    ],
+    "nextSteps": [
+      "Formalize MeasureAdditive properly with MeasureTheory",
+      "Add concrete examples of density-additive pairs",
+      "Main characterization is OPEN problem"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Framework formalization",
+      "status": "completed",
+      "notes": "Basic definitions and known construction axiomatized"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "additive-combinatorics",
+    "density",
+    "sumsets",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos335Problem.lean"
   ],
   "references": {
     "papers": [],
-    "urls": [],
+    "urls": [
+      "https://erdosproblems.com/335"
+    ],
     "mathlib": []
   },
   "started": "2026-01-13T00:04:50.018Z",
+  "lastUpdate": "2026-01-24T18:00:00Z",
   "significance": 6,
   "tractability": 4
 }
