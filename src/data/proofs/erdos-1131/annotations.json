@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e1131-header",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1131: Lagrange Basis Polynomial Integrals**\n\nFor nodes x₁,...,xₙ ∈ [-1,1], the Lagrange basis polynomials l_k(x) satisfy l_k(x_k)=1 and l_k(x_j)=0 for j≠k.\n\n**Question:** Minimize I = ∫_{-1}^{1} Σ_k |l_k(x)|² dx\n\n**Conjecture:** min I = 2 - (1+o(1))/n\n\n**Status: OPEN**",
+    "mathContext": "This is a fundamental problem in approximation theory connecting interpolation, orthogonal polynomials, and optimization.",
+    "significance": "critical",
+    "relatedConcepts": ["Lagrange interpolation", "Legendre polynomials", "Numerical analysis"]
+  },
+  {
+    "id": "ann-e1131-nodes",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 53, "endLine": 62 },
+    "type": "definition",
+    "title": "Node Configuration",
+    "content": "**NodeConfiguration:**\n\nA collection of n distinct points in [-1, 1].\n\n```lean\nstructure NodeConfiguration (n : ℕ) where\n  nodes : Fin n → ℝ\n  in_interval : ∀ i, nodes i ∈ Set.Icc (-1 : ℝ) 1\n  distinct : ∀ i j, i ≠ j → nodes i ≠ nodes j\n```\n\nThe choice of nodes determines the Lagrange basis polynomials.",
+    "mathContext": "Classic choices include uniform nodes, Chebyshev nodes, and Legendre polynomial roots.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev nodes", "Legendre roots", "Node placement"]
+  },
+  {
+    "id": "ann-e1131-basis",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 64, "endLine": 74 },
+    "type": "definition",
+    "title": "Lagrange Basis Polynomials",
+    "content": "**lagrangeBasis:**\n\nThe k-th Lagrange basis polynomial:\n\n$$l_k(x) = \\frac{\\prod_{i\\neq k}(x - x_i)}{\\prod_{i\\neq k}(x_k - x_i)}$$\n\nThese polynomials are degree n-1 and satisfy the interpolation property: l_k(x_j) = δ_{kj}.",
+    "mathContext": "Lagrange basis forms a basis for polynomials of degree < n with the property that the j-th basis function is 1 at node j and 0 at all other nodes.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial interpolation", "Kronecker delta", "Basis functions"]
+  },
+  {
+    "id": "ann-e1131-partition",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 94, "endLine": 100 },
+    "type": "theorem",
+    "title": "Partition of Unity",
+    "content": "**lagrangeBasis_sum_eq_one:**\n\n$$\\sum_k l_k(x) = 1$$ for all x.\n\nThis is the fundamental partition of unity property. It follows because interpolating the constant function 1 gives 1 = Σ 1·l_k(x).",
+    "mathContext": "This identity is key to understanding why the integral I approaches 2 as n→∞: the squared terms sum to something close to 1² integrated over [-1,1] = 2.",
+    "significance": "key",
+    "relatedConcepts": ["Partition of unity", "Interpolation", "Constant function"]
+  },
+  {
+    "id": "ann-e1131-objective",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 108, "endLine": 118 },
+    "type": "definition",
+    "title": "The Objective Function",
+    "content": "**objectiveFunction:**\n\n$$I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2 \\, dx$$\n\nThis measures the 'energy' of the Lagrange basis configuration. We want to find the node placement minimizing I.",
+    "mathContext": "Since Σ l_k(x) = 1, by Cauchy-Schwarz, Σ l_k(x)² ≥ 1/n with equality when all l_k are equal. The integral is thus at least 2/n.",
+    "significance": "critical",
+    "relatedConcepts": ["L² norm", "Energy minimization", "Cauchy-Schwarz"]
+  },
+  {
+    "id": "ann-e1131-ESVV-bounds",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 127, "endLine": 147 },
+    "type": "theorem",
+    "title": "ESVV94 Bounds",
+    "content": "**Known Bounds (1994):**\n\n$$2 - O\\left(\\frac{(\\log n)^2}{n}\\right) \\leq \\min I \\leq 2 - \\frac{2}{2n-1}$$\n\nThe upper bound comes from using Legendre polynomial roots. The lower bound involves deeper analysis.",
+    "mathContext": "The gap between O((log n)²/n) and Θ(1/n) is the key unsolved part. The conjecture says the true answer is Θ(1/n).",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic bounds", "Legendre roots", "Erdős-Szabados-Varma-Vértesi"]
+  },
+  {
+    "id": "ann-e1131-fejer",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 161, "endLine": 167 },
+    "type": "theorem",
+    "title": "Fejér's Theorem (1932)",
+    "content": "**fejer_theorem:**\n\nThe roots of the integral of the Legendre polynomial minimize:\n$$\\max_{x \\in [-1,1]} \\sum_k |l_k(x)|^2$$\n\nThis inspired Erdős to conjecture the same nodes minimize the integral.",
+    "mathContext": "Fejér's result shows Legendre roots are optimal for the max-norm. The surprising fact is they are NOT optimal for the L² norm.",
+    "significance": "key",
+    "relatedConcepts": ["Fejér", "Max norm", "Legendre polynomials"]
+  },
+  {
+    "id": "ann-e1131-szabados",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 176, "endLine": 185 },
+    "type": "theorem",
+    "title": "Szabados's Disproof (1966)",
+    "content": "**szabados_disproof:**\n\nFor n > 3, the Legendre polynomial roots do NOT minimize the integral I.\n\nThere exists a better configuration achieving strictly smaller I.",
+    "mathContext": "This was surprising: the natural candidate (Legendre roots) is not optimal. The true optimal configuration remains unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["Szabados", "Counterexample", "Optimal nodes"]
+  },
+  {
+    "id": "ann-e1131-conjecture",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 193, "endLine": 203 },
+    "type": "conjecture",
+    "title": "Erdős's Conjecture",
+    "content": "**erdosConjecture1131:**\n\n$$\\min I = 2 - \\frac{1 + o(1)}{n}$$\n\nEquivalently: lim_{n→∞} n(2 - min I) = 1.\n\nThis would mean the deviation from 2 is exactly linear in 1/n, not logarithmic.",
+    "mathContext": "The conjecture predicts the exact rate of convergence to 2, matching the upper bound but requiring a better lower bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic analysis", "Rate of convergence", "Open problem"]
+  },
+  {
+    "id": "ann-e1131-lebesgue",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 234, "endLine": 253 },
+    "type": "connection",
+    "title": "Connection to Lebesgue Constant",
+    "content": "**lebesgueConstant:**\n\nThe Lebesgue constant Λ_n = sup_x Σ |l_k(x)| measures interpolation stability.\n\n- Chebyshev nodes: Λ_n = O(log n)\n- Uniform nodes: Λ_n = O(2^n/n) (Runge phenomenon!)\n\nThe L² problem here is related but distinct from the L^∞ Lebesgue constant.",
+    "mathContext": "Both problems concern optimal node placement, but the answers differ. Chebyshev nodes are good for stability; different nodes may be better for the L² objective.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue constant", "Interpolation stability", "Runge phenomenon"]
+  },
+  {
+    "id": "ann-e1131-summary",
+    "proofId": "erdos-1131",
+    "range": { "startLine": 261, "endLine": 284 },
+    "type": "summary",
+    "title": "Main Result",
+    "content": "**erdos_1131:**\n\nThe problem is OPEN. We know:\n- Fejér (1932): Legendre roots minimize max Σ |l_k|²\n- Szabados (1966): Legendre roots do NOT minimize ∫ Σ |l_k|² for n > 3\n- ESVV94: 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1)\n- Conjecture: min I = 2 - (1+o(1))/n",
+    "mathContext": "The gap between logarithmic and linear decay is the heart of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Approximation theory", "Interpolation"]
+  }
+]
