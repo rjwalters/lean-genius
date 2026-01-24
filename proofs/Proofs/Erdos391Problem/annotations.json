@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-ordered-factorization",
+    "proofId": "erdos-391",
+    "range": { "startLine": 45, "endLine": 52 },
+    "type": "definition",
+    "title": "Ordered Factorization",
+    "content": "A factorization of m into exactly n factors a₁ ≤ a₂ ≤ ... ≤ aₙ in non-decreasing order.",
+    "significance": "major"
+  },
+  {
+    "id": "def-t-function",
+    "proofId": "erdos-391",
+    "range": { "startLine": 63, "endLine": 69 },
+    "type": "definition",
+    "title": "The Function t(n)",
+    "content": "t(n) is the maximum of the minimum factor over all n-factorizations of n!. The key object of study.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-easy-upper",
+    "proofId": "erdos-391",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "theorem",
+    "title": "Easy Upper Bound",
+    "content": "lim sup t(n)/n ≤ 1/e. If all factors a₁ ≤ ... ≤ aₙ, then a₁^k ≤ product of first k, which constrains a₁.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-lost-proof",
+    "proofId": "erdos-391",
+    "range": { "startLine": 103, "endLine": 116 },
+    "type": "insight",
+    "title": "The Lost Proof (Erdős-Selfridge-Straus)",
+    "content": "They claimed lim t(n)/n = 1/e but the proof was lost when Ernst Straus died. Erdős called it 'only a conjecture' afterward.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-acrstuv",
+    "proofId": "erdos-391",
+    "range": { "startLine": 127, "endLine": 137 },
+    "type": "theorem",
+    "title": "ACRSTUV Theorem (2025)",
+    "content": "t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}) where c₀ ≈ 0.3044. Resolves both questions in Problem #391.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-limit",
+    "proofId": "erdos-391",
+    "range": { "startLine": 139, "endLine": 146 },
+    "type": "theorem",
+    "title": "The Limit Equals 1/e",
+    "content": "Corollary of main theorem: lim t(n)/n = 1/e as n → ∞.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-upper-explicit",
+    "proofId": "erdos-391",
+    "range": { "startLine": 168, "endLine": 172 },
+    "type": "theorem",
+    "title": "Explicit Upper Bound",
+    "content": "t(n) ≤ n/e for all n ≠ 1, 2, 4. The exceptions are genuine (e.g., t(4) = 3 > 4/e).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-lower-explicit",
+    "proofId": "erdos-391",
+    "range": { "startLine": 174, "endLine": 179 },
+    "type": "theorem",
+    "title": "Explicit Lower Bound",
+    "content": "t(n) ≥ n/3 for all n ≥ 43632, and 43632 is the best possible threshold.",
+    "significance": "major"
+  },
+  {
+    "id": "summary-391",
+    "proofId": "erdos-391",
+    "range": { "startLine": 269, "endLine": 305 },
+    "type": "summary",
+    "title": "Problem Status Summary",
+    "content": "SOLVED: lim t(n)/n = 1/e with second-order correction -c₀/log n. Explicit bounds: t(n) ≤ n/e (n ≠ 1,2,4), t(n) ≥ n/3 (n ≥ 43632).",
+    "significance": "major"
+  }
+]
