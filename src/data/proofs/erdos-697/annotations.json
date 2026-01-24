@@ -1,1 +1,131 @@
-[]
+[
+  {
+    "id": "ann-697-header",
+    "proofId": "erdos-697",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #697** asks: let δ(m,α) be the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α). Does a sharp threshold β exist?\n\n**Answer:** YES, β = 1/log 2 ≈ 1.443 (Hall 1992).\n\n- For α < β: density → 0\n- For α > β: density → 1",
+    "mathContext": "This concerns divisibility by modular residues, a topic in multiplicative number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Density", "Modular arithmetic", "Threshold phenomena"]
+  },
+  {
+    "id": "ann-697-admissible",
+    "proofId": "erdos-697",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "IsAdmissibleDivisor",
+    "content": "A divisor d of n is admissible for (m, α) if:\n- d divides n\n- d > 1\n- d ≡ 1 (mod m)\n- d < exp(m^α)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-697-covered",
+    "proofId": "erdos-697",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "IsCovered",
+    "content": "An integer n is covered if it has at least one admissible divisor for the given (m, α). The density δ(m, α) measures how many integers are covered.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-697-delta",
+    "proofId": "erdos-697",
+    "range": { "startLine": 58, "endLine": 61 },
+    "type": "definition",
+    "title": "delta - The Density Function",
+    "content": "δ(m, α) = lim_{N→∞} (covered integers ≤ N) / N\n\nThis measures the asymptotic proportion of integers divisible by some d ≡ 1 (mod m) in the allowed range.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-697-threshold",
+    "proofId": "erdos-697",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "definition",
+    "title": "HasSharpThreshold",
+    "content": "A sharp threshold β exists if:\n- For all α < β: δ(m, α) → 0 as m → ∞\n- For all α > β: δ(m, α) → 1 as m → ∞\n\nThis captures a phase transition in divisibility.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-697-hallthreshold",
+    "proofId": "erdos-697",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "definition",
+    "title": "hallThreshold = 1/log 2",
+    "content": "The critical threshold β = 1/log 2 ≈ 1.443.\n\nThis value separates the regime where almost no integers are covered from where almost all are covered.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-697-trivial",
+    "proofId": "erdos-697",
+    "range": { "startLine": 85, "endLine": 93 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "For α < 1: δ(m, α) → 0 as m → ∞.\n\nThis is trivial because the number of d ≡ 1 (mod m) with d < exp(m^α) is about exp(m^α)/m = m^{α-1} → 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-697-erdos1979",
+    "proofId": "erdos-697",
+    "range": { "startLine": 99, "endLine": 104 },
+    "type": "theorem",
+    "title": "Erdős α = 1 Claim",
+    "content": "**Erdős (1979):** δ(m, 1) → 0 as m → ∞.\n\nErdős claimed this in his 1979 Astérisque paper but didn't publish a full proof. It was later confirmed by Hall.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-697-hall",
+    "proofId": "erdos-697",
+    "range": { "startLine": 110, "endLine": 120 },
+    "type": "axiom",
+    "title": "Hall's Theorem (1992)",
+    "content": "**Hall's Theorem:**\n\nThe sharp threshold exists and equals β = 1/log 2.\n\n- For α < 1/log 2: lim δ(m, α) = 0\n- For α > 1/log 2: lim δ(m, α) = 1",
+    "mathContext": "Published in J. Number Theory (1992): \"On some conjectures of P. Erdős in Astérisque I\"",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-697-threshold-proof",
+    "proofId": "erdos-697",
+    "range": { "startLine": 122, "endLine": 129 },
+    "type": "theorem",
+    "title": "Threshold is 1/log 2",
+    "content": "Combines Hall's theorem to show the threshold exists and equals exactly 1/log 2 ≈ 1.443.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-697-intuition",
+    "proofId": "erdos-697",
+    "range": { "startLine": 135, "endLine": 149 },
+    "type": "insight",
+    "title": "Why 1/log 2?",
+    "content": "**Intuition:**\n\nThe number of d ≡ 1 (mod m) with d < exp(m^α) is about exp(m^α)/m.\n\nFor coverage, we need this to be ≥ 1, which happens when m^α ≥ log m.\n\nThe precise value 1/log 2 comes from the multiplicative structure of such divisors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-697-example-m2",
+    "proofId": "erdos-697",
+    "range": { "startLine": 181, "endLine": 184 },
+    "type": "theorem",
+    "title": "Example: m = 2",
+    "content": "For m = 2: d ≡ 1 (mod 2) means d is odd.\n\nEvery integer > 1 is divisible by an odd d > 1 (itself if odd, or its odd part if even).\n\nSo δ(2, α) = 1 for all α > 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-697-answer",
+    "proofId": "erdos-697",
+    "range": { "startLine": 209, "endLine": 210 },
+    "type": "theorem",
+    "title": "The Answer is YES",
+    "content": "erdos_697_answer: HasSharpThreshold\n\nThe sharp threshold exists, confirming Erdős's conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-697-summary",
+    "proofId": "erdos-697",
+    "range": { "startLine": 218, "endLine": 231 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #697: SOLVED**\n\n- Question: Does sharp threshold β exist?\n- Answer: YES, β = 1/log 2 ≈ 1.443 (Hall 1992)\n- For α < β: density → 0\n- For α > β: density → 1",
+    "significance": "critical"
+  }
+]

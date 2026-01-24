@@ -1,33 +1,80 @@
 {
   "id": "erdos-697",
-  "title": "Erdős Problem #697",
+  "title": "Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)",
   "slug": "erdos-697",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the density of the set of integers which are divisible by some ... with .... Does there exist some ... such th...",
+  "description": "Let δ(m,α) be the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α). Does a sharp threshold β exist? SOLVED: YES, β = 1/log 2 ≈ 1.443 (Hall 1992).",
   "meta": {
-    "author": "Unknown",
+    "author": "Hall (1992)",
     "sourceUrl": "https://erdosproblems.com/697",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos697Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "modular-arithmetic",
+      "threshold",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 697,
     "erdosUrl": "https://erdosproblems.com/697",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for threshold definition",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential for divisor bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for density convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsAdmissibleDivisor: d | n with d ≡ 1 (mod m), 1 < d < exp(m^α)",
+      "IsCovered: n has an admissible divisor",
+      "delta(m, α): the density function",
+      "HasSharpThreshold: formal statement of threshold existence",
+      "hallThreshold: β = 1/log 2 ≈ 1.443",
+      "trivial_upper_bound: δ → 0 for α < 1",
+      "erdos_alpha_one: δ → 0 for α = 1 (Erdős 1979)",
+      "hall_theorem: complete solution with β = 1/log 2",
+      "erdos_697_answer, erdos_697_threshold: main results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #697 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta(m,\\alpha)$ denote the density of the set of integers which are divisible by some $d\\equiv 1\\pmod{m}$ with $1<d<\\exp(m^\\alpha)$. Does there exist some $\\beta\\in (1,\\infty)$ such that\\[\\lim_{m\\to \\infty}\\delta(m,\\alpha)\\]is $0$ if $\\alpha<\\beta$ and $1$ if $\\alpha>\\beta$?\n\n\n\nIt is trivial that\\[\\delta(m,\\alpha)<\\frac{m^\\alpha+1}{m}\\to 0\\]if $\\alpha <1$, and Erd\\H{o}s claims in \\cite{Er79e} he could prove that the same is true for $\\alpha=1$.\n\nThis was proved in the affirmative with $\\beta=1/\\log 2$ by Hall \\cite{Ha92}.\n\nSee also [696].\n\n\n\n\nReferences\n\n\n[Er79e] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Ast\\'{e}risque (1979), 73-82.\n\n[Ha92] Hall, R. R., On some conjectures of {P}. {E}rd\\H{o}s in {A}st\\'{e}risque. {I}. J. Number Theory (1992), 313--319.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Origins and History**\n\nErdős posed this problem in his 1979 paper \"Some unconventional problems in number theory\" in Astérisque. The question concerns divisibility by numbers d that are congruent to 1 modulo m, a fundamental topic in multiplicative number theory.\n\n**Trivial Bounds**\n\nFor α < 1, a simple counting argument shows δ(m, α) → 0 as m → ∞. Erdős claimed in 1979 that the same holds for α = 1.\n\n**Hall's Resolution (1992)**\n\nR.R. Hall proved in \"On some conjectures of P. Erdős in Astérisque I\" (J. Number Theory, 1992) that the sharp threshold exists at β = 1/log 2 ≈ 1.443.\n\n**Connection to Problem #696**\n\nThis problem is closely related to Erdős Problem #696, which concerns similar questions about divisibility by d ≡ 1 (mod m).",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet δ(m, α) denote the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α).\n\nDoes there exist β ∈ (1, ∞) such that:\n- lim_{m→∞} δ(m, α) = 0 if α < β\n- lim_{m→∞} δ(m, α) = 1 if α > β\n\n**Answer: YES**\n\nThe threshold is β = 1/log 2 ≈ 1.443 (Hall 1992).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Admissible Divisors:** IsAdmissibleDivisor captures d | n, d ≡ 1 (mod m), 1 < d < exp(m^α)\n\n2. **Coverage:** IsCovered defines when n has an admissible divisor\n\n3. **Density:** delta(m, α) is the limiting density\n\n4. **Threshold:** HasSharpThreshold formalizes the existence question\n\n5. **Results:** hallThreshold = 1/log 2, hall_theorem gives the complete answer\n\n6. **Examples:** m = 2 case, large prime case",
+    "keyInsights": [
+      "**Sharp Threshold:** β = 1/log 2 ≈ 1.443 separates density 0 from density 1",
+      "**Trivial Range:** For α < 1, density → 0 by simple counting",
+      "**Critical Exponent:** 1/log 2 arises from multiplicative structure of d ≡ 1 (mod m)",
+      "**Phase Transition:** Sharp jump from 0 to 1 at the threshold",
+      "**Erdős 1979:** Claimed α = 1 gives density 0, confirmed by Hall"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #697 asks whether a sharp threshold β exists for the density of integers divisible by d ≡ 1 (mod m) with 1 < d < exp(m^α). Hall (1992) proved YES, with β = 1/log 2 ≈ 1.443. For α below this threshold, the density → 0; for α above, the density → 1.",
+    "implications": "**Connections**\n\n1. **Multiplicative Number Theory:** Understanding divisibility by constrained divisors\n\n2. **Sieve Methods:** The threshold arises from sieve-theoretic considerations\n\n3. **Problem #696:** Related question about similar divisibility\n\n4. **Density Arguments:** Sharp phase transitions in number-theoretic densities",
+    "openQuestions": [
+      "Exact behavior at α = 1/log 2?",
+      "Rate of convergence to 0 or 1?",
+      "Generalizations to other congruence conditions?",
+      "Higher-order asymptotics near the threshold?"
+    ]
   }
 }
