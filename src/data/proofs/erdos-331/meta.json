@@ -1,33 +1,80 @@
 {
   "id": "erdos-331",
-  "title": "Erdős Problem #331",
+  "title": "Erdős Problem #331: Common Differences in Dense Sets",
   "slug": "erdos-331",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... such that for all large ...\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg N^{1/2}\\]and\\[\\lvert B\\cap \\{1,\\ldots,N\\}\\rvert \\g...",
+  "description": "For A, B ⊆ ℕ with |A ∩ {1,...,N}| ≫ N^{1/2} and |B ∩ {1,...,N}| ≫ N^{1/2}, must there be infinitely many common differences a₁-a₂ = b₁-b₂ ≠ 0? DISPROVED by Ruzsa.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ruzsa (counterexample)",
     "sourceUrl": "https://erdosproblems.com/331",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos331Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "density",
+      "counterexample",
+      "binary-representation",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 331,
     "erdosUrl": "https://erdosproblems.com/331",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Intervals for counting function",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for asymptotic density",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets for common differences",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "countingFunction, HasDensityAtLeast, HasSqrtDensity: density definitions",
+      "HasCommonDifference, commonDifferences: common difference predicates",
+      "HasInfinitelyManyCommonDifferences: infinitude condition",
+      "ErdosConjecture331: formal statement of the conjecture",
+      "evenBinaryPositions, oddBinaryPositions: Ruzsa's sets",
+      "ruzsaA, ruzsaB: the counterexample sets",
+      "ruzsa_unique_representation: key property of the construction",
+      "ruzsa_no_common_differences, ruzsa_counterexample: disproof",
+      "erdos_331_disproved, erdos_331_main: main theorems",
+      "RuzsaVariant: open variant with exact asymptotics"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #331 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B\\subseteq \\mathbb{N}$ such that for all large $N$\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg N^{1/2}\\]and\\[\\lvert B\\cap \\{1,\\ldots,N\\}\\rvert \\gg N^{1/2}.\\]Is it true that there are infinitely many solutions to $a_1-a_2=b_1-b_2\\neq 0$ with $a_1,a_2\\in A$ and $b_1,b_2\\in B$?\n\n\n\nRuzsa has observed that there is a simple counterexample: take $A$ to be the set of numbers whose binary representation has only non-zero digits in even places, and $B$ similarly but with non-zero digits only in odd places. It is easy to see $A$ and $B$ both grow like $\\gg N^{1/2}$ and yet for any $n\\geq 1$ there is exactly one solution to $n=a+b$ with $a\\in A$ and $b\\in B$.\n\nRuzsa suggests that a non-trivial variant of this problem arises if one imposes the stronger condition that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\sim c_AN^{1/2}\\]for some constant $c_A>0$ as $N\\to \\infty$, and similarly for $B$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #331 (Common Differences in Dense Sets)**\n\n**Origin:**\nErdős and Graham (1980) asked whether sets A, B ⊆ ℕ with density ≫ N^{1/2} must have infinitely many common differences: solutions to a₁ - a₂ = b₁ - b₂ ≠ 0.\n\n**Ruzsa's Counterexample:**\nImre Ruzsa provided an elegant counterexample using binary representations:\n- A = numbers with nonzero binary digits only in even positions (0, 2, 4, ...)\n- B = numbers with nonzero binary digits only in odd positions (1, 3, 5, ...)\n\nBoth sets have density exactly ~ c·N^{1/2}, but every positive integer n has a UNIQUE representation n = a + b with a ∈ A and b ∈ B. This forces the set of common differences to be empty.\n\n**Significance:**\nThe threshold N^{1/2} is critical: for larger density, common differences are guaranteed.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet A, B ⊆ ℕ such that for all large N:\n- |A ∩ {1,...,N}| ≫ N^{1/2}\n- |B ∩ {1,...,N}| ≫ N^{1/2}\n\n**Question:** Must there be infinitely many solutions to a₁ - a₂ = b₁ - b₂ ≠ 0?\n\n**Answer: NO (DISPROVED)**\n\nRuzsa constructed sets with the required density but NO common differences.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Density Definitions:** countingFunction, HasDensityAtLeast, HasSqrtDensity\n\n2. **Common Differences:** HasCommonDifference, commonDifferences, HasInfinitelyManyCommonDifferences\n\n3. **Conjecture:** ErdosConjecture331 formal statement\n\n4. **Ruzsa's Construction:** evenBinaryPositions, oddBinaryPositions, ruzsaA, ruzsaB\n\n5. **Key Properties:** ruzsaA_has_sqrt_density, ruzsaB_has_sqrt_density, ruzsa_unique_representation\n\n6. **Disproof:** ruzsa_no_common_differences, ruzsa_counterexample, erdos_331_disproved\n\n7. **Open Variant:** RuzsaVariant with exact asymptotics",
+    "keyInsights": [
+      "**Binary Representation:** Separating even/odd bit positions creates orthogonal sets",
+      "**Unique Representation:** Every n = a + b uniquely forces no common differences",
+      "**Critical Threshold:** N^{1/2} is the boundary for this phenomenon",
+      "**Ruzsa's Variant:** With exact asymptotics |A| ~ c·N^{1/2}, the question remains open",
+      "**Sparse Difference Sets:** Both A - A and B - B have density only N^{1/2}"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #331 asked whether sets A, B ⊆ ℕ with density ≫ N^{1/2} must have infinitely many common differences. Ruzsa provided a counterexample using binary representations: A has nonzero digits only in even positions, B in odd positions. The answer is NO.",
+    "implications": "**Connections**\n\n1. **Additive Combinatorics:** Shows density alone doesn't guarantee common structure\n\n2. **Binary Representations:** Orthogonal digit positions create independent sets\n\n3. **Threshold Phenomena:** Critical density N^{1/2} separates behaviors\n\n4. **Unique Representation:** The key is unique sums, not just density",
+    "openQuestions": [
+      "Does the stronger condition |A| ~ c·N^{1/2} (exact asymptotic) force common differences?",
+      "What is the minimum density that guarantees infinitely many common differences?",
+      "Are there other constructions with different properties?",
+      "What happens for three or more sets?"
+    ]
   }
 }

@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-331-counting",
+    "proofId": "erdos-331",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "countingFunction",
+    "content": "|A ∩ {1,...,N}| the counting function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-density",
+    "proofId": "erdos-331",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "definition",
+    "title": "HasDensityAtLeast",
+    "content": "Set has density ≥ c·N^α.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-sqrtdensity",
+    "proofId": "erdos-331",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "HasSqrtDensity",
+    "content": "Density ≫ N^{1/2}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-commondiff",
+    "proofId": "erdos-331",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "definition",
+    "title": "HasCommonDifference",
+    "content": "a₁ - a₂ = b₁ - b₂ ≠ 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-infinitelymany",
+    "proofId": "erdos-331",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "definition",
+    "title": "HasInfinitelyManyCommonDifferences",
+    "content": "Infinitely many common differences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-conjecture",
+    "proofId": "erdos-331",
+    "range": { "startLine": 78, "endLine": 83 },
+    "type": "definition",
+    "title": "ErdosConjecture331",
+    "content": "Density ≫ N^{1/2} implies infinitely many common differences?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-evenpos",
+    "proofId": "erdos-331",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "definition",
+    "title": "evenBinaryPositions",
+    "content": "Binary digits only in even positions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-oddpos",
+    "proofId": "erdos-331",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "definition",
+    "title": "oddBinaryPositions",
+    "content": "Binary digits only in odd positions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-ruzsaa",
+    "proofId": "erdos-331",
+    "range": { "startLine": 99, "endLine": 100 },
+    "type": "definition",
+    "title": "ruzsaA",
+    "content": "Ruzsa's set A: even positions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-ruzsab",
+    "proofId": "erdos-331",
+    "range": { "startLine": 102, "endLine": 103 },
+    "type": "definition",
+    "title": "ruzsaB",
+    "content": "Ruzsa's set B: odd positions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-adensity",
+    "proofId": "erdos-331",
+    "range": { "startLine": 105, "endLine": 106 },
+    "type": "theorem",
+    "title": "ruzsaA_has_sqrt_density",
+    "content": "A has density ≫ N^{1/2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-bdensity",
+    "proofId": "erdos-331",
+    "range": { "startLine": 108, "endLine": 109 },
+    "type": "theorem",
+    "title": "ruzsaB_has_sqrt_density",
+    "content": "B has density ≫ N^{1/2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-unique",
+    "proofId": "erdos-331",
+    "range": { "startLine": 111, "endLine": 114 },
+    "type": "theorem",
+    "title": "ruzsa_unique_representation",
+    "content": "Every n = a + b has unique representation.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-nocommon",
+    "proofId": "erdos-331",
+    "range": { "startLine": 120, "endLine": 124 },
+    "type": "theorem",
+    "title": "ruzsa_no_common_differences",
+    "content": "Ruzsa's sets have NO common differences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-counterexample",
+    "proofId": "erdos-331",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "theorem",
+    "title": "ruzsa_counterexample",
+    "content": "Ruzsa's sets disprove the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-disproved",
+    "proofId": "erdos-331",
+    "range": { "startLine": 136, "endLine": 141 },
+    "type": "theorem",
+    "title": "erdos_331_disproved",
+    "content": "Conjecture FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-variant",
+    "proofId": "erdos-331",
+    "range": { "startLine": 166, "endLine": 171 },
+    "type": "definition",
+    "title": "RuzsaVariant",
+    "content": "Stronger variant with exact asymptotics.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-largerdensity",
+    "proofId": "erdos-331",
+    "range": { "startLine": 200, "endLine": 203 },
+    "type": "theorem",
+    "title": "larger_density_common_differences",
+    "content": "Density > N^{1/2} guarantees common differences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-331-main",
+    "proofId": "erdos-331",
+    "range": { "startLine": 230, "endLine": 230 },
+    "type": "theorem",
+    "title": "erdos_331",
+    "content": "Main theorem: conjecture DISPROVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-331-ruzsa",
+    "proofId": "erdos-331",
+    "range": { "startLine": 235, "endLine": 239 },
+    "type": "theorem",
+    "title": "erdos_331_ruzsa",
+    "content": "Ruzsa provided the counterexample.",
+    "significance": "critical"
+  }
+]
