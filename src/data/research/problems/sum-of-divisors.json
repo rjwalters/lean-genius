@@ -1,8 +1,8 @@
 {
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
-  "phase": "NEW",
-  "status": "blocked",
+  "phase": "SURVEYED",
+  "status": "skipped",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-01T05:32:39.478Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-01-24T22:30:00Z",
+    "iteration": 2,
+    "focus": "Verified coverage by PerfectNumbers.lean",
+    "blockers": ["Main open problem (odd perfect numbers) is famously unsolved for 2000+ years"],
+    "nextAction": "No further action needed - problem appropriately marked skipped.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Open for 2000+ years!",
+    "progressSummary": "SKIPPED: Covered by PerfectNumbers.lean (Euclid-Euler theorem). Odd perfect numbers remain OPEN for 2000+ years.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "PerfectNumbers.lean contains complete Euclid-Euler characterization via Mathlib",
+      "Uses Archive.Wiedijk100Theorems.PerfectNumbers for main proofs",
+      "Examples verified for 6, 28, 496, 8128",
+      "No tractable extension path - odd perfect numbers are OPEN"
+    ],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
       "`Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors"

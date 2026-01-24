@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
+    "progressSummary": "PROGRESS: Proved NPC_in_P_implies_P_eq_NP theorem (removed axiom). Added PolyReduction output size bounds.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -71,6 +71,21 @@
         "name": "all_barriers_constrain_proofs",
         "description": "Combined constraint",
         "proven": true
+      },
+      {
+        "name": "poly_reduce_in_P",
+        "description": "Key lemma: if A ≤ₚ B and B ∈ P, then A ∈ P",
+        "proven": true
+      },
+      {
+        "name": "poly_reduce_P_preserved",
+        "description": "Corollary using Nonempty wrapper",
+        "proven": true
+      },
+      {
+        "name": "NPC_in_P_implies_P_eq_NP (upgraded)",
+        "description": "Removed axiom - now proved from poly_reduce_P_preserved",
+        "proven": true
       }
     ],
     "insights": [
@@ -81,7 +96,9 @@
       "natural_proof_breaks_crypto",
       "relativization_insight",
       "P_subset_NP",
-      "all_barriers_constrain_proofs"
+      "all_barriers_constrain_proofs",
+      "PolyReduction needs output size bounds for proper composition",
+      "Removed NPC_in_P_implies_P_eq_NP axiom by proving poly_reduce_P_preserved"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
