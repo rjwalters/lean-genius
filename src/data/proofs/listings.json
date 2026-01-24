@@ -11177,17 +11177,24 @@
   },
   {
     "id": "erdos-669",
-    "title": "Erdős Problem #669",
+    "title": "Erdős Problem #669: k-Point Lines - Exact and At-Least Counts",
     "slug": "erdos-669",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... points in ... there exist at most ... many distinct lines passing through at least ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate f_k(n) (exactly k points) and F_k(n) (at least k points). For k=3, the Orchard Problem: f_3(n) = F_3(n) = n²/6 - O(n) (Burr-Grünbaum-Sloane 1974). SOLVED for k=3.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "orchard-problem",
+      "point-line",
+      "incidences",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 669,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 14
   },
   {
     "id": "erdos-67",
