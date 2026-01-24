@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-169-header",
+    "proofId": "erdos-169",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #169: Define f(k) as the supremum of harmonic sums ∑ 1/n over sets A of positive integers lacking k-term arithmetic progressions. The problem asks to estimate f(k) and whether f(k)/log W(k) → ∞, where W(k) is the van der Waerden number.",
+    "mathContext": "f(k) = sup{∑_{n ∈ A} 1/n : A is k-AP-free}",
+    "significance": "critical",
+    "relatedConcepts": ["additive-combinatorics", "arithmetic-progressions", "harmonic-sums"]
+  },
+  {
+    "id": "ann-169-ap-def",
+    "proofId": "erdos-169",
+    "range": { "startLine": 44, "endLine": 60 },
+    "type": "definition",
+    "title": "Arithmetic Progressions",
+    "content": "A k-term arithmetic progression is a sequence a, a+d, a+2d, ..., a+(k-1)d with positive common difference d. A set is AP-free (for parameter k) if it contains no such k-term progression. Famous examples: {1,2,4,5,10,11,13,14,...} avoids 3-term APs.",
+    "mathContext": "IsArithmeticProgression(S, k) := S = {a + i·d : 0 ≤ i < k}",
+    "significance": "critical",
+    "relatedConcepts": ["szemerédi-theorem", "van-der-waerden"]
+  },
+  {
+    "id": "ann-169-harmonic",
+    "proofId": "erdos-169",
+    "range": { "startLine": 62, "endLine": 78 },
+    "type": "definition",
+    "title": "Harmonic Sum Function f(k)",
+    "content": "The function f(k) measures the maximum 'weight' of a k-AP-free set, where weight is the sum of reciprocals. Since any finite set of integers has finite harmonic sum, f(k) is a finite supremum over finite approximations. The question is: how fast does f(k) grow?",
+    "mathContext": "f(k) = sup{∑ 1/n : A ⊆ ℕ is k-AP-free}",
+    "significance": "critical",
+    "relatedConcepts": ["harmonic-series", "supremum"]
+  },
+  {
+    "id": "ann-169-vdw",
+    "proofId": "erdos-169",
+    "range": { "startLine": 80, "endLine": 99 },
+    "type": "definition",
+    "title": "Van der Waerden Numbers",
+    "content": "W(k) is the van der Waerden number: the smallest n such that any 2-coloring of {1,...,n} contains a monochromatic k-term AP. These numbers grow extremely fast—W(3) = 9, W(4) = 35, but W(5) is already huge. The ratio f(k)/log W(k) compares harmonic growth to this tower-like growth.",
+    "mathContext": "W(k) = min{n : every 2-coloring of [n] has monochromatic k-AP}",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-theory", "coloring"]
+  },
+  {
+    "id": "ann-169-berlekamp",
+    "proofId": "erdos-169",
+    "range": { "startLine": 101, "endLine": 120 },
+    "type": "theorem",
+    "title": "Berlekamp's Lower Bound (1968)",
+    "content": "Berlekamp proved f(k) ≥ (log 2 / 2)·k, the first non-trivial lower bound. His construction uses integers whose binary representation has at most ⌊k/2⌋ ones. Such sets avoid k-term APs because APs require 'balanced' digit patterns, and the harmonic sum of restricted-digit numbers is computable.",
+    "mathContext": "f(k) ≥ (ln 2 / 2) · k ≈ 0.347 · k",
+    "significance": "key",
+    "relatedConcepts": ["digit-restrictions", "construction"]
+  },
+  {
+    "id": "ann-169-gerver",
+    "proofId": "erdos-169",
+    "range": { "startLine": 122, "endLine": 141 },
+    "type": "theorem",
+    "title": "Gerver's Improvement (1977)",
+    "content": "Gerver substantially improved Berlekamp's bound to f(k) ≥ (1-o(1))k log k. This shows superlinear growth in k. Gerver also proved that Problem #3 (whether all f(k) are finite) is equivalent to the finiteness of f(k) for each individual k—a deep structural observation.",
+    "mathContext": "f(k) ≥ (1-o(1)) k log k",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic-bounds", "equivalence"]
+  },
+  {
+    "id": "ann-169-ratio",
+    "proofId": "erdos-169",
+    "range": { "startLine": 143, "endLine": 164 },
+    "type": "theorem",
+    "title": "The Ratio Question",
+    "content": "The trivial bound f(k)/log W(k) ≥ 1/2 follows from basic properties. Erdős asks: can we do better? Specifically, does this ratio tend to infinity? Even improving 1/2 to any constant > 1/2 remains open. This is the heart of Problem #169.",
+    "mathContext": "Question: lim_{k→∞} f(k)/log W(k) = ∞?",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "growth-rate"]
+  },
+  {
+    "id": "ann-169-records",
+    "proofId": "erdos-169",
+    "range": { "startLine": 166, "endLine": 180 },
+    "type": "insight",
+    "title": "Computational Records",
+    "content": "Explicit computations give lower bounds for small k: Wróblewski (1984) showed f(3) ≥ 3.00849 by constructing 3-AP-free sets with large harmonic sum. Walker (2025) proved f(4) ≥ 4.43975. These computations inform our understanding of f(k)'s behavior.",
+    "mathContext": "f(3) ≥ 3.00849, f(4) ≥ 4.43975",
+    "significance": "key",
+    "relatedConcepts": ["computation", "explicit-bounds"]
+  },
+  {
+    "id": "ann-169-kempner",
+    "proofId": "erdos-169",
+    "range": { "startLine": 182, "endLine": 203 },
+    "type": "theorem",
+    "title": "Walker's Kempner Characterization (2025)",
+    "content": "Walker proved a structural result: optimal AP-free sets for harmonic sum can be approximated by Kempner sets—integers whose base-b representation uses only digits from a fixed subset S ⊆ {0,...,b-1}. This reduces an infinite optimization to a more tractable class of sets.",
+    "mathContext": "∀ε>0, ∃ Kempner set A: A is k-AP-free ∧ ∑ 1/n ≥ f(k) - ε",
+    "significance": "key",
+    "relatedConcepts": ["kempner-sets", "digit-restrictions", "optimization"]
+  },
+  {
+    "id": "ann-169-properties",
+    "proofId": "erdos-169",
+    "range": { "startLine": 205, "endLine": 227 },
+    "type": "theorem",
+    "title": "Basic Properties of f(k)",
+    "content": "The function f has natural properties: f(k) is monotonically decreasing in k (avoiding longer APs is more restrictive), and f(k) > 0 for all k ≥ 3 (non-trivial AP-free sets always exist). Even the singleton {1} is k-AP-free for k ≥ 2.",
+    "mathContext": "k₁ ≤ k₂ → f(k₂) ≤ f(k₁), f(k) > 0 for k ≥ 3",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "positivity"]
+  },
+  {
+    "id": "ann-169-related",
+    "proofId": "erdos-169",
+    "range": { "startLine": 229, "endLine": 249 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "Problem #3 asks whether f(k) is finite for all k—Gerver showed this is equivalent to certain structural questions. Problem #170 is another AP-related question. OEIS A005346 counts 3-AP-free subsets of {1,...,n}, providing computational data related to this problem.",
+    "mathContext": "Connections to Problem #3, #170, OEIS A005346",
+    "significance": "supporting",
+    "relatedConcepts": ["problem-cluster", "oeis"]
+  },
+  {
+    "id": "ann-169-summary",
+    "proofId": "erdos-169",
+    "range": { "startLine": 251, "endLine": 291 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "Erdős Problem #169 remains OPEN. We know: (1) f(k) ≥ (1-o(1))k log k (Gerver), (2) f(k)/log W(k) ≥ 1/2 trivially, (3) improving 1/2 is open, (4) optimal sets are approximable by Kempner sets (Walker). The core question—whether f(k)/log W(k) → ∞—is unresolved.",
+    "mathContext": "Status: OPEN. Known: f(k) ~ k log k lower bound",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "status-summary"]
+  }
+]

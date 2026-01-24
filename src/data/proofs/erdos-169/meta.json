@@ -1,33 +1,99 @@
 {
   "id": "erdos-169",
-  "title": "Erdős Problem #169",
+  "title": "Erdős Problem #169: Harmonic Sum of AP-Free Sets",
   "slug": "erdos-169",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the supremum of ... as ... ranges over all sets of positive integers which do not contain a ...-term arith...",
+  "description": "For k ≥ 3, estimate f(k), the supremum of ∑ 1/n over sets lacking k-term arithmetic progressions. Is lim f(k)/log W(k) = ∞?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/169",
-    "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos169Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "additive-combinatorics", "arithmetic-progressions", "harmonic-sums", "van-der-waerden"],
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 169,
     "erdosUrl": "https://erdosproblems.com/169",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": ["Data.Nat.Basic", "Data.Real.Basic", "Data.Finset.Basic", "Algebra.BigOperators.Group.Finset.Basic"],
+    "originalContributions": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #169 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $f(k)$ be the supremum of $\\sum_{n\\in A}\\frac{1}{n}$ as $A$ ranges over all sets of positive integers which do not contain a $k$-term arithmetic progression. Estimate $f(k)$.\n\nIs\\[\\lim_{k\\to \\infty}\\frac{f(k)}{\\log W(k)}=\\infty\\]where $W(k)$ is the van der Waerden number?\n\n\n\nBerlekamp \\cite{Be68} proved $f(k) \\geq \\frac{\\log 2}{2}k$. Gerver \\cite{Ge77} proved\\[f(k) \\geq (1-o(1))k\\log k.\\]It is trivial that\\[\\frac{f(k)}{\\log W(k)}\\geq \\frac{1}{2},\\]but improving the right-hand side to any constant $>1/2$ is open.\n\nGerver also proved (see the comments for an alternative argument of Tao) that [3] is equivalent to $f(k)$ being finite for all $k$.\n\nThe current record for $f(3)$ is $f(3)\\geq 3.00849$, due to Wr\\'{o}blewski \\cite{Wr84}. Walker \\cite{Wa25} proved $f(4)\\geq 4.43975$.\n\nWalker \\cite{Wa25} has shown that it suffices to consider Kempner sets (that is, sets of integers defined as all those whose base $b$ digits are contained in some $S\\subset \\{0,\\ldots,b-1\\}$ for fixed $b$ and $S$), in the sense that for any $k\\geq 3$ and $\\epsilon>0$ there is a Kempner set $A$ lacking $k$-term arithmetic progressions such that\\[\\sum_{n\\in A}\\frac{1}{n}\\geq f(k)-\\epsilon.\\]\n\n\n\n\nReferences\n\n\n[Be68] Berlekamp, E. R., A construction for partitions which avoid long arithmetic progressions. Canad. Math. Bull. (1968), 409-414.\n\n[Ge77] Gerver, Joseph L., The sum of the reciprocals of a set of integers with no\narithmetic progression of {$k$} terms. Proc. Amer. Math. Soc. (1977), 211--214.\n\n[Wa25] A. Walker, Integer sets of large harmonic sum which avoid long arithmetic progressions. arXiv:2203.06045 (2025).\n\n[Wr84] No reference found.\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #169 connects two fundamental areas of combinatorics: the study of arithmetic-progression-free sets and the analysis of harmonic sums. The problem asks: how large can the sum of reciprocals be for a set of integers that avoids k-term arithmetic progressions?\n\nThe study of AP-free sets began with van der Waerden's theorem (1927), which guarantees that any finite coloring of integers contains arbitrarily long monochromatic APs. This led to the definition of van der Waerden numbers W(k), which grow extremely fast. Erdős's problem asks whether the harmonic sum function f(k) can grow faster than log W(k).\n\nBerlekamp (1968) gave the first lower bound f(k) ≥ (log 2 / 2)k using digit-based constructions. Gerver (1977) improved this to f(k) ≥ (1-o(1))k log k, showing superlinear growth. Recent work by Walker (2025) connected optimal AP-free sets to Kempner sets—integers defined by digit restrictions.",
+    "problemStatement": "Let $k \\geq 3$. Define $f(k) = \\sup \\left\\{ \\sum_{n \\in A} \\frac{1}{n} : A \\text{ lacks } k\\text{-term APs} \\right\\}$.\n\n**Questions:**\n1. Estimate $f(k)$.\n2. Is $\\lim_{k \\to \\infty} \\frac{f(k)}{\\log W(k)} = \\infty$, where $W(k)$ is the van der Waerden number?\n\n**Status:** OPEN\n\n**Known bounds:**\n- Berlekamp (1968): $f(k) \\geq \\frac{\\log 2}{2} \\cdot k$\n- Gerver (1977): $f(k) \\geq (1-o(1)) k \\log k$\n- Trivially: $\\frac{f(k)}{\\log W(k)} \\geq \\frac{1}{2}$\n- Computational: $f(3) \\geq 3.00849$, $f(4) \\geq 4.43975$",
+    "proofStrategy": "The Lean formalization defines arithmetic progressions, AP-free sets, and the function f(k) as a supremum of harmonic sums. Key results are axiomatized including Berlekamp's and Gerver's lower bounds, the trivial ratio bound, and Walker's recent characterization using Kempner sets. The problem remains open—the main question of whether f(k)/log W(k) → ∞ is unresolved.",
+    "keyInsights": [
+      "**Harmonic sum function:** f(k) measures the maximum 'weight' of integers avoiding k-term APs, where weight is the reciprocal sum",
+      "**Van der Waerden connection:** The ratio f(k)/log W(k) compares harmonic growth to the extremely fast-growing W(k)",
+      "**Berlekamp construction:** Digit-restricted integers (limited ones in binary) give AP-free sets with linear harmonic sum",
+      "**Gerver improvement:** Refined constructions show f(k) grows at least as k log k, faster than linear",
+      "**Walker's Kempner sufficiency:** Optimal AP-free sets can be approximated by integers with restricted base-b digits"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Arithmetic Progressions",
+      "startLine": 44,
+      "endLine": 60,
+      "summary": "Definitions of k-term arithmetic progressions and AP-free sets"
+    },
+    {
+      "title": "Harmonic Sum Function",
+      "startLine": 62,
+      "endLine": 78,
+      "summary": "Definition of f(k) as supremum of harmonic sums over AP-free sets"
+    },
+    {
+      "title": "Van der Waerden Numbers",
+      "startLine": 80,
+      "endLine": 99,
+      "summary": "Definition of W(k) and van der Waerden's theorem"
+    },
+    {
+      "title": "Berlekamp's Lower Bound",
+      "startLine": 101,
+      "endLine": 120,
+      "summary": "f(k) ≥ (log 2 / 2) · k from 1968"
+    },
+    {
+      "title": "Gerver's Improvement",
+      "startLine": 122,
+      "endLine": 141,
+      "summary": "f(k) ≥ (1-o(1)) k log k from 1977"
+    },
+    {
+      "title": "The Ratio Question",
+      "startLine": 143,
+      "endLine": 164,
+      "summary": "Whether f(k)/log W(k) → ∞ remains open"
+    },
+    {
+      "title": "Computational Records",
+      "startLine": 166,
+      "endLine": 180,
+      "summary": "Best known values for f(3) and f(4)"
+    },
+    {
+      "title": "Walker's Results",
+      "startLine": 182,
+      "endLine": 203,
+      "summary": "Kempner sets suffice for optimal AP-free harmonic sums"
+    },
+    {
+      "title": "Summary",
+      "startLine": 251,
+      "endLine": 291,
+      "summary": "Complete summary of what's known and what's open"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #169 remains open. We know f(k) ≥ (1-o(1))k log k (Gerver) and f(k)/log W(k) ≥ 1/2, but whether this ratio tends to infinity is unknown.",
+    "implications": "Resolving this problem would reveal deep connections between additive combinatorics and harmonic analysis, potentially impacting our understanding of Szemerédi-type theorems.",
+    "openQuestions": [
+      "Is lim f(k)/log W(k) = ∞?",
+      "Can the constant 1/2 in the ratio bound be improved?",
+      "What is the exact growth rate of f(k)?",
+      "Is there a closed-form expression or better asymptotic for f(k)?"
+    ]
   }
 }
