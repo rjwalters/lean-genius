@@ -1,33 +1,79 @@
 {
   "id": "erdos-821",
-  "title": "Erdős Problem #821",
+  "title": "Erdős Problem #821: Large Values of the Euler Phi Preimage Function",
   "slug": "erdos-821",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... such that .... Is it true that, for every ..., there exist infinitely many ... such that\\[g(n...",
+  "description": "Let g(n) count m with φ(m)=n. For every ε>0, are there infinitely many n with g(n) > n^{1-ε}? OPEN: Best known is g(n) > n^{0.71568} (Lichtman 2022).",
   "meta": {
-    "author": "Unknown",
+    "author": "Lichtman (2022, best bound)",
     "sourceUrl": "https://erdosproblems.com/821",
-    "date": "",
-    "status": "pending",
+    "date": "2022",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos821Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "euler-phi",
+      "totient",
+      "smooth-numbers",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 821,
     "erdosUrl": "https://erdosproblems.com/821",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.NumberTheory.EulerPhi.Basic"
+      },
+      {
+        "theorem": "Nat.card",
+        "description": "Cardinality for preimage counting",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for density estimates",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "phi, preimageCount: Euler totient and preimage count",
+      "pillai_theorem: lim sup g(n) = ∞",
+      "erdos_1935: g(n) > n^c for some c > 0",
+      "lichtmanExponent, lichtman_theorem: best known bound 0.71568",
+      "ErdosConjecture821: formal statement g(n) > n^{1-ε}",
+      "IsEpsilonSmooth, SmoothPrimesCondition: smooth primes connection",
+      "smooth_implies_conjecture: reduction to smooth primes",
+      "preimageCount_upper_bound, average_preimageCount: bounds",
+      "erdos_821_partial, erdos_821_best_known: partial results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #821 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ count the number of $m$ such that $\\phi(m)=n$. Is it true that, for every $\\epsilon>0$, there exist infinitely many $n$ such that\\[g(n) > n^{1-\\epsilon}?\\]\n\n\n\nPillai proved that $\\limsup g(n)=\\infty$ and Erd\\H{o}s \\cite{Er35b} proved that there exists some constant $c>0$ such that $g(n) >n^c$ for infinitely many $n$.\n\nThis conjecture would follow if we knew that, for every $\\epsilon>0$, there are $\\gg_\\epsilon \\frac{x}{\\log x}$ many primes $p<x$ such that all prime factors of $p-1$ are $<p^\\epsilon$.\n\nThe best known bound is that there are infinitely many $n$ such that\\[g(n) > n^{0.71568\\cdots},\\]obtained by Lichtman \\cite{Li22} as a consequence of proving that there are $\\geq \\frac{x}{(\\log x)^{O(1)}}$ many primes $p\\leq x$ such that all prime factors of $p-1$ are $\\leq x^{0.2843\\cdots}$ (which improves a number of previous exponents, most recently Baker and Harman \\cite{BaHa98}).\n\nThe average size of $g(n)$ was investigated by Luca and Pollack \\cite{LuPo11}.\n\nSee also [416].\n\n\n\n\n\n\nReferences\n\n\n[BaHa98] Baker, R. C. and Harman, G., Shifted primes without large prime factors. Acta Arith. (1998), 331--361.\n\n[Er35b] Erd\\H{o}s, P., On the normal number of prime factors of $p-1$ and some related problems concerning Euler's $\\varphi$-function. Quart. J. Math. (1935), 205-213.\n\n[Li22] J. D. Lichtman, Primes in arithmetic progressions to large moduli and shifted primes without large prime factors. arXiv:2211.09641 (2022).\n\n[LuPo11] Luca, Florian and Pollack, Paul, An arithmetic function arising from {C}armichael's conjecture. J. Th\\'{e}or. Nombres Bordeaux (2011), 697--714.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #821 (Euler Phi Preimage Function)**\n\n**Origin:**\nLet g(n) count the number of m such that φ(m) = n. Erdős asked whether g(n) > n^{1-ε} for infinitely many n, for every ε > 0.\n\n**Progress:**\n- Pillai: Proved lim sup g(n) = ∞\n- Erdős (1935): Showed g(n) > n^c for some c > 0 infinitely often\n- Baker-Harman (1998): Improved bounds\n- Lichtman (2022): Current best: g(n) > n^{0.71568...} infinitely often\n\n**Connection:**\nThe conjecture would follow if there are ≫ x/log x primes p < x with all prime factors of p-1 less than p^ε (smooth shifted primes).\n\n**Status:**\nThe full conjecture remains OPEN. The gap between the best known exponent 0.71568 and the target 1 is significant.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet g(n) = |{m : φ(m) = n}| count preimages of n under Euler's totient.\n\n**Question:** For every ε > 0, are there infinitely many n with g(n) > n^{1-ε}?\n\n**Status: OPEN**\n\n- Known: g(n) > n^{0.71568} infinitely often (Lichtman 2022)\n- Conjectured: g(n) > n^{1-ε} for all ε > 0\n- Gap: exponent 0.71568 vs target 1",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** phi (Euler totient), preimageCount (g(n))\n\n2. **Known Results:** pillai_theorem, erdos_1935, lichtman_theorem\n\n3. **Main Conjecture:** ErdosConjecture821 formal statement\n\n4. **Smooth Primes:** IsEpsilonSmooth, SmoothPrimesCondition\n\n5. **Reduction:** smooth_implies_conjecture showing the connection\n\n6. **Bounds:** Upper and average bounds on g(n)\n\n7. **Partial Results:** erdos_821_partial, erdos_821_best_known",
+    "keyInsights": [
+      "**Preimage Function:** g(n) = |{m : φ(m) = n}| counts totient preimages",
+      "**Best Bound:** Lichtman (2022): g(n) > n^{0.71568} infinitely often",
+      "**Smooth Primes:** Conjecture follows from density of primes with smooth p-1",
+      "**Gap to Close:** From 0.71568 to arbitrarily close to 1",
+      "**Related #416:** Connected to shifted primes problems"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #821 asks whether g(n) > n^{1-ε} for infinitely many n, where g(n) counts preimages of n under Euler's totient. The problem is OPEN. Lichtman (2022) proved the best known bound g(n) > n^{0.71568} infinitely often. The conjecture would follow from sufficient density of primes with smooth p-1.",
+    "implications": "**Connections**\n\n1. **Euler's Totient:** Deep properties of φ preimages\n\n2. **Smooth Numbers:** Primes p with smooth p-1 are key\n\n3. **Carmichael's Conjecture:** Related: no unique preimages of φ\n\n4. **Problem #416:** Connected shifted primes questions",
+    "openQuestions": [
+      "Can the exponent 0.71568 be improved toward 1?",
+      "Is there a barrier at some specific exponent?",
+      "What is the exact density of primes with ε-smooth p-1?",
+      "Can the connection to smooth primes be made unconditional?"
+    ]
   }
 }

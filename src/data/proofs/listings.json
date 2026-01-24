@@ -13562,17 +13562,24 @@
   },
   {
     "id": "erdos-821",
-    "title": "Erdős Problem #821",
+    "title": "Erdős Problem #821: Large Values of the Euler Phi Preimage Function",
     "slug": "erdos-821",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... such that .... Is it true that, for every ..., there exist infinitely many ... such that\\[g(n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(n) count m with φ(m)=n. For every ε>0, are there infinitely many n with g(n) > n^{1-ε}? OPEN: Best known is g(n) > n^{0.71568} (Lichtman 2022).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "euler-phi",
+      "totient",
+      "smooth-numbers",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 821,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-822",

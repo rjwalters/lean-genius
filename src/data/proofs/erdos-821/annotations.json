@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-821-phi",
+    "proofId": "erdos-821",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "phi",
+    "content": "Euler's totient function φ(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-821-preimagecount",
+    "proofId": "erdos-821",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "preimageCount",
+    "content": "g(n) = |{m : φ(m) = n}|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-821-pillai",
+    "proofId": "erdos-821",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "theorem",
+    "title": "pillai_theorem",
+    "content": "lim sup g(n) = ∞.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-821-erdos1935",
+    "proofId": "erdos-821",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "theorem",
+    "title": "erdos_1935",
+    "content": "∃ c > 0 with g(n) > n^c infinitely often.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-821-lichtmanexp",
+    "proofId": "erdos-821",
+    "range": { "startLine": 84, "endLine": 85 },
+    "type": "definition",
+    "title": "lichtmanExponent",
+    "content": "0.71568... the current best exponent.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-821-lichtman",
+    "proofId": "erdos-821",
+    "range": { "startLine": 87, "endLine": 90 },
+    "type": "theorem",
+    "title": "lichtman_theorem",
+    "content": "Lichtman 2022: g(n) > n^{0.71568} infinitely.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-821-conjecture",
+    "proofId": "erdos-821",
+    "range": { "startLine": 103, "endLine": 106 },
+    "type": "definition",
+    "title": "ErdosConjecture821",
+    "content": "∀ ε > 0, g(n) > n^{1-ε} infinitely.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-821-smooth",
+    "proofId": "erdos-821",
+    "range": { "startLine": 116, "endLine": 118 },
+    "type": "definition",
+    "title": "IsEpsilonSmooth",
+    "content": "Prime p has ε-smooth p-1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-821-smoothcond",
+    "proofId": "erdos-821",
+    "range": { "startLine": 120, "endLine": 124 },
+    "type": "definition",
+    "title": "SmoothPrimesCondition",
+    "content": "Sufficient smooth primes condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-821-reduction",
+    "proofId": "erdos-821",
+    "range": { "startLine": 126, "endLine": 128 },
+    "type": "theorem",
+    "title": "smooth_implies_conjecture",
+    "content": "Smooth primes ⟹ conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-821-upper",
+    "proofId": "erdos-821",
+    "range": { "startLine": 134, "endLine": 136 },
+    "type": "theorem",
+    "title": "preimageCount_upper_bound",
+    "content": "Upper bound g(n) ≤ n^{1+o(1)}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-821-average",
+    "proofId": "erdos-821",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "theorem",
+    "title": "average_preimageCount",
+    "content": "Average g(n) ≤ C log N.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-821-partial",
+    "proofId": "erdos-821",
+    "range": { "startLine": 208, "endLine": 210 },
+    "type": "theorem",
+    "title": "erdos_821_partial",
+    "content": "Partial result: Lichtman bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-821-open",
+    "proofId": "erdos-821",
+    "range": { "startLine": 212, "endLine": 213 },
+    "type": "definition",
+    "title": "erdos_821_open",
+    "content": "Full conjecture remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-821-best",
+    "proofId": "erdos-821",
+    "range": { "startLine": 215, "endLine": 218 },
+    "type": "theorem",
+    "title": "erdos_821_best_known",
+    "content": "Best known: g(n) > n^{0.71568}.",
+    "significance": "critical"
+  }
+]
