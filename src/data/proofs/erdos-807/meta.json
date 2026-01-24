@@ -1,33 +1,150 @@
 {
   "id": "erdos-807",
-  "title": "Erdős Problem #807",
+  "title": "Erdos Problem #807: Bipartite Decomposition of Random Graphs",
   "slug": "erdos-807",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe bipartition number ... of a graph ... is the smallest number of pairwise edge disjoint complete bipartite graphs whose un...",
+  "description": "Is the bipartition number of a random graph equal to n minus the independence number almost surely? NO, disproved by Alon (2015).",
   "meta": {
-    "author": "Unknown",
+    "author": "Alon (2015 disproof), Alon-Bohman-Huang (2017 improvement)",
     "sourceUrl": "https://erdosproblems.com/807",
-    "date": "",
-    "status": "pending",
+    "date": "2015",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos807Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "bipartite-decomposition",
+      "probabilistic-combinatorics",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 807,
     "erdosUrl": "https://erdosproblems.com/807",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure on a vertex type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Predicate for clique subsets",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite type class",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "independenceNumber definition for SimpleGraph",
+      "CompleteBipartite structure for complete bipartite subgraphs",
+      "BipartiteCover structure for edge-disjoint covers",
+      "bipartitionNumber definition as infimum of cover sizes",
+      "ERW_conjecture formulation of the original question",
+      "alon_2015 axiom: the disproof showing strict inequality",
+      "alon_bohman_huang_2017 axiom: quantitative improvement",
+      "graham_pollak axiom: classical result on complete graphs",
+      "erdos_807 theorem: the main disproof result",
+      "cliqueCoverNumber definition for comparison"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #807 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe bipartition number $\\tau(G)$ of a graph $G$ is the smallest number of pairwise edge disjoint complete bipartite graphs whose union is $G$. The independence number $\\alpha(G)$ is the size of the largest independent subset of $G$.\n\nIs it true that, if $G$ is a random graph on $n$ vertices with edge probability $1/2$, then\\[\\tau(G)=n-\\alpha(G)\\]almost surely?\n\n\n\nAlon \\cite{Al15} showed this is false: in fact almost surely $\\tau(G) \\leq n-\\alpha(G)-1$. Alon, Bohman, and Huang \\cite{ABH17} proved that in fact there is some absolute constant $c>0$ such that almost surely\\[\\tau(G) \\leq n-(1+c)\\alpha(G).\\]\n\n\n\n\nReferences\n\n\n[ABH17] Alon, Noga and Bohman, Tom and Huang, Hao, More on the bipartite decomposition of random graphs. J. Graph Theory (2017), 45-52.\n\n[Al15] Alon, Noga, Bipartite decomposition of random graphs. J. Combin. Theory Ser. B (2015), 220-235.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #807: Bipartite Decomposition**\n\nThis problem concerns the relationship between two fundamental graph parameters: the bipartition number and the independence number.\n\n**Key History:**\n- Katona, Recski, Wormald [KRW88]: Original conjecture formulation\n- Graham-Pollak (1971): Classic result that complete graphs need n-1 complete bipartite subgraphs\n- Alon [Al15] (2015): Disproved the conjecture\n- Alon, Bohman, Huang [ABH17] (2017): Strengthened the disproof\n\n**Mathematical Setting:**\n- tau(G) = bipartition number = minimum edge-disjoint complete bipartite subgraphs covering G\n- alpha(G) = independence number = size of largest independent set\n- G(n, 1/2) = Erdos-Renyi random graph with n vertices and edge probability 1/2\n\nThe conjecture asked whether tau(G) = n - alpha(G) almost surely for random graphs. This seemed plausible given connections to the Graham-Pollak theorem.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nThe bipartition number $\\tau(G)$ is the smallest number of pairwise edge-disjoint complete bipartite graphs whose union is $G$. The independence number $\\alpha(G)$ is the size of the largest independent set.\n\n**Conjecture:** For a random graph $G$ on $n$ vertices with edge probability $1/2$, is it true that $\\tau(G) = n - \\alpha(G)$ almost surely?\n\n**Answer: NO**\n\nAlon (2015) showed: Almost surely $\\tau(G) \\leq n - \\alpha(G) - 1$.\n\nAlon-Bohman-Huang (2017) proved: There exists $c > 0$ such that almost surely $\\tau(G) \\leq n - (1+c)\\alpha(G)$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structures:** Define independence number and bipartition number using SimpleGraph from Mathlib.\n\n2. **Key Definitions:**\n   - CompleteBipartite: structure for complete bipartite subgraphs\n   - BipartiteCover: edge-disjoint collection covering all edges\n   - bipartitionNumber: infimum of cover sizes\n\n3. **Main Results:** Axiomatize Alon's disproof and the Alon-Bohman-Huang improvement.\n\n4. **Why Axioms:** The results require probabilistic analysis of random graphs, concentration inequalities, and sophisticated counting arguments beyond Mathlib's current scope.",
+    "keyInsights": [
+      "**Bipartition Number:** The minimum number of edge-disjoint complete bipartite subgraphs needed to cover all edges of G",
+      "**Independence Number:** The size of the largest set of vertices with no edges between them",
+      "**Graham-Pollak Theorem:** For the complete graph K_n, we have tau(K_n) = n - 1, a foundational result",
+      "**Random Graph Behavior:** For G(n, 1/2), the independence number is typically around 2 log_2(n)",
+      "**The Gap:** The bipartition number is strictly smaller than n - alpha(G), with a multiplicative improvement"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-definitions",
+      "title": "Graph Definitions",
+      "summary": "Independence number, complete bipartite subgraphs, bipartite covers, bipartition number",
+      "startLine": 38,
+      "endLine": 83
+    },
+    {
+      "id": "erw-conjecture",
+      "title": "The ERW Conjecture",
+      "summary": "Original conjecture formulation: tau(G) = n - alpha(G) almost surely",
+      "startLine": 84,
+      "endLine": 98
+    },
+    {
+      "id": "alon-refutation",
+      "title": "Alon's Refutation (2015)",
+      "summary": "Disproof showing tau(G) <= n - alpha(G) - 1 almost surely",
+      "startLine": 99,
+      "endLine": 128
+    },
+    {
+      "id": "alon-bohman-huang",
+      "title": "Alon-Bohman-Huang Improvement (2017)",
+      "summary": "Stronger result: tau(G) <= n - (1+c)alpha(G) for some c > 0",
+      "startLine": 129,
+      "endLine": 147
+    },
+    {
+      "id": "bounds",
+      "title": "Lower and Upper Bounds",
+      "summary": "Graham-Pollak theorem and general bounds",
+      "startLine": 148,
+      "endLine": 167
+    },
+    {
+      "id": "random-graph-properties",
+      "title": "Properties of Random Graphs",
+      "summary": "Expected independence number and bipartition number for G(n, 1/2)",
+      "startLine": 168,
+      "endLine": 187
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_807 theorem and erdos_807_answer summary",
+      "startLine": 188,
+      "endLine": 214
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "summary": "Clique cover number and chromatic number connections",
+      "startLine": 215,
+      "endLine": 235
+    },
+    {
+      "id": "probabilistic-methods",
+      "title": "Probabilistic Methods",
+      "summary": "Techniques used in the proofs: probabilistic method and concentration inequalities",
+      "startLine": 236,
+      "endLine": 260
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #807 asked whether the bipartition number tau(G) equals n - alpha(G) almost surely for random graphs G(n, 1/2). The answer is NO. Alon (2015) showed that almost surely tau(G) <= n - alpha(G) - 1, and Alon-Bohman-Huang (2017) proved the stronger bound tau(G) <= n - (1+c)alpha(G) for some absolute constant c > 0.",
+    "implications": "**Graph-Theoretic Connections**\n\n1. **Bipartite Decomposition:** Understanding the minimum decomposition of graphs into complete bipartite subgraphs\n\n2. **Graham-Pollak Theorem:** The classical result tau(K_n) = n - 1 provides context for the random graph case\n\n3. **Probabilistic Combinatorics:** Random graph theory provides bounds unattainable deterministically\n\n4. **Independence vs Covering:** The gap between n - alpha(G) and tau(G) reveals structural properties of random graphs",
+    "openQuestions": [
+      "What is the optimal constant c in the Alon-Bohman-Huang bound?",
+      "Does the gap persist for other edge probabilities p != 1/2?",
+      "Can the bipartition number be computed efficiently for random graphs?",
+      "What is the typical value of tau(G) - (n - alpha(G)) for random graphs?",
+      "How does the bipartition number relate to other graph decomposition problems?"
+    ]
   }
 }
