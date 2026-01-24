@@ -1,33 +1,82 @@
 {
   "id": "erdos-584",
-  "title": "Erdős Problem #584",
+  "title": "Erdős Problem #584: Cycle-Connected Subgraphs",
   "slug": "erdos-584",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Are there subgraphs ... such that\n{UL}\n{LI}... has ... edges and every tw...",
+  "description": "For a graph G with n vertices and δn² edges, must there exist subgraphs H₁ (≫ δ³n² edges, 6-cycle connected) and H₂ (≫ δ²n² edges, 8-cycle connected)? OPEN - best known: δ⁵ for H₁ (Duke-Erdős-Rödl 1984), δ > n^{-1/5} for H₂ (Fox-Sudakov 2008).",
   "meta": {
-    "author": "Unknown",
+    "author": "Duke-Erdős-Rödl, Fox-Sudakov",
     "sourceUrl": "https://erdosproblems.com/584",
-    "date": "",
-    "status": "pending",
+    "date": "1984-2008",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos584Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycle-connectivity",
+      "extremal-graphs",
+      "subgraphs",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 584,
     "erdosUrl": "https://erdosproblems.com/584",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Graph structures and basic definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for edge counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real powers for density exponents",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Graph structure for n vertices",
+      "edgeCount, density, HasDensity: edge counting",
+      "IsSubgraph: subgraph relation",
+      "Path, IsCycle, OnCommonCycle: cycle definitions",
+      "IsCycleConnected: k-cycle connectivity",
+      "AdjacentEdgesOn4Cycle: adjacent edges on 4-cycles",
+      "HasH1Property, HasH2Property: main properties",
+      "ErdosConjecture584_H1, ErdosConjecture584_H2: formal statements",
+      "duke_erdos_1982, duke_erdos_rodl_1984: H₁ results",
+      "fox_sudakov_2008: H₂ result for δ > n^{-1/5}",
+      "IsSparseRegime, SparseRegimeConjecture: main challenge",
+      "bestKnownExponentH1, targetExponentH1: quantitative bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #584 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with $n$ vertices and $\\delta n^{2}$ edges. Are there subgraphs $H_1,H_2\\subseteq G$ such that\n{UL}\n{LI}$H_1$ has $\\gg \\delta^3n^2$ edges and every two edges in $H_1$ are contained in a cycle of length at most $6$, and furthermore if two edges share a vertex they are on a cycle of length $4$, and\n{LI}$H_2$ has $\\gg \\delta^2n^2$ edges and every two edges in $H_2$ are contained in a cycle of length at most $8$.\n{/UL}\n\n\n\nA problem of Erd\\H{o}s, Duke, and R\\\"{o}dl. Duke and Erd\\H{o}s \\cite{DuEr83}, who proved the first if $n$ is sufficiently large depending on $\\delta$. The real challenge is to prove this when $\\delta=n^{-c}$ for some $c>0$. Duke, Erd\\H{o}s, and R\\\"{o}dl \\cite{DER84} proved the first statement with a $\\delta^5$ in place of a $\\delta^3$.\n\nFox and Sudakov \\cite{FoSu08b} have proved the second statement when $\\delta >n^{-1/5}$.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[DER84] Duke, Richard and Erd\\H{o}s, Paul and R\\\"{o}dl, Vojt\\vEch, More results on subgraphs with many short cycles. Proceedings of the fifteenth Southeastern conference on\ncombinatorics, graph theory and computing (Baton Rouge,\nLa., 1984) (1984), 295-300.\n\n[DuEr83] No reference found.\n\n\n[FoSu08b] Fox, Jacob and Sudakov, Benny, On a problem of Duke-Erd\\H{o}s-R\\\"{o}dl on cycle-connected subgraphs. J. Combin. Theory Ser. B (2008), 1056-1062.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Duke-Erdős Question (1982)**\n\nRichard Duke and Paul Erdős asked in the early 1980s whether dense graphs must contain large subgraphs with strong cycle connectivity properties. Specifically, they sought subgraphs where any two edges lie on a short common cycle.\n\n**Early Results (1984)**\n\nDuke, Erdős, and Rödl proved in 1984 that for graphs with δn² edges, there exists a 6-cycle connected subgraph with δ⁵n² edges. This falls short of the conjectured δ³n² bound.\n\n**Fox-Sudakov Progress (2008)**\n\nJacob Fox and Benny Sudakov proved the H₂ part (8-cycle connectivity with δ²n² edges) when δ > n^{-1/5}. This leaves the sparse regime δ = n^{-c} for larger c as the main open challenge.\n\n**Current Status**\n\nThe full conjecture remains OPEN. The gap between δ⁵ (known) and δ³ (conjectured) for H₁ is significant. The sparse regime where δ = n^{-c} is particularly challenging.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet G be a graph with n vertices and δn² edges.\n\n**Question:** Must there exist subgraphs H₁, H₂ ⊆ G such that:\n\n**H₁:** Has ≫ δ³n² edges and\n- Every two edges are on a cycle of length ≤ 6\n- Adjacent edges are on a 4-cycle\n\n**H₂:** Has ≫ δ²n² edges and\n- Every two edges are on a cycle of length ≤ 8\n\n**Status: OPEN**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structure:** Graph type with edge set, edge count, density\n\n2. **Cycle Definitions:** Path, IsCycle, OnCommonCycle\n\n3. **Connectivity:** IsCycleConnected for k-cycle connectivity\n\n4. **Properties:** HasH1Property (6-cycle + 4-cycle adjacent), HasH2Property (8-cycle)\n\n5. **Conjectures:** ErdosConjecture584_H1 and ErdosConjecture584_H2\n\n6. **Known Results:** duke_erdos_1982, duke_erdos_rodl_1984, fox_sudakov_2008\n\n7. **Main Challenge:** SparseRegimeConjecture for δ = n^{-c}",
+    "keyInsights": [
+      "**Exponent Gap:** Known δ⁵ vs conjectured δ³ for H₁",
+      "**Density Threshold:** H₂ proved only for δ > n^{-1/5}",
+      "**Sparse Regime:** Main challenge is δ = n^{-c}",
+      "**Cycle Connectivity:** Edges on short common cycles",
+      "**Adjacent Edges:** Additional 4-cycle requirement"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #584 asks whether dense graphs must contain large cycle-connected subgraphs. Duke-Erdős-Rödl (1984) proved a weaker δ⁵ bound for H₁, and Fox-Sudakov (2008) proved H₂ for δ > n^{-1/5}. The full conjecture with δ³ for H₁ and the sparse regime remain OPEN.",
+    "implications": "**Connections**\n\n1. **Extremal Graph Theory:** Density vs structure\n\n2. **Regularity Lemma:** Structural decomposition\n\n3. **Random Graphs:** Probabilistic methods\n\n4. **Girth:** Connection to cycle lengths",
+    "openQuestions": [
+      "Can the δ⁵ be improved to δ³ for H₁?",
+      "Can Fox-Sudakov be extended below n^{-1/5}?",
+      "What is the correct exponent in the sparse regime?",
+      "Are there constructions matching the lower bounds?"
+    ]
   }
 }

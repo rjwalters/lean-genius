@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-584-graph",
+    "proofId": "erdos-584",
+    "range": { "startLine": 43, "endLine": 48 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "A simple graph on n vertices with edges, symmetry, and no loops.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-edgecount",
+    "proofId": "erdos-584",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "edgeCount",
+    "content": "Number of edges in a graph (card/2 for undirected).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-584-density",
+    "proofId": "erdos-584",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "density",
+    "content": "Edge density: e(G) / n².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-hasdensity",
+    "proofId": "erdos-584",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "HasDensity",
+    "content": "A graph has density δ if e(G) ≥ δn².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-issubgraph",
+    "proofId": "erdos-584",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "IsSubgraph",
+    "content": "H is a subgraph of G if H.edges ⊆ G.edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-584-path",
+    "proofId": "erdos-584",
+    "range": { "startLine": 72, "endLine": 77 },
+    "type": "definition",
+    "title": "Path",
+    "content": "A path in the graph as a list of consecutive vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-iscycle",
+    "proofId": "erdos-584",
+    "range": { "startLine": 79, "endLine": 83 },
+    "type": "definition",
+    "title": "IsCycle",
+    "content": "A cycle of length k: path with k distinct vertices closing back.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-oncommoncycle",
+    "proofId": "erdos-584",
+    "range": { "startLine": 85, "endLine": 89 },
+    "type": "definition",
+    "title": "OnCommonCycle",
+    "content": "Two edges are on a common cycle of length ≤ k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-iscycleconnected",
+    "proofId": "erdos-584",
+    "range": { "startLine": 91, "endLine": 94 },
+    "type": "definition",
+    "title": "IsCycleConnected",
+    "content": "Every two edges are on a cycle of length ≤ k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-adjacent4cycle",
+    "proofId": "erdos-584",
+    "range": { "startLine": 96, "endLine": 100 },
+    "type": "definition",
+    "title": "AdjacentEdgesOn4Cycle",
+    "content": "Edges sharing a vertex are on a 4-cycle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-h1property",
+    "proofId": "erdos-584",
+    "range": { "startLine": 105, "endLine": 108 },
+    "type": "definition",
+    "title": "HasH1Property",
+    "content": "H₁: 6-cycle connected with adjacent edges on 4-cycles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-h2property",
+    "proofId": "erdos-584",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "definition",
+    "title": "HasH2Property",
+    "content": "H₂: 8-cycle connected.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-conjecture-h1",
+    "proofId": "erdos-584",
+    "range": { "startLine": 113, "endLine": 120 },
+    "type": "definition",
+    "title": "ErdosConjecture584_H1",
+    "content": "Every dense graph has a large 6-cycle connected subgraph with ≫ δ³n² edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-conjecture-h2",
+    "proofId": "erdos-584",
+    "range": { "startLine": 121, "endLine": 128 },
+    "type": "definition",
+    "title": "ErdosConjecture584_H2",
+    "content": "Every dense graph has a large 8-cycle connected subgraph with ≫ δ²n² edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-full-conjecture",
+    "proofId": "erdos-584",
+    "range": { "startLine": 130, "endLine": 132 },
+    "type": "definition",
+    "title": "ErdosConjecture584",
+    "content": "The full conjecture: both H₁ and H₂ exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-duke-erdos-1982",
+    "proofId": "erdos-584",
+    "range": { "startLine": 137, "endLine": 144 },
+    "type": "theorem",
+    "title": "duke_erdos_1982",
+    "content": "Duke-Erdős (1982): H₁ exists for fixed δ when n is sufficiently large.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-duke-erdos-rodl-1984",
+    "proofId": "erdos-584",
+    "range": { "startLine": 145, "endLine": 152 },
+    "type": "theorem",
+    "title": "duke_erdos_rodl_1984",
+    "content": "Duke-Erdős-Rödl (1984): H₁ with δ⁵ exponent instead of conjectured δ³.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-fox-sudakov-2008",
+    "proofId": "erdos-584",
+    "range": { "startLine": 153, "endLine": 160 },
+    "type": "theorem",
+    "title": "fox_sudakov_2008",
+    "content": "Fox-Sudakov (2008): H₂ proved when δ > n^{-1/5}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-sparse-regime",
+    "proofId": "erdos-584",
+    "range": { "startLine": 165, "endLine": 168 },
+    "type": "definition",
+    "title": "IsSparseRegime",
+    "content": "The sparse regime: δ = n^{-c} for some c > 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-sparse-conjecture",
+    "proofId": "erdos-584",
+    "range": { "startLine": 169, "endLine": 178 },
+    "type": "definition",
+    "title": "SparseRegimeConjecture",
+    "content": "Main open question: does the conjecture hold in the sparse regime?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-584-best-exponents",
+    "proofId": "erdos-584",
+    "range": { "startLine": 217, "endLine": 225 },
+    "type": "definition",
+    "title": "Exponent bounds",
+    "content": "Best known: δ⁵ for H₁. Target: δ³. Gap is significant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-584-summary",
+    "proofId": "erdos-584",
+    "range": { "startLine": 246, "endLine": 264 },
+    "type": "theorem",
+    "title": "erdos_584_open",
+    "content": "Summary: Problem OPEN. Known: δ⁵ for H₁, δ > n^{-1/5} for H₂.",
+    "significance": "critical"
+  }
+]
