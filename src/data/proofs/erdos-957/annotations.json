@@ -1,1 +1,88 @@
-[]
+[
+  {
+    "id": "ann-e957-header",
+    "proofId": "erdos-957",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #957: Product of Extreme Distance Frequencies**\n\nFor n points in the plane with distances {d_1 < ... < d_k}, is the product f(d_1)f(d_k) <= (9/8 + o(1))n^2?\n\n**Answer: YES** (Dumitrescu 2019)\n\nThe constant 9/8 is tight (Makai's construction).",
+    "mathContext": "This sits at the intersection of discrete geometry and combinatorics. It constrains how extreme distances can both be frequent in point configurations.",
+    "significance": "critical",
+    "relatedConcepts": ["Distance frequency", "Extreme distances", "Point configurations"]
+  },
+  {
+    "id": "ann-e957-distance-freq",
+    "proofId": "erdos-957",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "definition",
+    "title": "Distance Frequency",
+    "content": "**distanceFrequency A d = f(d):**\n\nThe number of unordered pairs {p, q} in A with dist(p, q) = d.\n\nThis counts how many times each distance value appears.",
+    "mathContext": "Distance frequency is fundamental to Erdos's distance problems. The unit distance problem asks for max f(1).",
+    "significance": "critical",
+    "relatedConcepts": ["Distance counting", "Unit distance problem"]
+  },
+  {
+    "id": "ann-e957-conjecture",
+    "proofId": "erdos-957",
+    "range": { "startLine": 113, "endLine": 123 },
+    "type": "definition",
+    "title": "Erdos-Pach Conjecture",
+    "content": "**ErdosPachConjecture:**\n\nFor all epsilon > 0, eventually: f(d_1) * f(d_k) <= (9/8 + epsilon) * n^2\n\nThe product of minimum and maximum distance frequencies has universal bound 9/8.",
+    "mathContext": "Posed by Erdos and Pach in 1990. The constant 9/8 comes from Makai's extremal construction.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal combinatorics", "Asymptotic bounds"]
+  },
+  {
+    "id": "ann-e957-dumitrescu",
+    "proofId": "erdos-957",
+    "range": { "startLine": 129, "endLine": 139 },
+    "type": "axiom",
+    "title": "Dumitrescu's Theorem",
+    "content": "**dumitrescu_theorem:**\n\nThere exists C > 0 such that for all point sets A of size n >= 2:\nf(d_1) * f(d_k) <= (9/8) * n^2 + C * n\n\nThis is the main result solving Erdos Problem #957.",
+    "mathContext": "Dumitrescu's 2019 paper 'A product inequality for extreme distances' in Computational Geometry.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal geometry", "Distance bounds"]
+  },
+  {
+    "id": "ann-e957-tightness",
+    "proofId": "erdos-957",
+    "range": { "startLine": 164, "endLine": 180 },
+    "type": "theorem",
+    "title": "Tightness of 9/8",
+    "content": "**makai_tight_construction + constant_tight:**\n\nMakai showed there exist point sets achieving f(d_1)f(d_k) >= (9/8 - epsilon)n^2.\n\nTherefore, the constant 9/8 cannot be improved.",
+    "mathContext": "Makai's construction was described as 'easy' by Erdos-Pach but establishes optimality of the bound.",
+    "significance": "key",
+    "relatedConcepts": ["Tight bounds", "Extremal constructions"]
+  },
+  {
+    "id": "ann-e957-sum",
+    "proofId": "erdos-957",
+    "range": { "startLine": 192, "endLine": 195 },
+    "type": "axiom",
+    "title": "Sum Inequality",
+    "content": "**sum_inequality:**\n\nf(d_1) + f(d_k) <= 3n - c*sqrt(n) for some c > 0.\n\nThis sum bound is easier to prove than the product bound.",
+    "mathContext": "Erdos-Pach noted this is 'not difficult' to prove. The optimal value of c remains open.",
+    "significance": "key",
+    "relatedConcepts": ["Linear bounds", "Sum vs product"]
+  },
+  {
+    "id": "ann-e957-polygon",
+    "proofId": "erdos-957",
+    "range": { "startLine": 242, "endLine": 244 },
+    "type": "axiom",
+    "title": "Regular Polygon Example",
+    "content": "**regular_polygon_all_frequent:**\n\nFor an odd regular n-gon, f(d_i) >= n for ALL distances d_i, not just extremes.\n\nThis shows f(d) >= n is achievable for every distance.",
+    "mathContext": "Rotational symmetry of odd regular polygons causes each distance to appear many times. This is a key example in distance problems.",
+    "significance": "supporting",
+    "relatedConcepts": ["Symmetric point sets", "Distance structure"]
+  },
+  {
+    "id": "ann-e957-summary",
+    "proofId": "erdos-957",
+    "range": { "startLine": 280, "endLine": 319 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**Erdos Problem #957: SOLVED**\n\n**Result:** f(d_1)f(d_k) <= (9/8)n^2 + O(n) (Dumitrescu 2019)\n\n**Tightness:** Makai's construction shows 9/8 is optimal\n\n**Also:** f(d_1) + f(d_k) <= 3n - c*sqrt(n)",
+    "significance": "critical"
+  }
+]

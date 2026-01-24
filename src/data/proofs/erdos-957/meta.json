@@ -1,33 +1,149 @@
 {
   "id": "erdos-957",
-  "title": "Erdős Problem #957",
+  "title": "Erdos Problem #957: Product of Extreme Distance Frequencies",
   "slug": "erdos-957",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of size ... and let ... be the set of distinct distances determined by .... Let ... be the number of times t...",
+  "description": "For n points in the plane with distances {d_1 < ... < d_k} and f(d) = frequency of distance d, is f(d_1)f(d_k) <= (9/8 + o(1))n^2? YES (Dumitrescu 2019).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdos-Pach (1990), Dumitrescu (2019)",
     "sourceUrl": "https://erdosproblems.com/957",
-    "date": "",
-    "status": "pending",
+    "date": "2019",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos957Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distances",
+      "point-sets",
+      "extremal-combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 957,
     "erdosUrl": "https://erdosproblems.com/957",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanDist",
+        "description": "Euclidean distance in inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for distance calculations",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for point sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation and products over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Point and dist definitions for R^2",
+      "PointSet, pairwiseDistances, distanceFrequency definitions",
+      "minDistance, maxDistance (diameter) definitions",
+      "ErdosPachConjecture formalization",
+      "dumitrescu_theorem axiom: (9/8)n^2 + O(n) bound",
+      "makai_tight_construction axiom: constant 9/8 is optimal",
+      "constant_tight theorem: no smaller constant works",
+      "sum_inequality axiom: f(d_1) + f(d_k) <= 3n - c*sqrt(n)",
+      "StrongerConjecture involving convex hull vertices",
+      "regular_polygon_all_frequent axiom: odd polygons have all distances frequent"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #957 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a set of size $n$ and let $\\{d_1<\\ldots<d_k\\}$ be the set of distinct distances determined by $A$. Let $f(d)$ be the number of times the distance $d$ is determined. Is it true that\\[f(d_1)f(d_k) \\leq (\\tfrac{9}{8}+o(1))n^2?\\]\n\n\n\nA question of Erd\\H{o}s and Pach \\cite{ErPa90}, who write that an 'easy' unpublished construction of Makai shows that this would be the best possible, and that it is 'not difficult' to prove\\[f(d_1)+f(d_k) \\leq 3n -c\\sqrt{n}+o(\\sqrt{n})\\]for some $c>0$, and ask what the best possible value of $c$ is.\n\nA stronger version of this problem (which implies the inequality in the problem statement) is that\\[f(d_1)\\leq 3n-2m+o(\\sqrt{n}),\\]where $m$ is the number of vertices of the convex hull of $A$.\n\nThe odd regular polygon shows that it is possible for $f(d_i)\\geq n$ for all $i$.\n\nThe original problem was solved by Dumitrescu \\cite{Du19}, who proved that\\[f(d_1)f(d_k)\\leq \\frac{9}{8}n^2+O(n).\\]See also [132] and [756].\n\n\n\n\nReferences\n\n\n[Du19] Dumitrescu, Adrian, A product inequality for extreme distances. Comput. Geom. (2019), 101577, 10.\n\n[ErPa90] Erd\\H{o}s, P. and Pach, J., Variations on the theme of repeated distances. Combinatorica (1990), 261--269.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #957: Product of Extreme Distance Frequencies**\n\nThis problem was posed by Erdos and Pach in 1990 in their paper 'Variations on the theme of repeated distances'. They asked whether the product of minimum and maximum distance frequencies in a planar point set is bounded.\n\n**Key History:**\n- **Erdos-Pach (1990):** Posed the problem; noted Makai's 'easy' construction showing 9/8 is tight\n- **Dumitrescu (2019):** Proved f(d_1)f(d_k) <= (9/8)n^2 + O(n)\n\n**Context:**\nThe problem sits at the intersection of discrete geometry and combinatorics. Understanding how distance frequencies interact constrains the structure of point configurations.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet A be a set of n points in the plane. Let {d_1 < d_2 < ... < d_k} be the distinct distances determined by A, and let f(d) denote how many pairs of points achieve distance d.\n\nIs it true that:\n$$f(d_1) \\cdot f(d_k) \\leq \\left(\\frac{9}{8} + o(1)\\right) n^2$$\n\n**Answer:** YES (Dumitrescu 2019)\n\nDumitrescu proved: $f(d_1) \\cdot f(d_k) \\leq \\frac{9}{8}n^2 + O(n)$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point and Distance Setup:**\n   - Point as Fin 2 -> R\n   - Euclidean distance function\n   - pairwiseDistances, distanceFrequency functions\n\n2. **The Main Conjecture:**\n   - ErdosPachConjecture: asymptotic (9/8 + o(1))n^2 bound\n   - dumitrescu_theorem: precise (9/8)n^2 + O(n) bound\n\n3. **Tightness:**\n   - makai_tight_construction: shows 9/8 cannot be improved\n   - constant_tight theorem: proves no smaller constant works\n\n4. **Related Results:**\n   - Sum inequality: f(d_1) + f(d_k) <= 3n - c*sqrt(n)\n   - Convex hull variant conjecture\n   - Regular polygon examples",
+    "keyInsights": [
+      "**The Constant 9/8:** This specific constant arises from extremal configurations; Makai's construction achieves it",
+      "**Product vs Sum:** The product bound (9/8)n^2 is harder than the sum bound 3n - c*sqrt(n)",
+      "**Convex Hull Connection:** A stronger form involves the number of convex hull vertices m",
+      "**Regular Polygons:** Odd regular n-gons have f(d) >= n for ALL distances, not just extremes",
+      "**Dumitrescu's Proof (2019):** Uses careful geometric analysis and case splitting"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "points-distances",
+      "title": "Points and Distances in R^2",
+      "summary": "Point, dist, dist_symm, dist_nonneg definitions",
+      "startLine": 41,
+      "endLine": 69
+    },
+    {
+      "id": "point-sets",
+      "title": "Point Sets and Distance Multisets",
+      "summary": "PointSet, pairwiseDistances, distanceFrequency, minDistance, maxDistance",
+      "startLine": 71,
+      "endLine": 107
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdos-Pach Question",
+      "summary": "ErdosPachConjecture formalization",
+      "startLine": 109,
+      "endLine": 123
+    },
+    {
+      "id": "dumitrescu",
+      "title": "Dumitrescu's Theorem (2019)",
+      "summary": "dumitrescu_theorem axiom, erdos_pach_conjecture_true",
+      "startLine": 125,
+      "endLine": 153
+    },
+    {
+      "id": "tightness",
+      "title": "Makai's Construction (Tightness)",
+      "summary": "makai_tight_construction, constant_tight theorem",
+      "startLine": 155,
+      "endLine": 180
+    },
+    {
+      "id": "sum-inequality",
+      "title": "Sum Inequality",
+      "summary": "sum_inequality axiom: f(d_1) + f(d_k) <= 3n - c*sqrt(n)",
+      "startLine": 182,
+      "endLine": 200
+    },
+    {
+      "id": "convex-hull",
+      "title": "Convex Hull Variant",
+      "summary": "StrongerConjecture involving convex hull vertices",
+      "startLine": 202,
+      "endLine": 226
+    },
+    {
+      "id": "regular-polygon",
+      "title": "Regular Polygon Example",
+      "summary": "regular_polygon_all_frequent: odd polygons have frequent distances",
+      "startLine": 228,
+      "endLine": 252
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_957_summary: main results and status",
+      "startLine": 276,
+      "endLine": 325
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #957 asked whether the product of minimum and maximum distance frequencies in a planar point set is bounded by (9/8 + o(1))n^2. Dumitrescu (2019) proved YES with the precise bound (9/8)n^2 + O(n). Makai's construction shows 9/8 is the optimal constant.",
+    "implications": "**Connections**\n\n1. **Distance Problems:** Part of Erdos's extensive work on distances in point sets\n\n2. **Extremal Geometry:** Constrains the structure of planar point configurations\n\n3. **Related Problems:** Connected to #132 and #756 on repeated distances\n\n4. **Unit Distance Problem:** Related to counting pairs at a fixed distance",
+    "openQuestions": [
+      "What is the best constant c in the sum inequality f(d_1) + f(d_k) <= 3n - c*sqrt(n)?",
+      "Is the stronger convex hull conjecture true?",
+      "What happens in higher dimensions?",
+      "Can the O(n) error in Dumitrescu's bound be improved?"
+    ]
   }
 }
