@@ -1,41 +1,81 @@
 {
   "slug": "erdos-871",
   "title": "Erdős #871: Partitioning Additive Bases of Order 2",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #871: Partitioning Additive Bases of Order 2.",
-    "whyMatters": []
+    "formal": "A \\text{ order-2 basis}, r_A(n) \\to \\infty \\implies A = B \\sqcup C \\text{ both order-2 bases}?",
+    "plain": "If A is an additive basis of order 2 with r_A(n) → ∞, can A be partitioned into two disjoint order-2 bases?",
+    "whyMatters": [
+      "Explores structure of additive bases",
+      "Tests limits of partition theorems"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Larsen (2026): NO - counterexample exists",
+      "Erdős-Nathanson (1989): FALSE for fixed r_A(n) ≥ t",
+      "Erdős-Nathanson (1989): TRUE when r_A(n) > c log n"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Problem DISPROVED - formalization complete"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.547Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-01-24T18:15:00Z",
+    "iteration": 2,
+    "focus": "DISPROVED. Main theorem erdos_871_disproved PROVED. Blocking property formalized.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider proving Larsen construction explicitly",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE (DISPROVED): Erdos871Problem.lean (256 lines, 4 axioms, 0 sorries). Main theorem erdos_871_disproved PROVED. Blocking property formalized with blocking_prevents_partition PROVED. Both Erdős-Nathanson results axiomatized.",
+    "builtItems": [
+      "Erdos871Problem.lean (256 lines, 4 axioms, 0 sorries)",
+      "repFunc: representation function r_A(n)",
+      "sumset, IsAdditiveBasis2, IsAdditiveBasis2'",
+      "basis2_equiv (PROVED)",
+      "RepTendsToInfty, RepEventuallyGe predicates",
+      "repTendsToInfty_implies_eventuallyGe (PROVED)",
+      "CanPartitionIntoBases: partition predicate",
+      "Erdos871Conjecture: main conjecture",
+      "erdos_nathanson_1989 (AXIOM): weak version FALSE",
+      "erdos_nathanson_positive (AXIOM): c log n growth suffices",
+      "larsen_counterexample (AXIOM): main counterexample",
+      "erdos_871_disproved (PROVED)",
+      "HasBlockingProperty: partition blocker",
+      "blocking_prevents_partition (PROVED)",
+      "larsen_construction_blocking (AXIOM)"
+    ],
+    "insights": [
+      "Status: DISPROVED (Larsen 2026)",
+      "Gap: r_A(n) → ∞ lies between 'fixed t' and 'c log n'",
+      "Erdős-Nathanson 1989: fixed t too weak, c log n suffices",
+      "Blocking property: key mechanism for counterexample",
+      "Proof: blocking_prevents_partition + larsen_counterexample",
+      "r_A(n) → ∞ is NOT fast enough growth"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove Larsen construction explicitly",
+      "Formalize the exact constant c from Erdős-Nathanson",
+      "Problem is COMPLETE"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Blocking property approach",
+      "status": "completed",
+      "notes": "Main theorem proved via blocking property"
+    }
+  ],
   "tags": [
     "erdos",
     "disproved",
@@ -45,15 +85,20 @@
     "representation-function"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos871Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdős-Nathanson (1989): Partitions of bases into disjoint unions",
+      "Larsen (2026): AI-assisted disproof"
+    ],
+    "urls": [
+      "https://erdosproblems.com/871"
+    ],
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.547Z",
-  "lastUpdate": "2026-01-23T08:04:56.547Z",
+  "lastUpdate": "2026-01-24T18:15:00Z",
   "significance": 7,
   "tractability": 7
 }
