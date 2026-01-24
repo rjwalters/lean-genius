@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-290-harmonic",
+    "proofId": "erdos-290",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "partialHarmonic",
+    "content": "Partial harmonic sum ∑_{a≤n≤b} 1/n as a rational.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-denom",
+    "proofId": "erdos-290",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "reducedDenominator",
+    "content": "The denominator of a rational in lowest terms.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-hdenom",
+    "proofId": "erdos-290",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "harmonicDenom",
+    "content": "Denominator of the partial harmonic sum from a to b.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-drop",
+    "proofId": "erdos-290",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "HasDenominatorDrop",
+    "content": "Adding 1/(b+1) decreases the denominator.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-bfunc",
+    "proofId": "erdos-290",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "definition",
+    "title": "bFunction",
+    "content": "Smallest b > a with denominator drop.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-question",
+    "proofId": "erdos-290",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "ErdosQuestion290",
+    "content": "Does b(a) always exist for all a ≥ 1?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-growth",
+    "proofId": "erdos-290",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "GrowthQuestion",
+    "content": "Is b(a) ≪ a (linear growth)?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-290-main",
+    "proofId": "erdos-290",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "theorem",
+    "title": "van_doorn_main",
+    "content": "van Doorn (2024): YES, b(a) always exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-upper",
+    "proofId": "erdos-290",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "theorem",
+    "title": "van_doorn_upper_bound",
+    "content": "b(a) < 4.374a for all a > 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-290-lower",
+    "proofId": "erdos-290",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "theorem",
+    "title": "van_doorn_lower_bound",
+    "content": "b(a) > a + 0.54 log a for large a.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-290-explicit",
+    "proofId": "erdos-290",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "theorem",
+    "title": "van_doorn_explicit",
+    "content": "If a ∈ (3^k, 3^{k+1}], then b = 2·3^{k+1} - 1 works.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-290-ex1",
+    "proofId": "erdos-290",
+    "range": { "startLine": 119, "endLine": 123 },
+    "type": "definition",
+    "title": "Example Sums",
+    "content": "∑_{3≤n≤5} 1/n = 47/60, ∑_{3≤n≤6} 1/n = 19/20.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-290-exproof",
+    "proofId": "erdos-290",
+    "range": { "startLine": 125, "endLine": 133 },
+    "type": "theorem",
+    "title": "example_calculation",
+    "content": "Computationally verified: 47/60 → 19/20, so 60 > 20.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-290-infsmall",
+    "proofId": "erdos-290",
+    "range": { "startLine": 149, "endLine": 151 },
+    "type": "theorem",
+    "title": "van_doorn_infinitely_many_small",
+    "content": "b(a) < a + 0.61 log a for infinitely many a.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-290-lcm",
+    "proofId": "erdos-290",
+    "range": { "startLine": 169, "endLine": 171 },
+    "type": "definition",
+    "title": "lcmRange",
+    "content": "LCM of integers in [a, b].",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-290-oeis",
+    "proofId": "erdos-290",
+    "range": { "startLine": 189, "endLine": 191 },
+    "type": "definition",
+    "title": "oeis_A375081",
+    "content": "OEIS sequence: b(a) for small a.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-290-gen",
+    "proofId": "erdos-290",
+    "range": { "startLine": 200, "endLine": 202 },
+    "type": "definition",
+    "title": "generalizedHarmonic",
+    "content": "Generalized harmonic sum ∑ 1/n^s.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-290-final",
+    "proofId": "erdos-290",
+    "range": { "startLine": 250, "endLine": 255 },
+    "type": "theorem",
+    "title": "erdos_290",
+    "content": "Main theorem: ErdosQuestion290 holds (YES).",
+    "significance": "critical"
+  }
+]

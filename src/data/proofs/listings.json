@@ -3982,17 +3982,24 @@
   },
   {
     "id": "erdos-199",
-    "title": "Erdős Problem #199",
+    "title": "Erdős Problem #199: Arithmetic Progressions in Set Complements",
     "slug": "erdos-199",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... does not contain a 3-term arithmetic progression then must ... contain an infinite arithmetic progression?\n\n\n\nThe answ...",
-    "status": "pending",
+    "description": "If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression? NO - disproved by Baumgartner (1975) using the axiom of choice.",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "arithmetic-progressions",
+      "combinatorics",
+      "Ramsey-theory",
+      "axiom-of-choice",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 199,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-2",
@@ -4206,17 +4213,24 @@
   },
   {
     "id": "erdos-211",
-    "title": "Erdős Problem #211",
+    "title": "Erdős Problem #211: Lines Formed by Points in the Plane",
     "slug": "erdos-211",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Given ... points in ..., at most ... on any line, there are ... many lines which contain at least two points.\n\n\n\nIn ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n points with at most n-k collinear (1≤k<n), there are Ω(kn) lines through ≥2 points. SOLVED by Beck and Szemerédi-Trotter (1983).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "incidence-geometry",
+      "beck-theorem",
+      "szemeredi-trotter",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 211,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 1,
+    "annotationCount": 16
   },
   {
     "id": "erdos-212",
@@ -4450,17 +4464,25 @@
   },
   {
     "id": "erdos-224",
-    "title": "Erdős Problem #224",
+    "title": "Erdős Problem #224: Obtuse Angles in Point Sets",
     "slug": "erdos-224",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is any set of ... points then some three points in ... determine an obtuse angle.\n\n\n\nFor ... this is trivial. For ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Any 2^d + 1 points in ℝ^d contain three points forming an obtuse angle. SOLVED by Danzer-Grünbaum (1962). Hypercube is extremal.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "angles",
+      "hypercube",
+      "extremal",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 224,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-225",
@@ -4702,17 +4724,24 @@
   },
   {
     "id": "erdos-237",
-    "title": "Erdős Problem #237",
+    "title": "Erdős Problem #237: Prime Plus Set Representations",
     "slug": "erdos-237",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set such that ... for all large .... Let ... count the number of solutions to ... for ... prime and .... Is it t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For A ⊆ ℕ with |A ∩ [1,N]| ≫ log(N), is limsup f(n) = ∞ where f(n) counts n = p + a? YES (Chen-Ding 2022), even for infinite A.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "additive-combinatorics",
+      "representations",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 237,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-239",
@@ -5502,17 +5531,24 @@
   },
   {
     "id": "erdos-290",
-    "title": "Erdős Problem #290",
+    "title": "Erdős Problem #290: Denominator Non-Monotonicity in Harmonic Sums",
     "slug": "erdos-290",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Must there exist some ... such that\\[\\sum_{a\\leq n\\leq b}{n}={s_1}\\sum_{a\\leq n\\leq b+1}{n}={s_2},\\]with ... and ......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must there exist b > a such that adding 1/(b+1) to ∑_{a≤n≤b} 1/n decreases the reduced denominator? SOLVED: YES (van Doorn 2024) with b(a) < 4.374a.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "harmonic-sums",
+      "denominators",
+      "rational-arithmetic",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 290,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-291",
@@ -7490,17 +7526,21 @@
   },
   {
     "id": "erdos-429",
-    "title": "Erdős Problem #429",
+    "title": "Erdős Problem #429: Sparse Admissible Sets and Prime Shifts",
     "slug": "erdos-429",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if ... is sparse enough and does not cover all residue classes modulo ... for any prime ..., then there exis...",
-    "status": "pending",
+    "description": "Is sparsity + admissibility sufficient for a prime shift? Answer: NO (Weisenberg 2024 constructed arbitrarily sparse admissible sets with no prime shift).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "admissible-sets",
+      "covering-systems"
     ],
     "erdosNumber": 429,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-431",
@@ -7561,17 +7601,25 @@
   },
   {
     "id": "erdos-435",
-    "title": "Erdős Problem #435",
+    "title": "Erdős Problem #435: Binomial Coefficient Representation",
     "slug": "erdos-435",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... for any prime ... and .... What is the largest integer not of the form\\[\\sum_{1\\leq i<n}c_i{i}\\]where the .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n not a prime power, the largest integer not representable as Σ c_i·C(n,i) with c_i≥0 equals Σ_k (Σ_{d≤a_k} C(n,p_k^d))·(p_k-1) - n. SOLVED by Hwang-Song (2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "frobenius-number",
+      "representations",
+      "numerical-semigroups",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 435,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 17
   },
   {
     "id": "erdos-436",
@@ -8083,17 +8131,25 @@
   },
   {
     "id": "erdos-474",
-    "title": "Erdős Problem #474",
+    "title": "Erdős Problem #474: Coloring ℝ² for Uncountable Sets",
     "slug": "erdos-474",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nUnder what set theoretic assumptions is it true that ... can be ...-coloured such that, for every uncountable ..., ... contai...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Under what set-theoretic assumptions can ℝ² be 3-colored such that every uncountable A has A² containing pairs of all colors? PARTIALLY RESOLVED: works under CH (Erdős), fails with large c (Shelah), open for c = ℵ₂.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "partition-calculus",
+      "continuum-hypothesis",
+      "independence",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 474,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-475",
@@ -10050,17 +10106,21 @@
   },
   {
     "id": "erdos-618",
-    "title": "Erdős Problem #618",
+    "title": "Erdős Problem #618: Decreasing Diameter of Triangle-Free Graphs",
     "slug": "erdos-618",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph ... let ... be the smallest number of edges that need to be added to ... so that it has diameter .....",
-    "status": "pending",
+    "description": "For a triangle-free graph G, let h₂(G) be the minimum edges to add for diameter 2 while staying triangle-free. Proved: Δ = o(n^{1/2}) implies h₂(G) = o(n²).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "diameter",
+      "triangle-free",
+      "extremal-graphs"
     ],
     "erdosNumber": 618,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 19
   },
   {
     "id": "erdos-619",
@@ -10680,8 +10740,8 @@
     "title": "Erdős #650: Divisibility Covering in Intervals",
     "slug": "erdos-650",
     "description": "If A ⊆ {1,...,N} with |A| = m, every interval of length 2N contains ≥ f(m) integers divisible by distinct elements of A. Known: f(m) ≫ √m. Open: Is f(m) ≪ √m?",
-    "status": "formalized",
-    "badge": "wip",
+    "status": "complete",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -13145,17 +13205,24 @@
   },
   {
     "id": "erdos-807",
-    "title": "Erdős Problem #807",
+    "title": "Erdos Problem #807: Bipartite Decomposition of Random Graphs",
     "slug": "erdos-807",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe bipartition number ... of a graph ... is the smallest number of pairwise edge disjoint complete bipartite graphs whose un...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is the bipartition number of a random graph equal to n minus the independence number almost surely? NO, disproved by Alon (2015).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "bipartite-decomposition",
+      "probabilistic-combinatorics",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 807,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-808",
@@ -13829,17 +13896,25 @@
   },
   {
     "id": "erdos-855",
-    "title": "Erdős Problem #855",
+    "title": "Erdős Problem #855: The Second Hardy-Littlewood Conjecture",
     "slug": "erdos-855",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... counts the number of primes in ... then is it true that (for large ... and ...)\\[\\pi(x+y) \\leq \\pi(x)+\\pi(y)?\\]\n\n\n\nCom...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is π(x+y) ≤ π(x) + π(y) for large x,y? LIKELY FALSE - incompatible with the prime k-tuples conjecture (Hensley-Richards 1973).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "prime-counting",
+      "hardy-littlewood",
+      "k-tuples",
+      "likely-false"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 855,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-856",
@@ -14222,17 +14297,25 @@
   },
   {
     "id": "erdos-879",
-    "title": "Erdős Problem #879",
+    "title": "Erdős Problem #879: Maximum Sum of Pairwise Coprime Sets",
     "slug": "erdos-879",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a set ... admissible if ... for all .... Let\\[G(n) = \\max_{S\\subseteq \\{1,\\ldots,n\\}} \\sum_{a\\in S}a\\]and\\[H(n)=\\sum_{pH...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For admissible (pairwise coprime) sets S ⊆ {1,...,n}, is G(n) = max Σa close to H(n) = Σp + n·π(√n)? OPEN: Is G(n) > H(n) - n^{1+o(1)}? Known bounds: H(n) - n^{3/2} < G(n) < H(n).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "coprime-sets",
+      "additive-combinatorics",
+      "prime-sums",
+      "optimization",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 879,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-88",
@@ -15875,17 +15958,21 @@
   },
   {
     "id": "erdos-983",
-    "title": "Erdős Problem #983",
+    "title": "Erdős Problem #983: Prime Coverage Function for Smooth Numbers",
     "slug": "erdos-983",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be the smallest integer ... such that in any ... of size ... there exist primes ... such that at lea...",
-    "status": "pending",
+    "description": "Does 2π(√n) - f(π(n)+1, n) → ∞? Answer: NO. Erdős-Straus (1970) showed f(π(n)+1, n) = 2π(√n) + o(√n/(log n)^A).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "smooth-numbers",
+      "prime-counting"
     ],
     "erdosNumber": 983,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-984",
