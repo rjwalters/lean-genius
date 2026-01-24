@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-277-sigma",
+    "proofId": "erdos-277",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "sigma",
+    "content": "The sum of divisors function: σ(n) = ∑_{d|n} d.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-abundancy",
+    "proofId": "erdos-277",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "abundancyRatio",
+    "content": "The abundancy ratio σ(n)/n measures divisor richness.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-277-isabundant",
+    "proofId": "erdos-277",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "IsAbundant",
+    "content": "A number n is c-abundant if σ(n) > cn.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-congruence",
+    "proofId": "erdos-277",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
+    "title": "Congruence",
+    "content": "A congruence class: residue a (mod m) with m > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-covers",
+    "proofId": "erdos-277",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "definition",
+    "title": "Congruence.covers",
+    "content": "An integer x satisfies congruence a (mod m).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-277-covering",
+    "proofId": "erdos-277",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "definition",
+    "title": "IsCoveringSystem",
+    "content": "A covering system: congruences that cover all integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-alldivide",
+    "proofId": "erdos-277",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "AllModuliDivide",
+    "content": "All moduli in a covering system divide n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-277-hascovering",
+    "proofId": "erdos-277",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "definition",
+    "title": "HasCoveringWithDivisorModuli",
+    "content": "There exists a covering with all moduli dividing n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-question",
+    "proofId": "erdos-277",
+    "range": { "startLine": 101, "endLine": 107 },
+    "type": "definition",
+    "title": "ErdosQuestion277",
+    "content": "For every c, does n exist with σ(n)>cn but no covering?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-haight",
+    "proofId": "erdos-277",
+    "range": { "startLine": 113, "endLine": 116 },
+    "type": "theorem",
+    "title": "haight_theorem",
+    "content": "Haight (1979): YES, such n always exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-answer",
+    "proofId": "erdos-277",
+    "range": { "startLine": 118, "endLine": 119 },
+    "type": "theorem",
+    "title": "erdos_277_answer",
+    "content": "The answer to Erdős #277 is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-277-trivial",
+    "proofId": "erdos-277",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "definition",
+    "title": "trivialCovering",
+    "content": "The trivial covering: just 0 (mod 1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-277-nontrivial",
+    "proofId": "erdos-277",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "definition",
+    "title": "IsNonTrivialCovering",
+    "content": "A non-trivial covering has ≥2 distinct moduli.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-277-strong",
+    "proofId": "erdos-277",
+    "range": { "startLine": 164, "endLine": 169 },
+    "type": "theorem",
+    "title": "haight_strong_theorem",
+    "content": "Haight's stronger result about non-trivial coverings.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-277-reciprocal",
+    "proofId": "erdos-277",
+    "range": { "startLine": 175, "endLine": 177 },
+    "type": "definition",
+    "title": "reciprocalSum",
+    "content": "The sum ∑ 1/m_i for a covering system.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-277-bound",
+    "proofId": "erdos-277",
+    "range": { "startLine": 179, "endLine": 182 },
+    "type": "theorem",
+    "title": "covering_reciprocal_bound",
+    "content": "In a covering system, ∑ 1/m_i ≥ 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-277-lcm",
+    "proofId": "erdos-277",
+    "range": { "startLine": 217, "endLine": 219 },
+    "type": "definition",
+    "title": "coveringLCM",
+    "content": "The LCM of a covering system's moduli.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-277-hc",
+    "proofId": "erdos-277",
+    "range": { "startLine": 226, "endLine": 228 },
+    "type": "definition",
+    "title": "IsHighlyComposite",
+    "content": "n has more divisors than all smaller numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-277-super",
+    "proofId": "erdos-277",
+    "range": { "startLine": 230, "endLine": 232 },
+    "type": "definition",
+    "title": "IsSuperabundant",
+    "content": "n has larger σ(n)/n than all smaller numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-277-main",
+    "proofId": "erdos-277",
+    "range": { "startLine": 276, "endLine": 276 },
+    "type": "theorem",
+    "title": "erdos_277",
+    "content": "Main theorem: ErdosQuestion277 holds (YES).",
+    "significance": "critical"
+  }
+]
