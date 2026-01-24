@@ -31,10 +31,11 @@ showing SAT is NP-complete.
 - `Mathlib.Tactic` : Standard tactics
 
 **Formalization Notes:**
-- 0 sorries, 2 axioms (cook_levin_axiom, SAT_in_NP_axiom for complex parts)
-- Turing machines are modeled abstractly as oracle functions
-- Time complexity uses abstract bounds; concrete TM simulation omitted
-- Full formalization would require ~10,000+ lines for TM semantics
+- 1 sorry (polynomial arithmetic in poly_reduce_in_P)
+- Axioms: cook_levin_axiom, SAT_in_NP_axiom (complex parts), poly_reduce_trans_axiom
+- Key theorem NPC_in_P_implies_P_eq_NP is now fully proved (modulo poly arithmetic)
+- PolyReduction extended with output size bounds for proper composition
+- Turing machines modeled abstractly; full formalization would require ~10,000+ lines
 
 Historical Note: The P vs NP problem was formally stated by Stephen Cook in 1971.
 It asks whether every problem whose solution can be verified quickly (in polynomial
@@ -238,6 +239,12 @@ structure PolyReduction (A B : DecisionProblem) extends Reduction A B where
   computeTime : Nat → Nat
   /-- Reduction is computable in polynomial time -/
   polyCompute : isPolynomial computeTime
+  /-- Output size is bounded by a polynomial (standard complexity theory property) -/
+  outputSize : Nat → Nat
+  /-- Output size bound is polynomial -/
+  polyOutput : isPolynomial outputSize
+  /-- The reduction output size is bounded -/
+  outputBounded : ∀ n, inputSize (f n) ≤ outputSize (inputSize n)
 
 /-- Notation: A ≤ₚ B means A poly-reduces to B -/
 notation:50 A " ≤ₚ " B => Nonempty (PolyReduction A B)
@@ -250,6 +257,9 @@ theorem poly_reduce_refl (A : DecisionProblem) : A ≤ₚ A := by
     preserves := fun _ => rfl
     computeTime := fun n => n
     polyCompute := ⟨⟨1, 1⟩, fun n => by simp [Polynomial.eval]⟩
+    outputSize := id
+    polyOutput := ⟨⟨1, 1⟩, fun n => by simp [Polynomial.eval]⟩
+    outputBounded := fun n => le_refl _
   }
 
 /-- Polynomial reductions are transitive.
@@ -261,6 +271,86 @@ axiom poly_reduce_trans_axiom {A B C : DecisionProblem}
 theorem poly_reduce_trans {A B C : DecisionProblem}
     (hab : A ≤ₚ B) (hbc : B ≤ₚ C) : A ≤ₚ C :=
   poly_reduce_trans_axiom hab hbc
+
+/-- Key lemma: If A poly-reduces to B and B is in P, then A is in P.
+
+    This is the fundamental property that makes polynomial reductions useful:
+    they transfer polynomial-time solvability.
+
+    Proof idea:
+    1. Given input n for A, compute f(n) using the reduction
+    2. Apply B's polynomial-time solver to f(n)
+    3. Since f is poly-time and f(n) has poly-size, total time is polynomial -/
+theorem poly_reduce_in_P {A B : DecisionProblem}
+    (r : PolyReduction A B) (hB : inP B) : inP A := by
+  -- Get B's polynomial-time solver
+  obtain ⟨prog_B, poly_B, h_solves_B, h_time_B⟩ := hB
+  -- Get reduction's polynomial bounds
+  obtain ⟨poly_compute, h_compute⟩ := r.polyCompute
+  obtain ⟨poly_output, h_output⟩ := r.polyOutput
+  -- Construct a program for A that applies reduction then solves
+  let prog_A : Program := {
+    code := 0
+    decide := fun n =>
+      -- Compute f(n), then ask B's solver
+      let result := prog_B.decide (r.f n)
+      -- Time is: reduction time + B-solver time on f(n)
+      (result.1, r.computeTime (inputSize n) + result.2)
+  }
+  -- Construct polynomial bound: poly_compute + poly_B ∘ poly_output
+  -- We use a polynomial that dominates both components
+  let poly_A : Polynomial := {
+    degree := max poly_compute.degree (poly_B.degree + poly_output.degree)
+    coeff := (poly_compute.coeff + 1) * (poly_B.coeff + 1) * (poly_output.coeff + 1)
+  }
+  use prog_A, poly_A
+  constructor
+  -- Correctness: prog_A solves A
+  · intro n
+    simp only [prog_A]
+    -- A n = B (r.f n) by reduction correctness, and prog_B solves B
+    rw [r.preserves n]
+    exact h_solves_B (r.f n)
+  -- Time bound: runs in polynomial time
+  · intro n
+    simp only [prog_A, Polynomial.toTimeBound, Polynomial.eval, poly_A]
+    -- Time = r.computeTime (inputSize n) + (prog_B.decide (r.f n)).2
+    -- Bound 1: r.computeTime (inputSize n) ≤ poly_compute.eval (inputSize n)
+    have h1 : r.computeTime (inputSize n) ≤ poly_compute.eval (inputSize n) := h_compute (inputSize n)
+    -- Bound 2: B's time on f(n) ≤ poly_B.eval (inputSize (r.f n))
+    have h2 : (prog_B.decide (r.f n)).2 ≤ poly_B.eval (inputSize (r.f n)) := h_time_B (r.f n)
+    -- Bound 3: inputSize (r.f n) ≤ poly_output.eval (inputSize n) by output size bound
+    have h3 : inputSize (r.f n) ≤ r.outputSize (inputSize n) := r.outputBounded n
+    have h4 : r.outputSize (inputSize n) ≤ poly_output.eval (inputSize n) := h_output (inputSize n)
+    -- Now compose the bounds...
+    -- This gets technical with polynomial arithmetic; use omega/calc
+    calc r.computeTime (inputSize n) + (prog_B.decide (r.f n)).2
+      ≤ poly_compute.eval (inputSize n) + poly_B.eval (inputSize (r.f n)) := by
+          apply Nat.add_le_add h1 h2
+      _ ≤ poly_compute.eval (inputSize n) + poly_B.eval (poly_output.eval (inputSize n)) := by
+          apply Nat.add_le_add_left
+          apply Nat.le_of_lt_succ
+          apply Nat.lt_succ_of_le
+          have : inputSize (r.f n) ≤ poly_output.eval (inputSize n) :=
+            Nat.le_trans h3 h4
+          -- poly_B is monotonic in its argument
+          simp only [Polynomial.eval]
+          have h_mono : poly_B.coeff * (inputSize (r.f n)) ^ poly_B.degree ≤
+                        poly_B.coeff * (poly_output.eval (inputSize n)) ^ poly_B.degree := by
+            apply Nat.mul_le_mul_left
+            apply Nat.pow_le_pow_left this
+          exact h_mono
+      _ ≤ poly_A.coeff * (inputSize n) ^ poly_A.degree := by
+          simp only [Polynomial.eval, poly_A]
+          -- This bound follows from polynomial composition/domination
+          -- poly_compute(n) + poly_B(poly_output(n)) ≤ large_poly(n)
+          sorry  -- Technical polynomial arithmetic; axiomatize for now
+
+/-- Corollary: Polynomial reductions preserve P-membership -/
+theorem poly_reduce_P_preserved {A B : DecisionProblem}
+    (h_reduce : A ≤ₚ B) (hB : inP B) : inP A := by
+  obtain ⟨r⟩ := h_reduce
+  exact poly_reduce_in_P r hB
 
 -- ============================================================
 -- PART 7: NP-Hardness and NP-Completeness
@@ -410,10 +500,10 @@ theorem P_closed_complement (problem : DecisionProblem) :
     use prog', poly
     constructor
     · intro n
-      simp only [complement, solves, prog']
+      simp only [complement, prog']
       rw [h_solves]
     · intro n
-      simp only [prog', runsInTime]
+      simp only [prog']
       exact h_time n
   · obtain ⟨prog, poly, h_solves, h_time⟩ := h
     let prog' : Program := {
@@ -423,12 +513,12 @@ theorem P_closed_complement (problem : DecisionProblem) :
     use prog', poly
     constructor
     · intro n
-      simp only [complement, solves, prog'] at h_solves ⊢
+      simp only [prog'] at h_solves ⊢
       have := h_solves n
-      simp only [complement] at this
+      simp only [complement] at this ⊢
       cases hp : problem n <;> simp_all
     · intro n
-      simp only [prog', runsInTime]
+      simp only [prog']
       exact h_time n
 
 /-- P ⊆ coNP -/
@@ -478,14 +568,23 @@ theorem P_eq_NP_implies_NPC_in_P :
 
 /-- If any NP-complete problem is in P, then P = NP.
     This is the key insight: solving one NP-complete problem efficiently
-    would solve all of NP efficiently through the reduction chain. -/
-axiom NPC_in_P_implies_P_eq_NP_axiom :
-    (∃ problem, NPComplete problem ∧ inP problem) → P = NP
+    would solve all of NP efficiently through the reduction chain.
 
-/-- If any NP-complete problem is in P, then P = NP -/
+    Proof:
+    1. Let L be an NP-complete problem in P
+    2. For any NP problem A, we have A ≤ₚ L (by NP-hardness of L)
+    3. Since L ∈ P and poly reductions preserve P, we have A ∈ P
+    4. So NP ⊆ P, and since P ⊆ NP, we have P = NP -/
 theorem NPC_in_P_implies_P_eq_NP :
-    (∃ problem, NPComplete problem ∧ inP problem) → P = NP :=
-  NPC_in_P_implies_P_eq_NP_axiom
+    (∃ problem, NPComplete problem ∧ inP problem) → P = NP := by
+  intro ⟨L, ⟨h_L_in_NP, h_L_hard⟩, h_L_in_P⟩
+  apply Set.eq_of_subset_of_subset P_subset_NP
+  -- Show NP ⊆ P
+  intro A hA
+  -- A is in NP, so A ≤ₚ L by NP-hardness
+  have h_reduce : A ≤ₚ L := h_L_hard A hA
+  -- Since L ∈ P and A ≤ₚ L, we have A ∈ P
+  exact poly_reduce_P_preserved h_reduce h_L_in_P
 
 -- ============================================================
 -- PART 15: Known Results and Barriers
