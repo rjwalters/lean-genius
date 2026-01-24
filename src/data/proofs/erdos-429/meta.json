@@ -1,16 +1,20 @@
 {
   "id": "erdos-429",
-  "title": "Erdős Problem #429",
+  "title": "Erdős Problem #429: Sparse Admissible Sets and Prime Shifts",
   "slug": "erdos-429",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if ... is sparse enough and does not cover all residue classes modulo ... for any prime ..., then there exis...",
+  "description": "Is sparsity + admissibility sufficient for a prime shift? Answer: NO (Weisenberg 2024 constructed arbitrarily sparse admissible sets with no prime shift).",
   "meta": {
-    "author": "Unknown",
+    "author": "D. Weisenberg (solver)",
     "sourceUrl": "https://erdosproblems.com/429",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos429Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "admissible-sets",
+      "covering-systems"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +23,24 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #429 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if $A\\subseteq \\mathbb{N}$ is sparse enough and does not cover all residue classes modulo $p$ for any prime $p$, then there exists some $n$ such that $n+a$ is prime for all $a\\in A$?\n\n\n\nWeisenberg \\cite{We24} has shown the answer is no: $A$ can be arbitrarily sparse and missing at least one residue class modulo every prime $p$, and yet $A+n$ is not contained in the primes for any $n\\in \\mathbb{Z}$. (Weisenberg gives several constructions of such an $A$.)\n\n\n\n\nReferences\n\n\n[We24] D. Weisenberg, Sparse Admissible Sets and a Problem of Erd\\H{o}s and Graham. Integers (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Graham and concerns the relationship between sparsity, admissibility, and prime shifts. An admissible set is one that avoids at least one residue class mod p for every prime p - such sets cannot be ruled out from having prime shifts by simple modular arguments. The Hardy-Littlewood prime tuples conjecture suggests dense finite admissible sets should have infinitely many prime shifts. Weisenberg (2024) resolved this problem negatively.",
+    "problemStatement": "Is it true that if A ⊆ ℕ is sparse enough and does not cover all residue classes modulo p for any prime p, then there exists some n such that n + a is prime for all a ∈ A?",
+    "proofStrategy": "Weisenberg constructed arbitrarily sparse admissible sets A such that for every potential shift n, some element a ∈ A satisfies n + a is composite. The construction uses ideas from covering systems of congruences to ensure all shifts are 'blocked'.",
+    "keyInsights": [
+      "Admissibility is necessary but not sufficient for prime shifts",
+      "Even lacunary (extremely sparse) admissible sets can fail",
+      "The construction uses covering systems of congruences",
+      "Contrast with prime tuples conjecture for finite sets"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #429 is SOLVED with answer NO. Weisenberg (2024) proved that even arbitrarily sparse admissible sets can fail to have any prime shift, by constructing explicit counterexamples using covering system techniques.",
+    "implications": "The result shows that admissibility (avoiding one residue class mod p for each prime) combined with arbitrarily strong sparsity conditions is still not sufficient to guarantee the existence of a prime shift. This contrasts with the conjectured behavior for dense finite admissible sets.",
+    "openQuestions": [
+      "What additional conditions beyond admissibility guarantee a prime shift?",
+      "Is the prime tuples conjecture true for finite admissible sets?",
+      "Can the constructions be made more explicit or with better quantitative bounds?"
+    ]
   }
 }
