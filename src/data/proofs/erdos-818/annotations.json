@@ -7,7 +7,7 @@
     "title": "Sumset A + A",
     "content": "The sumset A + A is the set of all pairwise sums {a + b : a, b ∈ A}. This is computed as the image of A × A under addition. For an arithmetic progression of length n, |A+A| = 2n-1 (small).",
     "mathContext": "sumset A = (A ×ˢ A).image (fun p => p.1 + p.2)",
-    "significance": "The sumset size measures additive structure. Small sumsets indicate strong additive patterns.",
+    "significance": "critical",
     "relatedConcepts": ["additive combinatorics", "doubling constant", "Freiman's theorem"]
   },
   {
@@ -18,7 +18,7 @@
     "title": "Product Set A · A",
     "content": "The product set A · A is the set of all pairwise products {a · b : a, b ∈ A}. For a geometric progression, |AA| = 2n-1 (small). For random sets, |AA| ≈ |A|² (large).",
     "mathContext": "productSet A = (A ×ˢ A).image (fun p => p.1 * p.2)",
-    "significance": "The product set size measures multiplicative structure. The conjecture asks: when sumset is small, product set must be large.",
+    "significance": "critical",
     "relatedConcepts": ["multiplication table", "multiplicative structure", "sum-product"]
   },
   {
@@ -29,7 +29,7 @@
     "title": "Small Sumset Condition",
     "content": "A set has a 'small sumset' if |A+A| ≤ K·|A| for some constant K. This means the additive doubling is bounded. Such sets have strong additive structure (by Freiman's theorem, they're similar to arithmetic progressions).",
     "mathContext": "hasSmallSumset A K ↔ |sumset A| ≤ K · |A|",
-    "significance": "This is the hypothesis of the problem - assuming additive structure is strong, what happens to multiplicative expansion?",
+    "significance": "critical",
     "relatedConcepts": ["additive doubling", "Freiman's theorem", "generalized APs"]
   },
   {
@@ -40,7 +40,7 @@
     "title": "Erdős Conjecture #818",
     "content": "The conjecture asks: if |A+A| ≤ K|A|, must |AA| ≥ |A|²/(log|A|)^C for some C? This says the product set must be nearly quadratic in size, with only a polylogarithmic loss.",
     "mathContext": "|A+A| ≤ K|A| ⟹ |AA| ≥ |A|²/(log|A|)^C",
-    "significance": "This quantifies the sum-product dichotomy: small sumsets force large product sets.",
+    "significance": "critical",
     "relatedConcepts": ["sum-product conjecture", "expansion", "structure vs randomness"]
   },
   {
@@ -51,7 +51,7 @@
     "title": "Solymosi's Theorem (2009)",
     "content": "Solymosi proved the STRONGER result: |AA| ≥ c·|A|²/log|A| (with C = 1, not arbitrary C). This means only a single log factor is lost from the quadratic bound, which is tight.",
     "mathContext": "|A+A| ≤ K|A| ⟹ |AA| ≥ c·|A|²/log|A|",
-    "significance": "This completely resolves Problem 818. The exponent on log is 1, not some unknown C.",
+    "significance": "critical",
     "relatedConcepts": ["Solymosi", "optimal bound", "log factor"]
   },
   {
@@ -62,7 +62,7 @@
     "title": "Multiplicative Energy",
     "content": "E×(A) counts 4-tuples (a₁, a₂, a₃, a₄) with a₁a₂ = a₃a₄. High energy means many multiplicative collisions. By Cauchy-Schwarz, E×(A) ≥ |A|⁴/|AA|, so bounding energy bounds the product set.",
     "mathContext": "E×(A) = |{(a₁,a₂,a₃,a₄) : a₁a₂ = a₃a₄}|",
-    "significance": "Energy is the key intermediate quantity in Solymosi's proof.",
+    "significance": "key",
     "relatedConcepts": ["energy", "Cauchy-Schwarz", "collision counting"]
   },
   {
@@ -73,7 +73,7 @@
     "title": "Solymosi's Energy Lemma",
     "content": "Solymosi's key innovation: E×(A) ≤ |A|² · |A+A| · log|A|. This upper bound on multiplicative energy in terms of sumset size is the crucial bridge between additive and multiplicative structure.",
     "mathContext": "E×(A) ≤ |A|² · |A+A| · log|A|",
-    "significance": "Combined with E×(A) ≥ |A|⁴/|AA|, this yields the main theorem.",
+    "significance": "critical",
     "relatedConcepts": ["energy bound", "sumset-energy", "additive-multiplicative bridge"]
   },
   {
@@ -84,7 +84,7 @@
     "title": "Proof Strategy",
     "content": "1. Lower bound: E×(A) ≥ |A|⁴/|AA| (Cauchy-Schwarz)\n2. Upper bound: E×(A) ≤ |A|²·|A+A|·log|A| (Solymosi)\n3. Combine: |A|⁴/|AA| ≤ |A|²·|A+A|·log|A|\n4. Rearrange: |AA| ≥ |A|²/(|A+A|/|A|·log|A|)\n5. If |A+A| ≤ K|A|: |AA| ≥ |A|²/(K·log|A|)",
     "mathContext": "Sandwiching multiplicative energy gives the product set bound",
-    "significance": "This elegant proof shows how energy methods convert additive information to multiplicative bounds.",
+    "significance": "key",
     "relatedConcepts": ["sandwich argument", "energy methods", "proof technique"]
   },
   {
@@ -95,7 +95,7 @@
     "title": "Arithmetic Progressions",
     "content": "For A = {1, 2, ..., n}: |A+A| = 2n-1 (additive doubling ~2, small). But |AA| ≈ n²/log n by the Erdős multiplication table problem. This shows the log factor in Solymosi's bound is NECESSARY.",
     "mathContext": "A = {1,...,n} ⟹ |A+A| = 2n-1, |AA| ≈ n²/log n",
-    "significance": "Arithmetic progressions are extremal examples showing the bound is tight.",
+    "significance": "supporting",
     "relatedConcepts": ["multiplication table", "extremal example", "tightness"]
   },
   {
@@ -106,7 +106,7 @@
     "title": "Summary",
     "content": "Problem 818 is SOLVED. Solymosi proved that small sumsets force large product sets: |A+A| ≤ K|A| implies |AA| ≥ c|A|²/log|A|. This is a quantitative version of the sum-product dichotomy.",
     "mathContext": "ErdosConjecture818 is true, with C = 1",
-    "significance": "Complete resolution of the problem, showing the power of energy methods.",
+    "significance": "critical",
     "relatedConcepts": ["problem solved", "sum-product", "additive combinatorics"]
   }
 ]
