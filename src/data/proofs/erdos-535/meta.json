@@ -1,33 +1,100 @@
 {
   "id": "erdos-535",
-  "title": "Erdős Problem #535",
+  "title": "Erdős Problem #535: GCD-Free r-Subsets",
   "slug": "erdos-535",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... denote the size of the largest subset of ... such that no subset of size ... has the same pairwise great...",
+  "description": "For r ≥ 3, estimate f_r(N): the maximum size of A ⊆ {1,...,N} with no r elements having equal pairwise gcds. Known: N^{1/2+o(1)} upper (Abbott-Hanson), N^{c/log log N} lower (Erdős). Gap remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/535",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos535Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "extremal-combinatorics",
+      "sunflower",
+      "open"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 535,
     "erdosUrl": "https://erdosproblems.com/535",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #535 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$, and let $f_r(N)$ denote the size of the largest subset of $\\{1,\\ldots,N\\}$ such that no subset of size $r$ has the same pairwise greatest common divisor between all elements. Estimate $f_r(N)$.\n\n\n\nErd\\H{o}s \\cite{Er64} proved that\\[f_r(N) \\leq N^{\\frac{3}{4}+o(1)},\\]and Abbott and Hanson \\cite{AbHa70} improved this exponent to $1/2$. Erd\\H{o}s \\cite{Er64} proved the lower bound\\[f_3(N) > N^{\\frac{c}{\\log\\log N}}\\]for some constant $c>0$, and conjectured this should also be an upper bound.\n\nErd\\H{o}s writes this is 'intimately connected' with the sunflower problem [20]. Indeed, the conjectured upper bound would follow from the following stronger version of the sunflower problem: estimate the size of the largest set of integers $A$ such that $\\omega(n)=k$ for all $n\\in A$ and there does not exist $a_1,\\ldots,a_r\\in A$ and an integer $d$ such that $(a_i,a_j)=d$ for all $i\\neq j$ and $(a_i/d,d)=1$ for all $i$. The conjectured upper bound for $f_r(N)$ would follow if the size of such an $A$ must be at most $c_r^k$. The original sunflower proof of Erd\\H{o}s and Rado gives the upper bound $c_r^kk!$.\n\nSee also [536].\n\n\n\n\nReferences\n\n\n[AbHa70] Abbott, H. L. and Hanson, D., An extremal problem in number theory. Bull. London Math. Soc. (1970), 324-326.\n\n[Er64] Erd\\H{o}s, P., On a problem in elementary number theory and a combinatorial problem. Math. Comp. (1964), 644-646.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects number theory to extremal combinatorics. The function f_r(N) measures the maximum 'gcd-avoiding' subset. Erdős showed this connects deeply to the Sunflower Conjecture - a major open problem in combinatorics. Progress on either would impact the other.",
+    "problemStatement": "For r ≥ 3, let f_r(N) denote the maximum size of a subset A ⊆ {1,...,N} such that no r elements a₁,...,aᵣ have the same pairwise gcd (i.e., no d with gcd(aᵢ,aⱼ) = d for all i ≠ j). Estimate f_r(N).",
+    "proofStrategy": "Upper bounds use counting/graph-theoretic methods. Erdős (1964) got N^{3/4}, Abbott-Hanson (1970) improved to N^{1/2}. Lower bounds use multiplicative constructions. The gap between N^{1/2} (upper) and N^{c/log log N} (lower) remains open, with Erdős conjecturing the lower bound is correct.",
+    "keyInsights": [
+      "f_r(N) measures maximal 'gcd-clique-free' subsets",
+      "Upper: f_r(N) ≤ N^{1/2+o(1)} (Abbott-Hanson 1970)",
+      "Lower: f_3(N) > N^{c/log log N} (Erdős 1964)",
+      "Conjecture: f_r(N) ≤ N^{c/log log N} (quasi-polynomial)",
+      "Intimately connected to Sunflower Conjecture (Problem #20)",
+      "Gap between polynomial and quasi-polynomial bounds is enormous"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "HasNoRGCDSubset, f_r(N) definition",
+      "startLine": 43,
+      "endLine": 65
+    },
+    {
+      "id": "erdos-upper",
+      "title": "Erdős's Original Upper Bound",
+      "summary": "f_r(N) ≤ N^{3/4+o(1)} (1964)",
+      "startLine": 80,
+      "endLine": 95
+    },
+    {
+      "id": "abbott-hanson",
+      "title": "Abbott-Hanson Upper Bound",
+      "summary": "f_r(N) ≤ N^{1/2+o(1)} (1970)",
+      "startLine": 96,
+      "endLine": 114
+    },
+    {
+      "id": "lower-bound",
+      "title": "Erdős's Lower Bound",
+      "summary": "f_3(N) > N^{c/log log N}",
+      "startLine": 115,
+      "endLine": 134
+    },
+    {
+      "id": "gap",
+      "title": "The Gap and Conjecture",
+      "summary": "Conjectured: lower bound is tight",
+      "startLine": 135,
+      "endLine": 157
+    },
+    {
+      "id": "sunflower",
+      "title": "Connection to Sunflower Problem",
+      "summary": "Would follow from strong sunflower conjecture",
+      "startLine": 158,
+      "endLine": 184
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem remains OPEN",
+      "startLine": 239,
+      "endLine": 281
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #535 asks for the order of f_r(N), the maximum gcd-clique-free subset size. The problem remains OPEN with a large gap: upper bound N^{1/2} vs lower bound N^{c/log log N}. Erdős conjectured the lower bound is correct, which would follow from a strengthened Sunflower Conjecture.",
+    "implications": "This problem illustrates the deep connections between number theory and extremal combinatorics. Progress would impact understanding of gcd structure, multiplicative number theory, and the Sunflower Conjecture. The techniques developed (counting, graph methods) are widely applicable.",
+    "openQuestions": [
+      "Is f_r(N) ≤ N^{c/log log N}? (Erdős's conjecture)",
+      "Does a stronger sunflower lemma hold?",
+      "What is the exact constant c in the lower bound?",
+      "Can the Abbott-Hanson upper bound N^{1/2} be improved?"
+    ]
   }
 }

@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-535-header",
+    "proofId": "erdos-535",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #535: GCD-Free r-Subsets**\n\nEstimate f_r(N): max size of A ⊆ {1,...,N} with no r elements having equal pairwise gcds.\n\n**Status: OPEN**\n- Upper: N^{1/2+o(1)} (Abbott-Hanson)\n- Lower: N^{c/log log N} (Erdős)\n- Conjectured: lower bound is tight",
+    "mathContext": "Connects number theory to extremal combinatorics. Intimately related to the Sunflower Conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["GCD", "Sunflower problem", "Extremal combinatorics", "Turán-type problems"]
+  },
+  {
+    "id": "ann-535-definition",
+    "proofId": "erdos-535",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "HasNoRGCDSubset",
+    "content": "**HasNoRGCDSubset(A, r):**\n\nNo r elements of A have the same pairwise gcd.\n\nFormally: no S ⊆ A with |S| = r and gcd(a,b) = d for all distinct a,b ∈ S.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-535-f",
+    "proofId": "erdos-535",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "f_r(N)",
+    "content": "**f(r, N):**\n\nMaximum size of A ⊆ {1,...,N} satisfying HasNoRGCDSubset.\n\nThe main object of study in this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-535-erdos1964",
+    "proofId": "erdos-535",
+    "range": { "startLine": 84, "endLine": 88 },
+    "type": "axiom",
+    "title": "Erdős (1964) Upper Bound",
+    "content": "**erdos_1964_upper_bound:**\n\nf_r(N) ≤ N^{3/4+o(1)}\n\nThe first non-trivial upper bound. Later improved by Abbott-Hanson.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-535-abbotthanson",
+    "proofId": "erdos-535",
+    "range": { "startLine": 100, "endLine": 104 },
+    "type": "axiom",
+    "title": "Abbott-Hanson (1970)",
+    "content": "**abbott_hanson_upper_bound:**\n\nf_r(N) ≤ N^{1/2+o(1)}\n\nImproved exponent from 3/4 to 1/2. This is the best known upper bound!\n\nPublished in Bull. London Math. Soc. (1970).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-535-improvement",
+    "proofId": "erdos-535",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "theorem",
+    "title": "Exponent Improvement",
+    "content": "**exponent_improvement:**\n\n3/4 > 1/2\n\nAbbott-Hanson's bound is strictly better than Erdős's original.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-535-lower",
+    "proofId": "erdos-535",
+    "range": { "startLine": 119, "endLine": 122 },
+    "type": "axiom",
+    "title": "Erdős Lower Bound",
+    "content": "**erdos_lower_bound:**\n\nf_3(N) > N^{c/log log N}\n\nThis is quasi-polynomial: grows slower than N^ε for any ε > 0, but faster than polylog.\n\nErdős conjectured this is also an upper bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-535-gap",
+    "proofId": "erdos-535",
+    "range": { "startLine": 139, "endLine": 144 },
+    "type": "theorem",
+    "title": "The Gap",
+    "content": "**current_gap:**\n\nUpper: N^{1/2} (polynomial)\nLower: N^{c/log log N} (quasi-polynomial)\n\nThe gap is enormous - polynomial vs quasi-polynomial!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-535-conjecture",
+    "proofId": "erdos-535",
+    "range": { "startLine": 146, "endLine": 150 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**ErdosConjecture:**\n\nf_r(N) ≤ N^{c/log log N} for some constant c.\n\nThe lower bound should be tight. This would close the gap dramatically!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-535-sunflower",
+    "proofId": "erdos-535",
+    "range": { "startLine": 162, "endLine": 178 },
+    "type": "insight",
+    "title": "Sunflower Connection",
+    "content": "**Connection to Sunflower Problem:**\n\nErdős's conjecture would follow from a stronger Sunflower Lemma.\n\nThe original Erdős-Rado sunflower bound is c_r^k · k!.\nA bound of c_r^k (removing k!) would suffice.\n\nSee Problem #20 (Sunflower Conjecture).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-535-techniques",
+    "proofId": "erdos-535",
+    "range": { "startLine": 205, "endLine": 221 },
+    "type": "insight",
+    "title": "Proof Techniques",
+    "content": "**Methods used:**\n\n1. **Counting** - Erdős's approach to upper bounds\n2. **Graph theory** - Abbott-Hanson's Turán-type argument\n3. **Multiplicative constructions** - For lower bounds\n\nThe mismatch between multiplicative GCD and additive counting makes the problem hard.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-535-summary",
+    "proofId": "erdos-535",
+    "range": { "startLine": 251, "endLine": 280 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #535: OPEN**\n\n**Problem:** Estimate f_r(N)\n\n**Known:**\n- Upper: N^{1/2+o(1)} (Abbott-Hanson)\n- Lower: N^{c/log log N} (Erdős)\n\n**Conjecture:** f_r(N) ≤ N^{c/log log N}\n\n**Connection:** Would follow from strong sunflower conjecture.",
+    "significance": "critical"
+  }
+]

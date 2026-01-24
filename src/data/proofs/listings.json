@@ -8963,17 +8963,22 @@
   },
   {
     "id": "erdos-535",
-    "title": "Erdős Problem #535",
+    "title": "Erdős Problem #535: GCD-Free r-Subsets",
     "slug": "erdos-535",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... denote the size of the largest subset of ... such that no subset of size ... has the same pairwise great...",
-    "status": "pending",
+    "description": "For r ≥ 3, estimate f_r(N): the maximum size of A ⊆ {1,...,N} with no r elements having equal pairwise gcds. Known: N^{1/2+o(1)} upper (Abbott-Hanson), N^{c/log log N} lower (Erdős). Gap remains open.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "extremal-combinatorics",
+      "sunflower",
+      "open"
     ],
     "erdosNumber": 535,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-537",
