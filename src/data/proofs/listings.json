@@ -8129,17 +8129,22 @@
   },
   {
     "id": "erdos-465",
-    "title": "Erdős Problem #465",
+    "title": "Erdős Problem #465: Points with Distances Avoiding Integers",
     "slug": "erdos-465",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the maximum number of points ... which can be chosen in a circle of radius ... such that\\[\\| \\lvert P_i-P_j\\rv...",
-    "status": "pending",
+    "description": "Let N(X,δ) be the maximum number of points in a circle of radius X such that all pairwise distances avoid integers by at least δ. Is N(X,δ) = o(X)? Is N(X,δ) < X^{1/2+o(1)}? Both answered YES by Sárközy (1976) and Konyagin (2001).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "diophantine-approximation",
+      "distances",
+      "solved"
     ],
     "erdosNumber": 465,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-470",

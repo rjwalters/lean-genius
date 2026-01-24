@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-465-header",
+    "proofId": "erdos-465",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #465: Points with Distances Avoiding Integers**\n\nLet N(X,δ) be the max points in a radius-X circle with pairwise distances ‖d‖ ≥ δ.\n\nQuestions:\n1. Is N(X,δ) = o(X)?\n2. Is N(X,δ) < X^{1/2+o(1)}?\n\n**Answer:** YES to both! N(X,δ) ≍ X^{1/2}",
+    "mathContext": "Connects combinatorial geometry to Diophantine approximation. The constraint of avoiding integer distances is surprisingly restrictive.",
+    "significance": "critical",
+    "relatedConcepts": ["Diophantine approximation", "Distance to integers", "Packing", "Exponential sums"]
+  },
+  {
+    "id": "ann-465-distToInt",
+    "proofId": "erdos-465",
+    "range": { "startLine": 48, "endLine": 63 },
+    "type": "definition",
+    "title": "Distance to Nearest Integer",
+    "content": "**distToInt:**\n\n‖x‖ = |x - round(x)| = min{|x - n| : n ∈ ℤ}\n\nProperties:\n- 0 ≤ ‖x‖ ≤ 1/2 always\n- ‖x‖ = 0 iff x ∈ ℤ",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-pointconfig",
+    "proofId": "erdos-465",
+    "range": { "startLine": 69, "endLine": 84 },
+    "type": "definition",
+    "title": "Point Configurations",
+    "content": "**PointConfig:**\n\nA configuration of n points in a disk of radius X.\n\n**DistancesAvoidIntegers:**\nFor all i ≠ j: ‖|Pᵢ - Pⱼ|‖ ≥ δ\n\n**maxPoints(X, δ):**\nN(X, δ) = supremum over valid configurations",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-first",
+    "proofId": "erdos-465",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "definition",
+    "title": "First Conjecture",
+    "content": "**FirstConjecture:**\n\nN(X, δ) = o(X) for any fixed δ ∈ (0, 1/2)\n\nIn words: the maximum number of points grows slower than linearly in the radius.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-sarkozy",
+    "proofId": "erdos-465",
+    "range": { "startLine": 94, "endLine": 101 },
+    "type": "axiom",
+    "title": "Sárközy's Theorem (1976)",
+    "content": "**sarkozy_1976:**\n\nN(X, δ) ≪ δ⁻³ · X / log log X\n\nThis proves the first conjecture! The bound is 'almost linear' (X divided by a very slowly growing function).\n\nPublished in Studia Sci. Math. Hungar. (1976).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-second",
+    "proofId": "erdos-465",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "definition",
+    "title": "Second Conjecture",
+    "content": "**SecondConjecture:**\n\nN(X, δ) < X^{1/2+o(1)} for any fixed δ > 0\n\nMuch stronger than the first conjecture! Claims nearly square-root growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-konyagin",
+    "proofId": "erdos-465",
+    "range": { "startLine": 121, "endLine": 128 },
+    "type": "axiom",
+    "title": "Konyagin's Theorem (2001)",
+    "content": "**konyagin_2001:**\n\nN(X, δ) ≪_δ X^{1/2}\n\nThis is THE optimal bound! The exponent 1/2 cannot be improved.\n\nUsed Fourier analysis and exponential sum techniques.\n\nPublished in Mat. Zametki (2001).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-comparison",
+    "proofId": "erdos-465",
+    "range": { "startLine": 145, "endLine": 159 },
+    "type": "insight",
+    "title": "Bound Comparison",
+    "content": "**Improvement:**\n\nSárközy: N ≪ X / log log X (almost linear)\nKonyagin: N ≪ X^{1/2} (square root)\n\nThe improvement is enormous! For X = 10⁶:\n- Sárközy: ~10⁶ / 2.6 ≈ 400,000\n- Konyagin: ~1,000\n\nKonyagin's bound is 400× better!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-465-lower",
+    "proofId": "erdos-465",
+    "range": { "startLine": 165, "endLine": 172 },
+    "type": "axiom",
+    "title": "Lower Bound (Problem #466)",
+    "content": "**problem_466_lower_bound:**\n\nN(X, δ) ≫_δ X^{1/2}\n\nThere EXIST configurations achieving nearly X^{1/2} points!\n\nThis proves the exponent 1/2 is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-optimal",
+    "proofId": "erdos-465",
+    "range": { "startLine": 174, "endLine": 180 },
+    "type": "theorem",
+    "title": "Optimality",
+    "content": "**exponent_optimal:**\n\nCombining Konyagin (upper) and Problem #466 (lower):\n\nN(X, δ) ≍ X^{1/2}\n\nThe optimal growth is exactly square root, up to δ-dependent constants.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-techniques",
+    "proofId": "erdos-465",
+    "range": { "startLine": 186, "endLine": 201 },
+    "type": "insight",
+    "title": "Proof Techniques",
+    "content": "**Key methods:**\n\n1. **Exponential sums** - counting points with distance constraints\n2. **Fourier analysis** - Konyagin's approach to the sharp bound\n3. **Discrepancy theory** - distribution of distances mod 1",
+    "significance": "key"
+  },
+  {
+    "id": "ann-465-intuition",
+    "proofId": "erdos-465",
+    "range": { "startLine": 228, "endLine": 241 },
+    "type": "insight",
+    "title": "Why X^{1/2}?",
+    "content": "**Intuition:**\n\nConsider lattice points in a disk: about πX² points.\nAll distances are integers (violate constraint!).\n\nTo satisfy ‖d‖ ≥ δ, we must 'thin' the configuration.\nThe geometry limits us to ~√X points.\n\nThe constraint is very restrictive: random points would typically have ‖d‖ < δ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-465-solved",
+    "proofId": "erdos-465",
+    "range": { "startLine": 247, "endLine": 259 },
+    "type": "theorem",
+    "title": "Problem SOLVED",
+    "content": "**erdos_465_solved:**\n\nBoth conjectures are TRUE!\n\n**optimal_growth:**\nN(X, δ) ≍ X^{1/2} with optimal exponent.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-465-summary",
+    "proofId": "erdos-465",
+    "range": { "startLine": 261, "endLine": 291 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #465: SOLVED**\n\n**Questions:**\n1. Is N(X,δ) = o(X)? YES\n2. Is N(X,δ) < X^{1/2+o(1)}? YES\n\n**Results:**\n- Sárközy (1976): N ≪ X / log log X\n- Konyagin (2001): N ≪_δ X^{1/2} [OPTIMAL]\n- Lower bound: N ≫_δ X^{1/2}\n\n**Conclusion:** N(X,δ) ≈ X^{1/2}",
+    "significance": "critical"
+  }
+]
