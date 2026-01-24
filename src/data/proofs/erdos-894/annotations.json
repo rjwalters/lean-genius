@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-894-lacunary",
+    "proofId": "erdos-894",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "IsLacunary",
+    "content": "A sequence is lacunary with ratio (1+ε) if n_{k+1} ≥ (1+ε)n_k for all k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-growth",
+    "proofId": "erdos-894",
+    "range": { "startLine": 46, "endLine": 57 },
+    "type": "theorem",
+    "title": "lacunary_exponential_growth",
+    "content": "Lacunary sequences grow at least exponentially: a_k ≥ a_0 · (1+ε)^k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-894-geometric",
+    "proofId": "erdos-894",
+    "range": { "startLine": 59, "endLine": 74 },
+    "type": "theorem",
+    "title": "geometric_is_lacunary",
+    "content": "Powers of r ≥ 2 form a lacunary sequence with ε = 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-894-coloring",
+    "proofId": "erdos-894",
+    "range": { "startLine": 80, "endLine": 86 },
+    "type": "definition",
+    "title": "Coloring, AvoidsMonochromatic",
+    "content": "A coloring avoids monochromatic solutions if a - b ∈ A implies c(a) ≠ c(b).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-colorable",
+    "proofId": "erdos-894",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "definition",
+    "title": "IsFinitelyColorable",
+    "content": "A set A is finitely colorable if ∃ finite coloring avoiding monochromatic differences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-fractional",
+    "proofId": "erdos-894",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "definition",
+    "title": "fractionalDistance",
+    "content": "||x|| = min(x - floor(x), ceil(x) - x), the distance to nearest integer.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-894-problem464",
+    "proofId": "erdos-894",
+    "range": { "startLine": 106, "endLine": 111 },
+    "type": "theorem",
+    "title": "problem_464_result",
+    "content": "For lacunary A, ∃ irrational θ and δ > 0 with inf_k ||θn_k|| > δ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-katznelson",
+    "proofId": "erdos-894",
+    "range": { "startLine": 117, "endLine": 131 },
+    "type": "theorem",
+    "title": "katznelsonColoring",
+    "content": "Color n by which interval of length δ contains θn (mod 1). Uses O(1/δ) colors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-main",
+    "proofId": "erdos-894",
+    "range": { "startLine": 137, "endLine": 149 },
+    "type": "theorem",
+    "title": "lacunary_finitely_colorable",
+    "content": "Every lacunary sequence is finitely colorable. Follows from Problem #464.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-peresschlag",
+    "proofId": "erdos-894",
+    "range": { "startLine": 155, "endLine": 165 },
+    "type": "theorem",
+    "title": "peres_schlag_bound",
+    "content": "Peres-Schlag (2010): O(ε⁻¹ log(1/ε)) colors suffice for ratio (1+ε).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-cayley",
+    "proofId": "erdos-894",
+    "range": { "startLine": 171, "endLine": 195 },
+    "type": "definition",
+    "title": "CayleyGraph",
+    "content": "Cayley graph on ℤ with edges u-v ∈ A. Lacunary implies finite chromatic number.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-894-implication",
+    "proofId": "erdos-894",
+    "range": { "startLine": 216, "endLine": 221 },
+    "type": "theorem",
+    "title": "problem_464_implies_894",
+    "content": "Problem #464 (badly approximable θ) implies Problem #894 (finite coloring).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-894-powers2",
+    "proofId": "erdos-894",
+    "range": { "startLine": 227, "endLine": 243 },
+    "type": "theorem",
+    "title": "powers_of_2_colorable",
+    "content": "Powers of 2 and 3 are finitely colorable. Special cases of main theorem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-894-solved",
+    "proofId": "erdos-894",
+    "range": { "startLine": 280, "endLine": 284 },
+    "type": "theorem",
+    "title": "erdos_894_solved",
+    "content": "Problem #894 is SOLVED: YES, finite coloring exists with O(ε⁻¹ log(1/ε)) colors.",
+    "significance": "critical"
+  }
+]
