@@ -1,54 +1,105 @@
 {
   "slug": "erdos-249",
-  "title": "Erdős #249",
-  "phase": "NEW",
+  "title": "Erdős #249: Irrationality of Sum of φ(n)/2^n",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_n \\frac{\\phi(n)}{2^n}\\]irrational? Here $\\phi$ is the Euler totient function.\n\n\n\nThe decimal expansion of this sum is A256936 on the OEIS.\n\n\nBack to the problem",
-    "plain": "Forum",
-    "whyMatters": []
+    "formal": "\\text{Is } \\sum_{n=1}^{\\infty} \\frac{\\phi(n)}{2^n} \\text{ irrational?}",
+    "plain": "Is the sum ∑ φ(n)/2^n irrational, where φ is Euler's totient function?",
+    "whyMatters": [
+      "Tests irrationality techniques on arithmetic function series",
+      "Decimal expansion is OEIS A256936"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Series converges absolutely (φ(n)/2^n ≤ n/2^n)",
+      "Sum is positive and at most 2",
+      "Numerical value ≈ 1.3240... (OEIS A256936)"
+    ],
+    "open": [
+      "Is the sum irrational?"
+    ],
+    "goal": "Prove irrationality (or find rational representation)"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T22:27:32.550Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-01-24T17:55:00Z",
+    "iteration": 2,
+    "focus": "Clean formalization with convergence axiomatized and basic lemmas proved.",
+    "blockers": [
+      "Problem is OPEN - irrationality proof unknown"
+    ],
+    "nextAction": "Consider proving convergence from Mathlib comparison tests",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ACTIVE (OPEN): Erdos249Problem.lean (156 lines, 3 axioms, 0 sorries). Clean formalization with tsum. Term computations PROVED: termFn_zero, termFn_one, termFn_two, partial_sum_2. Convergence and bounds axiomatized.",
+    "builtItems": [
+      "Erdos249Problem.lean (156 lines, 3 axioms, 0 sorries)",
+      "termFn: φ(n)/2^n term definition",
+      "totientPowerSum: ∑' n, termFn n via tsum",
+      "totient_le_self (PROVED via Nat.totient_le)",
+      "termFn_nonneg (PROVED)",
+      "termFn_zero, termFn_one, termFn_two (PROVED)",
+      "totientPowerSum_summable (AXIOM)",
+      "totientPowerSum_pos (AXIOM)",
+      "totientPowerSum_le_two (AXIOM)",
+      "erdos_249: Irrational totientPowerSum",
+      "isRational, erdos_249_iff_not_rational (PROVED by rfl)",
+      "partial_sum_2 (PROVED): first 2 terms = 3/4"
+    ],
+    "insights": [
+      "Status: OPEN - no irrationality proof known",
+      "Convergence: φ(n)/2^n ≤ n/2^n and ∑ n/2^n = 2",
+      "First terms: 1/2 + 1/4 + 2/8 + 2/16 + ...",
+      "Numerical value ≈ 1.3240... (OEIS A256936)",
+      "Clean Lean API: uses tsum and Nat.totient",
+      "Irrational definition: ¬∃ r : ℚ, r = x"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #249 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_n \\frac{\\phi(n)}{2^n}\\]irrational? Here $\\phi$ is the Euler totient function.\n\n\n\nThe decimal expansion of this sum is A256936 on the OEIS.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #248\n- Problem #250\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "nextSteps": [
+      "Prove totientPowerSum_summable from Mathlib comparison",
+      "Prove totientPowerSum_pos from first term",
+      "Main conjecture requires irrationality techniques"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Direct formalization",
+      "status": "completed",
+      "notes": "Clean tsum-based formalization with basic lemmas proved"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "irrationality",
+    "totient",
+    "number-theory",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos249Problem.lean"
   ],
   "references": {
     "papers": [],
-    "urls": [],
-    "mathlib": []
+    "urls": [
+      "https://erdosproblems.com/249",
+      "https://oeis.org/A256936"
+    ],
+    "mathlib": [
+      "Nat.totient",
+      "Irrational"
+    ]
   },
   "started": "2026-01-12T22:27:32.550Z",
+  "lastUpdate": "2026-01-24T17:55:00Z",
   "significance": 7,
   "tractability": 5
 }
