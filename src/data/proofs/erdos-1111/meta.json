@@ -1,33 +1,153 @@
 {
   "id": "erdos-1111",
-  "title": "Erdős Problem #1111",
+  "title": "Erdős Problem #1111: Anticomplete High-Chromatic Subgraphs",
   "slug": "erdos-1111",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a finite graph and ... are disjoint sets of vertices then we call ... anticomplete if there are no edges between .....",
+  "description": "For t, c ≥ 1, find d(t, c): minimal d such that any graph with χ(G) ≥ d and ω(G) < t has anticomplete sets A, B with χ(A) ≥ χ(B) ≥ c. Known: d(2,2)=2, d(3,2)=4, d(4,2)=5. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "El Zahar-Erdős (1985), Wagon (1980), Nguyen-Scott-Seymour (2024)",
     "sourceUrl": "https://erdosproblems.com/1111",
-    "date": "",
-    "status": "pending",
+    "date": "1985",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1111Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "clique-number",
+      "anticomplete",
+      "coloring",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1111,
     "erdosUrl": "https://erdosproblems.com/1111",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Basic graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Clique",
+        "description": "Cliques and CliqueFree",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertex subsets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for bounds",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsAnticomplete definition: disjoint sets with no edges between them",
+      "inducedChromaticNumber: χ(G[S]) for induced subgraph",
+      "cliqueNumber: ω(G) = max clique size",
+      "HasElZaharErdosProperty: the (t, c, d) property",
+      "d_func: the function d(t, c)",
+      "ElZaharErdosConjecture: existence for all t, c ≥ 1",
+      "d_2_2, d_3_2, d_4_2 axioms: known exact values",
+      "wagon_1980 axiom: d(t, 2) ≤ C(t, 2) + 1",
+      "d_3_3_bound axiom: d(3, 3) ≤ 8",
+      "reduction_to_t_le_c axiom: sufficient to prove for t ≤ c",
+      "HasNSSProperty: strengthened property with minimum degree",
+      "nguyen_scott_seymour_2024 axiom: NSS existence result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1111 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a finite graph and $A,B$ are disjoint sets of vertices then we call $A,B$ anticomplete if there are no edges between $A$ and $B$.\n\nIf $t,c\\geq 1$ then there exists $d\\geq 1$ such that if $\\chi(G)\\geq d$ and $\\omega(G)<t$ then there are anticomplete sets $A,B$ with $\\chi(A)\\geq \\chi(B)\\geq c$.\n\n\n\nA problem of El Zahar and Erd\\H{o}s \\cite{ElEr85}, who show that it suffices to consider the case $t\\leq c$. Let $d(t,c)$ be the minimal such $d$.\n\nEl Zahar and Erd\\H{o}s note that a result of Wagon \\cite{Wa80b} implies $d(t,2)\\leq \\binom{t}{2}+1$ (and in fact $d(t+1,2)\\leq d(t,2)+t$). We also have $t(2,2)=2$ and $t(3,2)=4$ and $t(4,2)=5$.\n\nEl Zahar and Erd\\H{o}s proved $d(3,3)\\leq 8$ and\\[d(t,3) \\leq 2\\binom{t-1}{3}+7\\binom{t-1}{2}+t\\]for $t>3$.\n\nNguyen, Scott, and Seymour \\cite{NSS24} prove that if $t,c\\geq 1$ then there exists $d\\geq 1$ such that if $\\chi(G)\\geq d$ and $\\omega(G)<t$ then there are anticomplete sets $A,B$ with $\\chi(B)\\geq c$ and such that the minimum degree of the induced graph on $A$ is at least $c$.\n\n\n\n\nReferences\n\n\n[ElEr85] El-Zahar, M. and Erd\\H{o}s, P., On the existence of two nonneighboring subgraphs in a graph. Combinatorica (1985), 295--300.\n\n[NSS24] Nguyen, Tung and Scott, Alex and Seymour, Paul, On a problem of {E}l-{Z}ahar and {E}rd\\H{o}s. J. Combin. Theory Ser. B (2024), 211--222.\n\n[Wa80b] Wagon, Stanley, A bound on the chromatic number of graphs without certain\ninduced subgraphs. J. Combin. Theory Ser. B (1980), 345--346.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1111: Anticomplete High-Chromatic Subgraphs**\n\nThis problem was posed by El Zahar and Erdős in 1985.\n\n**Key History:**\n- **Wagon (1980):** Bound implying d(t, 2) ≤ C(t, 2) + 1\n- **El Zahar-Erdős (1985):** Original problem, reduction to t ≤ c, bounds for c = 3\n- **Nguyen-Scott-Seymour (2024):** Strengthened existence with minimum degree constraint\n\n**Mathematical Context:**\nHigh chromatic number with bounded clique number forces rich structure. This problem asks what anticomplete high-chromatic substructures must exist.",
+    "problemStatement": "**Problem Statement (Open)**\n\nTwo vertex sets A, B are **anticomplete** if there are no edges between them.\n\n**Conjecture:** For t, c ≥ 1, there exists d = d(t, c) such that any graph G with χ(G) ≥ d and ω(G) < t contains anticomplete sets A, B with χ(A) ≥ χ(B) ≥ c.\n\n**Known Values:**\n- d(2, 2) = 2, d(3, 2) = 4, d(4, 2) = 5\n- d(t, 2) ≤ C(t, 2) + 1 (Wagon 1980)\n- d(3, 3) ≤ 8 (El Zahar-Erdős 1985)\n\n**Open:** Exact values of d(t, c) for general t, c.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsAnticomplete: disjoint sets with no edges between them\n   - inducedChromaticNumber: χ of induced subgraph\n   - cliqueNumber: ω(G)\n\n2. **The (t, c, d) Property:**\n   - HasElZaharErdosProperty: the main property\n   - d_func: minimal d for the property to hold\n\n3. **Known Results as Axioms:**\n   - Exact values: d(2,2), d(3,2), d(4,2)\n   - Wagon's bound: d(t, 2) ≤ C(t, 2) + 1\n   - El Zahar-Erdős: d(3, 3) ≤ 8, reduction to t ≤ c\n\n4. **NSS Strengthening:**\n   - HasNSSProperty with minimum degree constraint",
+    "keyInsights": [
+      "**Anticomplete = No Edges:** A and B share no edges at all",
+      "**High χ, Low ω:** Graphs with large chromatic but small clique number have rich structure",
+      "**Reduction to t ≤ c:** Suffices to prove conjecture when clique bound ≤ chromatic target",
+      "**Exact vs Existence:** Existence is essentially known, but exact values of d(t, c) are hard",
+      "**NSS Strengthening:** Can additionally require A has minimum degree ≥ c"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsAnticomplete, inducedChromaticNumber, cliqueNumber",
+      "startLine": 41,
+      "endLine": 64
+    },
+    {
+      "id": "el-zahar-erdos",
+      "title": "The El Zahar-Erdős Property",
+      "summary": "HasElZaharErdosProperty, d_func, ElZaharErdosConjecture",
+      "startLine": 66,
+      "endLine": 93
+    },
+    {
+      "id": "small-cases",
+      "title": "Known Small Cases",
+      "summary": "d(2,2) = 2, d(3,2) = 4, d(4,2) = 5",
+      "startLine": 95,
+      "endLine": 115
+    },
+    {
+      "id": "wagon",
+      "title": "Wagon's Upper Bound (1980)",
+      "summary": "d(t, 2) ≤ C(t, 2) + 1",
+      "startLine": 117,
+      "endLine": 133
+    },
+    {
+      "id": "el-zahar-erdos-1985",
+      "title": "El Zahar-Erdős Results (1985)",
+      "summary": "Reduction to t ≤ c, d(3, 3) ≤ 8, general c = 3 bound",
+      "startLine": 135,
+      "endLine": 159
+    },
+    {
+      "id": "nss",
+      "title": "Nguyen-Scott-Seymour (2024)",
+      "summary": "Strengthened existence with minimum degree",
+      "startLine": 161,
+      "endLine": 182
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "Ramsey theory, χ-boundedness",
+      "startLine": 184,
+      "endLine": 202
+    },
+    {
+      "id": "difficulty",
+      "title": "Why It's Hard",
+      "summary": "Exact values vs existence, cannot compute",
+      "startLine": 204,
+      "endLine": 222
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorems and problem status",
+      "startLine": 224,
+      "endLine": 272
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1111 asks for the function d(t, c): the minimal chromatic number guaranteeing anticomplete high-chromatic subsets in graphs with bounded clique number. Some exact values are known (d(2,2)=2, d(3,2)=4, d(4,2)=5), and upper bounds exist, but determining d(t, c) for general t, c remains open.",
+    "implications": "**Connections and Applications**\n\n1. **χ-Boundedness:** Structure of high-chromatic, low-clique graphs\n\n2. **Ramsey Theory:** Structural Ramsey-type results\n\n3. **Graph Coloring:** Understanding what substructures high chromatic number forces\n\n4. **Extremal Graph Theory:** Interplay between chromatic and clique numbers",
+    "openQuestions": [
+      "What is d(t, c) for general t, c?",
+      "Is d(3, 3) exactly 8?",
+      "Can the El Zahar-Erdős c=3 bound be improved?",
+      "What is the asymptotic growth of d(t, t)?",
+      "Can algorithmic methods find anticomplete high-χ subsets efficiently?"
+    ]
   }
 }
