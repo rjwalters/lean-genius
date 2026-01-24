@@ -1,57 +1,112 @@
 {
   "slug": "erdos-100",
   "title": "Erdős #100: Point Sets with Restricted Distances",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #100: Point Sets with Restricted Distances.",
-    "whyMatters": []
+    "formal": "\\forall A \\subseteq \\mathbb{R}^2 \\text{ with } |A|=n, (\\forall p,q \\in A: d(p,q) \\geq 1 \\land d(p,q) \\in \\mathbb{Z}^+) \\implies \\text{diam}(A) \\gg n",
+    "plain": "For n points in ℝ² with pairwise distances ≥ 1 and all distances integers (equivalently, differing by ≥ 1), must the diameter be ≫ n?",
+    "whyMatters": [
+      "Connects to distinct distances problem (Erdős #89)",
+      "Relates discrete geometry to combinatorial bounds",
+      "Guth-Katz incidence geometry methods apply"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Kanold: diameter ≥ n^(3/4)",
+      "Guth-Katz (2015): diameter ≥ cn/log(n) via distinct distances",
+      "Piepmeyer: 9 points exist with diameter < 5"
+    ],
+    "open": [
+      "Main conjecture: does diameter grow linearly with n?",
+      "Strong conjecture: diameter ≥ n-1 for large n"
+    ],
+    "goal": "Prove linear diameter growth or find construction with sublinear diameter"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.539Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-01-24T17:30:00Z",
+    "iteration": 2,
+    "focus": "Formalization complete with bounds axiomatized, some lemmas proved.",
+    "blockers": [
+      "Problem is OPEN - linear diameter conjecture unresolved"
+    ],
+    "nextAction": "Consider proving distinct_distances_le_diameter without sorry",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ACTIVE (OPEN): Erdos100Problem.lean (330 lines, 4 axioms, 3 sorries). Complete formalization with restricted distance sets, diameter, and known bounds. Kanold and Guth-Katz bounds axiomatized. Piepmeyer construction axiomatized. Several lemmas proved.",
+    "builtItems": [
+      "Erdos100Problem.lean (330 lines, 4 axioms, 3 sorries)",
+      "Point := EuclideanSpace ℝ (Fin 2)",
+      "dist: Euclidean distance function",
+      "minDistanceOne, integerDistances predicates",
+      "hasRestrictedDistances: combined condition",
+      "diameter, diameter': max pairwise distance",
+      "erdos_100_conjecture: diameter ≥ c·n",
+      "erdos_100_strong_conjecture: diameter ≥ n-1",
+      "numDistinctDistances: count distinct distances",
+      "unitDistanceGraph: edges for distance 1",
+      "piepmeyer_ratio (PROVED): ratio < 5/9 achievable",
+      "dist_le_diameter (PROVED): distances bounded by diameter",
+      "diameter_ge_one (PROVED): diameter ≥ 1 for n ≥ 2",
+      "diameter_achieved (PROVED): diameter realized by some pair",
+      "unit_graph_min_distance (PROVED): unit graph characterization"
+    ],
+    "insights": [
+      "Status: OPEN - linear diameter conjecture unresolved",
+      "Integer distance condition: all pairwise distances are positive integers",
+      "Best lower bound: n/log(n) from Guth-Katz distinct distances",
+      "Best upper bound: 9 points with diameter < 5 (Piepmeyer)",
+      "Connection to Erdős #89: distinct distances problem key ingredient",
+      "Key inequality: numDistinctDistances ≤ floor(diameter)",
+      "Lattice points give natural examples with integer distances"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove distinct_distances_le_diameter (counting argument)",
+      "Complete lattice_integer_distances lemma",
+      "Explore constructions approaching linear diameter"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Direct formalization",
+      "status": "completed",
+      "notes": "Full infrastructure built, bounds axiomatized"
+    }
+  ],
   "tags": [
     "erdos",
     "discrete-geometry",
     "distinct-distances",
-    "open"
+    "open-problem",
+    "plane-geometry",
+    "guth-katz"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos100Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Kanold - diameter ≥ n^(3/4) bound",
+      "Piepmeyer - 9-point construction",
+      "Guth-Katz (2015) - distinct distances solution"
+    ],
+    "urls": [
+      "https://erdosproblems.com/100"
+    ],
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.538Z",
-  "lastUpdate": "2026-01-23T08:04:56.539Z",
+  "lastUpdate": "2026-01-24T17:30:00Z",
   "significance": 7,
   "tractability": 5
 }
