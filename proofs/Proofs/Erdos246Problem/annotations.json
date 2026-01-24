@@ -1,0 +1,101 @@
+[
+  {
+    "id": "def-power-set",
+    "proofId": "erdos-246",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Power Set",
+    "content": "powerSet(a, b) = {a^k · b^l : k, l ≥ 0}. The set of all products of non-negative powers of coprime integers a and b.",
+    "significance": "major"
+  },
+  {
+    "id": "def-complete",
+    "proofId": "erdos-246",
+    "range": { "startLine": 59, "endLine": 70 },
+    "type": "definition",
+    "title": "Complete Sequence",
+    "content": "A set S ⊆ ℕ is complete if every sufficiently large n is a sum of distinct elements from S.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-birch",
+    "proofId": "erdos-246",
+    "range": { "startLine": 76, "endLine": 84 },
+    "type": "theorem",
+    "title": "Birch's Theorem (1959)",
+    "content": "For coprime a, b ≥ 2, the set {a^k · b^l} is complete. The original proof of the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-two-three",
+    "proofId": "erdos-246",
+    "range": { "startLine": 86, "endLine": 91 },
+    "type": "theorem",
+    "title": "Classical Case: {2^k · 3^l}",
+    "content": "The set {2^k · 3^l : k, l ≥ 0} is complete. This is the canonical example.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-cassels",
+    "proofId": "erdos-246",
+    "range": { "startLine": 97, "endLine": 108 },
+    "type": "theorem",
+    "title": "Cassels' Generalization (1960)",
+    "content": "Any set with counting function ≥ c·log(n) is complete. This implies Birch's theorem.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-davenport",
+    "proofId": "erdos-246",
+    "range": { "startLine": 114, "endLine": 126 },
+    "type": "theorem",
+    "title": "Davenport's Bounded-l Result",
+    "content": "Completeness holds even with l bounded by a function C(a,b). Only finitely many powers of b are needed.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-hegyvari",
+    "proofId": "erdos-246",
+    "range": { "startLine": 132, "endLine": 136 },
+    "type": "theorem",
+    "title": "Hegyvári's Bound (2000)",
+    "content": "L ≤ 2^{2^{2^{2^{max(a,b)}}}} suffices for completeness with bounded l. Quadruple exponential.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-fang-chen",
+    "proofId": "erdos-246",
+    "range": { "startLine": 138, "endLine": 142 },
+    "type": "theorem",
+    "title": "Fang-Chen Improvement (2017)",
+    "content": "L ≤ 2^{2^{2^{max(a,b)}}} suffices. Triply exponential improvement over Hegyvári.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-yu",
+    "proofId": "erdos-246",
+    "range": { "startLine": 148, "endLine": 154 },
+    "type": "theorem",
+    "title": "Yu's Large Summands (2024)",
+    "content": "Large n can be represented using only elements > n/(log n)^{1+o(1)}. No small elements needed.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-single-not-complete",
+    "proofId": "erdos-246",
+    "range": { "startLine": 189, "endLine": 201 },
+    "type": "theorem",
+    "title": "Single Powers Not Complete",
+    "content": "For a ≥ 3, the set {a^k} is NOT complete. The non-representable integers have positive density. Contrast with the two-base case.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-main",
+    "proofId": "erdos-246",
+    "range": { "startLine": 270, "endLine": 292 },
+    "type": "theorem",
+    "title": "Main Result Summary",
+    "content": "SOLVED: {a^k b^l} is complete for coprime a, b ≥ 2. Key insight: two coprime bases generate logarithmic density, which suffices.",
+    "significance": "major"
+  }
+]
