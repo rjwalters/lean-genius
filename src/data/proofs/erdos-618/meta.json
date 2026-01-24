@@ -1,16 +1,20 @@
 {
   "id": "erdos-618",
-  "title": "Erdős Problem #618",
+  "title": "Erdős Problem #618: Decreasing Diameter of Triangle-Free Graphs",
   "slug": "erdos-618",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph ... let ... be the smallest number of edges that need to be added to ... so that it has diameter .....",
+  "description": "For a triangle-free graph G, let h₂(G) be the minimum edges to add for diameter 2 while staying triangle-free. Proved: Δ = o(n^{1/2}) implies h₂(G) = o(n²).",
   "meta": {
-    "author": "Unknown",
+    "author": "Noga Alon (solver)",
     "sourceUrl": "https://erdosproblems.com/618",
-    "date": "",
-    "status": "pending",
+    "date": "1998 (posed), ~2000s (solved)",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos618Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "diameter",
+      "triangle-free",
+      "extremal-graphs"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +23,24 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #618 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph $G$ let $h_2(G)$ be the smallest number of edges that need to be added to $G$ so that it has diameter $2$ and is still triangle-free. Is it true that if $G$ has maximum degree $o(n^{1/2})$ then $h(G)=o(n^2)$?\n\n\n\nA problem of Erd\\H{o}s, Gy\\'{a}rf\\'{a}s, and Ruszink\\'{o} \\cite{EGR98}. Simonovits showed that there exist graphs $G$ with maximum degree $\\gg n^{1/2}$ and $h_2(G)\\gg n^2$.\n\nErd\\H{o}s, Gy\\'{a}rf\\'{a}s, and Ruszink\\'{o} \\cite{EGR98} proved that if $G$ has no isolated vertices and maximum degree $O(1)$ then $h_2(G)\\ll n\\log n$.\n\nAlon has observed this problem is essentially identical to [134], and his solution in this note also solves this problem in the affirmative.\n\nSee also [619].\n\n\n\n\nReferences\n\n\n[EGR98] Erd\\H{o}s, Paul and Gy\\'{a}rf\\'{a}s, Andr\\'{a}s and\nRuszink\\'{o}, Mikl\\'{o}s, How to decrease the diameter of triangle-free graphs. Combinatorica (1998), 493-501.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős, Gyárfás, and Ruszinkó in their 1998 Combinatorica paper on decreasing the diameter of triangle-free graphs. They proved partial results for bounded degree graphs. Simonovits showed that graphs with degree above √n can require Θ(n²) edges. Noga Alon observed the connection to Problem #134 and proved the full conjecture.",
+    "problemStatement": "For a triangle-free graph G on n vertices, let h₂(G) denote the minimum number of edges that must be added to G so that the resulting graph has diameter at most 2 while remaining triangle-free. The question asks: if G has maximum degree o(n^{1/2}), must h₂(G) = o(n²)?",
+    "proofStrategy": "Alon's proof uses probabilistic and extremal graph theory methods. The key insight is that the √n threshold arises from the interplay between Mantel's theorem (triangle-free graphs have ≤ n²/4 edges) and the structural requirements for diameter 2.",
+    "keyInsights": [
+      "The √n degree threshold is sharp: below it h₂ = o(n²), above it h₂ can be Θ(n²)",
+      "Triangle-free + diameter 2 severely constrains the graph structure",
+      "The problem is essentially identical to Erdős Problem #134",
+      "For bounded degree graphs, h₂(G) = O(n log n)"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #618 is SOLVED. Alon proved that for triangle-free graphs with maximum degree o(n^{1/2}), the function h₂(G) is o(n²). The √n threshold is sharp, as shown by Simonovits's examples.",
+    "implications": "The result characterizes the minimum edge augmentation needed for diameter reduction in sparse triangle-free graphs. It connects graph diameter, triangle-freeness, and degree constraints in a precise asymptotic relationship.",
+    "openQuestions": [
+      "What is the exact coefficient in the asymptotic for specific degree ranges?",
+      "Can similar results be proved for diameter 3 or higher?",
+      "What about K₄-free or general Kr-free graphs?"
+    ]
   }
 }

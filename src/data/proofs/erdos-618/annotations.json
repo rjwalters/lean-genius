@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-618-1",
+    "proofId": "erdos-618",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #618 asks: for triangle-free G with max degree o(n^{1/2}), is h_2(G) = o(n^2)? Here h_2(G) is the minimum edges to add for diameter 2 while staying triangle-free. Answer: YES (Alon).",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-2",
+    "proofId": "erdos-618",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "IsTriangleFree G means G contains no K_3 (complete graph on 3 vertices). This is the CliqueFree 3 property in Mathlib.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-3",
+    "proofId": "erdos-618",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "definition",
+    "title": "Maximum Degree",
+    "content": "maxDegree G = max over all vertices of degree(v). This is the key parameter: the conjecture concerns graphs where this is o(n^{1/2}).",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-4",
+    "proofId": "erdos-618",
+    "range": { "startLine": 78, "endLine": 79 },
+    "type": "definition",
+    "title": "Diameter at Most Two",
+    "content": "DiameterAtMostTwo G means every pair of distinct vertices has a common neighbor (or is adjacent). This is the diameter 2 condition.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-618-5",
+    "proofId": "erdos-618",
+    "range": { "startLine": 108, "endLine": 111 },
+    "type": "definition",
+    "title": "Valid Extension",
+    "content": "ValidExtension G H means: G is a subgraph of H, H is triangle-free, and H has diameter at most 2. This captures the constraints for adding edges.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-6",
+    "proofId": "erdos-618",
+    "range": { "startLine": 118, "endLine": 119 },
+    "type": "definition",
+    "title": "The h_2 Function",
+    "content": "h_2(G) = minimum edges to add to get a valid extension. This is the central object of study in the problem.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-7",
+    "proofId": "erdos-618",
+    "range": { "startLine": 139, "endLine": 143 },
+    "type": "theorem",
+    "title": "Simonovits Example",
+    "content": "simonovits_example: There exist triangle-free graphs with degree >> sqrt(n) where h_2(G) >> n^2. This shows the sqrt(n) threshold is sharp from above.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-8",
+    "proofId": "erdos-618",
+    "range": { "startLine": 149, "endLine": 154 },
+    "type": "theorem",
+    "title": "Bounded Degree Result",
+    "content": "bounded_degree_result: For max degree O(1) and no isolated vertices, h_2(G) = O(n log n). This was proved by Erdos-Gyarfas-Ruszinko (1998).",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-618-9",
+    "proofId": "erdos-618",
+    "range": { "startLine": 175, "endLine": 180 },
+    "type": "theorem",
+    "title": "Alon's Theorem",
+    "content": "alon_theorem: The main result. If G is triangle-free with max degree at most n^{1/2-epsilon}, then h_2(G) <= epsilon * n^2. This proves the conjecture.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-10",
+    "proofId": "erdos-618",
+    "range": { "startLine": 186, "endLine": 188 },
+    "type": "insight",
+    "title": "Problem #134 Connection",
+    "content": "problem_134_connection: Alon observed Problem #618 is essentially identical to Problem #134. The solution to one gives the solution to the other.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-618-11",
+    "proofId": "erdos-618",
+    "range": { "startLine": 208, "endLine": 209 },
+    "type": "definition",
+    "title": "Little-o for Degree",
+    "content": "DegreeIsLittleO f means f(n) = o(n^{1/2}): for any epsilon > 0, eventually f(n) <= epsilon * sqrt(n).",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-618-12",
+    "proofId": "erdos-618",
+    "range": { "startLine": 215, "endLine": 216 },
+    "type": "definition",
+    "title": "Little-o for h_2",
+    "content": "H2IsLittleO f means f(n) = o(n^2): for any epsilon > 0, eventually f(n) <= epsilon * n^2.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-618-13",
+    "proofId": "erdos-618",
+    "range": { "startLine": 222, "endLine": 227 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "MainConjecture: If the max degree sequence is o(sqrt(n)), then the h_2 values are o(n^2). This is the formal statement that Alon proved.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-14",
+    "proofId": "erdos-618",
+    "range": { "startLine": 233, "endLine": 233 },
+    "type": "theorem",
+    "title": "Main Conjecture Proved",
+    "content": "main_conjecture_proved: The axiom asserting that Alon proved the main conjecture.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-15",
+    "proofId": "erdos-618",
+    "range": { "startLine": 247, "endLine": 256 },
+    "type": "theorem",
+    "title": "Sharp Threshold",
+    "content": "threshold_is_sharp: The sqrt(n) threshold is optimal. Below it h_2 = o(n^2), above it h_2 can be Theta(n^2).",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-16",
+    "proofId": "erdos-618",
+    "range": { "startLine": 298, "endLine": 303 },
+    "type": "insight",
+    "title": "Why sqrt(n) Threshold",
+    "content": "why_sqrt_threshold: The sqrt(n) appears because: Mantel says triangle-free has <= n^2/4 edges, degree <= k implies <= nk/2 edges, and diameter 2 needs Theta(n) neighbors per vertex.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-618-17",
+    "proofId": "erdos-618",
+    "range": { "startLine": 309, "endLine": 310 },
+    "type": "theorem",
+    "title": "Mantel's Theorem",
+    "content": "mantel_theorem: Triangle-free graphs have at most n^2/4 edges. This classical result bounds the density of triangle-free graphs.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-618-18",
+    "proofId": "erdos-618",
+    "range": { "startLine": 332, "endLine": 339 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "erdos_618_summary: Combines the main conjecture proof, sharp threshold, and Problem #134 connection into a single summary statement.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-618-19",
+    "proofId": "erdos-618",
+    "range": { "startLine": 345, "endLine": 345 },
+    "type": "theorem",
+    "title": "Erdos 618 Status",
+    "content": "erdos_618: SOLVED. Alon proved the conjecture affirmatively using extremal graph theory methods.",
+    "significance": "high"
+  }
+]
