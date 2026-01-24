@@ -1,0 +1,16 @@
+{
+  "problem_number": 1115,
+  "title": "Path Length for Entire Functions",
+  "status": "disproved",
+  "solvers": ["Gol'dberg-Eremenko (1979)"],
+  "source_url": "https://erdosproblems.com/1115",
+  "overview": "For finite-order entire f with f(z) → ∞ along path Γ, can path length ℓ(r) in disc |z|<r satisfy ℓ(r) ≪ r? Find minimal ℓ(r) in terms of max modulus M(r).",
+  "sections": [],
+  "conclusion": "DISPROVED by Gol'dberg-Eremenko (1979): For any φ(r) → ∞, there exist entire f with log M(r) ≪ φ(r)(log r)² but NO path has ℓ(r) ≪ r. Hayman (1960) showed if log M(r) ≪ (log r)² then rays work. Threshold is (log r)².",
+  "references": [
+    "Hayman (1960) - Positive result under log M(r) ≪ (log r)²",
+    "Gol'dberg-Eremenko (1979) - Counterexamples for general case"
+  ],
+  "related_problems": [1114, 1116],
+  "tags": ["complex-analysis", "entire-functions", "path-length", "disproved"]
+}
