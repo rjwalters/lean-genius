@@ -1,0 +1,18 @@
+{
+  "problem_number": 534,
+  "title": "Maximum GCD-Intersecting Sets Containing N",
+  "status": "solved",
+  "solvers": ["Ahlswede-Khachatrian (1996)"],
+  "source_url": "https://erdosproblems.com/534",
+  "overview": "Find the largest subset A ⊆ {1,...,N} containing N such that gcd(a,b) > 1 for all distinct a, b ∈ A. The original Erdős-Graham conjecture was wrong; Ahlswede-Khachatrian found a counterexample in 1992 and proved the correct characterization in 1996.",
+  "sections": [],
+  "conclusion": "SOLVED - For N = q₁^k₁ ⋯ qᵣ^kᵣ, the maximum is achieved by integers that are multiples of elements from {2q₁,...,2qⱼ, q₁⋯qⱼ} for an optimal j. The original Erdős-Graham conjecture was disproved.",
+  "references": [
+    "Erdős [Er73] - Original problem",
+    "Ahlswede-Khachatrian (1992) - Counterexample to original conjecture",
+    "Ahlswede-Khachatrian [AhKh96] - Correct characterization",
+    "OEIS A387543, A387698 - Related sequences"
+  ],
+  "related_problems": [56],
+  "tags": ["number-theory", "gcd", "intersecting-families", "solved"]
+}
