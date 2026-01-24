@@ -1,0 +1,16 @@
+{
+  "problem_number": 1044,
+  "title": "Boundary Length of Polynomial Level Sets",
+  "status": "solved",
+  "solvers": ["Quanyu Tang"],
+  "source_url": "https://erdosproblems.com/1044",
+  "overview": "Let f(z) = ∏(z - zᵢ) ∈ ℂ[z] where |zᵢ| ≤ 1 for all i. Define Λ(f) as the maximum of the lengths of the boundaries of the connected components of {z : |f(z)| < 1}. The problem asks to determine the infimum of Λ(f) over all such polynomials.",
+  "sections": [],
+  "conclusion": "The infimum is 2. Tang proved this result and conjectured that for fixed degree n, the infimum is achieved by f_n(z) = z^n - 1 (roots of unity polynomial). This conjecture is verified for n = 1, 2.",
+  "references": [
+    "Erdős-Herzog-Piranian [EHP58] - Original problem",
+    "Quanyu Tang - Solution (GitHub)"
+  ],
+  "related_problems": [],
+  "tags": ["complex-analysis", "polynomials", "level-sets", "boundary-length", "lemniscates", "solved"]
+}
