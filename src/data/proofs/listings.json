@@ -1867,17 +1867,24 @@
   },
   {
     "id": "erdos-1076",
-    "title": "Erdős Problem #1076",
+    "title": "Erdős Problem #1076: Extremal Numbers for 3-Uniform Hypergraphs",
     "slug": "erdos-1076",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the family of all ...-uniform hypergraphs with ... vertices and ... edges. Is it true that\\[_3(n,_k)\\s...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 5, let F_k be all 3-uniform hypergraphs with k vertices and k-2 edges. Is ex₃(n, F_k) ~ n²/6? SOLVED: YES (Bohman-Warnke 2019, Glock-Kühn-Lo-Osthus 2020).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-combinatorics",
+      "hypergraphs",
+      "steiner-systems",
+      "asymptotic",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 1076,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 20
   },
   {
     "id": "erdos-1077",
