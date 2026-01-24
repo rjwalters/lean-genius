@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-sequence",
+    "proofId": "erdos-482",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Graham-Pollak Sequence",
+    "content": "The sequence defined by a₁ = 1 and a_{n+1} = ⌊√2(aₙ + 1/2)⌋. This recurrence grows approximately by factor √2 at each step.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-graham-pollak",
+    "proofId": "erdos-482",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "theorem",
+    "title": "Graham-Pollak Theorem",
+    "content": "The difference a_{2n+1} - 2·a_{2n-1} equals either 0 or 1, giving the n-th binary digit of √2.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-growth",
+    "proofId": "erdos-482",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "insight",
+    "title": "Growth Rate",
+    "content": "The sequence grows approximately by factor √2, with the ratio a_{n+1}/a_n converging to √2 as n increases.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-sqrt-seq",
+    "proofId": "erdos-482",
+    "range": { "startLine": 99, "endLine": 102 },
+    "type": "definition",
+    "title": "Generalized Sequence for √m",
+    "content": "The natural generalization: replace √2 with √m in the recurrence. Works for squarefree m.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-stoll-2005",
+    "proofId": "erdos-482",
+    "range": { "startLine": 116, "endLine": 120 },
+    "type": "theorem",
+    "title": "Stoll's Generalization (2005)",
+    "content": "Extended the digit-extraction method to all quadratic irrationals satisfying ax² + bx + c = 0.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-stoll-2006",
+    "proofId": "erdos-482",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "theorem",
+    "title": "Stoll's Further Generalization (2006)",
+    "content": "Extended beyond quadratic irrationals to certain higher-degree algebraic numbers.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-cf",
+    "proofId": "erdos-482",
+    "range": { "startLine": 139, "endLine": 147 },
+    "type": "insight",
+    "title": "Continued Fraction Connection",
+    "content": "The sequence relates to the continued fraction expansion [1; 2, 2, 2, ...] of √2 and its convergents.",
+    "significance": "minor"
+  },
+  {
+    "id": "insight-oeis",
+    "proofId": "erdos-482",
+    "range": { "startLine": 166, "endLine": 170 },
+    "type": "reference",
+    "title": "OEIS A004539",
+    "content": "The binary expansion of √2 is catalogued as OEIS sequence A004539: 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, ...",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-characterization",
+    "proofId": "erdos-482",
+    "range": { "startLine": 218, "endLine": 233 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "The sequence satisfies the recurrence, differences give binary digits, and Stoll generalized the result.",
+    "significance": "major"
+  }
+]
