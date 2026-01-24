@@ -123,29 +123,39 @@ axiom davenport_erdos_1936 :
     ∃ f : ℕ → ℕ, (∀ i, f i ∈ A) ∧ IsDivisibilityChain f
 
 /--
-**Consequence:**
-If A has positive density and contains a divisibility chain of length 3,
-then a, a·k, a·k² gives an LCM triple: lcm(a, a·k) = a·k.
+**LCM Triple from Coprime Multipliers:**
+If a, k, m are positive with gcd(k, m) = 1, k > 1, m > 1, and k ≠ m,
+then (a*k, a*m, a*k*m) forms an LCM triple: lcm(a*k, a*m) = a*k*m.
 -/
-theorem divisibility_chain_gives_lcm (a k : ℕ) (ha : a > 0) (hk : k > 1) :
-    IsLCMTriple a (a * k) (a * k) := by
+theorem coprime_multipliers_lcm_triple (a k m : ℕ) (ha : a > 0) (hk : k > 1) (hm : m > 1)
+    (hkm : k ≠ m) (hcop : Nat.Coprime k m) :
+    IsLCMTriple (a * k) (a * m) (a * k * m) := by
   unfold IsLCMTriple
   constructor
-  · intro heq
-    have : k = 1 := by omega
+  · -- a*k ≠ a*m since k ≠ m
+    intro heq
+    have : k = m := Nat.eq_of_mul_eq_mul_left ha heq
+    exact hkm this
+  constructor
+  · -- a*m ≠ a*k*m since m ≠ k*m (k > 1)
+    intro heq
+    have h1 : m = k * m := Nat.eq_of_mul_eq_mul_left ha heq
+    have h2 : 1 * m = k * m := by ring_nf; exact h1
+    have h3 : 1 = k := Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero (by omega)) h2
     omega
   constructor
-  · intro heq
-    have : 1 = k := by
-      have h1 : a * k = a * k := heq
-      omega
+  · -- a*k ≠ a*k*m since k ≠ k*m (m > 1)
+    intro heq
+    have h1 : k = k * m := Nat.eq_of_mul_eq_mul_left ha heq
+    have h2 : k * 1 = k * m := by ring_nf; exact h1
+    have h3 : 1 = m := Nat.eq_of_mul_eq_mul_left (by omega) h2
     omega
-  constructor
-  · intro heq
-    have : k = 1 := by omega
-    omega
-  · simp [Nat.lcm, ha]
-    sorry  -- lcm(a, a*k) = a*k when a | a*k
+  · -- lcm(a*k, a*m) = a*k*m when gcd(k,m) = 1
+    have h1 : Nat.lcm (a * k) (a * m) = a * Nat.lcm k m := by
+      rw [Nat.lcm_mul_left]
+    have h2 : Nat.lcm k m = k * m := Nat.Coprime.lcm_eq_mul hcop
+    rw [h1, h2]
+    ring
 
 /-
 ## Part IV: Kleitman's Theorem (1971)
@@ -175,6 +185,13 @@ axiom kleitman_1971 :
       (F.card : ℝ) ≤ (1 + ε) * Nat.choose n (n / 2)
 
 /--
+**Central Binomial Coefficient Asymptotics:**
+C(n, n/2) / 2^n → 0 as n → ∞ (by Stirling's approximation: C(n, n/2) ≈ 2^n / √(πn/2)).
+-/
+axiom central_binomial_over_power_tends_to_zero :
+    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (Nat.choose n (n / 2) : ℝ) / 2^n < ε / 2
+
+/--
 **Corollary: o(2^n) bound**
 Union-free collections are o(2^n) in size.
 -/
@@ -183,7 +200,27 @@ theorem union_free_is_little_o :
       ∀ F : Finset (Finset (Fin n)),
         IsUnionFree (F.toSet.image (·.toSet)) →
         (F.card : ℝ) / 2^n < ε := by
-  sorry
+  intro ε hε
+  -- Get N₁ from Kleitman's theorem with ε' = 1
+  obtain ⟨N₁, hN₁⟩ := kleitman_1971 1 one_pos
+  -- Get N₂ from the central binomial asymptotics
+  obtain ⟨N₂, hN₂⟩ := central_binomial_over_power_tends_to_zero ε hε
+  -- Use N = max(N₁, N₂)
+  use max N₁ N₂
+  intro n hn F hUF
+  have hn1 : n ≥ N₁ := le_of_max_le_left hn
+  have hn2 : n ≥ N₂ := le_of_max_le_right hn
+  -- By Kleitman: |F| ≤ 2 · C(n, n/2)
+  have hF := hN₁ n hn1 F hUF
+  -- By asymptotics: C(n, n/2) / 2^n < ε/2
+  have hbinom := hN₂ n hn2
+  -- Combine: |F| / 2^n ≤ 2 · C(n, n/2) / 2^n < 2 · ε/2 = ε
+  calc (F.card : ℝ) / 2^n
+      ≤ (1 + 1) * Nat.choose n (n / 2) / 2^n := by
+        apply div_le_div_of_nonneg_right hF (by positivity)
+      _ = 2 * (Nat.choose n (n / 2) / 2^n) := by ring
+      _ < 2 * (ε / 2) := by nlinarith [hbinom]
+      _ = ε := by ring
 
 /-
 ## Part V: Main Theorem - Erdős Problem #487
@@ -232,14 +269,31 @@ theorem multiples_of_6_example : IsLCMTriple 12 18 36 := by
 **Example 2: Powers of 2**
 A = {1, 2, 4, 8, 16, ...} has density 0.
 (Dense sets are required; sparse sets may avoid LCM triples.)
+
+Powers of 2 have no proper LCM triples because lcm(2^i, 2^j) = 2^(max i j),
+which equals either a or b, never a distinct third element.
 -/
 theorem powers_of_2_no_lcm_triple :
     ¬∃ a b c : ℕ, (∃ i, a = 2^i) ∧ (∃ j, b = 2^j) ∧ (∃ k, c = 2^k) ∧
-      a ≠ b ∧ Nat.lcm a b = c := by
-  intro ⟨a, b, c, ⟨i, ha⟩, ⟨j, hb⟩, ⟨k, hc⟩, hab, hlcm⟩
-  -- lcm(2^i, 2^j) = 2^(max i j) = max(a, b), so c = max(a,b)
-  -- But then c ∈ {a, b}, violating distinctness
-  sorry
+      a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ Nat.lcm a b = c := by
+  intro ⟨a, b, c, ⟨i, ha⟩, ⟨j, hb⟩, ⟨k, hc⟩, hab, hca, hcb, hlcm⟩
+  -- lcm(2^i, 2^j) = 2^(max i j)
+  have hlcm_pow : Nat.lcm (2^i) (2^j) = 2^(max i j) := Nat.Prime.pow_max_lcm Nat.prime_two
+  rw [ha, hb] at hlcm
+  rw [hlcm_pow] at hlcm
+  -- So c = 2^(max i j), and max i j is either i or j
+  rw [hc] at hlcm
+  have hk_eq : k = max i j := Nat.pow_right_injective (by norm_num : 1 < 2) hlcm
+  -- Case split on whether max i j = i or max i j = j
+  rcases Nat.max_cases i j with (⟨hmax_eq, _⟩ | ⟨hmax_eq, _⟩)
+  · -- max i j = i, so k = i, so c = a
+    rw [hmax_eq] at hk_eq
+    have : c = a := by rw [hc, ha, hk_eq]
+    exact hca this
+  · -- max i j = j, so k = j, so c = b
+    rw [hmax_eq] at hk_eq
+    have : c = b := by rw [hc, hb, hk_eq]
+    exact hcb this
 
 /--
 **Example 3: Even numbers**
