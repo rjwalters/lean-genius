@@ -1,33 +1,157 @@
 {
   "id": "erdos-217",
-  "title": "Erdős Problem #217",
+  "title": "Erdős Problem #217: Point Configurations with Distance Multiplicities",
   "slug": "erdos-217",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which ... are there ... points in ..., no three on a line and no four on a circle, which determine ... distinct distances...",
+  "description": "For which n are there n points in R² in general position with n-1 distinct distances where the i-th distance appears exactly i times? OPEN. Known for n ≤ 8 (Pomerance, Palásti), conjectured impossible for large n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Pomerance, Palásti",
     "sourceUrl": "https://erdosproblems.com/217",
-    "date": "",
-    "status": "pending",
+    "date": "1983",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos217Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "distances",
+      "point-configurations",
+      "extremal-geometry",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 217,
     "erdosUrl": "https://erdosproblems.com/217",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Points in R²",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Multiset",
+        "description": "Distance multisets",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets of distances",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "PointConfiguration structure: n points in the plane",
+      "NoThreeCollinear, NoFourConcyclic: general position constraints",
+      "allDistances, distinctDistances: distance multiset definitions",
+      "HasStaircaseMultiplicity: the key multiplicity pattern",
+      "HasErdos217Property: full problem specification",
+      "Erdos217Exists predicate: existence for each n",
+      "small_cases_exist theorem: n = 4..8 work",
+      "ErdosConjecture217: impossibility for large n"
+    ],
+    "references": [
+      {
+        "key": "Er83c",
+        "citation": "Erdős, P., Combinatorial problems in geometry (1983), 35-54.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #217 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which $n$ are there $n$ points in $\\mathbb{R}^2$, no three on a line and no four on a circle, which determine $n-1$ distinct distances and so that (in some ordering of the distances) the $i$th distance occurs $i$ times?\n\n\n\nAn example with $n=4$ is an isosceles triangle with the point in the centre. Erd\\H{o}s originally believed this was impossible for $n\\geq 5$, but Pomerance constructed a set with $n=5$ (see \\cite{Er83c} for a description), and Pal\\'{a}sti has proved such sets exist for all $n\\leq 8$.\n\nErd\\H{o}s believed this is impossible for all sufficiently large $n$. This would follow from $h(n)\\geq n$ for sufficiently large $n$, where $h(n)$ is as in [98].\n\n\n\n\nReferences\n\n\n[Er83c] Erd\\H{o}s, Paul, Combinatorial problems in geometry. Math. Chronicle (1983), 35-54.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #217: Distance Multiplicities in Point Configurations**\n\nThis elegant problem asks for point configurations with a specific \"staircase\" pattern of distance multiplicities. Given n points, there are n(n-1)/2 point pairs. If we have n-1 distinct distances with multiplicities 1, 2, 3, ..., n-1, the total is exactly 1+2+...+(n-1) = n(n-1)/2 - a perfect match!\n\n**Known Constructions:**\n- **n = 4:** Erdős noted an isosceles triangle with center point works.\n- **n = 5:** Pomerance constructed an example, surprising Erdős who thought n ≥ 5 was impossible.\n- **n = 6, 7, 8:** Palásti proved existence for these cases.\n\n**Erdős's Conjecture:** Such configurations should be impossible for sufficiently large n. This connects to Problem #98 on minimum distinct distances in point sets.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor which $n$ are there $n$ points in $\\mathbb{R}^2$ satisfying:\n1. No three points are collinear\n2. No four points lie on a common circle\n3. The points determine exactly $n-1$ distinct distances\n4. In some ordering, the $i$-th distance appears exactly $i$ times?\n\n**Known Results:**\n- $n = 4$: YES (isosceles triangle + center)\n- $n = 5$: YES (Pomerance)\n- $n \\leq 8$: YES (Palásti)\n- $n$ large: Conjectured NO\n\n**Status: OPEN** - The exact characterization of valid $n$ is unknown.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configuration:** Define points in R² with distinctness.\n\n2. **General Position:** No 3 collinear, no 4 concyclic.\n\n3. **Distance Multiset:** All pairwise distances with multiplicities.\n\n4. **Staircase Property:** Ordering where d_i appears i times.\n\n5. **Full Property:** n-1 distinct distances + staircase.\n\n6. **Known Results:** Axiomatize Pomerance and Palásti constructions.\n\n7. **Conjecture:** State impossibility for large n.",
+    "keyInsights": [
+      "**Perfect Counting:** n(n-1)/2 pairs = 1+2+...+(n-1) is not coincidence",
+      "**General Position is Key:** The constraints make this hard",
+      "**Surprising n = 5:** Pomerance refuted Erdős's initial belief",
+      "**Palásti's Progress:** Extended to n ≤ 8",
+      "**Connection to #98:** Minimum distinct distances relates to this problem",
+      "**Staircase Pattern:** Elegant arithmetic constraint on geometry"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "point-configurations",
+      "title": "Point Configurations",
+      "summary": "Points in R² with distinctness",
+      "startLine": 46,
+      "endLine": 62
+    },
+    {
+      "id": "general-position",
+      "title": "General Position Constraints",
+      "summary": "No 3 collinear, no 4 concyclic",
+      "startLine": 64,
+      "endLine": 83
+    },
+    {
+      "id": "distance-multiset",
+      "title": "Distance Multiset",
+      "summary": "All pairwise distances",
+      "startLine": 85,
+      "endLine": 101
+    },
+    {
+      "id": "staircase-property",
+      "title": "Staircase Multiplicity",
+      "summary": "d_i appears i times",
+      "startLine": 103,
+      "endLine": 126
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "For which n does Erdős-217 property hold?",
+      "startLine": 128,
+      "endLine": 134
+    },
+    {
+      "id": "known-results",
+      "title": "Known Positive Results",
+      "summary": "n = 4..8 work",
+      "startLine": 136,
+      "endLine": 162
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős's Conjecture",
+      "summary": "Impossible for large n",
+      "startLine": 164,
+      "endLine": 177
+    },
+    {
+      "id": "counting",
+      "title": "Counting Argument",
+      "summary": "Why n(n-1)/2 = 1+2+...+(n-1)",
+      "startLine": 179,
+      "endLine": 196
+    },
+    {
+      "id": "example",
+      "title": "Example for n = 4",
+      "summary": "Isosceles triangle + center",
+      "startLine": 214,
+      "endLine": 230
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main result",
+      "startLine": 232,
+      "endLine": 270
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #217 asks for point configurations in general position with a staircase pattern of distance multiplicities. Constructions exist for n ≤ 8 (Pomerance, Palásti) but Erdős conjectured impossibility for large n. The problem remains OPEN.",
+    "implications": "**Implications**\n\n1. **Discrete Geometry:** Constrains how distances can be distributed in point sets.\n\n2. **Extremal Combinatorics:** Links geometric constraints to arithmetic patterns.\n\n3. **Problem #98 Connection:** Relates to minimum distinct distances.\n\n4. **Computational Geometry:** Constructions provide interesting test cases.",
+    "openQuestions": [
+      "Does the Erdős-217 property hold for any n > 8?",
+      "What is the smallest N for which no configuration exists?",
+      "Can the Pomerance and Palásti constructions be generalized?",
+      "Is the connection to Problem #98 the key to the conjecture?"
+    ]
   }
 }

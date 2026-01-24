@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-217-header",
+    "proofId": "erdos-217",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #217:** Find n points in R² in general position with n-1 distinct distances where the i-th distance appears exactly i times.\n\n**Status: OPEN** - Known for n ≤ 8, conjectured impossible for large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-point",
+    "proofId": "erdos-217",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Point and Distance",
+    "content": "**Point:** Element of EuclideanSpace R (Fin 2) = R².\n\n**dist(p,q):** Euclidean distance ||p - q||.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-217-config",
+    "proofId": "erdos-217",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "PointConfiguration",
+    "content": "**PointConfiguration(n):** n distinct points in the plane.\n\nThe distinctness constraint ensures all points are different.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-collinear",
+    "proofId": "erdos-217",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "definition",
+    "title": "NoThreeCollinear",
+    "content": "**No three collinear:** No three points lie on a common line.\n\nThis is a standard \"general position\" constraint in discrete geometry.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-217-concyclic",
+    "proofId": "erdos-217",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "definition",
+    "title": "NoFourConcyclic",
+    "content": "**No four concyclic:** No four points lie on a common circle.\n\nThis stronger constraint further restricts valid configurations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-217-general",
+    "proofId": "erdos-217",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "definition",
+    "title": "InGeneralPosition",
+    "content": "**General position:** Both constraints together - no 3 collinear AND no 4 concyclic.\n\nThis severely limits possible configurations.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-distances",
+    "proofId": "erdos-217",
+    "range": { "startLine": 89, "endLine": 96 },
+    "type": "definition",
+    "title": "Distance Multiset",
+    "content": "**allDistances:** Multiset of all n(n-1)/2 pairwise distances.\n\n**distinctDistances:** The set of unique distance values.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-staircase",
+    "proofId": "erdos-217",
+    "range": { "startLine": 111, "endLine": 118 },
+    "type": "definition",
+    "title": "HasStaircaseMultiplicity",
+    "content": "**Staircase property:** There's an ordering d_1, ..., d_k of distinct distances where d_i appears exactly i times.\n\nThis elegant pattern: 1 + 2 + ... + (n-1) = n(n-1)/2 pairs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-property",
+    "proofId": "erdos-217",
+    "range": { "startLine": 120, "endLine": 126 },
+    "type": "definition",
+    "title": "HasErdos217Property",
+    "content": "**Full Erdős-217 property:**\n1. General position\n2. Exactly n-1 distinct distances\n3. Staircase multiplicities",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-exists",
+    "proofId": "erdos-217",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "definition",
+    "title": "Erdos217Exists",
+    "content": "**Erdos217Exists(n):** There exists an n-point configuration with the Erdős-217 property.\n\nThe main question: for which n is this true?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-n4",
+    "proofId": "erdos-217",
+    "range": { "startLine": 140, "endLine": 144 },
+    "type": "axiom",
+    "title": "n = 4 Case",
+    "content": "**n = 4 works:** Isosceles triangle with center point.\n\nThis gives 3 distinct distances with multiplicities 1, 2, 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-217-pomerance",
+    "proofId": "erdos-217",
+    "range": { "startLine": 146, "endLine": 147 },
+    "type": "axiom",
+    "title": "Pomerance Construction",
+    "content": "**n = 5 (Pomerance):** Surprising construction refuting Erdős's belief that n ≥ 5 was impossible.\n\nShows the problem is harder than initially thought.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-palasti",
+    "proofId": "erdos-217",
+    "range": { "startLine": 149, "endLine": 152 },
+    "type": "axiom",
+    "title": "Palásti Constructions",
+    "content": "**n = 6, 7, 8 (Palásti):** Extended existence to all n ≤ 8.\n\nBeyond n = 8, no constructions are known.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-217-smallcases",
+    "proofId": "erdos-217",
+    "range": { "startLine": 154, "endLine": 162 },
+    "type": "theorem",
+    "title": "small_cases_exist",
+    "content": "**Theorem:** For n = 4, 5, 6, 7, 8, the Erdős-217 property is achievable.\n\nProof by cases using the axiomatized constructions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-217-conjecture",
+    "proofId": "erdos-217",
+    "range": { "startLine": 168, "endLine": 170 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**Conjecture:** There exists N such that for all n ≥ N, no Erdős-217 configuration exists.\n\nErdős believed the property fails for large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-217-counting",
+    "proofId": "erdos-217",
+    "range": { "startLine": 188, "endLine": 196 },
+    "type": "theorem",
+    "title": "Counting Argument",
+    "content": "**Key observation:** 1 + 2 + ... + (n-1) = n(n-1)/2.\n\nThe staircase pattern accounts for EXACTLY all pairs. No slack!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-217-main",
+    "proofId": "erdos-217",
+    "range": { "startLine": 253, "endLine": 260 },
+    "type": "theorem",
+    "title": "erdos_217",
+    "content": "**Main Result:**\n1. Small cases (n = 4..8) exist\n2. Large n conjectured impossible\n\nPROBLEM STATUS: OPEN",
+    "significance": "critical"
+  }
+]
