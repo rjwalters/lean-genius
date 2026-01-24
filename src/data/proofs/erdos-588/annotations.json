@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-588-header",
+    "proofId": "erdos-588",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #588: k-Point Lines in General Position**\n\nIs f_k(n) = o(n²) for k ≥ 4?\n\nHere f_k(n) is the maximum number of k-rich lines (lines with ≥k points) for n points with no k+1 collinear.\n\n**Status: OPEN** ($100 prize)\n\n**Best known:** n^{2-o(1)} ≤ f_k(n) ≤ O(n²)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-line",
+    "proofId": "erdos-588",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Line Structure",
+    "content": "**Line in the Plane:**\n\nA line is represented by coefficients (a, b, c) where ax + by = c.\n\nThe nonzero condition ensures (a, b) ≠ (0, 0).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-588-collinear",
+    "proofId": "erdos-588",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "definition",
+    "title": "Collinear",
+    "content": "**Collinear Points:**\n\nA set of points is collinear if they all lie on some common line.\n\nThis is the fundamental constraint in the problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-588-kgeneral",
+    "proofId": "erdos-588",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "InKGeneralPosition",
+    "content": "**k-General Position:**\n\nA point set is in k-general position if no k+1 points are collinear.\n\nFor k=3, this means no 4 collinear. For k=4, no 5 collinear. The problem restricts attention to such configurations.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-krich",
+    "proofId": "erdos-588",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "definition",
+    "title": "IsKRich",
+    "content": "**k-Rich Line:**\n\nA line is k-rich for point set P if it contains at least k points from P.\n\nThe function f_k(n) counts the maximum number of such lines.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-fk",
+    "proofId": "erdos-588",
+    "range": { "startLine": 111, "endLine": 114 },
+    "type": "definition",
+    "title": "f_k Function",
+    "content": "**f_k(n): The Extremal Function**\n\nf_k(n) = max number of k-rich lines over all n-point sets in k-general position.\n\nThe conjecture asks if f_k(n) = o(n²) for k ≥ 4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-sylvester",
+    "proofId": "erdos-588",
+    "range": { "startLine": 120, "endLine": 126 },
+    "type": "axiom",
+    "title": "Sylvester's Result (k=3)",
+    "content": "**f_3(n) = Θ(n²):**\n\nFor k=3, the number of 3-rich lines is Θ(n²) even with no 4 collinear.\n\nThis shows the conjecture fails for k=3, so the restriction to k≥4 is essential.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-karteszi",
+    "proofId": "erdos-588",
+    "range": { "startLine": 128, "endLine": 133 },
+    "type": "axiom",
+    "title": "Kárteszi Lower Bound (1963)",
+    "content": "**f_k(n) ≥ Ω(n log n):**\n\nKárteszi proved the first superlinear lower bound, showing f_k(n)/n → ∞.\n\nThis resolved Erdős's conjecture that f_k grows faster than linear.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-588-grunbaum",
+    "proofId": "erdos-588",
+    "range": { "startLine": 135, "endLine": 139 },
+    "type": "axiom",
+    "title": "Grünbaum Lower Bound (1976)",
+    "content": "**f_k(n) ≥ Ω(n^{1+1/(k-2)}):**\n\nGrünbaum improved the lower bound to a power of n greater than 1.\n\nFor k=4, this gives n^{3/2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-588-solymosi",
+    "proofId": "erdos-588",
+    "range": { "startLine": 141, "endLine": 146 },
+    "type": "axiom",
+    "title": "Solymosi-Stojaković (2013)",
+    "content": "**f_k(n) ≥ n^{2-O(1/√log n)}:**\n\nThe current best lower bound is extremely close to n².\n\nIf the o(n²) conjecture is true, the convergence to 0 is incredibly slow.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-conjecture",
+    "proofId": "erdos-588",
+    "range": { "startLine": 152, "endLine": 160 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**Conjecture: f_k(n) = o(n²) for k ≥ 4**\n\nFormally: for any ε > 0, f_k(n) < εn² for large enough n.\n\nThis is equivalent to f_k(n)/n² → 0 as n → ∞.\n\n**Prize:** $100",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-problem101",
+    "proofId": "erdos-588",
+    "range": { "startLine": 187, "endLine": 189 },
+    "type": "definition",
+    "title": "Problem #101 Connection",
+    "content": "**Problem #101: The k=4 Case**\n\nProblem #588 generalizes Problem #101, which specifically asks about f_4(n).\n\nThe k=4 case is the original formulation by Erdős.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-588-st",
+    "proofId": "erdos-588",
+    "range": { "startLine": 200, "endLine": 206 },
+    "type": "axiom",
+    "title": "Szemerédi-Trotter Connection",
+    "content": "**Szemerédi-Trotter Incidence Bound:**\n\nThe number of incidences between n points and m lines is O(n^{2/3}m^{2/3} + n + m).\n\nThis fundamental incidence theorem provides constraints on the problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-588-status",
+    "proofId": "erdos-588",
+    "range": { "startLine": 217, "endLine": 232 },
+    "type": "theorem",
+    "title": "Current Status",
+    "content": "**Summary of Known Results:**\n\n1. k=3: f_3(n) = Θ(n²) - conjecture fails\n2. k≥4: Lower bound n^{2-o(1)}, Upper bound O(n²)\n3. Gap is vanishingly small but persists\n\nThe conjecture f_k(n) = o(n²) remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-588-main",
+    "proofId": "erdos-588",
+    "range": { "startLine": 234, "endLine": 247 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #588: OPEN**\n\nThe question of whether f_k(n) = o(n²) for k ≥ 4 remains unresolved.\n\nThe $100 prize is unclaimed.",
+    "significance": "critical"
+  }
+]

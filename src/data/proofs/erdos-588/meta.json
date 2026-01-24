@@ -1,34 +1,89 @@
 {
   "id": "erdos-588",
-  "title": "Erdős Problem #588",
+  "title": "Erdős Problem #588: k-Point Lines in General Position",
   "slug": "erdos-588",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that if ... points in ... have no ... points on a line then there must be at most ... many lines cont...",
+  "description": "Is f_k(n) = o(n²) for k ≥ 4? Here f_k(n) is the max number of k-rich lines for n points with no k+1 collinear. OPEN. Best lower bound: n^{2-o(1)} (Solymosi-Stojaković 2013).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/588",
-    "date": "",
-    "status": "pending",
+    "date": "1970s",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos588Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "incidences",
+      "point-line",
+      "k-rich-lines",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 588,
     "erdosUrl": "https://erdosproblems.com/588",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {"theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic"},
+      {"theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"},
+      {"theorem": "Filter.Tendsto", "description": "Limit definition", "module": "Mathlib.Order.Filter.Basic"}
+    ],
+    "originalContributions": [
+      "Point, Line: geometric primitives",
+      "OnLine: point-line incidence",
+      "Collinear: collinearity predicate",
+      "InKGeneralPosition: no k+1 points collinear",
+      "IsKRich: line contains ≥k points",
+      "f_k: the extremal function",
+      "sylvester_k3: k=3 gives Θ(n²)",
+      "karteszi_lower_bound: n log n lower bound",
+      "grunbaum_lower_bound: n^{1+1/(k-2)} bound",
+      "solymosi_stojakovic: n^{2-o(1)} bound",
+      "erdos_588_conjecture: the main conjecture",
+      "problem_101: connection to k=4 case",
+      "szemeredi_trotter: incidence theorem"
+    ],
+    "references": [
+      {"key": "Ka63", "citation": "Kárteszi, F., Sylvester egy tételéről és Erdős egy sejtéséről, Mat. Lapok (1963)", "type": "paper"},
+      {"key": "Gr76", "citation": "Grünbaum, B., New views on old questions of combinatorial geometry, Colloquio Internazionale (1976)", "type": "paper"},
+      {"key": "SoSt13", "citation": "Solymosi, J. and Stojaković, M., Many collinear k-tuples with no k+1 collinear points, DCG (2013)", "type": "paper"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #588 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_k(n)$ be minimal such that if $n$ points in $\\mathbb{R}^2$ have no $k+1$ points on a line then there must be at most $f_k(n)$ many lines containing at least $k$ points. Is it true that\\[f_k(n)=o(n^2)\\]for $k\\geq 4$?\n\n\n\nA generalisation of [101] (which asks about $k=4$).\n\nThe restriction to $k\\geq 4$ is necessary since Sylvester has shown that $f_3(n)= n^2/6+O(n)$. (See also Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84} for constructions which show that $f_3(n)\\geq(1/6+o(1))n^2$.)\n\nFor $k\\geq 4$, K\\'{a}rteszi \\cite{Ka63} proved\\[f_k(n)\\gg_k n\\log n\\](resolving a conjecture of Erd\\H{o}s that $f_k(n)/n\\to \\infty$). Gr\\\"{u}nbaum \\cite{Gr76} proved\\[f_k(n) \\gg_k n^{1+\\frac{1}{k-2}}.\\]Erd\\H{o}s speculated this may be the correct order of magnitude, but Solymosi and Stojakovi\\'{c} \\cite{SoSt13} give a construction which shows\\[f_k(n)\\gg_k n^{2-O_k(1/\\sqrt{\\log n})}\\]\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[Gr76] Gr\\\"{u}nbaum, Branko, New views on some old questions of combinatorial geometry. Colloquio Internazionale sulle Teorie Combinatorie\n(Roma, 1973), Tomo I (1976), 451-468.\n\n[Ka63] F. K\\'{a}rteszi, Sylvester egy t\\'{e}tel\\'{e}r\\H{o}l \\'{e}s Erd\\H{o}s egy sejt\\'{e}s\\'{e}r\\H{o}l. Matematikai Lapok (1963), 3-10.\n\n[SoSt13] Solymosi, J\\'{o}zsef and Stojakovi\\'C, Milo\\vS, Many collinear {$k$}-tuples with no {$k+1$} collinear points. Discrete Comput. Geom. (2013), 811-820.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #588: k-Point Lines**\n\nThis problem generalizes Problem #101 (the k=4 case). It asks about the maximum number of 'k-rich' lines (lines containing ≥k points) when no k+1 points are collinear.\n\n**Key History:**\n- Sylvester: f_3(n) = n²/6 + O(n), so k≥4 is necessary\n- Kárteszi (1963): f_k(n) ≥ Ω(n log n)\n- Grünbaum (1976): f_k(n) ≥ Ω(n^{1+1/(k-2)})\n- Solymosi-Stojaković (2013): f_k(n) ≥ n^{2-o(1)}\n\nThe conjecture f_k(n) = o(n²) remains OPEN despite the lower bound being extremely close to n².",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f_k(n) be the minimum such that if n points in R² have no k+1 points collinear, then there are at most f_k(n) lines containing at least k points.\n\n**Conjecture:** f_k(n) = o(n²) for k ≥ 4.\n\n**Known Bounds:**\n- Lower: f_k(n) ≥ n^{2 - O(1/√log n)} (Solymosi-Stojaković)\n- Upper: f_k(n) ≤ O(n²) (trivial)\n\n**Prize:** $100",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry:** Define Point, Line, OnLine for plane geometry.\n2. **General Position:** Define InKGeneralPosition (no k+1 collinear).\n3. **k-Rich Lines:** Define IsKRich and the counting function f_k.\n4. **Known Results:** Axiomatize bounds from Sylvester, Kárteszi, Grünbaum, Solymosi-Stojaković.\n5. **Conjecture:** State the o(n²) conjecture formally.\n6. **Connections:** Link to Szemerédi-Trotter and Problem #101.",
+    "keyInsights": [
+      "**k=3 fails:** f_3(n) = Θ(n²), so k≥4 restriction is essential",
+      "**Near-tight lower:** n^{2-o(1)} is extremely close to n²",
+      "**Gap persists:** Despite progress, the o(n²) conjecture is open",
+      "**Generalizes #101:** Problem #101 is the special case k=4",
+      "**Szemerédi-Trotter:** Connected to incidence counting theorems",
+      "**$100 prize:** One of Erdős's open prize problems"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {"id": "geometry", "title": "Point Configurations and Lines", "summary": "Point, Line, OnLine, Collinear", "startLine": 43, "endLine": 63},
+    {"id": "general-position", "title": "General Position", "summary": "InKGeneralPosition, In4GeneralPosition", "startLine": 65, "endLine": 79},
+    {"id": "k-rich", "title": "k-Rich Lines", "summary": "IsKRich, kRichLines, f_k", "startLine": 81, "endLine": 114},
+    {"id": "known-results", "title": "Known Results", "summary": "Sylvester, Kárteszi, Grünbaum, Solymosi-Stojaković", "startLine": 116, "endLine": 146},
+    {"id": "conjecture", "title": "The Erdős Conjecture", "summary": "erdos_588_conjecture, limit form", "startLine": 148, "endLine": 168},
+    {"id": "trivial-bounds", "title": "Trivial Bounds", "summary": "Upper O(n²), Lower Ω(n)", "startLine": 170, "endLine": 181},
+    {"id": "k4-case", "title": "Special Case k=4", "summary": "problem_101 connection", "startLine": 183, "endLine": 194},
+    {"id": "connections", "title": "Connections to Incidence Geometry", "summary": "Szemerédi-Trotter theorem", "startLine": 196, "endLine": 211},
+    {"id": "summary", "title": "Summary", "summary": "Status and open nature", "startLine": 213, "endLine": 249}
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #588 asks whether f_k(n) = o(n²) for k ≥ 4, where f_k(n) counts k-rich lines for n points with no k+1 collinear. The conjecture is OPEN. The best lower bound (Solymosi-Stojaković 2013) is n^{2-o(1)}, tantalizingly close to n² but not quite there. The $100 prize remains unclaimed.",
+    "implications": "**Connections**\n\n1. **Incidence Geometry:** Related to Szemerédi-Trotter incidence bounds\n2. **Problem #101:** The k=4 special case was the original formulation\n3. **Extremal Combinatorics:** Part of the study of point-line configurations\n4. **Orchard Problem:** Related to problems about collinear point triples",
+    "openQuestions": [
+      "Is f_k(n) = o(n²) for k ≥ 4? (The main conjecture, $100 prize)",
+      "Can the n^{2-o(1)} lower bound be improved?",
+      "What is the exact asymptotic of f_k(n)?",
+      "Are there constructive examples achieving the lower bound?",
+      "How does the problem change in higher dimensions?"
+    ]
   }
 }
