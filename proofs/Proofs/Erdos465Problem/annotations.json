@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-dist-to-int",
+    "proofId": "erdos-465",
+    "range": { "startLine": 48, "endLine": 63 },
+    "type": "definition",
+    "title": "Distance to Nearest Integer",
+    "content": "‖x‖ = |x - round(x)| = distance from x to nearest integer. Satisfies 0 ≤ ‖x‖ ≤ 1/2.",
+    "significance": "major"
+  },
+  {
+    "id": "def-point-config",
+    "proofId": "erdos-465",
+    "range": { "startLine": 69, "endLine": 79 },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A configuration of n points in a disk of radius X where all pairwise distances have ‖d‖ ≥ δ (avoid integers by at least δ).",
+    "significance": "major"
+  },
+  {
+    "id": "def-max-points",
+    "proofId": "erdos-465",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "definition",
+    "title": "N(X, δ) Function",
+    "content": "maxPoints(X, δ) = maximum n such that a valid configuration exists. The central function of the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-first",
+    "proofId": "erdos-465",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "conjecture",
+    "title": "First Conjecture: Sublinear Growth",
+    "content": "Is N(X, δ) = o(X) for any 0 < δ < 1/2? Asks if growth is sublinear.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-sarkozy",
+    "proofId": "erdos-465",
+    "range": { "startLine": 94, "endLine": 109 },
+    "type": "theorem",
+    "title": "Sárközy's Bound (1976)",
+    "content": "N(X, δ) ≪ δ⁻³ · X / log log X. First proof of sublinear growth. Almost linear but o(X).",
+    "significance": "major"
+  },
+  {
+    "id": "conj-second",
+    "proofId": "erdos-465",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "conjecture",
+    "title": "Second Conjecture: Square Root Growth",
+    "content": "Is N(X, δ) < X^{1/2+o(1)}? Asks if growth is at most square root.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-konyagin",
+    "proofId": "erdos-465",
+    "range": { "startLine": 121, "endLine": 139 },
+    "type": "theorem",
+    "title": "Konyagin's Theorem (2001)",
+    "content": "N(X, δ) ≪_δ X^{1/2}. The optimal bound! Uses Fourier analysis. Much stronger than Sárközy.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-lower-bound",
+    "proofId": "erdos-465",
+    "range": { "startLine": 165, "endLine": 180 },
+    "type": "theorem",
+    "title": "Lower Bound (Problem #466)",
+    "content": "N(X, δ) ≫_δ X^{1/2}. Combined with Konyagin, shows exponent 1/2 is optimal.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-why-sqrt",
+    "proofId": "erdos-465",
+    "range": { "startLine": 227, "endLine": 241 },
+    "type": "insight",
+    "title": "Why X^{1/2}?",
+    "content": "Intuition from lattice points: πX² points in disk, distances are integers, perturbation limits to ~X^{1/2} points. The constraint ‖d‖ ≥ δ is very restrictive.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-summary",
+    "proofId": "erdos-465",
+    "range": { "startLine": 278, "endLine": 291 },
+    "type": "theorem",
+    "title": "Complete Solution",
+    "content": "SOLVED: Both conjectures proved, optimal bound N(X, δ) ≍ X^{1/2} established (Konyagin upper + lower from #466).",
+    "significance": "major"
+  }
+]

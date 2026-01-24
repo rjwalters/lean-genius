@@ -1,0 +1,17 @@
+{
+  "problem_number": 465,
+  "title": "Points with Distances Avoiding Integers",
+  "status": "solved",
+  "solvers": ["Sárközy (1976)", "Konyagin (2001)"],
+  "source_url": "https://erdosproblems.com/465",
+  "overview": "Let N(X,δ) be the max points in a circle of radius X with pairwise distances at least δ from integers. Questions: (1) Is N(X,δ) = o(X)? (2) Is N(X,δ) < X^{1/2+o(1)}?",
+  "sections": [],
+  "conclusion": "SOLVED - Both conjectures proved. Sárközy (1976): N(X,δ) ≪ δ⁻³ · X / log log X. Konyagin (2001): N(X,δ) ≪_δ X^{1/2} which is OPTIMAL (lower bound from Problem #466 shows N(X,δ) ≫_δ X^{1/2}).",
+  "references": [
+    "Sárközy [Sa76] - First bound: N ≪ X / log log X",
+    "Konyagin [Ko01] - Optimal bound: N ≪ X^{1/2}",
+    "Erdős-Graham (1980) - Original problem"
+  ],
+  "related_problems": [466, 953],
+  "tags": ["number-theory", "combinatorics", "diophantine-approximation", "distance-problems", "solved"]
+}
