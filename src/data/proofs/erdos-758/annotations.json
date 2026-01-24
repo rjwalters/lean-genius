@@ -1,1 +1,160 @@
-[]
+[
+  {
+    "id": "ann-e758-header",
+    "proofId": "erdos-758",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #758: Cochromatic Number z(n)**\n\nThe cochromatic number ζ(G) is the minimum colors needed such that each color class induces a clique or independent set.\n\nLet z(n) = max{ζ(G) : G has n vertices}.\n\n**Question:** Is z(12) = 4?\n\n**Answer: YES** (Bhavik Mehta, computational proof)",
+    "mathContext": "This is a graph coloring problem that generalizes both chromatic number and clique cover number. The cochromatic number is always at most min(χ(G), θ(G)).",
+    "significance": "critical",
+    "relatedConcepts": ["Chromatic number", "Clique cover", "Graph coloring", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e758-cochromatic-coloring",
+    "proofId": "erdos-758",
+    "range": { "startLine": 45, "endLine": 56 },
+    "type": "definition",
+    "title": "Cochromatic Coloring",
+    "content": "**CochromaticColoring G:**\n\nA partition of vertices into color classes where each class induces either:\n- A clique (all pairs adjacent), OR\n- An independent set (no pairs adjacent)\n\nThis flexibility makes cochromatic coloring easier than chromatic coloring.",
+    "mathContext": "In chromatic coloring, all classes must be independent sets. In clique cover, all classes must be cliques. Cochromatic coloring allows mixing.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph partition", "Clique", "Independent set"]
+  },
+  {
+    "id": "ann-e758-cochromatic-number",
+    "proofId": "erdos-758",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "definition",
+    "title": "Cochromatic Number ζ(G)",
+    "content": "**cochromaticNumber G = ζ(G):**\n\nThe minimum number of colors in any cochromatic coloring of G.\n\nEquivalently: minimum k such that V(G) can be partitioned into k cliques and independent sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e758-z-function",
+    "proofId": "erdos-758",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "definition",
+    "title": "The Function z(n)",
+    "content": "**z(n) = max{ζ(G) : G has n vertices}:**\n\nThe maximum cochromatic number over all graphs on n vertices.\n\nThis is the extremal function for cochromatic number.",
+    "mathContext": "Determining z(n) exactly is difficult. Erdős and Gimbel initiated the study of this function.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal graph theory", "Maximum coloring number"]
+  },
+  {
+    "id": "ann-e758-bounds",
+    "proofId": "erdos-758",
+    "range": { "startLine": 82, "endLine": 91 },
+    "type": "theorem",
+    "title": "Trivial Bounds",
+    "content": "**z_bounds:**\n\n1 ≤ z(n) ≤ n for all n ≥ 1.\n\n- Lower bound: Need at least 1 color\n- Upper bound: At most n colors (each vertex its own class)",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e758-cochromatic-bound",
+    "proofId": "erdos-758",
+    "range": { "startLine": 100, "endLine": 106 },
+    "type": "axiom",
+    "title": "Chromatic Bound",
+    "content": "**cochromatic_bound:**\n\nζ(G) ≤ min(χ(G), χ(Ḡ))\n\nThe cochromatic number is bounded by both the chromatic number and the chromatic number of the complement.",
+    "mathContext": "A proper coloring (independent sets only) is a special cochromatic coloring. A clique cover of Ḡ gives a cochromatic coloring of G.",
+    "significance": "key",
+    "relatedConcepts": ["Chromatic number", "Complement graph"]
+  },
+  {
+    "id": "ann-e758-z12",
+    "proofId": "erdos-758",
+    "range": { "startLine": 143, "endLine": 149 },
+    "type": "theorem",
+    "title": "Main Result: z(12) = 4",
+    "content": "**z_12: z 12 = 4**\n\nThis is the main result - the specific question Erdős and Gimbel asked.\n\nBhavik Mehta proved this computationally by identifying the unique extremal graph.",
+    "mathContext": "The difficulty is the lower bound: showing no graph on 12 vertices needs more than 4 colors. Mehta found the unique hard case and verified it.",
+    "significance": "critical",
+    "relatedConcepts": ["Computational proof", "Extremal graph"]
+  },
+  {
+    "id": "ann-e758-known-values",
+    "proofId": "erdos-758",
+    "range": { "startLine": 173, "endLine": 188 },
+    "type": "definition",
+    "title": "Known Values Table",
+    "content": "**knownValues: z(n) for n = 1 to 19:**\n\n{1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6}\n\nNotice the pattern: z increases by 1 at n = 3, 5, 9, 13, 16.",
+    "mathContext": "Most values follow from easy induction using R(3) = 6 and R(4) = 18. Only z(12) = 4 required significant effort.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey numbers", "Inductive bounds"]
+  },
+  {
+    "id": "ann-e758-gimbel-asymptotic",
+    "proofId": "erdos-758",
+    "range": { "startLine": 194, "endLine": 201 },
+    "type": "axiom",
+    "title": "Gimbel's Asymptotic",
+    "content": "**gimbel_asymptotic:**\n\nz(n) ~ n / log n as n → ∞\n\nMore precisely: ∃ c₁, c₂ > 0 such that c₁·n/log n ≤ z(n) ≤ c₂·n/log n.",
+    "mathContext": "This shows z(n) grows slower than linearly but is unbounded. Published in Gimbel [Gi86].",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic analysis", "Logarithmic growth"]
+  },
+  {
+    "id": "ann-e758-erdos-gimbel-bounds",
+    "proofId": "erdos-758",
+    "range": { "startLine": 216, "endLine": 225 },
+    "type": "theorem",
+    "title": "Erdős-Gimbel Bounds",
+    "content": "**erdos_gimbel_12:**\n\nBefore Mehta's proof: 4 ≤ z(12) ≤ 5\n\nErdős and Gimbel established this bound, leaving the exact value open.",
+    "mathContext": "The gap between 4 and 5 is what Mehta's computational work resolved.",
+    "significance": "key",
+    "relatedConcepts": ["Upper bounds", "Lower bounds"]
+  },
+  {
+    "id": "ann-e758-mehta-unique",
+    "proofId": "erdos-758",
+    "range": { "startLine": 238, "endLine": 248 },
+    "type": "axiom",
+    "title": "Mehta's Unique Graph",
+    "content": "**mehta_unique_graph:**\n\nThere is exactly one graph (up to complement) on 12 vertices such that:\n- G and Ḡ are both K₄-free\n- χ(G) ≥ 5 and χ(Ḡ) ≥ 5\n\nThis is the only potential obstruction to z(12) = 4.",
+    "mathContext": "If a graph has χ(G) ≤ 4 or χ(Ḡ) ≤ 4, then ζ(G) ≤ 4 automatically. Mehta found the unique exception.",
+    "significance": "critical",
+    "relatedConcepts": ["K₄-free graphs", "Chromatic number"]
+  },
+  {
+    "id": "ann-e758-mehta-verification",
+    "proofId": "erdos-758",
+    "range": { "startLine": 250, "endLine": 258 },
+    "type": "axiom",
+    "title": "Mehta's Verification",
+    "content": "**mehta_verification:**\n\nThe unique graph from mehta_unique_graph has cochromatic number exactly 4.\n\nThis completes the proof that z(12) = 4.",
+    "mathContext": "Despite needing 5 colors for proper coloring, this graph can be 4-colored if we allow clique classes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e758-ramsey",
+    "proofId": "erdos-758",
+    "range": { "startLine": 264, "endLine": 271 },
+    "type": "axiom",
+    "title": "Ramsey Connection",
+    "content": "**ramsey_connection:**\n\nIf R(k,k) ≤ n, then z(n) ≤ k.\n\nRamsey numbers control cochromatic number because they force either G or Ḡ to contain large cliques.",
+    "mathContext": "R(3) = 6 means z(5) ≤ 3. R(4) = 18 means z(17) ≤ 4. This is why the known values table has its structure.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "R(k,k)"]
+  },
+  {
+    "id": "ann-e758-z20-unknown",
+    "proofId": "erdos-758",
+    "range": { "startLine": 163, "endLine": 167 },
+    "type": "axiom",
+    "title": "z(20) Unknown",
+    "content": "**z_20_unknown:**\n\nz(20) = 6 or z(20) = 7\n\nThe exact value is not yet determined.",
+    "mathContext": "This is the next open case after the complete determination for n ≤ 19.",
+    "significance": "supporting",
+    "relatedConcepts": ["Open problems", "Computational limits"]
+  },
+  {
+    "id": "ann-e758-summary",
+    "proofId": "erdos-758",
+    "range": { "startLine": 276, "endLine": 307 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**Erdős Problem #758: SOLVED**\n\n**QUESTION:** Is z(12) = 4?\n\n**ANSWER:** YES (Bhavik Mehta)\n\n**METHOD:** Computational verification of unique extremal graph\n\n**KNOWN VALUES:** z = {1,1,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6} for n=1..19\n\n**ASYMPTOTIC:** z(n) ~ n/log n\n\n**OPEN:** z(20) = 6 or 7?",
+    "significance": "critical"
+  }
+]
