@@ -1,33 +1,82 @@
 {
   "id": "erdos-599",
-  "title": "Erdős Problem #599",
+  "title": "Erdős Problem #599: The Erdős-Menger Conjecture",
   "slug": "erdos-599",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a (possibly infinite) graph and ... be disjoint independent sets of vertices. Must there exist a family ... of dis...",
+  "description": "For any graph G (possibly infinite) with disjoint independent sets A, B, must there exist vertex-disjoint A-B paths P and a set S that is both a transversal of P and a separator for all A-B paths? SOLVED: YES (Aharoni-Berger 2009).",
   "meta": {
-    "author": "Unknown",
+    "author": "Aharoni-Berger (2009)",
     "sourceUrl": "https://erdosproblems.com/599",
-    "date": "",
-    "status": "pending",
+    "date": "2009",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos599Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "menger-theorem",
+      "infinite-graphs",
+      "connectivity",
+      "matroid-theory"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 599,
     "erdosUrl": "https://erdosproblems.com/599",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Graph structures and basic definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Connectivity",
+        "description": "Path and connectivity definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finite sets for separators",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "Graph structure for possibly infinite graphs",
+      "IsIndependent: independent set definition",
+      "Path structure with first, last, vertexSet",
+      "AreDisjoint, AreInternallyDisjoint: path disjointness",
+      "PathFamily: family of paths between sets",
+      "IsTransversal: transversal of path family",
+      "IsSeparator: separator for A-B paths",
+      "ErdosMengerConjecture: formal statement",
+      "MengersTheorem: finite case statement",
+      "aharoni_berger_theorem: main result axiom",
+      "IsKLinked: k-linkage definition",
+      "vertexConnectivity: connectivity definition"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #599 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a (possibly infinite) graph and $A,B$ be disjoint independent sets of vertices. Must there exist a family $P$ of disjoint paths between $A$ and $B$ and a set $S$ which contains exactly one vertex from each path in $P$, and such that every path between $A$ and $B$ contains at least one vertex from $S$?\n\n\n\nSometimes known as the Erd\\H{o}s-Menger conjecture. When $G$ is finite this is equivalent to Menger's theorem. Erd\\H{o}s was interested in the case when $G$ is infinite.\n\nThis was proved by Aharoni and Berger \\cite{AhBe09}.\n\n\n\n\nReferences\n\n\n[AhBe09] Aharoni, Ron and Berger, Eli, Menger's theorem for infinite graphs. Invent. Math. (2009), 1-62.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Menger's Classical Theorem (1927)**\n\nKarl Menger proved in 1927 that for finite graphs, the maximum number of vertex-disjoint paths between two sets equals the minimum size of a separating set. This is one of the foundational results in graph theory, closely related to max-flow min-cut theorems.\n\n**Erdős Extends to Infinite Graphs (1981)**\n\nErdős asked whether Menger's theorem extends to infinite graphs. The natural formulation is: for disjoint independent sets A, B in any graph G, does there exist a family P of vertex-disjoint A-B paths and a set S containing exactly one vertex from each path, such that S separates A from B? For finite graphs, this is exactly Menger's theorem. For infinite graphs, it was a major open problem.\n\n**The Aharoni-Berger Breakthrough (2009)**\n\nRon Aharoni and Eli Berger proved the infinite case in their landmark paper 'Menger's theorem for infinite graphs' published in Inventiones Mathematicae. The proof uses sophisticated techniques from infinite matroid theory, marking a major advance in infinite combinatorics. The paper resolved a conjecture that had been open for almost 30 years.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet G be a (possibly infinite) graph and A, B be disjoint independent sets of vertices.\n\n**Question:** Must there exist:\n- A family P of vertex-disjoint paths between A and B\n- A set S containing exactly one vertex from each path in P\n\nsuch that every path between A and B contains at least one vertex from S?\n\n**Answer: YES** (Aharoni-Berger 2009)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structure:** Custom Graph type supporting infinite vertex sets\n\n2. **Paths:** Path structure with vertices, first, last, vertexSet\n\n3. **Disjointness:** AreDisjoint and AreInternallyDisjoint predicates\n\n4. **Path Families:** PathFamily structure with pairwiseDisjoint property\n\n5. **Transversal & Separator:** IsTransversal and IsSeparator definitions\n\n6. **Main Conjecture:** ErdosMengerConjecture formal statement\n\n7. **Finite Case:** MengersTheorem for finite graphs\n\n8. **Main Result:** aharoni_berger_theorem axiom\n\n9. **Extensions:** IsKLinked for k-linkage",
+    "keyInsights": [
+      "**Finite Equivalence:** For finite graphs, equivalent to classical Menger's theorem",
+      "**Infinite Extension:** The natural extension required new techniques",
+      "**Matroid Theory:** Aharoni-Berger proof uses infinite matroid theory",
+      "**Max-Flow Min-Cut:** Generalizes the max-flow min-cut duality",
+      "**28 Years Open:** Conjecture remained open from 1981 to 2009"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #599 (the Erdős-Menger Conjecture) asks whether Menger's theorem extends to infinite graphs. Aharoni and Berger proved the answer is YES in 2009, using infinite matroid theory. This resolved a conjecture that had been open for almost 30 years and represents a major advance in infinite combinatorics.",
+    "implications": "**Connections**\n\n1. **Menger's Theorem:** Direct generalization to infinite graphs\n\n2. **Max-Flow Min-Cut:** Extends the duality to infinite setting\n\n3. **Infinite Matroid Theory:** Proof technique with broader applications\n\n4. **König's Theorem:** Menger generalizes König for paths",
+    "openQuestions": [
+      "Can the proof be simplified or made more constructive?",
+      "What are the computational aspects for countable graphs?",
+      "Are there further extensions to hypergraphs?",
+      "What other classical finite results extend to infinite graphs?"
+    ]
   }
 }
