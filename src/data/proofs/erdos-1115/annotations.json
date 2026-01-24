@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-1115-1",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1115: For entire functions f(z), can we find a path to infinity with ℓ(r) ≪ r? DISPROVED by Gol'dberg-Eremenko (1979). The threshold is exactly (log r)².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-2",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Entire Function",
+    "content": "An entire function f: C → C is holomorphic (complex-differentiable) at every point of C. Examples: polynomials, exp(z), sin(z), cos(z). Key property: no singularities anywhere.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-3",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 53,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Maximum Modulus M(r)",
+    "content": "M(r) = max_{|z|=r} |f(z)| measures the maximum size of f on the circle of radius r. For entire functions, M(r) → ∞ as r → ∞ unless f is constant. Growth rate of M(r) determines the 'order' of f.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-4",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Finite Order",
+    "content": "An entire function has finite order ρ if log log M(r) / log r → ρ. Polynomials have order 0, exp(z) has order 1, exp(z²) has order 2. The problem concerns finite-order functions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1115-5",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Rectifiable Path",
+    "content": "A rectifiable path has finite arc length on bounded intervals. Think of a curve you could actually draw with a pen. Non-rectifiable paths have 'infinite length' locally, like fractals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1115-6",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Path Length ℓ(r)",
+    "content": "ℓ(r) = length of path Γ inside disc |z| < r. A straight ray has ℓ(r) = r (linear growth). Winding paths have ℓ(r) growing faster. The question: can we always achieve ℓ(r) ≪ r?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-7",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 98,
+      "endLine": 101
+    },
+    "type": "theorem",
+    "title": "The Erdős Question",
+    "content": "Can we always find a path Γ with f → ∞ along Γ and ℓ(r) = O(r)? In other words, can we reach infinity 'efficiently' without excessive winding? This is the central question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-8",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 111,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "Hayman's Condition",
+    "content": "log M(r) ≪ (log r)² means extremely slow growth. Even slower than any polynomial! Examples: f(z) = z (polynomial), slowly oscillating functions. Under this condition, rays to infinity exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1115-9",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 120,
+      "endLine": 123
+    },
+    "type": "theorem",
+    "title": "Hayman's Positive Result (1960)",
+    "content": "If log M(r) ≪ (log r)², then there exists a straight ray Γ from the origin on which f → ∞. A ray has ℓ(r) = r, the optimal case. The function is so 'well-behaved' that no winding is needed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-10",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 145,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "Gol'dberg-Eremenko Disproof (1979)",
+    "content": "For ANY φ(r) → ∞, there exists f with log M(r) ≪ φ(r)(log r)² (barely above Hayman's condition) but NO path has both f → ∞ and ℓ(r) ≪ r. The general question is FALSE!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-11",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 157,
+      "endLine": 165
+    },
+    "type": "theorem",
+    "title": "Any Order Possible",
+    "content": "Counterexamples exist for ANY prescribed finite order ρ > 0. Whether ρ = 0.5 or ρ = 100, there's a function of that order where no efficient path to infinity exists. Order doesn't help!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1115-12",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 171,
+      "endLine": 174
+    },
+    "type": "theorem",
+    "title": "The Disproof",
+    "content": "The answer to Erdős's question is NO. The Gol'dberg-Eremenko counterexamples show that even with barely-above-threshold growth, efficient paths may not exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-13",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 188,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Winding Mechanism",
+    "content": "Why do counterexamples work? The functions have oscillating behavior that creates 'barriers' in every direction. Any path to infinity must wind around these barriers, accumulating length faster than r.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1115-14",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 192,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "The Threshold",
+    "content": "The exact threshold is (log r)². Below: rays work (Hayman). Above: counterexamples exist (Gol'dberg-Eremenko). This is a sharp phase transition in the behavior of entire functions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1115-15",
+    "proofId": "erdos-1115",
+    "range": {
+      "startLine": 225,
+      "endLine": 238
+    },
+    "type": "theorem",
+    "title": "Complete Summary",
+    "content": "erdos_1115_summary combines all results: Hayman's positive theorem, Gol'dberg-Eremenko counterexamples, and the disproof of the general question. A complete picture of path lengths to infinity.",
+    "significance": "critical"
+  }
+]

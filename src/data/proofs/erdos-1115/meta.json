@@ -1,33 +1,107 @@
 {
   "id": "erdos-1115",
-  "title": "Erdős Problem #1115",
+  "title": "Erdős Problem #1115: Path Length for Entire Functions",
   "slug": "erdos-1115",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function of finite order, and let ... be a rectifiable path on which .... Let ... be the length of ... i...",
+  "description": "For finite-order entire functions f(z), can we find a path Γ to infinity with ℓ(r) ≪ r? DISPROVED by Gol'dberg-Eremenko (1979). Hayman showed YES if log M(r) ≪ (log r)², but counterexamples exist for any faster growth.",
   "meta": {
-    "author": "Unknown",
+    "author": "Gol'dberg-Eremenko (1979)",
     "sourceUrl": "https://erdosproblems.com/1115",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1115Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "path-length",
+      "asymptotic-curves",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1115,
     "erdosUrl": "https://erdosproblems.com/1115",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "IsEntire and HasFiniteOrder definitions",
+      "maxModulus for M(r) = max|f(z)| on |z|=r",
+      "RectifiablePath structure with pathLengthInDisc",
+      "tendsToInfinityAlongPath predicate",
+      "ErdosQuestion1115 formal statement",
+      "HaymanCondition log M(r) ≪ (log r)²",
+      "hayman_1960 axiom for positive result",
+      "goldberg_eremenko_1979 counterexample axiom",
+      "goldberg_eremenko_any_order for prescribed order",
+      "erdos_question_disproved theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1115 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be an entire function of finite order, and let $\\Gamma$ be a rectifiable path on which $f(z)\\to \\infty$. Let $\\ell(r)$ be the length of $\\Gamma$ in the disc $\\lvert z\\rvert<r$.\n\nFind a path for which $\\ell(r)$ grows as slowly as possible, and estimate $\\ell(r)$ in terms of $M(r)=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$.\n\nIn particular, can such a path $\\Gamma$ be found for which $\\ell(r)\\ll r$?\n\n\n\nA problem originally due to Hayman \\cite{Ha60}, according to \\cite{GoEr79}, although (confusingly) in the book \\cite{Ha74} by Hayman it is attributed to Erd\\H{o}s, as Problem 2.41.\n\nHayman \\cite{Ha60b} proved that if $\\log M(r) \\ll (\\log r)^2$ then there exists a path $\\Gamma$ on which $f(z)\\to \\infty$ and $\\ell(r)=r$.\n\nDisproved by Gol'dberg and Eremenko \\cite{GoEr79} who proved that for any function $\\phi(r)$ which $\\to \\infty$ as $r\\to \\infty$ there is an entire function $f$ such that\\[\\log M(r) \\ll \\phi(r)(\\log r)^2\\]and there is no path $\\Gamma$ on which $f(z)\\to \\infty$ and $\\ell(r) \\ll r$. They also construct such functions of any prescribed finite order in $[0,\\infty)$.\n\n\n\n\nReferences\n\n\n[GoEr79] Gol\\cprime dberg, A. A. and Er\\\"{e}menko, A. \\`E., Asymptotic curves of entire functions of finite order. Mat. Sb. (N.S.) (1979), 555--581, 647.\n\n[Ha60] W. Hayman, Defective values and asymptotic paths. Matematika (1960), 21-27.\n\n[Ha60b] Hayman, W. K., Slowly growing integral and subharmonic functions. Comment. Math. Helv. (1960), 75--84.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1115** concerns asymptotic curves for entire functions, originally posed by Hayman (1960) but attributed to Erdős in some sources.\n\n**Historical Development:**\n- **1960:** Hayman proves that if log M(r) ≪ (log r)², then f → ∞ along a ray (ℓ(r) = r)\n- **1974:** Hayman's book lists this as Problem 2.41, attributed to Erdős\n- **1979:** Gol'dberg-Eremenko DISPROVE the general question\n- They show: for ANY φ(r) → ∞, there exist entire functions with log M(r) ≪ φ(r)(log r)² where NO path has ℓ(r) ≪ r\n\n**Key Insight:** The threshold (log r)² is exact. Below it, straight rays to infinity exist. Above it, the function can force paths to wind excessively.",
+    "problemStatement": "**Problem Statement**\n\nLet f(z) be an entire function of finite order, and let Γ be a rectifiable path on which f(z) → ∞. Let ℓ(r) be the length of Γ in the disc |z| < r.\n\nFind a path for which ℓ(r) grows as slowly as possible, and estimate ℓ(r) in terms of M(r) = max_{|z|=r} |f(z)|.\n\n**In particular:** Can such a path Γ always be found with ℓ(r) ≪ r?\n\n**Status:** DISPROVED (Gol'dberg-Eremenko 1979)\n\n**The answer is NO:** counterexamples exist even for functions of any prescribed finite order.",
+    "proofStrategy": "**Proof Strategy**\n\n1. **Positive Result (Hayman 1960):** If log M(r) ≪ (log r)², the function grows so slowly that a straight ray works as a path to infinity.\n\n2. **Counterexamples (Gol'dberg-Eremenko 1979):** For any growth function φ(r) → ∞, construct entire f with:\n   - log M(r) ≪ φ(r)(log r)² (barely above Hayman's threshold)\n   - No path Γ exists with both f → ∞ and ℓ(r) ≪ r\n\n3. **Construction Idea:** The counterexamples have oscillating behavior that forces any path to infinity to wind around many times, accumulating path length faster than linear.\n\n4. **Order Flexibility:** Such counterexamples exist for ANY prescribed finite order ρ > 0.",
+    "keyInsights": [
+      "**Critical Threshold:** log M(r) ≪ (log r)² is the exact boundary between ray-possible and ray-impossible cases.",
+      "**Hayman's Positive Result:** Below the threshold, f → ∞ along a straight ray with ℓ(r) = r.",
+      "**Counterexample Flexibility:** For ANY φ(r) → ∞, counterexamples exist slightly above the threshold.",
+      "**Order Independence:** Counterexamples exist for any prescribed finite order ρ > 0.",
+      "**Winding Behavior:** The counterexample functions force paths to wind excessively around the origin.",
+      "**Wiman-Valiron Connection:** The theory of entire functions near maximum modulus points is key to understanding the counterexamples."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 36,
+      "endLine": 86,
+      "summary": "Defines IsEntire, maxModulus M(r), HasFiniteOrder, RectifiablePath, pathLengthInDisc ℓ(r), and tendsToInfinityAlongPath."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "Formalizes Erdős's question: can we always find a path with f → ∞ and ℓ(r) ≪ r?"
+    },
+    {
+      "id": "hayman-positive",
+      "title": "Hayman's Positive Result",
+      "startLine": 103,
+      "endLine": 130,
+      "summary": "States Hayman (1960): if log M(r) ≪ (log r)², then a ray to infinity exists."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Gol'dberg-Eremenko Counterexamples",
+      "startLine": 132,
+      "endLine": 175,
+      "summary": "The main disproof: counterexamples exist for any growth rate above (log r)²."
+    },
+    {
+      "id": "interpretation",
+      "title": "Interpretation",
+      "startLine": 177,
+      "endLine": 203,
+      "summary": "Explains why counterexamples work: winding behavior and threshold characterization."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 205,
+      "endLine": 246,
+      "summary": "Complete summary: DISPROVED. Threshold is (log r)². Hayman positive, Gol'dberg-Eremenko negative."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1115 was DISPROVED by Gol'dberg and Eremenko (1979). While Hayman showed paths with ℓ(r) = r exist when log M(r) ≪ (log r)², counterexamples exist for any faster growth rate.",
+    "implications": "**Significance**\n\n1. **Sharp Threshold:** The bound (log r)² is exact for determining when rays to infinity exist.\n\n2. **Asymptotic Curve Theory:** Reveals fundamental limitations on how simply paths to infinity can behave.\n\n3. **Entire Function Geometry:** Shows the surprising complexity of level set structure even for slowly growing functions.\n\n4. **Function Order Independence:** The phenomenon is robust across all finite orders.",
+    "openQuestions": [
+      "What is the exact minimum path length growth rate for functions just above Hayman's threshold?",
+      "Can the counterexample construction be made more explicit for specific orders?",
+      "What happens for functions of infinite order?",
+      "Are there quantitative refinements of the threshold condition?"
+    ]
   }
 }
