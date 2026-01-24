@@ -1,33 +1,72 @@
 {
   "id": "erdos-577",
-  "title": "Erdős Problem #577",
+  "title": "Erdős Problem #577: Vertex-Disjoint 4-Cycles in Dense Graphs",
   "slug": "erdos-577",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with ... vertices and minimum degree at least ... then ... contains ... vertex-disjoint ...-cycles.\n\n\n\nA co...",
+  "description": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles? SOLVED by Wang (2010): YES, the Erdős-Faudree conjecture is true.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Faudree, Wang",
     "sourceUrl": "https://erdosproblems.com/577",
-    "date": "",
-    "status": "pending",
+    "date": "2010",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos577Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycles",
+      "minimum-degree",
+      "extremal-graph-theory",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 577,
     "erdosUrl": "https://erdosproblems.com/577",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {"theorem": "SimpleGraph", "description": "Simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"},
+      {"theorem": "Fintype", "description": "Finite types", "module": "Mathlib.Data.Fintype.Card"}
+    ],
+    "originalContributions": [
+      "FourCycle: 4-cycle structure definition",
+      "DisjointFourCycles: disjointness condition",
+      "ErdosFaudreeConjecture: formal statement",
+      "wang_theorem: main result axiom",
+      "degree_bound_sharp: sharpness result"
+    ],
+    "references": [
+      {"key": "Wa10", "citation": "Wang, Hong, Proof of the Erdős-Faudree conjecture on quadrilaterals, Graphs Combin. (2010), 833-877.", "type": "paper"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #577 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph with $4k$ vertices and minimum degree at least $2k$ then $G$ contains $k$ vertex-disjoint $4$-cycles.\n\n\n\nA conjecture of Erd\\H{o}s and Faudree. Proved by Wang \\cite{Wa10}.\n\n\n\n\nReferences\n\n\n[Wa10] Wang, Hong, Proof of the Erd\\H{o}s-Faudree conjecture on quadrilaterals. Graphs Combin. (2010), 833-877.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős-Faudree Conjecture (1985)**\n\nErdős and Faudree conjectured that dense graphs (minimum degree at least half the vertex count) can be partitioned into 4-cycles. This is part of a family of 'cycle partition' problems including the Corrádi-Hajnal theorem for triangles and El-Zahar's general conjecture.\n\n**Solution:** Wang (2010) proved the conjecture using structural analysis of minimal counterexamples.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIf G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles?\n\n**Answer: YES** (Wang 2010)\n\nThe minimum degree condition is sharp: there exist graphs with minimum degree 2k-1 that fail.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph structure:** Define FourCycle as a structure with 4 distinct vertices forming a cycle.\n2. **Disjointness:** Define vertex-disjoint cycles using Finset.Disjoint.\n3. **Conjecture:** Formalize ErdosFaudreeConjecture with cardinality and degree conditions.\n4. **Wang's theorem:** Axiomatize as wang_theorem.\n5. **Related results:** Note connections to Dirac, Corrádi-Hajnal, El-Zahar.",
+    "keyInsights": [
+      "**Degree threshold:** 2k is exactly half the vertex count",
+      "**Sharp bound:** Cannot weaken to 2k-1",
+      "**Partition property:** Vertices covered by disjoint 4-cycles",
+      "**Hamiltonian connection:** Related to Dirac's theorem",
+      "**General framework:** Special case of El-Zahar's conjecture"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {"id": "basic-defs", "title": "Basic Definitions", "summary": "FourCycle, vertices, disjointness", "startLine": 37, "endLine": 73},
+    {"id": "conjecture", "title": "Erdős-Faudree Conjecture", "summary": "Formal statement of the problem", "startLine": 75, "endLine": 92},
+    {"id": "wang", "title": "Wang's Theorem", "summary": "The main result (2010)", "startLine": 94, "endLine": 107},
+    {"id": "special-cases", "title": "Special Cases", "summary": "Base case k=1 and sharpness", "startLine": 109, "endLine": 139},
+    {"id": "related", "title": "Related Results", "summary": "Dirac, El-Zahar, Corrádi-Hajnal", "startLine": 141, "endLine": 163},
+    {"id": "techniques", "title": "Proof Techniques", "summary": "Wang's approach", "startLine": 165, "endLine": 183},
+    {"id": "summary", "title": "Summary", "summary": "Main theorem and status", "startLine": 185, "endLine": 217}
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #577 (the Erdős-Faudree conjecture) was SOLVED by Wang in 2010. If a graph has 4k vertices and minimum degree at least 2k, it contains k vertex-disjoint 4-cycles. The degree bound is sharp.",
+    "implications": "**Implications**\n\n1. **Cycle partition theory:** Confirms a key case of partition-into-cycles problems\n2. **Extremal graph theory:** Establishes optimal degree condition\n3. **El-Zahar's conjecture:** Validates a special case of the general framework",
+    "openQuestions": [
+      "Full proof of El-Zahar's conjecture for all cycle lengths",
+      "Algorithmic improvements for finding the disjoint cycles",
+      "Extensions to other graph classes"
+    ]
   }
 }
