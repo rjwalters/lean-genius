@@ -1,33 +1,84 @@
 {
   "id": "erdos-657",
-  "title": "Erdős Problem #657",
+  "title": "Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances",
   "slug": "erdos-657",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... is a set of ... points such that every subset of ... points determines ... distinct distances (i.e. .....",
+  "description": "If A ⊂ ℝ² is a set of n points with no isosceles triangles, must A determine at least f(n)·n distinct distances for some f(n) → ∞? PARTIALLY SOLVED: YES. Bounds: 2^{c(log n)^{1/9}} ≤ f(n) ≤ 2^{O(√log n)}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Davies (1973), Dumitrescu (2008), Kelley-Meka (2023)",
     "sourceUrl": "https://erdosproblems.com/657",
-    "date": "",
-    "status": "pending",
+    "date": "1973",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos657Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "distances",
+      "isosceles-free",
+      "combinatorial-geometry",
+      "3-AP-free",
+      "partially-solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 6,
     "erdosNumber": 657,
     "erdosUrl": "https://erdosproblems.com/657",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for Euclidean distance",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.product",
+        "description": "Product for pairwise distances",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit behavior of f(n)",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Point2: points in ℝ²",
+      "dist2: Euclidean distance function",
+      "Triple: structure for point triples",
+      "IsIsosceles, IsIsoscelesFree: isosceles definitions",
+      "distanceSet, numDistinctDistances: distance counting",
+      "f_ratio: the function f(n) from the problem",
+      "ErdosQuestion657: formal problem statement",
+      "dumitrescu_lower_bound axiom: (log n)^c bound",
+      "dumitrescu_upper_bound axiom: 2^{O(√log n)} construction",
+      "kelley_meka_lower_bound axiom: 2^{c(log n)^{1/9}} improvement",
+      "Is3APFree: 3-AP-free sets",
+      "oneDimensional_equivalence: reduction to 3-AP",
+      "straus_high_dimension: high-dimensional construction"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #657 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A\\subset \\mathbb{R}^2$ is a set of $n$ points such that every subset of $3$ points determines $3$ distinct distances (i.e. $A$ has no isosceles triangles) then $A$ must determine at least $f(n)n$ distinct distances, for some $f(n)\\to \\infty$?\n\n\n\nIn \\cite{Er73} Erd\\H{o}s attributes this problem (more generally in $\\mathbb{R}^k$) to himself and Davies. In \\cite{Er97e} he does not mention Davis, but says this problem was investigated by himself, F\\\"{u}redi, Ruzsa, and Pach.\n\nIn \\cite{Er73} Erd\\H{o}s says it is not even known in $\\mathbb{R}$ whether $f(n)\\to \\infty$. Sarosh Adenwalla has observed that this is equivalent to minimising the number of distinct differences in a set $A\\subset \\mathbb{R}$ of size $n$ without three-term arithmetic progressions. Dumitrescu \\cite{Du08} proved that, in these terms,\\[(\\log n)^c \\leq f(n) \\leq 2^{O(\\sqrt{\\log n})}\\]for some constant $c>0$.\n\nHunter observed in the comments that a result of Ruzsa coupled with standard tools of additive combinatorics (with details given by Alfaiz and Tang) allow recent progress on the size of subsets without three-term arithmetic progression (see \\cite{BlSi23} which improves slightly on the bounds due to Kelley and Meka \\cite{KeMe23}) yield\\[2^{c(\\log n)^{1/9}}\\leq f(n)\\]for some constant $c>0$.\n\nStraus has observed that if $2^k\\geq n$ then there exist $n$ points in $\\mathbb{R}^k$ which contain no isosceles triangle and determine at most $n-1$ distances.\n\nSee also [135].\n\n\n\n\nReferences\n\n\n[BlSi23] T. F. Bloom and O. Sisask, An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353 (2023).\n\n[Du08] Dumitrescu, Adrian, On distinct distances and {$\\lambda$}-free point sets. Discrete Math. (2008), 6533--6538.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #657 (Isosceles-Free Point Sets and Distinct Distances)**\n\n**Origin:**\nErdős and Davies formulated this problem in [Er73] (1973), asking about the relationship between avoiding isosceles triangles and forcing many distinct distances. The problem was later investigated by Erdős, Füredi, Ruzsa, and Pach.\n\n**The Setup:**\nA point set A ⊂ ℝ² is *isosceles-free* if every triple of points determines three distinct distances. The question is whether such sets must have many distances: at least f(n)·n for some f(n) → ∞.\n\n**Key Breakthrough:**\nDumitrescu (2008) established: (log n)^c ≤ f(n) ≤ 2^{O(√log n)}. The lower bound shows f(n) → ∞ (answering Erdős's question affirmatively), while the upper bound gives a construction.\n\n**Recent Progress:**\nKelley-Meka (2023) and Bloom-Sisask improved the lower bound to 2^{c(log n)^{1/9}} using advances in 3-term arithmetic progression bounds.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nIf A ⊂ ℝ² is a set of n points such that every subset of 3 points determines 3 distinct distances (i.e., A has no isosceles triangles), then A must determine at least f(n)·n distinct distances, for some f(n) → ∞?\n\n**Answer: YES** (f(n) → ∞ is confirmed)\n\n**Current Bounds:**\n- Lower: 2^{c(log n)^{1/9}} ≤ f(n) (Kelley-Meka/Bloom-Sisask 2023)\n- Upper: f(n) ≤ 2^{O(√log n)} (Dumitrescu 2008)\n\nThe exact growth rate of f(n) remains unknown.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Geometry:** Define Point2, dist2 (Euclidean distance)\n\n2. **Isosceles-Free:** Triple structure, IsIsosceles, IsIsoscelesFree\n\n3. **Distance Counting:** distanceSet, numDistinctDistances\n\n4. **The Question:** ErdosQuestion657 (f(n) → ∞)\n\n5. **Dumitrescu Bounds:** Axiomatize lower ((log n)^c) and upper (2^{√log n})\n\n6. **Kelley-Meka:** Axiomatize 2^{(log n)^{1/9}} improvement\n\n7. **3-AP Connection:** Is3APFree, equivalence in ℝ\n\n8. **High Dimension:** Straus's construction with n-1 distances",
+    "keyInsights": [
+      "**Isosceles Avoidance:** No repeated distances in any triple",
+      "**3-AP Connection:** In ℝ, equivalent to minimizing differences in 3-AP-free sets",
+      "**Dumitrescu Gap:** Lower (log n)^c vs upper 2^{√log n}",
+      "**Kelley-Meka Progress:** 3-AP bounds improve to 2^{(log n)^{1/9}}",
+      "**High Dimension:** In ℝ^k with 2^k ≥ n, only n-1 distances needed"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #657 asks whether isosceles-free point sets in ℝ² must determine at least f(n)·n distinct distances for some f(n) → ∞. The answer is YES: Dumitrescu proved f(n) ≥ (log n)^c. Recent work using 3-AP bounds (Kelley-Meka, Bloom-Sisask) improves this to 2^{c(log n)^{1/9}}. The exact growth rate remains open.",
+    "implications": "**Connections**\n\n1. **Roth's Theorem:** Progress on 3-AP-free sets directly improves bounds\n\n2. **Distinct Distances:** Related to Erdős's distinct distances problem (#135)\n\n3. **Combinatorial Geometry:** Structural constraints forcing distance diversity\n\n4. **High Dimensions:** Straus's construction shows dimension matters",
+    "openQuestions": [
+      "What is the true growth rate of f(n)?",
+      "Is f(n) = 2^{(log n)^{θ(1)}} for some θ?",
+      "Can the Kelley-Meka lower bound be improved?",
+      "What happens in dimensions 3 ≤ k < log n?"
+    ]
   }
 }
