@@ -1,33 +1,53 @@
 {
   "id": "erdos-1124",
-  "title": "Erdős Problem #1124",
+  "title": "Erdős Problem #1124: Tarski's Circle-Squaring Problem",
   "slug": "erdos-1124",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan a square and a circle of the same area be decomposed into a finite number of congruent parts?\n\n\n\nA problem of Tarski, whi...",
+  "description": "Can a circle and square of equal area be decomposed into finitely many congruent pieces? SOLVED by Laczkovich (1990): YES, using translations only with approximately 10^50 pieces.",
   "meta": {
-    "author": "Unknown",
+    "author": "Tarski (1925), Laczkovich (1990)",
     "sourceUrl": "https://erdosproblems.com/1124",
-    "date": "",
-    "status": "pending",
+    "date": "1925",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1124Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "geometry", "equidecomposition", "tarski", "circle-squaring", "measure-theory", "solved"],
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1124,
     "erdosUrl": "https://erdosproblems.com/1124",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {"theorem": "EuclideanSpace", "description": "Euclidean space type", "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"},
+      {"theorem": "MeasurableSet", "description": "Measurable sets", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"}
+    ],
+    "originalContributions": [
+      "Point: R² definition", "disk/square: basic shapes", "TranslationCongruent: translation congruence",
+      "IsDecomposition: finite decomposition", "TranslationEquidecomposable: equidecomposability by translations",
+      "TarskiProblem: original question", "laczkovich_theorem: main result", "tarski_solved: derived theorem"
+    ],
+    "references": [
+      {"key": "La90", "citation": "Laczkovich, M., Equidecomposability and discrepancy; a solution of Tarski's circle-squaring problem, J. Reine Angew. Math. (1990), 77-117.", "type": "paper"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1124 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan a square and a circle of the same area be decomposed into a finite number of congruent parts?\n\n\n\nA problem of Tarski, which Erd\\H{o}s described as 'a very beautiful problem...if it were my problem I would offer \\$1000 for it'.\n\nThis is true - Laczkovich \\cite{La90b} proved that in fact this is possible using translations only.\n\n\n\n\nReferences\n\n\n[La90b] Laczkovich, M., Equidecomposability and discrepancy; a solution of {T}arski's\ncircle-squaring problem. J. Reine Angew. Math. (1990), 77--117.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Tarski's Circle-Squaring Problem (1925)**\n\nOne of the most famous problems in geometric measure theory. Tarski asked whether a circle and square of equal area can be decomposed into finitely many congruent pieces.\n\n**Erdős's Comment:** 'A very beautiful problem...if it were my problem I would offer $1000 for it.'\n\n**Solution:** Laczkovich (1990) proved YES, and surprisingly, translations alone suffice!",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nCan a circle and square of equal area be decomposed into a finite number of congruent parts?\n\n**Answer: YES** (Laczkovich 1990)\n\n- Translations alone suffice (stronger than asked)\n- Uses approximately 10^50 pieces\n- Proof is non-constructive (uses Axiom of Choice)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Shapes:** Define disk and square in R².\n2. **Equidecomposability:** Define translation congruence and decompositions.\n3. **Tarski's Problem:** Formalize the original question.\n4. **Laczkovich's Theorem:** Axiomatize the solution.\n5. **Key Features:** Note non-constructive nature and piece count.",
+    "keyInsights": ["**65 years open:** From 1925 to 1990", "**Translations suffice:** Stronger than required", "**10^50 pieces:** Astronomical number", "**Non-constructive:** Requires Axiom of Choice", "**Non-measurable:** Pieces cannot all be Lebesgue measurable"]
   },
-  "sections": [],
+  "sections": [
+    {"id": "basic-defs", "title": "Basic Definitions", "summary": "Points, disks, squares", "startLine": 41, "endLine": 62},
+    {"id": "equidecomposability", "title": "Equidecomposability", "summary": "Translations and decompositions", "startLine": 64, "endLine": 102},
+    {"id": "circle-squaring", "title": "Circle-Squaring Problem", "summary": "Same area condition", "startLine": 104, "endLine": 123},
+    {"id": "tarski-problem", "title": "Tarski's Question", "summary": "Original problem statement", "startLine": 125, "endLine": 136},
+    {"id": "laczkovich", "title": "Laczkovich's Solution", "summary": "Main theorem", "startLine": 138, "endLine": 177},
+    {"id": "key-features", "title": "Key Features", "summary": "Non-constructive aspects", "startLine": 179, "endLine": 201},
+    {"id": "summary", "title": "Summary", "summary": "Main result", "startLine": 203, "endLine": 240}
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Tarski's Circle-Squaring Problem asks whether a circle and square of equal area can be decomposed into finitely many congruent pieces. Laczkovich (1990) proved YES, and translations alone suffice. The proof uses approximately 10^50 pieces and relies on the Axiom of Choice.",
+    "implications": "**Implications**\n\n1. **Banach-Tarski connection:** Related paradox in 3D\n2. **Measure theory:** Shows limits of Lebesgue measure\n3. **Set theory:** Demonstrates power of Axiom of Choice",
+    "openQuestions": ["Can the number of pieces be reduced?", "Is there a constructive proof?", "What about other shapes?"]
   }
 }
