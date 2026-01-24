@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-e857-header",
+    "proofId": "erdos-857",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #857: The Weak Sunflower Problem**\n\nLet m(n, k) be minimal such that any collection of m subsets of {1,...,n} contains a k-sunflower.\n\n**Status:** OPEN (partial results)\n\n**Key Results:**\n- Erdős-Ko-Rado (1961): Classical sunflower lemma\n- Naslund-Sawin (2017): m(n,3) ≤ 2.755^n\n- Connection to cap set problem",
+    "mathContext": "A sunflower (Δ-system) is a family of sets where any two intersect in the same 'core'. The problem asks for the minimum family size guaranteeing a k-sunflower.",
+    "significance": "critical",
+    "relatedConcepts": ["Sunflower Lemma", "Extremal combinatorics", "Cap set problem"]
+  },
+  {
+    "id": "ann-e857-sunflower-def",
+    "proofId": "erdos-857",
+    "range": { "startLine": 50, "endLine": 64 },
+    "type": "definition",
+    "title": "Sunflower Definition",
+    "content": "**IsSunflower family core:**\n\nA family forms a sunflower with core C if every pair of sets intersects exactly in C.\n\n**Definition:**\n```lean\ndef IsSunflower (family : Finset (Finset α)) (core : Finset α) : Prop :=\n  ∀ A B, A ∈ family → B ∈ family → A ≠ B → A ∩ B = core\n```\n\n**ContainsSunflower family k:**\nA family contains a k-sunflower if some k-element subfamily forms a sunflower.",
+    "mathContext": "The core is the common intersection; the 'petals' A \\ core are pairwise disjoint.",
+    "significance": "critical",
+    "relatedConcepts": ["Δ-system", "Set intersection", "Disjoint sets"]
+  },
+  {
+    "id": "ann-e857-petal",
+    "proofId": "erdos-857",
+    "range": { "startLine": 66, "endLine": 89 },
+    "type": "theorem",
+    "title": "Petals and Disjointness",
+    "content": "**Petal A core:** The set A \\ core.\n\n**sunflower_petals_disjoint:**\n\nIn a sunflower, the petals of distinct sets are disjoint.\n\n```lean\ntheorem sunflower_petals_disjoint :\n    Disjoint (Petal A core) (Petal B core)\n```\n\n**Proof:** If x ∈ A and x ∈ B but x ∉ core, then x ∈ A ∩ B but A ∩ B = core, contradiction.",
+    "mathContext": "This is the key structural property of sunflowers: petals partition into disjoint sets.",
+    "significance": "key",
+    "relatedConcepts": ["Disjointness", "Set difference", "Sunflower structure"]
+  },
+  {
+    "id": "ann-e857-function",
+    "proofId": "erdos-857",
+    "range": { "startLine": 91, "endLine": 111 },
+    "type": "definition",
+    "title": "The Sunflower Function m(n,k)",
+    "content": "**sunflowerNumber n k:**\n\nThe minimal m such that any family of m subsets of {1,...,n} contains a k-sunflower.\n\n**Definition:**\n```lean\nnoncomputable def sunflowerNumber (n k : ℕ) : ℕ :=\n  Nat.find (sunflower_number_exists n k)\n```\n\n**Existence:** Since there are only 2^n subsets, any family of 2^n + 1 sets must repeat, giving a trivial sunflower bound.",
+    "mathContext": "The function m(n, k) is well-defined and the problem asks to estimate its growth rate.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal function", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e857-ekr",
+    "proofId": "erdos-857",
+    "range": { "startLine": 113, "endLine": 148 },
+    "type": "axiom",
+    "title": "Erdős-Ko-Rado Sunflower Lemma",
+    "content": "**erdos_ko_rado_sunflower:**\n\nAny family of more than (k-1)! · ℓ^ℓ sets of size ≤ ℓ contains a k-sunflower.\n\n**Statement:**\n```lean\naxiom erdos_ko_rado_sunflower :\n    family.card > (k-1)! * ℓ^ℓ →\n    ContainsSunflower family k\n```\n\n**bounded_sets_sunflower:** A corollary for sets of exactly size ℓ.",
+    "mathContext": "This 1961 result gives a bound depending on the size of sets, not just n. For unbounded sets, stronger results are needed.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős-Ko-Rado", "Factorial bounds", "Bounded families"]
+  },
+  {
+    "id": "ann-e857-naslund",
+    "proofId": "erdos-857",
+    "range": { "startLine": 150, "endLine": 169 },
+    "type": "axiom",
+    "title": "Naslund-Sawin Bound",
+    "content": "**naslund_sawin_bound:**\n\nFor 3-sunflowers: m(n, 3) ≤ (3/2^(2/3))^((1+o(1))n) ≈ 2.755^n.\n\n**Statement:**\n```lean\naxiom naslund_sawin_bound :\n    ∀ ε > 0, ∃ N, ∀ n ≥ N,\n      sunflowerNumber n 3 ≤ ⌈(3/2^(2/3) + ε)^n⌉\n```\n\n**Cap Set Connection:** Uses the polynomial method and relates to subsets of F₃^n without 3-term APs.",
+    "mathContext": "This 2017 breakthrough used techniques from the cap set problem solution (Croot-Lev-Pach, Ellenberg-Gijswijt).",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial method", "Cap sets", "F₃^n"]
+  },
+  {
+    "id": "ann-e857-conjecture",
+    "proofId": "erdos-857",
+    "range": { "startLine": 171, "endLine": 195 },
+    "type": "axiom",
+    "title": "The Sunflower Conjecture",
+    "content": "**sunflower_conjecture:**\n\nFor any k ≥ 3, there exists c(k) such that m(n, k) ≤ c(k)^n.\n\n**Statement:**\n```lean\naxiom sunflower_conjecture :\n    ∀ k ≥ 3, ∃ c > 0, ∀ n, sunflowerNumber n k ≤ ⌈c^n⌉\n```\n\n**Status:** OPEN for all k ≥ 3. The trivial bound is 2^n.",
+    "mathContext": "This is one of the famous open problems in combinatorics, with connections to theoretical computer science.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Exponential bounds", "Erdős conjectures"]
+  },
+  {
+    "id": "ann-e857-examples",
+    "proofId": "erdos-857",
+    "range": { "startLine": 197, "endLine": 223 },
+    "type": "theorem",
+    "title": "Examples",
+    "content": "**singleton_sunflower_example:**\n\nThe family {{0}, {1}, {2}} is a 3-sunflower with core ∅.\n\n```lean\ntheorem singleton_sunflower_example :\n    IsSunflower ({{0}, {1}, {2}} : Finset (Finset (Fin 3))) ∅\n```\n\nSingletons always form a sunflower since their pairwise intersection is empty.",
+    "mathContext": "This is the simplest example: any collection of singletons forms a sunflower with empty core.",
+    "significance": "supporting",
+    "relatedConcepts": ["Singletons", "Empty core", "Trivial examples"]
+  },
+  {
+    "id": "ann-e857-variants",
+    "proofId": "erdos-857",
+    "range": { "startLine": 225, "endLine": 244 },
+    "type": "concept",
+    "title": "Weak vs Strong Sunflower",
+    "content": "**Strong vs Weak Sunflower Problem:**\n\n- **Strong (Problem #20):** Maximum ℓ-sets from {1,...,n} with no k-sunflower\n- **Weak (Problem #857):** All subsets, not just ℓ-sets\n\n**Union Formulation:**\nErdős originally used 'union' instead of 'intersection'. These are equivalent by complementation.",
+    "mathContext": "The weak version allows varying set sizes, making it harder to avoid sunflowers.",
+    "significance": "supporting",
+    "relatedConcepts": ["Strong sunflower", "Equivalent formulations"]
+  },
+  {
+    "id": "ann-e857-summary",
+    "proofId": "erdos-857",
+    "range": { "startLine": 246, "endLine": 283 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_857_summary:**\n\nCombines the main result:\n\n```lean\ntheorem erdos_857_summary :\n    ∀ n ℓ k, k ≥ 2 → ℓ ≥ 1 →\n      family.card > (k-1)! * ℓ^ℓ →\n      ContainsSunflower family k\n```\n\n**Status:** The exact value of m(n, k) remains OPEN. Best known bounds are subexponential in ℓ for bounded families.",
+    "mathContext": "The Sunflower Conjecture remains one of the central open problems in extremal combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open problems"]
+  }
+]
