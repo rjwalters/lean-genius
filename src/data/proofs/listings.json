@@ -4384,17 +4384,24 @@
   },
   {
     "id": "erdos-217",
-    "title": "Erdős Problem #217",
+    "title": "Erdős Problem #217: Point Configurations with Distance Multiplicities",
     "slug": "erdos-217",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which ... are there ... points in ..., no three on a line and no four on a circle, which determine ... distinct distances...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For which n are there n points in R² in general position with n-1 distinct distances where the i-th distance appears exactly i times? OPEN. Known for n ≤ 8 (Pomerance, Palásti), conjectured impossible for large n.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "distances",
+      "point-configurations",
+      "extremal-geometry",
+      "open"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 217,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 17
   },
   {
     "id": "erdos-219",
