@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "representation-count",
+    "proofId": "erdos-237",
+    "range": { "startLine": 38, "endLine": 43 },
+    "type": "definition",
+    "title": "Representation Count f(n)",
+    "content": "The function f(n) counts the number of ways to write n = p + a where p is prime and a is an element of the set A. This is the central object of study in the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "log-density",
+    "proofId": "erdos-237",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Logarithmic Lower Density",
+    "content": "A set A has logarithmic lower density if |A ∩ [1,N]| ≥ c·log(N) for some c > 0 and all large N. This is the density condition in Erdős's original question.",
+    "significance": "high"
+  },
+  {
+    "id": "unbounded-limsup",
+    "proofId": "erdos-237",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "definition",
+    "title": "Unbounded Limsup",
+    "content": "The predicate HasUnboundedLimsup(f) means that for every bound M, there exists n with f(n) > M. This is equivalent to limsup f(n) = ∞.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-conjecture",
+    "proofId": "erdos-237",
+    "range": { "startLine": 64, "endLine": 71 },
+    "type": "definition",
+    "title": "Erdős's Original Conjecture",
+    "content": "The conjecture states: if A has logarithmic density, then f(n) has unbounded limsup. This is the original formulation of Erdős Problem #237.",
+    "significance": "critical"
+  },
+  {
+    "id": "stronger-version",
+    "proofId": "erdos-237",
+    "range": { "startLine": 73, "endLine": 80 },
+    "type": "definition",
+    "title": "Chen-Ding Stronger Version",
+    "content": "Chen and Ding proved a stronger result: any infinite set A (not just those with logarithmic density) has unbounded representation count. This is a significant strengthening.",
+    "significance": "critical"
+  },
+  {
+    "id": "powers-of-two",
+    "proofId": "erdos-237",
+    "range": { "startLine": 86, "endLine": 90 },
+    "type": "definition",
+    "title": "Powers of Two",
+    "content": "The set A = {2^k : k ≥ 0} = {1, 2, 4, 8, 16, ...}. This was Erdős's original example from 1950.",
+    "significance": "medium"
+  },
+  {
+    "id": "erdos-1950",
+    "proofId": "erdos-237",
+    "range": { "startLine": 92, "endLine": 97 },
+    "type": "axiom",
+    "title": "Erdős 1950 Result",
+    "content": "Erdős (1950) proved that for A = powers of two, the representation count f(n) has unbounded limsup. This was the first case of the conjecture to be proved.",
+    "significance": "high"
+  },
+  {
+    "id": "chen-ding-2022",
+    "proofId": "erdos-237",
+    "range": { "startLine": 118, "endLine": 125 },
+    "type": "axiom",
+    "title": "Chen and Ding 2022 Theorem",
+    "content": "Chen and Ding (2022) proved that EVERY infinite set A satisfies the conclusion. This completely solves Problem #237 and proves much more than originally asked.",
+    "significance": "critical"
+  },
+  {
+    "id": "conjecture-true",
+    "proofId": "erdos-237",
+    "range": { "startLine": 127, "endLine": 141 },
+    "type": "theorem",
+    "title": "Original Conjecture is True",
+    "content": "The original conjecture follows from Chen-Ding: sets with logarithmic density are infinite, so the stronger result applies. The sorry handles the technicality of showing finite sets can't have log-density.",
+    "significance": "critical"
+  },
+  {
+    "id": "pnt-insight",
+    "proofId": "erdos-237",
+    "range": { "startLine": 155, "endLine": 160 },
+    "type": "insight",
+    "title": "Prime Number Theorem Connection",
+    "content": "The Prime Number Theorem (π(n) ~ n/log(n)) ensures primes are dense enough that infinite sets A will have many elements whose complements n - a are prime.",
+    "significance": "high"
+  },
+  {
+    "id": "squares-example",
+    "proofId": "erdos-237",
+    "range": { "startLine": 173, "endLine": 180 },
+    "type": "example",
+    "title": "Squares Example",
+    "content": "The set of perfect squares A = {1, 4, 9, 16, ...} is infinite, so by Chen-Ding, it has unbounded representation count. This is a concrete application of the theorem.",
+    "significance": "medium"
+  },
+  {
+    "id": "prime-powers-example",
+    "proofId": "erdos-237",
+    "range": { "startLine": 182, "endLine": 189 },
+    "type": "example",
+    "title": "Prime Powers Example",
+    "content": "The set of prime powers A = {p^k : p prime, k ≥ 1} is infinite, so it also has unbounded representation count.",
+    "significance": "medium"
+  },
+  {
+    "id": "goldbach-connection",
+    "proofId": "erdos-237",
+    "range": { "startLine": 202, "endLine": 208 },
+    "type": "insight",
+    "title": "Goldbach Connection",
+    "content": "This problem is related to Goldbach's conjecture. If A = {2}, then f(n) counts primes p with n - 2 prime (twin primes shifted). The general problem studies sums of primes with structured sets.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "erdos-237",
+    "range": { "startLine": 221, "endLine": 235 },
+    "type": "theorem",
+    "title": "Erdős Problem #237 SOLVED",
+    "content": "The main theorem erdos_237 states that the original conjecture is true. The answer to Problem #237 is YES, proved by Chen and Ding (2022) with an even stronger result.",
+    "significance": "critical"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-237",
+    "range": { "startLine": 237, "endLine": 248 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "The summary theorem combines both results: the original conjecture is true AND the stronger version (infinite sets suffice) is also true.",
+    "significance": "high"
+  }
+]

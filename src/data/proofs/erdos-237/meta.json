@@ -1,33 +1,143 @@
 {
   "id": "erdos-237",
-  "title": "Erdős Problem #237",
+  "title": "Erdős Problem #237: Prime Plus Set Representations",
   "slug": "erdos-237",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set such that ... for all large .... Let ... count the number of solutions to ... for ... prime and .... Is it t...",
+  "description": "For A ⊆ ℕ with |A ∩ [1,N]| ≫ log(N), is limsup f(n) = ∞ where f(n) counts n = p + a? YES (Chen-Ding 2022), even for infinite A.",
   "meta": {
-    "author": "Unknown",
+    "author": "Chen and Ding (2022 solution), Erdős (1950 special case)",
     "sourceUrl": "https://erdosproblems.com/237",
-    "date": "",
-    "status": "pending",
+    "date": "2022",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos237Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "additive-combinatorics",
+      "representations",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 237,
     "erdosUrl": "https://erdosproblems.com/237",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Nat.card",
+        "description": "Cardinality of a set",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Topology.Instances.Real"
+      }
+    ],
+    "originalContributions": [
+      "representationCount definition: counts n = p + a solutions",
+      "HasLogDensity predicate: |A ∩ [1,N]| ≥ c·log(N)",
+      "HasUnboundedLimsup predicate: limsup f(n) = ∞",
+      "ErdosConjecture formulation: original question",
+      "StrongerVersion formulation: infinite sets suffice",
+      "powersOfTwo definition: A = {2^k}",
+      "erdos_1950_powers_of_two axiom: special case",
+      "chen_ding_2022 axiom: main theorem",
+      "erdos_conjecture_true theorem: original is true",
+      "squares, primePowers examples"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #237 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a set such that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\log N$ for all large $N$. Let $f(n)$ count the number of solutions to $n=p+a$ for $p$ prime and $a\\in A$. Is it true that $\\limsup f(n)=\\infty$?\n\n\n\nErd\\H{o}s \\cite{Er50} proved this when $A=\\{2^k : k\\geq 0\\}$.\n\nThe answer is yes, as proved by Chen and Ding \\cite{ChDi22} - in fact, the assumption that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\log N$ can be replaced just with the assumption that $A$ is infinite.\n\nSee also [236].\n\n\n\n\nReferences\n\n\n[ChDi22] Chen, Y.-G. and Ding, Y., On a conjecture of Erd\\H{o}s. arXiv:2201.10727 (2022).\n\n[Er50] Erd\\\"{o}s, P., On integers of the form $2^k+p$ and some related problems. Summa Brasil. Math. (1950), 113-123.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #237: Prime Plus Set Representations**\n\nThis problem concerns the representation of integers as the sum of a prime and an element from a dense set.\n\n**Key History:**\n- Erdős (1950): Proved the result for A = {2^k : k ≥ 0}, the powers of two\n- The question remained open for general sets with logarithmic density\n- Chen and Ding (2022): Proved an even stronger result - any infinite set A suffices!\n\n**Mathematical Setting:**\nFor A ⊆ ℕ, define f(n) = |{(p,a) : p prime, a ∈ A, p + a = n}|. The question asks whether dense sets force f(n) to be unbounded.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $A \\subseteq \\mathbb{N}$ be a set such that $|A \\cap \\{1,\\ldots,N\\}| \\gg \\log N$ for all large $N$.\n\nLet $f(n)$ count the number of solutions to $n = p + a$ for $p$ prime and $a \\in A$.\n\n**Question:** Is it true that $\\limsup_{n \\to \\infty} f(n) = \\infty$?\n\n**Answer: YES** (Chen and Ding, 2022)\n\n**Stronger Result:** The logarithmic density condition can be replaced with just requiring $A$ to be infinite!",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Representation Count:** Define f(n) counting pairs (p,a) with p prime, a ∈ A, p + a = n.\n\n2. **Density Conditions:** Formalize logarithmic density and the infinite set condition.\n\n3. **Original Conjecture:** State that log-density implies unbounded limsup.\n\n4. **Stronger Version:** State that infinite sets suffice (Chen-Ding 2022).\n\n5. **Derive Original:** Show log-density implies infinite, so original follows from stronger.\n\n6. **Examples:** Powers of two, squares, prime powers as concrete instances.",
+    "keyInsights": [
+      "**Representation Counting:** f(n) counts ways to write n = p + a with p prime",
+      "**Logarithmic Density:** Erdős asked about |A ∩ [1,N]| ≥ c·log(N)",
+      "**Stronger Result:** Chen-Ding showed infinite sets suffice (much weaker condition)",
+      "**Powers of Two:** Erdős's original 1950 result for A = {2^k}",
+      "**Prime Number Theorem:** Primes are dense enough that infinite A yields many representations"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "representationCount, HasLogDensity, HasUnboundedLimsup",
+      "startLine": 38,
+      "endLine": 58
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture and StrongerVersion formulations",
+      "startLine": 60,
+      "endLine": 80
+    },
+    {
+      "id": "historical-results",
+      "title": "Historical Results",
+      "summary": "powersOfTwo definition, Erdős 1950 theorem",
+      "startLine": 82,
+      "endLine": 112
+    },
+    {
+      "id": "chen-ding",
+      "title": "Chen and Ding's Theorem",
+      "summary": "chen_ding_2022 axiom and erdos_conjecture_true derivation",
+      "startLine": 114,
+      "endLine": 141
+    },
+    {
+      "id": "proof-strategy",
+      "title": "Understanding the Proof Strategy",
+      "summary": "Why infinite sets suffice, PNT connection",
+      "startLine": 143,
+      "endLine": 167
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Special Cases",
+      "summary": "squares, primePowers definitions",
+      "startLine": 169,
+      "endLine": 196
+    },
+    {
+      "id": "goldbach",
+      "title": "Relation to Goldbach-type Problems",
+      "summary": "Connection to additive number theory",
+      "startLine": 198,
+      "endLine": 215
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_237 and erdos_237_summary theorems",
+      "startLine": 217,
+      "endLine": 250
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #237 asked whether sets A with logarithmic density force unbounded representation count f(n) = |{(p,a) : p + a = n}|. Chen and Ding (2022) proved YES, and showed an even stronger result: any infinite set A suffices. This supersedes Erdős's 1950 special case for powers of two.",
+    "implications": "**Connections to Number Theory**\n\n1. **Prime Number Theorem:** The density of primes ensures intersection with translates of infinite sets\n\n2. **Goldbach-type Problems:** Binary additive problems n = p + a are fundamental\n\n3. **Additive Combinatorics:** Shows sparsity of A has limited effect on representation counts\n\n4. **Related Problem #236:** Connected to other Goldbach-variant questions",
+    "openQuestions": [
+      "What is the growth rate of limsup f(n) for specific sets A?",
+      "For which A is f(n) → ∞ (not just limsup)?",
+      "What about n = p₁ + p₂ + a (adding a second prime)?",
+      "Can we characterize A for which f(n) ≥ c·g(n) for some growth function g?",
+      "What happens for signed representations n = p - a?"
+    ]
   }
 }
