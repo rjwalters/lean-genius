@@ -1,0 +1,17 @@
+{
+  "problem_number": 271,
+  "title": "Stanley Sequences",
+  "status": "partially_solved",
+  "solvers": ["Odlyzko-Stanley (1978)", "Moy (2011)", "van Doorn-Sothanaphan"],
+  "source_url": "https://erdosproblems.com/271",
+  "overview": "For any n, let A(n) be the greedy sequence starting with 0, n that avoids three-term arithmetic progressions. Can the elements be explicitly determined? How fast do they grow?",
+  "sections": [],
+  "conclusion": "PARTIALLY SOLVED: A(1) = base-3 numbers without digit 2. Similar for A(3^k), A(2·3^k). Upper bound aₖ ≤ (1/2 + ε)k² proven (Moy). OPEN: Odlyzko-Stanley dichotomy conjecture (either k^{log₂3} or k²/log k growth).",
+  "references": [
+    "Odlyzko-Stanley (1978) - Characterizations, dichotomy conjecture",
+    "Moy (2011) - Upper bound (1/2 + ε)k²",
+    "van Doorn-Sothanaphan - Explicit upper bound aₖ ≤ (k-1)(k+2)/2 + n"
+  ],
+  "related_problems": [],
+  "tags": ["combinatorics", "arithmetic-progressions", "greedy-algorithms", "sequences", "partially-solved"]
+}
