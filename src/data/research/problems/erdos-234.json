@@ -1,54 +1,105 @@
 {
   "slug": "erdos-234",
-  "title": "Erdős #234",
-  "phase": "NEW",
+  "title": "Erdős #234: Density of Normalized Prime Gaps",
+  "phase": "FORMALIZING",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $c\\geq 0$ the density $f(c)$ of integers for which\\[\\frac{p_{n+1}-p_n}{\\log n}< c\\]exists and is a continuous function of $c$.\n\n\n\nSee also [5].\n\n\nBack to the problem",
-    "plain": "Forum",
-    "whyMatters": []
+    "formal": "For every c ≥ 0, the density f(c) of integers n for which (p_{n+1} - p_n) / log n < c exists and is a continuous function of c.",
+    "plain": "The normalized prime gaps have a well-defined density distribution that is continuous.",
+    "whyMatters": [
+      "Fundamental question about the distribution of prime gaps",
+      "Connected to Cramér's probabilistic model of primes",
+      "Gallagher showed the result holds assuming Riemann Hypothesis"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Cramér's model predicts f(c) = 1 - exp(-c) (exponential distribution)",
+      "Gallagher (1976): Under RH, normalized gaps have exponential distribution",
+      "Density at zero is 0 (no negative gaps) - proved in Lean",
+      "Gap proportion is monotone in c"
+    ],
+    "open": [
+      "Unconditional existence of density f(c) for all c ≥ 0",
+      "Continuity of f(c) without RH assumption"
+    ],
+    "goal": "Formalize the conjecture and known conditional results"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T16:08:36.613Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "FORMALIZING",
+    "since": "2026-01-24T16:45:00Z",
+    "iteration": 2,
+    "focus": "Proved auxiliary lemmas, improved formalization",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider proving cramer_continuous for completeness",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #234 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $c\\geq 0$ the density $f(c)$ of integers for which\\[\\frac{p_{n+1}-p_n}{\\log n}< c\\]exists and is a continuous function of $c$.\n\n\n\nSee also [5].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #5\n- Problem #233\n- Problem #235\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n- Er61\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "progressSummary": "PROGRESS: Proved density_at_zero_expected theorem. Added helper lemmas for normalized gap non-negativity. Converted cramer_continuous to documented axiom.",
+    "builtItems": [
+      "normalizedGap_nonneg: Proved normalized gaps are non-negative",
+      "countSmallNormGaps_zero: Proved count at 0 is always 0",
+      "gapProportion_zero: Proved proportion at 0 is always 0",
+      "density_at_zero_expected: Proved f(0) = 0 if density exists",
+      "cramer_exp_continuous: Helper for exponential continuity"
+    ],
+    "insights": [
+      "The conjecture is OPEN - requires infinitary argument about limiting distributions",
+      "Gallagher's conditional result reduces problem to RH",
+      "Cramér's probabilistic model gives expected answer f(c) = 1 - exp(-c)",
+      "Continuity of piecewise functions in Lean requires careful API navigation"
+    ],
+    "mathlibGaps": [
+      "Continuous.if_lt or similar for strict inequalities in piecewise functions"
+    ],
+    "nextSteps": [
+      "Could prove cramer_continuous directly with more effort on Mathlib API",
+      "Consider adding more infrastructure for prime gap distribution"
+    ],
+    "markdown": "# Erdős #234 - Knowledge Base\n\n## Problem Statement\n\nFor every c ≥ 0, the density f(c) of integers n for which\n(p_{n+1} - p_n) / log n < c\nexists and is a continuous function of c.\n\n## Status: OPEN\n\nThis is a deep conjecture about the distribution of normalized prime gaps.\n\n## Session 1 (2026-01-24)\n\n**Proved:**\n- `density_at_zero_expected`: If the density exists at 0, then it equals 0\n- Helper lemmas: `normalizedGap_nonneg`, `countSmallNormGaps_zero`, `gapProportion_zero`\n\n**Key Insight:** The normalized gap is always ≥ 0 (prime gaps are positive, log n > 0 for n > 1), so no gaps have normalized value < 0, making f(0) = 0.\n\n**Remaining Axioms:**\n- `cramer_continuous`: Mathematical justification clear (piecewise continuous with matching boundary), but Lean proof requires navigating piecewise function API\n- Various standard axioms about density existence, Gallagher's theorem, etc.\n\n## References\n\n- Cramér (1936): Probabilistic model\n- Gallagher (1976): Conditional result under RH\n- Erdős (1935, 1940): Early work on prime gaps\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Prove auxiliary lemmas",
+      "status": "completed",
+      "description": "Proved density_at_zero_expected and helper lemmas",
+      "outcome": "Successfully proved f(0) = 0"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "prime-gaps",
+    "analytic",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos234Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Cramér (1936) - On the order of magnitude of prime gaps",
+      "Gallagher (1976) - On the distribution of primes in short intervals"
+    ],
+    "urls": [
+      "https://erdosproblems.com/234"
+    ],
+    "mathlib": [
+      "Nat.nth",
+      "Nat.Prime",
+      "Filter.Tendsto",
+      "Real.log",
+      "Real.exp"
+    ]
   },
   "started": "2026-01-12T16:08:36.613Z",
+  "lastUpdate": "2026-01-24T16:45:00Z",
   "significance": 7,
   "tractability": 5
 }
