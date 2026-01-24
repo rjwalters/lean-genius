@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 712,
     "erdosUrl": "https://erdosproblems.com/712",
     "erdosProblemStatus": "open",
@@ -46,72 +46,72 @@
     {
       "id": "turan-number",
       "title": "Hypergraph Turán Numbers",
-      "summary": "turanNumber definition, turanNumberDef, turan_upper_trivial",
+      "summary": "turanNumber definition using sSup, turanNumberDef, turan_upper_trivial axiom",
       "startLine": 67,
-      "endLine": 88
+      "endLine": 86
     },
     {
       "id": "turan-density",
       "title": "The Turán Density",
       "summary": "turanDensity, turan_density_exists, turan_density_bounds",
-      "startLine": 90,
-      "endLine": 108
+      "startLine": 88,
+      "endLine": 106
     },
     {
       "id": "turan-theorem",
       "title": "Classical Turán Theorem (r=2)",
       "summary": "turanGraphDensity, turan_theorem for graphs",
-      "startLine": 110,
-      "endLine": 133
+      "startLine": 108,
+      "endLine": 131
     },
     {
       "id": "k43-conjecture",
       "title": "The Case r=3, k=4 (Turán's Conjecture)",
       "summary": "turanConjectureK43 = 5/9, K43_lower_bound, K43_upper_bound_razborov",
-      "startLine": 135,
-      "endLine": 158
+      "startLine": 133,
+      "endLine": 156
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds and Results",
       "summary": "turan_density_positive, de_caen_lower_bound, kruskal_katona_upper, flag_algebras_upper",
-      "startLine": 160,
-      "endLine": 180
+      "startLine": 158,
+      "endLine": 178
     },
     {
       "id": "general-problem",
       "title": "The General Problem Statement",
-      "summary": "erdos_712_problem, erdos_712_open, erdos_712 theorem",
-      "startLine": 182,
-      "endLine": 213
+      "summary": "erdos_712_problem, erdos_712_open, erdos_712 theorem with full proof",
+      "startLine": 180,
+      "endLine": 217
     },
     {
       "id": "conjectures",
       "title": "Related Conjectures",
       "summary": "extremal_structure_conjecture, sidorenko_hypergraph, mubayi_K53_conjecture",
-      "startLine": 215,
-      "endLine": 231
+      "startLine": 219,
+      "endLine": 235
     },
     {
       "id": "computational",
       "title": "Computational Approaches",
       "summary": "flag_algebra_method, computed_bounds",
-      "startLine": 233,
-      "endLine": 248
+      "startLine": 237,
+      "endLine": 252
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "ramsey_connection, coding_connection, property_testing_connection",
-      "startLine": 250,
-      "endLine": 266
+      "startLine": 254,
+      "endLine": 270
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_712_summary stating problem is OPEN",
-      "startLine": 268,
-      "endLine": 286
+      "startLine": 272,
+      "endLine": 290
     }
   ],
   "conclusion": {
