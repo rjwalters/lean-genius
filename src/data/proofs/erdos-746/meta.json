@@ -1,33 +1,83 @@
 {
   "id": "erdos-746",
-  "title": "Erdős Problem #746",
+  "title": "Erdős Problem #746: Hamiltonicity of Random Graphs",
   "slug": "erdos-746",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, almost surely, a random graph on ... vertices with ... edges is Hamiltonian?\n\n\n\nA conjecture of Erds and R\\'...",
+  "description": "Is a random graph with ≥ (1/2+ε)n log n edges almost surely Hamiltonian? SOLVED: YES. Sharp threshold (1/2)n log n + (1/2)n log log n (Korshunov, Komlós-Szemerédi).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rényi (1966), Pósa (1976), Korshunov (1977), Komlós-Szemerédi (1983)",
     "sourceUrl": "https://erdosproblems.com/746",
-    "date": "",
-    "status": "pending",
+    "date": "1966",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos746Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "hamiltonicity",
+      "erdos-renyi",
+      "threshold",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 746,
     "erdosUrl": "https://erdosproblems.com/746",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for thresholds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential for limiting probability",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "GraphOnN: simple graphs on n vertices",
+      "numEdges: edge count",
+      "hamiltonianThreshold, preciseThreshold: threshold functions",
+      "IsHamiltonianCycle, IsHamiltonian: Hamiltonicity definitions",
+      "IsPerfectMatching, HasPerfectMatching: matching definitions",
+      "ErdosQuestion746: formal problem statement",
+      "erdos_renyi_matching axiom: perfect matching threshold",
+      "posa_theorem axiom: Cn log n suffices",
+      "korshunov_theorem axiom: sharp threshold",
+      "komlos_szemeredi_theorem axiom: limiting probability e^{-e^{-2c}}",
+      "limitingProbability, limiting_prob_at_zero: probability function",
+      "IsConnected, hamiltonian_implies_connected: connectivity"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #746 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, almost surely, a random graph on $n$ vertices with $\\geq (\\tfrac{1}{2}+\\epsilon)n\\log n$ edges is Hamiltonian?\n\n\n\nA conjecture of Erd\\H{o}s and R\\'{e}nyi \\cite{ErRe66}, who proved that almost surely such a graph has a perfect matching (when $n$ is even).\n\nThis is true. P\\'{o}sa \\cite{Po76} proved that almost surely a random graph with $\\geq Cn\\log n$ edges is Hamiltonian for some large constant $C$, and Korshunov \\cite{Ko77} proved that\\[\\geq \\frac{1}{2}n\\log n+\\frac{1}{2}n\\log\\log n+w(n)n\\]edges suffices, for any function $w$ which $\\to \\infty$ as $n\\to \\infty$.\n\nKoml\\'{o}s and Szemer\\'{e}di \\cite{KoSz83} proved the stronger result that with\\[\\frac{1}{2}n\\log n+\\frac{1}{2}n\\log\\log n+cn\\]edges the probability that the graph is Hamiltonian tends to $e^{-e^{-2c}}$ as $n\\to \\infty$.\n\n\n\n\nReferences\n\n\n[ErRe66] Erd\\H{o}s, P. and R\\'{e}nyi, A., On the existence of a factor of degree one of a connected\nrandom graph. Acta Math. Acad. Sci. Hungar. (1966), 359-368.\n\n[Ko77] Kor\\v sunov, A. D., Solution of a problem of {P}. {E}rd\\H{o}s and {A}. {R}\\'{e}nyi on\n{H}amiltonian cycles in nonoriented graphs. Diskret. Analiz (1977), 17--56, 90.\n\n[KoSz83] Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, Limit distribution for the existence of Hamiltonian cycles\nin a random graph. Discrete Math. (1983), 55-63.\n\n[Po76] P\\'{o}sa, L., Hamiltonian circuits in random graphs. Discrete Math. (1976), 359-364.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #746 (Hamiltonicity of Random Graphs)**\n\n**Origin:**\nErdős and Rényi (1966) conjectured that random graphs with ≥ (1/2+ε)n log n edges are almost surely Hamiltonian. They proved the weaker result about perfect matchings.\n\n**Key Results:**\n- Pósa (1976): Hamiltonicity for Cn log n edges\n- Korshunov (1977): Sharp threshold (1/2)n log n + (1/2)n log log n + ω(n)n\n- Komlós-Szemerédi (1983): Limiting probability e^{-e^{-2c}}\n\n**Significance:**\nThis is a fundamental result in random graph theory, showing that the Hamiltonicity threshold coincides with the connectivity threshold.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs it true that, almost surely, a random graph on n vertices with ≥ (1/2 + ε)n log n edges is Hamiltonian?\n\n**Answer: YES**\n\n**Sharp Threshold:**\n(1/2)n log n + (1/2)n log log n\n\n**Limiting Probability (Komlós-Szemerédi):**\nWith (1/2)n log n + (1/2)n log log n + cn edges,\nP(Hamiltonian) → e^{-e^{-2c}}",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Model:** GraphOnN, numEdges, ErdosRenyiModel\n\n2. **Thresholds:** hamiltonianThreshold, preciseThreshold\n\n3. **Hamiltonicity:** IsHamiltonianCycle, IsHamiltonian\n\n4. **Matchings:** IsPerfectMatching, HasPerfectMatching\n\n5. **Results:** erdos_renyi_matching, posa_theorem, korshunov_theorem\n\n6. **Precise:** komlos_szemeredi_theorem, limitingProbability\n\n7. **Connectivity:** IsConnected, threshold coincidence",
+    "keyInsights": [
+      "**Sharp Threshold:** (1/2)n log n + (1/2)n log log n",
+      "**Limiting Distribution:** P = e^{-e^{-2c}} double exponential",
+      "**Connectivity Coincidence:** Same threshold as Hamiltonicity",
+      "**Perfect Matching:** Weaker property at same threshold",
+      "**Pósa to Korshunov:** Constant improved to 1/2"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #746 asks whether random graphs with ≥ (1/2+ε)n log n edges are almost surely Hamiltonian. The answer is YES. Korshunov established the sharp threshold, and Komlós-Szemerédi proved the limiting probability is e^{-e^{-2c}} at threshold.",
+    "implications": "**Connections**\n\n1. **Connectivity:** Same threshold (1/2)n log n\n\n2. **Perfect Matching:** Erdős-Rényi's original result\n\n3. **Phase Transition:** Sharp threshold behavior\n\n4. **Dirac's Theorem:** Minimum degree connection",
+    "openQuestions": [
+      "What about directed Hamiltonicity?",
+      "Thresholds for other graph properties?",
+      "Higher-order corrections to the limiting distribution?",
+      "Algorithmic aspects of finding Hamiltonian cycles?"
+    ]
   }
 }
