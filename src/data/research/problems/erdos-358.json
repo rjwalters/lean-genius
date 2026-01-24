@@ -1,105 +1,54 @@
 {
   "slug": "erdos-358",
-  "title": "Erdős #358: Sums of Consecutive Terms",
-  "phase": "FORMALIZED",
-  "status": "surveyed",
+  "title": "Erdős #358",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let A = {a₁ < a₂ < ...} be an infinite sequence of integers. Let f(n) count solutions to n = Σᵢ₌ᵤᵛ aᵢ. Is there such an A for which f(n) → ∞ as n → ∞? Or even f(n) ≥ 2 for all large n?",
-    "plain": "Can we find an infinite increasing sequence of integers such that every large integer can be expressed as a sum of consecutive terms in at least 2 ways? Or even where the number of such representations grows without bound?",
-    "whyMatters": [
-      "Fundamental question about representation functions",
-      "Classical result: n = sum of ≥2 consecutive positive integers iff n ≠ 2^k",
-      "For naturals, count equals number of odd divisors",
-      "Connection to convex sumsets in additive combinatorics"
-    ]
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<\\cdots\\}$ be an infinite sequence of integers. Let $f(n)$ count the number of solutions to\\[n=\\sum_{u\\leq i\\leq v}a_i.\\]Is there such an $A$ for which $f(n)\\to \\infty$ as $n\\to \\infty$? Or even where $f(n)\\geq 2$ for all large $n$?\n\n\n\n\n\nWhen $a_n=n$ the function $f(n)$ counts the number of odd divisors of $n$.\n\nIn modern language, this asks for the existence of a convex set $A$ such that $1_A\\circ 1_A(n)\\to \\infty$ as $n\\to \\infty$.\n\nErd\\H{o}s and Moser \\cite{Mo63} considered the case when $A$ is the set of primes, and conjectured that the $\\limsup$ of the number of such representations in this case is infinite. They could not even prove that the upper density of the set of integers representable in this form is positive.\n\nIn \\cite{ErGr80} they further asked whether $f(n)\\geq 1$ for all large $n$ is possible, but Egami observed the answer to this is trivially yes, taking $a_n=n$. Perhaps they intended to restrict $f(n)$ to only count those representatives as the sum of at least two consecutive terms. (It is a classical fact that $n$ can be expressed as a sum of at least two consecutive positive integers if and only if $n\\neq 2^k$.)\n\nIn \\cite{Er77c} Erd\\H{o}s writes 'This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me'.\n\nWeisenberg observes that the finite analogue of this problem, asking how many integers up to some $x$ can be written as the sum of consecutive elements, is very similar to [356].\n\nThis is reported in problem C2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Mo63] Moser, L., Notes on number theory. III. On the sum of consecutive primes. Canad. Math. Bull. (1963), 159-161.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "consecutive_sum_formula: Formula for sum of consecutive integers (sorry)",
-      "consecutive_sum_char: n representable iff n ≠ 2^k (sorry, classical result)",
-      "naturals_count_odd_divisors: For A = naturals, f(n) = #{odd divisors}",
-      "strong_implies_weak: Erdos358Strong → Erdos358Weak"
-    ],
-    "open": [
-      "Erdos358Strong: ∃ A with f(n) → ∞",
-      "Erdos358Weak: ∃ A with f(n) ≥ 2 for large n",
-      "ErdosMoserConjecture: For primes, limsup of f(n) is infinite",
-      "PositiveDensityConjecture: Primes have positive density of representable integers"
-    ],
-    "goal": "OPEN - Formalization documents conjecture and known related results"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-01-23",
-    "iteration": 2,
-    "focus": "Problem is OPEN. Formalization complete documenting conjecture and partial results.",
-    "blockers": [
-      "This is an OPEN problem - no known proof"
-    ],
-    "nextAction": "Surveyed. Problem requires new mathematical ideas.",
+    "phase": "NEW",
+    "since": "2026-01-13T00:53:52.154Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Created formalization (~180 lines) documenting the OPEN conjecture about sums of consecutive terms. Includes IntSequence structure, consecutiveSumCount definition, classical result about powers of 2, and Erdős-Moser conjecture for primes.",
-    "builtItems": [
-      "IntSequence: infinite increasing sequence structure",
-      "consecutiveSumCount: count of consecutive sum representations",
-      "naturalsSeq: the natural numbers sequence",
-      "consecutiveSum: formula for consecutive integer sums",
-      "Erdos358Strong/Erdos358Weak: main conjectures",
-      "primesSeq: primes sequence (axiomatized)",
-      "ErdosMoserConjecture: primes version",
-      "PositiveDensityConjecture: density question"
-    ],
-    "insights": [
-      "Problem is OPEN with tractability 3/10",
-      "For A = naturals, f(n) = number of odd divisors of n",
-      "Classical: n = sum of ≥2 consecutive positive integers iff n ≠ 2^k",
-      "For primes, even positive density is unknown",
-      "Erdős (1977): 'This problem seems very strange and attractive to me'"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Problem is OPEN - requires new ideas",
-      "Potential: Prove classical consecutive sum characterization"
-    ]
+    "nextSteps": [],
+    "markdown": "# Erdős #358 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<\\cdots\\}$ be an infinite sequence of integers. Let $f(n)$ count the number of solutions to\\[n=\\sum_{u\\leq i\\leq v}a_i.\\]Is there such an $A$ for which $f(n)\\to \\infty$ as $n\\to \\infty$? Or even where $f(n)\\geq 2$ for all large $n$?\n\n\n\n\n\nWhen $a_n=n$ the function $f(n)$ counts the number of odd divisors of $n$.\n\nIn modern language, this asks for the existence of a convex set $A$ such that $1_A\\circ 1_A(n)\\to \\infty$ as $n\\to \\infty$.\n\nErd\\H{o}s and Moser \\cite{Mo63} considered the case when $A$ is the set of primes, and conjectured that the $\\limsup$ of the number of such representations in this case is infinite. They could not even prove that the upper density of the set of integers representable in this form is positive.\n\nIn \\cite{ErGr80} they further asked whether $f(n)\\geq 1$ for all large $n$ is possible, but Egami observed the answer to this is trivially yes, taking $a_n=n$. Perhaps they intended to restrict $f(n)$ to only count those representatives as the sum of at least two consecutive terms. (It is a classical fact that $n$ can be expressed as a sum of at least two consecutive positive integers if and only if $n\\neq 2^k$.)\n\nIn \\cite{Er77c} Erd\\H{o}s writes 'This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me'.\n\nWeisenberg observes that the finite analogue of this problem, asking how many integers up to some $x$ can be written as the sum of consecutive elements, is very similar to [356].\n\nThis is reported in problem C2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Mo63] Moser, L., Notes on number theory. III. On the sum of consecutive primes. Canad. Math. Bull. (1963), 159-161.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #356\n- Problem #357\n- Problem #359\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- Mo63\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
-  "approaches": [
-    {
-      "name": "Survey and formalization",
-      "status": "completed",
-      "description": "Document conjecture, classical results, and Erdős-Moser prime conjecture"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "open",
-    "number-theory",
-    "additive-combinatorics",
-    "representation-function"
+    "erdos"
   ],
   "relatedProofs": [
-    "Erdos358Problem.lean"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      "Guy, Unsolved Problems in Number Theory, Problem C2",
-      "Erdős-Graham, Old and new problems in combinatorial number theory (1980)",
-      "Moser, Notes on number theory III (1963)"
-    ],
-    "urls": [
-      "https://erdosproblems.com/358"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
   "started": "2026-01-13T00:53:52.154Z",
-  "lastUpdate": "2026-01-23T19:05:00.000Z",
   "significance": 5,
   "tractability": 3
 }

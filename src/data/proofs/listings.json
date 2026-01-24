@@ -2779,7 +2779,7 @@
     "dateAdded": "2026-01-19",
     "erdosNumber": 1127,
     "mathlibCount": 4,
-    "sorries": 3,
+    "sorries": 0,
     "annotationCount": 10
   },
   {
@@ -2845,17 +2845,23 @@
   },
   {
     "id": "erdos-1131",
-    "title": "Erdős Problem #1131",
+    "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
     "slug": "erdos-1131",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nWhat is the minimal value ...",
-    "status": "pending",
+    "description": "For points x₁,...,xₙ ∈ [-1,1], what is the minimum of ∫ Σ |l_k(x)|² dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "approximation-theory",
+      "interpolation",
+      "lagrange-polynomials",
+      "legendre-polynomials",
+      "optimization",
+      "open"
     ],
     "erdosNumber": 1131,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 11
   },
   {
     "id": "erdos-1132",
@@ -8992,17 +8998,23 @@
   },
   {
     "id": "erdos-534",
-    "title": "Erdős Problem #534",
+    "title": "Erdős Problem #534: Maximum GCD-Intersecting Sets",
     "slug": "erdos-534",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset ... which contains ... such that ... for all ...?\n\n\n\nA problem of Erds and Graham (in  it...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the largest subset A ⊆ {1,...,N} containing N such that gcd(a,b) > 1 for all distinct a,b ∈ A? Solved by Ahlswede-Khachatrian (1996) who proved the optimal sets use multiples of {2q₁,...,2qⱼ, q₁⋯qⱼ}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "intersecting-families",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 534,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-535",
@@ -14958,7 +14970,7 @@
       "domination"
     ],
     "erdosNumber": 902,
-    "sorries": 25,
+    "sorries": 0,
     "annotationCount": 16
   },
   {
