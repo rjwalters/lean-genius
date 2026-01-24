@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "point-def",
+    "proofId": "erdos-211",
+    "range": { "startLine": 38, "endLine": 42 },
+    "type": "definition",
+    "title": "Point in the Plane",
+    "content": "Points are pairs of real numbers (x, y) representing coordinates in ℝ².",
+    "significance": "medium"
+  },
+  {
+    "id": "line-def",
+    "proofId": "erdos-211",
+    "range": { "startLine": 44, "endLine": 52 },
+    "type": "definition",
+    "title": "Line Structure",
+    "content": "A line is determined by a point and a nonzero direction vector. This allows representing all lines in the plane.",
+    "significance": "medium"
+  },
+  {
+    "id": "num-lines",
+    "proofId": "erdos-211",
+    "range": { "startLine": 62, "endLine": 69 },
+    "type": "definition",
+    "title": "Number of Lines",
+    "content": "Counts distinct lines determined by pairs of points in P. Each unordered pair determines one line.",
+    "significance": "high"
+  },
+  {
+    "id": "max-collinear",
+    "proofId": "erdos-211",
+    "range": { "startLine": 71, "endLine": 76 },
+    "type": "definition",
+    "title": "Maximum Collinear Points",
+    "content": "The maximum number of points from P that lie on any single line. This is the key parameter in the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "bounded-collinearity",
+    "proofId": "erdos-211",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "definition",
+    "title": "Bounded Collinearity Condition",
+    "content": "The Erdős-Beck condition: at most n-k points on any line. Parameter k controls how spread out the points are.",
+    "significance": "critical"
+  },
+  {
+    "id": "beck-st-main",
+    "proofId": "erdos-211",
+    "range": { "startLine": 96, "endLine": 104 },
+    "type": "axiom",
+    "title": "Beck-Szemerédi-Trotter Main Theorem",
+    "content": "The main result: if n points have at most n-k on any line, then Ω(kn) lines are formed. This was proved independently by Beck and Szemerédi-Trotter in 1983.",
+    "significance": "critical"
+  },
+  {
+    "id": "special-case",
+    "proofId": "erdos-211",
+    "range": { "startLine": 106, "endLine": 112 },
+    "type": "axiom",
+    "title": "Special Case: Quadratic Lines",
+    "content": "For 2n points with at most n collinear, there are Ω(n²) lines. This is the k=n case giving quadratic growth.",
+    "significance": "high"
+  },
+  {
+    "id": "beck-dichotomy",
+    "proofId": "erdos-211",
+    "range": { "startLine": 118, "endLine": 128 },
+    "type": "axiom",
+    "title": "Beck's Dichotomy",
+    "content": "For n points, either many are collinear (≥n/K on one line) or many lines are formed (≥n²/K). This dichotomy is the key structural insight.",
+    "significance": "critical"
+  },
+  {
+    "id": "incidences",
+    "proofId": "erdos-211",
+    "range": { "startLine": 143, "endLine": 148 },
+    "type": "definition",
+    "title": "Point-Line Incidences",
+    "content": "Counts pairs (p, ℓ) where point p lies on line ℓ. This is the fundamental quantity in incidence geometry.",
+    "significance": "high"
+  },
+  {
+    "id": "szemeredi-trotter",
+    "proofId": "erdos-211",
+    "range": { "startLine": 150, "endLine": 156 },
+    "type": "axiom",
+    "title": "Szemerédi-Trotter Theorem",
+    "content": "For m points and n lines, incidences ≤ O(m^{2/3}n^{2/3} + m + n). This is the fundamental incidence bound in discrete geometry.",
+    "significance": "critical"
+  },
+  {
+    "id": "rich-lines",
+    "proofId": "erdos-211",
+    "range": { "startLine": 158, "endLine": 165 },
+    "type": "axiom",
+    "title": "Rich Lines Bound",
+    "content": "Lines with ≥r points are bounded by O(n²/r³ + n/r). This corollary controls 'rich' lines in configurations.",
+    "significance": "high"
+  },
+  {
+    "id": "refined-conjecture",
+    "proofId": "erdos-211",
+    "range": { "startLine": 171, "endLine": 179 },
+    "type": "definition",
+    "title": "Erdős's Refined Conjecture",
+    "content": "Erdős speculated the bound is ≥(1+o(1))kn/6 lines. The constant 1/6 is optimal from extremal configurations.",
+    "significance": "high"
+  },
+  {
+    "id": "one-sixth-optimal",
+    "proofId": "erdos-211",
+    "range": { "startLine": 181, "endLine": 190 },
+    "type": "axiom",
+    "title": "Why 1/6 is Optimal",
+    "content": "Configurations exist where each line has exactly 3 points, giving ≈n²/6 lines. These are Burr-Grünbaum-Sloane configurations.",
+    "significance": "high"
+  },
+  {
+    "id": "crossing-number",
+    "proofId": "erdos-211",
+    "range": { "startLine": 230, "endLine": 235 },
+    "type": "insight",
+    "title": "Crossing Number Method",
+    "content": "The Szemerédi-Trotter proof uses the crossing number inequality from graph drawing theory.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "erdos-211",
+    "range": { "startLine": 241, "endLine": 259 },
+    "type": "theorem",
+    "title": "Erdős Problem #211: SOLVED",
+    "content": "For n points with at most n-k collinear, there are Ω(kn) lines. Solved by Beck and Szemerédi-Trotter in 1983. Prize: $100 awarded.",
+    "significance": "critical"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-211",
+    "range": { "startLine": 261, "endLine": 277 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Combines the main result (Ω(kn) lines) with Beck's dichotomy as the fundamental structural insight.",
+    "significance": "high"
+  }
+]
