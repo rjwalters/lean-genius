@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-320-harmonicsum",
+    "proofId": "erdos-320",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "harmonicSum",
+    "content": "The harmonic sum H_n = 1 + 1/2 + ... + 1/n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-320-subsetsum",
+    "proofId": "erdos-320",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "subsetSum",
+    "content": "Sum of unit fractions ∑_{n∈A} 1/n for a subset A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-allsubsetsums",
+    "proofId": "erdos-320",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "allSubsetSums",
+    "content": "The set of all possible subset sums from {1,...,N}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-S",
+    "proofId": "erdos-320",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "S(N)",
+    "content": "S(N) = count of distinct sums ∑_{n∈A} 1/n for A ⊆ {1,...,N}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-320-iterlog",
+    "proofId": "erdos-320",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "definition",
+    "title": "iterLog",
+    "content": "The i-fold iterated logarithm log_i N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-iterlogproduct",
+    "proofId": "erdos-320",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "definition",
+    "title": "iterLogProduct",
+    "content": "Product of iterated logs: ∏_{i=3}^k log_i N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-lower",
+    "proofId": "erdos-320",
+    "range": { "startLine": 89, "endLine": 94 },
+    "type": "theorem",
+    "title": "bleicher_erdos_lower_bound",
+    "content": "Bleicher-Erdős (1975): log S(N) ≥ (N/log N)(log 2 · ∏ log_i N).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-320-upper",
+    "proofId": "erdos-320",
+    "range": { "startLine": 105, "endLine": 110 },
+    "type": "theorem",
+    "title": "bleicher_erdos_upper_bound",
+    "content": "Bleicher-Erdős (1976): log S(N) ≤ (N/log N)(log_r N · ∏ log_i N).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-320-bgms",
+    "proofId": "erdos-320",
+    "range": { "startLine": 120, "endLine": 126 },
+    "type": "theorem",
+    "title": "bgms_improved_lower_bound",
+    "content": "BGMS (2025): Improved lower bound with constant 2 log 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-320-bgms-improves",
+    "proofId": "erdos-320",
+    "range": { "startLine": 128, "endLine": 136 },
+    "type": "theorem",
+    "title": "bgms_improves_bleicher_erdos",
+    "content": "The BGMS bound improves upon Bleicher-Erdős.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-problem",
+    "proofId": "erdos-320",
+    "range": { "startLine": 142, "endLine": 150 },
+    "type": "definition",
+    "title": "ErdosProblem320",
+    "content": "The main problem: estimate S(N). STATUS: OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-320-egyptian",
+    "proofId": "erdos-320",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "definition",
+    "title": "IsEgyptianFraction",
+    "content": "Egyptian fraction: sum of distinct unit fractions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-S1",
+    "proofId": "erdos-320",
+    "range": { "startLine": 176, "endLine": 178 },
+    "type": "theorem",
+    "title": "S_one",
+    "content": "S(1) = 2: sums are {0, 1}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-320-small",
+    "proofId": "erdos-320",
+    "range": { "startLine": 188, "endLine": 189 },
+    "type": "theorem",
+    "title": "S_small",
+    "content": "For small N ≤ 6, S(N) = 2^N (all sums distinct).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-collisions",
+    "proofId": "erdos-320",
+    "range": { "startLine": 191, "endLine": 192 },
+    "type": "theorem",
+    "title": "S_collisions",
+    "content": "For N ≥ 8, collisions occur: S(N) < 2^N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-oeis",
+    "proofId": "erdos-320",
+    "range": { "startLine": 198, "endLine": 203 },
+    "type": "theorem",
+    "title": "oeis_A072207",
+    "content": "OEIS A072207: S(1)=2,...,S(7)=128, S(8)=255.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-320-firstcollision",
+    "proofId": "erdos-320",
+    "range": { "startLine": 205, "endLine": 210 },
+    "type": "theorem",
+    "title": "first_collision",
+    "content": "First collision at N=8: S(8) = 255 < 256 = 2^8.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-320-summary",
+    "proofId": "erdos-320",
+    "range": { "startLine": 231, "endLine": 249 },
+    "type": "theorem",
+    "title": "erdos_320_summary",
+    "content": "Summary: OPEN. Bounds known but gap remains.",
+    "significance": "critical"
+  }
+]
