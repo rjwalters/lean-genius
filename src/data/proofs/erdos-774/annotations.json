@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-774-dissociated",
+    "proofId": "erdos-774",
+    "range": { "startLine": 45, "endLine": 49 },
+    "type": "definition",
+    "title": "IsDissociated",
+    "content": "A finite set A is dissociated if distinct subsets have different sums: X ≠ Y ⟹ ∑X ≠ ∑Y.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-dissociatedset",
+    "proofId": "erdos-774",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "IsDissociatedSet",
+    "content": "Extension to infinite sets A ⊂ ℕ with the same unique sum property.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-uniquesums",
+    "proofId": "erdos-774",
+    "range": { "startLine": 56, "endLine": 69 },
+    "type": "theorem",
+    "title": "dissociated_iff_unique_sums",
+    "content": "Dissociated ⟺ unique subset sums. The two characterizations are equivalent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-powers2",
+    "proofId": "erdos-774",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "definition",
+    "title": "powersOfTwo",
+    "content": "{1, 2, 4, 8, ...} is the canonical dissociated set. Each n has unique binary representation.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-lacunary",
+    "proofId": "erdos-774",
+    "range": { "startLine": 90, "endLine": 95 },
+    "type": "definition",
+    "title": "IsLacunary",
+    "content": "Lacunary sequences: a_{n+1} > 2·∑_{i≤n} aᵢ. These are always dissociated.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-propdiss",
+    "proofId": "erdos-774",
+    "range": { "startLine": 101, "endLine": 106 },
+    "type": "definition",
+    "title": "IsProportionatelyDissociated",
+    "content": "Every finite B ⊂ A contains a dissociated subset of size ≥ c|B| for some fixed c > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-dissisprop",
+    "proofId": "erdos-774",
+    "range": { "startLine": 108, "endLine": 122 },
+    "type": "theorem",
+    "title": "dissociated_is_proportionately",
+    "content": "Every dissociated set is trivially proportionately dissociated (with c = 1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-774-sidonharmonic",
+    "proofId": "erdos-774",
+    "range": { "startLine": 128, "endLine": 135 },
+    "type": "definition",
+    "title": "IsSidonHarmonic",
+    "content": "Sidon set in harmonic analysis: ||f||₁ ≪ |∑f(n)e(nθ)| for some θ ∈ [0,1].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-pisier",
+    "proofId": "erdos-774",
+    "range": { "startLine": 137, "endLine": 140 },
+    "type": "theorem",
+    "title": "pisier_theorem",
+    "content": "Pisier (1983): Proportionately dissociated ⟺ Sidon (harmonic analysis).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-sidonadd",
+    "proofId": "erdos-774",
+    "range": { "startLine": 146, "endLine": 150 },
+    "type": "definition",
+    "title": "IsSidonAdditive",
+    "content": "Sidon set (additive combinatorics): a + b = c + d ⟹ {a,b} = {c,d}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-finiteunion",
+    "proofId": "erdos-774",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "definition",
+    "title": "IsFiniteUnionDissociated",
+    "content": "A = D₁ ∪ D₂ ∪ ... ∪ Dₙ where each Dᵢ is dissociated.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-conjecture",
+    "proofId": "erdos-774",
+    "range": { "startLine": 177, "endLine": 181 },
+    "type": "definition",
+    "title": "ErdosConjecture774",
+    "content": "Is every proportionately dissociated set a finite union of dissociated sets?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-alon",
+    "proofId": "erdos-774",
+    "range": { "startLine": 183, "endLine": 184 },
+    "type": "theorem",
+    "title": "alon_erdos_conjecture",
+    "content": "Alon-Erdős (1985) conjectured the answer is NO.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-propsidon",
+    "proofId": "erdos-774",
+    "range": { "startLine": 193, "endLine": 198 },
+    "type": "definition",
+    "title": "IsProportionatelySidon",
+    "content": "Analogous to proportionately dissociated but for Sidon sets (additive).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-sidonanalogue",
+    "proofId": "erdos-774",
+    "range": { "startLine": 205, "endLine": 209 },
+    "type": "definition",
+    "title": "SidonAnalogue",
+    "content": "The Sidon analogue: is every proportionately Sidon set a finite union of Sidon sets?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-nrs",
+    "proofId": "erdos-774",
+    "range": { "startLine": 211, "endLine": 215 },
+    "type": "theorem",
+    "title": "nesetril_rodl_sales_theorem",
+    "content": "Nešetřil-Rödl-Sales (2024): The Sidon analogue is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-nrsconstruction",
+    "proofId": "erdos-774",
+    "range": { "startLine": 217, "endLine": 220 },
+    "type": "theorem",
+    "title": "nrs_construction",
+    "content": "∃ infinite proportionately Sidon set that is NOT a finite union of Sidon sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-774-maxsize",
+    "proofId": "erdos-774",
+    "range": { "startLine": 254, "endLine": 263 },
+    "type": "theorem",
+    "title": "max_dissociated_log_bound",
+    "content": "Maximum dissociated subset of {1,...,n} has size Θ(log n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-774-open",
+    "proofId": "erdos-774",
+    "range": { "startLine": 289, "endLine": 293 },
+    "type": "definition",
+    "title": "erdos_774_open",
+    "content": "Problem #774 remains OPEN. The NRS result strongly suggests the answer is NO.",
+    "significance": "critical"
+  }
+]

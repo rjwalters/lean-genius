@@ -12163,17 +12163,25 @@
   },
   {
     "id": "erdos-746",
-    "title": "Erdős Problem #746",
+    "title": "Erdős Problem #746: Hamiltonicity of Random Graphs",
     "slug": "erdos-746",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, almost surely, a random graph on ... vertices with ... edges is Hamiltonian?\n\n\n\nA conjecture of Erds and R\\'...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is a random graph with ≥ (1/2+ε)n log n edges almost surely Hamiltonian? SOLVED: YES. Sharp threshold (1/2)n log n + (1/2)n log log n (Korshunov, Komlós-Szemerédi).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "hamiltonicity",
+      "erdos-renyi",
+      "threshold",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 746,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 21
   },
   {
     "id": "erdos-747",
@@ -12590,17 +12598,24 @@
   },
   {
     "id": "erdos-771",
-    "title": "Erdős Problem #771",
+    "title": "Erdős Problem #771: Subsets Avoiding a Given Sum",
     "slug": "erdos-771",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that, for every ..., there exists some ... with ... such that ... for all ....\n\nIs it true that\\[f(n)...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) be maximal such that for every m ≥ 1, there exists S ⊆ {1,...,n} with |S| = f(n) where no subset of S sums to m. Is f(n) = (1/2+o(1))n/log n? SOLVED: YES (Erdős-Graham lower, Alon-Freiman upper).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "subset-sums",
+      "primes",
+      "lcm",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 771,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 6,
+    "annotationCount": 19
   },
   {
     "id": "erdos-772",
@@ -12639,17 +12654,24 @@
   },
   {
     "id": "erdos-774",
-    "title": "Erdős Problem #774",
+    "title": "Erdős Problem #774: Dissociated and Proportionately Dissociated Sets",
     "slug": "erdos-774",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call ... dissociated if ... for all finite ... with ....\n\nLet ... be an infinite set. We call ... proportionately dissocia...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "A set A ⊂ ℕ is dissociated if distinct finite subsets have different sums. It is proportionately dissociated if every finite subset contains a proportional-size dissociated subset. Is every proportionately dissociated set a finite union of dissociated sets? OPEN (conjectured NO).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "dissociated-sets",
+      "sidon-sets",
+      "harmonic-analysis",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 774,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 19
   },
   {
     "id": "erdos-775",
@@ -13591,17 +13613,25 @@
   },
   {
     "id": "erdos-829",
-    "title": "Erdős Problem #829",
+    "title": "Erdős Problem #829: Representations as Sums of Two Cubes",
     "slug": "erdos-829",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of cubes. Is it true that\\[1_A\\ast 1_A(n) \\ll (\\log n)^{O(1)}?\\]\n\n\n\nMordell proved that\\[\\limsup_{n\\to \\in...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is 1_A * 1_A(n) << (log n)^{O(1)} where A is the set of cubes? OPEN. Known: Mordell (unbounded), Mahler (>>(log n)^{1/4}), Stewart (>>(log n)^{11/13}).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "cubes",
+      "representation-functions",
+      "elliptic-curves",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 829,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-83",
@@ -15807,17 +15837,24 @@
   },
   {
     "id": "erdos-973",
-    "title": "Erdős Problem #973",
+    "title": "Erdős Problem #973: Power Sums of Complex Numbers",
     "slug": "erdos-973",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a constant ... such that, for every ..., there exists a sequence ... with ... and ... for all ... with\\[\\max...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does there exist C > 1 such that max|∑z_i^k| < C^{-n} for sequences with |z_i| ≥ 1? SOLVED: Depends on constraint. C ≈ 1.32 (disk), C ≈ 1.7455 (circle), Turán bound (outside).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "power-sums",
+      "turan-method",
+      "analytic-number-theory",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 973,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 19
   },
   {
     "id": "erdos-974",
