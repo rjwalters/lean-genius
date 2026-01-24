@@ -1,33 +1,90 @@
 {
   "id": "erdos-204",
-  "title": "Erdős Problem #204",
+  "title": "Erdős Problem #204: Disjoint Covering Systems by Divisors",
   "slug": "erdos-204",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there ... such that there is a covering system with moduli the divisors of ... which is 'as disjoint as possible'?\n\nThat ...",
+  "description": "Are there n with a covering system using divisors of n that is 'as disjoint as possible'? NO - Adenwalla (2025) proved no such n exists, confirming the Erdős-Graham conjecture.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (conjecture), Adenwalla (2025 proof)",
     "sourceUrl": "https://erdosproblems.com/204",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos204Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "divisors",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "solved",
     "sorries": 0,
     "erdosNumber": 204,
     "erdosUrl": "https://erdosproblems.com/204",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #204 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there $n$ such that there is a covering system with moduli the divisors of $n$ which is 'as disjoint as possible'?\n\nThat is, for all $d\\mid n$ with $d>1$ there is an associated $a_d$ such that every integer is congruent to some $a_d\\pmod{d}$, and if there is some integer $x$ with\\[x\\equiv a_d\\pmod{d}\\textrm{ and }x\\equiv a_{d'}\\pmod{d'}\\]then $(d,d')=1$.\n\n\n\nThe density of such $n$ is zero. Erd\\H{o}s and Graham believed that no such $n$ exist.\n\nAdenwalla \\cite{Ad25} has proved there are no such $n$.\n\nIn general, for any $n$ one can try to choose such $a_d$ to maximise the density of integers so covered, and ask what this density is. This was also investigated by Adenwalla \\cite{Ad25}.\n\n\n\n\nReferences\n\n\n[Ad25] S. Adenwalla, A Question of Erd\\H{o}s and Graham on Covering Systems. arXiv:2501.15170 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Covering systems have been central to Erdős's work in combinatorial number theory. This problem asks about a special kind of covering system using divisors of n with a 'disjointness' constraint. Erdős and Graham believed no such n exists, and this was recently confirmed by Adenwalla in 2025.",
+    "problemStatement": "For n > 1, can we assign residues a_d to each proper divisor d | n such that: (1) every integer is covered by some residue class, and (2) if an integer belongs to two residue classes mod d and mod d', then gcd(d, d') = 1?",
+    "proofStrategy": "The key insight is that divisibility among divisors forces overlaps. If d | d', then gcd(d, d') = d > 1, but covering all integers requires using such pairs. Adenwalla's proof shows this obstruction is universal - no n can satisfy both conditions.",
+    "keyInsights": [
+      "A 'disjoint' covering requires overlaps only for coprime moduli",
+      "Divisibility structure of n's divisors forces non-coprime overlaps",
+      "The density of such n (if any existed) would be zero",
+      "Adenwalla (2025) proved: no such n exists at all",
+      "Also studied: maximizing density for general n with disjointness constraint"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Residue assignments, covering systems, coverage condition",
+      "startLine": 40,
+      "endLine": 63
+    },
+    {
+      "id": "disjointness",
+      "title": "The Disjointness Condition",
+      "summary": "Overlap implies coprime requirement",
+      "startLine": 64,
+      "endLine": 85
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "ExistsDisjointCoveringN and Erdős-Graham conjecture",
+      "startLine": 86,
+      "endLine": 98
+    },
+    {
+      "id": "adenwalla",
+      "title": "Adenwalla's Theorem (2025)",
+      "summary": "No such n exists",
+      "startLine": 114,
+      "endLine": 132
+    },
+    {
+      "id": "why-fails",
+      "title": "Why It Fails",
+      "summary": "Divisibility forces non-coprime overlaps",
+      "startLine": 133,
+      "endLine": 154
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "SOLVED - No disjoint covering systems exist",
+      "startLine": 218,
+      "endLine": 252
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #204 is SOLVED. Adenwalla (2025) proved that no n admits a 'disjoint' covering system by its divisors, confirming the Erdős-Graham conjecture. The key obstruction is that divisibility among divisors forces overlaps between non-coprime pairs.",
+    "implications": "This result deepens our understanding of covering systems. The constraint of 'disjointness' (overlaps only for coprime moduli) is incompatible with the covering requirement when using divisors. Related problems about maximizing covered density remain of interest.",
+    "openQuestions": [
+      "For given n, what is the maximum density coverable with the disjointness constraint?",
+      "What if we allow some non-divisor moduli?",
+      "Can we characterize which residue patterns maximize coverage?"
+    ]
   }
 }

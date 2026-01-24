@@ -1,1 +1,103 @@
-[]
+[
+  {
+    "id": "ann-204-header",
+    "proofId": "erdos-204",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #204: Disjoint Covering Systems**\n\nCan we cover all integers using divisors of n as moduli, with overlaps only for coprime moduli?\n\n**Answer: NO** (Adenwalla 2025)\n\nNo such n exists. The Erdős-Graham conjecture is confirmed.",
+    "mathContext": "Covering systems assign residue classes to cover all integers. This problem adds a 'disjointness' constraint requiring overlaps only for coprime moduli.",
+    "significance": "critical",
+    "relatedConcepts": ["Covering systems", "Divisibility", "GCD", "Residue classes"]
+  },
+  {
+    "id": "ann-204-residue",
+    "proofId": "erdos-204",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "definition",
+    "title": "ResidueAssignment",
+    "content": "**ResidueAssignment(n):**\n\nAssigns a residue a_d ∈ ℤ to each proper divisor d | n.\n\nDefines which residue class mod d is 'active'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-204-covering",
+    "proofId": "erdos-204",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "IsCoveringSystem",
+    "content": "**IsCoveringSystem:**\n\nEvery integer x is covered: x ≡ a_d (mod d) for some d | n.\n\nThis is the standard covering system requirement.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-204-disjoint",
+    "proofId": "erdos-204",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "definition",
+    "title": "IsAsDisjointAsPossible",
+    "content": "**IsAsDisjointAsPossible:**\n\nIf x ≡ a_d (mod d) AND x ≡ a_{d'} (mod d'), then gcd(d, d') = 1.\n\nOverlaps are only allowed for coprime moduli. This is the key constraint!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-204-exists",
+    "proofId": "erdos-204",
+    "range": { "startLine": 90, "endLine": 93 },
+    "type": "definition",
+    "title": "ExistsDisjointCoveringN",
+    "content": "**ExistsDisjointCoveringN:**\n\nDoes there exist n > 1 with a disjoint covering system?\n\nThis is the main question of Problem #204.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-204-conjecture",
+    "proofId": "erdos-204",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "definition",
+    "title": "Erdős-Graham Conjecture",
+    "content": "**ErdosGrahamConjecture:**\n\n¬ExistsDisjointCoveringN\n\nErdős and Graham believed no such n exists. Confirmed by Adenwalla (2025).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-204-adenwalla",
+    "proofId": "erdos-204",
+    "range": { "startLine": 118, "endLine": 120 },
+    "type": "axiom",
+    "title": "Adenwalla's Theorem (2025)",
+    "content": "**adenwalla_2025:**\n\nNo n admits a disjoint covering system by its divisors.\n\nThis is a recent result (arXiv:2501.15170, 2025)!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-204-answer",
+    "proofId": "erdos-204",
+    "range": { "startLine": 122, "endLine": 123 },
+    "type": "theorem",
+    "title": "The Answer is NO",
+    "content": "**erdos_204_answer:**\n\n¬ExistsDisjointCoveringN\n\nThe answer to Problem #204 is NO.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-204-why",
+    "proofId": "erdos-204",
+    "range": { "startLine": 143, "endLine": 147 },
+    "type": "theorem",
+    "title": "Divisor Pairs Not Coprime",
+    "content": "**divisor_pair_not_coprime:**\n\nIf d | d' and d > 1, then gcd(d, d') = d ≠ 1.\n\nThis is the key obstruction: divisibility forces non-coprime pairs!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-204-n6",
+    "proofId": "erdos-204",
+    "range": { "startLine": 184, "endLine": 190 },
+    "type": "axiom",
+    "title": "Example: n = 6 Fails",
+    "content": "**n6_fails:**\n\nFor n = 6, divisors are {2, 3, 6}.\n\n2 | 6 implies gcd(2,6) = 2 ≠ 1.\nAny covering must use 2 and 6 together, violating disjointness.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-204-summary",
+    "proofId": "erdos-204",
+    "range": { "startLine": 225, "endLine": 251 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #204: SOLVED (Adenwalla 2025)**\n\n**Question:** Does there exist n with a disjoint covering system?\n\n**Answer:** NO\n\n**Key insight:** Divisibility among divisors forces overlaps between non-coprime pairs, violating the disjointness requirement.",
+    "significance": "critical"
+  }
+]

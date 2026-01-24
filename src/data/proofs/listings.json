@@ -4088,17 +4088,21 @@
   },
   {
     "id": "erdos-204",
-    "title": "Erdős Problem #204",
+    "title": "Erdős Problem #204: Disjoint Covering Systems by Divisors",
     "slug": "erdos-204",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there ... such that there is a covering system with moduli the divisors of ... which is 'as disjoint as possible'?\n\nThat ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there n with a covering system using divisors of n that is 'as disjoint as possible'? NO - Adenwalla (2025) proved no such n exists, confirming the Erdős-Graham conjecture.",
+    "status": "complete",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "divisors",
+      "solved"
     ],
     "erdosNumber": 204,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-205",
