@@ -1,1 +1,206 @@
-[]
+[
+  {
+    "id": "ann-343-1",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #343: If A ⊆ ℕ has positive lower density, must its sumset P(A) contain an infinite arithmetic progression? SOLVED: YES by Szemerédi-Vu (2006). Threshold is sharp (Folkman 1966).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-2",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "countingFunction(A, N) counts how many elements of A are ≤ N. This measures the 'density' of A up to N. The problem asks about sets where this grows at least linearly.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-3",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Positive Lower Density",
+    "content": "A has positive lower density if |A ∩ {1,...,N}| ≥ cN for some constant c > 0 and all large N. This is the key condition - linear growth in the counting function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-4",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Sumset P(A)",
+    "content": "The sumset P(A) = {finite subset sums of A} = {∑_{n∈B} n : B ⊆ A finite}. This is all integers representable as sums of distinct elements from A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-5",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 70,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "An arithmetic progression {a + kd : k ∈ ℕ} with first term a and common difference d > 0. An infinite AP contains infinitely many terms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-343-6",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Subcompleteness",
+    "content": "A set A is subcomplete if P(A) contains an infinite arithmetic progression. This is the key property the problem asks about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-7",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 86,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "Folkman Superlinear (1966)",
+    "content": "Folkman proved: if |A ∩ {1,...,N}| ≫ N^{1+ε} for some ε > 0, then A is subcomplete. Superlinear density guarantees an infinite AP in the sumset.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-8",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 92,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "Folkman Counterexample (1966)",
+    "content": "Folkman showed: for any ε > 0, there exist multisets with density ~N^{1-ε} that are NOT subcomplete. Sublinear density does not suffice.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-9",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 98,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "The Gap",
+    "content": "Folkman's results left a gap: superlinear works, sublinear fails. What about exactly linear density? This was the open question for 40 years.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-343-10",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 108,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Szemerédi-Vu Theorem (2006)",
+    "content": "Szemerédi-Vu (2006): Linear density suffices for subcompleteness. If |A ∩ {1,...,N}| ≫ N, then P(A) contains an infinite AP. This answers Problem #343.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-11",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 112,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "erdos_343_solved: For any A with positive lower density, A is subcomplete. This directly follows from the Szemerédi-Vu theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-12",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 121,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "Sharpness",
+    "content": "The linear threshold is sharp: Folkman's counterexample shows that for any ε > 0, density N^{1-ε} does not guarantee subcompleteness. Linear is exactly the critical threshold.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-13",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 138,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "Sumset Structure",
+    "content": "The Szemerédi-Vu proof uses deep results about arithmetic progressions in iterated sumsets A + A + ... + A. If the sumset is large enough, it contains long APs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-343-14",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 144,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Freiman's Theorem",
+    "content": "Freiman's theorem: sets with small doubling |A+A|/|A| have additive structure. This connects to the problem through understanding sumset growth.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-343-15",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 149,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Erdős-Ginzburg-Ziv",
+    "content": "The EGZ theorem: among any 2n-1 integers, some n sum to a multiple of n. This is a foundational result in additive combinatorics related to subset sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-343-16",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 184,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "Final Answer",
+    "content": "erdos_343_answer: Positive lower density implies subcompleteness. The answer to Problem #343 is YES, proved by Szemerédi-Vu (2006).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-343-17",
+    "proofId": "erdos-343",
+    "range": {
+      "startLine": 188,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "SOLVED - Linear density is the sharp threshold. Szemerédi-Vu (2006) proved sufficiency, Folkman (1966) proved necessity. Complete characterization achieved.",
+    "significance": "critical"
+  }
+]

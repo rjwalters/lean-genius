@@ -1,33 +1,102 @@
 {
   "id": "erdos-343",
-  "title": "Erdős Problem #343",
+  "title": "Erdős Problem #343: Subcompleteness of Dense Multisets",
   "slug": "erdos-343",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a multiset of integers such that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\gg N\\]for all ... then must ... be subcomplete?...",
+  "description": "If A ⊆ ℕ has positive lower density (|A ∩ {1,...,N}| ≫ N), must P(A) contain an infinite arithmetic progression? SOLVED: YES (Szemerédi-Vu 2006), threshold is sharp (Folkman 1966).",
   "meta": {
-    "author": "Unknown",
+    "author": "Szemerédi-Vu (2006), Folkman (1966)",
     "sourceUrl": "https://erdosproblems.com/343",
-    "date": "",
-    "status": "pending",
+    "date": "2006",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos343Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
+    "tags": ["erdos", "additive-combinatorics", "sumsets", "arithmetic-progressions", "density"],
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 343,
     "erdosUrl": "https://erdosproblems.com/343",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #343 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subseteq \\mathbb{N}$ is a multiset of integers such that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\gg N\\]for all $N$ then must $A$ be subcomplete? That is, must\\[P(A) = \\left\\{\\sum_{n\\in B}n : B\\subseteq A\\textrm{ finite }\\right\\}\\]contain an infinite arithmetic progression?\n\n\n\nA problem of Folkman. Folkman \\cite{Fo66} showed that this is true if\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\gg N^{1+\\epsilon}\\]for some $\\epsilon>0$ and all $N$.\n\nThe original question was answered by Szemer\\'{e}di and Vu \\cite{SzVu06} (who proved that the answer is yes).\n\nThis is best possible, since Folkman \\cite{Fo66} showed that for all $\\epsilon>0$ there exists a multiset $A$ with\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\gg N^{1-\\epsilon}\\]for all $N$, such that $A$ is not subcomplete.\n\n\n\n\n\nReferences\n\n\n[Fo66] Folkman, Jon, On the representation of integers as sums of distinct terms from a fixed sequence. Canadian J. Math. (1966), 643-655.\n\n[SzVu06] Szemer\\'{e}di, E. and Vu, V., Long arithmetic progressions in sumsets: thresholds and bounds. J. Amer. Math. Soc. (2006), 119-169.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #343 is a problem of Folkman about subcompleteness of dense multisets. A set A ⊆ ℕ is called subcomplete if its sumset P(A) = {finite subset sums} contains an infinite arithmetic progression.\n\nFolkman (1966) proved that superlinear density (|A ∩ {1,...,N}| ≫ N^{1+ε}) implies subcompleteness. He also showed the opposite direction: for any ε > 0, there exist multisets with density ~N^{1-ε} that are NOT subcomplete. This left open the critical case of linear density.\n\nSzemerédi and Vu (2006) resolved the problem in their influential paper 'Long arithmetic progressions in sumsets: thresholds and bounds', proving that linear density suffices. This completed the characterization: linear density is the sharp threshold.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be a multiset with $|A \\cap \\{1,\\ldots,N\\}| \\gg N$ for all $N$.\n\nMust $A$ be subcomplete? That is, must $P(A) = \\{\\sum_{n \\in B} n : B \\subseteq A \\text{ finite}\\}$ contain an infinite arithmetic progression?\n\n**Answer:** YES (Szemerédi-Vu 2006)\n\n**Sharpness:** Folkman (1966) showed this is optimal - for any $\\varepsilon > 0$, there exist multisets with density $\\sim N^{1-\\varepsilon}$ that are NOT subcomplete.",
+    "proofStrategy": "The Lean formalization defines the counting function, positive lower density, sumsets, arithmetic progressions, and subcompleteness. Folkman's results are axiomatized: superlinear density implies subcompleteness, and sublinear density can fail to imply subcompleteness. The main theorem of Szemerédi-Vu (2006) is axiomatized: linear density suffices for subcompleteness.",
+    "keyInsights": [
+      "**Subcompleteness:** A set is subcomplete if its sumset P(A) contains an infinite arithmetic progression",
+      "**Folkman (1966) upper:** Superlinear density N^{1+ε} guarantees subcompleteness",
+      "**Folkman (1966) lower:** For any ε > 0, density N^{1-ε} does NOT guarantee subcompleteness",
+      "**Szemerédi-Vu (2006):** Linear density is sufficient - this closes the gap",
+      "**Sharp threshold:** Linear density is exactly the critical boundary",
+      "**Techniques:** The proof uses sumset structure theorems and Freiman-type results"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "density-definitions",
+      "title": "Multisets and Density",
+      "startLine": 35,
+      "endLine": 53,
+      "summary": "Defines counting function, positive lower density, and asymptotic density."
+    },
+    {
+      "id": "sumsets-subcompleteness",
+      "title": "Sumsets and Subcompleteness",
+      "startLine": 55,
+      "endLine": 80,
+      "summary": "Defines sumsets, arithmetic progressions, and the subcompleteness property."
+    },
+    {
+      "id": "folkman-results",
+      "title": "Folkman's Results (1966)",
+      "startLine": 82,
+      "endLine": 102,
+      "summary": "States Folkman's theorems: superlinear works, sublinear can fail."
+    },
+    {
+      "id": "szemeredi-vu",
+      "title": "Szemerédi-Vu Theorem (2006)",
+      "startLine": 104,
+      "endLine": 115,
+      "summary": "The main result: linear density suffices for subcompleteness."
+    },
+    {
+      "id": "sharpness",
+      "title": "Why This Is Sharp",
+      "startLine": 117,
+      "endLine": 132,
+      "summary": "Combines results to show linear density is the exact threshold."
+    },
+    {
+      "id": "techniques",
+      "title": "Key Techniques",
+      "startLine": 134,
+      "endLine": 152,
+      "summary": "Related results: sumset structure theorems, Freiman, Erdős-Ginzburg-Ziv."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 154,
+      "endLine": 166,
+      "summary": "Connections to Erdős-Graham conjecture and Folkman's broader research."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 168,
+      "endLine": 192,
+      "summary": "Complete answer: YES (linear density suffices), threshold is sharp."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #343 was SOLVED by Szemerédi and Vu in 2006. The answer is YES: if A ⊆ ℕ has positive lower density (|A ∩ {1,...,N}| ≫ N), then P(A) contains an infinite arithmetic progression. This threshold is sharp: Folkman showed that sublinear density N^{1-ε} does not suffice.",
+    "implications": "This result establishes the critical threshold for subcompleteness at exactly linear density. It connects to the broader theme in additive combinatorics of understanding when sumsets have rich arithmetic structure. The techniques developed by Szemerédi-Vu have influenced many subsequent results on arithmetic progressions in sumsets.",
+    "openQuestions": [
+      "What is the minimum length of AP that P(A) must contain for density-α sets?",
+      "Can the result be quantified: if density is cN, what is the modulus of the guaranteed AP?",
+      "Are there analogues in other groups or rings?"
+    ]
   }
 }
