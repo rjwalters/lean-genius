@@ -1,57 +1,111 @@
 {
   "slug": "erdos-10",
-  "title": "Erdős #10",
-  "phase": "NEW",
+  "title": "Erdős #10: Prime Plus Powers of 2",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Is there some $k$ such that every integer is the sum of a prime and at most $k$ powers of 2?",
-    "whyMatters": []
+    "formal": "\\exists k \\text{ s.t. } \\forall n \\in \\mathbb{Z}, n = p + 2^{a_1} + \\cdots + 2^{a_j} \\text{ with } j \\leq k",
+    "plain": "Is there some k such that every integer is the sum of a prime and at most k powers of 2?",
+    "whyMatters": [
+      "Fundamental question in additive number theory",
+      "Connects prime distribution to binary representations"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "k=1 insufficient: 262 is counterexample (fully proved)",
+      "k=2 insufficient: 906 is counterexample (FULLY PROVED)",
+      "k=3 insufficient: 1,117,175,146 (Grechuk axiom)",
+      "Infinitely many de Polignac numbers exist"
+    ],
+    "open": [
+      "Whether any k works for ALL integers (expected: NO)",
+      "k=4 counterexamples"
+    ],
+    "goal": "Prove no universal k exists"
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15",
-    "iteration": 3,
-    "focus": "Fully proved k=2 counterexample (removed axiom), added de Polignac covering congruence method.",
+    "iteration": 4,
+    "focus": "Knowledge structure update - populated structured fields from markdown.",
     "activeApproach": "Counterexample enumeration + covering congruence formalization.",
-    "blockers": [
-      "None currently."
-    ],
+    "blockers": [],
     "nextAction": "Search for k=4 counterexamples computationally, or formalize Chen et al. 2024 results.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ACTIVE: Erdos10PrimePlusPowers.lean (644 lines, 8 axioms, 0 sorries). k=1,2 counterexamples FULLY PROVED. k=3 axiomatized. De Polignac covering congruence formalized.",
+    "builtItems": [
+      "Erdos10PrimePlusPowers.lean (644 lines, 8 axioms, 0 sorries)",
+      "IsPrimePlus2Pow, IsPrimePlusKPowers definitions",
+      "counterexample_k1 := 262 (fully proved)",
+      "counterexample_k2 := 906 (FULLY PROVED)",
+      "k_one_insufficient, k_two_insufficient, k_three_insufficient theorems",
+      "de_polignac_infinite theorem",
+      "problem_10_summary combining all results"
+    ],
+    "insights": [
+      "906 is smallest k=2 counterexample: 906 - 2^a - 2^b is never prime for valid a,b",
+      "Our 'at most k powers' definition differs from OEIS A006286's 'exactly 2 distinct positive'",
+      "De Polignac covering: n ≡ 7629217 (mod 11184810) implies n - 2^k always composite",
+      "Pattern k=1,2,3 all having counterexamples strongly supports no universal k",
+      "k=2 proof uses exhaustive native_decide over all 100 (a,b) pairs with a,b ≤ 9",
+      "8 axioms encode published results (Grechuk, Romanoff, Gallagher, Crocker, Chen)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Computationally search for k=4 counterexamples",
+      "Consider proving chen_minimal_modulus without axiom",
+      "Formalize more of Crocker's 1971 infinite family construction"
+    ],
     "markdown": "# Erdős #10 - Knowledge Base\n\n## Problem Statement\n\nIs there some $k$ such that every integer is the sum of a prime and at most $k$ powers of 2?\n\n## Status\n\n**Erdős Database Status**: OPEN (likely FALSE)\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No (OPEN problem)\n\n## Current Formalization\n\n**File**: `proofs/Proofs/Erdos10PrimePlusPowers.lean` (644 lines)\n\n### Proven Results\n- k=1 insufficient: 262 is a counterexample (fully proved)\n- k=2 insufficient: 906 is a counterexample (FULLY PROVED - no axiom!)\n- k=3 insufficient: 1,117,175,146 (Grechuk, axiom)\n- De Polignac numbers: infinitely many exist (via covering congruence)\n\n### Key Definitions\n- `IsPrimePlus2Pow n`: n = p + 2^a for prime p\n- `IsPrimePlusKPowers k n`: n = p + (sum of at most k powers of 2)\n\n## Tags\n\n- erdos\n- number-theory\n- primes\n- powers-of-2\n- additive-combinatorics\n\n## Related Problems\n\n- Problem #337, #2000, #9, #11, #16, #2, #39, #1\n\n## References\n\n- Crocker 1971 (Pacific J. Math.) - infinitely many odd n not p + 2^a + 2^b\n- Gallagher 1975 - density approaches 1 as k increases\n- Granville-Soundararajan 1998 - conjectured k=3 for odd, k=4 for even\n- OEIS A006286 - numbers not of form p + 2^x + 2^y\n\n## Sessions\n\n### Session 2026-01-15 (Session 1) - k=2 Counterexample Discovery\n\n**Mode**: REVISIT\n**Problem**: erdos-10\n**Prior Status**: NEW (knowledge score 0)\n\n**What we did**:\n1. Scouted for new knowledge - problem remains OPEN\n2. Investigated OEIS A006286 (numbers not p + 2^x + 2^y)\n3. Discovered our AT MOST definition differs from EXACTLY 2 distinct positive powers\n4. Computationally searched for true k=2 counterexamples with our permissive definition\n5. Found 906 is the smallest counterexample for k=2\n6. Verified 262 (k=1 counterexample) CAN be done with k=2: 262 = 257 + 2^0 + 2^2\n7. Added `counterexample_k2`, `not_906_primePlus2Pow`, `k_two_insufficient` to Lean\n8. Updated `summary_known_insufficient` to include k=2\n\n**Key insight**:\n906 is the smallest number that cannot be expressed as p + (at most 2 powers of 2) including 2^0. This differs from OEIS A006286 which uses exactly 2 distinct positive powers. The pattern k=1,2,3 all having counterexamples strongly supports Erdős's expectation that no universal k exists.\n\n**New definitions/theorems**:\n- `counterexample_k2 : ℕ := 906`\n- `counterexample_k2_not_prime : ¬Nat.Prime counterexample_k2`\n- `not_906_primePlus2Pow : ¬IsPrimePlus2Pow 906` (fully proved)\n- `not_906_primePlus2Powers : ¬IsPrimePlusKPowers 2 906` (axiom)\n- `k_two_insufficient : ∃ n, ¬n.Prime ∧ ¬IsPrimePlusKPowers 2 n`\n\n**Outcome**:\n- Erdos10PrimePlusPowers.lean: **474 lines** (up from ~387)\n- Extended counterexample coverage from k=1 to k=1,2,3\n- One new axiom (not_906_primePlus2Powers) - could be proved with more case work\n\n**Files Modified**:\n- `proofs/Proofs/Erdos10PrimePlusPowers.lean` (+87 lines)\n- `research/problems/erdos-10/knowledge.md` - this file\n- `src/data/research/problems/erdos-10.json` - updated knowledge\n\n**Next steps**:\n1. Try to prove `not_906_primePlus2Powers` without axiom (enumerate all (a,b) pairs) ✓ DONE\n2. Search for k=4 counterexamples computationally\n3. Consider formalizing Crocker's 1971 infinite family result\n\n---\n\n### Session 2026-01-15 (Session 2) - Full k=2 Proof + De Polignac Covering\n\n**Mode**: CONTINUE\n**Problem**: erdos-10\n**Prior Status**: ACT (from Session 1)\n\n**What we did**:\n1. Proved `not_906_primePlus2Powers` WITHOUT axiom by exhaustive case analysis\n2. Created helper `not_prime_906_minus_powers` using `native_decide` for all 100 (a,b) pairs\n3. Used `linarith` instead of `omega` for exponential bounds (omega can't handle 2^a)\n4. Fixed multiset simp lemmas to properly simplify `{a, b}.map.sum`\n5. Added Part IX: De Polignac Covering Congruence Method\n6. Formalized the covering congruence arithmetic progression\n7. Proved `de_polignac_infinite` - infinitely many de Polignac numbers exist\n8. Added `problem_10_summary` combining all known results\n\n**Key insight**:\nThe k=2 proof required exhaustive enumeration of all 100 pairs (a,b) with a,b ≤ 9, checking that 906 - 2^a - 2^b is not prime for each. Using `native_decide` made this efficient. The de Polignac covering congruence shows the fundamental reason counterexamples exist: for n ≡ 7629217 (mod 11184810), every n - 2^k is composite.\n\n**New definitions/theorems**:\n- `not_prime_906_minus_powers` (private helper, line 318)\n- `not_906_primePlus2Powers` FULLY PROVED (line 333)\n- `dePolignacModulus := 11184810` (line 565)\n- `dePolignacResidue := 7629217` (line 575)\n- `erdos_covering_congruence` axiom (line 581)\n- `de_polignac_infinite` theorem (line 585)\n- `chen_minimal_modulus` axiom (line 603)\n- `chen_density_upper_bound` axiom (line 608)\n- `problem_10_summary` (line 627)\n\n**Outcome**:\n- Erdos10PrimePlusPowers.lean: **644 lines** (up from 474)\n- Removed axiom `not_906_primePlus2Powers` - now fully proved\n- Added comprehensive de Polignac covering method formalization\n- Summary theorem combining k=1,2,3 insufficiency + infinite de Polignac numbers\n\n**Files Modified**:\n- `proofs/Proofs/Erdos10PrimePlusPowers.lean` (+170 lines)\n- `research/problems/erdos-10/knowledge.md` - this file\n- `research/problems/erdos-10/state.md` - updated state\n- `src/data/research/problems/erdos-10.json` - updated knowledge\n\n**Next steps**:\n1. Search for k=4 counterexamples computationally\n2. Consider proving chen_minimal_modulus (technical but doable)\n3. Formalize more of Crocker's 1971 infinite family construction\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n*Last updated: 2026-01-15*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Counterexample enumeration",
+      "status": "completed",
+      "notes": "k=1,2 fully proved; k=3 uses Grechuk axiom"
+    },
+    {
+      "name": "De Polignac covering congruence",
+      "status": "completed",
+      "notes": "Formalized covering showing infinite de Polignac numbers"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "primes",
+    "powers-of-2",
+    "additive-combinatorics",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos10PrimePlusPowers.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Crocker 1971 (Pacific J. Math.)",
+      "Gallagher 1975",
+      "Granville-Soundararajan 1998",
+      "Grechuk 2010",
+      "Chen et al. 2024"
+    ],
+    "urls": [
+      "https://erdosproblems.com/10",
+      "https://oeis.org/A006286"
+    ],
     "mathlib": []
   },
   "started": "2026-01-12T04:04:26.047Z",
+  "lastUpdate": "2026-01-24T17:00:00Z",
   "significance": 7,
   "tractability": 6
 }
