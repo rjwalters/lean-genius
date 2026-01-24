@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-1076-hypergraph3",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Hypergraph3",
+    "content": "3-uniform hypergraph structure on n vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-numedges",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "numEdges",
+    "content": "Number of edges in a 3-uniform hypergraph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-isinfamilyf",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "IsInFamilyF",
+    "content": "Hypergraph in F_k: k vertices and k-2 edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-familyf",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "FamilyF",
+    "content": "The family F_k of forbidden hypergraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-f4",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "theorem",
+    "title": "family_F4_description",
+    "content": "F_4: 4 vertices, 2 edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1076-f5",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "theorem",
+    "title": "family_F5_description",
+    "content": "F_5: 5 vertices, 3 edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1076-containssubgraph",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 88, "endLine": 96 },
+    "type": "definition",
+    "title": "ContainsSubgraph",
+    "content": "H contains a copy of G as subgraph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-isfkfree",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "definition",
+    "title": "IsFkFree",
+    "content": "Hypergraph avoiding all F_k members.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-ex3",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 106, "endLine": 113 },
+    "type": "definition",
+    "title": "ex3",
+    "content": "Extremal number ex₃(n, F_k).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-besk4",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "theorem",
+    "title": "brown_erdos_sos_k4",
+    "content": "Brown-Erdős-Sós 1973: k=4 case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-besgeneral",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 127, "endLine": 130 },
+    "type": "theorem",
+    "title": "brown_erdos_sos_general",
+    "content": "For k ≥ 4: ex₃(n, F_k) = Θ_k(n²).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-erdos1974",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 136, "endLine": 140 },
+    "type": "theorem",
+    "title": "erdos_1974_supporting",
+    "content": "Erdős 1974: > (1/3)C(n,2) edges forces F_5 or F_6.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-conjecture",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 155, "endLine": 157 },
+    "type": "definition",
+    "title": "BrownErdosSosConjecture",
+    "content": "ex₃(n, F_k) ~ n²/6 for all k ≥ 5.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-bw",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 168, "endLine": 170 },
+    "type": "theorem",
+    "title": "bohman_warnke_theorem",
+    "content": "Bohman-Warnke 2019: Conjecture TRUE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-gklo",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 172, "endLine": 174 },
+    "type": "theorem",
+    "title": "glock_kuhn_lo_osthus_theorem",
+    "content": "GKLO 2020: Independent proof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-asymptotic",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 176, "endLine": 179 },
+    "type": "theorem",
+    "title": "ex3_asymptotic",
+    "content": "Asymptotic n²/6 for all k ≥ 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-sts",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 203, "endLine": 206 },
+    "type": "definition",
+    "title": "IsSteinerTripleSystem",
+    "content": "Steiner triple system: each pair in unique triple.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1076-stsedges",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 208, "endLine": 211 },
+    "type": "theorem",
+    "title": "sts_num_edges",
+    "content": "STS(n) has n(n-1)/6 edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1076-main",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 248, "endLine": 248 },
+    "type": "theorem",
+    "title": "erdos_1076",
+    "content": "Main theorem: conjecture is TRUE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1076-solved",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 254, "endLine": 256 },
+    "type": "theorem",
+    "title": "erdos_1076_solved",
+    "content": "Problem solved for all k ≥ 5.",
+    "significance": "critical"
+  }
+]

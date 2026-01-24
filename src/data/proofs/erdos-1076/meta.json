@@ -1,33 +1,80 @@
 {
   "id": "erdos-1076",
-  "title": "Erdős Problem #1076",
+  "title": "Erdős Problem #1076: Extremal Numbers for 3-Uniform Hypergraphs",
   "slug": "erdos-1076",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the family of all ...-uniform hypergraphs with ... vertices and ... edges. Is it true that\\[_3(n,_k)\\s...",
+  "description": "For k ≥ 5, let F_k be all 3-uniform hypergraphs with k vertices and k-2 edges. Is ex₃(n, F_k) ~ n²/6? SOLVED: YES (Bohman-Warnke 2019, Glock-Kühn-Lo-Osthus 2020).",
   "meta": {
-    "author": "Unknown",
+    "author": "Bohman-Warnke (2019), Glock-Kühn-Lo-Osthus (2020)",
     "sourceUrl": "https://erdosproblems.com/1076",
-    "date": "",
-    "status": "pending",
+    "date": "2019",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1076Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-combinatorics",
+      "hypergraphs",
+      "steiner-systems",
+      "asymptotic",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1076,
     "erdosUrl": "https://erdosproblems.com/1076",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for hypergraph edges",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "nhds",
+        "description": "Neighborhood filter for convergence",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Hypergraph3: 3-uniform hypergraph structure",
+      "FamilyF, IsInFamilyF: the family F_k definition",
+      "ContainsSubgraph, IsFkFree: subgraph containment",
+      "ex3: extremal number definition",
+      "brown_erdos_sos_k4, brown_erdos_sos_general: 1973 results",
+      "erdos_1974_supporting: Erdős's threshold theorem",
+      "BrownErdosSosConjecture: formal statement",
+      "bohman_warnke_theorem, glock_kuhn_lo_osthus_theorem: solutions",
+      "IsSteinerTripleSystem: STS connection",
+      "erdos_1076, erdos_1076_solved: main theorems"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1076 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 5$ and let $\\mathcal{F}_k$ be the family of all $3$-uniform hypergraphs with $k$ vertices and $k-2$ edges. Is it true that\\[\\mathrm{ex}_3(n,\\mathcal{F}_k)\\sim \\frac{n^2}{6}?\\]\n\n\n\nA question of Brown, Erd\\H{o}s, and S\\'{o}s \\cite{BES73} who proved this is true for $k=4$, and that for all $k\\geq 4$\\[\\mathrm{ex}_3(n,\\mathcal{F}_k)\\asymp_k n^2.\\]In \\cite{Er74c} Erd\\H{o}s writes 'the only argument in favour of this conjecture (the conjecture may easily turn out to be nonsense) is the following theorem': every $3$-uniform hypergraph on $n$ vertices with $>\\frac{1}{3}\\binom{n}{2}$ edges contains either a graph on $5$ vertices with $3$ edges or a graph on $6$ vertices with $4$ edges. (This is proved in \\cite{Er74c}.)\n\nThis is essentially a weaker version of [207]. In particular, for $k$ satisfying the right divisibility conditions, the extremal number is known exactly. The asymptotic version asked for here was proved independently by Bohman and Warnke \\cite{BoWa19} and Glock, K\\\"{u}hn, Lo, and Osthus \\cite{GKLO20}.\n\n\n\n\nReferences\n\n\n[BES73] Brown, W. G. and Erd\\H{o}s, P. and S\\'os, V. T., Some extremal problems on {$r$}-graphs. (1973), 53--63.\n\n[BoWa19] Bohman, Tom and Warnke, Lutz, Large girth approximate {S}teiner triple systems. J. Lond. Math. Soc. (2) (2019), 895--913.\n\n[Er74c] Erd\\H{o}s, Paul, Extremal problems on graphs and hypergraphs. (1974), 75-84.\n\n[GKLO20] Glock, Stefan and K\\\"uhn, Daniela and Lo, Allan and Osthus,\nDeryk, On a conjecture of {E}rd\\H{o}s on locally sparse {S}teiner\ntriple systems. Combinatorica (2020), 363--403.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1076 (Extremal Numbers for 3-Uniform Hypergraphs)**\n\n**Origin:**\nBrown, Erdős, and Sós (1973) studied extremal problems for r-graphs (hypergraphs). They defined F_k as the family of 3-uniform hypergraphs with k vertices and k-2 edges, and conjectured that ex₃(n, F_k) ~ n²/6 for all k ≥ 5.\n\n**Early Results:**\n- Brown-Erdős-Sós (1973): Proved the k=4 case and showed ex₃(n, F_k) = Θ_k(n²)\n- Erdős (1974): Showed hypergraphs with > (1/3)C(n,2) edges contain F_5 or F_6 members\n\n**The Solution (2019-2020):**\nThe asymptotic conjecture was independently proved by:\n- Bohman and Warnke (2019): \"Large girth approximate Steiner triple systems\"\n- Glock, Kühn, Lo, and Osthus (2020): \"On a conjecture of Erdős on locally sparse Steiner triple systems\"\n\n**Key Insight:**\nThe extremal number n²/6 matches the edge density of Steiner triple systems. The proofs use sophisticated probabilistic constructions of approximate Steiner systems with large girth.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet k ≥ 5 and let F_k be the family of all 3-uniform hypergraphs with k vertices and k-2 edges.\n\n**Question:** Is ex₃(n, F_k) ~ n²/6?\n\n**Answer: YES**\n\n- Brown-Erdős-Sós (1973): Proved for k=4, showed Θ_k(n²) bounds\n- Bohman-Warnke (2019): Proved asymptotic for all k ≥ 5\n- Glock-Kühn-Lo-Osthus (2020): Independent proof\n\nThe extremal number is asymptotically n²/6, matching Steiner triple system density.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Basics:** Hypergraph3 structure, numEdges, numVertices\n\n2. **Family F_k:** IsInFamilyF, FamilyF definition, examples for k=4,5,6\n\n3. **Containment:** ContainsSubgraph, IsFkFree predicates\n\n4. **Extremal Numbers:** ex3 definition, ex3_achieved axiom\n\n5. **Historical Results:** brown_erdos_sos_k4, brown_erdos_sos_general, erdos_1974_supporting\n\n6. **Main Conjecture:** BrownErdosSosConjecture formal statement\n\n7. **Solutions:** bohman_warnke_theorem, glock_kuhn_lo_osthus_theorem as axioms\n\n8. **STS Connection:** IsSteinerTripleSystem, sts_num_edges\n\n9. **Main Theorem:** erdos_1076, erdos_1076_solved",
+    "keyInsights": [
+      "**F_k Family:** 3-uniform hypergraphs with k vertices and k-2 edges",
+      "**Asymptotic n²/6:** Matches Steiner triple system edge density",
+      "**Independent Proofs:** Bohman-Warnke and GKLO solved simultaneously",
+      "**Erdős's Doubt:** In 1974, Erdős wrote the conjecture 'may easily turn out to be nonsense'",
+      "**Related #207:** Stronger version asking for exact extremal numbers"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1076 asks whether ex₃(n, F_k) ~ n²/6 for k ≥ 5, where F_k is the family of 3-uniform hypergraphs with k vertices and k-2 edges. Brown-Erdős-Sós (1973) proved the k=4 case. The general asymptotic was independently proved by Bohman-Warnke (2019) and Glock-Kühn-Lo-Osthus (2020). The answer is YES.",
+    "implications": "**Connections**\n\n1. **Steiner Triple Systems:** Extremal density matches STS density n(n-1)/6\n\n2. **Approximate STS:** Solutions use large girth approximate Steiner constructions\n\n3. **Problem #207:** Stronger version with exact extremal numbers\n\n4. **Hypergraph Turán:** Part of broader extremal hypergraph theory",
+    "openQuestions": [
+      "What are the exact constants in the o(1) error term?",
+      "Can the methods extend to r-uniform hypergraphs for r > 3?",
+      "What is the relationship between girth and extremal numbers?",
+      "Are there efficient algorithms for constructing extremal hypergraphs?"
+    ]
   }
 }
