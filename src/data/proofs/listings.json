@@ -13371,17 +13371,24 @@
   },
   {
     "id": "erdos-802",
-    "title": "Erdős Problem #802",
+    "title": "Erdős Problem #802: Independent Sets in K_r-Free Graphs",
     "slug": "erdos-802",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that any ...-free graph on ... vertices with average degree ... contains an independent set on\\[\\gg_r {t}n\\]many v...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that any K_r-free graph on n vertices with average degree t contains an independent set on (log t / t)n vertices? SOLVED for r=3 by AKS (1980). Partial progress for general r by Shearer (1995).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "independent-sets",
+      "ramsey-theory",
+      "probabilistic-method",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 802,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 14
   },
   {
     "id": "erdos-803",

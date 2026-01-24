@@ -1,33 +1,153 @@
 {
   "id": "erdos-802",
-  "title": "Erdős Problem #802",
+  "title": "Erdős Problem #802: Independent Sets in K_r-Free Graphs",
   "slug": "erdos-802",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that any ...-free graph on ... vertices with average degree ... contains an independent set on\\[\\gg_r {t}n\\]many v...",
+  "description": "Is it true that any K_r-free graph on n vertices with average degree t contains an independent set on (log t / t)n vertices? SOLVED for r=3 by AKS (1980). Partial progress for general r by Shearer (1995).",
   "meta": {
-    "author": "Unknown",
+    "author": "AEKS (1981), AKS (1980), Shearer (1995), Alon (1996)",
     "sourceUrl": "https://erdosproblems.com/802",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos802Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "independent-sets",
+      "ramsey-theory",
+      "probabilistic-method",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 802,
     "erdosUrl": "https://erdosproblems.com/802",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Clique predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "avgDegree: average degree of a graph",
+      "IsCliqueFree: K_r-free graph predicate",
+      "IsTriangleFree: K_3-free (triangle-free)",
+      "IsIndependent: independent set predicate",
+      "independenceNumber: alpha(G)",
+      "AEKSConjecture: the main conjecture formulation",
+      "aeksBound: the (log t / t)n bound function",
+      "aeks_1981: first bound axiom",
+      "shearer_1995: improved bound axiom",
+      "aks_1980_triangle_free: r=3 case",
+      "conjecture_true_for_r3: derived theorem",
+      "alon_1996: local chromatic version"
+    ],
+    "references": [
+      {
+        "key": "AEKS81",
+        "citation": "Ajtai, M., Erdős, P., Komlós, J., Szemerédi, E., On Turán's theorem for sparse graphs, Combinatorica (1981), 313-317.",
+        "type": "paper"
+      },
+      {
+        "key": "AKS80",
+        "citation": "Ajtai, M., Komlós, J., Szemerédi, E., A note on Ramsey numbers, J. Combin. Theory Ser. A (1980), 354-360.",
+        "type": "paper"
+      },
+      {
+        "key": "Sh95",
+        "citation": "Shearer, J.B., On the independence number of sparse graphs, Random Structures Algorithms (1995), 269-271.",
+        "type": "paper"
+      },
+      {
+        "key": "Al96",
+        "citation": "Alon, N., Independence numbers of locally sparse graphs, Random Structures Algorithms (1996), 271-278.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #802 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that any $K_r$-free graph on $n$ vertices with average degree $t$ contains an independent set on\\[\\gg_r \\frac{\\log t}{t}n\\]many vertices?\n\n\n\nA conjecture of Ajtai, Erd\\H{o}s, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AEKS81}, who proved that there must exist an independent set on\\[\\gg_r \\frac{\\log\\log(t+1)}{t}n\\]many vertices. Shearer \\cite{Sh95} improved this to\\[\\gg_r \\frac{\\log t}{\\log\\log(t+1)t}n.\\]Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS80} proved the conjectured bound when $r=3$. Alon \\cite{Al96b} proved the conjectured bound, but replacing the $K_r$-free assumption with the stronger assumption that the induced graph on every vertex neighbourhood has chromatic number $\\leq r-2$.\n\n\n\n\nReferences\n\n\n[AEKS81] Ajtai, M. and Erd\\H{o}s, P. and Koml\\'{o}s, J. and Szemer\\'{e}di,\nE., On Tur\\'{a}n's theorem for sparse graphs. Combinatorica (1981), 313-317.\n\n[AKS80] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, A note on Ramsey numbers. J. Combin. Theory Ser. A (1980), 354-360.\n\n[Al96b] Alon, Noga, Independence numbers of locally sparse graphs and a Ramsey\ntype problem. Random Structures Algorithms (1996), 271-278.\n\n[Sh95] Shearer, James B., On the independence number of sparse graphs. Random Structures Algorithms (1995), 269--271.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Independent Sets in Sparse Graphs**\n\nThe AEKS conjecture asks whether K_r-free graphs with average degree t must have large independent sets. This connects to Ramsey theory and the probabilistic method.\n\n**Timeline:**\n- **AEKS (1981):** Original conjecture, proved (log log t / t)n bound\n- **AKS (1980):** Proved the full conjecture for r=3 (triangle-free graphs)\n- **Shearer (1995):** Improved bound to (log t / (log log t * t))n\n- **Alon (1996):** Proved conjecture under stronger local chromatic assumptions\n\n**Key Insight:** The bound (log t / t)n is tight for random graphs.",
+    "problemStatement": "**Problem Statement (SOLVED for r=3)**\n\nLet G be a K_r-free graph on n vertices with average degree t.\n\n**Conjecture:** G contains an independent set of size at least c_r * (log t / t) * n.\n\n**Status:**\n- SOLVED for r=3 (AKS 1980)\n- PARTIAL for general r: best bound is (log t / (log log t * t))n (Shearer 1995)\n- SOLVED under stronger assumptions (Alon 1996)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Define avgDegree and IsCliqueFree predicates.\n\n2. **Independent Sets:** Define IsIndependent and independenceNumber.\n\n3. **The Conjecture:** State AEKSConjecture with the (log t / t)n bound.\n\n4. **Known Results:** Axiomatize AEKS, AKS, Shearer, and Alon bounds.\n\n5. **Triangle-Free Case:** Derive that the conjecture is true for r=3.\n\n6. **Ramsey Connection:** Link to Ramsey number lower bounds.",
+    "keyInsights": [
+      "**AEKS Conjecture:** K_r-free + avg degree t implies large independent sets",
+      "**Triangle-free solved:** AKS proved the full bound for r=3",
+      "**Shearer's improvement:** Best general bound has extra log log factor",
+      "**Local chromatic:** Alon's stronger assumption yields full bound",
+      "**Ramsey connection:** Implies R(3,k) >= c*k^2/log k"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "Average degree and K_r-free definitions",
+      "startLine": 41,
+      "endLine": 57
+    },
+    {
+      "id": "independent-sets",
+      "title": "Independent Sets",
+      "summary": "Independence predicate and number",
+      "startLine": 59,
+      "endLine": 69
+    },
+    {
+      "id": "aeks-conjecture",
+      "title": "The AEKS Conjecture",
+      "summary": "Main conjecture formulation",
+      "startLine": 71,
+      "endLine": 84
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "AEKS, Shearer, AKS bounds",
+      "startLine": 86,
+      "endLine": 117
+    },
+    {
+      "id": "alon-result",
+      "title": "Alon's Result",
+      "summary": "Local chromatic assumption",
+      "startLine": 119,
+      "endLine": 143
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Ramsey Connection",
+      "summary": "Link to Ramsey numbers",
+      "startLine": 145,
+      "endLine": 163
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and status",
+      "startLine": 165,
+      "endLine": 203
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #802 asks whether K_r-free graphs have independence number at least (log t / t)n. The conjecture is SOLVED for r=3 (AKS 1980) and under stronger local assumptions (Alon 1996). The best general bound has an extra log log factor (Shearer 1995).",
+    "implications": "**Implications**\n\n1. **Ramsey Theory:** AKS's proof gives R(3,k) >= c*k^2/log k.\n\n2. **Probabilistic Method:** The bound is optimal for random graphs.\n\n3. **Turán Theory:** Connects independence to forbidden subgraphs.",
+    "openQuestions": [
+      "Can the log log factor be removed for general r?",
+      "What is the optimal constant c_r?",
+      "Are there explicit constructions matching the bounds?"
+    ]
   }
 }

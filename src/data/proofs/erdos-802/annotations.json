@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-802-header",
+    "proofId": "erdos-802",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #802:** Is it true that any K_r-free graph on n vertices with average degree t contains an independent set on (log t / t)n vertices?\n\n**Status: SOLVED for r=3** (AKS 1980). Partial progress for general r (Shearer 1995).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-avgdegree",
+    "proofId": "erdos-802",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "avgDegree",
+    "content": "**Average Degree:** The average degree of a graph G is 2|E|/|V|.\n\nThis measures how dense the graph is on average.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-802-cliquefree",
+    "proofId": "erdos-802",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "IsCliqueFree",
+    "content": "**K_r-free:** A graph is K_r-free if it contains no clique of size r.\n\nFor r=3, this means triangle-free.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-trianglefree",
+    "proofId": "erdos-802",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "IsTriangleFree",
+    "content": "**Triangle-free:** A graph with no K_3 (triangle).\n\nThe r=3 case is special and was solved first.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-802-independent",
+    "proofId": "erdos-802",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "IsIndependent",
+    "content": "**Independent Set:** A set of vertices with no edges between them.\n\nFinding large independent sets is a central graph theory problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-alpha",
+    "proofId": "erdos-802",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "independenceNumber",
+    "content": "**Independence Number alpha(G):** The size of the largest independent set in G.\n\nThe AEKS conjecture gives a lower bound on alpha(G).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-aeks-conj",
+    "proofId": "erdos-802",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "definition",
+    "title": "AEKSConjecture",
+    "content": "**AEKS Conjecture:** K_r-free graphs with average degree t have alpha(G) >= c_r * (log t / t) * n.\n\nThis is the main question: does forbidding K_r force large independent sets?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-aeks-1981",
+    "proofId": "erdos-802",
+    "range": { "startLine": 90, "endLine": 95 },
+    "type": "axiom",
+    "title": "AEKS (1981)",
+    "content": "**First Bound:** alpha(G) >= c * (log log(t+1) / t) * n.\n\nThe original paper proved a weaker bound with double logarithm.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-802-shearer",
+    "proofId": "erdos-802",
+    "range": { "startLine": 97, "endLine": 103 },
+    "type": "axiom",
+    "title": "Shearer (1995)",
+    "content": "**Improved Bound:** alpha(G) >= c * (log t / (log log(t+1) * t)) * n.\n\nShearer improved the bound, but still with an extra log log factor.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-aks",
+    "proofId": "erdos-802",
+    "range": { "startLine": 105, "endLine": 110 },
+    "type": "axiom",
+    "title": "AKS (1980)",
+    "content": "**Triangle-Free Case:** For r=3, alpha(G) >= c * (log t / t) * n.\n\nAKS proved the full conjecture for triangle-free graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-r3-proved",
+    "proofId": "erdos-802",
+    "range": { "startLine": 112, "endLine": 117 },
+    "type": "theorem",
+    "title": "conjecture_true_for_r3",
+    "content": "**Theorem:** The AEKS conjecture is true for r=3.\n\nDerived from the AKS 1980 result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-802-alon",
+    "proofId": "erdos-802",
+    "range": { "startLine": 131, "endLine": 136 },
+    "type": "axiom",
+    "title": "Alon (1996)",
+    "content": "**Local Chromatic Version:** Under the stronger assumption that every neighborhood has chromatic number at most r-2, the full (log t / t) bound holds.\n\nThis is stronger than just K_r-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-802-ramsey",
+    "proofId": "erdos-802",
+    "range": { "startLine": 154, "endLine": 157 },
+    "type": "axiom",
+    "title": "Ramsey Connection",
+    "content": "**Ramsey Bound:** AKS's proof gives R(3,k) >= c * k^2 / log k.\n\nThe independence bound implies Ramsey number lower bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-802-main",
+    "proofId": "erdos-802",
+    "range": { "startLine": 178, "endLine": 189 },
+    "type": "theorem",
+    "title": "erdos_802",
+    "content": "**Main Result:**\n1. AEKS conjecture true for r=3\n2. Shearer's partial bound for general r\n\n**Status: SOLVED for r=3, PARTIAL for general r**",
+    "significance": "critical"
+  }
+]
