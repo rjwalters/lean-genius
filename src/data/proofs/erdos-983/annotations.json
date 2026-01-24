@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-983-1",
+    "proofId": "erdos-983",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #983 asks: Does 2*pi(sqrt(n)) - f(pi(n)+1, n) tend to infinity? Answer: NO. Erdos-Straus (1970) showed f(pi(n)+1,n) = 2*pi(sqrt(n)) + o(sqrt(n)/(log n)^A).",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-2",
+    "proofId": "erdos-983",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "Prime Counting Function",
+    "content": "primePi(n) = pi(n) = number of primes <= n. This is the classical prime counting function.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-983-3",
+    "proofId": "erdos-983",
+    "range": { "startLine": 64, "endLine": 65 },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "IsSmooth P m means m >= 1 and all prime factors of m are in the set P. Such numbers are 'P-smooth'.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-4",
+    "proofId": "erdos-983",
+    "range": { "startLine": 71, "endLine": 72 },
+    "type": "definition",
+    "title": "Smooth Elements",
+    "content": "smoothElements P A filters A to keep only P-smooth elements. This counts how many elements a prime set 'covers'.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-983-5",
+    "proofId": "erdos-983",
+    "range": { "startLine": 78, "endLine": 79 },
+    "type": "definition",
+    "title": "Primes Cover",
+    "content": "PrimesCover P A r means P has r primes and at least r elements of A are P-smooth. This is the covering condition.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-6",
+    "proofId": "erdos-983",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "definition",
+    "title": "The f Function",
+    "content": "f(k,n) = minimum r such that any k-subset of {1,...,n} can be r-covered by some set of r primes. The central object of study.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-7",
+    "proofId": "erdos-983",
+    "range": { "startLine": 100, "endLine": 101 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "f_upper_bound: f(k,n) <= pi(n). Using all primes up to n covers everything trivially.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-983-8",
+    "proofId": "erdos-983",
+    "range": { "startLine": 120, "endLine": 122 },
+    "type": "definition",
+    "title": "Erdos Question",
+    "content": "ErdosQuestion983: Does 2*pi(sqrt(n)) - f(pi(n)+1, n) tend to infinity? This is the main question.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-9",
+    "proofId": "erdos-983",
+    "range": { "startLine": 128, "endLine": 128 },
+    "type": "theorem",
+    "title": "Answer is NO",
+    "content": "erdos_question_answer: The answer to the main question is NO. The difference is bounded.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-10",
+    "proofId": "erdos-983",
+    "range": { "startLine": 143, "endLine": 147 },
+    "type": "theorem",
+    "title": "Erdos-Straus Main Theorem",
+    "content": "erdos_straus_main: f(pi(n)+1, n) = 2*pi(sqrt(n)) + o_A(sqrt(n)/(log n)^A) for any A > 0. This is the precise asymptotic.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-11",
+    "proofId": "erdos-983",
+    "range": { "startLine": 153, "endLine": 159 },
+    "type": "theorem",
+    "title": "Sublinear Difference",
+    "content": "difference_is_sublinear: The difference |2*pi(sqrt(n)) - f(pi(n)+1, n)| / sqrt(n) tends to 0. Quantifies how small the error is.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-983-12",
+    "proofId": "erdos-983",
+    "range": { "startLine": 167, "endLine": 170 },
+    "type": "theorem",
+    "title": "Dense Case",
+    "content": "erdos_straus_dense: For f(cn, n) with constant c, the answer is log log n + O(sqrt(log log n)). Different behavior for denser sets.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-13",
+    "proofId": "erdos-983",
+    "range": { "startLine": 191, "endLine": 194 },
+    "type": "insight",
+    "title": "Prime Structure",
+    "content": "prime_structure: Every m <= n has at most one prime factor > sqrt(n). This explains why 2*pi(sqrt(n)) appears.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-983-14",
+    "proofId": "erdos-983",
+    "range": { "startLine": 257, "endLine": 258 },
+    "type": "definition",
+    "title": "Y-Smooth Numbers",
+    "content": "IsYSmooth y m means all prime factors of m are <= y. Standard definition of smooth numbers.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-983-15",
+    "proofId": "erdos-983",
+    "range": { "startLine": 264, "endLine": 265 },
+    "type": "definition",
+    "title": "Smooth Number Count",
+    "content": "smoothCount x y = Psi(x,y) = number of y-smooth integers <= x. This function has the Dickman-de Bruijn asymptotics.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-983-16",
+    "proofId": "erdos-983",
+    "range": { "startLine": 295, "endLine": 304 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "erdos_983_summary: Combines the answer (NO), the sublinear bound on the difference, and the trivial upper bound.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-983-17",
+    "proofId": "erdos-983",
+    "range": { "startLine": 310, "endLine": 310 },
+    "type": "theorem",
+    "title": "Erdos 983 Status",
+    "content": "erdos_983: SOLVED. Erdos-Straus (1970) determined the precise asymptotics using graph-theoretic methods.",
+    "significance": "high"
+  }
+]
