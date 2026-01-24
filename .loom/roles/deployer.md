@@ -153,4 +153,14 @@ if [[ -f "$REPO_ROOT/.loom/signals/stop-deployer" ]] || \
     echo "Stop signal received. Exiting."
     exit 0
 fi
+
+# Check session usage limits (deployer has high priority - only pause at critical)
+throttle=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --throttle 2>/dev/null || echo "4")
+if [[ "$throttle" -ge 4 ]]; then
+    echo "$(date +%H:%M): Session limit critical (level $throttle). Deferring deployment."
+    exit 0
+fi
+if [[ "$throttle" -ge 3 ]]; then
+    echo "$(date +%H:%M): Session usage high (level $throttle). Proceeding with caution."
+fi
 ```
