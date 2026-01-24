@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-chromatic-number",
+    "proofId": "erdos-739",
+    "range": { "startLine": 53, "endLine": 66 },
+    "type": "definition",
+    "title": "Chromatic Number (Infinite)",
+    "content": "chromaticNumber(G) = minimum cardinal κ such that G has a proper κ-coloring. Can be any infinite cardinal.",
+    "significance": "major"
+  },
+  {
+    "id": "def-galvin-property",
+    "proofId": "erdos-739",
+    "range": { "startLine": 86, "endLine": 100 },
+    "type": "definition",
+    "title": "Galvin Property",
+    "content": "A graph G has the Galvin property if for all infinite κ < χ(G), there exists a subgraph with chromatic number κ.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-galvin-countable",
+    "proofId": "erdos-739",
+    "range": { "startLine": 106, "endLine": 125 },
+    "type": "theorem",
+    "title": "Galvin's Theorem (1973)",
+    "content": "If χ(G) = ℵ₀, then G has subgraphs of all finite chromatic numbers. The countable case is settled.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-galvin-set-theory",
+    "proofId": "erdos-739",
+    "range": { "startLine": 145, "endLine": 153 },
+    "type": "theorem",
+    "title": "Galvin's Set-Theoretic Observation",
+    "content": "If the induced subgraph version holds universally, then 2^κ < 2^ν for all κ < ν. This connects to cardinal arithmetic.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-komjath",
+    "proofId": "erdos-739",
+    "range": { "startLine": 159, "endLine": 188 },
+    "type": "theorem",
+    "title": "Komjáth's Consistency (1988)",
+    "content": "Consistent with ZFC (with 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃) that there's a graph with χ = ℵ₂ but no subgraph with χ = ℵ₁.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-shelah",
+    "proofId": "erdos-739",
+    "range": { "startLine": 194, "endLine": 212 },
+    "type": "theorem",
+    "title": "Shelah's Theorem (1990)",
+    "content": "Under V=L (axiom of constructibility), if χ(G) = ℵ₂ then G has a subgraph with χ = ℵ₁. YES under V=L.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-gch",
+    "proofId": "erdos-739",
+    "range": { "startLine": 225, "endLine": 239 },
+    "type": "conjecture",
+    "title": "GCH Question (Open)",
+    "content": "Does the Generalized Continuum Hypothesis imply the Galvin property for all graphs? Remains OPEN.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-independence",
+    "proofId": "erdos-739",
+    "range": { "startLine": 277, "endLine": 301 },
+    "type": "insight",
+    "title": "Why Independence?",
+    "content": "The problem connects chromatic numbers (combinatorial) to cardinal arithmetic (set-theoretic). Different models have different answers.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-739",
+    "range": { "startLine": 321, "endLine": 353 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "SET-THEORETIC INDEPENDENCE: YES under V=L (Shelah), NO in Komjáth's model, OPEN under GCH. Deep connection between combinatorics and set theory.",
+    "significance": "major"
+  }
+]
