@@ -1,33 +1,134 @@
 {
   "id": "erdos-287",
-  "title": "Erdős Problem #287",
+  "title": "Erdős Problem #287: Gap in Egyptian Fraction Representations of 1",
   "slug": "erdos-287",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that, for any distinct integers ... such that\\[1={n_1}+\\cdots+{n_k}\\]we must have ...?\n\n\n\nThe example ......",
+  "description": "For 1 = 1/n₁ + ⋯ + 1/nₖ with distinct integers, must max(nᵢ₊₁ - nᵢ) ≥ 3? The example 1 = 1/2 + 1/3 + 1/6 shows 3 is optimal. Gap ≥ 2 is proven. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/287",
-    "date": "",
-    "status": "pending",
+    "date": "1932",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos287Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 287,
     "erdosUrl": "https://erdosproblems.com/287",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number type",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "List.sort",
+        "description": "Sorting lists",
+        "module": "Mathlib.Data.List.Sort"
+      }
+    ],
+    "originalContributions": [
+      "EgyptianOne structure: representations of 1 as unit fraction sums",
+      "gaps and maxGap definitions for denominator sequences",
+      "Conjecture287: the main open problem",
+      "example_2_3_6 theorem: verified sum 1/2 + 1/3 + 1/6 = 1",
+      "gap_3_achievable theorem: optimality of bound 3",
+      "ConsecutiveSum definition",
+      "erdos_consecutive_theorem axiom: no consecutive reciprocals sum to 1",
+      "gap_at_least_2 theorem from consecutive theorem",
+      "Multiple verified examples with gap calculations"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #287 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$. Is it true that, for any distinct integers $1<n_1<\\cdots <n_k$ such that\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]we must have $\\max(n_{i+1}-n_i)\\geq 3$?\n\n\n\nThe example $1=\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{6}$ shows that $3$ would be best possible here. The lower bound of $\\geq 2$ is equivalent to saying that $1$ is not the sum of reciprocals of consecutive integers, proved by Erd\\H{o}s \\cite{Er32}.\n\nThis conjecture would follow for all but at most finitely many exceptions if it were known that, for all large $N$, there exists a prime $p\\in [N,2N]$ such that $\\frac{p+1}{2}$ is also prime.\n\n\n\n\nReferences\n\n\n[Er32] Erd\\H{o}s, P., Egy K\\\"{u}rschak-f\\'{e}le elemi sz\\'{a}melm\\'{e}ti t\\'{e}tel \\'{a}ltad\\'{a}nosit\\'{a}sa. MAt. es Phys. Lapok (1932).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #287: Egyptian Fraction Gap**\n\nThis problem explores the gap structure of Egyptian fraction representations of 1. Erdős asked whether every such representation must have a 'large' gap.\n\n**Historical Context:**\n- **1932:** Erdős proved 1 is not the sum of consecutive integer reciprocals\n- This implies gap ≥ 2 in any representation\n- The optimal example 1 = 1/2 + 1/3 + 1/6 has max gap = 3\n- The gap ≥ 3 conjecture remains OPEN\n\n**Connection to Primes:**\nThe conjecture would follow for all but finitely many cases if for all large N, there exists a prime p ∈ [N, 2N] with (p+1)/2 also prime.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet k ≥ 2. For any distinct integers 1 < n₁ < ⋯ < nₖ such that\n  1 = 1/n₁ + 1/n₂ + ⋯ + 1/nₖ\nmust we have max(nᵢ₊₁ - nᵢ) ≥ 3?\n\n**Known Results:**\n- Gap ≥ 2: Proven (Erdős 1932)\n- Gap = 3 achievable: 1 = 1/2 + 1/3 + 1/6\n- Gap ≥ 3: OPEN CONJECTURE",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Structure:** Define EgyptianOne for valid representations\n\n2. **Gap Computation:** Define gaps and maxGap on sorted denominators\n\n3. **Lower Bound:** Prove gap ≥ 2 from consecutive integer theorem\n\n4. **Optimality:** Verify 1/2 + 1/3 + 1/6 = 1 with max gap = 3\n\n5. **Examples:** Verify multiple representations satisfy the conjecture",
+    "keyInsights": [
+      "**Optimal Example:** 1 = 1/2 + 1/3 + 1/6 has gaps {1, 3}, max = 3",
+      "**Gap ≥ 2:** Follows from: consecutive reciprocals don't sum to 1",
+      "**Prime Connection:** Conjecture follows from certain prime distribution",
+      "**Heuristic:** 'Dense' representations (small gaps) are hard to achieve",
+      "**LCM Constraint:** Divisibility forces gaps in the denominators"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "egyptian-fractions",
+      "title": "Egyptian Fractions",
+      "summary": "Unit fractions, EgyptianOne structure, gap definitions",
+      "startLine": 42,
+      "endLine": 76
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "Conjecture287: every representation has gap ≥ 3",
+      "startLine": 77,
+      "endLine": 92
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality of 3",
+      "summary": "Example 1/2 + 1/3 + 1/6 = 1 with max gap = 3",
+      "startLine": 93,
+      "endLine": 120
+    },
+    {
+      "id": "gap-2",
+      "title": "Gap ≥ 2 Result",
+      "summary": "Erdős's consecutive integer theorem implies gap ≥ 2",
+      "startLine": 121,
+      "endLine": 146
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "Verified for small k, connection to Bertrand's postulate",
+      "startLine": 147,
+      "endLine": 164
+    },
+    {
+      "id": "examples",
+      "title": "Known Representations",
+      "summary": "Multiple verified examples with gap calculations",
+      "startLine": 165,
+      "endLine": 196
+    },
+    {
+      "id": "heuristics",
+      "title": "Why Gap 3 Might Be Necessary",
+      "summary": "Density heuristics and LCM constraints",
+      "startLine": 197,
+      "endLine": 215
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main results",
+      "startLine": 238,
+      "endLine": 279
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #287 asks whether every Egyptian fraction representation of 1 has a gap of at least 3 between consecutive denominators. The lower bound of 2 is proven (from Erdős's 1932 result), and the bound 3 is achieved by 1 = 1/2 + 1/3 + 1/6. The gap ≥ 3 conjecture remains OPEN.",
+    "implications": "**Implications**\n\n1. **Egyptian Fraction Structure:** Reveals constraints on unit fraction decompositions\n2. **Number-Theoretic Gaps:** Divisibility forces denominators apart\n3. **Prime Distribution:** Connected to prime density questions",
+    "openQuestions": [
+      "Is gap ≥ 3 true for all representations?",
+      "What is the smallest k for which all gap ≥ 3 is verified?",
+      "Can the prime connection be strengthened to prove the conjecture?",
+      "What is the distribution of max gaps across all representations?"
+    ]
   }
 }
