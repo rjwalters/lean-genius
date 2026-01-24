@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-1124-header",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1124: Tarski's Circle-Squaring Problem**\n\nCan a circle and square of equal area be decomposed into finitely many congruent pieces?\n\n**Answer: YES** (Laczkovich 1990)\n\nThis was one of the most famous problems in geometric measure theory, open from 1925 to 1990. Erdős called it 'a very beautiful problem' and said he would offer $1000 for it.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-point",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 45, "endLine": 46 },
+    "type": "definition",
+    "title": "Point",
+    "content": "**Point in R²:** A point in 2D Euclidean space.\n\nDefined as `EuclideanSpace ℝ (Fin 2)` from Mathlib, providing the standard inner product and norm structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1124-disk",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "disk",
+    "content": "**Disk of Radius r:** The set {p : ‖p‖ ≤ r}.\n\nA closed disk centered at the origin. This is one of the two shapes in Tarski's problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-square",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "square",
+    "content": "**Square of Side s:** The set [0,s] × [0,s].\n\nA closed square with corner at the origin. The other shape in Tarski's problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-translation",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 68, "endLine": 76 },
+    "type": "definition",
+    "title": "TranslationCongruent",
+    "content": "**Translation Congruence:** Two sets A and B are translation-congruent if B = A + v for some vector v.\n\nLaczkovich's key insight was that translations alone suffice—no rotations or reflections needed!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-decomposition",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "definition",
+    "title": "IsDecomposition",
+    "content": "**Finite Decomposition:** A partition of set S into finitely many disjoint pieces.\n\nThe pieces must be pairwise disjoint and their union must equal S exactly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1124-equidecomposable",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 90, "endLine": 95 },
+    "type": "definition",
+    "title": "TranslationEquidecomposable",
+    "content": "**Translation Equidecomposable:** Sets A and B can each be decomposed into n pieces such that corresponding pieces are translation-congruent.\n\nThis is the key property Laczkovich proved for circles and squares of equal area.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-samearea",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "definition",
+    "title": "SameArea",
+    "content": "**Equal Area Condition:** A circle of radius r and square of side s have equal area iff πr² = s².\n\nThis is the necessary condition for any equidecomposition to be possible.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1124-tarski",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 129, "endLine": 136 },
+    "type": "definition",
+    "title": "TarskiProblem",
+    "content": "**Tarski's Original Question (1925):** Can a circle and square of equal area be decomposed into finitely many congruent pieces using isometries?\n\nThis was open for 65 years until Laczkovich's 1990 solution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-laczkovich",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 142, "endLine": 151 },
+    "type": "axiom",
+    "title": "laczkovich_theorem",
+    "content": "**Laczkovich's Theorem (1990):** YES, and translations alone suffice!\n\nFor any circle and square of equal area, there exists a finite decomposition into pieces that can be rearranged by translations only.\n\n**Key facts:**\n- Uses approximately 10^50 pieces\n- Proof is non-constructive (requires Axiom of Choice)\n- Pieces are not Lebesgue measurable",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-piececount",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 153, "endLine": 160 },
+    "type": "axiom",
+    "title": "laczkovich_piece_count",
+    "content": "**Piece Count:** The number of pieces is bounded by 10^51.\n\nThe actual number is approximately 10^50—astronomically large but finite. The pieces cannot be explicitly constructed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1124-tarski-solved",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 174, "endLine": 177 },
+    "type": "theorem",
+    "title": "tarski_solved",
+    "content": "**Theorem:** Tarski's problem is solved.\n\nDerived from Laczkovich's theorem: translation equidecomposability implies isometry equidecomposability (translations are isometries).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1124-choice",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 183, "endLine": 186 },
+    "type": "concept",
+    "title": "Axiom of Choice",
+    "content": "**Non-Constructive Proof:** Laczkovich's proof fundamentally relies on the Axiom of Choice.\n\nThe pieces cannot be explicitly constructed—we only know they exist. This connects to the Banach-Tarski paradox.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1124-dhk",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 195, "endLine": 201 },
+    "type": "axiom",
+    "title": "dubins_hirsch_karush",
+    "content": "**Dubins-Hirsch-Karush Theorem:** It is impossible to decompose a circle and square into measurable pieces that are translation-congruent.\n\nThis explains why Laczkovich's pieces must be non-measurable—the problem has no 'nice' solution.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1124-main",
+    "proofId": "erdos-1124",
+    "range": { "startLine": 220, "endLine": 226 },
+    "type": "theorem",
+    "title": "erdos_1124",
+    "content": "**Main Result:**\n1. Tarski's problem is SOLVED\n2. Translations alone suffice (stronger than asked)\n\nThis formalizes Erdős Problem #1124 as completely resolved by Laczkovich's 1990 breakthrough.",
+    "significance": "critical"
+  }
+]
