@@ -1,33 +1,101 @@
 {
   "id": "erdos-998",
-  "title": "Erdős Problem #998",
+  "title": "Erdős Problem #998: Kesten's Equidistribution Characterization",
   "slug": "erdos-998",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an irrational number. Is it true that if, for all large ...,\\[\\#\\{ 1\\leq m\\leq n : \\{ \\alpha m\\} \\in [u,v)\\} = n(v...",
+  "description": "For irrational α, intervals [u,v) with O(1) discrepancy in #{m ≤ n : {αm} ∈ [u,v)} are exactly those where u = {αk} and v = {αℓ}. Solved by Kesten (1966).",
   "meta": {
-    "author": "Unknown",
+    "author": "Kesten (1966)",
     "sourceUrl": "https://erdosproblems.com/998",
-    "date": "",
-    "status": "pending",
+    "date": "1966",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos998Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "analysis", "diophantine-approximation", "equidistribution", "discrepancy"],
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 998,
     "erdosUrl": "https://erdosproblems.com/998",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #998 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha$ be an irrational number. Is it true that if, for all large $n$,\\[\\#\\{ 1\\leq m\\leq n : \\{ \\alpha m\\} \\in [u,v)\\} = n(v-u)+O(1)\\]then $u=\\{\\alpha k\\}$ and $v=\\{\\alpha \\ell\\}$ for some integers $k$ and $\\ell$?\n\n\n\nA problem of Erd\\H{o}s and Sz\\\"{u}sz. Hecke \\cite{He22} and Ostrowski (\\cite{Os27} and \\cite{Os30}) proved the converse.\n\nThis is true, and was proved by Kesten \\cite{Ke66}.\n\n\n\n\nReferences\n\n\n[He22] Hecke, E., \\\"Uber analytische {F}unktionen und die {V}erteilung von\n{Z}ahlen mod. eins. Abh. Math. Sem. Univ. Hamburg (1922), 54--76.\n\n[Ke66] Kesten, Harry, On a conjecture of {E}rd\\H{o}s and {S}z\\\"usz related to uniform\ndistribution {${\\rm mod}\\ 1$}. Acta Arith. (1966/67), 193--212.\n\n[Os27] Ostrowski, Alexander, Mathematische Miszellen. IX. Notiz zur Theorie der Diophantischen Approximationen. Jber. Deutsch. Math.-Verein. (1927), 178-180.\n\n[Os30] Ostrowski, Alexander, Mathematische Miszellen. XVI. Zur Theorie der linearen Diophantischen Approximationen. Jber. Deutsch. Math.-Verein. (1930), 34-46.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #998 was posed by Erdős and Szüsz, asking for a characterization of intervals with minimal discrepancy for irrational rotations. The sequence of fractional parts {αm} for irrational α is equidistributed in [0,1) by Weyl's theorem, meaning the count of points in any interval is approximately proportional to its length.\n\nHecke (1922) and Ostrowski (1927, 1930) proved that if u = {αk} and v = {αℓ} for integers k, ℓ, then the interval [u,v) has O(1) discrepancy—the count differs from the expected value by at most a constant. Erdős and Szüsz asked the converse: are these the only such intervals?\n\nKesten (1966) proved yes, completing the characterization. This connects equidistribution theory to the orbit structure of irrational rotations, with deep connections to continued fractions and the three-distance theorem.",
+    "problemStatement": "Let $\\alpha$ be an irrational number. Is it true that if, for all large $n$,\n$$\\#\\{ 1 \\leq m \\leq n : \\{\\alpha m\\} \\in [u,v)\\} = n(v-u) + O(1)$$\nthen $u = \\{\\alpha k\\}$ and $v = \\{\\alpha \\ell\\}$ for some integers $k$ and $\\ell$?\n\n**Answer:** YES. Proved by Kesten (1966).",
+    "proofStrategy": "The Lean formalization defines the fractional part function, the counting function for points in an interval, and the notion of O(1) (bounded) discrepancy. Kesten's theorem is axiomatized: bounded discrepancy implies endpoints are from the α-orbit. The Hecke-Ostrowski converse is also stated. Together they give a complete characterization.",
+    "keyInsights": [
+      "**Fractional parts:** {αm} = αm - ⌊αm⌋ gives the orbit of irrational rotation",
+      "**Equidistribution:** Weyl's theorem says #{m ≤ n : {αm} ∈ [u,v)} ≈ n(v-u), but with O(√n) error for generic intervals",
+      "**O(1) discrepancy:** Special intervals have constant-bounded error—these are exactly orbit-endpoint intervals",
+      "**Three-distance theorem:** The gaps between consecutive {kα} values have at most 3 distinct lengths, explaining the regularity",
+      "**Kesten's contribution:** Completed the characterization by proving the forward direction"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 69,
+      "summary": "Defines fractional part function, its properties, and irrationality"
+    },
+    {
+      "id": "counting-function",
+      "title": "Counting Function",
+      "startLine": 71,
+      "endLine": 87,
+      "summary": "Counts how many {αm} fall in interval [u,v)"
+    },
+    {
+      "id": "bounded-discrepancy",
+      "title": "Bounded Discrepancy",
+      "startLine": 89,
+      "endLine": 107,
+      "summary": "Defines O(1) discrepancy and notes Weyl's O(√n) generic bound"
+    },
+    {
+      "id": "characterization",
+      "title": "The Characterization",
+      "startLine": 109,
+      "endLine": 146,
+      "summary": "States Hecke-Ostrowski converse and Kesten's theorem, proving the equivalence"
+    },
+    {
+      "id": "three-distance",
+      "title": "Three-Distance Theorem",
+      "startLine": 148,
+      "endLine": 168,
+      "summary": "Connection to the three-distance theorem explaining orbit regularity"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 170,
+      "endLine": 196,
+      "summary": "Golden ratio example and the interval [0, {α})"
+    },
+    {
+      "id": "diophantine",
+      "title": "Diophantine Approximation",
+      "startLine": 198,
+      "endLine": 221,
+      "summary": "Connections to continued fractions, Ostrowski representation, Beatty sequences"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 249,
+      "endLine": 283,
+      "summary": "Complete summary of the solved problem"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #998 was SOLVED by Kesten (1966). An interval [u,v) has O(1) discrepancy for irrational α if and only if both endpoints are fractional parts of integer multiples of α.",
+    "implications": "This characterization reveals the special structure of irrational rotations. Only orbit-aligned intervals achieve minimal discrepancy, connecting number theory to dynamical systems.",
+    "openQuestions": [
+      "What is the precise constant in the O(1) bound for specific α?",
+      "How does the continued fraction expansion of α affect discrepancy?",
+      "Are there quantitative refinements for algebraic α?"
+    ]
   }
 }
