@@ -4784,17 +4784,24 @@
   },
   {
     "id": "erdos-239",
-    "title": "Erdős Problem #239",
+    "title": "Erdos Problem #239: Mean of Multiplicative Plus-Minus-One Functions",
     "slug": "erdos-239",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a multiplicative function. Is it true that\\[ \\lim_{N\\to \\infty}{N}\\sum_{n\\leq N}f(n)\\]always exists?\n\n\n\nWintner ob...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For multiplicative f : N -> {-1, 1}, does lim (1/N) sum_{n<=N} f(n) always exist? YES, proved by Wirsing (1967), generalized by Halasz (1968).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "multiplicative-functions",
+      "analytic-number-theory",
+      "mean-values",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 239,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 19
   },
   {
     "id": "erdos-24",
