@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Terence Tao, Tang",
     "sourceUrl": "https://erdosproblems.com/962",
     "date": "1965",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos962Problem.lean",
     "tags": [
       "erdos",
@@ -16,11 +16,11 @@
       "consecutive-integers",
       "divisibility"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 962,
     "erdosUrl": "https://erdosproblems.com/962",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -65,15 +65,16 @@
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1965 at a symposium on extremal problems in number theory. The problem asks about the longest intervals where all integers have a 'large' prime factor. Tao provided the first non-trivial upper bound via a simple pigeonhole argument, while Tang improved Erdős's original lower bound.",
+    "historicalContext": "**Erdős Problem #962: Consecutive Integers with Large Prime Divisors**\n\nErdős posed this problem in 1965 at a symposium on extremal problems in number theory, published in [Er65]. The problem asks about the longest intervals of consecutive integers where each has a 'large' prime factor exceeding the interval length.\n\n**Key Contributions:**\n- **Erdős (1965):** Established the first lower bound k(n) ≫_ε exp((log n)^{1/2-ε}) using sieve methods\n- **Terence Tao:** Provided the first non-trivial upper bound k(n) ≤ (1+o(1))√n via a simple but elegant pigeonhole argument\n- **Quanyu Tang:** Improved the lower bound to k(n) ≥ exp((1/√2-o(1))√(log n · log log n))\n\nThe problem connects to smooth number theory: an integer is k-smooth if all prime factors are ≤ k, so k(n) measures the longest interval of non-smooth integers.",
     "problemStatement": "Let k(n) be the maximal k such that there exists m ≤ n where each of m+1, ..., m+k is divisible by at least one prime greater than k. Estimate k(n).",
-    "proofStrategy": "The formalization defines the k(n) function, establishes basic properties like monotonicity, then axiomatizes the known bounds: Tang's lower bound exp((1/√2-o(1))√(log n log log n)) and Tao's upper bound (1+o(1))√n. The conjecture k(n) = o(n^ε) remains open.",
+    "proofStrategy": "**Formalization Approach:**\n\n1. **Definitions:** We define the largest prime factor function lpf(n), the predicate HasLargePrimeFactor, and the IsValidInterval property for consecutive integer intervals.\n\n2. **The k(n) Function:** Defined via supremum as the largest k where a valid interval of length k exists with starting point ≤ n.\n\n3. **Axiomatized Results:** The main bounds are axiomatized since they require analytic number theory beyond Mathlib:\n   - Tang's lower bound: k(n) ≥ exp((1/√2-o(1))√(log n · log log n))\n   - Tao's upper bound: k(n) ≤ (1+o(1))√n\n\n4. **Tao's Pigeonhole Argument:** We sketch the key idea - if k > √n, some small prime divides two numbers in the interval, contradiction.\n\n5. **Smooth Number Connection:** We reformulate k(n) in terms of non-smooth number intervals, connecting to established smooth number theory.",
     "keyInsights": [
-      "k(n) measures the longest 'large prime factor' interval below n",
-      "Lower bound uses sieve methods to avoid small primes",
-      "Upper bound uses pigeonhole: if k > √n, some small prime divides two nearby integers",
-      "The gap between bounds is enormous (subpolynomial vs polynomial)",
-      "Connection to smooth numbers: non-smooth integers avoid small prime factors"
+      "**Valid Intervals:** k(n) measures the longest interval {m+1,...,m+k} where every integer has a prime factor exceeding k",
+      "**Sieve Methods:** Erdős's lower bound uses sieve techniques to find intervals where small primes 'miss' consecutive integers",
+      "**Pigeonhole Argument:** Tao's upper bound: if k > √n, by pigeonhole some prime p ≤ k divides two numbers in {m+1,...,m+k} at distance ≤ p < k, contradiction",
+      "**Tang's Constant:** The constant 1/√2 ≈ 0.707 in Tang's lower bound arises from optimizing over prime sieves",
+      "**Enormous Gap:** Lower bound is subpolynomial exp(√(log n log log n)), upper bound is polynomial √n - closing this gap is the central open problem",
+      "**Smooth Numbers:** k(n) equals the longest interval of non-k-smooth numbers below n, connecting to well-studied smooth number density"
     ]
   },
   "sections": [
