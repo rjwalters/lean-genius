@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-sidon-set",
+    "proofId": "erdos-154",
+    "range": { "startLine": 45, "endLine": 56 },
+    "type": "definition",
+    "title": "Sidon Set",
+    "content": "A Sidon set (or B₂ sequence) is a set where all pairwise sums are distinct: if a+b = c+d with a,b,c,d ∈ A, then {a,b} = {c,d}.",
+    "significance": "major"
+  },
+  {
+    "id": "def-sumset",
+    "proofId": "erdos-154",
+    "range": { "startLine": 62, "endLine": 69 },
+    "type": "definition",
+    "title": "Sumset A+A",
+    "content": "The sumset A+A = {a+b : a,b ∈ A}. For Sidon sets, |A+A| = |A|(|A|+1)/2 since all sums are distinct.",
+    "significance": "major"
+  },
+  {
+    "id": "sidon-max-size",
+    "proofId": "erdos-154",
+    "range": { "startLine": 71, "endLine": 81 },
+    "type": "theorem",
+    "title": "Maximum Sidon Set Size",
+    "content": "The maximum Sidon set in {1,...,N} has size ~ √N. Singer's construction achieves this bound.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-well-distributed",
+    "proofId": "erdos-154",
+    "range": { "startLine": 87, "endLine": 98 },
+    "type": "definition",
+    "title": "Well-Distributed over Moduli",
+    "content": "A set is well-distributed mod m if each residue class r has about |A|/m elements, with error at most ε√|A|.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-lindstrom",
+    "proofId": "erdos-154",
+    "range": { "startLine": 104, "endLine": 125 },
+    "type": "theorem",
+    "title": "Lindström's Theorem (1998)",
+    "content": "Sidon sets of near-maximal size are well-distributed over small moduli. About half of A are even, half odd.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-kolountzakis",
+    "proofId": "erdos-154",
+    "range": { "startLine": 131, "endLine": 143 },
+    "type": "theorem",
+    "title": "Kolountzakis's Strengthening (1999)",
+    "content": "Kolountzakis improved Lindström's result with stronger quantitative bounds, allowing distribution to hold for moduli up to N^{1/4}.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-sumset-distribution",
+    "proofId": "erdos-154",
+    "range": { "startLine": 149, "endLine": 170 },
+    "type": "theorem",
+    "title": "Sumset Inherits Distribution",
+    "content": "For Sidon sets A, the sumset A+A inherits well-distribution from A. About half of A+A is even, half odd.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-sidon-structure",
+    "proofId": "erdos-154",
+    "range": { "startLine": 176, "endLine": 195 },
+    "type": "insight",
+    "title": "Why It Works",
+    "content": "The Sidon property gives unique representations for sums. This structure, combined with parity patterns (even+even=even, odd+odd=even, even+odd=odd), propagates distribution properties. Proofs use exponential sum methods.",
+    "significance": "minor"
+  },
+  {
+    "id": "example-sidon",
+    "proofId": "erdos-154",
+    "range": { "startLine": 201, "endLine": 213 },
+    "type": "example",
+    "title": "Sidon Set Examples",
+    "content": "Perfect difference set constructions give optimal Sidon sets. Example: {1,2,5,7} is a small Sidon set.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-main-answer",
+    "proofId": "erdos-154",
+    "range": { "startLine": 219, "endLine": 249 },
+    "type": "theorem",
+    "title": "Main Result and Summary",
+    "content": "Erdős Problem #154 is SOLVED: For Sidon A with |A| ~ √N, the sumset A+A is well-distributed over small moduli, with about half even and half odd.",
+    "significance": "major"
+  }
+]

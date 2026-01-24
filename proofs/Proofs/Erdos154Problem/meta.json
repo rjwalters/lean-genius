@@ -1,0 +1,17 @@
+{
+  "problem_number": 154,
+  "title": "Distribution of Sidon Sumsets over Moduli",
+  "status": "solved",
+  "solvers": ["Lindström (1998)", "Kolountzakis (1999)"],
+  "source_url": "https://erdosproblems.com/154",
+  "overview": "Let A ⊂ {1,...,N} be a Sidon set (all pairwise sums distinct) with |A| ~ √N. Must A+A be well-distributed over small moduli? In particular, must about half of A+A be even and half odd? Lindström (1998) showed A itself is well-distributed, Kolountzakis (1999) strengthened this, and the result for A+A follows from the Sidon property.",
+  "sections": [],
+  "conclusion": "YES - A+A is well-distributed over small moduli for maximal Sidon sets. The unique representation property of Sidon sets (each sum a+b has a unique representation) propagates distribution properties from A to A+A. About half the sums are even, half odd.",
+  "references": [
+    "[ESS94] - Original problem",
+    "[Li98] Lindström (1998)",
+    "[Ko99] Kolountzakis (1999)"
+  ],
+  "related_problems": [153, 155],
+  "tags": ["sidon-sets", "additive-combinatorics", "distribution", "sumsets"]
+}
