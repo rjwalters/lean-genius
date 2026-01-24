@@ -1,1 +1,125 @@
-[]
+[
+  {
+    "id": "ann-e438-header",
+    "proofId": "erdos-438",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #438: Square-Free Sumsets**\n\nHow large can A ⊆ {1,...,N} be if A+A contains no square numbers?\n\n**Answer**: |A| = (11/32 + o(1))N\n\n**Key Results**:\n- Lower bound: Massias construction achieves 11/32\n- Upper bound: Khalfalah-Lodha-Szemerédi (2002) proves 11/32 is tight",
+    "mathContext": "This is a density problem in additive combinatorics: finding the maximum size of sets whose sumsets avoid a specific structure (squares).",
+    "significance": "critical",
+    "relatedConcepts": ["Sumsets", "Additive combinatorics", "Density problems"]
+  },
+  {
+    "id": "ann-e438-square-def",
+    "proofId": "erdos-438",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Perfect Square",
+    "content": "**IsSquare(n)**:\n\nA natural number n is a perfect square if n = m² for some m.\n\nSquares: 0, 1, 4, 9, 16, 25, 36, ...",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e438-sumset",
+    "proofId": "erdos-438",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "Sumset and Square-Free Condition",
+    "content": "**sumset(A) = A+A = {a+b : a,b ∈ A}**\n\nThe sumset includes all pairwise sums (including a+a).\n\n**IsSquareFreeSumset(A)**:\n\nA has square-free sumset if no element of A+A is a perfect square.",
+    "mathContext": "The sumset A+A typically has size between |A| and |A|², depending on additive structure. Avoiding squares constrains this.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e438-mod3",
+    "proofId": "erdos-438",
+    "range": { "startLine": 69, "endLine": 85 },
+    "type": "axiom",
+    "title": "Simple mod 3 Construction",
+    "content": "**square_mod_3**: Squares are ≡ 0 or 1 (mod 3).\n\n**sum_mod_3_construction**: If a,b ≡ 1 (mod 3), then a+b ≡ 2 (mod 3).\n\n**mod_3_construction_works**: Taking A = {n : n ≡ 1 (mod 3)} gives square-free sumset.\n\nThis achieves density 1/3 ≈ 0.333.",
+    "mathContext": "Since 2 is not a quadratic residue mod 3, sums of form a+b with a ≡ b ≡ 1 (mod 3) can never be squares.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e438-massias",
+    "proofId": "erdos-438",
+    "range": { "startLine": 91, "endLine": 110 },
+    "type": "definition",
+    "title": "Massias Construction (mod 32)",
+    "content": "**massias_residues = {1,5,9,13,14,17,21,25,26,29,30}**\n\nThese 11 residue classes mod 32 have the property that no pairwise sum is a square mod 32.\n\n**massias_construction(N)**: Take all n ∈ {1,...,N} with n mod 32 in massias_residues.\n\n**massias_density**: This achieves density 11/32 ≈ 0.344.",
+    "mathContext": "Massias discovered that working mod 32 (instead of mod 3) allows more residue classes while still avoiding squares.",
+    "significance": "critical",
+    "relatedConcepts": ["Modular arithmetic", "Residue classes"]
+  },
+  {
+    "id": "ann-e438-los",
+    "proofId": "erdos-438",
+    "range": { "startLine": 116, "endLine": 120 },
+    "type": "axiom",
+    "title": "Lagarias-Odlyzko-Shearer Upper Bound",
+    "content": "**los_upper_bound**:\n\nFor any A ⊆ {1,...,N} with square-free sumset: |A| ≤ 0.475N + O(1)\n\nThis was the first non-trivial upper bound (1983), using character sum methods.",
+    "mathContext": "The proof uses exponential sums to count solutions to a+b = k² with a,b ∈ A, showing there must be many such solutions if |A| > 0.475N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e438-kls",
+    "proofId": "erdos-438",
+    "range": { "startLine": 128, "endLine": 132 },
+    "type": "axiom",
+    "title": "Khalfalah-Lodha-Szemerédi Theorem (2002)",
+    "content": "**kls_theorem**:\n\nFor all ε > 0, eventually: |A| ≤ (11/32 + ε)N\n\nThis proves 11/32 is the exact asymptotic density, matching Massias's construction.",
+    "mathContext": "The proof uses Szemerédi's regularity lemma to transfer the modular result (11/32 is sharp for ℤ/Nℤ) to the integer case.",
+    "significance": "critical",
+    "relatedConcepts": ["Szemerédi regularity", "Density transfer"]
+  },
+  {
+    "id": "ann-e438-squares32",
+    "proofId": "erdos-438",
+    "range": { "startLine": 138, "endLine": 142 },
+    "type": "theorem",
+    "title": "Squares mod 32",
+    "content": "**squares_mod_32 = {0, 1, 4, 9, 16, 17, 25}**\n\n**squares_mod_32_count**: There are exactly 7 squares mod 32.\n\nThese are the residues we must avoid when constructing square-free sumsets.",
+    "mathContext": "Among residues 0-31, only 7 are quadratic residues. The Massias residues are chosen so that no sum (a+b) mod 32 lands in this set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e438-maximal",
+    "proofId": "erdos-438",
+    "range": { "startLine": 144, "endLine": 153 },
+    "type": "axiom",
+    "title": "Maximality of 11",
+    "content": "**massias_avoids_squares**: For all a,b in massias_residues, (a+b) mod 32 is not a square.\n\n**massias_is_maximal**: No set of 12 or more residues mod 32 can avoid all square sums.\n\n11 is the maximum number of residues achievable.",
+    "mathContext": "This is a combinatorial optimization problem: find the largest independent set in a graph where vertices are residues and edges connect pairs whose sum is a square.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e438-related",
+    "proofId": "erdos-438",
+    "range": { "startLine": 159, "endLine": 173 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "**relation_to_439**: Problem #439 asks about avoiding kth powers (not just squares).\n\n**relation_to_587**: Problem #587 asks about A-A (differences) instead of A+A.\n\n**furstenberg_sarkozy**: The Furstenberg-Sárközy theorem says dense sets must contain differences that are squares—a complement to this problem.",
+    "significance": "supporting",
+    "relatedConcepts": ["Problem #439", "Problem #587", "Furstenberg-Sárközy"]
+  },
+  {
+    "id": "ann-e438-techniques",
+    "proofId": "erdos-438",
+    "range": { "startLine": 179, "endLine": 189 },
+    "type": "concept",
+    "title": "Proof Techniques",
+    "content": "**character_sum_method**: Lagarias-Odlyzko-Shearer use exponential sums to count square sums.\n\n**regularity_method**: Khalfalah-Lodha-Szemerédi use Szemerédi's regularity lemma.\n\nThe regularity approach transfers results from cyclic groups ℤ/Nℤ to integers.",
+    "mathContext": "Szemerédi regularity partitions dense graphs into pseudorandom pieces, enabling transfer of structural results.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e438-summary",
+    "proofId": "erdos-438",
+    "range": { "startLine": 229, "endLine": 249 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_438_characterization**:\n\n1. Lower bound: massias_residues.card = 11 (Massias construction)\n2. Upper bound: |A| ≤ (11/32 + o(1))N (KLS 2002)\n\n**erdos_438_status**: 'SOLVED - Maximum density is 11/32'\n\nThe exact asymptotic density is 11/32 = 0.34375.",
+    "mathContext": "A complete resolution showing both upper and lower bounds match at 11/32.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Complete characterization"]
+  }
+]
