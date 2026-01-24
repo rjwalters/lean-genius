@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-664-setfamily",
+    "proofId": "erdos-664",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "SetFamily",
+    "content": "Collection of m subsets of {1,...,n}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-large",
+    "proofId": "erdos-664",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "AllLargerThan",
+    "content": "All sets have size > c√n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-pairwise",
+    "proofId": "erdos-664",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "PairwiseSmallIntersection",
+    "content": "Any two sets intersect in at most 1 element.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-nearlinear",
+    "proofId": "erdos-664",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "definition",
+    "title": "NearLinearFamily",
+    "content": "Large sets with small pairwise intersection.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-blocker",
+    "proofId": "erdos-664",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "IsBlocker",
+    "content": "B intersects every set in the family.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-bounded",
+    "proofId": "erdos-664",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "definition",
+    "title": "HasBoundedIntersection",
+    "content": "B meets each set in at most k elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-good",
+    "proofId": "erdos-664",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "IsGoodBlocker",
+    "content": "Blocker with O(1) intersection with each set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-question",
+    "proofId": "erdos-664",
+    "range": { "startLine": 87, "endLine": 92 },
+    "type": "definition",
+    "title": "ErdosQuestion664",
+    "content": "Do good blockers always exist?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-disproof",
+    "proofId": "erdos-664",
+    "range": { "startLine": 104, "endLine": 106 },
+    "type": "theorem",
+    "title": "alon_disproof",
+    "content": "Alon: The answer is NO.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-projorder",
+    "proofId": "erdos-664",
+    "range": { "startLine": 108, "endLine": 109 },
+    "type": "definition",
+    "title": "projectivePlaneOrder",
+    "content": "Order q gives q²+q+1 points/lines.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-construction",
+    "proofId": "erdos-664",
+    "range": { "startLine": 116, "endLine": 131 },
+    "type": "theorem",
+    "title": "alon_construction",
+    "content": "Counterexample: any blocker has Ω(log n) intersection.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-logbound",
+    "proofId": "erdos-664",
+    "range": { "startLine": 162, "endLine": 166 },
+    "type": "theorem",
+    "title": "logarithmic_lower_bound",
+    "content": "Any blocker has |B ∩ Aⱼ| ≥ Ω(log n) for some j.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-bbd",
+    "proofId": "erdos-664",
+    "range": { "startLine": 172, "endLine": 174 },
+    "type": "definition",
+    "title": "IsBalancedBlockDesign",
+    "content": "Every pair in exactly one block.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-original",
+    "proofId": "erdos-664",
+    "range": { "startLine": 176, "endLine": 181 },
+    "type": "definition",
+    "title": "ErdosQuestion664_Original",
+    "content": "Original 1981 version using BBD (still open).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-minblock",
+    "proofId": "erdos-664",
+    "range": { "startLine": 199, "endLine": 202 },
+    "type": "theorem",
+    "title": "minimum_blocking_set_size",
+    "content": "Bruen: minimum blocker size q + √q + 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-664-main",
+    "proofId": "erdos-664",
+    "range": { "startLine": 263, "endLine": 263 },
+    "type": "theorem",
+    "title": "erdos_664",
+    "content": "Main theorem: conjecture is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-664-constructive",
+    "proofId": "erdos-664",
+    "range": { "startLine": 268, "endLine": 278 },
+    "type": "theorem",
+    "title": "erdos_664_constructive",
+    "content": "Explicit counterexample for each large prime q.",
+    "significance": "critical"
+  }
+]
