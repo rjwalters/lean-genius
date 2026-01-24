@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e841-header",
+    "proofId": "erdos-841",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #841: Minimal Interval for Square Product**\n\nLet t_n be minimal such that {n+1,...,n+t_n} contains a subset S where n·∏S is a perfect square.\n\n**Example**: t_6 = 6 since 6·8·12 = 24².\n\n**Key Results**:\n- t_n ≥ P(n) always (trivial)\n- t_n = P(n) when P(n) > √(2n)+1 (Selfridge)\n- Distribution follows P(n) (Bui-Pratt-Zaharescu 2024)",
+    "mathContext": "This problem connects perfect squares to prime factorization. The largest prime divisor P(n) determines the behavior of t_n.",
+    "significance": "critical",
+    "relatedConcepts": ["Perfect squares", "Prime divisors", "Smooth numbers"]
+  },
+  {
+    "id": "ann-e841-perfect-square",
+    "proofId": "erdos-841",
+    "range": { "startLine": 45, "endLine": 46 },
+    "type": "definition",
+    "title": "Perfect Square",
+    "content": "**IsPerfectSquare(n)**:\n\nA natural number n is a perfect square if n = m² for some m.\n\nEquivalently: all prime exponents in n's factorization are even.",
+    "mathContext": "Perfect squares are central to this problem. We want n·∏S to have all even exponents.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e841-interval",
+    "proofId": "erdos-841",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Interval Definition",
+    "content": "**interval(n, t) = {n+1, n+2, ..., n+t}**\n\nThe interval of t consecutive integers starting after n.\n\nWe search for subsets S ⊆ interval(n, t) making n·∏S a square.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e841-has-square",
+    "proofId": "erdos-841",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "Square Product Conditions",
+    "content": "**HasSquareProduct(n, S)**: n · ∏_{s∈S} s is a perfect square.\n\n**HasSquareSubset(n, t)**: ∃ nonempty S ⊆ interval(n,t) with HasSquareProduct(n, S).\n\nThe goal: find minimal t achieving HasSquareSubset(n, t).",
+    "mathContext": "The subset S provides factors to 'complete' n's odd prime exponents to even exponents.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e841-t-function",
+    "proofId": "erdos-841",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "definition",
+    "title": "The Function t_n",
+    "content": "**t(n)**:\n\n- If n is already a perfect square: t(n) = 0\n- Otherwise: t(n) = min{t : HasSquareSubset(n, t)}\n\nThis is the central function of Erdős Problem #841.",
+    "mathContext": "The existence of t_n is guaranteed by finiteness arguments: eventually we find enough factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e841-example",
+    "proofId": "erdos-841",
+    "range": { "startLine": 72, "endLine": 88 },
+    "type": "theorem",
+    "title": "Example: t_6 = 6",
+    "content": "**example_t6_product**: 6 · 8 · 12 = 576 = 24²\n\n**example_t6_subset**: The set {8, 12} ⊆ {7,...,12} makes 6·8·12 a square.\n\n**t6_equals_6**: t(6) = 6\n\nThis is the smallest t: we need to reach 12 (which provides factors of 2 and 3).",
+    "mathContext": "6 = 2·3 has odd exponents for both primes. The products 8 = 2³ and 12 = 2²·3 provide 2⁵·3² total, giving 6·8·12 = 2⁶·3² = (2³·3)² = 24².",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e841-P",
+    "proofId": "erdos-841",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "definition",
+    "title": "Largest Prime Divisor P(n)",
+    "content": "**largestPrimeDivisor(n) = P(n)**:\n\nThe largest prime p such that p | n. Returns 0 if n ≤ 1.\n\nP(n) is the key quantity determining t_n's behavior.",
+    "mathContext": "The largest prime divisor governs the 'roughness' of n. Large P(n) means n is 'rough'; small P(n) means n is 'smooth'.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Smooth numbers", "Rough numbers"]
+  },
+  {
+    "id": "ann-e841-trivial",
+    "proofId": "erdos-841",
+    "range": { "startLine": 99, "endLine": 108 },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "**trivial_lower_bound**:\n\nFor non-square n: t(n) ≥ P(n)\n\n**Intuition**: If p^(2k+1) || n, we need another factor of p in the interval. The first multiple of P(n) after n is at most P(n) away.\n\nThis bound is sometimes tight (for rough n) and sometimes far from tight (for smooth n).",
+    "mathContext": "The odd power of P(n) must be made even, requiring at least one multiple of P(n) in our interval.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e841-selfridge-equality",
+    "proofId": "erdos-841",
+    "range": { "startLine": 114, "endLine": 118 },
+    "type": "axiom",
+    "title": "Selfridge's Equality",
+    "content": "**selfridge_equality**:\n\nWhen P(n) > √(2n) + 1: t(n) = P(n)\n\nFor 'rough' n with a large prime factor, the trivial bound is achieved exactly.",
+    "mathContext": "When P(n) is large, there's only one multiple of P(n) in {n+1,...,n+P(n)}, and it suffices to complete the square.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e841-selfridge-upper",
+    "proofId": "erdos-841",
+    "range": { "startLine": 120, "endLine": 130 },
+    "type": "axiom",
+    "title": "Selfridge's Upper Bound",
+    "content": "**selfridge_upper_bound**:\n\nWhen P(n) ≤ √(2n) + 1: t(n) ≤ C·√n for some constant C.\n\nFor 'smooth' n with only small prime factors, t_n is much smaller than P(n).\n\n**Summary**: t_n is essentially determined by whether n is rough or smooth.",
+    "mathContext": "Smooth numbers have many factorization options, making it easier to find square-completing subsets in shorter intervals.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e841-lower-all",
+    "proofId": "erdos-841",
+    "range": { "startLine": 136, "endLine": 146 },
+    "type": "axiom",
+    "title": "Universal Lower Bound",
+    "content": "**lower_bound_for_all**:\n\nFor all non-square n ≥ 3:\nt(n) ≥ C · (log log n)^{6/5} / (log log log n)^{1/5}\n\nThis grows slower than log n but faster than any constant.",
+    "mathContext": "Even for very smooth n, t_n cannot be too small. The exponent 6/5 comes from deep number-theoretic analysis.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e841-upper-many",
+    "proofId": "erdos-841",
+    "range": { "startLine": 152, "endLine": 165 },
+    "type": "axiom",
+    "title": "Upper Bound for Most n",
+    "content": "**upper_bound_for_many**:\n\nFor x^{1-o(1)} many n ≤ x:\nt(n) ≤ exp(O(√(log n · log log n)))\n\nThis is subpolynomial but superpolylogarithmic—a refined characterization.",
+    "mathContext": "The upper bound applies to 'most' n in the density sense, showing t_n is moderate for generic integers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e841-bpz",
+    "proofId": "erdos-841",
+    "range": { "startLine": 171, "endLine": 181 },
+    "type": "axiom",
+    "title": "Bui-Pratt-Zaharescu (2024)",
+    "content": "**bui_pratt_zaharescu_2024**:\n\nFor any c ∈ (0,1]:\nlim_{x→∞} #{n≤x : t_n ≤ n^c} / #{n≤x : P(n) ≤ n^c} = 1\n\nThe distributions of t_n and P(n) are identical in the limit!\n\n**distribution_refinement**: The exceptional set where t_n ≠ P(n) has density 0.",
+    "mathContext": "This 2024 result completely characterizes the statistical behavior of t_n in terms of P(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Distribution theory", "Asymptotic density", "P(n) distribution"]
+  },
+  {
+    "id": "ann-e841-smooth",
+    "proofId": "erdos-841",
+    "range": { "startLine": 187, "endLine": 199 },
+    "type": "definition",
+    "title": "Smooth Numbers Connection",
+    "content": "**IsSmooth(n, y)**: All prime factors of n are ≤ y.\n\n**smooth_numbers_small_t**: For y-smooth n, we have t(n) ≤ y.\n\n**rough_numbers_exact_t**: For rough n (large P(n)), we have t(n) = P(n).\n\nThe smooth/rough dichotomy is the key structural insight.",
+    "mathContext": "Smooth numbers (also called y-friable) are central in analytic number theory. Their special structure makes finding square products easier.",
+    "significance": "key",
+    "relatedConcepts": ["Smooth numbers", "Friable numbers", "Dickman function"]
+  },
+  {
+    "id": "ann-e841-summary",
+    "proofId": "erdos-841",
+    "range": { "startLine": 219, "endLine": 251 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_841_characterization**:\n\n1. t(n) ≥ P(n) always (trivial)\n2. t(n) = P(n) when P(n) > √(2n)+1 (Selfridge)\n3. t(n) ≤ O(√n) when P(n) ≤ √(2n)+1 (Selfridge)\n\n**erdos_841_status**: 'SOLVED - t_n = P(n) when P(n) > √(2n)+1, otherwise t_n ≤ O(√n)'",
+    "mathContext": "A complete solution showing t_n is governed by the smooth/rough dichotomy of n.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Complete characterization"]
+  }
+]

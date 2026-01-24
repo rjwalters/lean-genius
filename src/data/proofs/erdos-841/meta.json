@@ -1,33 +1,105 @@
 {
   "id": "erdos-841",
-  "title": "Erdős Problem #841",
+  "title": "Erdős Problem #841: Minimal Interval for Square Product",
   "slug": "erdos-841",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that ... contains a subset whose product with ... is a square number (and let ... if ... is itself sq...",
+  "description": "Let t_n be minimal such that {n+1,...,n+t_n} contains a subset whose product with n is a perfect square. Selfridge proved t_n = P(n) when P(n) > √(2n)+1, and t_n ≤ O(√n) otherwise. Bui-Pratt-Zaharescu (2024) showed t_n follows P(n)'s distribution.",
   "meta": {
-    "author": "Unknown",
+    "author": "Selfridge; Bui-Pratt-Zaharescu (2024)",
     "sourceUrl": "https://erdosproblems.com/841",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos841Problem.lean",
     "tags": [
+      "number-theory",
+      "square-products",
+      "prime-divisors",
+      "smooth-numbers",
       "erdos"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 841,
     "erdosUrl": "https://erdosproblems.com/841",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [
+      {
+        "id": "erdos-437",
+        "relationship": "Related: Products in short intervals"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #841 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t_n$ be minimal such that $\\{n+1,\\ldots,n+t_n\\}$ contains a subset whose product with $n$ is a square number (and let $t_n=0$ if $n$ is itself square). Estimate $t_n$.\n\n\n\nA problem of Erd\\H{o}s, Graham, and Selfridge. For example, $t_6=6$ since $6\\cdot 8\\cdot 12=24^2$. It is trivial that $t_n\\geq P(n)$, where $P(n)$ is the largest prime divisor of $n$.\n\nErd\\H{o}s originally asked whether the set with $t_n\\geq n^{1-o(1)}$ has density zero. Selfridge then proved that $t_n=P(n)$ if $P(n)>\\sqrt{2n}+1$, and $t_n \\ll n^{1/2}$ otherwise.\n\nBui, Pratt, and Zaharescu \\cite{BPZ24} proved that the distribution of $t_n$ continues to follow $P(n)$, in that for any fixed $c\\in (0,1]$\\[\\lim_{x\\to \\infty}\\frac{\\lvert \\{ n\\leq x : t_n\\leq n^c\\}\\rvert}{x} = \\lim_{x\\to \\infty}\\frac{\\lvert \\{ n\\leq x : P(n)\\leq n^c\\}\\rvert}{x}.\\]They also prove that for at least $x^{1-o(1)}$ many $n\\leq x$ we have\\[t_n \\leq \\exp(O(\\sqrt{\\log n\\log\\log n}))\\]and for all non-square $n$\\[t_n \\gg (\\log\\log n)^{6/5}(\\log\\log\\log n)^{-1/5}.\\]See also [437].\n\nThis is problem B30 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[BPZ24] Bui, Hung M. and Pratt, Kyle and Zaharescu, Alexandru, A problem of Erd\\H{o}s-Graham-Granville-{S}elfridge on\nintegral points on hyperelliptic curves. Math. Proc. Cambridge Philos. Soc. (2024), 309--323.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Products and Perfect Squares in Short Intervals**\n\nThis problem was posed by Erdős, Graham, and Selfridge. Given n, what is the smallest t such that we can find a subset S of {n+1, ..., n+t} where n·∏S is a perfect square?\n\n**Example**: t_6 = 6 because 6·8·12 = 576 = 24².\n\n**The Key Player**: The largest prime divisor P(n). If p^(2k+1) || n, we need another factor of p to make the exponent even. The trivial bound is t_n ≥ P(n).\n\n**Selfridge's Theorem**: When P(n) > √(2n)+1 (n is 'rough'), we have exactly t_n = P(n). When P(n) ≤ √(2n)+1 (n is 'smooth'), we have t_n ≤ O(√n).\n\n**Recent Progress**: Bui-Pratt-Zaharescu (2024) proved that the distribution of t_n mirrors P(n)'s distribution precisely.",
+    "problemStatement": "**Problem Statement**\n\nLet t_n be minimal such that {n+1,...,n+t_n} contains a subset S whose product with n is a perfect square:\n\nn · ∏_{s∈S} s is a perfect square\n\n(Set t_n = 0 if n is already a perfect square.)\n\n**Estimate t_n.**\n\n**Answer**:\n- t_n ≥ P(n) always (trivial)\n- t_n = P(n) when P(n) > √(2n)+1 (Selfridge)\n- t_n ≤ O(√n) when P(n) ≤ √(2n)+1 (Selfridge)\n- Distribution of t_n follows P(n)'s distribution (Bui-Pratt-Zaharescu 2024)",
+    "proofStrategy": "**Selfridge's Approach**\n\n**Trivial lower bound**: If p^(2k+1) || n, we need at least one multiple of p in the interval to make the p-exponent even. The nearest is at distance ≤ P(n).\n\n**When P(n) > √(2n)+1**: The large prime P(n) appears only once in {n+1,...,n+P(n)}, and this unique multiple suffices. So t_n = P(n) exactly.\n\n**When P(n) ≤ √(2n)+1 (smooth n)**: Multiple strategies exist. With small prime factors, we can find suitable subsets more easily. Careful analysis gives t_n ≤ O(√n).\n\n**Bui-Pratt-Zaharescu (2024)**:\n- For any c ∈ (0,1]: density of {n: t_n ≤ n^c} = density of {n: P(n) ≤ n^c}\n- Universal lower bound: t_n ≥ (log log n)^{6/5}/(log log log n)^{1/5}\n- For most n: t_n ≤ exp(O(√(log n · log log n)))",
+    "keyInsights": [
+      "The behavior of t_n is determined by whether n is 'rough' (large prime factor) or 'smooth'",
+      "t_n = P(n) exactly when P(n) > √(2n)+1",
+      "For smooth n, t_n is much smaller than P(n) would suggest",
+      "The distribution of t_n perfectly mirrors P(n)'s distribution (Bui-Pratt-Zaharescu)",
+      "Example: t_6 = 6 since 6·8·12 = 24²",
+      "Connection to smooth numbers and factorization theory"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 41,
+      "endLine": 66,
+      "summary": "Defines perfect squares, intervals, HasSquareProduct (n·∏S is square), HasSquareSubset, and the function t_n."
+    },
+    {
+      "id": "example",
+      "title": "The Example t_6 = 6",
+      "startLine": 68,
+      "endLine": 88,
+      "summary": "Proves 6·8·12 = 24² and that t_6 = 6."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Trivial Lower Bound",
+      "startLine": 90,
+      "endLine": 108,
+      "summary": "States t_n ≥ P(n) with intuition: odd prime powers in n need another multiple."
+    },
+    {
+      "id": "selfridge",
+      "title": "Selfridge's Theorem",
+      "startLine": 110,
+      "endLine": 130,
+      "summary": "Selfridge's results: t_n = P(n) when P(n) > √(2n)+1, t_n ≤ O(√n) otherwise."
+    },
+    {
+      "id": "bounds",
+      "title": "General Bounds",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "Lower bound (log log n)^{6/5} and upper bound exp(O(√(log n · log log n)))."
+    },
+    {
+      "id": "distribution",
+      "title": "Bui-Pratt-Zaharescu (2024)",
+      "startLine": 167,
+      "endLine": 181,
+      "summary": "Distribution of t_n follows P(n)'s distribution exactly."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 216,
+      "endLine": 251,
+      "summary": "Complete characterization combining all results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #841 asks to estimate t_n, the minimal interval length for making n times a subset product a perfect square. Selfridge proved t_n = P(n) for rough n and t_n ≤ O(√n) for smooth n. Bui-Pratt-Zaharescu (2024) showed the distribution of t_n mirrors P(n)'s distribution.",
+    "implications": "**Significance**\n\n1. **Number Theory**: Reveals structure in how products become squares\n\n2. **Smooth vs Rough**: Dichotomy between smooth (small primes) and rough (large primes) numbers\n\n3. **Distribution Theory**: t_n and P(n) have identical distribution functions\n\n4. **Algorithmic**: For smooth n, finding square products is easier",
+    "openQuestions": [
+      "Exact determination of t_n for all n (not just asymptotic)",
+      "Better bounds for t_n when n is very smooth",
+      "Connection to factorization algorithms",
+      "Generalization to k-th power products"
+    ]
   }
 }
