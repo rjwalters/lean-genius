@@ -1,34 +1,77 @@
 {
   "id": "erdos-595",
-  "title": "Erdős Problem #595",
+  "title": "Erdős Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition",
   "slug": "erdos-595",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite graph ... which contains no ... and is not the union of countably many triangle-free graphs?\n\n\n\nA proble...",
+  "description": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal",
     "sourceUrl": "https://erdosproblems.com/595",
-    "date": "",
-    "status": "pending",
+    "date": "~1967",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos595Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "infinite-combinatorics",
+      "ramsey-theory",
+      "chromatic-theory",
+      "open"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 595,
     "erdosUrl": "https://erdosproblems.com/595",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$250"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #595 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite graph $G$ which contains no $K_4$ and is not the union of countably many triangle-free graphs?\n\n\n\nA problem of Erd\\H{o}s and Hajnal. Folkman \\cite{Fo70} and Ne\\v{s}et\\v{r}il and R\\\"{o}dl \\cite{NeRo75} have proved that for every $n\\geq 1$ there is a graph $G$ which contains no $K_4$ and is not the union of $n$ triangle-free graphs.\n\nSee also [582] and [596].\n\n\n\n\nReferences\n\n\n[Fo70] Folkman, Jon, Graphs with monochromatic complete subgraphs in every edge\ncoloring. SIAM J. Appl. Math. (1970), 19-24.\n\n[NeRo75] Ne\\u set\\u ril, Jaroslav and R\\\"odl, Vojt\\v ech, Type theory of partition properties of graphs. (1975), 405-412.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originated from Erdős and Hajnal around 1967, exploring the chromatic properties of infinite graphs. It asks whether a 'local' constraint (K₄-free) can coexist with 'global' resistance to decomposition. The problem connects to Folkman numbers and general Ramsey-type decomposition questions.",
+    "problemStatement": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs?",
+    "proofStrategy": "The problem remains OPEN. The finite case is completely solved: Folkman (1970) and Nešetřil-Rödl (1975) proved that for every n ≥ 1, there exists a K₄-free graph that cannot be covered by n triangle-free graphs. The jump to countably infinite covers introduces fundamentally new difficulties.",
+    "keyInsights": [
+      "Finite resistance does not automatically imply countable resistance",
+      "C₄-free graphs are countably coverable by trees (Erdős-Hajnal)",
+      "The problem is the (K₄, K₃) special case of the general (G₁, G₂) question (Problem 596)",
+      "Related to Folkman numbers (Problem 582) which concern finite graphs with Ramsey properties"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "finite-case",
+      "startLine": 142,
+      "endLine": 159,
+      "title": "The Finite Case: Folkman-Nešetřil-Rödl",
+      "summary": "For every finite n ≥ 1, there exists a K₄-free graph that cannot be expressed as the union of n triangle-free graphs. This was proved independently by Folkman (1970) and Nešetřil-Rödl (1975) using different methods."
+    },
+    {
+      "id": "countable-gap",
+      "startLine": 167,
+      "endLine": 180,
+      "title": "The Countable Gap",
+      "summary": "The key difficulty in extending to the countable case: a family of graphs {G_n} where G_n resists n-covers might still collectively admit a countable covering when suitably combined. This finite-to-countable gap is the essence of the problem."
+    },
+    {
+      "id": "problem-596-connection",
+      "startLine": 220,
+      "endLine": 227,
+      "title": "Connection to Problem 596",
+      "summary": "Problem 596 asks the general question: for which pairs (G₁, G₂) do we have finite resistance but countable covering? Problem 595 is the specific case G₁ = K₄, G₂ = K₃ (triangle). The (C₄, C₆) pair is known to have this property."
+    },
+    {
+      "id": "c4-free-result",
+      "startLine": 270,
+      "endLine": 281,
+      "title": "Related Results",
+      "summary": "Erdős and Hajnal proved that every C₄-free graph is a countable union of trees. Since trees are triangle-free, C₄-free graphs ARE countably coverable. This contrasts with the K₄-free case which remains open."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Problem 595 remains one of the significant open problems in infinite graph theory. The $250 prize reflects its difficulty. The finite analogues are well-understood, but the countable case requires fundamentally new ideas.",
+    "implications": "A positive answer would demonstrate a deep structural difference between finite and countable decomposability. A negative answer would establish a powerful compactness-type result for graph coverings.",
+    "openQuestions": [
+      "Does such an infinite K₄-free graph exist?",
+      "Can probabilistic or algebraic methods construct an explicit example?",
+      "What set-theoretic methods might be applicable?"
+    ]
   }
 }
