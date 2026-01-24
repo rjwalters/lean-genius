@@ -1,1 +1,242 @@
-[]
+[
+  {
+    "id": "ann-805-1",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #805: For which g(n) does there exist a graph G on n vertices such that every induced subgraph on g(n) vertices contains BOTH a clique of size ≥ log n AND an independent set of size ≥ log n? PARTIALLY SOLVED: Upper bound c(log n)³/(log log n) (Alon-Sudakov 2007), lower bound 2^{2^{√(log log n)}} (Alon-Bucić-Sudakov 2021).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-2",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Clique Definition",
+    "content": "A clique in a graph G is a set S of vertices that are all pairwise adjacent. For any two distinct vertices u, v in S, there is an edge between them in G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-3",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Independent Set Definition",
+    "content": "An independent set in a graph G is a set S of vertices with no edges between them. For any two distinct vertices u, v in S, there is NO edge between them in G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-4",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 51,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Clique Number",
+    "content": "The clique number ω(G) is the size of the largest clique in G. Finding the clique number is NP-hard in general.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-5",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "The independence number α(G) is the size of the largest independent set in G. Note that α(G) = ω(Ḡ) where Ḡ is the complement graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-6",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 65,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Everywhere Ramsey Property",
+    "content": "A graph G has the (g, k) everywhere-Ramsey property if EVERY induced subgraph on g vertices contains both a k-clique and a k-independent set. This is a strong local Ramsey condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-7",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 73,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Existence Problem",
+    "content": "ExistsEverywhereRamseyGraph(g) asks: for all sufficiently large n, does there exist an n-vertex graph with the (g(n), log n) everywhere-Ramsey property?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-8",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 81,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Erdős-Hajnal Conjecture (805)",
+    "content": "Erdős and Hajnal conjectured that g(n) = (log n)³ is TOO SMALL—no graph exists with the everywhere-Ramsey property at this threshold. This remains unresolved.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-9",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 92,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "Alon-Sudakov Negative Result",
+    "content": "Alon-Sudakov (2007): No such graph exists for g(n) = c(log n)³/(log log n). This provides an UPPER bound on the threshold function, ruling out graphs when g(n) is this large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-10",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 98,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Alon-Sudakov Implications",
+    "content": "The Alon-Sudakov result rules out g(n) = (log n)³ up to a log log n factor. This is close to but not exactly settling the (log n)³ question.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-11",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Alon-Bucić-Sudakov Positive Result",
+    "content": "Alon-Bucić-Sudakov (2021): Such a graph DOES exist for g(n) ≤ 2^{2^{(log log n)^{1/2+o(1)}}}. This is much smaller than (log n)³ but establishes that graphs with the property exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-12",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 115,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Construction Method",
+    "content": "The Alon-Bucić-Sudakov construction uses probabilistic arguments, careful Ramsey number analysis, and iterative graph constructions to achieve the result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-13",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 126,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "The Gap",
+    "content": "Current state: There's a gap between upper and lower bounds. UPPER (no graph): g(n) ≥ c(log n)³/(log log n). LOWER (graph exists): g(n) ≤ 2^{2^{√(log log n)}}. The exact threshold is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-14",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 134,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Open Question",
+    "content": "Whether there exists a graph for g(n) = (log n)³ exactly remains OPEN. Erdős-Hajnal conjectured NO, but this is neither proven nor disproven.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-15",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 143,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Classical Ramsey Numbers",
+    "content": "R(k,k) is the minimum n such that every 2-coloring of K_n edges contains a monochromatic K_k. Known bounds: 2^{k/2} ≤ R(k,k) ≤ 4^k. Problem #805 asks about 'local' Ramsey properties.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-16",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 151,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Local Ramsey Connection",
+    "content": "Instead of asking about the whole graph (classical Ramsey), Problem #805 asks: can EVERY induced subgraph of size g(n) be 'Ramsey' (contain both large clique and independent set)?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-805-17",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 161,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "Problem #804 asks similar questions about threshold functions. These problems form a family of 'everywhere Ramsey' questions in extremal combinatorics.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-805-18",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 168,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Erdős-Hajnal Conjecture (General)",
+    "content": "The general Erdős-Hajnal conjecture (different from the one in this problem): For every graph H, there exists ε > 0 such that every H-free graph on n vertices has a clique or independent set of size n^ε. This is a major open problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-805-19",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 178,
+      "endLine": 197
+    },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "Erdős Problem #805: PARTIALLY SOLVED. The question of exact threshold remains open. Alon-Sudakov (2007) showed no graph for g(n) = c(log n)³/(log log n). Alon-Bucić-Sudakov (2021) showed graphs exist for g(n) ≤ 2^{2^{√(log log n)}}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-805-20",
+    "proofId": "erdos-805",
+    "range": {
+      "startLine": 199,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "PARTIALLY SOLVED - Bounds established by Alon-Sudakov (2007) and Alon-Bucić-Sudakov (2021), but the exact threshold function remains open.",
+    "significance": "critical"
+  }
+]
