@@ -1,33 +1,83 @@
 {
   "id": "erdos-490",
-  "title": "Erdős Problem #490",
+  "title": "Erdős Problem #490: Distinct Products of Two Sets",
   "slug": "erdos-490",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that all the products ... with ... and ... are distinct. Is it true that\\[\\lvert A\\rvert \\lvert B\\rvert \\ll {...",
+  "description": "If A, B ⊆ {1,...,N} have all products ab distinct, is |A||B| ≪ N²/log N? SOLVED: YES (Szemerédi 1976). Optimal example achieves N²/(2 log N).",
   "meta": {
-    "author": "Unknown",
+    "author": "Szemerédi (1976 solution), Erdős (1972 original)",
     "sourceUrl": "https://erdosproblems.com/490",
-    "date": "",
-    "status": "pending",
+    "date": "1976",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos490Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "multiplicative-structures",
+      "product-sets",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 490,
     "erdosUrl": "https://erdosproblems.com/490",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for A, B subsets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for the N²/log N bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primes for optimal example",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsSubsetUpTo: A ⊆ {1,...,N}",
+      "productSet: A·B = {ab : a∈A, b∈B}",
+      "HasDistinctProducts: all products distinct",
+      "ProductMapInjective: alternative definition",
+      "ErdosQuestion490: formal problem statement",
+      "szemeredi_theorem axiom: |A||B| ≤ C·N²/log N",
+      "optimalA, optimalB: best possible construction",
+      "optimal_has_distinct_products: construction is valid",
+      "LimitQuestion: open limit question",
+      "van_doorn_observation: limit ≥ 1 if exists",
+      "IsMultiplicativeSidon: A = B case",
+      "multiplicativeEnergy: counting coincidences"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #490 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B\\subseteq \\{1,\\ldots,N\\}$ be such that all the products $ab$ with $a\\in A$ and $b\\in B$ are distinct. Is it true that\\[\\lvert A\\rvert \\lvert B\\rvert \\ll \\frac{N^2}{\\log N}?\\]\n\n\n\nThis would be best possible, for example letting $A=[1,N/2]\\cap \\mathbb{N}$ and $B=\\{ N/2<p\\leq N: p\\textrm{ prime}\\}$.\n\nThis is true, and was proved by Szemer\\'{e}di \\cite{Sz76}.\n\nIn \\cite{Er72} Erd\\H{o}s goes on to ask whether\\[\\lim_{N\\to \\infty}\\max_{A,B\\subseteq [N]}\\frac{\\lvert A\\rvert\\lvert B\\rvert\\log N}{N^2}\\]exists, where the maximum is over $A$ and $B$ with all the products $ab$ distinct, and to determine its value. As noted in the comments to [896] by van Doorn, if the limit exists it must be $\\geq 1$.\n\nSee also [425] and [896].\n\n\n\n\nReferences\n\n\n[Er72] Erd\\H{o}s, Paul, Extremal problems in number theory. Proceedings of the 1972 Number Theory Conference\n(Univ. Colorado, Boulder, Colo.) (1972), 80-86.\n\n[Sz76] Szemer\\'{e}di, E., On a problem of P. Erd\\H{o}s. J. Number Theory (1976), 264-270.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #490 (Distinct Products)**\n\nErdős asked in 1972 about the maximum size of |A||B| when all products ab are distinct.\n\n**The Question:**\nIf A, B ⊆ {1,...,N} with all products ab distinct, is |A||B| ≪ N²/log N?\n\n**Szemerédi's Answer (1976):**\nYES - this bound is correct and essentially optimal.\n\n**Optimal Example:**\nA = [1, N/2] and B = {primes in (N/2, N]}\nThis achieves |A||B| ~ N²/(2 log N) because:\n- |A| ~ N/2\n- |B| ~ N/log N (prime number theorem)\n- Products are distinct because primes > N/2 cannot divide numbers ≤ N/2",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A, B ⊆ {1,...,N} be such that all products ab with a ∈ A, b ∈ B are distinct.\n\nIs it true that |A||B| ≪ N²/log N?\n\n**Answer: YES** (Szemerédi 1976)\n\n**Best Possible:** A = [1, N/2], B = primes in (N/2, N]\nachieve |A||B| ~ N²/(2 log N).\n\n**Open (Erdős 1972):** Does lim max|A||B|·log N/N² exist? What is its value?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Set Definitions:** IsSubsetUpTo for A, B ⊆ {1,...,N}\n\n2. **Product Set:** productSet(A,B) = {ab : a∈A, b∈B}\n\n3. **Distinct Products:** HasDistinctProducts ↔ ProductMapInjective\n\n4. **Question:** ErdosQuestion490 formalizes the N²/log N bound\n\n5. **Answer:** szemeredi_theorem axiom\n\n6. **Optimality:** optimalA, optimalB construction with primes",
+    "keyInsights": [
+      "**Optimal Construction:** Use primes > N/2 to ensure uniqueness",
+      "**Why Primes Work:** If a·p = a'·p' with p, p' > N/2 and a, a' ≤ N/2, then p | a'p' forces p = p'",
+      "**Logarithmic Factor:** Comes from the density of primes π(N) ~ N/log N",
+      "**Open Limit:** Does max|A||B|·log N/N² have a limit? (≥ 1 by van Doorn)",
+      "**Related:** Problems #425 (sums) and #896 (general products)"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #490 asked whether sets A, B with distinct products satisfy |A||B| ≪ N²/log N. Szemerédi (1976) proved YES. The optimal example uses A = [1, N/2] and B = primes in (N/2, N], achieving |A||B| ~ N²/(2 log N). The limit question remains open.",
+    "implications": "**Combinatorial Number Theory**\n\n1. **Product-Set Structure:** Reveals constraints on multiplicative Sidon-type sets\n\n2. **Prime Distribution:** Optimal construction exploits prime number theorem\n\n3. **Multiplicative Energy:** Low energy characterizes distinct products\n\n4. **Related to Sumsets:** Analogous questions for addition (Problem #425)",
+    "openQuestions": [
+      "Does lim max|A||B|·log N/N² exist?",
+      "What is the exact limit if it exists? (must be ≥ 1)",
+      "Optimal constants in Szemerédi's bound?",
+      "Higher-dimensional generalizations?",
+      "Connection to Problems #425 and #896?"
+    ]
   }
 }

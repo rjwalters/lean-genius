@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-490-subset",
+    "proofId": "erdos-490",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "IsSubsetUpTo",
+    "content": "A set A ⊆ {1,...,N}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-490-product",
+    "proofId": "erdos-490",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "productSet",
+    "content": "A·B = {ab : a ∈ A, b ∈ B}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-490-distinct",
+    "proofId": "erdos-490",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "HasDistinctProducts",
+    "content": "All products ab are distinct: |A·B| = |A|·|B|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-490-injective",
+    "proofId": "erdos-490",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "ProductMapInjective",
+    "content": "Alternative: product map (a,b) → ab is injective.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-490-question",
+    "proofId": "erdos-490",
+    "range": { "startLine": 78, "endLine": 84 },
+    "type": "definition",
+    "title": "ErdosQuestion490",
+    "content": "Is |A||B| ≤ C·N²/log N for some constant C?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-490-szemeredi",
+    "proofId": "erdos-490",
+    "range": { "startLine": 90, "endLine": 97 },
+    "type": "theorem",
+    "title": "szemeredi_theorem",
+    "content": "Szemerédi (1976): YES, |A||B| ≪ N²/log N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-490-answer",
+    "proofId": "erdos-490",
+    "range": { "startLine": 99, "endLine": 100 },
+    "type": "theorem",
+    "title": "erdos_490_answer",
+    "content": "The answer to Erdős #490 is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-490-optA",
+    "proofId": "erdos-490",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "definition",
+    "title": "optimalA",
+    "content": "A = [1, N/2] ∩ ℕ for optimal construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-490-optB",
+    "proofId": "erdos-490",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "definition",
+    "title": "optimalB",
+    "content": "B = {primes p : N/2 < p ≤ N}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-490-optvalid",
+    "proofId": "erdos-490",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "theorem",
+    "title": "optimal_has_distinct_products",
+    "content": "The optimal construction has distinct products.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-490-ratio",
+    "proofId": "erdos-490",
+    "range": { "startLine": 138, "endLine": 140 },
+    "type": "definition",
+    "title": "productRatio",
+    "content": "The ratio |A||B|·log N / N².",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-490-limit",
+    "proofId": "erdos-490",
+    "range": { "startLine": 142, "endLine": 144 },
+    "type": "definition",
+    "title": "LimitQuestion",
+    "content": "Does lim productRatio(N) exist? OPEN.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-490-vandoorn",
+    "proofId": "erdos-490",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "theorem",
+    "title": "van_doorn_observation",
+    "content": "If the limit exists, it must be ≥ 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-490-sidon",
+    "proofId": "erdos-490",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "definition",
+    "title": "IsMultiplicativeSidon",
+    "content": "Case A = B: HasDistinctProducts A A.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-490-energy",
+    "proofId": "erdos-490",
+    "range": { "startLine": 192, "endLine": 196 },
+    "type": "definition",
+    "title": "multiplicativeEnergy",
+    "content": "Counts coincidences a₁b₁ = a₂b₂.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-490-main",
+    "proofId": "erdos-490",
+    "range": { "startLine": 245, "endLine": 254 },
+    "type": "theorem",
+    "title": "erdos_490",
+    "content": "Main theorem: ErdosQuestion490 holds (YES).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-490-optimal",
+    "proofId": "erdos-490",
+    "range": { "startLine": 256, "endLine": 275 },
+    "type": "theorem",
+    "title": "bound_is_optimal",
+    "content": "The N²/log N bound is tight up to constants.",
+    "significance": "key"
+  }
+]
