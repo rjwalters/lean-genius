@@ -1,33 +1,138 @@
 {
   "id": "erdos-537",
-  "title": "Erdős Problem #537",
+  "title": "Erdős Problem #537: Three Numbers with Equal Prime Products",
   "slug": "erdos-537",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large. If ... has ... then must there exist ... and distinct primes ... such that\\[a_1p_1=a_2...",
+  "description": "Let ε > 0 and N be large. If A ⊆ {1,...,N} has |A| ≥ εN, must there exist a₁,a₂,a₃ ∈ A and distinct primes p₁,p₂,p₃ with a₁p₁ = a₂p₂ = a₃p₃? NO, disproved by Ruzsa's counterexample.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ruzsa (counterexample), described by Erdős",
     "sourceUrl": "https://erdosproblems.com/537",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos537Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "prime-products",
+      "density",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 537,
     "erdosUrl": "https://erdosproblems.com/537",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Squarefree",
+        "description": "Squarefree numbers",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasPositiveDensity definition for lower density",
+      "IsDenseSubset definition for dense subsets",
+      "HasThreeEqualPrimeProducts definition for the target pattern",
+      "Erdos537Conjecture formalization",
+      "IsLacunarySquarefree definition for Ruzsa's construction",
+      "RuzsaSet definition for the counterexample",
+      "ruzsa_set_positive_density axiom",
+      "ruzsa_contradiction axiom for the key contradiction",
+      "ratio_bound theorem for interval constraint",
+      "erdos_537_disproved theorem: main disproof"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #537 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$ and $N$ be sufficiently large. If $A\\subseteq \\{1,\\ldots,N\\}$ has $\\lvert A\\rvert \\geq \\epsilon N$ then must there exist $a_1,a_2,a_3\\in A$ and distinct primes $p_1,p_2,p_3$ such that\\[a_1p_1=a_2p_2=a_3p_3?\\]\n\n\n\nA positive answer would imply [536].\n\nErd\\H{o}s describes a construction of Ruzsa which disproves this: consider the set of all squarefree numbers of the shape $p_1\\cdots p_r$ where $p_{i+1}>2p_i$ for $1\\leq i<r$. This set has positive density, and hence if $A$ is its intersection with $(N/2,N)$ then $\\lvert A\\rvert \\gg N$ for all large $N$. Suppose now that $p_1a_1=p_2a_2=p_3a_3$ where $a_i\\in A$ and $p_1,p_2,p_3$ are distinct primes. Without loss of generality we may assume that $a_2>a_3$ and hence $p_2<p_3$, and so since $p_2p_3\\mid a_1\\in A$ we must have $2<p_3/p_2$. On the other hand $p_3/p_2=a_2/a_3\\in (1,2)$, a contradiction.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #537: Three Equal Prime Products**\n\nThis problem asks about multiplicative structure in dense sets.\n\n**Question:** If A ⊆ {1,...,N} has |A| ≥ εN, must it contain a₁,a₂,a₃ and distinct primes p₁,p₂,p₃ with a₁p₁ = a₂p₂ = a₃p₃?\n\n**Motivation:** A positive answer would imply Erdős #536.\n\n**Resolution:** Ruzsa's counterexample shows the answer is NO.\n\n**Reference:** Er73 (cited at erdosproblems.com)",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\epsilon > 0$ and $N$ be sufficiently large. If $A \\subseteq \\{1,\\ldots,N\\}$ has $|A| \\geq \\epsilon N$, must there exist $a_1, a_2, a_3 \\in A$ and distinct primes $p_1, p_2, p_3$ such that\n$$a_1 p_1 = a_2 p_2 = a_3 p_3?$$\n\n**Answer: NO**\n\nRuzsa constructed a counterexample: the lacunary squarefree numbers (where consecutive prime factors satisfy $p_{i+1} > 2p_i$) have positive density but contain no such triple.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Density:** Define positive density sets and dense subsets.\n\n2. **Conjecture:** Formalize the claim about three equal prime products.\n\n3. **Ruzsa Set:** Define lacunary squarefree numbers where consecutive prime divisors have ratio > 2.\n\n4. **Key Lemma:** Show elements in (N/2, N) have ratios in (1, 2).\n\n5. **Contradiction:** The gap property forces p₃/p₂ > 2, but the interval forces a₂/a₃ < 2.\n\n6. **Why sorry:** The final bookkeeping for the contradiction requires careful set-theoretic reasoning.",
+    "keyInsights": [
+      "**Lacunary Squarefree:** Numbers where consecutive prime factors have ratio > 2",
+      "**Positive Density:** These lacunary numbers have positive lower density",
+      "**Interval Constraint:** In (N/2, N), any ratio a₂/a₃ lies in (1, 2)",
+      "**Gap Property:** If pq | n with p < q consecutive, then q > 2p",
+      "**The Contradiction:** These constraints are incompatible for three equal products",
+      "**Relation to #536:** A positive answer would have implied #536"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "HasPositiveDensity, IsDenseSubset, HasThreeEqualPrimeProducts",
+      "startLine": 35,
+      "endLine": 62
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős #537 Conjecture",
+      "summary": "The conjecture formulation (FALSE)",
+      "startLine": 64,
+      "endLine": 75
+    },
+    {
+      "id": "ruzsa-construction",
+      "title": "Ruzsa's Construction",
+      "summary": "IsLacunarySquarefree, RuzsaSet, positive density axiom",
+      "startLine": 77,
+      "endLine": 111
+    },
+    {
+      "id": "key-lemma",
+      "title": "The Key Lemma",
+      "summary": "Gap property, ratio_bound theorem, ruzsa_contradiction axiom",
+      "startLine": 113,
+      "endLine": 156
+    },
+    {
+      "id": "disproof",
+      "title": "The Disproof",
+      "summary": "ruzsa_no_three_products, erdos_537_disproved",
+      "startLine": 158,
+      "endLine": 198
+    },
+    {
+      "id": "understanding",
+      "title": "Understanding Ruzsa's Construction",
+      "summary": "Why lacunary? Prime ratio argument, density estimate",
+      "startLine": 200,
+      "endLine": 225
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Related Problems",
+      "summary": "Connection to Erdős #536, multiplicative structure",
+      "startLine": 227,
+      "endLine": 245
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_537 theorem, erdos_537_summary",
+      "startLine": 247,
+      "endLine": 279
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #537 is DISPROVED. The conjecture asked whether dense sets must contain three numbers with equal prime products. Ruzsa's construction of lacunary squarefree numbers provides a counterexample: these numbers have positive density but the gap property (consecutive prime factors have ratio > 2) prevents the required pattern.",
+    "implications": "**Number-Theoretic Significance**\n\n1. **Multiplicative Structure:** Density alone doesn't force multiplicative coincidences\n\n2. **Squarefree Numbers:** Lacunary squarefree sets have interesting structural properties\n\n3. **Relation to #536:** This doesn't resolve #536 (which remains open or has different status)\n\n4. **Gap Properties:** Large gaps between prime factors create obstruction to patterns",
+    "openQuestions": [
+      "What is the status of the related problem Erdős #536?",
+      "Can similar constructions disprove other multiplicative structure questions?",
+      "What is the exact density of lacunary squarefree numbers?",
+      "Are there other sets with positive density avoiding this pattern?"
+    ]
   }
 }

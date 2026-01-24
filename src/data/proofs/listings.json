@@ -8820,17 +8820,24 @@
   },
   {
     "id": "erdos-537",
-    "title": "Erdős Problem #537",
+    "title": "Erdős Problem #537: Three Numbers with Equal Prime Products",
     "slug": "erdos-537",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large. If ... has ... then must there exist ... and distinct primes ... such that\\[a_1p_1=a_2...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let ε > 0 and N be large. If A ⊆ {1,...,N} has |A| ≥ εN, must there exist a₁,a₂,a₃ ∈ A and distinct primes p₁,p₂,p₃ with a₁p₁ = a₂p₂ = a₃p₃? NO, disproved by Ruzsa's counterexample.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "prime-products",
+      "density",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 537,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 14
   },
   {
     "id": "erdos-539",
@@ -10680,17 +10687,24 @@
   },
   {
     "id": "erdos-651",
-    "title": "Erdős Problem #651",
+    "title": "Erdős Problem #651: Convex Polyhedra from Points in General Position",
     "slug": "erdos-651",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the smallest integer such that any ... points in general position in ... contain ... which determine a convex ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is f_k(n) > (1 + c_k)^n for finding convex polyhedra in ℝ^k? NO, disproved by Pohoata-Zakharov (2022) showing f_3(n) ≤ 2^{o(n)}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "convex-geometry",
+      "ramsey-theory",
+      "erdos-szekeres",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 651,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-652",
@@ -12941,17 +12955,25 @@
   },
   {
     "id": "erdos-799",
-    "title": "Erdős Problem #799",
+    "title": "Erdős Problem #799: List Chromatic Number of Random Graphs",
     "slug": "erdos-799",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number ... is defined to be the minimal ... such that for any assignment of a list of ... colours to each ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is the list chromatic number χ_L(G) = o(n) for almost all graphs on n vertices? YES, proved by Alon (1992) and refined by Alon-Krivelevich-Sudakov (1999).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "list-coloring",
+      "chromatic-number",
+      "probabilistic-combinatorics",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 799,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-8",
@@ -14264,17 +14286,24 @@
   },
   {
     "id": "erdos-883",
-    "title": "Erdős Problem #883",
+    "title": "Erdos Problem #883: Cycles in the Coprime Graph",
     "slug": "erdos-883",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let ... be the graph with vertex set ..., where two integers are joined by an edge if they are coprime.\n\nIs it true t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sarkozy (1999).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "number-theory",
+      "coprime-graph",
+      "cycles",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 883,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-885",
