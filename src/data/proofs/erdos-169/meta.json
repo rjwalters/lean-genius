@@ -15,7 +15,7 @@
     "erdosUrl": "https://erdosproblems.com/169",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": ["Data.Nat.Basic", "Data.Real.Basic", "Data.Finset.Basic", "Algebra.BigOperators.Group.Finset.Basic"],
+    "mathlibDependencies": [],
     "originalContributions": []
   },
   "overview": {
@@ -32,54 +32,63 @@
   },
   "sections": [
     {
+      "id": "arithmetic-progressions",
       "title": "Arithmetic Progressions",
       "startLine": 44,
       "endLine": 60,
       "summary": "Definitions of k-term arithmetic progressions and AP-free sets"
     },
     {
+      "id": "harmonic-sum-function",
       "title": "Harmonic Sum Function",
       "startLine": 62,
       "endLine": 78,
       "summary": "Definition of f(k) as supremum of harmonic sums over AP-free sets"
     },
     {
+      "id": "van-der-waerden-numbers",
       "title": "Van der Waerden Numbers",
       "startLine": 80,
       "endLine": 99,
       "summary": "Definition of W(k) and van der Waerden's theorem"
     },
     {
+      "id": "berlekamp-lower-bound",
       "title": "Berlekamp's Lower Bound",
       "startLine": 101,
       "endLine": 120,
       "summary": "f(k) ≥ (log 2 / 2) · k from 1968"
     },
     {
+      "id": "gerver-improvement",
       "title": "Gerver's Improvement",
       "startLine": 122,
       "endLine": 141,
       "summary": "f(k) ≥ (1-o(1)) k log k from 1977"
     },
     {
+      "id": "ratio-question",
       "title": "The Ratio Question",
       "startLine": 143,
       "endLine": 164,
       "summary": "Whether f(k)/log W(k) → ∞ remains open"
     },
     {
+      "id": "computational-records",
       "title": "Computational Records",
       "startLine": 166,
       "endLine": 180,
       "summary": "Best known values for f(3) and f(4)"
     },
     {
+      "id": "walker-results",
       "title": "Walker's Results",
       "startLine": 182,
       "endLine": 203,
       "summary": "Kempner sets suffice for optimal AP-free harmonic sums"
     },
     {
+      "id": "summary",
       "title": "Summary",
       "startLine": 251,
       "endLine": 291,
