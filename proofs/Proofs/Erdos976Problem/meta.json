@@ -1,0 +1,17 @@
+{
+  "problem_number": 976,
+  "title": "Greatest Prime Divisor of Polynomial Products",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/976",
+  "overview": "Let f ∈ ℤ[x] be irreducible of degree d ≥ 2. Let F_f(n) = greatest prime dividing ∏_{m=1}^n f(m). Is F_f(n) ≫ n^{1+c} for some c > 0? Or even ≫ n^d?",
+  "sections": [],
+  "conclusion": "OPEN - Best known: F_f(n) ≫ n exp((log n)^c) (Tenenbaum 1990). Earlier: n log n (Nagell-Ricci 1922), n(log n)^{log log log n} (Erdős 1952). The polynomial growth conjectures (n^{1+c} or n^d) remain unproved.",
+  "references": [
+    "Nagell-Ricci (1922) - Initial bound n log n",
+    "Erdős (1952) - Improved iterated log bound",
+    "Tenenbaum (1990) - Current best: n exp((log n)^c)"
+  ],
+  "related_problems": [],
+  "tags": ["number-theory", "primes", "polynomials", "prime-factors", "open"]
+}
