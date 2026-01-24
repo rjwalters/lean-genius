@@ -1,33 +1,81 @@
 {
   "id": "erdos-297",
-  "title": "Erdős Problem #297",
+  "title": "Erdős Problem #297: Counting Egyptian Fraction Representations of 1",
   "slug": "erdos-297",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many ... are there such that ...?\n\n\n\nIt was not even known for a long time whether this is ... for some ... or ....",
+  "description": "How many A ⊆ {1,...,N} satisfy Σ 1/n = 1? Answer: 2^{(0.91...+o(1))N}. Solved independently by three teams in 2024.",
   "meta": {
-    "author": "Unknown",
+    "author": "Steinerberger, Liu-Sawhney, Conlon et al. (2024)",
     "sourceUrl": "https://erdosproblems.com/297",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos297Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "egyptian-fractions",
+      "number-theory",
+      "combinatorics",
+      "counting",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 297,
     "erdosUrl": "https://erdosproblems.com/297",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power set of finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational numbers for unit fractions",
+        "module": "Mathlib.Data.Rat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "harmonicSum: sum of 1/n over a set A",
+      "IsEgyptianRepresentation: sets with harmonic sum 1",
+      "egyptianCount: count function for problem statement",
+      "hasSubexponentialGrowth: the key question formalized",
+      "steinerbergerConstant, steinerberger_upper_bound: 2024 upper bound",
+      "liuSawhneyConstant, liuSawhney_asymptotic: full asymptotic",
+      "conlon_et_al_general: generalization to any rational target",
+      "egyptianCountTarget: count for arbitrary x ∈ ℚ",
+      "erdos_297_main: main theorem with asymptotic",
+      "erdos_297_answer: affirmative answer to c < 1 question"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #297 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. How many $A\\subseteq \\{1,\\ldots,N\\}$ are there such that $\\sum_{n\\in A}\\frac{1}{n}=1$?\n\n\n\nIt was not even known for a long time whether this is $2^{cN}$ for some $c<1$ or $2^{(1+o(1))N}$. In fact the former is true, and the correct value of $c$ is now known.\n{UL}\n{LI}Steinerberger \\cite{St24} proved the relevant count is at most $2^{0.93N}$;{/LI}\n{LI}Independently, Liu and Sawhney \\cite{LiSa24} gave both upper and lower bounds, proving that the count is\\[2^{(0.91\\cdots+o(1))N},\\]where $0.91\\cdots$ is an explicit number defined as the solution to a certain integral equation;{/LI}\n{LI}Again independently this same asymptotic was proved (with a different proof) by Conlon, Fox, He, Mubayi, Pham, Suk, and Verstra\\\"{e}te \\cite{CFHMPSV24}, who prove more generally, for any $x\\in \\mathbb{Q}_{>0}$, a similar expression for the number of $A\\subseteq \\{1,\\ldots,N\\}$ such that $\\sum_{n\\in A}\\frac{1}{n}=x$;{/LI}\n{LI}The above papers all appeared within weeks of each other in 2024; in 2017 a similar question (with $\\leq 1$ rather than $=1$) was asked on MathOverflow by Mikhail Tikhomirov and proofs of the correct asymptotic were sketched by Lucia, RaphaelB4, and js21.{/LI}\n{/UL}\n\nSee also [362].\n\n\n\n\nReferences\n\n\n[CFHMPSV24] Conlon, D. and Fox, J. and He, X. and Mubayi, D. and Pham, H. T. and Suk, A. and Verstra\\\"{e}te, J., A question of Erd\\H{o}s and Graham on Egyptian fractions. arXiv:2404.16016 (2024).\n\n[LiSa24] Liu, Y. and Sawhney, M., On further questions regarding unit fractions. arXiv:2404.07113 (2024).\n\n[St24] S. Steinerberger, On a problem involving unit fractions. arXiv:2403.17041 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #297: Egyptian Fractions Summing to 1**\n\n**The Question:**\nHow many subsets A ⊆ {1,...,N} satisfy Σ_{n∈A} 1/n = 1?\n\nThe key open question was whether this count grows like 2^{cN} for some c < 1, or like 2^{(1+o(1))N} (nearly all subsets).\n\n**Breakthrough in 2024:**\nThree independent teams solved this within weeks of each other:\n\n1. **Steinerberger (arXiv:2403.17041):** Proved count ≤ 2^{0.93N}\n\n2. **Liu-Sawhney (arXiv:2404.07113):** Full asymptotic 2^{(c+o(1))N} where c ≈ 0.91... is defined by an integral equation\n\n3. **Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (arXiv:2404.16016):** Same asymptotic, extended to any positive rational target\n\n**Earlier Work:**\nA 2017 MathOverflow question (by Mikhail Tikhomirov) asked about ≤ 1 instead of = 1. Lucia, RaphaelB4, and js21 sketched proofs of the asymptotic.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet N ≥ 1. How many A ⊆ {1,...,N} satisfy Σ_{n∈A} 1/n = 1?\n\n**Answer:**\nThe count is 2^{(c + o(1))N} where c ≈ 0.91...\n\n**Key Result:**\nc < 1, so the count is exponentially smaller than 2^N.\nDespite 2^N possible subsets, only 2^{0.91N} have unit fraction sum exactly 1.\n\n**The Constant:**\nc is defined as the solution to a certain integral equation (Liu-Sawhney).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** harmonicSum, egyptianCount\n\n2. **Basic Examples:** {1}, {2,3,6}, {2,4,5,20} all sum to 1\n\n3. **The Question:** hasSubexponentialGrowth formalizes whether c < 1\n\n4. **Steinerberger:** steinerberger_upper_bound axiom for 2^{0.93N}\n\n5. **Liu-Sawhney:** liuSawhney_asymptotic for full 2^{(c+o(1))N}\n\n6. **Conlon et al.:** Generalization to arbitrary targets\n\n7. **Main Results:** erdos_297_main and erdos_297_answer",
+    "keyInsights": [
+      "**c < 1:** The count grows exponentially slower than 2^N",
+      "**c ≈ 0.91:** Defined by an integral equation (Liu-Sawhney)",
+      "**Three Independent Teams:** Solved within weeks in 2024",
+      "**Why Subexponential:** Most subsets overshoot since E[sum] ~ (log N)/2 → ∞",
+      "**Generalization:** Works for any target x ∈ ℚ₊, not just x = 1",
+      "**Connection to #362:** Related Egyptian fraction problem"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #297 asks how many subsets of {1,...,N} have unit fraction sum exactly 1. The answer is 2^{(c+o(1))N} where c ≈ 0.91... This was solved in 2024 by three independent teams: Steinerberger (upper bound), Liu-Sawhney (full asymptotic), and Conlon et al. (same asymptotic plus generalization). The key insight is that c < 1, meaning the count is exponentially smaller than the naive bound 2^N.",
+    "implications": "**Connections**\n\n1. **Egyptian Fractions:** Deep structural results on unit fraction sums\n\n2. **Counting Problems:** Refined asymptotics for constrained subset counting\n\n3. **Analytic Methods:** Integral equations characterize the constant c\n\n4. **Problem #362:** Related Egyptian fraction question\n\n5. **MathOverflow 2017:** Precursor question about ≤ 1",
+    "openQuestions": [
+      "What is the exact numerical value of c?",
+      "How does c_x depend on the target x?",
+      "Are there efficient algorithms to enumerate such subsets?",
+      "What about counting with repeated elements allowed?"
+    ]
   }
 }
