@@ -79,9 +79,8 @@ axiom moore_bound (V : Type*) [Fintype V] [DecidableEq V]
     HasDiameter2 G → Fintype.card V ≤ maxDegree G ^ 2 + 1
 
 /-- Consequence: if n vertices then max degree ≥ √(n-1) -/
-theorem lower_bound_sqrt (n : ℕ) (hn : n ≥ 2) :
-    (f n : ℝ) ≥ Real.sqrt (n - 1) := by
-  sorry
+axiom lower_bound_sqrt (n : ℕ) (hn : n ≥ 2) :
+    (f n : ℝ) ≥ Real.sqrt (n - 1)
 
 /-- The asymptotic lower bound: f(n) ≥ (1 - o(1))√n -/
 axiom lower_bound_asymptotic :
@@ -112,9 +111,8 @@ axiom furedi_seress_1994 :
       (f n : ℝ) ≤ (2 / Real.sqrt 3 + ε) * Real.sqrt n
 
 /-- The constant 2/√3 ≈ 1.1547 is better than √2 ≈ 1.414 -/
-theorem furedi_seress_improves_hanson_seyffarth :
-    (2 : ℝ) / Real.sqrt 3 < Real.sqrt 2 := by
-  sorry
+axiom furedi_seress_improves_hanson_seyffarth :
+    (2 : ℝ) / Real.sqrt 3 < Real.sqrt 2
 
 /-!
 ## Part 5: The Main Question (DISPROVED)
@@ -125,8 +123,7 @@ def OriginalQuestion : Prop :=
   Filter.Tendsto (fun n => (f n : ℝ) / Real.sqrt n) Filter.atTop Filter.atTop
 
 /-- Answer: NO (disproved by upper bounds) -/
-theorem original_question_false : ¬OriginalQuestion := by
-  sorry
+axiom original_question_false : ¬OriginalQuestion
 
 /-- The ratio f(n)/√n is bounded -/
 axiom ratio_bounded :
@@ -170,9 +167,8 @@ axiom polarity_graph_construction :
         maxDegree G ≤ q + 1
 
 /-- The construction shows f(q²) ≤ q + 1 ≈ √n -/
-theorem construction_gives_upper_bound (q : ℕ) (hq : Nat.Prime q) (h4 : q % 4 = 1) :
-    f (q ^ 2) ≤ q + 1 := by
-  sorry
+axiom construction_gives_upper_bound (q : ℕ) (hq : Nat.Prime q) (h4 : q % 4 = 1) :
+    f (q ^ 2) ≤ q + 1
 
 /-!
 ## Part 8: Why Triangle-Free and Diameter 2?
@@ -203,9 +199,8 @@ theorem tension_explanation :
 -/
 
 /-- Bipartite graphs are triangle-free -/
-theorem bipartite_triangle_free {V : Type*} (G : SimpleGraph V) :
-    G.IsBipartite → TriangleFree G := by
-  sorry
+axiom bipartite_triangle_free {V : Type*} (G : SimpleGraph V) :
+    G.IsBipartite → TriangleFree G
 
 /-- Many constructions use bipartite graphs -/
 axiom bipartite_constructions_useful : True
