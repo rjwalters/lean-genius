@@ -1,0 +1,17 @@
+{
+  "problem_number": 637,
+  "title": "Distinct Degrees in Induced Subgraphs of Ramsey Graphs",
+  "status": "solved",
+  "solvers": ["Bukh-Sudakov (2007)", "Jenssen-Keevash-Long-Yepremyan (2020)"],
+  "source_url": "https://erdosproblems.com/637",
+  "overview": "If G is a graph on n vertices with no clique or independent set on ≫ log n vertices (a 'Ramsey graph'), then G contains an induced subgraph on ≫ n vertices with ≫ √n distinct degrees.",
+  "sections": [],
+  "conclusion": "SOLVED - Bukh-Sudakov (2007) proved the original conjecture. Jenssen-Keevash-Long-Yepremyan (2020) strengthened this to ≫ n^{2/3} distinct degrees with no vertex count restriction. The exponent 2/3 is believed to be optimal.",
+  "references": [
+    "Erdős-Faudree-Sós [Er97d] - Original problem",
+    "Bukh-Sudakov [BuSu07] - First proof (√n degrees)",
+    "Jenssen-Keevash-Long-Yepremyan [JKLY20] - Strengthened to n^{2/3}"
+  ],
+  "related_problems": [],
+  "tags": ["graph-theory", "ramsey-theory", "degree-sequences", "solved"]
+}
