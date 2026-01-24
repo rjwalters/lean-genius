@@ -1,54 +1,109 @@
 {
   "slug": "erdos-750",
-  "title": "Erdős #750",
-  "phase": "NEW",
+  "title": "Erdős #750: Almost Bipartite Graphs with Infinite Chromatic Number",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?\n\n\n\nIn \\cite{Er69b} Erd\\H{o}s conjectures this for $f(m)=\\epsilon m$ for any fixed $\\epsilon>0$. This follows from a result of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}, as described by msellke in the comments.\n\nIn \\cite{ErHa67b} Erd\\H{o}s and Hajnal prove this for $f(m)\\geq cm$ for all $c>1/4$.\n\nSee also [75].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[ErHa67b] Erd\\H{o}s, P. and Hajnal, Andr\\'as, On chromatic graphs. Mat. Lapok (1967), 1--4.\n\n\nBack to the problem",
-    "plain": "Forum",
-    "whyMatters": []
+    "formal": "\\forall f: \\mathbb{N} \\to \\mathbb{N}, f(m) \\to \\infty \\implies \\exists G: \\chi(G) = \\infty \\land (\\forall S \\subseteq V(G), |S|=m \\implies \\alpha(G[S]) \\geq m/2 - f(m))",
+    "plain": "Does there exist a graph G with infinite chromatic number such that every m-vertex subgraph has an independent set of size ≥ m/2 - f(m)?",
+    "whyMatters": [
+      "Explores tension between local and global chromatic structure",
+      "Bipartite graphs achieve m/2 exactly - how close can we get?"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Erdős-Hajnal (1967): Holds for f(m) = cm where c > 1/4",
+      "Erdős-Hajnal-Szemerédi (1982): Holds for f(m) = εm for any ε > 0"
+    ],
+    "open": [
+      "Sublinear functions f(m) = o(m) with f(m) → ∞",
+      "Specific cases: f(m) = √m, f(m) = log m"
+    ],
+    "goal": "Prove conjecture for sublinear f(m)"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T08:18:33.645Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-01-24T17:45:00Z",
+    "iteration": 2,
+    "focus": "Full formalization with known results axiomatized. EHS82 linear case proved as corollary.",
+    "blockers": [
+      "Problem is OPEN for sublinear functions"
+    ],
+    "nextAction": "Consider proving chromaticNumber definition without sorry",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #750 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?\n\n\n\nIn \\cite{Er69b} Erd\\H{o}s conjectures this for $f(m)=\\epsilon m$ for any fixed $\\epsilon>0$. This follows from a result of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}, as described by msellke in the comments.\n\nIn \\cite{ErHa67b} Erd\\H{o}s and Hajnal prove this for $f(m)\\geq cm$ for all $c>1/4$.\n\nSee also [75].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[ErHa67b] Erd\\H{o}s, P. and Hajnal, Andr\\'as, On chromatic graphs. Mat. Lapok (1967), 1--4.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #4\n- Problem #75\n- Problem #749\n- Problem #751\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er94b\n- Er95d\n- Er69b\n- EHS82\n- ErHa67b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "ACTIVE (OPEN): Erdos750Problem.lean (288 lines, 3 axioms, 1 sorry). Complete infrastructure for almost bipartite graphs. EHS82 and ErHa67 results axiomatized. linear_functions_work proved as corollary. Sublinear case (√m, log m) remains open.",
+    "builtItems": [
+      "Erdos750Problem.lean (288 lines, 3 axioms, 1 sorry)",
+      "chromaticNumber (SORRY - needs infrastructure)",
+      "hasInfiniteChromaticNumber predicate",
+      "maxIndSetSize: max independent set in induced subgraph",
+      "AlmostBipartite, StrongAlmostBipartite properties",
+      "Erdos750_Conjecture: main conjecture statement",
+      "erdos_hajnal_1967: c > 1/4 case (AXIOM)",
+      "erdos_hajnal_szemeredi_1982: any ε > 0 case (AXIOM)",
+      "linear_functions_work (PROVED from EHS82)",
+      "SublinearConjecture, SqrtConjecture, LogConjecture",
+      "Problem75_Sketch: connection to related problem",
+      "ramsey_triangle_free (AXIOM)",
+      "erdos_750_summary (PROVED)"
+    ],
+    "insights": [
+      "Status: OPEN for sublinear f(m) = o(m)",
+      "Linear case SOLVED: EHS82 handles any f(m) = εm",
+      "Almost bipartite = local structure close to 2-colorable",
+      "Bipartite graphs achieve exactly m/2 independent set",
+      "Connection to Problem #75: ℵ₁ chromatic with n^{1-ε} independent sets",
+      "Triangle-free gives Ω(√n) independent sets (weaker)",
+      "Key question: can sublinear error coexist with infinite χ?"
+    ],
+    "mathlibGaps": [
+      "chromaticNumber definition needs significant infrastructure"
+    ],
+    "nextSteps": [
+      "Prove chromaticNumber definition from Mathlib coloring",
+      "Explore SqrtConjecture or LogConjecture approaches",
+      "erdos_750 main conjecture is OPEN"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Direct formalization",
+      "status": "completed",
+      "notes": "Full infrastructure built, known results axiomatized"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "independent-sets",
+    "open-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos750Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdős-Hajnal (1967): On chromatic graphs",
+      "Erdős-Hajnal-Szemerédi (1982): On almost bipartite large chromatic graphs",
+      "Erdős (1969): Problems and results in chromatic graph theory"
+    ],
+    "urls": [
+      "https://erdosproblems.com/750"
+    ],
     "mathlib": []
   },
   "started": "2026-01-15T08:18:33.645Z",
+  "lastUpdate": "2026-01-24T17:45:00Z",
   "significance": 6,
   "tractability": 4
 }
