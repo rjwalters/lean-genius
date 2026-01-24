@@ -1,0 +1,15 @@
+{
+  "problem_number": 284,
+  "title": "Maximum First Denominator for Egyptian Fraction Representations of 1",
+  "status": "solved",
+  "solvers": ["Croot (2001)"],
+  "source_url": "https://erdosproblems.com/284",
+  "overview": "Let f(k) = max{n₁ : 1 = 1/n₁ + ... + 1/nₖ with distinct denominators}. Is f(k) = (1+o(1))·k/(e-1)?",
+  "sections": [],
+  "conclusion": "YES - Croot (2001) proved f(k) ~ k/(e-1). Upper bound is trivial from harmonic series. Lower bound: for any N > 1, there exist distinct n₁ < ... < nₖ in (N, eN] with Σ1/nᵢ = 1.",
+  "references": [
+    "Croot (2001) - Main result: construction in (N, eN]"
+  ],
+  "related_problems": [283, 285, 280],
+  "tags": ["number-theory", "unit-fractions", "egyptian-fractions", "solved"]
+}
