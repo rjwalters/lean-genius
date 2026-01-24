@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-214-header",
+    "proofId": "erdos-214",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #214: Unit Distance Free Sets and Unit Squares**\n\nIf S ⊂ ℝ² has no two points at distance 1, must Sᶜ contain a unit square?\n\n**Answer:** YES (Juhász, 1979)\n\n**Stronger result:** Sᶜ contains a congruent copy of ANY 4-point set.",
+    "mathContext": "Unit-distance-free sets avoid a single distance. This forces their complements to be geometrically rich.",
+    "significance": "critical",
+    "relatedConcepts": ["Unit distance", "Combinatorial geometry", "Chromatic number of the plane"]
+  },
+  {
+    "id": "ann-214-unit-free",
+    "proofId": "erdos-214",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "IsUnitDistanceFree",
+    "content": "**Unit-Distance-Free Set:**\n\nA set S is unit-distance-free if no two distinct points in S are exactly distance 1 apart.\n\n∀ p, q ∈ S, p ≠ q → ‖p - q‖ ≠ 1",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-214-unit-square",
+    "proofId": "erdos-214",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "definition",
+    "title": "IsUnitSquare",
+    "content": "**Unit Square:**\n\nFour points form a unit square if:\n- All four edges have length 1\n- Both diagonals have length √2\n\nThis is a regular square with side length 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-214-statement",
+    "proofId": "erdos-214",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "Erdos214Statement",
+    "content": "**Main Statement:**\n\n∀ S ⊂ ℝ², if S is unit-distance-free, then Sᶜ contains four points forming a unit square.\n\nThe complement must be rich enough to contain this specific configuration.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-214-juhasz",
+    "proofId": "erdos-214",
+    "range": { "startLine": 71, "endLine": 72 },
+    "type": "axiom",
+    "title": "Juhász's Theorem (1979)",
+    "content": "**Juhász's Theorem:**\n\nThe statement Erdos214Statement is true.\n\nPublished in 'Ramsey type theorems in the plane' (1979).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-214-stronger",
+    "proofId": "erdos-214",
+    "range": { "startLine": 92, "endLine": 98 },
+    "type": "axiom",
+    "title": "Juhász's Stronger Theorem",
+    "content": "**Stronger Result:**\n\nIf S is unit-distance-free, then Sᶜ contains a congruent copy of ANY 4-point configuration.\n\nUnit squares are just one special case!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-214-fails-large",
+    "proofId": "erdos-214",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "insight",
+    "title": "Fails for Large Sets",
+    "content": "**Limitation:**\n\nThe property does NOT hold for arbitrarily large point sets.\n\nFor some n, there exists a unit-distance-free S whose complement avoids some n-point configuration.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-214-five-open",
+    "proofId": "erdos-214",
+    "range": { "startLine": 117, "endLine": 123 },
+    "type": "insight",
+    "title": "5-Point Case is Open",
+    "content": "**Open Question:**\n\nDoes the property hold for all 5-point configurations?\n\nWe know it works for 4 points, fails for large n. The 5-point case is unknown.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-214-chromatic",
+    "proofId": "erdos-214",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "insight",
+    "title": "Chromatic Number Connection",
+    "content": "**Connection to Chromatic Number:**\n\nThe chromatic number χ(ℝ²) is between 5 and 7 (de Grey, 2018).\n\nThis is the minimum colors needed to color the plane with no two distance-1 points sharing a color. Each color class is unit-distance-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-214-summary",
+    "proofId": "erdos-214",
+    "range": { "startLine": 251, "endLine": 274 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #214: SOLVED (Juhász, 1979)**\n\n**Problem:** Unit-distance-free S ⟹ Sᶜ contains unit square?\n\n**Answer:** YES - and more generally, any 4-point configuration\n\n**Limitation:** Fails for sufficiently large point sets\n\n**Open:** Does it hold for 5-point configurations?",
+    "significance": "critical"
+  }
+]

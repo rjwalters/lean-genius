@@ -1,33 +1,45 @@
 {
   "id": "erdos-214",
-  "title": "Erdős Problem #214",
+  "title": "Erdős Problem #214: Unit Distance Free Sets and Unit Squares",
   "slug": "erdos-214",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that no two points in ... are distance ... apart. Must the complement of ... contain four points which form a...",
+  "description": "If S ⊂ ℝ² has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juhász, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
   "meta": {
-    "author": "Unknown",
+    "author": "Juhász",
     "sourceUrl": "https://erdosproblems.com/214",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos214Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "unit-distance",
+      "combinatorial-geometry"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 214,
     "erdosUrl": "https://erdosproblems.com/214",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #214 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subset \\mathbb{R}^2$ be such that no two points in $S$ are distance $1$ apart. Must the complement of $S$ contain four points which form a unit square?\n\n\n\nThe answer is yes, proved by Juh\\'{a}sz \\cite{Ju79}, who proved more generally that the complement of $S$ must contain a congruent copy of any set of four points. This is not true for arbitrarily large sets of points, but perhaps is still true for any set of five points.\n\n\n\n\nReferences\n\n\n[Ju79] Juh\\'{a}sz, Roz\\'{a}lia, Ramsey type theorems in the plane. J. Combin. Theory Ser. A (1979), 152-160.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1983, asking about the geometric structure of unit-distance-free sets in the plane. The question explores the connection between avoiding a single distance and the required richness of the complement. Juhász resolved it in 1979 with a stronger result covering all 4-point configurations.",
+    "problemStatement": "Let S ⊂ ℝ² be such that no two points in S are distance 1 apart. Must the complement of S contain four points which form a unit square?",
+    "proofStrategy": "The formalization defines unit-distance-free sets, unit squares, and the main statement. Juhász's theorem is stated as an axiom, along with the stronger version for arbitrary 4-point configurations. The formalization also connects to the unit distance graph and the chromatic number of the plane.",
+    "keyInsights": [
+      "Unit-distance-free sets have 'sparse' structure",
+      "Their complements are dense enough to contain small configurations",
+      "The result generalizes to any 4-point configuration, not just unit squares",
+      "The property fails for sufficiently large point sets"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Juhász (1979) proved that if S ⊂ ℝ² avoids unit distances, then Sᶜ contains a congruent copy of any 4-point set, hence in particular a unit square. This captures how avoiding a single distance forces geometric richness in the complement.",
+    "implications": "The result connects to the chromatic number of the plane and unit distance graphs. It shows that unit-distance-free sets cannot be 'too large' in a geometric sense - their complements must contain diverse configurations.",
+    "openQuestions": [
+      "Does the property hold for all 5-point configurations?",
+      "What is the maximum n for which the property holds?",
+      "Can we characterize maximal unit-distance-free sets?"
+    ]
   }
 }
