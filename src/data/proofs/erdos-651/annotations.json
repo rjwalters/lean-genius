@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-651-1",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "General Position",
+    "content": "A set of points in ℝ^k is in general position if no k+1 points lie on a (k-1)-dimensional hyperplane. In ℝ²: no 3 points collinear. In ℝ³: no 4 points coplanar. This is formalized using AffineIndependent from Mathlib.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-2",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Determines Convex Polyhedron",
+    "content": "A set of points determines a convex polyhedron if every point is a vertex of the convex hull - no point lies inside the hull of the others. This is the 'convex position' condition that generalizes convex polygons to higher dimensions.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-3",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 80,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Contains Convex Polyhedron",
+    "content": "ContainsConvexPolyhedron S n means there exists a subset T of S with |T| = n points that form a convex polyhedron. This is the property we want to guarantee when S has enough points.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-4",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 94,
+      "endLine": 94
+    },
+    "type": "axiom",
+    "title": "The Function f_k(n)",
+    "content": "f_k(n) is the smallest integer such that any f_k(n) points in general position in ℝ^k contain n points forming a convex polyhedron. This is a Ramsey-type function: large enough sets guarantee structure.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-5",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 124,
+      "endLine": 125
+    },
+    "type": "axiom",
+    "title": "Erdős-Klein-Szekeres Bound",
+    "content": "For k = 2 (the plane): f_2(n) ≤ 2^{n-2} + 1. This is the famous 'happy ending problem'. Erdős-Szekeres (1935) proved this upper bound. The name comes from George Szekeres and Esther Klein meeting through this problem and later marrying.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-6",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 131,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Suk's Theorem (2017)",
+    "content": "Suk proved the exact value: f_2(n) = 2^{n-2} + 1, confirming the Erdős-Szekeres conjecture. This was a major breakthrough, 82 years after the original problem!",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-651-7",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 145,
+      "endLine": 146
+    },
+    "type": "axiom",
+    "title": "Monotonicity in Dimension",
+    "content": "f_2(n) > f_3(n) > f_4(n) > ... The function decreases with dimension. Intuition: in higher dimensions, there's 'more room' for points to be in convex position, so fewer points are needed to guarantee an n-vertex convex set.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-651-8",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 158,
+      "endLine": 159
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "ErdosConjecture states: for each k ≥ 2, there exists c_k > 0 such that f_k(n) > (1 + c_k)^n. This would mean exponential lower bounds in ALL dimensions, not just k = 2.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-9",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 172,
+      "endLine": 173
+    },
+    "type": "axiom",
+    "title": "Pohoata-Zakharov Theorem (2022)",
+    "content": "The key result: f_3(n) ≤ 2^{o(n)}. This is subexponential: for any ε > 0, eventually f_3(n) ≤ 2^{εn}. This completely breaks the exponential barrier for dimension 3 and higher.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-10",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 180,
+      "endLine": 181
+    },
+    "type": "axiom",
+    "title": "Subexponential Bound",
+    "content": "For any c > 0, there exists N such that f_3(n) < (1 + c)^n for all n ≥ N. This is the key lemma that contradicts the exponential conjecture: no fixed c works for all n.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-11",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 187,
+      "endLine": 193
+    },
+    "type": "theorem",
+    "title": "Conjecture False for k = 3",
+    "content": "conjecture_false_k3 proves there's no c > 0 with f_3(n) > (1 + c)^n for all n ≥ 4. Proof: given any such c, Pohoata-Zakharov gives N where f_3(n) < (1+c)^n for n ≥ N, a contradiction via linarith.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-12",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 198,
+      "endLine": 201
+    },
+    "type": "theorem",
+    "title": "Full Disproof",
+    "content": "erdos_651_disproved shows ¬ErdosConjecture. The conjecture claims exponential bounds for ALL k ≥ 2. We show it fails for k = 3, so the universal statement is false.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-651-13",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 226,
+      "endLine": 229
+    },
+    "type": "theorem",
+    "title": "Dimension Comparison",
+    "content": "The dramatic jump: f_2(n) = 2^{n-2} + 1 (exponential) versus f_3(n) ≤ 2^{o(n)} (subexponential). Going from dimension 2 to 3 fundamentally changes the asymptotics!",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-651-14",
+    "proofId": "erdos-651",
+    "range": {
+      "startLine": 266,
+      "endLine": 266
+    },
+    "type": "theorem",
+    "title": "Main Result: Erdős #651",
+    "content": "erdos_651 : ¬ErdosConjecture. The exponential lower bound conjecture is FALSE. Pohoata-Zakharov's subexponential bound for k = 3 disproves it. The key insight: higher dimensions make convex position easier to achieve.",
+    "significance": "core"
+  }
+]

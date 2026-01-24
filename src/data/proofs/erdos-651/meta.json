@@ -1,33 +1,143 @@
 {
   "id": "erdos-651",
-  "title": "Erdős Problem #651",
+  "title": "Erdős Problem #651: Convex Polyhedra from Points in General Position",
   "slug": "erdos-651",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the smallest integer such that any ... points in general position in ... contain ... which determine a convex ...",
+  "description": "Is f_k(n) > (1 + c_k)^n for finding convex polyhedra in ℝ^k? NO, disproved by Pohoata-Zakharov (2022) showing f_3(n) ≤ 2^{o(n)}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Pohoata, Zakharov (2022 disproof)",
     "sourceUrl": "https://erdosproblems.com/651",
-    "date": "",
-    "status": "pending",
+    "date": "2022",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos651Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "convex-geometry",
+      "ramsey-theory",
+      "erdos-szekeres",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 651,
     "erdosUrl": "https://erdosproblems.com/651",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "convexHull",
+        "description": "Convex hull of a set",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "AffineIndependent",
+        "description": "Affine independence of points",
+        "module": "Mathlib.LinearAlgebra.AffineSpace.Independent"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "InGeneralPosition definition for point sets in ℝ^k",
+      "DeterminesConvexPolyhedron predicate for convex position",
+      "ContainsConvexPolyhedron for finding subsets",
+      "f_k axiom for the Ramsey-type function",
+      "ErdosConjecture formulation of exponential lower bound",
+      "pohoata_zakharov_2022 axiom for 2^{o(n)} bound",
+      "conjecture_false_k3 theorem: disproof for k=3",
+      "erdos_651 theorem: full disproof"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #651 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_k(n)$ denote the smallest integer such that any $f_k(n)$ points in general position in $\\mathbb{R}^k$ contain $n$ which determine a convex polyhedron. Is it true that\\[f_k(n) > (1+c_k)^n\\]for some constant $c_k>0$?\n\n\n\nThe function when $k=2$ is the subject of the Erd\\H{o}s-Klein-Szekeres conjecture, see [107]. One can show that\\[f_2(n)>f_3(n)>\\cdots.\\]The answer is no, even for $k=3$: Pohoata and Zakharov \\cite{PoZa22} have proved that\\[f_3(n)\\leq 2^{o(n)}.\\]\n\n\n\n\nReferences\n\n\n[PoZa22] Pohoata, C. and Zakharov, D., Convex polytopes from fewer points. arXiv:2208.04878 (2022).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #651: Convex Polyhedra in Higher Dimensions**\n\nThis problem generalizes the famous Erdős-Klein-Szekeres \"happy ending problem\" to higher dimensions.\n\n**Key History:**\n- Erdős-Szekeres (1935): Proved f_2(n) exists and gave bounds\n- The \"happy ending problem\": Any 5 points in general position contain a convex quadrilateral\n- Suk (2017): Proved the ES conjecture f_2(n) = 2^{n-2} + 1\n- Pohoata-Zakharov (2022): Disproved the exponential conjecture for k ≥ 3\n\n**Mathematical Setting:**\n- f_k(n) = smallest N such that any N points in general position in ℝ^k contain n in convex position\n- General position: no k+1 points on a (k-1)-dimensional hyperplane\n- The function decreases: f_2(n) > f_3(n) > f_4(n) > ...",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $f_k(n)$ be the smallest integer such that any $f_k(n)$ points in general position in $\\mathbb{R}^k$ contain $n$ points determining a convex polyhedron.\n\n**Conjecture:** Is $f_k(n) > (1 + c_k)^n$ for some constant $c_k > 0$?\n\n**Answer: NO**\n\nPohoata-Zakharov (2022) proved: $f_3(n) \\leq 2^{o(n)}$.\n\nThis subexponential bound disproves the exponential lower bound conjecture for $k \\geq 3$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **General Position:** Define when points avoid hyperplane degeneracies.\n\n2. **Convex Polyhedron:** Points form a convex polyhedron if no point is in the convex hull of the others.\n\n3. **The Function f_k:** Axiomatize as a Ramsey-type function.\n\n4. **Disproof:** Use Pohoata-Zakharov's 2^{o(n)} bound to contradict any exponential lower bound.\n\n5. **Why Axioms:** The upper bound construction requires sophisticated geometric and combinatorial techniques.",
+    "keyInsights": [
+      "**f_k(n) decreases with dimension:** Higher dimensions make finding convex subsets easier",
+      "**k = 2 is exponential:** f_2(n) = 2^{n-2} + 1 (Erdős-Szekeres conjecture, proved by Suk)",
+      "**k ≥ 3 is subexponential:** f_3(n) ≤ 2^{o(n)} breaks the exponential barrier",
+      "**Dramatic dimension jump:** From exponential (k=2) to subexponential (k=3)",
+      "**Ramsey-type problem:** Find order in large enough sets"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "general-position",
+      "title": "Points in General Position",
+      "summary": "Definition of general position in ℝ^k",
+      "startLine": 38,
+      "endLine": 54
+    },
+    {
+      "id": "convex-polyhedra",
+      "title": "Convex Polyhedra",
+      "summary": "Convex hull, determining polyhedra, containing polyhedra",
+      "startLine": 56,
+      "endLine": 81
+    },
+    {
+      "id": "f-k-function",
+      "title": "The Function f_k(n)",
+      "summary": "Ramsey-type function for convex geometry",
+      "startLine": 83,
+      "endLine": 112
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "The Erdős-Klein-Szekeres Case",
+      "summary": "k = 2 case: f_2(n) = 2^{n-2} + 1",
+      "startLine": 114,
+      "endLine": 132
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity in Dimension",
+      "summary": "f_k decreases with increasing k",
+      "startLine": 134,
+      "endLine": 146
+    },
+    {
+      "id": "conjecture",
+      "title": "The Original Conjecture",
+      "summary": "Exponential lower bound conjecture",
+      "startLine": 148,
+      "endLine": 159
+    },
+    {
+      "id": "disproof",
+      "title": "The Disproof",
+      "summary": "Pohoata-Zakharov 2022: f_3(n) ≤ 2^{o(n)}",
+      "startLine": 161,
+      "endLine": 201
+    },
+    {
+      "id": "why-subexponential",
+      "title": "Why Subexponential?",
+      "summary": "Dimension comparison and construction insights",
+      "startLine": 203,
+      "endLine": 229
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_651 theorem: disproof of exponential conjecture",
+      "startLine": 249,
+      "endLine": 275
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #651 asked whether f_k(n) > (1 + c_k)^n for some c_k > 0, conjecturing exponential lower bounds for finding convex polyhedra in higher dimensions. The answer is NO. Pohoata and Zakharov (2022) proved f_3(n) ≤ 2^{o(n)}, a subexponential bound that contradicts any exponential lower bound for k ≥ 3.",
+    "implications": "**Geometric Ramsey Theory Connections**\n\n1. **Erdős-Szekeres Generalization:** Problem #107 asks about k = 2; this extends to higher dimensions\n\n2. **Dimension Matters:** The jump from exponential (k=2) to subexponential (k≥3) is fundamental\n\n3. **Convex Position:** Higher dimensions provide more \"room\" for points to be in convex position\n\n4. **Ramsey-Type Bounds:** Shows Ramsey functions can have different asymptotics by dimension",
+    "openQuestions": [
+      "What are the precise asymptotics of f_k(n) for k ≥ 3?",
+      "Is f_k(n) subexponential for all k ≥ 3?",
+      "What is the optimal construction achieving the Pohoata-Zakharov bound?",
+      "Can the bound be improved to polynomial in n?",
+      "What happens for other notions of convex position?"
+    ]
   }
 }
