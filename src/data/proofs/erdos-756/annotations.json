@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-756-point",
+    "proofId": "erdos-756",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Point",
+    "content": "A point in the Euclidean plane ℝ².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-dist",
+    "proofId": "erdos-756",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "dist",
+    "content": "Euclidean distance ‖p - q‖ between points.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-pointset",
+    "proofId": "erdos-756",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "PointSet",
+    "content": "Finite set of points in the plane.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-alldist",
+    "proofId": "erdos-756",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "allDistances",
+    "content": "Set of all positive pairwise distances in A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-mult",
+    "proofId": "erdos-756",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "definition",
+    "title": "distanceMultiplicity",
+    "content": "Count of ordered pairs (p,q) with dist(p,q) = d.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-rich",
+    "proofId": "erdos-756",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "IsRichDistance",
+    "content": "A distance is rich if multiplicity > |A|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-numrich",
+    "proofId": "erdos-756",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "numRichDistances",
+    "content": "Count of distances with multiplicity > |A|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-question",
+    "proofId": "erdos-756",
+    "range": { "startLine": 86, "endLine": 90 },
+    "type": "definition",
+    "title": "ErdosPachQuestion",
+    "content": "Can ≫n distances each occur >n times among n points?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-strong",
+    "proofId": "erdos-756",
+    "range": { "startLine": 92, "endLine": 96 },
+    "type": "definition",
+    "title": "StrongErdosPachQuestion",
+    "content": "Can ALL distances (except largest) be rich?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-756-maxdist",
+    "proofId": "erdos-756",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "definition",
+    "title": "maxDistance",
+    "content": "The largest distance in the point set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-756-hopf",
+    "proofId": "erdos-756",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "theorem",
+    "title": "hopf_pannwitz",
+    "content": "Hopf-Pannwitz (1934): Largest distance occurs ≤ n times.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-maxnotrich",
+    "proofId": "erdos-756",
+    "range": { "startLine": 110, "endLine": 115 },
+    "type": "theorem",
+    "title": "max_distance_not_rich",
+    "content": "The largest distance is never rich.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-756-bhowmick",
+    "proofId": "erdos-756",
+    "range": { "startLine": 128, "endLine": 130 },
+    "type": "theorem",
+    "title": "bhowmick_main",
+    "content": "Bhowmick (2024): ∃ n points with ⌊n/4⌋ rich distances.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-general",
+    "proofId": "erdos-756",
+    "range": { "startLine": 132, "endLine": 136 },
+    "type": "theorem",
+    "title": "bhowmick_general",
+    "content": "General: ⌊n/(2(m+1))⌋ distances with multiplicity ≥ n+m.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-756-answer",
+    "proofId": "erdos-756",
+    "range": { "startLine": 142, "endLine": 150 },
+    "type": "theorem",
+    "title": "erdos_756_answer",
+    "content": "The answer to Erdős #756 is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-756-cdl",
+    "proofId": "erdos-756",
+    "range": { "startLine": 165, "endLine": 170 },
+    "type": "theorem",
+    "title": "clemen_dumitrescu_liu",
+    "content": "Square grid: n^{c/loglog n} rich distances (2025).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-756-ratio",
+    "proofId": "erdos-756",
+    "range": { "startLine": 203, "endLine": 205 },
+    "type": "definition",
+    "title": "richDistanceRatio",
+    "content": "Ratio (# rich distances) / n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-756-upper",
+    "proofId": "erdos-756",
+    "range": { "startLine": 244, "endLine": 250 },
+    "type": "theorem",
+    "title": "multiplicity_trivial_upper",
+    "content": "Trivially, multiplicity ≤ n².",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-756-main",
+    "proofId": "erdos-756",
+    "range": { "startLine": 275, "endLine": 284 },
+    "type": "theorem",
+    "title": "erdos_756",
+    "content": "Main theorem: ErdosPachQuestion holds (YES answer).",
+    "significance": "critical"
+  }
+]
