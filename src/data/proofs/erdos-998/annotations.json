@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-998-header",
+    "proofId": "erdos-998",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #998: For irrational α, which intervals [u,v) have O(1) discrepancy in the count of fractional parts {αm}? Answer: exactly those where u = {αk} and v = {αℓ} for integers k, ℓ. Proved by Kesten (1966).",
+    "mathContext": "Characterization of O(1) discrepancy intervals for irrational rotation",
+    "significance": "critical",
+    "relatedConcepts": ["equidistribution", "diophantine-approximation", "discrepancy"]
+  },
+  {
+    "id": "ann-998-frac",
+    "proofId": "erdos-998",
+    "range": { "startLine": 47, "endLine": 63 },
+    "type": "definition",
+    "title": "Fractional Part",
+    "content": "The fractional part {x} = x - ⌊x⌋ is the 'remainder' after removing the integer part. It always lies in [0, 1). For irrational α, the sequence {α}, {2α}, {3α}, ... never repeats and is equidistributed in [0,1).",
+    "mathContext": "{x} ∈ [0, 1) with x = ⌊x⌋ + {x}",
+    "significance": "critical",
+    "relatedConcepts": ["floor-function", "modular-arithmetic"]
+  },
+  {
+    "id": "ann-998-counting",
+    "proofId": "erdos-998",
+    "range": { "startLine": 71, "endLine": 87 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "N(n, u, v, α) counts how many of {α}, {2α}, ..., {nα} land in [u, v). By Weyl's theorem, this is approximately n(v-u) for large n. The question is: for which intervals is the error O(1) rather than O(√n)?",
+    "mathContext": "N = #{1 ≤ m ≤ n : {αm} ∈ [u, v)}",
+    "significance": "critical",
+    "relatedConcepts": ["counting", "distribution"]
+  },
+  {
+    "id": "ann-998-discrepancy",
+    "proofId": "erdos-998",
+    "range": { "startLine": 89, "endLine": 107 },
+    "type": "definition",
+    "title": "Bounded Discrepancy",
+    "content": "An interval has bounded (O(1)) discrepancy if |N(n,u,v,α) - n(v-u)| ≤ C for all n. Generic intervals have O(√n) discrepancy (Weyl). Bounded discrepancy is rare and special—it means the interval is 'perfectly aligned' with the orbit.",
+    "mathContext": "|N - n(v-u)| = O(1) vs O(√n)",
+    "significance": "critical",
+    "relatedConcepts": ["discrepancy-theory", "weyl-bound"]
+  },
+  {
+    "id": "ann-998-endpoints",
+    "proofId": "erdos-998",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "definition",
+    "title": "Orbit Endpoints",
+    "content": "Endpoints are 'from the orbit' if u = {αk} and v = {αℓ} for some integers k, ℓ (or u = 0 or v = 1). These are precisely the points visited by the irrational rotation sequence. The characterization says these are the only O(1) discrepancy intervals.",
+    "mathContext": "u, v ∈ {{αk} : k ∈ ℤ} ∪ {0, 1}",
+    "significance": "critical",
+    "relatedConcepts": ["orbit", "rotation"]
+  },
+  {
+    "id": "ann-998-hecke",
+    "proofId": "erdos-998",
+    "range": { "startLine": 121, "endLine": 126 },
+    "type": "theorem",
+    "title": "Hecke-Ostrowski Theorem",
+    "content": "The converse direction (proved by Hecke 1922 and Ostrowski 1927-1930): if u = {αk} and v = {αℓ}, then [u,v) has O(1) discrepancy. This says orbit-endpoint intervals are 'good'. The question was whether they are the ONLY good ones.",
+    "mathContext": "Orbit endpoints → O(1) discrepancy",
+    "significance": "key",
+    "relatedConcepts": ["converse", "sufficiency"]
+  },
+  {
+    "id": "ann-998-kesten",
+    "proofId": "erdos-998",
+    "range": { "startLine": 128, "endLine": 135 },
+    "type": "theorem",
+    "title": "Kesten's Theorem (1966)",
+    "content": "Kesten proved the forward direction: if [u,v) has O(1) discrepancy, then u and v must be orbit endpoints. This completed the characterization. The proof uses properties of continued fractions and the three-distance theorem.",
+    "mathContext": "O(1) discrepancy → orbit endpoints",
+    "significance": "critical",
+    "relatedConcepts": ["necessity", "characterization"]
+  },
+  {
+    "id": "ann-998-equiv",
+    "proofId": "erdos-998",
+    "range": { "startLine": 137, "endLine": 146 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "Combining Hecke-Ostrowski and Kesten: [u,v) has O(1) discrepancy ⟺ u and v are orbit endpoints. This is a complete characterization of 'special' intervals for irrational rotation. The proof is an iff from the two implications.",
+    "mathContext": "O(1) discrepancy ⟺ orbit endpoints",
+    "significance": "critical",
+    "relatedConcepts": ["equivalence", "biconditional"]
+  },
+  {
+    "id": "ann-998-three-dist",
+    "proofId": "erdos-998",
+    "range": { "startLine": 148, "endLine": 168 },
+    "type": "theorem",
+    "title": "Three-Distance Theorem",
+    "content": "The fractional parts {α}, {2α}, ..., {nα} partition [0,1) into n+1 intervals of at most 3 distinct lengths. This 'three-gap theorem' (Steinhaus, Sós, Świerczkowski) explains why orbit-endpoint intervals are special: they align with the natural gap structure.",
+    "mathContext": "At most 3 distinct gap lengths for n points",
+    "significance": "key",
+    "relatedConcepts": ["gap-theorem", "steinhaus"]
+  },
+  {
+    "id": "ann-998-golden",
+    "proofId": "erdos-998",
+    "range": { "startLine": 174, "endLine": 179 },
+    "type": "insight",
+    "title": "Golden Ratio Example",
+    "content": "The golden ratio φ = (1+√5)/2 has the simplest continued fraction [1;1,1,1,...]. Its orbit structure is particularly regular, with the three-distance theorem giving gaps related to Fibonacci numbers. This makes φ a model case for studying equidistribution.",
+    "mathContext": "φ = [1;1,1,1,...], gaps involve Fibonacci",
+    "significance": "supporting",
+    "relatedConcepts": ["golden-ratio", "fibonacci"]
+  },
+  {
+    "id": "ann-998-cf",
+    "proofId": "erdos-998",
+    "range": { "startLine": 198, "endLine": 221 },
+    "type": "concept",
+    "title": "Diophantine Connections",
+    "content": "O(1) discrepancy intervals connect to: (1) Continued fractions—convergents pₙ/qₙ determine orbit structure; (2) Ostrowski representation—each integer has a unique base using partial quotients; (3) Beatty sequences—the integer parts ⌊nα⌋ and ⌊n/(α-1)⌋ are complementary.",
+    "mathContext": "Connections to continued fractions, Beatty sequences",
+    "significance": "key",
+    "relatedConcepts": ["continued-fractions", "ostrowski", "beatty"]
+  },
+  {
+    "id": "ann-998-weyl",
+    "proofId": "erdos-998",
+    "range": { "startLine": 239, "endLine": 247 },
+    "type": "theorem",
+    "title": "Weyl's Equidistribution",
+    "content": "Weyl's theorem: for irrational α, the sequence {mα} is equidistributed in [0,1). That is, N(n,u,v,α)/n → (v-u) as n → ∞ for any interval. This is the starting point—Erdős-Szüsz-Kesten asks about the error term, not just the limit.",
+    "mathContext": "N(n)/n → (v-u) as n → ∞",
+    "significance": "key",
+    "relatedConcepts": ["equidistribution", "weyl-theorem"]
+  },
+  {
+    "id": "ann-998-summary",
+    "proofId": "erdos-998",
+    "range": { "startLine": 249, "endLine": 283 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "Erdős Problem #998: SOLVED by Kesten (1966). An interval [u,v) has O(1) discrepancy for irrational rotation ⟺ both endpoints are fractional parts of α-multiples. Most intervals have O(√n) discrepancy; O(1) is special and characterized by orbit alignment.",
+    "mathContext": "Complete characterization proved",
+    "significance": "critical",
+    "relatedConcepts": ["solved", "characterization"]
+  }
+]
