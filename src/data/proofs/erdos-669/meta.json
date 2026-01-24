@@ -1,33 +1,82 @@
 {
   "id": "erdos-669",
-  "title": "Erdős Problem #669",
+  "title": "Erdős Problem #669: k-Point Lines - Exact and At-Least Counts",
   "slug": "erdos-669",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... points in ... there exist at most ... many distinct lines passing through at least ....",
+  "description": "Estimate f_k(n) (exactly k points) and F_k(n) (at least k points). For k=3, the Orchard Problem: f_3(n) = F_3(n) = n²/6 - O(n) (Burr-Grünbaum-Sloane 1974). SOLVED for k=3.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/669",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos669Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "orchard-problem",
+      "point-line",
+      "incidences",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 669,
     "erdosUrl": "https://erdosproblems.com/669",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {"theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic"},
+      {"theorem": "Nat.choose", "description": "Binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic"},
+      {"theorem": "Filter.Tendsto", "description": "Limit definition", "module": "Mathlib.Order.Filter.Basic"}
+    ],
+    "originalContributions": [
+      "Point, Line: geometric primitives",
+      "pointsOnLine: point count on line",
+      "ExactlyKPoints, AtLeastKPoints: line predicates",
+      "f_k, F_k: the counting functions",
+      "f_le_F: trivial inequality",
+      "orchardProblem: k=3 formulation",
+      "burr_grunbaum_sloane: BGS theorem",
+      "k3_limit: asymptotic limit 1/6",
+      "trivial_upper: C(n,2)/C(k,2) bound",
+      "limit_conjecture: the 1/(k(k-1)) conjecture"
+    ],
+    "references": [
+      {"key": "BGS74", "citation": "Burr, S.A., Grünbaum, B., Sloane, N.J.A., The orchard problem, Geom. Dedicata (1974), 397-424", "type": "paper"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #669 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F_k(n)$ be minimal such that for any $n$ points in $\\mathbb{R}^2$ there exist at most $F_k(n)$ many distinct lines passing through at least $k$ of the points, and $f_k(n)$ similarly but with lines passing through exactly $k$ points.\n\nEstimate $f_k(n)$ and $F_k(n)$ - in particular, determine $\\lim F_k(n)/n^2$ and $\\lim f_k(n)/n^2$.\n\n\n\nTrivially $f_k(n)\\leq F_k(n)$ and $f_2(n)=F_2(n)=\\binom{n}{2}$. The problem with $k=3$ is the classical 'Orchard problem' of Sylvester. Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} have proved that\\[f_3(n)=\\frac{n^2}{6}-O(n)\\]and\\[F_3(n)=\\frac{n^2}{6}-O(n).\\]There is a trivial upper bound of $F_k(n) \\leq \\binom{n}{2}/\\binom{k}{2}$, and hence\\[\\lim F_k(n)/n^2 \\leq \\frac{1}{k(k-1)}.\\]See also [101].\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #669: The Orchard Problem**\n\nThis classical problem asks about counting lines through multiple points. Two functions are studied:\n- f_k(n): lines through exactly k points\n- F_k(n): lines through at least k points\n\n**Key History:**\n- Sylvester: Original orchard problem (k=3)\n- Burr-Grünbaum-Sloane (1974): Solved k=3, proving f_3(n) = F_3(n) = n²/6 - O(n)\n\nThe general k case asks for lim f_k(n)/n² and lim F_k(n)/n².",
+    "problemStatement": "**Problem Statement**\n\nDefine:\n- f_k(n) = max lines through exactly k points of any n-point set\n- F_k(n) = max lines through at least k points\n\n**Known:**\n- k=2: f_2(n) = F_2(n) = C(n,2)\n- k=3: f_3(n) = F_3(n) = n²/6 - O(n) (SOLVED)\n\n**Question:** Determine lim f_k(n)/n² and lim F_k(n)/n² for all k.\n\n**Conjecture:** Both limits equal 1/(k(k-1)).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry:** Define Point, Line, OnLine, pointsOnLine.\n2. **Functions:** Define f_k (exactly k) and F_k (at least k).\n3. **Relations:** Prove f_k ≤ F_k and k=2 case.\n4. **Orchard:** Axiomatize BGS theorem for k=3.\n5. **Bounds:** Trivial upper bound F_k ≤ C(n,2)/C(k,2).\n6. **Conjecture:** State the 1/(k(k-1)) limit conjecture.",
+    "keyInsights": [
+      "**f_k ≤ F_k:** Exactly k implies at least k (trivial)",
+      "**k=2 trivial:** All pairs give distinct lines, so C(n,2)",
+      "**Orchard solved:** k=3 gives n²/6 - O(n) (BGS 1974)",
+      "**Upper bound:** F_k(n) ≤ C(n,2)/C(k,2) via pair counting",
+      "**Limit conjecture:** lim = 1/(k(k-1)) for all k ≥ 2",
+      "**k=3 check:** 1/(3·2) = 1/6 matches BGS result"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {"id": "geometry", "title": "Point and Line Definitions", "summary": "Point, Line, OnLine, pointsOnLine", "startLine": 34, "endLine": 54},
+    {"id": "functions", "title": "f_k and F_k Functions", "summary": "ExactlyKPoints, AtLeastKPoints, f_k, F_k", "startLine": 56, "endLine": 77},
+    {"id": "relations", "title": "Basic Relations", "summary": "f_le_F, k2_case", "startLine": 78, "endLine": 89},
+    {"id": "orchard", "title": "The Orchard Problem (k=3)", "summary": "orchardProblem, burr_grunbaum_sloane", "startLine": 91, "endLine": 115},
+    {"id": "upper-bound", "title": "Trivial Upper Bound", "summary": "trivial_upper, limit_upper", "startLine": 117, "endLine": 130},
+    {"id": "questions", "title": "The Main Questions", "summary": "limit_f_k, limit_F_k, limit_conjecture", "startLine": 132, "endLine": 150},
+    {"id": "special", "title": "Special Configurations", "summary": "collinear_case, general_position, optimal", "startLine": 152, "endLine": 174},
+    {"id": "connections", "title": "Connections", "summary": "Links to #588, #101, Szemerédi-Trotter", "startLine": 176, "endLine": 196},
+    {"id": "summary", "title": "Summary", "summary": "erdos_669_summary, orchard_solved", "startLine": 198, "endLine": 242}
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #669 asks for the asymptotic behavior of f_k(n) (exactly k-point lines) and F_k(n) (at least k-point lines). The k=3 case is the famous Orchard Problem, solved by Burr-Grünbaum-Sloane (1974): both functions equal n²/6 - O(n). The general conjecture is that both limits equal 1/(k(k-1)).",
+    "implications": "**Connections**\n\n1. **Problem #588:** Related problem with general position constraint\n2. **Problem #101:** The k=4 case\n3. **Szemerédi-Trotter:** Incidence bounds constrain these counts\n4. **Projective Planes:** Optimal configurations often from PG(2,q)",
+    "openQuestions": [
+      "Is lim f_k(n)/n² = 1/(k(k-1)) for all k ≥ 4?",
+      "Is lim F_k(n)/n² = 1/(k(k-1)) for all k ≥ 4?",
+      "What configurations achieve the maximum?",
+      "How does the problem generalize to higher dimensions?"
+    ]
   }
 }

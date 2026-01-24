@@ -2546,7 +2546,7 @@
     "dateAdded": "2026-01-24",
     "erdosNumber": 1113,
     "mathlibCount": 3,
-    "sorries": 1,
+    "sorries": 0,
     "annotationCount": 16
   },
   {
@@ -8465,7 +8465,7 @@
       "lcm"
     ],
     "erdosNumber": 487,
-    "sorries": 3,
+    "sorries": 0,
     "annotationCount": 14
   },
   {
@@ -9863,17 +9863,22 @@
   },
   {
     "id": "erdos-595",
-    "title": "Erdős Problem #595",
+    "title": "Erdős Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition",
     "slug": "erdos-595",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite graph ... which contains no ... and is not the union of countably many triangle-free graphs?\n\n\n\nA proble...",
-    "status": "pending",
+    "description": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "infinite-combinatorics",
+      "ramsey-theory",
+      "chromatic-theory",
+      "open"
     ],
     "erdosNumber": 595,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-597",
@@ -11145,17 +11150,24 @@
   },
   {
     "id": "erdos-669",
-    "title": "Erdős Problem #669",
+    "title": "Erdős Problem #669: k-Point Lines - Exact and At-Least Counts",
     "slug": "erdos-669",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... points in ... there exist at most ... many distinct lines passing through at least ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate f_k(n) (exactly k points) and F_k(n) (at least k points). For k=3, the Orchard Problem: f_3(n) = F_3(n) = n²/6 - O(n) (Burr-Grünbaum-Sloane 1974). SOLVED for k=3.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "orchard-problem",
+      "point-line",
+      "incidences",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 669,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 14
   },
   {
     "id": "erdos-67",
@@ -11735,7 +11747,7 @@
       "open-problem"
     ],
     "erdosNumber": 712,
-    "sorries": 3,
+    "sorries": 0,
     "annotationCount": 21
   },
   {
@@ -14192,17 +14204,23 @@
   },
   {
     "id": "erdos-857",
-    "title": "Erdős Problem #857",
+    "title": "Erdős Problem #857: The Weak Sunflower Problem",
     "slug": "erdos-857",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in any collection of sets ... there must exist a sunflower of size ... - that is, some collectio...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let m(n,k) be minimal such that any collection of m subsets of {1,...,n} contains a k-sunflower. Estimate m(n,k) or give an asymptotic formula. Connected to the Sunflower Conjecture and cap set problem.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sunflower",
+      "extremal-combinatorics",
+      "open"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 857,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-858",

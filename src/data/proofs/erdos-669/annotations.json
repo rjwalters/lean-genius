@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-669-header",
+    "proofId": "erdos-669",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #669: The Orchard Problem**\n\nTwo counting functions:\n- f_k(n): max lines through exactly k points\n- F_k(n): max lines through at least k points\n\nFor k=3: SOLVED by Burr-Grünbaum-Sloane (1974)\nf_3(n) = F_3(n) = n²/6 - O(n)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-fk",
+    "proofId": "erdos-669",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "definition",
+    "title": "f_k Function",
+    "content": "**f_k(n): Lines with Exactly k Points**\n\nThe maximum number of lines passing through exactly k points from any n-point configuration.\n\nFor k=2, this equals C(n,2) (all pairs).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-Fk",
+    "proofId": "erdos-669",
+    "range": { "startLine": 73, "endLine": 76 },
+    "type": "definition",
+    "title": "F_k Function",
+    "content": "**F_k(n): Lines with At Least k Points**\n\nThe maximum number of lines passing through at least k points.\n\nTrivially f_k(n) ≤ F_k(n) since exactly k implies at least k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-f-le-F",
+    "proofId": "erdos-669",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "theorem",
+    "title": "f_k ≤ F_k",
+    "content": "**Trivial Inequality:**\n\nf_k(n) ≤ F_k(n) for all k, n.\n\nEvery line with exactly k points also has at least k points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-669-k2",
+    "proofId": "erdos-669",
+    "range": { "startLine": 86, "endLine": 89 },
+    "type": "theorem",
+    "title": "k=2 Case",
+    "content": "**k=2: All Pairs**\n\nf_2(n) = F_2(n) = C(n,2).\n\nEvery pair of points determines a unique line, and generic points give exactly 2 points per line.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-669-orchard",
+    "proofId": "erdos-669",
+    "range": { "startLine": 95, "endLine": 101 },
+    "type": "definition",
+    "title": "The Orchard Problem",
+    "content": "**The Orchard Problem (Sylvester):**\n\nHow many lines pass through 3 or more points of n points?\n\nThis is the k=3 case: determine f_3(n) and F_3(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-bgs",
+    "proofId": "erdos-669",
+    "range": { "startLine": 103, "endLine": 110 },
+    "type": "axiom",
+    "title": "Burr-Grünbaum-Sloane Theorem",
+    "content": "**BGS (1974):**\n\nf_3(n) = n²/6 - O(n) and F_3(n) = n²/6 - O(n).\n\nThis completely solves the Orchard Problem. The limit is 1/6.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-k3limit",
+    "proofId": "erdos-669",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "axiom",
+    "title": "k=3 Asymptotic Limit",
+    "content": "**lim f_3(n)/n² = lim F_3(n)/n² = 1/6**\n\nThe asymptotic density of 3-point lines is 1/6.\n\nThis matches the conjectured formula 1/(k(k-1)) = 1/(3·2) = 1/6.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-upper",
+    "proofId": "erdos-669",
+    "range": { "startLine": 121, "endLine": 125 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "**F_k(n) ≤ C(n,2)/C(k,2):**\n\nEach k-rich line uses at least C(k,2) pairs of points.\n\nTotal pairs is C(n,2), giving the bound F_k(n) ≤ n²/(k(k-1)) + O(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-669-conjecture",
+    "proofId": "erdos-669",
+    "range": { "startLine": 144, "endLine": 147 },
+    "type": "definition",
+    "title": "Limit Conjecture",
+    "content": "**Conjecture: lim = 1/(k(k-1))**\n\nFor all k ≥ 2:\n- lim f_k(n)/n² = 1/(k(k-1))\n- lim F_k(n)/n² = 1/(k(k-1))\n\nConfirmed for k=2 (trivial) and k=3 (BGS).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-k3check",
+    "proofId": "erdos-669",
+    "range": { "startLine": 149, "endLine": 150 },
+    "type": "theorem",
+    "title": "k=3 Verification",
+    "content": "**1/(3·2) = 1/6 ✓**\n\nThe conjectured formula gives 1/6 for k=3, matching the BGS result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-669-connection588",
+    "proofId": "erdos-669",
+    "range": { "startLine": 180, "endLine": 185 },
+    "type": "concept",
+    "title": "Connection to Problem #588",
+    "content": "**Problem #588:**\n\nAsks about k-rich lines when no k+1 points are collinear.\n\nProblem #669 asks about arbitrary point sets. The constraints are different but the techniques overlap.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-669-summary",
+    "proofId": "erdos-669",
+    "range": { "startLine": 202, "endLine": 229 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #669: Summary**\n\n**SOLVED (k=3):**\n- f_3(n) = F_3(n) = n²/6 - O(n)\n- lim = 1/6 (Burr-Grünbaum-Sloane 1974)\n\n**CONJECTURE (general k):**\n- lim f_k(n)/n² = lim F_k(n)/n² = 1/(k(k-1))",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-669-orchard-solved",
+    "proofId": "erdos-669",
+    "range": { "startLine": 231, "endLine": 237 },
+    "type": "theorem",
+    "title": "Orchard Solved",
+    "content": "**The Orchard Problem is Fully Resolved:**\n\nThe k=3 case of Erdős #669 is completely solved by the BGS theorem.\n\nOptimal configurations often come from projective plane constructions.",
+    "significance": "critical"
+  }
+]
