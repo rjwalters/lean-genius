@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-973-seq",
+    "proofId": "erdos-973",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "ComplexSeq",
+    "content": "A sequence of n complex numbers: Fin n → ℂ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-powersum",
+    "proofId": "erdos-973",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "powerSum",
+    "content": "The k-th power sum: ∑_{i=1}^n z_i^k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-first",
+    "proofId": "erdos-973",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "HasFirstOne",
+    "content": "The first element z₁ = 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-973-geone",
+    "proofId": "erdos-973",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "AllModulusGeOne",
+    "content": "All elements have |z_i| ≥ 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-circle",
+    "proofId": "erdos-973",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "AllOnUnitCircle",
+    "content": "All elements have |z_i| = 1 (on unit circle).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-disk",
+    "proofId": "erdos-973",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "AllModulusLeOne",
+    "content": "All elements have |z_i| ≤ 1 (in unit disk).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-max",
+    "proofId": "erdos-973",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "maxPowerSum",
+    "content": "Maximum power sum over k from 2 to n+1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-question",
+    "proofId": "erdos-973",
+    "range": { "startLine": 71, "endLine": 78 },
+    "type": "definition",
+    "title": "ErdosQuestion973",
+    "content": "Does C > 1 exist with max power sum < C^{-n}?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-erdos",
+    "proofId": "erdos-973",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "theorem",
+    "title": "erdos_unit_disk_construction",
+    "content": "Erdős: For |z_i| ≤ 1, C ≈ 1.32 works.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-m2",
+    "proofId": "erdos-973",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "definition",
+    "title": "M2",
+    "content": "Optimal value for unit circle sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-lerdos",
+    "proofId": "erdos-973",
+    "range": { "startLine": 103, "endLine": 107 },
+    "type": "theorem",
+    "title": "l_erdos_1992_bounds",
+    "content": "L. Erdős (1992): (1.746)^{-n} < M₂ < (1.745)^{-n}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-turan",
+    "proofId": "erdos-973",
+    "range": { "startLine": 116, "endLine": 121 },
+    "type": "theorem",
+    "title": "turan_lower_bound",
+    "content": "Turán: For |z_i| ≥ 1, max ≥ (2e)^{-(1+o(1))n}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-const",
+    "proofId": "erdos-973",
+    "range": { "startLine": 123, "endLine": 124 },
+    "type": "definition",
+    "title": "turanConstant",
+    "content": "The Turán constant 2e ≈ 5.44.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-973-answer",
+    "proofId": "erdos-973",
+    "range": { "startLine": 133, "endLine": 144 },
+    "type": "definition",
+    "title": "AnswerSummary",
+    "content": "Answer depends on modulus constraint.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-roots",
+    "proofId": "erdos-973",
+    "range": { "startLine": 172, "endLine": 174 },
+    "type": "definition",
+    "title": "rootsOfUnitySequence",
+    "content": "n-th roots of unity as test sequence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-973-oncircle",
+    "proofId": "erdos-973",
+    "range": { "startLine": 176, "endLine": 182 },
+    "type": "theorem",
+    "title": "roots_on_circle",
+    "content": "Roots of unity are on the unit circle.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-973-diskthm",
+    "proofId": "erdos-973",
+    "range": { "startLine": 219, "endLine": 225 },
+    "type": "theorem",
+    "title": "erdos_973_unit_disk",
+    "content": "Main result for unit disk case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-constrained",
+    "proofId": "erdos-973",
+    "range": { "startLine": 227, "endLine": 232 },
+    "type": "theorem",
+    "title": "erdos_973_original_constrained",
+    "content": "Turán bound for |z_i| ≥ 1 case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-973-main",
+    "proofId": "erdos-973",
+    "range": { "startLine": 234, "endLine": 242 },
+    "type": "theorem",
+    "title": "erdos_973",
+    "content": "Main theorem: complete picture for all cases.",
+    "significance": "critical"
+  }
+]
