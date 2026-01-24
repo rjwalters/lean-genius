@@ -1,16 +1,21 @@
 {
   "id": "erdos-465",
-  "title": "Erdős Problem #465",
+  "title": "Erdős Problem #465: Points with Distances Avoiding Integers",
   "slug": "erdos-465",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the maximum number of points ... which can be chosen in a circle of radius ... such that\\[\\| \\lvert P_i-P_j\\rv...",
+  "description": "Let N(X,δ) be the maximum number of points in a circle of radius X such that all pairwise distances avoid integers by at least δ. Is N(X,δ) = o(X)? Is N(X,δ) < X^{1/2+o(1)}? Both answered YES by Sárközy (1976) and Konyagin (2001).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/465",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos465Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "diophantine-approximation",
+      "distances",
+      "solved"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +24,69 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #465 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N(X,\\delta)$ denote the maximum number of points $P_1,\\ldots,P_n$ which can be chosen in a circle of radius $X$ such that\\[\\| \\lvert P_i-P_j\\rvert \\| \\geq \\delta\\]for all $1\\leq i<j\\leq n$. (Here $\\|x\\|$ is the distance from $x$ to the nearest integer.)\n\nIs it true that, for any $0<\\delta<1/2$, we have\\[N(X,\\delta)=o(X)?\\]In fact, is it true that (for any fixed $\\delta>0$)\\[N(X,\\delta)<X^{1/2+o(1)}?\\]\n\n\n\nThe first conjecture was proved by S\\'{a}rk\\\"{o}zy \\cite{Sa76}, who in fact proved\\[N(X,\\delta) \\ll \\delta^{-3}\\frac{X}{\\log\\log X}.\\]Konyagin \\cite{Ko01} proved the strong upper bound\\[N(X,\\delta) \\ll_\\delta N^{1/2}.\\]See also [466] for lower bounds and [953] for a similar problem.\n\n\n\n\nReferences\n\n\n[Ko01] Konyagin, S. V., On the distances between points on the plane. Mat. Zametki (2001), 630-633.\n\n[Sa76] S\\'{a}rk\\\"{o}zy, A., On distances near integers. I, II. Studia Sci. Math. Hungar. (1976), 37-50, 105-111.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects combinatorial geometry with Diophantine approximation. The function N(X,δ) measures how many points can be placed in a disk while keeping all pairwise distances 'far' from integers. Erdős asked about the growth rate: is it sublinear? Is it at most X^{1/2}? Both were answered affirmatively, with Konyagin's 2001 result giving the optimal bound.",
+    "problemStatement": "Let N(X,δ) denote the maximum number of points P₁,...,Pₙ that can be chosen in a circle of radius X such that ‖|Pᵢ - Pⱼ|‖ ≥ δ for all i ≠ j, where ‖x‖ is the distance from x to the nearest integer. Questions: (1) Is N(X,δ) = o(X) for any 0 < δ < 1/2? (2) Is N(X,δ) < X^{1/2+o(1)} for any fixed δ > 0?",
+    "proofStrategy": "The first conjecture was proved by Sárközy (1976) using analytic number theory techniques, giving N(X,δ) ≪ δ⁻³ · X / log log X. Konyagin (2001) used Fourier analysis and exponential sum estimates to prove the much stronger bound N(X,δ) ≪_δ X^{1/2}. This is optimal, as Problem #466 shows matching lower bounds.",
+    "keyInsights": [
+      "N(X,δ) measures packing density with distance constraints modulo integers",
+      "Sárközy (1976): N(X,δ) ≪ δ⁻³ · X / log log X (sublinear growth)",
+      "Konyagin (2001): N(X,δ) ≪_δ X^{1/2} (optimal bound)",
+      "Lower bound from Problem #466: N(X,δ) ≫_δ X^{1/2}",
+      "The optimal exponent 1/2 reflects deep constraints from Diophantine approximation",
+      "Fourier analysis and exponential sums are key tools"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Distance to nearest integer ‖x‖, point configurations, N(X,δ)",
+      "startLine": 44,
+      "endLine": 84
+    },
+    {
+      "id": "first-conjecture",
+      "title": "First Conjecture (Sublinear Growth)",
+      "summary": "N(X,δ) = o(X) proved by Sárközy (1976)",
+      "startLine": 85,
+      "endLine": 110
+    },
+    {
+      "id": "second-conjecture",
+      "title": "Second Conjecture (Square Root Growth)",
+      "summary": "N(X,δ) < X^{1/2+o(1)} proved by Konyagin (2001)",
+      "startLine": 111,
+      "endLine": 140
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison of Bounds",
+      "summary": "Konyagin's X^{1/2} vs Sárközy's X/log log X",
+      "startLine": 141,
+      "endLine": 160
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Problem #466 shows X^{1/2} is optimal",
+      "startLine": 161,
+      "endLine": 181
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Both conjectures proved, optimal growth is X^{1/2}",
+      "startLine": 243,
+      "endLine": 292
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #465 is completely solved. Both conjectures are true: N(X,δ) = o(X) and N(X,δ) < X^{1/2+o(1)}. The optimal bound N(X,δ) ≍ X^{1/2} was established by Konyagin (2001) for the upper bound and Problem #466 for the lower bound.",
+    "implications": "This result shows that the constraint of avoiding integer distances is very restrictive. Even in a large disk, only about √X points can satisfy this constraint. The techniques developed (exponential sums, Fourier analysis) are broadly applicable in combinatorial geometry and Diophantine approximation.",
+    "openQuestions": [
+      "What is the exact dependence of the constant on δ?",
+      "How does the answer change in higher dimensions?",
+      "What happens for other notions of 'avoiding integers' (different metrics)?"
+    ]
   }
 }
