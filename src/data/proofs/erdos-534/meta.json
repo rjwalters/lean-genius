@@ -1,33 +1,133 @@
 {
   "id": "erdos-534",
-  "title": "Erdős Problem #534",
+  "title": "Erdős Problem #534: Maximum GCD-Intersecting Sets",
   "slug": "erdos-534",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset ... which contains ... such that ... for all ...?\n\n\n\nA problem of Erds and Graham (in  it...",
+  "description": "What is the largest subset A ⊆ {1,...,N} containing N such that gcd(a,b) > 1 for all distinct a,b ∈ A? Solved by Ahlswede-Khachatrian (1996) who proved the optimal sets use multiples of {2q₁,...,2qⱼ, q₁⋯qⱼ}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ahlswede-Khachatrian (1996)",
     "sourceUrl": "https://erdosproblems.com/534",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos534Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "intersecting-families",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 534,
     "erdosUrl": "https://erdosproblems.com/534",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.minFac",
+        "description": "Smallest prime factor",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "interval definition: {1,...,N}",
+      "IsGCDIntersecting definition: gcd(a,b) > 1 for all pairs",
+      "maxGCDIntersecting definition: supremum of valid set sizes",
+      "multiplesOfSmallestPrime construction",
+      "evenMultiplesSharing construction",
+      "OriginalConjecture statement (proved false)",
+      "optimalFamily definition with 2qᵢ and product terms",
+      "ahlswede_khachatrian_theorem axiom",
+      "prime_power_case and two_times_prime_case special cases"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #534 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset $A\\subseteq\\{1,\\ldots,N\\}$ which contains $N$ such that $\\mathrm{gcd}(a,b)>1$ for all $a\\neq b\\in A$?\n\n\n\nA problem of Erd\\H{o}s and Graham (in \\cite{Er73} it was stated with $(a,b)=1$ instead but this is clearly a typo). They conjecture that this maximum is either $N/p$ (where $p$ is the smallest prime factor of $N$) or it is the number of integers $\\{2t: t\\leq N/2\\textrm{ and }(2t,N)> 1\\}$.\n\nAhlswede and Khachatrian \\cite{AhKh96} observe that it is 'easy' to find a counterexample to this conjecture, which they informed Erd\\H{o}s about in 1992. Erd\\H{o}s then gave a refined conjecture, that if $N=q_1^{k_1}\\cdots q_r^{k_r}$ (where $q_1<\\cdots <q_r$ are distinct primes) then the maximum is achieved by, for some $1\\leq j\\leq r$, those integers in $[1,N]$ which are a multiple of at least one of\\[\\{2q_1,\\ldots,2q_j,q_1\\cdots q_j\\}.\\]This conjecture was proved by Ahlswede and Khachatrian \\cite{AhKh96}.\n\nSee also [56].\n\n\n\n\nReferences\n\n\n[AhKh96] Ahlswede, Rudolf and Khachatrian, Levon H., Sets of integers with pairwise common divisor and a factor\nfrom a specified set of primes. Acta Arith. (1996), 259--276.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #534: Maximum GCD-Intersecting Sets**\n\nThis problem asks for the largest subset of {1,...,N} containing N where every pair shares a common factor > 1.\n\n**Key History:**\n- Erdős-Graham: Original conjecture (max is N/p or even multiples sharing factor with N)\n- Ahlswede-Khachatrian (1992): Found counterexample\n- Ahlswede-Khachatrian (1996): Proved correct characterization\n\n**Mathematical Setting:**\nThe problem is an arithmetic analog of intersecting families, where gcd > 1 plays the role of 'shares an element'.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nWhat is the largest $A \\subseteq \\{1, \\ldots, N\\}$ containing $N$ such that $\\gcd(a, b) > 1$ for all distinct $a, b \\in A$?\n\n**Answer:** For $N = q_1^{k_1} \\cdots q_r^{k_r}$ (distinct primes $q_1 < \\cdots < q_r$), the maximum is achieved by integers that are multiples of at least one of $\\{2q_1, \\ldots, 2q_j, q_1 \\cdots q_j\\}$ for some optimal $1 \\leq j \\leq r$.\n\n**Note:** The original Erdős-Graham conjecture was wrong!",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - interval: {1,...,N}\n   - IsGCDIntersecting: pairwise gcd > 1\n   - maxGCDIntersecting: supremum of valid set sizes\n\n2. **Constructions:**\n   - multiplesOfSmallestPrime: size N/p\n   - evenMultiplesSharing: even numbers sharing factor with N\n   - optimalFamily: the Ahlswede-Khachatrian construction\n\n3. **Main Results:**\n   - original_conjecture_false: the counterexample exists\n   - ahlswede_khachatrian_theorem: correct characterization",
+    "keyInsights": [
+      "**Original Conjecture Wrong:** The max is NOT simply N/p or even multiples sharing factor",
+      "**Optimal Construction:** Uses {2q₁,...,2qⱼ, q₁⋯qⱼ} for optimal j",
+      "**Trade-off:** Larger j gives more 2qᵢ terms; smaller j gives more product multiples",
+      "**EKR Connection:** This is an arithmetic version of Erdős-Ko-Rado intersecting families",
+      "**Prime Powers:** For p^k, the max is p^(k-1)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "interval, IsGCDIntersecting, ContainsN, maxGCDIntersecting",
+      "startLine": 39,
+      "endLine": 56
+    },
+    {
+      "id": "simple-bounds",
+      "title": "Simple Upper Bounds",
+      "summary": "multiplesOfSmallestPrime construction and size N/p",
+      "startLine": 58,
+      "endLine": 73
+    },
+    {
+      "id": "even-multiples",
+      "title": "Even Multiples Construction",
+      "summary": "evenMultiplesSharing: even numbers sharing factor with N",
+      "startLine": 75,
+      "endLine": 85
+    },
+    {
+      "id": "original-conjecture",
+      "title": "Original Conjecture (WRONG)",
+      "summary": "OriginalConjecture, original_conjecture_false, counterexample_exists",
+      "startLine": 87,
+      "endLine": 103
+    },
+    {
+      "id": "correct-characterization",
+      "title": "Correct Characterization",
+      "summary": "optimalFamily, ahlswede_khachatrian_theorem",
+      "startLine": 105,
+      "endLine": 127
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "prime_power_case, two_times_prime_case, squarefree_case",
+      "startLine": 129,
+      "endLine": 147
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_534_characterization, erdos_534_solved",
+      "startLine": 195,
+      "endLine": 232
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #534 is SOLVED. The original Erdős-Graham conjecture was wrong—Ahlswede and Khachatrian found a counterexample in 1992 and proved the correct characterization in 1996. For N = q₁^k₁⋯qᵣ^kᵣ, the maximum GCD-intersecting set containing N uses multiples of {2q₁,...,2qⱼ, q₁⋯qⱼ} for optimal j.",
+    "implications": "**Connections to Combinatorics**\n\n1. **Intersecting Families:** Arithmetic version of EKR-type problems\n\n2. **GCD Structures:** Understanding sets with pairwise coprimality constraints\n\n3. **Prime Factorization:** The structure of N determines the optimal construction\n\n4. **OEIS:** Related sequences A387543, A387698",
+    "openQuestions": [
+      "Efficient algorithms to compute optimal j",
+      "Generalizations to other arithmetic conditions",
+      "Connections to coding theory",
+      "Higher-dimensional analogs"
+    ]
   }
 }

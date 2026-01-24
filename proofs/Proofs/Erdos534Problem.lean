@@ -110,7 +110,11 @@ axiom counterexample_exists :
 def optimalFamily (N : ℕ) (j : ℕ) (primes : List ℕ) : Finset ℕ :=
   -- Integers in [1,N] that are multiples of at least one of:
   -- 2q₁, 2q₂, ..., 2qⱼ, or q₁·q₂·...·qⱼ
-  sorry
+  let firstJ := primes.take j
+  let twoTimesPrimes := firstJ.map (2 * ·)  -- {2q₁, ..., 2qⱼ}
+  let productOfFirstJ := firstJ.foldl (· * ·) 1  -- q₁·q₂·...·qⱼ
+  (interval N).filter fun n =>
+    (twoTimesPrimes.any (· ∣ n)) ∨ (productOfFirstJ ∣ n)
 
 /-- The maximum is achieved by one of these families -/
 axiom ahlswede_khachatrian_theorem :
