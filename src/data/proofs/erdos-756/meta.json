@@ -1,33 +1,84 @@
 {
   "id": "erdos-756",
-  "title": "Erdős Problem #756",
+  "title": "Erdős Problem #756: Rich Distances in the Plane",
   "slug": "erdos-756",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points. Can there be ... many distinct distances each of which occurs for more than ... many pairs fr...",
+  "description": "Can there be ≫n distinct distances each occurring more than n times among n points in ℝ²? SOLVED: YES (Bhowmick 2024) - constructs n points with ⌊n/4⌋ rich distances.",
   "meta": {
-    "author": "Unknown",
+    "author": "Bhowmick (2024 solution), Clemen-Dumitrescu-Liu (2025 grid results)",
     "sourceUrl": "https://erdosproblems.com/756",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos756Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distance-problems",
+      "point-sets",
+      "combinatorics",
+      "solved"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 756,
     "erdosUrl": "https://erdosproblems.com/756",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean plane ℝ² for point coordinates",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for point sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "norm",
+        "description": "Norm for Euclidean distance",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Point/PointSet definitions for plane geometry",
+      "dist/distSq: Euclidean distance functions",
+      "allDistances: set of pairwise distances",
+      "distanceMultiplicity: count of point pairs at distance d",
+      "IsRichDistance: multiplicity > n definition",
+      "numRichDistances: count of rich distances",
+      "ErdosPachQuestion: formal statement of the problem",
+      "hopf_pannwitz axiom: largest distance ≤ n times",
+      "max_distance_not_rich theorem: largest is never rich",
+      "bhowmick_main axiom: ⌊n/4⌋ rich distances exist",
+      "bhowmick_general axiom: higher multiplicity version",
+      "erdos_756_answer theorem: YES answer",
+      "clemen_dumitrescu_liu axiom: square grid results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #756 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a set of $n$ points. Can there be $\\gg n$ many distinct distances each of which occurs for more than $n$ many pairs from $A$?\n\n\n\nAsked by Erd\\H{o}s and Pach in the stronger form of whether all distances (aside from the largest) can occur with multiplicity $>n$. Hopf and Pannowitz \\cite{HoPa34} proved that the largest distance between points of $A$ can occur at most $n$ times, but it is unknown whether a second such distance must occur (see [132]).\n\nThe answer is yes: Bhowmick \\cite{Bh24} constructs a set of $n$ points in $\\mathbb{R}^2$ such that $\\lfloor\\frac{n}{4}\\rfloor$ distances occur at least $n+1$ times. More generally, they construct, for any $m$ and large $n$, a set of $n$ points such that $\\lfloor \\frac{n}{2(m+1)}\\rfloor$ distances occur at least $n+m$ times.\n\nFurther investigations were undertaken by Clemen, Dumitrescu, and Liu \\cite{CDL25}, who proved, amongst other results, that if we take $A$ to be the square grid of $n$ points, then there are at least $n^{c/\\log\\log n}$ many distances which occur with multiplicity at least $n^{1+c/\\log\\log n}$ (for some constant $c>0$).\n\nSee also [132] and [957].\n\n\n\n\nReferences\n\n\n[Bh24] K. Bhowmick, A problem of Erd\\H{o}s about rich distances. arXiv:2407.01174 (2024).\n\n[CDL25] F. Clemen, A. Dumitrescu, and D. Liu, On multiplicities of interpoint distances. arXiv:2505.04283 (2025).\n\n[HoPa34] Hopf, H. and Pannwitz, E., Aufgabe 167. Jber. Deutsch. Math. Verein. (1934), 114.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #756 (Rich Distances)**\n\nAsked by Erdős and Pach: Can there be many distances, each occurring more than n times?\n\n**Key History:**\n- 1934: Hopf-Pannwitz proved the largest distance occurs ≤ n times\n- Erdős-Pach asked if all other distances can have multiplicity > n\n- 2024: Bhowmick gave positive answer with explicit construction\n- 2025: Clemen-Dumitrescu-Liu studied the square grid case\n\n**The Surprise:**\nDespite the Hopf-Pannwitz constraint on the largest distance, many other distances CAN be rich!",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A ⊆ ℝ² be a set of n points. Can there be ≫n many distinct distances each of which occurs for more than n many pairs from A?\n\n**Answer: YES**\n\nBhowmick (2024) constructs n points where:\n- At least ⌊n/4⌋ distances occur ≥ n+1 times\n- More generally: ⌊n/(2(m+1))⌋ distances occur ≥ n+m times\n\nConstraint: By Hopf-Pannwitz, the largest distance can occur at most n times.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Points in Plane:** Define Point = EuclideanSpace ℝ (Fin 2), PointSet = Finset Point\n\n2. **Distance Functions:** dist, distSq for Euclidean distance\n\n3. **Counting:** allDistances, distanceMultiplicity, numRichDistances\n\n4. **Rich Distance:** IsRichDistance A d ↔ multiplicity > |A|\n\n5. **Question:** ErdosPachQuestion formalizes ≫n rich distances existing\n\n6. **Classical Result:** hopf_pannwitz axiom for largest distance\n\n7. **Answer:** bhowmick_main axiom + erdos_756_answer theorem",
+    "keyInsights": [
+      "**Rich Threshold:** A distance is 'rich' if its multiplicity exceeds n",
+      "**Hopf-Pannwitz Constraint:** The largest distance is NEVER rich (≤ n occurrences)",
+      "**Bhowmick Construction:** Achieves ⌊n/4⌋ rich distances with explicit geometry",
+      "**Square Grid:** Has n^{c/loglog n} distances with superlinear multiplicity",
+      "**Open:** Stronger question about ALL distances (except largest) being rich"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #756 (Rich Distances) asked whether ≫n distinct distances can each occur >n times among n points in the plane. Bhowmick (2024) proved YES: there exist n-point sets with ⌊n/4⌋ 'rich' distances (each occurring ≥ n+1 times). The only constraint is Hopf-Pannwitz (1934): the largest distance must occur ≤ n times.",
+    "implications": "**Discrete Geometry**\n\n1. **Rich Distance Phenomenon:** Many distances can exceed the n-occurrence threshold\n\n2. **Hopf-Pannwitz is Tight:** Only the largest distance is constrained\n\n3. **Explicit Constructions:** Bhowmick provides geometric constructions\n\n4. **Grid Structure:** Square grids exhibit super-polynomial rich behavior\n\n5. **Connection to Unit Distance:** Related to Erdős Problem #132",
+    "openQuestions": [
+      "Can ALL distances (except largest) be rich simultaneously?",
+      "What is the optimal constant (better than 1/4)?",
+      "Characterize the extremal constructions",
+      "Higher dimensions: analogs in ℝ³ and beyond?",
+      "Algorithmic: efficiently find rich distances in given point sets?"
+    ]
   }
 }
