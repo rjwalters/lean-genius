@@ -2100,17 +2100,24 @@
   },
   {
     "id": "erdos-1088",
-    "title": "Erdős Problem #1088",
+    "title": "Erdos Problem #1088: Distinct Distance Subsets in High Dimensions",
     "slug": "erdos-1088",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that any set of ... points in ... contains a set of ... points such that any two determined d...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f_d(n) be the minimal m such that any m points in R^d contain n points with all pairwise distances distinct. Is f_d(n) = 2^{o(d)} for fixed n >= 3? OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "discrete-geometry",
+      "distinct-distances",
+      "ramsey-type",
+      "open"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 1088,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 19
   },
   {
     "id": "erdos-1089",

@@ -1,33 +1,147 @@
 {
   "id": "erdos-1088",
-  "title": "Erdős Problem #1088",
+  "title": "Erdos Problem #1088: Distinct Distance Subsets in High Dimensions",
   "slug": "erdos-1088",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that any set of ... points in ... contains a set of ... points such that any two determined d...",
+  "description": "Let f_d(n) be the minimal m such that any m points in R^d contain n points with all pairwise distances distinct. Is f_d(n) = 2^{o(d)} for fixed n >= 3? OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdos (1975), Croft (1962)",
     "sourceUrl": "https://erdosproblems.com/1088",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1088Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "discrete-geometry",
+      "distinct-distances",
+      "ramsey-type",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 1088,
     "erdosUrl": "https://erdosproblems.com/1088",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for distance computation",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums for Euclidean distance",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Point: points in R^d as Fin d -> R",
+      "dist: Euclidean distance between points",
+      "AllDistancesDistinct: all pairwise distances different",
+      "ContainsDistinctDistanceSubset: subset with property",
+      "f: the main function f_d(n)",
+      "upper_bound_polynomial: f_d(n) <= n^{O_d(1)}",
+      "erdos_straus_upper_bound: f_d(n) <= c_n^d",
+      "one_dimensional_case: f_1(n) ~ n^2",
+      "f_2_3, f_3_3: special values 7 and 9",
+      "f_d_3_asymptotic: f_d(3) = d^2/2 + O(d)",
+      "ErdosConjecture: f_d(n) = 2^{o(d)} for fixed n"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1088 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_d(n)$ be the minimal $m$ such that any set of $m$ points in $\\mathbb{R}^d$ contains a set of $n$ points such that any two determined distances are distinct. Estimate $f_d(n)$. In particular, is it true that, for fixed $n\\geq 3$,\\[f_d(n)=2^{o(d)}?\\]\n\n\n\nIt is easy to prove that $f_d(n) \\leq n^{O_d(1)}$. Erd\\H{o}s \\cite{Er75f} claimed that he and Straus proved $f_d(n)\\leq c_n^d$ for some constant $c_n>0$.\n\nWhen $d=1$ this is the subject of [530], and $f_1(n)\\asymp n^2$.\n\nWhen $n=3$ this is the subject of [503]. Erd\\H{o}s could prove $f_2(3)=7$ and Croft \\cite{Cr62} proved $f_3(3)=9$. The results described at [503] demonstrate that $f_d(3)=d^2/2+O(d)$.\n\n\n\n\nReferences\n\n\n[Cr62] Croft, H. T., $9$-point and $7$-point configurations in $3$-space. Proc. London Math. Soc. (3) (1962), 400-424.\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Distinct Distance Subset Problem**\n\nErdos posed this problem in 1975, asking how many points in R^d guarantee a subset of n points with all pairwise distances distinct. The problem connects combinatorics, discrete geometry, and high-dimensional analysis.\n\n**Known Exact Values:**\n- Erdos proved f_2(3) = 7 (plane case for 3 points)\n- Croft (1962) proved f_3(3) = 9 (3D case for 3 points)\n- General: f_d(3) = d^2/2 + O(d)\n\n**Related Problems:**\n- Problem #530: One-dimensional case where f_1(n) ~ n^2\n- Problem #503: The n = 3 case in arbitrary dimension",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f_d(n)$ be the minimal $m$ such that any set of $m$ points in $\\mathbb{R}^d$ contains a subset of $n$ points with all pairwise distances distinct.\n\n**Main Conjecture:**\nFor fixed $n \\geq 3$, is $f_d(n) = 2^{o(d)}$?\n\n**Known Bounds:**\n- Upper: $f_d(n) \\leq n^{O_d(1)}$\n- Upper: $f_d(n) \\leq c_n^d$ (Erdos-Straus)\n- Special: $f_1(n) \\asymp n^2$, $f_2(3) = 7$, $f_3(3) = 9$\n\n**Status: OPEN**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Points and Distance:** Define Point d as Fin d -> R, with Euclidean distance\n\n2. **Distinct Distances:** AllDistancesDistinct predicate\n\n3. **Main Function:** f(d, n) as minimal m\n\n4. **Upper Bounds:** Polynomial and exponential bounds\n\n5. **Special Cases:** d = 1, n = 3 with exact values\n\n6. **Main Conjecture:** f_d(n) = 2^{o(d)} for fixed n",
+    "keyInsights": [
+      "**Dimension Trade-off:** More dimensions = more room for distinct distances, but also more pairs",
+      "**f_2(3) = 7:** Regular hexagon vertices have only 2 distinct distances",
+      "**f_3(3) = 9:** Cube vertices have only 3 distinct distances (edge, face diag, space diag)",
+      "**f_d(3) ~ d^2/2:** Quadratic growth in dimension for 3 points",
+      "**f_1(n) ~ n^2:** One-dimensional case is quadratic in n",
+      "**Open Conjecture:** Whether f_d(n) is subexponential in d for fixed n"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Point, dist, AllDistancesDistinct, ContainsDistinctDistanceSubset",
+      "startLine": 38,
+      "endLine": 56
+    },
+    {
+      "id": "main-function",
+      "title": "The Function f_d(n)",
+      "summary": "Definition of f, well-definedness, defining property",
+      "startLine": 58,
+      "endLine": 74
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Polynomial and Erdos-Straus exponential bounds",
+      "startLine": 76,
+      "endLine": 90
+    },
+    {
+      "id": "one-dimensional",
+      "title": "One-Dimensional Case",
+      "summary": "f_1(n) ~ n^2, connection to Problem #530",
+      "startLine": 92,
+      "endLine": 105
+    },
+    {
+      "id": "n-equals-3",
+      "title": "The n = 3 Case",
+      "summary": "f_2(3) = 7, f_3(3) = 9, asymptotic f_d(3) = d^2/2 + O(d)",
+      "startLine": 107,
+      "endLine": 132
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "summary": "ErdosConjecture: f_d(n) = 2^{o(d)} for fixed n >= 3",
+      "startLine": 134,
+      "endLine": 149
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Connections to Problems #530 and #503",
+      "startLine": 151,
+      "endLine": 165
+    },
+    {
+      "id": "geometric-intuition",
+      "title": "Geometric Intuition",
+      "summary": "Why dimension matters, hexagon and cube constructions",
+      "startLine": 167,
+      "endLine": 187
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "bounds_summary, erdos_1088_summary, erdos_1088_status",
+      "startLine": 189,
+      "endLine": 235
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #1088 asks for the growth of f_d(n), the minimal m such that any m points in R^d contain n points with all pairwise distances distinct. The conjecture that f_d(n) = 2^{o(d)} for fixed n >= 3 remains OPEN. Known results include f_2(3) = 7 (Erdos), f_3(3) = 9 (Croft), and f_d(3) = d^2/2 + O(d).",
+    "implications": "**Connections and Applications**\n\n1. **Ramsey Theory:** Finding structured subsets in large sets\n\n2. **Discrete Geometry:** Understanding distance distributions\n\n3. **High-Dimensional Analysis:** How dimension affects combinatorics\n\n4. **Coding Theory:** Related to sphere packing and distance codes\n\n5. **Computational Geometry:** Finding diverse point subsets",
+    "openQuestions": [
+      "Is f_d(n) = 2^{o(d)} for fixed n >= 3?",
+      "What is f_d(4) asymptotically?",
+      "Are there better constructions avoiding distinct distances?",
+      "What is the exact constant in f_d(3) = d^2/2 + O(d)?",
+      "Can probabilistic methods improve the bounds?"
+    ]
   }
 }

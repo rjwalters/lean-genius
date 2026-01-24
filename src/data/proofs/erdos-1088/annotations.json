@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-1088-header",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #1088: Distinct Distance Subsets**\n\nLet f_d(n) = minimal m such that any m points in R^d contain n points with all pairwise distances distinct.\n\n**Main Conjecture (OPEN):** Is f_d(n) = 2^{o(d)} for fixed n >= 3?\n\nKnown: f_2(3) = 7 (Erdos), f_3(3) = 9 (Croft), f_d(3) = d^2/2 + O(d).",
+    "mathContext": "This is a Ramsey-type problem in discrete geometry: large sets must contain structured subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Discrete geometry", "Distinct distances"]
+  },
+  {
+    "id": "ann-1088-point",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Point Type",
+    "content": "**Point d = Fin d -> R**\n\nA point in R^d is represented as a function from Fin d (indices 0 to d-1) to real numbers.\n\nThis is equivalent to a d-tuple (x_0, x_1, ..., x_{d-1}).",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean space", "Coordinate representation"]
+  },
+  {
+    "id": "ann-1088-dist",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "**dist p q = sqrt(sum_i (p_i - q_i)^2)**\n\nThe standard Euclidean distance in R^d.\n\nIn 2D: sqrt((x1-x2)^2 + (y1-y2)^2)\nIn 3D: sqrt((x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2)",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean metric", "L2 norm"]
+  },
+  {
+    "id": "ann-1088-alldistinct",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "definition",
+    "title": "AllDistancesDistinct",
+    "content": "**AllDistancesDistinct S:**\n\nA set S has all pairwise distances distinct if no two different pairs of points have the same distance.\n\nFormally: if dist(p1, p2) = dist(q1, q2) and both pairs are distinct, then {p1, p2} = {q1, q2}.",
+    "significance": "critical",
+    "relatedConcepts": ["Distinct distances", "Point configurations"]
+  },
+  {
+    "id": "ann-1088-contains",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "ContainsDistinctDistanceSubset",
+    "content": "**ContainsDistinctDistanceSubset T n:**\n\nThe set T contains a subset of exactly n points with all pairwise distances distinct.\n\nThis is the property we want to guarantee when |T| >= f_d(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Subset selection", "Ramsey property"]
+  },
+  {
+    "id": "ann-1088-f",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "The Function f_d(n)",
+    "content": "**f(d, n) = minimal m such that...**\n\nAny set of m points in R^d contains n points with all distances distinct.\n\nThis is the central object of study - how does f_d(n) grow with d and n?",
+    "mathContext": "The function is well-defined because we can always achieve this with enough points.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey numbers", "Extremal functions"]
+  },
+  {
+    "id": "ann-1088-polynomial",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "axiom",
+    "title": "Polynomial Upper Bound",
+    "content": "**upper_bound_polynomial:**\n\nf_d(n) <= n^{O_d(1)} for fixed dimension d.\n\nThis is an 'easy' bound from pigeonhole: with enough points, many pairs have similar distances, forcing distinct distances somewhere.",
+    "significance": "key",
+    "relatedConcepts": ["Pigeonhole principle", "Polynomial bounds"]
+  },
+  {
+    "id": "ann-1088-erdosstraus",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 86, "endLine": 90 },
+    "type": "axiom",
+    "title": "Erdos-Straus Upper Bound",
+    "content": "**erdos_straus_upper_bound:**\n\nf_d(n) <= c_n^d for some constant c_n > 1.\n\nThis bound is exponential in d but with a base depending only on n. Erdos and Straus proved this in 1975.\n\nThe main conjecture asks if c_n can be made arbitrarily close to 1.",
+    "mathContext": "Exponential in dimension, but the conjecture asks if it's subexponential (c_n -> 1).",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential bounds", "Dimension dependence"]
+  },
+  {
+    "id": "ann-1088-1dim",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "axiom",
+    "title": "One-Dimensional Case",
+    "content": "**one_dimensional_case:**\n\nf_1(n) ~ n^2\n\nIn R^1 (the real line), we need about n^2 points to guarantee n with all distances distinct.\n\nThis is related to Problem #530.",
+    "mathContext": "In 1D, distances are just |x - y|. The quadratic growth comes from avoiding arithmetic progressions.",
+    "significance": "key",
+    "relatedConcepts": ["One dimension", "Quadratic growth", "Problem #530"]
+  },
+  {
+    "id": "ann-1088-f23",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 111, "endLine": 114 },
+    "type": "axiom",
+    "title": "f_2(3) = 7 (Erdos)",
+    "content": "**f_2_3 = 7:**\n\nIn the plane, 7 points guarantee 3 with all distances distinct.\n\n**Why 6 is not enough:**\nA regular hexagon has only 2 distinct distances (edge length and long diagonal).\nSo no 3 points have all 3 pairwise distances different.",
+    "mathContext": "The hexagon is the extremal configuration avoiding 3 points with distinct distances.",
+    "significance": "critical",
+    "relatedConcepts": ["Regular hexagon", "Plane geometry"]
+  },
+  {
+    "id": "ann-1088-f33",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 116, "endLine": 119 },
+    "type": "axiom",
+    "title": "f_3(3) = 9 (Croft)",
+    "content": "**f_3_3 = 9:**\n\nIn 3D, 9 points guarantee 3 with all distances distinct.\n\n**Why 8 is not enough:**\nA cube has only 3 distinct distances:\n- Edge length: 1\n- Face diagonal: sqrt(2)\n- Space diagonal: sqrt(3)\n\nNo 3 vertices have all different pairwise distances!",
+    "mathContext": "Croft proved this in 1962, establishing the exact value for 3D.",
+    "significance": "critical",
+    "relatedConcepts": ["Cube", "3D geometry", "Croft 1962"]
+  },
+  {
+    "id": "ann-1088-fd3",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 121, "endLine": 124 },
+    "type": "axiom",
+    "title": "f_d(3) = d^2/2 + O(d)",
+    "content": "**f_d_3_asymptotic:**\n\nFor finding 3 points with distinct distances in R^d, the answer is quadratic in dimension.\n\nf_d(3) = d^2/2 + O(d)\n\nThis is polynomial (not exponential!) in d for the n = 3 case.",
+    "mathContext": "The quadratic growth suggests the conjecture might be true for n = 3 (and maybe all n).",
+    "significance": "critical",
+    "relatedConcepts": ["Quadratic growth", "Asymptotic analysis"]
+  },
+  {
+    "id": "ann-1088-conjecture",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 138, "endLine": 146 },
+    "type": "definition",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**ErdosConjecture:**\n\nFor fixed n >= 3, f_d(n) = 2^{o(d)} as d -> infinity.\n\nEquivalently: for all epsilon > 0, eventually f_d(n) <= (1 + epsilon)^d.\n\nThis asks: does high dimension help so much that the exponential base goes to 1?\n\n**STATUS: OPEN** - This is the main unsolved question.",
+    "mathContext": "The conjecture interpolates between polynomial (n = 3 case) and exponential (general upper bound).",
+    "significance": "critical",
+    "relatedConcepts": ["Subexponential growth", "High-dimensional phenomena"]
+  },
+  {
+    "id": "ann-1088-530",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 155, "endLine": 158 },
+    "type": "definition",
+    "title": "Connection to Problem #530",
+    "content": "**problem_530_connection:**\n\nProblem #530 is the 1-dimensional case of this problem.\n\nIt asks: how many points on a line guarantee n with all distances distinct?\n\nAnswer: f_1(n) ~ n^2.",
+    "significance": "key",
+    "relatedConcepts": ["Problem #530", "One dimension"]
+  },
+  {
+    "id": "ann-1088-503",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 160, "endLine": 162 },
+    "type": "definition",
+    "title": "Connection to Problem #503",
+    "content": "**problem_503_connection:**\n\nProblem #503 is the n = 3 case of this problem.\n\nIt asks: how many points in R^d guarantee 3 with distinct distances?\n\nAnswer: f_d(3) = d^2/2 + O(d).",
+    "significance": "key",
+    "relatedConcepts": ["Problem #503", "Three points"]
+  },
+  {
+    "id": "ann-1088-hexagon",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 179, "endLine": 182 },
+    "type": "definition",
+    "title": "Hexagon Construction",
+    "content": "**croft_construction_2d:**\n\nThe 6-point extremal configuration in R^2 is a regular hexagon.\n\nDistances: only 2 types (edge = 1, long diagonal = 2).\n\nNo 3 vertices have all 3 pairwise distances different!",
+    "significance": "key",
+    "relatedConcepts": ["Regular hexagon", "Extremal configuration"]
+  },
+  {
+    "id": "ann-1088-cube",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 184, "endLine": 187 },
+    "type": "definition",
+    "title": "Cube Construction",
+    "content": "**croft_construction_3d:**\n\nThe 8-point extremal configuration in R^3 is a cube.\n\nDistances: 3 types (edge, face diagonal, space diagonal).\n\nAny 3 vertices have at least 2 equal distances!",
+    "significance": "key",
+    "relatedConcepts": ["Cube", "Extremal configuration"]
+  },
+  {
+    "id": "ann-1088-summary",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 205, "endLine": 229 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1088_summary:**\n\nCollects the main results:\n1. Problem is OPEN\n2. f_2(3) = 7 (Erdos)\n3. f_3(3) = 9 (Croft)\n\nThe conjecture f_d(n) = 2^{o(d)} remains unresolved.",
+    "significance": "critical",
+    "relatedConcepts": ["Main results", "Open problem"]
+  },
+  {
+    "id": "ann-1088-status",
+    "proofId": "erdos-1088",
+    "range": { "startLine": 231, "endLine": 233 },
+    "type": "definition",
+    "title": "Problem Status",
+    "content": "**erdos_1088_status:**\n\n\"OPEN - For fixed n >= 3, is f_d(n) = 2^{o(d)}? The conjecture is unresolved.\"\n\nThis summarizes the current state of knowledge.",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Status"]
+  }
+]
