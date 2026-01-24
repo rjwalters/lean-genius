@@ -1,0 +1,101 @@
+[
+  {
+    "id": "def-graph",
+    "proofId": "erdos-600",
+    "range": { "startLine": 40, "endLine": 47 },
+    "type": "definition",
+    "title": "Graph Structure",
+    "content": "A simple graph on n vertices represented by symmetric, irreflexive edge set.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-triangle",
+    "proofId": "erdos-600",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "Triangle",
+    "content": "A set of three vertices {u, v, w} forming a triangle: all three pairs are edges.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-triangle-count",
+    "proofId": "erdos-600",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "definition",
+    "title": "Triangle Count for an Edge",
+    "content": "triangleCount(G, u, v) = number of triangles containing the edge {u, v}.",
+    "significance": "major"
+  },
+  {
+    "id": "def-triangle-covered",
+    "proofId": "erdos-600",
+    "range": { "startLine": 75, "endLine": 87 },
+    "type": "definition",
+    "title": "Triangle-Covered Graphs",
+    "content": "A graph is triangle-covered if every edge is contained in at least one triangle.",
+    "significance": "major"
+  },
+  {
+    "id": "def-e-function",
+    "proofId": "erdos-600",
+    "range": { "startLine": 100, "endLine": 110 },
+    "type": "definition",
+    "title": "Function e(n,r)",
+    "content": "e(n,r) = minimal edges such that every triangle-covered graph on n vertices with ≥ e(n,r) edges has an edge in ≥ r triangles.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-ruzsa-szemeredi",
+    "proofId": "erdos-600",
+    "range": { "startLine": 123, "endLine": 131 },
+    "type": "theorem",
+    "title": "Ruzsa-Szemerédi (1978)",
+    "content": "e(n, r) = o(n²) for any fixed r. The function grows subquadratically, proved using the triangle removal lemma.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-question1",
+    "proofId": "erdos-600",
+    "range": { "startLine": 158, "endLine": 166 },
+    "type": "conjecture",
+    "title": "Question 1: Difference Growth",
+    "content": "Does e(n, r+1) - e(n, r) → ∞ as n → ∞? Asks whether the threshold strictly increases without bound.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-question2",
+    "proofId": "erdos-600",
+    "range": { "startLine": 184, "endLine": 192 },
+    "type": "conjecture",
+    "title": "Question 2: Ratio Convergence",
+    "content": "Does e(n, r+1) / e(n, r) → 1 as n → ∞? Asks whether consecutive thresholds are asymptotically equivalent.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-monotonicity",
+    "proofId": "erdos-600",
+    "range": { "startLine": 210, "endLine": 224 },
+    "type": "theorem",
+    "title": "Monotonicity Properties",
+    "content": "e(n, r) ≤ e(n, r+1) and e(n, r) ≤ e(n+1, r). More triangles required or more vertices means higher threshold.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-bounds",
+    "proofId": "erdos-600",
+    "range": { "startLine": 261, "endLine": 274 },
+    "type": "theorem",
+    "title": "Known Bounds",
+    "content": "Upper bound: e(n, r) ≤ C_r · n² / log(n). Lower bound: e(n, r) ≥ c_r · n^{2-o(1)}. The exact growth rate is between these.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-600",
+    "range": { "startLine": 280, "endLine": 304 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "OPEN - e(n,r) = o(n²) is known, but the fine structure of how thresholds change with r remains unsolved.",
+    "significance": "major"
+  }
+]
