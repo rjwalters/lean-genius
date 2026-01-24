@@ -1,33 +1,80 @@
 {
   "id": "erdos-512",
-  "title": "Erdős Problem #512",
+  "title": "Erdős Problem #512: Littlewood's Conjecture on Exponential Sums",
   "slug": "erdos-512",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if ... is a finite set of size ..., then\\[\\int_0^1 \\left\\lvert \\sum_{n\\in A}e(n\\theta)\\right\\rvert \\theta \\g...",
+  "description": "For finite A ⊂ ℤ with |A| = N, is ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N? SOLVED: YES (Konyagin 1981, McGehee-Pigno-Smith 1981).",
   "meta": {
-    "author": "Unknown",
+    "author": "Konyagin (1981), McGehee-Pigno-Smith (1981)",
     "sourceUrl": "https://erdosproblems.com/512",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos512Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "harmonic-analysis",
+      "exponential-sums",
+      "fourier-analysis",
+      "hardy-inequality",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 512,
     "erdosUrl": "https://erdosproblems.com/512",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential for e(x) = e^{2πix}",
+        "module": "Mathlib.Data.Complex.Exponential"
+      },
+      {
+        "theorem": "MeasureTheory.integral",
+        "description": "Integration for L¹ norm",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex modulus for |∑ e(nθ)|",
+        "module": "Mathlib.Data.Complex.Exponential"
+      }
+    ],
+    "originalContributions": [
+      "expTwoPiI: the exponential e(x) = e^{2πix}",
+      "expSum, expSumNorm: exponential sum definitions",
+      "L1norm: the integral ∫₀¹ |∑ e(nθ)| dθ",
+      "LittlewoodConjecture: formal statement",
+      "konyagin_theorem, mcgehee_pigno_smith_theorem: solution axioms",
+      "littlewoodConstant, littlewood_explicit: explicit bounds",
+      "littlewood_sharpness: log N is optimal",
+      "hardy_inequality: connection to MPS proof",
+      "weightedExpSum, weighted_littlewood: generalization",
+      "erdos_512, erdos_512_main: main theorems"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #512 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if $A\\subset \\mathbb{Z}$ is a finite set of size $N$, then\\[\\int_0^1 \\left\\lvert \\sum_{n\\in A}e(n\\theta)\\right\\rvert \\mathrm{d}\\theta \\gg \\log N,\\]where $e(x)=e^{2\\pi ix }$?\n\n\n\nLittlewood's conjecture, proved independently by Konyagin \\cite{Ko81} and McGehee, Pigno, and Smith \\cite{MPS81}.\n\n\n\n\nReferences\n\n\n[Ko81] Konyagin, S. V., On the Littlewood problem. Izv. Akad. Nauk SSSR Ser. Mat. (1981), 243-265, 463.\n\n[MPS81] McGehee, O. Carruth and Pigno, Louis and Smith, Brent, Hardy's inequality and the {$L\\sp{1}$} norm of exponential\nsums. Ann. of Math. (2) (1981), 613-618.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #512 (Littlewood's Conjecture)**\n\n**Origin:**\nLittlewood conjectured that the L¹ norm of exponential sums ∫₀¹ |∑_{n∈A} e(nθ)| dθ is at least c log N for any finite set A ⊂ ℤ with |A| = N. This is a fundamental question in harmonic analysis about how 'flat' trigonometric polynomials can be.\n\n**The Solution (1981):**\nThe conjecture was independently proved by:\n- Konyagin (1981): Using analytic techniques\n- McGehee, Pigno, and Smith (1981): Via Hardy's inequality\n\nThe MPS proof is particularly elegant, reducing the problem to a classical inequality.\n\n**Significance:**\nThe log N bound is essentially optimal - there exist sets achieving L¹ norm ≍ log N. This shows exponential sums cannot be uniformly small across [0,1].",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A ⊂ ℤ be a finite set with |A| = N, and let e(x) = e^{2πix}.\n\n**Question:** Is ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N?\n\n**Answer: YES**\n\n- Konyagin (1981): First proof\n- McGehee-Pigno-Smith (1981): Proof via Hardy's inequality\n\nThere exists an absolute constant c > 0 such that L¹ ≥ c log N for all finite A.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Exponential Function:** expTwoPiI definition, periodicity, norm, additivity\n\n2. **Exponential Sums:** expSum, expSumNorm, triangle inequality bound\n\n3. **L¹ Norm:** L1norm definition, nonnegativity, upper bound\n\n4. **Main Conjecture:** LittlewoodConjecture formal statement\n\n5. **Solutions:** konyagin_theorem, mcgehee_pigno_smith_theorem as axioms\n\n6. **Sharpness:** littlewood_sharpness showing log N is optimal\n\n7. **Hardy Connection:** hardy_inequality, MPS proof technique\n\n8. **Generalizations:** weighted sums, higher dimensions\n\n9. **Main Theorem:** erdos_512 combining results",
+    "keyInsights": [
+      "**L¹ ≫ log N:** The lower bound is logarithmic, much smaller than the L² norm √N",
+      "**Sharpness:** Arithmetic progressions achieve L¹ ≍ log N",
+      "**Hardy's Inequality:** The MPS proof reduces Littlewood to a classical inequality",
+      "**Independent Proofs:** Konyagin and MPS solved it simultaneously in 1981",
+      "**No Flat Polynomials:** Exponential sums cannot be uniformly small on [0,1]"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #512 asks whether ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N for finite sets A with |A| = N. This is Littlewood's conjecture. It was independently proved by Konyagin (1981) and McGehee-Pigno-Smith (1981). The answer is YES, with the log N bound being essentially optimal.",
+    "implications": "**Connections**\n\n1. **Harmonic Analysis:** Fundamental bounds on Fourier sums\n\n2. **Hardy's Inequality:** The MPS proof establishes a deep connection\n\n3. **Flat Polynomials:** Related to when |P(z)| can be nearly constant on |z|=1\n\n4. **Number Theory:** Bounds on character sums for prime counting",
+    "openQuestions": [
+      "What is the exact value of the optimal constant c?",
+      "Are there better bounds for structured sets (primes, squares)?",
+      "How do the bounds extend to weighted exponential sums?",
+      "What are analogues in higher dimensions?"
+    ]
   }
 }

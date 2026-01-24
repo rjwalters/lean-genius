@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-512-exptwopii",
+    "proofId": "erdos-512",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "expTwoPiI",
+    "content": "The exponential e(x) = e^{2πix}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-512-periodic",
+    "proofId": "erdos-512",
+    "range": { "startLine": 44, "endLine": 49 },
+    "type": "theorem",
+    "title": "expTwoPiI_periodic",
+    "content": "e(x) is periodic with period 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-512-norm",
+    "proofId": "erdos-512",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "theorem",
+    "title": "expTwoPiI_norm",
+    "content": "|e(x)| = 1 for all x.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-512-expsum",
+    "proofId": "erdos-512",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "expSum",
+    "content": "∑_{n∈A} e(nθ) for finite A ⊂ ℤ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-512-expsumnorm",
+    "proofId": "erdos-512",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "definition",
+    "title": "expSumNorm",
+    "content": "|∑_{n∈A} e(nθ)| the modulus.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-512-bound",
+    "proofId": "erdos-512",
+    "range": { "startLine": 77, "endLine": 84 },
+    "type": "theorem",
+    "title": "expSum_bound",
+    "content": "Triangle inequality: |expSum| ≤ |A|.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-512-l1norm",
+    "proofId": "erdos-512",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "definition",
+    "title": "L1norm",
+    "content": "∫₀¹ |∑ e(nθ)| dθ the L¹ norm.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-512-l1nonneg",
+    "proofId": "erdos-512",
+    "range": { "startLine": 94, "endLine": 99 },
+    "type": "theorem",
+    "title": "L1norm_nonneg",
+    "content": "L¹ norm is nonnegative.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-512-conjecture",
+    "proofId": "erdos-512",
+    "range": { "startLine": 110, "endLine": 116 },
+    "type": "definition",
+    "title": "LittlewoodConjecture",
+    "content": "∃ c > 0, L¹ ≥ c log N for |A| = N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-512-konyagin",
+    "proofId": "erdos-512",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "theorem",
+    "title": "konyagin_theorem",
+    "content": "Konyagin 1981: Conjecture TRUE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-512-mps",
+    "proofId": "erdos-512",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "theorem",
+    "title": "mcgehee_pigno_smith_theorem",
+    "content": "MPS 1981: Independent proof via Hardy.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-512-constant",
+    "proofId": "erdos-512",
+    "range": { "startLine": 135, "endLine": 136 },
+    "type": "definition",
+    "title": "littlewoodConstant",
+    "content": "c = 1/(4π) explicit constant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-512-sharpness",
+    "proofId": "erdos-512",
+    "range": { "startLine": 146, "endLine": 149 },
+    "type": "theorem",
+    "title": "littlewood_sharpness",
+    "content": "log N is essentially optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-512-hardy",
+    "proofId": "erdos-512",
+    "range": { "startLine": 165, "endLine": 168 },
+    "type": "theorem",
+    "title": "hardy_inequality",
+    "content": "Hardy's inequality (discrete form).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-512-l2",
+    "proofId": "erdos-512",
+    "range": { "startLine": 180, "endLine": 183 },
+    "type": "theorem",
+    "title": "L2_norm",
+    "content": "L² norm = √N by Parseval.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-512-weighted",
+    "proofId": "erdos-512",
+    "range": { "startLine": 201, "endLine": 203 },
+    "type": "definition",
+    "title": "weightedExpSum",
+    "content": "Weighted exponential sum ∑ w_n e(nθ).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-512-weightedbound",
+    "proofId": "erdos-512",
+    "range": { "startLine": 205, "endLine": 209 },
+    "type": "theorem",
+    "title": "weighted_littlewood",
+    "content": "Unit weights: same log N bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-512-main",
+    "proofId": "erdos-512",
+    "range": { "startLine": 246, "endLine": 246 },
+    "type": "theorem",
+    "title": "erdos_512",
+    "content": "Main theorem: conjecture TRUE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-512-solved",
+    "proofId": "erdos-512",
+    "range": { "startLine": 251, "endLine": 254 },
+    "type": "theorem",
+    "title": "erdos_512_solved",
+    "content": "Problem solved by two groups in 1981.",
+    "significance": "critical"
+  }
+]

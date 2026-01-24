@@ -8530,17 +8530,24 @@
   },
   {
     "id": "erdos-512",
-    "title": "Erdős Problem #512",
+    "title": "Erdős Problem #512: Littlewood's Conjecture on Exponential Sums",
     "slug": "erdos-512",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if ... is a finite set of size ..., then\\[\\int_0^1 \\left\\lvert \\sum_{n\\in A}e(n\\theta)\\right\\rvert \\theta \\g...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For finite A ⊂ ℤ with |A| = N, is ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N? SOLVED: YES (Konyagin 1981, McGehee-Pigno-Smith 1981).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "harmonic-analysis",
+      "exponential-sums",
+      "fourier-analysis",
+      "hardy-inequality",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 512,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 19
   },
   {
     "id": "erdos-514",
