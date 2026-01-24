@@ -1,34 +1,77 @@
 {
   "id": "erdos-720",
-  "title": "Erdős Problem #720",
+  "title": "Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles",
   "slug": "erdos-720",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
+  "description": "Let R̂(G) denote the size Ramsey number. Does R̂(Pₙ)/n → ∞ and R̂(Pₙ)/n² → 0? Does R̂(Cₙ) = o(n²)? SOLVED: Beck (1983) proved R̂(Pₙ) ≪ n and R̂(Cₙ) ≪ n — both are LINEAR in n!",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Faudree-Rousseau-Schelp (1978), Beck (1983)",
     "sourceUrl": "https://erdosproblems.com/720",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos720Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey",
+      "paths",
+      "cycles",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 720,
     "erdosUrl": "https://erdosproblems.com/720",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit behavior for asymptotic questions",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "GraphOnN, numEdges: graph basics",
+      "PathGraph, CycleGraph: path and cycle definitions",
+      "EdgeColoring, IsMonochromatic: coloring framework",
+      "sizeRamseyNumber, sizeRamseyPath, sizeRamseyCycle: R̂(G) definition",
+      "ErdosQuestion720a/b/c: original questions",
+      "beck_path_theorem, beck_cycle_theorem: linear bounds",
+      "dudek_pralat_bound: improved upper bound 900n",
+      "path_lower_bound, cycle_lower_bound: matching lower bounds",
+      "pathIsLinear, cycleIsLinear: Θ(n) characterization",
+      "answer_720a/b/c: answers to Erdős's questions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #720 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges such that in any $2$-colouring of the edges of $H$ there is a monochromatic copy of $G$.\n\nIs it true that, if $P_n$ is the path of length $n$, then\\[\\hat{R}(P_n)/n\\to \\infty\\]and\\[\\hat{R}(P_n)/n^2 \\to 0?\\]Is it true that, if $C_n$ is the cycle with $n$ edges, then\\[\\hat{R}(C_n) =o(n^2)?\\]\n\n\n\nA problem of Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS78b}.\n\nAnswered by Beck \\cite{Be83b}, who proved that in fact $\\hat{R}(P_n)\\ll n$ and $\\hat{R}(C_n)\\ll n$.\n\nA more general problem concerning the size Ramsey number of graphs with bounded maximum degree is [559].\n\n\n\n\nReferences\n\n\n[Be83b] Beck, J\\'{o}zsef, On size Ramsey number of paths, trees, and circuits. I. J. Graph Theory (1983), 115-129.\n\n[EFRS78b] Erd\\H{o}s, P. and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., The size Ramsey number. Period. Math. Hungar. (1978), 145-161.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #720 (Size Ramsey Numbers of Paths and Cycles)**\n\n**Origin:**\nErdős, Faudree, Rousseau, and Schelp posed this problem in 1978. The size Ramsey number R̂(G) is the minimum number of edges m such that some graph H with m edges guarantees a monochromatic copy of G under any 2-edge-coloring.\n\n**The Questions:**\n1. For paths Pₙ: Does R̂(Pₙ)/n → ∞ and R̂(Pₙ)/n² → 0?\n2. For cycles Cₙ: Does R̂(Cₙ) = o(n²)?\n\n**Beck's Breakthrough (1983):**\nBeck proved a much stronger result: R̂(Pₙ) ≪ n and R̂(Cₙ) ≪ n. Both size Ramsey numbers are LINEAR in n, not just subquadratic!\n\n**Current Best Bounds:**\n- Paths: 3.75n ≤ R̂(Pₙ) ≤ 900n (Dudek-Prałat 2017)\n- The exact constant remains unknown",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet R̂(G) denote the size Ramsey number: the minimal number of edges m such that there exists a graph H with m edges where any 2-coloring of edges of H contains a monochromatic copy of G.\n\n**Questions:**\n1a. Does R̂(Pₙ)/n → ∞?\n1b. Does R̂(Pₙ)/n² → 0?\n2. Does R̂(Cₙ) = o(n²)?\n\n**Answers:**\n1a. NO — R̂(Pₙ)/n is bounded (Beck 1983)\n1b. YES — in fact R̂(Pₙ) = O(n), so R̂(Pₙ)/n² → 0\n2. YES — in fact R̂(Cₙ) = O(n), much stronger than o(n²)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Model:** GraphOnN, numEdges for finite graphs\n\n2. **Path/Cycle Graphs:** PathGraph, CycleGraph definitions\n\n3. **Coloring Framework:** EdgeColoring, IsMonochromatic, ContainsMonochromaticCopy\n\n4. **Size Ramsey:** sizeRamseyNumber as minimal m\n\n5. **Original Questions:** ErdosQuestion720a/b/c\n\n6. **Beck's Theorem:** beck_path_theorem, beck_cycle_theorem (linear bounds)\n\n7. **Bounds:** Lower and upper bounds, Dudek-Prałat 900n\n\n8. **Answers:** answer_720a (NO), answer_720b (YES), answer_720c (YES)",
+    "keyInsights": [
+      "**Surprise Result:** Beck showed R̂(Pₙ) = Θ(n), contradicting Erdős's expectation",
+      "**Linear Bound:** Both paths and cycles have linear size Ramsey numbers",
+      "**Ordinary vs Size:** R(Pₙ) = 2n-1 (exact), but R̂(Pₙ) has large constant gap",
+      "**Current Gap:** 3.75n ≤ R̂(Pₙ) ≤ 900n — factor of 240 between bounds",
+      "**Related Problem:** #559 generalizes to bounded-degree graphs"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #720 asks about the asymptotic growth of size Ramsey numbers for paths and cycles. Beck (1983) proved both R̂(Pₙ) and R̂(Cₙ) are linear in n — much stronger than the original conjectures. The answer to 'R̂(Pₙ)/n → ∞?' is NO (it's bounded), while 'R̂(Pₙ)/n² → 0?' and 'R̂(Cₙ) = o(n²)?' are both YES.",
+    "implications": "**Connections**\n\n1. **Ramsey Theory:** Size Ramsey extends classical Ramsey to edge counts\n\n2. **Problem #559:** Generalization to bounded-degree graphs\n\n3. **Probabilistic Method:** Beck's proof uses probabilistic techniques\n\n4. **Exact Constants:** Determining the precise constant remains open",
+    "openQuestions": [
+      "What is the exact value of the size Ramsey constant for paths?",
+      "Can the gap 3.75n ≤ R̂(Pₙ) ≤ 900n be closed?",
+      "What about size Ramsey numbers for other graph families?",
+      "Is there a constructive proof of the linear bound?"
+    ]
   }
 }

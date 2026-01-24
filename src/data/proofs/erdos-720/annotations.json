@@ -1,1 +1,209 @@
-[]
+[
+  {
+    "id": "ann-720-graphonn",
+    "proofId": "erdos-720",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "GraphOnN",
+    "content": "SimpleGraph on n vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-720-numedges",
+    "proofId": "erdos-720",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "numEdges",
+    "content": "Count of edges in a graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-720-pathgraph",
+    "proofId": "erdos-720",
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "definition",
+    "title": "PathGraph",
+    "content": "Path Pₙ on n vertices (n-1 edges).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-cyclegraph",
+    "proofId": "erdos-720",
+    "range": { "startLine": 59, "endLine": 65 },
+    "type": "definition",
+    "title": "CycleGraph",
+    "content": "Cycle Cₙ on n vertices (n edges).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-edgecoloring",
+    "proofId": "erdos-720",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "definition",
+    "title": "EdgeColoring",
+    "content": "2-coloring of graph edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-720-monochromatic",
+    "proofId": "erdos-720",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "definition",
+    "title": "IsMonochromatic",
+    "content": "All edges same color.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-720-contains",
+    "proofId": "erdos-720",
+    "range": { "startLine": 88, "endLine": 92 },
+    "type": "definition",
+    "title": "ContainsMonochromaticCopy",
+    "content": "H forces monochromatic G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-720-sizeramsey",
+    "proofId": "erdos-720",
+    "range": { "startLine": 94, "endLine": 100 },
+    "type": "definition",
+    "title": "sizeRamseyNumber",
+    "content": "R̂(G): minimal edges for monochromatic copy.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-sizepath",
+    "proofId": "erdos-720",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "definition",
+    "title": "sizeRamseyPath",
+    "content": "R̂(Pₙ): size Ramsey of path.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-sizecycle",
+    "proofId": "erdos-720",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "definition",
+    "title": "sizeRamseyCycle",
+    "content": "R̂(Cₙ): size Ramsey of cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-q720a",
+    "proofId": "erdos-720",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "definition",
+    "title": "ErdosQuestion720a",
+    "content": "Does R̂(Pₙ)/n → ∞?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-q720b",
+    "proofId": "erdos-720",
+    "range": { "startLine": 118, "endLine": 120 },
+    "type": "definition",
+    "title": "ErdosQuestion720b",
+    "content": "Does R̂(Pₙ)/n² → 0?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-q720c",
+    "proofId": "erdos-720",
+    "range": { "startLine": 122, "endLine": 124 },
+    "type": "definition",
+    "title": "ErdosQuestion720c",
+    "content": "Does R̂(Cₙ) = o(n²)?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-beckpath",
+    "proofId": "erdos-720",
+    "range": { "startLine": 130, "endLine": 135 },
+    "type": "theorem",
+    "title": "beck_path_theorem",
+    "content": "Beck 1983: R̂(Pₙ) ≤ cn.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-beckcycle",
+    "proofId": "erdos-720",
+    "range": { "startLine": 137, "endLine": 142 },
+    "type": "theorem",
+    "title": "beck_cycle_theorem",
+    "content": "Beck 1983: R̂(Cₙ) ≤ c'n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-dudek",
+    "proofId": "erdos-720",
+    "range": { "startLine": 147, "endLine": 149 },
+    "type": "theorem",
+    "title": "dudek_pralat_bound",
+    "content": "R̂(Pₙ) ≤ 900n improved bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-720-pathlower",
+    "proofId": "erdos-720",
+    "range": { "startLine": 155, "endLine": 158 },
+    "type": "theorem",
+    "title": "path_lower_bound",
+    "content": "R̂(Pₙ) ≥ cn lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-720-pathlinear",
+    "proofId": "erdos-720",
+    "range": { "startLine": 165, "endLine": 168 },
+    "type": "definition",
+    "title": "pathIsLinear",
+    "content": "R̂(Pₙ) = Θ(n) characterization.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-answer-a",
+    "proofId": "erdos-720",
+    "range": { "startLine": 180, "endLine": 186 },
+    "type": "theorem",
+    "title": "answer_720a",
+    "content": "Answer: NO, R̂(Pₙ)/n is bounded.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-answer-b",
+    "proofId": "erdos-720",
+    "range": { "startLine": 188, "endLine": 192 },
+    "type": "theorem",
+    "title": "answer_720b",
+    "content": "Answer: YES, R̂(Pₙ)/n² → 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-answer-c",
+    "proofId": "erdos-720",
+    "range": { "startLine": 194, "endLine": 198 },
+    "type": "theorem",
+    "title": "answer_720c",
+    "content": "Answer: YES, R̂(Cₙ) = o(n²).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-main",
+    "proofId": "erdos-720",
+    "range": { "startLine": 253, "endLine": 254 },
+    "type": "theorem",
+    "title": "erdos_720",
+    "content": "Main: questions 1b and 2 answered YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-720-beck",
+    "proofId": "erdos-720",
+    "range": { "startLine": 261, "endLine": 271 },
+    "type": "theorem",
+    "title": "erdos_720_beck",
+    "content": "Both paths and cycles are Θ(n).",
+    "significance": "critical"
+  }
+]
