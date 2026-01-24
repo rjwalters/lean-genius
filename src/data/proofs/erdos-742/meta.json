@@ -1,33 +1,147 @@
 {
   "id": "erdos-742",
-  "title": "Erdős Problem #742",
+  "title": "Erdős Problem #742: Maximum Edges in Minimal Diameter-2 Graphs",
   "slug": "erdos-742",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with diameter ..., such that deleting any edge increases the diameter of .... Is it true t...",
+  "description": "Let G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that G has at most n²/4 edges? SOLVED by Füredi (1992): YES for sufficiently large n. The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} shows this bound is tight.",
   "meta": {
-    "author": "Unknown",
+    "author": "Murty-Plesník (1979), Füredi (1992)",
     "sourceUrl": "https://erdosproblems.com/742",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos742Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "diameter",
+      "edge-critical",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 742,
     "erdosUrl": "https://erdosproblems.com/742",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Connected",
+        "description": "Graph connectivity",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types for vertex sets",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasDiameter definition: graph diameter predicate",
+      "HasDiameter2: diameter exactly 2",
+      "deleteEdge: edge deletion operation",
+      "IsCriticalEdge: edge critical for diameter",
+      "IsMinimalDiameter2: minimal diameter-2 graph predicate",
+      "MurtyPlesnikBound: the n²/4 bound",
+      "furedi_theorem: the main result axiomatized",
+      "bound_is_tight: extremal example exists",
+      "IsDiameterCritical: general diameter-critical definition"
+    ],
+    "references": [
+      {
+        "key": "CaHa79",
+        "citation": "Caccetta, L. and Häggkvist, R., On diameter critical graphs, Discrete Math. 28 (1979), 223-229.",
+        "type": "paper"
+      },
+      {
+        "key": "Fu92",
+        "citation": "Füredi, Z., The maximum number of edges in a minimal graph of diameter 2, J. Graph Theory 16 (1992), 81-98.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #742 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices with diameter $2$, such that deleting any edge increases the diameter of $G$. Is it true that $G$ has at most $n^2/4$ edges?\n\n\n\nA conjecture of Murty and Plesnik (see \\cite{CaHa79}) (although F\\\"{u}redi credits this conjecture to Murty and Simon, and further mentions that Erd\\H{o}s told him that the conjecture goes back to Ore in the 1960s). The complete bipartite graph shows that this would be best possible.\n\nThis is true (for sufficiently large $n$) and was proved by F\\\"{u}redi \\cite{Fu92}.\n\n\n\n\nReferences\n\n\n[CaHa79] Caccetta, Louis and H\\\"{a}ggkvist, Roland, On diameter critical graphs. Discrete Math. (1979), 223-229.\n\n[Fu92] F\\\"{u}redi, Zolt\\'{a}n, The maximum number of edges in a minimal graph of diameter\n{$2$}. J. Graph Theory (1992), 81-98.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Diameter-Critical Graphs**\n\nA diameter-2 graph where every edge is critical (deletion increases diameter) is called a 'minimal diameter-2 graph.' The question of bounding their edges has a rich history:\n\n**Timeline:**\n- **Ore (1960s):** First posed the question\n- **Murty-Simon:** Reformulated the conjecture\n- **Murty-Plesník (1979):** Published the conjecture formally\n- **Caccetta-Häggkvist (1979):** Studied diameter-critical graphs, proved partial results\n- **Füredi (1992):** Proved the conjecture for sufficiently large n\n\n**Key Observation:** The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} has diameter 2, is edge-minimal, and has exactly ⌊n²/4⌋ edges.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter of G (i.e., G is a minimal diameter-2 graph).\n\n**Question:** Is it true that G has at most n²/4 edges?\n\n**Answer: YES** (for sufficiently large n)\n\nFüredi (1992) proved this conjecture. The bound is tight: K_{⌊n/2⌋,⌈n/2⌉} achieves ⌊n²/4⌋ edges.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Diameter:** Define HasDiameter predicate for diameter exactly d.\n\n2. **Edge Deletion:** Define deleteEdge operation and IsCriticalEdge.\n\n3. **Minimal Diameter-2:** Combine diameter 2 with all edges critical.\n\n4. **The Bound:** MurtyPlesnikBound(n) = n²/4.\n\n5. **Füredi's Theorem:** Axiomatize the main result.\n\n6. **Tightness:** Show complete bipartite graph achieves the bound.\n\n7. **Generalization:** Define IsDiameterCritical for arbitrary diameter.",
+    "keyInsights": [
+      "**Minimal diameter-2:** Every edge is essential for diameter 2",
+      "**Bound n²/4:** Conjectured by Murty-Plesník, proved by Füredi",
+      "**Complete bipartite graph:** K_{⌊n/2⌋,⌈n/2⌉} is the extremal example",
+      "**Large n:** The result holds for sufficiently large n",
+      "**Diameter-critical:** Generalizes to arbitrary diameter d"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-diameter",
+      "title": "Graph Diameter",
+      "summary": "Distance and diameter definitions",
+      "startLine": 37,
+      "endLine": 57
+    },
+    {
+      "id": "edge-deletion",
+      "title": "Edge Deletion and Critical Edges",
+      "summary": "Deleting edges and critical edge predicate",
+      "startLine": 59,
+      "endLine": 77
+    },
+    {
+      "id": "minimal-diameter2",
+      "title": "Minimal Diameter-2 Graphs",
+      "summary": "Main definition and edge bound",
+      "startLine": 79,
+      "endLine": 92
+    },
+    {
+      "id": "bipartite-example",
+      "title": "Complete Bipartite Graph",
+      "summary": "Extremal example achieving the bound",
+      "startLine": 94,
+      "endLine": 113
+    },
+    {
+      "id": "furedi-theorem",
+      "title": "Füredi's Theorem",
+      "summary": "Main result proving the bound",
+      "startLine": 115,
+      "endLine": 139
+    },
+    {
+      "id": "history",
+      "title": "Historical Context",
+      "summary": "Origin and development of the conjecture",
+      "startLine": 141,
+      "endLine": 157
+    },
+    {
+      "id": "related",
+      "title": "Related Concepts",
+      "summary": "Diameter-critical graphs for general d",
+      "startLine": 159,
+      "endLine": 184
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and problem status",
+      "startLine": 186,
+      "endLine": 225
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #742 asks whether minimal diameter-2 graphs on n vertices have at most n²/4 edges. Füredi (1992) proved this is true for sufficiently large n, settling the Murty-Plesník conjecture. The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} shows the bound is tight.",
+    "implications": "**Implications**\n\n1. **Extremal Graph Theory:** Optimal bound for diameter-critical graphs.\n\n2. **Complete Bipartite Graphs:** Uniquely extremal for this problem.\n\n3. **Diameter-Critical Theory:** Foundation for studying higher diameter cases.",
+    "openQuestions": [
+      "What is the exact threshold N₀ where Füredi's theorem applies?",
+      "What are the extremal graphs for diameter d ≥ 3?",
+      "Can the proof be simplified or made constructive?"
+    ]
   }
 }
