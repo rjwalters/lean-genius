@@ -1,0 +1,19 @@
+{
+  "problem_number": 571,
+  "title": "Rational Turán Exponents for Bipartite Graphs",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/571",
+  "overview": "Show that for any rational α ∈ [1,2) there exists a bipartite graph G such that ex(n;G) ≍ n^α. A rational with this property is called a 'Turán exponent'.",
+  "sections": [],
+  "conclusion": "OPEN - Many specific Turán exponents are known: 3/2-1/(2s), 4/3-1/(3s), 5/4-1/(4s), 2-a/b with various conditions (Conlon-Janzer-Lee, Jiang-Qiu, etc.). Bukh-Conlon (2018) proved the weaker version for finite families. The single graph case remains open, especially for exponents near 1.",
+  "references": [
+    "Bukh-Conlon [BuCo18] - Finite family version proved",
+    "Conlon-Janzer-Lee [CJL21] - Exponents 3/2 - 1/(2s)",
+    "Jiang-Qiu [JiQi20, JiQi23] - Multiple exponent families",
+    "Jiang-Ma-Yepremyan [JMY22] - 2 - 2/(2b+1) and 7/5",
+    "Conlon-Janzer [CoJa22] - Exponents near 2"
+  ],
+  "related_problems": [713],
+  "tags": ["graph-theory", "turan-number", "extremal-combinatorics", "bipartite-graphs", "open"]
+}
