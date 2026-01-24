@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-e93-header",
+    "proofId": "erdos-93",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #93: Distinct Distances in Convex Polygons**\n\nIf n distinct points in the plane form a convex polygon, how many distinct distances must they determine?\n\n**Answer**: At least ⌊n/2⌋ distinct distances.\n\n**Status**: SOLVED by Altman (1963)\n\n**Tightness**: Regular n-gons achieve exactly ⌊n/2⌋ distances, showing the bound is optimal.",
+    "mathContext": "This is one of Erdős's classic distinct distances problems. The convex case is much easier than the general case (Guth-Katz, 2015).",
+    "significance": "critical",
+    "relatedConcepts": ["Distinct distances", "Convex position", "Discrete geometry"]
+  },
+  {
+    "id": "ann-e93-point-def",
+    "proofId": "erdos-93",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "Point and Distance",
+    "content": "**Point := ℝ × ℝ**\n\nPoints are pairs of real numbers representing coordinates in the Euclidean plane.\n\n**dist(p, q)**:\nThe Euclidean distance √((p₁-q₁)² + (p₂-q₂)²) between two points.",
+    "mathContext": "Standard Euclidean geometry setup. The distance function is symmetric and satisfies the triangle inequality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e93-distinct-distances",
+    "proofId": "erdos-93",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "Distinct Distances Function",
+    "content": "**distinctDistances(S)**:\n\nThe set of positive distances determined by pairs of points in S.\n\n**numDistinctDistances(S)**:\n\nThe cardinality |distinctDistances(S)|, counting how many different distance values appear.",
+    "mathContext": "For n points, there are at most C(n,2) = n(n-1)/2 pairs, so at most that many distinct distances. The question is: what's the minimum?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e93-convex-position",
+    "proofId": "erdos-93",
+    "range": { "startLine": 64, "endLine": 81 },
+    "type": "definition",
+    "title": "Convex Position",
+    "content": "**InConvexPosition(S)**:\n\nA point set is in convex position if no point lies in the convex hull of the others.\n\n**IsConvexPolygon(S)**:\n\nEquivalently, points can be ordered as vertices of a convex polygon (all interior angles < 180°).\n\n**convex_position_equiv**: These two definitions are equivalent for finite sets.",
+    "mathContext": "Convex position is the key constraint. It forces points to spread angularly, which creates distance diversity. Without convexity, points could cluster.",
+    "significance": "critical",
+    "relatedConcepts": ["Convex hull", "Convex polygon", "Extreme points"]
+  },
+  {
+    "id": "ann-e93-altman",
+    "proofId": "erdos-93",
+    "range": { "startLine": 87, "endLine": 95 },
+    "type": "axiom",
+    "title": "Altman's Theorem (1963)",
+    "content": "**altman_theorem**:\n\nFor any finite point set S in convex position:\nnumDistinctDistances(S) ≥ |S|/2\n\nThis is the main result, establishing the ⌊n/2⌋ lower bound.\n\n**regular_polygon_achieves_bound**: Regular n-gons achieve exactly ⌊n/2⌋ distances, proving tightness.",
+    "mathContext": "Altman's 1963 proof uses the cyclic ordering of vertices and analyzes distances from a fixed vertex to all others.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Extremal configurations"]
+  },
+  {
+    "id": "ann-e93-regular-polygon",
+    "proofId": "erdos-93",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "axiom",
+    "title": "Regular Polygon Distances",
+    "content": "**regular_polygon_distances(n)**:\n\nThe regular n-gon has exactly ⌊n/2⌋ distinct distances.\n\nFor each k = 1, ..., ⌊n/2⌋, the distance d_k = 2R·sin(kπ/n) appears, where R is the circumradius.\n\n**Examples**:\n- Triangle (n=3): 1 distance\n- Square (n=4): 2 distances (side and diagonal)\n- Pentagon (n=5): 2 distances\n- Hexagon (n=6): 3 distances",
+    "mathContext": "Regular polygons are extremal: they minimize the number of distinct distances among convex n-gons.",
+    "significance": "key",
+    "relatedConcepts": ["Regular polygons", "Circumradius", "Trigonometric identities"]
+  },
+  {
+    "id": "ann-e93-proof-sketch",
+    "proofId": "erdos-93",
+    "range": { "startLine": 107, "endLine": 121 },
+    "type": "concept",
+    "title": "Proof Sketch",
+    "content": "**consecutive_vertex_argument**:\n\nFor convex polygon P₁, ..., Pₙ, consider distances |P₁Pₖ| for k = 2, ..., n.\n\nBy convexity, these distances increase up to some maximum, then decrease. This monotonicity creates many distinct values.\n\n**pigeonhole_application**:\n\nWith C(n,2) pairs, if fewer than ⌊n/2⌋ distances exist, some distance appears very often. Convexity limits repetition.",
+    "mathContext": "The proof combines geometric convexity constraints with combinatorial counting arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e93-stronger-variant",
+    "proofId": "erdos-93",
+    "range": { "startLine": 127, "endLine": 141 },
+    "type": "definition",
+    "title": "Stronger Variant (OPEN)",
+    "content": "**distancesFrom(p, S)**:\n\nThe set of distinct distances from point p to all other points in S.\n\n**StrongerVariant** (Problem #982):\n\nFor any convex n-gon, some vertex p determines at least ⌊n/2⌋ distinct distances to other vertices.\n\n**Status**: OPEN - we only know the average vertex determines about (n-1)/2 distances.",
+    "mathContext": "The original problem says the total number of distances is ≥ ⌊n/2⌋. The stronger variant asks if some single vertex achieves this.",
+    "significance": "critical",
+    "relatedConcepts": ["Problem #982", "Open problems", "Single-vertex distances"]
+  },
+  {
+    "id": "ann-e93-fishburn",
+    "proofId": "erdos-93",
+    "range": { "startLine": 147, "endLine": 156 },
+    "type": "definition",
+    "title": "Fishburn's Conjecture",
+    "content": "**FishburnConjecture**:\n\nFor convex n-gon with vertices v₁, ..., vₙ:\nΣᵢ R(vᵢ) ≥ C(n,2)\n\nwhere R(v) = number of distinct distances from v to other vertices.\n\n**fishburn_implies_average**: If true, the average R(v) ≥ (n-1)/2, so some vertex achieves ≥ ⌊n/2⌋.",
+    "mathContext": "This sum conjecture would imply the stronger variant (Problem #982) via pigeonhole. It remains open.",
+    "significance": "key",
+    "relatedConcepts": ["Sum conjectures", "Average arguments"]
+  },
+  {
+    "id": "ann-e93-related",
+    "proofId": "erdos-93",
+    "range": { "startLine": 161, "endLine": 179 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "**Problem #1082** (Szemerédi's variant):\n\nReplace 'convex position' with 'no three collinear'. Does the ⌊n/2⌋ bound still hold? OPEN.\n\n**Problem #660** (General distinct distances):\n\nFor n arbitrary points (not necessarily convex), Erdős conjectured ≥ cn/√(log n) distances. Guth-Katz (2015) proved cn/log n.\n\n**general_case_harder**: The general case is much harder than the convex case.",
+    "mathContext": "Convexity is a strong constraint. Relaxing it leads to much harder problems with weaker known bounds.",
+    "significance": "key",
+    "relatedConcepts": ["Problem #1082", "Problem #660", "Guth-Katz theorem", "Collinearity"]
+  },
+  {
+    "id": "ann-e93-examples",
+    "proofId": "erdos-93",
+    "range": { "startLine": 184, "endLine": 195 },
+    "type": "theorem",
+    "title": "Concrete Examples",
+    "content": "**Regular polygon examples**:\n\n- **Triangle** (n=3): 1 = ⌊3/2⌋ distinct distance (all sides equal)\n- **Square** (n=4): 2 = ⌊4/2⌋ distances (side and diagonal)\n- **Pentagon** (n=5): 2 = ⌊5/2⌋ distances\n- **Hexagon** (n=6): 3 = ⌊6/2⌋ distances\n\nIn each case, the regular polygon achieves exactly the minimum.",
+    "mathContext": "These small examples illustrate the tightness of the bound and the role of symmetry.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e93-summary",
+    "proofId": "erdos-93",
+    "range": { "startLine": 201, "endLine": 229 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_93_answer**:\n\nThe main theorem: every convex n-gon determines at least ⌊n/2⌋ distinct distances.\n\n**erdos_93_solved**: TRUE\n\n**erdos_93_status**: 'SOLVED (Altman 1963) - Convex n-gon has ≥ ⌊n/2⌋ distinct distances'\n\n**Open variants**:\n- Problem #982: Does some vertex see ⌊n/2⌋ distances?\n- Fishburn's conjecture: Is ΣR(x) ≥ C(n,2)?\n- Problem #1082: Does 'no 3 collinear' suffice?",
+    "mathContext": "A foundational result in discrete geometry, proved in 1963 but spawning several open generalizations.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Open problems", "Erdős legacy"]
+  }
+]
