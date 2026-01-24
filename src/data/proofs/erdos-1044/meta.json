@@ -1,33 +1,86 @@
 {
   "id": "erdos-1044",
-  "title": "Erdős Problem #1044",
+  "title": "Erdős Problem #1044: Boundary Length of Polynomial Level Sets",
   "slug": "erdos-1044",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... where ... for all .... If ... is the maximum of the lengths of the boundaries of the connected components of\\[\\{ z: \\...",
+  "description": "For polynomials f(z) with all roots in the unit disk, what is the infimum of the maximum boundary length of connected components of {z : |f(z)| < 1}? Tang proved the answer is 2, achieved in the limit but not by any specific polynomial.",
   "meta": {
-    "author": "Unknown",
+    "author": "Quanyu Tang",
     "sourceUrl": "https://erdosproblems.com/1044",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1044Problem.lean",
     "tags": [
+      "complex-analysis",
+      "polynomials",
+      "level-sets",
+      "boundary-length",
       "erdos"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1044,
     "erdosUrl": "https://erdosproblems.com/1044",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1044 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\prod_{i=1}^n(z-z_i)\\in\\mathbb{C}[x]$ where $\\lvert z_i\\rvert\\leq 1$ for all $i$. If $\\Lambda(f)$ is the maximum of the lengths of the boundaries of the connected components of\\[\\{ z: \\lvert f(z)\\rvert<1\\}\\]then determine the infimum of $\\Lambda(f)$.\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Polynomial Lemniscates and Boundary Lengths**\n\nThis problem was posed by Erdős, Herzog, and Piranian in 1958 while studying metric properties of polynomials. Given a monic polynomial f(z) = ∏(z - zᵢ) with all roots in the unit disk, the sublevel set {z : |f(z)| < 1} forms interesting shapes called polynomial lemniscates.\n\nThe question asks for the infimum of the maximum boundary length Λ(f) over all such polynomials.\n\n**Tang's Solution**: The infimum is exactly 2. This value is approached but never achieved by any specific polynomial. The conjectured optimizers for each degree n are the roots-of-unity polynomials z^n - 1.",
+    "problemStatement": "**Problem Statement**\n\nLet f(z) = ∏ᵢ(z - zᵢ) ∈ ℂ[z] where |zᵢ| ≤ 1 for all roots.\n\nDefine Λ(f) as the maximum of the lengths of the boundaries of the connected components of {z : |f(z)| < 1}.\n\nDetermine the infimum of Λ(f) over all such polynomials f.\n\n**Answer**: The infimum is 2.\n\n**Key Properties**:\n- The infimum is not achieved by any polynomial (Λ(f) > 2 for all f)\n- As degree → ∞ with appropriate roots, Λ(f) → 2\n- Conjecture: For fixed degree n, z^n - 1 minimizes Λ(f)",
+    "proofStrategy": "**Tang's Approach**\n\n1. **Upper bound (Λ ≥ 2)**: Show that any polynomial's level set boundary has length > 2 using geometric arguments about how the boundary must surround the roots.\n\n2. **Lower bound (inf = 2)**: Construct explicit families of polynomials (roots of unity) whose boundary lengths approach 2.\n\n3. **Geometric insight**: The roots-of-unity polynomial z^n - 1 has n roots uniformly distributed on the unit circle. Its sublevel set forms n small 'petals' that shrink as n → ∞, with total boundary length approaching 2.\n\n**Technical tools**:\n- Complex analysis and potential theory\n- Arc length computation for algebraic curves\n- Topology of sublevel sets",
+    "keyInsights": [
+      "The infimum is exactly 2, achieved in the limit as degree → ∞",
+      "No polynomial achieves Λ(f) = 2; the infimum is not a minimum",
+      "The roots-of-unity polynomials z^n - 1 are conjectured optimal for each degree",
+      "For n = 1,2 the conjecture is verified; f(z) = z has Λ = 2π",
+      "The sublevel sets form polynomial lemniscates with intricate topology",
+      "Connection to Green's functions and potential theory in the complex plane"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 37,
+      "endLine": 60,
+      "summary": "Defines HasRootsInDisk, sublevelSet {z : |f(z)| < 1}, connected components, boundary length, and the maximum boundary length function Λ(f)."
+    },
+    {
+      "id": "main-result",
+      "title": "The Infimum Result",
+      "startLine": 62,
+      "endLine": 79,
+      "summary": "States Tang's theorem: inf Λ(f) = 2, that no polynomial achieves this, and that the infimum is approached as degree → ∞."
+    },
+    {
+      "id": "tang-conjecture",
+      "title": "Tang's Conjecture",
+      "startLine": 81,
+      "endLine": 110,
+      "summary": "States the conjecture that z^n - 1 minimizes Λ(f) among degree n polynomials, with verification for n = 1, 2."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Geometric Intuition",
+      "startLine": 112,
+      "endLine": 179,
+      "summary": "Explores specific cases like degree 1 polynomials (boundary length 2π), the lemniscate structure, and why the limit is 2."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 230,
+      "endLine": 260,
+      "summary": "Complete characterization: infimum is 2, not achieved, z^n - 1 conjectured optimal."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1044 asks for the infimum of the maximum boundary length of polynomial level sets. Tang proved the answer is exactly 2, approached but never achieved by any polynomial. The roots-of-unity polynomials z^n - 1 are conjectured to be optimal for each fixed degree.",
+    "implications": "**Significance**\n\n1. **Complex Analysis**: Reveals precise metric properties of polynomial lemniscates\n\n2. **Extremal Problems**: An unusual case where the infimum exists but is not a minimum\n\n3. **Optimization**: The conjectured optimizers (z^n - 1) have beautiful symmetry\n\n4. **Potential Theory**: Connects polynomial level sets to Green's functions",
+    "openQuestions": [
+      "Prove Tang's conjecture: z^n - 1 minimizes Λ among degree n polynomials",
+      "Verify the conjecture for degrees n ≥ 3",
+      "Characterize the topology of sublevel sets for general root configurations",
+      "Extend to polynomials with roots in larger disks (expected: inf = 2R for |zᵢ| ≤ R)"
+    ]
   }
 }
