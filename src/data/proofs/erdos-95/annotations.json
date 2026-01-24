@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-95-header",
+    "proofId": "erdos-95",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #95: Sum of Squared Distance Multiplicities**\n\nFor n points in R² with distance multiplicities f(uᵢ), prove ∑f(uᵢ)² ≪ n^{3+ε}.\n\n**Answer: YES** (Guth-Katz 2015)\n\nThey proved the stronger bound ∑f(uᵢ)² ≪ n³ log n. Prize: $500.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-95-point",
+    "proofId": "erdos-95",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Point",
+    "content": "**Point in R²:** A point in 2D Euclidean space.\n\nDefined as EuclideanSpace ℝ (Fin 2), the standard 2D plane.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-95-config",
+    "proofId": "erdos-95",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "definition",
+    "title": "PointConfig",
+    "content": "**Point Configuration:** A finite set of points in R².\n\nThe input to our problem: n points x₁,...,xₙ. We require at least one point.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-95-distances",
+    "proofId": "erdos-95",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "distanceSet",
+    "content": "**Distance Set:** All pairwise distances in a configuration.\n\nIf the configuration has t distinct distances, this set has size t.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-95-mult",
+    "proofId": "erdos-95",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "multiplicity",
+    "content": "**Distance Multiplicity f(d):** How many pairs of points are exactly distance d apart.\n\nA distance with high multiplicity appears many times among point pairs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-95-sum",
+    "proofId": "erdos-95",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "theorem",
+    "title": "sum_multiplicities",
+    "content": "**Trivial Sum:** ∑f(uᵢ) = C(n,2) = n(n-1)/2.\n\nEvery pair contributes to exactly one distance, so the sum of multiplicities equals the number of pairs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-95-squared",
+    "proofId": "erdos-95",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "sumSquaredMultiplicities",
+    "content": "**Sum of Squared Multiplicities:** ∑f(uᵢ)².\n\nThis measures concentration: if all distances are distinct, sum ≈ n²; if one distance dominates, sum can be n⁴.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-95-conjecture",
+    "proofId": "erdos-95",
+    "range": { "startLine": 79, "endLine": 85 },
+    "type": "definition",
+    "title": "ErdosConjecture",
+    "content": "**Erdős's Conjecture:** For all ε > 0, ∑f(uᵢ)² ≪_ε n^{3+ε}.\n\nThis bounds how concentrated distances can be. The exponent 3+ε is nearly tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-95-guthkatz",
+    "proofId": "erdos-95",
+    "range": { "startLine": 91, "endLine": 100 },
+    "type": "axiom",
+    "title": "guth_katz_theorem",
+    "content": "**Guth-Katz Theorem (2015):** ∑f(uᵢ)² ≪ n³ log n.\n\nStronger than Erdős asked:\n- No ε in the exponent\n- Replace n^ε with log n\n\nPart of their landmark paper on distinct distances.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-95-proved",
+    "proofId": "erdos-95",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "theorem",
+    "title": "erdos_conjecture_proved",
+    "content": "**Erdős's Conjecture is Proved:** Guth-Katz implies the conjecture.\n\nSince log n = o(n^ε) for any ε > 0, the n³ log n bound implies n^{3+ε}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-95-poly",
+    "proofId": "erdos-95",
+    "range": { "startLine": 118, "endLine": 136 },
+    "type": "concept",
+    "title": "Polynomial Method",
+    "content": "**The Guth-Katz Approach:**\n\n1. **Point-Line Duality:** Distances ↔ incidences in 3D\n2. **Polynomial Partitioning:** Divide space using algebraic surfaces\n3. **Ruled Surfaces:** Lines at same distance form quadric surfaces\n4. **Incidence Bounds:** Control point-line incidences\n\nThis technique revolutionized combinatorial geometry.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-95-convex",
+    "proofId": "erdos-95",
+    "range": { "startLine": 142, "endLine": 148 },
+    "type": "axiom",
+    "title": "convex_polygon_case",
+    "content": "**Convex Polygon Case (Fishburn/Altman 1963):** For points in convex position, ∑f(uᵢ)² = O(n³).\n\nThe convex case was solved decades before the general case.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-95-main",
+    "proofId": "erdos-95",
+    "range": { "startLine": 158, "endLine": 177 },
+    "type": "theorem",
+    "title": "erdos_95",
+    "content": "**Erdős Problem #95: SOLVED**\n\nMain theorem combining:\n1. Erdős's conjecture holds\n2. With the stronger Guth-Katz bound n³ log n\n\nPrize: $500 (collected by Guth and Katz)",
+    "significance": "critical"
+  }
+]
