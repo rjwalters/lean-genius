@@ -1,0 +1,18 @@
+{
+  "problem_number": 482,
+  "title": "Binary Digits of √2 via Recurrence",
+  "status": "solved",
+  "solvers": ["Graham-Pollak (1970)", "Stoll (2005-2006)"],
+  "source_url": "https://erdosproblems.com/482",
+  "overview": "Define a sequence by a₁ = 1 and a_{n+1} = ⌊√2(aₙ + 1/2)⌋. The difference a_{2n+1} - 2·a_{2n-1} gives the n-th binary digit of √2. The problem asks to generalize this to √m and other algebraic numbers.",
+  "sections": [],
+  "conclusion": "SOLVED - Graham-Pollak (1970) proved the √2 result. Stoll (2005-2006) provided wide-ranging generalizations to quadratic irrationals and beyond. The recurrence elegantly captures the arithmetic structure of algebraic numbers.",
+  "references": [
+    "Erdős-Graham [ErGr80, p.96]",
+    "Graham-Pollak [GrPo70] - Original √2 result",
+    "Stoll [St05], [St06] - Generalizations",
+    "OEIS A004539 - Binary expansion of √2"
+  ],
+  "related_problems": [],
+  "tags": ["number-theory", "binary-digits", "algebraic-numbers", "recurrence", "continued-fractions", "solved"]
+}
