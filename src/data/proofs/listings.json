@@ -3923,17 +3923,23 @@
   },
   {
     "id": "erdos-192",
-    "title": "Erdős Problem #192",
+    "title": "Erdős Problem #192: Unit Vector Sequences and Abelian Squares",
     "slug": "erdos-192",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence such that ... is a positive unit vector (i.e. is of the form ...). For which ... must ... con...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For which d must an infinite unit vector sequence in ℝᵈ contain a 3-term AP? Answer: d ≤ 3 yes, d ≥ 4 no (Keränen 1992).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics-on-words",
+      "abelian-squares",
+      "arithmetic-progressions",
+      "geometry"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 192,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 21
   },
   {
     "id": "erdos-194",
@@ -11744,17 +11750,25 @@
   },
   {
     "id": "erdos-720",
-    "title": "Erdős Problem #720",
+    "title": "Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles",
     "slug": "erdos-720",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let R̂(G) denote the size Ramsey number. Does R̂(Pₙ)/n → ∞ and R̂(Pₙ)/n² → 0? Does R̂(Cₙ) = o(n²)? SOLVED: Beck (1983) proved R̂(Pₙ) ≪ n and R̂(Cₙ) ≪ n — both are LINEAR in n!",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey",
+      "paths",
+      "cycles",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 720,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 5,
+    "annotationCount": 23
   },
   {
     "id": "erdos-721",

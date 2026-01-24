@@ -1,33 +1,81 @@
 {
   "id": "erdos-192",
-  "title": "Erdős Problem #192",
+  "title": "Erdős Problem #192: Unit Vector Sequences and Abelian Squares",
   "slug": "erdos-192",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence such that ... is a positive unit vector (i.e. is of the form ...). For which ... must ... con...",
+  "description": "For which d must an infinite unit vector sequence in ℝᵈ contain a 3-term AP? Answer: d ≤ 3 yes, d ≥ 4 no (Keränen 1992).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (problem), Keränen (1992)",
     "sourceUrl": "https://erdosproblems.com/192",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos192Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics-on-words",
+      "abelian-squares",
+      "arithmetic-progressions",
+      "geometry"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 192,
     "erdosUrl": "https://erdosproblems.com/192",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for counting steps",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "List.filter",
+        "description": "Filtering for letter counting",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for alphabet",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "UnitVectorIndex, StepSequence: unit vector sequence representation",
+      "position: position in ℝᵈ from step sequence",
+      "IsArithmeticProgression, ContainsAP: AP definitions",
+      "extractBlock, letterCount, IsAnagram: abelian square machinery",
+      "HasAbelianSquare, IsAbelianSquareFree: key definitions",
+      "ap_iff_abelian_square, ap_characterization: equivalence",
+      "abelian_square_3_letters, abelian_square_2_letters: small d results",
+      "keranen_construction, keranenMorphismLength: Keränen's d=4 result",
+      "erdos_192_main: complete characterization",
+      "thresholdDimension, below_threshold_unavoidable, at_threshold_avoidable",
+      "Problem231Equivalent, problems_192_231_equivalent: connection to #231"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #192 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1,a_2,\\ldots\\}\\subset \\mathbb{R}^d$ be an infinite sequence such that $a_{i+1}-a_i$ is a positive unit vector (i.e. is of the form $(0,0,\\ldots,1,0,\\ldots,0)$). For which $d$ must $A$ contain a three-term arithmetic progression?\n\n\n\nThis is true for $d\\leq 3$ and false for $d\\geq 4$.\n\nThis problem is equivalent to one on 'abelian squares' (see [231]). In particular $A$ can be interpreted as an infinite string over an alphabet with $d$ letters (each letter describining which of the $d$ possible steps is taken at each point). An abelian square in a string $s$ is a pair of consecutive blocks $x$ and $y$ appearing in $s$ such that $y$ is a permutation of $x$. The connection comes from the observation that $p,q,r\\in A\\subset \\mathbb{R}^d$ form a three-term arithmetic progression if and only if the string corresponding to the steps from $p$ to $q$ is a permutation of the string corresponding to the steps from $q$ to $r$.\n\nThis problem is therefore equivalent to asking for which $d$ there exists an infinite string over $\\{1,\\ldots,d\\}$ with no abelian squares. It is easy to check that in fact any finite string of length $7$ over $\\{1,2,3\\}$ contains an abelian square.\n\nAn infinite string without abelian squares was constructed when $d=4$ by Keränen \\cite{Ke92}. We refer to a recent survey by Fici and Puzynina \\cite{FiPu23} for more background and related results, and a blog post by Renan for an entertaining and educational discussion.\n\n\n\n\nReferences\n\n\n[FiPu23] Fici, Gabriele and Puzynina, Svetlana, Abelian combinatorics on words: a survey. Comput. Sci. Rev. (2023), Paper No. 100532, 21.\n\n[Ke92] Ker\\\"Anen, Veikko, Abelian squares are avoidable on {$4$} letters. Automata, languages and programming (Vienna, 1992) (1992), 41-52.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős-Graham Problem (1980)**\n\nErdős and Graham asked: if you walk in ℝᵈ taking unit steps along coordinate axes, must your path contain three equally-spaced points?\n\n**The Abelian Square Connection**\n\nThe problem transforms beautifully into combinatorics on words. If you record which axis you step along as a letter, three equally-spaced positions form an AP if and only if the steps between first-second equal the steps between second-third as multisets—an \"abelian square.\"\n\n**Small Dimensions (d ≤ 3)**\n\nFor d = 3, any string of length 7 over 3 letters must contain an abelian square. This was known classically and implies APs are unavoidable in ℝ³.\n\n**Keränen's Breakthrough (1992)**\n\nVeikko Keränen constructed an infinite abelian square-free string over 4 letters, using a morphism where each letter maps to an 85-letter block. This resolves the problem: d = 4 is the threshold.\n\n**Recent Work**\n\nFici and Puzynina (2023) surveyed abelian combinatorics on words, and there's an educational blog post by Renan discussing this beautiful problem.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A = {a₁, a₂, ...} ⊂ ℝᵈ be an infinite sequence where aᵢ₊₁ - aᵢ is always a positive unit vector (0,...,1,...,0).\n\n**Question:** For which d must A contain a three-term arithmetic progression?\n\n**Answer:**\n- **d ≤ 3**: YES, APs are unavoidable\n- **d ≥ 4**: NO, AP-free sequences exist (Keränen 1992)\n\n**Equivalently:** For which alphabet sizes can you write an infinite abelian square-free string?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Step Sequences:** Represent unit vector sequences as functions ℕ → Fin d\n\n2. **Position Tracking:** Position after n steps = count of each letter used\n\n3. **AP Condition:** 2·middle = start + end coordinate-wise\n\n4. **Abelian Squares:** Two consecutive blocks that are anagrams\n\n5. **Equivalence:** AP in positions ↔ abelian square in step sequence\n\n6. **Small d:** Axiomatize that d ≤ 3 forces abelian squares\n\n7. **Keränen:** Axiomatize existence of abelian square-free sequence for d = 4\n\n8. **Main Theorem:** Combine to give complete characterization",
+    "keyInsights": [
+      "**Geometric → Combinatorial:** Unit vector paths become strings over d letters",
+      "**AP ↔ Abelian Square:** Equally-spaced positions mean anagram step sequences",
+      "**Threshold d = 4:** The critical dimension, neither obvious nor expected",
+      "**Morphism Method:** Keränen's 85-letter substitution rules avoid abelian squares",
+      "**Length 7 Barrier:** Any 7-letter string over {1,2,3} has an abelian square",
+      "**Connection to #231:** This problem is equivalent to Erdős Problem #231 on abelian squares"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #192 asks for which dimensions d an infinite unit vector sequence must contain a 3-term AP. The answer is d ≤ 3 (unavoidable) and d ≥ 4 (avoidable). Keränen (1992) constructed the critical 4-letter abelian square-free infinite string using morphism techniques. The problem connects geometry to combinatorics on words through the abelian square reformulation.",
+    "implications": "**Connections**\n\n1. **Combinatorics on Words:** Central to the theory of pattern avoidance\n\n2. **Formal Languages:** Morphisms and substitution systems\n\n3. **Problem #231:** Equivalent formulation about abelian squares directly\n\n4. **Ramsey Theory:** Unavoidability of patterns vs. existence of avoiding sequences",
+    "openQuestions": [
+      "What is the shortest abelian square-free string over 4 letters?",
+      "Can Keränen's morphism length 85 be reduced?",
+      "What about higher-order abelian patterns (abelian cubes)?",
+      "Computational complexity of detecting abelian squares?"
+    ]
   }
 }
