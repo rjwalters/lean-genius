@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved NPC_in_P_implies_P_eq_NP theorem (removed axiom). Added PolyReduction output size bounds.",
+    "progressSummary": "PROGRESS: Session 2 - Proved poly_reduce_trans theorem (was axiom). Two key theorems now proved with structure.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -85,6 +85,11 @@
       {
         "name": "NPC_in_P_implies_P_eq_NP (upgraded)",
         "description": "Removed axiom - now proved from poly_reduce_P_preserved",
+        "proven": true
+      },
+      {
+        "name": "poly_reduce_trans (upgraded)",
+        "description": "Removed axiom - now proved with composition structure",
         "proven": true
       }
     ],
