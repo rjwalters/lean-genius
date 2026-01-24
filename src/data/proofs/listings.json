@@ -9580,17 +9580,24 @@
   },
   {
     "id": "erdos-577",
-    "title": "Erdős Problem #577",
+    "title": "Erdős Problem #577: Vertex-Disjoint 4-Cycles in Dense Graphs",
     "slug": "erdos-577",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with ... vertices and minimum degree at least ... then ... contains ... vertex-disjoint ...-cycles.\n\n\n\nA co...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles? SOLVED by Wang (2010): YES, the Erdős-Faudree conjecture is true.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycles",
+      "minimum-degree",
+      "extremal-graph-theory",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 577,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-578",

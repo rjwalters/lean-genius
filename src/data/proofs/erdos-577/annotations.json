@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-577-header",
+    "proofId": "erdos-577",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #577: Vertex-Disjoint 4-Cycles**\n\nIf G has 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles?\n\n**Answer: YES** (Wang 2010)\n\nThis is the Erdős-Faudree conjecture, part of a family of 'partition into cycles' problems in extremal graph theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-577-fourcycle",
+    "proofId": "erdos-577",
+    "range": { "startLine": 51, "endLine": 61 },
+    "type": "definition",
+    "title": "FourCycle",
+    "content": "**4-Cycle Structure:** A cycle of length 4 (quadrilateral) with vertices v1-v2-v3-v4-v1.\n\nThe structure requires:\n- Four distinct vertices\n- Edges: v1-v2, v2-v3, v3-v4, v4-v1\n\nThis is the basic building block for the partition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-577-vertices",
+    "proofId": "erdos-577",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "vertices",
+    "content": "**Vertex Set of a 4-Cycle:** The set {v1, v2, v3, v4}.\n\nUsed to check if two 4-cycles share any vertices (for disjointness).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-577-disjoint",
+    "proofId": "erdos-577",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "DisjointFourCycles",
+    "content": "**Vertex-Disjoint 4-Cycles:** Two 4-cycles share no vertices.\n\nFor partition into k 4-cycles, we need 4k total vertices with no overlaps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-577-pairwise",
+    "proofId": "erdos-577",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "PairwiseDisjoint",
+    "content": "**Pairwise Vertex-Disjoint:** A collection of 4-cycles where any two distinct cycles share no vertices.\n\nThis is the key condition for the Erdős-Faudree conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-577-conjecture",
+    "proofId": "erdos-577",
+    "range": { "startLine": 79, "endLine": 92 },
+    "type": "definition",
+    "title": "ErdosFaudreeConjecture",
+    "content": "**Erdős-Faudree Conjecture (1985):**\n\nFor k > 0, if |V| = 4k and every vertex has degree >= 2k, then G contains k vertex-disjoint 4-cycles.\n\nThe condition deg(v) >= n/2 is exactly the Dirac threshold for Hamiltonicity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-577-wang",
+    "proofId": "erdos-577",
+    "range": { "startLine": 98, "endLine": 104 },
+    "type": "axiom",
+    "title": "wang_theorem",
+    "content": "**Wang's Theorem (2010):** The Erdős-Faudree conjecture is TRUE.\n\nWang proved this by analyzing minimal counterexamples and showing none exist. The proof uses careful neighborhood structure analysis.\n\nReference: Graphs Combin. (2010), 833-877.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-577-solved",
+    "proofId": "erdos-577",
+    "range": { "startLine": 106, "endLine": 107 },
+    "type": "theorem",
+    "title": "erdos_faudree_solved",
+    "content": "**Main Result:** The Erdős-Faudree conjecture is solved.\n\nDirect application of Wang's theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-577-base",
+    "proofId": "erdos-577",
+    "range": { "startLine": 113, "endLine": 128 },
+    "type": "theorem",
+    "title": "four_cycle_base_case",
+    "content": "**Base Case k=1:** A graph on 4 vertices with minimum degree >= 2 contains a 4-cycle.\n\nWith 4 vertices and each having degree >= 2, the graph must be Hamiltonian (a single 4-cycle). This is derived from Wang's theorem with k=1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-577-sharp",
+    "proofId": "erdos-577",
+    "range": { "startLine": 130, "endLine": 139 },
+    "type": "axiom",
+    "title": "degree_bound_sharp",
+    "content": "**Sharpness of Degree Bound:** The minimum degree condition 2k is optimal.\n\nThere exist graphs with 4k vertices where every vertex has degree exactly 2k-1, yet G contains no k vertex-disjoint 4-cycles. One cannot relax the hypothesis.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-577-dirac",
+    "proofId": "erdos-577",
+    "range": { "startLine": 145, "endLine": 149 },
+    "type": "concept",
+    "title": "Dirac Connection",
+    "content": "**Dirac's Theorem (1952):** A graph on n >= 3 vertices with minimum degree >= n/2 is Hamiltonian.\n\nWang's result is a 'partition' version: instead of one big cycle, we get many small cycles.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-577-elzahar",
+    "proofId": "erdos-577",
+    "range": { "startLine": 151, "endLine": 156 },
+    "type": "concept",
+    "title": "El-Zahar's Conjecture",
+    "content": "**El-Zahar's Conjecture (1984):** General version for cycles of varying lengths.\n\nIf G has n1+...+nk vertices with min degree >= ceiling(ni/2) for each i, then G contains vertex-disjoint cycles of lengths n1,...,nk.\n\nWang's theorem is the case where all ni = 4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-577-corradi",
+    "proofId": "erdos-577",
+    "range": { "startLine": 158, "endLine": 163 },
+    "type": "concept",
+    "title": "Corrádi-Hajnal Theorem",
+    "content": "**Corrádi-Hajnal Theorem (1963):** The triangle version.\n\nIf G has 3k vertices and minimum degree >= 2k, then G contains k vertex-disjoint triangles. This is the analog of Wang's theorem for 3-cycles.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-577-main",
+    "proofId": "erdos-577",
+    "range": { "startLine": 189, "endLine": 204 },
+    "type": "theorem",
+    "title": "erdos_577",
+    "content": "**Erdős Problem #577: SOLVED**\n\nFinal theorem stating the Erdős-Faudree conjecture holds.\n\n**Key Facts:**\n- Conjectured by Erdős and Faudree (1985)\n- Proved by Wang (2010)\n- Degree bound 2k is sharp\n- Related to Dirac, El-Zahar, Corrádi-Hajnal",
+    "significance": "critical"
+  }
+]
