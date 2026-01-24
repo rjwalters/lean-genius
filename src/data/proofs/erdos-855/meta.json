@@ -1,33 +1,139 @@
 {
   "id": "erdos-855",
-  "title": "Erdős Problem #855",
+  "title": "Erdős Problem #855: The Second Hardy-Littlewood Conjecture",
   "slug": "erdos-855",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... counts the number of primes in ... then is it true that (for large ... and ...)\\[\\pi(x+y) \\leq \\pi(x)+\\pi(y)?\\]\n\n\n\nCom...",
+  "description": "Is π(x+y) ≤ π(x) + π(y) for large x,y? LIKELY FALSE - incompatible with the prime k-tuples conjecture (Hensley-Richards 1973).",
   "meta": {
-    "author": "Unknown",
+    "author": "Hardy-Littlewood (original), Hensley-Richards (1973 incompatibility)",
     "sourceUrl": "https://erdosproblems.com/855",
-    "date": "",
-    "status": "pending",
+    "date": "1973",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos855Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "prime-counting",
+      "hardy-littlewood",
+      "k-tuples",
+      "likely-false"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 855,
     "erdosUrl": "https://erdosproblems.com/855",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "primePi definition: prime counting function",
+      "SecondHardyLittlewoodConjecture formulation",
+      "IsAdmissibleTuple definition: admissible k-tuples",
+      "PrimeKTuplesConjecture formulation",
+      "hensley_richards_incompatibility axiom: key result",
+      "hensley_richards_quantitative axiom: error term",
+      "dense_admissible_tuples_exist axiom",
+      "montgomery_vaughan_bound axiom",
+      "StrausConjecture and ErdosWeakerConjecture formulations",
+      "erdos_855_summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #855 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\pi(x)$ counts the number of primes in $[1,x]$ then is it true that (for large $x$ and $y$)\\[\\pi(x+y) \\leq \\pi(x)+\\pi(y)?\\]\n\n\n\nCommonly known as the second Hardy-Littlewood conjecture. In \\cite{Er85c} Erd\\H{o}s describes it as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood'.\n\nThis is probably false, since Hensley and Richards \\cite{HeRi73} have shown that this is false assuming the Hardy-Littlewood prime tuples conjecture. Indeed, assuming this conjecture, they prove that for every large $y$ there are infinitely many $x$ such that\\[\\pi(x+y)>\\pi(x)+\\pi(y)+(\\log 2-o(1))\\frac{y}{(\\log y)^2},\\]where the $o(1)$ term tends to $0$ as $y\\to \\infty$.\n\nErd\\H{o}s \\cite{Er85c} reports Straus as remarking that the 'correct way' of stating this conjecture would have been\\[\\pi(x+y) \\leq \\pi(x)+2\\pi(y/2).\\]Clark and Jarvis \\cite{ClJa01} have shown this is also incompatible with the prime tuples conjecture.\n\nIn \\cite{Er85c} Erd\\H{o}s conjectures the weaker result (which in particular follows from the conjecture of Straus) that\\[\\pi(x+y) \\leq \\pi(x)+\\pi(y)+O\\left(\\frac{y}{(\\log y)^2}\\right),\\]which the Hensley and Richards result shows (conditionally) would be best possible. Richards conjectured that this is false.\n\nErd\\H{o}s and Richards further conjectured that the original inequality is true almost always - that is, the set of $x$ such that $\\pi(x+y)\\leq \\pi(x)+\\pi(y)$ for all $y<x$ has density $1$. They could only prove that this set has positive lower density.\n\nThey also conjectured that for every $x$ the inequality $\\pi(x+y)\\leq \\pi(x)+\\pi(y)$ is true provided $y \\gg (\\log x)^C$ for some large constant $C>0$.\n\nHardy and Littlewood proved\\[\\pi(x+y) \\leq \\pi(x)+O(\\pi(y)).\\]The best known in this direction is a result of Montgomery and Vaughan \\cite{MoVa73}, which shows\\[\\pi(x+y) \\leq \\pi(x)+2\\frac{y}{\\log y}.\\]This is discussed in problem A9 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ClJa01] Clark, David A. and Jarvis, Norman C., Dense admissible sequences. Math. Comp. (2001), 1713--1718.\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[HeRi73] Hensley, Douglas and Richards, Ian, On the incompatibility of two conjectures concerning primes. (1973), 123--127.\n\n[MoVa73] Montgomery, H. L. and Vaughan, R. C., The large sieve. Mathematika (1973), 119--134.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #855: The Second Hardy-Littlewood Conjecture**\n\nThis problem concerns a fundamental inequality in the distribution of primes.\n\n**Key History:**\n- Hardy-Littlewood: Original conjecture π(x+y) ≤ π(x) + π(y)\n- Erdős (1985): Described it as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood'\n- Hensley-Richards (1973): Proved incompatibility with the prime k-tuples conjecture\n- Montgomery-Vaughan (1973): Proved π(x+y) ≤ π(x) + 2y/log(y) unconditionally\n\n**The Tension:** This conjecture and the prime k-tuples conjecture cannot both be true!",
+    "problemStatement": "**Problem Statement (Open, Likely False)**\n\nIf $\\pi(x)$ counts the number of primes in $[1,x]$, is it true that for all sufficiently large $x$ and $y$:\n$$\\pi(x+y) \\leq \\pi(x) + \\pi(y)$$?\n\n**Status:** OPEN but LIKELY FALSE\n\n**Key Result:** Hensley and Richards (1973) proved this is **incompatible** with the prime k-tuples conjecture. Under k-tuples:\n$$\\pi(x+y) > \\pi(x) + \\pi(y) + (\\log 2 - o(1))\\frac{y}{(\\log y)^2}$$\nfor infinitely many x.\n\nSince the k-tuples conjecture is widely believed, this conjecture is likely false.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Counting Function:** Define π(n) as the count of primes ≤ n.\n\n2. **Main Conjecture:** Formalize the Second Hardy-Littlewood Conjecture.\n\n3. **k-Tuples Conjecture:** Define admissible tuples and the prime k-tuples conjecture.\n\n4. **Incompatibility:** State Hensley-Richards theorem showing the two conjectures conflict.\n\n5. **Unconditional Bounds:** Include Montgomery-Vaughan's π(x+y) ≤ π(x) + 2y/log(y).\n\n6. **Related Variants:** Straus's modification and Erdős's weaker conjecture.",
+    "keyInsights": [
+      "**Prime Counting:** π(n) counts primes up to n, satisfies π(n) ~ n/log(n)",
+      "**The Conjecture:** Asserts π is subadditive for large arguments",
+      "**k-Tuples Conflict:** Can't have both conjectures true simultaneously",
+      "**Dense Admissible Tuples:** Hensley-Richards showed admissible tuples can have more elements than π(k) in [0,k)",
+      "**No Counterexample Known:** Despite computation, no explicit x,y violating the bound found"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "prime-counting",
+      "title": "The Prime Counting Function",
+      "summary": "primePi definition, primePi_monotone, prime number theorem",
+      "startLine": 33,
+      "endLine": 56
+    },
+    {
+      "id": "second-hl",
+      "title": "The Second Hardy-Littlewood Conjecture",
+      "summary": "SecondHardyLittlewoodConjecture definition and status",
+      "startLine": 58,
+      "endLine": 78
+    },
+    {
+      "id": "k-tuples",
+      "title": "The Prime k-Tuples Conjecture",
+      "summary": "IsAdmissibleTuple, PrimeKTuplesConjecture definitions",
+      "startLine": 80,
+      "endLine": 106
+    },
+    {
+      "id": "hensley-richards",
+      "title": "Hensley-Richards Incompatibility",
+      "summary": "hensley_richards_incompatibility, quantitative version, dense tuples",
+      "startLine": 108,
+      "endLine": 144
+    },
+    {
+      "id": "unconditional",
+      "title": "Unconditional Results",
+      "summary": "montgomery_vaughan_bound, primePi_add_ge theorem",
+      "startLine": 146,
+      "endLine": 174
+    },
+    {
+      "id": "related",
+      "title": "Related Conjectures",
+      "summary": "StrausConjecture, ErdosWeakerConjecture definitions",
+      "startLine": 176,
+      "endLine": 203
+    },
+    {
+      "id": "significance",
+      "title": "Why This Matters",
+      "summary": "Philosophical and computational notes",
+      "startLine": 205,
+      "endLine": 225
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_855 and erdos_855_summary theorems",
+      "startLine": 227,
+      "endLine": 264
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #855 (Second Hardy-Littlewood Conjecture) asks whether π(x+y) ≤ π(x) + π(y) for large x,y. This is LIKELY FALSE: Hensley and Richards (1973) proved it conflicts with the widely-believed prime k-tuples conjecture. No explicit counterexample is known, but the incompatibility is a strong negative indicator.",
+    "implications": "**Connections to Number Theory**\n\n1. **Prime Distribution:** Reveals subtle non-additive behavior of π(x)\n\n2. **k-Tuples Conjecture:** Highlights that dense prime patterns imply violations\n\n3. **Montgomery-Vaughan:** Best unconditional bound is π(x+y) ≤ π(x) + 2y/log(y)\n\n4. **Philosophical:** Two natural conjectures can be mutually exclusive",
+    "openQuestions": [
+      "Is the prime k-tuples conjecture true?",
+      "What is the smallest counterexample to the Second Hardy-Littlewood Conjecture (if any)?",
+      "Is Erdős's weaker conjecture π(x+y) ≤ π(x) + π(y) + O(y/(log y)²) true?",
+      "For which x does π(x+y) ≤ π(x) + π(y) hold for all y < x?",
+      "Can the Montgomery-Vaughan bound be improved unconditionally?"
+    ]
   }
 }
