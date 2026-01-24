@@ -1,1 +1,191 @@
-[]
+[
+  {
+    "id": "ann-746-graphonn",
+    "proofId": "erdos-746",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "GraphOnN",
+    "content": "SimpleGraph on n vertices (Fin n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-746-numedges",
+    "proofId": "erdos-746",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "numEdges",
+    "content": "Count of edges in the graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-746-erdosrenyi",
+    "proofId": "erdos-746",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "ErdosRenyiModel",
+    "content": "G(n, m): random graph with n vertices, m edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-threshold",
+    "proofId": "erdos-746",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "hamiltonianThreshold",
+    "content": "(1/2 + ε)n log n threshold function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-precise",
+    "proofId": "erdos-746",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "preciseThreshold",
+    "content": "(1/2)n log n + (1/2)n log log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-hamcycle",
+    "proofId": "erdos-746",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "definition",
+    "title": "IsHamiltonianCycle",
+    "content": "Cycle visiting every vertex exactly once.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-hamiltonian",
+    "proofId": "erdos-746",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "IsHamiltonian",
+    "content": "Graph contains a Hamiltonian cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-dirac",
+    "proofId": "erdos-746",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "theorem",
+    "title": "dirac_theorem",
+    "content": "Min degree ≥ n/2 implies Hamiltonian.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-746-matching",
+    "proofId": "erdos-746",
+    "range": { "startLine": 86, "endLine": 90 },
+    "type": "definition",
+    "title": "IsPerfectMatching",
+    "content": "Matching that pairs all vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-746-ermatching",
+    "proofId": "erdos-746",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "theorem",
+    "title": "erdos_renyi_matching",
+    "content": "Erdős-Rényi 1966: perfect matching threshold.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-question",
+    "proofId": "erdos-746",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "definition",
+    "title": "ErdosQuestion746",
+    "content": "Is G(n, (1/2+ε)n log n) a.s. Hamiltonian?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-posa",
+    "proofId": "erdos-746",
+    "range": { "startLine": 122, "endLine": 128 },
+    "type": "theorem",
+    "title": "posa_theorem",
+    "content": "Pósa 1976: Cn log n edges suffices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-korshunov",
+    "proofId": "erdos-746",
+    "range": { "startLine": 137, "endLine": 145 },
+    "type": "theorem",
+    "title": "korshunov_theorem",
+    "content": "Korshunov 1977: sharp threshold established.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-ks",
+    "proofId": "erdos-746",
+    "range": { "startLine": 156, "endLine": 162 },
+    "type": "theorem",
+    "title": "komlos_szemeredi_theorem",
+    "content": "Komlós-Szemerédi 1983: P → e^{-e^{-2c}}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-limiting",
+    "proofId": "erdos-746",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "definition",
+    "title": "limitingProbability",
+    "content": "exp(-exp(-2c)) double exponential.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-probzero",
+    "proofId": "erdos-746",
+    "range": { "startLine": 168, "endLine": 170 },
+    "type": "theorem",
+    "title": "limiting_prob_at_zero",
+    "content": "At c=0, probability is e^{-1} ≈ 0.368.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-746-answer",
+    "proofId": "erdos-746",
+    "range": { "startLine": 184, "endLine": 188 },
+    "type": "theorem",
+    "title": "erdos_746_answer",
+    "content": "The answer is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-connected",
+    "proofId": "erdos-746",
+    "range": { "startLine": 199, "endLine": 201 },
+    "type": "definition",
+    "title": "IsConnected",
+    "content": "All vertices are reachable from each other.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-746-hamconn",
+    "proofId": "erdos-746",
+    "range": { "startLine": 208, "endLine": 211 },
+    "type": "theorem",
+    "title": "hamiltonian_implies_connected",
+    "content": "Hamiltonicity implies connectivity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-746-main",
+    "proofId": "erdos-746",
+    "range": { "startLine": 246, "endLine": 246 },
+    "type": "theorem",
+    "title": "erdos_746",
+    "content": "Main theorem: YES, the conjecture is true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-746-solved",
+    "proofId": "erdos-746",
+    "range": { "startLine": 260, "endLine": 260 },
+    "type": "theorem",
+    "title": "erdos_746_solved",
+    "content": "Problem completely solved.",
+    "significance": "critical"
+  }
+]
