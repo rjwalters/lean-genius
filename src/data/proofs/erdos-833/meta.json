@@ -1,33 +1,152 @@
 {
   "id": "erdos-833",
-  "title": "Erdős Problem #833",
+  "title": "Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs",
   "slug": "erdos-833",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist an absolute constant ... such that, for all ..., in any ...-uniform hypergraph with chromatic number ... the...",
+  "description": "Does there exist c > 0 such that every r-uniform 3-chromatic hypergraph has a vertex in at least (1+c)^r edges? SOLVED by Erdős-Lovász (1975): YES, with bound 2^{r-1}/(4r).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Lovász (1975)",
     "sourceUrl": "https://erdosproblems.com/833",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos833Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "hypergraphs",
+      "chromatic-number",
+      "vertex-degree",
+      "extremal-combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 6,
     "erdosNumber": 833,
     "erdosUrl": "https://erdosproblems.com/833",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph theory basics",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for hypergraph edges",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "UniformHypergraph structure: r-uniform hypergraph definition",
+      "vertexDegree definition: edges containing a vertex",
+      "IsProperColoring, IsKColorable: hypergraph coloring",
+      "HasChromaticNumber3: exactly 3-chromatic",
+      "f(r) definition: minimum max degree over 3-chromatic r-uniform hypergraphs",
+      "ExponentialGrowthConjecture: the main question",
+      "erdos_lovasz_bound axiom: 2^{r-1}/(4r) bound",
+      "erdos_833_solution: exponential growth holds",
+      "contrapositive_form: low degree implies 2-colorable"
+    ],
+    "references": [
+      {
+        "key": "ErLo75",
+        "citation": "Erdős, P. and Lovász, L., Problems and results on 3-chromatic hypergraphs and some related questions (1975), 609-627.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #833 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist an absolute constant $c>0$ such that, for all $r\\geq 2$, in any $r$-uniform hypergraph with chromatic number $3$ there is a vertex contained in at least $(1+c)^r$ many edges?\n\n\n\nIn general, determine the largest integer $f(r)$ such that every $r$-uniform hypergraph with chromatic number $3$ has a vertex contained in at least $f(r)$ many edges. It is easy to see that $f(2)=2$ and $f(3)=3$. Erd\\H{o}s did not know the value of $f(4)$.\n\nThis was solved by Erd\\H{o}s and Lov\\'{a}sz \\cite{ErLo75}, who proved in particular that there is a vertex contained in at least\\[\\frac{2^{r-1}}{4r}\\]many edges.\n\n\n\n\nReferences\n\n\n[ErLo75] Erd\\H{o}s, P. and Lov\\'{a}sz, L., Problems and results on {$3$}-chromatic hypergraphs and some\nrelated questions. (1975), 609--627.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs**\n\nThis problem concerns the minimum vertex degree in hypergraphs with chromatic number exactly 3. A hypergraph H = (V, E) is r-uniform if every edge contains exactly r vertices. The chromatic number χ(H) is the minimum number of colors needed to color vertices so no edge is monochromatic.\n\n**The Question (Erdős):** Let f(r) be the largest integer such that every r-uniform 3-chromatic hypergraph has a vertex contained in at least f(r) edges. Does f(r) grow exponentially? Specifically, is there c > 0 such that f(r) ≥ (1+c)^r for all r ≥ 2?\n\n**Background:**\n- f(2) = 2 (the triangle is the minimal 3-chromatic graph)\n- f(3) = 3 (achieved by the Fano plane)\n- Erdős did not know f(4)\n\n**The Solution (Erdős-Lovász 1975):** YES! Every r-uniform 3-chromatic hypergraph has a vertex in at least 2^{r-1}/(4r) edges. This grows like (√2)^r, confirming exponential growth with c ≈ 0.414.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $f(r)$ = largest integer such that every $r$-uniform hypergraph with $\\chi(H) = 3$ has a vertex in at least $f(r)$ edges.\n\n**Question:** Does there exist $c > 0$ such that $f(r) \\geq (1+c)^r$ for all $r \\geq 2$?\n\n**Answer (Erdős-Lovász 1975):** YES!\n\nEvery $r$-uniform 3-chromatic hypergraph has a vertex in at least $\\frac{2^{r-1}}{4r}$ edges.\n\nSince $\\frac{2^{r-1}}{4r} \\sim \\frac{(\\sqrt{2})^r}{4r}$, this grows exponentially with base $\\sqrt{2} \\approx 1.414$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Structure:** Define r-uniform hypergraphs with edge uniformity constraint.\n\n2. **Vertex Degree:** Count edges containing each vertex.\n\n3. **Colorings:** Define proper k-colorings for hypergraphs (no monochromatic edge).\n\n4. **f(r) Function:** Minimum over all 3-chromatic r-uniform H of max degree.\n\n5. **Main Theorem:** Axiomatize Erdős-Lovász bound 2^{r-1}/(4r).\n\n6. **Exponential Growth:** Derive that the conjecture holds.\n\n7. **Proof Technique:** Note use of Lovász Local Lemma (contrapositive: low degree implies 2-colorable).",
+    "keyInsights": [
+      "**Exponential Growth Confirmed:** f(r) ≥ 2^{r-1}/(4r) grows like (√2)^r",
+      "**Lovász Local Lemma:** Key probabilistic tool - if all degrees are small, random 2-coloring works",
+      "**Contrapositive Argument:** χ(H) = 3 (not 2-colorable) implies some vertex has high degree",
+      "**Known Values:** f(2) = 2 (triangle), f(3) = 3 (Fano plane)",
+      "**Tight Examples:** Triangle and Fano plane achieve the minimum for r = 2, 3",
+      "**Connection to Extremal Combinatorics:** Bounds on hypergraph structure from chromatic constraints"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypergraph-definitions",
+      "title": "Hypergraph Definitions",
+      "summary": "r-uniform hypergraph structure and vertex degree",
+      "startLine": 46,
+      "endLine": 74
+    },
+    {
+      "id": "colorings",
+      "title": "Hypergraph Colorings",
+      "summary": "Proper colorings and chromatic number",
+      "startLine": 76,
+      "endLine": 100
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Definition of f(r) and known values",
+      "startLine": 102,
+      "endLine": 123
+    },
+    {
+      "id": "exponential-question",
+      "title": "The Exponential Question",
+      "summary": "Does f(r) grow exponentially?",
+      "startLine": 125,
+      "endLine": 133
+    },
+    {
+      "id": "erdos-lovasz",
+      "title": "Erdős-Lovász Theorem (1975)",
+      "summary": "The 2^{r-1}/(4r) bound",
+      "startLine": 135,
+      "endLine": 169
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "High degree vertex existence and edge bounds",
+      "startLine": 171,
+      "endLine": 190
+    },
+    {
+      "id": "specific-values",
+      "title": "Specific Values",
+      "summary": "f(2) = 2 (triangle), f(3) = 3 (Fano plane)",
+      "startLine": 192,
+      "endLine": 206
+    },
+    {
+      "id": "proof-technique",
+      "title": "Proof Technique",
+      "summary": "Lovász Local Lemma and contrapositive",
+      "startLine": 208,
+      "endLine": 224
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main theorem",
+      "startLine": 226,
+      "endLine": 267
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #833 asked whether vertex degrees in 3-chromatic r-uniform hypergraphs grow exponentially with r. Erdős and Lovász (1975) proved YES: every such hypergraph has a vertex in at least 2^{r-1}/(4r) edges, which grows like (√2)^r. The proof uses the Lovász Local Lemma.",
+    "implications": "**Implications**\n\n1. **Hypergraph Chromatic Theory:** Establishes fundamental lower bounds on vertex degrees.\n\n2. **Probabilistic Method:** Showcases power of Lovász Local Lemma in combinatorics.\n\n3. **Extremal Combinatorics:** Connects chromatic constraints to structural properties.\n\n4. **Tight Bounds:** Known examples (triangle, Fano plane) show f(2) = 2, f(3) = 3 are exact.",
+    "openQuestions": [
+      "What are exact values of f(r) for r ≥ 4?",
+      "Can the constant 4 in the denominator be improved?",
+      "What about higher chromatic numbers (χ = 4, 5, ...)?",
+      "Are there explicit constructions achieving the lower bound for general r?"
+    ]
   }
 }
