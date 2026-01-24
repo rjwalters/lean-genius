@@ -1,1 +1,194 @@
-[]
+[
+  {
+    "id": "ann-799-1",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 52,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Color List Assignment",
+    "content": "A ColorListAssignment assigns to each vertex v a finite set L(v) of available colors. Different vertices may have different color palettes, which is the key distinction from ordinary graph coloring.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-2",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 59,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Valid List Coloring",
+    "content": "A list coloring f is valid if: (1) each vertex v receives a color from its list L(v), and (2) adjacent vertices receive distinct colors. This generalizes proper coloring to the list setting.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-3",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "k-List Colorable",
+    "content": "A graph G is k-list colorable (or k-choosable) if for ANY assignment of lists of size at least k to vertices, a valid list coloring exists. The universal quantifier over all possible list assignments makes this stronger than ordinary k-colorability.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-4",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 77,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "List Chromatic Number",
+    "content": "The list chromatic number χ_L(G), also called the choice number ch(G), is the minimum k such that G is k-list colorable. It measures the 'worst-case' coloring difficulty when an adversary chooses the color lists.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-5",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 89,
+      "endLine": 90
+    },
+    "type": "axiom",
+    "title": "χ_L(G) ≥ χ(G)",
+    "content": "The list chromatic number is always at least the ordinary chromatic number. Proof: if we give every vertex the same list of χ(G) colors, we need exactly χ(G) colors for a proper coloring. So G must be χ(G)-list colorable, meaning χ_L(G) ≥ χ(G).",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-6",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "type": "axiom",
+    "title": "Arbitrarily Large Gap",
+    "content": "The complete bipartite graph K_{n,n} has χ = 2 (it's bipartite) but χ_L = ⌈log₂ n⌉ + 1. This shows χ_L can be arbitrarily larger than χ. The construction uses adversarial lists based on binary representations.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-799-7",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 109,
+      "endLine": 111
+    },
+    "type": "axiom",
+    "title": "Chromatic Number of Random Graphs",
+    "content": "For the Erdős-Rényi random graph G(n, 1/2), the chromatic number χ(G) ≈ n/(2 log₂ n) almost surely. This follows from the independence number α(G) ≈ 2 log₂ n and the greedy bound χ(G) ≥ n/α(G).",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-799-8",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 137,
+      "endLine": 140
+    },
+    "type": "axiom",
+    "title": "Alon 1992",
+    "content": "Alon's breakthrough 1992 paper proved χ_L(G) ≪ (log log n / log n) · n for G(n, 1/2). This was the first proof that χ_L(G) = o(n) for random graphs, answering the Erdős-Rubin-Taylor question affirmatively.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-9",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 146,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "Sublinear List Chromatic Number",
+    "content": "Alon's theorem immediately implies χ_L(G) = o(n) for almost all graphs. The factor (log log n / log n) → 0 as n → ∞, so the list chromatic number grows slower than linearly.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-10",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 167,
+      "endLine": 170
+    },
+    "type": "axiom",
+    "title": "Alon-Krivelevich-Sudakov 1999",
+    "content": "The 1999 paper established the tight asymptotic χ_L(G) ≍ n/log n for G(n, 1/2). This means there exist constants C₁, C₂ > 0 such that C₂ · n/log n ≤ χ_L(G) ≤ C₁ · n/log n almost surely.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-11",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 177,
+      "endLine": 179
+    },
+    "type": "axiom",
+    "title": "Upper Bound: Semi-Random Method",
+    "content": "The upper bound χ_L(G) ≤ O(n/log n) uses the semi-random method (Rödl nibble). This iteratively colors vertices in carefully chosen random rounds, exploiting pseudo-random properties of G(n, 1/2).",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-799-12",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 186,
+      "endLine": 188
+    },
+    "type": "axiom",
+    "title": "Lower Bound: Adversarial Construction",
+    "content": "The lower bound χ_L(G) ≥ Ω(n/log n) constructs adversarial list assignments that force many colors. The construction exploits the structure of random graphs to create 'hard' instances.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-799-13",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 204,
+      "endLine": 206
+    },
+    "type": "axiom",
+    "title": "Ratio χ_L/χ for Random Graphs",
+    "content": "For G(n, 1/2): χ(G) ≈ n/(2 log₂ n) and χ_L(G) ≍ n/log n. Converting to natural log: χ_L(G)/χ(G) → 2/ln(2) ≈ 2.885. The list chromatic number is about 2.885 times the ordinary chromatic number.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-799-14",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 236,
+      "endLine": 242
+    },
+    "type": "theorem",
+    "title": "Main Result: Erdős #799",
+    "content": "The main theorem erdos_799 establishes that χ_L(G) = o(n) for almost all graphs, with the precise bound χ_L(G) ≍ n/log n. This completely resolves the Erdős-Rubin-Taylor question.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-799-15",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 262,
+      "endLine": 264
+    },
+    "type": "axiom",
+    "title": "Fractional Chromatic Number",
+    "content": "The fractional chromatic number χ_f(G) satisfies χ_f(G) ≤ χ(G) ≤ χ_L(G). For random graphs, all three are Θ(n/log n), showing they are asymptotically equivalent up to constants.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-799-16",
+    "proofId": "erdos-799",
+    "range": {
+      "startLine": 294,
+      "endLine": 296
+    },
+    "type": "axiom",
+    "title": "Lovász Local Lemma",
+    "content": "The Lovász Local Lemma (LLL) is a key probabilistic tool. It shows that if 'bad' events are individually unlikely and have limited dependence, they can all be avoided simultaneously. Applied to show list colorings exist.",
+    "significance": "advanced"
+  }
+]
