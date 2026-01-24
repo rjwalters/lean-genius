@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "euclidean-point",
+    "proofId": "erdos-224",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "definition",
+    "title": "Euclidean d-Space",
+    "content": "Points in ℝ^d represented as functions from Fin d to ℝ. This allows working in arbitrary dimension.",
+    "significance": "high"
+  },
+  {
+    "id": "angle-def",
+    "proofId": "erdos-224",
+    "range": { "startLine": 41, "endLine": 46 },
+    "type": "definition",
+    "title": "Angle Between Three Points",
+    "content": "The angle ∠ABC at vertex B, computed using arccos of the normalized inner product of vectors BA and BC.",
+    "significance": "critical"
+  },
+  {
+    "id": "obtuse-angle",
+    "proofId": "erdos-224",
+    "range": { "startLine": 48, "endLine": 52 },
+    "type": "definition",
+    "title": "Obtuse Angle",
+    "content": "An angle θ is obtuse if θ > π/2 (90°). Equivalently, the dot product of the vectors is negative.",
+    "significance": "critical"
+  },
+  {
+    "id": "contains-obtuse",
+    "proofId": "erdos-224",
+    "range": { "startLine": 61, "endLine": 68 },
+    "type": "definition",
+    "title": "Contains Obtuse Triple",
+    "content": "A point set P contains an obtuse triple if there exist distinct points A, B, C forming an obtuse angle at B.",
+    "significance": "critical"
+  },
+  {
+    "id": "obtuse-free",
+    "proofId": "erdos-224",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
+    "title": "Obtuse-Free Set",
+    "content": "A point set is obtuse-free if no three points form an obtuse angle. The hypercube is the extremal example.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-conjecture",
+    "proofId": "erdos-224",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "Any set of 2^d + 1 points in ℝ^d contains three points forming an obtuse angle.",
+    "significance": "critical"
+  },
+  {
+    "id": "danzer-grunbaum",
+    "proofId": "erdos-224",
+    "range": { "startLine": 88, "endLine": 92 },
+    "type": "axiom",
+    "title": "Danzer-Grünbaum Theorem (1962)",
+    "content": "The main theorem proving Erdős's conjecture for all dimensions d. Published in Math. Z. 1962.",
+    "significance": "critical"
+  },
+  {
+    "id": "case-d2",
+    "proofId": "erdos-224",
+    "range": { "startLine": 98, "endLine": 102 },
+    "type": "axiom",
+    "title": "d = 2: Trivial Case",
+    "content": "Any 5 points in the plane contain an obtuse triple. This follows from convex position or collinearity arguments.",
+    "significance": "medium"
+  },
+  {
+    "id": "hypercube-vertices",
+    "proofId": "erdos-224",
+    "range": { "startLine": 122, "endLine": 127 },
+    "type": "definition",
+    "title": "Hypercube Vertices",
+    "content": "The 2^d vertices of the unit hypercube {0,1}^d. This is the extremal obtuse-free configuration.",
+    "significance": "critical"
+  },
+  {
+    "id": "hypercube-obtuse-free",
+    "proofId": "erdos-224",
+    "range": { "startLine": 136, "endLine": 142 },
+    "type": "axiom",
+    "title": "Hypercube is Obtuse-Free",
+    "content": "No three hypercube vertices form an obtuse angle. All angles are 60° (face diagonals) or 90° (edge angles).",
+    "significance": "critical"
+  },
+  {
+    "id": "hypercube-extremal",
+    "proofId": "erdos-224",
+    "range": { "startLine": 144, "endLine": 151 },
+    "type": "theorem",
+    "title": "Hypercube is Extremal",
+    "content": "The hypercube achieves the maximum 2^d obtuse-free points. This shows the bound 2^d + 1 is tight.",
+    "significance": "high"
+  },
+  {
+    "id": "angle-classification",
+    "proofId": "erdos-224",
+    "range": { "startLine": 157, "endLine": 169 },
+    "type": "axiom",
+    "title": "Hypercube Angle Classification",
+    "content": "For hypercube vertices, all angles are at most 90°. The specific values are 60° (equilateral faces) and 90° (orthogonal edges).",
+    "significance": "high"
+  },
+  {
+    "id": "pigeonhole",
+    "proofId": "erdos-224",
+    "range": { "startLine": 182, "endLine": 189 },
+    "type": "axiom",
+    "title": "Pigeonhole on Orthants",
+    "content": "ℝ^d has 2^d orthants. With 2^d + 1 points, some orthant contains 2 points by pigeonhole. This is key to forcing obtuse angles.",
+    "significance": "high"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "erdos-224",
+    "range": { "startLine": 234, "endLine": 248 },
+    "type": "theorem",
+    "title": "Erdős Problem #224: SOLVED",
+    "content": "Any 2^d + 1 points in ℝ^d contain three forming an obtuse angle. Solved by Danzer-Grünbaum (1962). The hypercube shows the bound is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-224",
+    "range": { "startLine": 250, "endLine": 261 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Combines the main result (conjecture true) with the extremality of the hypercube (2^d obtuse-free points exist).",
+    "significance": "high"
+  }
+]
