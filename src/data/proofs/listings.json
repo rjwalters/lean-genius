@@ -3249,17 +3249,24 @@
   },
   {
     "id": "erdos-147",
-    "title": "Erdős Problem #147",
+    "title": "Erdős Problem #147: Turán Numbers for Bipartite Graphs",
     "slug": "erdos-147",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is bipartite with minimum degree ... then there exists ... such that\\[(n;H) \\gg n^{2-{r-1}+\\epsilon}.\\]\n\n\n\nConjectured...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If H is bipartite with minimum degree r, is ex(n;H) ≫ n^{2-1/(r-1)+ε}? NO, disproved by Janzer (2023) who showed ex(n;H) ≪ n^{2-2/r+ε}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "bipartite-graphs",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 147,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-149",
