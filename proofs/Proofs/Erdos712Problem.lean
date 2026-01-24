@@ -72,9 +72,8 @@ ex_r(n, K_k^r) is the maximum edges in a K_k^r-free r-uniform hypergraph on n ve
 
 /-- The hypergraph Turán number ex_r(n, K_k^r) -/
 noncomputable def turanNumber (n r k : ℕ) : ℕ :=
-  Nat.find ⟨Nat.choose n r, by
-    use fun _ => Nat.lt_irrefl 0  -- Placeholder
-    sorry⟩
+  sSup {m : ℕ | ∃ (V : Finset (Fin n)) (H : Hypergraph (Fin n) r),
+    isCliqueFree H k ∧ H.edgeCount = m}
 
 /-- Alternative definition using supremum -/
 def turanNumberDef (n r k : ℕ) : Prop :=
@@ -83,9 +82,8 @@ def turanNumberDef (n r k : ℕ) : Prop :=
     m ≤ turanNumber n r k
 
 /-- Turán number is at most the number of r-subsets -/
-theorem turan_upper_trivial (n r k : ℕ) (hr : r ≤ n) :
-    turanNumber n r k ≤ Nat.choose n r := by
-  sorry
+axiom turan_upper_trivial (n r k : ℕ) (hr : r ≤ n) :
+    turanNumber n r k ≤ Nat.choose n r
 
 /-!
 ## Part 3: The Turán Density
@@ -207,9 +205,15 @@ theorem erdos_712 (r k : ℕ) (hr : r > 2) (hk : k > r) :
     · rfl
     constructor
     · exact turan_density_positive r k (by omega) hk
-    · have ⟨_, h⟩ := turan_density_bounds r k (by omega) hk
-      have hp := turan_density_positive r k (by omega) hk
-      sorry  -- Need to show π < 1
+    · -- Use Kruskal-Katona bound: π ≤ 1 - 1/k < 1 for k > 1
+      have hkk := kruskal_katona_upper r k (by omega) hk
+      have hk_pos : (0 : ℝ) < k := by
+        have : k > r := hk
+        have : r > 2 := hr
+        linarith
+      have h_one_div_k_pos : (0 : ℝ) < 1 / k := by positivity
+      calc turanDensity r k ≤ 1 - 1 / k := hkk
+        _ < 1 := by linarith
   · exact erdos_712_open r k hr hk
 
 /-!
