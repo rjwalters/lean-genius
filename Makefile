@@ -223,38 +223,57 @@ signals:
 restart-all: restart-deployer restart-aristotle restart-research restart-enhancers
 	@echo "All agents checked and restarted if needed."
 
-# Restart research agents if not running
+# Helper: check if claude is actively running in a tmux session
+# Returns 0 if idle (needs restart), 1 if active
+define check_agent_idle
+	@tmux has-session -t $(1) 2>/dev/null && \
+		! tmux list-panes -t $(1) -F '#{pane_pid}' | xargs -I{} ps -p {} -o command= 2>/dev/null | grep -q claude
+endef
+
+# Restart research agents if not running or idle
 restart-research:
-	@if ! tmux has-session -t researcher-1 2>/dev/null; then \
+	@if ! tmux has-session -t researcher-1 2>/dev/null || \
+		! (tmux list-panes -t researcher-1 -F '#{pane_pid}' | xargs -I{} ps -p {} -o command= 2>/dev/null | grep -q claude); then \
 		echo "Restarting research agents..."; \
+		./scripts/research/parallel-research.sh --stop 2>/dev/null || true; \
+		sleep 1; \
 		RESEARCHER_WAIT_INTERVAL=$(WAIT) ./scripts/research/parallel-research.sh $(N); \
 	else \
-		echo "Research agents already running."; \
+		echo "Research agents actively running."; \
 	fi
 
-# Restart deployer if not running
+# Restart deployer if not running or idle
 restart-deployer:
-	@if ! tmux has-session -t deployer 2>/dev/null; then \
+	@if ! tmux has-session -t deployer 2>/dev/null || \
+		! (tmux list-panes -t deployer -F '#{pane_pid}' | xargs -I{} ps -p {} -o command= 2>/dev/null | grep -q claude); then \
 		echo "Restarting deployer..."; \
+		./scripts/deploy/launch-agent.sh --stop 2>/dev/null || true; \
+		sleep 1; \
 		DEPLOYER_INTERVAL=$(INTERVAL) ./scripts/deploy/launch-agent.sh; \
 	else \
-		echo "Deployer already running."; \
+		echo "Deployer actively running."; \
 	fi
 
-# Restart aristotle if not running
+# Restart aristotle if not running or idle
 restart-aristotle:
-	@if ! tmux has-session -t aristotle-agent 2>/dev/null; then \
+	@if ! tmux has-session -t aristotle-agent 2>/dev/null || \
+		! (tmux list-panes -t aristotle-agent -F '#{pane_pid}' | xargs -I{} ps -p {} -o command= 2>/dev/null | grep -q claude); then \
 		echo "Restarting aristotle..."; \
+		./scripts/aristotle/launch-agent.sh --stop 2>/dev/null || true; \
+		sleep 1; \
 		ARISTOTLE_TARGET=$(TARGET) ARISTOTLE_INTERVAL=$(INTERVAL) ./scripts/aristotle/launch-agent.sh; \
 	else \
-		echo "Aristotle already running."; \
+		echo "Aristotle actively running."; \
 	fi
 
-# Restart enhancers if not running (checks enhancer-1 as proxy)
+# Restart enhancers if not running or idle (checks enhancer-1 as proxy)
 restart-enhancers:
-	@if ! tmux has-session -t erdos-enhancer-1 2>/dev/null; then \
+	@if ! tmux has-session -t erdos-enhancer-1 2>/dev/null || \
+		! (tmux list-panes -t erdos-enhancer-1 -F '#{pane_pid}' | xargs -I{} ps -p {} -o command= 2>/dev/null | grep -q claude); then \
 		echo "Restarting enhancer agents..."; \
+		./scripts/erdos/parallel-enhance.sh --stop 2>/dev/null || true; \
+		sleep 1; \
 		./scripts/erdos/parallel-enhance.sh $(N); \
 	else \
-		echo "Enhancer agents already running."; \
+		echo "Enhancer agents actively running."; \
 	fi
