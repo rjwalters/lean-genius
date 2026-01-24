@@ -1,0 +1,17 @@
+{
+  "problem_number": 391,
+  "title": "Factorizing n! with Large Minimum Factor",
+  "status": "solved",
+  "solvers": ["Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, Ventullo (2025)"],
+  "source_url": "https://erdosproblems.com/391",
+  "overview": "Let t(n) be the maximal value such that n! = a₁·a₂·...·aₙ with t(n) = a₁ ≤ a₂ ≤ ... ≤ aₙ. Is lim t(n)/n = 1/e? Does t(n)/n ≤ 1/e - c/log(n) for infinitely many n?",
+  "sections": [],
+  "conclusion": "SOLVED: ACRSTUV (2025) proved t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}) where c₀ ≈ 0.3044. This answers both questions: (1) lim t(n)/n = 1/e, (2) the correction term holds for ALL large n. Explicit bounds: t(n) ≤ n/e for n ≠ 1,2,4 and t(n) ≥ n/3 for n ≥ 43632 (sharp). Historical note: Erdős-Selfridge-Straus claimed this but the proof was lost when Straus died.",
+  "references": [
+    "Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, Ventullo (2025) - Main theorem",
+    "Erdős-Selfridge-Straus (lost proof) - Original claim",
+    "Guy, 'Unsolved Problems in Number Theory', Problem B22"
+  ],
+  "related_problems": [],
+  "tags": ["number-theory", "factorial", "factorization", "limits", "solved"]
+}
