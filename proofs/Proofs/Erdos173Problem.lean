@@ -187,7 +187,13 @@ This shows that if one equilateral triangle is not Ramsey, the problem's
 -/
 theorem at_most_one_is_tight :
     ∃ T : Triangle, IsEquilateral T ∧ ¬IsRamseyTriangle T := by
-  sorry -- Follows from the existence of strip coloring
+  -- Use h = 1 as a specific strip width
+  obtain ⟨T, hEquilateral, _, hNotMono⟩ := equilateral_not_monochromatic_strip 1 one_pos
+  refine ⟨T, hEquilateral, ?_⟩
+  -- T is not Ramsey: there exists a coloring with no monochromatic congruent copy
+  unfold IsRamseyTriangle
+  push_neg
+  exact ⟨stripColoring 1 one_pos, hNotMono⟩
 
 /-
 ## Part VI: Conjectured Resolution
