@@ -1,33 +1,83 @@
 {
   "id": "erdos-1118",
-  "title": "Erdős Problem #1118",
+  "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
   "slug": "erdos-1118",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a non-constant entire function such that, for some ..., the set ... has finite measure.\n\nWhat is the minimum growt...",
+  "description": "For entire f with |{z:|f(z)|>c}| finite: (1) What is minimum growth? (2) Must smaller c' work? SOLVED: Camera-Gol'dberg 1977-79.",
   "meta": {
-    "author": "Unknown",
+    "author": "Camera (1977), Gol'dberg (1979)",
     "sourceUrl": "https://erdosproblems.com/1118",
-    "date": "",
-    "status": "pending",
+    "date": "1977-1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1118Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "measure-theory",
+      "growth-rate",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1118,
     "erdosUrl": "https://erdosproblems.com/1118",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex",
+        "description": "Complex numbers and analysis",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.Lebesgue",
+        "description": "Lebesgue measure for superlevel sets",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for growth integral",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsEntire, IsNonConstantEntire: entire function predicates",
+      "superlevelSet: E(c) = {z : |f(z)| > c}",
+      "HasFiniteMeasure: finite planar measure predicate",
+      "maxModulus: M(r) = max_{|z|=r} |f(z)|",
+      "thresholdSet: T(f) = {c > 0 : |E(c)| < ∞}",
+      "growthIntegral: ∫ r/(log log M(r)) dr",
+      "HaymanConjecture: characterization of finite measure",
+      "camera_goldberg_theorem axiom: Hayman's conjecture proved",
+      "goldberg_counterexample axiom: threshold set can be [m,∞)",
+      "goldberg_threshold_classification axiom: all shapes possible",
+      "superlevel_nested, finite_measure_monotone: monotonicity",
+      "threshold_is_upper_set: proved property",
+      "erdos_1118_question2_negative: derived from axioms"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1118 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be a non-constant entire function such that, for some $c$, the set $E(c)=\\{ z: \\lvert f(z)\\rvert >c\\}$ has finite measure.\n\nWhat is the minimum growth rate of $f(z)$?\n\nIf $E(c)$ has finite measure then must there exist $c'<c$ such that $E(c')$ has finite measure?\n\n\n\nThis is Problem 2.40 in \\cite{Ha74} where it is attributed to Erd\\H{o}s. Hayman conjectured that\\[\\int_0^\\infty \\frac{r}{\\log\\log M(r)}\\mathrm{d}r<\\infty\\]is true, and best possible, where $M(r)=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$.\n\nHayman's strong conjecture was proved independently by Camera \\cite{Ca77} and Gol'dberg \\cite{Go79b}.\n\nThe second question was answered in the negative by Gol'dberg \\cite{Go79b}, who proved that if $T=\\{ c>0 : \\lvert E(c)\\rvert <\\infty\\}$ then for any $m>0$ there exist entire functions $f$ such that $T=[m,\\infty)$ or $T=(m,\\infty)$. (It is clear that $T=\\emptyset$ and $T=(0,\\infty)$ are also possible.)\n\n\n\n\nReferences\n\n\n[Ca77] G. Camera, On the minimum rate of growth of certain classes on integral and subharmonic functions, PhD Thesis. Imperial College, University of London (1977).\n\n[Go79b] Gol\\cprime dberg, A. A., Sets on which the modulus of an entire function has a lower\nbound. Sibirsk. Mat. Zh. (1979), 512--518, 691.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1118 (Finite Measure Superlevel Sets)**\n\n**Origins:**\nThis is Problem 2.40 in Hayman's 1974 collection, attributed to Erdős. It concerns entire functions and the measure-theoretic size of regions where |f(z)| is large.\n\n**The Setup:**\n- f: ℂ → ℂ is an entire (everywhere holomorphic) non-constant function\n- E(c) = {z : |f(z)| > c} is the superlevel set\n- Question: When does E(c) have finite planar measure?\n\n**Resolution:**\n- Camera (1977, PhD thesis) and Gol'dberg (1979) independently solved Question 1\n- Gol'dberg (1979) answered Question 2 negatively with complete classification",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(z) be a non-constant entire function.\n\n**Question 1:** If for some c > 0, the set E(c) = {z : |f(z)| > c} has finite measure, what is the minimum growth rate of f?\n\n**Question 2:** If E(c) has finite measure, must there exist c' < c with E(c') also having finite measure?\n\n**Answers:**\n\n**Q1:** Hayman conjectured that ∫₀^∞ r/(log log M(r)) dr < ∞ characterizes this. Camera and Gol'dberg proved this is correct.\n\n**Q2:** NO. Gol'dberg showed the threshold set T = {c > 0 : |E(c)| < ∞} can be:\n- ∅ (e.g., exp(z))\n- (0, ∞) (e.g., polynomials)\n- [m, ∞) for any m > 0\n- (m, ∞) for any m > 0",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire via Differentiable ℂ\n\n2. **Superlevel Sets:** superlevelSet f c = {z : |f(z)| > c}\n\n3. **Measure:** HasFiniteMeasure uses Lebesgue volume\n\n4. **Maximum Modulus:** M(r) = sup_{|z|=r} |f(z)|\n\n5. **Growth Integral:** ∫ r/(log log M(r)) dr\n\n6. **Threshold Set:** T(f) = {c > 0 : E(c) finite}\n\n7. **Camera-Gol'dberg:** Axiomatize growth characterization\n\n8. **Gol'dberg Classification:** All threshold shapes possible",
+    "keyInsights": [
+      "**Growth Rate:** ∫ r/(log log M(r)) dr < ∞ is the exact criterion",
+      "**Threshold Gaps:** T(f) need not contain all small c values",
+      "**Examples:** exp has T = ∅, polynomials have T = (0,∞)",
+      "**Monotonicity:** T is always an upper set (tail of ℝ₊)",
+      "**Complete Classification:** All interval types [m,∞), (m,∞), ∅, (0,∞) occur"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1118 asked two questions about entire functions with finite-measure superlevel sets. Camera (1977) and Gol'dberg (1979) proved the growth rate criterion ∫ r/(log log M(r)) dr < ∞. Gol'dberg showed the threshold set T can have various shapes, disproving monotonicity to 0.",
+    "implications": "**Complex Analysis Connections**\n\n1. **Nevanlinna Theory:** Growth rates connect to order and type\n\n2. **Value Distribution:** How often f is large in modulus\n\n3. **Maximum Modulus:** Central role of M(r) in characterization\n\n4. **Measure Theory:** Lebesgue measure in complex plane",
+    "openQuestions": [
+      "Finer classification of threshold set structures?",
+      "Higher-dimensional analogues for holomorphic maps?",
+      "Connections to other growth classifications?",
+      "Explicit constructions for each threshold type?"
+    ]
   }
 }

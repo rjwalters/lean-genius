@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-1118-entire",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "IsEntire",
+    "content": "An entire function: holomorphic on all of ℂ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-nonconstant",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "IsNonConstantEntire",
+    "content": "A non-constant entire function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-superlevel",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "superlevelSet",
+    "content": "E(c) = {z : |f(z)| > c}, the superlevel set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-finite",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "HasFiniteMeasure",
+    "content": "The superlevel set has finite Lebesgue measure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-maxmod",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "maxModulus",
+    "content": "M(r) = max_{|z|=r} |f(z)|, maximum modulus function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-threshold",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "thresholdSet",
+    "content": "T(f) = {c > 0 : E(c) has finite measure}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-integral",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "definition",
+    "title": "growthIntegral",
+    "content": "∫₀^∞ r/(log log M(r)) dr, the growth criterion.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-hayman",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 87, "endLine": 90 },
+    "type": "definition",
+    "title": "HaymanConjecture",
+    "content": "Finite growth integral ↔ some E(c) has finite measure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-camera",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "theorem",
+    "title": "camera_goldberg_theorem",
+    "content": "Camera-Gol'dberg (1977-79): Hayman's conjecture is true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-goldberg",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 110, "endLine": 113 },
+    "type": "theorem",
+    "title": "goldberg_counterexample",
+    "content": "Gol'dberg: threshold set can be [m, ∞) for m > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-classify",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 115, "endLine": 124 },
+    "type": "theorem",
+    "title": "goldberg_threshold_classification",
+    "content": "All threshold shapes ∅, (0,∞), [m,∞), (m,∞) are possible.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-unbounded",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 130, "endLine": 132 },
+    "type": "theorem",
+    "title": "max_modulus_unbounded",
+    "content": "M(r) → ∞ as r → ∞ for non-constant entire f (Liouville).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1118-poly",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 148, "endLine": 151 },
+    "type": "theorem",
+    "title": "polynomial_threshold",
+    "content": "Polynomials have T = (0, ∞): all positive c work.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1118-exp",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 153, "endLine": 155 },
+    "type": "theorem",
+    "title": "exp_threshold",
+    "content": "exp(z) has T = ∅: no superlevel set is finite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1118-nested",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 170, "endLine": 175 },
+    "type": "theorem",
+    "title": "superlevel_nested",
+    "content": "c₁ < c₂ implies E(c₂) ⊆ E(c₁).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1118-monotone",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 177, "endLine": 183 },
+    "type": "theorem",
+    "title": "finite_measure_monotone",
+    "content": "If E(c₂) finite and c₁ > c₂, then E(c₁) finite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1118-upper",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 185, "endLine": 191 },
+    "type": "theorem",
+    "title": "threshold_is_upper_set",
+    "content": "T(f) is always an upper set (upward closed).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1118-q1",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 227, "endLine": 227 },
+    "type": "theorem",
+    "title": "erdos_1118_question1",
+    "content": "Q1 Answer: Growth integral characterizes finite measure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-q2",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 229, "endLine": 256 },
+    "type": "theorem",
+    "title": "erdos_1118_question2_negative",
+    "content": "Q2 Answer: NO, threshold set can have gaps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1118-main",
+    "proofId": "erdos-1118",
+    "range": { "startLine": 258, "endLine": 263 },
+    "type": "theorem",
+    "title": "erdos_1118",
+    "content": "Main theorem: Both questions fully resolved.",
+    "significance": "critical"
+  }
+]
