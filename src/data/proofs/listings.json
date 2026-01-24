@@ -4306,17 +4306,20 @@
   },
   {
     "id": "erdos-214",
-    "title": "Erdős Problem #214",
+    "title": "Erdős Problem #214: Unit Distance Free Sets and Unit Squares",
     "slug": "erdos-214",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that no two points in ... are distance ... apart. Must the complement of ... contain four points which form a...",
-    "status": "pending",
+    "description": "If S ⊂ ℝ² has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juhász, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "unit-distance",
+      "combinatorial-geometry"
     ],
     "erdosNumber": 214,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-215",
