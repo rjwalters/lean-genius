@@ -1,1 +1,135 @@
-[]
+[
+  {
+    "id": "ann-e1075-header",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs**\n\nFor r ≥ 3, does there exist c_r > r^{-r} such that any r-uniform hypergraph on n vertices with ≥ (1+ε)(n/r)^r edges contains an m-vertex subgraph with ≥ c_r·m^r edges?\n\n**Status: OPEN**\n\nErdős [Er64f] proved c_r = r^{-r} works with the stronger threshold εn^r. The question is whether the weaker threshold allows improvement.",
+    "mathContext": "This is an extremal hypergraph theory problem. The constant r^{-r} comes from random selection - beating it requires structural arguments.",
+    "significance": "critical",
+    "relatedConcepts": ["Hypergraphs", "Extremal combinatorics", "Dense subgraphs"]
+  },
+  {
+    "id": "ann-e1075-hypergraph",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph",
+    "content": "**Hypergraph V r:**\n\nA hypergraph on vertex set V where every edge has exactly r vertices.\n\n```lean\nstructure Hypergraph (V : Type*) (r : ℕ) where\n  edges : Finset (Finset V)\n  uniform : ∀ e ∈ edges, e.card = r\n```",
+    "mathContext": "Ordinary graphs are 2-uniform hypergraphs. For r ≥ 3, the structure becomes more complex.",
+    "significance": "critical",
+    "relatedConcepts": ["Graphs", "Combinatorics", "Set systems"]
+  },
+  {
+    "id": "ann-e1075-induced",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "definition",
+    "title": "Induced Subhypergraph",
+    "content": "**Hypergraph.induced H S:**\n\nThe subhypergraph induced by vertex set S - includes all edges of H that are entirely contained in S.\n\nThis is the key object: we want to find S where the induced subgraph is dense.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1075-threshold",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "Threshold Constant r^{-r}",
+    "content": "**thresholdConstant(r) = r^{-r}:**\n\nThe density constant from Erdős's 1964 result and random selection.\n\n**Values:**\n- r = 3: 1/27 ≈ 0.037\n- r = 4: 1/256 ≈ 0.004\n- r = 5: 1/3125 ≈ 0.0003",
+    "mathContext": "This constant arises because in random subgraph selection, each r-subset is included with probability proportional to r^{-r}.",
+    "significance": "critical",
+    "relatedConcepts": ["Random selection", "Probability", "Density"]
+  },
+  {
+    "id": "ann-e1075-1964result",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "axiom",
+    "title": "Erdős 1964 Result",
+    "content": "**erdos_1964_result:**\n\nFor r ≥ 3 and ε > 0, if n is large enough:\n\nAny r-uniform hypergraph on n vertices with ≥ εn^r edges contains an m-vertex subhypergraph with ≥ r^{-r}·m^r edges.\n\nNote: This uses the STRONGER threshold εn^r, not (1+ε)(n/r)^r.",
+    "mathContext": "Published in [Er64f]. This establishes c_r = r^{-r} is achievable with the strong hypothesis.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős 1964", "Dense subgraphs", "Extremal results"]
+  },
+  {
+    "id": "ann-e1075-conjecture",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 93, "endLine": 105 },
+    "type": "definition",
+    "title": "The Open Conjecture",
+    "content": "**ErdosConjecture1075:**\n\nCan c_r > r^{-r} work when the edge threshold is (1+ε)(n/r)^r instead of εn^r?\n\nThe weaker hypothesis might allow stronger conclusions.",
+    "mathContext": "(1+ε)(n/r)^r = (1+ε)n^r/r^r is much smaller than εn^r for small ε and large n.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Density improvement", "Hypergraph theory"]
+  },
+  {
+    "id": "ann-e1075-random",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 116, "endLine": 120 },
+    "type": "concept",
+    "title": "Random Hypergraph Density",
+    "content": "**Why r^{-r} is the random baseline:**\n\nIf we select m vertices uniformly at random from n vertices, the expected number of edges in the induced subgraph has density ≈ r^{-r}.\n\nTo beat this, we need non-random structural arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1075-complete",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 145, "endLine": 153 },
+    "type": "definition",
+    "title": "Complete Hypergraph Edges",
+    "content": "**completeHypergraphEdges(m, r) = C(m, r):**\n\nThe complete r-uniform hypergraph on m vertices has C(m, r) = m!/(r!(m-r)!) edges.\n\nFor large m: C(m, r) ≈ m^r / r!",
+    "mathContext": "The binomial coefficient gives the maximum possible edges. The asymptotic m^r/r! shows the relationship to m^r density.",
+    "significance": "key",
+    "relatedConcepts": ["Binomial coefficients", "Complete hypergraphs", "Asymptotics"]
+  },
+  {
+    "id": "ann-e1075-approaches",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 155, "endLine": 175 },
+    "type": "concept",
+    "title": "Potential Approaches",
+    "content": "**Three main approaches:**\n\n1. **Regularity Lemma:** Hypergraph regularity might find dense pieces, but controlling constants is hard\n\n2. **Probabilistic Method:** Random selection gives r^{-r}; need more sophisticated randomness\n\n3. **Algebraic Methods:** Polynomial method, spectral techniques might exploit structure",
+    "significance": "key",
+    "relatedConcepts": ["Regularity lemma", "Probabilistic method", "Spectral methods"]
+  },
+  {
+    "id": "ann-e1075-r3",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 181, "endLine": 185 },
+    "type": "concept",
+    "title": "Case r = 3",
+    "content": "**3-uniform hypergraphs:**\n\nFor r = 3, the threshold constant is 1/27.\n\nFinding any c₃ > 1/27 would be significant progress on the problem.",
+    "mathContext": "The case r = 3 is the simplest non-trivial case and would likely need to be solved first.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1075-noknown",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 197, "endLine": 201 },
+    "type": "axiom",
+    "title": "No Improvement Known",
+    "content": "**no_improvement_known:**\n\nNo explicit constant c_r > r^{-r} has been established that satisfies the conjecture.\n\nThe problem remains fully open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1075-supersaturation",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 213, "endLine": 217 },
+    "type": "concept",
+    "title": "Supersaturation Connection",
+    "content": "**Connection to supersaturation:**\n\nSupersaturation results say that exceeding the Turán threshold guarantees many copies of forbidden subgraphs.\n\nSimilarly, this problem asks about dense substructures guaranteed by edge density.",
+    "mathContext": "Both are about what structure is forced by having 'more than expected' edges.",
+    "significance": "supporting",
+    "relatedConcepts": ["Supersaturation", "Turán problems", "Extremal theory"]
+  },
+  {
+    "id": "ann-e1075-summary",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 228, "endLine": 257 },
+    "type": "theorem",
+    "title": "Current State: OPEN",
+    "content": "**erdos_1075_current_state:**\n\n1. **Known:** c_r = r^{-r} works with threshold εn^r\n2. **Unknown:** whether c_r > r^{-r} works with threshold (1+ε)(n/r)^r\n3. **Key gap:** The weaker threshold might enable improved constants\n\n**What would solve it:**\n- Either prove c_r > r^{-r} exists (positive)\n- Or construct hypergraphs showing r^{-r} is optimal (negative)",
+    "significance": "critical"
+  }
+]
