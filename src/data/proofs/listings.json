@@ -2580,17 +2580,24 @@
   },
   {
     "id": "erdos-1118",
-    "title": "Erdős Problem #1118",
+    "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
     "slug": "erdos-1118",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a non-constant entire function such that, for some ..., the set ... has finite measure.\n\nWhat is the minimum growt...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For entire f with |{z:|f(z)|>c}| finite: (1) What is minimum growth? (2) Must smaller c' work? SOLVED: Camera-Gol'dberg 1977-79.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "measure-theory",
+      "growth-rate",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 1118,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-1119",
@@ -3838,17 +3845,23 @@
   },
   {
     "id": "erdos-186",
-    "title": "Erdős Problem #186",
+    "title": "Erdos Problem #186: Non-Averaging Sets",
     "slug": "erdos-186",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of ... which is 'non-averaging', so that no ... is the arithmetic mean of at least two elements i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the maximum size of a non-averaging subset of {1,...,N}? Answer: N^(1/4+o(1)), essentially resolved by Bosznay (1989) and Pham-Zakharov (2024).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "extremal-combinatorics",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 186,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-189",
@@ -5395,17 +5408,24 @@
   },
   {
     "id": "erdos-277",
-    "title": "Erdős Problem #277",
+    "title": "Erdős Problem #277: Covering Systems and Abundancy",
     "slug": "erdos-277",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there exists an ... such that ... but there is no covering system whose moduli all divide ......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For every c > 0, does there exist n with σ(n) > cn but no covering system has all moduli dividing n? SOLVED: YES (Haight 1979).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "sum-of-divisors",
+      "congruences",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 277,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 20
   },
   {
     "id": "erdos-280",
@@ -8386,17 +8406,24 @@
   },
   {
     "id": "erdos-490",
-    "title": "Erdős Problem #490",
+    "title": "Erdős Problem #490: Distinct Products of Two Sets",
     "slug": "erdos-490",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that all the products ... with ... and ... are distinct. Is it true that\\[\\lvert A\\rvert \\lvert B\\rvert \\ll {...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A, B ⊆ {1,...,N} have all products ab distinct, is |A||B| ≪ N²/log N? SOLVED: YES (Szemerédi 1976). Optimal example achieves N²/(2 log N).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "multiplicative-structures",
+      "product-sets",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 490,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-491",
@@ -8693,17 +8720,25 @@
   },
   {
     "id": "erdos-523",
-    "title": "Erdős Problem #523",
+    "title": "Erdős Problem #523: Maximum of Random Polynomials on Unit Circle",
     "slug": "erdos-523",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a random polynomial, where ... independently uniformly at random for ....\n\nDoes there exist some constant ... such...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For random ±1 polynomials, max_{|z|=1} |f(z)| = (C+o(1))√(n log n)? SOLVED: YES with C = 1 (Halász 1973).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "probability",
+      "polynomials",
+      "random-polynomials",
+      "littlewood",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 523,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 19
   },
   {
     "id": "erdos-525",
@@ -15195,17 +15230,24 @@
   },
   {
     "id": "erdos-933",
-    "title": "Erdős Problem #933",
+    "title": "Erdős Problem #933: Smooth Part of Consecutive Products",
     "slug": "erdos-933",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ..., where ..., then is it true that\\[\\limsup_{n\\to \\infty} {n\\log n}=\\infty?\\]\n\n\n\nMahler proved (a more general result th...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n(n+1) = 2^k · 3^l · m with gcd(m,6)=1, is limsup 2^k 3^l / (n log n) = ∞? SOLVED: YES. Steinerberger's proof uses n = 2^{3^r}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "consecutive-integers",
+      "factorization",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 933,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 15
   },
   {
     "id": "erdos-934",
