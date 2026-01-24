@@ -1,33 +1,83 @@
 {
   "id": "erdos-523",
-  "title": "Erdős Problem #523",
+  "title": "Erdős Problem #523: Maximum of Random Polynomials on Unit Circle",
   "slug": "erdos-523",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a random polynomial, where ... independently uniformly at random for ....\n\nDoes there exist some constant ... such...",
+  "description": "For random ±1 polynomials, max_{|z|=1} |f(z)| = (C+o(1))√(n log n)? SOLVED: YES with C = 1 (Halász 1973).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1961), Salem-Zygmund (1954), Halász (1973)",
     "sourceUrl": "https://erdosproblems.com/523",
-    "date": "",
-    "status": "pending",
+    "date": "1961",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos523Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "probability",
+      "polynomials",
+      "random-polynomials",
+      "littlewood",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 523,
     "erdosUrl": "https://erdosproblems.com/523",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex modulus",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for scaling",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for √(n log n)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "SignVector: ±1 coefficient vectors",
+      "IsValidSign: validity predicate",
+      "randomPolynomial: f(z) = ∑ εₖ z^k",
+      "maxModulus: sup over unit circle",
+      "expectedScale: √(n log n) function",
+      "ErdosQuestion523: formal problem statement",
+      "salem_zygmund_order axiom: √(n log n) order",
+      "halasz_theorem axiom: C = 1 exactly",
+      "halaszConstant = 1",
+      "L2Norm, L2_norm_exact: L² analysis",
+      "IsLittlewood, LittlewoodProblem: connections",
+      "mahlerMeasure: geometric mean measure"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #523 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\sum_{0\\leq k\\leq n} \\epsilon_k z^k$ be a random polynomial, where $\\epsilon_k\\in \\{-1,1\\}$ independently uniformly at random for $0\\leq k\\leq n$.\n\nDoes there exist some constant $C>0$ such that, almost surely,\\[\\max_{\\lvert z\\rvert=1}\\left\\lvert \\sum_{k\\leq n}\\epsilon_k(t)z^k\\right\\rvert=(C+o(1))\\sqrt{n\\log n}?\\]\n\n\n\nSalem and Zygmund \\cite{SZ54} proved that $\\sqrt{n\\log n}$ is the right order of magnitude, but not an asymptotic.\n\nThis was settled by Hal\\'{a}sz \\cite{Ha73}, who proved this is true with $C=1$.\n\n\n\n\nReferences\n\n\n[Ha73] Hal\\'{a}sz, G., On a result of {S}alem and {Z}ygmund concerning random\npolynomials. Studia Sci. Math. Hungar. (1973), 369--377.\n\n[SZ54] No reference found.\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #523 (Maximum of Random Polynomials)**\n\n**Origin:**\nErdős posed this problem in [Er61] (1961, p.253), asking about the maximum modulus of random ±1 polynomials on the unit circle.\n\n**Key Results:**\n- Salem-Zygmund (1954): Established that √(n log n) is the correct order of magnitude\n- Halász (1973): Proved the exact asymptotic with constant C = 1\n\n**Significance:**\nThis is a fundamental result in the theory of Littlewood polynomials and random Fourier series, connecting probability, complex analysis, and harmonic analysis.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(z) = ∑_{k=0}^n εₖ z^k be a random polynomial where εₖ ∈ {-1,1} independently uniformly at random.\n\nDoes there exist C > 0 such that, almost surely,\n$$\\max_{|z|=1} |f(z)| = (C + o(1))\\sqrt{n \\log n}?$$\n\n**Answer: YES, with C = 1**\n\n(Halász 1973)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sign Vectors:** SignVector, IsValidSign\n\n2. **Random Polynomial:** randomPolynomial, evalOnCircle\n\n3. **Maximum Modulus:** maxModulus, expectedScale\n\n4. **Salem-Zygmund:** salem_zygmund_order (order of magnitude)\n\n5. **Halász:** halasz_theorem (C = 1 exactly)\n\n6. **L² Analysis:** L2Norm, L2_norm_exact\n\n7. **Probability:** AlmostSureConvergence, halasz_almost_sure\n\n8. **Littlewood:** IsLittlewood, typical_littlewood",
+    "keyInsights": [
+      "**Random ±1 Polynomials:** Littlewood polynomials with random signs",
+      "**√(n log n) Scaling:** The natural scale for maximum on circle",
+      "**C = 1:** The exact constant (Halász)",
+      "**L² vs L^∞:** Max exceeds L² norm by √(log n) factor",
+      "**Almost Sure:** Convergence with probability 1"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #523 asks whether random ±1 polynomials have maximum modulus (C + o(1))√(n log n) on the unit circle, almost surely. Salem-Zygmund established the order of magnitude, and Halász proved the exact asymptotic with C = 1.",
+    "implications": "**Connections**\n\n1. **Littlewood Polynomials:** Typical behavior of ±1 polynomials\n\n2. **Random Fourier Series:** Kahane's theory\n\n3. **Concentration of Measure:** Maximum behavior\n\n4. **Mahler Measure:** Geometric mean on circle",
+    "openQuestions": [
+      "What is the second-order term in the asymptotic?",
+      "What is the distribution of the location of the maximum?",
+      "Generalizations to other coefficient distributions?",
+      "Connections to the Rudin flatness conjecture?"
+    ]
   }
 }

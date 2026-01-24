@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-523-signvec",
+    "proofId": "erdos-523",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "SignVector",
+    "content": "εₖ ∈ {-1, 1} for k = 0, ..., n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-valid",
+    "proofId": "erdos-523",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "IsValidSign",
+    "content": "All entries are ±1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-randpoly",
+    "proofId": "erdos-523",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "randomPolynomial",
+    "content": "f(z) = ∑ εₖ z^k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-maxmod",
+    "proofId": "erdos-523",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "maxModulus",
+    "content": "sup_{|z|=1} |f(z)|.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-scale",
+    "proofId": "erdos-523",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "expectedScale",
+    "content": "√(n log n) scaling.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-sz",
+    "proofId": "erdos-523",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "theorem",
+    "title": "salem_zygmund_order",
+    "content": "Salem-Zygmund: √(n log n) is the right order.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-question",
+    "proofId": "erdos-523",
+    "range": { "startLine": 93, "endLine": 99 },
+    "type": "definition",
+    "title": "ErdosQuestion523",
+    "content": "Does max = (C + o(1))√(n log n) a.s.?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-halasz",
+    "proofId": "erdos-523",
+    "range": { "startLine": 105, "endLine": 111 },
+    "type": "theorem",
+    "title": "halasz_theorem",
+    "content": "Halász 1973: YES with C = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-const",
+    "proofId": "erdos-523",
+    "range": { "startLine": 113, "endLine": 114 },
+    "type": "definition",
+    "title": "halaszConstant",
+    "content": "The optimal constant C = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-answer",
+    "proofId": "erdos-523",
+    "range": { "startLine": 116, "endLine": 121 },
+    "type": "theorem",
+    "title": "erdos_523_answer",
+    "content": "The answer is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-as",
+    "proofId": "erdos-523",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "definition",
+    "title": "AlmostSureConvergence",
+    "content": "Convergence with probability 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-l2",
+    "proofId": "erdos-523",
+    "range": { "startLine": 148, "endLine": 151 },
+    "type": "definition",
+    "title": "L2Norm",
+    "content": "L² norm on the circle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-l2exact",
+    "proofId": "erdos-523",
+    "range": { "startLine": 153, "endLine": 155 },
+    "type": "theorem",
+    "title": "L2_norm_exact",
+    "content": "L² norm = √(n+1).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-littlewood",
+    "proofId": "erdos-523",
+    "range": { "startLine": 170, "endLine": 172 },
+    "type": "definition",
+    "title": "IsLittlewood",
+    "content": "Polynomial with ±1 coefficients.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-upper",
+    "proofId": "erdos-523",
+    "range": { "startLine": 189, "endLine": 192 },
+    "type": "theorem",
+    "title": "upper_bound_high_prob",
+    "content": "max ≤ (1+ε)√(n log n) w.h.p.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-lower",
+    "proofId": "erdos-523",
+    "range": { "startLine": 194, "endLine": 197 },
+    "type": "theorem",
+    "title": "lower_bound_high_prob",
+    "content": "max ≥ (1-ε)√(n log n) w.h.p.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-523-mahler",
+    "proofId": "erdos-523",
+    "range": { "startLine": 214, "endLine": 217 },
+    "type": "definition",
+    "title": "mahlerMeasure",
+    "content": "Geometric mean measure.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-523-main",
+    "proofId": "erdos-523",
+    "range": { "startLine": 238, "endLine": 238 },
+    "type": "theorem",
+    "title": "erdos_523",
+    "content": "Main theorem: YES with C = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-523-exactconst",
+    "proofId": "erdos-523",
+    "range": { "startLine": 240, "endLine": 245 },
+    "type": "theorem",
+    "title": "erdos_523_constant",
+    "content": "The constant is exactly 1.",
+    "significance": "critical"
+  }
+]
