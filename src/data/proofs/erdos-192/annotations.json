@@ -1,1 +1,195 @@
-[]
+[
+  {
+    "id": "ann-192-header",
+    "proofId": "erdos-192",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #192** asks: for which dimensions d must an infinite unit vector sequence in ℝᵈ contain a 3-term arithmetic progression?\n\n**Answer:**\n- d ≤ 3: APs are unavoidable\n- d ≥ 4: AP-free sequences exist (Keränen 1992)\n\nThe key insight is the equivalence to abelian squares in combinatorics on words.",
+    "mathContext": "An abelian square is two consecutive blocks that are anagrams (permutations) of each other. Keränen's 1992 construction uses an 85-letter morphism.",
+    "significance": "critical",
+    "relatedConcepts": ["abelian squares", "combinatorics on words", "arithmetic progressions"]
+  },
+  {
+    "id": "ann-192-unitvector",
+    "proofId": "erdos-192",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "UnitVectorIndex",
+    "content": "A positive unit vector in ℝᵈ has 1 in exactly one coordinate and 0 elsewhere. We represent it by the index (0 to d-1) of the nonzero coordinate.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-192-stepseq",
+    "proofId": "erdos-192",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "StepSequence",
+    "content": "An infinite sequence of unit vector choices. At each step i, we record which coordinate increases. This is equivalent to an infinite string over a d-letter alphabet.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-position",
+    "proofId": "erdos-192",
+    "range": { "startLine": 50, "endLine": 53 },
+    "type": "definition",
+    "title": "position",
+    "content": "The position in ℝᵈ after n steps: for each coordinate k, count how many times that coordinate was chosen. This is the Parikh vector of the first n letters.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-isap",
+    "proofId": "erdos-192",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "IsArithmeticProgression",
+    "content": "Three positions p, q, r form an AP if 2q = p + r coordinate-wise. The middle position is exactly the average of the endpoints.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-containsap",
+    "proofId": "erdos-192",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "definition",
+    "title": "ContainsAP",
+    "content": "A sequence contains a 3-term AP if there exist indices i < j < k such that positions at these indices form an arithmetic progression.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-extractblock",
+    "proofId": "erdos-192",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "definition",
+    "title": "extractBlock",
+    "content": "Extract a substring (block) from the step sequence between given indices. Used to compare consecutive blocks for abelian squares.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-192-lettercount",
+    "proofId": "erdos-192",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "definition",
+    "title": "letterCount",
+    "content": "Count occurrences of a specific letter in a block. Two blocks are anagrams iff they have equal letter counts for all letters.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-192-isanagram",
+    "proofId": "erdos-192",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "definition",
+    "title": "IsAnagram",
+    "content": "Two blocks are anagrams if they have the same letter counts for every letter in the alphabet. This is abelian (commutative) equality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-hasabelian",
+    "proofId": "erdos-192",
+    "range": { "startLine": 84, "endLine": 88 },
+    "type": "definition",
+    "title": "HasAbelianSquare",
+    "content": "An abelian square is two consecutive equal-length blocks that are anagrams. This is the key pattern we seek to avoid.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-squarefree",
+    "proofId": "erdos-192",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "definition",
+    "title": "IsAbelianSquareFree",
+    "content": "A sequence is abelian square-free if it contains no abelian squares. Keränen showed such infinite sequences exist over 4 letters.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-equivalence",
+    "proofId": "erdos-192",
+    "range": { "startLine": 100, "endLine": 110 },
+    "type": "theorem",
+    "title": "AP ↔ Abelian Square Equivalence",
+    "content": "**The Key Insight:** Positions form an AP if and only if the step blocks between them are anagrams.\n\nIf i, j, k have equal gaps (j-i = k-j), then positions i, j, k form AP ↔ steps[i..j] is an anagram of steps[j..k].",
+    "mathContext": "This transforms the geometric problem into a combinatorics-on-words problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-3letters",
+    "proofId": "erdos-192",
+    "range": { "startLine": 118, "endLine": 122 },
+    "type": "axiom",
+    "title": "Abelian Squares on 3 Letters",
+    "content": "Any string of length ≥ 7 over 3 letters contains an abelian square. This classical result implies d ≤ 3 cannot avoid APs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-smalld",
+    "proofId": "erdos-192",
+    "range": { "startLine": 146, "endLine": 149 },
+    "type": "theorem",
+    "title": "small_d_has_ap",
+    "content": "**Theorem:** For d ≤ 3, every infinite unit vector sequence contains a 3-term AP.\n\nThis follows from the unavoidability of abelian squares on small alphabets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-keranen",
+    "proofId": "erdos-192",
+    "range": { "startLine": 157, "endLine": 160 },
+    "type": "axiom",
+    "title": "Keränen's Construction",
+    "content": "**Keränen (1992):** There exists an infinite abelian square-free string over 4 letters.\n\nThis groundbreaking construction uses a morphism where each letter maps to an 85-letter block.",
+    "mathContext": "Veikko Keränen's construction was the breakthrough that resolved this problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-morphism",
+    "proofId": "erdos-192",
+    "range": { "startLine": 162, "endLine": 171 },
+    "type": "definition",
+    "title": "keranenMorphismLength",
+    "content": "Keränen's morphism maps each of 4 letters to a specific 85-letter block. Iterating this morphism produces an infinite abelian square-free sequence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-larged",
+    "proofId": "erdos-192",
+    "range": { "startLine": 177, "endLine": 183 },
+    "type": "theorem",
+    "title": "large_d_avoids_ap",
+    "content": "**Theorem:** For d ≥ 4, there exist infinite unit vector sequences without any 3-term AP.\n\nEmbed Keränen's 4-letter construction into higher dimensions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-main",
+    "proofId": "erdos-192",
+    "range": { "startLine": 191, "endLine": 201 },
+    "type": "theorem",
+    "title": "erdos_192_main",
+    "content": "**Main Theorem:** Complete characterization of Erdős Problem #192.\n\n- For d ≤ 3: Every infinite sequence contains a 3-term AP\n- For d ≥ 4: AP-free sequences exist\n\nThe threshold dimension is exactly 4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-192-threshold",
+    "proofId": "erdos-192",
+    "range": { "startLine": 203, "endLine": 216 },
+    "type": "definition",
+    "title": "Threshold Dimension",
+    "content": "thresholdDimension = 4 is the critical value.\n\n- below_threshold_unavoidable: d < 4 ⟹ APs unavoidable\n- at_threshold_avoidable: d ≥ 4 ⟹ APs avoidable",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-problem231",
+    "proofId": "erdos-192",
+    "range": { "startLine": 224, "endLine": 233 },
+    "type": "definition",
+    "title": "Connection to Problem #231",
+    "content": "Problem #231 asks directly about abelian squares: for which alphabet sizes are abelian squares avoidable?\n\nProblems #192 and #231 are equivalent via the AP ↔ abelian square correspondence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-192-summary",
+    "proofId": "erdos-192",
+    "range": { "startLine": 253, "endLine": 268 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #192: SOLVED**\n\n- Question: For which d must unit vector sequences have 3-term APs?\n- Answer: d ≤ 3 yes, d ≥ 4 no\n- Key: Equivalence to abelian squares\n- Resolution: Keränen (1992) constructed 4-letter abelian square-free infinite string",
+    "significance": "critical"
+  }
+]
