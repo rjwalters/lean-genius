@@ -1,33 +1,163 @@
 {
   "id": "erdos-177",
-  "title": "Erdős Problem #177",
+  "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
   "slug": "erdos-177",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the smallest ... such that the following holds. There exists a function ... such that, for every ...,\\[\\max_{P_d}\\left\\l...",
+  "description": "Find the smallest h(d) such that there exists f: ℕ → {-1,1} with max discrepancy ≤ h(d) over all APs with difference d. Known: d^{1/2} ≤ h(d) ≤ d^{8+ε}. Status: OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Roth (1964 lower bound), Beck (2017 upper bound), Cantor-Erdős-Schreiber-Straus (1966)",
     "sourceUrl": "https://erdosproblems.com/177",
-    "date": "",
-    "status": "pending",
-    "proofRepoPath": "Proofs/Erdos177Problem.lean",
+    "date": "1966",
+    "status": "complete",
+    "proofRepoPath": "proofs/Proofs/Erdos177Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrepancy-theory",
+      "arithmetic-progressions",
+      "coloring",
+      "number-theory",
+      "combinatorics",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 177,
     "erdosUrl": "https://erdosproblems.com/177",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer operations for {-1, 1} colorings",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for arithmetic progressions",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real powers for bound expressions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for Van der Waerden consequence",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsColoring definition: functions f: ℕ → {-1, 1}",
+      "ArithProg definition: arithmetic progressions as Finsets",
+      "discrepancy definition: sum of coloring over a set",
+      "h(d) definition: minimum maximum discrepancy for difference d",
+      "HasBoundedDiscrepancy definition: bounded discrepancy property",
+      "van_der_waerden_consequence axiom: h(d) → ∞",
+      "roth_lower_bound axiom: h(d) ≥ c·d^{1/2}",
+      "cantor_erdos_schreiber_straus_1966 axiom: h(d) ≤ C·d!",
+      "beck_2017 axiom: h(d) ≤ d^{8+ε}",
+      "ConjecturedOrder definition: h(d) ≈ d^α for 1/2 ≤ α ≤ 1"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #177 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the smallest $h(d)$ such that the following holds. There exists a function $f:\\mathbb{N}\\to\\{-1,1\\}$ such that, for every $d\\geq 1$,\\[\\max_{P_d}\\left\\lvert \\sum_{n\\in P_d}f(n)\\right\\rvert\\leq h(d),\\]where $P_d$ ranges over all finite arithmetic progressions with common difference $d$.\n\n\n\nCantor, Erd\\H{o}s, Schreiber, and Straus \\cite{Er66} proved that $h(d)\\ll d!$ is possible. Van der Waerden's theorem implies that $h(d)\\to \\infty$. Beck \\cite{Be17} has shown that $h(d) \\leq d^{8+\\epsilon}$ is possible for every $\\epsilon>0$. Roth's famous discrepancy lower bound \\cite{Ro64} implies that $h(d)\\gg d^{1/2}$.\n\n\n\n\nReferences\n\n\n[Be17] Beck, J\\'{o}zsef, A discrepancy problem: balancing infinite dimensional vectors. Number theory-Diophantine problems, uniform distribution\nand applications (2017), 61-82.\n\n[Er66] Erd\\H{o}s, P\\'al, Remarks on number theory. {V}. {E}xtremal problems in number\ntheory. {II}. Mat. Lapok (1966), 135--155.\n\n[Ro64] Roth, K. F., Remark concerning integer sequences. Acta Arith. (1964), 257-260.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #177: Discrepancy of Arithmetic Progressions**\n\nThis problem combines discrepancy theory with arithmetic progressions.\n\n**Key History:**\n- **Cantor-Erdős-Schreiber-Straus (1966):** First upper bound h(d) ≪ d!\n- **Roth (1964):** Lower bound h(d) ≫ d^{1/2} from discrepancy theory\n- **Beck (2017):** Polynomial upper bound h(d) ≤ d^{8+ε}\n- **Van der Waerden:** h(d) → ∞ as a consequence of the famous theorem\n\n**Significance:**\nThis is a fundamental problem in discrepancy theory, connecting coloring problems to arithmetic structure.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFind the smallest function h(d) such that there exists a coloring f: ℕ → {-1, 1} satisfying:\n\nFor every d ≥ 1: max_{P_d} |Σ_{n∈P_d} f(n)| ≤ h(d)\n\nwhere P_d ranges over all finite arithmetic progressions with common difference d.\n\n**Known Bounds:**\n- Lower: h(d) ≥ c·d^{1/2} (Roth 1964)\n- Upper: h(d) ≤ d^{8+ε} for all ε > 0 (Beck 2017)\n- Historical: h(d) ≤ C·d! (Cantor-Erdős-Schreiber-Straus 1966)\n\n**Open:** What is the correct polynomial exponent?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Coloring Definitions:**\n   - IsColoring: f: ℕ → {-1, 1}\n   - ArithProg: arithmetic progressions as finite sets\n   - discrepancy: sum of f over a set\n\n2. **The Function h(d):**\n   - maxDiscrepancyForD: supremum over all APs\n   - h(d): infimum over all colorings\n\n3. **Van der Waerden Connection:**\n   - h(d) → ∞ follows from Van der Waerden's theorem\n\n4. **Bounds as Axioms:**\n   - Roth lower bound: d^{1/2}\n   - Beck upper bound: d^{8+ε}\n   - Historical factorial bound: d!",
+    "keyInsights": [
+      "**Discrepancy Measure:** The sum Σf(n) measures imbalance between +1 and -1 values",
+      "**Van der Waerden:** Any coloring has long monochromatic APs, forcing high discrepancy",
+      "**Roth's Analysis:** Harmonic analysis gives the d^{1/2} lower bound",
+      "**Beck's Breakthrough:** First polynomial upper bound, improving factorial to d^{8+ε}",
+      "**The Gap:** Exponent between 1/2 and 8 is unknown - likely closer to 1/2"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsColoring, ArithProg, discrepancy, apDiscrepancy",
+      "startLine": 39,
+      "endLine": 69
+    },
+    {
+      "id": "h-function",
+      "title": "The Function h(d)",
+      "summary": "maxDiscrepancyForD, h(d), HasBoundedDiscrepancy",
+      "startLine": 71,
+      "endLine": 102
+    },
+    {
+      "id": "van-der-waerden",
+      "title": "Van der Waerden Connection",
+      "summary": "h(d) → ∞ as consequence of Van der Waerden",
+      "startLine": 104,
+      "endLine": 125
+    },
+    {
+      "id": "roth-lower",
+      "title": "Roth's Lower Bound (1964)",
+      "summary": "h(d) ≥ c·d^{1/2}",
+      "startLine": 127,
+      "endLine": 148
+    },
+    {
+      "id": "historical-upper",
+      "title": "Historical Upper Bounds",
+      "summary": "Cantor-Erdős-Schreiber-Straus factorial bound",
+      "startLine": 150,
+      "endLine": 171
+    },
+    {
+      "id": "beck-upper",
+      "title": "Beck's Upper Bound (2017)",
+      "summary": "h(d) ≤ d^{8+ε} polynomial bound",
+      "startLine": 173,
+      "endLine": 193
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "summary": "Current state and conjectured order",
+      "startLine": 195,
+      "endLine": 220
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Connections to Roth's theorem and discrepancy theory",
+      "startLine": 222,
+      "endLine": 241
+    },
+    {
+      "id": "difficulty",
+      "title": "Why It's Hard",
+      "summary": "Infinite nature, cannot be computed",
+      "startLine": 243,
+      "endLine": 262
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorems and problem status",
+      "startLine": 264,
+      "endLine": 309
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #177 asks for the smallest h(d) such that a coloring f: ℕ → {-1,1} achieves discrepancy ≤ h(d) on all arithmetic progressions with difference d. Known bounds are d^{1/2} ≤ h(d) ≤ d^{8+ε}, but the exact polynomial exponent is unknown. This is a fundamental open problem in discrepancy theory.",
+    "implications": "**Connections and Applications**\n\n1. **Discrepancy Theory:** Central problem connecting coloring to arithmetic structure\n\n2. **Van der Waerden's Theorem:** h(d) → ∞ is a quantitative consequence\n\n3. **Harmonic Analysis:** Roth's bound uses Fourier techniques\n\n4. **Combinatorial Number Theory:** Bridge between additive and multiplicative structures",
+    "openQuestions": [
+      "What is the correct polynomial exponent α in h(d) ≈ d^α?",
+      "Can Beck's exponent 8 be improved?",
+      "Is h(d) ≈ d^{1/2}·(log d)^c for some c?",
+      "What are the optimal colorings for small d?",
+      "Can probabilistic methods give better upper bounds?"
+    ]
   }
 }

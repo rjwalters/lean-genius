@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e177-header",
+    "proofId": "erdos-177",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #177: Discrepancy of Arithmetic Progressions**\n\nFind the smallest h(d) such that there exists f: ℕ → {-1, 1} with:\n\nmax_{P_d} |Σ_{n∈P_d} f(n)| ≤ h(d)\n\nfor all APs P_d with difference d.\n\n**Status: OPEN**\n\n**Known:** d^{1/2} ≤ h(d) ≤ d^{8+ε}",
+    "mathContext": "This is a fundamental problem in discrepancy theory, connecting coloring problems to arithmetic structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Discrepancy theory", "Van der Waerden", "Arithmetic progressions", "Coloring"]
+  },
+  {
+    "id": "ann-e177-coloring",
+    "proofId": "erdos-177",
+    "range": { "startLine": 43, "endLine": 48 },
+    "type": "definition",
+    "title": "Coloring Function",
+    "content": "**IsColoring f:**\n\nA function f: ℕ → {-1, 1} assigning a 'color' (+1 or -1) to each natural number.\n\nThis is the standard setup for discrepancy problems.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e177-arith-prog",
+    "proofId": "erdos-177",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "**ArithProg a d k:**\n\nThe arithmetic progression {a, a+d, a+2d, ..., a+(k-1)d} as a finite set.\n\nParameters: start a, common difference d, length k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e177-discrepancy",
+    "proofId": "erdos-177",
+    "range": { "startLine": 57, "endLine": 69 },
+    "type": "definition",
+    "title": "Discrepancy",
+    "content": "**discrepancy f S = Σ_{n∈S} f(n):**\n\nThe sum of f over elements of S. Measures the imbalance between +1 and -1 values.\n\n**apDiscrepancy:** Absolute value of discrepancy over an AP.",
+    "mathContext": "Discrepancy measures how far from balanced a coloring is on a given set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e177-h",
+    "proofId": "erdos-177",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "definition",
+    "title": "The Function h(d)",
+    "content": "**h(d):**\n\nThe minimum over all colorings f of the maximum discrepancy for difference d.\n\nh(d) = inf_f max_{a,k} |Σ f(ArithProg a d k)|\n\nThis is the central object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e177-vdw",
+    "proofId": "erdos-177",
+    "range": { "startLine": 108, "endLine": 116 },
+    "type": "axiom",
+    "title": "Van der Waerden Consequence",
+    "content": "**van_der_waerden_consequence:**\n\nh(d) → ∞ as d → ∞.\n\nVan der Waerden's theorem implies any coloring has arbitrarily long monochromatic APs, forcing discrepancy to grow.",
+    "mathContext": "This shows h(d) is unbounded - the problem is to find HOW FAST it grows.",
+    "significance": "key",
+    "relatedConcepts": ["Van der Waerden's theorem", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e177-roth",
+    "proofId": "erdos-177",
+    "range": { "startLine": 131, "endLine": 139 },
+    "type": "axiom",
+    "title": "Roth's Lower Bound (1964)",
+    "content": "**roth_lower_bound:**\n\nh(d) ≥ c·d^{1/2} for some c > 0 and large d.\n\nThis fundamental lower bound comes from Roth's discrepancy theory using harmonic analysis.",
+    "mathContext": "Roth's 1964 paper 'Remark concerning integer sequences' established this using Fourier techniques.",
+    "significance": "critical",
+    "relatedConcepts": ["Harmonic analysis", "Fourier methods"]
+  },
+  {
+    "id": "ann-e177-cess",
+    "proofId": "erdos-177",
+    "range": { "startLine": 154, "endLine": 162 },
+    "type": "axiom",
+    "title": "Cantor-Erdős-Schreiber-Straus (1966)",
+    "content": "**cantor_erdos_schreiber_straus_1966:**\n\nh(d) ≤ C·d! for some constant C.\n\nThis factorial bound was the first explicit upper bound, but is far from optimal.",
+    "mathContext": "Published in 'Remarks on number theory V' (1966). The factorial growth is extremely fast.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e177-beck",
+    "proofId": "erdos-177",
+    "range": { "startLine": 177, "endLine": 185 },
+    "type": "axiom",
+    "title": "Beck's Upper Bound (2017)",
+    "content": "**beck_2017:**\n\nh(d) ≤ d^{8+ε} for every ε > 0.\n\nBeck's polynomial bound dramatically improved the factorial bound. The exponent 8 is likely not optimal.",
+    "mathContext": "From 'A discrepancy problem: balancing infinite dimensional vectors' (2017).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e177-gap",
+    "proofId": "erdos-177",
+    "range": { "startLine": 199, "endLine": 209 },
+    "type": "theorem",
+    "title": "The Current Gap",
+    "content": "**current_bounds_gap:**\n\nd^{1/2} ≤ h(d) ≤ d^{8+ε}\n\nThe true polynomial exponent is unknown. Experts conjecture it's closer to 1/2 than to 8.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e177-conjecture",
+    "proofId": "erdos-177",
+    "range": { "startLine": 211, "endLine": 220 },
+    "type": "definition",
+    "title": "Conjectured Order",
+    "content": "**ConjecturedOrder:**\n\nh(d) ≈ d^α for some 1/2 ≤ α ≤ 1.\n\nMost researchers believe α is close to 1/2, possibly with logarithmic corrections.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e177-cannot-compute",
+    "proofId": "erdos-177",
+    "range": { "startLine": 256, "endLine": 262 },
+    "type": "concept",
+    "title": "Cannot Be Computed",
+    "content": "**cannot_compute:**\n\nThe problem asks about ALL arithmetic progressions (infinitely many), so no finite computation can settle it.\n\nThis is explicitly noted on erdosproblems.com.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e177-summary",
+    "proofId": "erdos-177",
+    "range": { "startLine": 268, "endLine": 303 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #177: OPEN**\n\n**Problem:** Find h(d) - minimum max discrepancy over APs with difference d.\n\n**Known:**\n- Lower: d^{1/2} (Roth 1964)\n- Upper: d^{8+ε} (Beck 2017)\n- Van der Waerden: h(d) → ∞\n\n**Open:** The correct polynomial exponent.",
+    "significance": "critical"
+  }
+]
