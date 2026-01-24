@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-tournament",
+    "proofId": "erdos-902",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "definition",
+    "title": "Tournament Structure",
+    "content": "A tournament is a complete directed graph - an orientation of the complete graph where every pair of vertices has exactly one directed edge between them.",
+    "significance": "major"
+  },
+  {
+    "id": "def-dominates",
+    "proofId": "erdos-902",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Vertex Dominates Set",
+    "content": "A vertex v dominates a set S if v ∉ S and v → s for all s ∈ S (v beats every member of S).",
+    "significance": "major"
+  },
+  {
+    "id": "def-n-dominating",
+    "proofId": "erdos-902",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "n-Dominating Tournament",
+    "content": "A tournament is n-dominating if every subset of n vertices is dominated by some vertex outside the subset.",
+    "significance": "major"
+  },
+  {
+    "id": "def-f-function",
+    "proofId": "erdos-902",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) is the minimum order of an n-dominating tournament. This is the central object of study in the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-f-1-2-3",
+    "proofId": "erdos-902",
+    "range": { "startLine": 84, "endLine": 109 },
+    "type": "theorem",
+    "title": "Known Values f(1)=3, f(2)=7, f(3)=19",
+    "content": "The first three values of f are known exactly: the rock-paper-scissors tournament for f(1), the Paley tournament of order 7 for f(2), and a 19-vertex tournament for f(3).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-lower-bound",
+    "proofId": "erdos-902",
+    "range": { "startLine": 123, "endLine": 137 },
+    "type": "theorem",
+    "title": "Szekeres Lower Bound",
+    "content": "Szekeres & Szekeres (1965): f(n) ≥ c · n · 2^n. Based on counting: each vertex can dominate at most C(k-1,n) sets of size n.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-upper-bound",
+    "proofId": "erdos-902",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "theorem",
+    "title": "Erdős Upper Bound",
+    "content": "Erdős (1963): f(n) ≤ C · n² · 2^n via the probabilistic method. A random tournament of this order is likely n-dominating.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-asymptotic-gap",
+    "proofId": "erdos-902",
+    "range": { "startLine": 167, "endLine": 171 },
+    "type": "conjecture",
+    "title": "The Asymptotic Gap",
+    "content": "The bounds differ by a factor of n: c ≤ f(n)/(n·2^n) ≤ C·n. Determining the true asymptotic is the main open problem.",
+    "significance": "major"
+  },
+  {
+    "id": "def-paley",
+    "proofId": "erdos-902",
+    "range": { "startLine": 175, "endLine": 187 },
+    "type": "definition",
+    "title": "Paley Tournament",
+    "content": "For prime p ≡ 3 (mod 4), the Paley tournament has edge u → v iff v - u is a quadratic residue mod p. Highly symmetric with automorphism group of order p(p-1)/2.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-probabilistic",
+    "proofId": "erdos-902",
+    "range": { "startLine": 216, "endLine": 229 },
+    "type": "theorem",
+    "title": "Probabilistic Existence",
+    "content": "For k large enough, a random tournament of order k is n-dominating with positive probability, proving existence of n-dominating tournaments.",
+    "significance": "minor"
+  }
+]
