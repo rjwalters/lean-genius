@@ -6241,17 +6241,24 @@
   },
   {
     "id": "erdos-331",
-    "title": "Erdős Problem #331",
+    "title": "Erdős Problem #331: Common Differences in Dense Sets",
     "slug": "erdos-331",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... such that for all large ...\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg N^{1/2}\\]and\\[\\lvert B\\cap \\{1,\\ldots,N\\}\\rvert \\g...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For A, B ⊆ ℕ with |A ∩ {1,...,N}| ≫ N^{1/2} and |B ∩ {1,...,N}| ≫ N^{1/2}, must there be infinitely many common differences a₁-a₂ = b₁-b₂ ≠ 0? DISPROVED by Ruzsa.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "density",
+      "counterexample",
+      "binary-representation",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 331,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 20
   },
   {
     "id": "erdos-333",
