@@ -1,33 +1,75 @@
 {
   "id": "erdos-994",
-  "title": "Erdős Problem #994",
+  "title": "Erdős Problem #994: Khintchine's Equidistribution Conjecture",
   "slug": "erdos-994",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a meaurable subset with Lebesgue measure .... Is it true that, for almost all ...,\\[\\lim_{n\\to \\infty}{n}\\sum_{1\\l...",
+  "description": "For almost all α, is lim (1/n)∑1_{kα∈E} = λ(E) for ALL measurable E ⊆ (0,1)? DISPROVED: Marstrand (1970) showed this is FALSE. The quantifiers cannot be exchanged.",
   "meta": {
-    "author": "Unknown",
+    "author": "Khintchine (1923, conjecture), Marstrand (1970, disproof)",
     "sourceUrl": "https://erdosproblems.com/994",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos994Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "measure-theory",
+      "equidistribution",
+      "discrepancy",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 994,
     "erdosUrl": "https://erdosproblems.com/994",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Measure",
+        "description": "Lebesgue measure for λ(E)",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for equidistribution",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "frac, fracSequence: fractional part {kα}",
+      "indicator, countInE, empiricalFrequency: counting hits in E",
+      "IsEquidistributed: limit definition",
+      "weyl_theorem, WeylStatement: what IS true",
+      "KhintchineConjecture: what was conjectured",
+      "WeylOrder, KhintchineOrder: quantifier difference",
+      "quantifier_exchange_fails: key insight",
+      "marstrand_disproof, marstrand_construction: the counterexample",
+      "bad_set_exists: E can be constructed for each α",
+      "weyl_equidistribution: intervals always work"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #994 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $E\\subseteq (0,1)$ be a meaurable subset with Lebesgue measure $\\lambda(E)$. Is it true that, for almost all $\\alpha$,\\[\\lim_{n\\to \\infty}\\frac{1}{n}\\sum_{1\\leq k\\leq n}1_{\\{k\\alpha \\}\\in E}=\\lambda(E)\\]for all $E$?\n\n\n\nA conjecture of Khintchine \\cite{Kh23}.\n\nIn fact this is false, and was disproved by Marstrand \\cite{Ma70}.\n\n\n\n\nReferences\n\n\n[Kh23] Khintchine, A., Ein {S}atz \\\"uber {K}ettenbr\\\"uche, mit arithmetischen\n{A}nwendungen. Math. Z. (1923), 289--306.\n\n[Ma70] Marstrand, J. M., On {K}hinchin's conjecture about strong uniform distribution. Proc. London Math. Soc. (3) (1970), 540--556.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #994 (Khintchine's Equidistribution Conjecture)**\n\n**Origin:**\nKhintchine (1923) conjectured that for almost all real α, the sequence {kα} (fractional parts) is equidistributed in EVERY measurable set E ⊆ (0,1).\n\n**Weyl's Theorem (True):**\nFor any FIXED measurable E, for almost all α, equidistribution holds. The exceptional set depends on E.\n\n**Khintchine's Conjecture (False):**\nCan the exceptional set be made independent of E? That is: for almost all α, does equidistribution hold for ALL E simultaneously?\n\n**Marstrand's Disproof (1970):**\nNo! The quantifier exchange fails. For any α, one can construct a 'bad' set E where equidistribution fails.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet E ⊆ (0,1) be measurable with Lebesgue measure λ(E). Is it true that for almost all α:\n\n  lim_{n→∞} (1/n) ∑_{k=1}^n 1_{kα ∈ E} = λ(E)\n\nfor ALL measurable E?\n\n**Answer: NO** (Marstrand 1970)\n\nThe conjecture is FALSE. The quantifiers ∀E and ∀ᵐα cannot be exchanged.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Fractional Parts:** frac, fracSequence for {kα}\n\n2. **Counting:** countInE, empiricalFrequency\n\n3. **Equidistribution:** IsEquidistributed as limit definition\n\n4. **Weyl's Theorem:** weyl_theorem, WeylStatement (true)\n\n5. **Khintchine:** KhintchineConjecture (false)\n\n6. **Quantifier Difference:** WeylOrder (∀E ∀ᵐα) vs KhintchineOrder (∀ᵐα ∀E)\n\n7. **Disproof:** marstrand_disproof, marstrand_construction\n\n8. **Bad Sets:** bad_set_exists — E depends on α",
+    "keyInsights": [
+      "**Quantifier Exchange:** ∀E ∀ᵐα ≠ ∀ᵐα ∀E",
+      "**Weyl True:** For fixed E, a.e. α works (exceptional set depends on E)",
+      "**Khintchine False:** No universal exceptional set for all E",
+      "**Marstrand:** Constructs bad E for any given α",
+      "**Intervals Work:** Equidistribution always holds for intervals"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #994 asks whether Khintchine's equidistribution conjecture is true: for a.e. α, does {kα} equidistribute in ALL measurable E? Marstrand (1970) showed this is FALSE. While Weyl's theorem says for any fixed E, a.e. α works, you cannot exchange quantifiers to get a single exceptional set for all E.",
+    "implications": "**Connections**\n\n1. **Weyl's Theorem:** The true statement — equidistribution for fixed sets\n\n2. **Discrepancy Theory:** Measures deviation from equidistribution\n\n3. **Continued Fractions:** Marstrand's construction uses CF expansion of α\n\n4. **Measure Theory:** Uncountably many E causes the failure",
+    "openQuestions": [
+      "What restrictions on E make Khintchine-type statements true?",
+      "What is the 'size' of the set of α for which a given E fails?",
+      "How does discrepancy depend on the structure of E?",
+      "What about higher-dimensional analogues?"
+    ]
   }
 }
