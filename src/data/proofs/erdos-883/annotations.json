@@ -1,1 +1,148 @@
-[]
+[
+  {
+    "id": "ann-e883-header",
+    "proofId": "erdos-883",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #883: Cycles in the Coprime Graph**\n\nThis problem studies cycle structure in graphs defined by coprimality.\n\n**Two Questions:**\n1. Do all short odd cycles exist above a threshold? (Open)\n2. Do tripartite subgraphs exist? (Solved by Sarkozy 1999)\n\nThe threshold floor(n/2) + floor(n/3) - floor(n/6) is tight.",
+    "mathContext": "The problem connects number theory and extremal graph theory through coprimality conditions.",
+    "significance": "critical",
+    "relatedConcepts": ["Coprime graph", "Cycle detection", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e883-coprime-graph",
+    "proofId": "erdos-883",
+    "range": { "startLine": 41, "endLine": 49 },
+    "type": "definition",
+    "title": "Coprime Graph Definition",
+    "content": "**coprimeGraph:**\n\nThe graph G(A) on vertex set A where two integers are adjacent iff they are coprime (gcd = 1).\n\n**Definition:**\n```lean\ndef coprimeGraph (A : Finset N) : SimpleGraph N where\n  Adj := fun a b => a in A and b in A and a != b and Nat.Coprime a b\n```\n\nThis is a sparse graph on integers with rich structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Coprimality", "Simple graphs"]
+  },
+  {
+    "id": "ann-e883-threshold",
+    "proofId": "erdos-883",
+    "range": { "startLine": 51, "endLine": 55 },
+    "type": "definition",
+    "title": "Threshold Value",
+    "content": "**threshold:**\n\nThe value floor(n/2) + floor(n/3) - floor(n/6).\n\nBy inclusion-exclusion, this counts integers <= n divisible by 2 or 3.\n\nAsymptotically, threshold(n) approx (2/3)n.",
+    "mathContext": "Arises from inclusion-exclusion on multiples of 2 and 3.",
+    "significance": "critical",
+    "relatedConcepts": ["Inclusion-exclusion", "Counting"]
+  },
+  {
+    "id": "ann-e883-extremal-set",
+    "proofId": "erdos-883",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "definition",
+    "title": "Extremal Set",
+    "content": "**extremalSet:**\n\nThe set of integers <= n divisible by 2 or 3.\n\nThis set has size exactly threshold(n) but contains no triangles in the coprime graph, since any two elements share a common factor.\n\nThis shows the threshold is tight.",
+    "significance": "key",
+    "relatedConcepts": ["Extremal construction", "Triangle-free graphs"]
+  },
+  {
+    "id": "ann-e883-triangle-free",
+    "proofId": "erdos-883",
+    "range": { "startLine": 78, "endLine": 91 },
+    "type": "theorem",
+    "title": "Extremal Set is Triangle-Free",
+    "content": "**extremal_set_triangle_free:**\n\nThe extremal set (multiples of 2 or 3) has no triangles.\n\n**Proof idea:** Any two elements in the set share either 2 or 3 as a common factor, so they cannot be coprime.\n\nThis proves the threshold is best possible.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e883-erdos-sarkozy",
+    "proofId": "erdos-883",
+    "range": { "startLine": 97, "endLine": 108 },
+    "type": "axiom",
+    "title": "Erdos-Sarkozy Theorem (1997)",
+    "content": "**erdos_sarkozy_odd_cycles:**\n\nIf |A| > threshold(n), then G(A) contains all odd cycles of length <= cn for some absolute constant c > 0.\n\nThis is a partial answer to Question 1.\n\n**Reference:** Erdos-Sarkozy, \"On cycles in the coprime graph of integers\", Electron. J. Combin. (1997).",
+    "mathContext": "The proof uses counting arguments and properties of coprime pairs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e883-question-1",
+    "proofId": "erdos-883",
+    "range": { "startLine": 114, "endLine": 125 },
+    "type": "concept",
+    "title": "Question 1 (Open)",
+    "content": "**erdos_883_question_1:**\n\nDoes |A| > threshold(n) imply G(A) contains all odd cycles of length <= n/3 + 1?\n\nThis asks for the specific constant 1/3, stronger than Erdos-Sarkozy.\n\n**Status:** OPEN - the optimal constant is not known.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e883-tripartite-def",
+    "proofId": "erdos-883",
+    "range": { "startLine": 138, "endLine": 151 },
+    "type": "definition",
+    "title": "Complete (1,l,l) Tripartite Graph",
+    "content": "**hasTripartite:**\n\nA (1,l,l) tripartite subgraph consists of:\n- One central vertex v\n- Two disjoint sets S and T, each of size l\n- v is adjacent to every vertex in S and T\n\nThis is a star-like structure with 2l + 1 vertices.",
+    "significance": "key",
+    "relatedConcepts": ["Tripartite graphs", "Star graphs"]
+  },
+  {
+    "id": "ann-e883-sarkozy-theorem",
+    "proofId": "erdos-883",
+    "range": { "startLine": 153, "endLine": 166 },
+    "type": "axiom",
+    "title": "Sarkozy's Theorem (1999)",
+    "content": "**sarkozy_tripartite:**\n\nFor large n, if |A| > threshold(n), then G(A) contains a complete (1,l,l) tripartite subgraph with l >> log n / log log n.\n\nThis solves Question 2 affirmatively.\n\n**Reference:** Sarkozy, \"Complete tripartite subgraphs in the coprime graph\", Discrete Math. (1999).",
+    "mathContext": "The l >> log n / log log n bound comes from estimates on coprime pairs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e883-q2-solved",
+    "proofId": "erdos-883",
+    "range": { "startLine": 172, "endLine": 184 },
+    "type": "theorem",
+    "title": "Question 2 SOLVED",
+    "content": "**erdos_883_question_2_solved:**\n\nFor all n >= 1000 and A with |A| > threshold(n), the coprime graph G(A) contains a (1,l,l) tripartite subgraph.\n\nThis is the main solved part of Erdos #883.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e883-main",
+    "proofId": "erdos-883",
+    "range": { "startLine": 204, "endLine": 209 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_883:**\n\nThe main theorem combines the solved parts:\n- Question 2 is fully answered\n- Question 1 has partial progress (cycles of length cn)\n\nThe tripartite subgraph result is the highlight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e883-coprime-cycle",
+    "proofId": "erdos-883",
+    "range": { "startLine": 224, "endLine": 230 },
+    "type": "definition",
+    "title": "Coprime Cycles",
+    "content": "**isCoprimeCycle:**\n\nA coprime cycle is a sequence a_1, a_2, ..., a_k, a_1 where each consecutive pair is coprime.\n\nOdd coprime cycles (k odd) are the focus of Question 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["Graph cycles", "Coprimality chains"]
+  },
+  {
+    "id": "ann-e883-triangles",
+    "proofId": "erdos-883",
+    "range": { "startLine": 232, "endLine": 240 },
+    "type": "axiom",
+    "title": "Triangles Above Threshold",
+    "content": "**triangles_above_threshold:**\n\nFor n >= 10 and |A| > threshold(n), the coprime graph G(A) contains a triangle.\n\nThis is the simplest case of odd cycle existence - the base of the cycle structure theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e883-inclusion-exclusion",
+    "proofId": "erdos-883",
+    "range": { "startLine": 246, "endLine": 250 },
+    "type": "theorem",
+    "title": "Threshold Formula",
+    "content": "**threshold_by_inclusion_exclusion:**\n\nThe threshold equals n/2 + n/3 - n/6 by definition.\n\nThis is the inclusion-exclusion formula: |mult of 2| + |mult of 3| - |mult of 6|.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e883-asymptotic",
+    "proofId": "erdos-883",
+    "range": { "startLine": 252, "endLine": 256 },
+    "type": "axiom",
+    "title": "Threshold Asymptotics",
+    "content": "**threshold_asymptotic:**\n\nFor n >= 6, threshold(n) <= 2n/3 + 1.\n\nSo the critical density is approximately 2/3 of the integers up to n.",
+    "significance": "supporting",
+    "relatedConcepts": ["Asymptotic bounds", "Density"]
+  }
+]
