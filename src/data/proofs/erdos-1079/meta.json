@@ -1,33 +1,85 @@
 {
   "id": "erdos-1079",
-  "title": "Erdős Problem #1079",
+  "title": "Erdős Problem #1079: Turán Density in Neighborhoods",
   "slug": "erdos-1079",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If ... is a graph on ... vertices with at least ... edges then must ... contain a vertex with degree ... whose neigh...",
+  "description": "For r ≥ 4, if G has n vertices and ≥ ex(n; Kᵣ) edges, must G contain a vertex with dense neighborhood? SOLVED: YES (Bollobás-Thomason 1981, Bondy 1983). A nice generalization of Turán's theorem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Bollobás-Thomason (1981), Bondy (1983)",
     "sourceUrl": "https://erdosproblems.com/1079",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1079Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "turan-number",
+      "extremal-graphs",
+      "neighborhoods",
+      "solved"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 1079,
     "erdosUrl": "https://erdosproblems.com/1079",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "turanNumber definition: ex(n, K_r) edge count",
+      "IsTuranGraph predicate",
+      "neighborhood and inducedSubgraph definitions",
+      "bollobas_thomason axiom: main theorem",
+      "bondy_strengthening: max-degree vertex works"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1079 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 4$. If $G$ is a graph on $n$ vertices with at least $\\mathrm{ex}(n;K_r)$ edges then must $G$ contain a vertex with degree $d\\gg_r n$ whose neighbourhood contains at least $\\mathrm{ex}(d;K_{r-1})$ edges?\n\n\n\nAs Erd\\H{o}s \\cite{Er75} says 'if true this would be a nice generalisation of Tur\\'{a}n's theorem'.\n\nThis is true (unless $G$ it itself the Tur\\'{a}n graph), and was proved by Bollob\\'{a}s and Thomason \\cite{BoTh81}. Bondy \\cite{Bo83b} showed that if $G$ has $>\\mathrm{ex}(n;K_r)$ edges then the corresponding vertex can be chosen to be of maximum degree in $G$.\n\n\n\n\nReferences\n\n\n[Bo83b] Bondy, J. A., Large dense neighbourhoods and {T}ur\\'an's theorem. J. Combin. Theory Ser. B (1983), 109--111.\n\n[BoTh81] Bollob\\'as, B\\'{e}la and Thomason, Andrew, Dense neighbourhoods and {T}ur\\'an's theorem. J. Combin. Theory Ser. B (1981), 111--114.\n\n[Er75] Erd\\H{o}s, P., Some recent progress on extremal problems in graph theory. Congr. Numer. (1975), 3-14.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1079** asks about local density in globally dense graphs.\n\n**Historical Development:**\n- **1975:** Erdős poses the question, noting it would be a 'nice generalisation of Turán's theorem'\n- **1981:** Bollobás and Thomason prove the conjecture: YES, except for Turán graphs\n- **1983:** Bondy strengthens the result: the max-degree vertex always works\n\n**Key Insight:** Dense graphs (near Turán threshold) have vertices whose neighborhoods are also dense.",
+    "problemStatement": "**Problem Statement**\n\nLet r ≥ 4. If G is a graph on n vertices with at least ex(n; Kᵣ) edges, must G contain a vertex v with degree d ≫ᵣ n whose neighborhood contains at least ex(d; K_{r-1}) edges?\n\n**Status:** SOLVED\n\n**Answer:** YES, unless G is the Turán graph T(n, r-1) itself.\n\n**Bondy's Strengthening:** If G has > ex(n; Kᵣ) edges, the vertex can be chosen to have maximum degree.",
+    "proofStrategy": "**Proof Strategy**\n\n1. **Bollobás-Thomason Approach:** If G has ≥ ex(n; Kᵣ) edges but is not Turán, it has 'extra' edges creating denser local neighborhoods.\n\n2. **Bondy's Extension:** Show the max-degree vertex always satisfies the condition.",
+    "keyInsights": [
+      "**Turán Generalization:** Dense global structure implies dense local structure",
+      "**Turán Graph Exception:** The Turán graph achieves ex(n; Kᵣ) with neighborhoods achieving exactly ex(d; K_{r-1})",
+      "**r ≥ 4 Condition:** The case r = 3 needs different treatment",
+      "**Max-Degree Vertex:** Bondy showed this vertex always works when G is not Turán"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 36,
+      "endLine": 64,
+      "summary": "Turán number, Turán graph predicate, neighborhood, induced subgraph"
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 65,
+      "endLine": 93,
+      "summary": "Bollobás-Thomason (1981) and Bondy (1983) strengthening"
+    },
+    {
+      "id": "generalization",
+      "title": "Turán Generalization",
+      "startLine": 94,
+      "endLine": 117,
+      "summary": "Why this generalizes Turán's theorem"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 223,
+      "endLine": 257,
+      "summary": "Complete characterization and problem status"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1079 is SOLVED. For r ≥ 4, graphs with ≥ ex(n; Kᵣ) edges must have a vertex with dense neighborhood, unless the graph is Turán. Bollobás-Thomason (1981) proved this; Bondy (1983) showed the max-degree vertex works.",
+    "implications": "A 'nice generalisation of Turán's theorem' as Erdős hoped. Dense graphs have dense local neighborhoods. Useful for algorithmic clique detection and stability results.",
+    "openQuestions": [
+      "Exact constants in the degree bound d ≫ᵣ n",
+      "Generalizations to other forbidden graphs H",
+      "Hypergraph analogues"
+    ]
   }
 }
