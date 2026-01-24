@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "ann-702-header",
+    "proofId": "erdos-702",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #702: Singleton Intersections**\n\nFor k ≥ 4, if a k-uniform family F has more than C(n-2, k-2) sets, must it contain A, B with |A ∩ B| = 1?\n\n**Answer: YES** (Frankl 1977)\n\nThe bound is tight: all k-sets through two fixed points avoid singleton intersections.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-702-kuniform",
+    "proofId": "erdos-702",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "IsKUniform",
+    "content": "**k-Uniform Family:** All sets in F have exactly k elements.\n\nThis is the standard uniformity condition in extremal set theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-702-singleton",
+    "proofId": "erdos-702",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "SingletonIntersection",
+    "content": "**Singleton Intersection:** Two sets A, B with |A ∩ B| = 1.\n\nThey share exactly one element. The problem asks when such pairs must exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-702-avoids",
+    "proofId": "erdos-702",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "AvoidsSingletonIntersections",
+    "content": "**Avoids Singleton Intersections:** No two distinct sets share exactly one element.\n\nThe extremal family achieves this by making all sets share at least 2 elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-702-has",
+    "proofId": "erdos-702",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "HasSingletonPair",
+    "content": "**Has Singleton Pair:** There exist A, B ∈ F with A ≠ B and |A ∩ B| = 1.\n\nFrankl's theorem says this occurs when |F| > C(n-2, k-2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-702-extremal",
+    "proofId": "erdos-702",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "axiom",
+    "title": "extremal_construction",
+    "content": "**Extremal Construction:** Fix two elements x, y. Take all k-sets containing both.\n\nThis family has C(n-2, k-2) sets and avoids singleton intersections: any two sets share at least {x, y}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-702-why",
+    "proofId": "erdos-702",
+    "range": { "startLine": 81, "endLine": 84 },
+    "type": "concept",
+    "title": "Why C(n-2, k-2)",
+    "content": "**Why This Bound?** Choosing k-2 elements from {1,...,n}\\{x,y} gives C(n-2, k-2) sets.\n\nEach set contains {x,y} plus k-2 other elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-702-frankl",
+    "proofId": "erdos-702",
+    "range": { "startLine": 90, "endLine": 100 },
+    "type": "axiom",
+    "title": "frankl_theorem",
+    "content": "**Frankl's Theorem (1977):** For k ≥ 4, if |F| > C(n-2, k-2), then F has a singleton pair.\n\nThis confirms the Erdős-Sós conjecture and shows the bound is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-702-katona",
+    "proofId": "erdos-702",
+    "range": { "startLine": 102, "endLine": 110 },
+    "type": "axiom",
+    "title": "katona_k4",
+    "content": "**Katona's Case k=4 (unpublished):** The first case, proved before Frankl's general result.\n\nFor 4-subsets of {1,...,n} with |F| > C(n-2, 2), a singleton pair exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-702-k3",
+    "proofId": "erdos-702",
+    "range": { "startLine": 122, "endLine": 130 },
+    "type": "axiom",
+    "title": "k3_fails",
+    "content": "**k=3 Fails:** The condition k ≥ 4 is necessary.\n\nFor k=3, there exist large 3-uniform families exceeding C(n-2, 1) that still avoid singleton intersections.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-702-main",
+    "proofId": "erdos-702",
+    "range": { "startLine": 148, "endLine": 167 },
+    "type": "theorem",
+    "title": "erdos_702",
+    "content": "**Erdős Problem #702: SOLVED**\n\nMain theorem: For k ≥ 4 and |F| > C(n-2, k-2), the family F contains a singleton intersection pair.\n\n**Key:** Proved by Frankl (1977), earlier by Katona for k=4.",
+    "significance": "critical"
+  }
+]

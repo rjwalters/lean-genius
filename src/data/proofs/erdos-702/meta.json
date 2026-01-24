@@ -1,33 +1,72 @@
 {
   "id": "erdos-702",
-  "title": "Erdős Problem #702",
+  "title": "Erdős Problem #702: Singleton Intersections in k-Uniform Families",
   "slug": "erdos-702",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If $...\\{1,\\ldots,n\\}...\\lvert A\\rvert=k...A\\in ...\\lvert \\rvert >{k-2}...A,B\\in...\\lvert A\\cap B\\rvert=1...k=4...k\\...",
+  "description": "For k ≥ 4, if F is a k-uniform family over {1,...,n} with |F| > C(n-2, k-2), must some pair have |A ∩ B| = 1? SOLVED by Frankl (1977): YES, the bound is tight.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Sós, Katona, Frankl",
     "sourceUrl": "https://erdosproblems.com/702",
-    "date": "",
-    "status": "pending",
+    "date": "1977",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos702Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-set-theory",
+      "intersecting-families",
+      "frankl",
+      "combinatorics",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 702,
     "erdosUrl": "https://erdosproblems.com/702",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {"theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic"},
+      {"theorem": "Nat.choose", "description": "Binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic"}
+    ],
+    "originalContributions": [
+      "IsKUniform: k-uniform family definition",
+      "SingletonIntersection: |A ∩ B| = 1",
+      "HasSingletonPair: existence of singleton pair",
+      "frankl_theorem: main result axiom",
+      "extremal_construction: tight example"
+    ],
+    "references": [
+      {"key": "Fr77", "citation": "Frankl, Péter, On families of finite sets no two of which intersect in a singleton, Bull. Austral. Math. Soc. (1977), 125-134.", "type": "paper"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #702 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 4$. If $\\mathcal{F}$ is a family of subsets of $\\{1,\\ldots,n\\}$ with $\\lvert A\\rvert=k$ for all $A\\in \\mathcal{F}$ and $\\lvert \\mathcal{F}\\rvert >\\binom{n-2}{k-2}$ then there are $A,B\\in\\mathcal{F}$ such that $\\lvert A\\cap B\\rvert=1$.\n\n\n\nA conjecture of Erd\\H{o}s and S\\'{o}s. Katona (unpublished) proved this when $k=4$, and Frankl \\cite{Fr77} proved this for all $k\\geq 4$.\n\nSee also [703].\n\n\n\n\nReferences\n\n\n[Fr77] Frankl, P\\'{e}ter, On families of finite sets no two of which intersect in a\nsingleton. Bull. Austral. Math. Soc. (1977), 125-134.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős-Sós Conjecture**\n\nErdős and Sós asked: for k ≥ 4, if a k-uniform family F has more than C(n-2, k-2) sets, must it contain two sets with exactly one common element?\n\n**Solution:**\n- Katona (unpublished): Proved for k = 4\n- Frankl (1977): Proved for all k ≥ 4\n\nThe bound is tight: all k-sets containing two fixed elements avoid singleton intersections.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet k ≥ 4. If F is a family of k-subsets of {1,...,n} with |F| > C(n-2, k-2), then there exist A, B ∈ F with |A ∩ B| = 1.\n\n**Answer: YES** (Frankl 1977)\n\nThe bound C(n-2, k-2) is tight.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Set families:** Define k-uniform families over ground set.\n2. **Intersection patterns:** SingletonIntersection as |A ∩ B| = 1.\n3. **Extremal bound:** C(n-2, k-2) from fixing two elements.\n4. **Frankl's theorem:** Axiomatize main result.\n5. **Failure for k=3:** Note the condition k ≥ 4 is necessary.",
+    "keyInsights": [
+      "**Extremal construction:** Fix {x,y} in all sets → |A ∩ B| ≥ 2 always",
+      "**Threshold:** C(n-2, k-2) is the maximum avoiding singletons",
+      "**k ≥ 4 required:** The theorem fails for k = 3",
+      "**Shifting technique:** Frankl's proof method",
+      "**Related to #703:** Companion problem on intersecting families"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {"id": "families", "title": "Set Families", "summary": "Ground set, k-uniform, subsets", "startLine": 34, "endLine": 47},
+    {"id": "intersections", "title": "Intersection Patterns", "summary": "Singleton, avoiding, pairs", "startLine": 49, "endLine": 64},
+    {"id": "extremal", "title": "Extremal Bound", "summary": "C(n-2,k-2) construction", "startLine": 66, "endLine": 84},
+    {"id": "frankl", "title": "Frankl's Theorem", "summary": "Main result (1977)", "startLine": 86, "endLine": 110},
+    {"id": "special", "title": "Special Cases", "summary": "k=4, k=3 failure", "startLine": 112, "endLine": 130},
+    {"id": "proof", "title": "Proof Technique", "summary": "Shifting method", "startLine": 132, "endLine": 142},
+    {"id": "summary", "title": "Summary", "summary": "Main theorem and status", "startLine": 144, "endLine": 181}
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #702 (Erdős-Sós conjecture) was SOLVED by Frankl in 1977. For k ≥ 4, any k-uniform family with more than C(n-2, k-2) sets contains a singleton intersection pair. The bound is achieved by taking all k-sets through two fixed points.",
+    "implications": "**Implications**\n\n1. **Extremal set theory:** Characterizes maximum avoiding-singleton families\n2. **Intersection structure:** Reveals constraints on set family geometry\n3. **Threshold phenomena:** Sharp transition at C(n-2, k-2)",
+    "openQuestions": [
+      "Strengthen results for specific values of n and k",
+      "Characterize all extremal families",
+      "Extensions to other intersection conditions"
+    ]
   }
 }
