@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed j-invariant theorems, removed sorry by restructuring to avoid IsElliptic typeclass requirements. Build passes.",
+    "builtItems": [
+      "toWeierstrassCurve_discriminant_ne_zero: Δ ≠ 0 for our curves",
+      "toWeierstrassCurve_c4: c₄ = -48a formula",
+      "toWeierstrassCurve_c4_cubed: c₄³ = -110592a³ formula"
+    ],
+    "insights": [
+      "Fixed Mathlib compatibility: j-invariant theorems now work with current Mathlib WeierstrassCurve API",
+      "Proved toWeierstrassCurve_discriminant_ne_zero connecting EllipticCurveQ to Mathlib Δ ≠ 0",
+      "Proved toWeierstrassCurve_c4 showing c₄ = -48a for short Weierstrass form",
+      "Proved toWeierstrassCurve_c4_cubed showing c₄³ = -110592a³"
+    ],
     "mathlibGaps": [
       "Torsion subgroup",
       "Mordell-Weil",
