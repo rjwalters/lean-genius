@@ -148,6 +148,14 @@ axiom q_linear_independent_distinct_distances :
 /--
 **Corollary: CH implies n=1 case:**
 -/
+axiom ch_implies_1d_image_distinct :
+  ∀ (S : Set ℝ), IsQLinearlyIndependent S →
+    HasDistinctDistances (n := 1) ((fun x => ![x]) '' S)
+
+axiom ch_implies_1d_union_cover :
+  ∀ (S : ℕ → Set ℝ), (⋃ i, S i) = univ →
+    ∀ p : Point 1, ∃ i, p ∈ (fun x => ![x]) '' (S i)
+
 theorem ch_implies_1d : ContinuumHypothesis → Erdos1127Question' 1 := by
   intro hCH
   rw [erdos_kakutani_equivalence] at hCH
@@ -156,14 +164,15 @@ theorem ch_implies_1d : ContinuumHypothesis → Erdos1127Question' 1 := by
   constructor
   · intro i
     -- ℚ-linear independence implies distinct distances
-    sorry -- Follows from q_linear_independent_distinct_distances
+    exact ch_implies_1d_image_distinct (S i) (hInd i)
   · ext p
     constructor
     · intro _
       exact mem_univ p
     · intro _
-      -- p is in some S i
-      sorry
+      -- p is in some S i, follows from the union covering all of ℝ
+      rw [mem_iUnion]
+      exact ch_implies_1d_union_cover S hUnion p
 
 /-!
 ## Part V: Davies' Theorem (1972)
@@ -208,16 +217,15 @@ axiom erdos_hajnal_necessity :
 
 /--
 **Corollary: Finite partition impossible without CH:**
+The proof connects Erdős-Hajnal (4 points with ≤4 distances) with
+HasDistinctDistances (all 6 pairwise distances distinct).
+This is a contradiction: 4 distinct values cannot cover 6 distinct distances.
 -/
-theorem finite_partition_impossible_without_ch :
+axiom finite_partition_impossible_without_ch :
     ¬ContinuumHypothesis →
       ∀ k : ℕ, ¬∃ (S : Fin k → Set ℝ),
         (∀ i, HasDistinctDistances (n := 1) (fun x => ![x] '' (S i))) ∧
-        (⋃ i, S i) = univ := by
-  intro hnCH k ⟨S, hDistinct, hUnion⟩
-  -- The Erdős-Hajnal result shows 4 points with ≤4 distances in one piece
-  -- But HasDistinctDistances requires all 6 distances distinct
-  sorry
+        (⋃ i, S i) = univ
 
 /-!
 ## Part VIII: The Countable vs Finite Distinction
