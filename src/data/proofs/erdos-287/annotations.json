@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-287-header",
+    "proofId": "erdos-287",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #287: For any Egyptian fraction representation 1 = 1/n₁ + 1/n₂ + ⋯ + 1/nₖ with distinct integers n₁ < n₂ < ⋯ < nₖ, must the maximum gap between consecutive denominators be at least 3? This is an open problem exploring the 'spacing structure' of unit fraction representations.",
+    "mathContext": "Egyptian fractions: sums of distinct unit fractions 1/n",
+    "significance": "critical",
+    "relatedConcepts": ["egyptian-fractions", "unit-fractions", "number-theory"]
+  },
+  {
+    "id": "ann-287-unit-fraction",
+    "proofId": "erdos-287",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "definition",
+    "title": "Unit Fraction",
+    "content": "A unit fraction is simply 1/n for a positive integer n. The ancient Egyptians used sums of distinct unit fractions to represent all positive rationals, which is why such representations are called 'Egyptian fractions'. Every positive rational can be written this way.",
+    "mathContext": "unitFraction(n) = 1/n",
+    "significance": "supporting",
+    "relatedConcepts": ["fractions", "egyptian-mathematics"]
+  },
+  {
+    "id": "ann-287-egyptian-one",
+    "proofId": "erdos-287",
+    "range": { "startLine": 52, "endLine": 60 },
+    "type": "definition",
+    "title": "Egyptian Representation of 1",
+    "content": "An EgyptianOne structure captures a valid representation: a nonempty finite set of distinct integers ≥ 2 whose reciprocals sum to exactly 1. The distinctness is crucial—without it, 1 = 1/2 + 1/2 would be trivial. Examples include {2,3,6}, {2,4,5,20}, {2,3,7,42}.",
+    "mathContext": "∑ 1/nᵢ = 1 where all nᵢ ≥ 2 are distinct",
+    "significance": "critical",
+    "relatedConcepts": ["partition", "sumset", "distinct-elements"]
+  },
+  {
+    "id": "ann-287-gaps",
+    "proofId": "erdos-287",
+    "range": { "startLine": 62, "endLine": 76 },
+    "type": "definition",
+    "title": "Gap Definition",
+    "content": "The gap between consecutive denominators measures how 'spread out' the representation is. Given sorted denominators n₁ < n₂ < ⋯ < nₖ, the gaps are n₂-n₁, n₃-n₂, ..., nₖ-nₖ₋₁. The maximum gap captures the largest spacing anywhere in the sequence.",
+    "mathContext": "gaps = [n₂-n₁, n₃-n₂, ...], maxGap = max(gaps)",
+    "significance": "critical",
+    "relatedConcepts": ["consecutive-differences", "spacing", "extremal"]
+  },
+  {
+    "id": "ann-287-conjecture",
+    "proofId": "erdos-287",
+    "range": { "startLine": 81, "endLine": 91 },
+    "type": "theorem",
+    "title": "The Conjecture",
+    "content": "Erdős conjectured that EVERY Egyptian fraction representation of 1 has max gap ≥ 3. This means you can never find a representation where all consecutive denominators differ by at most 2. The conjecture remains OPEN—neither proved nor disproved.",
+    "mathContext": "Conjecture287: ∀ e : EgyptianOne, maxGap(e) ≥ 3",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "lower-bound"]
+  },
+  {
+    "id": "ann-287-example-236",
+    "proofId": "erdos-287",
+    "range": { "startLine": 97, "endLine": 119 },
+    "type": "theorem",
+    "title": "The Optimal Example: 1/2 + 1/3 + 1/6 = 1",
+    "content": "This classic representation achieves max gap = 3 exactly. The gaps are 3-2=1 and 6-3=3, so max gap is 3. This shows the conjecture is TIGHT: we cannot hope to prove max gap ≥ 4, because this example violates it. If the conjecture is true, 3 is the exact threshold.",
+    "mathContext": "1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1",
+    "significance": "critical",
+    "relatedConcepts": ["extremal-example", "tightness", "optimal"]
+  },
+  {
+    "id": "ann-287-consecutive",
+    "proofId": "erdos-287",
+    "range": { "startLine": 125, "endLine": 145 },
+    "type": "theorem",
+    "title": "Erdős's Consecutive Theorem",
+    "content": "Erdős proved that no sum of reciprocals of consecutive integers equals 1. That is, 1/n + 1/(n+1) + ⋯ + 1/(n+k) ≠ 1 for any starting point n ≥ 2 and any length k ≥ 1. This immediately implies gap ≥ 2: if all gaps were 1, the denominators would be consecutive, contradicting this theorem.",
+    "mathContext": "∀ n ≥ 2, k ≥ 1: ∑ᵢ₌₀ᵏ 1/(n+i) ≠ 1",
+    "significance": "key",
+    "relatedConcepts": ["consecutive-integers", "harmonic-series", "gap-lower-bound"]
+  },
+  {
+    "id": "ann-287-gap-2",
+    "proofId": "erdos-287",
+    "range": { "startLine": 139, "endLine": 146 },
+    "type": "theorem",
+    "title": "Gap At Least 2",
+    "content": "The corollary of Erdős's consecutive theorem: every EgyptianOne representation has max gap ≥ 2. This is because if all gaps were ≤ 1 (meaning all gaps equal 1), the denominators would be consecutive integers, which is impossible. So some gap must be ≥ 2.",
+    "mathContext": "∀ e : EgyptianOne, maxGap(e) ≥ 2",
+    "significance": "key",
+    "relatedConcepts": ["corollary", "pigeonhole"]
+  },
+  {
+    "id": "ann-287-more-examples",
+    "proofId": "erdos-287",
+    "range": { "startLine": 168, "endLine": 195 },
+    "type": "insight",
+    "title": "More Representations",
+    "content": "Other known representations include 1/2 + 1/4 + 1/5 + 1/20 = 1 (gaps: 2, 1, 15; max = 15) and 1/2 + 1/3 + 1/7 + 1/42 = 1 (gaps: 1, 4, 35; max = 35). All known examples have max gap ≥ 3, supporting the conjecture. The gap tends to grow large for the last term.",
+    "mathContext": "Multiple verified examples with max gap ≥ 3",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "verification", "empirical-evidence"]
+  },
+  {
+    "id": "ann-287-heuristics",
+    "proofId": "erdos-287",
+    "range": { "startLine": 197, "endLine": 214 },
+    "type": "insight",
+    "title": "Why Gap 3 Might Be Necessary",
+    "content": "Dense representations (small gaps throughout) are hard to achieve because: (1) Consecutive reciprocals overshoot or undershoot 1, (2) The LCM of denominators imposes divisibility constraints, (3) Number-theoretic restrictions push denominators apart. These heuristics suggest gap ≥ 3 is forced by the arithmetic, though a proof remains elusive.",
+    "mathContext": "Structural constraints on dense representations",
+    "significance": "key",
+    "relatedConcepts": ["divisibility", "lcm", "density-arguments"]
+  },
+  {
+    "id": "ann-287-related",
+    "proofId": "erdos-287",
+    "range": { "startLine": 216, "endLine": 236 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "Problems #288, #289, #290 form a cluster of related Egyptian fraction questions posed by Erdős. These explore variations on representing integers or rationals as sums of unit fractions with various constraints. The gap problem is part of a broader investigation into the structure of such representations.",
+    "mathContext": "Erdős Problems #288-290: related unit fraction questions",
+    "significance": "supporting",
+    "relatedConcepts": ["problem-cluster", "variations"]
+  },
+  {
+    "id": "ann-287-summary",
+    "proofId": "erdos-287",
+    "range": { "startLine": 238, "endLine": 276 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "Erdős Problem #287 remains OPEN. What's known: (1) Gap ≥ 2 is proven via the consecutive integer theorem, (2) Gap = 3 is achievable by {2,3,6}, so 3 is the best possible bound, (3) All verified examples satisfy gap ≥ 3, (4) The conjecture connects to prime distribution and divisibility theory. The gap from 2 to 3 is the frontier.",
+    "mathContext": "Status: OPEN. Known: gap ≥ 2 proved, gap ≥ 3 conjectured",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "status-summary", "future-work"]
+  }
+]
