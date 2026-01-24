@@ -1,33 +1,113 @@
 {
   "id": "erdos-1131",
-  "title": "Erdős Problem #1131",
+  "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
   "slug": "erdos-1131",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nWhat is the minimal value ...",
+  "description": "For points x₁,...,xₙ ∈ [-1,1], what is the minimum of ∫ Σ |l_k(x)|² dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Szabados, Varma, Vértesi",
     "sourceUrl": "https://erdosproblems.com/1131",
-    "date": "",
-    "status": "pending",
+    "date": "1994",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1131Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "approximation-theory",
+      "interpolation",
+      "lagrange-polynomials",
+      "legendre-polynomials",
+      "optimization",
+      "open"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1131 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $x_1,\\ldots,x_n\\in [-1,1]$ let\\[l_k(x)=\\frac{\\prod_{i\\neq k}(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that $l_k(x_k)=1$ and $l_k(x_i)=0$ for $i\\neq k$.\n\nWhat is the minimal value of\\[I(x_1,\\ldots,x_n)=\\int_{-1}^1 \\sum_k \\lvert l_k(x)\\rvert^2\\mathrm{d}x?\\]In particular, is it true that\\[\\min I =2-(1+o(1))\\frac{1}{n}?\\]\n\n\n\nErd\\H{o}s first conjectured this minimum was achieved by taking the $x_i$ to be the roots of the integral of the Legendre polynomial, since Fejer \\cite{Fe32} had earlier shown these to be minimisers of\\[\\max_{x\\in [-1,1]}\\sum_k \\lvert l_k(x)\\rvert^2.\\]This was disproved by Szabados \\cite{Sz66} for every $n>3$.\n\nErd\\H{o}s, Szabados, Varma, and V\\'{e}rtesi \\cite{ESVV94} proved that\\[2-O\\left(\\frac{(\\log n)^2}{n}\\right)\\leq \\min I\\leq 2-\\frac{2}{2n-1}\\]where the upper bound is witnessed by the roots of the integral of the Legendre polynomial as above.\n\n\n\n\nReferences\n\n\n[ESVV94] Erd\\H{o}s, P. and Szabados, J. and Varma, A. K. and V\\'{e}rtesi,\nP., On an interpolation theoretical extremal problem. Studia Sci. Math. Hungar. (1994), 55--60.\n\n[Fe32] Fej\\'{e}r, Leopold, Bestimmung derjenigen {A}bszissen eines {I}ntervalles, f\\\"ur\nwelche die {Q}uadratsumme der {G}rundfunktionen der\n{L}agrangeschen {I}nterpolation im {I}ntervalle ein\n{M}\\\"oglichst kleines {M}aximum {B}esitzt. Ann. Scuola Norm. Super. Pisa Cl. Sci. (2) (1932), 263--276.\n\n[Sz66] Szabados, J., On a problem of {P}. {E}rd\\H{o}s. Acta Math. Acad. Sci. Hungar. (1966), 155--157.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem studies optimal node placement for Lagrange interpolation. Fejér (1932) showed Legendre polynomial roots minimize the maximum of Σ|l_k(x)|². Erdős conjectured they also minimize the integral. Szabados (1966) disproved this for n > 3. The current best bounds are from Erdős-Szabados-Varma-Vértesi (1994).",
+    "problemStatement": "For x₁,...,xₙ ∈ [-1,1], the Lagrange basis polynomials l_k(x) satisfy l_k(x_k)=1 and l_k(x_j)=0 for j≠k. Find the minimum of I = ∫_{-1}^{1} Σ_k |l_k(x)|² dx. Is min I = 2 - (1+o(1))/n?",
+    "proofStrategy": "The problem remains OPEN. We formalize the Lagrange basis definition, the objective function, known bounds from ESVV94, Fejér's related result on maximum minimization, Szabados's disproof, and Erdős's conjecture. The gap between O((log n)²/n) and Θ(1/n) is the key open question.",
+    "keyInsights": [
+      "Lagrange basis polynomials form a partition of unity: Σ_k l_k(x) = 1",
+      "Fejér's optimal nodes (Legendre roots) minimize max but not integral",
+      "Szabados disproved Erdős's initial conjecture for n > 3",
+      "Current bounds: 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1)",
+      "Connection to Lebesgue constant and interpolation stability"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lagrange-basis",
+      "startLine": 43,
+      "endLine": 74,
+      "title": "Lagrange Basis Polynomials",
+      "summary": "Definition of node configurations and Lagrange basis polynomials l_k(x)"
+    },
+    {
+      "id": "basis-properties",
+      "startLine": 76,
+      "endLine": 100,
+      "title": "Properties of Lagrange Basis",
+      "summary": "Key properties: l_k(x_k)=1, l_k(x_j)=0, and partition of unity"
+    },
+    {
+      "id": "objective-function",
+      "startLine": 102,
+      "endLine": 118,
+      "title": "The Objective Function",
+      "summary": "Definition of I = ∫ Σ |l_k(x)|² dx"
+    },
+    {
+      "id": "known-bounds",
+      "startLine": 120,
+      "endLine": 147,
+      "title": "Known Bounds (ESVV94)",
+      "summary": "Lower and upper bounds from Erdős-Szabados-Varma-Vértesi (1994)"
+    },
+    {
+      "id": "fejer-theorem",
+      "startLine": 149,
+      "endLine": 167,
+      "title": "Fejér's Related Result",
+      "summary": "Legendre roots minimize max Σ |l_k(x)|² over [-1,1]"
+    },
+    {
+      "id": "szabados-disproof",
+      "startLine": 169,
+      "endLine": 185,
+      "title": "Szabados's Disproof",
+      "summary": "Legendre roots do NOT minimize the integral for n > 3"
+    },
+    {
+      "id": "conjecture",
+      "startLine": 187,
+      "endLine": 222,
+      "title": "The Main Conjecture",
+      "summary": "Erdős's conjecture: min I = 2 - (1+o(1))/n"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
-  }
+    "summary": "Erdős Problem #1131 asks for the minimum integral of squared Lagrange basis polynomials. Known bounds: 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1). The conjecture that min I = 2 - (1+o(1))/n remains OPEN.",
+    "implications": "Understanding optimal node placement has applications in numerical analysis, approximation theory, and computational methods. The gap between logarithmic and linear decay rates is fundamental.",
+    "openQuestions": [
+      "What is the exact asymptotic behavior of min I?",
+      "Can the lower bound be improved to match the upper bound?",
+      "What configuration achieves the minimum for specific n?"
+    ]
+  },
+  "references": [
+    {
+      "key": "Fe32",
+      "citation": "Fejér, L., Ann. Scuola Norm. Super. Pisa Cl. Sci. (2) (1932), 263-276."
+    },
+    {
+      "key": "Sz66",
+      "citation": "Szabados, J., On a problem of P. Erdős, Acta Math. Acad. Sci. Hungar. (1966), 155-157."
+    },
+    {
+      "key": "ESVV94",
+      "citation": "Erdős, P., Szabados, J., Varma, A. K., Vértesi, P., On an interpolation theoretical extremal problem, Studia Sci. Math. Hungar. (1994), 55-60."
+    }
+  ]
 }
