@@ -21,7 +21,41 @@
     "erdosNumber": 7,
     "erdosUrl": "https://erdosproblems.com/7",
     "erdosProblemStatus": "open",
-    "erdosPrizeValue": "$25 (Erdős) + $2000 (Selfridge)"
+    "erdosPrizeValue": "$25 (Erdős) + $2000 (Selfridge)",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.ModEq",
+        "description": "Modular equivalence for integers",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "Nat.lcm",
+        "description": "Least common multiple for moduli",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Odd",
+        "description": "Predicate for odd numbers",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "List.Nodup",
+        "description": "No duplicates for distinct moduli",
+        "module": "Mathlib.Data.List.Nodup"
+      }
+    ],
+    "originalContributions": [
+      "CongruenceClass structure for arithmetic progressions",
+      "CoveringSystem structure with coverage property",
+      "allOddModuli predicate for the main question",
+      "erdos_selfridge_conjecture and equivalent formulation",
+      "Proof of equivalence of two conjecture forms",
+      "Axiomatization of Balister et al. (2022) result",
+      "Axiomatization of Hough-Nielsen (2019) theorem",
+      "LCM constraint formalization",
+      "odd_covering_constraints combining all known constraints",
+      "selfridge_challenge definition for explicit construction"
+    ]
   },
   "overview": {
     "historicalContext": "This problem asks whether covering systems can avoid even moduli. A covering system is a finite collection of congruence classes that cover all integers. Erdős and Selfridge conjectured that at least one modulus must be even. Related to Problem #2 which bounded the minimum modulus.",
