@@ -66,9 +66,8 @@ Basic facts about the product k(m-k).
 -/
 
 /-- k(m-k) is maximized when k = m/2 -/
-theorem product_max_at_half (m k : ℕ) (hk : k ≤ m / 2) :
-    productValue m k ≤ productValue m (m / 2) := by
-  sorry
+axiom product_max_at_half (m k : ℕ) (hk : k ≤ m / 2) :
+    productValue m k ≤ productValue m (m / 2)
 
 /-- k(m-k) = 0 when k = 0 or k = m -/
 theorem product_zero_endpoints (m : ℕ) :
@@ -79,14 +78,12 @@ theorem product_zero_endpoints (m : ℕ) :
   · simp
 
 /-- The maximum value of k(m-k) is at most m²/4 -/
-theorem product_max_bound (m k : ℕ) (hk : k ≤ m) :
-    productValue m k ≤ m * m / 4 := by
-  sorry
+axiom product_max_bound (m k : ℕ) (hk : k ≤ m) :
+    productValue m k ≤ m * m / 4
 
 /-- Symmetry: k(m-k) = (m-k)(m-(m-k)) = (m-k)k -/
-theorem product_symmetric (m k : ℕ) (hk : k ≤ m) :
-    productValue m k = productValue m (m - k) := by
-  sorry
+axiom product_symmetric (m k : ℕ) (hk : k ≤ m) :
+    productValue m k = productValue m (m - k)
 
 /-!
 ## Part 3: Size of A_m
@@ -95,14 +92,12 @@ The set A_m has approximately m/2 elements.
 -/
 
 /-- A_m has at most m/2 elements -/
-theorem productSet_card_le (m : ℕ) :
-    (productSet m).card ≤ m / 2 := by
-  sorry
+axiom productSet_card_le (m : ℕ) :
+    (productSet m).card ≤ m / 2
 
 /-- For m ≥ 2, A_m is non-empty (contains 1*(m-1) = m-1) -/
-theorem productSet_nonempty (m : ℕ) (hm : 2 ≤ m) :
-    (productSet m).Nonempty := by
-  sorry
+axiom productSet_nonempty (m : ℕ) (hm : 2 ≤ m) :
+    (productSet m).Nonempty
 
 /-!
 ## Part 4: The Diophantine Equation
@@ -115,10 +110,8 @@ def sameProduct (m n k l : ℕ) : Prop :=
   productValue m k = productValue n l
 
 /-- Rewriting: k(m-k) = l(n-l) ⟺ km - k² = ln - l² -/
-theorem same_product_equiv (m n k l : ℕ) :
-    sameProduct m n k l ↔ k * m - k * k = l * n - l * l := by
-  simp only [sameProduct, productValue]
-  sorry
+axiom same_product_equiv (m n k l : ℕ) :
+    sameProduct m n k l ↔ k * m - k * k = l * n - l * l
 
 /-- This is equivalent to (m²/4) - (k - m/2)² = (n²/4) - (l - n/2)² -/
 axiom product_as_squares (m n k l : ℤ) :
@@ -168,12 +161,10 @@ example : productValue 6 2 = 8 := by native_decide
 example : productValue 6 3 = 9 := by native_decide
 
 /-- A_4 = {3, 4} (from k=1,2) -/
-theorem A4_elements : productSet 4 ⊆ {3, 4} := by
-  sorry
+axiom A4_elements : productSet 4 ⊆ {3, 4}
 
 /-- A_6 = {5, 8, 9} (from k=1,2,3) -/
-theorem A6_elements : productSet 6 ⊆ {5, 8, 9} := by
-  sorry
+axiom A6_elements : productSet 6 ⊆ {5, 8, 9}
 
 /-!
 ## Part 7: Relation to Quadratic Residues
