@@ -1,33 +1,81 @@
 {
   "id": "erdos-664",
-  "title": "Erdős Problem #664",
+  "title": "Erdős Problem #664: Blocking Sets with Bounded Intersection",
   "slug": "erdos-664",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be some constant and ... be such that ... for all ... and ... for all ....\n\nMust there exist some set ... such that ....",
+  "description": "For set families with |Aᵢ| > c√n and pairwise |Aᵢ ∩ Aⱼ| ≤ 1, must a blocker exist with O(1) intersection? DISPROVED by Alon using projective plane constructions.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1981), Alon (disproof)",
     "sourceUrl": "https://erdosproblems.com/664",
-    "date": "",
-    "status": "pending",
+    "date": "1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos664Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "blocking-sets",
+      "projective-planes",
+      "finite-geometry",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 664,
     "erdosUrl": "https://erdosproblems.com/664",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for size bounds",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for intersection bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "SetFamily: indexed collection of finite sets",
+      "AllLargerThan: sets of size > c√n",
+      "PairwiseSmallIntersection: |Aᵢ ∩ Aⱼ| ≤ 1",
+      "NearLinearFamily: structure combining conditions",
+      "IsBlocker, HasBoundedIntersection, IsGoodBlocker",
+      "ErdosQuestion664: formal problem statement",
+      "alon_disproof axiom: the answer is NO",
+      "projectivePlaneOrder, projective_plane_exists",
+      "alon_construction axiom: explicit counterexample",
+      "IsBalancedBlockDesign: original weaker formulation",
+      "ErdosQuestion664_Original: balanced design version (open)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #664 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c<1$ be some constant and $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ be such that $\\lvert A_i\\rvert >c\\sqrt{n}$ for all $i$ and $\\lvert A_i\\cap A_j\\rvert\\leq 1$ for all $i\\neq j$.\n\nMust there exist some set $B$ such that $B\\cap A_i\\neq \\emptyset$ and $\\lvert B\\cap A_i\\rvert \\ll_c 1$ for all $i$?\n\n\n\nThis would imply in particular that in a finite geometry there is always a blocking set which meets every line in $O(1)$ many points.\n\nIn \\cite{Er81} the condition $\\lvert A_i\\cap A_j\\rvert\\leq 1$ for all $i\\neq j$ is replaced by every two points in $\\{1,\\ldots,n\\}$ being contained in exactly one $A_i$, that is, $A_1,\\ldots,A_m$ is a pairwise balanced block design (and the condition $c<1$ is omitted).\n\nAlon has proved that the answer is no: if $q$ is a large prime power and $n=m=q^2+q+1$ then there exist $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that $\\lvert A_i\\rvert \\geq \\tfrac{2}{5}\\sqrt{n}$ for all $i$ and $\\lvert A_i\\cap A_j\\rvert\\leq 1$ for all $i\\neq j$, and yet if $B$ has non-empty intersection with all $A_i$ then there exists $A_j$ such that $\\lvert B\\cap A_j\\rvert \\gg \\log n$. (The construction is to take random subsets of the lines of a projective plane.)\n\nThe weaker version that Erd\\H{o}s posed in \\cite{Er81} remains open, although Alon conjectures the answer there to also be no.\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #664 (Blocking Sets with Bounded Intersection)**\n\n**Origin:**\nErdős posed this problem in [Er81] (1981), asking whether near-linear set families (large sets with small pairwise intersection) always admit 'nice' blocking sets that intersect each set in O(1) points.\n\n**Motivation:**\nThis relates to blocking sets in finite geometries: can we find a blocking set (meeting every line) that doesn't concentrate on any single line?\n\n**Resolution:**\nNils Alon disproved the conjecture using a probabilistic construction based on projective planes. For n = q² + q + 1, random subsets of projective plane lines give families where any blocker must have logarithmically large intersection with some set.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet c < 1 and A₁,...,Aₘ ⊆ {1,...,n} with |Aᵢ| > c√n and |Aᵢ ∩ Aⱼ| ≤ 1 for i ≠ j.\n\nMust there exist B such that B ∩ Aᵢ ≠ ∅ and |B ∩ Aᵢ| = O_c(1) for all i?\n\n**Answer: NO**\n\n**Alon's Counterexample:**\nFor n = m = q² + q + 1 (q large prime), random subsets of projective plane lines give:\n- |Aᵢ| ≥ (2/5)√n\n- |Aᵢ ∩ Aⱼ| ≤ 1\n- Any blocker has |B ∩ Aⱼ| ≥ Ω(log n) for some j",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Set Families:** SetFamily, familySizes, AllLargerThan\n\n2. **Intersection:** PairwiseSmallIntersection, NearLinearFamily\n\n3. **Blocking:** IsBlocker, HasBoundedIntersection, IsGoodBlocker\n\n4. **The Question:** ErdosQuestion664 (O(1)-blockers exist?)\n\n5. **Disproof:** alon_disproof axiom\n\n6. **Construction:** Projective plane parameters, alon_construction\n\n7. **Original Version:** IsBalancedBlockDesign (still open)",
+    "keyInsights": [
+      "**Near-Linear Families:** Sets > c√n with ≤1 pairwise intersection",
+      "**Blocking Sets:** Transversals meeting each set",
+      "**Projective Planes:** PG(2,q) has q²+q+1 points and lines",
+      "**Random Thinning:** Probabilistic construction preserves properties",
+      "**Logarithmic Barrier:** Any blocker has Ω(log n) intersection somewhere"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #664 asked whether near-linear set families (|Aᵢ| > c√n, pairwise intersection ≤ 1) always admit blocking sets with O(1) intersection. Alon disproved this using projective plane constructions: for n = q² + q + 1, any blocker must have Ω(log n) intersection with some set. The original balanced block design version remains open.",
+    "implications": "**Connections**\n\n1. **Finite Geometry:** Blocking sets in projective planes\n\n2. **Probabilistic Method:** Random subset construction\n\n3. **Hypergraph Theory:** Near-linear hypergraphs\n\n4. **Set Cover:** Transversal and hitting set problems",
+    "openQuestions": [
+      "Is the balanced block design version also false?",
+      "What is the exact threshold for the logarithmic lower bound?",
+      "Does the construction extend to other combinatorial structures?",
+      "What is the minimum blocker size for general near-linear families?"
+    ]
   }
 }
