@@ -1,1 +1,121 @@
-[]
+[
+  {
+    "id": "ann-e1111-header",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #1111: Anticomplete High-Chromatic Subgraphs**\n\nTwo vertex sets A, B are **anticomplete** if they are disjoint and share no edges.\n\n**Conjecture:** For t, c >= 1, there exists d = d(t, c) such that any graph G with chi(G) >= d and omega(G) < t contains anticomplete sets A, B with chi(A) >= chi(B) >= c.\n\n**Known values:** d(2,2)=2, d(3,2)=4, d(4,2)=5\n\n**Status: OPEN** - General d(t, c) unknown.",
+    "mathContext": "This problem explores what substructure high chromatic number forces when clique number is bounded. It connects to chi-boundedness and Ramsey theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Chromatic number", "Clique number", "Anticomplete sets", "Graph coloring"]
+  },
+  {
+    "id": "ann-e1111-anticomplete",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "Anticomplete Sets",
+    "content": "**IsAnticomplete G A B:**\n\nTwo vertex sets A, B in graph G are anticomplete if:\n1. A and B are disjoint (A cap B = emptyset)\n2. No edges exist between A and B (forall a in A, b in B: not G.Adj a b)\n\nThis is stronger than just disjoint - the sets must have no interaction at all.",
+    "mathContext": "Anticomplete sets partition into independent components. Finding such sets with high chromatic number shows the graph has rich internal structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Disjoint sets", "Graph adjacency", "Independent sets"]
+  },
+  {
+    "id": "ann-e1111-chromatic-clique",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 52, "endLine": 64 },
+    "type": "definition",
+    "title": "Chromatic and Clique Numbers",
+    "content": "**inducedChromaticNumber G S = chi(G[S]):**\nChromatic number of the induced subgraph on vertex set S.\n\n**cliqueNumber G = omega(G):**\nMaximum clique size in G (largest complete subgraph).\n\nThe problem concerns graphs with high chi but low omega - these must have complex structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph coloring", "Clique", "Induced subgraph"]
+  },
+  {
+    "id": "ann-e1111-property",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "definition",
+    "title": "The El Zahar-Erdos Property",
+    "content": "**HasElZaharErdosProperty t c d:**\n\nA graph G has the (t, c, d) property if:\n- chi(G) >= d and omega(G) < t implies\n- There exist anticomplete A, B with chi(A) >= c and chi(B) >= c\n\nThe conjecture asserts this property holds for all t, c >= 1 with some d.",
+    "mathContext": "This defines when a chromatic threshold d is sufficient to guarantee anticomplete high-chromatic substructures given clique bound t and chromatic target c.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph property", "Chromatic threshold"]
+  },
+  {
+    "id": "ann-e1111-d-func",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 81, "endLine": 93 },
+    "type": "definition",
+    "title": "The Function d(t, c)",
+    "content": "**d_func t c = d(t, c):**\n\nThe minimal d such that HasElZaharErdosProperty t c d holds.\n\n**ElZaharErdosConjecture:**\nFor all t, c >= 1, d(t, c) exists (is finite).\n\nDetermining the exact function d(t, c) is the open problem.",
+    "mathContext": "The existence of d(t, c) follows from various results, but computing exact values is hard. Only small cases are known precisely.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal function", "Minimality"]
+  },
+  {
+    "id": "ann-e1111-small-cases",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 95, "endLine": 115 },
+    "type": "theorem",
+    "title": "Known Small Cases",
+    "content": "**Exact values:**\n- d(2, 2) = 2: Triangle-free graphs with chi >= 2 work\n- d(3, 2) = 4: K3-free graphs need chi >= 4\n- d(4, 2) = 5: K4-free graphs need chi >= 5\n\nThese are the only exactly determined values of d(t, c).",
+    "mathContext": "Small cases can be verified by case analysis. The jump from d(3,2)=4 to d(4,2)=5 shows the function is not simply linear in t.",
+    "significance": "key",
+    "relatedConcepts": ["Triangle-free graphs", "Exact computation"]
+  },
+  {
+    "id": "ann-e1111-wagon",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 117, "endLine": 133 },
+    "type": "axiom",
+    "title": "Wagon's Upper Bound (1980)",
+    "content": "**wagon_1980:**\nd(t, 2) <= C(t, 2) + 1 = t(t-1)/2 + 1\n\n**wagon_recursive:**\nd(t+1, 2) <= d(t, 2) + t\n\nThese bounds show d(t, 2) grows at most quadratically in t.",
+    "mathContext": "Wagon's 1980 paper established the first general upper bounds. The recursive formulation is useful for inductive arguments.",
+    "significance": "key",
+    "relatedConcepts": ["Binomial coefficient", "Upper bound", "Recursive bound"]
+  },
+  {
+    "id": "ann-e1111-reduction",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 139, "endLine": 145 },
+    "type": "axiom",
+    "title": "Reduction to t <= c",
+    "content": "**reduction_to_t_le_c:**\n\nEl Zahar and Erdos showed: To prove the conjecture for all t, c, it suffices to prove it when t <= c.\n\nThis reduces the infinite problem to a more tractable family of cases.",
+    "mathContext": "When t > c, one can use the result for (c, c) and deduce the general case. This is a standard reduction technique in extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": ["Problem reduction", "Sufficient condition"]
+  },
+  {
+    "id": "ann-e1111-c3-bounds",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 147, "endLine": 159 },
+    "type": "axiom",
+    "title": "Bounds for c = 3",
+    "content": "**d_3_3_bound:** d(3, 3) <= 8\n\n**el_zahar_erdos_c3_bound:**\nFor t > 3: d(t, 3) <= 2*C(t-1, 3) + 7*C(t-1, 2) + t\n\nThe c = 3 case is the next frontier after c = 2.",
+    "mathContext": "El Zahar and Erdos (1985) established these bounds. The exact value of d(3, 3) is unknown - could be anywhere from 5 to 8.",
+    "significance": "key",
+    "relatedConcepts": ["Cubic bound", "Polynomial growth"]
+  },
+  {
+    "id": "ann-e1111-nss",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 161, "endLine": 182 },
+    "type": "axiom",
+    "title": "Nguyen-Scott-Seymour (2024)",
+    "content": "**HasNSSProperty t c d:**\nStrengthening where additionally the minimum degree in G[A] is at least c.\n\n**nguyen_scott_seymour_2024:**\nFor all t, c >= 1, the NSS property holds for some d.\n\nThis 2024 result strengthens the existence claim with a minimum degree constraint.",
+    "mathContext": "The NSS result shows not only do anticomplete high-chi sets exist, but one can additionally require good degree properties. This is a significant structural strengthening.",
+    "significance": "key",
+    "relatedConcepts": ["Minimum degree", "Structural strengthening", "2024 result"]
+  },
+  {
+    "id": "ann-e1111-summary",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 224, "endLine": 272 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**Erdos Problem #1111: OPEN**\n\n**Known:**\n- Exact values: d(2,2)=2, d(3,2)=4, d(4,2)=5\n- Upper bounds: d(t,2) <= C(t,2)+1, d(3,3) <= 8\n- Existence: NSS 2024 proves existence with degree constraint\n\n**Open:** Determine d(t, c) for general t, c.\n\n**Note:** Cannot be resolved by finite computation - requires infinite analysis.",
+    "mathContext": "The problem sits at the intersection of chromatic number theory, Ramsey theory, and chi-boundedness. Progress requires new structural insights.",
+    "significance": "critical"
+  }
+]
