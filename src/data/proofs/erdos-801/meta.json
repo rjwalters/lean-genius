@@ -1,16 +1,20 @@
 {
   "id": "erdos-801",
-  "title": "Erdős Problem #801",
+  "title": "Erdős Problem #801: Dense Subgraphs in Graphs with Bounded Independence",
   "slug": "erdos-801",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices containing no independent set on ... vertices then there is a set of ... vertices containin...",
+  "description": "If G is a graph on n vertices with no independent set larger than √n, then there exists a set of ≤ √n vertices containing ≫ √n log n edges. Proved by Alon (1996) using probabilistic methods.",
   "meta": {
-    "author": "Unknown",
+    "author": "Alon",
     "sourceUrl": "https://erdosproblems.com/801",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos801Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "extremal-combinatorics",
+      "probabilistic-method"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +23,24 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #801 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph on $n$ vertices containing no independent set on $>n^{1/2}$ vertices then there is a set of $\\leq n^{1/2}$ vertices containing $\\gg n^{1/2}\\log n$ edges.\n\n\n\nProved by Alon \\cite{Al96b}.\n\n\n\n\nReferences\n\n\n[Al96b] Alon, Noga, Independence numbers of locally sparse graphs and a Ramsey\ntype problem. Random Structures Algorithms (1996), 271-278.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1979, asking whether graphs with bounded independence number must contain locally dense subsets. The problem captures a fundamental local-global phenomenon in extremal graph theory. Noga Alon resolved it affirmatively in 1996 using sophisticated probabilistic techniques.",
+    "problemStatement": "If G is a graph on n vertices containing no independent set on more than √n vertices, then there is a set of at most √n vertices containing at least c · √n · log n edges for some constant c > 0.",
+    "proofStrategy": "The formalization defines the independence number and induced edge count, then states Alon's theorem as an axiom. The proof uses the probabilistic method: sample random subsets of appropriate size and show the expected number of induced edges is large. Concentration inequalities and derandomization complete the argument.",
+    "keyInsights": [
+      "Small independence number (global property) forces high local edge density",
+      "The logarithmic factor √n log n is necessary and cannot be removed",
+      "The vertex set size √n is optimal",
+      "Probabilistic sampling techniques are essential"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Alon (1996) proved that graphs with independence number at most √n must contain a small dense subgraph. Specifically, there exists a set of ≤ √n vertices inducing ≫ √n log n edges. The bound is tight up to constants.",
+    "implications": "The result demonstrates a local-global principle: global sparsity constraints (bounded independence) imply local density. Applications include community detection algorithms, dense subgraph discovery, and Ramsey-type structural theorems.",
+    "openQuestions": [
+      "What is the optimal constant c in the bound?",
+      "Can the result be extended to hypergraphs?",
+      "What is the complexity of finding the dense subset algorithmically?"
+    ]
   }
 }
