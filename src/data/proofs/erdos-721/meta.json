@@ -16,11 +16,44 @@
       "arithmetic-progressions",
       "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 721,
     "erdosUrl": "https://erdosproblems.com/721",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2025-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp",
+        "description": "Real exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "W: Van der Waerden number axiom",
+      "W_exists, W_increasing: Basic properties",
+      "W_known_values: Small known values",
+      "graham_conjecture: Definition and its falsity",
+      "green_lower_bound: Superpolynomial lower bound",
+      "hunter_lower_bound: Improved exponent 2 lower bound",
+      "W_superpolynomial: Theorem for superpolynomial growth",
+      "schoen_upper_bound: First subexponential bound",
+      "bloom_sisask_upper_bound: Current best bound",
+      "exact_growth_conjecture: Open growth rate question",
+      "erdos_721_status: Main status theorem",
+      "W_bounds_summary: Combined bounds"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1980-81, asking for bounds on W(3,k). Graham famously conjectured W(3,k) ≪ k², but this polynomial bound was spectacularly disproved by Green in 2022 who showed superpolynomial growth. The problem was fully resolved through a sequence of breakthroughs: Green's lower bound (2022), Hunter's improvement (2022), Schoen's subexponential upper bound (2021), and the Kelley-Meka/Bloom-Sisask advances (2023).",
