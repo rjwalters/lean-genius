@@ -1,33 +1,81 @@
 {
   "id": "erdos-539",
-  "title": "Erdős Problem #539",
+  "title": "Erdős Problem #539: GCD-Reduced Quotients",
   "slug": "erdos-539",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that, for any set ... of size ..., the set\\[\\left\\{ {(a,b)}: a,b\\in A\\right\\}\\]has size at least .... Estimat...",
+  "description": "For A ⊆ ℕ of size n, what is the minimum size of { a/gcd(a,b) : a,b ∈ A }? Bounds: n^{1/2} ≪ h(n) ≪ n^{2/3}. Exact behavior unknown.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Szemerédi (1973), Freiman-Lev (improvement)",
     "sourceUrl": "https://erdosproblems.com/539",
-    "date": "",
-    "status": "pending",
+    "date": "1973",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos539Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "combinatorics",
+      "additive-combinatorics",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 539,
     "erdosUrl": "https://erdosproblems.com/539",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.div_mul_cancel",
+        "description": "Division by divisor",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "gcdQuotient: a / gcd(a,b) function",
+      "gcdQuotient_pos, gcdQuotient_is_nat, gcdQuotient_self: properties",
+      "gcdQuotientSet, gcdQuotientSize: quotient set and its size",
+      "h: minimum quotient set size function",
+      "quotient_set_nonempty, one_in_quotient_set: basic properties",
+      "erdos_szemeredi_lower axiom: n^{1/2} lower bound",
+      "erdos_szemeredi_upper axiom: n^{1-c} upper bound",
+      "freiman_lev_upper axiom: n^{2/3} improved bound",
+      "arithmeticProgression, geometricProgression: examples",
+      "gcdMatrix, quotientMatrix: matrix formulations",
+      "ErdosSzemeredi_Bounds, ImprovedBounds: combined statements"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #539 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be such that, for any set $A\\subseteq \\mathbb{N}$ of size $n$, the set\\[\\left\\{ \\frac{a}{(a,b)}: a,b\\in A\\right\\}\\]has size at least $h(n)$. Estimate $h(n)$.\n\n\n\nErd\\H{o}s and Szemer\\'{e}di proved that\\[n^{1/2} \\ll h(n) \\ll n^{1-c}\\]for some constant $c>0$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #539 (GCD-Reduced Quotients)**\n\n**Origin:**\nErdős posed this problem in [Er73] (1973), asking about the minimum size of the set { a/gcd(a,b) : a,b ∈ A } over all n-element sets A ⊆ ℕ.\n\n**Key Results:**\n- Erdős-Szemerédi established: n^{1/2} ≪ h(n) ≪ n^{1-c}\n- Freiman-Lev improved the upper bound to n^{2/3}\n- Granville-Roesler provided a geometric reformulation\n\n**Current Status:**\nThe exact behavior of h(n) remains unknown. The true exponent lies between 1/2 and 2/3.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet h(n) be such that for any set A ⊆ ℕ of size n, the set\n{ a / gcd(a,b) : a, b ∈ A }\nhas size at least h(n). Estimate h(n).\n\n**Known Bounds:**\n- Lower: h(n) ≫ n^{1/2} (Erdős-Szemerédi)\n- Upper: h(n) ≪ n^{2/3} (Freiman-Lev)\n\nThe gap between 1/2 and 2/3 remains open.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **GCD Quotient:** gcdQuotient a b = a / gcd(a,b)\n\n2. **Quotient Set:** gcdQuotientSet A = { gcdQuotient a b : a,b ∈ A }\n\n3. **The Function:** h(n) = infimum of quotient set sizes\n\n4. **Lower Bound:** erdos_szemeredi_lower (n^{1/2})\n\n5. **Upper Bounds:** erdos_szemeredi_upper (n^{1-c}), freiman_lev_upper (n^{2/3})\n\n6. **Examples:** APs and GPs have specific quotient set sizes\n\n7. **Geometric View:** Granville-Roesler reformulation",
+    "keyInsights": [
+      "**GCD Structure:** a/gcd(a,b) extracts coprime part",
+      "**Always Contains 1:** gcdQuotient a a = 1",
+      "**Lower Bound:** Pigeonhole on divisibility classes",
+      "**Upper Bound:** Constructions with structured sets",
+      "**Gap:** True exponent between 1/2 and 2/3 unknown"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #539 asks for the minimum size of { a/gcd(a,b) : a,b ∈ A } over n-element sets. Erdős-Szemerédi proved n^{1/2} ≪ h(n) ≪ n^{1-c}, and Freiman-Lev improved the upper bound to n^{2/3}. The exact exponent remains unknown.",
+    "implications": "**Connections**\n\n1. **Additive Combinatorics:** GCD structure relates to sum-product phenomena\n\n2. **Divisibility:** Quotients encode divisibility relationships\n\n3. **Geometric Interpretation:** Granville-Roesler's lattice point view\n\n4. **Extremal Sets:** Special structure needed for small quotient sets",
+    "openQuestions": [
+      "What is the true exponent α in h(n) = Θ(n^α)?",
+      "Is h(n) closer to n^{1/2} or n^{2/3}?",
+      "What is the structure of extremal sets?",
+      "Can the lower bound be improved?"
+    ]
   }
 }

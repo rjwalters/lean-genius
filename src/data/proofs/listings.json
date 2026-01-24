@@ -9008,17 +9008,24 @@
   },
   {
     "id": "erdos-539",
-    "title": "Erdős Problem #539",
+    "title": "Erdős Problem #539: GCD-Reduced Quotients",
     "slug": "erdos-539",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that, for any set ... of size ..., the set\\[\\left\\{ {(a,b)}: a,b\\in A\\right\\}\\]has size at least .... Estimat...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For A ⊆ ℕ of size n, what is the minimum size of { a/gcd(a,b) : a,b ∈ A }? Bounds: n^{1/2} ≪ h(n) ≪ n^{2/3}. Exact behavior unknown.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "combinatorics",
+      "additive-combinatorics",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 539,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 19
   },
   {
     "id": "erdos-540",
