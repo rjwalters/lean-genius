@@ -1,0 +1,101 @@
+[
+  {
+    "id": "def-turan-threshold",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "definition",
+    "title": "Turán Threshold",
+    "content": "turanThreshold(n) = n²/4 is the maximum edges without a triangle. Graphs above this threshold must contain triangles (Turán's theorem).",
+    "significance": "major"
+  },
+  {
+    "id": "def-triangle",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 67, "endLine": 77 },
+    "type": "definition",
+    "title": "Triangle Structure",
+    "content": "A triangle in G consists of three distinct vertices v1, v2, v3 that are pairwise adjacent.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-triangle-degree-sum",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "definition",
+    "title": "Triangle Degree Sum",
+    "content": "triangleDegreeSum(G, T) = deg(v1) + deg(v2) + deg(v3) for a triangle T = {v1, v2, v3}.",
+    "significance": "major"
+  },
+  {
+    "id": "def-h-function",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 99, "endLine": 112 },
+    "type": "definition",
+    "title": "Function h(n)",
+    "content": "h(n) = max k such that every graph on n vertices with > n²/4 edges has a triangle with degree sum ≥ k.",
+    "significance": "major"
+  },
+  {
+    "id": "def-erdos-laskar-constant",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 125, "endLine": 130 },
+    "type": "definition",
+    "title": "Erdős-Laskar Constant",
+    "content": "2(√3 - 1) ≈ 1.464 is the conjectured asymptotic coefficient for h(n)/n.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-laskar-upper",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 138, "endLine": 148 },
+    "type": "theorem",
+    "title": "Erdős-Laskar Upper Bound (1985)",
+    "content": "h(n) ≤ 2(√3-1)n. There exist graphs above Turán threshold where all triangles have degree sum at most this.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-fan-lower",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 174, "endLine": 183 },
+    "type": "theorem",
+    "title": "Fan's Lower Bound (1988)",
+    "content": "h(n) ≥ (21/16)n = 1.3125n. Improved the original Erdős-Laskar lower bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-current-bounds",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 185, "endLine": 190 },
+    "type": "theorem",
+    "title": "Current Bounds",
+    "content": "(21/16)n ≤ h(n) ≤ 2(√3-1)n. The gap is about 0.15n.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-main",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 216, "endLine": 224 },
+    "type": "conjecture",
+    "title": "Main Conjecture",
+    "content": "h(n) ≥ (2(√3-1) - o(1))n. If true, the upper bound is tight and h(n)/n → 2(√3-1).",
+    "significance": "major"
+  },
+  {
+    "id": "def-extremal",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 278, "endLine": 287 },
+    "type": "definition",
+    "title": "Extremal Graphs",
+    "content": "An extremal graph achieves h(n): it's above Turán threshold but all triangles have degree sum ≤ h(n).",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 328, "endLine": 356 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "OPEN - The gap between 1.3125n and 1.464n remains. Graphs just above Turán threshold must have triangles with high degree sum, but exact value unknown.",
+    "significance": "major"
+  }
+]
