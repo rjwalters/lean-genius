@@ -1,33 +1,86 @@
 {
   "id": "erdos-277",
-  "title": "Erdős Problem #277",
+  "title": "Erdős Problem #277: Covering Systems and Abundancy",
   "slug": "erdos-277",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there exists an ... such that ... but there is no covering system whose moduli all divide ......",
+  "description": "For every c > 0, does there exist n with σ(n) > cn but no covering system has all moduli dividing n? SOLVED: YES (Haight 1979).",
   "meta": {
-    "author": "Unknown",
+    "author": "Haight (1979 solution)",
     "sourceUrl": "https://erdosproblems.com/277",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos277Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "sum-of-divisors",
+      "congruences",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 277,
     "erdosUrl": "https://erdosproblems.com/277",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums for sigma function",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for abundancy ratio",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sigma: sum of divisors function σ(n)",
+      "abundancyRatio: σ(n)/n for measuring abundancy",
+      "IsAbundant: σ(n) > cn predicate",
+      "Congruence: structure for a (mod m)",
+      "IsCoveringSystem: congruences covering all integers",
+      "AllModuliDivide: all moduli divide n",
+      "HasCoveringWithDivisorModuli: formal covering property",
+      "ErdosQuestion277: formal problem statement",
+      "haight_theorem axiom: main YES answer",
+      "trivialCovering: the 0 (mod 1) covering",
+      "HasDistinctModuli, IsNonTrivialCovering: refinements",
+      "haight_strong_theorem axiom: non-trivial version",
+      "reciprocalSum: ∑ 1/m_i for coverings",
+      "covering_reciprocal_bound axiom: ∑ 1/m_i ≥ 1",
+      "coveringLCM: lcm of covering moduli",
+      "IsHighlyComposite, IsSuperabundant: related concepts"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #277 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $c$, there exists an $n$ such that $\\sigma(n)>cn$ but there is no covering system whose moduli all divide $n$?\n\n\n\nThis was answered affirmatively by Haight \\cite{Ha79}.\n\n\n\n\nReferences\n\n\n[Ha79] Haight, J. A., Covering systems of congruences, a negative result. Mathematika (1979), 53--61.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #277 (Covering Systems and Abundancy)**\n\n**The Question:** For every c > 0, can we find n such that σ(n) > cn (highly abundant) but no covering system has all its moduli dividing n?\n\n**Background:**\n- **σ(n)** = sum of divisors of n (e.g., σ(12) = 1+2+3+4+6+12 = 28)\n- **Abundancy** σ(n)/n measures how \"rich in divisors\" n is\n- **Covering system**: congruences like 0 (mod 2), 0 (mod 3), 1 (mod 4), ... that cover all integers\n\n**Key Tension:**\nHigh abundancy requires many small divisors. But covering systems with small moduli face constraints (reciprocal sum ≥ 1). Haight showed these constraints are incompatible for certain n.\n\n**Haight's Resolution (1979):**\nProved the answer is YES: for every c, such n exists. The key insight is structural: having many divisors doesn't guarantee they can form a covering system.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs it true that, for every c > 0, there exists n such that:\n- σ(n) > cn (the number has large divisor sum)\n- No covering system has all moduli dividing n\n\n**Answer: YES** (Haight 1979)\n\nThe intuition suggests abundant numbers should be easier to cover (more divisors = more possible moduli), but Haight showed this fails: structure matters more than count.\n\n**Key constraint:** A covering system with distinct moduli must satisfy ∑ 1/m_i ≥ 1.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sum of Divisors:** Define σ(n) = ∑_{d|n} d using Mathlib's divisors\n\n2. **Abundancy:** Define IsAbundant(n, c) as σ(n) > cn\n\n3. **Covering Systems:** Formalize as finite sets of congruences covering ℤ\n\n4. **The Question:** ErdosQuestion277 asks if such n always exist\n\n5. **Haight's Theorem:** Axiomatize the main result\n\n6. **Refinements:** Handle trivial coverings, reciprocal sum bounds\n\n7. **Connections:** Link to highly composite and superabundant numbers",
+    "keyInsights": [
+      "**Abundancy ≠ Coverability:** Large σ(n)/n doesn't imply covering feasibility",
+      "**Trivial Covering:** 0 (mod 1) covers everything, so we need non-trivial coverings",
+      "**Reciprocal Sum:** ∑ 1/m_i ≥ 1 is necessary for covering",
+      "**Structural Obstruction:** Haight found n with incompatible divisor structure",
+      "**Related to #276, #278:** Part of Erdős's covering system investigations"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #277 asked whether highly abundant numbers (large σ(n)/n) can still be \"uncoverable\" - having no covering system with all moduli as divisors. Haight (1979) proved YES: for every abundancy threshold c, such numbers exist. This reveals a fundamental disconnect between divisor count and covering system structure.",
+    "implications": "**Number Theory Insights**\n\n1. **Divisor Structure:** The pattern of divisors matters, not just their sum\n\n2. **Covering Systems:** Highly constrained by reciprocal sum and Chinese Remainder Theorem\n\n3. **Superabundant Numbers:** Related to Haight's constructions\n\n4. **Computational:** Finding explicit examples for given c is non-trivial",
+    "openQuestions": [
+      "What is the growth rate of minimal uncoverable n for given c?",
+      "Can we characterize all uncoverable numbers?",
+      "Connections to practical covering system constructions?",
+      "Higher-dimensional analogues?"
+    ]
   }
 }
