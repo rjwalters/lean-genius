@@ -1,0 +1,17 @@
+{
+  "problem_number": 785,
+  "title": "Exact Additive Complements",
+  "status": "solved",
+  "solvers": ["Sárközy-Szemerédi (1994)"],
+  "source_url": "https://erdosproblems.com/785",
+  "overview": "For infinite A, B ⊆ ℕ with A+B covering all large integers and A(x)B(x) ~ x ('exact' complements), does A(x)B(x) - x → ∞?",
+  "sections": [],
+  "conclusion": "YES - Sárközy-Szemerédi (1994) proved A(x)B(x) - x → ∞ for exact additive complements. Ruzsa (2017) showed the growth can be arbitrarily slow. Danzer (1964) proved such pairs exist.",
+  "references": [
+    "Danzer (1964) - Exact additive complements exist",
+    "Sárközy-Szemerédi (1994) - Main result: A(x)B(x) - x → ∞",
+    "Ruzsa (2017) - Growth rate can be any w(x) → ∞"
+  ],
+  "related_problems": [784, 786],
+  "tags": ["additive-combinatorics", "sumsets", "complement-sets", "solved"]
+}
