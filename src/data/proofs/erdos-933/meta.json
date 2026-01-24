@@ -1,33 +1,82 @@
 {
   "id": "erdos-933",
-  "title": "Erdős Problem #933",
+  "title": "Erdős Problem #933: Smooth Part of Consecutive Products",
   "slug": "erdos-933",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ..., where ..., then is it true that\\[\\limsup_{n\\to \\infty} {n\\log n}=\\infty?\\]\n\n\n\nMahler proved (a more general result th...",
+  "description": "For n(n+1) = 2^k · 3^l · m with gcd(m,6)=1, is limsup 2^k 3^l / (n log n) = ∞? SOLVED: YES. Steinerberger's proof uses n = 2^{3^r}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1976), Steinerberger",
     "sourceUrl": "https://erdosproblems.com/933",
-    "date": "",
-    "status": "pending",
+    "date": "1976",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos933Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "consecutive-integers",
+      "factorization",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 933,
     "erdosUrl": "https://erdosproblems.com/933",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation for lifting the exponent",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      }
+    ],
+    "originalContributions": [
+      "power2, power3: largest powers of 2, 3 dividing n",
+      "smoothPart23: the {2,3}-smooth part of n",
+      "consecutiveSmoothPart: smooth part of n(n+1)",
+      "smoothRatio: the ratio 2^k 3^l / (n log n)",
+      "ErdosQuestion933: formal problem statement",
+      "mahler_upper_bound axiom: 2^k 3^l < n^{1+o(1)}",
+      "erdos_lower_bound axiom: infinitely often > n log n",
+      "steinerbergerN: n = 2^{3^r} construction",
+      "steinerberger_divisibility axiom: 3^{r+1} | 2^{3^r} + 1",
+      "lifting_the_exponent axiom: LTE lemma",
+      "consecutive_coprime: n and n+1 coprime",
+      "steinerberger_proof axiom: main result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #933 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $n(n+1)=2^k3^lm$, where $(m,6)=1$, then is it true that\\[\\limsup_{n\\to \\infty} \\frac{2^k3^l}{n\\log n}=\\infty?\\]\n\n\n\nMahler proved (a more general result that implies in particular) that\\[2^k3^l<n^{1+o(1)}.\\]Erd\\H{o}s \\cite{Er76d} wrote 'it is easy to see' that for infinitely many $n$\\[2^k3^l>n\\log n.\\]Steinerberger has noted a simple proof of this fact follows from taking $n=2^{3^r}$ for any integer $r\\geq 1$, when $k=3^r$ and $l=r+1$.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #933 (Smooth Part of Consecutive Products)**\n\n**The Setup:**\nWrite n(n+1) = 2^k · 3^l · m where gcd(m, 6) = 1. The question is about how large the {2,3}-smooth part 2^k · 3^l can be compared to n log n.\n\n**Key Results:**\n- Mahler (upper): 2^k · 3^l < n^{1+o(1)} from S-unit equation theory\n- Erdős (lower): For infinitely many n, 2^k · 3^l > n log n\n\n**Steinerberger's Simple Proof:**\nTake n = 2^{3^r}. Then n+1 = 2^{3^r} + 1 is divisible by 3^{r+1} (Lifting the Exponent Lemma). So k = 3^r, l ≥ r+1, and the ratio grows without bound.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIf n(n+1) = 2^k · 3^l · m where gcd(m, 6) = 1, is it true that:\n\n$$\\limsup_{n \\to \\infty} \\frac{2^k 3^l}{n \\log n} = \\infty?$$\n\n**Answer: YES**\n\n**Steinerberger's Proof:**\nFor n = 2^{3^r} (r ≥ 1):\n- k = 3^r (n is a power of 2)\n- l = r + 1 (by LTE, 3^{r+1} | 2^{3^r} + 1)\n- Ratio = 3^{r+1} / log n → ∞",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Smooth Parts:** Define power2, power3, smoothPart23\n\n2. **Consecutive Products:** consecutiveSmoothPart for n(n+1)\n\n3. **The Ratio:** smoothRatio = 2^k 3^l / (n log n)\n\n4. **Mahler Bound:** Axiomatize n^{1+o(1)} upper bound\n\n5. **Erdős Claim:** Axiomatize infinitely often > n log n\n\n6. **Steinerberger:** Define n = 2^{3^r} construction\n\n7. **LTE Lemma:** Axiomatize 3^{r+1} | 2^{3^r} + 1\n\n8. **Main Result:** limsup = ∞",
+    "keyInsights": [
+      "**{2,3}-Smooth Part:** Extract powers of 2 and 3 from n(n+1)",
+      "**Consecutive Coprime:** n and n+1 share no prime factors",
+      "**Steinerberger's n:** 2^{3^r} gives extremal examples",
+      "**Lifting the Exponent:** v_3(2^{3^r} + 1) = r + 1",
+      "**Mahler Upper:** S-unit equations give n^{1+o(1)}"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #933 asks whether the {2,3}-smooth part of n(n+1) can exceed n log n infinitely often. The answer is YES, as shown by Steinerberger: taking n = 2^{3^r} gives 2^k · 3^l = n · 3^{r+1}, with ratio 3^{r+1}/log n → ∞.",
+    "implications": "**Number Theory Connections**\n\n1. **S-Unit Equations:** Mahler's bound comes from finiteness of solutions\n\n2. **Lifting the Exponent:** Key tool for computing p-adic valuations\n\n3. **Smooth Numbers:** Structure of consecutive products\n\n4. **Explicit Constructions:** Steinerberger's sequence is computable",
+    "openQuestions": [
+      "What is the exact growth rate of the limsup?",
+      "Are there other extremal constructions besides 2^{3^r}?",
+      "Generalizations to other sets of primes?",
+      "Connections to abc conjecture?"
+    ]
   }
 }

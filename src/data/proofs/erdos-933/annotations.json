@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-933-power2",
+    "proofId": "erdos-933",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "power2",
+    "content": "The largest power of 2 dividing n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-933-power3",
+    "proofId": "erdos-933",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "power3",
+    "content": "The largest power of 3 dividing n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-933-smooth",
+    "proofId": "erdos-933",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "smoothPart23",
+    "content": "The {2,3}-smooth part: 2^a · 3^b factor.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-consec",
+    "proofId": "erdos-933",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "consecutiveSmoothPart",
+    "content": "The {2,3}-smooth part of n(n+1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-ratio",
+    "proofId": "erdos-933",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "definition",
+    "title": "smoothRatio",
+    "content": "The ratio 2^k · 3^l / (n · log n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-question",
+    "proofId": "erdos-933",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "ErdosQuestion933",
+    "content": "Is limsup of smoothRatio infinite?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-mahler",
+    "proofId": "erdos-933",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "theorem",
+    "title": "mahler_upper_bound",
+    "content": "Mahler: 2^k 3^l < n^{1+o(1)} upper bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-erdos",
+    "proofId": "erdos-933",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "theorem",
+    "title": "erdos_lower_bound",
+    "content": "Erdős: infinitely often > n log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-steiner",
+    "proofId": "erdos-933",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "definition",
+    "title": "steinerbergerN",
+    "content": "Steinerberger's n = 2^{3^r} construction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-divides",
+    "proofId": "erdos-933",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "theorem",
+    "title": "steinerberger_divisibility",
+    "content": "Key fact: 3^{r+1} | 2^{3^r} + 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-proof",
+    "proofId": "erdos-933",
+    "range": { "startLine": 138, "endLine": 139 },
+    "type": "theorem",
+    "title": "steinerberger_proof",
+    "content": "Steinerberger's proof: limsup = ∞.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-933-lte",
+    "proofId": "erdos-933",
+    "range": { "startLine": 149, "endLine": 152 },
+    "type": "theorem",
+    "title": "lifting_the_exponent",
+    "content": "LTE Lemma: v_3(2^{3^r} + 1) = r + 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-933-coprime",
+    "proofId": "erdos-933",
+    "range": { "startLine": 165, "endLine": 167 },
+    "type": "theorem",
+    "title": "consecutive_coprime",
+    "content": "n and n+1 are coprime.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-933-ex1",
+    "proofId": "erdos-933",
+    "range": { "startLine": 185, "endLine": 188 },
+    "type": "definition",
+    "title": "example_n8",
+    "content": "Example: n=8, smooth part = 72.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-933-main",
+    "proofId": "erdos-933",
+    "range": { "startLine": 219, "endLine": 219 },
+    "type": "theorem",
+    "title": "erdos_933",
+    "content": "Main theorem: limsup = ∞ (YES).",
+    "significance": "critical"
+  }
+]
