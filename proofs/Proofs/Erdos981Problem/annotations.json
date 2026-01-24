@@ -1,0 +1,56 @@
+[
+  {
+    "id": "def-legendre",
+    "proofId": "erdos-981",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "definition",
+    "title": "Legendre Symbol and Character Sum",
+    "content": "(n/p) = +1 if n is QR mod p, -1 if NQR, 0 if p|n. Character sum Σ(n/p) measures cancellation.",
+    "significance": "major"
+  },
+  {
+    "id": "def-f-eps",
+    "proofId": "erdos-981",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "definition",
+    "title": "Stabilization Threshold f_ε(p)",
+    "content": "f_ε(p) = smallest m such that |Σ_{n≤N}(n/p)| < εN for all N ≥ m. When sums become 'permanently small'.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-elliott",
+    "proofId": "erdos-981",
+    "range": { "startLine": 95, "endLine": 109 },
+    "type": "theorem",
+    "title": "Elliott's Theorem (1969)",
+    "content": "Σ_{p<x} f_ε(p) ~ c_ε · x/log x for some c_ε > 0. Solves the problem completely.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-polya-vinogradov",
+    "proofId": "erdos-981",
+    "range": { "startLine": 115, "endLine": 123 },
+    "type": "theorem",
+    "title": "Pólya-Vinogradov Inequality",
+    "content": "|Σ_{n≤N}(n/p)| ≤ √p · log p. Classical bound on character sums.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-burgess",
+    "proofId": "erdos-981",
+    "range": { "startLine": 142, "endLine": 145 },
+    "type": "theorem",
+    "title": "Burgess Bound (1962)",
+    "content": "Improved bounds for short character sums. Key tool in the proof.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-981",
+    "range": { "startLine": 182, "endLine": 212 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "SOLVED: Elliott (1969) proved Σf_ε(p) ~ c_ε · x/log x. Character sums cancel due to equidistribution of quadratic residues.",
+    "significance": "major"
+  }
+]
