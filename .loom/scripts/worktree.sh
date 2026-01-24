@@ -106,6 +106,21 @@ Safety Features:
   ✓ Prevents nested worktrees
   ✓ Non-interactive (safe for AI agents)
   ✓ Reuses existing branches automatically
+  ✓ Runs project-specific hooks after creation
+
+Project-Specific Hooks:
+  Create .loom/hooks/post-worktree.sh to run custom setup after worktree creation.
+  This file is NOT overwritten by Loom upgrades.
+
+  The hook receives three arguments:
+    \$1 - Absolute path to the new worktree
+    \$2 - Branch name (e.g., feature/issue-42)
+    \$3 - Issue number
+
+  Example hook (.loom/hooks/post-worktree.sh):
+    #!/bin/bash
+    cd "\$1"
+    pnpm install  # or: lake exe cache get, pip install -e ., etc.
 
 Resuming Abandoned Work:
   If an agent abandoned work on issue #42, a new agent can resume:
@@ -237,11 +252,6 @@ if check_if_in_worktree; then
     fi
 fi
 
-# Set MAIN_WORKSPACE if not already set (when running from main workspace directly)
-if [[ -z "$MAIN_WORKSPACE" ]]; then
-    MAIN_WORKSPACE=$(pwd)
-fi
-
 # Determine branch name
 if [[ -n "$CUSTOM_BRANCH" ]]; then
     BRANCH_NAME="feature/$CUSTOM_BRANCH"
@@ -358,39 +368,25 @@ if git worktree add "${CREATE_ARGS[@]}"; then
         cd - > /dev/null
     fi
 
-    # Symlink .lake from main workspace for Lean projects (instant, no rebuild)
-    # This shares the pre-built Mathlib artifacts with the worktree instead of
-    # downloading them again (which is slow and duplicates disk usage)
-    WORKTREE_PROOFS_DIR="$ABS_WORKTREE_PATH/proofs"
-    MAIN_PROOFS_LAKE="$MAIN_WORKSPACE/proofs/.lake"
+    # Run project-specific post-worktree hook if it exists
+    # This allows projects to add custom setup steps (e.g., pnpm install, lake exe cache get)
+    # The hook is stored in .loom/hooks/ which is NOT overwritten by Loom upgrades
+    MAIN_WORKSPACE_DIR=$(git rev-parse --show-toplevel 2>/dev/null)
+    POST_WORKTREE_HOOK="$MAIN_WORKSPACE_DIR/.loom/hooks/post-worktree.sh"
+    if [[ -x "$POST_WORKTREE_HOOK" ]]; then
+        if [[ "$JSON_OUTPUT" != "true" ]]; then
+            print_info "Running project-specific post-worktree hook..."
+        fi
 
-    if [[ -d "$WORKTREE_PROOFS_DIR" ]] && [[ -f "$WORKTREE_PROOFS_DIR/lakefile.toml" ]]; then
-        if [[ -d "$MAIN_PROOFS_LAKE" ]]; then
+        # Run the hook from the new worktree directory
+        # Pass: worktree path, branch name, issue number
+        if (cd "$ABS_WORKTREE_PATH" && "$POST_WORKTREE_HOOK" "$ABS_WORKTREE_PATH" "$BRANCH_NAME" "$ISSUE_NUMBER"); then
             if [[ "$JSON_OUTPUT" != "true" ]]; then
-                print_info "Symlinking .lake from main workspace (instant, no rebuild needed)..."
-            fi
-
-            # Remove any existing .lake in worktree (could be dir or broken symlink)
-            rm -rf "$WORKTREE_PROOFS_DIR/.lake"
-
-            # Create symlink using relative path so it works regardless of repo location
-            # From .loom/worktrees/issue-N/proofs/.lake -> ../../../../proofs/.lake
-            ln -s "../../../../proofs/.lake" "$WORKTREE_PROOFS_DIR/.lake"
-
-            if [[ -L "$WORKTREE_PROOFS_DIR/.lake" ]] && [[ -d "$WORKTREE_PROOFS_DIR/.lake" ]]; then
-                if [[ "$JSON_OUTPUT" != "true" ]]; then
-                    print_success "Linked .lake from main workspace"
-                fi
-            else
-                if [[ "$JSON_OUTPUT" != "true" ]]; then
-                    print_warning "Failed to create .lake symlink"
-                    print_info "Try manually: ln -s ../../../../proofs/.lake $WORKTREE_PROOFS_DIR/.lake"
-                fi
+                print_success "Post-worktree hook completed"
             fi
         else
             if [[ "$JSON_OUTPUT" != "true" ]]; then
-                print_warning "Main workspace .lake not found - run 'lake build' in main first"
-                print_info "Then re-run: cd $WORKTREE_PROOFS_DIR && ln -s ../../../../proofs/.lake .lake"
+                print_warning "Post-worktree hook failed (worktree still created)"
             fi
         fi
     fi
