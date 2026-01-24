@@ -1,0 +1,15 @@
+{
+  "problem_number": 983,
+  "title": "Prime Coverage Function for Smooth Numbers",
+  "status": "solved",
+  "solvers": ["Erdős-Straus (1970)"],
+  "source_url": "https://erdosproblems.com/983",
+  "overview": "Let n ≥ 2 and π(n) < k ≤ n. Define f(k,n) as the smallest integer r such that in any A ⊆ {1,...,n} of size |A| = k, there exist primes p₁,...,pᵣ covering at least r elements of A (as smooth numbers). Does 2π(√n) - f(π(n)+1, n) → ∞?",
+  "sections": [],
+  "conclusion": "NO - Erdős and Straus (1970) proved f(π(n)+1, n) = 2π(√n) + o(√n/(log n)^A) for any A > 0. The difference does not tend to infinity; it is sublinear in √n. They also showed f(cn, n) = log log n + O(√(log log n)) for constant 0 < c < 1.",
+  "references": [
+    "[Er70b] Erdős, 'Some applications of graph theory to number theory', Proc. Second Chapel Hill Conf. (1970), 136-145"
+  ],
+  "related_problems": [],
+  "tags": ["number-theory", "primes", "smooth-numbers", "prime-counting", "solved"]
+}
