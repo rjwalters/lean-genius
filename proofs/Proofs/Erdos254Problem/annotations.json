@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-frac-dist",
+    "proofId": "erdos-254",
+    "range": { "startLine": 41, "endLine": 51 },
+    "type": "definition",
+    "title": "Fractional Distance",
+    "content": "{x} denotes the distance from x to the nearest integer. Also define countTo(A, x) as the number of elements of A up to x.",
+    "significance": "major"
+  },
+  {
+    "id": "def-growth-condition",
+    "proofId": "erdos-254",
+    "range": { "startLine": 57, "endLine": 66 },
+    "type": "definition",
+    "title": "Growth Condition",
+    "content": "The growth condition requires |A ∩ [1,2x]| - |A ∩ [1,x]| → ∞. This means A has infinitely many elements in each sufficiently long dyadic interval.",
+    "significance": "major"
+  },
+  {
+    "id": "def-irrationality-condition",
+    "proofId": "erdos-254",
+    "range": { "startLine": 72, "endLine": 84 },
+    "type": "definition",
+    "title": "Irrationality Condition",
+    "content": "The irrationality condition requires Σ{θn} = ∞ for all θ ∈ (0,1). Intuitively, the fractional parts θn are well-distributed, far from integers.",
+    "significance": "major"
+  },
+  {
+    "id": "def-conjecture",
+    "proofId": "erdos-254",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "If A satisfies both conditions, then every sufficiently large integer is representable as a sum of distinct elements of A.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-cassels",
+    "proofId": "erdos-254",
+    "range": { "startLine": 109, "endLine": 126 },
+    "type": "theorem",
+    "title": "Cassels's Theorem (1960)",
+    "content": "Cassels proved the conjecture under stronger conditions: (1) growth divided by log log x → ∞, (2) sum of {θn}² = ∞. This establishes the result with faster growth but weaker irrationality.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-gap",
+    "proofId": "erdos-254",
+    "range": { "startLine": 132, "endLine": 146 },
+    "type": "insight",
+    "title": "The Gap Between Conditions",
+    "content": "Erdős's growth condition is weaker (just → ∞), Cassels's is stronger (/ log log x → ∞). For irrationality, Erdős uses Σ{θn}, Cassels uses Σ{θn}². The gap remains open.",
+    "significance": "minor"
+  },
+  {
+    "id": "example-powers-of-2",
+    "proofId": "erdos-254",
+    "range": { "startLine": 152, "endLine": 165 },
+    "type": "example",
+    "title": "Powers of 2 Example",
+    "content": "The set {1, 2, 4, 8, ...} satisfies both conditions. Every positive integer is a sum of distinct powers of 2 (binary representation).",
+    "significance": "minor"
+  },
+  {
+    "id": "connections",
+    "proofId": "erdos-254",
+    "range": { "startLine": 171, "endLine": 182 },
+    "type": "discussion",
+    "title": "Related Problems",
+    "content": "Connection to the NP-complete subset sum problem (here conditions guarantee existence for large n) and to Sidon sets (unique vs existence of representations).",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-status",
+    "proofId": "erdos-254",
+    "range": { "startLine": 194, "endLine": 214 },
+    "type": "theorem",
+    "title": "Problem Status and Summary",
+    "content": "Erdős Problem #254 is OPEN. Cassels (1960) proved a related result but under strictly stronger hypotheses. Closing the gap between Erdős's and Cassels's conditions remains an open challenge.",
+    "significance": "major"
+  }
+]

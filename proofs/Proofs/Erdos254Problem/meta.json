@@ -1,0 +1,16 @@
+{
+  "problem_number": 254,
+  "title": "Sumset Representation from Growth and Irrationality Conditions",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/254",
+  "overview": "Let A ⊆ ℕ satisfy: (1) |A ∩ [1,2x]| - |A ∩ [1,x]| → ∞ and (2) Σ{θn} = ∞ for all θ ∈ (0,1), where {x} = dist(x,ℤ). Conjecture: Every sufficiently large integer is a sum of distinct elements of A. Cassels (1960) proved this under stronger conditions; original conjecture remains open.",
+  "sections": [],
+  "conclusion": "OPEN - Cassels (1960) proved a related result under stronger hypotheses: faster growth (divided by log log x) and squared fractional sums. The gap between Erdős's conditions and Cassels's remains to be closed.",
+  "references": [
+    "[Er61] Erdős (1961) - Original problem",
+    "[Ca60] Cassels (1960) - Proof under stronger conditions"
+  ],
+  "related_problems": [253, 255],
+  "tags": ["number-theory", "sumsets", "subset-sums", "open"]
+}
