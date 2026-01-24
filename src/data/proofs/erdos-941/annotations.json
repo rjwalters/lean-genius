@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-941-powerful",
+    "proofId": "erdos-941",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "IsPowerful",
+    "content": "p | n → p² | n (squarefull).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-941-alt",
+    "proofId": "erdos-941",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "IsPowerfulAlt",
+    "content": "n = a²b³ characterization.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-equiv",
+    "proofId": "erdos-941",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "theorem",
+    "title": "powerful_iff_alt",
+    "content": "Two definitions are equivalent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-one",
+    "proofId": "erdos-941",
+    "range": { "startLine": 56, "endLine": 64 },
+    "type": "theorem",
+    "title": "one_is_powerful",
+    "content": "1 is powerful (vacuously).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-941-square",
+    "proofId": "erdos-941",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "theorem",
+    "title": "square_is_powerful",
+    "content": "Perfect squares are powerful.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-cube",
+    "proofId": "erdos-941",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "theorem",
+    "title": "cube_is_powerful",
+    "content": "Perfect cubes are powerful.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-mul",
+    "proofId": "erdos-941",
+    "range": { "startLine": 81, "endLine": 84 },
+    "type": "theorem",
+    "title": "powerful_mul",
+    "content": "Products of powerful numbers are powerful.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-sumk",
+    "proofId": "erdos-941",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "definition",
+    "title": "IsSumOfKPowerful",
+    "content": "n is sum of k powerful numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-sum3",
+    "proofId": "erdos-941",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "definition",
+    "title": "IsSumOf3Powerful",
+    "content": "n = a + b + c with all powerful.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-941-sum3z",
+    "proofId": "erdos-941",
+    "range": { "startLine": 119, "endLine": 124 },
+    "type": "definition",
+    "title": "IsSumOf3PowerfulOrZero",
+    "content": "Allows some summands to be 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-941-question",
+    "proofId": "erdos-941",
+    "range": { "startLine": 130, "endLine": 133 },
+    "type": "definition",
+    "title": "ErdosIvicQuestion",
+    "content": "∃ N, ∀ n ≥ N sum of 3 powerful.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-941-hb",
+    "proofId": "erdos-941",
+    "range": { "startLine": 147, "endLine": 150 },
+    "type": "theorem",
+    "title": "heath_brown_theorem",
+    "content": "Heath-Brown 1988: YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-941-rpow",
+    "proofId": "erdos-941",
+    "range": { "startLine": 203, "endLine": 205 },
+    "type": "definition",
+    "title": "IsRPowerful",
+    "content": "r-powerful: p | n → p^r | n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-gen",
+    "proofId": "erdos-941",
+    "range": { "startLine": 212, "endLine": 215 },
+    "type": "definition",
+    "title": "generalizedQuestion",
+    "content": "Problem #1107: r-powerful generalization.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-941-main",
+    "proofId": "erdos-941",
+    "range": { "startLine": 233, "endLine": 233 },
+    "type": "theorem",
+    "title": "erdos_941",
+    "content": "Main theorem: answer is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-941-solved",
+    "proofId": "erdos-941",
+    "range": { "startLine": 239, "endLine": 239 },
+    "type": "theorem",
+    "title": "erdos_941_solved",
+    "content": "Problem completely solved.",
+    "significance": "critical"
+  }
+]

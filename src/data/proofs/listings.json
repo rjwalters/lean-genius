@@ -15430,17 +15430,24 @@
   },
   {
     "id": "erdos-941",
-    "title": "Erdős Problem #941",
+    "title": "Erdős Problem #941: Sums of Three Powerful Numbers",
     "slug": "erdos-941",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre all large integers the sum of at most three powerful numbers (i.e. if ... then ...)?\n\n\n\nThis was given in 1986 in the Obe...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are all large integers the sum of at most three powerful numbers (p | n → p² | n)? SOLVED: YES (Heath-Brown 1988). Every sufficiently large integer is the sum of at most 3 powerful numbers.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "additive-representation",
+      "squarefull",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 941,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 5,
+    "annotationCount": 16
   },
   {
     "id": "erdos-942",
