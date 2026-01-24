@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-product-rep",
+    "proofId": "erdos-796",
+    "range": { "startLine": 43, "endLine": 48 },
+    "type": "definition",
+    "title": "Product Representation",
+    "content": "(a₁, a₂) represents m if a₁ < a₂ and a₁·a₂ = m. Counting these representations is central to the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "def-g-function",
+    "proofId": "erdos-796",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "definition",
+    "title": "Function g_k(n)",
+    "content": "g_k(n) = maximum |A| for A ⊆ {1,...,n} where every m has < k representations as products from A.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-1964",
+    "proofId": "erdos-796",
+    "range": { "startLine": 110, "endLine": 122 },
+    "type": "theorem",
+    "title": "Erdős (1964) Main Theorem",
+    "content": "For 2^{r-1} < k ≤ 2^r: g_k(n) ~ ((log log n)^{r-1}/(r-1)!) · n/log n. First-order solved.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-g3-first-order",
+    "proofId": "erdos-796",
+    "range": { "startLine": 128, "endLine": 141 },
+    "type": "theorem",
+    "title": "First-Order for k=3",
+    "content": "g₃(n) ~ (log log n / log n)·n. Here r=2 since 2 < 3 ≤ 4.",
+    "significance": "major"
+  },
+  {
+    "id": "def-error-term",
+    "proofId": "erdos-796",
+    "range": { "startLine": 147, "endLine": 153 },
+    "type": "definition",
+    "title": "Error Term E₃(n)",
+    "content": "E₃(n) = g₃(n) - (log log n / log n)·n. The second-order term to be characterized.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-e3-bounded",
+    "proofId": "erdos-796",
+    "range": { "startLine": 155, "endLine": 163 },
+    "type": "theorem",
+    "title": "Bounds on E₃(n)",
+    "content": "c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)² for some 0 < c₁ ≤ c₂. Order of magnitude known.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-main",
+    "proofId": "erdos-796",
+    "range": { "startLine": 165, "endLine": 177 },
+    "type": "conjecture",
+    "title": "Main Conjecture (Open)",
+    "content": "E₃(n) = (c + o(1))·n/(log n)² for some specific constant c. Does the limit exist?",
+    "significance": "major"
+  },
+  {
+    "id": "insight-pattern",
+    "proofId": "erdos-796",
+    "range": { "startLine": 226, "endLine": 236 },
+    "type": "insight",
+    "title": "General k Pattern",
+    "content": "For k in (2^{r-1}, 2^r], the leading term involves (log log n)^{r-1}. Extremal sets have integers with r prime factors.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-796",
+    "range": { "startLine": 278, "endLine": 299 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "OPEN: First-order asymptotics solved (Erdős 1964). Second-order bounds known. Exact constant c for g₃(n) second term remains unknown.",
+    "significance": "major"
+  }
+]
