@@ -1,0 +1,17 @@
+{
+  "problem_number": 725,
+  "title": "Asymptotic Counting of Latin Rectangles",
+  "status": "partially_solved",
+  "solvers": ["Erdős-Kaplansky (1946)", "Yamamoto (1951)", "Godsil-McKay (1990)"],
+  "source_url": "https://erdosproblems.com/725",
+  "overview": "Give an asymptotic formula for the number L(k,n) of k×n Latin rectangles. A k×n Latin rectangle has n symbols, each appearing once per row and at most once per column.",
+  "sections": [],
+  "conclusion": "PARTIALLY SOLVED: Erdős-Kaplansky (1946) proved L(k,n) ~ e^{-C(k,2)} · (n!)^k when k = o((log n)^{3/2-ε}). Yamamoto (1951) extended to k ≤ n^{1/3-o(1)}. The general asymptotic for k = Θ(n) or k = Θ(n^α) with α > 1/3 remains OPEN.",
+  "references": [
+    "Erdős-Kaplansky (1946) - Asymptotic formula for small k",
+    "Yamamoto (1951) - Extension to k ≤ n^{1/3-o(1)}",
+    "Godsil-McKay (1990) - Bounds using permanents"
+  ],
+  "related_problems": [],
+  "tags": ["combinatorics", "latin-rectangles", "asymptotic-enumeration", "partially-solved"]
+}
