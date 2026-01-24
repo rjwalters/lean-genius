@@ -1,33 +1,138 @@
 {
   "id": "erdos-224",
-  "title": "Erdős Problem #224",
+  "title": "Erdős Problem #224: Obtuse Angles in Point Sets",
   "slug": "erdos-224",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is any set of ... points then some three points in ... determine an obtuse angle.\n\n\n\nFor ... this is trivial. For ... ...",
+  "description": "Any 2^d + 1 points in ℝ^d contain three points forming an obtuse angle. SOLVED by Danzer-Grünbaum (1962). Hypercube is extremal.",
   "meta": {
-    "author": "Unknown",
+    "author": "Danzer-Grünbaum (1962), Kuiper-Boerdijk (d=3)",
     "sourceUrl": "https://erdosproblems.com/224",
-    "date": "",
-    "status": "pending",
+    "date": "1962",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos224Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "angles",
+      "hypercube",
+      "extremal",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 224,
     "erdosUrl": "https://erdosproblems.com/224",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "inner_product",
+        "description": "Inner product for angle computation",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Real.arccos",
+        "description": "Arc cosine for angles",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "EuclideanPoint type for d-dimensional points",
+      "angle definition using inner product",
+      "IsObtuseAngle, FormsObtuseAngle predicates",
+      "ContainsObtuseTriple, IsObtuseFree predicates",
+      "ErdosObtuseConjecture formulation",
+      "danzer_grunbaum axiom: main theorem",
+      "hypercubeVertices definition",
+      "hypercube_extremal theorem: optimality",
+      "hypercube_angle_classification axiom"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #224 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subseteq \\mathbb{R}^d$ is any set of $2^d+1$ points then some three points in $A$ determine an obtuse angle.\n\n\n\nFor $d=2$ this is trivial. For $d=3$ there is an unpublished proof by Kuiper and Boerdijk. The general case was proved by Danzer and Gr\\\"{u}nbaum \\cite{DaGr62}.\n\n\n\n\nReferences\n\n\n[DaGr62] Danzer, L. and Gr\\\"{u}nbaum, B., \\\"{U}ber zwei Probleme bez\\\"{u}glich konvexer K\\\"{o}rper\nvon P. Erd\\H{o}s und von V. L. Klee. Math. Z. (1962), 95-99.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #224: Obtuse Angles in Point Sets**\n\nThis problem concerns the geometric structure of point sets in high dimensions.\n\n**Key History:**\n- d = 2: Trivial (any 5 points in plane have obtuse triple)\n- d = 3: Kuiper and Boerdijk (unpublished)\n- General d: Danzer and Grünbaum (1962)\n\n**Mathematical Setting:**\nThe hypercube vertices {0,1}^d form 2^d points with no obtuse angles. Adding any point forces an obtuse angle.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIf $A \\subseteq \\mathbb{R}^d$ is any set of $2^d + 1$ points, then some three points in $A$ determine an obtuse angle (angle > 90°).\n\n**Answer:** YES (Danzer-Grünbaum 1962)\n\n**Extremal Configuration:** The $2^d$ vertices of the unit hypercube are obtuse-free.\n\n**Special Cases:**\n- $d = 2$: Any 5 points in the plane (trivial)\n- $d = 3$: Any 9 points in ℝ³ (Kuiper-Boerdijk)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Euclidean Points:** Define d-dimensional points as Fin d → ℝ.\n\n2. **Angle Definition:** Use inner product: cos(θ) = ⟨u,v⟩/(‖u‖‖v‖).\n\n3. **Obtuse Predicates:** θ > π/2 means obtuse.\n\n4. **Main Conjecture:** For |P| = 2^d + 1, P contains obtuse triple.\n\n5. **Extremal Example:** Hypercube vertices are obtuse-free.\n\n6. **Special Cases:** d = 2, 3 have elementary proofs.",
+    "keyInsights": [
+      "**Hypercube Extremality:** 2^d vertices have only 60° and 90° angles",
+      "**Pigeonhole Principle:** 2^d+1 points → some orthant has 2 points",
+      "**d = 2 Triviality:** 5 points → convex quad or 3 collinear",
+      "**High Dimensions:** The 2^d bound is exponential in dimension",
+      "**Inner Product Geometry:** Obtuse ⟺ negative dot product"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "EuclideanPoint, angle, IsObtuseAngle, FormsObtuseAngle",
+      "startLine": 31,
+      "endLine": 75
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "summary": "ErdosObtuseConjecture, danzer_grunbaum axiom",
+      "startLine": 77,
+      "endLine": 92
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "case_d2, case_d3 axioms",
+      "startLine": 94,
+      "endLine": 116
+    },
+    {
+      "id": "extremal-config",
+      "title": "The Extremal Configuration",
+      "summary": "hypercubeVertices, hypercube_extremal theorem",
+      "startLine": 118,
+      "endLine": 151
+    },
+    {
+      "id": "hypercube-angles",
+      "title": "Angles in the Hypercube",
+      "summary": "hypercube_angle_classification axiom",
+      "startLine": 153,
+      "endLine": 176
+    },
+    {
+      "id": "why-2d-plus-1",
+      "title": "Why More Than 2^d Forces Obtuse",
+      "summary": "pigeonhole_orthants, Danzer-Grünbaum argument",
+      "startLine": 178,
+      "endLine": 203
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Acute sets, spherical codes",
+      "startLine": 205,
+      "endLine": 228
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_224 and erdos_224_summary theorems",
+      "startLine": 230,
+      "endLine": 263
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #224 was solved by Danzer and Grünbaum (1962). Any 2^d + 1 points in ℝ^d must contain three forming an obtuse angle. The hypercube vertices (2^d points) are extremal - all angles are 60° or 90°.",
+    "implications": "**Connections to Discrete Geometry**\n\n1. **Hypercube Geometry:** The extremal configuration reveals hypercube structure\n\n2. **Spherical Codes:** Related to maximum packing with angle constraints\n\n3. **High-Dimensional Phenomena:** The 2^d bound shows exponential growth\n\n4. **Inner Product Spaces:** Angles characterize point configurations",
+    "openQuestions": [
+      "What if we require all angles to be acute (< 90°)?",
+      "What is the maximum acute set size in ℝ^d?",
+      "Are there other extremal configurations besides hypercube?",
+      "What happens with weighted or approximate versions?",
+      "Extensions to non-Euclidean geometries?"
+    ]
   }
 }
