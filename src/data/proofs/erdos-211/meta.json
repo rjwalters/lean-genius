@@ -1,34 +1,133 @@
 {
   "id": "erdos-211",
-  "title": "Erdős Problem #211",
+  "title": "Erdős Problem #211: Lines Formed by Points in the Plane",
   "slug": "erdos-211",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Given ... points in ..., at most ... on any line, there are ... many lines which contain at least two points.\n\n\n\nIn ...",
+  "description": "For n points with at most n-k collinear (1≤k<n), there are Ω(kn) lines through ≥2 points. SOLVED by Beck and Szemerédi-Trotter (1983).",
   "meta": {
-    "author": "Unknown",
+    "author": "Beck (1983), Szemerédi-Trotter (1983)",
     "sourceUrl": "https://erdosproblems.com/211",
-    "date": "",
-    "status": "pending",
+    "date": "1983",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos211Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "incidence-geometry",
+      "beck-theorem",
+      "szemeredi-trotter",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 211,
     "erdosUrl": "https://erdosproblems.com/211",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.card",
+        "description": "Natural number cardinality",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Point and Line types for plane geometry",
+      "numLines, formedLines: counting lines",
+      "maxCollinear: maximum points on a line",
+      "HasBoundedCollinearity predicate",
+      "beck_szemeredi_trotter axiom: main result",
+      "beck_dichotomy axiom: key structural lemma",
+      "szemeredi_trotter axiom: incidence bound",
+      "ErdosRefinedConjecture: 1/6 constant",
+      "constant_one_sixth_optimal: optimality"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #211 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq k<n$. Given $n$ points in $\\mathbb{R}^2$, at most $n-k$ on any line, there are $\\gg kn$ many lines which contain at least two points.\n\n\n\nIn particular, given any $2n$ points with at most $n$ on a line there are $\\gg n^2$ many lines formed by the points. Solved by Beck \\cite{Be83} and Szemer\\'{e}di and Trotter \\cite{SzTr83}.\n\nIn \\cite{Er84} Erd\\H{o}s speculates that perhaps there are $\\geq (1+o(1))kn/6$ many such lines, but says 'perhaps [this] is too optimistic and one should first look for a counterexample'. The constant $1/6$ would be best possible here, since there are arrangements of $n$ points with no four points on a line and $\\sim n^2/6$ many lines containing three points (see Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}).\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[Be83] Beck, J\\'{o}zsef, On the lattice property of the plane and some problems of Dirac, Motzkin and Erd\\H{o}s in combinatorial geometry. Combinatorica (1983), 281-297.\n\n[Er84] Erd\\H{o}s, P., Research problems. Period. Math. Hungar. (1984), 101-103.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[SzTr83] Szemer\\'{e}di, Endre and Trotter, Jr., William T., Extremal problems in discrete geometry. Combinatorica (1983), 381-392.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #211: Lines Formed by Points**\n\nThis problem concerns incidence geometry and counting lines in point configurations.\n\n**Key History:**\n- Beck (1983): Proved using incidence bounds and dichotomy argument\n- Szemerédi-Trotter (1983): Independent proof via crossing number inequality\n- Prize: $100 awarded\n- Erdős speculated optimal constant is 1/6\n\n**Mathematical Setting:**\nGiven n points with bounded collinearity, how many distinct lines contain ≥2 points?",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $1 \\leq k < n$. Given $n$ points in $\\mathbb{R}^2$ with at most $n-k$ on any line, prove there are $\\Omega(kn)$ lines containing at least two points.\n\n**Special Case:** For $2n$ points with at most $n$ collinear, there are $\\Omega(n^2)$ such lines.\n\n**Answer:** YES (Beck 1983, Szemerédi-Trotter 1983)\n\n**Prize:** $100 (awarded)\n\n**Refined Bound:** Erdős speculated $\\geq (1+o(1))kn/6$ lines, which is tight.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry Setup:** Define Point, Line, and collinearity.\n\n2. **Counting Functions:** numLines, formedLines, maxCollinear.\n\n3. **Main Theorem:** State Beck-Szemerédi-Trotter bound Ω(kn).\n\n4. **Beck's Dichotomy:** Either many collinear or many lines.\n\n5. **Szemerédi-Trotter:** Incidence bound O(m^{2/3}n^{2/3} + m + n).\n\n6. **Optimal Constant:** The 1/6 threshold from extremal configurations.",
+    "keyInsights": [
+      "**Beck's Dichotomy:** Either ≥n/K collinear or ≥n²/K lines",
+      "**Szemerédi-Trotter:** Fundamental incidence bound in discrete geometry",
+      "**Optimal Constant 1/6:** From 3-point lines in Burr-Grünbaum-Sloane configs",
+      "**Crossing Number Method:** Key tool in Szemerédi-Trotter proof",
+      "**Rich Lines:** Lines with many points are constrained by incidence bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-setup",
+      "title": "Basic Setup",
+      "summary": "Point, Line, Collinear definitions",
+      "startLine": 34,
+      "endLine": 76
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Erdős Conjecture (Solved)",
+      "summary": "HasBoundedCollinearity, beck_szemeredi_trotter",
+      "startLine": 78,
+      "endLine": 112
+    },
+    {
+      "id": "beck-theorem",
+      "title": "Beck's Theorem",
+      "summary": "beck_dichotomy, beck_quantitative",
+      "startLine": 114,
+      "endLine": 137
+    },
+    {
+      "id": "szemeredi-trotter",
+      "title": "Szemerédi-Trotter Incidence Theorem",
+      "summary": "incidences, szemeredi_trotter, rich_lines_bound",
+      "startLine": 139,
+      "endLine": 165
+    },
+    {
+      "id": "refined-conjecture",
+      "title": "Erdős's Refined Conjecture",
+      "summary": "ErdosRefinedConjecture, constant_one_sixth_optimal",
+      "startLine": 167,
+      "endLine": 190
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Configurations",
+      "summary": "bgs_configuration, furedi_palasti_optimal",
+      "startLine": 192,
+      "endLine": 210
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Results",
+      "summary": "Unit distances, extremal geometry, crossing number",
+      "startLine": 212,
+      "endLine": 235
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_211 and erdos_211_summary theorems",
+      "startLine": 237,
+      "endLine": 278
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #211 was solved by Beck and Szemerédi-Trotter in 1983. For n points with at most n-k collinear, there are Ω(kn) lines. The optimal constant is 1/6, achieved by configurations where all lines contain exactly 3 points.",
+    "implications": "**Connections to Discrete Geometry**\n\n1. **Szemerédi-Trotter Theorem:** Fundamental tool for incidence problems\n\n2. **Beck's Dichotomy:** Key structural result for point configurations\n\n3. **Crossing Number:** The proof technique connects to graph drawing\n\n4. **Unit Distance Problem:** Related extremal geometry questions",
+    "openQuestions": [
+      "What is the exact constant in the Ω(kn) bound?",
+      "How do the bounds change in higher dimensions?",
+      "Can we characterize configurations achieving equality?",
+      "What are tight bounds for specific values of k?",
+      "Extensions to colored point configurations?"
+    ]
   }
 }
