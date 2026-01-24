@@ -1,0 +1,18 @@
+{
+  "problem_number": 844,
+  "title": "Maximum Set with Non-Squarefree Products",
+  "status": "solved",
+  "solvers": ["Weisenberg", "Alexeev-Mixon-Sawin"],
+  "source_url": "https://erdosproblems.com/844",
+  "overview": "Let A ⊆ {1,...,N} be such that for all a,b ∈ A, the product ab is not squarefree. Is the maximum size of such an A achieved by taking A to be the set of even numbers and odd non-squarefree numbers? The answer is YES, proved independently by Weisenberg and by Alexeev-Mixon-Sawin.",
+  "sections": [],
+  "conclusion": "YES - The maximum is achieved exactly by even numbers ∪ odd non-squarefree numbers. The key insight is reduction to Chvátal's result on intersecting families: among squarefree numbers, we need all pairs to share a prime, and this is maximized by taking all even squarefree numbers.",
+  "references": [
+    "Erdős-Sárközy [Er92b, p.239] - Original problem",
+    "Weisenberg - First proof",
+    "Alexeev-Mixon-Sawin - Alternative proof",
+    "Chvátal - Intersecting set families"
+  ],
+  "related_problems": [848],
+  "tags": ["number-theory", "squarefree", "intersecting-families", "extremal", "solved"]
+}
