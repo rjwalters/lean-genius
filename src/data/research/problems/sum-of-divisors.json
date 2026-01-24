@@ -2,7 +2,7 @@
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
   "phase": "NEW",
-  "status": "skipped",
+  "status": "blocked",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -29,16 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Comprehensive coverage already exists across PerfectNumbers.lean and multiple Erdos problem files. No tractable gap identified for new work.",
+    "progressSummary": "Open for 2000+ years!",
     "builtItems": [],
-    "insights": [
-      "Confirmed: PerfectNumbers.lean has complete Euclid-Euler theorem from Mathlib",
-      "Erdos955Problem.lean defines IsDeficient, IsAbundant, IsPerfect using proper divisor sum",
-      "Erdos470Problem.lean has weird number definitions and 70 example",
-      "Erdos277Problem.lean has c-abundant and superabundant concepts",
-      "Erdos381Problem.lean has highly abundant number definitions",
-      "No gap identified - divisor sum properties well-distributed across problem files"
-    ],
+    "insights": [],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
       "`Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors"
