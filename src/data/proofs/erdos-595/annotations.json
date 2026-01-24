@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-e595-header",
+    "proofId": "erdos-595",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #595: Infinite Graphs and Triangle-Free Decomposition**\n\nThis problem asks: Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs?\n\n**Status: OPEN** - $250 prize unclaimed\n\nThis is a fundamental question by Erdős and Hajnal about whether the 'local' constraint of being K₄-free can coexist with 'global' resistance to countable decomposition.",
+    "mathContext": "This problem bridges finite and infinite combinatorics, asking whether resistance to finite covers extends to countable covers.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Infinite graphs", "Graph decomposition", "Chromatic theory"]
+  },
+  {
+    "id": "ann-e595-imports",
+    "proofId": "erdos-595",
+    "range": { "startLine": 33, "endLine": 39 },
+    "type": "definition",
+    "title": "Imports for Infinite Graph Theory",
+    "content": "**Cardinal Theory:**\n\nWe import Cardinal theory for handling infinite sets, allowing proper discussion of countable vs uncountable decompositions.\n\n**SimpleGraph:**\n\nMathlib's graph library provides the core definitions for adjacency, cliques, and graph operations.",
+    "mathContext": "Working with infinite graphs requires cardinal arithmetic to distinguish countable from uncountable collections.",
+    "significance": "foundational",
+    "relatedConcepts": ["Cardinals", "Mathlib", "SimpleGraph"]
+  },
+  {
+    "id": "ann-e595-clique-infinite",
+    "proofId": "erdos-595",
+    "range": { "startLine": 51, "endLine": 75 },
+    "type": "definition",
+    "title": "Cliques in Infinite Graphs",
+    "content": "**hasCliqueInfinite:**\n\nFor infinite graphs, we use Set.ncard (natural number cardinality for sets) rather than Finset.card.\n\n```lean\ndef hasCliqueInfinite (G : SimpleGraph V) (k : ℕ) : Prop :=\n  ∃ s : Set V, s.ncard = k ∧ G.IsClique s\n```\n\n**K₄-free:**\n\nA graph containing no complete graph on 4 vertices.\n\n**Triangle-free:**\n\nA graph containing no complete graph on 3 vertices (no triangles).",
+    "mathContext": "The question asks if a K₄-free graph can resist being covered by countably many triangle-free pieces.",
+    "significance": "key",
+    "relatedConcepts": ["Cliques", "Forbidden subgraphs", "Graph freeness"]
+  },
+  {
+    "id": "ann-e595-covering",
+    "proofId": "erdos-595",
+    "range": { "startLine": 81, "endLine": 104 },
+    "type": "definition",
+    "title": "Graph Coverings",
+    "content": "**isCountableUnionOf:**\n\nA graph G is a countable union of graphs from family F if every edge of G belongs to some F(n).\n\n```lean\ndef isCountableUnionOf (G : SimpleGraph V) (F : ℕ → SimpleGraph V) : Prop :=\n  ∀ v w, G.Adj v w → ∃ n, (F n).Adj v w\n```\n\n**hasCountableTriangleFreeCover:**\n\nG can be covered by countably many triangle-free subgraphs.",
+    "mathContext": "The covering graphs must be subgraphs of G and must be triangle-free. Every edge must be 'explained' by at least one covering graph.",
+    "significance": "key",
+    "relatedConcepts": ["Graph unions", "Covering", "Decomposition"]
+  },
+  {
+    "id": "ann-e595-conjecture",
+    "proofId": "erdos-595",
+    "range": { "startLine": 112, "endLine": 124 },
+    "type": "theorem",
+    "title": "The Main Conjecture",
+    "content": "**erdos595_conjecture:**\n\nThere exists an infinite K₄-free graph that cannot be expressed as a countable union of triangle-free graphs.\n\n```lean\ndef erdos595_conjecture : Prop :=\n  ∃ (V : Type) (G : SimpleGraph V),\n    Infinite V ∧\n    isK4Free G ∧\n    ¬ hasCountableTriangleFreeCover G\n```\n\nThis would demonstrate a fundamental incompatibility between local and global structure.",
+    "mathContext": "The conjecture asks whether 'local sparsity' (K₄-free) can coexist with 'global complexity' (not countably decomposable).",
+    "significance": "critical",
+    "relatedConcepts": ["Infinite combinatorics", "Decomposition resistance"]
+  },
+  {
+    "id": "ann-e595-folkman",
+    "proofId": "erdos-595",
+    "range": { "startLine": 142, "endLine": 159 },
+    "type": "theorem",
+    "title": "Folkman's Finite Resistance",
+    "content": "**Folkman's Theorem (1970):**\n\nFor every n ≥ 1, there exists a finite K₄-free graph that cannot be covered by n triangle-free graphs.\n\n**Nešetřil-Rödl (1975):**\n\nAlternative proof using type theory methods.\n\nThis establishes that finite resistance exists for every finite n - the question is whether this extends to countable covers.",
+    "mathContext": "These results show the phenomenon exists finitely, but the jump to countable is fundamentally different.",
+    "significance": "key",
+    "relatedConcepts": ["Folkman numbers", "Finite resistance", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e595-gap",
+    "proofId": "erdos-595",
+    "range": { "startLine": 167, "endLine": 180 },
+    "type": "insight",
+    "title": "The Finite-to-Countable Gap",
+    "content": "**finiteDoesNotImplyCountable:**\n\nThe critical observation: having a K₄-free graph that resists n-covers for each n does NOT automatically give one that resists countable covers.\n\nDifferent graphs might require different covers, and these could potentially be combined when we allow countably many covering graphs.",
+    "mathContext": "This is the essence of the problem - finite resistance for all n does not trivially imply countable resistance.",
+    "significance": "critical",
+    "relatedConcepts": ["Compactness", "Infinite combinatorics", "Diagonal arguments"]
+  },
+  {
+    "id": "ann-e595-chromatic",
+    "proofId": "erdos-595",
+    "range": { "startLine": 186, "endLine": 208 },
+    "type": "definition",
+    "title": "Triangle-Free Chromatic Number",
+    "content": "**triangleFreeChromatic:**\n\nInformally, the minimum number of triangle-free subgraphs needed to cover a graph.\n\n**problem595_reformulated:**\n\nDoes there exist a K₄-free graph with triangle-free chromatic number strictly greater than ℵ₀?",
+    "mathContext": "This reformulation emphasizes the 'escape' property - G always has edges that any countable triangle-free family fails to cover.",
+    "significance": "key",
+    "relatedConcepts": ["Chromatic number", "Graph coloring", "Cardinal arithmetic"]
+  },
+  {
+    "id": "ann-e595-related",
+    "proofId": "erdos-595",
+    "range": { "startLine": 214, "endLine": 227 },
+    "type": "connection",
+    "title": "Related Erdős Problems",
+    "content": "**Problem 582: Folkman Numbers (SOLVED)**\n\nFinite K₄-free graphs where every 2-coloring has a monochromatic triangle.\n\n**Problem 596: General (G₁, G₂) Pairs (OPEN)**\n\nFor which pairs do we have finite resistance but countable covering?\n\nProblem 595 is the (K₄, K₃) special case of Problem 596.",
+    "mathContext": "These problems form a constellation around Ramsey-type decomposition questions.",
+    "significance": "key",
+    "relatedConcepts": ["Problem 582", "Problem 596", "Folkman numbers"]
+  },
+  {
+    "id": "ann-e595-approaches",
+    "proofId": "erdos-595",
+    "range": { "startLine": 235, "endLine": 254 },
+    "type": "method",
+    "title": "Potential Approaches",
+    "content": "**Random Graph Approach:**\n\nPerhaps a suitable limit of Erdős-Rényi graphs could serve as a counterexample.\n\n**Algebraic Construction:**\n\nCayley graphs over infinite groups might yield explicit examples.\n\n**Set-Theoretic Methods:**\n\nForcing and independence results could potentially construct examples or prove impossibility.",
+    "mathContext": "Multiple mathematical frameworks might apply - this reflects the problem's depth.",
+    "significance": "foundational",
+    "relatedConcepts": ["Random graphs", "Cayley graphs", "Set-theoretic forcing"]
+  },
+  {
+    "id": "ann-e595-c4free",
+    "proofId": "erdos-595",
+    "range": { "startLine": 270, "endLine": 281 },
+    "type": "theorem",
+    "title": "C₄-Free Graphs are Coverable",
+    "content": "**c4_free_countable_trees:**\n\nErdős and Hajnal proved: every C₄-free (4-cycle-free) graph is a countable union of trees.\n\nSince trees are triangle-free, C₄-free graphs ARE countably coverable!\n\nThis contrasts with the K₄-free case which remains open.",
+    "mathContext": "This shows forbidding 4-cycles is a stronger condition than forbidding K₄, at least for this decomposition property.",
+    "significance": "key",
+    "relatedConcepts": ["Cycle-free graphs", "Trees", "Decomposition"]
+  },
+  {
+    "id": "ann-e595-main",
+    "proofId": "erdos-595",
+    "range": { "startLine": 287, "endLine": 306 },
+    "type": "summary",
+    "title": "Main Statement",
+    "content": "**erdos_595:**\n\nThe main theorem is stated as True (trivial) because the problem is OPEN.\n\nThe real content is in the conjecture definition `erdos595_conjecture` which captures the mathematical question precisely.\n\n**Status:** OPEN, $250 prize unclaimed.",
+    "mathContext": "For open problems, we formalize the conjecture statement precisely while noting it remains unproved.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Conjectures", "Prize problems"]
+  },
+  {
+    "id": "ann-e595-prize",
+    "proofId": "erdos-595",
+    "range": { "startLine": 315, "endLine": 319 },
+    "type": "history",
+    "title": "Prize Status",
+    "content": "**Prize History:**\n\nErdős offered $250 for this problem - one of the larger prizes in his collection.\n\nIt reflects the difficulty and importance of bridging finite and infinite combinatorics.\n\nThe prize remains unclaimed as of 2024.",
+    "mathContext": "Erdős prizes were modest but carried prestige. The $250 reflects his assessment of the problem's difficulty.",
+    "significance": "foundational",
+    "relatedConcepts": ["Erdős prizes", "Problem history"]
+  }
+]
