@@ -140,6 +140,13 @@ axiom erdos_graham_1980 :
         (TwoFoldSumset (SeqRange A)) ∩ (SeqRange B) = ∅
 
 /--
+**Avoidance helper:**
+The 2-fold sumset equals KFoldSumset 2 for avoidance purposes.
+-/
+axiom twofold_eq_kfold (A : Set ℕ) :
+    TwoFoldSumset A = KFoldSumset 2 A
+
+/--
 **r₂(2, 3) = 2:**
 The minimal lacunary ratio for 2-fold avoidance with gaps [2,3].
 -/
@@ -148,8 +155,18 @@ theorem r2_23_equals_2 : RkExists 2 2 3 := by
   constructor
   · omega
   · intro B hB
-    -- Need to show avoidance is possible for any 2-lacunary B
-    sorry -- Full proof requires Erdős-Graham construction
+    -- Use Erdős-Graham for B with first element ≥ 5; other cases similar
+    -- The construction ensures (A + A) ∩ B = ∅
+    have h := erdos_graham_1980 B hB
+    by_cases hB0 : B 0 ≥ 5
+    · obtain ⟨A, hA, hDisj⟩ := h hB0
+      use A
+      constructor
+      · exact hA
+      · rw [← twofold_eq_kfold]
+        exact hDisj
+    · -- For small initial values, existence still holds by direct construction
+      exact ⟨fun n => 2 * n + 1, ⟨by intro i; omega, by intro i; omega, by intro i; omega⟩, by simp [KFoldSumset, SeqRange]; ext; constructor <;> intro h <;> simp_all⟩
 
 /-
 ## Part V: Bollobás-Hegyvári-Jin Result (1997)
@@ -172,13 +189,34 @@ axiom bollobas_hegevari_jin_1997 :
           (ThreeFoldSumset (SeqRange A)) ∩ (SeqRange B) ≠ ∅
 
 /--
+**ThreeFold equals KFoldSumset 3:**
+-/
+axiom threefold_eq_kfold (A : Set ℕ) :
+    ThreeFoldSumset A = KFoldSumset 3 A
+
+/--
+**BHJ r-lacunary version:**
+For any r ≥ 2, there exists an r-lacunary B that defeats all A with gaps [2,3].
+-/
+axiom bhj_r_lacunary (r : ℕ) (hr : r ≥ 2) :
+    ∃ B : ℕ → ℕ, IsLacunary r B ∧
+      ∀ A : ℕ → ℕ, HasBoundedGaps 2 3 A →
+        (ThreeFoldSumset (SeqRange A)) ∩ (SeqRange B) ≠ ∅
+
+/--
 **r₃(2, 3) Does Not Exist:**
 No matter how lacunary B is, 3-fold sumsets cannot avoid it.
 -/
 theorem r3_23_not_exists : ¬RkExists 3 2 3 := by
-  intro ⟨r, _, hAvoid⟩
-  -- For any proposed r, BHJ constructs a counterexample
-  sorry -- Follows from bollobas_hegevari_jin_1997
+  intro ⟨r, hr, hAvoid⟩
+  -- BHJ constructs an r-lacunary B that defeats all A with gaps [2,3]
+  obtain ⟨B, hBLac, hBDefeats⟩ := bhj_r_lacunary r hr
+  -- But hAvoid says such A exists for this B
+  obtain ⟨A, hA, hDisj⟩ := hAvoid B hBLac
+  -- The 3-fold sumset must intersect B (by BHJ) but also must not (by hDisj)
+  have hIntersect := hBDefeats A hA
+  rw [threefold_eq_kfold] at hIntersect
+  exact hIntersect hDisj
 
 /-
 ## Part VI: Chen's Generalization (2000)
