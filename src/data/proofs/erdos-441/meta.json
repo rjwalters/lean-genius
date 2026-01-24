@@ -1,33 +1,45 @@
 {
   "id": "erdos-441",
-  "title": "Erdős Problem #441",
+  "title": "Erdős Problem #441: LCM-Bounded Subsets",
   "slug": "erdos-441",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the size of the largest ... such that ... for all ..., where ... is the least common multiple of ... and ......",
+  "description": "Find the maximum size g(N) of A ⊆ {1,...,N} such that lcm(a,b) ≤ N for all a,b ∈ A. Is Erdős' construction optimal? Answer: NO - Chen and Dai proved for infinitely many N, the optimal set is strictly larger than Erdős' construction. The asymptotic g(N) ~ (9N/8)^{1/2} is known.",
   "meta": {
-    "author": "Unknown",
+    "author": "Chen-Dai",
     "sourceUrl": "https://erdosproblems.com/441",
-    "date": "",
-    "status": "pending",
+    "date": "2006-2007",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos441Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "extremal-combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 441,
     "erdosUrl": "https://erdosproblems.com/441",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #441 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. What is the size of the largest $A\\subset \\{1,\\ldots,N\\}$ such that $[a,b]\\leq N$ for all $a,b\\in A$, where $[a,b]$ is the least common multiple of $a$ and $b$?\n\nIs it attained by choosing all integers in $[1,(N/2)^{1/2}]$ together with all even integers in $[(N/2)^{1/2},(2N)^{1/2}]$?\n\n\n\nLet $g(N)$ denote the size of the largest such $A$. The construction mentioned proves that\\[g(N) \\geq \\left(\\tfrac{9}{8}n\\right)^{1/2}+O(1).\\]Erd\\H{o}s \\cite{Er51b} proved $g(N) \\leq (4n)^{1/2}+O(1)$, which was improved by Choi \\cite{Ch72b}. Chen \\cite{Ch98} established the asymptotic\\[g(N) \\sim \\left(\\tfrac{9}{8}n\\right)^{1/2}.\\]Chen and Dai \\cite{DaCh06} proved that\\[g(N)\\leq \\left(\\tfrac{9}{8}n\\right)^{1/2}+O\\left(\\left(\\frac{N}{\\log N}\\right)^{1/2}\\log\\log N\\right).\\]In \\cite{ChDa07} the same authors prove that, infinitely often, Erd\\H{o}s' construction is not optimal: if $B$ is that construction and $A$ is such that $\\lvert A\\rvert=g(N)$ then, for infinitely many $N$,\\[\\lvert A\\rvert\\geq \\lvert B\\rvert+t,\\]where $t\\geq 0$ is defined such that the $t$-fold iterated logarithm of $N$ is in $[0,1)$.\n\nThis is discussed in problems B26 and E2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Ch72b] Choi, S. L. G., The largest subset in {$[1,$} {$n]$} whose integers have\npairwise {L}.C.{M}. not exceeding {$n$}. Mathematika (1972), 221--230.\n\n[Ch98] Chen, Yong-Gao, Sequences with bounded l.c.m. of each pair of terms. Acta Arith. (1998), 71-95.\n\n[ChDa07] Chen, Yong-Gao and Dai, Li-Xia, Sequences with bounded l.c.m. of each pair of terms. {III}. Acta Arith. (2007), 125-133.\n\n[DaCh06] Dai, Li-Xia and Chen, Yong-Gao, Sequences with bounded l.c.m. of each pair of terms. {II}. Acta Arith. (2006), 315-326.\n\n[Er51b] P. Erd\\H{o}s, Problem. Mat. Lapok (1951), 233.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős proposed this problem in 1951, asking for the maximum size of a subset A of {1,...,N} where all pairwise LCMs are at most N. He conjectured that his specific construction (integers up to (N/2)^{1/2} combined with even integers in [(N/2)^{1/2}, (2N)^{1/2}]) would be optimal. The problem was studied by Choi (1972) and definitively resolved by Chen (1998) who established the asymptotic, and Chen-Dai (2006-2007) who proved the construction is not always optimal.",
+    "problemStatement": "Let N ≥ 1. What is the size g(N) of the largest A ⊆ {1,...,N} such that lcm(a,b) ≤ N for all a,b ∈ A? Is the maximum attained by choosing all integers in [1, (N/2)^{1/2}] together with all even integers in [(N/2)^{1/2}, (2N)^{1/2}]?",
+    "proofStrategy": "The formalization establishes the LCM-bounded property, defines Erdős' proposed construction, and captures the known bounds: lower bound g(N) ≥ (9N/8)^{1/2} - O(1) from the construction, upper bound g(N) ≤ (9N/8)^{1/2} + O((N/log N)^{1/2} · log log N) from Chen-Dai. The key result that the construction is not optimal for infinitely many N is stated as an axiom.",
+    "keyInsights": [
+      "The asymptotic g(N) ~ (9N/8)^{1/2} is tight",
+      "The constant 9/8 arises from the structure of Erdős' construction",
+      "For infinitely many N, optimal sets differ from Erdős' pattern",
+      "The answer to Erdős' specific question is NO"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős' question about whether his construction is optimal has a negative answer. While the asymptotic g(N) ~ (9N/8)^{1/2} established by Chen (1998) shows the construction gives the correct order of magnitude, Chen and Dai (2006) proved that for infinitely many N, the maximum LCM-bounded subset is strictly larger than Erdős' construction.",
+    "implications": "The problem illustrates that natural constructions in extremal combinatorics may not be optimal, even when they achieve the correct asymptotic behavior. The gap between the construction and the optimal value, while o(√N), demonstrates subtle structure in the problem.",
+    "openQuestions": [
+      "What is the exact structure of optimal LCM-bounded sets?",
+      "Can the O((N/log N)^{1/2} · log log N) error term be improved?",
+      "For which specific N values is Erdős' construction suboptimal?"
+    ]
   }
 }

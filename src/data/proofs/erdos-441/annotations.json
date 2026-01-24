@@ -1,1 +1,103 @@
-[]
+[
+  {
+    "id": "ann-441-header",
+    "proofId": "erdos-441",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #441: LCM-Bounded Subsets**\n\nFind the maximum size g(N) of A ⊆ {1,...,N} such that lcm(a,b) ≤ N for all a,b ∈ A.\n\n**Question:** Is Erdős' construction optimal?\n\n**Answer:** NO (Chen-Dai, 2006)\n\nThe asymptotic is g(N) ~ (9N/8)^{1/2}, but the proposed construction is not always optimal.",
+    "mathContext": "LCM constraints arise in number theory when studying multiplicative structure. The constraint lcm(a,b) ≤ N restricts which pairs can coexist in A.",
+    "significance": "critical",
+    "relatedConcepts": ["LCM", "Extremal combinatorics", "Asymptotic analysis", "Multiplicative number theory"]
+  },
+  {
+    "id": "ann-441-lcm-bounded",
+    "proofId": "erdos-441",
+    "range": { "startLine": 52, "endLine": 57 },
+    "type": "definition",
+    "title": "IsLCMBounded",
+    "content": "**LCM-Bounded Subset:**\n\nA ⊆ {1,...,N} is LCM-bounded if:\n1. A ⊆ {1,...,N} (elements in range)\n2. lcm(a,b) ≤ N for all a,b ∈ A\n\nThis restricts which pairs can coexist - elements with many common factors work well together.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-441-g-def",
+    "proofId": "erdos-441",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "g(N) - Maximum Size",
+    "content": "**g(N) = max{|A| : A is LCM-bounded in {1,...,N}}**\n\nThis is the central quantity. Erdős' question asks for its exact value and whether his construction achieves it.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-441-construction",
+    "proofId": "erdos-441",
+    "range": { "startLine": 67, "endLine": 77 },
+    "type": "definition",
+    "title": "Erdős' Construction",
+    "content": "**Erdős' Proposed Construction:**\n\n1. All integers in [1, (N/2)^{1/2}]\n2. All EVEN integers in [(N/2)^{1/2}, (2N)^{1/2}]\n\n**Why it works:** Small integers have small LCMs with each other. Even integers in the second range have LCMs bounded by their product of 2, which stays ≤ N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-441-question",
+    "proofId": "erdos-441",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "definition",
+    "title": "ErdosQuestion",
+    "content": "**The Main Question:**\n\nIs g(N) = |ErdosConstruction(N)| for all N ≥ 1?\n\nDoes Erdős' construction always achieve the maximum?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-441-chen-asymptotic",
+    "proofId": "erdos-441",
+    "range": { "startLine": 124, "endLine": 130 },
+    "type": "axiom",
+    "title": "Chen's Asymptotic (1998)",
+    "content": "**Chen's Theorem:**\n\ng(N) ~ (9N/8)^{1/2} as N → ∞\n\nThis establishes the asymptotic behavior - the construction gives the right order of magnitude.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-441-chen-dai-upper",
+    "proofId": "erdos-441",
+    "range": { "startLine": 132, "endLine": 139 },
+    "type": "axiom",
+    "title": "Chen-Dai Upper Bound (2007)",
+    "content": "**Chen-Dai Upper Bound:**\n\ng(N) ≤ (9N/8)^{1/2} + O((N/log N)^{1/2} · log log N)\n\nThe error term is larger than O(1), leaving room for the construction to be suboptimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-441-not-optimal",
+    "proofId": "erdos-441",
+    "range": { "startLine": 145, "endLine": 150 },
+    "type": "axiom",
+    "title": "Construction Not Optimal (Chen-Dai 2006)",
+    "content": "**Chen-Dai (2006):**\n\nFor infinitely many N: g(N) > |ErdosConstruction(N)|\n\nThis definitively answers Erdős' question: NO, the construction is not always optimal.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-441-disproved",
+    "proofId": "erdos-441",
+    "range": { "startLine": 152, "endLine": 160 },
+    "type": "theorem",
+    "title": "erdos_question_disproved",
+    "content": "**Erdős' Question is Disproved:**\n\nIf the construction is not optimal for infinitely many N, then it cannot be optimal for ALL N.\n\nThe proof uses basic logic: existence of counterexamples contradicts universal optimality.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-441-nine-eighths",
+    "proofId": "erdos-441",
+    "range": { "startLine": 219, "endLine": 230 },
+    "type": "insight",
+    "title": "Why 9/8?",
+    "content": "**Origin of the constant 9/8:**\n\nFrom Erdős' construction:\n- First part: ~(N/2)^{1/2} integers\n- Second part: ~(1/2)[(2N)^{1/2} - (N/2)^{1/2}] even integers\n\nTotal ≈ (3/(2√2)) · N^{1/2} = (9/8)^{1/2} · N^{1/2}",
+    "significance": "key"
+  },
+  {
+    "id": "ann-441-summary",
+    "proofId": "erdos-441",
+    "range": { "startLine": 250, "endLine": 274 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #441: SOLVED**\n\n**Question:** Is Erdős' construction optimal for g(N)?\n\n**Answer:** NO\n\n**Results:**\n- Asymptotic: g(N) ~ (9N/8)^{1/2} (Chen 1998)\n- Upper: g(N) ≤ (9N/8)^{1/2} + O((N/log N)^{1/2} log log N)\n- The construction is NOT optimal for infinitely many N (Chen-Dai 2006)\n\n**Key insight:** Even asymptotically optimal constructions may not be exactly optimal.",
+    "significance": "critical"
+  }
+]
