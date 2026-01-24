@@ -13272,17 +13272,21 @@
   },
   {
     "id": "erdos-801",
-    "title": "Erdős Problem #801",
+    "title": "Erdős Problem #801: Dense Subgraphs in Graphs with Bounded Independence",
     "slug": "erdos-801",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices containing no independent set on ... vertices then there is a set of ... vertices containin...",
-    "status": "pending",
+    "description": "If G is a graph on n vertices with no independent set larger than √n, then there exists a set of ≤ √n vertices containing ≫ √n log n edges. Proved by Alon (1996) using probabilistic methods.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "extremal-combinatorics",
+      "probabilistic-method"
     ],
     "erdosNumber": 801,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-802",

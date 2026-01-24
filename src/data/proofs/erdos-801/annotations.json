@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "id": "ann-801-header",
+    "proofId": "erdos-801",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #801: Dense Subgraphs in Graphs with Bounded Independence**\n\nIf G has n vertices and α(G) ≤ √n, then some set of ≤ √n vertices contains ≫ √n log n edges.\n\n**Answer:** YES (Alon, 1996)\n\nGraphs with small independence number must have locally dense regions.",
+    "mathContext": "This captures a local-global phenomenon: a global constraint (bounded independence) implies local structure (dense subset).",
+    "significance": "critical",
+    "relatedConcepts": ["Independence number", "Induced subgraph", "Probabilistic method", "Ramsey theory"]
+  },
+  {
+    "id": "ann-801-independence",
+    "proofId": "erdos-801",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "definition",
+    "title": "Independence Number α(G)",
+    "content": "**α(G) = max{|S| : S is an independent set in G}**\n\nAn independent set has no edges between its vertices. The problem constrains α(G) ≤ √n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-801-induced-edges",
+    "proofId": "erdos-801",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Induced Edges",
+    "content": "**e(S) = number of edges in the subgraph induced by S**\n\nCount edges with both endpoints in S. The problem asks for S with |S| ≤ √n but e(S) ≫ √n log n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-801-statement",
+    "proofId": "erdos-801",
+    "range": { "startLine": 63, "endLine": 71 },
+    "type": "definition",
+    "title": "Erdos801Statement",
+    "content": "**Main Statement:**\n\n∃ c > 0 such that for all n ≥ 2, for all G with n vertices:\n\nIf α(G) ≤ √n, then ∃ S with |S| ≤ √n and e(S) ≥ c · √n · log n",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-801-alon",
+    "proofId": "erdos-801",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "axiom",
+    "title": "Alon's Theorem (1996)",
+    "content": "**Alon's Theorem:**\n\nThe statement Erdos801Statement is true.\n\nProved using probabilistic methods and concentration inequalities.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-801-log-necessary",
+    "proofId": "erdos-801",
+    "range": { "startLine": 89, "endLine": 93 },
+    "type": "insight",
+    "title": "Logarithmic Factor is Necessary",
+    "content": "**The log n factor cannot be removed:**\n\nOne cannot replace √n log n with √n · ω(n) for any faster-growing function ω.\n\nThe bound is tight up to the constant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-801-ramsey",
+    "proofId": "erdos-801",
+    "range": { "startLine": 104, "endLine": 109 },
+    "type": "insight",
+    "title": "Ramsey Connection",
+    "content": "**Connection to Ramsey Theory:**\n\nSmall independence ↔ complementary clique structure.\n\nIf α(G) ≤ √n, the complement G' has ω(G') ≥ n/α(G) ≥ √n.\n\nThis connects to off-diagonal Ramsey numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-801-probabilistic",
+    "proofId": "erdos-801",
+    "range": { "startLine": 127, "endLine": 132 },
+    "type": "insight",
+    "title": "Probabilistic Method",
+    "content": "**Alon's Proof Technique:**\n\n1. Sample a random subset S of size ~√n\n2. Compute expected induced edges E[e(S)]\n3. Show E[e(S)] ≈ √n log n\n4. Derandomize to get deterministic result",
+    "significance": "key"
+  },
+  {
+    "id": "ann-801-contrapositive",
+    "proofId": "erdos-801",
+    "range": { "startLine": 150, "endLine": 154 },
+    "type": "theorem",
+    "title": "Contrapositive Form",
+    "content": "**Locally Sparse ⟹ Large Independence:**\n\nIf every set of ≤ √n vertices has o(√n log n) edges, then α(G) > √n.\n\nLocal sparsity implies the existence of large independent sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-801-summary",
+    "proofId": "erdos-801",
+    "range": { "startLine": 241, "endLine": 270 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #801: SOLVED (Alon, 1996)**\n\n**Problem:** α(G) ≤ √n ⟹ ∃ small dense subset\n\n**Answer:** YES - some ≤ √n vertices induce ≫ √n log n edges\n\n**Key insight:** Bounded independence forces local density\n\n**Applications:** Community detection, dense subgraph algorithms, Ramsey-type theorems",
+    "significance": "critical"
+  }
+]
