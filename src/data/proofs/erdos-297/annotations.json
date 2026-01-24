@@ -1,1 +1,148 @@
-[]
+[
+  {
+    "id": "ann-297-header",
+    "proofId": "erdos-297",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #297** asks: how many A ⊆ {1,...,N} satisfy Σ 1/n = 1?\n\n**Answer:** The count is 2^{(c + o(1))N} where c ≈ 0.91...\n\n**Key Result:** c < 1, so far fewer than 2^N subsets work.\n\n**2024 Breakthrough:** Solved independently by Steinerberger, Liu-Sawhney, and Conlon et al.",
+    "mathContext": "Egyptian fraction representations of 1 are exponentially sparse among all subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["Egyptian fractions", "Unit fractions", "Counting problems"]
+  },
+  {
+    "id": "ann-297-harmonicsum",
+    "proofId": "erdos-297",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "harmonicSum",
+    "content": "The harmonic sum of set A: Σ_{n ∈ A} 1/n.\n\nThis is the key quantity - we count sets where it equals exactly 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-egyptian",
+    "proofId": "erdos-297",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "IsEgyptianRepresentation",
+    "content": "A set A is an Egyptian representation of 1 if:\n- harmonicSum(A) = 1\n- All elements are positive (n ≥ 1)",
+    "significance": "key"
+  },
+  {
+    "id": "ann-297-egyptiancount",
+    "proofId": "erdos-297",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "egyptianCount",
+    "content": "The main counting function: number of A ⊆ {1,...,N} with Σ 1/n = 1.\n\nThis is what Erdős asked to characterize asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-examples",
+    "proofId": "erdos-297",
+    "range": { "startLine": 71, "endLine": 85 },
+    "type": "theorem",
+    "title": "Basic Examples",
+    "content": "**Examples of Egyptian representations:**\n\n- {1}: 1/1 = 1\n- {2, 3, 6}: 1/2 + 1/3 + 1/6 = 1\n- {2, 4, 5, 20}: 1/2 + 1/4 + 1/5 + 1/20 = 1",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-297-question",
+    "proofId": "erdos-297",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "definition",
+    "title": "The Key Question",
+    "content": "**hasSubexponentialGrowth:**\n\nIs there c < 1 such that egyptianCount(N) ≤ C · 2^{cN}?\n\nAnswer: YES, and c ≈ 0.91...",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-steinerberger",
+    "proofId": "erdos-297",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "axiom",
+    "title": "Steinerberger's Upper Bound",
+    "content": "**Steinerberger (2024, arXiv:2403.17041):**\n\negyptianCount(N) ≤ 2^{0.93N} for large N.\n\nFirst proof that c < 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-liusawhney-constant",
+    "proofId": "erdos-297",
+    "range": { "startLine": 122, "endLine": 129 },
+    "type": "definition",
+    "title": "Liu-Sawhney Constant",
+    "content": "**liuSawhneyConstant:**\n\nc ≈ 0.91... is defined as the solution to a certain integral equation.\n\nThis is the exact asymptotic constant.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-liusawhney",
+    "proofId": "erdos-297",
+    "range": { "startLine": 131, "endLine": 135 },
+    "type": "axiom",
+    "title": "Liu-Sawhney Asymptotic",
+    "content": "**Liu-Sawhney (2024, arXiv:2404.07113):**\n\nFull asymptotic: egyptianCount(N) = 2^{(c + o(1))N}\n\nBoth upper AND lower bounds with the same constant c.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-conlon",
+    "proofId": "erdos-297",
+    "range": { "startLine": 141, "endLine": 147 },
+    "type": "axiom",
+    "title": "Conlon et al. Result",
+    "content": "**Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (2024, arXiv:2404.16016):**\n\nIndependently proved the same asymptotic with different methods.\n\nAlso generalized to any target x ∈ ℚ₊.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-general",
+    "proofId": "erdos-297",
+    "range": { "startLine": 153, "endLine": 158 },
+    "type": "axiom",
+    "title": "Generalization",
+    "content": "**conlon_et_al_general:**\n\nFor any x ∈ ℚ₊, the count of A with Σ 1/n = x is 2^{(c_x + o(1))N}.\n\nThe constant c_x depends on x but is always < 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-297-mathoverflow",
+    "proofId": "erdos-297",
+    "range": { "startLine": 164, "endLine": 173 },
+    "type": "axiom",
+    "title": "MathOverflow Precedent",
+    "content": "**2017 MathOverflow Question:**\n\nMikhail Tikhomirov asked about subsets with sum ≤ 1 (not = 1).\n\nLucia, RaphaelB4, and js21 sketched proofs of the asymptotic.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-297-intuition",
+    "proofId": "erdos-297",
+    "range": { "startLine": 179, "endLine": 189 },
+    "type": "insight",
+    "title": "Why c < 1?",
+    "content": "**Intuition:**\n\nMost subsets overshoot 1. For a random subset, E[Σ 1/n] ≈ (log N)/2.\n\nSince (log N)/2 → ∞, most random subsets have sum > 1.\n\nThe constraint Σ 1/n = 1 exactly is very restrictive.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-297-main",
+    "proofId": "erdos-297",
+    "range": { "startLine": 202, "endLine": 222 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_297_main:**\n\n∃ c ∈ (0.9, 0.93), for all ε > 0, eventually:\n\n2^{(c-ε)N} ≤ egyptianCount(N) ≤ 2^{(c+ε)N}\n\nThe count is precisely characterized asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-answer",
+    "proofId": "erdos-297",
+    "range": { "startLine": 224, "endLine": 236 },
+    "type": "theorem",
+    "title": "The Answer",
+    "content": "**erdos_297_answer:**\n\nYES, hasSubexponentialGrowth holds.\n\nThe count is 2^{cN} with c < 1 (specifically c ≈ 0.91).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-297-summary",
+    "proofId": "erdos-297",
+    "range": { "startLine": 242, "endLine": 259 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #297: SOLVED (2024)**\n\n- Question: How many A ⊆ {1,...,N} have Σ 1/n = 1?\n- Answer: 2^{(0.91... + o(1))N}\n- Key: c < 1, so count << 2^N\n- Solved by three teams independently in 2024",
+    "significance": "critical"
+  }
+]
