@@ -1,1 +1,131 @@
-[]
+[
+  {
+    "id": "ann-163-header",
+    "proofId": "erdos-163",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #163: The Burr-Erdős Conjecture**\n\nFor any d ≥ 1, if H is a graph such that every subgraph contains a vertex of degree at most d (i.e., H is d-degenerate), then R(H) ≪_d n.\n\n**Answer:** YES (Lee, 2017)\n- R(H) ≤ 2^{2^{O(d)}} · n\n\nThis means degenerate graphs have linear Ramsey numbers, unlike cliques which grow exponentially.",
+    "mathContext": "Ramsey theory studies unavoidable patterns in large structures. This problem shows that 'sparse' graphs (degenerate) behave much better than dense graphs (cliques).",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey numbers", "Graph degeneracy", "Regularity lemma", "Dependent random choice"]
+  },
+  {
+    "id": "ann-163-degenerate",
+    "proofId": "erdos-163",
+    "range": { "startLine": 55, "endLine": 59 },
+    "type": "definition",
+    "title": "IsDDegenerate",
+    "content": "A graph G is d-degenerate if every non-empty subgraph has a vertex of degree at most d.\n\nFormally: ∀ S ⊆ V, S ≠ ∅ → ∃ v ∈ S such that deg_S(v) ≤ d\n\nThis captures 'local sparseness' - you can always find low-degree vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-163-ordering",
+    "proofId": "erdos-163",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "definition",
+    "title": "HasDegeneracyOrdering",
+    "content": "Equivalent characterization: G is d-degenerate iff vertices can be ordered so each has ≤ d neighbors among later vertices.\n\nThis 'deletion ordering' is useful for greedy algorithms and embedding arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-163-equiv",
+    "proofId": "erdos-163",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "axiom",
+    "title": "Equivalence of Degeneracy Definitions",
+    "content": "The two definitions of d-degeneracy are equivalent:\n- Every subgraph has a vertex of degree ≤ d\n- Vertices admit an ordering with ≤ d backward neighbors\n\nProof uses induction: repeatedly remove minimum-degree vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-163-examples",
+    "proofId": "erdos-163",
+    "range": { "startLine": 72, "endLine": 82 },
+    "type": "insight",
+    "title": "Examples of Degenerate Graphs",
+    "content": "**Key examples:**\n- Trees: 1-degenerate (every subtree has a leaf)\n- Forests: 1-degenerate\n- Planar graphs: 5-degenerate (Euler's formula)\n- Bounded treewidth k: k-degenerate\n\nThese all have linear Ramsey numbers by the Burr-Erdős conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-163-ramsey",
+    "proofId": "erdos-163",
+    "range": { "startLine": 88, "endLine": 99 },
+    "type": "definition",
+    "title": "Ramsey Number R(H)",
+    "content": "R(H) = minimum n such that any 2-coloring of K_n contains a monochromatic copy of H.\n\nFor cliques: R(K_n) grows exponentially (2^{n/2} ≤ R(K_n) ≤ 4^n).\n\nThe Burr-Erdős conjecture asks: do 'sparse' graphs have better (linear) Ramsey numbers?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-163-conjecture",
+    "proofId": "erdos-163",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "definition",
+    "title": "BurrErdosConjecture",
+    "content": "**The Burr-Erdős Conjecture (1975):**\n\nFor d-degenerate H on n vertices: R(H) ≤ C_d · n\n\nThe constant C_d depends only on d, not on the specific graph H or its size n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-163-equivalences",
+    "proofId": "erdos-163",
+    "range": { "startLine": 119, "endLine": 137 },
+    "type": "theorem",
+    "title": "Equivalent Formulations",
+    "content": "The conjecture has equivalent forms:\n\n1. **Original:** d-degenerate H has R(H) ≤ C_d · n\n2. **Forests:** Union of c forests has R(H) ≤ C_c · n\n3. **Average degree:** Bounded average degree implies linear R(H)\n\nThese equivalences follow from characterizations of degeneracy.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-163-lee",
+    "proofId": "erdos-163",
+    "range": { "startLine": 143, "endLine": 157 },
+    "type": "axiom",
+    "title": "Lee's Theorem (2017)",
+    "content": "**Lee's Main Theorem:**\n\nR(H) ≤ 2^{2^{O(d)}} · n for d-degenerate H on n vertices.\n\nThis proves the Burr-Erdős conjecture! The constant C_d = 2^{2^{O(d)}} is doubly exponential in d.\n\nRefined bound using chromatic number χ: R(H) ≤ 2^{d·2^{O(χ)}} · n",
+    "mathContext": "Published in 'Ramsey numbers of degenerate graphs' (2017). Resolved a 42-year-old conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-163-solved",
+    "proofId": "erdos-163",
+    "range": { "startLine": 171, "endLine": 178 },
+    "type": "theorem",
+    "title": "burr_erdos_solved",
+    "content": "**The Burr-Erdős Conjecture is TRUE.**\n\nProof: Apply Lee's theorem directly. For any d ≥ 1, Lee provides the constant C_d such that R(H) ≤ C_d · n for all d-degenerate H.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-163-optimal",
+    "proofId": "erdos-163",
+    "range": { "startLine": 183, "endLine": 203 },
+    "type": "definition",
+    "title": "OptimalBurrErdos - Conjectured Optimal Bound",
+    "content": "**Open Question:**\n\nIs R(H) ≤ 2^{O(d)} · n? (single exponential in d)\n\nLee's bound is 2^{2^{O(d)}} (double exponential).\n\nThe gap between the proven bound and conjectured optimal is significant - a whole exponential tower!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-163-special",
+    "proofId": "erdos-163",
+    "range": { "startLine": 209, "endLine": 232 },
+    "type": "theorem",
+    "title": "Special Cases",
+    "content": "**Known special cases:**\n\n- Trees (d=1): R(T_n) ≤ C · n\n- Paths: R(P_n) = n exactly\n- Cycles: R(C_n) computed for various n\n- Planar graphs (d=5): R(H) ≤ C_5 · n\n\nThese were known before Lee's general result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-163-techniques",
+    "proofId": "erdos-163",
+    "range": { "startLine": 237, "endLine": 252 },
+    "type": "insight",
+    "title": "Proof Techniques",
+    "content": "**Lee's proof uses:**\n\n1. **Szemerédi regularity lemma** - partitions graphs into pseudo-random parts\n2. **Dependent random choice** - finds large subsets with common neighborhoods\n3. **Embedding lemmas** - degenerate graphs embed in pseudo-random graphs\n\nThese powerful tools from extremal combinatorics are essential.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-163-summary",
+    "proofId": "erdos-163",
+    "range": { "startLine": 278, "endLine": 311 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #163: SOLVED (Lee, 2017)**\n\n**Conjecture:** For d-degenerate H on n vertices, R(H) ≤ C_d · n\n\n**Answer:** TRUE\n\n**Bounds:**\n- Proven: R(H) ≤ 2^{2^{O(d)}} · n\n- Refined: R(H) ≤ 2^{d·2^{O(χ)}} · n\n- Conjectured optimal: R(H) ≤ 2^{O(d)} · n (OPEN)\n\n**Key insight:** Degeneracy (local sparseness) implies linear Ramsey growth, not exponential like cliques.",
+    "significance": "critical"
+  }
+]

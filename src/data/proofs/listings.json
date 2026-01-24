@@ -3435,17 +3435,23 @@
   },
   {
     "id": "erdos-163",
-    "title": "Erdős Problem #163",
+    "title": "Erdős Problem #163: The Burr-Erdős Conjecture",
     "slug": "erdos-163",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ... if ... is a graph such that every subgraph contains a vertex of degree at most ... then ....\n\n\n\nThe Burr-Erd. Thi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For d-degenerate graph H on n vertices, is R(H) = O(n)? SOLVED: YES, R(H) ≤ 2^{2^{O(d)}} · n (Lee, 2017).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "degeneracy",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 163,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-164",
@@ -6114,17 +6120,25 @@
   },
   {
     "id": "erdos-320",
-    "title": "Erdős Problem #320",
+    "title": "Erdős Problem #320: Distinct Sums of Unit Fractions",
     "slug": "erdos-320",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of distinct sums of the form ... for .... Estimate ....\n\n\n\nBleicher and Erds  proved the lower bound...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate S(N), the number of distinct sums ∑_{n∈A} 1/n for A ⊆ {1,...,N}. OPEN - Bleicher-Erdős (1975-76) gave bounds with iterated logarithms. BGMS (2025) improved the lower bound.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "counting",
+      "iterated-logarithms",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 320,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 5,
+    "annotationCount": 18
   },
   {
     "id": "erdos-322",
@@ -8782,8 +8796,8 @@
     "title": "Erdős Problem #526: Circle Coverage by Random Arcs (Dvoretzky's Problem)",
     "slug": "erdos-526",
     "description": "Given arc lengths a_n → 0 with Σa_n = ∞, when do random arcs cover the unit circle with probability 1? Shepp (1972) proved the necessary and sufficient condition is Σ exp(a_1+...+a_n)/n² = ∞.",
-    "status": "solved",
-    "badge": "mathlib",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "probability",
       "random-covering",
@@ -8791,10 +8805,11 @@
       "circle",
       "arcs"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 526,
     "mathlibCount": 6,
     "sorries": 0,
-    "annotationCount": 13
+    "annotationCount": 16
   },
   {
     "id": "erdos-527",
@@ -9601,17 +9616,24 @@
   },
   {
     "id": "erdos-584",
-    "title": "Erdős Problem #584",
+    "title": "Erdős Problem #584: Cycle-Connected Subgraphs",
     "slug": "erdos-584",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Are there subgraphs ... such that\n{UL}\n{LI}... has ... edges and every tw...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a graph G with n vertices and δn² edges, must there exist subgraphs H₁ (≫ δ³n² edges, 6-cycle connected) and H₂ (≫ δ²n² edges, 8-cycle connected)? OPEN - best known: δ⁵ for H₁ (Duke-Erdős-Rödl 1984), δ > n^{-1/5} for H₂ (Fox-Sudakov 2008).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycle-connectivity",
+      "extremal-graphs",
+      "subgraphs",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 584,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 22
   },
   {
     "id": "erdos-586",
@@ -10983,17 +11005,24 @@
   },
   {
     "id": "erdos-664",
-    "title": "Erdős Problem #664",
+    "title": "Erdős Problem #664: Blocking Sets with Bounded Intersection",
     "slug": "erdos-664",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be some constant and ... be such that ... for all ... and ... for all ....\n\nMust there exist some set ... such that ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For set families with |Aᵢ| > c√n and pairwise |Aᵢ ∩ Aⱼ| ≤ 1, must a blocker exist with O(1) intersection? DISPROVED by Alon using projective plane constructions.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "blocking-sets",
+      "projective-planes",
+      "finite-geometry",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 664,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-665",
@@ -16339,17 +16368,24 @@
   },
   {
     "id": "erdos-994",
-    "title": "Erdős Problem #994",
+    "title": "Erdős Problem #994: Khintchine's Equidistribution Conjecture",
     "slug": "erdos-994",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a meaurable subset with Lebesgue measure .... Is it true that, for almost all ...,\\[\\lim_{n\\to \\infty}{n}\\sum_{1\\l...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For almost all α, is lim (1/n)∑1_{kα∈E} = λ(E) for ALL measurable E ⊆ (0,1)? DISPROVED: Marstrand (1970) showed this is FALSE. The quantifiers cannot be exchanged.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "measure-theory",
+      "equidistribution",
+      "discrepancy",
+      "disproved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 994,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-995",

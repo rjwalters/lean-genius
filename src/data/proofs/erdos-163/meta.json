@@ -1,33 +1,143 @@
 {
   "id": "erdos-163",
-  "title": "Erdős Problem #163",
+  "title": "Erdős Problem #163: The Burr-Erdős Conjecture",
   "slug": "erdos-163",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ... if ... is a graph such that every subgraph contains a vertex of degree at most ... then ....\n\n\n\nThe Burr-Erd. Thi...",
+  "description": "For d-degenerate graph H on n vertices, is R(H) = O(n)? SOLVED: YES, R(H) ≤ 2^{2^{O(d)}} · n (Lee, 2017).",
   "meta": {
-    "author": "Unknown",
+    "author": "Burr-Erdős (1975 conjecture), Choongbum Lee (2017 proof)",
     "sourceUrl": "https://erdosproblems.com/163",
-    "date": "",
-    "status": "pending",
+    "date": "2017",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos163Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "degeneracy",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 163,
     "erdosUrl": "https://erdosproblems.com/163",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types for graph vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      }
+    ],
+    "originalContributions": [
+      "IsDDegenerate definition: every subgraph has vertex of degree ≤ d",
+      "HasDegeneracyOrdering definition: alternative characterization",
+      "degenerate_equiv_ordering axiom: equivalence of definitions",
+      "ramseyNumber definition: idealized Ramsey number",
+      "BurrErdosConjecture definition: formal conjecture statement",
+      "BurrErdosForests definition: forest union formulation",
+      "BurrErdosAverageDegree definition: average degree formulation",
+      "lee_theorem axiom: R(H) ≤ C_d · n for d-degenerate H",
+      "lee_constant_bound axiom: C_d = 2^{2^{O(d)}}",
+      "lee_chromatic_refinement axiom: refined bound using χ(H)",
+      "burr_erdos_solved theorem: main resolution",
+      "OptimalBurrErdos definition: conjectured 2^{O(d)} bound",
+      "Special cases: trees, paths, cycles, planar graphs"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #163 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $d\\geq 1$ if $H$ is a graph such that every subgraph contains a vertex of degree at most $d$ then $R(H)\\ll_d n$.\n\n\n\nThe Burr-Erd\\H{os conjecture}. This is equivalent to showing that if $H$ is the union of $c$ forests then $R(H)\\ll_c n$, and also that if every subgraph has average degree at most $d$ then $R(H)\\ll_d n$. Solved by Lee \\cite{Le16}, who proved that\\[ R(H) \\leq 2^{2^{O(d)}}n.\\]This problem is #9 in Ramsey Theory in the graphs problem collection. See also [800].\n\n\n\n\nReferences\n\n\n[Le16] No reference found.\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Burr-Erdős Conjecture was posed by Burr and Erdős in 1975 as Problem #9 in Ramsey Theory. It remained open for 42 years until Choongbum Lee resolved it in 2017 using the regularity method and dependent random choice. The conjecture relates graph degeneracy (a local sparseness condition) to Ramsey numbers.",
+    "problemStatement": "For any d ≥ 1, if H is a graph such that every subgraph contains a vertex of degree at most d (i.e., H is d-degenerate), then R(H) ≪_d n, where n is the number of vertices of H.",
+    "proofStrategy": "The formalization defines d-degeneracy, Ramsey numbers, and states the Burr-Erdős Conjecture in equivalent forms. Lee's theorem is axiomatized: R(H) ≤ 2^{2^{O(d)}} · n. The conjecture is proved from Lee's theorem. Special cases (trees, planar graphs) and the conjectured optimal bound 2^{O(d)} · n are discussed.",
+    "keyInsights": [
+      "A graph is d-degenerate iff every subgraph has a vertex of degree ≤ d",
+      "Equivalent: d-degenerate iff vertices can be ordered with ≤d backward neighbors",
+      "Trees/forests are 1-degenerate, planar graphs are 5-degenerate",
+      "Lee proved R(H) ≤ 2^{2^{O(d)}} · n for d-degenerate H",
+      "Conjectured optimal: R(H) ≤ 2^{O(d)} · n (gap is significant!)",
+      "Uses regularity lemma and dependent random choice",
+      "After 42 years, confirms degeneracy controls Ramsey growth"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "degeneracy",
+      "title": "Graph Degeneracy",
+      "startLine": 49,
+      "endLine": 82,
+      "summary": "IsDDegenerate, HasDegeneracyOrdering, special graph classes"
+    },
+    {
+      "id": "ramsey-numbers",
+      "title": "Ramsey Numbers",
+      "startLine": 84,
+      "endLine": 105,
+      "summary": "ramseyNumber definition and basic properties"
+    },
+    {
+      "id": "burr-erdos-conjecture",
+      "title": "The Burr-Erdős Conjecture",
+      "startLine": 107,
+      "endLine": 137,
+      "summary": "BurrErdosConjecture and equivalent formulations"
+    },
+    {
+      "id": "lee-theorem",
+      "title": "Lee's Theorem (2017)",
+      "startLine": 139,
+      "endLine": 165,
+      "summary": "Main theorem with 2^{2^{O(d)}} bound"
+    },
+    {
+      "id": "solved",
+      "title": "Conjecture is SOLVED",
+      "startLine": 167,
+      "endLine": 178,
+      "summary": "burr_erdos_solved and erdos_163 theorems"
+    },
+    {
+      "id": "optimal-bound",
+      "title": "Conjectured Optimal Bound",
+      "startLine": 180,
+      "endLine": 203,
+      "summary": "OptimalBurrErdos: 2^{O(d)} · n (OPEN)"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 205,
+      "endLine": 232,
+      "summary": "Trees, paths, cycles, planar graphs"
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Proof Techniques",
+      "startLine": 234,
+      "endLine": 252,
+      "summary": "Regularity method and embedding lemma"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 274,
+      "endLine": 311,
+      "summary": "Final result and problem status"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #163 (the Burr-Erdős Conjecture) is SOLVED. Choongbum Lee (2017) proved that d-degenerate graphs on n vertices have Ramsey number R(H) ≤ 2^{2^{O(d)}} · n, confirming that degeneracy implies linear Ramsey growth. This was a famous open problem for 42 years.",
+    "implications": "The result establishes that local sparseness (degeneracy) fundamentally controls Ramsey behavior. Unlike cliques which have exponential Ramsey numbers, degenerate graphs have linear Ramsey numbers with a constant depending on the degeneracy parameter d.",
+    "openQuestions": [
+      "Is the optimal bound R(H) ≤ 2^{O(d)} · n? (single vs double exponential in d)",
+      "What is the exact value of the constant for specific d?",
+      "How does the bound depend on chromatic number?",
+      "Algorithms for finding monochromatic copies"
+    ]
   }
 }
