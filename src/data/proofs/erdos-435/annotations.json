@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-435-1",
+    "proofId": "erdos-435",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #435 is a Frobenius-type problem asking for the largest integer not representable using binomial coefficients C(n,i). Solved by Hwang-Song (2024) with an explicit formula. The key condition is that n must not be a prime power.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-2",
+    "proofId": "erdos-435",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Prime Power Definition",
+    "content": "IsPrimePower(n) holds when n = p^k for some prime p and k ≥ 1. This captures exactly the numbers excluded from the problem's scope.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-3",
+    "proofId": "erdos-435",
+    "range": { "startLine": 50, "endLine": 50 },
+    "type": "definition",
+    "title": "Not Prime Power",
+    "content": "NotPrimePower is the negation of IsPrimePower. Numbers like 6 = 2·3, 10 = 2·5, 12 = 2²·3 satisfy this condition and are the focus of the problem.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-4",
+    "proofId": "erdos-435",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "definition",
+    "title": "Representability Predicate",
+    "content": "IsRepresentable(n, m) means m can be written as Σ c_i · C(n,i) where coefficients c_i are non-negative integers and 1 ≤ i < n. This is the central concept of the problem.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-5",
+    "proofId": "erdos-435",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "Representable Set",
+    "content": "The set of all representable numbers forms a numerical semigroup - closed under addition, containing 0, with finite complement in ℕ when n is not a prime power.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-6",
+    "proofId": "erdos-435",
+    "range": { "startLine": 72, "endLine": 73 },
+    "type": "definition",
+    "title": "Frobenius Number",
+    "content": "frobeniusBinomial(n) is the supremum of non-representable numbers - the largest integer that cannot be expressed using binomial coefficients of n. This is what the problem asks to determine.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-7",
+    "proofId": "erdos-435",
+    "range": { "startLine": 84, "endLine": 85 },
+    "type": "definition",
+    "title": "Prime Power Contribution",
+    "content": "For each prime p dividing n with exponent a, the contribution is (Σ_{d=1}^{a} C(n,p^d)) · (p-1). This sum captures how binomial coefficients at prime power indices contribute to the formula.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-8",
+    "proofId": "erdos-435",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "definition",
+    "title": "Hwang-Song Formula",
+    "content": "The explicit formula: sum over all prime factors p of n of primePowerContribution(n,p,a_p), minus n. This closed-form expression is the main result of the 2024 paper.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-9",
+    "proofId": "erdos-435",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "theorem",
+    "title": "Hwang-Song Theorem (Main Result)",
+    "content": "The Frobenius number for binomial coefficient representations equals the Hwang-Song formula. This completely answers Erdős Problem #435 for all n that are not prime powers.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-10",
+    "proofId": "erdos-435",
+    "range": { "startLine": 118, "endLine": 119 },
+    "type": "theorem",
+    "title": "Large Numbers Representable",
+    "content": "All integers strictly greater than the Frobenius number are representable. This confirms the Frobenius number is indeed the largest non-representable integer.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-11",
+    "proofId": "erdos-435",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "example",
+    "title": "n = 6 is Not a Prime Power",
+    "content": "The proof that 6 is not a prime power uses case analysis: 6 ≠ p¹ (no prime is 6) and 6 ≠ p² (√6 is not an integer). This is the smallest interesting case.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-12",
+    "proofId": "erdos-435",
+    "range": { "startLine": 138, "endLine": 138 },
+    "type": "example",
+    "title": "Frobenius Number for n = 6",
+    "content": "For n = 6 = 2·3, the formula gives: C(6,2)·(2-1) + C(6,3)·(3-1) - 6 = 15·1 + 20·2 - 6 = 49. So 49 is the largest integer not representable using C(6,1) through C(6,5).",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-13",
+    "proofId": "erdos-435",
+    "range": { "startLine": 155, "endLine": 156 },
+    "type": "insight",
+    "title": "Why Prime Powers are Excluded",
+    "content": "When n = p^k, the binomial coefficients have special divisibility properties (via Lucas' theorem) that make the representation problem degenerate - the Frobenius number may not exist or have a different character.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-14",
+    "proofId": "erdos-435",
+    "range": { "startLine": 174, "endLine": 178 },
+    "type": "theorem",
+    "title": "Numerical Semigroup Structure",
+    "content": "The representable set is a numerical semigroup: 0 is representable (empty sum), and if a and b are representable, so is a + b (combine coefficients). This algebraic structure underlies the Frobenius problem.",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-15",
+    "proofId": "erdos-435",
+    "range": { "startLine": 185, "endLine": 186 },
+    "type": "theorem",
+    "title": "GCD Condition",
+    "content": "For n not a prime power, the gcd of the binomial coefficients C(n,1), ..., C(n,n-1) is 1. This is necessary for a finite Frobenius number to exist (by the Chicken McNugget theorem generalization).",
+    "significance": "medium"
+  },
+  {
+    "id": "ann-435-16",
+    "proofId": "erdos-435",
+    "range": { "startLine": 229, "endLine": 231 },
+    "type": "theorem",
+    "title": "Erdős 435 Main Theorem",
+    "content": "The formal statement: for n ≥ 2 and n not a prime power, frobeniusBinomial(n) = hwangSongFormula(n). This directly invokes the Hwang-Song theorem to completely solve the problem.",
+    "significance": "high"
+  },
+  {
+    "id": "ann-435-17",
+    "proofId": "erdos-435",
+    "range": { "startLine": 239, "endLine": 244 },
+    "type": "summary",
+    "title": "Complete Solution Summary",
+    "content": "The summary theorem combines the main result with the corollary that all larger numbers are representable. Together these completely characterize the representability of integers using middle binomial coefficients.",
+    "significance": "high"
+  }
+]
