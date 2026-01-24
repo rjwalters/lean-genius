@@ -9831,17 +9831,24 @@
   },
   {
     "id": "erdos-599",
-    "title": "Erdős Problem #599",
+    "title": "Erdős Problem #599: The Erdős-Menger Conjecture",
     "slug": "erdos-599",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a (possibly infinite) graph and ... be disjoint independent sets of vertices. Must there exist a family ... of dis...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any graph G (possibly infinite) with disjoint independent sets A, B, must there exist vertex-disjoint A-B paths P and a set S that is both a transversal of P and a separator for all A-B paths? SOLVED: YES (Aharoni-Berger 2009).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "menger-theorem",
+      "infinite-graphs",
+      "connectivity",
+      "matroid-theory"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 599,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-6",

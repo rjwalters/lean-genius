@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-599-graph",
+    "proofId": "erdos-599",
+    "range": { "startLine": 41, "endLine": 45 },
+    "type": "definition",
+    "title": "Graph",
+    "content": "Graph structure supporting infinite vertex sets with symmetric adjacency and no loops.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-independent",
+    "proofId": "erdos-599",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "IsIndependent",
+    "content": "A set S is independent if no two vertices in S are adjacent.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-path",
+    "proofId": "erdos-599",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "definition",
+    "title": "Path",
+    "content": "A path as a nonempty list of vertices with consecutive adjacency.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-pathbetween",
+    "proofId": "erdos-599",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "IsPathBetween",
+    "content": "A path goes from A to B: first vertex in A, last vertex in B.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-599-disjoint",
+    "proofId": "erdos-599",
+    "range": { "startLine": 77, "endLine": 85 },
+    "type": "definition",
+    "title": "AreInternallyDisjoint",
+    "content": "Two paths are internally vertex-disjoint: share vertices only at endpoints.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-599-pathfamily",
+    "proofId": "erdos-599",
+    "range": { "startLine": 91, "endLine": 99 },
+    "type": "definition",
+    "title": "PathFamily",
+    "content": "A family of paths between sets A and B, with pairwise disjointness property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-transversal",
+    "proofId": "erdos-599",
+    "range": { "startLine": 101, "endLine": 104 },
+    "type": "definition",
+    "title": "IsTransversal",
+    "content": "Set S is a transversal: exactly one vertex from each path in the family.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-separator",
+    "proofId": "erdos-599",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "definition",
+    "title": "IsSeparator",
+    "content": "Set S is a separator: every A-B path contains a vertex from S.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-conjecture",
+    "proofId": "erdos-599",
+    "range": { "startLine": 110, "endLine": 118 },
+    "type": "definition",
+    "title": "ErdosMengerConjecture",
+    "content": "∃ vertex-disjoint A-B paths P and set S: S is transversal of P AND S is separator.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-menger",
+    "proofId": "erdos-599",
+    "range": { "startLine": 124, "endLine": 135 },
+    "type": "theorem",
+    "title": "MengersTheorem",
+    "content": "Menger (1927): For finite graphs, max disjoint paths = min separator size.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-aharoniberger",
+    "proofId": "erdos-599",
+    "range": { "startLine": 141, "endLine": 147 },
+    "type": "theorem",
+    "title": "aharoni_berger_theorem",
+    "content": "Aharoni-Berger (2009): The Erdős-Menger conjecture holds for ALL graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-599-matroids",
+    "proofId": "erdos-599",
+    "range": { "startLine": 153, "endLine": 154 },
+    "type": "concept",
+    "title": "Infinite Matroids",
+    "content": "The proof uses infinite matroid theory - sophisticated combinatorial structures.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-599-klinked",
+    "proofId": "erdos-599",
+    "range": { "startLine": 166, "endLine": 173 },
+    "type": "definition",
+    "title": "IsKLinked",
+    "content": "k-linked: any k sources can be connected to k targets by disjoint paths.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-599-history",
+    "proofId": "erdos-599",
+    "range": { "startLine": 186, "endLine": 196 },
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "Menger 1927 (finite) → Erdős 1981 (infinite conjecture) → Aharoni-Berger 2009 (proof).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-599-connectivity",
+    "proofId": "erdos-599",
+    "range": { "startLine": 202, "endLine": 212 },
+    "type": "definition",
+    "title": "vertexConnectivity",
+    "content": "Vertex connectivity: minimum size of separating set.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-599-konig",
+    "proofId": "erdos-599",
+    "range": { "startLine": 218, "endLine": 225 },
+    "type": "concept",
+    "title": "König Connection",
+    "content": "Menger's theorem generalizes König's theorem on bipartite matching.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-599-solved",
+    "proofId": "erdos-599",
+    "range": { "startLine": 264, "endLine": 268 },
+    "type": "theorem",
+    "title": "erdos_599_solved",
+    "content": "Problem #599 is SOLVED: YES, Menger's theorem extends to infinite graphs.",
+    "significance": "critical"
+  }
+]
