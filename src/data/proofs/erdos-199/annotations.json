@@ -1,1 +1,148 @@
-[]
+[
+  {
+    "id": "ann-199-header",
+    "proofId": "erdos-199",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #199: Arithmetic Progressions in Set Complements**\n\n**Question:** If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression?\n\n**Answer:** NO (Disproved)\n\n**Historical Timeline:**\n- 1970s: Erdős posed the question\n- 1975: Baumgartner provided counterexample using axiom of choice\n\n**Key Insight:** The construction uses a Hamel basis for ℝ over ℚ to partition the reals into two sets, neither containing an infinite AP.",
+    "mathContext": "This problem connects Ramsey theory (van der Waerden's theorem) with set-theoretic constructions requiring the axiom of choice.",
+    "significance": "critical",
+    "relatedConcepts": ["Arithmetic progressions", "Ramsey theory", "Axiom of choice", "Hamel basis"]
+  },
+  {
+    "id": "ann-199-has3ap",
+    "proofId": "erdos-199",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "3-Term Arithmetic Progression",
+    "content": "**has3AP:**\n\nA set A contains a 3-term arithmetic progression if there exist a, d ∈ ℝ with d ≠ 0 such that a, a+d, a+2d are all in A.\n\n**Definition:**\n```lean\ndef has3AP (A : Set ℝ) : Prop :=\n  ∃ a d : ℝ, d ≠ 0 ∧ a ∈ A ∧ (a + d) ∈ A ∧ (a + 2*d) ∈ A\n```\n\n**Examples:**\n- {1, 2, 3} has a 3-AP: 1, 2, 3 with d = 1\n- {1, 3, 9} has no 3-AP (it's a geometric progression)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-199-3apfree",
+    "proofId": "erdos-199",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "3-AP-Free Sets",
+    "content": "**is3APFree:**\n\nA set is 3-AP-free if it contains no 3-term arithmetic progression.\n\n**Definition:**\n```lean\ndef is3APFree (A : Set ℝ) : Prop := ¬has3AP A\n```\n\n**Classical examples of 3-AP-free sets:**\n- Stanley sequence: 0, 1, 3, 5, 11, 22, 45, ...\n- Powers of 2: {1, 2, 4, 8, 16, ...}",
+    "significance": "key"
+  },
+  {
+    "id": "ann-199-infiniteap",
+    "proofId": "erdos-199",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "definition",
+    "title": "Infinite Arithmetic Progression",
+    "content": "**infiniteAP:**\n\nThe infinite arithmetic progression {a, a+d, a+2d, a+3d, ...} for d ≠ 0.\n\n**Definition:**\n```lean\ndef infiniteAP (a d : ℝ) : Set ℝ := {x : ℝ | ∃ n : ℕ, x = a + n * d}\n```\n\n**Examples:**\n- infiniteAP 0 1 = {0, 1, 2, 3, ...} = ℕ\n- infiniteAP 1 2 = {1, 3, 5, 7, ...} = odd naturals",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-199-containsinf",
+    "proofId": "erdos-199",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Contains Infinite AP",
+    "content": "**containsInfiniteAP:**\n\nA set contains an infinite AP if some infinite arithmetic progression is a subset.\n\n**Definition:**\n```lean\ndef containsInfiniteAP (A : Set ℝ) : Prop :=\n  ∃ a d : ℝ, d ≠ 0 ∧ infiniteAP a d ⊆ A\n```\n\n**Note:** This is a much stronger condition than containing arbitrarily long finite APs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-199-conjecture",
+    "proofId": "erdos-199",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**ErdosConjecture199:**\n\nThe original question formalized: if A is 3-AP-free, must ℝ \\ A contain an infinite AP?\n\n**Definition:**\n```lean\ndef ErdosConjecture199 : Prop :=\n  ∀ A : Set ℝ, is3APFree A → containsInfiniteAP Aᶜ\n```\n\n**Intuition:** If you remove a \"sparse\" set (3-AP-free), there should be \"lots of structure\" left (infinite AP). This turns out to be false!",
+    "mathContext": "The conjecture seems plausible given van der Waerden's theorem, but infinite APs behave very differently.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-199-hamel",
+    "proofId": "erdos-199",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "axiom",
+    "title": "Hamel Basis",
+    "content": "**hamelBasisExists:**\n\nℝ is a vector space over ℚ, and (using AC) there exists a basis—the Hamel basis.\n\n**Key Properties:**\n- Every real number is a finite ℚ-linear combination of basis elements\n- The basis is uncountable\n- Cannot be explicitly constructed\n\n**Role in Proof:** The Hamel basis provides the algebraic structure for Baumgartner's partition.",
+    "mathContext": "The existence of a Hamel basis is equivalent to the axiom of choice. No explicit Hamel basis is known.",
+    "significance": "key",
+    "relatedConcepts": ["Axiom of choice", "Vector spaces", "Linear algebra"]
+  },
+  {
+    "id": "ann-199-baumgartner",
+    "proofId": "erdos-199",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "axiom",
+    "title": "Baumgartner's Partition (1975)",
+    "content": "**baumgartner_partition:**\n\nBaumgartner showed ℝ can be partitioned into two sets A and B, where NEITHER contains an infinite arithmetic progression.\n\n**Statement:**\n```lean\naxiom baumgartner_partition :\n    ∃ A B : Set ℝ,\n      A ∪ B = univ ∧ A ∩ B = ∅ ∧\n      ¬containsInfiniteAP A ∧ ¬containsInfiniteAP B\n```\n\n**Construction Idea:**\n1. Take a Hamel basis B for ℝ over ℚ\n2. Partition using the \"parity\" of coefficients in the basis expansion\n3. This prevents infinite APs in either part",
+    "mathContext": "Published in 'Partitioning vector spaces' (J. Combinatorial Theory Ser. A, 1975, pp. 231-233).",
+    "significance": "critical",
+    "relatedConcepts": ["Set partition", "Hamel basis", "Axiom of choice"]
+  },
+  {
+    "id": "ann-199-disproved",
+    "proofId": "erdos-199",
+    "range": { "startLine": 94, "endLine": 102 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "**erdos_199_disproved:**\n\nErdős's conjecture is false.\n\n**Proof:**\n```lean\ntheorem erdos_199_disproved : ¬ErdosConjecture199 := by\n  intro h\n  obtain ⟨A, hAP, hNoInfAP⟩ := baumgartner_3AP_free\n  have := h A hAP\n  exact hNoInfAP this\n```\n\n**Logic:** Baumgartner gives a 3-AP-free set A whose complement has no infinite AP. This directly contradicts the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-199-main",
+    "proofId": "erdos-199",
+    "range": { "startLine": 104, "endLine": 106 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_199:**\n\nThe answer to Erdős Problem #199 is NO.\n\n**Statement:**\n```lean\ntheorem erdos_199 : ∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ :=\n  baumgartner_3AP_free\n```\n\nThere exists a set A that is 3-AP-free, yet its complement contains no infinite AP.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-199-ac",
+    "proofId": "erdos-199",
+    "range": { "startLine": 108, "endLine": 119 },
+    "type": "concept",
+    "title": "Role of Axiom of Choice",
+    "content": "**construction_requires_AC:**\n\nBaumgartner's construction fundamentally requires the axiom of choice.\n\n**Why AC is Needed:**\n- Hamel bases cannot be constructed without AC\n- No explicit example of the counterexample set A is known\n- The construction is inherently non-constructive\n\n**Open Question:** In ZF (without AC), the problem might have a different answer. This is not yet resolved.",
+    "mathContext": "The dependence on AC highlights the difference between constructive and non-constructive mathematics.",
+    "significance": "key",
+    "relatedConcepts": ["Axiom of choice", "ZF set theory", "Constructive mathematics"]
+  },
+  {
+    "id": "ann-199-vdw",
+    "proofId": "erdos-199",
+    "range": { "startLine": 127, "endLine": 135 },
+    "type": "axiom",
+    "title": "Van der Waerden's Theorem",
+    "content": "**van_der_waerden:**\n\nFor any finite coloring of ℕ, some color class contains arbitrarily long arithmetic progressions.\n\n**Statement:**\n```lean\naxiom van_der_waerden :\n    ∀ (k : ℕ) (c : ℕ → Fin k),\n      ∀ n : ℕ, ∃ a d : ℕ, d > 0 ∧ ∀ i < n, c (a + i * d) = c a\n```\n\n**Contrast with Erdős 199:**\n- VdW: Finite colorings of ℕ → long APs exist\n- Baumgartner: 2-partition of ℝ → NO infinite APs\n\nThe difference: infinite APs are much harder to avoid than arbitrarily long finite ones.",
+    "mathContext": "Van der Waerden's theorem (1927) is a cornerstone of Ramsey theory.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "Szemerédi's theorem", "Combinatorics"]
+  },
+  {
+    "id": "ann-199-example-nat",
+    "proofId": "erdos-199",
+    "range": { "startLine": 143, "endLine": 152 },
+    "type": "theorem",
+    "title": "Example: ℕ Has 3-APs",
+    "content": "**Example showing ℕ (embedded in ℝ) has many 3-APs:**\n\n```lean\nexample : has3AP {n : ℝ | ∃ k : ℕ, n = k} := by\n  use 1, 1\n  ...\n```\n\n**Verification:** 1, 2, 3 is a 3-term AP with a = 1, d = 1.\n\nThis shows that dense sets like ℕ definitely contain APs. The question is about sparse (3-AP-free) sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-199-example-rat",
+    "proofId": "erdos-199",
+    "range": { "startLine": 154, "endLine": 164 },
+    "type": "theorem",
+    "title": "Example: ℚ Contains Infinite APs",
+    "content": "**Example showing ℚ (embedded in ℝ) contains infinite APs:**\n\n```lean\nexample : containsInfiniteAP {q : ℝ | ∃ r : ℚ, q = r} := by\n  use 0, 1\n  ...\n```\n\n**Verification:** The infinite AP {0, 1, 2, 3, ...} ⊆ ℚ.\n\nThis contrasts with Baumgartner's sets, which avoid all infinite APs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-199-summary",
+    "proofId": "erdos-199",
+    "range": { "startLine": 192, "endLine": 199 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_199_summary:**\n\nCombines all the main results:\n\n```lean\ntheorem erdos_199_summary :\n    ¬ErdosConjecture199 ∧\n    (∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ) ∧\n    True\n```\n\n**Components:**\n1. Erdős's conjecture is FALSE\n2. A counterexample EXISTS (via Baumgartner)\n3. The problem is RESOLVED",
+    "significance": "critical"
+  }
+]

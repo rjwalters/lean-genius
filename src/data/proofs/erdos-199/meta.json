@@ -1,33 +1,134 @@
 {
   "id": "erdos-199",
-  "title": "Erdős Problem #199",
+  "title": "Erdős Problem #199: Arithmetic Progressions in Set Complements",
   "slug": "erdos-199",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... does not contain a 3-term arithmetic progression then must ... contain an infinite arithmetic progression?\n\n\n\nThe answ...",
+  "description": "If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression? NO - disproved by Baumgartner (1975) using the axiom of choice.",
   "meta": {
-    "author": "Unknown",
+    "author": "Baumgartner, J.E. (1975 disproof)",
     "sourceUrl": "https://erdosproblems.com/199",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
+    "dateAdded": "2026-01-23",
     "proofRepoPath": "Proofs/Erdos199Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "arithmetic-progressions",
+      "combinatorics",
+      "Ramsey-theory",
+      "axiom-of-choice",
+      "disproved"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 199,
     "erdosUrl": "https://erdosproblems.com/199",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "solvedBy": "J.E. Baumgartner",
+    "solvedYear": 1975,
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.compl",
+        "description": "Set complement notation Aᶜ"
+      },
+      {
+        "theorem": "Set.univ",
+        "description": "The universal set"
+      },
+      {
+        "theorem": "Set.mem_setOf",
+        "description": "Membership in set-builder sets"
+      }
+    ],
+    "originalContributions": [
+      "has3AP definition for 3-term arithmetic progressions",
+      "is3APFree predicate for AP-free sets",
+      "infiniteAP definition for infinite arithmetic progressions",
+      "containsInfiniteAP predicate",
+      "ErdosConjecture199 formalization of the original question",
+      "baumgartner_partition axiom for the counterexample",
+      "erdos_199_disproved theorem showing the conjecture is false",
+      "van_der_waerden axiom connecting to Ramsey theory",
+      "Concrete examples with naturals and rationals"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #199 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subset \\mathbb{R}$ does not contain a 3-term arithmetic progression then must $\\mathbb{R}\\backslash A$ contain an infinite arithmetic progression?\n\n\n\nThe answer is no, as shown by Baumgartner \\cite{Ba75} (whose construction uses the axiom of choice to provide a basis for $\\mathbb{R}$ over $\\mathbb{Q}$).\n\n\n\n\nReferences\n\n\n[Ba75] Baumgartner, James E., Partitioning vector spaces. J. Combinatorial Theory Ser. A (1975), 231-233.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in the 1970s, asking whether avoiding 3-term arithmetic progressions forces the complement to contain infinite progressions. The question connects to Ramsey theory and van der Waerden's theorem, which guarantees arbitrarily long APs in finite colorings of ℕ.\n\nBaumgartner (1975) provided a surprising negative answer using the axiom of choice. His construction uses a Hamel basis for ℝ over ℚ to partition the reals into two sets, neither containing an infinite AP.\n\nThis result highlights the fundamental difference between finite and infinite combinatorics, and the essential role of the axiom of choice in such constructions.",
+    "problemStatement": "If $A \\subset \\mathbb{R}$ does not contain a 3-term arithmetic progression, must $\\mathbb{R} \\setminus A$ contain an infinite arithmetic progression?\n\n**Answer: NO**\n\nBaumgartner showed this is false using an axiom-of-choice construction.",
+    "proofStrategy": "The formalization axiomatizes Baumgartner's result since the construction requires:\n1. A Hamel basis for ℝ over ℚ (non-constructive via AC)\n2. A careful partition using the algebraic structure\n\nWe define the key predicates (has3AP, is3APFree, containsInfiniteAP), state Erdős's conjecture formally, and prove it false via the axiomatized counterexample.",
+    "keyInsights": [
+      "**Axiom of Choice Essential**: Baumgartner's construction uses a Hamel basis, requiring AC",
+      "**Partition Both Ways**: ℝ splits into two sets, NEITHER having an infinite AP",
+      "**Contrast with van der Waerden**: VdW gives long APs in ℕ colorings, but infinite APs are different",
+      "**ZF Question Open**: Without AC, the answer might be different",
+      "**Non-constructive**: The counterexample cannot be explicitly described"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 36,
+      "endLine": 54,
+      "summary": "3-term AP, AP-free sets, infinite AP definitions"
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős's Conjecture",
+      "startLine": 56,
+      "endLine": 64,
+      "summary": "Formal statement of the original question"
+    },
+    {
+      "id": "baumgartner",
+      "title": "Baumgartner's Counterexample",
+      "startLine": 66,
+      "endLine": 86,
+      "summary": "The partition axiom and counterexample existence"
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "startLine": 88,
+      "endLine": 106,
+      "summary": "Proof that Erdős's conjecture is false"
+    },
+    {
+      "id": "axiom-of-choice",
+      "title": "Axiom of Choice",
+      "startLine": 108,
+      "endLine": 119,
+      "summary": "The essential role of AC in the construction"
+    },
+    {
+      "id": "van-der-waerden",
+      "title": "Van der Waerden Connection",
+      "startLine": 121,
+      "endLine": 135,
+      "summary": "Contrast with Ramsey-theoretic results"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 137,
+      "endLine": 164,
+      "summary": "Concrete examples with naturals and rationals"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 166,
+      "endLine": 204,
+      "summary": "Complete statement of the disproved result"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #199 asked whether avoiding 3-term APs forces infinite APs in the complement. Baumgartner (1975) showed the answer is NO, using an axiom-of-choice construction based on a Hamel basis for ℝ over ℚ.",
+    "implications": "This result demonstrates:\n1. The gap between finite and infinite Ramsey theory\n2. The essential role of the axiom of choice in combinatorics\n3. Non-constructive objects can have surprising combinatorial properties",
+    "openQuestions": [
+      "What is the answer in ZF without the axiom of choice?",
+      "Are there 'natural' (explicit) counterexamples?",
+      "What about higher-dimensional generalizations?"
+    ]
   }
 }
