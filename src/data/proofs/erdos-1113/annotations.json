@@ -56,16 +56,16 @@
   {
     "id": "ann-1113-covering-implies",
     "proofId": "erdos-1113",
-    "range": { "startLine": 82, "endLine": 93 },
-    "type": "theorem",
+    "range": { "startLine": 82, "endLine": 89 },
+    "type": "axiom",
     "title": "covering_set_implies_sierpinski",
-    "content": "**Theorem:** If m has a covering set, then m is a Sierpinski number.\n\nCovering sets explain compositeness: each term is divisible by a prime from the covering set.",
+    "content": "**Axiom:** If m has a covering set, then m is a Sierpinski number.\n\nCovering sets explain compositeness: each term is divisible by a prime from the covering set. (Axiomatized due to subtle finiteness arguments.)",
     "significance": "key"
   },
   {
     "id": "ann-1113-main-question",
     "proofId": "erdos-1113",
-    "range": { "startLine": 99, "endLine": 101 },
+    "range": { "startLine": 95, "endLine": 97 },
     "type": "definition",
     "title": "ErdosProblem1113",
     "content": "**The Main Question:** ∃ m, IsSierpinskiNumber m ∧ ¬HasFiniteCoveringSet m\n\nDoes there exist a Sierpinski number that CANNOT be explained by any covering set?",
@@ -74,7 +74,7 @@
   {
     "id": "ann-1113-equivalence",
     "proofId": "erdos-1113",
-    "range": { "startLine": 107, "endLine": 115 },
+    "range": { "startLine": 103, "endLine": 111 },
     "type": "theorem",
     "title": "problem_equivalence",
     "content": "**Theorem:** ErdosProblem1113 ↔ ¬AllSierpinskiHaveCoverings\n\nThe problem is equivalent to asking: is it FALSE that every Sierpinski number has a covering?",
@@ -83,7 +83,7 @@
   {
     "id": "ann-1113-78557",
     "proofId": "erdos-1113",
-    "range": { "startLine": 121, "endLine": 130 },
+    "range": { "startLine": 117, "endLine": 126 },
     "type": "axiom",
     "title": "Smallest Known Sierpinski",
     "content": "**78557 (Selfridge):** The smallest known Sierpinski number.\n\nIts covering set is {3, 5, 7, 13, 19, 37, 73} - seven primes that together cover all terms.",
@@ -92,7 +92,7 @@
   {
     "id": "ann-1113-infinitely-many",
     "proofId": "erdos-1113",
-    "range": { "startLine": 136, "endLine": 142 },
+    "range": { "startLine": 132, "endLine": 138 },
     "type": "axiom",
     "title": "Sierpinski's Construction",
     "content": "**Sierpinski (1960):** Infinitely many Sierpinski numbers exist, all with covering sets.\n\nThe construction uses Chinese Remainder Theorem to build covering systems.",
@@ -101,7 +101,7 @@
   {
     "id": "ann-1113-izotov",
     "proofId": "erdos-1113",
-    "range": { "startLine": 148, "endLine": 158 },
+    "range": { "startLine": 144, "endLine": 154 },
     "type": "axiom",
     "title": "Izotov's Candidate",
     "content": "**Izotov (1995):** m = 734110615000775^4 is conjectured to have NO covering set.\n\nThis is the strongest evidence that Erdős Problem #1113 has answer YES.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-1113-perfect-power",
     "proofId": "erdos-1113",
-    "range": { "startLine": 164, "endLine": 166 },
+    "range": { "startLine": 160, "endLine": 162 },
     "type": "definition",
     "title": "IsPerfectPower",
     "content": "**Perfect Power:** m = n^k for some n, k ≥ 2.\n\nPerfect powers may behave differently regarding covering sets.",
@@ -119,7 +119,7 @@
   {
     "id": "ann-1113-ffk",
     "proofId": "erdos-1113",
-    "range": { "startLine": 168, "endLine": 184 },
+    "range": { "startLine": 164, "endLine": 180 },
     "type": "definition",
     "title": "FFKConjecture",
     "content": "**Filaseta-Finch-Kozek Conjecture (2008):**\n\nEvery Sierpinski number is either a perfect power OR has a finite covering set.\n\nIzotov's candidate IS a 4th power, consistent with this conjecture!",
@@ -128,7 +128,7 @@
   {
     "id": "ann-1113-fermat",
     "proofId": "erdos-1113",
-    "range": { "startLine": 190, "endLine": 211 },
+    "range": { "startLine": 186, "endLine": 207 },
     "type": "concept",
     "title": "Fermat Prime Connection",
     "content": "**Erdős-Graham Observation:**\n\nIf ALL Sierpinski numbers have covering sets, then infinitely many Fermat primes exist.\n\nSince infinitely many Fermat primes is considered unlikely, this supports answer YES to Problem #1113.",
@@ -137,7 +137,7 @@
   {
     "id": "ann-1113-main",
     "proofId": "erdos-1113",
-    "range": { "startLine": 244, "endLine": 261 },
+    "range": { "startLine": 240, "endLine": 257 },
     "type": "theorem",
     "title": "erdos_1113",
     "content": "**Main Result:**\n1. The question remains OPEN\n2. Izotov's candidate is a Sierpinski number\n3. FFK conjecture is compatible with Izotov's example\n\n**Status: OPEN** - Strong evidence suggests uncovered Sierpinski numbers exist.",
