@@ -1,0 +1,18 @@
+{
+  "problem_number": 651,
+  "title": "Convex Polyhedra from Points in General Position",
+  "status": "disproved",
+  "solvers": ["Pohoata-Zakharov (2022)"],
+  "source_url": "https://erdosproblems.com/651",
+  "overview": "Let f_k(n) be the smallest integer such that any f_k(n) points in general position in ℝ^k contain n points determining a convex polyhedron. Is f_k(n) > (1 + c_k)^n for some c_k > 0?",
+  "sections": [],
+  "conclusion": "NO - DISPROVED by Pohoata-Zakharov (2022) who showed f_3(n) ≤ 2^{o(n)}, which is subexponential. This means no constant c_3 > 0 can give a uniform exponential lower bound. The conjecture fails for all k ≥ 3.",
+  "references": [
+    "Erdős [Er97e] - Original problem formulation",
+    "Pohoata-Zakharov [PoZa22] - Disproof: f_3(n) ≤ 2^{o(n)}",
+    "Erdős-Szekeres (1935) - f_2(n) ≤ 2^{n-2} + 1",
+    "Suk (2017) - f_2(n) = 2^{n-2} + 1 exact"
+  ],
+  "related_problems": [107],
+  "tags": ["geometry", "convex-geometry", "ramsey-theory", "combinatorics", "disproved"]
+}
