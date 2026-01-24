@@ -1,33 +1,86 @@
 {
   "id": "erdos-320",
-  "title": "Erdős Problem #320",
+  "title": "Erdős Problem #320: Distinct Sums of Unit Fractions",
   "slug": "erdos-320",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of distinct sums of the form ... for .... Estimate ....\n\n\n\nBleicher and Erds  proved the lower bound...",
+  "description": "Estimate S(N), the number of distinct sums ∑_{n∈A} 1/n for A ⊆ {1,...,N}. OPEN - Bleicher-Erdős (1975-76) gave bounds with iterated logarithms. BGMS (2025) improved the lower bound.",
   "meta": {
-    "author": "Unknown",
+    "author": "Bleicher-Erdős (1975-76), Bettin-Grenié-Molteni-Sanna (2025)",
     "sourceUrl": "https://erdosproblems.com/320",
-    "date": "",
-    "status": "pending",
+    "date": "1975-2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos320Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "counting",
+      "iterated-logarithms",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 320,
     "erdosUrl": "https://erdosproblems.com/320",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power set for subset enumeration",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Rat.Basic",
+        "description": "Rational numbers for unit fractions",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for iterated logs",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Products for iterated log products",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "harmonicSum, subsetSum: unit fraction sums",
+      "allSubsetSums, S: counting distinct sums",
+      "iterLog, iterLogProduct: iterated logarithms",
+      "bleicher_erdos_lower_bound: (1975) lower bound",
+      "bleicher_erdos_upper_bound: (1976) upper bound",
+      "bgms_improved_lower_bound: (2025) improved lower",
+      "IsEgyptianFraction, egyptianCount: Egyptian fractions",
+      "oeis_A072207: specific values S(1)=2,...,S(8)=255",
+      "first_collision: S(8) < 2^8 (first collision at N=8)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #320 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S(N)$ count the number of distinct sums of the form $\\sum_{n\\in A}\\frac{1}{n}$ for $A\\subseteq \\{1,\\ldots,N\\}$. Estimate $S(N)$.\n\n\n\nBleicher and Erd\\H{o}s \\cite{BlEr75} proved the lower bound\\[\\log S(N)\\geq \\frac{N}{\\log N}\\left(\\log 2\\prod_{i=3}^k\\log_iN\\right),\\]valid for $k\\geq 4$ and $\\log_kN\\geq k$, and also \\cite{BlEr76b} proved the upper bound\\[\\log S(N)\\leq \\frac{N}{\\log N}\\left(\\log_r N \\prod_{i=3}^r \\log_iN\\right),\\]valid for $r\\geq 1$ and $\\log_{2r}N\\geq 1$. (In these bounds $\\log_in$ denotes the $i$-fold iterated logarithm.)\n\nBettin, Greni\\'{e}, Molteni, and Sanna \\cite{BGMS25} improved the lower bound to\\[\\log S(N) \\geq \\frac{N}{\\log N}\\left(2\\log 2\\left(1-\\frac{3/2}{\\log_kN}\\right)\\prod_{i=3}^k\\log_iN\\right),\\]valid for $k\\geq 4$ and $\\log_kN\\geq 3/2$. (In particular this goes to infinity faster than the lower bound of Bleicher and Erd\\H{o}s.)\n\nSee also [321].\n\n\n\n\nReferences\n\n\n[BGMS25] S. Bettin, L. Greni\\'{e}, G. Molteni, and C. Sanna, A lower bound for the number of Egyptian fractions. arXiv:2509.10030 (2025).\n\n[BlEr75] Bleicher, M. N. and Erd\\H{o}s, P., The number of distinct subsums of $\\sum \\sb{1}\\spN\\,1/i$. Math. Comp. (1975), 29-42.\n\n[BlEr76b] Bleicher, Michael N. and Erd\\H{o}s, Paul, Denominators of Egyptian fractions. II. Illinois J. Math. (1976), 598-613.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Bleicher-Erdős on Distinct Subsums (1975-76)**\n\nLet S(N) count distinct sums ∑_{n∈A} 1/n for subsets A ⊆ {1,...,N}. Bleicher and Erdős established bounds using iterated logarithms log_i N (where log_i denotes i-fold iteration).\n\n**Lower Bound (1975):**\nlog S(N) ≥ (N/log N)(log 2 · ∏_{i=3}^k log_i N)\n\n**Upper Bound (1976):**\nlog S(N) ≤ (N/log N)(log_r N · ∏_{i=3}^r log_i N)\n\n**Recent Progress:**\nBettin, Grenié, Molteni, and Sanna (2025) improved the lower bound constant from log 2 to 2 log 2, showing faster growth.\n\n**Status:**\nThe problem remains OPEN - the gap between bounds is significant and the exact asymptotic behavior is unknown.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet S(N) = |{∑_{n∈A} 1/n : A ⊆ {1,...,N}}| count distinct unit fraction sums.\n\n**Question:** Estimate S(N).\n\n**Known:**\n- Lower: log S(N) ≥ (N/log N)(log 2 · ∏ log_i N)\n- Upper: log S(N) ≤ (N/log N)(log_r N · ∏ log_i N)\n- S(N) = 2^N for N ≤ 7 (no collisions)\n- First collision at N = 8: S(8) = 255\n\n**Status: OPEN**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** harmonicSum, subsetSum, allSubsetSums, S(N)\n\n2. **Iterated Logarithms:** iterLog, log₁, log₂, log₃, iterLogProduct\n\n3. **Bleicher-Erdős Bounds:** Lower (1975), Upper (1976)\n\n4. **BGMS Improvement:** 2025 improved lower bound\n\n5. **Egyptian Fractions:** IsEgyptianFraction, connection to #321\n\n6. **Specific Values:** S(1)=2 through S(8)=255 (OEIS A072207)\n\n7. **First Collision:** S(8) < 2^8 proves collisions exist",
+    "keyInsights": [
+      "**Iterated Logs:** Bounds involve products ∏_{i=3}^k log_i N",
+      "**Growth Rate:** S(N) ~ exp((N/log N) · iterated logs)",
+      "**No Collisions for N ≤ 7:** All 2^N subset sums distinct",
+      "**First Collision at N = 8:** S(8) = 255 < 256 = 2^8",
+      "**BGMS Improvement:** Constant from log 2 to 2 log 2",
+      "**Gap Remains:** Upper vs lower bound gap significant"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #320 asks for the asymptotic behavior of S(N), the count of distinct unit fraction sums from {1,...,N}. Bleicher-Erdős (1975-76) established bounds with iterated logarithms. BGMS (2025) improved the lower bound. The problem remains OPEN - closing the gap between bounds is the main challenge.",
+    "implications": "**Connections**\n\n1. **Egyptian Fractions:** S(N) counts representable values\n\n2. **Problem #321:** Related to Egyptian fraction counts\n\n3. **Combinatorics:** Subset sum problems over rationals\n\n4. **OEIS A072207:** Explicit values computed",
+    "openQuestions": [
+      "What is the exact asymptotic constant?",
+      "Can the gap between bounds be closed?",
+      "What causes collisions (different subsets, same sum)?",
+      "Is there a pattern to collision structure?"
+    ]
   }
 }
