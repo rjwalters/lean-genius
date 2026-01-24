@@ -1,0 +1,17 @@
+{
+  "problem_number": 93,
+  "title": "Distinct Distances in Convex Polygons",
+  "status": "solved",
+  "solvers": ["Altman (1963)"],
+  "source_url": "https://erdosproblems.com/93",
+  "overview": "If n distinct points in ℝ² form a convex polygon, they determine at least ⌊n/2⌋ distinct distances. Altman (1963) proved this bound, which is achieved by regular n-gons. The stronger variant asking if some vertex sees ⌊n/2⌋ distances remains open (Problem #982).",
+  "sections": [],
+  "conclusion": "TRUE - A convex n-gon has at least ⌊n/2⌋ distinct distances. The bound is tight: regular polygons achieve exactly this. Convexity constrains how distances can repeat, forcing this minimum. Related open problems ask about single-vertex distance counts.",
+  "references": [
+    "[Al63] Altman (1963) - Original proof",
+    "Problem #982 - Stronger variant (OPEN)",
+    "Problem #660, #1082 - Related generalizations"
+  ],
+  "related_problems": [982, 660, 1082],
+  "tags": ["geometry", "convex-polygon", "distinct-distances"]
+}
