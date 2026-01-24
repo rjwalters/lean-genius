@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-970-header",
+    "proofId": "erdos-970",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #970** asks: is h(k) = O(k²) where h(k) is Jacobsthal's function?\n\n**Answer:** OPEN\n\n**Best bounds:**\n- Upper: h(k) ≤ C(k log k)² (Iwaniec 1978)\n- Lower: h(k) ≥ ck log k log³k/(log²k)² (FGKMT 2018)",
+    "mathContext": "Jacobsthal's function measures coprimality in intervals of consecutive integers.",
+    "significance": "critical",
+    "relatedConcepts": ["Coprimality", "Prime gaps", "Sieve methods", "Primorials"]
+  },
+  {
+    "id": "ann-970-omega",
+    "proofId": "erdos-970",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "definition",
+    "title": "omega and hasAtMostKPrimes",
+    "content": "omega(n) = number of distinct prime factors of n.\n\nhasAtMostKPrimes(n, k): n has at most k distinct prime factors.\n\nThese are the domain constraints for Jacobsthal's function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-970-jacobsthal",
+    "proofId": "erdos-970",
+    "range": { "startLine": 58, "endLine": 70 },
+    "type": "definition",
+    "title": "Jacobsthal's Function h(k)",
+    "content": "h(k) = max over all n with ≤k prime factors of the minimal m such that any m consecutive integers contain one coprime to n.\n\njacobsthalForN(n): the minimal m for a specific n.\n\nh(k): the maximum over all valid n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-970-conjecture",
+    "proofId": "erdos-970",
+    "range": { "startLine": 76, "endLine": 82 },
+    "type": "definition",
+    "title": "Jacobsthal's Conjecture",
+    "content": "**jacobsthalConjecture:** There exists C > 0 such that h(k) ≤ Ck² for all k ≥ 1.\n\nThis is the main open question. The conjecture asserts quadratic growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-970-iwaniec",
+    "proofId": "erdos-970",
+    "range": { "startLine": 88, "endLine": 102 },
+    "type": "axiom",
+    "title": "Iwaniec's Upper Bound",
+    "content": "**Iwaniec (1978):** h(k) ≤ C(k log k)² for large k.\n\nThis is the best known upper bound. It uses sieve methods.\n\nThe gap from the conjectured k² is a factor of (log k)².",
+    "mathContext": "Published in Demonstratio Math. (1978)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-970-fgkmt",
+    "proofId": "erdos-970",
+    "range": { "startLine": 123, "endLine": 130 },
+    "type": "axiom",
+    "title": "FGKMT Lower Bound",
+    "content": "**Ford-Green-Konyagin-Maynard-Tao (2018):**\n\nh(k) ≥ ck · (log k)(log log log k)/(log log k)²\n\nThis is the current best lower bound, using breakthrough results on prime gaps.",
+    "mathContext": "Published in J. Amer. Math. Soc. (2018)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-970-small",
+    "proofId": "erdos-970",
+    "range": { "startLine": 136, "endLine": 149 },
+    "type": "theorem",
+    "title": "Small Values of h(k)",
+    "content": "**Computed values:**\n- h(1) = 2\n- h(2) = 4\n- h(3) = 6\n- h(4) = 10\n- h(5) = 14\n\nThese are achieved at primorials (products of first k primes).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-970-primorial",
+    "proofId": "erdos-970",
+    "range": { "startLine": 151, "endLine": 157 },
+    "type": "definition",
+    "title": "Primorials and Extremals",
+    "content": "**primorial(k):** Product of first k primes: 2·3·5·...·pₖ.\n\nJacobsthal's function is maximized at primorials: jacobsthalForN(primorial(k)) = h(k).\n\nThis is why primorials are the key examples.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-970-gaps",
+    "proofId": "erdos-970",
+    "range": { "startLine": 163, "endLine": 179 },
+    "type": "concept",
+    "title": "Connection to Prime Gaps",
+    "content": "**Problem 687:** Related question about gaps between primes.\n\nLarge prime gaps imply lower bounds for h(k). The FGKMT paper on 'Long gaps between primes' gives the current best lower bound.\n\nJacobsthal's function generalizes prime gap questions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-970-sieve",
+    "proofId": "erdos-970",
+    "range": { "startLine": 185, "endLine": 195 },
+    "type": "concept",
+    "title": "Proof Methods",
+    "content": "**Sieve methods:** Give upper bounds (Iwaniec's approach).\n\n**Chinese Remainder Theorem:** Guarantees coprime elements exist.\n\n**Probabilistic heuristics:** Suggest h(k) ~ k log k or k², but don't resolve the conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-970-gap",
+    "proofId": "erdos-970",
+    "range": { "startLine": 211, "endLine": 217 },
+    "type": "theorem",
+    "title": "Current Gap",
+    "content": "**Gap between bounds:**\n- Upper: C(k log k)²\n- Lower: ck log k log³k/(log²k)²\n\nGap from quadratic to upper is (log k)². Gap between upper and lower is roughly k log k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-970-status",
+    "proofId": "erdos-970",
+    "range": { "startLine": 260, "endLine": 265 },
+    "type": "theorem",
+    "title": "Problem Status: OPEN",
+    "content": "erdos_970_status: OPEN\n\nJacobsthal's Conjecture h(k) ≪ k² remains unresolved despite significant progress on bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-970-summary",
+    "proofId": "erdos-970",
+    "range": { "startLine": 274, "endLine": 287 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #970: OPEN**\n\n- Question: Is h(k) = O(k²)?\n- Answer: UNKNOWN\n- Upper: h(k) ≤ C(k log k)² (Iwaniec 1978)\n- Lower: h(k) ≥ ck log k log³k/(log²k)² (FGKMT 2018)\n\nGap to quadratic is (log k)². Open since Jacobsthal.",
+    "significance": "critical"
+  }
+]

@@ -1,33 +1,144 @@
 {
   "id": "erdos-970",
-  "title": "Erdős Problem #970",
+  "title": "Erdős Problem #970: Jacobsthal's Function",
   "slug": "erdos-970",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be Jacobsthal's function, defined to as the minimal ... such that, if ... has at most ... prime factors, then in any ...",
+  "description": "Is h(k) = O(k²) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)² by Iwaniec (1978).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/970",
-    "date": "",
-    "status": "pending",
+    "date": "2018",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos970Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "gaps",
+      "coprimality",
+      "open-problem",
+      "jacobsthal"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 970,
     "erdosUrl": "https://erdosproblems.com/970",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "primeFactors",
+        "description": "Set of prime factors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "omega definition: number of distinct prime factors",
+      "hasAtMostKPrimes definition: n has at most k prime factors",
+      "consecutiveInterval definition: interval [a, a+m)",
+      "hasCoprimeElement definition: interval contains coprime element",
+      "jacobsthalForN definition: Jacobsthal's function for specific n",
+      "h definition: Jacobsthal's function h(k)",
+      "jacobsthalConjecture definition: h(k) = O(k²)",
+      "iwaniec_upper_bound axiom: h(k) ≤ C(k log k)²",
+      "fgkmt_lower_bound axiom: h(k) ≥ ck log k log³k / (log²k)²",
+      "h_one through h_five axioms: small computed values",
+      "primorial definition: product of first k primes",
+      "jacobsthal_extremal axiom: primorials maximize h(k)",
+      "erdos_970_conjecture: formal conjecture statement"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #970 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(k)$ be Jacobsthal's function, defined to as the minimal $m$ such that, if $n$ has at most $k$ prime factors, then in any set of $m$ consecutive integers there exists an integer coprime to $n$. Determine the order of magnitude of $h(k)$. In particular, is it true that\\[h(k) \\ll k^2?\\]\n\n\n\nThat $h(k)\\ll k^2$ is a conjecture of Jacobsthal. Iwaniec \\cite{Iw78} proved\\[h(k) \\ll (k\\log k)^2.\\]The best lower bound known is\\[h(k) \\gg \\frac{(\\log k)(\\log\\log\\log k)}{(\\log\\log k)^2}k,\\]due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18}.\n\nThis is a more general form of the function considered in [687].\n\n\n\n\nReferences\n\n\n[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.\n\n[Iw78] Iwaniec, Henryk, On the problem of {J}acobsthal. Demonstratio Math. (1978), 225--231.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Jacobsthal's function h(k) is defined as the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors. Jacobsthal conjectured h(k) = O(k²). Iwaniec (1978) proved h(k) ≤ C(k log k)², the best known upper bound. Ford-Green-Konyagin-Maynard-Tao (2018) proved the current best lower bound using their breakthrough on prime gaps. The problem is connected to Problem #687.",
+    "problemStatement": "Let h(k) be Jacobsthal's function, defined as the minimal m such that, if n has at most k prime factors, then in any set of m consecutive integers there exists an integer coprime to n. Determine the order of magnitude of h(k). In particular, is it true that h(k) ≪ k²?",
+    "proofStrategy": "The formalization defines Jacobsthal's function h(k) and the main conjecture h(k) = O(k²). Known bounds are axiomatized: Iwaniec's upper bound h(k) ≤ C(k log k)² and FGKMT's lower bound. Small values h(1)=2, h(2)=4, h(3)=6, h(4)=10, h(5)=14 are recorded. The problem remains OPEN with a (log k)² gap from the conjectured bound.",
+    "keyInsights": [
+      "Jacobsthal's function measures coprimality in intervals",
+      "Best upper bound: h(k) ≤ C(k log k)² (Iwaniec 1978)",
+      "Best lower bound: h(k) ≥ ck log k log³k/(log²k)² (FGKMT 2018)",
+      "Gap from k² is roughly (log k)²",
+      "Primorials maximize Jacobsthal's function",
+      "Connected to prime gap problems",
+      "Sieve methods give upper bounds",
+      "Problem remains OPEN"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 70,
+      "summary": "omega, hasAtMostKPrimes, jacobsthalForN, h(k)"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 72,
+      "endLine": 82,
+      "summary": "jacobsthalConjecture: h(k) = O(k²)"
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 84,
+      "endLine": 108,
+      "summary": "Iwaniec's theorem: h(k) ≤ C(k log k)²"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 110,
+      "endLine": 130,
+      "summary": "FGKMT lower bound and earlier results"
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "startLine": 132,
+      "endLine": 157,
+      "summary": "h(1)=2, h(2)=4, h(3)=6, h(4)=10, h(5)=14"
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Connection to Prime Gaps",
+      "startLine": 159,
+      "endLine": 179,
+      "summary": "Relation to Problem 687 and FGKMT paper"
+    },
+    {
+      "id": "proof-strategies",
+      "title": "Proof Strategies",
+      "startLine": 181,
+      "endLine": 202,
+      "summary": "Sieve methods, CRT, probabilistic heuristics"
+    },
+    {
+      "id": "summary",
+      "title": "Main Results",
+      "startLine": 256,
+      "endLine": 287,
+      "summary": "Problem status and known bounds summary"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #970 remains OPEN. Jacobsthal's Conjecture asks whether h(k) = O(k²). The best known upper bound is h(k) ≤ C(k log k)² by Iwaniec (1978), which has a (log k)² gap from the conjectured quadratic bound. The best known lower bound is h(k) ≥ ck log k log³k/(log²k)² by Ford-Green-Konyagin-Maynard-Tao (2018).",
+    "implications": "Resolving Jacobsthal's Conjecture would have implications for understanding coprimality in intervals, which connects to prime distribution. The techniques involved (sieve methods, prime gaps) are fundamental in analytic number theory.",
+    "openQuestions": [
+      "Is h(k) = O(k²)? (The main conjecture)",
+      "Can Iwaniec's bound be improved to remove log factors?",
+      "What is the exact asymptotic of h(k)?",
+      "Behavior at the threshold α = 2"
+    ]
   }
 }
