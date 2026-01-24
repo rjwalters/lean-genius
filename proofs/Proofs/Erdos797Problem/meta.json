@@ -1,0 +1,16 @@
+{
+  "problem_number": 797,
+  "title": "Acyclic Chromatic Number",
+  "status": "solved",
+  "solvers": ["Alon-McDiarmid-Reed (1991)"],
+  "source_url": "https://erdosproblems.com/797",
+  "overview": "Let f(d) be the maximal acyclic chromatic number of any graph with maximum degree d. An acyclic coloring requires no edge between same-colored vertices and no bichromatic cycles. The question asks: Is f(d) = o(d²)?",
+  "sections": [],
+  "conclusion": "YES - f(d) = Θ(d^{4/3}). Alon-McDiarmid-Reed (1991) proved f(d) ≤ O(d^{4/3}). The lower bound is Ω(d^{4/3}/(log d)^{1/3}). The exponent 4/3 arises from balancing constraints on bichromatic 4-cycles.",
+  "references": [
+    "Alon-Berger [AlBe76] - Early work",
+    "Alon-McDiarmid-Reed [AMR91] - Tight bounds"
+  ],
+  "related_problems": [],
+  "tags": ["graph-theory", "chromatic-number", "acyclic-coloring", "probabilistic-method", "solved"]
+}
