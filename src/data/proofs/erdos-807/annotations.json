@@ -1,1 +1,160 @@
-[]
+[
+  {
+    "id": "ann-e807-header",
+    "proofId": "erdos-807",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #807: Bipartite Decomposition of Random Graphs**\n\nThis problem asks whether the bipartition number tau(G) equals n - alpha(G) almost surely for random graphs G(n, 1/2).\n\n**Key Definitions:**\n- tau(G) = minimum edge-disjoint complete bipartite subgraphs covering G\n- alpha(G) = size of largest independent set\n\n**Answer: NO** - Disproved by Alon (2015), strengthened by Alon-Bohman-Huang (2017).",
+    "mathContext": "The problem originates from work by Katona, Recski, and Wormald [KRW88] on bipartite graph decomposition.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph decomposition", "Random graphs", "Independence number"]
+  },
+  {
+    "id": "ann-e807-independence-number",
+    "proofId": "erdos-807",
+    "range": { "startLine": 46, "endLine": 52 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "**independenceNumber** alpha(G):\n\nThe size of the largest independent set in G. An independent set is a set of vertices with no edges between them.\n\n**Definition:**\n```lean\ndef independenceNumber (G : SimpleGraph V) : N :=\n  Finset.univ.sup fun S => if G.IsClique S^c then S.card else 0\n```\n\n**Note:** For random graphs G(n, 1/2), alpha(G) is typically around 2 log_2(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Independent set", "Clique", "Graph coloring"]
+  },
+  {
+    "id": "ann-e807-complete-bipartite",
+    "proofId": "erdos-807",
+    "range": { "startLine": 54, "endLine": 63 },
+    "type": "definition",
+    "title": "Complete Bipartite Subgraph",
+    "content": "**CompleteBipartite:**\n\nA structure representing a complete bipartite subgraph of G.\n\n**Fields:**\n- left, right: Disjoint vertex sets\n- disjoint: Proof that left and right are disjoint\n- edges_complete: Every vertex in left is adjacent to every vertex in right\n\nThese are the building blocks for bipartite decomposition.",
+    "significance": "key",
+    "relatedConcepts": ["Bipartite graphs", "Complete graphs", "Graph decomposition"]
+  },
+  {
+    "id": "ann-e807-bipartite-cover",
+    "proofId": "erdos-807",
+    "range": { "startLine": 65, "endLine": 74 },
+    "type": "definition",
+    "title": "Edge-Disjoint Bipartite Cover",
+    "content": "**BipartiteCover:**\n\nA collection of complete bipartite subgraphs that:\n1. Are pairwise edge-disjoint (no edge in multiple subgraphs)\n2. Cover all edges of G (union equals G)\n\nThe bipartition number is the minimum size of such a cover.",
+    "significance": "key",
+    "relatedConcepts": ["Edge covering", "Graph decomposition"]
+  },
+  {
+    "id": "ann-e807-bipartition-number",
+    "proofId": "erdos-807",
+    "range": { "startLine": 76, "endLine": 82 },
+    "type": "definition",
+    "title": "Bipartition Number",
+    "content": "**bipartitionNumber** tau(G):\n\nThe smallest number of pairwise edge-disjoint complete bipartite subgraphs whose union covers all edges of G.\n\n**Definition:**\n```lean\ndef bipartitionNumber (G : SimpleGraph V) : N :=\n  sInf {k : N | exists cover : BipartiteCover G, cover.parts.card = k}\n```\n\nThis is the central quantity in Erdos #807.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph decomposition", "Complete bipartite graphs"]
+  },
+  {
+    "id": "ann-e807-erw-conjecture",
+    "proofId": "erdos-807",
+    "range": { "startLine": 90, "endLine": 97 },
+    "type": "concept",
+    "title": "The ERW Conjecture",
+    "content": "**ERW_conjecture:**\n\nThe original conjecture by Erdos-Recski-Wormald:\n\nFor a random graph G on n vertices with edge probability 1/2, is tau(G) = n - alpha(G) almost surely?\n\nThis conjecture was motivated by connections to the Graham-Pollak theorem, which shows tau(K_n) = n - 1.",
+    "significance": "key",
+    "relatedConcepts": ["Graham-Pollak theorem", "Random graphs"]
+  },
+  {
+    "id": "ann-e807-alon-2015",
+    "proofId": "erdos-807",
+    "range": { "startLine": 105, "endLine": 115 },
+    "type": "axiom",
+    "title": "Alon's Disproof (2015)",
+    "content": "**alon_2015:**\n\nAlon proved that the ERW conjecture is false.\n\n**Statement:** Almost surely, tau(G) <= n - alpha(G) - 1 for G in G(n, 1/2).\n\nThis shows the bipartition number is strictly smaller than n - alpha(G), disproving the equality conjecture.\n\n**Reference:** Alon, \"Bipartite decomposition of random graphs\", J. Combin. Theory Ser. B (2015).",
+    "mathContext": "The proof uses the probabilistic method to show random bipartite subgraphs cover edges efficiently.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e807-erw-false",
+    "proofId": "erdos-807",
+    "range": { "startLine": 117, "endLine": 127 },
+    "type": "theorem",
+    "title": "ERW Conjecture is False",
+    "content": "**erw_conjecture_false:**\n\nThe ERW conjecture is false.\n\n```lean\ntheorem erw_conjecture_false : not (forall n, ERW_conjecture n)\n```\n\n**Proof:** Since tau(G) <= n - alpha(G) - 1 < n - alpha(G) almost surely, the equality fails.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e807-abh-2017",
+    "proofId": "erdos-807",
+    "range": { "startLine": 135, "endLine": 146 },
+    "type": "axiom",
+    "title": "Alon-Bohman-Huang Improvement (2017)",
+    "content": "**alon_bohman_huang_2017:**\n\nA quantitative improvement over Alon's result.\n\n**Statement:** There exists an absolute constant c > 0 such that almost surely tau(G) <= n - (1+c)alpha(G).\n\nThis shows the gap between tau(G) and n - alpha(G) is multiplicative, not just additive.\n\n**Reference:** Alon, Bohman, Huang, \"More on the bipartite decomposition of random graphs\", J. Graph Theory (2017).",
+    "mathContext": "The improved bound uses more sophisticated probabilistic arguments.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e807-graham-pollak",
+    "proofId": "erdos-807",
+    "range": { "startLine": 152, "endLine": 159 },
+    "type": "axiom",
+    "title": "Graham-Pollak Theorem",
+    "content": "**graham_pollak:**\n\nA classical result in graph theory.\n\n**Statement:** tau(K_n) = n - 1 for the complete graph on n vertices.\n\nThis is optimal: you need exactly n - 1 complete bipartite subgraphs to decompose the complete graph.\n\nThe proof uses linear algebra over GF(2).",
+    "significance": "key",
+    "relatedConcepts": ["Complete graphs", "Linear algebra"]
+  },
+  {
+    "id": "ann-e807-random-graph-alpha",
+    "proofId": "erdos-807",
+    "range": { "startLine": 172, "endLine": 178 },
+    "type": "axiom",
+    "title": "Independence Number of Random Graphs",
+    "content": "**independence_number_random_graph:**\n\nFor random graphs G in G(n, 1/2):\n\nAlmost surely, alpha(G) is approximately 2 log_2(n).\n\nThis is a classical result in random graph theory, proved using first and second moment methods.",
+    "significance": "supporting",
+    "relatedConcepts": ["Random graphs", "Probabilistic methods"]
+  },
+  {
+    "id": "ann-e807-main-theorem",
+    "proofId": "erdos-807",
+    "range": { "startLine": 192, "endLine": 205 },
+    "type": "theorem",
+    "title": "Erdos Problem #807: DISPROVED",
+    "content": "**erdos_807:**\n\nThe main result: The ERW conjecture is false, with a quantitative gap.\n\n```lean\ntheorem erdos_807 : exists c : R, c > 0 and\n    -- The ERW conjecture is false with gap at least c * alpha(G)\n    True :=\n  alon_bohman_huang_2017\n```\n\n**Summary:**\n1. Alon (2015): tau(G) <= n - alpha(G) - 1 almost surely\n2. ABH (2017): tau(G) <= n - (1+c)alpha(G) for some c > 0",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e807-answer",
+    "proofId": "erdos-807",
+    "range": { "startLine": 207, "endLine": 213 },
+    "type": "theorem",
+    "title": "Answer Statement",
+    "content": "**erdos_807_answer:**\n\nErdos #807 asked if tau(G) = n - alpha(G) almost surely.\n\n**Answer: NO**\n\nThe bipartition number is strictly smaller than expected for random graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e807-clique-cover",
+    "proofId": "erdos-807",
+    "range": { "startLine": 219, "endLine": 226 },
+    "type": "definition",
+    "title": "Clique Cover Number",
+    "content": "**cliqueCoverNumber:**\n\nThe minimum number of cliques needed to cover all edges.\n\n**Relation:** tau(G) <= cliqueCover(G) since every clique can be decomposed into complete bipartite subgraphs.\n\nThe clique cover number is another measure of graph complexity.",
+    "significance": "supporting",
+    "relatedConcepts": ["Clique", "Graph covering"]
+  },
+  {
+    "id": "ann-e807-probabilistic-method",
+    "proofId": "erdos-807",
+    "range": { "startLine": 240, "endLine": 248 },
+    "type": "concept",
+    "title": "Probabilistic Method",
+    "content": "**The Probabilistic Method:**\n\nAlon's proof uses the probabilistic method, pioneered by Erdos himself.\n\n**Key idea:** Show that a random bipartite subgraph covers many edges in expectation, then use this to construct an efficient decomposition.\n\nThis is a powerful technique where existence is proved by showing a random object has the desired property with positive probability.",
+    "significance": "key",
+    "relatedConcepts": ["Random graphs", "Expectation", "Erdos"]
+  },
+  {
+    "id": "ann-e807-concentration",
+    "proofId": "erdos-807",
+    "range": { "startLine": 250, "endLine": 258 },
+    "type": "concept",
+    "title": "Concentration Inequalities",
+    "content": "**Concentration Inequalities:**\n\nThe \"almost surely\" statements use concentration inequalities:\n\n- Chernoff bounds for sums of independent random variables\n- Azuma-Hoeffding for martingales\n- Talagrand's inequality for complex dependencies\n\nThese show that random variables are close to their expectation with high probability.",
+    "significance": "supporting",
+    "relatedConcepts": ["Probability theory", "Random graphs", "Tail bounds"]
+  }
+]
