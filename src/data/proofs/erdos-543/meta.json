@@ -16,11 +16,53 @@
       "probability",
       "additive-combinatorics"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 8,
     "erdosNumber": 543,
     "erdosUrl": "https://erdosproblems.com/543",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "AddCommGroup",
+        "description": "Additive commutative groups for abelian group structure",
+        "module": "Mathlib.Algebra.Group.Subgroup.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite type for finite groups",
+        "module": "Mathlib.Algebra.Group.Fintype"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for subsets and powersets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "powersetCard",
+        "description": "k-subsets of a finite set",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Real.logb",
+        "description": "Logarithm function for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Cyclic groups for special cases",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of subsetSums for additive groups",
+      "IsSpanningSet predicate for subset sum coverage",
+      "spanningProbability formalization via k-subset counting",
+      "minimalSpanningSize definition using Nat.find",
+      "LittleOConjecture formalizing the o(log log N) question",
+      "ErdosCounterConjecture capturing Erdős's belief",
+      "Proof that conjectures are logical negations",
+      "Special case analysis for cyclic and prime groups"
+    ]
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős and Rényi's 1965 work on probabilistic methods in group theory [ErRe65]. They proved f(N) ≤ log₂ N + O(log log N), and the question asks whether the O(log log N) term can be improved to o(log log N). Erdős believed this improvement is impossible.",
