@@ -1,33 +1,129 @@
 {
   "id": "erdos-857",
-  "title": "Erdős Problem #857",
+  "title": "Erdős Problem #857: The Weak Sunflower Problem",
   "slug": "erdos-857",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in any collection of sets ... there must exist a sunflower of size ... - that is, some collectio...",
+  "description": "Let m(n,k) be minimal such that any collection of m subsets of {1,...,n} contains a k-sunflower. Estimate m(n,k) or give an asymptotic formula. Connected to the Sunflower Conjecture and cap set problem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Ko-Rado (1961), Naslund-Sawin (2017)",
     "sourceUrl": "https://erdosproblems.com/857",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos857Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sunflower",
+      "extremal-combinatorics",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 857,
     "erdosUrl": "https://erdosproblems.com/857",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsSunflower definition: family with common pairwise intersection",
+      "ContainsSunflower definition: k-sunflower existence",
+      "Petal definition and sunflower_petals_disjoint theorem",
+      "sunflowerNumber definition: the function m(n,k)",
+      "erdos_ko_rado_sunflower axiom: classical (k-1)!·ℓ^ℓ bound",
+      "bounded_sets_sunflower corollary",
+      "naslund_sawin_bound axiom: m(n,3) ≤ (3/2^(2/3))^n",
+      "sunflower_conjecture axiom: c(k)^n bound",
+      "singleton_sunflower_example: verified 3-sunflower"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #857 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $m=m(n,k)$ be minimal such that in any collection of sets $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ there must exist a sunflower of size $k$ - that is, some collection of $k$ of the $A_i$ which pairwise have the same intersection.\n\nEstimate $m(n,k)$, or even better, give an asymptotic formula.\n\n\n\nRelated to [536] and [856]. In \\cite{Er70} Erd\\H{o}s asks this in the equivalent formulation with intersection replaced by union.\n\nThis is sometimes known as the weak sunflower problem (see [20] for the strong sunflower problem).\n\nWhen $k=3$ this is strongly connected to the cap set problem (finding the maximal size of subsets of $\\mathbb{F}_3^n$ with no three-term arithmetic progressions), as observed by Alon, Shpilka, and Umans \\cite{ASU13}). Naslund and Sawin \\cite{NaSa17} have proved that\\[m(n,3) \\leq (3/2^{2/3})^{(1+o(1))n}.\\]\n\n\n\n\nReferences\n\n\n[ASU13] Alon, Noga and Shpilka, Amir and Umans, Christopher, On sunflowers and matrix multiplication. Comput. Complexity (2013), 219--243.\n\n[Er70] Erd\\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.\n\n[NaSa17] Naslund, Eric and Sawin, Will, Upper bounds for sunflower-free sets. Forum Math. Sigma (2017), Paper No. e15, 10.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #857: The Weak Sunflower Problem**\n\nThis problem belongs to extremal combinatorics and asks for the minimum number of subsets of {1,...,n} guaranteed to contain a k-sunflower.\n\n**Key History:**\n- Erdős-Rado (1960): Introduced the sunflower lemma\n- Erdős [Er70]: Formulated the weak sunflower problem\n- Alon-Shpilka-Umans (2013): Connected to cap set problem\n- Naslund-Sawin (2017): Best known bound for k=3\n\n**Mathematical Setting:**\nA sunflower (Δ-system) is a family of sets where any two have the same intersection (the \"core\"). The petals are disjoint.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $m = m(n, k)$ be minimal such that any collection of $m$ subsets $A_1, \\ldots, A_m \\subseteq \\{1, \\ldots, n\\}$ contains a $k$-sunflower.\n\nEstimate $m(n, k)$, or give an asymptotic formula.\n\n**Known Results:**\n- Erdős-Ko-Rado: $m(n, k) \\leq (k-1)! \\cdot \\ell^\\ell$ for $\\ell$-bounded families\n- Naslund-Sawin: $m(n, 3) \\leq (3/2^{2/3})^{(1+o(1))n} \\approx 2.755^n$\n\n**Sunflower Conjecture:** $m(n, k) \\leq c(k)^n$ for constant $c(k)$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - IsSunflower: family with common pairwise intersection\n   - ContainsSunflower: k-sunflower existence predicate\n   - Petal: A \\ core for set A in sunflower\n\n2. **Main Function:**\n   - sunflowerNumber n k: the function m(n, k)\n\n3. **Key Results:**\n   - erdos_ko_rado_sunflower: classical bound\n   - naslund_sawin_bound: best k=3 bound\n   - sunflower_conjecture: exponential bound",
+    "keyInsights": [
+      "**Sunflower Definition:** A family where any two sets intersect in the same core; petals are disjoint",
+      "**Classical Bound:** (k-1)!·ℓ^ℓ sets of size ≤ ℓ guarantee a k-sunflower",
+      "**Cap Set Connection:** 3-sunflower problem relates to F₃^n subsets with no 3-term APs",
+      "**Naslund-Sawin:** m(n,3) ≤ 2.755^n using polynomial method",
+      "**Conjecture:** m(n,k) grows exponentially in n with base depending only on k"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "IsSunflower, ContainsSunflower, Petal, sunflower_petals_disjoint",
+      "startLine": 46,
+      "endLine": 89
+    },
+    {
+      "id": "sunflower-function",
+      "title": "The Sunflower Function m(n,k)",
+      "summary": "sunflowerNumber definition and existence axiom",
+      "startLine": 91,
+      "endLine": 111
+    },
+    {
+      "id": "erdos-ko-rado",
+      "title": "Classical Sunflower Lemma",
+      "summary": "erdos_ko_rado_sunflower axiom and bounded_sets_sunflower corollary",
+      "startLine": 113,
+      "endLine": 148
+    },
+    {
+      "id": "naslund-sawin",
+      "title": "Naslund-Sawin Bound",
+      "summary": "naslund_sawin_bound axiom for k=3 case",
+      "startLine": 150,
+      "endLine": 169
+    },
+    {
+      "id": "sunflower-conjecture",
+      "title": "The Sunflower Conjecture",
+      "summary": "sunflower_conjecture axiom and trivial_upper_bound",
+      "startLine": 171,
+      "endLine": 195
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "singleton_sunflower_example and conceptual examples",
+      "startLine": 197,
+      "endLine": 244
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_857_summary combining main results",
+      "startLine": 246,
+      "endLine": 283
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #857 asks for the minimum number m(n,k) of subsets of {1,...,n} guaranteed to contain a k-sunflower. The Erdős-Ko-Rado sunflower lemma gives bounds for bounded-size families, and Naslund-Sawin (2017) proved the best known bound for k=3. The Sunflower Conjecture—that m(n,k) ≤ c(k)^n—remains open.",
+    "implications": "**Connections to Combinatorics**\n\n1. **Cap Set Problem:** 3-sunflowers connect to subsets of F₃^n without 3-term APs\n\n2. **Extremal Set Theory:** Bounds on set families avoiding patterns\n\n3. **Matrix Multiplication:** Alon-Shpilka-Umans connection to fast algorithms\n\n4. **Polynomial Method:** Naslund-Sawin used algebraic techniques",
+    "openQuestions": [
+      "Prove or disprove the Sunflower Conjecture",
+      "Improve the constant in Naslund-Sawin bound",
+      "Extend k=3 techniques to general k",
+      "Find tight bounds for specific values of n and k",
+      "Characterize extremal sunflower-free families"
+    ]
   }
 }
