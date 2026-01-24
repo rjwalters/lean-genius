@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-742-header",
+    "proofId": "erdos-742",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #742:** Let G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that G has at most n²/4 edges?\n\n**Status: SOLVED** - Füredi (1992) proved YES for sufficiently large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-742-diameter",
+    "proofId": "erdos-742",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "HasDiameter",
+    "content": "**HasDiameter(G, d):** Graph G has diameter exactly d.\n\nRequires: connected, all distances at most d, some pair at distance exactly d.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-742-diameter2",
+    "proofId": "erdos-742",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "HasDiameter2",
+    "content": "**HasDiameter2:** Special case of diameter exactly 2.\n\nAny two vertices are connected by a path of length at most 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-delete-edge",
+    "proofId": "erdos-742",
+    "range": { "startLine": 63, "endLine": 69 },
+    "type": "definition",
+    "title": "deleteEdge",
+    "content": "**deleteEdge(G, u, v):** The graph G with edge (u,v) removed.\n\nPreserves all other adjacencies while removing just this one edge.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-critical",
+    "proofId": "erdos-742",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "IsCriticalEdge",
+    "content": "**IsCriticalEdge:** An edge (u,v) is critical if its deletion increases the diameter.\n\nIn a minimal diameter-2 graph, every edge must be critical.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-742-minimal",
+    "proofId": "erdos-742",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "definition",
+    "title": "IsMinimalDiameter2",
+    "content": "**IsMinimalDiameter2:** A graph with diameter 2 where every edge is critical.\n\nThis is the central object of study in Problem #742.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-742-bound",
+    "proofId": "erdos-742",
+    "range": { "startLine": 91, "endLine": 92 },
+    "type": "definition",
+    "title": "MurtyPlesnikBound",
+    "content": "**MurtyPlesnikBound(n) = n²/4:** The conjectured maximum number of edges.\n\nThis bound is achieved by the complete bipartite graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-742-bipartite",
+    "proofId": "erdos-742",
+    "range": { "startLine": 98, "endLine": 102 },
+    "type": "axiom",
+    "title": "Complete Bipartite Graph",
+    "content": "**K_{a,b} has diameter 2:** The complete bipartite graph achieves diameter 2 with a*b edges.\n\nFor balanced partition, this gives n²/4 edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-balanced",
+    "proofId": "erdos-742",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "axiom",
+    "title": "Balanced Bipartite Minimal",
+    "content": "**K_{n/2,n/2} is minimal diameter-2:** The balanced complete bipartite graph is edge-minimal for diameter 2.\n\nThis shows the bound n²/4 is tight.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-furedi",
+    "proofId": "erdos-742",
+    "range": { "startLine": 119, "endLine": 128 },
+    "type": "axiom",
+    "title": "Füredi's Theorem",
+    "content": "**Füredi (1992):** For sufficiently large n, every minimal diameter-2 graph has at most n²/4 edges.\n\nThis settles the Murty-Plesnik-Ore conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-742-tight",
+    "proofId": "erdos-742",
+    "range": { "startLine": 130, "endLine": 139 },
+    "type": "theorem",
+    "title": "bound_is_tight",
+    "content": "**Theorem:** The bound n²/4 is achieved for all n at least 2.\n\nThe complete bipartite graph provides the extremal example.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-history",
+    "proofId": "erdos-742",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "definition",
+    "title": "Conjecture History",
+    "content": "**Timeline:** Ore (1960s) then Murty-Simon then Murty-Plesnik (1979) then Caccetta-Haggkvist then Furedi (1992)\n\nThe conjecture evolved through multiple researchers over 30 years.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-diameter-critical",
+    "proofId": "erdos-742",
+    "range": { "startLine": 163, "endLine": 167 },
+    "type": "definition",
+    "title": "IsDiameterCritical",
+    "content": "**IsDiameterCritical(G, d):** Graph has diameter d and every edge is critical for this diameter.\n\nGeneralizes minimal diameter-2 to arbitrary diameter.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-equiv",
+    "proofId": "erdos-742",
+    "range": { "startLine": 169, "endLine": 179 },
+    "type": "theorem",
+    "title": "minimal_iff_critical",
+    "content": "**Theorem:** IsMinimalDiameter2 is equivalent to IsDiameterCritical for diameter 2.\n\nThe two notions coincide for diameter 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-742-main",
+    "proofId": "erdos-742",
+    "range": { "startLine": 203, "endLine": 211 },
+    "type": "theorem",
+    "title": "erdos_742",
+    "content": "**Main Result:**\n1. Furedi's bound: at most n²/4 edges (for large n)\n2. Tightness: complete bipartite achieves the bound\n\n**Status: SOLVED**",
+    "significance": "critical"
+  }
+]

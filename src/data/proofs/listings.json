@@ -12229,17 +12229,24 @@
   },
   {
     "id": "erdos-742",
-    "title": "Erdős Problem #742",
+    "title": "Erdős Problem #742: Maximum Edges in Minimal Diameter-2 Graphs",
     "slug": "erdos-742",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with diameter ..., such that deleting any edge increases the diameter of .... Is it true t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that G has at most n²/4 edges? SOLVED by Füredi (1992): YES for sufficiently large n. The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} shows this bound is tight.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "diameter",
+      "edge-critical",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 742,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-743",
