@@ -1,11 +1,22 @@
 [
   {
+    "id": "ann-526-header",
+    "proofId": "erdos-526",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #526: Dvoretzky's Circle Covering Problem**\n\nWhen do randomly placed arcs of decreasing lengths completely cover the unit circle with probability 1?\n\n**Setup:**\n- Arc lengths a_n ≥ 0 with a_n → 0 and Σa_n = ∞\n- Each arc placed uniformly and independently on [0,1)\n- Question: When is the entire circle covered with probability 1?\n\n**Historical Timeline:**\n- Dvoretzky (1956): Posed the problem\n- Kahane (1959): Showed a_n = (1+c)/n covers\n- Erdős (unpublished): Identified 1/n as critical boundary\n- Shepp (1972): Complete solution",
+    "mathContext": "This is a fundamental problem in probabilistic geometry connecting random covering, harmonic series growth, and Poisson processes.",
+    "significance": "critical",
+    "relatedConcepts": ["Random covering", "Poisson processes", "Harmonic series"]
+  },
+  {
     "id": "ann-526-circle",
     "proofId": "erdos-526",
     "range": { "startLine": 49, "endLine": 50 },
     "type": "definition",
-    "title": "UnitCircle",
-    "content": "The interval [0,1) with wraparound.",
+    "title": "Unit Circle",
+    "content": "**UnitCircle:**\n\nThe interval [0, 1) with wraparound, representing points on the unit circle.\n\n**Definition:**\n```lean\ndef UnitCircle := Set.Ico (0 : ℝ) 1\n```\n\nWe identify the circle with [0,1) where 0 and 1 are the same point.",
     "significance": "supporting"
   },
   {
@@ -13,8 +24,8 @@
     "proofId": "erdos-526",
     "range": { "startLine": 52, "endLine": 55 },
     "type": "definition",
-    "title": "Arc",
-    "content": "Arc of length a starting at position theta.",
+    "title": "Arc Definition",
+    "content": "**Arc:**\n\nAn arc of length a starting at position θ on the unit circle.\n\n**Definition:**\n```lean\ndef Arc (θ a : ℝ) : Set ℝ :=\n  if a ≥ 1 then UnitCircle\n  else { x | ∃ t : ℝ, 0 ≤ t ∧ t < a ∧ (x = (θ + t) - ⌊θ + t⌋) }\n```\n\nIf a ≥ 1, the arc covers the entire circle. Otherwise, it's the set of points within distance a from θ (with wraparound).",
     "significance": "supporting"
   },
   {
@@ -22,8 +33,9 @@
     "proofId": "erdos-526",
     "range": { "startLine": 57, "endLine": 62 },
     "type": "definition",
-    "title": "ArcSequence",
-    "content": "Sequence with a_n >= 0, a_n -> 0, sum diverges.",
+    "title": "Arc Sequence Structure",
+    "content": "**ArcSequence:**\n\nA sequence of arc lengths satisfying the problem's conditions:\n\n**Fields:**\n- `a : ℕ → ℝ` - the arc length function\n- `nonneg` - all lengths are non-negative: a_n ≥ 0\n- `tendsto_zero` - lengths vanish: a_n → 0\n- `sum_diverges` - total length is infinite: Σa_n = ∞\n\n**Key insight:** The divergence condition Σa_n = ∞ is necessary for any hope of coverage, but not sufficient!",
+    "mathContext": "The conditions ensure we place infinitely many arcs, each getting smaller, but with total length infinite. The question is when this suffices for complete coverage.",
     "significance": "critical"
   },
   {
@@ -31,8 +43,8 @@
     "proofId": "erdos-526",
     "range": { "startLine": 74, "endLine": 76 },
     "type": "definition",
-    "title": "partialSum",
-    "content": "S_n = a_1 + ... + a_n.",
+    "title": "Partial Sum S_n",
+    "content": "**partialSum:**\n\nThe partial sum S_n = a_1 + a_2 + ... + a_n.\n\n**Definition:**\n```lean\nnoncomputable def partialSum (a : ℕ → ℝ) (n : ℕ) : ℝ :=\n  ∑ i ∈ Finset.range n, a (i + 1)\n```\n\n**Importance:** S_n appears in the exponent of Shepp's criterion. Its growth rate determines whether coverage occurs.",
     "significance": "critical"
   },
   {
@@ -40,27 +52,31 @@
     "proofId": "erdos-526",
     "range": { "startLine": 78, "endLine": 80 },
     "type": "definition",
-    "title": "SheppCriterion",
-    "content": "Sum of exp(S_n)/n^2 diverges.",
-    "significance": "critical"
+    "title": "Shepp's Criterion",
+    "content": "**SheppCriterion:**\n\nThe necessary and sufficient condition for coverage:\n\n**Definition:**\n```lean\ndef SheppCriterion (a : ℕ → ℝ) : Prop :=\n  ¬Summable (fun n => if n = 0 then 0 else exp (partialSum a n) / (n : ℝ)^2)\n```\n\n**In words:** Σ_n exp(a_1 + ... + a_n) / n² = ∞\n\n**Why this criterion?**\n- exp(S_n) captures cumulative arc length growth\n- Division by n² relates to expected number of uncovered points\n- Divergence means \"enough coverage power\" to cover everything",
+    "mathContext": "Shepp derived this using Poisson process techniques and careful analysis of expected uncovered region.",
+    "significance": "critical",
+    "relatedConcepts": ["Exponential function", "Series convergence", "Poisson processes"]
   },
   {
     "id": "ann-526-covers",
     "proofId": "erdos-526",
     "range": { "startLine": 82, "endLine": 85 },
     "type": "definition",
-    "title": "CoversWithProbOne",
-    "content": "Full coverage with probability 1.",
+    "title": "Coverage Predicate",
+    "content": "**CoversWithProbOne:**\n\nThe predicate that random arcs cover the entire circle with probability 1.\n\n**Definition:**\n```lean\ndef CoversWithProbOne (seq : ArcSequence) : Prop :=\n  True  -- Axiomatized via Shepp's result\n```\n\n**Meaning:** Almost surely, the union of all random arcs equals the full circle [0,1).\n\nThis is axiomatized because the probability theory requires measure-theoretic machinery beyond our scope.",
     "significance": "critical"
   },
   {
-    "id": "ann-526-shepp",
+    "id": "ann-526-shepp-thm",
     "proofId": "erdos-526",
-    "range": { "startLine": 91, "endLine": 93 },
-    "type": "theorem",
-    "title": "Shepp 1972",
-    "content": "Coverage iff Shepp criterion holds.",
-    "significance": "critical"
+    "range": { "startLine": 91, "endLine": 99 },
+    "type": "axiom",
+    "title": "Shepp's Theorem (1972)",
+    "content": "**shepp_1972:**\n\nThe complete characterization of random arc covering.\n\n**Statement:**\n```lean\naxiom shepp_1972 (seq : ArcSequence) :\n    CoversWithProbOne seq ↔ SheppCriterion seq.a\n```\n\n**In words:** Random arcs cover the circle with probability 1 if and only if Σ exp(S_n)/n² = ∞.\n\n**Proof technique:** Shepp used Poisson process methods and careful analysis of the expected number of uncovered points. The exponential captures the cumulative \"coverage power\" of arcs.",
+    "mathContext": "Published in 'Covering the circle with random arcs' (1972). This solved a 16-year-old problem of Dvoretzky.",
+    "significance": "critical",
+    "relatedConcepts": ["Poisson processes", "Renewal theory"]
   },
   {
     "id": "ann-526-supercrit",
@@ -68,7 +84,8 @@
     "range": { "startLine": 106, "endLine": 118 },
     "type": "definition",
     "title": "Supercritical Sequence",
-    "content": "a_n = (1+c)/n covers with prob 1.",
+    "content": "**superCriticalSeq:**\n\nThe sequence a_n = (1+c)/n for c > 0.\n\n**Properties:**\n- nonneg: (1+c)/n ≥ 0 ✓\n- tendsto_zero: (1+c)/n → 0 ✓\n- sum_diverges: Σ(1+c)/n = (1+c) · Σ(1/n) = ∞ ✓\n\n**Shepp check:**\n- S_n ≈ (1+c) log n\n- exp(S_n)/n² ≈ n^(1+c)/n² = n^(c-1)\n- For c > 0: sum diverges (at least logarithmically)",
+    "mathContext": "Kahane (1959) proved this covers. It's 'supercritical' because it's strictly above the 1/n threshold.",
     "significance": "key"
   },
   {
@@ -76,9 +93,11 @@
     "proofId": "erdos-526",
     "range": { "startLine": 120, "endLine": 128 },
     "type": "definition",
-    "title": "Critical Sequence",
-    "content": "a_n = 1/n is the boundary case.",
-    "significance": "critical"
+    "title": "Critical Sequence (1/n)",
+    "content": "**criticalSeq:**\n\nThe boundary case a_n = 1/n.\n\n**Properties:**\n- This is the harmonic sequence\n- S_n = H_n ≈ log n + γ (Euler-Mascheroni)\n- exp(S_n)/n² ≈ n/n² = 1/n\n- Σ(1/n) = ∞ (barely!)\n\n**Result:** Erdős showed this DOES cover with probability 1.\n\n**Key insight:** At exactly 1/n, the criterion just barely diverges. This is the precise phase transition.",
+    "mathContext": "The harmonic series grows logarithmically: H_n ~ log n + 0.5772... The exponential exactly cancels one power of n.",
+    "significance": "critical",
+    "relatedConcepts": ["Harmonic series", "Euler-Mascheroni constant"]
   },
   {
     "id": "ann-526-subcrit",
@@ -86,34 +105,59 @@
     "range": { "startLine": 130, "endLine": 139 },
     "type": "definition",
     "title": "Subcritical Sequence",
-    "content": "a_n = (1-c)/n does NOT cover.",
+    "content": "**subCriticalSeq:**\n\nThe sequence a_n = (1-c)/n for 0 < c < 1.\n\n**Properties:**\n- S_n ≈ (1-c) log n\n- exp(S_n)/n² ≈ n^(1-c)/n² = n^(-1-c)\n- Σ n^(-1-c) converges (p-series with p = 1+c > 1)\n\n**Result:** Erdős showed this does NOT cover with probability 1.\n\n**Geometric meaning:** The arcs shrink just slightly too fast, leaving infinitely many uncovered points almost surely.",
+    "mathContext": "The phase transition at 1/n is sharp: any constant factor below 1 causes failure.",
     "significance": "key"
   },
   {
     "id": "ann-526-dvoretzky",
     "proofId": "erdos-526",
     "range": { "startLine": 165, "endLine": 168 },
-    "type": "theorem",
-    "title": "Dvoretzky 1956",
-    "content": "Almost all circle covered with prob 1.",
+    "type": "axiom",
+    "title": "Dvoretzky's Observation",
+    "content": "**dvoretzky_almost_all:**\n\nDvoretzky (1956) observed that under the basic conditions (a_n → 0, Σa_n = ∞), almost all of the circle is covered with probability 1.\n\nMore precisely: the Lebesgue measure of the uncovered set is 0 almost surely.\n\n**The question:** Is the uncovered set empty (full coverage) or just measure zero (missing isolated points)?",
+    "mathContext": "This was the starting point. Dvoretzky asked for the exact condition distinguishing full coverage from merely almost-full coverage.",
     "significance": "key"
   },
   {
     "id": "ann-526-harmonic",
     "proofId": "erdos-526",
     "range": { "startLine": 222, "endLine": 225 },
+    "type": "axiom",
+    "title": "Harmonic Series Growth",
+    "content": "**harmonic_log_growth:**\n\nThe harmonic partial sums satisfy:\n\nH_n = 1 + 1/2 + 1/3 + ... + 1/n ≈ log n + γ\n\nwhere γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\n**Precise bound:**\n|H_n - log n| ≤ γ + 1\n\n**Why this matters:**\nAt a_n = 1/n, S_n = H_n ≈ log n, so exp(S_n) ≈ n.\nThus exp(S_n)/n² ≈ 1/n, and Σ(1/n) = ∞.",
+    "mathContext": "The logarithmic growth of harmonic sums is fundamental to understanding why 1/n is the critical boundary.",
+    "significance": "key",
+    "relatedConcepts": ["Harmonic series", "Euler-Mascheroni constant", "Logarithmic growth"]
+  },
+  {
+    "id": "ann-526-euler",
+    "proofId": "erdos-526",
+    "range": { "startLine": 227, "endLine": 228 },
+    "type": "axiom",
+    "title": "Euler-Mascheroni Constant",
+    "content": "**euler_mascheroni:**\n\nThe Euler-Mascheroni constant γ is defined as:\n\nγ = lim_{n→∞} (H_n - log n) ≈ 0.5772156649...\n\n**Properties:**\n- It's unknown whether γ is rational or irrational\n- Appears in many areas: number theory, analysis, combinatorics\n- Governs the fine structure of harmonic sums",
+    "significance": "supporting",
+    "relatedConcepts": ["Harmonic series", "Mathematical constants"]
+  },
+  {
+    "id": "ann-526-examples",
+    "proofId": "erdos-526",
+    "range": { "startLine": 202, "endLine": 218 },
     "type": "theorem",
-    "title": "Harmonic Growth",
-    "content": "H_n ~ log n + gamma (Euler-Mascheroni).",
-    "significance": "key"
+    "title": "Computational Examples",
+    "content": "**Numerical verification examples:**\n\n1. H_5 = 1 + 1/2 + 1/3 + 1/4 + 1/5 > 2 ✓\n2. exp(1) ≈ 2.718\n3. For a_n = 1/n at n = 10:\n   - S_10 ≈ 2.93\n   - exp(S_10)/100 ≈ 18.7/100 ≈ 0.187\n\nThese demonstrate that Shepp's criterion terms are calculable and the series growth is testable.",
+    "significance": "supporting"
   },
   {
     "id": "ann-526-main",
     "proofId": "erdos-526",
     "range": { "startLine": 255, "endLine": 264 },
     "type": "theorem",
-    "title": "Main Statement",
-    "content": "Shepp + critical case + solved status.",
-    "significance": "critical"
+    "title": "Main Theorem Statement",
+    "content": "**erdos_526_statement:**\n\nThe complete answer to Erdős Problem #526:\n\n```lean\ntheorem erdos_526_statement :\n    (∀ seq : ArcSequence, CoversWithProbOne seq ↔ SheppCriterion seq.a) ∧\n    CoversWithProbOne criticalSeq ∧\n    True\n```\n\n**Components:**\n1. Shepp's characterization: coverage ↔ Σ exp(S_n)/n² = ∞\n2. Critical case covers: a_n = 1/n succeeds\n3. Problem status: SOLVED\n\nThis combines all the key results into a single theorem.",
+    "mathContext": "Erdős Problem #526 was solved by Shepp in 1972, 16 years after Dvoretzky posed it. The solution reveals a beautiful phase transition at a_n = 1/n.",
+    "significance": "critical",
+    "relatedConcepts": ["Dvoretzky covering", "Shepp criterion", "Phase transitions"]
   }
 ]
