@@ -5708,17 +5708,24 @@
   },
   {
     "id": "erdos-297",
-    "title": "Erdős Problem #297",
+    "title": "Erdős Problem #297: Counting Egyptian Fraction Representations of 1",
     "slug": "erdos-297",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many ... are there such that ...?\n\n\n\nIt was not even known for a long time whether this is ... for some ... or ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How many A ⊆ {1,...,N} satisfy Σ 1/n = 1? Answer: 2^{(0.91...+o(1))N}. Solved independently by three teams in 2024.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "egyptian-fractions",
+      "number-theory",
+      "combinatorics",
+      "counting",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 297,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 5,
+    "annotationCount": 16
   },
   {
     "id": "erdos-298",
@@ -7776,7 +7783,7 @@
     "title": "Erdős Problem #440: LCM of Consecutive Sequence Elements",
     "slug": "erdos-440",
     "description": "For infinite sequence A, let A(x) count indices i with lcm(aᵢ, aᵢ₊₁) ≤ x. Is A(x) = O(√x)? YES, and liminf A(x)/√x ≤ 1 always, with equality for A = ℕ (Erdős-Szemerédi 1980).",
-    "status": "pending",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
       "erdos",
@@ -11355,17 +11362,25 @@
   },
   {
     "id": "erdos-697",
-    "title": "Erdős Problem #697",
+    "title": "Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)",
     "slug": "erdos-697",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the density of the set of integers which are divisible by some ... with .... Does there exist some ... such th...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let δ(m,α) be the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α). Does a sharp threshold β exist? SOLVED: YES, β = 1/log 2 ≈ 1.443 (Hall 1992).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "modular-arithmetic",
+      "threshold",
+      "solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 697,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 14
   },
   {
     "id": "erdos-698",
@@ -13005,17 +13020,24 @@
   },
   {
     "id": "erdos-790",
-    "title": "Erdős Problem #790",
+    "title": "Erdős Problem #790: Maximum Sum-Free Subsequences",
     "slug": "erdos-790",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that if ... with ... then there exists a sum-free ... with ... - that is, ... is such that there are ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element set. Known bounds: √(n log n / log log n) ≤ l(n) ≤ n / log n (CKS 1975). Main conjecture: l(n) ≥ n^{1-o(1)}. OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sum-free",
+      "extremal-combinatorics",
+      "sequences",
+      "open"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 790,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 3,
+    "annotationCount": 15
   },
   {
     "id": "erdos-791",
@@ -15877,17 +15899,25 @@
   },
   {
     "id": "erdos-970",
-    "title": "Erdős Problem #970",
+    "title": "Erdős Problem #970: Jacobsthal's Function",
     "slug": "erdos-970",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be Jacobsthal's function, defined to as the minimal ... such that, if ... has at most ... prime factors, then in any ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is h(k) = O(k²) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)² by Iwaniec (1978).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "gaps",
+      "coprimality",
+      "open-problem",
+      "jacobsthal"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 970,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 13
   },
   {
     "id": "erdos-971",

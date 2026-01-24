@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-perfect-square",
+    "proofId": "erdos-841",
+    "range": { "startLine": 45, "endLine": 46 },
+    "type": "definition",
+    "title": "Perfect Square",
+    "content": "A natural number n is a perfect square if n = m² for some natural m.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-has-square-product",
+    "proofId": "erdos-841",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "Square Product Property",
+    "content": "A subset S of the interval {n+1,...,n+t} has the square product property if n·∏S is a perfect square.",
+    "significance": "major"
+  },
+  {
+    "id": "def-t-function",
+    "proofId": "erdos-841",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "definition",
+    "title": "The Function t_n",
+    "content": "t_n is the minimal t such that {n+1,...,n+t} contains a subset whose product with n is a perfect square. If n is already a square, t_n = 0.",
+    "significance": "major"
+  },
+  {
+    "id": "example-t6",
+    "proofId": "erdos-841",
+    "range": { "startLine": 72, "endLine": 88 },
+    "type": "example",
+    "title": "Example: t_6 = 6",
+    "content": "t_6 = 6 because 6·8·12 = 576 = 24². The subset {8, 12} ⊆ {7,...,12} makes 6 times the product a perfect square.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-largest-prime-divisor",
+    "proofId": "erdos-841",
+    "range": { "startLine": 94, "endLine": 108 },
+    "type": "definition",
+    "title": "Largest Prime Divisor P(n)",
+    "content": "P(n) denotes the largest prime factor of n. The trivial lower bound t_n ≥ P(n) holds because we need another multiple of P(n) to cancel odd prime powers.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-selfridge-equality",
+    "proofId": "erdos-841",
+    "range": { "startLine": 114, "endLine": 130 },
+    "type": "theorem",
+    "title": "Selfridge's Theorem",
+    "content": "When P(n) > √(2n) + 1, we have t_n = P(n) exactly. Otherwise, t_n ≤ O(√n). This completely characterizes t_n based on the size of the largest prime factor.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-lower-bound",
+    "proofId": "erdos-841",
+    "range": { "startLine": 136, "endLine": 146 },
+    "type": "theorem",
+    "title": "Lower Bound for All Non-Squares",
+    "content": "For all non-square n ≥ 3: t_n ≥ C·(log log n)^{6/5}/(log log log n)^{1/5}. This shows t_n grows at least as a power of log log n.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-bui-pratt-zaharescu",
+    "proofId": "erdos-841",
+    "range": { "startLine": 171, "endLine": 181 },
+    "type": "theorem",
+    "title": "Bui-Pratt-Zaharescu (2024)",
+    "content": "The distribution of t_n follows P(n)'s distribution: for any fixed c ∈ (0,1], among n with P(n) ≤ n^c, we have t_n = P(n) for almost all such n.",
+    "significance": "major"
+  },
+  {
+    "id": "def-smooth-numbers",
+    "proofId": "erdos-841",
+    "range": { "startLine": 187, "endLine": 199 },
+    "type": "definition",
+    "title": "Smooth and Rough Numbers",
+    "content": "y-smooth numbers have all prime factors ≤ y. For smooth n, t_n is small (≤ y). For rough n (large P(n)), we have t_n = P(n) exactly.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-characterization",
+    "proofId": "erdos-841",
+    "range": { "startLine": 219, "endLine": 251 },
+    "type": "theorem",
+    "title": "Complete Characterization of t_n",
+    "content": "t_n is completely characterized: (1) t_n ≥ P(n) always, (2) t_n = P(n) when P(n) > √(2n)+1, (3) t_n ≤ O(√n) otherwise. The behavior depends on whether n is 'rough' or 'smooth'.",
+    "significance": "major"
+  }
+]
