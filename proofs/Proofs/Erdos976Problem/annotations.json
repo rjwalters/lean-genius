@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-irreducible",
+    "proofId": "erdos-976",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "Irreducible Polynomial",
+    "content": "A polynomial that cannot be factored into lower degree polynomials over ℤ.",
+    "significance": "major"
+  },
+  {
+    "id": "def-F-f",
+    "proofId": "erdos-976",
+    "range": { "startLine": 61, "endLine": 67 },
+    "type": "definition",
+    "title": "Function F_f(n)",
+    "content": "F_f(n) = greatest prime dividing any f(m) for 1 ≤ m ≤ n. Central function in the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-nagell-ricci",
+    "proofId": "erdos-976",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "theorem",
+    "title": "Nagell-Ricci Bound (1922)",
+    "content": "F_f(n) ≫ n log n for irreducible f of degree ≥ 2. First non-trivial lower bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-1952",
+    "proofId": "erdos-976",
+    "range": { "startLine": 81, "endLine": 89 },
+    "type": "theorem",
+    "title": "Erdős Bound (1952)",
+    "content": "F_f(n) ≫ n(log n)^{log log log n}. Improved using sieve methods.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-tenenbaum",
+    "proofId": "erdos-976",
+    "range": { "startLine": 91, "endLine": 99 },
+    "type": "theorem",
+    "title": "Tenenbaum Bound (1990)",
+    "content": "F_f(n) ≫ n exp((log n)^c) for some c > 0. Currently the best rigorous bound.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-polynomial",
+    "proofId": "erdos-976",
+    "range": { "startLine": 105, "endLine": 127 },
+    "type": "conjecture",
+    "title": "Polynomial Growth Conjectures (Open)",
+    "content": "F_f(n) ≫ n^{1+c} for some c > 0, or even ≫ n^d where d = deg(f). Both remain OPEN.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-algebraic",
+    "proofId": "erdos-976",
+    "range": { "startLine": 178, "endLine": 190 },
+    "type": "insight",
+    "title": "Algebraic Connection",
+    "content": "Distribution of prime divisors of f(m) relates to splitting of primes in ℚ[x]/(f) via Chebotarev.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-976",
+    "range": { "startLine": 293, "endLine": 330 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "OPEN: Best known bound n exp((log n)^c) (Tenenbaum). Conjectured n^{1+c} or n^d remains unproved. Large gap between bounds.",
+    "significance": "major"
+  }
+]
