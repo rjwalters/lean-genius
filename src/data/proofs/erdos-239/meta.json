@@ -1,33 +1,165 @@
 {
   "id": "erdos-239",
-  "title": "Erdős Problem #239",
+  "title": "Erdos Problem #239: Mean of Multiplicative Plus-Minus-One Functions",
   "slug": "erdos-239",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a multiplicative function. Is it true that\\[ \\lim_{N\\to \\infty}{N}\\sum_{n\\leq N}f(n)\\]always exists?\n\n\n\nWintner ob...",
+  "description": "For multiplicative f : N -> {-1, 1}, does lim (1/N) sum_{n<=N} f(n) always exist? YES, proved by Wirsing (1967), generalized by Halasz (1968).",
   "meta": {
-    "author": "Unknown",
+    "author": "Wirsing (1967), Halasz (1968)",
     "sourceUrl": "https://erdosproblems.com/239",
-    "date": "",
-    "status": "pending",
+    "date": "1967",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos239Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "multiplicative-functions",
+      "analytic-number-theory",
+      "mean-values",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 239,
     "erdosUrl": "https://erdosproblems.com/239",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate for multiplicativity",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums for partial sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.factors",
+        "description": "Prime factorization for Liouville function",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential for Wintner counterexample",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
+      }
+    ],
+    "originalContributions": [
+      "IsMultiplicative: f(1)=1 and f(mn)=f(m)f(n) for coprime m,n",
+      "IsPlusMinusOne: function takes values only in {-1, 1}",
+      "MultPlusMinusOne: set of multiplicative pm1 functions",
+      "partialSum, meanValue, HasConvergentMean: mean value definitions",
+      "liouville: Liouville function lambda(n) = (-1)^Omega(n)",
+      "wirsing_theorem: main convergence theorem (axiom)",
+      "halasz_characterization: when limit is nonzero (axiom)",
+      "wintner_renyi_counterexample: n^i has no convergent mean",
+      "constOne: trivial example with mean 1",
+      "liouville_mean_zero: connection to Prime Number Theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #239 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{N}\\to \\{-1,1\\}$ be a multiplicative function. Is it true that\\[ \\lim_{N\\to \\infty}\\frac{1}{N}\\sum_{n\\leq N}f(n)\\]always exists?\n\n\n\nWintner observed that if $f$ can take complex values on the unit circle then the limit need not exist. A simple example of this is $f(n)=n^i$, as noted by R\\'{e}nyi.\n\nThe answer is yes, as proved by Wirsing \\cite{Wi67}, and generalised by Hal\\'{a}sz \\cite{Ha68}.\n\n\n\n\nReferences\n\n\n[Ha68] Hal\\'{a}sz, G., \\\"{U}ber die Mittelwerte multiplikativer zahlentheoretischer\nFunktionen. Acta Math. Acad. Sci. Hungar. (1968), 365-403.\n\n[Wi67] Wirsing, E., Das asymptotische Verhalten von Summen \\\"{u}ber multiplikative Funk­tionen. Acta Math. Acad. Sei. Hung. (1967), 411-467.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Mean Value Problem for Multiplicative Functions**\n\nErdos asked (1961, 1965, 1973) whether multiplicative functions taking values only in {-1, 1} always have convergent mean values. Wintner had observed that for complex-valued multiplicative functions on the unit circle, the limit need not exist - Renyi's example f(n) = n^i oscillates without converging.\n\n**Wirsing's Resolution (1967):**\nIn a landmark paper, Wirsing proved that the restriction to real values {-1, 1} forces convergence. The proof uses analytic methods involving Dirichlet series and careful estimates on sums over primes.\n\n**Halasz's Generalization (1968):**\nHalasz extended Wirsing's work to characterize exactly when the mean limit is zero versus non-zero, in terms of the sum sum_p (1 - f(p))/p over primes.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $f : \\mathbb{N} \\to \\{-1, 1\\}$ be a multiplicative function. Does the limit\n$$\\lim_{N \\to \\infty} \\frac{1}{N} \\sum_{n \\leq N} f(n)$$\nalways exist?\n\n**Answer: YES** (Wirsing, 1967)\n\n**Key Constraint:**\nThe restriction to {-1, 1} is essential. For complex values on the unit circle, Wintner and Renyi showed n^i is a counterexample.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Multiplicative Functions:** Define IsMultiplicative and IsPlusMinusOne predicates\n\n2. **Mean Values:** Define partialSum, meanValue, and HasConvergentMean\n\n3. **Classical Examples:** Liouville function, Mobius function, constant function\n\n4. **Wintner Counterexample:** n^i on the unit circle has no limit\n\n5. **Main Theorems:** Axiomatize Wirsing and Halasz results\n\n6. **Connections:** Link to Prime Number Theorem via Liouville mean",
+    "keyInsights": [
+      "**Real vs Complex:** {-1,1} forces convergence; unit circle does not",
+      "**Wirsing 1967:** Main theorem - mean always exists",
+      "**Halasz 1968:** L=0 iff sum_p (1-f(p))/p diverges",
+      "**Liouville Example:** lambda(n) has mean 0, equivalent to PNT",
+      "**Constant 1:** Trivial case with mean limit 1",
+      "**Dirichlet Series:** Proof uses analytic number theory"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "multiplicative-functions",
+      "title": "Multiplicative Functions",
+      "summary": "IsMultiplicative, IsPlusMinusOne, MultPlusMinusOne definitions",
+      "startLine": 46,
+      "endLine": 60
+    },
+    {
+      "id": "mean-values",
+      "title": "Mean Values",
+      "summary": "partialSum, meanValue, HasConvergentMean definitions",
+      "startLine": 62,
+      "endLine": 76
+    },
+    {
+      "id": "classical-examples",
+      "title": "Classical Examples",
+      "summary": "liouville, mobiusSign definitions and properties",
+      "startLine": 78,
+      "endLine": 101
+    },
+    {
+      "id": "completely-multiplicative",
+      "title": "Completely Multiplicative Case",
+      "summary": "IsCompletelyMultiplicative, determination by prime values",
+      "startLine": 103,
+      "endLine": 122
+    },
+    {
+      "id": "wintner-counterexample",
+      "title": "Wintner-Renyi Counterexample",
+      "summary": "powerI function, why {-1,1} restriction is needed",
+      "startLine": 124,
+      "endLine": 144
+    },
+    {
+      "id": "wirsing-theorem",
+      "title": "Wirsing's Theorem",
+      "summary": "Main convergence theorem, erdos_239",
+      "startLine": 146,
+      "endLine": 165
+    },
+    {
+      "id": "halasz-generalization",
+      "title": "Halasz Generalization",
+      "summary": "meanLimit, halasz_characterization",
+      "startLine": 167,
+      "endLine": 188
+    },
+    {
+      "id": "constant-function",
+      "title": "Constant Function Example",
+      "summary": "constOne with mean 1",
+      "startLine": 190,
+      "endLine": 216
+    },
+    {
+      "id": "liouville-mean",
+      "title": "Liouville Function Mean",
+      "summary": "liouville_mean_zero, connection to PNT",
+      "startLine": 218,
+      "endLine": 237
+    },
+    {
+      "id": "prime-distribution",
+      "title": "Connection to Prime Distribution",
+      "summary": "liouville_pnt_equivalence, Riemann Hypothesis",
+      "startLine": 239,
+      "endLine": 256
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_239_summary, erdos_239_answer",
+      "startLine": 258,
+      "endLine": 293
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #239 asked whether multiplicative functions f : N -> {-1,1} always have convergent mean values. Wirsing (1967) proved YES, settling the question affirmatively. Halasz (1968) characterized when the limit is zero. The Liouville function's mean converging to 0 is equivalent to the Prime Number Theorem.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Prime Number Theorem:** Liouville mean -> 0 is equivalent to PNT\n\n2. **Riemann Hypothesis:** Rate of convergence of Liouville mean\n\n3. **Analytic Methods:** Dirichlet series and L-functions\n\n4. **Oscillation Theory:** When multiplicativity controls oscillation\n\n5. **Halasz Theory:** Modern treatment of mean values",
+    "openQuestions": [
+      "Effective error bounds in Wirsing's theorem",
+      "Extensions to other function classes",
+      "Connections to pretentious number theory",
+      "Computational aspects of mean values",
+      "Higher moment behavior"
+    ]
   }
 }
