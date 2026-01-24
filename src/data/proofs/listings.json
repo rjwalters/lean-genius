@@ -1469,17 +1469,21 @@
   },
   {
     "id": "erdos-1044",
-    "title": "Erdős Problem #1044",
+    "title": "Erdős Problem #1044: Boundary Length of Polynomial Level Sets",
     "slug": "erdos-1044",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... where ... for all .... If ... is the maximum of the lengths of the boundaries of the connected components of\\[\\{ z: \\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For polynomials f(z) with all roots in the unit disk, what is the infimum of the maximum boundary length of connected components of {z : |f(z)| < 1}? Tang proved the answer is 2, achieved in the limit but not by any specific polynomial.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
+      "complex-analysis",
+      "polynomials",
+      "level-sets",
+      "boundary-length",
       "erdos"
     ],
     "erdosNumber": 1044,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-1045",
@@ -2524,7 +2528,7 @@
     "dateAdded": "2026-01-18",
     "erdosNumber": 1112,
     "mathlibCount": 2,
-    "sorries": 2,
+    "sorries": 0,
     "annotationCount": 14
   },
   {
@@ -3058,7 +3062,7 @@
     "dateAdded": "2026-01-22",
     "erdosNumber": 133,
     "mathlibCount": 3,
-    "sorries": 5,
+    "sorries": 0,
     "annotationCount": 17
   },
   {
@@ -7776,17 +7780,21 @@
   },
   {
     "id": "erdos-438",
-    "title": "Erdős Problem #438",
+    "title": "Erdős Problem #438: Square-Free Sumsets",
     "slug": "erdos-438",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large can ... be if ... contains no square numbers?\n\n\n\nTaking all integers ... shows that ... is possible. This can be im...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How large can A ⊆ {1,...,N} be if A+A contains no square numbers? The maximum density is exactly 11/32, achieved by a mod 32 construction (Massias) and proved tight by Khalfalah-Lodha-Szemerédi (2002).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
+      "number-theory",
+      "sumsets",
+      "squares",
+      "density",
       "erdos"
     ],
     "erdosNumber": 438,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-439",
@@ -7901,7 +7909,7 @@
     "dateAdded": "2026-01-22",
     "erdosNumber": 443,
     "mathlibCount": 3,
-    "sorries": 8,
+    "sorries": 0,
     "annotationCount": 21
   },
   {
@@ -11596,17 +11604,24 @@
   },
   {
     "id": "erdos-702",
-    "title": "Erdős Problem #702",
+    "title": "Erdős Problem #702: Singleton Intersections in k-Uniform Families",
     "slug": "erdos-702",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If $...\\{1,\\ldots,n\\}...\\lvert A\\rvert=k...A\\in ...\\lvert \\rvert >{k-2}...A,B\\in...\\lvert A\\cap B\\rvert=1...k=4...k\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 4, if F is a k-uniform family over {1,...,n} with |F| > C(n-2, k-2), must some pair have |A ∩ B| = 1? SOLVED by Frankl (1977): YES, the bound is tight.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-set-theory",
+      "intersecting-families",
+      "frankl",
+      "combinatorics",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 702,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-703",
@@ -13974,17 +13989,24 @@
   },
   {
     "id": "erdos-835",
-    "title": "Erdős Problem #835",
+    "title": "Erdős Problem #835: Chromatic Number of Johnson Graphs",
     "slug": "erdos-835",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a ... such that the ...-sized subsets of ... can be coloured with ... colours such that for every ... with ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does there exist k > 2 such that J(2k,k) has chromatic number k+1? SOLVED: NO for 3 ≤ k ≤ 8. The chromatic number exceeds k+1 in all verified cases.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "chromatic-number",
+      "johnson-graphs",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 835,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-836",
@@ -14058,17 +14080,21 @@
   },
   {
     "id": "erdos-841",
-    "title": "Erdős Problem #841",
+    "title": "Erdős Problem #841: Minimal Interval for Square Product",
     "slug": "erdos-841",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that ... contains a subset whose product with ... is a square number (and let ... if ... is itself sq...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let t_n be minimal such that {n+1,...,n+t_n} contains a subset whose product with n is a perfect square. Selfridge proved t_n = P(n) when P(n) > √(2n)+1, and t_n ≤ O(√n) otherwise. Bui-Pratt-Zaharescu (2024) showed t_n follows P(n)'s distribution.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
+      "number-theory",
+      "square-products",
+      "prime-divisors",
+      "smooth-numbers",
       "erdos"
     ],
     "erdosNumber": 841,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 15
   },
   {
     "id": "erdos-842",
@@ -14322,17 +14348,25 @@
   },
   {
     "id": "erdos-860",
-    "title": "Erdős Problem #860",
+    "title": "Erdős Problem #860: Prime Covering Intervals",
     "slug": "erdos-860",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that, for any ..., in the interval ... there exist distinct integers ... for ... such that ..., where ... den...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Estimate h(n), the minimum interval length such that any interval contains distinct multiples of the first π(n) primes. OPEN: Known bounds are (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2), but exact asymptotics unknown.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-numbers",
+      "intervals",
+      "covering",
+      "number-theory",
+      "asymptotics",
+      "open"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 860,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-861",
@@ -14668,7 +14702,7 @@
       "restricted-sums"
     ],
     "erdosNumber": 880,
-    "sorries": 4,
+    "sorries": 0,
     "annotationCount": 17
   },
   {
@@ -15487,8 +15521,8 @@
     "title": "Erdős Problem #93: Distinct Distances in Convex Polygons",
     "slug": "erdos-93",
     "description": "The vertices of a convex n-gon determine at least ⌊n/2⌋ distinct distances. Proved by Altman (1963), this is a foundational result in discrete geometry, though stronger variants remain open.",
-    "status": "pending",
-    "badge": "pending",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "discrete-geometry",
       "distinct-distances",
@@ -15498,7 +15532,7 @@
     ],
     "erdosNumber": 93,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-930",
@@ -15765,19 +15799,21 @@
     "title": "Erdős Problem #95: Sum of Squared Distance Multiplicities",
     "slug": "erdos-95",
     "description": "For n points in ℝ² with distance multiplicities f(uᵢ), prove ∑f(uᵢ)² ≪ n^{3+ε}. Solved by Guth and Katz (2015) with the stronger bound n³ log n, as part of their landmark distinct distances paper.",
-    "status": "pending",
-    "badge": "pending",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
       "discrete-geometry",
       "distinct-distances",
       "erdos",
       "polynomial-method",
       "algebraic-geometry",
-      "incidence-geometry"
+      "incidence-geometry",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 95,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-955",

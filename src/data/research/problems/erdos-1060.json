@@ -29,46 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PARTIAL (OPEN): Erdos1060Problem.lean (241 lines, 2 axioms, 6 sorries). Counting solutions to k·σ(k)=n. Core infrastructure built. Two main conjectures axiomatized: weak (n^o(1/log log n)) and strong ((log n)^O(1)).",
-    "builtItems": [
-      "Erdos1060Problem.lean (241 lines, 2 axioms, 6 sorries)",
-      "sigma: sum of divisors abbreviation",
-      "sigma_one (PROVED)",
-      "sigma_prime (PROVED)",
-      "sigma_mul_coprime (SORRY): multiplicativity",
-      "g: k·σ(k) product function",
-      "g_one (PROVED)",
-      "g_prime (PROVED)",
-      "solutionSet: {k : g(k) = n}",
-      "f: counting function (noncomputable)",
-      "solutionSet_finite (PARTIAL): k ≤ n bound",
-      "f' Finset alternative definition",
-      "f_eq_f' (SORRY)",
-      "f_of_one, f_of_zero (SORRIES)",
-      "erdos_1060_weak_conjecture (AXIOM - OPEN)",
-      "erdos_1060_strong_conjecture (AXIOM - OPEN)",
-      "oeis_A327153 definition",
-      "Example computations: g(2)=6, g(3)=12, g(6)=72, etc."
-    ],
-    "insights": [
-      "Status: OPEN (both weak and strong conjectures)",
-      "f(n) counts solutions to k·σ(k) = n",
-      "Solution set finite: k·σ(k) ≥ k implies k ≤ n",
-      "Weak bound: f(n) ≤ n^{ε/log log n} for large n",
-      "Strong bound: f(n) ≤ (log n)^C (polynomial in log)",
-      "Problem B11 in Guy's collection",
-      "Connected to OEIS A327153"
-    ],
-    "mathlibGaps": [
-      "Need sigma multiplicativity proof",
-      "Real.log asymptotics for bounds"
-    ],
-    "nextSteps": [
-      "Prove sigma_mul_coprime from Mathlib",
-      "Complete solutionSet_finite proof",
-      "Prove f_of_one and f_of_zero",
-      "Both conjectures remain OPEN"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Erdős #1060 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1059\n- Problem #1061\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

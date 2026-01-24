@@ -1,78 +1,41 @@
 {
   "slug": "erdos-401",
   "title": "Erdős #401: Factorial Divisibility with Prime Products",
-  "phase": "ACT",
+  "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\exists f(r) \\to \\infty: \\exists^\\infty n, \\exists a_1, a_2: a_1! a_2! | n! \\cdot 2^n 3^n \\cdots p_r^n \\land a_1 + a_2 > n + f(r) \\log n",
-    "plain": "Does there exist f(r) → ∞ such that for infinitely many n, we can find a₁, a₂ with a₁!a₂! | n!·2ⁿ3ⁿ...pᵣⁿ and a₁ + a₂ > n + f(r)·log n?",
-    "whyMatters": [
-      "Extends Erdős-Graham factorial divisibility bounds",
-      "Primorial factors provide extra 'room' in divisibility"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Erdős #401: Factorial Divisibility with Prime Products.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Barreto-Leeham (2026): YES - conjecture is TRUE",
-      "Erdős-Graham: Without extra factors, a₁+a₂ ≤ n + O(log n)",
-      "Sothanaphan: 'For all large n' version is FALSE"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Problem PROVED - formalization complete"
+    "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-24T18:10:00Z",
-    "iteration": 2,
-    "focus": "PROVED. Main theorem erdos_401_proved established via Barreto-Leeham construction.",
+    "phase": "NEW",
+    "since": "2026-01-23T08:04:56.544Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Consider proving Barreto-Leeham construction explicitly",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (PROVED): Erdos401Problem.lean (177 lines, 6 axioms, 0 sorries). Main theorem erdos_401_proved ESTABLISHED. Barreto-Leeham construction axiomatized. Connection to Problem #729 formalized. Sothanaphan counterexample for strong version.",
-    "builtItems": [
-      "Erdos401Problem.lean (177 lines, 6 axioms, 0 sorries)",
-      "nthPrime, primorialPow: prime infrastructure",
-      "FactorialDivides: a₁!a₂! | n!·primorialPow(r,n)",
-      "TendsToInfty: f(r) → ∞ predicate",
-      "Erdos401Conjecture: main conjecture",
-      "erdos_graham_baseline (AXIOM): O(log n) bound",
-      "barreto_leeham_401 (AXIOM): proof of conjecture",
-      "erdos_401_proved (PROVED = barreto_leeham_401)",
-      "Erdos401Strong: 'for all large n' version",
-      "sothanaphan_counterexample (AXIOM): strong version FALSE",
-      "g₂, g₂_modified: max excess functions",
-      "erdos_401_reformulation, erdos_729_connection (AXIOMS)"
-    ],
-    "insights": [
-      "Status: PROVED (Barreto-Leeham 2026)",
-      "Same construction as Problem #729",
-      "Key: primorial factors provide extra divisibility room",
-      "Baseline: Erdős-Graham shows O(log n) without extra factors",
-      "Strong version (∀ large n) is FALSE (Sothanaphan)",
-      "Counterexample: n = p_{r+1}^k - 1"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove Barreto-Leeham construction explicitly",
-      "Formalize Sothanaphan counterexample construction",
-      "Problem is COMPLETE"
-    ]
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Barreto-Leeham construction",
-      "status": "completed",
-      "notes": "Main theorem established via axiom"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "erdos",
     "proved",
@@ -82,20 +45,15 @@
     "primes"
   ],
   "relatedProofs": [
-    "Erdos401Problem.lean"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      "Erdős-Graham (1980): Old and New Problems, p.78",
-      "Barreto-Leeham (2026): AI-assisted proof"
-    ],
-    "urls": [
-      "https://erdosproblems.com/401"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.544Z",
-  "lastUpdate": "2026-01-24T18:10:00Z",
+  "lastUpdate": "2026-01-23T08:04:56.544Z",
   "significance": 6,
   "tractability": 7
 }

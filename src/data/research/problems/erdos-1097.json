@@ -29,46 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PARTIAL (OPEN): Erdos1097Problem.lean (303 lines, 6 axioms, 0 sorries). Three-term AP common differences problem. Main theorem erdos_1097_summary PROVED. Current bounds: 1.778 ≤ c ≤ 11/6. Bourgain equivalence formalized.",
-    "builtItems": [
-      "Erdos1097Problem.lean (303 lines, 6 axioms, 0 sorries)",
-      "IsThreeAP: a, a+d, a+2d ∈ A definition",
-      "commonDifferences: set of valid d",
-      "commonDifferencesFinset, numCommonDifferences",
-      "maxCommonDifferences: f(n) definition",
-      "ErdosConjecture_3_2: O(n^{3/2}) question",
-      "katz_tao_upper_bound (AXIOM): n^{11/6}",
-      "lemm_lower_bound (AXIOM): n^{1.778...}",
-      "current_bounds (PROVED)",
-      "erdos_spencer_construction (AXIOM): n^{3/2} achieved",
-      "erdos_ruzsa_construction (AXIOM): explicit n^{1+c}",
-      "restrictedSum, restrictedDiff definitions",
-      "BourgainExponent definition",
-      "chan_equivalence (AXIOM): AP ↔ sums-differences",
-      "erdos_1097_summary (PROVED): full bounds",
-      "MainOpenQuestion definition",
-      "alphaevolve_improvement (AXIOM)"
-    ],
-    "insights": [
-      "Status: OPEN (n^{3/2} conjecture)",
-      "f(n) = max common differences in n-element set",
-      "Current bounds: 1.778 ≤ c ≤ 11/6 ≈ 1.833",
-      "Upper: Katz-Tao (1999), Lower: Lemm (2015)",
-      "Equivalent to Bourgain's sums-differences problem",
-      "Connected to Kakeya conjecture",
-      "Probabilistic: Erdős-Spencer achieved n^{3/2}",
-      "Explicit: Erdős-Ruzsa achieved n^{1+c}",
-      "AlphaEvolve (2025) slightly improved lower bound"
-    ],
-    "mathlibGaps": [
-      "AP.Three infrastructure for common differences",
-      "Finset sup optimization"
-    ],
-    "nextSteps": [
-      "Narrow gap between 1.778 and 1.833",
-      "Prove or disprove n^{3/2} conjecture",
-      "Problem remains OPEN"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Erdős #1097 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a set of $n$ integers. How many distinct $d$ can occur as the common difference of a three-term arithmetic progression in $A$? Are there always $O(n^{3/2})$ many such $d$?\n\n\n\nA problem Erd\\H{o}s posed in the 1989 problem session of Great Western Number Theory.\n\nHe states that Erd\\H{o}s and Ruzsa gave an explicit construction which achieved $n^{1+c}$ for some $c>0$, and Erd\\H{o}s and Spencer gave a probabilistic proof which achieved $n^{3/2}$, and speculated this may be the best possible.\n\nIn the comment section, Chan has noticed that this problem is exactly equivalent to a sums-differences question of Bourgain \\cite{Bo99}, introduced as an arithmetic path towards the Kakeya conjecture: find the smallest $c\\in [1,2]$ such that, for any finite sets of integers $A$ and $B$ and $G\\subseteq A\\times B$ we have\\[\\lvert A\\overset{G}{-}B\\rvert \\ll \\max(\\lvert A\\rvert,\\lvert B\\rvert, \\lvert A\\overset{G}{+}B\\rvert)^c\\](where, for example, $A\\overset{G}{+}B$ denotes the set of $a+b$ with $(a,b)\\in G$).\n\nThis is equivalent in the sense that the greatest exponent $c$ achievable for the main problem here is equal to the smallest constant achievable for the sums-differences question. The current best bounds known are thus\\[1.77898\\cdots \\leq c \\leq 11/6 \\approx 1.833.\\]The upper bound is due to Katz and Tao \\cite{KaTa99}. The lower bound is due to Lemm \\cite{Le15} (with a very small improvement found by AlphaEvolve \\cite{GGTW25}).\n\n\n\n\n\nReferences\n\n\n[Bo99] Bourgain, J., On the dimension of {K}akeya sets and related maximal\ninequalities. Geom. Funct. Anal. (1999), 256--282.\n\n[GGTW25] B. Georgiev, J. G\\'{o}mez-Serrano, T. Tao, and A. Wagner, Mathematical exploration and discovery at scale. arXiv:2511.02864 (2025).\n\n[KaTa99] Katz, Nets Hawk and Tao, Terence, Bounds on arithmetic projections, and applications to the\n{K}akeya conjecture. Math. Res. Lett. (1999), 625--630.\n\n[Le15] Lemm, Marius, New counterexamples for sums-differences. Proc. Amer. Math. Soc. (2015), 3863--3868.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #6\n- Problem #1096\n- Problem #1098\n- Problem #39\n- Problem #1\n\n## References\n\n- GWNT89\n- Bo99\n- KaTa99\n- Le15\n- GGTW25\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

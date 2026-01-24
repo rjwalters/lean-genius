@@ -29,44 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PARTIAL (OPEN): Erdos1052Problem.lean (236 lines, 9 axioms, 0 sorries). Unitary perfect number formalization. Key result: all unitary perfect are even (axiomatized). Main conjecture (finiteness) is OPEN. Two theorems PROVED: unitary_iff_no_common_prime, unitary_complement.",
-    "builtItems": [
-      "Erdos1052Problem.lean (236 lines, 9 axioms, 0 sorries)",
-      "properUnitaryDivisors: gcd(d, n/d) = 1 filter",
-      "IsUnitaryPerfect: sum = n definition",
-      "one_mem_properUnitaryDivisors (PROVED)",
-      "mem_properUnitaryDivisors (PROVED)",
-      "odd_of_unitaryDivisor_of_odd (PROVED)",
-      "sum_odd_parity (AXIOM): parity of sum of odd numbers",
-      "even_of_isUnitaryPerfect (AXIOM): main parity result",
-      "isUnitaryPerfect_6, _60, _90 (AXIOMS): verified examples",
-      "erdos_1052_conjecture (AXIOM - OPEN): finiteness",
-      "unitary_iff_no_common_prime (PROVED)",
-      "unitaryDivisorSum definition",
-      "unitaryDivisors_primePow (AXIOM)",
-      "unitaryDivisorSum_mul_coprime (AXIOM): multiplicativity",
-      "unitary_complement (PROVED)",
-      "properUnitaryDivisors_pairing (AXIOM)"
-    ],
-    "insights": [
-      "Status: OPEN (finiteness conjecture)",
-      "Key result: All unitary perfect numbers are even",
-      "Only 5 known examples: 6, 60, 90, 87360, 146361946186458562560000",
-      "Unitary divisors pair up: d ↔ n/d (except at √n)",
-      "Proof approach: odd n leads to parity contradiction via pairing",
-      "$10 prize offered by Carlitz, Erdős, and Subbarao",
-      "unitaryDivisorSum is multiplicative for coprime arguments"
-    ],
-    "mathlibGaps": [
-      "Unitary divisor infrastructure",
-      "Multiplicative function for unitary divisor sum"
-    ],
-    "nextSteps": [
-      "Prove sum_odd_parity from Mathlib",
-      "Complete even_of_isUnitaryPerfect proof",
-      "Verify isUnitaryPerfect examples computationally",
-      "Problem is OPEN - finiteness conjecture remains"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Erdős #1052 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1051\n- Problem #1053\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

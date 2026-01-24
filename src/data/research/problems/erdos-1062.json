@@ -29,45 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PARTIAL (OPEN): Erdos1062Problem.lean (249 lines, 4 axioms, 5 sorries). Maximum subset size with no element dividing two others. Lebensold bounds (0.6725n ≤ f(n) ≤ 0.6736n) axiomatized. Key theorem proved: noDividesTwoOthers_strictly_weaker shows property is weaker than primitive sets.",
-    "builtItems": [
-      "Erdos1062Problem.lean (249 lines, 4 axioms, 5 sorries)",
-      "NoDividesTwoOthers: core property definition",
-      "AtMostOneProperMultiple: alternative formulation",
-      "noDividesTwoOthers_iff_atMostOne (SORRY)",
-      "universe: {1,...,n} as Finset",
-      "f: maximum subset size (noncomputable)",
-      "lowerBoundConstruction: [m+1, 3m+2] interval",
-      "lowerBoundConstruction_card (PROVED): size = 2m+2",
-      "lowerBoundConstruction_valid (SORRY): property holds",
-      "lower_bound (SORRY): f(n) ≥ (2n+2)/3",
-      "lebensold_lower (AXIOM): f(n) ≥ 0.6725n",
-      "lebensold_upper (AXIOM): f(n) ≤ 0.6736n",
-      "limiting_density_exists (AXIOM): limit in [0.6725, 0.6736]",
-      "erdos_1062_open_question (AXIOM - OPEN): is limit irrational?",
-      "IsPrimitiveSet: stronger antichain property",
-      "primitive_implies_noDividesTwoOthers (PROVED)",
-      "noDividesTwoOthers_strictly_weaker (PROVED): {2,6,9} example"
-    ],
-    "insights": [
-      "Status: OPEN (irrationality of limiting density)",
-      "Property: no a divides two distinct b,c in set",
-      "Lower bound: f(n) ≥ ⌈(2/3)n⌉ from [m+1, 3m+2]",
-      "Lebensold (1976): 0.6725n ≤ f(n) ≤ 0.6736n",
-      "Strictly weaker than primitive/antichain sets",
-      "Example: {2,6,9} is not primitive but satisfies property",
-      "Problem B24 in Guy's collection"
-    ],
-    "mathlibGaps": [
-      "Finset sup for optimization",
-      "Divisibility ratio bounds"
-    ],
-    "nextSteps": [
-      "Prove lowerBoundConstruction_valid",
-      "Prove lower_bound theorem",
-      "Prove noDividesTwoOthers_iff_atMostOne",
-      "Irrationality question remains OPEN"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Erdős #1062 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?\n\n\n\nThe example $[m+1,3m+2]$ shows that $f(n)\\geq\\lceil \\frac{2}{3}n\\rceil$. Lebensold \\cite{Le76} has shown that, for large $n$,\\[0.6725 n \\leq f(n) \\leq 0.6736 n.\\]This is problem B24 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Le76] Lebensold, Kenneth, A divisibility problem. Studies in Appl. Math. (1976/77), 291--294.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1061\n- Problem #1063\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n- Le76\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

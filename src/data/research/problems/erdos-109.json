@@ -1,95 +1,59 @@
 {
   "slug": "erdos-109",
   "title": "Erdős #109: The Erdős Sumset Conjecture",
-  "phase": "ACT",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\forall A \\subseteq \\mathbb{N}, d^*(A) > 0 \\implies \\exists B,C \\text{ infinite}: B+C \\subseteq A",
-    "plain": "Any A ⊆ ℕ of positive upper density contains a sumset B + C where both B and C are infinite.",
-    "whyMatters": [
-      "Sets of positive density are additively rich",
-      "Fundamental result in additive combinatorics"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Erdős #109: The Erdős Sumset Conjecture.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Moreira-Richter-Robertson (2019): Full conjecture proved in Annals of Math"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Formalize the MRR proof or accept as axiom"
+    "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-24T17:20:00Z",
-    "iteration": 2,
-    "focus": "Aristotle-processed formalization with density infrastructure.",
+    "phase": "NEW",
+    "since": "2026-01-23T08:04:56.540Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Main theorem axiomatized - consider proving density lemmas.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "ACTIVE: Erdos109Problem.lean (334 lines, 2 axioms, 0 sorries). Processed by Aristotle. MRR theorem axiomatized. Full density infrastructure proved.",
-    "builtItems": [
-      "Erdos109Problem.lean (334 lines, 2 axioms, 0 sorries)",
-      "countingFn: |A ∩ {1,...,N}|",
-      "upperDensity, lowerDensity via limsup/liminf",
-      "HasPositiveUpperDensity, HasPositiveLowerDensity predicates",
-      "lowerDensity_le_upperDensity (PROVED)",
-      "ErdosSumsetConjecture statement",
-      "evenNumbers, oddNumbers definitions",
-      "even_and_odd_disjoint (PROVED)",
-      "even_union_odd_eq_univ (PROVED)"
-    ],
-    "insights": [
-      "Status: SOLVED (Moreira-Richter-Robertson 2019, Annals of Math)",
-      "Main theorem axiomatized as moreira_richter_robertson",
-      "File processed by Aristotle proof search",
-      "Density bounds (≤1, ≥0) fully proved",
-      "liminf ≤ limsup inequality proved via Filter lemmas",
-      "Example: even numbers have positive density (axiom)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider proving even_has_pos_density without axiom",
-      "Add more examples of sets with positive density"
-    ]
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Aristotle proof search",
-      "status": "completed",
-      "notes": "Density infrastructure proved, main theorem axiomatized"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "erdos",
     "solved",
     "additive-combinatorics",
     "density",
     "sumsets",
-    "ergodic-theory",
-    "aristotle-processed"
+    "ergodic-theory"
   ],
   "relatedProofs": [
-    "Erdos109Problem.lean"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      "Moreira-Richter-Robertson (2019): Ann. Math. 189(2):605-652"
-    ],
-    "urls": [
-      "https://erdosproblems.com/109"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.540Z",
-  "lastUpdate": "2026-01-24T17:20:00Z",
+  "lastUpdate": "2026-01-23T08:04:56.540Z",
   "significance": 8,
   "tractability": 7
 }

@@ -1,108 +1,54 @@
 {
   "slug": "erdos-234",
-  "title": "Erdős #234: Density of Normalized Prime Gaps",
-  "phase": "ACT",
+  "title": "Erdős #234",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\forall c \\geq 0: f(c) := \\lim_{N\\to\\infty} \\frac{|\\{n \\leq N : g_n/\\log n < c\\}|}{N} \\text{ exists and is continuous}",
-    "plain": "Does the density f(c) of integers n with (p_{n+1} - p_n)/log n < c exist for all c ≥ 0, and is it a continuous function of c?",
-    "whyMatters": [
-      "Fundamental question about prime gap distribution",
-      "Connects to Riemann Hypothesis via Gallagher's work"
-    ]
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $c\\geq 0$ the density $f(c)$ of integers for which\\[\\frac{p_{n+1}-p_n}{\\log n}< c\\]exists and is a continuous function of $c$.\n\n\n\nSee also [5].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Gallagher (1976): Under RH, normalized gaps have exponential distribution",
-      "Cramér's model predicts f(c) = 1 - e^{-c}",
-      "Average normalized gap → 1 (from PNT)"
-    ],
-    "open": [
-      "Unconditional existence of density",
-      "Continuity of density function"
-    ],
-    "goal": "Prove density exists and is continuous (unconditionally)"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-24T17:50:00Z",
-    "iteration": 2,
-    "focus": "Complete formalization with RH-conditional result and Cramér model.",
-    "blockers": [
-      "Problem is OPEN unconditionally"
-    ],
-    "nextAction": "Consider proving density_at_zero_expected and cramer_continuous",
+    "phase": "NEW",
+    "since": "2026-01-12T16:08:36.613Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "ACTIVE (OPEN): Erdos234Problem.lean (252 lines, 8 axioms, 2 sorries). Full infrastructure for prime gap density. Cramér prediction defined and properties stated. Gallagher conditional result axiomatized. gallagher_implies_conjecture PROVED.",
-    "builtItems": [
-      "Erdos234Problem.lean (252 lines, 8 axioms, 2 sorries)",
-      "nthPrime, primeGap, normalizedGap definitions",
-      "countSmallNormGaps, gapProportion, gapDensity",
-      "DensityExists, Erdos234Conjecture",
-      "cramerPrediction: 1 - e^{-c} model",
-      "cramer_prediction_cdf (PROVED by rfl)",
-      "density_monotone (AXIOM)",
-      "density_at_infinity (AXIOM)",
-      "gallagher_conditional: RH implies exponential dist (AXIOM)",
-      "gallagher_implies_conjecture (PROVED)",
-      "small_gaps_exist, large_gaps_exist (AXIOMS)",
-      "average_normalized_gap (AXIOM)",
-      "erdos_234_status, summary_erdos_234 (PROVED)"
-    ],
-    "insights": [
-      "Status: OPEN unconditionally",
-      "RH-conditional: Gallagher shows exponential distribution",
-      "Cramér model: f(c) = 1 - e^{-c} is the predicted form",
-      "Key difficulty: needs joint distribution of all normalized gaps",
-      "Connection to Problem #233 (sum of squared gaps)",
-      "Connection to Problem #235 (solved by Hooley)",
-      "Large gaps exist (Rankin, Pintz, Ford-Green-Konyagin-Tao)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove density_at_zero_expected (f(0) = 0)",
-      "Prove cramer_continuous",
-      "Main conjecture requires new mathematics"
-    ]
+    "nextSteps": [],
+    "markdown": "# Erdős #234 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $c\\geq 0$ the density $f(c)$ of integers for which\\[\\frac{p_{n+1}-p_n}{\\log n}< c\\]exists and is a continuous function of $c$.\n\n\n\nSee also [5].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #5\n- Problem #233\n- Problem #235\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n- Er61\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
-  "approaches": [
-    {
-      "name": "RH-conditional approach",
-      "status": "completed",
-      "notes": "gallagher_implies_conjecture fully proved"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "prime-gaps",
-    "analytic-number-theory",
-    "riemann-hypothesis",
-    "open-problem"
+    "erdos"
   ],
   "relatedProofs": [
-    "Erdos234Problem.lean"
+    "Relevance"
   ],
   "references": {
-    "papers": [
-      "Cramér (1936): On the order of magnitude of prime gaps",
-      "Gallagher (1976): On the distribution of primes in short intervals",
-      "Erdős (1935, 1940): On the difference of consecutive primes"
-    ],
-    "urls": [
-      "https://erdosproblems.com/234"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
   "started": "2026-01-12T16:08:36.613Z",
-  "lastUpdate": "2026-01-24T17:50:00Z",
   "significance": 7,
   "tractability": 5
 }
