@@ -7801,17 +7801,20 @@
   },
   {
     "id": "erdos-441",
-    "title": "Erdős Problem #441",
+    "title": "Erdős Problem #441: LCM-Bounded Subsets",
     "slug": "erdos-441",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the size of the largest ... such that ... for all ..., where ... is the least common multiple of ... and ......",
-    "status": "pending",
+    "description": "Find the maximum size g(N) of A ⊆ {1,...,N} such that lcm(a,b) ≤ N for all a,b ∈ A. Is Erdős' construction optimal? Answer: NO - Chen and Dai proved for infinitely many N, the optimal set is strictly larger than Erdős' construction. The asymptotic g(N) ~ (9N/8)^{1/2} is known.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 441,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 11
   },
   {
     "id": "erdos-442",
