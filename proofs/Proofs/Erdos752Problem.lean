@@ -98,14 +98,32 @@ axiom sudakov_verstrate_2008 : ∃ c : ℝ, c > 0 ∧
     GirthGreaterThan G (2 * s) →
     ∃ (start : ℕ), ConsecutiveEvenCycleLengths G start ⌊c * (k : ℝ) ^ s⌋₊
 
+/-- Min degree lower bounds average degree -/
+axiom min_degree_le_avg (V : Type*) [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    (minDegree G : ℝ) ≤ avgDegree G
+
+/-- Consecutive lengths give at least that many distinct cycle lengths -/
+axiom consecutive_gives_distinct (V : Type*) [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) (start count : ℕ) :
+    ConsecutiveEvenCycleLengths G start count →
+    numCycleLengths G ≥ count
+
 /-- The original conjecture follows from the stronger result -/
 theorem erdos_752_solved : ErdosFaudreeSchelpConjecture := by
   obtain ⟨c, hc_pos, h⟩ := sudakov_verstrate_2008
   use c / 2, by linarith
   intro V _ _ G _ k s hmin hgirth
-  -- The min degree bound implies the average degree bound
-  -- Consecutive cycle lengths give distinct lengths
-  sorry
+  -- min degree ≤ avg degree, so avg degree ≥ k
+  have havg : avgDegree G ≥ k := by
+    calc avgDegree G ≥ minDegree G := min_degree_le_avg V G
+      _ ≥ k := by exact_mod_cast hmin
+  obtain ⟨start, hcons⟩ := h V G k s havg hgirth
+  have hdist := consecutive_gives_distinct V G start _ hcons
+  calc (numCycleLengths G : ℝ)
+      ≥ ⌊c * (k : ℝ) ^ s⌋₊ := by exact_mod_cast hdist
+    _ ≥ c * (k : ℝ) ^ s - 1 := Nat.sub_one_lt_floor (c * (k : ℝ) ^ s)
+    _ ≥ c / 2 * (k : ℝ) ^ s := by nlinarith [hc_pos, pow_nonneg (Nat.cast_nonneg k) s]
 
 /-!
 ## Part 4: Why Girth Matters
