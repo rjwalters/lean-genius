@@ -1,60 +1,93 @@
 {
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
-  "phase": "NEW",
-  "status": "blocked",
+  "phase": "SKIPPED",
+  "status": "skipped",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "SKIPPED: Already covered by PerfectNumbers.",
+    "formal": "\\text{(covered by PerfectNumbers.lean)}",
+    "plain": "SKIPPED: Core σ function properties are formalized in PerfectNumbers.lean via Mathlib's Wiedijk100Theorems.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Euclid-Euler theorem (complete characterization of even perfect numbers)",
+      "σ(2^k) = 2^{k+1} - 1 formula",
+      "Examples: 6, 28, 496, 8128 are perfect"
+    ],
+    "open": [
+      "Existence of odd perfect numbers (open for 2000+ years)",
+      "Aliquot sequence termination"
+    ],
+    "goal": "No additional goal - covered by PerfectNumbers.lean"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-01T05:32:39.478Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SKIPPED",
+    "since": "2026-01-24T16:47:28Z",
+    "iteration": 2,
+    "focus": "Confirmed skip decision after survey.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No action needed - properly skipped.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Open for 2000+ years!",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [
-      "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
-      "`Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors"
+    "progressSummary": "SKIPPED (confirmed): PerfectNumbers.lean (202 lines, no sorries) provides complete coverage of σ function properties via Mathlib's Wiedijk100Theorems. Odd perfect numbers are mathematically OPEN. No tractable extension identified.",
+    "builtItems": [
+      "PerfectNumbers.lean (202 lines, no sorries) - complete Euclid-Euler theorem",
+      "Imports Archive.Wiedijk100Theorems.PerfectNumbers from Mathlib",
+      "Examples for first 4 perfect numbers (6, 28, 496, 8128)"
     ],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: Sum of Divisors Properties\n\n## Status: Covered Elsewhere\n\nThis problem is marked **SKIPPED** because related content already exists in the proof gallery.\n\n## What We Have\n\n### In PerfectNumbers.lean (~317 lines)\n\nThe `PerfectNumbers.lean` file formalizes the sum-of-divisors function and its properties:\n\n**Definitions**:\n- Uses Mathlib's `Nat.divisors` and summation\n\n**Key Theorems**:\n- `sigma_prime_power`: σ(p^k) = (p^{k+1} - 1)/(p - 1)\n- `sigma_two_power`: σ(2^k) = 2^{k+1} - 1\n- `perfect_iff_sigma_2n`: n is perfect ⟺ σ(n) = 2n\n- `euclid_euler_perfect`: Euclid-Euler theorem for even perfect numbers\n\n**Concrete Examples**:\n- 6 is perfect (1 + 2 + 3 = 6)\n- 28 is perfect (1 + 2 + 4 + 7 + 14 = 28)\n- 496 is perfect\n- 8128 is perfect\n\n### In Mathlib\n\nThe divisor sum function is `Nat.sigma` in Mathlib:\n- `Nat.sigma 1 n` = σ(n) = sum of divisors of n\n- `Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors\n\n## Why This Problem Is Marked Skipped\n\nThe original problem statement was general \"sum of divisors properties\" without specific goals. Since our PerfectNumbers.lean already covers:\n1. The σ function behavior\n2. Perfect number characterization\n3. Euclid-Euler theorem\n\n...there's no clear additional target that would justify a separate research track.\n\n## Related Open Problems\n\nIf we wanted to extend this work, possible directions include:\n\n### 1. Odd Perfect Numbers\n**Status**: Open for 2000+ years!\n\nNo odd perfect number is known. If one exists, it must:\n- Be greater than 10^1500\n- Have at least 101 prime factors (counting multiplicity)\n- Have a special form involving prime powers\n\n### 2. Mersenne Primes Connection\n\nA number 2^{p-1}(2^p - 1) is perfect iff 2^p - 1 is prime (Mersenne prime).\n\nKnown: M_2, M_3, M_5, M_7, M_13, M_17, M_19, M_31, ...\n\n### 3. Aliquot Sequences\n\nFor a number n, define a(n) = σ(n) - n (sum of proper divisors).\nThe sequence n → a(n) → a(a(n)) → ...\n\n- Perfect numbers: fixed points\n- Amicable numbers: 2-cycles\n- Sociable numbers: longer cycles\n- Open: Does every sequence eventually cycle or reach 1?\n\n### 4. Abundancy Index\n\nThe abundancy index σ(n)/n measures how \"abundant\" n is:\n- σ(n)/n < 2: deficient\n- σ(n)/n = 2: perfect\n- σ(n)/n > 2: abundant\n\nOpen questions about the distribution of abundancy.\n\n## References\n\n- Dickson, L.E. (1919). \"History of the Theory of Numbers\" Vol I\n- Guy, R.K. (2004). \"Unsolved Problems in Number Theory\" Section B\n- Ochem, P., Rao, M. (2012). \"Odd perfect numbers are greater than 10^1500\"\n\n## Scouting Log\n\n### Backfill Session (2026-01-01)\n\n**Mode**: BACKFILL - Related work exists in PerfectNumbers.lean\n\n**Decision**: Mark as SKIPPED since core σ function properties are already formalized. No specific open problem identified that would benefit from additional research effort.\n\n**If Revisiting**: Consider odd perfect number bounds or aliquot sequence properties as potential targets.\n"
+    "insights": [
+      "PerfectNumbers.lean is complete - imports Wiedijk100Theorems and adds pedagogical wrappers",
+      "Euclid-Euler theorem fully proven: n is even perfect iff n = 2^k × (2^{k+1} - 1) where 2^{k+1} - 1 is Mersenne prime",
+      "Odd perfect numbers are OPEN for 2000+ years - known: if exists, > 10^1500 with 101+ prime factors",
+      "Several Erdős problems use σ (48, 250, 252, 277, 412, etc.) - these are tracked separately",
+      "Mathlib's ArithmeticFunction.sigma provides σ_k(n) = sum of k-th powers of divisors",
+      "Aliquot sequences (n → σ(n) - n → ...) could be formalized but no specific theorem target identified"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "No action needed - skip confirmed",
+      "If revisiting: consider odd perfect number bounds (requires new math, not formalization)",
+      "Related Erdős problems (48, 250, 252, etc.) tracked separately"
+    ],
+    "markdown": "# Knowledge Base: Sum of Divisors Properties\n\n## Status: SKIPPED (Confirmed 2026-01-24)\n\nThis problem is correctly marked SKIPPED because:\n1. PerfectNumbers.lean provides complete coverage (202 lines, no sorries)\n2. Mathlib's ArithmeticFunction.sigma covers σ_k functions\n3. Odd perfect numbers are mathematically OPEN (2000+ years)\n4. No tractable extension identified\n\n## What We Have\n\n### PerfectNumbers.lean (202 lines)\n\nImports `Archive.Wiedijk100Theorems.PerfectNumbers` from Mathlib:\n\n**Theorems**:\n- `perfect_iff_divisor_sum`: n perfect ↔ σ(n) = 2n\n- `sigma_two_pow`: σ(2^k) = 2^{k+1} - 1\n- `euclid_perfect_numbers`: Mersenne prime → perfect number\n- `euler_even_perfect`: Even perfect → Mersenne form\n- `even_perfect_iff`: Complete characterization\n\n**Examples**:\n- `six_is_perfect`: 6 = 2^1 × 3\n- `twentyeight_is_perfect`: 28 = 2^2 × 7\n- `fourhundredninetysix_is_perfect`: 496 = 2^4 × 31\n- `eightthousandonetwentyeight_is_perfect`: 8128 = 2^6 × 127\n\n### In Mathlib\n\n- `Nat.sigma 1 n` = σ(n) = sum of divisors\n- `Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors\n- `ArithmeticFunction.IsMultiplicative σ` - σ is multiplicative\n\n## Potential Extensions (Not Tractable)\n\n### 1. Odd Perfect Numbers\n**Status**: OPEN for 2000+ years!\n\nNo odd perfect number is known. If one exists:\n- Must be > 10^1500\n- Must have at least 101 prime factors\n- Must have special form\n\n**Why Not Tractable**: This is a mathematical problem, not a formalization problem.\n\n### 2. Aliquot Sequences\n\nFor n, define a(n) = σ(n) - n (proper divisor sum).\nThe sequence n → a(n) → a(a(n)) → ...\n\n- Perfect: fixed points (a(6) = 6)\n- Amicable: 2-cycles (a(220) = 284, a(284) = 220)\n- Sociable: longer cycles\n\n**Open**: Does every sequence eventually cycle or reach 1?\n\n### 3. Related Erdős Problems\n\nSeveral Erdős problems use σ - these are tracked separately:\n- Erdős #48: φ(n) = σ(m) pairs (SOLVED)\n- Erdős #250, #252, #277, #412, etc.\n\n## Survey Log\n\n### Assessment: 2026-01-24 (researcher-3)\n\n**Decision**: SKIP CONFIRMED\n\n**Reason**: PerfectNumbers.lean is complete with no sorries. It imports the authoritative Wiedijk100Theorems from Mathlib and provides pedagogical wrappers. No tractable extension identified - odd perfect numbers are mathematically open, not a formalization gap.\n\n**Recommendation**: Keep skipped. Related Erdős problems tracked separately.\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Survey existing coverage",
+      "status": "completed",
+      "notes": "PerfectNumbers.lean confirmed complete - 202 lines, no sorries"
+    }
+  ],
   "tags": [
     "number-theory",
     "arithmetic-functions",
-    "classical"
+    "classical",
+    "covered-elsewhere"
   ],
   "relatedProofs": [
-    "Relevance"
+    "PerfectNumbers.lean",
+    "Erdos48Problem.lean"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Dickson (1919) History of Theory of Numbers Vol I",
+      "Guy (2004) Unsolved Problems in Number Theory Section B"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Archive.Wiedijk100Theorems.PerfectNumbers",
+      "Mathlib.NumberTheory.ArithmeticFunction"
+    ]
   },
   "started": "2026-01-01T05:32:39.478Z",
-  "lastUpdate": "2026-01-01T05:32:39.478Z",
+  "lastUpdate": "2026-01-24T16:47:28Z",
   "significance": 5,
   "tractability": 9
 }
