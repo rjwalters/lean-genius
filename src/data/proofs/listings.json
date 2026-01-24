@@ -10869,17 +10869,25 @@
   },
   {
     "id": "erdos-657",
-    "title": "Erdős Problem #657",
+    "title": "Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances",
     "slug": "erdos-657",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... is a set of ... points such that every subset of ... points determines ... distinct distances (i.e. .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A ⊂ ℝ² is a set of n points with no isosceles triangles, must A determine at least f(n)·n distinct distances for some f(n) → ∞? PARTIALLY SOLVED: YES. Bounds: 2^{c(log n)^{1/9}} ≤ f(n) ≤ 2^{O(√log n)}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "distances",
+      "isosceles-free",
+      "combinatorial-geometry",
+      "3-AP-free",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-23",
     "erdosNumber": 657,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 6,
+    "annotationCount": 19
   },
   {
     "id": "erdos-658",

@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-657-point2",
+    "proofId": "erdos-657",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Point2",
+    "content": "A point in ℝ² as a pair of reals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-dist2",
+    "proofId": "erdos-657",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "dist2",
+    "content": "Euclidean distance √((x₁-x₂)² + (y₁-y₂)²).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-triple",
+    "proofId": "erdos-657",
+    "range": { "startLine": 75, "endLine": 85 },
+    "type": "definition",
+    "title": "Triple",
+    "content": "Structure for three distinct points from A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-isosceles",
+    "proofId": "erdos-657",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "definition",
+    "title": "IsIsosceles",
+    "content": "A triple is isosceles if two distances equal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-free",
+    "proofId": "erdos-657",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "definition",
+    "title": "IsIsoscelesFree",
+    "content": "No triple in A forms an isosceles triangle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-distset",
+    "proofId": "erdos-657",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "definition",
+    "title": "distanceSet",
+    "content": "Set of all pairwise distances in A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-numdist",
+    "proofId": "erdos-657",
+    "range": { "startLine": 118, "endLine": 120 },
+    "type": "definition",
+    "title": "numDistinctDistances",
+    "content": "Count of distinct distances in A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-fratio",
+    "proofId": "erdos-657",
+    "range": { "startLine": 131, "endLine": 135 },
+    "type": "definition",
+    "title": "f_ratio",
+    "content": "f(n) = min distances/n over isosceles-free sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-question",
+    "proofId": "erdos-657",
+    "range": { "startLine": 137, "endLine": 141 },
+    "type": "definition",
+    "title": "ErdosQuestion657",
+    "content": "Does f(n) → ∞ as n → ∞?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-dumlower",
+    "proofId": "erdos-657",
+    "range": { "startLine": 153, "endLine": 159 },
+    "type": "theorem",
+    "title": "dumitrescu_lower_bound",
+    "content": "Dumitrescu 2008: f(n) ≥ (log n)^c.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-dumupper",
+    "proofId": "erdos-657",
+    "range": { "startLine": 161, "endLine": 167 },
+    "type": "theorem",
+    "title": "dumitrescu_upper_bound",
+    "content": "Dumitrescu 2008: f(n) ≤ 2^{O(√log n)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-kelley",
+    "proofId": "erdos-657",
+    "range": { "startLine": 173, "endLine": 179 },
+    "type": "theorem",
+    "title": "kelley_meka_lower_bound",
+    "content": "Kelley-Meka 2023: f(n) ≥ 2^{c(log n)^{1/9}}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-3ap",
+    "proofId": "erdos-657",
+    "range": { "startLine": 190, "endLine": 192 },
+    "type": "definition",
+    "title": "Is3APFree",
+    "content": "Set with no three-term arithmetic progression.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-equiv",
+    "proofId": "erdos-657",
+    "range": { "startLine": 202, "endLine": 207 },
+    "type": "theorem",
+    "title": "oneDimensional_equivalence",
+    "content": "In ℝ, isosceles-free ↔ 3-AP-free differences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-straus",
+    "proofId": "erdos-657",
+    "range": { "startLine": 218, "endLine": 229 },
+    "type": "theorem",
+    "title": "straus_high_dimension",
+    "content": "In ℝ^k with 2^k ≥ n: n-1 distances suffice.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-gap",
+    "proofId": "erdos-657",
+    "range": { "startLine": 261, "endLine": 266 },
+    "type": "definition",
+    "title": "currentGap",
+    "content": "Gap: 2^{(log n)^{1/9}} ≤ f(n) ≤ 2^{√log n}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-657-tendsinf",
+    "proofId": "erdos-657",
+    "range": { "startLine": 281, "endLine": 288 },
+    "type": "theorem",
+    "title": "f_tends_to_infinity",
+    "content": "f(n) → ∞ follows from (log n)^c lower bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-main",
+    "proofId": "erdos-657",
+    "range": { "startLine": 313, "endLine": 313 },
+    "type": "theorem",
+    "title": "erdos_657",
+    "content": "Main theorem: YES, f(n) → ∞.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-657-partial",
+    "proofId": "erdos-657",
+    "range": { "startLine": 323, "endLine": 324 },
+    "type": "theorem",
+    "title": "erdos_657_partial",
+    "content": "Partial: f(n) → ∞ + growth rate open.",
+    "significance": "critical"
+  }
+]
