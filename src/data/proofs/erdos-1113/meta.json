@@ -1,33 +1,163 @@
 {
   "id": "erdos-1113",
-  "title": "Erdős Problem #1113",
+  "title": "Erdős Problem #1113: Sierpinski Numbers Without Covering Sets",
   "slug": "erdos-1113",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA positive odd integer ... such that none of ... are prime for ... is called a Sierpinski number. We say that a set of primes...",
+  "description": "Are there Sierpinski numbers with no finite covering set? OPEN. Izotov's candidate m = 734110615000775^4 is conjectured uncovered. If NO, infinitely many Fermat primes would exist.",
   "meta": {
-    "author": "Unknown",
+    "author": "Sierpinski (1960), Izotov (1995), Filaseta-Finch-Kozek (2008)",
     "sourceUrl": "https://erdosproblems.com/1113",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1113Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "sierpinski-numbers",
+      "covering-systems",
+      "fermat-primes",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1113,
     "erdosUrl": "https://erdosproblems.com/1113",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for covering sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Odd",
+        "description": "Odd number predicate",
+        "module": "Mathlib.Data.Nat.Parity"
+      }
+    ],
+    "originalContributions": [
+      "IsSierpinskiNumber definition: 2^k·m + 1 always composite",
+      "IsCoveringSet definition: primes covering the sequence",
+      "HasFiniteCoveringSet predicate",
+      "ErdosProblem1113: main question formalization",
+      "smallestKnownSierpinski = 78557 with its covering set",
+      "izotovCandidate: conjectured uncovered example",
+      "IsPerfectPower definition",
+      "FFKConjecture: refined conjecture about perfect powers",
+      "FermatNumber, IsFermatPrime: connection to Fermat primes",
+      "erdos_graham_connection: link to infinitely many Fermat primes"
+    ],
+    "references": [
+      {
+        "key": "Si60",
+        "citation": "Sierpinski, W., Sur un problème concernant les nombres k·2^n+1, Elem. Math. (1960), 73-74.",
+        "type": "paper"
+      },
+      {
+        "key": "Iz95",
+        "citation": "Izotov, A., A note on Sierpinski numbers, Fibonacci Quart. (1995), 206-207.",
+        "type": "paper"
+      },
+      {
+        "key": "FFK08",
+        "citation": "Filaseta, M., Finch, C., Kozek, M., On powers associated with Sierpinski numbers, J. Number Theory (2008), 1916-1940.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1113 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA positive odd integer $m$ such that none of $2^km+1$ are prime for $k\\geq 0$ is called a Sierpinski number. We say that a set of primes $P$ is a covering set for $m$ if every $2^km+1$ is divisible by some $p\\in P$.\n\nAre there Sierpinski numbers with no finite covering set of primes?\n\n\n\nSierpinski \\cite{Si60} proved that there are infinitely many Sierpinski numbers, using covering systems to construct suitable covering sets for any $m$ satisfying a certain congruence. This establishes that there is a positive density set of such $m$.\n\nThe smallest Sierpinski number is believed to be $78557$, which was found by Selfridge.\n\nErd\\H{o}s and Graham \\cite{ErGr80} asked whether there are Sierpinski numbers for which a covering system is not 'responsible', for which the best interpretation seems to be the above question. This is formulated precisely in problem F13 of Guy's collection \\cite{Gu04}. Erd\\H{o}s and Graham thought the answer is yes (in that there are such Sierpinski numbers), since otherwise this would imply there are infinitely many Fermat primes.\n\nThere is now further evidence with a concrete example: an argument of Izotov \\cite{Iz95}, given in more detail by Filaseta, Finch, and Kozek \\cite{FFK08}, suggests that $m=734110615000775^4$ is a Sierpinski number without a covering set. (Izotov proved that this $m$ is indeed a Sierpinski number.)\n\nFilaseta, Finch, and Kozek \\cite{FFK08} give a revised conjecture, suggesting that every Sierpinski number is either a perfect power or else has a finite covering set of primes. They also prove that for every $l\\geq 1$ there is an $m$ such that $2^km^i+1$ is composite for all $1\\leq i\\leq l$ and $k\\geq 0$.\n\nSee also [203], and [276] for another problem in which the question is whether covering systems are always responsible.\n\n\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[FFK08] Filaseta, Michael and Finch, Carrie and Kozek, Mark, On powers associated with {S}ierpi\\'nski numbers, {R}iesel\nnumbers and {P}olignac's conjecture. J. Number Theory (2008), 1916--1940.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Iz95] Izotov, Anatoly S., A note on {S}ierpi\\'nski numbers. Fibonacci Quart. (1995), 206--207.\n\n[Si60] Sierpi\\'nski, W., Sur un probl\\`eme concernant les nombres {$k\\cdot 2\\sp{n}+1$}. Elem. Math. (1960), 73--74.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Sierpinski Numbers and Covering Systems**\n\nA Sierpinski number m is a positive odd integer where 2^k·m + 1 is composite for all k ≥ 0. Sierpinski (1960) proved infinitely many exist using covering systems - finite sets of primes that 'cover' the sequence.\n\n**The Question (Erdős-Graham 1980):** Are there Sierpinski numbers that CANNOT be explained by a covering system?\n\n**Key Development:**\n- **Selfridge:** Found 78557, the smallest known Sierpinski number (with covering set {3,5,7,13,19,37,73})\n- **Izotov (1995):** Proposed m = 734110615000775^4 as uncovered\n- **FFK (2008):** Conjectured all Sierpinski numbers are either perfect powers or covered\n\n**Deep Connection:** If ALL Sierpinski numbers have coverings, infinitely many Fermat primes exist - considered highly unlikely.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nA Sierpinski number $m$ is an odd positive integer where $2^k \\cdot m + 1$ is composite for all $k \\geq 0$.\n\nA covering set $P$ for $m$ is a finite set of primes such that every $2^k \\cdot m + 1$ is divisible by some $p \\in P$.\n\n**Question:** Are there Sierpinski numbers with no finite covering set?\n\n**Evidence for YES:**\n- Izotov's candidate $m = 734110615000775^4$\n- If NO, infinitely many Fermat primes exist (unlikely)\n\n**Status: OPEN**",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sierpinski Numbers:** Define IsSierpinskiNumber as all terms composite.\n\n2. **Covering Sets:** Define IsCoveringSet requiring divisibility by primes in P.\n\n3. **Main Question:** ErdosProblem1113 asks for uncovered Sierpinski numbers.\n\n4. **Known Examples:** 78557 with explicit covering set.\n\n5. **Izotov's Candidate:** Axiomatize the specific example.\n\n6. **FFK Conjecture:** Perfect powers or covered.\n\n7. **Fermat Connection:** Link to infinitely many Fermat primes.",
+    "keyInsights": [
+      "**Covering Systems:** Finite prime sets explaining compositeness",
+      "**78557:** Smallest known Sierpinski number with 7-element covering set",
+      "**Izotov's Candidate:** 734110615000775^4 is conjectured uncovered",
+      "**FFK Conjecture:** Perfect powers might escape covering sets",
+      "**Fermat Connection:** NO answer implies infinitely many Fermat primes",
+      "**Positive Density:** Covered Sierpinski numbers have positive density"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sierpinski-numbers",
+      "title": "Sierpinski Numbers",
+      "summary": "Definition and basic properties",
+      "startLine": 44,
+      "endLine": 66
+    },
+    {
+      "id": "covering-sets",
+      "title": "Covering Sets",
+      "summary": "Finite prime sets covering the sequence",
+      "startLine": 68,
+      "endLine": 93
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Erdős Problem #1113 formalization",
+      "startLine": 95,
+      "endLine": 115
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Sierpinski Numbers",
+      "summary": "78557 and its covering set",
+      "startLine": 117,
+      "endLine": 130
+    },
+    {
+      "id": "sierpinski-construction",
+      "title": "Sierpinski's Construction",
+      "summary": "Infinitely many with coverings",
+      "startLine": 132,
+      "endLine": 142
+    },
+    {
+      "id": "izotov",
+      "title": "Izotov's Candidate",
+      "summary": "734110615000775^4 conjectured uncovered",
+      "startLine": 144,
+      "endLine": 158
+    },
+    {
+      "id": "ffk-conjecture",
+      "title": "Filaseta-Finch-Kozek Conjecture",
+      "summary": "Perfect powers or covered",
+      "startLine": 160,
+      "endLine": 184
+    },
+    {
+      "id": "fermat-connection",
+      "title": "Connection to Fermat Primes",
+      "summary": "NO implies infinitely many Fermat primes",
+      "startLine": 186,
+      "endLine": 211
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main result",
+      "startLine": 223,
+      "endLine": 262
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1113 asks whether Sierpinski numbers without covering sets exist. Izotov's candidate m = 734110615000775^4 is the leading example. The FFK conjecture suggests uncovered Sierpinski numbers must be perfect powers. A negative answer would imply infinitely many Fermat primes - considered unlikely.",
+    "implications": "**Implications**\n\n1. **Covering Systems Theory:** Tests limits of this technique.\n\n2. **Fermat Primes:** Deep connection to their infinitude.\n\n3. **Prime Distribution:** Understanding compositeness patterns.\n\n4. **Perfect Powers:** Special role in the theory.",
+    "openQuestions": [
+      "Does Izotov's candidate truly lack a covering set?",
+      "Is the FFK conjecture true?",
+      "Are there non-power Sierpinski numbers without coverings?",
+      "Can covering systems always explain compositeness?"
+    ]
   }
 }
