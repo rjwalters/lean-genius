@@ -1,1 +1,242 @@
-[]
+[
+  {
+    "id": "ann-154-1",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #154: For Sidon sets A ⊂ {1,...,N} with |A| ~ √N, must A+A be well-distributed over small moduli? SOLVED: YES by Lindström (1998) and Kolountzakis (1999).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-2",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "A set A is a Sidon set (or B₂ sequence) if all pairwise sums are distinct: a + b = c + d implies {a,b} = {c,d}. This unique representation property is the key to distribution results.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-3",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Equivalent Formulation",
+    "content": "Alternative definition: if a ≤ b and c ≤ d with a + b = c + d, then a = c and b = d. This ordered version is often more convenient for proofs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-4",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 62,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Sumset Definition",
+    "content": "The sumset A + A = {a + b : a, b ∈ A}. For Sidon sets, each element of A+A has a unique representation as a+b (up to order), giving structure to the sumset.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-5",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 66,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "Sidon Sumset Size",
+    "content": "For Sidon sets, |A+A| = |A|(|A|+1)/2. Since all sums are distinct (up to order), we get the full triangular count. This is much larger than typical sets where many sums coincide.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-6",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 71,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Maximum Sidon Set Size",
+    "content": "The maximum size of a Sidon set in {1,...,N} is approximately √N. Upper bound: |A|² ≈ |A+A| ≤ 2N, so |A| ≤ √(2N). Lower bound achieved by Singer's construction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-7",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 78,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Singer's Construction",
+    "content": "Singer (1938) showed how to construct Sidon sets of size ~√N using perfect difference sets in finite fields. For prime power q, there exists a Sidon set in {1,...,q²} of size q.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-8",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 87,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Residue Class",
+    "content": "residueClass(A, m, r) = elements of A that are congruent to r mod m. For well-distribution, we want each residue class to have about |A|/m elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-9",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 91,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Well-Distribution",
+    "content": "A set A is well-distributed mod m with error ε if ||A ∩ [r]_m| - |A|/m| ≤ ε√|A| for all residues r. The error bound O(√|A|) is natural for probabilistic arguments.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-10",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 104,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Lindström's Theorem (1998)",
+    "content": "Near-maximal Sidon sets are well-distributed over small moduli. If |A| ≥ (1-δ)√N, then each residue class mod m (for small m) has approximately |A|/m elements. First proof of distribution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-11",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 113,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Lindström Parity Result",
+    "content": "Special case: about half of a near-maximal Sidon set A is even and half is odd. This is the m=2 case of well-distribution, answering part of Erdős's original question.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-12",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 131,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Kolountzakis's Strengthening (1999)",
+    "content": "Extended the range of valid moduli: distribution holds for m up to N^{1/4}. Also improved the quantitative bounds. This strengthening is important for applications.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-13",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 149,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Sumset Distribution",
+    "content": "The sumset A+A inherits distribution from A. If A is well-distributed mod m, then A+A is also well-distributed. This answers the main question of Problem #154.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-154-14",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 157,
+      "endLine": 164
+    },
+    "type": "theorem",
+    "title": "Sumset Parity",
+    "content": "About half of A+A is even and half odd. This follows from: even+even=even, odd+odd=even, even+odd=odd. If A has balanced parity, so does A+A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-15",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 176,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Sidon Structure Insight",
+    "content": "The unique representation property is key: each element of A+A comes from exactly one pair {a,b}. This injectivity propagates distribution properties from A to A+A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-16",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 182,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Parity Pattern",
+    "content": "In A+A: (even+even)→even, (odd+odd)→even, (even+odd)→odd. With ~|A|²/4 each type and A balanced, the evens are (#even)² + (#odd)² ≈ |A|²/2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-154-17",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 191,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "Exponential Sum Methods",
+    "content": "The proofs use Fourier analysis. Distribution mod m is measured by character sums ∑_{a∈A} e^{2πi·ra/m}. Well-distribution means these sums are small for r ≠ 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-154-18",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 201,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Perfect Difference Sets",
+    "content": "Singer's construction: for prime power q, the set {x ∈ F_{q²} : x^{(q²-1)/(q-1)} = 1} gives a Sidon set. These achieve the maximum size and have beautiful algebraic structure.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-154-19",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 207,
+      "endLine": 213
+    },
+    "type": "example",
+    "title": "Small Example",
+    "content": "{1, 2, 5, 7} is a Sidon set in {1,...,7}. All pairwise sums: 2,3,6,8,4,7,9,10,12,14 are distinct. The sumset has 10 elements evenly distributed: 5 even, 5 odd.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-154-20",
+    "proofId": "erdos-154",
+    "range": {
+      "startLine": 229,
+      "endLine": 245
+    },
+    "type": "theorem",
+    "title": "Final Answer",
+    "content": "erdos_154_answer: A+A is well-distributed over small moduli. erdos_154_status: SOLVED by Lindström (1998) and Kolountzakis (1999). The unique representation in Sidon sets propagates distribution.",
+    "significance": "critical"
+  }
+]
