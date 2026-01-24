@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "ann-790-header",
+    "proofId": "erdos-790",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #790** asks: define l(n) as the maximum guaranteed sum-free subset size in any n-element set. Estimate l(n).\n\n**Known Bounds (CKS 1975):**\n- Lower: √(n log n / log log n)\n- Upper: n / log n\n\n**Status: OPEN** - The gap is huge.",
+    "mathContext": "Sum-free here means no a = a₂ + ... + aᵣ with distinct elements, which is weaker than classical sum-free (no a + b = c).",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Extremal combinatorics", "Additive number theory"]
+  },
+  {
+    "id": "ann-790-issumfree",
+    "proofId": "erdos-790",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "definition",
+    "title": "IsSumFree",
+    "content": "A set B is sum-free if no element equals a sum of ≥2 distinct other elements.\n\nFormally: ∀ a ∈ B, ∀ S ⊆ B\\{a} with |S| ≥ 2, a ≠ Σ S.\n\nThis is weaker than classical sum-free (no a + b = c).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-l-function",
+    "proofId": "erdos-790",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "definition",
+    "title": "l(n) - The Extremal Function",
+    "content": "l(n) = min over all A with |A| = n of the maximum sum-free subset size.\n\nEquivalently: l(n) is the largest k such that every n-set has a sum-free subset of size ≥ k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-characterization",
+    "proofId": "erdos-790",
+    "range": { "startLine": 88, "endLine": 97 },
+    "type": "axiom",
+    "title": "Characterization of l(n)",
+    "content": "Two axioms characterize l(n):\n\n**l_characterization:** Every n-set has a sum-free subset of size ≥ l(n).\n\n**l_optimal:** For any k > l(n), some n-set has no sum-free subset of size ≥ k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-790-erdos-lower",
+    "proofId": "erdos-790",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "theorem",
+    "title": "Erdős's Lower Bound",
+    "content": "**Erdős observed:** l(n) ≥ √(n/2)\n\nIdea: In {1,...,n}, the upper half {⌊n/2⌋+1,...,n} is \"almost\" sum-free since sums of large numbers exceed n. One can extract √(n/2) elements that are strictly sum-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-790-choi",
+    "proofId": "erdos-790",
+    "range": { "startLine": 115, "endLine": 120 },
+    "type": "theorem",
+    "title": "Choi's Improvement",
+    "content": "**Choi improved to:** l(n) > (1+c)√n for some constant c > 0.\n\nThis beats Erdős's √(n/2) ≈ 0.707√n by a constant factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-790-cks-lower",
+    "proofId": "erdos-790",
+    "range": { "startLine": 126, "endLine": 130 },
+    "type": "axiom",
+    "title": "CKS Lower Bound",
+    "content": "**Choi-Komlós-Szemerédi (1975):**\n\nl(n) ≥ c √(n log n / log log n)\n\nThis is significantly better than √n for large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-cks-upper",
+    "proofId": "erdos-790",
+    "range": { "startLine": 132, "endLine": 136 },
+    "type": "axiom",
+    "title": "CKS Upper Bound",
+    "content": "**Choi-Komlós-Szemerédi (1975):**\n\nl(n) ≤ C n / log n\n\nThis shows l(n) = o(n), answering Erdős's question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-cks-combined",
+    "proofId": "erdos-790",
+    "range": { "startLine": 138, "endLine": 145 },
+    "type": "theorem",
+    "title": "Combined CKS Bounds",
+    "content": "**The CKS Sandwich:**\n\n√(n log n / log log n) ≪ l(n) ≪ n / log n\n\nThe gap is from roughly n^{0.5+ε} to n^{1-ε}. The conjecture is that the upper bound is closer to the truth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-q1",
+    "proofId": "erdos-790",
+    "range": { "startLine": 151, "endLine": 160 },
+    "type": "theorem",
+    "title": "Question 1: l(n)/√n → ∞",
+    "content": "**Does l(n)/√n → ∞? YES!**\n\nThe CKS lower bound √(n log n / log log n) divided by √n gives √(log n / log log n) → ∞.\n\nSo l(n) grows faster than √n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-q2",
+    "proofId": "erdos-790",
+    "range": { "startLine": 162, "endLine": 174 },
+    "type": "theorem",
+    "title": "Question 2: l(n) < n^{1-c}",
+    "content": "**Is l(n) < n^{1-c} for some c > 0? YES!**\n\nThe CKS upper bound l(n) ≤ n/log n is o(n^{1-c}) for any c < 1.\n\nErdős claimed in 1965 he could prove l(n) = o(n) but couldn't reconstruct his proof by 1973.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-conjecture",
+    "proofId": "erdos-790",
+    "range": { "startLine": 180, "endLine": 189 },
+    "type": "insight",
+    "title": "CKS Conjecture",
+    "content": "**Conjecture:** l(n) ≥ n^{1-o(1)}\n\nThis would mean l(n) is nearly linear. Combined with upper bound n/log n, this would give l(n) ≈ n/polylog(n).\n\n**STATUS: OPEN**",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-790-classical",
+    "proofId": "erdos-790",
+    "range": { "startLine": 212, "endLine": 222 },
+    "type": "definition",
+    "title": "Classical vs Weak Sum-Free",
+    "content": "**Classical sum-free:** No a + b = c (3-term constraint)\n\n**This problem (weak):** No a = a₂ + ... + aᵣ for r ≥ 2 (variable-term constraint)\n\nThe weak condition is easier to satisfy, so more sets are \"sum-free.\" Classical implies weak.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-790-lost-proof",
+    "proofId": "erdos-790",
+    "range": { "startLine": 169, "endLine": 174 },
+    "type": "insight",
+    "title": "Erdős's Lost Proof",
+    "content": "**The curious case of the lost proof:**\n\n1965: Erdős wrote \"by complicated arguments we can show l(n) = o(n)\"\n\n1973: \"difficulties in reconstructing [his] proof\"\n\nThe CKS 1975 paper provided the rigorous proof.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-790-summary",
+    "proofId": "erdos-790",
+    "range": { "startLine": 244, "endLine": 271 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #790: OPEN**\n\n- Q1 (l(n)/√n → ∞?): YES\n- Q2 (l(n) < n^{1-c}?): YES\n- Main conjecture (l(n) ≥ n^{1-o(1)}?): OPEN\n\nKnown: √(n log n / log log n) ≤ l(n) ≤ n / log n",
+    "significance": "critical"
+  }
+]

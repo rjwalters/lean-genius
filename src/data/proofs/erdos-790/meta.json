@@ -1,33 +1,81 @@
 {
   "id": "erdos-790",
-  "title": "Erdős Problem #790",
+  "title": "Erdős Problem #790: Maximum Sum-Free Subsequences",
   "slug": "erdos-790",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that if ... with ... then there exists a sum-free ... with ... - that is, ... is such that there are ...",
+  "description": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element set. Known bounds: √(n log n / log log n) ≤ l(n) ≤ n / log n (CKS 1975). Main conjecture: l(n) ≥ n^{1-o(1)}. OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Choi-Komlós-Szemerédi (1975)",
     "sourceUrl": "https://erdosproblems.com/790",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos790Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sum-free",
+      "extremal-combinatorics",
+      "sequences",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 790,
     "erdosUrl": "https://erdosproblems.com/790",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets for defining sum-free",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.erase",
+        "description": "Set minus element for sum-free definition",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for bound expressions",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "IsSumFree: definition of sum-free subsets (no a = Σ aᵢ)",
+      "l(n): the extremal function for guaranteed sum-free subsets",
+      "erdos_lower_bound: l(n) ≥ √(n/2)",
+      "choi_improvement: l(n) > (1+c)√n",
+      "cks_lower_bound: l(n) ≥ c√(n log n / log log n)",
+      "cks_upper_bound: l(n) ≤ C n / log n",
+      "question1_affirmative: l(n)/√n → ∞",
+      "question2_answered: l(n) < n^{1-c}",
+      "cks_conjecture: l(n) ≥ n^{1-o(1)}",
+      "classicalSumFree: comparison to classical sum-free (a + b ≠ c)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #790 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $l(n)$ be maximal such that if $A\\subset\\mathbb{Z}$ with $\\lvert A\\rvert=n$ then there exists a sum-free $B\\subseteq A$ with $\\lvert B\\rvert \\geq l(n)$ - that is, $B$ is such that there are no solutions to\\[a_1=a_2+\\cdots+a_r\\]with $a_i\\in B$ all distinct.\n\nEstimate $l(n)$. In particular, is it true that $l(n)n^{-1/2}\\to \\infty$? Is it true that $l(n)< n^{1-c}$ for some $c>0$?\n\n\n\nErd\\H{o}s observed that $l(n)\\geq (n/2)^{1/2}$, which Choi improved to $l(n)>(1+c)n^{1/2}$ for some $c>0$. Erd\\H{o}s \\cite{Er73} thought he could prove $l(n)=o(n)$ but had 'difficulties in reconstructing [his] proof'. (In \\cite{Er65} he wrote 'by complicated arguments we can show $l(n)=o(n)$'.)\n\nChoi, Koml\\'{o}s, and Szemer\\'{e}di \\cite{CKS75} proved\\[\\left(\\frac{\\log n}{\\log\\log n}n\\right)^{1/2}\\ll l(n) \\ll \\frac{n}{\\log n}.\\]They further conjecture that $l(n)\\geq n^{1-o(1)}$.\n\nSee also [876].\n\n\n\n\nReferences\n\n\n[CKS75] Choi, S. L. G. and Koml\\'os, J. and Szemer\\'{e}di, E., On sum-free subsequences. Trans. Amer. Math. Soc. (1975), 307--313.\n\n[Er65] Erd\\H{o}s, P., Extremal problems in number theory. Proc. Sympos. Pure Math., Vol. VIII (1965), 181-189.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Origins and History**\n\nThis problem appeared in Erdős's 1965 survey \"Extremal problems in number theory\" where he claimed to have a complicated proof that l(n) = o(n). However, by 1973 he reported \"difficulties in reconstructing [his] proof.\"\n\n**Choi-Komlós-Szemerédi Breakthrough (1975)**\n\nThe definitive paper appeared in Trans. Amer. Math. Soc. (1975). They proved both:\n- Lower bound: l(n) ≥ c√(n log n / log log n)\n- Upper bound: l(n) ≤ C n / log n\n\nThey conjectured l(n) ≥ n^{1-o(1)}, which remains open.\n\n**Connection to Sum-Free Sets**\n\nThis is a weaker notion than classical sum-free (no a + b = c). Here we forbid a = a₂ + ... + aᵣ for any r ≥ 2 distinct elements. The weaker condition means more sets are \"sum-free\" in this sense.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet l(n) be maximal such that for any A ⊆ ℤ with |A| = n, there exists a sum-free B ⊆ A with |B| ≥ l(n).\n\nHere \"sum-free\" means: no element equals a sum of ≥2 distinct other elements.\n\n**Questions:**\n1. Estimate l(n)\n2. Does l(n)/√n → ∞? (YES)\n3. Is l(n) < n^{1-c} for some c > 0? (YES: l(n) ≤ n/log n)\n\n**Status: OPEN** - The gap between √(n log n / log log n) and n/log n remains.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sum-Free Definition:** IsSumFree forbids a = Σ_{i∈S} aᵢ for S ⊆ B\\{a} with |S| ≥ 2\n\n2. **Extremal Function:** l(n) characterized by l_characterization and l_optimal axioms\n\n3. **Lower Bounds:** Erdős (√(n/2)), Choi ((1+c)√n), CKS (√(n log n / log log n))\n\n4. **Upper Bound:** CKS (n / log n)\n\n5. **Main Questions:** Both answered affirmatively by CKS bounds\n\n6. **Conjecture:** l(n) ≥ n^{1-o(1)} remains open",
+    "keyInsights": [
+      "**Weaker than classical:** No a = a₂ + ... + aᵣ (r ≥ 2) is weaker than no a + b = c",
+      "**Gap remains:** √(n log n / log log n) to n/log n is a huge gap",
+      "**Both questions answered:** CKS bounds answer Questions 1 and 2",
+      "**Conjecture:** l(n) ≥ n^{1-o(1)} would close the gap (nearly linear)",
+      "**Erdős's lost proof:** He claimed l(n) = o(n) but couldn't reconstruct it",
+      "**Related:** Problem #876 is a variant on sum-free sets"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #790 asks for the maximum guaranteed size l(n) of a sum-free subset in any n-element integer set, where sum-free means no element equals a sum of distinct others. Choi-Komlós-Szemerédi (1975) proved √(n log n / log log n) ≤ l(n) ≤ n/log n. This answers that l(n)/√n → ∞ and l(n) < n^{1-c}. The conjecture l(n) ≥ n^{1-o(1)} remains OPEN.",
+    "implications": "**Connections**\n\n1. **Sum-free sets:** Relates to Schur numbers and Ramsey theory\n\n2. **Additive combinatorics:** Questions about avoiding additive dependencies\n\n3. **Extremal combinatorics:** Finding optimal guaranteed structures\n\n4. **Problem #876:** Related sum-free variant\n\n5. **Probabilistic method:** Used in lower bound constructions",
+    "openQuestions": [
+      "Is l(n) ≥ n^{1-o(1)}? (CKS Conjecture)",
+      "Can the n/log n upper bound be improved?",
+      "What is the correct asymptotic for l(n)?",
+      "What happens for sum-free in Z/mZ instead of Z?"
+    ]
   }
 }
