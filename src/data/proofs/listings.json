@@ -2546,7 +2546,7 @@
     "dateAdded": "2026-01-24",
     "erdosNumber": 1113,
     "mathlibCount": 3,
-    "sorries": 1,
+    "sorries": 0,
     "annotationCount": 16
   },
   {
@@ -8465,7 +8465,7 @@
       "lcm"
     ],
     "erdosNumber": 487,
-    "sorries": 3,
+    "sorries": 0,
     "annotationCount": 14
   },
   {
@@ -9751,17 +9751,24 @@
   },
   {
     "id": "erdos-588",
-    "title": "Erdős Problem #588",
+    "title": "Erdős Problem #588: k-Point Lines in General Position",
     "slug": "erdos-588",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that if ... points in ... have no ... points on a line then there must be at most ... many lines cont...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is f_k(n) = o(n²) for k ≥ 4? Here f_k(n) is the max number of k-rich lines for n points with no k+1 collinear. OPEN. Best lower bound: n^{2-o(1)} (Solymosi-Stojaković 2013).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "incidences",
+      "point-line",
+      "k-rich-lines",
+      "open"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 588,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-589",
@@ -9863,17 +9870,22 @@
   },
   {
     "id": "erdos-595",
-    "title": "Erdős Problem #595",
+    "title": "Erdős Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition",
     "slug": "erdos-595",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite graph ... which contains no ... and is not the union of countably many triangle-free graphs?\n\n\n\nA proble...",
-    "status": "pending",
+    "description": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "infinite-combinatorics",
+      "ramsey-theory",
+      "chromatic-theory",
+      "open"
     ],
     "erdosNumber": 595,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-597",
@@ -11735,7 +11747,7 @@
       "open-problem"
     ],
     "erdosNumber": 712,
-    "sorries": 3,
+    "sorries": 0,
     "annotationCount": 21
   },
   {
@@ -14192,17 +14204,23 @@
   },
   {
     "id": "erdos-857",
-    "title": "Erdős Problem #857",
+    "title": "Erdős Problem #857: The Weak Sunflower Problem",
     "slug": "erdos-857",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in any collection of sets ... there must exist a sunflower of size ... - that is, some collectio...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let m(n,k) be minimal such that any collection of m subsets of {1,...,n} contains a k-sunflower. Estimate m(n,k) or give an asymptotic formula. Connected to the Sunflower Conjecture and cap set problem.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sunflower",
+      "extremal-combinatorics",
+      "open"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 857,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 10
   },
   {
     "id": "erdos-858",
