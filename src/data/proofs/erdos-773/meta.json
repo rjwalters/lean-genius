@@ -1,33 +1,86 @@
 {
   "id": "erdos-773",
-  "title": "Erdős Problem #773",
+  "title": "Erdős Problem #773: Sidon Subsets of Perfect Squares",
   "slug": "erdos-773",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest Sidon subset ...? Is it ...?\n\n\n\nA question of Alon and Erds , who proved ... is possible (via...",
+  "description": "What is the max size of a Sidon subset of {1², 2², ..., N²}? OPEN: Lower bound N^{2/3} (Lefmann-Thiele), upper bound N/(log N)^{1/4} (Alon-Erdős). Is it N^{1-o(1)}?",
   "meta": {
-    "author": "Unknown",
+    "author": "Alon-Erdős (1985), Lefmann-Thiele (1995)",
     "sourceUrl": "https://erdosproblems.com/773",
-    "date": "",
-    "status": "pending",
+    "date": "1985",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos773Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sidon-sets",
+      "squares",
+      "additive-combinatorics",
+      "open"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 773,
     "erdosUrl": "https://erdosproblems.com/773",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "IsSidon and IsSidonAlt definitions",
+      "squaresUpTo: set of perfect squares",
+      "f: max Sidon subset size",
+      "lower_bound, upper_bound axioms",
+      "landau_theorem: sums of two squares density"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #773 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest Sidon subset $A\\subseteq\\{1,2^2,\\ldots,N^2\\}$? Is it $N^{1-o(1)}$?\n\n\n\nA question of Alon and Erd\\H{o}s \\cite{AlEr85}, who proved $\\lvert A\\rvert \\geq N^{2/3-o(1)}$ is possible (via a random subset), and observed that\\[\\lvert A\\rvert \\ll \\frac{N}{(\\log N)^{1/4}},\\]since (as shown by Landau) the density of the sums of two squares decays like $(\\log N)^{-1/2}$. The lower bound was improved to\\[\\lvert A\\rvert \\gg N^{2/3}\\]by Lefmann and Thiele \\cite{LeTh95}.\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[LeTh95] Lefmann, Hanno and Thiele, Torsten, Point sets with distinct distances. Combinatorica (1995), 379--408.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #773 (Sidon Subsets of Squares)**\n\nA Sidon set (B₂ sequence) has all pairwise sums distinct. The question asks: how large can a Sidon set be when restricted to perfect squares?\n\n**Key Results:**\n- **Alon-Erdős (1985):** Lower bound N^{2/3-o(1)} via random construction; upper bound N/(log N)^{1/4}\n- **Lefmann-Thiele (1995):** Improved lower bound to N^{2/3}\n- **Landau (1908):** Sums of two squares have density ~(log N)^{-1/2}, constraining Sidon sets of squares\n\n**Status:** OPEN - gap between N^{2/3} and N/(log N)^{1/4} remains",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nWhat is the size of the largest Sidon subset A ⊆ {1², 2², ..., N²}? Is it N^{1-o(1)}?\n\n**Known Bounds:**\n- Lower: |A| ≥ c·N^{2/3} (Lefmann-Thiele 1995)\n- Upper: |A| ≤ C·N/(log N)^{1/4} (Alon-Erdős 1985)\n\n**Key Question:** Is the true answer closer to N^{1-o(1)} or N^{2/3}?",
+    "proofStrategy": "**Approach**\n\n1. **Sidon Sets:** Define the Sidon property (distinct pairwise sums)\n\n2. **Bounds:** State lower (random construction) and upper (Landau counting) bounds\n\n3. **Landau Connection:** Sums of two squares are sparse - this constrains Sidon sets",
+    "keyInsights": [
+      "**Sidon Property:** All pairwise sums a² + b² must be distinct",
+      "**Landau's Constraint:** Sums of two squares have density ~(log N)^{-1/2}",
+      "**Lower Bound:** Random subset achieves N^{2/3}",
+      "**Upper Bound:** Counting sums of squares gives N/(log N)^{1/4}",
+      "**Open Gap:** Is true answer closer to N^{1-o(1)} or N^{2/3}?"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sidon-sets",
+      "title": "Sidon Sets",
+      "startLine": 33,
+      "endLine": 53,
+      "summary": "Definition of Sidon sets (B₂ sequences)"
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 91,
+      "endLine": 120,
+      "summary": "Lower N^{2/3}, upper N/(log N)^{1/4}"
+    },
+    {
+      "id": "landau",
+      "title": "Landau's Theorem",
+      "startLine": 121,
+      "endLine": 161,
+      "summary": "Sums of two squares density constrains Sidon sets"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 225,
+      "endLine": 258,
+      "summary": "Problem status: OPEN with known bounds"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #773 asks for the max Sidon subset of {1², ..., N²}. OPEN: N^{2/3} ≤ f(N) ≤ N/(log N)^{1/4}. Landau's theorem on sums of two squares is key.",
+    "implications": "Connects additive combinatorics, Sidon sets, and Landau's classical theorem on sums of two squares.",
+    "openQuestions": [
+      "Is f(N) = N^{1-o(1)}?",
+      "Can the lower bound N^{2/3} be improved?",
+      "Is there an explicit construction beating random?"
+    ]
   }
 }
