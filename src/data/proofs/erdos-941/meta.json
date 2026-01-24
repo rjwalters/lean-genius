@@ -1,33 +1,74 @@
 {
   "id": "erdos-941",
-  "title": "Erdős Problem #941",
+  "title": "Erdős Problem #941: Sums of Three Powerful Numbers",
   "slug": "erdos-941",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre all large integers the sum of at most three powerful numbers (i.e. if ... then ...)?\n\n\n\nThis was given in 1986 in the Obe...",
+  "description": "Are all large integers the sum of at most three powerful numbers (p | n → p² | n)? SOLVED: YES (Heath-Brown 1988). Every sufficiently large integer is the sum of at most 3 powerful numbers.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Ivić (1986, problem), Heath-Brown (1988, proof)",
     "sourceUrl": "https://erdosproblems.com/941",
-    "date": "",
-    "status": "pending",
+    "date": "1988",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos941Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "additive-representation",
+      "squarefull",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "erdosNumber": 941,
     "erdosUrl": "https://erdosproblems.com/941",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime numbers for divisibility",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Nat.Factorization",
+        "description": "Factorization for powerful definition",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsPowerful, IsPowerfulAlt: powerful number definitions",
+      "powerful_iff_alt: equivalence n = a²b³",
+      "one_is_powerful, square_is_powerful, cube_is_powerful",
+      "powerful_mul: product closure",
+      "IsSumOf3Powerful, IsSumOf3PowerfulOrZero",
+      "ErdosIvicQuestion: formal problem statement",
+      "heath_brown_theorem: main result axiom",
+      "IsRPowerful: r-powerful generalization",
+      "generalizedQuestion: Problem #1107 connection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #941 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre all large integers the sum of at most three powerful numbers (i.e. if $p\\mid n$ then $p^2\\mid n$)?\n\n\n\nThis was given in 1986 in the Oberwolfach problem book as a problem of Erd\\H{o}s and Ivi\\'{c}. It was proved by Heath-Brown \\cite{He88}.\n\nSee [1107] for the generalisation to $r$-powerful numbers with $r\\geq 3$, and also [940].\n\n\n\n\nReferences\n\n\n[He88] Heath-Brown, D. R., Ternary quadratic forms and sums of three square-full numbers. (1988), 137--163.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #941 (Sums of Three Powerful Numbers)**\n\n**Origin:**\nErdős and Ivić posed this problem in 1986 at Oberwolfach: Are all sufficiently large integers the sum of at most three powerful numbers?\n\n**Powerful Numbers:**\nA number n is powerful (or squarefull) if every prime dividing n divides it at least twice: p | n → p² | n. Equivalently, n = a²b³ for some a, b ≥ 1.\n\n**Heath-Brown's Proof (1988):**\nHeath-Brown proved the affirmative answer using methods from the theory of ternary quadratic forms.\n\n**Related Problems:**\n- #940: Other variants of powerful representations\n- #1107: Generalization to r-powerful numbers (p | n → p^r | n)",
+    "problemStatement": "**Problem Statement (Solved)**\n\nAre all large integers the sum of at most three powerful numbers?\n\nA number n is powerful if p | n implies p² | n.\n\n**Answer: YES** (Heath-Brown 1988)\n\nEvery sufficiently large positive integer is the sum of at most three powerful numbers.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Powerful Numbers:** IsPowerful (p|n → p²|n), IsPowerfulAlt (n = a²b³)\n\n2. **Basic Properties:** one_is_powerful, square_is_powerful, cube_is_powerful, powerful_mul\n\n3. **Sum Representations:** IsSumOf3Powerful, IsSumOf3PowerfulOrZero\n\n4. **Main Question:** ErdosIvicQuestion (∃ N, ∀ n ≥ N, sum of 3)\n\n5. **Heath-Brown:** heath_brown_theorem axiom\n\n6. **Generalizations:** IsRPowerful for r-powerful numbers",
+    "keyInsights": [
+      "**Powerful = Squarefull:** p | n → p² | n",
+      "**Equivalent Form:** n = a²b³ characterization",
+      "**Density:** Powerful numbers have density ~ c√n",
+      "**Heath-Brown Method:** Ternary quadratic forms",
+      "**Generalization:** r-powerful for r ≥ 3 (#1107)"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #941 asks whether all large integers are the sum of at most three powerful numbers. Heath-Brown (1988) proved the affirmative answer. A powerful number n satisfies p | n → p² | n, equivalently n = a²b³. This resolved a 1986 Oberwolfach problem of Erdős and Ivić.",
+    "implications": "**Connections**\n\n1. **Ternary Quadratic Forms:** Heath-Brown's method\n\n2. **Problem #940:** Related variants\n\n3. **Problem #1107:** Generalization to r-powerful\n\n4. **Additive Number Theory:** Waring-type problems",
+    "openQuestions": [
+      "What is the smallest N such that all n ≥ N work?",
+      "How many representations does a typical n have?",
+      "What about sums of 2 powerful numbers?",
+      "Explicit bounds for the r-powerful generalization?"
+    ]
   }
 }
