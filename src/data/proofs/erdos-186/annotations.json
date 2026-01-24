@@ -1,1 +1,152 @@
-[]
+[
+  {
+    "id": "ann-e186-header",
+    "proofId": "erdos-186",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #186: Non-Averaging Sets**\n\nWhat is the maximum size of a non-averaging subset of {1,...,N}?\n\n**Answer:** F(N) = N^(1/4+o(1))\n\n- Lower bound: Bosznay (1989)\n- Upper bound: Pham-Zakharov (2024)\n\nOriginally due to Straus.",
+    "mathContext": "A set is non-averaging if no element equals the mean of two others.",
+    "significance": "critical",
+    "relatedConcepts": ["Non-averaging sets", "Arithmetic means", "Extremal combinatorics"]
+  },
+  {
+    "id": "ann-e186-nonaveraging",
+    "proofId": "erdos-186",
+    "range": { "startLine": 43, "endLine": 53 },
+    "type": "definition",
+    "title": "Non-Averaging Set Definition",
+    "content": "**IsNonAveraging:**\n\nA set A is non-averaging if no element is the arithmetic mean of two distinct other elements.\n\n**Definition:**\n```lean\ndef IsNonAveraging (A : Finset N) : Prop :=\n  forall a in A, forall b in A, forall c in A,\n    b != a -> c != a -> b != c -> 2 * a != b + c\n```\n\nEquivalently: no centered 3-term arithmetic progressions.",
+    "significance": "critical",
+    "relatedConcepts": ["Arithmetic progressions", "Means"]
+  },
+  {
+    "id": "ann-e186-F-def",
+    "proofId": "erdos-186",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "definition",
+    "title": "Maximum Non-Averaging Set Size",
+    "content": "**F(N):**\n\nThe maximum size of a non-averaging subset of {1,...,N}.\n\nThis is the central quantity in the problem - we want to understand its growth rate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e186-empty",
+    "proofId": "erdos-186",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "theorem",
+    "title": "Empty Set is Non-Averaging",
+    "content": "**empty_is_nonAveraging:**\n\nThe empty set is trivially non-averaging (no elements to average).\n\nThis is the base case for the definition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e186-singleton",
+    "proofId": "erdos-186",
+    "range": { "startLine": 82, "endLine": 89 },
+    "type": "theorem",
+    "title": "Singletons are Non-Averaging",
+    "content": "**singleton_is_nonAveraging:**\n\nAny set with one element is non-averaging.\n\nWith only one element, there are no two distinct elements to average.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e186-pair",
+    "proofId": "erdos-186",
+    "range": { "startLine": 91, "endLine": 99 },
+    "type": "theorem",
+    "title": "Pairs are Non-Averaging",
+    "content": "**pair_is_nonAveraging:**\n\nAny set with two distinct elements is non-averaging.\n\n**Proof:** With only two elements a and b, we can't have three distinct elements a, b, c with b = (a+c)/2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e186-bosznay",
+    "proofId": "erdos-186",
+    "range": { "startLine": 105, "endLine": 115 },
+    "type": "axiom",
+    "title": "Bosznay's Lower Bound (1989)",
+    "content": "**bosznay_lower_bound:**\n\nThere exist non-averaging sets of size >= N^(1/4).\n\nBosznay's construction uses number-theoretic techniques to build large non-averaging sets.\n\n**Reference:** Bosznay, \"On the lower estimation of nonaveraging sets\", Acta Math. Hungar. (1989).",
+    "mathContext": "The construction achieves the correct exponent 1/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e186-lower",
+    "proofId": "erdos-186",
+    "range": { "startLine": 117, "endLine": 125 },
+    "type": "theorem",
+    "title": "Lower Bound Corollary",
+    "content": "**lower_bound_quarter:**\n\nF(N) >= c * N^(1/4) for some constant c > 0.\n\nThis follows from Bosznay's construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e186-erdos-sarkozy",
+    "proofId": "erdos-186",
+    "range": { "startLine": 131, "endLine": 138 },
+    "type": "axiom",
+    "title": "Erdos-Sarkozy Upper Bound (1990)",
+    "content": "**erdos_sarkozy_upper_bound_1990:**\n\nOriginal upper bound: F(N) << (N log N)^(1/2).\n\nThis was the first non-trivial upper bound, far from the lower bound.\n\n**Reference:** Erdos-Sarkozy, \"On a problem of Straus\" (1990).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e186-cfp",
+    "proofId": "erdos-186",
+    "range": { "startLine": 140, "endLine": 147 },
+    "type": "axiom",
+    "title": "Conlon-Fox-Pham (2023)",
+    "content": "**conlon_fox_pham_upper_bound_2023:**\n\nImproved upper bound: F(N) << N^(1/4) * (log N)^c for some c.\n\nThis brought the exponent close to 1/4.\n\n**Reference:** Conlon-Fox-Pham, \"Homogeneous structures in subset sums\" (2023).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e186-pham-zakharov",
+    "proofId": "erdos-186",
+    "range": { "startLine": 149, "endLine": 159 },
+    "type": "axiom",
+    "title": "Pham-Zakharov Sharp Bound (2024)",
+    "content": "**pham_zakharov_upper_bound_2024:**\n\nSharp upper bound: F(N) << N^(1/4+o(1)).\n\nFor any epsilon > 0, F(N) <= C * N^(1/4+epsilon) for large N.\n\nThis essentially resolves the problem by matching the lower bound.\n\n**Reference:** Pham-Zakharov, \"Sharp bound for the Erdos-Straus problem\" (2024).",
+    "mathContext": "The o(1) term in the exponent is necessary - we can't achieve exactly N^(1/4).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e186-main",
+    "proofId": "erdos-186",
+    "range": { "startLine": 165, "endLine": 187 },
+    "type": "theorem",
+    "title": "Main Bounds Theorem",
+    "content": "**erdos_186_bounds:**\n\nCombines the lower and upper bounds:\n\nc * N^(1/4) <= F(N) <= C * N^(1/4+epsilon)\n\nfor any epsilon > 0 and sufficiently large N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e186-erdos186",
+    "proofId": "erdos-186",
+    "range": { "startLine": 189, "endLine": 199 },
+    "type": "theorem",
+    "title": "Erdos Problem #186: SOLVED",
+    "content": "**erdos_186:**\n\nThe main theorem: F(N) = N^(1/4+o(1)).\n\nThe order of growth is completely determined - the exponent is 1/4 with a sub-polynomial correction factor.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e186-subset",
+    "proofId": "erdos-186",
+    "range": { "startLine": 205, "endLine": 211 },
+    "type": "theorem",
+    "title": "Hereditary Property",
+    "content": "**nonAveraging_subset:**\n\nSubsets of non-averaging sets are non-averaging.\n\n**Proof:** If A is non-averaging and B is a subset of A, any three elements in B are also in A, so the non-averaging property holds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e186-roth",
+    "proofId": "erdos-186",
+    "range": { "startLine": 226, "endLine": 235 },
+    "type": "concept",
+    "title": "Roth's Theorem Connection",
+    "content": "**Roth's Theorem:**\n\nSets avoiding all 3-term APs have size at most N / log N.\n\nNon-averaging is weaker - only avoiding centered APs - so larger sets are possible.\n\nThis explains why F(N) grows faster than the Roth bound.",
+    "significance": "key",
+    "relatedConcepts": ["Roth's theorem", "3-APs", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e186-exponent",
+    "proofId": "erdos-186",
+    "range": { "startLine": 248, "endLine": 256 },
+    "type": "theorem",
+    "title": "Exponent is 1/4",
+    "content": "**exponent_is_quarter:**\n\nThe exponent 1/4 is correct - we cannot have F(N) <= N^(1/4 - epsilon) for any epsilon > 0.\n\nThis follows from Bosznay's lower bound construction.",
+    "significance": "key"
+  }
+]
