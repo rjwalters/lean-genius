@@ -1,33 +1,164 @@
 {
   "id": "erdos-1083",
-  "title": "Erdős Problem #1083",
+  "title": "Erdős Problem #1083: Distinct Distances in Higher Dimensions",
   "slug": "erdos-1083",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... be the minimal ... such that every set of ... points in ... determines at least ... distinct distances. ...",
+  "description": "Let d ≥ 3, and let f_d(n) be the minimal m such that every n-point set in ℝ^d determines at least m distinct distances. Is f_d(n) = n^{2/d - o(1)}?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Solymosi-Vu, Aronov-Pach-Sharir-Tardos",
     "sourceUrl": "https://erdosproblems.com/1083",
-    "date": "",
-    "status": "pending",
+    "date": "1946-2008",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1083Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "distinct-distances",
+      "higher-dimensions",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1083,
     "erdosUrl": "https://erdosproblems.com/1083",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanDist",
+        "description": "Euclidean distance in finite-dimensional spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Finset.product",
+        "description": "Cartesian product of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for distance computation",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum for Euclidean distance formula",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Point type for d-dimensional Euclidean space",
+      "euclidDist function with symmetry and non-negativity proofs",
+      "distanceSet and numDistinctDistances definitions",
+      "f_d function for minimum distinct distances",
+      "Axiomatization of Erdős 1946 bounds",
+      "Axiomatization of Solymosi-Vu 2008 improvements",
+      "Axiomatization of APST 2004 bounds",
+      "DistinctDistanceConjecture formalization",
+      "Guth-Katz 2015 connection for d=2",
+      "Duality with g_d from Problem #1089"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-89",
+        "relationship": "Solved 2D case (Guth-Katz 2015)"
+      },
+      {
+        "id": "erdos-1089",
+        "relationship": "Inverse function g_d(n)"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1083 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d\\geq 3$, and let $f_d(n)$ be the minimal $m$ such that every set of $n$ points in $\\mathbb{R}^d$ determines at least $m$ distinct distances. Estimate $f_d(n)$ - in particular, is it true that\\[f_d(n)=n^{\\frac{2}{d}-o(1)}?\\]\n\n\n\nA generalisation of the distinct distance problem [89] to higher dimensions. Erd\\H{o}s \\cite{Er46b} proved\\[n^{1/d}\\ll_d f_d(n)\\ll_d n^{2/d},\\]the upper bound construction being given by a set of lattice points.\n{UL}\n{LI} Clarkson, Edelsbrunner, Gubias, Sharir, and Welzl \\cite{CEGSW90} proved $f_3(n)\\gg n^{1/2}$.{/LI}\n{LI}Aronov, Pach, Sharir, and Tardos \\cite{APST04} proved $f_d(n)\\gg n^{\\frac{1}{d-90/77}-o(1)}$ for any $d\\geq 3$ (for example, $f_3(n)\\gg n^{0.546}$).{/LI}\n{LI}Solymosi and Vu \\cite{SoVu08} proved $f_3(n) \\gg n^{3/5}$ and\\[ f_d(n)\\gg_d n^{\\frac{2}{d}-\\frac{c}{d^2}}\\]for all $d\\geq 4$ for some constant $c>0$. (The result in their paper for $d=3$ is slightly weaker than stated here, but uses as a black box the bound for distinct distances in $2$ dimensions; we have recorded the consequence of combining their method with the work of Guth and Katz on [89].){/LI}\n{/UL}\n\nThe function $f_d(n)$ is essentially the inverse of the function $g_d(n)$ considered in [1089] - with our definitions, $g_d(n)>m$ if and only if $f_d(m)<n$. The emphasis in this problem is, however, on the behaviour as $d$ is fixed and $n\\to \\infty$.\n\n\n\n\nReferences\n\n\n[APST04] Aronov, Boris and Pach, J\\'anos and Sharir, Micha and Tardos,\nG\\'abor, Distinct distances in three and higher dimensions. Combin. Probab. Comput. (2004), 283--293.\n\n[CEGSW90] Clarkson, Kenneth L. and Edelsbrunner, Herbert and Guibas,\nLeonidas J. and Sharir, Micha and Welzl, Emo, Combinatorial complexity bounds for arrangements of curves and\nspheres. Discrete Comput. Geom. (1990), 99--160.\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[SoVu08] Solymosi, J\\'ozsef and Vu, Van H., Near optimal bounds for the {E}rd\\H{o}s distinct distances\nproblem in high dimensions. Combinatorica (2008), 113--125.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Distinct Distances in Higher Dimensions**\n\nThis is the natural generalization of the famous distinct distances problem (Erdős #89, solved by Guth-Katz 2015) to higher dimensions. Erdős posed this in 1946, proving that f_d(n) is between n^{1/d} and n^{2/d}.\n\n**Key Contributors:**\n- **Erdős (1946):** Original bounds n^{1/d} ≪ f_d(n) ≪ n^{2/d}\n- **CEGSW (1990):** f_3(n) ≫ n^{1/2}\n- **APST (2004):** f_d(n) ≫ n^{1/(d-90/77)-o(1)}\n- **Solymosi-Vu (2008):** f_d(n) ≫ n^{2/d - c/d²} for d ≥ 4\n- **Guth-Katz (2015):** Solved the 2D case",
+    "problemStatement": "Let d ≥ 3, and let f_d(n) be the minimal m such that every set of n points in ℝ^d determines at least m distinct distances. Estimate f_d(n) - in particular, is it true that f_d(n) = n^{2/d - o(1)}?",
+    "proofStrategy": "**Formalization Approach:**\n\n1. **Definitions:** Points in ℝ^d as (Fin d → ℝ), Euclidean distance via sqrt of sum of squares, distance set and numDistinctDistances.\n\n2. **The f_d Function:** Defined as the minimum over all n-point configurations.\n\n3. **Axiomatized Results:** All bounds are axiomatized since they require complex incidence geometry arguments.\n\n4. **Conjecture:** The main conjecture f_d(n) = n^{2/d - o(1)} is formalized as DistinctDistanceConjecture.\n\n5. **Connections:** Links to 2D (Guth-Katz) and inverse function g_d (Problem #1089).",
+    "keyInsights": [
+      "**Lattice Extremals:** Integer lattice points achieve the upper bound n^{2/d}",
+      "**Gap Shrinks with d:** The gap n^{c/d²} between lower and upper bounds shrinks as d grows",
+      "**3D is Special:** f_3(n) ≥ n^{0.6} from Solymosi-Vu combined with Guth-Katz",
+      "**Duality:** f_d and g_d (from #1089) are essentially inverse functions",
+      "**2D Solved:** Guth-Katz (2015) showed f_2(n) ≈ n/log n, which helps the 3D case",
+      "**Open Conjecture:** Whether f_d(n) = n^{2/d - o(1)} remains unresolved"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Part I: Basic Definitions",
+      "summary": "Point type, Euclidean distance, symmetry and non-negativity proofs",
+      "startLine": 43,
+      "endLine": 63
+    },
+    {
+      "id": "distinct-distances",
+      "title": "Part II: Distinct Distances",
+      "summary": "distanceSet and numDistinctDistances definitions",
+      "startLine": 65,
+      "endLine": 73
+    },
+    {
+      "id": "f-function",
+      "title": "Part III: The Function f_d(n)",
+      "summary": "Definition of f_d as minimum distinct distances over all n-point sets",
+      "startLine": 75,
+      "endLine": 89
+    },
+    {
+      "id": "erdos-1946",
+      "title": "Part IV: Erdős's Original Bounds (1946)",
+      "summary": "Lower bound n^{1/d} and upper bound n^{2/d}",
+      "startLine": 91,
+      "endLine": 117
+    },
+    {
+      "id": "d3-improvements",
+      "title": "Part V: Improvements for d = 3",
+      "summary": "CEGSW 1990 and Solymosi-Vu 2008 bounds for 3D",
+      "startLine": 119,
+      "endLine": 137
+    },
+    {
+      "id": "higher-d",
+      "title": "Part VI: General Higher Dimensions",
+      "summary": "APST 2004 and Solymosi-Vu 2008 for d ≥ 4",
+      "startLine": 139,
+      "endLine": 158
+    },
+    {
+      "id": "conjecture",
+      "title": "Part VII: The Conjecture",
+      "summary": "DistinctDistanceConjecture: f_d(n) = n^{2/d - o(1)}",
+      "startLine": 160,
+      "endLine": 176
+    },
+    {
+      "id": "2d-connection",
+      "title": "Part VIII: Connection to 2D",
+      "summary": "Guth-Katz 2015 solution for d=2",
+      "startLine": 178,
+      "endLine": 192
+    },
+    {
+      "id": "duality",
+      "title": "Part IX: Relation to Problem #1089",
+      "summary": "Duality between f_d and g_d",
+      "startLine": 194,
+      "endLine": 210
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "summary": "Problem status and main theorem",
+      "startLine": 212,
+      "endLine": 248
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1083 asks to estimate f_d(n), the minimum number of distinct distances determined by n points in ℝ^d. The conjecture is f_d(n) = n^{2/d - o(1)}, matching the lattice upper bound. Significant partial results include Solymosi-Vu's f_d(n) ≥ n^{2/d - c/d²} for d ≥ 4.",
+    "implications": "This is the natural higher-dimensional extension of the distinct distances problem. The 2D case was famously solved by Guth-Katz using polynomial partitioning, but higher dimensions remain open.",
+    "openQuestions": [
+      "Is f_d(n) = n^{2/d - o(1)} for all d ≥ 3?",
+      "Can the gap c/d² be eliminated?",
+      "What is the exact value of f_3(n)?",
+      "Can polynomial partitioning extend to higher dimensions?"
+    ]
   }
 }
