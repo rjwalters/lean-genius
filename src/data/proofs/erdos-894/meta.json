@@ -1,33 +1,84 @@
 {
   "id": "erdos-894",
-  "title": "Erdős Problem #894",
+  "title": "Erdős Problem #894: Chromatic Numbers of Lacunary Cayley Graphs",
   "slug": "erdos-894",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence (so there exists some ... with ... for all ...).\n\nIs it true that there must exist a finite co...",
+  "description": "For a lacunary sequence A with n_{k+1} ≥ (1+ε)n_k, does there exist a finite coloring of ℕ with no monochromatic a-b ∈ A? SOLVED: YES, using O(ε⁻¹ log(1/ε)) colors (Peres-Schlag 2010).",
   "meta": {
-    "author": "Unknown",
+    "author": "Katznelson (2001), Peres-Schlag (2010)",
     "sourceUrl": "https://erdosproblems.com/894",
-    "date": "",
-    "status": "pending",
+    "date": "2010",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos894Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "chromatic-number",
+      "lacunary-sequences",
+      "cayley-graphs",
+      "diophantine-approximation"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 894,
     "erdosUrl": "https://erdosproblems.com/894",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for quantitative bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.ceil",
+        "description": "Ceiling function for color count",
+        "module": "Mathlib.Algebra.Order.Floor.Basic"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrational numbers for rotation",
+        "module": "Mathlib.Data.Real.Irrational"
+      }
+    ],
+    "originalContributions": [
+      "IsLacunary: lacunary sequence definition",
+      "lacunary_exponential_growth: growth theorem (proved)",
+      "geometricSequence, geometric_is_lacunary: examples",
+      "Coloring, AvoidsMonochromatic: coloring definitions",
+      "IsFinitelyColorable: main predicate",
+      "fractionalDistance: distance to nearest integer",
+      "problem_464_result: connection to Problem #464",
+      "katznelsonColoring, katznelson_theorem: coloring construction",
+      "lacunary_finitely_colorable: main theorem",
+      "ErdosConjecture894, erdos_894: formal statement and proof",
+      "peres_schlag_bound: quantitative bound O(ε⁻¹ log(1/ε))",
+      "CayleyGraph, lacunaryCayleyGraph: graph definitions",
+      "problem_464_implies_894: implication theorem",
+      "powers_of_2_colorable, powers_of_3_colorable: special cases"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #894 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}\\subset \\mathbb{N}$ be a lacunary sequence (so there exists some $\\epsilon>0$ with $n_{k+1}\\geq (1+\\epsilon)n_k$ for all $k$).\n\nIs it true that there must exist a finite colouring of $\\mathbb{N}$ with no monochromatic solutions to $a-b\\in A$?\n\n\n\nAsked by Erd\\H{o}s in 1987, according to Katznelson \\cite{Ka01}. In other words, does the Cayley graph defined on $\\mathbb{Z}$ by a lacunary sequence have a finite chromatic number?\n\nKatznelson observed that a positive solution to the problem follows from the answer to [464], which yields an irrational $\\theta$ and $\\delta>0$ such that $\\inf_k \\| \\theta n_k\\|>\\delta$.\n\nIndeed, given such a $\\theta$ a colouring of $\\mathbb{N}$ using $\\ll \\delta^{-1}$ colours lacking any solution to $a-b\\in A$ can be produced by dividing $\\mathbb{R}/\\mathbb{Z}$ into disjoint intervals of length $\\leq \\delta$ and then colouring $n$ according to which interval $\\| \\theta n\\|$ belongs to.\n\nIn particular, the solution to [464] implies the answer to this question is yes, with the best known quantitative bound, due to Peres and Schlag \\cite{PeSc10}, being that there is a colouring with no solutions using at most\\[\\ll \\epsilon^{-1}\\log(1/\\epsilon)\\]colours.\n\n\n\n\nReferences\n\n\n[Ka01] Katznelson, Y., Chromatic numbers of Cayley graphs on {$\\Bbb Z$} and\nrecurrence. Combinatorica (2001), 211--219.\n\n[PeSc10] Peres, Yuval and Schlag, Wilhelm, Two Erd\\H{o}s problems on lacunary sequences: chromatic\nnumber and Diophantine approximation. Bull. Lond. Math. Soc. (2010), 295--300.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Chromatic Number Question (1987)**\n\nErdős asked in 1987 whether Cayley graphs on ℤ defined by lacunary sequences have finite chromatic number. A sequence A = {n₁ < n₂ < ...} is lacunary if n_{k+1} ≥ (1+ε)n_k for some ε > 0. The question is whether ℕ can be finitely colored so that no two integers differing by an element of A share the same color.\n\n**Katznelson's Connection (2001)**\n\nYitzhak Katznelson made a crucial observation connecting this problem to Diophantine approximation (Problem #464). He showed that if there exists an irrational θ with inf_k ||θn_k|| > δ > 0 (where ||·|| is distance to nearest integer), then one can color using O(1/δ) colors by dividing the circle into intervals of length δ.\n\n**Peres-Schlag Resolution (2010)**\n\nYuval Peres and Wilhelm Schlag resolved both problems simultaneously in their paper 'Two Erdős problems on lacunary sequences.' They proved that O(ε⁻¹ log(1/ε)) colors suffice for a lacunary sequence with ratio (1+ε). This bound is essentially optimal.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A = {n₁ < n₂ < ...} ⊂ ℕ be a lacunary sequence with n_{k+1} ≥ (1+ε)n_k.\n\n**Question:** Does there exist a finite coloring of ℕ with no monochromatic solutions to a - b ∈ A?\n\n**Equivalently:** Does the Cayley graph on ℤ with connection set A have finite chromatic number?\n\n**Answer: YES** - O(ε⁻¹ log(1/ε)) colors suffice (Peres-Schlag 2010)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lacunary Sequences:** IsLacunary definition, exponential growth theorem\n\n2. **Colorings:** Coloring type, AvoidsMonochromatic predicate\n\n3. **Diophantine Connection:** fractionalDistance, problem_464_result\n\n4. **Katznelson Construction:** katznelsonColoring using circle intervals\n\n5. **Main Theorem:** lacunary_finitely_colorable via Problem #464\n\n6. **Quantitative Bounds:** peres_schlag_bound O(ε⁻¹ log(1/ε))\n\n7. **Cayley Graphs:** CayleyGraph structure, cayleyChromatic\n\n8. **Special Cases:** Powers of 2 and 3 are finitely colorable",
+    "keyInsights": [
+      "**Irrational Rotation:** Color n by position of θn on the circle",
+      "**Problem #464:** Lacunary sequences have badly approximable θ",
+      "**Quantitative:** O(ε⁻¹ log(1/ε)) colors suffice and are needed",
+      "**Cayley Graph:** Finite chromatic number for lacunary generators",
+      "**Circle Division:** Divide ℝ/ℤ into intervals to define colors"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #894 asks whether Cayley graphs on ℤ defined by lacunary sequences have finite chromatic number. Katznelson (2001) connected this to Diophantine approximation, and Peres-Schlag (2010) proved that O(ε⁻¹ log(1/ε)) colors suffice for a sequence with ratio (1+ε). The answer is YES.",
+    "implications": "**Connections**\n\n1. **Diophantine Approximation:** Problem #464 on badly approximable numbers\n\n2. **Harmonic Analysis:** Lacunary sequences and Fourier analysis\n\n3. **Graph Coloring:** Cayley graphs on infinite groups\n\n4. **Discrepancy Theory:** Uniform distribution modulo 1",
+    "openQuestions": [
+      "Is the O(ε⁻¹ log(1/ε)) bound exactly optimal?",
+      "What about non-lacunary sequences with gaps?",
+      "Can the construction be made explicit for specific sequences?",
+      "What is the chromatic number for powers of 2?"
+    ]
   }
 }
