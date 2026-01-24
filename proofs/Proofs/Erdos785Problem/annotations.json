@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-sumset",
+    "proofId": "erdos-785",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "Sumset",
+    "content": "A + B = {a + b : a ∈ A, b ∈ B}. Central object in additive combinatorics.",
+    "significance": "major"
+  },
+  {
+    "id": "def-counting",
+    "proofId": "erdos-785",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "A(x) = |A ∩ [1,x]|. Measures density of sets up to x.",
+    "significance": "major"
+  },
+  {
+    "id": "def-exact",
+    "proofId": "erdos-785",
+    "range": { "startLine": 86, "endLine": 92 },
+    "type": "definition",
+    "title": "Exact Additive Complement",
+    "content": "A,B with A+B covering all large integers and A(x)B(x) ~ x. Optimally sparse complements.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-main",
+    "proofId": "erdos-785",
+    "range": { "startLine": 105, "endLine": 112 },
+    "type": "conjecture",
+    "title": "Erdős-Danzer Question (Solved)",
+    "content": "For exact additive complements, does A(x)B(x) - x → ∞?",
+    "significance": "major"
+  },
+  {
+    "id": "thm-danzer",
+    "proofId": "erdos-785",
+    "range": { "startLine": 118, "endLine": 124 },
+    "type": "theorem",
+    "title": "Danzer (1964)",
+    "content": "Exact additive complements exist. Initially surprising result.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-sarkozy-szemeredi",
+    "proofId": "erdos-785",
+    "range": { "startLine": 137, "endLine": 151 },
+    "type": "theorem",
+    "title": "Sárközy-Szemerédi (1994)",
+    "content": "A(x)B(x) - x → ∞ for exact additive complements. Solves the main question affirmatively.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-ruzsa",
+    "proofId": "erdos-785",
+    "range": { "startLine": 164, "endLine": 182 },
+    "type": "theorem",
+    "title": "Ruzsa (2017)",
+    "content": "Growth to ∞ can be arbitrarily slow: for any w(x) → ∞, ∃ exact complements with A(x)B(x) - x < w(x) i.o.",
+    "significance": "major"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-785",
+    "range": { "startLine": 233, "endLine": 267 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "SOLVED: YES, A(x)B(x) - x → ∞ (Sárközy-Szemerédi 1994). Growth can be arbitrarily slow (Ruzsa 2017).",
+    "significance": "major"
+  }
+]
