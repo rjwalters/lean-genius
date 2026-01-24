@@ -15,10 +15,11 @@ interface ErdosProblemCardProps {
 function getStatusConfig(status?: ErdosProblemStatus) {
   const configs: Record<ErdosProblemStatus, { icon: typeof CheckCircle; label: string; className: string }> = {
     'solved': { icon: CheckCircle, label: 'Solved', className: 'text-green-400' },
+    'disproved': { icon: CheckCircle, label: 'Disproved', className: 'text-purple-400' },
     'partially-solved': { icon: CircleDot, label: 'Partially Solved', className: 'text-yellow-400' },
     'open': { icon: Circle, label: 'Open', className: 'text-muted-foreground' }
   }
-  return status ? configs[status] : configs['open']
+  return (status && configs[status]) ? configs[status] : configs['open']
 }
 
 export function ErdosProblemCard({

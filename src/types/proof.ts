@@ -229,7 +229,7 @@ export const ERDOS_BADGE_INFO = {
 /**
  * Status of an Erdős problem
  */
-export type ErdosProblemStatus = 'open' | 'solved' | 'partially-solved'
+export type ErdosProblemStatus = 'open' | 'solved' | 'partially-solved' | 'disproved'
 
 /**
  * Mapping of some notable Erdős problem numbers to their names
