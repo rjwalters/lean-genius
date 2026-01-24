@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-994-frac",
+    "proofId": "erdos-994",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "frac",
+    "content": "Fractional part x - ⌊x⌋.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-fracseq",
+    "proofId": "erdos-994",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "fracSequence",
+    "content": "The sequence {kα} for k = 1, 2, ...",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-count",
+    "proofId": "erdos-994",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "countInE",
+    "content": "Count of {kα} falling in E.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-empfreq",
+    "proofId": "erdos-994",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "definition",
+    "title": "empiricalFrequency",
+    "content": "(1/n) times count in E.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-isequid",
+    "proofId": "erdos-994",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "IsEquidistributed",
+    "content": "Limit equals μ = λ(E).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-weyl",
+    "proofId": "erdos-994",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "theorem",
+    "title": "weyl_theorem",
+    "content": "For fixed E, a.e. α works.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-weylstate",
+    "proofId": "erdos-994",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "definition",
+    "title": "WeylStatement",
+    "content": "∀ E, ∀ᵐ α equidistribution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-weyltrue",
+    "proofId": "erdos-994",
+    "range": { "startLine": 93, "endLine": 96 },
+    "type": "theorem",
+    "title": "weyl_is_true",
+    "content": "Weyl's theorem is true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-khint",
+    "proofId": "erdos-994",
+    "range": { "startLine": 102, "endLine": 107 },
+    "type": "definition",
+    "title": "KhintchineConjecture",
+    "content": "∀ᵐ α, ∀ E equidistribution?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-weylord",
+    "proofId": "erdos-994",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "definition",
+    "title": "WeylOrder",
+    "content": "∀ E, ∀ᵐ α (true order).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-khintord",
+    "proofId": "erdos-994",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "definition",
+    "title": "KhintchineOrder",
+    "content": "∀ᵐ α, ∀ E (false order).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-exchange",
+    "proofId": "erdos-994",
+    "range": { "startLine": 131, "endLine": 132 },
+    "type": "theorem",
+    "title": "quantifier_exchange_fails",
+    "content": "Quantifiers cannot be swapped!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-marstrand",
+    "proofId": "erdos-994",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "theorem",
+    "title": "marstrand_disproof",
+    "content": "Khintchine's conjecture is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-construct",
+    "proofId": "erdos-994",
+    "range": { "startLine": 143, "endLine": 147 },
+    "type": "theorem",
+    "title": "marstrand_construction",
+    "content": "∃ α, ∃ E where it fails.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-badset",
+    "proofId": "erdos-994",
+    "range": { "startLine": 149, "endLine": 152 },
+    "type": "theorem",
+    "title": "bad_set_exists",
+    "content": "For each irrational α, bad E exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-weyleq",
+    "proofId": "erdos-994",
+    "range": { "startLine": 175, "endLine": 178 },
+    "type": "theorem",
+    "title": "weyl_equidistribution",
+    "content": "Intervals always work for irrational α.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-994-main",
+    "proofId": "erdos-994",
+    "range": { "startLine": 209, "endLine": 209 },
+    "type": "theorem",
+    "title": "erdos_994",
+    "content": "Main: conjecture is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-994-vs",
+    "proofId": "erdos-994",
+    "range": { "startLine": 218, "endLine": 220 },
+    "type": "theorem",
+    "title": "weyl_vs_khintchine",
+    "content": "Weyl true, Khintchine false.",
+    "significance": "critical"
+  }
+]
