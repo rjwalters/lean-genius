@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-e1044-header",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1044: Boundary Length of Polynomial Level Sets**\n\nFor f(z) = ∏(z - zᵢ) with |zᵢ| ≤ 1, define Λ(f) as the maximum boundary length of connected components of {z : |f(z)| < 1}.\n\n**Question**: What is inf Λ(f) over all such polynomials?\n\n**Answer**: The infimum is exactly 2 (Tang).\n\n**Key point**: The infimum is not achieved—no polynomial has Λ(f) = 2.",
+    "mathContext": "This problem was posed by Erdős, Herzog, and Piranian in 1958. The sublevel sets {|f(z)| < 1} form polynomial lemniscates, with boundaries that are algebraic curves.",
+    "significance": "critical",
+    "relatedConcepts": ["Polynomial lemniscates", "Complex analysis", "Level sets"]
+  },
+  {
+    "id": "ann-e1044-roots-disk",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Roots in Unit Disk",
+    "content": "**HasRootsInDisk(f)**:\n\nA polynomial f has all roots in the closed unit disk: ∀z, f(z) = 0 → |z| ≤ 1.\n\nThis constraint ensures the polynomial is 'centered' around the origin.",
+    "mathContext": "The unit disk constraint is crucial. For roots in {|z| ≤ R}, the infimum would scale to 2R.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1044-sublevel",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Sublevel Set",
+    "content": "**sublevelSet(f) = {z : |f(z)| < 1}**\n\nThe sublevel set is where the polynomial's modulus is less than 1. This set always contains neighborhoods of all roots (since f(zᵢ) = 0).\n\nThe boundary ∂{|f(z)| < 1} is the level curve {|f(z)| = 1}.",
+    "mathContext": "These sublevel sets are polynomial lemniscates, whose topology depends on root configuration. They may be connected or have multiple components.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1044-boundary-length",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "definition",
+    "title": "Boundary Length Λ(f)",
+    "content": "**maxBoundaryLength(f)**:\n\nThe maximum arc length of boundaries of connected components of sublevelSet(f).\n\nFor a polynomial with multiple components in its sublevel set, Λ(f) is the length of the longest boundary.",
+    "mathContext": "Computing arc length of algebraic curves requires integration along the level set {|f(z)| = 1}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1044-tang",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "axiom",
+    "title": "Tang's Theorem",
+    "content": "**tang_theorem**:\n\ninf{Λ(f) : f ≠ 0, HasRootsInDisk(f)} = 2\n\nThe infimum over all admissible polynomials is exactly 2.\n\nThis is the main result solving Erdős Problem #1044.",
+    "mathContext": "The proof uses geometric analysis of how level set boundaries must 'surround' roots, combined with explicit constructions approaching the infimum.",
+    "significance": "critical",
+    "relatedConcepts": ["Infimum", "Extremal problems"]
+  },
+  {
+    "id": "ann-e1044-not-achieved",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "axiom",
+    "title": "Infimum Not Achieved",
+    "content": "**infimum_not_achieved**:\n\nFor every polynomial f ≠ 0 with HasRootsInDisk(f): Λ(f) > 2.\n\nNo polynomial achieves the infimum—this is an unusual extremal situation where the infimum exists but is not a minimum.",
+    "mathContext": "This makes the problem interesting: the 'optimal' polynomial doesn't exist, only ever-improving approximations.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1044-limit",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "axiom",
+    "title": "Limit as Degree → ∞",
+    "content": "**infimum_limit**:\n\nFor all ε > 0, there exists n₀ such that for n ≥ n₀, some degree-n polynomial f has Λ(f) < 2 + ε.\n\nThe infimum 2 is approached as degree increases.",
+    "mathContext": "The roots-of-unity polynomials z^n - 1 witness this limit, with their boundary lengths approaching 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1044-roots-unity",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 85, "endLine": 100 },
+    "type": "definition",
+    "title": "Roots of Unity Polynomials",
+    "content": "**rootsOfUnityPoly(n) = z^n - 1**\n\nThe polynomial with roots at the n-th roots of unity: e^{2πik/n} for k = 0, 1, ..., n-1.\n\n**tang_conjecture**: For fixed degree n, z^n - 1 minimizes Λ(f) among all degree-n polynomials with roots in the unit disk.\n\nVerified for n = 1, 2.",
+    "mathContext": "The roots of z^n - 1 are uniformly distributed on the unit circle, creating maximum 'spreading' of roots.",
+    "significance": "critical",
+    "relatedConcepts": ["Roots of unity", "Unit circle", "Symmetric configurations"]
+  },
+  {
+    "id": "ann-e1044-degree1",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 116, "endLine": 125 },
+    "type": "axiom",
+    "title": "Degree 1 Case",
+    "content": "**degree_1_sublevel**: For f(z) = z - a with |a| ≤ 1, the sublevel set is the disk Metric.ball(a, 1).\n\n**degree_1_boundary_length**: The boundary length is 2π (circumference of unit circle).\n\nThe simplest case: linear polynomials have sublevel sets that are unit disks centered at the root.",
+    "mathContext": "2π ≈ 6.28 is much larger than the infimum 2, showing degree-1 polynomials are far from optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1044-limit-roots-unity",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 133, "endLine": 136 },
+    "type": "axiom",
+    "title": "Roots of Unity Limit",
+    "content": "**roots_of_unity_limit**:\n\nlim_{n→∞} Λ(z^n - 1) = 2\n\nAs n increases, the boundary length of the roots-of-unity polynomial approaches 2.",
+    "mathContext": "The sublevel set of z^n - 1 forms n small 'petals' around each root. As n → ∞, these petals shrink and their boundaries straighten.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1044-geometry",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 142, "endLine": 159 },
+    "type": "concept",
+    "title": "Geometric Intuition",
+    "content": "**Why the infimum is 2**:\n\nWhen roots are uniformly spread on the unit circle (z^n - 1), the sublevel set {|f(z)| < 1} forms n small 'petals' around each root.\n\nAs n → ∞:\n- Each petal becomes very small\n- The boundaries approach straight line segments\n- Total boundary length approaches 2\n\n**boundary_surrounds_roots**: The boundary must have enough length to 'surround' all roots, giving a lower bound.",
+    "mathContext": "The value 2 arises from the limiting geometry: in the limit, the boundaries become two parallel lines of unit length each.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1044-potential",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "concept",
+    "title": "Connection to Potential Theory",
+    "content": "**potential_theory_connection**:\n\nThe function log|f(z)| is subharmonic. The sublevel sets relate to Green's functions of the region.\n\nThis connects polynomial level sets to classical potential theory in complex analysis.",
+    "mathContext": "For a polynomial f, log|f| is harmonic except at the roots, where it has logarithmic singularities.",
+    "significance": "supporting",
+    "relatedConcepts": ["Potential theory", "Subharmonic functions", "Green's functions"]
+  },
+  {
+    "id": "ann-e1044-summary",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 233, "endLine": 260 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_1044_characterization**:\n\n1. inf Λ(f) = 2 (Tang's theorem)\n2. No polynomial achieves Λ(f) = 2 (infimum not achieved)\n3. z^n - 1 is conjectured optimal for degree n (verified for n = 1, 2)\n\n**erdos_1044_status**: 'SOLVED - The infimum of Λ(f) is 2 (Tang)'",
+    "mathContext": "A complete solution to Erdős Problem #1044, with partial progress on the conjectured optimizers.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Complete characterization"]
+  }
+]
