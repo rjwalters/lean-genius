@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-egyptian-rep",
+    "proofId": "erdos-284",
+    "range": { "startLine": 44, "endLine": 49 },
+    "type": "definition",
+    "title": "Egyptian Fraction Representation",
+    "content": "A representation of r as a sum of distinct unit fractions 1/nᵢ.",
+    "significance": "major"
+  },
+  {
+    "id": "def-f",
+    "proofId": "erdos-284",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "definition",
+    "title": "Function f(k)",
+    "content": "f(k) = max{n₁ : ∃ n₁ < ... < nₖ with 1 = Σ 1/nᵢ}. Maximum first denominator.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-harmonic",
+    "proofId": "erdos-284",
+    "range": { "startLine": 87, "endLine": 95 },
+    "type": "theorem",
+    "title": "Harmonic Series in Interval",
+    "content": "Σ_{n=u}^{eu} 1/n ≈ 1. The key identity for the upper bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-upper-bound",
+    "proofId": "erdos-284",
+    "range": { "startLine": 97, "endLine": 107 },
+    "type": "theorem",
+    "title": "Upper Bound (Trivial)",
+    "content": "f(k) ≤ (1+o(1))·k/(e-1). Follows from harmonic series counting.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-croot",
+    "proofId": "erdos-284",
+    "range": { "startLine": 120, "endLine": 136 },
+    "type": "theorem",
+    "title": "Croot's Theorem (2001)",
+    "content": "For any N > 1, ∃ distinct nᵢ in (N, eN] with Σ1/nᵢ = 1. Proves matching lower bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-main",
+    "proofId": "erdos-284",
+    "range": { "startLine": 138, "endLine": 147 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "f(k) = (1+o(1))·k/(e-1). Complete asymptotic formula.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-interval",
+    "proofId": "erdos-284",
+    "range": { "startLine": 166, "endLine": 172 },
+    "type": "insight",
+    "title": "Why (N, eN]?",
+    "content": "Interval length (e-1)N, harmonic sum ∫_N^{eN} 1/x dx = ln(e) = 1.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-284",
+    "range": { "startLine": 234, "endLine": 263 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "SOLVED: f(k) ~ k/(e-1) (Croot 2001). The constant e-1 ≈ 1.718 is optimal.",
+    "significance": "major"
+  }
+]
