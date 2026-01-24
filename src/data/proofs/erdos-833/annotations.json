@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-833-header",
+    "proofId": "erdos-833",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #833:** Does every r-uniform 3-chromatic hypergraph have a vertex in at least (1+c)^r edges for some absolute c > 0?\n\n**Answer:** YES! Erdős-Lovász (1975) proved the bound 2^{r-1}/(4r), confirming exponential growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-hypergraph",
+    "proofId": "erdos-833",
+    "range": { "startLine": 50, "endLine": 59 },
+    "type": "definition",
+    "title": "UniformHypergraph",
+    "content": "**r-uniform hypergraph:** H = (V, E) where every edge e in E has exactly r vertices.\n\nExamples: r = 2 is ordinary graphs, r = 3 is triple systems.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-degree",
+    "proofId": "erdos-833",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "definition",
+    "title": "vertexDegree",
+    "content": "**Vertex degree:** Number of edges containing vertex v.\n\ndeg(v) = |{e in E : v in e}|",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-coloring",
+    "proofId": "erdos-833",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "definition",
+    "title": "IsProperColoring",
+    "content": "**Proper k-coloring:** Assigns colors 1..k to vertices so no edge is monochromatic.\n\nFor hypergraphs: every edge contains at least two vertices of different colors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-833-chromatic3",
+    "proofId": "erdos-833",
+    "range": { "startLine": 97, "endLine": 100 },
+    "type": "definition",
+    "title": "HasChromaticNumber3",
+    "content": "**Chromatic number 3:** H is NOT 2-colorable but IS 3-colorable.\n\nThis is the minimal non-bipartite case for hypergraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-f-function",
+    "proofId": "erdos-833",
+    "range": { "startLine": 109, "endLine": 114 },
+    "type": "definition",
+    "title": "f(r) Function",
+    "content": "**f(r):** Minimum over all r-uniform 3-chromatic hypergraphs H of the maximum vertex degree in H.\n\nEvery such H has a vertex in at least f(r) edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-known-values",
+    "proofId": "erdos-833",
+    "range": { "startLine": 116, "endLine": 123 },
+    "type": "theorem",
+    "title": "Known Values",
+    "content": "**Known:** f(2) = 2 (triangle), f(3) = 3 (Fano plane).\n\nErdős did not know f(4).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-833-conjecture",
+    "proofId": "erdos-833",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "definition",
+    "title": "Exponential Growth Conjecture",
+    "content": "**Conjecture:** There exists c > 0 such that f(r) >= (1+c)^r for all r >= 2.\n\nDoes vertex degree grow exponentially with uniformity?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-erdos-lovasz",
+    "proofId": "erdos-833",
+    "range": { "startLine": 139, "endLine": 147 },
+    "type": "axiom",
+    "title": "Erdős-Lovász Theorem",
+    "content": "**Erdős-Lovász (1975):** Every r-uniform 3-chromatic hypergraph has a vertex in at least 2^{r-1}/(4r) edges.\n\nThis grows like (sqrt(2))^r, confirming exponential growth!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-lower-bound",
+    "proofId": "erdos-833",
+    "range": { "startLine": 149, "endLine": 152 },
+    "type": "theorem",
+    "title": "f(r) Lower Bound",
+    "content": "**Corollary:** f(r) >= floor(2^{r-1}/(4r)).\n\nThis is exponential in r with base sqrt(2) approx 1.414.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-833-exponential",
+    "proofId": "erdos-833",
+    "range": { "startLine": 154, "endLine": 158 },
+    "type": "theorem",
+    "title": "Bound is Exponential",
+    "content": "**Key insight:** 2^{r-1}/(4r) >= (sqrt(2) - epsilon)^r for large r.\n\nThe polynomial factor 1/r is dominated by the exponential.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-833-solution",
+    "proofId": "erdos-833",
+    "range": { "startLine": 160, "endLine": 169 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Theorem:** ExponentialGrowthConjecture is TRUE.\n\nTake c = 0.4 (so 1+c = 1.4 < sqrt(2)). The Erdős-Lovász bound implies the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-exists-vertex",
+    "proofId": "erdos-833",
+    "range": { "startLine": 175, "endLine": 180 },
+    "type": "theorem",
+    "title": "High Degree Vertex Exists",
+    "content": "**Corollary:** Every 3-chromatic r-uniform H has a vertex v with deg(v) >= 2^{r-1}/(4r).\n\nDirect application of the main bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-833-triangle",
+    "proofId": "erdos-833",
+    "range": { "startLine": 196, "endLine": 200 },
+    "type": "theorem",
+    "title": "Triangle Example",
+    "content": "**f(2) = 2:** The triangle (K_3) is 3-chromatic with all vertices having degree 2.\n\nThis is the minimal 3-chromatic graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-833-fano",
+    "proofId": "erdos-833",
+    "range": { "startLine": 202, "endLine": 206 },
+    "type": "axiom",
+    "title": "Fano Plane",
+    "content": "**f(3) = 3:** The Fano plane is a 3-uniform hypergraph with 7 vertices, 7 edges, chromatic number 3, and all degrees = 3.\n\nIt's the projective plane PG(2,2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-833-local-lemma",
+    "proofId": "erdos-833",
+    "range": { "startLine": 212, "endLine": 215 },
+    "type": "axiom",
+    "title": "Lovász Local Lemma",
+    "content": "**Proof technique:** If all vertex degrees are small, a random 2-coloring avoids monochromatic edges with positive probability.\n\nContradicts chi(H) = 3, so some degree must be large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-833-contrapositive",
+    "proofId": "erdos-833",
+    "range": { "startLine": 217, "endLine": 224 },
+    "type": "theorem",
+    "title": "Contrapositive Form",
+    "content": "**Contrapositive:** If all deg(v) < 2^{r-1}/(4r), then H is 2-colorable.\n\nSo chi(H) = 3 implies some vertex has high degree.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-833-main",
+    "proofId": "erdos-833",
+    "range": { "startLine": 247, "endLine": 258 },
+    "type": "theorem",
+    "title": "erdos_833",
+    "content": "**Complete Result:**\n1. ExponentialGrowthConjecture holds (c approx 0.4)\n2. Specific bound: 2^{r-1}/(4r) for every 3-chromatic r-uniform H\n\nPROBLEM SOLVED by Erdős-Lovász (1975).",
+    "significance": "critical"
+  }
+]

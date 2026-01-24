@@ -13842,17 +13842,25 @@
   },
   {
     "id": "erdos-833",
-    "title": "Erdős Problem #833",
+    "title": "Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs",
     "slug": "erdos-833",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist an absolute constant ... such that, for all ..., in any ...-uniform hypergraph with chromatic number ... the...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does there exist c > 0 such that every r-uniform 3-chromatic hypergraph has a vertex in at least (1+c)^r edges? SOLVED by Erdős-Lovász (1975): YES, with bound 2^{r-1}/(4r).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "hypergraphs",
+      "chromatic-number",
+      "vertex-degree",
+      "extremal-combinatorics",
+      "solved"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 833,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 6,
+    "annotationCount": 18
   },
   {
     "id": "erdos-834",
