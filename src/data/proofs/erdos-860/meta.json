@@ -1,33 +1,74 @@
 {
   "id": "erdos-860",
-  "title": "Erdős Problem #860",
+  "title": "Erdős Problem #860: Prime Covering Intervals",
   "slug": "erdos-860",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that, for any ..., in the interval ... there exist distinct integers ... for ... such that ..., where ... den...",
+  "description": "Estimate h(n), the minimum interval length such that any interval contains distinct multiples of the first π(n) primes. OPEN: Known bounds are (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2), but exact asymptotics unknown.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Pomerance, Selfridge, Ruzsa",
     "sourceUrl": "https://erdosproblems.com/860",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos860Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-numbers",
+      "intervals",
+      "covering",
+      "number-theory",
+      "asymptotics",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 860,
     "erdosUrl": "https://erdosproblems.com/860",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {"theorem": "PrimeCounting", "description": "Prime counting function π(n)", "module": "Mathlib.NumberTheory.PrimeCounting"},
+      {"theorem": "Asymptotics", "description": "Big-O and little-o notation", "module": "Mathlib.Analysis.Asymptotics.Asymptotics"}
+    ],
+    "originalContributions": [
+      "PrimeCovering: covering assignment structure",
+      "h: interval function definition",
+      "erdos_selfridge_lower_bound: (3-o(1))n lower bound",
+      "ruzsa_growth: h(n)/n → ∞",
+      "erdos_pomerance_upper_bound: n^(3/2) upper bound"
+    ],
+    "references": [
+      {"key": "ErPo80", "citation": "Erdős, P. and Pomerance, C., Matching the natural numbers up to n with distinct multiples of another interval, Indigationes Math. (1980), 147-151.", "type": "paper"},
+      {"key": "Gu04", "citation": "Guy, Richard K., Unsolved Problems in Number Theory, 3rd ed. (2004), Problem B32.", "type": "book"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #860 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be such that, for any $m\\geq 1$, in the interval $(m,m+h(n))$ there exist distinct integers $a_i$ for $1\\leq i\\leq \\pi(n)$ such that $p_i\\mid a_i$, where $p_i$ denotes the $i$th prime.\n\nEstimate $h(n)$.\n\n\n\nA problem of Erd\\H{o}s and Pomerance \\cite{ErPo80}, who proved that\\[h(n) \\ll \\frac{n^{3/2}}{(\\log n)^{1/2}}.\\]Erd\\H{o}s and Selfridge proved $h(n)>(3-o(1))n$, and Ruzsa proved $h(n)/n\\to \\infty$.\n\nThis is discussed in problem B32 of Guy's collection \\cite{Gu04}.\n\nSee also [375].\n\n\n\n\nReferences\n\n\n[ErPo80] P. Erd\\H{o}s and C. Pomerance, Matching the natural numbers up to $n$ with distinct multiples of another interval. Indigationes Math. (1980), 147-151.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős-Pomerance Problem (1980)**\n\nThis problem asks about covering primes with multiples from intervals. Given the first π(n) primes p₁, p₂, ..., p_π(n), how long must an interval be to guarantee we can find distinct multiples a₁, a₂, ..., a_π(n) with pᵢ | aᵢ?\n\n**Key results:**\n- Erdős-Selfridge: Need at least (3-o(1))n\n- Ruzsa: h(n)/n → ∞ (superlinear)\n- Erdős-Pomerance: At most n^(3/2)/(log n)^(1/2)",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet h(n) be the minimum L such that for any m ≥ 1, the interval (m, m+L] contains distinct integers a₁, ..., a_π(n) with pᵢ | aᵢ.\n\n**Estimate h(n).**\n\n**Known:** (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2)\n\n**Open:** Exact asymptotic growth rate",
+    "proofStrategy": "**Formalization Approach**\n\n1. **PrimeCovering:** Structure for assignment satisfying divisibility and distinctness.\n2. **The function h:** Minimum interval length for universal covering.\n3. **Lower bounds:** Erdős-Selfridge and Ruzsa axioms.\n4. **Upper bound:** Erdős-Pomerance axiom.\n5. **Open question:** Exact asymptotics remain unknown.",
+    "keyInsights": [
+      "**Matching problem:** Bipartite graph matching primes to interval elements",
+      "**Superlinear growth:** h(n)/n → ∞ (Ruzsa)",
+      "**Subquadratic:** h(n) = o(n²)",
+      "**Gap remains:** Between n·ω(n) and n^(3/2-ε)",
+      "**Hall's theorem:** Key tool for analyzing matchings"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {"id": "basic-defs", "title": "Basic Definitions", "summary": "PrimeCovering structure and AdmitsCovering", "startLine": 42, "endLine": 62},
+    {"id": "h-function", "title": "The Function h(n)", "summary": "Definition and properties", "startLine": 64, "endLine": 83},
+    {"id": "bounds", "title": "Known Bounds", "summary": "Erdős-Selfridge, Ruzsa, Erdős-Pomerance", "startLine": 85, "endLine": 109},
+    {"id": "gap", "title": "The Gap", "summary": "Distance between bounds", "startLine": 111, "endLine": 137},
+    {"id": "connections", "title": "Connections", "summary": "Related problems and approaches", "startLine": 139, "endLine": 156},
+    {"id": "reformulation", "title": "Reformulation", "summary": "Bipartite matching view", "startLine": 158, "endLine": 171},
+    {"id": "summary", "title": "Summary", "summary": "Main result and open question", "startLine": 173, "endLine": 211}
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #860 remains OPEN. The function h(n) - the minimum interval length for covering the first π(n) primes with distinct multiples - satisfies (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2), but the exact asymptotic growth rate is unknown.",
+    "implications": "**Implications**\n\n1. **Distribution of multiples:** How multiples of different primes interleave in intervals\n2. **Matching theory:** Applications of Hall's theorem to number-theoretic problems\n3. **Prime gap questions:** Related to understanding prime spacing",
+    "openQuestions": [
+      "What is the exact growth rate of h(n)?",
+      "Is h(n) = Θ(n^α) for some 1 < α < 3/2?",
+      "Can the upper bound be improved?"
+    ]
   }
 }

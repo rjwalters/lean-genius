@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-860-header",
+    "proofId": "erdos-860",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #860: Prime Covering Intervals**\n\nEstimate h(n), the minimum interval length such that any interval of that length contains distinct multiples of the first π(n) primes.\n\n**Status: OPEN** (bounds known, exact asymptotics unknown)\n\n**Known:** (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-860-covering",
+    "proofId": "erdos-860",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "PrimeCovering",
+    "content": "**Prime Covering Assignment:** A function assigning to each of the first k primes a distinct multiple from an interval.\n\nRequirements:\n- All assignments in the interval (m, m+L]\n- All assignments distinct\n- pᵢ divides the i-th assignment",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-860-admits",
+    "proofId": "erdos-860",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "AdmitsCovering",
+    "content": "**Admissible Interval:** An interval (m, m+L] admits a prime covering for k primes if such an assignment exists.\n\nThe function h(n) is the minimum L making all intervals admissible.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-860-h",
+    "proofId": "erdos-860",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "definition",
+    "title": "h",
+    "content": "**The Function h(n):** The minimum interval length L such that EVERY interval (m, m+L] admits a covering for the first π(n) primes.\n\nThis is the central object of study: h(n) = min{L : ∀m, AdmitsCovering m L π(n)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-860-universal",
+    "proofId": "erdos-860",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "axiom",
+    "title": "h_universal",
+    "content": "**Universality of h(n):** Every interval of length h(n) admits a covering.\n\nThis is the defining property: h(n) is large enough to work for ALL starting points m.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-860-selfridge",
+    "proofId": "erdos-860",
+    "range": { "startLine": 89, "endLine": 94 },
+    "type": "axiom",
+    "title": "erdos_selfridge_lower_bound",
+    "content": "**Erdős-Selfridge Lower Bound:** h(n) > (3-o(1))n.\n\nThe interval must be at least about 3n long. This is a linear lower bound, showing h(n) grows at least linearly with n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-860-ruzsa",
+    "proofId": "erdos-860",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "axiom",
+    "title": "ruzsa_growth",
+    "content": "**Ruzsa's Result:** h(n)/n → ∞ as n → ∞.\n\nThe growth is superlinear! The ratio h(n)/n is unbounded, so h(n) grows faster than any linear function cn.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-860-pomerance",
+    "proofId": "erdos-860",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "axiom",
+    "title": "erdos_pomerance_upper_bound",
+    "content": "**Erdős-Pomerance Upper Bound:** h(n) ≪ n^(3/2)/(log n)^(1/2).\n\nAn explicit upper bound that is subquadratic. This means h(n) = o(n²), so intervals of length n² are more than sufficient.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-860-linear",
+    "proofId": "erdos-860",
+    "range": { "startLine": 115, "endLine": 124 },
+    "type": "theorem",
+    "title": "linear_lower_bound",
+    "content": "**Linear Lower Bound Theorem:** h(n) ≥ cn for some constant c > 0.\n\nDerived from Erdős-Selfridge: we can take c close to 3 for large n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-860-subquadratic",
+    "proofId": "erdos-860",
+    "range": { "startLine": 126, "endLine": 131 },
+    "type": "theorem",
+    "title": "subquadratic_upper_bound",
+    "content": "**Subquadratic Growth:** h(n) = o(n²).\n\nThe function h(n) is asymptotically smaller than n². This follows from the Erdős-Pomerance bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-860-gap",
+    "proofId": "erdos-860",
+    "range": { "startLine": 133, "endLine": 137 },
+    "type": "concept",
+    "title": "The Gap",
+    "content": "**The Open Problem:** We know n·ω(n) ≤ h(n) ≤ n^(3/2-ε) for some slowly growing ω(n).\n\nWhat is the exact growth rate? Is h(n) = Θ(n^α) for some 1 < α < 3/2?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-860-matching",
+    "proofId": "erdos-860",
+    "range": { "startLine": 162, "endLine": 166 },
+    "type": "concept",
+    "title": "Bipartite Matching",
+    "content": "**Graph-Theoretic View:** h(n) is the least L such that for all m, the bipartite graph with primes on one side and interval elements on the other (with edges for divisibility) has a perfect matching on the prime side.\n\nHall's theorem characterizes when such matchings exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-860-hall",
+    "proofId": "erdos-860",
+    "range": { "startLine": 168, "endLine": 171 },
+    "type": "concept",
+    "title": "Hall's Condition",
+    "content": "**Hall's Marriage Theorem:** A matching exists iff for every subset S of primes, |N(S)| ≥ |S| where N(S) is the set of multiples in the interval.\n\nThis condition must hold for all intervals and all prime subsets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-860-main",
+    "proofId": "erdos-860",
+    "range": { "startLine": 177, "endLine": 197 },
+    "type": "theorem",
+    "title": "erdos_860",
+    "content": "**Erdős Problem #860: OPEN**\n\nMain theorem stating the known results:\n1. Superlinear growth: h(n)/n → ∞ (Ruzsa)\n2. Polynomial upper bound: h(n) ≪ n^(3/2)/(log n)^(1/2)\n\nThe exact asymptotic behavior remains unknown.",
+    "significance": "critical"
+  }
+]
