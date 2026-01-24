@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-147-1",
+    "proofId": "erdos-147",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "axiom",
+    "title": "Turán Number Definition",
+    "content": "The Turán number ex(n; H) is the maximum number of edges in an n-vertex graph that does not contain H as a subgraph. This is the central object in extremal graph theory, measuring how dense a graph can be while avoiding a forbidden subgraph.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-147-2",
+    "proofId": "erdos-147",
+    "range": { "startLine": 52, "endLine": 60 },
+    "type": "axiom",
+    "title": "Turán Number Achievability",
+    "content": "States that the Turán number is achieved by some extremal graph. There exists an H-free graph with exactly ex(n; H) edges, establishing that the maximum is attained.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-147-3",
+    "proofId": "erdos-147",
+    "range": { "startLine": 62, "endLine": 69 },
+    "type": "axiom",
+    "title": "Turán Number Maximality",
+    "content": "The defining property of the Turán number: any H-free graph has at most ex(n; H) edges. This makes ex(n; H) the tight upper bound for edge counts in H-free graphs.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-147-4",
+    "proofId": "erdos-147",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "The minimum degree δ(G) is the smallest degree among all vertices. For bipartite graphs with minimum degree r, the Erdős-Simonovits conjecture predicts a specific relationship between r and the Turán exponent.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-147-5",
+    "proofId": "erdos-147",
+    "range": { "startLine": 82, "endLine": 88 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "A graph is bipartite if its vertices can be partitioned into two independent sets A and B, where every edge connects a vertex in A to a vertex in B. Bipartite graphs are fundamental to extremal graph theory.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-147-6",
+    "proofId": "erdos-147",
+    "range": { "startLine": 90, "endLine": 95 },
+    "type": "definition",
+    "title": "Regular Graph",
+    "content": "A graph is r-regular if every vertex has degree exactly r. Janzer's counterexamples use regular bipartite graphs to disprove the Erdős-Simonovits conjecture.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-147-7",
+    "proofId": "erdos-147",
+    "range": { "startLine": 101, "endLine": 114 },
+    "type": "definition",
+    "title": "Erdős-Simonovits Conjecture",
+    "content": "The 1984 conjecture: for any bipartite graph H with minimum degree r, there exists ε > 0 such that ex(n; H) ≫ n^{2 - 1/(r-1) + ε}. This predicted that higher minimum degree implies a larger Turán exponent.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-147-8",
+    "proofId": "erdos-147",
+    "range": { "startLine": 120, "endLine": 130 },
+    "type": "axiom",
+    "title": "Probabilistic Lower Bound",
+    "content": "The probabilistic method establishes ex(n; H) ≫ n^{2-2/r+ε} for bipartite H with minimum degree r. This bound is weaker than the conjecture (since 2/r > 1/(r-1) for r ≥ 3) but turns out to be essentially tight.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-147-9",
+    "proofId": "erdos-147",
+    "range": { "startLine": 132, "endLine": 145 },
+    "type": "theorem",
+    "title": "Exponent Gap",
+    "content": "Proves 2/r > 1/(r-1) for r ≥ 3 using rational arithmetic. This shows that the probabilistic bound (exponent 2-2/r) is weaker than what the conjecture predicted (exponent 2-1/(r-1)).",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-147-10",
+    "proofId": "erdos-147",
+    "range": { "startLine": 151, "endLine": 163 },
+    "type": "axiom",
+    "title": "Janzer's Theorem for r = 3",
+    "content": "Janzer (2023) showed that for any ε > 0, there exists a 3-regular bipartite graph H with ex(n; H) ≪ n^{4/3+ε}. The conjecture predicted n^{3/2+ε}, but 4/3 < 3/2, so this is a counterexample.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-147-11",
+    "proofId": "erdos-147",
+    "range": { "startLine": 165, "endLine": 176 },
+    "type": "axiom",
+    "title": "Janzer's Theorem for Even r ≥ 4",
+    "content": "For even r ≥ 4 and any ε > 0, there exists an r-regular bipartite graph H with ex(n; H) ≪ n^{2-2/r+ε}. This shows the probabilistic lower bound is essentially tight for even degrees.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-147-12",
+    "proofId": "erdos-147",
+    "range": { "startLine": 178, "endLine": 195 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "The main theorem proving the Erdős-Simonovits conjecture is false. Uses Janzer's r=3 counterexample: the conjecture requires ex ≫ n^{3/2+ε}, but Janzer achieves ex ≪ n^{4/3+ε}. The sorry handles the arithmetic contradiction for large n.",
+    "significance": "core"
+  },
+  {
+    "id": "ann-147-13",
+    "proofId": "erdos-147",
+    "range": { "startLine": 201, "endLine": 220 },
+    "type": "definition",
+    "title": "Janzer's New Conjecture",
+    "content": "The corrected conjecture: for any r ≥ 3 and ε > 0, there exists an r-regular bipartite graph H with ex(n; H) ≪ n^{2-2/r+ε}. This is proved for even r ≥ 4 and r = 3, suggesting the probabilistic bound is universally tight.",
+    "significance": "advanced"
+  },
+  {
+    "id": "ann-147-14",
+    "proofId": "erdos-147",
+    "range": { "startLine": 226, "endLine": 248 },
+    "type": "theorem",
+    "title": "Exponent Comparison Theorems",
+    "content": "Two key comparisons: (1) 4/3 < 3/2, showing Janzer's r=3 bound beats the conjecture's prediction; (2) 2-2/r < 2-1/(r-1) for r ≥ 3, showing the true exponent is smaller than conjectured.",
+    "significance": "standard"
+  },
+  {
+    "id": "ann-147-15",
+    "proofId": "erdos-147",
+    "range": { "startLine": 276, "endLine": 290 },
+    "type": "theorem",
+    "title": "Main Result: erdos_147",
+    "content": "The final theorem stating that the Erdős-Simonovits conjecture is false. This is the answer to Erdős Problem #147, worth $500. The proof invokes conjecture_disproved which uses Janzer's counterexamples.",
+    "significance": "core"
+  }
+]
