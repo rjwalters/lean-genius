@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-676-header",
+    "proofId": "erdos-676",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #676: Is every sufficiently large integer expressible as ap^2 + b for some prime p, integer a >= 1, and 0 <= b < p? Status: OPEN.",
+    "mathContext": "Posed in [Er79], [Er79d]. The sieve of Eratosthenes shows 'almost all' integers are representable.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-squares", "representation", "sieve"]
+  },
+  {
+    "id": "ann-676-hasrep",
+    "proofId": "erdos-676",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "definition",
+    "title": "Representation Definition",
+    "content": "HasRepresentation(n, a, p, b) := p.Prime AND a >= 1 AND b < p AND n = a*p^2 + b. The core representation constraint.",
+    "mathContext": "The constraint b < p ensures uniqueness of decomposition for fixed p.",
+    "significance": "critical",
+    "relatedConcepts": ["prime", "decomposition", "constraints"]
+  },
+  {
+    "id": "ann-676-isrep",
+    "proofId": "erdos-676",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "definition",
+    "title": "Representable Numbers",
+    "content": "IsRepresentable(n) := exists a, p, b with HasRepresentation(n, a, p, b). ExceptionSet = numbers without representation.",
+    "mathContext": "The question is whether ExceptionSet is finite.",
+    "significance": "key",
+    "relatedConcepts": ["existence", "exceptions"]
+  },
+  {
+    "id": "ann-676-conjecture",
+    "proofId": "erdos-676",
+    "range": { "startLine": 57, "endLine": 63 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture676 := exists N such that all n >= N are representable. ErdosConjecture676' := ExceptionSet is finite.",
+    "mathContext": "The two formulations are equivalent - existence of threshold vs finiteness of exceptions.",
+    "significance": "critical",
+    "relatedConcepts": ["threshold", "finiteness"]
+  },
+  {
+    "id": "ann-676-equiv",
+    "proofId": "erdos-676",
+    "range": { "startLine": 65, "endLine": 85 },
+    "type": "theorem",
+    "title": "Equivalence of Formulations",
+    "content": "conjecture_equiv: ErdosConjecture676 <-> ErdosConjecture676'. Threshold existence equals finite exceptions.",
+    "mathContext": "Standard equivalence between 'eventually true' and 'finitely many exceptions'.",
+    "significance": "supporting",
+    "relatedConcepts": ["equivalence", "finset"]
+  },
+  {
+    "id": "ann-676-density",
+    "proofId": "erdos-676",
+    "range": { "startLine": 93, "endLine": 104 },
+    "type": "axiom",
+    "title": "Density Results",
+    "content": "brun_selberg_bound: |exceptions in [1,x]| <= x/(log x)^c. density_one: representable numbers have density 1.",
+    "mathContext": "Sieve methods show exceptions are sparse, but don't prove finiteness.",
+    "significance": "key",
+    "relatedConcepts": ["sieve", "density", "asymptotic"]
+  },
+  {
+    "id": "ann-676-examples",
+    "proofId": "erdos-676",
+    "range": { "startLine": 112, "endLine": 134 },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "five_representable: 5 = 1*2^2 + 1. thirteen_representable: 13 = 3*2^2 + 1. Small examples demonstrating the definition.",
+    "mathContext": "These verify the definition works correctly for specific cases.",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "verification"]
+  },
+  {
+    "id": "ann-676-general",
+    "proofId": "erdos-676",
+    "range": { "startLine": 142, "endLine": 148 },
+    "type": "definition",
+    "title": "General Representation",
+    "content": "IsRepresentableGeneral(n) := exists a, m, b with a >= 1, m >= 2, b < m, n = a*m^2 + b. Without prime constraint.",
+    "mathContext": "Selfridge-Wagstaff suggest this general version has infinitely many exceptions.",
+    "significance": "key",
+    "relatedConcepts": ["general-case", "selfridge-wagstaff"]
+  },
+  {
+    "id": "ann-676-minimal",
+    "proofId": "erdos-676",
+    "range": { "startLine": 150, "endLine": 164 },
+    "type": "definition",
+    "title": "Minimal Coefficient",
+    "content": "minimalCoefficient(n) = smallest a for which n = a*p^2 + b exists. Erdos conjectured limsup c_n = infinity.",
+    "mathContext": "Related question: how small can the coefficient a be?",
+    "significance": "key",
+    "relatedConcepts": ["minimal", "limsup", "growth"]
+  },
+  {
+    "id": "ann-676-subpoly",
+    "proofId": "erdos-676",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "definition",
+    "title": "Subpolynomial Growth",
+    "content": "SubpolynomialGrowth := for all epsilon > 0, eventually c_n < n^epsilon. Is c_n < n^{o(1)}?",
+    "mathContext": "Even if limsup c_n = infinity, the growth might be subpolynomial.",
+    "significance": "supporting",
+    "relatedConcepts": ["growth-rate", "little-o"]
+  },
+  {
+    "id": "ann-676-byprime",
+    "proofId": "erdos-676",
+    "range": { "startLine": 172, "endLine": 178 },
+    "type": "definition",
+    "title": "Representation by Prime",
+    "content": "RepresentableByPrime(p) = {n | exists a, b with constraints}. The union over all primes covers almost all N.",
+    "mathContext": "Each prime p contributes a subset of representable numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime-partition", "coverage"]
+  },
+  {
+    "id": "ann-676-skeptical",
+    "proofId": "erdos-676",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "concept",
+    "title": "Erdos's Skepticism",
+    "content": "Erdos believed it 'rather unlikely' that all large integers are representable. He expected infinitely many exceptions.",
+    "mathContext": "The sparse exceptions from sieve methods don't imply finiteness.",
+    "significance": "key",
+    "relatedConcepts": ["heuristic", "expectation"]
+  },
+  {
+    "id": "ann-676-statement",
+    "proofId": "erdos-676",
+    "range": { "startLine": 197, "endLine": 212 },
+    "type": "theorem",
+    "title": "Formal Statement",
+    "content": "erdos_676_statement: The conjecture using explicit prime, coefficient, and remainder constraints.",
+    "mathContext": "Precise formal statement of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["formal-statement", "main-result"]
+  },
+  {
+    "id": "ann-676-status",
+    "proofId": "erdos-676",
+    "range": { "startLine": 214, "endLine": 228 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Known: density 1, sparse exceptions. Unknown: whether all large integers work.",
+    "mathContext": "Cannot be resolved by finite computation - requires theoretical breakthrough.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "status"]
+  }
+]

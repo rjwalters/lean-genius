@@ -1,0 +1,142 @@
+{
+  "id": "erdos-676",
+  "title": "Erdős Problem #676: Representations ap² + b with p Prime",
+  "slug": "erdos-676",
+  "description": "Is every sufficiently large integer expressible as ap² + b for some prime p, integer a >= 1, and 0 <= b < p?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/676",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos676Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-squares",
+      "representation",
+      "sieve-methods",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 676,
+    "erdosUrl": "https://erdosproblems.com/676",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of functions",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "HasRepresentation definition: n = a*p^2 + b with constraints",
+      "IsRepresentable definition: existence of representation",
+      "ExceptionSet definition: non-representable numbers",
+      "ErdosConjecture676 definition: all large n representable",
+      "conjecture_equiv theorem: equivalence of formulations",
+      "exceptionCount definition: counting exceptions",
+      "brun_selberg_bound axiom: sparse exceptions",
+      "density_one axiom: density of representable numbers",
+      "five_representable theorem: verified example",
+      "thirteen_representable theorem: verified example",
+      "IsRepresentableGeneral definition: without prime constraint",
+      "selfridge_wagstaff_conjecture axiom: general exceptions",
+      "minimalCoefficient definition: smallest coefficient",
+      "erdos_minimal_conjecture axiom: limsup c_n = infinity",
+      "SubpolynomialGrowth definition: c_n < n^{o(1)}",
+      "erdos_676_statement theorem: formal statement"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdos posed this problem in 1979 [Er79], [Er79d]. The question asks whether every sufficiently large integer can be written as ap^2 + b where p is prime, a >= 1, and 0 <= b < p.\n\nThe sieve of Eratosthenes shows that 'almost all' integers have this representation, and the Brun-Selberg sieve gives that exceptions in [1,x] are at most x/(log x)^c for some c > 0.\n\nErdos himself believed it 'rather unlikely' that all large integers would satisfy this condition. Selfridge and Wagstaff's computer searches (without the prime restriction) suggested infinitely many exceptions even in the general case.\n\nRelated questions include the behavior of the minimal coefficient c_n and whether c_n < n^{o(1)}.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs every sufficiently large integer expressible as ap^2 + b for some prime p, integer a >= 1, and 0 <= b < p?\n\nEquivalently: Are there only finitely many integers that cannot be represented in this form?\n\n**Background:**\n- The sieve of Eratosthenes shows 'almost all' integers are representable\n- Brun-Selberg sieve: exceptions in [1,x] are << x/(log x)^c\n- Erdos believed positive answer 'rather unlikely'",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Representation:** Define HasRepresentation(n, a, p, b) as n = a*p^2 + b with p prime, a >= 1, b < p\n\n2. **Conjecture:** ErdosConjecture676 states exists N such that all n >= N are representable\n\n3. **Density Results:** Axiomatize Brun-Selberg bound and density 1\n\n4. **Examples:** Prove specific numbers are representable\n\n5. **Variants:** Formalize the general case and minimal coefficient questions",
+    "keyInsights": [
+      "**Density 1:** Almost all integers are representable - exceptions are very sparse",
+      "**Sieve Methods:** Brun-Selberg gives |exceptions in [1,x]| << x/(log x)^c",
+      "**Erdos's Skepticism:** He believed 'rather unlikely' that ALL large integers work",
+      "**General Case:** Without prime constraint, Selfridge-Wagstaff suggest infinitely many exceptions",
+      "**Minimal Coefficient:** Erdos conjectured limsup c_n = infinity for smallest valid a"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "HasRepresentation, IsRepresentable, ExceptionSet",
+      "startLine": 31,
+      "endLine": 49
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture676, ErdosConjecture676', conjecture_equiv",
+      "startLine": 51,
+      "endLine": 85
+    },
+    {
+      "id": "density",
+      "title": "Density Results",
+      "summary": "exceptionCount, brun_selberg_bound, density_one",
+      "startLine": 87,
+      "endLine": 104
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "summary": "five_representable, thirteen_representable",
+      "startLine": 106,
+      "endLine": 134
+    },
+    {
+      "id": "variants",
+      "title": "Variant Problems",
+      "summary": "IsRepresentableGeneral, minimalCoefficient, SubpolynomialGrowth",
+      "startLine": 136,
+      "endLine": 164
+    },
+    {
+      "id": "connections",
+      "title": "Related Concepts",
+      "summary": "RepresentableByPrime, ResidueConstraint, almost_all_covered",
+      "startLine": 166,
+      "endLine": 183
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_676_status, erdos_676_statement",
+      "startLine": 185,
+      "endLine": 212
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Known results, open questions, Erdos's belief",
+      "startLine": 214,
+      "endLine": 230
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #676 asks whether every sufficiently large integer can be written as ap^2 + b where p is prime, a >= 1, and 0 <= b < p. While almost all integers have this form (density 1), the question of whether ALL large integers are representable remains OPEN.",
+    "implications": "A positive answer would establish a universal representation theorem for large integers involving prime squares. A negative answer (infinitely many exceptions) would be consistent with Erdos's intuition and the Selfridge-Wagstaff observations in the general case.",
+    "openQuestions": [
+      "Are there only finitely many non-representable integers?",
+      "What is the density exponent c in the Brun-Selberg bound?",
+      "Is limsup c_n = infinity for the minimal coefficient?",
+      "Is c_n < n^{o(1)} always?",
+      "What are explicit examples of non-representable integers?"
+    ]
+  }
+}
