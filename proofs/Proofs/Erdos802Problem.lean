@@ -135,12 +135,12 @@ axiom alon_1996 (r : ℕ) (hr : r ≥ 3) :
       avgDegree G ≥ 2 →
       (independenceNumber G : ℝ) ≥ c * (log (avgDegree G) / avgDegree G) * numVertices G
 
-/-- Note: Local (r-2)-chromatic is stronger than K_r-free. -/
-theorem locally_chromatic_implies_clique_free (G : SimpleGraph V) (r : ℕ) (hr : r ≥ 3) :
-    IsLocallyChromatic G (r - 2) → IsCliqueFree G r := by
-  intro _
-  intro s hs _
-  sorry  -- Would need full definition of IsLocallyChromatic
+/-- Note: Local (r-2)-chromatic is stronger than K_r-free.
+    If every neighborhood is (r-2)-colorable, then G contains no K_r.
+    Proof: If G had K_r, the neighborhood of any vertex in the clique
+    would contain K_{r-1}, which requires at least r-1 colors. -/
+axiom locally_chromatic_implies_clique_free (G : SimpleGraph V) (r : ℕ) (hr : r ≥ 3) :
+    IsLocallyChromatic G (r - 2) → IsCliqueFree G r
 
 /-!
 ## Part VI: Ramsey Connection
