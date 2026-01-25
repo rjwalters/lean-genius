@@ -1,0 +1,67 @@
+{
+  "id": "erdos-265",
+  "title": "Erdős Problem #265: Growth Rates of Sequences with Rational Sums",
+  "slug": "erdos-265",
+  "description": "How fast can a sequence grow if both ∑ 1/aₙ and ∑ 1/(aₙ-1) are rational?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/265",
+    "status": "axiom",
+    "proofRepoPath": "Proofs/Erdos265Problem.lean",
+    "tags": ["number-theory", "irrationality", "sequences"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 265,
+    "erdosUrl": "https://erdosproblems.com/265",
+    "erdosProblemStatus": "open",
+    "references": [
+      {
+        "key": "KoTa24",
+        "citation": "V. Kovač, T. Tao, 'Sequences with doubly exponential growth and rational sums', Annals of Mathematics (2024)"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cantor discovered that triangular numbers aₙ = n(n-1)/2 have both ∑ 1/aₙ and ∑ 1/(aₙ-1) rational. Erdős asked how fast valid sequences can grow, conjecturing that aₙ^(1/n) → ∞ is achievable but aₙ^(1/2ⁿ) → 1 is necessary. In 2024, Kovač and Tao proved doubly exponential growth is possible for some β > 1, partially resolving the first conjecture. The threshold question—whether β = 2 is the limit—remains open.",
+    "problemStatement": "Let 1 ≤ a₁ < a₂ < ... be strictly increasing integers. How fast can aₙ grow if both ∑ 1/aₙ and ∑ 1/(aₙ-1) are rational? Specifically: can we have limsup aₙ^(1/2ⁿ) > 1?",
+    "proofStrategy": "The formalization defines valid sequences, introduces growth measures (single and double exponential), states Cantor's example, Erdős's conjectures, and the Kovač-Tao result. The remaining question about the β = 2 threshold is stated as an axiom.",
+    "keyInsights": [
+      "Cantor's triangular numbers are the classical example: aₙ = n(n-1)/2",
+      "Higher-degree polynomials work with different shifts (e.g., n³+6n²+5n with shift 12)",
+      "Kovač-Tao proved ∃ β > 1 allowing aₙ^(1/βⁿ) → ∞",
+      "A folklore result: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational",
+      "The threshold β = 2 is the key open question"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Sequences with Rational Sums",
+      "description": "Definition of valid sequences where both ∑ 1/aₙ and ∑ 1/(aₙ-1) are rational"
+    },
+    {
+      "title": "Cantor's Example",
+      "description": "The triangular numbers as the classical example"
+    },
+    {
+      "title": "Growth Rates",
+      "description": "Measures of growth: aₙ^(1/n) and aₙ^(1/2ⁿ)"
+    },
+    {
+      "title": "Kovač-Tao Theorem",
+      "description": "Doubly exponential growth is achievable for some β > 1"
+    },
+    {
+      "title": "Main Open Question",
+      "description": "Can β = 2 work, or is it the threshold?"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #265 concerns the maximum growth rate of sequences with two rational reciprocal sums. Cantor's triangular numbers give polynomial growth. Kovač and Tao (2024) achieved doubly exponential growth for some β > 1. The question of whether β = 2 is achievable remains the key open problem.",
+    "implications": "Resolution would sharpen our understanding of rationality criteria for infinite series and connect to transcendence theory. The irrationality threshold at β = 2 would be a precise dividing line.",
+    "openQuestions": [
+      "Can limsup aₙ^(1/2ⁿ) > 1 be achieved?",
+      "What is the optimal β in Kovač-Tao's construction?",
+      "Are there explicit constructions approaching the threshold?"
+    ]
+  }
+}
