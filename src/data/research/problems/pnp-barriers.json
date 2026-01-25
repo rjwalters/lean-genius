@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 2 - Proved poly_reduce_trans theorem (was axiom). Two key theorems now proved with structure.",
+    "progressSummary": "PROGRESS: Session 4 - Added polynomial helper lemmas (eval_mono, poly_bound_degree, poly_pow_expand). Extended PolyReduction with outputMono field. Proved polyComp case for n>=1 using calc chain. 3 sorries remain (degenerate n=0 case, polyOut, poly_reduce_in_P). Two axioms removed: poly_reduce_trans, NPC_in_P_implies_P_eq_NP.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -90,6 +90,31 @@
       {
         "name": "poly_reduce_trans (upgraded)",
         "description": "Removed axiom - now proved with composition structure",
+        "proven": true
+      },
+      {
+        "name": "Polynomial.eval_mono",
+        "description": "Helper: polynomial evaluation is monotonic",
+        "proven": true
+      },
+      {
+        "name": "poly_bound_degree",
+        "description": "Helper: c*n^d <= (c+1)*n^d' when d <= d'",
+        "proven": true
+      },
+      {
+        "name": "poly_pow_expand",
+        "description": "Helper: (c*n^d₁)^d₂ = c^d₂ * n^(d₁*d₂)",
+        "proven": true
+      },
+      {
+        "name": "outputMono field",
+        "description": "Extended PolyReduction with outputMono for monotonicity",
+        "proven": true
+      },
+      {
+        "name": "polyComp case (n>=1)",
+        "description": "Proved polynomial bound for composition time using calc chain",
         "proven": true
       }
     ],
