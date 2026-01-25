@@ -1,0 +1,142 @@
+{
+  "id": "erdos-188",
+  "title": "Erdos Problem #188: Unit Distance Colorings and Arithmetic Progressions",
+  "slug": "erdos-188",
+  "description": "Find the smallest k such that R^2 can be red/blue colored with no red unit distances and no k-term blue AP with distance 1.",
+  "meta": {
+    "author": "Erdos",
+    "sourceUrl": "https://erdosproblems.com/188",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos188Problem.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "ramsey-theory",
+      "unit-distance",
+      "arithmetic-progressions",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 188,
+    "erdosUrl": "https://erdosproblems.com/188",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value on complex numbers",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "PlaneColoring definition: R^2 -> {red, blue}",
+      "redPoints, bluePoints definitions: color classes",
+      "RedUnitDistanceFree definition: no red unit distances",
+      "BlueContainsUnitAP definition: k-AP with unit step",
+      "IsValidColoring definition: combined constraints",
+      "achievableSet definition: k values with valid colorings",
+      "ErdosProblem188 definition: find minimum of s",
+      "lower_bound_5 axiom: k >= 5 (EGMRSS)",
+      "lower_bound_6 axiom: k >= 6 (Tsaturian 2017)",
+      "upper_bound_exists axiom: k <= 10,000,000 exists",
+      "achievable_nonempty theorem: s is nonempty",
+      "UnitDistanceGraph definition: unit distance graph",
+      "red_is_independent theorem: red is independent set",
+      "vanDerWaerden axiom: van der Waerden's theorem",
+      "alon_observation axiom: original problem has no solution",
+      "erdos_188_statement theorem: formal statement"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This Euclidean Ramsey theory problem was studied by Erdos, Graham, Montgomery, Rothschild, Spencer, and Straus [EGMRSS75]. The original formulation asked about arbitrary APs in blue, but Noga Alon showed this has no solution via van der Waerden's theorem.\n\nThe correct formulation restricts to APs with unit distance steps. The lower bound k >= 5 was established by EGMRSS, improved to k >= 6 by Tsaturian in 2017. Erdos and Graham claimed k <= 10,000,000 without detailed proof.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFind the smallest constant k such that the plane R^2 can be 2-colored (red/blue) where:\n1. No two red points are at unit distance apart\n2. No k-term arithmetic progression of blue points has distance 1 between consecutive terms\n\n**Known Bounds:**\n- Lower: k >= 6 (Tsaturian 2017)\n- Upper: k <= 10,000,000 (Erdos-Graham)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Coloring:** PlaneColoring := C -> Bool (using complex plane)\n\n2. **Constraints:** RedUnitDistanceFree and BlueContainsUnitAP\n\n3. **Achievable Set:** s = {k | exists valid coloring}\n\n4. **Bounds:** Axiomatize lower (6) and upper (10^7) bounds\n\n5. **Unit Distance Graph:** Connect to graph independence",
+    "keyInsights": [
+      "**Alon's Observation:** Original problem (any AP) has no solution due to van der Waerden",
+      "**Unit Distance Restriction:** The key is requiring AP steps of length exactly 1",
+      "**Lower Bound 6:** Tsaturian (2017) improved EGMRSS bound from 5 to 6",
+      "**Upper Bound 10^7:** Erdos-Graham construction (details unclear)",
+      "**Huge Gap:** 6 <= k <= 10,000,000 - enormous uncertainty"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "PlaneColoring, redPoints, bluePoints, constraints",
+      "startLine": 28,
+      "endLine": 64
+    },
+    {
+      "id": "achievable",
+      "title": "The Set s",
+      "summary": "achievableSet, ErdosProblem188, minAchievable",
+      "startLine": 66,
+      "endLine": 80
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "lower_bound_5, lower_bound_6, upper_bound_exists",
+      "startLine": 82,
+      "endLine": 105
+    },
+    {
+      "id": "unitgraph",
+      "title": "Unit Distance Graph",
+      "summary": "UnitDistanceGraph, red_is_independent",
+      "startLine": 107,
+      "endLine": 128
+    },
+    {
+      "id": "vanderwaerden",
+      "title": "van der Waerden Connection",
+      "summary": "vanDerWaerden, alon_observation",
+      "startLine": 130,
+      "endLine": 146
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "summary": "large_k_valid",
+      "startLine": 148,
+      "endLine": 161
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_188_status, erdos_188_statement",
+      "startLine": 163,
+      "endLine": 186
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Known bounds, open questions",
+      "startLine": 188,
+      "endLine": 201
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #188 asks for the smallest k such that R^2 can be 2-colored avoiding both red unit distances and k-term blue APs with unit steps. Known bounds: 6 <= k <= 10,000,000. The problem remains OPEN.",
+    "implications": "Determining k would advance understanding of Euclidean Ramsey theory and the interplay between unit distance graphs and arithmetic progressions in the plane.",
+    "openQuestions": [
+      "What is the exact value of min s?",
+      "Can the lower bound 6 be improved?",
+      "Can the upper bound 10^7 be improved significantly?",
+      "What are explicit constructions achieving k near 6?",
+      "Is there a polynomial-time algorithm to check if k is in s for small k?"
+    ]
+  }
+}
