@@ -1,0 +1,149 @@
+[
+  {
+    "id": "erdos953-point-type",
+    "line": 29,
+    "type": "definition",
+    "title": "Point Type in ℝ²",
+    "content": "We represent points in the Euclidean plane as elements of `EuclideanSpace ℝ (Fin 2)`, which is Mathlib's standard representation of ℝ² with the Euclidean inner product structure. This gives us access to norm, distance, and all standard geometric operations."
+  },
+  {
+    "id": "erdos953-euclidean-dist",
+    "line": 32,
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "The Euclidean distance between two points p and q is defined as ‖p - q‖, the norm of their difference vector. In ℝ², this equals √((p₁-q₁)² + (p₂-q₂)²). This is the standard metric that makes ℝ² a complete metric space."
+  },
+  {
+    "id": "erdos953-integer-distance",
+    "line": 36,
+    "type": "definition",
+    "title": "Integer Distance Predicate",
+    "content": "Two points are at integer distance if their Euclidean distance equals some integer n. Note that we allow n to be any integer (including negative integers via ℤ), though distance is always non-negative so only non-negative integers matter. This predicate captures exactly when two points should be forbidden to coexist in our target sets."
+  },
+  {
+    "id": "erdos953-integer-distance-free",
+    "line": 40,
+    "type": "definition",
+    "title": "Integer-Distance-Free Sets",
+    "content": "A set S is integer-distance-free if no two distinct points in S are at integer distance. This is the central property studied in Problem #953. Such sets form independent sets in the 'integer distance graph' where vertices are points and edges connect pairs at integer distance."
+  },
+  {
+    "id": "erdos953-closed-disk",
+    "line": 44,
+    "type": "definition",
+    "title": "The Disk of Radius r",
+    "content": "We consider sets contained in the closed disk of radius r centered at the origin, denoted {x ∈ ℝ² : |x| ≤ r}. Using Mathlib's `Metric.closedBall 0 r` provides a well-behaved compact set with measure πr². The compactness is important for measure-theoretic arguments."
+  },
+  {
+    "id": "erdos953-lebesgue-measure",
+    "line": 56,
+    "type": "context",
+    "title": "Lebesgue Measure on the Plane",
+    "content": "We use the standard Lebesgue measure on ℝ², accessed via `MeasureTheory.volume`. This is the unique translation-invariant measure that assigns measure 1 to the unit square. For the disk of radius r, the measure is πr². Measurability becomes crucial since we maximize over measurable sets."
+  },
+  {
+    "id": "erdos953-m-function",
+    "line": 71,
+    "type": "definition",
+    "title": "The Function m(r)",
+    "content": "The function m(r) is defined as the supremum of the measures of all measurable integer-distance-free subsets of the disk of radius r. This supremum may or may not be attained. The central question is: how does m(r) grow as r → ∞?"
+  },
+  {
+    "id": "erdos953-empty-singleton",
+    "line": 82,
+    "type": "proof-technique",
+    "title": "Basic Integer-Distance-Free Sets",
+    "content": "The empty set and singletons are trivially integer-distance-free—there are no pairs of distinct points to check. These give the lower bound m(r) > 0 for r > 0. More interesting is constructing larger integer-distance-free sets, which requires careful geometric analysis."
+  },
+  {
+    "id": "erdos953-subset-property",
+    "line": 95,
+    "type": "theorem",
+    "title": "Subset Closure Property",
+    "content": "Subsets of integer-distance-free sets are also integer-distance-free. This hereditary property means we're studying a downward-closed family of sets, similar to independent sets in a graph. It's crucial for the supremum definition of m(r) to be well-behaved."
+  },
+  {
+    "id": "erdos953-monotonicity",
+    "line": 101,
+    "type": "theorem",
+    "title": "Monotonicity of m(r)",
+    "content": "The function m(r) is monotonically increasing in r. This follows because a larger disk contains more integer-distance-free subsets. Intuitively, we have 'more room' to place points while avoiding integer distances. This monotonicity is used in asymptotic analysis."
+  },
+  {
+    "id": "erdos953-trivial-bounds",
+    "line": 115,
+    "type": "context",
+    "title": "Trivial Bounds on m(r)",
+    "content": "We have 0 < m(r) ≤ πr² for r > 0. The lower bound comes from singletons or small neighborhoods. The upper bound is the total measure of the disk. The interesting question is whether m(r) is strictly o(r²), i.e., grows slower than the full disk measure."
+  },
+  {
+    "id": "erdos953-subquadratic",
+    "line": 138,
+    "type": "axiom",
+    "title": "Subquadratic Growth Conjecture",
+    "content": "The main conjecture is that m(r) = o(r²), meaning for any ε > 0, eventually m(r) < ε·r². This would show that integer-distance-free sets are fundamentally sparse—they cannot fill a positive fraction of any large disk. This is stated as an axiom since it remains open."
+  },
+  {
+    "id": "erdos953-density-zero",
+    "line": 142,
+    "type": "axiom",
+    "title": "Zero Density Conjecture",
+    "content": "An equivalent formulation: m(r)/πr² → 0 as r → ∞. This says the 'density' of the maximum integer-distance-free set inside the disk tends to zero. The Furstenberg-Katznelson-Weiss theorem on positive density sets supports this conjecture."
+  },
+  {
+    "id": "erdos953-graph-connection",
+    "line": 150,
+    "type": "definition",
+    "title": "Integer Distance Graph",
+    "content": "The integer distance graph on ℝ² has all points as vertices, with edges connecting pairs at integer distance. Integer-distance-free sets are exactly independent sets in this graph. This graph-theoretic perspective connects to chromatic numbers and independence ratios."
+  },
+  {
+    "id": "erdos953-equivalence",
+    "line": 162,
+    "type": "theorem",
+    "title": "Equivalence with Graph Independence",
+    "content": "A set is integer-distance-free if and only if it's an independent set in the integer distance graph. This tautology-like theorem makes the connection explicit and allows us to import intuitions from graph theory about independent sets."
+  },
+  {
+    "id": "erdos953-unit-distance",
+    "line": 172,
+    "type": "context",
+    "title": "Relation to Unit Distance Problem",
+    "content": "Sets avoiding all integer distances also avoid unit distance specifically. The unit distance problem (Erdős Problem #198) asks similar questions about sets avoiding distance exactly 1. Integer-distance avoidance is strictly stronger, so bounds here inform the unit distance problem."
+  },
+  {
+    "id": "erdos953-unit-avoidance",
+    "line": 178,
+    "type": "theorem",
+    "title": "Integer-Distance-Free Implies Unit-Distance-Free",
+    "content": "If a set is integer-distance-free, it avoids unit distance. This follows immediately since 1 is an integer. This connects Problem #953 to the extensive literature on unit distance avoidance, including chromatic numbers of distance graphs."
+  },
+  {
+    "id": "erdos953-lattice-points",
+    "line": 193,
+    "type": "context",
+    "title": "Lattice Point Considerations",
+    "content": "Integer lattice points ℤ² create a dense set of constraints. Near any lattice point, many directions lead to other lattice points at integer distances (e.g., (3,4) is distance 5 from origin). This limits how much 'volume' can be placed near lattice points."
+  },
+  {
+    "id": "erdos953-upper-density",
+    "line": 210,
+    "type": "definition",
+    "title": "Upper Density in the Plane",
+    "content": "The upper density of a set S is the limsup of μ(S ∩ D_r)/μ(D_r) as r → ∞. The conjecture that integer-distance-free sets have zero upper density is closely related to m(r) = o(r²). The FKW theorem implies that positive upper density sets contain all large integer distances."
+  },
+  {
+    "id": "erdos953-autocorrelation",
+    "line": 228,
+    "type": "proof-technique",
+    "title": "Autocorrelation Approach",
+    "content": "The autocorrelation function measures how many pairs in a set are at a given distance. For integer-distance-free sets, the autocorrelation at integer distances is zero (except at 0). This spectral approach connects to Fourier analysis and can provide bounds on m(r)."
+  },
+  {
+    "id": "erdos953-main-statement",
+    "line": 247,
+    "type": "axiom",
+    "title": "Main Open Problem",
+    "content": "Erdős Problem #953 asks: given the constraints, determine the growth rate of m(r). The trivial bounds are 0 < m(r) ≤ πr². The conjecture is m(r) = o(r²). Whether m(r) = O(r^(2-ε)) for some explicit ε > 0 is unknown. This encapsulates one of the beautiful open problems in combinatorial geometry."
+  }
+]

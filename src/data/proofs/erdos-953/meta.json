@@ -1,0 +1,81 @@
+{
+  "id": "erdos-953",
+  "title": "Erdős Problem #953: Maximum Measure of Integer-Distance-Free Sets",
+  "slug": "erdos-953",
+  "description": "Given a measurable set A contained in a disk of radius r in ℝ² such that no two points of A are at integer distance, what is the maximum Lebesgue measure of A?",
+  "meta": {
+    "author": "Erdős",
+    "coauthors": ["Sárközy"],
+    "sourceUrl": "https://erdosproblems.com/953",
+    "status": "axiom",
+    "proofRepoPath": "Proofs/Erdos953Problem.lean",
+    "tags": ["geometry", "distances", "measure-theory", "combinatorial-geometry"],
+    "badge": "axiom",
+    "sorries": 4,
+    "erdosNumber": 953,
+    "erdosUrl": "https://erdosproblems.com/953",
+    "erdosProblemStatus": "open",
+    "relatedProblems": [104, 506, 198],
+    "references": [
+      {
+        "key": "Er77c",
+        "citation": "P. Erdős, 'Problems and results in combinatorial geometry', Annals of the New York Academy of Sciences (1977)"
+      },
+      {
+        "key": "FKW90",
+        "citation": "H. Furstenberg, Y. Katznelson, B. Weiss, 'Ergodic theory and configurations in sets of positive density', Mathematics of Ramsey Theory (1990)"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Paul Erdős and András Sárközy around 1977, appearing in [Er77c]. It sits at the intersection of combinatorial geometry, measure theory, and number theory. The question generalizes the classical problem of finding large sets avoiding specific distances to the setting of Lebesgue measure. Related work by Furstenberg, Katznelson, and Weiss [FKW90] using ergodic theory showed that measurable sets of positive upper density in ℝ² must contain pairs at all sufficiently large integer distances, suggesting that integer-distance-free sets must be sparse.",
+    "problemStatement": "Let A ⊂ {x ∈ ℝ² : |x| < r} be a measurable set such that no two distinct points of A are at integer distance apart. Define m(r) as the supremum of the Lebesgue measure of all such sets A. What is the growth rate of m(r) as r → ∞?",
+    "proofStrategy": "The formalization defines the integer-distance-free property and the function m(r) measuring the maximum size of such sets. We establish basic properties including monotonicity, positivity, and the trivial upper bound of πr². The main conjectures about subquadratic growth are stated as axioms since they remain open.",
+    "keyInsights": [
+      "Integer-distance-free sets correspond to independent sets in the integer distance graph on ℝ²",
+      "The Furstenberg-Katznelson-Weiss theorem implies integer-distance-free sets have zero upper density",
+      "Any set avoiding all integer distances also avoids the unit distance specifically",
+      "The spectral theory approach via autocorrelation functions shows integer-distance-free sets have vanishing autocorrelation at integer distances",
+      "Lattice point considerations show the constraints are severe—points near lattice points face many integer distance obstacles"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Basic Definitions",
+      "description": "Defines points in ℝ², Euclidean distance, and the integer-distance-free property"
+    },
+    {
+      "title": "Measure Theory Setup",
+      "description": "Establishes Lebesgue measure on the plane and measurability predicates"
+    },
+    {
+      "title": "The Erdős-Sárközy Function",
+      "description": "Defines m(r) as the supremum of measures of integer-distance-free subsets of the disk of radius r"
+    },
+    {
+      "title": "Basic Properties",
+      "description": "Proves monotonicity, positivity, and basic bounds on m(r)"
+    },
+    {
+      "title": "Main Conjectures",
+      "description": "States the open conjecture that m(r) grows subquadratically"
+    },
+    {
+      "title": "Integer Distance Graph",
+      "description": "Connects integer-distance-free sets to independent sets in the graph structure"
+    },
+    {
+      "title": "Density and Asymptotics",
+      "description": "Discusses upper density and asymptotic behavior of integer-distance-free sets"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #953 asks for the maximum measure of measurable sets in a disk that avoid all integer distances. While the trivial bound is πr², the conjecture is that the maximum is o(r²), meaning integer-distance-free sets must be sparse. This remains open, with connections to ergodic theory (Furstenberg-Katznelson-Weiss) providing partial motivation.",
+    "implications": "A positive resolution would have implications for combinatorial geometry, the unit distance problem, and our understanding of distance-avoiding sets in continuous settings.",
+    "openQuestions": [
+      "Determine the exact growth rate of m(r)—is it O(r^(2-ε)) for some ε > 0?",
+      "Is there a relationship between this problem and the chromatic number of the integer distance graph?",
+      "What is the situation in higher dimensions ℝ^d for d ≥ 3?"
+    ]
+  }
+}
