@@ -17,6 +17,7 @@ export function ProofPage() {
   const { slug } = useParams<{ slug: string }>()
   const [proofData, setProofData] = useState<ProofData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [selectedLine, setSelectedLine] = useState<number | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const viewerRef = useRef<HTMLDivElement>(null)
@@ -25,10 +26,17 @@ export function ProofPage() {
   useEffect(() => {
     setLoading(true)
     setProofData(null)
-    getProofAsync(slug || '').then((data) => {
-      setProofData(data || null)
-      setLoading(false)
-    })
+    setError(null)
+    getProofAsync(slug || '')
+      .then((data) => {
+        setProofData(data || null)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error(`Failed to load proof '${slug}':`, err)
+        setError(err instanceof Error ? err.message : 'Unknown error loading proof')
+        setLoading(false)
+      })
   }, [slug])
 
   // Find annotation for selected line
@@ -66,6 +74,25 @@ export function ProofPage() {
       <div className="h-screen flex flex-col items-center justify-center gap-4">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-annotation" />
         <p className="text-muted-foreground">Loading proof...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center gap-4 p-8">
+        <div className="text-center max-w-md">
+          <h1 className="text-2xl font-bold mb-2 text-red-400">Error Loading Proof</h1>
+          <p className="text-muted-foreground mb-4">
+            Failed to load proof &quot;{slug}&quot;
+          </p>
+          <pre className="text-left text-xs bg-muted p-4 rounded-lg overflow-auto max-h-48 mb-4">
+            {error}
+          </pre>
+          <Link to="/" className="text-annotation hover:underline">
+            ← Back to home
+          </Link>
+        </div>
       </div>
     )
   }
