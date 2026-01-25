@@ -1,97 +1,218 @@
 [
   {
-    "id": "ann-e766-overview",
+    "id": "ann-e766-header",
     "proofId": "erdos-766",
-    "range": { "startLine": 1, "endLine": 28 },
+    "range": { "startLine": 1, "endLine": 29 },
     "type": "concept",
-    "title": "Erdős Problem #766: Extremal Numbers",
-    "content": "This problem studies the function **f(n; k, l)** in extremal graph theory.\n\n**Definition:** f(n; k, l) = min ex(n; G) over all graphs G with k vertices and l edges.\n\n**Questions:**\n1. Estimate f(n; k, l) for k < l ≤ k²/4\n2. Is f strictly monotone in l for fixed k, large n?\n\n**Known (Dirac-Erdős):** At l = ⌊k²/4⌋ + 1, f(n; k, l) ≤ ⌊n²/4⌋ + 1.\n\n**Status:** OPEN",
-    "mathContext": "From [Er64c]. Related to Turán's theorem and extremal graph theory.",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #766: Extremal Numbers and Graph Density**\n\nThis problem studies the function f(n; k, l) in extremal graph theory.\n\n**Definition:** f(n; k, l) = min ex(n; G) over all graphs G with k vertices and l edges.\n\n**Questions:**\n1. Estimate f(n; k, l) for k < l ≤ k²/4\n2. Is f strictly monotone in l for fixed k, large n?\n\n**Known (Dirac-Erdős):** At l = ⌊k²/4⌋ + 1, f(n; k, l) ≤ ⌊n²/4⌋ + 1.\n\n**Status:** OPEN",
+    "mathContext": "From [Er64c]. Related to Turán's theorem and extremal graph theory. The function f inverts the classical Turán question.",
     "significance": "critical",
-    "relatedConcepts": ["Turán numbers", "Extremal graph theory", "Graph density"]
+    "relatedConcepts": ["Turán numbers", "extremal graph theory", "graph density", "forbidden subgraphs"]
   },
   {
-    "id": "ann-e766-graphs",
+    "id": "ann-e766-graph-abbrev",
     "proofId": "erdos-766",
-    "range": { "startLine": 41, "endLine": 59 },
+    "range": { "startLine": 43, "endLine": 44 },
     "type": "definition",
-    "title": "Graph Definitions",
-    "content": "**Basic Concepts:**\n\n```lean\nabbrev Graph (V : Type*) [Fintype V] := SimpleGraph V\n\ndef numEdges (G : Graph V) : ℕ := Finset.card G.edgeFinset\n```\n\n**Subgraph Containment:**\n```lean\ndef containsSubgraph (G : Graph V) (H : Graph W) : Prop :=\n  ∃ f : W → V, Function.Injective f ∧ ∀ v w, H.Adj v w → G.Adj (f v) (f w)\n```\n\n**H-Free Graphs:**\n```lean\ndef isHFree (G : Graph V) (H : Graph W) : Prop :=\n  ¬containsSubgraph G H\n```\n\nA graph is H-free if it contains no copy of H.",
-    "significance": "critical"
+    "title": "Graph Abbreviation",
+    "content": "**Graph (V : Type*) := SimpleGraph V**\n\nFor finite types V, a Graph is just a SimpleGraph from Mathlib.\n\n```lean\nabbrev Graph (V : Type*) [Fintype V] := SimpleGraph V\n```\n\nSimpleGraph represents undirected graphs without self-loops or multi-edges.",
+    "significance": "supporting",
+    "relatedConcepts": ["SimpleGraph", "finite types", "undirected graphs"]
   },
   {
-    "id": "ann-e766-turan",
+    "id": "ann-e766-num-edges",
     "proofId": "erdos-766",
-    "range": { "startLine": 61, "endLine": 69 },
+    "range": { "startLine": 46, "endLine": 49 },
     "type": "definition",
-    "title": "The Turán Number ex(n; H)",
-    "content": "**Definition:**\n```lean\nnoncomputable def turanNumber (n : ℕ) (H : Graph (Fin n)) : ℕ :=\n  sSup { numEdges G | G : Graph (Fin n) // isHFree G H }\n```\n\nex(n; H) = maximum edges in an n-vertex graph containing no copy of H.\n\n**Key Examples:**\n- ex(n; K₃) = ⌊n²/4⌋ (Turán 1941)\n- ex(n; K_r) ≈ (1 - 1/(r-1))n²/2\n- ex(n; C₄) = Θ(n^{3/2})\n\nThe Turán number is the central object in extremal graph theory.",
-    "mathContext": "Turán's theorem (1941) determined ex(n; K_r) exactly.",
-    "significance": "critical"
+    "title": "Edge Count",
+    "content": "**numEdges:** Count of edges in a graph.\n\n```lean\nnoncomputable def numEdges {V : Type*} [Fintype V] [DecidableEq V]\n    (G : Graph V) : ℕ :=\n  Finset.card G.edgeFinset\n```\n\nFor a graph on n vertices, numEdges ∈ [0, n(n-1)/2].\n\n**Examples:**\n- Complete graph K_n: n(n-1)/2 edges\n- Path P_n: n-1 edges\n- Cycle C_n: n edges",
+    "mathContext": "The edge count is fundamental; Turán-type problems ask how many edges a graph can have while avoiding certain subgraphs.",
+    "significance": "key",
+    "relatedConcepts": ["edge density", "complete graphs", "sparse graphs"]
   },
   {
-    "id": "ann-e766-f-function",
+    "id": "ann-e766-subgraph",
     "proofId": "erdos-766",
-    "range": { "startLine": 71, "endLine": 83 },
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "Subgraph Containment",
+    "content": "**containsSubgraph G H:** G contains H as a (not necessarily induced) subgraph.\n\n```lean\ndef containsSubgraph {V W : Type*} [Fintype V] [Fintype W]\n    (G : Graph V) (H : Graph W) : Prop :=\n  ∃ f : W → V, Function.Injective f ∧ ∀ v w, H.Adj v w → G.Adj (f v) (f w)\n```\n\n**Meaning:** There exists an injective map f : V(H) → V(G) such that edges of H map to edges of G.\n\nNote: This is NOT induced subgraph - non-edges of H may become edges.",
+    "mathContext": "Subgraph containment is weaker than induced subgraph. The choice affects which graphs are H-free.",
+    "significance": "critical",
+    "relatedConcepts": ["graph homomorphism", "induced subgraph", "embedding"]
+  },
+  {
+    "id": "ann-e766-hfree",
+    "proofId": "erdos-766",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "definition",
+    "title": "H-Free Graphs",
+    "content": "**isHFree G H:** G is H-free (contains no copy of H).\n\n```lean\ndef isHFree {V W : Type*} [Fintype V] [Fintype W]\n    (G : Graph V) (H : Graph W) : Prop :=\n  ¬containsSubgraph G H\n```\n\n**Examples:**\n- Triangle-free: No K₃\n- Bipartite = odd-cycle-free\n- Planar graphs are K₅-free and K_{3,3}-free (Kuratowski)\n\nH-free graphs are the central objects in extremal graph theory.",
+    "mathContext": "The study of H-free graphs dates to Turán (1941). Determining maximum edges in H-free graphs is a fundamental problem.",
+    "significance": "critical",
+    "relatedConcepts": ["forbidden subgraph", "Turán problem", "bipartite graphs"]
+  },
+  {
+    "id": "ann-e766-turan-def",
+    "proofId": "erdos-766",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "The Turán Number",
+    "content": "**turanNumber n H = ex(n; H):**\n\nMaximum edges in an n-vertex H-free graph.\n\n```lean\nnoncomputable def turanNumber (n : ℕ) (H : Graph (Fin n)) : ℕ :=\n  sSup { numEdges G | G : Graph (Fin n) // isHFree G H }\n```\n\n**Key Examples:**\n- ex(n; K₃) = ⌊n²/4⌋ (Turán 1941, Mantel 1907)\n- ex(n; K_r) = (1 - 1/(r-1))n²/2 + O(n)\n- ex(n; C₄) = Θ(n^{3/2}) (Kővári-Sós-Turán 1954)\n\nThe Turán number is the central object in extremal graph theory.",
+    "mathContext": "Turán's theorem (1941) exactly determines ex(n; K_r). For other graphs, exact values are often unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán's theorem", "Mantel's theorem", "Kővári-Sós-Turán theorem"]
+  },
+  {
+    "id": "ann-e766-f-def",
+    "proofId": "erdos-766",
+    "range": { "startLine": 77, "endLine": 79 },
     "type": "definition",
     "title": "The Function f(n; k, l)",
-    "content": "**Definition:**\n```lean\nnoncomputable def f (n k l : ℕ) : ℕ :=\n  sInf { turanNumber n G | G : Graph (Fin k) // numEdges G = l }\n```\n\n**In Words:**\nf(n; k, l) takes the MINIMUM Turán number over all graphs with:\n- Exactly k vertices\n- Exactly l edges\n\n**Intuition:**\nAmong all graphs with k vertices and l edges, which one has the smallest Turán number? That is, which forbidden graph is \"easiest to avoid\"?",
-    "significance": "critical"
+    "content": "**f(n; k, l):** The central object of Erdős Problem #766.\n\n```lean\nnoncomputable def f (n k l : ℕ) : ℕ :=\n  sInf { turanNumber n G | G : Graph (Fin k) // numEdges G = l }\n```\n\n**In Words:**\nf(n; k, l) = min ex(n; G) over all graphs G with:\n- Exactly k vertices\n- Exactly l edges\n\n**Intuition:**\nAmong all graphs with k vertices and l edges, which one has the smallest Turán number? That is, which is \"easiest to avoid\" in an n-vertex graph?\n\nThis INVERTS the usual Turán question.",
+    "mathContext": "Taking minimum over Turán numbers reveals how graph structure (not just parameters) affects extremal behavior.",
+    "significance": "critical",
+    "relatedConcepts": ["minimax problems", "extremal combinatorics", "graph isomorphism classes"]
+  },
+  {
+    "id": "ann-e766-bipartite-threshold",
+    "proofId": "erdos-766",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "Bipartite Threshold",
+    "content": "**maxBipartiteEdges k = ⌊k²/4⌋:**\n\n```lean\ndef maxBipartiteEdges (k : ℕ) : ℕ := k * k / 4\n```\n\n**Significance:**\nThe complete bipartite graph K_{⌊k/2⌋, ⌈k/2⌉} has exactly ⌊k²/4⌋ edges.\n\nThis is the MAXIMUM edges a bipartite graph on k vertices can have.\n\n**Why Critical?**\n- l ≤ k²/4: Graph CAN be bipartite\n- l > k²/4: Graph MUST contain odd cycles (triangles)\n\nAt l = k²/4 + 1, graph structure fundamentally changes.",
+    "mathContext": "The transition from bipartite to non-bipartite is a phase transition in graph structure, with dramatic effects on Turán numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["bipartite graphs", "complete bipartite", "odd cycles", "graph coloring"]
   },
   {
     "id": "ann-e766-range",
     "proofId": "erdos-766",
-    "range": { "startLine": 85, "endLine": 94 },
+    "range": { "startLine": 91, "endLine": 94 },
     "type": "definition",
-    "title": "Range of Interest: k < l ≤ k²/4",
-    "content": "**Bipartite Threshold:**\n```lean\ndef maxBipartiteEdges (k : ℕ) : ℕ := k * k / 4\n```\n\nThe complete bipartite graph K_{⌊k/2⌋, ⌈k/2⌉} has ⌊k²/4⌋ edges.\n\n**Why This Range?**\n- l = k - 1: Graphs are trees (connected) or forests\n- l = k²/4: Maximum bipartite density\n- l > k²/4: Graphs must contain odd cycles (triangles)\n\nThe range k < l ≤ k²/4 is where the interesting behavior occurs.",
-    "significance": "key"
+    "title": "Range of Interest",
+    "content": "**inRangeOfInterest k l:** k < l ≤ k²/4\n\n```lean\ndef inRangeOfInterest (k l : ℕ) : Prop :=\n  k < l ∧ l ≤ maxBipartiteEdges k\n```\n\n**Why This Range?**\n- l ≤ k: Graphs are very sparse (forests possible)\n- k < l ≤ k²/4: Graphs have moderate density, may or may not be bipartite\n- l > k²/4: All graphs contain triangles → ex drops to ≈ n²/4\n\nThe range k < l ≤ k²/4 is where the interesting \"interpolation\" behavior occurs.",
+    "significance": "key",
+    "relatedConcepts": ["sparse graphs", "dense graphs", "threshold phenomena"]
   },
   {
     "id": "ann-e766-dirac-erdos",
     "proofId": "erdos-766",
-    "range": { "startLine": 96, "endLine": 107 },
-    "type": "theorem",
+    "range": { "startLine": 98, "endLine": 107 },
+    "type": "axiom",
     "title": "Dirac-Erdős Theorem",
-    "content": "**Dirac-Erdős (independently):**\n```lean\naxiom dirac_erdos_theorem (n k : ℕ) (hk : k ≥ 3) (hn : n ≥ k) :\n    f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1\n```\n\n**Meaning:**\nWhen l = ⌊k²/4⌋ + 1 (one edge beyond bipartite), f(n; k, l) ≤ ⌊n²/4⌋ + 1.\n\n**Why?**\nAny graph with k vertices and > k²/4 edges contains a triangle.\nSo ex(n; G) ≤ ex(n; K₃) = ⌊n²/4⌋ for such G.\n\nThis is the key known result at the bipartite boundary.",
-    "mathContext": "Proved independently by Dirac and Erdős.",
-    "significance": "critical"
+    "content": "**dirac_erdos_theorem:**\n\nWhen l = ⌊k²/4⌋ + 1 (one edge beyond bipartite threshold):\nf(n; k, l) ≤ ⌊n²/4⌋ + 1\n\n```lean\naxiom dirac_erdos_theorem (n k : ℕ) (hk : k ≥ 3) (hn : n ≥ k) :\n    f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1\n```\n\n**Why?**\nAny graph with k vertices and > k²/4 edges contains a triangle (K₃).\nSo ex(n; G) ≤ ex(n; K₃) = ⌊n²/4⌋.\n\nThis is the key KNOWN result at the bipartite boundary.\n\nProved independently by Dirac and Erdős.",
+    "mathContext": "The theorem shows f collapses to the triangle-free bound at the bipartite threshold.",
+    "significance": "critical",
+    "relatedConcepts": ["Mantel's theorem", "triangle-free graphs", "Turán graph"]
   },
   {
     "id": "ann-e766-turan-theorem",
     "proofId": "erdos-766",
-    "range": { "startLine": 109, "endLine": 123 },
-    "type": "concept",
+    "range": { "startLine": 109, "endLine": 118 },
+    "type": "axiom",
     "title": "Turán's Theorem",
-    "content": "**Classical Turán (1941):**\n```lean\naxiom turan_theorem (n r : ℕ) (hr : r ≥ 2) :\n    ∃ C > 0, |turanNumber n (completeGraph (Fin r)) -\n      (1 - 1 / (r - 1 : ℝ)) * n * n / 2| ≤ C * n\n```\n\n**Formula:**\nex(n; K_r) = (1 - 1/(r-1)) · n²/2 + O(n)\n\n**Extremal Graph (Turán Graph):**\nThe complete (r-1)-partite graph T(n, r-1) with parts as equal as possible.\n\n**For Triangles (r=3):**\nex(n; K₃) = ⌊n²/4⌋, achieved by the complete bipartite K_{⌊n/2⌋, ⌈n/2⌉}.",
-    "mathContext": "One of the foundational theorems of extremal graph theory.",
-    "significance": "key"
+    "content": "**turan_theorem (Classical, 1941):**\n\n```lean\naxiom turan_theorem (n r : ℕ) (hr : r ≥ 2) :\n    ∃ C > 0, |turanNumber n (completeGraph (Fin r)) -\n      (1 - 1 / (r - 1 : ℝ)) * n * n / 2| ≤ C * n\n```\n\n**Formula:**\nex(n; K_r) = (1 - 1/(r-1)) · n²/2 + O(n)\n\n**Extremal Graph (Turán Graph T(n,r-1)):**\nComplete (r-1)-partite graph with parts as equal as possible.\n\n**Special Cases:**\n- r = 3: ex(n; K₃) = ⌊n²/4⌋ (complete bipartite)\n- r = 4: ex(n; K₄) = (1-1/3)n²/2 = n²/3 + O(n)",
+    "mathContext": "One of the most celebrated results in combinatorics. Turán graphs achieve the extremal edge count.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán graph", "complete partite graphs", "Szemerédi regularity"]
   },
   {
-    "id": "ann-e766-monotonicity",
+    "id": "ann-e766-monotonicity-question",
     "proofId": "erdos-766",
-    "range": { "startLine": 125, "endLine": 142 },
-    "type": "concept",
-    "title": "The Monotonicity Question (OPEN)",
-    "content": "**Open Question:**\n```lean\ndef monotonicity_question : Prop :=\n  ∀ k : ℕ, k ≥ 3 →\n    ∃ N : ℕ, ∀ n ≥ N, ∀ l₁ l₂ : ℕ,\n      inRangeOfInterest k l₁ → inRangeOfInterest k l₂ →\n      l₁ < l₂ → f n k l₁ < f n k l₂\n```\n\n**Intuition:**\nMore edges in forbidden graph → harder to contain → more edges allowed in host.\n\nSo f should increase with l.\n\n**Weak Version (known):** f is non-decreasing.\n**Strong Version (OPEN):** f is STRICTLY increasing.\n\nThe strict monotonicity remains unproven!",
-    "significance": "critical"
+    "range": { "startLine": 127, "endLine": 137 },
+    "type": "definition",
+    "title": "Monotonicity Question (OPEN)",
+    "content": "**monotonicity_question:** Is f strictly increasing in l?\n\n```lean\ndef monotonicity_question : Prop :=\n  ∀ k : ℕ, k ≥ 3 →\n    ∃ N : ℕ, ∀ n ≥ N, ∀ l₁ l₂ : ℕ,\n      inRangeOfInterest k l₁ → inRangeOfInterest k l₂ →\n      l₁ < l₂ → f n k l₁ < f n k l₂\n```\n\n**Intuition:**\nMore edges in forbidden graph → harder to contain in host → host can have more edges.\n\nSo f SHOULD increase with l.\n\n**Known:** f is non-decreasing (weak monotonicity).\n**OPEN:** Is f STRICTLY increasing?\n\nThis is the main open question of Erdős Problem #766.",
+    "mathContext": "Strict monotonicity would provide a complete ordering of forbidden graphs by their extremal numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["monotonicity", "ordering problems", "extremal graph families"]
   },
   {
-    "id": "ann-e766-special-cases",
+    "id": "ann-e766-nondecreasing",
     "proofId": "erdos-766",
-    "range": { "startLine": 163, "endLine": 180 },
+    "range": { "startLine": 139, "endLine": 142 },
+    "type": "axiom",
+    "title": "f is Non-Decreasing",
+    "content": "**f_nondecreasing:** The weak monotonicity result.\n\n```lean\naxiom f_nondecreasing (n k l₁ l₂ : ℕ) (hl : l₁ ≤ l₂)\n    (h1 : inRangeOfInterest k l₁) (h2 : inRangeOfInterest k l₂) :\n    f n k l₁ ≤ f n k l₂\n```\n\n**Meaning:** l₁ ≤ l₂ implies f(n; k, l₁) ≤ f(n; k, l₂).\n\nThis is the known (weak) result. The STRICT inequality (l₁ < l₂ → f < f) remains open.",
+    "significance": "key",
+    "relatedConcepts": ["weak monotonicity", "non-strict inequality"]
+  },
+  {
+    "id": "ann-e766-bounds",
+    "proofId": "erdos-766",
+    "range": { "startLine": 144, "endLine": 161 },
     "type": "theorem",
-    "title": "Special Cases",
-    "content": "**Triangle (k=3, l=3):**\nf(n; 3, 3) = ex(n; K₃) = ⌊n²/4⌋\n\nThe only 3-vertex, 3-edge graph is K₃.\n\n**4-Cycle (C₄):**\nex(n; C₄) = Θ(n^{3/2})\n\nThis is an anomaly - much smaller than n²!\n\n**Trees (l = k-1):**\nFor trees, ex(n; tree) is roughly linear in n.\nf(n; k, k-1) ≥ (k-2)(n-1)/2 for paths.\n\nDifferent graph structures lead to very different Turán numbers.",
-    "significance": "key"
+    "title": "Bounds on f",
+    "content": "**Basic Bounds:**\n\n**Lower:** f(n; k, l) ≥ 0 (trivial)\n\n**Upper:** f(n; k, l) ≤ n(n-1)/2 (complete graph)\n\n**Trees (l = k-1):**\nf(n; k, k-1) ≥ (k-2)(n-1)/2\n\nFor paths, ex(n; P_k) is about this size.\n\n**Near Bipartite:**\nf(n; k, ⌊k²/4⌋) ≤ n²/4 + k\n\nThe bipartite Turán graph nearly achieves the bound.",
+    "mathContext": "Bounds bracket f between trivial extremes and reveal behavior at special points.",
+    "significance": "key",
+    "relatedConcepts": ["upper bounds", "lower bounds", "path graphs"]
+  },
+  {
+    "id": "ann-e766-triangle",
+    "proofId": "erdos-766",
+    "range": { "startLine": 165, "endLine": 169 },
+    "type": "theorem",
+    "title": "Triangle Case",
+    "content": "**f_triangle:** f(n; 3, 3) = ⌊n²/4⌋\n\n```lean\ntheorem f_triangle (n : ℕ) (hn : n ≥ 3) :\n    f n 3 3 = n * n / 4\n```\n\nThe only graph with 3 vertices and 3 edges is K₃ (triangle).\nSo f(n; 3, 3) = ex(n; K₃) = ⌊n²/4⌋.\n\nThis is the simplest non-trivial case and equals Turán's result for r=3.",
+    "mathContext": "The triangle case is exactly Mantel's theorem (1907), the first result in extremal graph theory.",
+    "significance": "key",
+    "relatedConcepts": ["Mantel's theorem", "triangle-free graphs", "bipartite graphs"]
+  },
+  {
+    "id": "ann-e766-c4",
+    "proofId": "erdos-766",
+    "range": { "startLine": 176, "endLine": 180 },
+    "type": "axiom",
+    "title": "4-Cycle Anomaly",
+    "content": "**turan_c4:** ex(n; C₄) = Θ(n^{3/2})\n\n```lean\naxiom turan_c4 (n : ℕ) (hn : n ≥ 4) :\n    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧\n      C₁ * n^(3/2 : ℝ) ≤ turanNumber n (cycleGraph 4) ∧\n      turanNumber n (cycleGraph 4) ≤ C₂ * n^(3/2 : ℝ)\n```\n\n**Significance:**\nC₄ = K_{2,2} (complete bipartite 2-by-2) has ex(n; C₄) = Θ(n^{3/2}).\n\nThis is MUCH smaller than n² - 4-cycles are \"hard to avoid\".\n\nThe Kővári-Sós-Turán theorem (1954) gives ex(n; K_{s,t}) = O(n^{2-1/s}).",
+    "mathContext": "The subquadratic growth for K_{s,t} is a major departure from the complete graph case. It reflects the structure of bipartite forbidden graphs.",
+    "significance": "key",
+    "relatedConcepts": ["Kővári-Sós-Turán theorem", "complete bipartite", "Zarankiewicz problem"]
+  },
+  {
+    "id": "ann-e766-turan-density",
+    "proofId": "erdos-766",
+    "range": { "startLine": 184, "endLine": 186 },
+    "type": "definition",
+    "title": "Turán Density",
+    "content": "**turanDensity H = π(H):**\n\nThe asymptotic edge density:\nπ(H) = lim_{n→∞} ex(n; H) / C(n,2)\n\nwhere C(n,2) = n(n-1)/2.\n\n**Examples:**\n- π(K_r) = 1 - 1/(r-1)\n- π(C₄) = 0 (subquadratic growth)\n- π(any bipartite) = 0\n\nGraphs with π(H) > 0 are called \"dense\" or \"degenerate\".",
+    "mathContext": "Turán density captures asymptotic behavior. The Erdős-Stone theorem relates π(H) to chromatic number.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic density", "Erdős-Stone theorem", "chromatic number"]
+  },
+  {
+    "id": "ann-e766-dense-triangle",
+    "proofId": "erdos-766",
+    "range": { "startLine": 192, "endLine": 195 },
+    "type": "axiom",
+    "title": "Dense Graphs Contain Triangles",
+    "content": "**dense_graph_contains_triangle:**\n\nIf a graph has k vertices and > k²/4 edges, it contains K₃.\n\n```lean\naxiom dense_graph_contains_triangle (k l : ℕ) (hk : k ≥ 3)\n    (hdense : l > k * k / 4) :\n    ∀ G : Graph (Fin k), numEdges G = l → containsSubgraph G (completeGraph (Fin 3))\n```\n\n**Why?**\nIf l > k²/4, the graph cannot be bipartite (bipartite graphs have ≤ k²/4 edges).\nNon-bipartite graphs contain odd cycles.\nThe smallest odd cycle is a triangle.\n\nThis is why the bipartite threshold is so important!",
+    "mathContext": "This structural result underlies the Dirac-Erdős theorem.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite graphs", "odd cycles", "graph structure"]
   },
   {
     "id": "ann-e766-summary",
     "proofId": "erdos-766",
-    "range": { "startLine": 197, "endLine": 228 },
+    "range": { "startLine": 199, "endLine": 223 },
     "type": "theorem",
-    "title": "Summary: Problem OPEN",
-    "content": "**Erdős Problem #766: Summary**\n\nLet f(n; k, l) = min ex(n; G) over graphs with k vertices, l edges.\n\n**Known:**\n- Dirac-Erdős: f(n; k, ⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1\n- f is non-decreasing in l\n- f(n; 3, 3) = ⌊n²/4⌋\n\n**Open:**\n1. Good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) STRICTLY monotone in l?\n\n**Status:** OPEN - Both main questions unresolved.",
-    "significance": "critical"
+    "title": "Summary Theorem",
+    "content": "**erdos_766_summary:**\n\nCombines the main results:\n1. Dirac-Erdős theorem at bipartite threshold\n2. Problem remains OPEN\n\n```lean\ntheorem erdos_766_summary :\n    (∀ n k, k ≥ 3 → n ≥ k → f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1) ∧\n    True\n```\n\n**Known:**\n- Dirac-Erdős: f(n; k, ⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1\n- f is non-decreasing in l\n- f(n; 3, 3) = ⌊n²/4⌋\n\n**Open:**\n1. Good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) STRICTLY monotone in l?",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "partial results"]
+  },
+  {
+    "id": "ann-e766-open",
+    "proofId": "erdos-766",
+    "range": { "startLine": 225, "endLine": 228 },
+    "type": "theorem",
+    "title": "Problem OPEN",
+    "content": "**erdos_766_open:**\n\n```lean\ntheorem erdos_766_open :\n    True := trivial\n```\n\n**Status: OPEN**\n\nBoth main questions remain unresolved:\n1. Estimates for f(n; k, l) in k < l ≤ k²/4\n2. Strict monotonicity of f in l\n\nThe problem dates to Erdős [Er64c] and remains an active area of research in extremal graph theory.",
+    "mathContext": "Originally posed in Erdős's 1964 paper. Over 60 years later, the fundamental questions remain open.",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "extremal graph theory", "research directions"]
   }
 ]
