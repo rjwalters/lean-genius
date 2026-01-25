@@ -1,0 +1,68 @@
+{
+  "id": "erdos-792",
+  "title": "Erdős Problem #792: Sum-Free Subsets",
+  "slug": "erdos-792",
+  "description": "Estimate f(n), the minimum size of the largest sum-free subset guaranteed in any n-element set of integers.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/792",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos792Problem.lean",
+    "tags": ["additive combinatorics", "sum-free sets", "Ramsey theory"],
+    "badge": "open-problem",
+    "sorries": 10,
+    "erdosNumber": 792,
+    "erdosUrl": "https://erdosproblems.com/792",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": []
+  },
+  "overview": {
+    "historicalContext": "This problem is a cornerstone of additive combinatorics. Erdős established the basic n/3 lower bound. The problem appears as Problem 1 on Ben Green's open problems list. Recent work by Bedert (2025) achieved f(n) ≥ n/3 + c·log log n, while Eberhard-Green-Manners established f(n) ≤ n/3 + o(n).",
+    "problemStatement": "A set B ⊆ ℤ is sum-free if there are no a, b, c ∈ B with a + b = c. Let f(n) be the maximum value such that every n-element subset A ⊆ ℤ contains a sum-free subset B with |B| ≥ f(n). Estimate f(n).",
+    "proofStrategy": "The lower bound uses probabilistic and algebraic methods. The 'middle third' construction shows f(n) ≥ n/3. Improvements use Fourier analysis and additive combinatorics techniques. The upper bound constructs explicit sets with small sum-free subsets.",
+    "keyInsights": [
+      "The main term is n/3, achieved by the 'middle third' construction",
+      "The second-order term is the key open question",
+      "Bedert's 2025 result: f(n) ≥ n/3 + c·log log n",
+      "Eberhard-Green-Manners: f(n) ≤ n/3 + o(n)",
+      "The exact growth rate of f(n) - n/3 remains unknown"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-sum-free",
+      "title": "Sum-Free Sets",
+      "content": "A set B is sum-free if a + b ≠ c for all a, b, c ∈ B. Equivalently, B ∩ (B + B) = ∅. The condition prevents any element from being expressible as the sum of two others in the set."
+    },
+    {
+      "id": "section-function-f",
+      "title": "The Function f(n)",
+      "content": "f(n) is defined as the minimum, over all n-element sets A ⊆ ℤ, of the maximum size of a sum-free subset of A. We seek both upper and lower bounds on f(n)."
+    },
+    {
+      "id": "section-lower-bounds",
+      "title": "Lower Bounds",
+      "content": "Erdős: f(n) ≥ n/3. Alon-Kleitman: f(n) ≥ (n+1)/3. Bourgain: f(n) ≥ (n+2)/3. Bedert (2025): f(n) ≥ n/3 + c·log log n. These progressively improve the second-order term."
+    },
+    {
+      "id": "section-upper-bounds",
+      "title": "Upper Bounds",
+      "content": "Eberhard-Green-Manners: f(n) ≤ n/3 + o(n). This shows the main term n/3 is optimal. Combined with lower bounds, we have f(n)/n → 1/3 as n → ∞."
+    },
+    {
+      "id": "section-open-question",
+      "title": "Main Open Question",
+      "content": "What is the exact second-order term? Is f(n) = n/3 + Θ(log log n)? The gap between the Bedert lower bound and Eberhard-Green-Manners upper bound remains the key open problem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #792 asks for the asymptotics of f(n), the guaranteed size of sum-free subsets. We know f(n)/n → 1/3, but the second-order term remains open. Recent progress by Bedert achieved f(n) ≥ n/3 + c·log log n.",
+    "implications": "Resolution would illuminate the structure of sum-free sets and extremal problems in additive combinatorics. The problem connects to Ramsey theory and Schur numbers.",
+    "openQuestions": [
+      "Is f(n) = n/3 + Θ(log log n)?",
+      "What sets A achieve the minimum f(n)?",
+      "Can Bedert's lower bound be improved?",
+      "Is there a matching upper bound of n/3 + O(log log n)?"
+    ]
+  }
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ann-792-1",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #792: Estimate f(n), where f(n) is the maximum value such that every n-element subset of ℤ contains a sum-free subset of size at least f(n). Current bounds: n/3 + c·log log n ≤ f(n) ≤ n/3 + o(n). OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-792-2",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Sum-Free Set",
+    "content": "A set B is sum-free if there are no a, b, c ∈ B with a + b = c. This prevents any element from being the sum of two others in the set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-792-3",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Sum-Free Subset",
+    "content": "IsSumFreeSubset(B, A) means B ⊆ A and B is sum-free. We seek the largest such B for any given A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-4",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Maximum Sum-Free Size",
+    "content": "maxSumFreeSize(A) is the size of the largest sum-free subset of A. This measures how 'sum-rich' A is (smaller value = more sums).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-5",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) is the minimum of maxSumFreeSize(A) over all n-element sets A. It's the worst-case guarantee for sum-free subset size.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-792-6",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 74,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "Erdős Problem #792: Determine the asymptotics of f(n). The answer should be f(n) = n/3 + g(n) where g(n) = o(n), and we want to characterize g(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-792-7",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 86,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Erdős Lower Bound",
+    "content": "Erdős's original result: f(n) ≥ n/3. This is achieved by the 'middle third' construction - taking elements in the middle range avoids most sums.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-8",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 90,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Alon-Kleitman Bound",
+    "content": "Alon and Kleitman improved to f(n) ≥ (n+1)/3. This is a small but meaningful improvement over Erdős's bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-9",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 94,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "Bourgain Bound",
+    "content": "Bourgain further improved to f(n) ≥ (n+2)/3. The progression of improvements shows the difficulty of the problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-10",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 98,
+      "endLine": 101
+    },
+    "type": "theorem",
+    "title": "Bedert Bound (2025)",
+    "content": "Bedert (2025): f(n) ≥ n/3 + c·log log n for some c > 0. This is the current best lower bound, showing the second-order term is at least logarithmic.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-792-11",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 109,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "Eberhard-Green-Manners Upper Bound",
+    "content": "f(n) ≤ n/3 + o(n). This shows the main term n/3 is optimal and the second-order term is sublinear.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-792-12",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Limit Theorem",
+    "content": "Corollary: f(n)/n → 1/3 as n → ∞. The limiting density of guaranteed sum-free subsets is exactly 1/3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-13",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 122,
+      "endLine": 125
+    },
+    "type": "example",
+    "title": "Small Example",
+    "content": "For {1, 2, 3}: since 1 + 2 = 3, any sum-free subset can contain at most one of {1, 2} together with 3, or exclude 3. Maximum sum-free subset has size 1 or 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-792-14",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 127,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Interval Sum-Free",
+    "content": "The interval [n, 2n-1] is sum-free: if a, b ∈ [n, 2n-1], then a + b ≥ 2n > 2n-1, so a + b is not in the interval.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-15",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 132,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "Middle Third Construction",
+    "content": "Taking elements in (n/3, 2n/3] gives a sum-free set of size ≈ n/3. This is the construction achieving Erdős's lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-16",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 141,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "Existence Theorem",
+    "content": "Every n-element set A ⊆ ℤ has a sum-free subset of size ≥ ⌈n/3⌉. This is the constructive version of the lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-792-17",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 145,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Extremal Sets",
+    "content": "Sets achieving the minimum f(n) tend to have rich additive structure. Understanding these extremal configurations is key to improving bounds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-792-18",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 153,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Additive Combinatorics Connection",
+    "content": "The sum-free subset problem is central to additive combinatorics. It relates to arithmetic progressions, Schur numbers, and Ramsey theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-792-19",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 165,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Second-Order Question",
+    "content": "The main open question: What is the true growth rate of f(n) - n/3? Bedert shows it's at least c·log log n. Is this tight?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-792-20",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 171,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Second-Order Conjecture",
+    "content": "Is f(n) = n/3 + Θ(log log n)? This would mean Bedert's bound is essentially optimal. The conjecture remains open.",
+    "significance": "critical"
+  }
+]
