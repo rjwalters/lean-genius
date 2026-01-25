@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-190-header",
+    "proofId": "erdos-190",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 30 },
+    "title": "Problem Overview",
+    "content": "H(k) is the canonical Ramsey number for k-APs: the smallest N where every coloring yields a monochromatic or rainbow k-AP. Two questions: estimate H(k), and determine if H(k)^{1/k}/k → ∞.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-190-ap-def",
+    "proofId": "erdos-190",
+    "type": "definition",
+    "range": { "startLine": 40, "endLine": 52 },
+    "title": "Arithmetic Progressions",
+    "content": "A k-term AP is a sequence a, a+d, a+2d, ..., a+(k-1)d with common difference d > 0. These are the structures we seek in colorings of {1,...,N}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-190-coloring",
+    "proofId": "erdos-190",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 81 },
+    "title": "Colorings and Patterns",
+    "content": "A coloring assigns colors to elements. Monochromatic means all same color. Rainbow means all distinct colors. These are the two 'win conditions' for H(k).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-190-canonical",
+    "proofId": "erdos-190",
+    "type": "definition",
+    "range": { "startLine": 83, "endLine": 95 },
+    "title": "Canonical Property",
+    "content": "A coloring has the canonical property if it contains a monochromatic OR rainbow k-AP. This OR is what makes H(k) a 'canonical' Ramsey number, unlike van der Waerden.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-190-h-function",
+    "proofId": "erdos-190",
+    "type": "definition",
+    "range": { "startLine": 97, "endLine": 118 },
+    "title": "The H(k) Function",
+    "content": "H(k) is defined as the minimum N for which all colorings of {1,...,N} have the canonical property. Existence follows from Szemerédi's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-190-van-der-waerden",
+    "proofId": "erdos-190",
+    "type": "context",
+    "range": { "startLine": 120, "endLine": 134 },
+    "title": "Comparison with van der Waerden",
+    "content": "H(k) ≤ W(k) because rainbow APs provide an easier win condition. Van der Waerden requires monochromatic only, so W(k) is at least as large.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-190-asymptotic",
+    "proofId": "erdos-190",
+    "type": "theorem",
+    "range": { "startLine": 136, "endLine": 155 },
+    "title": "Asymptotic Results",
+    "content": "Known: H(k)^{1/k} → ∞. Open: Does H(k)^{1/k}/k → ∞? The latter asks if H(k) grows faster than k^k, a much stronger statement.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-190-summary",
+    "proofId": "erdos-190",
+    "type": "conclusion",
+    "range": { "startLine": 204, "endLine": 238 },
+    "title": "Summary",
+    "content": "H(k) exists and grows at least as H(k)^{1/k} → ∞. The main open question is the stronger asymptotic: does H(k)^{1/k}/k → ∞? This determines if H(k) is super-exponential in k.",
+    "significance": "key"
+  }
+]
