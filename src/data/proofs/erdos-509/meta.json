@@ -1,0 +1,60 @@
+{
+  "id": "erdos-509",
+  "title": "Erdős Problem #509: Covering Polynomial Sublevel Sets with Discs",
+  "slug": "erdos-509",
+  "description": "Can the sublevel set {z ∈ ℂ : |f(z)| ≤ 1} of a monic polynomial be covered by closed discs with total radius ≤ 2?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/509",
+    "status": "enhanced",
+    "proofRepoPath": "Proofs/Erdos509Problem.lean",
+    "tags": ["complex analysis", "polynomials", "covering"],
+    "badge": "formalized",
+    "sorries": 4,
+    "erdosNumber": 509,
+    "erdosUrl": "https://erdosproblems.com/509",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős in 1961 and concerns the efficiency of covering polynomial sublevel sets. Cartan (1928) proved a 2e bound, and Pommerenke improved it to 2.59 in 1961. The connected case was solved by Pommerenke in 1959 with exact bound 2.",
+    "problemStatement": "For any monic non-constant polynomial f(z) ∈ ℂ[z], can the sublevel set {z ∈ ℂ : |f(z)| ≤ 1} always be covered by a collection of closed discs whose radii sum to at most 2?",
+    "proofStrategy": "The formalization defines bounded disc covers, polynomial sublevel sets, and states the main conjecture along with known results (Cartan's 2e bound, Pommerenke's 2.59 bound, and the connected case theorem).",
+    "keyInsights": [
+      "The sublevel set contains all roots of f and is compact for monic polynomials",
+      "For degree-n polynomials, the sublevel set has at most n connected components",
+      "The bound 2 is achieved by z² - 1, which has two components requiring radius 1 each",
+      "Cartan proved 2e ≈ 5.44 suffices, Pommerenke improved to 2.59"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bounded-disc-cover",
+      "title": "Bounded Disc Cover",
+      "description": "Definition of a covering by discs with bounded total radius"
+    },
+    {
+      "id": "sublevel-set",
+      "title": "Polynomial Sublevel Sets",
+      "description": "The set {z : |f(z)| ≤ 1} and its properties"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "description": "The open question: can we always cover with total radius ≤ 2?"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "description": "Cartan's 2e bound, Pommerenke's 2.59 bound, and the connected case"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #509 asks whether polynomial sublevel sets can always be covered by discs with total radius ≤ 2. While Cartan proved 2e works and Pommerenke improved to 2.59, the optimal bound 2 remains open except for connected sublevel sets.",
+    "implications": "A positive answer would provide a sharp geometric characterization of polynomial sublevel sets. The problem connects complex analysis with geometric covering theory.",
+    "openQuestions": [
+      "Can the general case be reduced to the connected case?",
+      "Are there polynomials that require total radius arbitrarily close to 2?",
+      "What is the structure of extremal polynomials?"
+    ]
+  }
+}
