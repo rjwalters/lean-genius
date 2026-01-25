@@ -1,0 +1,154 @@
+{
+  "id": "erdos-382",
+  "title": "Erdos Problem #382: Prime Powers in Factorial Products",
+  "slug": "erdos-382",
+  "description": "For intervals [u,v] where the largest prime dividing the product u(u+1)...v has exponent >= 2: Is v-u = v^o(1)? Can v-u be arbitrarily large? OPEN. Ramachandra: v-u <= v^{1/2+o(1)}.",
+  "meta": {
+    "author": "Erdos-Graham (1980)",
+    "sourceUrl": "https://erdosproblems.com/382",
+    "date": "1980",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos382Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "factorization",
+      "prime-gaps",
+      "cramer-conjecture",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 382,
+    "erdosUrl": "https://erdosproblems.com/382",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals of natural numbers",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "prodInterval definition: product of consecutive integers",
+      "largestPrimeDivisor definition: maximum prime factor",
+      "exponent definition: p-adic valuation wrapper",
+      "exponentInProduct definition: exponent of p in product",
+      "satisfiesCondition definition: largest prime has exp >= 2",
+      "question1 definition: is v-u = v^o(1)?",
+      "question2 definition: can v-u be arbitrarily large?",
+      "ramachandra_bound axiom: v-u <= v^{1/2+o(1)}",
+      "cramersConjecture definition: prime gap conjecture",
+      "cramer_implies_q1 axiom: Cramer -> Q1 is YES",
+      "noPrimeLargerThanSqrt definition: equivalent characterization",
+      "no_prime_in_upper_half axiom: structural result"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #382: Prime Powers in Factorial Products**\n\nThis problem from Erdos and Graham [ErGr80] studies the structure of products of consecutive integers from a prime factorization perspective.\n\n**Historical Background:**\n- Erdos-Graham (1980): Original problem formulation\n- Ramachandra: Established the bound v - u <= v^{1/2 + o(1)}\n- Cambie (recent): Connected to Cramer's conjecture, provided heuristics\n\n**The Setting:**\nWhen we multiply consecutive integers u, u+1, ..., v, the largest prime in this product is typically some prime p in the interval. For p to appear with exponent >= 2, we need p^2 to also divide the product, which constrains how large p can be relative to v.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet u <= v be positive integers such that the largest prime dividing the product u(u+1)...v appears with exponent at least 2.\n\n**Questions:**\n1. Is v - u = v^o(1)? (Does v - u grow subpolynomially in v?)\n2. Can v - u be arbitrarily large?\n\n**Known Results:**\n- Ramachandra: v - u <= v^{1/2 + o(1)}\n- Under Cramer's conjecture: Q1 has answer YES\n- Cambie's heuristic: Q2 likely has answer YES\n\n**Status:** Both questions remain OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Interval Product:** Define prodInterval(u, v) = u(u+1)...v\n\n2. **Largest Prime Divisor:** Define using prime factorization\n\n3. **Exponent Function:** P-adic valuation of the product\n\n4. **The Condition:** Largest prime has exponent >= 2\n\n5. **Questions 1 & 2:** State as formal propositions\n\n6. **Known Bounds:** Ramachandra's result as axiom\n\n7. **Cramer Connection:** Show Cramer implies Q1\n\n8. **Equivalent Characterization:** No prime larger than sqrt(v) in [u, v]",
+    "keyInsights": [
+      "**The Condition Means:** No prime p with sqrt(v) < p <= v is in the interval [u, v]",
+      "**Why Exponent >= 2:** If p is the largest prime in [u, v] and p^2 > v, then p appears exactly once",
+      "**Ramachandra Bound:** v - u cannot exceed roughly sqrt(v)",
+      "**Cramer Connection:** Short prime gaps would force v - u to be small",
+      "**Prime-Free Intervals:** The condition requires a 'prime-free gap' above sqrt(v)",
+      "**Heuristic for Q2:** Near squares of large primes, intervals may satisfy the condition with large v - u"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "prodInterval, largestPrimeDivisor, exponent",
+      "startLine": 34,
+      "endLine": 84
+    },
+    {
+      "id": "exponent",
+      "title": "Exponent of Prime in Product",
+      "summary": "exponentInProduct definition and properties",
+      "startLine": 86,
+      "endLine": 102
+    },
+    {
+      "id": "condition",
+      "title": "The Condition",
+      "summary": "satisfiesCondition definition, structural results",
+      "startLine": 104,
+      "endLine": 130
+    },
+    {
+      "id": "questions",
+      "title": "The Questions",
+      "summary": "question1 and question2 definitions",
+      "startLine": 132,
+      "endLine": 160
+    },
+    {
+      "id": "ramachandra",
+      "title": "Known Upper Bound",
+      "summary": "Ramachandra's bound: v-u <= v^{1/2+o(1)}",
+      "startLine": 162,
+      "endLine": 176
+    },
+    {
+      "id": "cramer",
+      "title": "Connection to Cramer's Conjecture",
+      "summary": "cramersConjecture definition, cramer_implies_q1",
+      "startLine": 178,
+      "endLine": 198
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Worked examples and structural constraints",
+      "startLine": 200,
+      "endLine": 218
+    },
+    {
+      "id": "prime-free",
+      "title": "Prime-Free Interval Perspective",
+      "summary": "Equivalent characterization: no prime > sqrt(v)",
+      "startLine": 220,
+      "endLine": 240
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_382_summary theorem",
+      "startLine": 242,
+      "endLine": 270
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #382 asks about intervals [u, v] where the largest prime in the product u(u+1)...v has exponent >= 2. The two questions - whether v-u is subpolynomial in v, and whether v-u can be arbitrarily large - both remain open. Ramachandra established that v-u <= v^{1/2+o(1)}, and under Cramer's conjecture, the first question would have answer YES.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Prime Gap Theory:** Connects to Cramer's conjecture and prime distribution\n\n2. **Factorization Structure:** Understanding when products have repeated prime factors\n\n3. **Interval Primes:** Related to the distribution of primes in short intervals\n\n4. **Computational Number Theory:** Affects algorithms for factoring products of consecutives\n\n5. **Related Problems:** Connected to Erdos problems #380 and #383",
+    "openQuestions": [
+      "Is v - u = v^o(1) for all intervals satisfying the condition?",
+      "Can v - u be made arbitrarily large?",
+      "What is the exact growth rate of v - u as a function of v?",
+      "Can the Ramachandra bound be improved?",
+      "Are there explicit constructions of intervals with large v - u satisfying the condition?"
+    ]
+  }
+}

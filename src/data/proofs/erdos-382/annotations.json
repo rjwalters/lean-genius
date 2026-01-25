@@ -1,0 +1,106 @@
+[
+  {
+    "id": "ann-e382-header",
+    "proofId": "erdos-382",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #382: Prime Powers in Factorial Products**\n\nLet [u, v] be an interval where the largest prime dividing u(u+1)...v has exponent >= 2.\n\n**Questions:**\n1. Is v - u = v^o(1)? (Subpolynomial growth)\n2. Can v - u be arbitrarily large?\n\n**Known:** Ramachandra: v - u <= v^{1/2 + o(1)}\n**Status:** Both questions OPEN",
+    "mathContext": "From Erdos-Graham [ErGr80]. Connected to prime gap theory and Cramer's conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["prime gaps", "factorization", "Cramer's conjecture", "Ramachandra"]
+  },
+  {
+    "id": "ann-e382-product",
+    "proofId": "erdos-382",
+    "range": { "startLine": 34, "endLine": 56 },
+    "type": "definition",
+    "title": "Interval Product",
+    "content": "**prodInterval(u, v) = u(u+1)...v**\n\n```lean\ndef prodInterval (u v : N) : N :=\n  prod m in Finset.Icc u v, m\n```\n\n**Relation to Factorials:**\nprodInterval(u, v) = v! / (u-1)!\n\n**Examples:**\n- prodInterval(2, 4) = 2 * 3 * 4 = 24\n- prodInterval(5, 8) = 5 * 6 * 7 * 8 = 1680",
+    "significance": "key",
+    "relatedConcepts": ["factorial", "falling factorial", "Finset.prod"]
+  },
+  {
+    "id": "ann-e382-largest",
+    "proofId": "erdos-382",
+    "range": { "startLine": 58, "endLine": 84 },
+    "type": "definition",
+    "title": "Largest Prime Divisor",
+    "content": "**largestPrimeDivisor n:** The largest prime factor of n.\n\n```lean\nnoncomputable def largestPrimeDivisor (n : N) : N :=\n  if h : n > 1 then\n    (n.primeFactorsList).maximum?.getD 0\n  else 0\n```\n\n**Properties:**\n- Always divides n (for n > 1)\n- Is prime\n- All other prime divisors are smaller\n\n**Example:** largestPrimeDivisor 24 = 3",
+    "significance": "key",
+    "relatedConcepts": ["prime factorization", "maximum element", "primeFactorsList"]
+  },
+  {
+    "id": "ann-e382-condition",
+    "proofId": "erdos-382",
+    "range": { "startLine": 104, "endLine": 130 },
+    "type": "definition",
+    "title": "The Condition",
+    "content": "**satisfiesCondition(u, v):** The largest prime in the product has exponent >= 2.\n\n```lean\ndef satisfiesCondition (u v : N) : Prop :=\n  u <= v and u > 0 and\n  let P := prodInterval u v\n  let p := largestPrimeDivisor P\n  exponent p P >= 2\n```\n\n**Key Insight:**\nThis is equivalent to: no prime p with sqrt(v) < p <= v is in [u, v].\n\n**Why?** If p > sqrt(v), then p^2 > v, so p can appear at most once in [1, v].",
+    "mathContext": "The condition constrains which primes can be in the interval. Large primes force exponent = 1.",
+    "significance": "critical",
+    "relatedConcepts": ["p-adic valuation", "prime distribution", "interval primes"]
+  },
+  {
+    "id": "ann-e382-q1",
+    "proofId": "erdos-382",
+    "range": { "startLine": 132, "endLine": 150 },
+    "type": "definition",
+    "title": "Question 1 (OPEN)",
+    "content": "**question1:** Is v - u = v^o(1)?\n\n```lean\ndef question1 : Prop :=\n  forall eps > 0, exists V,\n    forall u v >= V, satisfiesCondition u v ->\n      (v - u : R) < (v : R) ^ eps\n```\n\n**Meaning:**\nFor intervals satisfying the condition, does v - u grow slower than any positive power of v?\n\n**Under Cramer's Conjecture:** Answer is YES.",
+    "significance": "critical",
+    "relatedConcepts": ["subpolynomial growth", "little-o notation", "Cramer's conjecture"]
+  },
+  {
+    "id": "ann-e382-q2",
+    "proofId": "erdos-382",
+    "range": { "startLine": 152, "endLine": 160 },
+    "type": "definition",
+    "title": "Question 2 (OPEN)",
+    "content": "**question2:** Can v - u be arbitrarily large?\n\n```lean\ndef question2 : Prop :=\n  forall L : N, exists u v : N,\n    satisfiesCondition u v and v - u > L\n```\n\n**Cambie's Heuristic:** Likely YES.\n\nNear squares of large primes p^2, the interval [p^2 - k, p^2] may satisfy the condition with k growing.",
+    "significance": "critical",
+    "relatedConcepts": ["unbounded growth", "prime squares", "heuristic arguments"]
+  },
+  {
+    "id": "ann-e382-ramachandra",
+    "proofId": "erdos-382",
+    "range": { "startLine": 162, "endLine": 176 },
+    "type": "axiom",
+    "title": "Ramachandra's Bound",
+    "content": "**ramachandra_bound:** v - u <= v^{1/2 + o(1)}\n\n```lean\naxiom ramachandra_bound (eps : R) (h : eps > 0) :\n    exists V, forall u v >= V, satisfiesCondition u v ->\n      (v - u : R) <= (v : R) ^ (1/2 + eps)\n```\n\n**This is the best known upper bound.**\n\nIt says intervals satisfying the condition have length at most roughly sqrt(v).",
+    "mathContext": "Ramachandra's work on primes in short intervals gives this bound.",
+    "significance": "critical",
+    "relatedConcepts": ["short intervals", "prime distribution", "upper bounds"]
+  },
+  {
+    "id": "ann-e382-cramer",
+    "proofId": "erdos-382",
+    "range": { "startLine": 178, "endLine": 198 },
+    "type": "axiom",
+    "title": "Connection to Cramer's Conjecture",
+    "content": "**Cramer's Conjecture:** Prime gaps are O((log p)^2).\n\n```lean\ndef cramersConjecture : Prop :=\n  exists C > 0, forall n > 0,\n    let p := Nat.nth Prime n\n    let q := Nat.nth Prime (n + 1)\n    (q - p : R) <= C * (Real.log p) ^ 2\n```\n\n**Implication:**\nCramer's conjecture implies Question 1 is YES (v - u = v^o(1)).\n\n**Intuition:** If prime gaps are small, we can't have long prime-free intervals above sqrt(v).",
+    "mathContext": "Cramer's conjecture is a major open problem in analytic number theory, dating to 1936.",
+    "significance": "key",
+    "relatedConcepts": ["prime gaps", "Cramer's conjecture", "conditional results"]
+  },
+  {
+    "id": "ann-e382-primefree",
+    "proofId": "erdos-382",
+    "range": { "startLine": 220, "endLine": 240 },
+    "type": "theorem",
+    "title": "Prime-Free Interval Perspective",
+    "content": "**Equivalent Characterization:**\n\n```lean\ndef noPrimeLargerThanSqrt (u v : N) : Prop :=\n  forall p prime, u <= p <= v -> p <= Nat.sqrt v\n```\n\n**Key Insight:**\nsatisfiesCondition(u, v) is equivalent to:\nNo prime p with p > sqrt(v) lies in [u, v].\n\n**Why This Matters:**\nThe problem becomes about finding 'prime-free gaps' in the upper half of [1, v].",
+    "significance": "key",
+    "relatedConcepts": ["prime-free intervals", "equivalent formulations", "structural characterization"]
+  },
+  {
+    "id": "ann-e382-summary",
+    "proofId": "erdos-382",
+    "range": { "startLine": 242, "endLine": 270 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdos Problem #382: Summary**\n\n```lean\ntheorem erdos_382_summary :\n    -- Ramachandra's bound\n    (forall eps > 0, exists V, ...) and\n    -- Cramer implies Q1\n    (cramersConjecture -> question1) and\n    True\n```\n\n**State of Knowledge:**\n- Q1 (v - u = v^o(1)?): OPEN. YES under Cramer.\n- Q2 (v - u arbitrarily large?): OPEN. Heuristically YES.\n- Best bound: v - u <= v^{1/2 + o(1)} (Ramachandra)",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "known bounds", "conditional results"]
+  }
+]
