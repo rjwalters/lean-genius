@@ -1,0 +1,76 @@
+{
+  "id": "erdos-348",
+  "title": "Erdős Problem #348: Robustness of Complete Sequences",
+  "slug": "erdos-348",
+  "description": "For what values of 0 ≤ m < n is there a complete sequence that remains complete after removing any m elements but becomes incomplete after removing some n elements?",
+  "meta": {
+    "author": "Erdős",
+    "coauthors": ["Graham"],
+    "sourceUrl": "https://erdosproblems.com/348",
+    "status": "axiom",
+    "proofRepoPath": "Proofs/Erdos348Problem.lean",
+    "tags": ["number-theory", "complete-sequences", "additive-combinatorics"],
+    "badge": "axiom",
+    "sorries": 8,
+    "erdosNumber": 348,
+    "erdosUrl": "https://erdosproblems.com/348",
+    "erdosProblemStatus": "open",
+    "references": [
+      {
+        "key": "ErGr80",
+        "citation": "P. Erdős, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Mathématique (1980)"
+      },
+      {
+        "key": "Zec72",
+        "citation": "E. Zeckendorf, 'Représentation des nombres naturels par une somme de nombres de Fibonacci ou de nombres de Lucas', Bulletin de la Société Royale des Sciences de Liège (1972)"
+      },
+      {
+        "key": "VD24",
+        "citation": "W. van Doorn, 'On strongly complete sequences', preprint (2024)"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and Graham in their 1980 monograph [ErGr80]. A sequence A is complete if every sufficiently large integer can be expressed as a sum of distinct elements of A. The question explores the 'robustness' of completeness—how many elements can be removed while preserving the property. The problem connects to Zeckendorf representations and additive basis theory. Van Doorn recently showed that for the stronger notion of completeness (all integers, not just large ones), no sequence can be 2-robust.",
+    "problemStatement": "A sequence A = {a₁ ≤ a₂ ≤ ...} is complete if every sufficiently large integer is a sum of distinct elements of A. We say A is m-robust if it remains complete after removing any m elements. For what pairs (m, n) with m < n does there exist a complete sequence that is m-robust but not n-robust?",
+    "proofStrategy": "The formalization defines complete sequences via finite sums, formalizes robustness as completeness after removing indices, and proves (0,1) valid via powers of 2 and (1,2) valid via the Fibonacci sequence. The main conjecture about characterizing all valid pairs is stated as an axiom.",
+    "keyInsights": [
+      "Powers of 2 are complete but removing any one breaks completeness (m=0, n=1)",
+      "The Fibonacci sequence is 1-robust but not 2-robust (m=1, n=2)",
+      "Van Doorn proved no strongly complete sequence is 2-robust",
+      "The weaker completeness notion (allowing finitely many exceptions) may allow more valid pairs",
+      "Complete sequences cannot have arbitrarily large gaps"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Complete Sequences",
+      "description": "Definition of completeness via finite sums of distinct elements"
+    },
+    {
+      "title": "Removing Elements",
+      "description": "Formalizing element removal and the robustness property"
+    },
+    {
+      "title": "Known Examples",
+      "description": "Powers of 2 for (0,1) and Fibonacci for (1,2)"
+    },
+    {
+      "title": "Van Doorn's Result",
+      "description": "Strong completeness prevents 2-robustness"
+    },
+    {
+      "title": "Main Conjecture",
+      "description": "Characterizing all valid pairs remains open"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #348 asks which pairs (m, n) admit a complete sequence that is m-robust but not n-robust. Known valid pairs are (0,1) and (1,2). Van Doorn's work constrains the strong completeness case. The case (2,3) for weak completeness remains open.",
+    "implications": "Resolution would illuminate the structure of additive bases and the flexibility of representation systems. It connects to Zeckendorf's theorem and additive combinatorics.",
+    "openQuestions": [
+      "Is (2, 3) valid for weak completeness?",
+      "Is (m, m+1) valid for all m, or is there a cutoff?",
+      "What structural properties of a sequence determine its robustness level?"
+    ]
+  }
+}
