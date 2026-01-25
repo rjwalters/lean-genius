@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ann-e1060-header",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #1060**\n\nLet f(n) count solutions to k·σ(k) = n, where σ(k) is the sum of divisors.\n\n**Questions:**\n1. Is f(n) ≤ n^{o(1/log log n)}?\n2. Perhaps even f(n) ≤ (log n)^{O(1)}?\n\n**References:**\n- Guy [Gu04] Problem B11\n- OEIS A327153",
+    "mathContext": "The sum of divisors function σ(k) = Σ_{d|k} d is multiplicative. The product k·σ(k) combines multiplicative and additive structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum of divisors", "Counting solutions", "Diophantine equations"]
+  },
+  {
+    "id": "ann-e1060-sigma",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "Sum of Divisors",
+    "content": "**sigma:**\n\nSum of divisors function σ(k) = sum of all divisors of k.\n\n```lean\nabbrev sigma (k : N) : N := (Nat.divisors k).sum id\n```\n\n**Examples:**\n- σ(1) = 1\n- σ(6) = 1+2+3+6 = 12\n- σ(p) = p+1 for prime p",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1060-sigma-one",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 43, "endLine": 47 },
+    "type": "theorem",
+    "title": "σ(1) = 1",
+    "content": "**sigma_one:**\n\nThe only divisor of 1 is 1 itself, so σ(1) = 1.\n\n```lean\ntheorem sigma_one : sigma 1 = 1\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1060-sigma-prime",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "theorem",
+    "title": "σ(p) = p + 1 for primes",
+    "content": "**sigma_prime:**\n\nFor prime p, the only divisors are 1 and p, so σ(p) = 1 + p.\n\n```lean\ntheorem sigma_prime (p : N) (hp : p.Prime) : sigma p = p + 1\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1060-g",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "definition",
+    "title": "Product Function g(k)",
+    "content": "**g:**\n\nThe product function g(k) = k · σ(k).\n\n```lean\ndef g (k : N) : N := k * sigma k\n```\n\nThis is the central function of the problem. The question is: how many k give g(k) = n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1060-g-prime",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "theorem",
+    "title": "g(p) = p(p+1) for primes",
+    "content": "**g_prime:**\n\nFor prime p, g(p) = p · (p+1).\n\n**Examples:**\n- g(2) = 2·3 = 6\n- g(3) = 3·4 = 12\n- g(5) = 5·6 = 30\n- g(7) = 7·8 = 56",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1060-solution-set",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "definition",
+    "title": "Solution Set",
+    "content": "**solutionSet:**\n\nThe set of k such that k·σ(k) = n.\n\n```lean\ndef solutionSet (n : N) : Set N := {k : N | g k = n}\n```\n\nThis set is what we count to get f(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1060-f",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "definition",
+    "title": "Counting Function f(n)",
+    "content": "**f:**\n\nf(n) = number of solutions to k·σ(k) = n.\n\n```lean\nnoncomputable def f (n : N) : N := (solutionSet n).ncard\n```\n\nThis is the main object of study. The conjectures bound f(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1060-finite",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 100, "endLine": 117 },
+    "type": "theorem",
+    "title": "Finiteness of Solutions",
+    "content": "**solutionSet_finite:**\n\nThe solution set is finite for any n > 0.\n\n**Proof idea:**\n- σ(k) ≥ 1 for all k > 0 (since 1 | k)\n- Therefore k·σ(k) ≥ k\n- So if g(k) = n, then k ≤ n\n\nThis means we only need to check finitely many k.",
+    "mathContext": "This finiteness is crucial for f(n) to be well-defined as a natural number.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1060-weak-conj",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 152, "endLine": 161 },
+    "type": "axiom",
+    "title": "Weak Conjecture",
+    "content": "**erdos_1060_weak_conjecture:**\n\nf(n) ≤ n^{o(1/log log n)} as n → ∞.\n\nThis means: for any ε > 0, eventually f(n) ≤ n^{ε/log log n}.\n\n```lean\naxiom erdos_1060_weak_conjecture :\n    forall ε > 0, exists N, forall n > N,\n      f n ≤ n ^ (ε / log (log n))\n```\n\nThis is a very slow growth rate - slower than any fixed power of n.",
+    "mathContext": "The double-logarithmic decay means f(n) grows extremely slowly compared to any polynomial.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1060-strong-conj",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 163, "endLine": 172 },
+    "type": "axiom",
+    "title": "Strong Conjecture",
+    "content": "**erdos_1060_strong_conjecture:**\n\nf(n) ≤ (log n)^C for some constant C.\n\n```lean\naxiom erdos_1060_strong_conjecture :\n    exists C, forall n > 1, f n ≤ (log n) ^ C\n```\n\nThis is much stronger - polynomial in log n rather than a slow power of n.",
+    "mathContext": "A polylogarithmic bound would be a dramatic improvement over the weak conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1060-oeis",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 178, "endLine": 182 },
+    "type": "definition",
+    "title": "OEIS A327153",
+    "content": "**oeis_A327153:**\n\nThe set of n for which f(n) > 0 (i.e., k·σ(k) = n has a solution).\n\n```lean\ndef oeis_A327153 : Set N := {n : N | f n > 0}\n```\n\nThis is the range of the function g(k) = k·σ(k).",
+    "significance": "key",
+    "relatedConcepts": ["OEIS", "Integer sequences"]
+  },
+  {
+    "id": "ann-e1060-ex-6",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 212, "endLine": 217 },
+    "type": "theorem",
+    "title": "Example: g(2) = 6",
+    "content": "**Example:**\n\nn = 6: k = 2 gives 2·σ(2) = 2·3 = 6.\n\n```lean\nexample : g 2 = 6\n```\n\nVerified by native_decide.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1060-ex-12",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 219, "endLine": 224 },
+    "type": "theorem",
+    "title": "Example: g(3) = 12",
+    "content": "**Example:**\n\nn = 12: k = 3 gives 3·σ(3) = 3·4 = 12.\n\n```lean\nexample : g 3 = 12\n```",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1060-ex-72",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 226, "endLine": 231 },
+    "type": "theorem",
+    "title": "Example: g(6) = 72",
+    "content": "**Example:**\n\nn = 72: k = 6 gives 6·σ(6) = 6·12 = 72.\n\nNote: σ(6) = 1+2+3+6 = 12.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1060-primes",
+    "proofId": "erdos-1060",
+    "range": { "startLine": 233, "endLine": 239 },
+    "type": "theorem",
+    "title": "Prime Examples",
+    "content": "**Prime examples:**\n\nFor prime p, g(p) = p(p+1):\n- g(5) = 30\n- g(7) = 56\n\nThis gives infinitely many values in the range of g.",
+    "significance": "key"
+  }
+]
