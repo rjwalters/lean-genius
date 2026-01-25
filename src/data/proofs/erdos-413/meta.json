@@ -1,0 +1,77 @@
+{
+  "id": "erdos-413",
+  "title": "Erdős Problem #413: Barriers for the Omega Function",
+  "slug": "erdos-413",
+  "description": "Are there infinitely many n such that m + ω(m) ≤ n for all m < n?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/413",
+    "status": "axiom",
+    "proofRepoPath": "Proofs/Erdos413Problem.lean",
+    "tags": ["number-theory", "arithmetic-functions", "iterated-functions"],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 413,
+    "erdosUrl": "https://erdosproblems.com/413",
+    "erdosProblemStatus": "open",
+    "relatedProblems": [412, 414],
+    "oeis": ["A005236"],
+    "references": [
+      {
+        "key": "Er79d",
+        "citation": "P. Erdős, 'Problems and results on consecutive integers', Publicationes Mathematicae Debrecen (1979)"
+      },
+      {
+        "key": "ErGr80",
+        "citation": "P. Erdős, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Mathématique (1980)"
+      },
+      {
+        "key": "Gu04",
+        "citation": "R. K. Guy, 'Unsolved Problems in Number Theory', 3rd ed., Springer (2004)"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős introduced the concept of 'barriers' for arithmetic functions. A number n is a barrier for f if m + f(m) ≤ n for all m < n. He observed that functions like φ and σ grow too fast to have barriers beyond trivial cases. For ω (number of distinct prime divisors), he conjectured infinitely many barriers exist. In [Er79d], he proved that the exponent product function F(n) = ∏kᵢ has barriers with positive density. Selfridge computed that 99840 is the largest Ω-barrier below 10^5.",
+    "problemStatement": "Let ω(n) denote the number of distinct primes dividing n. A number n is a barrier for ω if m + ω(m) ≤ n for all m < n. Are there infinitely many such barriers? Additionally, is there ε > 0 such that infinitely many n satisfy m + ε·ω(m) ≤ n for all m < n?",
+    "proofStrategy": "The formalization defines barriers for general arithmetic functions, specializes to ω and Ω, proves basic properties, and states the main conjectures. We include Erdős's result on expProd, Selfridge's computation, and connections to iterated dynamics.",
+    "keyInsights": [
+      "Barriers exist when f grows slowly enough (ω ≤ log₂ n)",
+      "Functions φ and σ grow too fast to have barriers",
+      "expProd = ∏kᵢ has barriers with positive density",
+      "99840 is the largest Ω-barrier below 10^5 (Selfridge)",
+      "Barriers connect to the dynamics of n ↦ n + ω(n)"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Arithmetic Functions",
+      "description": "Definitions of ω, Ω, and expProd"
+    },
+    {
+      "title": "Barriers",
+      "description": "Definition and basic properties of barriers"
+    },
+    {
+      "title": "Main Conjectures",
+      "description": "Infinitely many ω-barriers and ε-variant"
+    },
+    {
+      "title": "Known Results",
+      "description": "Erdős's expProd result and Selfridge's computation"
+    },
+    {
+      "title": "Iterated Dynamics",
+      "description": "Connection to problems #412 and #414"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #413 asks whether ω has infinitely many barriers. A barrier n blocks all trajectories m + ω(m) from below. Erdős proved related results for expProd and conjectured ω behaves similarly. The ε-variant asks about weaker barrier conditions.",
+    "implications": "Resolution would illuminate the structure of arithmetic functions and connect to iterated dynamics. It distinguishes ω from faster-growing functions like φ and σ.",
+    "openQuestions": [
+      "Are there infinitely many ω-barriers?",
+      "What is the density of ω-barriers?",
+      "Is there a constructive characterization of barriers?"
+    ]
+  }
+}

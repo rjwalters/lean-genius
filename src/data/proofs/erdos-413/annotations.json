@@ -1,0 +1,135 @@
+[
+  {
+    "id": "erdos413-omega",
+    "line": 30,
+    "type": "definition",
+    "title": "The Omega Function ω(n)",
+    "content": "ω(n) counts the number of distinct prime divisors of n. For example, ω(12) = 2 since 12 = 2² × 3. This is a fundamental arithmetic function that grows slowly—at most log₂(n) for n ≥ 2, since the smallest prime is 2."
+  },
+  {
+    "id": "erdos413-bigomega",
+    "line": 34,
+    "type": "definition",
+    "title": "The Big Omega Function Ω(n)",
+    "content": "Ω(n) counts prime divisors WITH multiplicity. So Ω(12) = 3 since 12 = 2² × 3 = 2 × 2 × 3. This grows faster than ω but still slowly. The relationship ω(n) ≤ Ω(n) always holds."
+  },
+  {
+    "id": "erdos413-expprod",
+    "line": 38,
+    "type": "definition",
+    "title": "The Exponent Product Function",
+    "content": "expProd(n) = ∏kᵢ where n = ∏pᵢ^kᵢ. For n = 12 = 2² × 3¹, expProd(12) = 2 × 1 = 2. Erdős [Er79d] proved this function has barriers with positive density—a key result motivating the conjecture for ω."
+  },
+  {
+    "id": "erdos413-barrier-def",
+    "line": 47,
+    "type": "definition",
+    "title": "Barrier Definition",
+    "content": "A number n is a barrier for function f if m + f(m) ≤ n for ALL m < n. Think of it as a 'wall' that blocks all trajectories from below. If we iterate m ↦ m + f(m), a barrier ensures no trajectory can jump over n."
+  },
+  {
+    "id": "erdos413-barrier-real",
+    "line": 51,
+    "type": "definition",
+    "title": "Barriers for Real Functions",
+    "content": "For the ε-variant, we need barriers for εω(n) where ε ∈ ℝ. This allows asking: is there any ε > 0 for which infinitely many barriers exist? The real-valued version handles the fractional coefficients."
+  },
+  {
+    "id": "erdos413-barriers-set",
+    "line": 55,
+    "type": "definition",
+    "title": "The Set of Barriers",
+    "content": "We collect all barriers into a set barriers(f) = {n : IsBarrier f n}. The main question is whether this set is infinite for f = ω. OEIS A005236 lists known elements: 1, 2, 4, 6, 12, 24, ..."
+  },
+  {
+    "id": "erdos413-one-barrier",
+    "line": 66,
+    "type": "theorem",
+    "title": "1 is Always a Barrier",
+    "content": "The number 1 is vacuously a barrier for any f since there are no m < 1 to check. This gives us a trivial element of every barrier set, but the interesting question is about large barriers."
+  },
+  {
+    "id": "erdos413-two-barrier",
+    "line": 71,
+    "type": "theorem",
+    "title": "When 2 is a Barrier",
+    "content": "2 is a barrier for f iff f(1) ≤ 1 (assuming f(0) = 0). For ω, ω(1) = 0 ≤ 1, so 2 is an ω-barrier. This gives a simple characterization for small barriers."
+  },
+  {
+    "id": "erdos413-omega-values",
+    "line": 85,
+    "type": "theorem",
+    "title": "Values of ω",
+    "content": "ω(1) = 0, ω(p) = 1 for primes p, ω(6) = 2, ω(30) = 3. These small values help verify which small numbers are barriers. The sequence grows slowly, enabling barriers to exist."
+  },
+  {
+    "id": "erdos413-conjecture",
+    "line": 101,
+    "type": "axiom",
+    "title": "Main Conjecture",
+    "content": "Erdős conjectured that ω has infinitely many barriers. Unlike φ and σ which grow too fast, ω's slow growth (≤ log₂ n) suggests barriers should continue indefinitely. This is stated as an axiom since it remains open."
+  },
+  {
+    "id": "erdos413-epsilon",
+    "line": 105,
+    "type": "axiom",
+    "title": "The ε-Variant",
+    "content": "A weaker question: is there ANY ε > 0 with infinitely many n satisfying m + ε·ω(m) ≤ n for all m < n? Even ε = 0.001 would be interesting. This relaxed problem might be more tractable."
+  },
+  {
+    "id": "erdos413-expprod-density",
+    "line": 115,
+    "type": "axiom",
+    "title": "Erdős's Positive Density Result",
+    "content": "Erdős [Er79d] proved that expProd has barriers forming a set of positive density. This means a positive fraction of all integers are expProd-barriers. The proof uses properties of prime factorization."
+  },
+  {
+    "id": "erdos413-selfridge",
+    "line": 121,
+    "type": "axiom",
+    "title": "Selfridge's Computation",
+    "content": "Selfridge computed that 99840 is the largest Ω-barrier below 10⁵. This computational result shows Ω-barriers become sparse but doesn't resolve whether they're infinite. The gap from 99840 to the next (if it exists) is unknown."
+  },
+  {
+    "id": "erdos413-oeis",
+    "line": 126,
+    "type": "axiom",
+    "title": "Known ω-Barriers",
+    "content": "OEIS A005236 lists ω-barriers: 1, 2, 4, 6, 12, 24, ... The sequence appears to grow but computational evidence doesn't resolve the infinity question. These first few can be verified directly."
+  },
+  {
+    "id": "erdos413-iter-omega",
+    "line": 134,
+    "type": "definition",
+    "title": "The Iteration Function",
+    "content": "Define f(n) = n + ω(n). Iterating this function produces trajectories: n, n+ω(n), n+ω(n)+ω(n+ω(n)), ... Barriers are values that no trajectory can jump over. This connects to dynamical problems #412 and #414."
+  },
+  {
+    "id": "erdos413-trajectories-meet",
+    "line": 147,
+    "type": "axiom",
+    "title": "Trajectories Eventually Meet",
+    "content": "A related conjecture (Problem #412): all trajectories eventually merge into one. If barriers are infinite, this suggests trajectories must repeatedly 'bounce' off barriers until they converge."
+  },
+  {
+    "id": "erdos413-phi-no-barriers",
+    "line": 157,
+    "type": "axiom",
+    "title": "φ Has No Large Barriers",
+    "content": "Euler's totient φ grows too fast to have barriers beyond trivial ones. Since φ(n) ≥ √n for most n, we get m + φ(m) > n for large m close to n. This contrast highlights why ω's slow growth matters."
+  },
+  {
+    "id": "erdos413-omega-bound",
+    "line": 170,
+    "type": "theorem",
+    "title": "Upper Bound on ω",
+    "content": "ω(n) ≤ log₂(n) for n ≥ 2. This is because n ≥ 2^ω(n) (the product of ω(n) primes, each ≥ 2). This logarithmic growth is what allows barriers to potentially exist—m + ω(m) grows slowly."
+  },
+  {
+    "id": "erdos413-main",
+    "line": 202,
+    "type": "axiom",
+    "title": "Main Open Problem",
+    "content": "Erdős Problem #413 has two parts: (1) Are there infinitely many ω-barriers? (2) Does there exist ε > 0 with infinitely many ε-barriers? Both remain open. Sieve methods were suggested but deemed insufficient at the time."
+  }
+]
