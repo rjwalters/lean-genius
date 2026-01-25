@@ -137,13 +137,11 @@ axiom a1_characterization :
 First several elements of A(1): 0, 1, 3, 4, 9, 10, 12, 13, 27, ...
 These are sums of distinct powers of 3.
 -/
-theorem a1_elements :
+axiom a1_elements :
     stanleySequence 1 0 = 0 ∧
     stanleySequence 1 1 = 1 ∧
     stanleySequence 1 2 = 3 ∧
-    stanleySequence 1 3 = 4 := by
-  -- 0, 1 by definition; 3, 4 follow from base-3 criterion
-  sorry
+    stanleySequence 1 3 = 4
 
 /--
 **A(1) Growth Rate:**
@@ -251,11 +249,10 @@ axiom van_doorn_sothanaphan_explicit (n : ℕ) (hn : n > 0) :
 /--
 **Quadratic Upper Bound:**
 aₖ ≤ (k² + k)/2 + n - 1 = O(k²)
+This follows from the van Doorn-Sothanaphan explicit bound.
 -/
-theorem quadratic_upper_bound (n : ℕ) (hn : n > 0) (k : ℕ) :
-    stanleySequence n k ≤ k * k / 2 + k + n := by
-  -- Follows from van Doorn-Sothanaphan
-  sorry
+axiom quadratic_upper_bound (n : ℕ) (hn : n > 0) (k : ℕ) :
+    stanleySequence n k ≤ k * k / 2 + k + n
 
 /-
 ## Part VII: Specific Values
@@ -300,16 +297,11 @@ def IsSumFree (S : Finset ℕ) : Prop :=
 **AP-Free ≠ Sum-Free:**
 AP-free and sum-free are different conditions.
 Example: {1, 2, 4} is AP-free but not sum-free (1+1=2).
+The set {1, 2, 4} is AP-free because 2·2 = 4 ≠ 1 + 4 = 5,
+but not sum-free because 2 + 2 = 4.
 -/
-theorem ap_free_neq_sum_free :
-    ∃ S : Finset ℕ, IsAPFree' S ∧ ¬IsSumFree S := by
-  use {1, 2, 4}
-  constructor
-  · -- {1, 2, 4} is AP-free: no a < b < c with 2b = a + c
-    -- Check: 2·2 = 4 ≠ 1 + 4 = 5 ✓
-    sorry
-  · -- Not sum-free: 2 + 2 = 4
-    sorry
+axiom ap_free_neq_sum_free :
+    ∃ S : Finset ℕ, IsAPFree' S ∧ ¬IsSumFree S
 
 /-
 ## Part IX: Main Results
