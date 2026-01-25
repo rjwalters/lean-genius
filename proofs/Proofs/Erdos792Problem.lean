@@ -36,7 +36,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -/
 
-import Mathlib
+import Mathlib.Data.Int.Basic
+import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Lattice
+import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Topology.Order.Basic
 
 /-!
 # Erdős Problem 792: Sum-Free Subsets

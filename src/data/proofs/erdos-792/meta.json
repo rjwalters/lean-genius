@@ -4,65 +4,158 @@
   "slug": "erdos-792",
   "description": "Estimate f(n), the minimum size of the largest sum-free subset guaranteed in any n-element set of integers.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős (1965 problem), Bedert (2025 best lower bound)",
     "sourceUrl": "https://erdosproblems.com/792",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos792Problem.lean",
-    "tags": ["additive combinatorics", "sum-free sets", "Ramsey theory"],
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "extremal-combinatorics",
+      "open-problem"
+    ],
     "badge": "open-problem",
-    "sorries": 10,
+    "sorries": 12,
     "erdosNumber": 792,
     "erdosUrl": "https://erdosproblems.com/792",
     "erdosProblemStatus": "open",
-    "mathlibDependencies": []
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for limits at infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals as finite sets",
+        "module": "Mathlib.Data.Finset.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "SumFree definition: set with no a + b = c",
+      "SumFreeFinset definition: finite set version",
+      "IsSumFreeSubset predicate: sum-free subset relation",
+      "maxSumFreeSize: maximum sum-free subset cardinality",
+      "f(n) function: minimum guaranteed sum-free subset size",
+      "erdos_792 main problem statement",
+      "erdos_lower_bound: f(n) >= n/3",
+      "alon_kleitman_bound: f(n) >= (n+1)/3",
+      "bourgain_bound: f(n) >= (n+2)/3",
+      "bedert_bound: f(n) >= n/3 + c*log log n",
+      "egm_upper_bound: f(n) <= n/3 + o(n)",
+      "f_limit: f(n)/n -> 1/3",
+      "interval_sum_free: [n, 2n-1] is sum-free",
+      "middle_third_sum_free: construction achieving n/3",
+      "erdos_792_second_order: conjecture on exact asymptotics"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem is a cornerstone of additive combinatorics. Erdős established the basic n/3 lower bound. The problem appears as Problem 1 on Ben Green's open problems list. Recent work by Bedert (2025) achieved f(n) ≥ n/3 + c·log log n, while Eberhard-Green-Manners established f(n) ≤ n/3 + o(n).",
-    "problemStatement": "A set B ⊆ ℤ is sum-free if there are no a, b, c ∈ B with a + b = c. Let f(n) be the maximum value such that every n-element subset A ⊆ ℤ contains a sum-free subset B with |B| ≥ f(n). Estimate f(n).",
-    "proofStrategy": "The lower bound uses probabilistic and algebraic methods. The 'middle third' construction shows f(n) ≥ n/3. Improvements use Fourier analysis and additive combinatorics techniques. The upper bound constructs explicit sets with small sum-free subsets.",
+    "historicalContext": "**Erdős Problem #792: Sum-Free Subsets**\n\nThis fundamental problem in additive combinatorics asks about guaranteed sum-free subsets. A set is sum-free if no element equals the sum of two others.\n\n**Historical Timeline:**\n- Erdős (1965): Established basic bound f(n) >= n/3 using the 'middle third' construction\n- Alon & Kleitman (1990): Improved to f(n) >= (n+1)/3\n- Bourgain (1997): Further improved to f(n) >= (n+2)/3\n- Eberhard, Green & Manners (2014): Proved f(n) <= n/3 + o(n), showing main term is optimal\n- Bedert (2025): Achieved f(n) >= n/3 + c*log log n, the current best lower bound\n\n**Significance:** This is Problem 1 on Ben Green's open problems list, indicating its central importance to the field. The exact second-order term remains unknown.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(n)$ be the maximum value such that every $n$-element subset $A \\subseteq \\mathbb{Z}$ contains a sum-free subset $B \\subseteq A$ with $|B| \\geq f(n)$.\n\n**Estimate $f(n)$.**\n\n**Current Knowledge:**\n- Lower bound: $f(n) \\geq n/3 + c \\cdot \\log\\log n$ (Bedert 2025)\n- Upper bound: $f(n) \\leq n/3 + o(n)$ (Eberhard-Green-Manners 2014)\n- Asymptotic: $\\lim_{n \\to \\infty} f(n)/n = 1/3$\n\n**Main Open Question:** What is the exact growth rate of $f(n) - n/3$?",
+    "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we formalize the definitions and known results:\n\n1. **Core Definitions:** SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize, f(n)\n\n2. **Lower Bounds:** Formalize the progression of results from Erdős through Bedert\n\n3. **Upper Bounds:** Eberhard-Green-Manners result showing f(n)/n -> 1/3\n\n4. **Examples:** Interval sum-free sets, middle third construction\n\n5. **Open Question:** State the second-order term conjecture\n\nAll theorems beyond basic definitions use `sorry` as this remains an active research area.",
     "keyInsights": [
-      "The main term is n/3, achieved by the 'middle third' construction",
-      "The second-order term is the key open question",
-      "Bedert's 2025 result: f(n) ≥ n/3 + c·log log n",
-      "Eberhard-Green-Manners: f(n) ≤ n/3 + o(n)",
-      "The exact growth rate of f(n) - n/3 remains unknown"
+      "**Sum-Free Definition:** B is sum-free if for all a, b, c in B, we have a + b != c",
+      "**Middle Third Construction:** Taking elements in (n/3, 2n/3] avoids sums, achieving f(n) >= n/3",
+      "**Interval [n, 2n-1]:** This interval is sum-free since a + b >= 2n > 2n-1 for all a, b in it",
+      "**Main Term Optimal:** f(n)/n -> 1/3, so n/3 is the correct leading term",
+      "**Second-Order Gap:** Between Bedert's log log n and Eberhard-Green-Manners' o(n)",
+      "**Ramsey Connection:** Related to Schur numbers and coloring problems"
     ]
   },
   "sections": [
     {
-      "id": "section-sum-free",
-      "title": "Sum-Free Sets",
-      "content": "A set B is sum-free if a + b ≠ c for all a, b, c ∈ B. Equivalently, B ∩ (B + B) = ∅. The condition prevents any element from being expressible as the sum of two others in the set."
+      "id": "header-docs",
+      "title": "Problem Overview",
+      "summary": "Header documentation with problem statement and known bounds",
+      "startLine": 1,
+      "endLine": 37
     },
     {
-      "id": "section-function-f",
-      "title": "The Function f(n)",
-      "content": "f(n) is defined as the minimum, over all n-element sets A ⊆ ℤ, of the maximum size of a sum-free subset of A. We seek both upper and lower bounds on f(n)."
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "summary": "Mathlib imports and namespace declaration",
+      "startLine": 39,
+      "endLine": 55
     },
     {
-      "id": "section-lower-bounds",
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize, f(n)",
+      "startLine": 57,
+      "endLine": 75
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem Statement",
+      "summary": "erdos_792: Determine the asymptotics of f(n)",
+      "startLine": 77,
+      "endLine": 91
+    },
+    {
+      "id": "lower-bounds",
       "title": "Lower Bounds",
-      "content": "Erdős: f(n) ≥ n/3. Alon-Kleitman: f(n) ≥ (n+1)/3. Bourgain: f(n) ≥ (n+2)/3. Bedert (2025): f(n) ≥ n/3 + c·log log n. These progressively improve the second-order term."
+      "summary": "Erdős, Alon-Kleitman, Bourgain, Bedert bounds",
+      "startLine": 93,
+      "endLine": 118
     },
     {
-      "id": "section-upper-bounds",
+      "id": "upper-bounds",
       "title": "Upper Bounds",
-      "content": "Eberhard-Green-Manners: f(n) ≤ n/3 + o(n). This shows the main term n/3 is optimal. Combined with lower bounds, we have f(n)/n → 1/3 as n → ∞."
+      "summary": "Eberhard-Green-Manners bound and limit theorem",
+      "startLine": 120,
+      "endLine": 135
     },
     {
-      "id": "section-open-question",
-      "title": "Main Open Question",
-      "content": "What is the exact second-order term? Is f(n) = n/3 + Θ(log log n)? The gap between the Bedert lower bound and Eberhard-Green-Manners upper bound remains the key open problem."
+      "id": "examples",
+      "title": "Examples and Constructions",
+      "summary": "Small examples, interval sum-free, middle third",
+      "startLine": 137,
+      "endLine": 156
+    },
+    {
+      "id": "structural",
+      "title": "Structural Results",
+      "summary": "Existence theorem and extremal sets",
+      "startLine": 158,
+      "endLine": 168
+    },
+    {
+      "id": "connections",
+      "title": "Additive Combinatorics Connections",
+      "summary": "Relation to arithmetic progressions and Schur numbers",
+      "startLine": 170,
+      "endLine": 182
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "summary": "Second-order term question and conjecture",
+      "startLine": 184,
+      "endLine": 202
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #792 asks for the asymptotics of f(n), the guaranteed size of sum-free subsets. We know f(n)/n → 1/3, but the second-order term remains open. Recent progress by Bedert achieved f(n) ≥ n/3 + c·log log n.",
-    "implications": "Resolution would illuminate the structure of sum-free sets and extremal problems in additive combinatorics. The problem connects to Ramsey theory and Schur numbers.",
+    "summary": "Erdős Problem #792 asks for the asymptotics of f(n), the minimum guaranteed size of sum-free subsets in any n-element integer set. We know f(n)/n -> 1/3, but the exact second-order term remains open. The current best bounds are n/3 + c*log log n <= f(n) <= n/3 + o(n).",
+    "implications": "**Significance in Additive Combinatorics**\n\n1. **Fundamental Question:** One of the most natural extremal problems about integer sums\n\n2. **Ben Green's List:** Problem 1 on his open problems list\n\n3. **Technique Development:** Drives advances in probabilistic and Fourier methods\n\n4. **Ramsey Theory:** Connected to Schur numbers and partition regularity\n\n5. **Extremal Configurations:** Understanding which sets minimize sum-free subsets",
     "openQuestions": [
-      "Is f(n) = n/3 + Θ(log log n)?",
+      "Is f(n) = n/3 + Theta(log log n)?",
       "What sets A achieve the minimum f(n)?",
       "Can Bedert's lower bound be improved?",
-      "Is there a matching upper bound of n/3 + O(log log n)?"
+      "Is there a matching upper bound of n/3 + O(log log n)?",
+      "What is the exact constant c in Bedert's bound?"
     ]
   }
 }
