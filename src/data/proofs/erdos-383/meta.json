@@ -1,0 +1,144 @@
+{
+  "id": "erdos-383",
+  "title": "Erdős Problem #383: Prime Divisors of Consecutive Squares",
+  "slug": "erdos-383",
+  "description": "For every k, are there infinitely many primes p such that p is the largest prime divisor of ∏_{i=0}^k (p² + i)?",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/383",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos383Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-divisors",
+      "smooth-numbers",
+      "dickman",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 383,
+    "erdosUrl": "https://erdosproblems.com/383",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of prime factors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.maxPrimeFac",
+        "description": "Largest prime factor",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "primeDivisors definition: set of prime factors",
+      "hasLargestPrimeFactor definition: p is max prime factor",
+      "consecutiveSquareProduct definition: ∏_{i=0}^k (p² + i)",
+      "isKGood definition: p is k-good prime",
+      "kGoodPrimes definition: set of k-good primes",
+      "ErdosConjecture383 definition: main conjecture",
+      "Problem382Part2 definition: related problem",
+      "isSmooth definition: y-smooth numbers",
+      "countSmooth definition: counting smooth numbers",
+      "dickman_asymptotic axiom: Dickman function asymptotics",
+      "erdos_383_statement theorem: formal statement"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in 1980 [ErGr80]. It relates to Problem #382 about the density of primes with specific prime divisor properties.\n\nThe problem connects to smooth number theory - specifically numbers without prime factors exceeding their square root. The Dickman function ρ(u) describes the density of such numbers.\n\nA positive answer would confirm that for any k, infinitely many primes have a special property relating to consecutive integers near their square.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor every positive integer k, is it true that there are infinitely many primes p such that p is the largest prime divisor of\n$$\\prod_{i=0}^{k} (p^2 + i) = p^2(p^2+1)(p^2+2)\\cdots(p^2+k)?$$\n\n**Heuristic Argument:**\nProbabilistic reasoning suggests YES. The Dickman function ρ(2) ≈ 0.307 implies about 30.7% of numbers have all prime factors ≤ √n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Factors:** primeDivisors(n), hasLargestPrimeFactor(n, p)\n\n2. **Product:** consecutiveSquareProduct(p, k) = ∏_{i=0}^k (p² + i)\n\n3. **k-Good Primes:** isKGood(p, k) := p is largest prime factor of product\n\n4. **Conjecture:** ErdosConjecture383 := ∀k, kGoodPrimes(k) is infinite\n\n5. **Smooth Numbers:** isSmooth(n, y), connection to Dickman function",
+    "keyInsights": [
+      "**k=0 Case:** Every prime is 0-good since maxPrimeFac(p²) = p",
+      "**Smooth Connection:** p is k-good iff p²+i is p-smooth for all i ≤ k",
+      "**Dickman's Function:** ρ(2) > 0 implies positive density of √n-smooth numbers",
+      "**Problem #382:** A positive answer resolves part of Problem #382",
+      "**Heuristic:** Probabilistic arguments strongly suggest YES"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-factors",
+      "title": "Prime Factor Definitions",
+      "summary": "primeDivisors, hasLargestPrimeFactor, hasLargestPrimeFactor_iff",
+      "startLine": 34,
+      "endLine": 52
+    },
+    {
+      "id": "product",
+      "title": "The Product Definition",
+      "summary": "consecutiveSquareProduct, special cases for k=0,1",
+      "startLine": 53,
+      "endLine": 81
+    },
+    {
+      "id": "kgood",
+      "title": "k-Good Primes",
+      "summary": "isKGood, isKGood', kGoodPrimes, zero_good_iff",
+      "startLine": 82,
+      "endLine": 104
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "ErdosConjecture383, ErdosConjecture383', conjecture_equiv",
+      "startLine": 105,
+      "endLine": 121
+    },
+    {
+      "id": "partial",
+      "title": "Partial Results",
+      "summary": "all_primes_zero_good, infinitely_many_zero_good, positive_density_smooth",
+      "startLine": 122,
+      "endLine": 138
+    },
+    {
+      "id": "problem382",
+      "title": "Relation to Problem #382",
+      "summary": "Problem382Part2, problem383_implies_382",
+      "startLine": 139,
+      "endLine": 151
+    },
+    {
+      "id": "smooth",
+      "title": "Smooth Numbers",
+      "summary": "isSmooth, kGood_iff_smooth, countSmooth, dickman_asymptotic",
+      "startLine": 152,
+      "endLine": 175
+    },
+    {
+      "id": "heuristic",
+      "title": "Heuristic Argument",
+      "summary": "Dickman ρ(2) ≈ 0.307 supports positive answer",
+      "startLine": 176,
+      "endLine": 190
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Formal Statement",
+      "summary": "erdos_383_status, erdos_383_statement",
+      "startLine": 191,
+      "endLine": 212
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #383 asks whether for every k, infinitely many primes p have p as the largest prime divisor of ∏_{i=0}^k (p² + i). The problem is OPEN, but heuristic arguments based on smooth number theory strongly suggest YES.",
+    "implications": "A positive answer would confirm infinitely many primes with special divisibility properties near their squares, and would resolve part of Problem #382.",
+    "openQuestions": [
+      "Is the conjecture true for k = 1?",
+      "What is the density of k-good primes for small k?",
+      "Can explicit examples of k-good primes be found for large k?",
+      "Is there an effective version: for which p < N is p k-good?",
+      "How does the density depend on k?"
+    ]
+  }
+}

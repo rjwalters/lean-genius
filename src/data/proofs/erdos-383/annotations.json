@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-383-header",
+    "proofId": "erdos-383",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #383: For every k, are there infinitely many primes p such that p is the largest prime divisor of ∏_{i=0}^k (p² + i)? Status: OPEN.",
+    "mathContext": "Posed in [ErGr80]. Relates to smooth numbers and the Dickman function ρ(2) ≈ 0.307.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-divisors", "smooth-numbers", "dickman"]
+  },
+  {
+    "id": "ann-383-primediv",
+    "proofId": "erdos-383",
+    "range": { "startLine": 40, "endLine": 47 },
+    "type": "definition",
+    "title": "Prime Divisors",
+    "content": "primeDivisors(n) = n.primeFactors. hasLargestPrimeFactor(n, p) := p is in primeDivisors(n) and maximal.",
+    "mathContext": "Using Mathlib's primeFactors for the set of prime factors.",
+    "significance": "key",
+    "relatedConcepts": ["prime-factors", "divisibility"]
+  },
+  {
+    "id": "ann-383-product",
+    "proofId": "erdos-383",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "definition",
+    "title": "Consecutive Square Product",
+    "content": "consecutiveSquareProduct(p, k) = ∏_{i=0}^k (p² + i) = p²(p²+1)...(p²+k). This is k+1 consecutive integers starting at p².",
+    "mathContext": "The product of k+1 terms, each a consecutive integer.",
+    "significance": "critical",
+    "relatedConcepts": ["product", "consecutive-integers"]
+  },
+  {
+    "id": "ann-383-special",
+    "proofId": "erdos-383",
+    "range": { "startLine": 71, "endLine": 81 },
+    "type": "theorem",
+    "title": "Special Cases",
+    "content": "consecutiveSquareProduct(p, 0) = p². consecutiveSquareProduct(p, 1) = p²(p²+1).",
+    "mathContext": "For k=0, the product is just p², so p is always the largest prime factor.",
+    "significance": "supporting",
+    "relatedConcepts": ["base-case", "k-zero"]
+  },
+  {
+    "id": "ann-383-kgood",
+    "proofId": "erdos-383",
+    "range": { "startLine": 88, "endLine": 97 },
+    "type": "definition",
+    "title": "k-Good Primes",
+    "content": "isKGood(p, k) := p.Prime ∧ hasLargestPrimeFactor(product, p). A prime p is k-good if p is the largest prime factor of the product.",
+    "mathContext": "The central definition: when is p the dominant prime factor?",
+    "significance": "critical",
+    "relatedConcepts": ["k-good", "dominant-factor"]
+  },
+  {
+    "id": "ann-383-kgoodset",
+    "proofId": "erdos-383",
+    "range": { "startLine": 98, "endLine": 104 },
+    "type": "definition",
+    "title": "Set of k-Good Primes",
+    "content": "kGoodPrimes(k) = {p | isKGood(p, k)}. zero_good_iff: every prime is 0-good.",
+    "mathContext": "The problem asks if kGoodPrimes(k) is infinite for all k.",
+    "significance": "key",
+    "relatedConcepts": ["prime-set", "infinite"]
+  },
+  {
+    "id": "ann-383-conjecture",
+    "proofId": "erdos-383",
+    "range": { "startLine": 111, "endLine": 121 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture383 := ∀k, kGoodPrimes(k) is infinite. ErdosConjecture383' uses Nat.maxPrimeFac directly.",
+    "mathContext": "The conjecture asserts infinitely many k-good primes for each k.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "infinite-primes"]
+  },
+  {
+    "id": "ann-383-partial",
+    "proofId": "erdos-383",
+    "range": { "startLine": 128, "endLine": 138 },
+    "type": "theorem",
+    "title": "Partial Results",
+    "content": "all_primes_zero_good: every prime is 0-good. infinitely_many_zero_good: kGoodPrimes(0) is infinite. positive_density_smooth: smooth numbers have positive density.",
+    "mathContext": "The k=0 case is trivial. Smooth number density supports the general conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["partial", "k-zero", "density"]
+  },
+  {
+    "id": "ann-383-problem382",
+    "proofId": "erdos-383",
+    "range": { "startLine": 145, "endLine": 151 },
+    "type": "definition",
+    "title": "Relation to Problem #382",
+    "content": "Problem382Part2: infinitely many primes p with p = maxPrimeFac(p²+1). problem383_implies_382: k=1 case implies Problem 382 Part 2.",
+    "mathContext": "A positive answer to Problem 383 would resolve Problem 382.",
+    "significance": "key",
+    "relatedConcepts": ["problem-382", "implication"]
+  },
+  {
+    "id": "ann-383-smooth",
+    "proofId": "erdos-383",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "isSmooth(n, y) := all prime factors of n are ≤ y. p is k-good iff p²+i is p-smooth for all i ≤ k.",
+    "mathContext": "The k-good condition is equivalent to smoothness of consecutive integers.",
+    "significance": "key",
+    "relatedConcepts": ["smooth", "y-smooth"]
+  },
+  {
+    "id": "ann-383-dickman",
+    "proofId": "erdos-383",
+    "range": { "startLine": 170, "endLine": 175 },
+    "type": "axiom",
+    "title": "Dickman Function",
+    "content": "dickman_asymptotic: Ψ(x, x^{1/u}) ~ x·ρ(u) where ρ is the Dickman function. ρ(2) ≈ 0.307.",
+    "mathContext": "The Dickman function describes the density of smooth numbers. ρ(2) > 0 supports the conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["dickman", "asymptotic-density"]
+  },
+  {
+    "id": "ann-383-heuristic",
+    "proofId": "erdos-383",
+    "range": { "startLine": 182, "endLine": 190 },
+    "type": "concept",
+    "title": "Heuristic Argument",
+    "content": "ρ(2) ≈ 0.307 means about 30.7% of numbers have no prime factor > √n. This suggests infinitely many k-good primes exist.",
+    "mathContext": "The probabilistic argument: smooth numbers are common enough.",
+    "significance": "supporting",
+    "relatedConcepts": ["heuristic", "probability"]
+  },
+  {
+    "id": "ann-383-status",
+    "proofId": "erdos-383",
+    "range": { "startLine": 197, "endLine": 199 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Heuristic arguments strongly suggest a positive answer.",
+    "mathContext": "No proof or disproof exists. The probabilistic evidence favors YES.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "conjectured-true"]
+  },
+  {
+    "id": "ann-383-formal",
+    "proofId": "erdos-383",
+    "range": { "startLine": 206, "endLine": 211 },
+    "type": "theorem",
+    "title": "Formal Statement",
+    "content": "erdos_383_statement: The conjecture using Nat.maxPrimeFac and Finset.Icc.",
+    "mathContext": "Precise formal statement adapted from formal-conjectures.",
+    "significance": "critical",
+    "relatedConcepts": ["formal-statement", "maxPrimeFac"]
+  }
+]
