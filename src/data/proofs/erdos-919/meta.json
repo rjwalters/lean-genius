@@ -1,0 +1,112 @@
+{
+  "id": "erdos-919",
+  "title": "Erdős Problem #919: Chromatic Numbers on Ordinal Products",
+  "slug": "erdos-919",
+  "description": "Is there a graph G on vertex set ω₂² with chromatic number ℵ₂ such that every subgraph of smaller order type has chromatic number at most ℵ₀?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/919",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos919Problem.lean",
+    "tags": ["erdos", "graph-theory", "chromatic-number", "set-theory", "ordinals", "infinite-combinatorics"],
+    "badge": "axiom",
+    "sorries": 6,
+    "erdosNumber": 919,
+    "erdosUrl": "https://erdosproblems.com/919",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Ordinal.Basic",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Order.WellFounded"
+    ],
+    "originalContributions": [
+      "Formal definitions for graphs on ordinal products",
+      "Chromatic number formalization for infinite graphs",
+      "Order type conditions for subgraphs",
+      "Erdős-Hajnal construction on ω₁²",
+      "Generalization framework for cardinal parameters"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős in 1969 [Er69b] and sits at the intersection of graph theory, set theory, and infinite combinatorics. It was inspired by Babai's theorem about chromatic properties of graphs on well-ordered vertex sets.\n\nErdős and Hajnal made crucial progress by constructing a counterexample at the ℵ₁ level. They built a graph on ω₁² (the ordinal product of two copies of the first uncountable ordinal) with chromatic number ℵ₁, but where every strictly smaller subgraph (by order type) has countable chromatic number ≤ ℵ₀. This showed that Babai's theorem does not generalize to higher cardinals.\n\nThe natural question then arises: can we do the same construction at the next level? This is Problem #919: does there exist a graph on ω₂² with chromatic number ℵ₂ where smaller subgraphs have chromatic number at most ℵ₀ (not just ℵ₁)?",
+    "problemStatement": "Two questions about graphs on ordinal products:\n\n1. Is there a graph $G$ on vertex set $\\omega_2^2$ with $\\chi(G) = \\aleph_2$ such that every subgraph whose vertices have lesser order type has $\\chi \\leq \\aleph_0$?\n\n2. What if we instead ask for $\\chi(G) = \\aleph_1$?\n\n**Known:** Erdős-Hajnal constructed $G$ on $\\omega_1^2$ with $\\chi(G) = \\aleph_1$ and smaller subgraphs having $\\chi \\leq \\aleph_0$.",
+    "proofStrategy": "The formalization defines graphs on ordinal products ω₁² and ω₂² and introduces chromatic numbers for infinite graphs. We axiomatize the Erdős-Hajnal construction showing such a graph exists on ω₁². The main questions ask whether similar constructions exist at higher cardinal levels.\n\nKey technical elements include:\n1. Order type of subsets of ordinal products\n2. Induced subgraphs with their chromatic properties\n3. The gap between ℵ₀ and ℵ₁ bounds in partial results",
+    "keyInsights": [
+      "**Ordinal Products**: ω₁² = ω₁ × ω₁ has rich structure; vertices can be compared by lexicographic order, enabling order-type constraints",
+      "**Babai's Failure**: The Erdős-Hajnal graph shows that chromatic constraints don't propagate from smaller to larger subgraphs at uncountable cardinals",
+      "**The Gap**: A graph on ω₂² with χ = ℵ₂ and smaller subgraphs having χ ≤ ℵ₁ exists, but achieving ≤ ℵ₀ remains open",
+      "**Two Questions**: Both χ = ℵ₂ and χ = ℵ₁ variants on ω₂² are interesting; they may have different answers",
+      "**General Framework**: The problem generalizes to arbitrary cardinals κ, λ, μ with the question of existence of such graphs"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Basic Definitions",
+      "startLine": 31,
+      "endLine": 53,
+      "summary": "Defines ordinal products ω₁², ω₂² and graphs on vertex sets"
+    },
+    {
+      "title": "Chromatic Number",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "Proper colorings and chromatic number for infinite graphs"
+    },
+    {
+      "title": "Order Type and Subgraphs",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "Order type of subsets and induced subgraphs"
+    },
+    {
+      "title": "Erdős-Hajnal Construction",
+      "startLine": 90,
+      "endLine": 107,
+      "summary": "The counterexample graph on ω₁² with χ = ℵ₁"
+    },
+    {
+      "title": "Main Questions",
+      "startLine": 109,
+      "endLine": 129,
+      "summary": "Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²"
+    },
+    {
+      "title": "Partial Results",
+      "startLine": 131,
+      "endLine": 147,
+      "summary": "Construction with ℵ₁ bound (not ℵ₀)"
+    },
+    {
+      "title": "Generalization",
+      "startLine": 149,
+      "endLine": 170,
+      "summary": "General question for cardinals κ, λ, μ"
+    },
+    {
+      "title": "Babai Connection",
+      "startLine": 172,
+      "endLine": 193,
+      "summary": "Babai's theorem and why it fails at ω₁"
+    },
+    {
+      "title": "Formal Statement",
+      "startLine": 224,
+      "endLine": 243,
+      "summary": "Main theorem combining both questions"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #919 on chromatic numbers of graphs on ordinal products. We define the framework for infinite graphs on ω₁² and ω₂², establish the Erdős-Hajnal construction as a key precedent, and pose both questions about ω₂².",
+    "implications": "The problem illuminates deep connections between graph theory and set theory. A resolution would advance our understanding of how chromatic properties behave under set-theoretic constructions, potentially requiring sophisticated forcing or inner model techniques.",
+    "openQuestions": [
+      "Does a graph on ω₂² with χ = ℵ₂ and smaller subgraphs having χ ≤ ℵ₀ exist?",
+      "Does a graph on ω₂² with χ = ℵ₁ and smaller subgraphs having χ ≤ ℵ₀ exist?",
+      "Is the answer set-theoretically independent?",
+      "What is the minimal cardinal gap achievable?",
+      "How does the answer depend on large cardinal assumptions?"
+    ]
+  }
+}

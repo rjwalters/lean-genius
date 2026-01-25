@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-919-header",
+    "proofId": "erdos-919",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #919 asks about chromatic numbers of graphs on ordinal products. Specifically, can we build a graph on ω₂² (the square of the second uncountable ordinal) with chromatic number ℵ₂, where every smaller subgraph has countable chromatic number? This generalizes an Erdős-Hajnal construction at the ℵ₁ level.",
+    "mathContext": "The problem combines graph theory with set theory, using cardinal and ordinal arithmetic. It relates to how chromatic constraints propagate through infinite graph structures.",
+    "significance": "critical",
+    "relatedConcepts": ["chromatic-number", "ordinals", "infinite-combinatorics"]
+  },
+  {
+    "id": "ann-919-ordinals",
+    "proofId": "erdos-919",
+    "range": { "startLine": 37, "endLine": 47 },
+    "type": "definition",
+    "title": "Ordinal Products",
+    "content": "ω₁ is the first uncountable ordinal (the smallest ordinal larger than all countable ordinals). ω₂ is the second uncountable ordinal. The products ω₁² = ω₁ × ω₁ and ω₂² = ω₂ × ω₂ with lexicographic ordering serve as vertex sets for our graphs.",
+    "mathContext": "Ordinal products carry a natural well-ordering (lexicographic), which lets us talk about the 'order type' of subsets - a measure of how large they are ordinally.",
+    "significance": "key",
+    "relatedConcepts": ["omega1", "omega2", "lexicographic-order"]
+  },
+  {
+    "id": "ann-919-graph",
+    "proofId": "erdos-919",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Graph Structure",
+    "content": "We define a graph on a vertex set V as an adjacency relation that is symmetric (if x ~ y then y ~ x) and loopless (no x ~ x). This is a standard undirected simple graph definition, extended to infinite vertex sets.",
+    "mathContext": "For infinite graphs, the standard Mathlib SimpleGraph works, but we use a custom structure to make the chromatic number definition cleaner.",
+    "significance": "supporting",
+    "relatedConcepts": ["adjacency", "simple-graph", "symmetry"]
+  },
+  {
+    "id": "ann-919-chromatic",
+    "proofId": "erdos-919",
+    "range": { "startLine": 55, "endLine": 72 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The chromatic number χ(G) is the minimum cardinal k such that vertices can be colored with k colors without adjacent vertices having the same color. For finite graphs this is a natural number; for infinite graphs it can be any cardinal ℵ₀, ℵ₁, ℵ₂, etc.",
+    "mathContext": "We define chromatic number as an infimum over cardinals. A proper k-coloring is a function c: V → k.toType where c(x) ≠ c(y) whenever x ~ y.",
+    "significance": "critical",
+    "relatedConcepts": ["coloring", "cardinal", "minimum"]
+  },
+  {
+    "id": "ann-919-ordertype",
+    "proofId": "erdos-919",
+    "range": { "startLine": 74, "endLine": 88 },
+    "type": "definition",
+    "title": "Order Type and Induced Subgraphs",
+    "content": "The order type of a subset S captures 'how large' S is ordinally. An induced subgraph G[S] keeps only vertices in S and edges between them. The key constraint is that subgraphs with smaller order type should have bounded chromatic number.",
+    "mathContext": "If S ⊂ ω₁² has order type less than ω₁ · ω₁, then S is 'strictly smaller' than the full product. This is the threshold for the chromatic constraint.",
+    "significance": "key",
+    "relatedConcepts": ["order-type", "induced-subgraph", "well-order"]
+  },
+  {
+    "id": "ann-919-erdos-hajnal",
+    "proofId": "erdos-919",
+    "range": { "startLine": 90, "endLine": 107 },
+    "type": "axiom",
+    "title": "Erdős-Hajnal Construction",
+    "content": "Erdős and Hajnal constructed a graph on ω₁² where vertices (x_α, y_β) and (x_γ, y_δ) are adjacent iff α < γ and β > δ (or vice versa). This graph has χ = ℵ₁, but every subgraph of smaller order type is countably colorable.",
+    "mathContext": "The construction uses the comparability of coordinates in opposite directions. Think of it as: adjacent if one is 'northeast' and the other 'southwest' on the ordinal grid.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "construction", "aleph1"]
+  },
+  {
+    "id": "ann-919-questions",
+    "proofId": "erdos-919",
+    "range": { "startLine": 109, "endLine": 129 },
+    "type": "definition",
+    "title": "The Two Main Questions",
+    "content": "Question 1: Can we do the E-H construction at the next level? Build a graph on ω₂² with χ = ℵ₂ and smaller subgraphs having χ ≤ ℵ₀. Question 2: What about χ = ℵ₁ on ω₂² with the same constraint? Both remain open.",
+    "mathContext": "The jump from ℵ₁ to ℵ₂ is non-trivial. The gap between ℵ₀ (countable) and ℵ₂ (two steps up) may be too large to bridge with similar techniques.",
+    "significance": "critical",
+    "relatedConcepts": ["question1", "question2", "aleph2"]
+  },
+  {
+    "id": "ann-919-partial",
+    "proofId": "erdos-919",
+    "range": { "startLine": 131, "endLine": 147 },
+    "type": "axiom",
+    "title": "Partial Result",
+    "content": "There exists a graph on ω₂² with χ = ℵ₂ where smaller subgraphs have χ ≤ ℵ₁ (not ℵ₀). This is progress but doesn't answer Question 1 since we need the ℵ₀ bound, not ℵ₁.",
+    "mathContext": "The partial construction likely uses techniques similar to E-H but at one level higher. The gap from ℵ₁ to ℵ₀ remains the challenge.",
+    "significance": "key",
+    "relatedConcepts": ["partial-progress", "gap", "bound"]
+  },
+  {
+    "id": "ann-919-general",
+    "proofId": "erdos-919",
+    "range": { "startLine": 149, "endLine": 170 },
+    "type": "definition",
+    "title": "General Framework",
+    "content": "The questions generalize to arbitrary cardinals: for cardinals κ, λ, μ, does a graph on κ² exist with χ = λ and smaller subgraphs having χ ≤ μ? The E-H result is the case (ℵ₁, ℵ₁, ℵ₀) which is true.",
+    "mathContext": "This parameterized view helps understand what makes Problem #919 hard: we're asking about (ℵ₂, ℵ₂, ℵ₀) or (ℵ₂, ℵ₁, ℵ₀), with a larger gap.",
+    "significance": "key",
+    "relatedConcepts": ["generalization", "parameters", "cardinal-arithmetic"]
+  },
+  {
+    "id": "ann-919-babai",
+    "proofId": "erdos-919",
+    "range": { "startLine": 172, "endLine": 193 },
+    "type": "axiom",
+    "title": "Babai's Theorem and Its Failure",
+    "content": "Babai proved results about chromatic propagation for graphs on countable ordinals. The E-H construction shows these results fail at ω₁: there we can have χ = ℵ₁ globally while all smaller subgraphs have χ ≤ ℵ₀.",
+    "mathContext": "This is a 'phase transition' phenomenon: at countable cardinals chromatic constraints propagate, but at uncountable cardinals they can 'jump' from the subgraphs to the whole.",
+    "significance": "key",
+    "relatedConcepts": ["babai-theorem", "propagation", "counterexample"]
+  },
+  {
+    "id": "ann-919-status",
+    "proofId": "erdos-919",
+    "range": { "startLine": 195, "endLine": 206 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "Both questions remain OPEN. The problem cannot be resolved by finite computation since it involves uncountable cardinals and infinite structures. Set-theoretic independence (like with the Continuum Hypothesis) is possible.",
+    "mathContext": "Problems at this level often turn out to be independent of ZFC or require large cardinal assumptions.",
+    "significance": "supporting",
+    "relatedConcepts": ["open-problem", "independence", "zfc"]
+  },
+  {
+    "id": "ann-919-summary",
+    "proofId": "erdos-919",
+    "range": { "startLine": 208, "endLine": 222 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "The summary theorem combines what we know: (1) E-H construction exists on ω₁², and (2) a partial construction exists on ω₂² with the weaker ℵ₁ bound. This formally captures the state of knowledge.",
+    "mathContext": "The proof uses the axiomatized results directly, showing they form a coherent picture of partial progress.",
+    "significance": "key",
+    "relatedConcepts": ["summary", "known-results", "partial"]
+  },
+  {
+    "id": "ann-919-main",
+    "proofId": "erdos-919",
+    "range": { "startLine": 230, "endLine": 243 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "The main theorem establishes that the questions are well-posed: if Question1 is true, we get a graph with χ = ℵ₂; if Question2 is true, we get χ = ℵ₁. The disjunction leaves open which (if any) holds.",
+    "mathContext": "This is the formal statement of Problem #919. The proof is straightforward from the definitions but captures the logical structure.",
+    "significance": "critical",
+    "relatedConcepts": ["main-theorem", "well-posed", "formal-statement"]
+  }
+]
