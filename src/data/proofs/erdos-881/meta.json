@@ -1,0 +1,60 @@
+{
+  "id": "erdos-881",
+  "title": "Erdős Problem #881: Minimal Additive Bases and Order Increase",
+  "slug": "erdos-881",
+  "description": "For a minimal additive basis of order k, must there exist an infinite subset whose removal yields a basis of order k+1?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/881",
+    "status": "enhanced",
+    "proofRepoPath": "Proofs/Erdos881Problem.lean",
+    "tags": ["number theory", "additive basis", "additive combinatorics"],
+    "badge": "formalized",
+    "sorries": 2,
+    "erdosNumber": 881,
+    "erdosUrl": "https://erdosproblems.com/881",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős in 1998 [Er98] and concerns the structure of minimal additive bases. It relates to classical questions in additive number theory including Waring's problem and the Erdős-Turán conjecture.",
+    "problemStatement": "Let A ⊂ ℕ be an additive basis of order k which is minimal (no infinite subset can be removed while maintaining order k). Must there exist an infinite B ⊂ A such that A \\ B is a basis of order exactly k+1?",
+    "proofStrategy": "The formalization defines asymptotic additive bases of order k, minimal bases, and states the main conjecture. It includes structural properties like monotonicity and provides examples using perfect squares (Lagrange's theorem).",
+    "keyInsights": [
+      "A set A is a basis of order k if every large n is a sum of ≤ k elements of A",
+      "Minimal means no infinite subset removal preserves the order",
+      "The conjecture asks if order always increases by exactly 1 under optimal removal",
+      "Related to Waring's problem: k-th powers form a basis of order g(k)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "additive-bases",
+      "title": "Additive Bases",
+      "description": "Definition of asymptotic additive basis of order k"
+    },
+    {
+      "id": "minimal-bases",
+      "title": "Minimal Bases",
+      "description": "Bases that cannot have infinite subsets removed without order increase"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "description": "The open question about order increase by exactly 1"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "description": "Perfect squares and higher powers as additive bases"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #881 asks whether minimal additive bases always admit an infinite subset whose removal increases the order by exactly 1. This delicate structural question about additive bases remains open.",
+    "implications": "A positive answer would reveal a fundamental regularity in the structure of minimal additive bases, showing they always have 'room' to degrade gracefully by one order.",
+    "openQuestions": [
+      "Are there minimal bases where no removal increases order by exactly 1?",
+      "What is the structure of minimal bases for small orders?",
+      "How does this relate to the Erdős-Turán conjecture?"
+    ]
+  }
+}
