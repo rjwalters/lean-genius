@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-e269-header",
+    "proofId": "erdos-269",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #269: LCM Series Irrationality**\n\nLet P be a finite set of primes with |P| >= 2.\nLet {a_n} be the P-smooth numbers (all prime factors in P).\nLet L_n = [a_0,...,a_{n-1}] be the partial LCM.\n\n**Question:** Is the series sum 1/L_n irrational?\n\n**Status:**\n- Finite P: OPEN\n- Infinite P: SOLVED (always irrational)\n- Distinct terms: SOLVED (irrational)",
+    "mathContext": "From Erdos's letter to Fibonacci Quarterly (1973). Published in Vol. 12 (1974), p. 335. Related work in [ErGr80] and [Er88c].",
+    "significance": "critical",
+    "relatedConcepts": ["smooth numbers", "irrationality", "LCM", "infinite series"]
+  },
+  {
+    "id": "ann-e269-psmooth",
+    "proofId": "erdos-269",
+    "range": { "startLine": 34, "endLine": 72 },
+    "type": "definition",
+    "title": "P-smooth Numbers",
+    "content": "**IsPSmooth P n:** n is P-smooth (all prime divisors in P).\n\n```lean\ndef IsPSmooth (P : Set N) (n : N) : Prop :=\n  n > 0 and forall p, p.Prime -> p | n -> p in P\n```\n\n**Examples for P = {2, 3}:**\n1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, ...\n\n**Properties:**\n- 1 is P-smooth for any P (vacuously true)\n- If p in P and p prime, then p is P-smooth\n- Product of P-smooth numbers is P-smooth",
+    "mathContext": "Also called P-friable numbers. Fundamental in computational number theory (factorization algorithms, number field sieve).",
+    "significance": "critical",
+    "relatedConcepts": ["friable numbers", "regular numbers", "multiplicative semigroups"]
+  },
+  {
+    "id": "ann-e269-sequence",
+    "proofId": "erdos-269",
+    "range": { "startLine": 74, "endLine": 92 },
+    "type": "definition",
+    "title": "The P-smooth Sequence",
+    "content": "**smoothSeq P:** Enumeration of P-smooth numbers.\n\n```lean\nnoncomputable def smoothSeq (P : Set N) : N -> N :=\n  Nat.nth (IsPSmooth P)\n```\n\n**For P = {2, 3}:**\n- smoothSeq P 0 = 1\n- smoothSeq P 1 = 2\n- smoothSeq P 2 = 3\n- smoothSeq P 3 = 4\n- smoothSeq P 4 = 6\n- ...\n\nThe sequence is strictly increasing and exhausts all P-smooth numbers.",
+    "significance": "key",
+    "relatedConcepts": ["enumeration", "increasing sequences", "Nat.nth"]
+  },
+  {
+    "id": "ann-e269-lcm",
+    "proofId": "erdos-269",
+    "range": { "startLine": 94, "endLine": 128 },
+    "type": "definition",
+    "title": "Partial LCM",
+    "content": "**partialLcm P n = L_n = [a_0,...,a_{n-1}]**\n\n```lean\nnoncomputable def partialLcm (P : Set N) (n : N) : N :=\n  (Finset.range n).lcm (smoothSeq P)\n```\n\n**Key Properties:**\n- L_0 = 1 (empty LCM)\n- L_1 = 1 (just a_0 = 1)\n- L_{n+1} = lcm(L_n, a_n)\n- L_n is monotone non-decreasing\n- L_n is P-smooth\n\n**For P = {2,3}:**\nL_1=1, L_2=2, L_3=6, L_4=12, L_5=12 (duplicate!), ...",
+    "mathContext": "The key insight is that L_n stays constant when a_n | L_{n-1}. These 'duplicate' terms complicate the analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["LCM", "lattice operations", "Finset.lcm"]
+  },
+  {
+    "id": "ann-e269-series",
+    "proofId": "erdos-269",
+    "range": { "startLine": 130, "endLine": 151 },
+    "type": "definition",
+    "title": "The LCM Series",
+    "content": "**lcmSeries P = sum 1/L_n**\n\n```lean\nnoncomputable def lcmSeries (P : Set N) : R :=\n  tsum (fun n => (1 : R) / (partialLcm P n))\n```\n\n**Properties:**\n- Always converges (L_n grows at least exponentially)\n- Always positive\n- For P = {2,3}: S ~ 1 + 1/2 + 1/6 + 1/12 + 1/12 + ...\n\nThe series includes duplicate terms when L_n = L_{n-1}.",
+    "significance": "critical",
+    "relatedConcepts": ["infinite series", "convergence", "tsum"]
+  },
+  {
+    "id": "ann-e269-main",
+    "proofId": "erdos-269",
+    "range": { "startLine": 153, "endLine": 175 },
+    "type": "axiom",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**erdos_269 (OPEN):**\n\n```lean\naxiom erdos_269 (P : Finset N) (hPrime : forall p in P, p.Prime)\n    (hCard : P.card >= 2) :\n    Irrational (lcmSeries (P : Set N))\n```\n\n**Statement:**\nFor any finite set P of at least 2 primes, the LCM series is irrational.\n\n**What Makes It Hard:**\nThe duplicate terms (when L_n = L_{n-1}) create a complex pattern that depends on the specific primes in P.",
+    "mathContext": "The finite case remains open. Understanding the duplicate pattern is the key challenge.",
+    "significance": "critical",
+    "relatedConcepts": ["irrationality", "open problems", "finite sets of primes"]
+  },
+  {
+    "id": "ann-e269-infinite",
+    "proofId": "erdos-269",
+    "range": { "startLine": 177, "endLine": 192 },
+    "type": "axiom",
+    "title": "Infinite P Case (SOLVED)",
+    "content": "**erdos_269_infinite:**\n\n```lean\naxiom erdos_269_infinite (P : Set N)\n    (hPrime : forall p in P, p.Prime) (hInf : P.Infinite) :\n    Irrational (lcmSeries P)\n```\n\n**Erdos called this 'a simple exercise'.**\n\n**Why It's Easier:**\nWith infinitely many primes, there are infinitely many 'new contributions' at each p-adic level, preventing the series from being rational.\n\nThe finite case lacks this infinite source of irrationality.",
+    "mathContext": "The infinite case was solved by Erdos. The key difference is that infinite P provides endless new structure.",
+    "significance": "critical",
+    "relatedConcepts": ["infinite sets", "p-adic contributions", "solved cases"]
+  },
+  {
+    "id": "ann-e269-examples",
+    "proofId": "erdos-269",
+    "range": { "startLine": 194, "endLine": 228 },
+    "type": "concept",
+    "title": "Example: P = {2, 3}",
+    "content": "**The 3-smooth Numbers:**\n\n```lean\ndef twoThreeSmooth : Set N := {2, 3}\n```\n\n**Sequence:** 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, ...\n\n**Partial LCMs:**\n- L_1 = 1\n- L_2 = 2\n- L_3 = lcm(2,3) = 6\n- L_4 = lcm(6,4) = 12\n- L_5 = lcm(12,6) = 12 (duplicate!)\n- L_6 = lcm(12,8) = 24\n- ...\n\n**Note:** a_4 = 6 divides L_3 = 6, so L_4 = L_5.",
+    "significance": "key",
+    "relatedConcepts": ["3-smooth numbers", "regular numbers", "Babylonian mathematics"]
+  },
+  {
+    "id": "ann-e269-padic",
+    "proofId": "erdos-269",
+    "range": { "startLine": 230, "endLine": 256 },
+    "type": "definition",
+    "title": "P-adic Valuation of L_n",
+    "content": "**lcmPadicVal p n P = v_p(L_n)**\n\nThe p-adic valuation of the partial LCM.\n\n**Key Properties:**\n- Non-decreasing in n (for p in P)\n- Increases when a new power of p enters the sequence\n- v_p(L_n) = max{v_p(a_i) : i < n}\n\n**Insight:**\nThe LCM L_n 'records' the highest power of each prime seen so far. When p^k first appears in the sequence, v_p(L_n) jumps from k-1 to k.",
+    "mathContext": "P-adic valuations are fundamental tools in number theory. They measure how divisible a number is by prime powers.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "prime factorization", "LCM structure"]
+  },
+  {
+    "id": "ann-e269-distinct",
+    "proofId": "erdos-269",
+    "range": { "startLine": 284, "endLine": 306 },
+    "type": "axiom",
+    "title": "Distinct Terms Case (SOLVED)",
+    "content": "**erdos_269_distinct:**\n\nIf we remove duplicate terms (where L_n = L_{n-1}), the series is irrational.\n\n```lean\ndef distinctLcmTerms (P : Set N) : Set N :=\n  { n | n = 0 or partialLcm P n != partialLcm P (n - 1) }\n\naxiom erdos_269_distinct (P : Finset N) ... :\n    Irrational (distinctLcmSeries (P : Set N))\n```\n\n**Note by Erdos:**\nThe series without duplicates is irrational. The difficulty is precisely the duplicate terms!",
+    "mathContext": "This partial result shows that duplicates are the key obstacle. The 'cleaned' series is tractable.",
+    "significance": "critical",
+    "relatedConcepts": ["duplicate removal", "partial results", "series manipulation"]
+  },
+  {
+    "id": "ann-e269-summary",
+    "proofId": "erdos-269",
+    "range": { "startLine": 308, "endLine": 340 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdos Problem #269: Summary**\n\n```lean\ntheorem erdos_269_summary :\n    -- Infinite case is solved\n    (forall P, primes in P -> P.Infinite -> Irrational (lcmSeries P)) and\n    -- Distinct case is solved\n    (forall P finite primes, |P|>=2 -> Irrational (distinctLcmSeries P)) and\n    -- General finite case is open\n    True\n```\n\n**State of Knowledge:**\n1. Infinite P: SOLVED (irrational)\n2. Finite P, distinct: SOLVED (irrational)\n3. Finite P, full: OPEN",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "partial solutions", "research directions"]
+  }
+]
