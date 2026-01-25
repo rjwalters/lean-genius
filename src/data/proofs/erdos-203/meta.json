@@ -1,0 +1,141 @@
+{
+  "id": "erdos-203",
+  "title": "Erdos Problem #203: Covering Systems and Prime Avoidance",
+  "slug": "erdos-203",
+  "description": "Is there an integer m >= 1 with (m, 6) = 1 such that none of 2^k * 3^l * m + 1 are prime, for any k, l >= 0?",
+  "meta": {
+    "author": "Erdos",
+    "sourceUrl": "https://erdosproblems.com/203",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos203Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "covering-systems",
+      "sierpinski",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 203,
+    "erdosUrl": "https://erdosproblems.com/203",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.ModEq",
+        "description": "Modular equivalence for integers",
+        "module": "Mathlib.Data.Int.ModEq"
+      }
+    ],
+    "originalContributions": [
+      "candidateNumber definition: 2^k * 3^l * m + 1",
+      "AvoidsPrimes definition: m coprime to 6 with no prime candidates",
+      "ErdosConjecture203 definition: existence of avoiding m",
+      "IsSierpinskiNumber definition: classical Sierpinski numbers",
+      "selfridge_sierpinski: the known smallest Sierpinski number",
+      "IsCoveringSystem definition: covering congruences",
+      "PrimeCovering definition: prime-associated covering system",
+      "IsExtendedAvoiding definition: two-dimensional avoidance",
+      "ExtendedDivisibility definition: primes dividing 2^a * 3^b - 1",
+      "ord2, ord3 definitions: multiplicative orders",
+      "coprime_6_equiv theorem: coprime to 6 iff coprime to 2 and 3",
+      "base_case theorem: m + 1 must not be prime",
+      "one_fails, five_fails theorems: counterexamples",
+      "IsGeneralizedAvoiding definition: multi-prime generalization",
+      "erdos_203_statement theorem: formal main statement"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdos posed this problem in 1980 with Graham [ErGr80, p. 27]. It generalizes the Sierpinski problem, which asks for odd m such that 2^k * m + 1 is never prime for any k >= 0.\n\nThe classical Sierpinski problem was solved: Selfridge (1962) showed 78557 is Sierpinski, using covering systems. The Sierpinski Problem (finding the smallest such number) remains open, with candidates being eliminated by the 'Seventeen or Bust' project.\n\nProblem 203 extends this to expressions involving both powers of 2 and 3, making the covering system approach much more complex.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs there an integer m >= 1 with gcd(m, 6) = 1 such that none of 2^k * 3^l * m + 1 are prime, for any k, l >= 0?\n\n**Background:**\n- Extends Sierpinski numbers to two-base expressions\n- Connected to covering systems of congruences\n- The two-dimensional nature makes this much harder than the classical case",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Candidates:** Define candidateNumber(m, k, l) = 2^k * 3^l * m + 1\n\n2. **Avoidance:** AvoidsPrimes(m) requires coprimality and no prime candidates\n\n3. **Sierpinski:** Formalize classical Sierpinski numbers for comparison\n\n4. **Covering Systems:** Define covering systems and their connection to Sierpinski\n\n5. **Extended Problem:** Formalize the two-dimensional covering challenge",
+    "keyInsights": [
+      "**Sierpinski Connection:** The problem generalizes Sierpinski numbers to 2^k * 3^l factors",
+      "**Covering Systems:** Classical Sierpinski proofs use covering systems with primes dividing 2^n - 1",
+      "**Two-Dimensional:** The k, l parameters make the covering system approach much harder",
+      "**Selfridge's Number:** 78557 is the smallest known Sierpinski number",
+      "**Small Cases Fail:** m = 1, 5, ... quickly produce primes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "candidateNumber, AvoidsPrimes, AvoidingSet",
+      "startLine": 27,
+      "endLine": 41
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture203, conjecture_equiv",
+      "startLine": 43,
+      "endLine": 61
+    },
+    {
+      "id": "sierpinski",
+      "title": "Sierpinski Numbers",
+      "summary": "IsSierpinskiNumber, selfridge_sierpinski, sierpinski_exists",
+      "startLine": 63,
+      "endLine": 88
+    },
+    {
+      "id": "covering",
+      "title": "Covering Systems",
+      "summary": "IsCoveringSystem, PrimeCovering, covering_implies_sierpinski",
+      "startLine": 90,
+      "endLine": 108
+    },
+    {
+      "id": "extended",
+      "title": "Extended Problem",
+      "summary": "IsExtendedAvoiding, ExtendedDivisibility, ord2, ord3",
+      "startLine": 110,
+      "endLine": 136
+    },
+    {
+      "id": "constraints",
+      "title": "Constraints and Small Cases",
+      "summary": "coprime_6_equiv, base_case, one_fails, five_fails",
+      "startLine": 138,
+      "endLine": 178
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalized Problems",
+      "summary": "IsGeneralizedAvoiding, QuadraticProductAvoiding",
+      "startLine": 180,
+      "endLine": 198
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_203_status, erdos_203_statement",
+      "startLine": 200,
+      "endLine": 220
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #203 asks whether there exists an integer m coprime to 6 such that 2^k * 3^l * m + 1 is never prime for any k, l >= 0. This generalizes Sierpinski numbers to two prime bases. The problem remains OPEN.",
+    "implications": "A positive answer would extend covering system techniques to two-dimensional lattices of exponents. A negative answer would establish fundamental limitations on prime avoidance.",
+    "openQuestions": [
+      "Does such an m exist?",
+      "Can covering systems be extended to handle 2^k * 3^l factors?",
+      "What is the relationship to the Sierpinski problem?",
+      "Are there analogues for other pairs of primes?",
+      "What computational bounds have been established?"
+    ]
+  }
+}
