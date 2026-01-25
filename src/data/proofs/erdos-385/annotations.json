@@ -1,0 +1,110 @@
+[
+  {
+    "id": "erdos-385-header",
+    "proofId": "erdos-385",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 31 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #385 defines F(n) = max{m + p(m) : m < n composite} where p(m) is the least prime divisor. Question 1: F(n) > n for large n? Question 2: F(n) - n → ∞?",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-385-composite",
+    "proofId": "erdos-385",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 45 },
+    "title": "Composite Numbers",
+    "content": "A number n is composite if n > 1 and n is not prime. These are exactly the numbers with non-trivial factorizations: 4, 6, 8, 9, 10, ...",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-385-least-prime",
+    "proofId": "erdos-385",
+    "type": "definition",
+    "range": { "startLine": 47, "endLine": 64 },
+    "title": "Least Prime Divisor",
+    "content": "For n > 1, p(n) is the smallest prime dividing n. For composite n, p(n) ≤ √n (key property). We use Mathlib's minFac which computes this efficiently.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-385-function-f",
+    "proofId": "erdos-385",
+    "type": "definition",
+    "range": { "startLine": 68, "endLine": 87 },
+    "title": "The Function F(n)",
+    "content": "F(n) = max{m + p(m) : m < n, m composite}. We take the maximum of m + p(m) over all composite m less than n. This measures how far composite values can 'reach beyond' n.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-385-upper-bound",
+    "proofId": "erdos-385",
+    "type": "theorem",
+    "range": { "startLine": 91, "endLine": 97 },
+    "title": "Trivial Upper Bound",
+    "content": "F(n) ≤ n + √n. Since any composite m < n has p(m) ≤ √m ≤ √n, we get m + p(m) < n + √n. This is tight asymptotically.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-385-question1",
+    "proofId": "erdos-385",
+    "type": "theorem",
+    "range": { "startLine": 101, "endLine": 110 },
+    "title": "Question 1 (OPEN)",
+    "content": "Is F(n) > n for all sufficiently large n? Equivalently: for large n, can we always find a composite m < n with m + p(m) > n? Plausible prime conjectures imply this.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-385-question2",
+    "proofId": "erdos-385",
+    "type": "theorem",
+    "range": { "startLine": 112, "endLine": 123 },
+    "title": "Question 2 (OPEN)",
+    "content": "Does F(n) - n → ∞ as n → ∞? This is stronger than Question 1, asking not just that F(n) exceeds n but that the excess grows without bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-385-problem430",
+    "proofId": "erdos-385",
+    "type": "context",
+    "range": { "startLine": 127, "endLine": 135 },
+    "title": "Connection to Problem #430",
+    "content": "Sarosh Adenwalla observed Question 1 is equivalent to Problem #430. This asks about the same phenomenon from different angles - density of composites with large m + p(m).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-385-examples",
+    "proofId": "erdos-385",
+    "type": "example",
+    "range": { "startLine": 139, "endLine": 154 },
+    "title": "Concrete Example",
+    "content": "F(10) = 12, achieved by m = 9 with p(9) = 3 so 9 + 3 = 12. The composites below 10 are {4,6,8,9} giving sums {6,8,10,12}. Here F(10) > 10. ✓",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-385-lower-bound",
+    "proofId": "erdos-385",
+    "type": "theorem",
+    "range": { "startLine": 158, "endLine": 167 },
+    "title": "Conjectured Lower Bound",
+    "content": "It's conjectured that F(n) ≥ n + (1 - o(1))√n, meaning we can always find m < n composite with m + p(m) close to n + √n (the upper bound). Gap is o(√n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-385-difficulty",
+    "proofId": "erdos-385",
+    "type": "context",
+    "range": { "startLine": 171, "endLine": 182 },
+    "title": "Why This Is Hard",
+    "content": "The problem connects to prime distribution, the parity problem in sieve theory, and Siegel zeros (discussed by Terry Tao). Proving F(n) > n requires understanding when composites with small p(m) appear close to n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-385-summary",
+    "proofId": "erdos-385",
+    "type": "conclusion",
+    "range": { "startLine": 194, "endLine": 220 },
+    "title": "Summary",
+    "content": "Both questions remain OPEN. F(n) ≤ n + √n is trivial. Conjecturally F(n) ≥ n + (1-o(1))√n. Related to Problems #430, #463, and OEIS A322292. Terry Tao connected it to Siegel zeros.",
+    "significance": "key"
+  }
+]
