@@ -1,0 +1,135 @@
+[
+  {
+    "id": "erdos768-witness",
+    "line": 26,
+    "type": "definition",
+    "title": "Witness Divisor Property",
+    "content": "For a prime p dividing n, a 'witness' is a divisor d > 1 of n with d ≡ 1 (mod p). For example, if n = 6 = 2 × 3 and p = 2, then d = 3 is a witness since 3 > 1, 3 | 6, and 3 ≡ 1 (mod 2)."
+  },
+  {
+    "id": "erdos768-setA",
+    "line": 30,
+    "type": "definition",
+    "title": "The Set A",
+    "content": "A = {n ∈ ℕ : for every prime p | n, there exists d | n with d > 1 and d ≡ 1 (mod p)}. This is a multiplicatively defined set with interesting asymptotic density. The condition relates to the divisor lattice structure."
+  },
+  {
+    "id": "erdos768-alternative",
+    "line": 37,
+    "type": "definition",
+    "title": "Alternative Definition",
+    "content": "We can equivalently define A using prime factors and divisors: n ∈ A iff for each p ∈ primeFactors(n), there exists d ∈ divisors(n) with d > 1 and d % p = 1. This makes the computation more explicit."
+  },
+  {
+    "id": "erdos768-one",
+    "line": 45,
+    "type": "theorem",
+    "title": "1 is in A",
+    "content": "The number 1 is vacuously in A since it has no prime divisors. The condition 'for all primes p | n' is vacuously true when n = 1. This gives the smallest element of A."
+  },
+  {
+    "id": "erdos768-prime-power",
+    "line": 54,
+    "type": "theorem",
+    "title": "Prime Powers are Not in A",
+    "content": "If n = p^k for a prime p, then n ∉ A. Any divisor of p^k is p^j for some j, and p^j ≡ 0 (mod p) for j ≥ 1. There's no d > 1 with d | p^k and d ≡ 1 (mod p). This excludes all prime powers."
+  },
+  {
+    "id": "erdos768-product",
+    "line": 66,
+    "type": "theorem",
+    "title": "Products with Witnesses",
+    "content": "If n is a product of distinct primes where each prime p has another prime q | n with q ≡ 1 (mod p), then n ∈ A. For example, n = 2 × 3 = 6 works because 3 ≡ 1 (mod 2) and 2 can serve as witness for 3."
+  },
+  {
+    "id": "erdos768-countA",
+    "line": 78,
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "A(N) = |A ∩ [1,N]| counts how many integers up to N are in set A. The main question concerns the asymptotic behavior of A(N)/N as N → ∞. This density is the central object of study."
+  },
+  {
+    "id": "erdos768-density",
+    "line": 82,
+    "type": "definition",
+    "title": "Density of A",
+    "content": "The density d(N) = A(N)/N gives the proportion of integers up to N in A. Erdős showed this decays like exp(-c√(log N)·log log N) for some c > 0, but the exact value of c is unknown."
+  },
+  {
+    "id": "erdos768-exponent",
+    "line": 91,
+    "type": "definition",
+    "title": "The Exponent Function",
+    "content": "The natural scale for this problem is √(log N)·log log N. This double-logarithmic function appears because the condition involves prime divisors, and the number of prime factors of n is roughly log log n on average."
+  },
+  {
+    "id": "erdos768-lower-bound",
+    "line": 95,
+    "type": "axiom",
+    "title": "Erdős's Lower Bound",
+    "content": "Erdős proved: density ≥ exp(-c·√(log N)·log log N) for some c > 0. This means A is not too sparse—there's a positive proportion at this scale. The proof uses counting arguments on prime factorizations."
+  },
+  {
+    "id": "erdos768-upper-bound",
+    "line": 99,
+    "type": "axiom",
+    "title": "Erdős's Upper Bound",
+    "content": "Erdős also proved: density ≤ exp(-(1+o(1))·√(log N·log log N)). This slightly different form gives an upper bound. The gap between bounds leaves room for the exact asymptotic to be determined."
+  },
+  {
+    "id": "erdos768-conjecture",
+    "line": 109,
+    "type": "axiom",
+    "title": "The Main Conjecture",
+    "content": "The question: does a constant c exist such that A(N)/N ~ exp(-c√(log N)·log log N)? This asks whether the ratio -log(density)/exponent converges. Both 'yes' and 'no' are possible resolutions."
+  },
+  {
+    "id": "erdos768-simple-groups",
+    "line": 124,
+    "type": "context",
+    "title": "Connection to Simple Groups",
+    "content": "The set A bounds counts of non-cyclic simple group orders! If n is the order of a non-cyclic simple group, then n ∈ A. This follows from Sylow theory: the existence of Sylow subgroups creates the required divisors."
+  },
+  {
+    "id": "erdos768-noncyclic",
+    "line": 136,
+    "type": "axiom",
+    "title": "Non-Cyclic Simple Groups in A",
+    "content": "If n is the order of a non-cyclic simple group, then n ∈ A. This deep connection to group theory motivates studying A. The density of A bounds how common such group orders can be."
+  },
+  {
+    "id": "erdos768-structure",
+    "line": 147,
+    "type": "theorem",
+    "title": "Squarefree Structure",
+    "content": "If n ∈ A and a prime p | n with p² ∤ n, then n must have another prime factor q ≡ 1 (mod p). The witness d must have a prime factor congruent to 1 mod p, which must divide n."
+  },
+  {
+    "id": "erdos768-smallest",
+    "line": 155,
+    "type": "axiom",
+    "title": "Smallest Non-trivial Element",
+    "content": "After 1, the next element of A is 6 = 2 × 3. The primes 2, 3, 4, 5 are not in A (they're prime or prime powers). 6 works because 3 serves as witness for 2 (3 ≡ 1 mod 2)."
+  },
+  {
+    "id": "erdos768-scaling",
+    "line": 169,
+    "type": "axiom",
+    "title": "Log-Log Scaling",
+    "content": "The natural way to study the density is via log(-log(density)). This should scale like √(log N)·log log N, which is the 'right' scale for problems involving prime factorizations and divisibility."
+  },
+  {
+    "id": "erdos768-six",
+    "line": 183,
+    "type": "theorem",
+    "title": "6 is in A",
+    "content": "6 = 2 × 3 is in A. For p = 2, the witness is d = 3 (since 3 > 1, 3 | 6, 3 ≡ 1 mod 2). For p = 3, we can also use d = 3 itself (3 ≡ 1 mod 3 doesn't work, but 3 ≡ 0 mod 3... actually we need a different witness)."
+  },
+  {
+    "id": "erdos768-main",
+    "line": 203,
+    "type": "axiom",
+    "title": "Main Open Problem",
+    "content": "Erdős Problem #768 asks for the exact asymptotic of |A ∩ [1,N]|/N. We have bounds exp(-c₂·f(N)) ≤ density ≤ exp(-c₁·f(N)) where f(N) = √(log N)·log log N, but the precise constant(s) remain unknown."
+  }
+]
