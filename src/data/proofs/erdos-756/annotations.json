@@ -1,173 +1,218 @@
 [
   {
-    "id": "ann-756-point",
+    "id": "ann-e756-header",
+    "proofId": "erdos-756",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #756: Rich Distances in the Plane**\n\nCan there be ≫n distinct distances each occurring >n times among n points in ℝ²?\n\n**Answer: YES** (Bhowmick 2024)\n\n**Key Results:**\n- Bhowmick: ⌊n/4⌋ distances occur ≥ n+1 times\n- Hopf-Pannwitz (1934): Largest distance ≤ n times (so never rich)\n- Clemen-Dumitrescu-Liu (2025): Grids have n^{c/log log n} rich distances\n\n**References:**\n- [Bh24] arXiv:2407.01174\n- [CDL25] arXiv:2505.04283",
+    "mathContext": "This problem connects distance geometry, combinatorics, and discrete geometry. The solution reveals that despite the Hopf-Pannwitz constraint, many distances can be 'rich'.",
+    "significance": "critical",
+    "relatedConcepts": ["distance problems", "discrete geometry", "point configurations", "multiplicities"]
+  },
+  {
+    "id": "ann-e756-point",
     "proofId": "erdos-756",
     "range": { "startLine": 44, "endLine": 45 },
     "type": "definition",
-    "title": "Point",
-    "content": "A point in the Euclidean plane ℝ².",
-    "significance": "critical"
+    "title": "Point in the Plane",
+    "content": "**Point := EuclideanSpace ℝ (Fin 2)**\n\nA point in the Euclidean plane ℝ², represented using Mathlib's EuclideanSpace.\n\n```lean\nabbrev Point := EuclideanSpace ℝ (Fin 2)\n```\n\nThis gives us access to the Euclidean norm ‖·‖ for computing distances.",
+    "mathContext": "EuclideanSpace ℝ (Fin 2) is the canonical representation of ℝ² in Mathlib with its standard inner product and norm.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean space", "coordinates", "inner product"]
   },
   {
-    "id": "ann-756-dist",
+    "id": "ann-e756-dist",
     "proofId": "erdos-756",
-    "range": { "startLine": 51, "endLine": 53 },
+    "range": { "startLine": 47, "endLine": 53 },
     "type": "definition",
-    "title": "dist",
-    "content": "Euclidean distance ‖p - q‖ between points.",
-    "significance": "critical"
+    "title": "Euclidean Distance",
+    "content": "**dist(p, q) = ‖p - q‖**\n\nThe Euclidean distance between two points.\n\n```lean\nnoncomputable def dist (p q : Point) : ℝ :=\n  ‖p - q‖\n```\n\n**Properties:**\n- dist(p, q) ≥ 0\n- dist(p, q) = 0 ↔ p = q\n- dist(p, q) = dist(q, p)\n- Triangle inequality: dist(p, r) ≤ dist(p, q) + dist(q, r)\n\nAlso defined: distSq(p, q) = ‖p - q‖² (squared distance, often computationally easier).",
+    "mathContext": "The Euclidean norm ‖·‖ comes from Mathlib's normed space structure on EuclideanSpace.",
+    "significance": "critical",
+    "relatedConcepts": ["Euclidean norm", "metric", "triangle inequality"]
   },
   {
-    "id": "ann-756-pointset",
+    "id": "ann-e756-pointset",
     "proofId": "erdos-756",
     "range": { "startLine": 55, "endLine": 56 },
     "type": "definition",
-    "title": "PointSet",
-    "content": "Finite set of points in the plane.",
-    "significance": "critical"
+    "title": "Point Set",
+    "content": "**PointSet := Finset Point**\n\nA finite set of points in the plane.\n\n```lean\nabbrev PointSet := Finset Point\n```\n\nUsing Finset ensures finiteness and gives access to cardinality |A| = A.card.",
+    "significance": "key",
+    "relatedConcepts": ["finite sets", "cardinality", "point configurations"]
   },
   {
-    "id": "ann-756-alldist",
+    "id": "ann-e756-alldist",
     "proofId": "erdos-756",
     "range": { "startLine": 62, "endLine": 64 },
     "type": "definition",
-    "title": "allDistances",
-    "content": "Set of all positive pairwise distances in A.",
-    "significance": "critical"
+    "title": "All Distances",
+    "content": "**allDistances A:**\n\nThe set of all positive pairwise distances in point set A.\n\n```lean\nnoncomputable def allDistances (A : PointSet) : Finset ℝ :=\n  Finset.image₂ dist A A |>.filter (· > 0)\n```\n\n**Size:** For n points in general position, |allDistances A| can range from 1 (all on a circle centered at one point) to C(n,2) = n(n-1)/2 (all distinct).\n\nThe famous Erdős distinct distances problem asks for the minimum.",
+    "mathContext": "For n random points, almost surely all distances are distinct. Structured sets (like grids) have fewer distinct distances.",
+    "significance": "critical",
+    "relatedConcepts": ["distinct distances", "Erdős distance problem", "point configurations"]
   },
   {
-    "id": "ann-756-mult",
+    "id": "ann-e756-mult",
     "proofId": "erdos-756",
     "range": { "startLine": 70, "endLine": 72 },
     "type": "definition",
-    "title": "distanceMultiplicity",
-    "content": "Count of ordered pairs (p,q) with dist(p,q) = d.",
-    "significance": "critical"
+    "title": "Distance Multiplicity",
+    "content": "**distanceMultiplicity A d:**\n\nThe number of ordered pairs (p, q) in A × A with dist(p, q) = d.\n\n```lean\nnoncomputable def distanceMultiplicity (A : PointSet) (d : ℝ) : ℕ :=\n  ((A ×ˢ A).filter fun (p, q) => dist p q = d).card\n```\n\n**Note:** This counts ordered pairs, so each unordered pair {p, q} contributes 2 to the count (unless p = q, which has d = 0).\n\n**Example:** If 3 points form an equilateral triangle with side 1, then distanceMultiplicity A 1 = 6.",
+    "mathContext": "High multiplicity means many point pairs share the same distance - a key phenomenon in distance geometry.",
+    "significance": "critical",
+    "relatedConcepts": ["unit distance problem", "repeated distances", "incidence geometry"]
   },
   {
-    "id": "ann-756-rich",
+    "id": "ann-e756-rich",
     "proofId": "erdos-756",
     "range": { "startLine": 74, "endLine": 76 },
     "type": "definition",
-    "title": "IsRichDistance",
-    "content": "A distance is rich if multiplicity > |A|.",
-    "significance": "critical"
+    "title": "Rich Distance",
+    "content": "**IsRichDistance A d:**\n\nA distance d is \"rich\" in A if its multiplicity exceeds |A|.\n\n```lean\ndef IsRichDistance (A : PointSet) (d : ℝ) : Prop :=\n  distanceMultiplicity A d > A.card\n```\n\n**Why this threshold?**\nFor n points, the \"trivial\" multiplicity bound is n (think of n points on a circle - each pair on the circle defines one distance). Going beyond n is the \"rich\" phenomenon.\n\n**Key Question:** How many distances can be rich simultaneously?",
+    "mathContext": "The threshold n is natural: regular n-gon vertices have each distance occurring exactly n times.",
+    "significance": "critical",
+    "relatedConcepts": ["multiplicity threshold", "distance counting", "rich structures"]
   },
   {
-    "id": "ann-756-numrich",
+    "id": "ann-e756-numrich",
     "proofId": "erdos-756",
     "range": { "startLine": 78, "endLine": 80 },
     "type": "definition",
-    "title": "numRichDistances",
-    "content": "Count of distances with multiplicity > |A|.",
-    "significance": "critical"
+    "title": "Number of Rich Distances",
+    "content": "**numRichDistances A:**\n\nCount of distances with multiplicity > |A|.\n\n```lean\nnoncomputable def numRichDistances (A : PointSet) : ℕ :=\n  ((allDistances A).filter (IsRichDistance A)).card\n```\n\nThe main question is: how large can numRichDistances be as a function of n = |A|?",
+    "significance": "critical",
+    "relatedConcepts": ["counting rich distances", "extremal configurations"]
   },
   {
-    "id": "ann-756-question",
+    "id": "ann-e756-question",
     "proofId": "erdos-756",
     "range": { "startLine": 86, "endLine": 90 },
     "type": "definition",
-    "title": "ErdosPachQuestion",
-    "content": "Can ≫n distances each occur >n times among n points?",
-    "significance": "critical"
+    "title": "The Erdős-Pach Question",
+    "content": "**ErdosPachQuestion:**\n\nCan the number of rich distances be ≫n (linear in n)?\n\n```lean\ndef ErdosPachQuestion : Prop :=\n  ∃ c : ℝ, c > 0 ∧\n    ∀ n : ℕ, n ≥ 4 →\n      ∃ A : PointSet, A.card = n ∧ (numRichDistances A : ℝ) ≥ c * n\n```\n\n**In Words:** For some constant c > 0 and all n ≥ 4, there exists a point set of n points with at least c·n rich distances.\n\n**Answer: YES** with c = 1/4 (Bhowmick 2024).",
+    "mathContext": "The question asks for linear growth of rich distances. Bhowmick achieved c = 1/4.",
+    "significance": "critical",
+    "relatedConcepts": ["linear growth", "extremal problems", "existence questions"]
   },
   {
-    "id": "ann-756-strong",
+    "id": "ann-e756-strong",
     "proofId": "erdos-756",
     "range": { "startLine": 92, "endLine": 96 },
     "type": "definition",
-    "title": "StrongErdosPachQuestion",
-    "content": "Can ALL distances (except largest) be rich?",
-    "significance": "key"
+    "title": "Strong Erdős-Pach Question",
+    "content": "**StrongErdosPachQuestion:**\n\nCan ALL distances (except the largest) be rich?\n\n```lean\ndef StrongErdosPachQuestion : Prop :=\n  ∀ n : ℕ, n ≥ 3 →\n    ∃ A : PointSet, A.card = n ∧\n      numRichDistances A = numDistinctDistances A - 1\n```\n\nThis is the original Erdős-Pach formulation. The \"-1\" accounts for the largest distance (which cannot be rich by Hopf-Pannwitz).\n\n**Status:** OPEN - Bhowmick's construction achieves only ⌊n/4⌋, not all distances.",
+    "mathContext": "The strong form asks if the Hopf-Pannwitz constraint is the ONLY obstruction to richness.",
+    "significance": "key",
+    "relatedConcepts": ["extremal configurations", "all distances rich", "open problems"]
   },
   {
-    "id": "ann-756-maxdist",
+    "id": "ann-e756-maxdist",
     "proofId": "erdos-756",
     "range": { "startLine": 102, "endLine": 104 },
     "type": "definition",
-    "title": "maxDistance",
-    "content": "The largest distance in the point set.",
-    "significance": "key"
+    "title": "Maximum Distance",
+    "content": "**maxDistance A:**\n\nThe largest distance occurring in point set A.\n\n```lean\nnoncomputable def maxDistance (A : PointSet) : ℝ :=\n  (allDistances A).sup' (by sorry) id\n```\n\nThis is the diameter of the point set.\n\n**Geometric Meaning:** The maximum distance is achieved by points on the convex hull of A.",
+    "significance": "key",
+    "relatedConcepts": ["diameter", "convex hull", "extreme points"]
   },
   {
-    "id": "ann-756-hopf",
+    "id": "ann-e756-hopf",
     "proofId": "erdos-756",
     "range": { "startLine": 106, "endLine": 108 },
-    "type": "theorem",
-    "title": "hopf_pannwitz",
-    "content": "Hopf-Pannwitz (1934): Largest distance occurs ≤ n times.",
-    "significance": "critical"
+    "type": "axiom",
+    "title": "Hopf-Pannwitz Theorem (1934)",
+    "content": "**hopf_pannwitz:**\n\nThe largest distance in a set of n points occurs at most n times.\n\n```lean\naxiom hopf_pannwitz (A : PointSet) (hA : A.card ≥ 2) :\n  distanceMultiplicity A (maxDistance A) ≤ A.card\n```\n\n**Why?** The diameter is achieved only by points on the convex hull. With n points, there are at most n pairs achieving the maximum (think of a regular n-gon).\n\n**Consequence:** The largest distance is NEVER rich.",
+    "mathContext": "This classical result (Hopf-Pannwitz 1934) is the only known universal constraint on distance multiplicities.",
+    "significance": "critical",
+    "relatedConcepts": ["convex hull", "diameter", "classical geometry", "extremal point pairs"]
   },
   {
-    "id": "ann-756-maxnotrich",
+    "id": "ann-e756-maxnotrich",
     "proofId": "erdos-756",
     "range": { "startLine": 110, "endLine": 115 },
     "type": "theorem",
-    "title": "max_distance_not_rich",
-    "content": "The largest distance is never rich.",
-    "significance": "key"
+    "title": "Maximum Distance Not Rich",
+    "content": "**max_distance_not_rich:**\n\nDirect consequence: the largest distance is never rich.\n\n```lean\ntheorem max_distance_not_rich (A : PointSet) (hA : A.card ≥ 2) :\n    ¬IsRichDistance A (maxDistance A)\n```\n\n**Proof:** By Hopf-Pannwitz, multiplicity ≤ n. Rich requires multiplicity > n. Contradiction.\n\nThis is why the strong question asks for n-1 rich distances (excluding the largest).",
+    "mathContext": "This is a direct corollary of Hopf-Pannwitz, proved in Lean using omega.",
+    "significance": "key",
+    "relatedConcepts": ["corollary", "constraint on richness"]
   },
   {
-    "id": "ann-756-bhowmick",
+    "id": "ann-e756-bhowmick-main",
     "proofId": "erdos-756",
     "range": { "startLine": 128, "endLine": 130 },
-    "type": "theorem",
-    "title": "bhowmick_main",
-    "content": "Bhowmick (2024): ∃ n points with ⌊n/4⌋ rich distances.",
-    "significance": "critical"
+    "type": "axiom",
+    "title": "Bhowmick's Main Result (2024)",
+    "content": "**bhowmick_main:**\n\nFor n ≥ 4, there exist n points with at least ⌊n/4⌋ rich distances.\n\n```lean\naxiom bhowmick_main (n : ℕ) (hn : n ≥ 4) :\n  ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4\n```\n\n**Significance:** This proves ErdosPachQuestion with constant c = 1/4.\n\n**Construction:** Bhowmick gives an explicit geometric construction (see arXiv:2407.01174).",
+    "mathContext": "Bhowmick's 2024 paper provides the first construction achieving linear growth in rich distances.",
+    "significance": "critical",
+    "relatedConcepts": ["explicit construction", "linear bound", "affirmative answer"]
   },
   {
-    "id": "ann-756-general",
+    "id": "ann-e756-bhowmick-general",
     "proofId": "erdos-756",
     "range": { "startLine": 132, "endLine": 136 },
-    "type": "theorem",
-    "title": "bhowmick_general",
-    "content": "General: ⌊n/(2(m+1))⌋ distances with multiplicity ≥ n+m.",
-    "significance": "key"
+    "type": "axiom",
+    "title": "Bhowmick's General Result",
+    "content": "**bhowmick_general:**\n\nFor higher multiplicities: ⌊n/(2(m+1))⌋ distances can occur ≥ n+m times.\n\n```lean\naxiom bhowmick_general (m n : ℕ) (hn : n ≥ 2 * (m + 1)) :\n  ∃ A : PointSet, A.card = n ∧\n    (((allDistances A).filter fun d =>\n      distanceMultiplicity A d ≥ n + m).card : ℕ) ≥ n / (2 * (m + 1))\n```\n\n**Trade-off:** Higher multiplicity (n+m instead of n+1) means fewer such distances.",
+    "mathContext": "This generalizes the main result to multiplicities beyond the n+1 threshold.",
+    "significance": "key",
+    "relatedConcepts": ["trade-off", "higher multiplicities", "generalization"]
   },
   {
-    "id": "ann-756-answer",
+    "id": "ann-e756-answer",
     "proofId": "erdos-756",
     "range": { "startLine": 142, "endLine": 150 },
     "type": "theorem",
-    "title": "erdos_756_answer",
-    "content": "The answer to Erdős #756 is YES.",
-    "significance": "critical"
+    "title": "Answer: YES",
+    "content": "**erdos_756_answer:**\n\nThe answer to Erdős Problem #756 is YES.\n\n```lean\ntheorem erdos_756_answer : ErdosPachQuestion := by\n  unfold ErdosPachQuestion\n  use 1/4\n  constructor\n  · norm_num\n  intro n hn\n  obtain ⟨A, hcard, hrich⟩ := bhowmick_main n hn\n  exact ⟨A, hcard, by simp only [hcard]; linarith [hrich]⟩\n```\n\n**Proof:** Use Bhowmick's construction with constant c = 1/4.",
+    "mathContext": "This theorem formally resolves Erdős Problem #756 by invoking Bhowmick's axiomatized result.",
+    "significance": "critical",
+    "relatedConcepts": ["problem resolution", "existence proof"]
   },
   {
-    "id": "ann-756-cdl",
+    "id": "ann-e756-cdl",
     "proofId": "erdos-756",
     "range": { "startLine": 165, "endLine": 170 },
-    "type": "theorem",
-    "title": "clemen_dumitrescu_liu",
-    "content": "Square grid: n^{c/loglog n} rich distances (2025).",
-    "significance": "key"
+    "type": "axiom",
+    "title": "Square Grid Results (2025)",
+    "content": "**clemen_dumitrescu_liu:**\n\nOn the n×n square grid: superpolynomially many rich distances.\n\n```lean\naxiom clemen_dumitrescu_liu (n : ℕ) (hn : n ≥ 2) :\n  ∃ c : ℝ, c > 0 ∧\n    let A := squareGrid n\n    let k := n^2  -- number of grid points\n    (numRichDistances A : ℝ) ≥ k^(c / Real.log (Real.log k))\n```\n\n**Growth:** n^{c/log log n} rich distances among n² = k grid points.\n\nThe grid structure creates many distances with high multiplicity!",
+    "mathContext": "Clemen-Dumitrescu-Liu (2025) showed structured sets like grids can achieve superpolynomial richness.",
+    "significance": "key",
+    "relatedConcepts": ["square grid", "lattice points", "superpolynomial growth"]
   },
   {
-    "id": "ann-756-ratio",
+    "id": "ann-e756-ratio",
     "proofId": "erdos-756",
-    "range": { "startLine": 203, "endLine": 205 },
-    "type": "definition",
-    "title": "richDistanceRatio",
-    "content": "Ratio (# rich distances) / n.",
-    "significance": "supporting"
+    "range": { "startLine": 203, "endLine": 217 },
+    "type": "theorem",
+    "title": "Richness Ratio",
+    "content": "**richDistanceRatio and bhowmick_ratio:**\n\nThe ratio of rich distances to n.\n\n```lean\nnoncomputable def richDistanceRatio (A : PointSet) : ℝ :=\n  (numRichDistances A : ℝ) / A.card\n\ntheorem bhowmick_ratio (n : ℕ) (hn : n ≥ 4) :\n    ∃ A : PointSet, A.card = n ∧ richDistanceRatio A ≥ 1/4\n```\n\nBhowmick achieves ratio ≥ 1/4. What is the optimal ratio as n → ∞?",
+    "mathContext": "The ratio question asks for the best constant in the linear bound.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic ratio", "optimal constant", "open problem"]
   },
   {
-    "id": "ann-756-upper",
+    "id": "ann-e756-upper",
     "proofId": "erdos-756",
-    "range": { "startLine": 244, "endLine": 250 },
+    "range": { "startLine": 244, "endLine": 256 },
     "type": "theorem",
-    "title": "multiplicity_trivial_upper",
-    "content": "Trivially, multiplicity ≤ n².",
-    "significance": "supporting"
+    "title": "Upper Bounds",
+    "content": "**multiplicity_trivial_upper:**\n\nTrivial bound: any distance has multiplicity ≤ n².\n\n```lean\ntheorem multiplicity_trivial_upper (A : PointSet) (d : ℝ) :\n    distanceMultiplicity A d ≤ A.card * A.card\n```\n\n**Proof:** The multiplicity counts pairs from A × A, which has n² elements.\n\n**rich_distances_trivial_upper:**\nNumber of rich distances ≤ number of distinct distances.",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial bounds", "counting arguments"]
   },
   {
-    "id": "ann-756-main",
+    "id": "ann-e756-main",
     "proofId": "erdos-756",
-    "range": { "startLine": 275, "endLine": 284 },
+    "range": { "startLine": 262, "endLine": 284 },
     "type": "theorem",
-    "title": "erdos_756",
-    "content": "Main theorem: ErdosPachQuestion holds (YES answer).",
-    "significance": "critical"
+    "title": "Main Theorem",
+    "content": "**erdos_756 and erdos_756_main:**\n\nThe complete resolution of Erdős Problem #756.\n\n```lean\ntheorem erdos_756 : ErdosPachQuestion := erdos_756_answer\n\ntheorem erdos_756_main :\n    ∀ n : ℕ, n ≥ 4 →\n      ∃ A : PointSet, A.card = n ∧\n        (numRichDistances A : ℝ) ≥ n / 4\n```\n\n**Summary:**\n- Answer: YES to Erdős-Pach question\n- Constant: c = 1/4 achieved\n- Constraint: Largest distance never rich (Hopf-Pannwitz)\n- Status: SOLVED by Bhowmick (2024)",
+    "mathContext": "These theorems package the complete answer: the Erdős-Pach question has an affirmative answer with explicit constant.",
+    "significance": "critical",
+    "relatedConcepts": ["main result", "problem solved", "Bhowmick 2024"]
   }
 ]
