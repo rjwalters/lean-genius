@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-684-header",
+    "proofId": "erdos-684",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #684: Decompose C(n,k) = u*v where u has primes <= k, v has primes > k. Find bounds on f(n) = min k with u > n². Status: OPEN.",
+    "mathContext": "Posed in [Er79d]. Tang-ChatGPT: f(n) <= n^{30/43+o(1)}. Heuristic: f(n) ~ 2 log n for most n.",
+    "significance": "critical",
+    "relatedConcepts": ["smooth-numbers", "binomial-coefficients", "prime-factorization"]
+  },
+  {
+    "id": "ann-684-smooth",
+    "proofId": "erdos-684",
+    "range": { "startLine": 44, "endLine": 51 },
+    "type": "definition",
+    "title": "Smooth Part",
+    "content": "smoothPart(k, m) := product of p^{v_p(m)} for primes p <= k. The k-smooth component of m.",
+    "mathContext": "A number is k-smooth if all prime factors are <= k. We extract this component.",
+    "significance": "critical",
+    "relatedConcepts": ["smooth-numbers", "factorization"]
+  },
+  {
+    "id": "ann-684-binomial",
+    "proofId": "erdos-684",
+    "range": { "startLine": 59, "endLine": 64 },
+    "type": "definition",
+    "title": "Binomial Smooth Part",
+    "content": "binomialSmoothPart(n, k) := smoothPart(k, C(n,k)). The k-smooth component of the binomial coefficient.",
+    "mathContext": "For C(n,k), primes in (k,n] divide numerator but not denominator.",
+    "significance": "critical",
+    "relatedConcepts": ["binomial", "smooth"]
+  },
+  {
+    "id": "ann-684-f",
+    "proofId": "erdos-684",
+    "range": { "startLine": 72, "endLine": 82 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) := min {k : binomialSmoothPart(n, k) > n²}. f_property: at k = f(n), smooth part exceeds n².",
+    "mathContext": "The central function of the problem - how small can k be with large smooth part?",
+    "significance": "critical",
+    "relatedConcepts": ["minimum", "threshold"]
+  },
+  {
+    "id": "ann-684-mahler",
+    "proofId": "erdos-684",
+    "range": { "startLine": 90, "endLine": 98 },
+    "type": "axiom",
+    "title": "Mahler's Theorem (Ineffective)",
+    "content": "mahler_ineffective: For any epsilon > 0, smooth part <= n^{1+epsilon} for sufficiently large n. But N is not explicit.",
+    "mathContext": "Classical result giving asymptotic bound, but useless for explicit computation.",
+    "significance": "key",
+    "relatedConcepts": ["ineffective", "asymptotic"]
+  },
+  {
+    "id": "ann-684-tang",
+    "proofId": "erdos-684",
+    "range": { "startLine": 106, "endLine": 111 },
+    "type": "axiom",
+    "title": "Tang-ChatGPT Bound",
+    "content": "tang_bound: f(n) <= n^{30/43 + o(1)}. The exponent 30/43 ≈ 0.698. Best known unconditional bound.",
+    "mathContext": "Recent result (2026) giving explicit exponent. Major progress on the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["upper-bound", "explicit"]
+  },
+  {
+    "id": "ann-684-rh",
+    "proofId": "erdos-684",
+    "range": { "startLine": 113, "endLine": 118 },
+    "type": "axiom",
+    "title": "RH-Conditional Bound",
+    "content": "rh_conditional_bound: Under Riemann Hypothesis, f(n) <= n^{2/3 + o(1)}. Better exponent but conditional.",
+    "mathContext": "Shows connection to prime distribution and zero-free regions.",
+    "significance": "key",
+    "relatedConcepts": ["riemann-hypothesis", "conditional"]
+  },
+  {
+    "id": "ann-684-heuristic",
+    "proofId": "erdos-684",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "axiom",
+    "title": "Heuristic Conjecture",
+    "content": "heuristic_conjecture: f(n) ~ 2 log n for density 1 set of n. Vastly smaller than proven bounds!",
+    "mathContext": "Suggests huge gap between proven and true behavior. Major open question.",
+    "significance": "critical",
+    "relatedConcepts": ["heuristic", "density-one"]
+  },
+  {
+    "id": "ann-684-kummer",
+    "proofId": "erdos-684",
+    "range": { "startLine": 146, "endLine": 153 },
+    "type": "axiom",
+    "title": "Kummer's Theorem",
+    "content": "kummer_theorem: v_p(C(n,k)) = carries when adding k + (n-k) in base p. Connects to Legendre formula.",
+    "mathContext": "Fundamental result for understanding prime powers in binomial coefficients.",
+    "significance": "key",
+    "relatedConcepts": ["kummer", "carries", "legendre"]
+  },
+  {
+    "id": "ann-684-prime",
+    "proofId": "erdos-684",
+    "range": { "startLine": 164, "endLine": 168 },
+    "type": "theorem",
+    "title": "Prime Binomial Structure",
+    "content": "prime_binomial_structure: For prime p and 1 <= k <= p-1, p divides C(p,k).",
+    "mathContext": "Special structure of binomial coefficients for prime upper index.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime-divisibility", "lucas"]
+  },
+  {
+    "id": "ann-684-general",
+    "proofId": "erdos-684",
+    "range": { "startLine": 176, "endLine": 182 },
+    "type": "definition",
+    "title": "Generalized Problem",
+    "content": "fGeneral(n, j) := min k >= j with smooth part > n². Generalizes f(n) = fGeneral(n, 0).",
+    "mathContext": "Natural extension allowing constraint on starting point.",
+    "significance": "supporting",
+    "relatedConcepts": ["generalization", "constraint"]
+  },
+  {
+    "id": "ann-684-oeis",
+    "proofId": "erdos-684",
+    "range": { "startLine": 190, "endLine": 193 },
+    "type": "concept",
+    "title": "OEIS Reference",
+    "content": "The sequence f(n) is recorded in OEIS A392019.",
+    "mathContext": "Computationally accessible for small n.",
+    "significance": "supporting",
+    "relatedConcepts": ["oeis", "sequence"]
+  },
+  {
+    "id": "ann-684-status",
+    "proofId": "erdos-684",
+    "range": { "startLine": 201, "endLine": 233 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Best: f(n) <= n^{30/43+o(1)}. Heuristic: f(n) ~ 2 log n. Huge gap remains!",
+    "mathContext": "Gap between 2 log n and n^{0.698} is enormous - suggests major progress possible.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "bounds-gap"]
+  }
+]

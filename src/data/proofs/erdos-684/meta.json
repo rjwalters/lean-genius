@@ -1,0 +1,149 @@
+{
+  "id": "erdos-684",
+  "title": "Erdős Problem #684: Smooth Parts of Binomial Coefficients",
+  "slug": "erdos-684",
+  "description": "Find bounds on f(n) = smallest k such that the k-smooth part of C(n,k) exceeds n².",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/684",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos684Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "binomial-coefficients",
+      "smooth-numbers",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 5,
+    "erdosNumber": 684,
+    "erdosUrl": "https://erdosproblems.com/684",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "smoothPart definition: product of prime powers with p ≤ k",
+      "roughPart definition: remaining prime factors",
+      "binomialSmoothPart definition: smooth part of C(n,k)",
+      "f definition: min k with smooth part > n²",
+      "f_property axiom: smooth part exceeds n² at f(n)",
+      "mahler_ineffective axiom: classical bound (ineffective)",
+      "tang_exponent definition: 30/43",
+      "tang_bound axiom: f(n) ≤ n^{30/43+o(1)}",
+      "rh_exponent definition: 2/3",
+      "rh_conditional_bound axiom: RH-conditional bound",
+      "heuristic_bound definition: 2 log n",
+      "heuristic_conjecture axiom: f(n) ~ 2 log n for most n",
+      "legendreExponent definition: prime power in n!",
+      "kummer_theorem axiom: prime power in C(n,k)",
+      "prime_binomial_structure theorem: p divides C(p,k)",
+      "fGeneral definition: generalized problem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in [Er79d]. For binomial coefficient C(n,k), we decompose it as u·v where u is the k-smooth part (primes ≤ k) and v is the k-rough part (primes > k).\n\nThe function f(n) asks: how small can k be while still having the smooth part exceed n²?\n\nMahler's classical theorem gives an ineffective bound. Recent work by Tang & ChatGPT (2026) proved f(n) ≤ n^{30/43+o(1)}, with n^{2/3+o(1)} conditional on the Riemann Hypothesis.\n\nRemarkably, heuristic arguments by Sothanaphan & ChatGPT suggest f(n) ~ 2 log n for most n - vastly smaller than proven bounds!\n\nThe sequence f(n) is recorded in OEIS A392019.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor binomial coefficient C(n,k), decompose C(n,k) = u·v where:\n- u contains only prime factors from [2, k] (the k-smooth part)\n- v contains only prime factors from (k, n] (the k-rough part)\n\nLet f(n) be the smallest k such that u > n².\n\n**Question:** What are the bounds on f(n)?\n\n**Known Bounds:**\n- Upper: f(n) ≤ n^{30/43+o(1)} (Tang-ChatGPT)\n- Conditional: f(n) ≤ n^{2/3+o(1)} under RH",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Smooth Part:** Define smoothPart using prime factorization and filtering\n\n2. **The Function f:** Define f(n) as minimum k with smooth part > n²\n\n3. **Mahler's Bound:** Axiomatize the classical (ineffective) bound\n\n4. **Modern Bounds:** Axiomatize Tang-ChatGPT and RH-conditional results\n\n5. **Heuristic:** State the conjectured f(n) ~ 2 log n\n\n6. **Kummer's Theorem:** Connect to prime powers in binomial coefficients",
+    "keyInsights": [
+      "**Smooth Decomposition:** C(n,k) = (k-smooth part) × (k-rough part)",
+      "**Tang-ChatGPT Bound:** f(n) ≤ n^{30/43+o(1)} ≈ n^{0.698}",
+      "**RH Conditional:** f(n) ≤ n^{2/3+o(1)} assuming Riemann Hypothesis",
+      "**Heuristic Gap:** f(n) ~ 2 log n expected, far below proven bounds",
+      "**Ineffective Classical:** Mahler's bound exists but gives no explicit N"
+    ]
+  },
+  "sections": [
+    {
+      "id": "smooth-rough",
+      "title": "Smooth and Rough Parts",
+      "summary": "smoothPart, roughPart, binomialSmoothPart, binomialRoughPart",
+      "startLine": 38,
+      "endLine": 64
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function f(n)",
+      "summary": "f, f_property, below_f_small",
+      "startLine": 66,
+      "endLine": 82
+    },
+    {
+      "id": "mahler",
+      "title": "Mahler's Classical Result",
+      "summary": "mahler_ineffective, f_tendsto_infty_weak",
+      "startLine": 84,
+      "endLine": 98
+    },
+    {
+      "id": "modern-bounds",
+      "title": "Modern Bounds",
+      "summary": "tang_exponent, tang_bound, rh_exponent, rh_conditional_bound",
+      "startLine": 100,
+      "endLine": 118
+    },
+    {
+      "id": "heuristic",
+      "title": "Heuristic Conjectures",
+      "summary": "heuristic_bound, heuristic_conjecture",
+      "startLine": 120,
+      "endLine": 134
+    },
+    {
+      "id": "structure",
+      "title": "Structure of Smooth Part",
+      "summary": "legendreExponent, kummer_theorem",
+      "startLine": 136,
+      "endLine": 153
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "f_lower_bound, prime_binomial_structure",
+      "startLine": 155,
+      "endLine": 168
+    },
+    {
+      "id": "generalized",
+      "title": "The Generalized Problem",
+      "summary": "fGeneral, f_is_fGeneral_0",
+      "startLine": 170,
+      "endLine": 182
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_684_status, erdos_684_statement, summary",
+      "startLine": 195,
+      "endLine": 233
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #684 asks for bounds on f(n), the smallest k such that the k-smooth part of C(n,k) exceeds n². Recent work gives f(n) ≤ n^{30/43+o(1)}, but heuristics suggest f(n) ~ 2 log n for most n - a huge gap!",
+    "implications": "Understanding f(n) connects prime distribution in binomial coefficients to smooth number theory. The gap between proven bounds and heuristics suggests major progress is possible.",
+    "openQuestions": [
+      "Can the exponent 30/43 be improved unconditionally?",
+      "Is f(n) ~ 2 log n for most n?",
+      "What is the exact growth rate of f(n)?",
+      "How does f(n) behave for prime n?",
+      "Can Mahler's theorem be made effective?"
+    ]
+  }
+}
