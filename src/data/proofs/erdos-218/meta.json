@@ -1,0 +1,157 @@
+{
+  "id": "erdos-218",
+  "title": "Erdos Problem #218: Prime Gap Densities",
+  "slug": "erdos-218",
+  "description": "Let d_n = p_{n+1} - p_n be the prime gap. Erdos conjectured that the sets where d_{n+1} >= d_n and d_{n+1} <= d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN. Terence Tao: 'looks difficult'.",
+  "meta": {
+    "author": "Erdos (1955-1985)",
+    "sourceUrl": "https://erdosproblems.com/218",
+    "date": "1955",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos218Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "prime-gaps",
+      "natural-density",
+      "arithmetic-progressions",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 218,
+    "erdosUrl": "https://erdosproblems.com/218",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit behavior for sequences",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "limsup",
+        "description": "Limit superior for density bounds",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "nthPrime definition: enumeration of prime numbers",
+      "primeGap definition: d_n = p_{n+1} - p_n",
+      "HasDensity definition: natural density of a set",
+      "upperDensity and lowerDensity definitions",
+      "gapIncreasingSet definition: {n | d_n <= d_{n+1}}",
+      "gapDecreasingSet definition: {n | d_{n+1} <= d_n}",
+      "gapEqualSet definition: {n | d_n = d_{n+1}}",
+      "erdos_218a axiom: gapIncreasingSet has density 1/2",
+      "erdos_218b axiom: gapDecreasingSet has density 1/2",
+      "erdos_218c axiom: gapEqualSet is infinite",
+      "threePrimesInAP definition: consecutive primes in arithmetic progression",
+      "gapEqual_iff_ap theorem: equal gaps iff 3-term AP",
+      "gapIncreasingSet_infinite theorem: proved",
+      "partition theorem: decomposition of natural numbers by gap comparison"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #218: Prime Gap Densities**\n\nThis problem, appearing across many of Erdos's papers from 1955-1985, studies the local behavior of prime gaps.\n\n**Historical Background:**\n- Erdos [Er55c], [Er57], [Er61], [Er65b], [Er85c]: Various formulations\n- Green-Tao (2008): Primes contain arbitrarily long arithmetic progressions\n- Terence Tao (modern assessment): 'looks difficult'\n\n**Context:**\nWhile the Prime Number Theorem tells us that gaps between consecutive primes grow on average like log(n), the LOCAL behavior of consecutive gaps - whether they increase, decrease, or stay equal - is poorly understood. This problem asks about the statistical distribution of these local comparisons.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $d_n = p_{n+1} - p_n$ be the gap between the $n$th and $(n+1)$th prime.\n\n**Conjectures:**\n1. The set $\\{n : d_{n+1} \\geq d_n\\}$ has natural density $\\frac{1}{2}$\n2. The set $\\{n : d_{n+1} \\leq d_n\\}$ has natural density $\\frac{1}{2}$\n3. There exist infinitely many $n$ where $d_{n+1} = d_n$\n\n**Status:** All three remain OPEN.\n\n**Note:** Conjecture 3 is equivalent to the existence of infinitely many 3-term arithmetic progressions of consecutive primes.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Enumeration:** Define nthPrime as the function enumerating primes\n\n2. **Prime Gaps:** Define primeGap n = nthPrime (n+1) - nthPrime n\n\n3. **Natural Density:** Formalize density as a limit of counting functions\n\n4. **Key Sets:** Define gapIncreasingSet, gapDecreasingSet, gapEqualSet\n\n5. **Three Conjectures:** State as axioms (problem is OPEN)\n\n6. **Connections:** Relate equal gaps to 3-term APs of consecutive primes\n\n7. **Partial Results:** Prove both increasing and decreasing sets are infinite",
+    "keyInsights": [
+      "**Gap Definition:** d_n = p_{n+1} - p_n measures the gap between consecutive primes",
+      "**Natural Density:** Measures the 'proportion' of integers with a property via limits",
+      "**Equal Gaps = 3-AP:** d_n = d_{n+1} means p_n, p_{n+1}, p_{n+2} form an arithmetic progression",
+      "**Symmetry Heuristic:** If gap comparisons were random, density 1/2 would be natural",
+      "**Why It's Hard:** Primes have subtle correlations that defeat simple probabilistic arguments",
+      "**Example:** n=1 gives gap equal case: 3, 5, 7 form AP with difference 2",
+      "**Green-Tao:** Gives long APs in primes, but not necessarily of consecutive primes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-enum",
+      "title": "Prime Enumeration and Gaps",
+      "summary": "nthPrime, primeGap, basic properties",
+      "startLine": 34,
+      "endLine": 88
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "summary": "HasDensity, upperDensity, lowerDensity",
+      "startLine": 90,
+      "endLine": 116
+    },
+    {
+      "id": "key-sets",
+      "title": "The Sets of Interest",
+      "summary": "gapIncreasingSet, gapDecreasingSet, gapEqualSet",
+      "startLine": 118,
+      "endLine": 166
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjectures (OPEN)",
+      "summary": "erdos_218a, erdos_218b, erdos_218c axioms",
+      "startLine": 168,
+      "endLine": 195
+    },
+    {
+      "id": "ap-connection",
+      "title": "Connection to Arithmetic Progressions",
+      "summary": "threePrimesInAP, gapEqual_iff_ap",
+      "startLine": 197,
+      "endLine": 230
+    },
+    {
+      "id": "green-tao",
+      "title": "Connection to Green-Tao",
+      "summary": "Green-Tao theorem, relation to conjecture 3",
+      "startLine": 243,
+      "endLine": 259
+    },
+    {
+      "id": "partial",
+      "title": "Partial Results",
+      "summary": "gapIncreasingSet_infinite, gapDecreasingSet_infinite",
+      "startLine": 261,
+      "endLine": 280
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry Argument (Heuristic)",
+      "summary": "Why density 1/2 is plausible, partition theorem",
+      "startLine": 282,
+      "endLine": 309
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_218_summary, erdos_218_open",
+      "startLine": 311,
+      "endLine": 343
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #218 asks about the natural density of indices where consecutive prime gaps increase, decrease, or stay equal. All three parts remain open. The equal gap conjecture is equivalent to the existence of infinitely many 3-term arithmetic progressions of consecutive primes. While Green-Tao gives arbitrarily long APs in primes, they need not be consecutive, leaving this problem unresolved.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Prime Gap Statistics:** Understanding local gap behavior vs. average behavior\n\n2. **Arithmetic Progressions:** Equal gaps = 3-term APs of consecutive primes\n\n3. **Density Questions:** Natural density captures asymptotic behavior\n\n4. **Green-Tao Context:** This is a finer question than existence of long APs\n\n5. **Randomness in Primes:** Tests our understanding of 'pseudo-random' behavior of primes",
+    "openQuestions": [
+      "Do the sets {n : d_{n+1} >= d_n} and {n : d_{n+1} <= d_n} have density 1/2?",
+      "Are there infinitely many n with d_n = d_{n+1} (equal consecutive gaps)?",
+      "For any k, are there infinitely many k consecutive equal gaps?",
+      "What is the density of the equal gap set (expected to be 0)?",
+      "Can Green-Tao methods be adapted to consecutive primes?"
+    ]
+  }
+}
