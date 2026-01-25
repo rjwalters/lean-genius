@@ -1,0 +1,56 @@
+{
+  "id": "erdos-190",
+  "title": "Erdős Problem #190: Canonical Ramsey Number for Arithmetic Progressions",
+  "slug": "erdos-190",
+  "description": "Estimate H(k), the smallest N guaranteeing either a monochromatic or rainbow k-term arithmetic progression in every coloring of {1,...,N}.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/190",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos190Problem.lean",
+    "tags": ["additive-combinatorics", "arithmetic-progressions", "ramsey-theory", "canonical-ramsey"],
+    "badge": "open",
+    "sorries": 4,
+    "erdosNumber": 190,
+    "erdosUrl": "https://erdosproblems.com/190",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This is a canonical Ramsey theory problem from Erdős-Graham [ErGr79, ErGr80]. Unlike van der Waerden numbers (monochromatic only), H(k) allows rainbow APs as an alternative win condition. The existence of H(k) follows from Szemerédi's theorem, but precise bounds remain unknown.",
+    "problemStatement": "Let H(k) denote the smallest N such that any finite coloring of {1,...,N} contains either a monochromatic k-term AP or a rainbow k-term AP (all different colors). Estimate H(k), and determine if H(k)^{1/k}/k → ∞.",
+    "proofStrategy": "The formalization defines arithmetic progressions, monochromatic and rainbow colorings, the canonical property, and the H(k) function. Known results about H(k)^{1/k} → ∞ and comparisons with van der Waerden numbers are stated as axioms.",
+    "keyInsights": [
+      "H(k) ≤ W(k) because rainbow APs give an easier win condition",
+      "H(k)^{1/k} → ∞ is known (relatively straightforward)",
+      "Whether H(k)^{1/k}/k → ∞ (i.e., H(k) > k^k eventually) is open",
+      "Rainbow and monochromatic compete via pigeonhole principle",
+      "Existence follows from Szemerédi's theorem on APs in dense sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "The Problem",
+      "content": "H(k) captures the interplay between monochromatic and rainbow structures. Any coloring must produce at least one: use few colors and risk monochromatic APs, use many colors and risk rainbow APs."
+    },
+    {
+      "id": "canonical-ramsey",
+      "title": "Canonical Ramsey Theory",
+      "content": "Unlike standard Ramsey theory (monochromatic only), canonical Ramsey allows 'canonical' patterns. Rainbow is the simplest canonical pattern - all elements distinct."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "content": "H(k) exists (via Szemerédi). H(k)^{1/k} → ∞ (not hard). H(k) ≤ W(k). The question of whether H(k)^{1/k}/k → ∞ remains open."
+    }
+  ],
+  "conclusion": {
+    "summary": "The problem asks for bounds on H(k), the canonical Ramsey number for k-APs. The key question is whether H(k) grows faster than k^k, expressed as H(k)^{1/k}/k → ∞.",
+    "implications": "Better bounds on H(k) would illuminate the structure of arithmetic progressions in colored sets and the balance between monochromatic and rainbow patterns.",
+    "openQuestions": [
+      "Does H(k)^{1/k}/k → ∞?",
+      "What are tight bounds on H(k) for specific k?",
+      "How does H(k) compare to other canonical Ramsey numbers?"
+    ]
+  }
+}
