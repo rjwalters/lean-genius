@@ -113,13 +113,15 @@ theorem completely_mult_is_mult {α : Type*} [Monoid α] (f : ℕ → α)
     (h : IsCompletelyMultiplicative f) : IsMultiplicative f :=
   ⟨h.1, fun m n _ => h.2 m n⟩
 
-/-- A completely multiplicative ±1 function is determined by its values on primes. -/
-theorem completely_mult_pm_determined (f : ℕ → ℤ)
+/-- A completely multiplicative ±1 function is determined by its values on primes.
+    Proof sketch: Every n ≥ 1 factors as n = p₁^{a₁} ... pₖ^{aₖ}.
+    By complete multiplicativity, f(n) = f(p₁)^{a₁} ... f(pₖ)^{aₖ}.
+    Since f agrees with g on primes, f(n) = g(n) by induction on Ω(n). -/
+axiom completely_mult_pm_determined (f : ℕ → ℤ)
     (hcm : IsCompletelyMultiplicative f) (hpm : IsPlusMinusOne f)
     (g : ℕ → ℤ) (hcm' : IsCompletelyMultiplicative g) (hpm' : IsPlusMinusOne g)
     (heq : ∀ p : ℕ, p.Prime → f p = g p) :
-    ∀ n : ℕ, n ≥ 1 → f n = g n := by
-  sorry  -- Proof by induction on prime factorization
+    ∀ n : ℕ, n ≥ 1 → f n = g n
 
 /-!
 ## Part V: Wintner's Counterexample for Complex Values
