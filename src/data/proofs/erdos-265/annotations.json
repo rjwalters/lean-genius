@@ -1,0 +1,128 @@
+[
+  {
+    "id": "erdos265-pos-seq",
+    "line": 24,
+    "type": "definition",
+    "title": "Positive Integer Sequences",
+    "content": "We work with sequences a : ℕ → ℕ where each aₙ ≥ 1. This ensures the reciprocals 1/aₙ are well-defined positive real numbers. The positivity condition is mild but necessary."
+  },
+  {
+    "id": "erdos265-increasing",
+    "line": 28,
+    "type": "definition",
+    "title": "Strictly Increasing",
+    "content": "The sequence must be strictly increasing: a₁ < a₂ < a₃ < .... This ensures the terms are distinct and the sequence goes to infinity, so the sum ∑ 1/aₙ converges (by comparison with ∑ 1/n²)."
+  },
+  {
+    "id": "erdos265-reciprocal-sum",
+    "line": 32,
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "The sum ∑ₙ₌₁^∞ 1/aₙ is the primary object. For increasing sequences with aₙ → ∞, this converges. The question is when this sum can be rational. Most sequences give irrational sums, so finding rational ones is special."
+  },
+  {
+    "id": "erdos265-shifted-sum",
+    "line": 36,
+    "type": "definition",
+    "title": "Shifted Reciprocal Sum",
+    "content": "The shifted sum ∑ₙ₌₁^∞ 1/(aₙ-1) is the second constraint. Having BOTH ∑ 1/aₙ AND ∑ 1/(aₙ-1) rational is much more restrictive than having just one rational. This is the key constraint of the problem."
+  },
+  {
+    "id": "erdos265-both-rational",
+    "line": 40,
+    "type": "definition",
+    "title": "Both Sums Rational",
+    "content": "A sequence is 'valid' if both reciprocal sums are rational. The rationality constraint is very restrictive—most sequences fail. Cantor's triangular numbers are the classical example showing this is achievable."
+  },
+  {
+    "id": "erdos265-cantor",
+    "line": 50,
+    "type": "definition",
+    "title": "Cantor's Sequence",
+    "content": "Cantor discovered that aₙ = n(n+1)/2 (triangular numbers) works. Both ∑ 2/(n(n+1)) = 2 and the shifted sum are rational. This polynomial sequence has slow growth: aₙ ~ n²/2, so aₙ^(1/n) → 1."
+  },
+  {
+    "id": "erdos265-cantor-inc",
+    "line": 54,
+    "type": "theorem",
+    "title": "Cantor's Sequence is Increasing",
+    "content": "The triangular numbers 1, 3, 6, 10, 15, ... are strictly increasing. The n-th triangular number is n(n+1)/2, and (n+1)(n+2)/2 > n(n+1)/2 for all n ≥ 1."
+  },
+  {
+    "id": "erdos265-single-exp",
+    "line": 71,
+    "type": "definition",
+    "title": "Single Exponential Growth",
+    "content": "We measure growth by aₙ^(1/n). If aₙ = cⁿ, then aₙ^(1/n) = c. If aₙ grows polynomially, aₙ^(1/n) → 1. If aₙ grows faster than any exponential, aₙ^(1/n) → ∞."
+  },
+  {
+    "id": "erdos265-double-exp",
+    "line": 75,
+    "type": "definition",
+    "title": "Double Exponential Growth",
+    "content": "For doubly exponential growth, we use aₙ^(1/2ⁿ). If aₙ = 2^(2ⁿ), then aₙ^(1/2ⁿ) = 2. This measures how fast the sequence grows compared to the tower function. Erdős conjectured this should → 1."
+  },
+  {
+    "id": "erdos265-gen-exp",
+    "line": 79,
+    "type": "definition",
+    "title": "General Exponential Growth",
+    "content": "For general β > 1, we consider aₙ^(1/βⁿ). Kovač and Tao showed this can → ∞ for some β > 1. The question is: what's the largest β that works? Is β = 2 the threshold?"
+  },
+  {
+    "id": "erdos265-conj1",
+    "line": 89,
+    "type": "axiom",
+    "title": "Erdős's First Conjecture",
+    "content": "Erdős conjectured that aₙ^(1/n) → ∞ is achievable. This means sequences growing faster than any single exponential can have both sums rational. Kovač-Tao proved this in 2024 by achieving doubly exponential growth."
+  },
+  {
+    "id": "erdos265-conj2",
+    "line": 94,
+    "type": "axiom",
+    "title": "Erdős's Second Conjecture",
+    "content": "Erdős also conjectured that aₙ^(1/2ⁿ) → 1 is necessary. This would mean double-exponential growth is the limit—you can approach it but not exceed it. This conjecture remains open."
+  },
+  {
+    "id": "erdos265-kovac-tao",
+    "line": 104,
+    "type": "axiom",
+    "title": "Kovač-Tao Theorem",
+    "content": "Kovač and Tao (2024) proved: there exists β > 1 such that aₙ^(1/βⁿ) → ∞ is achievable. This confirms Erdős's first conjecture and shows the growth can be doubly exponential. The exact β is not specified."
+  },
+  {
+    "id": "erdos265-remaining",
+    "line": 111,
+    "type": "axiom",
+    "title": "The Remaining Question",
+    "content": "Can β = 2 work? Either: (1) there exists a valid sequence with limsup aₙ^(1/2ⁿ) > 1 (disproving Erdős's second conjecture), or (2) all valid sequences satisfy aₙ^(1/2ⁿ) → 1 (proving it)."
+  },
+  {
+    "id": "erdos265-irrat-threshold",
+    "line": 122,
+    "type": "axiom",
+    "title": "Irrationality Threshold",
+    "content": "A folklore result: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational. This explains why β = 2 might be the threshold—crossing it forces irrationality, violating the constraint."
+  },
+  {
+    "id": "erdos265-valid-set",
+    "line": 132,
+    "type": "definition",
+    "title": "The Set of Valid Sequences",
+    "content": "We collect all sequences satisfying: positive, strictly increasing, both sums rational. This set is non-empty (Cantor's example) but highly constrained. Understanding its structure is the goal."
+  },
+  {
+    "id": "erdos265-poly",
+    "line": 144,
+    "type": "axiom",
+    "title": "Polynomial Examples",
+    "content": "Higher-degree polynomials can work with appropriate shifts. For example, n³+6n²+5n works with shift 12: both ∑ 1/p(n) and ∑ 1/(p(n)-12) are rational. These give polynomial growth, not doubly exponential."
+  },
+  {
+    "id": "erdos265-main",
+    "line": 159,
+    "type": "axiom",
+    "title": "Main Open Problem",
+    "content": "Erdős #265 asks: what's the maximum growth rate? The Kovač-Tao result shows doubly exponential is possible. The key remaining question: is β = 2 the threshold, or can we exceed it? This determines the exact growth limit."
+  }
+]
