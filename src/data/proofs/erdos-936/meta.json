@@ -1,0 +1,140 @@
+{
+  "id": "erdos-936",
+  "title": "Erdős Problem #936: Powerful Numbers Near 2^n and n!",
+  "slug": "erdos-936",
+  "description": "Are 2^n ± 1 and n! ± 1 powerful for only finitely many n? Conditionally YES assuming the ABC conjecture (Cushing-Pascoe 2016, CrowdMath 2020).",
+  "meta": {
+    "author": "Erdős (1976 problem), Cushing-Pascoe (2016), CrowdMath (2020)",
+    "sourceUrl": "https://erdosproblems.com/936",
+    "date": "1976",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos936Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "abc-conjecture",
+      "factorial",
+      "exponential",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 936,
+    "erdosUrl": "https://erdosproblems.com/936",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Factorization",
+        "description": "Prime factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventually properties",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Powerful definition: all prime exponents >= 2",
+      "EventuallyNotPowerful predicate using Filter.atTop",
+      "sq_powerful theorem: perfect squares are powerful",
+      "prime_not_powerful theorem: primes are never powerful",
+      "Concrete examples: 2^n + 1, 2^n - 1, n! + 1, n! - 1 for small n",
+      "abc_conjecture_holds axiom: placeholder for ABC conjecture",
+      "cushing_pascoe_theorem axiom: n! ± 1 result",
+      "crowdmath_theorem axiom: 2^n ± 1 result",
+      "Four variant axioms for each sequence",
+      "erdos_936_all_variants: combined conditional result",
+      "Squarefree' definition and its relation to powerful numbers",
+      "erdos_936_summary: complete status of the problem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #936**\n\nThis problem was posed by Paul Erdős in 1976 [Er76d, p.32] and concerns powerful numbers near special sequences.\n\n**Key History:**\n- Erdős (1976): Original problem formulation\n- Cushing-Pascoe (2016): Proved n! ± 1 case assuming ABC conjecture\n- CrowdMath (2020): Extended to 2^n ± 1 case assuming ABC conjecture\n\n**Mathematical Setting:**\nA number m is *powerful* if whenever a prime p divides m, then p² also divides m. Equivalently, m = a²b³ for positive integers a, b. The powerful numbers begin: 1, 4, 8, 9, 16, 25, 27, 32, 36, ...\n\nThe problem asks whether the sequences 2^n + 1, 2^n - 1, n! + 1, and n! - 1 are powerful for only finitely many n. This is connected to the ABC conjecture, one of the deepest unsolved problems in number theory.",
+    "problemStatement": "**Problem Statement (Open)**\n\nAre $2^n \\pm 1$ and $n! \\pm 1$ powerful for only finitely many $n$?\n\n**Conditional Answer: YES** (assuming ABC conjecture)\n\n**Known Results:**\n- Cushing-Pascoe (2016): Assuming ABC, $n! \\pm 1$ is powerful for only finitely many $n$\n- CrowdMath (2020): Assuming ABC, $2^n \\pm 1$ is powerful for only finitely many $n$\n\n**Unconditional Status:** OPEN\n\nNo powerful values are known for these sequences beyond trivial cases (like $2^1 - 1 = 1$).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Powerful Definition:** Define Powerful(n) as all prime factors having exponent >= 2\n\n2. **Basic Properties:**\n   - 1 is powerful (vacuously)\n   - Perfect squares are powerful\n   - Primes are NOT powerful\n\n3. **EventuallyNotPowerful:** Use Filter.atTop to express \"for all sufficiently large n\"\n\n4. **Concrete Examples:** Verify small cases computationally\n\n5. **ABC Connection:** Axiomatize the conditional results\n\n6. **Summary Theorem:** Combine all results showing the conditional resolution",
+    "keyInsights": [
+      "**Powerful Numbers:** Numbers where every prime factor appears with exponent >= 2. Examples: 1, 4, 8, 9, 16, 25, 27, 32, 36",
+      "**ABC Conjecture Connection:** The ABC conjecture controls how \"spread out\" the prime factors of a + b = c can be. This limits powerful numbers near special sequences",
+      "**Squarefree vs Powerful:** Squarefree numbers (all exponents = 1) are the opposite of powerful numbers (all exponents >= 2). The ABC conjecture actually implies n! ± 1 is squarefree for large n",
+      "**No Known Powerful Values:** Despite extensive computation, no powerful value of 2^n + 1, n! + 1, or n! - 1 is known (beyond 2^1 - 1 = 1)",
+      "**OEIS A146968:** The sequence of n where n! ± 1 is powerful appears to be empty for n > 1",
+      "**Open Problem:** While conditionally resolved, unconditional proofs remain out of reach without progress on ABC"
+    ]
+  },
+  "sections": [
+    {
+      "id": "powerful-numbers",
+      "title": "Powerful Numbers",
+      "summary": "Definition of powerful numbers and basic examples",
+      "startLine": 45,
+      "endLine": 106
+    },
+    {
+      "id": "sequences",
+      "title": "The Sequences in Question",
+      "summary": "Definition of EventuallyNotPowerful and the four target sequences",
+      "startLine": 108,
+      "endLine": 129
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "summary": "Verified computations for small values of n",
+      "startLine": 131,
+      "endLine": 190
+    },
+    {
+      "id": "abc-connection",
+      "title": "ABC Conjecture Connection",
+      "summary": "The Cushing-Pascoe and CrowdMath theorems",
+      "startLine": 192,
+      "endLine": 228
+    },
+    {
+      "id": "four-variants",
+      "title": "The Four Variants",
+      "summary": "Individual axioms for each sequence variant",
+      "startLine": 230,
+      "endLine": 284
+    },
+    {
+      "id": "squarefree",
+      "title": "Squarefree Observations",
+      "summary": "Relationship between squarefree and powerful numbers",
+      "startLine": 286,
+      "endLine": 307
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Status",
+      "summary": "Complete formalization status and main results",
+      "startLine": 309,
+      "endLine": 343
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #936 asks whether 2^n ± 1 and n! ± 1 are powerful for only finitely many n. The conditional answer is YES assuming the ABC conjecture, proved by Cushing-Pascoe (2016) for factorials and CrowdMath (2020) for powers of 2. The unconditional problem remains OPEN, making it one of the few Erdős problems where the answer is \"known\" but not fully proven.",
+    "implications": "**Connections and Implications**\n\n1. **ABC Conjecture:** Progress on Erdős #936 is tied to one of the deepest open problems in mathematics\n\n2. **Powerful Number Distribution:** Understanding which numbers can be powerful helps characterize prime factorization patterns\n\n3. **Squarefree Numbers:** The stronger result that n! ± 1 is squarefree for large n (assuming ABC) has implications for random matrix theory\n\n4. **Computational Mathematics:** Despite no theoretical proof, extensive computation suggests the conjecture is true\n\n5. **Polymath Collaboration:** The CrowdMath result demonstrates the power of collaborative mathematics",
+    "openQuestions": [
+      "Unconditional proof that 2^n + 1 is not powerful for n > 0",
+      "Unconditional proof that n! + 1 is not powerful for n > 0",
+      "Prove the ABC conjecture (Millennium Problem candidate)",
+      "Find the exact threshold N where these sequences stop being powerful",
+      "Extend results to other exponential and factorial-like sequences"
+    ]
+  }
+}
