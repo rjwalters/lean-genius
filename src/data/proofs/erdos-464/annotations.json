@@ -1,1 +1,206 @@
-[]
+[
+  {
+    "id": "ann-464-1",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #464: For lacunary A, must there exist irrational θ with {‖θn_k‖} not dense in [0, 1/2]? SOLVED: YES (de Mathan/Pollington 1979-80). Best bound: ε/log(1/ε) (Peres-Schlag 2010).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-2",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 47,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Lacunary Sequence",
+    "content": "A sequence A = {n₁ < n₂ < ...} is lacunary with parameter ε > 0 if n_{k+1} ≥ (1+ε)n_k for all k. This exponential-like growth makes the sequence very sparse.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-3",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 52,
+      "endLine": 59
+    },
+    "type": "theorem",
+    "title": "Strictly Increasing",
+    "content": "Lacunary sequences are strictly increasing. Since (1+ε) > 1, we have n_{k+1} > n_k for all k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-464-4",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 61,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Exponential Growth",
+    "content": "Lacunary sequences grow at least exponentially: n_k ≥ (1+ε)^k · n₀. This sparse growth is key to finding θ with non-dense fractional parts.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-464-5",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Distance to Integer",
+    "content": "distToInt(x) = |x - round(x)| gives the distance from x to the nearest integer. This is always in [0, 1/2].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-6",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 99,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "Fractional Distances",
+    "content": "fractionalDistances(A, θ) = {‖θn_k‖ : k ∈ ℕ}. For a fixed θ, this collects all distances from θ·n_k to integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-7",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 103,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Dense in Interval",
+    "content": "S is dense in [0, 1/2] if for every x ∈ [0, 1/2] and every ε > 0, there exists y ∈ S with |y-x| < ε. The question: can this fail for some θ?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-464-8",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 107,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Has Gap",
+    "content": "hasGap(S) means there exists x ∈ [0, 1/2] and δ > 0 such that no element of S is within δ of x. This witnesses non-density.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-464-9",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 115,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "de Mathan-Pollington Theorem",
+    "content": "de Mathan (1980) and Pollington (1979): For any lacunary A, there exists irrational θ with a gap in {‖θn_k‖}. The answer to Problem #464 is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-10",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 120,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "Original Bound",
+    "content": "de Mathan-Pollington showed inf_k ‖θn_k‖ ≫ ε⁴/log(1/ε). This was the first quantitative bound on the gap size.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-464-11",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 126,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Peres-Schlag Bound (2010)",
+    "content": "Peres-Schlag improved to inf_k ‖θn_k‖ ≫ ε/log(1/ε). This is the current best bound, approaching the conjectured optimal ε.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-12",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 132,
+      "endLine": 145
+    },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "erdos_464_solved: For lacunary A, ∃ irrational θ with fractionalDistances(A,θ) not dense. The proof converts hasGap to non-density via contradiction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-13",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 151,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Optimal Conjecture",
+    "content": "Conjecture: The best possible bound is ≫ ε (without log factor). Peres-Schlag's ε/log(1/ε) is close but removing the log remains open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-464-14",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 172,
+      "endLine": 177
+    },
+    "type": "concept",
+    "title": "Chromatic Connection",
+    "content": "Problem #464 has implications for Problem #894 on chromatic numbers of distance graphs. Katznelson (2001) used this connection to improve bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-464-15",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 189,
+      "endLine": 197
+    },
+    "type": "example",
+    "title": "Powers of 2",
+    "content": "{1, 2, 4, 8, 16, ...} = {2^n} is lacunary with ε = 1. Each term is double the previous, satisfying n_{k+1} ≥ 2n_k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-464-16",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 228,
+      "endLine": 231
+    },
+    "type": "theorem",
+    "title": "Final Answer",
+    "content": "erdos_464_answer: For any lacunary A, there exists irrational θ with a gap in the fractional distances. Non-density is guaranteed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-464-17",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 233,
+      "endLine": 235
+    },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "SOLVED - Non-density exists (de Mathan/Pollington), best bound ε/log(1/ε) (Peres-Schlag 2010), conjectured optimal ε.",
+    "significance": "critical"
+  }
+]

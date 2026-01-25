@@ -1,33 +1,102 @@
 {
   "id": "erdos-464",
-  "title": "Erdős Problem #464",
+  "title": "Erdős Problem #464: Lacunary Sequences and Density of Fractional Parts",
   "slug": "erdos-464",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence (so there exists some ... with ... for all ...). Must there exist an irrational ... such that\\...",
+  "description": "For lacunary A (n_{k+1} ≥ (1+ε)n_k), must there exist irrational θ with {‖θn_k‖} not dense? SOLVED: YES (de Mathan/Pollington 1979-80). Best bound: ε/log(1/ε) (Peres-Schlag 2010).",
   "meta": {
-    "author": "Unknown",
+    "author": "de Mathan (1980), Pollington (1979), Peres-Schlag (2010)",
     "sourceUrl": "https://erdosproblems.com/464",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos464Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "diophantine-approximation", "lacunary-sequences", "fractional-parts", "density"],
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 464,
     "erdosUrl": "https://erdosproblems.com/464",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #464 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}\\subset \\mathbb{N}$ be a lacunary sequence (so there exists some $\\epsilon>0$ with $n_{k+1}\\geq (1+\\epsilon)n_k$ for all $k$). Must there exist an irrational $\\theta$ such that\\[\\{ \\|\\theta n_k\\| : k\\geq 1\\}\\]is not dense in $[0,1]$ (where $\\| x\\|$ is the distance to the nearest integer)?\n\n\n\nSolved independently by de Mathan \\cite{dM80} and Pollington \\cite{Po79b}, who showed that, given any such $A$, there exists such a $\\theta$, with\\[\\inf_{k\\geq 1}\\| \\theta n_k\\| \\gg \\frac{\\epsilon^4}{\\log(1/\\epsilon)}.\\]This bound was improved by Katznelson \\cite{Ka01}, Akhunzhanov and Moshchevitin \\cite{AkMo04}, and Dubickas \\cite{Du06}, before Peres and Schlag \\cite{PeSc10} improved it to\\[\\inf_{k\\geq 1}\\| \\theta n_k\\| \\gg \\frac{\\epsilon}{\\log(1/\\epsilon)},\\]and note that the best bound possible here would be $\\gg \\epsilon$.\n\nThis problem has consequences for [894].\n\n\n\n\nReferences\n\n\n[AkMo04] Akhunzhanov, R. K. and Moshchevitin, N. G., On the chromatic number of a distance graph associated with a\nlacunary sequence. Dokl. Akad. Nauk (2004), 295--296.\n\n[Du06] Dubickas, Art\\=uras, On the fractional parts of lacunary sequences. Math. Scand. (2006), 136--146.\n\n[Ka01] Katznelson, Y., Chromatic numbers of Cayley graphs on {$\\Bbb Z$} and\nrecurrence. Combinatorica (2001), 211--219.\n\n[PeSc10] Peres, Yuval and Schlag, Wilhelm, Two Erd\\H{o}s problems on lacunary sequences: chromatic\nnumber and Diophantine approximation. Bull. Lond. Math. Soc. (2010), 295--300.\n\n[Po79b] Pollington, A. D., On the density of sequence {$\\{n\\sbK\\xi \\}$}. Illinois J. Math. (1979), 511--515.\n\n[dM80] de Mathan, B., Numbers contravening a condition in density modulo {$1$}. Acta Math. Acad. Sci. Hungar. (1980), 237--241 (1981).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #464 asks about the density of fractional parts for lacunary sequences. A sequence A = {n₁ < n₂ < ...} is lacunary with parameter ε > 0 if n_{k+1} ≥ (1+ε)n_k for all k—this means the sequence grows at least exponentially.\n\nFor any real θ, consider the set {‖θn_k‖ : k ≥ 1} where ‖x‖ is the distance to the nearest integer. The question: must there exist irrational θ such that this set is NOT dense in [0, 1/2]?\n\nSolved independently by de Mathan (1980) and Pollington (1979) with bound ε⁴/log(1/ε). Improved by Katznelson (2001), Akhunzhanov-Moshchevitin (2004), Dubickas (2006), and finally Peres-Schlag (2010) who achieved ε/log(1/ε). The conjectured optimal bound is ε.",
+    "problemStatement": "Let $A = \\{n_1 < n_2 < \\cdots\\} \\subset \\mathbb{N}$ be a lacunary sequence (there exists $\\varepsilon > 0$ with $n_{k+1} \\geq (1+\\varepsilon)n_k$ for all $k$).\n\nMust there exist an irrational $\\theta$ such that $\\{\\|\\theta n_k\\| : k \\geq 1\\}$ is NOT dense in $[0, 1/2]$?\n\n**Answer:** YES\n\n**Quantitative bounds:**\n- Original (de Mathan/Pollington): $\\inf_k \\|\\theta n_k\\| \\gg \\varepsilon^4/\\log(1/\\varepsilon)$\n- Best known (Peres-Schlag 2010): $\\inf_k \\|\\theta n_k\\| \\gg \\varepsilon/\\log(1/\\varepsilon)$\n- Conjectured optimal: $\\gg \\varepsilon$",
+    "proofStrategy": "The Lean formalization defines lacunary sequences, distance to nearest integer, and the density property. The main theorem of de Mathan-Pollington is axiomatized: for any lacunary A, there exists irrational θ with a gap in the fractional distances. The improved Peres-Schlag bound is also stated. The proof shows that hasGap implies non-density.",
+    "keyInsights": [
+      "**Lacunary sequences:** n_{k+1} ≥ (1+ε)n_k implies exponential-like growth, making A very sparse",
+      "**Distance to integer:** ‖x‖ = |x - round(x)| ∈ [0, 1/2] measures how far x is from integers",
+      "**de Mathan-Pollington (1979-80):** For lacunary A, ∃ irrational θ with inf_k ‖θn_k‖ > 0",
+      "**Bound evolution:** ε⁴/log → improved → ε/log (2010) → conjectured ε",
+      "**Chromatic connection:** Related to Problem #894 on chromatic numbers of distance graphs",
+      "**Peres-Schlag (2010):** Current best bound ε/log(1/ε) uses sophisticated Diophantine methods"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lacunary-sequences",
+      "title": "Lacunary Sequences",
+      "startLine": 40,
+      "endLine": 70,
+      "summary": "Defines lacunary sequences and proves exponential growth property."
+    },
+    {
+      "id": "distance-to-integer",
+      "title": "Distance to Nearest Integer",
+      "startLine": 72,
+      "endLine": 90,
+      "summary": "Defines ‖x‖ and its basic properties (range [0, 1/2])."
+    },
+    {
+      "id": "density-question",
+      "title": "The Density Question",
+      "startLine": 92,
+      "endLine": 109,
+      "summary": "Defines fractional distances, density, and gaps in [0, 1/2]."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 111,
+      "endLine": 145,
+      "summary": "States de Mathan-Pollington theorem and Peres-Schlag improved bound."
+    },
+    {
+      "id": "optimal-bound",
+      "title": "Conjectured Optimal Bound",
+      "startLine": 147,
+      "endLine": 166,
+      "summary": "The conjectured ε bound (without log factor) and history of improvements."
+    },
+    {
+      "id": "chromatic-connection",
+      "title": "Connection to Chromatic Numbers",
+      "startLine": 168,
+      "endLine": 183,
+      "summary": "Relation to Problem #894 and Katznelson's chromatic number approach."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 185,
+      "endLine": 208,
+      "summary": "Powers of 2 and powers of q as lacunary examples."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 210,
+      "endLine": 237,
+      "summary": "Complete answer and problem status."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #464 was SOLVED by de Mathan (1980) and Pollington (1979). For any lacunary sequence A, there exists irrational θ such that the fractional parts {‖θn_k‖} are not dense. The best known bound is ε/log(1/ε) (Peres-Schlag 2010), with conjectured optimal ε.",
+    "implications": "This result shows that lacunary sequences are 'too sparse' for their fractional parts to fill [0, 1/2] densely for all θ. The connection to chromatic numbers of distance graphs (Problem #894) reveals deep interplay between Diophantine approximation and graph theory.",
+    "openQuestions": [
+      "Can the Peres-Schlag bound ε/log(1/ε) be improved to ε?",
+      "What is the exact optimal constant?",
+      "Are there sequences with slower growth where non-density still holds?"
+    ]
   }
 }
