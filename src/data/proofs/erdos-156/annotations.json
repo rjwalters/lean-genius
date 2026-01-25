@@ -1,0 +1,142 @@
+[
+  {
+    "id": "erdos156-sidon-def",
+    "line": 28,
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "A Sidon set (named after Simon Sidon who introduced them in 1932) is a set A of positive integers where all pairwise sums a + b (with a ≤ b) are distinct. Equivalently, if a + b = c + d with a, b, c, d ∈ A and a ≤ b, c ≤ d, then {a, b} = {c, d}. These are also called B₂ sequences in additive combinatorics."
+  },
+  {
+    "id": "erdos156-sidon-alt",
+    "line": 33,
+    "type": "definition",
+    "title": "Alternative Sidon Characterization",
+    "content": "An equivalent definition requires a + b = c + d with a < b and c < d to imply a = c and b = d. This 'strict' version is sometimes more convenient for proofs. The equivalence comes from the fact that if we order elements within pairs, equal sums must have equal pairs."
+  },
+  {
+    "id": "erdos156-sidon-equiv",
+    "line": 38,
+    "type": "theorem",
+    "title": "Equivalence of Definitions",
+    "content": "We prove that the two characterizations of Sidon sets are equivalent. This involves careful case analysis on the orderings of elements. The proof handles all combinations of comparisons between a, b, c, d to show the definitions coincide."
+  },
+  {
+    "id": "erdos156-interval",
+    "line": 73,
+    "type": "definition",
+    "title": "The Finite Interval",
+    "content": "We work with Sidon subsets of {1, 2, ..., N}. This finite interval is the natural domain for studying maximal Sidon sets, as it provides a bounded universe from which elements can be added. The lower bound of 1 (rather than 0) is traditional in Sidon set literature."
+  },
+  {
+    "id": "erdos156-maximal",
+    "line": 76,
+    "type": "definition",
+    "title": "Maximal Sidon Sets",
+    "content": "A Sidon set A ⊆ {1,...,N} is maximal if: (1) A is a Sidon set, and (2) for every x ∈ {1,...,N} \\ A, the set A ∪ {x} is NOT a Sidon set. This means adding any missing element would create a repeated sum. Maximal sets are 'saturated' within the interval."
+  },
+  {
+    "id": "erdos156-greedy",
+    "line": 90,
+    "type": "definition",
+    "title": "Greedy Sidon Construction",
+    "content": "The greedy algorithm builds a Sidon set by iterating through {1, 2, ..., N} and including each element that preserves the Sidon property. This produces a maximal Sidon set (since we only skip elements that would violate Sidon-ness). The greedy construction achieves size roughly √N."
+  },
+  {
+    "id": "erdos156-greedy-sidon",
+    "line": 100,
+    "type": "theorem",
+    "title": "Greedy Produces Sidon Sets",
+    "content": "The greedy construction always produces a valid Sidon set. The proof is by induction: the empty set is Sidon, and at each step we either maintain the previous Sidon set or explicitly check that adding the new element preserves the Sidon property."
+  },
+  {
+    "id": "erdos156-greedy-maximal",
+    "line": 112,
+    "type": "theorem",
+    "title": "Greedy is Maximal",
+    "content": "The greedy construction produces a maximal Sidon set. Any element not included was rejected because it would create a repeated sum with existing elements. This is marked as sorry since the detailed proof requires tracking the rejection history."
+  },
+  {
+    "id": "erdos156-upper-bound",
+    "line": 120,
+    "type": "axiom",
+    "title": "Classical Upper Bound",
+    "content": "Any Sidon set A ⊆ {1,...,N} has size at most √N + O(1). This is the famous Erdős-Turán bound: since all sums lie in {2,...,2N} and there are (|A| choose 2) + |A| distinct sums, we get |A|² ≤ 4N. The O(1) term comes from a more careful counting argument."
+  },
+  {
+    "id": "erdos156-greedy-lower",
+    "line": 125,
+    "type": "axiom",
+    "title": "Greedy Lower Bound",
+    "content": "The greedy construction achieves size Ω(√N). This follows from the analysis: when considering element n, we reject it only if n = a + b - c for some a, b, c in the current set. With |A| elements, there are O(|A|³) such forbidden values, which saturates around √N elements."
+  },
+  {
+    "id": "erdos156-ruzsa",
+    "line": 135,
+    "type": "axiom",
+    "title": "Ruzsa's Small Maximal Sidon Sets",
+    "content": "Ruzsa [Ru98b] proved that for any ε > 0, there exist maximal Sidon sets of size O(N^{1/3+ε}). His construction uses a clever recursive approach that creates 'holes' in the natural greedy construction, allowing maximality with much smaller size. This was a breakthrough improving on earlier bounds."
+  },
+  {
+    "id": "erdos156-conjecture",
+    "line": 147,
+    "type": "axiom",
+    "title": "The Main Conjecture",
+    "content": "Erdős Problem #156 asks: do maximal Sidon sets of size O(N^{1/3}) exist? This is stronger than Ruzsa's result—asking for exactly N^{1/3} rather than N^{1/3+ε}. The conjecture is stated as a disjunction: either such sets exist, or there's a lower bound growing faster than N^{1/3}."
+  },
+  {
+    "id": "erdos156-gap",
+    "line": 161,
+    "type": "context",
+    "title": "The Gap in Our Knowledge",
+    "content": "Current knowledge shows a gap: greedy gives maximal sets of size ~√N = N^{1/2}, while Ruzsa achieves ~N^{1/3+ε}. The question is whether the true minimum is N^{1/3}, N^{1/3} log factors, or something else entirely. Closing this gap is the essence of Problem #156."
+  },
+  {
+    "id": "erdos156-min-maximal",
+    "line": 165,
+    "type": "definition",
+    "title": "Minimum Maximal Size",
+    "content": "We define the function giving the minimum size of a maximal Sidon set in {1,...,N}. This is the infimum over all maximal Sidon sets. The main question is the growth rate of this function—specifically, whether it's O(N^{1/3})."
+  },
+  {
+    "id": "erdos156-exponent",
+    "line": 170,
+    "type": "axiom",
+    "title": "The Growth Exponent",
+    "content": "We conjecture there exists an exponent α ∈ [1/3, 1/2] such that the minimum maximal Sidon size grows like N^α. The bounds come from Ruzsa (α ≤ 1/3 + ε for any ε) and the obvious lower bound that any non-empty set has size ≥ 1. Determining α precisely is the goal."
+  },
+  {
+    "id": "erdos156-sumset",
+    "line": 184,
+    "type": "definition",
+    "title": "Sumsets and Sidon Sets",
+    "content": "The sumset A + A = {a + b : a, b ∈ A} captures all pairwise sums. For Sidon sets, |A + A| = (|A| choose 2) + |A| = |A|(|A|+1)/2, since all sums are distinct. This connection to additive combinatorics is fundamental to the study of Sidon sets."
+  },
+  {
+    "id": "erdos156-sumset-size",
+    "line": 187,
+    "type": "theorem",
+    "title": "Sumset Size for Sidon Sets",
+    "content": "For a finite Sidon set A, the sumset A + A has exactly |A|(|A|+1)/2 elements. This counts: |A| sums of the form a + a (when a = b), plus (|A| choose 2) sums with a ≠ b. The Sidon property ensures no collisions, so we get exactly this many distinct sums."
+  },
+  {
+    "id": "erdos156-b2",
+    "line": 193,
+    "type": "definition",
+    "title": "B₂ Sequences",
+    "content": "Sidon sets are also called B₂ sets or B₂ sequences in the notation of additive combinatorics. More generally, a B_h set has the property that sums of h elements are distinct (up to reordering). Sidon sets are the h = 2 case, the most studied instance."
+  },
+  {
+    "id": "erdos156-infimum",
+    "line": 212,
+    "type": "definition",
+    "title": "Infimum Formulation",
+    "content": "The infimum of sizes of maximal Sidon sets provides the precise quantity we want to understand. Using the infimum rather than minimum handles the fact that the minimum might not be achieved (though for finite N it is). The growth rate of this infimum is the central question."
+  },
+  {
+    "id": "erdos156-precise",
+    "line": 216,
+    "type": "axiom",
+    "title": "Precise Problem Statement",
+    "content": "The final axiom states the precise form of Problem #156: either the infimum is O(N^{1/3}) (small maximal Sidon sets exist), or it grows faster than any constant times N^{1/3} (there's a barrier at N^{1/3}). This formulation captures both possible resolutions of the problem."
+  }
+]

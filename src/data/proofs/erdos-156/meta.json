@@ -1,0 +1,82 @@
+{
+  "id": "erdos-156",
+  "title": "Erdős Problem #156: Minimum Size of Maximal Sidon Sets",
+  "slug": "erdos-156",
+  "description": "Does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})?",
+  "meta": {
+    "author": "Erdős",
+    "coauthors": ["Sárközy", "Sós"],
+    "sourceUrl": "https://erdosproblems.com/156",
+    "status": "axiom",
+    "proofRepoPath": "Proofs/Erdos156Problem.lean",
+    "tags": ["sidon-sets", "additive-combinatorics", "extremal-combinatorics"],
+    "badge": "axiom",
+    "sorries": 5,
+    "erdosNumber": 156,
+    "erdosUrl": "https://erdosproblems.com/156",
+    "erdosProblemStatus": "open",
+    "relatedProblems": [340],
+    "oeis": ["A382397"],
+    "references": [
+      {
+        "key": "ESS94",
+        "citation": "P. Erdős, A. Sárközy, V. T. Sós, 'On sum sets of Sidon sets', Journal of Number Theory (1994)"
+      },
+      {
+        "key": "Ru98b",
+        "citation": "I. Ruzsa, 'An infinite Sidon sequence', Journal of Number Theory (1998)"
+      },
+      {
+        "key": "OR97",
+        "citation": "K. O'Bryant, 'A complete annotated bibliography of work related to Sidon sets', Electronic Journal of Combinatorics (2004)"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős, Sárközy, and Sós in [ESS94] as part of their systematic study of Sidon sets. A Sidon set (also called a B₂ sequence) is a set where all pairwise sums are distinct. Sidon introduced these sets in 1932 while studying Fourier series. The question of maximal Sidon sets—those that cannot be extended—connects the upper bound theory (any Sidon set has size O(√N)) with constructive methods. The greedy algorithm gives maximal sets of size Θ(√N), but Ruzsa [Ru98b] showed much smaller maximal sets exist.",
+    "problemStatement": "A Sidon set A ⊂ {1,...,N} is maximal if adding any element from {1,...,N} would create a repeated sum. The greedy construction yields maximal Sidon sets of size roughly √N. Ruzsa constructed maximal Sidon sets of size roughly (N log N)^{1/3}. The question is: can we achieve size exactly O(N^{1/3})?",
+    "proofStrategy": "The formalization defines Sidon sets via the sum-distinctness property, defines maximality in finite intervals, and states the main conjecture about N^{1/3} size. We include Ruzsa's result as an axiom showing N^{1/3+ε} is achievable, establishing that the question is about removing the ε.",
+    "keyInsights": [
+      "Sidon sets have size at most √N + O(1) in {1,...,N}",
+      "The greedy algorithm produces maximal Sidon sets of size Θ(√N)",
+      "Ruzsa's construction achieves maximal Sidon sets of size o((N log N)^{1/3})",
+      "The gap between √N and N^{1/3} represents our uncertainty about minimal maximal Sidon sets",
+      "This connects to B_h[g] sequences and sumset theory in additive combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Sidon Sets",
+      "description": "Definition of Sidon sets as sets with distinct pairwise sums"
+    },
+    {
+      "title": "Maximal Sidon Sets",
+      "description": "Definition of maximality in finite intervals and basic properties"
+    },
+    {
+      "title": "The Greedy Construction",
+      "description": "Analysis of the greedy algorithm for building Sidon sets"
+    },
+    {
+      "title": "Known Bounds",
+      "description": "Classical bounds on Sidon set sizes and greedy construction"
+    },
+    {
+      "title": "Ruzsa's Construction",
+      "description": "Small maximal Sidon sets achieving size close to N^{1/3}"
+    },
+    {
+      "title": "Main Conjecture",
+      "description": "The open question about achieving exactly O(N^{1/3})"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #156 asks whether maximal Sidon sets of size O(N^{1/3}) exist. While Ruzsa achieved N^{1/3+ε} for any ε > 0, the question of exact N^{1/3} scaling remains open. This represents a fundamental question about the structure of maximal sets avoiding repeated sums.",
+    "implications": "Resolution would clarify the trade-off between maximality and sparsity for sum-free-like structures. It would also inform the study of B_h[g] sequences and complement other Erdős problems on Sidon sets.",
+    "openQuestions": [
+      "What is the exact growth exponent for minimal maximal Sidon sets?",
+      "Can probabilistic methods determine the typical size of maximal Sidon sets?",
+      "How does this generalize to B_h sequences for h > 2?"
+    ]
+  }
+}
