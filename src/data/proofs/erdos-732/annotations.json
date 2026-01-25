@@ -5,8 +5,10 @@
     "range": { "startLine": 1, "endLine": 33 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #732:**\n\nA sequence 1 < X₁ ≤ ... ≤ Xₘ ≤ n is *block-compatible* if there exists a pairwise balanced block design (PBD) with block sizes X₁, ..., Xₘ.\n\n**Two Questions:**\n1. Are there necessary and sufficient conditions for block-compatibility?\n2. Is there c > 0 such that B(n) ≥ exp(c·√n·log n)?\n\n**Status:** Q2 SOLVED by Alon, Q1 OPEN",
-    "significance": "critical"
+    "content": "**Erdős Problem #732** studies block-compatible sequences - sequences of block sizes that can arise from pairwise balanced block designs. A PBD partitions all pairs {i,j} from {1,...,n} into blocks, with each pair in exactly one block. The problem asks (1) to characterize which sequences are block-compatible, and (2) to count how many exist.",
+    "mathContext": "Erdős posed this in 1981. He proved the upper bound on the count. Alon later proved the matching lower bound, resolving Q2. The characterization problem Q1 remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["PBD", "block design", "combinatorics"]
   },
   {
     "id": "ann-732-block",
