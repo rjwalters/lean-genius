@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-e891-header",
+    "proofId": "erdos-891",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #891** asks about the distribution of integers with many prime factors in short intervals.\n\nGiven the first k primes $p_1 = 2, p_2 = 3, \\ldots, p_k$, the **primorial** $p_1 \\cdots p_k$ gives a natural interval length.\n\n**Question:** For large n, must every interval $[n, n + p_1 \\cdots p_k)$ contain an integer with more than k prime factors?\n\nThe problem is OPEN even for k = 2, asking about intervals of length 6.",
+    "mathContext": "The primorial intervals have special structure since they are divisible by all small primes. This makes the problem surprisingly difficult - you cannot simply compute your way to an answer.",
+    "significance": "critical",
+    "relatedConcepts": ["Primorial", "Prime factorization", "Short intervals"]
+  },
+  {
+    "id": "ann-e891-big-omega",
+    "proofId": "erdos-891",
+    "range": { "startLine": 46, "endLine": 56 },
+    "type": "definition",
+    "title": "Big Omega Function",
+    "content": "**bigOmega(n):** Counts prime factors WITH multiplicity.\n\nAlso written as $\\Omega(n)$ in number theory.\n\n**Examples:**\n- $\\Omega(12) = \\Omega(2^2 \\cdot 3) = 2 + 1 = 3$\n- $\\Omega(8) = \\Omega(2^3) = 3$\n- $\\Omega(30) = \\Omega(2 \\cdot 3 \\cdot 5) = 1 + 1 + 1 = 3$\n\n**Implementation:** Sums all exponents in the prime factorization.",
+    "mathContext": "The Ω function is one of two standard ways to count prime factors. The other is ω (little omega), which counts distinct primes only.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Arithmetic functions", "Little omega"]
+  },
+  {
+    "id": "ann-e891-little-omega",
+    "proofId": "erdos-891",
+    "range": { "startLine": 58, "endLine": 67 },
+    "type": "definition",
+    "title": "Little Omega Function",
+    "content": "**littleOmega(n):** Counts DISTINCT prime factors.\n\nAlso written as $\\omega(n)$ in number theory.\n\n**Examples:**\n- $\\omega(12) = \\omega(2^2 \\cdot 3) = 2$ (two distinct primes: 2 and 3)\n- $\\omega(8) = \\omega(2^3) = 1$ (only one prime: 2)\n- $\\omega(30) = \\omega(2 \\cdot 3 \\cdot 5) = 3$\n\n**Note:** $\\omega(n) \\leq \\Omega(n)$ always, with equality iff n is squarefree.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e891-nth-prime",
+    "proofId": "erdos-891",
+    "range": { "startLine": 92, "endLine": 108 },
+    "type": "definition",
+    "title": "The k-th Prime",
+    "content": "**nthPrime(k):** Returns the k-th prime (1-indexed).\n\n**Values:**\n- nthPrime(1) = 2\n- nthPrime(2) = 3\n- nthPrime(3) = 5\n- nthPrime(4) = 7\n- nthPrime(5) = 11\n\nUsed to define the primorial and state the conjecture precisely.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e891-primorial",
+    "proofId": "erdos-891",
+    "range": { "startLine": 116, "endLine": 138 },
+    "type": "definition",
+    "title": "Primorial Definition",
+    "content": "**primorial(k):** The product of the first k primes.\n\n**Values:**\n- primorial(1) = 2\n- primorial(2) = 2 × 3 = 6\n- primorial(3) = 2 × 3 × 5 = 30\n- primorial(4) = 2 × 3 × 5 × 7 = 210\n- primorial(5) = 2310\n\nThese give the interval lengths for Erdős #891.\n\nNotation: Sometimes written as $p_k\\#$ or $k\\#$.",
+    "mathContext": "Primorials grow very rapidly - faster than factorials for large k. They have the property of being divisible by all primes up to pₖ.",
+    "significance": "critical",
+    "relatedConcepts": ["Factorial", "Product of primes", "Smooth numbers"]
+  },
+  {
+    "id": "ann-e891-has-many-factors",
+    "proofId": "erdos-891",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "definition",
+    "title": "HasManyFactors Predicate",
+    "content": "**HasManyFactors(n, k):** The interval [n, n + primorial(k)) contains an integer m with Ω(m) > k.\n\nThis is the core property that Erdős #891 conjectures holds for all sufficiently large n.\n\n**For k = 2:** Asks if [n, n+6) contains an integer with ≥ 3 prime factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e891-conjecture",
+    "proofId": "erdos-891",
+    "range": { "startLine": 154, "endLine": 159 },
+    "type": "axiom",
+    "title": "The Main Conjecture",
+    "content": "**erdos891_conjecture(k):** For k ≥ 2, there exists N such that HasManyFactors(n, k) holds for all n ≥ N.\n\nIn other words: every primorial-length interval eventually contains an integer with many prime factors.\n\n**Status:** OPEN for all k ≥ 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e891-k-equals-2",
+    "proofId": "erdos-891",
+    "range": { "startLine": 168, "endLine": 177 },
+    "type": "axiom",
+    "title": "The k = 2 Case",
+    "content": "**erdos891_k_equals_2:** The conjecture for k = 2.\n\nThis is the simplest open case. It asks:\n\n*Does every interval of 6 consecutive integers (for large n) contain a number with at least 3 prime factors?*\n\n**Examples that work:**\n- [8, 14): Contains 8 = 2³ with Ω(8) = 3\n- [12, 18): Contains 12 = 2² · 3 with Ω(12) = 3\n\nBut proving this for ALL large n remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e891-examples",
+    "proofId": "erdos-891",
+    "range": { "startLine": 179, "endLine": 206 },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "**Concrete computations** using native_decide:\n\n- Ω(8) = 3 (since 8 = 2³)\n- Ω(12) = 3 (since 12 = 2² · 3)\n- Ω(18) = 3 (since 18 = 2 · 3²)\n- Ω(24) = 4 (since 24 = 2³ · 3)\n\n**example_interval_8_14:** Shows [8, 14) satisfies the k=2 condition since 8 has 3 prime factors.\n\nThese examples demonstrate the conjecture works for specific intervals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e891-schinzel",
+    "proofId": "erdos-891",
+    "range": { "startLine": 215, "endLine": 228 },
+    "type": "axiom",
+    "title": "Schinzel's Theorem",
+    "content": "**schinzel_theorem:** A weaker version of the conjecture IS provable.\n\nIf we use $p_1 \\cdots p_{k-1} \\cdot p_{k+1}$ instead of $p_1 \\cdots p_k$ (skipping the k-th prime), then the statement holds.\n\n**Proof idea:** Uses Pólya's theorem on unbounded gaps in k-smooth number sequences.\n\nThis shows the conjecture is \"almost\" true - just with a slightly larger interval.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e891-dicksons",
+    "proofId": "erdos-891",
+    "range": { "startLine": 236, "endLine": 244 },
+    "type": "axiom",
+    "title": "Dickson's Conjecture",
+    "content": "**dicksons_conjecture:** A major open problem generalizing the twin prime conjecture.\n\nIt states: For linear forms aᵢn + bᵢ with certain conditions, infinitely many n make all forms simultaneously prime.\n\n**Special cases:**\n- k=1: Infinitely many primes (proven)\n- k=2 with forms n, n+2: Twin prime conjecture (open)\n\nUsed in Weisenberg's conditional result.",
+    "mathContext": "Dickson's conjecture is one of the strongest open conjectures in prime number theory, implying infinitely many twin primes, Sophie Germain primes, and more.",
+    "significance": "key",
+    "relatedConcepts": ["Twin primes", "Prime constellations", "Hardy-Littlewood conjecture"]
+  },
+  {
+    "id": "ann-e891-weisenberg",
+    "proofId": "erdos-891",
+    "range": { "startLine": 246, "endLine": 256 },
+    "type": "axiom",
+    "title": "Weisenberg's Counterexample",
+    "content": "**weisenberg_conditional:** Under Dickson's conjecture, the statement FAILS with interval length $p_1 \\cdots p_k - 1$.\n\nThis shows:\n1. The exact primorial length is critical\n2. Subtracting just 1 breaks the conjecture\n3. The problem has deep connections to prime constellations\n\nConditionally, infinitely many intervals of length primorial(k) - 1 have NO integer with > k factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e891-smooth",
+    "proofId": "erdos-891",
+    "range": { "startLine": 265, "endLine": 279 },
+    "type": "definition",
+    "title": "Smooth Numbers and Pólya's Theorem",
+    "content": "**isSmooth(n, k):** n is k-smooth if all prime factors are ≤ pₖ.\n\n**Examples of 2-smooth numbers:** 1, 2, 4, 8, 16, ... (powers of 2)\n**Examples of 3-smooth numbers:** 1, 2, 3, 4, 6, 8, 9, 12, ...\n\n**Pólya's Theorem:** The gaps between consecutive k-smooth numbers are unbounded.\n\nThis is key to Schinzel's result: eventually there are arbitrarily long stretches without k-smooth numbers, forcing numbers with more prime factors.",
+    "significance": "key",
+    "relatedConcepts": ["Friable numbers", "Gaps in sequences", "Prime distribution"]
+  },
+  {
+    "id": "ann-e891-summary",
+    "proofId": "erdos-891",
+    "range": { "startLine": 285, "endLine": 310 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_891_summary:** Complete status of Erdős Problem #891.\n\n**What's proven:**\n- Concrete examples work (intervals containing 8, 12, 24)\n- Schinzel's weaker version with modified primorial\n\n**What's open:**\n- Main conjecture for any k ≥ 2\n- Even the k = 2 case (intervals of length 6)\n\n**What's conditionally resolved:**\n- Weisenberg: primorial - 1 fails (under Dickson's conjecture)",
+    "significance": "critical"
+  }
+]
