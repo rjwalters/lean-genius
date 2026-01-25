@@ -16,12 +16,35 @@
       "partition-calculus",
       "cardinals"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1128,
     "erdosUrl": "https://erdosproblems.com/1128",
     "erdosProblemStatus": "disproved",
-    "erdosPrizeValue": "$50"
+    "erdosPrizeValue": "$50",
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.Basic",
+        "description": "Cardinal arithmetic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Basic set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "aleph_1 axiom: declaration of ℵ₁ cardinal",
+      "aleph_0 definition: ℵ₀ = Cardinal.omega",
+      "TwoColoring definition: A × B × C → Bool",
+      "isMonochromatic definition: constant coloring on a cube",
+      "hasCardinalityAleph0 definition: countably infinite subset",
+      "erdos_hajnal_conjecture definition: the partition property statement",
+      "prikry_mills_disproof axiom: the conjecture is FALSE",
+      "exists_bad_coloring theorem: derived from disproof",
+      "erdos_1128_status theorem: complete problem status"
+    ]
   },
   "overview": {
     "historicalContext": "A problem of Erdős and Hajnal in partition calculus, asking whether the cardinal Ramsey property ℵ₁³ → (ℵ₀)³₂ holds. Prikry and Mills disproved it in 1978 with a counterexample, though their proof remained unpublished. The result was later documented by Todorčević (1994) and Komjáth (2025).",
