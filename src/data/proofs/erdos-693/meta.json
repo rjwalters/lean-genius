@@ -1,0 +1,63 @@
+{
+  "id": "erdos-693",
+  "title": "Erdős Problem #693: Divisor Gaps in Intervals",
+  "slug": "erdos-693",
+  "description": "Is the maximum gap between consecutive integers with a divisor in (n, 2n) bounded polylogarithmically?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/693",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos693Problem.lean",
+    "tags": ["number theory", "divisors", "gaps", "density"],
+    "badge": "open-problem",
+    "sorries": 4,
+    "erdosNumber": 693,
+    "erdosUrl": "https://erdosproblems.com/693",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": []
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Paul Erdős (referenced as [Er79e]) and concerns the distribution of integers with medium-sized divisors. The question connects to classical divisor theory and sieve methods. It asks about the fine structure of how divisibility constrains the placement of integers in intervals.",
+    "problemStatement": "Let k ≥ 2 and n be sufficiently large. Define A as the set of integers in [n, n^k] that have a divisor in (n, 2n). Order A as a₁ < a₂ < ···. Is the maximum gap max_i(a_{i+1} - a_i) bounded by (log n)^O(1)?",
+    "proofStrategy": "The problem requires estimating both the density of A and the uniformity of its distribution. Heuristically, integers with a divisor in (n, 2n) should have density ~1/log(n), suggesting average gap ~log(n). The question is whether maximum gaps stay polylogarithmic or can be much larger.",
+    "keyInsights": [
+      "Elements of A must have a divisor d with n < d < 2n",
+      "Heuristic density of A is ~1/log(n) in the range [n, n^k]",
+      "Average gap analysis suggests polylog is plausible",
+      "Maximum gap could exceed average due to local irregularities",
+      "Related to Hooley divisor function and sieve methods"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-set-a",
+      "title": "The Set A",
+      "content": "A(n,k) consists of integers m in [n, n^k] such that m has at least one divisor d with n < d < 2n. These are integers with 'medium-sized' divisors relative to n. The condition m = d·q with n < d < 2n constrains the arithmetic structure of elements."
+    },
+    {
+      "id": "section-gap-problem",
+      "title": "Gap Problem",
+      "content": "Ordering A as a₁ < a₂ < ···, we ask about the maximum gap a_{i+1} - a_i. A polylogarithmic bound means the maximum gap is at most C·(log n)^α for some constants C > 0 and α > 0, independent of n."
+    },
+    {
+      "id": "section-density",
+      "title": "Density Considerations",
+      "content": "If d divides m, then m = d·q. For d in (n, 2n), possible values of m in [n, n^k] are d, 2d, 3d, ..., ⌊n^k/d⌋·d. Summing over all such d gives a heuristic count of |A| ~ (n^k - n)/log(n), suggesting gaps average ~log(n)."
+    },
+    {
+      "id": "section-related",
+      "title": "Related Problems",
+      "content": "Related to Problem #446 and general questions about divisor distribution. Connects to the Hooley divisor function τ(n; y, z) counting divisors in intervals. Sieve methods may apply to counting elements of A."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #693 remains open. It asks whether integers with medium-sized divisors (in (n, 2n)) are densely and uniformly distributed in [n, n^k], with gaps bounded polylogarithmically.",
+    "implications": "Resolution would illuminate the fine structure of divisor distribution. A positive answer confirms regularity in how divisibility constraints spread integers. A negative answer would reveal surprising clustering or gaps.",
+    "openQuestions": [
+      "Is the maximum gap bounded by C·(log n)^α for some constants?",
+      "What is the density of A in [n, n^k]?",
+      "Are there arithmetic progressions or other structures causing large gaps?",
+      "How does the answer depend on k?"
+    ]
+  }
+}
