@@ -1,0 +1,153 @@
+{
+  "id": "erdos-499",
+  "title": "Erdős Problem #499: Diagonals of Doubly Stochastic Matrices",
+  "slug": "erdos-499",
+  "description": "Does every n×n doubly stochastic matrix have a diagonal with product ≥ n^{-n}? YES, proved by Marcus-Minc (1962).",
+  "meta": {
+    "author": "Marcus-Minc (1962 proof), Erdős (problem)",
+    "sourceUrl": "https://erdosproblems.com/499",
+    "date": "1962",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos499Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "linear-algebra",
+      "doubly-stochastic",
+      "permanent",
+      "matrix",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 499,
+    "erdosUrl": "https://erdosproblems.com/499",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.doublyStochastic",
+        "description": "Doubly stochastic matrix definition",
+        "module": "Mathlib.LinearAlgebra.Matrix.DoublyStochastic"
+      },
+      {
+        "theorem": "Matrix.permanent",
+        "description": "Matrix permanent function",
+        "module": "Mathlib.LinearAlgebra.Matrix.Permanent"
+      },
+      {
+        "theorem": "Equiv.Perm",
+        "description": "Permutation group",
+        "module": "Mathlib.GroupTheory.Perm.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsDoublyStochastic definition: non-negative, rows and columns sum to 1",
+      "uniformMatrix definition: all entries 1/n (minimum permanent)",
+      "diagonalProduct definition: product of diagonal entries for a permutation",
+      "perm' definition: permanent as sum of diagonal products",
+      "marcus_ree_theorem axiom: weaker sum version (1959)",
+      "marcus_minc_theorem axiom: main product result (1962)",
+      "erdos_499 theorem: main result as the Marcus-Minc theorem",
+      "van_der_waerden axiom: stronger permanent bound",
+      "vanDerWaerden_implies_erdos499: implication structure",
+      "two_by_two_erdos499: verification for n=2 case",
+      "IsPermutationMatrix definition",
+      "birkhoff_von_neumann axiom: convex hull characterization"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #499**\n\nThis problem asks about finding large diagonal products in doubly stochastic matrices, connecting to the famous van der Waerden conjecture.\n\n**Key History:**\n- Marcus & Ree (1959): Proved weaker version (sum of diagonal ≥ 1)\n- Marcus & Minc (1962): Proved this problem (product ≥ n^{-n})\n- Gyires (1980), Egorychev (1981), Falikman (1981): Proved van der Waerden conjecture (permanent ≥ n^{-n} · n!)\n\n**Mathematical Setting:**\nA doubly stochastic matrix has non-negative entries with each row and column summing to 1. The Birkhoff-von Neumann theorem shows these are exactly the convex combinations of permutation matrices. The question is whether every such matrix has a \"good\" diagonal.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $M$ be an $n \\times n$ doubly stochastic matrix. Does there exist a permutation $\\sigma \\in S_n$ such that\n$$\\prod_{i=1}^{n} M_{i,\\sigma(i)} \\geq n^{-n}?$$\n\n**Answer: YES**\n\nMarcus and Minc proved this in 1962. The bound n^{-n} is tight: the uniform matrix (all entries 1/n) achieves exactly this bound for every diagonal.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Doubly Stochastic Matrices:**\n   - Define IsDoublyStochastic predicate\n   - Define the uniform matrix as the extremal example\n\n2. **Diagonal Products:**\n   - For each permutation σ, compute ∏ᵢ M_{i,σ(i)}\n   - The problem asks for at least one permutation achieving ≥ n^{-n}\n\n3. **The Permanent:**\n   - perm(M) = ∑_σ ∏ᵢ M_{i,σ(i)}\n   - Van der Waerden: perm(M) ≥ n^{-n} · n!\n   - By averaging, some diagonal must be ≥ n^{-n}\n\n4. **Structural Results:**\n   - Birkhoff-von Neumann theorem\n   - 2×2 case verification",
+    "keyInsights": [
+      "**Doubly Stochastic Matrices:** Non-negative entries, rows and columns sum to 1. They model probability transitions and averaging operations",
+      "**The Uniform Matrix:** With all entries 1/n, every diagonal product is exactly n^{-n}. This is the \"worst case\" for Erdős #499",
+      "**Van der Waerden Conjecture:** The permanent (sum of all diagonal products) is minimized by the uniform matrix at n^{-n} · n!",
+      "**Birkhoff Polytope:** The set of doubly stochastic matrices forms a convex polytope whose vertices are permutation matrices",
+      "**Pigeonhole Argument:** If the sum of n! diagonal products is ≥ n^{-n} · n!, then at least one product is ≥ n^{-n}",
+      "**Historical Significance:** The van der Waerden conjecture was open for over 50 years before being proved in 1981"
+    ]
+  },
+  "sections": [
+    {
+      "id": "doubly-stochastic",
+      "title": "Doubly Stochastic Matrices",
+      "summary": "Definition and basic examples including uniform matrix",
+      "startLine": 44,
+      "endLine": 80
+    },
+    {
+      "id": "diagonal-products",
+      "title": "Diagonal Products",
+      "summary": "Definition of diagonal products for permutations",
+      "startLine": 82,
+      "endLine": 107
+    },
+    {
+      "id": "permanent",
+      "title": "The Permanent",
+      "summary": "Definition of permanent and its properties",
+      "startLine": 109,
+      "endLine": 134
+    },
+    {
+      "id": "marcus-ree",
+      "title": "Marcus-Ree Theorem (1959)",
+      "summary": "Weaker result: sum of diagonal ≥ 1",
+      "startLine": 136,
+      "endLine": 151
+    },
+    {
+      "id": "marcus-minc",
+      "title": "Marcus-Minc Theorem (1962)",
+      "summary": "Main result: product ≥ n^{-n} = Erdős #499",
+      "startLine": 153,
+      "endLine": 177
+    },
+    {
+      "id": "van-der-waerden",
+      "title": "Van der Waerden Conjecture",
+      "summary": "Stronger result: permanent ≥ n^{-n} · n!",
+      "startLine": 179,
+      "endLine": 214
+    },
+    {
+      "id": "two-by-two",
+      "title": "The 2×2 Case",
+      "summary": "Concrete verification for small matrices",
+      "startLine": 216,
+      "endLine": 237
+    },
+    {
+      "id": "birkhoff",
+      "title": "Birkhoff-von Neumann Theorem",
+      "summary": "Structural characterization of doubly stochastic matrices",
+      "startLine": 239,
+      "endLine": 262
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete formalization status and main results",
+      "startLine": 264,
+      "endLine": 288
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #499 asks if every doubly stochastic matrix has a diagonal with product at least n^{-n}. This was proved by Marcus and Minc in 1962. The problem is related to the van der Waerden conjecture on permanents, which provides an even stronger bound and was proved in 1981 by Egorychev and Falikman.",
+    "implications": "**Connections and Implications**\n\n1. **Optimization:** Finding optimal assignments in weighted bipartite matching problems\n\n2. **Probability Theory:** Doubly stochastic matrices model transition probabilities with conservation laws\n\n3. **Birkhoff Polytope:** Understanding the geometry of convex polytopes\n\n4. **Permanent Computation:** While computing the permanent is #P-complete, bounds like van der Waerden's have algorithmic applications\n\n5. **Algebraic Combinatorics:** Connections to symmetric functions and representation theory",
+    "openQuestions": [
+      "Efficient algorithms for finding the best diagonal in a doubly stochastic matrix",
+      "Generalizations to rectangular stochastic matrices",
+      "Analogous results for other classes of structured matrices",
+      "Quantum analogues for doubly stochastic channels"
+    ]
+  }
+}
