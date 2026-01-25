@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ann-367-1",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #367: For fixed k, is ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}? Here B₂(n) is the 2-full part of n. Strong bound ≪_k n² fails for k ≥ 3 (van Doorn). OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-367-2",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Squarefree Part",
+    "content": "The squarefree part of n is the product of primes dividing n exactly once. It's the 'squarefree core' of n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-3",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "2-Full Part",
+    "content": "B₂(n) = n / squarefreePart(n) is the 2-full part. It captures prime powers p² and higher in the factorization of n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-367-4",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 56,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Alternative Definition",
+    "content": "B₂(n) = ∏_{v_p(n) ≥ 2} p^{v_p(n)}. This shows B₂(n) is the product of prime powers where the exponent is at least 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-5",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Product Function",
+    "content": "productTwoFullParts(n, k) = ∏_{n ≤ m < n+k} B₂(m). This is the main quantity of interest in the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-367-6",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Weak Bound",
+    "content": "weakBound(k) states that ∏B₂(m) ≤ C·n^{2+ε} for any ε > 0 and some C depending on ε. This is the main conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-367-7",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Strong Bound",
+    "content": "strongBound(k) states that ∏B₂(m) ≤ C_k·n² for a constant depending only on k. This fails for k ≥ 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-8",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "Erdős Problem #367: Does weakBound(k) hold for all k ≥ 1? This asks for n^{2+o(1)} growth of products of 2-full parts.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-367-9",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 90,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Trivial Cases",
+    "content": "For k ≤ 2, the strong bound ≪ n² holds. This follows from B₂(n) ≤ n and B₂(n)·B₂(n+1) ≤ n(n+1).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-10",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 95,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Strong Bound Failure",
+    "content": "The strong bound ≪_k n² fails for k = 3 (and hence for all k ≥ 3). van Doorn showed this.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-367-11",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "van Doorn Lower Bound",
+    "content": "There exist infinitely many n with ∏_{n ≤ m < n+3} B₂(m) ≥ c·n²·log n. This shows products can exceed n² by a logarithmic factor.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-367-12",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 111,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Squarefree Characterization",
+    "content": "B₂(n) = 1 if and only if n is squarefree. Squarefree numbers have no repeated prime factors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-13",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 116,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "Prime Cases",
+    "content": "B₂(p) = 1 for primes (squarefree), and B₂(p²) = p² (perfect square). These are extreme cases.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-367-14",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 128,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Multiplicativity",
+    "content": "B₂ is multiplicative on coprime arguments: B₂(mn) = B₂(m)·B₂(n) when gcd(m,n) = 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-15",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 133,
+      "endLine": 140
+    },
+    "type": "theorem",
+    "title": "Basic Bounds",
+    "content": "B₂(n) ≤ n always, and B₂(n) divides n. These follow from the definition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-367-16",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 146,
+      "endLine": 160
+    },
+    "type": "example",
+    "title": "Computed Examples",
+    "content": "B₂(1) = 1, B₂(4) = 4, B₂(6) = 1 (squarefree), B₂(12) = 4, B₂(72) = 36. These illustrate the computation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-367-17",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 166,
+      "endLine": 169
+    },
+    "type": "definition",
+    "title": "r-Full Part",
+    "content": "The r-full part B_r(n) generalizes to ∏_{v_p(n) ≥ r} p^{v_p(n)}. The 2-full part is B_2(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-18",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 174,
+      "endLine": 179
+    },
+    "type": "theorem",
+    "title": "Generalized Problem",
+    "content": "For r ≥ 3, ask whether products of r-full parts grow at most as n^{r+o(1)}. This extends the main problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-367-19",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 185,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Consecutive Integer Analysis",
+    "content": "Large products occur when consecutive integers share high prime powers. If p² divides both n and n+k for small k, products can be large.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-367-20",
+    "proofId": "erdos-367",
+    "range": {
+      "startLine": 195,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Heuristics",
+    "content": "On average, B₂(n) ≈ 1 since most numbers are nearly squarefree. But occasional large values (highly composite numbers) can create large products over short intervals.",
+    "significance": "supporting"
+  }
+]
