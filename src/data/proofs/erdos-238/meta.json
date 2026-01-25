@@ -1,0 +1,68 @@
+{
+  "id": "erdos-238",
+  "title": "Erdős Problem #238: Consecutive Primes with Large Gaps",
+  "slug": "erdos-238",
+  "description": "Can we always find long runs of consecutive primes where all gaps exceed a fixed constant?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/238",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos238Problem.lean",
+    "tags": ["prime numbers", "prime gaps", "consecutive primes"],
+    "badge": "open-problem",
+    "sorries": 7,
+    "erdosNumber": 238,
+    "erdosUrl": "https://erdosproblems.com/238",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": []
+  },
+  "overview": {
+    "historicalContext": "This problem appears in Erdős's works [Er55c, p.7] and builds on [Er49c]. It concerns the distribution of prime gaps and whether long sequences of 'large' gaps (exceeding a fixed constant) can always be found among primes up to x. Erdős himself showed the result holds when the multiplier c₁ is sufficiently small.",
+    "problemStatement": "Let c₁, c₂ > 0. Is it true that for any sufficiently large x, there exist more than c₁·log(x) consecutive primes ≤ x such that the difference between any two adjacent primes is > c₂?",
+    "proofStrategy": "Erdős proved the partial result that for any c₂ > 0, the statement holds if c₁ is chosen sufficiently small. The general case for arbitrary c₁, c₂ > 0 remains open. Probabilistic heuristics suggest the conjecture should be true since average gaps grow as log x.",
+    "keyInsights": [
+      "Average prime gap near x is ~log x by PNT",
+      "Finding gaps > c₂ (constant) is easy; the challenge is finding LONG runs",
+      "Erdős proved the result for sufficiently small c₁",
+      "The general case (arbitrary c₁ > 0) remains open",
+      "Related to prime gap distribution and Cramér's conjecture"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-problem",
+      "title": "Problem Statement",
+      "content": "For constants c₁, c₂ > 0, we seek consecutive primes p_m, p_{m+1}, ..., p_{m+k-1} ≤ x where k > c₁·log(x) and each gap p_{i+1} - p_i > c₂. The question is whether such runs always exist for large x."
+    },
+    {
+      "id": "section-partial",
+      "title": "Partial Result",
+      "content": "Erdős proved that for any c₂ > 0, if c₁ is chosen sufficiently small (depending on c₂), then the conjecture holds. This shows long runs of large-gap primes exist but with a restriction on how long."
+    },
+    {
+      "id": "section-gaps",
+      "title": "Prime Gap Distribution",
+      "content": "By the Prime Number Theorem, the average gap between primes near x is ~log(x). This means most gaps exceed any fixed constant c₂ for large x. The difficulty is ensuring ALL gaps in a long run are large."
+    },
+    {
+      "id": "section-heuristics",
+      "title": "Probabilistic Heuristics",
+      "content": "If gaps behave somewhat randomly, the probability of k consecutive gaps all exceeding c₂ is roughly (1 - o(1))^k. For k ~ c₁·log(x), this probability doesn't vanish immediately, suggesting the conjecture should hold."
+    },
+    {
+      "id": "section-related",
+      "title": "Related Problems",
+      "content": "Connects to Cramér's conjecture on maximal prime gaps, the study of prime gaps in short intervals, and questions about the uniformity of prime distribution."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #238 asks whether long runs of consecutive primes with all gaps exceeding a fixed constant c₂ can always be found among primes ≤ x. Erdős proved this for sufficiently small c₁; the general case remains open.",
+    "implications": "Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient 'uniformity' to support long runs of large values.",
+    "openQuestions": [
+      "Does the conjecture hold for all c₁, c₂ > 0?",
+      "What is the optimal dependence of c₁ on c₂?",
+      "How does the answer relate to Cramér's conjecture?",
+      "Can we achieve c₁ = 1/log(c₂) or better?"
+    ]
+  }
+}
