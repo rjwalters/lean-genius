@@ -1,0 +1,61 @@
+{
+  "id": "erdos-312",
+  "title": "Erdős Problem #312: Subset Sum of Unit Fractions",
+  "slug": "erdos-312",
+  "description": "Does there exist c > 0 such that for K > 1, every large multiset with Σ(1/n) > K has a subset summing to within exp(-cK) of 1?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/312",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos312Problem.lean",
+    "tags": ["number-theory", "unit-fractions", "subset-sum", "exponential-bounds"],
+    "badge": "open",
+    "sorries": 5,
+    "erdosNumber": 312,
+    "erdosUrl": "https://erdosproblems.com/312",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Originally posed by Erdős and Graham [ErGr80], this problem explores the precision of subset sums of unit fractions. Erdős and Graham proved a weaker polynomial bound (c/K²), but the exponential bound (exp(-cK)) remains open. This exemplifies the gap between polynomial and exponential rates in combinatorial number theory.",
+    "problemStatement": "Does there exist a constant c > 0 such that, for any K > 1, whenever A is a sufficiently large finite multiset of positive integers with Σ_{n ∈ A} 1/n > K, there exists a subset S ⊆ A with 1 - exp(-cK) < Σ_{n ∈ S} 1/n ≤ 1?",
+    "proofStrategy": "The formalization defines the subset sum property for unit fractions, states the main conjecture with exponential bound, and includes the known Erdős-Graham result with polynomial bound. Comparison theorems show the exponential bound is strictly stronger.",
+    "keyInsights": [
+      "The problem asks about 'precision' of subset sums approaching 1",
+      "Exponential bound exp(-cK) is much stronger than polynomial c/K²",
+      "Large total sum (> K) ensures many possible subset sums",
+      "Unit fractions have irregular structure unlike powers of 2",
+      "Harmonic numbers provide natural examples with Σ 1/n ≈ ln(n)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "The Problem",
+      "content": "Given a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose sum is very close to 1? The conjectured error bound is exp(-cK), exponentially small in K."
+    },
+    {
+      "id": "known-result",
+      "title": "Erdős-Graham Theorem",
+      "content": "A weaker version is known: the polynomial bound c/K² suffices. This means we can always find a subset summing to within c/K² of 1. The gap is the transition from polynomial to exponential."
+    },
+    {
+      "id": "bounds-comparison",
+      "title": "Exponential vs Polynomial",
+      "content": "For large K, exp(-cK) << c/K². So the conjectured exponential bound gives much tighter approximation to 1. Proving this requires understanding the fine structure of subset sums."
+    },
+    {
+      "id": "harmonic-example",
+      "title": "Harmonic Numbers",
+      "content": "The canonical example is A = {1, 2, ..., n} with sum H_n ≈ ln(n) + γ. As n grows, we get arbitrarily large K, and the problem asks about finding near-1 sums."
+    }
+  ],
+  "conclusion": {
+    "summary": "The problem asks whether subset sums of unit fractions can achieve exponentially precise approximations to 1. The polynomial version is solved, but the exponential conjecture remains open.",
+    "implications": "Resolution would impact our understanding of the arithmetic of unit fractions and potentially have applications to approximation algorithms for subset sum problems.",
+    "openQuestions": [
+      "Does the exponential bound exp(-cK) hold?",
+      "What is the optimal constant c?",
+      "Are there connections to the Egyptian fraction representation of rationals?"
+    ]
+  }
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "erdos-312-header",
+    "proofId": "erdos-312",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 29 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #312 asks about the precision of subset sums of unit fractions: when Σ(1/n) > K, can we find a subset summing to within exp(-cK) of 1? The exponential bound is conjectured but unproven.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-312-unit-fraction-sum",
+    "proofId": "erdos-312",
+    "type": "definition",
+    "range": { "startLine": 42, "endLine": 57 },
+    "title": "Unit Fraction Sum",
+    "content": "The sum of unit fractions Σ_{n ∈ A} 1/n is always non-negative. This is the basic quantity we work with - the total 'budget' of reciprocals available for forming subset sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-312-subset-property",
+    "proofId": "erdos-312",
+    "type": "definition",
+    "range": { "startLine": 59, "endLine": 70 },
+    "title": "Subset Sum Property",
+    "content": "A multiset has the (c,K)-property if some subset's reciprocal sum is in the interval (1 - exp(-cK), 1]. This formalizes 'finding a subset that sums to almost exactly 1'.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-312-main-conjecture",
+    "proofId": "erdos-312",
+    "type": "theorem",
+    "range": { "startLine": 72, "endLine": 89 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "Does there exist c > 0 such that for all K > 1, every sufficiently large multiset with sum > K has the (c,K)-property? This is the central open question with exponential precision.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-312-erdos-graham",
+    "proofId": "erdos-312",
+    "type": "theorem",
+    "range": { "startLine": 91, "endLine": 114 },
+    "title": "Erdős-Graham Theorem (Polynomial)",
+    "content": "The weaker polynomial bound c/K² is known to work. This means we can always find a subset summing to within c/K² of 1, but exponential precision remains unproven.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-312-bounds-comparison",
+    "proofId": "erdos-312",
+    "type": "context",
+    "range": { "startLine": 116, "endLine": 143 },
+    "title": "Comparing Bounds",
+    "content": "For large K, exp(-cK) << c/K². The exponential bound gives much tighter approximation. The conjectured property implies the known property, showing the gap between polynomial and exponential rates.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-312-harmonic",
+    "proofId": "erdos-312",
+    "type": "example",
+    "range": { "startLine": 145, "endLine": 164 },
+    "title": "Harmonic Numbers",
+    "content": "H_n = 1 + 1/2 + ... + 1/n ≈ ln(n) + γ. The set {1,...,n} provides a canonical example. As n grows, H_n can exceed any K, making this a natural test case for the conjecture.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-312-subset-sum",
+    "proofId": "erdos-312",
+    "type": "context",
+    "range": { "startLine": 181, "endLine": 196 },
+    "title": "Connection to Subset Sum",
+    "content": "This problem relates to the computational subset sum problem. Instead of hitting an exact target, we want to land in a small interval (1-exp(-cK), 1]. The large total ensures existence.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-312-difficulty",
+    "proofId": "erdos-312",
+    "type": "context",
+    "range": { "startLine": 198, "endLine": 210 },
+    "title": "Why This Is Hard",
+    "content": "The challenge is proving exponential precision. Unit fractions have irregular structure - understanding their subset sum 'density' requires delicate analysis beyond what gives the polynomial bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-312-summary",
+    "proofId": "erdos-312",
+    "type": "conclusion",
+    "range": { "startLine": 212, "endLine": 244 },
+    "title": "Summary",
+    "content": "Known: Polynomial bound c/K² works (Erdős-Graham). Open: Does exponential bound exp(-cK) work? This is the key gap between polynomial and exponential precision in subset sums.",
+    "significance": "key"
+  }
+]
