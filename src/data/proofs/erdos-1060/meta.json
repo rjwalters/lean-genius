@@ -1,0 +1,126 @@
+{
+  "id": "erdos-1060",
+  "title": "Erdős Problem #1060: Counting Solutions to k·σ(k) = n",
+  "slug": "erdos-1060",
+  "description": "Let f(n) count solutions to k·σ(k) = n. Is f(n) ≤ n^{o(1/log log n)}? Perhaps even f(n) ≤ (log n)^{O(1)}? This problem remains OPEN.",
+  "meta": {
+    "author": "Erdős, documented in Guy [Gu04] Problem B11",
+    "sourceUrl": "https://erdosproblems.com/1060",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1060Problem.lean",
+    "tags": ["erdos", "number-theory", "divisor-functions", "counting-solutions", "open-problem"],
+    "badge": "axiom",
+    "sorries": 5,
+    "erdosNumber": 1060,
+    "erdosUrl": "https://erdosproblems.com/1060",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "ArithmeticFunction",
+        "description": "Arithmetic functions framework",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sigma definition: sum of divisors using Finset.sum",
+      "sigma_one theorem: σ(1) = 1",
+      "sigma_prime theorem: σ(p) = p + 1 for prime p",
+      "g definition: g(k) = k·σ(k)",
+      "g_one theorem: g(1) = 1",
+      "g_prime theorem: g(p) = p(p+1) for prime p",
+      "solutionSet definition: {k | g(k) = n}",
+      "f definition: counting function using ncard",
+      "solutionSet_finite theorem: finite solutions for n > 0",
+      "erdos_1060_weak_conjecture axiom: f(n) ≤ n^{o(1/log log n)}",
+      "erdos_1060_strong_conjecture axiom: f(n) ≤ (log n)^C",
+      "oeis_A327153 definition: values with solutions",
+      "Concrete examples: g(2)=6, g(3)=12, g(5)=30, g(6)=72, g(7)=56"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1060**\n\nThis problem appears as B11 in Richard Guy's collection 'Unsolved Problems in Number Theory' [Gu04], attributed to Erdős.\n\n**Key History:**\n- The problem concerns the multiplicative Diophantine equation k·σ(k) = n\n- Related to understanding the structure of the divisor function σ\n- Connected to OEIS sequence A327153\n\n**Mathematical Setting:**\nThe sum of divisors function σ(k) = Σ_{d|k} d is one of the most fundamental arithmetic functions. The product k·σ(k) combines multiplicative and additive structure in a subtle way.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet f(n) count the number of solutions to k·σ(k) = n, where σ(k) is the sum of divisors of k.\n\n**Questions:**\n1. **Weak Conjecture:** Is f(n) ≤ n^{o(1/log log n)}?\n2. **Strong Conjecture:** Perhaps even f(n) ≤ (log n)^{O(1)}?\n\n**Answer: UNKNOWN**\n\nBoth bounds remain open. The strong conjecture would imply f(n) is at most polynomial in log n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Function:** Define σ(k) using Finset.sum over divisors\n\n2. **Product Function:** Define g(k) = k·σ(k)\n\n3. **Counting Function:** Define f(n) as the cardinality of {k : g(k) = n}\n\n4. **Finiteness:** Prove the solution set is finite for n > 0\n\n5. **Conjectures:** Axiomatize both the weak and strong bounds\n\n6. **Examples:** Verify concrete cases computationally",
+    "keyInsights": [
+      "**Finiteness:** For n > 0, since k·σ(k) ≥ k (as σ(k) ≥ 1), we have k ≤ n, so finitely many solutions",
+      "**Prime Values:** For prime p, g(p) = p(p+1), giving solutions at n = 2, 6, 12, 30, 56, ...",
+      "**Multiplicativity:** σ is multiplicative, but g(k) = k·σ(k) is not",
+      "**Growth Rates:** Weak conjecture: f(n) = n^{o(1/log log n)}; Strong: f(n) = (log n)^{O(1)}",
+      "**OEIS A327153:** Records values of n for which k·σ(k) = n has a solution",
+      "**Density Question:** How sparse are the values in the range of g?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisor-function",
+      "title": "Sum of Divisors Function",
+      "summary": "sigma definition and basic properties",
+      "startLine": 34,
+      "endLine": 61
+    },
+    {
+      "id": "product-function",
+      "title": "Product k·σ(k)",
+      "summary": "g definition, g_one, g_prime theorems",
+      "startLine": 63,
+      "endLine": 83
+    },
+    {
+      "id": "counting-function",
+      "title": "Counting Function f(n)",
+      "summary": "solutionSet, f definitions, finiteness proof",
+      "startLine": 85,
+      "endLine": 129
+    },
+    {
+      "id": "basic-values",
+      "title": "Basic Values",
+      "summary": "f(1), f(0) theorems",
+      "startLine": 131,
+      "endLine": 146
+    },
+    {
+      "id": "conjectures",
+      "title": "Upper Bound Conjectures (Open)",
+      "summary": "Weak and strong conjecture axioms",
+      "startLine": 148,
+      "endLine": 172
+    },
+    {
+      "id": "oeis",
+      "title": "OEIS Connection",
+      "summary": "A327153 definition and membership",
+      "startLine": 174,
+      "endLine": 201
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Computations",
+      "summary": "Concrete verified examples using native_decide",
+      "startLine": 203,
+      "endLine": 239
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1060 asks for upper bounds on f(n), the number of solutions to k·σ(k) = n. Two conjectures are proposed: a weak bound f(n) ≤ n^{o(1/log log n)} and a strong bound f(n) ≤ (log n)^C. Both remain OPEN. The formalization defines the counting function, proves finiteness of solutions, and verifies concrete examples.",
+    "implications": "**Number Theory Connections**\n\n1. **Divisor Function Structure:** Understanding when k·σ(k) = n relates to the multiplicative structure of σ\n\n2. **Diophantine Equations:** Part of the broader study of multiplicative equations\n\n3. **Value Distribution:** Related to understanding the range of arithmetic functions\n\n4. **Density Questions:** How sparse is {k·σ(k) : k ∈ ℕ}?\n\n5. **Perfect Numbers:** For perfect n, σ(n) = 2n, so g(n) = 2n², giving specific solutions",
+    "openQuestions": [
+      "Is f(n) ≤ n^{o(1/log log n)}? (weak conjecture)",
+      "Is f(n) ≤ (log n)^C for some C? (strong conjecture)",
+      "What is the density of values in the range of g?",
+      "Are there infinitely many n with f(n) = 1?",
+      "What is the maximum of f(n) for n ≤ N?"
+    ]
+  }
+}
