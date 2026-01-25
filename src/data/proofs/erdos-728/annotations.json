@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ann-e728-header",
+    "proofId": "erdos-728",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #728: Factorial Divisibility**\n\nCan a!b! divide n!(a+b-n)! when:\n1. a, b > epsilon * n\n2. a + b is in the range (n + C log n, n + C' log n)?\n\n**Origin:** Erdos, Graham, Ruzsa, Straus (1975)\n**Status:** SOLVED by Barreto & ChatGPT-5.2\n**Key:** The b = n/2 construction works",
+    "mathContext": "This refines Erdos's 1968 result that a!b! | n! implies a+b <= n + O(log n).",
+    "significance": "critical",
+    "relatedConcepts": ["Factorial divisibility", "p-adic valuation", "Legendre's formula"]
+  },
+  {
+    "id": "ann-e728-divisibility",
+    "proofId": "erdos-728",
+    "range": { "startLine": 40, "endLine": 55 },
+    "type": "definition",
+    "title": "Factorial Divisibility",
+    "content": "**factorialDivisibility a b n:**\n\nThe key condition: a! * b! divides n! * (a + b - n)!\n\n```lean\ndef factorialDivisibility (a b n : N) : Prop :=\n  a + b >= n and a! * b! | n! * (a + b - n)!\n```\n\nThis generalizes the simpler condition a!b! | n!",
+    "mathContext": "When a + b = n, this becomes the binomial coefficient condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e728-gap",
+    "proofId": "erdos-728",
+    "range": { "startLine": 61, "endLine": 72 },
+    "type": "definition",
+    "title": "Logarithmic Gap",
+    "content": "**hasLogarithmicGap a b n C C':**\n\nThe sum a + b lies in the \"logarithmic gap\" above n:\n- n + C * log(n) < a + b\n- a + b < n + C' * log(n)\n\nThis is the interesting regime where Erdos's 1968 bound is nearly tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e728-size",
+    "proofId": "erdos-728",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "definition",
+    "title": "Size Condition",
+    "content": "**hasSizeCondition a b n epsilon:**\n\nBoth a and b are substantial fractions of n:\n- epsilon * n < a\n- epsilon * n < b\n\nThis prevents trivial solutions with very small a or b.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e728-solution",
+    "proofId": "erdos-728",
+    "range": { "startLine": 84, "endLine": 100 },
+    "type": "definition",
+    "title": "Full Solution Condition",
+    "content": "**isErdos728Solution a b n epsilon C C':**\n\nA complete solution satisfies:\n1. n > 0\n2. hasSizeCondition (a, b large)\n3. factorialDivisibility (the divisibility holds)\n4. hasLogarithmicGap (a + b in the right range)\n\nThe problem asks: do such triples exist?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e728-erdos1968",
+    "proofId": "erdos-728",
+    "range": { "startLine": 106, "endLine": 125 },
+    "type": "axiom",
+    "title": "Erdos 1968 Bound",
+    "content": "**erdos_1968_bound:**\n\nIf a! * b! divides n!, then a + b <= n + K * log(n) for some constant K.\n\n```lean\naxiom erdos_1968_bound :\n    exists K > 0, forall a b n,\n      a! * b! | n! -> (a + b : R) <= n + K * log n\n```\n\nThis classical result shows divisibility tightly constrains a + b.",
+    "mathContext": "The proof uses properties of prime factorizations and the Prime Number Theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e728-resolution",
+    "proofId": "erdos-728",
+    "range": { "startLine": 135, "endLine": 155 },
+    "type": "axiom",
+    "title": "Main Resolution",
+    "content": "**erdos_728_resolution:**\n\nThe answer is YES: for any 0 < C < C', infinitely many solutions exist.\n\n```lean\naxiom erdos_728_resolution :\n    forall epsilon near 0, forall 0 < C < C',\n      exists a b n, isErdos728Solution a b n epsilon C C'\n```\n\n**Proved by:** Barreto & ChatGPT-5.2",
+    "mathContext": "Notable as one of the first Erdos problems resolved with AI assistance.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e728-construction",
+    "proofId": "erdos-728",
+    "range": { "startLine": 167, "endLine": 183 },
+    "type": "definition",
+    "title": "The b = n/2 Construction",
+    "content": "**constructionTemplate:**\n\nFor even n, set:\n- b = n/2\n- a = n/2 + O(log n)\n\nThis construction:\n1. Satisfies the size condition (both ~ n/2)\n2. Achieves the logarithmic gap (a + b = n + O(log n))\n3. Can be verified for divisibility via Legendre's formula",
+    "mathContext": "The key insight: b = n/2 provides enough 'room' for the construction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e728-construction-works",
+    "proofId": "erdos-728",
+    "range": { "startLine": 185, "endLine": 195 },
+    "type": "theorem",
+    "title": "Construction Size Verification",
+    "content": "**construction_size:**\n\nFor n >= 4 and epsilon < 1/3, we have epsilon * n < n/2.\n\nThis confirms b = n/2 satisfies the size condition for reasonable epsilon.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e728-legendre",
+    "proofId": "erdos-728",
+    "range": { "startLine": 201, "endLine": 215 },
+    "type": "definition",
+    "title": "Legendre's Formula",
+    "content": "**legendreSum n p:**\n\nThe p-adic valuation of n! is:\nv_p(n!) = sum_{i >= 1} floor(n / p^i)\n\n```lean\ndef legendreSum (n p : N) : N :=\n  (Finset.range n).sum fun i => n / p^(i + 1)\n```\n\nThis is the key tool for verifying factorial divisibility.",
+    "mathContext": "Legendre's formula converts divisibility questions into arithmetic sums.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e728-legendre-div",
+    "proofId": "erdos-728",
+    "range": { "startLine": 217, "endLine": 225 },
+    "type": "axiom",
+    "title": "Divisibility via Legendre",
+    "content": "**divisibility_via_legendre:**\n\na! * b! | n! * (a+b-n)! iff for every prime p:\nv_p(n!) + v_p((a+b-n)!) >= v_p(a!) + v_p(b!)\n\nThis reduces divisibility to checking p-adic valuations for all primes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e728-729",
+    "proofId": "erdos-728",
+    "range": { "startLine": 233, "endLine": 240 },
+    "type": "axiom",
+    "title": "Problem #729 Connection",
+    "content": "**problem_729_connection:**\n\nProblem #729 asks related questions about factorial divisibility with different parameter constraints.\n\nThese problems form a family exploring the boundaries of factorial arithmetic.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e728-summary",
+    "proofId": "erdos-728",
+    "range": { "startLine": 258, "endLine": 275 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_728_summary:**\n\n1. Erdos (1968): a!b! | n! implies a + b <= n + O(log n)\n2. Question (1975): Can we achieve divisibility AT the logarithmic limit?\n3. Answer (Barreto/ChatGPT-5.2): YES, using b = n/2 construction\n\n```lean\ntheorem erdos_728_summary :\n    exists K > 0, forall a b n,\n      a! * b! | n! -> (a + b : R) <= n + K * log n\n```",
+    "significance": "key"
+  }
+]
