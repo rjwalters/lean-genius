@@ -1,0 +1,106 @@
+{
+  "id": "erdos-183",
+  "title": "Erdős Problem #183: Multicolor Triangle Ramsey Numbers",
+  "slug": "erdos-183",
+  "description": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/183",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos183Problem.lean",
+    "tags": ["erdos", "ramsey-theory", "graph-theory", "combinatorics", "extremal-combinatorics"],
+    "badge": "axiom",
+    "sorries": 5,
+    "erdosNumber": 183,
+    "erdosUrl": "https://erdosproblems.com/183",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Nat.Factorial.Basic"
+    ],
+    "originalContributions": [
+      "Formal definition of multicolor Ramsey numbers R(3;k)",
+      "Edge coloring framework for complete graphs",
+      "Monochromatic triangle detection predicates",
+      "Connection between Schur numbers and Ramsey numbers",
+      "Growth rate bounds and limit formulations"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Paul Erdős in 1961 [Er61] and remains one of the fundamental open questions in Ramsey theory. The multicolor Ramsey number R(3;k) generalizes the classical two-color Ramsey number R(3,3) = 6, which asks for the minimum n such that any 2-coloring of K_n's edges contains a monochromatic triangle.\n\nThe problem connects to several areas of combinatorics. The upper bound R(3;k) ≤ ⌈e·k!⌉ follows from a clever pigeonhole argument, while lower bounds come from connections to Schur numbers. A major breakthrough came in 2021 when Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik [ACPPRT21] improved the lower bound to R(3;k) ≥ 380^{k/5} - O(1).\n\nErdős offered $250 for solving this problem, with an additional $100 specifically for proving that the limit is finite. The gap between known bounds is enormous: R(3;k) lies between roughly 3.28^k and k!, making this one of the most intriguing open problems in Ramsey theory.",
+    "problemStatement": "Let $R(3;k)$ denote the minimum $n$ such that any $k$-coloring of the edges of the complete graph $K_n$ must contain a monochromatic triangle. Determine:\n\n$$\\lim_{k \\to \\infty} R(3;k)^{1/k}$$\n\n**Known bounds:**\n- Upper: $R(3;k) \\leq \\lceil e \\cdot k! \\rceil$\n- Lower: $R(3;k) \\geq 380^{k/5} - O(1)$\n\n**Reward:** $250 (plus $100 for proving the limit is finite)",
+    "proofStrategy": "The formalization defines R(3;k) as the minimum n forcing a monochromatic triangle in any k-coloring of K_n. We establish the existence of R(3;k) through an axiom (finiteness follows from the pigeonhole upper bound). The known small values R(3;1)=3, R(3;2)=6, R(3;3)=17 are axiomatized.\n\nThe upper bound uses the inductive relation R(3;k) ≤ 2 + k(R(3;k-1)-1), which unfolds to the factorial bound. The lower bound leverages connections to Schur numbers and the 2021 construction achieving 380^{k/5}.\n\nThe main question is formulated as Filter.Tendsto (fun k => R(3;k)^{1/k}) atTop (nhds L) for some limit L, or alternatively whether this tends to infinity.",
+    "keyInsights": [
+      "**Multicolor Generalization**: R(3;k) extends the classical R(3,3)=6 to k colors, asking when monochromatic triangles are unavoidable",
+      "**Enormous Gap**: Known bounds span from exponential (3.28^k) to factorial (k!), leaving vast uncertainty about the true growth rate",
+      "**Schur Connection**: Lower bounds come from Schur numbers S(k), where R(3;k) ≥ S(k) + 2, linking sum-free colorings to triangle-free colorings",
+      "**Pigeonhole Upper Bound**: The relation R(3;k) ≤ 2 + k(R(3;k-1)-1) follows from considering color classes at a vertex",
+      "**Open Questions**: Both whether the limit exists and whether it is finite remain unknown, each worth separate rewards"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Basic Definitions",
+      "startLine": 29,
+      "endLine": 54,
+      "summary": "Defines edge colorings, symmetry conditions, and monochromatic triangle predicates"
+    },
+    {
+      "title": "Ramsey Number Definition",
+      "startLine": 56,
+      "endLine": 74,
+      "summary": "Defines R(3;k) as the minimum n forcing monochromatic triangles"
+    },
+    {
+      "title": "Known Small Values",
+      "startLine": 76,
+      "endLine": 89,
+      "summary": "States R(3;1)=3, R(3;2)=6, R(3;3)=17"
+    },
+    {
+      "title": "Upper Bound",
+      "startLine": 91,
+      "endLine": 111,
+      "summary": "The pigeonhole bound R(3;k) ≤ ⌈e·k!⌉"
+    },
+    {
+      "title": "Lower Bound",
+      "startLine": 113,
+      "endLine": 135,
+      "summary": "Schur number connection and the 380^{k/5} lower bound"
+    },
+    {
+      "title": "Main Question",
+      "startLine": 137,
+      "endLine": 171,
+      "summary": "The limit lim R(3;k)^{1/k} and its possible values"
+    },
+    {
+      "title": "Growth Rate Analysis",
+      "startLine": 173,
+      "endLine": 207,
+      "summary": "Summary of bounds and the enormous gap"
+    },
+    {
+      "title": "Formal Statement",
+      "startLine": 222,
+      "endLine": 250,
+      "summary": "Main theorem combining existence and bounds"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #183 on multicolor triangle Ramsey numbers. We define R(3;k), establish its basic properties, and formalize the known upper and lower bounds. The main open question asks for the limit of R(3;k)^{1/k}.",
+    "implications": "The growth rate of R(3;k) is fundamental to understanding how combinatorial structures resist partitioning. A resolution would illuminate deep connections between Ramsey theory, Schur numbers, and extremal combinatorics. The $350 reward reflects the problem's difficulty and importance.",
+    "openQuestions": [
+      "Does lim_{k→∞} R(3;k)^{1/k} exist?",
+      "If the limit exists, is it finite?",
+      "What is the exact value of R(3;4)?",
+      "Can the lower bound 380^{k/5} be improved?",
+      "Is there a construction giving R(3;k) = o(k!)?"
+    ]
+  }
+}
