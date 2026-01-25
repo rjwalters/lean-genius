@@ -31,7 +31,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -/
 
-import Mathlib
+import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Order.Filter.AtTopBot
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.Real.Basic
 
 /-!
 # Erdős Problem 404: Prime Power Divisibility of Factorial Sums
