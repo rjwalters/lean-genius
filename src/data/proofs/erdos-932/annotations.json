@@ -1,0 +1,110 @@
+[
+  {
+    "id": "erdos-932-header",
+    "proofId": "erdos-932",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 31 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #932 asks: for infinitely many r, are there at least two integers in the prime gap (p_r, p_{r+1}) whose prime factors are all smaller than the gap size? This connects prime gap distribution with smooth number theory.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-932-nth-prime",
+    "proofId": "erdos-932",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 63 },
+    "title": "The n-th Prime",
+    "content": "We define nthPrime(n) as the n-th prime in the sequence 2, 3, 5, 7, 11, ... using Mathlib's Nat.nth function. Key properties: the sequence is strictly increasing, and each element is prime.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-932-prime-gap",
+    "proofId": "erdos-932",
+    "type": "definition",
+    "range": { "startLine": 65, "endLine": 82 },
+    "title": "Prime Gap Definition",
+    "content": "The prime gap g_n = p_{n+1} - p_n measures the distance between consecutive primes. The gap is always positive since primes are strictly increasing. Famous gaps include the twin prime gap (g_n = 2).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-932-max-prime-factor",
+    "proofId": "erdos-932",
+    "type": "definition",
+    "range": { "startLine": 86, "endLine": 103 },
+    "title": "Maximum Prime Factor",
+    "content": "maxPrimeFactor(n) returns the largest prime dividing n, or 0 if n <= 1. For example, maxPrimeFactor(12) = 3 since 12 = 2^2 * 3. This is the key measure for smooth numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-932-smooth-def",
+    "proofId": "erdos-932",
+    "type": "definition",
+    "range": { "startLine": 105, "endLine": 119 },
+    "title": "B-Smooth Numbers",
+    "content": "A number n is B-smooth if all its prime factors are at most B, i.e., maxPrimeFactor(n) <= B. Smooth numbers appear throughout number theory, including in factoring algorithms and the study of the Riemann zeta function.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-932-gap-interval",
+    "proofId": "erdos-932",
+    "type": "definition",
+    "range": { "startLine": 121, "endLine": 161 },
+    "title": "Smooth Numbers in Gap",
+    "content": "We define the open interval (p_r, p_{r+1}) between consecutive primes, then filter for numbers whose prime factors are all smaller than the gap size. The count of such numbers is smoothCount(r).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-932-main-conjecture",
+    "proofId": "erdos-932",
+    "type": "theorem",
+    "range": { "startLine": 163, "endLine": 183 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "The set { r : smoothCount(r) >= 2 } is infinite. In other words, infinitely many prime gaps contain at least two numbers that are smooth relative to the gap size. This remains unproven.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-932-density-zero",
+    "proofId": "erdos-932",
+    "type": "theorem",
+    "range": { "startLine": 185, "endLine": 218 },
+    "title": "Erdős's Density Result (SOLVED)",
+    "content": "Erdős proved that the natural density of r with smoothCount(r) >= 1 is 0. This means almost all prime gaps contain NO smooth numbers relative to their size, making the main conjecture highly non-trivial.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-932-example",
+    "proofId": "erdos-932",
+    "type": "example",
+    "range": { "startLine": 220, "endLine": 243 },
+    "title": "Concrete Example: r = 3",
+    "content": "For r=3, we have primes 7 and 11 with gap 4. The interval (7,11) = {8,9,10}. Here 8 = 2^3 has maxPrimeFactor 2 < 4, and 9 = 3^2 has maxPrimeFactor 3 < 4. Both are 4-smooth, so smoothCount(3) = 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-932-difficulty",
+    "proofId": "erdos-932",
+    "type": "context",
+    "range": { "startLine": 245, "endLine": 262 },
+    "title": "Why This Problem Is Hard",
+    "content": "The challenge is proving infinitely many r exist despite their density being zero. Smooth numbers must be in short intervals (prime gaps) AND have only small prime factors. The interplay between gap size and smooth number distribution is subtle.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-932-dickman",
+    "proofId": "erdos-932",
+    "type": "context",
+    "range": { "startLine": 264, "endLine": 284 },
+    "title": "Smooth Number Distribution",
+    "content": "The counting function Psi(x,y) = |{n <= x : n is y-smooth}| is well-studied. Asymptotically, Psi(x,y) ~ x * rho(log(x)/log(y)) where rho is the Dickman function. This describes how smooth numbers become rarer as the smoothness bound decreases.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-932-summary",
+    "proofId": "erdos-932",
+    "type": "conclusion",
+    "range": { "startLine": 286, "endLine": 320 },
+    "title": "Summary",
+    "content": "The problem asks about infinitely many prime gaps with at least 2 smooth numbers. Known: density of r with >= 1 smooth number is 0 (Erdős). Example: r=3 (gap 7 to 11) works. The main question remains OPEN.",
+    "significance": "key"
+  }
+]
