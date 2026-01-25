@@ -1,12 +1,14 @@
 [
   {
-    "id": "erdos-828-header",
+    "id": "ann-828-header",
     "proofId": "erdos-828",
-    "type": "context",
+    "type": "concept",
     "range": { "startLine": 1, "endLine": 28 },
     "title": "Problem Overview",
-    "content": "Erdős Problem #828 asks: for any integer a, are there infinitely many n with φ(n) | n + a? This generalizes Lehmer's conjecture (a = -1) and the characterized case a = 0.",
-    "significance": "key"
+    "content": "**Erdős Problem #828** asks: for any integer a, are there infinitely many n with φ(n) | n + a? This unifies two classical results: the a=0 case (completely characterized as n = 2^a·3^b) and Lehmer's 1932 conjecture (a = -1, only primes work).",
+    "mathContext": "Posed by Erdős [Er83], conjecture attributed to Graham. See also Guy (2004) Problem B37.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler totient", "Lehmer's conjecture", "divisibility"]
   },
   {
     "id": "erdos-828-totient-divisors",
