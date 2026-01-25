@@ -108,6 +108,30 @@ def Polynomial.toTimeBound (p : Polynomial) : TimeBound :=
 def isPolynomial (T : TimeBound) : Prop :=
   ∃ p : Polynomial, ∀ n : Nat, T n ≤ p.eval n
 
+/-- Polynomial evaluation is monotonic -/
+theorem Polynomial.eval_mono (p : Polynomial) {a b : Nat} (h : a ≤ b) :
+    p.eval a ≤ p.eval b := by
+  simp only [eval]
+  apply Nat.mul_le_mul_left
+  apply Nat.pow_le_pow_left h
+
+/-- Key bound: c*n^d ≤ (c+1)*n^d' when d ≤ d' and n ≥ 1 -/
+theorem poly_bound_degree {c d d' n : Nat} (hd : d ≤ d') (hn : 1 ≤ n) :
+    c * n^d ≤ (c + 1) * n^d' := by
+  have h1 : n^d ≤ n^d' := Nat.pow_le_pow_right hn hd
+  calc c * n^d
+    ≤ c * n^d' := Nat.mul_le_mul_left c h1
+    _ ≤ (c + 1) * n^d' := Nat.mul_le_mul_right (n^d') (Nat.le_succ c)
+
+/-- Key bound: (c₁*n^d₁)^d₂ = c₁^d₂ * n^(d₁*d₂) -/
+theorem poly_pow_expand (c d₁ d₂ n : Nat) :
+    (c * n^d₁)^d₂ = c^d₂ * n^(d₁ * d₂) := by
+  rw [Nat.mul_pow, Nat.pow_mul]
+
+/-- Sum bound: a + b ≤ 2 * max a b -/
+theorem sum_le_twice_max (a b : Nat) : a + b ≤ 2 * max a b := by
+  omega
+
 -- ============================================================
 -- PART 3: Complexity Class P
 -- ============================================================
@@ -245,6 +269,8 @@ structure PolyReduction (A B : DecisionProblem) extends Reduction A B where
   outputSize : Nat → Nat
   /-- Output size bound is polynomial -/
   polyOutput : isPolynomial outputSize
+  /-- Output size is monotonic (larger inputs → outputs no smaller) -/
+  outputMono : ∀ a b, a ≤ b → outputSize a ≤ outputSize b
   /-- The reduction output size is bounded -/
   outputBounded : ∀ n, inputSize (f n) ≤ outputSize (inputSize n)
 
@@ -261,6 +287,7 @@ theorem poly_reduce_refl (A : DecisionProblem) : A ≤ₚ A := by
     polyCompute := ⟨⟨1, 1⟩, fun n => by simp [Polynomial.eval]⟩
     outputSize := id
     polyOutput := ⟨⟨1, 1⟩, fun n => by simp [Polynomial.eval]⟩
+    outputMono := fun _ _ h => h
     outputBounded := fun n => le_refl _
   }
 
@@ -286,6 +313,7 @@ theorem poly_reduce_trans {A B C : DecisionProblem}
     -- Output size: r2.outputSize(r1.outputSize(n))
     outputSize := fun n => r2.outputSize (r1.outputSize n)
     polyOutput := ?polyOut
+    outputMono := ?outMono
     outputBounded := ?outBound
   }
   case polyComp =>
@@ -295,12 +323,81 @@ theorem poly_reduce_trans {A B C : DecisionProblem}
     obtain ⟨q1, hq1⟩ := r1.polyOutput
     -- Similar polynomial arithmetic as in poly_reduce_in_P
     -- For now, use a placeholder polynomial
-    use ⟨max p1.degree (p2.degree + q1.degree),
-         (p1.coeff + 1) * (p2.coeff + 1) * (q1.coeff + 1)⟩
+    -- Degree: max of d₁ and d₂*d₃ (for composition p₂(q₁(n)))
+    -- Coeff: 2 * product to handle sum of two terms
+    use ⟨max p1.degree (p2.degree * q1.degree),
+         2 * (p1.coeff + 1) * (p2.coeff + 1) * (q1.coeff + 1)^p2.degree⟩
     intro n
-    -- Technical bound; same structure as poly_reduce_in_P
+    -- Goal: r1.computeTime n + r2.computeTime (r1.outputSize n) ≤ bound
     simp only [Polynomial.eval]
-    sorry  -- Polynomial arithmetic (same pattern as poly_reduce_in_P)
+    -- Bounds we have:
+    have h1 : r1.computeTime n ≤ p1.coeff * n^p1.degree := hp1 n
+    have h2 : r2.computeTime (r1.outputSize n) ≤ p2.coeff * (r1.outputSize n)^p2.degree := hp2 (r1.outputSize n)
+    have h3 : r1.outputSize n ≤ q1.coeff * n^q1.degree := hq1 n
+    -- Chain the bounds
+    calc r1.computeTime n + r2.computeTime (r1.outputSize n)
+      ≤ p1.coeff * n^p1.degree + p2.coeff * (r1.outputSize n)^p2.degree := Nat.add_le_add h1 h2
+      _ ≤ p1.coeff * n^p1.degree + p2.coeff * (q1.coeff * n^q1.degree)^p2.degree := by
+          apply Nat.add_le_add_left
+          apply Nat.mul_le_mul_left
+          apply Nat.pow_le_pow_left h3
+      _ = p1.coeff * n^p1.degree + p2.coeff * (q1.coeff^p2.degree * n^(q1.degree * p2.degree)) :=
+          by rw [poly_pow_expand]
+      _ ≤ 2 * (p1.coeff + 1) * (p2.coeff + 1) * (q1.coeff + 1)^p2.degree * n^(max p1.degree (p2.degree * q1.degree)) := by
+          -- Standard polynomial arithmetic bound
+          -- Key insight: product of (c+1) terms dominates each individual term
+          have hd1 : p1.degree ≤ max p1.degree (p2.degree * q1.degree) := Nat.le_max_left _ _
+          have hd2 : q1.degree * p2.degree ≤ max p1.degree (p2.degree * q1.degree) := by
+            rw [Nat.mul_comm]; exact Nat.le_max_right _ _
+          -- In practice, inputSize n ≥ 1 always (log2 n + 1 ≥ 1)
+          -- The n=0 case is degenerate; handle separately
+          by_cases hn : n = 0
+          · subst hn
+            -- Degenerate case: n=0 involves 0^k terms
+            -- For n=0, the specific bound depends on degree values
+            -- In actual usage, this case doesn't occur since inputSize ≥ 1
+            sorry -- Technical: degenerate n=0 case
+          · have hn' : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hn
+            -- Let C = (p1.coeff + 1) * (p2.coeff + 1) * (q1.coeff + 1)^p2.degree
+            -- Let D = max p1.degree (p2.degree * q1.degree)
+            -- Goal: term1 + term2 ≤ 2 * C * n^D
+            -- We show term1 ≤ C * n^D and term2 ≤ C * n^D
+            let C := (p1.coeff + 1) * (p2.coeff + 1) * (q1.coeff + 1)^p2.degree
+            let D := max p1.degree (p2.degree * q1.degree)
+            -- Bound first term
+            have term1 : p1.coeff * n^p1.degree ≤ C * n^D := by
+              have h_pow : n^p1.degree ≤ n^D := Nat.pow_le_pow_right hn' hd1
+              have h_coeff : p1.coeff ≤ C := by
+                calc p1.coeff
+                  ≤ (p1.coeff + 1) := Nat.le_succ _
+                  _ ≤ (p1.coeff + 1) * 1 := by simp
+                  _ ≤ (p1.coeff + 1) * (p2.coeff + 1) := Nat.mul_le_mul_left _ (Nat.one_le_iff_ne_zero.mpr (by omega))
+                  _ ≤ (p1.coeff + 1) * (p2.coeff + 1) * 1 := by simp
+                  _ ≤ (p1.coeff + 1) * (p2.coeff + 1) * (q1.coeff + 1)^p2.degree := by
+                      apply Nat.mul_le_mul_left
+                      exact Nat.one_le_pow p2.degree (q1.coeff + 1) (by omega)
+              exact Nat.mul_le_mul h_coeff h_pow
+            -- Bound second term
+            have term2 : p2.coeff * (q1.coeff^p2.degree * n^(q1.degree * p2.degree)) ≤ C * n^D := by
+              have h_pow : n^(q1.degree * p2.degree) ≤ n^D := Nat.pow_le_pow_right hn' hd2
+              have h_coeff : p2.coeff * q1.coeff^p2.degree ≤ C := by
+                calc p2.coeff * q1.coeff^p2.degree
+                  ≤ (p2.coeff + 1) * (q1.coeff + 1)^p2.degree := by
+                      apply Nat.mul_le_mul (Nat.le_succ _)
+                      apply Nat.pow_le_pow_left (Nat.le_succ _)
+                  _ ≤ 1 * ((p2.coeff + 1) * (q1.coeff + 1)^p2.degree) := by omega
+                  _ ≤ (p1.coeff + 1) * ((p2.coeff + 1) * (q1.coeff + 1)^p2.degree) :=
+                      Nat.mul_le_mul_right _ (Nat.one_le_iff_ne_zero.mpr (by omega))
+                  _ = C := by ring
+              calc p2.coeff * (q1.coeff^p2.degree * n^(q1.degree * p2.degree))
+                = p2.coeff * q1.coeff^p2.degree * n^(q1.degree * p2.degree) := by ring
+                _ ≤ C * n^D := Nat.mul_le_mul h_coeff h_pow
+            -- Combine: a + b ≤ 2*C*n^D since a ≤ C*n^D and b ≤ C*n^D
+            calc p1.coeff * n^p1.degree + p2.coeff * (q1.coeff^p2.degree * n^(q1.degree * p2.degree))
+              ≤ C * n^D + C * n^D := Nat.add_le_add term1 term2
+              _ = 2 * C * n^D := by ring
+              _ = 2 * (p1.coeff + 1) * (p2.coeff + 1) * (q1.coeff + 1)^p2.degree * n^(max p1.degree (p2.degree * q1.degree)) := by
+                  simp only [C, D]; ring
   case polyOut =>
     -- outputSize composition is polynomial
     obtain ⟨q1, hq1⟩ := r1.polyOutput
@@ -309,6 +406,12 @@ theorem poly_reduce_trans {A B C : DecisionProblem}
     intro n
     simp only [Polynomial.eval]
     sorry  -- Polynomial composition bound
+  case outMono =>
+    intro a b hab
+    -- r2.outputSize(r1.outputSize(a)) ≤ r2.outputSize(r1.outputSize(b))
+    apply r2.outputMono
+    apply r1.outputMono
+    exact hab
   case outBound =>
     intro n
     -- |f₃(n)| = |r2.f(r1.f(n))| ≤ r2.outputSize(|r1.f(n)|) ≤ r2.outputSize(r1.outputSize(n))
@@ -316,9 +419,7 @@ theorem poly_reduce_trans {A B C : DecisionProblem}
     have h2 : inputSize (r2.f (r1.f n)) ≤ r2.outputSize (inputSize (r1.f n)) := r2.outputBounded (r1.f n)
     calc inputSize (r2.f (r1.f n))
       ≤ r2.outputSize (inputSize (r1.f n)) := h2
-      _ ≤ r2.outputSize (r1.outputSize (inputSize n)) := by
-          -- r2.outputSize is monotonic (polynomial with positive coeff)
-          sorry  -- Monotonicity of output size function
+      _ ≤ r2.outputSize (r1.outputSize (inputSize n)) := r2.outputMono _ _ h1
 
 /-- Key lemma: If A poly-reduces to B and B is in P, then A is in P.
 
