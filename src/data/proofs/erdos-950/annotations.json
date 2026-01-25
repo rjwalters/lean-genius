@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ann-950-1",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #950: Study f(n) = ∑_{p<n} 1/(n-p). Questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1. OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-950-2",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Primes Less Than n",
+    "content": "primesLessThan(n) is the set of all primes p with p < n. This is the index set for the sum defining f(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-3",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) = ∑_{p<n} 1/(n-p) sums reciprocal distances to all primes below n. Nearby primes contribute more than distant ones.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-950-4",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "Question 1",
+    "content": "Is lim inf f(n) = 1? This asks whether f(n) can get arbitrarily close to 1 from below, infinitely often.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-950-5",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 67,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Question 2",
+    "content": "Is lim sup f(n) = ∞? This asks whether f(n) is unbounded, meaning it can be arbitrarily large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-950-6",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 72,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Question 3",
+    "content": "Is f(n) = o(log log n)? This asks for a universal upper bound on f(n) growing slower than log log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-950-7",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 77,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Little-o Formulation",
+    "content": "fLittleO states that f(n)/log(log n) → 0 as n → ∞. This is the precise asymptotic version of Question 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-8",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 90,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Sum Asymptotics",
+    "content": "de Bruijn-Erdős-Turán: ∑_{n<x} f(n) ~ x. The sum of f(n) over n < x grows linearly with x.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-950-9",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 95,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Sum of Squares",
+    "content": "de Bruijn-Erdős-Turán: ∑_{n<x} f(n)² ~ x. The sum of squared values also grows linearly, indicating f(n) concentrates near 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-950-10",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 100,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Average Value",
+    "content": "The average value of f(n) is 1. Combined with ∑f(n)² ~ x, this shows f(n) doesn't deviate too far from 1 on average.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-11",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 108,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Nonnegativity",
+    "content": "f(n) ≥ 0 for all n. Each term 1/(n-p) is positive since p < n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-950-12",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 115,
+      "endLine": 126
+    },
+    "type": "example",
+    "title": "Small Values",
+    "content": "f(2) = 0 (no primes < 2), f(3) = 1 (only prime 2, distance 1), f(4) = 3/2 (primes 2, 3 with distances 2, 1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-950-13",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 136,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Large f(n) Heuristic",
+    "content": "f(n) is large when n immediately follows a prime (term 1/(n-p) = 1) or has many nearby primes. Prime-rich regions inflate f(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-14",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 141,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Small f(n) Heuristic",
+    "content": "f(n) is small when n is far from all primes ('prime desert'). Large gaps between primes reduce the reciprocal sum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-15",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 145,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Integral Approximation",
+    "content": "∑_{p<n} 1/(n-p) ≈ ∫_2^n 1/(n-t) · (1/log t) dt ~ 1. This integral heuristic explains why the average is 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-950-16",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 154,
+      "endLine": 160
+    },
+    "type": "definition",
+    "title": "Weaker Conjecture",
+    "content": "For every ε > 0, large x has some y < x with π(x) < π(y) + ε·π(x-y). This is a weaker prime distribution statement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-17",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 162,
+      "endLine": 165
+    },
+    "type": "theorem",
+    "title": "Weaker Implies Bound",
+    "content": "If a strong version of the weaker conjecture holds, then f(n) ≪ log log log n, giving a very slow growth bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-18",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 171,
+      "endLine": 173
+    },
+    "type": "definition",
+    "title": "Prime Gap",
+    "content": "primeGap(m) is the gap between the m-th and (m+1)-th primes. The distribution of gaps affects f(n) behavior.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-950-19",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 175,
+      "endLine": 177
+    },
+    "type": "concept",
+    "title": "f(n) and Prime Distribution",
+    "content": "f(n) is a measure of local prime density near n. Dense regions give large f(n); sparse regions give small f(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-950-20",
+    "proofId": "erdos-950",
+    "range": {
+      "startLine": 179,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Dense Primes Increase f",
+    "content": "If there's a prime in [n-k, n), then f(n) ≥ 1/k. More primes nearby means larger f(n).",
+    "significance": "supporting"
+  }
+]
