@@ -4,57 +4,162 @@
   "slug": "erdos-828",
   "description": "For any integer a, are there infinitely many n such that φ(n) divides n + a?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős (1983 problem), Graham (conjecture attribution)",
     "sourceUrl": "https://erdosproblems.com/828",
-    "status": "enhanced",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos828Problem.lean",
-    "tags": ["number theory", "totient function", "divisibility"],
-    "badge": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "divisibility",
+      "lehmer-conjecture",
+      "open-problem"
+    ],
+    "badge": "open-problem",
     "sorries": 8,
     "erdosNumber": 828,
     "erdosUrl": "https://erdosproblems.com/828",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "totient_prime",
+        "description": "φ(p) = p-1 for primes",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "originalContributions": [
+      "totientDivisors: set {n : φ(n) | n + a}",
+      "totient_dvd_self_iff: characterization of a=0 case",
+      "totientDivisors_zero_infinite: infinitely many for a=0",
+      "lehmerConjecture: Lehmer's conjecture statement",
+      "prime_totient_dvd_pred: φ(p) | p-1 for primes",
+      "totientDivisors_neg_one_infinite: all primes satisfy a=-1",
+      "erdos828Conjecture: main conjecture statement",
+      "erdos_828: main axiom",
+      "Concrete examples for a=1,2",
+      "totient_even: φ(n) even for n>2",
+      "totient_prime_pow': φ(p^k) formula",
+      "totient_structure: structural constraint"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and is attributed to Graham. It generalizes classical questions about divisibility relations involving Euler's totient function, including Lehmer's famous conjecture from 1932.",
-    "problemStatement": "For any integer a ∈ ℤ, are there infinitely many natural numbers n such that φ(n) | n + a, where φ denotes Euler's totient function?",
-    "proofStrategy": "The formalization defines the set of n satisfying φ(n) | n + a, examines special cases (a = 0, a = -1), and states the main conjecture. Key results include characterization of a = 0 case and connection to Lehmer's conjecture.",
+    "historicalContext": "**Erdős Problem #828: Totient Divisibility**\n\nThis problem was posed by Erdős [Er83] and the conjecture is attributed to Graham.\n\n**Historical Context:**\n- Lehmer (1932): Conjectured that φ(n) | n-1 implies n is prime (still open)\n- The a=0 case (φ(n) | n) is completely characterized: n = 2^a · 3^b\n- Graham's generalization: for every a, infinitely many n satisfy φ(n) | n+a\n\n**Reference:** Guy (2004), Problem B37 in 'Unsolved Problems in Number Theory'\n\n**Status:** OPEN - cannot be resolved by finite computation.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor any integer $a \\in \\mathbb{Z}$, are there infinitely many natural numbers $n$ such that $\\phi(n) \\mid n + a$?\n\n**Special Cases:**\n- **a = 0:** Completely solved. $\\phi(n) \\mid n$ iff $n \\leq 1$ or $n = 2^a \\cdot 3^b$\n- **a = -1:** Lehmer's Conjecture. Only primes $p$ satisfy $\\phi(p) \\mid p - 1$ for $n > 1$\n- **General a:** Infinitely many solutions conjectured",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definition:** totientDivisors(a) = {n : φ(n) | n + a}\n\n2. **Case a = 0:** totient_dvd_self_iff characterizes solutions as 2^a · 3^b\n\n3. **Case a = -1:** Lehmer's conjecture - all primes work, conjectured to be the only ones\n\n4. **Main Conjecture:** erdos828Conjecture states infiniteness for all a\n\n5. **Structural Results:** φ(n) even for n > 2, prime power formulas\n\n6. **Examples:** Concrete computations for a = 1, 2",
     "keyInsights": [
-      "For a = 0: φ(n) | n iff n ≤ 1 or n = 2^a · 3^b (completely characterized)",
-      "For a = -1: Lehmer's conjecture - only primes satisfy φ(n) | n-1 for n > 1",
-      "φ(n) is always even for n > 2, constraining possible divisibilities",
-      "The totient depends on prime factorization in complex ways"
+      "**a = 0 Characterized:** φ(n) | n iff n = 2^a · 3^b (primes 2, 3 only)",
+      "**Lehmer's Conjecture:** No composite Lehmer number known (φ(n) | n-1, n > 1 composite)",
+      "**φ(n) Even:** For n > 2, φ(n) is always even",
+      "**Prime Formula:** φ(p) = p - 1 for primes",
+      "**Prime Power Formula:** φ(p^k) = p^(k-1)(p - 1)",
+      "**Fermat-Euler:** a^φ(n) ≡ 1 (mod n) provides structure"
     ]
   },
   "sections": [
     {
+      "id": "header-docs",
+      "title": "Problem Overview",
+      "summary": "Header with problem statement and historical context",
+      "startLine": 1,
+      "endLine": 28
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "summary": "Mathlib imports and namespace",
+      "startLine": 30,
+      "endLine": 37
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
-      "description": "Euler's totient function and the divisibility condition"
+      "summary": "totientDivisors set definition",
+      "startLine": 39,
+      "endLine": 50
     },
     {
       "id": "case-zero",
-      "title": "Special Case a = 0",
-      "description": "Complete characterization: n = 2^a · 3^b"
+      "title": "Case a = 0",
+      "summary": "Complete characterization: n = 2^a · 3^b",
+      "startLine": 52,
+      "endLine": 69
     },
     {
       "id": "lehmer",
       "title": "Lehmer's Conjecture (a = -1)",
-      "description": "The famous open problem about φ(n) | n-1"
+      "summary": "lehmerConjecture and prime_totient_dvd_pred",
+      "startLine": 71,
+      "endLine": 94
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "description": "Infinitely many solutions for every integer a"
+      "title": "Main Conjecture",
+      "summary": "erdos828Conjecture and erdos_828 axiom",
+      "startLine": 96,
+      "endLine": 108
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete examples for a = 1, 2",
+      "startLine": 110,
+      "endLine": 141
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "summary": "totient_even, totient_prime', totient_prime_pow'",
+      "startLine": 143,
+      "endLine": 158
+    },
+    {
+      "id": "fermat-euler",
+      "title": "Fermat-Euler Connection",
+      "summary": "Connection to multiplicative order",
+      "startLine": 160,
+      "endLine": 174
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Is Hard",
+      "summary": "Discussion of the challenge",
+      "startLine": 176,
+      "endLine": 189
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Complete summary and open status",
+      "startLine": 191,
+      "endLine": 219
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #828 asks whether for every integer a, there are infinitely many n with φ(n) | n + a. The a = 0 case is solved, a = -1 is Lehmer's conjecture, but the general case remains open.",
-    "implications": "A positive answer would reveal deep structure in how the totient function relates to arithmetic progressions. The connection to Lehmer's conjecture makes this particularly interesting.",
+    "summary": "Erdős Problem #828 asks whether for every integer a, there are infinitely many n with φ(n) | n + a. The a = 0 case is solved (n = 2^a · 3^b). The a = -1 case is Lehmer's famous 1932 conjecture. The general case, attributed to Graham, remains open.",
+    "implications": "**Significance:**\n\n1. **Totient Structure:** Reveals arithmetic relationships involving Euler's function\n\n2. **Lehmer Connection:** The a = -1 case connects to one of the oldest open problems\n\n3. **Prime Factorization:** Understanding how φ depends on factorization\n\n4. **Graham's Generalization:** Unified framework for totient divisibility",
     "openQuestions": [
-      "Are there composite Lehmer numbers (n > 1 with φ(n) | n-1)?",
+      "Are there composite Lehmer numbers (φ(n) | n-1 with n > 1 composite)?",
       "What is the density of solutions for each fixed a?",
-      "Can we characterize solutions for specific values of a?"
+      "Can we characterize solutions for specific values of a beyond 0 and -1?",
+      "Is there a pattern connecting solutions for different values of a?"
     ]
   }
 }
