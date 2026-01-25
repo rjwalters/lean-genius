@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-e668-header",
+    "proofId": "erdos-668",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #668: Unit Distance Configuration Uniqueness**\n\nThis problem asks about the multiplicity of extremal configurations for the unit distance problem.\n\n**Key Questions:**\n1. Does f(n) (number of incongruent extremals) tend to infinity?\n2. Is f(n) > 1 for all n > 3?\n\n**Status:** OPEN\n**Related:** Problem #90 (maximum unit distances u(n))",
+    "mathContext": "The unit distance problem is a classic question in combinatorial geometry, posed by Erdos in 1946.",
+    "significance": "critical",
+    "relatedConcepts": ["Unit distance graph", "Extremal configurations", "Congruence"]
+  },
+  {
+    "id": "ann-e668-plane",
+    "proofId": "erdos-668",
+    "range": { "startLine": 36, "endLine": 45 },
+    "type": "definition",
+    "title": "The Euclidean Plane",
+    "content": "**Plane:**\n\nWe work in the Euclidean plane R^2 with standard distance.\n\n```lean\nabbrev Plane := EuclideanSpace R (Fin 2)\n```\n\nThis uses Mathlib's EuclideanSpace structure which provides the metric.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e668-unit-pair",
+    "proofId": "erdos-668",
+    "range": { "startLine": 47, "endLine": 55 },
+    "type": "definition",
+    "title": "Unit Distance Pairs",
+    "content": "**isUnitPair p q:**\n\nTwo points are at unit distance if dist(p, q) = 1.\n\n```lean\ndef isUnitPair (p q : Plane) : Prop := dist p q = 1\n```\n\nThe unit distance graph of a point set has edges between all unit pairs.",
+    "mathContext": "Unit distance graphs are fundamental objects in combinatorial geometry.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e668-count",
+    "proofId": "erdos-668",
+    "range": { "startLine": 61, "endLine": 72 },
+    "type": "definition",
+    "title": "Counting Unit Distances",
+    "content": "**unitDistanceCount S:**\n\nCounts the number of unordered pairs {p, q} in S with dist(p, q) = 1.\n\n```lean\nnoncomputable def unitDistanceCount (S : Finset Plane) : N :=\n  ((S xs S).filter ...).card / 2\n```\n\nDivide by 2 because we count ordered pairs and want unordered.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e668-u-n",
+    "proofId": "erdos-668",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "definition",
+    "title": "Maximum Unit Distances u(n)",
+    "content": "**u(n):**\n\nThe maximum number of unit distances achievable by n points in the plane.\n\n```lean\nnoncomputable def u (n : N) : N :=\n  sSup {k | exists S, S.card = n and unitDistanceCount S = k}\n```\n\nThis is the central object of Erdos Problem #90.",
+    "mathContext": "Erdos proved u(n) = O(n^(4/3)). The exact value is still unknown for most n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e668-extremal",
+    "proofId": "erdos-668",
+    "range": { "startLine": 84, "endLine": 100 },
+    "type": "definition",
+    "title": "Extremal Configurations",
+    "content": "**isExtremal S:**\n\nA point set is extremal if it achieves the maximum u(|S|) unit distances.\n\n```lean\ndef isExtremal (S : Finset Plane) : Prop :=\n  unitDistanceCount S = u S.card\n```\n\n**extremalConfigs n:** The set of all n-point extremals.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e668-congruent",
+    "proofId": "erdos-668",
+    "range": { "startLine": 106, "endLine": 130 },
+    "type": "definition",
+    "title": "Congruence of Point Sets",
+    "content": "**areCongruent S T:**\n\nTwo point sets are congruent if there exists a bijective isometry mapping one to the other.\n\n```lean\ndef areCongruent (S T : Finset Plane) : Prop :=\n  exists f : Plane -> Plane, isRigidMotion f and ...\n```\n\n**Rigid motions** preserve distances: dist(f(p), f(q)) = dist(p, q).\n\nCongruence is an equivalence relation (reflexive, symmetric, transitive).",
+    "mathContext": "Rigid motions in the plane are compositions of translations, rotations, and reflections.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e668-f-n",
+    "proofId": "erdos-668",
+    "range": { "startLine": 146, "endLine": 165 },
+    "type": "definition",
+    "title": "The Counting Function f(n)",
+    "content": "**f(n):**\n\nThe number of incongruent n-point extremal configurations.\n\nFormally, f(n) is the number of equivalence classes in extremalConfigs(n) under congruence.\n\n**The main questions:**\n1. Does f(n) -> infinity?\n2. Is f(n) > 1 for n > 3?",
+    "mathContext": "This function measures the 'diversity' of extremal configurations.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e668-f-four",
+    "proofId": "erdos-668",
+    "range": { "startLine": 175, "endLine": 195 },
+    "type": "axiom",
+    "title": "The n=4 Case",
+    "content": "**f(4) = 1:**\n\nThe unique 4-point extremal configuration is the **double triangle**: two equilateral triangles sharing an edge.\n\nThis rhombus-like shape has 5 unit distances:\n- The shared edge (1)\n- Two sides from each triangle (4)\n\n**u(4) = 5** is also known.",
+    "mathContext": "The double triangle is a well-known configuration in discrete geometry.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e668-unique",
+    "proofId": "erdos-668",
+    "range": { "startLine": 197, "endLine": 202 },
+    "type": "axiom",
+    "title": "Uniqueness for n=4",
+    "content": "**four_config_unique:**\n\nAny two 4-point extremal configurations are congruent.\n\n```lean\naxiom four_config_unique :\n  forall S T : Finset Plane,\n    S.card = 4 -> T.card = 4 -> isExtremal S -> isExtremal T ->\n    areCongruent S T\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e668-computational",
+    "proofId": "erdos-668",
+    "range": { "startLine": 208, "endLine": 220 },
+    "type": "axiom",
+    "title": "Computational Evidence",
+    "content": "**Computational results:**\n\nFor 5 <= n <= 21, computational searches suggest f(n) = 1.\n\n**Important caveat:** These checks verified only graph isomorphism, not full geometric congruence.\n\n**Contributors:**\n- Engel, Hammond-Lee, Su, Varga, Zsamboki [EHSVZ25]\n- Alexeev, Mixon, Parshall [AMP25]",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e668-question-one",
+    "proofId": "erdos-668",
+    "range": { "startLine": 230, "endLine": 240 },
+    "type": "definition",
+    "title": "Question 1: Does f(n) -> infinity?",
+    "content": "**question_one:**\n\nDoes the number of incongruent extremal configurations grow without bound?\n\n```lean\ndef question_one : Prop :=\n  forall M : N, exists N : N, forall n >= N, f n >= M\n```\n\nThis asks whether extremal configurations become increasingly diverse.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e668-question-two",
+    "proofId": "erdos-668",
+    "range": { "startLine": 242, "endLine": 260 },
+    "type": "definition",
+    "title": "Question 2: Is f(n) > 1?",
+    "content": "**question_two:**\n\nIs f(n) > 1 for all n > 3?\n\n**Note:** This is FALSE as stated since f(4) = 1.\n\n**Modified question:** Is f(n) > 1 for all sufficiently large n?\n\n```lean\ndef question_two_modified : Prop :=\n  exists N : N, forall n >= N, f n > 1\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e668-problem-90",
+    "proofId": "erdos-668",
+    "range": { "startLine": 268, "endLine": 280 },
+    "type": "axiom",
+    "title": "Connection to Problem #90",
+    "content": "**Relationship to u(n):**\n\nProblem #668 builds on Problem #90 (maximum unit distances).\n\n**Key bounds on u(n):**\n- Lower: u(n) >= n - 1\n- Upper: u(n) < c * n^(4/3) (Erdos)\n\nUnderstanding u(n) is prerequisite to studying f(n).",
+    "significance": "key",
+    "relatedConcepts": ["Erdos Problem #90", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-e668-summary",
+    "proofId": "erdos-668",
+    "range": { "startLine": 301, "endLine": 320 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**erdos_668_summary:**\n\nCombines the known results:\n1. f(4) = 1 (unique double-triangle)\n2. Any two 4-point extremals are congruent\n\n```lean\ntheorem erdos_668_summary :\n    f 4 = 1 and\n    (forall S T, S.card = 4 -> T.card = 4 ->\n      isExtremal S -> isExtremal T -> areCongruent S T)\n```\n\n**Status:** The main questions remain OPEN.",
+    "significance": "key"
+  }
+]
