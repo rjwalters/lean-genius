@@ -1720,6 +1720,27 @@
     "annotationCount": 31
   },
   {
+    "id": "erdos-1061",
+    "title": "Erdos Problem #1061: Additive Divisor Equation",
+    "slug": "erdos-1061",
+    "description": "How many ordered pairs (a,b) satisfy sigma(a)+sigma(b)=sigma(a+b) with a+b<=x? Is this count asymptotic to cx for some c>0?",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "asymptotic-analysis",
+      "open-problem"
+    ],
+    "dateAdded": "2026-01-25",
+    "erdosNumber": 1061,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 14
+  },
+  {
     "id": "erdos-1064",
     "title": "Erdős Problem #1064: Comparing φ(n) and φ(n - φ(n))",
     "slug": "erdos-1064",
@@ -4022,6 +4043,23 @@
     "annotationCount": 17
   },
   {
+    "id": "erdos-190",
+    "title": "Erdős Problem #190: Canonical Ramsey Number for Arithmetic Progressions",
+    "slug": "erdos-190",
+    "description": "Estimate H(k), the smallest N guaranteeing either a monochromatic or rainbow k-term arithmetic progression in every coloring of {1,...,N}.",
+    "status": "formalized",
+    "badge": "open",
+    "tags": [
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "ramsey-theory",
+      "canonical-ramsey"
+    ],
+    "erdosNumber": 190,
+    "sorries": 4,
+    "annotationCount": 8
+  },
+  {
     "id": "erdos-191",
     "title": "Erdős Problem #191: Monochromatic Sets with Large 1/log Sum",
     "slug": "erdos-191",
@@ -6225,6 +6263,23 @@
     "annotationCount": 18
   },
   {
+    "id": "erdos-312",
+    "title": "Erdős Problem #312: Subset Sum of Unit Fractions",
+    "slug": "erdos-312",
+    "description": "Does there exist c > 0 such that for K > 1, every large multiset with Σ(1/n) > K has a subset summing to within exp(-cK) of 1?",
+    "status": "formalized",
+    "badge": "open",
+    "tags": [
+      "number-theory",
+      "unit-fractions",
+      "subset-sum",
+      "exponential-bounds"
+    ],
+    "erdosNumber": 312,
+    "sorries": 5,
+    "annotationCount": 10
+  },
+  {
     "id": "erdos-314",
     "title": "Erdős Problem #314: Harmonic Sum Error Term",
     "slug": "erdos-314",
@@ -7270,6 +7325,28 @@
     "annotationCount": 21
   },
   {
+    "id": "erdos-382",
+    "title": "Erdos Problem #382: Prime Powers in Factorial Products",
+    "slug": "erdos-382",
+    "description": "For intervals [u,v] where the largest prime dividing the product u(u+1)...v has exponent >= 2: Is v-u = v^o(1)? Can v-u be arbitrarily large? OPEN. Ramachandra: v-u <= v^{1/2+o(1)}.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "factorization",
+      "prime-gaps",
+      "cramer-conjecture",
+      "open-problem"
+    ],
+    "dateAdded": "2026-01-25",
+    "erdosNumber": 382,
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 10
+  },
+  {
     "id": "erdos-384",
     "title": "Erdős Problem #384: Prime Divisors of Binomial Coefficients",
     "slug": "erdos-384",
@@ -7286,7 +7363,23 @@
     "dateAdded": "2026-01-22",
     "erdosNumber": 384,
     "mathlibCount": 4,
-    "sorries": 1,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "erdos-385",
+    "title": "Erdős Problem #385: Composites and Least Prime Divisors",
+    "slug": "erdos-385",
+    "description": "Is F(n) = max{m + p(m) : m < n composite} greater than n for all large n, where p(m) is the least prime divisor?",
+    "status": "enhanced",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "prime divisors",
+      "composite numbers"
+    ],
+    "erdosNumber": 385,
+    "sorries": 5,
     "annotationCount": 12
   },
   {
@@ -7565,18 +7658,21 @@
     "title": "Erdős Problem #404: Prime Power Divisibility of Factorial Sums",
     "slug": "erdos-404",
     "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a?",
-    "status": "formalized",
+    "status": "complete",
     "badge": "open-problem",
     "tags": [
-      "number theory",
+      "erdos",
+      "number-theory",
       "factorials",
-      "p-adic valuation",
-      "divisibility"
+      "p-adic-valuation",
+      "divisibility",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-25",
     "erdosNumber": 404,
-    "mathlibCount": 0,
+    "mathlibCount": 4,
     "sorries": 8,
-    "annotationCount": 20
+    "annotationCount": 17
   },
   {
     "id": "erdos-405",
@@ -7716,6 +7812,22 @@
     "erdosNumber": 416,
     "sorries": 1,
     "annotationCount": 9
+  },
+  {
+    "id": "erdos-417",
+    "title": "Erdős Problem #417: Counting Totient Values",
+    "slug": "erdos-417",
+    "description": "Does the limit V(x)/V'(x) exist, where V'(x) counts distinct totients from inputs ≤ x and V(x) counts all totient values ≤ x?",
+    "status": "enhanced",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "totient function",
+      "counting"
+    ],
+    "erdosNumber": 417,
+    "sorries": 5,
+    "annotationCount": 13
   },
   {
     "id": "erdos-418",
@@ -8810,6 +8922,39 @@
     "erdosNumber": 501,
     "sorries": 5,
     "annotationCount": 18
+  },
+  {
+    "id": "erdos-504",
+    "title": "Erdős Problem #504: Maximum Angle in Point Sets",
+    "slug": "erdos-504",
+    "description": "Determine α_n, the supremum of angles α such that every n-point set in the plane contains three points forming an angle at least α.",
+    "status": "formalized",
+    "badge": "solved",
+    "tags": [
+      "geometry",
+      "discrete-geometry",
+      "angles",
+      "point-sets"
+    ],
+    "erdosNumber": 504,
+    "sorries": 4,
+    "annotationCount": 11
+  },
+  {
+    "id": "erdos-509",
+    "title": "Erdős Problem #509: Covering Polynomial Sublevel Sets with Discs",
+    "slug": "erdos-509",
+    "description": "Can the sublevel set {z ∈ ℂ : |f(z)| ≤ 1} of a monic polynomial be covered by closed discs with total radius ≤ 2?",
+    "status": "enhanced",
+    "badge": "formalized",
+    "tags": [
+      "complex analysis",
+      "polynomials",
+      "covering"
+    ],
+    "erdosNumber": 509,
+    "sorries": 4,
+    "annotationCount": 13
   },
   {
     "id": "erdos-511",
@@ -12199,7 +12344,7 @@
     "dateAdded": "2026-01-23",
     "erdosNumber": 720,
     "mathlibCount": 2,
-    "sorries": 5,
+    "sorries": 0,
     "annotationCount": 23
   },
   {
@@ -12385,17 +12530,20 @@
     "id": "erdos-732",
     "title": "Erdős Problem #732: Block-Compatible Sequences",
     "slug": "erdos-732",
-    "description": "A sequence 1 < X₁ ≤ X₂ ≤ ... ≤ Xₘ ≤ n is block-compatible if there exists a pairwise balanced block design A₁, ..., Aₘ ⊆ {1, ..., n} with |Aᵢ| = Xᵢ. Question 1: Characterize block-compatible sequences. Question 2: Count them.",
-    "status": "partially-solved",
-    "badge": "mathlib",
+    "description": "A sequence 1 < X₁ ≤ ... ≤ Xₘ ≤ n is block-compatible if there exists a pairwise balanced block design with those block sizes. Q1: Characterize such sequences. Q2: Count them.",
+    "status": "complete",
+    "badge": "partially-solved",
     "tags": [
       "erdos",
       "combinatorics",
       "block-designs",
-      "enumeration"
+      "enumeration",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-25",
     "erdosNumber": 732,
-    "sorries": 0,
+    "mathlibCount": 4,
+    "sorries": 4,
     "annotationCount": 16
   },
   {
@@ -12580,7 +12728,7 @@
     "dateAdded": "2026-01-24",
     "erdosNumber": 742,
     "mathlibCount": 3,
-    "sorries": 1,
+    "sorries": 0,
     "annotationCount": 15
   },
   {
@@ -13011,7 +13159,7 @@
     "dateAdded": "2026-01-22",
     "erdosNumber": 766,
     "mathlibCount": 5,
-    "sorries": 3,
+    "sorries": 0,
     "annotationCount": 20
   },
   {
@@ -13155,7 +13303,7 @@
     "erdosNumber": 774,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 19
+    "annotationCount": 21
   },
   {
     "id": "erdos-775",
@@ -13305,17 +13453,23 @@
   },
   {
     "id": "erdos-785",
-    "title": "Erdős Problem #785",
+    "title": "Erdős Problem #785: Exact Additive Complements",
     "slug": "erdos-785",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite sets such that ... contains all large integers. Let ... and similarly for .... Is it true that if ... the...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For exact additive complements A, B with A(x)B(x) ~ x, does A(x)B(x) - x tend to infinity? YES, proved by Sárközy-Szemerédi (1994).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "complement-sets",
+      "solved"
     ],
+    "dateAdded": "2026-01-25",
     "erdosNumber": 785,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-786",
@@ -13461,16 +13615,19 @@
     "title": "Erdős Problem #792: Sum-Free Subsets",
     "slug": "erdos-792",
     "description": "Estimate f(n), the minimum size of the largest sum-free subset guaranteed in any n-element set of integers.",
-    "status": "formalized",
+    "status": "complete",
     "badge": "open-problem",
     "tags": [
-      "additive combinatorics",
-      "sum-free sets",
-      "Ramsey theory"
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "extremal-combinatorics",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-25",
     "erdosNumber": 792,
-    "mathlibCount": 0,
-    "sorries": 10,
+    "mathlibCount": 4,
+    "sorries": 12,
     "annotationCount": 20
   },
   {
@@ -13703,7 +13860,7 @@
     "dateAdded": "2026-01-24",
     "erdosNumber": 802,
     "mathlibCount": 3,
-    "sorries": 1,
+    "sorries": 0,
     "annotationCount": 14
   },
   {
@@ -14147,14 +14304,19 @@
     "title": "Erdős Problem #828: Totient Divisibility φ(n) | n + a",
     "slug": "erdos-828",
     "description": "For any integer a, are there infinitely many n such that φ(n) divides n + a?",
-    "status": "enhanced",
-    "badge": "formalized",
+    "status": "complete",
+    "badge": "open-problem",
     "tags": [
-      "number theory",
-      "totient function",
-      "divisibility"
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "divisibility",
+      "lehmer-conjecture",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-25",
     "erdosNumber": 828,
+    "mathlibCount": 4,
     "sorries": 8,
     "annotationCount": 10
   },
@@ -14260,7 +14422,7 @@
     "dateAdded": "2026-01-24",
     "erdosNumber": 833,
     "mathlibCount": 3,
-    "sorries": 6,
+    "sorries": 0,
     "annotationCount": 18
   },
   {
@@ -14336,7 +14498,7 @@
       "general-position"
     ],
     "erdosNumber": 838,
-    "mathlibCount": 0,
+    "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 20
   },
@@ -14453,7 +14615,7 @@
     "dateAdded": "2026-01-24",
     "erdosNumber": 844,
     "mathlibCount": 4,
-    "sorries": 2,
+    "sorries": 0,
     "annotationCount": 15
   },
   {
@@ -15880,6 +16042,23 @@
     "erdosNumber": 930,
     "mathlibCount": 3,
     "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "erdos-932",
+    "title": "Erdős Problem #932: Smooth Numbers in Prime Gaps",
+    "slug": "erdos-932",
+    "description": "For infinitely many r, are there at least two integers in the prime gap (p_r, p_{r+1}) whose prime factors are all smaller than the gap size p_{r+1} - p_r?",
+    "status": "formalized",
+    "badge": "open",
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "smooth-numbers",
+      "natural-density"
+    ],
+    "erdosNumber": 932,
+    "sorries": 5,
     "annotationCount": 12
   },
   {

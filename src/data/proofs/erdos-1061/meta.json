@@ -1,0 +1,155 @@
+{
+  "id": "erdos-1061",
+  "title": "Erdos Problem #1061: Additive Divisor Equation",
+  "slug": "erdos-1061",
+  "description": "How many ordered pairs (a,b) satisfy sigma(a)+sigma(b)=sigma(a+b) with a+b<=x? Is this count asymptotic to cx for some c>0?",
+  "meta": {
+    "author": "Erdos (question via Guy's collection)",
+    "sourceUrl": "https://erdosproblems.com/1061",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1061Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "asymptotic-analysis",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1061,
+    "erdosUrl": "https://erdosproblems.com/1061",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "ArithmeticFunction",
+        "description": "Arithmetic functions including sigma",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit and asymptotic behavior",
+        "module": "Mathlib.Order.Filter.Archimedean"
+      }
+    ],
+    "originalContributions": [
+      "sigma definition: sum of all divisors",
+      "isAdditiveDivisorPair predicate",
+      "additiveDivisorPairs set",
+      "S counting function for pairs with a+b<=x",
+      "Verified examples: (1,2) and (2,1) are solutions",
+      "Verified non-examples: (1,1), (2,2), (3,3), etc.",
+      "A110177 set: sums of solution pairs",
+      "hasLinearGrowth formulation of the open problem",
+      "Bounds: S(x) >= 2 for x >= 3, S(x) <= x^2/4"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #1061**\n\nThis problem appears as Problem B15 in Richard Guy's celebrated collection \"Unsolved Problems in Number Theory\" (2004 edition), attributed to Erdos.\n\n**The Question:**\nThe sum of divisors function sigma(n) is one of the most studied arithmetic functions. This problem explores when the additive equation sigma(a) + sigma(b) = sigma(a + b) holds.\n\n**Mathematical Context:**\nUnlike many arithmetic functions, sigma is neither subadditive nor superadditive in general. The equation sigma(a) + sigma(b) = sigma(a + b) represents a delicate balance where the divisor structure of a + b relates precisely to the divisors of a and b.\n\n**Current Status:**\nThis problem remains OPEN. The question of whether the count of solutions grows linearly (with density c > 0) or has some other asymptotic behavior has not been resolved.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet S(x) count the number of ordered pairs (a, b) of positive integers with:\n1. a + b <= x\n2. sigma(a) + sigma(b) = sigma(a + b)\n\nwhere sigma is the sum of divisors function.\n\n**Question:** Is S(x) ~ c * x for some constant c > 0?\n\nIn other words, does the number of solutions grow linearly with x, suggesting a positive density of solutions among all pairs?\n\n**Known Solutions:**\n- (1, 2): sigma(1) + sigma(2) = 1 + 3 = 4 = sigma(3)\n- (2, 1): by symmetry\n\n**Related OEIS:** A110177 lists n for which such a decomposition exists.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Functions:** Define sigma(n) as the sum over n.divisors\n\n2. **Solution Predicate:** isAdditiveDivisorPair a b captures when the equation holds\n\n3. **Counting Function:** S(x) counts pairs via Finset.filter\n\n4. **Verified Examples:** Use native_decide to check small cases\n\n5. **Asymptotic Question:** Formalize hasLinearGrowth using Filter.Tendsto\n\n6. **Open Problem:** Mark erdos_1061_open as an axiom placeholder\n\nSince this is an open problem, we cannot prove the main conjecture, but we establish the framework and verify known facts.",
+    "keyInsights": [
+      "**Solution Structure:** The equation sigma(a) + sigma(b) = sigma(a + b) probes how divisibility interacts with addition",
+      "**Known Solutions:** (1, 2) and (2, 1) give S(x) >= 2 for x >= 3",
+      "**Non-Subadditivity:** sigma is generally NOT subadditive, making equality special",
+      "**Linear Growth Question:** Asking if S(x) ~ cx tests whether solutions have positive density",
+      "**OEIS Connection:** A110177 catalogs the sums a + b of solution pairs"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sum-of-divisors",
+      "title": "Sum of Divisors Function",
+      "summary": "Definition of sigma(n) and basic values",
+      "startLine": 36,
+      "endLine": 66
+    },
+    {
+      "id": "additive-equation",
+      "title": "The Additive Divisor Equation",
+      "summary": "Definition of isAdditiveDivisorPair and additiveDivisorPairs set",
+      "startLine": 68,
+      "endLine": 87
+    },
+    {
+      "id": "counting-function",
+      "title": "The Counting Function S(x)",
+      "summary": "Definition of S(x) and base cases S(0)=0, S(1)=0",
+      "startLine": 89,
+      "endLine": 113
+    },
+    {
+      "id": "known-solutions",
+      "title": "Known Solutions",
+      "summary": "Verified examples: (1,2), (2,1) are solutions; many pairs are not",
+      "startLine": 115,
+      "endLine": 175
+    },
+    {
+      "id": "structure-theorems",
+      "title": "Structure Theorems",
+      "summary": "Non-subadditivity and non-superadditivity of sigma",
+      "startLine": 177,
+      "endLine": 200
+    },
+    {
+      "id": "asymptotic-question",
+      "title": "Asymptotic Question",
+      "summary": "hasLinearGrowth and isAsymptoticToLinear formulations",
+      "startLine": 202,
+      "endLine": 226
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds and Estimates",
+      "summary": "Lower bound S(x)>=2 for x>=3, upper bound S(x)<=x^2/4",
+      "startLine": 228,
+      "endLine": 250
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "summary": "Erdos 1061 statement as an axiom placeholder",
+      "startLine": 252,
+      "endLine": 278
+    },
+    {
+      "id": "oeis",
+      "title": "Related OEIS Sequence",
+      "summary": "A110177: sums n with sigma(n) = sigma(a) + sigma(n-a)",
+      "startLine": 280,
+      "endLine": 304
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1061_summary combining verified facts",
+      "startLine": 306,
+      "endLine": 330
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #1061 asks whether the count of ordered pairs (a,b) satisfying sigma(a)+sigma(b)=sigma(a+b) with a+b<=x grows linearly as ~cx for some c>0. This remains an OPEN problem. We formalize the question, verify known solutions like (1,2), and establish basic bounds.",
+    "implications": "**Number-Theoretic Significance**\n\n1. **Divisor Structure:** The equation probes how the divisor function behaves under addition\n\n2. **Density Questions:** Positive c would mean solutions are \"common\" in a precise sense\n\n3. **Computational Aspects:** Finding solutions requires checking divisor sums\n\n4. **OEIS Connection:** Results feed into sequence A110177\n\n5. **Open Status:** Resolution could reveal deep structure in divisor behavior",
+    "openQuestions": [
+      "Does S(x) grow linearly, i.e., is there c > 0 with S(x) ~ cx?",
+      "What is the density of solutions among pairs with a + b = n for fixed n?",
+      "Are there infinitely many solutions beyond (1,2) and (2,1)?",
+      "Can the equation hold for coprime a, b?",
+      "What is the relationship to perfect numbers and amicable numbers?"
+    ]
+  }
+}
