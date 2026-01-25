@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ann-938-1",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #938: Let A = {n₁ < n₂ < ···} be the sequence of powerful numbers (if p | n then p² | n). Are there only finitely many three-term arithmetic progressions of consecutive terms nₖ, nₖ₊₁, nₖ₊₂? OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-938-2",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Powerful Number",
+    "content": "A positive integer n is powerful (squarefull) if p | n implies p² | n for all primes p. Equivalently, n can be written as a²b³ for some positive integers a, b.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-938-3",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Alternative Characterization",
+    "content": "PowerfulAlt defines powerful numbers via the representation n = a²·b³. This is equivalent to the prime-power definition and sometimes easier to work with.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-938-4",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 53,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Powerful Set and Enumeration",
+    "content": "The set of all powerful numbers forms an infinite sequence: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ... (OEIS A001694). The n-th powerful number can be accessed via enumeration.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-938-5",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 60,
+      "endLine": 78
+    },
+    "type": "example",
+    "title": "Small Powerful Numbers",
+    "content": "Verification that 1, 4, 8, 9 are powerful: 1 is vacuously powerful (no prime divisors), 4 = 2², 8 = 2³, 9 = 3². These are the first four powerful numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-938-6",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 80,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Consecutive AP Condition",
+    "content": "ConsecutivePowerfulAP(k) holds when the k-th, (k+1)-th, and (k+2)-th powerful numbers form an arithmetic progression: n_{k+1} - n_k = n_{k+2} - n_{k+1}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-938-7",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "AP Index Set",
+    "content": "apIndices is the set of all k where consecutive powerful numbers form an AP. The main question is whether this set is finite.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-938-8",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 96,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "Erdős Problem #938: Is apIndices.Finite? This asks whether the arithmetic progression pattern among consecutive powerful numbers can only occur finitely often.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-938-9",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 107,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Gap Function",
+    "content": "powerfulGap(k) = n_{k+1} - n_k measures the distance between consecutive powerful numbers. For an AP, consecutive gaps must be equal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-938-10",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 111,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Equal Gaps Characterization",
+    "content": "A three-term AP of consecutive powerful numbers is equivalent to having equal consecutive gaps: gap(k) = gap(k+1). This reformulates the AP condition in terms of differences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-938-11",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 121,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "Problem 364 Connection",
+    "content": "NoThreeConsecutivePowerful states that no three consecutive integers n, n+1, n+2 can all be powerful. This is a stronger conjecture (Problem #364) related to Problem #938.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-938-12",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 126,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "Problem 364 Formalization",
+    "content": "Erdős Problem #364: Are there NO three consecutive integers that are all powerful? If true, this forbids APs with common difference 1, a much stronger result than Problem #938.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-938-13",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 137,
+      "endLine": 139
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "countPowerful(n) counts powerful numbers up to n. This is the counting function π_P(x) for the set of powerful numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-938-14",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 141,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "Asymptotic Count",
+    "content": "The number of powerful numbers ≤ x is asymptotically (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x. This classical result shows powerful numbers have density proportional to 1/√x.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-938-15",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 152,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Computational Nature",
+    "content": "The problem has a computational aspect: enumerate powerful numbers, check consecutive triples for the AP condition. The question is whether infinitely many examples exist or the process terminates.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-938-16",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 162,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Problem Hardness",
+    "content": "The problem is subtle because: (1) powerful numbers have irregular distribution, (2) the AP condition requires exact arithmetic relationships, (3) the 'consecutive' constraint is more restrictive than arbitrary APs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-938-17",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 169,
+      "endLine": 174
+    },
+    "type": "definition",
+    "title": "AP Structure Type",
+    "content": "ConsecutivePowerfulAPWithDiff packages an AP index k with its common difference d. This structure captures both the location and the arithmetic data of an AP.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-938-18",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 176,
+      "endLine": 178
+    },
+    "type": "definition",
+    "title": "Difference Set",
+    "content": "apDifferences is the set of common differences d that appear in consecutive powerful APs. A sub-question: is this set finite?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-938-19",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 180,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Differences Finiteness",
+    "content": "If apIndices is finite, then apDifferences is also finite. This follows trivially since each AP contributes at most one difference.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-938-20",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 96,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "Erdős Problem #938: OPEN. The question of whether consecutive powerful numbers can form arithmetic progressions only finitely often remains unresolved. Related to Problem #364 on consecutive integers.",
+    "significance": "critical"
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "id": "erdos-938",
+  "title": "Erdős Problem #938: Three-term Progressions in Consecutive Powerful Numbers",
+  "slug": "erdos-938",
+  "description": "Are there only finitely many three-term arithmetic progressions among consecutive powerful numbers?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/938",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos938Problem.lean",
+    "tags": ["number theory", "powerful numbers", "arithmetic progressions", "squarefull numbers"],
+    "badge": "open-problem",
+    "sorries": 3,
+    "erdosNumber": 938,
+    "erdosUrl": "https://erdosproblems.com/938",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": []
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Paul Erdős and concerns the distribution of powerful numbers (also called squarefull numbers). A positive integer n is powerful if p | n implies p² | n for all primes p, or equivalently, n = a²b³ for some positive integers a, b. The sequence begins 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ... (OEIS A001694). This problem is related to the stronger Problem #364 which conjectures that no three consecutive integers can all be powerful.",
+    "problemStatement": "Let A = {n₁ < n₂ < ···} be the sequence of powerful numbers. Are there only finitely many three-term arithmetic progressions of consecutive terms nₖ, nₖ₊₁, nₖ₊₂? In other words, are there only finitely many k such that nₖ₊₁ - nₖ = nₖ₊₂ - nₖ₊₁?",
+    "proofStrategy": "The problem requires either: (1) proving that for sufficiently large k, consecutive powerful numbers cannot form arithmetic progressions, or (2) constructing infinitely many such progressions. The irregular distribution of powerful numbers makes this challenging. The asymptotic count of powerful numbers ≤ x is approximately (ζ(3/2)/ζ(3))·√x, but the local structure of gaps is not well understood.",
+    "keyInsights": [
+      "Powerful numbers have asymptotic density proportional to 1/√x",
+      "The AP condition requires exact arithmetic relationships between gaps",
+      "The 'consecutive' constraint is more restrictive than arbitrary APs",
+      "Related to Problem #364: no three consecutive integers can all be powerful",
+      "Gap distribution between powerful numbers is irregular and not fully understood"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-powerful-def",
+      "title": "Powerful Numbers",
+      "content": "A positive integer n is powerful (or squarefull) if whenever a prime p divides n, then p² also divides n. Equivalently, n can be written as n = a²b³ for some positive integers a and b. The powerful numbers are: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100, 108, 121, 125, 128, ... (OEIS A001694)."
+    },
+    {
+      "id": "section-ap-condition",
+      "title": "Arithmetic Progression Condition",
+      "content": "Three consecutive powerful numbers nₖ, nₖ₊₁, nₖ₊₂ form an arithmetic progression when the gaps are equal: nₖ₊₁ - nₖ = nₖ₊₂ - nₖ₊₁. This is a strong constraint requiring the local distribution of powerful numbers to exhibit regularity."
+    },
+    {
+      "id": "section-asymptotic",
+      "title": "Asymptotic Distribution",
+      "content": "The number of powerful numbers up to x is asymptotically (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x. This means powerful numbers become increasingly sparse, with average gap growing like √n. However, the local gap structure can vary significantly from this average."
+    },
+    {
+      "id": "section-related-364",
+      "title": "Relation to Problem #364",
+      "content": "Erdős Problem #364 makes the stronger conjecture that no three consecutive integers n, n+1, n+2 can all be powerful. If true, this forbids APs with common difference 1 entirely. Problem #938 asks about the weaker question of finiteness rather than impossibility."
+    },
+    {
+      "id": "section-computational",
+      "title": "Computational Aspects",
+      "content": "The problem has a computational flavor: enumerate powerful numbers, check consecutive triples for the AP condition, and determine if this process finds infinitely many examples. Computational searches can verify the conjecture for bounded ranges but cannot resolve it definitively."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #938 remains open. It asks whether the arithmetic progression condition among consecutive powerful numbers can occur only finitely often. The irregular distribution of powerful numbers and the exact arithmetic constraints make this a delicate question in multiplicative number theory.",
+    "implications": "Resolution would deepen understanding of the fine structure of powerful number distribution. A positive answer would show that local regularity (equal gaps) becomes impossible for large powerful numbers. A negative answer would reveal surprising hidden structure.",
+    "openQuestions": [
+      "Are there infinitely many three-term APs among consecutive powerful numbers?",
+      "What is the largest known index k where consecutive powerful numbers form an AP?",
+      "Can Problem #364 (no three consecutive integers are powerful) be resolved?",
+      "What is the distribution of gap differences |g_{k+1} - g_k| for consecutive powerful numbers?"
+    ]
+  }
+}
