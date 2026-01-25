@@ -1,242 +1,178 @@
 [
   {
-    "id": "ann-404-1",
+    "id": "ann-404-header",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 1,
-      "endLine": 14
-    },
+    "range": { "startLine": 1, "endLine": 32 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #404: For which (a, p) is f(a,p) = sup{k : p^k | some factorial sum} finite? Lin showed f(2,2) ≤ 254. Also asks if v_p(∑aᵢ!) can → ∞. OPEN.",
-    "significance": "critical"
+    "content": "**Erdős Problem #404** asks about prime power divisibility of factorial sums. For a strictly increasing sequence a₁ < a₂ < ... < aₙ starting at a, when can p^k divide a₁! + a₂! + ... + aₙ!? The function f(a,p) measures the maximum such k. Lin proved f(2,2) ≤ 254.",
+    "mathContext": "Posed by Erdős-Graham (1980). Connects p-adic analysis with factorial combinatorics. Related to Problem #403.",
+    "significance": "critical",
+    "relatedConcepts": ["p-adic valuation", "factorials", "divisibility"]
   },
   {
-    "id": "ann-404-2",
+    "id": "ann-404-imports",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 44,
-      "endLine": 50
-    },
+    "range": { "startLine": 34, "endLine": 50 },
+    "type": "supporting",
+    "title": "Imports and Setup",
+    "content": "We import factorial definitions, p-adic valuation tools, filter limits, and big operators. The namespace Erdos404 contains all definitions for this problem.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "Lean 4"]
+  },
+  {
+    "id": "ann-404-strictseq",
+    "proofId": "erdos-404",
+    "range": { "startLine": 52, "endLine": 58 },
     "type": "definition",
     "title": "Strictly Increasing Sequence",
-    "content": "A StrictIncSeq starting at a is a finite sequence a = a₁ < a₂ < ··· < aₙ. These are the index sets for factorial sums.",
-    "significance": "key"
+    "content": "**StrictIncSeq a** is a strictly increasing finite sequence starting at a. It captures the index set a = a₁ < a₂ < ... < aₙ over which we sum factorials.",
+    "mathContext": "Defined as a structure with length, sequence function, starting condition, and strict monotonicity.",
+    "significance": "key",
+    "relatedConcepts": ["sequence", "monotonicity"]
   },
   {
-    "id": "ann-404-3",
+    "id": "ann-404-factsum",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 52,
-      "endLine": 54
-    },
+    "range": { "startLine": 59, "endLine": 61 },
     "type": "definition",
     "title": "Factorial Sum",
-    "content": "factorialSum(s) = a₁! + a₂! + ··· + aₙ! is the sum of factorials over the sequence. We study divisibility of this sum.",
-    "significance": "critical"
+    "content": "**factorialSum s** = a₁! + a₂! + ... + aₙ! is the sum of factorials over the sequence s. This is the quantity whose divisibility we study.",
+    "significance": "critical",
+    "relatedConcepts": ["factorial", "sum"]
   },
   {
-    "id": "ann-404-4",
+    "id": "ann-404-divides",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 56,
-      "endLine": 62
-    },
+    "range": { "startLine": 63, "endLine": 69 },
     "type": "definition",
-    "title": "Divisibility Predicate",
-    "content": "dividesByPrimePower(a, k, p) holds if there exists a sequence starting at a whose factorial sum is divisible by p^k.",
-    "significance": "key"
+    "title": "Divisibility Predicate and f(a,p)",
+    "content": "**dividesByPrimePower a k p** holds if some sequence starting at a has factorial sum divisible by p^k. **f(a,p)** is the supremum of all such k - the central function of the problem.",
+    "mathContext": "f(a,p) = sup{k : p^k | some factorial sum starting at a}. May be infinite.",
+    "significance": "critical",
+    "relatedConcepts": ["supremum", "divisibility"]
   },
   {
-    "id": "ann-404-5",
+    "id": "ann-404-q1",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 64,
-      "endLine": 66
-    },
-    "type": "definition",
-    "title": "The Function f(a,p)",
-    "content": "f(a,p) = sup{k : p^k divides some factorial sum starting at a}. This is the central function of the problem.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-404-6",
-    "proofId": "erdos-404",
-    "range": {
-      "startLine": 74,
-      "endLine": 77
-    },
+    "range": { "startLine": 81, "endLine": 85 },
     "type": "theorem",
     "title": "Main Question",
-    "content": "Question 1: For which (a, p) is f(a,p) < ∞? This asks when there's a uniform bound on prime power divisibility.",
-    "significance": "critical"
+    "content": "**erdos_404_q1**: For which (a, p) is f(a,p) < ∞? This asks when there's a uniform upper bound on prime power divisibility of factorial sums starting at a.",
+    "significance": "critical",
+    "relatedConcepts": ["finiteness", "bound"]
   },
   {
-    "id": "ann-404-7",
+    "id": "ann-404-secondary",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 82,
-      "endLine": 87
-    },
-    "type": "definition",
+    "range": { "startLine": 90, "endLine": 97 },
+    "type": "axiom",
     "title": "Secondary Question",
-    "content": "Does there exist p and sequence {aᵢ} with v_p(∑_{i≤k} aᵢ!) → ∞? This asks if partial sums can have unbounded p-adic valuation.",
-    "significance": "critical"
+    "content": "**secondaryQuestion**: Does there exist p and infinite sequence {aᵢ} such that v_p(Σ_{i≤k} aᵢ!) → ∞? This asks if partial sums can have unbounded p-adic valuation.",
+    "mathContext": "A positive answer would imply certain f(a,p) are infinite for strategic choices of sequence.",
+    "significance": "critical",
+    "relatedConcepts": ["limit", "p-adic valuation"]
   },
   {
-    "id": "ann-404-8",
+    "id": "ann-404-lin",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 96,
-      "endLine": 98
-    },
+    "range": { "startLine": 103, "endLine": 106 },
     "type": "theorem",
     "title": "Lin's Bound",
-    "content": "Lin proved f(2,2) ≤ 254. No sum of factorials starting at 2 is divisible by 2^255.",
-    "significance": "critical"
+    "content": "**lin_bound**: Lin (1976) proved f(2,2) ≤ 254. This means no sum of factorials starting at 2 is divisible by 2^255. The main quantitative result for this problem.",
+    "mathContext": "This is the only concrete upper bound known for any (a,p) pair.",
+    "significance": "critical",
+    "relatedConcepts": ["bound", "Lin"]
   },
   {
-    "id": "ann-404-9",
+    "id": "ann-404-lin-meaning",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 100,
-      "endLine": 102
-    },
+    "range": { "startLine": 108, "endLine": 111 },
     "type": "theorem",
-    "title": "Lin's Bound Meaning",
-    "content": "For any strictly increasing sequence starting at 2, the sum of factorials is not divisible by 2^255.",
-    "significance": "key"
+    "title": "Lin's Bound Interpretation",
+    "content": "**lin_bound_meaning**: For any strictly increasing sequence starting at 2, the factorial sum is not divisible by 2^255. An equivalent formulation of Lin's result.",
+    "significance": "key",
+    "relatedConcepts": ["interpretation"]
   },
   {
-    "id": "ann-404-10",
+    "id": "ann-404-legendre",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 108,
-      "endLine": 111
-    },
+    "range": { "startLine": 117, "endLine": 123 },
     "type": "definition",
     "title": "Legendre's Formula",
-    "content": "v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋. This gives the exact p-adic valuation of factorials.",
-    "significance": "key"
+    "content": "**legendreSum n p** = Σ_{i≥1} ⌊n/p^i⌋ gives v_p(n!), the p-adic valuation of n!. This classical formula is essential for understanding factorial divisibility.",
+    "mathContext": "Legendre's formula counts how many times p divides n! by summing contributions from p, p², p³, etc.",
+    "significance": "key",
+    "relatedConcepts": ["Legendre", "p-adic valuation"]
   },
   {
-    "id": "ann-404-11",
+    "id": "ann-404-asymp",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 113,
-      "endLine": 116
-    },
-    "type": "theorem",
-    "title": "Legendre Formula Proof",
-    "content": "The p-adic valuation of n! equals the Legendre sum ∑⌊n/p^i⌋. This is a classical result in number theory.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-404-12",
-    "proofId": "erdos-404",
-    "range": {
-      "startLine": 118,
-      "endLine": 120
-    },
+    "range": { "startLine": 125, "endLine": 128 },
     "type": "theorem",
     "title": "Asymptotic Formula",
-    "content": "For large n, v_p(n!) ≈ n/(p-1). This approximation governs the growth of p-adic valuations.",
-    "significance": "key"
+    "content": "**padic_val_factorial_asymp**: For large n, v_p(n!)/n → 1/(p-1). This asymptotic governs the growth rate of p-adic valuations of factorials.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic", "limit"]
   },
   {
-    "id": "ann-404-13",
+    "id": "ann-404-modular",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 126,
-      "endLine": 129
-    },
+    "range": { "startLine": 134, "endLine": 137 },
     "type": "theorem",
-    "title": "Factorial Sum Modular",
-    "content": "If a₁ < a₂, then a₁! + a₂! ≡ a₁! (mod a₂!). The larger factorial dominates modularly.",
-    "significance": "supporting"
+    "title": "Factorial Sum Modular Structure",
+    "content": "**factorial_sum_mod**: If a₁ < a₂, then a₁! + a₂! ≡ a₁! (mod a₂!). The larger factorial dominates modularly.",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic"]
   },
   {
-    "id": "ann-404-14",
+    "id": "ann-404-factored",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 134,
-      "endLine": 137
-    },
+    "range": { "startLine": 143, "endLine": 146 },
     "type": "theorem",
-    "title": "Factored Form",
-    "content": "a₁! + a₂! = a₁!(1 + a₂!/a₁!). This factorization helps analyze divisibility.",
-    "significance": "key"
+    "title": "Factorization Lemma",
+    "content": "**factorial_sum_factored**: a₁! + a₂! = a₁!(1 + a₂!/a₁!). This factorization helps analyze divisibility by extracting the common factor.",
+    "significance": "key",
+    "relatedConcepts": ["factorization"]
   },
   {
-    "id": "ann-404-15",
+    "id": "ann-404-example1",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 143,
-      "endLine": 145
-    },
+    "range": { "startLine": 152, "endLine": 154 },
     "type": "example",
-    "title": "Example: 2! + 3!",
-    "content": "2! + 3! = 2 + 6 = 8 = 2³, showing f(2,2) ≥ 3. This is a simple case demonstrating the phenomenon.",
-    "significance": "supporting"
+    "title": "Example: 2! + 3! = 8",
+    "content": "2! + 3! = 2 + 6 = 8 = 2³. This shows f(2,2) ≥ 3. A concrete example demonstrating the phenomenon.",
+    "significance": "supporting",
+    "relatedConcepts": ["example"]
   },
   {
-    "id": "ann-404-16",
+    "id": "ann-404-example2",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 147,
-      "endLine": 149
-    },
+    "range": { "startLine": 156, "endLine": 158 },
     "type": "example",
-    "title": "Example: 1! + 2!",
-    "content": "1! + 2! = 1 + 2 = 3, which is divisible by 3. This shows f(1,3) ≥ 1.",
-    "significance": "supporting"
+    "title": "Example: 1! + 2! = 3",
+    "content": "1! + 2! = 1 + 2 = 3. This shows 3 | (1! + 2!), so f(1,3) ≥ 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["example"]
   },
   {
-    "id": "ann-404-17",
+    "id": "ann-404-heuristics",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 151,
-      "endLine": 152
-    },
-    "type": "concept",
-    "title": "Large Primes",
-    "content": "For p > a, we have v_p(a!) = 0, simplifying the analysis. The problem is easier for large primes.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-404-18",
-    "proofId": "erdos-404",
-    "range": {
-      "startLine": 158,
-      "endLine": 165
-    },
+    "range": { "startLine": 163, "endLine": 174 },
     "type": "concept",
     "title": "Heuristics",
-    "content": "For fixed a, f(a,p) should decrease as p → ∞. For fixed p, f(a,p) might increase as a → ∞. The problem cannot be resolved by finite computation.",
-    "significance": "supporting"
+    "content": "**Informal reasoning:** For fixed a, f(a,p) should decrease as p → ∞ (larger primes are harder to achieve high powers). For fixed p, f(a,p) might increase as a → ∞ (access to larger factorials). The problem cannot be resolved by finite computation.",
+    "significance": "supporting",
+    "relatedConcepts": ["heuristics"]
   },
   {
-    "id": "ann-404-19",
+    "id": "ann-404-special",
     "proofId": "erdos-404",
-    "range": {
-      "startLine": 171,
-      "endLine": 175
-    },
+    "range": { "startLine": 180, "endLine": 188 },
     "type": "concept",
     "title": "Special Cases",
-    "content": "For a = 1, we study 1 + larger factorials. For p = 2, Lin's bound applies. These are the most accessible cases.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-404-20",
-    "proofId": "erdos-404",
-    "range": {
-      "startLine": 177,
-      "endLine": 178
-    },
-    "type": "concept",
-    "title": "Equality Question",
-    "content": "When does f(a,p) = k exactly? This requires p^k dividing some sum but p^{k+1} never dividing any sum.",
-    "significance": "supporting"
+    "content": "**Special cases:** For a=1, we study 1 + (larger factorials). For p=2, Lin's bound applies. These are the most accessible cases for analysis.",
+    "significance": "supporting",
+    "relatedConcepts": ["special cases"]
   }
 ]
