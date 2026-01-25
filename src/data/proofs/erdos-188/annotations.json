@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-188-header",
+    "proofId": "erdos-188",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #188: Find the smallest k such that the plane can be 2-colored with no red unit distance and no blue k-term arithmetic progression with unit step. Status: OPEN.",
+    "mathContext": "Posed in [Er75] and [Er79]. Erdős-Graham showed k <= 10,000,000 exists. Tsaturian (2017) proved k >= 6.",
+    "significance": "critical",
+    "relatedConcepts": ["plane-coloring", "unit-distance", "arithmetic-progression"]
+  },
+  {
+    "id": "ann-188-coloring",
+    "proofId": "erdos-188",
+    "range": { "startLine": 31, "endLine": 38 },
+    "type": "definition",
+    "title": "Plane Coloring",
+    "content": "PlaneColoring := ℂ → Bool. The plane ℂ ≅ ℝ² is 2-colored with false = red and true = blue.",
+    "mathContext": "Using complex numbers as the plane allows elegant distance and direction formulas.",
+    "significance": "critical",
+    "relatedConcepts": ["two-coloring", "plane-geometry"]
+  },
+  {
+    "id": "ann-188-red-constraint",
+    "proofId": "erdos-188",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "definition",
+    "title": "Red Unit Distance Free",
+    "content": "RedUnitDistanceFree(c) := no two distinct red points are at distance 1. This avoids the unit distance graph in red.",
+    "mathContext": "The unit distance graph has vertices in ℝ² and edges between points at distance 1. We forbid red edges.",
+    "significance": "critical",
+    "relatedConcepts": ["unit-distance-graph", "constraint"]
+  },
+  {
+    "id": "ann-188-blue-constraint",
+    "proofId": "erdos-188",
+    "range": { "startLine": 47, "endLine": 55 },
+    "type": "definition",
+    "title": "Blue Arithmetic Progression",
+    "content": "BlueContainsUnitAP(c, k) := exists blue k-term AP with unit step. Points a, a+d, a+2d, ..., a+(k-1)d with |d|=1 all blue.",
+    "mathContext": "The direction d can be any unit vector, so APs can point in any direction in the plane.",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic-progression", "unit-step", "direction"]
+  },
+  {
+    "id": "ann-188-valid",
+    "proofId": "erdos-188",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "Valid Coloring",
+    "content": "IsValidColoring(c, k) := RedUnitDistanceFree(c) AND BlueContainsUnitAP(c, k). Both constraints satisfied simultaneously.",
+    "mathContext": "Finding the minimum k for which a valid coloring exists is the core problem.",
+    "significance": "key",
+    "relatedConcepts": ["valid-configuration", "optimization"]
+  },
+  {
+    "id": "ann-188-achievable",
+    "proofId": "erdos-188",
+    "range": { "startLine": 64, "endLine": 70 },
+    "type": "definition",
+    "title": "Achievable Set",
+    "content": "achievableSet := {k | exists valid coloring for k}. minK := inf(achievableSet). The problem asks for minK.",
+    "mathContext": "If k works, then any k' > k also works (same coloring). So achievableSet is upward closed.",
+    "significance": "key",
+    "relatedConcepts": ["minimum", "optimization"]
+  },
+  {
+    "id": "ann-188-lower-bound",
+    "proofId": "erdos-188",
+    "range": { "startLine": 78, "endLine": 84 },
+    "type": "axiom",
+    "title": "Lower Bound",
+    "content": "lower_bound_6: For all k in achievableSet, k >= 6. Tsaturian (2017) proved no valid coloring exists for k <= 5.",
+    "mathContext": "This uses geometric arguments about unit distance constraints forcing long blue APs.",
+    "significance": "critical",
+    "relatedConcepts": ["lower-bound", "tsaturian"]
+  },
+  {
+    "id": "ann-188-upper-bound",
+    "proofId": "erdos-188",
+    "range": { "startLine": 86, "endLine": 92 },
+    "type": "axiom",
+    "title": "Upper Bound",
+    "content": "upper_bound_exists: exists k in achievableSet with k <= 10,000,000. Erdős-Graham constructed such a coloring.",
+    "mathContext": "The construction uses a very large grid and careful coloring to satisfy both constraints.",
+    "significance": "critical",
+    "relatedConcepts": ["upper-bound", "erdos-graham", "construction"]
+  },
+  {
+    "id": "ann-188-conjecture",
+    "proofId": "erdos-188",
+    "range": { "startLine": 94, "endLine": 102 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture188 := minK = 6. The achievable set is exactly {k | k >= 6}.",
+    "mathContext": "This would mean Tsaturian's lower bound is tight - a valid coloring exists for k = 6.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "tight-bound"]
+  },
+  {
+    "id": "ann-188-van-der-waerden",
+    "proofId": "erdos-188",
+    "range": { "startLine": 110, "endLine": 124 },
+    "type": "concept",
+    "title": "Van der Waerden Connection",
+    "content": "Van der Waerden theorem: any finite coloring of N contains arbitrarily long monochromatic APs. The plane version is more subtle.",
+    "mathContext": "For integers, 2-colorings must have arbitrarily long mono APs. The plane geometry changes things.",
+    "significance": "key",
+    "relatedConcepts": ["van-der-waerden", "ramsey-theory"]
+  },
+  {
+    "id": "ann-188-alon",
+    "proofId": "erdos-188",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "axiom",
+    "title": "Alon's Observation",
+    "content": "alon_observation: The plane can be 2-colored avoiding unit distances entirely. Uses number-theoretic coloring.",
+    "mathContext": "This shows the red constraint alone is satisfiable - it's the combination with blue APs that's hard.",
+    "significance": "key",
+    "relatedConcepts": ["alon", "unit-distance", "possibility"]
+  },
+  {
+    "id": "ann-188-generalization",
+    "proofId": "erdos-188",
+    "range": { "startLine": 142, "endLine": 164 },
+    "type": "concept",
+    "title": "Generalizations",
+    "content": "GeneralizedProblem(d, k, m) considers AP of length k, step size d, and m colors. Higher dimensions and more colors also studied.",
+    "mathContext": "The 2-color, unit step, unit distance case is the core problem. Generalizations are wide open.",
+    "significance": "supporting",
+    "relatedConcepts": ["generalization", "higher-dimension"]
+  },
+  {
+    "id": "ann-188-status",
+    "proofId": "erdos-188",
+    "range": { "startLine": 172, "endLine": 202 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Best bounds: 6 <= minK <= 10,000,000. Huge gap between lower and upper bounds.",
+    "mathContext": "Improving either bound would be significant progress. The true value is conjectured to be 6.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "bounds-gap"]
+  }
+]
