@@ -4497,6 +4497,28 @@
     "annotationCount": 17
   },
   {
+    "id": "erdos-218",
+    "title": "Erdos Problem #218: Prime Gap Densities",
+    "slug": "erdos-218",
+    "description": "Let d_n = p_{n+1} - p_n be the prime gap. Erdos conjectured that the sets where d_{n+1} >= d_n and d_{n+1} <= d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN. Terence Tao: 'looks difficult'.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "prime-gaps",
+      "natural-density",
+      "arithmetic-progressions",
+      "open-problem"
+    ],
+    "dateAdded": "2026-01-25",
+    "erdosNumber": 218,
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 11
+  },
+  {
     "id": "erdos-219",
     "title": "Erdős Problem #219: Arbitrarily Long Arithmetic Progressions of Primes",
     "slug": "erdos-219",
@@ -5456,6 +5478,28 @@
     "erdosNumber": 268,
     "sorries": 12,
     "annotationCount": 22
+  },
+  {
+    "id": "erdos-269",
+    "title": "Erdos Problem #269: LCM Series Irrationality",
+    "slug": "erdos-269",
+    "description": "For P a finite set of primes with |P|>=2, let {a_n} be the P-smooth numbers and L_n=[a_0,...,a_{n-1}]. Is the sum 1/L_1 + 1/L_2 + ... irrational? OPEN for finite P. Solved (always irrational) for infinite P.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "lcm",
+      "smooth-numbers",
+      "series",
+      "open-problem"
+    ],
+    "dateAdded": "2026-01-25",
+    "erdosNumber": 269,
+    "mathlibCount": 5,
+    "sorries": 3,
+    "annotationCount": 11
   },
   {
     "id": "erdos-27",
@@ -12754,7 +12798,7 @@
     "slug": "erdos-756",
     "description": "Can there be ≫n distinct distances each occurring more than n times among n points in ℝ²? SOLVED: YES (Bhowmick 2024) - constructs n points with ⌊n/4⌋ rich distances.",
     "status": "complete",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -12765,9 +12809,9 @@
     ],
     "dateAdded": "2026-01-23",
     "erdosNumber": 756,
-    "mathlibCount": 3,
-    "sorries": 0,
-    "annotationCount": 19
+    "mathlibCount": 5,
+    "sorries": 3,
+    "annotationCount": 20
   },
   {
     "id": "erdos-757",
@@ -12966,9 +13010,9 @@
     ],
     "dateAdded": "2026-01-22",
     "erdosNumber": 766,
-    "mathlibCount": 3,
+    "mathlibCount": 5,
     "sorries": 3,
-    "annotationCount": 10
+    "annotationCount": 20
   },
   {
     "id": "erdos-767",
@@ -14953,6 +14997,26 @@
     "annotationCount": 17
   },
   {
+    "id": "erdos-881",
+    "title": "Erdős Problem #881: Minimal Additive Bases and Order Increase",
+    "slug": "erdos-881",
+    "description": "For a minimal additive basis of order k, must there exist an infinite subset whose removal yields a basis of order k+1?",
+    "status": "complete",
+    "badge": "open-problem",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "additive-basis",
+      "open-problem"
+    ],
+    "dateAdded": "2026-01-25",
+    "erdosNumber": 881,
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 17
+  },
+  {
     "id": "erdos-882",
     "title": "Erdős Problem #882: Subset Sums Without Divisibility",
     "slug": "erdos-882",
@@ -16644,17 +16708,20 @@
     "slug": "erdos-983",
     "description": "Does 2π(√n) - f(π(n)+1, n) → ∞? Answer: NO. Erdős-Straus (1970) showed f(π(n)+1, n) = 2π(√n) + o(√n/(log n)^A).",
     "status": "complete",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
       "primes",
       "smooth-numbers",
-      "prime-counting"
+      "prime-counting",
+      "combinatorics"
     ],
+    "dateAdded": "2026-01-24",
     "erdosNumber": 983,
-    "sorries": 0,
-    "annotationCount": 17
+    "mathlibCount": 5,
+    "sorries": 3,
+    "annotationCount": 25
   },
   {
     "id": "erdos-984",
