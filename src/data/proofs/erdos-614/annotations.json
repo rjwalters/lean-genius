@@ -1,0 +1,266 @@
+[
+  {
+    "id": "ann-614-1",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #614: Let f(n,k) be the minimal number of edges such that there exists a graph on n vertices where every (k+2)-subset induces a subgraph with maximum degree at least k. Determine f(n,k). OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-614-2",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Vertex Degree",
+    "content": "The degree of vertex v in graph G is the number of vertices adjacent to v. This counts the edges incident to v.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-614-3",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Maximum Degree",
+    "content": "The maximum degree Δ(G) is the largest degree among all vertices. For induced subgraphs, this measures local connectivity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-4",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "The induced subgraph G[S] contains all edges of G between vertices in S. This is the natural restriction of G to S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-5",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 55,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Induced Maximum Degree",
+    "content": "inducedMaxDegree(G, S) is the maximum degree in the induced subgraph G[S]. This is the key quantity we want to bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-614-6",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Property P(k)",
+    "content": "A graph has property P(k) if every (k+2)-vertex induced subgraph has maximum degree at least k. This is the property we want to achieve with minimum edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-614-7",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "The number of edges in a graph. We want to minimize this while achieving property P(k).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-8",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 77,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Existence Predicate",
+    "content": "existsGraphWithPropertyP(n, k, m) states that there exists a graph on n vertices with exactly m edges having property P(k).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-9",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 84,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "The Function f(n,k)",
+    "content": "f(n,k) is the minimum m such that existsGraphWithPropertyP(n, k, m) holds. This is the function Erdős asked to determine.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-614-10",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 96,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "f(n,k) ≥ kn/2 for n > k+2 and k > 0. This comes from needing enough edges to achieve degree k somewhere in each (k+2)-subset.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-11",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 101,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "f(n,k) ≤ n(n-1)/2. The complete graph trivially has property P(k) since every vertex has degree n-1 ≥ k in any induced subgraph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-12",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 107,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Trivial Case k=0",
+    "content": "f(n, 0) = 0. The empty graph has property P(0) since every 2-subset has induced max degree 0 ≥ 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-614-13",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 116,
+      "endLine": 120
+    },
+    "type": "theorem",
+    "title": "Case k=1",
+    "content": "f(n, 1) ≥ n-2. Every 3-subset must contain at least one edge, so we need to avoid independent triples.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-14",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 122,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Maximum k Case",
+    "content": "f(n, n-2) = n(n-1)/2. For k = n-2, every n-subset must have max degree ≥ n-2, which requires the complete graph.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-15",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 134,
+      "endLine": 136
+    },
+    "type": "theorem",
+    "title": "Monotonicity in n",
+    "content": "f(n,k) ≤ f(n+1, k). Adding vertices doesn't decrease the minimum edge requirement.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-614-16",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    },
+    "type": "theorem",
+    "title": "Monotonicity in k",
+    "content": "f(n,k) ≤ f(n, k+1). Requiring higher induced max degree needs more edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-614-17",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 146,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Turán Connection",
+    "content": "The problem relates to Turán numbers ex(n, K_{k+2}). Graphs avoiding large cliques struggle to achieve property P(k).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-18",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 152,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Ramsey Flavor",
+    "content": "The problem has Ramsey-theoretic character: we require a property to hold for ALL subsets of a given size, not just one.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-614-19",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 158,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Open Problem Statement",
+    "content": "Erdős Problem #614 remains OPEN. No closed-form formula for f(n,k) is known, and even the asymptotic behavior is not fully understood.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-614-20",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 181,
+      "endLine": 185
+    },
+    "type": "example",
+    "title": "Star Graph Fails P(1)",
+    "content": "The star graph S_n has n-1 edges but fails property P(1): taking 3 leaves gives an independent set with induced max degree 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-614-21",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 187,
+      "endLine": 191
+    },
+    "type": "example",
+    "title": "Cycle Fails P(2)",
+    "content": "The cycle C_n fails property P(2) for n ≥ 5: taking 4 non-adjacent vertices gives induced max degree ≤ 1 < 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-614-22",
+    "proofId": "erdos-614",
+    "range": {
+      "startLine": 197,
+      "endLine": 218
+    },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "Erdős Problem #614: OPEN. Determine f(n,k), the minimum edges for an n-vertex graph where every (k+2)-subset has induced max degree ≥ k.",
+    "significance": "critical"
+  }
+]
