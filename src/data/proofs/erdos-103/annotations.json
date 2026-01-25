@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-103-header",
+    "proofId": "erdos-103",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #103: Let h(n) count incongruent optimal configurations of n points minimizing diameter with separation >= 1. Does h(n) -> infinity? Status: OPEN.",
+    "mathContext": "Posed in [Er94b] (1994). Related to Problem #99. Even h(n) >= 2 for all large n is unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["point-configuration", "diameter", "congruence"]
+  },
+  {
+    "id": "ann-103-pointconfig",
+    "proofId": "erdos-103",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "PointConfig(n) := Fin n -> R x R. A configuration of n labeled points in the plane. pointDist uses Euclidean distance.",
+    "mathContext": "Using Fin n ensures exactly n distinct point positions.",
+    "significance": "critical",
+    "relatedConcepts": ["euclidean-plane", "finite-set"]
+  },
+  {
+    "id": "ann-103-separation",
+    "proofId": "erdos-103",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Minimum Separation",
+    "content": "HasMinSeparation(n, P) := for all distinct i, j, distance(P(i), P(j)) >= 1. All pairs at least unit distance apart.",
+    "mathContext": "Equivalent to non-overlapping unit circles centered at each point.",
+    "significance": "critical",
+    "relatedConcepts": ["packing", "constraint"]
+  },
+  {
+    "id": "ann-103-diameter",
+    "proofId": "erdos-103",
+    "range": { "startLine": 50, "endLine": 58 },
+    "type": "definition",
+    "title": "Diameter",
+    "content": "diameter(n, P) := sup over all i,j of distance(P(i), P(j)). Maximum pairwise distance in the configuration.",
+    "mathContext": "We seek to minimize this quantity subject to separation constraint.",
+    "significance": "critical",
+    "relatedConcepts": ["optimization", "maximum-distance"]
+  },
+  {
+    "id": "ann-103-optimal",
+    "proofId": "erdos-103",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "definition",
+    "title": "Optimal Configuration",
+    "content": "IsOptimal(n, P) := IsValidConfig(n, P) AND diameter(n, P) = minDiameter(n). Achieves smallest possible diameter.",
+    "mathContext": "Multiple configurations may achieve the same minimum diameter - we count them.",
+    "significance": "critical",
+    "relatedConcepts": ["minimum", "optimization"]
+  },
+  {
+    "id": "ann-103-isometry",
+    "proofId": "erdos-103",
+    "range": { "startLine": 84, "endLine": 95 },
+    "type": "definition",
+    "title": "Isometry and Congruence",
+    "content": "Isometry2D preserves distances. AreCongruent(n, P, Q) := exists isometry sigma such that Q = sigma(P).",
+    "mathContext": "Congruent configurations are considered 'the same' - we quotient by this equivalence.",
+    "significance": "critical",
+    "relatedConcepts": ["rigid-motion", "equivalence"]
+  },
+  {
+    "id": "ann-103-equiv-props",
+    "proofId": "erdos-103",
+    "range": { "startLine": 97, "endLine": 111 },
+    "type": "theorem",
+    "title": "Congruence is Equivalence",
+    "content": "congruent_refl, congruent_symm, congruent_trans: Congruence is reflexive, symmetric, transitive.",
+    "mathContext": "Forms a proper equivalence relation allowing quotient construction.",
+    "significance": "key",
+    "relatedConcepts": ["equivalence-relation", "quotient"]
+  },
+  {
+    "id": "ann-103-counting",
+    "proofId": "erdos-103",
+    "range": { "startLine": 121, "endLine": 130 },
+    "type": "definition",
+    "title": "Counting Function h(n)",
+    "content": "h(n) := number of congruence classes of optimal configurations. Axiomatized since actual computation is complex.",
+    "mathContext": "The central object of the problem - counts 'essentially different' optimal configs.",
+    "significance": "critical",
+    "relatedConcepts": ["counting", "equivalence-classes"]
+  },
+  {
+    "id": "ann-103-conjecture",
+    "proofId": "erdos-103",
+    "range": { "startLine": 138, "endLine": 156 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture103 := for all C, exists N such that for all n >= N, h(n) > C. Equivalently: h is unbounded.",
+    "mathContext": "Asking whether optimal configurations become increasingly diverse.",
+    "significance": "critical",
+    "relatedConcepts": ["limit", "unbounded"]
+  },
+  {
+    "id": "ann-103-weak",
+    "proofId": "erdos-103",
+    "range": { "startLine": 164, "endLine": 177 },
+    "type": "definition",
+    "title": "Weaker Conjectures",
+    "content": "WeakConjecture: h(n) >= 2 eventually. VeryWeakConjecture: infinitely many n have h(n) >= 2. Both remain OPEN.",
+    "mathContext": "Even establishing two incongruent optimal configs for large n is unknown.",
+    "significance": "key",
+    "relatedConcepts": ["weak-version", "open-question"]
+  },
+  {
+    "id": "ann-103-small",
+    "proofId": "erdos-103",
+    "range": { "startLine": 175, "endLine": 177 },
+    "type": "axiom",
+    "title": "Small Cases",
+    "content": "h(2) = 1: two points at distance 1 (unique). h(3) = 1: equilateral triangle with side 1 (unique).",
+    "mathContext": "For small n, optimal configurations are unique up to congruence.",
+    "significance": "supporting",
+    "relatedConcepts": ["base-case", "uniqueness"]
+  },
+  {
+    "id": "ann-103-packing",
+    "proofId": "erdos-103",
+    "range": { "startLine": 185, "endLine": 192 },
+    "type": "concept",
+    "title": "Packing Connection",
+    "content": "optimalPackingDensity = pi/(2*sqrt(3)). diameter_asymptotic: minDiameter(n) ~ sqrt(n/density) for large n.",
+    "mathContext": "Optimal configurations resemble hexagonal circle packings. Thue-Minkowski theorem.",
+    "significance": "key",
+    "relatedConcepts": ["circle-packing", "hexagonal-lattice", "thue-minkowski"]
+  },
+  {
+    "id": "ann-103-status",
+    "proofId": "erdos-103",
+    "range": { "startLine": 216, "endLine": 244 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Known: h(n) >= 1 for n >= 2, small cases unique. Unknown: whether h(n) -> infinity.",
+    "mathContext": "Requires understanding ALL optimal configurations, not just finding one.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "difficulty"]
+  }
+]

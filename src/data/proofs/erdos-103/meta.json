@@ -1,0 +1,142 @@
+{
+  "id": "erdos-103",
+  "title": "Erdős Problem #103: Incongruent Optimal Point Configurations",
+  "slug": "erdos-103",
+  "description": "Let h(n) count the number of incongruent sets of n points in ℝ² that minimize diameter with d(x,y) ≥ 1 for all distinct x,y. Is h(n) → ∞?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/103",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos103Problem.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "distances",
+      "packing",
+      "congruence",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 103,
+    "erdosUrl": "https://erdosproblems.com/103",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Metric.dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Set",
+        "description": "Set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "PointConfig definition: n points in ℝ²",
+      "pointDist definition: Euclidean distance",
+      "HasMinSeparation definition: all pairs at distance ≥ 1",
+      "diameter definition: max pairwise distance",
+      "IsValidConfig definition: has minimum separation",
+      "minDiameter definition: infimum over valid configs",
+      "IsOptimal definition: achieves minimum diameter",
+      "Isometry2D structure: distance-preserving maps",
+      "AreCongruent definition: related by isometry",
+      "congruent_refl theorem: congruence is reflexive",
+      "h function axiom: counts incongruent optimal configs",
+      "ErdosConjecture103 definition: h(n) → ∞",
+      "WeakConjecture definition: h(n) ≥ 2 eventually",
+      "h_2, h_3 axioms: small case values",
+      "optimalPackingDensity definition: π/(2√3)",
+      "diameter_asymptotic axiom: relation to packing"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in [Er94b] (1994). The question concerns the diversity of optimal point configurations in the plane.\n\nGiven n points with minimum pairwise separation 1, we seek configurations minimizing the diameter (largest distance). h(n) counts how many 'essentially different' (incongruent) optimal configurations exist.\n\nThe problem connects to classical circle packing - placing n non-overlapping unit circles in the smallest possible containing circle. The hexagonal lattice is optimal for large n (Thue-Minkowski).\n\nRelated to Erdős Problem #99. Even very weak versions of the conjecture remain open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet h(n) count the number of incongruent sets of n points in ℝ² that minimize the diameter subject to d(x,y) ≥ 1 for all distinct x,y.\n\n**Question:** Is it true that h(n) → ∞ as n → ∞?\n\n**Constraints:**\n- Points must be separated by distance at least 1\n- We minimize the diameter (max pairwise distance)\n- Two configurations are congruent if related by rigid motion\n- h(n) counts equivalence classes under congruence",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define PointConfig as Fin n → ℝ × ℝ\n\n2. **Constraints:** HasMinSeparation requires all pairs at distance ≥ 1\n\n3. **Optimality:** IsOptimal means achieving minimum diameter\n\n4. **Congruence:** Define Isometry2D and AreCongruent relation\n\n5. **Counting:** Axiomatize h(n) as count of incongruent optimal configs\n\n6. **Conjecture:** ErdosConjecture103 states h(n) → ∞",
+    "keyInsights": [
+      "**Counting Problem:** Not about finding one optimal config, but counting all of them up to congruence",
+      "**Difficulty:** Even h(n) ≥ 2 for all large n is unknown",
+      "**Small Cases:** h(2) = h(3) = 1 - unique configurations (line segment, equilateral triangle)",
+      "**Packing Connection:** Optimal diameter ≈ √(n/density) for hexagonal packing",
+      "**Hexagonal Lattice:** Thue-Minkowski shows hexagonal packing is asymptotically optimal"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "PointConfig, pointDist, HasMinSeparation, diameter, IsValidConfig",
+      "startLine": 33,
+      "endLine": 58
+    },
+    {
+      "id": "optimal",
+      "title": "Optimal Configurations",
+      "summary": "minDiameter, IsOptimal, OptimalSet",
+      "startLine": 60,
+      "endLine": 76
+    },
+    {
+      "id": "congruence",
+      "title": "Congruence of Configurations",
+      "summary": "Isometry2D, applyIsometry, AreCongruent, equivalence properties",
+      "startLine": 78,
+      "endLine": 111
+    },
+    {
+      "id": "counting",
+      "title": "Counting Incongruent Optimal Configurations",
+      "summary": "IncongruentOptimal, h function, h_counts_optimal",
+      "startLine": 113,
+      "endLine": 130
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture103, hUnbounded, conjecture_equiv",
+      "startLine": 132,
+      "endLine": 156
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds and Partial Results",
+      "summary": "WeakConjecture, VeryWeakConjecture, h_pos, h_2, h_3",
+      "startLine": 158,
+      "endLine": 177
+    },
+    {
+      "id": "packing",
+      "title": "Connection to Packing Problems",
+      "summary": "optimalPackingDensity, diameter_asymptotic, IsHexagonalLattice",
+      "startLine": 179,
+      "endLine": 198
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_103_status, erdos_103_statement, Summary",
+      "startLine": 210,
+      "endLine": 244
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #103 asks whether the count h(n) of incongruent optimal point configurations (minimizing diameter with separation ≥ 1) tends to infinity. This is a counting problem about the diversity of optimal geometric configurations.",
+    "implications": "Understanding h(n) would reveal whether optimal packings become increasingly diverse or eventually stabilize into a few canonical forms. A positive answer suggests rich geometric structure; if h(n) is bounded, there may be a universal limiting configuration.",
+    "openQuestions": [
+      "Does h(n) → ∞ as n → ∞?",
+      "Is h(n) ≥ 2 for all sufficiently large n?",
+      "Are there infinitely many n with h(n) ≥ 2?",
+      "What is the growth rate of h(n) if unbounded?",
+      "How do optimal configurations transition as n increases?"
+    ]
+  }
+}
