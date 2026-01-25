@@ -1,0 +1,148 @@
+{
+  "id": "erdos-948",
+  "title": "Erdős Problem #948: Subset Sums and Colorings",
+  "slug": "erdos-948",
+  "description": "Does there exist f(n) and k such that for any k-coloring, there is a sequence a with aₙ < f(n) infinitely often, whose subsums don't contain all colors?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/948",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos948Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "ramsey-theory",
+      "hindman",
+      "ip-sets",
+      "colorings",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 948,
+    "erdosUrl": "https://erdosproblems.com/948",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "FiniteSubsums definition: all sums of finite subsets",
+      "Coloring definition: k-coloring of naturals",
+      "IsMonochromatic definition: set has single color",
+      "ContainsAllColors definition: all colors appear",
+      "AvoidsSomeColor definition: some color missing",
+      "BoundedInfinitelyOften definition: growth constraint",
+      "MonochromaticConjecture definition: original (false) conjecture",
+      "galvin_counterexample axiom: disproves monochromatic version",
+      "ErdosConjecture948 definition: modified conjecture",
+      "dyadicValuation definition: 2-adic valuation",
+      "galvinColoring definition: Galvin's 2-coloring",
+      "hindman_theorem axiom: IP sets in colorings",
+      "IsIPSet, IsFSSet, IsIPStar definitions: IP set theory",
+      "erdos_948_mono_false theorem: monochromatic is false"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1977 [Er77c], connecting to Hindman's theorem (1974) on IP sets. Hindman's theorem says any finite coloring of ℕ has an infinite sequence whose finite subsums are monochromatic.\n\nGalvin provided a counterexample showing the monochromatic version with growth bounds is false. The problem relates to Erdős Problem #532 on variants of Hindman's theorem.\n\nIP sets (named by Furstenberg for 'idempotent') are central to additive combinatorics.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nDoes there exist a function f(n) and integer k ≥ 2 such that:\n\nFor any k-coloring c of ℕ, there exists a strictly increasing sequence a₁ < a₂ < ... with:\n1. aₙ < f(n) for infinitely many n\n2. The finite subsums {∑ᵢ∈S aᵢ : S finite} do not contain all k colors\n\n**Note:** The original monochromatic version was DISPROVED by Galvin.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Finite Subsums:** FiniteSubsums(a) = {∑ᵢ∈S aᵢ : S finite ⊆ ℕ}\n\n2. **Colorings:** Define k-colorings and monochromaticity predicates\n\n3. **Growth Condition:** BoundedInfinitelyOften(a, f) := {n | aₙ < f(n)} infinite\n\n4. **Conjectures:** Original (false) and modified (open) versions\n\n5. **Galvin's Counterexample:** Axiomatize the dyadic coloring disproof\n\n6. **Hindman's Theorem:** The positive existence result (without bounds)",
+    "keyInsights": [
+      "**Hindman's Theorem:** Any finite coloring admits monochromatic IP sets",
+      "**Galvin's Counterexample:** The 2-adic coloring admits no bounded monochromatic sequence",
+      "**IP Sets:** Sets closed under finite sums of some sequence",
+      "**IP* Sets:** Sets meeting every IP set - some color class is always IP*",
+      "**Modified Problem:** Ask for 'not all colors' instead of 'monochromatic'"
+    ]
+  },
+  "sections": [
+    {
+      "id": "finite-subsums",
+      "title": "Finite Subsums",
+      "summary": "FiniteSubsums, FiniteSubsums', sumOverSet, basic theorems",
+      "startLine": 31,
+      "endLine": 57
+    },
+    {
+      "id": "colorings",
+      "title": "Colorings",
+      "summary": "Coloring, IsMonochromatic, ContainsAllColors, AvoidsSomeColor",
+      "startLine": 58,
+      "endLine": 78
+    },
+    {
+      "id": "growth",
+      "title": "Growth Conditions",
+      "summary": "BoundedInfinitelyOften, StrictlyIncreasing",
+      "startLine": 79,
+      "endLine": 92
+    },
+    {
+      "id": "conjectures",
+      "title": "The Main Conjectures",
+      "summary": "MonochromaticConjecture (false), ModifiedConjecture, ErdosConjecture948",
+      "startLine": 93,
+      "endLine": 125
+    },
+    {
+      "id": "galvin",
+      "title": "Galvin's Counterexample",
+      "summary": "dyadicValuation, galvinColoring, galvin_no_monochromatic",
+      "startLine": 126,
+      "endLine": 143
+    },
+    {
+      "id": "hindman",
+      "title": "Hindman's Theorem",
+      "summary": "hindman_theorem axiom",
+      "startLine": 144,
+      "endLine": 159
+    },
+    {
+      "id": "ip-sets",
+      "title": "IP Sets and FS Sets",
+      "summary": "IsIPSet, IsFSSet, IsIPStar, hindman_ip_star",
+      "startLine": 160,
+      "endLine": 181
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_948_status, CountableColorsVersion",
+      "startLine": 182,
+      "endLine": 198
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_948_mono_false, erdos_948_statement",
+      "startLine": 199,
+      "endLine": 228
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #948 asks about bounded sequences whose finite subsums avoid containing all colors. The original monochromatic version was DISPROVED by Galvin, but the modified version remains OPEN.",
+    "implications": "Resolving this problem would clarify the relationship between Hindman's theorem (existence) and growth constraints. It touches on fundamental questions in additive combinatorics about IP sets.",
+    "openQuestions": [
+      "Does the modified conjecture (avoiding some color) hold?",
+      "What is the optimal growth function f if the conjecture is true?",
+      "Does the problem remain open for countably many colors?",
+      "What structural properties distinguish 'good' colorings from Galvin's?",
+      "Can ultrafilter methods give stronger results?"
+    ]
+  }
+}
