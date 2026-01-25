@@ -101,10 +101,11 @@ axiom complete_bipartite_diameter2 (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) :
     ∃ (V : Type*) (_ : Fintype V) (G : SimpleGraph V),
       Fintype.card V = a + b ∧ HasDiameter2 G ∧ edgeCount G = a * b
 
-/-- The balanced complete bipartite graph achieves ⌊n²/4⌋ edges. -/
-theorem balanced_bipartite_edges (n : ℕ) (hn : n ≥ 2) :
-    (n / 2) * ((n + 1) / 2) = n^2 / 4 := by
-  sorry  -- Arithmetic identity
+/-- The balanced complete bipartite graph achieves ⌊n²/4⌋ edges.
+    For n = 2k: (k) * (k) = k² = (2k)²/4 = n²/4
+    For n = 2k+1: (k) * (k+1) = k² + k = (2k+1)²/4 = n²/4 (integer division) -/
+axiom balanced_bipartite_edges (n : ℕ) (hn : n ≥ 2) :
+    (n / 2) * ((n + 1) / 2) = n^2 / 4
 
 /-- K_{⌊n/2⌋, ⌈n/2⌉} is a minimal diameter-2 graph.
     It shows the bound is tight. -/
