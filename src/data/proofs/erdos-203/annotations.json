@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-203-header",
+    "proofId": "erdos-203",
+    "range": { "startLine": 1, "endLine": 19 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #203: Is there m coprime to 6 such that 2^k * 3^l * m + 1 is never prime? Status: OPEN.",
+    "mathContext": "Posed in [ErGr80, p.27]. Generalizes Sierpinski numbers to two prime bases.",
+    "significance": "critical",
+    "relatedConcepts": ["sierpinski", "covering-systems", "primes"]
+  },
+  {
+    "id": "ann-203-candidate",
+    "proofId": "erdos-203",
+    "range": { "startLine": 33, "endLine": 41 },
+    "type": "definition",
+    "title": "Candidate Numbers",
+    "content": "candidateNumber(m, k, l) = 2^k * 3^l * m + 1. AvoidsPrimes(m) requires coprime to 6 and no prime candidates.",
+    "mathContext": "The two parameters k, l make this a two-dimensional problem.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-power", "coprimality"]
+  },
+  {
+    "id": "ann-203-conjecture",
+    "proofId": "erdos-203",
+    "range": { "startLine": 49, "endLine": 61 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture203 := exists m coprime to 6 such that no 2^k * 3^l * m + 1 is prime.",
+    "mathContext": "The question is whether the AvoidingSet is nonempty.",
+    "significance": "critical",
+    "relatedConcepts": ["existence", "avoidance"]
+  },
+  {
+    "id": "ann-203-sierpinski",
+    "proofId": "erdos-203",
+    "range": { "startLine": 69, "endLine": 83 },
+    "type": "definition",
+    "title": "Sierpinski Numbers",
+    "content": "IsSierpinskiNumber(m) := Odd m AND for all k, 2^k * m + 1 is not prime. 78557 is the smallest known.",
+    "mathContext": "Selfridge (1962) proved 78557 is Sierpinski using covering systems.",
+    "significance": "key",
+    "relatedConcepts": ["sierpinski", "selfridge"]
+  },
+  {
+    "id": "ann-203-selfridge",
+    "proofId": "erdos-203",
+    "range": { "startLine": 76, "endLine": 80 },
+    "type": "axiom",
+    "title": "Selfridge's Sierpinski Number",
+    "content": "selfridge_sierpinski = 78557. selfridge_sierpinski_is_sierpinski: 78557 is a Sierpinski number.",
+    "mathContext": "The smallest proven Sierpinski number. The true minimum remains unknown.",
+    "significance": "supporting",
+    "relatedConcepts": ["sierpinski-problem", "seventeen-or-bust"]
+  },
+  {
+    "id": "ann-203-covering",
+    "proofId": "erdos-203",
+    "range": { "startLine": 96, "endLine": 108 },
+    "type": "definition",
+    "title": "Covering Systems",
+    "content": "IsCoveringSystem(S): congruences cover all integers. PrimeCovering: primes dividing 2^n - 1 for moduli.",
+    "mathContext": "Covering systems are the key tool for proving Sierpinski-type results.",
+    "significance": "key",
+    "relatedConcepts": ["covering", "congruence", "fermat"]
+  },
+  {
+    "id": "ann-203-extended",
+    "proofId": "erdos-203",
+    "range": { "startLine": 116, "endLine": 136 },
+    "type": "definition",
+    "title": "Extended Problem",
+    "content": "IsExtendedAvoiding: two-dimensional avoidance. ExtendedDivisibility: primes dividing 2^a * 3^b - 1.",
+    "mathContext": "The challenge is extending covering systems to the lattice Z^2 of exponents.",
+    "significance": "key",
+    "relatedConcepts": ["two-dimensional", "lattice"]
+  },
+  {
+    "id": "ann-203-coprime6",
+    "proofId": "erdos-203",
+    "range": { "startLine": 144, "endLine": 155 },
+    "type": "theorem",
+    "title": "Coprimality Equivalence",
+    "content": "coprime_6_equiv: m.Coprime 6 <-> m.Coprime 2 AND m.Coprime 3. m must be coprime to both 2 and 3.",
+    "mathContext": "Standard decomposition of coprimality to a composite.",
+    "significance": "supporting",
+    "relatedConcepts": ["coprime", "factorization"]
+  },
+  {
+    "id": "ann-203-basecase",
+    "proofId": "erdos-203",
+    "range": { "startLine": 157, "endLine": 161 },
+    "type": "theorem",
+    "title": "Base Case",
+    "content": "base_case: if AvoidsPrimes(m) then m + 1 is not prime. The k = l = 0 case gives this constraint.",
+    "mathContext": "Immediately rules out m such that m + 1 is prime.",
+    "significance": "supporting",
+    "relatedConcepts": ["base-case", "constraint"]
+  },
+  {
+    "id": "ann-203-fails",
+    "proofId": "erdos-203",
+    "range": { "startLine": 163, "endLine": 178 },
+    "type": "theorem",
+    "title": "Small Cases Fail",
+    "content": "one_fails: m = 1 fails (2 is prime). five_fails: m = 5 fails (11 = 2*5+1 is prime).",
+    "mathContext": "Small coprime-to-6 values quickly produce primes.",
+    "significance": "supporting",
+    "relatedConcepts": ["counterexamples", "small-cases"]
+  },
+  {
+    "id": "ann-203-general",
+    "proofId": "erdos-203",
+    "range": { "startLine": 186, "endLine": 198 },
+    "type": "definition",
+    "title": "Generalized Problems",
+    "content": "IsGeneralizedAvoiding: multi-prime base generalization. QuadraticProductAvoiding: primes q = 1 (mod 4).",
+    "mathContext": "Erdos-Graham posed several variants involving different prime combinations.",
+    "significance": "supporting",
+    "relatedConcepts": ["generalization", "variants"]
+  },
+  {
+    "id": "ann-203-statement",
+    "proofId": "erdos-203",
+    "range": { "startLine": 209, "endLine": 213 },
+    "type": "theorem",
+    "title": "Formal Statement",
+    "content": "erdos_203_statement: The conjecture is equivalent to existence of m coprime to 6 avoiding all primes.",
+    "mathContext": "Precise formal statement of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["formal-statement", "main-result"]
+  },
+  {
+    "id": "ann-203-status",
+    "proofId": "erdos-203",
+    "range": { "startLine": 205, "endLine": 218 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Sierpinski numbers exist but the two-dimensional extension is much harder.",
+    "mathContext": "No m has been found or proven not to exist.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "difficulty"]
+  }
+]
