@@ -68,7 +68,85 @@
       "**NRS 2024:** The Sidon analogue is FALSE, suggesting #774 is also false"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "dissociated-sets",
+      "title": "Dissociated Sets",
+      "summary": "IsDissociated, IsDissociatedSet, HasUniqueSubsetSums, equivalence theorem",
+      "startLine": 41,
+      "endLine": 69
+    },
+    {
+      "id": "examples",
+      "title": "Examples of Dissociated Sets",
+      "summary": "Powers of 2, powers of any base, lacunary sequences",
+      "startLine": 71,
+      "endLine": 95
+    },
+    {
+      "id": "proportionately-dissociated",
+      "title": "Proportionately Dissociated Sets",
+      "summary": "IsProportionatelyDissociated definition, dissociated implies proportionately",
+      "startLine": 97,
+      "endLine": 122
+    },
+    {
+      "id": "sidon-harmonic",
+      "title": "Sidon Sets (Harmonic Analysis)",
+      "summary": "IsSidonHarmonic, Pisier's theorem connecting to proportionately dissociated",
+      "startLine": 124,
+      "endLine": 140
+    },
+    {
+      "id": "sidon-additive",
+      "title": "Sidon Sets (Additive Combinatorics)",
+      "summary": "IsSidonAdditive, relationship to dissociated sets",
+      "startLine": 142,
+      "endLine": 158
+    },
+    {
+      "id": "union-decomposition",
+      "title": "Union Decomposition",
+      "summary": "IsFiniteUnionDissociated, finite_union_is_proportionately",
+      "startLine": 160,
+      "endLine": 171
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture774 formal statement, Alon-Erdős conjecture",
+      "startLine": 173,
+      "endLine": 187
+    },
+    {
+      "id": "sidon-analogue",
+      "title": "The Sidon Analogue",
+      "summary": "IsProportionatelySidon, SidonAnalogue, Nešetřil-Rödl-Sales theorem",
+      "startLine": 189,
+      "endLine": 220
+    },
+    {
+      "id": "connections",
+      "title": "Connections and Implications",
+      "summary": "NRS suggests NO, implications between Sidon and dissociated",
+      "startLine": 222,
+      "endLine": 249
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on Dissociated Subsets",
+      "summary": "maxDissociatedSize, Θ(log n) bound",
+      "startLine": 251,
+      "endLine": 263
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem statement, status, key results, erdos_774_open",
+      "startLine": 265,
+      "endLine": 295
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #774 asks whether every proportionately dissociated set is a finite union of dissociated sets. Pisier (1983) showed proportionately dissociated equals Sidon in harmonic analysis. Alon-Erdős (1985) conjectured the answer is NO. The Nešetřil-Rödl-Sales theorem (2024) resolving the Sidon analogue negatively provides strong evidence that #774 also has a negative answer. The problem remains OPEN.",
     "implications": "**Connections**\n\n1. **Harmonic Analysis:** Sidon sets and Fourier analysis on ℤ\n\n2. **Additive Combinatorics:** Subset sum problems and sumsets\n\n3. **Graph Theory:** Hypergraph independent sets\n\n4. **Probabilistic Method:** NRS construction uses random methods",
