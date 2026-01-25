@@ -1,33 +1,144 @@
 {
   "id": "erdos-785",
-  "title": "Erdős Problem #785",
+  "title": "Erdős Problem #785: Exact Additive Complements",
   "slug": "erdos-785",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite sets such that ... contains all large integers. Let ... and similarly for .... Is it true that if ... the...",
+  "description": "For exact additive complements A, B with A(x)B(x) ~ x, does A(x)B(x) - x tend to infinity? YES, proved by Sárközy-Szemerédi (1994).",
   "meta": {
-    "author": "Unknown",
+    "author": "Sárközy-Szemerédi (1994), Danzer (1964), Ruzsa (2017)",
     "sourceUrl": "https://erdosproblems.com/785",
-    "date": "",
-    "status": "pending",
+    "date": "1994",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos785Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "complement-sets",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 785,
     "erdosUrl": "https://erdosproblems.com/785",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets for counting function",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and asymptotic behavior",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Set.Icc",
+        "description": "Closed intervals for counting functions",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sumset: Definition of A + B for sets",
+      "countingFunction: A(x) = |A ∩ [1,x]|",
+      "CoversLargeIntegers: A + B ⊇ {n : n ≥ N₀}",
+      "IsAdditiveComplement: Additive complement pair definition",
+      "ProductAsymptoticToX: A(x)B(x) ~ x asymptotic condition",
+      "IsExactAdditiveComplement: Optimally sparse complement pairs",
+      "ErdosDanzerQuestion: Formal statement of the problem",
+      "danzer_1964_existence: Exact additive complements exist",
+      "sarkozy_szemeredi_1994: Affirmative answer to the question",
+      "ruzsa_2017: Growth rate can be arbitrarily slow",
+      "representationFunction: r(n) for variance analysis"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #785 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B\\subseteq \\mathbb{N}$ be infinite sets such that $A+B$ contains all large integers. Let $A(x)=\\lvert A\\cap [1,x]\\rvert$ and similarly for $B(x)$. Is it true that if $A(x)B(x)\\sim x$ then\\[A(x)B(x)-x\\to \\infty\\]as $x\\to \\infty$?\n\n\n\nA conjecture of Erd\\H{o}s and Danzer. Such sets $A$ and $B$ (with all large integers in $A+B$ and $A(x)B(x)\\sim x$) are called exact additive complements. Danzer \\cite{Da64} proved that exact additive complements exist (Hanani had earlier conjectured they do not exist).\n\nThe answer is yes, proved by S\\'{a}rk\\\"{o}zy and Szemer\\'{e}di \\cite{SaSz94}. Ruzsa \\cite{Ru17} has constructed, for any function $w(x)\\to \\infty$, such a pair of sets with\\[A(x)B(x)-x<w(x)\\]for infinitely many $x$.\n\n\n\n\nReferences\n\n\n[Da64] Danzer, L., \\\"{U}ber eine Frage von G. Hanani aus der additiven\nZahlentheorie. J. Reine Angew. Math. (1964), 392-394.\n\n[Ru17] Ruzsa, Imre Z., Exact additive complements. Q. J. Math. (2017), 227-235.\n\n[SaSz94] S\\'{a}rk\\\"ozy, A. and Szemer\\'{e}di, E., On a problem in additive number theory. Acta Math. Hungar. (1994), 237-245.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Exact Additive Complements: Minimal Density Pairs**\n\nThe study of additive complements concerns pairs of sets A, B such that A + B covers all sufficiently large integers. The counting function A(x) = |A ∩ [1,x]| measures how dense each set is.\n\n**Danzer's Existence Theorem (1964)**\n\nLudwig Danzer proved that 'exact' additive complements exist: pairs where A(x)B(x) ~ x. This was surprising because Hanani had earlier conjectured they don't exist. The condition A(x)B(x) ~ x means these sets are as sparse as possible while still covering all large integers.\n\n**Sárközy-Szemerédi Solution (1994)**\n\nAndrás Sárközy and Endre Szemerédi answered Erdős and Danzer's question affirmatively: for exact additive complements, A(x)B(x) - x must tend to infinity. The proof uses careful analysis of the representation function r(n) and variance estimates.\n\n**Ruzsa's Refinement (2017)**\n\nImre Ruzsa showed that while A(x)B(x) - x → ∞ is necessary, the growth can be arbitrarily slow. For any w(x) → ∞, there exist exact complements with A(x)B(x) - x < w(x) infinitely often.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A, B ⊆ ℕ be infinite sets such that A + B contains all large integers.\n\nLet A(x) = |A ∩ [1,x]| and B(x) = |B ∩ [1,x]|.\n\nIf A(x)B(x) ~ x (exact additive complements), is it true that A(x)B(x) - x → ∞?\n\n**Answer: YES** (Sárközy-Szemerédi 1994)\n\n**Refinement:** The growth to ∞ can be arbitrarily slow (Ruzsa 2017)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** sumset A + B, counting function A(x), CoversLargeIntegers\n\n2. **Exact Complements:** IsAdditiveComplement, ProductAsymptoticToX, IsExactAdditiveComplement\n\n3. **The Main Question:** ErdosDanzerQuestion as a formal proposition\n\n4. **Key Theorems:**\n   - Danzer (1964): Existence of exact complements\n   - Sárközy-Szemerédi (1994): A(x)B(x) - x → ∞\n   - Ruzsa (2017): Growth rate tight characterization\n\n5. **Related Concepts:** Representation function r(n), variance analysis\n\n6. **Summary Theorem:** Combining all main results",
+    "keyInsights": [
+      "**Counting Function A(x):** Measures density of A up to x",
+      "**Exact = Minimal Density:** A(x)B(x) ~ x is the sparsest possible",
+      "**Danzer's Surprise:** Hanani conjectured exact complements don't exist",
+      "**Mandatory Growth:** A(x)B(x) - x → ∞ is unavoidable",
+      "**Arbitrary Slowness:** Growth rate can be any w(x) → ∞ (Ruzsa)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sumsets-complements",
+      "title": "Sumsets and Additive Complements",
+      "summary": "sumset, countingFunction, CoversLargeIntegers, IsAdditiveComplement",
+      "startLine": 35,
+      "endLine": 72
+    },
+    {
+      "id": "exact-complements",
+      "title": "Exact Additive Complements",
+      "summary": "ProductAsymptoticToX, IsExactAdditiveComplement, exact_minimality",
+      "startLine": 74,
+      "endLine": 99
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "ErdosDanzerQuestion formal statement",
+      "startLine": 101,
+      "endLine": 112
+    },
+    {
+      "id": "danzer-existence",
+      "title": "Danzer's Existence Result",
+      "summary": "danzer_1964_existence, construction idea",
+      "startLine": 114,
+      "endLine": 131
+    },
+    {
+      "id": "sarkozy-szemeredi",
+      "title": "Sárközy-Szemerédi Solution",
+      "summary": "sarkozy_szemeredi_1994, erdos_danzer_solved, proof technique",
+      "startLine": 133,
+      "endLine": 158
+    },
+    {
+      "id": "ruzsa-refinement",
+      "title": "Ruzsa's Refinement",
+      "summary": "ruzsa_2017, growth rate interpretation",
+      "startLine": 160,
+      "endLine": 182
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "summary": "representationFunction, average representation, variance",
+      "startLine": 184,
+      "endLine": 209
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Non-examples and simple examples",
+      "startLine": 211,
+      "endLine": 227
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_785_summary combining all results, erdos_785 main theorem",
+      "startLine": 229,
+      "endLine": 269
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #785 asked whether exact additive complements (pairs with A(x)B(x) ~ x covering all large integers) must satisfy A(x)B(x) - x → ∞. Sárközy and Szemerédi (1994) proved the answer is YES. Ruzsa (2017) showed the growth can be arbitrarily slow while still tending to infinity.",
+    "implications": "**Connections**\n\n1. **Additive Bases:** Understanding minimal density for coverage\n\n2. **Representation Functions:** Analysis of r(n) = #{(a,b) : a+b = n}\n\n3. **Variance Methods:** Statistical techniques in additive combinatorics\n\n4. **Asymptotic Analysis:** Precise control of counting functions",
+    "openQuestions": [
+      "Explicit constructions achieving the optimal growth rate",
+      "Higher-dimensional analogues for k-fold sums",
+      "Connection to Erdős-Turán conjecture on additive bases",
+      "Probabilistic models for complement pairs"
+    ]
   }
 }
