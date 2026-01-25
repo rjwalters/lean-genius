@@ -1,0 +1,60 @@
+{
+  "id": "erdos-828",
+  "title": "Erdős Problem #828: Totient Divisibility φ(n) | n + a",
+  "slug": "erdos-828",
+  "description": "For any integer a, are there infinitely many n such that φ(n) divides n + a?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/828",
+    "status": "enhanced",
+    "proofRepoPath": "Proofs/Erdos828Problem.lean",
+    "tags": ["number theory", "totient function", "divisibility"],
+    "badge": "formalized",
+    "sorries": 8,
+    "erdosNumber": 828,
+    "erdosUrl": "https://erdosproblems.com/828",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and is attributed to Graham. It generalizes classical questions about divisibility relations involving Euler's totient function, including Lehmer's famous conjecture from 1932.",
+    "problemStatement": "For any integer a ∈ ℤ, are there infinitely many natural numbers n such that φ(n) | n + a, where φ denotes Euler's totient function?",
+    "proofStrategy": "The formalization defines the set of n satisfying φ(n) | n + a, examines special cases (a = 0, a = -1), and states the main conjecture. Key results include characterization of a = 0 case and connection to Lehmer's conjecture.",
+    "keyInsights": [
+      "For a = 0: φ(n) | n iff n ≤ 1 or n = 2^a · 3^b (completely characterized)",
+      "For a = -1: Lehmer's conjecture - only primes satisfy φ(n) | n-1 for n > 1",
+      "φ(n) is always even for n > 2, constraining possible divisibilities",
+      "The totient depends on prime factorization in complex ways"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "description": "Euler's totient function and the divisibility condition"
+    },
+    {
+      "id": "case-zero",
+      "title": "Special Case a = 0",
+      "description": "Complete characterization: n = 2^a · 3^b"
+    },
+    {
+      "id": "lehmer",
+      "title": "Lehmer's Conjecture (a = -1)",
+      "description": "The famous open problem about φ(n) | n-1"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "description": "Infinitely many solutions for every integer a"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #828 asks whether for every integer a, there are infinitely many n with φ(n) | n + a. The a = 0 case is solved, a = -1 is Lehmer's conjecture, but the general case remains open.",
+    "implications": "A positive answer would reveal deep structure in how the totient function relates to arithmetic progressions. The connection to Lehmer's conjecture makes this particularly interesting.",
+    "openQuestions": [
+      "Are there composite Lehmer numbers (n > 1 with φ(n) | n-1)?",
+      "What is the density of solutions for each fixed a?",
+      "Can we characterize solutions for specific values of a?"
+    ]
+  }
+}
