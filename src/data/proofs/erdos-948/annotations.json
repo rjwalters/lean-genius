@@ -1,0 +1,167 @@
+[
+  {
+    "id": "ann-948-header",
+    "proofId": "erdos-948",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #948: For any k-coloring, does there exist a bounded sequence whose finite subsums don't contain all colors? Original monochromatic version DISPROVED by Galvin. Modified version OPEN.",
+    "mathContext": "Posed in [Er77c]. Connects to Hindman's theorem (1974) and IP set theory.",
+    "significance": "critical",
+    "relatedConcepts": ["hindman", "ip-sets", "colorings"]
+  },
+  {
+    "id": "ann-948-subsums",
+    "proofId": "erdos-948",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "Finite Subsums",
+    "content": "FiniteSubsums(a) = {∑ᵢ∈S aᵢ : S finite ⊆ ℕ}. All possible sums of finite subsets of the sequence.",
+    "mathContext": "Also called FS(a). These form an IP set if a is infinite.",
+    "significance": "critical",
+    "relatedConcepts": ["ip-set", "subset-sum"]
+  },
+  {
+    "id": "ann-948-basic",
+    "proofId": "erdos-948",
+    "range": { "startLine": 50, "endLine": 57 },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "0 ∈ FiniteSubsums(a) (empty sum) and a(n) ∈ FiniteSubsums(a) (singleton sum).",
+    "mathContext": "These are immediate from the definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["empty-sum", "singleton"]
+  },
+  {
+    "id": "ann-948-coloring",
+    "proofId": "erdos-948",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "k-Coloring",
+    "content": "Coloring(k) := ℕ → Fin k. Assigns each natural number one of k colors.",
+    "mathContext": "Finite colorings are central to Ramsey theory.",
+    "significance": "key",
+    "relatedConcepts": ["ramsey", "finite-coloring"]
+  },
+  {
+    "id": "ann-948-monochromatic",
+    "proofId": "erdos-948",
+    "range": { "startLine": 67, "endLine": 78 },
+    "type": "definition",
+    "title": "Color Properties",
+    "content": "IsMonochromatic: all elements have same color. ContainsAllColors: all k colors appear. AvoidsSomeColor: at least one color missing.",
+    "mathContext": "These predicates capture different notions of color structure.",
+    "significance": "key",
+    "relatedConcepts": ["monochromaticity", "rainbow"]
+  },
+  {
+    "id": "ann-948-growth",
+    "proofId": "erdos-948",
+    "range": { "startLine": 85, "endLine": 92 },
+    "type": "definition",
+    "title": "Growth Conditions",
+    "content": "BoundedInfinitelyOften(a, f) := {n | aₙ < f(n)} is infinite. StrictlyIncreasing(a) := m < n → a(m) < a(n).",
+    "mathContext": "The growth bound is the key constraint. Without it, Hindman guarantees existence.",
+    "significance": "critical",
+    "relatedConcepts": ["bounded-growth", "strict-mono"]
+  },
+  {
+    "id": "ann-948-monoconj",
+    "proofId": "erdos-948",
+    "range": { "startLine": 99, "endLine": 106 },
+    "type": "definition",
+    "title": "Monochromatic Conjecture (FALSE)",
+    "content": "MonochromaticConjecture: ∃f, k such that for any k-coloring, there's a bounded sequence with monochromatic subsums. This is FALSE.",
+    "mathContext": "Galvin showed this fails for k=2 using the dyadic coloring.",
+    "significance": "critical",
+    "relatedConcepts": ["disproved", "galvin"]
+  },
+  {
+    "id": "ann-948-galvin-axiom",
+    "proofId": "erdos-948",
+    "range": { "startLine": 107, "endLine": 109 },
+    "type": "axiom",
+    "title": "Galvin's Counterexample",
+    "content": "galvin_counterexample: ¬MonochromaticConjecture. The monochromatic version is disproved.",
+    "mathContext": "Galvin used the 2-adic structure to construct a counterexample.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "disproof"]
+  },
+  {
+    "id": "ann-948-modified",
+    "proofId": "erdos-948",
+    "range": { "startLine": 118, "endLine": 125 },
+    "type": "definition",
+    "title": "Modified Conjecture (OPEN)",
+    "content": "ErdosConjecture948: ∃f, k≥2 such that for any k-coloring, there's a bounded sequence whose subsums don't contain all colors. This is OPEN.",
+    "mathContext": "The modified version weakens 'monochromatic' to 'not all colors'.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "avoid-color"]
+  },
+  {
+    "id": "ann-948-dyadic",
+    "proofId": "erdos-948",
+    "range": { "startLine": 132, "endLine": 139 },
+    "type": "definition",
+    "title": "Dyadic Valuation and Galvin's Coloring",
+    "content": "dyadicValuation(n) = max k such that 2^k | n. galvinColoring colors by parity of the odd part.",
+    "mathContext": "The 2-adic structure ensures subsums have mixed parities.",
+    "significance": "key",
+    "relatedConcepts": ["2-adic", "odd-part"]
+  },
+  {
+    "id": "ann-948-hindman",
+    "proofId": "erdos-948",
+    "range": { "startLine": 151, "endLine": 156 },
+    "type": "axiom",
+    "title": "Hindman's Theorem",
+    "content": "hindman_theorem: ∀k > 0, ∀k-coloring c, ∃ increasing a with monochromatic FiniteSubsums(a). But NO growth bound!",
+    "mathContext": "Hindman (1974) proved this using ultrafilters. Won the Steele Prize.",
+    "significance": "critical",
+    "relatedConcepts": ["hindman", "ip-set-existence"]
+  },
+  {
+    "id": "ann-948-ipset",
+    "proofId": "erdos-948",
+    "range": { "startLine": 166, "endLine": 173 },
+    "type": "definition",
+    "title": "IP Sets and FS Sets",
+    "content": "IsIPSet(S) := S contains FiniteSubsums(a) for some infinite a. IsFSSet(S) := S equals FiniteSubsums(a).",
+    "mathContext": "IP = 'idempotent' (Furstenberg). IP sets are closed under shifted addition.",
+    "significance": "key",
+    "relatedConcepts": ["ip-set", "fs-set"]
+  },
+  {
+    "id": "ann-948-ipstar",
+    "proofId": "erdos-948",
+    "range": { "startLine": 174, "endLine": 181 },
+    "type": "definition",
+    "title": "IP* Sets",
+    "content": "IsIPStar(S) := S meets every IP set. Hindman implies some color class is always IP*.",
+    "mathContext": "IP* is the dual notion. Large in the IP-sense.",
+    "significance": "supporting",
+    "relatedConcepts": ["ip-star", "dual"]
+  },
+  {
+    "id": "ann-948-status",
+    "proofId": "erdos-948",
+    "range": { "startLine": 189, "endLine": 198 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "Modified conjecture is OPEN. The countable colors version is also open.",
+    "mathContext": "The gap between Hindman (existence) and Galvin (no bounded monochromatic) remains unresolved.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "countable"]
+  },
+  {
+    "id": "ann-948-summary",
+    "proofId": "erdos-948",
+    "range": { "startLine": 215, "endLine": 227 },
+    "type": "theorem",
+    "title": "Main Results",
+    "content": "erdos_948_mono_false: Original monochromatic conjecture is FALSE. erdos_948_statement: Formal statement of modified conjecture.",
+    "mathContext": "The formalization captures both the disproved and open versions.",
+    "significance": "critical",
+    "relatedConcepts": ["main-result", "formal-statement"]
+  }
+]
