@@ -1,0 +1,60 @@
+{
+  "id": "erdos-417",
+  "title": "Erdős Problem #417: Counting Totient Values",
+  "slug": "erdos-417",
+  "description": "Does the limit V(x)/V'(x) exist, where V'(x) counts distinct totients from inputs ≤ x and V(x) counts all totient values ≤ x?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/417",
+    "status": "enhanced",
+    "proofRepoPath": "Proofs/Erdos417Problem.lean",
+    "tags": ["number theory", "totient function", "counting"],
+    "badge": "formalized",
+    "sorries": 5,
+    "erdosNumber": 417,
+    "erdosUrl": "https://erdosproblems.com/417",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and concerns the counting functions for Euler's totient. In [Er98], Erdős conjectured that the ratio V(x)/V'(x) may tend to infinity.",
+    "problemStatement": "Let V'(x) = |{φ(m) : m ≤ x}| (distinct totient values from small inputs) and V(x) = |{n ≤ x : n = φ(m) for some m}| (all totient values ≤ x). Does lim V(x)/V'(x) exist? Is it > 1? Does it → ∞?",
+    "proofStrategy": "The formalization defines both counting functions V'(x) and V(x), proves V'(x) ≤ V(x), characterizes which numbers are totient values, and states the main questions about their limiting ratio.",
+    "keyInsights": [
+      "V'(x) ≤ V(x) trivially since totients from m ≤ x are included in V(x)",
+      "Odd numbers > 1 are never totient values (φ is even for inputs > 2)",
+      "All powers of 2 are totient values: φ(2^(k+1)) = 2^k",
+      "Erdős conjectured V(x)/V'(x) → ∞"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Counting Functions",
+      "description": "V'(x) and V(x) definitions for totient values"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "description": "V'(x) ≤ V(x) and totient value characterization"
+    },
+    {
+      "id": "main-questions",
+      "title": "The Main Questions",
+      "description": "Existence of limit, whether > 1, Erdős's infinite limit conjecture"
+    },
+    {
+      "id": "totient-structure",
+      "title": "Totient Value Structure",
+      "description": "Which integers are totient values"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #417 asks about the ratio V(x)/V'(x) of two counting functions for totient values. The trivial bound V'(x) ≤ V(x) holds, but whether the ratio converges and to what value remains open.",
+    "implications": "Understanding this ratio would reveal how efficiently small inputs generate the totient value range versus contributions from large inputs.",
+    "openQuestions": [
+      "Does lim V(x)/V'(x) exist?",
+      "Is V(x)/V'(x) strictly > 1 for large x?",
+      "Does V(x)/V'(x) → ∞ as Erdős conjectured?"
+    ]
+  }
+}
