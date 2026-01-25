@@ -133,9 +133,10 @@ launch_agent() {
     print_info "Launching deployer agent..."
     print_info "Interval: $INTERVAL minutes"
 
-    # Launch in tmux
+    # Launch in tmux with resilient wrapper for error handling
+    local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     tmux new-session -d -s "$SESSION_NAME" -c "$REPO_ROOT" \
-        "claude --dangerously-skip-permissions \"You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.\" 2>&1 | tee -a $LOG_FILE"
+        "ENHANCER_ID=deployer REPO_ROOT=$REPO_ROOT $wrapper_script --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE' --max-retries 5"
 
     print_success "Launched deployer agent"
     echo ""

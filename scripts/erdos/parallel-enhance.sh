@@ -392,8 +392,10 @@ Start now by running step 1 to read the full instructions, then claim and enhanc
 PROMPT_EOF
 
         # Start Claude Code with simple prompt pointing to instructions
+        # Uses wrapper script for resilient error handling and retry logic
         local simple_prompt="You are $enhancer_id. Read $prompt_file for your instructions, then start the enhancement workflow."
-        tmux send-keys -t "$session" "claude --dangerously-skip-permissions '$simple_prompt' 2>&1 | tee '$log_file'" Enter
+        local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+        tmux send-keys -t "$session" "$wrapper_script --prompt '$simple_prompt' --log '$log_file' --max-retries 5" Enter
 
         print_success "Launched $session (worktree: $worktree_path)"
     done

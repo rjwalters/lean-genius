@@ -223,9 +223,10 @@ launch_agent() {
     # Kill existing session if any
     tmux kill-session -t "$session_name" 2>/dev/null || true
 
-    # Launch in tmux
+    # Launch in tmux with resilient wrapper for error handling
+    local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     tmux new-session -d -s "$session_name" -c "$worktree_path" \
-        "claude --dangerously-skip-permissions \"You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.\" 2>&1 | tee -a $log_file"
+        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT $wrapper_script --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file' --max-retries 5"
 
     print_success "Launched $session_name (worktree: $worktree_path)"
 }

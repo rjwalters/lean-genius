@@ -274,10 +274,11 @@ PROMPT_EOF
         sleep 0.3
     fi
 
-    # Launch Claude
+    # Launch Claude with resilient wrapper for error handling
     sleep 0.5
     local prompt="You are the Aristotle agent. Read $prompt_file for your instructions, then start the queue management workflow."
-    tmux send-keys -t "$SESSION_NAME" "claude --dangerously-skip-permissions '$prompt' 2>&1 | tee '$LOG_FILE'" Enter
+    local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+    tmux send-keys -t "$SESSION_NAME" "ENHANCER_ID=aristotle $wrapper_script --prompt '$prompt' --log '$LOG_FILE' --max-retries 5" Enter
 
     print_success "Launched Aristotle agent"
     echo ""
