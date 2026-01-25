@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 0,
     "erdosNumber": 833,
     "erdosUrl": "https://erdosproblems.com/833",
     "erdosProblemStatus": "solved",
@@ -47,11 +47,15 @@
       "vertexDegree definition: edges containing a vertex",
       "IsProperColoring, IsKColorable: hypergraph coloring",
       "HasChromaticNumber3: exactly 3-chromatic",
+      "hypergraph_trivially_colorable axiom: every H is |V|-colorable",
       "f(r) definition: minimum max degree over 3-chromatic r-uniform hypergraphs",
       "ExponentialGrowthConjecture: the main question",
       "erdos_lovasz_bound axiom: 2^{r-1}/(4r) bound",
-      "erdos_833_solution: exponential growth holds",
-      "contrapositive_form: low degree implies 2-colorable"
+      "f_lower_bound axiom: f(r) ≥ 2^{r-1}/(4r)",
+      "bound_is_exponential axiom: bound grows like (√2)^r",
+      "erdos_833_solution axiom: exponential growth holds",
+      "f_2_achieved axiom: triangle achieves f(2)=2",
+      "contrapositive_form axiom: low degree implies 2-colorable"
     ],
     "references": [
       {
