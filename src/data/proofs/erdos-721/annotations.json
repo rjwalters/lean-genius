@@ -9,7 +9,9 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "Erdős Problem #721: Give reasonable bounds for the van der Waerden number W(3,k). Two specific challenges: (1) non-trivial lower bounds, (2) prove W(3,k) < exp(k^c) for c < 1. SOLVED: Both challenges met through work of Green, Hunter, Schoen, and Bloom-Sisask.",
-    "significance": "critical"
+    "mathContext": "Van der Waerden numbers lie at the intersection of Ramsey theory and additive combinatorics, connecting to density theorems for arithmetic progressions.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Van der Waerden theorem", "Arithmetic progressions", "Additive combinatorics"]
   },
   {
     "id": "ann-721-2",
@@ -21,7 +23,9 @@
     "type": "definition",
     "title": "Van der Waerden's Theorem",
     "content": "Van der Waerden's theorem (1927): For any r colors and k, there exists W(r,k) such that any r-coloring of {1,...,W(r,k)} contains a monochromatic k-term arithmetic progression. A foundational result in Ramsey theory.",
-    "significance": "critical"
+    "mathContext": "One of the earliest Ramsey-theoretic results, showing that sufficiently long sequences cannot avoid monochromatic patterns.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Arithmetic progressions", "Monochromatic subsets"]
   },
   {
     "id": "ann-721-3",
@@ -33,7 +37,9 @@
     "type": "definition",
     "title": "The Number W(3,k)",
     "content": "W(3,k) is the off-diagonal van der Waerden number: the minimum n such that any red/blue coloring of {1,...,n} contains either a red 3-term AP or a blue k-term AP. Asymmetric - we fix one color's AP length at 3.",
-    "significance": "critical"
+    "mathContext": "Off-diagonal van der Waerden numbers are easier to study than diagonal ones, offering insight into the general behavior.",
+    "significance": "critical",
+    "relatedConcepts": ["Van der Waerden numbers", "2-colorings", "Ramsey asymmetry"]
   },
   {
     "id": "ann-721-4",
