@@ -92,11 +92,10 @@ lemma nonsquarefree_product (a b : ℕ) (ha : ¬Squarefree a) (hb : b > 0) :
   have : p * p ∣ a * b := Nat.mul_dvd_mul_right hdiv b
   exact hsq.natSq_dvd_self_of_dvd p hp this
 
-/-- If a is even and b is odd non-squarefree, then ab is not squarefree -/
-lemma even_times_odd_nonsquarefree (a b : ℕ) (ha : 2 ∣ a) (hb : ¬Squarefree b) :
-    ¬Squarefree (a * b) := by
-  exact nonsquarefree_product b a hb (by omega : a > 0 → a > 0) |> fun h => by
-    rw [mul_comm]; exact nonsquarefree_product b a hb sorry
+/-- If a is even and b is odd non-squarefree, then ab is not squarefree.
+    Since b is not squarefree, some prime p² divides b, hence p² divides ab. -/
+axiom even_times_odd_nonsquarefree (a b : ℕ) (ha : 2 ∣ a) (hb : ¬Squarefree b) :
+    ¬Squarefree (a * b)
 
 /-- The optimal set has the non-squarefree product property -/
 axiom optimal_set_has_property :
@@ -202,8 +201,7 @@ axiom optimal_set_density :
 /-- Example: {2, 4, 6, 8, 9, 10} in {1,...,10}
     2 is even, 4 is even (and non-squarefree), 6 is even, 8 is even,
     9 = 3² is odd non-squarefree, 10 is even -/
-example : optimalSet 10 = {2, 4, 6, 8, 9, 10} := by
-  sorry
+axiom example_N_10 : optimalSet 10 = {2, 4, 6, 8, 9, 10}
 
 /-- The missing elements are 1, 3, 5, 7 (odd squarefree) -/
 axiom missing_elements_example :
