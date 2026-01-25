@@ -1,0 +1,156 @@
+[
+  {
+    "id": "erdos348-finite-sums",
+    "line": 32,
+    "type": "definition",
+    "title": "Finite Sums of a Set",
+    "content": "The set finiteSums(A) consists of all natural numbers that can be expressed as the sum of a finite set of distinct elements from A. Formally, n ∈ finiteSums(A) iff there exists a finite S ⊆ A with n = Σₛ s. This includes 0 (the empty sum) and all individual elements."
+  },
+  {
+    "id": "erdos348-complete",
+    "line": 36,
+    "type": "definition",
+    "title": "Complete Sequences",
+    "content": "A set A is complete if every sufficiently large natural number lies in finiteSums(A). Formally, ∃N such that ∀n ≥ N, n ∈ finiteSums(A). This allows finitely many exceptions below the threshold N. Classic examples include the powers of 2 and the Fibonacci numbers."
+  },
+  {
+    "id": "erdos348-strongly-complete",
+    "line": 40,
+    "type": "definition",
+    "title": "Strongly Complete Sequences",
+    "content": "A stronger notion requires representing ALL natural numbers, not just those above a threshold. This is the 'strong completeness' Van Doorn's theorem addresses. The distinction matters: strong completeness imposes stricter constraints on robustness."
+  },
+  {
+    "id": "erdos348-remove-indices",
+    "line": 51,
+    "type": "definition",
+    "title": "Removing Indices",
+    "content": "To remove elements from a sequence a : ℕ → ℕ, we specify a finite set S of indices to exclude. The resulting set is {a(i) : i ∉ S}. This models 'removing m elements' as choosing m indices and excluding them from the sequence."
+  },
+  {
+    "id": "erdos348-robust",
+    "line": 62,
+    "type": "definition",
+    "title": "m-Robustness",
+    "content": "A sequence is m-robust if it remains complete after removing ANY set of m indices. This is a universally quantified property: for all S with |S| = m, the remaining sequence is still complete. Higher robustness means more resilience to deletions."
+  },
+  {
+    "id": "erdos348-not-robust",
+    "line": 66,
+    "type": "definition",
+    "title": "Not n-Robust",
+    "content": "A sequence is NOT n-robust if there EXISTS some set of n indices whose removal breaks completeness. This is existentially quantified: we only need one 'bad' set of n elements. The problem asks for sequences that are m-robust but not n-robust."
+  },
+  {
+    "id": "erdos348-valid-pairs",
+    "line": 70,
+    "type": "definition",
+    "title": "Valid Pairs",
+    "content": "A pair (m, n) with m < n is valid if there exists a monotone, complete sequence that is m-robust but not n-robust. The set of all such pairs is what Problem #348 asks us to characterize. Known valid pairs are (0,1) and (1,2)."
+  },
+  {
+    "id": "erdos348-powers-of-2",
+    "line": 82,
+    "type": "definition",
+    "title": "Powers of 2",
+    "content": "The sequence 2^n = 1, 2, 4, 8, 16, ... is complete because every positive integer has a unique binary representation. It's the prototypical complete sequence. Every natural number can be written as a sum of distinct powers of 2."
+  },
+  {
+    "id": "erdos348-fibonacci",
+    "line": 86,
+    "type": "definition",
+    "title": "The Fibonacci Sequence",
+    "content": "We use the shifted Fibonacci sequence 1, 2, 3, 5, 8, 13, ... (starting F₀=1, F₁=2). This is complete by Zeckendorf's theorem: every positive integer is uniquely a sum of non-consecutive Fibonacci numbers. It's also 1-robust but not 2-robust."
+  },
+  {
+    "id": "erdos348-powers-complete",
+    "line": 93,
+    "type": "theorem",
+    "title": "Powers of 2 are Complete",
+    "content": "Every positive integer has a binary representation, which is a sum of distinct powers of 2. This is the fundamental theorem of binary arithmetic. The representation is unique, giving exactly one way to write each number."
+  },
+  {
+    "id": "erdos348-powers-not-robust",
+    "line": 98,
+    "type": "theorem",
+    "title": "Powers of 2 are Not 1-Robust",
+    "content": "Removing any power 2^k breaks completeness. Specifically, the number 2^k itself can no longer be represented: it's not a sum of other powers of 2 (since binary representation is unique). This shows the sequence is 0-robust but not 1-robust."
+  },
+  {
+    "id": "erdos348-pair-01",
+    "line": 108,
+    "type": "theorem",
+    "title": "(0, 1) is Valid",
+    "content": "Powers of 2 witness that (0, 1) ∈ validPairs. The sequence is trivially 0-robust (removing nothing preserves everything) and not 1-robust (removing any element breaks completeness). This is the simplest non-trivial valid pair."
+  },
+  {
+    "id": "erdos348-fib-complete",
+    "line": 128,
+    "type": "theorem",
+    "title": "Fibonacci is Complete",
+    "content": "Zeckendorf's theorem (1972) states that every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers. This makes the Fibonacci sequence complete. The non-consecutivity condition ensures uniqueness."
+  },
+  {
+    "id": "erdos348-fib-robust",
+    "line": 133,
+    "type": "theorem",
+    "title": "Fibonacci is 1-Robust",
+    "content": "Removing any single Fibonacci number doesn't break completeness. The remaining Fibonacci numbers can still represent all large integers. The proof uses the flexibility in Zeckendorf representations—alternative representations exist."
+  },
+  {
+    "id": "erdos348-fib-not-2-robust",
+    "line": 138,
+    "type": "theorem",
+    "title": "Fibonacci is Not 2-Robust",
+    "content": "Removing F₀=1 and F₁=2 breaks completeness: the number 3 cannot be represented. With 1 and 2 removed, the smallest available elements are 3, 5, 8, ... and 3 itself cannot be written as a sum of these (3 alone works, but any sum of 5,8,... is ≥ 5)."
+  },
+  {
+    "id": "erdos348-pair-12",
+    "line": 143,
+    "type": "theorem",
+    "title": "(1, 2) is Valid",
+    "content": "The Fibonacci sequence witnesses that (1, 2) ∈ validPairs. It's 1-robust (survives any single deletion) but not 2-robust (deleting 1 and 2 breaks it). This is the second known valid pair after (0, 1)."
+  },
+  {
+    "id": "erdos348-characterization",
+    "line": 163,
+    "type": "axiom",
+    "title": "Characterization Conjecture",
+    "content": "The full characterization of valid pairs is unknown. One possibility: valid pairs are exactly {(m, m+1) : m ∈ ℕ}. Another: there's a cutoff k beyond which (m, m+1) is not valid. Determining which is true is the essence of Problem #348."
+  },
+  {
+    "id": "erdos348-case-23",
+    "line": 168,
+    "type": "axiom",
+    "title": "The (2, 3) Case",
+    "content": "Whether (2, 3) is valid remains unknown. Finding a sequence that is 2-robust but not 3-robust would prove it valid. Alternatively, proving no such sequence exists would establish a barrier at m = 2. This is the key open case."
+  },
+  {
+    "id": "erdos348-vandoorn",
+    "line": 183,
+    "type": "axiom",
+    "title": "Van Doorn's Theorem",
+    "content": "Wouter van Doorn proved that for STRONGLY complete sequences (representing ALL integers), no sequence is 2-robust. This rules out (2, n) for any n > 2 under strong completeness. The weak completeness case remains open."
+  },
+  {
+    "id": "erdos348-repr-count",
+    "line": 192,
+    "type": "definition",
+    "title": "Representation Count",
+    "content": "The representation count r(A, n) counts how many ways n can be written as a sum of distinct elements of A. Completeness is equivalent to r(A, n) > 0 for all large n. Studying r(A, n) gives finer information about the additive structure."
+  },
+  {
+    "id": "erdos348-gap",
+    "line": 204,
+    "type": "definition",
+    "title": "The Gap Property",
+    "content": "The gap between consecutive terms a(n+1) - a(n) must be bounded for complete sequences. If gaps grow unboundedly, integers in the gap cannot be represented. This structural constraint limits which sequences can be complete."
+  },
+  {
+    "id": "erdos348-main",
+    "line": 222,
+    "type": "axiom",
+    "title": "Main Open Problem",
+    "content": "The core question: are all pairs (m, m+1) valid, or is there a cutoff? The first option means every robustness level has a 'tight' example. The second means beyond some point, m-robustness automatically implies (m+1)-robustness. Both possibilities are consistent with current knowledge."
+  }
+]
