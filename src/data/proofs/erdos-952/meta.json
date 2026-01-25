@@ -1,0 +1,148 @@
+{
+  "id": "erdos-952",
+  "title": "Erdős Problem #952: The Gaussian Moat Problem",
+  "slug": "erdos-952",
+  "description": "Is there an infinite sequence of distinct Gaussian primes x₁, x₂, ... with bounded gaps |x_{n+1} - xₙ| ≪ 1?",
+  "meta": {
+    "author": "Motzkin, Gordon, et al. (1963) - misattributed to Erdős",
+    "sourceUrl": "https://erdosproblems.com/952",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos952Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "gaussian-integers",
+      "gaussian-primes",
+      "moat-problem",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 952,
+    "erdosUrl": "https://erdosproblems.com/952",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "GaussianInt",
+        "description": "Gaussian integers ℤ[i]",
+        "module": "Mathlib.NumberTheory.Zsqrtd.GaussianInt"
+      },
+      {
+        "theorem": "Prime",
+        "description": "Primality in commutative monoids",
+        "module": "Mathlib.Algebra.Prime.Basic"
+      },
+      {
+        "theorem": "GaussianInt.norm",
+        "description": "Norm function on Gaussian integers",
+        "module": "Mathlib.NumberTheory.Zsqrtd.GaussianInt"
+      }
+    ],
+    "originalContributions": [
+      "IsGaussianPrime definition: Prime in ℤ[i]",
+      "GaussianPrimes definition: set of Gaussian primes",
+      "IsNorm2Prime, IsInertPrime, IsSplitPrime: classification of Gaussian primes",
+      "gaussian_prime_classification axiom: complete classification",
+      "IsInfiniteGaussianPrimeWalk definition: injective prime sequence",
+      "HasBoundedGaps definition: consecutive norm differences bounded",
+      "GaussianMoatConjecture definition: existence of bounded walk",
+      "jordan_rabung axiom: no walk with steps ≤ 2",
+      "tsuchimura axiom: no walk with steps ≤ √26",
+      "gethner_et_al axiom: step size 4 insufficient",
+      "CanEscapeMoat definition: moat escapability",
+      "criticalMoatWidth definition: smallest non-escapable moat",
+      "gaussianPrimeCount definition: counting function",
+      "gaussian_prime_theorem axiom: asymptotic density",
+      "primes_mod_4_connection axiom: relation to primes ≡ 1 (mod 4)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem is notably NOT actually an Erdős problem. According to Erdős himself, the conjecture originated with Theodore Motzkin, Basil Gordon, and others at a 1963 Pasadena number theory meeting. Erdős popularized it by sharing it widely, and the attribution was eventually forgotten.\n\nThe 'Gaussian moat' refers to prime-free regions in ℤ[i]. The question asks whether one can 'walk' from 0 to infinity on Gaussian primes with bounded step size.\n\nKnown results:\n- Jordan and Rabung (1970): No walk with steps ≤ 2\n- Tsuchimura (2005): No walk with steps ≤ √26\n- Gethner et al.: Step size 4 insufficient\n\nTerence Tao has indicated this problem appears quite difficult.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs there an infinite sequence of distinct Gaussian primes x₁, x₂, ... such that |x_{n+1} - xₙ| ≪ 1?\n\nEquivalently: Can we walk from 0 to infinity on Gaussian primes using steps of bounded length?\n\n**Background:**\n- Gaussian integers: ℤ[i] = {a + bi : a, b ∈ ℤ}\n- Gaussian primes: irreducible elements in the UFD ℤ[i]\n- The 'moat' is a prime-free annulus preventing escape",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Gaussian Primes:** Use Mathlib's GaussianInt and Prime\n\n2. **Classification:** Define IsNorm2Prime, IsInertPrime, IsSplitPrime\n\n3. **Walk Definition:** IsInfiniteGaussianPrimeWalk as injective prime sequence\n\n4. **Bounded Gaps:** HasBoundedGaps requires norm differences < C\n\n5. **Known Results:** Axiomatize Jordan-Rabung, Tsuchimura bounds\n\n6. **Moat Width:** CanEscapeMoat and criticalMoatWidth",
+    "keyInsights": [
+      "**Misattribution:** Not actually Erdős's problem - originated with Motzkin, Gordon (1963)",
+      "**Best Bound:** Tsuchimura (2005) showed no walk with steps ≤ √26",
+      "**Density:** Gaussian primes have density ~ 1/log(norm), similar to rational primes",
+      "**Difficulty:** Tao considers this problem quite hard",
+      "**Connection:** Related to gaps in primes ≡ 1 (mod 4) which split in ℤ[i]"
+    ]
+  },
+  "sections": [
+    {
+      "id": "gaussian-primes",
+      "title": "Gaussian Integers and Primes",
+      "summary": "IsGaussianPrime, GaussianPrimes using Mathlib",
+      "startLine": 39,
+      "endLine": 52
+    },
+    {
+      "id": "classification",
+      "title": "Gaussian Prime Classification",
+      "summary": "IsNorm2Prime, IsInertPrime, IsSplitPrime, gaussian_prime_classification",
+      "startLine": 54,
+      "endLine": 75
+    },
+    {
+      "id": "moat-problem",
+      "title": "The Moat Problem",
+      "summary": "IsInfiniteGaussianPrimeWalk, HasBoundedGaps, GaussianMoatConjecture",
+      "startLine": 77,
+      "endLine": 97
+    },
+    {
+      "id": "known-results",
+      "title": "Known Negative Results",
+      "summary": "jordan_rabung, tsuchimura, gethner_et_al, CurrentBestBound",
+      "startLine": 99,
+      "endLine": 118
+    },
+    {
+      "id": "moat-width",
+      "title": "The Moat Width",
+      "summary": "CanEscapeMoat, criticalMoatWidth, StrongNegation",
+      "startLine": 120,
+      "endLine": 135
+    },
+    {
+      "id": "density",
+      "title": "Density of Gaussian Primes",
+      "summary": "gaussianPrimeCount, gaussian_prime_theorem",
+      "startLine": 137,
+      "endLine": 151
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Rational Primes",
+      "summary": "splitPrime, primes_mod_4_connection",
+      "startLine": 153,
+      "endLine": 170
+    },
+    {
+      "id": "variants",
+      "title": "Variants",
+      "summary": "EisensteinMoatProblem, RationalPrimeMoat",
+      "startLine": 184,
+      "endLine": 197
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_952_status, attribution_note, erdos_952_statement",
+      "startLine": 199,
+      "endLine": 239
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gaussian Moat Problem asks whether one can walk from 0 to infinity on Gaussian primes with bounded step size. Despite computational searches, the problem remains OPEN. Notably, this is NOT actually an Erdős problem - it was posed by Motzkin, Gordon, and others in 1963.",
+    "implications": "A positive answer would show Gaussian primes are 'connected at infinity' with bounded jumps. A negative answer would establish fundamental gaps in the Gaussian prime distribution that grow without bound.",
+    "openQuestions": [
+      "Does any bounded step size suffice to walk to infinity?",
+      "What is the critical moat width (if the answer is NO)?",
+      "Can improved bounds be established beyond √26?",
+      "Is there a theoretical obstruction or just computational evidence?",
+      "What about Eisenstein primes in ℤ[ω]?"
+    ]
+  }
+}

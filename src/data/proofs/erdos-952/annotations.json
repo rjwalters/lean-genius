@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-952-header",
+    "proofId": "erdos-952",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "The Gaussian Moat Problem: Can we walk from 0 to infinity on Gaussian primes with bounded step size? Status: OPEN.",
+    "mathContext": "NOT actually an Erdős problem - originated with Motzkin, Gordon, et al. at a 1963 Pasadena meeting. Erdős popularized it.",
+    "significance": "critical",
+    "relatedConcepts": ["gaussian-primes", "bounded-gaps", "moat"]
+  },
+  {
+    "id": "ann-952-gaussian-prime",
+    "proofId": "erdos-952",
+    "range": { "startLine": 48, "endLine": 52 },
+    "type": "definition",
+    "title": "Gaussian Primes",
+    "content": "IsGaussianPrime(z) := Prime z in ℤ[i]. GaussianPrimes := {z | IsGaussianPrime z}.",
+    "mathContext": "ℤ[i] is a unique factorization domain; Gaussian primes are its irreducibles.",
+    "significance": "critical",
+    "relatedConcepts": ["gaussian-integers", "ufd", "prime"]
+  },
+  {
+    "id": "ann-952-classification",
+    "proofId": "erdos-952",
+    "range": { "startLine": 63, "endLine": 75 },
+    "type": "definition",
+    "title": "Gaussian Prime Classification",
+    "content": "Three types: (1) IsNorm2Prime: norm = 2 (like 1+i). (2) IsInertPrime: p ≡ 3 (mod 4) stays prime. (3) IsSplitPrime: p ≡ 1 (mod 4) splits.",
+    "mathContext": "Complete classification: π is Gaussian prime iff norm is 2, p² for p ≡ 3 (mod 4), or p for p ≡ 1 (mod 4).",
+    "significance": "critical",
+    "relatedConcepts": ["fermat-two-square", "splitting", "inert"]
+  },
+  {
+    "id": "ann-952-walk",
+    "proofId": "erdos-952",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "Infinite Walk",
+    "content": "IsInfiniteGaussianPrimeWalk(x) := x is injective AND all x(n) are Gaussian primes. HasBoundedGaps(x, C) := norm(x(n+1) - x(n)) < C for all n.",
+    "mathContext": "We want to walk on Gaussian primes with steps of bounded length (norm).",
+    "significance": "critical",
+    "relatedConcepts": ["sequence", "bounded-steps"]
+  },
+  {
+    "id": "ann-952-conjecture",
+    "proofId": "erdos-952",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "definition",
+    "title": "The Moat Conjecture",
+    "content": "GaussianMoatConjecture := exists infinite walk x and bound C such that HasBoundedGaps(x, C). ErdosConjecture952 := GaussianMoatConjecture.",
+    "mathContext": "Positive answer means Gaussian primes are 'connected' at bounded distance.",
+    "significance": "critical",
+    "relatedConcepts": ["moat-problem", "connectivity"]
+  },
+  {
+    "id": "ann-952-jordan-rabung",
+    "proofId": "erdos-952",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "axiom",
+    "title": "Jordan-Rabung (1970)",
+    "content": "jordan_rabung: No walk exists with step norm < 5 (i.e., |step| ≤ 2).",
+    "mathContext": "First computational result showing moats exist for small step sizes.",
+    "significance": "key",
+    "relatedConcepts": ["negative-result", "step-bound"]
+  },
+  {
+    "id": "ann-952-tsuchimura",
+    "proofId": "erdos-952",
+    "range": { "startLine": 109, "endLine": 111 },
+    "type": "axiom",
+    "title": "Tsuchimura (2005)",
+    "content": "tsuchimura: No walk exists with step norm < 27 (i.e., |step| ≤ √26).",
+    "mathContext": "Current best bound showing moats exist for larger step sizes.",
+    "significance": "critical",
+    "relatedConcepts": ["best-known", "computational"]
+  },
+  {
+    "id": "ann-952-moat-width",
+    "proofId": "erdos-952",
+    "range": { "startLine": 126, "endLine": 135 },
+    "type": "definition",
+    "title": "Moat Width",
+    "content": "CanEscapeMoat(k) := exists walk with HasBoundedGaps(x, k). criticalMoatWidth := smallest k with NOT CanEscapeMoat(k).",
+    "mathContext": "If answer is NO, there's a critical width beyond which escape is impossible.",
+    "significance": "key",
+    "relatedConcepts": ["critical-value", "escape"]
+  },
+  {
+    "id": "ann-952-density",
+    "proofId": "erdos-952",
+    "range": { "startLine": 143, "endLine": 151 },
+    "type": "axiom",
+    "title": "Gaussian Prime Density",
+    "content": "gaussian_prime_theorem: π_ℤ[i](R) ~ R² / log(R). Similar to rational prime counting function.",
+    "mathContext": "Gaussian primes are dense enough locally, but gaps can still grow.",
+    "significance": "key",
+    "relatedConcepts": ["prime-counting", "asymptotic"]
+  },
+  {
+    "id": "ann-952-mod4",
+    "proofId": "erdos-952",
+    "range": { "startLine": 166, "endLine": 170 },
+    "type": "axiom",
+    "title": "Primes mod 4 Connection",
+    "content": "primes_mod_4_connection: If no escape possible, then large gaps in primes ≡ 1 (mod 4) exist.",
+    "mathContext": "Primes p ≡ 1 (mod 4) split in ℤ[i], creating Gaussian primes. Gaps in these create moats.",
+    "significance": "key",
+    "relatedConcepts": ["splitting-primes", "gaps"]
+  },
+  {
+    "id": "ann-952-tao",
+    "proofId": "erdos-952",
+    "range": { "startLine": 172, "endLine": 182 },
+    "type": "concept",
+    "title": "Tao's Assessment",
+    "content": "Terence Tao has indicated this problem appears quite difficult.",
+    "mathContext": "Understanding global structure of Gaussian primes is much harder than local density.",
+    "significance": "supporting",
+    "relatedConcepts": ["difficulty", "expert-opinion"]
+  },
+  {
+    "id": "ann-952-variants",
+    "proofId": "erdos-952",
+    "range": { "startLine": 190, "endLine": 197 },
+    "type": "definition",
+    "title": "Variants",
+    "content": "EisensteinMoatProblem: Same question for ℤ[ω]. RationalPrimeMoat: Related to twin prime conjecture.",
+    "mathContext": "Analogous problems exist for other number rings and the integers.",
+    "significance": "supporting",
+    "relatedConcepts": ["eisenstein", "twin-primes"]
+  },
+  {
+    "id": "ann-952-status",
+    "proofId": "erdos-952",
+    "range": { "startLine": 205, "endLine": 239 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Known: no walk with steps ≤ √26. Unknown: whether any bounded step suffices.",
+    "mathContext": "Note: NOT actually an Erdős problem despite the attribution.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "misattribution"]
+  }
+]
