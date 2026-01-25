@@ -1,0 +1,148 @@
+{
+  "id": "erdos-951",
+  "title": "Erdős Problem #951: Beurling Prime Numbers",
+  "slug": "erdos-951",
+  "description": "Is it true that #{aᵢ ≤ x} ≤ π(x) for any Beurling prime sequence? Are the primes the densest well-separated sequence?",
+  "meta": {
+    "author": "Erdős (problem), Beurling (generalized primes theory)",
+    "sourceUrl": "https://erdosproblems.com/951",
+    "date": "1937-present",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos951Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "analytic-number-theory",
+      "beurling-primes",
+      "generalized-primes",
+      "prime-counting",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 951,
+    "erdosUrl": "https://erdosproblems.com/951",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number operations",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "Prime counting function π(x)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Finsupp.Basic",
+        "description": "Finitely supported functions for exponent tuples",
+        "module": "Mathlib.Data.Finsupp.Basic"
+      },
+      {
+        "theorem": "BigOperators.Group.Finset.Basic",
+        "description": "Products over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "WellSeparatedProducts predicate: products of Beurling primes are ≥1 apart",
+      "BeurlingPrimes structure: strictly increasing, all >1, well-separated",
+      "beurlingPi counting function: #{aᵢ ≤ x}",
+      "primePi function: standard prime counting",
+      "erdos951_conjecture: π_a(x) ≤ π(x) for all Beurling sequences",
+      "primeSeq definition: nth prime as real number",
+      "actualPrimes: ordinary primes form a Beurling sequence",
+      "powersOfTwo: example Beurling sequence (2, 4, 8, ...)",
+      "powersOfTwoBeurling: powers of 2 satisfy Beurling conditions",
+      "IsBeurlingInteger: products of Beurling primes",
+      "beurlingN: Beurling integer counting function",
+      "beurlings_conjecture: if N_a(x) = x + o(log x), then aᵢ = primes",
+      "separation_implies_distinct theorem: well-separation implies distinctness"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #951**\n\nThis problem concerns Beurling generalized prime numbers, introduced by Arne Beurling in 1937. A Beurling prime sequence is a sequence 1 < a₁ < a₂ < ... of real numbers whose products behave like integers.\n\n**Key History:**\n- Beurling (1937): Introduced generalized primes and proved the prime number theorem extends to them under certain conditions\n- Erdős: Posed this problem during a lecture at Queens College, possibly suggested by S. Shapiro\n- The problem asks if the ordinary primes are the 'densest' sequence satisfying the well-separation property\n\n**Mathematical Setting:**\nA Beurling prime sequence must satisfy: for any two distinct products ∏aᵢ^{kᵢ} and ∏aⱼ^{ℓⱼ}, their difference is at least 1. This mimics how products of ordinary primes (i.e., positive integers) are always at least 1 apart.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet 1 < a₁ < a₂ < ... be a sequence of real numbers such that for every distinct pair of non-negative finitely supported integer tuples (kᵢ), (ℓⱼ):\n\n|∏ᵢ aᵢ^{kᵢ} - ∏ⱼ aⱼ^{ℓⱼ}| ≥ 1\n\n**Question:** Is it true that #{aᵢ ≤ x} ≤ π(x)?\n\nIn other words, can any Beurling prime sequence be denser than the actual primes?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Beurling Prime Definition:**\n   - Define WellSeparatedProducts predicate using Finsupp for exponent tuples\n   - Define BeurlingPrimes structure with strictly increasing, all >1, and well-separated conditions\n\n2. **Counting Functions:**\n   - beurlingPi: count Beurling primes up to x\n   - primePi: standard prime counting function\n\n3. **The Conjecture:**\n   - erdos951_conjecture: for all Beurling sequences, π_a(x) ≤ π(x)\n\n4. **Examples:**\n   - Ordinary primes form a Beurling sequence (by FTA)\n   - Powers of 2 form a sparser Beurling sequence\n\n5. **Related Results:**\n   - Beurling's Conjecture: if the Beurling integers have density x + o(log x), then the sequence must be the actual primes",
+    "keyInsights": [
+      "**Beurling Primes:** A generalization where we keep the multiplicative structure (well-separated products) but allow real numbers instead of integers",
+      "**The Separation Condition:** |∏aᵢ^{kᵢ} - ∏aⱼ^{ℓⱼ}| ≥ 1 ensures 'Beurling integers' (products) don't cluster densely",
+      "**Why Primes Work:** The Fundamental Theorem of Arithmetic implies distinct products of primes are distinct integers, hence ≥1 apart",
+      "**Powers of 2 Example:** The sequence 2, 4, 8, 16, ... satisfies separation (products are distinct powers of 2) but is much sparser than primes",
+      "**The Conjecture's Meaning:** Erdős asks if primes are 'optimal' - you can't fit more well-separated generators below x than there are primes",
+      "**Beurling's Related Conjecture:** If the counting of Beurling integers matches natural numbers closely (x + o(log x)), the sequence must actually be the primes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "beurling-primes",
+      "title": "Beurling Prime Numbers",
+      "summary": "Definition of Beurling primes via the well-separated products property",
+      "startLine": 44,
+      "endLine": 74
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions",
+      "summary": "Beurling π_a(x) and standard π(x) counting functions",
+      "startLine": 76,
+      "endLine": 101
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Erdős #951: Is π_a(x) ≤ π(x) for all Beurling sequences?",
+      "startLine": 103,
+      "endLine": 118
+    },
+    {
+      "id": "actual-primes",
+      "title": "Actual Primes as Beurling Primes",
+      "summary": "The ordinary primes form a Beurling prime sequence",
+      "startLine": 120,
+      "endLine": 155
+    },
+    {
+      "id": "examples",
+      "title": "Examples of Beurling Sequences",
+      "summary": "Powers of 2 as a sparser Beurling sequence",
+      "startLine": 157,
+      "endLine": 202
+    },
+    {
+      "id": "beurling-integers",
+      "title": "Beurling Integers",
+      "summary": "Products of Beurling primes and Beurling's conjecture",
+      "startLine": 204,
+      "endLine": 236
+    },
+    {
+      "id": "separation-analysis",
+      "title": "Separation Condition Analysis",
+      "summary": "Why the separation condition matters",
+      "startLine": 238,
+      "endLine": 259
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Open status and known results",
+      "startLine": 261,
+      "endLine": 288
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #951 asks whether any Beurling prime sequence can be denser than the actual primes. The conjecture is that π_a(x) ≤ π(x) always holds, meaning primes are the densest well-separated sequence. This remains an open problem in analytic number theory.",
+    "implications": "**Connections and Implications**\n\n1. **Prime Number Theory:** Understanding what makes primes 'special' among sequences with multiplicative structure\n\n2. **Beurling's Theory:** The broader study of generalized primes and their prime number theorem analogues\n\n3. **Multiplicative Structure:** The separation condition captures the essence of unique factorization without requiring integers\n\n4. **Optimality of Primes:** If true, establishes primes as extremal for the well-separation property\n\n5. **Distribution Questions:** Connects to deep questions about how primes are distributed among integers",
+    "openQuestions": [
+      "Is π_a(x) ≤ π(x) for all Beurling prime sequences? (Main conjecture)",
+      "What is the maximum density achievable by a Beurling sequence?",
+      "Can the conjecture be proved for specific classes of Beurling sequences?",
+      "What happens if we weaken the separation condition from ≥1 to ≥ε?",
+      "Are there Beurling sequences that approach the density of primes asymptotically?"
+    ]
+  }
+}
