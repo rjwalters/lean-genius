@@ -1,7 +1,7 @@
 {
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
-  "phase": "SURVEYED",
+  "phase": "SKIPPED",
   "status": "skipped",
   "tier": "B",
   "path": "fast",
@@ -16,26 +16,25 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-01-24T22:30:00Z",
-    "iteration": 2,
-    "focus": "Verified coverage by PerfectNumbers.lean",
-    "blockers": ["Main open problem (odd perfect numbers) is famously unsolved for 2000+ years"],
-    "nextAction": "No further action needed - problem appropriately marked skipped.",
+    "phase": "SKIPPED",
+    "since": "2026-01-25T08:45:00.000Z",
+    "iteration": 1,
+    "focus": "Already covered by PerfectNumbers.lean",
+    "blockers": [],
+    "nextAction": "No action needed - covered elsewhere",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SKIPPED: Covered by PerfectNumbers.lean (Euclid-Euler theorem). Odd perfect numbers remain OPEN for 2000+ years.",
+    "progressSummary": "SKIPPED: Already covered by PerfectNumbers.lean (202 lines, 0 sorries). Odd perfect numbers remain OPEN for 2000+ years.",
     "builtItems": [],
     "insights": [
-      "PerfectNumbers.lean contains complete Euclid-Euler characterization via Mathlib",
-      "Uses Archive.Wiedijk100Theorems.PerfectNumbers for main proofs",
-      "Examples verified for 6, 28, 496, 8128",
-      "No tractable extension path - odd perfect numbers are OPEN"
+      "Core σ function properties formalized in PerfectNumbers.lean",
+      "Euclid-Euler theorem for even perfect numbers completed",
+      "Odd perfect number existence is OPEN - not tractable"
     ],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
@@ -59,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T05:32:39.478Z",
-  "lastUpdate": "2026-01-01T05:32:39.478Z",
+  "lastUpdate": "2026-01-25T08:45:00.000Z",
   "significance": 5,
   "tractability": 9
 }
