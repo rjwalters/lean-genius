@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ann-120-1",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #120 (The Similarity Problem, $100 prize): For infinite A ⊆ ℝ, must there exist positive measure E containing no similar copy aA + b (a ≠ 0)? TRUE for unbounded/dense A; FALSE for finite A. OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-120-2",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Similar Copy",
+    "content": "similarCopy(A, a, b) = {a·x + b : x ∈ A} for a ≠ 0. This is a translate and scale of A preserving ratios.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-120-3",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Contains Similar Copy",
+    "content": "containsSimilarCopy(E, A) holds if some aA + b ⊆ E with a ≠ 0. E 'catches' a scaled translate of A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-120-4",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Avoids Similar Copies",
+    "content": "avoidsSimilarCopies(E, A) means E contains no similar copy of A. This is the desired property for E.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-120-5",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 58,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Universal Similarity Set",
+    "content": "A is a universal similarity set if every positive measure E contains a similar copy of A. The conjecture says infinite A are NOT universal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-120-6",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 70,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "similarityConjecture: For every infinite A, there exists measurable E with positive measure that avoids all similar copies of A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-120-7",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "Erdős Problem #120: Is similarityConjecture true? This is a major open problem with a $100 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-120-8",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 84,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Steinhaus Theorem",
+    "content": "Finite sets are universal similarity sets (Steinhaus, 1920). Every positive measure set contains a similar copy of any finite set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-120-9",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 89,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Unbounded Avoidable",
+    "content": "Unbounded sets are avoidable. There exists positive measure E containing no similar copy of any unbounded A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-120-10",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Dense in Interval Avoidable",
+    "content": "Sets dense in some interval are avoidable. The density creates enough structure to be excluded.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-120-11",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 108,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "Geometric Sequence",
+    "content": "geometricSeq = {1, 1/2, 1/4, ...} = {(1/2)^n : n ∈ ℕ}. This is Problem 94 on Green's open problems list.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-120-12",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 112,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Geometric Sequence Case",
+    "content": "Is the geometric sequence avoidable? This is the key open case, testing the conjecture on a specific bounded convergent sequence.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-120-13",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 122,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "Ratio Preservation",
+    "content": "Similar copies preserve ratios: (aᵢ - aⱼ)/(aₖ - aₗ) is invariant under aA + b. This constrains where copies can appear.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-120-14",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 127,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Convergent Clustering",
+    "content": "For sequences converging to 0, similar copies aA + b cluster near b. This creates local constraints on E.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-120-15",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 137,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Measure Theory Tools",
+    "content": "The Steinhaus theorem (E - E contains an interval) and Lebesgue density theorem are key tools. Points of density create constraints.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-120-16",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 147,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Construction Approach",
+    "content": "Build E by iteratively excluding similar copies of A. Start with [0,1], remove copies, argue positive measure remains.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-120-17",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 151,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Probabilistic Approach",
+    "content": "Consider random constructions (e.g., Cantor-type sets). Do random subsets avoid similar copies with positive probability?",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-120-18",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 154,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Fourier Approach",
+    "content": "Fourier analysis of indicator functions might exploit spectral properties of A to construct avoiding sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-120-19",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 161,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Related Questions",
+    "content": "What is the minimum measure of an avoiding set? Can E be nice (union of intervals)? Connection to Ramsey theory (colorings avoiding monochromatic copies).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-120-20",
+    "proofId": "erdos-120",
+    "range": {
+      "startLine": 76,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "Erdős Problem #120: OPEN with $100 prize. The Similarity Problem asks if every infinite set is avoidable. Finite sets are universal (Steinhaus). Geometric sequence is the key test case.",
+    "significance": "critical"
+  }
+]
