@@ -35,11 +35,70 @@ This project uses **two distinct AI agent orchestration systems** for different 
 
 **Invoke via**: `/erdos`, `/aristotle`, `/research`, `/deploy`
 
+**Team orchestration**: `/lean` - Start/stop/scale the full mathematical agent team
+
 ### When to Use Which
 
 - **Writing code, fixing bugs, reviewing PRs** → Use Loom agents (Builder, Judge, etc.)
 - **Formalizing math, proving theorems, enhancing Erdős problems** → Use Lean Genius agents (Erdős, Aristotle, Researcher)
 - **Deploying the website** → Use Deployer
+- **Starting the full mathematical team** → Use `/lean`
+
+---
+
+# /lean - Mathematical Team Orchestration
+
+The `/lean` skill provides a unified interface to start, stop, and scale the mathematical agent team.
+
+## Quick Start
+
+```bash
+# Start with defaults (2 erdos, 1 aristotle, 1 researcher, 1 deployer)
+/lean
+
+# Start with custom pool sizes
+/lean start --erdos 3 --researcher 2
+
+# Check status
+/lean status
+
+# Stop all agents
+/lean stop
+```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `/lean` | Start daemon with default pool |
+| `/lean status` | Show work queue and agent status |
+| `/lean start [options]` | Start with custom pool sizes |
+| `/lean spawn <type>` | Add one agent (erdos, aristotle, researcher, deployer) |
+| `/lean scale <type> <N>` | Scale pool to N agents |
+| `/lean stop` | Graceful shutdown of all agents |
+
+## Pool Limits
+
+| Agent | Default | Max |
+|-------|---------|-----|
+| Erdős Enhancer | 2 | 5 |
+| Aristotle | 1 | 2 |
+| Researcher | 1 | 3 |
+| Deployer | 1 | 1 |
+
+## Helper Scripts
+
+```bash
+# Status (also works outside /lean skill)
+./scripts/lean/status.sh
+./scripts/lean/status.sh --json
+
+# Launch/stop (also works outside /lean skill)
+./scripts/lean/launch.sh start --erdos 2
+./scripts/lean/launch.sh stop
+./scripts/lean/launch.sh spawn erdos
+./scripts/lean/launch.sh scale erdos 3
+```
 
 ---
 
