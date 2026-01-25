@@ -1,0 +1,92 @@
+[
+  {
+    "id": "erdos-828-header",
+    "proofId": "erdos-828",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 28 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #828 asks: for any integer a, are there infinitely many n with φ(n) | n + a? This generalizes Lehmer's conjecture (a = -1) and the characterized case a = 0.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-828-totient-divisors",
+    "proofId": "erdos-828",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 50 },
+    "title": "Totient Divisors Set",
+    "content": "For each integer a, we define the set {n ∈ ℕ : φ(n) | n + a}. The conjecture asks if this set is infinite for every a.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-828-case-zero",
+    "proofId": "erdos-828",
+    "type": "theorem",
+    "range": { "startLine": 54, "endLine": 69 },
+    "title": "Case a = 0: Complete Characterization",
+    "content": "φ(n) | n if and only if n ≤ 1 or n = 2^a · 3^b for some a > 0. This is because φ(n)/n = ∏(1 - 1/p) requires denominators to only have factors 2 and 3.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-828-lehmer",
+    "proofId": "erdos-828",
+    "type": "theorem",
+    "range": { "startLine": 73, "endLine": 94 },
+    "title": "Lehmer's Conjecture (a = -1)",
+    "content": "For n > 1: φ(n) | n - 1 if and only if n is prime. The 'if' direction is easy (φ(p) = p-1). The 'only if' direction is Lehmer's famous 1932 conjecture - no composite 'Lehmer number' is known.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-828-main-conjecture",
+    "proofId": "erdos-828",
+    "type": "theorem",
+    "range": { "startLine": 98, "endLine": 108 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "For every integer a, there are infinitely many n such that φ(n) | n + a. This would unify the known cases (a = 0, a = -1) into a general statement about totient divisibility.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-828-examples",
+    "proofId": "erdos-828",
+    "type": "example",
+    "range": { "startLine": 112, "endLine": 141 },
+    "title": "Concrete Examples",
+    "content": "For a = 1: n ∈ {1, 2, 3, 15, ...} work since φ(1)=1|2, φ(2)=1|3, φ(3)=2|4, φ(15)=8|16. For a = 2: n ∈ {2, 4, ...} work. Finding patterns is the challenge.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-828-totient-even",
+    "proofId": "erdos-828",
+    "type": "theorem",
+    "range": { "startLine": 145, "endLine": 158 },
+    "title": "Structural Properties of φ",
+    "content": "φ(n) is always even for n > 2 (since -1 has order 2 in (ℤ/nℤ)*). For primes p, φ(p) = p-1. For prime powers, φ(p^k) = p^(k-1)(p-1). These formulas constrain divisibility.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-828-fermat-euler",
+    "proofId": "erdos-828",
+    "type": "context",
+    "range": { "startLine": 162, "endLine": 174 },
+    "title": "Connection to Fermat-Euler",
+    "content": "The Fermat-Euler theorem says a^φ(n) ≡ 1 (mod n) for gcd(a,n) = 1. This connects φ(n) to multiplicative orders and the structure of (ℤ/nℤ)*, providing context for divisibility questions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-828-difficulty",
+    "proofId": "erdos-828",
+    "type": "context",
+    "range": { "startLine": 178, "endLine": 189 },
+    "title": "Why This Is Hard",
+    "content": "φ(n) depends on the prime factorization of n in a complex way. For each a, we need to construct infinitely many n where the totient happens to divide n + a - this requires delicate number-theoretic engineering.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-828-summary",
+    "proofId": "erdos-828",
+    "type": "conclusion",
+    "range": { "startLine": 193, "endLine": 217 },
+    "title": "Summary",
+    "content": "Erdős Problem #828 remains OPEN. Case a = 0 is solved (n = 2^a·3^b). Case a = -1 is Lehmer's conjecture. The general conjecture, attributed to Graham, asks if solutions are infinite for every a.",
+    "significance": "key"
+  }
+]
