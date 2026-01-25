@@ -1,0 +1,189 @@
+[
+  {
+    "id": "ann-911-header",
+    "proofId": "erdos-911",
+    "range": { "startLine": 1, "endLine": 19 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #911: Does there exist f with f(x)/x → ∞ such that for C-dense graphs G (e ≥ Cn), we have R̂(G) > f(C)·e(G)? Status: OPEN.",
+    "mathContext": "Posed in [Er82e, p.78]. Size Ramsey numbers measure minimum edge complexity for Ramsey properties.",
+    "significance": "critical",
+    "relatedConcepts": ["size-ramsey", "graph-density", "ramsey-theory"]
+  },
+  {
+    "id": "ann-911-simplegraph",
+    "proofId": "erdos-911",
+    "range": { "startLine": 31, "endLine": 36 },
+    "type": "definition",
+    "title": "Simple Graph Structure",
+    "content": "SimpleGraph'(V) has adjacency relation adj : V → V → Prop, symmetry (adj a b → adj b a), and no loops (¬adj a a).",
+    "mathContext": "Custom structure to avoid Mathlib's SimpleGraph for cleaner axiomatization.",
+    "significance": "key",
+    "relatedConcepts": ["adjacency", "undirected-graph"]
+  },
+  {
+    "id": "ann-911-edgecount",
+    "proofId": "erdos-911",
+    "range": { "startLine": 37, "endLine": 45 },
+    "type": "definition",
+    "title": "Edge Count and Average Degree",
+    "content": "edgeCount(G) = |{(a,b) : a adj b and a < b}| counts edges. avgDegree(G) = 2e/n is the average vertex degree.",
+    "mathContext": "Uses ordered pairs to avoid double-counting symmetric edges.",
+    "significance": "key",
+    "relatedConcepts": ["edge-set", "degree"]
+  },
+  {
+    "id": "ann-911-dense",
+    "proofId": "erdos-911",
+    "range": { "startLine": 47, "endLine": 51 },
+    "type": "definition",
+    "title": "C-Dense Graphs",
+    "content": "isDense(G, C) := e(G) ≥ C·n means G has at least C edges per vertex on average. This is the key density condition.",
+    "mathContext": "Density is central to the problem: we ask if high density forces large size Ramsey numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["edge-density", "average-degree"]
+  },
+  {
+    "id": "ann-911-coloring",
+    "proofId": "erdos-911",
+    "range": { "startLine": 59, "endLine": 72 },
+    "type": "definition",
+    "title": "Edge Coloring and Monochromatic Subgraphs",
+    "content": "EdgeColoring assigns each edge a color (Bool). isMonochromatic(G,H,c,col) says G-edges in H all have color col. isRamseyFor(H,G) says every 2-coloring of H contains monochromatic G.",
+    "mathContext": "The Ramsey property: no matter how you color H, you find a monochromatic copy of G.",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-property", "coloring"]
+  },
+  {
+    "id": "ann-911-sizeramsey",
+    "proofId": "erdos-911",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "axiom",
+    "title": "Size Ramsey Number",
+    "content": "sizeRamseyNumber(G) = R̂(G) is the minimum number of edges in a graph H that is Ramsey for G. Axiomatized since the definition spans all graph sizes.",
+    "mathContext": "Introduced by Erdős-Faudree-Rousseau-Schelp (1978). Measures edge-complexity of Ramsey.",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-number", "edge-minimality"]
+  },
+  {
+    "id": "ann-911-superlinear",
+    "proofId": "erdos-911",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "definition",
+    "title": "Superlinear Growth",
+    "content": "superlinearGrowth(f) := ∀M, ∃x₀, ∀x > x₀, f(x)/x > M. This says f grows faster than any linear function.",
+    "mathContext": "The problem asks for f with this growth property, implying R̂(G) >> e(G) for dense G.",
+    "significance": "key",
+    "relatedConcepts": ["growth-rate", "asymptotic"]
+  },
+  {
+    "id": "ann-911-conjecture",
+    "proofId": "erdos-911",
+    "range": { "startLine": 89, "endLine": 97 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture911: ∃f superlinear, ∃C₀, ∀C ≥ C₀, ∀G C-dense, R̂(G) > f(C)·e(G). This is THE open problem.",
+    "mathContext": "The conjecture asserts density forces superlinear size Ramsey growth.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos-conjecture", "density-ramsey"]
+  },
+  {
+    "id": "ann-911-beck",
+    "proofId": "erdos-911",
+    "range": { "startLine": 108, "endLine": 111 },
+    "type": "axiom",
+    "title": "Beck's Theorem (1983)",
+    "content": "R̂(Pₙ) = O(n) for paths. Paths have linear size Ramsey numbers despite having n-1 edges.",
+    "mathContext": "Beck's breakthrough showed paths are 'easy' for size Ramsey. Uses random embedding techniques.",
+    "significance": "key",
+    "relatedConcepts": ["paths", "linear-bound"]
+  },
+  {
+    "id": "ann-911-rodl",
+    "proofId": "erdos-911",
+    "range": { "startLine": 112, "endLine": 117 },
+    "type": "axiom",
+    "title": "Rödl-Szemerédi Theorem (2000)",
+    "content": "R̂(Kₙ) = Θ(n²) for complete graphs. This is linear in edge count e(Kₙ) = n(n-1)/2.",
+    "mathContext": "Complete graphs are maximally dense but have R̂ = Θ(edges), not superlinear.",
+    "significance": "key",
+    "relatedConcepts": ["complete-graphs", "tight-bound"]
+  },
+  {
+    "id": "ann-911-krss",
+    "proofId": "erdos-911",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "axiom",
+    "title": "KRSS Theorem (2011)",
+    "content": "Bounded degree graphs have linear size Ramsey numbers: if max_deg(G) ≤ Δ, then R̂(G) = O_Δ(n).",
+    "mathContext": "Kohayakawa-Rödl-Schacht-Szemerédi showed bounded degree is sufficient for linear R̂.",
+    "significance": "key",
+    "relatedConcepts": ["bounded-degree", "linear-ramsey"]
+  },
+  {
+    "id": "ann-911-lowerbound",
+    "proofId": "erdos-911",
+    "range": { "startLine": 130, "endLine": 134 },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "R̂(G) ≥ e(G) always. Any Ramsey graph H for G must contain G as a subgraph, hence has at least e(G) edges.",
+    "mathContext": "This is the baseline. The conjecture asks if density improves this to R̂(G) ≥ f(C)·e(G).",
+    "significance": "key",
+    "relatedConcepts": ["lower-bound", "subgraph"]
+  },
+  {
+    "id": "ann-911-denseedges",
+    "proofId": "erdos-911",
+    "range": { "startLine": 135, "endLine": 140 },
+    "type": "theorem",
+    "title": "Dense Graphs Have Many Edges",
+    "content": "If G is C-dense (e ≥ Cn), then e(G) ≥ Cn trivially. Combined with R̂ ≥ e, we get R̂(G) ≥ Cn.",
+    "mathContext": "But the question is whether we can do better: R̂(G) ≥ f(C)·e(G) where f(C)/C → ∞.",
+    "significance": "supporting",
+    "relatedConcepts": ["density-edges", "linear-bound"]
+  },
+  {
+    "id": "ann-911-status",
+    "proofId": "erdos-911",
+    "range": { "startLine": 151, "endLine": 153 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. No proof either way is known. The conjecture is neither confirmed nor refuted.",
+    "mathContext": "The status 'OPEN' indicates genuine mathematical uncertainty, not just missing formalization.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "unknown"]
+  },
+  {
+    "id": "ann-911-alternative",
+    "proofId": "erdos-911",
+    "range": { "startLine": 154, "endLine": 161 },
+    "type": "definition",
+    "title": "Alternative Formulation",
+    "content": "densityForcesStructure: ∀ε>0, ∃C₀, ∀C≥C₀, C-dense G has R̂(G) ≥ C^(1+ε)·e(G). This asks for polynomial superlinearity.",
+    "mathContext": "An equivalent way to state superlinear growth: R̂ grows like C^(1+ε)·e, not just C·e.",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial-growth", "epsilon"]
+  },
+  {
+    "id": "ann-911-vertexramsey",
+    "proofId": "erdos-911",
+    "range": { "startLine": 171, "endLine": 178 },
+    "type": "axiom",
+    "title": "Vertex Ramsey Number",
+    "content": "graphRamseyNumber(G) = R(G) is the classical Ramsey number (minimum vertices). R̂(G) ≤ e(K_{R(G)}) = R(G)·(R(G)-1)/2.",
+    "mathContext": "Size Ramsey is bounded by taking the complete graph on R(G) vertices.",
+    "significance": "supporting",
+    "relatedConcepts": ["vertex-ramsey", "complete-bound"]
+  },
+  {
+    "id": "ann-911-summary",
+    "proofId": "erdos-911",
+    "range": { "startLine": 187, "endLine": 216 },
+    "type": "concept",
+    "title": "Summary",
+    "content": "Status: OPEN. Known: R̂(G) ≥ e(G), R̂(Pₙ) = O(n), R̂(Kₙ) = Θ(n²), bounded degree has linear R̂. Unknown: does density alone force superlinear R̂?",
+    "mathContext": "The formalization captures the problem statement and known partial results on size Ramsey numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["status", "summary"]
+  }
+]
