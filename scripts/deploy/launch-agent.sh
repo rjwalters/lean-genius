@@ -133,10 +133,11 @@ launch_agent() {
     print_info "Launching deployer agent..."
     print_info "Interval: $INTERVAL minutes"
 
-    # Launch in tmux with resilient wrapper for error handling
+    # Launch in tmux with resilient wrapper in DAEMON mode for infinite retry
+    # The --daemon flag ensures the deployer survives API outages indefinitely
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     tmux new-session -d -s "$SESSION_NAME" -c "$REPO_ROOT" \
-        "ENHANCER_ID=deployer REPO_ROOT=$REPO_ROOT $wrapper_script --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE' --max-retries 5"
+        "ENHANCER_ID=deployer REPO_ROOT=$REPO_ROOT $wrapper_script --daemon --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE'"
 
     print_success "Launched deployer agent"
     echo ""
