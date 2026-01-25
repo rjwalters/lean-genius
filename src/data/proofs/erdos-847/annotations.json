@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ann-847-header",
+    "proofId": "erdos-847",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #847: If A has the property that every n-subset contains an AP-free part of size >= epsilon*n, must A be a finite union of AP-free sets? DISPROVED - the answer is NO.",
+    "mathContext": "A problem of Erdos, Nesetril, and Rodl connecting to Szemeredi's theorem and AP-free set structure.",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic-progressions", "szemeredi", "additive-combinatorics"]
+  },
+  {
+    "id": "ann-847-threeap",
+    "proofId": "erdos-847",
+    "range": { "startLine": 41, "endLine": 47 },
+    "type": "definition",
+    "title": "Three-Term Arithmetic Progression",
+    "content": "A three-term AP is {a, a+d, a+2d} where d > 0. These are three evenly-spaced numbers. Examples: {3,5,7}, {2,6,10}, {1,4,7}.",
+    "mathContext": "The d > 0 requirement ensures non-trivial progressions (not all equal).",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic-sequences", "even-spacing"]
+  },
+  {
+    "id": "ann-847-apfree",
+    "proofId": "erdos-847",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "definition",
+    "title": "AP-Free Set",
+    "content": "A set S is AP-free if it contains no three-term arithmetic progression. Equivalently: for any a, d > 0, if a and a+d are in S, then a+2d is NOT in S.",
+    "mathContext": "AP-free sets are very sparse by Szemeredi's theorem - they have density 0 in any interval.",
+    "significance": "critical",
+    "relatedConcepts": ["density", "sparseness"]
+  },
+  {
+    "id": "ann-847-apfree-alt",
+    "proofId": "erdos-847",
+    "range": { "startLine": 55, "endLine": 61 },
+    "type": "definition",
+    "title": "Alternative AP-Free Formulation",
+    "content": "isAPFree' says: for any x < y < z in S, we have 2y != x + z. This is equivalent - the middle element can't be the average of the outer two.",
+    "mathContext": "The condition 2y = x + z characterizes arithmetic progressions: y is the midpoint of x and z.",
+    "significance": "supporting",
+    "relatedConcepts": ["midpoint", "averages"]
+  },
+  {
+    "id": "ann-847-enr",
+    "proofId": "erdos-847",
+    "range": { "startLine": 64, "endLine": 79 },
+    "type": "definition",
+    "title": "The ENR Condition",
+    "content": "hasENRCondition(A, epsilon): Every finite subset B of A has an AP-free subset C of size >= epsilon * |B|. This says 'uniformly large AP-free parts exist.'",
+    "mathContext": "Named for Erdos-Nesetril-Rodl. The key is that epsilon is fixed - it works for ALL finite subsets B.",
+    "significance": "critical",
+    "relatedConcepts": ["uniform-bounds", "density"]
+  },
+  {
+    "id": "ann-847-finunion",
+    "proofId": "erdos-847",
+    "range": { "startLine": 82, "endLine": 96 },
+    "type": "definition",
+    "title": "Finite AP-Free Union",
+    "content": "isFiniteAPFreeUnion(A): A can be written as A1 union A2 union ... union Ak where each Ai is AP-free. This is a very structured decomposition.",
+    "mathContext": "If such a decomposition exists, any finite subset can be partitioned into at most k AP-free parts.",
+    "significance": "critical",
+    "relatedConcepts": ["decomposition", "partition"]
+  },
+  {
+    "id": "ann-847-conjecture",
+    "proofId": "erdos-847",
+    "range": { "startLine": 99, "endLine": 108 },
+    "type": "theorem",
+    "title": "The ENR Conjecture",
+    "content": "ENRConjecture: If infinite A has the ENR property, then A is a finite union of AP-free sets. This seems plausible - uniformly large AP-free parts should come from a finite collection.",
+    "mathContext": "The conjecture asks whether local density implies global structure.",
+    "significance": "critical",
+    "relatedConcepts": ["local-global", "structure"]
+  },
+  {
+    "id": "ann-847-false",
+    "proofId": "erdos-847",
+    "range": { "startLine": 109, "endLine": 122 },
+    "type": "axiom",
+    "title": "The Conjecture is FALSE",
+    "content": "enr_conjecture_false: The ENR conjecture is DISPROVED. There exists an infinite A with the ENR property that is NOT a finite union of AP-free sets!",
+    "mathContext": "The counterexample shows that different finite subsets may require different decompositions, with no finite collection working for all.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "disproof"]
+  },
+  {
+    "id": "ann-847-szemeredi",
+    "proofId": "erdos-847",
+    "range": { "startLine": 125, "endLine": 135 },
+    "type": "axiom",
+    "title": "Szemeredi's Theorem",
+    "content": "For any k >= 3 and delta > 0, there exists N such that any subset of [1,N] with density >= delta contains a k-term AP. This is one of the deepest results in combinatorics.",
+    "mathContext": "Won Szemeredi the Abel Prize. Implies AP-free sets have density 0. Roth proved k=3 case in 1953.",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-theory", "density"]
+  },
+  {
+    "id": "ann-847-density",
+    "proofId": "erdos-847",
+    "range": { "startLine": 136, "endLine": 144 },
+    "type": "axiom",
+    "title": "AP-Free Sets Have Density Zero",
+    "content": "apfree_zero_density: Any AP-free subset of [1,N] has size o(N). The density |A cap [1,N]| / N tends to 0 as N grows.",
+    "mathContext": "Direct consequence of Szemeredi. AP-free sets are very sparse in the integers.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotics", "sparseness"]
+  },
+  {
+    "id": "ann-847-insight",
+    "proofId": "erdos-847",
+    "range": { "startLine": 147, "endLine": 159 },
+    "type": "concept",
+    "title": "Why the Conjecture Fails",
+    "content": "The ENR condition only asks for SOME large AP-free subset of each finite piece. Different pieces can use different decompositions! A finite union gives ONE decomposition that works for ALL pieces.",
+    "mathContext": "The gap between 'local existence' and 'global structure' is the key insight.",
+    "significance": "critical",
+    "relatedConcepts": ["local-global", "uniformity"]
+  },
+  {
+    "id": "ann-847-implication",
+    "proofId": "erdos-847",
+    "range": { "startLine": 160, "endLine": 170 },
+    "type": "theorem",
+    "title": "Finite Union Implies ENR",
+    "content": "If A is a finite union of k AP-free sets, then A satisfies ENR with epsilon = 1/k. Any finite subset can be partitioned into k AP-free parts, one in each Ai.",
+    "mathContext": "The converse direction works - finite union is stronger than ENR.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole", "partition"]
+  },
+  {
+    "id": "ann-847-related",
+    "proofId": "erdos-847",
+    "range": { "startLine": 171, "endLine": 184 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "Problems #774 and #846 in the Erdos collection also deal with AP-free sets and their structure. They form a cluster of related questions.",
+    "mathContext": "Erdos posed many problems about arithmetic progressions and set structure.",
+    "significance": "supporting",
+    "relatedConcepts": ["problem-774", "problem-846"]
+  },
+  {
+    "id": "ann-847-roth",
+    "proofId": "erdos-847",
+    "range": { "startLine": 187, "endLine": 196 },
+    "type": "axiom",
+    "title": "Roth's Theorem (1953)",
+    "content": "The k=3 case of Szemeredi: any dense subset of [1,N] contains a 3-term AP. Specifically, if |A| > N/(log N)^c, then A contains a 3-AP.",
+    "mathContext": "Klaus Roth won the Fields Medal partly for this result. It was the first major result on AP-free sets.",
+    "significance": "key",
+    "relatedConcepts": ["fields-medal", "density"]
+  },
+  {
+    "id": "ann-847-kelley-meka",
+    "proofId": "erdos-847",
+    "range": { "startLine": 197, "endLine": 204 },
+    "type": "axiom",
+    "title": "Kelley-Meka Bounds (2023)",
+    "content": "The best known bounds: an AP-free subset of [1,N] has size at most N * exp(-c * (log N)^{1/12}). This is a major breakthrough from 2023.",
+    "mathContext": "Improved on bounds that had stood for decades. Shows AP-free sets are even sparser than previously known.",
+    "significance": "key",
+    "relatedConcepts": ["breakthrough", "bounds"]
+  },
+  {
+    "id": "ann-847-main",
+    "proofId": "erdos-847",
+    "range": { "startLine": 207, "endLine": 236 },
+    "type": "theorem",
+    "title": "Main Results",
+    "content": "erdos_847_disproved: The ENR conjecture is FALSE. erdos_847_counterexample: There exists an explicit counterexample - an infinite A with ENR property that is NOT a finite AP-free union.",
+    "mathContext": "The main theorems establishing the disproof of Erdos Problem #847.",
+    "significance": "critical",
+    "relatedConcepts": ["disproof", "counterexample"]
+  }
+]

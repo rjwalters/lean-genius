@@ -1,0 +1,144 @@
+{
+  "id": "erdos-847",
+  "title": "Erdos Problem #847: AP-Free Subsets and Finite Unions",
+  "slug": "erdos-847",
+  "description": "If infinite A has the property that every n-subset contains an AP-free subset of size >= epsilon*n, must A be a finite union of AP-free sets? DISPROVED.",
+  "meta": {
+    "author": "Erdos, Nesetril, Rodl",
+    "sourceUrl": "https://erdosproblems.com/847",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos847Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "szemeredi",
+      "ap-free",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 847,
+    "erdosUrl": "https://erdosproblems.com/847",
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isThreeTermAP definition: three-term arithmetic progression",
+      "isAPFree definition: set containing no 3-AP",
+      "hasENRCondition definition: epsilon-density AP-free subsets",
+      "hasENRProperty definition: existence of epsilon > 0",
+      "isFiniteAPFreeUnion definition: finite union characterization",
+      "ENRConjecture definition: the disproved conjecture",
+      "enr_conjecture_false axiom: the conjecture is FALSE",
+      "counterexample_exists axiom: explicit counterexample",
+      "szemeredi_theorem axiom: density implies APs",
+      "roth_theorem axiom: k=3 case",
+      "kelley_meka_bound axiom: best known bounds",
+      "erdos_847_disproved theorem: main result"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdos, Nesetril, and Rodl [Er92b]. It asks about the structure of infinite sets with a specific property related to AP-free subsets.\n\nThe problem connects deeply to Szemeredi's theorem (1975), which shows that any dense subset of the integers contains arbitrarily long arithmetic progressions. Consequently, AP-free sets have density 0.\n\nThe question explores whether having uniformly large AP-free subsets forces a simple structure (finite union of AP-free sets).",
+    "problemStatement": "**Problem Statement (DISPROVED)**\n\nLet A be an infinite subset of the natural numbers. Suppose there exists epsilon > 0 such that every n-element subset B of A contains an AP-free subset of size at least epsilon*n.\n\n**Question:** Must A be expressible as a finite union of AP-free sets?\n\n**Answer: NO.** The conjecture was DISPROVED.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **AP Definitions:** isThreeTermAP and isAPFree predicates\n\n2. **ENR Property:** Every finite subset has large AP-free part\n\n3. **Finite Union:** A = A1 union ... union Ak, each Ai AP-free\n\n4. **Counterexample:** Axiomatized existence of A violating the conjecture\n\n5. **Context:** Szemeredi, Roth, and Kelley-Meka bounds",
+    "keyInsights": [
+      "**ENR is weaker:** The ENR condition allows different decompositions for different finite subsets",
+      "**Finite unions are rigid:** A finite union gives a uniform decomposition that works for all subsets",
+      "**Szemeredi's theorem:** AP-free sets have density 0, so they are sparse",
+      "**Roth (1953):** First k=3 result on APs in dense sets",
+      "**Kelley-Meka (2023):** Best bounds: |A| <= N exp(-c(log N)^{1/12})"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ap-definitions",
+      "title": "Arithmetic Progression Definitions",
+      "summary": "isThreeTermAP, isAPFree, isAPFree' definitions",
+      "startLine": 39,
+      "endLine": 61
+    },
+    {
+      "id": "enr-condition",
+      "title": "The ENR Condition",
+      "summary": "hasENRCondition, hasENRProperty definitions",
+      "startLine": 62,
+      "endLine": 79
+    },
+    {
+      "id": "finite-union",
+      "title": "Finite Union Characterization",
+      "summary": "isFiniteAPFreeUnion, hasFiniteAPFreePartition definitions",
+      "startLine": 80,
+      "endLine": 96
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (Disproved)",
+      "summary": "ENRConjecture, enr_conjecture_false, counterexample_exists",
+      "startLine": 97,
+      "endLine": 122
+    },
+    {
+      "id": "szemeredi",
+      "title": "Szemeredi's Theorem",
+      "summary": "szemeredi_theorem, apfree_zero_density",
+      "startLine": 123,
+      "endLine": 144
+    },
+    {
+      "id": "why-fails",
+      "title": "Why the Conjecture Fails",
+      "summary": "key_insight, finite_union_implies_enr",
+      "startLine": 145,
+      "endLine": 170
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Problems #774 and #846",
+      "startLine": 171,
+      "endLine": 184
+    },
+    {
+      "id": "bounds",
+      "title": "Roth's Theorem and Bounds",
+      "summary": "roth_theorem, kelley_meka_bound",
+      "startLine": 185,
+      "endLine": 204
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_847_disproved, erdos_847_counterexample",
+      "startLine": 205,
+      "endLine": 236
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #847 was DISPROVED. The ENR property (every n-subset has an AP-free subset of size >= epsilon*n) does NOT imply that A is a finite union of AP-free sets. The key insight is that the ENR condition allows different decompositions for different finite subsets.",
+    "implications": "This result shows that the ENR property is genuinely weaker than being a finite union of AP-free sets. It reveals subtleties in the structure of sets with uniform AP-free density properties.",
+    "openQuestions": [
+      "Explicit construction of the counterexample",
+      "What additional conditions would force finite union structure?",
+      "Connections to other Ramsey-type decomposition problems",
+      "Quantitative versions: how many AP-free sets are needed?"
+    ]
+  }
+}
