@@ -1,0 +1,110 @@
+[
+  {
+    "id": "erdos-881-header",
+    "proofId": "erdos-881",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 31 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #881 asks about minimal additive bases: if A is a basis of order k that's minimal (can't remove infinite subsets), must there be an infinite B ⊆ A such that A \\ B is a basis of order k+1?",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-881-asymptotic-basis",
+    "proofId": "erdos-881",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 51 },
+    "title": "Asymptotic Additive Basis",
+    "content": "A set A ⊂ ℕ is an asymptotic additive basis of order k if every sufficiently large natural number can be written as a sum of at most k elements from A. This is the standard notion in additive combinatorics.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-881-order-one",
+    "proofId": "erdos-881",
+    "type": "theorem",
+    "range": { "startLine": 53, "endLine": 72 },
+    "title": "Order 1 Characterization",
+    "content": "A set is a basis of order 1 if and only if it contains all sufficiently large integers. This is the simplest case: each number represents itself.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-881-minimal-basis",
+    "proofId": "erdos-881",
+    "type": "definition",
+    "range": { "startLine": 76, "endLine": 87 },
+    "title": "Minimal Additive Basis",
+    "content": "A minimal basis of order k is a basis where removing ANY infinite subset destroys the basis property (increases the order). These are 'tight' bases with no redundancy.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-881-minimal-infinite",
+    "proofId": "erdos-881",
+    "type": "theorem",
+    "range": { "startLine": 89, "endLine": 97 },
+    "title": "Minimal Bases Are Infinite",
+    "content": "Any minimal basis must be infinite. A finite set cannot be a basis of any order since it can only represent finitely many sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-881-main-conjecture",
+    "proofId": "erdos-881",
+    "type": "theorem",
+    "range": { "startLine": 101, "endLine": 115 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "The central question: for any minimal basis A of order k, can we find an infinite B ⊆ A such that A \\ B is a basis of order exactly k+1? This asks if minimal bases always 'degrade gracefully'.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-881-weak-version",
+    "proofId": "erdos-881",
+    "type": "theorem",
+    "range": { "startLine": 119, "endLine": 134 },
+    "title": "Weak Version",
+    "content": "A weaker question asks if we can increase the order by SOME finite amount m, not necessarily 1. The strong conjecture (m=1) implies this weak version.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-881-squares",
+    "proofId": "erdos-881",
+    "type": "example",
+    "range": { "startLine": 138, "endLine": 156 },
+    "title": "Perfect Squares Example",
+    "content": "The set of perfect squares is a basis of order 4 by Lagrange's four-square theorem. Waring's problem generalizes this: k-th powers form a basis of order g(k).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-881-monotonicity",
+    "proofId": "erdos-881",
+    "type": "theorem",
+    "range": { "startLine": 160, "endLine": 171 },
+    "title": "Monotonicity of Order",
+    "content": "If A is a basis of order k, it's automatically a basis of any higher order k' ≥ k. Using more summands can only make representation easier.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-881-subset-property",
+    "proofId": "erdos-881",
+    "type": "theorem",
+    "range": { "startLine": 173, "endLine": 184 },
+    "title": "Subset Property",
+    "content": "If A ⊆ A' and A is a basis of order k, then A' is also a basis of order k. Adding more elements can only improve (or maintain) the order.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-881-difficulty",
+    "proofId": "erdos-881",
+    "type": "context",
+    "range": { "startLine": 188, "endLine": 198 },
+    "title": "Why This Is Hard",
+    "content": "The challenge is the delicate balance: minimal bases are tight, yet we want to show there's always a way to increase order by exactly 1 (not more). This requires fine control over the structure.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-881-summary",
+    "proofId": "erdos-881",
+    "type": "conclusion",
+    "range": { "startLine": 202, "endLine": 229 },
+    "title": "Summary",
+    "content": "Erdős Problem #881 remains OPEN. It asks whether minimal bases of order k always contain an infinite subset whose removal yields a basis of order exactly k+1. Related to Waring's problem and Sidon sets.",
+    "significance": "key"
+  }
+]
