@@ -76,7 +76,10 @@ is_claim_expired() {
     now_epoch=$(date -u +%s)
 
     if [[ "$(uname)" == "Darwin" ]]; then
-        expires_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$expires_at" +%s 2>/dev/null || echo 0)
+        # Strip the Z suffix and parse as UTC
+        # macOS date -j doesn't respect Z timezone suffix
+        local stripped="${expires_at%Z}"
+        expires_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$stripped" +%s 2>/dev/null || echo 0)
     else
         expires_epoch=$(date -d "$expires_at" +%s 2>/dev/null || echo 0)
     fi
