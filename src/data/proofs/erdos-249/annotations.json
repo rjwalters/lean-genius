@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-249-header",
+    "proofId": "erdos-249",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #249: Is ∑ φ(n)/2^n irrational? Here φ is Euler's totient function. The series converges to ≈1.3240 (OEIS A256936). Status: OPEN.",
+    "mathContext": "Erdos posed this in [ErGr80, p.61]. It belongs to a family of irrationality questions about arithmetic sums.",
+    "significance": "critical",
+    "relatedConcepts": ["irrationality", "totient", "series"]
+  },
+  {
+    "id": "ann-249-termfn",
+    "proofId": "erdos-249",
+    "range": { "startLine": 35, "endLine": 38 },
+    "type": "definition",
+    "title": "Term Function",
+    "content": "termFn(n) = φ(n)/2^n is the general term of the series. Each term is a rational number, but their infinite sum might be irrational.",
+    "mathContext": "Using Nat.totient from Mathlib for φ.",
+    "significance": "key",
+    "relatedConcepts": ["totient", "series-terms"]
+  },
+  {
+    "id": "ann-249-sum",
+    "proofId": "erdos-249",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "The Totient Power Sum",
+    "content": "totientPowerSum = ∑' n, termFn n computes the infinite series. Since φ(0) = 0, this equals ∑_{n≥1} φ(n)/2^n.",
+    "mathContext": "Uses Mathlib's tsum for infinite series.",
+    "significance": "critical",
+    "relatedConcepts": ["tsum", "infinite-series"]
+  },
+  {
+    "id": "ann-249-bound",
+    "proofId": "erdos-249",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "theorem",
+    "title": "Totient Bound",
+    "content": "φ(n) ≤ n for all n. This is essential for proving convergence: since φ(n)/2^n ≤ n/2^n and ∑ n/2^n converges, so does our series.",
+    "mathContext": "Uses Nat.totient_le from Mathlib.",
+    "significance": "key",
+    "relatedConcepts": ["bounds", "convergence"]
+  },
+  {
+    "id": "ann-249-nonneg",
+    "proofId": "erdos-249",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "theorem",
+    "title": "Non-negativity",
+    "content": "Each term termFn(n) ≥ 0. This follows since φ(n) ≥ 0 and 2^n > 0. Proven using positivity tactic.",
+    "mathContext": "Non-negativity ensures the partial sums are monotonically increasing.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity", "monotonicity"]
+  },
+  {
+    "id": "ann-249-small-terms",
+    "proofId": "erdos-249",
+    "range": { "startLine": 57, "endLine": 70 },
+    "type": "theorem",
+    "title": "Small Term Values",
+    "content": "termFn(0) = 0, termFn(1) = 1/2, termFn(2) = 1/4. These give the first non-trivial terms of the series.",
+    "mathContext": "Uses Nat.totient_zero, Nat.totient_one, Nat.totient_prime.",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "base-cases"]
+  },
+  {
+    "id": "ann-249-convergence",
+    "proofId": "erdos-249",
+    "range": { "startLine": 71, "endLine": 93 },
+    "type": "axiom",
+    "title": "Convergence Properties",
+    "content": "Three axioms: (1) summable - the series converges, (2) pos - the sum is positive, (3) le_two - the sum is at most 2. These follow from comparison with ∑ n/2^n = 2.",
+    "mathContext": "Axiomatized to avoid complex Mathlib API for comparison tests.",
+    "significance": "key",
+    "relatedConcepts": ["summability", "bounds"]
+  },
+  {
+    "id": "ann-249-conjecture",
+    "proofId": "erdos-249",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "erdos_249 := Irrational totientPowerSum. This is THE open problem: is the sum irrational? No proof either way exists.",
+    "mathContext": "Irrational x means there's no rational r with r = x.",
+    "significance": "critical",
+    "relatedConcepts": ["irrational", "conjecture"]
+  },
+  {
+    "id": "ann-249-alternative",
+    "proofId": "erdos-249",
+    "range": { "startLine": 105, "endLine": 114 },
+    "type": "theorem",
+    "title": "Alternative Characterization",
+    "content": "The conjecture is equivalent to saying no rational equals the sum. erdos_249_iff_not_rational proves this equivalence definitionally.",
+    "mathContext": "Irrational in Mathlib is defined as ¬∃ r : ℚ, (r : ℝ) = x.",
+    "significance": "supporting",
+    "relatedConcepts": ["equivalence", "rationality"]
+  },
+  {
+    "id": "ann-249-numerical",
+    "proofId": "erdos-249",
+    "range": { "startLine": 115, "endLine": 130 },
+    "type": "concept",
+    "title": "Numerical Information",
+    "content": "The series begins: 1/2 + 1/4 + 2/8 + 2/16 + ... ≈ 1.3240. The decimal expansion is OEIS A256936. partial_sum_2 verifies the first two terms sum to 3/4.",
+    "mathContext": "Numerical approximation helps intuition but doesn't prove irrationality.",
+    "significance": "supporting",
+    "relatedConcepts": ["oeis", "approximation"]
+  },
+  {
+    "id": "ann-249-summary",
+    "proofId": "erdos-249",
+    "range": { "startLine": 131, "endLine": 157 },
+    "type": "concept",
+    "title": "Summary",
+    "content": "Status: OPEN. Known: convergence, 0 < sum ≤ 2, numerical value ≈ 1.3240. Unknown: irrationality, irrationality measure. Formalization provides definitions and basic properties.",
+    "mathContext": "Captures current mathematical knowledge about this problem.",
+    "significance": "critical",
+    "relatedConcepts": ["status", "open-problem"]
+  }
+]
