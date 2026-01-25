@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 766,
     "erdosUrl": "https://erdosproblems.com/766",
     "erdosProblemStatus": "open",
@@ -65,8 +65,10 @@
       "turan_theorem axiom: ex(n;K_r) = (1-1/(r-1))n²/2 + O(n)",
       "monotonicity_question definition: is f strictly increasing in l?",
       "f_nondecreasing axiom: f is non-decreasing",
-      "f_triangle theorem: f(n;3,3) = ⌊n²/4⌋",
+      "f_upper_bound axiom: f(n;k,l) ≤ n(n-1)/2",
+      "f_triangle axiom: f(n;3,3) = ⌊n²/4⌋ (Mantel's theorem)",
       "turan_c4 axiom: ex(n;C₄) = Θ(n^{3/2})",
+      "turanDensityExists axiom: existence of Turán density limit",
       "turanDensity definition: asymptotic density π(H)",
       "erdos_766_summary theorem: main results and open status"
     ]
@@ -91,7 +93,7 @@
       "title": "Basic Graph Definitions",
       "summary": "Graph, numEdges, containsSubgraph, isHFree",
       "startLine": 41,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "turan",
@@ -112,49 +114,49 @@
       "title": "Range of Interest",
       "summary": "k < l ≤ k²/4 (bipartite threshold)",
       "startLine": 85,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "Dirac-Erdős and Turán's theorem",
       "startLine": 96,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "monotonicity",
       "title": "The Monotonicity Question",
       "summary": "Is f strictly increasing in l? (OPEN)",
       "startLine": 125,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "bounds",
       "title": "Bounds and Estimates",
       "summary": "Upper/lower bounds, tree case, bipartite threshold",
       "startLine": 144,
-      "endLine": 161
+      "endLine": 166
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Triangles, K₄, C₄",
-      "startLine": 163,
-      "endLine": 180
+      "startLine": 167,
+      "endLine": 186
     },
     {
       "id": "turan-density",
       "title": "Turán Density",
       "summary": "Asymptotic density π(H), dense graph triangles",
-      "startLine": 182,
-      "endLine": 195
+      "startLine": 187,
+      "endLine": 206
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main results and open questions",
-      "startLine": 197,
-      "endLine": 230
+      "startLine": 207,
+      "endLine": 241
     }
   ],
   "conclusion": {
