@@ -1,0 +1,119 @@
+[
+  {
+    "id": "erdos-509-header",
+    "proofId": "erdos-509",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 29 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #509 asks about covering polynomial sublevel sets with discs. Given a monic polynomial f(z), can {z : |f(z)| ≤ 1} be covered by discs with total radius ≤ 2? This is a sharp bound conjectured but unproven.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-509-bounded-disc-cover",
+    "proofId": "erdos-509",
+    "type": "definition",
+    "range": { "startLine": 40, "endLine": 54 },
+    "title": "Bounded Disc Cover",
+    "content": "A BoundedDiscCover is a collection of closed discs (specified by centers and radii) that cover a set S, with summable radii bounded by r. All radii must be positive.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-509-can-be-covered",
+    "proofId": "erdos-509",
+    "type": "definition",
+    "range": { "startLine": 55, "endLine": 58 },
+    "title": "Coverability Definition",
+    "content": "A set S can be r-covered if there exists some index type ι and a BoundedDiscCover of S with total radius ≤ r over that index. This existential formulation allows arbitrary (possibly infinite) collections of discs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-509-sublevel-set",
+    "proofId": "erdos-509",
+    "type": "definition",
+    "range": { "startLine": 61, "endLine": 69 },
+    "title": "Polynomial Sublevel Set",
+    "content": "For f(z) ∈ ℂ[z], the sublevel set is {z ∈ ℂ : |f(z)| ≤ 1}. This is the preimage of the closed unit disc under the polynomial evaluation map. It's compact for monic polynomials and contains all roots.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-509-roots-in-sublevel",
+    "proofId": "erdos-509",
+    "type": "theorem",
+    "range": { "startLine": 71, "endLine": 75 },
+    "title": "Roots in Sublevel Set",
+    "content": "Every root of f is in the sublevel set, since |f(z)| = 0 ≤ 1 when f(z) = 0. This explains why the sublevel set has geometric structure related to the root distribution.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-509-main-conjecture",
+    "proofId": "erdos-509",
+    "type": "theorem",
+    "range": { "startLine": 84, "endLine": 96 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "The central open question: for every monic non-constant polynomial f, can we cover the sublevel set with discs totaling radius ≤ 2? The bound 2 would be optimal (achieved by z² - 1).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-509-cartan",
+    "proofId": "erdos-509",
+    "type": "theorem",
+    "range": { "startLine": 100, "endLine": 107 },
+    "title": "Cartan's Theorem (1928)",
+    "content": "Henri Cartan proved that the sublevel set can always be covered with total radius ≤ 2e ≈ 5.44. This was the first general bound and uses potential-theoretic methods.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-509-pommerenke",
+    "proofId": "erdos-509",
+    "type": "theorem",
+    "range": { "startLine": 109, "endLine": 115 },
+    "title": "Pommerenke's Improvement (1961)",
+    "content": "Pommerenke improved Cartan's bound to 2.59, getting closer to the conjectured optimal value of 2. The gap between 2.59 and 2 remains open.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-509-connected-case",
+    "proofId": "erdos-509",
+    "type": "theorem",
+    "range": { "startLine": 117, "endLine": 124 },
+    "title": "Connected Case (Pommerenke, 1959)",
+    "content": "When the sublevel set is connected (happens for some polynomials), the bound 2 is achievable. This solved the problem for a special case and suggests 2 might be the right answer in general.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-509-components",
+    "proofId": "erdos-509",
+    "type": "context",
+    "range": { "startLine": 126, "endLine": 136 },
+    "title": "Component Structure",
+    "content": "For a degree-n polynomial, the sublevel set has at most n connected components, each containing at least one root. The difficulty arises when components are well-separated.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-509-linear-example",
+    "proofId": "erdos-509",
+    "type": "example",
+    "range": { "startLine": 138, "endLine": 147 },
+    "title": "Linear Polynomial Example",
+    "content": "For f(z) = z - a, the sublevel set is exactly the closed unit disc centered at a. This requires radius 1 to cover, well under the bound of 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-509-lower-bound",
+    "proofId": "erdos-509",
+    "type": "example",
+    "range": { "startLine": 149, "endLine": 160 },
+    "title": "Lower Bound Example",
+    "content": "For f(z) = z² - 1, the sublevel set has two components around ±1, each roughly requiring radius 1. This shows that total radius 2 is sometimes necessary, making it the conjectured optimal bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-509-summary",
+    "proofId": "erdos-509",
+    "type": "conclusion",
+    "range": { "startLine": 175, "endLine": 207 },
+    "title": "Summary",
+    "content": "Known: Cartan (2e ≈ 5.44), Pommerenke (2.59), connected case (2). Open: Does 2 always suffice? The problem sits at the intersection of complex analysis, potential theory, and geometric measure theory.",
+    "significance": "key"
+  }
+]
