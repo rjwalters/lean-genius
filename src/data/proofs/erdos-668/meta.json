@@ -1,0 +1,153 @@
+{
+  "id": "erdos-668",
+  "title": "Erdos Problem #668: Unit Distance Configuration Uniqueness",
+  "slug": "erdos-668",
+  "description": "Does the number of incongruent extremal unit distance configurations tend to infinity? Is there more than one for n > 3?",
+  "meta": {
+    "author": "Erdos",
+    "sourceUrl": "https://erdosproblems.com/668",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos668Problem.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "distances",
+      "combinatorial-geometry",
+      "extremal-problems",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 668,
+    "erdosUrl": "https://erdosproblems.com/668",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space structure",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "dist",
+        "description": "Metric space distance function",
+        "module": "Mathlib.Geometry.Euclidean.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "isUnitPair predicate for unit distance pairs",
+      "unitDistanceEdges definition for unit distance graph",
+      "unitDistanceCount function counting unit pairs",
+      "u(n) definition: maximum unit distances for n points",
+      "isExtremal predicate for extremal configurations",
+      "extremalConfigs set of all n-point extremals",
+      "areCongruent relation on point sets",
+      "f(n) counting function for incongruent extremals",
+      "f(4) = 1 axiom (known result)",
+      "four_config_unique theorem (double triangle)",
+      "Connection to Erdos Problem #90",
+      "u(n) bounds: lower n-1, upper cn^(4/3)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #668**\n\nThis problem explores the structure of extremal configurations for the classical unit distance problem in the plane.\n\n**Background:**\nThe unit distance problem (Erdos Problem #90) asks: what is the maximum number u(n) of unit distances among n points in the plane? Problem #668 goes further, asking about the UNIQUENESS of configurations achieving this maximum.\n\n**Historical Development:**\n- The unit distance problem was posed by Erdos in 1946\n- The case n=4 is fully understood: exactly one configuration (the double triangle)\n- Computational work by Engel, Hammond-Lee, Su, Varga, Zsamboki [EHSVZ25] and Alexeev, Mixon, Parshall [AMP25] suggests uniqueness for 5 <= n <= 21\n\n**Status:** OPEN",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet u(n) be the maximum number of unit distances among n points in the plane.\nLet f(n) be the number of incongruent point configurations achieving u(n).\n\n**Question 1:** Does f(n) tend to infinity as n grows?\n\n**Question 2:** Is f(n) > 1 for all n > 3?\n\n**Known Results:**\n- f(4) = 1: The unique extremal is two equilateral triangles sharing an edge\n- Computational evidence suggests f(n) = 1 for 5 <= n <= 21\n\n**Note:** The second question as stated is false (f(4) = 1), so the interesting version asks about large n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Euclidean Setup:** Use Mathlib's EuclideanSpace for the plane R^2\n\n2. **Unit Distances:** Define isUnitPair and count unit pairs in a point set\n\n3. **Extremality:** Define u(n) and isExtremal predicate\n\n4. **Congruence:** Define areCongruent via rigid motions (isometries)\n\n5. **Counting Function:** f(n) as number of congruence classes\n\n6. **Known Results:** Axiomatize f(4) = 1 and the unique double-triangle\n\n7. **Open Questions:** State question_one and question_two formally",
+    "keyInsights": [
+      "**Double Triangle:** The unique 4-point extremal has 5 unit distances and looks like a rhombus with 60-degree angles",
+      "**Congruence vs Graph Isomorphism:** Computational checks often verify graph isomorphism, not full geometric congruence",
+      "**Connection to Problem #90:** Understanding u(n) is prerequisite to studying f(n)",
+      "**Uniqueness Phenomenon:** Evidence suggests extremal configurations may be unique for small n",
+      "**Asymptotic Question:** Does multiplicity emerge for large n, or remain 1 forever?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unit-distances",
+      "title": "Unit Distances in the Plane",
+      "summary": "isUnitPair, unitDistanceEdges definitions",
+      "startLine": 36,
+      "endLine": 55
+    },
+    {
+      "id": "counting",
+      "title": "Counting Unit Distances",
+      "summary": "unitDistanceCount, u(n) maximum definition",
+      "startLine": 57,
+      "endLine": 78
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Configurations",
+      "summary": "isExtremal, extremalConfigs set",
+      "startLine": 80,
+      "endLine": 100
+    },
+    {
+      "id": "congruence",
+      "title": "Congruence of Point Sets",
+      "summary": "isRigidMotion, areCongruent, equivalence relation",
+      "startLine": 102,
+      "endLine": 140
+    },
+    {
+      "id": "f-function",
+      "title": "The Counting Function f(n)",
+      "summary": "f(n) definition counting incongruent extremals",
+      "startLine": 142,
+      "endLine": 165
+    },
+    {
+      "id": "n-four",
+      "title": "The n=4 Case",
+      "summary": "f(4)=1, unique double-triangle, u(4)=5",
+      "startLine": 167,
+      "endLine": 202
+    },
+    {
+      "id": "computational",
+      "title": "Computational Evidence",
+      "summary": "Evidence for f(n)=1 for 5<=n<=21",
+      "startLine": 204,
+      "endLine": 220
+    },
+    {
+      "id": "open-questions",
+      "title": "The Open Questions",
+      "summary": "question_one and question_two formalization",
+      "startLine": 222,
+      "endLine": 260
+    },
+    {
+      "id": "problem-90",
+      "title": "Connection to Problem #90",
+      "summary": "Relationship to u(n), bounds on unit distances",
+      "startLine": 262,
+      "endLine": 295
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_668_summary theorem",
+      "startLine": 297,
+      "endLine": 320
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #668 asks about the multiplicity of extremal unit distance configurations. While f(4)=1 is known (the unique double-triangle), and computational evidence suggests f(n)=1 for n up to 21, the questions of whether f(n) tends to infinity or exceeds 1 for large n remain OPEN.",
+    "implications": "**Geometric Significance**\n\n1. **Extremal Structure:** Understanding f(n) reveals how constrained or flexible extremal configurations are\n\n2. **Uniqueness Phenomenon:** If f(n)=1 persists, extremal structures have remarkable rigidity\n\n3. **Asymptotic Behavior:** The growth of f(n) reflects the complexity of the unit distance problem\n\n4. **Computational Geometry:** Results inform algorithms for geometric optimization\n\n5. **Connection to Erdos-Ko-Rado Type Problems:** Extremal configurations in discrete geometry",
+    "openQuestions": [
+      "Does f(n) tend to infinity as n grows?",
+      "Is f(n) > 1 for all sufficiently large n?",
+      "What is f(n) for 22 <= n <= 100?",
+      "Can extremal configurations be characterized combinatorially?",
+      "How does f(n) relate to the structure of u(n)?"
+    ]
+  }
+}
