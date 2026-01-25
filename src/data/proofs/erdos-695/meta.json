@@ -1,0 +1,136 @@
+{
+  "id": "erdos-695",
+  "title": "Erdős Problem #695: Prime Chain Growth",
+  "slug": "erdos-695",
+  "description": "Let p₁ < p₂ < ⋯ be primes with p_{i+1} ≡ 1 (mod p_i). Is lim p_k^{1/k} = ∞? Can p_k ≤ exp(k(log k)^{1+o(1)})?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/695",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos695Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-chains",
+      "growth-rates",
+      "linnik",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 4,
+    "erdosNumber": 695,
+    "erdosUrl": "https://erdosproblems.com/695",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
+    ],
+    "originalContributions": [
+      "IsPrimeChain definition: strictly increasing primes with p_{i+1} ≡ 1 (mod p_i)",
+      "ChainDivisibility definition: p_i | (p_{i+1} - 1)",
+      "chain_equiv theorem: equivalence of definitions",
+      "kthRoot definition: p_k^{1/k}",
+      "Question1 definition: does p_k^{1/k} → ∞?",
+      "Question2 definition: can p_k ≤ exp(k(log k)^{1+o(1)})?",
+      "linnik_bound axiom: least prime in AP bound",
+      "greedy_doubly_exponential axiom: greedy gives exp(exp(O(k)))",
+      "small_prime_conjecture axiom: conjectured polynomial bound",
+      "IsCunninghamChainFirst definition: 2p+1 chains",
+      "fkl_analysis axiom: Ford-Konyagin-Luca results",
+      "exponential_lower_bound axiom: p_k ≥ c^k"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1979 [Er79e]. Prime chains arise from the multiplicative structure of cyclic groups: if p_{i+1} ≡ 1 (mod p_i), then Z/p_{i+1}Z contains a cyclic subgroup of order p_i.\n\nFord, Konyagin, and Luca [FKL10] conducted an extensive study of prime chain growth, establishing various bounds. The problem connects to Linnik's theorem on the least prime in arithmetic progressions.\n\nRelated: OEIS A061092, Cunningham chains.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $p_1 < p_2 < \\cdots$ be a sequence of primes where $p_{i+1} \\equiv 1 \\pmod{p_i}$.\n\n**Question 1:** Is it true that $\\lim_{k \\to \\infty} p_k^{1/k} = \\infty$?\n\n**Question 2:** Does there exist such a sequence with $p_k \\leq \\exp(k(\\log k)^{1+o(1)})$?\n\nBoth questions remain OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Chains:** IsPrimeChain(p) := StrictMono p ∧ all primes ∧ p_{i+1} % p_i = 1\n\n2. **Growth Questions:** Question1 (k-th root → ∞) and Question2 (sub-doubly-exponential)\n\n3. **Known Bounds:** Axiomatize Linnik's theorem, greedy algorithm bounds, FKL analysis\n\n4. **Related Structures:** Cunningham chains as special prime chains\n\n5. **Formal Statements:** Precise Tendsto formulation from formal-conjectures",
+    "keyInsights": [
+      "**Greedy Bound:** Using Linnik's theorem, greedy gives p_k ≤ exp(exp(O(k)))",
+      "**Conjectural Improvement:** If least prime ≡ 1 (mod p) is O(p(log p)^C), get desired bound",
+      "**Exponential Lower:** Any prime chain grows at least exponentially: p_k ≥ c^k",
+      "**Cunningham Chains:** p, 2p+1, 4p+3,... are prime chains when all terms are prime",
+      "**Gap:** Large gap between known lower (c^k) and upper (exp(exp(Ck))) bounds"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-chain",
+      "title": "Prime Chain Definition",
+      "summary": "IsPrimeChain, ChainDivisibility, chain_equiv",
+      "startLine": 30,
+      "endLine": 57
+    },
+    {
+      "id": "growth-questions",
+      "title": "Growth Questions",
+      "summary": "kthRoot, Question1, Question2, question1_equiv",
+      "startLine": 58,
+      "endLine": 84
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "linnik_bound, greedy_chain_exists, greedy_doubly_exponential, small_prime_conjecture",
+      "startLine": 85,
+      "endLine": 114
+    },
+    {
+      "id": "related-sequences",
+      "title": "Related Sequences",
+      "summary": "smallestPrimeCongruentOne, IsCunninghamChainFirst, cunningham_is_prime_chain",
+      "startLine": 115,
+      "endLine": 134
+    },
+    {
+      "id": "fkl",
+      "title": "Ford-Konyagin-Luca Analysis",
+      "summary": "fkl_analysis, exponential_lower_bound",
+      "startLine": 135,
+      "endLine": 150
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_695_status, ErdosProblem695Part1, ErdosProblem695Part2",
+      "startLine": 151,
+      "endLine": 169
+    },
+    {
+      "id": "formal",
+      "title": "Formal Statements",
+      "summary": "erdos_695_main, erdos_695_variant",
+      "startLine": 170,
+      "endLine": 196
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #695 asks two questions about prime chains (sequences p_i where p_{i+1} ≡ 1 (mod p_i)): does p_k^{1/k} → ∞, and can p_k grow as slowly as exp(k(log k)^{1+o(1)})? Both questions are OPEN.",
+    "implications": "Understanding prime chain growth would illuminate the distribution of primes in arithmetic progressions and the structure of multiplicative groups modulo primes.",
+    "openQuestions": [
+      "Does every prime chain have p_k^{1/k} → ∞?",
+      "Can we improve on the greedy doubly-exponential bound?",
+      "Is the small prime conjecture true?",
+      "What is the longest prime chain with p_k ≤ n?",
+      "Are there prime chains with p_k = exp(k^{1+o(1)})?"
+    ]
+  }
+}
