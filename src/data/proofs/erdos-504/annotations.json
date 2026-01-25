@@ -1,0 +1,101 @@
+[
+  {
+    "id": "erdos-504-header",
+    "proofId": "erdos-504",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 32 },
+    "title": "Problem Overview",
+    "content": "Blumenthal's Problem: determine α_n, the supremum of angles α such that every n-point planar set contains three points forming angle ≥ α. Completely solved by Sendov in 1993 after partial results by Szekeres (1941) and Erdős-Szekeres (1960).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-504-angle-def",
+    "proofId": "erdos-504",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 66 },
+    "title": "Angle Definition",
+    "content": "The angle ∠xyz is computed using the dot product formula: angle = arccos((v1·v2)/(|v1||v2|)) where v1 = x-y and v2 = z-y. The angle is always in [0, π] and is symmetric in x and z.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-504-max-angle",
+    "proofId": "erdos-504",
+    "type": "definition",
+    "range": { "startLine": 68, "endLine": 82 },
+    "title": "Maximum Angle in Set",
+    "content": "Given a finite point set A, maxAngleInSet(A) is the largest angle that can be formed by choosing three distinct points from A. This is the quantity we're trying to minimize over all n-point sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-504-alpha-n",
+    "proofId": "erdos-504",
+    "type": "definition",
+    "range": { "startLine": 84, "endLine": 102 },
+    "title": "The α_n Function",
+    "content": "α_n = inf { maxAngleInSet(A) : |A| = n } is the infimum of maximum angles over all n-point sets. Equivalently, it's the largest angle that MUST appear in every n-point configuration. This function is monotonically non-increasing.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-504-erdos-szekeres",
+    "proofId": "erdos-504",
+    "type": "theorem",
+    "range": { "startLine": 112, "endLine": 134 },
+    "title": "Erdős-Szekeres Result (1960)",
+    "content": "For powers of 2, Erdős and Szekeres proved α_{2^n} = π(1-1/n). This elegant formula relates optimal angles to regular 2^n-gons. They conjectured this held more broadly, which Sendov later disproved.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-504-sendov-upper",
+    "proofId": "erdos-504",
+    "type": "theorem",
+    "range": { "startLine": 136, "endLine": 165 },
+    "title": "Sendov's Upper Range Formula",
+    "content": "For 2^{n-1} + 2^{n-3} < N ≤ 2^n, Sendov proved α_N = π(1-1/n). This is the same as the Erdős-Szekeres formula, valid for the 'upper part' of each range between powers of 2.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-504-sendov-lower",
+    "proofId": "erdos-504",
+    "type": "theorem",
+    "range": { "startLine": 167, "endLine": 174 },
+    "title": "Sendov's Lower Range Formula",
+    "content": "For 2^{n-1} < N ≤ 2^{n-1} + 2^{n-3}, Sendov proved α_N = π(1-1/(2n-1)). This different formula for the 'lower part' was the key insight that disproved the Erdős-Szekeres conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-504-counterexample",
+    "proofId": "erdos-504",
+    "type": "example",
+    "range": { "startLine": 176, "endLine": 199 },
+    "title": "Counterexample to Erdős-Szekeres",
+    "content": "Sendov (1992) showed that N=5 is a counterexample: 5 is in range (4, 5] = (2^2, 2^2+2^0], so α_5 = π(1-1/5) ≠ π(1-1/3). The conjecture that α_N = π(1-1/n) for all N ∈ (2^{n-1}, 2^n] was false.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-504-regular-polygon",
+    "proofId": "erdos-504",
+    "type": "definition",
+    "range": { "startLine": 201, "endLine": 218 },
+    "title": "Regular Polygon Configurations",
+    "content": "The vertices of a regular n-gon, placed on the unit circle, achieve the optimal configuration for N = 2^k. The maximum angle among any three vertices relates to the inscribed angle theorem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-504-convex",
+    "proofId": "erdos-504",
+    "type": "context",
+    "range": { "startLine": 220, "endLine": 236 },
+    "title": "Convex Position",
+    "content": "The problem considers all planar point sets, not just convex position. Remarkably, optimal configurations achieving α_N are typically in convex position - all points are vertices of the convex hull.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-504-summary",
+    "proofId": "erdos-504",
+    "type": "conclusion",
+    "range": { "startLine": 238, "endLine": 274 },
+    "title": "Summary",
+    "content": "Problem SOLVED by Sendov (1993). The answer has a beautiful binary structure: α_N depends on whether N is in the upper part (2^{n-1}+2^{n-3}, 2^n] or lower part (2^{n-1}, 2^{n-1}+2^{n-3}] of each range between powers of 2.",
+    "significance": "key"
+  }
+]

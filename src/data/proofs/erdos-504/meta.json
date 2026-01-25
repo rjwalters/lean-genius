@@ -1,0 +1,61 @@
+{
+  "id": "erdos-504",
+  "title": "Erdős Problem #504: Maximum Angle in Point Sets",
+  "slug": "erdos-504",
+  "description": "Determine α_n, the supremum of angles α such that every n-point set in the plane contains three points forming an angle at least α.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/504",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos504Problem.lean",
+    "tags": ["geometry", "discrete-geometry", "angles", "point-sets"],
+    "badge": "solved",
+    "sorries": 4,
+    "erdosNumber": 504,
+    "erdosUrl": "https://erdosproblems.com/504",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Also known as Blumenthal's Problem. Szekeres (1941) established initial bounds. Erdős and Szekeres (1960) proved α_{2^n} = π(1-1/n) and conjectured this held for all N in ranges [2^{n-1}+1, 2^n]. Sendov (1992) disproved this conjecture and (1993) provided the complete solution with an elegant two-part formula.",
+    "problemStatement": "Let α_n be the supremum of all 0 ≤ α ≤ π such that in every set A ⊂ ℝ² of n points there exist three distinct points x, y, z ∈ A such that the angle ∠xyz is at least α. Determine α_n.",
+    "proofStrategy": "The formalization defines angles between points, the maximum angle function for point sets, and the α_n infimum. Sendov's complete solution is stated as axioms covering two ranges based on binary representations.",
+    "keyInsights": [
+      "Optimal configurations are vertices of regular polygons",
+      "α_n decreases as n increases (more points allows smaller max angle)",
+      "The formula depends on where N falls in binary: above or below 2^{n-1} + 2^{n-3}",
+      "Sendov's counterexample showed the Erdős-Szekeres conjecture was too optimistic",
+      "Regular 2^n-gons achieve the optimal configuration for N = 2^n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "The Problem",
+      "content": "Given n points in the plane, three of them always form a triangle with some maximum angle. The question is: what's the largest α such that EVERY n-point configuration has three points with angle ≥ α?"
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "Erdős-Szekeres Contribution",
+      "content": "In 1960, Erdős and Szekeres proved that α_{2^n} = α_{2^n-1} = π(1-1/n). They conjectured this formula held for all N between consecutive powers of 2."
+    },
+    {
+      "id": "sendov-solution",
+      "title": "Sendov's Complete Solution",
+      "content": "Sendov (1993) showed the answer depends on binary structure: α_N = π(1-1/n) for N in upper part of range [2^{n-1}+1, 2^n], but α_N = π(1-1/(2n-1)) for N in lower part."
+    },
+    {
+      "id": "optimal-configs",
+      "title": "Optimal Configurations",
+      "content": "The configurations achieving the minimum maximum angle are typically vertices of regular or nearly-regular convex polygons. For powers of 2, the regular 2^n-gon is optimal."
+    }
+  ],
+  "conclusion": {
+    "summary": "The maximum angle problem was completely solved by Sendov in 1993 after decades of partial results. The solution reveals a beautiful dependence on binary representation: the formula changes depending on where N falls relative to 2^{n-1} + 2^{n-3}.",
+    "implications": "The solution connects discrete geometry to number theory through the binary structure of N. It also demonstrates that naive generalizations (like the Erdős-Szekeres conjecture) can fail even when special cases look promising.",
+    "openQuestions": [
+      "What is the analogous result in higher dimensions?",
+      "How do optimal configurations generalize beyond regular polygons?",
+      "Are there efficient algorithms to find the maximum angle configuration?"
+    ]
+  }
+}
