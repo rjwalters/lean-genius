@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ann-358-header",
+    "proofId": "erdos-358",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #358 asks: for an infinite increasing sequence A, let f(n) count ways to write n as a sum of consecutive terms. Does any A have f(n) -> infinity? Or even f(n) >= 2 for large n? Both questions are OPEN.",
+    "mathContext": "Related to additive combinatorics and convex sumsets. The problem has connections to classical results about consecutive integer sums.",
+    "significance": "critical",
+    "relatedConcepts": ["consecutive-sums", "additive-basis", "number-theory"]
+  },
+  {
+    "id": "ann-358-intseq",
+    "proofId": "erdos-358",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "definition",
+    "title": "IntSequence Structure",
+    "content": "An IntSequence is a strictly increasing sequence of integers: seq(n) < seq(n+1) for all n. This captures the requirement that A = {a_1 < a_2 < ...} be infinite and strictly increasing.",
+    "mathContext": "The increasing property ensures each term is used at most once in any consecutive sum representation.",
+    "significance": "key",
+    "relatedConcepts": ["sequences", "monotonicity"]
+  },
+  {
+    "id": "ann-358-count",
+    "proofId": "erdos-358",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "definition",
+    "title": "Consecutive Sum Count f(n)",
+    "content": "f(n) = consecutiveSumCount counts pairs (u,v) with u <= v where the sum of A's terms from index u to v equals n. This is the central object: how many ways can n be represented?",
+    "mathContext": "Uses Set.ncard to count the set of valid (u,v) pairs. The sum is computed over Finset.Icc u v.",
+    "significance": "critical",
+    "relatedConcepts": ["counting-functions", "sum-representations"]
+  },
+  {
+    "id": "ann-358-naturals",
+    "proofId": "erdos-358",
+    "range": { "startLine": 48, "endLine": 56 },
+    "type": "definition",
+    "title": "Natural Numbers Sequence",
+    "content": "naturalsSeq is A = {1, 2, 3, ...} defined as seq(n) = n+1. This is the most natural example and has a complete characterization: f(n) equals the number of odd divisors of n.",
+    "mathContext": "The increasing property is proven inline using omega tactic.",
+    "significance": "key",
+    "relatedConcepts": ["natural-numbers", "odd-divisors"]
+  },
+  {
+    "id": "ann-358-formula",
+    "proofId": "erdos-358",
+    "range": { "startLine": 57, "endLine": 67 },
+    "type": "theorem",
+    "title": "Consecutive Sum Formula",
+    "content": "The sum of integers from u+1 to v+1 equals (v-u+1)(u+v+2)/2. This is the classic arithmetic series formula, essential for characterizing which n are representable.",
+    "mathContext": "Sorry'd because the proof requires algebraic manipulation that is tedious in Lean.",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic-series", "gauss-sum"]
+  },
+  {
+    "id": "ann-358-classic",
+    "proofId": "erdos-358",
+    "range": { "startLine": 62, "endLine": 67 },
+    "type": "theorem",
+    "title": "Classical Characterization",
+    "content": "n can be written as a sum of at least 2 consecutive positive integers if and only if n is NOT a power of 2. This is the complete answer for naturals with the >=2 terms restriction.",
+    "mathContext": "The proof uses the sum formula: (v-u+1)(u+v+2)/2 = n. For n = 2^k, the factors force v-u+1 = 1 (single term).",
+    "significance": "critical",
+    "relatedConcepts": ["powers-of-two", "divisibility"]
+  },
+  {
+    "id": "ann-358-odd-divisors",
+    "proofId": "erdos-358",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "axiom",
+    "title": "Odd Divisors Connection",
+    "content": "For the natural numbers sequence, f(n) equals the number of odd divisors of n. This gives explicit values: f(15) = 4 (divisors 1,3,5,15), f(16) = 1 (only divisor 1).",
+    "mathContext": "Axiomatized because the proof requires careful analysis of the sum formula factors.",
+    "significance": "key",
+    "relatedConcepts": ["divisor-function", "odd-numbers"]
+  },
+  {
+    "id": "ann-358-strong",
+    "proofId": "erdos-358",
+    "range": { "startLine": 74, "endLine": 81 },
+    "type": "definition",
+    "title": "Strong Conjecture",
+    "content": "Erdos358Strong: Does there exist A with f(n) -> infinity as n -> infinity? This asks for a sequence where large integers have arbitrarily many consecutive sum representations.",
+    "mathContext": "Formalized using Filter.Tendsto and Filter.atTop for the limit.",
+    "significance": "critical",
+    "relatedConcepts": ["limits", "tendsto"]
+  },
+  {
+    "id": "ann-358-weak",
+    "proofId": "erdos-358",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "Weak Conjecture",
+    "content": "Erdos358Weak: Does there exist A with f(n) >= 2 for all sufficiently large n? Even this modest requirement - just two representations eventually - is unknown!",
+    "mathContext": "Weaker than the Strong form but still open. For naturals, powers of 2 violate this (f(2^k) = 1 for single-term sums only).",
+    "significance": "critical",
+    "relatedConcepts": ["eventually", "lower-bounds"]
+  },
+  {
+    "id": "ann-358-egami",
+    "proofId": "erdos-358",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "theorem",
+    "title": "Egami's Observation",
+    "content": "f(n) >= 1 for all n >= 1 is trivially achieved by A = naturals, since n can always be written as the single-term sum (n itself). The challenge is getting f(n) >= 2.",
+    "mathContext": "The trivial representation n = sum from index n-1 to n-1 works for any n.",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial-bounds"]
+  },
+  {
+    "id": "ann-358-power2",
+    "proofId": "erdos-358",
+    "range": { "startLine": 104, "endLine": 111 },
+    "type": "axiom",
+    "title": "Power of 2 Obstruction",
+    "content": "Powers of 2 cannot be written as sums of 2 or more consecutive positive integers. This is the only obstruction - all other positive integers have such a representation.",
+    "mathContext": "If 2^k = sum from u+1 to v+1 with u < v, then 2^k = (v-u+1)(u+v+2)/2, but 2^k has no odd factor > 1 unless v-u+1 = 1.",
+    "significance": "key",
+    "relatedConcepts": ["powers-of-two", "uniqueness"]
+  },
+  {
+    "id": "ann-358-primes",
+    "proofId": "erdos-358",
+    "range": { "startLine": 114, "endLine": 124 },
+    "type": "concept",
+    "title": "The Prime Sequence Case",
+    "content": "For A = primes, Erdos and Moser (1963) conjectured that limsup f(n) = infinity. They could not even prove that the upper density of representable integers is positive!",
+    "mathContext": "primesSeq is axiomatized since extracting the nth prime is complex. The conjecture remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-numbers", "erdos-moser"]
+  },
+  {
+    "id": "ann-358-density",
+    "proofId": "erdos-358",
+    "range": { "startLine": 131, "endLine": 144 },
+    "type": "definition",
+    "title": "Density Conjecture",
+    "content": "PositiveDensityConjecture asks: does the set of integers representable as consecutive prime sums have positive upper density? Even this basic question is unknown.",
+    "mathContext": "representableCount counts integers up to N with f(n) >= 1. We don't know if representableCount(N)/N has a positive liminf.",
+    "significance": "key",
+    "relatedConcepts": ["density", "prime-sums"]
+  },
+  {
+    "id": "ann-358-related",
+    "proofId": "erdos-358",
+    "range": { "startLine": 145, "endLine": 154 },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "Problem #356 is the finite analogue. Modern additive combinatorics views this as asking for a convex set A with 1_A * 1_A(n) -> infinity (convolution of indicator functions).",
+    "mathContext": "The convex set formulation connects to sumset theory and the structure of arithmetic progressions within A.",
+    "significance": "supporting",
+    "relatedConcepts": ["problem-356", "convex-sumsets"]
+  },
+  {
+    "id": "ann-358-status",
+    "proofId": "erdos-358",
+    "range": { "startLine": 156, "endLine": 173 },
+    "type": "concept",
+    "title": "Current Status Summary",
+    "content": "Both the Strong and Weak forms of Erdos #358 remain OPEN. What's known: (1) For naturals, f(n) = odd divisors, (2) n != 2^k iff representable by >=2 terms, (3) For primes, even positive density is unknown.",
+    "mathContext": "Erdos called the problem 'artificial and in the backwater of Mathematics' but found it 'very strange and attractive.'",
+    "significance": "critical",
+    "relatedConcepts": ["open-problems", "erdos-quote"]
+  },
+  {
+    "id": "ann-358-main",
+    "proofId": "erdos-358",
+    "range": { "startLine": 175, "endLine": 183 },
+    "type": "theorem",
+    "title": "Status Theorem",
+    "content": "erdos_358_status: Summarizes that Strong implies Weak, and the problem is formally undetermined (either answer is consistent with current knowledge).",
+    "mathContext": "The final theorem packages the implications and openness into a single statement.",
+    "significance": "key",
+    "relatedConcepts": ["summary", "implications"]
+  }
+]
