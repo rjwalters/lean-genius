@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-e218-header",
+    "proofId": "erdos-218",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #218: Prime Gap Densities**\n\nThis problem studies the behavior of consecutive prime gaps d_n = p_{n+1} - p_n.\n\n**Conjectures:**\n1. The set {n : d_{n+1} >= d_n} has density 1/2\n2. The set {n : d_{n+1} <= d_n} has density 1/2\n3. There are infinitely many n with d_n = d_{n+1}\n\n**Status:** All three remain OPEN. Terence Tao marked this as 'looks difficult'.",
+    "mathContext": "From Erdos [Er55c], [Er57], [Er61], [Er65b], [Er85c]. The third conjecture is equivalent to infinitely many 3-term arithmetic progressions of consecutive primes.",
+    "significance": "critical",
+    "relatedConcepts": ["prime gaps", "natural density", "arithmetic progressions", "Prime Number Theorem"]
+  },
+  {
+    "id": "ann-e218-nthprime",
+    "proofId": "erdos-218",
+    "range": { "startLine": 40, "endLine": 60 },
+    "type": "definition",
+    "title": "Prime Enumeration",
+    "content": "**nthPrime n:** The nth prime number (0-indexed).\n\n```lean\nnoncomputable def nthPrime : N -> N := sorry\n```\n\n**Examples:**\n- nthPrime 0 = 2 (first prime)\n- nthPrime 1 = 3 (second prime)\n- nthPrime 2 = 5 (third prime)\n- nthPrime 3 = 7 (fourth prime)\n\n**Properties:**\n- Always prime: nthPrime n is prime for all n\n- Strictly increasing: n < m implies nthPrime n < nthPrime m",
+    "significance": "key",
+    "relatedConcepts": ["prime numbers", "prime counting function", "Sieve of Eratosthenes"]
+  },
+  {
+    "id": "ann-e218-primegap",
+    "proofId": "erdos-218",
+    "range": { "startLine": 62, "endLine": 88 },
+    "type": "definition",
+    "title": "Prime Gap Function",
+    "content": "**primeGap n = d_n = p_{n+1} - p_n**\n\nThe gap between the nth and (n+1)th primes.\n\n```lean\ndef primeGap (n : N) : N := nthPrime (n + 1) - nthPrime n\n```\n\n**Examples:**\n- primeGap 0 = 3 - 2 = 1\n- primeGap 1 = 5 - 3 = 2\n- primeGap 2 = 7 - 5 = 2\n- primeGap 3 = 11 - 7 = 4\n\n**Key Fact:** Prime gaps are always positive (primes are strictly increasing).\n\n**Asymptotic Behavior:** By the Prime Number Theorem, average gap ~ log(p_n).",
+    "mathContext": "Prime gaps exhibit complex local behavior even though their average is well-understood. Large gaps (Cramer's conjecture) and small gaps (twin primes) are active research areas.",
+    "significance": "critical",
+    "relatedConcepts": ["twin primes", "Cramer's conjecture", "Prime Number Theorem"]
+  },
+  {
+    "id": "ann-e218-density",
+    "proofId": "erdos-218",
+    "range": { "startLine": 90, "endLine": 116 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "**HasDensity S d:** A set S has natural density d.\n\n```lean\ndef HasDensity (S : Set N) (d : R) : Prop :=\n  Tendsto (fun N => |S cap [1,N]| / N) atTop (nhds d)\n```\n\n**Meaning:**\nThe proportion of integers in S up to N approaches d as N -> infinity.\n\n**Examples:**\n- Even numbers have density 1/2\n- Multiples of 3 have density 1/3\n- Primes have density 0\n- Squares have density 0\n\n**Upper/Lower Density:** When the limit doesn't exist, we use limsup and liminf.",
+    "mathContext": "Natural density is a fundamental concept in analytic number theory. Not all sets have a well-defined density (some oscillate between upper and lower bounds).",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic density", "Schnirelmann density", "limsup", "liminf"]
+  },
+  {
+    "id": "ann-e218-keysets",
+    "proofId": "erdos-218",
+    "range": { "startLine": 118, "endLine": 166 },
+    "type": "definition",
+    "title": "The Key Sets",
+    "content": "**Three sets defined by gap comparisons:**\n\n1. **gapIncreasingSet:** {n : d_n <= d_{n+1}}\n   - Indices where next gap is larger or equal\n\n2. **gapDecreasingSet:** {n : d_{n+1} <= d_n}\n   - Indices where next gap is smaller or equal\n\n3. **gapEqualSet:** {n : d_n = d_{n+1}}\n   - Indices where consecutive gaps are equal\n   - This is the intersection of the other two!\n\n**Key Identity:**\ngapEqualSet = gapIncreasingSet ∩ gapDecreasingSet\n\n**Example:** n = 1 is in gapEqualSet since gap(1) = gap(2) = 2 (primes 3,5,7).",
+    "significance": "critical",
+    "relatedConcepts": ["set intersection", "monotonicity", "prime gap comparisons"]
+  },
+  {
+    "id": "ann-e218-conjectures",
+    "proofId": "erdos-218",
+    "range": { "startLine": 168, "endLine": 195 },
+    "type": "axiom",
+    "title": "The Three Conjectures (OPEN)",
+    "content": "**Erdos's Conjectures:**\n\n```lean\naxiom erdos_218a : HasDensity gapIncreasingSet (1/2)\naxiom erdos_218b : HasDensity gapDecreasingSet (1/2)\naxiom erdos_218c : gapEqualSet.Infinite\n```\n\n**Conjecture 1:** {n : d_{n+1} >= d_n} has density 1/2\n\n**Conjecture 2:** {n : d_{n+1} <= d_n} has density 1/2\n\n**Conjecture 3:** Infinitely many n have d_n = d_{n+1}\n\n**Note:** Conjectures 1 and 2 together imply that gapEqualSet has density 0 (since both allow equality but density 1/2 + 1/2 = 1 only works if equality is rare).",
+    "mathContext": "All three remain open. The heuristic for density 1/2 comes from symmetry: if gap comparisons were 'random', each direction would be equally likely.",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "natural density", "symmetry arguments"]
+  },
+  {
+    "id": "ann-e218-ap",
+    "proofId": "erdos-218",
+    "range": { "startLine": 197, "endLine": 230 },
+    "type": "theorem",
+    "title": "Connection to Arithmetic Progressions",
+    "content": "**Equal Gaps = Three Primes in AP**\n\n```lean\ndef threePrimesInAP (n : N) : Prop :=\n  nthPrime n + nthPrime (n + 2) = 2 * nthPrime (n + 1)\n\ntheorem gapEqual_iff_ap (n : N) :\n    n in gapEqualSet <-> threePrimesInAP n\n```\n\n**Meaning:**\nd_n = d_{n+1} iff p_n, p_{n+1}, p_{n+2} form an arithmetic progression.\n\n**Example:** n = 1 gives 3, 5, 7 with common difference 2.\n\n**Conjecture 3 Equivalence:**\nInfinitely many equal gaps iff infinitely many 3-term APs of consecutive primes.",
+    "mathContext": "This connects prime gap statistics to arithmetic progressions. Green-Tao gives long APs in primes, but not necessarily of consecutive primes.",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic progressions", "Green-Tao theorem", "consecutive primes"]
+  },
+  {
+    "id": "ann-e218-greentao",
+    "proofId": "erdos-218",
+    "range": { "startLine": 243, "endLine": 259 },
+    "type": "axiom",
+    "title": "Green-Tao Theorem",
+    "content": "**Green-Tao (2008):** Primes contain arbitrarily long arithmetic progressions.\n\n```lean\naxiom green_tao (k : N) : exists a d : N, d > 0 and\n    forall i < k, (a + i * d).Prime\n```\n\n**Important Distinction:**\nGreen-Tao gives APs of primes, but these primes need not be consecutive.\n\n**Example:**\n5, 11, 17, 23, 29 is a 5-term AP of primes (difference 6), but 7, 13, 19 are between them.\n\nSo Green-Tao doesn't immediately imply Conjecture 3, which asks about CONSECUTIVE primes.",
+    "mathContext": "Green-Tao is one of the landmark results in 21st century number theory. It shows primes are not 'too sparse' to contain long structures.",
+    "significance": "key",
+    "relatedConcepts": ["Szemeredi's theorem", "arithmetic progressions", "additive combinatorics"]
+  },
+  {
+    "id": "ann-e218-partial",
+    "proofId": "erdos-218",
+    "range": { "startLine": 261, "endLine": 280 },
+    "type": "theorem",
+    "title": "Partial Results",
+    "content": "**What We Can Prove:**\n\n```lean\ntheorem gapIncreasingSet_infinite : gapIncreasingSet.Infinite\ntheorem gapDecreasingSet_infinite : gapDecreasingSet.Infinite\n```\n\n**Why Increasing Set is Infinite:**\nPrimes thin out (PNT), so gaps must increase infinitely often.\n\n**Why Decreasing Set is Infinite:**\nAfter large gaps (like following 'prime deserts'), we often see smaller gaps.\n\n**What Remains Unknown:**\n- Exact density of either set\n- Whether gapEqualSet is infinite",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "infinite sets", "prime deserts"]
+  },
+  {
+    "id": "ann-e218-symmetry",
+    "proofId": "erdos-218",
+    "range": { "startLine": 282, "endLine": 309 },
+    "type": "concept",
+    "title": "Symmetry Heuristic",
+    "content": "**Why Density 1/2 is Plausible:**\n\nIf gap comparisons were 'random' and independent:\n- P(d_{n+1} > d_n) ~ 1/2\n- P(d_{n+1} < d_n) ~ 1/2\n- P(d_{n+1} = d_n) ~ 0 (equality is rare)\n\n**Partition of N:**\n```lean\ntheorem partition :\n  strictlyIncreasing ∪ strictlyDecreasing ∪ gapEqualSet = Set.univ\n```\n\n**The Difficulty:**\nPrimes have subtle correlations. Consecutive gaps are not independent, making the 'random' model too naive.",
+    "mathContext": "Similar heuristics work for many number theory problems but often fail due to hidden structure. The difficulty is proving density rigorously.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic models", "prime randomness", "Cramer model"]
+  },
+  {
+    "id": "ann-e218-summary",
+    "proofId": "erdos-218",
+    "range": { "startLine": 311, "endLine": 343 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdos Problem #218: Summary**\n\n```lean\ntheorem erdos_218_summary :\n    (gapIncreasingSet.Infinite ∧ gapDecreasingSet.Infinite) ∧\n    (gapEqualSet.Infinite ↔ apTriples.Infinite)\n```\n\n**What We Know:**\n- Both increasing and decreasing gap sets are infinite\n- Equal gaps iff consecutive primes form 3-term AP\n\n**What Remains OPEN:**\n1. Density 1/2 for increasing gaps\n2. Density 1/2 for decreasing gaps\n3. Infinitude of equal gaps\n\n**Assessment:** Terence Tao: 'looks difficult'",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "prime gaps", "arithmetic progressions"]
+  }
+]
