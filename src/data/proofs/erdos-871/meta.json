@@ -1,0 +1,106 @@
+{
+  "id": "erdos-871",
+  "title": "Erdős Problem #871: Partitioning Additive Bases of Order 2",
+  "slug": "erdos-871",
+  "description": "Can an additive basis A of order 2 with r_A(n) → ∞ be partitioned into two disjoint additive bases of order 2? DISPROVED by Daniel Larsen (2026).",
+  "meta": {
+    "author": "Daniel Larsen (2026)",
+    "sourceUrl": "https://erdosproblems.com/871",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos871Problem.lean",
+    "tags": ["erdos", "additive-combinatorics", "number-theory", "additive-basis", "partition", "disproved"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 871,
+    "erdosUrl": "https://erdosproblems.com/871",
+    "erdosProblemStatus": "disproved (lean)",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.BigOperators.Basic"
+    ],
+    "originalContributions": [
+      "Formal definition of additive basis of order 2",
+      "Representation function r_A(n) formalization",
+      "Partition predicate for bases",
+      "Blocking property preventing partition",
+      "Formal disproof using Larsen's counterexample"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and Nathanson in 1988 and concerns partitioning additive bases. An additive basis of order 2 is a set A such that A + A covers all sufficiently large integers. The representation function r_A(n) counts how many ways n can be written as a + b with a, b ∈ A.\n\nErdős and Nathanson (1989) showed that for any fixed threshold t, there exists a basis A with r_A(n) ≥ t for all large n that cannot be partitioned into two disjoint bases. They also proved that partition IS possible when r_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48.\n\nThe problem asked about the intermediate case: if r_A(n) → ∞ (growing without bound, but possibly slower than log n), can A always be partitioned? Daniel Larsen (2026) showed the answer is NO, disproving the conjecture using an AI-assisted proof with Claude Opus 4.5.",
+    "problemStatement": "Let $A$ be an additive basis of order 2, meaning $A + A$ covers all sufficiently large integers. Let $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n\\}|$ be the representation function.\n\n**Question:** If $\\lim_{n \\to \\infty} r_A(n) = \\infty$, can $A$ always be partitioned into two disjoint additive bases of order 2?\n\n**Answer:** NO (Larsen 2026)",
+    "proofStrategy": "The formalization establishes the key definitions: additive basis, representation function, and partition into bases. The disproof uses a 'blocking property' construction: for any partition B ∪ C = A, infinitely many integers n fail to be covered by both B + B and C + C simultaneously.\n\nThe Larsen construction modifies the Erdős-Nathanson approach to ensure r_A(n) → ∞ while maintaining this blocking property. The formal proof shows that any set with the blocking property cannot be partitioned into two bases.",
+    "keyInsights": [
+      "**Representation Function**: r_A(n) counts how many ways n = a + b with a, b ∈ A; it measures 'redundancy' of coverage",
+      "**Threshold vs Growth**: Having r_A(n) ≥ t (fixed) is too weak, while r_A(n) > c log n is strong enough for partition",
+      "**Blocking Property**: A construction prevents partition by ensuring for any split, some integers are missed by at least one part",
+      "**AI-Assisted Discovery**: The counterexample was found using Claude Opus 4.5, demonstrating AI utility in mathematical research",
+      "**Gap Closure**: The result shows r_A(n) → ∞ behaves like the fixed-threshold case, not like the logarithmic case"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Core Definitions",
+      "startLine": 38,
+      "endLine": 86,
+      "summary": "Defines representation function, sumset, and additive basis of order 2"
+    },
+    {
+      "title": "Growth Conditions",
+      "startLine": 88,
+      "endLine": 115,
+      "summary": "RepTendsToInfty and RepEventuallyGe conditions on r_A(n)"
+    },
+    {
+      "title": "Partition Predicate",
+      "startLine": 117,
+      "endLine": 121,
+      "summary": "Definition of CanPartitionIntoBases"
+    },
+    {
+      "title": "The Conjecture",
+      "startLine": 123,
+      "endLine": 129,
+      "summary": "Formal statement of Erdős Problem #871"
+    },
+    {
+      "title": "Erdős-Nathanson Results",
+      "startLine": 131,
+      "endLine": 146,
+      "summary": "1989 negative and positive results on partitioning"
+    },
+    {
+      "title": "Larsen Counterexample",
+      "startLine": 148,
+      "endLine": 159,
+      "summary": "The disproof axiom and main theorem"
+    },
+    {
+      "title": "Blocking Property",
+      "startLine": 182,
+      "endLine": 225,
+      "summary": "Technical blocking condition preventing partition"
+    },
+    {
+      "title": "Summary",
+      "startLine": 227,
+      "endLine": 256,
+      "summary": "Overview of results and references"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #871 has been DISPROVED. The conjecture that additive bases with r_A(n) → ∞ can always be partitioned into two disjoint bases is FALSE. Daniel Larsen (2026) constructed a counterexample using a modification of the Erdős-Nathanson blocking technique.",
+    "implications": "The result clarifies the boundary between partitionable and non-partitionable bases. The growth condition r_A(n) → ∞ is insufficient for partition; one needs faster growth like r_A(n) > c log n. This advances understanding of the structure of additive bases.",
+    "openQuestions": [
+      "What is the minimal growth rate of r_A(n) that guarantees partition?",
+      "Is r_A(n) = ω(1) but r_A(n) = o(log n) the critical regime?",
+      "Can the blocking construction be made explicit?",
+      "Are there other structural conditions that guarantee partition?",
+      "What about partition into more than two bases?"
+    ]
+  }
+}

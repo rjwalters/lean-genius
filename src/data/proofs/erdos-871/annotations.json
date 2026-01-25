@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ann-871-header",
+    "proofId": "erdos-871",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #871 asked whether an additive basis A of order 2 with r_A(n) → ∞ can always be partitioned into two disjoint order-2 bases. Daniel Larsen (2026) proved the answer is NO using an AI-assisted construction with Claude Opus 4.5.",
+    "mathContext": "The problem sits between two known results: (1) for fixed threshold r_A(n) ≥ t, partition can fail; (2) for r_A(n) > c log n, partition is possible. The r_A(n) → ∞ case was open until Larsen's disproof.",
+    "significance": "critical",
+    "relatedConcepts": ["additive-basis", "partition", "representation-function"]
+  },
+  {
+    "id": "ann-871-repfunc",
+    "proofId": "erdos-871",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "Representation Function",
+    "content": "r_A(n) = |{(a,b) ∈ A × A : a + b = n}| counts ordered pairs summing to n. This measures how 'redundantly' n is covered by the sumset A + A. More representations mean more flexibility for partition.",
+    "mathContext": "We use Set.ncard for the cardinality of the set of pairs. The function is noncomputable since it involves arbitrary infinite sets.",
+    "significance": "critical",
+    "relatedConcepts": ["sumset", "counting", "pairs"]
+  },
+  {
+    "id": "ann-871-sumset",
+    "proofId": "erdos-871",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Sumset A + A",
+    "content": "The sumset A + A = {a + b : a, b ∈ A} is the set of all pairwise sums from A. An order-2 basis is a set whose sumset covers all but finitely many naturals.",
+    "mathContext": "This is the foundational concept for additive bases. The notation A +ₛ B is used for sumset unions in some contexts.",
+    "significance": "key",
+    "relatedConcepts": ["additive-combinatorics", "sumset", "coverage"]
+  },
+  {
+    "id": "ann-871-basis",
+    "proofId": "erdos-871",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "Additive Basis of Order 2",
+    "content": "A is an additive basis of order 2 if A + A covers all sufficiently large n. Equivalently, the complement (A + A)ᶜ is finite. The equivalence is proved in basis2_equiv.",
+    "mathContext": "The 'order' refers to how many elements are summed. Order 2 means pairs a + b; order 3 would need a + b + c.",
+    "significance": "critical",
+    "relatedConcepts": ["order", "coverage", "finite-exception"]
+  },
+  {
+    "id": "ann-871-equiv",
+    "proofId": "erdos-871",
+    "range": { "startLine": 58, "endLine": 86 },
+    "type": "theorem",
+    "title": "Equivalence of Definitions",
+    "content": "The two definitions of order-2 basis are equivalent: (1) ∃N₀, ∀n ≥ N₀, n ∈ A + A, and (2) (A + A)ᶜ is finite. The proof uses BddAbove for the finite complement case.",
+    "mathContext": "This equivalence is standard but the formal proof requires careful handling of the cases where the complement is empty vs nonempty.",
+    "significance": "supporting",
+    "relatedConcepts": ["equivalence", "complement", "bounded"]
+  },
+  {
+    "id": "ann-871-tendsto",
+    "proofId": "erdos-871",
+    "range": { "startLine": 90, "endLine": 96 },
+    "type": "definition",
+    "title": "r_A(n) → ∞ Condition",
+    "content": "RepTendsToInfty(A) says that r_A(n) grows without bound as n → ∞. This is formalized using Filter.Tendsto to atTop. The weaker RepEventuallyGe(A, t) says r_A(n) ≥ t eventually.",
+    "mathContext": "The Tendsto characterization lets us extract: for any t, eventually r_A(n) ≥ t. This is proved in repTendsToInfty_implies_eventuallyGe.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto", "growth", "eventually"]
+  },
+  {
+    "id": "ann-871-implication",
+    "proofId": "erdos-871",
+    "range": { "startLine": 98, "endLine": 115 },
+    "type": "theorem",
+    "title": "Growth Implication",
+    "content": "If r_A(n) → ∞, then for any fixed t, r_A(n) ≥ t eventually. This shows the r_A(n) → ∞ condition is strictly stronger than having a fixed threshold.",
+    "mathContext": "The proof uses the atTop filter characterization of limits. We extract the witness N₀ from the Tendsto definition.",
+    "significance": "key",
+    "relatedConcepts": ["implication", "threshold", "filter"]
+  },
+  {
+    "id": "ann-871-partition",
+    "proofId": "erdos-871",
+    "range": { "startLine": 119, "endLine": 121 },
+    "type": "definition",
+    "title": "Partition into Bases",
+    "content": "CanPartitionIntoBases(A) asserts that A can be split into disjoint sets B and C, each of which is itself an order-2 basis. This is the property the conjecture asked about.",
+    "mathContext": "The partition requirement is B ∩ C = ∅ and B ∪ C = A. Both B and C must independently cover all large integers.",
+    "significance": "critical",
+    "relatedConcepts": ["partition", "disjoint", "coverage"]
+  },
+  {
+    "id": "ann-871-conjecture",
+    "proofId": "erdos-871",
+    "range": { "startLine": 125, "endLine": 129 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "Erdos871Conjecture states: for all A, if A is an order-2 basis with r_A(n) → ∞, then A can be partitioned into two disjoint order-2 bases. This is what Larsen disproved.",
+    "mathContext": "The conjecture seemed plausible because growing representations suggest 'enough room' to split. The disproof shows this intuition fails.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "quantifier", "disproof"]
+  },
+  {
+    "id": "ann-871-nathanson-neg",
+    "proofId": "erdos-871",
+    "range": { "startLine": 133, "endLine": 137 },
+    "type": "axiom",
+    "title": "Erdős-Nathanson Negative Result",
+    "content": "For any fixed threshold t, there exists a basis A with r_A(n) ≥ t (eventually) that cannot be partitioned. This was known since 1989 and inspired the stronger conjecture.",
+    "mathContext": "The construction uses a 'blocking' technique to ensure any partition fails. Larsen extended this to handle r_A(n) → ∞.",
+    "significance": "key",
+    "relatedConcepts": ["erdos-nathanson", "counterexample", "threshold"]
+  },
+  {
+    "id": "ann-871-nathanson-pos",
+    "proofId": "erdos-871",
+    "range": { "startLine": 141, "endLine": 146 },
+    "type": "axiom",
+    "title": "Erdős-Nathanson Positive Result",
+    "content": "When r_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48, partition IS possible. This shows logarithmic growth is sufficient for partition.",
+    "mathContext": "The threshold c ≈ 3.48 comes from a probabilistic argument. Faster growth gives more 'slack' for splitting.",
+    "significance": "key",
+    "relatedConcepts": ["positive-result", "logarithmic", "threshold"]
+  },
+  {
+    "id": "ann-871-counterexample",
+    "proofId": "erdos-871",
+    "range": { "startLine": 150, "endLine": 153 },
+    "type": "axiom",
+    "title": "Larsen's Counterexample",
+    "content": "There exists a basis A with r_A(n) → ∞ that cannot be partitioned. This is the key axiom that disproves the conjecture. The construction was found with AI assistance.",
+    "mathContext": "The axiom states existence; the construction sketch in the file explains the technique. Full details are in Larsen's paper.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "disproof", "ai-assisted"]
+  },
+  {
+    "id": "ann-871-disproved",
+    "proofId": "erdos-871",
+    "range": { "startLine": 155, "endLine": 159 },
+    "type": "theorem",
+    "title": "Disproof Theorem",
+    "content": "erdos_871_disproved proves ¬Erdos871Conjecture. The proof applies the conjecture to the Larsen counterexample, obtaining a contradiction.",
+    "mathContext": "This is a classic proof by contradiction: assume the conjecture, apply to the counterexample, derive False.",
+    "significance": "critical",
+    "relatedConcepts": ["disproof", "contradiction", "negation"]
+  },
+  {
+    "id": "ann-871-blocking",
+    "proofId": "erdos-871",
+    "range": { "startLine": 182, "endLine": 185 },
+    "type": "definition",
+    "title": "Blocking Property",
+    "content": "HasBlockingProperty(A) says: for any partition B ∪ C = A, infinitely many n satisfy n ∉ B + B or n ∉ C + C. This prevents both parts from being bases.",
+    "mathContext": "The blocking is quantified using Filter.Frequently (∃ᶠ), meaning infinitely many failures. This is the key obstruction to partition.",
+    "significance": "key",
+    "relatedConcepts": ["blocking", "frequently", "obstruction"]
+  },
+  {
+    "id": "ann-871-blocking-thm",
+    "proofId": "erdos-871",
+    "range": { "startLine": 187, "endLine": 221 },
+    "type": "theorem",
+    "title": "Blocking Prevents Partition",
+    "content": "If A has the blocking property, then A cannot be partitioned into two bases. The proof shows that the 'frequently fails' condition contradicts both parts being bases (which must cover all large n).",
+    "mathContext": "The proof uses the Filter.Frequently characterization to derive a contradiction with the eventually-covers property of bases.",
+    "significance": "key",
+    "relatedConcepts": ["implication", "contradiction", "coverage"]
+  },
+  {
+    "id": "ann-871-larsen-blocking",
+    "proofId": "erdos-871",
+    "range": { "startLine": 223, "endLine": 225 },
+    "type": "axiom",
+    "title": "Larsen Construction",
+    "content": "The Larsen construction produces A with: (1) A is an order-2 basis, (2) r_A(n) → ∞, (3) A has the blocking property. This combines the positive aspects with the partition-preventing feature.",
+    "mathContext": "The key insight is that the blocking property can be maintained even as representations grow unboundedly.",
+    "significance": "key",
+    "relatedConcepts": ["construction", "combination", "technique"]
+  }
+]
