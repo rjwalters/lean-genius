@@ -1,0 +1,69 @@
+{
+  "id": "erdos-404",
+  "title": "Erdős Problem #404: Prime Power Divisibility of Factorial Sums",
+  "slug": "erdos-404",
+  "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/404",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos404Problem.lean",
+    "tags": ["number theory", "factorials", "p-adic valuation", "divisibility"],
+    "badge": "open-problem",
+    "sorries": 8,
+    "erdosNumber": 404,
+    "erdosUrl": "https://erdosproblems.com/404",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": []
+  },
+  "overview": {
+    "historicalContext": "This problem concerns the divisibility of sums of factorials by prime powers. It connects p-adic analysis with combinatorial number theory. Lin proved that f(2,2) ≤ 254, establishing a concrete upper bound for one case. The problem cannot be resolved by finite computation alone.",
+    "problemStatement": "For which integers a ≥ 1 and primes p is there a finite upper bound on k such that there exist a = a₁ < a₂ < ··· < aₙ with p^k | (a₁! + ··· + aₙ!)? If f(a,p) denotes the greatest such k, how does it behave? Also: Is there p and sequence with v_p(∑aᵢ!) → ∞?",
+    "proofStrategy": "The analysis uses p-adic valuations and Legendre's formula v_p(n!) = ∑⌊n/p^i⌋. Understanding when sums of factorials have high p-adic valuation requires analyzing cancellation patterns and the structure of factorial ratios.",
+    "keyInsights": [
+      "f(a,p) = sup{k : p^k | some factorial sum starting at a}",
+      "Lin proved f(2,2) ≤ 254",
+      "Legendre's formula gives v_p(n!) ≈ n/(p-1)",
+      "The problem cannot be resolved by finite computation",
+      "Secondary question asks if v_p(∑aᵢ!) can grow unboundedly"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-definition",
+      "title": "The Function f(a,p)",
+      "content": "f(a,p) is the supremum of k such that p^k divides some sum a₁! + ··· + aₙ! where a = a₁ < a₂ < ··· is strictly increasing. The question is whether f(a,p) is always finite."
+    },
+    {
+      "id": "section-secondary",
+      "title": "Secondary Question",
+      "content": "Is there a prime p and infinite sequence a₁ < a₂ < ··· such that v_p(∑_{i≤k} aᵢ!) → ∞ as k → ∞? This asks if partial sums can achieve arbitrarily high p-adic valuations."
+    },
+    {
+      "id": "section-lin",
+      "title": "Lin's Result",
+      "content": "Lin proved f(2,2) ≤ 254, meaning no sum of factorials starting at 2 can be divisible by 2^255. This is the main known quantitative result."
+    },
+    {
+      "id": "section-padic",
+      "title": "p-adic Analysis",
+      "content": "Legendre's formula v_p(n!) = ∑⌊n/p^i⌋ gives the p-adic valuation of factorials. For large n, v_p(n!) ≈ n/(p-1). Sums of factorials can have cancellation affecting their p-adic valuation."
+    },
+    {
+      "id": "section-structure",
+      "title": "Structure of Sums",
+      "content": "For a₁ < a₂, we have a₁! + a₂! = a₁!(1 + a₂!/a₁!). The ratio a₂!/a₁! = (a₁+1)(a₁+2)···a₂ determines how divisibility extends."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #404 asks about the divisibility of factorial sums by prime powers. The function f(a,p) measures the maximum power of p that can divide such sums. Lin showed f(2,2) ≤ 254. The general behavior of f(a,p) and the secondary question remain open.",
+    "implications": "Resolution would illuminate the arithmetic structure of factorial sums and their p-adic properties. Understanding f(a,p) connects to deep questions about how factorials combine arithmetically.",
+    "openQuestions": [
+      "Is f(a,p) finite for all a and primes p?",
+      "How does f(a,p) grow with a for fixed p?",
+      "Can v_p(∑aᵢ!) → ∞ for some sequence?",
+      "What is the exact value of f(2,2)?",
+      "Are there other primes p where f(2,p) is bounded?"
+    ]
+  }
+}
