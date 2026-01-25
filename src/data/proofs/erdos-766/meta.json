@@ -27,8 +27,18 @@
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
-        "description": "Simple graph definition",
+        "description": "Simple graph structure on a type",
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Finite set of edges in a simple graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "SimpleGraph.Subgraph",
+        "description": "Subgraph structures and embeddings",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
       },
       {
         "theorem": "Finset.card",
@@ -36,34 +46,43 @@
         "module": "Mathlib.Data.Finset.Card"
       },
       {
-        "theorem": "Fintype",
-        "description": "Finite types",
-        "module": "Mathlib.Data.Fintype.Basic"
+        "theorem": "sInf",
+        "description": "Greatest lower bound (infimum) of a set",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
       }
     ],
     "originalContributions": [
-      "Graph definitions: numEdges, containsSubgraph, isHFree",
-      "Turán number ex(n;H) definition",
-      "f(n;k,l) = min ex(n;G) over graphs with k vertices, l edges",
-      "Range of interest: k < l ≤ k²/4",
-      "Dirac-Erdős theorem axiomatization",
-      "Turán's theorem axiomatization",
-      "Monotonicity question formalization",
-      "Special cases: triangles, C₄, trees",
-      "Turán density connection"
+      "Graph abbreviation: Graph V = SimpleGraph V for finite types",
+      "numEdges definition: count of edges in a graph",
+      "containsSubgraph definition: injective graph homomorphism preserving adjacency",
+      "isHFree definition: graph contains no copy of H as subgraph",
+      "turanNumber definition: ex(n;H) = max edges in n-vertex H-free graph",
+      "graphsWithEdges definition: set of k-vertex graphs with l edges",
+      "f definition: f(n;k,l) = min ex(n;G) over graphs with k vertices, l edges",
+      "maxBipartiteEdges definition: ⌊k²/4⌋ edges in complete bipartite",
+      "inRangeOfInterest definition: k < l ≤ k²/4",
+      "dirac_erdos_theorem axiom: f(n;k,⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1",
+      "turan_theorem axiom: ex(n;K_r) = (1-1/(r-1))n²/2 + O(n)",
+      "monotonicity_question definition: is f strictly increasing in l?",
+      "f_nondecreasing axiom: f is non-decreasing",
+      "f_triangle theorem: f(n;3,3) = ⌊n²/4⌋",
+      "turan_c4 axiom: ex(n;C₄) = Θ(n^{3/2})",
+      "turanDensity definition: asymptotic density π(H)",
+      "erdos_766_summary theorem: main results and open status"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #766: Extremal Numbers and Graph Density**\n\nThis problem from extremal graph theory studies the function f(n;k,l), which takes the minimum Turán number over all graphs with fixed vertex and edge counts.\n\n**Background:**\n- **Turán's Theorem (1941):** ex(n; K_r) = (1 - 1/(r-1))n²/2 + O(n)\n- **Dirac-Erdős:** At the bipartite threshold (l = ⌊k²/4⌋ + 1), f drops to ≈ n²/4\n\nThe problem connects graph density to extremal numbers.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f(n; k, l) = min ex(n; G) where G ranges over graphs with k vertices and l edges.\n\n**Questions:**\n1. Give good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) strictly monotone in l for fixed k and large n?\n\n**Known (Dirac-Erdős):**\nWhen l = ⌊k²/4⌋ + 1: f(n; k, l) ≤ ⌊n²/4⌋ + 1\n\n**Status:** OPEN - Estimates and monotonicity unresolved.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graphs:** Define SimpleGraph, numEdges, containsSubgraph.\n\n2. **Turán Number:** ex(n; H) = max edges in H-free graph.\n\n3. **f(n;k,l):** Take infimum over graphs with k vertices, l edges.\n\n4. **Range:** k < l ≤ k²/4 (bipartite threshold).\n\n5. **Dirac-Erdős:** Axiomatize the threshold result.\n\n6. **Monotonicity:** Define the open question precisely.\n\n7. **Special Cases:** Triangles, cycles, complete bipartite graphs.",
+    "historicalContext": "**Erdős Problem #766: Extremal Numbers and Graph Density**\n\nThis problem from Erdős's 1964 paper [Er64c] lies at the heart of extremal graph theory, the study of how graph structure constrains edge density.\n\n**Historical Background:**\n- **Turán (1941):** Foundational theorem determining ex(n;K_r) exactly\n- **Dirac & Erdős:** Independently proved the bipartite threshold result\n- **Kővári-Sós-Turán (1954):** ex(n;K_{s,t}) = O(n^{2-1/s}) for complete bipartite\n\n**The Central Question:**\nThe function f(n;k,l) takes the MINIMUM Turán number over all graphs with fixed vertex and edge counts. This inverts the usual question: instead of asking \"how many edges can we have avoiding one specific graph?\", we ask \"over all graphs with these parameters, which is easiest to avoid?\"\n\n**Significance:**\nUnderstanding f reveals how the \"shape\" of a forbidden graph (not just its size) affects extremal numbers. The transition at l = k²/4 marks where graphs must contain odd cycles, fundamentally changing their extremal behavior.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f(n; k, l) = min ex(n; G) where G ranges over all graphs with k vertices and l edges.\n\n**Questions:**\n1. Give good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) strictly monotone in l for fixed k and large n?\n\n**Known (Dirac-Erdős):**\nWhen l = ⌊k²/4⌋ + 1 (one edge beyond bipartite threshold):\nf(n; k, l) ≤ ⌊n²/4⌋ + 1\n\n**Status:** OPEN - Both main questions remain unresolved.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Define graphs, edge counts, subgraph containment, H-freeness using Mathlib's SimpleGraph\n\n2. **Turán Number:** Define ex(n;H) as supremum of edges in H-free graphs\n\n3. **The f Function:** Take infimum over all (k,l)-graphs of their Turán numbers\n\n4. **Range Definition:** k < l ≤ k²/4 (bipartite threshold region)\n\n5. **Dirac-Erdős Theorem:** Axiomatize the result at l = ⌊k²/4⌋ + 1\n\n6. **Monotonicity:** Formalize the open question precisely\n\n7. **Special Cases:** Handle triangles, C₄, trees with specific bounds\n\n8. **Turán Density:** Connect to asymptotic density theory",
     "keyInsights": [
-      "**Turán Number:** ex(n;H) measures maximum edge density avoiding H",
-      "**Bipartite Threshold:** k²/4 edges is the complete bipartite density",
-      "**Dirac-Erdős:** Beyond bipartite, graphs contain triangles → ex drops",
-      "**Monotonicity Intuition:** More edges in forbidden graph → more allowed in host",
-      "**Special Case:** f(n;3,3) = ex(n;K₃) = ⌊n²/4⌋ (Turán's theorem)",
-      "**C₄ Anomaly:** ex(n;C₄) = Θ(n^{3/2}), much smaller than n²"
+      "**Turán Number ex(n;H):** Maximum edges in n-vertex H-free graph; central to extremal graph theory",
+      "**Bipartite Threshold k²/4:** Complete bipartite K_{⌊k/2⌋,⌈k/2⌉} has this many edges; beyond this, graphs contain triangles",
+      "**Dirac-Erdős Result:** At l = ⌊k²/4⌋+1, all graphs contain K₃, so f drops to triangle's Turán number ≈ n²/4",
+      "**Monotonicity Intuition:** More edges in forbidden graph → harder to contain → host can have more edges",
+      "**Weak vs Strong:** Non-decreasing (known) vs strictly increasing (OPEN)",
+      "**C₄ Anomaly:** ex(n;C₄) = Θ(n^{3/2}), much smaller than quadratic; 4-cycles are hard to avoid",
+      "**Trees vs Dense:** For trees (l=k-1), ex is nearly linear; for dense graphs, ex is quadratic"
     ]
   },
   "sections": [
@@ -110,6 +129,13 @@
       "endLine": 142
     },
     {
+      "id": "bounds",
+      "title": "Bounds and Estimates",
+      "summary": "Upper/lower bounds, tree case, bipartite threshold",
+      "startLine": 144,
+      "endLine": 161
+    },
+    {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Triangles, K₄, C₄",
@@ -117,21 +143,29 @@
       "endLine": 180
     },
     {
+      "id": "turan-density",
+      "title": "Turán Density",
+      "summary": "Asymptotic density π(H), dense graph triangles",
+      "startLine": 182,
+      "endLine": 195
+    },
+    {
       "id": "summary",
       "title": "Summary",
       "summary": "Main results and open questions",
       "startLine": 197,
-      "endLine": 228
+      "endLine": 230
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #766 asks for estimates of f(n;k,l) = min ex(n;G) in the range k < l ≤ k²/4, and whether f is strictly monotone in l. The Dirac-Erdős theorem gives a key result at the bipartite threshold. The strict monotonicity question remains open.",
-    "implications": "**Implications**\n\n1. **Extremal Graph Theory:** Understanding the minimum Turán number over graph families.\n\n2. **Graph Density:** The bipartite threshold k²/4 is critical for structure.\n\n3. **Turán Problems:** Connects to the classical Turán theorem and its generalizations.\n\n4. **Forbidden Subgraphs:** How edge count of forbidden graphs affects extremal numbers.",
+    "summary": "Erdős Problem #766 asks for estimates of f(n;k,l) = min ex(n;G) in the range k < l ≤ k²/4, and whether f is strictly monotone in l. The Dirac-Erdős theorem provides a key result at the bipartite threshold: when l exceeds k²/4, all (k,l)-graphs contain triangles, forcing f(n;k,l) ≤ ⌊n²/4⌋+1. The strict monotonicity question remains open.",
+    "implications": "**Implications and Connections**\n\n1. **Extremal Graph Theory:** Understanding f inverts the classical Turán question - which forbidden graphs are easiest to avoid?\n\n2. **Graph Structure:** The bipartite threshold k²/4 is critical; beyond it, graphs necessarily contain odd cycles\n\n3. **Ramsey Theory:** Related to the interplay between structure and density\n\n4. **Algorithm Design:** Bounds on f affect algorithms for forbidden subgraph detection\n\n5. **Random Graphs:** The threshold behavior connects to phase transitions in random graph theory",
     "openQuestions": [
       "Give good estimates for f(n;k,l) when k < l ≤ k²/4",
       "Is f(n;k,l) strictly monotone in l for fixed k and large n?",
-      "What is the behavior of f near the bipartite threshold?",
-      "How does f behave for specific graph families (trees, cycles, complete bipartite)?"
+      "What is the exact behavior of f near the bipartite threshold?",
+      "For which pairs (k,l) is f(n;k,l) achieved by a unique graph (up to isomorphism)?",
+      "How does f behave for specific graph families (trees, cycles, complete multipartite)?"
     ]
   }
 }
