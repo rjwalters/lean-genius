@@ -1,0 +1,68 @@
+{
+  "id": "erdos-768",
+  "title": "Erdős Problem #768: Integers with Witness Divisors",
+  "slug": "erdos-768",
+  "description": "Determine the exact asymptotic density of integers n where every prime divisor p has a witness divisor d > 1 with d ≡ 1 (mod p).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/768",
+    "status": "axiom",
+    "proofRepoPath": "Proofs/Erdos768Problem.lean",
+    "tags": ["number-theory", "divisibility", "asymptotics"],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 768,
+    "erdosUrl": "https://erdosproblems.com/768",
+    "erdosProblemStatus": "open",
+    "oeis": ["A001034", "A352287"],
+    "references": [
+      {
+        "key": "Er",
+        "citation": "P. Erdős, on the density of integers with the witness divisor property"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem concerns a special set A of positive integers defined by a divisibility condition: n ∈ A if for every prime p dividing n, there exists a divisor d > 1 of n with d ≡ 1 (mod p). The set A has significance in group theory—it provides an upper bound for counting orders of non-cyclic simple groups. Erdős established bounds on the density of A involving the double-logarithm function, but the exact asymptotic remains unknown.",
+    "problemStatement": "Let A be the set of n ∈ ℕ where every prime divisor p of n has a 'witness' divisor d > 1 with d ≡ 1 (mod p). Is there a constant c > 0 such that |A ∩ [1,N]|/N = exp(-(c+o(1))√(log N)·log log N)?",
+    "proofStrategy": "The formalization defines the set A via the witness divisor property, proves basic cases (1 ∈ A, prime powers ∉ A, 6 ∈ A), states Erdős's known bounds, and formulates the main conjecture about the exact asymptotic. The connection to simple group orders is included.",
+    "keyInsights": [
+      "Prime powers are never in A (no witness d > 1 with d ≡ 1 mod p exists)",
+      "Products like 6 = 2 × 3 are in A because 3 ≡ 1 (mod 2)",
+      "The density decays as exp(-c√(log N)·log log N)",
+      "Orders of non-cyclic simple groups are contained in A",
+      "The problem asks for the precise constant c in the asymptotic"
+    ]
+  },
+  "sections": [
+    {
+      "title": "The Set A",
+      "description": "Definition of integers with the witness divisor property"
+    },
+    {
+      "title": "Basic Properties",
+      "description": "Which integers are in A: 1 yes, prime powers no, 6 yes"
+    },
+    {
+      "title": "Density Bounds",
+      "description": "Erdős's lower and upper bounds on the density"
+    },
+    {
+      "title": "Simple Groups Connection",
+      "description": "Orders of non-cyclic simple groups lie in A"
+    },
+    {
+      "title": "Main Conjecture",
+      "description": "The exact asymptotic form remains open"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #768 asks for the precise asymptotic density of integers where every prime divisor has a congruential witness. While Erdős established bounds, the exact constant c in exp(-c√(log N)·log log N) is unknown. The problem connects to counting orders of simple groups.",
+    "implications": "Resolution would precisely characterize this density and inform the distribution of simple group orders. The techniques would likely involve sieve methods and multiplicative number theory.",
+    "openQuestions": [
+      "What is the exact value of c?",
+      "Is the limit well-defined (does c exist)?",
+      "How tight are the current upper and lower bounds?"
+    ]
+  }
+}
