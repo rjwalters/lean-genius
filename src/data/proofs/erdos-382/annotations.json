@@ -33,7 +33,7 @@
   {
     "id": "ann-e382-condition",
     "proofId": "erdos-382",
-    "range": { "startLine": 104, "endLine": 130 },
+    "range": { "startLine": 108, "endLine": 130 },
     "type": "definition",
     "title": "The Condition",
     "content": "**satisfiesCondition(u, v):** The largest prime in the product has exponent >= 2.\n\n```lean\ndef satisfiesCondition (u v : N) : Prop :=\n  u <= v and u > 0 and\n  let P := prodInterval u v\n  let p := largestPrimeDivisor P\n  exponent p P >= 2\n```\n\n**Key Insight:**\nThis is equivalent to: no prime p with sqrt(v) < p <= v is in [u, v].\n\n**Why?** If p > sqrt(v), then p^2 > v, so p can appear at most once in [1, v].",
@@ -64,7 +64,7 @@
   {
     "id": "ann-e382-ramachandra",
     "proofId": "erdos-382",
-    "range": { "startLine": 162, "endLine": 176 },
+    "range": { "startLine": 163, "endLine": 173 },
     "type": "axiom",
     "title": "Ramachandra's Bound",
     "content": "**ramachandra_bound:** v - u <= v^{1/2 + o(1)}\n\n```lean\naxiom ramachandra_bound (eps : R) (h : eps > 0) :\n    exists V, forall u v >= V, satisfiesCondition u v ->\n      (v - u : R) <= (v : R) ^ (1/2 + eps)\n```\n\n**This is the best known upper bound.**\n\nIt says intervals satisfying the condition have length at most roughly sqrt(v).",
@@ -86,8 +86,8 @@
   {
     "id": "ann-e382-primefree",
     "proofId": "erdos-382",
-    "range": { "startLine": 220, "endLine": 240 },
-    "type": "theorem",
+    "range": { "startLine": 210, "endLine": 224 },
+    "type": "definition",
     "title": "Prime-Free Interval Perspective",
     "content": "**Equivalent Characterization:**\n\n```lean\ndef noPrimeLargerThanSqrt (u v : N) : Prop :=\n  forall p prime, u <= p <= v -> p <= Nat.sqrt v\n```\n\n**Key Insight:**\nsatisfiesCondition(u, v) is equivalent to:\nNo prime p with p > sqrt(v) lies in [u, v].\n\n**Why This Matters:**\nThe problem becomes about finding 'prime-free gaps' in the upper half of [1, v].",
     "significance": "key",
@@ -96,7 +96,7 @@
   {
     "id": "ann-e382-summary",
     "proofId": "erdos-382",
-    "range": { "startLine": 242, "endLine": 270 },
+    "range": { "startLine": 228, "endLine": 258 },
     "type": "theorem",
     "title": "Summary",
     "content": "**Erdos Problem #382: Summary**\n\n```lean\ntheorem erdos_382_summary :\n    -- Ramachandra's bound\n    (forall eps > 0, exists V, ...) and\n    -- Cramer implies Q1\n    (cramersConjecture -> question1) and\n    True\n```\n\n**State of Knowledge:**\n- Q1 (v - u = v^o(1)?): OPEN. YES under Cramer.\n- Q2 (v - u arbitrarily large?): OPEN. Heuristically YES.\n- Best bound: v - u <= v^{1/2 + o(1)} (Ramachandra)",
