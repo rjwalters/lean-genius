@@ -1,0 +1,142 @@
+{
+  "id": "erdos-358",
+  "title": "Erdos Problem #358: Sums of Consecutive Terms",
+  "slug": "erdos-358",
+  "description": "Does there exist an infinite sequence A such that the count of representations of n as a sum of consecutive terms tends to infinity? Or even f(n) >= 2 for all large n?",
+  "meta": {
+    "author": "Erdos (1977)",
+    "sourceUrl": "https://erdosproblems.com/358",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos358Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-basis",
+      "consecutive-sums",
+      "primes",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 358,
+    "erdosUrl": "https://erdosproblems.com/358",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IntSequence structure: infinite increasing integer sequences",
+      "consecutiveSumCount definition: f(n) = count of consecutive sum representations",
+      "naturalsSeq definition: the natural numbers sequence a_n = n+1",
+      "consecutiveSum definition: sum of consecutive integers",
+      "Erdos358Strong definition: f(n) -> infinity conjecture",
+      "Erdos358Weak definition: f(n) >= 2 for large n conjecture",
+      "primesSeq axiom: the prime number sequence",
+      "ErdosMoserConjecture definition: limsup for primes is infinite",
+      "representableCount definition: density counting function",
+      "PositiveDensityConjecture definition: positive upper density",
+      "Classical characterization: n = sum of >=2 consecutive iff n != 2^k"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdos Problem #358 was posed in 1977 [Er77c] and revisited in Erdos-Graham (1980). It asks a deceptively simple question about how many ways an integer can be written as a sum of consecutive terms from a fixed sequence.\n\nErdos himself remarked: \"This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me.\"\n\nThe problem connects to classical results about sums of consecutive integers (which relate to odd divisors) and to the Erdos-Moser conjecture (1963) about consecutive prime sums.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet A = {a_1 < a_2 < ...} be an infinite sequence of integers. Let f(n) count solutions to n = sum_{i=u}^{v} a_i (sum of consecutive terms).\n\n**Question 1 (Strong):** Does there exist A with f(n) -> infinity as n -> infinity?\n\n**Question 2 (Weak):** Does there exist A with f(n) >= 2 for all sufficiently large n?\n\nBoth questions remain **OPEN**.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define IntSequence as strictly increasing integer sequences\n\n2. **Counting Function:** f(n) = #{(u,v) : u <= v and sum_{i=u}^{v} a_i = n}\n\n3. **Natural Numbers Case:** When A = {1,2,3,...}, f(n) = number of odd divisors\n\n4. **Classical Result:** n = sum of >=2 consecutive positives iff n != 2^k\n\n5. **Prime Case:** Erdos-Moser conjecture about consecutive prime sums\n\n6. **Main Conjectures:** Strong (f -> infinity) and Weak (f >= 2 eventually) forms",
+    "keyInsights": [
+      "**Natural Numbers:** For A = {1,2,3,...}, f(n) equals the count of odd divisors of n",
+      "**Power of 2 Obstruction:** n is a sum of >=2 consecutive positive integers iff n != 2^k",
+      "**Prime Sums:** Even the positive density of prime consecutive sums is unknown",
+      "**Convex Sumsets:** Modern formulation asks for 1_A * 1_A(n) -> infinity",
+      "**Finite Analogue:** Related to Problem #356 about finite sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "IntSequence, consecutiveSumCount function f(n)",
+      "startLine": 35,
+      "endLine": 45
+    },
+    {
+      "id": "naturals-case",
+      "title": "The Natural Numbers Case",
+      "summary": "naturalsSeq, consecutiveSum, odd divisor connection",
+      "startLine": 46,
+      "endLine": 71
+    },
+    {
+      "id": "main-conjectures",
+      "title": "The Main Conjectures",
+      "summary": "Erdos358Strong (f -> infinity) and Erdos358Weak (f >= 2)",
+      "startLine": 72,
+      "endLine": 92
+    },
+    {
+      "id": "observations",
+      "title": "Known Observations",
+      "summary": "Trivial f >= 1, power of 2 obstruction for >=2 term sums",
+      "startLine": 93,
+      "endLine": 111
+    },
+    {
+      "id": "prime-case",
+      "title": "The Prime Case",
+      "summary": "primesSeq, Erdos-Moser conjecture about consecutive prime sums",
+      "startLine": 112,
+      "endLine": 124
+    },
+    {
+      "id": "density",
+      "title": "Density Questions",
+      "summary": "representableCount, PositiveDensityConjecture for primes",
+      "startLine": 125,
+      "endLine": 144
+    },
+    {
+      "id": "connections",
+      "title": "Related Problems",
+      "summary": "Connection to Problem #356, convex sumsets",
+      "startLine": 145,
+      "endLine": 154
+    },
+    {
+      "id": "status",
+      "title": "Current Status",
+      "summary": "Both questions OPEN, what is known, Erdos quote",
+      "startLine": 156,
+      "endLine": 183
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #358 asks whether there exists an infinite sequence A where f(n) - the count of consecutive sum representations - tends to infinity, or even just exceeds 1 for all large n. Both questions remain OPEN. For natural numbers, f(n) equals the odd divisor count. For primes, even positive density is unknown.",
+    "implications": "This problem reveals how little we understand about the structure of consecutive sums from infinite sequences. Despite the natural numbers case being completely understood (odd divisors), finding a sequence with f(n) -> infinity or even f(n) >= 2 eventually remains elusive.",
+    "openQuestions": [
+      "Does any sequence A have f(n) -> infinity?",
+      "Does any sequence A have f(n) >= 2 for large n?",
+      "Is the upper density of prime consecutive sums positive?",
+      "What is the structure of consecutive prime sums?",
+      "Exact connection to Problem #356 (finite analogue)"
+    ]
+  }
+}
