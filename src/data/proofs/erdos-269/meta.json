@@ -1,0 +1,173 @@
+{
+  "id": "erdos-269",
+  "title": "Erdos Problem #269: LCM Series Irrationality",
+  "slug": "erdos-269",
+  "description": "For P a finite set of primes with |P|>=2, let {a_n} be the P-smooth numbers and L_n=[a_0,...,a_{n-1}]. Is the sum 1/L_1 + 1/L_2 + ... irrational? OPEN for finite P. Solved (always irrational) for infinite P.",
+  "meta": {
+    "author": "Erdos (1973)",
+    "sourceUrl": "https://erdosproblems.com/269",
+    "date": "1973",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos269Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "lcm",
+      "smooth-numbers",
+      "series",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 269,
+    "erdosUrl": "https://erdosproblems.com/269",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.lcm",
+        "description": "LCM over finite sets",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrationality predicate for reals",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series summation",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Nat.padicValNat",
+        "description": "P-adic valuation of natural numbers",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      }
+    ],
+    "originalContributions": [
+      "IsPSmooth definition: n has all prime divisors in P",
+      "smoothSeq definition: enumeration of P-smooth numbers",
+      "partialLcm definition: L_n = [a_0,...,a_{n-1}]",
+      "lcmSeries definition: sum of 1/L_n",
+      "erdos_269 axiom: series is irrational for finite P (OPEN)",
+      "erdos_269_infinite axiom: series is irrational for infinite P (SOLVED)",
+      "erdos_269_distinct axiom: distinct-term series is irrational",
+      "twoThreeSmooth example: P = {2,3}",
+      "lcmPadicVal definition: p-adic valuation of L_n",
+      "partialLcm_eventually_periodic theorem: L_n stabilizes mod M",
+      "distinctLcmSeries definition: series without duplicate terms"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #269: LCM Series Irrationality**\n\nThis problem was posed by Erdos in a letter to the editor of the Fibonacci Quarterly (January 1, 1973), published in Vol. 12 (1974), p. 335.\n\n**Key History:**\n- Erdos (1973): Original problem statement\n- [ErGr80, p.65]: Referenced in Erdos-Graham collaboration\n- [Er88c, p.106]: Further discussion\n\n**The Setting:**\nP-smooth numbers (or P-friable numbers) are integers whose prime factors all come from a fixed set P. When P = {2,3}, these are the 3-smooth numbers: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, ...\n\nThe series sums reciprocals of successive LCMs of these numbers.",
+    "problemStatement": "**Problem Statement**\n\nLet P be a finite set of primes with |P| >= 2.\nLet {a_1 < a_2 < ...} be the set of positive integers whose prime divisors are all in P.\nLet L_n = [a_1, ..., a_n] be the LCM of the first n such integers.\n\n**Question:** Is the sum $\\sum_{n=1}^{\\infty} \\frac{1}{L_n}$ irrational?\n\n**Status:**\n- Finite P: OPEN\n- Infinite P: SOLVED (always irrational, 'simple exercise' per Erdos)\n- Finite P, distinct terms only: SOLVED (irrational)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **P-smooth Numbers:** Define IsPSmooth P n predicate\n\n2. **Enumeration:** Define smoothSeq P as the sequence of P-smooth numbers\n\n3. **Partial LCM:** Define L_n = lcm(a_0, ..., a_{n-1})\n\n4. **The Series:** Define lcmSeries P = sum of 1/L_n\n\n5. **Main Conjecture:** State erdos_269 as axiom for finite P\n\n6. **Infinite Case:** State erdos_269_infinite as axiom (SOLVED)\n\n7. **P-adic Analysis:** Key to understanding LCM growth patterns\n\n8. **Examples:** Work through P = {2,3} case explicitly",
+    "keyInsights": [
+      "**P-smooth Numbers:** Integers with all prime factors in P; for P={2,3} these are 3-smooth: 1,2,3,4,6,8,9,...",
+      "**LCM Growth:** L_n grows when a new prime power enters the sequence; stays constant otherwise",
+      "**Infinite P Case:** 'Simple exercise' - infinitely many primes ensure irrationality",
+      "**Duplicate Terms:** When a_n | L_{n-1}, we get L_n = L_{n-1}, creating duplicates",
+      "**Distinct Terms:** Removing duplicates makes the series provably irrational",
+      "**P-adic Valuation:** v_p(L_n) increases in discrete jumps at powers of p",
+      "**The Difficulty:** For finite P, pattern of duplicates is hard to analyze"
+    ]
+  },
+  "sections": [
+    {
+      "id": "psmooth",
+      "title": "P-smooth Numbers",
+      "summary": "IsPSmooth definition, basic properties",
+      "startLine": 34,
+      "endLine": 72
+    },
+    {
+      "id": "sequence",
+      "title": "The P-smooth Sequence",
+      "summary": "smoothSeq enumeration and properties",
+      "startLine": 74,
+      "endLine": 92
+    },
+    {
+      "id": "partial-lcm",
+      "title": "Partial LCM",
+      "summary": "L_n = [a_0,...,a_{n-1}] definition and properties",
+      "startLine": 94,
+      "endLine": 128
+    },
+    {
+      "id": "series",
+      "title": "The Series",
+      "summary": "lcmSeries definition, convergence, positivity",
+      "startLine": 130,
+      "endLine": 151
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "summary": "erdos_269 axiom for finite P",
+      "startLine": 153,
+      "endLine": 175
+    },
+    {
+      "id": "infinite-case",
+      "title": "The Infinite Case (SOLVED)",
+      "summary": "erdos_269_infinite axiom",
+      "startLine": 177,
+      "endLine": 192
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "P = {2,3} worked examples",
+      "startLine": 194,
+      "endLine": 228
+    },
+    {
+      "id": "padic",
+      "title": "Structural Properties",
+      "summary": "P-adic valuation analysis",
+      "startLine": 230,
+      "endLine": 256
+    },
+    {
+      "id": "difficulty",
+      "title": "Why It's Hard",
+      "summary": "Analysis of the finite P difficulty",
+      "startLine": 258,
+      "endLine": 282
+    },
+    {
+      "id": "partial-result",
+      "title": "Known Partial Result",
+      "summary": "Distinct terms case is solved",
+      "startLine": 284,
+      "endLine": 306
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_269_summary theorem",
+      "startLine": 308,
+      "endLine": 340
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #269 asks whether the sum of reciprocals of successive LCMs of P-smooth numbers is irrational, for finite sets P of primes with |P|>=2. The infinite P case is solved (always irrational). The finite P case with distinct terms removed is also solved. The full finite P case remains OPEN.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Smooth Numbers:** Understanding P-smooth number distribution is key to many algorithms (integer factorization, number field sieve)\n\n2. **Irrationality Theory:** Connects to general irrationality of series questions\n\n3. **P-adic Analysis:** The p-adic structure of LCMs reveals arithmetic patterns\n\n4. **Fibonacci Connection:** Problem appeared in Fibonacci Quarterly, linking to recurrence relations\n\n5. **Multiplicative Structure:** P-smooth numbers form a multiplicative semigroup",
+    "openQuestions": [
+      "Is the series irrational for any specific finite P with |P| >= 2?",
+      "Can the duplicate pattern be characterized precisely?",
+      "What is the exact growth rate of L_n for various P?",
+      "Is there a closed form for the series for simple P like {2,3}?",
+      "Can transcendence methods be applied to this series?"
+    ]
+  }
+}
