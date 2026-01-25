@@ -1,0 +1,141 @@
+{
+  "id": "erdos-603",
+  "title": "Erdos Problem #603: Set Family Colorings with Intersection Restrictions",
+  "slug": "erdos-603",
+  "description": "Find the smallest cardinal C such that any family of countably infinite sets with |A_i ∩ A_j| != 2 can be colored with C colors so no set is monochromatic.",
+  "meta": {
+    "author": "Erdos/Komjath",
+    "sourceUrl": "https://erdosproblems.com/603",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos603Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "hypergraph-coloring",
+      "cardinals",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 603,
+    "erdosUrl": "https://erdosproblems.com/603",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Countable",
+        "description": "Countable sets",
+        "module": "Mathlib.Data.Set.Countable"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal numbers",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "IsCountablyInfiniteFamily definition: family of countably infinite sets",
+      "IntersectionNot2 definition: |A_i ∩ A_j| != 2 constraint",
+      "IsValidFamily definition: combined constraints",
+      "IsMonochromatic definition: all elements same color",
+      "IsValidColoring definition: no monochromatic sets",
+      "SufficientColors definition: C colors suffice",
+      "chromaticNumber definition: minimum colors needed",
+      "ErdosConjecture603 definition: universal bound",
+      "IntersectionNot1 definition: alternative constraint",
+      "komjath_not1 axiom: Komjath's theorem for != 1",
+      "lower_bound_2 theorem: at least 2 colors needed",
+      "countable_suffices_trivial axiom: aleph_0 upper bound",
+      "SetFamilyHypergraph structure: hypergraph view",
+      "disjoint_2_colors theorem: disjoint families need 2",
+      "erdos_603_statement theorem: formal statement"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This is a problem of Komjath, recorded in [Er87]. It explores chromatic properties of set families with restricted intersection sizes.\n\nA related variant has been solved: Komjath showed that if |A_i ∩ A_j| != 1 (instead of != 2), then countably many colors suffice.\n\nThe problem connects to hypergraph coloring theory, where the goal is to color vertices so no hyperedge is monochromatic.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet (A_i) be a family of countably infinite sets such that |A_i ∩ A_j| != 2 for all i != j.\n\nFind the smallest cardinal C such that the union of all A_i can always be colored with at most C colors so that no A_i is monochromatic.\n\n**Related Result:**\nFor |A_i ∩ A_j| != 1, Komjath showed aleph_0 colors suffice.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Families:** Define IsCountablyInfiniteFamily and intersection constraints\n\n2. **Colorings:** Define IsMonochromatic and IsValidColoring\n\n3. **Chromatic Number:** SufficientColors and chromaticNumber definitions\n\n4. **Komjath's Result:** Axiomatize the != 1 case\n\n5. **Bounds:** Lower bound 2, upper bound aleph_0\n\n6. **Hypergraph View:** Alternative formulation via hypergraphs",
+    "keyInsights": [
+      "**Lower Bound:** At least 2 colors needed (infinite sets can't be trivially colored)",
+      "**Upper Bound:** Countably many colors always suffice (trivial coloring)",
+      "**Komjath's Result:** For != 1 constraint, aleph_0 is optimal",
+      "**Open Question:** Can finite colors suffice for the != 2 constraint?",
+      "**Hypergraph View:** This is weak chromatic number of a hypergraph"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "IsCountablyInfiniteFamily, IntersectionNot2, IsValidFamily, colorings",
+      "startLine": 28,
+      "endLine": 56
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "SufficientColors, chromaticNumber, ErdosConjecture603",
+      "startLine": 58,
+      "endLine": 78
+    },
+    {
+      "id": "komjath",
+      "title": "Related Problem - Intersection != 1",
+      "summary": "IntersectionNot1, komjath_not1",
+      "startLine": 80,
+      "endLine": 96
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds and Special Cases",
+      "summary": "lower_bound_2, countable_suffices_trivial, CanDoBetterThanAleph0",
+      "startLine": 98,
+      "endLine": 125
+    },
+    {
+      "id": "hypergraph",
+      "title": "Hypergraph Perspective",
+      "summary": "SetFamilyHypergraph, hypergraphChromatic, weakChromatic",
+      "startLine": 127,
+      "endLine": 146
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Constructions",
+      "summary": "disjoint_2_colors, SatisfiesBoth, both_constraints",
+      "startLine": 148,
+      "endLine": 169
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_603_status, erdos_603_statement",
+      "startLine": 171,
+      "endLine": 196
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Known bounds, open questions",
+      "startLine": 198,
+      "endLine": 212
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #603 asks for the smallest cardinal C such that any family of countably infinite sets with |A_i ∩ A_j| != 2 can be properly colored. Known bounds: 2 <= C <= aleph_0. The problem remains OPEN.",
+    "implications": "Determining C would advance understanding of hypergraph coloring and set-theoretic combinatorics. The contrast with Komjath's result (for != 1) suggests the exact intersection size matters significantly.",
+    "openQuestions": [
+      "Can finite colors suffice for the != 2 constraint?",
+      "If finite, what is the exact value?",
+      "If infinite, is aleph_0 optimal?",
+      "What about the != k constraint for general k?",
+      "Are there explicit families requiring many colors?"
+    ]
+  }
+}

@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-603-header",
+    "proofId": "erdos-603",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #603: Find smallest C such that families with |A_i ∩ A_j| != 2 can be C-colored without monochromatic sets. Status: OPEN.",
+    "mathContext": "A problem of Komjath from [Er87]. Related to hypergraph coloring.",
+    "significance": "critical",
+    "relatedConcepts": ["hypergraph", "coloring", "intersection"]
+  },
+  {
+    "id": "ann-603-family",
+    "proofId": "erdos-603",
+    "range": { "startLine": 34, "endLine": 44 },
+    "type": "definition",
+    "title": "Set Family Definitions",
+    "content": "IsCountablyInfiniteFamily: each A_i countable and infinite. IntersectionNot2: |A_i ∩ A_j| != 2 for i != j.",
+    "mathContext": "The intersection constraint is the key restriction on the family.",
+    "significance": "critical",
+    "relatedConcepts": ["countable", "infinite", "intersection-size"]
+  },
+  {
+    "id": "ann-603-coloring",
+    "proofId": "erdos-603",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "Coloring Definitions",
+    "content": "IsMonochromatic(S, c): all elements of S have same color. IsValidColoring: no A_i is monochromatic.",
+    "mathContext": "A valid coloring breaks monochromaticity of all sets in the family.",
+    "significance": "key",
+    "relatedConcepts": ["monochromatic", "proper-coloring"]
+  },
+  {
+    "id": "ann-603-chromatic",
+    "proofId": "erdos-603",
+    "range": { "startLine": 64, "endLine": 78 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "SufficientColors(A, C): C colors suffice for family A. chromaticNumber: infimum of sufficient cardinals.",
+    "mathContext": "The problem asks for the supremum of chromaticNumber over all valid families.",
+    "significance": "critical",
+    "relatedConcepts": ["cardinal", "infimum", "chromatic"]
+  },
+  {
+    "id": "ann-603-conjecture",
+    "proofId": "erdos-603",
+    "range": { "startLine": 72, "endLine": 78 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture603(C): for all valid families, C colors suffice. minimalChromatic: the smallest such C.",
+    "mathContext": "The question is the value of minimalChromatic.",
+    "significance": "critical",
+    "relatedConcepts": ["universal-bound", "minimal"]
+  },
+  {
+    "id": "ann-603-komjath",
+    "proofId": "erdos-603",
+    "range": { "startLine": 86, "endLine": 96 },
+    "type": "axiom",
+    "title": "Komjath's Theorem",
+    "content": "IntersectionNot1: |A_i ∩ A_j| != 1 constraint. komjath_not1: for this case, aleph_0 colors suffice.",
+    "mathContext": "The related problem with != 1 is solved - countably many colors needed.",
+    "significance": "key",
+    "relatedConcepts": ["komjath", "aleph-zero", "solved"]
+  },
+  {
+    "id": "ann-603-bounds",
+    "proofId": "erdos-603",
+    "range": { "startLine": 104, "endLine": 125 },
+    "type": "theorem",
+    "title": "Bounds",
+    "content": "lower_bound_2: at least 2 colors needed. countable_suffices_trivial: aleph_0 always works.",
+    "mathContext": "Known: 2 <= C <= aleph_0. The exact value is unknown.",
+    "significance": "key",
+    "relatedConcepts": ["lower-bound", "upper-bound"]
+  },
+  {
+    "id": "ann-603-finite",
+    "proofId": "erdos-603",
+    "range": { "startLine": 119, "endLine": 125 },
+    "type": "definition",
+    "title": "Finite vs Infinite",
+    "content": "CanDoBetterThanAleph0: some finite n suffices. Aleph0Necessary: no finite n works.",
+    "mathContext": "The key open question: is the answer finite or infinite?",
+    "significance": "key",
+    "relatedConcepts": ["finite", "infinite", "dichotomy"]
+  },
+  {
+    "id": "ann-603-hypergraph",
+    "proofId": "erdos-603",
+    "range": { "startLine": 133, "endLine": 146 },
+    "type": "definition",
+    "title": "Hypergraph Perspective",
+    "content": "SetFamilyHypergraph: vertices = union, hyperedges = sets. weakChromatic: the problem's chromatic number.",
+    "mathContext": "Hypergraph coloring viewpoint - weak chromatic number.",
+    "significance": "supporting",
+    "relatedConcepts": ["hypergraph", "weak-chromatic"]
+  },
+  {
+    "id": "ann-603-disjoint",
+    "proofId": "erdos-603",
+    "range": { "startLine": 154, "endLine": 157 },
+    "type": "theorem",
+    "title": "Disjoint Families",
+    "content": "disjoint_2_colors: if all intersections empty, 2 colors suffice.",
+    "mathContext": "Disjoint families trivially satisfy the != 2 constraint.",
+    "significance": "supporting",
+    "relatedConcepts": ["disjoint", "trivial-case"]
+  },
+  {
+    "id": "ann-603-both",
+    "proofId": "erdos-603",
+    "range": { "startLine": 161, "endLine": 169 },
+    "type": "theorem",
+    "title": "Satisfying Both Constraints",
+    "content": "SatisfiesBoth: intersection != 1 AND != 2. both_constraints: Komjath's bound applies.",
+    "mathContext": "Families avoiding both 1 and 2 are covered by Komjath's result.",
+    "significance": "supporting",
+    "relatedConcepts": ["both-constraints", "intersection"]
+  },
+  {
+    "id": "ann-603-statement",
+    "proofId": "erdos-603",
+    "range": { "startLine": 186, "endLine": 196 },
+    "type": "theorem",
+    "title": "Formal Statement",
+    "content": "erdos_603_statement: existence of universal bound C equivalent to the problem.",
+    "mathContext": "Precise formal statement of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["formal-statement", "equivalence"]
+  },
+  {
+    "id": "ann-603-status",
+    "proofId": "erdos-603",
+    "range": { "startLine": 177, "endLine": 184 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Known: 2 <= C <= aleph_0. For != 1: C = aleph_0 (Komjath). For != 2: unknown.",
+    "mathContext": "The contrast with the solved != 1 case is notable.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "status"]
+  }
+]
