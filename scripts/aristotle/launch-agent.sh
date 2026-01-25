@@ -274,11 +274,12 @@ PROMPT_EOF
         sleep 0.3
     fi
 
-    # Launch Claude with resilient wrapper for error handling
+    # Launch Claude with resilient wrapper in DAEMON mode for infinite retry
+    # The --daemon flag ensures the Aristotle agent survives API outages indefinitely
     sleep 0.5
     local prompt="You are the Aristotle agent. Read $prompt_file for your instructions, then start the queue management workflow."
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
-    tmux send-keys -t "$SESSION_NAME" "ENHANCER_ID=aristotle $wrapper_script --prompt '$prompt' --log '$LOG_FILE' --max-retries 5" Enter
+    tmux send-keys -t "$SESSION_NAME" "ENHANCER_ID=aristotle $wrapper_script --daemon --prompt '$prompt' --log '$LOG_FILE'" Enter
 
     print_success "Launched Aristotle agent"
     echo ""

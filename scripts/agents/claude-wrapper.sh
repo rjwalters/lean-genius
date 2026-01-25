@@ -7,9 +7,11 @@
 # - Catches "No messages returned" and similar errors
 # - Implements exponential backoff retry
 # - Respects stop signals
+# - Daemon mode for long-running agents (infinite retry)
 #
 # Usage:
 #   ./claude-wrapper.sh --prompt "Your prompt" [--log logfile.log] [--max-retries N]
+#   ./claude-wrapper.sh --daemon --prompt "Your prompt" [--log logfile.log]
 #
 # Environment:
 #   REPO_ROOT - Path to main repository (for signal files)
@@ -26,6 +28,7 @@ REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOG_FILE=""
 PROMPT=""
+DAEMON_MODE=false
 
 # Colors
 RED='\033[0;31m'
@@ -54,6 +57,10 @@ while [[ $# -gt 0 ]]; do
             MAX_RETRIES="$2"
             shift 2
             ;;
+        --daemon)
+            DAEMON_MODE=true
+            shift
+            ;;
         *)
             log_error "Unknown argument: $1"
             exit 1
@@ -62,8 +69,12 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$PROMPT" ]]; then
-    log_error "Usage: $0 --prompt 'Your prompt' [--log logfile.log]"
+    log_error "Usage: $0 --prompt 'Your prompt' [--log logfile.log] [--daemon]"
     exit 1
+fi
+
+if [[ "$DAEMON_MODE" == "true" ]]; then
+    log_info "Running in DAEMON mode (infinite retry enabled)"
 fi
 
 # Check for stop signal
@@ -128,11 +139,32 @@ is_recoverable_error() {
     return 1
 }
 
-# Main retry loop
+# Run Claude once and return exit code
+run_claude_once() {
+    local last_output=""
+    local exit_code=0
+
+    # Run Claude CLI
+    if [[ -n "$LOG_FILE" ]]; then
+        last_output=$(claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
+    else
+        last_output=$(claude --dangerously-skip-permissions "$PROMPT" 2>&1; echo "EXIT_CODE:$?")
+    fi
+
+    # Extract exit code from output
+    exit_code=$(echo "$last_output" | grep -o 'EXIT_CODE:[0-9]*' | cut -d: -f2)
+    exit_code="${exit_code:-1}"
+    last_output=$(echo "$last_output" | sed '/EXIT_CODE:[0-9]*/d')
+
+    # Store output for caller
+    LAST_OUTPUT="$last_output"
+    return $exit_code
+}
+
+# Main retry loop (finite retries)
 run_with_retry() {
     local attempt=1
     local backoff=$INITIAL_BACKOFF
-    local last_output=""
     local exit_code=0
 
     while [[ $attempt -le $MAX_RETRIES ]]; do
@@ -153,30 +185,19 @@ run_with_retry() {
 
         log_info "Starting Claude (attempt $attempt/$MAX_RETRIES)"
 
-        # Run Claude CLI
-        if [[ -n "$LOG_FILE" ]]; then
-            last_output=$(claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
-        else
-            last_output=$(claude --dangerously-skip-permissions "$PROMPT" 2>&1; echo "EXIT_CODE:$?")
-        fi
-
-        # Extract exit code from output
-        exit_code=$(echo "$last_output" | grep -o 'EXIT_CODE:[0-9]*' | cut -d: -f2)
-        exit_code="${exit_code:-1}"
-        last_output=$(echo "$last_output" | sed '/EXIT_CODE:[0-9]*/d')
-
-        # Success - Claude ran to completion
-        if [[ "$exit_code" -eq 0 ]]; then
+        # Run Claude
+        if run_claude_once; then
             log_success "Claude completed successfully"
             return 0
         fi
+        exit_code=$?
 
         # Check if this is a recoverable error
-        if is_recoverable_error "$last_output" "$exit_code"; then
+        if is_recoverable_error "$LAST_OUTPUT" "$exit_code"; then
             log_warn "Recoverable error detected (exit code: $exit_code)"
 
             # Log the error
-            if echo "$last_output" | grep -q "No messages returned"; then
+            if echo "$LAST_OUTPUT" | grep -q "No messages returned"; then
                 log_warn "Error: No messages returned from API"
             fi
 
@@ -197,15 +218,99 @@ run_with_retry() {
         else
             # Non-recoverable error
             log_error "Non-recoverable error (exit code: $exit_code)"
-            echo "$last_output" >&2
+            echo "$LAST_OUTPUT" >&2
             return $exit_code
         fi
     done
 
     log_error "Max retries ($MAX_RETRIES) exceeded"
-    echo "$last_output" >&2
+    echo "$LAST_OUTPUT" >&2
     return 1
 }
 
+# Daemon mode: infinite retry loop
+run_daemon() {
+    local cycle=1
+    local backoff=$INITIAL_BACKOFF
+    local consecutive_failures=0
+
+    log_info "Daemon mode: will retry indefinitely until stop signal"
+
+    while true; do
+        # Check for stop signal before each cycle
+        if check_stop_signal; then
+            log_info "Daemon exiting due to stop signal"
+            exit 0
+        fi
+
+        # Pre-flight usage check
+        if ! check_usage_limits; then
+            log_warn "Daemon: waiting for usage limits (backoff: ${backoff}s)"
+            sleep $backoff
+            backoff=$((backoff * 2))
+            [[ $backoff -gt $MAX_BACKOFF ]] && backoff=$MAX_BACKOFF
+            continue
+        fi
+
+        log_info "Daemon cycle $cycle: starting Claude"
+
+        # Run Claude
+        if run_claude_once; then
+            log_success "Daemon cycle $cycle: Claude completed successfully"
+            # Reset backoff on success
+            backoff=$INITIAL_BACKOFF
+            consecutive_failures=0
+            cycle=$((cycle + 1))
+            # In daemon mode, we restart after successful completion
+            # This handles agents that are meant to run periodically
+            continue
+        fi
+
+        local exit_code=$?
+        consecutive_failures=$((consecutive_failures + 1))
+
+        # Check if this is a recoverable error (in daemon mode, most errors are recoverable)
+        if is_recoverable_error "$LAST_OUTPUT" "$exit_code"; then
+            log_warn "Daemon cycle $cycle: recoverable error (exit code: $exit_code, consecutive failures: $consecutive_failures)"
+
+            if echo "$LAST_OUTPUT" | grep -q "No messages returned"; then
+                log_warn "Error: No messages returned from API"
+            fi
+
+            # Check stop signal before waiting
+            if check_stop_signal; then
+                log_info "Daemon exiting due to stop signal"
+                exit 0
+            fi
+
+            log_info "Daemon: waiting ${backoff}s before retry..."
+            sleep $backoff
+
+            # Exponential backoff (capped at MAX_BACKOFF)
+            backoff=$((backoff * 2))
+            [[ $backoff -gt $MAX_BACKOFF ]] && backoff=$MAX_BACKOFF
+
+            cycle=$((cycle + 1))
+        else
+            # Even "non-recoverable" errors get retried in daemon mode
+            log_warn "Daemon cycle $cycle: error that would be fatal in normal mode (exit code: $exit_code)"
+            log_warn "Daemon mode: retrying anyway after ${MAX_BACKOFF}s"
+
+            # Check stop signal before waiting
+            if check_stop_signal; then
+                log_info "Daemon exiting due to stop signal"
+                exit 0
+            fi
+
+            sleep $MAX_BACKOFF
+            cycle=$((cycle + 1))
+        fi
+    done
+}
+
 # Run the wrapper
-run_with_retry
+if [[ "$DAEMON_MODE" == "true" ]]; then
+    run_daemon
+else
+    run_with_retry
+fi
