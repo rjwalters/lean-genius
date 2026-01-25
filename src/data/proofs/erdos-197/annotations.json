@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ann-e197-header",
+    "proofId": "erdos-197",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #197**\n\nCan N be partitioned into two sets, each of which can be permuted to avoid monotone 3-term arithmetic progressions?\n\n**Key Results:**\n- The answer is YES if three sets are allowed (Erdos-Graham)\n- The two-set case remains OPEN\n- Cannot be resolved by finite computation\n\n**References:**\n- [ErGr79] and [ErGr80]: Erdos and Graham's foundational work",
+    "mathContext": "A monotone 3-AP in a sequence f is a triple i < j < k where f(i) + f(k) = 2*f(j). This is stronger than just containing an AP as a set.",
+    "significance": "critical",
+    "relatedConcepts": ["Arithmetic progressions", "Set partitions", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e197-ap-def",
+    "proofId": "erdos-197",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "definition",
+    "title": "Arithmetic Progression Predicate",
+    "content": "**isArithmeticProgression:**\n\nThree natural numbers a, b, c form an arithmetic progression if the middle one is the average of the other two.\n\n**Definition:**\n```lean\ndef isArithmeticProgression (a b c : N) : Prop := a + c = 2 * b\n```\n\n**Examples:**\n- (1, 3, 5): 1 + 5 = 6 = 2 * 3 (YES)\n- (1, 2, 4): 1 + 4 = 5 != 4 = 2 * 2 (NO)",
+    "significance": "critical",
+    "relatedConcepts": ["Common difference", "Arithmetic sequences"]
+  },
+  {
+    "id": "ann-e197-has-3ap",
+    "proofId": "erdos-197",
+    "range": { "startLine": 55, "endLine": 61 },
+    "type": "definition",
+    "title": "Monotone 3-AP Detection",
+    "content": "**hasMonotone3AP:**\n\nA sequence f : N -> N contains a monotone 3-AP if there exist indices i < j < k such that f(i), f(j), f(k) form an arithmetic progression.\n\n```lean\ndef hasMonotone3AP (f : N -> N) : Prop :=\n  exists i j k, i < j and j < k and isArithmeticProgression (f i) (f j) (f k)\n```\n\nThe ordering constraint i < j < k is crucial - we care about the sequential structure.",
+    "mathContext": "This captures the 'monotone' aspect: the indices must be increasing. A set might contain APs without having monotone APs in any enumeration.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e197-avoids-3ap",
+    "proofId": "erdos-197",
+    "range": { "startLine": 63, "endLine": 67 },
+    "type": "definition",
+    "title": "3-AP Free Sequence",
+    "content": "**avoids3AP:**\n\nA sequence avoids monotone 3-APs if it has no such triple.\n\n```lean\ndef avoids3AP (f : N -> N) : Prop := not hasMonotone3AP f\n```\n\nThis is the property we want for each partition part.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e197-enumeration",
+    "proofId": "erdos-197",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "definition",
+    "title": "Enumeration of a Set",
+    "content": "**isEnumeration:**\n\nAn enumeration of a set S is a bijection from N to S.\n\n```lean\ndef isEnumeration (S : Set N) (f : N -> N) : Prop :=\n  Function.Bijective f and forall n, f n in S\n```\n\nThis allows us to 'order' the elements of S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e197-permute-3ap-free",
+    "proofId": "erdos-197",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "definition",
+    "title": "Set Permutable to 3-AP-Free",
+    "content": "**canPermuteTo3APFree:**\n\nA set S can be permuted to avoid 3-APs if there exists an enumeration of S that has no monotone 3-AP.\n\n```lean\ndef canPermuteTo3APFree (S : Set N) : Prop :=\n  exists f, isEnumeration S f and avoids3AP f\n```\n\nThis is the key property each partition part must have.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e197-two-partition",
+    "proofId": "erdos-197",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "definition",
+    "title": "Two-Set Partition of N",
+    "content": "**isTwoPartition:**\n\nA and B form a partition of N if they are disjoint and their union is N.\n\n```lean\ndef isTwoPartition (A B : Set N) : Prop :=\n  Disjoint A B and A union B = Set.univ\n```\n\nThis captures the classical notion of a partition into two parts.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e197-partition-mem",
+    "proofId": "erdos-197",
+    "range": { "startLine": 104, "endLine": 121 },
+    "type": "theorem",
+    "title": "Partition Membership",
+    "content": "**partition_mem_iff:**\n\nIn a two-partition, each element belongs to exactly one part.\n\n```lean\ntheorem partition_mem_iff (A B : Set N) (h : isTwoPartition A B) (n : N) :\n    (n in A and n not in B) or (n not in A and n in B)\n```\n\nThis is a basic but important property of partitions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e197-conjecture",
+    "proofId": "erdos-197",
+    "range": { "startLine": 130, "endLine": 141 },
+    "type": "axiom",
+    "title": "Erdos Problem #197 (Open)",
+    "content": "**erdos_197_conjecture:**\n\nThe main open question: Does there exist a partition of N into two sets A and B such that both can be permuted to avoid monotone 3-APs?\n\n```lean\naxiom erdos_197_conjecture :\n    (exists A B, isTwoPartition A B and\n      canPermuteTo3APFree A and canPermuteTo3APFree B) or\n    (forall A B, isTwoPartition A B ->\n      not canPermuteTo3APFree A or not canPermuteTo3APFree B)\n```\n\nAxiomatized as the disjunction of the two possible answers (yes or no).",
+    "mathContext": "This formulation captures that the problem is open - we assert one of the two answers holds without knowing which.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e197-three-partition",
+    "proofId": "erdos-197",
+    "range": { "startLine": 149, "endLine": 154 },
+    "type": "definition",
+    "title": "Three-Set Partition of N",
+    "content": "**isThreePartition:**\n\nA, B, C form a partition of N if they are pairwise disjoint and cover N.\n\n```lean\ndef isThreePartition (A B C : Set N) : Prop :=\n  Disjoint A B and Disjoint B C and Disjoint A C and A union B union C = Set.univ\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e197-erdos-graham",
+    "proofId": "erdos-197",
+    "range": { "startLine": 156, "endLine": 162 },
+    "type": "axiom",
+    "title": "Erdos-Graham Three-Set Theorem",
+    "content": "**erdos_graham_three_sets:**\n\nN CAN be partitioned into THREE sets, each permutable to avoid monotone 3-APs.\n\n```lean\naxiom erdos_graham_three_sets :\n    exists A B C, isThreePartition A B C and\n      canPermuteTo3APFree A and canPermuteTo3APFree B and canPermuteTo3APFree C\n```\n\nThis proves the threshold is at most 3. The open question is whether it's 2 or 3.",
+    "mathContext": "The construction uses sophisticated combinatorial techniques. The jump from 2 to 3 represents a fundamental structural change.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e197-identity-3ap",
+    "proofId": "erdos-197",
+    "range": { "startLine": 196, "endLine": 206 },
+    "type": "theorem",
+    "title": "Identity Has 3-APs",
+    "content": "**identity_has_3AP:**\n\nThe sequence 0, 1, 2, 3, ... has a 3-AP at any three consecutive terms.\n\n```lean\ntheorem identity_has_3AP : hasMonotone3AP id := by\n  use 0, 1, 2\n  ...\n```\n\n**Verification:** 0 + 2 = 2 = 2 * 1.\n\nThe natural ordering fails spectacularly!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e197-powers-2",
+    "proofId": "erdos-197",
+    "range": { "startLine": 208, "endLine": 214 },
+    "type": "axiom",
+    "title": "Powers of 2 Avoid 3-APs",
+    "content": "**powers_of_2_avoid_3AP:**\n\nThe sequence 1, 2, 4, 8, 16, ... avoids 3-APs.\n\n```lean\naxiom powers_of_2_avoid_3AP : avoids3AP (fun n => 2 ^ n)\n```\n\n**Why:** If 2^a + 2^c = 2 * 2^b, then by uniqueness of binary representation, we need a = b = c (contradiction for a < b < c).\n\nThis is a canonical example of a 3-AP-free sequence.",
+    "mathContext": "Powers of 2 have unique binary representations, which prevents the AP equality from holding with distinct exponents.",
+    "significance": "key",
+    "relatedConcepts": ["Binary representation", "Geometric sequences"]
+  },
+  {
+    "id": "ann-e197-not-finite",
+    "proofId": "erdos-197",
+    "range": { "startLine": 220, "endLine": 229 },
+    "type": "axiom",
+    "title": "Non-Computability",
+    "content": "**erdos_197_not_finite_checkable:**\n\nThe two-set version cannot be resolved by finite computation.\n\nAny finite portion of N can be partitioned to avoid 3-APs in both parts, but this doesn't guarantee a solution for all of N.\n\nThis is why the problem remains open despite decades of study.",
+    "mathContext": "Compactness arguments fail here. Local solutions don't compose into global solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e197-stanley",
+    "proofId": "erdos-197",
+    "range": { "startLine": 235, "endLine": 254 },
+    "type": "definition",
+    "title": "Stanley Sequence",
+    "content": "**isStanleySequence:**\n\nThe Stanley Sequence S(0,1) is the 3-AP-free sequence starting with 0, 1 and greedily adding the smallest number that doesn't create a 3-AP.\n\n**Begins:** 0, 1, 3, 5, 9, 11, 13, 15, 25, 27, ...\n\nBy construction, this sequence avoids all 3-APs.",
+    "mathContext": "Stanley sequences are important in combinatorial number theory. Their density and structure are actively studied.",
+    "significance": "key",
+    "relatedConcepts": ["Greedy algorithms", "3-AP-free sets"]
+  },
+  {
+    "id": "ann-e197-status",
+    "proofId": "erdos-197",
+    "range": { "startLine": 260, "endLine": 274 },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "**erdos_197_status:**\n\nSummary of what we know:\n1. The three-set version is solvable (erdos_graham_three_sets)\n2. Individual 3-AP-free sequences exist (powers_of_2_avoid_3AP)\n\n```lean\ntheorem erdos_197_status :\n    (exists A B C, isThreePartition A B C and ...) and\n    (exists f, avoids3AP f)\n```\n\nThe open question is whether two sets suffice.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e197-open-question",
+    "proofId": "erdos-197",
+    "range": { "startLine": 276, "endLine": 285 },
+    "type": "theorem",
+    "title": "The Main Open Question",
+    "content": "**erdos_197_open_question:**\n\nWhether two sets suffice remains unknown.\n\n```lean\ntheorem erdos_197_open_question :\n    (exists A B, isTwoPartition A B and\n      canPermuteTo3APFree A and canPermuteTo3APFree B) or\n    (forall A B, isTwoPartition A B ->\n      not canPermuteTo3APFree A or not canPermuteTo3APFree B) :=\n  erdos_197_conjecture\n```\n\nThis directly exposes the open nature of the problem.",
+    "significance": "critical"
+  }
+]

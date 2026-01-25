@@ -1,0 +1,148 @@
+{
+  "id": "erdos-197",
+  "title": "Erdős Problem #197: Partition of ℕ Avoiding Monotone 3-AP Permutations",
+  "slug": "erdos-197",
+  "description": "Can ℕ be partitioned into two sets, each of which can be permuted to avoid monotone 3-term arithmetic progressions? This problem remains OPEN.",
+  "meta": {
+    "author": "Erdős-Graham (three-set case solved)",
+    "sourceUrl": "https://erdosproblems.com/197",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos197Problem.lean",
+    "tags": ["erdos", "arithmetic-progressions", "combinatorics", "partition-theory", "open-problem"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 197,
+    "erdosUrl": "https://erdosproblems.com/197",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Disjoint",
+        "description": "Disjoint sets predicate",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Function.Bijective",
+        "description": "Bijection predicate for functions",
+        "module": "Mathlib.Logic.Function.Basic"
+      },
+      {
+        "theorem": "Set.univ",
+        "description": "The universal set",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "isArithmeticProgression definition: a + c = 2 * b",
+      "hasMonotone3AP definition: 3-AP in indexed sequence",
+      "avoids3AP definition: sequence with no monotone 3-AP",
+      "isEnumeration definition: bijection from ℕ to a set",
+      "canPermuteTo3APFree definition: set permutable to 3-AP-free",
+      "isTwoPartition definition: partition of ℕ into two disjoint sets",
+      "isThreePartition definition: partition of ℕ into three disjoint sets",
+      "erdos_197_conjecture axiom: the open two-set question",
+      "erdos_graham_three_sets axiom: three sets suffice",
+      "powers_of_2_avoid_3AP axiom: 2^n sequence is 3-AP-free",
+      "partition_mem_iff theorem: elements in exactly one part",
+      "identity_has_3AP theorem: 0,1,2,... has 3-APs",
+      "erdos_197_status theorem: summary of known results",
+      "erdos_197_open_question theorem: the main conjecture"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #197**\n\nThis problem originates from Erdős and Graham's foundational work on arithmetic progressions in the late 1970s and early 1980s, documented in [ErGr79] and [ErGr80].\n\n**Key History:**\n- Erdős and Graham posed the original question about partitioning ℕ\n- The three-set version was proved solvable by Erdős-Graham\n- The two-set version remains open and cannot be resolved by finite computation\n\n**Mathematical Setting:**\nA monotone 3-term arithmetic progression (3-AP) in a sequence f is a triple (i, j, k) with i < j < k where f(i), f(j), f(k) form an arithmetic progression. The question asks whether ℕ can be split into two parts, each rearrangeable to avoid such patterns.",
+    "problemStatement": "**Problem Statement (Open)**\n\nCan ℕ be partitioned into two sets, each of which can be permuted to avoid monotone 3-term arithmetic progressions?\n\n**Formal Statement:**\nDoes there exist A, B ⊆ ℕ with A ∩ B = ∅ and A ∪ B = ℕ such that both A and B admit enumerations f: ℕ → A and g: ℕ → B with no i < j < k satisfying f(i) + f(k) = 2f(j) or g(i) + g(k) = 2g(j)?\n\n**Answer: UNKNOWN**\n\nThe three-set version is solvable (Erdős-Graham), indicating a threshold phenomenon.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Progressions:** Define isArithmeticProgression and monotone 3-AP detection\n\n2. **Sequence Properties:** Define hasMonotone3AP and avoids3AP predicates\n\n3. **Set Permutations:** Define when a set can be permuted to avoid 3-APs\n\n4. **Partition Definitions:** isTwoPartition and isThreePartition\n\n5. **Main Results:**\n   - Axiomatize the open conjecture\n   - Axiomatize Erdős-Graham's three-set result\n   - Prove supporting properties\n\n6. **Examples:** Powers of 2, identity sequence, Stanley sequence",
+    "keyInsights": [
+      "**Threshold Phenomenon:** Three sets suffice, but two sets remain unknown",
+      "**Non-Computability:** The problem cannot be resolved by checking finite cases",
+      "**Powers of 2:** The sequence 1, 2, 4, 8, ... is a canonical 3-AP-free sequence",
+      "**Stanley Sequences:** Greedy 3-AP-free sequences provide examples",
+      "**Identity Fails:** The natural ordering 0, 1, 2, ... has many 3-APs",
+      "**Density Considerations:** 3-AP-free sets cannot be too dense (Roth's theorem)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "arithmetic-progressions",
+      "title": "Arithmetic Progressions",
+      "summary": "isArithmeticProgression, hasMonotone3AP, avoids3AP definitions",
+      "startLine": 41,
+      "endLine": 67
+    },
+    {
+      "id": "set-permutations",
+      "title": "Permutations of Sets",
+      "summary": "isEnumeration, canPermuteTo3APFree definitions",
+      "startLine": 69,
+      "endLine": 89
+    },
+    {
+      "id": "partitions",
+      "title": "Partitions of ℕ",
+      "summary": "isTwoPartition definition and partition_mem_iff theorem",
+      "startLine": 91,
+      "endLine": 122
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdos_197_conjecture axiom - the open two-set question",
+      "startLine": 123,
+      "endLine": 141
+    },
+    {
+      "id": "three-set-case",
+      "title": "The Three-Set Case (Solved)",
+      "summary": "isThreePartition and erdos_graham_three_sets axiom",
+      "startLine": 143,
+      "endLine": 162
+    },
+    {
+      "id": "properties",
+      "title": "Properties of 3-AP Avoidance",
+      "summary": "constant_avoids_3AP, StrictlyIncreasing, StrictlyDecreasing",
+      "startLine": 164,
+      "endLine": 190
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "identity_has_3AP theorem and powers_of_2_avoid_3AP axiom",
+      "startLine": 192,
+      "endLine": 214
+    },
+    {
+      "id": "computational",
+      "title": "Computational Intractability",
+      "summary": "erdos_197_not_finite_checkable axiom",
+      "startLine": 216,
+      "endLine": 229
+    },
+    {
+      "id": "related-sequences",
+      "title": "Related Sequences",
+      "summary": "Stanley sequence definition and properties",
+      "startLine": 231,
+      "endLine": 254
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_197_status and erdos_197_open_question theorems",
+      "startLine": 256,
+      "endLine": 285
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #197 asks whether ℕ can be partitioned into two sets, each permutable to avoid monotone 3-term arithmetic progressions. The answer is UNKNOWN. We do know that three sets suffice (Erdős-Graham) and that the problem cannot be resolved by finite computation. The formalization captures the open conjecture as an axiom representing the disjunction of the two possible answers.",
+    "implications": "**Combinatorial Number Theory Connections**\n\n1. **Ramsey Theory:** Related to coloring problems and unavoidable patterns\n\n2. **Density Bounds:** Connected to Roth's theorem on 3-AP-free sets\n\n3. **Permutation Avoidance:** Links to pattern avoidance in combinatorics\n\n4. **Threshold Phenomena:** The jump from 2 to 3 sets marks a structural boundary\n\n5. **Algorithmic Questions:** Stanley sequences and greedy constructions",
+    "openQuestions": [
+      "Does the answer change for arithmetic progressions of length > 3?",
+      "What is the minimum number of parts needed for length-k AP avoidance?",
+      "Are there explicit constructions if the answer is YES?",
+      "What density constraints exist on such partitions?",
+      "How does this relate to Szemerédi's theorem generalizations?"
+    ]
+  }
+}
