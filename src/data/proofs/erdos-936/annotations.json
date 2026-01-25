@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ann-e936-header",
+    "proofId": "erdos-936",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #936** asks whether four special sequences eventually avoid being powerful numbers:\n\n- $2^n + 1$\n- $2^n - 1$\n- $n! + 1$\n- $n! - 1$\n\nA **powerful number** is one where every prime factor appears with exponent at least 2. For example, 36 = 2² · 3² is powerful, but 12 = 2² · 3 is not.\n\nThe problem is conditionally resolved: assuming the ABC conjecture, all four sequences are eventually not powerful.",
+    "mathContext": "This problem connects to the ABC conjecture, one of the most important unsolved problems in number theory. The ABC conjecture would imply strong constraints on the prime factorization of numbers of the form a + b = c.",
+    "significance": "critical",
+    "relatedConcepts": ["Powerful numbers", "ABC conjecture", "Prime factorization"]
+  },
+  {
+    "id": "ann-e936-powerful-def",
+    "proofId": "erdos-936",
+    "range": { "startLine": 51, "endLine": 65 },
+    "type": "definition",
+    "title": "Powerful Number Definition",
+    "content": "**Powerful(n):** A natural number n is powerful if for every prime p dividing n, we also have p² dividing n.\n\n**Examples:**\n- 1 is powerful (vacuously - no prime divisors)\n- 4 = 2² is powerful (only prime 2 appears with exponent 2)\n- 8 = 2³ is powerful (exponent 3 ≥ 2)\n- 6 = 2 · 3 is NOT powerful (both primes have exponent 1)\n\n**Equivalent definition:** n = a²b³ for some positive integers a, b.",
+    "mathContext": "Powerful numbers are also called squareful numbers. They are the opposite extreme from squarefree numbers (where all prime exponents are exactly 1).",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Squarefree numbers", "Divisibility"]
+  },
+  {
+    "id": "ann-e936-one-powerful",
+    "proofId": "erdos-936",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "theorem",
+    "title": "1 is Powerful",
+    "content": "**one_powerful:** The number 1 is powerful.\n\nThis is vacuously true: 1 has no prime divisors, so the condition \"for every prime p dividing 1, p² divides 1\" is satisfied with no primes to check.\n\nThis is a boundary case that makes 2^1 - 1 = 1 technically powerful.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e936-sq-powerful",
+    "proofId": "erdos-936",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "theorem",
+    "title": "Perfect Squares are Powerful",
+    "content": "**sq_powerful:** Every perfect square n² is powerful.\n\n**Proof idea:** If prime p divides n², then p divides n (since p is prime). Therefore p² divides (n)² = n².\n\nThis gives us many examples: 4, 9, 16, 25, 36, 49, 64, 81, 100, ...",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e936-prime-not-powerful",
+    "proofId": "erdos-936",
+    "range": { "startLine": 92, "endLine": 100 },
+    "type": "theorem",
+    "title": "Primes are NOT Powerful",
+    "content": "**prime_not_powerful:** No prime number is powerful.\n\n**Proof:** If p is prime, then p divides p. For p to be powerful, we'd need p² to divide p. But p² > p for p ≥ 2, so p² cannot divide p.\n\nThis is fundamental: most values of 2^n + 1, n! + 1, etc. are either prime or have prime factors with exponent 1, making them not powerful.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e936-eventually-not-powerful",
+    "proofId": "erdos-936",
+    "range": { "startLine": 118, "endLine": 129 },
+    "type": "definition",
+    "title": "Eventually Not Powerful",
+    "content": "**EventuallyNotPowerful(a):** A sequence a : ℕ → ℕ is eventually not powerful if there exists N such that for all n ≥ N, a(n) is not powerful.\n\n**Formalization:** Uses Filter.atTop to express \"for all sufficiently large n\":\n```lean\ndef EventuallyNotPowerful (a : ℕ → ℕ) : Prop :=\n  atTop.Eventually (fun n => ¬Powerful (a n))\n```\n\nThis is exactly what Erdős #936 asks about the four sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e936-concrete-examples",
+    "proofId": "erdos-936",
+    "range": { "startLine": 131, "endLine": 190 },
+    "type": "proof",
+    "title": "Verified Small Cases",
+    "content": "**Concrete computations** for small values of n:\n\n**2^n + 1:**\n- n=0: 2 (not powerful - prime)\n- n=1: 3 (not powerful - prime)\n- n=2: 5 (not powerful - prime)\n\n**2^n - 1:**\n- n=1: 1 (powerful - vacuously)\n- n=2: 3 (not powerful - prime)\n\n**n! + 1:**\n- n=1: 2 (not powerful)\n- n=2: 3 (not powerful)\n- n=3: 7 (not powerful - prime)\n\n**n! - 1:**\n- n=2: 1 (powerful)\n- n=3: 5 (not powerful - prime)\n\nNo non-trivial powerful values found!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e936-abc-conjecture",
+    "proofId": "erdos-936",
+    "range": { "startLine": 199, "endLine": 207 },
+    "type": "axiom",
+    "title": "ABC Conjecture",
+    "content": "**abc_conjecture_holds:** Placeholder for the ABC conjecture.\n\nThe **ABC conjecture** states: For coprime positive integers a, b, c with a + b = c, the product of distinct prime factors of abc (the \"radical\" rad(abc)) satisfies:\n\nrad(abc) > c^(1-ε) for any ε > 0, with only finitely many exceptions.\n\nThis remains one of the most important unsolved problems in mathematics. It was proposed by Oesterlé and Masser in 1985.",
+    "mathContext": "The ABC conjecture has profound implications for Diophantine equations and would resolve many open problems including Fermat's Last Theorem (by a different route).",
+    "significance": "critical",
+    "relatedConcepts": ["Radical of integer", "Diophantine equations", "Fermat's Last Theorem"]
+  },
+  {
+    "id": "ann-e936-cushing-pascoe",
+    "proofId": "erdos-936",
+    "range": { "startLine": 209, "endLine": 219 },
+    "type": "axiom",
+    "title": "Cushing-Pascoe Theorem (2016)",
+    "content": "**cushing_pascoe_theorem:** Assuming the ABC conjecture, n! ± 1 is powerful for only finitely many n.\n\nMore generally, for any fixed k ≥ 0, there exist only finitely many n and powerful numbers x satisfying |x - n!| ≤ k.\n\nThe actual paper title is \"The abc conjecture implies that n! ± 1 is squarefree for large n\" - an even stronger result than just not being powerful.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e936-crowdmath",
+    "proofId": "erdos-936",
+    "range": { "startLine": 221, "endLine": 228 },
+    "type": "axiom",
+    "title": "CrowdMath Theorem (2020)",
+    "content": "**crowdmath_theorem:** Assuming the ABC conjecture, 2^n ± 1 is powerful for only finitely many n.\n\nThis was proved through the CrowdMath collaborative mathematics project, demonstrating the power of distributed mathematical research.\n\nThe proof extends techniques from Cushing-Pascoe to exponential sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e936-four-variants",
+    "proofId": "erdos-936",
+    "range": { "startLine": 230, "endLine": 284 },
+    "type": "axiom",
+    "title": "The Four Variants",
+    "content": "**Four axioms** capture the conditional resolution of Erdős #936:\n\n1. **erdos_936_two_pow_add_one:** ABC → 2^n + 1 eventually not powerful\n2. **erdos_936_two_pow_sub_one:** ABC → 2^n - 1 eventually not powerful\n3. **erdos_936_factorial_add_one:** ABC → n! + 1 eventually not powerful\n4. **erdos_936_factorial_sub_one:** ABC → n! - 1 eventually not powerful\n\n**Combined theorem:** erdos_936_all_variants shows all four follow from ABC.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e936-squarefree",
+    "proofId": "erdos-936",
+    "range": { "startLine": 294, "endLine": 307 },
+    "type": "definition",
+    "title": "Squarefree Numbers",
+    "content": "**Squarefree'(n):** A number n is squarefree if no prime square divides it.\n\n**Key relationship:** Squarefree numbers with n > 1 are NOT powerful.\n\n**Proof:** If n is squarefree and n > 1, then n has at least one prime divisor p. Since n is squarefree, p² does not divide n. So n fails the powerful condition.\n\nThe ABC conjecture implies n! ± 1 is actually squarefree (not just not-powerful) for large n.",
+    "significance": "key",
+    "relatedConcepts": ["Powerful numbers", "Möbius function", "Prime factorization"]
+  },
+  {
+    "id": "ann-e936-summary",
+    "proofId": "erdos-936",
+    "range": { "startLine": 313, "endLine": 341 },
+    "type": "theorem",
+    "title": "Problem Summary",
+    "content": "**erdos_936_summary:** Complete status of Erdős Problem #936.\n\n**Main result:** Assuming the ABC conjecture, all four sequences (2^n ± 1, n! ± 1) are eventually not powerful.\n\n**Also established:**\n- 2 and 3 are not powerful (primes)\n- 1, 4, and 9 are powerful\n\n**Status:** OPEN (conditionally resolved)\n\nThe problem joins the rare category of results that are \"known\" assuming a major conjecture but have no unconditional proof.",
+    "significance": "critical"
+  }
+]
