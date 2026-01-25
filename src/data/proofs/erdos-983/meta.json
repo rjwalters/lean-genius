@@ -14,33 +14,141 @@
       "number-theory",
       "primes",
       "smooth-numbers",
-      "prime-counting"
+      "prime-counting",
+      "combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 983,
     "erdosUrl": "https://erdosproblems.com/983",
-    "erdosProblemStatus": "solved"
-  },
-  "overview": {
-    "historicalContext": "This problem appeared in Erdős's 1970 paper 'Some applications of graph theory to number theory' at the Chapel Hill conference. The function f(k,n) measures the minimum number of primes needed to 'cover' k elements from {1,...,n} via smooth numbers. The problem relates to the density of smooth numbers and has connections to factorization algorithms.",
-    "problemStatement": "Let f(k,n) be the smallest r such that in any A ⊆ {1,...,n} of size k, there exist r primes p₁,...,pᵣ with at least r elements of A smooth with respect to these primes. Does 2π(√n) - f(π(n)+1, n) → ∞ as n → ∞?",
-    "proofStrategy": "Erdős-Straus used hypergraph covering techniques. The key insight is that 2π(√n) arises from the structure of prime factorizations: integers ≤ n have at most one prime factor > √n, and covering such numbers requires tracking both small primes and the unique large prime factor.",
-    "keyInsights": [
-      "f(π(n)+1, n) ≈ 2π(√n) with small error term",
-      "For dense sets (cn elements), f grows like log log n",
-      "The constant c₁ relates to the normal distribution",
-      "Smooth numbers are key to factorization algorithms"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Predicate for prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter elements of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "Prime counting function π(n)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Nat.sqrt",
+        "description": "Integer square root",
+        "module": "Mathlib.Data.Nat.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "primePi definition: π(n) = count of primes ≤ n",
+      "primesUpTo definition: finite set of primes up to n",
+      "IsSmooth definition: P-smooth numbers (all prime factors in P)",
+      "smoothElements definition: P-smooth elements of a set A",
+      "PrimesCover definition: when r primes cover r elements",
+      "f definition: minimum primes to cover any k-subset",
+      "ErdosQuestion983 definition: does 2π(√n) - f(π(n)+1, n) → ∞?",
+      "erdos_question_answer axiom: answer is NO",
+      "erdos_straus_main axiom: precise asymptotic formula",
+      "erdos_straus_dense axiom: behavior for dense sets f(cn, n)",
+      "prime_structure axiom: at most one large prime factor",
+      "IsYSmooth definition: y-smooth numbers",
+      "smoothCount definition: Ψ(x, y) counting function",
+      "erdos_983_summary theorem: combining all results"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "**Erdős Problem #983**\n\nThis problem appeared in Erdős's influential 1970 paper \"Some applications of graph theory to number theory\" at the Second Chapel Hill Conference on Combinatorial Mathematics. It concerns the prime coverage function f(k,n), which measures how many primes are needed to \"cover\" k elements from {1,...,n} via smooth numbers.\n\n**Key History:**\n- Erdős [Er70b]: Original formulation of the problem\n- Erdős-Straus (1970): Complete resolution with precise asymptotics\n\n**Mathematical Setting:**\nThe function f(k,n) is the smallest r such that any k-subset A of {1,...,n} contains at least r elements that are smooth with respect to some set of r primes. The main question asks whether 2π(√n) - f(π(n)+1, n) → ∞, where π denotes the prime counting function.\n\n**Significance:**\nSmooth numbers (integers with no large prime factors) play a crucial role in factorization algorithms like the quadratic sieve and number field sieve. Understanding their covering properties has implications for computational number theory and cryptography.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet n ≥ 2 and π(n) < k ≤ n. Define f(k,n) as the smallest r such that any A ⊆ {1,...,n} with |A| = k contains at least r elements that are P-smooth for some set P of r primes.\n\nDoes 2π(√n) - f(π(n)+1, n) → ∞ as n → ∞?\n\n**Answer: NO**\n\nErdős and Straus (1970) proved:\n1. f(π(n)+1, n) = 2π(√n) + o_A(√n/(log n)^A) for any A > 0\n2. For constant 0 < c < 1: f(cn, n) = log log n + (c₁ + o(1))√(2 log log n)\n\nThe difference is bounded, not tending to infinity.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define π(n), smooth numbers, and the coverage function f(k,n)\n\n2. **The Main Question:** Formalize ErdosQuestion983 as the assertion that the difference tends to infinity\n\n3. **Key Results:** Axiomatize Erdős-Straus theorems:\n   - erdos_straus_main: precise asymptotic for f(π(n)+1, n)\n   - erdos_straus_dense: behavior for f(cn, n) with constant c\n\n4. **Supporting Theory:**\n   - prime_structure: integers ≤ n have at most one prime > √n\n   - Connection to Dickman function and smooth number density\n\n5. **Summary Theorem:** Combine all results into erdos_983_summary",
+    "keyInsights": [
+      "**Prime Coverage:** f(k,n) measures the minimum primes needed to cover k elements via smoothness",
+      "**The Factor 2π(√n):** Arises because integers ≤ n have at most one prime factor > √n, requiring double-counting of small primes",
+      "**Sublinear Difference:** The gap |2π(√n) - f(π(n)+1, n)| / √n → 0, so the approximation is very tight",
+      "**Dense Sets:** For f(cn, n), the answer is log log n + O(√(log log n)), much smaller than for sparse sets",
+      "**Normal Distribution:** The constant c₁ in the dense case relates to the standard normal CDF Φ(c₁) = c",
+      "**Graph-Theoretic Proof:** The original proof uses hypergraph covering techniques",
+      "**Algorithmic Relevance:** Smooth numbers are central to subexponential factorization algorithms"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "primePi, primesUpTo, IsSmooth, smoothElements, PrimesCover",
+      "startLine": 40,
+      "endLine": 79
+    },
+    {
+      "id": "f-function",
+      "title": "The f Function",
+      "summary": "f definition, f_upper_bound, f_mono_k",
+      "startLine": 81,
+      "endLine": 108
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "ErdosQuestion983, erdos_question_answer",
+      "startLine": 110,
+      "endLine": 128
+    },
+    {
+      "id": "erdos-straus-results",
+      "title": "Erdős-Straus Results",
+      "summary": "erdos_straus_main, difference_is_sublinear, erdos_straus_dense, normal_distribution_constant",
+      "startLine": 130,
+      "endLine": 178
+    },
+    {
+      "id": "intuition",
+      "title": "Why 2π(√n)?",
+      "summary": "prime_structure, why_two_pi_sqrt, smooth_number_density",
+      "startLine": 180,
+      "endLine": 214
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "summary": "factorization_algorithms, cryptographic_relevance, graph_theory_connection",
+      "startLine": 216,
+      "endLine": 247
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "summary": "IsYSmooth, smoothCount, dickman_asymptotics",
+      "startLine": 249,
+      "endLine": 272
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_983_summary, erdos_983",
+      "startLine": 274,
+      "endLine": 312
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #983 is SOLVED with answer NO. Erdős-Straus (1970) proved that 2π(√n) - f(π(n)+1, n) does not tend to infinity; the difference is o(√n/(log n)^A) for any A > 0.",
-    "implications": "The result precisely characterizes the prime coverage function f(k,n) and connects to smooth number theory. The formula explains why 2π(√n) is the natural scale for covering π(n)+1 elements.",
+    "summary": "Erdős Problem #983 asked whether 2π(√n) - f(π(n)+1, n) → ∞. The answer is NO. Erdős and Straus (1970) proved that f(π(n)+1, n) = 2π(√n) + o(√n/(log n)^A) for any A > 0, meaning the difference is small (sublinear in √n). For denser sets with f(cn, n), the function grows only as log log n.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Smooth Number Theory:** Characterizes prime coverage for smooth numbers\n\n2. **Prime Counting:** Deep connection between π(n), π(√n), and covering properties\n\n3. **Factorization:** Smooth numbers are key to quadratic sieve and number field sieve\n\n4. **Cryptography:** Understanding smooth number density affects cryptanalysis\n\n5. **Combinatorics:** Original proof used hypergraph covering techniques",
     "openQuestions": [
-      "Can the error term be improved further?",
+      "Can the error term o(√n/(log n)^A) be made more explicit?",
       "What are optimal constructions achieving the bound?",
-      "Extensions to more general covering problems"
+      "Extensions to other covering problems in number theory",
+      "Computational aspects of finding optimal prime sets",
+      "Connections to the Dickman function and smooth number asymptotics"
     ]
   }
 }
