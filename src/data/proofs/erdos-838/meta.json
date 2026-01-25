@@ -16,8 +16,38 @@
     "erdosUrl": "https://erdosproblems.com/838",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
-    "originalContributions": []
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power set of a finite set",
+        "module": "Mathlib.Data.Finset.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "Point2D structure: 2D point representation with coordinates",
+      "collinear definition: cross product test for three collinear points",
+      "inGeneralPosition definition: no three points collinear",
+      "isConvexSubset definition: convex polygon with empty interior",
+      "numConvexSubsets definition: count of convex subsets in a point set",
+      "f definition: minimum convex subsets over all n-point configurations",
+      "f_definition axiom: f(n) is a lower bound for any n-point set",
+      "erdos_lower_bound axiom: f(n) > n^{c₁ log n}",
+      "erdos_upper_bound axiom: f(n) < n^{c₂ log n}",
+      "erdos_bounds theorem: combines lower and upper bounds",
+      "normalizedLogF definition: (log f(n))/(log n)²",
+      "erdos_szekeres_connection axiom: relation to Erdős-Szekeres",
+      "erdos_838_status theorem: problem remains OPEN"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #838, posed by Erdős and Hammer, concerns counting convex subsets of point sets in general position. Given n points in the plane with no three collinear, how many distinct convex polygons can they determine?\n\nThe function f(n) is defined as the MINIMUM number of convex subsets over all n-point configurations. In his 1978 paper 'Some more problems on elementary geometry' (Austral. Math. Soc. Gaz.), Erdős established that f(n) grows like n^{Θ(log n)}, a 'quasi-polynomial' rate faster than any polynomial but slower than any exponential.\n\nThe main question asks whether the normalized quantity (log f(n))/(log n)² converges to a constant c as n → ∞, and if so, what is c?",

@@ -8,8 +8,10 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #838: Let f(n) be maximal such that any n points in ℝ² (no three collinear) determine at least f(n) convex subsets. Question: Does lim (log f(n))/(log n)² = c exist? OPEN: Bounds n^{c₁ log n} < f(n) < n^{c₂ log n} known (Erdős 1978).",
-    "significance": "critical"
+    "content": "**Erdős Problem #838: Convex Subsets of Point Sets**\n\nLet f(n) be maximal such that any n points in ℝ² (no three collinear) determine at least f(n) convex subsets.\n\n**Question:** Does lim (log f(n))/(log n)² = c exist?\n\n**Status:** OPEN - Bounds n^{c₁ log n} < f(n) < n^{c₂ log n} known (Erdős 1978).\n\nPosed by Erdős and Hammer, this problem connects combinatorial geometry with asymptotic analysis.",
+    "mathContext": "From [Er78c] 'Some more problems on elementary geometry' (Austral. Math. Soc. Gaz.). Related to Erdős-Szekeres theorem on convex subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["convex geometry", "general position", "quasi-polynomial growth", "Erdős-Szekeres theorem"]
   },
   {
     "id": "ann-838-2",
@@ -44,8 +46,10 @@
     },
     "type": "definition",
     "title": "General Position",
-    "content": "A set S of points is in general position if no three points are collinear. This ensures every triple forms a proper (non-degenerate) triangle.",
-    "significance": "critical"
+    "content": "**General Position:** A set S of points is in general position if no three points are collinear.\n\n```lean\ndef inGeneralPosition (S : Finset Point2D) : Prop :=\n  ∀ p q r : Point2D, p ∈ S → q ∈ S → r ∈ S →\n    p ≠ q → q ≠ r → p ≠ r → ¬collinear p q r\n```\n\nThis ensures every triple forms a proper (non-degenerate) triangle. General position is the standard assumption in discrete geometry.",
+    "mathContext": "General position is fundamental in computational geometry and combinatorics. It excludes degenerate configurations.",
+    "significance": "critical",
+    "relatedConcepts": ["collinearity", "discrete geometry", "non-degeneracy"]
   },
   {
     "id": "ann-838-5",
@@ -128,8 +132,10 @@
     },
     "type": "theorem",
     "title": "Combined Bounds",
-    "content": "The bounds together: n^{c₁ log n} < f(n) < n^{c₂ log n}. This pins down f(n) to quasi-polynomial growth n^{Θ(log n)}.",
-    "significance": "critical"
+    "content": "**erdos_bounds theorem:** Combines lower and upper bounds.\n\n```lean\ntheorem erdos_bounds :\n    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧\n      ∀ n : ℕ, n ≥ 4 →\n        n ^ (c₁ * log n) < (f n : ℝ) ∧ (f n : ℝ) < n ^ (c₂ * log n)\n```\n\nThis pins down f(n) to **quasi-polynomial growth** n^{Θ(log n)}:\n- Faster than any polynomial n^k\n- Slower than any exponential c^n\n\nThe proof extracts constants from both bound axioms.",
+    "mathContext": "Quasi-polynomial growth is an intermediate rate between polynomial and exponential, common in complexity theory and combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["quasi-polynomial", "growth rates", "asymptotic analysis"]
   },
   {
     "id": "ann-838-12",
@@ -152,8 +158,10 @@
     },
     "type": "concept",
     "title": "The Open Question",
-    "content": "Does lim_{n→∞} (log f(n))/(log n)² exist? If so, what is the constant c? This is the main open problem. The bounds show c₁ ≤ c ≤ c₂ if the limit exists.",
-    "significance": "critical"
+    "content": "**The Main Open Question:**\n\nDoes the following limit exist?\n$$\\lim_{n \\to \\infty} \\frac{\\log f(n)}{(\\log n)^2} = c$$\n\nIf so, what is the constant c?\n\n**What we know:**\n- From the bounds: c₁ ≤ c ≤ c₂ (if limit exists)\n- The limit captures the precise growth rate exponent\n- Its existence would show f(n) has a 'clean' asymptotic form",
+    "mathContext": "This is a question about the regularity of asymptotic growth. Existence of the limit would imply f(n) ~ n^{c(log n)} for some precise constant c.",
+    "significance": "critical",
+    "relatedConcepts": ["limits", "asymptotic analysis", "growth rate"]
   },
   {
     "id": "ann-838-14",
