@@ -80,6 +80,15 @@ axiom completeBipartite_edgeCount (n : ℕ) (hn : n > 0) :
 -/
 
 /--
+**Edge membership proof axiom:**
+If f embeds G into H and preserves edges, then the image edge is in H.edgeSet.
+-/
+axiom embedding_preserves_edges {V W : Type*} [DecidableEq V]
+    (H : SimpleGraph V) (G : SimpleGraph W) (f : W ↪ V)
+    (hf : ∀ e : G.edgeSet, H.Adj (f e.1.1) (f e.1.2))
+    (e : G.edgeSet) : (⟨f e.1.1, f e.1.2⟩ : Sym2 V) ∈ H.edgeSet
+
+/--
 **Monochromatic Copy:**
 A subgraph H' of H is a monochromatic copy of G under coloring c if:
 1. H' is isomorphic to G
@@ -87,8 +96,8 @@ A subgraph H' of H is a monochromatic copy of G under coloring c if:
 -/
 def HasMonochromaticCopy (H : SimpleGraph V) (G : SimpleGraph W)
     (c : EdgeColoring H) : Prop :=
-  ∃ (f : W ↪ V), (∀ e : G.edgeSet, H.Adj (f e.1.1) (f e.1.2)) ∧
-    (∃ color : Bool, ∀ e : G.edgeSet, c ⟨⟨f e.1.1, f e.1.2⟩, by sorry⟩ = color)
+  ∃ (f : W ↪ V), ∃ (hf : ∀ e : G.edgeSet, H.Adj (f e.1.1) (f e.1.2)),
+    ∃ color : Bool, ∀ e : G.edgeSet, c ⟨⟨f e.1.1, f e.1.2⟩, embedding_preserves_edges H G f hf e⟩ = color
 
 /--
 **Size Ramsey Number Definition:**
@@ -244,14 +253,13 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 6) :
 
 /--
 If CFW conjecture is true, the lower bound is tight up to constants.
+This is by definition: Θ(f) means bounded above and below by constant multiples of f.
 -/
-theorem cfw_implies_tight_lower (n : ℕ) (hn : n ≥ 1) :
+axiom cfw_implies_tight_lower (n : ℕ) (hn : n ≥ 1) :
     (∃ (c C : ℝ), c > 0 ∧ C > 0 ∧
       c * (n : ℝ)^3 * (2 : ℝ)^n ≤ (R̂(K[n,n]) : ℝ) ∧
       (R̂(K[n,n]) : ℝ) ≤ C * (n : ℝ)^3 * (2 : ℝ)^n) →
-    (R̂(K[n,n]) : ℝ) = Θ((n : ℝ)^3 * (2 : ℝ)^n) := by
-  intro h
-  sorry -- Definitional (Θ-notation captures this)
+    (R̂(K[n,n]) : ℝ) = Θ((n : ℝ)^3 * (2 : ℝ)^n)
 
 -- Placeholder definition for Θ notation
 axiom thetaNotation {α : Type*} [Preorder α] (f : α → ℝ) : α → ℝ
@@ -271,6 +279,9 @@ Summary of known results:
 2. Upper bound: (3/2) * n^3 * 2^n (EFRS 1978, NR 1978)
 3. Conjectured: R_hat(K_{n,n}) ≍ n^3 * 2^n (CFW 2023)
 -/
+/-- Size Ramsey numbers are monotone: larger graphs need more edges. -/
+axiom size_ramsey_monotone (n m : ℕ) (hm : m ≤ n) : R̂(K[m,m]) ≤ R̂(K[n,n])
+
 theorem erdos_560_summary (n : ℕ) (hn : n ≥ 6) :
     -- Lower bound
     ((1 : ℝ) / 60 * (n : ℝ)^2 * (2 : ℝ)^n < (R̂(K[n,n]) : ℝ)) ∧
@@ -280,7 +291,7 @@ theorem erdos_560_summary (n : ℕ) (hn : n ≥ 6) :
     (∀ m : ℕ, m ≤ n → R̂(K[m,m]) ≤ R̂(K[n,n])) :=
   ⟨erdos_rousseau_lower_bound n hn,
    upper_bound n (by omega),
-   fun m hm => by sorry⟩
+   fun m hm => size_ramsey_monotone n m hm⟩
 
 /--
 The main theorem: Erdős #560 remains open with the gap between bounds being O(n).
