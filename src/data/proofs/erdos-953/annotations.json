@@ -1,0 +1,155 @@
+[
+  {
+    "id": "erdos-953-header",
+    "proofId": "erdos-953",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 32 },
+    "title": "Problem Overview: Avoiding Integer Distances",
+    "content": "Erdős Problem #953 asks: if A ⊆ B(0,r) in the plane has no two points at integer distance, how large can the Lebesgue measure of A be? Joint with Sárközi. Known bounds: O(r) upper, r^{0.26} lower. The true asymptotic is unknown.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-integer-dist",
+    "proofId": "erdos-953",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 52 },
+    "title": "Integer Distance Predicate",
+    "content": "IsIntegerDistance(a, b) holds when dist(a, b) = n for some integer n. This is the fundamental constraint: we want to forbid all such pairs in our set A.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-avoids",
+    "proofId": "erdos-953",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 58 },
+    "title": "Avoiding Integer Distances",
+    "content": "A set A avoids integer distances if for any distinct a, b ∈ A, we have dist(a,b) ∉ ℤ. This is the central property studied in the problem. Note that distance 0 (same point) is excluded by 'distinct'.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-disk",
+    "proofId": "erdos-953",
+    "type": "definition",
+    "range": { "startLine": 77, "endLine": 80 },
+    "title": "The Open Disk",
+    "content": "openDisk(r) = {x ∈ ℝ² : |x| < r} is the open ball of radius r centered at the origin. This is the domain we restrict our sets to, and r is the key parameter for the problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-max-measure",
+    "proofId": "erdos-953",
+    "type": "definition",
+    "range": { "startLine": 85, "endLine": 92 },
+    "title": "Maximum Measure Function",
+    "content": "M(r) = maxMeasure(r) is the supremum of Lebesgue measures over all measurable sets A ⊆ B(0,r) that avoid integer distances. This is THE quantity the problem asks about.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-singleton",
+    "proofId": "erdos-953",
+    "type": "theorem",
+    "range": { "startLine": 99, "endLine": 103 },
+    "title": "Singletons Avoid Trivially",
+    "content": "A singleton {p} trivially avoids integer distances because there are no distinct pairs. This is the base case for understanding the constraint.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-pair-half",
+    "proofId": "erdos-953",
+    "type": "theorem",
+    "range": { "startLine": 105, "endLine": 125 },
+    "title": "Pair at Distance 0.5",
+    "content": "The set {(0,0), (0.5, 0)} avoids integer distances because the only distance between distinct points is 0.5, which is not an integer. This shows nontrivial sets exist.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-upper-bound",
+    "proofId": "erdos-953",
+    "type": "theorem",
+    "range": { "startLine": 137, "endLine": 145 },
+    "title": "Trivial Upper Bound O(r)",
+    "content": "Any set avoiding integer distances has measure O(r). This follows from geometric considerations: the set cannot be too 'spread out' radially without creating integer distances.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-circle-sep",
+    "proofId": "erdos-953",
+    "type": "theorem",
+    "range": { "startLine": 147, "endLine": 153 },
+    "title": "Circle Separation Argument",
+    "content": "A key insight: if two circles centered at the same point have radii differing by 1, any points on them are at distance 1. So a set avoiding distance 1 cannot contain points on both circles.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-kovac",
+    "proofId": "erdos-953",
+    "type": "theorem",
+    "range": { "startLine": 163, "endLine": 173 },
+    "title": "Kovač Lower Bound",
+    "content": "Kovač showed that maxMeasure(r) ≥ C·r^α for α ≈ 0.26. This adapts Sárközy's methods from problem #466. The construction is nontrivial and uses ideas from additive combinatorics.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-sarkozy-exp",
+    "proofId": "erdos-953",
+    "type": "context",
+    "range": { "startLine": 175, "endLine": 180 },
+    "title": "The Sárközy Exponent",
+    "content": "The exponent α ≈ 0.26 comes from Sárközy's work. It's not known if this is optimal—improving this exponent would narrow the gap between upper and lower bounds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-annulus",
+    "proofId": "erdos-953",
+    "type": "definition",
+    "range": { "startLine": 192, "endLine": 195 },
+    "title": "Annulus Definition",
+    "content": "An annulus is the region between two concentric circles: {x : r₁ ≤ |x| < r₂}. Thin annuli (thickness < 1) are useful for avoiding integer distances.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-thin-annulus",
+    "proofId": "erdos-953",
+    "type": "theorem",
+    "range": { "startLine": 197, "endLine": 203 },
+    "title": "Thin Annulus Property",
+    "content": "An annulus of thickness δ < 1 automatically avoids distances > 2. The only constraint is avoiding distance 1, which is more manageable. This is a key construction technique.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-forbidden-gen",
+    "proofId": "erdos-953",
+    "type": "definition",
+    "range": { "startLine": 212, "endLine": 217 },
+    "title": "General Forbidden Distances",
+    "content": "AvoidsForbiddenDistances(A, D) means no pair in A has distance in D. Avoiding integers is the special case D = ℤ. This generalizes to other forbidden sets like {1} (unit distance problem).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-related",
+    "proofId": "erdos-953",
+    "type": "context",
+    "range": { "startLine": 224, "endLine": 239 },
+    "title": "Related Problems #465 and #466",
+    "content": "Erdős #465 gives upper bounds for unit-distance-avoiding sets. Erdős #466 gives lower bounds. Problem #953 is the 'integer distance' variant combining both directions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-953-asymptotic",
+    "proofId": "erdos-953",
+    "type": "theorem",
+    "range": { "startLine": 251, "endLine": 262 },
+    "title": "The Asymptotic Question",
+    "content": "The main open question: what is the true asymptotic of M(r)? We conjecture M(r) = Θ(r^α) for some α between 0.26 and 1, but the correct exponent is unknown.",
+    "significance": "major"
+  },
+  {
+    "id": "erdos-953-summary",
+    "proofId": "erdos-953",
+    "type": "context",
+    "range": { "startLine": 269, "endLine": 290 },
+    "title": "Summary: Open Problem",
+    "content": "Erdős #953 remains OPEN. Current bounds: O(r) upper, r^{0.26} lower. The huge gap shows how little we understand about the geometry of integer-distance-avoiding sets. Joint with Sárközi.",
+    "significance": "major"
+  }
+]
