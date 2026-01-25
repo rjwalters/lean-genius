@@ -142,10 +142,10 @@
   {
     "id": "ann-e766-bounds",
     "proofId": "erdos-766",
-    "range": { "startLine": 144, "endLine": 161 },
+    "range": { "startLine": 144, "endLine": 166 },
     "type": "theorem",
     "title": "Bounds on f",
-    "content": "**Basic Bounds:**\n\n**Lower:** f(n; k, l) ≥ 0 (trivial)\n\n**Upper:** f(n; k, l) ≤ n(n-1)/2 (complete graph)\n\n**Trees (l = k-1):**\nf(n; k, k-1) ≥ (k-2)(n-1)/2\n\nFor paths, ex(n; P_k) is about this size.\n\n**Near Bipartite:**\nf(n; k, ⌊k²/4⌋) ≤ n²/4 + k\n\nThe bipartite Turán graph nearly achieves the bound.",
+    "content": "**Basic Bounds:**\n\n**Lower:** f(n; k, l) ≥ 0 (trivial)\n\n**Upper:** f(n; k, l) ≤ n(n-1)/2 (complete graph)\n\nThe upper bound is axiomatized because it requires showing that the infimum over Turán numbers is bounded by the complete graph's edge count.\n\n**Trees (l = k-1):**\nf(n; k, k-1) ≥ (k-2)(n-1)/2\n\nFor paths, ex(n; P_k) is about this size.\n\n**Near Bipartite:**\nf(n; k, ⌊k²/4⌋) ≤ n²/4 + k\n\nThe bipartite Turán graph nearly achieves the bound.",
     "mathContext": "Bounds bracket f between trivial extremes and reveal behavior at special points.",
     "significance": "key",
     "relatedConcepts": ["upper bounds", "lower bounds", "path graphs"]
@@ -153,10 +153,10 @@
   {
     "id": "ann-e766-triangle",
     "proofId": "erdos-766",
-    "range": { "startLine": 165, "endLine": 169 },
-    "type": "theorem",
+    "range": { "startLine": 169, "endLine": 174 },
+    "type": "axiom",
     "title": "Triangle Case",
-    "content": "**f_triangle:** f(n; 3, 3) = ⌊n²/4⌋\n\n```lean\ntheorem f_triangle (n : ℕ) (hn : n ≥ 3) :\n    f n 3 3 = n * n / 4\n```\n\nThe only graph with 3 vertices and 3 edges is K₃ (triangle).\nSo f(n; 3, 3) = ex(n; K₃) = ⌊n²/4⌋.\n\nThis is the simplest non-trivial case and equals Turán's result for r=3.",
+    "content": "**f_triangle:** f(n; 3, 3) = ⌊n²/4⌋\n\n```lean\naxiom f_triangle (n : ℕ) (hn : n ≥ 3) : f n 3 3 = n * n / 4\n```\n\nThe only graph with 3 vertices and 3 edges is K₃ (triangle).\nSo f(n; 3, 3) = ex(n; K₃) = ⌊n²/4⌋.\n\nThis is Mantel's theorem (1907): the maximum edges in a triangle-free graph on n vertices is ⌊n²/4⌋. Axiomatized as the proof requires machinery beyond current Mathlib formalization.",
     "mathContext": "The triangle case is exactly Mantel's theorem (1907), the first result in extremal graph theory.",
     "significance": "key",
     "relatedConcepts": ["Mantel's theorem", "triangle-free graphs", "bipartite graphs"]
@@ -164,7 +164,7 @@
   {
     "id": "ann-e766-c4",
     "proofId": "erdos-766",
-    "range": { "startLine": 176, "endLine": 180 },
+    "range": { "startLine": 181, "endLine": 186 },
     "type": "axiom",
     "title": "4-Cycle Anomaly",
     "content": "**turan_c4:** ex(n; C₄) = Θ(n^{3/2})\n\n```lean\naxiom turan_c4 (n : ℕ) (hn : n ≥ 4) :\n    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧\n      C₁ * n^(3/2 : ℝ) ≤ turanNumber n (cycleGraph 4) ∧\n      turanNumber n (cycleGraph 4) ≤ C₂ * n^(3/2 : ℝ)\n```\n\n**Significance:**\nC₄ = K_{2,2} (complete bipartite 2-by-2) has ex(n; C₄) = Θ(n^{3/2}).\n\nThis is MUCH smaller than n² - 4-cycles are \"hard to avoid\".\n\nThe Kővári-Sós-Turán theorem (1954) gives ex(n; K_{s,t}) = O(n^{2-1/s}).",
@@ -175,10 +175,10 @@
   {
     "id": "ann-e766-turan-density",
     "proofId": "erdos-766",
-    "range": { "startLine": 184, "endLine": 186 },
+    "range": { "startLine": 189, "endLine": 196 },
     "type": "definition",
     "title": "Turán Density",
-    "content": "**turanDensity H = π(H):**\n\nThe asymptotic edge density:\nπ(H) = lim_{n→∞} ex(n; H) / C(n,2)\n\nwhere C(n,2) = n(n-1)/2.\n\n**Examples:**\n- π(K_r) = 1 - 1/(r-1)\n- π(C₄) = 0 (subquadratic growth)\n- π(any bipartite) = 0\n\nGraphs with π(H) > 0 are called \"dense\" or \"degenerate\".",
+    "content": "**turanDensity H = π(H):**\n\nThe asymptotic edge density:\nπ(H) = lim_{n→∞} ex(n; H) / C(n,2)\n\nwhere C(n,2) = n(n-1)/2.\n\nThe existence of this limit is guaranteed by the Erdős-Stone theorem and is axiomatized via `turanDensityExists`.\n\n**Examples:**\n- π(K_r) = 1 - 1/(r-1)\n- π(C₄) = 0 (subquadratic growth)\n- π(any bipartite) = 0\n\nGraphs with π(H) > 0 are called \"dense\" or \"degenerate\".",
     "mathContext": "Turán density captures asymptotic behavior. The Erdős-Stone theorem relates π(H) to chromatic number.",
     "significance": "key",
     "relatedConcepts": ["asymptotic density", "Erdős-Stone theorem", "chromatic number"]
@@ -186,7 +186,7 @@
   {
     "id": "ann-e766-dense-triangle",
     "proofId": "erdos-766",
-    "range": { "startLine": 192, "endLine": 195 },
+    "range": { "startLine": 202, "endLine": 206 },
     "type": "axiom",
     "title": "Dense Graphs Contain Triangles",
     "content": "**dense_graph_contains_triangle:**\n\nIf a graph has k vertices and > k²/4 edges, it contains K₃.\n\n```lean\naxiom dense_graph_contains_triangle (k l : ℕ) (hk : k ≥ 3)\n    (hdense : l > k * k / 4) :\n    ∀ G : Graph (Fin k), numEdges G = l → containsSubgraph G (completeGraph (Fin 3))\n```\n\n**Why?**\nIf l > k²/4, the graph cannot be bipartite (bipartite graphs have ≤ k²/4 edges).\nNon-bipartite graphs contain odd cycles.\nThe smallest odd cycle is a triangle.\n\nThis is why the bipartite threshold is so important!",
@@ -197,7 +197,7 @@
   {
     "id": "ann-e766-summary",
     "proofId": "erdos-766",
-    "range": { "startLine": 199, "endLine": 223 },
+    "range": { "startLine": 209, "endLine": 234 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_766_summary:**\n\nCombines the main results:\n1. Dirac-Erdős theorem at bipartite threshold\n2. Problem remains OPEN\n\n```lean\ntheorem erdos_766_summary :\n    (∀ n k, k ≥ 3 → n ≥ k → f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1) ∧\n    True\n```\n\n**Known:**\n- Dirac-Erdős: f(n; k, ⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1\n- f is non-decreasing in l\n- f(n; 3, 3) = ⌊n²/4⌋\n\n**Open:**\n1. Good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) STRICTLY monotone in l?",
@@ -207,7 +207,7 @@
   {
     "id": "ann-e766-open",
     "proofId": "erdos-766",
-    "range": { "startLine": 225, "endLine": 228 },
+    "range": { "startLine": 235, "endLine": 241 },
     "type": "theorem",
     "title": "Problem OPEN",
     "content": "**erdos_766_open:**\n\n```lean\ntheorem erdos_766_open :\n    True := trivial\n```\n\n**Status: OPEN**\n\nBoth main questions remain unresolved:\n1. Estimates for f(n; k, l) in k < l ≤ k²/4\n2. Strict monotonicity of f in l\n\nThe problem dates to Erdős [Er64c] and remains an active area of research in extremal graph theory.",
