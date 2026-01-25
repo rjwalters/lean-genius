@@ -1,1 +1,242 @@
-[]
+[
+  {
+    "id": "ann-838-1",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #838: Let f(n) be maximal such that any n points in ℝ² (no three collinear) determine at least f(n) convex subsets. Question: Does lim (log f(n))/(log n)² = c exist? OPEN: Bounds n^{c₁ log n} < f(n) < n^{c₂ log n} known (Erdős 1978).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-2",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Point2D Structure",
+    "content": "A point in the plane represented by (x, y) coordinates. This simple structure allows defining geometric predicates like collinearity.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-838-3",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Collinearity",
+    "content": "Three points p, q, r are collinear if (q.x - p.x)(r.y - p.y) = (r.x - p.x)(q.y - p.y). This is the cross product condition: zero area for the triangle pqr.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-838-4",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 50,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "General Position",
+    "content": "A set S of points is in general position if no three points are collinear. This ensures every triple forms a proper (non-degenerate) triangle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-5",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Convex Subset",
+    "content": "A subset T ⊆ S is a convex subset if T forms the vertices of a convex polygon with no points of S in the interior or on edges between vertices. Requires |T| ≥ 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-6",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 70,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Counting Convex Subsets",
+    "content": "numConvexSubsets(S) counts how many subsets of S form convex polygons with empty interior. This is the quantity we want to minimize over all configurations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-838-7",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) = min { numConvexSubsets(S) : S has n points in general position }. It's the MINIMUM over all n-point configurations, capturing the worst-case scenario.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-8",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 86,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "f(n) Definition Property",
+    "content": "Any n points in general position determine at least f(n) convex subsets. This is the defining property of f(n) as a minimum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-838-9",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 95,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Erdős Lower Bound",
+    "content": "Erdős (1978): f(n) > n^{c₁ log n} for some constant c₁ > 0. Even the worst-case configuration determines super-polynomially many convex subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-10",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 100,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "Erdős Upper Bound",
+    "content": "Erdős (1978): f(n) < n^{c₂ log n} for some constant c₂ > 0. There exist configurations with sub-exponentially many convex subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-11",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 105,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "Combined Bounds",
+    "content": "The bounds together: n^{c₁ log n} < f(n) < n^{c₂ log n}. This pins down f(n) to quasi-polynomial growth n^{Θ(log n)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-12",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 121,
+      "endLine": 123
+    },
+    "type": "definition",
+    "title": "Normalized Log Function",
+    "content": "normalizedLogF(n) = log(f(n))/(log n)². The bounds imply c₁ < normalizedLogF(n) < c₂. The main question: does this converge as n → ∞?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-838-13",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 125,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "The Open Question",
+    "content": "Does lim_{n→∞} (log f(n))/(log n)² exist? If so, what is the constant c? This is the main open problem. The bounds show c₁ ≤ c ≤ c₂ if the limit exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-838-14",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 141,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Erdős-Szekeres Connection",
+    "content": "The Erdős-Szekeres theorem guarantees any n points contain ~log₂(n) points in convex position. This provides SOME convex subsets, but f(n) counts ALL of them.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-838-15",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 148,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Small Subsets Dominate",
+    "content": "Most convex subsets are triangles and quadrilaterals. Larger convex polygons require special configurations and become increasingly rare.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-838-16",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 158,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Optimization Difficulty",
+    "content": "Finding f(n) requires optimizing over ALL n-point configurations. Different arrangements yield vastly different convex subset counts, making the minimum hard to determine.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-838-17",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 176,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Related Problem #107",
+    "content": "Problem #107 concerns related questions about convex polygons in point sets. These problems form a family in combinatorial geometry.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-838-18",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 182,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Empty Convex Polygons",
+    "content": "Related question: minimum n guaranteeing an empty k-gon (convex k-gon with no points inside). Klein: 5 points → empty quadrilateral. Harborth: sets exist with no empty hexagon.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-838-19",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 194,
+      "endLine": 207
+    },
+    "type": "theorem",
+    "title": "Growth Rate Implications",
+    "content": "The bounds imply f(n) = n^{Θ(log n)}, which is 'quasi-polynomial': faster than any polynomial n^k, slower than any exponential c^n. This is a distinctive intermediate growth rate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-838-20",
+    "proofId": "erdos-838",
+    "range": {
+      "startLine": 213,
+      "endLine": 235
+    },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "Erdős Problem #838: OPEN. Bounds n^{c₁ log n} < f(n) < n^{c₂ log n} known (Erdős 1978). The limit question—whether (log f(n))/(log n)² converges—remains unresolved.",
+    "significance": "critical"
+  }
+]
