@@ -1,0 +1,155 @@
+{
+  "id": "erdos-891",
+  "title": "Erdős Problem #891: Prime Factors in Short Intervals",
+  "slug": "erdos-891",
+  "description": "For k ≥ 2 and large n, must every interval [n, n + p₁···pₖ) contain an integer with more than k prime factors? OPEN, even for k = 2 (intervals of length 6).",
+  "meta": {
+    "author": "Erdős-Selfridge (1967 problem), Schinzel (partial result)",
+    "sourceUrl": "https://erdosproblems.com/891",
+    "date": "1967",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos891Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "primorial",
+      "smooth-numbers",
+      "intervals",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 891,
+    "erdosUrl": "https://erdosproblems.com/891",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.primorial",
+        "description": "Product of first k primes",
+        "module": "Mathlib.NumberTheory.Primorial"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "bigOmega definition: count prime factors with multiplicity",
+      "littleOmega definition: count distinct prime factors",
+      "nthPrime definition: k-th prime (1-indexed)",
+      "primorial definition: product of first k primes",
+      "HasManyFactors predicate: interval contains number with > k factors",
+      "erdos891_conjecture: main statement formalized",
+      "Concrete examples: Ω(8) = 3, Ω(12) = 3, Ω(24) = 4",
+      "example_interval_8_14: verified instance of the conjecture",
+      "schinzel_theorem axiom: weaker result with modified primorial",
+      "dicksons_conjecture axiom: placeholder for Dickson's conjecture",
+      "weisenberg_conditional axiom: conditional counterexample",
+      "isSmooth definition: k-smooth numbers",
+      "polya_theorem axiom: gaps in smooth numbers are unbounded"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #891**\n\nThis problem was posed by Erdős and Selfridge in 1967 [ErSe67, p.430] and connects the distribution of prime factors to the structure of short intervals.\n\n**Key History:**\n- Erdős-Selfridge (1967): Original problem formulation\n- Schinzel: Proved a weaker version using Pólya's theorem on smooth numbers\n- Weisenberg: Showed conditional counterexample with interval length p₁···pₖ - 1\n\n**Mathematical Setting:**\nThe primorial p₁···pₖ (product of first k primes) gives natural interval lengths: 2, 6, 30, 210, 2310, ...\nThe question asks whether these specific lengths guarantee finding integers with many prime factors.\n\nThe problem remains open even for k = 2, asking whether every interval of 6 consecutive integers (for large n) contains a number with at least 3 prime factors.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $2 = p_1 < p_2 < p_3 < \\cdots$ denote the primes and $k \\geq 2$.\n\nIs it true that for all sufficiently large $n$, there exists an integer $m \\in [n, n + p_1 \\cdots p_k)$ with more than $k$ prime factors (counted with multiplicity)?\n\n**Special Cases:**\n- $k = 2$: Does every interval of length 6 (for large n) contain an integer with $\\Omega(m) \\geq 3$?\n- This simplest case remains OPEN.\n\n**Interval lengths:** primorial(2) = 6, primorial(3) = 30, primorial(4) = 210, ...",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Factor Counting:**\n   - bigOmega(n): Total prime factors with multiplicity\n   - littleOmega(n): Distinct prime factors\n\n2. **Prime Enumeration:**\n   - nthPrime(k): The k-th prime (1-indexed)\n   - Axiomatize basic values: p₁ = 2, p₂ = 3, p₃ = 5\n\n3. **Primorial Definition:**\n   - Product of first k primes\n   - Gives interval lengths: 2, 6, 30, 210, ...\n\n4. **Main Conjecture:**\n   - HasManyFactors(n, k): Interval contains m with Ω(m) > k\n   - erdos891_conjecture: Eventually true for all n\n\n5. **Related Results:**\n   - Schinzel's weaker theorem\n   - Weisenberg's conditional counterexample\n   - Connection to smooth numbers",
+    "keyInsights": [
+      "**Primorial Intervals:** The interval length p₁···pₖ is special - it's divisible by all primes ≤ pₖ, creating a natural boundary for the problem",
+      "**Ω Function:** Counts prime factors WITH multiplicity. E.g., Ω(8) = Ω(2³) = 3, not 1",
+      "**k = 2 Challenge:** Even checking if every interval of 6 integers contains a number with ≥ 3 prime factors is unsolved",
+      "**Critical Length:** Weisenberg showed that using p₁···pₖ - 1 instead makes the statement FALSE (conditionally), so the exact primorial length is essential",
+      "**Smooth Number Connection:** Pólya's theorem on gaps in k-smooth numbers is key to Schinzel's partial result",
+      "**Dickson's Conjecture:** The conditional counterexample relies on this generalization of the twin prime conjecture"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-counting",
+      "title": "Prime Factor Counting",
+      "summary": "Definitions of bigOmega and littleOmega functions",
+      "startLine": 40,
+      "endLine": 84
+    },
+    {
+      "id": "nth-prime",
+      "title": "The k-th Prime",
+      "summary": "Definition of nthPrime and basic axioms",
+      "startLine": 86,
+      "endLine": 108
+    },
+    {
+      "id": "primorial",
+      "title": "Primorial",
+      "summary": "Product of first k primes",
+      "startLine": 110,
+      "endLine": 138
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "HasManyFactors predicate and erdos891_conjecture",
+      "startLine": 140,
+      "endLine": 159
+    },
+    {
+      "id": "k-equals-2",
+      "title": "The k = 2 Case",
+      "summary": "Simplest open case with intervals of length 6",
+      "startLine": 161,
+      "endLine": 206
+    },
+    {
+      "id": "schinzel",
+      "title": "Schinzel's Weaker Result",
+      "summary": "Modified primorial version that is provable",
+      "startLine": 208,
+      "endLine": 228
+    },
+    {
+      "id": "weisenberg",
+      "title": "Weisenberg's Conditional Counterexample",
+      "summary": "p₁···pₖ - 1 fails under Dickson's conjecture",
+      "startLine": 230,
+      "endLine": 256
+    },
+    {
+      "id": "smooth-numbers",
+      "title": "Smooth Numbers Connection",
+      "summary": "k-smooth numbers and Pólya's theorem",
+      "startLine": 258,
+      "endLine": 279
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Status",
+      "summary": "Main results and open status",
+      "startLine": 281,
+      "endLine": 310
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #891 asks whether every interval [n, n + p₁···pₖ) for large n contains an integer with more than k prime factors. The problem is OPEN even for k = 2, which asks about intervals of length 6. Schinzel proved a weaker version with modified interval length, while Weisenberg showed the exact primorial length is critical.",
+    "implications": "**Connections and Implications**\n\n1. **Prime Factor Distribution:** Understanding how integers with many prime factors are distributed in short intervals\n\n2. **Smooth Numbers:** Deep connection to the gaps between k-smooth numbers\n\n3. **Dickson's Conjecture:** The conditional counterexample shows unexpected connections to prime constellation problems\n\n4. **Computational Limits:** Even the k = 2 case cannot be resolved by computation alone\n\n5. **Primorial Structure:** The specific choice of interval length p₁···pₖ is mathematically significant, not arbitrary",
+    "openQuestions": [
+      "Prove or disprove the k = 2 case (intervals of length 6)",
+      "Find the exact threshold N where the conjecture becomes true",
+      "Determine if the conjecture holds for all k or just specific values",
+      "Unconditional proof or disproof of Weisenberg's counterexample",
+      "Strengthen Schinzel's result to approach the original primorial"
+    ]
+  }
+}
