@@ -1,0 +1,45 @@
+{
+  "id": "erdos-677",
+  "title": "Distinct LCM of Consecutive Integers",
+  "slug": "erdos-677",
+  "description": "Is M(n,k) = lcm(n+1,...,n+k) always distinct for m ≥ n+k? The Thue–Siegel theorem gives finiteness for fixed k. Only two cross-parameter examples are known.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/677",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos677Problem.lean",
+    "tags": ["number-theory", "lcm", "consecutive-integers", "prime-factors"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 677,
+    "erdosUrl": "https://erdosproblems.com/677",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about the distinctness of lcm of consecutive integer blocks. The Thue–Siegel theorem implies finiteness for fixed k. Erdős knew only two cross-parameter examples: lcm(5,6,7) = lcm(14,15) = 210 and lcm(4,5,6,7) = lcm(20,21) = 420. A stronger conjecture asserts that consecutive products can rarely share the same prime factor set.",
+    "problemStatement": "Let M(n,k) = lcm(n+1,...,n+k). Is M(m,k) ≠ M(n,k) for all m ≥ n+k?",
+    "proofStrategy": "We define lcmInterval using Finset.fold with Nat.lcm, consecutiveProduct using Finset.prod, and samePrimeFactors via Nat.primeFactors. The main conjecture and its stronger variant are stated as Prop. Thue–Siegel finiteness is an axiom.",
+    "keyInsights": [
+      "The Thue–Siegel theorem gives finiteness for fixed k but not the full conjecture",
+      "Only two known cross-parameter examples exist (both involving k=2 on one side)",
+      "The stronger prime-factor conjecture would imply the LCM conjecture",
+      "Related to Erdős Problems 678, 686, and 850 on consecutive products"
+    ]
+  },
+  "sections": [
+    { "id": "lcm", "title": "LCM of Consecutive Integers", "startLine": 30, "endLine": 35, "summary": "Defines lcmInterval n k as the fold of Nat.lcm over range k." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 37, "endLine": 41, "summary": "ErdosProblem677: M(m,k) ≠ M(n,k) for all m ≥ n+k." },
+    { "id": "examples", "title": "Known Examples", "startLine": 43, "endLine": 48, "summary": "The two known cross-parameter equalities: M(4,3) = M(13,2) and M(3,4) = M(19,2)." },
+    { "id": "strong", "title": "Stronger Conjecture and Thue–Siegel", "startLine": 50, "endLine": 72, "summary": "Stronger prime-factor conjecture and Thue–Siegel finiteness theorem." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 74, "endLine": 97, "summary": "Proves lcmInterval_zero/one, consecutiveProduct_zero/one. States divisibility and positivity." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, and Thue–Siegel finiteness. 0 sorries.",
+    "implications": "Resolution would advance understanding of multiplicative structure of consecutive integers and connect to Diophantine equations.",
+    "openQuestions": [
+      "Is M(m,k) ≠ M(n,k) for all m ≥ n+k?",
+      "Are the two known cross-parameter examples the only ones?",
+      "Does the stronger prime-factor conjecture hold?"
+    ]
+  }
+}

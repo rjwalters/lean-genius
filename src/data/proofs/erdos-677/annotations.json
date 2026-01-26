@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-677-lcm",
+    "proofId": "erdos-677",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 35 },
+    "title": "LCM Interval",
+    "content": "lcmInterval n k = lcm(n+1, n+2, ..., n+k), computed via fold over range k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-677-conjecture",
+    "proofId": "erdos-677",
+    "type": "conjecture",
+    "range": { "startLine": 40, "endLine": 41 },
+    "title": "Distinct LCM Conjecture",
+    "content": "ErdosProblem677: M(m,k) ≠ M(n,k) for all m ≥ n+k with k > 0.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-677-examples",
+    "proofId": "erdos-677",
+    "type": "result",
+    "range": { "startLine": 47, "endLine": 48 },
+    "title": "Known Examples",
+    "content": "M(4,3) = M(13,2) = 210 and M(3,4) = M(19,2) = 420 are the only known cross-parameter equalities.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-677-strong",
+    "proofId": "erdos-677",
+    "type": "conjecture",
+    "range": { "startLine": 62, "endLine": 65 },
+    "title": "Strong Prime Factor Conjecture",
+    "content": "For k > 2, only finitely many pairs have ∏(n+i) and ∏(m+i) sharing the same prime factors.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-677-thue-siegel",
+    "proofId": "erdos-677",
+    "type": "result",
+    "range": { "startLine": 71, "endLine": 72 },
+    "title": "Thue–Siegel Finiteness",
+    "content": "For fixed k, only finitely many pairs (m,n) with m ≥ n+k satisfy M(m,k) = M(n,k).",
+    "significance": "essential"
+  }
+]
