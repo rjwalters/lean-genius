@@ -1,0 +1,77 @@
+{
+  "id": "erdos-893",
+  "title": "Erdős Problem #893: Divisor Sum of Mersenne Numbers",
+  "slug": "erdos-893",
+  "description": "Define f(n) = ∑ τ(2^k − 1) for k = 1 to n. Does f(2n)/f(n) → ∞? Kovač–Luca (2025) proved lim sup = ∞. Full divergence remains open.",
+  "meta": {
+    "erdosNumber": 893,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "mersenne-numbers",
+      "open"
+    ],
+    "references": [
+      "Erdős (1998): original problem",
+      "Kovač–Luca (2025): lim sup f(2n)/f(n) = ∞, arXiv:2506.04883",
+      "Cambie: independent heuristic for divergence",
+      "https://erdosproblems.com/893"
+    ],
+    "leanFile": "Proofs/Erdos893Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 34,
+      "summary": "Divisor function τ, Mersenne divisor sum f(n), and ratio f(2n)/f(n)."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 36,
+      "endLine": 42,
+      "summary": "Does f(2n)/f(n) → ∞?"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 44,
+      "endLine": 57,
+      "summary": "Kovač–Luca: lim sup = ∞ (no finite limit), partial result."
+    },
+    {
+      "id": "context",
+      "title": "Context",
+      "startLine": 59,
+      "endLine": 77,
+      "summary": "No simple asymptotic, Mersenne prime connection, Cambie's heuristic."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1998, noting that f(n) = ∑ τ(2^k − 1) likely has no simple asymptotic formula due to its erratic growth. The problem connects the divisor function to the arithmetic of Mersenne numbers, a topic with deep ties to prime number theory.",
+    "problemStatement": "Define f(n) = ∑_{k=1}^n τ(2^k − 1). Does f(2n)/f(n) tend to infinity as n → ∞?",
+    "proofStrategy": "We define the divisor function, the Mersenne divisor sum f(n), and the ratio f(2n)/f(n). We state the divergence conjecture and record Kovač–Luca's result that lim sup = ∞.",
+    "keyInsights": [
+      "Kovač–Luca (2025) proved lim sup f(2n)/f(n) = ∞, ruling out finite limits",
+      "The gap between lim sup = ∞ and lim = ∞ remains open",
+      "Mersenne primes (2^k − 1 prime) contribute τ = 2, influencing growth",
+      "Erdős believed no simple asymptotic formula exists for f(n)",
+      "Cambie independently found a heuristic for divergence"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #893 asks whether the cumulative divisor count of Mersenne numbers grows so fast that f(2n)/f(n) → ∞. Kovač–Luca (2025) proved the ratio is unbounded (lim sup = ∞), but full divergence (lim = ∞) remains open.",
+    "implications": "Resolving this would deepen understanding of the divisor structure of Mersenne numbers and the interplay between multiplicative and additive number theory at exponential scales.",
+    "openQuestions": [
+      "Does f(2n)/f(n) → ∞ (not just lim sup = ∞)?",
+      "What is the growth rate of f(n)?",
+      "How does the distribution of Mersenne primes affect f(n)?",
+      "Can the Kovač–Luca method be strengthened to handle lim inf?"
+    ]
+  }
+}
