@@ -1,0 +1,81 @@
+{
+  "id": "erdos-466",
+  "title": "Points in a Circle with Fractional Distance Separation",
+  "slug": "erdos-466",
+  "description": "Is there δ > 0 such that arbitrarily many points fit in a large disk with all pairwise distances bounded away from integers by ≥ δ? PROVED: Graham showed N(X,1/10) ≥ (log X)/10; Sárközy proved N(X,δ) > X^{1/2−δ^{1/7}}.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/466",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos466Problem.lean",
+    "tags": [
+      "number theory",
+      "discrete geometry",
+      "diophantine approximation",
+      "distance geometry"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 466,
+    "erdosUrl": "https://erdosproblems.com/466",
+    "erdosProblemStatus": "proved"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this in the 1970s, asking whether the fractional parts of pairwise distances in a point set can all be bounded away from 0 for arbitrarily large configurations. Graham gave the first affirmative answer with a logarithmic bound. Sárközy (1976) dramatically improved this to a polynomial bound.",
+    "problemStatement": "Let N(X, δ) be the maximum number of points in a disk of radius X with ‖|Pᵢ − Pⱼ|‖ ≥ δ for all pairs. Is there δ > 0 such that N(X, δ) → ∞?",
+    "proofStrategy": "We formalize the fractional distance, the separated configuration structure, the maximum function N(X,δ), Graham's logarithmic lower bound, Sárközy's polynomial improvement, and monotonicity properties.",
+    "keyInsights": [
+      "Graham: N(X, 1/10) ≥ (log X)/10 — first affirmative answer",
+      "Sárközy: N(X, δ) > X^{1/2 − δ^{1/7}} for small δ — nearly √X points",
+      "The fractional distance is always ≤ 1/2, so δ > 1/2 is trivially impossible",
+      "N(X, δ) is monotone in X (non-decreasing) and δ (non-increasing)",
+      "Related to Problems #465 (upper bounds) and #953"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 49,
+      "summary": "Defines the fractional distance fracDist, the SeparatedConfig structure for points in a disk with pairwise separation, and maxSeparatedPoints N(X, δ)."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "startLine": 51,
+      "endLine": 56,
+      "summary": "States the proved result: there exists δ > 0 such that N(X, δ) → ∞."
+    },
+    {
+      "id": "graham",
+      "title": "Graham's Bound",
+      "startLine": 58,
+      "endLine": 63,
+      "summary": "Graham showed N(X, 1/10) ≥ (log X)/10 for large X."
+    },
+    {
+      "id": "sarkozy",
+      "title": "Sárközy's Improvement",
+      "startLine": 65,
+      "endLine": 73,
+      "summary": "Sárközy (1976) proved N(X, δ) > X^{1/2 − δ^{1/7}} for small δ and large X — a polynomial bound."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 75,
+      "endLine": 90,
+      "summary": "The fractional distance is ≤ 1/2; N(X,δ) is monotone non-decreasing in X and non-increasing in δ."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #466 on separated point configurations in disks, including Graham's logarithmic and Sárközy's polynomial lower bounds for N(X, δ).",
+    "implications": "Shows that Euclidean geometry allows large separated configurations, connecting distance geometry to Diophantine approximation.",
+    "openQuestions": [
+      "What is the true growth rate of N(X, δ) for fixed δ?",
+      "Can Sárközy's exponent 1/2 − δ^{1/7} be improved to 1/2 − o(1)?",
+      "What is the relationship between this and Problem #465 upper bounds?"
+    ]
+  }
+}
