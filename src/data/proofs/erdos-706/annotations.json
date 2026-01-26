@@ -1,0 +1,56 @@
+[
+  {
+    "id": "distance-set",
+    "proofId": "erdos-706",
+    "range": { "startLine": 24, "endLine": 26 },
+    "type": "definition",
+    "title": "Distance Set",
+    "content": "A distance set A is a finite subset of positive reals. The distance graph G_A on ℝ² connects two points iff their Euclidean distance belongs to A.",
+    "significance": "high"
+  },
+  {
+    "id": "multi-dist-chromatic",
+    "proofId": "erdos-706",
+    "range": { "startLine": 28, "endLine": 31 },
+    "type": "definition",
+    "title": "Multi-Distance Chromatic Function",
+    "content": "L(r) = max_{|A|=r} χ(G_A) is the maximum chromatic number over all distance sets of size r. This is the central quantity to estimate.",
+    "significance": "high"
+  },
+  {
+    "id": "polynomial-bound",
+    "proofId": "erdos-706",
+    "range": { "startLine": 36, "endLine": 40 },
+    "type": "conjecture",
+    "title": "Polynomial Bound Conjecture",
+    "content": "The main question: is L(r) ≤ C · r^k for some constants C, k > 0? This would mean the chromatic number grows at most polynomially in the number of forbidden distances.",
+    "significance": "high"
+  },
+  {
+    "id": "hadwiger-nelson",
+    "proofId": "erdos-706",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "note",
+    "title": "Hadwiger–Nelson Base Case",
+    "content": "When r = 1, this reduces to the Hadwiger–Nelson problem. de Grey (2018) showed L(1) ≥ 5, and L(1) ≤ 7 from hexagonal tiling. The exact value remains unknown.",
+    "significance": "high"
+  },
+  {
+    "id": "monotonicity",
+    "proofId": "erdos-706",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "note",
+    "title": "Monotonicity",
+    "content": "L(r) is non-decreasing: if A ⊂ B then G_A is a subgraph of G_B, so χ(G_A) ≤ χ(G_B). More forbidden distances can only increase the chromatic number.",
+    "significance": "medium"
+  },
+  {
+    "id": "exponential-upper",
+    "proofId": "erdos-706",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "note",
+    "title": "Exponential Upper Bound",
+    "content": "It is known that L(r) grows at most exponentially in r. The polynomial bound conjecture asks whether this exponential behavior can be improved to polynomial growth.",
+    "significance": "medium"
+  }
+]
