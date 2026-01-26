@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-451-avoidance",
+    "proofId": "erdos-451",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 34 },
+    "title": "Bertrand Prime Avoidance",
+    "content": "AvoidsBertrandPrimes n k means the product (n-1)(n-2)⋯(n-k) has no prime factor p with k < p < 2k. This is the central condition defining n_k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-451-nk",
+    "proofId": "erdos-451",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 39 },
+    "title": "The Function n_k",
+    "content": "nk k is the smallest integer greater than 2k satisfying the avoidance condition. It is axiomatised with existence, avoidance, and minimality.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-451-lower",
+    "proofId": "erdos-451",
+    "type": "result",
+    "range": { "startLine": 53, "endLine": 56 },
+    "title": "Erdős–Graham Lower Bound",
+    "content": "n_k > k^{1+c} for some constant c > 0. This shows n_k grows faster than any polynomial of degree ≤ 1+c.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-451-upper",
+    "proofId": "erdos-451",
+    "type": "result",
+    "range": { "startLine": 58, "endLine": 61 },
+    "title": "Adenwalla Upper Bound",
+    "content": "n_k ≤ ∏_{k<p<2k} p = e^{O(k)}. The product of all Bertrand-range primes gives an explicit upper bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-451-conjecture",
+    "proofId": "erdos-451",
+    "type": "conjecture",
+    "range": { "startLine": 66, "endLine": 79 },
+    "title": "Erdős Problem 451",
+    "content": "n_k is superpolynomial (n_k > k^d for all d) but sub-exponential (n_k < e^{o(k)}). The exact growth rate remains open.",
+    "significance": "essential"
+  }
+]

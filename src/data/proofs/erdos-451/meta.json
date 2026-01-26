@@ -1,0 +1,69 @@
+{
+  "id": "erdos-451",
+  "title": "Erdős Problem #451: Primes in (k, 2k) Avoiding Products",
+  "slug": "erdos-451",
+  "description": "Estimate n_k, the smallest n > 2k such that (n-1)(n-2)⋯(n-k) has no prime factor in (k, 2k). Conjectured superpolynomial but sub-exponential.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/451",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos451Problem.lean",
+    "tags": ["number theory", "prime factors", "Bertrand postulate", "products"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 451,
+    "erdosUrl": "https://erdosproblems.com/451",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham studied n_k, the smallest n > 2k such that the descending product (n-1)⋯(n-k) avoids all primes in (k,2k). They proved n_k > k^{1+c} and conjectured superpolynomial growth. Adenwalla gave the upper bound n_k ≤ ∏_{k<p<2k} p = e^{O(k)}. The exact growth rate remains open.",
+    "problemStatement": "Estimate n_k. Is n_k > k^d for every d? Is n_k < e^{o(k)}?",
+    "proofStrategy": "The formalization defines the descending product, Bertrand-range primes, and the avoidance condition. n_k is axiomatised with minimality. Known lower and upper bounds are stated, along with both conjectures.",
+    "keyInsights": [
+      "By Bertrand's postulate, primes in (k,2k) always exist, so avoidance is non-trivial",
+      "Erdős–Graham: n_k > k^{1+c} for some c > 0",
+      "Adenwalla: n_k ≤ ∏_{k<p<2k} p = e^{O(k)} (product of Bertrand primes)",
+      "Conjectured growth: superpolynomial but sub-exponential"
+    ]
+  },
+  "sections": [
+    {
+      "id": "product-primes",
+      "title": "Product and Prime Avoidance",
+      "startLine": 20,
+      "endLine": 34,
+      "summary": "Descending product (n-1)⋯(n-k), Bertrand-range primes, and avoidance condition."
+    },
+    {
+      "id": "nk-definition",
+      "title": "The Function n_k",
+      "startLine": 36,
+      "endLine": 49,
+      "summary": "n_k axiomatised as the minimal n > 2k avoiding Bertrand-range prime factors."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 51,
+      "endLine": 61,
+      "summary": "Erdős–Graham lower bound k^{1+c} and Adenwalla upper bound e^{O(k)}."
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures",
+      "startLine": 63,
+      "endLine": 81,
+      "summary": "Superpolynomial growth (n_k > k^d for all d) and sub-exponential growth (n_k < e^{o(k)})."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 451, asking for the growth rate of n_k — the smallest integer avoiding Bertrand-range prime factors in its descending product.",
+    "implications": "Determining the growth of n_k would illuminate the distribution of primes dividing products of consecutive integers and the multiplicative structure of shifted integers.",
+    "openQuestions": [
+      "Is n_k superpolynomial in k?",
+      "Is n_k sub-exponential in k?",
+      "What is the exact order of growth?",
+      "Can the Erdős–Graham lower bound exponent 1+c be improved?"
+    ]
+  }
+}
