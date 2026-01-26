@@ -1,0 +1,45 @@
+{
+  "id": "erdos-327",
+  "title": "Sum-Divides-Product Avoidance",
+  "slug": "erdos-327",
+  "description": "How large can A ⊆ {1,...,N} be if a+b ∤ ab for all distinct a,b ∈ A? Equivalently, no pair has 1/a+1/b a unit fraction. Odd numbers give N/2; van Doorn shows 25/28·N is a threshold.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/327",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos327Problem.lean",
+    "tags": ["number-theory", "unit-fractions", "extremal-combinatorics", "divisibility"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 327,
+    "erdosUrl": "https://erdosproblems.com/327",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether a subset of {1,...,N} avoiding the condition a+b | ab (equivalently, 1/a+1/b being a unit fraction) can be substantially larger than the odd numbers. Van Doorn proved that any set of size ≥ (25/28)N must contain such a pair. A variant with 2ab replacing ab asks whether avoiding sets must have o(N) elements.",
+    "problemStatement": "Let A ⊆ {1,...,N} with a+b ∤ ab for all distinct a,b ∈ A. Can |A| > (1/2+ε)N for some ε > 0?",
+    "proofStrategy": "We define SumNotDvdProd and SumNotDvdTwoProd as avoiding conditions, maxAvoidSize as the extremal function. The main conjecture states maxAvoidSize(N) ≤ (1/2+ε)N. Van Doorn's bound and the unit-fraction equivalence are axioms. Basic monotonicity properties are proved.",
+    "keyInsights": [
+      "a+b | ab is equivalent to 1/a + 1/b being a unit fraction 1/c",
+      "Odd numbers naturally avoid the condition since a+b is even but ab is odd",
+      "Van Doorn's threshold of 25/28 is the best known density bound",
+      "The factor-of-2 variant may force o(N) size"
+    ]
+  },
+  "sections": [
+    { "id": "property", "title": "Sum-Divides-Product Property", "startLine": 25, "endLine": 37, "summary": "Defines SumNotDvdProd, SumNotDvdTwoProd, and maxAvoidSize as extremal function." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 39, "endLine": 45, "summary": "States ErdosProblem327: maxAvoidSize(N) ≤ (1/2+ε)N for all ε > 0." },
+    { "id": "vandoorn", "title": "Van Doorn's Bound", "startLine": 47, "endLine": 53, "summary": "Van Doorn's result: |A| ≥ 25N/28 forces a pair with a+b | ab." },
+    { "id": "variant", "title": "Factor-of-2 Variant", "startLine": 55, "endLine": 68, "summary": "Variant conjecture with 2ab and unit-fraction equivalence axiom." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 70, "endLine": 89, "summary": "Proves SumNotDvdProd for empty, singleton, and subsets. States odd-numbers result." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 327 on sum-divides-product avoidance, van Doorn's density bound, the factor-of-2 variant, and the unit-fraction equivalence. 0 sorries.",
+    "implications": "Resolution would clarify the extremal theory of unit-fraction avoidance sets and connect to Problems 301 and 302.",
+    "openQuestions": [
+      "Can A be larger than (1/2+ε)N for some ε > 0?",
+      "Is the 25/28 bound sharp?",
+      "Does the factor-of-2 variant force o(N) size?"
+    ]
+  }
+}
