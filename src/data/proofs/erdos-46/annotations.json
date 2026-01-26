@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-46-unit-fraction",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 26 },
+    "title": "Unit Fraction Representation",
+    "content": "IsUnitFractionRepr S holds when all n ∈ S satisfy n ≥ 2 and ∑ 1/n = 1 as rationals.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-46-colouring",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 40 },
+    "title": "Finite Colouring and Monochromaticity",
+    "content": "FiniteColouring r is ℕ → Fin r. IsMonochromatic c S means all elements of S receive the same colour.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-46-main",
+    "proofId": "erdos-46",
+    "type": "conjecture",
+    "range": { "startLine": 46, "endLine": 48 },
+    "title": "Erdős Problem 46 (Croot)",
+    "content": "Every r-colouring of ℕ has a monochromatic set S with ∑_{n ∈ S} 1/n = 1 and all n ≥ 2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-46-infinite",
+    "proofId": "erdos-46",
+    "type": "result",
+    "range": { "startLine": 51, "endLine": 54 },
+    "title": "Infinitely Many Disjoint Solutions",
+    "content": "Croot's stronger result: for any N, there exists a monochromatic unit-fraction solution with all terms > N.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-46-rational",
+    "proofId": "erdos-46",
+    "type": "conjecture",
+    "range": { "startLine": 60, "endLine": 62 },
+    "title": "Erdős–Graham Rational Generalization",
+    "content": "Every r-colouring of ℕ has a monochromatic Egyptian fraction representation of any positive rational q.",
+    "significance": "essential"
+  }
+]
