@@ -1,0 +1,82 @@
+{
+  "id": "erdos-538",
+  "title": "Erdős Problem #538: Reciprocal Sums with Bounded Prime Representations",
+  "slug": "erdos-538",
+  "description": "For A ⊆ {1,...,N} with at most r representations m = p·a (p prime, a ∈ A), find the best upper bound for Σ 1/n. Erdős showed ≪ r·log N/log log N. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/538",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos538Problem.lean",
+    "tags": ["number-theory", "prime-factors", "reciprocal-sums", "multiplicative-number-theory"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 538,
+    "erdosUrl": "https://erdosproblems.com/538",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős (1973) studied sets A ⊆ {1,...,N} with a bounded number of representations m = p·a where p is prime. He proved the reciprocal sum is ≪ r·log N / log log N, but the optimal bound is unknown. This is related to Problems 536 and 537 on multiplicative representations.",
+    "problemStatement": "Let r ≥ 2 and A ⊆ {1,...,N} such that for any m, at most r solutions exist to m = p·a with p prime and a ∈ A. Give the best possible upper bound for Σ_{n ∈ A} 1/n.",
+    "proofStrategy": "We define reprCount and HasBoundedRepr to capture the representation constraint. ErdosProblem538 seeks the optimal bound function f(r,N). Erdős's bound r·log N / log log N is axiomatized, along with trivial bounds and connections to multiplicative structure.",
+    "keyInsights": [
+      "reprCount counts representations m = p·a with p prime, a ∈ A",
+      "Erdős proved Σ 1/n ≪ r · log N / log log N by a counting argument",
+      "For r = 1, the bound strengthens to log N / log log N",
+      "The problem connects to multiplicative energy between A and the primes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "representation-count",
+      "title": "Representation Count",
+      "startLine": 21,
+      "endLine": 32,
+      "summary": "Defines reprCount and HasBoundedRepr: at most r representations m = p·a."
+    },
+    {
+      "id": "reciprocal-sum",
+      "title": "The Reciprocal Sum",
+      "startLine": 34,
+      "endLine": 40,
+      "summary": "Defines reciprocalSum: Σ_{n ∈ A} 1/n."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Problem",
+      "startLine": 42,
+      "endLine": 60,
+      "summary": "States ErdosProblem538: find the optimal upper bound f(r,N) for the reciprocal sum."
+    },
+    {
+      "id": "erdos-bound",
+      "title": "Erdős Upper Bound",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "Axiomatizes Erdős's bound: Σ 1/n ≪ r · log N / log log N."
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "Harmonic upper bound (unconstrained) and the r = 1 case."
+    },
+    {
+      "id": "multiplicative-connections",
+      "title": "Connections to Multiplicative Structure",
+      "startLine": 90,
+      "endLine": 109,
+      "summary": "Counting argument relating prime factors to the bound, and multiplicative energy connection."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 538 asks for the optimal reciprocal sum bound for sets with bounded prime representations. Erdős proved ≪ r · log N / log log N, but whether this is tight remains open.",
+    "implications": "The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density in sets of integers.",
+    "openQuestions": [
+      "Is r · log N / log log N the optimal bound?",
+      "Can the bound be improved for specific values of r?",
+      "What is the extremal structure of sets achieving the maximum reciprocal sum?"
+    ]
+  }
+}
