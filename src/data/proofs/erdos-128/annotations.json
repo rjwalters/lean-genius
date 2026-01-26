@@ -1,0 +1,56 @@
+[
+  {
+    "id": "dense-subgraphs",
+    "proofId": "erdos-128",
+    "range": { "startLine": 48, "endLine": 52 },
+    "type": "definition",
+    "title": "Dense Subgraphs Condition",
+    "content": "Every induced subgraph on at least ⌊n/2⌋ vertices has more than n²/50 edges. This is a 'local density' condition — it doesn't require the whole graph to be dense, just every large enough subgraph.",
+    "significance": "high"
+  },
+  {
+    "id": "c5-blowup",
+    "proofId": "erdos-128",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "example",
+    "title": "C₅ Blow-up Extremal Example",
+    "content": "Partition n vertices into 5 equal parts, connect parts i and i+1 (mod 5). This is triangle-free (C₅ has no odd cycle of length 3) with subgraph density approaching n²/50 in half-sized subgraphs, showing 1/50 is optimal.",
+    "significance": "high"
+  },
+  {
+    "id": "efrs",
+    "proofId": "erdos-128",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "theorem",
+    "title": "EFRS Theorem",
+    "content": "Erdős–Faudree–Rousseau–Schelp proved the conjecture with 50 replaced by 16. If every subgraph on ≥ n/2 vertices has > n²/16 edges, then G contains a triangle.",
+    "significance": "high"
+  },
+  {
+    "id": "razborov",
+    "proofId": "erdos-128",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "theorem",
+    "title": "Razborov's Flag Algebra Result",
+    "content": "Razborov improved the constant to 27/1024 ≈ 0.0264 using flag algebra methods. Compare with the target 1/50 = 0.02. The gap is now quite small but closing it remains an open challenge.",
+    "significance": "high"
+  },
+  {
+    "id": "norin-yepremyan",
+    "proofId": "erdos-128",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "theorem",
+    "title": "Norin–Yepremyan for Dense Graphs",
+    "content": "For graphs with total edge count ≥ (1/5 − c)n² (close to the Turán density for triangle-free graphs), the conjecture holds. The remaining hard cases are graphs that are globally sparse but locally dense.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-128",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "conjecture",
+    "title": "Main Conjecture ($250)",
+    "content": "If every induced subgraph on ≥ ⌊n/2⌋ vertices has > n²/50 edges, then G contains a triangle. The $250 prize reflects that this is a concrete, falsifiable question — a single counterexample would disprove it.",
+    "significance": "high"
+  }
+]
