@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-530-sidon-def",
+    "proofId": "erdos-530",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 50 },
+    "title": "Sidon Set Definition",
+    "content": "IsSidon S holds when all pairwise sums a + b (a ≤ b) in S are distinct. Equivalently, a + b = c + d implies {a,b} = {c,d}. Also known as B₂-sets. The empty set and singletons are proved Sidon.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-530-max-size",
+    "proofId": "erdos-530",
+    "type": "definition",
+    "range": { "startLine": 59, "endLine": 61 },
+    "title": "Maximum Sidon Subset Size",
+    "content": "maxSidonSize A computes the supremum of Finset.card over all Sidon subsets of A. This is the function ℓ(N) when A has N elements.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-530-kss",
+    "proofId": "erdos-530",
+    "type": "result",
+    "range": { "startLine": 79, "endLine": 84 },
+    "title": "Komlós–Sulyok–Szemerédi Lower Bound",
+    "content": "Every finite set A has a Sidon subset of size at least c·|A|^{1/2}, improving Erdős's earlier N^{1/3} bound. This is the best known lower bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-530-conjecture",
+    "proofId": "erdos-530",
+    "type": "conjecture",
+    "range": { "startLine": 100, "endLine": 106 },
+    "title": "Erdős Problem 530",
+    "content": "The maximum Sidon subset size ℓ(N) is Θ(N^{1/2}): there exist absolute constants c₁, c₂ such that c₁·N^{1/2} ≤ ℓ(N) ≤ c₂·N^{1/2} for all sets of size N.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-530-partition",
+    "proofId": "erdos-530",
+    "type": "conjecture",
+    "range": { "startLine": 121, "endLine": 127 },
+    "title": "Alon–Erdős Partition Conjecture",
+    "content": "Any set of N integers can be partitioned into at most (1+o(1))·N^{1/2} Sidon sets. This is a dual formulation related to the maximum Sidon subset problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-530-sum-count",
+    "proofId": "erdos-530",
+    "type": "result",
+    "range": { "startLine": 137, "endLine": 141 },
+    "title": "Sidon Sum Count",
+    "content": "A Sidon set S of size k has exactly k(k+1)/2 distinct pairwise sums. Since these must fit in the ambient set's sumset, this gives the upper bound k ≤ O(N^{1/2}).",
+    "significance": "supporting"
+  }
+]
