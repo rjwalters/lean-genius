@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-1063-divisibility",
+    "proofId": "erdos-1063",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 52 },
+    "title": "Divisibility Conditions",
+    "content": "DividesChoose: (n-i) | C(n,k). divisibilityCount: how many i ∈ {0,...,k-1} satisfy this. AllButOneDivide: at least k-1 of the k values divide.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-threshold",
+    "proofId": "erdos-1063",
+    "type": "definition",
+    "range": { "startLine": 58, "endLine": 62 },
+    "title": "Threshold n_k",
+    "content": "IsThreshold nk k: nk is the least n ≥ 2k where all but one of {n,...,n-k+1} divide C(n,k). The central object to estimate.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-selfridge",
+    "proofId": "erdos-1063",
+    "type": "result",
+    "range": { "startLine": 68, "endLine": 77 },
+    "title": "Erdős–Selfridge Non-Divisibility",
+    "content": "For n ≥ 2k, at least one (n-i) does not divide C(n,k). Full divisibility never occurs. This motivates the 'all but one' question.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-small",
+    "proofId": "erdos-1063",
+    "type": "result",
+    "range": { "startLine": 83, "endLine": 99 },
+    "title": "Known Small Values",
+    "content": "n_2 = 4, n_3 = 6, n_4 = 9, n_5 = 12. These are the known exact thresholds for small k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-bounds",
+    "proofId": "erdos-1063",
+    "type": "result",
+    "range": { "startLine": 105, "endLine": 127 },
+    "title": "Upper Bounds",
+    "content": "Monier (1985): n_k ≤ k! for k ≥ 3. Cambie: n_k ≤ k · lcm(2,...,k-1) ≤ e^{(1+o(1))k}. The polynomial vs exponential growth question remains open.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-summary",
+    "proofId": "erdos-1063",
+    "type": "context",
+    "range": { "startLine": 133, "endLine": 139 },
+    "title": "Summary",
+    "content": "The growth rate of n_k remains open. Known bounds are exponential; the question is whether polynomial growth is achievable.",
+    "significance": "supporting"
+  }
+]
