@@ -1,0 +1,82 @@
+{
+  "id": "erdos-687",
+  "title": "Covering Congruences and the Jacobsthal Function",
+  "slug": "erdos-687",
+  "description": "Let Y(x) be the maximal y such that covering congruences for primes ≤ x cover [1,y]. Is Y(x) = o(x²)? $1,000 prize. Known: x·log x·... ≪ Y(x) ≪ x² (Iwaniec 1978, FGKMT 2018).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/687",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos687Problem.lean",
+    "tags": [
+      "number theory",
+      "covering systems",
+      "Jacobsthal function",
+      "prime gaps",
+      "sieve theory"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 687,
+    "erdosUrl": "https://erdosproblems.com/687",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős offered $1,000 for determining the growth rate of Y(x), the maximum interval covered by residue classes of primes ≤ x. This is equivalent to the Jacobsthal function of the primorial. Iwaniec (1978) proved Y(x) ≪ x². Ford, Green, Konyagin, Maynard, and Tao (2018) gave the best lower bound using their breakthrough on large prime gaps.",
+    "problemStatement": "Is Y(x) = o(x²)? Is Y(x) ≪ x^{1+o(1)}? What is the true growth rate?",
+    "proofStrategy": "We formalize covering systems, the Jacobsthal function, Y(x) as the Jacobsthal function of the primorial, the $1,000 conjecture, and known upper/lower bounds.",
+    "keyInsights": [
+      "Y(x) equals the Jacobsthal function g(primorial(x))",
+      "Iwaniec: Y(x) ≪ x² — best known upper bound since 1978",
+      "FGKMT: Y(x) ≫ x·(log x)(log³ x)/(log² x) — improved Rankin",
+      "Maier–Pomerance conjecture: Y(x) ≪ x·(log x)^{2+o(1)}",
+      "$1,000 prize for proving Y(x) = o(x²)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 53,
+      "summary": "Defines primorial, covering systems, IsCovered, and jacobsthalY as the maximum covered interval length."
+    },
+    {
+      "id": "jacobsthal",
+      "title": "The Jacobsthal Function",
+      "startLine": 55,
+      "endLine": 66,
+      "summary": "Defines the Jacobsthal function g(n) and states Y(x) = g(primorial(x))."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture ($1,000)",
+      "startLine": 68,
+      "endLine": 73,
+      "summary": "States the $1,000 prize conjecture: Y(x) ≤ x^{1+ε} for any ε > 0 and large x."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 75,
+      "endLine": 96,
+      "summary": "Iwaniec upper bound Y(x) ≪ x², FGKMT lower bound with iterated logarithms, and Maier–Pomerance conjecture."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 98,
+      "endLine": 106,
+      "summary": "Monotonicity of Y(x) and the trivial lower bound Y(x) ≥ x + 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #687 on covering congruences and the Jacobsthal function, including the $1,000 prize conjecture Y(x) = o(x²), Iwaniec's upper bound, and the FGKMT lower bound.",
+    "implications": "Determining Y(x) would resolve fundamental questions about the distribution of primes in arithmetic progressions and the structure of covering systems.",
+    "openQuestions": [
+      "Is Y(x) = o(x²)? ($1,000 prize)",
+      "Is the Maier–Pomerance conjecture Y(x) ≪ x(log x)^{2+o(1)} correct?",
+      "Can Iwaniec's x² upper bound be improved at all?"
+    ]
+  }
+}

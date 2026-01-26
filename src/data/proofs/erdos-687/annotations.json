@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-687-ann-primorial",
+    "proofId": "erdos-687",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "Primorial",
+    "content": "The product of all primes ≤ x. The Jacobsthal function of the primorial equals Y(x).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-687-ann-covering",
+    "proofId": "erdos-687",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Covering System",
+    "content": "A choice of residue class aₚ for each prime p ≤ x. An integer n is covered if n ≡ aₚ (mod p) for some p.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-687-ann-Y",
+    "proofId": "erdos-687",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Y(x) — Jacobsthal Covering Length",
+    "content": "The maximal y such that some covering system for primes ≤ x covers all integers in [1, y].",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-687-ann-jacobsthal",
+    "proofId": "erdos-687",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Jacobsthal Function",
+    "content": "g(n) is the largest gap between consecutive integers coprime to n. Equivalently, 1 plus the longest run of integers sharing a factor with n.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-687-ann-conjecture",
+    "proofId": "erdos-687",
+    "range": { "startLine": 71, "endLine": 72 },
+    "type": "theorem",
+    "title": "Main Conjecture ($1,000)",
+    "content": "Y(x) ≤ x^{1+ε} for any ε > 0 and large x. This $1,000 prize problem asks whether Y(x) grows subquadratically.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-687-ann-iwaniec",
+    "proofId": "erdos-687",
+    "range": { "startLine": 78, "endLine": 79 },
+    "type": "theorem",
+    "title": "Iwaniec Upper Bound",
+    "content": "Y(x) ≪ x². This 1978 result remains the best known upper bound, nearly 50 years later.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-687-ann-fgkmt",
+    "proofId": "erdos-687",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "theorem",
+    "title": "FGKMT Lower Bound",
+    "content": "Y(x) ≫ x·(log x)(log log log x)/(log log x). This improved Rankin's 1938 bound using breakthrough techniques on large prime gaps.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-687-ann-mp",
+    "proofId": "erdos-687",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "theorem",
+    "title": "Maier–Pomerance Conjecture",
+    "content": "Y(x) ≪ x·(log x)^{2+o(1)}. If true, this nearly closes the gap with the FGKMT lower bound.",
+    "significance": "key"
+  }
+]
