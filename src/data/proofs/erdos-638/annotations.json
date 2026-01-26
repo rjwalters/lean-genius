@@ -1,0 +1,65 @@
+[
+  {
+    "id": "erdos-638-mono-triangle",
+    "proofId": "erdos-638",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 32 },
+    "title": "Monochromatic Triangle",
+    "content": "HasMonoTriangle defines a monochromatic triangle: three mutually adjacent vertices whose pairwise edges all receive the same colour under a vertex-pair colouring function c : V → V → α.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-638-triangle-ramsey",
+    "proofId": "erdos-638",
+    "type": "definition",
+    "range": { "startLine": 34, "endLine": 38 },
+    "title": "n-Colour Triangle Ramsey Property",
+    "content": "HasTriangleRamsey states that every colouring of vertex pairs with Fin n colours yields a monochromatic triangle. This captures the finite-colour Ramsey property for a single graph.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-638-ramsey-family",
+    "proofId": "erdos-638",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 48 },
+    "title": "Ramsey Family",
+    "content": "IsRamseyFamily defines a family S of finite graphs (indexed by vertex count) such that for every n ≥ 1, some member G ∈ S(m) has the n-colour triangle Ramsey property. This is the key hypothesis of the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-638-cardinal-ramsey",
+    "proofId": "erdos-638",
+    "type": "definition",
+    "range": { "startLine": 52, "endLine": 54 },
+    "title": "Cardinal Triangle Ramsey Property",
+    "content": "HasCardinalTriangleRamsey generalises the Ramsey property to arbitrary colour types κ, requiring every κ-colouring of vertex pairs to yield a monochromatic triangle.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-638-conjecture",
+    "proofId": "erdos-638",
+    "type": "conjecture",
+    "range": { "startLine": 60, "endLine": 65 },
+    "title": "Erdős Problem 638",
+    "content": "The main conjecture: for every Ramsey family S and every infinite colour type κ, there exists a graph G whose vertex pairs exhibit the cardinal triangle Ramsey property for κ. Uses Lean's Infinite typeclass to express infinite cardinality.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-638-classical",
+    "proofId": "erdos-638",
+    "type": "context",
+    "range": { "startLine": 69, "endLine": 77 },
+    "title": "Classical Ramsey Theorem",
+    "content": "The classical finite Ramsey theorem for triangles (axiomatised): for every n ≥ 1, some complete graph K_N has the n-colour triangle Ramsey property. As a corollary, the family of complete graphs forms a Ramsey family.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-638-monotonicity",
+    "proofId": "erdos-638",
+    "type": "result",
+    "range": { "startLine": 81, "endLine": 84 },
+    "title": "Monotonicity of Ramsey Property",
+    "content": "If a graph has the n-colour triangle Ramsey property and m ≤ n, then it also has the m-colour property. This follows because any m-colouring can be viewed as a special n-colouring.",
+    "significance": "supporting"
+  }
+]
