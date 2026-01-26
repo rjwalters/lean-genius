@@ -1,0 +1,74 @@
+[
+  {
+    "id": "digit-restricted",
+    "proofId": "erdos-124",
+    "type": "definition",
+    "title": "Digit-Restricted Numbers",
+    "content": "P(d,k) consists of numbers whose base-d representation uses only digits 0 and 1 starting from position k. These are sums of distinct powers of d (from d^k onward).",
+    "significance": "critical",
+    "range": {
+      "startLine": 26,
+      "endLine": 34
+    }
+  },
+  {
+    "id": "reciprocal-condition",
+    "proofId": "erdos-124",
+    "type": "definition",
+    "title": "Reciprocal Condition",
+    "content": "Σ 1/(dᵢ-1) ≥ 1: the critical threshold for completeness. For {3,4,7}: 1/2 + 1/3 + 1/6 = 1 exactly.",
+    "significance": "critical",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    }
+  },
+  {
+    "id": "pomerance",
+    "proofId": "erdos-124",
+    "type": "theorem",
+    "title": "Pomerance's Necessity",
+    "content": "The reciprocal condition is necessary: if Σ 1/(dᵢ-1) < 1, then infinitely many integers are not representable. This gives a sharp characterization.",
+    "significance": "key",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    }
+  },
+  {
+    "id": "q1-proved",
+    "proofId": "erdos-124",
+    "type": "theorem",
+    "title": "Question 1 (PROVED)",
+    "content": "If Σ 1/(dᵢ-1) ≥ 1, all sufficiently large integers can be written as Σ cᵢaᵢ with cᵢ ∈ {0,1} and aᵢ ∈ P(dᵢ,0). Proved by Aristotle via Alexeev's method and formalized in Lean.",
+    "significance": "critical",
+    "range": {
+      "startLine": 77,
+      "endLine": 81
+    }
+  },
+  {
+    "id": "q2-open",
+    "proofId": "erdos-124",
+    "type": "concept",
+    "title": "Question 2 (Open)",
+    "content": "With gcd(d₁,...,dᵣ) = 1, for any k ≥ 1, all sufficiently large integers should be representable using P(dᵢ,k). This strengthens Q1 by restricting to higher powers. Open in general.",
+    "significance": "critical",
+    "range": {
+      "startLine": 85,
+      "endLine": 92
+    }
+  },
+  {
+    "id": "case-3-4-7",
+    "proofId": "erdos-124",
+    "type": "theorem",
+    "title": "{3,4,7} Verification",
+    "content": "Q2 is verified for bases {3,4,7}, which satisfy the reciprocal condition with equality: 1/2 + 1/3 + 1/6 = 1, and gcd(3,4,7) = 1.",
+    "significance": "key",
+    "range": {
+      "startLine": 95,
+      "endLine": 99
+    }
+  }
+]

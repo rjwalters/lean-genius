@@ -1,0 +1,68 @@
+{
+  "id": "erdos-124",
+  "title": "Erdős Problem #124: Complete Sequences from Digit-Restricted Sums",
+  "slug": "erdos-124",
+  "description": "For bases 3 ≤ d₁ < ... < dᵣ with Σ1/(dᵢ-1) ≥ 1, can all large integers be written as Σcᵢaᵢ with cᵢ ∈ {0,1} and aᵢ having only digits {0,1} in base dᵢ? Q1 PROVED. Q2 open (proved for {3,4,7}).",
+  "meta": {
+    "author": "Burr, Erdős, Graham, Li",
+    "sourceUrl": "https://erdosproblems.com/124",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos124Problem.lean",
+    "tags": ["number theory", "base representations", "additive combinatorics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 124,
+    "erdosUrl": "https://erdosproblems.com/124",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Burr, Erdős, Graham, and Li (1996) conjectured that digit-restricted numbers in multiple bases form complete sequences when a reciprocal condition is satisfied. The first question was proved and formalized in Lean. The second question (with gcd and level-k digits) remains open in general.",
+    "problemStatement": "For integers 3 ≤ d₁ < ... < dᵣ with Σ 1/(dᵢ-1) ≥ 1, can all sufficiently large integers be represented as Σ cᵢaᵢ where cᵢ ∈ {0,1} and aᵢ uses only digits {0,1} in base dᵢ?",
+    "proofStrategy": "Full rewrite from formal-conjectures. Defines digit-restricted numbers, the reciprocal condition, and representation properties. States Pomerance's necessity result, the proved first question, and the open second question with the {3,4,7} verification.",
+    "keyInsights": [
+      "The reciprocal condition Σ 1/(dᵢ-1) ≥ 1 is both necessary and sufficient for Q1",
+      "Numbers with digits {0,1} in base d are sums of distinct powers of d",
+      "The gcd condition in Q2 prevents trivial obstructions from common factors",
+      "The {3,4,7} case verification shows Σ 1/(dᵢ-1) = 1/2 + 1/3 + 1/6 = 1 exactly"
+    ]
+  },
+  "sections": [
+    {
+      "id": "digit-restricted",
+      "title": "Digit-Restricted Numbers",
+      "startLine": 22,
+      "endLine": 34,
+      "summary": "Defines P(d,k) and binaryDigitsInBase: numbers using only digits {0,1}."
+    },
+    {
+      "id": "conditions",
+      "title": "Reciprocal and Base Conditions",
+      "startLine": 38,
+      "endLine": 44,
+      "summary": "Defines the critical reciprocal condition and valid base sequences."
+    },
+    {
+      "id": "representation",
+      "title": "Representation Properties",
+      "startLine": 48,
+      "endLine": 64,
+      "summary": "Defines representability at level 0 and level k."
+    },
+    {
+      "id": "results",
+      "title": "Main Results",
+      "startLine": 68,
+      "endLine": 99,
+      "summary": "States Pomerance's necessity, the proved Q1, and the open Q2 with the {3,4,7} case."
+    }
+  ],
+  "conclusion": {
+    "summary": "Question 1 of Erdős Problem 124 is PROVED: the reciprocal condition is necessary and sufficient. Question 2 (with gcd condition and digits starting from level k) remains open in general, though verified for {3,4,7}.",
+    "implications": "The result connects base representations with additive number theory and complete sequences.",
+    "openQuestions": [
+      "Does Q2 hold for all valid base sets with gcd 1?",
+      "What is the threshold N₀ beyond which all integers are representable?",
+      "Can the result be extended to digits {0,1,...,m} for m > 1?"
+    ]
+  }
+}
