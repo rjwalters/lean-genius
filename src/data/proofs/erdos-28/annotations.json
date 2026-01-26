@@ -1,0 +1,56 @@
+[
+  {
+    "id": "rep-function",
+    "proofId": "erdos-28",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "Representation Function",
+    "content": "r(n) counts pairs (a,b) with a ≤ b, a,b ∈ A, a+b = n. This is the ordered representation count, central to additive number theory.",
+    "significance": "high"
+  },
+  {
+    "id": "asymptotic-basis",
+    "proofId": "erdos-28",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Asymptotic Basis of Order 2",
+    "content": "A ⊆ ℕ with (A+A)ᶜ finite: every sufficiently large integer is a sum of two elements of A. The prototypical example is the set of squares (Lagrange needed 4; we ask for 2).",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-28",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "conjecture",
+    "title": "Erdős–Turán Conjecture",
+    "content": "If A is an asymptotic basis of order 2, then r(n) is unbounded. No additive basis can have all representation counts bounded by a single constant. $500 bounty.",
+    "significance": "high"
+  },
+  {
+    "id": "strong-form",
+    "proofId": "erdos-28",
+    "range": { "startLine": 60, "endLine": 63 },
+    "type": "conjecture",
+    "title": "Logarithmic Growth Conjecture",
+    "content": "lim sup r(n)/log n > 0: the representation function grows at least logarithmically along a subsequence. Much stronger than the basic conjecture.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-fuchs",
+    "proofId": "erdos-28",
+    "range": { "startLine": 94, "endLine": 99 },
+    "type": "theorem",
+    "title": "Erdős–Fuchs Theorem",
+    "content": "The cumulative sum Σ_{n≤N} r(n) cannot be cN + o(N^{1/4}/√(log N)). This shows representations must fluctuate, but does NOT prove individual r(n) is unbounded.",
+    "significance": "medium"
+  },
+  {
+    "id": "sidon-connection",
+    "proofId": "erdos-28",
+    "range": { "startLine": 82, "endLine": 85 },
+    "type": "theorem",
+    "title": "Sidon Sets Are Not Bases",
+    "content": "If r(n) ≤ 1 for all n (Sidon/B₂ condition), then A is too sparse to be a basis. This confirms the conjecture for the extremal case r ≤ 1.",
+    "significance": "medium"
+  }
+]
