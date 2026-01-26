@@ -1,0 +1,72 @@
+{
+  "id": "erdos-5",
+  "title": "Erdős Problem #5: Limit Points of Normalized Prime Gaps",
+  "slug": "erdos-5",
+  "description": "Is the set S of limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, ∞)? Known: 0 ∈ S (GPY), ∞ ∈ S (Westzynthius), S has positive measure (Erdős–Ricci), at least 1/3 coverage (Merikoski). Open.",
+  "meta": {
+    "erdosNumber": 5,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "analytic-number-theory",
+      "open"
+    ],
+    "references": [
+      "Goldston–Pintz–Yıldırım: 0 ∈ S (2009)",
+      "Westzynthius: ∞ ∈ S (1931)",
+      "Erdős–Ricci: S has positive Lebesgue measure",
+      "Hildebrand–Maier: arbitrarily large finite limit points",
+      "Merikoski: at least 1/3 of [0,∞) in S (2020)",
+      "https://erdosproblems.com/5"
+    ],
+    "leanFile": "Proofs/Erdos5Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 28,
+      "endLine": 48,
+      "summary": "nthPrime, normalizedGap g(n), IsLimitPointOfGaps."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 50,
+      "endLine": 72,
+      "summary": "0 ∈ S, ∞ ∈ S, Hildebrand–Maier, Merikoski 1/3 density."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 74,
+      "endLine": 80,
+      "summary": "S = [0, ∞): every C ≥ 0 is a limit point."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős studied the distribution of gaps between consecutive primes normalized by the logarithm. The sequence g(n) = (p_{n+1} - p_n)/log(p_n) has average value 1 by the prime number theorem, but its set of limit points S remains mysterious. The conjecture that S = [0, ∞) emerged from Erdős's deep investigations into prime gap irregularities.",
+    "problemStatement": "Is the set S of all limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, ∞)? Equivalently, for every C ≥ 0, does there exist an infinite sequence of indices n_i with g(n_i) → C?",
+    "proofStrategy": "We axiomatize nthPrime and normalizedGap, define IsLimitPointOfGaps via the ε-N formulation, record known partial results (GPY, Westzynthius, Hildebrand–Maier, Merikoski), and state the full conjecture.",
+    "keyInsights": [
+      "GPY (2009) proved lim inf g(n) = 0, establishing 0 ∈ S and opening the way to bounded gaps",
+      "Westzynthius (1931) showed gaps can grow arbitrarily relative to log(p_n), so ∞ ∈ S",
+      "Erdős–Ricci proved S has positive Lebesgue measure, showing the conjecture holds for 'many' values",
+      "Merikoski (2020) improved the density bound to at least 1/3 of [0, ∞)",
+      "The prime number theorem gives average gap ~ log(p_n), so g(n) has average 1, but its fluctuations are poorly understood"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #5 conjectures that every non-negative real number is a limit point of the normalized prime gap sequence. Despite major progress — 0 and ∞ are known to be in S, and at least 1/3 of [0, ∞) is covered — the full conjecture remains open.",
+    "implications": "Resolution would provide a complete picture of prime gap fluctuations, connecting to the Hardy–Littlewood prime tuple conjecture, the distribution of primes in short intervals, and sieve methods.",
+    "openQuestions": [
+      "Is every C ≥ 0 a limit point of (p_{n+1} - p_n)/log(p_n)?",
+      "Is the set S connected (i.e., is S an interval)?",
+      "Can the Merikoski 1/3 density bound be improved toward full coverage?",
+      "What is the Hausdorff dimension of the complement [0,∞) \\ S?"
+    ]
+  }
+}
