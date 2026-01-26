@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-187-ann-1",
+    "proofId": "erdos-187",
+    "range": { "startLine": 24, "endLine": 43 },
+    "type": "definition",
+    "title": "Colorings and AP Definitions",
+    "content": "TwoColoring assigns each natural number a color in Fin 2. IsMonoAP(χ, a, d, k) checks that {a, a+d, ..., a+(k-1)d} is monochromatic under χ. maxMonoAPLength(χ, d) is the maximum length of a mono AP with difference d. optAPBound(d) is the optimal function f(d).",
+    "significance": "These definitions set up the framework for studying how colorings interact with arithmetic progressions of prescribed common difference."
+  },
+  {
+    "id": "erdos-187-ann-2",
+    "proofId": "erdos-187",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "result",
+    "title": "Van der Waerden Growth",
+    "content": "Van der Waerden's theorem guarantees that f(d) → ∞: for every k, there exists d such that any 2-coloring contains a monochromatic AP of length k with difference d.",
+    "significance": "This establishes the baseline: f(d) is unbounded. The question is how fast it grows."
+  },
+  {
+    "id": "erdos-187-ann-3",
+    "proofId": "erdos-187",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "result",
+    "title": "Beck's Upper Bound (1980)",
+    "content": "Beck showed f(d) ≤ (1+o(1))log₂ d by constructing a 2-coloring that avoids long monochromatic APs of any given difference. This is the best known upper bound.",
+    "significance": "Beck's bound suggests that f(d) grows only logarithmically, but no matching lower bound is known."
+  },
+  {
+    "id": "erdos-187-ann-4",
+    "proofId": "erdos-187",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "result",
+    "title": "Erdős's √2-Coloring Construction",
+    "content": "Erdős observed that coloring n by whether {√2·n} < 1/2 yields a 2-coloring where the longest monochromatic AP with difference d has length O(d). This uses the equidistribution of {√2·n·d}.",
+    "significance": "This construction predates Beck's and provides a natural Diophantine connection, though it gives a weaker bound."
+  },
+  {
+    "id": "erdos-187-ann-5",
+    "proofId": "erdos-187",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "conjecture",
+    "title": "Optimal Bound Conjecture",
+    "content": "Erdős asked whether f(d) = Θ(log d). The formalization asserts the existence of constants c, C such that c·log₂ d ≤ f(d) ≤ C·log₂ d for all large d.",
+    "significance": "If true, this would completely characterize the asymptotic behavior of monochromatic AP lengths in 2-colorings, confirming Beck's bound is tight."
+  }
+]
