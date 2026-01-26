@@ -1,0 +1,78 @@
+{
+  "id": "erdos-1104",
+  "title": "Erdős Problem #1104: Maximum Chromatic Number of Triangle-Free Graphs",
+  "slug": "erdos-1104",
+  "description": "Let f(n) = max χ(G) over triangle-free graphs on n vertices. Estimate f(n). Known: f(n) = Θ(√(n/log n)). Exact constant open. Lower: Hefty–Horn–King–Pfender (2025). Upper: Davies–Illingworth (2022).",
+  "meta": {
+    "erdosNumber": 1104,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "triangle-free",
+      "open"
+    ],
+    "references": [
+      "Erdős (1967): original problem",
+      "Kim (1995): R(3,k) = Θ(k²/log k)",
+      "Davies–Illingworth (2022): f(n) ≤ (2+o(1))√(n/log n)",
+      "Hefty–Horn–King–Pfender (2025): f(n) ≥ (1−o(1))√(n/log n)",
+      "https://erdosproblems.com/1104"
+    ],
+    "leanFile": "Proofs/Erdos1104Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 27,
+      "summary": "Triangle-free maximum chromatic function f(n)."
+    },
+    {
+      "id": "main-bounds",
+      "title": "Main Bounds",
+      "startLine": 29,
+      "endLine": 54,
+      "summary": "Lower (HHKP 2025), upper (DI 2022), combined asymptotic Θ(√(n/log n))."
+    },
+    {
+      "id": "edge-variant",
+      "title": "Edge Variant",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "Edge-based variant g(m) = Θ((m/(log m)²)^{1/3})."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 65,
+      "endLine": 82,
+      "summary": "Mycielski construction, Kim's Ramsey bound, inverse to h₃(k)."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1967. Kim (1995) resolved the dual Ramsey question R(3,k) = Θ(k²/log k). The maximum chromatic number of triangle-free graphs was pinned to Θ(√(n/log n)) by Davies–Illingworth (2022, upper) and Hefty–Horn–King–Pfender (2025, lower).",
+    "problemStatement": "Let f(n) be the maximum chromatic number of a triangle-free graph on n vertices. Estimate f(n).",
+    "proofStrategy": "We axiomatize f(n) and state the matched upper and lower bounds f(n) = Θ(√(n/log n)). The exact leading constant is the remaining open question.",
+    "keyInsights": [
+      "f(n) = Θ(√(n/log n)): order of magnitude determined",
+      "Davies–Illingworth (2022) proved f(n) ≤ (2+o(1))√(n/log n)",
+      "Hefty–Horn–King–Pfender (2025) proved f(n) ≥ (1−o(1))√(n/log n)",
+      "Dual to Kim's R(3,k) = Θ(k²/log k)",
+      "Exact constant between 1 and 2 remains open"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1104 asks for the maximum chromatic number of triangle-free graphs on n vertices. The answer is Θ(√(n/log n)), but the exact leading constant (between 1 and 2) remains unknown.",
+    "implications": "Pinning the constant would complete our understanding of the extremal chromatic theory of triangle-free graphs, with applications to Ramsey theory and probabilistic combinatorics.",
+    "openQuestions": [
+      "What is the exact leading constant in f(n) ~ c√(n/log n)?",
+      "Can the gap between constants 1 and 2 be narrowed?",
+      "What structural properties do extremal triangle-free graphs have?",
+      "Does the answer change for K₄-free or general Kₜ-free graphs?"
+    ]
+  }
+}

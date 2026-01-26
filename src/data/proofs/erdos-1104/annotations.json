@@ -1,0 +1,56 @@
+[
+  {
+    "id": "triangle-free-max",
+    "proofId": "erdos-1104",
+    "range": { "startLine": 24, "endLine": 27 },
+    "type": "definition",
+    "title": "Triangle-Free Max Chromatic",
+    "content": "f(n) = max χ(G) over all triangle-free graphs G on n vertices. This function captures the extremal chromatic behavior under the triangle-free constraint.",
+    "significance": "high"
+  },
+  {
+    "id": "lower-bound",
+    "proofId": "erdos-1104",
+    "range": { "startLine": 31, "endLine": 37 },
+    "type": "note",
+    "title": "Lower Bound (HHKP 2025)",
+    "content": "Hefty–Horn–King–Pfender (2025) proved f(n) ≥ (1−o(1))√(n/log n) using probabilistic constructions of triangle-free graphs with high chromatic number.",
+    "significance": "high"
+  },
+  {
+    "id": "upper-bound",
+    "proofId": "erdos-1104",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "note",
+    "title": "Upper Bound (DI 2022)",
+    "content": "Davies–Illingworth (2022) proved f(n) ≤ (2+o(1))√(n/log n). This is the best known upper bound on the maximum chromatic number of triangle-free graphs.",
+    "significance": "high"
+  },
+  {
+    "id": "asymptotic",
+    "proofId": "erdos-1104",
+    "range": { "startLine": 47, "endLine": 54 },
+    "type": "conjecture",
+    "title": "Exact Constant Open",
+    "content": "f(n) = Θ(√(n/log n)) is established. The remaining open question is the exact leading constant c: is c = 1, c = 2, or something in between?",
+    "significance": "high"
+  },
+  {
+    "id": "kim-ramsey",
+    "proofId": "erdos-1104",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "note",
+    "title": "Kim's Ramsey Bound",
+    "content": "Kim (1995) proved R(3,k) = Θ(k²/log k) using a semi-random method. Since f(n) ≥ k iff R(3,k) ≤ n, this is dual to the lower bound for f(n).",
+    "significance": "high"
+  },
+  {
+    "id": "edge-variant",
+    "proofId": "erdos-1104",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "note",
+    "title": "Edge Variant",
+    "content": "g(m) = max χ(G) over triangle-free graphs with m edges satisfies g(m) = Θ((m/(log m)²)^{1/3}), from Davies–Illingworth (upper) and Kim (lower).",
+    "significance": "medium"
+  }
+]
