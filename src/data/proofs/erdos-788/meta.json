@@ -4,123 +4,104 @@
   "slug": "erdos-788",
   "description": "Estimate f(n) where f(n) is maximal s.t. for all B ⊂ (2n,4n), ∃ C ⊂ (n,2n) sum-free w.r.t. B with |C|+|B| ≥ f(n). Conjectured f(n) ≤ n^{1/2+o(1)}. Known: n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. OPEN.",
   "meta": {
-    "author": "Choi (1971, conjecture), Adenwalla, Hunter, Baltz-Schoen-Srivastav (2000)",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/788",
-    "date": "2000",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos788Problem.lean",
-    "tags": ["erdos", "additive-combinatorics", "sum-free-sets", "sidon-sets", "open-problem"],
+    "tags": ["additive-combinatorics", "sum-free-sets", "sidon-sets", "intervals"],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 788,
     "erdosUrl": "https://erdosproblems.com/788",
-    "erdosProblemStatus": "open",
-    "mathlib_version": "4.26.0",
-    "mathlibDependencies": [
-      { "theorem": "Finset", "description": "Finite sets for intervals and subsets", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Real.log", "description": "Natural logarithm for bounds", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
-      { "theorem": "Real.rpow", "description": "Real exponentiation for power bounds", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
-    ],
-    "originalContributions": [
-      "Lean formalization of sum-free with respect to a set",
-      "Definition of the function f(n)",
-      "Choi's conjecture formalization",
-      "Adenwalla's lower bound axiomatized",
-      "BSS upper bound axiomatized",
-      "Sidon set definition and existence",
-      "Interval constraint analysis"
-    ],
-    "dateAdded": "2026-01-19"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #788: Sum-Free Subsets in Intervals**\n\nThis problem asks about the interplay between sum-free sets and interval arithmetic. Given a \"forbidden\" set B in the interval (2n, 4n), we seek a large set C in (n, 2n) such that no two distinct elements of C sum to an element of B. The key observation is that sums of elements from (n, 2n) naturally land in (2n, 4n), making these intervals the natural setting.\n\n**Historical Development:**\n- Choi (1971): First studied this problem systematically, proving f(n) ≪ n^{3/4} and conjecturing f(n) ≤ n^{1/2+o(1)}\n- Adenwalla: Provided the lower bound f(n) ≫ n^{1/2} using a clever Sidon set construction\n- Hunter: Improved the upper bound to n^{2/3+o(1)} via counting arguments\n- Baltz, Schoen, Srivastav (2000): Achieved the current best upper bound f(n) ≪ (n log n)^{2/3} using probabilistic methods\n\n**Mathematical Setting:**\nThe function f(n) captures the \"guaranteed combined size\" of C and B - no matter how an adversary chooses B, we can always find C such that |C| + |B| ≥ f(n). This min-max formulation connects to game-theoretic aspects of additive combinatorics.",
+    "historicalContext": "This problem asks about the interplay between sum-free sets and interval arithmetic. Given a 'forbidden' set B in (2n, 4n), we seek a large set C in (n, 2n) whose pairwise sums avoid B. The function f(n) measures the guaranteed combined size |C| + |B|.\n\nChoi (1971) first studied this, proving f(n) ≪ n^{3/4} and conjecturing f(n) ≤ n^{1/2+o(1)}. Adenwalla gave the lower bound f(n) ≫ n^{1/2} via Sidon sets. Hunter improved the upper bound to n^{2/3+o(1)}. Baltz, Schoen, and Srivastav (2000) achieved the current best f(n) ≪ (n log n)^{2/3} using probabilistic methods.",
     "problemStatement": "Let f(n) be maximal such that for all B ⊂ (2n,4n) ∩ ℕ, there exists C ⊂ (n,2n) ∩ ℕ with c₁ + c₂ ∉ B for all c₁ ≠ c₂ ∈ C and |C| + |B| ≥ f(n). Estimate f(n). Is f(n) ≤ n^{1/2+o(1)}?",
-    "proofStrategy": "The formalization defines sum-free sets with respect to a prescribed set, the function f(n), and Sidon sets. Known bounds are axiomatized: Choi's n^{3/4}, Adenwalla's n^{1/2} lower bound, Hunter's n^{2/3+o(1)}, and BSS's (n log n)^{2/3}.",
+    "proofStrategy": "The formalization defines sum-free sets with respect to a prescribed set, the function f(n) via Nat.find, and Sidon sets. Known bounds are axiomatized: Choi's n^{3/4}, Adenwalla's n^{1/2} lower bound, Hunter's n^{2/3+o(1)}, and BSS's (n log n)^{2/3}. The interval_sum_range theorem is proved directly. Summary theorems combine the known bounds.",
     "keyInsights": [
-      "Elements of (n, 2n) sum to values in (2n, 4n), so the intervals are natural",
-      "Sidon sets provide key lower bound constructions",
-      "The gap between n^{1/2} and (n log n)^{2/3} remains open",
-      "Choi's conjecture that f(n) ≤ n^{1/2+o(1)} is still unresolved",
-      "Probabilistic methods give the best upper bounds",
-      "The problem relates to strongly sum-free sets"
+      "Elements of (n, 2n) sum to values in (2n, 4n), making the intervals natural",
+      "Sidon sets provide the key lower bound construction (f(n) ≫ n^{1/2})",
+      "The gap between n^{1/2} and (n log n)^{2/3} remains open after 50+ years",
+      "Choi's conjecture f(n) ≤ n^{1/2+o(1)} is still unresolved",
+      "Probabilistic methods give the best upper bounds (BSS 2000)"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "title": "Part 1: Basic Definitions",
       "startLine": 45,
-      "endLine": 89,
-      "summary": "Open intervals, pairwise sums, sum-free with respect to B"
+      "endLine": 88,
+      "summary": "Open intervals (n,2n) and (2n,4n), pairwise sums, and sum-free with respect to B."
     },
     {
       "id": "function-f",
-      "title": "The Function f(n)",
+      "title": "Part 2: The Function f(n)",
       "startLine": 90,
-      "endLine": 122,
-      "summary": "Definition and characterization of f(n)"
+      "endLine": 121,
+      "summary": "f(n) defined via Nat.find as the maximum guaranteed |C|+|B| over all B."
     },
     {
       "id": "choi-bound",
-      "title": "Choi's Original Bound",
+      "title": "Part 3: Choi's Original Bound (1971)",
       "startLine": 123,
-      "endLine": 140,
-      "summary": "Choi's n^{3/4} bound and conjecture"
+      "endLine": 139,
+      "summary": "Choi's upper bound f(n) ≪ n^{3/4} and conjecture f(n) ≤ n^{1/2+o(1)}."
     },
     {
       "id": "adenwalla",
-      "title": "Adenwalla's Lower Bound",
+      "title": "Part 4: Adenwalla's Lower Bound",
       "startLine": 141,
-      "endLine": 176,
-      "summary": "Lower bound n^{1/2} via Sidon sets"
+      "endLine": 175,
+      "summary": "Lower bound f(n) ≫ n^{1/2} via Sidon set construction. Sidon set definition and existence."
     },
     {
       "id": "hunter-bound",
-      "title": "Hunter's Improvement",
+      "title": "Part 5: Hunter's Improvement",
       "startLine": 177,
-      "endLine": 194,
-      "summary": "Hunter's improved bound n^{2/3+o(1)}"
+      "endLine": 193,
+      "summary": "Hunter's improved upper bound f(n) ≪ n^{2/3+o(1)} via counting arguments."
     },
     {
       "id": "bss-bound",
-      "title": "Baltz-Schoen-Srivastav Bound",
+      "title": "Part 6: Baltz-Schoen-Srivastav Bound (2000)",
       "startLine": 195,
       "endLine": 221,
-      "summary": "Best upper bound (n log n)^{2/3}"
+      "summary": "Best known upper bound f(n) ≪ (n log n)^{2/3} via probabilistic construction of strongly sum-free sets."
     },
     {
       "id": "gap",
-      "title": "The Gap",
+      "title": "Part 7: The Gap",
       "startLine": 222,
-      "endLine": 246,
-      "summary": "Current bounds and the open gap"
+      "endLine": 245,
+      "summary": "Current bounds theorem combining n^{1/2} lower and (n log n)^{2/3} upper. The gap remains open."
     },
     {
       "id": "sum-free-connection",
-      "title": "Connections to Sum-Free Sets",
+      "title": "Part 8: Connections to Sum-Free Sets",
       "startLine": 247,
-      "endLine": 272,
-      "summary": "Classical sum-free sets and density"
+      "endLine": 271,
+      "summary": "Classical sum-free sets, sum-free density, and how Problem 788 generalizes the sum-free concept."
     },
     {
       "id": "interval-constraints",
-      "title": "Interval Constraints",
+      "title": "Part 9: Interval Constraints",
       "startLine": 273,
-      "endLine": 312,
-      "summary": "Why these intervals and sum ranges"
+      "endLine": 311,
+      "summary": "Why sums from (n,2n) land in (2n,4n). Proved theorem interval_sum_range and axiom sums_in_upper_interval."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 331,
-      "endLine": 375,
-      "summary": "Main results, timeline, and open status"
+      "title": "Part 10: Summary",
+      "startLine": 313,
+      "endLine": 374,
+      "summary": "Summary theorem combining bounds, Choi's conjecture status, and historical timeline. OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #788 remains OPEN. The function f(n) satisfies n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. Choi's conjecture that f(n) ≤ n^{1/2+o(1)} is unresolved.",
-    "implications": "This problem connects additive combinatorics with the theory of Sidon sets and sum-free sets. The gap between the lower and upper bounds represents a fundamental barrier in understanding sum-free structures.",
+    "summary": "Erdős Problem #788 remains OPEN. The function f(n) satisfies n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. Choi's conjecture that f(n) ≤ n^{1/2+o(1)} is unresolved after 50+ years.",
+    "implications": "This problem connects additive combinatorics with the theory of Sidon sets and sum-free sets. The gap between the lower and upper bounds represents a fundamental barrier in understanding sum-free structures in intervals.",
     "openQuestions": [
       "Prove or disprove Choi's conjecture f(n) ≤ n^{1/2+o(1)}",
       "Close the gap between n^{1/2} and (n log n)^{2/3}",
