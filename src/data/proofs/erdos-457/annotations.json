@@ -1,0 +1,68 @@
+[
+  {
+    "id": "erdos-457-header",
+    "proofId": "erdos-457",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 18 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #457: Is there ε > 0 such that infinitely many n have all primes p ≤ (2+ε)log(n) dividing the product of log(n) consecutive integers after n? OPEN.",
+    "mathContext": "The product of consecutive integers is divisible by many primes; the question is whether small primes are captured with margin ε.",
+    "significance": "essential",
+    "relatedConcepts": ["consecutive products", "prime divisors", "smooth numbers"]
+  },
+  {
+    "id": "erdos-457-definitions",
+    "proofId": "erdos-457",
+    "type": "definition",
+    "range": { "startLine": 30, "endLine": 46 },
+    "title": "Consecutive Products and q(n,k)",
+    "content": "consecutiveProduct(n, k): product of (n+i) for i in [1,k]. smallestNonDividingPrime(n, k): q(n,k), the least prime not dividing the product. 1 sorry in Nat.find proof.",
+    "mathContext": "q(n,k) captures the threshold of prime divisibility for consecutive products.",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.Icc", "Nat.find", "prime divisibility"]
+  },
+  {
+    "id": "erdos-457-conjecture",
+    "proofId": "erdos-457",
+    "type": "conjecture",
+    "range": { "startLine": 48, "endLine": 60 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "ErdosConjecture457: exists ε > 0 with infinitely many n where all primes p ≤ (2+ε)log(n) divide the consecutive product. erdos_457 (axiom).",
+    "mathContext": "Uses Set.Infinite to express 'infinitely many n'. The threshold (2+ε) is the key parameter.",
+    "significance": "essential",
+    "relatedConcepts": ["Set.Infinite", "prime threshold", "infinitely often"]
+  },
+  {
+    "id": "erdos-457-q-formulation",
+    "proofId": "erdos-457",
+    "type": "conjecture",
+    "range": { "startLine": 62, "endLine": 72 },
+    "title": "Equivalent q(n,k) Formulation",
+    "content": "ErdosConjecture457_q: q(n, log n) ≥ (2+ε)log(n) infinitely often. erdos_457_q (axiom).",
+    "mathContext": "The q(n,k) formulation is more natural and directly expressible.",
+    "significance": "essential",
+    "relatedConcepts": ["smallest non-dividing prime", "equivalent formulations"]
+  },
+  {
+    "id": "erdos-457-bounds",
+    "proofId": "erdos-457",
+    "type": "result",
+    "range": { "startLine": 74, "endLine": 91 },
+    "title": "Known Construction and Upper Bound",
+    "content": "construction_lower (axiom): q(n,log n) ≥ (2+o(1))log(n) achievable. UpperBoundConjecture: q(n,log n) < (1-ε)(log n)² for large n. erdos_457_upper (axiom).",
+    "mathContext": "The lower construction uses n = product of primes in [log(n), (2+o(1))log(n)]. The upper bound question is a separate open problem.",
+    "significance": "essential",
+    "relatedConcepts": ["prime product construction", "upper bounds"]
+  },
+  {
+    "id": "erdos-457-summary",
+    "proofId": "erdos-457",
+    "type": "result",
+    "range": { "startLine": 93, "endLine": 110 },
+    "title": "Summary: OPEN",
+    "content": "erdos_457_statement (proved): by simp. erdos_457_status (proved): True. Main conjecture, q(n,k) formulation, and upper bound question all OPEN.",
+    "mathContext": "The known lower construction gives (2+o(1)) but the strict (2+ε) remains open.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]
