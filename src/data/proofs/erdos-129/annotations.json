@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-129-edgecoloring",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 27 },
+    "title": "Edge Coloring",
+    "content": "EdgeColoring N r assigns a color in Fin r to each edge (ordered pair with i < j) of K_N.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-129-avoidsmono",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": { "startLine": 31, "endLine": 35 },
+    "title": "Avoids Monochromatic Clique",
+    "content": "AvoidsMono requires that no k-element subset of S has all edges in color c.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-129-hasramseyavoid",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 46 },
+    "title": "HasRamseyAvoid",
+    "content": "HasRamseyAvoid N n k r: every r-coloring of K_N has an n-vertex set with no monochromatic K_k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-129-conjecture",
+    "proofId": "erdos-129",
+    "type": "conjecture",
+    "range": { "startLine": 52, "endLine": 59 },
+    "title": "Erdős–Gyárfás Conjecture",
+    "content": "C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}} for constants C₁, C₂ > 1 depending on r.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-129-k3",
+    "proofId": "erdos-129",
+    "type": "conjecture",
+    "range": { "startLine": 62, "endLine": 65 },
+    "title": "k=3 Upper Bound",
+    "content": "R(n;3,r) < C^{√n} for some C > 1. The specific case of the general conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-129-lowerbound",
+    "proofId": "erdos-129",
+    "type": "result",
+    "range": { "startLine": 71, "endLine": 73 },
+    "title": "Erdős–Gyárfás Lower Bound",
+    "content": "R(n;3,r) > C^{√n} for some C > 1. Proved by Erdős and Gyárfás.",
+    "significance": "essential"
+  }
+]
