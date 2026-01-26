@@ -1,0 +1,85 @@
+{
+  "id": "erdos-507",
+  "title": "Erdős Problem #507: Heilbronn's Triangle Problem",
+  "slug": "erdos-507",
+  "description": "Estimate α(n), the smallest area such that every n-point set in the unit disk contains a triangle of area ≤ α(n). Best bounds: (log n)/n² ≪ α(n) ≪ 1/n^{7/6+o(1)}. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 507,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "combinatorial-geometry",
+      "open"
+    ],
+    "references": [
+      "Heilbronn: original problem",
+      "Komlós–Pintz–Szemerédi (1982): lower bound (log n)/n²",
+      "Komlós–Pintz–Szemerédi (1981): upper bound 1/n^{8/7}",
+      "Cohen–Pohoata–Zakharov (2024): upper bound 1/n^{7/6+o(1)}",
+      "https://erdosproblems.com/507"
+    ],
+    "leanFile": "Proofs/Erdos507Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 44,
+      "summary": "Define triangleArea, IsInUnitDisk, minTriangleArea, and the Heilbronn function."
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "Erdős's 1/n² lower bound and the pigeonhole 1/n upper bound."
+    },
+    {
+      "id": "kps-lower",
+      "title": "KPS Lower Bound",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "Komlós–Pintz–Szemerédi (1982): α(n) ≫ (log n)/n²."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 67,
+      "endLine": 82,
+      "summary": "KPS (1981) exponent 8/7 and CPZ (2024) exponent 7/6."
+    },
+    {
+      "id": "open-question",
+      "title": "Main Open Question",
+      "startLine": 84,
+      "endLine": 100,
+      "summary": "The true exponent β with α(n) = n^{-β+o(1)} lies in [7/6, 2]."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Heilbronn originally posed the problem of estimating the minimum triangle area in n-point configurations. Erdős observed the 1/n² lower bound via greedy placement. The problem has seen dramatic progress: Komlós, Pintz, and Szemerédi improved both bounds in the 1980s, and Cohen, Pohoata, and Zakharov achieved the current best upper bound in 2024.",
+    "problemStatement": "Let α(n) be the largest value such that every set of n points in the unit disk contains three points forming a triangle of area ≤ α(n). Estimate α(n).",
+    "proofStrategy": "We formalize the Heilbronn function, state the trivial bounds, the KPS logarithmic improvement to the lower bound, and the successive upper bound improvements from 1/n^{8/7} to 1/n^{7/6+o(1)}.",
+    "keyInsights": [
+      "The greedy argument gives α(n) ≫ 1/n², improved to (log n)/n² by KPS",
+      "The trivial upper bound 1/n was improved to 1/n^{8/7} using regularity",
+      "Cohen–Pohoata–Zakharov (2024) achieved 1/n^{7/6+o(1)} via incidence geometry",
+      "The true exponent β lies in [7/6, 2] — the gap is still enormous",
+      "Higher-dimensional analogs are even less understood"
+    ]
+  },
+  "conclusion": {
+    "summary": "Heilbronn's triangle problem asks for the minimum unavoidable triangle area in n-point configurations. The best bounds are (log n)/n² ≪ α(n) ≪ 1/n^{7/6+o(1)}, leaving a large gap. The problem remains open.",
+    "implications": "Closing the gap would resolve a fundamental question in combinatorial geometry, connecting to incidence geometry, the polynomial method, and probabilistic combinatorics.",
+    "openQuestions": [
+      "What is the true exponent β in α(n) = n^{-β+o(1)}?",
+      "Can the lower bound be improved beyond (log n)/n²?",
+      "Can the upper bound exponent be pushed beyond 7/6?",
+      "What are the optimal bounds in higher dimensions?"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "triangle-area",
+    "proofId": "erdos-507",
+    "range": { "startLine": 28, "endLine": 30 },
+    "type": "definition",
+    "title": "Triangle Area",
+    "content": "The signed area formula |x₁(y₂-y₃) + x₂(y₃-y₁) + x₃(y₁-y₂)|/2 for three points in ℝ². This is the standard determinant formula.",
+    "significance": "medium"
+  },
+  {
+    "id": "heilbronn-function",
+    "proofId": "erdos-507",
+    "range": { "startLine": 38, "endLine": 42 },
+    "type": "definition",
+    "title": "Heilbronn Function α(n)",
+    "content": "The supremum over all n-point sets in the unit disk of the minimum triangle area. Large α(n) means every configuration has a small triangle, while α(n) small means some configurations avoid small triangles.",
+    "significance": "high"
+  },
+  {
+    "id": "lower-bound-trivial",
+    "proofId": "erdos-507",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "theorem",
+    "title": "Erdős Lower Bound 1/n²",
+    "content": "A greedy argument: place points one at a time. Each new point must avoid O(n²) thin strips of total area O(1/n), so we can always find a placement keeping all triangles ≥ c/n².",
+    "significance": "medium"
+  },
+  {
+    "id": "kps-lower",
+    "proofId": "erdos-507",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "theorem",
+    "title": "KPS Lower Bound (log n)/n²",
+    "content": "Komlós–Pintz–Szemerédi (1982) improved the lower bound to α(n) ≫ (log n)/n² using a probabilistic refinement of the greedy argument. Still the best known lower bound.",
+    "significance": "high"
+  },
+  {
+    "id": "cpz-upper",
+    "proofId": "erdos-507",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "theorem",
+    "title": "CPZ Upper Bound n^{-7/6}",
+    "content": "Cohen–Pohoata–Zakharov (2024) proved α(n) ≪ 1/n^{7/6+o(1)}, improving the KPS exponent 8/7. Uses the polynomial method and incidence geometry.",
+    "significance": "high"
+  },
+  {
+    "id": "exponent-gap",
+    "proofId": "erdos-507",
+    "range": { "startLine": 86, "endLine": 91 },
+    "type": "conjecture",
+    "title": "Unknown True Exponent",
+    "content": "The true exponent β with α(n) = n^{-β+o(1)} lies in [7/6, 2]. The gap between upper and lower bounds is enormous — even the correct order of magnitude is unknown.",
+    "significance": "high"
+  }
+]
