@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-1103-sqfree-sumset",
+    "proofId": "erdos-1103",
+    "type": "definition",
+    "range": { "startLine": 30, "endLine": 33 },
+    "title": "Squarefree Sumset",
+    "content": "SquarefreeSumset A requires that a + b is squarefree for all a, b ∈ A.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1103-enumset",
+    "proofId": "erdos-1103",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 41 },
+    "title": "Set Enumeration",
+    "content": "enumSet A j is the j-th smallest element of A, axiomatized as strictly monotone with range A.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1103-conjecture",
+    "proofId": "erdos-1103",
+    "type": "conjecture",
+    "range": { "startLine": 48, "endLine": 51 },
+    "title": "Exponential Growth Conjecture",
+    "content": "ErdosProblem1103: every infinite squarefree-sumset sequence grows at least exponentially (C^j ≤ a_j for some C > 1).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1103-vdt-upper",
+    "proofId": "erdos-1103",
+    "type": "result",
+    "range": { "startLine": 57, "endLine": 60 },
+    "title": "van Doorn–Tao Upper Bound",
+    "content": "There exists an infinite squarefree-sumset sequence with a_j < exp(5j/log j).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1103-vdt-lower",
+    "proofId": "erdos-1103",
+    "type": "result",
+    "range": { "startLine": 64, "endLine": 65 },
+    "title": "van Doorn–Tao Lower Bound",
+    "content": "Any infinite squarefree-sumset sequence satisfies a_j > 0.24·j^{4/3}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1103-konyagin",
+    "proofId": "erdos-1103",
+    "type": "result",
+    "range": { "startLine": 69, "endLine": 73 },
+    "title": "Konyagin Finite Bound",
+    "content": "For A ⊆ {1,...,N} with squarefree sumset, |A| ≤ C·N^{11/15}.",
+    "significance": "supporting"
+  }
+]
