@@ -1,0 +1,82 @@
+{
+  "id": "erdos-390",
+  "title": "Erdős Problem #390: Factorial Factorization with Large Factors",
+  "slug": "erdos-390",
+  "description": "Let f(n) = min m such that n! = a₁⋯aₖ with n < a₁ < ⋯ < aₖ = m. Known: f(n) - 2n ≍ n/log n (EGS 1982). Is there c with f(n) - 2n ~ c·n/log n? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/390",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos390Problem.lean",
+    "tags": ["number-theory", "factorials", "asymptotics"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 390,
+    "erdosUrl": "https://erdosproblems.com/390",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem about expressing n! as a product of distinct integers all greater than n. Erdős, Guy, and Selfridge (1982) proved f(n) - 2n ≍ n/log n, establishing the correct order of magnitude. Whether a precise constant exists remains open.",
+    "problemStatement": "Let f(n) be the minimal m such that n! = a₁·a₂·⋯·aₖ with n < a₁ < a₂ < ⋯ < aₖ = m. Is there a constant c such that f(n) - 2n ~ c · n / log n?",
+    "proofStrategy": "We axiomatize factorizationMax (f) and state the basic lower bound f(n) ≥ 2n. The Erdős–Guy–Selfridge two-sided bounds are axiomatized. ErdosProblem390 asks whether the normalized ratio converges. Existence of factorizations, small values, monotonicity, and unboundedness of the excess are included.",
+    "keyInsights": [
+      "Expressing n! as a product of distinct factors all > n is always possible for n ≥ 3",
+      "The trivial bound f(n) ≥ 2n comes from counting arguments",
+      "The secondary term n/log n arises from prime factorization structure",
+      "Whether the ratio (f(n) - 2n)·log n/n has a limit is the open question"
+    ]
+  },
+  "sections": [
+    {
+      "id": "function-definition",
+      "title": "The Function f(n)",
+      "startLine": 21,
+      "endLine": 31,
+      "summary": "Axiomatizes factorizationMax: the minimal largest factor in any valid factorization of n!."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Basic Lower Bound",
+      "startLine": 33,
+      "endLine": 41,
+      "summary": "f(n) ≥ 2n for n ≥ 1."
+    },
+    {
+      "id": "egs-bounds",
+      "title": "Erdős–Guy–Selfridge Bounds",
+      "startLine": 43,
+      "endLine": 54,
+      "summary": "Two-sided bounds: c·n/log n ≤ f(n) - 2n ≤ C·n/log n (1982)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 56,
+      "endLine": 69,
+      "summary": "States ErdosProblem390: does (f(n) - 2n)·log n/n converge to a positive constant?"
+    },
+    {
+      "id": "related-properties",
+      "title": "Related Properties",
+      "startLine": 71,
+      "endLine": 87,
+      "summary": "Existence of factorizations for n ≥ 3 and OEIS small values (f(3) = 6)."
+    },
+    {
+      "id": "monotonicity-growth",
+      "title": "Monotonicity and Growth",
+      "startLine": 89,
+      "endLine": 104,
+      "summary": "Eventually monotone and f(n) - 2n → ∞."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 390 asks whether f(n) - 2n has a precise asymptotic c·n/log n. The order of magnitude is known (EGS 1982) but the existence of a limit constant is open.",
+    "implications": "A precise asymptotic would reveal the fine structure of how factorials can be decomposed into products of large factors, connecting to combinatorial number theory.",
+    "openQuestions": [
+      "Does lim (f(n) - 2n)·log n / n exist?",
+      "If so, what is the constant c?",
+      "What is the distribution of f(n) - 2n around its mean?"
+    ]
+  }
+}
