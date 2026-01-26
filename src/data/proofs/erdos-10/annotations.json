@@ -1,0 +1,92 @@
+[
+  {
+    "id": "erdos-10-ann-sumPrimeAndTwoPows",
+    "proofId": "erdos-10",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "sumPrimeAndTwoPows",
+    "content": "The set of naturals expressible as p + 2^{a₁} + ... + 2^{aⱼ} where p is prime and j ≤ k. The powers-of-2 component is modeled as a multiset of exponents.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-10-ann-lowerDensity",
+    "proofId": "erdos-10",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "definition",
+    "title": "Asymptotic Lower Density",
+    "content": "The lower density of S ⊆ ℕ is the liminf of |S ∩ [0,n]| / (n+1) as n → ∞. This measures the 'thinnest' asymptotic proportion of naturals in S.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-10-ann-main",
+    "proofId": "erdos-10",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "theorem",
+    "title": "Erdős–Graham Conjecture",
+    "content": "No finite k suffices to represent all integers > 1 as a prime plus at most k powers of 2. Erdős described this as 'probably unattackable.'",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-10-ann-gallagher",
+    "proofId": "erdos-10",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "theorem",
+    "title": "Gallagher's Density Theorem",
+    "content": "For any ε > 0, some k(ε) gives lower density ≥ 1 − ε for the representable set. This means almost all integers are representable for large enough k, even if not all are.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-10-ann-gs-odd",
+    "proofId": "erdos-10",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "theorem",
+    "title": "Granville–Soundararajan (Odd)",
+    "content": "Conjectured: every odd integer > 1 is the sum of a prime and at most 3 powers of 2. This would give a strong uniform bound for half of all integers.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-10-ann-gs-even",
+    "proofId": "erdos-10",
+    "range": { "startLine": 75, "endLine": 76 },
+    "type": "theorem",
+    "title": "Granville–Soundararajan (Even)",
+    "content": "Conjectured: every nonzero even integer is the sum of a prime and at most 4 powers of 2. This follows from the odd conjecture by adding one extra power of 2.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-10-ann-grechuk",
+    "proofId": "erdos-10",
+    "range": { "startLine": 83, "endLine": 84 },
+    "type": "insight",
+    "title": "Grechuk's Counterexample",
+    "content": "1117175146 is not expressible as a prime plus ≤ 3 powers of 2, showing k = 3 does not work for all integers (even ones in particular).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-10-ann-exceptions-k2",
+    "proofId": "erdos-10",
+    "range": { "startLine": 91, "endLine": 92 },
+    "type": "theorem",
+    "title": "Infinitely Many Exceptions for k = 2",
+    "content": "Covering congruence arguments show infinitely many even integers cannot be written as a prime plus 2 powers of 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-10-ann-exceptions-k3",
+    "proofId": "erdos-10",
+    "range": { "startLine": 98, "endLine": 99 },
+    "type": "theorem",
+    "title": "Conjectured Exceptions for k = 3",
+    "content": "It is conjectured that infinitely many even integers are not the sum of a prime and at most 3 powers of 2, motivated by Grechuk's counterexample and parity arguments.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-10-ann-romanoff",
+    "proofId": "erdos-10",
+    "range": { "startLine": 106, "endLine": 107 },
+    "type": "theorem",
+    "title": "Romanoff's Theorem",
+    "content": "Already the k = 1 case — sums of a prime and a single power of 2 — has positive lower density. This classical result (1934) was one of the earliest theorems on prime-plus-lacunary bases.",
+    "significance": "key"
+  }
+]
