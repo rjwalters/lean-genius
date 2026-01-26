@@ -1,0 +1,82 @@
+{
+  "id": "erdos-409",
+  "title": "Totient Iteration to Primes",
+  "slug": "erdos-409",
+  "description": "How many iterations of n ↦ φ(n) + 1 are needed before reaching a prime? F(n) = o(n) trivially; can infinitely many n reach the same prime? What is the density of n reaching a fixed prime? A problem of Finucane.",
+  "meta": {
+    "author": "Erdős, Graham, Finucane",
+    "sourceUrl": "https://erdosproblems.com/409",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos409Problem.lean",
+    "tags": [
+      "number theory",
+      "Euler totient",
+      "iteration",
+      "primes"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 409,
+    "erdosUrl": "https://erdosproblems.com/409",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "A problem of Finucane, discussed by Erdős and Graham (1980, p. 81). The map n ↦ φ(n) + 1 is strictly decreasing for composites, so always reaches a prime. The question is how quickly, and what the structure of the prime 'basins of attraction' looks like.",
+    "problemStatement": "Estimate F(n) = number of iterations of n ↦ φ(n)+1 to reach a prime. Can infinitely many n reach the same prime? What is the density?",
+    "proofStrategy": "We formalize the totient-plus-one map, iteration count F(n), termination, the three main questions, and the sigma variant.",
+    "keyInsights": [
+      "φ(n) + 1 ≤ n for n > 1, with equality iff n is prime",
+      "F(n) = o(n) is trivial; F(n) = 1 infinitely often",
+      "The prime 2 is a fixed point: φ(2) + 1 = 2",
+      "φ(n) + 1 is odd for n ≥ 3 (since φ(n) is even)",
+      "The σ(n) − 1 variant is non-decreasing, making termination unclear"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 43,
+      "summary": "Defines the totient-plus-one map, its iterates, and F(n) the iteration count to first prime."
+    },
+    {
+      "id": "termination",
+      "title": "Termination",
+      "startLine": 45,
+      "endLine": 53,
+      "summary": "The iteration always terminates for n > 0, since φ(n)+1 < n for composite n."
+    },
+    {
+      "id": "questions",
+      "title": "Main Questions",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "Part (i): estimate F(n); Part (ii): infinitely many n reach same prime; Part (iii): density."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties and Sigma Variant",
+      "startLine": 74,
+      "endLine": 101,
+      "summary": "F(p)=0 for primes, F=1 criterion, φ(n)+1 odd, σ variant grows for composites."
+    },
+    {
+      "id": "examples",
+      "title": "Small Cases",
+      "startLine": 103,
+      "endLine": 116,
+      "summary": "2 is fixed point, φ(4)+1=3, F(n)=1 infinitely often."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #409 on iterating n ↦ φ(n)+1 to primes. The three main questions — iteration count, shared primes, and density — remain open.",
+    "implications": "Understanding the iteration dynamics connects totient function behavior, prime distribution, and dynamical systems on the natural numbers.",
+    "openQuestions": [
+      "What is the growth rate of F(n)?",
+      "Can infinitely many n reach the same prime?",
+      "What is the density of n reaching prime p?",
+      "Does n ↦ σ(n) − 1 always reach a prime?"
+    ]
+  }
+}

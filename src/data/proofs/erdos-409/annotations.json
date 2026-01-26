@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-409-ann-map",
+    "proofId": "erdos-409",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
+    "title": "Totient-Plus-One Map",
+    "content": "n ↦ φ(n) + 1: the central dynamical map. Strictly decreasing for composites, fixed at primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-409-ann-fn",
+    "proofId": "erdos-409",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "F(n) — Iteration Count",
+    "content": "The minimum number of iterations of n ↦ φ(n)+1 to reach a prime. The central quantity to estimate.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-409-ann-terminate",
+    "proofId": "erdos-409",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "theorem",
+    "title": "Termination Guarantee",
+    "content": "For any n > 0, the iteration reaches a prime. Since φ(n)+1 < n for composite n > 1, the sequence strictly decreases until a prime is hit.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-409-ann-upper",
+    "proofId": "erdos-409",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "theorem",
+    "title": "Part (i): F(n) = o(n)",
+    "content": "Trivially F(n) = o(n) since each step decreases n. The challenge is finding tight upper bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-409-ann-same",
+    "proofId": "erdos-409",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "theorem",
+    "title": "Part (ii): Same Prime",
+    "content": "Can infinitely many n reach the same prime under iteration? The 'basin of attraction' question.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-409-ann-density",
+    "proofId": "erdos-409",
+    "range": { "startLine": 71, "endLine": 72 },
+    "type": "theorem",
+    "title": "Part (iii): Density",
+    "content": "For each prime p, does the set of n reaching p have a natural density? What is it?",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-409-ann-fixed",
+    "proofId": "erdos-409",
+    "range": { "startLine": 107, "endLine": 108 },
+    "type": "concept",
+    "title": "Fixed Point: 2",
+    "content": "φ(2) + 1 = 2: the prime 2 is a fixed point of the map. All even composites may eventually reach 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-409-ann-sigma",
+    "proofId": "erdos-409",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "concept",
+    "title": "Sigma Variant",
+    "content": "The companion map n ↦ σ(n)−1 is non-decreasing for composites, making termination unclear — fundamentally different from the φ variant.",
+    "significance": "supporting"
+  }
+]
