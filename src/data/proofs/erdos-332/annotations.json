@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-332-diffset",
+    "proofId": "erdos-332",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 29 },
+    "title": "Difference Set D(A)",
+    "content": "diffSet A is the set of integers d such that the set of pairs (a₁, a₂) with a₁, a₂ ∈ A and a₁ - a₂ = d is infinite. This captures differences that occur infinitely often, not just once.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-332-bounded-gaps",
+    "proofId": "erdos-332",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 38 },
+    "title": "Bounded Gaps (Syndeticity)",
+    "content": "HasBoundedGaps S means S is syndetic: there exists M > 0 such that every interval [z, z+M) contains an element of S. This is the structural property the problem asks about.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-332-density",
+    "proofId": "erdos-332",
+    "type": "definition",
+    "range": { "startLine": 47, "endLine": 50 },
+    "title": "Positive Upper Density",
+    "content": "HasPositiveUpperDensity A means there exists δ > 0 such that |A ∩ {1,…,N}| ≥ δN for infinitely many N. This is the known sufficient condition for D(A) to have bounded gaps.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-332-prikry",
+    "proofId": "erdos-332",
+    "type": "result",
+    "range": { "startLine": 63, "endLine": 64 },
+    "title": "Prikry's Theorem",
+    "content": "Positive upper density implies D(A) has bounded gaps. This is the main known result, establishing a sufficient condition for the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-332-symmetry",
+    "proofId": "erdos-332",
+    "type": "result",
+    "range": { "startLine": 71, "endLine": 72 },
+    "title": "Symmetry of D(A)",
+    "content": "D(A) is symmetric: d ∈ D(A) if and only if -d ∈ D(A). This follows from swapping the roles of a₁ and a₂.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-332-conjecture",
+    "proofId": "erdos-332",
+    "type": "conjecture",
+    "range": { "startLine": 85, "endLine": 89 },
+    "title": "Erdős Problem 332",
+    "content": "The main open question: characterise the weakest condition P on A ⊆ ℕ such that P(A) implies D(A) has bounded gaps. Positive upper density is known to be sufficient; the problem asks if weaker conditions also work.",
+    "significance": "essential"
+  }
+]
