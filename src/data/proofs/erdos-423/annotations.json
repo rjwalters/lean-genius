@@ -1,0 +1,79 @@
+[
+  {
+    "id": "erdos-423-header",
+    "proofId": "erdos-423",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 21 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #423: Let a₁=1, a₂=2, and for k≥3, aₖ is the least integer > a_{k-1} that is a sum of at least two consecutive terms. What is the asymptotic behaviour? OPEN. Sequence: 1, 2, 3, 5, 6, 8, 10, 11, ... (OEIS A005243).",
+    "mathContext": "A greedy sequence defined by consecutive-sum representability. Each term must equal some aᵢ + aᵢ₊₁ + ... + aⱼ with j > i. Related to Ulam-type constructions.",
+    "significance": "essential",
+    "relatedConcepts": ["greedy sequences", "consecutive sums", "Ulam sequences"]
+  },
+  {
+    "id": "erdos-423-definition",
+    "proofId": "erdos-423",
+    "type": "definition",
+    "range": { "startLine": 33, "endLine": 64 },
+    "title": "Sequence and Consecutive Sum Property",
+    "content": "consSeq: ℕ → ℕ (noncomputable). Initial values a(0)=1, a(1)=2. consSeq_strictMono (axiom). consecutiveSum(i,j): sum of terms from index i to j. IsConsecutiveSum(m,n): m is a consecutive sum from the first n terms. consSeq_is_consecutive_sum (axiom), consSeq_minimal (axiom).",
+    "mathContext": "The sequence is well-defined by a greedy algorithm: at each step, pick the smallest valid integer.",
+    "significance": "essential",
+    "relatedConcepts": ["greedy algorithm", "StrictMono", "Finset.sum"]
+  },
+  {
+    "id": "erdos-423-values",
+    "proofId": "erdos-423",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 78 },
+    "title": "Initial Values",
+    "content": "consSeq_values (axiom): first 8 terms are 1, 2, 3, 5, 6, 8, 10, 11. verify_three (axiom): 3 = a(0)+a(1). verify_five (axiom): 5 = a(1)+a(2).",
+    "mathContext": "The sequence skips 4 because 4 cannot be written as a sum of consecutive terms at the time it would be needed.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A005243", "computation"]
+  },
+  {
+    "id": "erdos-423-growth",
+    "proofId": "erdos-423",
+    "type": "result",
+    "range": { "startLine": 80, "endLine": 93 },
+    "title": "Growth Properties (Bolan, Tang)",
+    "content": "consSeq_lower_bound (axiom): a(n) ≥ n+1. excess_nondecreasing (axiom): a(m)-m ≤ a(n)-n for m ≤ n. excess_unbounded (axiom): a(n)-n → ∞.",
+    "mathContext": "The sequence grows strictly faster than linearly. The excess a(n)-n is both nondecreasing and unbounded, recent results from 2024-2025.",
+    "significance": "essential",
+    "relatedConcepts": ["superlinear growth", "Filter.Tendsto", "excess function"]
+  },
+  {
+    "id": "erdos-423-missing",
+    "proofId": "erdos-423",
+    "type": "result",
+    "range": { "startLine": 95, "endLine": 108 },
+    "title": "Missing Numbers",
+    "content": "seqRange: set of values appearing in the sequence. missingNumbers: positive integers not in seqRange. infinitely_many_missing (axiom): Set.Infinite missingNumbers. four_is_missing (axiom): 4 is the first missing number.",
+    "mathContext": "The sequence does not cover all positive integers. The missing numbers form an infinite set, with 4 being the first gap.",
+    "significance": "essential",
+    "relatedConcepts": ["Set.Infinite", "missing values", "gaps"]
+  },
+  {
+    "id": "erdos-423-question",
+    "proofId": "erdos-423",
+    "type": "conjecture",
+    "range": { "startLine": 110, "endLine": 126 },
+    "title": "Asymptotic Questions (OPEN)",
+    "content": "ErdosQuestion423_convergence: does a(n)/n → C for some C > 1? ErdosQuestion423_density: does the sequence have a natural density 0 < d < 1?",
+    "mathContext": "The main open question. If a(n)/n converges, the limit C would determine the density as 1/C.",
+    "significance": "essential",
+    "relatedConcepts": ["asymptotic density", "growth rate", "Filter.Tendsto"]
+  },
+  {
+    "id": "erdos-423-summary",
+    "proofId": "erdos-423",
+    "type": "result",
+    "range": { "startLine": 128, "endLine": 154 },
+    "title": "Summary: OPEN",
+    "content": "erdos_423_known (proved): combines excess nondecreasing and infinitely many missing. erdos_423_status (proved): True. Problem remains OPEN.",
+    "mathContext": "The summary theorem combines the two main known results into a single statement.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]
