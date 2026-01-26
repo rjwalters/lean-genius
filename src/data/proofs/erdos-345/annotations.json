@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-345-complete",
+    "proofId": "erdos-345",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 30 },
+    "title": "Complete Sequence",
+    "content": "IsComplete A means all sufficiently large integers are subset sums of A. This is the fundamental property studied in the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-345-threshold",
+    "proofId": "erdos-345",
+    "type": "definition",
+    "range": { "startLine": 36, "endLine": 37 },
+    "title": "Completeness Threshold T(A)",
+    "content": "threshold A is the least m such that all n ≥ m are in P(A). Axiomatised with correctness and minimality.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-345-power-seq",
+    "proofId": "erdos-345",
+    "type": "definition",
+    "range": { "startLine": 51, "endLine": 52 },
+    "title": "Power Sequence",
+    "content": "powerSeq k is the set {n^k : n ≥ 1}. The completeness of these sequences follows from Waring's problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-345-values",
+    "proofId": "erdos-345",
+    "type": "result",
+    "range": { "startLine": 61, "endLine": 71 },
+    "title": "Known Threshold Values",
+    "content": "Exact computed values: T(n²)=128, T(n³)=12758, T(n⁴)=5134240, T(n⁵)=67898771. The sequence is rapidly increasing for small k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-345-conjecture",
+    "proofId": "erdos-345",
+    "type": "conjecture",
+    "range": { "startLine": 81, "endLine": 83 },
+    "title": "Erdős Problem 345",
+    "content": "Are there infinitely many k with T(n^k) > T(n^{k+1})? This asks whether the rapidly increasing threshold sequence ever reverses.",
+    "significance": "essential"
+  }
+]

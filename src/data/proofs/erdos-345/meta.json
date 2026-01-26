@@ -1,0 +1,82 @@
+{
+  "id": "erdos-345",
+  "title": "Erdős Problem #345: Completeness Thresholds for Power Sequences",
+  "slug": "erdos-345",
+  "description": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n²)=128, T(n³)=12758.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/345",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos345Problem.lean",
+    "tags": ["number theory", "complete sequences", "subset sums", "Waring problem"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 345,
+    "erdosUrl": "https://erdosproblems.com/345",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980) studied the completeness threshold T(A) — the least m such that all n ≥ m are subset sums of A. For power sequences {n^k}, the thresholds grow rapidly. Erdős asked whether T(n^k) can ever decrease as k increases.",
+    "problemStatement": "Are there infinitely many k such that T(n^k) > T(n^{k+1})?",
+    "proofStrategy": "The formalization defines subset sums, completeness, and the threshold T(A) axiomatically. Power sequences are defined and their completeness follows from Waring's problem. Known threshold values are axiomatised.",
+    "keyInsights": [
+      "T(n)=1, T(n²)=128, T(n³)=12758, T(n⁴)=5134240, T(n⁵)=67898771",
+      "Known thresholds are rapidly increasing, but the question is about eventual decrease",
+      "Erdős–Graham suggest k = 2^t for large t as candidates",
+      "Completeness of power sequences follows from Waring's problem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "subset-sums-completeness",
+      "title": "Subset Sums and Completeness",
+      "startLine": 21,
+      "endLine": 30,
+      "summary": "Definitions of subset sums P(A) and completeness of a sequence."
+    },
+    {
+      "id": "threshold",
+      "title": "Completeness Threshold",
+      "startLine": 32,
+      "endLine": 47,
+      "summary": "Axiomatisation of T(A) with correctness and minimality properties."
+    },
+    {
+      "id": "power-sequences",
+      "title": "Power Sequences",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "Definition of {n^k : n ≥ 1} and T(n) = 1."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Threshold Values",
+      "startLine": 59,
+      "endLine": 71,
+      "summary": "T(n²) = 128, T(n³) = 12758, T(n⁴) = 5134240, T(n⁵) = 67898771."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 79,
+      "endLine": 84,
+      "summary": "Erdős Problem 345: infinitely many k with T(n^k) > T(n^{k+1})."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity Observations",
+      "startLine": 86,
+      "endLine": 94,
+      "summary": "Known thresholds T(n) < T(n²) < T(n³) < T(n⁴) < T(n⁵) are increasing."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 345 on completeness thresholds for power sequences, with exact values for k ≤ 5 and the open question of threshold decrease.",
+    "implications": "Understanding when T(n^k) decreases would reveal deep structure in the additive properties of power sequences and connections to Waring's problem.",
+    "openQuestions": [
+      "Are there infinitely many k with T(n^k) > T(n^{k+1})?",
+      "Does T(n^{2^t}) eventually decrease?",
+      "What is the growth rate of T(n^k) as k → ∞?"
+    ]
+  }
+}
