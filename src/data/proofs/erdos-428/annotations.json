@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-428-density",
+    "proofId": "erdos-428",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 31 },
+    "title": "Prime Density Ratio",
+    "content": "primeCounting counts primes ≤ n. primeDensityRatio measures |A ∩ [1,n]| / π(n).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-428-offset",
+    "proofId": "erdos-428",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 37 },
+    "title": "All Offsets Prime",
+    "content": "AllOffsetsPrime A n holds when n - a is prime for every a ∈ A with 0 < a < n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-428-conjecture",
+    "proofId": "erdos-428",
+    "type": "conjecture",
+    "range": { "startLine": 41, "endLine": 46 },
+    "title": "Erdős Problem 428",
+    "content": "Exists A with positive prime density (liminf > 0) and infinitely many n where all offsets give primes.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-428-limsup",
+    "proofId": "erdos-428",
+    "type": "conjecture",
+    "range": { "startLine": 50, "endLine": 55 },
+    "title": "Limsup Variant",
+    "content": "Same as Problem 428 but with limsup instead of liminf. Erdős-Graham showed this follows from the k-tuple conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-428-ktuple",
+    "proofId": "erdos-428",
+    "type": "definition",
+    "range": { "startLine": 63, "endLine": 68 },
+    "title": "Prime k-Tuple Conjecture",
+    "content": "Every admissible k-tuple pattern occurs infinitely often among primes.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-428-counting",
+    "proofId": "erdos-428",
+    "type": "result",
+    "range": { "startLine": 76, "endLine": 81 },
+    "title": "Prime Counting is Positive",
+    "content": "primeCounting n > 0 for n ≥ 2. Proved by exhibiting 2 as a prime in the range.",
+    "significance": "supporting"
+  }
+]
