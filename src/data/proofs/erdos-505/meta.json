@@ -1,0 +1,79 @@
+{
+  "id": "erdos-505",
+  "title": "Erdős Problem #505: Borsuk's Conjecture",
+  "slug": "erdos-505",
+  "description": "Can every diameter-1 set in ℝⁿ be partitioned into ≤ n+1 parts of smaller diameter? TRUE for n ≤ 3, FALSE for n ≥ 64 (Brouwer–Jenrich 2014). Open for 4 ≤ n ≤ 63.",
+  "meta": {
+    "erdosNumber": 505,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "geometry",
+      "combinatorial-geometry",
+      "borsuk",
+      "open"
+    ],
+    "references": [
+      "Borsuk (1933): original conjecture",
+      "Eggleston (1955): true for n = 3",
+      "Kahn–Kalai (1993): false for n ≥ 2014, α(n) ≥ 1.2^√n",
+      "Brouwer–Jenrich (2014): false for n ≥ 64",
+      "Schramm: α(n) ≤ ((3/2)^{1/2}+o(1))^n",
+      "https://erdosproblems.com/505"
+    ],
+    "leanFile": "Proofs/Erdos505Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 48,
+      "summary": "Bounded sets, diameter, small-diameter partitions, Borsuk number α(n)."
+    },
+    {
+      "id": "low-dim",
+      "title": "Low-Dimensional Results",
+      "startLine": 55,
+      "endLine": 60,
+      "summary": "Borsuk's conjecture holds for n = 2 and n = 3."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "startLine": 62,
+      "endLine": 73,
+      "summary": "Kahn–Kalai (n ≥ 2014) and Brouwer–Jenrich (n ≥ 64) disprove the conjecture."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on α(n)",
+      "startLine": 75,
+      "endLine": 90,
+      "summary": "Lower bound 1.2^√n, upper bound (√(3/2)+o(1))^n, open range 4 ≤ n ≤ 63."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Borsuk conjectured in 1933 that every bounded set in ℝⁿ can be divided into n+1 parts of strictly smaller diameter. This was believed true for decades until Kahn and Kalai's dramatic counterexample in 1993. Erdős had suspected the conjecture would fail in high dimensions. The threshold has been lowered from n ≥ 2014 to n ≥ 64 by Brouwer and Jenrich.",
+    "problemStatement": "Is every set of diameter 1 in ℝⁿ the union of at most n+1 sets of diameter < 1? Equivalently, what is α(n), the minimum number of smaller-diameter pieces needed?",
+    "proofStrategy": "We axiomatize the Borsuk number α(n), state the conjecture as α(n) ≤ n+1, record the positive results for n ≤ 3, the counterexamples for n ≥ 64, and the quantitative bounds on α(n).",
+    "keyInsights": [
+      "TRUE for n ≤ 3, FALSE for n ≥ 64, open for 4 ≤ n ≤ 63",
+      "Kahn–Kalai used subsets of {0,1}^n with controlled inner products to construct counterexamples",
+      "α(n) grows at least as (1.2)^√n, far exceeding the conjectured n+1",
+      "Schramm's upper bound (√(3/2))^n shows α(n) is at most singly exponential",
+      "Brouwer–Jenrich improved the counterexample threshold from 2014 to 64"
+    ]
+  },
+  "conclusion": {
+    "summary": "Borsuk's conjecture is resolved in the extremes — true for n ≤ 3, false for n ≥ 64 — but the intermediate range 4 ≤ n ≤ 63 remains open. The dramatic failure discovered by Kahn and Kalai fundamentally changed the landscape of combinatorial geometry.",
+    "implications": "The resolution connects to algebraic combinatorics (Boolean functions, intersecting families), convex geometry (illumination bodies), and complexity theory (Frankl–Wilson type bounds).",
+    "openQuestions": [
+      "What is the smallest n for which Borsuk's conjecture fails?",
+      "What is α(n) for specific small dimensions (n = 4, 5, ...)?",
+      "Can the Kahn–Kalai lower bound 1.2^√n be improved?",
+      "What is the correct exponential growth rate of α(n)?"
+    ]
+  }
+}
