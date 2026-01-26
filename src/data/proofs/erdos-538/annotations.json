@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-538-repr-def",
+    "proofId": "erdos-538",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 32 },
+    "title": "Bounded Prime Representations",
+    "content": "reprCount A m counts elements a ∈ A with m = p·a for some prime p. HasBoundedRepr A r requires reprCount ≤ r for all m.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-538-problem",
+    "proofId": "erdos-538",
+    "type": "conjecture",
+    "range": { "startLine": 51, "endLine": 60 },
+    "title": "Erdős Problem 538",
+    "content": "Find the optimal f(r,N) such that Σ 1/n ≤ f(r,N) for all A ⊆ {1,...,N} with r-bounded representations. The bound should be tight.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-538-bound",
+    "proofId": "erdos-538",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 72 },
+    "title": "Erdős Upper Bound",
+    "content": "Erdős (1973) proved Σ 1/n ≪ r · log N / log log N via a counting argument involving primes and divisors.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-538-r1",
+    "proofId": "erdos-538",
+    "type": "result",
+    "range": { "startLine": 84, "endLine": 88 },
+    "title": "r = 1 Bound",
+    "content": "For r = 1 (at most one representation m = pa), the bound strengthens to log N / log log N, reflecting stronger multiplicative independence.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-538-counting",
+    "proofId": "erdos-538",
+    "type": "context",
+    "range": { "startLine": 96, "endLine": 100 },
+    "title": "Counting Argument",
+    "content": "The key counting argument: summing over a ∈ A the number of primes p with pa ≤ N, weighted by 1/a, is bounded by r·N via the representation constraint.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-538-energy",
+    "proofId": "erdos-538",
+    "type": "context",
+    "range": { "startLine": 104, "endLine": 109 },
+    "title": "Multiplicative Energy",
+    "content": "The representation constraint bounds the multiplicative energy of A with the primes: pairs (a₁,a₂) ∈ A² with q₁a₁ = q₂a₂ for primes q₁,q₂ are bounded by r²|A|.",
+    "significance": "supporting"
+  }
+]
