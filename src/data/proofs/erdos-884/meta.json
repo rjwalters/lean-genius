@@ -1,0 +1,151 @@
+{
+  "id": "erdos-884",
+  "title": "Erdős Problem #884: Divisor Gap Sums",
+  "slug": "erdos-884",
+  "description": "Is Σ_{i<j} 1/(d_j - d_i) ≪ 1 + Σ_i 1/(d_{i+1} - d_i) for divisors d_1 < ... < d_t of n? The all-pairs sum vs consecutive-pairs sum.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/884",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos884Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "divisor-gaps",
+      "harmonic-sums",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 10,
+    "erdosNumber": 884,
+    "erdosUrl": "https://erdosproblems.com/884",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "List.sort",
+        "description": "Sorted lists",
+        "module": "Mathlib.Data.List.Sort"
+      }
+    ],
+    "originalContributions": [
+      "divisorList definition: sorted divisors of n",
+      "numDivisors definition: τ(n)",
+      "divisor definition: access i-th divisor",
+      "consecutiveGap definition: d_{i+1} - d_i",
+      "generalGap definition: d_j - d_i",
+      "allPairsSum definition: Σ_{i<j} 1/(d_j - d_i)",
+      "consecutivePairsSum definition: Σ_i 1/(d_{i+1} - d_i)",
+      "ErdosConjecture884 definition: main inequality",
+      "prime_case_equality theorem: primes satisfy with equality",
+      "gap_lower_bound theorem: general gap ≥ consecutive gap",
+      "numDivisors_mul_coprime theorem: multiplicativity",
+      "divisorHarmonicSum definition: Σ_{d|n} 1/d"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #884 asks about the relationship between two natural sums over divisor gaps. Given the divisors d_1 < d_2 < ... < d_t of n, we compare the sum over ALL pairs 1/(d_j - d_i) with the sum over CONSECUTIVE pairs 1/(d_{i+1} - d_i).\n\nThe problem appears in [Er98] and is related to Problem #144 on divisor arithmetic and Egyptian fractions.\n\nThe consecutive-pairs sum forms a natural 'basis' since every gap d_j - d_i is a sum of consecutive gaps.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet d_1 < d_2 < ... < d_t be the divisors of n. Is there an absolute constant C such that\n$$\\sum_{1 \\leq i < j \\leq t} \\frac{1}{d_j - d_i} \\leq C \\left(1 + \\sum_{1 \\leq i < t} \\frac{1}{d_{i+1} - d_i}\\right)$$\n\n**Left side:** Sum over ALL pairs of divisors\n**Right side:** Sum over CONSECUTIVE pairs only\n**Question:** Is the all-pairs sum controlled by the consecutive-pairs sum?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Structure:** divisorList, numDivisors, divisor accessor\n\n2. **Gap Definitions:** consecutiveGap, generalGap\n\n3. **Sum Definitions:** allPairsSum, consecutivePairsSum\n\n4. **Main Conjecture:** ErdosConjecture884 with existential constant\n\n5. **Examples:** Prime case (equality), n=6 computation\n\n6. **Intuition:** Telescoping and gap bounds\n\n7. **Related:** Connection to Problem #144",
+    "keyInsights": [
+      "**All Pairs vs Consecutive:** The key comparison between O(τ²) terms and O(τ) terms",
+      "**Primes Are Trivial:** For prime p, both sums equal 1/(p-1)",
+      "**Telescoping:** d_j - d_i = sum of consecutive gaps, so general gaps are larger",
+      "**Multiplicative Structure:** τ(mn) = τ(m)τ(n) for coprime m,n affects gap patterns",
+      "**Related to #144:** Both problems study arithmetic of divisor sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisor-lists",
+      "title": "Divisor Lists",
+      "summary": "divisorList, numDivisors, divisor, divisorList_sorted",
+      "startLine": 30,
+      "endLine": 54
+    },
+    {
+      "id": "divisor-gaps",
+      "title": "Divisor Gaps",
+      "summary": "consecutiveGap, generalGap, consecutiveGap_pos, generalGap_pos",
+      "startLine": 56,
+      "endLine": 86
+    },
+    {
+      "id": "two-sums",
+      "title": "The Two Sums",
+      "summary": "allPairsSum, consecutivePairsSum",
+      "startLine": 88,
+      "endLine": 111
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture884, erdos_884",
+      "startLine": 113,
+      "endLine": 131
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "allPairsSum_nonneg, consecutivePairsSum_nonneg, num_terms",
+      "startLine": 133,
+      "endLine": 156
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "divisors_6, divisors_prime, prime_case_equality",
+      "startLine": 158,
+      "endLine": 204
+    },
+    {
+      "id": "intuition",
+      "title": "Why This Might Be True",
+      "summary": "gap_lower_bound, telescoping intuition",
+      "startLine": 206,
+      "endLine": 226
+    },
+    {
+      "id": "problem-144",
+      "title": "Connection to Problem 144",
+      "summary": "divisorHarmonicSum, related problems",
+      "startLine": 228,
+      "endLine": 249
+    },
+    {
+      "id": "multiplicative",
+      "title": "Multiplicative Structure",
+      "summary": "numDivisors_mul_coprime, factorial_divisors",
+      "startLine": 251,
+      "endLine": 276
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_884_status, erdos_884_statement, Summary",
+      "startLine": 278,
+      "endLine": 312
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #884 asks whether the sum over ALL pairs of divisor gaps Σ_{i<j} 1/(d_j - d_i) is controlled by the sum over CONSECUTIVE pairs Σ_i 1/(d_{i+1} - d_i). The problem is OPEN. For primes the sums are equal; for composite numbers the relationship is subtle.",
+    "implications": "Resolution would clarify the arithmetic structure of divisor sequences and the relationship between local (consecutive) and global (all pairs) gap information.",
+    "openQuestions": [
+      "Does the inequality hold with some absolute constant C?",
+      "What is the optimal constant C if it exists?",
+      "How does the ratio behave for highly composite numbers?",
+      "What is the connection to Egyptian fractions (Problem #144)?"
+    ]
+  }
+}

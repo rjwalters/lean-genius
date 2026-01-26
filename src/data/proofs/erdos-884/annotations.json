@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-884-header",
+    "proofId": "erdos-884",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #884: Is the all-pairs divisor gap sum bounded by the consecutive-pairs sum? Status: OPEN.",
+    "mathContext": "For divisors d_1 < ... < d_t of n, compare sum_{i<j} 1/(d_j-d_i) with 1 + sum_i 1/(d_{i+1}-d_i).",
+    "significance": "critical",
+    "relatedConcepts": ["divisors", "gap-sums", "harmonic-sums"]
+  },
+  {
+    "id": "ann-884-divisorlist",
+    "proofId": "erdos-884",
+    "range": { "startLine": 36, "endLine": 54 },
+    "type": "definition",
+    "title": "Divisor Lists",
+    "content": "divisorList(n): sorted list of divisors. numDivisors(n) = tau(n). divisor(n,i): i-th divisor.",
+    "mathContext": "The divisors of n form a finite set; sorting gives d_1 < d_2 < ... < d_t.",
+    "significance": "critical",
+    "relatedConcepts": ["divisors", "tau-function", "sorted-list"]
+  },
+  {
+    "id": "ann-884-gaps",
+    "proofId": "erdos-884",
+    "range": { "startLine": 56, "endLine": 86 },
+    "type": "definition",
+    "title": "Divisor Gaps",
+    "content": "consecutiveGap(n,i) := d_{i+1} - d_i. generalGap(n,i,j) := d_j - d_i for i < j.",
+    "mathContext": "Consecutive gaps are the basic building blocks; general gaps are sums of consecutive ones.",
+    "significance": "critical",
+    "relatedConcepts": ["gap", "consecutive", "difference"]
+  },
+  {
+    "id": "ann-884-sums",
+    "proofId": "erdos-884",
+    "range": { "startLine": 88, "endLine": 111 },
+    "type": "definition",
+    "title": "The Two Sums",
+    "content": "allPairsSum(n) := sum_{i<j} 1/(d_j-d_i). consecutivePairsSum(n) := sum_i 1/(d_{i+1}-d_i).",
+    "mathContext": "All-pairs has O(tau^2) terms; consecutive-pairs has O(tau) terms. The conjecture compares them.",
+    "significance": "critical",
+    "relatedConcepts": ["harmonic-sum", "pair-sum", "comparison"]
+  },
+  {
+    "id": "ann-884-conjecture",
+    "proofId": "erdos-884",
+    "range": { "startLine": 113, "endLine": 131 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "ErdosConjecture884: exists C > 0 such that allPairsSum(n) <= C * (1 + consecutivePairsSum(n)) for all n > 1.",
+    "mathContext": "The central question: is the all-pairs sum controlled by consecutive-pairs sum with absolute constant?",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "bound", "constant"]
+  },
+  {
+    "id": "ann-884-properties",
+    "proofId": "erdos-884",
+    "range": { "startLine": 133, "endLine": 156 },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "allPairsSum_nonneg, consecutivePairsSum_nonneg. All-pairs has C(tau,2) terms, consecutive has tau-1 terms.",
+    "mathContext": "Both sums are non-negative since gaps are positive. The number of terms differs quadratically.",
+    "significance": "supporting",
+    "relatedConcepts": ["nonnegativity", "term-count"]
+  },
+  {
+    "id": "ann-884-examples",
+    "proofId": "erdos-884",
+    "range": { "startLine": 158, "endLine": 204 },
+    "type": "theorem",
+    "title": "Examples",
+    "content": "n=6: divisors [1,2,3,6], consecutive sum 2.33, all-pairs sum 3.28. Prime p: both sums equal 1/(p-1).",
+    "mathContext": "For primes the conjecture holds with equality. For composites the ratio varies.",
+    "significance": "key",
+    "relatedConcepts": ["example", "prime-case", "verification"]
+  },
+  {
+    "id": "ann-884-intuition",
+    "proofId": "erdos-884",
+    "range": { "startLine": 206, "endLine": 226 },
+    "type": "concept",
+    "title": "Telescoping Intuition",
+    "content": "d_j - d_i = sum of consecutive gaps. So 1/(d_j-d_i) <= 1/(max consecutive gap involved).",
+    "mathContext": "Consecutive gaps form a natural basis. General gaps are sums, hence larger.",
+    "significance": "key",
+    "relatedConcepts": ["telescoping", "lower-bound", "basis"]
+  },
+  {
+    "id": "ann-884-problem144",
+    "proofId": "erdos-884",
+    "range": { "startLine": 228, "endLine": 249 },
+    "type": "definition",
+    "title": "Connection to Problem 144",
+    "content": "divisorHarmonicSum(n) = sum_{d|n} 1/d. Problem 144 studies Egyptian fractions with divisor denominators.",
+    "mathContext": "Both problems study arithmetic of divisor sets, connecting to Egyptian fraction representations.",
+    "significance": "supporting",
+    "relatedConcepts": ["problem-144", "egyptian-fractions", "harmonic-sum"]
+  },
+  {
+    "id": "ann-884-multiplicative",
+    "proofId": "erdos-884",
+    "range": { "startLine": 251, "endLine": 276 },
+    "type": "theorem",
+    "title": "Multiplicative Structure",
+    "content": "numDivisors_mul_coprime: tau(mn) = tau(m)*tau(n) for coprime m,n. Highly composite numbers are test cases.",
+    "mathContext": "The multiplicative structure of tau affects gap patterns; HCNs maximize divisor count.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative", "coprime", "highly-composite"]
+  },
+  {
+    "id": "ann-884-status",
+    "proofId": "erdos-884",
+    "range": { "startLine": 278, "endLine": 312 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. erdos_884_statement: formal version of the conjecture.",
+    "mathContext": "The question of whether all-pairs is bounded by consecutive-pairs remains unresolved.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "status", "formal-statement"]
+  }
+]
