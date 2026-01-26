@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-875-ann-rFold",
+    "proofId": "erdos-875",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "rFoldSumset",
+    "content": "The r-fold sumset of A: all sums of r distinct elements from A. Computed as the image of r-element subsets under summation.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-875-ann-disjoint",
+    "proofId": "erdos-875",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "DisjointSumsets",
+    "content": "The r-fold and s-fold sumsets of the first N terms are disjoint for all r ≠ s and all N. This is the key structural condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-875-ann-admissible",
+    "proofId": "erdos-875",
+    "range": { "startLine": 52, "endLine": 53 },
+    "type": "definition",
+    "title": "IsAdmissible",
+    "content": "A sequence is admissible if it is strictly increasing and has pairwise disjoint r-fold sumsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-875-ann-gap",
+    "proofId": "erdos-875",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "theorem",
+    "title": "Gap Threshold",
+    "content": "There exists a critical exponent c₀ such that polynomial gaps n^c are achievable for c > c₀ but not for c < c₀. The value of c₀ is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-875-ann-ratio",
+    "proofId": "erdos-875",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "theorem",
+    "title": "Ratio One Existence",
+    "content": "There exists an admissible sequence with a(n+1)/a(n) → 1. Erdős described this as 'not completely trivial.'",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-875-ann-powers",
+    "proofId": "erdos-875",
+    "range": { "startLine": 80, "endLine": 81 },
+    "type": "insight",
+    "title": "Powers of 2 Example",
+    "content": "a(n) = 2^n is admissible: binary representations uniquely encode which elements are summed, ensuring disjoint sumsets.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-875-ann-reciprocal",
+    "proofId": "erdos-875",
+    "range": { "startLine": 86, "endLine": 87 },
+    "type": "theorem",
+    "title": "Reciprocal Sum Converges",
+    "content": "For any admissible sequence, ∑ 1/a(n) converges. This implies the sequence must grow at least as fast as any polynomial.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-875-ann-growth",
+    "proofId": "erdos-875",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "concept",
+    "title": "Growth Lower Bound",
+    "content": "Admissible sequences satisfy a(n) ≥ n + 1, a minimal lower bound from the strictly increasing and disjointness conditions.",
+    "significance": "supporting"
+  }
+]
