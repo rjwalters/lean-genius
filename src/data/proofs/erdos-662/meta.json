@@ -1,0 +1,76 @@
+{
+  "id": "erdos-662",
+  "title": "Erdős Problem #662: Distances in Separated Point Sets",
+  "slug": "erdos-662",
+  "description": "For 1-separated points in ℝ², is the number of pairs at distance ≤ t maximized by the triangular lattice? f(1)=6, f(√3)=12, f(3)=18. Erdős–Lovász–Vesztergombi. Open.",
+  "meta": {
+    "erdosNumber": 662,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "distances",
+      "lattices",
+      "open"
+    ],
+    "references": [
+      "Erdős–Lovász–Vesztergombi (1997): original problem",
+      "Thue (1910), Tóth (1940): hexagonal packing optimality",
+      "https://erdosproblems.com/662"
+    ],
+    "leanFile": "Proofs/Erdos662Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 42,
+      "summary": "Point, distance, separation, pairs within distance, triangular lattice count."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 44,
+      "endLine": 50,
+      "summary": "Triangular lattice maximizes pairs at distance ≤ t among 1-separated sets."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "Triangular lattice: f(1)=6, f(√3)=12, f(3)=18."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 61,
+      "endLine": 79,
+      "summary": "Hexagonal packing, contact number, problem statement caveat."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős, Lovász, and Vesztergombi posed this problem in 1997 about the optimality of the triangular lattice for maximizing short-range distances in separated point sets. It connects to the classical hexagonal packing theorem and contact number problems.",
+    "problemStatement": "For n points in ℝ² with pairwise distance ≥ 1, is the number of pairs at distance ≤ t maximized by the triangular lattice configuration?",
+    "proofStrategy": "We define 1-separated point sets, the pair count function, and the triangular lattice count f(t). We state the optimality conjecture and record known lattice values.",
+    "keyInsights": [
+      "The triangular lattice has f(1)=6, f(√3)=12, f(3)=18 neighbors within distance t",
+      "The conjecture extends hexagonal packing optimality to distance pair counting",
+      "The case t=1 relates to the contact number problem: max unit distances = 3n − O(√n)",
+      "The original problem statement contains a known typo",
+      "Connects to Thue's circle packing theorem in ℝ²"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #662 asks whether the triangular lattice maximizes the number of pairs at distance ≤ t among 1-separated point sets in ℝ². This extends the classical hexagonal packing optimality to a distance counting problem.",
+    "implications": "Confirming the conjecture would establish the triangular lattice as the universal extremal configuration for short-range pair interactions, with applications to crystallography and optimal packing theory.",
+    "openQuestions": [
+      "Is the triangular lattice the unique maximizer for all t ≥ 1?",
+      "What happens for non-integer multiples of lattice distances?",
+      "Does the analogous result hold in higher dimensions (FCC lattice)?",
+      "Can the contact number case (t=1) be resolved independently?"
+    ]
+  }
+}
