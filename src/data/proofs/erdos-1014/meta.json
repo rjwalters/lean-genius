@@ -1,0 +1,92 @@
+{
+  "id": "erdos-1014",
+  "title": "Erdős Problem #1014: Ramsey Number Ratio Convergence",
+  "slug": "erdos-1014",
+  "description": "For fixed k ≥ 3, prove that R(k, l+1)/R(k, l) → 1 as l → ∞, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1014,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics",
+      "asymptotics",
+      "open"
+    ],
+    "references": [
+      "Erdős [Er71], p. 99",
+      "Ajtai–Komlós–Szemerédi (1980)",
+      "Shearer (1983)",
+      "Kim (1995)",
+      "https://erdosproblems.com/1014"
+    ],
+    "leanFile": "Proofs/Erdos1014Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 35,
+      "summary": "Define the Ramsey number R(k,l) axiomatically with positivity and symmetry properties."
+    },
+    {
+      "id": "classical-bounds",
+      "title": "Classical Bounds",
+      "startLine": 37,
+      "endLine": 50,
+      "summary": "Erdős–Szekeres upper bound, monotonicity R(k,l) ≤ R(k,l+1), and the recurrence relation."
+    },
+    {
+      "id": "r3-bounds",
+      "title": "R(3,l) Bounds",
+      "startLine": 52,
+      "endLine": 61,
+      "summary": "Tight bounds R(3,l) ~ l²/log l from Shearer/Kim (lower) and Ajtai–Komlós–Szemerédi (upper)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 63,
+      "endLine": 67,
+      "summary": "Erdős Problem #1014: R(k, l+1)/R(k, l) → 1 as l → ∞ for fixed k ≥ 3."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Implications",
+      "startLine": 69,
+      "endLine": 85,
+      "summary": "The conjecture follows from conjectured asymptotics R(k,l) ~ c_k l^(k-1)/(log l)^(k-2). Equivalent formulation: R(k,l+1) - R(k,l) = o(R(k,l))."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 87,
+      "endLine": 99,
+      "summary": "Trivial for k=2 (R(2,l)=l). Known values R(3,3)=6, R(3,4)=9, R(3,5)=14. Diagonal case is separate."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this in 1971, asking whether Ramsey numbers grow smoothly as the second parameter increases. Despite major progress on R(3,l) bounds by Ajtai–Komlós–Szemerédi, Kim, and Mattheus–Verstraëte, the ratio convergence remains open even for k=3.",
+    "problemStatement": "For fixed k ≥ 3, prove R(k, l+1)/R(k, l) → 1 as l → ∞.",
+    "proofStrategy": "We axiomatize the Ramsey number with basic properties (symmetry, monotonicity, recurrence), state classical bounds for R(3,l), and show the conjecture follows from precise enough asymptotics. The equivalence with the difference condition R(k,l+1) - R(k,l) = o(R(k,l)) is formalized.",
+    "keyInsights": [
+      "The conjecture asks for smooth growth of R(k,l) in the second parameter",
+      "For k=3, tight bounds R(3,l) ~ l²/log l are known but don't immediately yield the ratio",
+      "The ratio convergence follows from conjectured polynomial asymptotics R(k,l) ~ c·l^(k-1)/(log l)^(k-2)",
+      "Equivalent to: the increment R(k,l+1) - R(k,l) is sublinear in R(k,l)",
+      "Open even for k=3 despite R(3,l) being the best-understood off-diagonal case"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1014 remains open. The smooth growth conjecture R(k,l+1)/R(k,l) → 1 is a fundamental question about Ramsey number regularity. Even for k=3, where the order of magnitude is known, the ratio convergence has not been established.",
+    "implications": "Proving this would demonstrate that Ramsey numbers behave regularly as one parameter varies, supporting the broader conjecture of polynomial asymptotics. It would also constrain the form of exact Ramsey number formulas.",
+    "openQuestions": [
+      "Can the ratio convergence be proved for k=3 using the known l²/log l bounds?",
+      "What is the rate of convergence of R(k,l+1)/R(k,l) to 1?",
+      "Does R(k,l+1) - R(k,l) have a meaningful asymptotic formula?"
+    ]
+  }
+}
