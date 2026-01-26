@@ -1,0 +1,56 @@
+[
+  {
+    "id": "q3-def",
+    "proofId": "erdos-567",
+    "range": { "startLine": 38, "endLine": 45 },
+    "type": "definition",
+    "title": "3-Dimensional Hypercube Q₃",
+    "content": "Q₃ has 8 vertices (3-bit strings) and 12 edges (Hamming distance 1). It is the smallest hypercube not covered by the EFRS sparse linearity result (which handles ≤ n+1 = 9 edges).",
+    "significance": "high"
+  },
+  {
+    "id": "k33-def",
+    "proofId": "erdos-567",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "definition",
+    "title": "Complete Bipartite K₃,₃",
+    "content": "K₃,₃ has 6 vertices in two parts of size 3, with 9 edges. Erdős specifically asked about this case, as bipartite graphs often have special Ramsey properties.",
+    "significance": "high"
+  },
+  {
+    "id": "h5-def",
+    "proofId": "erdos-567",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "definition",
+    "title": "H₅ = K₄* (C₅ + Two Chords)",
+    "content": "H₅ is the 5-cycle with chords 0-2 and 1-3 added. It is also described as K₄* — the graph obtained by subdividing one edge of K₄. It has 5 vertices and 7 edges.",
+    "significance": "high"
+  },
+  {
+    "id": "size-linear",
+    "proofId": "erdos-567",
+    "range": { "startLine": 72, "endLine": 78 },
+    "type": "definition",
+    "title": "Ramsey Size Linearity",
+    "content": "G is Ramsey size linear if r̂(G, H) ≤ C·m for all H with m edges and no isolated vertices, where C depends only on G. This means the size Ramsey number grows linearly in the 'opponent' graph's edge count.",
+    "significance": "high"
+  },
+  {
+    "id": "bradac",
+    "proofId": "erdos-567",
+    "range": { "startLine": 94, "endLine": 98 },
+    "type": "theorem",
+    "title": "K₄ Subdivisions Are Linear",
+    "content": "Bradač, Gishboliner, and Sudakov proved that every subdivision of K₄ with at least 6 vertices is Ramsey size linear. Since H₅ = K₄* is such a subdivision, this addresses the H₅ case.",
+    "significance": "high"
+  },
+  {
+    "id": "efrs",
+    "proofId": "erdos-567",
+    "range": { "startLine": 100, "endLine": 104 },
+    "type": "theorem",
+    "title": "EFRS Sparse Linearity (1993)",
+    "content": "Erdős–Faudree–Rousseau–Schelp proved that graphs with at most n+1 edges and no isolated vertices are Ramsey size linear. Q₃ and K₃,₃ exceed this edge threshold.",
+    "significance": "medium"
+  }
+]

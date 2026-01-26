@@ -1,0 +1,77 @@
+{
+  "id": "erdos-567",
+  "title": "Erdős Problem #567: Ramsey Size Linearity of Q₃, K₃,₃, H₅",
+  "slug": "erdos-567",
+  "description": "Are Q₃ (3-cube), K₃,₃, and H₅ (C₅ + two chords) Ramsey size linear? Special case of #566. Bradač–Gishboliner–Sudakov: K₄ subdivisions with ≥ 6 vertices are linear. Open.",
+  "meta": {
+    "erdosNumber": 567,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey",
+      "open"
+    ],
+    "references": [
+      "EFRS (1993): Ramsey size linear graphs",
+      "Bradač–Gishboliner–Sudakov: K₄ subdivisions",
+      "Special case of Problem #566",
+      "https://erdosproblems.com/567"
+    ],
+    "leanFile": "Proofs/Erdos567Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "graph-defs",
+      "title": "Graph Definitions",
+      "startLine": 24,
+      "endLine": 66,
+      "summary": "Q₃ (3-cube), K₃,₃ (complete bipartite), H₅ (C₅ + chords)."
+    },
+    {
+      "id": "ramsey-size",
+      "title": "Size Ramsey Numbers",
+      "startLine": 68,
+      "endLine": 78,
+      "summary": "Size Ramsey number and Ramsey size linearity definitions."
+    },
+    {
+      "id": "questions",
+      "title": "Main Questions",
+      "startLine": 80,
+      "endLine": 90,
+      "summary": "Is each of Q₃, K₃,₃, H₅ Ramsey size linear?"
+    },
+    {
+      "id": "partial",
+      "title": "Partial Results",
+      "startLine": 92,
+      "endLine": 102,
+      "summary": "K₄ subdivisions are linear (Bradač et al.), EFRS sparse linearity."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős, Faudree, Rousseau, and Schelp (1993) introduced the concept of Ramsey size linear graphs and proved that graphs with at most n+1 edges are Ramsey size linear. Problem #567 asks about three specific graphs that are natural test cases beyond the EFRS threshold: the 3-cube Q₃, the complete bipartite K₃,₃, and H₅ = K₄* (C₅ with two chords).",
+    "problemStatement": "Is it true that r̂(G, H) = O(m) for G ∈ {Q₃, K₃,₃, H₅} and every H with m edges and no isolated vertices?",
+    "proofStrategy": "We define Q₃, K₃,₃, H₅ as concrete graphs, axiomatize the size Ramsey number, define Ramsey size linearity, and state the three questions. We record partial results by Bradač–Gishboliner–Sudakov on K₄ subdivisions and EFRS on sparse graphs.",
+    "keyInsights": [
+      "Q₃ has 12 edges and 8 vertices — the smallest hypercube that is not trivially Ramsey size linear",
+      "K₃,₃ has 9 edges — Erdős specifically highlighted this bipartite case",
+      "H₅ = K₄* is a subdivision of K₄, so recent results by Bradač et al. may apply",
+      "EFRS proved linearity for graphs with ≤ n+1 edges; these three exceed that threshold",
+      "This is a special case of Problem #566 on general Ramsey size linearity for sparse graphs"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #567 asks whether three specific graphs — Q₃, K₃,₃, H₅ — are Ramsey size linear. Recent progress on K₄ subdivisions addresses H₅, but Q₃ and K₃,₃ remain open.",
+    "implications": "Resolution would extend the EFRS theory of Ramsey size linear graphs, connecting to structural Ramsey theory and the broader question of which graphs have linear size Ramsey numbers.",
+    "openQuestions": [
+      "Is Q₃ Ramsey size linear?",
+      "Is K₃,₃ Ramsey size linear?",
+      "Does the Bradač–Gishboliner–Sudakov result fully resolve the H₅ case?",
+      "Is every graph with bounded maximum degree Ramsey size linear?"
+    ]
+  }
+}
