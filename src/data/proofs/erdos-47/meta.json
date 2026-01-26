@@ -1,0 +1,95 @@
+{
+  "id": "erdos-47",
+  "title": "Erdős Problem #47: Unit Fractions from Dense Sets",
+  "slug": "erdos-47",
+  "description": "If A ⊆ {1,…,N} has ∑ 1/a > δ log N, must some S ⊆ A have ∑ 1/n = 1? Yes — proved by Bloom (2021). Liu–Sawhney improved the quantitative bound. SOLVED.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/47",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos47Problem.lean",
+    "tags": [
+      "number-theory",
+      "unit-fractions",
+      "density",
+      "combinatorial-number-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 47,
+    "erdosUrl": "https://erdosproblems.com/47",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #47 asks whether dense subsets of {1, …, N} (measured by reciprocal sum) must contain a subset whose reciprocals sum to 1. Bloom [Bl21] proved this affirmatively; Liu and Sawhney [LiSa24] improved the quantitative threshold. Pomerance showed Erdős's conjectured (log log N)² bound is essentially optimal.",
+    "problemStatement": "If δ > 0 and N is large, and A ⊆ {1, …, N} has ∑ 1/a > δ log N, must there exist S ⊆ A with ∑ 1/n = 1? SOLVED: YES (Bloom).",
+    "proofStrategy": "We formalize the unit fraction problem using Finset and ℚ arithmetic. Bloom's theorem and the Liu–Sawhney improvement are stated as axioms. Pomerance's lower bound construction is also axiomatized.",
+    "keyInsights": [
+      "Bloom proved the conjecture: large reciprocal sum forces a unit fraction subset",
+      "Bloom's quantitative bound: ∑ 1/a ≫ (log log log N / log log N) · log N suffices",
+      "Liu–Sawhney improved to ∑ 1/a ≫ (log N)^{4/5 + o(1)}",
+      "Pomerance showed (log log N)² is essentially the optimal threshold",
+      "The problem is related to Egyptian fraction representations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unit-fractions",
+      "title": "Part I: Unit Fraction Subsets",
+      "startLine": 36,
+      "endLine": 56,
+      "summary": "Defines reciprocalSum, HasUnitFractionSum (∑ 1/n = 1), and ContainsUnitFraction (∃ subset summing to 1)."
+    },
+    {
+      "id": "dense-subsets",
+      "title": "Part II: Dense Subsets of {1, ..., N}",
+      "startLine": 58,
+      "endLine": 72,
+      "summary": "Defines Icc1 (the interval {1,…,N}) and IsDenseSubset (A ⊆ Icc1 N with ∑ 1/a > δ log N)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part III: Erdős's Conjecture (Solved)",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "Defines ErdosConjecture47: for all δ > 0 and large N, dense subsets contain unit fraction subsets."
+    },
+    {
+      "id": "bloom",
+      "title": "Part IV: Bloom's Theorem",
+      "startLine": 90,
+      "endLine": 114,
+      "summary": "Axiom bloom_theorem: the conjecture is true. Axiom bloom_quantitative: explicit threshold with triple-log."
+    },
+    {
+      "id": "liu-sawhney",
+      "title": "Part V: Liu–Sawhney Improvement",
+      "startLine": 116,
+      "endLine": 128,
+      "summary": "Axiom: threshold improved to (log N)^{4/5+ε} for any ε > 0."
+    },
+    {
+      "id": "pomerance",
+      "title": "Part VI: Pomerance's Optimality",
+      "startLine": 130,
+      "endLine": 142,
+      "summary": "Axiom: sets with ∑ 1/a ≈ (log log N)² exist without unit fraction subsets, showing optimality."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 144,
+      "endLine": 154,
+      "summary": "Theorem erdos_47_summary: the conjecture equals bloom_theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #47 is solved: dense subsets of {1, …, N} always contain unit fraction subsets. Bloom proved the conjecture; Liu–Sawhney improved the quantitative bound. Pomerance showed near-optimality.",
+    "implications": "The result connects additive combinatorics to Egyptian fractions. The quantitative gap between (log N)^{4/5} and (log log N)² remains open.",
+    "openQuestions": [
+      "What is the exact threshold for guaranteed unit fraction subsets?",
+      "Can the Liu–Sawhney bound be improved further toward (log log N)²?",
+      "What structural properties characterize sets avoiding unit fraction subsets?"
+    ]
+  }
+}
