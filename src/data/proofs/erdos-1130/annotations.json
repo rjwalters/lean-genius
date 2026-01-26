@@ -1,0 +1,74 @@
+[
+  {
+    "id": "lagrange-basis",
+    "proofId": "erdos-1130",
+    "type": "definition",
+    "title": "Lagrange Basis Polynomial",
+    "content": "l_k(x) = ∏_{j≠k} (x - xⱼ)/(x_k - xⱼ) satisfies l_k(xⱼ) = δ_{kj}. These form a basis for polynomial interpolation of degree ≤ n-1.",
+    "significance": "critical",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    }
+  },
+  {
+    "id": "lebesgue-function",
+    "proofId": "erdos-1130",
+    "type": "definition",
+    "title": "Lebesgue Function",
+    "content": "Λ(x) = Σ_k |l_k(x)| measures how much interpolation amplifies pointwise errors. The Lebesgue constant is max_x Λ(x).",
+    "significance": "critical",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    }
+  },
+  {
+    "id": "upsilon-def",
+    "proofId": "erdos-1130",
+    "type": "definition",
+    "title": "The Υ Functional",
+    "content": "Υ = min_{0≤i≤n} max_{x∈[xᵢ,xᵢ₊₁]} Σ|l_k(x)|: the minimum over subintervals of the maximum Lebesgue function value. This measures the best subinterval's worst-case amplification.",
+    "significance": "critical",
+    "range": {
+      "startLine": 60,
+      "endLine": 64
+    }
+  },
+  {
+    "id": "sqrt-bound",
+    "proofId": "erdos-1130",
+    "type": "theorem",
+    "title": "Erdős's √n Bound",
+    "content": "Erdős initially proved Υ < √n, establishing polynomial growth but far from the conjectured logarithmic bound.",
+    "significance": "key",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    }
+  },
+  {
+    "id": "log-bound",
+    "proofId": "erdos-1130",
+    "type": "theorem",
+    "title": "Sharp Logarithmic Bound",
+    "content": "Υ ≤ (2/π) log n + O(1). This confirms Erdős's conjecture that Υ ≪ log n, with the sharp constant 2/π.",
+    "significance": "critical",
+    "range": {
+      "startLine": 74,
+      "endLine": 78
+    }
+  },
+  {
+    "id": "de-boor-pinkus",
+    "proofId": "erdos-1130",
+    "type": "theorem",
+    "title": "De Boor–Pinkus Characterization",
+    "content": "The points maximizing Υ are exactly those for which the maximum Lebesgue function is equal on all subintervals — an equioscillation property.",
+    "significance": "key",
+    "range": {
+      "startLine": 82,
+      "endLine": 87
+    }
+  }
+]

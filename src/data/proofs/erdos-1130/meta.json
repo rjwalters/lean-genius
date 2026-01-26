@@ -1,0 +1,68 @@
+{
+  "id": "erdos-1130",
+  "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
+  "slug": "erdos-1130",
+  "description": "For nodes in [-1,1], is the minimum over subintervals of the max Lebesgue function at most O(log n)? PROVED: Υ ≤ (2/π) log n + O(1). De Boor–Pinkus characterized the optimal nodes.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1130",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1130Problem.lean",
+    "tags": ["approximation theory", "interpolation", "analysis"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 1130,
+    "erdosUrl": "https://erdosproblems.com/1130",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about Lagrange interpolation in 1947. The Lebesgue function Λ(x) = Σ|l_k(x)| measures how much interpolation amplifies errors. Erdős asked whether the functional Υ, the minimum over subintervals of the max Lebesgue function, grows at most logarithmically.",
+    "problemStatement": "For points x₁,...,xₙ ∈ [-1,1], is Υ(x₁,...,xₙ) = min_i max_{x∈[xᵢ,xᵢ₊₁]} Σ|l_k(x)| at most O(log n)?",
+    "proofStrategy": "Defines Lagrange basis polynomials, the Lebesgue function, and the Υ functional. States Erdős's initial √n bound, the optimal (2/π)log n + O(1) bound, and the de Boor–Pinkus characterization of maximizing nodes.",
+    "keyInsights": [
+      "The Lebesgue function measures the worst-case amplification of interpolation errors",
+      "Erdős first proved Υ < √n, far from the conjectured log n",
+      "The sharp bound (2/π) log n + O(1) matches the classical Lebesgue constant up to the Υ minimization",
+      "De Boor–Pinkus showed optimal nodes equalize the Lebesgue function across subintervals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lagrange",
+      "title": "Lagrange Interpolation Basis",
+      "startLine": 22,
+      "endLine": 44,
+      "summary": "Defines interpolation nodes, Lagrange basis polynomials, and the Lebesgue function."
+    },
+    {
+      "id": "upsilon",
+      "title": "The Υ Functional",
+      "startLine": 48,
+      "endLine": 64,
+      "summary": "Defines the subinterval decomposition and the Υ functional as a min-max quantity."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on Υ",
+      "startLine": 68,
+      "endLine": 78,
+      "summary": "States Erdős's √n bound and the sharp (2/π) log n + O(1) bound."
+    },
+    {
+      "id": "optimal",
+      "title": "De Boor–Pinkus and Main Result",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "States the characterization of optimal nodes and the proved conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 1130 is PROVED: the Υ functional grows as (2/π) log n + O(1). De Boor and Pinkus characterized the nodes maximizing Υ as those equalizing the Lebesgue function across all subintervals.",
+    "implications": "The result has implications for numerical analysis, polynomial approximation theory, and the choice of interpolation nodes.",
+    "openQuestions": [
+      "What is the exact constant in the O(1) term?",
+      "How does the optimal node distribution relate to Chebyshev points asymptotically?",
+      "Are there analogues for multivariate interpolation?"
+    ]
+  }
+}
