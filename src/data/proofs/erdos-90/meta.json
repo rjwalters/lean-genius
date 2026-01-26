@@ -1,0 +1,75 @@
+{
+  "id": "erdos-90",
+  "title": "Erdős Problem #90: The Unit Distance Problem",
+  "slug": "erdos-90",
+  "description": "What is the maximum number u(n) of unit-distance pairs among n points in ℝ²? Erdős conjectured u(n) = n^{1+O(1/log log n)}. Best upper bound is O(n^{4/3}) by Spencer–Szemerédi–Trotter. $500 prize.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/90",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos90Problem.lean",
+    "tags": ["combinatorial geometry", "unit distance", "incidence geometry"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 90,
+    "erdosUrl": "https://erdosproblems.com/90",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1946. It is one of the most famous problems in combinatorial geometry. The unit distance problem asks for the maximum number u(n) of pairs of points at distance 1 in a set of n points in the plane. Erdős offered a $500 prize for its resolution.",
+    "problemStatement": "Does every set of n distinct points in ℝ² contain at most n^{1+O(1/log log n)} pairs at unit distance?",
+    "proofStrategy": "Full rewrite from formal-conjectures. Defines unit distance counting via offDiag filtering, states the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound, the lattice lower bound, the main conjecture, its weak form u(n) = n^{1+o(1)}, and Valtr's metric obstruction.",
+    "keyInsights": [
+      "The trivial upper bound C(n,2) is improved to O(n^{4/3}) via the Szemerédi–Trotter incidence theorem",
+      "Lattice constructions achieve n^{1+c/log log n} unit distances, matching the conjectured bound",
+      "Valtr's obstruction shows the n^{4/3} barrier cannot be broken by purely combinatorial methods",
+      "Any improvement must exploit specific properties of Euclidean distance"
+    ]
+  },
+  "sections": [
+    {
+      "id": "counting",
+      "title": "Unit Distance Counting",
+      "startLine": 18,
+      "endLine": 39,
+      "summary": "Defines unit distance pair counting and the maximum function u(n)."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Spencer–Szemerédi–Trotter Upper Bound",
+      "startLine": 47,
+      "endLine": 53,
+      "summary": "States the O(n^{4/3}) upper bound from the Szemerédi–Trotter incidence theorem."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lattice Lower Bound",
+      "startLine": 57,
+      "endLine": 62,
+      "summary": "States the n^{1+c/log log n} lower bound from lattice constructions."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "startLine": 66,
+      "endLine": 80,
+      "summary": "States the main conjecture u(n) = n^{1+O(1/log log n)} and the weaker n^{1+o(1)} version."
+    },
+    {
+      "id": "obstruction",
+      "title": "Valtr's Obstruction",
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "Explains why purely combinatorial methods cannot improve beyond n^{4/3}."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 90 is one of the central questions in combinatorial geometry. The gap between the n^{4/3} upper bound and the n^{1+c/log log n} lower bound has remained open since 1946. Valtr's obstruction shows that new geometric ideas are needed.",
+    "implications": "Resolution would have profound consequences for incidence geometry, Kakeya-type problems, and the algebraic structure of Euclidean distance.",
+    "openQuestions": [
+      "Can the O(n^{4/3}) upper bound be improved at all?",
+      "What special property of Euclidean distance would enable such an improvement?",
+      "Does the problem have different behavior in higher dimensions?"
+    ]
+  }
+}

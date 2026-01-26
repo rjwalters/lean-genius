@@ -1,0 +1,86 @@
+[
+  {
+    "id": "unit-distance-count",
+    "proofId": "erdos-90",
+    "type": "definition",
+    "title": "Unit Distance Pairs Count",
+    "content": "Counts unordered pairs of distinct points at Euclidean distance exactly 1. Uses offDiag filtering on Finset of points in ℝ², divided by 2 for unordered pairs.",
+    "significance": "critical",
+    "range": {
+      "startLine": 22,
+      "endLine": 25
+    }
+  },
+  {
+    "id": "max-unit-distances",
+    "proofId": "erdos-90",
+    "type": "definition",
+    "title": "Maximum Unit Distances u(n)",
+    "content": "The function u(n) = max over all n-point configurations of the number of unit-distance pairs. Defined as sSup of the set of achievable counts.",
+    "significance": "critical",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    }
+  },
+  {
+    "id": "sst-bound",
+    "proofId": "erdos-90",
+    "type": "theorem",
+    "title": "Spencer–Szemerédi–Trotter Bound",
+    "content": "u(n) = O(n^{4/3}), proved in 1984 using the Szemerédi–Trotter incidence theorem. This is the best known upper bound and has stood for over 40 years.",
+    "significance": "critical",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    }
+  },
+  {
+    "id": "lattice-bound",
+    "proofId": "erdos-90",
+    "type": "theorem",
+    "title": "Lattice Lower Bound",
+    "content": "Integer lattice constructions achieve n^{1+c/log log n} unit distances, establishing the conjectured order of magnitude from below.",
+    "significance": "key",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-90",
+    "type": "concept",
+    "title": "The Erdős Conjecture",
+    "content": "u(n) = n^{1+O(1/log log n)}: the maximum number of unit distances grows only slightly faster than linear. This would match the lattice lower bound. $500 prize.",
+    "significance": "critical",
+    "range": {
+      "startLine": 66,
+      "endLine": 72
+    }
+  },
+  {
+    "id": "weak-form",
+    "proofId": "erdos-90",
+    "type": "theorem",
+    "title": "Weak Conjecture: u(n) = n^{1+o(1)}",
+    "content": "The weaker form states u(n) ≤ n^{1+ε} for every ε > 0 and large n. Even this is wide open. Erdős offered $300 (later $250) for this version.",
+    "significance": "key",
+    "range": {
+      "startLine": 75,
+      "endLine": 80
+    }
+  },
+  {
+    "id": "valtr-obstruction",
+    "proofId": "erdos-90",
+    "type": "insight",
+    "title": "Valtr's Metric Obstruction",
+    "content": "Valtr constructed a non-Euclidean metric on ℝ² where n points can have Θ(n^{4/3}) unit distances. Since SST methods generalize to such metrics, breaking the n^{4/3} barrier requires exploiting Euclidean geometry specifically.",
+    "significance": "key",
+    "range": {
+      "startLine": 84,
+      "endLine": 96
+    }
+  }
+]
