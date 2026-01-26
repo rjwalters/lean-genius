@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-361-subsetsum",
+    "proofId": "erdos-361",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 28 },
+    "title": "Subset Sum",
+    "content": "IsSubsetSum A n holds when some B ⊆ A has ∑ b = n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-361-nonrepr",
+    "proofId": "erdos-361",
+    "type": "definition",
+    "range": { "startLine": 31, "endLine": 32 },
+    "title": "Non-Representing",
+    "content": "NonRepresenting A n means no subset of A sums to n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-361-maxsize",
+    "proofId": "erdos-361",
+    "type": "definition",
+    "range": { "startLine": 36, "endLine": 38 },
+    "title": "Maximum Non-Representing Size",
+    "content": "maxNonReprSize c n is the largest |A| for A ⊆ {1,...,⌊cn⌋} with NonRepresenting A n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-361-conjecture",
+    "proofId": "erdos-361",
+    "type": "conjecture",
+    "range": { "startLine": 45, "endLine": 47 },
+    "title": "Irregularity Conjecture",
+    "content": "ErdosProblem361: maxNonReprSize c is not monotone in n — irregular dependence.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-361-theta",
+    "proofId": "erdos-361",
+    "type": "conjecture",
+    "range": { "startLine": 60, "endLine": 61 },
+    "title": "Plausible Θ(√n) Growth",
+    "content": "The growth rate maxNonReprSize c n = Θ(√n) is a plausible conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-361-subset-mono",
+    "proofId": "erdos-361",
+    "type": "result",
+    "range": { "startLine": 68, "endLine": 70 },
+    "title": "Subset Monotonicity",
+    "content": "Subsets of non-representing sets are non-representing.",
+    "significance": "supporting"
+  }
+]
