@@ -1,103 +1,90 @@
 [
   {
-    "id": "ann-e527-overview",
+    "id": "erdos-527-header",
     "proofId": "erdos-527",
-    "range": { "startLine": 1, "endLine": 20 },
-    "type": "concept",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 21 },
     "title": "Problem Overview",
-    "content": "**Erdős Problem #527: Random Power Series Convergence**\n\nFor ∑|aₙ|² = ∞ and |aₙ| = o(1/√n), does ∑ εₙaₙzⁿ converge for some |z| = 1?\n\n**Status:** SOLVED (Michelen-Sawhney 2025)\n**Answer:** YES, and the convergence set has Hausdorff dimension 1",
-    "mathContext": "Random signs εₙ = ±1 are chosen uniformly at random. The question is about convergence on the unit circle.",
-    "significance": "critical",
-    "relatedConcepts": ["Power series", "Random series", "Hausdorff dimension", "Unit circle"]
+    "content": "Erdős Problem #527: For aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n), does Σ εₙaₙzⁿ converge for some |z| = 1 for a.e. sign choices? SOLVED by Michelen-Sawhney (2025): YES, and the convergence set has Hausdorff dimension 1.",
+    "mathContext": "Random signs εₙ = ±1 chosen uniformly. Despite divergence being typical, a geometrically rich convergence set exists.",
+    "significance": "essential",
+    "relatedConcepts": ["power series", "random series", "Hausdorff dimension", "unit circle"]
   },
   {
-    "id": "ann-e527-littleo",
+    "id": "erdos-527-definitions",
     "proofId": "erdos-527",
-    "range": { "startLine": 41, "endLine": 43 },
     "type": "definition",
-    "title": "The Little-o Condition",
-    "content": "**littleO_sqrt a:** |aₙ| = o(1/√n)\n\nFor all ε > 0, eventually |aₙ| < ε/√n.\n\nThis is the key condition that allows convergence to exist.",
-    "significance": "critical",
-    "leanSymbol": "littleO_sqrt"
+    "range": { "startLine": 33, "endLine": 75 },
+    "title": "Definitions and Probabilistic Setup",
+    "content": "unitCircle: {z : |z| = 1}. littleO_sqrt(a): |aₙ| = o(1/√n). divergentSquares(a): Σ|aₙ|² = ∞. randomPowerSeries(a,ε,z): the series εₙaₙzⁿ. convergesAt: Summable predicate. signMeasure (axiom): product measure on {±1}^N. almostAllSigns: probability-1 events.",
+    "mathContext": "Uses Mathlib's Complex.abs, Real.sqrt, MeasureTheory. The little-o condition is the key hypothesis.",
+    "significance": "essential",
+    "relatedConcepts": ["Complex.abs", "Summable", "MeasureTheory.Measure"]
   },
   {
-    "id": "ann-e527-divergent",
+    "id": "erdos-527-divergence",
     "proofId": "erdos-527",
-    "range": { "startLine": 45, "endLine": 47 },
+    "type": "result",
+    "range": { "startLine": 77, "endLine": 91 },
+    "title": "Classical Divergence Results",
+    "content": "divergence_typical (axiom): for a.e. signs and a.e. z on S¹, the series diverges when Σ|aₙ|² = ∞. dvoretzky_erdos_1959 (axiom): if |aₙ| > c/√n, diverges everywhere on S¹ for a.e. signs.",
+    "mathContext": "Dvoretzky-Erdős (1959) shows |aₙ| = o(1/√n) is necessary for any convergence. The little-o condition is sharp.",
+    "significance": "essential",
+    "relatedConcepts": ["Dvoretzky-Erdős", "divergence", "necessity"]
+  },
+  {
+    "id": "erdos-527-main",
+    "proofId": "erdos-527",
+    "type": "result",
+    "range": { "startLine": 93, "endLine": 111 },
+    "title": "Michelen-Sawhney (2025): Main Result",
+    "content": "convergenceSet(a,ε): {z ∈ S¹ : Σ εₙaₙzⁿ converges}. michelen_sawhney_2025 (axiom): for a.e. signs, convergenceSet is nonempty. hausdorff_dimension_one (axiom): dimH(convergenceSet) = 1 a.s.",
+    "mathContext": "Answers Erdős's question affirmatively. The convergence set is geometrically as large as possible (dimension 1) while having measure zero.",
+    "significance": "essential",
+    "relatedConcepts": ["Michelen-Sawhney", "Hausdorff dimension", "convergence set"]
+  },
+  {
+    "id": "erdos-527-hausdorff",
+    "proofId": "erdos-527",
+    "type": "result",
+    "range": { "startLine": 132, "endLine": 155 },
+    "title": "Convergence Set Properties",
+    "content": "hausdorffDim wrapper for dimH. dimension_one_meaning (axiom): placeholder. convergence_set_uncountable (axiom): the set is uncountable. convergence_set_measure_zero (axiom): the set has Lebesgue measure zero.",
+    "mathContext": "A fractal-like set: Hausdorff dimension 1 (geometrically large), measure zero (measure-theoretically small), uncountable.",
+    "significance": "essential",
+    "relatedConcepts": ["Hausdorff dimension", "measure zero", "uncountable"]
+  },
+  {
+    "id": "erdos-527-examples",
+    "proofId": "erdos-527",
     "type": "definition",
-    "title": "Divergent Squares",
-    "content": "**divergentSquares a:** ∑|aₙ|² = ∞\n\nThe coefficients decay slowly enough that the series has unbounded L² norm.\n\nThis forces the series to typically diverge.",
-    "significance": "key",
-    "leanSymbol": "divergentSquares"
+    "range": { "startLine": 157, "endLine": 177 },
+    "title": "Examples",
+    "content": "example_seq: aₙ = 1/(√n log n). example_satisfies_conditions (axiom): satisfies both hypotheses. boundary_example (axiom): aₙ = 1/√n does NOT satisfy littleO_sqrt. summable_example (axiom): aₙ = 1/n has Σ|aₙ|² < ∞.",
+    "mathContext": "Concrete sequences illustrating the boundary between the conditions. The 1/(√n log n) sequence is the canonical example.",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "boundary cases", "conditions"]
   },
   {
-    "id": "ann-e527-convergenceset",
+    "id": "erdos-527-connections",
     "proofId": "erdos-527",
-    "range": { "startLine": 98, "endLine": 100 },
-    "type": "definition",
-    "title": "The Convergence Set",
-    "content": "**convergenceSet a ε:** The set of z ∈ S¹ where ∑ εₙaₙzⁿ converges.\n\nThis set depends on both the coefficients a and the sign choice ε.",
-    "significance": "key",
-    "leanSymbol": "convergenceSet"
+    "type": "context",
+    "range": { "startLine": 178, "endLine": 249 },
+    "title": "Connections and Techniques",
+    "content": "Rademacher series connections (placeholder). Khintchine inequality (placeholder). Proof techniques: oscillation analysis, metric entropy, martingale methods (placeholders). Related: Salem-Zygmund, Kahane, applications to lacunary series, analytic continuation, Fourier analysis.",
+    "mathContext": "The actual proof by Michelen-Sawhney uses deep techniques from probabilistic analysis and metric geometry.",
+    "significance": "supporting",
+    "relatedConcepts": ["Rademacher functions", "Khintchine inequality", "metric entropy", "martingales"]
   },
   {
-    "id": "ann-e527-main",
+    "id": "erdos-527-summary",
     "proofId": "erdos-527",
-    "range": { "startLine": 102, "endLine": 105 },
-    "type": "axiom",
-    "title": "Michelen-Sawhney (2025)",
-    "content": "**michelen_sawhney_2025:** For a.e. sign choice, the convergence set is nonempty.\n\nThis answers Erdős's question in the affirmative. The condition |aₙ| = o(1/√n) is essential.",
-    "significance": "critical",
-    "leanSymbol": "michelen_sawhney_2025"
-  },
-  {
-    "id": "ann-e527-dimension",
-    "proofId": "erdos-527",
-    "range": { "startLine": 107, "endLine": 110 },
-    "type": "axiom",
-    "title": "Hausdorff Dimension 1",
-    "content": "**hausdorff_dimension_one:** The convergence set has Hausdorff dimension 1.\n\nThis is the strongest possible result - the set is as 'thick' as the circle itself geometrically, while having measure zero.",
-    "significance": "critical",
-    "leanSymbol": "hausdorff_dimension_one"
-  },
-  {
-    "id": "ann-e527-dvoretzky",
-    "proofId": "erdos-527",
-    "range": { "startLine": 87, "endLine": 90 },
-    "type": "axiom",
-    "title": "Dvoretzky-Erdős (1959)",
-    "content": "**dvoretzky_erdos_1959:** If |aₙ| > c/√n, the series diverges EVERYWHERE on S¹ for a.e. signs.\n\nThis shows the condition |aₙ| = o(1/√n) is necessary for any convergence.",
-    "significance": "key",
-    "leanSymbol": "dvoretzky_erdos_1959"
-  },
-  {
-    "id": "ann-e527-typical",
-    "proofId": "erdos-527",
-    "range": { "startLine": 82, "endLine": 85 },
-    "type": "axiom",
-    "title": "Divergence is Typical",
-    "content": "**divergence_typical:** For a.e. signs and a.e. z ∈ S¹, the series diverges.\n\nThis is 'well known' - divergence dominates in a measure-theoretic sense.",
-    "significance": "key",
-    "leanSymbol": "divergence_typical"
-  },
-  {
-    "id": "ann-e527-uncountable",
-    "proofId": "erdos-527",
-    "range": { "startLine": 145, "endLine": 154 },
-    "type": "axiom",
-    "title": "Structure of Convergence Set",
-    "content": "**Properties of the convergence set:**\n\n- Hausdorff dimension 1\n- Measure zero\n- Uncountable\n\nA fractal-like set: geometrically large but measure-theoretically small.",
-    "significance": "key",
-    "leanSymbol": "convergence_set_uncountable"
-  },
-  {
-    "id": "ann-e527-summary",
-    "proofId": "erdos-527",
-    "range": { "startLine": 257, "endLine": 270 },
-    "type": "theorem",
-    "title": "Main Result Summary",
-    "content": "**erdos_527_main and erdos_527_strong:** Complete answer to Erdős's question.\n\nFor coefficients with ∑|aₙ|² = ∞ and |aₙ| = o(1/√n):\n- A.e. sign choices have nonempty convergence set\n- This set has Hausdorff dimension 1\n\nStatus: SOLVED",
-    "significance": "critical",
-    "leanSymbol": "erdos_527_main"
+    "type": "result",
+    "range": { "startLine": 250, "endLine": 271 },
+    "title": "Summary: SOLVED",
+    "content": "erdos_527_main (proved): almostAllSigns nonempty convergenceSet := michelen_sawhney_2025. erdos_527_strong (proved): almostAllSigns dimH = 1 := hausdorff_dimension_one. erdos_527 (proved): True. Problem SOLVED.",
+    "mathContext": "Two proved theorems directly applying the axioms. The strong version gives Hausdorff dimension 1.",
+    "significance": "essential",
+    "relatedConcepts": ["solved problem", "Michelen-Sawhney 2025"]
   }
 ]
