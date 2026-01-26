@@ -1,0 +1,83 @@
+[
+  {
+    "id": "erdos-389-ann-consecutiveProd",
+    "proofId": "erdos-389",
+    "range": { "startLine": 35, "endLine": 36 },
+    "type": "definition",
+    "title": "consecutiveProd",
+    "content": "The product n·(n+1)···(n+k−1) = ∏ i ∈ range k, (n + i). This is the rising factorial or Pochhammer symbol.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-389-ann-divides",
+    "proofId": "erdos-389",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "divides_upper_block",
+    "content": "The condition consecutiveProd n k ∣ consecutiveProd (n+k) k, i.e., the lower block of k integers divides the upper block.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-389-ann-main",
+    "proofId": "erdos-389",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "For every n ≥ 1, there exists k ≥ 1 such that the lower block divides the upper block. This is the central open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-389-ann-n1",
+    "proofId": "erdos-389",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "theorem",
+    "title": "Case n = 1",
+    "content": "Trivial: 1 divides 2 (k = 1). This is the only case that can be proved directly in Lean without computation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-389-ann-n2",
+    "proofId": "erdos-389",
+    "range": { "startLine": 62, "endLine": 62 },
+    "type": "theorem",
+    "title": "Case n = 2",
+    "content": "k = 5 works: 2·3·4·5·6 = 720 divides 7·8·9·10·11 = 55440 = 77 × 720.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-389-ann-n3",
+    "proofId": "erdos-389",
+    "range": { "startLine": 65, "endLine": 65 },
+    "type": "theorem",
+    "title": "Case n = 3",
+    "content": "k = 4 works: 3·4·5·6 = 360 divides 7·8·9·10 = 5040 = 14 × 360.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-389-ann-mehta",
+    "proofId": "erdos-389",
+    "range": { "startLine": 72, "endLine": 73 },
+    "type": "insight",
+    "title": "Mehta: Minimal k for n = 4",
+    "content": "Bhavik Mehta computed that the smallest k for n = 4 is 207 — a dramatic jump from the small k values needed for n = 1, 2, 3. Minimal k values form OEIS A375071.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-389-ann-minimality",
+    "proofId": "erdos-389",
+    "range": { "startLine": 77, "endLine": 78 },
+    "type": "theorem",
+    "title": "Minimality for n = 4",
+    "content": "No k in [1, 206] satisfies the divisibility for n = 4, confirming 207 is truly minimal.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-389-ann-binomial",
+    "proofId": "erdos-389",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "concept",
+    "title": "Binomial Coefficient Connection",
+    "content": "consecutiveProd n k = k! · C(n+k−1, k), connecting the product of consecutive integers to binomial coefficients.",
+    "significance": "key"
+  }
+]

@@ -1,0 +1,81 @@
+{
+  "id": "erdos-389",
+  "title": "Divisibility of Consecutive Integer Products",
+  "slug": "erdos-389",
+  "description": "Is it true that for every n ≥ 1 there exists k such that n(n+1)···(n+k−1) divides (n+k)···(n+2k−1)? The minimal k for n = 4 is 207 (Mehta). OEIS A375071 catalogs minimal k values.",
+  "meta": {
+    "author": "Erdős, Straus",
+    "sourceUrl": "https://erdosproblems.com/389",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos389Problem.lean",
+    "tags": [
+      "number theory",
+      "divisibility",
+      "consecutive integers",
+      "products"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 389,
+    "erdosUrl": "https://erdosproblems.com/389",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Straus posed this problem on whether the product of k consecutive integers starting at n always divides the product of the next k consecutive integers, for some k depending on n. The problem appeared in Erdős–Graham (1980). Bhavik Mehta computed minimal k values for small n, revealing surprisingly large values (e.g., 207 for n = 4).",
+    "problemStatement": "For every n ≥ 1, does there exist k ≥ 1 such that n(n+1)···(n+k−1) | (n+k)(n+k+1)···(n+2k−1)?",
+    "proofStrategy": "We formalize the divisibility condition, state the main conjecture, verify small cases (n = 1,2,3), record Mehta's computation for n = 4, and connect the product ratio to binomial coefficients.",
+    "keyInsights": [
+      "The divisibility holds iff the product ∏(n+k+i)/(n+i) is an integer",
+      "For n = 1, k = 1 works trivially; for n = 2, k = 5; for n = 3, k = 4",
+      "The minimal k for n = 4 jumps to 207 — much larger than small cases suggest",
+      "Minimal k values form OEIS sequence A375071",
+      "The product consecutiveProd n k equals k! · C(n+k−1, k)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 29,
+      "endLine": 47,
+      "summary": "Defines consecutiveProd as the product of k consecutive integers starting at n, the divisibility condition divides_upper_block, and the minimal k function."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 49,
+      "endLine": 55,
+      "summary": "States the Erdős–Straus conjecture: for every n ≥ 1, some k ≥ 1 satisfies the divisibility condition."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 57,
+      "endLine": 67,
+      "summary": "Verifies the divisibility for n = 1 (k=1, proved), n = 2 (k=5), and n = 3 (k=4)."
+    },
+    {
+      "id": "mehta",
+      "title": "Mehta's Computation",
+      "startLine": 69,
+      "endLine": 79,
+      "summary": "Records Bhavik Mehta's result that the minimal k for n = 4 is exactly 207."
+    },
+    {
+      "id": "ratio",
+      "title": "Ratio Interpretation",
+      "startLine": 81,
+      "endLine": 95,
+      "summary": "Connects the divisibility to the product of ratios (n+k+i)/(n+i) and to binomial coefficients."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #389 on whether the product of consecutive integers always divides the next block, including the main conjecture, small cases, Mehta's computation, and the binomial coefficient connection.",
+    "implications": "The problem reveals deep structure in the prime factorization of consecutive integer products. The rapid growth of minimal k values suggests the problem is far from trivial.",
+    "openQuestions": [
+      "Does a satisfying k exist for every n ≥ 1?",
+      "What is the growth rate of the minimal k as a function of n?",
+      "Is there a structural explanation for why n = 4 requires k = 207?"
+    ]
+  }
+}
