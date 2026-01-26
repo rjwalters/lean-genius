@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cycle-def",
+    "proofId": "erdos-585",
+    "type": "definition",
+    "title": "Cycle in a Graph",
+    "content": "A cycle on vertex set S is an injective sequence of ≥ 3 vertices spanning S with consecutive adjacencies, including wrap-around.",
+    "significance": "supporting",
+    "range": {
+      "startLine": 22,
+      "endLine": 28
+    }
+  },
+  {
+    "id": "edge-disjoint-cycles",
+    "proofId": "erdos-585",
+    "type": "definition",
+    "title": "Edge-Disjoint Cycles on Same Vertex Set",
+    "content": "Two cycles share the same vertex set S but use at least one different edge. This is a strong structural property: the graph on S admits two distinct Hamiltonian cycles.",
+    "significance": "critical",
+    "range": {
+      "startLine": 32,
+      "endLine": 45
+    }
+  },
+  {
+    "id": "extremal-function",
+    "proofId": "erdos-585",
+    "type": "definition",
+    "title": "Extremal Function f(n)",
+    "content": "f(n) is the maximum number of edges in an n-vertex simple graph containing no two edge-disjoint cycles on the same vertex set.",
+    "significance": "critical",
+    "range": {
+      "startLine": 49,
+      "endLine": 53
+    }
+  },
+  {
+    "id": "prs-lower",
+    "proofId": "erdos-585",
+    "type": "theorem",
+    "title": "Pyber–Rödl–Szemerédi Lower Bound",
+    "content": "f(n) ≥ c·n·log log n for some constant c > 0. Proved in 1995 using probabilistic and Ramsey-theoretic constructions.",
+    "significance": "key",
+    "range": {
+      "startLine": 57,
+      "endLine": 63
+    }
+  },
+  {
+    "id": "cjmm-upper",
+    "proofId": "erdos-585",
+    "type": "theorem",
+    "title": "CJMM Upper Bound (2024)",
+    "content": "f(n) ≤ C·n·(log n)^α for constants C, α > 0. A major 2024 breakthrough by Chakraborti, Janzer, Methuku, and Montgomery, nearly closing the gap.",
+    "significance": "critical",
+    "range": {
+      "startLine": 67,
+      "endLine": 74
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-585",
+    "type": "concept",
+    "title": "The Open Gap",
+    "content": "The exact growth rate of f(n) between Ω(n log log n) and O(n(log n)^C) is unknown. Determining whether f(n) is closer to the lower or upper bound is the central question.",
+    "significance": "critical",
+    "range": {
+      "startLine": 78,
+      "endLine": 87
+    }
+  }
+]
