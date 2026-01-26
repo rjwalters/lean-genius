@@ -1,0 +1,83 @@
+[
+  {
+    "id": "erdos-313-ann-solutions",
+    "proofId": "erdos-313",
+    "range": { "startLine": 35, "endLine": 38 },
+    "type": "definition",
+    "title": "erdos313Solutions",
+    "content": "The set of pairs (m, P) where m ≥ 2, P is a nonempty finset of distinct primes, and ∑ 1/p = 1 − 1/m.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-313-ann-ppn",
+    "proofId": "erdos-313",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Primary Pseudoperfect Number",
+    "content": "An integer n is primary pseudoperfect if there exists a prime set P such that (n, P) is in the solution set. Only 8 such numbers are known.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-313-ann-conjecture",
+    "proofId": "erdos-313",
+    "range": { "startLine": 48, "endLine": 48 },
+    "type": "theorem",
+    "title": "Infinitude Conjecture",
+    "content": "Are there infinitely many solutions? Equivalently, are there infinitely many primary pseudoperfect numbers? This is the main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-313-ann-example-6",
+    "proofId": "erdos-313",
+    "range": { "startLine": 58, "endLine": 58 },
+    "type": "theorem",
+    "title": "Example: m = 6",
+    "content": "1/2 + 1/3 = 5/6 = 1 − 1/6. The prime set is {2, 3} and the product is 6.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-313-ann-example-42",
+    "proofId": "erdos-313",
+    "range": { "startLine": 61, "endLine": 61 },
+    "type": "theorem",
+    "title": "Example: m = 42",
+    "content": "1/2 + 1/3 + 1/7 = 41/42 = 1 − 1/42. The prime set is {2, 3, 7}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-313-ann-product",
+    "proofId": "erdos-313",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "theorem",
+    "title": "Product Constraint",
+    "content": "In any solution (m, P), we must have m = p₁ · p₂ · ··· · pₖ. This means the prime factorization of m consists exactly of the primes in P.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-313-ann-unique",
+    "proofId": "erdos-313",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "theorem",
+    "title": "Uniqueness",
+    "content": "At most one prime set P works for each m, since P is determined by m's prime factorization.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-313-ann-eight",
+    "proofId": "erdos-313",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "insight",
+    "title": "At Least 8 Known",
+    "content": "There are at least 8 known primary pseudoperfect numbers. The sequence grows explosively: 2, 6, 42, 1806, 47058, 2214502422, ...",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-313-ann-egyptian",
+    "proofId": "erdos-313",
+    "range": { "startLine": 97, "endLine": 98 },
+    "type": "concept",
+    "title": "Egyptian Fraction Form",
+    "content": "The equation ∑ 1/pᵢ + 1/m = 1 is an Egyptian fraction representation of 1 with distinct denominators, all but one being prime.",
+    "significance": "key"
+  }
+]

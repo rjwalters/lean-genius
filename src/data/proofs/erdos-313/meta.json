@@ -1,0 +1,82 @@
+{
+  "id": "erdos-313",
+  "title": "Primary Pseudoperfect Numbers",
+  "slug": "erdos-313",
+  "description": "Are there infinitely many m such that ∑ 1/p = 1 − 1/m for some set of distinct primes P? These m are called primary pseudoperfect numbers. Only 8 are known (OEIS A054377). Each m equals the product of its primes.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/313",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos313Problem.lean",
+    "tags": [
+      "number theory",
+      "unit fractions",
+      "Egyptian fractions",
+      "primes",
+      "pseudoperfect numbers"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 313,
+    "erdosUrl": "https://erdosproblems.com/313",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this in their 1980 monograph. The equation ∑ 1/p = 1 − 1/m with P a set of distinct primes leads to 'primary pseudoperfect numbers,' cataloged as OEIS A054377. Only 8 are known; the largest has 31 digits.",
+    "problemStatement": "Are there infinitely many integers m ≥ 2 such that ∑_{p ∈ P} 1/p = 1 − 1/m for some finite set P of distinct primes?",
+    "proofStrategy": "We formalize the solution set, the primary pseudoperfect property, verify known examples, state the product constraint (m = ∏P) and uniqueness, and connect to Egyptian fraction representations.",
+    "keyInsights": [
+      "m must equal the product of all primes in P",
+      "At most one prime set P works for each m (uniqueness)",
+      "The equation rewrites as 1/p₁ + ··· + 1/pₖ + 1/m = 1 (Egyptian fraction of 1)",
+      "Only 8 primary pseudoperfect numbers are known",
+      "The known sequence grows extremely rapidly: 2, 6, 42, 1806, 47058, ..."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 29,
+      "endLine": 42,
+      "summary": "Defines erdos313Solutions as the set of (m, P) pairs and IsPrimaryPseudoperfect for integers m admitting such a prime set."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 44,
+      "endLine": 51,
+      "summary": "States the infinitude conjecture for both the solution set and the set of primary pseudoperfect numbers."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 53,
+      "endLine": 73,
+      "summary": "Records the first 5 known solutions: m = 2, 6, 42, 1806, 47058 with their prime sets."
+    },
+    {
+      "id": "structure",
+      "title": "Structural Properties",
+      "startLine": 75,
+      "endLine": 90,
+      "summary": "The product constraint (m = ∏P), uniqueness of P for each m, and the count of at least 8 known solutions."
+    },
+    {
+      "id": "egyptian",
+      "title": "Egyptian Fraction Connection",
+      "startLine": 92,
+      "endLine": 99,
+      "summary": "The equation rewrites as an Egyptian fraction representation of 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #313 on primary pseudoperfect numbers — integers m where the reciprocals of m's prime factors sum to 1 − 1/m. Includes known examples, structural constraints, and the Egyptian fraction connection.",
+    "implications": "The scarcity of solutions (only 8 known) combined with the rapid growth of known values makes this a challenging problem in elementary number theory.",
+    "openQuestions": [
+      "Are there infinitely many primary pseudoperfect numbers?",
+      "Is there a 9th primary pseudoperfect number?",
+      "What is the growth rate of the sequence?"
+    ]
+  }
+}
