@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sidon-set",
+    "proofId": "erdos-340",
+    "range": { "startLine": 27, "endLine": 30 },
+    "type": "definition",
+    "title": "Sidon Set (B₂ Set)",
+    "content": "A set S where all pairwise sums a+b (a ≤ b) are distinct. Equivalently, a+b = c+d with a ≤ b, c ≤ d implies a=c, b=d. The fundamental object in additive number theory.",
+    "significance": "high"
+  },
+  {
+    "id": "greedy-sidon",
+    "proofId": "erdos-340",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "definition",
+    "title": "Greedy Sidon Sequence",
+    "content": "The Mian–Chowla sequence: start with 1, then always add the smallest integer preserving the Sidon property. Produces 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, ... (OEIS A005282).",
+    "significance": "high"
+  },
+  {
+    "id": "initial-values",
+    "proofId": "erdos-340",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "note",
+    "title": "Initial Values",
+    "content": "a(0)=1, a(1)=2, a(2)=4, a(3)=8, a(4)=13, a(5)=21, a(6)=31, a(7)=45, a(8)=66, a(9)=81, a(10)=97. The gaps grow roughly as √n.",
+    "significance": "medium"
+  },
+  {
+    "id": "cube-root-lower",
+    "proofId": "erdos-340",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "theorem",
+    "title": "Cube Root Lower Bound",
+    "content": "|A ∩ [1,N]| ≥ cN^{1/3}. The greedy process places elements in a growing interval; the Sidon constraint limits density but the greedy choice guarantees at least cube-root growth.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-340",
+    "range": { "startLine": 79, "endLine": 83 },
+    "type": "conjecture",
+    "title": "Near-Optimal Growth Conjecture",
+    "content": "|A ∩ [1,N]| ≫ N^{1/2-ε} for all ε > 0. Since √N is the maximum possible for a Sidon set, this says the greedy construction is nearly as good as the best possible.",
+    "significance": "high"
+  },
+  {
+    "id": "diff-set",
+    "proofId": "erdos-340",
+    "range": { "startLine": 87, "endLine": 93 },
+    "type": "conjecture",
+    "title": "Difference Set Density",
+    "content": "Does A - A = {a-b : a > b, a,b ∈ A} have positive density in ℕ? Known to contain many small integers, but 33 is uncertain. A separate open question from Erdős–Graham.",
+    "significance": "high"
+  }
+]
