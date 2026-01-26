@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-152-sidon",
+    "proofId": "erdos-152",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 35 },
+    "title": "Sidon Sets and Sumsets",
+    "content": "IsSidonFinset A requires all pairwise sums to be distinct. sumsetFinset computes A + A via pointwise addition.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-152-isolated",
+    "proofId": "erdos-152",
+    "type": "definition",
+    "range": { "startLine": 41, "endLine": 49 },
+    "title": "Isolated Elements",
+    "content": "An element s ∈ A + A is isolated if neither s-1 nor s+1 belongs to A + A. isolatedCount measures how many such elements exist.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-152-conjecture",
+    "proofId": "erdos-152",
+    "type": "conjecture",
+    "range": { "startLine": 55, "endLine": 60 },
+    "title": "Erdős Problem 152",
+    "content": "For any M, sufficiently large Sidon sets A have at least M isolated elements in A + A. The number of isolated elements grows without bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-152-strong",
+    "proofId": "erdos-152",
+    "type": "conjecture",
+    "range": { "startLine": 66, "endLine": 72 },
+    "title": "Strong Form: ≫ |A|²",
+    "content": "The stronger conjecture: isolatedCount ≥ c·|A|² for some absolute constant c > 0, meaning a positive fraction of the sumset is isolated.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-152-sumset-size",
+    "proofId": "erdos-152",
+    "type": "result",
+    "range": { "startLine": 78, "endLine": 88 },
+    "title": "Sumset Size Bounds",
+    "content": "For Sidon sets of size n: |A + A| = n(n+1)/2 and max element ≥ n² - n + 1. These bounds constrain the sumset structure.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-152-infinite",
+    "proofId": "erdos-152",
+    "type": "context",
+    "range": { "startLine": 101, "endLine": 109 },
+    "title": "Infinite Sidon Set Version",
+    "content": "The analogous question for infinite Sidon sets: do truncations A ∩ [1,N] produce unboundedly many isolated elements as N → ∞?",
+    "significance": "supporting"
+  }
+]

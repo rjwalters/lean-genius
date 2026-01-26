@@ -1,0 +1,82 @@
+{
+  "id": "erdos-152",
+  "title": "Erdős Problem #152: Isolated Elements in Sidon Sumsets",
+  "slug": "erdos-152",
+  "description": "For large finite Sidon sets A, are there arbitrarily many isolated elements a ∈ A+A with a±1 ∉ A+A? Conjectured ≫ |A|² such elements. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/152",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos152Problem.lean",
+    "tags": ["additive-combinatorics", "sidon-sets", "sumsets"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 152,
+    "erdosUrl": "https://erdosproblems.com/152",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Sárközy, and Sós (1994) studied the structure of sumsets A + A when A is a Sidon set. They asked whether large Sidon sets always produce many isolated elements in A + A — elements with no neighbors in the sumset. The stronger form conjectures ≫ |A|² such elements.",
+    "problemStatement": "For any M ≥ 1, if A ⊂ ℕ is a sufficiently large finite Sidon set, do there exist at least M elements a ∈ A + A such that a - 1, a + 1 ∉ A + A?",
+    "proofStrategy": "We define IsSidonFinset (distinct pairwise sums), sumsetFinset (A + A), IsIsolated and isolatedCount. ErdosProblem152 states the weak version (unbounded count). ErdosProblem152Strong states the ≫ |A|² version. Sumset size and range bounds for Sidon sets are axiomatized. The infinite version is also stated.",
+    "keyInsights": [
+      "Sidon sets have |A + A| = n(n+1)/2, nearly half of all possible sums",
+      "The sumset fits in an interval of length ≤ 2·max A, creating many gaps",
+      "Isolated elements are those with no sumset neighbors, measuring sparsity",
+      "The conjectured ≫ |A|² count says a positive fraction of the sumset is isolated"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sidon-sumsets",
+      "title": "Sidon Sets and Sumsets",
+      "startLine": 24,
+      "endLine": 35,
+      "summary": "Defines IsSidonFinset (distinct pairwise sums) and sumsetFinset (A + A)."
+    },
+    {
+      "id": "isolated-elements",
+      "title": "Isolated Elements",
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "Defines IsIsolated (no sumset neighbors) and isolatedCount."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 51,
+      "endLine": 60,
+      "summary": "States ErdosProblem152: isolatedCount → ∞ as |A| → ∞ over Sidon sets."
+    },
+    {
+      "id": "strong-conjecture",
+      "title": "The Stronger Conjecture",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "ErdosProblem152Strong: isolatedCount ≥ c·|A|² for some c > 0."
+    },
+    {
+      "id": "sumset-size",
+      "title": "Sumset Size for Sidon Sets",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "|A + A| = n(n+1)/2 and Sidon sets need max element ≥ n² - n + 1."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 90,
+      "endLine": 109,
+      "summary": "Pigeonhole gap existence and the infinite Sidon set version."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 152 asks whether large Sidon sets always produce many isolated elements in their sumsets. The weak version (unbounded count) and strong version (≫ |A|²) are both open.",
+    "implications": "Understanding the gap structure of Sidon sumsets connects to additive combinatorics and the inverse sumset problem.",
+    "openQuestions": [
+      "Does isolatedCount → ∞ for large Sidon sets?",
+      "Is isolatedCount ≥ c·|A|² for some absolute constant c?",
+      "Does the analogous result hold for infinite Sidon sets?"
+    ]
+  }
+}
