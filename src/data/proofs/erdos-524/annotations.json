@@ -1,0 +1,56 @@
+[
+  {
+    "id": "random-sign-poly",
+    "proofId": "erdos-524",
+    "range": { "startLine": 28, "endLine": 33 },
+    "type": "definition",
+    "title": "Random Sign Polynomial",
+    "content": "P_n(t,x) = Σ_{k=1}^n sign_k(t)·x^k where sign_k(t) = (-1)^{ε_k(t)} and ε_k(t) is the k-th binary digit of t. Under Lebesgue measure, the signs are independent fair ±1 random variables.",
+    "significance": "high"
+  },
+  {
+    "id": "poly-max",
+    "proofId": "erdos-524",
+    "range": { "startLine": 35, "endLine": 38 },
+    "type": "definition",
+    "title": "Maximum Modulus M_n(t)",
+    "content": "M_n(t) = max_{x ∈ [-1,1]} |P_n(t,x)|, the supremum of the absolute value of the random polynomial over the interval [-1,1]. This is well-defined since polynomials are continuous on compact sets.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-lower",
+    "proofId": "erdos-524",
+    "range": { "startLine": 42, "endLine": 48 },
+    "type": "theorem",
+    "title": "Erdős Lower Bound",
+    "content": "For almost all t and every ε > 0, M_n(t)/n^{1/2-ε} → ∞. This means M_n grows faster than n^{1/2-ε} for any ε, suggesting √n as a lower barrier. Erdős's proof was unpublished.",
+    "significance": "high"
+  },
+  {
+    "id": "chung-upper",
+    "proofId": "erdos-524",
+    "range": { "startLine": 52, "endLine": 57 },
+    "type": "theorem",
+    "title": "Chung Upper Bound",
+    "content": "For a.e. t, infinitely many n satisfy M_n(t) ≤ C√(n/log log n). This is an 'infinitely often' bound, not a uniform upper bound for all large n. The log log n factor comes from iterated logarithm considerations.",
+    "significance": "high"
+  },
+  {
+    "id": "salem-zygmund",
+    "proofId": "erdos-524",
+    "range": { "startLine": 61, "endLine": 69 },
+    "type": "note",
+    "title": "Salem–Zygmund Comparison",
+    "content": "For random trigonometric polynomials Σ ±cos(kθ) on [0,2π], the maximum is Θ(√(n log n)) a.s. The polynomial case on [-1,1] is expected to differ because monomials x^k concentrate near ±1.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-question",
+    "proofId": "erdos-524",
+    "range": { "startLine": 73, "endLine": 80 },
+    "type": "conjecture",
+    "title": "Order of Magnitude of M_n(t)",
+    "content": "The main open question: find f(n) such that M_n(t) = Θ(f(n)) for a.e. t. The answer is conjectured to be f(n) = √n, but the gap between known bounds has not been closed.",
+    "significance": "high"
+  }
+]

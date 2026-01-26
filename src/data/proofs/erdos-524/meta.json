@@ -1,0 +1,85 @@
+{
+  "id": "erdos-524",
+  "title": "Erdős Problem #524: Maximum of Random Sign Polynomials",
+  "slug": "erdos-524",
+  "description": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (±1)·x^k| for a.e. t ∈ (0,1), where signs come from binary digits of t. Known: n^{1/2-ε} ≪ M_n ≪ √(n/log log n) i.o. Open.",
+  "meta": {
+    "erdosNumber": 524,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "analysis",
+      "probability",
+      "polynomials",
+      "open"
+    ],
+    "references": [
+      "Salem–Zygmund: random trigonometric polynomials",
+      "Erdős (unpublished): M_n(t)/n^{1/2-ε} → ∞ a.e.",
+      "Chung: M_n(t) ≤ C√(n/log log n) i.o. a.e.",
+      "Erdős [Er61, p.253]: original statement",
+      "https://erdosproblems.com/524"
+    ],
+    "leanFile": "Proofs/Erdos524Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 38,
+      "summary": "Binary digit function, random sign polynomial, and maximum modulus M_n(t)."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound (Erdős)",
+      "startLine": 40,
+      "endLine": 48,
+      "summary": "M_n(t)/n^{1/2-ε} → ∞ a.e. for every ε > 0."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound (Chung)",
+      "startLine": 50,
+      "endLine": 57,
+      "summary": "M_n(t) ≤ C√(n/log log n) for infinitely many n, a.e."
+    },
+    {
+      "id": "comparison",
+      "title": "Salem–Zygmund Comparison",
+      "startLine": 59,
+      "endLine": 69,
+      "summary": "Classical theorem for random trigonometric polynomials gives Θ(√(n log n))."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Open Problem",
+      "startLine": 71,
+      "endLine": 80,
+      "summary": "Determine the exact order of magnitude of M_n(t) a.e."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This problem originates from Salem and Zygmund's work on random polynomials and appears in Erdős's 1961 compilation [Er61, p.253]. It asks about the typical behavior of the maximum of a polynomial on [-1,1] whose coefficients are random ±1 signs determined by the binary expansion of a uniformly random real number t ∈ (0,1).",
+    "problemStatement": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (-1)^{ε_k(t)} x^k| for almost all t ∈ (0,1), where ε_k(t) ∈ {0,1} are the binary digits of t.",
+    "proofStrategy": "We define the binary digit function, random sign polynomial, and maximum modulus M_n(t). We state Erdős's lower bound (n^{1/2-ε} is negligible compared to M_n), Chung's upper bound (√(n/log log n) infinitely often), and the Salem–Zygmund comparison for trigonometric polynomials.",
+    "keyInsights": [
+      "Signs are determined by binary digits of t, making this equivalent to random ±1 coefficients under Lebesgue measure",
+      "Erdős proved M_n(t) ≫ n^{1/2-ε} a.e., so the growth is at least almost √n",
+      "Chung showed M_n(t) ≪ √(n/log log n) for infinitely many n, but this is not a uniform upper bound",
+      "The classical Salem–Zygmund theorem gives Θ(√(n log n)) for trigonometric polynomials on [0,2π]",
+      "The polynomial case differs because x^k concentrates near x = ±1"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #524 asks for the precise order of magnitude of the maximum of random ±1 polynomials on [-1,1]. The known bounds leave a substantial gap between n^{1/2-ε} from below and √(n/log log n) from above (infinitely often).",
+    "implications": "Resolution would advance the theory of random polynomials, connecting to the Littlewood–Offord problem, flat polynomials, and the distribution of zeros of random analytic functions.",
+    "openQuestions": [
+      "Is M_n(t) = Θ(√n) for a.e. t?",
+      "Does a uniform upper bound M_n(t) ≤ C·f(n) hold for all large n, a.e.?",
+      "What is the distribution of M_n(t) for fixed large n?",
+      "Can the gap between Erdős's lower and Chung's upper bound be closed?"
+    ]
+  }
+}
