@@ -1,0 +1,156 @@
+{
+  "id": "erdos-410",
+  "title": "Erdős Problem #410: Iterated Sum of Divisors Growth",
+  "slug": "erdos-410",
+  "description": "Does lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2, where σₖ is the k-th iterate of the sum of divisors function?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/410",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos410Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "iterated-functions",
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 10,
+    "erdosNumber": 410,
+    "erdosUrl": "https://erdosproblems.com/410",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.sigma",
+        "description": "Sum of divisors function",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Function.iterate",
+        "description": "Function iteration",
+        "module": "Mathlib.Logic.Function.Iterate"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits of functions",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sigmaIterate definition: k-th iterate of σ",
+      "sigma_iterate_zero theorem: σ₀(n) = n",
+      "sigma_iterate_succ theorem: σₖ₊₁(n) = σ(σₖ(n))",
+      "sigma_iterate_increasing theorem: iterates increasing",
+      "sigma_iterate_tendsto_infty theorem: iterates unbounded",
+      "growthRate definition: σₖ(n)^{1/k}",
+      "ErdosConjecture410 definition: growth rate → ∞",
+      "conjecture_equiv theorem: super-exponential growth",
+      "sigma_lower_bound theorem: σ(n) ≥ n + 1",
+      "sigma_upper_bound axiom: Robin's bound",
+      "average_sigma axiom: average ≈ π²/6",
+      "IsPerfect, IsAbundant, IsDeficient definitions",
+      "aliquot definition: proper divisor sum",
+      "CatalanDicksonConjecture definition",
+      "sigma_multiplicative theorem",
+      "sigma_prime_pow theorem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem appears in [ErGr80] (Erdős-Graham 1980) and is discussed in Guy's 'Unsolved Problems in Number Theory' as Problem B9. It was also studied in 'On the normal behavior of the iterates of some arithmetical functions' by Erdős, Granville, Pomerance, and Spiro (1990).\n\nThe sum of divisors function σ(n) is fundamental in number theory. The question asks whether the iterated application σₖ(n) grows faster than any exponential c^k.\n\nRelated to perfect numbers (σ(n) = 2n), aliquot sequences (s(n) = σ(n) - n), and the Catalan-Dickson conjecture on aliquot sequence termination.\n\nOEIS sequence A007497 records related data.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet σ₁(n) = σ(n) be the sum of divisors function, and σₖ(n) = σ(σₖ₋₁(n)).\n\nIs it true that lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2?\n\n**Equivalent Formulation:** For all n ≥ 2 and all c > 0, we have σₖ(n) > c^k for sufficiently large k.\n\n**Background:**\n- σ(n) > n for all n > 1 (so iterates grow)\n- The question is whether growth is 'super-exponential'",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sum of Divisors:** Use Mathlib's ArithmeticFunction.sigma\n\n2. **Iteration:** Define sigmaIterate using Function.iterate\n\n3. **Growth Rate:** Define growthRate as σₖ(n)^{1/k}\n\n4. **Conjecture:** ErdosConjecture410 states growthRate → ∞\n\n5. **Related Concepts:** Perfect/abundant/deficient numbers, aliquot sequences\n\n6. **Multiplicativity:** σ is multiplicative with explicit prime power formula",
+    "keyInsights": [
+      "**Iterates Grow:** σₖ(n) → ∞ as k → ∞ since σ(m) > m for m > 1",
+      "**Super-Exponential?:** The question is whether σₖ(n) > c^k for any c",
+      "**Multiplicative:** σ(mn) = σ(m)σ(n) for gcd(m,n) = 1",
+      "**Prime Powers:** σ(p^k) = (p^{k+1} - 1)/(p - 1)",
+      "**Related Problems:** Aliquot sequences, Catalan-Dickson conjecture"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sigma-function",
+      "title": "The Sum of Divisors Function",
+      "summary": "sigma_pos, sigma_gt_n, sigma_one, sigma_prime",
+      "startLine": 33,
+      "endLine": 55
+    },
+    {
+      "id": "iteration",
+      "title": "Iterated Sum of Divisors",
+      "summary": "sigmaIterate, sigma_iterate_zero, sigma_iterate_succ",
+      "startLine": 57,
+      "endLine": 81
+    },
+    {
+      "id": "growth",
+      "title": "Growth of Iterates",
+      "summary": "sigma_iterate_increasing, sigma_iterate_tendsto_infty",
+      "startLine": 83,
+      "endLine": 97
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "growthRate, ErdosConjecture410, conjecture_equiv",
+      "startLine": 99,
+      "endLine": 116
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on σ",
+      "summary": "sigma_lower_bound, sigma_upper_bound, average_sigma",
+      "startLine": 118,
+      "endLine": 136
+    },
+    {
+      "id": "special-numbers",
+      "title": "Special Numbers",
+      "summary": "IsPerfect, IsAbundant, IsDeficient, perfect_6, perfect_28",
+      "startLine": 138,
+      "endLine": 158
+    },
+    {
+      "id": "aliquot",
+      "title": "Aliquot Sequences",
+      "summary": "aliquot, CatalanDicksonConjecture",
+      "startLine": 160,
+      "endLine": 177
+    },
+    {
+      "id": "examples",
+      "title": "Explicit Computations",
+      "summary": "sigma_chain_2 and growth rate observations",
+      "startLine": 179,
+      "endLine": 197
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Connection to Multiplicativity",
+      "summary": "sigma_multiplicative, sigma_prime_pow",
+      "startLine": 199,
+      "endLine": 212
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_410_status, erdos_410_statement, Summary",
+      "startLine": 214,
+      "endLine": 245
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #410 asks whether the k-th root of the k-th iterate of σ tends to infinity. While we know σₖ(n) → ∞, the question of super-exponential growth remains OPEN.",
+    "implications": "A positive answer would establish a fundamental growth property of the sum of divisors function under iteration. A negative answer would mean σₖ(n) is eventually bounded by some exponential c^k.",
+    "openQuestions": [
+      "Does lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2?",
+      "What is the actual growth rate of σₖ(n)?",
+      "Are there special values of n with known answers?",
+      "What is the connection to the Catalan-Dickson conjecture?",
+      "How does the multiplicativity of σ affect the iterates?"
+    ]
+  }
+}
