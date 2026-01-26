@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-554-ramsey",
+    "proofId": "erdos-554",
+    "type": "definition",
+    "range": { "startLine": 31, "endLine": 49 },
+    "title": "Ramsey Number Definitions",
+    "content": "ramseyNumber: k-color Ramsey number of a graph by size. triangleRamsey k = R(K₃; k). oddCycleRamsey n k = R(C_{2n+1}; k).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-554-conjecture",
+    "proofId": "erdos-554",
+    "type": "conjecture",
+    "range": { "startLine": 55, "endLine": 65 },
+    "title": "The Erdős–Graham Conjecture",
+    "content": "ErdosConjecture554: for n ≥ 2, R(C_{2n+1};k)/R(K₃;k) → 0 as k → ∞. Odd cycles are 'much easier' than triangles.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-554-triangle-bound",
+    "proofId": "erdos-554",
+    "type": "result",
+    "range": { "startLine": 71, "endLine": 76 },
+    "title": "Triangle Ramsey Exponential Growth",
+    "content": "R(K₃; k) ≥ 2^k. The triangle Ramsey number grows at least exponentially.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-554-two-color",
+    "proofId": "erdos-554",
+    "type": "result",
+    "range": { "startLine": 87, "endLine": 93 },
+    "title": "Classical 2-Color Results",
+    "content": "R(C_{2n+1}; 2) = 4n + 1 for n ≥ 2 (Bondy–Erdős 1973). R(K₃; 2) = 6. The 2-color case is completely understood.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-554-pentagon",
+    "proofId": "erdos-554",
+    "type": "conjecture",
+    "range": { "startLine": 101, "endLine": 107 },
+    "title": "Pentagon Case",
+    "content": "ErdosConjecture554_Pentagon: even the simplest case R(C₅;k)/R(K₃;k) → 0 is open.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-554-summary",
+    "proofId": "erdos-554",
+    "type": "context",
+    "range": { "startLine": 113, "endLine": 119 },
+    "title": "Summary",
+    "content": "Open even for C₅. The conjecture relates the Ramsey complexity of odd cycles to triangles in the multicolor setting.",
+    "significance": "supporting"
+  }
+]

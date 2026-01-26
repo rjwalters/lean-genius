@@ -1,0 +1,81 @@
+{
+  "id": "erdos-554",
+  "title": "Erdős Problem #554: Odd Cycle vs Triangle Ramsey Numbers",
+  "slug": "erdos-554",
+  "description": "Show lim R(C_{2n+1};k)/R(K₃;k) = 0 as k → ∞ for n ≥ 2. Odd cycles should be easier to find monochromatically than triangles. Open even for C₅. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/554",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos554Problem.lean",
+    "tags": [
+      "graph-theory",
+      "ramsey-theory",
+      "odd-cycles",
+      "multicolor-ramsey"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 554,
+    "erdosUrl": "https://erdosproblems.com/554",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #554 (Erdős–Graham, 1981) conjectures that the multicolor Ramsey number of odd cycles grows negligibly compared to the triangle Ramsey number as the number of colors increases. This is open even for the pentagon C₅.",
+    "problemStatement": "Let R(G; k) be the k-color Ramsey number of G. Show that lim_{k→∞} R(C_{2n+1}; k) / R(K₃; k) = 0 for any n ≥ 2.",
+    "proofStrategy": "We define Ramsey numbers for graphs parametrized by size, state the conjecture as a ratio-limit condition, and axiomatize known bounds: exponential lower bound for R(K₃; k), upper bounds for odd cycle Ramsey numbers, and classical 2-color results.",
+    "keyInsights": [
+      "The conjecture says odd cycles are 'much easier' than triangles in multicolor Ramsey theory",
+      "Open even for the simplest case n = 2 (the pentagon C₅)",
+      "R(K₃; k) grows at least exponentially in k",
+      "R(C_{2n+1}; 2) = 4n + 1 for n ≥ 2 (Bondy–Erdős 1973)",
+      "The ratio R(C_{2n+1}; k) / R(K₃; k) is conjectured to tend to 0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ramsey-numbers",
+      "title": "Part I: Ramsey Numbers",
+      "startLine": 27,
+      "endLine": 49,
+      "summary": "Defines ramseyNumber, triangleRamsey, and oddCycleRamsey."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part II: The Conjecture",
+      "startLine": 51,
+      "endLine": 65,
+      "summary": "ErdosConjecture554: the ratio R(C_{2n+1};k)/R(K₃;k) → 0 as k → ∞."
+    },
+    {
+      "id": "bounds",
+      "title": "Part III: Known Bounds",
+      "startLine": 67,
+      "endLine": 95,
+      "summary": "Exponential triangle Ramsey lower bound, odd cycle upper bounds, 2-color exact values."
+    },
+    {
+      "id": "pentagon",
+      "title": "Part IV: The Pentagon Case",
+      "startLine": 97,
+      "endLine": 107,
+      "summary": "The simplest open case: C₅ vs K₃ as k → ∞."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary",
+      "startLine": 109,
+      "endLine": 119,
+      "summary": "Status: open even for C₅. Odd cycles conjectured negligible vs triangles."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #554 conjectures R(C_{2n+1};k)/R(K₃;k) → 0. Odd cycles should be easier to find monochromatically than triangles. Open even for the pentagon.",
+    "implications": "Resolution would reveal fundamental differences in the Ramsey-theoretic complexity of odd cycles versus complete graphs, with implications for the structure of multicolor Ramsey theory.",
+    "openQuestions": [
+      "Does R(C₅; k) / R(K₃; k) → 0 as k → ∞?",
+      "What is the correct growth rate of R(C_{2n+1}; k)?",
+      "Is there a graph G with χ(G) = 3 for which R(G;k)/R(K₃;k) does not tend to 0?"
+    ]
+  }
+}
