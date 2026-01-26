@@ -1,0 +1,45 @@
+{
+  "id": "erdos-428",
+  "title": "Prime Offsets with Positive Density",
+  "slug": "erdos-428",
+  "description": "Is there A ⊆ ℕ with liminf |A∩[1,x]|/π(x) > 0 such that for infinitely many n, all n-a are prime for a ∈ A?",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/428",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos428Problem.lean",
+    "tags": ["number-theory", "prime-numbers", "density", "k-tuple-conjecture"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 428,
+    "erdosUrl": "https://erdosproblems.com/428",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980) posed this problem about sets of prime-generating offsets. They showed the limsup variant holds under the prime k-tuple conjecture. The liminf version remains open.",
+    "problemStatement": "Is there A ⊆ ℕ with liminf |A ∩ [1,x]| / π(x) > 0 such that for infinitely many n, all n - a are prime for a ∈ A with 0 < a < n?",
+    "proofStrategy": "We define primeCounting, primeDensityRatio, and AllOffsetsPrime. The conjecture uses Filter.liminf and Filter.Frequently. The limsup variant and k-tuple connection are stated as axioms.",
+    "keyInsights": [
+      "The limsup variant holds under the prime k-tuple conjecture",
+      "The gap between liminf and limsup is the essential difficulty",
+      "Finite sets trivially satisfy AllOffsetsPrime but have zero density",
+      "The problem connects prime distribution to additive combinatorics"
+    ]
+  },
+  "sections": [
+    { "id": "density", "title": "Prime Counting and Density", "startLine": 23, "endLine": 31, "summary": "Defines primeCounting π(n) and primeDensityRatio |A∩[1,n]|/π(n)." },
+    { "id": "offset", "title": "Prime Offset Property", "startLine": 33, "endLine": 37, "summary": "AllOffsetsPrime A n requires all n-a to be prime for a ∈ A." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 39, "endLine": 46, "summary": "ErdosProblem428: positive prime density A with infinitely many prime-generating n." },
+    { "id": "limsup", "title": "Limsup Variant and k-Tuple Conjecture", "startLine": 48, "endLine": 72, "summary": "States the limsup variant and its connection to the prime k-tuple conjecture via Erdős-Graham." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 74, "endLine": 100, "summary": "Proves primeCounting_pos, singleton_offset, empty_trivial, and states finite_set_zero_density." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 428 on prime offsets with positive density, the limsup variant, and the k-tuple conjecture connection. 0 sorries.",
+    "implications": "Resolution would advance understanding of prime distribution and the structure of admissible tuples.",
+    "openQuestions": [
+      "Can the limsup result be strengthened to liminf unconditionally?",
+      "What is the maximal density achievable for prime-generating offset sets?",
+      "Does the k-tuple conjecture imply the full liminf version?"
+    ]
+  }
+}
