@@ -1,0 +1,56 @@
+[
+  {
+    "id": "tower-function",
+    "proofId": "erdos-562",
+    "range": { "startLine": 29, "endLine": 32 },
+    "type": "definition",
+    "title": "Tower Function",
+    "content": "twr(k, n) = 2↑↑k starting from n: twr(0,n) = n, twr(k+1,n) = 2^{twr(k,n)}. So twr(1,n) = 2^n, twr(2,n) = 2^{2^n}, etc.",
+    "significance": "medium"
+  },
+  {
+    "id": "hypergraph-ramsey",
+    "proofId": "erdos-562",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "Hypergraph Ramsey Number",
+    "content": "R_r(n) = minimal m such that every 2-coloring of K_m^{(r)} (complete r-uniform hypergraph) contains a monochromatic K_n^{(r)}. Generalizes the classical diagonal Ramsey number R(n,n) = R_2(n).",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-szekeres",
+    "proofId": "erdos-562",
+    "range": { "startLine": 52, "endLine": 61 },
+    "type": "theorem",
+    "title": "Erdős–Szekeres Bounds (r = 2)",
+    "content": "For graphs: 2^{n/2} ≤ R(n,n) ≤ C(2n-2,n-1) < 4^n. The lower bound uses the probabilistic method; the upper bound is the original 1935 induction. The exponential gap remains open.",
+    "significance": "high"
+  },
+  {
+    "id": "stepping-up",
+    "proofId": "erdos-562",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "theorem",
+    "title": "Erdős–Rado Stepping-Up Lemma",
+    "content": "R_r(n) ≤ twr_{r-1}(c·n²): each increase in uniformity adds one tower level. This converts graph Ramsey bounds to hypergraph bounds, with a quadratic penalty in the argument.",
+    "significance": "high"
+  },
+  {
+    "id": "lower-bounds",
+    "proofId": "erdos-562",
+    "range": { "startLine": 74, "endLine": 83 },
+    "type": "theorem",
+    "title": "Lower Bounds",
+    "content": "R_r(n) ≥ twr_{r-1}(c·n) for r ≥ 3. For r = 3, the Erdős–Hajnal bound gives twr_2(c·n²). The gap between cn and cn² in the tower argument is the main obstacle.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-562",
+    "range": { "startLine": 92, "endLine": 97 },
+    "type": "conjecture",
+    "title": "Tower Growth Conjecture",
+    "content": "R_r(n) = twr_{r-1}(Θ(n)) for r ≥ 3. The iterated logarithm of R_r(n) should be linear in n, meaning the tower height is exactly r-1 and the argument is linear.",
+    "significance": "high"
+  }
+]
