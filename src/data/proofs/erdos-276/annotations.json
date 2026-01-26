@@ -1,0 +1,56 @@
+[
+  {
+    "id": "lucas-sequence",
+    "proofId": "erdos-276",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "definition",
+    "title": "Lucas Sequence",
+    "content": "A Lucas sequence satisfies a(n+2) = a(n+1) + a(n). This is the Fibonacci recurrence with arbitrary initial conditions. The Fibonacci sequence itself has a(0) = 0, a(1) = 1.",
+    "significance": "high"
+  },
+  {
+    "id": "primefree",
+    "proofId": "erdos-276",
+    "range": { "startLine": 31, "endLine": 33 },
+    "type": "definition",
+    "title": "Primefree Sequence",
+    "content": "A sequence is primefree if every term is composite. The question is whether such sequences exist among Lucas sequences with coprime initial terms.",
+    "significance": "high"
+  },
+  {
+    "id": "existence",
+    "proofId": "erdos-276",
+    "range": { "startLine": 43, "endLine": 47 },
+    "type": "conjecture",
+    "title": "Existence Question",
+    "content": "Does there exist a primefree Lucas sequence with no universal divisor? Answered YES by Graham (1964), but the deeper mechanism question remains open.",
+    "significance": "high"
+  },
+  {
+    "id": "graham-1964",
+    "proofId": "erdos-276",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "note",
+    "title": "Graham's Construction (1964)",
+    "content": "Graham constructed a primefree Lucas sequence with coprime composite starting values using covering congruences. His original values had 34 digits; Vsemirnov (2004) reduced this to 12 digits.",
+    "significance": "high"
+  },
+  {
+    "id": "covering-system",
+    "proofId": "erdos-276",
+    "range": { "startLine": 67, "endLine": 75 },
+    "type": "note",
+    "title": "Covering System Mechanism",
+    "content": "The Lucas sequence is periodic mod each prime p. By choosing a finite set S of primes such that the positions where p|a(k) form a covering system, every term is guaranteed composite.",
+    "significance": "medium"
+  },
+  {
+    "id": "covering-necessary",
+    "proofId": "erdos-276",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "conjecture",
+    "title": "Covering Systems Necessary?",
+    "content": "The central open question: is every primefree coprime Lucas sequence explained by a covering system? Or can such sequences arise from fundamentally different mechanisms?",
+    "significance": "high"
+  }
+]
