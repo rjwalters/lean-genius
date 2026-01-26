@@ -1,0 +1,75 @@
+{
+  "id": "erdos-121",
+  "title": "Erdős Problem #121: Square-Free Products",
+  "slug": "erdos-121",
+  "description": "Let F_k(N) be the max size of A ⊆ {1,…,N} with no k-element product a perfect square. Conjecture F_{2k+1}(N) = (1-o(1))N. DISPROVED by Tao (2024): F_k(N) ≤ (1-c_k)N for k ≥ 4.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/121",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos121Problem.lean",
+    "tags": ["number theory", "squares", "multiplicative number theory", "extremal"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 121,
+    "erdosUrl": "https://erdosproblems.com/121",
+    "erdosProblemStatus": "disproved"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Sós, and Sárközy studied the extremal function F_k(N) for square-free products. They established F_2(N) ~ 6N/π², F_3(N) ~ N, and F_4(N) = o(N). Erdős conjectured F_{2k+1}(N) ~ N for all k. Tao (2024) disproved this for k ≥ 4.",
+    "problemStatement": "Is F_{2k+1}(N) = (1 - o(1))N for all k ≥ 1? Specifically, is F_5(N) = (1 - o(1))N?",
+    "proofStrategy": "The formalization defines IsSquare, k-square-free sets, and F_k(N) via powerset filtration. Known asymptotics for k = 2, 3, 4 are axiomatised. The conjecture and Tao's disproof are both captured.",
+    "keyInsights": [
+      "F_2(N) ~ 6N/π² (squarefree density), F_3(N) ~ N (full density)",
+      "F_4(N) = o(N) (Erdős), showing even-index products force density zero",
+      "Tao (2024) proved F_k(N) ≤ (1-c_k)N for all k ≥ 4, disproving the conjecture",
+      "The transition from full density to sub-full density happens between k=3 and k=4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "square-free-products",
+      "title": "Square-Free Product Sets",
+      "startLine": 20,
+      "endLine": 37,
+      "summary": "IsSquare, IsKSquareFree, and F_k(N) = squareFreeMax: the extremal function for k-square-free subsets."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results for Small k",
+      "startLine": 39,
+      "endLine": 60,
+      "summary": "F_2 ~ 6N/π², F_3 ~ N, F_4 = o(N): the known asymptotics for k = 2, 3, 4."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (Disproved)",
+      "startLine": 62,
+      "endLine": 70,
+      "summary": "Erdős's conjecture F_{2k+1}(N) ~ N for all k ≥ 1."
+    },
+    {
+      "id": "tao-disproof",
+      "title": "Tao's Disproof (2024)",
+      "startLine": 72,
+      "endLine": 83,
+      "summary": "Tao proved F_k(N) ≤ (1-c_k)N for k ≥ 4, disproving the conjecture."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 85,
+      "endLine": 94,
+      "summary": "F_k is monotone in N and anti-monotone in k."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 121 on square-free products, including the original conjecture and Tao's 2024 disproof showing F_k(N) ≤ (1-c_k)N for k ≥ 4.",
+    "implications": "Tao's result reveals a sharp transition: k=3 allows full density but k ≥ 4 does not, fundamentally changing the understanding of multiplicative structure in integer subsets.",
+    "openQuestions": [
+      "What are the precise constants c_k in Tao's bound?",
+      "What is the exact asymptotic of F_5(N)?",
+      "Is F_k(N)/N monotone in k for k ≥ 4?"
+    ]
+  }
+}
