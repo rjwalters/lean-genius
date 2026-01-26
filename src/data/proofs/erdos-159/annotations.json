@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-159-has-c4",
+    "proofId": "erdos-159",
+    "type": "definition",
+    "range": { "startLine": 24, "endLine": 28 },
+    "title": "4-Cycle Containment",
+    "content": "HasC4 states that a simple graph contains a 4-cycle: four distinct vertices a, b, c, d forming a cycle a-b-c-d-a with all four edges present.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-159-has-clique",
+    "proofId": "erdos-159",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 34 },
+    "title": "Clique Containment",
+    "content": "HasClique G n holds when G contains a set of n distinct pairwise-adjacent vertices, i.e., a complete subgraph Kₙ.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-159-ramsey",
+    "proofId": "erdos-159",
+    "type": "definition",
+    "range": { "startLine": 40, "endLine": 51 },
+    "title": "Ramsey Number R(C₄, Kₙ)",
+    "content": "ramseyC4Kn n is the smallest N such that every graph on N vertices either contains a 4-cycle C₄ or its complement contains a complete graph Kₙ. Axiomatised with its threshold property.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-159-upper",
+    "proofId": "erdos-159",
+    "type": "result",
+    "range": { "startLine": 56, "endLine": 60 },
+    "title": "Szemerédi's Upper Bound",
+    "content": "Szemerédi proved R(C₄, Kₙ) ≤ C·n²/(log n)² for some constant C and large n. This is the best known upper bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-159-lower",
+    "proofId": "erdos-159",
+    "type": "result",
+    "range": { "startLine": 63, "endLine": 67 },
+    "title": "Spencer's Lower Bound",
+    "content": "Spencer proved R(C₄, Kₙ) ≥ c·n^{3/2}/(log n)^{3/2} for some constant c and large n. This is the best known lower bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-159-conjecture",
+    "proofId": "erdos-159",
+    "type": "conjecture",
+    "range": { "startLine": 74, "endLine": 80 },
+    "title": "Erdős Problem 159",
+    "content": "The main conjecture: there exists c > 0 and C > 0 such that R(C₄, Kₙ) ≤ C·n^{2-c} for all large n. This asks for a power saving over the n² trivial bound.",
+    "significance": "essential"
+  }
+]
