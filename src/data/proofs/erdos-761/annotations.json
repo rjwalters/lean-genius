@@ -1,0 +1,74 @@
+[
+  {
+    "id": "orientation-def",
+    "proofId": "erdos-761",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Graph Orientation",
+    "content": "An orientation assigns a direction to each edge: for every edge {u,v}, exactly one of (u→v) or (v→u) holds. This is formalized as a structure with a directed relation and a compatibility condition with the adjacency relation.",
+    "significance": "high"
+  },
+  {
+    "id": "acyclic-coloring",
+    "proofId": "erdos-761",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Acyclic Coloring",
+    "content": "A coloring is acyclic with respect to an orientation if no directed edge connects two same-color vertices. This prevents monochromatic directed cycles, which is the key constraint defining the dichromatic number.",
+    "significance": "high"
+  },
+  {
+    "id": "dichrom-number",
+    "proofId": "erdos-761",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "definition",
+    "title": "Dichromatic Number",
+    "content": "δ(G) is the minimum k such that for every orientation of G, there exists an acyclic k-coloring. It measures the worst-case coloring complexity across all possible edge orientations.",
+    "significance": "high"
+  },
+  {
+    "id": "cochromatic-def",
+    "proofId": "erdos-761",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "Cochromatic Coloring",
+    "content": "A cochromatic coloring partitions vertices so each color class is either a clique (all pairs adjacent) or an independent set (no pairs adjacent). The cochromatic number ζ(G) is the minimum number of such classes.",
+    "significance": "medium"
+  },
+  {
+    "id": "dichrom-le-chrom",
+    "proofId": "erdos-761",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "theorem",
+    "title": "Dichromatic ≤ Chromatic",
+    "content": "Any proper coloring (no adjacent vertices share a color) is automatically acyclic for every orientation, since monochromatic directed edges cannot exist. Thus δ(G) ≤ χ(G).",
+    "significance": "medium"
+  },
+  {
+    "id": "question1",
+    "proofId": "erdos-761",
+    "range": { "startLine": 97, "endLine": 101 },
+    "type": "conjecture",
+    "title": "Question 1: Large χ ⟹ Large δ",
+    "content": "Erdős and Neumann-Lara asked: for every k, does there exist f(k) such that χ(G) ≥ f(k) implies δ(G) ≥ k? This would establish that high chromatic number forces complex orientation-coloring structure.",
+    "significance": "high"
+  },
+  {
+    "id": "question2",
+    "proofId": "erdos-761",
+    "range": { "startLine": 105, "endLine": 112 },
+    "type": "conjecture",
+    "title": "Question 2: Large ζ ⟹ Subgraph with Large δ",
+    "content": "Erdős and Gimbel strengthened the question: does large cochromatic number force a subgraph with large dichromatic number? Since ζ(G) ≤ χ(G), this is strictly stronger than Question 1.",
+    "significance": "high"
+  },
+  {
+    "id": "q2-implies-q1",
+    "proofId": "erdos-761",
+    "range": { "startLine": 117, "endLine": 124 },
+    "type": "theorem",
+    "title": "Question 2 Implies Question 1",
+    "content": "If large cochromatic number forces large dichromatic number in some subgraph, then large chromatic number does too, since ζ(G) ≤ χ(G). This establishes a hierarchy: Q2 is the stronger conjecture.",
+    "significance": "medium"
+  }
+]
