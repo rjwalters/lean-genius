@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-421-header",
+    "proofId": "erdos-421",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #421: Find sequence d_1 < d_2 < ... with density 1 and all interval products distinct. Status: OPEN.",
+    "mathContext": "From [ErGr80, p.84]. Selfridge achieves density 1/e - eps. Gap to density 1 remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["distinct-products", "density", "sequences"]
+  },
+  {
+    "id": "ann-421-sequence",
+    "proofId": "erdos-421",
+    "range": { "startLine": 34, "endLine": 42 },
+    "type": "definition",
+    "title": "Sequence Definitions",
+    "content": "IsStrictlyIncreasing(d) := StrictMono d. StartsAtOne(d) := 1 <= d(0). IsValidSequence combines both.",
+    "mathContext": "We want d: N -> N with d(0) < d(1) < d(2) < ... and d(0) >= 1.",
+    "significance": "critical",
+    "relatedConcepts": ["strict-mono", "sequence"]
+  },
+  {
+    "id": "ann-421-density",
+    "proofId": "erdos-421",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "HasDensity(S, delta) := |S ∩ [0,n]| / n -> delta as n -> inf. HasDensityOne(d) := density of range(d) is 1.",
+    "mathContext": "Density 1 means the sequence contains almost all integers asymptotically.",
+    "significance": "critical",
+    "relatedConcepts": ["natural-density", "asymptotic"]
+  },
+  {
+    "id": "ann-421-product",
+    "proofId": "erdos-421",
+    "range": { "startLine": 72, "endLine": 85 },
+    "type": "definition",
+    "title": "Interval Products",
+    "content": "intervalProduct(d, u, v) := prod_{u <= i <= v} d(i). productMap: (u,v) -> interval product.",
+    "mathContext": "For each pair (u, v) with u <= v, we compute the product of d_u * d_{u+1} * ... * d_v.",
+    "significance": "critical",
+    "relatedConcepts": ["product", "interval", "finset"]
+  },
+  {
+    "id": "ann-421-distinct",
+    "proofId": "erdos-421",
+    "range": { "startLine": 93, "endLine": 111 },
+    "type": "definition",
+    "title": "Distinct Products",
+    "content": "HasDistinctProducts(d) := productMap is injective on ValidPairs. distinct_equiv: equivalent to pairwise distinct.",
+    "mathContext": "Different intervals (u1,v1) != (u2,v2) must give different products.",
+    "significance": "critical",
+    "relatedConcepts": ["injective", "distinct"]
+  },
+  {
+    "id": "ann-421-conjecture",
+    "proofId": "erdos-421",
+    "range": { "startLine": 119, "endLine": 128 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "ErdosConjecture421 := exists d valid with density 1 and distinct products.",
+    "mathContext": "Combines three requirements: strictly increasing, density 1, and injective productMap.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "existence"]
+  },
+  {
+    "id": "ann-421-selfridge",
+    "proofId": "erdos-421",
+    "range": { "startLine": 136, "endLine": 149 },
+    "type": "axiom",
+    "title": "Selfridge Construction",
+    "content": "selfridge_construction: For any eps > 0, exists sequence with distinct products and density > 1/e - eps.",
+    "mathContext": "Best known construction achieves density approaching 1/e ~ 0.3679. Far from density 1.",
+    "significance": "critical",
+    "relatedConcepts": ["selfridge", "one-over-e", "construction"]
+  },
+  {
+    "id": "ann-421-bounds",
+    "proofId": "erdos-421",
+    "range": { "startLine": 160, "endLine": 164 },
+    "type": "definition",
+    "title": "Product Counting",
+    "content": "numProductsUpToLength(n) = n(n+1)/2. Number of interval products grows quadratically.",
+    "mathContext": "Constraint: many products must fit distinctly, limiting how dense the sequence can be.",
+    "significance": "key",
+    "relatedConcepts": ["counting", "constraint"]
+  },
+  {
+    "id": "ann-421-examples",
+    "proofId": "erdos-421",
+    "range": { "startLine": 172, "endLine": 184 },
+    "type": "concept",
+    "title": "Examples",
+    "content": "Natural numbers: density 1 but products collide (1*2 = 2). Primes: distinct products but density 0.",
+    "mathContext": "Neither extreme works. Need clever construction balancing both constraints.",
+    "significance": "supporting",
+    "relatedConcepts": ["natural-numbers", "primes", "counterexample"]
+  },
+  {
+    "id": "ann-421-related",
+    "proofId": "erdos-421",
+    "range": { "startLine": 192, "endLine": 193 },
+    "type": "concept",
+    "title": "Related Problem",
+    "content": "Problem 786 contains details of Selfridge's construction.",
+    "mathContext": "See erdosproblems.com/786 for the construction achieving density 1/e.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos-786", "selfridge"]
+  },
+  {
+    "id": "ann-421-status",
+    "proofId": "erdos-421",
+    "range": { "startLine": 201, "endLine": 227 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Best: density 1/e - eps. Target: density 1. OEIS: A389544, A390848.",
+    "mathContext": "Large gap between best construction (1/e) and target (1). No upper bounds on achievable density known.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "oeis", "gap"]
+  }
+]

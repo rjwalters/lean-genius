@@ -1,0 +1,159 @@
+{
+  "id": "erdos-421",
+  "title": "Erdős Problem #421: Distinct Products in Dense Sequences",
+  "slug": "erdos-421",
+  "description": "Is there a strictly increasing sequence d₁ < d₂ < ... with density 1 such that all interval products ∏_{u ≤ i ≤ v} d_i are distinct?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/421",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos421Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sequences",
+      "products",
+      "density",
+      "distinct-products",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 421,
+    "erdosUrl": "https://erdosproblems.com/421",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.range",
+        "description": "Range of a function as a set",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition for density",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotone functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsStrictlyIncreasing definition: StrictMono d",
+      "StartsAtOne definition: 1 ≤ d 0",
+      "IsValidSequence definition: increasing from 1",
+      "HasDensity definition: natural density via limit",
+      "HasDensityOne definition: density 1",
+      "intervalProduct definition: ∏_{u ≤ i ≤ v} d_i",
+      "ValidPairs definition: {(u,v) | u ≤ v}",
+      "productMap definition: pairs to products",
+      "HasDistinctProducts definition: InjOn productMap",
+      "distinct_equiv theorem: equivalence of definitions",
+      "ErdosConjecture421 definition",
+      "selfridgeDensity definition: 1/e",
+      "selfridge_construction axiom"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem appears in [ErGr80, p.84]. It asks whether the constraint of having distinct interval products is compatible with maximal density.\n\nSelfridge provided a construction achieving density arbitrarily close to 1/e ≈ 0.3679, showing that non-trivial sequences exist. The gap between 1/e and the target density 1 remains a major open question.\n\nRelated to Problem 786, which details Selfridge's construction. The problem has connections to multiplicative number theory and the structure of integer factorizations.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs there a sequence 1 ≤ d₁ < d₂ < ... with density 1 such that all products ∏_{u ≤ i ≤ v} dᵢ are distinct?\n\n**Definitions:**\n- Density 1: |{dᵢ ≤ n}| / n → 1 as n → ∞\n- Distinct products: for all (u₁,v₁) ≠ (u₂,v₂), products ∏_{u₁ ≤ i ≤ v₁} dᵢ differ\n\n**Known:**\n- Selfridge achieves density > 1/e - ε for any ε > 0",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define IsStrictlyIncreasing, StartsAtOne, IsValidSequence\n\n2. **Density:** HasDensity via limit of counting function ratio\n\n3. **Products:** intervalProduct as ∏ over Finset.Icc u v\n\n4. **Distinctness:** HasDistinctProducts as InjOn over ValidPairs\n\n5. **Conjecture:** ErdosConjecture421 combines density 1 + distinct products\n\n6. **Known Result:** selfridge_construction achieves 1/e - ε",
+    "keyInsights": [
+      "**Density vs Distinctness:** Higher density means more values, but products grow faster, risking collisions",
+      "**Natural Numbers Fail:** d_i = i gives density 1 but products collide (e.g., 1*2 = 2)",
+      "**Primes Succeed:** Primes have distinct products but density 0",
+      "**Selfridge's 1/e:** Achievable density 1/e is significant - not 0, but not 1",
+      "**Gap Remains:** No construction reaches density 1; open whether possible"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sequences",
+      "title": "Sequence Definitions",
+      "summary": "IsStrictlyIncreasing, StartsAtOne, IsValidSequence",
+      "startLine": 25,
+      "endLine": 42
+    },
+    {
+      "id": "density",
+      "title": "Density of Sequences",
+      "summary": "countingFunc, indexUpTo, HasDensity, HasDensityOne",
+      "startLine": 44,
+      "endLine": 64
+    },
+    {
+      "id": "products",
+      "title": "Interval Products",
+      "summary": "intervalProduct, AllIntervalProducts, ValidPairs, productMap",
+      "startLine": 66,
+      "endLine": 85
+    },
+    {
+      "id": "distinctness",
+      "title": "Distinctness of Products",
+      "summary": "HasDistinctProducts, HasDistinctProductsAlt, distinct_equiv",
+      "startLine": 87,
+      "endLine": 111
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture421, erdos_421_statement",
+      "startLine": 113,
+      "endLine": 128
+    },
+    {
+      "id": "selfridge",
+      "title": "Selfridge's Construction",
+      "summary": "selfridgeDensity, selfridge_construction, selfridge_achieves_one_over_e",
+      "startLine": 130,
+      "endLine": 149
+    },
+    {
+      "id": "bounds",
+      "title": "Upper Bounds and Obstructions",
+      "summary": "numProductsUpToLength, density constraints",
+      "startLine": 151,
+      "endLine": 164
+    },
+    {
+      "id": "examples",
+      "title": "Simple Examples",
+      "summary": "Natural numbers fail, primes work but sparse",
+      "startLine": 166,
+      "endLine": 184
+    },
+    {
+      "id": "related",
+      "title": "Related Problem 786",
+      "summary": "RelatedProblem786",
+      "startLine": 186,
+      "endLine": 193
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_421_status, OEIS references",
+      "startLine": 195,
+      "endLine": 227
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #421 asks whether a density-1 sequence can have all interval products distinct. Selfridge showed density 1/e - ε is achievable, but reaching density 1 remains open.",
+    "implications": "A positive answer would provide an interesting structure in the integers combining multiplicative uniqueness with high density. A negative answer would reveal fundamental constraints on how products can distribute.",
+    "openQuestions": [
+      "Can density 1 be achieved with distinct products?",
+      "What is the supremum of achievable densities?",
+      "Are there constructions between 1/e and 1?",
+      "What is the structure of Selfridge's construction?",
+      "Are there algebraic obstructions to density 1?"
+    ]
+  }
+}
