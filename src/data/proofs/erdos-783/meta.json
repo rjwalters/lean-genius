@@ -1,0 +1,76 @@
+{
+  "id": "erdos-783",
+  "title": "Erdős Problem #783: Optimal Sieving with Coprime Sets",
+  "slug": "erdos-783",
+  "description": "Given budget C on reciprocal sums, which pairwise coprime A ⊆ {2,...,n} minimizes unsieved integers? Conjectured: first k primes with Σ 1/p_i ≤ C. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 783,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sieve-theory",
+      "optimization",
+      "prime-numbers",
+      "open"
+    ],
+    "references": [
+      "Erdős (1973): original problem",
+      "https://erdosproblems.com/783"
+    ],
+    "leanFile": "Proofs/Erdos783Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 45,
+      "summary": "Define IsValidSievingSet, unsievedCount, and the optimization problem."
+    },
+    {
+      "id": "prime-sieving",
+      "title": "The Prime Sieving Set",
+      "startLine": 47,
+      "endLine": 68,
+      "summary": "Define primeSievingSet, maxPrimeCount, and verify the budget constraint."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 70,
+      "endLine": 77,
+      "summary": "The first k primes minimize the unsieved count for large n."
+    },
+    {
+      "id": "analysis",
+      "title": "Inclusion-Exclusion and Optimality",
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "Coprime sieve estimate via inclusion-exclusion. Primes minimize the survival product."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this in 1973 as a sieve optimization problem. Given a 'budget' C on reciprocal sums of a coprime sieving set, which set eliminates the most integers? The problem connects to the Brun sieve and Selberg sieve, but asks for exact optimality rather than asymptotic estimates.",
+    "problemStatement": "Given C > 0 and large n, which pairwise coprime A ⊆ {2,...,n} with Σ_{a∈A} 1/a ≤ C minimizes the count of m ≤ n not divisible by any a ∈ A?",
+    "proofStrategy": "We formalize valid sieving sets, the unsieved count, and the prime sieving set. We state the conjecture that primes are optimal, connect to inclusion-exclusion estimates, and give the heuristic argument via product minimization.",
+    "keyInsights": [
+      "The unsieved fraction is approximately Π_{a∈A} (1 - 1/a) by inclusion-exclusion",
+      "For a fixed reciprocal sum budget, primes minimize this product",
+      "Replacing a composite by its prime factor improves the sieve",
+      "The conjecture says the greedy prime selection is globally optimal",
+      "Connects to the Brun and Selberg sieves in analytic number theory"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #783 conjectures that the optimal coprime sieving set (with reciprocal sum budget C) consists of the first k primes. The heuristic is that primes minimize the survival product Π(1 - 1/a_i). The problem remains open.",
+    "implications": "A proof would establish that greedy prime selection is optimal for sieving with coprime sets, providing a clean optimality result in sieve theory. This would complement the asymptotic results of the Brun and Selberg sieves.",
+    "openQuestions": [
+      "Is the first-k-primes sieving set optimal for all large n?",
+      "Can the inclusion-exclusion heuristic be made rigorous?",
+      "What happens if the coprimality constraint is relaxed?",
+      "Is the answer different for small n?"
+    ]
+  }
+}
