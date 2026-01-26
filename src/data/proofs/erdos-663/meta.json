@@ -1,0 +1,45 @@
+{
+  "id": "erdos-663",
+  "title": "Smallest Prime Not Dividing Consecutive Products",
+  "slug": "erdos-663",
+  "description": "For positive integers n and k, let q(n,k) be the least prime not dividing (n+1)(n+2)···(n+k). Erdős conjectured q(n,k) < (1+o(1)) log n.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/663",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos663Problem.lean",
+    "tags": ["number-theory", "prime-numbers", "consecutive-products", "asymptotic-bounds"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 663,
+    "erdosUrl": "https://erdosproblems.com/663",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about the smallest prime gap in consecutive products. The weak bound q(n,k) < (1+o(1))k·log n follows from the prime number theorem, but the conjectured bound removes the factor of k. Tao provided heuristic support for the conjecture. Related to Erdős Problem #457.",
+    "problemStatement": "For positive integers n and k, define q(n,k) as the least prime not dividing the product (n+1)(n+2)···(n+k). Is q(n,k) < (1+o(1)) log n for fixed k as n → ∞?",
+    "proofStrategy": "We formalize q(n,k) via axioms capturing its primality, non-divisibility, and minimality properties. The main conjecture is stated as an ε-N asymptotic bound. We prove that the conjecture implies the known weak bound, and establish basic properties of consecutive products.",
+    "keyInsights": [
+      "q(n,k) > k since every prime p ≤ k divides some term among k consecutive integers",
+      "The weak bound q(n,k) < (1+o(1))k·log n follows from the prime number theorem",
+      "For k = 1, the weak bound already gives the conjectured bound",
+      "q(n,k) is non-increasing in k: more terms means more prime divisors"
+    ]
+  },
+  "sections": [
+    { "id": "definitions", "title": "Consecutive Products and Smallest Missing Prime", "startLine": 24, "endLine": 44, "summary": "Defines consecutiveProduct and axiomatizes q(n,k) with its key properties: primality, non-divisibility, and minimality." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 46, "endLine": 54, "summary": "States Erdős Problem 663: q(n,k) < (1+o(1)) log n as an ε-N formulation." },
+    { "id": "weak-bound", "title": "Weak Bound", "startLine": 56, "endLine": 77, "summary": "States the weak bound q(n,k) < (1+o(1))k·log n and proves it coincides with the conjecture for k=1." },
+    { "id": "related", "title": "Related Results", "startLine": 79, "endLine": 110, "summary": "Proves consecutiveProduct properties, states the connection to Problem 457, and establishes q(n,k) > k." },
+    { "id": "monotonicity", "title": "Monotonicity Properties", "startLine": 112, "endLine": 128, "summary": "States monotonicity of q in k and proves the main conjecture implies the weak bound." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 663 on the asymptotic behavior of the smallest prime not dividing consecutive products. The main conjecture, weak bound, and several structural properties are formalized with 0 sorries.",
+    "implications": "Resolution would advance understanding of prime distribution in consecutive integer products, connecting to the prime number theorem and sieve methods.",
+    "openQuestions": [
+      "Can the weak bound be improved beyond the factor of k?",
+      "Is the bound uniform in k or does the implicit constant depend on k?",
+      "What is the connection to Linnik-type results on least prime in arithmetic progressions?"
+    ]
+  }
+}
