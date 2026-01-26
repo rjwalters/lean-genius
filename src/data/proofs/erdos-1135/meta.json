@@ -1,0 +1,78 @@
+{
+  "id": "erdos-1135",
+  "title": "Erdős Problem #1135: The Collatz Conjecture",
+  "slug": "erdos-1135",
+  "description": "Does every positive integer eventually reach 1 under f(n) = n/2 (even) or (3n+1)/2 (odd)? Verified up to 2^68. Tao: almost all orbits attain small values. Open. $500.",
+  "meta": {
+    "erdosNumber": 1135,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "dynamical-systems",
+      "collatz",
+      "open"
+    ],
+    "references": [
+      "Collatz: original conjecture (pre-1952)",
+      "Tao (2019): almost all orbits attain small values",
+      "Krasikov–Lagarias (2003): density ≥ x^{0.84}",
+      "Barina (2020): verified up to 2^68",
+      "https://erdosproblems.com/1135"
+    ],
+    "leanFile": "Proofs/Erdos1135Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 35,
+      "summary": "collatz, collatzIter, ReachesOne."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 37,
+      "endLine": 45,
+      "summary": "collatz 1 = 2, collatz 2 = 1, one_reaches_one."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "startLine": 47,
+      "endLine": 62,
+      "summary": "Tao almost-all result, Krasikov–Lagarias density bound."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 64,
+      "endLine": 69,
+      "summary": "Every m ≥ 1 reaches 1."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Collatz conjecture was formulated by Lothar Collatz before 1952 and is one of the most famous open problems in mathematics. Erdős said 'Mathematics may not be ready for such problems' and informally estimated it at $500 on his prize scale. Despite extensive computation and theoretical work, the conjecture remains stubbornly open.",
+    "problemStatement": "Does every positive integer m eventually reach 1 under iteration of f(n) = n/2 (if n even) or f(n) = (3n+1)/2 (if n odd)?",
+    "proofStrategy": "We define the Collatz function and its iteration constructively, prove basic values by decide, and axiomatize the Tao almost-all result, Krasikov–Lagarias density bound, and the full conjecture.",
+    "keyInsights": [
+      "The Collatz function is fully computable: collatz and collatzIter are defined without sorry or axioms",
+      "Tao (2019) proved almost all orbits attain values below any function growing to infinity — the strongest theoretical result",
+      "Krasikov–Lagarias (2003) showed the set reaching 1 has density at least x^{0.84}",
+      "Computational verification extends to 2^68 ≈ 3×10^20 (Barina, 2020)",
+      "The problem connects number theory, ergodic theory, and computation theory"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1135 is the Collatz conjecture: every positive integer reaches 1 under the 3n+1 map. Despite Tao's almost-all result and computational verification to 2^68, the full conjecture remains open.",
+    "implications": "Resolution would connect dynamical systems on the integers to number-theoretic structure, with potential implications for undecidability (Conway showed generalizations are undecidable).",
+    "openQuestions": [
+      "Does every positive integer reach 1 under Collatz iteration?",
+      "Are there other cycles besides 1 → 2 → 1?",
+      "What is the growth rate of the stopping time as a function of m?",
+      "Is the Collatz conjecture independent of standard axiom systems?"
+    ]
+  }
+}
