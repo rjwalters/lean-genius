@@ -1,0 +1,82 @@
+{
+  "id": "erdos-488",
+  "title": "Erdős Problem #488: Divisibility Density in Multiples of Finite Sets",
+  "slug": "erdos-488",
+  "description": "Let A be a finite set and B = {n ≥ 1 : a | n for some a ∈ A}. Is |B ∩ [1,m]|/m < 2·|B ∩ [1,n]|/n for all m > n ≥ max(A)? The constant 2 is optimal.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/488",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos488Problem.lean",
+    "tags": ["number theory", "divisibility", "density", "inclusion-exclusion"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 488,
+    "erdosUrl": "https://erdosproblems.com/488",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1961 about the density regularity of multiples of a finite set. The 1961 version had a likely typo (a ∤ n instead of a | n), corrected in 1966. The constant 2 is shown to be optimal by the singleton example A = {a} with n = 2a-1, m = 2a.",
+    "problemStatement": "Let A be a finite set of integers ≥ 2 and B = {n ≥ 1 : a | n for some a ∈ A}. Is |B ∩ [1,m]|/m < 2·|B ∩ [1,n]|/n for all m > n ≥ max(A)?",
+    "proofStrategy": "The formalization defines the multiples set B(A), the counting function and density ratio, and states the conjecture as a universal inequality. The optimality of constant 2 is axiomatised via the singleton example.",
+    "keyInsights": [
+      "B(A) is the set of positive multiples of elements of A",
+      "The density ratio |B ∩ [1,N]|/N stabilises as N grows",
+      "The constant 2 is optimal: A = {a}, n = 2a-1, m = 2a gives ratio approaching 2",
+      "The 1961 version had a ∤ n (typo), corrected to a | n in 1966"
+    ]
+  },
+  "sections": [
+    {
+      "id": "multiples-set",
+      "title": "Multiples Set",
+      "startLine": 24,
+      "endLine": 29,
+      "summary": "Definition of B(A): positive integers divisible by some element of A."
+    },
+    {
+      "id": "counting-function",
+      "title": "Counting Function",
+      "startLine": 31,
+      "endLine": 39,
+      "summary": "multiplesCount and multiplesRatio: counting elements of B(A) in intervals and the density ratio."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 41,
+      "endLine": 53,
+      "summary": "Erdős Problem 488: the density ratio inequality |B∩[1,m]|/m < 2·|B∩[1,n]|/n."
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality of Constant 2",
+      "startLine": 55,
+      "endLine": 66,
+      "summary": "The constant 2 cannot be improved, shown via A = {a}, n = 2a-1, m = 2a."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Inclusion–Exclusion for Multiples",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "Singleton count formula, monotonicity, and subset monotonicity."
+    },
+    {
+      "id": "davenport-density",
+      "title": "Davenport's Density",
+      "startLine": 84,
+      "endLine": 92,
+      "summary": "The asymptotic density of B(A) exists and lies in (0,1]."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 488 on the regularity of density ratios for multiples of finite sets, with the optimality of the constant 2 and basic properties of multiples counting.",
+    "implications": "The conjecture, if true, would establish a strong uniformity property for the density of multiples, showing that the density ratio never doubles beyond the threshold max(A).",
+    "openQuestions": [
+      "Is the inequality |B∩[1,m]|/m < 2·|B∩[1,n]|/n true for all m > n ≥ max(A)?",
+      "Can the constant 2 be improved for specific families of sets A?",
+      "What is the relationship to Davenport's theorem on natural density of multiples?"
+    ]
+  }
+}

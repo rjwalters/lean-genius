@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-488-multiples",
+    "proofId": "erdos-488",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 29 },
+    "title": "Multiples Set B(A)",
+    "content": "multiplesSet A is the set of positive integers divisible by some element of A. This is the central object: the problem studies the density regularity of this set.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-488-ratio",
+    "proofId": "erdos-488",
+    "type": "definition",
+    "range": { "startLine": 37, "endLine": 39 },
+    "title": "Density Ratio",
+    "content": "multiplesRatio A N is |B(A) ∩ [1,N]| / N, the proportion of integers up to N that are multiples of some element of A.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-488-conjecture",
+    "proofId": "erdos-488",
+    "type": "conjecture",
+    "range": { "startLine": 44, "endLine": 52 },
+    "title": "Erdős Problem 488",
+    "content": "For every finite A with elements ≥ 2 and m > n ≥ max(A), the density ratio satisfies |B∩[1,m]|/m < 2·|B∩[1,n]|/n. The density can at most double.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-488-optimal",
+    "proofId": "erdos-488",
+    "type": "result",
+    "range": { "startLine": 59, "endLine": 65 },
+    "title": "Optimality of Constant 2",
+    "content": "The constant 2 is sharp: for A = {a}, n = 2a-1, m = 2a, the ratio of density ratios approaches 2 as a → ∞.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-488-singleton",
+    "proofId": "erdos-488",
+    "type": "result",
+    "range": { "startLine": 69, "endLine": 70 },
+    "title": "Singleton Count",
+    "content": "For A = {a}, the multiples count |B∩[1,N]| = ⌊N/a⌋. This is the basic case from which the optimality example derives.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-488-davenport",
+    "proofId": "erdos-488",
+    "type": "result",
+    "range": { "startLine": 86, "endLine": 91 },
+    "title": "Davenport's Density",
+    "content": "The asymptotic density of B(A) exists in (0,1] for any finite set A of positive integers. This can be computed by inclusion–exclusion.",
+    "significance": "supporting"
+  }
+]
