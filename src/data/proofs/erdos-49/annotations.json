@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-49-inc-totient",
+    "proofId": "erdos-49",
+    "type": "definition",
+    "range": { "startLine": 23, "endLine": 25 },
+    "title": "Increasing Totient Set",
+    "content": "IsIncreasingTotientSet A holds when for all a, b ∈ A with a < b, φ(a) < φ(b). This is the key structural property: the totient values are strictly increasing with the elements.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-49-max-size",
+    "proofId": "erdos-49",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 31 },
+    "title": "Maximum Increasing Totient Set Size",
+    "content": "maxIncTotientSize N is the maximum cardinality of an increasing totient set contained in {1,…,N}. This is the extremal quantity the problem studies.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-49-primes",
+    "proofId": "erdos-49",
+    "type": "result",
+    "range": { "startLine": 42, "endLine": 48 },
+    "title": "Primes Form Increasing Totient Set",
+    "content": "The set of primes in {1,…,N} has strictly increasing totient values because φ(p) = p-1 for primes. This gives the lower bound maxIncTotientSize(N) ≥ π(N).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-49-tao",
+    "proofId": "erdos-49",
+    "type": "result",
+    "range": { "startLine": 53, "endLine": 58 },
+    "title": "Tao's Theorem (2023)",
+    "content": "Tao proved that maxIncTotientSize(N) ≤ (1+ε)π(N) for all ε > 0 and sufficiently large N. The precise bound has error term O((log log x)⁵/log x).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-49-conjecture",
+    "proofId": "erdos-49",
+    "type": "conjecture",
+    "range": { "startLine": 63, "endLine": 67 },
+    "title": "Erdős Problem 49 (Solved)",
+    "content": "The maximum size of an increasing totient set in {1,…,N} is asymptotically π(N). Proved by Tao (2023), confirming that primes are asymptotically optimal.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-49-totient-prime",
+    "proofId": "erdos-49",
+    "type": "result",
+    "range": { "startLine": 81, "endLine": 82 },
+    "title": "Totient of Primes",
+    "content": "For any prime p, φ(p) = p - 1. This is the fundamental property that makes primes a natural increasing totient set.",
+    "significance": "supporting"
+  }
+]
