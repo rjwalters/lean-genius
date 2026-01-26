@@ -1,0 +1,68 @@
+{
+  "id": "erdos-544",
+  "title": "Erdős Problem #544: Consecutive Ramsey Number Differences",
+  "slug": "erdos-544",
+  "description": "Show that R(3, k+1) − R(3, k) → ∞. Prove or disprove that R(3, k+1) − R(3, k) = o(k).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/544",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos544Problem.lean",
+    "tags": ["graph theory", "Ramsey theory", "Ramsey numbers"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 544,
+    "erdosUrl": "https://erdosproblems.com/544",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Sós asked whether the consecutive differences R(3, k+1) − R(3, k) tend to infinity, and whether the growth is sublinear in k. The best known asymptotics for R(3, k) are Θ(k²/log k), established by Kim (1995) for the lower bound and Shearer (1983) / Campos–Griffiths–Morris–Sahasrabudhe (2023) for the upper bound. Both parts of the question remain open.",
+    "problemStatement": "Show that R(3, k+1) − R(3, k) → ∞ as k → ∞. Similarly, prove or disprove that R(3, k+1) − R(3, k) = o(k).",
+    "proofStrategy": "The formalization axiomatises R(3, k) with known values (k = 3 through 9), monotonicity, and the Kim / Shearer asymptotic bounds. The consecutive difference function and both parts of the conjecture (divergence and sublinearity) are stated.",
+    "keyInsights": [
+      "R(3, k) = Θ(k²/log k) implies the average difference grows like k/log k",
+      "Known values: R(3,3)=6, R(3,4)=9, ..., R(3,9)=36 show irregular gaps",
+      "Divergence of differences is expected from the quadratic growth",
+      "Sublinearity (o(k)) is the harder open question"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ramsey-axiom",
+      "title": "Ramsey Number R(3, k)",
+      "startLine": 24,
+      "endLine": 37,
+      "summary": "Axiomatisation of R(3, k) with lower bound and monotonicity."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "startLine": 39,
+      "endLine": 57,
+      "summary": "Exact values R(3,3)=6 through R(3,9)=36."
+    },
+    {
+      "id": "asymptotic-bounds",
+      "title": "Asymptotic Bounds",
+      "startLine": 59,
+      "endLine": 69,
+      "summary": "Kim lower bound and Shearer/CGMS upper bound: R(3,k) = Θ(k²/log k)."
+    },
+    {
+      "id": "main-problems",
+      "title": "Main Problems",
+      "startLine": 71,
+      "endLine": 91,
+      "summary": "Divergence (Part 1) and sublinearity (Part 2) of consecutive Ramsey differences."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures both parts of Erdős Problem 544: the divergence of R(3,k+1) − R(3,k) and the question of whether the growth is sublinear in k.",
+    "implications": "Understanding consecutive Ramsey differences would refine our knowledge of the fine structure of the R(3,k) sequence beyond its asymptotic order Θ(k²/log k).",
+    "openQuestions": [
+      "Does R(3, k+1) − R(3, k) → ∞?",
+      "Is R(3, k+1) − R(3, k) = o(k)?",
+      "What is the exact order of growth of consecutive differences?"
+    ]
+  }
+}

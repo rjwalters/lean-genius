@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-544-ramsey3",
+    "proofId": "erdos-544",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 30 },
+    "title": "Ramsey Number R(3, k)",
+    "content": "ramsey3 k is axiomatised as the minimum n such that every 2-colouring of K_n contains a red triangle or a blue K_k. This is the diagonal Ramsey number studied in the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-544-known-values",
+    "proofId": "erdos-544",
+    "type": "result",
+    "range": { "startLine": 41, "endLine": 57 },
+    "title": "Known Exact Values",
+    "content": "R(3,3)=6, R(3,4)=9, R(3,5)=14, R(3,6)=18, R(3,7)=23, R(3,8)=28, R(3,9)=36. The differences 3,5,4,5,5,8 show irregular growth.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-544-bounds",
+    "proofId": "erdos-544",
+    "type": "result",
+    "range": { "startLine": 61, "endLine": 69 },
+    "title": "Asymptotic Bounds",
+    "content": "Kim (1995) proved R(3,k) ≥ c·k²/log k and Shearer (1983) / CGMS (2023) proved R(3,k) ≤ C·k²/log k, establishing R(3,k) = Θ(k²/log k).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-544-divergence",
+    "proofId": "erdos-544",
+    "type": "conjecture",
+    "range": { "startLine": 74, "endLine": 78 },
+    "title": "Divergence of Differences (Part 1)",
+    "content": "R(3, k+1) − R(3, k) → ∞ as k → ∞. This is the primary assertion of the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-544-sublinear",
+    "proofId": "erdos-544",
+    "type": "conjecture",
+    "range": { "startLine": 80, "endLine": 85 },
+    "title": "Sublinearity of Differences (Part 2)",
+    "content": "Is R(3, k+1) − R(3, k) = o(k)? This secondary question asks whether the consecutive differences grow slower than linearly.",
+    "significance": "essential"
+  }
+]
