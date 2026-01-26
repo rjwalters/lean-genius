@@ -1,0 +1,89 @@
+{
+  "id": "erdos-931",
+  "title": "Erdős Problem #931: Same Prime Factors in Products of Consecutive Integers",
+  "slug": "erdos-931",
+  "description": "Let k₁ ≥ k₂ ≥ 3. Are there only finitely many n₂ ≥ n₁+k₁ such that ∏(n₁+i) and ∏(n₂+j) share the same prime factors? Counterexamples to the stronger claim exist (AlphaProof: 10! and 14·15·16). OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/931",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos931Problem.lean",
+    "tags": ["number-theory", "prime-factorization", "consecutive-integers"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 931,
+    "erdosUrl": "https://erdosproblems.com/931",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem concerns the prime factorization structure of products of consecutive integers. Erdős expressed doubt about the conjecture, proposing the weaker claim that n₂ > 2(n₁+k₁). AlphaProof found counterexamples to the strong version. Related to Problem 388; discussed in Guy's collection (B35).",
+    "problemStatement": "Let k₁ ≥ k₂ ≥ 3. Are there only finitely many n₂ ≥ n₁+k₁ such that ∏_{i=1}^{k₁}(n₁+i) and ∏_{j=1}^{k₂}(n₂+j) have the same set of prime factors?",
+    "proofStrategy": "We define consecutiveProduct, consecutivePrimeFactors, and SamePrimeFactors. The main conjecture states finiteness. We also state the stronger conjecture (n₂ > 2(n₁+k₁)), axiomatize the AlphaProof counterexample and Tijdeman's example, and state the open question about primes between n₁ and n₂.",
+    "keyInsights": [
+      "AlphaProof counterexample: 10! and 14·15·16 share prime factors {2,3,5,7} with n₂ ≤ 2(n₁+k₁)",
+      "Tijdeman's example: 19·20·21·22 and 54·55·56·57 share the same prime factors",
+      "Erdős could not prove a prime must exist between n₁ and n₂ when products share factors",
+      "The stronger conjecture (finiteness for n₂ ≤ 2(n₁+k₁)) has counterexamples but the original remains open"
+    ]
+  },
+  "sections": [
+    {
+      "id": "product-prime-factors",
+      "title": "Product Prime Factors",
+      "startLine": 26,
+      "endLine": 42,
+      "summary": "Defines consecutiveProduct and consecutivePrimeFactors for a block of consecutive integers starting from n+1."
+    },
+    {
+      "id": "same-factors",
+      "title": "Same Prime Factors Property",
+      "startLine": 44,
+      "endLine": 53,
+      "summary": "Defines SamePrimeFactors as equality of consecutive prime factor sets for two blocks."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 55,
+      "endLine": 67,
+      "summary": "Formalizes Erdős Problem 931: for all k₁ ≥ k₂ ≥ 3, the set of pairs with same prime factors and n₂ ≥ n₁+k₁ is finite."
+    },
+    {
+      "id": "stronger-conjecture",
+      "title": "The Stronger Conjecture",
+      "startLine": 69,
+      "endLine": 81,
+      "summary": "States the stronger claim: finiteness even restricted to n₂ ≤ 2(n₁+k₁)."
+    },
+    {
+      "id": "alphaproof-counterexample",
+      "title": "AlphaProof Counterexample",
+      "startLine": 83,
+      "endLine": 94,
+      "summary": "Axiomatizes that 10! and 14·15·16 share prime factors {2,3,5,7} with n₂ ≤ 2(n₁+k₁)."
+    },
+    {
+      "id": "tijdeman-example",
+      "title": "Tijdeman's Example",
+      "startLine": 96,
+      "endLine": 105,
+      "summary": "Tijdeman found 19·20·21·22 and 54·55·56·57 share the same prime factors."
+    },
+    {
+      "id": "prime-between",
+      "title": "Prime Between n₁ and n₂",
+      "startLine": 107,
+      "endLine": 122,
+      "summary": "Open question: must a prime exist between n₁ and n₂ when their consecutive products share prime factors?"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 931 asks about finiteness of pairs of consecutive-integer blocks with identical prime factor sets. The stronger version (n₂ ≤ 2(n₁+k₁)) has counterexamples, but the original finiteness question remains open.",
+    "implications": "Resolution would illuminate the distribution of prime factors across consecutive integers and connect to classical problems about smooth numbers and prime gaps.",
+    "openQuestions": [
+      "Are there only finitely many pairs with same prime factors for fixed k₁ ≥ k₂ ≥ 3?",
+      "Must a prime exist between n₁ and n₂ when their products share prime factors?",
+      "What is the growth rate of the largest n₂ with same factors as a function of n₁?"
+    ]
+  }
+}
