@@ -1,0 +1,74 @@
+{
+  "id": "erdos-738",
+  "title": "Triangle-Free Graphs with Infinite Chromatic Number",
+  "slug": "erdos-738",
+  "description": "Must every triangle-free graph with infinite chromatic number contain every finite tree as an induced subgraph? (Gyárfás conjecture). Kierstead–Penrice (1994) proved radius-2 trees; Scott (1997) proved caterpillars.",
+  "meta": {
+    "author": "Erdős, Gyárfás",
+    "sourceUrl": "https://erdosproblems.com/738",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos738Problem.lean",
+    "tags": [
+      "graph theory",
+      "chromatic number",
+      "triangle-free",
+      "induced subgraphs"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 738,
+    "erdosUrl": "https://erdosproblems.com/738",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Gyárfás (1975) conjectured that for every tree T, there exists f(T) such that every graph with chromatic number ≥ f(T) contains T as an induced subgraph. Erdős popularized the triangle-free case. Kierstead–Penrice (1994) proved it for radius-2 trees, Scott (1997) for caterpillars, and Chudnovsky–Scott–Seymour (2020) made further progress on subdivisions.",
+    "problemStatement": "Must every triangle-free graph with infinite chromatic number contain every finite tree as an induced subgraph?",
+    "proofStrategy": "We formalize triangle-free graphs, infinite chromatic number, induced subgraph copies, the main conjecture, known special cases (paths, stars, radius-2 trees, caterpillars), and the finite-to-infinite reduction via compactness.",
+    "keyInsights": [
+      "Triangle-free + infinite χ forces tree-like local structure",
+      "Paths and stars are easy special cases; general trees require deeper arguments",
+      "Kierstead–Penrice: radius-2 trees; Scott: caterpillars (≤ 3 leaves)",
+      "Finite chromatic bound version implies the infinite version by compactness",
+      "The conjecture generalizes to χ-bounded classes for tree-induced subgraphs"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 55,
+      "summary": "Defines triangle-free graphs, chromatic number bounds, infinite chromatic number, finite trees, and induced subgraph copies."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 57,
+      "endLine": 63,
+      "summary": "States the Gyárfás conjecture: triangle-free graphs with infinite chromatic number contain every finite tree as an induced subgraph."
+    },
+    {
+      "id": "partial",
+      "title": "Known Partial Results",
+      "startLine": 65,
+      "endLine": 100,
+      "summary": "Paths, stars, and Kierstead–Penrice radius-2 result as verified special cases."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 102,
+      "endLine": 131,
+      "summary": "Local tree-like structure, finite version, Scott's caterpillar result, and finite-implies-infinite reduction."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #738 (Gyárfás conjecture): every triangle-free graph with infinite chromatic number contains every finite tree as an induced subgraph. Includes key partial results by Kierstead–Penrice and Scott.",
+    "implications": "A resolution would advance the theory of χ-bounded graph classes and connect chromatic number to induced subgraph structure.",
+    "openQuestions": [
+      "Does every triangle-free graph with infinite χ contain every finite tree as an induced subgraph?",
+      "What is the optimal chromatic threshold f(T) for each tree T?",
+      "Does the conjecture extend to K₄-free graphs and larger excluded cliques?"
+    ]
+  }
+}
