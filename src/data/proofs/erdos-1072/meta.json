@@ -1,0 +1,78 @@
+{
+  "id": "erdos-1072",
+  "title": "Erdős Problem #1072: Least n with n! ≡ −1 (mod p)",
+  "slug": "erdos-1072",
+  "description": "For prime p, let f(p) be the least n with n! + 1 ≡ 0 (mod p). By Wilson's theorem, f(p) ≤ p-1. Are there infinitely many p with f(p) = p-1? Is f(p)/p → 0 for almost all p? Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1072,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "factorials",
+      "wilson-theorem",
+      "prime-numbers",
+      "open"
+    ],
+    "references": [
+      "Erdős–Hardy–Subbarao (2002): original problem",
+      "Guy (2004): Problem A2",
+      "OEIS A154554",
+      "https://erdosproblems.com/1072"
+    ],
+    "leanFile": "Proofs/Erdos1072Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 42,
+      "summary": "Define leastFactorialWilson f(p) and the maximality condition isWilsonMaximal."
+    },
+    {
+      "id": "wilson-bound",
+      "title": "Wilson's Theorem Bound",
+      "startLine": 44,
+      "endLine": 58,
+      "summary": "Wilson's theorem guarantees f(p) ≤ p-1 and f(p) ≥ 1 for p ≥ 3."
+    },
+    {
+      "id": "main-questions",
+      "title": "The Main Questions",
+      "startLine": 60,
+      "endLine": 82,
+      "summary": "Question 1: infinitely many maximal primes. Question 2: f(p)/p → 0 for almost all p."
+    },
+    {
+      "id": "examples-connections",
+      "title": "Small Examples and Wilson Primes",
+      "startLine": 84,
+      "endLine": 114,
+      "summary": "f(2)=1, f(3)=2, f(5)=4 (maximal), f(7)=3 (first non-maximal). Wilson prime distinction."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This problem was formulated by Erdős together with Hardy and Subbarao, published in 2002 in the American Mathematical Monthly. It connects Wilson's theorem ((p-1)! ≡ -1 mod p) to the question of how early this congruence can be achieved. The problem appears as A2 in Guy's collection.",
+    "problemStatement": "For prime p, define f(p) as the least positive n with n! ≡ -1 (mod p). Is the set {p : f(p) = p-1} infinite? Does f(p)/p → 0 for almost all primes?",
+    "proofStrategy": "We formalize f(p) via leastFactorialWilson, verify Wilson's theorem gives the upper bound f(p) ≤ p-1, state both main conjectures, and provide small examples showing f(7) = 3 is the first non-maximal prime.",
+    "keyInsights": [
+      "Wilson's theorem gives f(p) ≤ p-1 for all primes",
+      "f(p) = p-1 means no factorial before (p-1)! achieves -1 mod p",
+      "p = 7 is the first prime with f(p) < p-1 since 3! + 1 = 7",
+      "Hardy–Subbarao believe maximal primes have density 0 among primes",
+      "Distinct from Wilson primes (p² | (p-1)! + 1): known examples 5, 13, 563"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1072 asks about the least factorial achieving -1 modulo a prime. The two questions — infinitely many maximal primes and asymptotic density — both remain open. Hardy and Subbarao conjectured that maximal primes are sparse.",
+    "implications": "A resolution would illuminate the distribution of factorial residues modulo primes, connecting to Wilson's theorem, factorial number theory, and the distribution of primes with special arithmetic properties.",
+    "openQuestions": [
+      "Are there infinitely many primes p with f(p) = p - 1?",
+      "Is f(p)/p → 0 for almost all primes?",
+      "What is the density of primes with f(p) = p - 1?",
+      "Is there a number-theoretic characterization of maximal primes?"
+    ]
+  }
+}
