@@ -1731,6 +1731,23 @@
     "annotationCount": 35
   },
   {
+    "id": "erdos-1051",
+    "title": "Erdős Problem #1051: Irrationality of Reciprocal Product Series",
+    "slug": "erdos-1051",
+    "description": "If a₁ < a₂ < ⋯ are integers with lim inf aₙ^{1/2ⁿ} > 1, is Σ 1/(aₙ·aₙ₊₁) irrational? Known for rapid growth aₙ₊₁ ≥ C·aₙ². OPEN in general.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "series",
+      "transcendence-theory"
+    ],
+    "erdosNumber": 1051,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-1052",
     "title": "Erdős #1052: Unitary Perfect Numbers",
     "slug": "erdos-1052",
@@ -1864,6 +1881,22 @@
     "mathlibCount": 4,
     "sorries": 0,
     "annotationCount": 14
+  },
+  {
+    "id": "erdos-1062",
+    "title": "Erdős Problem #1062: Maximum \"No Divides Two Others\" Sets",
+    "slug": "erdos-1062",
+    "description": "Let f(n) = max |A| for A ⊆ {1,…,n} with no element dividing two distinct others. Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n. Is lim f(n)/n irrational? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "extremal-combinatorics",
+      "divisibility"
+    ],
+    "erdosNumber": 1062,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-1063",
@@ -2417,6 +2450,38 @@
     "mathlibCount": 4,
     "sorries": 0,
     "annotationCount": 25
+  },
+  {
+    "id": "erdos-1093",
+    "title": "Erdős Problem #1093: Deficiency of Binomial Coefficients",
+    "slug": "erdos-1093",
+    "description": "For n ≥ 2k with C(n,k) having no prime factor ≤ k, the deficiency counts k-smooth terms among n, n-1, ..., n-k+1. Are there infinitely many with deficiency 1? Only finitely many with deficiency > 1? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "binomial-coefficients",
+      "smooth-numbers"
+    ],
+    "erdosNumber": 1093,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "erdos-1094",
+    "title": "Erdős Problem #1094: Least Prime Factor of Binomial Coefficients",
+    "slug": "erdos-1094",
+    "description": "For n ≥ 2k, the least prime factor of C(n,k) should be ≤ max(n/k, k) with only finitely many exceptions. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "binomial-coefficients",
+      "prime-factorization"
+    ],
+    "erdosNumber": 1094,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-1095",
@@ -3339,6 +3404,23 @@
     "annotationCount": 5
   },
   {
+    "id": "erdos-122",
+    "title": "Erdős Problem #122: Distribution of n + f(n) in Short Intervals",
+    "slug": "erdos-122",
+    "description": "For which f is it true that n + f(n) concentrates in short intervals? Proved for d(n) and ω(n) by Erdős–Pomerance–Sárközy. Conjectured false for φ(n) and σ(n). OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "arithmetic-functions",
+      "distribution",
+      "short-intervals"
+    ],
+    "erdosNumber": 122,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-123",
     "title": "Erdős #123: d-Complete Sequences",
     "slug": "erdos-123",
@@ -3391,6 +3473,57 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 27
+  },
+  {
+    "id": "erdos-125",
+    "title": "Erdős Problem #125: Positive Density of Digit-Restricted Sumsets",
+    "slug": "erdos-125",
+    "description": "Let A = {digits 0,1 in base 3}, B = {digits 0,1 in base 4}. Does A + B have positive density? Known: |A+B ∩ [1,x]| ≫ x^{0.9777}, upper density ≤ 0.696. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "base-representations",
+      "density",
+      "additive-combinatorics"
+    ],
+    "erdosNumber": 125,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "erdos-126",
+    "title": "Erdős Problem #126: Distinct Prime Factors of Pairwise Sums",
+    "slug": "erdos-126",
+    "description": "Let f(n) be maximal such that for any n-element A ⊆ N, the product of all pairwise sums has at least f(n) distinct prime factors. Is f(n)/log(n) → ∞? Erdős-Turán proved log(n) ≪ f(n) ≪ n/log(n). OPEN ($250).",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "prime-factors",
+      "extremal-problems",
+      "asymptotics",
+      "open-problem"
+    ],
+    "erdosNumber": 126,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "erdos-127",
+    "title": "Erdős Problem #127: Large Bipartite Subgraphs Beyond Edwards' Bound",
+    "slug": "erdos-127",
+    "description": "Let f(m) be the excess beyond Edwards' bound for bipartite subgraphs of m-edge graphs. Is there a sequence mᵢ with f(mᵢ) → ∞? SOLVED: YES (Alon 1996).",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "graph-theory",
+      "bipartite-graphs",
+      "extremal-graph-theory"
+    ],
+    "erdosNumber": 127,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-129",
@@ -3852,6 +3985,22 @@
     "erdosNumber": 151,
     "sorries": 0,
     "annotationCount": 4
+  },
+  {
+    "id": "erdos-152",
+    "title": "Erdős Problem #152: Isolated Elements in Sidon Sumsets",
+    "slug": "erdos-152",
+    "description": "For large finite Sidon sets A, are there arbitrarily many isolated elements a ∈ A+A with a±1 ∉ A+A? Conjectured ≫ |A|² such elements. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "additive-combinatorics",
+      "sidon-sets",
+      "sumsets"
+    ],
+    "erdosNumber": 152,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-153",
@@ -5827,6 +5976,23 @@
     "annotationCount": 11
   },
   {
+    "id": "erdos-25",
+    "title": "Erdős Problem #25: Logarithmic Density of Congruence-Sieved Sets",
+    "slug": "erdos-25",
+    "description": "Let n₁ < n₂ < ⋯ be a strictly increasing sequence of positive integers with associated residue classes aᵢ (mod nᵢ). Let A be the set of integers m such that for every i, either m < nᵢ or m ≢ aᵢ (mod nᵢ). Must the logarithmic density of A exist? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "density",
+      "sieve-theory",
+      "modular-arithmetic"
+    ],
+    "erdosNumber": 25,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-250",
     "title": "Erdős Problem #250: Irrationality of the Sigma-Power Series",
     "slug": "erdos-250",
@@ -6519,6 +6685,24 @@
     "mathlibCount": 3,
     "sorries": 1,
     "annotationCount": 12
+  },
+  {
+    "id": "erdos-288",
+    "title": "Erdős Problem #288: Integer Harmonic Sums Over Interval Pairs",
+    "slug": "erdos-288",
+    "description": "Are there only finitely many pairs of intervals (I₁, I₂) such that Σ_{I₁} 1/n + Σ_{I₂} 1/n is a positive integer? Example: 1/3+1/4+1/5+1/6+1/20 = 1. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "harmonic-sums",
+      "unit-fractions",
+      "intervals",
+      "open-problem"
+    ],
+    "erdosNumber": 288,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-289",
@@ -7229,6 +7413,39 @@
     "annotationCount": 10
   },
   {
+    "id": "erdos-323",
+    "title": "Erdős Problem #323: Sums of k-th Powers Counting Function",
+    "slug": "erdos-323",
+    "description": "How many integers ≤ x are sums of m nonneg k-th powers? Conjectured: f_{k,k}(x) ≫ x^{1-ε} and f_{k,m}(x) ≫ x^{m/k} for m < k.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "Waring problem",
+      "sums of powers",
+      "counting functions"
+    ],
+    "erdosNumber": 323,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
+    "id": "erdos-324",
+    "title": "Erdős Problem #324: Distinct Polynomial Pair Sums",
+    "slug": "erdos-324",
+    "description": "Does there exist f(x) ∈ ℤ[x] such that all sums f(a) + f(b) with a < b are distinct? Conjectured for f(x) = x⁵. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "polynomial",
+      "additive-combinatorics"
+    ],
+    "erdosNumber": 324,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-325",
     "title": "Erdős Problem #325: Sums of Three k-th Powers",
     "slug": "erdos-325",
@@ -7549,6 +7766,24 @@
     "erdosNumber": 341,
     "sorries": 0,
     "annotationCount": 8
+  },
+  {
+    "id": "erdos-342",
+    "title": "Erdős Problem #342: The Ulam Sequence U(1,2)",
+    "slug": "erdos-342",
+    "description": "In the Ulam sequence a₁=1, a₂=2, where a_{n+1} is the least integer > aₙ uniquely representable as aᵢ+aⱼ (i<j), do infinitely many twin pairs (a, a+2) occur? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "sequences",
+      "additive-combinatorics",
+      "ulam-sequences",
+      "open-problem"
+    ],
+    "erdosNumber": 342,
+    "sorries": 1,
+    "annotationCount": 7
   },
   {
     "id": "erdos-343",
@@ -8480,6 +8715,22 @@
     "annotationCount": 10
   },
   {
+    "id": "erdos-390",
+    "title": "Erdős Problem #390: Factorial Factorization with Large Factors",
+    "slug": "erdos-390",
+    "description": "Let f(n) = min m such that n! = a₁⋯aₖ with n < a₁ < ⋯ < aₖ = m. Known: f(n) - 2n ≍ n/log n (EGS 1982). Is there c with f(n) - 2n ~ c·n/log n? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "factorials",
+      "asymptotics"
+    ],
+    "erdosNumber": 390,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-391",
     "title": "Erdős Problem #391",
     "slug": "erdos-391",
@@ -8666,6 +8917,23 @@
     "erdosNumber": 4,
     "sorries": 1,
     "annotationCount": 21
+  },
+  {
+    "id": "erdos-400",
+    "title": "Erdős Problem #400: Factorial Divisibility and Sum Excess",
+    "slug": "erdos-400",
+    "description": "For k ≥ 2, let g_k(n) = max{(a₁+⋯+aₖ)-n : a₁!⋯aₖ! | n!}. Is Σ g_k(n) ~ cₖ·x·log x? Is g_k(n) concentrated around cₖ·log x? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "factorials",
+      "asymptotics",
+      "combinatorics"
+    ],
+    "erdosNumber": 400,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-401",
@@ -8880,6 +9148,23 @@
     "annotationCount": 11
   },
   {
+    "id": "erdos-411",
+    "title": "Erdős Problem #411: Iterated Totient Sums and Doubling",
+    "slug": "erdos-411",
+    "description": "Let g(n) = n + φ(n) and g_k(n) = g^k(n). For which n and r is g_{k+r}(n) = 2·g_k(n) for all large k? Known for r = 2: n = 10, 94. OPEN in general.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "iterated-functions",
+      "totient",
+      "arithmetic-dynamics"
+    ],
+    "erdosNumber": 411,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-412",
     "title": "Erdos Problem #412: Iterated Sum of Divisors Convergence",
     "slug": "erdos-412",
@@ -9069,6 +9354,24 @@
     "annotationCount": 11
   },
   {
+    "id": "erdos-423",
+    "title": "Erdős Problem #423: Sums of Consecutive Terms Sequence",
+    "slug": "erdos-423",
+    "description": "Let a₁=1, a₂=2. For k≥3, aₖ is the least integer > a_{k-1} that is a sum of at least two consecutive terms. What is the asymptotic behaviour? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "sequences",
+      "additive-combinatorics",
+      "asymptotics",
+      "open-problem"
+    ],
+    "erdosNumber": 423,
+    "sorries": 1,
+    "annotationCount": 7
+  },
+  {
     "id": "erdos-425",
     "title": "Erdős Problem #425: Multiplicative Sidon Sets",
     "slug": "erdos-425",
@@ -9128,6 +9431,23 @@
     "annotationCount": 13
   },
   {
+    "id": "erdos-428",
+    "title": "Prime Offsets with Positive Density",
+    "slug": "erdos-428",
+    "description": "Is there A ⊆ ℕ with liminf |A∩[1,x]|/π(x) > 0 such that for infinitely many n, all n-a are prime for a ∈ A?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "density",
+      "k-tuple-conjecture"
+    ],
+    "erdosNumber": 428,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-429",
     "title": "Erdős Problem #429: Sparse Admissible Sets and Prime Shifts",
     "slug": "erdos-429",
@@ -9144,6 +9464,22 @@
     "erdosNumber": 429,
     "sorries": 0,
     "annotationCount": 18
+  },
+  {
+    "id": "erdos-43",
+    "title": "Erdős Problem #43: Sidon Sets with Disjoint Difference Sets",
+    "slug": "erdos-43",
+    "description": "If A, B are Sidon sets in {1,...,N} with (A-A) ∩ (B-B) = {0}, must C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1)? OPEN ($100).",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets"
+    ],
+    "erdosNumber": 43,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-431",
@@ -9573,6 +9909,23 @@
     "annotationCount": 6
   },
   {
+    "id": "erdos-451",
+    "title": "Erdős Problem #451: Primes in (k, 2k) Avoiding Products",
+    "slug": "erdos-451",
+    "description": "Estimate n_k, the smallest n > 2k such that (n-1)(n-2)⋯(n-k) has no prime factor in (k, 2k). Conjectured superpolynomial but sub-exponential.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "prime factors",
+      "Bertrand postulate",
+      "products"
+    ],
+    "erdosNumber": 451,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "erdos-452",
     "title": "Erdős Problem #452: Largest Interval with ω(n) > log log n",
     "slug": "erdos-452",
@@ -9721,6 +10074,40 @@
     "annotationCount": 14
   },
   {
+    "id": "erdos-46",
+    "title": "Monochromatic Unit Fraction Representations",
+    "slug": "erdos-46",
+    "description": "Does every finite colouring of ℕ have a monochromatic solution to 1 = Σ 1/nᵢ? Proved by Croot. Erdős–Graham generalization to arbitrary rationals also holds.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "unit-fractions",
+      "ramsey-theory",
+      "colouring"
+    ],
+    "erdosNumber": 46,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
+    "id": "erdos-460",
+    "title": "Erdős Problem #460: Greedy Coprime Sieve Reciprocals",
+    "slug": "erdos-460",
+    "description": "Let a₀ = 0, a₁ = 1. Define aₖ as the least integer > aₖ₋₁ with gcd(n - aₖ, n - aᵢ) = 1 for all i < k. Does Σ (1/aᵢ) → ∞ as n → ∞? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "sieve-methods",
+      "reciprocal-sums",
+      "coprimality"
+    ],
+    "erdosNumber": 460,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-461",
     "title": "Erdős Problem #461: Distinct Smooth Components in Short Intervals",
     "slug": "erdos-461",
@@ -9842,6 +10229,23 @@
     "erdosNumber": 467,
     "sorries": 0,
     "annotationCount": 8
+  },
+  {
+    "id": "erdos-47",
+    "title": "Erdős Problem #47: Unit Fractions from Dense Sets",
+    "slug": "erdos-47",
+    "description": "If A ⊆ {1,…,N} has ∑ 1/a > δ log N, must some S ⊆ A have ∑ 1/n = 1? Yes — proved by Bloom (2021). Liu–Sawhney improved the quantitative bound. SOLVED.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "unit-fractions",
+      "density",
+      "combinatorial-number-theory"
+    ],
+    "erdosNumber": 47,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-470",
@@ -10302,6 +10706,23 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 12
+  },
+  {
+    "id": "erdos-495",
+    "title": "Erdős Problem #495: The Littlewood Conjecture",
+    "slug": "erdos-495",
+    "description": "Let α, β ∈ ℝ. Is lim inf n·‖nα‖·‖nβ‖ = 0? The famous Littlewood conjecture. EKL (2006): counterexamples have Hausdorff dimension zero. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "littlewood-conjecture",
+      "simultaneous-approximation"
+    ],
+    "erdosNumber": 495,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-496",
@@ -10772,23 +11193,19 @@
     "id": "erdos-527",
     "title": "Erdős Problem #527: Convergence of Random Power Series on Unit Circle",
     "slug": "erdos-527",
-    "description": "For aₙ with ∑|aₙ|² = ∞ and |aₙ| = o(1/√n), does ∑ εₙaₙzⁿ converge for some |z| = 1 for almost all sign choices? SOLVED: YES, and the convergence set has Hausdorff dimension 1 (Michelen-Sawhney 2025).",
-    "status": "complete",
+    "description": "For aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n), does Σ εₙaₙzⁿ converge for some |z| = 1 for almost all sign choices? SOLVED: YES, and the convergence set has Hausdorff dimension 1 (Michelen-Sawhney 2025).",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "analysis",
       "power-series",
       "random",
       "unit-circle",
-      "hausdorff-dimension",
-      "solved"
+      "hausdorff-dimension"
     ],
-    "dateAdded": "2026-01-22",
     "erdosNumber": 527,
-    "mathlibCount": 4,
-    "sorries": 1,
-    "annotationCount": 10
+    "sorries": 0,
+    "annotationCount": 8
   },
   {
     "id": "erdos-528",
@@ -10844,6 +11261,23 @@
       "sum-product"
     ],
     "erdosNumber": 53,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "erdos-530",
+    "title": "Erdős Problem #530: Maximum Sidon Subsets of Finite Sets",
+    "slug": "erdos-530",
+    "description": "For a finite set A of size N, what is the maximum size ℓ(N) of a Sidon subset? Komlós–Sulyok–Szemerédi: N^{1/2} ≪ ℓ(N) ≤ (1+o(1))N^{1/2}. Conjectured: ℓ(N) ~ N^{1/2}. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "sidon-sets",
+      "additive-combinatorics",
+      "extremal-combinatorics"
+    ],
+    "erdosNumber": 530,
     "sorries": 0,
     "annotationCount": 6
   },
@@ -11040,6 +11474,23 @@
     "mathlibCount": 3,
     "sorries": 2,
     "annotationCount": 14
+  },
+  {
+    "id": "erdos-542",
+    "title": "Reciprocal Sums Under LCM Constraints",
+    "slug": "erdos-542",
+    "description": "If A ⊆ {1,...,n} with lcm(a,b) > n for distinct a,b ∈ A, must ∑ 1/a ≤ 31/30? Solved by Schinzel-Szekeres (1959).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "lcm",
+      "reciprocal-sums",
+      "extremal-combinatorics"
+    ],
+    "erdosNumber": 542,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-543",
@@ -11460,6 +11911,21 @@
     "mathlibCount": 3,
     "sorries": 1,
     "annotationCount": 10
+  },
+  {
+    "id": "erdos-569",
+    "title": "Erdős Problem #569: Erdős Problem #569",
+    "slug": "erdos-569",
+    "description": "Problem statement pending. ",
+    "status": "stub",
+    "badge": "stub",
+    "tags": [
+      "graph theory",
+      "ramsey theory"
+    ],
+    "erdosNumber": 569,
+    "sorries": 1,
+    "annotationCount": 1
   },
   {
     "id": "erdos-57",
@@ -12010,6 +12476,22 @@
     "erdosNumber": 597,
     "sorries": 0,
     "annotationCount": 18
+  },
+  {
+    "id": "erdos-598",
+    "title": "Erdős Problem #598: Coloring Countable Subsets",
+    "slug": "erdos-598",
+    "description": "Can one color countable subsets of an infinite set m with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains all colors? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "set-theory",
+      "ramsey-theory",
+      "cardinal-arithmetic"
+    ],
+    "erdosNumber": 598,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-599",
@@ -13333,6 +13815,23 @@
     "annotationCount": 16
   },
   {
+    "id": "erdos-663",
+    "title": "Smallest Prime Not Dividing Consecutive Products",
+    "slug": "erdos-663",
+    "description": "For positive integers n and k, let q(n,k) be the least prime not dividing (n+1)(n+2)···(n+k). Erdős conjectured q(n,k) < (1+o(1)) log n.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "consecutive-products",
+      "asymptotic-bounds"
+    ],
+    "erdosNumber": 663,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-664",
     "title": "Erdős Problem #664: Blocking Sets with Bounded Intersection",
     "slug": "erdos-664",
@@ -13650,6 +14149,44 @@
     "annotationCount": 13
   },
   {
+    "id": "erdos-68",
+    "title": "Erdős Problem #68: Irrationality of Factorial Sum",
+    "slug": "erdos-68",
+    "description": "Is the sum Σ_{n≥2} 1/(n!-1) irrational? Erdős conjectured more broadly that Σ 1/(n!+t) is transcendental for every integer t.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "transcendence",
+      "factorial",
+      "infinite-series",
+      "open"
+    ],
+    "erdosNumber": 68,
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 13
+  },
+  {
+    "id": "erdos-680",
+    "title": "Least Prime Factor Exceeding k² + 1",
+    "slug": "erdos-680",
+    "description": "Is it true that for all sufficiently large n, there exists k ≥ 1 with p(n+k) > k² + 1, where p(m) is the least prime factor of m?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "prime-gaps",
+      "least-prime-factor"
+    ],
+    "erdosNumber": 680,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-681",
     "title": "Erdős Problem #681: Large Least Prime Factor in Shifted Composites",
     "slug": "erdos-681",
@@ -13745,6 +14282,25 @@
     "erdosNumber": 685,
     "sorries": 0,
     "annotationCount": 5
+  },
+  {
+    "id": "erdos-686",
+    "title": "Erdős Problem #686: Ratios of Products of Consecutive Integers",
+    "slug": "erdos-686",
+    "description": "Can every integer N ≥ 2 be written as ∏(m+i) / ∏(n+i) for some k ≥ 2 and m ≥ n + k? OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "products",
+      "consecutive-integers",
+      "factorials",
+      "binomials",
+      "open-problem"
+    ],
+    "erdosNumber": 686,
+    "sorries": 0,
+    "annotationCount": 7
   },
   {
     "id": "erdos-687",
@@ -15208,7 +15764,7 @@
     "erdosNumber": 758,
     "mathlibCount": 5,
     "sorries": 15,
-    "annotationCount": 15
+    "annotationCount": 9
   },
   {
     "id": "erdos-759",
@@ -17114,6 +17670,22 @@
     "annotationCount": 16
   },
   {
+    "id": "erdos-852",
+    "title": "Erdős Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps",
+    "slug": "erdos-852",
+    "description": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) → ∞.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "prime gaps",
+      "sieve theory"
+    ],
+    "erdosNumber": 852,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-854",
     "title": "Erdős Problem #854: Gaps Between Coprime Residues of Primorials",
     "slug": "erdos-854",
@@ -17747,6 +18319,24 @@
     "erdosNumber": 883,
     "sorries": 0,
     "annotationCount": 9
+  },
+  {
+    "id": "erdos-884",
+    "title": "Erdős Problem #884: Divisor Gap Sums",
+    "slug": "erdos-884",
+    "description": "Is Σ_{i<j} 1/(d_j - d_i) bounded by C(1 + Σ_i 1/(d_{i+1} - d_i)) for the divisors d_1 < ... < d_t of n? All-pairs sum vs consecutive-pairs sum. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "divisors",
+      "divisor-gaps",
+      "harmonic-sums",
+      "open-problem"
+    ],
+    "erdosNumber": 884,
+    "sorries": 0,
+    "annotationCount": 8
   },
   {
     "id": "erdos-885",
@@ -18805,6 +19395,22 @@
     "mathlibCount": 2,
     "sorries": 8,
     "annotationCount": 18
+  },
+  {
+    "id": "erdos-935",
+    "title": "Erdős Problem #935: Powerful Part of Consecutive Products",
+    "slug": "erdos-935",
+    "description": "Three questions about Q₂(n(n+1)⋯(n+ℓ)), the powerful part of consecutive products: upper bound n^{2+ε}, divergent lim sup, and vanishing ratio.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "powerful numbers",
+      "consecutive products"
+    ],
+    "erdosNumber": 935,
+    "sorries": 0,
+    "annotationCount": 5
   },
   {
     "id": "erdos-936",
