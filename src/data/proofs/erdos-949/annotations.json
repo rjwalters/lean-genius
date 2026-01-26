@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-949-sum-free",
+    "proofId": "erdos-949",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 29 },
+    "title": "Sum-Free Set",
+    "content": "IsSumFreeSet S means no a, b ∈ S satisfy a + b ∈ S. Equivalently, (S + S) ∩ S = ∅. This is the central hypothesis of Problem 949.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-949-conjecture",
+    "proofId": "erdos-949",
+    "type": "conjecture",
+    "range": { "startLine": 58, "endLine": 62 },
+    "title": "Erdős Problem 949",
+    "content": "For every sum-free S ⊆ ℝ, there exists A ⊆ Sᶜ with Cardinal.mk A = continuum and realSumset A ⊆ Sᶜ. The complement of a sum-free set has rich additive structure.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-949-sidon-solved",
+    "proofId": "erdos-949",
+    "type": "result",
+    "range": { "startLine": 72, "endLine": 76 },
+    "title": "Sidon Variant (Solved)",
+    "content": "If S is a Sidon set (all pairwise sums distinct), the continuum-sized sumset-avoiding subset exists. Proved by Dillies using a technique discovered by AlphaProof.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-949-small-case",
+    "proofId": "erdos-949",
+    "type": "result",
+    "range": { "startLine": 89, "endLine": 93 },
+    "title": "Small Sidon Case (Zorn's Lemma)",
+    "content": "When |S| < 𝔠 and S is Sidon, Zorn's lemma produces a maximal A ⊆ Sᶜ with A+A ⊆ Sᶜ. Maximality forces |A| = 𝔠 since A ∪ ⋃_{a∈A} (S-a) covers most of Sᶜ.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-949-continuum-case",
+    "proofId": "erdos-949",
+    "type": "result",
+    "range": { "startLine": 98, "endLine": 102 },
+    "title": "Continuum Sidon Case (Shift Construction)",
+    "content": "When |S| = 𝔠 and S is Sidon, pick a ≠ 0 in S and form A = ((S\\{a}) - a/2) \\ S. The Sidon property ensures the image-complement intersection has at most one element.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-949-open",
+    "proofId": "erdos-949",
+    "type": "context",
+    "range": { "startLine": 108, "endLine": 113 },
+    "title": "General Case Remains Open",
+    "content": "The general sum-free case does not follow from the Sidon technique, which relies on the injectivity of the sum function. The proof does not extend to arbitrary sum-free sets.",
+    "significance": "supporting"
+  }
+]
