@@ -1,0 +1,82 @@
+{
+  "id": "erdos-281",
+  "title": "Erdős Problem #281: Covering Congruences and Density",
+  "slug": "erdos-281",
+  "description": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < ε for every ε > 0?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/281",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos281Problem.lean",
+    "tags": ["number theory", "covering systems", "density", "congruences"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 281,
+    "erdosUrl": "https://erdosproblems.com/281",
+    "erdosProblemStatus": "proved"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether the full-covering condition (every congruence class choice leaves a density-0 complement) automatically gives uniform finite approximation. The problem was resolved affirmatively using the Davenport–Erdős theorem on lower density and Rogers' theorem from Halberstam–Roth.",
+    "problemStatement": "Let n₁ < n₂ < ⋯ be such that for any choice of classes aᵢ (mod nᵢ), the uncovered integers have density 0. Must there exist, for every ε > 0, a finite k achieving density < ε uniformly over all choices?",
+    "proofStrategy": "The formalization defines congruence class assignments, coverage, and uncovered density. It axiomatises the divergence of reciprocals, the coprime special case, and the main theorem that full covering implies uniform finite approximation.",
+    "keyInsights": [
+      "Full covering implies Σ 1/nᵢ = ∞",
+      "For pairwise coprime moduli, divergent reciprocals suffice",
+      "The Davenport–Erdős theorem upgrades upper density 0 to a uniform finite bound",
+      "Rogers' theorem provides the maximization step"
+    ]
+  },
+  "sections": [
+    {
+      "id": "congruence-classes",
+      "title": "Congruence Classes and Coverage",
+      "startLine": 24,
+      "endLine": 40,
+      "summary": "Definitions of congruence choices, coverage, and coverage by the first k classes."
+    },
+    {
+      "id": "uncovered-density",
+      "title": "Counting Uncovered Integers",
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "Count and density of integers not covered by the first k congruence classes."
+    },
+    {
+      "id": "full-covering",
+      "title": "Full Covering Hypothesis",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "The sequence has full covering: every choice leaves density 0 uncovered. Auxiliary properties of valid moduli."
+    },
+    {
+      "id": "divergence",
+      "title": "Divergence of Reciprocals",
+      "startLine": 68,
+      "endLine": 73,
+      "summary": "Full covering implies Σ 1/nᵢ = ∞."
+    },
+    {
+      "id": "coprime-case",
+      "title": "Pairwise Coprime Case",
+      "startLine": 75,
+      "endLine": 86,
+      "summary": "When moduli are pairwise coprime, divergent reciprocals suffice for full covering."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem (Solved)",
+      "startLine": 88,
+      "endLine": 102,
+      "summary": "Erdős Problem 281: full covering implies uniform finite approximation, proved via Davenport–Erdős and Rogers."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 281, proved affirmatively: the full-covering condition implies uniform finite approximability via the Davenport–Erdős and Rogers theorems.",
+    "implications": "This result shows that infinite covering systems exhibit a compactness property: the global density-0 condition is automatically witnessed by finitely many classes, uniformly over all congruence choices.",
+    "openQuestions": [
+      "What is the optimal rate of convergence of k(ε)?",
+      "Can the result be extended to non-congruence coverage systems?",
+      "What is the quantitative dependence on the growth rate of moduli?"
+    ]
+  }
+}
