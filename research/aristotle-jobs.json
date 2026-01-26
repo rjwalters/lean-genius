@@ -36,9 +36,9 @@
       "problem_id": "erdos-1",
       "submitted": "2026-01-12T09:31:03Z",
       "sorries": [
-        "theorem erdos_1_lower_bound {A : Finset ℕ} {N : ℕ}",
-        "theorem max_element_bound {A : Finset ℕ} (hA : A.Nonempty)",
-        "theorem subset_sums_spacing {A : Finset ℕ} (hA_pos : ∀ a ∈ A, 0 < a)"
+        "theorem erdos_1_lower_bound {A : Finset \u2115} {N : \u2115}",
+        "theorem max_element_bound {A : Finset \u2115} (hA : A.Nonempty)",
+        "theorem subset_sums_spacing {A : Finset \u2115} (hA_pos : \u2200 a \u2208 A, 0 < a)"
       ],
       "notes": "Distinct subset sums - tractability 9/10",
       "status": "expired",
@@ -64,14 +64,14 @@
         "theorem primeSum_irrational : Irrational primeSum := by",
         "theorem tao_identity : omegaSum = primeSum := by"
       ],
-      "notes": "Tao identity: double sum manipulation for ∑ω(n)/2^n = ∑1/(2^p-1)",
+      "notes": "Tao identity: double sum manipulation for \u2211\u03c9(n)/2^n = \u22111/(2^p-1)",
       "status": "expired",
       "last_check": {
         "timestamp": "2026-01-14T05:21:20Z",
         "percent": 100,
         "runtime_minutes": 0
       },
-      "outcome": "PROVED tao_identity. primeSum_irrational requires Tao-Teräväinen 2025 (beyond Aristotle scope). [Expired on Aristotle]",
+      "outcome": "PROVED tao_identity. primeSum_irrational requires Tao-Ter\u00e4v\u00e4inen 2025 (beyond Aristotle scope). [Expired on Aristotle]",
       "integrated": "2026-01-13",
       "theorems_proven": [
         "tao_identity"
@@ -95,7 +95,7 @@
       "problem_id": "erdos-659",
       "submitted": "2026-01-13T18:46:10Z",
       "sorries": [
-        "def isConfiguration : Finset (ℝ × ℝ) → TwoDistanceConfig → Prop := fun _ _ => sorry"
+        "def isConfiguration : Finset (\u211d \u00d7 \u211d) \u2192 TwoDistanceConfig \u2192 Prop := fun _ _ => sorry"
       ],
       "notes": "Definition sorries: moreeOsburnLattice, isConfiguration. Testing concurrent job limits.",
       "status": "expired",
@@ -152,7 +152,7 @@
       "problem_id": "erdos-92",
       "submitted": "2026-01-13T23:59:00Z",
       "sorries": [
-        "theorem f_le_n_minus_one (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by",
+        "theorem f_le_n_minus_one (n : \u2115) (hn : n \u2265 1) : f n \u2264 n - 1 := by",
         "theorem strong_implies_weak (h : StrongConjecture) : WeakConjecture := by"
       ],
       "notes": "HARD sorries: f_le_n_minus_one (trivial bound from definitions), strong_implies_weak (limits analysis). Both are provable!",
@@ -174,7 +174,7 @@
       "problem_id": "erdos-97",
       "submitted": "2026-01-14T17:10:00Z",
       "sorries": [
-        "theorem kEquidistant_implies_unitDistance_bound (k : ℕ)"
+        "theorem kEquidistant_implies_unitDistance_bound (k : \u2115)"
       ],
       "notes": "Resubmitted after previous job expired. HARD sorry: kEquidistant_implies_unitDistance_bound (counting argument). danzerPoints is a construction.",
       "status": "expired",
@@ -262,9 +262,9 @@
         "lemma computeA_22 : computeA (![2, 2] : HomologyClass 2) = 10 := by",
         "lemma computeA_31 : computeA (![3, 1] : HomologyClass 2) = 11 := by",
         "theorem GL5_class : GLnClass K 5 =",
-        "theorem GLn_product_expansion (n : ℕ) :",
-        "theorem L_ne_zero (hK : (1 : K.carrier) ≠ 0) : K.L ≠ 0 ∨ K.L = 0 := by",
-        "theorem triangular_sum (n : ℕ) :"
+        "theorem GLn_product_expansion (n : \u2115) :",
+        "theorem L_ne_zero (hK : (1 : K.carrier) \u2260 0) : K.L \u2260 0 \u2228 K.L = 0 := by",
+        "theorem triangular_sum (n : \u2115) :"
       ],
       "notes": "GL5, Fl5, computeA cases - overnight run",
       "status": "expired",
@@ -401,8 +401,8 @@
       "sorries": [
         "theorem f_3_value : f 3 = 3 := by",
         "theorem f_4_lb : 4 < f 4 := by",
-        "theorem f_4_ub : f 4 ≤ 5 := by",
-        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
+        "theorem f_4_ub : f 4 \u2264 5 := by",
+        "theorem f_finite (n : \u2115) (hn : 3 \u2264 n) : (CardSet n).Nonempty := by",
         "theorem f_three_eq : f 3 = 3 := by"
       ],
       "notes": "Happy Ending Problem - small cases f(3), f(4) bounds",
@@ -417,8 +417,8 @@
       "problem_id": "erdos-45",
       "submitted": "2026-01-14T19:34:08Z",
       "sorries": [
-        "lemma egyptian_fraction_bound (D' : Finset ℕ) (hsum : reciprocalSum D' = 1)",
-        "theorem croot_existence (k : ℕ) (hk : k ≥ 2) :"
+        "lemma egyptian_fraction_bound (D' : Finset \u2115) (hsum : reciprocalSum D' = 1)",
+        "theorem croot_existence (k : \u2115) (hk : k \u2265 2) :"
       ],
       "notes": "Monochromatic divisor sums - Croot theorem",
       "status": "expired",
@@ -439,13 +439,13 @@
       "problem_id": "erdos-157",
       "submitted": "2026-01-14T19:34:20Z",
       "sorries": [
-        "def exampleSidonSet : Finset ℕ := {1, 2, 5, 10, 11, 13}",
-        "def IsSidonAlt (A : Set ℕ) : Prop :=",
-        "theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ) := by",
+        "def exampleSidonSet : Finset \u2115 := {1, 2, 5, 10, 11, 13}",
+        "def IsSidonAlt (A : Set \u2115) : Prop :=",
+        "theorem example_is_sidon : IsSidon (\u2191exampleSidonSet : Set \u2115) := by",
         "theorem pilatte_existence : Erdos157Conjecture := by",
-        "theorem powers_of_two_sidon : IsSidon { n | ∃ k : ℕ, n = 2^k } := by",
-        "theorem sidon_iff_sidon_alt (A : Set ℕ) : IsSidon A ↔ IsSidonAlt A := by",
-        "theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :"
+        "theorem powers_of_two_sidon : IsSidon { n | \u2203 k : \u2115, n = 2^k } := by",
+        "theorem sidon_iff_sidon_alt (A : Set \u2115) : IsSidon A \u2194 IsSidonAlt A := by",
+        "theorem sidon_not_basis_2 (A : Set \u2115) (hA : A.Infinite) (hSidon : IsSidon A) :"
       ],
       "notes": "Sidon asymptotic basis - Pilatte theorem",
       "status": "expired",
@@ -501,7 +501,7 @@
       "problem_id": "erdos-4",
       "submitted": "2026-01-14T19:34:44Z",
       "sorries": [
-        "theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :"
+        "theorem improved_stronger (n : \u2115) (hn : n \u2265 100) :"
       ],
       "notes": "Prime gaps - technical inequality",
       "status": "expired",
@@ -543,7 +543,7 @@
       "problem_id": "erdos-30",
       "submitted": "2026-01-14T19:35:14Z",
       "sorries": [
-        "theorem sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2 := by"
+        "theorem sidon_is_b2 (A : Finset \u2115) : IsSidonSet A \u2194 IsBhSet A 2 := by"
       ],
       "notes": "Covering systems",
       "status": "expired",
@@ -559,7 +559,7 @@
       "sorries": [
         "theorem f_one : f 1 = 1 := by",
         "theorem f_two : f 2 = 3 := by",
-        "theorem lower_bound_simplified (n : ℕ) (hn : n ≥ 2) :"
+        "theorem lower_bound_simplified (n : \u2115) (hn : n \u2265 2) :"
       ],
       "notes": "Covering intersecting families - Kahn 1994 resolution",
       "status": "expired",
@@ -573,11 +573,11 @@
       "problem_id": "erdos-29",
       "submitted": "2026-01-15T08:27:02Z",
       "sorries": [
-        "def IsEconomical' (A : Set ℕ) : Prop :=",
-        "theorem basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) :",
-        "theorem economical_equiv (A : Set ℕ) : IsEconomical A ↔ IsEconomical' A := by",
-        "theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) : ¬IsAdditiveBasis A := by",
-        "theorem univ_not_economical : ¬IsEconomical Set.univ := by"
+        "def IsEconomical' (A : Set \u2115) : Prop :=",
+        "theorem basis_size_lower_bound (A : Set \u2115) (hA : IsAdditiveBasis A) :",
+        "theorem economical_equiv (A : Set \u2115) : IsEconomical A \u2194 IsEconomical' A := by",
+        "theorem sidon_not_basis (A : Set \u2115) (hS : IsSidon A) : \u00acIsAdditiveBasis A := by",
+        "theorem univ_not_economical : \u00acIsEconomical Set.univ := by"
       ],
       "notes": "Explicit economical additive basis - JPSZ 2024",
       "status": "expired",
@@ -597,7 +597,7 @@
       "problem_id": "erdos-135",
       "submitted": "2026-01-15T08:27:05Z",
       "sorries": [
-        "theorem parallelogram_few_distances (p₁ p₂ p₃ p₄ : Point)",
+        "theorem parallelogram_few_distances (p\u2081 p\u2082 p\u2083 p\u2084 : Point)",
         "theorem trivial_distance_bound (A : Finset Point) :"
       ],
       "notes": "Four points five distances - Tao 2024 counterexample",
@@ -612,11 +612,11 @@
       "problem_id": "erdos-139",
       "submitted": "2026-01-15T08:27:15Z",
       "sorries": [
-        "def SzemerediTheorem : Prop := ∀ k : ℕ, k ≥ 2 → SzemerediDensity k",
-        "theorem erdos_139 (k : ℕ) (hk : 1 < k) :",
-        "theorem erdos_139_k3 : Tendsto (fun N => (r 3 N / N : ℝ)) atTop (𝓝 0) := by",
-        "theorem erdos_139_main (k : ℕ) (hk : k ≥ 2) :",
-        "theorem erdos_139_of_szemeredi (k : ℕ) (hk : 1 < k) (hsz : SzemerediDensity k) :"
+        "def SzemerediTheorem : Prop := \u2200 k : \u2115, k \u2265 2 \u2192 SzemerediDensity k",
+        "theorem erdos_139 (k : \u2115) (hk : 1 < k) :",
+        "theorem erdos_139_k3 : Tendsto (fun N => (r 3 N / N : \u211d)) atTop (\ud835\udcdd 0) := by",
+        "theorem erdos_139_main (k : \u2115) (hk : k \u2265 2) :",
+        "theorem erdos_139_of_szemeredi (k : \u2115) (hk : 1 < k) (hsz : SzemerediDensity k) :"
       ],
       "notes": "Szemeredi theorem - density version",
       "status": "expired",
@@ -635,9 +635,9 @@
       "problem_id": "erdos-166",
       "submitted": "2026-01-15T08:27:18Z",
       "sorries": [
-        "theorem ramsey_one_left (t : ℕ) (ht : t ≥ 1) : R(1, t) = 1 := by",
-        "theorem ramsey_symmetric (s t : ℕ) : R(s, t) = R(t, s) := by",
-        "theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by"
+        "theorem ramsey_one_left (t : \u2115) (ht : t \u2265 1) : R(1, t) = 1 := by",
+        "theorem ramsey_symmetric (s t : \u2115) : R(s, t) = R(t, s) := by",
+        "theorem ramsey_two_left (t : \u2115) (ht : t \u2265 2) : R(2, t) = t := by"
       ],
       "notes": "Ramsey R(4,k) lower bound - Mattheus-Verstraete 2023",
       "status": "integrated",
@@ -651,8 +651,8 @@
       "problem_id": "erdos-167",
       "submitted": "2026-01-15T08:27:20Z",
       "sorries": [
-        "theorem k4_tight : ∃ (G : SimpleGraph (Fin 4)),",
-        "theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),",
+        "theorem k4_tight : \u2203 (G : SimpleGraph (Fin 4)),",
+        "theorem k5_tight : \u2203 (G : SimpleGraph (Fin 5)),",
         "theorem trivial_bound (G : SimpleGraph V) :"
       ],
       "notes": "Tuza triangle covering conjecture",
@@ -667,10 +667,10 @@
       "problem_id": "erdos-168",
       "submitted": "2026-01-15T08:27:30Z",
       "sorries": [
-        "theorem better_construction (N : ℕ) :",
-        "theorem density_bounded (N : ℕ) (hN : N ≥ 1) :",
-        "theorem F_monotone (N : ℕ) : F N ≤ F (N + 1) := by",
-        "theorem simple_lower_bound (N : ℕ) (hN : N ≥ 1) :"
+        "theorem better_construction (N : \u2115) :",
+        "theorem density_bounded (N : \u2115) (hN : N \u2265 1) :",
+        "theorem F_monotone (N : \u2115) : F N \u2264 F (N + 1) := by",
+        "theorem simple_lower_bound (N : \u2115) (hN : N \u2265 1) :"
       ],
       "notes": "n 2n 3n free sets - GSW 1977",
       "status": "integrated",
@@ -684,10 +684,10 @@
       "problem_id": "erdos-169",
       "submitted": "2026-01-15T08:27:32Z",
       "sorries": [
-        "theorem ex_k1t (n t : ℕ) (ht : t ≥ 1) (hn : n ≥ t) :",
-        "theorem ex_k22_bounds (n : ℕ) (hn : n ≥ 4) :",
-        "theorem kst_asymptotic (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ s) :",
-        "theorem zarankiewicz_known (s : ℕ) (hs : (s - 1).Prime) :"
+        "theorem ex_k1t (n t : \u2115) (ht : t \u2265 1) (hn : n \u2265 t) :",
+        "theorem ex_k22_bounds (n : \u2115) (hn : n \u2265 4) :",
+        "theorem kst_asymptotic (s t : \u2115) (hs : s \u2265 1) (ht : t \u2265 s) :",
+        "theorem zarankiewicz_known (s : \u2115) (hs : (s - 1).Prime) :"
       ],
       "notes": "Bipartite Turan numbers - KST 1954",
       "status": "expired",
@@ -702,7 +702,7 @@
       "submitted": "2026-01-15T08:27:35Z",
       "sorries": [
         "theorem chromatic_ge_clique {V : Type*} [Fintype V] (G : SimpleGraph V) :",
-        "theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n := by"
+        "theorem trivial_upper (n : \u2115) : maxChromaticSegments n \u2264 n := by"
       ],
       "notes": "Segment intersection chromatic - Pawlik 2014",
       "status": "integrated",
@@ -717,8 +717,8 @@
       "submitted": "2026-01-15T08:27:38Z",
       "sorries": [
         "theorem clique_number_3 :",
-        "theorem de_grey : chromaticNumberPlane ≥ 5 := by",
-        "theorem lower_bound_4 : chromaticNumberPlane ≥ 4 := by",
+        "theorem de_grey : chromaticNumberPlane \u2265 5 := by",
+        "theorem lower_bound_4 : chromaticNumberPlane \u2265 4 := by",
         "theorem no_4_clique :"
       ],
       "notes": "Unit distance chromatic - de Grey 2018",
@@ -733,8 +733,8 @@
       "problem_id": "erdos-140",
       "submitted": "2026-01-16T03:44:58Z",
       "sorries": [
-        "def greedyAP3Free : ℕ → ℕ",
-        "theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto"
+        "def greedyAP3Free : \u2115 \u2192 \u2115",
+        "theorem r3_density_vanishes : \u2200 C > 0, Filter.Tendsto"
       ],
       "notes": "Kelley-Meka theorem corollaries: r3_superlogarithmic, r3_density_vanishes. Definition sorry greedyAP3Free expected to skip.",
       "status": "expired",
@@ -814,7 +814,7 @@
       "sorries": [
         ""
       ],
-      "notes": "Chromatic subgraphs - Rödl 1977",
+      "notes": "Chromatic subgraphs - R\u00f6dl 1977",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-16"
@@ -918,7 +918,7 @@
         "squarefree_double_odd",
         "squarefree_one"
       ],
-      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erdős 1951, Granville 1998). Build verified.",
+      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erd\u0151s 1951, Granville 1998). Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. All sorries converted to axioms. No theorems proved.",
@@ -939,7 +939,7 @@
         "liu_montgomery",
         "penman_uncountable"
       ],
-      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erdős, Bondy-Simonovits, high degree cycle results. Build verified.",
+      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erd\u0151s, Bondy-Simonovits, high degree cycle results. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. Unexpected axioms added. No theorems proved.",
@@ -960,7 +960,7 @@
         "harborth_five",
         "kreisel_kurz_seven"
       ],
-      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erdős, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
+      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erd\u0151s, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. No theorems proved - all axiomatized.",
@@ -974,8 +974,8 @@
       "sorries": [
         "kovac_tao_all_rationals",
         "stolarsky_conjecture_false",
-        "theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := by",
-        "theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (n + 1)^2) := by"
+        "theorem harmonic_diverges : \u00acSummable (fun n : \u2115 => (1 : \u211d) / (n + 1)) := by",
+        "theorem sum_reciprocal_squares_summable : Summable (fun n : \u2115 => (1 : \u211d) / (n + 1)^2) := by"
       ],
       "notes": "Standard convergence/divergence results for series",
       "status": "failed",
@@ -997,8 +997,8 @@
         "suk_bound",
         "theorem f_3_value : f 3 = 3 := by",
         "theorem f_4_lb : 4 < f 4 := by",
-        "theorem f_4_ub : f 4 ≤ 5 := by",
-        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
+        "theorem f_4_ub : f 4 \u2264 5 := by",
+        "theorem f_finite (n : \u2115) (hn : 3 \u2264 n) : (CardSet n).Nonempty := by",
         "theorem f_three_eq : f 3 = 3 := by"
       ],
       "notes": "5 sorries: Happy Ending Problem - f_3_value, f_4_lb, f_4_ub, f_finite, f_three_eq",
@@ -1036,9 +1036,9 @@
         "theorem example_binomial_square :",
         "theorem example_trinomial_square :",
         "theorem f_one : f 1 = 1 := by",
-        "theorem f_pos (k : ℕ) (hk : k ≥ 1) : f k ≥ 1 := by",
+        "theorem f_pos (k : \u2115) (hk : k \u2265 1) : f k \u2265 1 := by",
         "theorem f_two : f 2 = 3 := by",
-        "theorem general_divergence (n : ℕ) (hn : n ≥ 1) :",
+        "theorem general_divergence (n : \u2115) (hn : n \u2265 1) :",
         "theorem schinzel_lower_bound :",
         "theorem schinzel_zannier_improved :"
       ],
@@ -1053,10 +1053,10 @@
       "problem_id": "erdos-402",
       "submitted": "2026-01-17T19:20:27Z",
       "sorries": [
-        "theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)",
-        "theorem erdos_402_graham_conjecture (A : Finset ℕ) (hA : A.Nonempty)",
-        "theorem erdos_402_range (n : ℕ) (hn : n ≥ 1) :",
-        "theorem erdos_402_ratio_bound (A : Finset ℕ) (hA : A.Nonempty)"
+        "theorem erdos_402_equality_cases (A : Finset \u2115) (hA : A.Nonempty)",
+        "theorem erdos_402_graham_conjecture (A : Finset \u2115) (hA : A.Nonempty)",
+        "theorem erdos_402_range (n : \u2115) (hn : n \u2265 1) :",
+        "theorem erdos_402_ratio_bound (A : Finset \u2115) (hA : A.Nonempty)"
       ],
       "notes": "SOLVED: Graham GCD conjecture. 5 theorem sorries - main theorem and equality characterization.",
       "status": "expired",
@@ -1087,7 +1087,7 @@
       "sorries": [
         "fejer_riesz",
         "littlewood_lower_bound",
-        "theorem erdos_225_main (n : ℕ) (p : TrigPoly n)",
+        "theorem erdos_225_main (n : \u2115) (p : TrigPoly n)",
         "theorem erdos_225_optimal :",
         "theorem sup_on_circle_eq_trig_sup (p : TrigPoly n) :"
       ],
@@ -1113,7 +1113,7 @@
         "gpf_prime_of_gt_one",
         "gpf_prime_pow",
         "steinerberger_factorization",
-        "theorem erdos_370 : ∃ f : ℕ → ℕ, Function.Injective f ∧",
+        "theorem erdos_370 : \u2203 f : \u2115 \u2192 \u2115, Function.Injective f \u2227",
         "theorem erdos_370_infinitely_many :"
       ],
       "notes": "SOLVED: Consecutive smooth numbers. 2 theorem sorries for infinitude proof.",
@@ -1135,8 +1135,8 @@
         "identity_is_little_o",
         "konieczny_quarter_bound",
         "random_permutation_limit",
-        "theorem consecutiveSum_pos (n : ℕ) (hn : n ≥ 1) (π : Perm n)",
-        "theorem S_upper_bound (n : ℕ) (π : Perm n) :"
+        "theorem consecutiveSum_pos (n : \u2115) (hn : n \u2265 1) (\u03c0 : Perm n)",
+        "theorem S_upper_bound (n : \u2115) (\u03c0 : Perm n) :"
       ],
       "notes": "DISPROVED: Consecutive sums in permutations. 2 theorem sorries for counterexample bounds.",
       "status": "expired",
@@ -1155,8 +1155,8 @@
         "ruzsa_essential_component_lower_bound",
         "schnirelmann_theorem",
         "smooth23_counting",
-        "theorem lacunary_counting_bound (A : Set ℕ) (hA : IsLacunarySet A) :",
-        "theorem schnirelmannDensity_mem_Icc (A : Set ℕ) :"
+        "theorem lacunary_counting_bound (A : Set \u2115) (hA : IsLacunarySet A) :",
+        "theorem schnirelmannDensity_mem_Icc (A : Set \u2115) :"
       ],
       "notes": "DISPROVED: Essential components and lacunary sets. 2 theorem sorries for Ruzsa theorem.",
       "status": "expired",
@@ -1183,10 +1183,10 @@
         "brownRodl_theorem",
         "erdos303_true",
         "theorem infinitely_many_solutions :",
-        "theorem monochromatic_iff_alt (𝓒 : ℤ → α) (a b c : ℤ) :",
-        "theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :"
+        "theorem monochromatic_iff_alt (\ud835\udcd2 : \u2124 \u2192 \u03b1) (a b c : \u2124) :",
+        "theorem unitFractionEq_iff_alt (a b c : \u2124) (ha : a \u2260 0) (hb : b \u2260 0) (hc : c \u2260 0) :"
       ],
-      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-Rödl 1991)",
+      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-R\u00f6dl 1991)",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-19",
@@ -1206,7 +1206,7 @@
         "theorem jkly_strengthened : StrengthenedConjecture := by",
         "theorem original_conjecture_solved : OriginalConjecture := by",
         "theorem ramsey_not_too_regular (G : SimpleGraph V) (hRamsey : IsRamseyGraph G)",
-        "theorem regular_one_degree (G : SimpleGraph V) (k : ℕ) (h : IsRegular G k) :",
+        "theorem regular_one_degree (G : SimpleGraph V) (k : \u2115) (h : IsRegular G k) :",
         "theorem upper_bound_construction :"
       ],
       "notes": "Distinct Degrees in Induced Subgraphs - SOLVED (Bukh-Sudakov 2007, JKLY 2020)",
@@ -1220,9 +1220,9 @@
       "problem_id": "erdos-27",
       "submitted": "2026-01-18T04:34:10Z",
       "sorries": [
-        "theorem averaging_bound (m₁ m₂ : ℕ) (hm : m₁ ≤ m₂) (hm₁ : m₁ > 0) :",
+        "theorem averaging_bound (m\u2081 m\u2082 : \u2115) (hm : m\u2081 \u2264 m\u2082) (hm\u2081 : m\u2081 > 0) :",
         "theorem bbmst_bound :",
-        "theorem conjecture_dichotomy : ErdosConjecture ↔ ¬ErdosConjectureNegation := by",
+        "theorem conjecture_dichotomy : ErdosConjecture \u2194 \u00acErdosConjectureNegation := by",
         "theorem erdos_27_disproved : ErdosConjectureNegation := by",
         "theorem ffkpy_main_theorem :",
         "theorem growing_C_works :",
@@ -1230,8 +1230,8 @@
         "theorem no_universal_constant :",
         "theorem perfect_covering_min_modulus :",
         "theorem perfect_is_zero_almost (S : CongruenceSystem) (h : IsPerfectCovering S) :",
-        "theorem product_bounded_below (N : ℕ) (C : ℝ) (hC : C > 1) (hN : N ≥ 2) :",
-        "theorem sufficient_C_works (ε : ℝ) (hε : ε > 0) :"
+        "theorem product_bounded_below (N : \u2115) (C : \u211d) (hC : C > 1) (hN : N \u2265 2) :",
+        "theorem sufficient_C_works (\u03b5 : \u211d) (h\u03b5 : \u03b5 > 0) :"
       ],
       "notes": "Almost Covering Systems - SOLVED/DISPROVED (FFKPY)",
       "status": "expired",
@@ -1245,10 +1245,10 @@
       "submitted": "2026-01-18T04:34:13Z",
       "sorries": [
         "theorem aks_bipartite_bound :",
-        "theorem cycle_edge_count (n : ℕ) (hn : n ≥ 3) :",
-        "theorem cycle_ramsey_linear (n : ℕ) (hn : n ≥ 3) :",
-        "theorem path_edge_count (n : ℕ) (hn : n ≥ 1) :",
-        "theorem path_ramsey_linear (n : ℕ) (hn : n ≥ 2) :",
+        "theorem cycle_edge_count (n : \u2115) (hn : n \u2265 3) :",
+        "theorem cycle_ramsey_linear (n : \u2115) (hn : n \u2265 3) :",
+        "theorem path_edge_count (n : \u2115) (hn : n \u2265 1) :",
+        "theorem path_ramsey_linear (n : \u2115) (hn : n \u2265 2) :",
         "theorem probabilistic_lower_bound :",
         "theorem sparse_graphs_better_bound :",
         "theorem sudakov_implies_545_partial :",
@@ -1267,8 +1267,8 @@
       "sorries": [
         "erdosSarkozy_partial",
         "szemeredi_theorem",
-        "theorem g_ge_n (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) : g k n ≥ n := by",
-        "theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by",
+        "theorem g_ge_n (k n : \u2115) (hk : k \u2265 3) (hn : n \u2265 1) : g k n \u2265 n := by",
+        "theorem g3_le_exp (n : \u2115) (hn : n \u2265 1) : g 3 n \u2264 3^n := by",
         "theorem g3_one : g 3 1 = 1 := by",
         "theorem g3_two : g 3 2 = 2 := by"
       ],
@@ -1294,11 +1294,11 @@
         "huang_loh_sudakov",
         "kleitman_exact",
         "luczak_mieczkowska",
-        "theorem f_2_explicit (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ 2 * k) :",
-        "theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) :",
-        "theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n ≥ r * k) :"
+        "theorem f_2_explicit (n k : \u2115) (hk : k \u2265 1) (hn : n \u2265 2 * k) :",
+        "theorem large_n_construction2_dominates (r k : \u2115) (hr : r \u2265 2) (hk : k \u2265 1) :",
+        "theorem upper_bound_tight_construction2 (n r k : \u2115) (hr : r \u2265 2) (hk : k \u2265 1) (hn : n \u2265 r * k) :"
       ],
-      "notes": "The Erdős Matching Conjecture - SOLVED for r=2,3",
+      "notes": "The Erd\u0151s Matching Conjecture - SOLVED for r=2,3",
       "status": "expired",
       "last_check": null,
       "outcome": "3 sorries remaining [Expired on Aristotle]"
@@ -1324,7 +1324,7 @@
         "R_satisfies",
         "R_symm",
         "ramsey_exists",
-        "theorem ratio_lower_from_befs (k : ℕ) (hk : k ≥ 3) :",
+        "theorem ratio_lower_from_befs (k : \u2115) (hk : k \u2265 3) :",
         "trivial_diff_bound"
       ],
       "notes": "Ramsey growth rate - 1 sorry, 16 axioms",
@@ -1349,7 +1349,7 @@
         "pyber_covering",
         "ramsey_3_3",
         "small_case_5",
-        "theorem edge_partition (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :",
+        "theorem edge_partition (n : \u2115) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :",
         "theorem mono_iff_red_or_blue (c : EdgeColoring n) (t : Triangle n) :"
       ],
       "notes": "Graph packing - 3 sorries, 10 axioms",
@@ -1366,7 +1366,7 @@
         "aks_theorem",
         "aks_tight",
         "critical_transition",
-        "def WithHighProbability (P : ℕ → Prop) : Prop :=",
+        "def WithHighProbability (P : \u2115 \u2192 Prop) : Prop :=",
         "dfs_path_finding",
         "f_at_one",
         "f_at_two",
@@ -1382,7 +1382,7 @@
         "subcritical_forest",
         "subcritical_path_length",
         "supercritical_giant",
-        "theorem large_c_almost_hamiltonian (c : ℝ) (hc : c > 10) :",
+        "theorem large_c_almost_hamiltonian (c : \u211d) (hc : c > 10) :",
         "tree_diameter"
       ],
       "notes": "Arithmetic progressions - 3 sorries, 19 axioms",
@@ -1409,8 +1409,8 @@
         "planar_edge_bound",
         "planar_girth_5_choosable",
         "smallest_known_not_4_choosable",
-        "theorem choosable_implies_colorable (G : SimpleGraph V) (k : ℕ) :",
-        "theorem choosable_monotone (G : SimpleGraph V) (k : ℕ) :",
+        "theorem choosable_implies_colorable (G : SimpleGraph V) (k : \u2115) :",
+        "theorem choosable_monotone (G : SimpleGraph V) (k : \u2115) :",
         "theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :",
         "theorem outerplanar_is_planar (G : SimpleGraph V) (h : IsOuterplanar G) :",
         "theorem planar_5_choosable :",
@@ -1448,7 +1448,7 @@
         "theorem bipartite_iff_no_odd_cycle (G : SimpleGraph V) :",
         "theorem bipartite_list_can_exceed_2 :",
         "theorem bound_is_tight :",
-        "theorem complete_graph_list_chromatic (n : ℕ) :",
+        "theorem complete_graph_list_chromatic (n : \u2115) :",
         "theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :",
         "theorem nonplanar_bipartite_unbounded :",
         "theorem outerplanar_is_planar (G : SimpleGraph V) (h : IsOuterplanar G) :",
@@ -1497,13 +1497,13 @@
         "brown_jung_theorem",
         "def IsLineGraph (G : SimpleGraph V) : Prop :=",
         "theorem contains_critical (G : SimpleGraph V)",
-        "theorem critical_min_degree (G : SimpleGraph V) (k : ℕ) (hcrit : IsCritical G k) :",
+        "theorem critical_min_degree (G : SimpleGraph V) (k : \u2115) (hcrit : IsCritical G k) :",
         "theorem disjoint_odd_cycles_splittable (G : SimpleGraph V)",
-        "theorem odd_cycle_chi_3 (n : ℕ) (hn : n ≥ 3) (hodd : n % 2 = 1) :",
+        "theorem odd_cycle_chi_3 (n : \u2115) (hn : n \u2265 3) (hodd : n % 2 = 1) :",
         "theorem perfect_clique_free (G : SimpleGraph V) (hperf : IsPerfect G) :",
         "theorem perfect_tihany_vacuous (G : SimpleGraph V) (hperf : IsPerfect G)",
-        "theorem tihany_a_eq_2 (b : ℕ) (hb : b ≥ 2) :",
-        "theorem weak_splittability (G : SimpleGraph V) (k a b : ℕ)"
+        "theorem tihany_a_eq_2 (b : \u2115) (hb : b \u2265 2) :",
+        "theorem weak_splittability (G : SimpleGraph V) (k a b : \u2115)"
       ],
       "notes": "Tihany conjecture - OPEN but special cases proven",
       "status": "expired",
@@ -1906,6 +1906,1806 @@
       "submitted": "2026-01-26T00:15:43Z",
       "status": "submitted",
       "notes": "Batch submission"
+    },
+    {
+      "project_id": "65de9981-7947-4aa7-9460-836db197aed2",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:43.998538",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "79846210-e0d0-4f08-9d1d-3b19e9975941",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:42.060621",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "d81829c6-b363-4732-a36b-4123a66db86c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:39.961861",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "2115ddbc-a420-472a-aa8b-b38df0558425",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:38.052130",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c2326e21-487c-4731-b1b6-3c70a8767a82",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:36.039019",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "39bb5cf6-0928-4e00-8205-a6dac188535c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:34.000016",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "3de8099a-c3c6-4780-a75e-6d8d3da1b462",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:32.107569",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b590dfe8-7d9d-49fa-bf64-ec3f73df3057",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:29.950189",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "86939dec-dc1d-48cd-b2f6-731109cf3c06",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:27.998512",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "e4fa4520-1329-409d-b22b-147241e9d8b6",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:26.038957",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c691c4f0-2d70-4c1c-88bd-3e0391e27ae3",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:23.880328",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ed70921b-7efc-44a1-994c-fa4ca074dce8",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:21.906555",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "746e4bdf-fb5e-429e-8771-82914e39a66d",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:19.831894",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "199efbf4-0eb1-4d1c-a952-b1fb14bbe37c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:17.736867",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ce357796-a156-4bcf-a01f-0cc2a968457e",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:15.814590",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "9f74aa40-e5e8-45db-9610-40d4192e4d4f",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:13.833111",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "8fd31994-f9ea-4742-bcb8-42d7bac2792a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:11.773599",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "4e173304-972a-430f-907e-a2a25440e38d",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:09.712180",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "d4913fb3-0a2f-436c-ad55-a308080bbd60",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:07.721012",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "2867a6e0-ccc4-4ec2-ab81-5e50f4cc0490",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-26 03:19:05.611077",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a4fcf5ba-d014-4da3-a177-a5dbcc11da3f",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:55.579061",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c5f6521f-1b65-43e4-8a18-abffefeccb11",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:53.579205",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b4c83b4b-4692-4c0b-9aa3-144fceff9df0",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:51.718276",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "463e9b4c-6b29-41be-9594-a9f25db326e5",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:49.738460",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "19422fe1-4263-4e7b-a5c6-90fe95736e5f",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:47.726471",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c4c32a69-bc1a-4fd7-99d8-d559bb5ab1ea",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:45.711857",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "43857da8-afaf-46c3-893e-7084b741d803",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:43.619373",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "dd8fcfa5-adf1-4ddf-894d-0d631cd5e69a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:41.734430",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "14df3ed5-28e6-4d79-b9ab-99aebc7af18a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:39.785076",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "0f21036f-9065-4ea1-a704-44541291c619",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 23:11:37.918201",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "7f5317fd-21a9-40c2-87f3-e0aceeff8dbd",
+      "file": "proofs/Proofs/Erdos586Problem.lean",
+      "problem_id": "erdos-586",
+      "submitted": "2026-01-25 13:04:44.511015",
+      "status": "submitted",
+      "notes": "Discovered on server (status: QUEUED)"
+    },
+    {
+      "project_id": "bd42b2d1-3d51-4af3-bea7-fcf96571e184",
+      "file": "proofs/Proofs/Erdos543Problem.lean",
+      "problem_id": "erdos-543",
+      "submitted": "2026-01-25 13:04:41.681714",
+      "status": "submitted",
+      "notes": "Discovered on server (status: QUEUED)"
+    },
+    {
+      "project_id": "074e28d3-8c3c-4dc3-a6cc-0193e818d9ea",
+      "file": "proofs/Proofs/Erdos35Problem.lean",
+      "problem_id": "erdos-35",
+      "submitted": "2026-01-25 13:04:38.807427",
+      "status": "submitted",
+      "notes": "Discovered on server (status: QUEUED)"
+    },
+    {
+      "project_id": "fb1d11c0-2d6f-4b41-b0db-36a618a4f207",
+      "file": "proofs/Proofs/Erdos120Problem.lean",
+      "problem_id": "erdos-120",
+      "submitted": "2026-01-25 13:04:36.216208",
+      "status": "submitted",
+      "notes": "Discovered on server (status: QUEUED)"
+    },
+    {
+      "project_id": "13c434ef-e732-4bcf-b5fa-387b3ddd2099",
+      "file": "proofs/Proofs/Erdos811Problem.lean",
+      "problem_id": "erdos-811",
+      "submitted": "2026-01-25 13:04:33.634793",
+      "status": "submitted",
+      "notes": "Discovered on server (status: QUEUED)"
+    },
+    {
+      "project_id": "f9858805-091f-4d9d-9245-2f43d7d2aec3",
+      "file": "proofs/Proofs/Erdos586Problem.lean",
+      "problem_id": "erdos-586",
+      "submitted": "2026-01-25 12:33:23.256450",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "c4290d1e-fe0a-4c9f-8157-1d8cbf570f9c",
+      "file": "proofs/Proofs/Erdos543Problem.lean",
+      "problem_id": "erdos-543",
+      "submitted": "2026-01-25 12:33:20.535993",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "98f475d1-074f-45d8-985d-f52a347fdd26",
+      "file": "proofs/Proofs/Erdos35Problem.lean",
+      "problem_id": "erdos-35",
+      "submitted": "2026-01-25 12:33:17.301288",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "023d2dc0-3312-40b4-aba6-0b9ae26c26d3",
+      "file": "proofs/Proofs/Erdos120Problem.lean",
+      "problem_id": "erdos-120",
+      "submitted": "2026-01-25 12:33:14.324441",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "c4139b2a-aa93-4ad9-8c46-3766bd1b7418",
+      "file": "proofs/Proofs/Erdos811Problem.lean",
+      "problem_id": "erdos-811",
+      "submitted": "2026-01-25 12:33:11.691718",
+      "status": "integrated",
+      "notes": "Integrated: 6\u21924 sorries"
+    },
+    {
+      "project_id": "272aa743-6297-4883-aee4-cc94ae60cf38",
+      "file": "proofs/Proofs/Erdos811Problem.lean",
+      "problem_id": "erdos-811",
+      "submitted": "2026-01-25 11:30:21.444507",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "73015cbd-6f8e-426e-961b-d2aadb57a24d",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 09:24:09.763214",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "7f5ee621-4a03-40bc-a7ed-21f71d83aefa",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 09:24:07.810969",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "8fb8ec0f-0640-4f83-ad61-d5f018581c9a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 09:24:05.705228",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "be886a2d-9127-4004-bf11-3814b8d91f71",
+      "file": "proofs/Proofs/Erdos312Problem.lean",
+      "problem_id": "erdos-312",
+      "submitted": "2026-01-25 09:24:02.874762",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "0fcaaee3-d231-46e3-a7b5-8ae2b066f02e",
+      "file": "proofs/Proofs/Erdos218Problem.lean",
+      "problem_id": "erdos-218",
+      "submitted": "2026-01-25 08:52:07.479930",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "d6af2a2d-37cb-4eea-801d-d0700e810c4a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:21:04.406543",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b379a8c7-01a5-4ce1-a232-ce1dadb273bc",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:20:07.571170",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ee0d1b75-6e5b-47e1-aa76-9ad951988fde",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:20:05.666146",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a7cfdd0b-70b6-469c-be3f-b2081e972d44",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:20:03.606879",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ef9af609-b8f3-4700-bc62-128d0e42123e",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:20:01.624600",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "04fbc4b0-fcd1-4ba8-9aa0-b113d2f0b7f7",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:59.708732",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "334a4a66-d2e2-41a0-9c09-d48b4745299d",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:57.852494",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "87506880-2257-4740-86ab-c26d2d0a967e",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:55.884702",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "aa0fa2e8-e90a-4b82-91bf-5ffde563a450",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:53.922125",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "90844dc1-e9d6-4e70-9e7e-0b512d0ecdbd",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:51.989058",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "d25ec5b2-a562-419b-afc7-0bd692ca4752",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:50.114008",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ab625ebe-6ca5-41d8-81d1-bea6b70fcc66",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:48.044260",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "963a5d44-f1ec-46fb-832d-1178e2282ea5",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:46.106156",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "13d2b5ee-2bdd-489b-acb4-b5d5fdf11d3d",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:44.015854",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "fdaaa65b-0c67-4d3e-98c1-fa964ab9bc85",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:42.136458",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "0459180e-8a64-4a9d-8b14-3db8438129b0",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 08:19:40.251198",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a20ee821-41e7-444b-a701-73641ab74f68",
+      "file": "proofs/Proofs/Erdos543Problem.lean",
+      "problem_id": "erdos-543",
+      "submitted": "2026-01-25 08:19:37.522120",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "d82181ac-e183-4ba8-a404-26f419e4f958",
+      "file": "proofs/Proofs/Erdos35Problem.lean",
+      "problem_id": "erdos-35",
+      "submitted": "2026-01-25 08:19:34.920872",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "19a7d8f4-8116-4ff6-b309-236f252278d5",
+      "file": "proofs/Proofs/Erdos120Problem.lean",
+      "problem_id": "erdos-120",
+      "submitted": "2026-01-25 08:19:32.211200",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "cf9ce399-9a59-4099-b9fe-f5cc3529758d",
+      "file": "proofs/Proofs/Erdos811Problem.lean",
+      "problem_id": "erdos-811",
+      "submitted": "2026-01-25 08:19:29.330676",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "9d3abd0d-e9d9-494b-84de-437518ede86a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:48.666462",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a8db08f0-b195-4deb-9fe4-35b51ea22289",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:46.545564",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c9584172-743a-4c05-a36c-02138a624802",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:44.663661",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "53dfbe81-4dbd-4432-a546-b9f3137f9519",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:42.777959",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ae491af5-9940-4a61-8af6-9e7c05e9fde1",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:40.750300",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "692246c8-553e-434e-a1c4-baa9e4d19646",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:38.726203",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "cc8ea3c8-c256-4366-ae32-a92e478eb00c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:36.562331",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "8626a2b5-a534-45e0-82d8-4102c1b5cd00",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:34.579016",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ac5f0c78-4fbd-4691-b0db-4213da3ebdce",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:32.633929",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "16dca1e1-b26c-4cee-a8d4-a4d6ef716498",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:30.666686",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b2d158d2-e4af-4d03-900f-c0cc3e2b213a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:28.698558",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a60f8235-2a22-4d4b-b4c7-9b4fbd58ac5b",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:26.680263",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "dae74d12-2cef-4977-ac25-c88935e2c559",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:24.673901",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "4ed3e1a4-44b8-401a-81fa-10be8f7ca364",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:22.785676",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b097771f-a02c-4d69-b56a-2d49766eeed1",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:20.656982",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ed218086-4ebe-44d1-9d73-10c344481e11",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:18.751019",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "2d0cc073-beb7-4aaf-9762-b062e4c4f7fc",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:16.760198",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "29af85f9-ce1c-46ac-8260-fed42c656947",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:14.636626",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "4351e981-6b09-4822-a9e8-67bef6990660",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-25 04:14:12.626113",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "11b1257f-a250-4f5b-a654-ae227e119e65",
+      "file": "proofs/Proofs/Erdos604Problem.lean",
+      "problem_id": "erdos-604",
+      "submitted": "2026-01-25 04:14:09.836168",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "ab0cfe4e-4fb7-4ad5-be5c-9fb51ec58f9c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 23:05:10.551104",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "44a93735-8e06-4d7e-9ad3-5122f32f356b",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:49.835520",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a6f43be7-5caf-482a-873a-03f663f4b1c1",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:47.705594",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a1eb7171-52f9-4900-9839-68b11aba8c66",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:45.694045",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "6028c4fb-de56-413b-9e8f-08d3980204f8",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:43.641874",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "e28f1462-42bc-42e5-8a0d-c04fedae5ec4",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:41.605325",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "7c7d50be-15e3-4afc-a049-0772ef23ea0a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:39.682731",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "39b2b0e9-9fe9-4855-b78e-4fe25f166a6a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:37.432166",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "38d8b870-a035-466f-916a-8033df6b86ed",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:35.423953",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "0fab719f-6c2a-41f0-a169-6b7fd7d1a741",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:33.329671",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "738ec69a-8463-4920-8bdc-a5d6450765e0",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:31.377113",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "694ab5cf-67fd-4ea7-a628-51356844a7e6",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:29.051950",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "76a73f7e-760f-49dd-bac1-59ddb5d97946",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:26.964923",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "f7f5fc07-6422-489e-939b-26a5bf6d4ea8",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:24.850507",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "61545743-c4c8-40be-881e-4a7bee24b27b",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:22.903988",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "0ef6d78f-93bf-467e-b5c1-1648fbbc42fa",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:20.852919",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "54981de2-70a0-43ca-af56-4aaade642c75",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:18.667488",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "f9e98ce5-c500-47a7-9880-29858b476cca",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:16.497618",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "d65813e9-d84d-4e97-b2d1-b9fec5cb0d24",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:14.532642",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ac9a0d73-69d2-4b72-9e0d-16cebaa464aa",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:12.453645",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "17464ef1-c67b-4926-b66f-5df6c7190906",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 22:32:10.349921",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "dacc1097-ce7e-491a-b918-3a99f18171ed",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 16:45:26.013981",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a2d4d933-5157-4398-b933-097e996c85bb",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 16:45:24.036067",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "3b4e95c0-f6e5-4478-847d-5dd76c03ecb3",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 16:45:22.112317",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "3bbb262b-d411-41b7-8aa9-7afc444d4df9",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 16:45:20.144701",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "250ff6b1-76f4-4511-8e29-14f7a4e86d28",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 16:45:18.151518",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "118a064f-61bf-4843-9f98-60d6b3c35983",
+      "file": "proofs/Proofs/Erdos595Problem.lean",
+      "problem_id": "erdos-595",
+      "submitted": "2026-01-24 16:45:15.391707",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "463fd6f9-3344-4387-82fe-0c9a02da0dec",
+      "file": "proofs/Proofs/Erdos588Problem.lean",
+      "problem_id": "erdos-588",
+      "submitted": "2026-01-24 16:45:11.924959",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "16e9bd15-a744-41ef-b167-35f49d54c50e",
+      "file": "proofs/Proofs/Erdos577Problem.lean",
+      "problem_id": "erdos-577",
+      "submitted": "2026-01-24 16:45:09.071859",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "4d4f46e7-8d9e-49a3-8943-4c97ee8a241f",
+      "file": "proofs/Proofs/Erdos464Problem.lean",
+      "problem_id": "erdos-464",
+      "submitted": "2026-01-24 16:45:06.201378",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "7b08aa45-b0dc-48be-9c8a-02fbad4bed12",
+      "file": "proofs/Proofs/Erdos438Problem.lean",
+      "problem_id": "erdos-438",
+      "submitted": "2026-01-24 16:45:03.398839",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "ef30d0d9-3f55-4112-9437-47814b7302a5",
+      "file": "proofs/Proofs/Erdos391Problem.lean",
+      "problem_id": "erdos-391",
+      "submitted": "2026-01-24 16:45:00.553239",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "47173e4d-2d1a-45d1-8983-b625aeb306fe",
+      "file": "proofs/Proofs/Erdos343Problem.lean",
+      "problem_id": "erdos-343",
+      "submitted": "2026-01-24 16:44:57.973502",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "2e2221be-82ff-470a-a8af-6ac3e0541cd6",
+      "file": "proofs/Proofs/Erdos287Problem.lean",
+      "problem_id": "erdos-287",
+      "submitted": "2026-01-24 16:44:55.154383",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "27cefd97-f765-43a8-aba3-657d2b98f812",
+      "file": "proofs/Proofs/Erdos239Problem.lean",
+      "problem_id": "erdos-239",
+      "submitted": "2026-01-24 16:44:52.400269",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "254112df-e7b4-495b-8be3-2d2617d6d9e6",
+      "file": "proofs/Proofs/Erdos217Problem.lean",
+      "problem_id": "erdos-217",
+      "submitted": "2026-01-24 16:44:49.559384",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "6ccb3d33-7aa3-4408-9163-9036c5003b00",
+      "file": "proofs/Proofs/Erdos177Problem.lean",
+      "problem_id": "erdos-177",
+      "submitted": "2026-01-24 16:44:46.792496",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "a906ad36-22fc-4cc3-9c05-75bb1642dce8",
+      "file": "proofs/Proofs/Erdos1131Problem.lean",
+      "problem_id": "erdos-1131",
+      "submitted": "2026-01-24 16:44:42.690561",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "616281fa-b36b-4ebc-a357-049756ffa289",
+      "file": "proofs/Proofs/Erdos1124Problem.lean",
+      "problem_id": "erdos-1124",
+      "submitted": "2026-01-24 16:44:39.907401",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "18d6a209-f23e-40ee-8d47-e90b24d2d50d",
+      "file": "proofs/Proofs/Erdos1113Problem.lean",
+      "problem_id": "erdos-1113",
+      "submitted": "2026-01-24 16:44:36.934908",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "dc09c612-5b8e-4d08-b750-309c7c56fbd1",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 03:03:52.829428",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c592e3f9-702f-42b9-a726-2042268f1e0c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 02:32:05.060164",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "d9900e00-acbd-4f7b-b227-ff46d8b832e8",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:59:57.692574",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "df6ba9e4-40b1-4f6e-be84-138863ee2290",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:59:01.120274",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "7e20d96a-e659-4bc0-9e58-b27ac0a23a39",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:58.999648",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "4332a55e-4ee9-43db-97ec-80535f2c8818",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:56.951549",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "3b236aa3-b0f3-4af2-9e1b-bd6e13a7eeb6",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:54.998893",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "57c9cf56-d8e0-4a59-acb1-07e39f76059b",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:52.592720",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "7a4e50ab-b7c9-4885-8b2b-a4683bfc1694",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:50.565825",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "0666c825-3317-4188-a870-5023929a3f9c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:48.525537",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "3a9af47b-5d6a-4a4b-9d28-aa445b17ae92",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:46.513683",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "54f019ec-0bb9-4141-95d4-7c65026d4204",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:44.465685",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "1c91fed7-a02a-4262-8a7b-91b3bafc1b92",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:42.429117",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "5dc06699-285c-4d39-9977-af2064ed4564",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:40.447793",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b58bf7cb-8805-4f13-b61d-49f1d447c177",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:38.197834",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b904dc67-c3a9-4955-b607-1dd92bdbe3f3",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:36.207976",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "6164be91-e668-4335-aeb2-72d3a794e047",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:34.241798",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a0693523-044e-45a9-a1b4-5ba41e235814",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:32.244125",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "8c488c28-dd4d-4e5b-9e5c-ed5548acdd2a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:30.257722",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "719d9629-28cb-463a-94b3-f879978d95c2",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:28.238390",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "ab955096-f6c4-441d-8d99-715ad388d5bb",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:26.153273",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c0c999fa-365b-43e3-b01d-68b23d2cb39a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:58:24.161635",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "74e8ce1e-9d7d-4ecc-9b78-6925b0d0c969",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:40:43.360910",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c0a3d807-c4f1-4682-8960-575e783ca502",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:40:41.403287",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "388d4fdb-a4fa-40cc-bc7f-91297f470df1",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:40:39.521303",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "eef42615-e820-4ee4-afe5-9cde9d6bacbe",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:08:05.910625",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "2d47de17-e6e6-42be-b271-496dee583306",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:05:09.303010",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "c1a40378-80b8-489e-b539-52f9ac5cbc3c",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:03:48.765205",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "09f88666-2573-4443-a6ae-128dc3a92975",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:48.832442",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "7a16c5ef-8482-471b-9304-a6c142f80a74",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:46.946985",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "913ffb27-aa29-44f8-a043-90d5abf7b646",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:45.089710",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "bb0331d5-2430-420b-a64f-697e966f85ad",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:43.164560",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "8e718bc8-2ac8-4ed1-a91e-2ec57f9a0400",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:41.205935",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "868045c5-239b-49cf-a797-dadf2d7cf31b",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:39.251868",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "729126d6-474f-4970-a1dc-d743d5aaa261",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:37.309091",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a57ace11-feff-4101-8da2-1df76201bcef",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:35.425892",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "d56d0cd2-8a55-4b48-9957-331aee087c43",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:33.471525",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "a28fbde2-9fe0-4bc2-b118-0dbb80e357e7",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:31.587790",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "895aa600-f469-4790-8690-c0a674d60b35",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:29.635274",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b2211252-1377-405a-8f15-918da41c8ba2",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:27.605847",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "cb40e88e-a6d5-4b1f-b5b2-0a4a57e10792",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:25.284963",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "b42684a2-e361-41e4-a0f0-fc3d8eb0ad2f",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:23.248885",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "07f22e50-dd25-4d63-ba29-1b2767d05a28",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:21.388330",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "9eafd3b9-196e-4285-80e5-98314df7246d",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:19.462599",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "f3bc0b0d-c1bb-41cb-b853-f618e71c9d8a",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:17.491079",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "00677f6b-347f-467e-9415-9acd20ed79ce",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:15.558395",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "3ca1ddf8-51b2-4484-b1ad-a32e9cc7e539",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-24 01:02:13.593950",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "04843af7-8282-4f94-b3a7-9fcfc22f3a30",
+      "file": "proofs/Proofs/Erdos1111Problem.lean",
+      "problem_id": "erdos-1111",
+      "submitted": "2026-01-24 01:02:10.548904",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "fbc615f8-2307-468c-9436-913e6b4b073f",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-23 18:25:22.301676",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "46f0a695-1a32-4e89-8c64-ca4a26ab0be7",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-23 18:25:20.161904",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "852a53ea-be3d-45ec-8120-b557a08654ba",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-23 18:25:18.104412",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "67a0318b-72a4-410d-be0c-65c438b7fb89",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-23 18:25:16.287310",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "e789138b-f94d-474c-8563-a9fc2e2fcb2e",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-23 18:25:14.431483",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "8ea7dc50-3a45-4a34-8c00-ae3af2ecb240",
+      "file": "unknown",
+      "problem_id": "unknown",
+      "submitted": "2026-01-23 18:25:12.565068",
+      "status": "submitted",
+      "notes": "Discovered on server (status: NOT_STARTED)"
+    },
+    {
+      "project_id": "4c676a95-75da-4463-b3c6-aeabf2b6ef38",
+      "file": "proofs/Proofs/Erdos199Problem.lean",
+      "problem_id": "erdos-199",
+      "submitted": "2026-01-23 18:25:10.088045",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "f5d0f273-819d-49bf-9021-01842b19bafa",
+      "file": "proofs/Proofs/Erdos192Problem.lean",
+      "problem_id": "erdos-192",
+      "submitted": "2026-01-23 18:25:07.226637",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "ca6f73f6-7352-477a-9749-0820bcfd35b4",
+      "file": "proofs/Proofs/Erdos186Problem.lean",
+      "problem_id": "erdos-186",
+      "submitted": "2026-01-23 18:25:04.559402",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "7d7e7019-24ae-40cf-9e5e-92be5dd42228",
+      "file": "proofs/Proofs/Erdos177Problem.lean",
+      "problem_id": "erdos-177",
+      "submitted": "2026-01-23 18:25:01.613456",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "3c2f52bb-140c-43ba-9900-d7495f13c8bb",
+      "file": "proofs/Proofs/Erdos164Problem.lean",
+      "problem_id": "erdos-164",
+      "submitted": "2026-01-23 18:24:14.489473",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "d8997f0b-47ed-47d2-bf5f-b7865b6b33d2",
+      "file": "proofs/Proofs/Erdos163Problem.lean",
+      "problem_id": "erdos-163",
+      "submitted": "2026-01-23 18:24:11.971674",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "b01a17b8-e26e-43e4-be75-3aed52544d5f",
+      "file": "proofs/Proofs/Erdos154Problem.lean",
+      "problem_id": "erdos-154",
+      "submitted": "2026-01-23 18:24:09.178015",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "4a246fde-e044-4b8c-ac6c-a4fec61000f2",
+      "file": "proofs/Proofs/Erdos147Problem.lean",
+      "problem_id": "erdos-147",
+      "submitted": "2026-01-23 18:24:06.327572",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "27717d0e-3247-4338-9f60-e9e025bd455e",
+      "file": "proofs/Proofs/Erdos1131Problem.lean",
+      "problem_id": "erdos-1131",
+      "submitted": "2026-01-23 18:24:03.633239",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "a031e936-523e-4cfa-b773-f55c95eb393f",
+      "file": "proofs/Proofs/Erdos1124Problem.lean",
+      "problem_id": "erdos-1124",
+      "submitted": "2026-01-23 18:24:00.861726",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "ba6c8c3b-2613-4209-a850-0f0da70377dd",
+      "file": "proofs/Proofs/Erdos1118Problem.lean",
+      "problem_id": "erdos-1118",
+      "submitted": "2026-01-23 18:23:58.182339",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "e5d665d8-d033-4741-9cd8-2aafbcb1cf30",
+      "file": "proofs/Proofs/Erdos1115Problem.lean",
+      "problem_id": "erdos-1115",
+      "submitted": "2026-01-23 18:23:55.507426",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "4724a7a8-1587-44eb-afee-aa8affe28422",
+      "file": "proofs/Proofs/Erdos1113Problem.lean",
+      "problem_id": "erdos-1113",
+      "submitted": "2026-01-23 18:23:52.824512",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "8026749d-5182-4173-a96e-403a636f656a",
+      "file": "proofs/Proofs/Erdos1111Problem.lean",
+      "problem_id": "erdos-1111",
+      "submitted": "2026-01-23 18:23:49.896286",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "4d8d9f24-86da-4076-8256-ca160cebfc40",
+      "file": "proofs/Proofs/Erdos1131Problem.lean",
+      "problem_id": "erdos-1131",
+      "submitted": "2026-01-23 06:48:03.233768",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "2413597e-a40a-4fdf-8283-59d72d01ce15",
+      "file": "proofs/Proofs/Erdos1125Problem.lean",
+      "problem_id": "erdos-1125",
+      "submitted": "2026-01-23 06:48:00.317938",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "c4bacfe7-6cce-4ba7-8bc3-108516283242",
+      "file": "proofs/Proofs/Erdos1124Problem.lean",
+      "problem_id": "erdos-1124",
+      "submitted": "2026-01-23 06:47:57.594305",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "8942450f-e396-4846-97d7-20d51ef5dc57",
+      "file": "proofs/Proofs/Erdos1122Problem.lean",
+      "problem_id": "erdos-1122",
+      "submitted": "2026-01-23 06:47:54.912850",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "79bbc9b1-bd00-4482-a8f3-655d41a5a5a2",
+      "file": "proofs/Proofs/Erdos1118Problem.lean",
+      "problem_id": "erdos-1118",
+      "submitted": "2026-01-23 06:47:52.252190",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "a08e8ad4-9307-49cb-bf1f-ae5fd87d5c0d",
+      "file": "proofs/Proofs/Erdos1116Problem.lean",
+      "problem_id": "erdos-1116",
+      "submitted": "2026-01-23 06:47:49.473807",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "b9ddc9a3-b988-407a-9cf4-c994c1841f3e",
+      "file": "proofs/Proofs/Erdos1115Problem.lean",
+      "problem_id": "erdos-1115",
+      "submitted": "2026-01-23 06:47:46.606131",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "087f6048-9b9c-4c93-aea9-41743fbd8cb4",
+      "file": "proofs/Proofs/Erdos1114Problem.lean",
+      "problem_id": "erdos-1114",
+      "submitted": "2026-01-23 06:47:44.041812",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "9241f544-be05-4b46-92f9-1662ce065441",
+      "file": "proofs/Proofs/Erdos1113Problem.lean",
+      "problem_id": "erdos-1113",
+      "submitted": "2026-01-23 06:47:41.341072",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "0fe83e63-3bae-46b8-bcf1-87349658b9a8",
+      "file": "proofs/Proofs/Erdos1111Problem.lean",
+      "problem_id": "erdos-1111",
+      "submitted": "2026-01-23 06:47:38.784223",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "53ad8a5a-cb79-424d-a474-eb6a05318d2c",
+      "file": "/Users/rwalters/GitHub/lean-genius/proofs/Proofs/Erdos299Problem.lean",
+      "problem_id": "erdos-299",
+      "submitted": "2026-01-19 16:57:10.224244",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "862baad1-a95e-4d9c-b7df-c4a582a067a7",
+      "file": "/Users/rwalters/GitHub/lean-genius/proofs/Proofs/Erdos57Problem.lean",
+      "problem_id": "erdos-57",
+      "submitted": "2026-01-19 16:56:59.083880",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "2c0deff5-83dc-45bd-a8dc-7d900c102ea5",
+      "file": "/Users/rwalters/GitHub/lean-genius/proofs/Proofs/Erdos157Problem.lean",
+      "problem_id": "erdos-157",
+      "submitted": "2026-01-19 16:56:19.492163",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "5e879a4b-c313-4d93-ada9-41f2dcf2407c",
+      "file": "/Users/rwalters/GitHub/lean-genius/proofs/Proofs/Erdos517Problem.lean",
+      "problem_id": "erdos-517",
+      "submitted": "2026-01-19 16:56:16.798328",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "7f3f3262-086e-4aec-9136-767d20504d2d",
+      "file": "Proofs/Erdos895Problem-aristotle.lean",
+      "problem_id": "erdos-895",
+      "submitted": "2026-01-19 05:43:42.338595",
+      "status": "failed",
+      "notes": "Discovered on server (status: FAILED)"
+    },
+    {
+      "project_id": "917c5697-439d-4c62-945c-d3f9e1c94055",
+      "file": "Proofs/Erdos671Problem-aristotle.lean",
+      "problem_id": "erdos-671",
+      "submitted": "2026-01-19 05:43:40.753661",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "28d9c61c-2d8d-4dec-944f-8150c11b778f",
+      "file": "Proofs/Erdos621Problem-aristotle.lean",
+      "problem_id": "erdos-621",
+      "submitted": "2026-01-19 05:43:39.026895",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "2412b38d-88be-4afa-9e96-e764feaa76db",
+      "file": "Proofs/Erdos604Problem-aristotle.lean",
+      "problem_id": "erdos-604",
+      "submitted": "2026-01-19 05:43:37.178428",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "27e0c7b5-4284-4195-b828-67256d8c054e",
+      "file": "Proofs/Erdos1050Problem-aristotle.lean",
+      "problem_id": "erdos-1050",
+      "submitted": "2026-01-19 02:40:37.851301",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "0d366b85-3e52-477a-baf4-80bb77092c6f",
+      "file": "Proofs/Erdos1036Problem-aristotle.lean",
+      "problem_id": "erdos-1036",
+      "submitted": "2026-01-19 02:40:35.543220",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "f1ef68da-44c0-48e9-8b4a-4da0967bfbc2",
+      "file": "Proofs/Erdos1028Problem-aristotle.lean",
+      "problem_id": "erdos-1028",
+      "submitted": "2026-01-19 02:40:33.856889",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "1bfe04c2-72a7-4502-81e0-fc5dc70cd9f5",
+      "file": "Proofs/Erdos1027Problem-aristotle.lean",
+      "problem_id": "erdos-1027",
+      "submitted": "2026-01-19 02:40:32.376558",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "8cf74069-7541-4a39-8729-d6c0ebe84d39",
+      "file": "Proofs/Erdos1022Problem-aristotle.lean",
+      "problem_id": "erdos-1022",
+      "submitted": "2026-01-19 02:40:30.746348",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "a650a422-1719-454b-b7a9-4a7e24f51011",
+      "file": "Proofs/Erdos1017Problem-aristotle.lean",
+      "problem_id": "erdos-1017",
+      "submitted": "2026-01-19 02:40:29.056963",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "ea84fc1a-eedf-46ab-87c0-82ff21023479",
+      "file": "Proofs/Erdos100Problem-aristotle.lean",
+      "problem_id": "erdos-100",
+      "submitted": "2026-01-19 02:40:27.259072",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "6204db25-a9ee-4ef3-9363-9f00285ea259",
+      "file": "Proofs/Erdos1004Problem-aristotle.lean",
+      "problem_id": "erdos-1004",
+      "submitted": "2026-01-19 02:40:25.428698",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "4ae8ae0c-1d07-40be-93f3-91ccaf5ae1f8",
+      "file": "Proofs/Erdos1002Problem-aristotle.lean",
+      "problem_id": "erdos-1002",
+      "submitted": "2026-01-19 02:40:23.736968",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "f31f3802-bfb3-439d-95f6-24d4a2aac7e9",
+      "file": "Proofs/Erdos1000Problem-aristotle.lean",
+      "problem_id": "erdos-1000",
+      "submitted": "2026-01-19 02:40:11.715382",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "f46357f3-f4fc-480e-9d45-76a5f699cbfe",
+      "file": "Proofs/Erdos92Problem.lean",
+      "problem_id": "erdos-92",
+      "submitted": "2026-01-14 03:46:20.063573",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "560b795b-ccd2-42f4-ac9c-f470a0552735",
+      "file": "Proofs/Erdos92Problem.lean",
+      "problem_id": "erdos-92",
+      "submitted": "2026-01-14 03:41:10.785885",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
+    },
+    {
+      "project_id": "8476fb3b-3882-4459-a171-5b7289b6f78a",
+      "file": "test-aristotle.lean",
+      "problem_id": "unknown",
+      "submitted": "2026-01-12 00:32:09.291303",
+      "status": "completed",
+      "notes": "Discovered on server (status: COMPLETE)"
     }
   ],
   "completed": [],
@@ -1914,7 +3714,7 @@
     "Aristotle = proof search (known results), Claude = creative work (OPEN problems)",
     "Don't send OPEN conjectures to Aristotle - no proof exists to find",
     "DO attempt OPEN problems ourselves - that's our mission!",
-    "ALLOW OVERNIGHT RUNS - Erdős #728 took 6 hours and succeeded with 1416 lines!",
+    "ALLOW OVERNIGHT RUNS - Erd\u0151s #728 took 6 hours and succeeded with 1416 lines!",
     "Aristotle can formalize hard theorems if a proof exists somewhere",
     "Use --no-wait for async workflow, check status next morning",
     "Classify sorries: TRIVIAL (fast), HARD (overnight OK), OPEN (Claude only)"
@@ -8855,6 +10655,6 @@
     "2026-01-11: Verified problems via erdosproblems.com directly",
     "REMOVED as OPEN: erdos-17, erdos-18, erdos-19, erdos-20",
     "erdos-205 and erdos-333 already have Lean proofs (check codebase)",
-    "erdos-69 (Tao-Teräväinen 2025) omitted - analytic proof may be hard to formalize"
+    "erdos-69 (Tao-Ter\u00e4v\u00e4inen 2025) omitted - analytic proof may be hard to formalize"
   ]
 }

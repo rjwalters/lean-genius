@@ -3,7 +3,7 @@ This file was edited by Aristotle.
 
 Lean version: leanprover/lean4:v4.24.0
 Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
-This project request had uuid: cf9ce399-9a59-4099-b9fe-f5cc3529758d
+This project request had uuid: c4139b2a-aa93-4ad9-8c46-3766bd1b7418
 
 To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
 Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
@@ -78,13 +78,11 @@ def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
 theorem complete_graph_edges (n : ℕ) :
     Finset.card (Finset.filter (fun p : Fin n × Fin n => p.1 < p.2) Finset.univ) =
     n * (n - 1) / 2 := by
-  have h_diag : Finset.card (Finset.filter (fun p : Fin n × Fin n => p.1 < p.2) (Finset.univ : Finset (Fin n × Fin n))) = Finset.sum (Finset.range n) (fun i => n - 1 - i) := by
-    rw [ Finset.card_filter ];
-    erw [ Finset.sum_product ];
-    simp +decide [ Finset.sum_ite, Finset.filter_lt_eq_Ioi ];
-    rw [ Finset.sum_range ];
-  rw [ h_diag, ← Finset.sum_range_id ];
-  conv_rhs => rw [ ← Finset.sum_range_reflect ] ;
+  rw [ Finset.card_filter ];
+  erw [ Finset.sum_product ] ; simp +decide [ Finset.sum_ite ];
+  simp +decide [ Finset.filter_lt_eq_Ioi ];
+  rw [ ← Finset.sum_range_id ];
+  rw [ ← Finset.sum_range_reflect, Finset.sum_range ]
 
 /-! ## Edge Colorings -/
 
@@ -191,7 +189,7 @@ theorem erdos_tuza_C4_bounds :
     ∃ c : ℝ, c > 0 ∧
     ∀ n : ℕ, n ≥ 1 →
       (n / 6 : ℝ) ≤ (1/4 - c) * n := by
-  exact ⟨ 1 / 12, by norm_num, fun n hn => by linarith ⟩
+  exact ⟨ 1 / 12, by norm_num, fun n hn => by nlinarith [ show ( n : ℝ ) ≥ 1 by norm_cast ] ⟩
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
