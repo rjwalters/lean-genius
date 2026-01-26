@@ -1,0 +1,82 @@
+{
+  "id": "erdos-125",
+  "title": "Erdős Problem #125: Positive Density of Digit-Restricted Sumsets",
+  "slug": "erdos-125",
+  "description": "Let A = {digits 0,1 in base 3}, B = {digits 0,1 in base 4}. Does A + B have positive density? Known: |A+B ∩ [1,x]| ≫ x^{0.9777}, upper density ≤ 0.696. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/125",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos125Problem.lean",
+    "tags": ["number-theory", "base-representations", "density", "additive-combinatorics"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 125,
+    "erdosUrl": "https://erdosproblems.com/125",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Burr, Erdős, Graham, and Li (1996) posed this question about digit-restricted sets. Melfi (2001) proved the counting function grows as x^{0.965}. Hasler and Melfi (2024) improved this to x^{0.9777} and showed the upper density is at most 0.696. The question of positive lower density remains open.",
+    "problemStatement": "Let A = {n ∈ ℕ : digits of n in base 3 are all 0 or 1} and B = {n ∈ ℕ : digits in base 4 are all 0 or 1}. Does A + B have positive lower density?",
+    "proofStrategy": "We define digitSet b (numbers with only 0,1 digits in base b), setA = digitSet 3, setB = digitSet 4, and setC = A + B. ErdosProblem125 asks if lim inf |C ∩ [1,x]|/x > 0. Melfi's and Hasler–Melfi's bounds are axiomatized. The generalization to multiple bases and the log-sum condition are stated.",
+    "keyInsights": [
+      "A and B are 'Cantor set integers' — sparse but structured subsets of ℕ",
+      "The counting function |C ∩ [1,x]| grows nearly linearly (exponent > 0.977)",
+      "Upper density ≤ 0.696 shows C cannot be all of ℕ even if dense",
+      "The condition log₃(2) + log₄(2) > 1 governs the generalization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "digit-sets",
+      "title": "Digit-Restricted Sets",
+      "startLine": 24,
+      "endLine": 38,
+      "summary": "Defines digitSet b, setA (base 3), and setB (base 4)."
+    },
+    {
+      "id": "sumset",
+      "title": "The Sumset",
+      "startLine": 40,
+      "endLine": 49,
+      "summary": "Defines setC = A + B and countingC |C ∩ [1,x]|."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 51,
+      "endLine": 60,
+      "summary": "States ErdosProblem125: does C have positive lower density?"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "Melfi (2001): ≫ x^{0.965}. Hasler–Melfi (2024): ≫ x^{0.9777}."
+    },
+    {
+      "id": "upper-density",
+      "title": "Upper Density Bound",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "Hasler–Melfi (2024): upper density ≤ 0.696."
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization to Other Bases",
+      "startLine": 86,
+      "endLine": 107,
+      "summary": "General question for multiple bases with Σ log_b(2) > 1 condition."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 125 asks whether the sumset of base-3 and base-4 'Cantor integers' has positive density. The counting function is nearly linear but positive density is unproved.",
+    "implications": "Understanding this would connect digital properties of integers to additive structure, bridging fractal geometry and number theory.",
+    "openQuestions": [
+      "Does A + B have positive lower density?",
+      "What is the exact lower density if it exists?",
+      "Does the generalization hold for all pairwise coprime bases satisfying the log condition?"
+    ]
+  }
+}
