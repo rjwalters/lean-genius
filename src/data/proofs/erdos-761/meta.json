@@ -1,0 +1,83 @@
+{
+  "id": "erdos-761",
+  "title": "Erdős Problem #761: Dichromatic Number and Chromatic Number",
+  "slug": "erdos-761",
+  "description": "Must a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a subgraph with large dichromatic number? The dichromatic number is the minimum k such that every orientation admits an acyclic k-coloring. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 761,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "dichromatic-number",
+      "orientations",
+      "open"
+    ],
+    "references": [
+      "Erdős–Gimbel [ErGi93]",
+      "Neumann-Lara (1982): dichromatic number definition",
+      "https://erdosproblems.com/761"
+    ],
+    "leanFile": "Proofs/Erdos761Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 35,
+      "endLine": 73,
+      "summary": "Define chromatic number, orientations, acyclic coloring, dichromatic number, cochromatic coloring, and cochromatic number."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 75,
+      "endLine": 92,
+      "summary": "Dichromatic number is at most chromatic number; cochromatic number is at most chromatic number; tournament dichromaticity characterization."
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures",
+      "startLine": 94,
+      "endLine": 112,
+      "summary": "The two open questions: (1) large χ implies large δ (Erdős–Neumann-Lara), (2) large ζ implies a subgraph with large δ (Erdős–Gimbel)."
+    },
+    {
+      "id": "implications",
+      "title": "Implications",
+      "startLine": 114,
+      "endLine": 124,
+      "summary": "Question 2 implies Question 1 since cochromatic number is bounded by chromatic number."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 126,
+      "endLine": 142,
+      "summary": "Dichromatic number bounds for perfect graphs, triangle-free graphs, and bipartite graphs."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Neumann-Lara introduced the dichromatic number in 1982. Erdős and Neumann-Lara asked whether large chromatic number forces large dichromatic number. Erdős and Gimbel (1993) extended this to cochromatic number, strengthening the question.",
+    "problemStatement": "Must a graph with large chromatic number have large dichromatic number? Must large cochromatic number force a subgraph with large dichromatic number?",
+    "proofStrategy": "We formalize orientations, acyclic colorings, and the dichromatic/cochromatic numbers using SimpleGraph from Mathlib. We state both open questions and prove that Question 2 implies Question 1.",
+    "keyInsights": [
+      "The dichromatic number δ(G) measures worst-case acyclic coloring across all orientations",
+      "δ(G) ≤ χ(G) always, but the reverse relationship (large χ ⟹ large δ) is open",
+      "Cochromatic coloring allows both cliques and independent sets as color classes",
+      "Question 2 implies Question 1 via the bound ζ(G) ≤ χ(G)",
+      "Bipartite graphs always have δ ≤ 2, so the question is interesting only for high chromatic number"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #761 remains open. Both questions about the relationship between dichromatic number and chromatic/cochromatic number are unresolved. The implication structure (Q2 ⟹ Q1) provides a natural hierarchy of difficulty.",
+    "implications": "Resolving these questions would clarify the fundamental relationship between undirected coloring complexity and directed acyclicity constraints, connecting structural graph theory with orientation problems.",
+    "openQuestions": [
+      "Is there a function f such that χ(G) ≥ f(k) implies δ(G) ≥ k?",
+      "Can triangle-free graphs with arbitrarily large chromatic number have bounded dichromatic number?",
+      "What is the dichromatic number of Kneser graphs?"
+    ]
+  }
+}
