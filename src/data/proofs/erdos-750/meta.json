@@ -1,0 +1,78 @@
+{
+  "id": "erdos-750",
+  "title": "Erdős Problem #750: Almost Bipartite Graphs with Infinite Chromatic Number",
+  "slug": "erdos-750",
+  "description": "For f(m) → ∞, does there exist an infinite-chromatic graph where every m-vertex subgraph has an independent set of size ≥ m/2 - f(m)? Solved for f(m) = εm (EHS82). Open for sublinear f.",
+  "meta": {
+    "erdosNumber": 750,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "independent-sets",
+      "ramsey-theory",
+      "open"
+    ],
+    "references": [
+      "Erdős (1969): original conjecture",
+      "Erdős–Hajnal (1967): c > 1/4 case",
+      "Erdős–Hajnal–Szemerédi (1982): all ε > 0",
+      "https://erdosproblems.com/750"
+    ],
+    "leanFile": "Proofs/Erdos750Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 40,
+      "summary": "Define HasInfiniteChromatic, maxIndSetSize, AlmostBipartite."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 42,
+      "endLine": 48,
+      "summary": "For any f(m) → ∞, there exists an f-almost-bipartite infinite-chromatic graph."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 50,
+      "endLine": 68,
+      "summary": "Erdős–Hajnal (1967) for c > 1/4; EHS82 for all ε > 0 (linear case)."
+    },
+    {
+      "id": "open-cases",
+      "title": "Open Cases and Connections",
+      "startLine": 70,
+      "endLine": 102,
+      "summary": "f(m) = √m, f(m) = log m still open. Connection to Problem #75."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős conjectured in 1969 that almost-bipartite graphs can have infinite chromatic number. Erdős and Hajnal proved this for large linear deviations in 1967, and with Szemerédi extended to all linear deviations in 1982. The sublinear case remains the frontier.",
+    "problemStatement": "For any f : ℕ → ℕ with f(m) → ∞, does there exist a graph G with χ(G) = ∞ such that every m-vertex subgraph has an independent set of size ≥ m/2 - f(m)?",
+    "proofStrategy": "We formalize the almost-bipartite property, state the main conjecture, and record the Erdős–Hajnal and EHS82 solutions for the linear case. The sublinear case is stated as open, with specific instances (√m, log m).",
+    "keyInsights": [
+      "Bipartite graphs have independent sets of exactly ⌈m/2⌉; deviation measures local non-bipartiteness",
+      "Erdős–Hajnal (1967) handles deviations > m/4",
+      "EHS82 (1982) handles any linear deviation εm",
+      "Sublinear deviations (√m, log m) remain completely open",
+      "Connection to Problem #75 on ℵ₁-chromatic graphs with n^{1-ε} independence"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #750 asks whether infinite chromatic number is compatible with being 'almost bipartite' locally. The linear case is settled (EHS82), but sublinear error functions f(m) = o(m) remain open, including f(m) = √m and f(m) = log m.",
+    "implications": "A resolution would illuminate the relationship between local and global graph coloring properties, a central theme in chromatic graph theory.",
+    "openQuestions": [
+      "Does the conjecture hold for f(m) = √m?",
+      "Does it hold for f(m) = log m?",
+      "What is the threshold growth rate for f(m)?",
+      "Is there a connection to Ramsey numbers?"
+    ]
+  }
+}
