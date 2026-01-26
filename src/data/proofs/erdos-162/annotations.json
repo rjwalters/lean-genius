@@ -1,0 +1,38 @@
+[
+  {
+    "id": "erdos-162-balanced",
+    "proofId": "erdos-162",
+    "type": "definition",
+    "range": { "startLine": 36, "endLine": 39 },
+    "title": "α-Balanced Subgraph",
+    "content": "IsBalanced means each colour has more than α·C(|S|,2) edges. This captures the discrepancy condition: no colour is too dominant.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-162-f",
+    "proofId": "erdos-162",
+    "type": "definition",
+    "range": { "startLine": 43, "endLine": 46 },
+    "title": "Function F(n, α)",
+    "content": "discrepancyF n α is the largest k such that some 2-colouring of K_n has every ≥k-vertex induced subgraph α-balanced.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-162-bounds",
+    "proofId": "erdos-162",
+    "type": "result",
+    "range": { "startLine": 56, "endLine": 64 },
+    "title": "Logarithmic Bounds",
+    "content": "The probabilistic method gives c₁(α)·log n < F(n,α) < c₂(α)·log n, establishing logarithmic growth but not the exact constant.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-162-conjecture",
+    "proofId": "erdos-162",
+    "type": "conjecture",
+    "range": { "startLine": 69, "endLine": 75 },
+    "title": "Erdős Problem 162",
+    "content": "F(n, α) / log n → c_α for some constant c_α > 0. The limit should exist and depend continuously on α.",
+    "significance": "essential"
+  }
+]
