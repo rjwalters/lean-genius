@@ -1,0 +1,88 @@
+{
+  "id": "erdos-450",
+  "title": "Erdős Problem #450: Divisor Density in Short Intervals",
+  "slug": "erdos-450",
+  "description": "How large must y be so that ≤ ε fraction of integers in (x,x+y) have a divisor in (n,2n)? Cambie: 'for all x' fails in some regimes. Erdős–Graham 1980, p.89. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/450",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos450Problem.lean",
+    "tags": [
+      "number-theory",
+      "divisors",
+      "density",
+      "short-intervals"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 450,
+    "erdosUrl": "https://erdosproblems.com/450",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #450 from Erdős–Graham (1980, p.89) asks about the density of integers having a divisor in (n, 2n) within short intervals. Cambie showed that the 'for all x' interpretation fails for certain parameter ranges, using Ford's work on divisor distribution.",
+    "problemStatement": "How large must y = y(ε, n) be such that the number of integers in (x, x+y) with a divisor in (n, 2n) is at most ε·y?",
+    "proofStrategy": "We define HasDivisorIn (existence of a divisor in (n, 2n)), the counting function countWithDivisor, density bounds, and state both the 'for all x' and 'exists x' versions. Cambie's results and Ford's divisor distribution are axiomatized.",
+    "keyInsights": [
+      "The problem has a quantifier subtlety: 'for all x' vs 'exists x'",
+      "Cambie: the 'for all x' version fails when ε·(log n)^δ·(log log n)^{3/2} → ∞",
+      "For ε ≪ 1/n, y(ε, n) ∼ 2n (intervals of length 2n suffice)",
+      "Ford's work on divisor anatomy is foundational",
+      "The problem connects divisor distribution to interval density"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisors",
+      "title": "Part I: Divisors in an Interval",
+      "startLine": 31,
+      "endLine": 45,
+      "summary": "Defines HasDivisorIn and countWithDivisor."
+    },
+    {
+      "id": "density",
+      "title": "Part II: The Density Condition",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "Defines DensityBound using rational ε approximation."
+    },
+    {
+      "id": "for-all",
+      "title": "Part III: The Problem (For All x)",
+      "startLine": 56,
+      "endLine": 66,
+      "summary": "ErdosProblem450_ForAll: density bound holds for all starting points x."
+    },
+    {
+      "id": "existential",
+      "title": "Part IV: The Problem (Existential x)",
+      "startLine": 68,
+      "endLine": 78,
+      "summary": "ErdosProblem450_Exists: density bound holds for some x."
+    },
+    {
+      "id": "known-results",
+      "title": "Part V: Known Results",
+      "startLine": 80,
+      "endLine": 114,
+      "summary": "Cambie's observations on failure of 'for all x' version and the small-ε regime. Ford's divisor distribution."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 116,
+      "endLine": 127,
+      "summary": "Status: open. Depends on quantifier over x. Cambie showed failures in some regimes."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #450 asks for the interval length y needed to bound the density of integers with a divisor in (n, 2n). The answer depends on quantifier choice (for all x vs exists x). Cambie showed the universal version fails for certain ε, n ranges. Open.",
+    "implications": "Resolution would deepen understanding of divisor distribution in short intervals, with connections to the anatomy of integers and multiplicative number theory.",
+    "openQuestions": [
+      "For which ε and n does y(ε, n) exist in the 'for all x' version?",
+      "What is the exact threshold for the 'exists x' version?",
+      "Can Ford's techniques give tighter bounds on y(ε, n)?"
+    ]
+  }
+}
