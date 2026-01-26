@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-864-ann-reprcount",
+    "proofId": "erdos-864",
+    "range": { "startLine": 28, "endLine": 30 },
+    "type": "definition",
+    "title": "Sum Representation Count",
+    "content": "The number of ordered pairs (a,b) with a ≤ b in A summing to n. A collision occurs when this count ≥ 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-864-ann-almostsidon",
+    "proofId": "erdos-864",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "Almost-Sidon Set",
+    "content": "A set where at most one integer has multiple sum representations. Strictly weaker than the Sidon condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-864-ann-conjecture",
+    "proofId": "erdos-864",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "The maximum almost-Sidon set in {1,...,N} has size (1+o(1))·(2/√3)·√N ≈ 1.155·√N.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-864-ann-lower",
+    "proofId": "erdos-864",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "theorem",
+    "title": "Erdős–Freud Lower Bound",
+    "content": "Reflected Sidon construction achieves (2/√3)·√N. Take Sidon B ⊆ {1,...,N/3} and form B ∪ {N−b}.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-864-ann-sidonupper",
+    "proofId": "erdos-864",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "theorem",
+    "title": "Sidon Upper Bound",
+    "content": "Pure Sidon sets satisfy |A| ≤ √N + O(N^{1/4}). Almost-Sidon allows ~15.5% more.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-864-ann-implies",
+    "proofId": "erdos-864",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "theorem",
+    "title": "Sidon Implies Almost-Sidon",
+    "content": "Every Sidon set is trivially almost-Sidon. Proved: zero collisions ≤ one allowed collision.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-864-ann-range",
+    "proofId": "erdos-864",
+    "range": { "startLine": 99, "endLine": 102 },
+    "type": "theorem",
+    "title": "Sum Range Constraint",
+    "content": "Almost-Sidon sums use ≥ C(|A|,2)+|A|−1 distinct values in [2,2N]. This constrains |A|.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-864-ann-reflected",
+    "proofId": "erdos-864",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "theorem",
+    "title": "Reflected Construction",
+    "content": "B ∪ (N−B) is almost-Sidon when B is Sidon in {1,...,N/3}. The only collision is at sum N.",
+    "significance": "supporting"
+  }
+]
