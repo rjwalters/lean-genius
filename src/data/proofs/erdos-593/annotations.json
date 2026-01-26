@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-593-hypergraph-def",
+    "proofId": "erdos-593",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 41 },
+    "title": "3-Uniform Hypergraph and Coloring",
+    "content": "Hypergraph3 is a structure with edges that are 3-element Finsets. IsProperColoring requires no monochromatic edge. ChromaticNumberLE uses Cardinal to bound the number of colors.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-593-unavoidable",
+    "proofId": "erdos-593",
+    "type": "conjecture",
+    "range": { "startLine": 57, "endLine": 72 },
+    "title": "Erdős Problem 593",
+    "content": "A finite 3-uniform hypergraph F is 'unavoidable' if it appears as a subhypergraph in every 3-uniform hypergraph of chromatic number > ℵ₀. The problem asks to characterize all such F. $500 prize.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-593-graph-case",
+    "proofId": "erdos-593",
+    "type": "result",
+    "range": { "startLine": 78, "endLine": 97 },
+    "title": "Solved Graph Case",
+    "content": "For ordinary graphs (2-uniform), the characterization is complete: a finite graph is unavoidable in every graph of chromatic number ≥ ℵ₁ if and only if it is bipartite. Odd cycles need not appear.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-593-2colorable",
+    "proofId": "erdos-593",
+    "type": "result",
+    "range": { "startLine": 103, "endLine": 111 },
+    "title": "2-Colorable Hypergraphs Are Unavoidable",
+    "content": "Any 2-colorable (properly 2-chromatic) finite 3-uniform hypergraph is unavoidable. This is the natural analog of bipartiteness for the 3-uniform case.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-593-k43",
+    "proofId": "erdos-593",
+    "type": "context",
+    "range": { "startLine": 113, "endLine": 116 },
+    "title": "Complete 3-Uniform Hypergraph K₄³",
+    "content": "K₄³ (all 4 triples on 4 vertices) has chromatic number 3 and is not 2-colorable. Whether non-2-colorable hypergraphs can be unavoidable is part of the open question.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-593-egh",
+    "proofId": "erdos-593",
+    "type": "context",
+    "range": { "startLine": 122, "endLine": 127 },
+    "title": "Erdős–Galvin–Hajnal Framework",
+    "content": "Erdős, Galvin, and Hajnal (1975) investigated the general question of which finite structures must appear in structures of large chromatic number, establishing the framework for Problem 593.",
+    "significance": "supporting"
+  }
+]
