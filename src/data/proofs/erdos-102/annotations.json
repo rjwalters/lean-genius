@@ -1,0 +1,56 @@
+[
+  {
+    "id": "rich-line-count",
+    "proofId": "erdos-102",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "definition",
+    "title": "Rich Line Count",
+    "content": "The number of lines containing at least 4 points of the configuration. The problem assumes at least cn² such lines exist.",
+    "significance": "high"
+  },
+  {
+    "id": "max-collinear",
+    "proofId": "erdos-102",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "Maximum Collinear Points",
+    "content": "The maximum number of points lying on any single line. This is h_c(n), the quantity to estimate.",
+    "significance": "high"
+  },
+  {
+    "id": "main-problem",
+    "proofId": "erdos-102",
+    "range": { "startLine": 48, "endLine": 52 },
+    "type": "conjecture",
+    "title": "Erdős Problem #102",
+    "content": "h_c(n) → ∞: if cn² lines contain ≥ 4 points, the maximum collinear count grows with n. The divergence question remains open.",
+    "significance": "high"
+  },
+  {
+    "id": "upper-bound",
+    "proofId": "erdos-102",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "theorem",
+    "title": "Upper Bound h_c(n) ≤ C√n",
+    "content": "The maximum collinear count is at most O(√n) when cn² rich lines exist. This is the best known upper bound.",
+    "significance": "high"
+  },
+  {
+    "id": "hunter",
+    "proofId": "erdos-102",
+    "range": { "startLine": 64, "endLine": 70 },
+    "type": "theorem",
+    "title": "Hunter's Counterexample",
+    "content": "Erdős conjectured h_c(n) ≫ √n, but Hunter disproved this using lattice point configurations in {1,...,m}^d, achieving h_c(n) ≪ n^{1/log(1/c)}.",
+    "significance": "high"
+  },
+  {
+    "id": "connection-101",
+    "proofId": "erdos-102",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "note",
+    "title": "Connection to Problem #101",
+    "content": "Problem #101 asks whether four-point lines are o(n²). Showing h_c(n) ≥ 5 for all c would settle #101.",
+    "significance": "medium"
+  }
+]

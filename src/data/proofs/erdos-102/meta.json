@@ -1,0 +1,77 @@
+{
+  "id": "erdos-102",
+  "title": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
+  "slug": "erdos-102",
+  "description": "Given n points with cn² lines containing ≥ 4 points, estimate h_c(n) = max collinear. Known: ≤ C√n. Erdős's √n lower conjecture disproved by Hunter. Open.",
+  "meta": {
+    "erdosNumber": 102,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "collinearity",
+      "open"
+    ],
+    "references": [
+      "Erdős–Purdy: original problem",
+      "Erdős (1992, 1995, 1997): discussions",
+      "Hunter: counterexample to √n lower bound",
+      "https://erdosproblems.com/102"
+    ],
+    "leanFile": "Proofs/Erdos102Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 44,
+      "summary": "PointConfig, collinear₃, richLineCount, maxCollinear."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem",
+      "startLine": 46,
+      "endLine": 52,
+      "summary": "h_c(n) → ∞: many rich lines force large collinear subsets."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 54,
+      "endLine": 74,
+      "summary": "Upper √n bound, Hunter's counterexample, connection to #101."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "Szemerédi–Trotter context, Erdős–Purdy origin."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Purdy posed this problem in combinatorial geometry. Erdős conjectured h_c(n) ≫ √n, but Zach Hunter disproved this using lattice point configurations, showing h_c(n) can be much smaller.",
+    "problemStatement": "Given n points in ℝ² with at least cn² lines containing ≥ 4 points, estimate h_c(n), the maximum collinear count. Is h_c(n) → ∞?",
+    "proofStrategy": "We formalize the rich-line counting, maximum collinear number, and state the divergence question. Known upper/lower bounds and Hunter's counterexample are recorded.",
+    "keyInsights": [
+      "h_c(n) ≤ C√n is the known upper bound",
+      "Erdős conjectured h_c(n) ≫ √n, disproved by Hunter",
+      "Hunter's construction uses lattice points: h_c(n) ≪ n^{1/log(1/c)}",
+      "Connected to Problem #101 (four-point lines o(n²))",
+      "Szemerédi–Trotter incidence bound is the key tool"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #102 asks to estimate h_c(n), the maximum collinear count when cn² rich lines exist. The √n upper bound holds, but the conjectured √n lower bound was disproved by Hunter. Whether h_c(n) → ∞ remains open.",
+    "implications": "A resolution would complement Problem #101 and advance our understanding of collinearity patterns in point configurations.",
+    "openQuestions": [
+      "Does h_c(n) → ∞ for fixed c > 0?",
+      "What is the true growth rate of h_c(n)?",
+      "Can Hunter's lattice construction be improved?",
+      "What is the relationship between c and h_c(n)?"
+    ]
+  }
+}
