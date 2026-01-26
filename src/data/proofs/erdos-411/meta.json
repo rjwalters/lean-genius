@@ -1,0 +1,82 @@
+{
+  "id": "erdos-411",
+  "title": "Erdős Problem #411: Iterated Totient Sums and Doubling",
+  "slug": "erdos-411",
+  "description": "Let g(n) = n + φ(n) and g_k(n) = g^k(n). For which n and r is g_{k+r}(n) = 2·g_k(n) for all large k? Known for r = 2: n = 10, 94. OPEN in general.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/411",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos411Problem.lean",
+    "tags": ["number-theory", "iterated-functions", "totient", "arithmetic-dynamics"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 411,
+    "erdosUrl": "https://erdosproblems.com/411",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980, p. 81) posed this question about iterating g(n) = n + φ(n). The function g always increases n, and the iterates g_k(n) grow roughly linearly. The question asks when this growth is exactly doubling with a fixed period. Steinerberger (2025) reduced the r = 2 case to a single equation. Cambie found solutions with other ratios.",
+    "problemStatement": "Let g(n) = n + φ(n) and g_k = g ∘ ⋯ ∘ g (k times). For which n and r is g_{k+r}(n) = 2·g_k(n) for all sufficiently large k?",
+    "proofStrategy": "We define totientStep (g), iteratedTotientStep (g_k), and DoublingRelation. ErdosProblem411 asks for a characterization of all solution pairs (n, r). Known solutions (n = 10, 94 for r = 2) are axiomatized. GeneralRatioRelation extends to arbitrary multiplicative ratios. Steinerberger's equivalence and structural properties are included.",
+    "keyInsights": [
+      "g(n) = n + φ(n) is a natural arithmetic iteration arising from the totient function",
+      "The r = 2 doubling case reduces to φ(n) + φ(n + φ(n)) = n (Steinerberger)",
+      "Cambie found solutions with ratios 3 and 4, not just doubling",
+      "All known r = 2 solutions have form n = 2^l · p for small p"
+    ]
+  },
+  "sections": [
+    {
+      "id": "iteration-function",
+      "title": "The Iteration Function",
+      "startLine": 19,
+      "endLine": 29,
+      "summary": "Defines totientStep g(n) = n + φ(n) and iteratedTotientStep g_k(n) by recursion."
+    },
+    {
+      "id": "doubling-relation",
+      "title": "The Doubling Relation",
+      "startLine": 31,
+      "endLine": 38,
+      "summary": "Defines DoublingRelation: g_{k+r}(n) = 2·g_k(n) for all large k."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 40,
+      "endLine": 50,
+      "summary": "States ErdosProblem411: characterize all (n, r) with the doubling property."
+    },
+    {
+      "id": "known-solutions",
+      "title": "Known Solutions",
+      "startLine": 52,
+      "endLine": 73,
+      "summary": "Axiomatizes known solutions: n = 10, 94 for r = 2; Cambie's ratio-3 and ratio-4 solutions."
+    },
+    {
+      "id": "steinerberger-reduction",
+      "title": "Steinerberger's Reduction",
+      "startLine": 75,
+      "endLine": 83,
+      "summary": "The r = 2 case is equivalent to φ(n) + φ(n + φ(n)) = n."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 85,
+      "endLine": 109,
+      "summary": "Even preservation under g, Cambie's conjecture on the form of solutions, and monotonicity of g."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 411 asks for all (n, r) such that iterating g(n) = n + φ(n) satisfies g_{k+r}(n) = 2·g_k(n) for large k. Solutions are known for r = 2 (n = 10, 94) and for general ratios (Cambie). The problem remains open.",
+    "implications": "A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition.",
+    "openQuestions": [
+      "Are there finitely or infinitely many (n, r) with the doubling property?",
+      "Does Cambie's conjecture (n = 2^l · p for small p) hold for all r = 2 solutions?",
+      "What ratios c besides 2, 3, 4 admit solutions to g_{k+r}(n) = c·g_k(n)?"
+    ]
+  }
+}
