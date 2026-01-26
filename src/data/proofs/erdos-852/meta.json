@@ -1,0 +1,68 @@
+{
+  "id": "erdos-852",
+  "title": "Erdős Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps",
+  "slug": "erdos-852",
+  "description": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) → ∞.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/852",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos852Problem.lean",
+    "tags": ["number theory", "prime gaps", "sieve theory"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 852,
+    "erdosUrl": "https://erdosproblems.com/852",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this question about the structure of consecutive prime gaps in 1985. The problem asks for the growth rate of h(x), the maximal length of a run of distinct consecutive prime gaps below x. Brun's sieve establishes that h(x) → ∞, but the precise growth rate remains unknown.",
+    "problemStatement": "Let dₙ = pₙ₊₁ − pₙ. Define h(x) as the maximal k such that some consecutive run dₙ, dₙ₊₁, …, dₙ₊ₖ₋₁ with pₙ < x has all distinct values. Is h(x) > (log x)^c for some c > 0? Is h(x) = o(log x)?",
+    "proofStrategy": "We axiomatize the prime sequence, prime gaps, and the notion of distinct-gap runs. The function h(x) is defined with witness and optimality properties. Brun's divergence result and the two open conjectures are stated.",
+    "keyInsights": [
+      "Prime gaps dₙ = pₙ₊₁ − pₙ encode the local distribution of primes",
+      "Brun's sieve ensures h(x) → ∞: long runs of distinct gaps exist",
+      "The lower bound conjecture (log x)^c suggests polynomial-in-log growth",
+      "The upper bound o(log x) would place h(x) strictly below logarithmic scale"
+    ]
+  },
+  "sections": [
+    {
+      "id": "primes-gaps",
+      "title": "Prime Sequence and Gaps",
+      "startLine": 17,
+      "endLine": 33,
+      "summary": "Defines the n-th prime, prime gaps dₙ = pₙ₊₁ − pₙ, and their basic properties."
+    },
+    {
+      "id": "distinct-runs",
+      "title": "Distinct Gap Runs",
+      "startLine": 35,
+      "endLine": 51,
+      "summary": "Defines runs of distinct consecutive gaps and the function h(x) with witness and optimality."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 53,
+      "endLine": 60,
+      "summary": "Records Brun's sieve divergence result and initial gap values."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős Conjectures",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "States the lower bound (log x)^c and upper bound o(log x) conjectures."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 852 investigates the growth rate of maximal distinct-gap runs among consecutive primes. While Brun's sieve shows h(x) → ∞, the conjectured growth rate between (log x)^c and o(log x) remains unresolved.",
+    "implications": "Determining h(x) would reveal deep structure in how prime gaps vary locally, connecting to the Hardy–Littlewood and Maier phenomena.",
+    "openQuestions": [
+      "Is h(x) > (log x)^c for some constant c > 0?",
+      "Is h(x) = o(log x)?",
+      "What is the exact asymptotic growth rate of h(x)?"
+    ]
+  }
+}

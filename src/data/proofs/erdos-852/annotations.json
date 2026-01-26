@@ -1,0 +1,74 @@
+[
+  {
+    "id": "prime-gap",
+    "proofId": "erdos-852",
+    "type": "definition",
+    "title": "Prime Gap",
+    "content": "The n-th prime gap dₙ = pₙ₊₁ − pₙ measures the distance between consecutive primes.",
+    "significance": "critical",
+    "range": {
+      "startLine": 29,
+      "endLine": 30
+    }
+  },
+  {
+    "id": "distinct-run",
+    "proofId": "erdos-852",
+    "type": "definition",
+    "title": "Distinct Gap Run",
+    "content": "A run of k consecutive prime gaps starting at index n is distinct if all k gap values are different from each other.",
+    "significance": "critical",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    }
+  },
+  {
+    "id": "h-function",
+    "proofId": "erdos-852",
+    "type": "definition",
+    "title": "Maximal Distinct Run Function",
+    "content": "h(x) is the maximum length k such that some run of k consecutive distinct prime gaps occurs among primes below x.",
+    "significance": "critical",
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    }
+  },
+  {
+    "id": "brun-divergence",
+    "proofId": "erdos-852",
+    "type": "theorem",
+    "title": "Brun's Sieve Divergence",
+    "content": "Brun's sieve implies h(x) → ∞ as x → ∞: the maximal length of distinct consecutive gap runs grows without bound.",
+    "significance": "critical",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    }
+  },
+  {
+    "id": "lower-bound-conjecture",
+    "proofId": "erdos-852",
+    "type": "concept",
+    "title": "Lower Bound Conjecture",
+    "content": "Erdős conjectured h(x) > (log x)^c for some constant c > 0, suggesting polynomial-in-logarithm growth.",
+    "significance": "key",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    }
+  },
+  {
+    "id": "upper-bound-conjecture",
+    "proofId": "erdos-852",
+    "type": "concept",
+    "title": "Upper Bound Conjecture",
+    "content": "Erdős also asked whether h(x) = o(log x), meaning h(x) grows strictly slower than logarithmically.",
+    "significance": "key",
+    "range": {
+      "startLine": 72,
+      "endLine": 77
+    }
+  }
+]
