@@ -1,0 +1,56 @@
+[
+  {
+    "id": "admissible",
+    "proofId": "erdos-430",
+    "range": { "startLine": 32, "endLine": 35 },
+    "type": "definition",
+    "title": "Admissible Integers",
+    "content": "An integer m ∈ [1,n) is admissible at level n if every prime factor p of m satisfies p > n − m. This means m is 'close to n' relative to its factorization — its smoothness is bounded by its distance from n.",
+    "significance": "high"
+  },
+  {
+    "id": "greedy-construction",
+    "proofId": "erdos-430",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Greedy Sequence Construction",
+    "content": "Starting from a₁ = n−1, each subsequent term is the largest admissible integer strictly below the previous term. The sequence is strictly decreasing and terminates when no admissible element remains.",
+    "significance": "high"
+  },
+  {
+    "id": "n8-example",
+    "proofId": "erdos-430",
+    "range": { "startLine": 60, "endLine": 63 },
+    "type": "example",
+    "title": "n = 8 Example",
+    "content": "For n = 8: a₁ = 7 (prime, factor 7 > 8−7=1), a₂ = 5 (prime, factor 5 > 8−5=3), then no admissible integer exists below 5. The sequence is entirely prime for this small n.",
+    "significance": "medium"
+  },
+  {
+    "id": "problem-385",
+    "proofId": "erdos-430",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "note",
+    "title": "Equivalence with Problem #385",
+    "content": "Adenwalla observed that Problem #430 is equivalent to the first part of Problem #385: for large n, there exists a composite m < n with all prime factors exceeding n − m. This connects the greedy sequence to smooth number theory.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-430",
+    "range": { "startLine": 76, "endLine": 79 },
+    "type": "conjecture",
+    "title": "Main Conjecture",
+    "content": "For sufficiently large n, the greedy sequence must contain at least one composite number. Selfridge's calculations support this but no proof exists. The difficulty lies in showing primes cannot fill all admissible slots.",
+    "significance": "high"
+  },
+  {
+    "id": "small-n",
+    "proofId": "erdos-430",
+    "range": { "startLine": 81, "endLine": 84 },
+    "type": "note",
+    "title": "Small n Behavior",
+    "content": "For small n, the greedy sequence may consist entirely of primes (or 1). The conjecture asserts this all-prime behavior cannot persist for arbitrarily large n, which requires understanding the density of primes near n.",
+    "significance": "medium"
+  }
+]
