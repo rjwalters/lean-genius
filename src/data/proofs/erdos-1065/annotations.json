@@ -1,0 +1,56 @@
+[
+  {
+    "id": "two-time-prime",
+    "proofId": "erdos-1065",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "definition",
+    "title": "2^k · q + 1 Form",
+    "content": "A prime p has this form if p − 1 = 2^k · q for some prime q and k ≥ 0. This restricts the factorization of p − 1 to a power of 2 and exactly one odd prime factor.",
+    "significance": "high"
+  },
+  {
+    "id": "two-three-time-prime",
+    "proofId": "erdos-1065",
+    "range": { "startLine": 32, "endLine": 33 },
+    "type": "definition",
+    "title": "2^k · 3^l · q + 1 Form",
+    "content": "The relaxed form allowing p − 1 = 2^k · 3^l · q. This is a weaker condition than the 2^k · q + 1 form (set l = 0 to recover the stronger version).",
+    "significance": "high"
+  },
+  {
+    "id": "conjecture-a",
+    "proofId": "erdos-1065",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "conjecture",
+    "title": "Erdős Problem #1065a",
+    "content": "There are infinitely many primes of the form 2^k · q + 1. This is the stronger of the two variants.",
+    "significance": "high"
+  },
+  {
+    "id": "conjecture-b",
+    "proofId": "erdos-1065",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "conjecture",
+    "title": "Erdős Problem #1065b",
+    "content": "There are infinitely many primes of the form 2^k · 3^l · q + 1. Weaker than 1065a since the 2^k · q + 1 form is a special case (l = 0).",
+    "significance": "high"
+  },
+  {
+    "id": "sophie-germain",
+    "proofId": "erdos-1065",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "note",
+    "title": "Sophie Germain Connection",
+    "content": "When k = 1, primes p = 2q + 1 are safe primes. The infinitude of safe primes is itself a famous open conjecture. Settling it positively would resolve the k = 1 case of 1065a.",
+    "significance": "medium"
+  },
+  {
+    "id": "smooth-structure",
+    "proofId": "erdos-1065",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "note",
+    "title": "Smooth Number Structure",
+    "content": "The condition p = 2^k · q + 1 means p − 1 is a 2-smooth number times a single odd prime. This connects to the broader study of how 'smooth' p − 1 can be for primes p.",
+    "significance": "medium"
+  }
+]
