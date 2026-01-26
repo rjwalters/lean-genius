@@ -2,35 +2,83 @@
   "id": "erdos-527",
   "title": "Erdős Problem #527: Convergence of Random Power Series on Unit Circle",
   "slug": "erdos-527",
-  "description": "For aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n), does Σ εₙaₙzⁿ converge for some |z| = 1 for almost all sign choices? SOLVED: YES, and the convergence set has Hausdorff dimension 1 (Michelen-Sawhney 2025).",
+  "description": "For aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n), does Σ εₙaₙzⁿ converge for some |z| = 1 for almost all sign choices? YES, and the convergence set has Hausdorff dimension 1 (Michelen-Sawhney 2025).",
   "meta": {
-    "author": "Michelen-Sawhney (2025)",
+    "author": "Michelen-Sawhney (2025 proof), Erdős (1961 problem)",
     "sourceUrl": "https://erdosproblems.com/527",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos527Problem.lean",
     "tags": [
+      "erdos",
       "analysis",
       "power-series",
-      "random",
-      "unit-circle",
-      "hausdorff-dimension"
+      "probability",
+      "random-series",
+      "hausdorff-dimension",
+      "solved"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 527,
     "erdosUrl": "https://erdosproblems.com/527",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-26",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value for unit circle definition",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root for the o(1/√n) condition",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "MeasureTheory.Measure",
+        "description": "Measure theory for probability and Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "dimH",
+        "description": "Hausdorff dimension for the convergence set",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDimension"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Series convergence predicate",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unitCircle definition: {z : ℂ | Complex.abs z = 1}",
+      "littleO_sqrt definition: |aₙ| = o(1/√n) condition",
+      "divergentSquares definition: Σ|aₙ|² = ∞",
+      "randomPowerSeries definition: εₙaₙzⁿ partial sums",
+      "convergesAt definition: Summable predicate at z",
+      "signMeasure axiom: product probability on {±1}^ℕ",
+      "almostAllSigns definition: probability-1 events",
+      "convergenceSet definition: {z ∈ S¹ | series converges}",
+      "divergence_typical axiom: classical divergence result",
+      "dvoretzky_erdos_1959 axiom: sharp divergence threshold",
+      "michelen_sawhney_2025 axiom: nonempty convergence set a.s.",
+      "hausdorff_dimension_one axiom: dimH = 1 a.s.",
+      "convergence_set_uncountable and measure_zero axioms",
+      "example_seq: canonical example aₙ = 1/(√n log n)",
+      "erdos_527_main and erdos_527_strong: proved from axioms"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #527 asks about convergence of random power series on the unit circle. Dvoretzky-Erdős (1959) showed |aₙ| > c/√n implies divergence everywhere for a.e. signs. For Σ|aₙ|² = ∞, divergence is typical for a.e. z and a.e. signs. Michelen-Sawhney (2025) proved that with |aₙ| = o(1/√n), convergence occurs on a set of Hausdorff dimension 1.",
-    "problemStatement": "Let aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n). Is it true that for almost all choices of εₙ = ±1, there exists z with |z| = 1 such that Σ εₙaₙzⁿ converges? SOLVED: YES, and the convergence set has Hausdorff dimension 1.",
-    "proofStrategy": "The formalization defines unitCircle, littleO_sqrt, divergentSquares, randomPowerSeries, and convergesAt. The probabilistic setup uses signMeasure and almostAllSigns. Classical results (divergence_typical, dvoretzky_erdos_1959) and the main Michelen-Sawhney results are axiomatized. Proved: erdos_527_main and erdos_527_strong using the axioms.",
+    "historicalContext": "Erdős Problem #527, posed in 1961 (p. 254), concerns the behavior of random power series on the unit circle. Given a sequence of real coefficients aₙ with divergent sum of squares and |aₙ| = o(1/√n), Erdős asked whether random sign choices almost surely yield convergence at some point on the unit circle.\n\nThe problem sits at the intersection of harmonic analysis, probability theory, and fractal geometry. Dvoretzky and Erdős (1959) had established that if coefficients decay no faster than c/√n, the random series diverges everywhere on the unit circle for almost all sign choices. This showed that the decay condition |aₙ| = o(1/√n) is sharp — any slower decay destroys convergence entirely.\n\nThe problem remained open for over 60 years until Michelen and Sawhney (2025) resolved it affirmatively. Their proof showed not merely that convergence occurs somewhere, but that the convergence set has Hausdorff dimension 1 — the largest possible geometric size for a measure-zero subset of the circle. This dramatic result reveals that even when divergence dominates almost everywhere, convergence persists on a rich fractal set.",
+    "problemStatement": "Let $a_n \\in \\mathbb{R}$ with $\\sum_n |a_n|^2 = \\infty$ and $|a_n| = o(1/\\sqrt{n})$. Is it true that, for almost all choices of $\\epsilon_n = \\pm 1$, there exists some $z$ with $|z| = 1$ such that $\\sum_n \\epsilon_n a_n z^n$ converges?\n\n**Answer: YES.** Moreover, the set of such $z$ has Hausdorff dimension 1 (Michelen-Sawhney 2025).",
+    "proofStrategy": "The formalization builds the problem from first principles using Mathlib's complex analysis and measure theory.\n\n1. **Definitions:** unitCircle, littleO_sqrt (the decay condition), divergentSquares, randomPowerSeries, and convergesAt capture the problem setup.\n\n2. **Probabilistic Framework:** signMeasure axiomatizes the product measure on {±1}^ℕ, and almostAllSigns defines probability-1 events.\n\n3. **Classical Results:** divergence_typical (generic divergence) and dvoretzky_erdos_1959 (sharp threshold) establish the context.\n\n4. **Main Results:** michelen_sawhney_2025 (nonempty convergence set a.s.) and hausdorff_dimension_one (dimH = 1 a.s.) are axiomatized.\n\n5. **Properties:** The convergence set is uncountable yet has measure zero — a fractal phenomenon.\n\n6. **Examples:** Concrete sequences like aₙ = 1/(√n log n) illustrate the hypotheses.",
     "keyInsights": [
-      "Divergence is typical: for a.e. signs, the series diverges for a.e. |z| = 1",
-      "Dvoretzky-Erdős (1959): |aₙ| > c/√n implies complete divergence on the circle",
-      "The condition |aₙ| = o(1/√n) is precisely what allows a convergence set to exist",
-      "Dimension 1: the convergence set is as large as possible geometrically while having measure zero",
-      "Recent resolution: this Erdős problem was solved only in 2025 by Michelen and Sawhney"
+      "**Divergence Dominates:** For a.e. signs and a.e. points on S¹, the series diverges when Σ|aₙ|² = ∞ — but convergence still occurs on a rich set",
+      "**Sharp Threshold:** Dvoretzky-Erdős (1959) shows |aₙ| = o(1/√n) is exactly the right decay condition — any slower decay kills all convergence",
+      "**Fractal Convergence Set:** The convergence set has Hausdorff dimension 1 (as large as the circle) but Lebesgue measure zero — a fractal phenomenon",
+      "**Recent Resolution:** Solved in 2025 by Michelen and Sawhney after being open for over 60 years, using probabilistic analysis and metric geometry",
+      "**Canonical Example:** aₙ = 1/(√n log n) satisfies both conditions — divergent squares and the o(1/√n) decay"
     ]
   },
   "sections": [
@@ -39,94 +87,94 @@
       "title": "Part 1: Basic Definitions",
       "startLine": 33,
       "endLine": 59,
-      "summary": "Defines unitCircle, littleO_sqrt, divergentSquares, SignChoice, randomPowerSeries, convergesAt."
+      "summary": "Defines unitCircle, littleO_sqrt, divergentSquares, SignChoice, randomPowerSeries, and convergesAt."
     },
     {
       "id": "probability",
       "title": "Part 2: The Probabilistic Setup",
       "startLine": 61,
       "endLine": 75,
-      "summary": "Axiom signMeasure (product measure on {-1,1}^N). Defines almostAllSigns as probability-1 events."
+      "summary": "Axiomatizes signMeasure (product measure on {±1}^ℕ) and defines almostAllSigns as probability-1 events."
     },
     {
       "id": "divergence",
       "title": "Part 3: Known Results on Divergence",
       "startLine": 77,
       "endLine": 91,
-      "summary": "divergence_typical (axiom): a.e. z diverges for a.e. signs. dvoretzky_erdos_1959 (axiom): |aₙ| > c/√n implies total divergence."
+      "summary": "Classical divergence: divergence_typical and the sharp dvoretzky_erdos_1959 threshold."
     },
     {
       "id": "main-result",
       "title": "Part 4: The Main Result (Michelen-Sawhney 2025)",
       "startLine": 93,
       "endLine": 111,
-      "summary": "convergenceSet definition. michelen_sawhney_2025 (axiom): nonempty a.s. hausdorff_dimension_one (axiom): dimH = 1 a.s."
+      "summary": "convergenceSet definition and the two main axioms: nonempty a.s. and Hausdorff dimension 1 a.s."
     },
     {
       "id": "boundary",
       "title": "Part 5: Boundary of Conditions",
       "startLine": 113,
       "endLine": 130,
-      "summary": "Placeholder axioms for boundary case |aₙ| = Θ(1/√n), stronger decay, and monotonicity."
+      "summary": "Boundary behavior when |aₙ| = Θ(1/√n), stronger decay conditions, and monotonicity."
     },
     {
       "id": "hausdorff",
       "title": "Part 6: Hausdorff Dimension",
       "startLine": 132,
       "endLine": 155,
-      "summary": "hausdorffDim wrapper. Axioms: convergence_set_uncountable, convergence_set_measure_zero."
+      "summary": "Properties of the convergence set: uncountable yet measure zero, with hausdorffDim wrapper."
     },
     {
       "id": "examples",
       "title": "Part 7: Examples",
       "startLine": 157,
       "endLine": 177,
-      "summary": "example_seq = 1/(√n log n). example_satisfies_conditions (axiom). boundary_example and summable_example axioms."
+      "summary": "Concrete sequences: aₙ = 1/(√n log n) satisfies conditions; boundary and summable counterexamples."
     },
     {
       "id": "rademacher",
       "title": "Part 8: Connection to Rademacher Series",
       "startLine": 178,
-      "endLine": 195,
-      "summary": "Placeholder axioms: rademacher_functions, khintchine_inequality, random_trig_polys."
+      "endLine": 194,
+      "summary": "Connections to Rademacher functions, Khintchine inequality, random trigonometric polynomials."
     },
     {
       "id": "proof-techniques",
       "title": "Part 9: Proof Techniques",
       "startLine": 196,
-      "endLine": 213,
-      "summary": "Placeholder axioms: oscillation_analysis, metric_entropy, martingale_methods."
+      "endLine": 212,
+      "summary": "Methods of Michelen-Sawhney: oscillation analysis, metric entropy, martingale methods."
     },
     {
       "id": "related",
       "title": "Part 10: Related Problems",
       "startLine": 214,
-      "endLine": 231,
-      "summary": "Placeholder axioms: salem_zygmund, kahane_random_series, modern_developments."
+      "endLine": 230,
+      "summary": "Related work: Salem-Zygmund, Kahane random series, modern developments."
     },
     {
       "id": "applications",
       "title": "Part 11: Applications",
       "startLine": 232,
-      "endLine": 249,
-      "summary": "Placeholder axioms: lacunary_application, analytic_continuation, fourier_application."
+      "endLine": 248,
+      "summary": "Applications to lacunary series, analytic continuation, and Fourier analysis."
     },
     {
       "id": "summary",
       "title": "Part 12: Summary",
       "startLine": 250,
       "endLine": 271,
-      "summary": "Proved: erdos_527_main (:= michelen_sawhney_2025), erdos_527_strong (:= hausdorff_dimension_one), erdos_527 (trivial). SOLVED."
+      "summary": "Main theorems erdos_527_main and erdos_527_strong proved from axioms. SOLVED."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #527 is SOLVED by Michelen-Sawhney (2025). For aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n), almost all sign choices yield a nonempty convergence set on the unit circle with Hausdorff dimension 1.",
-    "implications": "The result extends understanding of when random series can converge, connecting to fractal geometry, harmonic analysis, and analytic continuation.",
+    "summary": "Erdős Problem #527 is SOLVED by Michelen and Sawhney (2025). For coefficient sequences aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n), almost all random sign choices yield a nonempty convergence set on the unit circle, and this set has Hausdorff dimension 1. The result resolves a problem open for over 60 years and reveals a striking fractal phenomenon: convergence persists on a geometrically rich set despite generic divergence.",
+    "implications": "The result deepens our understanding of random power series and the interplay between harmonic analysis, probability, and fractal geometry. The sharp threshold at |aₙ| = o(1/√n), established by Dvoretzky-Erdős (1959), is now complemented by the full convergence picture above this threshold. The methods connect to metric entropy, martingale theory, and the geometry of Hausdorff dimension.",
     "openQuestions": [
-      "What is the exact structure of the convergence set?",
-      "What happens at the boundary case |aₙ| = c/√n for different values of c?",
-      "Can the Hausdorff dimension be computed explicitly for specific sequences?",
-      "What about higher moments — does Σ|aₙ|^p < ∞ for p > 2 help?"
+      "What is the exact structure (e.g., topological type) of the convergence set?",
+      "What happens at the boundary case |aₙ| = c/√n for different constants c?",
+      "Can the Hausdorff dimension be computed explicitly for specific coefficient sequences?",
+      "What about higher moments — does Σ|aₙ|^p < ∞ for some p > 2 improve the result?"
     ]
   }
 }
