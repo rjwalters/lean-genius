@@ -1,0 +1,45 @@
+{
+  "id": "erdos-827",
+  "title": "Distinct Circumradii in General Position",
+  "slug": "erdos-827",
+  "description": "Determine n_k: the minimal number of points in general position guaranteeing a k-subset with all distinct circumradii. Martinez-Roldán-Pensado: n_k ≪ k⁹.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/827",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos827Problem.lean",
+    "tags": ["geometry", "discrete-geometry", "circumradii", "ramsey-type"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 827,
+    "erdosUrl": "https://erdosproblems.com/827",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1975 about Ramsey-type results for circumradii. His 1978 claimed bound contained errors. Martinez and Roldán-Pensado corrected the proof and showed n_k ≪ k⁹.",
+    "problemStatement": "For k ≥ 3, what is the minimal n_k such that any n_k points in general position in ℝ² contain a k-subset where all C(k,3) triples have distinct circumradii?",
+    "proofStrategy": "We define general position, circumradius, and the distinct circumradii property computationally. The function n_k is axiomatized with validity and sharpness properties. The Martinez-Roldán-Pensado polynomial bound is stated.",
+    "keyInsights": [
+      "General position (no three collinear) ensures all circumradii are well-defined",
+      "The circumradius formula R² = |pq|²|qr|²|rp|² / (16·Area²) is used",
+      "Erdős's original bound was incorrect; the corrected bound is n_k ≪ k⁹",
+      "n_3 = 3 trivially since one triangle has one circumradius"
+    ]
+  },
+  "sections": [
+    { "id": "general-position", "title": "Points in General Position", "startLine": 21, "endLine": 34, "summary": "Defines Point, distSq, and GeneralPosition (no three collinear)." },
+    { "id": "circumradius", "title": "Circumradius", "startLine": 36, "endLine": 55, "summary": "Defines circumRadiusSq and AllDistinctCircumradii for point sets." },
+    { "id": "minimal-nk", "title": "The Minimal Number n_k", "startLine": 57, "endLine": 78, "summary": "Defines NkExists, axiomatizes minimalNk with validity and sharpness." },
+    { "id": "main-problem", "title": "Main Problem", "startLine": 80, "endLine": 84, "summary": "States ErdosProblem827: n_k exists for all k ≥ 3." },
+    { "id": "bounds", "title": "Known Bounds and Trivial Cases", "startLine": 86, "endLine": 112, "summary": "States Martinez n_k ≪ k⁹, Erdős's original bound, and basic properties (n_3 = 3, monotonicity)." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 827 on Ramsey-type circumradii configurations with computable definitions and the Martinez-Roldán-Pensado polynomial bound. 0 sorries.",
+    "implications": "Determining the growth rate of n_k connects to Ramsey theory for geometric configurations.",
+    "openQuestions": [
+      "What is the exact growth rate of n_k — polynomial of what degree?",
+      "Can the exponent 9 in the upper bound be lowered?",
+      "Is there a polynomial lower bound n_k ≥ k^α for some α > 1?"
+    ]
+  }
+}
