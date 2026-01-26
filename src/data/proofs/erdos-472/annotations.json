@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-472-header",
+    "proofId": "erdos-472",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 14 },
+    "title": "Problem Background",
+    "content": "A problem due to Ulam: given a seed of primes, extend by taking q_{n+1} as the smallest prime of form q_n + q_i − 1. Can this produce an infinite sequence? Starting with 3, 5 gives 3, 5, 7, 11, 13, 17, …",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-472-candidate",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "range": { "startLine": 22, "endLine": 25 },
+    "title": "Candidate Next Prime",
+    "content": "IsCandidateNext checks that p is prime and equals last + q − 1 for some q in the current sequence.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-472-ulam-seq",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 42 },
+    "title": "Ulam Prime Sequence",
+    "content": "IsUlamPrimeSeq specifies: seed matching, all-prime, strictly increasing, and each f(n+1) is the smallest candidate prime.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-472-conjecture",
+    "proofId": "erdos-472",
+    "type": "conjecture",
+    "range": { "startLine": 46, "endLine": 53 },
+    "title": "Main Conjecture",
+    "content": "There exists a seed of ≥ 2 primes in increasing order such that the Ulam prime extension produces an infinite sequence.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-472-seed35",
+    "proofId": "erdos-472",
+    "type": "result",
+    "range": { "startLine": 57, "endLine": 62 },
+    "title": "Candidate Seed [3, 5]",
+    "content": "The seed [3, 5] consists of primes and produces the sequence 3, 5, 7, 11, 13, 17, … which is conjectured to be infinite.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-472-basic",
+    "proofId": "erdos-472",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 72 },
+    "title": "Basic Properties",
+    "content": "Consecutive terms differ by at least 2 (except possibly 2→3), and the self-candidate 2p − 1 is always odd for p ≥ 2.",
+    "significance": "supporting"
+  }
+]
