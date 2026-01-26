@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-913-distinct-exp",
+    "proofId": "erdos-913",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 45 },
+    "title": "Distinct Exponent Property",
+    "content": "HasDistinctExponents n holds when the factorization map of n(n+1) is injective on its prime factors — i.e., all exponents in the prime factorization are distinct.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-913-conjecture",
+    "proofId": "erdos-913",
+    "type": "conjecture",
+    "range": { "startLine": 53, "endLine": 55 },
+    "title": "Erdős Problem 913",
+    "content": "The set of n with distinct exponents in n(n+1) is infinite. This is the central open question.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-913-prime-pairs",
+    "proofId": "erdos-913",
+    "type": "definition",
+    "range": { "startLine": 63, "endLine": 67 },
+    "title": "8p²-1 Prime Pairs",
+    "content": "PrimePairs8 is the set of primes p such that 8p²-1 is also prime. Its infinitude (a Bunyakovsky-type hypothesis) would suffice to resolve Problem 913.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-913-conditional",
+    "proofId": "erdos-913",
+    "type": "result",
+    "range": { "startLine": 80, "endLine": 83 },
+    "title": "Conditional Result",
+    "content": "If PrimePairs8 is infinite, then DistinctExponentSet is infinite. For p in PrimePairs8, n = 8p²-1 gives n(n+1) = (8p²-1)¹·p²·2³ with exponents {1,2,3}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-913-examples",
+    "proofId": "erdos-913",
+    "type": "result",
+    "range": { "startLine": 96, "endLine": 103 },
+    "title": "Small Examples",
+    "content": "Known examples: n=3 (exponents {2,1}), n=7 (exponents {3,1}), n=8 (exponents {3,2}). All have distinct exponents in their n(n+1) factorizations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-913-structure",
+    "proofId": "erdos-913",
+    "type": "result",
+    "range": { "startLine": 128, "endLine": 132 },
+    "title": "Exponent Structure for 8p²-1",
+    "content": "For p prime with 8p²-1 prime and p ≠ 2, the product n(n+1) has exactly three prime factors {8p²-1, p, 2} with exponents {1, 2, 3} respectively.",
+    "significance": "essential"
+  }
+]

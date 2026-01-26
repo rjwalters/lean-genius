@@ -1,0 +1,89 @@
+{
+  "id": "erdos-913",
+  "title": "Erdős Problem #913: Distinct Exponents in n(n+1) Factorizations",
+  "slug": "erdos-913",
+  "description": "Are there infinitely many n such that in n(n+1) = ∏ pᵢ^kᵢ, all exponents kᵢ are distinct? Conditionally true if infinitely many primes p have 8p²-1 prime (via exponents {1,2,3}). OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/913",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos913Problem.lean",
+    "tags": ["number-theory", "prime-factorization", "consecutive-integers"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 913,
+    "erdosUrl": "https://erdosproblems.com/913",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem appears in Erdős [Er82c, p.28]. It asks about the multiplicative structure of products of consecutive integers. The conditional approach via 8p²-1 primes was identified as a natural path, connecting the problem to the Bunyakovsky/Bateman–Horn conjectures on prime values of polynomials.",
+    "problemStatement": "Are there infinitely many n such that if n(n+1) = ∏ pᵢ^kᵢ is the factorization into distinct primes, then all exponents kᵢ are distinct?",
+    "proofStrategy": "We define HasDistinctExponents using Mathlib's factorization and Set.InjOn on primeFactors. The main conjecture states DistinctExponentSet is infinite. The conditional result shows this follows from infinitely many primes p with 8p²-1 prime, since n = 8p²-1 gives n(n+1) with exponents {1,2,3}.",
+    "keyInsights": [
+      "For n = 8p²-1 with p and 8p²-1 both prime, n(n+1) = (8p²-1)·p²·2³ has exponents {1,2,3}",
+      "The conditional proof uses Finsupp arithmetic and factorization multiplicativity",
+      "The hypothesis on 8p²-1 primes is a special case of the Bunyakovsky conjecture",
+      "Many Mersenne-like numbers n = 2^k - 1 give examples with exponents {k,1}"
+    ]
+  },
+  "sections": [
+    {
+      "id": "distinct-exponent-def",
+      "title": "Distinct Exponent Property",
+      "startLine": 27,
+      "endLine": 45,
+      "summary": "Defines HasDistinctExponents via Set.InjOn of the factorization map on primeFactors, and DistinctExponentSet as the set of all such n."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 47,
+      "endLine": 55,
+      "summary": "States ErdosProblem913: the set of n with distinct exponents in n(n+1) is infinite."
+    },
+    {
+      "id": "prime-hypothesis",
+      "title": "The 8p²-1 Prime Hypothesis",
+      "startLine": 57,
+      "endLine": 67,
+      "summary": "Defines PrimePairs8 = {p prime | 8p²-1 prime} and axiomatizes that this set is infinite."
+    },
+    {
+      "id": "conditional-proof",
+      "title": "Conditional Proof",
+      "startLine": 69,
+      "endLine": 83,
+      "summary": "States the conditional result: PrimePairs8 infinite implies DistinctExponentSet infinite, via n = 8p²-1 giving exponents {1,2,3}."
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Examples",
+      "startLine": 85,
+      "endLine": 103,
+      "summary": "Axiomatizes small examples: n = 3, 7, 8 each have distinct exponents in n(n+1)."
+    },
+    {
+      "id": "bunyakovsky-connection",
+      "title": "Connection to Bunyakovsky Conjecture",
+      "startLine": 105,
+      "endLine": 117,
+      "summary": "The 8p²-1 hypothesis is a special case of Bunyakovsky/Bateman–Horn for f(x) = 8x²-1."
+    },
+    {
+      "id": "exponent-structure",
+      "title": "Exponent Multiplicity Structure",
+      "startLine": 119,
+      "endLine": 134,
+      "summary": "States that for p prime with 8p²-1 prime and p ≠ 2, n(n+1) has exactly three prime factors {8p²-1, p, 2}."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 913 asks whether infinitely many n have distinct prime exponents in n(n+1). The problem is conditionally resolved: it suffices to show infinitely many primes p have 8p²-1 also prime, which follows from standard conjectures in analytic number theory.",
+    "implications": "A proof of the Bunyakovsky conjecture for 8x²-1 would resolve this problem. The approach illustrates how polynomial prime value conjectures connect to multiplicative number theory questions.",
+    "openQuestions": [
+      "Is the set of primes p with 8p²-1 prime infinite?",
+      "Are there unconditional proofs not relying on the Bunyakovsky conjecture?",
+      "What is the density of n with distinct exponents in n(n+1)?"
+    ]
+  }
+}
