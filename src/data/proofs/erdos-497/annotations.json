@@ -1,0 +1,38 @@
+[
+  {
+    "id": "erdos-497-antichain",
+    "proofId": "erdos-497",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 31 },
+    "title": "Antichain (Sperner Family)",
+    "content": "IsAntichain n F means F is a family of subsets of [n] with no containment between distinct members. These are also called Sperner families.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-497-sperner",
+    "proofId": "erdos-497",
+    "type": "result",
+    "range": { "startLine": 39, "endLine": 42 },
+    "title": "Sperner's Theorem",
+    "content": "Every antichain in P([n]) has size at most C(n, ⌊n/2⌋). This classical result (1928) gives the maximum width of the Boolean lattice.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-497-dedekind",
+    "proofId": "erdos-497",
+    "type": "result",
+    "range": { "startLine": 50, "endLine": 56 },
+    "title": "Small Dedekind Numbers",
+    "content": "D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168. These are the number of antichains for small n, forming OEIS A000372.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-497-kleitman",
+    "proofId": "erdos-497",
+    "type": "conjecture",
+    "range": { "startLine": 76, "endLine": 83 },
+    "title": "Erdős Problem 497 (Solved)",
+    "content": "Kleitman (1969): the number of antichains in P([n]) is 2^{(1+o(1))·C(n, ⌊n/2⌋)}. This determines the logarithmic order of the Dedekind numbers.",
+    "significance": "essential"
+  }
+]
