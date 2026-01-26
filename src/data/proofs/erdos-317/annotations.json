@@ -1,206 +1,112 @@
 [
   {
-    "id": "ann-317-1",
+    "id": "erdos-317-header",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 1,
-      "endLine": 25
-    },
-    "type": "concept",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 25 },
     "title": "Problem Overview",
-    "content": "Erdős Problem #317: Is there c > 0 such that for every n, we can find δ_k ∈ {-1,0,1} with 0 < |∑δ_k/k| < c/2^n? Related: for large n, must nonzero sums exceed 1/lcm(1,...,n)? OPEN.",
-    "significance": "critical"
+    "content": "Erdős Problem #317: Is there c > 0 such that for every n, we can find δ_k ∈ {−1,0,1} with 0 < |∑δ_k/k| < c/2^n? Related: for large n, must nonzero sums exceed 1/lcm(1,...,n)? OPEN.",
+    "mathContext": "From [ErGr80, p.42]. Known: Kovac-van Doorn achieved 2^{−n·polylog/log n}. Van Doorn's heuristic suggests this may be optimal.",
+    "significance": "essential",
+    "relatedConcepts": ["unit fractions", "Diophantine approximation", "lcm", "signed sums"]
   },
   {
-    "id": "ann-317-2",
+    "id": "erdos-317-definitions",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 39,
-      "endLine": 41
-    },
     "type": "definition",
-    "title": "Sign Function",
-    "content": "A sign function δ : Fin n → ℤ assigns each index k a value in {-1, 0, 1}. This determines the signed combination of unit fractions.",
-    "significance": "key"
+    "range": { "startLine": 45, "endLine": 55 },
+    "title": "Sign Functions and Signed Sums",
+    "content": "IsSignFunction(n, δ): δ : Fin n → ℤ with values in {−1, 0, 1}. signedUnitFractionSum(n, δ) = ∑_{k} δ(k)/(k+1) as rational. signedSumAbs(n, δ) = |sum| as real.",
+    "mathContext": "IsSignFunction n δ ≡ ∀ k, δ k ∈ {-1, 0, 1}. signedUnitFractionSum n δ = ∑ k, (δ k : ℚ)/(k+1). signedSumAbs n δ = |signedUnitFractionSum n δ|.",
+    "significance": "essential",
+    "relatedConcepts": ["Fin", "Finset.sum", "rational arithmetic"]
   },
   {
-    "id": "ann-317-3",
+    "id": "erdos-317-q1",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 43,
-      "endLine": 45
-    },
-    "type": "definition",
-    "title": "Signed Unit Fraction Sum",
-    "content": "signedUnitFractionSum(n, δ) = ∑_{k=1}^n δ_k/(k+1) computes the signed combination of unit fractions 1/1, 1/2, ..., 1/n.",
-    "significance": "critical"
+    "type": "conjecture",
+    "range": { "startLine": 64, "endLine": 70 },
+    "title": "Question 1: Exponentially Small Sums (OPEN)",
+    "content": "Is there c > 0 such that for every n ≥ 1, there exists δ with 0 < |∑δ_k/k| < c/2^n? This asks whether signed unit fraction sums can be made exponentially small.",
+    "mathContext": "Question1: ∃ c > 0, ∀ n ≥ 1, ∃ δ, IsSignFunction n δ ∧ 0 < signedSumAbs n δ ∧ signedSumAbs n δ < c/2^n.",
+    "significance": "essential",
+    "relatedConcepts": ["exponential decay", "signed sums", "unit fractions"]
   },
   {
-    "id": "ann-317-4",
+    "id": "erdos-317-q2",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 47,
-      "endLine": 49
-    },
-    "type": "definition",
-    "title": "Absolute Value of Sum",
-    "content": "signedSumAbs(n, δ) = |∑δ_k/k|. We want to make this small but nonzero.",
-    "significance": "key"
+    "type": "conjecture",
+    "range": { "startLine": 78, "endLine": 87 },
+    "title": "Question 2: LCM Lower Bound (OPEN)",
+    "content": "For large n, must |∑δ_k/k| > 1/lcm(1,...,n) when the sum is nonzero? lcm_1_to_n(n) = lcm of 1 through n via Finset.lcm. The strict inequality is the hard part.",
+    "mathContext": "lcm_1_to_n n = (Finset.range n).lcm (·+1). Question2: ∀ᶠ n in atTop, ∀ δ, IsSignFunction n δ → sum ≠ 0 → |sum| > 1/lcm.",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.lcm", "Filter.Eventually", "atTop"]
   },
   {
-    "id": "ann-317-5",
+    "id": "erdos-317-known",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 55,
-      "endLine": 62
-    },
-    "type": "definition",
-    "title": "Question 1",
-    "content": "Question 1: Is there c > 0 such that for every n ≥ 1, there exists δ with 0 < |∑δ_k/k| < c/2^n? This asks for exponentially small nonzero sums.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 93, "endLine": 110 },
+    "title": "Known Results",
+    "content": "weak_inequality: |sum| ≥ 1/lcm when nonzero (axiom — denominators divide lcm). counterexample_small_n: δ = (0,1,−1,−1) gives 1/2 − 1/3 − 1/4 = −1/12 = 1/lcm(1,2,3,4), achieving equality not strict inequality.",
+    "mathContext": "weak_inequality: axiom (trivial from denominator divisibility). counterexample_small_n: axiom (δ achieving equality with 1/lcm).",
+    "significance": "essential",
+    "relatedConcepts": ["denominator divisibility", "counterexample", "lcm"]
   },
   {
-    "id": "ann-317-6",
+    "id": "erdos-317-kovac",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 68,
-      "endLine": 70
-    },
-    "type": "definition",
-    "title": "LCM Function",
-    "content": "lcm_1_to_n(n) = lcm(1, 2, ..., n). This grows like e^n by the prime number theorem. It's the natural lower bound for denominators.",
-    "significance": "key"
+    "type": "result",
+    "range": { "startLine": 112, "endLine": 123 },
+    "title": "Kovac–van Doorn Bound",
+    "content": "Kovac-van Doorn achieved 2^{−n·(log log log n)^{1+o(1)}/log n}, much larger than c/2^n but still exponentially small. Van Doorn's heuristic suggests this may be optimal, implying Q1 is false.",
+    "mathContext": "kovac_van_doorn_bound: True (placeholder). van_doorn_heuristic: True (placeholder).",
+    "significance": "essential",
+    "relatedConcepts": ["Kovac", "van Doorn", "polylog bounds"]
   },
   {
-    "id": "ann-317-7",
+    "id": "erdos-317-connections",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 72,
-      "endLine": 77
-    },
-    "type": "definition",
-    "title": "Question 2",
-    "content": "Question 2: For large n, must |∑δ_k/k| > 1/lcm(1,...,n) whenever the sum is nonzero? The strict inequality is the hard part.",
-    "significance": "critical"
+    "type": "context",
+    "range": { "startLine": 125, "endLine": 139 },
+    "title": "Number Theory Connections",
+    "content": "lcm(1,...,n) = ∏_{p ≤ n} p^{⌊log_p n⌋} ~ e^n by PNT. The problem is a form of simultaneous Diophantine approximation: making a linear combination of 1/k's small while keeping it nonzero.",
+    "mathContext": "prime_lcm_connection: True (placeholder). diophantine_context: True (placeholder).",
+    "significance": "supporting",
+    "relatedConcepts": ["Prime Number Theorem", "lcm growth", "Diophantine approximation"]
   },
   {
-    "id": "ann-317-8",
+    "id": "erdos-317-difficulty",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 83,
-      "endLine": 87
-    },
-    "type": "theorem",
-    "title": "Weak Inequality (Trivial)",
-    "content": "|∑δ_k/k| ≥ 1/lcm(1,...,n) when nonzero. This is trivial because the sum has denominator dividing lcm, so the smallest nonzero value is 1/lcm.",
-    "significance": "key"
+    "type": "context",
+    "range": { "startLine": 141, "endLine": 155 },
+    "title": "Why the Problem is Hard",
+    "content": "3^n choices for (δ_1,...,δ_n) make brute force infeasible. Achieving small sums requires precise cancellation between terms with different denominators.",
+    "mathContext": "exponential_search: True (placeholder). subtle_cancellations: True (placeholder).",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential search space", "cancellation", "arithmetic structure"]
   },
   {
-    "id": "ann-317-9",
+    "id": "erdos-317-related",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 89,
-      "endLine": 95
-    },
-    "type": "theorem",
-    "title": "Small n Counterexample",
-    "content": "For n = 4: 1/2 - 1/3 - 1/4 = -1/12, and lcm(1,2,3,4) = 12. So |-1/12| = 1/12 = 1/lcm, achieving equality not strict inequality. Q2 fails for small n.",
-    "significance": "key"
+    "type": "context",
+    "range": { "startLine": 157, "endLine": 171 },
+    "title": "Related Problems",
+    "content": "Connected to Egyptian fractions (representing rationals as sums of distinct unit fractions). Related to other Erdős problems on unit fractions (#280, #281).",
+    "mathContext": "egyptian_fractions: True (placeholder). related_erdos_problems: True (placeholder).",
+    "significance": "supporting",
+    "relatedConcepts": ["Egyptian fractions", "Erdős problems", "unit fractions"]
   },
   {
-    "id": "ann-317-10",
+    "id": "erdos-317-summary",
     "proofId": "erdos-317",
-    "range": {
-      "startLine": 101,
-      "endLine": 106
-    },
-    "type": "theorem",
-    "title": "Kovac-van Doorn Bound",
-    "content": "Kovac and van Doorn proved a weak version: we can achieve |sum| < 2^{-n·(log log log n)^{1+o(1)}/log n}. This is much larger than c/2^n but still exponentially small.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-317-11",
-    "proofId": "erdos-317",
-    "range": {
-      "startLine": 108,
-      "endLine": 112
-    },
-    "type": "concept",
-    "title": "van Doorn Heuristic",
-    "content": "van Doorn's heuristic suggests the weak bound may be optimal. If true, Question 1 would have a NEGATIVE answer—we cannot achieve c/2^n.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-317-12",
-    "proofId": "erdos-317",
-    "range": {
-      "startLine": 118,
-      "endLine": 122
-    },
-    "type": "concept",
-    "title": "LCM Growth",
-    "content": "lcm(1,...,n) = ∏_{p ≤ n} p^{⌊log_p n⌋} ~ e^n by the prime number theorem. This exponential growth is related to primorial functions.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-317-13",
-    "proofId": "erdos-317",
-    "range": {
-      "startLine": 124,
-      "endLine": 128
-    },
-    "type": "concept",
-    "title": "Diophantine Context",
-    "content": "The problem is a form of simultaneous Diophantine approximation: making a linear combination of 1/k's small while keeping it nonzero.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-317-14",
-    "proofId": "erdos-317",
-    "range": {
-      "startLine": 134,
-      "endLine": 138
-    },
-    "type": "concept",
-    "title": "Exponential Search Space",
-    "content": "There are 3^n choices for (δ_1, ..., δ_n). Brute force search is infeasible for large n, requiring clever algebraic or analytic techniques.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-317-15",
-    "proofId": "erdos-317",
-    "range": {
-      "startLine": 140,
-      "endLine": 144
-    },
-    "type": "concept",
-    "title": "Subtle Cancellations",
-    "content": "Achieving small sums requires precise cancellation between terms with different denominators. The arithmetic structure of 1/k makes this delicate.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-317-16",
-    "proofId": "erdos-317",
-    "range": {
-      "startLine": 150,
-      "endLine": 154
-    },
-    "type": "concept",
-    "title": "Egyptian Fractions",
-    "content": "Related to Egyptian fractions (representing rationals as sums of distinct unit fractions). Here we allow signs and study the minimum achievable value.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-317-17",
-    "proofId": "erdos-317",
-    "range": {
-      "startLine": 164,
-      "endLine": 183
-    },
-    "type": "theorem",
-    "title": "Problem Status",
-    "content": "Erdős Problem #317: OPEN. Q1 asks for c/2^n bound; Kovac-van Doorn achieved weaker polylog bound. Q2 about 1/lcm lower bound fails for small n. Both questions unresolved.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 192, "endLine": 200 },
+    "title": "Summary: OPEN",
+    "content": "erdos_317_status: True (trivial). Both questions remain OPEN. Q1: c/2^n bound unknown. Q2: 1/lcm strict inequality fails for small n, open for large n.",
+    "mathContext": "erdos_317_status: True := trivial. erdos_317_status_string: \"OPEN\".",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
   }
 ]

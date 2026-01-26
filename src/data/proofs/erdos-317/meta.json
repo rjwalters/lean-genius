@@ -2,109 +2,105 @@
   "id": "erdos-317",
   "title": "Erdős Problem #317: Signed Unit Fraction Approximations",
   "slug": "erdos-317",
-  "description": "Is there c > 0 such that for every n, we can find δ_k ∈ {-1,0,1} with 0 < |∑δ_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
+  "description": "Is there c > 0 such that for every n, we can find δ_k ∈ {−1,0,1} with 0 < |∑δ_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
   "meta": {
-    "author": "Erdős, Kovac, van Doorn",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/317",
-    "date": "1980",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos317Problem.lean",
-    "tags": ["erdos", "number-theory", "unit-fractions", "diophantine-approximation"],
+    "tags": ["number-theory", "unit-fractions", "diophantine-approximation", "open-problem"],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 317,
     "erdosUrl": "https://erdosproblems.com/317",
-    "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
-    "originalContributions": []
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #317, from [ErGr80, p.42], asks about the smallest nonzero value achievable by signed unit fraction sums. Given n, can we always find signs δ_k ∈ {-1, 0, 1} such that the sum ∑δ_k/k is positive but exponentially small?\n\nThe problem has two parts:\n1. Is there a universal constant c such that we can always achieve 0 < |sum| < c/2^n?\n2. For large n, must any nonzero sum exceed 1/lcm(1,...,n)?\n\nKovac and van Doorn proved a weaker version of Question 1 with bound 2^{-n·(log log log n)^{1+o(1)}/log n}. Van Doorn's heuristics suggest this may be optimal, which would make Question 1 false.",
-    "problemStatement": "**Question 1:** Is there some constant $c > 0$ such that for every $n \\geq 1$ there exists some $\\delta_k \\in \\{-1, 0, 1\\}$ for $1 \\leq k \\leq n$ with:\n$$0 < \\left|\\sum_{1 \\leq k \\leq n} \\frac{\\delta_k}{k}\\right| < \\frac{c}{2^n}$$\n\n**Question 2:** For sufficiently large $n$, for any $\\delta_k \\in \\{-1, 0, 1\\}$, must:\n$$\\left|\\sum_{1 \\leq k \\leq n} \\frac{\\delta_k}{k}\\right| > \\frac{1}{[1, \\ldots, n]}$$\nwhenever the left-hand side is nonzero?\n\n**Status:** OPEN",
-    "proofStrategy": "The Lean formalization defines:\n\n1. **Sign functions**: Functions δ : Fin n → ℤ with values in {-1, 0, 1}\n2. **Signed sums**: ∑_{k=1}^n δ_k/k as a rational number\n3. **Question 1**: Existence of universal constant c for exponential bound\n4. **Question 2**: Lower bound 1/lcm for nonzero sums\n5. **Kovac-van Doorn**: The known weaker bound\n6. **Counterexample**: 1/2 - 1/3 - 1/4 = -1/12 shows Q2 fails for small n",
+    "historicalContext": "Erdős Problem #317, from [ErGr80, p.42], asks about the smallest nonzero value achievable by signed unit fraction sums. Kovac and van Doorn proved a weaker version of Question 1 with bound 2^{−n·(log log log n)^{1+o(1)}/log n}. Van Doorn's heuristics suggest this may be optimal, which would make Question 1 false.",
+    "problemStatement": "Question 1: Is there c > 0 such that for every n ≥ 1, there exists δ_k ∈ {−1,0,1} with 0 < |∑δ_k/k| < c/2^n? Question 2: For large n, must |∑δ_k/k| > 1/lcm(1,...,n) when nonzero? Both OPEN.",
+    "proofStrategy": "The formalization defines IsSignFunction, signedUnitFractionSum, signedSumAbs, lcm_1_to_n. Both questions are formal propositions. Known results include the weak inequality (axiom) and counterexample for small n (axiom). Kovac-van Doorn bound and heuristics are placeholders. A summary theorem states the problem status.",
     "keyInsights": [
-      "**Exponential goal:** Seeking sums exponentially small in n (c/2^n)",
-      "**Kovac-van Doorn:** Achieved 2^{-n·polylog/log n}, much weaker than c/2^n",
-      "**van Doorn heuristic:** The weak bound may be optimal (Q1 possibly false)",
-      "**Q2 counterexample:** 1/2 - 1/3 - 1/4 = -1/12 achieves equality with 1/lcm(1,2,3,4)",
-      "**Weak inequality trivial:** |sum| ≥ 1/lcm follows from denominator divisibility",
-      "**3^n search space:** Exponentially many sign choices make exhaustive search infeasible"
+      "Seeking sums exponentially small in n (c/2^n) from signed unit fractions",
+      "Kovac-van Doorn achieved 2^{−n·polylog/log n}, much weaker than c/2^n",
+      "Van Doorn's heuristic suggests the weak bound may be optimal (Q1 possibly false)",
+      "Q2 counterexample: 1/2 − 1/3 − 1/4 = −1/12 achieves equality with 1/lcm(1,2,3,4)",
+      "The weak inequality |sum| ≥ 1/lcm follows from denominator divisibility",
+      "3^n search space makes exhaustive approach infeasible"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "startLine": 33,
-      "endLine": 51,
-      "summary": "Sign functions, signed unit fraction sums, and absolute values."
+      "title": "Part 1: Basic Definitions",
+      "startLine": 39,
+      "endLine": 55,
+      "summary": "IsSignFunction, signedUnitFractionSum, signedSumAbs."
     },
     {
       "id": "question-1",
-      "title": "Question 1 (Main Conjecture)",
-      "startLine": 53,
-      "endLine": 65,
-      "summary": "Is there c > 0 achieving 0 < |sum| < c/2^n for all n?"
+      "title": "Part 2: Question 1 (Main Conjecture)",
+      "startLine": 57,
+      "endLine": 70,
+      "summary": "Question1: ∃ c > 0, ∀ n ≥ 1, ∃ δ with 0 < |sum| < c/2^n."
     },
     {
       "id": "question-2",
-      "title": "Question 2",
-      "startLine": 67,
-      "endLine": 80,
-      "summary": "For large n, must nonzero sums exceed 1/lcm(1,...,n)?"
+      "title": "Part 3: Question 2",
+      "startLine": 72,
+      "endLine": 87,
+      "summary": "lcm_1_to_n, Question2: ∀ᶠ n, nonzero sums exceed 1/lcm."
     },
     {
       "id": "known-results",
-      "title": "Known Results",
-      "startLine": 82,
-      "endLine": 100,
-      "summary": "Weak inequality is trivial; counterexample for small n."
+      "title": "Part 4: Known Results",
+      "startLine": 89,
+      "endLine": 110,
+      "summary": "weak_inequality axiom, counterexample_small_n axiom (1/2 − 1/3 − 1/4 = −1/12)."
     },
     {
       "id": "kovac-van-doorn",
-      "title": "Kovac-van Doorn Bound",
-      "startLine": 102,
-      "endLine": 115,
-      "summary": "The known weaker bound and van Doorn's heuristic."
+      "title": "Part 5: Kovac–van Doorn Upper Bound",
+      "startLine": 112,
+      "endLine": 123,
+      "summary": "Weaker bound 2^{−n·polylog/log n} and van Doorn's heuristic."
     },
     {
       "id": "number-theory",
-      "title": "Number Theory Connections",
-      "startLine": 117,
-      "endLine": 130,
-      "summary": "Relation to lcm growth and Diophantine approximation."
+      "title": "Part 6: Number Theory Connections",
+      "startLine": 125,
+      "endLine": 139,
+      "summary": "LCM growth via PNT, Diophantine approximation context."
     },
     {
       "id": "difficulty",
-      "title": "Why the Problem is Hard",
-      "startLine": 132,
-      "endLine": 146,
-      "summary": "Exponential search space and subtle cancellations required."
+      "title": "Part 7: Why the Problem is Hard",
+      "startLine": 141,
+      "endLine": 155,
+      "summary": "3^n search space, subtle cancellations required."
     },
     {
       "id": "related",
-      "title": "Related Problems",
-      "startLine": 148,
-      "endLine": 160,
-      "summary": "Connections to Egyptian fractions and other Erdős problems."
+      "title": "Part 8: Related Problems",
+      "startLine": 157,
+      "endLine": 171,
+      "summary": "Egyptian fractions, related Erdős problems on unit fractions."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 162,
-      "endLine": 186,
-      "summary": "Complete problem status: OPEN."
+      "title": "Part 9: Summary",
+      "startLine": 173,
+      "endLine": 200,
+      "summary": "erdos_317_status: True (trivial). Both questions OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #317 remains OPEN. Question 1 asks whether signed unit fraction sums can be made exponentially small (< c/2^n). Kovac-van Doorn achieved a weaker bound, but van Doorn's heuristics suggest c/2^n may be unachievable. Question 2 about the 1/lcm lower bound fails for small n.",
-    "implications": "This problem connects number theory (unit fractions, lcm growth) with Diophantine approximation (achieving small nonzero values). Understanding the precise bounds would illuminate the structure of signed harmonic sums.",
+    "summary": "Erdős Problem #317 remains OPEN. Question 1 asks whether signed unit fraction sums can be made exponentially small (< c/2^n). Kovac-van Doorn achieved a weaker bound. Question 2 about the 1/lcm lower bound fails for small n.",
+    "implications": "Connects unit fraction arithmetic with Diophantine approximation. Understanding precise bounds would illuminate the structure of signed harmonic sums.",
     "openQuestions": [
       "Is there c > 0 achieving 0 < |∑δ_k/k| < c/2^n for all n?",
       "Is the Kovac-van Doorn bound optimal?",
       "For what minimal N does Question 2 hold for all n ≥ N?",
-      "Can the counterexamples be characterized structurally?"
+      "Can counterexamples be characterized structurally?"
     ]
   }
 }
