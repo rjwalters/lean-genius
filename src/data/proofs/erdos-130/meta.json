@@ -1,0 +1,77 @@
+{
+  "id": "erdos-130",
+  "title": "Erdős Problem #130: Integer Distance Graphs in General Position",
+  "slug": "erdos-130",
+  "description": "Given an infinite set A ⊆ ℝ² with no 3 collinear and no 4 cocircular points, form the integer distance graph G(A). Can χ(G(A)) be infinite? Anning–Erdős shows the clique number must be finite. Open.",
+  "meta": {
+    "erdosNumber": 130,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "graph-theory",
+      "chromatic-number",
+      "integer-distance",
+      "open"
+    ],
+    "references": [
+      "Andrásfai & Erdős (1997): original problem [Er97b]",
+      "Anning & Erdős (1945): infinite integer distance sets are collinear [AnEr45]",
+      "https://erdosproblems.com/130"
+    ],
+    "leanFile": "Proofs/Erdos130Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 24,
+      "endLine": 66,
+      "summary": "Point2, distance, collinearity, cocircularity, general position, integer distance graph."
+    },
+    {
+      "id": "chromatic-clique",
+      "title": "Chromatic and Clique Numbers",
+      "startLine": 68,
+      "endLine": 80,
+      "summary": "Proper coloring, chromatic number, and clique definitions for integer distance graphs."
+    },
+    {
+      "id": "main-questions",
+      "title": "Main Questions",
+      "startLine": 82,
+      "endLine": 92,
+      "summary": "Can the chromatic number be infinite? How large can the clique number be?"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 94,
+      "endLine": 114,
+      "summary": "Anning–Erdős theorem: infinite integer distance sets are collinear. Finite clique in general position."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Andrásfai and Erdős posed this problem in 1997 about integer distance graphs in the plane under general position constraints. It builds on the classical Anning–Erdős theorem (1945) which showed that any infinite set of points with all pairwise distances integers must be collinear.",
+    "problemStatement": "Given an infinite set A ⊆ ℝ² with no three collinear and no four cocircular points, form the graph G(A) connecting pairs at integer distance. Can the chromatic number χ(G(A)) be infinite? How large can the clique number ω(G(A)) be?",
+    "proofStrategy": "We define the integer distance graph on general-position point sets, state the chromatic number and clique number questions, and record the Anning–Erdős theorem which forces finite clique number.",
+    "keyInsights": [
+      "Anning–Erdős (1945): infinite integer distance sets must be collinear",
+      "General position (no 3 collinear, no 4 cocircular) forces finite clique number",
+      "Chromatic number could still be infinite even with finite clique number",
+      "No known relationship forcing χ ≤ f(ω) for geometric distance graphs",
+      "Related to Problem #213 (integer distances without cocircularity restriction)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #130 asks whether the chromatic number of integer distance graphs in general position can be infinite. While the Anning–Erdős theorem forces finite clique number, the chromatic number question remains open, as geometric distance graphs need not satisfy the relationship χ ≤ f(ω).",
+    "implications": "Resolving this problem would illuminate the interplay between integer distances, geometric constraints, and graph coloring in the plane, with connections to the Hadwiger–Nelson problem and rational distance sets.",
+    "openQuestions": [
+      "Can χ(G(A)) be infinite for A in general position?",
+      "What is the maximum finite clique number achievable?",
+      "Does adding the cocircularity constraint significantly reduce the chromatic number?",
+      "What is the relationship to rational distance sets in the plane?"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "general-position",
+    "proofId": "erdos-130",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "definition",
+    "title": "General Position",
+    "content": "A point set is in general position if no three points are collinear and no four are cocircular. This prevents degenerate configurations that would trivially allow infinite integer distance sets.",
+    "significance": "high"
+  },
+  {
+    "id": "integer-dist-graph",
+    "proofId": "erdos-130",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "Integer Distance Graph",
+    "content": "G(A) has vertex set A ⊆ ℝ² and edges connecting pairs of points whose Euclidean distance is an integer. The key question is about the chromatic and clique numbers of this graph.",
+    "significance": "high"
+  },
+  {
+    "id": "chromatic-question",
+    "proofId": "erdos-130",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "conjecture",
+    "title": "Infinite Chromatic Number",
+    "content": "Can there exist an infinite general-position set A such that χ(G(A)) is not bounded by any finite k? This is the central open question of Problem #130.",
+    "significance": "high"
+  },
+  {
+    "id": "anning-erdos",
+    "proofId": "erdos-130",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "note",
+    "title": "Anning–Erdős Theorem",
+    "content": "Any infinite set of points in the plane with all pairwise distances integers must have all points collinear. This classical result (1945) implies that no infinite clique can exist in general position.",
+    "significance": "high"
+  },
+  {
+    "id": "finite-clique",
+    "proofId": "erdos-130",
+    "range": { "startLine": 103, "endLine": 106 },
+    "type": "note",
+    "title": "Finite Clique Number",
+    "content": "In general position, the clique number of the integer distance graph must be finite. This follows from the Anning–Erdős theorem since an infinite clique would require all points collinear.",
+    "significance": "medium"
+  },
+  {
+    "id": "chromatic-clique-gap",
+    "proofId": "erdos-130",
+    "range": { "startLine": 118, "endLine": 121 },
+    "type": "note",
+    "title": "Chromatic–Clique Gap",
+    "content": "For geometric distance graphs, there is no general bound χ ≤ f(ω). The clique number being finite does not preclude infinite chromatic number, making the problem fundamentally harder than in finite graph theory.",
+    "significance": "medium"
+  }
+]
