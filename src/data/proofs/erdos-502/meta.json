@@ -1,0 +1,78 @@
+{
+  "id": "erdos-502",
+  "title": "Erdős Problem #502: Two-Distance Sets in Euclidean Space",
+  "slug": "erdos-502",
+  "description": "What is the maximum size f(n) of a set A ⊆ ℝⁿ with exactly two distinct pairwise distances? Bannai–Bannai–Stanton proved f(n) ≤ C(n+2,2); a projection construction gives f(n) ≥ C(n+1,2). Status: SOLVED.",
+  "meta": {
+    "erdosNumber": 502,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "geometry",
+      "distances",
+      "combinatorial-geometry",
+      "polynomial-method",
+      "solved"
+    ],
+    "references": [
+      "Erdős (1961): original problem, posed by Coxeter",
+      "Bannai–Bannai–Stanton (1983): upper bound C(n+2,2)",
+      "Petrov–Pohoata (2021): simpler proof of BBS bound",
+      "https://erdosproblems.com/502"
+    ],
+    "leanFile": "Proofs/Erdos502Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 38,
+      "summary": "Define IsTwoDistanceSet and the maximum size function maxTwoDistSize."
+    },
+    {
+      "id": "binary-construction",
+      "title": "The Binary Vector Construction",
+      "startLine": 40,
+      "endLine": 52,
+      "summary": "Binary vectors with exactly two 1-coordinates form a two-distance set."
+    },
+    {
+      "id": "bounds",
+      "title": "Lower and Upper Bounds",
+      "startLine": 54,
+      "endLine": 70,
+      "summary": "Lower bound C(n+1,2) from projections, upper bound C(n+2,2) from BBS."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result and Small Cases",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "Combined sandwich bound and exact values for dimensions 2 and 3."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Coxeter asked Erdős for the maximum size of a two-distance set in ℝⁿ. Erdős initially believed f(n) ≤ n^O(1) but found an error in his proof, leaving only the weaker exponential bound. The polynomial bound was eventually established by Bannai, Bannai, and Stanton in 1983 using the polynomial method. Petrov and Pohoata gave a simpler proof in 2021.",
+    "problemStatement": "Given n, find the maximum cardinality f(n) of a finite set A ⊆ ℝⁿ such that the set of pairwise distances {|x-y| : x ≠ y ∈ A} has exactly two elements.",
+    "proofStrategy": "We formalize the two-distance set definition, the binary vector construction giving C(n+1,2), and the Bannai–Bannai–Stanton upper bound C(n+2,2). The gap between C(n+1,2) and C(n+2,2) remains open for general n.",
+    "keyInsights": [
+      "Binary vectors with exactly two 1-coordinates give a two-distance set with distances √2 and 2",
+      "A suitable projection improves the lower bound from C(n,2) to C(n+1,2)",
+      "The Bannai–Bannai–Stanton proof uses the polynomial/Gram matrix method",
+      "The exact value is known for small dimensions: f(2) = 5, f(3) = 6",
+      "The gap between C(n+1,2) and C(n+2,2) is open for general n"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #502 asks for the maximum two-distance set in ℝⁿ. The answer is Θ(n²): the Bannai–Bannai–Stanton upper bound C(n+2,2) and the projection lower bound C(n+1,2) sandwich f(n) quadratically in n. The problem is considered solved.",
+    "implications": "The result confirms that two-distance sets grow quadratically, answering Coxeter's original question. The polynomial method used in the proof has become a fundamental tool in discrete geometry and combinatorics.",
+    "openQuestions": [
+      "What is the exact value of f(n) for all n?",
+      "Is f(n) = C(n+1,2) for all sufficiently large n?",
+      "What is the structure of extremal two-distance sets?",
+      "How does the answer change for k-distance sets with k ≥ 3?"
+    ]
+  }
+}
