@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-324-pairsum",
+    "proofId": "erdos-324",
+    "type": "definition",
+    "range": { "startLine": 29, "endLine": 40 },
+    "title": "Distinct Pair Sums",
+    "content": "HasDistinctPairSums f holds when the map (a,b) ↦ f(a)+f(b) is injective on ordered pairs {(a,b) | a < b}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-324-conjecture",
+    "proofId": "erdos-324",
+    "type": "conjecture",
+    "range": { "startLine": 46, "endLine": 49 },
+    "title": "Erdős Problem 324",
+    "content": "Does there exist f ∈ ℤ[X] with all pair sums f(a)+f(b) distinct for a < b? This 'very annoying' problem remains open.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-324-quintic",
+    "proofId": "erdos-324",
+    "type": "conjecture",
+    "range": { "startLine": 55, "endLine": 62 },
+    "title": "Quintic Conjecture",
+    "content": "f(x) = x⁵ is conjectured to have distinct pair sums. Proved to imply the main problem (quintic_implies_324).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-324-failures",
+    "proofId": "erdos-324",
+    "type": "result",
+    "range": { "startLine": 78, "endLine": 87 },
+    "title": "Known Failures n ≤ 4",
+    "content": "For n = 2,3,4, the polynomial xⁿ fails. Squares: 1²+8² = 4²+7². Cubes: 1³+12³ = 9³+10³ = 1729. Fourth powers also fail.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-324-mindeg",
+    "proofId": "erdos-324",
+    "type": "result",
+    "range": { "startLine": 97, "endLine": 99 },
+    "title": "Minimum Degree ≥ 5",
+    "content": "Any polynomial with distinct pair sums must have degree at least 5, ruling out low-degree solutions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-324-lps",
+    "proofId": "erdos-324",
+    "type": "context",
+    "range": { "startLine": 73, "endLine": 76 },
+    "title": "Lander-Parkin-Selfridge Connection",
+    "content": "The Lander-Parkin-Selfridge conjecture would imply xⁿ works for all n ≥ 5, immediately solving Erdős 324.",
+    "significance": "supporting"
+  }
+]
