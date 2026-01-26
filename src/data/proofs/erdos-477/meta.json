@@ -1,0 +1,77 @@
+{
+  "id": "erdos-477",
+  "title": "Erdős Problem #477: Polynomial Complements of Integer Sets",
+  "slug": "erdos-477",
+  "description": "Is there a polynomial f: ℤ → ℤ of degree ≥ 2 and a set A ⊆ ℤ such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x². Erdős–Graham conjecture: no for all such f. Open.",
+  "meta": {
+    "erdosNumber": 477,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "tilings",
+      "polynomials",
+      "open"
+    ],
+    "references": [
+      "Erdős & Graham (1980): original problem [ErGr80, p.95]",
+      "Sekanina (1959): no complement for squares [Sek59]",
+      "https://erdosproblems.com/477"
+    ],
+    "leanFile": "Proofs/Erdos477Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 37,
+      "summary": "Polynomial image, perfect complement, and polynomial degree."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 39,
+      "endLine": 44,
+      "summary": "Does a perfect polynomial complement exist for any degree ≥ 2 polynomial?"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 46,
+      "endLine": 58,
+      "summary": "Sekanina's result for squares, quadratic divisibility condition."
+    },
+    {
+      "id": "conjectures",
+      "title": "Conjectures for Specific Polynomials",
+      "startLine": 60,
+      "endLine": 70,
+      "summary": "No complement for cubes or any monomial x^k, k ≥ 2."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in 1980, asking whether any polynomial of degree ≥ 2 can perfectly tile the integers by translation. Sekanina (1959) had already shown this is impossible for f(x) = x², and the general question connects to factorization of abelian groups and additive number theory.",
+    "problemStatement": "Is there a polynomial f: ℤ → ℤ of degree ≥ 2 and a set A ⊆ ℤ such that ℤ = A ⊕ f(ℤ), meaning every integer has a unique representation z = a + f(n) with a ∈ A, n ∈ ℤ?",
+    "proofStrategy": "We define perfect complements and state the main conjecture (no such polynomial exists). We record Sekanina's result for squares and the quadratic divisibility condition, then state conjectures for cubes and general monomials.",
+    "keyInsights": [
+      "Sekanina (1959): no perfect complement for f(x) = x²",
+      "No complement for ax²+bx+c when a|b (AlphaProof + generalization)",
+      "Conjectured: no complement for any monomial x^k, k ≥ 2",
+      "For degree d ≥ 2, the complement A must have density 1 since |f(ℤ)∩[-N,N]| ~ N^{1/d}",
+      "Connects to factorization of abelian groups and integer tilings"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #477 asks whether polynomial images of degree ≥ 2 can perfectly tile the integers. Sekanina proved impossibility for squares, and partial results cover some quadratics, but the general question remains open. Erdős and Graham conjectured the answer is always no.",
+    "implications": "Resolution would advance understanding of integer tilings by polynomial sequences, with connections to additive combinatorics, group factorizations, and the structure of sumsets.",
+    "openQuestions": [
+      "Does the conjecture hold for all polynomials of degree ≥ 2?",
+      "Is there a unified approach covering all monomials x^k?",
+      "What about polynomials with non-integer coefficients mapping ℤ → ℤ?",
+      "Can the density argument be made rigorous to rule out more cases?"
+    ]
+  }
+}
