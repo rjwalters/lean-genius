@@ -1,0 +1,67 @@
+{
+  "id": "erdos-875",
+  "title": "Admissible Sequences with Disjoint Sumsets",
+  "slug": "erdos-875",
+  "description": "Let A = {a₁ < a₂ < ...} with r-fold sumsets Sᵣ pairwise disjoint for all r. How fast must A grow? For which c is a_{n+1} − aₙ ≤ n^c possible? Can a_{n+1}/aₙ → 1? Erdős noted the ratio-1 case is 'not completely trivial.'",
+  "meta": {
+    "author": "Deshouillers, Erdős",
+    "sourceUrl": "https://erdosproblems.com/875",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos875Problem.lean",
+    "tags": [
+      "additive combinatorics",
+      "sumsets",
+      "growth rates",
+      "sequences"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 875,
+    "erdosUrl": "https://erdosproblems.com/875",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Deshouillers and Erdős posed this as an infinite variant of Problem #874. An admissible sequence has pairwise disjoint r-fold sumsets. Powers of 2 trivially satisfy this (binary encoding), but the question asks how slowly such sequences can grow.",
+    "problemStatement": "For an infinite admissible sequence A with pairwise disjoint r-fold sumsets, how fast must A grow? For which c can a_{n+1} − aₙ ≤ n^c?",
+    "proofStrategy": "We formalize the r-fold sumset, the admissibility condition, polynomial gap and ratio-one properties, and structural observations including the powers-of-2 example and reciprocal convergence.",
+    "keyInsights": [
+      "Powers of 2 form an admissible sequence (binary encoding of subsets)",
+      "Admissible sequences must grow fast enough that ∑ 1/aₙ converges",
+      "Erdős noted a_{n+1}/aₙ → 1 is possible but 'not completely trivial'",
+      "The critical exponent c for polynomial gaps is unknown",
+      "Infinite variant of Problem #874 (Deshouillers–Erdős)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 52,
+      "summary": "Defines r-fold sumsets, strictly increasing sequences, disjoint sumsets property, and admissible sequences."
+    },
+    {
+      "id": "questions",
+      "title": "Main Questions",
+      "startLine": 54,
+      "endLine": 75,
+      "summary": "Formalizes the polynomial gap threshold question and the ratio-one question."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 77,
+      "endLine": 96,
+      "summary": "Powers of 2 are admissible; reciprocal sum converges; crude growth lower bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #875 on admissible sequences with disjoint r-fold sumsets, including growth rate questions, the polynomial gap threshold, and structural properties.",
+    "implications": "Understanding admissible sequences connects to Sidon set theory, additive bases, and the combinatorics of subset sums.",
+    "openQuestions": [
+      "What is the critical exponent c for polynomial gaps?",
+      "Can an admissible sequence have a_{n+1}/aₙ → 1?",
+      "What is the optimal growth rate for admissible sequences?"
+    ]
+  }
+}
