@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-335-ann-density",
+    "proofId": "erdos-335",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "definition",
+    "title": "Asymptotic Density",
+    "content": "d(A) = lim_{N→∞} |A ∩ [1,N]|/N. The natural measure of 'how thick' a set of integers is.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-335-ann-sumset",
+    "proofId": "erdos-335",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "Sumset A + B",
+    "content": "A + B = {a + b : a ∈ A, b ∈ B}. The sumset inherits structure from A and B.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-335-ann-additive",
+    "proofId": "erdos-335",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "definition",
+    "title": "Density Additivity",
+    "content": "d(A+B) = d(A) + d(B): the sumset density is exactly the sum of the individual densities. Much stronger than Plünnecke–Ruzsa.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-335-ann-frac",
+    "proofId": "erdos-335",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "Fractional Part Sets",
+    "content": "A = {n > 0 : {nθ} ∈ X} for irrational θ and measurable X ⊆ [0,1). By Weyl, d(A) = μ(X).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-335-ann-conjecture",
+    "proofId": "erdos-335",
+    "range": { "startLine": 82, "endLine": 90 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "All density-additive pairs arise from group rotation constructions: A = {n : orbit of g in G meets X_A}.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-335-ann-plunnecke",
+    "proofId": "erdos-335",
+    "range": { "startLine": 104, "endLine": 108 },
+    "type": "theorem",
+    "title": "Plünnecke–Ruzsa Lower Bound",
+    "content": "d(A+B) ≥ min(d(A)+d(B), 1). Density additivity means this bound is achieved with equality.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-335-ann-tight",
+    "proofId": "erdos-335",
+    "range": { "startLine": 111, "endLine": 114 },
+    "type": "theorem",
+    "title": "Tightness Theorem",
+    "content": "Density additivity implies d(A+B) = min(d(A)+d(B), 1). Proved from the sum constraint d(A)+d(B) ≤ 1.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-335-ann-weyl",
+    "proofId": "erdos-335",
+    "range": { "startLine": 69, "endLine": 70 },
+    "type": "theorem",
+    "title": "Weyl Equidistribution",
+    "content": "For irrational θ, the sequence {nθ} is equidistributed mod 1, so fractional part sets have well-defined density equal to the measure of the target set.",
+    "significance": "supporting"
+  }
+]
