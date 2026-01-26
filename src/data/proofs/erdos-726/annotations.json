@@ -1,0 +1,56 @@
+[
+  {
+    "id": "upper-half-residue",
+    "proofId": "erdos-726",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "definition",
+    "title": "Upper Half Residue",
+    "content": "n mod p lies in (p/2, p): the least nonnegative residue r = n % p satisfies p/2 < r < p. Roughly half of all residues satisfy this for odd p.",
+    "significance": "high"
+  },
+  {
+    "id": "upper-half-sum",
+    "proofId": "erdos-726",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Upper Half Weighted Sum",
+    "content": "Σ_{p ≤ n, p prime, n mod p ∈ (p/2,p)} 1/p. The sum of prime reciprocals restricted to primes where n has an upper-half residue.",
+    "significance": "high"
+  },
+  {
+    "id": "mertens",
+    "proofId": "erdos-726",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "theorem",
+    "title": "Mertens' Theorem",
+    "content": "Σ_{p≤n} 1/p ~ log log n. The classical result on prime reciprocal sums, which provides the baseline that the EGRS conjecture splits in half.",
+    "significance": "medium"
+  },
+  {
+    "id": "egrs-conjecture",
+    "proofId": "erdos-726",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "conjecture",
+    "title": "EGRS Conjecture",
+    "content": "upperHalfSum(n) ~ (log log n)/2: the upper-half residues contribute exactly half of Mertens' sum. A quantitative equidistribution statement for residues modulo primes.",
+    "significance": "high"
+  },
+  {
+    "id": "heuristic",
+    "proofId": "erdos-726",
+    "range": { "startLine": 56, "endLine": 63 },
+    "type": "note",
+    "title": "Uniform Residue Heuristic",
+    "content": "For random n, n mod p is uniform on {0,...,p-1}. The fraction in (p/2, p) is ≈ 1/2 for each prime. The challenge is that n is fixed, not random, so correlations between primes must be controlled.",
+    "significance": "medium"
+  },
+  {
+    "id": "partition",
+    "proofId": "erdos-726",
+    "range": { "startLine": 71, "endLine": 74 },
+    "type": "theorem",
+    "title": "Sum Partition",
+    "content": "The upper and lower half sums partition Mertens' full sum exactly. If the conjecture holds for the upper half, the lower half automatically contributes ~ (log log n)/2 as well.",
+    "significance": "medium"
+  }
+]
