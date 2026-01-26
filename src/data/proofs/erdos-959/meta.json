@@ -1,0 +1,45 @@
+{
+  "id": "erdos-959",
+  "title": "Distance Frequency Gaps in Planar Point Sets",
+  "slug": "erdos-959",
+  "description": "Estimate max(f(d₁) - f(d₂)) for n-point sets in ℝ², where f orders distance frequencies. Known: Ω(n log n). Conjectured: n^{1+c/log log n}.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/959",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos959Problem.lean",
+    "tags": ["geometry", "distances", "combinatorial-geometry", "frequency"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 959,
+    "erdosUrl": "https://erdosproblems.com/959",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked about the gap between the most and second-most frequent distances in planar point sets. Clemen, Dumitrescu, and Liu proved the gap can be Ω(n log n) and conjectured n^{1+c/log log n}. For general rank r, they showed Ω(n log n / r).",
+    "problemStatement": "Estimate max(f(d₁) - f(d₂)) over all n-point sets in ℝ², where distances are ordered by frequency.",
+    "proofStrategy": "We define distFrequency counting unordered pairs at a given distance, distinctDistances, maxFrequency, secondFrequency, and frequencyGap. The main conjecture and stronger variant are stated existentially. The Clemen–Dumitrescu–Liu lower bound is an axiom.",
+    "keyInsights": [
+      "Distance frequency is counted over unordered pairs (divide by 2)",
+      "The known lower bound Ω(n log n) uses explicit constructions",
+      "The conjectured n^{1+c/log log n} bound is much stronger",
+      "General rank-r gap is Ω(n log n / r) for r ≤ log n"
+    ]
+  },
+  "sections": [
+    { "id": "frequency", "title": "Distance Frequency", "startLine": 26, "endLine": 46, "summary": "Defines distFrequency, distinctDistances, maxFrequency, secondFrequency, and frequencyGap." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 48, "endLine": 55, "summary": "States ErdosProblem959: existence of C > 0 with frequency gap ≥ C·n·log n." },
+    { "id": "known", "title": "Known Lower Bound", "startLine": 57, "endLine": 68, "summary": "Clemen–Dumitrescu–Liu axiom: Ω(n log n) lower bound on frequency gap." },
+    { "id": "strong", "title": "Stronger Conjecture", "startLine": 70, "endLine": 76, "summary": "Conjectured n^{1+c/log log n} growth rate." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 78, "endLine": 89, "summary": "Axioms on small sets, frequency ordering, and nonnegativity." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 959 on distance frequency gaps, the Clemen–Dumitrescu–Liu lower bound, and the stronger n^{1+c/log log n} conjecture. 0 sorries.",
+    "implications": "Resolution would advance understanding of distance distribution in planar point configurations.",
+    "openQuestions": [
+      "Is the Ω(n log n) lower bound tight, or can it be improved?",
+      "Does the n^{1+c/log log n} conjecture hold?",
+      "What is the exact growth rate of max(f(d_r) - f(d_{r+1})) for general r?"
+    ]
+  }
+}
