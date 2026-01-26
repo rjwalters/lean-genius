@@ -1,0 +1,82 @@
+{
+  "id": "erdos-598",
+  "title": "Erdős Problem #598: Coloring Countable Subsets",
+  "slug": "erdos-598",
+  "description": "Can one color countable subsets of an infinite set m with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains all colors? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/598",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos598Problem.lean",
+    "tags": ["set-theory", "ramsey-theory", "cardinal-arithmetic"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 598,
+    "erdosUrl": "https://erdosproblems.com/598",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős (1987) posed this question about coloring countable subsets of infinite sets. The problem sits at the intersection of set theory, Ramsey theory, and cardinal arithmetic. It asks whether the successor of the continuum provides enough colors for a certain completeness property.",
+    "problemStatement": "Let m be an infinite cardinal and κ = (2^ℵ₀)⁺. Can one color the countable subsets of m with κ colors so that every X ⊆ m with |X| = κ contains subsets of every color?",
+    "proofStrategy": "We define kappa = (2^ℵ₀)⁺, CountableSubset, ChromaticCompleteness (every κ-sized subset hits all colors). ErdosProblem598 states the universal version. Special cases include the minimal case m = κ and the CH scenario where κ = ℵ₂. Monotonicity in m is axiomatized.",
+    "keyInsights": [
+      "κ = (2^ℵ₀)⁺ is the natural threshold: both the number of colors and the subset size",
+      "Chromatic completeness requires every large subset to realize all colors",
+      "Under CH, κ = ℵ₂ and the problem has a concrete cardinal-arithmetic form",
+      "The problem is monotone in m: larger ground sets make it easier"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cardinal-setup",
+      "title": "Cardinal Setup",
+      "startLine": 22,
+      "endLine": 30,
+      "summary": "Defines kappa = (2^ℵ₀)⁺ and its basic properties."
+    },
+    {
+      "id": "countable-subsets",
+      "title": "Countable Subsets",
+      "startLine": 32,
+      "endLine": 37,
+      "summary": "Defines CountableSubset α as countable subsets of α."
+    },
+    {
+      "id": "coloring-property",
+      "title": "The Coloring Property",
+      "startLine": 39,
+      "endLine": 53,
+      "summary": "Defines ChromaticCompleteness: every κ-sized subset contains all colors."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 55,
+      "endLine": 66,
+      "summary": "States ErdosProblem598: the coloring exists for all |α| ≥ κ."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "Minimal case m = κ and the CH scenario where κ = ℵ₂."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "Coloring existence is monotone: larger ground sets inherit colorings."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 598 asks whether countable subsets of infinite sets can be colored with (2^ℵ₀)⁺ colors such that every large subset contains all colors. The problem remains open.",
+    "implications": "Resolution would advance understanding of partition relations for countable subsets and the combinatorics of cardinal successors.",
+    "openQuestions": [
+      "Does the chromatic completeness coloring exist for m = κ?",
+      "Is the answer independent of ZFC?",
+      "Does the answer change under CH vs. ¬CH?"
+    ]
+  }
+}
