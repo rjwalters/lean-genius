@@ -1,0 +1,85 @@
+{
+  "id": "erdos-36",
+  "title": "Erdős Problem #36: Minimum Overlap Problem",
+  "slug": "erdos-36",
+  "description": "Partition {1,...,2N} into equal sets A, B. Minimize over partitions the maximum number of pairs (a,b) with a−b=k. Determine c = lim M(N)/N. Known: 0.379 < c < 0.381. Open.",
+  "meta": {
+    "erdosNumber": 36,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "number-theory",
+      "open"
+    ],
+    "references": [
+      "Erdős (1955): original problem and 1/4 lower bound",
+      "Scherk (1955): 1 − 1/√2 lower bound",
+      "White (2022): 0.379005 lower bound via Fourier analysis",
+      "Haugland (2016): 0.380926 upper bound",
+      "https://erdosproblems.com/36"
+    ],
+    "leanFile": "Proofs/Erdos36Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 39,
+      "summary": "Overlap function, maximum overlap, and M(N) definition."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 41,
+      "endLine": 46,
+      "summary": "Existence and value of the asymptotic constant c = lim M(N)/N."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 48,
+      "endLine": 72,
+      "summary": "Lower bounds (Erdős, Scherk, White) and upper bound (Haugland)."
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "startLine": 74,
+      "endLine": 79,
+      "summary": "M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 81,
+      "endLine": 95,
+      "summary": "Erdős' disproved conjecture c=1/2, Fourier approach, additive combinatorics connection."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1955. He initially conjectured c = 1/2, which was later disproved. The problem has attracted sustained interest from combinatorialists, with bounds steadily improving over decades. White (2022) made a major advance using Fourier analysis.",
+    "problemStatement": "Partition {1, ..., 2N} into two sets A, B of size N. For each k, count pairs (a,b) with a ∈ A, b ∈ B, a−b = k. Let M(N) = min over partitions of max overlap. Determine c = lim M(N)/N.",
+    "proofStrategy": "We axiomatize the overlap function, M(N), and the asymptotic constant. We state the known bounds 0.379005 < c < 0.380876 and record small values of M(N).",
+    "keyInsights": [
+      "Erdős originally conjectured c = 1/2, which was disproved",
+      "Best known bounds: 0.379005 < c < 0.380876",
+      "White (2022) used Fourier analysis and convex optimization for the lower bound",
+      "Haugland (2016) used step functions for the upper bound",
+      "Small values: M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3"
+    ]
+  },
+  "conclusion": {
+    "summary": "The minimum overlap problem asks for the exact asymptotic constant c = lim M(N)/N where M(N) is the minimum maximum overlap in equal partitions of {1,...,2N}. The constant is pinned between 0.379005 and 0.380876 but its exact value remains unknown.",
+    "implications": "Determining c would resolve a fundamental question in additive combinatorics about the unavoidable structure in equal partitions of consecutive integers. The Fourier-analytic methods developed for this problem have broader applications.",
+    "openQuestions": [
+      "What is the exact value of c = lim M(N)/N?",
+      "Can the gap between 0.379005 and 0.380876 be further narrowed?",
+      "Is c algebraic or transcendental?",
+      "What is the optimal partition structure achieving M(N)?"
+    ]
+  }
+}
