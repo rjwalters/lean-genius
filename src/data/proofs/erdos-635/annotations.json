@@ -1,0 +1,68 @@
+[
+  {
+    "id": "erdos-635-header",
+    "proofId": "erdos-635",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 16 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #635: For A ⊆ {1,...,N} with b-a ≥ t implying (b-a) ∤ b, is |A| ≤ (1/2 + o_t(1))N? For t=1, max is ⌊(N+1)/2⌋. OPEN.",
+    "mathContext": "A non-divisibility condition on differences constrains which pairs can coexist. The question is whether the density is always close to 1/2.",
+    "significance": "essential",
+    "relatedConcepts": ["divisibility", "extremal sets", "density"]
+  },
+  {
+    "id": "erdos-635-definitions",
+    "proofId": "erdos-635",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 44 },
+    "title": "Non-Divisibility Condition and Extremal Function",
+    "content": "IsNonDivisible(A, t): for a, b ∈ A with b-a ≥ t, (b-a) ∤ b. IsAdmissible(A, N, t): A ⊆ {1,...,N} and IsNonDivisible. f(N, t) = sSup of admissible set sizes.",
+    "mathContext": "The extremal function f(N,t) measures the maximum size of a t-admissible subset of {1,...,N}.",
+    "significance": "essential",
+    "relatedConcepts": ["extremal function", "sSup", "admissible sets"]
+  },
+  {
+    "id": "erdos-635-t1",
+    "proofId": "erdos-635",
+    "type": "result",
+    "range": { "startLine": 46, "endLine": 62 },
+    "title": "Case t = 1: Odd Numbers",
+    "content": "oddSet(N): odd numbers in {1,...,N}. oddSet_admissible (axiom): the odd set satisfies the condition. oddSet_card (axiom): |oddSet| = (N+1)/2. f_t1 (axiom): f(N,1) = (N+1)/2.",
+    "mathContext": "Odd numbers are optimal for t=1: any difference from an odd number to another has an even component that prevents divisibility.",
+    "significance": "essential",
+    "relatedConcepts": ["odd numbers", "optimal sets"]
+  },
+  {
+    "id": "erdos-635-t2",
+    "proofId": "erdos-635",
+    "type": "result",
+    "range": { "startLine": 64, "endLine": 74 },
+    "title": "Case t = 2: Erdős Construction",
+    "content": "f_t2_lower (axiom): f(N,2) ≥ N/2 + c·log(N). erdos_construction_t2 (axiom): explicit construction using odd numbers plus powers of 2.",
+    "mathContext": "For t=2, Erdős showed one can exceed the N/2 barrier by a logarithmic amount, using odd numbers augmented with certain powers of 2.",
+    "significance": "essential",
+    "relatedConcepts": ["logarithmic improvement", "construction"]
+  },
+  {
+    "id": "erdos-635-conjecture",
+    "proofId": "erdos-635",
+    "type": "conjecture",
+    "range": { "startLine": 76, "endLine": 90 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "ErdosConjecture635: ∀ ε > 0, ∀ t ≥ 1, ∃ N₀, ∀ N ≥ N₀, f(N,t) ≤ (1/2+ε)N. The density of admissible sets is always close to 1/2. erdos_635 (axiom).",
+    "mathContext": "The o_t(1) notation means the error depends on t but vanishes as N → ∞ for fixed t.",
+    "significance": "essential",
+    "relatedConcepts": ["asymptotic density", "o(1) notation", "extremal bounds"]
+  },
+  {
+    "id": "erdos-635-summary",
+    "proofId": "erdos-635",
+    "type": "result",
+    "range": { "startLine": 101, "endLine": 122 },
+    "title": "Summary: OPEN",
+    "content": "erdos_635_t1_solved (proved): f(N,1) = (N+1)/2 from f_t1. erdos_635_status (proved): True. Problem OPEN for general t.",
+    "mathContext": "The t=1 case is completely resolved. The general conjecture remains open.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]
