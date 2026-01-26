@@ -1,0 +1,76 @@
+{
+  "id": "erdos-468",
+  "title": "Erdős Problem #468: Partial Sums of Divisors",
+  "slug": "erdos-468",
+  "description": "Let D_n = partial sums of divisors of n (excluding 1). How large is D_n \\ ⋃_{m<n} D_m? If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)? Status: OPEN.",
+  "meta": {
+    "erdosNumber": 468,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "partial-sums",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham (1980): original problem",
+      "OEIS A167485, A387502, A387503",
+      "https://erdosproblems.com/468"
+    ],
+    "leanFile": "Proofs/Erdos468Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 42,
+      "summary": "Define properDivisorsSorted, partialDivisorSums D_n, newElements."
+    },
+    {
+      "id": "question-1",
+      "title": "Question 1: New Elements",
+      "startLine": 44,
+      "endLine": 54,
+      "summary": "How large is D_n minus all previous partial sum sets?"
+    },
+    {
+      "id": "question-2",
+      "title": "Question 2: First Appearance",
+      "startLine": 56,
+      "endLine": 72,
+      "summary": "f(N) = min{n : N ∈ D_n}; conjectured f(N) = o(N)."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Observations",
+      "startLine": 74,
+      "endLine": 92,
+      "summary": "D_6 = {2,5,11}, D_12 = {2,5,9,15,27}. Smallest and largest elements."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this in 1980 as part of their study of divisor-related problems. The partial sums of divisors form a natural combinatorial object, but their collective behavior across all integers is poorly understood.",
+    "problemStatement": "Let D_n be the set of partial sums of divisors of n (excluding 1). (1) How many elements of D_n are new? (2) If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)?",
+    "proofStrategy": "We formalize D_n as partial sums of sorted divisors > 1, define the first-appearance function f(N), and state both conjectures. Small examples illustrate the construction.",
+    "keyInsights": [
+      "D_n is the set of cumulative sums d₁, d₁+d₂, ... of divisors > 1",
+      "Each n contributes new partial sums not seen before",
+      "The smallest element of D_n is the least prime factor of n",
+      "The largest element is σ(n) - 1",
+      "f(N) = o(N) would mean most partial sums arise from relatively small n"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #468 asks about the partial sums of divisors: how many are new for each n, and how quickly does f(N) grow? Both questions remain open, connecting divisor theory to combinatorial number theory.",
+    "implications": "Understanding partial divisor sums would shed light on the additive structure of divisor sets and the distribution of arithmetic functions.",
+    "openQuestions": [
+      "How large is D_n \\ ⋃_{m<n} D_m?",
+      "Is f(N) = o(N) for all N?",
+      "Is f(N) = o(N) for almost all N?",
+      "What is the density of ⋃_n D_n in ℕ?"
+    ]
+  }
+}
