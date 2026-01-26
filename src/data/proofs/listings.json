@@ -1997,6 +1997,22 @@
     "annotationCount": 15
   },
   {
+    "id": "erdos-1071",
+    "title": "Erdős Problem #1071: Maximal Packings of Unit Segments in the Unit Square",
+    "slug": "erdos-1071",
+    "description": "Can finitely many non-intersecting unit segments in [0,1]² be maximal? Yes (Danzer). Can a countably infinite maximal packing exist in some region? Open.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "geometry",
+      "combinatorial geometry",
+      "packing"
+    ],
+    "erdosNumber": 1071,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-1073",
     "title": "Composites Dividing Factorial Plus One",
     "slug": "erdos-1073",
@@ -2596,6 +2612,23 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 12
+  },
+  {
+    "id": "erdos-1103",
+    "title": "Squarefree Sumsets",
+    "slug": "erdos-1103",
+    "description": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "squarefree",
+      "sumsets",
+      "growth-rates"
+    ],
+    "erdosNumber": 1103,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-1105",
@@ -3204,6 +3237,38 @@
     "annotationCount": 17
   },
   {
+    "id": "erdos-115",
+    "title": "Erdős Problem #115: Polynomial Derivatives on Connected Lemniscates",
+    "slug": "erdos-115",
+    "description": "For a degree-n polynomial with connected lemniscate, max|p'(z)| ≤ (1/2 + o(1))n². Proved by Eremenko and Lempert; Chebyshev polynomials are extremal.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "analysis",
+      "polynomials",
+      "complex analysis"
+    ],
+    "erdosNumber": 115,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "erdos-116",
+    "title": "Erdős Problem #116: Measure of Polynomial Sublevel Sets",
+    "slug": "erdos-116",
+    "description": "For a monic polynomial p with all roots in the unit disk, is |{|p(z)|<1}| ≥ n^{-O(1)}? PROVED: Krishnapur–Lundberg–Ramachandran showed |{|p(z)|<1}| ≥ c/log n, and this is tight up to log log factors.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "complex analysis",
+      "polynomial theory",
+      "measure theory"
+    ],
+    "erdosNumber": 116,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
     "id": "erdos-119",
     "title": "Maximum Modulus of Polynomials on the Unit Circle",
     "slug": "erdos-119",
@@ -3243,18 +3308,18 @@
     "id": "erdos-120",
     "title": "Erdős Problem #120: The Similarity Problem",
     "slug": "erdos-120",
-    "description": "For every infinite A ⊆ ℝ, must there exist a set E of positive measure containing no similar copy of A?",
+    "description": "For every infinite A ⊆ ℝ, must there exist a set E of positive Lebesgue measure containing no similar copy aA + b (a ≠ 0)?",
     "status": "formalized",
-    "badge": "open-problem",
+    "badge": "axiom",
     "tags": [
       "measure theory",
       "similarity",
-      "combinatorics"
+      "real analysis",
+      "geometric measure theory"
     ],
     "erdosNumber": 120,
-    "mathlibCount": 0,
-    "sorries": 6,
-    "annotationCount": 20
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-121",
@@ -3770,6 +3835,23 @@
     "mathlibCount": 6,
     "sorries": 1,
     "annotationCount": 15
+  },
+  {
+    "id": "erdos-151",
+    "title": "Erdős Problem #151: Clique Transversal and Triangle-Free Independence",
+    "slug": "erdos-151",
+    "description": "Is τ(G) ≤ n − H(n) for every n-vertex graph G, where τ is the clique transversal number and H(n) is the triangle-free independence number?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "graph theory",
+      "clique transversal",
+      "independence number",
+      "Ramsey theory"
+    ],
+    "erdosNumber": 151,
+    "sorries": 0,
+    "annotationCount": 4
   },
   {
     "id": "erdos-153",
@@ -4487,7 +4569,7 @@
     "slug": "erdos-190",
     "description": "Estimate H(k), the smallest N guaranteeing either a monochromatic or rainbow k-term arithmetic progression in every coloring of {1,...,N}.",
     "status": "formalized",
-    "badge": "open",
+    "badge": "axiom",
     "tags": [
       "additive-combinatorics",
       "arithmetic-progressions",
@@ -4495,8 +4577,8 @@
       "canonical-ramsey"
     ],
     "erdosNumber": 190,
-    "sorries": 4,
-    "annotationCount": 8
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-191",
@@ -5064,24 +5146,20 @@
   },
   {
     "id": "erdos-218",
-    "title": "Erdos Problem #218: Prime Gap Densities",
+    "title": "Erdős Problem #218: Prime Gap Densities",
     "slug": "erdos-218",
-    "description": "Let d_n = p_{n+1} - p_n be the prime gap. Erdos conjectured that the sets where d_{n+1} >= d_n and d_{n+1} <= d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN. Terence Tao: 'looks difficult'.",
-    "status": "complete",
+    "description": "Let d_n = p_{n+1} - p_n be the prime gap. Erdős conjectured that the sets where d_{n+1} ≥ d_n and d_{n+1} ≤ d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "number-theory",
-      "prime-numbers",
       "prime-gaps",
       "natural-density",
       "arithmetic-progressions",
       "open-problem"
     ],
-    "dateAdded": "2026-01-25",
     "erdosNumber": 218,
-    "mathlibCount": 4,
-    "sorries": 3,
+    "sorries": 0,
     "annotationCount": 11
   },
   {
@@ -5506,18 +5584,18 @@
     "id": "erdos-238",
     "title": "Erdős Problem #238: Consecutive Primes with Large Gaps",
     "slug": "erdos-238",
-    "description": "Can we always find long runs of consecutive primes where all gaps exceed a fixed constant?",
+    "description": "For c₁, c₂ > 0, can we find > c₁·log(x) consecutive primes ≤ x with all gaps > c₂? Proved for small c₁ (Erdős); general case OPEN.",
     "status": "formalized",
-    "badge": "open-problem",
+    "badge": "axiom",
     "tags": [
-      "prime numbers",
-      "prime gaps",
-      "consecutive primes"
+      "prime-numbers",
+      "prime-gaps",
+      "consecutive-primes",
+      "number-theory"
     ],
     "erdosNumber": 238,
-    "mathlibCount": 0,
-    "sorries": 7,
-    "annotationCount": 20
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-239",
@@ -6339,6 +6417,23 @@
     "annotationCount": 17
   },
   {
+    "id": "erdos-281",
+    "title": "Erdős Problem #281: Covering Congruences and Density",
+    "slug": "erdos-281",
+    "description": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < ε for every ε > 0?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "covering systems",
+      "density",
+      "congruences"
+    ],
+    "erdosNumber": 281,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "erdos-283",
     "title": "Erdős Problem #283: Egyptian Fractions and Polynomial Values",
     "slug": "erdos-283",
@@ -7041,19 +7136,18 @@
     "id": "erdos-317",
     "title": "Erdős Problem #317: Signed Unit Fraction Approximations",
     "slug": "erdos-317",
-    "description": "Is there c > 0 such that for every n, we can find δ_k ∈ {-1,0,1} with 0 < |∑δ_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
-    "status": "complete",
+    "description": "Is there c > 0 such that for every n, we can find δ_k ∈ {−1,0,1} with 0 < |∑δ_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "number-theory",
       "unit-fractions",
-      "diophantine-approximation"
+      "diophantine-approximation",
+      "open-problem"
     ],
     "erdosNumber": 317,
-    "mathlibCount": 0,
-    "sorries": 2,
-    "annotationCount": 17
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-318",
@@ -7500,6 +7594,40 @@
     "annotationCount": 11
   },
   {
+    "id": "erdos-345",
+    "title": "Erdős Problem #345: Completeness Thresholds for Power Sequences",
+    "slug": "erdos-345",
+    "description": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n²)=128, T(n³)=12758.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "complete sequences",
+      "subset sums",
+      "Waring problem"
+    ],
+    "erdosNumber": 345,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
+    "id": "erdos-346",
+    "title": "Erdős Problem #346: Complete Sequences and the Golden Ratio",
+    "slug": "erdos-346",
+    "description": "If a lacunary sequence is strongly complete but fragile (removing any infinite subset destroys completeness), must a_{n+1}/a_n → φ?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "complete sequences",
+      "golden ratio",
+      "Fibonacci numbers"
+    ],
+    "erdosNumber": 346,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "erdos-347",
     "title": "Erdős Problem #347: Complete Sequences with Ratio Tending to 2",
     "slug": "erdos-347",
@@ -7887,18 +8015,18 @@
     "id": "erdos-367",
     "title": "Erdős Problem #367: Products of 2-Full Parts",
     "slug": "erdos-367",
-    "description": "Study the growth of products of 2-full parts over consecutive integers.",
+    "description": "For fixed k ≥ 1, is ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}? The strong bound ≪ n² holds for k ≤ 2 but fails for k ≥ 3 (van Doorn). OPEN.",
     "status": "formalized",
-    "badge": "open-problem",
+    "badge": "axiom",
     "tags": [
-      "number theory",
-      "powerful numbers",
-      "consecutive integers"
+      "number-theory",
+      "powerful-numbers",
+      "consecutive-integers",
+      "squarefree"
     ],
     "erdosNumber": 367,
-    "mathlibCount": 0,
-    "sorries": 15,
-    "annotationCount": 20
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-368",
@@ -8034,26 +8162,6 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 17
-  },
-  {
-    "id": "erdos-374",
-    "title": "Erdős Problem #374: Factorial Products as Perfect Squares",
-    "slug": "erdos-374",
-    "description": "For F(m) = min k with a₁!···aₖ! a square (a₁<···<aₖ=m), study |Dₖ∩{1,...,n}| for Dₖ = {m: F(m)=k}. D₂ = squares. Dₖ = ∅ for k>6. Min D₆ = 527. Open for 3≤k≤6.",
-    "status": "complete",
-    "badge": "open",
-    "tags": [
-      "erdos",
-      "number-theory",
-      "factorials",
-      "perfect-squares",
-      "open"
-    ],
-    "dateAdded": "2026-01-25",
-    "erdosNumber": 374,
-    "mathlibCount": 3,
-    "sorries": 0,
-    "annotationCount": 4
   },
   {
     "id": "erdos-375",
@@ -8215,25 +8323,21 @@
   },
   {
     "id": "erdos-382",
-    "title": "Erdos Problem #382: Prime Powers in Factorial Products",
+    "title": "Erdős Problem #382: Prime Powers in Factorial Products",
     "slug": "erdos-382",
-    "description": "For intervals [u,v] where the largest prime dividing the product u(u+1)...v has exponent >= 2: Is v-u = v^o(1)? Can v-u be arbitrarily large? OPEN. Ramachandra: v-u <= v^{1/2+o(1)}.",
-    "status": "complete",
+    "description": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2: Is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra: v−u ≤ v^{1/2+o(1)}. OPEN.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "number-theory",
       "prime-numbers",
       "factorization",
       "prime-gaps",
-      "cramer-conjecture",
       "open-problem"
     ],
-    "dateAdded": "2026-01-25",
     "erdosNumber": 382,
-    "mathlibCount": 4,
-    "sorries": 3,
-    "annotationCount": 10
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-383",
@@ -8259,21 +8363,18 @@
     "id": "erdos-384",
     "title": "Erdős Problem #384: Prime Divisors of Binomial Coefficients",
     "slug": "erdos-384",
-    "description": "If 1 < k < n-1 then C(n,k) is divisible by a prime p < n/2. SOLVED by Ecklund (1969). The only exception is C(7,3) = 35 = 5 × 7.",
-    "status": "complete",
+    "description": "If 1 < k < n−1 then C(n,k) is divisible by a prime p < n/2. SOLVED by Ecklund (1969). The only exception is C(7,3) = 35 = 5 × 7.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "number-theory",
       "binomial-coefficients",
       "prime-divisors",
       "solved"
     ],
-    "dateAdded": "2026-01-22",
     "erdosNumber": 384,
-    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 12
+    "annotationCount": 10
   },
   {
     "id": "erdos-385",
@@ -8344,6 +8445,23 @@
     "erdosNumber": 388,
     "sorries": 0,
     "annotationCount": 8
+  },
+  {
+    "id": "erdos-389",
+    "title": "Divisibility of Consecutive Integer Products",
+    "slug": "erdos-389",
+    "description": "Is it true that for every n ≥ 1 there exists k such that n(n+1)···(n+k−1) divides (n+k)···(n+2k−1)? The minimal k for n = 4 is 207 (Mehta). OEIS A375071 catalogs minimal k values.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "divisibility",
+      "consecutive integers",
+      "products"
+    ],
+    "erdosNumber": 389,
+    "sorries": 0,
+    "annotationCount": 9
   },
   {
     "id": "erdos-39",
@@ -9537,6 +9655,23 @@
     "annotationCount": 8
   },
   {
+    "id": "erdos-456",
+    "title": "Erdős Problem #456: Smallest Prime ≡ 1 (mod n) vs Smallest Totient Divisor",
+    "slug": "erdos-456",
+    "description": "Compare pₙ (smallest prime ≡ 1 mod n) with mₙ (smallest m with n | φ(m)). Is mₙ < pₙ for almost all n? Does pₙ/mₙ → ∞? Three open questions about their relationship.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "primes",
+      "totient function",
+      "Linnik"
+    ],
+    "erdosNumber": 456,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
     "id": "erdos-457",
     "title": "Erdős Problem #457: Small Prime Divisors of Consecutive Products",
     "slug": "erdos-457",
@@ -9593,6 +9728,40 @@
     "annotationCount": 14
   },
   {
+    "id": "erdos-461",
+    "title": "Erdős Problem #461: Distinct Smooth Components in Short Intervals",
+    "slug": "erdos-461",
+    "description": "Let sₜ(n) be the t-smooth component of n and f(n,t) count distinct values of sₜ(m) for m ∈ {n+1,…,n+t}. Is f(n,t) ≫ t? Erdős–Graham proved f(n,t) ≫ t/log t.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "primes",
+      "smooth numbers",
+      "short intervals"
+    ],
+    "erdosNumber": 461,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "erdos-462",
+    "title": "Erdős Problem #462: Least Prime Factor Sums in Short Intervals",
+    "slug": "erdos-462",
+    "description": "Let p(n) be the least prime factor of n. The sum ∑ p(n)/n over composites n < x is ~ c·√x/(log x)². Does a short interval of length C·√x·(log x)² capture a bounded fraction of this sum?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "primes",
+      "least prime factor",
+      "short intervals"
+    ],
+    "erdosNumber": 462,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-463",
     "title": "Composites Near Their Least Prime Factor",
     "slug": "erdos-463",
@@ -9646,6 +9815,23 @@
     "erdosNumber": 465,
     "sorries": 0,
     "annotationCount": 14
+  },
+  {
+    "id": "erdos-466",
+    "title": "Points in a Circle with Fractional Distance Separation",
+    "slug": "erdos-466",
+    "description": "Is there δ > 0 such that arbitrarily many points fit in a large disk with all pairwise distances bounded away from integers by ≥ δ? PROVED: Graham showed N(X,1/10) ≥ (log X)/10; Sárközy proved N(X,δ) > X^{1/2−δ^{1/7}}.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "discrete geometry",
+      "diophantine approximation",
+      "distance geometry"
+    ],
+    "erdosNumber": 466,
+    "sorries": 0,
+    "annotationCount": 9
   },
   {
     "id": "erdos-467",
@@ -10140,6 +10326,23 @@
     "erdosNumber": 496,
     "sorries": 0,
     "annotationCount": 8
+  },
+  {
+    "id": "erdos-497",
+    "title": "Erdős Problem #497: Counting Antichains (Dedekind's Problem)",
+    "slug": "erdos-497",
+    "description": "How many antichains exist in P([n])? Kleitman (1969) proved the answer is 2^{(1+o(1))·C(n, ⌊n/2⌋)}.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "combinatorics",
+      "antichains",
+      "Sperner theory",
+      "Dedekind numbers"
+    ],
+    "erdosNumber": 497,
+    "sorries": 0,
+    "annotationCount": 4
   },
   {
     "id": "erdos-499",
@@ -10793,6 +10996,23 @@
     "annotationCount": 19
   },
   {
+    "id": "erdos-54",
+    "title": "Erdős Problem #54: Ramsey 2-Complete Sets",
+    "slug": "erdos-54",
+    "description": "A set A is Ramsey 2-complete if every 2-colouring yields monochromatic sums covering all large integers. Conlon–Fox–Pham (2021) showed the minimum growth rate is Θ((log N)²).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "Ramsey theory",
+      "complete sequences",
+      "additive combinatorics"
+    ],
+    "erdosNumber": 54,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "erdos-540",
     "title": "Erdős Problem #540: Zero-Sum Subsets (Erdős-Heilbronn Conjecture)",
     "slug": "erdos-540",
@@ -10846,6 +11066,22 @@
     "mathlibCount": 6,
     "sorries": 8,
     "annotationCount": 14
+  },
+  {
+    "id": "erdos-544",
+    "title": "Erdős Problem #544: Consecutive Ramsey Number Differences",
+    "slug": "erdos-544",
+    "description": "Show that R(3, k+1) − R(3, k) → ∞. Prove or disprove that R(3, k+1) − R(3, k) = o(k).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "graph theory",
+      "Ramsey theory",
+      "Ramsey numbers"
+    ],
+    "erdosNumber": 544,
+    "sorries": 0,
+    "annotationCount": 5
   },
   {
     "id": "erdos-545",
@@ -11040,6 +11276,22 @@
     ],
     "erdosNumber": 554,
     "sorries": 1,
+    "annotationCount": 6
+  },
+  {
+    "id": "erdos-555",
+    "title": "Erdős Problem #555: Ramsey Numbers of Even Cycles",
+    "slug": "erdos-555",
+    "description": "Determine R(C₂ₙ; k), the multicolor Ramsey number of even cycles. Erdős showed k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. For C₄, Chung–Graham gave k²−k+1 < R(C₄;k) ≤ k²+k+1. The exact growth rate is open.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "Ramsey theory",
+      "graph theory",
+      "extremal combinatorics"
+    ],
+    "erdosNumber": 555,
+    "sorries": 0,
     "annotationCount": 6
   },
   {
@@ -13144,6 +13396,23 @@
     "annotationCount": 19
   },
   {
+    "id": "erdos-667",
+    "title": "Erdős Problem #667: Clique Density Exponent c(p,q)",
+    "slug": "erdos-667",
+    "description": "Is c(p,q) = lim inf log H(n;p,q)/log n strictly increasing in q, where H(n;p,q) is the largest clique guaranteed when every p-set spans ≥ q edges?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal graph theory",
+      "clique numbers"
+    ],
+    "erdosNumber": 667,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "erdos-668",
     "title": "Erdos Problem #668: Unit Distance Configuration Uniqueness",
     "slug": "erdos-668",
@@ -13468,6 +13737,41 @@
     "annotationCount": 13
   },
   {
+    "id": "erdos-685",
+    "title": "Prime Divisors of Binomial Coefficients",
+    "slug": "erdos-685",
+    "description": "For n^ε < k ≤ n^{1-ε}, is ω(C(n,k)) = (1+o(1))·k·Σ_{k<p<n} 1/p? Trivial lower bound: log C(n,k)/log n, tight when k > n^{1-o(1)}.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "primes",
+      "binomial-coefficients",
+      "prime-factors"
+    ],
+    "erdosNumber": 685,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
+    "id": "erdos-687",
+    "title": "Covering Congruences and the Jacobsthal Function",
+    "slug": "erdos-687",
+    "description": "Let Y(x) be the maximal y such that covering congruences for primes ≤ x cover [1,y]. Is Y(x) = o(x²)? $1,000 prize. Known: x·log x·... ≪ Y(x) ≪ x² (Iwaniec 1978, FGKMT 2018).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "covering systems",
+      "Jacobsthal function",
+      "prime gaps",
+      "sieve theory"
+    ],
+    "erdosNumber": 687,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
     "id": "erdos-688",
     "title": "Covering by Large Prime Congruences",
     "slug": "erdos-688",
@@ -13521,6 +13825,22 @@
     "annotationCount": 8
   },
   {
+    "id": "erdos-691",
+    "title": "Erdős Problem #691: Behrend Sequences and Density of Multiples",
+    "slug": "erdos-691",
+    "description": "Find a necessary and sufficient condition for a set A ⊆ ℕ to be a Behrend sequence (its multiples have density 1). Known for coprime sets: Σ 1/a = ∞. General criterion remains open.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "density",
+      "multiplicative number theory"
+    ],
+    "erdosNumber": 691,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-692",
     "title": "Erdős Problem #692: Unimodularity of Divisor Density",
     "slug": "erdos-692",
@@ -13545,19 +13865,19 @@
     "id": "erdos-693",
     "title": "Erdős Problem #693: Divisor Gaps in Intervals",
     "slug": "erdos-693",
-    "description": "Is the maximum gap between consecutive integers with a divisor in (n, 2n) bounded polylogarithmically?",
+    "description": "Let k ≥ 2 and A = {m ∈ [n, n^k] : m has a divisor in (n, 2n)}. Is the maximum gap between consecutive elements of A bounded by (log n)^O(1)? OPEN.",
     "status": "formalized",
-    "badge": "open-problem",
+    "badge": "axiom",
     "tags": [
-      "number theory",
+      "number-theory",
       "divisors",
       "gaps",
-      "density"
+      "density",
+      "open-problem"
     ],
     "erdosNumber": 693,
-    "mathlibCount": 0,
-    "sorries": 4,
-    "annotationCount": 20
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-694",
@@ -15465,20 +15785,17 @@
     "title": "Erdős Problem #788: Sum-Free Subsets in Intervals",
     "slug": "erdos-788",
     "description": "Estimate f(n) where f(n) is maximal s.t. for all B ⊂ (2n,4n), ∃ C ⊂ (n,2n) sum-free w.r.t. B with |C|+|B| ≥ f(n). Conjectured f(n) ≤ n^{1/2+o(1)}. Known: n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. OPEN.",
-    "status": "complete",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "additive-combinatorics",
       "sum-free-sets",
       "sidon-sets",
-      "open-problem"
+      "intervals"
     ],
-    "dateAdded": "2026-01-19",
     "erdosNumber": 788,
-    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 12
+    "annotationCount": 11
   },
   {
     "id": "erdos-789",
@@ -16282,6 +16599,23 @@
     "annotationCount": 15
   },
   {
+    "id": "erdos-825",
+    "title": "Erdős Problem #825: Abundancy Bound for Weird Numbers",
+    "slug": "erdos-825",
+    "description": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "divisor functions",
+      "weird numbers",
+      "semiperfect numbers"
+    ],
+    "erdosNumber": 825,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "erdos-826",
     "title": "Erdős Problem #826: Divisor Function Growth Along Shifts",
     "slug": "erdos-826",
@@ -16299,6 +16633,23 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 11
+  },
+  {
+    "id": "erdos-827",
+    "title": "Distinct Circumradii in General Position",
+    "slug": "erdos-827",
+    "description": "Determine n_k: the minimal number of points in general position guaranteeing a k-subset with all distinct circumradii. Martinez-Roldán-Pensado: n_k ≪ k⁹.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "geometry",
+      "discrete-geometry",
+      "circumradii",
+      "ramsey-type"
+    ],
+    "erdosNumber": 827,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-828",
@@ -16736,6 +17087,23 @@
     "annotationCount": 10
   },
   {
+    "id": "erdos-850",
+    "title": "Same Prime Factors for Three Consecutive Shifts",
+    "slug": "erdos-850",
+    "description": "Can distinct x, y have the same prime factors for x,y and x+1,y+1 and x+2,y+2? Conjectured no (Erdős-Woods conjecture).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "prime-factors",
+      "abc-conjecture",
+      "erdos-woods"
+    ],
+    "erdosNumber": 850,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
     "id": "erdos-851",
     "title": "Erdős Problem #851: Density of Integers 2^k + n",
     "slug": "erdos-851",
@@ -16948,6 +17316,22 @@
     "erdosNumber": 862,
     "sorries": 2,
     "annotationCount": 15
+  },
+  {
+    "id": "erdos-863",
+    "title": "Erdős Problem #863: B₂[r] Sum Sets vs Difference Sets",
+    "slug": "erdos-863",
+    "description": "For B₂[r] sets in {1,...,N}, do the asymptotic constants cᵣ (sums) and c'ᵣ (differences) differ when r ≥ 2? For r = 1 (Sidon sets), c₁ = c'₁ = 1. Erdős conjectured c'ᵣ < cᵣ. Open.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "additive combinatorics",
+      "Sidon sets",
+      "number theory"
+    ],
+    "erdosNumber": 863,
+    "sorries": 0,
+    "annotationCount": 5
   },
   {
     "id": "erdos-864",
@@ -17589,6 +17973,23 @@
     "mathlibCount": 3,
     "sorries": 11,
     "annotationCount": 19
+  },
+  {
+    "id": "erdos-896",
+    "title": "Unique Product Representations",
+    "slug": "erdos-896",
+    "description": "Estimate max F(A,B) where F counts products ab with exactly one representation. Van Doorn: N²/log N ≤ max F ≪ N²/(log N)^δ.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number-theory",
+      "multiplicative-combinatorics",
+      "product-sets",
+      "asymptotic-bounds"
+    ],
+    "erdosNumber": 896,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-897",
@@ -18368,7 +18769,7 @@
     "slug": "erdos-932",
     "description": "For infinitely many r, are there at least two integers in the prime gap (p_r, p_{r+1}) whose prime factors are all smaller than the gap size p_{r+1} - p_r?",
     "status": "formalized",
-    "badge": "open",
+    "badge": "axiom",
     "tags": [
       "number-theory",
       "prime-gaps",
@@ -18376,7 +18777,7 @@
       "natural-density"
     ],
     "erdosNumber": 932,
-    "sorries": 5,
+    "sorries": 0,
     "annotationCount": 12
   },
   {
@@ -18721,18 +19122,19 @@
     "id": "erdos-950",
     "title": "Erdős Problem #950: Sum of Reciprocal Prime Gaps",
     "slug": "erdos-950",
-    "description": "Study the behavior of f(n) = ∑_{p<n} 1/(n-p), the sum of reciprocals of distances to primes.",
+    "description": "Define f(n) = ∑_{p<n} 1/(n−p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1 (de Bruijn–Erdős–Turán). OPEN.",
     "status": "formalized",
-    "badge": "open-problem",
+    "badge": "axiom",
     "tags": [
-      "prime numbers",
-      "prime gaps",
-      "analytic number theory"
+      "number-theory",
+      "prime-numbers",
+      "prime-gaps",
+      "analytic-number-theory",
+      "open-problem"
     ],
     "erdosNumber": 950,
-    "mathlibCount": 0,
-    "sorries": 10,
-    "annotationCount": 20
+    "sorries": 0,
+    "annotationCount": 9
   },
   {
     "id": "erdos-951",
@@ -18864,21 +19266,18 @@
     "title": "Erdős Problem #958: Distance Multiplicities and Point Configurations",
     "slug": "erdos-958",
     "description": "Is it true that k = n-1 distinct distances with multiplicities {n-1,...,1} characterizes equidistant points on a line or circle? NO - other configurations exist (Clemen-Dumitrescu-Liu, 2025).",
-    "status": "complete",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "geometry",
       "distances",
       "point-configurations",
       "disproved",
       "solved"
     ],
-    "dateAdded": "2026-01-23",
     "erdosNumber": 958,
-    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 8
+    "annotationCount": 9
   },
   {
     "id": "erdos-959",
