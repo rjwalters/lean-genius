@@ -1,0 +1,88 @@
+{
+  "id": "erdos-122",
+  "title": "Erdős Problem #122: Distribution of n + f(n) in Short Intervals",
+  "slug": "erdos-122",
+  "description": "For which f is it true that n + f(n) concentrates in short intervals? Proved for d(n) and ω(n) by Erdős–Pomerance–Sárközy. Conjectured false for φ(n) and σ(n). OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/122",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos122Problem.lean",
+    "tags": [
+      "number-theory",
+      "arithmetic-functions",
+      "distribution",
+      "short-intervals"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 122,
+    "erdosUrl": "https://erdosproblems.com/122",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #122 (Erdős–Pomerance–Sárközy, [ErPoSa97]) asks which number-theoretic functions f have the property that n + f(n) concentrates in short intervals. Known for divisor count d and distinct prime count ω; conjectured false for Euler's totient φ and sum of divisors σ.",
+    "problemStatement": "For which f does #{n : n + f(n) ∈ (x, x + F(x))} / F(x) → ∞ for infinitely many x, whenever f(n)/F(n) → 0 a.e.? OPEN (general characterization).",
+    "proofStrategy": "We define the Short Interval Concentration Property (SICP) using Finset counting and natural density. The Erdős–Pomerance–Sárközy theorem (for d and ω) is axiomatized. Conjectured failures for φ and σ are stated as definitions.",
+    "keyInsights": [
+      "The divisor function d(n) and distinct prime count ω(n) have SICP (proved)",
+      "Euler's totient φ(n) and sum of divisors σ(n) are conjectured to lack SICP",
+      "SICP captures how n + f(n) concentrates relative to short intervals (x, x+F(x))",
+      "The general characterization of which functions have SICP remains open",
+      "The problem connects arithmetic function distribution to interval analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "arithmetic-functions",
+      "title": "Part I: Number-Theoretic Functions",
+      "startLine": 37,
+      "endLine": 61,
+      "summary": "Defines divisorCount d(n), distinctPrimeCount ω(n), eulerTotient φ(n), and sumOfDivisors σ(n)."
+    },
+    {
+      "id": "counting",
+      "title": "Part II: Counting in Intervals",
+      "startLine": 63,
+      "endLine": 81,
+      "summary": "Defines countInInterval (counting n + f(n) in (x, x+F(x)]) and GrowthDominates (f/F → 0 a.e.)."
+    },
+    {
+      "id": "sicp",
+      "title": "Part III: The Short Interval Concentration Property",
+      "startLine": 83,
+      "endLine": 98,
+      "summary": "Defines HasSICP: for every dominating F and constant C, infinitely many x have count > C·F(x)."
+    },
+    {
+      "id": "known-results",
+      "title": "Part IV: Known Results",
+      "startLine": 100,
+      "endLine": 112,
+      "summary": "Axioms: divisor_count_has_SICP and prime_count_has_SICP (Erdős–Pomerance–Sárközy theorem)."
+    },
+    {
+      "id": "conjectures",
+      "title": "Part V: Conjectured Failures",
+      "startLine": 114,
+      "endLine": 142,
+      "summary": "States ErdosConjecture122_phi (¬HasSICP φ), ErdosConjecture122_sigma (¬HasSICP σ), and combined ErdosProblem122."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 144,
+      "endLine": 157,
+      "summary": "Theorem erdos_122_known_results: d and ω have SICP (from axioms)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #122 asks which arithmetic functions have the short interval concentration property. d(n) and ω(n) do (Erdős–Pomerance–Sárközy); φ(n) and σ(n) conjecturally do not. The general characterization is open.",
+    "implications": "The SICP distinguishes arithmetic functions by their distributional behavior. Functions with irregular growth (like d and ω) tend to concentrate, while smooth functions (like φ and σ) may not.",
+    "openQuestions": [
+      "Does φ(n) truly fail SICP?",
+      "Does σ(n) truly fail SICP?",
+      "Can a general criterion be given for which functions have SICP?"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-122-functions",
+    "proofId": "erdos-122",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 61 },
+    "title": "Arithmetic Functions",
+    "content": "Four standard functions: divisorCount d(n), distinctPrimeCount ω(n), eulerTotient φ(n), sumOfDivisors σ(n). The problem classifies which have the short interval concentration property.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-122-counting",
+    "proofId": "erdos-122",
+    "type": "definition",
+    "range": { "startLine": 65, "endLine": 81 },
+    "title": "Interval Counting and Growth Dominance",
+    "content": "countInInterval counts n with n + f(n) in (x, x+F(x)]. GrowthDominates formalizes f(n)/F(n) → 0 for almost all n via natural density.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-122-sicp",
+    "proofId": "erdos-122",
+    "type": "definition",
+    "range": { "startLine": 85, "endLine": 98 },
+    "title": "Short Interval Concentration Property",
+    "content": "HasSICP: for every dominating F and constant C ≥ 1, there exist infinitely many x where the count of n + f(n) in (x, x+F(x)] exceeds C · F(x). This is the central property in Problem #122.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-122-known",
+    "proofId": "erdos-122",
+    "type": "result",
+    "range": { "startLine": 102, "endLine": 112 },
+    "title": "Erdős–Pomerance–Sárközy Theorem",
+    "content": "The divisor function d(n) and distinct prime count ω(n) have SICP. Proved in [ErPoSa97]. These are the only known positive cases.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-122-conjectures",
+    "proofId": "erdos-122",
+    "type": "conjecture",
+    "range": { "startLine": 116, "endLine": 142 },
+    "title": "Conjectured Failures for φ and σ",
+    "content": "Erdős conjectured that Euler's totient φ(n) and sum of divisors σ(n) do NOT have SICP. ErdosProblem122 combines all four claims. The general classification remains open.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-122-summary",
+    "proofId": "erdos-122",
+    "type": "context",
+    "range": { "startLine": 146, "endLine": 157 },
+    "title": "Summary and Known Results",
+    "content": "Theorem erdos_122_known_results combines the two positive axioms. The problem asks for a complete characterization: which arithmetic functions have SICP?",
+    "significance": "supporting"
+  }
+]
