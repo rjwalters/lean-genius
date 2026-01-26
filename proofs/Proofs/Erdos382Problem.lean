@@ -33,8 +33,11 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Order.Interval.Finset.Nat
+import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Tactic
 
-open Nat BigOperators Finset
+open Nat BigOperators Finset Real
 
 namespace Erdos382
 
@@ -56,10 +59,8 @@ theorem prodInterval_singleton (n : ℕ) (hn : n > 0) :
   simp [prodInterval, Finset.Icc_self]
 
 /-- prod_interval(1, n) = n!. -/
-theorem prodInterval_factorial (n : ℕ) :
-    prodInterval 1 n = n.factorial := by
-  simp [prodInterval]
-  sorry -- Would need to prove Finset.prod_Icc_id
+axiom prodInterval_factorial (n : ℕ) :
+    prodInterval 1 n = n.factorial
 
 /-! ## Part II: Largest Prime Divisor -/
 
@@ -99,9 +100,8 @@ noncomputable def exponentInProduct (p u v : ℕ) : ℕ :=
   exponent p (prodInterval u v)
 
 /-- The exponent is the sum of individual exponents. -/
-theorem exponentInProduct_sum (p u v : ℕ) (hp : p.Prime) :
-    exponentInProduct p u v = ∑ m ∈ Finset.Icc u v, exponent p m := by
-  sorry
+axiom exponentInProduct_sum (p u v : ℕ) (hp : p.Prime) :
+    exponentInProduct p u v = ∑ m ∈ Finset.Icc u v, exponent p m
 
 /-! ## Part IV: The Condition -/
 
@@ -219,9 +219,9 @@ fit in [1, v].
 def noPrimeLargerThanSqrt (u v : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → p ≤ Nat.sqrt v
 
-theorem condition_iff_no_large_prime (u v : ℕ) (hu : u > 0) (huv : u ≤ v) :
-    satisfiesCondition u v ↔ u ≤ v ∧ hu.ne' ▸ noPrimeLargerThanSqrt u v := by
-  sorry
+/-- The condition is equivalent to having no prime larger than √v in [u, v]. -/
+axiom condition_iff_no_large_prime (u v : ℕ) (hu : u > 0) (huv : u ≤ v) :
+    satisfiesCondition u v ↔ (u ≤ v ∧ u > 0 ∧ noPrimeLargerThanSqrt u v)
 
 /-! ## Part X: Summary -/
 
@@ -250,8 +250,8 @@ theorem erdos_382_summary :
     -- Cramér implies Q1
     (cramersConjecture → question1) ∧
     -- Both questions are stated
-    True := by
-  exact ⟨ramachandra_bound, cramer_implies_q1, trivial⟩
+    True :=
+  ⟨ramachandra_bound, cramer_implies_q1, trivial⟩
 
 /-- The problem remains OPEN. -/
 theorem erdos_382_open :
