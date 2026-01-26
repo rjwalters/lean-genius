@@ -1,0 +1,78 @@
+{
+  "id": "erdos-1092",
+  "title": "Erdős Problem #1092: Chromatic Decomposition Threshold",
+  "slug": "erdos-1092",
+  "description": "Let f_r(n) be max edges removable from each subgraph to reduce chromatic number to ≤ r while forcing χ(G) ≤ r+1. Is f₂(n) ≫ n? Rödl (1982) gives f₂(n) = O(n·polylog). Open.",
+  "meta": {
+    "erdosNumber": 1092,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "extremal-graph-theory",
+      "open"
+    ],
+    "references": [
+      "Erdős–Hajnal–Szemerédi: original question",
+      "Rödl (1982): construction giving f₂(n) = O(n·polylog)",
+      "Tang: observation connecting Rödl to this problem",
+      "Related to Problem #744",
+      "https://erdosproblems.com/1092"
+    ],
+    "leanFile": "Proofs/Erdos1092Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 52,
+      "summary": "Graph, coloring, chromatic number, edge removal for chromatic reduction."
+    },
+    {
+      "id": "threshold",
+      "title": "The Function f_r(n)",
+      "startLine": 54,
+      "endLine": 62,
+      "summary": "Definition of the chromatic decomposition threshold."
+    },
+    {
+      "id": "questions",
+      "title": "Main Questions",
+      "startLine": 64,
+      "endLine": 74,
+      "summary": "Is f₂(n) ≫ n? Is f_r(n) ≫ rn for general r?"
+    },
+    {
+      "id": "rodl",
+      "title": "Rödl's Construction and Bounds",
+      "startLine": 76,
+      "endLine": 96,
+      "summary": "Upper bound O(n·polylog), trivial lower bound n-1, monotonicity."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős, Hajnal, and Szemerédi studied when local chromatic reduction (by removing few edges from each subgraph) forces global chromatic number bounds. Tang observed that Rödl's 1982 construction provides evidence against the first question, showing f₂(n) cannot grow much faster than n.",
+    "problemStatement": "Let f_r(n) be the maximum k such that if every m-vertex subgraph of G has chromatic number ≤ r after removing ≤ k edges, then χ(G) ≤ r+1. Is f₂(n) ≫ n? Is f_r(n) ≫_r rn?",
+    "proofStrategy": "We define chromatic reduction via edge deletion, formalize f_r(n) as the threshold function, state both questions, and record Rödl's upper bound and the trivial lower bound.",
+    "keyInsights": [
+      "f_r(n) measures the gap between local and global chromatic structure",
+      "Rödl's 1982 construction shows f₂(n) = O(n·(log n)²), suggesting Question 1 may be false",
+      "The trivial lower bound f_r(n) ≥ n-1 comes from tree subgraphs",
+      "f_r(n) is monotone in r: more colors make reduction easier",
+      "Related to Problem #744 on similar chromatic decomposition thresholds"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1092 asks about the threshold for local-to-global chromatic number reduction. Rödl's construction provides an upper bound of O(n·polylog), casting doubt on the conjecture f₂(n) ≫ n, but the exact behavior remains open.",
+    "implications": "Resolution would clarify how local chromatic structure controls global coloring properties, connecting to the Ramsey-type theory of graph coloring and structural graph theory.",
+    "openQuestions": [
+      "Is f₂(n) = Θ(n) or does it grow super-linearly?",
+      "Does Rödl's construction definitively disprove f₂(n) ≫ n?",
+      "What is the exact growth rate of f_r(n) for fixed r ≥ 3?",
+      "Is f_r(n)/n bounded or unbounded as a function of r?"
+    ]
+  }
+}
