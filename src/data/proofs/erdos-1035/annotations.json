@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-1035-hypercube",
+    "proofId": "erdos-1035",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 38 },
+    "title": "Hypercube Graph Q_n",
+    "content": "hypercubeGraph n is a SimpleGraph on Fin(2^n) where u ~ v iff u ≠ v and u XOR v is a power of 2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1035-mindegree",
+    "proofId": "erdos-1035",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 45 },
+    "title": "Minimum Degree",
+    "content": "HasMinDegree G d holds when every vertex of G has at least d neighbours.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1035-containment",
+    "proofId": "erdos-1035",
+    "type": "definition",
+    "range": { "startLine": 51, "endLine": 53 },
+    "title": "Subgraph Containment",
+    "content": "ContainsAsSubgraph G H holds when there is an injective map preserving adjacency from H into G.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1035-conjecture",
+    "proofId": "erdos-1035",
+    "type": "conjecture",
+    "range": { "startLine": 59, "endLine": 63 },
+    "title": "Main Conjecture",
+    "content": "ErdosProblem1035: ∃ c > 0 such that min degree > (1-c)·2^n on 2^n vertices forces Q_n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1035-alternatives",
+    "proofId": "erdos-1035",
+    "type": "conjecture",
+    "range": { "startLine": 69, "endLine": 83 },
+    "title": "Alternative Formulations",
+    "content": "If the main conjecture fails: find smallest m > 2^n forcing Q_n, or find exact threshold u_n on 2^n vertices.",
+    "significance": "supporting"
+  }
+]

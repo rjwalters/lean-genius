@@ -1,0 +1,45 @@
+{
+  "id": "erdos-1035",
+  "title": "Hypercube Subgraphs in Dense Graphs",
+  "slug": "erdos-1035",
+  "description": "Is there c > 0 such that every graph on 2^n vertices with min degree > (1-c)·2^n contains the hypercube Q_n? Related to extremal graph theory for hypercube embeddings.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1035",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1035Problem.lean",
+    "tags": ["graph-theory", "hypercube", "extremal-graph-theory", "minimum-degree"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 1035,
+    "erdosUrl": "https://erdosproblems.com/1035",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether a constant fraction of minimum degree suffices to embed the n-dimensional hypercube in a graph on 2^n vertices. This connects extremal graph theory with hypercube structure. If false, alternative formulations seek the smallest host graph or the precise minimum degree threshold.",
+    "problemStatement": "Is there c > 0 such that every graph on 2^n vertices with minimum degree > (1-c)·2^n contains Q_n as a subgraph?",
+    "proofStrategy": "We define hypercubeGraph via XOR adjacency on Fin(2^n), HasMinDegree for degree conditions, and ContainsAsSubgraph for injective homomorphisms. The main conjecture and two alternative formulations are stated as Prop. The hypercube construction proves symmetry and irreflexivity.",
+    "keyInsights": [
+      "The hypercube Q_n has 2^n vertices and n·2^(n-1) edges with vertex degree n",
+      "XOR-based adjacency captures the combinatorial structure of Q_n",
+      "Related to Problem 576 on extremal number of edges forcing Q_n",
+      "Two fallback questions address relaxed host graph size and exact degree threshold"
+    ]
+  },
+  "sections": [
+    { "id": "hypercube", "title": "Hypercube Graph", "startLine": 23, "endLine": 38, "summary": "Defines hypercubeAdj via XOR and constructs hypercubeGraph as a SimpleGraph with symmetry and irreflexivity proofs." },
+    { "id": "degree", "title": "Minimum Degree", "startLine": 40, "endLine": 45, "summary": "Defines HasMinDegree as all vertices having at least d neighbours." },
+    { "id": "containment", "title": "Subgraph Containment", "startLine": 47, "endLine": 53, "summary": "Defines ContainsAsSubgraph via injective adjacency-preserving maps." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 55, "endLine": 63, "summary": "States ErdosProblem1035: existence of c > 0 for hypercube embedding under min degree condition." },
+    { "id": "alternatives", "title": "Alternative Questions and Basic Properties", "startLine": 65, "endLine": 99, "summary": "Two alternative formulations (larger host, exact threshold) and basic axioms on self-containment and completeness." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 1035 on hypercube embedding in dense graphs, with XOR-based Q_n construction, the main conjecture, and two alternative formulations. 0 sorries.",
+    "implications": "Resolution would advance understanding of how dense a graph must be to contain structured subgraphs like hypercubes.",
+    "openQuestions": [
+      "Does a constant c > 0 exist for the main conjecture?",
+      "What is the exact minimum degree threshold for Q_n on 2^n vertices?",
+      "How does the problem relate to the extremal number ex(N, Q_n)?"
+    ]
+  }
+}
