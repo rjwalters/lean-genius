@@ -2,68 +2,97 @@
   "id": "erdos-950",
   "title": "Erdős Problem #950: Sum of Reciprocal Prime Gaps",
   "slug": "erdos-950",
-  "description": "Study the behavior of f(n) = ∑_{p<n} 1/(n-p), the sum of reciprocals of distances to primes.",
+  "description": "Define f(n) = ∑_{p<n} 1/(n−p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1 (de Bruijn–Erdős–Turán). OPEN.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/950",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos950Problem.lean",
-    "tags": ["prime numbers", "prime gaps", "analytic number theory"],
-    "badge": "open-problem",
-    "sorries": 10,
+    "tags": ["number-theory", "prime-numbers", "prime-gaps", "analytic-number-theory", "open-problem"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 950,
     "erdosUrl": "https://erdosproblems.com/950",
-    "erdosProblemStatus": "open",
-    "mathlibDependencies": []
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem concerns the function f(n) = ∑_{p<n} 1/(n-p), which measures how 'close' n is to primes by weighting nearby primes more heavily. De Bruijn, Erdős, and Turán showed that ∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x, meaning f(n) averages to 1.",
-    "problemStatement": "Define f(n) = ∑_{p<n} 1/(n-p) where p ranges over primes. Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n) for all n?",
-    "proofStrategy": "The known average results suggest f(n) fluctuates around 1. Question 1 asks if f(n) can get arbitrarily close to 1 from below. Question 2 asks if f(n) can be arbitrarily large. Question 3 asks for a universal upper bound.",
+    "historicalContext": "This problem concerns the function f(n) = ∑_{p<n} 1/(n−p), which measures how 'close' n is to primes by weighting nearby primes more heavily. De Bruijn, Erdős, and Turán showed that ∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x, meaning f(n) averages to 1 and concentrates near 1. The three questions probe the extremal behavior.",
+    "problemStatement": "Define f(n) = ∑_{p<n} 1/(n−p) where p ranges over primes. Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? All three remain OPEN.",
+    "proofStrategy": "The formalization defines primesLessThan, f, and fReal. The three questions are stated as formal propositions using Filter.liminf, Filter.limsup, and Filter.Eventually. Known average results are axioms. Basic properties (nonnegativity, small values) are proved or axiomatized. A weaker conjecture and its implication are included. A summary theorem combines the known results.",
     "keyInsights": [
-      "f(n) weights nearby primes more heavily via 1/(n-p)",
-      "de Bruijn-Erdős-Turán: f(n) averages to 1",
-      "f(n) is large when n has many nearby primes",
-      "f(n) is small when n is in a 'prime desert'",
-      "The three questions probe different aspects of the distribution"
+      "f(n) weights nearby primes more heavily via 1/(n−p)",
+      "de Bruijn–Erdős–Turán: f(n) averages to 1 (∑ f(n) ~ x, ∑ f(n)² ~ x)",
+      "f(n) is large when n has many nearby primes, small in 'prime deserts'",
+      "The integral approximation ∫ dt/((n−t) log t) ~ 1 explains the average",
+      "A weaker prime distribution conjecture would give f(n) ≪ log log log n"
     ]
   },
   "sections": [
     {
-      "id": "section-definition",
-      "title": "The Function f(n)",
-      "content": "f(n) = ∑_{p<n} 1/(n-p) sums the reciprocals of distances from n to all primes less than n. A prime p close to n contributes a large term 1/(n-p), while distant primes contribute little."
+      "id": "function-definition",
+      "title": "Part 1: The Function f(n)",
+      "startLine": 38,
+      "endLine": 67,
+      "summary": "primesLessThan, f(n) = ∑_{p<n} 1/(n−p), and real-valued variant fReal."
     },
     {
-      "id": "section-questions",
-      "title": "Three Questions",
-      "content": "Q1: Is lim inf f(n) = 1? This asks if f(n) can approach 1 from above infinitely often. Q2: Is lim sup f(n) = ∞? This asks if f(n) is unbounded. Q3: Is f(n) = o(log log n)? This asks for a slow-growing upper bound."
+      "id": "three-questions",
+      "title": "Part 2: The Three Questions",
+      "startLine": 69,
+      "endLine": 119,
+      "summary": "question1 (lim inf = 1), question2 (lim sup = ∞), question3 (o(log log n)), fLittleO. All OPEN."
     },
     {
-      "id": "section-known",
-      "title": "Known Results",
-      "content": "De Bruijn, Erdős, and Turán proved ∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x. This means the average value of f(n) is 1, and f(n)² also averages to 1, indicating f(n) concentrates near 1 on average."
+      "id": "known-results",
+      "title": "Part 3: Known Results (de Bruijn–Erdős–Turán)",
+      "startLine": 121,
+      "endLine": 152,
+      "summary": "∑ f(n) ~ x and ∑ f(n)² ~ x as axioms. f_average_one proved from axiom."
     },
     {
-      "id": "section-weaker",
-      "title": "Weaker Conjecture",
-      "content": "Erdős proposed: for every ε > 0, large x has some y < x with π(x) < π(y) + ε·π(x-y). If a stronger bound holds (with O((x-y)/log x)), then f(n) ≪ log log log n."
+      "id": "basic-properties",
+      "title": "Part 4: Basic Properties",
+      "startLine": 154,
+      "endLine": 185,
+      "summary": "f_nonneg proved, f_two proved by simp, f_three and f_four as axioms, prime_contributes proved."
     },
     {
-      "id": "section-connection",
-      "title": "Connection to Prime Distribution",
-      "content": "f(n) reflects the local distribution of primes near n. Regions dense in primes give large f(n); prime deserts give small f(n). The questions probe the extremal behavior of this distribution."
+      "id": "heuristics",
+      "title": "Part 5: Heuristic Analysis",
+      "startLine": 187,
+      "endLine": 211,
+      "summary": "Integral approximation explains average = 1. f(n) large near primes."
+    },
+    {
+      "id": "weaker-conjecture",
+      "title": "Part 6: Weaker Conjecture and Connection",
+      "startLine": 213,
+      "endLine": 244,
+      "summary": "primeCountingFunction, weakerConjecture, weaker_implies_bound axiom (f ≪ log log log n)."
+    },
+    {
+      "id": "prime-distribution",
+      "title": "Part 7: Connection to Prime Distribution",
+      "startLine": 246,
+      "endLine": 267,
+      "summary": "primeGap definition, dense_primes_increase_f axiom (f(n) ≥ 1/k)."
+    },
+    {
+      "id": "summary",
+      "title": "Part 8: Summary",
+      "startLine": 269,
+      "endLine": 291,
+      "summary": "erdos_950_summary theorem combining both average results and True. Status: OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #950 asks three questions about f(n) = ∑_{p<n} 1/(n-p): Is lim inf = 1? Is lim sup = ∞? Is f(n) = o(log log n)? The average is known to be 1, but extremal behavior is open.",
-    "implications": "Resolution would illuminate the fine structure of prime distribution. Answering Q1 and Q2 would characterize fluctuations of f(n) around its mean. Q3 would provide a universal bound.",
+    "summary": "Erdős Problem #950 asks three questions about f(n) = ∑_{p<n} 1/(n−p): Is lim inf = 1? Is lim sup = ∞? Is f(n) = o(log log n)? The average is known to be 1 (de Bruijn–Erdős–Turán), but extremal behavior is open.",
+    "implications": "Resolution would illuminate the fine structure of prime distribution near integers, characterizing fluctuations of the reciprocal-distance sum around its mean.",
     "openQuestions": [
       "Is lim inf f(n) = 1?",
       "Is lim sup f(n) = ∞?",
       "Is f(n) = o(log log n)?",
-      "What is the true growth rate of max_{n ≤ x} f(n)?",
-      "Can we characterize n where f(n) is extremal?"
+      "What is the true growth rate of max_{n ≤ x} f(n)?"
     ]
   }
 }

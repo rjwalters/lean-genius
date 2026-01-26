@@ -1,242 +1,101 @@
 [
   {
-    "id": "ann-950-1",
+    "id": "erdos-950-header",
     "proofId": "erdos-950",
-    "range": {
-      "startLine": 1,
-      "endLine": 16
-    },
-    "type": "concept",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 22 },
     "title": "Problem Overview",
-    "content": "Erdős Problem #950: Study f(n) = ∑_{p<n} 1/(n-p). Questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1. OPEN.",
-    "significance": "critical"
+    "content": "Erdős Problem #950: Define f(n) = ∑_{p<n} 1/(n−p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1. OPEN.",
+    "mathContext": "f(n) = ∑_{p<n, p prime} 1/(n−p). De Bruijn–Erdős–Turán: ∑_{n<x} f(n) ~ x, ∑_{n<x} f(n)² ~ x.",
+    "significance": "essential",
+    "relatedConcepts": ["prime gaps", "reciprocal sums", "lim inf", "lim sup", "analytic number theory"]
   },
   {
-    "id": "ann-950-2",
+    "id": "erdos-950-function",
     "proofId": "erdos-950",
-    "range": {
-      "startLine": 45,
-      "endLine": 47
-    },
     "type": "definition",
-    "title": "Primes Less Than n",
-    "content": "primesLessThan(n) is the set of all primes p with p < n. This is the index set for the sum defining f(n).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-950-3",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 49,
-      "endLine": 51
-    },
-    "type": "definition",
+    "range": { "startLine": 44, "endLine": 67 },
     "title": "The Function f(n)",
-    "content": "f(n) = ∑_{p<n} 1/(n-p) sums reciprocal distances to all primes below n. Nearby primes contribute more than distant ones.",
-    "significance": "critical"
+    "content": "primesLessThan(n) = {p prime : p < n}. f(n) = ∑_{p ∈ primesLessThan(n)} 1/(n−p). fReal extends to real arguments via floor. Nearby primes contribute more than distant ones.",
+    "mathContext": "primesLessThan n = (Finset.range n).filter Nat.Prime. f n = ∑ p ∈ primesLessThan n, 1/(n−p : ℕ). fReal uses ⌊n⌋₊.",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.filter", "Finset.sum", "prime counting"]
   },
   {
-    "id": "ann-950-4",
+    "id": "erdos-950-questions",
     "proofId": "erdos-950",
-    "range": {
-      "startLine": 62,
-      "endLine": 65
-    },
-    "type": "theorem",
-    "title": "Question 1",
-    "content": "Is lim inf f(n) = 1? This asks whether f(n) can get arbitrarily close to 1 from below, infinitely often.",
-    "significance": "critical"
+    "type": "conjecture",
+    "range": { "startLine": 75, "endLine": 119 },
+    "title": "The Three Questions (OPEN)",
+    "content": "Q1: lim inf f(n) = 1? (Filter.liminf). Q2: lim sup f(n) = ∞? (Filter.limsup = ⊤). Q3: f(n) = o(log log n)? (Eventually f(n) < log(log n)). Strong form: f(n)/log(log n) → 0 (Tendsto to nhds 0).",
+    "mathContext": "question1 = Filter.liminf f atTop = 1. question2 = Filter.limsup f atTop = ⊤. question3 = ∀ᶠ n, f n < log(log n). fLittleO = Tendsto (f/log∘log) atTop (nhds 0).",
+    "significance": "essential",
+    "relatedConcepts": ["Filter.liminf", "Filter.limsup", "Tendsto", "nhds", "o-notation"]
   },
   {
-    "id": "ann-950-5",
+    "id": "erdos-950-known",
     "proofId": "erdos-950",
-    "range": {
-      "startLine": 67,
-      "endLine": 70
-    },
-    "type": "theorem",
-    "title": "Question 2",
-    "content": "Is lim sup f(n) = ∞? This asks whether f(n) is unbounded, meaning it can be arbitrarily large.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 127, "endLine": 152 },
+    "title": "de Bruijn–Erdős–Turán Results",
+    "content": "∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x. Both stated as axioms (Tendsto to nhds 1). f_average_one is proved directly from the first axiom.",
+    "mathContext": "de_bruijn_erdos_turan_sum: Tendsto (∑ f(n)/x) atTop (nhds 1). de_bruijn_erdos_turan_sum_sq: Tendsto (∑ f(n)²/x) atTop (nhds 1). f_average_one: proved from axiom.",
+    "significance": "essential",
+    "relatedConcepts": ["Cesàro mean", "second moment", "Tendsto", "average behavior"]
   },
   {
-    "id": "ann-950-6",
+    "id": "erdos-950-properties",
     "proofId": "erdos-950",
-    "range": {
-      "startLine": 72,
-      "endLine": 75
-    },
-    "type": "theorem",
-    "title": "Question 3",
-    "content": "Is f(n) = o(log log n)? This asks for a universal upper bound on f(n) growing slower than log log n.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 160, "endLine": 185 },
+    "title": "Basic Properties of f(n)",
+    "content": "f_nonneg: f(n) ≥ 0 (proved by Finset.sum_nonneg). f_two: f(2) = 0 (proved by simp). f_three: f(3) = 1 (axiom). f_four: f(4) = 3/2 (axiom). prime_contributes: membership lemma (proved).",
+    "mathContext": "f_nonneg: proved (sum_nonneg + cast_nonneg). f_two: proved (simp). f_three, f_four: axioms. prime_contributes: proved (⟨p, rfl⟩).",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.sum_nonneg", "Nat.cast_nonneg", "base cases"]
   },
   {
-    "id": "ann-950-7",
+    "id": "erdos-950-heuristics",
     "proofId": "erdos-950",
-    "range": {
-      "startLine": 77,
-      "endLine": 82
-    },
+    "type": "context",
+    "range": { "startLine": 187, "endLine": 211 },
+    "title": "Heuristic Analysis",
+    "content": "By PNT, primes have density ~1/log t, so ∑_{p<n} 1/(n−p) ≈ ∫₂ⁿ dt/((n−t) log t) ~ 1. This explains why f(n) averages to 1. f(n) is large when n immediately follows a prime (term 1/(n−p) = 1).",
+    "mathContext": "integral_heuristic: True (placeholder). f_large_near_primes: True (placeholder). Both capture heuristic reasoning.",
+    "significance": "supporting",
+    "relatedConcepts": ["Prime Number Theorem", "integral approximation", "heuristic"]
+  },
+  {
+    "id": "erdos-950-weaker",
+    "proofId": "erdos-950",
+    "type": "conjecture",
+    "range": { "startLine": 219, "endLine": 244 },
+    "title": "Weaker Conjecture and Implication",
+    "content": "Erdős's weaker conjecture: ∀ ε > 0, large x has y < x with π(x) < π(y) + ε·π(x−y). If a strong version holds, then f(n) ≪ log log log n — an extremely slow growth bound.",
+    "mathContext": "weakerConjecture: ∀ ε > 0, ∀ᶠ x, ∃ y < x, π(x) < π(y) + ε·π(x−y). weaker_implies_bound: weakerConjecture → ∃ C, ∀ᶠ n, f(n) ≤ C·log(log(log n)).",
+    "significance": "supporting",
+    "relatedConcepts": ["prime counting function", "conditional results", "log log log"]
+  },
+  {
+    "id": "erdos-950-distribution",
+    "proofId": "erdos-950",
     "type": "definition",
-    "title": "Little-o Formulation",
-    "content": "fLittleO states that f(n)/log(log n) → 0 as n → ∞. This is the precise asymptotic version of Question 3.",
-    "significance": "key"
+    "range": { "startLine": 252, "endLine": 267 },
+    "title": "Prime Distribution Connection",
+    "content": "primeGap(m) = p_{m+1} − p_m via Nat.nth. dense_primes_increase_f: if [n−k, n) contains a prime, then f(n) ≥ 1/k. More primes nearby means larger f(n).",
+    "mathContext": "primeGap m = Nat.nth Prime (m+1) − Nat.nth Prime m. dense_primes_increase_f: card(primesLessThan n ∩ Ico(n−k, n)) > 0 → f(n) ≥ 1/k (axiom).",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.nth", "prime gaps", "lower bounds"]
   },
   {
-    "id": "ann-950-8",
+    "id": "erdos-950-summary",
     "proofId": "erdos-950",
-    "range": {
-      "startLine": 90,
-      "endLine": 93
-    },
-    "type": "theorem",
-    "title": "Sum Asymptotics",
-    "content": "de Bruijn-Erdős-Turán: ∑_{n<x} f(n) ~ x. The sum of f(n) over n < x grows linearly with x.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-950-9",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 95,
-      "endLine": 98
-    },
-    "type": "theorem",
-    "title": "Sum of Squares",
-    "content": "de Bruijn-Erdős-Turán: ∑_{n<x} f(n)² ~ x. The sum of squared values also grows linearly, indicating f(n) concentrates near 1.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-950-10",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 100,
-      "endLine": 102
-    },
-    "type": "theorem",
-    "title": "Average Value",
-    "content": "The average value of f(n) is 1. Combined with ∑f(n)² ~ x, this shows f(n) doesn't deviate too far from 1 on average.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-950-11",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 108,
-      "endLine": 113
-    },
-    "type": "theorem",
-    "title": "Nonnegativity",
-    "content": "f(n) ≥ 0 for all n. Each term 1/(n-p) is positive since p < n.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-950-12",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 115,
-      "endLine": 126
-    },
-    "type": "example",
-    "title": "Small Values",
-    "content": "f(2) = 0 (no primes < 2), f(3) = 1 (only prime 2, distance 1), f(4) = 3/2 (primes 2, 3 with distances 2, 1).",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-950-13",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 136,
-      "endLine": 139
-    },
-    "type": "concept",
-    "title": "Large f(n) Heuristic",
-    "content": "f(n) is large when n immediately follows a prime (term 1/(n-p) = 1) or has many nearby primes. Prime-rich regions inflate f(n).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-950-14",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 141,
-      "endLine": 143
-    },
-    "type": "concept",
-    "title": "Small f(n) Heuristic",
-    "content": "f(n) is small when n is far from all primes ('prime desert'). Large gaps between primes reduce the reciprocal sum.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-950-15",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 145,
-      "endLine": 148
-    },
-    "type": "concept",
-    "title": "Integral Approximation",
-    "content": "∑_{p<n} 1/(n-p) ≈ ∫_2^n 1/(n-t) · (1/log t) dt ~ 1. This integral heuristic explains why the average is 1.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-950-16",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 154,
-      "endLine": 160
-    },
-    "type": "definition",
-    "title": "Weaker Conjecture",
-    "content": "For every ε > 0, large x has some y < x with π(x) < π(y) + ε·π(x-y). This is a weaker prime distribution statement.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-950-17",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 162,
-      "endLine": 165
-    },
-    "type": "theorem",
-    "title": "Weaker Implies Bound",
-    "content": "If a strong version of the weaker conjecture holds, then f(n) ≪ log log log n, giving a very slow growth bound.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-950-18",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 171,
-      "endLine": 173
-    },
-    "type": "definition",
-    "title": "Prime Gap",
-    "content": "primeGap(m) is the gap between the m-th and (m+1)-th primes. The distribution of gaps affects f(n) behavior.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-950-19",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 175,
-      "endLine": 177
-    },
-    "type": "concept",
-    "title": "f(n) and Prime Distribution",
-    "content": "f(n) is a measure of local prime density near n. Dense regions give large f(n); sparse regions give small f(n).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-950-20",
-    "proofId": "erdos-950",
-    "range": {
-      "startLine": 179,
-      "endLine": 183
-    },
-    "type": "theorem",
-    "title": "Dense Primes Increase f",
-    "content": "If there's a prime in [n-k, n), then f(n) ≥ 1/k. More primes nearby means larger f(n).",
-    "significance": "supporting"
+    "type": "result",
+    "range": { "startLine": 279, "endLine": 291 },
+    "title": "Summary and Known Results",
+    "content": "erdos_950_summary combines: de Bruijn–Erdős–Turán sum and sum-of-squares asymptotics, and True (all questions stated). Proved by ⟨de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial⟩. Status: OPEN.",
+    "mathContext": "erdos_950_summary: (∑ f ~ x) ∧ (∑ f² ~ x) ∧ True. Proof: ⟨de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial⟩.",
+    "significance": "essential",
+    "relatedConcepts": ["known results", "open problem", "summary theorem"]
   }
 ]
