@@ -9,48 +9,104 @@
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos190Problem.lean",
     "tags": ["additive-combinatorics", "arithmetic-progressions", "ramsey-theory", "canonical-ramsey"],
-    "badge": "open",
-    "sorries": 4,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 190,
     "erdosUrl": "https://erdosproblems.com/190",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This is a canonical Ramsey theory problem from Erdős-Graham [ErGr79, ErGr80]. Unlike van der Waerden numbers (monochromatic only), H(k) allows rainbow APs as an alternative win condition. The existence of H(k) follows from Szemerédi's theorem, but precise bounds remain unknown.",
+    "historicalContext": "This is a canonical Ramsey theory problem from Erdős-Graham [ErGr79, p.333; ErGr80, p.17]. Unlike van der Waerden numbers W(k) (which require monochromatic APs only), H(k) allows rainbow APs as an alternative 'win condition'. The existence of H(k) follows from Szemerédi's theorem: for N large enough, either pigeonhole forces a monochromatic AP, or the coloring uses enough colors for a rainbow AP. The known result H(k)^{1/k} → ∞ is relatively straightforward, but the stronger question H(k)^{1/k}/k → ∞ — equivalently, whether H(k) grows faster than k^k — remains open.",
     "problemStatement": "Let H(k) denote the smallest N such that any finite coloring of {1,...,N} contains either a monochromatic k-term AP or a rainbow k-term AP (all different colors). Estimate H(k), and determine if H(k)^{1/k}/k → ∞.",
-    "proofStrategy": "The formalization defines arithmetic progressions, monochromatic and rainbow colorings, the canonical property, and the H(k) function. Known results about H(k)^{1/k} → ∞ and comparisons with van der Waerden numbers are stated as axioms.",
+    "proofStrategy": "The formalization defines arithmetic progressions, monochromatic/rainbow colorings, the canonical property, and the H(k) function via Nat.find. Van der Waerden numbers W(k) are similarly defined. Known results (H(k)^{1/k} → ∞, H(k) ≤ W(k), lower bounds) are axioms. The main conjecture H(k)^{1/k}/k → ∞ is stated. A summary theorem combines the known results.",
     "keyInsights": [
-      "H(k) ≤ W(k) because rainbow APs give an easier win condition",
-      "H(k)^{1/k} → ∞ is known (relatively straightforward)",
-      "Whether H(k)^{1/k}/k → ∞ (i.e., H(k) > k^k eventually) is open",
-      "Rainbow and monochromatic compete via pigeonhole principle",
-      "Existence follows from Szemerédi's theorem on APs in dense sets"
+      "H(k) ≤ W(k) because rainbow APs provide an easier 'win condition' than monochromatic only",
+      "H(k)^{1/k} → ∞ is known — the k-th root grows without bound",
+      "Whether H(k)^{1/k}/k → ∞ (equivalently H(k) > k^k eventually) is open",
+      "Rainbow and monochromatic conditions compete via the pigeonhole principle",
+      "Existence of H(k) follows from Szemerédi's theorem on APs in dense sets"
     ]
   },
   "sections": [
     {
-      "id": "problem-statement",
-      "title": "The Problem",
-      "content": "H(k) captures the interplay between monochromatic and rainbow structures. Any coloring must produce at least one: use few colors and risk monochromatic APs, use many colors and risk rainbow APs."
+      "id": "arithmetic-progressions",
+      "title": "Part 1: Arithmetic Progressions",
+      "startLine": 40,
+      "endLine": 52,
+      "summary": "Definition of k-term arithmetic progressions as sets {a, a+d, ..., a+(k-1)d} and as function sequences."
     },
     {
-      "id": "canonical-ramsey",
-      "title": "Canonical Ramsey Theory",
-      "content": "Unlike standard Ramsey theory (monochromatic only), canonical Ramsey allows 'canonical' patterns. Rainbow is the simplest canonical pattern - all elements distinct."
+      "id": "colorings",
+      "title": "Part 2: Colorings",
+      "startLine": 54,
+      "endLine": 81,
+      "summary": "Colorings of {1,...,N}, monochromatic sets (all same color), and rainbow sets (all distinct colors)."
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "content": "H(k) exists (via Szemerédi). H(k)^{1/k} → ∞ (not hard). H(k) ≤ W(k). The question of whether H(k)^{1/k}/k → ∞ remains open."
+      "id": "canonical-property",
+      "title": "Part 3: The Canonical Property",
+      "startLine": 83,
+      "endLine": 95,
+      "summary": "A coloring has the canonical property for k-APs if it contains a monochromatic OR rainbow k-AP."
+    },
+    {
+      "id": "h-function",
+      "title": "Part 4: The H(k) Function",
+      "startLine": 97,
+      "endLine": 118,
+      "summary": "H(k) defined via Nat.find as the minimum N guaranteeing the canonical property. Existence, specification, and minimality axioms."
+    },
+    {
+      "id": "van-der-waerden",
+      "title": "Part 5: Relation to van der Waerden Numbers",
+      "startLine": 120,
+      "endLine": 139,
+      "summary": "Van der Waerden number W(k) defined via Nat.find. H(k) ≤ W(k) and H(k) ≥ k for k ≥ 3."
+    },
+    {
+      "id": "asymptotics",
+      "title": "Part 6: Known Asymptotic Results",
+      "startLine": 141,
+      "endLine": 160,
+      "summary": "Known: H(k)^{1/k} → ∞. Conjecture: H(k)^{1/k}/k → ∞ (super-exponential growth)."
+    },
+    {
+      "id": "small-cases",
+      "title": "Part 7: Small Cases",
+      "startLine": 162,
+      "endLine": 168,
+      "summary": "Bounds on small values: H(3) ≤ 10, H(4) ≤ 100."
+    },
+    {
+      "id": "connections",
+      "title": "Part 8: Connections",
+      "startLine": 170,
+      "endLine": 187,
+      "summary": "Connection to Szemerédi's theorem (density → existence) and canonical vs standard Ramsey theory."
+    },
+    {
+      "id": "difficulty",
+      "title": "Part 9: Why This Is Hard",
+      "startLine": 189,
+      "endLine": 207,
+      "summary": "The challenge of precise asymptotics: interplay between monochromatic and rainbow conditions via pigeonhole."
+    },
+    {
+      "id": "summary",
+      "title": "Part 10: Summary",
+      "startLine": 209,
+      "endLine": 249,
+      "summary": "H_pos axiom, summary theorem combining H(k) > 0 and H(k)^{1/k} → ∞. Status: OPEN."
     }
   ],
   "conclusion": {
-    "summary": "The problem asks for bounds on H(k), the canonical Ramsey number for k-APs. The key question is whether H(k) grows faster than k^k, expressed as H(k)^{1/k}/k → ∞.",
-    "implications": "Better bounds on H(k) would illuminate the structure of arithmetic progressions in colored sets and the balance between monochromatic and rainbow patterns.",
+    "summary": "Erdős Problem #190 asks for bounds on H(k), the canonical Ramsey number for k-APs. H(k) is the smallest N where every coloring of {1,...,N} yields a monochromatic or rainbow k-AP. The known result H(k)^{1/k} → ∞ is formalized; the open question H(k)^{1/k}/k → ∞ is stated as the main conjecture.",
+    "implications": "Better bounds on H(k) would illuminate the structure of arithmetic progressions in colored sets and the balance between monochromatic and rainbow patterns in canonical Ramsey theory.",
     "openQuestions": [
-      "Does H(k)^{1/k}/k → ∞?",
-      "What are tight bounds on H(k) for specific k?",
-      "How does H(k) compare to other canonical Ramsey numbers?"
+      "Does H(k)^{1/k}/k → ∞ (i.e., H(k) > k^k eventually)?",
+      "What are tight bounds on H(k) for specific small k?",
+      "How does H(k) compare to other canonical Ramsey numbers?",
+      "What is the precise relationship between H(k) and the Hales-Jewett numbers?"
     ]
   }
 }

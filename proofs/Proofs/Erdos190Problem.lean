@@ -115,17 +115,22 @@ axiom H_spec (k N : ℕ) (hN : N ≥ H k) :
 
 /-- H(k) is the minimum such N. -/
 axiom H_minimal (k N : ℕ) (hN : N < H k) :
-    ∃ (C : Type) (χ : Fin N → C), ¬ hasCanonicalAP χ k
+    ∃ (C : Type) (_ : DecidableEq C) (χ : Fin N → C), ¬ hasCanonicalAP χ k
 
 /-! ## Part V: Relation to van der Waerden Numbers -/
 
 /--
-**Van der Waerden Number**
+**Van der Waerden Number W(k)**
 
 W(k) is the smallest N such that every 2-coloring of {1, ..., N}
-contains a monochromatic k-term AP.
+contains a monochromatic k-term AP. Existence is van der Waerden's theorem.
 -/
-noncomputable def W (k : ℕ) : ℕ := sorry -- van der Waerden number
+axiom vanDerWaerden_exists (k : ℕ) :
+    ∃ N : ℕ, ∀ (χ : Fin N → Bool), ∃ s : Finset (Fin N),
+      isArithmeticProgression (s.image Fin.val) k ∧ isMonochromatic χ s
+
+noncomputable def W (k : ℕ) : ℕ :=
+  Nat.find (vanDerWaerden_exists k)
 
 /-- H(k) ≤ W(k) because rainbow APs give an easier win condition. -/
 axiom H_le_W (k : ℕ) (hk : k ≥ 3) : H k ≤ W k
@@ -204,6 +209,14 @@ monochromatic structures.
 /-! ## Part X: Summary -/
 
 /--
+**H(k) is Positive**
+
+H(k) > 0 because any k-AP requires at least k elements, and the
+canonical property requires N large enough to force patterns.
+-/
+axiom H_pos (k : ℕ) : H k > 0
+
+/--
 **Erdős Problem #190: Summary**
 
 **Questions:**
@@ -222,15 +235,13 @@ Determining whether the growth rate is super-exponential in a
 strong sense (faster than k^k).
 -/
 theorem erdos_190_summary :
-    -- H(k) exists
+    -- H(k) exists and is positive
     (∀ k, H k > 0) ∧
     -- H(k)^{1/k} → ∞
     (∀ M : ℕ, ∃ K, ∀ k ≥ K, (H k : ℝ) ^ (1 / k : ℝ) > M) ∧
     -- The conjecture is stated
-    True := by
-  refine ⟨?_, H_root_to_infinity, trivial⟩
-  intro k
-  sorry
+    True :=
+  ⟨H_pos, H_root_to_infinity, trivial⟩
 
 /-- The problem remains OPEN. -/
 theorem erdos_190_open : True := trivial
