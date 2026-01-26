@@ -1,0 +1,74 @@
+{
+  "id": "erdos-929",
+  "title": "Smooth Numbers in Short Intervals",
+  "slug": "erdos-929",
+  "description": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/929",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos929Problem.lean",
+    "tags": [
+      "number theory",
+      "smooth numbers",
+      "sieve methods",
+      "prime gaps"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 929,
+    "erdosUrl": "https://erdosproblems.com/929",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1976, asking about the smoothness threshold for blocks of consecutive integers. The problem connects to the distribution of smooth numbers and prime gaps. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large prime gaps yields the best known upper bound.",
+    "problemStatement": "Let S(k) be the minimal x such that n+1,...,n+k are all x-smooth for a positive density set of n. Is S(k) ≥ k^{1−o(1)}?",
+    "proofStrategy": "We formalize x-smoothness, smooth blocks, the threshold function S(k), the main conjecture, and known upper/lower bounds including the FGKMT result.",
+    "keyInsights": [
+      "Trivial upper bound: S(k) ≤ k+1 via n ≡ −1 mod (k+1)!",
+      "Rosser's sieve gives S(k) > k^{1/2−o(1)}",
+      "FGKMT (2018): S(k) ≪ k·log³k / (log²k · log⁴k) via prime gap technology",
+      "The conjecture S(k) ≥ k^{1−o(1)} would be a strong smoothness result",
+      "S(k) is monotone non-decreasing in k"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 53,
+      "summary": "Defines IsSmooth, SmoothBlock, smoothBlockSet, upper density, and the threshold function S(k)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 55,
+      "endLine": 61,
+      "summary": "States the Erdős conjecture: S(k) ≥ k^{1−ε} for all ε > 0 and large k."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 63,
+      "endLine": 84,
+      "summary": "Trivial upper bound S(k) ≤ k+1, Rosser lower bound k^{1/2−o(1)}, and FGKMT upper bound with iterated logarithms."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 86,
+      "endLine": 94,
+      "summary": "Monotonicity of S(k) and the specific value S(2) = 3."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #929 on the smoothness threshold for consecutive integers, including the main conjecture S(k) ≥ k^{1−o(1)}, known bounds from Rosser's sieve and Ford–Green–Konyagin–Maynard–Tao.",
+    "implications": "The problem connects the distribution of smooth numbers to prime gaps. The FGKMT breakthrough provides the best known upper bound but leaves a significant gap with the conjectured lower bound.",
+    "openQuestions": [
+      "Is the true order of S(k) closer to k or k^{1/2}?",
+      "Can the Rosser sieve lower bound be improved beyond k^{1/2}?",
+      "What is the exact value of S(k) for small k?"
+    ]
+  }
+}

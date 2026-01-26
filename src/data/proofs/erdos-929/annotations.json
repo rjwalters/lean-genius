@@ -1,0 +1,83 @@
+[
+  {
+    "id": "erdos-929-ann-smooth",
+    "proofId": "erdos-929",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "definition",
+    "title": "IsSmooth",
+    "content": "A natural number n is x-smooth if all its prime factors are ≤ x. This is the central notion in multiplicative number theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-929-ann-block",
+    "proofId": "erdos-929",
+    "range": { "startLine": 35, "endLine": 36 },
+    "type": "definition",
+    "title": "SmoothBlock",
+    "content": "A block n+1, n+2, …, n+k is x-smooth if every element in the block is x-smooth.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-929-ann-threshold",
+    "proofId": "erdos-929",
+    "range": { "startLine": 48, "endLine": 51 },
+    "type": "definition",
+    "title": "S(k) — Smooth Threshold",
+    "content": "The minimal x such that a positive density set of n produces an x-smooth block of length k. This is the central quantity to estimate.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-929-ann-conjecture",
+    "proofId": "erdos-929",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "S(k) ≥ k^{1−ε} for every ε > 0 and large k. This would mean S(k) is nearly linear in k.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-929-ann-trivial",
+    "proofId": "erdos-929",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "S(k) ≤ k+1. Take n ≡ −1 mod (k+1)!, then n+i is divisible by i for i = 1,...,k, so all are (k+1)-smooth.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-929-ann-rosser",
+    "proofId": "erdos-929",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "theorem",
+    "title": "Rosser's Sieve Lower Bound",
+    "content": "S(k) > k^{1/2−o(1)}: Rosser's sieve shows the threshold is at least a near-square-root of k.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-929-ann-fgkmt",
+    "proofId": "erdos-929",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "theorem",
+    "title": "FGKMT Upper Bound",
+    "content": "S(k) ≪ k · log³k / (log²k · log⁴k). This uses the Ford–Green–Konyagin–Maynard–Tao breakthrough on large gaps between primes.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-929-ann-mono",
+    "proofId": "erdos-929",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "concept",
+    "title": "Monotonicity",
+    "content": "S(k) is non-decreasing: requiring more consecutive smooth numbers can only increase the threshold.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-929-ann-s2",
+    "proofId": "erdos-929",
+    "range": { "startLine": 93, "endLine": 93 },
+    "type": "insight",
+    "title": "S(2) = 3",
+    "content": "The smallest case: a positive density of n have both n+1 and n+2 being 3-smooth (i.e., of the form 2^a · 3^b).",
+    "significance": "supporting"
+  }
+]
