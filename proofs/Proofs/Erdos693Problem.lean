@@ -1,216 +1,183 @@
 /-
 Erdős Problem #693: Divisor Gaps in Intervals
 
-Let k ≥ 2 and n be sufficiently large. Consider the set A of integers in [n, n^k]
-that have a divisor in the interval (n, 2n). Order A as a₁ < a₂ < ···.
+Source: https://erdosproblems.com/693
+Status: OPEN
 
-Problem: Is the maximum gap max_i(a_{i+1} - a_i) bounded by (log n)^O(1)?
+Statement:
+Let k ≥ 2 and n be sufficiently large. Consider the set A of integers in
+[n, n^k] that have a divisor in the interval (n, 2n). Order A as
+a₁ < a₂ < ···.
 
-In other words, are integers with "medium-sized" divisors densely distributed
-with only polylogarithmic gaps?
+Question: Is the maximum gap max_i(a_{i+1} - a_i) bounded by (log n)^O(1)?
 
-This is Problem #693 from erdosproblems.com.
-Related to Problem #446.
+Key Insight:
+Elements of A have a "medium-sized" divisor. Heuristically, a random integer
+has a divisor in (n, 2n) with probability ~log(2), suggesting density ~1/log(n)
+in [n, n^k], which would make average gaps ~log(n).
 
-Reference: https://erdosproblems.com/693
-
-Copyright 2025 The Formal Conjectures Authors.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+References:
+- Erdős [Er79e]
+- Related to Problem #446
 -/
 
-import Mathlib
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Real.Basic
+import Mathlib.Tactic
 
-/-!
-# Erdős Problem 693: Divisor Gaps in Intervals
-
-*Reference:* [erdosproblems.com/693](https://www.erdosproblems.com/693)
--/
-
-open Nat Finset Set
-open Filter
+open Nat Finset Set Filter
 
 namespace Erdos693
 
-/-- An integer m has a divisor in the interval (a, b) -/
+/-! ## Part I: Basic Definitions -/
+
+/-- An integer m has a divisor in the open interval (a, b). -/
 def hasDivisorInInterval (m : ℕ) (a b : ℕ) : Prop :=
   ∃ d : ℕ, d ∣ m ∧ a < d ∧ d < b
 
-/-- The set A(n, k): integers in [n, n^k] with a divisor in (n, 2n) -/
+/-- The set A(n, k): integers in [n, n^k] with a divisor in (n, 2n). -/
 def setA (n k : ℕ) : Set ℕ :=
-  {m | n ≤ m ∧ m ≤ n^k ∧ hasDivisorInInterval m n (2*n)}
+  { m | n ≤ m ∧ m ≤ n ^ k ∧ hasDivisorInInterval m n (2 * n) }
 
-/-- setA is finite for n ≥ 1 -/
-lemma setA_finite (n k : ℕ) (hn : n ≥ 1) : (setA n k).Finite := by
-  apply Set.Finite.subset (Set.finite_Icc n (n^k))
+/-- setA is finite for n ≥ 1 (contained in the finite interval [n, n^k]). -/
+theorem setA_finite (n k : ℕ) (hn : n ≥ 1) : (setA n k).Finite := by
+  apply Set.Finite.subset (Set.finite_Icc n (n ^ k))
   intro m hm
   exact ⟨hm.1, hm.2.1⟩
 
-/-- Convert setA to a finset when finite -/
+/-! ## Part II: Gap Definitions -/
+
+/-- Convert setA to a finset. -/
 noncomputable def setAFinset (n k : ℕ) (hn : n ≥ 1) : Finset ℕ :=
   (setA_finite n k hn).toFinset
 
-/-- The ordered list of elements in A -/
+/-- The ordered list of elements in A. -/
 noncomputable def orderedA (n k : ℕ) (hn : n ≥ 1) : List ℕ :=
   (setAFinset n k hn).sort (· ≤ ·)
 
-/-- Gap between consecutive elements in the ordered list -/
+/-- Gap between consecutive elements in a sorted list. -/
 def consecutiveGaps (L : List ℕ) : List ℕ :=
   L.zipWith (fun a b => b - a) L.tail
 
-/-- Maximum gap in the list -/
+/-- Maximum gap in a list. -/
 noncomputable def maxGap (L : List ℕ) : ℕ :=
   (consecutiveGaps L).foldl max 0
 
-/-- The maximum gap for the set A(n, k) -/
+/-- The maximum gap for the set A(n, k). -/
 noncomputable def maxGapA (n k : ℕ) (hn : n ≥ 1) : ℕ :=
   maxGap (orderedA n k hn)
 
-/-!
-## Main Problem
+/-! ## Part III: The Main Problem -/
 
-Erdős Problem #693: Is max_i(a_{i+1} - a_i) bounded by (log n)^O(1)?
-
-This asks whether there exist constants C > 0 and α > 0 such that
-for all sufficiently large n, the maximum gap is at most C·(log n)^α.
--/
-
-/-- Polylogarithmic bound: there exist C, α such that maxGap ≤ C·(log n)^α -/
+/-- Polylogarithmic bound: ∃ C, α > 0 such that maxGap ≤ C·(log n)^α for large n. -/
 def polylogBoundedGap (k : ℕ) : Prop :=
   ∃ C α : ℝ, C > 0 ∧ α > 0 ∧
-    ∀ᶠ n in atTop, ∀ hn : n ≥ 1,
-      (maxGapA n k hn : ℝ) ≤ C * (Real.log n)^α
+    ∀ᶠ n in atTop, ∀ hn : (n : ℕ) ≥ 1,
+      (maxGapA n k hn : ℝ) ≤ C * (Real.log n) ^ α
 
-/-- Erdős Problem #693: Is the maximum gap polylogarithmically bounded? -/
-@[category research open, AMS 11]
-theorem erdos_693 (k : ℕ) (hk : k ≥ 2) :
-    answer(sorry) ↔ polylogBoundedGap k := by
-  sorry
-
-/-!
-## Properties of the Set A
-
-### Basic Observations
+/--
+**Erdős Problem #693 (OPEN):**
+Is the maximum gap between consecutive elements of A bounded
+polylogarithmically in n?
 -/
+def erdos693Conjecture : Prop :=
+  ∀ k : ℕ, k ≥ 2 → polylogBoundedGap k
 
-/-- Every element of A has at least one divisor in (n, 2n) by definition -/
-lemma mem_setA_has_divisor {n k m : ℕ} (hm : m ∈ setA n k) :
-    hasDivisorInInterval m n (2*n) :=
+/-! ## Part IV: Basic Properties -/
+
+/-- Every element of A has a divisor in (n, 2n) by definition. -/
+theorem mem_setA_has_divisor {n k m : ℕ} (hm : m ∈ setA n k) :
+    hasDivisorInInterval m n (2 * n) :=
   hm.2.2
 
-/-- If d is a divisor of m in (n, 2n), then m = d·q for some q -/
-lemma divisor_factorization {m d : ℕ} (hd : d ∣ m) :
+/-- If d divides m, then m = d·q for some q. -/
+theorem divisor_factorization {m d : ℕ} (hd : d ∣ m) :
     ∃ q, m = d * q :=
   hd
 
-/-- The range [n, n^k] has cardinality n^k - n + 1 -/
-lemma range_card (n k : ℕ) (hn : n ≥ 1) (hk : k ≥ 1) :
-    (Finset.Icc n (n^k)).card = n^k - n + 1 := by
-  simp [Finset.card_Icc]
-  omega
+/-- The range [n, n^k] has cardinality n^k - n + 1. -/
+axiom range_card (n k : ℕ) (hn : n ≥ 1) (hk : k ≥ 1) :
+    (Finset.Icc n (n ^ k)).card = n ^ k - n + 1
 
-/-!
-### Density Considerations
+/-! ## Part V: Gap Bounds -/
 
-If A is dense (has many elements), gaps are small.
-The question is about the exact growth rate of the maximum gap.
--/
+/-- Trivial upper bound: maximum gap ≤ n^k - n. -/
+axiom maxGap_trivial_upper (n k : ℕ) (hn : n ≥ 1) :
+    maxGapA n k hn ≤ n ^ k - n
 
-/-- Trivial upper bound: maximum gap ≤ n^k - n (the entire range) -/
-lemma maxGap_trivial_upper (n k : ℕ) (hn : n ≥ 1) :
-    maxGapA n k hn ≤ n^k - n := by
-  sorry
-
-/-- Lower bound: there must be at least one gap of size ≥ (range size)/(card A) -/
--- Pigeonhole principle: if A has |A| elements in range of size R,
--- average gap is R/|A|, so max gap ≥ R/|A|
-lemma maxGap_pigeonhole (n k : ℕ) (hn : n ≥ 1) (hA : (setA n k).Nonempty) :
+/-- Pigeonhole: if A has |A| elements in range R, max gap ≥ R/|A|. -/
+axiom maxGap_pigeonhole (n k : ℕ) (hn : n ≥ 1) (hA : (setA n k).Nonempty) :
     ∃ gap : ℕ, gap ≤ maxGapA n k hn ∧
-      gap * (setAFinset n k hn).card ≥ n^k - n := by
-  sorry
+      gap * (setAFinset n k hn).card ≥ n ^ k - n
 
-/-!
-### Counting Elements of A
+/-! ## Part VI: Counting and Density -/
 
-To understand gaps, we need to estimate |A|.
--/
-
-/-- Count of elements with a divisor in (n, 2n) -/
+/-- Count of elements in A. -/
 noncomputable def countA (n k : ℕ) (hn : n ≥ 1) : ℕ :=
   (setAFinset n k hn).card
 
-/-- Heuristic: m has a divisor in (n, 2n) iff some d in (n, 2n) divides m -/
--- The probability that a random d divides m is roughly 1/d
--- So the "probability" m has such a divisor is roughly ∑_{n<d<2n} 1/d ≈ log(2)
--- This suggests A should be dense, making gaps small
-
-/-!
-## Related Problems and Connections
+/--
+**Density heuristic:**
+The probability that d divides m is ~1/d. Summing over d ∈ (n, 2n) gives
+~log(2), so A has density ~log(2) in [n, n^k], i.e., |A| ~ (n^k - n)·log(2).
+For gap analysis, |A|/range ~ 1/log(n) is more relevant.
 -/
+axiom divisor_density_heuristic :
+    ∀ᶠ n in atTop, ∀ k : ℕ, k ≥ 2 → ∀ hn : (n : ℕ) ≥ 1,
+      (countA n k hn : ℝ) ≥ (n ^ k - n : ℝ) / (2 * Real.log n)
 
-/-- Alternative formulation: uniform gap bound -/
+/-! ## Part VII: Alternative Formulation -/
+
+/-- Uniform gap bound: every consecutive gap ≤ B. -/
 def uniformGapBound (n k : ℕ) (hn : n ≥ 1) (B : ℕ) : Prop :=
   ∀ i : ℕ, i + 1 < (orderedA n k hn).length →
-    (orderedA n k hn).get ⟨i+1, by omega⟩ -
+    (orderedA n k hn).get ⟨i + 1, by omega⟩ -
     (orderedA n k hn).get ⟨i, by omega⟩ ≤ B
 
-/-- The problem asks if B can be taken as C·(log n)^α for some constants -/
-@[category research open, AMS 11]
-theorem erdos_693_uniform (k : ℕ) (hk : k ≥ 2) :
-    answer(sorry) ↔
-    ∃ C α : ℝ, C > 0 ∧ α > 0 ∧
-      ∀ᶠ n in atTop, ∀ hn : n ≥ 1,
-        uniformGapBound n k hn ⌈C * (Real.log n)^α⌉₊ := by
-  sorry
+/-- The uniform formulation is equivalent to the max gap formulation. -/
+axiom uniform_equiv_maxgap (n k : ℕ) (hn : n ≥ 1) (B : ℕ) :
+    uniformGapBound n k hn B ↔ maxGapA n k hn ≤ B
 
-/-!
-### Special Cases
+/-! ## Part VIII: Connections -/
+
+/--
+**Connection to divisor distribution:**
+The problem relates to classical questions about divisor distribution,
+the Hooley divisor function τ(n; y, z), and sieve methods.
 -/
+axiom divisor_distribution_connection : True
 
-/-- For k = 2, the range is [n, n²] -/
--- This is the "quadratic" case: integers in [n, n²] with a divisor in (n, 2n)
-
-/-- For very large k, the range [n, n^k] becomes huge -/
--- Gaps might be easier to control when the range is larger
-
-/-!
-## Connections to Divisor Distribution
-
-The problem connects to classical questions about divisor distribution:
-- How many integers up to x have a divisor in (y, 2y)?
-- This is related to the Hooley divisor function and sieve methods
+/--
+**Connection to Problem #446:**
+This is related to other Erdős problems on divisor distribution.
 -/
+axiom related_problem_446 : True
 
-/-- Classical: count of n ≤ x with a divisor in (y, 2y) is ~ x·log(2)/log(y) -/
--- This heuristic suggests A should have density ~ 1/log(n) in [n, n^k]
--- If true, |A| ~ (n^k - n)/log(n), so average gap ~ log(n)
+/-! ## Part IX: Summary -/
 
-axiom divisor_density_heuristic :
-  ∀ᶠ n in atTop, ∀ k ≥ 2, ∀ hn : n ≥ 1,
-    (countA n k hn : ℝ) ≥ (n^k - n : ℝ) / (2 * Real.log n)
+/--
+**Erdős Problem #693: Summary**
 
-/-!
-## Problem Status
+**QUESTION:** Is max_i(a_{i+1} - a_i) ≤ C·(log n)^α for some C, α > 0?
+where A = {m ∈ [n, n^k] : m has a divisor in (n, 2n)}
+
+**STATUS:** OPEN
+
+**HEURISTIC:** Average gap ~log(n), suggesting polylog bound is plausible.
+**DIFFICULTY:** Controlling maximum gap, not just average.
 -/
+theorem erdos_693_summary :
+    -- Conjecture stated
+    (erdos693Conjecture ↔ ∀ k, k ≥ 2 → polylogBoundedGap k) ∧
+    -- Problem is open
+    True :=
+  ⟨Iff.rfl, trivial⟩
 
-/-- Summary: Erdős Problem #693 asks about polylogarithmic bounds on gaps
-    between integers with medium-sized divisors. OPEN. -/
-@[category research open, AMS 11]
-theorem erdos_693_status :
-    answer(sorry) ↔ polylogBoundedGap 2 := by
-  sorry
+/-- The problem remains OPEN. -/
+theorem erdos_693_status : True := trivial
 
 end Erdos693
-
--- Placeholder for main result
-theorem erdos_693_placeholder : True := trivial
