@@ -1,0 +1,75 @@
+{
+  "id": "erdos-555",
+  "title": "Erdős Problem #555: Ramsey Numbers of Even Cycles",
+  "slug": "erdos-555",
+  "description": "Determine R(C₂ₙ; k), the multicolor Ramsey number of even cycles. Erdős showed k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. For C₄, Chung–Graham gave k²−k+1 < R(C₄;k) ≤ k²+k+1. The exact growth rate is open.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/555",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos555Problem.lean",
+    "tags": ["Ramsey theory", "graph theory", "extremal combinatorics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 555,
+    "erdosUrl": "https://erdosproblems.com/555",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem of Erdős and Graham asks for the precise growth rate of the multicolor Ramsey number for even cycles. The problem connects extremal graph theory with projective geometry (the C₄ case relates to finite projective planes).",
+    "problemStatement": "Determine R(C₂ₙ; k): the minimum m such that every k-coloring of the edges of Kₘ yields a monochromatic C₂ₙ.",
+    "proofStrategy": "Defines cycle containment, edge colorings, and the Ramsey number for even cycles. States Erdős's general upper and lower bounds, the sharp Chung–Graham bounds for C₄, and the main open problem of determining the exact exponent.",
+    "keyInsights": [
+      "The lower bound k^{1+1/(2n)} comes from probabilistic constructions",
+      "The upper bound k^{1+1/(n-1)} uses the Szemerédi regularity method",
+      "For C₄, the bounds k²±k+1 are nearly tight, relating to projective planes",
+      "The gap between exponents 1/(2n) and 1/(n-1) is the central open question"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cycles-colorings",
+      "title": "Even Cycles and Colorings",
+      "startLine": 20,
+      "endLine": 43,
+      "summary": "Defines cycle containment, edge colorings, and monochromatic subgraphs."
+    },
+    {
+      "id": "ramsey-def",
+      "title": "Ramsey Number Definition",
+      "startLine": 47,
+      "endLine": 52,
+      "summary": "Defines R(C₂ₙ; k) as a Nat.find."
+    },
+    {
+      "id": "erdos-bounds",
+      "title": "Erdős Bounds",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "States the general lower bound k^{1+1/(2n)} and upper bound k^{1+1/(n-1)}."
+    },
+    {
+      "id": "c4-case",
+      "title": "C₄ Case: Chung–Graham",
+      "startLine": 69,
+      "endLine": 79,
+      "summary": "States the nearly tight bounds for R(C₄; k) from Chung–Graham (1975)."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Erdős–Graham Problem",
+      "startLine": 83,
+      "endLine": 92,
+      "summary": "States the main open problem: determining the exact exponent α in R(C₂ₙ; k) ≈ k^{1+α}."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 555 asks for the exact growth rate of multicolor Ramsey numbers for even cycles. The gap between the lower bound exponent 1/(2n) and upper bound exponent 1/(n-1) remains open for all n ≥ 2.",
+    "implications": "Resolution would advance understanding of Ramsey numbers for sparse graphs, with connections to finite geometry and the regularity method.",
+    "openQuestions": [
+      "What is the exact exponent α_n in R(C₂ₙ; k) = Θ(k^{1+α_n})?",
+      "Is R(C₄; k) = k² + o(k²)?",
+      "Do the bounds improve for odd cycles C₂ₙ₊₁?"
+    ]
+  }
+}
