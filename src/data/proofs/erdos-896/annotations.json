@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-896-repr",
+    "proofId": "erdos-896",
+    "type": "definition",
+    "range": { "startLine": 24, "endLine": 31 },
+    "title": "Product Representations",
+    "content": "reprCount counts representations of m as ab with a ∈ A, b ∈ B. uniqueProductCount is F(A,B), the number of uniquely representable products.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-896-problem",
+    "proofId": "erdos-896",
+    "type": "conjecture",
+    "range": { "startLine": 47, "endLine": 53 },
+    "title": "Erdős Problem 896",
+    "content": "Estimate max_{A,B ⊆ {1,...,N}} F(A,B). The problem asks whether the asymptotic order is N²/log N.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-896-lower",
+    "proofId": "erdos-896",
+    "type": "result",
+    "range": { "startLine": 57, "endLine": 61 },
+    "title": "Van Doorn Lower Bound",
+    "content": "max F(A,B) ≥ (1+o(1)) N²/log N, establishing the lower bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-896-upper",
+    "proofId": "erdos-896",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 72 },
+    "title": "Van Doorn Upper Bound",
+    "content": "max F(A,B) ≪ N²/(log N)^δ (log log N)^{3/2} with δ ≈ 0.086.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-896-trivial",
+    "proofId": "erdos-896",
+    "type": "result",
+    "range": { "startLine": 79, "endLine": 88 },
+    "title": "Trivial Upper Bound",
+    "content": "F(A,B) ≤ |A|·|B|. Proved via card_filter_le, card_image_le, and card_product.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-896-exact",
+    "proofId": "erdos-896",
+    "type": "conjecture",
+    "range": { "startLine": 107, "endLine": 113 },
+    "title": "Exact Order Conjecture",
+    "content": "The true asymptotic order of max F(A,B) is conjectured to be N²/log N.",
+    "significance": "supporting"
+  }
+]
