@@ -1,0 +1,74 @@
+{
+  "id": "erdos-690",
+  "title": "Unimodality of k-th Prime Factor Density",
+  "slug": "erdos-690",
+  "description": "Is d_k(p), the density of integers whose k-th smallest prime factor is p, unimodal in p? Cambie: YES for k ≤ 3, NO for 4 ≤ k ≤ 20. Erdős expected NO.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/690",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos690Problem.lean",
+    "tags": [
+      "number theory",
+      "prime factors",
+      "density",
+      "unimodality"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 690,
+    "erdosUrl": "https://erdosproblems.com/690",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether the density of integers whose k-th smallest prime factor equals p is unimodal as a function of p. He expected the answer is no but could not prove it. He showed the typical k-th prime factor is e^{e^k} while the density peaks at e^{(1+o(1))k}. Cambie resolved the question for k ≤ 20: unimodal for k ≤ 3, not for k ≥ 4.",
+    "problemStatement": "For fixed k ≥ 1, is d_k(p) unimodal in p (non-decreasing then non-increasing along primes)?",
+    "proofStrategy": "We formalize the k-th smallest prime factor, the density function (axiomatized), unimodality on primes, Cambie's results for k ≤ 3 and k ≥ 4, and Erdős's observations on typical values and the divisor analogue.",
+    "keyInsights": [
+      "d_1(p) is strictly decreasing (trivially unimodal): d_1(2) = 1/2, d_1(3) = 1/6, ...",
+      "For k ≤ 3, unimodality holds (Cambie); for k ≥ 4, it fails",
+      "Typical k-th prime factor is exp(exp(k)), but density peaks at exp((1+o(1))k)",
+      "The analogous question for k-th smallest divisor has answer NO",
+      "Erdős expected failure of unimodality in general"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 46,
+      "summary": "Defines k-th smallest prime factor, the prime factor set, density function, and unimodality on primes."
+    },
+    {
+      "id": "results",
+      "title": "Main Results",
+      "startLine": 48,
+      "endLine": 72,
+      "summary": "Cambie's unimodality for k ≤ 3, non-unimodality for 4 ≤ k ≤ 20, and the proof that the answer is NO."
+    },
+    {
+      "id": "observations",
+      "title": "Erdős's Observations",
+      "startLine": 74,
+      "endLine": 92,
+      "summary": "Typical k-th prime factor behavior, peak location, and the divisor analogue."
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "startLine": 94,
+      "endLine": 114,
+      "summary": "Explicit formula for d_1(p), values at p=2,3, and strict decrease of d_1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #690 on unimodality of k-th prime factor density. Cambie showed unimodality holds for k ≤ 3 but fails for k ≥ 4, confirming Erdős's intuition. The precise transition and behavior for large k remain of interest.",
+    "implications": "Understanding the shape of d_k(p) connects the distribution of prime factors to analytic number theory and probabilistic models of factorization.",
+    "openQuestions": [
+      "Is d_k(p) non-unimodal for all k ≥ 4?",
+      "What is the structure of the non-unimodality (how many local maxima)?",
+      "What is the asymptotic shape of d_k for large k?"
+    ]
+  }
+}
