@@ -1,0 +1,56 @@
+[
+  {
+    "id": "no-four-concyclic",
+    "proofId": "erdos-654",
+    "range": { "startLine": 27, "endLine": 33 },
+    "type": "definition",
+    "title": "No Four Concyclic",
+    "content": "No four points lie on a common circle. This geometric condition limits how many points can be equidistant from any given point, as a circle through xᵢ contains at most 2 other points.",
+    "significance": "high"
+  },
+  {
+    "id": "distinct-distances",
+    "proofId": "erdos-654",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "Distinct Distances from a Point",
+    "content": "The number of distinct values in {dist(xᵢ, xⱼ) : j ≠ i}. The conjecture asks for this to be near n for some i.",
+    "significance": "high"
+  },
+  {
+    "id": "known-bound",
+    "proofId": "erdos-654",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "theorem",
+    "title": "Known Lower Bound (n-1)/3",
+    "content": "Each circle through xᵢ contains at most 3 other points (at most 2 besides xᵢ, plus the circle passes through xᵢ). So at most 3 points share each distance from xᵢ, giving ≥ (n-1)/3 distinct distances.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-654",
+    "range": { "startLine": 54, "endLine": 58 },
+    "type": "conjecture",
+    "title": "Near-Linear Distinct Distances",
+    "content": "Under no-four-concyclic, some point has (1-o(1))n distinct distances. This is enormously stronger than the (n-1)/3 bound.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-pach",
+    "proofId": "erdos-654",
+    "range": { "startLine": 72, "endLine": 77 },
+    "type": "conjecture",
+    "title": "Erdős–Pach Weaker Variant",
+    "content": "Under general position (no three collinear), does some point have ≥ (1/3+c)n distinct distances? This is weaker than the main conjecture but still open.",
+    "significance": "high"
+  },
+  {
+    "id": "guth-katz",
+    "proofId": "erdos-654",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "note",
+    "title": "Guth–Katz Context",
+    "content": "The Guth–Katz theorem gives Ω(n/log n) total distinct distances (over all pairs) without any geometric restriction. Problem #654 asks for near-n from a SINGLE point, using the concyclic constraint.",
+    "significance": "medium"
+  }
+]
