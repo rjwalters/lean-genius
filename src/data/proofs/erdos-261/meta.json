@@ -1,0 +1,68 @@
+{
+  "id": "erdos-261",
+  "title": "Erdős Problem #261: Reciprocal Power-of-Two Representations",
+  "slug": "erdos-261",
+  "description": "Can every positive integer n be represented as n/2^n = Σ k/2^k over a set of distinct positive integers? Cusick proved infinitely many n work; the full conjecture remains open.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/261",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos261Problem.lean",
+    "tags": ["number theory", "combinatorics", "representations"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 261,
+    "erdosUrl": "https://erdosproblems.com/261",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about representing n/2^n as sums of distinct terms k/2^k. The question connects to binary digit representations and combinatorial number theory. Cusick first proved that infinitely many n admit such representations, and Borwein–Loring gave an explicit infinite family. Tengely, Ulas, and Zygadło verified the conjecture computationally for all n up to 10000.",
+    "problemStatement": "Are there infinitely many (or all) positive integers n such that n/2^n = Σ_{k∈S} k/2^k for some finite set S of distinct positive integers with |S| ≥ 2? Additionally, does some rational admit continuum-many such representations?",
+    "proofStrategy": "We formalize the weight function k/2^k, the notion of a valid representation, and axiomatize known results: Cusick's infinitude theorem, the Borwein–Loring explicit family, and Tengely–Ulas–Zygadło's computational verification. The stronger conjectures (all n, continuum representations) are stated as axioms.",
+    "keyInsights": [
+      "The weight function k/2^k decays exponentially, making finite decompositions non-trivial",
+      "Borwein–Loring's family n = 2^{m+1} − m − 2 uses consecutive blocks {n+1,...,n+m}",
+      "Computational verification covers all n ≤ 10000 but no general proof for all n exists",
+      "The continuum question asks whether the representation space can be uncountably large"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 40,
+      "summary": "Defines the weight function k/2^k, the sum over a finite set, and the notion of a valid reciprocal power-of-two representation."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 42,
+      "endLine": 57,
+      "summary": "Axiomatizes Cusick's infinitude result, the Borwein–Loring explicit family, and Tengely–Ulas–Zygadło's verification for n ≤ 10000."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős Conjectures",
+      "startLine": 59,
+      "endLine": 71,
+      "summary": "States the main conjectures: Part 1 (infinitely many, resolved), Part 2 (all n, open)."
+    },
+    {
+      "id": "continuum",
+      "title": "Continuum Representations",
+      "startLine": 73,
+      "endLine": 91,
+      "summary": "Formalizes infinite representations and the conjecture that some rational admits continuum-many distinct representations."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 261 explores the rich structure of reciprocal power-of-two representations. While Cusick's theorem settles the infinitude question, the universality conjecture (all n) and the continuum question remain open.",
+    "implications": "A positive resolution would reveal deep structure in the interaction between binary representations and rational arithmetic, with connections to combinatorial number theory and Diophantine analysis.",
+    "openQuestions": [
+      "Does every positive integer n admit a representation n/2^n = Σ k/2^k?",
+      "Does some rational admit continuum-many distinct infinite representations?",
+      "What is the minimal cardinality |S| needed for the representation of n?"
+    ]
+  }
+}
