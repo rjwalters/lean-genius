@@ -1,0 +1,56 @@
+[
+  {
+    "id": "overlap",
+    "proofId": "erdos-36",
+    "range": { "startLine": 26, "endLine": 29 },
+    "type": "definition",
+    "title": "Overlap Function",
+    "content": "The overlap of sets A, B at difference k counts pairs (a,b) with a ∈ A, b ∈ B, a − b = k. This measures how much A and B 'overlap' at shift k.",
+    "significance": "high"
+  },
+  {
+    "id": "min-max-overlap",
+    "proofId": "erdos-36",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "definition",
+    "title": "Minimum Maximum Overlap",
+    "content": "M(N) = min over all equal partitions {A,B} of {1,...,2N} of the maximum overlap. This is the central quantity whose asymptotics the problem seeks.",
+    "significance": "high"
+  },
+  {
+    "id": "limit-constant",
+    "proofId": "erdos-36",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "conjecture",
+    "title": "Asymptotic Constant",
+    "content": "The main question: determine c = lim M(N)/N. Currently known: 0.379005 < c < 0.380876. The exact value is unknown.",
+    "significance": "high"
+  },
+  {
+    "id": "white-lower",
+    "proofId": "erdos-36",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "note",
+    "title": "White's Lower Bound (2022)",
+    "content": "White (2022) proved M(N)/N > 0.379005 using elementary Fourier analysis to reduce the problem to a convex optimization program. This was a major improvement over prior bounds.",
+    "significance": "high"
+  },
+  {
+    "id": "upper-bound",
+    "proofId": "erdos-36",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "note",
+    "title": "Upper Bound",
+    "content": "Haugland (2016) proved M(N)/N < 0.380926 using step-function constructions. This was further improved to 0.380876. The gap to the lower bound is less than 0.002.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-conjecture",
+    "proofId": "erdos-36",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "note",
+    "title": "Disproved Original Conjecture",
+    "content": "Erdős initially conjectured c = 1/2, meaning the trivial partition would be optimal. This was disproved: the true value is approximately 0.38, far from 1/2.",
+    "significance": "medium"
+  }
+]
