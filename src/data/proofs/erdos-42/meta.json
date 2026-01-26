@@ -1,0 +1,68 @@
+{
+  "id": "erdos-42",
+  "title": "Erdős Problem #42: Sidon Sets with Disjoint Difference Sets",
+  "slug": "erdos-42",
+  "description": "For every maximal Sidon set A ⊆ {1,...,N}, does there exist a Sidon set B of size M with (A−A) ∩ (B−B) = {0}? Proved for M ≤ 3 (Sedov). Open in general.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/42",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos42Problem.lean",
+    "tags": ["number theory", "Sidon sets", "additive combinatorics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 42,
+    "erdosUrl": "https://erdosproblems.com/42",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about the structure of maximal Sidon sets. A Sidon set has all pairwise sums distinct. The question asks whether maximal Sidon sets always leave room for other Sidon sets with completely disjoint non-zero differences. Sedov proved the cases M = 2 and M = 3.",
+    "problemStatement": "For every M ≥ 1 and N sufficiently large, is it true that every maximal Sidon set A ⊆ {1,...,N} admits a companion Sidon set B ⊆ {1,...,N} of size M with (A−A) ∩ (B−B) = {0}?",
+    "proofStrategy": "Full rewrite from formal-conjectures. We define Sidon sets, maximality in {1,...,N}, difference sets, and disjoint-difference properties. Sedov's results for M ≤ 3 are axiomatized. The general conjecture and its constructive version are stated.",
+    "keyInsights": [
+      "A Sidon set in {1,...,N} has at most ~√N elements",
+      "Maximality means no element can be added while preserving the Sidon property",
+      "Disjoint differences (A−A) ∩ (B−B) = {0} is a strong structural constraint",
+      "Sedov's computational methods handle M ≤ 3 but the general case requires new ideas"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sidon-defs",
+      "title": "Sidon Set Definitions",
+      "startLine": 19,
+      "endLine": 38,
+      "summary": "Defines Sidon sets, containment in {1,...,N}, and maximal Sidon sets."
+    },
+    {
+      "id": "difference-sets",
+      "title": "Difference Sets",
+      "startLine": 40,
+      "endLine": 48,
+      "summary": "Defines difference sets A−A and the disjoint-differences property."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "startLine": 60,
+      "endLine": 76,
+      "summary": "Axiomatizes Sedov's proofs for M = 2 and M = 3."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Erdős Problem",
+      "startLine": 78,
+      "endLine": 96,
+      "summary": "States the general conjecture for all M and its constructive version with explicit bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 42 asks whether maximal Sidon sets always coexist with other Sidon sets having disjoint difference sets. Sedov's results cover M ≤ 3, but the general conjecture remains open.",
+    "implications": "Resolution would reveal fundamental structure of maximal Sidon sets, with implications for additive combinatorics and the theory of B₂ sets.",
+    "openQuestions": [
+      "Does the conjecture hold for all M ≥ 4?",
+      "What is the growth rate of the threshold N₀(M)?",
+      "Can the companion set B be chosen constructively?"
+    ]
+  }
+}

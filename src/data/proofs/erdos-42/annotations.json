@@ -1,0 +1,74 @@
+[
+  {
+    "id": "sidon-set",
+    "proofId": "erdos-42",
+    "type": "definition",
+    "title": "Sidon Set",
+    "content": "A finite set A is Sidon (B₂) if all pairwise sums a + b (a ≤ b) are distinct, equivalently all nonzero differences are distinct.",
+    "significance": "critical",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    }
+  },
+  {
+    "id": "maximal-sidon",
+    "proofId": "erdos-42",
+    "type": "definition",
+    "title": "Maximal Sidon Set",
+    "content": "A maximal Sidon set in {1,...,N} is a Sidon set where no additional element from {1,...,N} can be included while maintaining the Sidon property.",
+    "significance": "critical",
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    }
+  },
+  {
+    "id": "disjoint-diffs",
+    "proofId": "erdos-42",
+    "type": "definition",
+    "title": "Disjoint Differences",
+    "content": "Two sets have disjoint differences if (A−A) ∩ (B−B) = {0}, meaning the only shared difference is zero.",
+    "significance": "critical",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    }
+  },
+  {
+    "id": "size-bound",
+    "proofId": "erdos-42",
+    "type": "theorem",
+    "title": "Sidon Size Bound",
+    "content": "A Sidon set in {1,...,N} has at most ~√N elements, since the N pairwise sums must be distinct in {2,...,2N}.",
+    "significance": "key",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    }
+  },
+  {
+    "id": "sedov-results",
+    "proofId": "erdos-42",
+    "type": "theorem",
+    "title": "Sedov's Results",
+    "content": "Sedov proved the conjecture for M = 2 and M = 3, showing that for large N every maximal Sidon set admits companion sets of these sizes with disjoint differences.",
+    "significance": "key",
+    "range": {
+      "startLine": 64,
+      "endLine": 76
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-42",
+    "type": "concept",
+    "title": "General Conjecture",
+    "content": "For every M ≥ 1 and N sufficiently large, every maximal Sidon set A ⊆ {1,...,N} has a companion Sidon set B of size M with (A−A) ∩ (B−B) = {0}.",
+    "significance": "critical",
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    }
+  }
+]
