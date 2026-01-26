@@ -1,0 +1,88 @@
+{
+  "id": "erdos-369",
+  "title": "Erdős Problem #369: Consecutive Smooth Numbers",
+  "slug": "erdos-369",
+  "description": "For ε > 0 and k ≥ 2, does {1,…,n} contain k consecutive n^ε-smooth integers for all large n? Open even for k=2. Balog–Wooley: infinitely many exist. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/369",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos369Problem.lean",
+    "tags": [
+      "number-theory",
+      "smooth-numbers",
+      "consecutive-integers",
+      "prime-factors"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 369,
+    "erdosUrl": "https://erdosproblems.com/369",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #369 (Erdős–Graham, 1980, p.69) asks about consecutive smooth numbers in {1,…,n}. Called 'very hard' even for k=2. Balog–Wooley (1998) proved infinitely many pairs of consecutive smooth numbers exist, but not for all sufficiently large n.",
+    "problemStatement": "Let ε > 0, k ≥ 2. For all large n, does {1,…,n} contain k consecutive n^ε-smooth integers? OPEN even for k = 2.",
+    "proofStrategy": "We define IsSmooth (B-smooth numbers), ConsecutiveSmoothRun (k consecutive smooth integers), and state the conjecture parametrized by a smoothness bound function. The Balog–Wooley partial result is axiomatized.",
+    "keyInsights": [
+      "Open even for k = 2: finding two consecutive smooth numbers in {1,…,n} for all large n",
+      "Balog–Wooley (1998) proved infinitely many n have n, n+1 both smooth",
+      "The gap: 'infinitely many' vs 'all sufficiently large' n remains wide open",
+      "Erdős and Graham called this 'very hard' in 1980",
+      "Connects smooth number distribution to consecutive integer structure"
+    ]
+  },
+  "sections": [
+    {
+      "id": "smooth-numbers",
+      "title": "Part I: Smooth Numbers",
+      "startLine": 37,
+      "endLine": 52,
+      "summary": "Defines IsSmooth (all prime factors ≤ B) and largestPrimeFactor."
+    },
+    {
+      "id": "consecutive-runs",
+      "title": "Part II: Consecutive Smooth Runs",
+      "startLine": 54,
+      "endLine": 71,
+      "summary": "Defines ConsecutiveSmoothRun and HasConsecutiveSmoothRun for k consecutive B-smooth integers."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part III: The Erdős–Graham Conjecture",
+      "startLine": 73,
+      "endLine": 91,
+      "summary": "ErdosConjecture369: for all k ≥ 2 and growing smoothBound, all large n have a smooth run."
+    },
+    {
+      "id": "k2-case",
+      "title": "Part IV: The k = 2 Case",
+      "startLine": 93,
+      "endLine": 109,
+      "summary": "ErdosConjecture369_k2: the simplest open case, two consecutive smooth numbers."
+    },
+    {
+      "id": "balog-wooley",
+      "title": "Part V: Balog–Wooley Partial Result",
+      "startLine": 111,
+      "endLine": 124,
+      "summary": "Axiom: infinitely many n have n, n+1 both smooth (but not for all large n)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 126,
+      "endLine": 136,
+      "summary": "Status: open even for k = 2. Balog–Wooley gives infinitely many, not all."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #369 asks whether consecutive smooth numbers exist in {1,…,n} for all large n. Open even for k = 2. Balog–Wooley proved infinitely many exist, but the 'for all large n' gap remains.",
+    "implications": "A positive answer would reveal deep structure in the distribution of smooth numbers among consecutive integers, with applications to factoring algorithms and cryptographic assumptions.",
+    "openQuestions": [
+      "Can the Balog–Wooley result be strengthened to all sufficiently large n?",
+      "What is the smallest k for which the conjecture might be easier?",
+      "Are there density results for the set of n having k consecutive smooth numbers nearby?"
+    ]
+  }
+}
