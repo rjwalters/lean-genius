@@ -1,0 +1,56 @@
+[
+  {
+    "id": "r-uniform",
+    "proofId": "erdos-719",
+    "range": { "startLine": 22, "endLine": 25 },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph",
+    "content": "An r-uniform hypergraph has all edges (hyperedges) of size exactly r. For r=2, this is an ordinary graph.",
+    "significance": "high"
+  },
+  {
+    "id": "complete-clique",
+    "proofId": "erdos-719",
+    "range": { "startLine": 27, "endLine": 31 },
+    "type": "definition",
+    "title": "Complete Clique K_{r+1}^r",
+    "content": "The complete r-uniform hypergraph on r+1 vertices: all (r+1 choose r) = r+1 possible r-edges. For r=2, this is a triangle K₃.",
+    "significance": "high"
+  },
+  {
+    "id": "turan-number",
+    "proofId": "erdos-719",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "Hypergraph Turán Number",
+    "content": "ex_r(n; K_{r+1}^r) is the maximum number of r-edges on n vertices avoiding a complete (r+1)-clique. For r ≥ 3, this is a major open problem.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-sauer",
+    "proofId": "erdos-719",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "conjecture",
+    "title": "Erdős–Sauer Conjecture",
+    "content": "Every r-uniform hypergraph on n vertices can be decomposed into at most ex_r(n; K_{r+1}^r) edge-disjoint copies of single edges and complete cliques.",
+    "significance": "high"
+  },
+  {
+    "id": "graph-case",
+    "proofId": "erdos-719",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "note",
+    "title": "Graph Case (r = 2)",
+    "content": "For ordinary graphs, the conjecture asks: can every graph on n vertices be decomposed into ≤ ⌊n²/4⌋ edges and triangles with no shared edge? The bound comes from Turán's theorem.",
+    "significance": "high"
+  },
+  {
+    "id": "turan-density",
+    "proofId": "erdos-719",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "note",
+    "title": "Turán Density Problem",
+    "content": "For r ≥ 3, even the exact value of ex_r(n; K_{r+1}^r) is unknown. This is a central open problem in extremal combinatorics, making the conjecture doubly difficult.",
+    "significance": "medium"
+  }
+]

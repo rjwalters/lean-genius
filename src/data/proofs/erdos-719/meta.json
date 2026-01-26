@@ -1,0 +1,76 @@
+{
+  "id": "erdos-719",
+  "title": "Erdős Problem #719: Hypergraph Decomposition into Cliques",
+  "slug": "erdos-719",
+  "description": "Can every r-uniform hypergraph on n vertices be decomposed into ≤ ex_r(n; K_{r+1}^r) copies of K_r^r and K_{r+1}^r with no shared r-edge? Erdős–Sauer conjecture. Open.",
+  "meta": {
+    "erdosNumber": 719,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "hypergraphs",
+      "turan-theory",
+      "open"
+    ],
+    "references": [
+      "Erdős (1981): original conjecture",
+      "Erdős–Sauer: hypergraph decomposition conjecture",
+      "https://erdosproblems.com/719"
+    ],
+    "leanFile": "Proofs/Erdos719Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 20,
+      "endLine": 35,
+      "summary": "r-uniform hypergraph, complete clique, Turán number."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 37,
+      "endLine": 46,
+      "summary": "Erdős–Sauer: decompose into ≤ ex_r(n; K_{r+1}^r) edge-disjoint cliques."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 48,
+      "endLine": 58,
+      "summary": "Graph case r=2: ≤ ⌊n²/4⌋ edges and triangles. Turán's theorem."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 60,
+      "endLine": 76,
+      "summary": "Erdős 1981 origin, edge-disjoint requirement, Turán density open."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Sauer conjectured this decomposition property for r-uniform hypergraphs, published in Erdős' 1981 paper. The problem connects Turán-type extremal theory with decomposition problems in hypergraph theory.",
+    "problemStatement": "Is every r-uniform hypergraph on n vertices the union of at most ex_r(n; K_{r+1}^r) copies of K_r^r and K_{r+1}^r, no two sharing a K_r^r?",
+    "proofStrategy": "We define r-uniform hypergraphs, complete cliques, and the Turán number. We state the Erdős–Sauer decomposition conjecture and note the graph case (r=2) and the open Turán density problem.",
+    "keyInsights": [
+      "The decomposition must be edge-disjoint: no two pieces share an r-edge",
+      "For r=2, the bound is ⌊n²/4⌋ from Turán's theorem",
+      "For r ≥ 3, even the Turán number ex_r(n; K_{r+1}^r) is unknown",
+      "The conjecture links extremal hypergraph theory with decomposition theory",
+      "No partial results or counterexamples are documented"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Erdős–Sauer conjecture asks whether every r-uniform hypergraph can be decomposed into at most ex_r(n; K_{r+1}^r) edge-disjoint complete sub-hypergraphs. This intertwines two major open areas: hypergraph Turán theory and decomposition theory.",
+    "implications": "Resolution would provide a fundamental structural result connecting the Turán number with decomposability of hypergraphs, extending classical graph decomposition results to the hypergraph setting.",
+    "openQuestions": [
+      "Does the Erdős–Sauer decomposition hold for all r?",
+      "Can the graph case (r=2) be resolved independently?",
+      "What is the relationship to fractional decompositions?",
+      "Does the conjecture hold approximately (with a multiplicative constant)?"
+    ]
+  }
+}
