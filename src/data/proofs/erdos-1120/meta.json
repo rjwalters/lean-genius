@@ -1,0 +1,78 @@
+{
+  "id": "erdos-1120",
+  "title": "Erdős Problem #1120: Shortest Path in Polynomial Sublevel Sets",
+  "slug": "erdos-1120",
+  "description": "For monic f of degree n with roots in the unit disk, what is the shortest path in {|f(z)| ≤ 1} from 0 to |z| = 1? Conjectured → ∞ with n. Halász 4.22. Open.",
+  "meta": {
+    "erdosNumber": 1120,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "path-length",
+      "open"
+    ],
+    "references": [
+      "Halász Problem 4.22",
+      "Clunie–Netanyahu: existence of path",
+      "Related: Problem #1041",
+      "https://erdosproblems.com/1120"
+    ],
+    "leanFile": "Proofs/Erdos1120Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 44,
+      "summary": "UnitRootedPoly, sublevelSet, shortestPathLength, worstCasePathLength."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem",
+      "startLine": 46,
+      "endLine": 51,
+      "summary": "Worst-case path length → ∞ with degree n."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 53,
+      "endLine": 68,
+      "summary": "Trivial bound 1, Clunie–Netanyahu existence, slow growth conjecture."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 70,
+      "endLine": 79,
+      "summary": "Connection to #1041, lemniscate geometry."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This is Problem 4.22 from Halász's collection, attributed to Erdős. Clunie and Netanyahu showed that a path in E from 0 to the unit circle always exists. The question is how long it must be.",
+    "problemStatement": "For a monic polynomial f of degree n with roots in the closed unit disk, what is the shortest path in E = {|f(z)| ≤ 1} from z = 0 to |z| = 1?",
+    "proofStrategy": "We formalize the unit-rooted polynomial, the sublevel set, and the shortest path length. The main conjecture (divergence with n) and known results are stated as axioms.",
+    "keyInsights": [
+      "For f(z) = z^n, E is the unit disk and path length is 1",
+      "Clunie–Netanyahu proved such a path always exists",
+      "Erdős conjectured the worst-case path length → ∞ but slowly",
+      "E is a lemniscate; root clustering creates thin passages",
+      "Connected to Problem #1041 on polynomial sublevel set covering"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1120 asks for the shortest path in a polynomial sublevel set from the origin to the unit circle. The path length is at least 1 (achieved by z^n), but whether it grows to ∞ with the degree remains open.",
+    "implications": "A resolution would illuminate the geometry of polynomial lemniscates and the topology of sublevel sets in complex analysis.",
+    "openQuestions": [
+      "Does the worst-case path length tend to infinity with n?",
+      "What is the growth rate?",
+      "Which root configurations produce the longest shortest paths?",
+      "Is the path length bounded by a polynomial in n?"
+    ]
+  }
+}
