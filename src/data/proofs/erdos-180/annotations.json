@@ -1,0 +1,68 @@
+[
+  {
+    "id": "erdos-180-header",
+    "proofId": "erdos-180",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 16 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #180: For a finite family F of graphs, does some G in F have ex(n;G) = O(ex(n;F))? Yes for non-bipartite families. Folklore counterexample for infinite families. OPEN.",
+    "mathContext": "The domination property connects a family's extremal function to its individual members. The bipartite case is the open frontier.",
+    "significance": "essential",
+    "relatedConcepts": ["Turán number", "extremal graph theory", "forbidden subgraphs"]
+  },
+  {
+    "id": "erdos-180-definitions",
+    "proofId": "erdos-180",
+    "type": "definition",
+    "range": { "startLine": 23, "endLine": 52 },
+    "title": "Turán Numbers and Domination",
+    "content": "turanNumber: sSup of edge counts in H-free graphs. ExSingle, ExFamily: type aliases for N -> N. HasDomination: some member has ex(n;G) = O(ex(n;F)).",
+    "mathContext": "The abstract representation avoids encoding specific graph structures and focuses on the extremal function.",
+    "significance": "essential",
+    "relatedConcepts": ["sSup", "Big-O", "extremal function"]
+  },
+  {
+    "id": "erdos-180-conjecture",
+    "proofId": "erdos-180",
+    "type": "conjecture",
+    "range": { "startLine": 54, "endLine": 67 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "ErdosConjecture180: every finite nonempty family has the domination property. erdos_180 (axiom).",
+    "mathContext": "The conjecture asks if the extremal function of a family is always controlled by one of its members.",
+    "significance": "essential",
+    "relatedConcepts": ["domination property", "finite families"]
+  },
+  {
+    "id": "erdos-180-erdos-stone",
+    "proofId": "erdos-180",
+    "type": "result",
+    "range": { "startLine": 69, "endLine": 79 },
+    "title": "Non-Bipartite Case (Erdős-Stone)",
+    "content": "erdos_stone_domination (axiom): non-bipartite families have domination, since chromatic number determines ex(n;F) up to o(n²).",
+    "mathContext": "The Erdős-Stone theorem gives ex(n;H) = (1-1/(chi(H)-1)+o(1))C(n,2) for non-bipartite H.",
+    "significance": "essential",
+    "relatedConcepts": ["Erdős-Stone theorem", "chromatic number"]
+  },
+  {
+    "id": "erdos-180-bipartite",
+    "proofId": "erdos-180",
+    "type": "conjecture",
+    "range": { "startLine": 81, "endLine": 98 },
+    "title": "Bipartite Case and Counterexamples",
+    "content": "BipartiteCase: existence of a family without domination. folklore_counterexample_infinite (axiom): infinite family {star, matching} with ex(n;F) << 1 but ex(n;Hi) ~ n.",
+    "mathContext": "The bipartite case is open because Zarankiewicz-type bounds are often unknown. The counterexample works only for infinite families.",
+    "significance": "essential",
+    "relatedConcepts": ["bipartite Turán", "Zarankiewicz problem", "infinite families"]
+  },
+  {
+    "id": "erdos-180-summary",
+    "proofId": "erdos-180",
+    "type": "result",
+    "range": { "startLine": 113, "endLine": 129 },
+    "title": "Summary: OPEN",
+    "content": "erdos_180_statement (proved): by simp. erdos_180_status (proved): True. Non-bipartite case resolved; bipartite case and general finite families remain OPEN.",
+    "mathContext": "The Erdős-Stone theorem resolves the non-bipartite case. The bipartite case is the main open question.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]

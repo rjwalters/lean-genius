@@ -1,0 +1,96 @@
+{
+  "id": "erdos-180",
+  "title": "Erdős Problem #180: Turán Numbers for Graph Families",
+  "slug": "erdos-180",
+  "description": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/180",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos180Problem.lean",
+    "tags": [
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-number",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 180,
+    "erdosUrl": "https://erdosproblems.com/180",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #180, posed by Erdős and Simonovits [ErSi82], asks whether the Turán number of a finite graph family is always dominated by a single member. For non-bipartite families, the Erdős-Stone theorem resolves this. A folklore counterexample (star + matching) exists for infinite families.",
+    "problemStatement": "For a finite family F of graphs, let ex(n;F) be the maximum edges in an n-vertex F-free graph. Does there always exist G in F such that ex(n;G) = O(ex(n;F))? OPEN.",
+    "proofStrategy": "The formalization defines ExFamily, ExSingle, HasDomination, and the main conjecture ErdosConjecture180. The non-bipartite case is axiomatized via Erdős-Stone. The bipartite case and folklore counterexample for infinite families are formalized.",
+    "keyInsights": [
+      "The domination property asks if a single forbidden graph controls the family's extremal function",
+      "Non-bipartite case resolved by Erdős-Stone: chromatic number determines asymptotics",
+      "The bipartite case is nontrivial due to unknown Zarankiewicz-type bounds",
+      "Folklore counterexample for infinite families: star + matching",
+      "Connected to Turán-type extremal graph theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "turan-numbers",
+      "title": "Part I: Turán Numbers",
+      "startLine": 23,
+      "endLine": 43,
+      "summary": "Defines turanNumber via sSup, ExSingle, ExFamily type aliases."
+    },
+    {
+      "id": "domination",
+      "title": "Part II: The Domination Property",
+      "startLine": 45,
+      "endLine": 52,
+      "summary": "Defines HasDomination: some member's Turán number is O(family's Turán number)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part III: The Main Conjecture",
+      "startLine": 54,
+      "endLine": 67,
+      "summary": "Defines ErdosConjecture180: every finite family has domination. Axiom erdos_180."
+    },
+    {
+      "id": "erdos-stone",
+      "title": "Part IV: Non-Bipartite Case (Erdős-Stone)",
+      "startLine": 69,
+      "endLine": 79,
+      "summary": "Axiom erdos_stone_domination: non-bipartite families have the domination property."
+    },
+    {
+      "id": "bipartite",
+      "title": "Part V: Bipartite Case Difficulty",
+      "startLine": 81,
+      "endLine": 98,
+      "summary": "Defines BipartiteCase. Axiom folklore_counterexample_infinite for infinite families."
+    },
+    {
+      "id": "properties",
+      "title": "Part VI: Properties",
+      "startLine": 100,
+      "endLine": 111,
+      "summary": "Axioms: family_le_members (family ≤ min of members), monotonicity."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 113,
+      "endLine": 129,
+      "summary": "Proved: erdos_180_statement (simp), erdos_180_status (trivial). OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #180 asks whether a single forbidden graph always dominates the Turán number of a finite graph family. Resolved for non-bipartite families, but open in general.",
+    "implications": "Resolution would clarify the structure of extremal functions for forbidden graph families, connecting to the Zarankiewicz problem and bipartite Turán theory.",
+    "openQuestions": [
+      "Does domination hold for all finite families?",
+      "What happens for families of bipartite graphs?",
+      "Can the folklore counterexample be extended to finite families?",
+      "How does the answer depend on the structure of the family?"
+    ]
+  }
+}
