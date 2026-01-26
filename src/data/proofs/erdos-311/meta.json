@@ -1,0 +1,77 @@
+{
+  "id": "erdos-311",
+  "title": "Erdős Problem #311: Minimal Deviation of Unit Fraction Sums from 1",
+  "slug": "erdos-311",
+  "description": "Is δ(N) = e^{-(c+o(1))N} for c ∈ (0,1), where δ(N) is the minimal nonzero |1 - Σ 1/n| over A ⊆ {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)³) (Tang). Open.",
+  "meta": {
+    "erdosNumber": 311,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "approximation",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham (1980): original question",
+      "Tang: upper bound exp(-cN/(log N log log N)³)",
+      "Kovac: equivalence of subset-sum-to-1 variant",
+      "https://erdosproblems.com/311"
+    ],
+    "leanFile": "Proofs/Erdos311Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 24,
+      "endLine": 35,
+      "summary": "unitFracSum, delta (axiomatized), delta_pos."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "startLine": 37,
+      "endLine": 42,
+      "summary": "δ(N) ≥ e^{-(1+o(1))N} from lcm bound."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 44,
+      "endLine": 50,
+      "summary": "Tang: δ(N) ≤ exp(-cN/(log N log log N)³)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 52,
+      "endLine": 61,
+      "summary": "δ(N) = e^{-(c+o(1))N} for c ∈ (0,1)."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980) studied the approximation of 1 by sums of distinct unit fractions from {1/1, 1/2, ..., 1/N}. The function δ(N) measures how close one can get to 1 without hitting it exactly. This connects to Egyptian fraction representations and the structure of the lcm of {1,...,N}.",
+    "problemStatement": "Is δ(N) = e^{-(c+o(1))N} for some constant c ∈ (0,1)? That is, does the minimal nonzero deviation from 1 by unit fraction sums decay exponentially at a rate strictly between 0 and 1?",
+    "proofStrategy": "We axiomatize δ(N) and state its positivity, the lower bound from lcm, Tang's upper bound, and the full conjecture in ε-N₀ form.",
+    "keyInsights": [
+      "The trivial lower bound δ(N) ≥ 1/lcm(1,...,N) = e^{-(1+o(1))N} comes from clearing denominators",
+      "Tang's upper bound exp(-cN/(log N log log N)³) is subexponential but far from e^{-cN}",
+      "The conjectured rate c ∈ (0,1) would place δ(N) strictly between the lcm lower bound and any polynomial decay",
+      "Kovac showed the variant asking about subsets summing exactly to 1 is equivalent",
+      "The problem connects Egyptian fractions to the prime number theorem via lcm(1,...,N) estimates"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #311 asks whether the minimal nonzero deviation of unit fraction sums from 1 decays as e^{-cN} for some c ∈ (0,1). The trivial lcm lower bound gives rate 1, and Tang's upper bound is subexponential, leaving a large gap.",
+    "implications": "Resolution would reveal the fine structure of unit fraction approximation to 1, connecting to the Erdős–Graham conjecture, Egyptian fractions, and the distribution of smooth numbers.",
+    "openQuestions": [
+      "Is δ(N) = e^{-(c+o(1))N} for some c ∈ (0,1)?",
+      "What is the exact value of c if it exists?",
+      "Can Tang's upper bound be improved to a true exponential exp(-cN)?",
+      "Does the extremal subset A achieving δ(N) have any structural properties?"
+    ]
+  }
+}
