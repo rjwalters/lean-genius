@@ -1,0 +1,86 @@
+{
+  "id": "erdos-282",
+  "title": "Erdős Problem #282: Greedy Algorithm for Egyptian Fractions",
+  "slug": "erdos-282",
+  "description": "Does the greedy Egyptian fraction algorithm terminate when x has odd denominator and A = odd integers? Fibonacci (1202): yes for A = ℕ. Erdős–Graham conjecture squares fail. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 282,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "greedy-algorithms",
+      "rational-numbers",
+      "open"
+    ],
+    "references": [
+      "Fibonacci (1202): greedy terminates for A = ℕ",
+      "Erdős–Graham (1980): p.30, original problem",
+      "Graham (1964): representability with congruence conditions",
+      "Stein: odd denominator variant",
+      "https://erdosproblems.com/282"
+    ],
+    "leanFile": "Proofs/Erdos282Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 26,
+      "endLine": 50,
+      "summary": "Define Egyptian fraction representation, representability, greedy step, and greedy termination."
+    },
+    {
+      "id": "fibonacci",
+      "title": "Fibonacci's Theorem",
+      "startLine": 52,
+      "endLine": 56,
+      "summary": "The greedy algorithm terminates for all rationals in (0,1] when A = ℕ \\ {0}."
+    },
+    {
+      "id": "odd-question",
+      "title": "The Odd Denominator Question",
+      "startLine": 58,
+      "endLine": 74,
+      "summary": "Stein's question: does greedy terminate for odd-denominator rationals with A = odd integers?"
+    },
+    {
+      "id": "graham",
+      "title": "Graham's Representability",
+      "startLine": 76,
+      "endLine": 86,
+      "summary": "Graham (1964): algebraic conditions for representability with denominators in congruence classes."
+    },
+    {
+      "id": "squares-general",
+      "title": "Square Denominators and General Framework",
+      "startLine": 88,
+      "endLine": 102,
+      "summary": "Erdős–Graham conjecture that greedy fails for squares. Greedy termination implies representability."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Egyptian fraction decomposition dates to ancient Egypt and was systematized by Fibonacci in 1202, who proved the greedy algorithm terminates for A = ℕ. Erdős and Graham (1980) posed variants for restricted denominator sets. Stein asked about odd denominators. Graham (1964) gave algebraic conditions for representability in congruence classes, but greedy termination is harder.",
+    "problemStatement": "Does the greedy Egyptian fraction algorithm terminate when the starting rational has odd denominator and the allowed denominators are odd positive integers?",
+    "proofStrategy": "We formalize Egyptian fraction representations, the greedy algorithm step, and termination. We state Fibonacci's classical result, Stein's odd-denominator question, Graham's representability theorems, and the Erdős–Graham conjecture about square denominators.",
+    "keyInsights": [
+      "Fibonacci (1202): greedy always terminates for A = ℕ — the classical result",
+      "Stein's question: restricting to odd denominators and odd-denominator rationals",
+      "Graham (1964): algebraic conditions determine representability in congruence classes",
+      "Greedy termination is strictly harder than representability",
+      "Erdős–Graham conjecture that greedy fails for square denominators 'almost always'"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #282 asks whether the greedy Egyptian fraction algorithm terminates for odd-denominator rationals using only odd denominators. While Fibonacci's classical theorem covers A = ℕ and Graham characterized representability in congruence classes, greedy termination for restricted sets remains poorly understood.",
+    "implications": "A positive answer would extend the classical Fibonacci result to the most natural restricted setting. A negative answer would reveal fundamental limitations of the greedy approach for Egyptian fractions.",
+    "openQuestions": [
+      "Does the greedy algorithm terminate for all odd-denominator rationals using odd denominators?",
+      "For which infinite sets A does the greedy algorithm always terminate?",
+      "Does the greedy algorithm fail for square denominators for almost all rationals?",
+      "Can non-greedy strategies always find representations where greedy fails?"
+    ]
+  }
+}

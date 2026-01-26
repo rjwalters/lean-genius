@@ -1,0 +1,65 @@
+[
+  {
+    "id": "egyptian-frac",
+    "proofId": "erdos-282",
+    "range": { "startLine": 29, "endLine": 31 },
+    "type": "definition",
+    "title": "Egyptian Fraction Representation",
+    "content": "x = Σ_{n ∈ S} 1/n where S is a finite set of distinct positive integers from A. This ancient concept was used by Egyptians and formalized by Fibonacci.",
+    "significance": "high"
+  },
+  {
+    "id": "greedy-step",
+    "proofId": "erdos-282",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Greedy Step",
+    "content": "Given x > 0, find the smallest n ∈ A with 1/n ≤ x. Subtract 1/n and repeat. This greedy approach always picks the largest possible unit fraction.",
+    "significance": "high"
+  },
+  {
+    "id": "fibonacci-thm",
+    "proofId": "erdos-282",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "theorem",
+    "title": "Fibonacci's Theorem (1202)",
+    "content": "The greedy algorithm terminates for all x ∈ (0,1] when A = ℕ \\ {0}. This is the classical result establishing that every positive rational has an Egyptian fraction decomposition.",
+    "significance": "high"
+  },
+  {
+    "id": "odd-positives",
+    "proofId": "erdos-282",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "definition",
+    "title": "Odd Positive Integers",
+    "content": "A = {1, 3, 5, 7, ...}. The problem restricts denominators to this set and asks about rationals with odd denominators in lowest terms.",
+    "significance": "medium"
+  },
+  {
+    "id": "stein-conjecture",
+    "proofId": "erdos-282",
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "conjecture",
+    "title": "Stein's Odd Greedy Conjecture",
+    "content": "The greedy algorithm terminates for all x ∈ (0,1] with odd denominator when restricted to odd denominators. This is the main question of Problem #282.",
+    "significance": "high"
+  },
+  {
+    "id": "graham-repr",
+    "proofId": "erdos-282",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "theorem",
+    "title": "Graham's Representability (1964)",
+    "content": "Algebraic conditions determine when m/n can be written as a sum of distinct unit fractions with denominators ≡ a (mod d). This gives representability but says nothing about greedy termination.",
+    "significance": "medium"
+  },
+  {
+    "id": "squares-conjecture",
+    "proofId": "erdos-282",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "conjecture",
+    "title": "Erdős–Graham Squares Conjecture",
+    "content": "The greedy algorithm on A = {n² : n ≥ 1} 'perhaps fails to terminate almost always.' This contrasts with the odd-denominator case where termination is expected.",
+    "significance": "medium"
+  }
+]
