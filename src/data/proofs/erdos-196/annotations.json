@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-196-ann-ap4",
+    "proofId": "erdos-196",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "4-Term Arithmetic Progression",
+    "content": "Four values a < b < c < d with constant difference: b−a = c−b = d−c.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-196-ann-monotone4",
+    "proofId": "erdos-196",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "definition",
+    "title": "Monotone 4-AP in Permutation",
+    "content": "A 4-AP at indices that are either all increasing or all decreasing. The central object of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-196-ann-conjecture",
+    "proofId": "erdos-196",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "theorem",
+    "title": "Main Conjecture: k = 4",
+    "content": "Every permutation of ℕ contains a monotone 4-term AP. The critical threshold between k=3 (proved) and k=5 (disproved).",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-196-ann-degs3",
+    "proofId": "erdos-196",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "theorem",
+    "title": "DEGS: k = 3 Always Exists",
+    "content": "Davis–Entringer–Graham–Simmons (1977): every permutation of ℕ contains a monotone 3-term AP.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-196-ann-degs5",
+    "proofId": "erdos-196",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "theorem",
+    "title": "DEGS: k = 5 Avoidable",
+    "content": "There exists a permutation with no monotone 5-term AP. The DEGS construction interleaves blocks to break long monotone APs.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-196-ann-lv",
+    "proofId": "erdos-196",
+    "range": { "startLine": 96, "endLine": 100 },
+    "type": "theorem",
+    "title": "LeSaulnier–Vijay: Odd-CD Avoidable",
+    "content": "Odd common difference 4-APs can be avoided. This reduces the conjecture to even-CD 4-APs.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-196-ann-parity",
+    "proofId": "erdos-196",
+    "range": { "startLine": 103, "endLine": 106 },
+    "type": "theorem",
+    "title": "Parity Dichotomy",
+    "content": "Every 4-AP has either odd or even common difference. Since odd-CD can be avoided, the conjecture is equivalent to forcing even-CD 4-APs.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-196-ann-es",
+    "proofId": "erdos-196",
+    "range": { "startLine": 126, "endLine": 131 },
+    "type": "theorem",
+    "title": "Erdős–Szekeres Theorem",
+    "content": "Every sequence of (r−1)(s−1)+1 distinct numbers has a monotone subsequence of length r or s. Guarantees long monotone subsequences but not arithmetic progressions.",
+    "significance": "supporting"
+  }
+]
