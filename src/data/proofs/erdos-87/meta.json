@@ -1,0 +1,68 @@
+{
+  "id": "erdos-87",
+  "title": "Erdős Problem #87: Ramsey Numbers and Chromatic Number",
+  "slug": "erdos-87",
+  "description": "For every ε > 0, is it true that for sufficiently large k, R(G) > (1 − ε)^k · R(k) for every graph G with χ(G) = k? Stronger form: does there exist c > 0 such that R(G) > c · R(k) for all large k?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/87",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos87Problem.lean",
+    "tags": ["graph theory", "ramsey theory", "chromatic number"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 87,
+    "erdosUrl": "https://erdosproblems.com/87",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős originally conjectured R(G) ≥ R(k) whenever χ(G) = k. This was disproved by Faudree and McKay, who showed the pentagonal wheel W has χ(W) = 4 but R(W) = 17 < R(4) = 18. Erdős then weakened the conjecture to the forms stated here.",
+    "problemStatement": "For every ε > 0, is R(G) > (1 − ε)^k · R(k) for all sufficiently large k and every graph G with chromatic number k? The stronger form asks whether there exists an absolute constant c > 0 with R(G) > c · R(k).",
+    "proofStrategy": "The formalization axiomatizes diagonal Ramsey numbers R(k), graph Ramsey numbers R(G), and chromatic numbers χ(G). Both weak and strong conjectures are stated. Known bounds (exponential lower bound from random colourings, upper bound R(k) ≤ 4^k) and the Faudree–McKay counterexample to the original conjecture are recorded as axioms.",
+    "keyInsights": [
+      "The original conjecture R(G) ≥ R(k) for χ(G) = k is false: the pentagonal wheel gives R(W) = 17 < R(4) = 18",
+      "The weakened conjecture allows a multiplicative factor (1 − ε)^k that shrinks exponentially",
+      "Random colouring arguments give R(G) ≫ 2^{k/2} for χ(G) = k, providing evidence for the conjecture",
+      "The strong form asks for an absolute constant c independent of k"
+    ]
+  },
+  "sections": [
+    {
+      "id": "axioms",
+      "title": "Axiomatized Ramsey and Chromatic Numbers",
+      "startLine": 23,
+      "endLine": 48,
+      "summary": "Axioms for the diagonal Ramsey number R(k), graph Ramsey number R(G), and chromatic number χ(G), along with basic positivity and boundedness properties."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 50,
+      "endLine": 68,
+      "summary": "The weak form states R(G) > (1 − ε)^k · R(k) for large k, and the strong form posits an absolute constant c > 0 with R(G) > c · R(k)."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 70,
+      "endLine": 81,
+      "summary": "Exponential lower bound R(G) ≫ 2^{k/2} from random colourings and the classical upper bound R(k) ≤ 4^k."
+    },
+    {
+      "id": "counterexample",
+      "title": "Counterexample to Original Conjecture",
+      "startLine": 83,
+      "endLine": 89,
+      "summary": "The Faudree–McKay result: the pentagonal wheel W satisfies χ(W) = 4, R(W) = 17, while R(4) = 18, disproving R(G) ≥ R(k)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures both the weak and strong forms of Erdős Problem 87, records the known exponential lower bound and Ramsey upper bound, and includes the Faudree–McKay counterexample that motivated the weakened conjecture.",
+    "implications": "Resolution would clarify the relationship between chromatic number and Ramsey number, a central question in Ramsey theory. The strong form would imply that graphs with high chromatic number are essentially as hard to avoid in Ramsey colourings as complete graphs.",
+    "openQuestions": [
+      "Does either the weak or strong form hold?",
+      "What is the optimal decay rate for the multiplicative factor as a function of k?",
+      "Can the Faudree–McKay construction be extended to larger chromatic numbers?"
+    ]
+  }
+}

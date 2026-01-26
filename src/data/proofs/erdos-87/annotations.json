@@ -1,0 +1,83 @@
+[
+  {
+    "id": "erdos-87-header",
+    "proofId": "erdos-87",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 14 },
+    "title": "Problem Background",
+    "content": "Erdős Problem 87 asks whether the graph Ramsey number R(G) is close to the diagonal Ramsey number R(k) whenever χ(G) = k. The original conjecture R(G) ≥ R(k) was disproved by Faudree and McKay via the pentagonal wheel.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-87-diagonal-ramsey",
+    "proofId": "erdos-87",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 30 },
+    "title": "Diagonal Ramsey Number",
+    "content": "The diagonal Ramsey number R(k) is axiomatized as a function ℕ → ℕ representing the minimum N such that every 2-colouring of K_N contains a monochromatic K_k. Positivity for k ≥ 1 is asserted.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-87-graph-ramsey",
+    "proofId": "erdos-87",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 37 },
+    "title": "Graph Ramsey Number",
+    "content": "The graph Ramsey number R(G) is axiomatized as the smallest N such that every 2-colouring of K_N contains a monochromatic copy of G. It takes a SimpleGraph on Fin n and returns ℕ.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-87-chromatic-number",
+    "proofId": "erdos-87",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 48 },
+    "title": "Chromatic Number",
+    "content": "The chromatic number χ(G) is axiomatized as a function from SimpleGraph (Fin n) to ℕ, with bounds: χ(G) ≤ n and χ(G) ≥ 1 for non-empty graphs.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-87-weak-conjecture",
+    "proofId": "erdos-87",
+    "type": "conjecture",
+    "range": { "startLine": 52, "endLine": 59 },
+    "title": "Weak Form of Conjecture",
+    "content": "For every ε ∈ (0,1), there exists k₀ such that for all k ≥ k₀ and all G with χ(G) = k, we have R(G) > (1 − ε)^k · R(k).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-87-strong-conjecture",
+    "proofId": "erdos-87",
+    "type": "conjecture",
+    "range": { "startLine": 61, "endLine": 68 },
+    "title": "Strong Form of Conjecture",
+    "content": "There exists c > 0 and k₀ such that for all k ≥ k₀ and all G with χ(G) = k, we have R(G) > c · R(k). This is stronger because c is independent of k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-87-exponential-lower",
+    "proofId": "erdos-87",
+    "type": "result",
+    "range": { "startLine": 72, "endLine": 77 },
+    "title": "Exponential Lower Bound",
+    "content": "A random colouring argument gives R(G) ≫ 2^{k/2} for any graph G with χ(G) = k, providing evidence for the conjecture.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-87-ramsey-upper",
+    "proofId": "erdos-87",
+    "type": "result",
+    "range": { "startLine": 79, "endLine": 81 },
+    "title": "Ramsey Upper Bound",
+    "content": "The classical upper bound R(k) ≤ 4^k, used to calibrate what the conjecture demands.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-87-counterexample",
+    "proofId": "erdos-87",
+    "type": "result",
+    "range": { "startLine": 83, "endLine": 89 },
+    "title": "Faudree–McKay Counterexample",
+    "content": "The pentagonal wheel W on 6 vertices has χ(W) = 4 and R(W) = 17, while R(4) = 18. This disproves the original conjecture R(G) ≥ R(k) and motivates the weakened formulations.",
+    "significance": "essential"
+  }
+]
