@@ -1,0 +1,87 @@
+{
+  "id": "erdos-1056",
+  "title": "Erdős Problem #1056: Consecutive Interval Products ≡ 1 (mod p)",
+  "slug": "erdos-1056",
+  "description": "For k ≥ 2, does there exist a prime p and k consecutive intervals whose products are all ≡ 1 (mod p)? Known for k=2 (p=11, Erdős 1979) and k=3 (p=17, Makowski 1983). Guy's Problem A15. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1056,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "factorials",
+      "wilson-theorem",
+      "open"
+    ],
+    "references": [
+      "Erdős (1979): k=2 example, 3·4 ≡ 5·6·7 ≡ 1 (mod 11)",
+      "Makowski (1983): k=3 example, p=17",
+      "Guy: Unsolved Problems in Number Theory, A15",
+      "Noll–Simmons: factorial congruence generalization",
+      "OEIS A060427",
+      "https://erdosproblems.com/1056"
+    ],
+    "leanFile": "Proofs/Erdos1056Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 44,
+      "summary": "Define intervalProd, IsValidBoundary, AllProductsCongruentOne, and HasSolution."
+    },
+    {
+      "id": "k2-example",
+      "title": "Erdős's k=2 Example",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "p=11: 3·4 ≡ 1, 5·6·7 ≡ 1 (mod 11). Verified by native_decide."
+    },
+    {
+      "id": "k3-example",
+      "title": "Makowski's k=3 Example",
+      "startLine": 59,
+      "endLine": 73,
+      "summary": "p=17: three consecutive intervals with products ≡ 1 (mod 17). Verified."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 75,
+      "endLine": 80,
+      "summary": "For every k ≥ 2, a solution exists."
+    },
+    {
+      "id": "generalizations",
+      "title": "Wilson's Theorem and Noll–Simmons",
+      "startLine": 82,
+      "endLine": 102,
+      "summary": "Wilson's theorem constrains solutions. Noll–Simmons asks about factorial congruences."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős observed in a 1979 letter that 3·4 ≡ 5·6·7 ≡ 1 (mod 11), producing two consecutive intervals with products congruent to 1. Makowski (1983) extended this to three intervals modulo 17. The problem asks whether this extends to arbitrarily many intervals. It appears as Problem A15 in Guy's Unsolved Problems in Number Theory.",
+    "problemStatement": "For every k ≥ 2, does there exist a prime p and k consecutive intervals I₁, ..., Iₖ (partitioning a range of integers) such that the product of integers in each interval is ≡ 1 (mod p)?",
+    "proofStrategy": "We formalize interval products, define solutions as prime-boundary pairs satisfying the congruence, verify the known k=2 and k=3 examples via native_decide, state the main conjecture, and connect to Wilson's theorem and the Noll–Simmons factorial generalization.",
+    "keyInsights": [
+      "Erdős (1979): 3·4 ≡ 5·6·7 ≡ 1 (mod 11) gives k=2",
+      "Makowski (1983): found k=3 solution with p=17",
+      "Wilson's theorem constrains: (p-1)! ≡ -1 (mod p) governs the total product",
+      "Consecutive interval products relate to ratios of factorials modulo p",
+      "Noll–Simmons generalize: do factorials q₁!, ..., qₖ! all agree mod p?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1056 asks whether for every k ≥ 2, there exist k consecutive intervals of integers whose products are all 1 mod some prime. Known for k=2 (Erdős, p=11) and k=3 (Makowski, p=17). The general case remains open.",
+    "implications": "A positive answer would reveal deep structure in the distribution of products of consecutive integers modulo primes, connecting Wilson's theorem with partitions of {1,...,p-1} into multiplicatively structured intervals.",
+    "openQuestions": [
+      "Does a solution exist for k=4? What is the smallest such prime?",
+      "Does the required prime p grow polynomially or exponentially in k?",
+      "Can the Noll–Simmons factorial variant be resolved independently?",
+      "Is there a constructive method to find solutions for given k?"
+    ]
+  }
+}
