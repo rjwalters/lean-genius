@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-50-ann-totientSet",
+    "proofId": "erdos-50",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "totientRatioBelow",
+    "content": "The set {n > 0 : φ(n)/n < c}. The ratio φ(n)/n measures how 'divisible' n is by small primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-50-ann-schoenbergF",
+    "proofId": "erdos-50",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Schoenberg's Distribution Function",
+    "content": "f(c) = natural density of {n : φ(n)/n < c}. Schoenberg proved this limit exists for all c ∈ [0,1].",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-50-ann-schoenberg",
+    "proofId": "erdos-50",
+    "range": { "startLine": 51, "endLine": 52 },
+    "type": "theorem",
+    "title": "Schoenberg's Density Theorem",
+    "content": "The natural density of {n : φ(n)/n < c} exists for every c ∈ [0,1] and lies in [0,1].",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-50-ann-continuous",
+    "proofId": "erdos-50",
+    "range": { "startLine": 62, "endLine": 62 },
+    "type": "theorem",
+    "title": "Continuity of f",
+    "content": "Schoenberg's function f is continuous on [0,1], making it a distribution function of a continuous probability measure.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-50-ann-singular",
+    "proofId": "erdos-50",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "theorem",
+    "title": "Erdős's Pure Singularity",
+    "content": "f'(x) = 0 for Lebesgue-almost every x ∈ [0,1]. The function increases only on a set of measure zero — a purely singular distribution.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-50-ann-conjecture",
+    "proofId": "erdos-50",
+    "range": { "startLine": 78, "endLine": 79 },
+    "type": "theorem",
+    "title": "Main Conjecture ($250)",
+    "content": "There is no x where f'(x) exists and is positive. This strengthens 'a.e. zero derivative' to 'everywhere zero where defined.'",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-50-ann-product",
+    "proofId": "erdos-50",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "concept",
+    "title": "Euler Product Formula",
+    "content": "φ(n)/n = ∏_{p | n} (1 − 1/p). The ratio depends only on the set of prime divisors, not their multiplicities.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-50-ann-inf",
+    "proofId": "erdos-50",
+    "range": { "startLine": 91, "endLine": 92 },
+    "type": "concept",
+    "title": "Infimum is Zero",
+    "content": "liminf φ(n)/n = 0, achieved along primorials (products of the first k primes).",
+    "significance": "supporting"
+  }
+]
