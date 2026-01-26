@@ -1,0 +1,56 @@
+[
+  {
+    "id": "unit-rooted-poly",
+    "proofId": "erdos-1120",
+    "range": { "startLine": 27, "endLine": 30 },
+    "type": "definition",
+    "title": "Unit-Rooted Polynomial",
+    "content": "A monic polynomial of degree n whose roots all lie in the closed unit disk. The sublevel set E = {|f(z)| ≤ 1} depends on the root configuration.",
+    "significance": "high"
+  },
+  {
+    "id": "sublevel-set",
+    "proofId": "erdos-1120",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "Sublevel Set E",
+    "content": "E = {z ∈ ℂ : |f(z)| ≤ 1}, also called a lemniscate. Contains all roots and always contains a neighborhood of each root.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-1120",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "conjecture",
+    "title": "Erdős Problem #1120",
+    "content": "The worst-case shortest path from 0 to |z| = 1 in E tends to infinity with n. The growth is conjectured to be slow.",
+    "significance": "high"
+  },
+  {
+    "id": "trivial-bound",
+    "proofId": "erdos-1120",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "For f(z) = z^n, the sublevel set is the closed unit disk and the shortest path has length 1. This is the trivial case.",
+    "significance": "medium"
+  },
+  {
+    "id": "clunie-netanyahu",
+    "proofId": "erdos-1120",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "theorem",
+    "title": "Clunie–Netanyahu Existence",
+    "content": "A path from 0 to |z| = 1 always exists within E. The sublevel set is connected enough to allow such a path.",
+    "significance": "high"
+  },
+  {
+    "id": "lemniscate",
+    "proofId": "erdos-1120",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "note",
+    "title": "Lemniscate Geometry",
+    "content": "E is a polynomial lemniscate. When roots cluster, E develops thin necks that force longer paths. The geometry depends sensitively on root placement.",
+    "significance": "medium"
+  }
+]
