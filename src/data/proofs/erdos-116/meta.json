@@ -1,0 +1,75 @@
+{
+  "id": "erdos-116",
+  "title": "Erdős Problem #116: Measure of Polynomial Sublevel Sets",
+  "slug": "erdos-116",
+  "description": "For a monic polynomial p with all roots in the unit disk, is |{|p(z)|<1}| ≥ n^{-O(1)}? PROVED: Krishnapur–Lundberg–Ramachandran showed |{|p(z)|<1}| ≥ c/log n, and this is tight up to log log factors.",
+  "meta": {
+    "author": "Erdős, Herzog, Piranian",
+    "sourceUrl": "https://erdosproblems.com/116",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos116Problem.lean",
+    "tags": ["complex analysis", "polynomial theory", "measure theory"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 116,
+    "erdosUrl": "https://erdosproblems.com/116",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Herzog, and Piranian conjectured that for any monic polynomial of degree n with roots in the closed unit disk, the sublevel set {|p(z)| < 1} has Lebesgue measure at least n^{-O(1)}, or even (log n)^{-O(1)}. Pommerenke first proved c/n⁴, and Krishnapur–Lundberg–Ramachandran achieved the optimal c/log n.",
+    "problemStatement": "Is the 2D Lebesgue measure of {z ∈ ℂ : |p(z)| < 1} at least (log n)^{-O(1)} for every monic degree-n polynomial with roots in the unit disk?",
+    "proofStrategy": "Defines unit disk polynomials, their sublevel sets, and the associated measure. States Pommerenke's n^{-4} bound, the KLR optimal c/log n lower bound, the KLR C/log log n upper bound, and Pólya's absolute π bound.",
+    "keyInsights": [
+      "The sublevel set {|p(z)| < 1} surrounds each root, and its measure quantifies how 'spread out' the small values are",
+      "Pommerenke's bound c/n⁴ was the first polynomial lower bound",
+      "KLR's c/log n is nearly tight: the matching upper bound is C/log log n",
+      "Pólya showed the maximum measure π is achieved only when all roots coincide"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Monic Polynomials with Roots in the Unit Disk",
+      "startLine": 22,
+      "endLine": 37,
+      "summary": "Defines unit disk polynomials, their evaluation, and sublevel sets."
+    },
+    {
+      "id": "measure",
+      "title": "Sublevel Set Measure",
+      "startLine": 41,
+      "endLine": 45,
+      "summary": "Defines the 2D Lebesgue measure of the sublevel set."
+    },
+    {
+      "id": "pommerenke",
+      "title": "Pommerenke's Bound",
+      "startLine": 49,
+      "endLine": 53,
+      "summary": "States the first polynomial lower bound c/n⁴."
+    },
+    {
+      "id": "klr",
+      "title": "KLR Bounds",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "States the optimal lower bound c/log n and the near-matching upper bound C/log log n."
+    },
+    {
+      "id": "polya-and-conjecture",
+      "title": "Pólya Bound and Main Result",
+      "startLine": 76,
+      "endLine": 97,
+      "summary": "States Pólya's π upper bound and the proved Erdős–Herzog–Piranian conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 116 is PROVED: the sublevel set measure is Θ(1/log n) up to log log factors. The KLR lower bound c/log n resolves the conjecture, and the KLR upper bound C/log log n shows a small remaining gap.",
+    "implications": "The result connects polynomial geometry to measure theory and has applications in potential theory and complex dynamics.",
+    "openQuestions": [
+      "Which polynomials minimize the sublevel measure for each degree n?",
+      "Is the exact minimum Θ(1/log n) or Θ(1/log log n)?",
+      "Do analogous results hold for polynomials with roots on the unit circle?"
+    ]
+  }
+}

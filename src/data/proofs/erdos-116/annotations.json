@@ -1,0 +1,86 @@
+[
+  {
+    "id": "unit-disk-poly",
+    "proofId": "erdos-116",
+    "type": "definition",
+    "title": "Unit Disk Polynomial",
+    "content": "A monic polynomial of degree n with all roots zᵢ satisfying |zᵢ| ≤ 1. The structure bundles the roots with the disk containment proof.",
+    "significance": "critical",
+    "range": {
+      "startLine": 24,
+      "endLine": 27
+    }
+  },
+  {
+    "id": "sublevel-set",
+    "proofId": "erdos-116",
+    "type": "definition",
+    "title": "Sublevel Set",
+    "content": "The set {z ∈ ℂ : |p(z)| < 1} where the polynomial is smaller than 1 in absolute value. Its 2D Lebesgue measure is the object of study.",
+    "significance": "critical",
+    "range": {
+      "startLine": 34,
+      "endLine": 37
+    }
+  },
+  {
+    "id": "pommerenke",
+    "proofId": "erdos-116",
+    "type": "theorem",
+    "title": "Pommerenke's Bound",
+    "content": "The sublevel measure is at least c/n⁴ for some absolute constant c > 0. This was the first polynomial lower bound, giving |{|p(z)|<1}| ≥ n^{-O(1)}.",
+    "significance": "key",
+    "range": {
+      "startLine": 49,
+      "endLine": 53
+    }
+  },
+  {
+    "id": "klr-lower",
+    "proofId": "erdos-116",
+    "type": "theorem",
+    "title": "KLR Lower Bound (Proves Conjecture)",
+    "content": "Krishnapur, Lundberg, and Ramachandran proved |{|p(z)|<1}| ≥ c/log n. This resolves the Erdős–Herzog–Piranian conjecture with the optimal logarithmic dependence.",
+    "significance": "critical",
+    "range": {
+      "startLine": 59,
+      "endLine": 63
+    }
+  },
+  {
+    "id": "klr-upper",
+    "proofId": "erdos-116",
+    "type": "theorem",
+    "title": "KLR Upper Bound",
+    "content": "There exist unit disk polynomials with sublevel measure at most C/log log n, showing the c/log n lower bound is nearly tight. The small gap (log n vs log log n) remains open.",
+    "significance": "key",
+    "range": {
+      "startLine": 67,
+      "endLine": 72
+    }
+  },
+  {
+    "id": "polya",
+    "proofId": "erdos-116",
+    "type": "theorem",
+    "title": "Pólya's π Bound",
+    "content": "The sublevel measure is at most π for every unit disk polynomial. Equality holds only when all roots coincide: p(z) = (z - z₀)ⁿ, giving a disk of radius 1.",
+    "significance": "key",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    }
+  },
+  {
+    "id": "main-result",
+    "proofId": "erdos-116",
+    "type": "insight",
+    "title": "Resolution Status",
+    "content": "The Erdős–Herzog–Piranian conjecture is PROVED. The sublevel measure is Θ(1/log n) up to log log factors. The remaining open question concerns which specific polynomials achieve the minimum.",
+    "significance": "critical",
+    "range": {
+      "startLine": 83,
+      "endLine": 89
+    }
+  }
+]
