@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-127-edwards",
+    "proofId": "erdos-127",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 34 },
+    "title": "Edwards' Bound",
+    "content": "edwardsBound(m) = m/2 + (√(8m+1) - 1)/8. Every graph with m edges has a bipartite subgraph with at least this many edges (Edwards 1973).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-127-excess",
+    "proofId": "erdos-127",
+    "type": "definition",
+    "range": { "startLine": 40, "endLine": 45 },
+    "title": "Excess Function f(m)",
+    "content": "excessF(m) measures how much better than Edwards' bound one can guarantee. f(m) ≥ 0 always holds.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-127-tight",
+    "proofId": "erdos-127",
+    "type": "result",
+    "range": { "startLine": 51, "endLine": 54 },
+    "title": "Tightness at Complete Graphs",
+    "content": "f(C(n,2)) = 0: complete graphs show Edwards' bound is tight at triangular numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-127-conjecture",
+    "proofId": "erdos-127",
+    "type": "conjecture",
+    "range": { "startLine": 60, "endLine": 64 },
+    "title": "Erdős Problem 127",
+    "content": "Is there an infinite sequence mᵢ with f(mᵢ) → ∞? Solved affirmatively by Alon (1996).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-127-alon-lower",
+    "proofId": "erdos-127",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 69 },
+    "title": "Alon's Lower Bound",
+    "content": "Alon (1996) proved f(n²/2) ≫ n^{1/2}, establishing that the excess grows at least like √n along the sequence m = n²/2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-127-alon-upper",
+    "proofId": "erdos-127",
+    "type": "result",
+    "range": { "startLine": 79, "endLine": 82 },
+    "title": "Alon's Upper Bound",
+    "content": "f(m) ≪ m^{1/4} for all m. The optimal constant remains unknown.",
+    "significance": "supporting"
+  }
+]
