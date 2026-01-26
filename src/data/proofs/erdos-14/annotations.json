@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-14-ann-unique",
+    "proofId": "erdos-14",
+    "range": { "startLine": 28, "endLine": 33 },
+    "type": "definition",
+    "title": "Unique Sums",
+    "content": "The set of integers with exactly one ordered representation a+b (a≤b) from A. The central object of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-14-ann-count",
+    "proofId": "erdos-14",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "Non-Unique Sum Count",
+    "content": "Count of integers in {1,...,N} not representable in exactly one way. This measures how far the sumset is from perfect unique coverage.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-14-ann-14a",
+    "proofId": "erdos-14",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "theorem",
+    "title": "Conjecture 14a: Lower Bound",
+    "content": "For every A and ε > 0, |{1,...,N}\\B| ≫ N^{1/2−ε}. The non-unique count cannot be much smaller than √N.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-14-ann-14b",
+    "proofId": "erdos-14",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "theorem",
+    "title": "Conjecture 14b: o(√N) Possible?",
+    "content": "Can the non-unique count be o(√N)? If yes, question (a) would be answered negatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-14-ann-ess-upper",
+    "proofId": "erdos-14",
+    "range": { "startLine": 62, "endLine": 67 },
+    "type": "theorem",
+    "title": "ESS Upper Bound",
+    "content": "Erdős–Sárközy–Szemerédi: there exists A with non-unique count ≪ N^{1/2+ε}. Close to √N from above.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-14-ann-ess-lower",
+    "proofId": "erdos-14",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "theorem",
+    "title": "ESS Lower Bound",
+    "content": "The same ESS set has non-unique count ≫ N^{1/3−ε} for infinitely many N. The gap 1/3 to 1/2 is open.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-14-ann-ef",
+    "proofId": "erdos-14",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "theorem",
+    "title": "Erdős–Freud Finite Analogue",
+    "content": "For finite A ⊆ {1,...,N}, the non-unique count is < 2^{3/2}·√N. The constant may be optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-14-ann-sidon",
+    "proofId": "erdos-14",
+    "range": { "startLine": 89, "endLine": 94 },
+    "type": "theorem",
+    "title": "Sidon Set Structure",
+    "content": "Sidon sets give perfect uniqueness but are too sparse: |A∩{1,...,N}| ≤ √N + O(N^{1/4}), leaving ~N unrepresented integers.",
+    "significance": "supporting"
+  }
+]
