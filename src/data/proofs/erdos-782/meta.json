@@ -1,0 +1,158 @@
+{
+  "id": "erdos-782",
+  "title": "Erdős Problem #782: Quasi-Progressions and Cubes in the Squares",
+  "slug": "erdos-782",
+  "description": "Two questions about structure in perfect squares: (1) Do squares contain arbitrarily long quasi-progressions with uniform bound C? (2) Do squares contain arbitrarily large combinatorial cubes?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/782",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos782Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "squares",
+      "progressions",
+      "combinatorial-cubes",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 782,
+    "erdosUrl": "https://erdosproblems.com/782",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set",
+        "description": "Set operations for defining Squares",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for cube vertices",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.pow",
+        "description": "Natural number powers for squares",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Squares definition: {n : exists k, n = k^2}",
+      "IsSquare definition: membership in Squares",
+      "ArithProg definition: a + i*d for i in Fin k",
+      "ContainsAP definition: set contains length-k AP",
+      "IsQuasiProg definition: bounded gaps d <= gap <= d+C",
+      "ContainsQuasiProg definition",
+      "Question1 definition: uniform C for all k",
+      "CubeVertices definition: {a + sum of subset of b's}",
+      "IsNontrivialCube definition: all b_i > 0",
+      "ContainsCube definition",
+      "Question2 definition: cubes of all sizes",
+      "question1_implies_question2 axiom",
+      "SolymosiConjecture definition: Q2 is false",
+      "BombieriLangConjecture placeholder",
+      "cilleruelo_granville axiom",
+      "no_4AP_in_squares axiom (classical)",
+      "squares_contain_3AP axiom"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Brown, Erdős, and Freedman in [BEF90]. It connects classical results about arithmetic progressions in squares with modern questions in additive combinatorics.\n\nThe classical result that squares contain no 4-term APs (related to Fermat's Last Theorem for n=4) motivates asking about weaker structures. Quasi-progressions relax the exact gap requirement to bounded gaps.\n\nSolymosi (2007) conjectured that even combinatorial cubes don't appear in unbounded sizes. Cilleruelo and Granville (2007) showed this would follow from the Bombieri-Lang conjecture in algebraic geometry.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\n**Question 1 (Quasi-Progressions):**\nDoes there exist a constant C > 0 such that for any k, the squares contain a sequence x₁ < ... < xₖ where d ≤ xᵢ₊₁ - xᵢ ≤ d + C for some d?\n\n**Question 2 (Cubes in Squares):**\nDo the squares contain arbitrarily large combinatorial cubes of the form {a + ∑_{i∈I} bᵢ : I ⊆ {1,...,k}}?\n\n**Key Facts:**\n- An affirmative answer to Q1 implies affirmative to Q2\n- Squares contain no 4-term arithmetic progressions (classical)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Squares:** Define as {n | ∃ k, n = k²}\n\n2. **Arithmetic Progressions:** ArithProg and ContainsAP\n\n3. **Quasi-Progressions:** IsQuasiProg with bounded gap condition\n\n4. **Combinatorial Cubes:** CubeVertices as sums over subsets\n\n5. **Questions:** Question1 (uniform C) and Question2 (all k)\n\n6. **Implications:** Q1 → Q2, and conditional results under Bombieri-Lang",
+    "keyInsights": [
+      "**No 4-AP:** Classical result that squares have no 4-term APs motivates relaxation",
+      "**Uniform vs Non-uniform:** Q1 asks for uniform C; non-uniform version is easier",
+      "**Cubes Generalize APs:** k-cubes have 2^k elements; APs have k elements",
+      "**Implication:** Q1 affirmative → Q2 affirmative (via Ramsey-type argument)",
+      "**Conditional Negative:** Bombieri-Lang implies Q2 negative (Cilleruelo-Granville)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "squares",
+      "title": "Perfect Squares",
+      "summary": "Squares, IsSquare, isSquare_iff, small examples",
+      "startLine": 33,
+      "endLine": 52
+    },
+    {
+      "id": "progressions",
+      "title": "Arithmetic Progressions",
+      "summary": "ArithProg, ContainsAP, squares_contain_3AP, no_4AP_in_squares",
+      "startLine": 54,
+      "endLine": 77
+    },
+    {
+      "id": "quasi-prog",
+      "title": "Quasi-Progressions",
+      "summary": "IsQuasiProg, ContainsQuasiProg, Question1, Question1Weak",
+      "startLine": 79,
+      "endLine": 103
+    },
+    {
+      "id": "cubes",
+      "title": "Combinatorial Cubes",
+      "summary": "CubeVertices, IsNontrivialCube, ContainsCube, Question2",
+      "startLine": 105,
+      "endLine": 130
+    },
+    {
+      "id": "relationship",
+      "title": "Relationship Between Questions",
+      "summary": "question1_implies_question2, no_cubes_implies_no_quasiprog",
+      "startLine": 132,
+      "endLine": 145
+    },
+    {
+      "id": "solymosi",
+      "title": "Solymosi's Conjecture",
+      "summary": "SolymosiConjecture, SolymosiConjectureAlt, solymosi_equiv",
+      "startLine": 147,
+      "endLine": 168
+    },
+    {
+      "id": "bombieri-lang",
+      "title": "Conditional Result",
+      "summary": "BombieriLangConjecture, cilleruelo_granville, conditional_q2_negative",
+      "startLine": 170,
+      "endLine": 188
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "Has2Cube, Has3Cube",
+      "startLine": 190,
+      "endLine": 207
+    },
+    {
+      "id": "density",
+      "title": "Density Considerations",
+      "summary": "numSquaresUpTo, sparsity analysis",
+      "startLine": 209,
+      "endLine": 224
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_782_status, erdos_782_question1, erdos_782_question2",
+      "startLine": 226,
+      "endLine": 265
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #782 poses two questions about structure in perfect squares: whether they contain arbitrarily long quasi-progressions with a uniform bound, and whether they contain arbitrarily large combinatorial cubes. Both questions remain open.",
+    "implications": "Understanding these structures would reveal deep connections between additive combinatorics (progression-like structures) and algebraic geometry (via the Bombieri-Lang conjecture). The problem bridges number theory and combinatorics.",
+    "openQuestions": [
+      "Do squares contain arbitrarily long quasi-progressions with uniform C?",
+      "Do squares contain arbitrarily large combinatorial cubes?",
+      "What is the largest k such that squares definitely contain a k-cube?",
+      "Does the Bombieri-Lang conjecture hold?",
+      "Is there an unconditional proof that Q2 is negative?"
+    ]
+  }
+}
