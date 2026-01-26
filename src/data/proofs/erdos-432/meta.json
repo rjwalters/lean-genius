@@ -1,0 +1,88 @@
+{
+  "id": "erdos-432",
+  "title": "Erdős Problem #432: Pairwise Coprime Sumsets",
+  "slug": "erdos-432",
+  "description": "Let A, B ⊆ ℕ be infinite. How dense can A + B be if all elements are pairwise coprime? Asked by Straus (Erdős–Graham 1980, p.85). OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/432",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos432Problem.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "coprimality",
+      "sumsets"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 432,
+    "erdosUrl": "https://erdosproblems.com/432",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #432 was asked by Straus, inspired by Ostmann's related problem (#431). Discussed in Erdős–Graham (1980, p.85). The problem asks how dense a sumset A + B can be when all its elements are required to be pairwise coprime. Tao has noted this 'looks difficult.'",
+    "problemStatement": "Let A, B ⊆ ℕ be infinite sets. How dense can A + B = {a + b : a ∈ A, b ∈ B} be if all elements of A + B are pairwise coprime?",
+    "proofStrategy": "We define sumsets, pairwise coprimality, and counting functions. The problem is formalized as finding a non-trivial upper bound on the counting function of A + B under the pairwise coprime constraint. Basic observations about prime factor uniqueness are axiomatized.",
+    "keyInsights": [
+      "Pairwise coprimality means each prime divides at most one element of A + B",
+      "This severely restricts density: a pairwise coprime set in {1,…,n} has ≤ π(n) + 1 elements",
+      "Related to Ostmann's problem (#431) about additive complements",
+      "Tao noted this problem 'looks difficult'",
+      "The sumset structure adds complexity beyond just coprime sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sumsets",
+      "title": "Part I: Sumsets",
+      "startLine": 27,
+      "endLine": 42,
+      "summary": "Defines sumset A + B and sumsetUpTo for counting."
+    },
+    {
+      "id": "coprimality",
+      "title": "Part II: Pairwise Coprimality",
+      "startLine": 44,
+      "endLine": 57,
+      "summary": "Defines IsPairwiseCoprime and SumsetPairwiseCoprime."
+    },
+    {
+      "id": "counting",
+      "title": "Part III: Counting Functions",
+      "startLine": 59,
+      "endLine": 72,
+      "summary": "Defines countingFn and IsInfiniteSet."
+    },
+    {
+      "id": "problem",
+      "title": "Part IV: The Problem",
+      "startLine": 74,
+      "endLine": 94,
+      "summary": "States ErdosProblem432: find a non-trivial upper bound on coprime sumset density."
+    },
+    {
+      "id": "observations",
+      "title": "Part V: Basic Observations",
+      "startLine": 96,
+      "endLine": 122,
+      "summary": "Each prime divides at most one element; coprime set bound; Ostmann connection."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 124,
+      "endLine": 134,
+      "summary": "Status: open. Pairwise coprime constraint limits density. Tao noted difficulty."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #432 asks how dense A + B can be when all elements are pairwise coprime. The constraint means each prime divides at most one element, but finding the exact density bound remains open.",
+    "implications": "Understanding this would illuminate the interplay between additive structure (sumsets) and multiplicative structure (coprimality), with connections to sieve methods and additive combinatorics.",
+    "openQuestions": [
+      "Is there a density bound of the form |A+B ∩ [1,n]| = O(π(n))?",
+      "Can the sumset A + B be as dense as the primes themselves?",
+      "What is the relationship to Ostmann's problem (#431) on additive complements?"
+    ]
+  }
+}
