@@ -1,0 +1,74 @@
+[
+  {
+    "id": "rep-count",
+    "proofId": "erdos-40",
+    "range": { "startLine": 28, "endLine": 29 },
+    "type": "definition",
+    "title": "Representation Count r_A(n)",
+    "content": "The number of ways to write n = a + b with a, b ∈ A and a ≤ b. This is the sumset representation function, central to additive combinatorics. For an additive basis, r_A(n) ≥ 1 for all large n.",
+    "significance": "high"
+  },
+  {
+    "id": "additive-basis",
+    "proofId": "erdos-40",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "Additive Basis of Order 2",
+    "content": "A set A is an additive basis of order 2 if every sufficiently large integer is a sum of two elements of A. The Erdős–Turán conjecture asks whether such sets always have unbounded r_A(n).",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-turan",
+    "proofId": "erdos-40",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "conjecture",
+    "title": "Erdős–Turán Conjecture (Problem #28)",
+    "content": "Every additive basis of order 2 has limsup r_A(n) = ∞. This 1941 conjecture remains open and is one of the most famous problems in additive combinatorics.",
+    "significance": "high"
+  },
+  {
+    "id": "density-condition",
+    "proofId": "erdos-40",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Density Condition",
+    "content": "The set A has density |A ∩ {1,...,N}| ≥ c·N^{1/2}/g(N) for a fixed c > 0 and all large N. This is weaker than being an additive basis when g(N) → ∞.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-40",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "conjecture",
+    "title": "Problem #40: $500 Bounty",
+    "content": "For ALL functions g → ∞, the density condition |A| >> N^{1/2}/g(N) implies limsup r_A(n) = ∞. This is strictly stronger than Problem #28 and carries a $500 bounty from Erdős.",
+    "significance": "high"
+  },
+  {
+    "id": "implies-28",
+    "proofId": "erdos-40",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "theorem",
+    "title": "Problem #40 Implies Problem #28",
+    "content": "An additive basis has |A ∩ {1,...,N}| >> N^{1/2} (since it must cover all sums). Applying Problem #40 with any g → ∞ (e.g., g = √N) recovers the Erdős–Turán conjecture.",
+    "significance": "high"
+  },
+  {
+    "id": "sidon-bound",
+    "proofId": "erdos-40",
+    "range": { "startLine": 76, "endLine": 79 },
+    "type": "theorem",
+    "title": "Sidon Set Density Bound",
+    "content": "If r_A(n) ≤ 1 for all n (Sidon set), then |A ∩ {1,...,N}| ≤ (1+o(1))N^{1/2}. This shows N^{1/2} is the critical density: Sidon sets are at the boundary where representations are bounded.",
+    "significance": "medium"
+  },
+  {
+    "id": "random-heuristic",
+    "proofId": "erdos-40",
+    "range": { "startLine": 92, "endLine": 96 },
+    "type": "insight",
+    "title": "Random Model Heuristic",
+    "content": "A random set of density N^{1/2}/g(N) has expected r_A(n) ~ |A|²/N ~ 1/g(N)². As g → ∞, this vanishes on average, but fluctuations may produce unbounded peaks. The critical growth rate of g is unknown.",
+    "significance": "medium"
+  }
+]
