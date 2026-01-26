@@ -1,0 +1,111 @@
+{
+  "id": "erdos-342",
+  "title": "Erdős Problem #342: The Ulam Sequence U(1,2)",
+  "slug": "erdos-342",
+  "description": "In the Ulam sequence a₁=1, a₂=2, where a_{n+1} is the least integer > aₙ uniquely representable as aᵢ+aⱼ (i<j), do infinitely many twin pairs (a, a+2) occur? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/342",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos342Problem.lean",
+    "tags": [
+      "number-theory",
+      "sequences",
+      "additive-combinatorics",
+      "ulam-sequences",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 342,
+    "erdosUrl": "https://erdosproblems.com/342",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #342 concerns the Ulam sequence U(1,2), introduced by Stanislaw Ulam in 1964. The sequence begins 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28, ... where each subsequent term is the smallest integer with a unique representation as a sum of two distinct earlier terms. The problem asks whether infinitely many 'twin pairs' (a, a+2) occur. From [ErGr80, p.53]. OEIS A002858.",
+    "problemStatement": "Define a sequence where a₁ = 1, a₂ = 2, and for n ≥ 2, a_{n+1} is the least integer greater than aₙ that can be expressed uniquely as aᵢ + aⱼ with i < j ≤ n. Do infinitely many twin pairs (a, a+2) occur in this sequence? OPEN.",
+    "proofStrategy": "The formalization defines the Ulam sequence (noncomputable, with initial values axiomatized), the unique representation property, twin pairs, and the conjecture as Set.Infinite of twin indices. Growth rate and density questions are also formalized. The equivalence theorem erdos_342_statement is proved by simp.",
+    "keyInsights": [
+      "Each term is the smallest integer with exactly one representation as a sum of two distinct earlier terms",
+      "5 is excluded because 5 = 1+4 = 2+3 has two representations",
+      "The growth rate is approximately a(n) ≈ 13.5n (empirical, Steinerberger 2015)",
+      "Twin pairs like (26,28) and (478,480) appear but their infinitude is unknown",
+      "The density of the Ulam sequence is also an open question"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Part I: The Ulam Sequence Definition",
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "Defines ulamSeq as ℕ → ℕ with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity."
+    },
+    {
+      "id": "representation",
+      "title": "Part II: Unique Representation Property",
+      "startLine": 47,
+      "endLine": 62,
+      "summary": "Defines representationCount. Axioms: ulamSeq_unique_representation (exactly 1 representation) and ulamSeq_minimal (no smaller candidate)."
+    },
+    {
+      "id": "initial-values",
+      "title": "Part III: Known Initial Values",
+      "startLine": 64,
+      "endLine": 78,
+      "summary": "Axiom ulamSeq_values (first 12 terms). Axioms: five_not_ulam (5 excluded, two representations), six_is_ulam."
+    },
+    {
+      "id": "twin-pairs",
+      "title": "Part IV: Twin Pairs",
+      "startLine": 80,
+      "endLine": 95,
+      "summary": "Defines IsUlamTwin(n): a(n+1) = a(n) + 2. Defines twinIndices as the set of such n. Axiom twin_examples."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part V: The Erdős Conjecture",
+      "startLine": 97,
+      "endLine": 107,
+      "summary": "Defines ErdosConjecture342: Set.Infinite twinIndices. Axiom erdos_342."
+    },
+    {
+      "id": "density",
+      "title": "Part VI: Density Questions",
+      "startLine": 109,
+      "endLine": 122,
+      "summary": "Defines ulamCount and DensityZero via Filter.Tendsto. Axiom: density question is undecided."
+    },
+    {
+      "id": "growth",
+      "title": "Part VII: Growth Rate",
+      "startLine": 124,
+      "endLine": 134,
+      "summary": "Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C ≈ 13.5)."
+    },
+    {
+      "id": "additive-structure",
+      "title": "Part VIII: Additive Structure",
+      "startLine": 136,
+      "endLine": 152,
+      "summary": "Defines ulamSet, uniqueSumset. Axiom ulam_characterization: members are unique sums exceeding all previous terms."
+    },
+    {
+      "id": "summary",
+      "title": "Part IX: Summary",
+      "startLine": 154,
+      "endLine": 175,
+      "summary": "Proved: erdos_342_statement (simp), erdos_342_status (trivial). Problem remains OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #342 asks whether the Ulam sequence U(1,2) contains infinitely many twin pairs (a, a+2). The sequence is defined by unique-sum representations and grows roughly linearly. The problem remains open, as does the question of density.",
+    "implications": "Resolution would illuminate the additive structure of Ulam sequences, connecting to additive combinatorics and the theory of B₂ sequences.",
+    "openQuestions": [
+      "Do infinitely many twin pairs (a, a+2) occur?",
+      "Does the Ulam sequence have asymptotic density zero?",
+      "What is the exact growth constant (empirically ≈ 13.5)?",
+      "How do generalized Ulam sequences U(a,b) behave?"
+    ]
+  }
+}
