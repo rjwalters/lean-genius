@@ -1,0 +1,82 @@
+{
+  "id": "erdos-406",
+  "title": "Erdős Problem #406: Powers of 2 with Only Digits 0 and 1 in Base 3",
+  "slug": "erdos-406",
+  "description": "Are there only finitely many powers of 2 whose base-3 representation uses only digits 0 and 1? Known: 1, 4, 256. Saye verified no new examples for 2^n with n ≤ 5.9×10²¹.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/406",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos406Problem.lean",
+    "tags": ["number theory", "base representations", "powers of 2", "digit problems"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 406,
+    "erdosUrl": "https://erdosproblems.com/406",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem asks about the intersection of powers of 2 and numbers expressible with only digits 0 and 1 in base 3 (sums of distinct powers of 3). Only three examples are known: 1, 4, and 256. The problem connects multiplication (powers of 2) with additive structure (base-3 representations) and is notoriously difficult.",
+    "problemStatement": "Is the set {2^k : all base-3 digits of 2^k are 0 or 1} finite? A variant asks whether 2^15 is the largest power of 2 with only digits 1 and 2 in base 3.",
+    "proofStrategy": "The formalization defines digit predicates HasOnlyDigits01Base3 and HasOnlyDigits12Base3 via Nat.digits, constructs the relevant sets, states finiteness as the main conjecture, and records the three known examples, the variant conjecture, and Saye's massive computational verification.",
+    "keyInsights": [
+      "Only three powers of 2 are known to have only digits 0 and 1 in base 3: 1, 4, 256",
+      "Numbers with only ternary digits 0 and 1 are exactly sums of distinct powers of 3",
+      "Saye (2022) checked all 2^n for n up to 5.9×10²¹ — none have this property for n ≥ 16",
+      "The variant with digits 1 and 2 conjectures that 2^15 = 32768 is the largest"
+    ]
+  },
+  "sections": [
+    {
+      "id": "digit-predicates",
+      "title": "Ternary Digit Predicates",
+      "startLine": 23,
+      "endLine": 39,
+      "summary": "Definitions of HasOnlyDigits01Base3, HasOnlyDigits12Base3, and the corresponding sets ternarySparse and ternaryDense."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 41,
+      "endLine": 45,
+      "summary": "Erdős Problem 406: the set ternarySparse is finite."
+    },
+    {
+      "id": "variant",
+      "title": "Variant Conjecture",
+      "startLine": 47,
+      "endLine": 51,
+      "summary": "2^15 is the greatest power of 2 with only ternary digits 1 and 2."
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Examples",
+      "startLine": 53,
+      "endLine": 62,
+      "summary": "The three known elements of ternarySparse: 1 = 2^0, 4 = 2^2, 256 = 2^8."
+    },
+    {
+      "id": "computational-evidence",
+      "title": "Computational Evidence",
+      "startLine": 64,
+      "endLine": 71,
+      "summary": "Saye's 2022 computation: for 16 ≤ n ≤ 5.9×10²¹, 2^n uses all three ternary digits."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 73,
+      "endLine": 83,
+      "summary": "Numbers with ternary digits 0,1 are sums of distinct powers of 3; 0 trivially has this property."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the open Erdős Problem 406 on finiteness of powers of 2 with restricted ternary digits, recording the three known examples, the digit-1-2 variant, and massive computational evidence from Saye (2022).",
+    "implications": "Resolution would illuminate the multiplicative-additive independence of powers of 2 and powers of 3, a deep question in number theory related to the abc conjecture and S-unit equations.",
+    "openQuestions": [
+      "Is {2^k with ternary digits ⊆ {0,1}} finite?",
+      "Is 2^15 the largest power of 2 with ternary digits ⊆ {1,2}?",
+      "Can methods from transcendence theory or p-adic analysis resolve the problem?"
+    ]
+  }
+}
