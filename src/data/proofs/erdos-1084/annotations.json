@@ -1,0 +1,74 @@
+[
+  {
+    "id": "separated-config",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 30, "endLine": 33 },
+    "type": "definition",
+    "title": "Separated Point Configuration",
+    "content": "A collection of n points in ℝ^d where every pair has distance ≥ 1. This is the packing constraint: points cannot be closer than unit distance. The structure carries both the point positions and the separation proof.",
+    "significance": "high"
+  },
+  {
+    "id": "unit-dist-pairs",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 36, "endLine": 39 },
+    "type": "definition",
+    "title": "Unit Distance Pairs",
+    "content": "Count of ordered pairs (i,j) with i < j and dist(p_i, p_j) = 1. Points at exactly unit distance are 'touching' in the packing — they are as close as the separation constraint allows.",
+    "significance": "high"
+  },
+  {
+    "id": "f1-exact",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 48, "endLine": 49 },
+    "type": "theorem",
+    "title": "1D Exact Formula",
+    "content": "f_1(n) = n-1: on the real line, separated points achieving maximum unit pairs are at positions 0, 1, 2, ..., n-1, giving n-1 consecutive unit pairs. No other arrangement can do better.",
+    "significance": "medium"
+  },
+  {
+    "id": "harborth-exact",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "theorem",
+    "title": "Harborth's Exact Formula (2D)",
+    "content": "f_2(n) = ⌊3n - √(12n-3)⌋ for n ≥ 2. The triangular lattice with unit spacing achieves this bound. Each interior point has 6 unit neighbors; boundary effects reduce the count by ~√n.",
+    "significance": "high"
+  },
+  {
+    "id": "f2-trivial",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "theorem",
+    "title": "Trivial 2D Upper Bound",
+    "content": "f_2(n) < 3n: each point in the plane can have at most 6 unit-distance neighbors (a hexagonal arrangement), so the total pairs are at most 6n/2 = 3n.",
+    "significance": "medium"
+  },
+  {
+    "id": "f3-leading",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "theorem",
+    "title": "3D Leading Coefficient",
+    "content": "f_3(n) ~ 6n: in 3D, the kissing number is 12 (Newton, 1694), so each point has ≤ 12 unit neighbors, giving ≤ 12n/2 = 6n pairs. The FCC/HCP lattice approaches this.",
+    "significance": "high"
+  },
+  {
+    "id": "bezdek-reid",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "theorem",
+    "title": "Bezdek–Reid 3D Upper Bound",
+    "content": "f_3(n) < 6n - c·n^{2/3} with c ≈ 0.926. This establishes that the correction term in 3D is at least of order n^{2/3}, matching the conjectured lower bound.",
+    "significance": "high"
+  },
+  {
+    "id": "general-bounds",
+    "proofId": "erdos-1084",
+    "range": { "startLine": 105, "endLine": 116 },
+    "type": "theorem",
+    "title": "General Dimension Bounds",
+    "content": "In dimension d: f_d(n) is between (d-o(1))n and 2^{O(d)}·n. The lower bound uses d-dimensional lattice packings; the upper bound uses the exponential kissing number bound. The gap is exponential in d.",
+    "significance": "medium"
+  }
+]
