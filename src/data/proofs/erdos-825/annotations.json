@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-825-semiperfect",
+    "proofId": "erdos-825",
+    "type": "definition",
+    "range": { "startLine": 40, "endLine": 42 },
+    "title": "Semiperfect Number",
+    "content": "IsSemiperfect n means n equals the sum of some subset of its proper divisors. This is the key property—weird numbers fail to have it despite being abundant.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-825-weird",
+    "proofId": "erdos-825",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 46 },
+    "title": "Weird Number",
+    "content": "IsWeird n means n is abundant (σ(n) > 2n) but not semiperfect. The problem asks whether weirdness is bounded in terms of abundancy.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-825-lower",
+    "proofId": "erdos-825",
+    "type": "result",
+    "range": { "startLine": 63, "endLine": 66 },
+    "title": "Lower Bound C > 2",
+    "content": "Any valid constant C must exceed 2. The counterexample is n = 70: σ(70) = 144 > 140 = 2·70, yet 70 is weird (not semiperfect).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-825-odd-weird",
+    "proofId": "erdos-825",
+    "type": "context",
+    "range": { "startLine": 70, "endLine": 78 },
+    "title": "Odd Weird Numbers Connection",
+    "content": "No odd weird number is known up to 10²¹ (Erdős Problem #470). If none exist, all weird numbers have abundancy < 4, which would imply C = 3 works.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-825-conjecture",
+    "proofId": "erdos-825",
+    "type": "conjecture",
+    "range": { "startLine": 83, "endLine": 88 },
+    "title": "Erdős Problem 825",
+    "content": "There exists an absolute constant C > 2 such that every n with σ(n) > Cn is semiperfect. The conjectured threshold is C = 3.",
+    "significance": "essential"
+  }
+]
