@@ -1,128 +1,101 @@
 [
   {
-    "id": "ann-894-lacunary",
+    "id": "erdos-894-header",
     "proofId": "erdos-894",
-    "range": { "startLine": 41, "endLine": 44 },
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 25 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #894: For a lacunary sequence A (n_{k+1} ≥ (1+ε)n_k), does there exist a finite coloring of ℕ with no monochromatic a - b ∈ A? SOLVED: YES. O(ε⁻¹ log(1/ε)) colors suffice (Peres-Schlag 2010).",
+    "mathContext": "Connects Cayley graph chromatic numbers to Diophantine approximation. Katznelson observed that badly approximable irrationals from Problem #464 yield finite colorings.",
+    "significance": "essential",
+    "relatedConcepts": ["lacunary sequences", "chromatic number", "Cayley graphs", "Diophantine approximation"]
+  },
+  {
+    "id": "erdos-894-lacunary",
+    "proofId": "erdos-894",
     "type": "definition",
-    "title": "IsLacunary",
-    "content": "A sequence is lacunary with ratio (1+ε) if n_{k+1} ≥ (1+ε)n_k for all k.",
-    "significance": "critical"
+    "range": { "startLine": 37, "endLine": 72 },
+    "title": "Lacunary Sequences",
+    "content": "IsLacunary(a, ε): ε > 0 and a(k+1) ≥ (1+ε)·a(k). lacunary_exponential_growth (proved): a(k) ≥ a(0)·(1+ε)^k by induction. geometricSequence, geometric_is_lacunary (proved): powers of r ≥ 2 are lacunary with ε = 1.",
+    "mathContext": "Lacunary sequences grow exponentially, ensuring sparsity that enables finite colorings.",
+    "significance": "essential",
+    "relatedConcepts": ["exponential growth", "geometric sequences"]
   },
   {
-    "id": "ann-894-growth",
+    "id": "erdos-894-coloring",
     "proofId": "erdos-894",
-    "range": { "startLine": 46, "endLine": 57 },
-    "type": "theorem",
-    "title": "lacunary_exponential_growth",
-    "content": "Lacunary sequences grow at least exponentially: a_k ≥ a_0 · (1+ε)^k.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-894-geometric",
-    "proofId": "erdos-894",
-    "range": { "startLine": 59, "endLine": 74 },
-    "type": "theorem",
-    "title": "geometric_is_lacunary",
-    "content": "Powers of r ≥ 2 form a lacunary sequence with ε = 1.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-894-coloring",
-    "proofId": "erdos-894",
-    "range": { "startLine": 80, "endLine": 86 },
     "type": "definition",
-    "title": "Coloring, AvoidsMonochromatic",
-    "content": "A coloring avoids monochromatic solutions if a - b ∈ A implies c(a) ≠ c(b).",
-    "significance": "critical"
+    "range": { "startLine": 74, "endLine": 92 },
+    "title": "Colorings and Finite Colorability",
+    "content": "Coloring(k): ℕ → Fin k. AvoidsMonochromatic: a - b ∈ A implies c(a) ≠ c(b). IsFinitelyColorable: ∃ k and coloring avoiding monochromatic differences. chromaticNumber: placeholder definition.",
+    "mathContext": "The coloring problem on the integers with forbidden differences from the set A.",
+    "significance": "essential",
+    "relatedConcepts": ["graph coloring", "forbidden differences"]
   },
   {
-    "id": "ann-894-colorable",
+    "id": "erdos-894-katznelson",
     "proofId": "erdos-894",
-    "range": { "startLine": 88, "endLine": 91 },
     "type": "definition",
-    "title": "IsFinitelyColorable",
-    "content": "A set A is finitely colorable if ∃ finite coloring avoiding monochromatic differences.",
-    "significance": "critical"
+    "range": { "startLine": 94, "endLine": 124 },
+    "title": "Diophantine Connection and Katznelson's Construction",
+    "content": "fractionalDistance(x) = min(x - floor(x), ceil(x) - x). problem_464_result (axiom): lacunary sequences have badly approximable θ with inf_k ||θ·n_k|| > δ > 0. katznelsonColoring: divide the circle into δ-intervals, O(1/δ) colors. katznelson_theorem (axiom): this coloring avoids monochromatic differences.",
+    "mathContext": "Katznelson's key insight: irrational rotation on the circle provides the coloring. Problem #464 guarantees the required separation.",
+    "significance": "essential",
+    "relatedConcepts": ["fractional distance", "irrational rotation", "Problem #464"]
   },
   {
-    "id": "ann-894-fractional",
+    "id": "erdos-894-main",
     "proofId": "erdos-894",
-    "range": { "startLine": 102, "endLine": 104 },
+    "type": "result",
+    "range": { "startLine": 126, "endLine": 140 },
+    "title": "Main Theorem",
+    "content": "lacunary_finitely_colorable (proved): every lacunary sequence is finitely colorable, via Problem #464 and Katznelson's construction. ErdosConjecture894: formal statement. erdos_894 (proved): equals lacunary_finitely_colorable.",
+    "mathContext": "The proof composes: Problem #464 gives θ and δ, Katznelson's coloring uses O(1/δ) colors, and the theorem avoids monochromatic differences.",
+    "significance": "essential",
+    "relatedConcepts": ["main theorem", "Problem #464", "Katznelson"]
+  },
+  {
+    "id": "erdos-894-quantitative",
+    "proofId": "erdos-894",
+    "type": "result",
+    "range": { "startLine": 142, "endLine": 154 },
+    "title": "Peres-Schlag Quantitative Bounds",
+    "content": "peres_schlag_bound (axiom): O(ε⁻¹ log(1/ε)) colors suffice for ratio (1+ε). peres_schlag_optimality (axiom): this bound is essentially optimal.",
+    "mathContext": "Peres and Schlag (2010) resolved both Problems #464 and #894 with tight quantitative bounds.",
+    "significance": "essential",
+    "relatedConcepts": ["quantitative bounds", "Peres-Schlag 2010"]
+  },
+  {
+    "id": "erdos-894-cayley",
+    "proofId": "erdos-894",
     "type": "definition",
-    "title": "fractionalDistance",
-    "content": "||x|| = min(x - floor(x), ceil(x) - x), the distance to nearest integer.",
-    "significance": "key"
+    "range": { "startLine": 156, "endLine": 191 },
+    "title": "Cayley Graphs",
+    "content": "CayleyGraph structure with vertices, edges, symmetry, generated_by_A. lacunaryCayleyGraph (proved): concrete Cayley graph on ℤ. lacunary_cayley_finite_chromatic (proved): finite chromatic number.",
+    "mathContext": "The Cayley graph formulation is equivalent to the coloring problem: finite chromatic number ↔ finite coloring with no monochromatic differences.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cayley graphs", "chromatic number"]
   },
   {
-    "id": "ann-894-problem464",
+    "id": "erdos-894-connections",
     "proofId": "erdos-894",
-    "range": { "startLine": 106, "endLine": 111 },
-    "type": "theorem",
-    "title": "problem_464_result",
-    "content": "For lacunary A, ∃ irrational θ and δ > 0 with inf_k ||θn_k|| > δ.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 193, "endLine": 226 },
+    "title": "Problem #464 Implication and Special Cases",
+    "content": "Problem464Statement: formal statement of Problem #464. problem_464_implies_894 (proved): Problem #464 implies #894. powers_of_2_colorable (proved), powers_of_3_colorable (proved): special cases from main theorem.",
+    "mathContext": "The logical dependency chain: Problem #464 → Katznelson's construction → Problem #894. Powers of integers are concrete lacunary sequences.",
+    "significance": "supporting",
+    "relatedConcepts": ["Problem #464", "powers of 2", "powers of 3"]
   },
   {
-    "id": "ann-894-katznelson",
+    "id": "erdos-894-summary",
     "proofId": "erdos-894",
-    "range": { "startLine": 117, "endLine": 131 },
-    "type": "theorem",
-    "title": "katznelsonColoring",
-    "content": "Color n by which interval of length δ contains θn (mod 1). Uses O(1/δ) colors.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-894-main",
-    "proofId": "erdos-894",
-    "range": { "startLine": 137, "endLine": 149 },
-    "type": "theorem",
-    "title": "lacunary_finitely_colorable",
-    "content": "Every lacunary sequence is finitely colorable. Follows from Problem #464.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-894-peresschlag",
-    "proofId": "erdos-894",
-    "range": { "startLine": 155, "endLine": 165 },
-    "type": "theorem",
-    "title": "peres_schlag_bound",
-    "content": "Peres-Schlag (2010): O(ε⁻¹ log(1/ε)) colors suffice for ratio (1+ε).",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-894-cayley",
-    "proofId": "erdos-894",
-    "range": { "startLine": 171, "endLine": 195 },
-    "type": "definition",
-    "title": "CayleyGraph",
-    "content": "Cayley graph on ℤ with edges u-v ∈ A. Lacunary implies finite chromatic number.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-894-implication",
-    "proofId": "erdos-894",
-    "range": { "startLine": 216, "endLine": 221 },
-    "type": "theorem",
-    "title": "problem_464_implies_894",
-    "content": "Problem #464 (badly approximable θ) implies Problem #894 (finite coloring).",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-894-powers2",
-    "proofId": "erdos-894",
-    "range": { "startLine": 227, "endLine": 243 },
-    "type": "theorem",
-    "title": "powers_of_2_colorable",
-    "content": "Powers of 2 and 3 are finitely colorable. Special cases of main theorem.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-894-solved",
-    "proofId": "erdos-894",
-    "range": { "startLine": 280, "endLine": 284 },
-    "type": "theorem",
-    "title": "erdos_894_solved",
-    "content": "Problem #894 is SOLVED: YES, finite coloring exists with O(ε⁻¹ log(1/ε)) colors.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 228, "endLine": 253 },
+    "title": "Summary: SOLVED",
+    "content": "erdos_894_solved (proved): alias for erdos_894. erdos_894_status (proved): True. Problem #894 is SOLVED: YES, every lacunary sequence is finitely colorable with O(ε⁻¹ log(1/ε)) colors.",
+    "mathContext": "Complete resolution by Katznelson (2001) for finite colorability and Peres-Schlag (2010) for quantitative bounds.",
+    "significance": "essential",
+    "relatedConcepts": ["solved", "summary", "lacunary sequences"]
   }
 ]
