@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-1135-ann-1",
+    "proofId": "erdos-1135",
+    "range": { "startLine": 24, "endLine": 35 },
+    "type": "definition",
+    "title": "Collatz Function and Orbit",
+    "content": "collatz n computes n/2 for even n, (3n+1)/2 for odd n. collatzIter iterates collatz k times. ReachesOne m holds if some iterate equals 1. All definitions are constructive — no axioms needed.",
+    "significance": "The Collatz function is one of the simplest to define yet hardest to analyze. The constructive definitions allow computational verification via decide."
+  },
+  {
+    "id": "erdos-1135-ann-2",
+    "proofId": "erdos-1135",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "result",
+    "title": "Basic Computed Values",
+    "content": "collatz 1 = 2 and collatz 2 = 1 are proved by decide, establishing the trivial 1 → 2 → 1 cycle. ReachesOne 1 follows immediately with k = 0.",
+    "significance": "These are the only known cycle values. The conjecture implies 1 → 2 → 1 is the unique cycle for positive integers."
+  },
+  {
+    "id": "erdos-1135-ann-3",
+    "proofId": "erdos-1135",
+    "range": { "startLine": 49, "endLine": 57 },
+    "type": "result",
+    "title": "Tao's Almost-All Result (2019)",
+    "content": "Tao proved that for any function g(n) → ∞, the set of m ≤ x whose Collatz orbit reaches below g(m) has density tending to 1. This is the strongest theoretical evidence for the conjecture.",
+    "significance": "Tao's result shows the conjecture is 'almost' true in a precise density sense, but does not rule out sparse exceptions."
+  },
+  {
+    "id": "erdos-1135-ann-4",
+    "proofId": "erdos-1135",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "result",
+    "title": "Krasikov–Lagarias Density Bound",
+    "content": "The number of m ≤ x that reach 1 is at least x^{0.84}. This is a counting result: not just density 1, but a power-law lower bound on the number of 'good' integers.",
+    "significance": "Combined with Tao's result, this shows the Collatz conjecture holds for an overwhelmingly dense set of integers."
+  },
+  {
+    "id": "erdos-1135-ann-5",
+    "proofId": "erdos-1135",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "conjecture",
+    "title": "The Collatz Conjecture",
+    "content": "Every positive integer m eventually reaches 1 under Collatz iteration. Erdős informally valued this at $500 and remarked that mathematics may not be ready for such problems.",
+    "significance": "One of the most famous open problems in mathematics, connecting elementary number theory to deep questions about dynamical systems and computability."
+  }
+]
