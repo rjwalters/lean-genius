@@ -1,0 +1,65 @@
+[
+  {
+    "id": "erdos-575-ann-turan",
+    "proofId": "erdos-575",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Turán Number ex(n; H)",
+    "content": "The maximum number of edges in an n-vertex graph containing no copy of H. The central quantity in extremal graph theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-575-ann-family",
+    "proofId": "erdos-575",
+    "range": { "startLine": 38, "endLine": 42 },
+    "type": "definition",
+    "title": "Family Extremal Function",
+    "content": "ex(n; F) for a family F: the maximum edges in a graph avoiding all members of F. Always ≤ ex(n; G) for any G ∈ F.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-575-ann-bipartite",
+    "proofId": "erdos-575",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "A graph whose vertices can be 2-colored with no monochromatic edge. Bipartite exclusions yield subquadratic Turán numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-575-ann-conjecture",
+    "proofId": "erdos-575",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "theorem",
+    "title": "Erdős–Simonovits Conjecture",
+    "content": "For any finite F containing a bipartite graph, some bipartite G ∈ F satisfies ex(n;G) = O(ex(n;F)). A single bipartite member controls the asymptotics.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-575-ann-ess",
+    "proofId": "erdos-575",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "theorem",
+    "title": "Erdős–Stone–Simonovits",
+    "content": "For non-bipartite H: ex(n;H) = (1 − 1/(χ−1) + o(1))·n²/2. Determines ex(n;H) asymptotically when χ(H) ≥ 3.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-575-ann-kst",
+    "proofId": "erdos-575",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "theorem",
+    "title": "Kővári–Sós–Turán",
+    "content": "ex(n; K_{s,t}) ≤ c·n^{2−1/s}. For bipartite H, ex(n;H) = o(n²), making the subquadratic regime relevant.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-575-ann-mono",
+    "proofId": "erdos-575",
+    "range": { "startLine": 82, "endLine": 83 },
+    "type": "concept",
+    "title": "Monotonicity",
+    "content": "Excluding more graphs reduces ex(n;F): ex(n;F) ≤ ex(n;G) for G ∈ F.",
+    "significance": "supporting"
+  }
+]
