@@ -1,0 +1,152 @@
+{
+  "id": "erdos-705",
+  "title": "Erdős Problem #705: Unit Distance Graphs with Large Girth",
+  "slug": "erdos-705",
+  "description": "Is there some k such that every finite unit distance graph in the plane with girth at least k has chromatic number at most 3? Known: 4-chromatic UDGs exist with girth up to 5 (Wormald, 6448 vertices). Open for girth 6+.",
+  "meta": {
+    "author": "Erdős (1981)",
+    "sourceUrl": "https://erdosproblems.com/705",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos705Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "unit-distance-graph",
+      "girth",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 705,
+    "erdosUrl": "https://erdosproblems.com/705",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Graph coloring definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space for ℝ²",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      }
+    ],
+    "originalContributions": [
+      "unitDistAdj definition: unit distance adjacency in ℝ²",
+      "unitDistGraph definition: unit distance graph on point sets",
+      "chromaticNumber' and girth' axioms",
+      "hasGirthAtLeast definition",
+      "moser_spindle_exists axiom: 7-vertex 4-chromatic UDG",
+      "odonnell_graph_exists axiom: 56-vertex girth-4 4-chromatic UDG",
+      "wormald_graph_exists axiom: 6448-vertex girth-5 4-chromatic UDG",
+      "chilakamarri_family axiom: 47-vertex girth-4 4-chromatic UDG",
+      "erdos_705_conjecture definition: the open problem",
+      "girth_3_chi_4, girth_4_chi_4, girth_5_chi_4 theorems",
+      "de_grey_lower_bound axiom: χ(plane) ≥ 5",
+      "erdos_1959_girth_chromatic axiom: abstract high-girth high-χ graphs",
+      "erdos_705_main theorem: combined known results"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #705 was posed by Erdős in 1981 (p. 27 of the source). It asks whether forbidding short cycles in unit distance graphs forces the chromatic number down to at most 3. This sits at the intersection of graph theory and combinatorial geometry, closely related to the famous Hadwiger-Nelson problem about the chromatic number of the plane.\n\nThe key constructions are: the Moser spindle (1961, 7 vertices, girth 3, χ = 4), O'Donnell's graph (1994, 56 vertices, girth 4, χ = 4), Chilakamarri's graph (1995, 47 vertices, girth 4, χ = 4), and Wormald's graph (1979, 6448 vertices, girth 5, χ = 4). These show that avoiding short cycles up to length 4 does not force 3-colorability. The frontier is girth 6: no 4-chromatic unit distance graph with girth ≥ 6 is known.\n\nA crucial contrast: for abstract graphs (without geometric constraints), Erdős proved in 1959 that graphs with arbitrarily large girth AND chromatic number exist, using the probabilistic method. But unit distance graphs are constrained by Euclidean geometry. Problem #705 asks whether this geometric constraint eventually forces χ ≤ 3 when short cycles are excluded.",
+    "problemStatement": "Let $G$ be a finite unit distance graph in $\\mathbb{R}^2$.\n\nIs there some $k$ such that if $G$ has girth $\\geq k$, then $\\chi(G) \\leq 3$?\n\n**Known:** $k > 5$ if it exists, since Wormald constructed a 4-chromatic unit distance graph with girth 5.\n\n**Status:** OPEN",
+    "proofStrategy": "The formalization proceeds in ten parts:\n\n1. **Unit distance graphs:** Define adjacency (distance = 1) and the unit distance graph on point sets in ℝ².\n\n2. **Graph parameters:** Axiomatize chromatic number and girth.\n\n3. **Known constructions:** Axiomatize the Moser spindle, O'Donnell, Wormald, and Chilakamarri graphs with their properties.\n\n4. **The conjecture:** Define erdos_705_conjecture and its negation.\n\n5. **Consequences:** Derive girth-specific results from the construction axioms.\n\n6. **Context:** Connect to the Hadwiger-Nelson problem and Erdős's 1959 result on abstract graphs.",
+    "keyInsights": [
+      "**Geometry vs. Combinatorics:** Abstract graphs have high girth + high χ (Erdős 1959), but unit distance graphs may not — geometry constrains coloring.",
+      "**Girth Frontier at 6:** 4-chromatic UDGs exist at girth 3, 4, and 5, but NO girth-6 example is known.",
+      "**Exponential Growth:** Vertex counts grow dramatically: 7 → 47 → 6448, suggesting higher-girth constructions may be impossible.",
+      "**Hadwiger-Nelson Connection:** The chromatic number of the full plane is 5-7 (de Grey 2018). Problem #705 asks about finite subgraphs with cycle constraints.",
+      "**Moser Spindle:** The simplest 4-chromatic UDG has only 7 vertices but contains triangles (girth 3)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "unit-distance",
+      "title": "Unit Distance Graphs",
+      "summary": "unitDistAdj, unitDistGraph — definition of UDGs in ℝ²",
+      "startLine": 35,
+      "endLine": 67
+    },
+    {
+      "id": "parameters",
+      "title": "Chromatic Number and Girth",
+      "summary": "chromaticNumber', girth', isKColorable, hasGirthAtLeast",
+      "startLine": 69,
+      "endLine": 97
+    },
+    {
+      "id": "constructions",
+      "title": "Known 4-Chromatic Constructions",
+      "summary": "Moser spindle, O'Donnell, Wormald, Chilakamarri axioms",
+      "startLine": 99,
+      "endLine": 146
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "erdos_705_conjecture, erdos_705_negation",
+      "startLine": 148,
+      "endLine": 170
+    },
+    {
+      "id": "consequences",
+      "title": "Deriving Consequences",
+      "summary": "girth_3_chi_4, girth_4_chi_4, girth_5_chi_4 theorems",
+      "startLine": 172,
+      "endLine": 197
+    },
+    {
+      "id": "hadwiger-nelson",
+      "title": "The Hadwiger-Nelson Connection",
+      "summary": "de_grey_lower_bound — χ(plane) ≥ 5",
+      "startLine": 199,
+      "endLine": 218
+    },
+    {
+      "id": "abstract-geometric",
+      "title": "Abstract vs. Geometric Graphs",
+      "summary": "erdos_1959_girth_chromatic — why geometry matters",
+      "startLine": 220,
+      "endLine": 238
+    },
+    {
+      "id": "vertex-growth",
+      "title": "Vertex Count Growth",
+      "summary": "vertexCountGrowth — exponential growth of constructions",
+      "startLine": 240,
+      "endLine": 257
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Problems #508, #704, #706",
+      "startLine": 259,
+      "endLine": 273
+    },
+    {
+      "id": "status",
+      "title": "Problem Status and Main Statement",
+      "summary": "erdos_705_status, erdos_705_main — combined results",
+      "startLine": 275,
+      "endLine": 311
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #705 asks whether sufficiently large girth forces finite unit distance graphs to be 3-colorable. Known constructions show 4-chromatic UDGs exist with girth up to 5, but no girth-6 example is known. The problem remains open, sitting at the frontier between combinatorial graph theory and Euclidean geometry.",
+    "implications": "A positive answer would reveal a fundamental limitation of Euclidean geometry on graph coloring: unlike abstract graphs, unit distance graphs cannot simultaneously have large girth and high chromatic number. A negative answer (constructing 4-chromatic UDGs at every girth) would show that the geometric constraint is insufficient to control coloring.",
+    "openQuestions": [
+      "Does a 4-chromatic unit distance graph with girth ≥ 6 exist?",
+      "What is the minimum vertex count for a 4-chromatic UDG with girth 6 (if it exists)?",
+      "Can probabilistic or algebraic methods construct high-girth 4-chromatic UDGs?",
+      "Is the analogous question for higher dimensions (ℝ³, etc.) also open?"
+    ]
+  }
+}
