@@ -1,0 +1,78 @@
+{
+  "id": "erdos-536",
+  "title": "Erdős Problem #536: Equal Pairwise LCMs in Dense Sets",
+  "slug": "erdos-536",
+  "description": "If A ⊆ {1,...,N} has |A| ≥ εN, must there be distinct a,b,c ∈ A with [a,b]=[b,c]=[a,c]? Weisenberg: yes for ε > 221/225. Fails for four elements. Open.",
+  "meta": {
+    "erdosNumber": 536,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "lcm",
+      "density",
+      "combinatorics",
+      "open"
+    ],
+    "references": [
+      "Erdős (1964, 1970, 1973): original problem",
+      "Erdős, 1991 West Coast Number Theory session",
+      "Weisenberg: ε > 221/225 partial result",
+      "https://erdosproblems.com/536"
+    ],
+    "leanFile": "Proofs/Erdos536Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 33,
+      "summary": "HasEqualPairwiseLCM, HasLCMTriple."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 35,
+      "endLine": 43,
+      "summary": "Dense subsets of {1,...,N} contain an LCM-equal triple."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 45,
+      "endLine": 74,
+      "summary": "Weisenberg ε > 221/225, four-element failure, construction lower bound."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 76,
+      "endLine": 87,
+      "summary": "LCM divisibility structure, related problems."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this at the 1991 West Coast Number Theory session, building on earlier work from the 1960s–70s. The problem asks whether positive-density subsets of {1,...,N} must contain three elements with equal pairwise LCMs.",
+    "problemStatement": "For any ε > 0 and N sufficiently large, if A ⊆ {1,...,N} with |A| ≥ εN, must there exist distinct a, b, c ∈ A with [a,b] = [b,c] = [a,c]?",
+    "proofStrategy": "We formalize the equal-pairwise-LCM property, state the density conjecture, and record Weisenberg's partial results (both positive and constructive).",
+    "keyInsights": [
+      "Equal pairwise LCMs means a, b, c are divisors of a common L covering all prime factors",
+      "Weisenberg proved the conjecture for ε > 221/225 ≈ 0.982",
+      "The analogous statement for four elements is false (Erdős)",
+      "Constructions avoiding the property can have size ≫ N/log N",
+      "Related to Problems #535, #537, #856, #857 on GCD/LCM patterns"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #536 asks whether dense subsets of {1,...,N} must contain three elements with equal pairwise LCMs. Weisenberg proved it for density > 221/225 and showed no four-element analogue holds. The general case remains open.",
+    "implications": "A resolution would illuminate the multiplicative structure of dense integer sets and the distribution of LCM patterns.",
+    "openQuestions": [
+      "Does the conjecture hold for all ε > 0?",
+      "What is the threshold density (if any)?",
+      "Can Weisenberg's 221/225 bound be improved?",
+      "What is the maximum size of a set avoiding LCM triples?"
+    ]
+  }
+}
