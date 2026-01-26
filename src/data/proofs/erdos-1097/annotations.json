@@ -1,0 +1,83 @@
+[
+  {
+    "id": "erdos-1097-ann-threeAP",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "IsThreeAP",
+    "content": "A three-term arithmetic progression with base a and common difference d in set A: a, a+d, a+2d ∈ A.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1097-ann-commonDiff",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 45, "endLine": 46 },
+    "type": "definition",
+    "title": "Common Differences D(A)",
+    "content": "The set of all integers d such that some three-term AP in A has common difference d.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1097-ann-conjecture",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "theorem",
+    "title": "O(n^{3/2}) Conjecture",
+    "content": "Erdős's main question: does there exist C such that |D(A)| ≤ C·n^{3/2} for all n-element sets A?",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1097-ann-katz-tao",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "theorem",
+    "title": "Katz–Tao Upper Bound",
+    "content": "f(n) ≤ C·n^{11/6} for some constant C. The exponent 11/6 ≈ 1.833 is the best known upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1097-ann-spencer",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 77, "endLine": 80 },
+    "type": "theorem",
+    "title": "Erdős–Spencer Lower Bound",
+    "content": "Probabilistic construction: there exist n-element sets with Ω(n^{3/2}) common differences.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1097-ann-lemm",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "theorem",
+    "title": "Lemm's Lower Bound",
+    "content": "There exist sets achieving exponent > 1.778, improving the Erdős–Spencer n^{3/2} construction.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1097-ann-bourgain",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 113, "endLine": 118 },
+    "type": "definition",
+    "title": "Bourgain Exponent",
+    "content": "The sums-differences exponent c: |A −_G B| ≤ C·max(|A|,|B|,|A +_G B|)^c. Equivalent to the 3-AP common differences exponent.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1097-ann-chan",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 123, "endLine": 127 },
+    "type": "theorem",
+    "title": "Chan's Equivalence",
+    "content": "The optimal exponent for common differences equals the critical Bourgain exponent. This bridges combinatorics and harmonic analysis.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1097-ann-summary",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 132, "endLine": 137 },
+    "type": "theorem",
+    "title": "Current Bounds Summary",
+    "content": "Combines lemm_lower and katz_tao_upper to state: 1.778 < c* ≤ 11/6. This is proved from the axioms.",
+    "significance": "supporting"
+  }
+]

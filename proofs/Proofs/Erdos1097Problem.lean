@@ -1,303 +1,137 @@
-/-
-Erdős Problem #1097: Common Differences in Three-Term Arithmetic Progressions
+/-!
+# Erdős Problem #1097 — Common Differences in Three-Term Arithmetic Progressions
 
-Source: https://erdosproblems.com/1097
-Status: OPEN
-
-Statement:
-Let A be a set of n integers. How many distinct d can occur as the common
-difference of a three-term arithmetic progression in A?
+Let A be a set of n integers. How many distinct d can occur as the
+common difference of a three-term arithmetic progression in A?
 Are there always O(n^{3/2}) many such d?
 
-Background:
-If a, a+d, a+2d ∈ A, then d is a "valid" common difference.
-Let D(A) = {d : ∃a, a+d, a+2d ∈ A} be the set of common differences.
-The question: what is max |D(A)| as A ranges over n-element sets?
+## Status: OPEN
 
-Known Results:
-1. Erdős-Ruzsa: explicit construction achieving n^{1+c} for some c > 0
-2. Erdős-Spencer: probabilistic proof achieving n^{3/2}
-3. Katz-Tao (1999): upper bound c ≤ 11/6 ≈ 1.833
-4. Lemm (2015): lower bound c ≥ 1.77898...
-5. AlphaEvolve (2025): slight improvement on lower bound
+## Key Results
 
-Current best bounds: 1.77898... ≤ c ≤ 11/6
+- **Erdős–Spencer**: Probabilistic construction achieving n^{3/2} common
+  differences.
+- **Erdős–Ruzsa**: Explicit construction achieving n^{1+c} for some c > 0.
+- **Katz–Tao (1999)**: Upper bound f(n) ≤ C · n^{11/6}.
+- **Lemm (2015)**: Lower bound f(n) ≥ n^{1.77898...}.
+- **AlphaEvolve (2025)**: Slight improvement on Lemm's lower bound.
 
-Equivalence to Bourgain's Sums-Differences Problem:
-This is equivalent to finding the smallest c ∈ [1,2] such that for any
-finite sets A, B and G ⊆ A × B:
-  |A -_G B| ≪ max(|A|, |B|, |A +_G B|)^c
+Current gap: 1.778... ≤ c ≤ 11/6 ≈ 1.833.
 
-where A +_G B = {a+b : (a,b) ∈ G} and A -_G B = {a-b : (a,b) ∈ G}.
+## Equivalent Formulation
 
-This connection was noted by Chan and relates to the Kakeya conjecture.
+The problem is equivalent to Bourgain's sums-differences problem: find
+the smallest c such that |A −_G B| ≤ C · max(|A|, |B|, |A +_G B|)^c.
+This connects to the Kakeya conjecture via Bourgain's arithmetic approach.
 
-References:
-- Bo99: Bourgain, "On the dimension of Kakeya sets" (1999)
-- KaTa99: Katz-Tao, "Bounds on arithmetic projections" (1999)
-- Le15: Lemm, "New counterexamples for sums-differences" (2015)
-- GGTW25: Georgiev et al., "Mathematical exploration at scale" (2025)
+*Reference:* [erdosproblems.com/1097](https://www.erdosproblems.com/1097)
 -/
 
-import Mathlib.Combinatorics.Additive.AP.Three.Defs
+import Mathlib.Tactic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
-namespace Erdos1097
+open Finset
 
-/-
-## Part I: Basic Definitions
--/
+/-! ## Core Definitions -/
 
-/--
-**Three-term AP with common difference d:**
-Given a set A and an integer d, we say (a, d) forms a 3-AP in A if
-a, a+d, a+2d are all in A.
--/
+/-- A three-term AP with base a and common difference d in set A:
+a, a+d, a+2d all belong to A. -/
 def IsThreeAP (A : Set ℤ) (a d : ℤ) : Prop :=
-  a ∈ A ∧ a + d ∈ A ∧ a + 2*d ∈ A
+  a ∈ A ∧ a + d ∈ A ∧ a + 2 * d ∈ A
 
-/--
-**Set of common differences:**
-D(A) is the set of all integers d such that some 3-AP in A has
-common difference d.
--/
+/-- The set of common differences of three-term APs in A:
+  D(A) = { d : ∃ a, {a, a+d, a+2d} ⊆ A }. -/
 def commonDifferences (A : Set ℤ) : Set ℤ :=
-  {d : ℤ | ∃ a : ℤ, IsThreeAP A a d}
+  { d | ∃ a, IsThreeAP A a d }
 
-/--
-**Finite version for counting:**
-For a finite set A, count the common differences.
--/
-noncomputable def commonDifferencesFinset (A : Finset ℤ) : Finset ℤ :=
-  Finset.filter (fun d => ∃ a ∈ A, a + d ∈ A ∧ a + 2*d ∈ A) (A - A)
+/-- Finite version: common differences of a finite integer set. -/
+noncomputable def commonDiffFinset (A : Finset ℤ) : Finset ℤ :=
+  (A - A).filter fun d => ∃ a ∈ A, a + d ∈ A ∧ a + 2 * d ∈ A
 
-/--
-**Number of common differences:**
-|D(A)| for a finite set A.
--/
-noncomputable def numCommonDifferences (A : Finset ℤ) : ℕ :=
-  (commonDifferencesFinset A).card
+/-- Count of distinct common differences |D(A)|. -/
+noncomputable def numCommonDiff (A : Finset ℤ) : ℕ :=
+  (commonDiffFinset A).card
 
-/-
-## Part II: The Main Question
--/
+/-! ## Main Conjecture -/
 
-/--
-**Maximum common differences for n-element sets:**
-f(n) = max{|D(A)| : |A| = n}
--/
-noncomputable def maxCommonDifferences (n : ℕ) : ℕ :=
-  Nat.find (⟨0, fun A hA => by simp⟩ : ∃ M : ℕ, ∀ A : Finset ℤ, A.card = n → numCommonDifferences A ≤ M)
-  -- This is a placeholder; the actual definition would need choice
+/-- **Erdős Problem #1097 (Open).**
+Is f(n) = O(n^{3/2})? That is, does there exist C such that every
+n-element set A of integers satisfies |D(A)| ≤ C · n^{3/2}? -/
+def erdos_1097_conjecture : Prop :=
+  ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ) (A : Finset ℤ), A.card = n →
+    (numCommonDiff A : ℝ) ≤ C * (n : ℝ) ^ ((3 : ℝ) / 2)
 
-/--
-**Erdős's Question:**
-Is f(n) = O(n^{3/2})? More precisely, does there exist C such that
-for all n and all n-element sets A: |D(A)| ≤ C · n^{3/2}?
--/
-def ErdosConjecture_3_2 : Prop :=
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, ∀ A : Finset ℤ, A.card = n →
-    (numCommonDifferences A : ℝ) ≤ C * n^(3/2 : ℝ)
+/-! ## Upper Bound -/
 
-/--
-**General Form:**
-The exponent c such that f(n) = Θ(n^c).
--/
-def OptimalExponent : Prop → ℝ → Prop :=
-  fun _ c => True  -- Placeholder
+/-- **Katz–Tao (1999).** f(n) ≤ C · n^{11/6} for some absolute constant C.
+This is the best known upper bound on the exponent. -/
+axiom katz_tao_upper :
+  ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ) (A : Finset ℤ), A.card = n →
+    (numCommonDiff A : ℝ) ≤ C * (n : ℝ) ^ ((11 : ℝ) / 6)
 
-/-
-## Part III: Known Results
--/
+/-! ## Lower Bounds -/
 
-/--
-**Upper Bound (Katz-Tao 1999):**
-|D(A)| ≤ C · n^{11/6} for some constant C.
--/
-axiom katz_tao_upper_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, ∀ A : Finset ℤ, A.card = n →
-    (numCommonDifferences A : ℝ) ≤ C * n^((11 : ℝ)/6)
+/-- **Erdős–Spencer.** Probabilistic construction: there exist n-element
+sets with at least C · n^{3/2} common differences. -/
+axiom erdos_spencer_lower :
+  ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ), 0 < n →
+    ∃ A : Finset ℤ, A.card = n ∧
+      (numCommonDiff A : ℝ) ≥ C * (n : ℝ) ^ ((3 : ℝ) / 2)
 
-/--
-**Lower Bound (Lemm 2015):**
-There exist sets A with |D(A)| ≥ n^{1.77898...}
--/
-axiom lemm_lower_bound :
-  ∃ c : ℝ, c > 1.778 ∧ ∀ n : ℕ, n > 0 →
-    ∃ A : Finset ℤ, A.card = n ∧ (numCommonDifferences A : ℝ) ≥ n^c
+/-- **Erdős–Ruzsa.** Explicit construction achieving n^{1+c} for some c > 0. -/
+axiom erdos_ruzsa_explicit :
+  ∃ c : ℝ, 0 < c ∧ ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ), 0 < n →
+    ∃ A : Finset ℤ, A.card = n ∧
+      (numCommonDiff A : ℝ) ≥ C * (n : ℝ) ^ (1 + c)
 
-/--
-**Current State of Knowledge:**
-1.77898... ≤ c ≤ 11/6 ≈ 1.833
--/
-theorem current_bounds :
-    -- Lower bound
-    (∃ c : ℝ, c > 1.778 ∧ ∀ n : ℕ, n > 0 →
-      ∃ A : Finset ℤ, A.card = n ∧ (numCommonDifferences A : ℝ) ≥ n^c) ∧
-    -- Upper bound
-    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, ∀ A : Finset ℤ, A.card = n →
-      (numCommonDifferences A : ℝ) ≤ C * n^((11 : ℝ)/6)) := by
-  exact ⟨lemm_lower_bound, katz_tao_upper_bound⟩
+/-- **Lemm (2015).** There exist sets achieving exponent > 1.778. -/
+axiom lemm_lower :
+  ∃ c : ℝ, c > 1.778 ∧ ∀ (n : ℕ), 0 < n →
+    ∃ A : Finset ℤ, A.card = n ∧
+      (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c
 
-/-
-## Part IV: Erdős-Spencer Construction
--/
+/-- **AlphaEvolve (2025).** Slight improvement on Lemm's lower bound
+using automated search methods. -/
+axiom alphaevolve_improvement :
+  ∃ c : ℝ, c > 1.77898 ∧ ∀ (n : ℕ), 0 < n →
+    ∃ A : Finset ℤ, A.card = n ∧
+      (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c
 
-/--
-**Erdős-Spencer Result:**
-There exists a construction achieving n^{3/2} common differences.
-This used probabilistic methods.
--/
-axiom erdos_spencer_construction :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n > 0 →
-    ∃ A : Finset ℤ, A.card = n ∧ (numCommonDifferences A : ℝ) ≥ C * n^(3/2 : ℝ)
+/-! ## Bourgain's Sums-Differences Equivalence -/
 
-/--
-**Erdős-Ruzsa Construction:**
-Explicit construction achieving n^{1+c} for some c > 0.
--/
-axiom erdos_ruzsa_construction :
-  ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n > 0 →
-    ∃ A : Finset ℤ, A.card = n ∧ (numCommonDifferences A : ℝ) ≥ C * n^(1 + c)
+/-- Restricted sum: { a + b : (a,b) ∈ G }. -/
+def restrictedSum (G : Finset (ℤ × ℤ)) : Finset ℤ :=
+  G.image fun p => p.1 + p.2
 
-/-
-## Part V: Equivalence to Bourgain's Problem
--/
+/-- Restricted difference: { a − b : (a,b) ∈ G }. -/
+def restrictedDiff (G : Finset (ℤ × ℤ)) : Finset ℤ :=
+  G.image fun p => p.1 - p.2
 
-/--
-**Restricted Sums and Differences:**
-Given sets A, B and a relation G ⊆ A × B:
-- A +_G B = {a + b : (a,b) ∈ G}
-- A -_G B = {a - b : (a,b) ∈ G}
--/
-def restrictedSum (A B : Finset ℤ) (G : Finset (ℤ × ℤ)) : Finset ℤ :=
-  G.image (fun p => p.1 + p.2)
-
-def restrictedDiff (A B : Finset ℤ) (G : Finset (ℤ × ℤ)) : Finset ℤ :=
-  G.image (fun p => p.1 - p.2)
-
-/--
-**Bourgain's Sums-Differences Problem:**
-Find the smallest c ∈ [1,2] such that for any finite sets A, B
-and G ⊆ A × B:
-  |A -_G B| ≤ C · max(|A|, |B|, |A +_G B|)^c
-
-for some absolute constant C.
--/
+/-- **Bourgain's sums-differences exponent.** The exponent c holds if
+|A −_G B| ≤ C · max(|A|, |B|, |A +_G B|)^c for all A, B, G ⊆ A × B. -/
 def BourgainExponent (c : ℝ) : Prop :=
-  ∃ C : ℝ, C > 0 ∧
+  ∃ C : ℝ, 0 < C ∧
     ∀ (A B : Finset ℤ) (G : Finset (ℤ × ℤ)),
       G ⊆ A ×ˢ B →
-      ((restrictedDiff A B G).card : ℝ) ≤
-        C * (max (max A.card B.card) (restrictedSum A B G).card : ℝ)^c
+      ((restrictedDiff G).card : ℝ) ≤
+        C * ((max (max A.card B.card) (restrictedSum G).card : ℕ) : ℝ) ^ c
 
-/--
-**Equivalence Theorem (Chan):**
-The optimal exponent for the common differences problem equals
-the smallest c for which Bourgain's sums-differences bound holds.
--/
+/-- **Chan's Equivalence.** The optimal exponent for common differences
+equals the critical Bourgain exponent. This connects the combinatorial
+3-AP problem to harmonic analysis and the Kakeya conjecture. -/
 axiom chan_equivalence :
   ∀ c : ℝ, c ≥ 1 →
-    (∀ n : ℕ, n > 0 → ∃ A : Finset ℤ, A.card = n ∧
-      (numCommonDifferences A : ℝ) ≥ n^c) ↔
+    (∀ (n : ℕ), 0 < n →
+      ∃ A : Finset ℤ, A.card = n ∧ (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c) ↔
     ¬BourgainExponent c
 
-/-
-## Part VI: Connection to Kakeya Conjecture
--/
+/-! ## Summary -/
 
-/--
-**Kakeya Connection:**
-Bourgain introduced the sums-differences problem as an arithmetic
-approach to the Kakeya conjecture. Progress on the sums-differences
-problem has implications for Kakeya set bounds.
-
-The Kakeya conjecture states that Kakeya sets (sets containing a unit
-line segment in every direction) have Hausdorff dimension n in ℝⁿ.
--/
-def KakeyaConnection : Prop :=
-  -- The arithmetic sums-differences problem is related to
-  -- geometric questions about Kakeya sets
-  True  -- Placeholder; the connection is complex
-
-/-
-## Part VII: Summary
--/
-
-/--
-**Erdős Problem #1097: Summary**
-
-Status: OPEN
-
-Main Question: Is f(n) = O(n^{3/2})?
-
-Known Bounds:
-- Upper: f(n) ≤ C·n^{11/6} (Katz-Tao 1999)
-- Lower: f(n) ≥ n^{1.77898...} (Lemm 2015)
-
-Current gap: [1.77898, 1.833...]
-
-Key Connections:
-- Equivalent to Bourgain's sums-differences problem
-- Related to Kakeya conjecture
--/
-theorem erdos_1097_summary :
-    -- The n^{3/2} conjecture is still open
-    True ∧
-    -- Current best bounds
-    (∃ c_lower c_upper : ℝ,
-      c_lower > 1.778 ∧ c_upper < 1.834 ∧
-      -- Lower bound achieved
-      (∀ n : ℕ, n > 0 →
-        ∃ A : Finset ℤ, A.card = n ∧ (numCommonDifferences A : ℝ) ≥ n^c_lower) ∧
-      -- Upper bound
-      (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, ∀ A : Finset ℤ, A.card = n →
-        (numCommonDifferences A : ℝ) ≤ C * n^c_upper)) := by
-  constructor
-  · trivial
-  · use 1.779, 11/6
-    constructor
-    · norm_num
-    constructor
-    · norm_num
-    constructor
-    · intro n hn
-      have h := lemm_lower_bound
-      obtain ⟨c, hc, hbound⟩ := h
-      obtain ⟨A, hcard, hnum⟩ := hbound n hn
-      refine ⟨A, hcard, ?_⟩
-      calc (numCommonDifferences A : ℝ) ≥ n^c := hnum
-           _ ≥ n^(1.779 : ℝ) := by
-             apply Real.rpow_le_rpow_left_of_exponent
-             · exact Nat.one_le_cast.mpr hn
-             · linarith
-    · exact katz_tao_upper_bound
-
-/-
-## Part VIII: Open Questions
--/
-
-/--
-**Main Open Question:**
-Is the true exponent 3/2? Or something else between 1.778 and 1.833?
--/
-def MainOpenQuestion : Prop :=
-  ∃ c : ℝ, c = 3/2 ∧
-    (∀ n : ℕ, n > 0 → ∃ A : Finset ℤ, A.card = n ∧
-      (numCommonDifferences A : ℝ) ≥ n^c) ∧
-    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, ∀ A : Finset ℤ, A.card = n →
-      (numCommonDifferences A : ℝ) ≤ C * n^c)
-
-/--
-**AlphaEvolve Result (2025):**
-A very small improvement on Lemm's lower bound was found using
-automated search methods. Shows the bound is likely not tight.
--/
-axiom alphaevolve_improvement :
-  ∃ c : ℝ, c > 1.77898 ∧
-    ∀ n : ℕ, n > 0 →
-      ∃ A : Finset ℤ, A.card = n ∧ (numCommonDifferences A : ℝ) ≥ n^c
-
-end Erdos1097
+/-- The current state of knowledge: 1.778 < c* ≤ 11/6 ≈ 1.833. -/
+theorem current_bounds_summary :
+    (∃ c : ℝ, c > 1.778 ∧ ∀ (n : ℕ), 0 < n →
+      ∃ A : Finset ℤ, A.card = n ∧ (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c) ∧
+    (∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ) (A : Finset ℤ), A.card = n →
+      (numCommonDiff A : ℝ) ≤ C * (n : ℝ) ^ ((11 : ℝ) / 6)) :=
+  ⟨lemm_lower, katz_tao_upper⟩
