@@ -1007,6 +1007,23 @@
     "annotationCount": 15
   },
   {
+    "id": "erdos-1016",
+    "title": "Pancyclic Excess Edges",
+    "slug": "erdos-1016",
+    "description": "Let h(n) be the minimum excess edges beyond n for an n-vertex pancyclic graph (containing all cycle lengths 3 to n). Estimate h(n): is h(n) ≥ log₂ n + log* n − O(1)? Known: log₂(n−1) − 1 ≤ h(n) ≤ log₂ n + log* n + O(1).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "graph theory",
+      "pancyclic graphs",
+      "cycles",
+      "extremal graph theory"
+    ],
+    "erdosNumber": 1016,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
     "id": "erdos-1017",
     "title": "Erdős Problem #1017: Clique Partition of Graphs",
     "slug": "erdos-1017",

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-1016-ann-pancyclic",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Pancyclic Graph",
+    "content": "A graph on n vertices containing cycles of every length k with 3 ≤ k ≤ n. Stronger than Hamiltonian (which only requires a cycle of length n).",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1016-ann-excess",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 38, "endLine": 40 },
+    "type": "definition",
+    "title": "Pancyclic Excess h(n)",
+    "content": "h(n) = min{|E(G)| − n} over all pancyclic n-vertex graphs G. The minimum number of edges beyond n needed for pancyclicity.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1016-ann-iterlog",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "definition",
+    "title": "Iterated Logarithm log*",
+    "content": "log*(n): number of times log₂ must be applied to reach ≤ 1. An extremely slowly growing function appearing in the upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1016-ann-conjecture",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "theorem",
+    "title": "Main Conjecture: h(n) ≥ log₂ n + log* n − O(1)",
+    "content": "Erdős conjectured the lower bound matches the upper bound up to O(1). This would pinpoint h(n) to within a constant.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1016-ann-bondy",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "theorem",
+    "title": "Bondy's Lower Bound",
+    "content": "h(n) ≥ ⌊log₂(n−1)⌋ − 1. First published proof by Griffin (2013). Shows pancyclicity requires at least logarithmically many extra edges.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1016-ann-gkw",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "theorem",
+    "title": "George–Khodkar–Wallis Upper Bound",
+    "content": "h(n) ≤ ⌊log₂ n⌋ + log* n + O(1). Proved in 2016, confirming Bondy's 1971 conjecture on the upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1016-ann-bondy-quad",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "concept",
+    "title": "Bondy's Quadratic Threshold",
+    "content": "Any graph with ≥ n²/4 edges is pancyclic or bipartite. Far from tight: n²/4 ≫ n + log n for large n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-1016-ann-small",
+    "proofId": "erdos-1016",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "concept",
+    "title": "Small Cases",
+    "content": "h(3) = 0 (triangle is pancyclic), h(4) = 1 (need 5 edges for cycles of length 3 and 4). OEIS A105206 gives further values.",
+    "significance": "supporting"
+  }
+]

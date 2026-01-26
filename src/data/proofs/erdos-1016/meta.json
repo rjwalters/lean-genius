@@ -1,0 +1,74 @@
+{
+  "id": "erdos-1016",
+  "title": "Pancyclic Excess Edges",
+  "slug": "erdos-1016",
+  "description": "Let h(n) be the minimum excess edges beyond n for an n-vertex pancyclic graph (containing all cycle lengths 3 to n). Estimate h(n): is h(n) ≥ log₂ n + log* n − O(1)? Known: log₂(n−1) − 1 ≤ h(n) ≤ log₂ n + log* n + O(1).",
+  "meta": {
+    "author": "Erdős, Bondy",
+    "sourceUrl": "https://erdosproblems.com/1016",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1016Problem.lean",
+    "tags": [
+      "graph theory",
+      "pancyclic graphs",
+      "cycles",
+      "extremal graph theory"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 1016,
+    "erdosUrl": "https://erdosproblems.com/1016",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Bondy conjectured bounds on h(n) in 1971 but without published proofs. Griffin (2013) gave the first proof of the lower bound log₂(n−1) − 1 ≤ h(n). George, Khodkar, and Wallis (2016) proved the upper bound h(n) ≤ log₂ n + log* n + O(1). Erdős believed the upper bound is correct but could not prove h(n) − log₂ n → ∞.",
+    "problemStatement": "Estimate h(n), the minimum excess edges for pancyclic n-vertex graphs. Is h(n) ≥ log₂ n + log* n − O(1)?",
+    "proofStrategy": "We formalize pancyclic graphs, the excess function h(n), the iterated logarithm, the main conjecture, and known upper/lower bounds.",
+    "keyInsights": [
+      "A pancyclic graph contains cycles of all lengths 3 through n",
+      "Bondy's lower bound: h(n) ≥ log₂(n−1) − 1 (Griffin 2013)",
+      "Upper bound: h(n) ≤ log₂ n + log* n + O(1) (George–Khodkar–Wallis 2016)",
+      "The gap is only log* n + O(1) — extremely tight",
+      "Erdős could not prove even h(n) − log₂ n → ∞"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 26,
+      "endLine": 48,
+      "summary": "Defines pancyclic graphs, the excess function h(n), and the iterated logarithm log*(n)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "Erdős's conjecture h(n) ≥ log₂ n + log* n − O(1) and the weaker open question h(n) − log₂ n → ∞."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 64,
+      "endLine": 78,
+      "summary": "Bondy's lower bound (Griffin 2013) and George–Khodkar–Wallis upper bound (2016)."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 80,
+      "endLine": 109,
+      "summary": "Hamiltonian edge count, Bondy's quadratic threshold, monotonicity, small cases h(3)=0 and h(4)=1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #1016 on the minimum excess edges for pancyclic graphs. The gap between known bounds is only log* n + O(1), making this one of the tightest open problems in extremal graph theory.",
+    "implications": "Resolving the precise value of h(n) would determine the exact edge threshold for pancyclicity, a fundamental structural property of graphs.",
+    "openQuestions": [
+      "Is h(n) ≥ log₂ n + log* n − O(1)?",
+      "Does h(n) − log₂ n → ∞?",
+      "What is the exact value of h(n) for small n?"
+    ]
+  }
+}
