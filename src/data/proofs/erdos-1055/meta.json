@@ -1,0 +1,85 @@
+{
+  "id": "erdos-1055",
+  "title": "Erdős Problem #1055: Prime Classification by p+1 Factorization",
+  "slug": "erdos-1055",
+  "description": "Classify primes by the factorization depth of p+1. Class 1: p+1 is 3-smooth. Class r: all prime factors of p+1 have class ≤ r-1. Are there infinitely many primes in each class? How does p_r^{1/r} grow? Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1055,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-classification",
+      "smooth-numbers",
+      "prime-gaps",
+      "open"
+    ],
+    "references": [
+      "Erdős–Selfridge: prime classification system",
+      "Guy: Unsolved Problems in Number Theory, A18",
+      "OEIS A005113: least prime in class r",
+      "https://erdosproblems.com/1055"
+    ],
+    "leanFile": "Proofs/Erdos1055Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 46,
+      "summary": "Define primeClass recursively and IsInClass. Characterize class 1 as 3-smooth successors."
+    },
+    {
+      "id": "least-primes",
+      "title": "Least Prime in Each Class",
+      "startLine": 48,
+      "endLine": 71,
+      "summary": "Define leastPrimeInClass, state known values: p_1=2, p_2=13, p_3=37, p_4=73, p_5=1021."
+    },
+    {
+      "id": "existence",
+      "title": "Existence and Infinitude",
+      "startLine": 73,
+      "endLine": 82,
+      "summary": "Each class is nonempty. Main conjecture: infinitely many primes in each class."
+    },
+    {
+      "id": "growth",
+      "title": "Growth Conjectures",
+      "startLine": 84,
+      "endLine": 100,
+      "summary": "Erdős conjecture: p_r^{1/r} → ∞. Selfridge conjecture: p_r^{1/r} bounded. These are contradictory."
+    },
+    {
+      "id": "density",
+      "title": "Density and Contradiction",
+      "startLine": 102,
+      "endLine": 117,
+      "summary": "Class density is at most n^{o(1)}. The Erdős and Selfridge conjectures cannot both hold."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Selfridge developed this recursive classification of primes based on the factorization of p+1. The classification reveals a hierarchy: class 1 primes have 3-smooth successors, and each higher class requires deeper factorization structure. The problem appears as A18 in Guy's Unsolved Problems in Number Theory.",
+    "problemStatement": "Are there infinitely many primes in each class? If p_r is the least prime in class r, how does p_r^{1/r} behave as r → ∞?",
+    "proofStrategy": "We formalize the recursive prime classification, axiomatize known values of p_r from OEIS A005113, state the infinitude conjecture, and present the competing Erdős (p_r^{1/r} → ∞) and Selfridge (bounded) conjectures about growth.",
+    "keyInsights": [
+      "Class 1 primes have 3-smooth successors: 2, 3, 5, 7, 11, 23, ...",
+      "Known least primes: p_1=2, p_2=13, p_3=37, p_4=73, p_5=1021 (OEIS A005113)",
+      "The density of class-r primes is at most n^{o(1)} — extremely sparse",
+      "Erdős and Selfridge made contradictory conjectures about p_r^{1/r}",
+      "The p+1 variant connects to smooth number theory and Cunningham chains"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1055 asks whether each class in the Erdős–Selfridge prime classification contains infinitely many primes, and how the least prime p_r grows with class r. The known sequence p_1=2, p_2=13, p_3=37, p_4=73, p_5=1021 gives ambiguous evidence: Erdős conjectured superexponential growth while Selfridge conjectured bounded p_r^{1/r}.",
+    "implications": "A resolution would shed light on the multiplicative structure of shifted primes p+1, connecting to smooth number theory, Cunningham chains, and the distribution of primes in arithmetic progressions.",
+    "openQuestions": [
+      "Are there infinitely many primes in each class?",
+      "Does p_r^{1/r} tend to infinity (Erdős) or stay bounded (Selfridge)?",
+      "What is p_6? (The next term of OEIS A005113)",
+      "Does the analogous classification using p-1 instead of p+1 behave differently?"
+    ]
+  }
+}
