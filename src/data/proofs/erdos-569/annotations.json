@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-e569-header",
+    "proofId": "erdos-569",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #569** asks: for k ≥ 1, what is the best constant c_k such that R(C_{2k+1}, H) ≤ c_k · m for any graph H on m edges without isolated vertices? Here R denotes the two-color Ramsey number — the smallest N such that every red-blue coloring of K_N contains a red odd cycle or a blue copy of H.",
+    "mathContext": "The Ramsey number R(G₁, G₂) is a central object in combinatorics. This problem specifically asks about the asymmetric case where one graph is an odd cycle and the other is arbitrary, parameterized by edge count rather than vertex count.",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-theory", "odd-cycles", "extremal-graph-theory"]
+  },
+  {
+    "id": "ann-e569-imports",
+    "proofId": "erdos-569",
+    "range": { "startLine": 26, "endLine": 31 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "The formalization uses Mathlib's SimpleGraph for graph-theoretic definitions, Nat.Basic for natural number arithmetic, and Order.Bounds for expressing extremal quantities.",
+    "mathContext": "Specific Mathlib imports avoid the heavy `import Mathlib` that pulls in the entire library. SimpleGraph provides the adjacency relation and edge set machinery.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "simple-graphs"]
+  },
+  {
+    "id": "ann-e569-odd-cycle",
+    "proofId": "erdos-569",
+    "range": { "startLine": 42, "endLine": 54 },
+    "type": "definition",
+    "title": "Odd Cycle Length",
+    "content": "**OddCycleLength k = 2k + 1** parametrizes all odd cycle lengths ≥ 3. For k = 1 we get triangles (C_3), for k = 2 pentagons (C_5), and so on. Two theorems are **proved** (not axiomatized): the length is always ≥ 3 for k ≥ 1, and the length is always odd.",
+    "mathContext": "The `omega` tactic handles both proofs automatically since they reduce to linear arithmetic over ℕ. The oddness proof shows ¬(2 ∣ 2k+1), which omega solves by case analysis on divisibility.",
+    "significance": "key",
+    "relatedConcepts": ["odd-cycles", "omega-tactic"]
+  },
+  {
+    "id": "ann-e569-no-isolated",
+    "proofId": "erdos-569",
+    "range": { "startLine": 63, "endLine": 73 },
+    "type": "definition",
+    "title": "No Isolated Vertices",
+    "content": "**NoIsolatedVertices** requires every vertex to have at least one neighbor. This is essential: without this condition, a graph could have arbitrarily many isolated vertices on any number of edges, making the Ramsey number depend on vertex count rather than edge count.",
+    "mathContext": "The vertex bound axiom states that a graph with no isolated vertices and m edges has at most 2m vertices. This follows from the handshaking lemma: the sum of degrees equals 2m, and each vertex contributes at least 1 to this sum.",
+    "significance": "key",
+    "relatedConcepts": ["simple-graphs", "handshaking-lemma"]
+  },
+  {
+    "id": "ann-e569-ramsey-def",
+    "proofId": "erdos-569",
+    "range": { "startLine": 82, "endLine": 90 },
+    "type": "axiom",
+    "title": "Ramsey Number Axiomatization",
+    "content": "The Ramsey number R(C_{2k+1}, H) is axiomatized rather than constructed. Formalizing Ramsey numbers from scratch would require defining graph homomorphisms, colorings of complete graphs, and the Ramsey existence theorem — well beyond current Mathlib capabilities.",
+    "mathContext": "R_cycle_graph(k, m) represents the maximum of R(C_{2k+1}, H) over all graphs H with exactly m edges and no isolated vertices. This 'worst-case' formulation is what the problem asks to bound.",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-numbers", "graph-colorings"]
+  },
+  {
+    "id": "ann-e569-linear-bound",
+    "proofId": "erdos-569",
+    "range": { "startLine": 100, "endLine": 113 },
+    "type": "definition",
+    "title": "Linear Ramsey Bound",
+    "content": "**LinearRamseyBound k c** formalizes the property that R(C_{2k+1}, H) ≤ c · m for ALL graphs H with m edges and no isolated vertices. This is the central property the problem asks about. The optimal constant c_k is the smallest such c.",
+    "mathContext": "The universally quantified definition ranges over all graph types V, all finite types, and all simple graphs on V. This captures the full generality of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-theory", "linear-bounds"]
+  },
+  {
+    "id": "ann-e569-triangle",
+    "proofId": "erdos-569",
+    "range": { "startLine": 121, "endLine": 136 },
+    "type": "theorem",
+    "title": "Triangle Case (k = 1)",
+    "content": "For triangles (C_3), the Ramsey number R(C_3, H) ≤ 2m + 1 is known. This gives c_1 ≤ 3 since 2m + 1 ≤ 3m for m ≥ 1. The triangle case is the simplest instance of Problem #569 and the bound is essentially tight.",
+    "mathContext": "The triangle Ramsey number bound follows from a classical argument: in any 2-coloring of K_N with N = 2m + 1 vertices, if there is no red triangle, the red graph is triangle-free and by Turán's theorem has at most m edges, leaving room for a blue copy of H.",
+    "significance": "key",
+    "relatedConcepts": ["triangles", "turan-theorem"]
+  },
+  {
+    "id": "ann-e569-pentagon",
+    "proofId": "erdos-569",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "theorem",
+    "title": "Pentagon Case (k = 2)",
+    "content": "For pentagons (C_5), a linear bound R(C_5, H) ≤ 4m + 1 is known. This gives c_2 ≤ 5. The pentagon case requires more sophisticated Ramsey-theoretic arguments than the triangle case.",
+    "mathContext": "The bound for C_5 uses the fact that C_5-free graphs have edge density bounded by the Kővári–Sós–Turán theorem and related results on graphs without odd cycles of bounded length.",
+    "significance": "key",
+    "relatedConcepts": ["pentagons", "cycle-free-graphs"]
+  },
+  {
+    "id": "ann-e569-efrs",
+    "proofId": "erdos-569",
+    "range": { "startLine": 149, "endLine": 160 },
+    "type": "axiom",
+    "title": "EFRS93 General Bound",
+    "content": "Erdős, Faudree, Rousseau, and Schelp (1993) proved R(C_{2k+1}, H) ≤ c · k · m for some absolute constant c. This shows **linearity in m** but with a factor of k. The open question is whether this k factor can be replaced by a constant c_k depending only on k.",
+    "mathContext": "The EFRS bound is existentially quantified: there exists c such that for all k and m, the bound holds. The conjectured improvement would separate this into: for each k, there exists c_k such that the bound holds for all m.",
+    "significance": "critical",
+    "relatedConcepts": ["efrs93", "ramsey-bounds"]
+  },
+  {
+    "id": "ann-e569-lower",
+    "proofId": "erdos-569",
+    "range": { "startLine": 168, "endLine": 178 },
+    "type": "theorem",
+    "title": "Lower Bounds",
+    "content": "The star graph K_{1,m} has m edges and provides a lower bound: R(C_{2k+1}, K_{1,m}) ≥ 2m + 1. This shows c_k ≥ 2 for all k ≥ 1. Any constant c_k must be at least 2.",
+    "mathContext": "To see this: in K_{2m}, color all edges incident to one fixed set of m vertices red, the rest blue. The red graph is bipartite (hence no odd cycle), and the blue graph is K_m (no copy of K_{1,m} as a subgraph with m edges).",
+    "significance": "key",
+    "relatedConcepts": ["star-graphs", "lower-bounds"]
+  },
+  {
+    "id": "ann-e569-chvatal",
+    "proofId": "erdos-569",
+    "range": { "startLine": 186, "endLine": 197 },
+    "type": "concept",
+    "title": "Chvátal's Theorem and Cycle Ramsey",
+    "content": "Chvátal's theorem gives R(T_n, K_m) = (n-1)(m-1) + 1 for trees. The exact formula R(C_{2k+1}, C_{2k+1}) = 4k + 1 (for k ≥ 2) shows that odd cycle-vs-cycle Ramsey numbers are well understood. Problem #569 extends this to cycle-vs-arbitrary graphs.",
+    "mathContext": "Trees are 1-degenerate and have the simplest Ramsey behavior. Odd cycles are the next simplest class: they are 2-degenerate and have chromatic number 3. The progression from trees to cycles to general graphs guides the theory.",
+    "significance": "key",
+    "relatedConcepts": ["chvatal-theorem", "tree-ramsey"]
+  },
+  {
+    "id": "ann-e569-burr-erdos",
+    "proofId": "erdos-569",
+    "range": { "startLine": 198, "endLine": 205 },
+    "type": "concept",
+    "title": "Burr-Erdős Conjecture",
+    "content": "The Burr-Erdős conjecture, proved by Lee in 2017, states R(G, G) ≤ c(d) · n for d-degenerate graphs G on n vertices. Problem #569 asks a related but distinct question: bounding R(C_{2k+1}, H) linearly in the **edge count** m rather than vertex count n.",
+    "mathContext": "Since cycles are 2-degenerate, the Burr-Erdős theorem gives R(C_{2k+1}, H) ≤ c · n for degenerate H. But Problem #569 allows arbitrary H and parametrizes by edges, which is a different and potentially harder question.",
+    "significance": "key",
+    "relatedConcepts": ["burr-erdos", "degenerate-graphs"]
+  },
+  {
+    "id": "ann-e569-parity",
+    "proofId": "erdos-569",
+    "range": { "startLine": 213, "endLine": 226 },
+    "type": "concept",
+    "title": "Odd vs Even Cycle Parity",
+    "content": "The restriction to **odd** cycles is essential. Even cycles C_{2k} have fundamentally different Ramsey behavior — R(C_{2k}, H) can be superlinear in m for certain graphs H. Odd cycles are bipartite-avoiding (they force 3-colorability), which gives them better Ramsey properties.",
+    "mathContext": "A graph is bipartite if and only if it contains no odd cycle. So forcing a red odd cycle is equivalent to forcing the red graph to be non-bipartite. This structural characterization is what makes odd cycles 'Ramsey-good'.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite-graphs", "chromatic-number", "graph-coloring"]
+  },
+  {
+    "id": "ann-e569-open",
+    "proofId": "erdos-569",
+    "range": { "startLine": 232, "endLine": 258 },
+    "type": "theorem",
+    "title": "Open Problem Status",
+    "content": "**Erdős Problem #569 remains OPEN.** The exact value of c_k is unknown for every k ≥ 1. It is not even known whether c_k is bounded as k → ∞. The problem explicitly cannot be resolved by finite computation, as it involves a universal quantifier over all graphs with m edges.",
+    "mathContext": "The problem is #34 in the Ramsey Theory section of the Erdős Problems collection. It sits at a natural point in the progression of Ramsey problems: from exact formulas (cycle-vs-cycle) to asymptotic bounds (cycle-vs-arbitrary graph).",
+    "significance": "critical",
+    "relatedConcepts": ["open-problems", "ramsey-theory", "combinatorics"]
+  }
+]
