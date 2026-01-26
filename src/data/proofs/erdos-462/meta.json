@@ -1,0 +1,75 @@
+{
+  "id": "erdos-462",
+  "title": "Erdős Problem #462: Least Prime Factor Sums in Short Intervals",
+  "slug": "erdos-462",
+  "description": "Let p(n) be the least prime factor of n. The sum ∑ p(n)/n over composites n < x is ~ c·√x/(log x)². Does a short interval of length C·√x·(log x)² capture a bounded fraction of this sum?",
+  "meta": {
+    "author": "Erdős–Graham",
+    "sourceUrl": "https://erdosproblems.com/462",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos462Problem.lean",
+    "tags": ["number theory", "primes", "least prime factor", "short intervals"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 462,
+    "erdosUrl": "https://erdosproblems.com/462",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph (p. 92). It concerns the distribution of the least prime factor function p(n) weighted by 1/n over short intervals. The global asymptotic ∑_{n<x, composite} p(n)/n ~ c·√x/(log x)² is known.",
+    "problemStatement": "Does there exist C > 0 such that ∑_{x ≤ n ≤ x + C·√x·(log x)²} p(n)/n ≫ 1 for all large x? In other words, can a short interval of the natural scale capture a bounded-below contribution from least prime factors?",
+    "proofStrategy": "The formalization defines the least prime factor via Nat.minFac, sums over composites (compositeSum) and over intervals (intervalSum), states the known asymptotic as a two-sided bound, and formulates the open conjecture about short intervals.",
+    "keyInsights": [
+      "The global sum ∑ p(n)/n over composites grows as √x/(log x)², so intervals of length √x·(log x)² are the natural scale",
+      "The conjecture asks whether the sum is equidistributed enough that every such interval captures O(1) contribution",
+      "For composites, the least prime factor is at most √n, bounding individual terms",
+      "The least prime factor of a prime equals itself"
+    ]
+  },
+  "sections": [
+    {
+      "id": "least-prime-factor",
+      "title": "Least Prime Factor",
+      "startLine": 19,
+      "endLine": 36,
+      "summary": "Definition of leastPrimeFactor via Nat.minFac and its key properties: primality, divisibility, and minimality."
+    },
+    {
+      "id": "sums",
+      "title": "Sums Involving Least Prime Factor",
+      "startLine": 38,
+      "endLine": 49,
+      "summary": "Definitions of compositeSum (over composites below x) and intervalSum (over an arbitrary interval)."
+    },
+    {
+      "id": "asymptotics",
+      "title": "Known Asymptotics",
+      "startLine": 51,
+      "endLine": 59,
+      "summary": "The two-sided asymptotic: compositeSum(x) = Θ(√x/(log x)²)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 61,
+      "endLine": 70,
+      "summary": "The open conjecture: a short interval of length C·√x·(log x)² captures at least δ > 0 in the sum."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 72,
+      "endLine": 84,
+      "summary": "Properties: least prime factor of a prime is itself, lower bound 2, and upper bound √n for composites."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the open Erdős Problem 462 about equidistribution of least prime factor sums over short intervals, with the known global asymptotic and basic properties of the least prime factor.",
+    "implications": "Resolution would reveal how uniformly the least prime factor contribution is spread across the integers, connecting to prime distribution in short intervals.",
+    "openQuestions": [
+      "Does the short interval sum ∑ p(n)/n stay bounded below for all x?",
+      "What is the correct scale of fluctuations in the least prime factor sum?",
+      "Can sieve methods establish the conjecture?"
+    ]
+  }
+}

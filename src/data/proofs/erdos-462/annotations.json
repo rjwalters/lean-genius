@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-462-header",
+    "proofId": "erdos-462",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 13 },
+    "title": "Problem Background",
+    "content": "Erdős Problem 462 asks about the distribution of ∑ p(n)/n in short intervals of length √x·(log x)². From Erdős–Graham (1980), p. 92.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-462-lpf",
+    "proofId": "erdos-462",
+    "type": "definition",
+    "range": { "startLine": 21, "endLine": 36 },
+    "title": "Least Prime Factor",
+    "content": "leastPrimeFactor(n) returns 0 for n ≤ 1 and Nat.minFac otherwise. Axioms assert primality, divisibility, and minimality among prime divisors.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-462-sums",
+    "proofId": "erdos-462",
+    "type": "definition",
+    "range": { "startLine": 40, "endLine": 49 },
+    "title": "Sum Definitions",
+    "content": "compositeSum(x) sums p(n)/n over composites in {2,…,x−1}. intervalSum(a,b) sums p(n)/n over {a,…,b}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-462-asymptotic",
+    "proofId": "erdos-462",
+    "type": "result",
+    "range": { "startLine": 53, "endLine": 59 },
+    "title": "Known Asymptotic",
+    "content": "The composite sum satisfies compositeSum(x) = Θ(√x/(log x)²), giving the natural interval scale for the conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-462-conjecture",
+    "proofId": "erdos-462",
+    "type": "conjecture",
+    "range": { "startLine": 63, "endLine": 70 },
+    "title": "Main Conjecture",
+    "content": "There exist C, δ > 0 such that intervalSum(x, x + C·√x·(log x)²) ≥ δ for all large x. This asks whether the sum is equidistributed on its natural scale.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-462-basic",
+    "proofId": "erdos-462",
+    "type": "result",
+    "range": { "startLine": 72, "endLine": 84 },
+    "title": "Basic Properties",
+    "content": "The least prime factor of a prime is itself, is always ≥ 2, and for composites is at most √n.",
+    "significance": "supporting"
+  }
+]
