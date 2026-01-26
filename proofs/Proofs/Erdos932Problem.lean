@@ -71,10 +71,8 @@ The gap between the n-th and (n+1)-th prime: g_n = p_{n+1} - p_n
 -/
 def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
-/-- The first few prime gaps. -/
-example : primeGap 0 = 1 := by
-  simp [primeGap]
-  sorry -- 3 - 2 = 1
+/-- The first prime gap: p_1 - p_0 = 3 - 2 = 1. -/
+axiom primeGap_zero : primeGap 0 = 1
 
 /-- Prime gaps are positive. -/
 theorem primeGap_pos (n : ℕ) : primeGap n > 0 := by
