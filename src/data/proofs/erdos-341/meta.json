@@ -1,0 +1,74 @@
+{
+  "id": "erdos-341",
+  "title": "Dickson's Sum-Free Extension",
+  "slug": "erdos-341",
+  "description": "Given a finite set A of positive integers, extend by always choosing the smallest integer not expressible as a sum of two previous elements. Is the difference sequence a_{m+1} − aₘ eventually periodic? An old problem of Dickson.",
+  "meta": {
+    "author": "Erdős, Graham, Dickson",
+    "sourceUrl": "https://erdosproblems.com/341",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos341Problem.lean",
+    "tags": [
+      "number theory",
+      "sequences",
+      "sum-free sets",
+      "periodicity"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 341,
+    "erdosUrl": "https://erdosproblems.com/341",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This is an old problem of Dickson, highlighted by Erdős and Graham (1980, p. 53). The extension rule — always pick the smallest non-sum — creates sequences whose difference patterns appear to become periodic, but proving this remains open. Even starting from {1,4,9,16,25}, periodicity takes thousands of terms to emerge.",
+    "problemStatement": "For any finite starting set A, is the sequence of consecutive differences in the Dickson extension eventually periodic?",
+    "proofStrategy": "We formalize pairwise sums, the Dickson extension sequence, the difference sequence, eventual periodicity, and structural properties including strict monotonicity and sum avoidance.",
+    "keyInsights": [
+      "Each new term is the smallest integer not a sum of two previous terms",
+      "The difference sequence appears eventually periodic for all tested starting sets",
+      "Even small starting sets (perfect squares) require thousands of terms for periodicity",
+      "Featured as Problem 7 on Ben Green's open problems list",
+      "The eventual period depends on the starting set"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 49,
+      "summary": "Defines pairwise sums, sum representability, the Dickson extension sequence, difference sequence, and eventual periodicity."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 51,
+      "endLine": 56,
+      "summary": "States the Erdős–Dickson conjecture: for every finite starting set, differences are eventually periodic."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 58,
+      "endLine": 81,
+      "summary": "Strict monotonicity, positive differences, sum avoidance, and minimality of each extension step."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Growth",
+      "startLine": 83,
+      "endLine": 107,
+      "summary": "Singleton starting set, slow periodicity of squares, period dependence on initial set, and linear growth."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #341 (Dickson's sum-free extension): extending a finite set by always choosing the smallest non-sum creates sequences with apparently periodic differences, but proving periodicity remains open.",
+    "implications": "A proof would reveal hidden periodicity structure in additive combinatorics, connecting greedy algorithms to automatic sequences.",
+    "openQuestions": [
+      "Is the difference sequence always eventually periodic?",
+      "How does the period depend on the starting set?",
+      "What is the growth rate of the period as a function of the starting set?"
+    ]
+  }
+}
