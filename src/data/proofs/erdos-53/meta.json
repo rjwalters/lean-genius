@@ -1,0 +1,82 @@
+{
+  "id": "erdos-53",
+  "title": "Erdős Problem #53: Sums and Products of Distinct Elements",
+  "slug": "erdos-53",
+  "description": "For every k, if |A| is sufficiently large, are there at least |A|^k integers representable as sums or products of distinct elements of A? PROVED by Chang (2003). Erdős–Szemerédi upper bound: exp(c(log|A|)² log log|A|).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/53",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos53Problem.lean",
+    "tags": ["number-theory", "additive-combinatorics", "sum-product"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 53,
+    "erdosUrl": "https://erdosproblems.com/53",
+    "erdosProblemStatus": "proved"
+  },
+  "overview": {
+    "historicalContext": "Posed by Erdős and Szemerédi (1983), this problem asks about the richness of sums and products of distinct elements from a finite integer set. It is closely related to the Erdős–Szemerédi sum-product problem (Problem 52). Chang resolved Problem 53 affirmatively in 2003.",
+    "problemStatement": "Let A be a finite set of integers. For every k ≥ 1, if |A| is sufficiently large (depending on k), then there are at least |A|^k integers representable as sums or products of distinct elements of A.",
+    "proofStrategy": "We define subset sums and products of a finite integer set, state the main conjecture as a Prop, axiomatize Chang's theorem (the affirmative resolution), and state the Erdős–Szemerédi upper bound showing the count cannot grow too fast.",
+    "keyInsights": [
+      "The problem counts integers representable as sums or products of distinct elements (subsets), not pairwise sums/products",
+      "Chang's 2003 proof resolves the conjecture affirmatively for all k",
+      "Erdős–Szemerédi proved an upper bound: exp(c(log|A|)² log log|A|), limiting how fast the count can grow",
+      "Closely related to the sum-product conjecture (Problem 52) which concerns |A+A| + |A·A|"
+    ]
+  },
+  "sections": [
+    {
+      "id": "subset-sums-products",
+      "title": "Subset Sums and Products",
+      "startLine": 22,
+      "endLine": 43,
+      "summary": "Defines subsetSums, subsetProducts, and sumsOrProducts for a finite integer set using Finset.powerset and Finset.image."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Erdős–Szemerédi Conjecture",
+      "startLine": 45,
+      "endLine": 57,
+      "summary": "States ErdosProblem53: for every k ≥ 1, there exists N₀ such that |A| ≥ N₀ implies at least |A|^k representable integers."
+    },
+    {
+      "id": "chang-theorem",
+      "title": "Chang's Theorem (2003)",
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "Axiomatizes Chang's 2003 affirmative resolution of Problem 53."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Erdős–Szemerédi Upper Bound",
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "States the Erdős–Szemerédi upper bound: arbitrarily large sets exist where the representable count is at most exp(c(log|A|)² log log|A|)."
+    },
+    {
+      "id": "sum-product-connection",
+      "title": "Sum-Product Phenomena Connection",
+      "startLine": 83,
+      "endLine": 106,
+      "summary": "Defines sumset and productset for pairwise operations and states the related sum-product conjecture (Problem 52), clarifying the distinction."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Representations",
+      "startLine": 108,
+      "endLine": 129,
+      "summary": "Defines subsetSumCount and subsetProductCount, and axiomatizes that the union count dominates each individually."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 53 asks whether sums and products of distinct elements from a finite set grow polynomially in |A|. Chang (2003) proved this affirmatively. The Erdős–Szemerédi upper bound shows the growth is at most subexponential.",
+    "implications": "Chang's resolution confirms that finite sets inherently produce rich arithmetic structure through subset sums and products, a fundamental result in additive combinatorics.",
+    "openQuestions": [
+      "What is the optimal growth rate of the count of representable integers?",
+      "Can the Erdős–Szemerédi upper bound be improved?",
+      "What is the relationship between the growth rates for sums versus products?"
+    ]
+  }
+}

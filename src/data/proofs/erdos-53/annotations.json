@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-53-subset-ops",
+    "proofId": "erdos-53",
+    "type": "definition",
+    "range": { "startLine": 33, "endLine": 43 },
+    "title": "Subset Sums and Products",
+    "content": "subsetSums A maps each subset of A to its sum; subsetProducts A maps each nonempty subset to its product. sumsOrProducts A is their union — the set of all integers representable via distinct elements.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-53-conjecture",
+    "proofId": "erdos-53",
+    "type": "conjecture",
+    "range": { "startLine": 51, "endLine": 57 },
+    "title": "Erdős Problem 53",
+    "content": "For every k ≥ 1, there exists N₀ such that if |A| ≥ N₀, then at least |A|^k integers are representable as sums or products of distinct elements of A.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-53-chang",
+    "proofId": "erdos-53",
+    "type": "result",
+    "range": { "startLine": 65, "endLine": 66 },
+    "title": "Chang's Theorem (2003)",
+    "content": "Chang resolved Erdős Problem 53 affirmatively in 2003, proving that the polynomial lower bound holds for every k when |A| is large enough.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-53-upper-bound",
+    "proofId": "erdos-53",
+    "type": "result",
+    "range": { "startLine": 76, "endLine": 81 },
+    "title": "Erdős–Szemerédi Upper Bound",
+    "content": "Erdős and Szemerédi proved that arbitrarily large sets A exist where the count of representable integers is at most exp(c(log|A|)² log log|A|), showing the growth is subexponential.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-53-sum-product",
+    "proofId": "erdos-53",
+    "type": "context",
+    "range": { "startLine": 92, "endLine": 106 },
+    "title": "Sum-Product Connection",
+    "content": "Problem 53 is closely related to Problem 52 (the Erdős–Szemerédi sum-product conjecture). Problem 52 concerns |A+A| + |A·A| for pairwise operations, while Problem 53 asks about sums and products of distinct subsets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-53-counting",
+    "proofId": "erdos-53",
+    "type": "definition",
+    "range": { "startLine": 115, "endLine": 129 },
+    "title": "Counting Functions",
+    "content": "subsetSumCount and subsetProductCount count the number of distinct integers representable as subset sums and products respectively. The union count dominates each.",
+    "significance": "supporting"
+  }
+]
