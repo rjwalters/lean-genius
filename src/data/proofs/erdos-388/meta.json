@@ -1,0 +1,74 @@
+{
+  "id": "erdos-388",
+  "title": "Products of Consecutive Integers",
+  "slug": "erdos-388",
+  "description": "Can one classify all solutions of ∏(m₁+i) = ∏(m₂+j) where k₁, k₂ > 3 and the blocks are disjoint? Erdős conjectured only finitely many solutions exist. Generalizes to proportional products a·∏(m₁+i) = b·∏(m₂+j).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/388",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos388Problem.lean",
+    "tags": [
+      "number theory",
+      "diophantine equations",
+      "consecutive integers",
+      "factorials"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 388,
+    "erdosUrl": "https://erdosproblems.com/388",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem on when two disjoint blocks of consecutive integers can have equal products. It connects to the Erdős–Selfridge theorem (1975) that no product of consecutive integers is a perfect power, and to the Brocard–Ramanujan problem. The problem appeared in several Erdős papers from 1976 to 1992.",
+    "problemStatement": "Are there only finitely many solutions to ∏_{i=1}^{k₁}(m₁+i) = ∏_{j=1}^{k₂}(m₂+j) with k₁, k₂ > 3 and the blocks disjoint (m₁ + k₁ ≤ m₂)?",
+    "proofStrategy": "We formalize the equal-products equation, the main finiteness conjecture, the generalized proportional-products version, and the related Erdős–Selfridge theorem on perfect powers of consecutive products.",
+    "keyInsights": [
+      "Products of consecutive integers encode factorial ratios: (m+1)···(m+k) = (m+k)!/m!",
+      "Erdős–Selfridge proved no such product is a perfect power (k ≥ 2, r ≥ 2)",
+      "The generalized version with coefficients a, b should also have finitely many solutions",
+      "The constraint k₁, k₂ > 3 is essential — small cases have known infinite families",
+      "Related to Problems #363 and #931 on consecutive integer products"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 33,
+      "endLine": 57,
+      "summary": "Defines consecutiveProduct as the product of k consecutive integers starting from m+1, and the EqualProductSolution structure encoding solutions with k₁, k₂ > 3 and disjoint blocks."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "States the finiteness conjecture: only finitely many solutions exist to the equal-products equation."
+    },
+    {
+      "id": "generalized",
+      "title": "Generalized Version",
+      "startLine": 68,
+      "endLine": 88,
+      "summary": "Defines the proportional-products equation a·∏(m₁+i) = b·∏(m₂+j) and conjectures finiteness for fixed nonzero a, b."
+    },
+    {
+      "id": "classical",
+      "title": "Related Classical Results",
+      "startLine": 90,
+      "endLine": 108,
+      "summary": "States the Erdős–Selfridge theorem (no consecutive product is a perfect power), the factorial connection, and the trivial identity solution."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #388 on equal products of disjoint blocks of consecutive integers, including the finiteness conjecture, generalized proportional version, and the Erdős–Selfridge theorem.",
+    "implications": "Resolving this would advance understanding of Diophantine equations involving factorial-type products and constrain the arithmetic of consecutive integer sequences.",
+    "openQuestions": [
+      "Are there any non-trivial solutions with k₁, k₂ > 3?",
+      "Can the generalized proportional version be proved for specific values of a, b?",
+      "What is the connection to abc conjecture implications for this problem?"
+    ]
+  }
+}
