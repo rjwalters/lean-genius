@@ -81,7 +81,41 @@ theorem one_squarefull : IsSquarefull 1 := by
 -/
 theorem prime_power_squarefull (p : ℕ) (hp : p.Prime) (k : ℕ) :
     IsSquarefull (p^k) ↔ k ≥ 2 ∨ k = 0 := by
-  sorry
+  constructor
+  · -- Forward: if p^k is squarefull and k ≥ 1 then k ≥ 2
+    intro ⟨_, hdiv⟩
+    by_contra h
+    push_neg at h
+    obtain ⟨hlt, hne⟩ := h
+    have hk1 : k = 1 := by omega
+    subst hk1
+    simp only [pow_one] at hdiv
+    have h1 := hdiv p hp (dvd_refl p)
+    -- h1 : p ^ 2 ∣ p, so p^2 ≤ p
+    have hle : p ^ 2 ≤ p := Nat.le_of_dvd hp.pos h1
+    -- But p^2 = p*p ≥ 2p > p for p ≥ 2
+    have hp2 : p ≥ 2 := hp.two_le
+    have : p ^ 2 ≥ 2 * p := by nlinarith
+    omega
+  · -- Backward: k ≥ 2 or k = 0 implies p^k is squarefull
+    intro h
+    refine ⟨?_, ?_⟩
+    · rcases h with h | h
+      · exact Nat.pos_of_ne_zero (pow_ne_zero k hp.ne_zero)
+      · simp [h]
+    · intro q hq hd
+      rcases h with h | h
+      · have hqp : q ∣ p := hq.dvd_of_dvd_pow hd
+        have heq : q = p := by
+          rcases hp.eq_one_or_self_of_dvd q hqp with h1 | h1
+          · exact absurd h1 hq.one_lt.ne'
+          · exact h1
+        rw [heq]
+        exact Nat.pow_dvd_pow p h
+      · subst h
+        simp only [pow_zero] at hd
+        have hq2 := hq.two_le
+        exact absurd (Nat.le_of_dvd Nat.one_pos hd) (by omega)
 
 /--
 **Small squarefull numbers:**
@@ -231,8 +265,19 @@ meaning A(x) grows faster than expected.
 -/
 theorem alpha_less_than_half : alpha < 1/2 := by
   unfold alpha
-  -- α = 1 - 2^(-1/3) ≈ 0.206 < 0.5
-  sorry
+  -- Need: 1 - 2^(-1/3) < 1/2, equivalently 1/2 < 2^(-1/3)
+  suffices h : (1 : ℝ) / 2 < (2 : ℝ) ^ (-(1 / 3 : ℝ)) by linarith
+  -- 2^(-1/3) = 1/2^(1/3), and 2^(1/3) < 2 so 1/2^(1/3) > 1/2
+  have hcbrt_lt : (2 : ℝ) ^ ((1 : ℝ) / 3) < 2 := by
+    calc (2 : ℝ) ^ ((1 : ℝ) / 3) < (2 : ℝ) ^ (1 : ℝ) := by
+          apply Real.rpow_lt_rpow_of_exponent_lt (by norm_num : (1 : ℝ) < 2)
+          norm_num
+    _ = 2 := Real.rpow_one 2
+  have hcbrt_pos : (0 : ℝ) < (2 : ℝ) ^ ((1 : ℝ) / 3) := by positivity
+  rw [Real.rpow_neg (by norm_num : (2 : ℝ) ≥ 0)]
+  -- Goal: 1/2 < (2^(1/3))⁻¹
+  rw [show (1 : ℝ) / 2 = ((2 : ℝ))⁻¹ from one_div 2]
+  exact (inv_lt_inv₀ (by norm_num : (0 : ℝ) < 2) hcbrt_pos).mpr hcbrt_lt
 
 /-
 ## Part VII: Why the Conjecture Failed
