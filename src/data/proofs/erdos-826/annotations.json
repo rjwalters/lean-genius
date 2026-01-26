@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-e826-header",
+    "proofId": "erdos-826",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #826: Divisor Function Growth Along Shifts**\n\nThis open problem asks: are there infinitely many starting points n where the divisor function τ(n+k) grows at most linearly in k?\n\nFormally: ∃ C > 0 such that {n : τ(n+k) ≤ Ck for all k ≥ 1} is infinite.\n\nThis is a stronger form of Erdős Problem #248. Terence Tao has noted it appears difficult.\n\n**Status:** OPEN",
+    "mathContext": "Posed by Erdős in 1974 [Er74b]. The divisor function τ(n) = σ₀(n) is one of the most fundamental arithmetic functions in number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["divisor function", "arithmetic functions", "number theory"]
+  },
+  {
+    "id": "ann-e826-tau",
+    "proofId": "erdos-826",
+    "range": { "startLine": 35, "endLine": 55 },
+    "type": "definition",
+    "title": "The Divisor Function τ(n)",
+    "content": "**tau(n)** = σ₀(n) = number of positive divisors of n.\n\nIn Mathlib, τ is represented as `σ 0 n`, the arithmetic function σ_k evaluated at k = 0. This counts divisors rather than summing their k-th powers.\n\n**Examples:**\n- τ(1) = 1, τ(2) = 2, τ(6) = 4, τ(12) = 6\n- τ(p) = 2 for any prime p\n- τ(p^a) = a + 1 for prime powers\n\nThe divisor function is multiplicative: τ(mn) = τ(m)τ(n) when gcd(m,n) = 1.",
+    "mathContext": "The notation σ_k(n) = Σ_{d|n} d^k is standard. At k=0, each divisor contributes 1, giving the count.",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic functions", "multiplicative functions", "divisors"]
+  },
+  {
+    "id": "ann-e826-growth",
+    "proofId": "erdos-826",
+    "range": { "startLine": 57, "endLine": 85 },
+    "type": "axiom",
+    "title": "Growth Bounds on τ",
+    "content": "**Average order:** The average value of τ(n) for n ≤ x is about log(x). This is Dirichlet's classical result:\n  Σ_{n≤x} τ(n) = x·log(x) + (2γ-1)x + O(√x)\n\n**Maximum order:** τ(n) can be as large as 2^{(1+o(1))·log(n)/log(log(n))}, achieved by highly composite numbers like 2·3·5·7·...·p_k.\n\nThe gap between average (logarithmic) and maximum (sub-polynomial) order is central to understanding this problem.",
+    "mathContext": "The average order result goes back to Dirichlet (1849). The maximum order was determined by Ramanujan and later refined by Nicolas and others.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet's divisor problem", "highly composite numbers", "average order"]
+  },
+  {
+    "id": "ann-e826-linear-bound",
+    "proofId": "erdos-826",
+    "range": { "startLine": 87, "endLine": 114 },
+    "type": "definition",
+    "title": "The Linear Bound Condition",
+    "content": "**linearBoundCondition(n, C):** τ(n+k) ≤ C·k for all k ≥ 1.\n\nThis says divisor counts along the sequence n+1, n+2, n+3, ... grow at most linearly. The bound becomes:\n- k=1: τ(n+1) ≤ C (very restrictive!)\n- k=2: τ(n+2) ≤ 2C\n- k=10: τ(n+10) ≤ 10C (much more permissive)\n\n**goodStartingPoints(C):** The set of all n satisfying this condition. Problem #826 asks whether this set is infinite for some C.",
+    "significance": "critical",
+    "relatedConcepts": ["linear growth", "divisor bounds", "set theory"]
+  },
+  {
+    "id": "ann-e826-conjecture",
+    "proofId": "erdos-826",
+    "range": { "startLine": 116, "endLine": 142 },
+    "type": "concept",
+    "title": "The Erdős Conjecture (Open)",
+    "content": "**erdos_826_conjecture:** ∃ C > 0, goodStartingPoints(C) is infinite.\n\nThe existential quantifier over C is important: we need ONE constant that works for ALL k at INFINITELY MANY starting points n. The constant C does not depend on n or k.\n\n**erdos_826_statement** shows this is equivalent to the formal-conjectures formulation: ∃ C > 0, {n | ∀ k ≥ 1, σ₀(n+k) ≤ C·k} is infinite.",
+    "mathContext": "The Vinogradov notation f ≪ g means f ≤ Cg for some constant C. The problem asks whether such a C exists with infinitely many witnesses.",
+    "significance": "critical",
+    "relatedConcepts": ["Vinogradov notation", "infinitely many solutions", "existential quantification"]
+  },
+  {
+    "id": "ann-e826-relation248",
+    "proofId": "erdos-826",
+    "range": { "startLine": 144, "endLine": 164 },
+    "type": "theorem",
+    "title": "Relation to Problem #248",
+    "content": "**erdos_826_implies_248:** Problem #826 implies the weaker Problem #248.\n\nProblem #248 concerns similar growth conditions on the divisor function along shifts, but with weaker requirements. Any solution to #826 automatically solves #248.\n\nThe proof is immediate since the conditions of #826 are strictly stronger.",
+    "significance": "key",
+    "relatedConcepts": ["problem hierarchy", "implication", "Erdős problems"]
+  },
+  {
+    "id": "ann-e826-k1-constraint",
+    "proofId": "erdos-826",
+    "range": { "startLine": 166, "endLine": 191 },
+    "type": "concept",
+    "title": "The k=1 Constraint and Primes",
+    "content": "**The bottleneck at k=1:**\n\nThe hardest constraint is at k=1: τ(n+1) ≤ C. This means n+1 must have few divisors.\n\n**prime_satisfies_bound:** If n+1 is prime, then τ(n+1) = 2, which satisfies the bound for any C ≥ 2. So primes p give candidates n = p-1.\n\nBut having n+1 prime is not enough — we also need τ(n+2), τ(n+3), ... to satisfy their respective bounds. This simultaneous requirement is what makes the problem hard.",
+    "significance": "key",
+    "relatedConcepts": ["prime numbers", "constraint analysis", "simultaneous conditions"]
+  },
+  {
+    "id": "ann-e826-heuristic",
+    "proofId": "erdos-826",
+    "range": { "startLine": 193, "endLine": 215 },
+    "type": "concept",
+    "title": "Probabilistic Heuristic",
+    "content": "**Why the conjecture is plausible:**\n\nSince τ(m) averages to log(m), the condition τ(n+k) ≤ Ck is automatic for k ≥ log(n)/C. The critical range is small k.\n\nFor k in [1, log(n)/C], we need about log(n)/C consecutive integers all with unusually few divisors. Heuristically, such intervals should occur infinitely often — if the events were independent. The correlations between divisor counts of consecutive integers make rigorous proof difficult.",
+    "mathContext": "The critical range length is O(log n / C), defined formally as heuristicCriticalRange.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic heuristics", "average order", "independence"]
+  },
+  {
+    "id": "ann-e826-smooth",
+    "proofId": "erdos-826",
+    "range": { "startLine": 217, "endLine": 235 },
+    "type": "definition",
+    "title": "Connection to Smooth Numbers",
+    "content": "**Smooth numbers** are integers whose prime factors are all small. Numbers with controlled divisor counts tend to have specific factorization patterns.\n\n**hasControlledDivisors(m, bound):** σ₀(m) ≤ bound.\n\nThe problem connects to the distribution of smooth numbers in short intervals: we need many consecutive integers to have restricted factorizations.",
+    "significance": "supporting",
+    "relatedConcepts": ["smooth numbers", "Dickman function", "factorization patterns"]
+  },
+  {
+    "id": "ann-e826-difficulty",
+    "proofId": "erdos-826",
+    "range": { "startLine": 237, "endLine": 264 },
+    "type": "concept",
+    "title": "Why This Problem Is Difficult",
+    "content": "**Tao's assessment:** Terence Tao has marked this as a difficult problem. Four key challenges:\n\n1. **Simultaneous control:** The bound must hold for ALL k ≥ 1. One failure at any k disqualifies n.\n\n2. **Small k dominance:** τ(n+1) ≤ C is the tightest constraint.\n\n3. **Correlation structure:** Divisor counts of consecutive integers are correlated through shared small prime factors.\n\n4. **Method limitations:** Sieve methods give upper bounds on τ in short intervals, but not the uniform all-k control needed here.",
+    "mathContext": "The difficulty classification comes from the erdosproblems.com database, where Tao has contributed assessments.",
+    "significance": "key",
+    "relatedConcepts": ["sieve methods", "analytic number theory", "correlation"]
+  },
+  {
+    "id": "ann-e826-main",
+    "proofId": "erdos-826",
+    "range": { "startLine": 266, "endLine": 307 },
+    "type": "theorem",
+    "title": "Main Statement and Summary",
+    "content": "**erdos_826_main** establishes two facts:\n\n1. **Well-definedness:** The conjecture is equivalent to ∃ C > 0, goodStartingPoints(C) is infinite.\n\n2. **Implication:** erdos_826_conjecture → erdos_248_weaker.\n\nThe problem remains **OPEN**. This formalization captures the mathematical framework surrounding the problem, including growth bounds, heuristic arguments, and the structural challenges that have prevented resolution.",
+    "mathContext": "This is primarily a documentation formalization of an open problem. The axioms and definitions establish the framework without claiming to resolve the conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "Erdős problems", "number theory conjectures"]
+  }
+]
