@@ -1,0 +1,70 @@
+{
+  "id": "erdos-374",
+  "title": "Erdős Problem #374: Factorial Products as Perfect Squares",
+  "slug": "erdos-374",
+  "description": "For F(m) = min k with a₁!···aₖ! a square (a₁<···<aₖ=m), study |Dₖ∩{1,...,n}| for Dₖ = {m: F(m)=k}. D₂ = squares. Dₖ = ∅ for k>6. Min D₆ = 527. Open for 3≤k≤6.",
+  "meta": {
+    "erdosNumber": 374,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "factorials",
+      "perfect-squares",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham (1976): original study",
+      "Dₖ = ∅ for k > 6",
+      "D₆ smallest element 527",
+      "https://erdosproblems.com/374"
+    ],
+    "leanFile": "Proofs/Erdos374Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 25,
+      "endLine": 52,
+      "summary": "IsPerfectSquare, factorialProduct, HasSquareFactorialProduct, bigF, inDk."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 54,
+      "endLine": 69,
+      "summary": "D₂ = squares, no primes in Dₖ, Dₖ empty for k>6, min D₆ = 527."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 71,
+      "endLine": 79,
+      "summary": "Growth rate of |Dₖ ∩ {1,...,n}| for 3≤k≤6."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham (1976) studied the function F(m), the minimal number of factorials needed in a strictly increasing sequence ending at m whose product is a perfect square. The decomposition of ℕ into the sets Dₖ reveals surprising structure: only D₂ through D₆ are nonempty, and their growth rates are poorly understood.",
+    "problemStatement": "Determine the growth rate of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6, where Dₖ = {m : F(m) = k}.",
+    "proofStrategy": "We define IsPerfectSquare, factorialProduct, and HasSquareFactorialProduct constructively, axiomatize F(m) as bigF, and record known structural results about the sets Dₖ.",
+    "keyInsights": [
+      "D₂ = perfect squares > 1, giving |D₂ ∩ {1,...,n}| = √n + O(1)",
+      "No prime belongs to any Dₖ, since a single factorial p! cannot be part of a square product",
+      "Dₖ = ∅ for k > 6, so only finitely many classes D₂,...,D₆ partition the relevant integers",
+      "The smallest element of D₆ is 527, showing D₆ is sparse",
+      "D₃ grows slower than D₄, indicating non-monotone behavior in k"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #374 asks for the growth rate of Dₖ (integers requiring exactly k factorials for a square product) for 3 ≤ k ≤ 6. The structure is known — only D₂ through D₆ are nonempty — but growth rates remain open.",
+    "implications": "Resolution would connect factorial arithmetic to the distribution of square-free parts and p-adic valuations, with links to Stirling's approximation and multiplicative number theory.",
+    "openQuestions": [
+      "What is |D₃ ∩ {1,...,n}| asymptotically?",
+      "What is |D₄ ∩ {1,...,n}| asymptotically?",
+      "Is D₅ finite or infinite?",
+      "What is the density of D₃ ∪ D₄ ∪ D₅ ∪ D₆?"
+    ]
+  }
+}
