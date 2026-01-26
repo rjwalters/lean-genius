@@ -1,242 +1,123 @@
 [
   {
-    "id": "ann-120-1",
+    "id": "erdos-120-header",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 1,
-      "endLine": 17
-    },
-    "type": "concept",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 23 },
     "title": "Problem Overview",
-    "content": "Erdős Problem #120 (The Similarity Problem, $100 prize): For infinite A ⊆ ℝ, must there exist positive measure E containing no similar copy aA + b (a ≠ 0)? TRUE for unbounded/dense A; FALSE for finite A. OPEN.",
-    "significance": "critical"
+    "content": "Erdős Problem #120 (The Similarity Problem, $100 prize): For every infinite A ⊆ ℝ, must there exist a positive-measure set E containing no similar copy aA + b? Steinhaus showed finite sets are universal. The conjecture is that all infinite sets are avoidable.",
+    "mathContext": "Similar copy: aA + b = {a·x + b : x ∈ A} for a ≠ 0. Avoidable: ∃ E measurable with μ(E) > 0 and ¬∃ a,b with aA+b ⊆ E.",
+    "significance": "essential",
+    "relatedConcepts": ["similarity transformations", "Lebesgue measure", "Steinhaus theorem"]
   },
   {
-    "id": "ann-120-2",
+    "id": "erdos-120-similar",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 46,
-      "endLine": 48
-    },
     "type": "definition",
-    "title": "Similar Copy",
-    "content": "similarCopy(A, a, b) = {a·x + b : x ∈ A} for a ≠ 0. This is a translate and scale of A preserving ratios.",
-    "significance": "critical"
+    "range": { "startLine": 38, "endLine": 69 },
+    "title": "Similar Copies and Avoidance",
+    "content": "Three key definitions: similarCopy A a b = (x ↦ a·x + b) '' A; containsSimilarCopy E A requires some aA+b ⊆ E with a ≠ 0; avoidsSimilarCopies E A negates containment.",
+    "mathContext": "similarCopy A a b = {a·x + b : x ∈ A}. containsSimilarCopy E A ≡ ∃ a b, a ≠ 0 ∧ aA+b ⊆ E. avoidsSimilarCopies ≡ ¬containsSimilarCopy.",
+    "significance": "essential",
+    "relatedConcepts": ["affine maps", "set image", "pattern containment"]
   },
   {
-    "id": "ann-120-3",
+    "id": "erdos-120-universal",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 50,
-      "endLine": 52
-    },
     "type": "definition",
-    "title": "Contains Similar Copy",
-    "content": "containsSimilarCopy(E, A) holds if some aA + b ⊆ E with a ≠ 0. E 'catches' a scaled translate of A.",
-    "significance": "key"
+    "range": { "startLine": 71, "endLine": 96 },
+    "title": "Universal and Avoidable Sets",
+    "content": "A is universal if every measurable E with μ(E) > 0 contains a similar copy of A. A is avoidable if some positive-measure measurable E avoids all copies. These are complementary properties (proved in Part 9).",
+    "mathContext": "universalSimilaritySet A ≡ ∀ E, MeasurableSet E → μ(E) > 0 → containsSimilarCopy E A. avoidable A ≡ ∃ E, MeasurableSet E ∧ μ(E) > 0 ∧ avoidsSimilarCopies E A.",
+    "significance": "essential",
+    "relatedConcepts": ["Lebesgue measure", "MeasurableSet", "universality"]
   },
   {
-    "id": "ann-120-4",
+    "id": "erdos-120-steinhaus",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 54,
-      "endLine": 56
-    },
+    "type": "result",
+    "range": { "startLine": 98, "endLine": 116 },
+    "title": "Steinhaus: Finite Sets are Universal",
+    "content": "Steinhaus (1920) proved that every finite nonempty set A is a universal similarity set. The proof uses the Steinhaus difference theorem: if μ(E) > 0, then E - E contains an interval, providing room to embed finite patterns.",
+    "mathContext": "steinhaus_finite: A.Finite → A.Nonempty → universalSimilaritySet A.",
+    "significance": "essential",
+    "relatedConcepts": ["Steinhaus theorem", "difference set", "finite patterns"]
+  },
+  {
+    "id": "erdos-120-known",
+    "proofId": "erdos-120",
+    "type": "result",
+    "range": { "startLine": 118, "endLine": 143 },
+    "title": "Known Avoidable Cases",
+    "content": "Two classes are known avoidable: (1) unbounded sets — bounded E cannot contain copies with arbitrarily large elements; (2) sets dense in an interval — density forces copies to fill intervals, which can be avoided.",
+    "mathContext": "unbounded_avoidable: ¬IsBounded A → avoidable A. dense_in_interval_avoidable: (∃ a < b, Dense(A ∩ (a,b))) → avoidable A.",
+    "significance": "essential",
+    "relatedConcepts": ["boundedness", "density", "Bornology.IsBounded"]
+  },
+  {
+    "id": "erdos-120-conjecture",
+    "proofId": "erdos-120",
+    "type": "conjecture",
+    "range": { "startLine": 145, "endLine": 172 },
+    "title": "The Erdős Conjecture ($100)",
+    "content": "Every infinite set A ⊆ ℝ is avoidable. Equivalently, no infinite set is a universal similarity set. The negation would give an infinite set whose similar copies appear in every positive-measure set.",
+    "mathContext": "erdos_120_conjecture ≡ ∀ A, A.Infinite → avoidable A. erdos_120_negation ≡ ∃ A, A.Infinite ∧ universalSimilaritySet A.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "$100 prize", "infinite combinatorics"]
+  },
+  {
+    "id": "erdos-120-geometric",
+    "proofId": "erdos-120",
     "type": "definition",
-    "title": "Avoids Similar Copies",
-    "content": "avoidsSimilarCopies(E, A) means E contains no similar copy of A. This is the desired property for E.",
-    "significance": "key"
+    "range": { "startLine": 174, "endLine": 203 },
+    "title": "Geometric Sequence Case (OPEN)",
+    "content": "The geometric sequence {(1/2)^n : n ∈ ℕ} = {1, 1/2, 1/4, ...} is bounded, infinite, and nowhere dense. Whether it is avoidable is the key test case, also listed as Problem 94 on Ben Green's open problems list.",
+    "mathContext": "geometricSeq = {x | ∃ n : ℕ, x = (1/2)^n}. Axioms: geometricSeq.Infinite and IsBounded geometricSeq.",
+    "significance": "essential",
+    "relatedConcepts": ["geometric sequence", "Ben Green Problem 94", "bounded convergent"]
   },
   {
-    "id": "ann-120-5",
+    "id": "erdos-120-ratio",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 58,
-      "endLine": 62
-    },
-    "type": "definition",
-    "title": "Universal Similarity Set",
-    "content": "A is a universal similarity set if every positive measure E contains a similar copy of A. The conjecture says infinite A are NOT universal.",
-    "significance": "key"
+    "type": "result",
+    "range": { "startLine": 205, "endLine": 227 },
+    "title": "Ratio Preservation (PROVED)",
+    "content": "Similar copies preserve ratios of differences: (a·a₁+b - (a·a₂+b)) / (a·a₃+b - (a·a₄+b)) = (a₁-a₂)/(a₃-a₄). This is proved by ring_nf and mul_div_mul_left. It constrains where copies can appear in E.",
+    "mathContext": "ratio_preserved: proved via ring_nf; rw [mul_div_mul_left _ _ ha]. No axioms or sorry needed.",
+    "significance": "essential",
+    "relatedConcepts": ["affine invariant", "cross-ratio", "ring_nf tactic"]
   },
   {
-    "id": "ann-120-6",
+    "id": "erdos-120-tools",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 70,
-      "endLine": 74
-    },
-    "type": "definition",
-    "title": "Main Conjecture",
-    "content": "similarityConjecture: For every infinite A, there exists measurable E with positive measure that avoids all similar copies of A.",
-    "significance": "critical"
+    "type": "context",
+    "range": { "startLine": 229, "endLine": 255 },
+    "title": "Measure-Theoretic Tools",
+    "content": "Two key tools: (1) Steinhaus difference theorem — E-E contains an interval when μ(E) > 0; (2) Lebesgue density theorem — almost every point of E has density 1. Both constrain the local structure of positive-measure sets.",
+    "mathContext": "steinhaus_difference: μ(E) > 0 → ∃ δ > 0, (-δ,δ) ⊆ E-E. lebesgue_density: μ(E) > 0 → ∃ x ∈ E, local density > 1/2.",
+    "significance": "supporting",
+    "relatedConcepts": ["Steinhaus theorem", "Lebesgue density", "measure theory"]
   },
   {
-    "id": "ann-120-7",
+    "id": "erdos-120-duality",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 76,
-      "endLine": 78
-    },
-    "type": "theorem",
-    "title": "Main Problem Statement",
-    "content": "Erdős Problem #120: Is similarityConjecture true? This is a major open problem with a $100 prize.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 257, "endLine": 294 },
+    "title": "Duality and Equivalence (PROVED)",
+    "content": "Two proved theorems: (1) universal_iff_not_avoidable shows A is universal iff not avoidable; (2) conjecture_equiv shows the conjecture is equivalent to 'no infinite set is universal'. Both use the definitions directly.",
+    "mathContext": "universal_iff_not_avoidable: universalSimilaritySet A ↔ ¬avoidable A. conjecture_equiv: erdos_120_conjecture ↔ ∀ A, A.Infinite → ¬universalSimilaritySet A.",
+    "significance": "essential",
+    "relatedConcepts": ["logical duality", "equivalent formulations", "by_contra"]
   },
   {
-    "id": "ann-120-8",
+    "id": "erdos-120-summary",
     "proofId": "erdos-120",
-    "range": {
-      "startLine": 84,
-      "endLine": 87
-    },
-    "type": "theorem",
-    "title": "Steinhaus Theorem",
-    "content": "Finite sets are universal similarity sets (Steinhaus, 1920). Every positive measure set contains a similar copy of any finite set.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-120-9",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 89,
-      "endLine": 93
-    },
-    "type": "theorem",
-    "title": "Unbounded Avoidable",
-    "content": "Unbounded sets are avoidable. There exists positive measure E containing no similar copy of any unbounded A.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-120-10",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 95,
-      "endLine": 100
-    },
-    "type": "theorem",
-    "title": "Dense in Interval Avoidable",
-    "content": "Sets dense in some interval are avoidable. The density creates enough structure to be excluded.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-120-11",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 108,
-      "endLine": 110
-    },
-    "type": "definition",
-    "title": "Geometric Sequence",
-    "content": "geometricSeq = {1, 1/2, 1/4, ...} = {(1/2)^n : n ∈ ℕ}. This is Problem 94 on Green's open problems list.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-120-12",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 112,
-      "endLine": 116
-    },
-    "type": "theorem",
-    "title": "Geometric Sequence Case",
-    "content": "Is the geometric sequence avoidable? This is the key open case, testing the conjecture on a specific bounded convergent sequence.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-120-13",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 122,
-      "endLine": 125
-    },
-    "type": "concept",
-    "title": "Ratio Preservation",
-    "content": "Similar copies preserve ratios: (aᵢ - aⱼ)/(aₖ - aₗ) is invariant under aA + b. This constrains where copies can appear.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-120-14",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 127,
-      "endLine": 131
-    },
-    "type": "theorem",
-    "title": "Convergent Clustering",
-    "content": "For sequences converging to 0, similar copies aA + b cluster near b. This creates local constraints on E.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-120-15",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 137,
-      "endLine": 141
-    },
-    "type": "concept",
-    "title": "Measure Theory Tools",
-    "content": "The Steinhaus theorem (E - E contains an interval) and Lebesgue density theorem are key tools. Points of density create constraints.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-120-16",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 147,
-      "endLine": 149
-    },
-    "type": "concept",
-    "title": "Construction Approach",
-    "content": "Build E by iteratively excluding similar copies of A. Start with [0,1], remove copies, argue positive measure remains.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-120-17",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 151,
-      "endLine": 152
-    },
-    "type": "concept",
-    "title": "Probabilistic Approach",
-    "content": "Consider random constructions (e.g., Cantor-type sets). Do random subsets avoid similar copies with positive probability?",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-120-18",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 154,
-      "endLine": 155
-    },
-    "type": "concept",
-    "title": "Fourier Approach",
-    "content": "Fourier analysis of indicator functions might exploit spectral properties of A to construct avoiding sets.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-120-19",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 161,
-      "endLine": 167
-    },
-    "type": "concept",
-    "title": "Related Questions",
-    "content": "What is the minimum measure of an avoiding set? Can E be nice (union of intervals)? Connection to Ramsey theory (colorings avoiding monochromatic copies).",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-120-20",
-    "proofId": "erdos-120",
-    "range": {
-      "startLine": 76,
-      "endLine": 116
-    },
-    "type": "concept",
-    "title": "Problem Status",
-    "content": "Erdős Problem #120: OPEN with $100 prize. The Similarity Problem asks if every infinite set is avoidable. Finite sets are universal (Steinhaus). Geometric sequence is the key test case.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 296, "endLine": 331 },
+    "title": "Summary and Known Results",
+    "content": "The known results theorem combines: finite sets are universal (Steinhaus) and unbounded sets are avoidable. The problem remains OPEN with a $100 prize. The geometric sequence is the key test case.",
+    "mathContext": "erdos_120_known_results: (∀ A, A.Finite → A.Nonempty → universalSimilaritySet A) ∧ (∀ A, ¬IsBounded A → avoidable A).",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "known results", "Erdős prize"]
   }
 ]
