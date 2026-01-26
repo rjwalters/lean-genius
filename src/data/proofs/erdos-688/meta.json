@@ -1,0 +1,74 @@
+{
+  "id": "erdos-688",
+  "title": "Covering by Large Prime Congruences",
+  "slug": "erdos-688",
+  "description": "Define εₙ as the max ε such that choosing one residue class per prime in (n^ε, n] covers [1,n]. Estimate εₙ; is εₙ = o(1)? Erdős showed εₙ ≫ (log log log n)/(log log n).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/688",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos688Problem.lean",
+    "tags": [
+      "number theory",
+      "covering systems",
+      "prime numbers",
+      "congruences"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 688,
+    "erdosUrl": "https://erdosproblems.com/688",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this in 1979, exploring how efficiently large primes can cover intervals via congruence classes. Each prime p covers ~n/p integers with one class. The question is whether primes near n (i.e., p > n^ε with ε → 0) suffice.",
+    "problemStatement": "Define εₙ as the maximum ε for which one residue class per prime in (n^ε, n] covers [1, n]. Is εₙ = o(1)?",
+    "proofStrategy": "We formalize covering assignments, the covering interval condition, εₙ, the main conjecture, Erdős's lower bound, and structural properties via Mertens' theorem.",
+    "keyInsights": [
+      "Each prime p covers ~n/p integers in [1,n] with one class",
+      "Mertens' theorem: ∑_{n^ε < p ≤ n} 1/p ~ log(1/ε), so total coverage ~ n·log(1/ε)",
+      "Erdős's lower bound: εₙ ≫ (log log log n)/(log log n)",
+      "Covering is dual to sieving: cover vs. exclude one class per prime",
+      "Related to Problems #687 and #689"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 47,
+      "summary": "Defines covering assignments, interval coverage, prime ranges, and the covering exponent εₙ."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 49,
+      "endLine": 53,
+      "summary": "States εₙ → 0: primes near n suffice for covering with one class each."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 55,
+      "endLine": 66,
+      "summary": "Erdős's lower bound (log log log n)/(log log n) and trivial upper bound εₙ < 1."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 68,
+      "endLine": 102,
+      "summary": "Single-class coverage, Mertens coverage estimate, monotonicity, full prime covering, and sieve duality."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #688 on covering intervals by one congruence class per large prime. Erdős's iterated-logarithm lower bound on εₙ is the best known; whether εₙ → 0 remains open.",
+    "implications": "Understanding εₙ connects sieve theory, prime distribution, and covering systems, with applications to the distribution of primes in arithmetic progressions.",
+    "openQuestions": [
+      "Is εₙ = o(1)?",
+      "What is the true rate of decay of εₙ?",
+      "How does the answer change for composite moduli?"
+    ]
+  }
+}

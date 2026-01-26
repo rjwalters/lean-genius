@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-688-ann-assignment",
+    "proofId": "erdos-688",
+    "range": { "startLine": 28, "endLine": 29 },
+    "type": "definition",
+    "title": "Covering Assignment",
+    "content": "For each prime p in a range, choose a residue class aₚ ∈ {0,...,p−1}. One class per prime.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-688-ann-cover",
+    "proofId": "erdos-688",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "definition",
+    "title": "Interval Coverage",
+    "content": "A covering assignment covers [1,n] if every m ∈ [1,n] satisfies m ≡ aₚ (mod p) for some prime p in the range.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-688-ann-exponent",
+    "proofId": "erdos-688",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "definition",
+    "title": "Covering Exponent εₙ",
+    "content": "The maximum ε such that primes in (n^ε, n] with one class each can cover [1,n]. The central quantity of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-688-ann-conjecture",
+    "proofId": "erdos-688",
+    "range": { "startLine": 51, "endLine": 52 },
+    "type": "theorem",
+    "title": "Main Conjecture: εₙ → 0",
+    "content": "εₙ = o(1): even primes very close to n suffice for covering. The threshold ε can be pushed arbitrarily close to 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-688-ann-lower",
+    "proofId": "erdos-688",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "theorem",
+    "title": "Erdős's Lower Bound",
+    "content": "εₙ ≫ (log log log n)/(log log n). The exponent cannot vanish faster than this triply-iterated-log ratio.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-688-ann-mertens",
+    "proofId": "erdos-688",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "theorem",
+    "title": "Mertens Coverage Estimate",
+    "content": "By Mertens' theorem, ∑ n/p over primes in (n^ε, n] is ~n·log(1/ε). This bounds the total covering capacity.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-688-ann-monotone",
+    "proofId": "erdos-688",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "concept",
+    "title": "Monotonicity",
+    "content": "Smaller ε gives more primes in (n^ε, n], so more covering capacity. εₙ is the threshold where coverage becomes possible.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-688-ann-sieve",
+    "proofId": "erdos-688",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "concept",
+    "title": "Sieve Duality",
+    "content": "Covering [1,n] by including one class per prime is dual to sieving (excluding one class per prime). Both use the same prime structure.",
+    "significance": "supporting"
+  }
+]
