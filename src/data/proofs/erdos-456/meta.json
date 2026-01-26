@@ -1,0 +1,61 @@
+{
+  "id": "erdos-456",
+  "title": "Erdős Problem #456: Smallest Prime ≡ 1 (mod n) vs Smallest Totient Divisor",
+  "slug": "erdos-456",
+  "description": "Compare pₙ (smallest prime ≡ 1 mod n) with mₙ (smallest m with n | φ(m)). Is mₙ < pₙ for almost all n? Does pₙ/mₙ → ∞? Three open questions about their relationship.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/456",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos456Problem.lean",
+    "tags": ["number theory", "primes", "totient function", "Linnik"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 456,
+    "erdosUrl": "https://erdosproblems.com/456",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős compared two natural arithmetic functions of n: the smallest prime in the arithmetic progression 1 mod n, and the smallest integer whose totient is divisible by n. While mₙ ≤ pₙ trivially, Erdős conjectured the gap is typically large and explored when equality occurs.",
+    "problemStatement": "Three questions: (1) Is mₙ < pₙ for almost all n? (2) Does pₙ/mₙ → ∞ for almost all n? (3) Are there infinitely many primes p such that p−1 is the only n with mₙ = p?",
+    "proofStrategy": "We axiomatize the Euler totient, the functions pₙ and mₙ with their defining properties. Known results (mₙ ≤ pₙ, Linnik's bound, Erdős's infinitude result, van Doorn's observation) are recorded. The three conjectures are stated as axioms.",
+    "keyInsights": [
+      "mₙ ≤ pₙ always holds since φ(pₙ) = pₙ − 1 is divisible by n",
+      "Linnik's theorem bounds pₙ polynomially in n",
+      "When n = q−1 for prime q, necessarily mₙ = pₙ = q",
+      "Van Doorn showed mₙ ≤ 2n for n = 2^{2k+1}, giving explicit strict inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-functions",
+      "title": "Core Functions",
+      "startLine": 22,
+      "endLine": 54,
+      "summary": "Defines Euler's totient, the smallest prime ≡ 1 (mod n), and the smallest totient-divisor m."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 56,
+      "endLine": 80,
+      "summary": "Records mₙ ≤ pₙ, Linnik's bound, Erdős's infinitude result, and van Doorn's observation."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős Conjectures",
+      "startLine": 82,
+      "endLine": 104,
+      "summary": "States the three open questions: almost-all strict inequality, ratio divergence, and unique preimage primes."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 456 explores the comparative growth of pₙ and mₙ. While basic inequalities are established, the three main conjectures about their typical behavior remain open.",
+    "implications": "Resolving these questions would illuminate the relationship between primes in arithmetic progressions and the totient function's preimage structure.",
+    "openQuestions": [
+      "Is mₙ < pₙ for almost all n?",
+      "Does pₙ/mₙ → ∞ for almost all n?",
+      "Are there infinitely many primes p where p−1 is the unique n with mₙ = p?"
+    ]
+  }
+}

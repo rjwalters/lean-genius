@@ -1,0 +1,86 @@
+[
+  {
+    "id": "smallest-prime-mod1",
+    "proofId": "erdos-456",
+    "type": "definition",
+    "title": "Smallest Prime ≡ 1 (mod n)",
+    "content": "pₙ is the smallest prime congruent to 1 modulo n. By Dirichlet's theorem such a prime always exists.",
+    "significance": "critical",
+    "range": {
+      "startLine": 34,
+      "endLine": 41
+    }
+  },
+  {
+    "id": "smallest-totient-div",
+    "proofId": "erdos-456",
+    "type": "definition",
+    "title": "Smallest Totient Divisor",
+    "content": "mₙ is the smallest positive integer m such that n divides φ(m), where φ is Euler's totient function.",
+    "significance": "critical",
+    "range": {
+      "startLine": 43,
+      "endLine": 52
+    }
+  },
+  {
+    "id": "trivial-inequality",
+    "proofId": "erdos-456",
+    "type": "theorem",
+    "title": "Trivial Inequality",
+    "content": "mₙ ≤ pₙ always, since φ(pₙ) = pₙ − 1 is divisible by n (as pₙ ≡ 1 mod n).",
+    "significance": "key",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    }
+  },
+  {
+    "id": "linnik-bound",
+    "proofId": "erdos-456",
+    "type": "theorem",
+    "title": "Linnik's Theorem",
+    "content": "The smallest prime ≡ 1 (mod n) satisfies pₙ ≤ n^L for some absolute constant L (Linnik's constant).",
+    "significance": "key",
+    "range": {
+      "startLine": 61,
+      "endLine": 64
+    }
+  },
+  {
+    "id": "van-doorn-observation",
+    "proofId": "erdos-456",
+    "type": "insight",
+    "title": "Van Doorn's Observation",
+    "content": "For n = 2^{2k+1}, we have mₙ ≤ 2n while pₙ ≥ 2n+1, giving explicit strict inequality.",
+    "significance": "supporting",
+    "range": {
+      "startLine": 77,
+      "endLine": 80
+    }
+  },
+  {
+    "id": "almost-all-conjecture",
+    "proofId": "erdos-456",
+    "type": "concept",
+    "title": "Almost-All Conjecture",
+    "content": "Erdős conjectured mₙ < pₙ for almost all n, and moreover pₙ/mₙ → ∞ for almost all n.",
+    "significance": "critical",
+    "range": {
+      "startLine": 88,
+      "endLine": 94
+    }
+  },
+  {
+    "id": "unique-preimage",
+    "proofId": "erdos-456",
+    "type": "concept",
+    "title": "Unique Preimage Primes",
+    "content": "Are there infinitely many primes p such that p−1 is the only n for which the smallest m with n | φ(m) equals p?",
+    "significance": "key",
+    "range": {
+      "startLine": 97,
+      "endLine": 101
+    }
+  }
+]
