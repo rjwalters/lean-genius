@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-1051-growth",
+    "proofId": "erdos-1051",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 29 },
+    "title": "Growth Condition",
+    "content": "GrowthCondition requires lim inf aₙ^{1/2ⁿ} > 1. This implies aₙ grows at least doubly exponentially, ensuring the series converges.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1051-series",
+    "proofId": "erdos-1051",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 37 },
+    "title": "The Erdős Series",
+    "content": "erdosSeries a = Σ 1/(aₙ · aₙ₊₁) is the series whose irrationality is in question. It is a telescoping-like sum of reciprocal products.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1051-conjecture",
+    "proofId": "erdos-1051",
+    "type": "conjecture",
+    "range": { "startLine": 49, "endLine": 51 },
+    "title": "Erdős Problem 1051",
+    "content": "For every strictly monotone integer sequence with the growth condition, Σ 1/(aₙ·aₙ₊₁) is irrational.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1051-rapid",
+    "proofId": "erdos-1051",
+    "type": "result",
+    "range": { "startLine": 60, "endLine": 63 },
+    "title": "Rapid Growth Case",
+    "content": "Erdős (1988) proved irrationality when aₙ₊₁ ≥ C·aₙ² for some C > 0. This quadratic recurrence is stronger than the general growth condition.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1051-convergence",
+    "proofId": "erdos-1051",
+    "type": "result",
+    "range": { "startLine": 69, "endLine": 72 },
+    "title": "Series Convergence",
+    "content": "Under the growth condition, the series converges absolutely. The terms 1/(aₙ·aₙ₊₁) decay faster than any geometric series.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1051-related",
+    "proofId": "erdos-1051",
+    "type": "context",
+    "range": { "startLine": 83, "endLine": 98 },
+    "title": "Related Series and Examples",
+    "content": "The simpler series Σ 1/aₙ is also conjectured irrational. The Sylvester–Fibonacci sequence provides a known example where both conditions and irrationality hold.",
+    "significance": "supporting"
+  }
+]

@@ -1,0 +1,82 @@
+{
+  "id": "erdos-1051",
+  "title": "Erdős Problem #1051: Irrationality of Reciprocal Product Series",
+  "slug": "erdos-1051",
+  "description": "If a₁ < a₂ < ⋯ are integers with lim inf aₙ^{1/2ⁿ} > 1, is Σ 1/(aₙ·aₙ₊₁) irrational? Known for rapid growth aₙ₊₁ ≥ C·aₙ². OPEN in general.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1051",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1051Problem.lean",
+    "tags": ["number-theory", "irrationality", "series", "transcendence-theory"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1051,
+    "erdosUrl": "https://erdosproblems.com/1051",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980, p.64) posed this problem about irrationality of series formed from rapidly growing integer sequences. Erdős (1988) proved the result for sequences satisfying aₙ₊₁ ≥ C·aₙ² (quadratic growth), but the general case with only lim inf aₙ^{1/2ⁿ} > 1 remains open.",
+    "problemStatement": "If a₁ < a₂ < ⋯ is a strictly increasing integer sequence with lim inf aₙ^{1/2ⁿ} > 1, is Σ 1/(aₙ · aₙ₊₁) irrational?",
+    "proofStrategy": "We define GrowthCondition (lim inf aₙ^{1/2ⁿ} > 1) and erdosSeries (Σ 1/(aₙ·aₙ₊₁)). ErdosProblem1051 states universal irrationality. The solved rapid growth case is axiomatized. Convergence and positivity are stated, along with the related simple reciprocal series question.",
+    "keyInsights": [
+      "lim inf aₙ^{1/2ⁿ} > 1 implies doubly exponential growth",
+      "Erdős (1988) proved irrationality when aₙ₊₁ ≥ C·aₙ² (rapid growth)",
+      "The gap between the growth condition and the proved case is the open problem",
+      "Related: Σ 1/aₙ may also be irrational under the same growth condition"
+    ]
+  },
+  "sections": [
+    {
+      "id": "growth-condition",
+      "title": "Growth Condition",
+      "startLine": 21,
+      "endLine": 29,
+      "summary": "Defines GrowthCondition: lim inf aₙ^{1/2ⁿ} > 1 via Filter.liminf."
+    },
+    {
+      "id": "series",
+      "title": "The Series",
+      "startLine": 31,
+      "endLine": 37,
+      "summary": "Defines erdosSeries: Σ 1/(aₙ · aₙ₊₁) using tsum."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "States ErdosProblem1051: the series is always irrational under the growth condition."
+    },
+    {
+      "id": "rapid-growth",
+      "title": "Rapid Growth Case (Solved)",
+      "startLine": 53,
+      "endLine": 63,
+      "summary": "Erdős (1988): irrationality holds when aₙ₊₁ ≥ C·aₙ² for some C > 0."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence",
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "The series converges absolutely under the growth condition and is positive when aₙ > 0."
+    },
+    {
+      "id": "related-series",
+      "title": "Related Series",
+      "startLine": 79,
+      "endLine": 98,
+      "summary": "The simpler Σ 1/aₙ question and the Sylvester–Fibonacci example."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 1051 asks whether Σ 1/(aₙ·aₙ₊₁) is always irrational for doubly-exponentially growing integer sequences. The rapid growth case (aₙ₊₁ ≥ C·aₙ²) is solved. The general case is open.",
+    "implications": "Resolution would advance the theory of irrationality of series with integer terms, connecting growth rates to number-theoretic properties of infinite sums.",
+    "openQuestions": [
+      "Is Σ 1/(aₙ·aₙ₊₁) irrational under the full growth condition?",
+      "Is Σ 1/aₙ also irrational under the same growth condition?",
+      "What is the weakest growth condition ensuring irrationality?"
+    ]
+  }
+}
