@@ -1,0 +1,56 @@
+[
+  {
+    "id": "completeness",
+    "proofId": "erdos-349",
+    "range": { "startLine": 24, "endLine": 28 },
+    "type": "definition",
+    "title": "Additive Completeness",
+    "content": "A set S ⊂ ℤ is additively complete if all sufficiently large integers can be represented as sums of distinct elements from S. This generalizes the notion of a complete sequence.",
+    "significance": "high"
+  },
+  {
+    "id": "good-pair",
+    "proofId": "erdos-349",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "definition",
+    "title": "Good Pair (t,α)",
+    "content": "A pair (t,α) is good if the exponential floor sequence ⌊tα^n⌋ is additively complete. The problem asks to characterize all good pairs.",
+    "significance": "high"
+  },
+  {
+    "id": "golden-ratio",
+    "proofId": "erdos-349",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "conjecture",
+    "title": "Golden Ratio Conjecture",
+    "content": "The sequence ⌊tα^n⌋ is conjectured to be complete for all t > 0 and 1 < α < (1+√5)/2. The golden ratio is the growth rate of the Fibonacci sequence, which is known to be complete.",
+    "significance": "high"
+  },
+  {
+    "id": "graham-segments",
+    "proofId": "erdos-349",
+    "range": { "startLine": 54, "endLine": 61 },
+    "type": "note",
+    "title": "Graham's Disjoint Segments",
+    "content": "For any k, there exists t ∈ (0,1) such that the set of α values yielding completeness consists of at least k disjoint intervals. This shows the completeness region has complex structure.",
+    "significance": "high"
+  },
+  {
+    "id": "parity-odd",
+    "proofId": "erdos-349",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "conjecture",
+    "title": "⌊(3/2)^n⌋ Odd Infinitely Often",
+    "content": "Is ⌊(3/2)^n⌋ odd for infinitely many n? This basic question is a fundamental obstacle to the main completeness conjecture and remains completely open.",
+    "significance": "high"
+  },
+  {
+    "id": "fibonacci",
+    "proofId": "erdos-349",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "note",
+    "title": "Fibonacci Threshold",
+    "content": "The golden ratio (1+√5)/2 ≈ 1.618 is the growth rate of the Fibonacci sequence, which is a classic example of a complete sequence. The conjecture suggests completeness persists up to this natural boundary.",
+    "significance": "medium"
+  }
+]
