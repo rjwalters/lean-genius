@@ -1,0 +1,56 @@
+[
+  {
+    "id": "n-commuting",
+    "proofId": "erdos-117",
+    "range": { "startLine": 27, "endLine": 30 },
+    "type": "definition",
+    "title": "n-Commuting Property",
+    "content": "A group G has the n-commuting property if every subset of size > n contains two distinct elements x ≠ y with xy = yx. A Ramsey-type condition on the group.",
+    "significance": "high"
+  },
+  {
+    "id": "abelian-cover",
+    "proofId": "erdos-117",
+    "range": { "startLine": 36, "endLine": 41 },
+    "type": "definition",
+    "title": "Abelian Cover Number h(n)",
+    "content": "The minimum number of Abelian subgroups needed to cover any group with the n-commuting property. This is the quantity Erdős asks to estimate.",
+    "significance": "high"
+  },
+  {
+    "id": "main-problem",
+    "proofId": "erdos-117",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "conjecture",
+    "title": "Erdős Problem #117",
+    "content": "Estimate h(n). Known to be exponential: c₁^n < h(n) < c₂^n. The exact base is unknown.",
+    "significance": "high"
+  },
+  {
+    "id": "pyber",
+    "proofId": "erdos-117",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "theorem",
+    "title": "Pyber (1987)",
+    "content": "h(n) is exponential in n. There exist constants c₂ > c₁ > 1 with c₁^n < h(n) < c₂^n. The gap between the constants remains open.",
+    "significance": "high"
+  },
+  {
+    "id": "isaacs",
+    "proofId": "erdos-117",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "theorem",
+    "title": "Isaacs Lower Bound",
+    "content": "The exponential lower bound c^n ≤ h(n) was known to Isaacs before Pyber's complete result.",
+    "significance": "medium"
+  },
+  {
+    "id": "trivial-case",
+    "proofId": "erdos-117",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "note",
+    "title": "Trivial Case h(1) = 1",
+    "content": "If every pair of elements commutes (n = 1), the group is Abelian. One subgroup (the whole group) suffices.",
+    "significance": "medium"
+  }
+]
