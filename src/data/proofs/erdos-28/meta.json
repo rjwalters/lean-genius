@@ -1,0 +1,78 @@
+{
+  "id": "erdos-28",
+  "title": "Erdős Problem #28: The Erdős–Turán Conjecture on Additive Bases",
+  "slug": "erdos-28",
+  "description": "If A ⊆ ℕ is an additive basis of order 2 (A+A covers all but finitely many integers), must the representation function r(n) be unbounded? $500 bounty. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 28,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "additive-bases",
+      "representation-functions",
+      "open"
+    ],
+    "references": [
+      "Erdős–Turán (1941): original conjecture",
+      "Erdős–Fuchs (1956): fluctuation theorem",
+      "Halberstam–Roth: average representation",
+      "https://erdosproblems.com/28"
+    ],
+    "leanFile": "Proofs/Erdos28Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 46,
+      "summary": "Define repFunction, IsAsymptoticBasis2, and countingFn."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 48,
+      "endLine": 56,
+      "summary": "The Erdős–Turán conjecture: basis of order 2 implies unbounded representations."
+    },
+    {
+      "id": "stronger-forms",
+      "title": "Stronger Forms",
+      "startLine": 58,
+      "endLine": 72,
+      "summary": "Strong form with log n lower bound and density version with √N hypothesis."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results and Connections",
+      "startLine": 74,
+      "endLine": 105,
+      "summary": "Sidon sets, Problem #40 connection, Erdős–Fuchs fluctuation theorem, average rep."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Turán conjectured this in 1941, making it one of the oldest open problems in additive combinatorics. The $500 bounty reflects its importance. The conjecture says that if A+A covers all integers (basis of order 2), then some integers have many representations. Despite decades of work, even the basic conjecture remains open.",
+    "problemStatement": "If A ⊆ ℕ and A + A contains all but finitely many natural numbers, must lim sup r_A(n) = ∞, where r_A(n) counts representations n = a + b with a, b ∈ A?",
+    "proofStrategy": "We formalize the representation function, the asymptotic basis condition, state the main conjecture and its stronger forms, and connect to known results (Erdős–Fuchs, Sidon sets, Problem #40).",
+    "keyInsights": [
+      "The conjecture says no basis of order 2 has uniformly bounded representations",
+      "The stronger form predicts r(n) ≥ c log n infinitely often",
+      "Erdős–Fuchs shows cumulative representations must fluctuate — but this doesn't imply the conjecture",
+      "Sidon sets (r ≤ 1) are too sparse to be bases, confirming the conjecture vacuously",
+      "Connected to Problems #40 and #1145 on B₂[g] sets"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Erdős–Turán conjecture on additive bases is one of the most important open problems in additive combinatorics. Despite partial results like the Erdős–Fuchs theorem and connections to Sidon sets, the basic conjecture remains unresolved after 80+ years.",
+    "implications": "A proof would establish a fundamental dichotomy: either a set is too sparse to be a basis, or it must have arbitrarily many representations. This would have deep consequences for additive number theory and the structure of sumsets.",
+    "openQuestions": [
+      "Does lim sup r(n) = ∞ for every asymptotic basis of order 2?",
+      "Is lim sup r(n)/log n > 0?",
+      "Does the conclusion hold under the weaker hypothesis |A ∩ [1,N]| ≫ √N?",
+      "What is the relationship to the density version of the conjecture?"
+    ]
+  }
+}
