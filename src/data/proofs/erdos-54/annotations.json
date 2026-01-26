@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-54-ramsey-2-complete",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 42 },
+    "title": "Ramsey 2-Complete Set",
+    "content": "IsRamsey2Complete A means for every 2-colouring of A, some colour class has subset sums covering all sufficiently large integers. This is the central robustness property.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-54-lower",
+    "proofId": "erdos-54",
+    "type": "result",
+    "range": { "startLine": 53, "endLine": 56 },
+    "title": "Burr–Erdős Lower Bound",
+    "content": "Burr and Erdős (1985) proved that no Ramsey 2-complete set can satisfy |A ∩ [1,N]| ≤ c(log N)² for all large N. This gives the lower bound on growth rate.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-54-cfp",
+    "proofId": "erdos-54",
+    "type": "result",
+    "range": { "startLine": 60, "endLine": 64 },
+    "title": "Conlon–Fox–Pham Construction",
+    "content": "Conlon, Fox, and Pham (2021) constructed a Ramsey 2-complete set with |A ∩ [1,N]| ≪ (log N)². This matches the Burr–Erdős lower bound up to constants, solving the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-54-main",
+    "proofId": "erdos-54",
+    "type": "conjecture",
+    "range": { "startLine": 69, "endLine": 78 },
+    "title": "Erdős Problem 54 (Solved)",
+    "content": "The minimum growth rate of a Ramsey 2-complete set is Θ((log N)²). Both the lower bound (Burr–Erdős) and matching upper bound (Conlon–Fox–Pham) are captured.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-54-earlier",
+    "proofId": "erdos-54",
+    "type": "result",
+    "range": { "startLine": 83, "endLine": 86 },
+    "title": "Earlier Upper Bound",
+    "content": "Burr and Erdős (1985) gave the initial upper bound (2 log₂ N)³, which was improved by Conlon–Fox–Pham to (log N)².",
+    "significance": "supporting"
+  }
+]
