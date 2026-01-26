@@ -1,0 +1,68 @@
+{
+  "id": "erdos-667",
+  "title": "Erdős Problem #667: Clique Density Exponent c(p,q)",
+  "slug": "erdos-667",
+  "description": "Is c(p,q) = lim inf log H(n;p,q)/log n strictly increasing in q, where H(n;p,q) is the largest clique guaranteed when every p-set spans ≥ q edges?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/667",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos667Problem.lean",
+    "tags": ["graph theory", "Ramsey theory", "extremal graph theory", "clique numbers"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 667,
+    "erdosUrl": "https://erdosproblems.com/667",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Faudree, Rousseau, and Schelp studied H(n;p,q), the largest clique guaranteed in n-vertex graphs where every p-set has ≥ q edges. They defined c(p,q) = lim inf log H/log n and asked whether it is strictly increasing in q. Known bounds include the Ramsey-type bounds for q = 1 and c(p, ⌊(p-1)/2⌋) ≤ 1/2.",
+    "problemStatement": "Is c(p,q) strictly increasing in q for 1 ≤ q ≤ C(p-1,2) + 1?",
+    "proofStrategy": "The formalization axiomatises H(n;p,q) with monotonicity and boundary values, then defines c(p,q) with known Ramsey bounds and the EFRS bound. The strict monotonicity conjecture is the main statement.",
+    "keyInsights": [
+      "H(n;p,q) generalises Ramsey numbers by requiring q edges per p-set",
+      "c(p,1) corresponds to classical Ramsey: 1/(p-1) ≤ c ≤ 2/(p+1)",
+      "c(p, C(p-1,2)+1) = 1 trivially (every graph is complete)",
+      "EFRS proved c(p, ⌊(p-1)/2⌋) ≤ 1/2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "clique-guarantee",
+      "title": "The Function H(n; p, q)",
+      "startLine": 24,
+      "endLine": 38,
+      "summary": "Axiomatisation of H(n;p,q) with monotonicity in n and q."
+    },
+    {
+      "id": "boundary-values",
+      "title": "Boundary Values",
+      "startLine": 40,
+      "endLine": 49,
+      "summary": "H at maximum q equals n (complete graph); H at q = 0 equals 1."
+    },
+    {
+      "id": "exponent",
+      "title": "The Exponent c(p, q)",
+      "startLine": 51,
+      "endLine": 72,
+      "summary": "c(p,q) with Ramsey bounds for q = 1, c = 1 at max q, and EFRS bound."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 74,
+      "endLine": 82,
+      "summary": "c(p,q) is strictly increasing in q."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 667, asking whether the clique density exponent c(p,q) is strictly increasing in the edge-density parameter q.",
+    "implications": "Strict monotonicity would show that every additional edge per p-set gives a strictly larger polynomial clique guarantee, refining the landscape between Ramsey theory and Turán-type extremal results.",
+    "openQuestions": [
+      "Is c(p,q) strictly increasing in q?",
+      "What is the exact value of c(p,q) for small p and general q?",
+      "Can the EFRS bound c(p, ⌊(p-1)/2⌋) ≤ 1/2 be improved?"
+    ]
+  }
+}

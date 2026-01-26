@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-667-clique-guarantee",
+    "proofId": "erdos-667",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 31 },
+    "title": "Clique Guarantee H(n; p, q)",
+    "content": "cliqueGuarantee n p q is the largest m such that every n-vertex graph where every p-set spans ≥ q edges contains K_m. This generalises Ramsey numbers.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-667-cpq",
+    "proofId": "erdos-667",
+    "type": "definition",
+    "range": { "startLine": 53, "endLine": 55 },
+    "title": "Exponent c(p, q)",
+    "content": "cpq p q = lim inf log(H(n;p,q))/log(n). This captures the polynomial rate of growth of the clique guarantee.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-667-ramsey-bounds",
+    "proofId": "erdos-667",
+    "type": "result",
+    "range": { "startLine": 57, "endLine": 63 },
+    "title": "Ramsey Bounds for c(p, 1)",
+    "content": "1/(p-1) ≤ c(p,1) ≤ 2/(p+1). When q = 1, the problem reduces to classical Ramsey theory.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-667-efrs",
+    "proofId": "erdos-667",
+    "type": "result",
+    "range": { "startLine": 69, "endLine": 71 },
+    "title": "EFRS Bound",
+    "content": "Erdős–Faudree–Rousseau–Schelp proved c(p, ⌊(p-1)/2⌋) ≤ 1/2, showing the exponent is at most 1/2 at the midpoint.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-667-conjecture",
+    "proofId": "erdos-667",
+    "type": "conjecture",
+    "range": { "startLine": 76, "endLine": 80 },
+    "title": "Erdős Problem 667",
+    "content": "c(p,q) is strictly increasing in q for 1 ≤ q ≤ C(p-1,2)+1. Each additional edge per p-set strictly improves the clique guarantee exponent.",
+    "significance": "essential"
+  }
+]
