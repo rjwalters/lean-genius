@@ -1,0 +1,74 @@
+[
+  {
+    "id": "general-position",
+    "proofId": "erdos-98",
+    "type": "definition",
+    "title": "General Position",
+    "content": "A point set is in general position if all points are distinct, no 3 are collinear, and no 4 are concyclic. This prevents structured configurations that minimize distinct distances.",
+    "significance": "critical",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    }
+  },
+  {
+    "id": "h-function",
+    "proofId": "erdos-98",
+    "type": "definition",
+    "title": "The Function h(n)",
+    "content": "h(n) is the minimum number of distinct distances among all n-point configurations in general position. The conjecture is h(n)/n → ∞.",
+    "significance": "critical",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    }
+  },
+  {
+    "id": "pach-bound",
+    "proofId": "erdos-98",
+    "type": "theorem",
+    "title": "Pach's Upper Bound",
+    "content": "h(n) < n^{log₂ 3} ≈ n^{1.585}: there exist general-position configurations with fewer than n^{1.585} distinct distances.",
+    "significance": "key",
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    }
+  },
+  {
+    "id": "efp-bound",
+    "proofId": "erdos-98",
+    "type": "theorem",
+    "title": "Erdős–Füredi–Pach Bound",
+    "content": "h(n) < n·exp(c√(log n)): a stronger upper bound, showing h(n) is close to linear. This is the best known upper bound on h(n).",
+    "significance": "critical",
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-98",
+    "type": "concept",
+    "title": "The Erdős Conjecture: h(n)/n → ∞",
+    "content": "General position should force superlinearly many distinct distances. Even the weaker statement h(n) ≥ n is unknown. Open since the 1970s.",
+    "significance": "critical",
+    "range": {
+      "startLine": 75,
+      "endLine": 82
+    }
+  },
+  {
+    "id": "guth-katz",
+    "proofId": "erdos-98",
+    "type": "theorem",
+    "title": "Guth–Katz Comparison",
+    "content": "Without general-position assumptions, any n points determine Ω(n/log n) distinct distances (Guth–Katz 2015). General position should give more, but this isn't proved.",
+    "significance": "key",
+    "range": {
+      "startLine": 86,
+      "endLine": 93
+    }
+  }
+]
