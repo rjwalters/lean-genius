@@ -36,14 +36,13 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Set.Countable
 import Mathlib.Topology.Order.Basic
+import Mathlib.Tactic
 
 open Complex Set
 
 namespace Erdos226
 
-/-
-## Part I: Entire Functions
--/
+/-! ## Part I: Entire Functions -/
 
 /--
 **Entire Function:**
@@ -67,9 +66,7 @@ A function is non-linear if it is not of the form f(x) = ax + b.
 def IsNonLinear (f : ℂ → ℂ) : Prop :=
   ¬∃ (a b : ℂ), ∀ z, f z = a * z + b
 
-/-
-## Part II: Countable Dense Sets
--/
+/-! ## Part II: Countable Dense Sets -/
 
 /--
 **Countable Dense Set:**
@@ -87,9 +84,7 @@ theorem rationals_countable_dense : IsCountableDense (Set.range (↑· : ℚ →
   · exact Set.countable_range _
   · exact Rat.denseRange_ratCast
 
-/-
-## Part III: The Rationality Preservation Property
--/
+/-! ## Part III: The Rationality Preservation Property -/
 
 /--
 **Rationality Preservation:**
@@ -105,9 +100,7 @@ A function maps set A exactly onto set B, preserving membership.
 def MapsSetToSet (f : ℝ → ℝ) (A B : Set ℝ) : Prop :=
   ∀ x : ℝ, x ∈ A ↔ f x ∈ B
 
-/-
-## Part IV: The Original Question
--/
+/-! ## Part IV: The Original Question -/
 
 /--
 **The Erdős Question:**
@@ -120,9 +113,7 @@ def ErdosQuestion : Prop :=
     IsNonLinear f ∧
     ∀ x : ℝ, (∃ q : ℚ, (q : ℝ) = x) ↔ (∃ q : ℚ, (q : ℝ) = (f x).re)
 
-/-
-## Part V: The General Question
--/
+/-! ## Part V: The General Question -/
 
 /--
 **The General Question:**
@@ -136,9 +127,7 @@ def GeneralQuestion : Prop :=
     ∃ (f : ℂ → ℂ), IsEntire f ∧
       ∀ x : ℝ, x ∈ A ↔ (f x).re ∈ B
 
-/-
-## Part VI: Barth-Schneider Theorem (1970)
--/
+/-! ## Part VI: Barth-Schneider Theorem (1970) -/
 
 /--
 **Barth-Schneider Theorem (1970):**
@@ -170,9 +159,7 @@ axiom barth_schneider_monotone :
       (∀ x : ℝ, x ∈ A ↔ (f x).re ∈ B) ∧
       StrictMono (fun x : ℝ => (f x).re)
 
-/-
-## Part VII: The Answer to Erdős's Question
--/
+/-! ## Part VII: The Answer to Erdős's Question -/
 
 /--
 **Erdős's Question is Answered Affirmatively:**
@@ -218,9 +205,7 @@ theorem general_question_affirmative : GeneralQuestion := by
   use f
   exact ⟨hf_trans.1, hf_maps⟩
 
-/-
-## Part VIII: Extensions
--/
+/-! ## Part VIII: Extensions -/
 
 /--
 **Complex Extension (1971):**
@@ -243,9 +228,7 @@ additional properties (monotone on ℝ, specific growth, etc.).
 -/
 axiom construction_flexibility : True
 
-/-
-## Part IX: Why This Works
--/
+/-! ## Part IX: Why This Works -/
 
 /--
 **Key Insight 1: Weierstrass Products:**
@@ -277,9 +260,7 @@ axiom no_polynomial_works :
     ¬∃ (p : Polynomial ℝ), p.natDegree > 1 ∧
       ∀ x : ℝ, (∃ q : ℚ, (q : ℝ) = x) ↔ (∃ q : ℚ, (q : ℝ) = p.eval x)
 
-/-
-## Part X: Summary
--/
+/-! ## Part X: Summary -/
 
 /--
 **Complete Solution to Erdős Problem #226:**
