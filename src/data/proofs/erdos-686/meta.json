@@ -2,150 +2,103 @@
   "id": "erdos-686",
   "title": "Erdős Problem #686: Ratios of Products of Consecutive Integers",
   "slug": "erdos-686",
-  "description": "Can every integer N ≥ 2 be written as ∏(m+i) / ∏(n+i) for some k ≥ 2 and m ≥ n + k?",
+  "description": "Can every integer N ≥ 2 be written as ∏(m+i) / ∏(n+i) for some k ≥ 2 and m ≥ n + k? OPEN.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/686",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos686Problem.lean",
     "tags": [
-      "erdos",
       "number-theory",
       "products",
       "consecutive-integers",
       "factorials",
       "binomials",
-      "open"
+      "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "erdosNumber": 686,
     "erdosUrl": "https://erdosproblems.com/686",
-    "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Finset.prod",
-        "description": "Product over finite sets",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      },
-      {
-        "theorem": "Nat.factorial",
-        "description": "Factorial function",
-        "module": "Mathlib.Data.Nat.Factorial.Basic"
-      },
-      {
-        "theorem": "Nat.choose",
-        "description": "Binomial coefficients",
-        "module": "Mathlib.Data.Nat.Choose.Basic"
-      }
-    ],
-    "originalContributions": [
-      "consecutiveProduct definition: ∏_{i=1}^k (n+i)",
-      "consecutiveProduct_eq_factorial theorem",
-      "ratioExpression definition as rational",
-      "IsIntegerRatio, integerRatio definitions",
-      "IsRepresentable, Representable definitions",
-      "ErdosConjecture686 definition",
-      "numerator_gt_denominator theorem",
-      "ratio_gt_one theorem",
-      "product_binomial_relation theorem",
-      "RepresentableSet definition",
-      "ratio_mono, representable_set_infinite theorems"
-    ]
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem appears in [Er79d]. It asks whether all integers ≥ 2 can be expressed as ratios of products of consecutive integers.\n\nThe problem relates to classical questions about factorials, binomial coefficients, and the arithmetic structure of products. Products of k consecutive integers equal k! * C(n+k, k).\n\nRelated to Problem 677. A follow-up question asks about the structure of integers representable with fixed n and k.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nCan every integer N ≥ 2 be written as\n$$N = \\frac{\\prod_{1 \\le i \\le k}(m+i)}{\\prod_{1 \\le i \\le k}(n+i)}$$\nfor some k ≥ 2 and m ≥ n + k?\n\n**Constraints:**\n- k ≥ 2: at least 2 consecutive integers\n- m ≥ n + k: numerator and denominator ranges don't overlap\n\n**Follow-up:** For fixed n, k, what is the set of representable integers?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Products:** Define consecutiveProduct(n, k) = ∏_{i=1}^k (n+i)\n\n2. **Ratios:** Define ratioExpression as rational quotient\n\n3. **Representability:** IsRepresentable combines k ≥ 2, m ≥ n+k, ratio = N\n\n4. **Conjecture:** ErdosConjecture686 quantifies over all N ≥ 2\n\n5. **Structure:** Connect to factorials, binomials, and monotonicity",
+    "historicalContext": "Erdős Problem #686 from [Er79d] asks whether all integers N ≥ 2 can be expressed as ratios of products of consecutive integers. Products of k consecutive integers equal k! * C(n+k, k), connecting to factorials and binomial coefficients. Related to Problem #677.",
+    "problemStatement": "Can every integer N ≥ 2 be written as ∏_{i=1}^k (m+i) / ∏_{i=1}^k (n+i) for some k ≥ 2 and m ≥ n + k? The constraints ensure non-trivial non-overlapping ranges with ratio > 1. OPEN.",
+    "proofStrategy": "The formalization defines consecutiveProduct, ratioExpression (over Q), IsRepresentable, Representable, and ErdosConjecture686. Structural properties (numerator > denominator, ratio > 1, monotonicity) and binomial connections are axiomatized. Examples verified via native_decide. Proved: erdos_686_statement (simp).",
     "keyInsights": [
-      "**Factorial Connection:** consecutiveProduct(n, k) = (n+k)!/n! = k! * C(n+k, k)",
-      "**Non-overlap:** m ≥ n + k ensures numerator factors all exceed denominator factors",
-      "**k ≥ 2:** Excludes trivial case k = 1 where ratio is just (m+1)/(n+1)",
-      "**Binomial Ratio:** ratioExpression = C(m+k, k) / C(n+k, k)",
-      "**Monotonicity:** For fixed n, k, ratio increases with m"
+      "P(n,k) = (n+k)!/n! = k! * C(n+k, k)",
+      "m ≥ n + k ensures non-overlapping ranges and ratio > 1",
+      "k ≥ 2 excludes trivial single-factor case",
+      "The ratio C(m+k,k)/C(n+k,k) must be an integer — subtle divisibility",
+      "For fixed n, k, the representable set is infinite (ratio increases with m)"
     ]
   },
   "sections": [
     {
       "id": "products",
-      "title": "Consecutive Products",
-      "summary": "consecutiveProduct, consecutiveProduct_eq_factorial, examples",
-      "startLine": 29,
-      "endLine": 48
+      "title": "Part I: Consecutive Products",
+      "startLine": 31,
+      "endLine": 48,
+      "summary": "Defines consecutiveProduct(n,k). Axioms: factorial and binomial relations. Three native_decide examples."
     },
     {
       "id": "ratios",
-      "title": "Ratio Expression",
-      "summary": "ratioExpression, IsIntegerRatio, integerRatio",
+      "title": "Part II: The Ratio Expression",
       "startLine": 50,
-      "endLine": 66
+      "endLine": 58,
+      "summary": "Defines ratioExpression over Q and IsIntegerRatio divisibility predicate."
     },
     {
       "id": "representability",
-      "title": "Representation Property",
-      "summary": "IsRepresentable, Representable, ErdosConjecture686",
-      "startLine": 68,
-      "endLine": 84
+      "title": "Part III: The Representation Property",
+      "startLine": 60,
+      "endLine": 76,
+      "summary": "Defines IsRepresentable (k ≥ 2, m ≥ n+k, ratio = N), Representable, ErdosConjecture686."
     },
     {
-      "id": "constraints",
-      "title": "Why the Constraints?",
-      "summary": "k ≥ 2, m ≥ n+k, numerator_gt_denominator, ratio_gt_one",
-      "startLine": 86,
-      "endLine": 106
+      "id": "structural",
+      "title": "Part IV: Structural Properties",
+      "startLine": 78,
+      "endLine": 86,
+      "summary": "Axioms: numerator_gt_denominator, ratio_gt_one."
     },
     {
-      "id": "small-cases",
-      "title": "Small Cases",
-      "summary": "N = 2, N = 6, N = 10 analysis",
-      "startLine": 108,
-      "endLine": 131
-    },
-    {
-      "id": "binomial",
-      "title": "Connection to Binomials",
-      "summary": "product_binomial_relation theorem",
-      "startLine": 133,
-      "endLine": 147
+      "id": "examples",
+      "title": "Part V: Examples",
+      "startLine": 88,
+      "endLine": 91,
+      "summary": "N = 6 verified: ratioExpression 0 2 2 = 6 via native_decide."
     },
     {
       "id": "followup",
-      "title": "Follow-Up Question",
-      "summary": "RepresentableSet, ratio_mono, representable_set_infinite",
-      "startLine": 149,
-      "endLine": 167
+      "title": "Part VI: Follow-Up Question",
+      "startLine": 93,
+      "endLine": 105,
+      "summary": "Defines RepresentableSet. Axioms: ratio_mono (monotonicity), representable_set_infinite."
     },
     {
-      "id": "structure",
-      "title": "Constraints and Structure",
-      "summary": "Divisibility requirements for integer ratios",
-      "startLine": 169,
-      "endLine": 182
+      "id": "connections",
+      "title": "Part VII: Connections",
+      "startLine": 107,
+      "endLine": 110,
+      "summary": "Placeholder connection to Problem #677."
     },
     {
-      "id": "related",
-      "title": "Related Problem 677",
-      "summary": "RelatedProblem677",
-      "startLine": 184,
-      "endLine": 190
-    },
-    {
-      "id": "status",
-      "title": "Problem Status",
-      "summary": "erdos_686_status, erdos_686_statement, erdos_686_original",
-      "startLine": 192,
-      "endLine": 233
+      "id": "summary",
+      "title": "Part VIII: Summary",
+      "startLine": 112,
+      "endLine": 137,
+      "summary": "Proved: erdos_686_statement (simp), erdos_686_status (trivial). Problem remains OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #686 asks whether every integer N ≥ 2 can be expressed as a ratio of products of k consecutive integers, with the numerator starting at a larger value. The problem connects to factorials, binomial coefficients, and divisibility.",
-    "implications": "A positive answer would show a rich representation theorem for integers via consecutive products. Understanding representable sets for fixed n, k would reveal arithmetic structure.",
+    "summary": "Erdős Problem #686 remains OPEN. The question is whether every integer N ≥ 2 can be expressed as a ratio of products of k consecutive integers with non-overlapping ranges. The problem connects to factorials, binomial coefficients, and divisibility.",
+    "implications": "A positive answer would show a rich representation theorem for integers via consecutive products.",
     "openQuestions": [
       "Can every N ≥ 2 be represented?",
       "For fixed n, k, what integers are representable?",
-      "Is there a pattern to the minimal k needed for each N?",
-      "What is the structure of counterexamples if any exist?",
+      "What is the minimal k needed for each N?",
       "How does this relate to Problem 677?"
     ]
   }
