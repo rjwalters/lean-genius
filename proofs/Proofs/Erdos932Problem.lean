@@ -35,6 +35,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Tactic
 
 open Nat Finset
 

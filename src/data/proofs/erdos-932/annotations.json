@@ -90,7 +90,7 @@
   {
     "id": "erdos-932-example",
     "proofId": "erdos-932",
-    "type": "example",
+    "type": "result",
     "range": { "startLine": 220, "endLine": 243 },
     "title": "Concrete Example: r = 3",
     "content": "For r=3, primes 7 and 11 have gap 4. The interval (7,11) = {8,9,10}. Here 8 = 2³ has maxPrimeFactor 2 < 4, and 9 = 3² has maxPrimeFactor 3 < 4. Both are 4-smooth, so smoothCount(3) = 2, satisfying the Erdős condition.",
