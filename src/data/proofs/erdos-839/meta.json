@@ -1,0 +1,84 @@
+{
+  "id": "erdos-839",
+  "title": "Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums",
+  "slug": "erdos-839",
+  "description": "For sequences where no term is a sum of consecutive earlier terms: is lim sup(aₙ/n) = ∞? Does the logarithmic density vanish? Upper density can reach 19/36 (Freud), disproving Erdős's 1/2 conjecture. Open.",
+  "meta": {
+    "erdosNumber": 839,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "sequences",
+      "open"
+    ],
+    "references": [
+      "Erdős: original questions on growth rate and density",
+      "Freud: upper density 19/36, disproving 1/2 conjecture",
+      "Related to Problems #359 and #867",
+      "https://erdosproblems.com/839"
+    ],
+    "leanFile": "Proofs/Erdos839Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 40,
+      "summary": "Consecutive sums, sum-avoiding sequences, and valid sequences."
+    },
+    {
+      "id": "questions",
+      "title": "Growth Rate Questions",
+      "startLine": 42,
+      "endLine": 54,
+      "summary": "Question 1: lim sup(aₙ/n) = ∞? Question 2: logarithmic density → 0?"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 56,
+      "endLine": 70,
+      "summary": "lim inf(aₙ/n) can be finite, reciprocal sums ≥ c·log log x."
+    },
+    {
+      "id": "upper-density",
+      "title": "Upper Density",
+      "startLine": 72,
+      "endLine": 84,
+      "summary": "Freud's counterexample: upper density 19/36 > 1/2."
+    },
+    {
+      "id": "main-questions",
+      "title": "Main Open Questions",
+      "startLine": 86,
+      "endLine": 92,
+      "summary": "Both questions remain open."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem about sequences where no term is the sum of consecutive earlier terms. He conjectured that such sequences must be sparse (lim sup aₙ/n = ∞) and have vanishing logarithmic density. He also conjectured the upper density is at most 1/2, which Freud disproved with a construction achieving 19/36.",
+    "problemStatement": "Let 1 ≤ a₁ < a₂ < ... be integers where no aₘ equals aᵢ + aᵢ₊₁ + ... + aⱼ for i ≤ j < m. (1) Is lim sup(aₙ/n) = ∞? (2) Does (1/log x)·Σ_{aₙ<x} 1/aₙ → 0?",
+    "proofStrategy": "We define consecutive-term sum avoidance, formalize both growth-rate questions, record Erdős's observations about achievable lower bounds, and state Freud's counterexample showing upper density can exceed 1/2.",
+    "keyInsights": [
+      "Consecutive-sum avoidance is stronger than avoiding all subset sums — it only forbids contiguous blocks",
+      "lim inf(aₙ/n) < ∞ is achievable, so the sequence can be dense infinitely often",
+      "Erdős's conjecture that upper density ≤ 1/2 was disproved by Freud (19/36 ≈ 0.528)",
+      "The reciprocal sum Σ 1/aₙ can grow at least as c·log log x",
+      "Related to Problems #359 (sum-free sets) and #867"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #839 poses two open questions about the sparsity of sequences avoiding consecutive-term sums. While Freud disproved the upper density conjecture, both growth-rate questions remain unresolved.",
+    "implications": "Resolution would clarify the structure of additive avoidance constraints, connecting to Sidon sets, sum-free sets, and additive number theory more broadly.",
+    "openQuestions": [
+      "Is lim sup(aₙ/n) = ∞ for all valid sequences?",
+      "Does the logarithmic density (1/log x)·Σ 1/aₙ vanish?",
+      "What is the maximum possible upper density of a valid sequence?",
+      "Is Freud's 19/36 the supremum, or can it be improved?"
+    ]
+  }
+}
