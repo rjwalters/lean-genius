@@ -1,0 +1,87 @@
+{
+  "id": "erdos-155",
+  "title": "Erdős Problem #155: Slow Growth of Maximum Sidon Subsets",
+  "slug": "erdos-155",
+  "description": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) ≤ F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k ≈ ε√N. F(N) ~ √N. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 155,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "extremal-combinatorics",
+      "growth-rate",
+      "open"
+    ],
+    "references": [
+      "Erdős–Turán (1941): F(N) = O(√N)",
+      "Lindström (1969): F(N) ≤ √N + N^{1/4} + 1",
+      "Singer (1938): perfect difference sets",
+      "Erdős (1992, 1994): problem statements",
+      "OEIS A003022, A143824",
+      "https://erdosproblems.com/155"
+    ],
+    "leanFile": "Proofs/Erdos155Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 26,
+      "endLine": 47,
+      "summary": "Define IsSidonSet, maxSidonSize F(N), achievability and optimality."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 49,
+      "endLine": 55,
+      "summary": "F is monotone nondecreasing and increases by at most 1 per step."
+    },
+    {
+      "id": "asymptotic-bounds",
+      "title": "Asymptotic Bounds",
+      "startLine": 57,
+      "endLine": 67,
+      "summary": "Erdős–Turán upper bound F(N) ≤ √N + N^{1/4} + 1 and lower bound F(N) ≥ (1-o(1))√N."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main and Stronger Conjectures",
+      "startLine": 69,
+      "endLine": 84,
+      "summary": "F(N+k) ≤ F(N)+1 for fixed k and large N. Stronger form: k ≈ ε√N."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Small Values",
+      "startLine": 86,
+      "endLine": 102,
+      "summary": "Increase points are sparse (density ~√N). Known values: F(1)=1, ..., F(18)=6."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem around 1992, building on the classical Erdős–Turán (1941) study of Sidon sets. The function F(N) measures the largest B₂ subset of {1,...,N}. While F(N) ~ √N is well-established, the fine structure of its growth — whether F can jump by more than 1 over intervals of fixed length — remains unknown.",
+    "problemStatement": "Is it true that for every k ≥ 1, F(N+k) ≤ F(N) + 1 for all sufficiently large N, where F(N) is the maximum Sidon subset size of {1,...,N}?",
+    "proofStrategy": "We formalize Sidon sets, define F(N) axiomatically, state the Erdős–Turán asymptotic bounds, and present both the basic conjecture (fixed k) and the stronger form (k ≈ ε√N). We also state consequences about the sparsity of increase points.",
+    "keyInsights": [
+      "A Sidon (B₂) set has all pairwise sums distinct: |S| ≤ √N + O(N^{1/4})",
+      "F(N) ~ √N, so F increases by 1 about √N times in {1,...,N}",
+      "The conjecture says F plateaus on every fixed-length interval for large N",
+      "The stronger form suggests plateaus of length ~ε√N between increases",
+      "Known values: F(1)=1, F(2)=2, F(3)=3, F(6)=4, F(11)=5, F(18)=6"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #155 asks whether the maximum Sidon subset function F(N) grows so slowly that F(N+k) ≤ F(N)+1 for any fixed k and large N. This captures the intuition that F increases by 1 very rarely. The problem remains open, with a stronger variant suggesting plateaus of length ~ε√N.",
+    "implications": "A positive answer would provide fine structural information about the distribution of Sidon sets, complementing the classical Erdős–Turán asymptotics. It would show that the 'next' larger Sidon set requires a substantial expansion of the interval.",
+    "openQuestions": [
+      "Does F(N+k) ≤ F(N)+1 hold for all fixed k and large N?",
+      "Does the stronger form with k ≈ ε√N hold?",
+      "What is the exact threshold: the largest k(N) such that F(N+k(N)) ≤ F(N)+1?",
+      "Can the gap F(N) - √N be determined more precisely?"
+    ]
+  }
+}
