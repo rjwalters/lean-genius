@@ -1,0 +1,74 @@
+{
+  "id": "erdos-575",
+  "title": "Bipartite Turán Numbers Dominate",
+  "slug": "erdos-575",
+  "description": "For a finite family F of graphs containing a bipartite member, does some bipartite G ∈ F satisfy ex(n;G) ≪ ex(n;F)? That is, does a single bipartite graph control the extremal function? Erdős–Simonovits (1982).",
+  "meta": {
+    "author": "Erdős, Simonovits",
+    "sourceUrl": "https://erdosproblems.com/575",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos575Problem.lean",
+    "tags": [
+      "extremal graph theory",
+      "Turán numbers",
+      "bipartite graphs",
+      "combinatorics"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 575,
+    "erdosUrl": "https://erdosproblems.com/575",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Simonovits posed this in 1982 as a fundamental question in extremal graph theory. The Erdős–Stone–Simonovits theorem determines ex(n;H) asymptotically for non-bipartite H. For families containing bipartite graphs, the extremal function is subquadratic, and the question is whether one bipartite member controls the asymptotics.",
+    "problemStatement": "For a finite family F of graphs with at least one bipartite member, does there exist bipartite G ∈ F such that ex(n;G) = O(ex(n;F))?",
+    "proofStrategy": "We set up the framework for extremal graph numbers, state the Erdős–Simonovits conjecture, and provide context via the Erdős–Stone–Simonovits theorem and Kővári–Sós–Turán bound.",
+    "keyInsights": [
+      "Erdős–Stone–Simonovits: ex(n;H) = (1 − 1/(χ−1) + o(1))·n²/2 for non-bipartite H",
+      "Kővári–Sós–Turán: ex(n;K_{s,t}) ≤ c·n^{2−1/s}, so bipartite exclusions give o(n²)",
+      "The conjecture: a single bipartite member controls the family extremal function",
+      "Related to Problem #180 on bipartite Turán densities",
+      "The answer is known for some special families but open in general"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 49,
+      "summary": "Defines the Turán extremal number, family extremal function, and bipartite graph predicate."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 51,
+      "endLine": 61,
+      "summary": "States the Erdős–Simonovits conjecture: some bipartite member dominates the family extremal function."
+    },
+    {
+      "id": "context",
+      "title": "Erdős–Stone–Simonovits Context",
+      "startLine": 63,
+      "endLine": 77,
+      "summary": "The Erdős–Stone–Simonovits theorem for non-bipartite graphs and Kővári–Sós–Turán for bipartite graphs."
+    },
+    {
+      "id": "properties",
+      "title": "Family Extremal Function Properties",
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "Monotonicity, subquadratic growth for families with bipartite members, and the single-graph control principle."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #575 on whether a single bipartite graph in a forbidden family controls the extremal function, with context from the Erdős–Stone–Simonovits theorem.",
+    "implications": "A positive answer would provide a powerful structural theorem for extremal graph theory: the Turán problem for families reduces to the Turán problem for individual bipartite graphs.",
+    "openQuestions": [
+      "Does some bipartite member always dominate?",
+      "For which families can the controlling member be identified explicitly?",
+      "What is the relationship to degenerate Turán numbers?"
+    ]
+  }
+}
