@@ -1,0 +1,74 @@
+[
+  {
+    "id": "unit-segment",
+    "proofId": "erdos-1071",
+    "type": "definition",
+    "title": "Unit Segment",
+    "content": "A unit line segment in ℝ² defined by two endpoints at distance 1 apart.",
+    "significance": "critical",
+    "range": {
+      "startLine": 23,
+      "endLine": 28
+    }
+  },
+  {
+    "id": "maximal-packing",
+    "proofId": "erdos-1071",
+    "type": "definition",
+    "title": "Maximal Packing",
+    "content": "A packing of unit segments is maximal if no additional unit segment can be placed without intersecting an existing one.",
+    "significance": "critical",
+    "range": {
+      "startLine": 51,
+      "endLine": 55
+    }
+  },
+  {
+    "id": "danzer-result",
+    "proofId": "erdos-1071",
+    "type": "theorem",
+    "title": "Danzer's Construction",
+    "content": "Danzer proved that a finite maximal packing of unit segments exists in the unit square [0,1]², earning $10 from Erdős.",
+    "significance": "critical",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    }
+  },
+  {
+    "id": "region-packing",
+    "proofId": "erdos-1071",
+    "type": "definition",
+    "title": "Region Packing",
+    "content": "A packing restricted to a region R, where both endpoints of each segment must lie in R.",
+    "significance": "key",
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    }
+  },
+  {
+    "id": "countable-conjecture",
+    "proofId": "erdos-1071",
+    "type": "concept",
+    "title": "Countably Infinite Conjecture",
+    "content": "The open question asks whether some region R admits a countably infinite maximal packing of unit segments.",
+    "significance": "critical",
+    "range": {
+      "startLine": 87,
+      "endLine": 90
+    }
+  },
+  {
+    "id": "endpoint-variant",
+    "proofId": "erdos-1071",
+    "type": "concept",
+    "title": "Endpoint Intersection Variant",
+    "content": "A variant where unit segments may touch at their endpoints but not cross. Can a finite maximal configuration exist under this relaxed condition?",
+    "significance": "supporting",
+    "range": {
+      "startLine": 93,
+      "endLine": 99
+    }
+  }
+]
