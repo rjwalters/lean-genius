@@ -1,0 +1,79 @@
+{
+  "id": "erdos-78",
+  "title": "Erdős Problem #78: Constructive Ramsey Lower Bound",
+  "slug": "erdos-78",
+  "description": "Give a constructive proof that R(k) > C^k. Equivalently, build explicit graphs with no clique/independent set of size c·log n. Best: Li (2023) achieves (log n)^C. Open ($100).",
+  "meta": {
+    "erdosNumber": 78,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "probabilistic-method",
+      "open"
+    ],
+    "references": [
+      "Erdős (1947): R(k) > k·2^{k/2}/e (probabilistic)",
+      "Erdős–Szekeres (1935): R(k) < 4^k",
+      "Cohen (2015): explicit graph, no clique/indep set 2^{(log log n)^C}",
+      "Li (2023): improved to (log n)^C",
+      "Campos–Griffiths–Morris–Sahasrabudhe (2023): R(k) ≤ (4-ε)^k",
+      "https://erdosproblems.com/78"
+    ],
+    "leanFile": "Proofs/Erdos78Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 44,
+      "summary": "Graphs, cliques, independent sets, Ramsey numbers."
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Bound",
+      "startLine": 46,
+      "endLine": 56,
+      "summary": "Erdős 1947: R(k) ≥ √2^k, non-constructive."
+    },
+    {
+      "id": "constructive",
+      "title": "Constructive Results",
+      "startLine": 58,
+      "endLine": 80,
+      "summary": "Cohen (2015), Li (2023) explicit graph constructions."
+    },
+    {
+      "id": "main-and-upper",
+      "title": "Main Problem and Upper Bounds",
+      "startLine": 82,
+      "endLine": 100,
+      "summary": "The $100 constructive challenge and R(k) upper bounds."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős's 1947 probabilistic proof that R(k) > √2^k was the birth of the probabilistic method. Despite 75+ years, no one has matched this bound constructively. The best explicit constructions (Li 2023) only achieve independence number (log n)^C, far from the c·log n target. Meanwhile, the upper bound was recently improved by Campos et al. (2023) to R(k) ≤ (4-ε)^k.",
+    "problemStatement": "Give a constructive (explicit, polynomial-time) proof that R(k) > C^k for some C > 1. Equivalently, construct explicit n-vertex graphs with no clique or independent set of size ≥ c·log n.",
+    "proofStrategy": "We axiomatize Ramsey numbers, state Erdős's probabilistic bound, record the best constructive results (Cohen 2015, Li 2023), and formalize the main open problem. We also state the Erdős–Szekeres upper bound and the CGMS improvement.",
+    "keyInsights": [
+      "The probabilistic method gives R(k) ≥ √2^k but is non-constructive",
+      "Constructive lower bounds lag enormously: (log n)^C vs the target c·log n",
+      "The gap between constructive and probabilistic bounds is one of the largest in combinatorics",
+      "Campos–Griffiths–Morris–Sahasrabudhe (2023) broke the 4^k upper bound barrier",
+      "Algebraic constructions (e.g., Paley graphs) achieve √n but not the optimal c·log n"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #78 remains one of the most famous open problems in combinatorics. The enormous gap between probabilistic bounds (R(k) > √2^k) and constructive ones (independence number ~ (log n)^C) highlights a fundamental limitation in our ability to construct Ramsey-type objects explicitly.",
+    "implications": "A constructive proof would have major implications for complexity theory, pseudorandomness, and derandomization. It connects to the broader question of whether probabilistic existence proofs can always be made constructive.",
+    "openQuestions": [
+      "Can explicit graphs achieve independence number O(log n)?",
+      "Is the probabilistic method inherently stronger than explicit constructions for Ramsey numbers?",
+      "What is the true value of C in R(k) ~ C^k?",
+      "Can algebraic or number-theoretic constructions close the gap?"
+    ]
+  }
+}
