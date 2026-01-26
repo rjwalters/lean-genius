@@ -1,0 +1,83 @@
+[
+  {
+    "id": "erdos-466-ann-fracDist",
+    "proofId": "erdos-466",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "Fractional Distance",
+    "content": "The distance from a real number to the nearest integer: ‖x‖ = |x − round(x)|. Always lies in [0, 1/2].",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-466-ann-config",
+    "proofId": "erdos-466",
+    "range": { "startLine": 38, "endLine": 44 },
+    "type": "definition",
+    "title": "SeparatedConfig",
+    "content": "A configuration of n points in a disk of radius X with all pairwise fractional-distance separations ≥ δ. Encodes both the geometric containment and the separation condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-466-ann-maxPoints",
+    "proofId": "erdos-466",
+    "range": { "startLine": 48, "endLine": 49 },
+    "type": "definition",
+    "title": "N(X, δ)",
+    "content": "The maximum number of points achievable in a disk of radius X with pairwise fractional-distance separation ≥ δ.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-466-ann-main",
+    "proofId": "erdos-466",
+    "range": { "startLine": 54, "endLine": 55 },
+    "type": "theorem",
+    "title": "Main Result (Proved)",
+    "content": "There exists δ > 0 such that N(X, δ) → ∞ as X → ∞. The answer to Erdős's question is yes.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-466-ann-graham",
+    "proofId": "erdos-466",
+    "range": { "startLine": 61, "endLine": 62 },
+    "type": "theorem",
+    "title": "Graham's Logarithmic Bound",
+    "content": "N(X, 1/10) ≥ (log X)/10 for large X. This was the first result showing N can grow without bound.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-466-ann-sarkozy",
+    "proofId": "erdos-466",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "theorem",
+    "title": "Sárközy's Polynomial Bound",
+    "content": "For small δ > 0, N(X, δ) > X^{1/2 − δ^{1/7}} for large X. This polynomial bound is vastly stronger than Graham's logarithmic one.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-466-ann-bound",
+    "proofId": "erdos-466",
+    "range": { "startLine": 78, "endLine": 78 },
+    "type": "concept",
+    "title": "Fractional Distance Bound",
+    "content": "The fractional distance is always ≤ 1/2, so δ > 1/2 trivially gives N = 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-466-ann-mono-X",
+    "proofId": "erdos-466",
+    "range": { "startLine": 82, "endLine": 83 },
+    "type": "concept",
+    "title": "Monotonicity in X",
+    "content": "N(X, δ) is non-decreasing in X: a larger disk can contain at least as many separated points.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-466-ann-mono-delta",
+    "proofId": "erdos-466",
+    "range": { "startLine": 87, "endLine": 88 },
+    "type": "concept",
+    "title": "Monotonicity in δ",
+    "content": "N(X, δ) is non-increasing in δ: stricter separation constraints reduce the achievable count.",
+    "significance": "supporting"
+  }
+]
