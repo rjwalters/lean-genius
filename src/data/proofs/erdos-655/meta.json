@@ -1,0 +1,68 @@
+{
+  "id": "erdos-655",
+  "title": "Erdős Problem #655: Distinct Distances with Concyclicity Restriction",
+  "slug": "erdos-655",
+  "description": "With no circle centered at any point containing 3+ others, do n points in ℝ² determine ≥ (1+c)n/2 distinct distances? FALSE as stated (Hunter). Likely intended with no 4 concyclic. Open.",
+  "meta": {
+    "author": "Erdős, Pach",
+    "sourceUrl": "https://erdosproblems.com/655",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos655Problem.lean",
+    "tags": ["combinatorial geometry", "distinct distances", "concyclicity"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 655,
+    "erdosUrl": "https://erdosproblems.com/655",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Pach asked whether restricting concyclicity forces more distinct distances. Every point trivially determines ≥ (n-1)/2 distances. The conjecture asks for a multiplicative improvement (1+c). Hunter showed the original formulation is false; the intended version likely requires no 4 concyclic points.",
+    "problemStatement": "Under a concyclicity restriction, do n points in ℝ² determine at least (1+c)n/2 distinct distances for some universal c > 0?",
+    "proofStrategy": "Defines point configurations, distinct distances, and the NoConcyclicTriple condition. States the basic (n-1)/2 bound, Hunter's counterexample disproving the original statement, and the corrected conjecture with the no-4-concyclic condition.",
+    "keyInsights": [
+      "The basic lower bound (n-1)/2 follows from the pigeonhole principle under the concyclicity condition",
+      "Equally-spaced points on a circle satisfy the original condition but give only n/2 distances",
+      "The corrected formulation (no 4 concyclic) prevents this counterexample",
+      "The problem connects distinct distances to incidence geometry"
+    ]
+  },
+  "sections": [
+    {
+      "id": "distances",
+      "title": "Point Configurations and Distances",
+      "startLine": 20,
+      "endLine": 34,
+      "summary": "Defines point configurations, distinct distances, and distances from a single point."
+    },
+    {
+      "id": "concyclicity",
+      "title": "Concyclicity Restrictions",
+      "startLine": 38,
+      "endLine": 51,
+      "summary": "Defines the NoConcyclicTriple and NoFourConcyclic conditions."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Basic Lower Bound",
+      "startLine": 55,
+      "endLine": 60,
+      "summary": "States the (n-1)/2 distance bound under the concyclicity restriction."
+    },
+    {
+      "id": "counterexample-conjecture",
+      "title": "Counterexample and Corrected Conjecture",
+      "startLine": 64,
+      "endLine": 82,
+      "summary": "States Hunter's counterexample and the corrected Erdős–Pach conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 655 asks for an improvement over the basic (n-1)/2 distinct distance bound under concyclicity restrictions. The original formulation is disproved by Hunter, but the corrected version with no 4 concyclic points remains open.",
+    "implications": "Resolution would advance the theory of distinct distances in restricted point configurations.",
+    "openQuestions": [
+      "Does the corrected conjecture (no 4 concyclic) hold?",
+      "What is the optimal constant c?",
+      "Can the result be strengthened to n^{1+ε} distinct distances?"
+    ]
+  }
+}

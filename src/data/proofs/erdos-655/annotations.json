@@ -1,0 +1,74 @@
+[
+  {
+    "id": "distinct-distances",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "Distinct Distances",
+    "content": "The number of distinct nonzero pairwise distances in a point configuration. This is the central quantity in Erdős distance problems.",
+    "significance": "critical",
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    }
+  },
+  {
+    "id": "no-concyclic-triple",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "No Concyclic Triple",
+    "content": "No circle centered at any point xᵢ passes through 3 or more other points: at most 2 points are equidistant from any given point. This is the original formulation's condition.",
+    "significance": "critical",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    }
+  },
+  {
+    "id": "no-four-concyclic",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "No Four Concyclic",
+    "content": "No 4 points lie on a common circle. This is the stronger condition believed to be the intended formulation.",
+    "significance": "critical",
+    "range": {
+      "startLine": 46,
+      "endLine": 51
+    }
+  },
+  {
+    "id": "basic-bound",
+    "proofId": "erdos-655",
+    "type": "theorem",
+    "title": "Basic (n-1)/2 Bound",
+    "content": "Under the NoConcyclicTriple condition, every point determines at least ⌈(n-1)/2⌉ distinct distances, by pigeonhole: each distance appears at most twice.",
+    "significance": "key",
+    "range": {
+      "startLine": 55,
+      "endLine": 60
+    }
+  },
+  {
+    "id": "hunter-counter",
+    "proofId": "erdos-655",
+    "type": "insight",
+    "title": "Hunter's Counterexample",
+    "content": "Equally-spaced points on a circle satisfy NoConcyclicTriple but determine only ~n/2 distinct distances, disproving the original conjecture. This shows the formulation needs strengthening.",
+    "significance": "critical",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    }
+  },
+  {
+    "id": "corrected-conjecture",
+    "proofId": "erdos-655",
+    "type": "concept",
+    "title": "Corrected Erdős–Pach Conjecture",
+    "content": "Under the stronger no-4-concyclic condition, n points should determine ≥ (1+c)n/2 distinct distances for some universal c > 0. This remains open.",
+    "significance": "critical",
+    "range": {
+      "startLine": 74,
+      "endLine": 82
+    }
+  }
+]
