@@ -2,61 +2,105 @@
   "id": "erdos-367",
   "title": "Erdős Problem #367: Products of 2-Full Parts",
   "slug": "erdos-367",
-  "description": "Study the growth of products of 2-full parts over consecutive integers.",
+  "description": "For fixed k ≥ 1, is ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}? The strong bound ≪ n² holds for k ≤ 2 but fails for k ≥ 3 (van Doorn). OPEN.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/367",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos367Problem.lean",
-    "tags": ["number theory", "powerful numbers", "consecutive integers"],
-    "badge": "open-problem",
-    "sorries": 15,
+    "tags": ["number-theory", "powerful-numbers", "consecutive-integers", "squarefree"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 367,
     "erdosUrl": "https://erdosproblems.com/367",
-    "erdosProblemStatus": "open",
-    "mathlibDependencies": []
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem concerns the 2-full (squareful) part of integers, which captures the contribution from prime powers p² and higher. The problem asks about the growth of products of these parts over consecutive integers, connecting to questions about the distribution of powerful numbers.",
-    "problemStatement": "Let B₂(n) denote the 2-full part of n (the ratio n/n', where n' is the squarefree part). For every fixed k ≥ 1, is it true that ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}? Or perhaps even ≪_k n²?",
-    "proofStrategy": "The trivial cases k ≤ 2 follow from B₂(n) ≤ n. For k ≥ 3, van Doorn showed the strong n² bound fails by exhibiting sequences where the product grows as n²·log n. The weak n^{2+ε} bound remains open.",
+    "historicalContext": "This problem concerns the 2-full (squareful) part B₂(n) of integers, which captures prime powers p² and higher. B₂(n) = n/squarefreePart(n). The problem asks about products of B₂ over k consecutive integers.\n\nFor k ≤ 2, the product is ≤ n² trivially since B₂(n) ≤ n. For k ≥ 3, van Doorn showed the strong n² bound fails: there exist infinitely many n with ∏B₂(m) ≫ n²·log n. The weak bound n^{2+o(1)} remains open for all k.",
+    "problemStatement": "Let B₂(n) = n/squarefreePart(n) denote the 2-full part. For every fixed k ≥ 1, is it true that ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}? Or perhaps even ≪_k n²?",
+    "proofStrategy": "The formalization defines squarefreePart, twoFullPart, and productTwoFullParts. Weak and strong bounds are defined as propositions. Known results (k ≤ 2 strong bound, k ≥ 3 failure, van Doorn lower bound) are axioms. Properties of B₂ (squarefree characterization, multiplicativity, divisibility) are axioms. The r-full generalization is defined with a proved consistency theorem. A summary theorem combines the known results.",
     "keyInsights": [
-      "B₂(n) = 1 when n is squarefree",
-      "B₂(n) = n when n is a perfect power",
-      "For k ≤ 2, the bound ≪ n² holds trivially",
-      "For k ≥ 3, van Doorn showed ∏B₂(m) can be ≫ n²·log n",
-      "The weak bound n^{2+o(1)} remains open"
+      "B₂(n) = 1 when n is squarefree; B₂(n) = n when n is a perfect power",
+      "For k ≤ 2, ∏B₂(m) ≤ n² holds trivially since B₂(n) ≤ n",
+      "van Doorn: for k = 3, ∏B₂(m) can be ≫ n²·log n, so strong bound fails",
+      "The weak bound n^{2+o(1)} remains open — the gap is the logarithmic factor",
+      "The problem generalizes to r-full parts B_r(n) for r ≥ 3"
     ]
   },
   "sections": [
     {
-      "id": "section-two-full",
-      "title": "The 2-Full Part",
-      "content": "The 2-full part B₂(n) is n divided by its squarefree part. Equivalently, B₂(n) = ∏_{p² | n} p^{v_p(n)} where v_p(n) is the p-adic valuation. B₂(n) captures the 'highly divisible' component of n."
+      "id": "two-full-part",
+      "title": "Part 1: The 2-Full Part",
+      "startLine": 39,
+      "endLine": 72,
+      "summary": "Definitions of squarefreePart, twoFullPart (B₂), and twoFullPartAlt via prime factorization."
     },
     {
-      "id": "section-problem",
-      "title": "Main Problem",
-      "content": "For fixed k, study the maximum of ∏_{n ≤ m < n+k} B₂(m). The strong conjecture is ≪_k n². The weak conjecture is ≪ n^{2+ε} for any ε > 0. The trivial bound is ≪ n^k."
+      "id": "product",
+      "title": "Part 2: Product over Consecutive Integers",
+      "startLine": 74,
+      "endLine": 87,
+      "summary": "productTwoFullParts(n, k) = ∏_{n ≤ m < n+k} B₂(m), the main object of study."
     },
     {
-      "id": "section-trivial",
-      "title": "Trivial Cases",
-      "content": "For k = 1, the product is just B₂(n) ≤ n ≤ n². For k = 2, B₂(n)·B₂(n+1) ≤ n·(n+1) < n². So the strong bound holds for k ≤ 2."
+      "id": "bounds",
+      "title": "Part 3: The Bounds",
+      "startLine": 89,
+      "endLine": 111,
+      "summary": "weakBound (n^{2+ε} for all ε > 0) and strongBound (n²) as formal propositions."
     },
     {
-      "id": "section-van-doorn",
-      "title": "van Doorn's Lower Bound",
-      "content": "For k = 3, van Doorn showed there exist infinitely many n with ∏_{n ≤ m < n+3} B₂(m) ≫ n²·log n. This disproves the strong n² bound for k ≥ 3."
+      "id": "conjecture",
+      "title": "Part 4: The Erdős Conjecture",
+      "startLine": 113,
+      "endLine": 127,
+      "summary": "erdos_367_conjecture: weakBound(k) holds for all k ≥ 1. The main open question."
     },
     {
-      "id": "section-generalization",
-      "title": "r-Full Parts",
-      "content": "The problem generalizes to r-full parts B_r(n) for r ≥ 3, asking whether products grow at most as n^{r+o(1)}. This connects to the distribution of r-full numbers."
+      "id": "trivial-cases",
+      "title": "Part 5: Trivial Cases (k ≤ 2)",
+      "startLine": 129,
+      "endLine": 147,
+      "summary": "Strong bound holds for k = 1 and k = 2, since B₂(n) ≤ n."
+    },
+    {
+      "id": "failure",
+      "title": "Part 6: Failure of Strong Bound (k ≥ 3)",
+      "startLine": 149,
+      "endLine": 171,
+      "summary": "van Doorn: strong bound fails for k = 3. Infinitely many n with ∏B₂(m) ≫ n²·log n."
+    },
+    {
+      "id": "properties",
+      "title": "Part 7: Properties of B₂",
+      "startLine": 173,
+      "endLine": 221,
+      "summary": "B₂(n) = 1 iff squarefree, B₂(p) = 1, B₂(p²) = p², multiplicativity, B₂(n) ≤ n, B₂(n) | n."
+    },
+    {
+      "id": "generalization",
+      "title": "Part 8: r-Full Parts Generalization",
+      "startLine": 223,
+      "endLine": 254,
+      "summary": "rFullPart definition, proved twoFullPartAlt = rFullPart 2, generalized conjecture."
+    },
+    {
+      "id": "heuristics",
+      "title": "Part 9: Heuristic Analysis",
+      "startLine": 256,
+      "endLine": 271,
+      "summary": "Average B₂(n) is bounded; products can be large when consecutive integers share prime powers."
+    },
+    {
+      "id": "summary",
+      "title": "Part 10: Summary",
+      "startLine": 273,
+      "endLine": 295,
+      "summary": "Summary theorem: strong bound for k ≤ 2, failure for k ≥ 3. Status: OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #367 asks about products of 2-full parts over consecutive integers. The strong n² bound fails for k ≥ 3 (van Doorn), but the weak n^{2+o(1)} bound remains open.",
+    "summary": "Erdős Problem #367 asks whether products of 2-full parts over k consecutive integers grow at most as n^{2+o(1)}. The strong n² bound fails for k ≥ 3 (van Doorn), but the weak bound remains open.",
     "implications": "Resolution would illuminate the distribution of powerful parts among consecutive integers and connect to questions about smooth numbers and highly composite numbers.",
     "openQuestions": [
       "Does ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)} hold for all k?",
