@@ -1,0 +1,86 @@
+{
+  "id": "erdos-118",
+  "title": "Erdős Problem #118: Partition Ordinals and Higher Cliques",
+  "slug": "erdos-118",
+  "description": "Does α → (α,3)² imply α → (α,n)² for all n ≥ 3? DISPROVED by Schipperus (1999/2010) and Darby (1999). Larson's counterexample: ω^(ω²) → (ω^(ω²),3)² but ω^(ω²) ↛ (ω^(ω²),5)².",
+  "meta": {
+    "erdosNumber": 118,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "partition-relations",
+      "ordinals",
+      "disproved"
+    ],
+    "references": [
+      "Erdős–Hajnal: original conjecture",
+      "Schipperus (1999/2010): independent disproof",
+      "Darby (1999): independent disproof",
+      "Larson: counterexample ω^(ω²) with n=5",
+      "Hajnal–Larson (2010): Chapter 2.9 survey",
+      "https://erdosproblems.com/118"
+    ],
+    "leanFile": "Proofs/Erdos118Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 37,
+      "summary": "Define ordPartition, IsPartitionOrd, and the Erdős–Hajnal conjecture."
+    },
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "startLine": 39,
+      "endLine": 50,
+      "summary": "ω^(ω²) satisfies α → (α,3)² but fails α → (α,5)²."
+    },
+    {
+      "id": "disproof",
+      "title": "Disproof",
+      "startLine": 52,
+      "endLine": 58,
+      "summary": "Formal proof that the Erdős–Hajnal conjecture is false."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Partition Threshold and Monotonicity",
+      "startLine": 60,
+      "endLine": 77,
+      "summary": "Define partition threshold, monotonicity in k, and the exact threshold for ω^(ω²)."
+    },
+    {
+      "id": "relation-592",
+      "title": "Relation to Problem #592",
+      "startLine": 79,
+      "endLine": 84,
+      "summary": "Connection to the open classification of partition ordinals for triangles."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Hajnal conjectured that if α → (α,3)² then α → (α,n)² for all finite n. This would mean that partition ordinals for triangles automatically handle all finite cliques. The conjecture was independently disproved by Schipperus and Darby in 1999, showing the partition landscape is more nuanced than expected.",
+    "problemStatement": "Does the ordinal partition relation α → (α,3)² imply α → (α,n)² for all finite n ≥ 3?",
+    "proofStrategy": "We formalize the partition relation, state the conjecture, define the counterexample ordinal ω^(ω²), axiomatize that it satisfies α → (α,3)² but not α → (α,5)², and derive the formal disproof by contradiction.",
+    "keyInsights": [
+      "Schipperus (1999/2010) and Darby (1999) independently disproved the conjecture",
+      "Larson's counterexample: ω^(ω²) → (ω^(ω²),3)² but ω^(ω²) ↛ (ω^(ω²),5)²",
+      "The partition relation is monotone decreasing in k, but the threshold varies by ordinal",
+      "Different ordinals can have different partition thresholds, not just 3 vs ∞",
+      "Closely related to Problem #592 on classifying partition ordinals for triangles"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #118 asked whether α → (α,3)² implies α → (α,n)² for all n. This was disproved: ω^(ω²) is a partition ordinal for triangles but not for K_5. Each ordinal has a partition threshold that can be finite and greater than 3.",
+    "implications": "The disproof reveals that ordinal Ramsey theory has a richer structure than anticipated. The partition threshold is an additional invariant of interest for each ordinal, and the full classification of partition ordinals must be done clique-size by clique-size.",
+    "openQuestions": [
+      "What is the exact partition threshold of ω^(ω²)? (Known: between 3 and 4)",
+      "For which ordinals α and k does α → (α,k)² hold?",
+      "How does the partition threshold grow for ordinals of the form ω^(ω^γ)?"
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ord-partition",
+    "proofId": "erdos-118",
+    "range": { "startLine": 28, "endLine": 29 },
+    "type": "definition",
+    "title": "Ordinal Partition Relation",
+    "content": "α → (α, k)²: for any 2-coloring of pairs from α, there is either a red set of order type α or a blue k-clique. This extends Ramsey theory to infinite ordinals.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-hajnal-conj",
+    "proofId": "erdos-118",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "conjecture",
+    "title": "Erdős–Hajnal Conjecture (Disproved)",
+    "content": "The conjecture that α → (α,3)² implies α → (α,n)² for all n ≥ 3. This would have unified partition ordinals across all clique sizes. DISPROVED.",
+    "significance": "high"
+  },
+  {
+    "id": "counterexample-ord",
+    "proofId": "erdos-118",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Counterexample Ordinal ω^(ω²)",
+    "content": "The ordinal ω^(ω²) = ω^(ω·ω). Larson showed this is a partition ordinal for triangles but not for K_5, providing a concrete counterexample.",
+    "significance": "high"
+  },
+  {
+    "id": "counter-positive",
+    "proofId": "erdos-118",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "theorem",
+    "title": "ω^(ω²) → (ω^(ω²), 3)²",
+    "content": "The partition property holds for triangles. This follows from Schipperus's positive classification results for ordinals with small CNF-length.",
+    "significance": "medium"
+  },
+  {
+    "id": "counter-negative",
+    "proofId": "erdos-118",
+    "range": { "startLine": 51, "endLine": 52 },
+    "type": "theorem",
+    "title": "ω^(ω²) ↛ (ω^(ω²), 5)²",
+    "content": "The partition property fails for K_5. Larson demonstrated an explicit 2-coloring of K_{ω^(ω²)} with no red copy of order type ω^(ω²) and no blue K_5.",
+    "significance": "high"
+  },
+  {
+    "id": "disproof",
+    "proofId": "erdos-118",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "theorem",
+    "title": "Formal Disproof",
+    "content": "The Erdős–Hajnal conjecture is false: the counterexample satisfies α → (α,3)² but not α → (α,5)², contradicting the universal implication.",
+    "significance": "high"
+  },
+  {
+    "id": "partition-threshold",
+    "proofId": "erdos-118",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "definition",
+    "title": "Partition Threshold",
+    "content": "The largest k such that α → (α,k)² holds. For ω^(ω²), this threshold is between 3 and 4. The threshold concept captures the nuanced structure revealed by the disproof.",
+    "significance": "medium"
+  }
+]
