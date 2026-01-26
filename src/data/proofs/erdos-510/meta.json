@@ -1,0 +1,85 @@
+{
+  "id": "erdos-510",
+  "title": "Erdős Problem #510: Chowla's Cosine Problem",
+  "slug": "erdos-510",
+  "description": "For finite A ⊂ ℕ of size N, must there exist θ with ∑ cos(nθ) < −c√N for absolute c > 0? Best known: −cN^{1/7} (Bedert 2025). Sidon sets show √N is optimal. Open.",
+  "meta": {
+    "erdosNumber": 510,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "harmonic-analysis",
+      "additive-combinatorics",
+      "exponential-sums",
+      "open"
+    ],
+    "references": [
+      "Chowla: original cosine problem",
+      "Bedert (2025): N^{1/7} polynomial bound",
+      "Ruzsa (2004): exp(√(log N)) improvement over Bourgain",
+      "Jin–Milojević–Tomon–Zhang (2025): independent polynomial bound",
+      "https://erdosproblems.com/510"
+    ],
+    "leanFile": "Proofs/Erdos510Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 31,
+      "summary": "Cosine sum and minimum cosine sum definitions."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 33,
+      "endLine": 40,
+      "summary": "Chowla's conjecture: min_θ ∑ cos(nθ) < −c√N."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 42,
+      "endLine": 57,
+      "summary": "Bedert N^{1/7}, Ruzsa exp(√log N), Bourgain first bound."
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality",
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "Sidon set construction showing √N is best possible."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "Additive combinatorics connection, Green's problem list, polynomial progress."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Chowla posed the cosine problem, which Erdős publicized. It asks whether every large finite set of positive integers has a large negative cosine sum. Bourgain (1986) gave the first non-trivial bound, Ruzsa (2004) improved it, and Bedert (2025) achieved the first polynomial bound N^{1/7}.",
+    "problemStatement": "For finite A ⊂ ℕ⁺ of size N, does there exist c > 0 and θ such that ∑_{n ∈ A} cos(nθ) < −c√N?",
+    "proofStrategy": "We define the cosine sum function, state the √N conjecture, record the best known N^{1/7} bound (Bedert 2025), and prove optimality via Sidon sets.",
+    "keyInsights": [
+      "The conjectured bound √N is optimal: Sidon difference sets achieve it",
+      "Bedert (2025) proved the first polynomial bound: −cN^{1/7}",
+      "The gap between N^{1/7} and N^{1/2} remains open",
+      "The problem connects harmonic analysis with additive combinatorics",
+      "Appears as Problem 81 on Green's open problems list"
+    ]
+  },
+  "conclusion": {
+    "summary": "Chowla's cosine problem asks whether every finite set of N positive integers has a cosine sum below −c√N. The best known bound is −cN^{1/7} (Bedert 2025), far from the conjectured √N. The problem sits at the intersection of harmonic analysis and additive combinatorics.",
+    "implications": "Resolving Chowla's conjecture would strengthen understanding of exponential sum bounds and have applications to discrepancy theory, Diophantine approximation, and the distribution of arithmetic sequences.",
+    "openQuestions": [
+      "Can the exponent 1/7 be improved toward 1/2?",
+      "Is there a structural characterization of sets achieving the minimum cosine sum?",
+      "What is the relationship to the Littlewood conjecture on exponential sums?",
+      "Can the polynomial bounds be achieved constructively?"
+    ]
+  }
+}
