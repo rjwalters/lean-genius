@@ -1,0 +1,82 @@
+{
+  "id": "erdos-1094",
+  "title": "Erdős Problem #1094: Least Prime Factor of Binomial Coefficients",
+  "slug": "erdos-1094",
+  "description": "For n ≥ 2k, the least prime factor of C(n,k) should be ≤ max(n/k, k) with only finitely many exceptions. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1094",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1094Problem.lean",
+    "tags": ["number-theory", "binomial-coefficients", "prime-factorization"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1094,
+    "erdosUrl": "https://erdosproblems.com/1094",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Lacampagne, and Selfridge (1988) conjectured that the least prime factor of C(n,k) is bounded by max(n/k, k) for all but finitely many pairs (n,k) with n ≥ 2k. This strengthens Erdős Problem 384. Selfridge conjectured the bound holds for n ≥ k²-1 with only C(62,6) as exception.",
+    "problemStatement": "For all n ≥ 2k, is it true that the least prime factor of C(n,k) is ≤ max(n/k, k), with only finitely many exceptions?",
+    "proofStrategy": "We define LPFBound and IsException using Nat.minFac. ErdosProblem1094 states finite exceptionality. Known exceptions (C(7,3), C(62,6), C(284,28)) are axiomatized. Selfridge's refinement and stronger bounds (√k, constant 13) are included. Proved: bound_simplifies_large.",
+    "keyInsights": [
+      "The bound lpf(C(n,k)) ≤ max(n/k, k) fails for only 14 known pairs",
+      "Selfridge conjectured the bound holds for n ≥ k²-1 with sole exception C(62,6)",
+      "Stronger conjectures suggest replacing k with √k or even the constant 13",
+      "For n ≥ k², the bound simplifies to lpf(C(n,k)) ≤ n/k"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lpf-bound",
+      "title": "Least Prime Factor Bound",
+      "startLine": 18,
+      "endLine": 28,
+      "summary": "Defines LPFBound (minFac ≤ max(n/k, k)) and IsException for pairs violating the bound."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 30,
+      "endLine": 37,
+      "summary": "States ErdosProblem1094: finitely many exceptions to the LPF bound."
+    },
+    {
+      "id": "exceptions",
+      "title": "Known Exceptions",
+      "startLine": 39,
+      "endLine": 56,
+      "summary": "C(7,3), C(62,6), C(284,28) are exceptions; 14 known total."
+    },
+    {
+      "id": "selfridge",
+      "title": "Selfridge's Refinement",
+      "startLine": 58,
+      "endLine": 66,
+      "summary": "Selfridge conjectured the bound holds for n ≥ k²-1 with only C(62,6) excepted."
+    },
+    {
+      "id": "stronger-bounds",
+      "title": "Stronger Bounds",
+      "startLine": 68,
+      "endLine": 85,
+      "summary": "Stronger conjectures with √k or constant 13 replacing k in the bound."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 87,
+      "endLine": 100,
+      "summary": "Proved: for n ≥ k², the bound simplifies to lpf(C(n,k)) ≤ n/k."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 1094 conjectures that the least prime factor of C(n,k) is ≤ max(n/k, k) with only finitely many exceptions. 14 exceptions are known. The problem remains open.",
+    "implications": "Resolution would advance understanding of prime factorization patterns in binomial coefficients, strengthening known results from Problem 384.",
+    "openQuestions": [
+      "Are there exactly 14 exceptions to the LPF bound?",
+      "Is Selfridge's conjecture correct (bound holds for n ≥ k²-1 except C(62,6))?",
+      "Can the bound be improved to max(n/k, 13) with ≤ 12 exceptions?"
+    ]
+  }
+}

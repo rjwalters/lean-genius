@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-1094-lpfbound",
+    "proofId": "erdos-1094",
+    "type": "definition",
+    "range": { "startLine": 22, "endLine": 28 },
+    "title": "LPF Bound and Exceptions",
+    "content": "LPFBound n k holds when minFac(C(n,k)) ≤ max(n/k, k). IsException flags pairs where this fails.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1094-conjecture",
+    "proofId": "erdos-1094",
+    "type": "conjecture",
+    "range": { "startLine": 34, "endLine": 37 },
+    "title": "Erdős Problem 1094",
+    "content": "Only finitely many pairs (n,k) with n ≥ 2k violate the bound lpf(C(n,k)) ≤ max(n/k, k).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1094-exceptions",
+    "proofId": "erdos-1094",
+    "type": "result",
+    "range": { "startLine": 43, "endLine": 56 },
+    "title": "14 Known Exceptions",
+    "content": "C(7,3), C(62,6), C(284,28) are among the 14 documented exceptions to the LPF bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1094-selfridge",
+    "proofId": "erdos-1094",
+    "type": "conjecture",
+    "range": { "startLine": 62, "endLine": 66 },
+    "title": "Selfridge's Refinement",
+    "content": "The bound holds for all n ≥ k²-1, with the sole exception C(62,6).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-1094-stronger",
+    "proofId": "erdos-1094",
+    "type": "conjecture",
+    "range": { "startLine": 72, "endLine": 85 },
+    "title": "Stronger Bounds",
+    "content": "Conjectured: lpf(C(n,k)) ≤ max(n/k, √k), or even ≤ max(n/k, 13) with at most 12 exceptions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-1094-simplifies",
+    "proofId": "erdos-1094",
+    "type": "result",
+    "range": { "startLine": 93, "endLine": 96 },
+    "title": "Bound Simplification",
+    "content": "Proved: when k ≤ n/k (i.e., n ≥ k²), the bound simplifies to lpf(C(n,k)) ≤ n/k.",
+    "significance": "supporting"
+  }
+]
