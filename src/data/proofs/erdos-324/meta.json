@@ -1,0 +1,82 @@
+{
+  "id": "erdos-324",
+  "title": "Erdős Problem #324: Distinct Polynomial Pair Sums",
+  "slug": "erdos-324",
+  "description": "Does there exist f(x) ∈ ℤ[x] such that all sums f(a) + f(b) with a < b are distinct? Conjectured for f(x) = x⁵. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/324",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos324Problem.lean",
+    "tags": ["number-theory", "polynomial", "additive-combinatorics"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 324,
+    "erdosUrl": "https://erdosproblems.com/324",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980) posed this question about polynomials whose pair sums are all distinct. They described it as 'very annoying.' The problem connects to Waring-type questions and the Lander-Parkin-Selfridge conjecture on equal sums of like powers.",
+    "problemStatement": "Does there exist a polynomial f(x) ∈ ℤ[x] such that all the sums f(a) + f(b) with a < b nonnegative integers are distinct?",
+    "proofStrategy": "We define pairSumFn, orderedPairs, and HasDistinctPairSums using Set.InjOn. ErdosProblem324 asks for existence. The QuinticConjecture (f = x⁵) is stated and shown to imply the main problem. Known failures for n = 2,3,4 (taxicab numbers, Euler) are axiomatized. A minimum degree bound of 5 is included.",
+    "keyInsights": [
+      "The conjecture is that f(x) = x⁵ has all pair sums f(a)+f(b) distinct for a < b",
+      "For n ≤ 4, xⁿ fails: squares (65 = 1²+8² = 4²+7²), cubes (1729), and fourth powers all have collisions",
+      "The Lander-Parkin-Selfridge conjecture implies xⁿ works for all n ≥ 5",
+      "Any polynomial with distinct pair sums must have degree ≥ 5"
+    ]
+  },
+  "sections": [
+    {
+      "id": "pair-sums",
+      "title": "Distinct Pair Sums",
+      "startLine": 25,
+      "endLine": 40,
+      "summary": "Defines pairSumFn, orderedPairs, and HasDistinctPairSums via injectivity on ordered pairs."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 42,
+      "endLine": 49,
+      "summary": "States ErdosProblem324: existence of a polynomial with distinct pair sums."
+    },
+    {
+      "id": "quintic",
+      "title": "The Quintic Conjecture",
+      "startLine": 51,
+      "endLine": 62,
+      "summary": "States QuinticConjecture (f = x⁵) and proves it implies the main problem."
+    },
+    {
+      "id": "powers",
+      "title": "Power Generalizations",
+      "startLine": 64,
+      "endLine": 87,
+      "summary": "PowerPairSumDistinct for general n, LPS implication, and known failures for n = 2,3,4."
+    },
+    {
+      "id": "lower-degree",
+      "title": "Lower Degree Impossibility",
+      "startLine": 89,
+      "endLine": 99,
+      "summary": "Linear polynomials fail; minimum degree for distinct pair sums is ≥ 5."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Pair Sums",
+      "startLine": 101,
+      "endLine": 113,
+      "summary": "Defines distinctPairSumCount and shows it equals C(N+1,2) for distinct pair sums."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 324 asks whether a polynomial f ∈ ℤ[x] can make all pair sums f(a)+f(b) distinct for a < b. The conjecture is that x⁵ works. The problem remains open.",
+    "implications": "Resolution would connect to the Lander-Parkin-Selfridge conjecture and Waring-type problems about representations of integers as sums of powers.",
+    "openQuestions": [
+      "Does f(x) = x⁵ have distinct pair sums?",
+      "Is the Lander-Parkin-Selfridge conjecture true?",
+      "Can a non-monomial polynomial have distinct pair sums?"
+    ]
+  }
+}
