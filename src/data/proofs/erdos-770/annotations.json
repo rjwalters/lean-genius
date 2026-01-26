@@ -1,0 +1,56 @@
+[
+  {
+    "id": "h-function",
+    "proofId": "erdos-770",
+    "range": { "startLine": 26, "endLine": 29 },
+    "type": "definition",
+    "title": "Mutual Coprime Bound h(n)",
+    "content": "h(n) is the minimal k ≥ 2 such that 2^n−1, 3^n−1, ..., k^n−1 are pairwise coprime. This measures how far the sequence must extend before all shared factors vanish.",
+    "significance": "high"
+  },
+  {
+    "id": "density-question",
+    "proofId": "erdos-770",
+    "range": { "startLine": 37, "endLine": 40 },
+    "type": "conjecture",
+    "title": "Density Existence",
+    "content": "Does the density δ_p of integers n with h(n) = p exist for every prime p? This asks about the statistical distribution of h(n) values.",
+    "significance": "high"
+  },
+  {
+    "id": "liminf",
+    "proofId": "erdos-770",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "conjecture",
+    "title": "Lim Inf Question",
+    "content": "Does lim inf h(n) = ∞? This asks whether h(n) eventually exceeds any fixed bound for almost all n.",
+    "significance": "high"
+  },
+  {
+    "id": "prime-char",
+    "proofId": "erdos-770",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "note",
+    "title": "Prime Characterization",
+    "content": "h(n) = n+1 if and only if n+1 is prime. When n+1 = p is prime, Fermat's theorem gives k^{p−1} ≡ 1 (mod p) for gcd(k,p)=1, so p | k^n − 1 for all k.",
+    "significance": "high"
+  },
+  {
+    "id": "unbounded-odd",
+    "proofId": "erdos-770",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "note",
+    "title": "Unbounded for Odd n",
+    "content": "h(n) is unbounded when restricted to odd values of n. The behavior for even n may differ due to the factor 2.",
+    "significance": "medium"
+  },
+  {
+    "id": "fermat",
+    "proofId": "erdos-770",
+    "range": { "startLine": 76, "endLine": 80 },
+    "type": "note",
+    "title": "Fermat Connection",
+    "content": "The key mechanism: when p − 1 | n, Fermat's theorem forces p | k^n − 1 for all k coprime to p, creating shared prime factors that prevent mutual coprimality.",
+    "significance": "medium"
+  }
+]
