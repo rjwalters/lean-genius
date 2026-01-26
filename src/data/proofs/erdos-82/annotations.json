@@ -1,0 +1,123 @@
+[
+  {
+    "id": "erdos-82-header",
+    "proofId": "erdos-82",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 23 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #82 asks whether F(n)/log(n) → ∞, where F(n) is the largest integer such that every n-vertex graph contains a regular induced subgraph on at least F(n) vertices. Posed by Erdős, Fajtlowicz, and Staton in 1988.",
+    "mathContext": "F(n) = max{m : every G on n vertices has a regular induced subgraph on ≥ m vertices}. The conjecture is that F(n) grows superlogarithmically.",
+    "significance": "essential",
+    "relatedConcepts": ["regular graphs", "induced subgraphs", "Ramsey theory"]
+  },
+  {
+    "id": "erdos-82-regular",
+    "proofId": "erdos-82",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 63 },
+    "title": "Regular Graphs",
+    "content": "A graph is k-regular if every vertex has degree exactly k. A graph is regular if it is k-regular for some k. Regular graphs include cliques (k-1 regular on k vertices), independent sets (0-regular), cycles (2-regular), and the Petersen graph (3-regular on 10 vertices).",
+    "mathContext": "IsRegular G k ≡ ∀ v, G.degree v = k. IsRegularGraph G ≡ ∃ k, IsRegular G k.",
+    "significance": "essential",
+    "relatedConcepts": ["vertex degree", "graph regularity", "algebraic graph theory"]
+  },
+  {
+    "id": "erdos-82-induced",
+    "proofId": "erdos-82",
+    "type": "definition",
+    "range": { "startLine": 65, "endLine": 83 },
+    "title": "Induced Subgraphs",
+    "content": "The induced subgraph G[S] on a vertex subset S keeps all edges of G between vertices in S. This is constructed as a SimpleGraph on the subtype S with adjacency inherited from G, with symmetry and irreflexivity proved from G's properties.",
+    "mathContext": "inducedSubgraph G S has Adj(u,v) ≡ G.Adj(u.val, v.val) for u, v : S.",
+    "significance": "essential",
+    "relatedConcepts": ["subgraph", "vertex subset", "SimpleGraph"]
+  },
+  {
+    "id": "erdos-82-fn",
+    "proofId": "erdos-82",
+    "type": "definition",
+    "range": { "startLine": 85, "endLine": 113 },
+    "title": "The Function F(n)",
+    "content": "F(n) is the central function in this problem. It is defined as the supremum of all m such that every graph on n vertices has a regular induced subgraph on at least m vertices. The predicate HasRegularInduced captures the existence of such a subgraph.",
+    "mathContext": "F(n) = sSup{m : ∀ G on n vertices, ∃ S with |S| ≥ m and G[S] is regular}. Defined noncomputably via sSup.",
+    "significance": "essential",
+    "relatedConcepts": ["extremal function", "graph invariant", "sSup"]
+  },
+  {
+    "id": "erdos-82-trivial",
+    "proofId": "erdos-82",
+    "type": "result",
+    "range": { "startLine": 115, "endLine": 141 },
+    "title": "Trivial Lower Bound",
+    "content": "Every graph with at least one vertex has a regular induced subgraph: any single vertex is 0-regular. More usefully, any clique is (k-1)-regular and any independent set is 0-regular. This guarantees F(n) ≥ 1 for all n ≥ 1.",
+    "mathContext": "F(n) ≥ 1 for n ≥ 1. Cliques and independent sets are both regular induced subgraphs.",
+    "significance": "supporting",
+    "relatedConcepts": ["clique", "independent set", "0-regular"]
+  },
+  {
+    "id": "erdos-82-ramsey",
+    "proofId": "erdos-82",
+    "type": "result",
+    "range": { "startLine": 143, "endLine": 183 },
+    "title": "Ramsey-Theoretic Lower Bound",
+    "content": "The Ramsey number R(k,k) guarantees every graph on R(k,k) vertices contains a k-clique or k-independent set. The Erdős-Szekeres bound R(k,k) ≤ 4^k gives F(n) ≥ (1/2)log₂(n). This is the baseline that Problem #82 asks us to beat.",
+    "mathContext": "R(k,k) ≤ 4^k ⟹ every n-vertex graph has a clique or independent set of size ≥ (1/2)log₂(n) ⟹ F(n) ≥ Nat.log 2 n / 2.",
+    "significance": "essential",
+    "relatedConcepts": ["Ramsey number", "Erdős-Szekeres", "diagonal Ramsey"]
+  },
+  {
+    "id": "erdos-82-aks",
+    "proofId": "erdos-82",
+    "type": "result",
+    "range": { "startLine": 185, "endLine": 205 },
+    "title": "Alon-Krivelevich-Sudakov Upper Bound",
+    "content": "Alon, Krivelevich, and Sudakov (2007) proved F(n) ≤ C·√n·(log n)^{O(1)} using probabilistic constructions. This shows F(n) cannot grow as fast as n^{1/2+ε}, placing the truth somewhere between log(n) and √n.",
+    "mathContext": "∃ C, C' > 0 such that F(n) ≤ C · n^{1/2} · (log n)^{C'} for all n ≥ 2.",
+    "significance": "essential",
+    "relatedConcepts": ["probabilistic method", "upper bound", "extremal construction"]
+  },
+  {
+    "id": "erdos-82-small",
+    "proofId": "erdos-82",
+    "type": "context",
+    "range": { "startLine": 207, "endLine": 242 },
+    "title": "Small Values and Computations",
+    "content": "Exact values of F(n) are known for small n from OEIS A120414: F(1..15) = 1,2,2,3,3,3,4,4,4,4,4,5,5,5,5. The inverse function G(k) gives the minimum n guaranteeing a k-regular induced subgraph. These computations provide concrete evidence for the growth rate.",
+    "mathContext": "G(k) = sInf{n : every n-vertex graph has a (k+1)-vertex k-regular induced subgraph}. G(0)=1, G(1)=2, G(2)=10.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A120414", "OEIS A390256", "computational graph theory"]
+  },
+  {
+    "id": "erdos-82-conjecture",
+    "proofId": "erdos-82",
+    "type": "conjecture",
+    "range": { "startLine": 244, "endLine": 274 },
+    "title": "The Erdős Conjecture",
+    "content": "The formal conjecture: F(n)/log(n) → ∞ as n → ∞. Formalized using Filter.Tendsto as Tendsto (fun n ↦ F(n)/log(n)) atTop atTop. An equivalent explicit formulation states: for every C > 0, for sufficiently large n, F(n) ≥ C·log(n).",
+    "mathContext": "erdos_82_conjecture ≡ Tendsto (fun n => (F n : ℝ) / Real.log n) atTop atTop. Equivalently: ∀ C > 0, ∃ N, ∀ n ≥ N, F(n) ≥ C·log(n).",
+    "significance": "essential",
+    "relatedConcepts": ["superlogarithmic growth", "Filter.Tendsto", "asymptotic analysis"]
+  },
+  {
+    "id": "erdos-82-connections",
+    "proofId": "erdos-82",
+    "type": "context",
+    "range": { "startLine": 276, "endLine": 318 },
+    "title": "Related Results and Connections",
+    "content": "The problem connects to: (1) the Erdős-Sauer problem on degree-constrained subgraphs, (2) improvements to diagonal Ramsey bounds (Campos-Griffiths-Morris-Sahasrabudhe 2023 improving R(k,k) ≤ (4-ε)^k), and (3) the behavior of F(n) on random graphs G(n,1/2).",
+    "mathContext": "Ramsey improvement: ∃ c > 0, R(k,k) ≤ ⌈(4-c)^k⌉. Random graph bound: ∀ ε > 0, F(n) ≥ (2-ε)·log₂(n) for large n.",
+    "significance": "supporting",
+    "relatedConcepts": ["diagonal Ramsey", "random graphs", "Erdős-Sauer"]
+  },
+  {
+    "id": "erdos-82-summary",
+    "proofId": "erdos-82",
+    "type": "result",
+    "range": { "startLine": 320, "endLine": 355 },
+    "title": "Bounds Summary",
+    "content": "The main theorem combines both known bounds: (1) F(n) ≥ (1/2)log₂(n) from Ramsey theory, and (2) F(n) ≤ C·√n·(log n)^{O(1)} from Alon-Krivelevich-Sudakov. The problem remains OPEN.",
+    "mathContext": "erdos_82_bounds_summary: (∀ n ≥ 2, F(n) ≥ log₂(n)/2) ∧ (∃ C C' > 0, ∀ n ≥ 2, F(n) ≤ C·n^{1/2}·(log n)^{C'}).",
+    "significance": "essential",
+    "relatedConcepts": ["bounds", "open problem", "growth rate"]
+  }
+]
