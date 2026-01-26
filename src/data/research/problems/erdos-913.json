@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that if\\[n(n+1) = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then all exponents $k_i$ are distinct?\n\n\n\nIt is likely that there are infinitely many primes $p$ such that $8p^2-1$ is also prime, in which case this is true with exponents $\\{1,2,3\\}$, letting $n=8p^2-1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Are there infinitely many $n$ such that if\\[n(n+1) = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then all exponents $k_i$ are distinct?\n\n\n\nIt is likely that there are infinitely many primes $p$ such that $8p^2-1$ is also prime, in which case this is true with exponents $\\{1,2,3\\}$, letting $n=8p^2-1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.",
+    "plain": "Are there infinitely many $n$ such that if\\[n(n+1) = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then all exponents $k_i$ are distinct?",
     "whyMatters": []
   },
   "knownResults": {

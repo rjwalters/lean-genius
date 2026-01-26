@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For any prime $p$, let $f(p)$ be the least integer such that $f(p)!+1\equiv 0\pmod{p}$.
 
 Is it true that there are infinitely many $p$ for which $f(p)=p-1$?
@@ -29,18 +19,9 @@ These are mentioned in problem A2 of Guy's collection.
 
 Refe...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For any prime $p$, let $f(p)$ be the least integer such that $f(p)!+1\equiv 0\pmod{p}$.
 
 Is it true that there are infinitely many $p$ for which $f(p)=p-1$?
@@ -51,17 +32,6 @@ Is it true that $f(p)/p\to 0$ for almost all $p$?
 Questions formulated by Erd\H{o}s, Hardy, and Subbarao \cite{HaSu02}, who believed that the number of $p\leq x$ for which $f(p)=p-1$ is $o(x/\log x)$.
 
 These are mentioned in problem A2 of Guy's collection.
-
-
-
-
-References
-
-
-[HaSu02] Hardy, G. E. and Subbarao, M. V., A modified problem of Pillai and some related questions. Amer. Math. Monthly (2002), 554--559.
-
-
-Back to the problem
 $$
 
 ## Classification

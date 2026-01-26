@@ -3,35 +3,13 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a sequence $1\leq d_11/e-\epsilon$ for any $\epsilon>0$.
 
 See also [786].
 
 
-Back to the problem
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a sequence $1\leq d_1<d_2<\cdots$ with density $1$ such that all products $\prod_{u\leq i\leq v}d_i$ are distinct?
 
 
@@ -39,9 +17,6 @@ Is there a sequence $1\leq d_1<d_2<\cdots$ with density $1$ such that all produc
 A construction of Selfridge (see [786]) shows that there exists such a sequence of density $>1/e-\epsilon$ for any $\epsilon>0$.
 
 See also [786].
-
-
-Back to the problem
 $$
 
 ## Classification

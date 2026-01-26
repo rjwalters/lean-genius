@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For any $M\geq 1$, if $A\subset \mathbb{N}$ is a sufficiently large finite Sidon set then there are at least $M$ many $a\in A+A$ such that $a+1,a-1\not\in A+A$.
 
 
 
 There may even be $\gg \lvert A\rvert^2$ many such $a$. A similar question can be asked for truncations of infinite Sidon sets.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For any $M\geq 1$, if $A\subset \mathbb{N}$ is a sufficiently large finite Sidon set then there are at least $M$ many $a\in A+A$ such that $a+1,a-1\not\in A+A$.
 
 
 
 There may even be $\gg \lvert A\rvert^2$ many such $a$. A similar question can be asked for truncations of infinite Sidon sets.
-
-
-Back to the problem
 $$
 
 ## Classification

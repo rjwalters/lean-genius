@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subseteq \{1,\ldots N\}$ be a set such that there exists at most one $n$ with more than one solution to $n=a+b$ (with $a\leq b\in A$). Estimate the maximal possible size of $\lvert A\rvert$ - in particular, is it true that\[\lvert A\rvert \leq (1+o(1))\frac{2}{\sqrt{3}}N^{1/2}?\]
 
 
 
 A problem of Erd\H{o}s and Freud, who prove that\[\lvert A\rvert \geq (1+o(1))\frac{2}{\sqrt{3}}N^{1/2}.\]This is shown by taking a ge...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subseteq \{1,\ldots N\}$ be a set such that there exists at most one $n$ with more than one solution to $n=a+b$ (with $a\leq b\in A$). Estimate the maximal possible size of $\lvert A\rvert$ - in particular, is it true that\[\lvert A\rvert \leq (1+o(1))\frac{2}{\sqrt{3}}N^{1/2}?\]
 
 
@@ -40,9 +21,6 @@ A problem of Erd\H{o}s and Freud, who prove that\[\lvert A\rvert \geq (1+o(1))\f
 For the analogous question with $n=a-b$ they prove that $\lvert A\rvert\sim N^{1/2}$.
 
 This is a weaker form of [840].
-
-
-Back to the problem
 $$
 
 ## Classification

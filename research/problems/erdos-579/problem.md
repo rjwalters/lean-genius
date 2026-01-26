@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices with no $K_{2,2,2}$ and at least $\delta n^2$ edges then $G$ contains an independent set of size $\gg_\delta n$.
 
 
@@ -21,21 +11,9 @@ A problem of Erd\H{o}s, Hajnal, S\'{o}s, and Szemer\'{e}di, who could prove this
 
 See also [533] and the entry in the graphs problem collection.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices with no $K_{2,2,2}$ and at least $\delta n^2$ edges then $G$ contains an independent set of size $\gg_\delta n$.
 
 
@@ -43,9 +21,6 @@ Let $\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices 
 A problem of Erd\H{o}s, Hajnal, S\'{o}s, and Szemer\'{e}di, who could prove this is true for $\delta>1/8$.
 
 See also [533] and the entry in the graphs problem collection.
-
-
-Back to the problem
 $$
 
 ## Classification

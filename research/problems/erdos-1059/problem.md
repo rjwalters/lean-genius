@@ -3,41 +3,11 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\leq k!l$, and all the numbers $n-k!$ are composite for $1\leq k\leq l$.
 
 
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\leq k!<p$?
 
 
@@ -45,17 +15,6 @@ Are there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ 
 A question of Erd\H{o}s reported in problem A2 of Guy's collection \cite{Gu04}.
 
 Examples are $p=101$ and $p=211$. Erd\H{o}s suggested it may be easier to show that there are infinitely many $n$ such that, if $l!<n\leq (l+1)!$, then all the prime factors of $n$ are $>l$, and all the numbers $n-k!$ are composite for $1\leq k\leq l$.
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $G$ be a graph such that $R(G,T_n)\ll n$ for any tree $T_n$ on $n$ vertices and $R(G,K_n)\ll n^2$. Is it true that, for any $H$ with $m$ edges and no isolated vertices,\[R(G,H)\ll m?\]
 
 
@@ -21,21 +11,9 @@ In other words, is $G$ Ramsey size linear?
 
 See also the entry in the graphs problem collection.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $G$ be a graph such that $R(G,T_n)\ll n$ for any tree $T_n$ on $n$ vertices and $R(G,K_n)\ll n^2$. Is it true that, for any $H$ with $m$ edges and no isolated vertices,\[R(G,H)\ll m?\]
 
 
@@ -43,9 +21,6 @@ Let $G$ be a graph such that $R(G,T_n)\ll n$ for any tree $T_n$ on $n$ vertices 
 In other words, is $G$ Ramsey size linear?
 
 See also the entry in the graphs problem collection.
-
-
-Back to the problem
 $$
 
 ## Classification

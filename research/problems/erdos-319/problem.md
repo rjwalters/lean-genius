@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 What is the size of the largest $A\subseteq \{1,\ldots,N\}$ such that there is a function $\delta:A\to \{-1,1\}$ such that\[\sum_{n\in A}\frac{\delta_n}{n}=0\]and\[\sum_{n\in A'}\frac{\delta_n}{n}\neq 0\]for all non-empty $A'\subsetneq A$?
 
 
 
 Adenwalla has observed that a lower bound of\[\lvert A\rvert\geq (1-\tfrac{1}{e}+o(1))N\]follows from the main result of Croot \cite{Cr01}, which states that there exists some set of...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 What is the size of the largest $A\subseteq \{1,\ldots,N\}$ such that there is a function $\delta:A\to \{-1,1\}$ such that\[\sum_{n\in A}\frac{\delta_n}{n}=0\]and\[\sum_{n\in A'}\frac{\delta_n}{n}\neq 0\]for all non-empty $A'\subsetneq A$?
 
 
@@ -40,17 +21,6 @@ Adenwalla has observed that a lower bound of\[\lvert A\rvert\geq (1-\tfrac{1}{e}
 We may then let $A=B\cup\{1\}$ and choose $\delta(n)=-1$ for all $n\in B$ and $\delta(1)=1$.
 
 This problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.
-
-
-
-
-References
-
-
-[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.
-
-
-Back to the problem
 $$
 
 ## Classification

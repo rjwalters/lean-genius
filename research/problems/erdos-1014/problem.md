@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $R(k,l)$ be the Ramsey number, so the minimal $n$ such that every graph on at least $n$ vertices contains either a $K_k$ or an independent set on $l$ vertices.
 
 Prove, for fixed $k\geq 3$, that\[\lim_{l\to \infty}\frac{R(k,l+1)}{R(k,l)}=1.\]
@@ -23,21 +13,9 @@ This is open even for $k=3$.
 
 See also [544] for other behaviour of $R(3,k)$, and [1030] for the diagonal version of this question.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $R(k,l)$ be the Ramsey number, so the minimal $n$ such that every graph on at least $n$ vertices contains either a $K_k$ or an independent set on $l$ vertices.
 
 Prove, for fixed $k\geq 3$, that\[\lim_{l\to \infty}\frac{R(k,l+1)}{R(k,l)}=1.\]
@@ -47,9 +25,6 @@ Prove, for fixed $k\geq 3$, that\[\lim_{l\to \infty}\frac{R(k,l+1)}{R(k,l)}=1.\]
 This is open even for $k=3$.
 
 See also [544] for other behaviour of $R(3,k)$, and [1030] for the diagonal version of this question.
-
-
-Back to the problem
 $$
 
 ## Classification

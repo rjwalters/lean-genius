@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\sum_{n\in A}\frac{1}{n}>K$ there exists some $S\subseteq A$ such that\[1-e^{-cK} < \sum_{n\in S}\frac{1}{n}\leq 1?\]
 
 
 
 Erd\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\sum_{n\in A}\frac{1}{n}>K$ there exists some $S\subseteq A$ such that\[1-e^{-cK} < \sum_{n\in S}\frac{1}{n}\leq 1?\]
 
 
 
 Erd\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.
-
-
-Back to the problem
 $$
 
 ## Classification

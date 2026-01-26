@@ -3,32 +3,13 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 If $\mathcal{F}$ is a finite set of finite graphs then $\mathrm{ex}(n;\mathcal{F})$ is the maximum number of edges a graph on $n$ vertices can have without containing any subgraphs from $\mathcal{F}$. Note that it is trivial that $\mathrm{ex}(n;\mathcal{F})\leq \mathrm{ex}(n;G)$ for every $G\in\mathcal{F}$.
 
 Is it true that, for every $\mathcal{F}$, if there is a bipartite graph in $\mathcal{F}$ then there exists some bip...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 If $\mathcal{F}$ is a finite set of finite graphs then $\mathrm{ex}(n;\mathcal{F})$ is the maximum number of edges a graph on $n$ vertices can have without containing any subgraphs from $\mathcal{F}$. Note that it is trivial that $\mathrm{ex}(n;\mathcal{F})\leq \mathrm{ex}(n;G)$ for every $G\in\mathcal{F}$.
 
 Is it true that, for every $\mathcal{F}$, if there is a bipartite graph in $\mathcal{F}$ then there exists some bipartite $G\in\mathcal{F}$ such that\[\mathrm{ex}(n;G)\ll_{\mathcal{F}}\mathrm{ex}(n;\mathcal{F})?\]
@@ -38,9 +19,6 @@ Is it true that, for every $\mathcal{F}$, if there is a bipartite graph in $\mat
 A problem of Erd\H{o}s and Simonovits.
 
 See also [180] and the entry in the graphs problem collection.
-
-
-Back to the problem
 $$
 
 ## Classification

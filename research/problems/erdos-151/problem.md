@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For a graph $G$ let $\tau(G)$ denote the minimal number of vertices that include at least one from each maximal clique of $G$ on at least two vertices (sometimes called the clique transversal number).
 
 Let $H(n)$ be maximal such that every triangle-free graph on $n$ vertices contains an independent set on $H(n)$ vertices.
@@ -23,18 +13,9 @@ If $G$ is a graph on $n$ vertices then is\[\tau(G)\leq n-H(n)?\]
 
 It is easy to see that $\tau(G) ...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For a graph $G$ let $\tau(G)$ denote the minimal number of vertices that include at least one from each maximal clique of $G$ on at least two vertices (sometimes called the clique transversal number).
 
 Let $H(n)$ be maximal such that every triangle-free graph on $n$ vertices contains an independent set on $H(n)$ vertices.
@@ -50,19 +31,6 @@ This is listed in \cite{Er88} as a problem of Erd\H{o}s and Gallai, who were una
 It later appeared as Problem 1 in \cite{EGT92}.
 
 The general behaviour of $\tau(G)$ is the subject of [610].
-
-
-
-
-References
-
-
-[EGT92] Erd\H{o}s, Paul and Gallai, Tibor and Tuza, Zsolt, Covering the cliques of a graph with vertices. Discrete Math. (1992), 279-289.
-
-[Er88] Erd\H{o}s, P, Problems and results in combinatorial analysis and graph theory. Discrete Math. (1988), 81-92.
-
-
-Back to the problem
 $$
 
 ## Classification

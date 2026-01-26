@@ -3,58 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $d_n=p_{n+1}-p_n$. The set of $n$ such that $d_{n+1}\geq d_n$ has density $1/2$, and similarly for $d_{n+1}\leq d_n$. Furthermore, there are infinitely many $n$ such that $d_{n+1}=d_n$.
 
 
 
 In \cite{Er85c} Erd\H{o}s also conjectures that $d_n=d_{n+1}=\cdots=d_{n+k}$ is solvable for every $k$ (which is equivalent to $k$ consecutive primes in arithmetic progression, see [141]).
 
-
-
-
-References
-
-
-[Er85c] Erd\H{o}s, P., On ...
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $d_n=p_{n+1}-p_n$. The set of $n$ such that $d_{n+1}\geq d_n$ has density $1/2$, and similarly for $d_{n+1}\leq d_n$. Furthermore, there are infinitely many $n$ such that $d_{n+1}=d_n$.
 
 
 
 In \cite{Er85c} Erd\H{o}s also conjectures that $d_n=d_{n+1}=\cdots=d_{n+k}$ is solvable for every $k$ (which is equivalent to $k$ consecutive primes in arithmetic progression, see [141]).
-
-
-
-
-References
-
-
-[Er85c] Erd\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.
-
-
-Back to the problem
 $$
 
 ## Classification

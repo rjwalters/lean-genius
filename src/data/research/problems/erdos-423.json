@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1=1$ and $a_2=2$ and for $k\\geq 3$ we choose $a_k$ to be the least integer $>a_{k-1}$ which is the sum of at least two consecutive terms of the sequence. What is the asymptotic behaviour of this sequence?\n\n\n\nAsked by Hofstadter (although in \\cite{Er77c} Erd\\H{o}s says this question was originally due to Ulam). The sequence begins $1,2,3,5,6,8,10,11,\\ldots$ and is A005243 in the OEIS.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $a_1=1$ and $a_2=2$ and for $k\\geq 3$ we choose $a_k$ to be the least integer $>a_{k-1}$ which is the sum of at least two consecutive terms of the sequence. What is the asymptotic behaviour of this sequence?\n\n\n\nAsked by Hofstadter (although in \\cite{Er77c} Erd\\H{o}s says this question was originally due to Ulam). The sequence begins $1,2,3,5,6,8,10,11,\\ldots$ and is A005243 in the OEIS.",
+    "plain": "Let $a_1=1$ and $a_2=2$ and for $k\\geq 3$ we choose $a_k$ to be the least integer $>a_{k-1}$ which is the sum of at least two consecutive terms of the sequence. What is the asymptotic behaviour of this sequence?",
     "whyMatters": []
   },
   "knownResults": {

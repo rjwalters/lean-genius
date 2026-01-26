@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a set $A\subseteq \mathbb{N}$ such that, for infinitely many $n$, all of $n-a$ are prime for all $a\in A$ with $00?\]
 
 
@@ -20,28 +10,13 @@ Is there a set $A\subseteq \mathbb{N}$ such that, for infinitely many $n$, all o
 Erd\H{o}s and Graham could show this is true (assuming the prime $k$-tuple conjecture) if we replace $\liminf$ by $\limsup$.
 
 
-Back to the problem
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a set $A\subseteq \mathbb{N}$ such that, for infinitely many $n$, all of $n-a$ are prime for all $a\in A$ with $0<a<n$ and\[\liminf\frac{\lvert A\cap [1,x]\rvert}{\pi(x)}>0?\]
 
 
 
 Erd\H{o}s and Graham could show this is true (assuming the prime $k$-tuple conjecture) if we replace $\liminf$ by $\limsup$.
-
-
-Back to the problem
 $$
 
 ## Classification

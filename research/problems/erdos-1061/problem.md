@@ -3,61 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 How many solutions are there to\[\sigma(a)+\sigma(b)=\sigma(a+b)\]with $a+b\leq x$, where $\sigma$ is the sum of divisors function? Is it $\sim cx$ for some constant $c>0$?
 
 
 
 A question of Erd\H{o}s reported in problem B15 of Guy's collection \cite{Gu04}.
 
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 How many solutions are there to\[\sigma(a)+\sigma(b)=\sigma(a+b)\]with $a+b\leq x$, where $\sigma$ is the sum of divisors function? Is it $\sim cx$ for some constant $c>0$?
 
 
 
 A question of Erd\H{o}s reported in problem B15 of Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

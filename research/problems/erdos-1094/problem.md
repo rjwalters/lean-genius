@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For all $n\geq 2k$ the least prime factor of $\binom{n}{k}$ is $\leq \max(n/k,k)$, with only finitely many exceptions.
 
 
 
 A stronger form of [384] that appears in a paper of Erd\H{o}s, Lacampagne, and Selfridge \cite{ELS88}. Erd\H{o}s observed that the least prime factor is always $\leq n/k$ provided $n$ is sufficiently large depending on $k$. Selfridge \cite{Se77} further conjectured that this always happens if $n\geq k^...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For all $n\geq 2k$ the least prime factor of $\binom{n}{k}$ is $\leq \max(n/k,k)$, with only finitely many exceptions.
 
 
@@ -46,23 +27,6 @@ Discussed in problem B31 and B33 of Guy's collection \cite{Gu04} - there Guy cre
 This is related to [1093], in that the only counterexamples to this conjecture can occur from $\binom{n}{k}$ with deficiency $\geq 1$.
 
 There is an interesting discussion about this problem on MathOverflow.
-
-
-
-
-References
-
-
-[ELS88] Erd\H{o}s, P. and Lacampagne, C. B. and Selfridge, J. L., Prime factors of binomial coefficients and related problems. Acta Arith. (1988), 507--523.
-
-[ELS93] Erd\H{o}s, P. and Lacampagne, C. B. and Selfridge, J. L., Estimates of the least prime factor of a binomial coefficient. Math. Comp. (1993), 215--224.
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-[Se77] J. L. Selfridge, Some problems on the prime factors of consecutive integers. Notices Amer. Math. Soc. (1977), A456-457.
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -3,42 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $d(A)$ denote the density of $A\subseteq \mathbb{N}$. Characterise those $A,B\subseteq \mathbb{N}$ with positive density such that\[d(A+B)=d(A)+d(B).\]
 
 
 
 One way this can happen is if there exists $\theta>0$ such that\[A=\{ n>0 : \{ n\theta\} \in X_A\}\textrm{ and }B=\{ n>0 : \{n\theta\} \in X_B\}\]where $\{x\}$ denotes the fractional part of $x$ and $X_A,X_B\subseteq \mathbb{R}/\mathbb{Z}$ are such that $\mu(X_A+X_B...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $d(A)$ denote the density of $A\subseteq \mathbb{N}$. Characterise those $A,B\subseteq \mathbb{N}$ with positive density such that\[d(A+B)=d(A)+d(B).\]
 
 
 
 One way this can happen is if there exists $\theta>0$ such that\[A=\{ n>0 : \{ n\theta\} \in X_A\}\textrm{ and }B=\{ n>0 : \{n\theta\} \in X_B\}\]where $\{x\}$ denotes the fractional part of $x$ and $X_A,X_B\subseteq \mathbb{R}/\mathbb{Z}$ are such that $\mu(X_A+X_B)=\mu(X_A)+\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?
-
-
-Back to the problem
 $$
 
 ## Classification

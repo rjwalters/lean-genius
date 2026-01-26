@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Given some initial finite sequence of primes $q_1<\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?
 
 
 
 A problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\ldots$. It is possible that this sequence is infinite.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Given some initial finite sequence of primes $q_1<\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?
 
 
 
 A problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\ldots$. It is possible that this sequence is infinite.
-
-
-Back to the problem
 $$
 
 ## Classification

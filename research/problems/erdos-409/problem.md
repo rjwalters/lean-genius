@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 How many iterations of $n\mapsto \phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?
 
 
 
 A problem of Finucane. One can also ask similar questions about $n\mapsto \sigma(n)-1$: do iterates of this always reach a prime? If so, how soon? (It is easily seen that iterates of this cannot reach the same prime infinitely often, sinc...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 How many iterations of $n\mapsto \phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?
 
 
@@ -42,18 +23,6 @@ This problem is somewhat ambiguously phrased. Let $F(n)$ count the number of ite
 Cambie notes in the comments that $F(n)=o(n)$ is trivial, and $F(n)=1$ infinitely often. Presumably the intended question is to find 'good' upper bounds for $F(n)$.
 
 This is discussed in problem B41 of Guy's collection \cite{Gu04}.
-
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subseteq \\mathbb{Z}^3$ be a finite set and let $A=\\{a_1,a_2,\\ldots,\\}\\subset \\mathbb{Z}^3$ be an infinite $S$-walk, so that $a_{i+1}-a_i\\in S$ for all $i$. Must $A$ contain three collinear points?\n\n\n\nOriginally conjectured by Gerver and Ramsey \\cite{GeRa79}, who showed that the answer is yes for $\\mathbb{Z}^2$, and for $\\mathbb{Z}^3$ that the largest number of collinear points can be bounded.\n\n\n\n\nReferences\n\n\n[GeRa79] Gerver, Joseph L. and Ramsey, L. Thomas, On certain sequences of lattice points. Pacific J. Math. (1979), 357-363.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $S\\subseteq \\mathbb{Z}^3$ be a finite set and let $A=\\{a_1,a_2,\\ldots,\\}\\subset \\mathbb{Z}^3$ be an infinite $S$-walk, so that $a_{i+1}-a_i\\in S$ for all $i$. Must $A$ contain three collinear points?\n\n\n\nOriginally conjectured by Gerver and Ramsey \\cite{GeRa79}, who showed that the answer is yes for $\\mathbb{Z}^2$, and for $\\mathbb{Z}^3$ that the largest number of collinear points can be bounded.",
+    "plain": "Let $S\\subseteq \\mathbb{Z}^3$ be a finite set and let $A=\\{a_1,a_2,\\ldots,\\}\\subset \\mathbb{Z}^3$ be an infinite $S$-walk, so that $a_{i+1}-a_i\\in S$ for all $i$. Must $A$ contain three collinear points?",
     "whyMatters": []
   },
   "knownResults": {

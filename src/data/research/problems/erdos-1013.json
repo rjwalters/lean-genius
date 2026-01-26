@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\\[\\lim_{k\\to \\infty}\\frac{h_3(k+1)}{h_3(k)}=1.\\]\n\n\n\nIt is known that\\[\\frac{\\log k}{\\log\\log k}k^2 \\ll h_3(k) \\ll (\\log k)k^2.\\]The lower bound is due to Graver and Yackel \\cite{GrYa68}, the upper bound follows from Shearer's upper bound for $R(3,k)$ (see [165]).\n\nThe function $h_r(k)$ for $r\\geq 4$ is the subject of [920].\n\n\n\n\nReferences\n\n\n[GrYa68] Graver, Jack E. and Yackel, James, Some graph theoretic results associated with {R}amsey's\ntheorem. J. Combinatorial Theory (1968), 125--175.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\\[\\lim_{k\\to \\infty}\\frac{h_3(k+1)}{h_3(k)}=1.\\]\n\n\n\nIt is known that\\[\\frac{\\log k}{\\log\\log k}k^2 \\ll h_3(k) \\ll (\\log k)k^2.\\]The lower bound is due to Graver and Yackel \\cite{GrYa68}, the upper bound follows from Shearer's upper bound for $R(3,k)$ (see [165]).\n\nThe function $h_r(k)$ for $r\\geq 4$ is the subject of [920].",
+    "plain": "Let $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\\[\\lim_{k\\to \\infty}\\frac{h_3(k+1)}{h_3(k)}=1.\\]",
     "whyMatters": []
   },
   "knownResults": {

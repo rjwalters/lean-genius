@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<\\cdots<a_k\\}$ be a finite set of integers and extend it to an infinite sequence $\\overline{A}=\\{a_1<a_2<\\cdots \\}$ by defining $a_{n+1}$ for $n\\geq k$ to be the least integer exceeding $a_n$ which is not of the form $a_i+a_j$ with $i,j\\leq n$. Is it true that the sequence of differences $a_{m+1}-a_m$ is eventually periodic?\n\n\n\nAn old problem of Dickson. Even a starting set as small as $\\{1,4,9,16,25\\}$ requires thousands of terms before periodicity occurs.\n\nThis problem is discussed under Problem 7 on Green's open problems list.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $A=\\{a_1<\\cdots<a_k\\}$ be a finite set of integers and extend it to an infinite sequence $\\overline{A}=\\{a_1<a_2<\\cdots \\}$ by defining $a_{n+1}$ for $n\\geq k$ to be the least integer exceeding $a_n$ which is not of the form $a_i+a_j$ with $i,j\\leq n$. Is it true that the sequence of differences $a_{m+1}-a_m$ is eventually periodic?\n\n\n\nAn old problem of Dickson. Even a starting set as small as $\\{1,4,9,16,25\\}$ requires thousands of terms before periodicity occurs.\n\nThis problem is discussed under Problem 7 on Green's open problems list.",
+    "plain": "Let $A=\\{a_1<\\cdots<a_k\\}$ be a finite set of integers and extend it to an infinite sequence $\\overline{A}=\\{a_1<a_2<\\cdots \\}$ by defining $a_{n+1}$ for $n\\geq k$ to be the least integer exceeding $a_n$ which is not of the form $a_i+a_j$ with $i,j\\leq n$. Is it true that the sequence of differences $a_{m+1}-a_m$ is eventually periodic?",
     "whyMatters": []
   },
   "knownResults": {

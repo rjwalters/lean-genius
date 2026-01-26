@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$ and $n$ be large depending on $\\epsilon$. Is it true that for all $n^\\epsilon<k\\leq n^{1-\\epsilon}$ the number of distinct prime divisors of $\\binom{n}{k}$ is\\[(1+o(1))k\\sum_{k<p<n}\\frac{1}{p}?\\]Or perhaps even when $k \\geq (\\log n)^c$?\n\n\n\nIt is trivial that the number of prime factors is\\[>\\frac{\\log \\binom{n}{k}}{\\log n},\\]and this inequality becomes (asymptotic) equality if $k>n^{1-o(1)}$.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $\\epsilon>0$ and $n$ be large depending on $\\epsilon$. Is it true that for all $n^\\epsilon<k\\leq n^{1-\\epsilon}$ the number of distinct prime divisors of $\\binom{n}{k}$ is\\[(1+o(1))k\\sum_{k<p<n}\\frac{1}{p}?\\]Or perhaps even when $k \\geq (\\log n)^c$?\n\n\n\nIt is trivial that the number of prime factors is\\[>\\frac{\\log \\binom{n}{k}}{\\log n},\\]and this inequality becomes (asymptotic) equality if $k>n^{1-o(1)}$.",
+    "plain": "Let $\\epsilon>0$ and $n$ be large depending on $\\epsilon$. Is it true that for all $n^\\epsilon\\frac{\\log \\binom{n}{k}}{\\log n},\\]and this inequality becomes (asymptotic) equality if $k>n^{1-o(1)}$.",
     "whyMatters": []
   },
   "knownResults": {

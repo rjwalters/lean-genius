@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.\n\nIs it true that $f_2(n) \\gg n$? More generally, is $f_r(n)\\gg_r n$?\n\n\n\nA conjecture of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di. This seems to be closely related to, but distinct from, [744].\n\nTang notes in the comments that a construction of R\\\"{o}dl \\cite{Ro82} disproves the first question, so that $f_2(n)\\not\\gg n$.\n\n\n\n\nReferences\n\n\n[Ro82] R\\\"{o}dl, Vojt\\vEch, Nearly bipartite graphs with large chromatic number. Combinatorica (1982), 377-383.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.\n\nIs it true that $f_2(n) \\gg n$? More generally, is $f_r(n)\\gg_r n$?\n\n\n\nA conjecture of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di. This seems to be closely related to, but distinct from, [744].\n\nTang notes in the comments that a construction of R\\\"{o}dl \\cite{Ro82} disproves the first question, so that $f_2(n)\\not\\gg n$.",
+    "plain": "Let $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.",
     "whyMatters": []
   },
   "knownResults": {

@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]\n\n\n\nConjectured by Burr and Erd\\H{o}s, althouhg in \\cite{Er93} Erd\\H{o}s says the behaviour of $R(Q_n)$ was considered by himself and S\\'{o}s, who could not decide whether $R(Q_n)/2^n\\to \\infty$ or not.\n\nThe trivial bound is\\[R(Q_n) \\leq R(K_{2^n})\\leq C^{2^n}\\]for some constant $C>1$. This was improved a number of times; the current best bound due to Tikhomirov \\cite{Ti22} is\\[R(Q_n)\\ll 2^{(2-c)n}\\]for some small constant $c>0$. (In fact $c\\approx 0.03656$ is permissible.)\n\nThis problem is #20 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Ti22] Tikhomirov, K., A remark on the Ramsey number of the hypercube. arXiv:2208.14568 (2022).\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]\n\n\n\nConjectured by Burr and Erd\\H{o}s, althouhg in \\cite{Er93} Erd\\H{o}s says the behaviour of $R(Q_n)$ was considered by himself and S\\'{o}s, who could not decide whether $R(Q_n)/2^n\\to \\infty$ or not.\n\nThe trivial bound is\\[R(Q_n) \\leq R(K_{2^n})\\leq C^{2^n}\\]for some constant $C>1$. This was improved a number of times; the current best bound due to Tikhomirov \\cite{Ti22} is\\[R(Q_n)\\ll 2^{(2-c)n}\\]for some small constant $c>0$. (In fact $c\\approx 0.03656$ is permissible.)\n\nThis problem is #20 in Ramsey Theory in the graphs problem collection.",
+    "plain": "Let $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]",
     "whyMatters": []
   },
   "knownResults": {

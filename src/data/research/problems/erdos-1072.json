@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any prime $p$, let $f(p)$ be the least integer such that $f(p)!+1\\equiv 0\\pmod{p}$.\n\nIs it true that there are infinitely many $p$ for which $f(p)=p-1$?\nIs it true that $f(p)/p\\to 0$ for almost all $p$?\n\n\n\nQuestions formulated by Erd\\H{o}s, Hardy, and Subbarao \\cite{HaSu02}, who believed that the number of $p\\leq x$ for which $f(p)=p-1$ is $o(x/\\log x)$.\n\nThese are mentioned in problem A2 of Guy's collection.\n\n\n\n\nReferences\n\n\n[HaSu02] Hardy, G. E. and Subbarao, M. V., A modified problem of Pillai and some related questions. Amer. Math. Monthly (2002), 554--559.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "For any prime $p$, let $f(p)$ be the least integer such that $f(p)!+1\\equiv 0\\pmod{p}$.\n\nIs it true that there are infinitely many $p$ for which $f(p)=p-1$?\nIs it true that $f(p)/p\\to 0$ for almost all $p$?\n\n\n\nQuestions formulated by Erd\\H{o}s, Hardy, and Subbarao \\cite{HaSu02}, who believed that the number of $p\\leq x$ for which $f(p)=p-1$ is $o(x/\\log x)$.\n\nThese are mentioned in problem A2 of Guy's collection.",
+    "plain": "For any prime $p$, let $f(p)$ be the least integer such that $f(p)!+1\\equiv 0\\pmod{p}$.",
     "whyMatters": []
   },
   "knownResults": {

@@ -3,41 +3,16 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$ and $n$ be large depending on $\epsilon$. Is it true that for all $n^\epsilon\frac{\log \binom{n}{k}}{\log n},\]and this inequality becomes (asymptotic) equality if $k>n^{1-o(1)}$.
 
 
-Back to the problem
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$ and $n$ be large depending on $\epsilon$. Is it true that for all $n^\epsilon<k\leq n^{1-\epsilon}$ the number of distinct prime divisors of $\binom{n}{k}$ is\[(1+o(1))k\sum_{k<p<n}\frac{1}{p}?\]Or perhaps even when $k \geq (\log n)^c$?
 
 
 
 It is trivial that the number of prime factors is\[>\frac{\log \binom{n}{k}}{\log n},\]and this inequality becomes (asymptotic) equality if $k>n^{1-o(1)}$.
-
-
-Back to the problem
 $$
 
 ## Classification

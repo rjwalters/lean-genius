@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that for every $n\geq 1$ there is a $k$ such that\[n(n+1)\cdots(n+k-1)\mid (n+k)\cdots (n+2k-1)?\]
 
 
@@ -20,27 +10,15 @@ Is it true that for every $n\geq 1$ there is a $k$ such that\[n(n+1)\cdots(n+k-1
 Asked by Erd\H{o}s and Straus.
 For example when $n=2$ we have $k=5$:\[2\times 3 \times 4 \times 5\times 6 \mid 7 \times 8 \times 9\times 10\times 11.\]and when $n=3$ we have $k=4$:\[3\times 4\times 5\times 6 \mid 7\times 8\times 9\times 10.\]Bhavik Mehta has computed the minimal such $k$ for $1\leq n\leq 18$ (n...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that for every $n\geq 1$ there is a $k$ such that\[n(n+1)\cdots(n+k-1)\mid (n+k)\cdots (n+2k-1)?\]
 
 
 
 Asked by Erd\H{o}s and Straus.
 For example when $n=2$ we have $k=5$:\[2\times 3 \times 4 \times 5\times 6 \mid 7 \times 8 \times 9\times 10\times 11.\]and when $n=3$ we have $k=4$:\[3\times 4\times 5\times 6 \mid 7\times 8\times 9\times 10.\]Bhavik Mehta has computed the minimal such $k$ for $1\leq n\leq 18$ (now available as A375071 on the OEIS).
-
-
-Back to the problem
 $$
 
 ## Classification

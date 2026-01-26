@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 There exists some constant $c>0$ such that
 
 $$R(C_4,K_n) \ll n^{2-c}.$$
@@ -24,27 +14,9 @@ The current bounds are\[ \frac{n^{3/2}}{(\log n)^{3/2}}\ll R(C_4,K_n)\ll \frac{n
 This problem is #17 in Ramsey Theory in the graphs problem collection.
 
 
-
-
-References
-
-
-[EFRS78] Erd\H{o}s, Paul and Faudree, R. J...
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 There exists some constant $c>0$ such that
-
 $$R(C_4,K_n) \ll n^{2-c}.$$
 
 

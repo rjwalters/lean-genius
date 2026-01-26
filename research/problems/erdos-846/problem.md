@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \mathbb{R}^2$ be an infinite set for which there exists some $\epsilon>0$ such that in any subset of $A$ of size $n$ there are always at least $\epsilon n$ with no three on a line.
 
 Is it true that $A$ is the union of a finite number of sets where no three are on a line?
@@ -23,21 +13,9 @@ A problem of Erd\H{o}s, Ne\v{s}et\v{r}il, and R\"{o}dl.
 
 See also [774] and [847].
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \mathbb{R}^2$ be an infinite set for which there exists some $\epsilon>0$ such that in any subset of $A$ of size $n$ there are always at least $\epsilon n$ with no three on a line.
 
 Is it true that $A$ is the union of a finite number of sets where no three are on a line?
@@ -47,9 +25,6 @@ Is it true that $A$ is the union of a finite number of sets where no three are o
 A problem of Erd\H{o}s, Ne\v{s}et\v{r}il, and R\"{o}dl.
 
 See also [774] and [847].
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a function $f(n)$ and a $k$ such that in any $k$-colouring of the integers there exists a sequence $a_1<\cdots$ such that $a_n<f(n)$ for infinitely many $n$ and the set\[\left\{ \sum_{i\in S}a_i : \textrm{finite }S\right\}\]does not contain all colours?
 
 
 
 Erd\H{o}s initially asked whether this is possible with the set being monochromatic, but Galvin showed that this is not always possible, considering the two co...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a function $f(n)$ and a $k$ such that in any $k$-colouring of the integers there exists a sequence $a_1<\cdots$ such that $a_n<f(n)$ for infinitely many $n$ and the set\[\left\{ \sum_{i\in S}a_i : \textrm{finite }S\right\}\]does not contain all colours?
 
 
@@ -40,9 +21,6 @@ Erd\H{o}s initially asked whether this is possible with the set being monochroma
 This is open even in the case of $\aleph_0$-many colours.
 
 This is asking about a variant of Hindman's theorem (see [532]).
-
-
-Back to the problem
 $$
 
 ## Classification

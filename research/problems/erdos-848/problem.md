@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is the maximum size of a set $A\subseteq \{1,\ldots,N\}$ such that $ab+1$ is never squarefree (for all $a,b\in A$) achieved by taking those $n\equiv 7\pmod{25}$?
 
 
@@ -21,18 +11,9 @@ A problem of Erd\H{o}s and S\'{a}rk\"{o}zy.
 
 van Doorn has sent the following argument which shows\[\lvert A\rvert \leq (0.108\cdots+o(1))N.\]The condition implies, in particular, that $a^2+1$ is divisible by $p^2$ for some prime $p$ for all $a\in A$. Furtherm...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is the maximum size of a set $A\subseteq \{1,\ldots,N\}$ such that $ab+1$ is never squarefree (for all $a,b\in A$) achieved by taking those $n\equiv 7\pmod{25}$?
 
 
@@ -44,10 +25,6 @@ van Doorn has sent the following argument which shows\[\lvert A\rvert \leq (0.10
 This was solved for all sufficiently large $N$ by Sawhney in this note. In fact, Sawhney proves something slightly stronger, that there exists some constant $c>0$ such that if $\lvert A\rvert \geq (\frac{1}{25}-c)N$ and $N$ is large then $A$ is contained in either $\{ n\equiv 7\pmod{25}\}$ or $\{n\equiv 18\pmod{25}\}$.
 
 See also [844].
-
-
-
-Back to the problem
 $$
 
 ## Classification

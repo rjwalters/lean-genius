@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there a finite set of unit line segments in the unit square, no two of which intersect, which are maximal with respect to this property?
 
 Is there a region $R$ with a maximal set of disjoint unit line segments that is countably infinite?
@@ -23,18 +13,9 @@ A question of Erd\H{o}s and T\'{o}th. The answer to the first question is yes (w
 
 There are two examples Erd\H{o}s gives in \cite{Er87b}, the {IMAGE=1...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there a finite set of unit line segments in the unit square, no two of which intersect, which are maximal with respect to this property?
 
 Is there a region $R$ with a maximal set of disjoint unit line segments that is countably infinite?
@@ -44,17 +25,6 @@ Is there a region $R$ with a maximal set of disjoint unit line segments that is 
 A question of Erd\H{o}s and T\'{o}th. The answer to the first question is yes (which Erd\H{o}s gave \$10 for).
 
 There are two examples Erd\H{o}s gives in \cite{Er87b}, the {IMAGE=1071-one,first} by Danzer, the {IMAGE=1071-two,second} by an unnamed participant.
-
-
-
-
-References
-
-
-[Er87b] Erd\H{o}s, P., Some combinatorial and metric problems in geometry. Intuitive geometry (Si\'{o}fok, 1985) (1987), 167-177.
-
-
-Back to the problem
 $$
 
 ## Classification

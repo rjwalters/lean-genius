@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDefine $\\epsilon_n$ to be maximal such that there exists some choice of congruence class $a_p$ for all primes $n^{\\epsilon_n}<p\\leq n$ such that every integer in $[1,n]$ satisfies at least one of the congruences $\\equiv a_p\\pmod{p}$.\n\nEstimate $\\epsilon_n$ - in particular is it true that $\\epsilon_n=o(1)$?\n\n\n\nErd\\H{o}s could prove\\[\\epsilon_n \\gg \\frac{\\log\\log\\log n}{\\log\\log n}.\\]See also [687] and [689].\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Define $\\epsilon_n$ to be maximal such that there exists some choice of congruence class $a_p$ for all primes $n^{\\epsilon_n}<p\\leq n$ such that every integer in $[1,n]$ satisfies at least one of the congruences $\\equiv a_p\\pmod{p}$.\n\nEstimate $\\epsilon_n$ - in particular is it true that $\\epsilon_n=o(1)$?\n\n\n\nErd\\H{o}s could prove\\[\\epsilon_n \\gg \\frac{\\log\\log\\log n}{\\log\\log n}.\\]See also [687] and [689].",
+    "plain": "Define $\\epsilon_n$ to be maximal such that there exists some choice of congruence class $a_p$ for all primes $n^{\\epsilon_n}<p\\leq n$ such that every integer in $[1,n]$ satisfies at least one of the congruences $\\equiv a_p\\pmod{p}$.",
     "whyMatters": []
   },
   "knownResults": {

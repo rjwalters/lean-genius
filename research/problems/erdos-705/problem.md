@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $G$ be a finite unit distance graph in $\mathbb{R}^2$ (i.e. the vertices are a finite collection of points in $\mathbb{R}^2$ and there is an edge between two points if and only if the distance between them is $1$).
 
 Is there some $k$ such that if $G$ has girth $\geq k$ (i.e. $G$ contains no cycles of length $<k$) then $\chi(G)\leq 3$?
@@ -21,18 +11,9 @@ Is there some $k$ such that if $G$ has girth $\geq k$ (i.e. $G$ contains no cycl
 
 The maximal value of $\chi(G)$ (without a girth condition) is the Hadwiger-Nelson...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $G$ be a finite unit distance graph in $\mathbb{R}^2$ (i.e. the vertices are a finite collection of points in $\mathbb{R}^2$ and there is an edge between two points if and only if the distance between them is $1$).
 
 Is there some $k$ such that if $G$ has girth $\geq k$ (i.e. $G$ contains no cycles of length $<k$) then $\chi(G)\leq 3$?
@@ -45,23 +26,6 @@ Wormald \cite{Wo79} has constructed a unit distance graph with $\chi(G)=4$ and g
 
 
 See also [508], [704], and [706].
-
-
-
-
-References
-
-
-[Ch95] Chilakamarri, Kiran B., A {$4$}-chromatic unit-distance graph with no triangles. Geombinatorics (1995), 64-76.
-
-[OD94] O'Donnell, Paul, A triangle-free {$4$}-chromatic graph in the plane. Geombinatorics (1994), 23-29.
-
-[Wo79] Wormald, Nicholas, A {$4$}-chromatic graph with a special plane drawing. J. Austral. Math. Soc. Ser. A (1979), 1-8.
-
-[dG18] de Grey, Aubrey D. N. J., The chromatic number of the plane is at least 5. Geombinatorics (2018), 18-31.
-
-
-Back to the problem
 $$
 
 ## Classification

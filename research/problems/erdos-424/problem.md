@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $a_1=2$ and $a_2=3$ and continue the sequence by appending to $a_1,\ldots,a_n$ all possible values of $a_ia_j-1$ with $i\neq j$. Is it true that the set of integers which eventually appear has positive density?
 
 
@@ -21,18 +11,9 @@ Asked by Hofstadter. The sequence begins $2,3,5,9,14,17,26,\ldots$ and is A00524
 
 In \cite{ErGr80...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $a_1=2$ and $a_2=3$ and continue the sequence by appending to $a_1,\ldots,a_n$ all possible values of $a_ia_j-1$ with $i\neq j$. Is it true that the set of integers which eventually appear has positive density?
 
 
@@ -44,20 +25,6 @@ In \cite{ErGr80} (and in Guy's book) this problem as written is asking for wheth
 Presumably it is the weaker question of whether a positive density of integers appear (as correctly asked in \cite{Er77c}) that was also intended in \cite{ErGr80}.
 
 See also Problem 63 of Green's open problems list.
-
-
-
-
-References
-
-
-[Er77c] Erd\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,
-New York, 1976) (1977), 43-72.
-
-[ErGr80] Erd\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).
-
-
-Back to the problem
 $$
 
 ## Classification

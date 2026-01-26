@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that, for $k\geq 2$,\[\mathrm{ex}(n;\{C_{2k-1},C_{2k}\})=(1+o(1))(n/2)^{1+\frac{1}{k}}.\]
 
 
@@ -21,21 +11,9 @@ A problem of Erd\H{o}s and Simonovits.
 
 See also [573] for the specific case of $k=2$ and the entry in the graphs problem collection.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that, for $k\geq 2$,\[\mathrm{ex}(n;\{C_{2k-1},C_{2k}\})=(1+o(1))(n/2)^{1+\frac{1}{k}}.\]
 
 
@@ -43,9 +21,6 @@ Is it true that, for $k\geq 2$,\[\mathrm{ex}(n;\{C_{2k-1},C_{2k}\})=(1+o(1))(n/2
 A problem of Erd\H{o}s and Simonovits.
 
 See also [573] for the specific case of $k=2$ and the entry in the graphs problem collection.
-
-
-Back to the problem
 $$
 
 ## Classification

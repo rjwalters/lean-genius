@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?\n\n\n\nErd\\H{o}s suggests that if the answer is no one could consider the variant where we assume that $S$ is Sidon (i.e. all $a+b$ with $a,b\\in S$ are distinct, aside from the trivial coincidences).\n\nIn the comments Dillies gives a positive proof of this, found by AlphaProof: in other words, if $S\\subset \\mathbb{R}$ is a Sidon set then there exists $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?\n\n\n\nErd\\H{o}s suggests that if the answer is no one could consider the variant where we assume that $S$ is Sidon (i.e. all $a+b$ with $a,b\\in S$ are distinct, aside from the trivial coincidences).\n\nIn the comments Dillies gives a positive proof of this, found by AlphaProof: in other words, if $S\\subset \\mathbb{R}$ is a Sidon set then there exists $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$.",
+    "plain": "Let $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?",
     "whyMatters": []
   },
   "knownResults": {

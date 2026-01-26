@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many $n$ such that, for all $k\geq 1$,\[\tau(n+k)\ll k?\]
 
 
 
 A stronger form of [248].
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many $n$ such that, for all $k\geq 1$,\[\tau(n+k)\ll k?\]
 
 
 
 A stronger form of [248].
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $k\\geq 0$ and $n\\geq 1$ let $v(n,k)$ count the prime factors of $n+k$ which do not divide $n+i$ for $0\\leq i<k$. Equivalently, $v(n,k)$ counts the number of prime factors of $n+k$ which are $>k$.\n\nIs it true that\\[v_0(n)=\\max_{k\\geq 0}v(n,k)\\to \\infty\\]as $n\\to \\infty$?\n\n\n\nA question of Erd\\H{o}s and Selfridge \\cite{ErSe67}, who could only show that $v_0(n)\\geq 2$ for $n\\geq 17$. More generally, they conjecture that\\[v_l(n)=\\max_{k\\geq l}v(n,k)\\to \\infty\\]as $n\\to \\infty$, for every fixed $l$, but could not even prove that $v_1(n)\\geq 2$ for all large $n$.\n\nThis is problem B27 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ErSe67] Erd\\H{o}s, P. and Selfridge, J. L., Some problems on the prime factors of consecutive integers. Illinois J. Math. (1967), 428--430.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "For $k\\geq 0$ and $n\\geq 1$ let $v(n,k)$ count the prime factors of $n+k$ which do not divide $n+i$ for $0\\leq i<k$. Equivalently, $v(n,k)$ counts the number of prime factors of $n+k$ which are $>k$.\n\nIs it true that\\[v_0(n)=\\max_{k\\geq 0}v(n,k)\\to \\infty\\]as $n\\to \\infty$?\n\n\n\nA question of Erd\\H{o}s and Selfridge \\cite{ErSe67}, who could only show that $v_0(n)\\geq 2$ for $n\\geq 17$. More generally, they conjecture that\\[v_l(n)=\\max_{k\\geq l}v(n,k)\\to \\infty\\]as $n\\to \\infty$, for every fixed $l$, but could not even prove that $v_1(n)\\geq 2$ for all large $n$.\n\nThis is problem B27 of Guy's collection \\cite{Gu04}.",
+    "plain": "For $k\\geq 0$ and $n\\geq 1$ let $v(n,k)$ count the prime factors of $n+k$ which do not divide $n+i$ for $0\\leq ik$.",
     "whyMatters": []
   },
   "knownResults": {

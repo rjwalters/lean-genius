@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\[\lim_{k\to \infty}\frac{h_3(k+1)}{h_3(k)}=1.\]
 
 
 
 It is known that\[\frac{\log k}{\log\log k}k^2 \ll h_3(k) \ll (\log k)k^2.\]The lower bound is due to Graver and Yackel \cite{GrYa68}, the upper bound follows from Shearer's upper bound for $R(3,k)$ (see [1...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\[\lim_{k\to \infty}\frac{h_3(k+1)}{h_3(k)}=1.\]
 
 
@@ -38,18 +19,6 @@ Let $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on 
 It is known that\[\frac{\log k}{\log\log k}k^2 \ll h_3(k) \ll (\log k)k^2.\]The lower bound is due to Graver and Yackel \cite{GrYa68}, the upper bound follows from Shearer's upper bound for $R(3,k)$ (see [165]).
 
 The function $h_r(k)$ for $r\geq 4$ is the subject of [920].
-
-
-
-
-References
-
-
-[GrYa68] Graver, Jack E. and Yackel, James, Some graph theoretic results associated with {R}amsey's
-theorem. J. Combinatorial Theory (1968), 125--175.
-
-
-Back to the problem
 $$
 
 ## Classification

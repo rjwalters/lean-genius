@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that, for any $a\in\mathbb{Z}$, there are infinitely many $n$ such that\[\phi(n) \mid n+a?\]
 
 
@@ -21,26 +11,9 @@ A conjecture of Graham. Lehmer has conjectured that $\phi(n)\mid n-1$ if and onl
 
 This is discussed in problem B37 of Guy's collection \cite{Gu04}.
 
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number the...
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that, for any $a\in\mathbb{Z}$, there are infinitely many $n$ such that\[\phi(n) \mid n+a?\]
 
 
@@ -48,17 +21,6 @@ Is it true that, for any $a\in\mathbb{Z}$, there are infinitely many $n$ such th
 A conjecture of Graham. Lehmer has conjectured that $\phi(n)\mid n-1$ if and only if $n$ is prime. It is an easy exercise to show that $\phi(n) \mid n$ if and only if $n=2^a3^b$.
 
 This is discussed in problem B37 of Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

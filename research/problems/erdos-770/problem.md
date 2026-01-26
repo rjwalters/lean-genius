@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $h(n)$ be minimal such that $2^n-1,3^n-1,\ldots,h(n)^n-1$ are mutually coprime.
 
 Does, for every prime $p$, the density $\delta_p$ of integers with $h(n)=p$ exist? Does $\liminf h(n)=\infty$? Is it true that if $p$ is the greatest prime such that $p-1\mid n$ and $p>n^\epsilon$ then $h(n)=p$?
@@ -24,18 +14,9 @@ It is easy to see that $h(n)=n+1$ if and only if $n+1$ is prime, and that $h(n)$
 
 It is probably t...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $h(n)$ be minimal such that $2^n-1,3^n-1,\ldots,h(n)^n-1$ are mutually coprime.
 
 Does, for every prime $p$, the density $\delta_p$ of integers with $h(n)=p$ exist? Does $\liminf h(n)=\infty$? Is it true that if $p$ is the greatest prime such that $p-1\mid n$ and $p>n^\epsilon$ then $h(n)=p$?
@@ -48,9 +29,6 @@ It is easy to see that $h(n)=n+1$ if and only if $n+1$ is prime, and that $h(n)$
 It is probably true that $h(n)=3$ for infinitely many $n$.
 
 See also [820].
-
-
-Back to the problem
 $$
 
 ## Classification

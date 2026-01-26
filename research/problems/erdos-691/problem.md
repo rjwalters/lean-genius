@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Given $A\subseteq \mathbb{N}$ let $M_A=\{ n \geq 1 : a\mid n\textrm{ for some }a\in A\}$ be the set of multiples of $A$. Find a necessary and sufficient condition on $A$ for $M_A$ to have density $1$.
 
 
@@ -21,18 +11,9 @@ A sequence $A$ for which $M_A$ has density $1$ is called a Behrend sequence.
 
 If $A$ is a set of prime numbers (or, more generally, a set of pairwise coprime integers without $1$) then a necessary and sufficient condition...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Given $A\subseteq \mathbb{N}$ let $M_A=\{ n \geq 1 : a\mid n\textrm{ for some }a\in A\}$ be the set of multiples of $A$. Find a necessary and sufficient condition on $A$ for $M_A$ to have density $1$.
 
 
@@ -48,17 +29,6 @@ Erd\H{o}s writes it 'seems certain' that there is some threshold $\alpha\in (0,1
 Tenenbaum notes in \cite{Te96} that this is certainly not true as written since if the $n_j$ grow sufficiently quickly then this sequence is never Behrend, for any choice of $\eta_k$. He then writes 'we understand from subsequent discussions with Erd\H{o}s that he had actually in mind a two-sided condition on' $n_{j+1}/n_j$.
 
 Tenenbaum \cite{Te96} proves this conjecture: if there are constants $1<C_1<C_2$ such that $C_1<n_{i+1}/n_i<C_2$ for all $i$ and $\eta_k=k^{-\beta}$ then $A$ is Behrend if $\beta<\log 2$ and not Behrend if $\beta>\log 2$.
-
-
-
-
-References
-
-
-[Te96] Tenenbaum, G., On block {B}ehrend sequences. Math. Proc. Cambridge Philos. Soc. (1996), 355--367.
-
-
-Back to the problem
 $$
 
 ## Classification

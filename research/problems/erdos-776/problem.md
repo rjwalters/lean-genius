@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $r\geq 2$ and $A_1,\ldots,A_m\subseteq \{1,\ldots,n\}$ be such that $A_i\not\subseteq A_j$ for all $i\neq j$ and for any $t$ if there exists some $i$ with $\lvert A_i\rvert=t$ then there must exist at least $r$ sets of that size.
 
 How large must $n$ be (as a function of $r$) to ensure that there is such a family which achieves $n-3$ distinct sizes of sets?
@@ -21,18 +11,9 @@ How large must $n$ be (as a function of $r$) to ensure that there is such a fami
 
 A problem of Erd\H{o}s and Trotter. For $r=1$ and $n>3$ the...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $r\geq 2$ and $A_1,\ldots,A_m\subseteq \{1,\ldots,n\}$ be such that $A_i\not\subseteq A_j$ for all $i\neq j$ and for any $t$ if there exists some $i$ with $\lvert A_i\rvert=t$ then there must exist at least $r$ sets of that size.
 
 How large must $n$ be (as a function of $r$) to ensure that there is such a family which achieves $n-3$ distinct sizes of sets?
@@ -40,9 +21,6 @@ How large must $n$ be (as a function of $r$) to ensure that there is such a fami
 
 
 A problem of Erd\H{o}s and Trotter. For $r=1$ and $n>3$ the maximum possible is $n-2$. For $r>1$ and $n$ sufficiently large $n-3$ is achievable, but $n-2$ is never achievable.
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -3,32 +3,13 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 If $\mathcal{F}$ is a finite set of finite graphs then $\mathrm{ex}(n;\mathcal{F})$ is the maximum number of edges a graph on $n$ vertices can have without containing any subgraphs from $\mathcal{F}$. Note that it is trivial that $\mathrm{ex}(n;\mathcal{F})\leq \mathrm{ex}(n;G)$ for every $G\in\mathcal{F}$.
 
 Is it true that, for every $\mathcal{F}$, there exists $G\in\mathcal{F}$ such that\[\mathrm{ex}(n;G)\ll_{\mathcal{F...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 If $\mathcal{F}$ is a finite set of finite graphs then $\mathrm{ex}(n;\mathcal{F})$ is the maximum number of edges a graph on $n$ vertices can have without containing any subgraphs from $\mathcal{F}$. Note that it is trivial that $\mathrm{ex}(n;\mathcal{F})\leq \mathrm{ex}(n;G)$ for every $G\in\mathcal{F}$.
 
 Is it true that, for every $\mathcal{F}$, there exists $G\in\mathcal{F}$ such that\[\mathrm{ex}(n;G)\ll_{\mathcal{F}}\mathrm{ex}(n;\mathcal{F})?\]
@@ -43,9 +24,6 @@ This is trivially true if $\mathcal{F}$ does not contain any bipartite graphs, s
 Hunter has provided the following 'folklore counterexample': if $\mathcal{F}=\{H_1,H_2\}$ where $H_1$ is a star and $H_2$ is a matching, both with at least two edges, then $\mathrm{ex}(n;\mathcal{F})\ll 1$, but $\mathrm{ex}(n;H_i)\asymp n$ for $1\leq i\leq 2$. This conjecture may still hold for all other $\mathcal{F}$.
 
 See also [575] and the entry in the graphs problem collection.
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\in [n+1,n+t]$. Is it true that\[f(n,t)\gg t\](uniformly, for all $t$ and $n$)?
 
 
 
 Erd\H{o}s and Graham report they can show\[f(n,t) \gg \frac{t}{\log t}.\]
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\in [n+1,n+t]$. Is it true that\[f(n,t)\gg t\](uniformly, for all $t$ and $n$)?
 
 
 
 Erd\H{o}s and Graham report they can show\[f(n,t) \gg \frac{t}{\log t}.\]
-
-
-Back to the problem
 $$
 
 ## Classification

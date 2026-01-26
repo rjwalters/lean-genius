@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $Y(x)$ be the maximal $y$ such that there exists a choice of congruence classes $a_p$ for all primes $p\leq x$ such that every integer in $[1,y]$ is congruent to at least one of the $a_p\pmod{p}$.
 
 Give good estimates for $Y(x)$. In particular, can one prove that $Y(x)=o(x^2)$ or even $Y(x)\ll x^{1+o(1)}$?
@@ -21,18 +11,9 @@ Give good estimates for $Y(x)$. In particular, can one prove that $Y(x)=o(x^2)$ 
 
 This function (associated with Jacobsthal) is closely related to the problem of gaps between primes (see [4])....
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $Y(x)$ be the maximal $y$ such that there exists a choice of congruence classes $a_p$ for all primes $p\leq x$ such that every integer in $[1,y]$ is congruent to at least one of the $a_p\pmod{p}$.
 
 Give good estimates for $Y(x)$. In particular, can one prove that $Y(x)=o(x^2)$ or even $Y(x)\ll x^{1+o(1)}$?
@@ -48,23 +29,6 @@ In \cite{Er80} he writes 'It is not clear who first formulated this problem - pr
 In \cite{Er80} Erd\H{o}s also asks about a weaker variant in which all except $o(y/\log y)$ of the integers in $[1,y]$ are congruent to at least one of the $a_p\pmod{p}$, and in particular asks if the answer is very different.
 
 See also [688] and [689]. A more general Jacobsthal function is the focus of [970].
-
-
-
-
-References
-
-
-[Er80] Erd\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.
-
-[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.
-
-[Iw78] Iwaniec, Henryk, On the problem of {J}acobsthal. Demonstratio Math. (1978), 225--231.
-
-[Ra38] Rankin, R. A., The Difference between Consecutive Prime Numbers. J. London Math. Soc. (1938), 242-247.
-
-
-Back to the problem
 $$
 
 ## Classification

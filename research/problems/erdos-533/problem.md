@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices with no $K_5$ and at least $\delta n^2$ edges then $G$ contains a set of $\gg_\delta n$ vertices containing no triangle.
 
 
@@ -22,18 +12,9 @@ A problem of Erd\H{o}s, Hajnal, Simonovits, S\'{o}s, and Szemer\'{e}di, who coul
 
 They further observed tha...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices with no $K_5$ and at least $\delta n^2$ edges then $G$ contains a set of $\gg_\delta n$ vertices containing no triangle.
 
 
@@ -45,17 +26,6 @@ They further observed that it fails for $\delta =1/4$ if we replace $K_5$ with $
 
 
 See also [579] and the entry in the graphs problem collection.
-
-
-
-
-References
-
-
-[ErRo62] Erd\H{o}s, P. and Rogers, C. A., The construction of certain graphs. Canadian J. Math. (1962), 702-707.
-
-
-Back to the problem
 $$
 
 ## Classification

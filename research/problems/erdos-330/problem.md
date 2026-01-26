@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does there exist a minimal basis with positive density, say $A\subset\mathbb{N}$, such that for any $n\in A$ the (upper) density of integers which cannot be represented without using $n$ is positive?
 
 
 
 Asked by Erd\H{o}s and Nathanson.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does there exist a minimal basis with positive density, say $A\subset\mathbb{N}$, such that for any $n\in A$ the (upper) density of integers which cannot be represented without using $n$ is positive?
 
 
 
 Asked by Erd\H{o}s and Nathanson.
-
-
-Back to the problem
 $$
 
 ## Classification

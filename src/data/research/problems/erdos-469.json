@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be the set of all $n$ such that $n=d_1+\\cdots+d_k$ with $d_i$ distinct proper divisors of $n$, but this is not true for any $m\\mid n$ with $m<n$. Does\\[\\sum_{n\\in A}\\frac{1}{n}\\]converge?\n\n\n\nThe integers in $A$ are also known as primitive pseudoperfect numbers and are listed as A006036 in the OEIS.\n\nThe same question can be asked for those $n$ which do not have distinct sums of sets of divisors, but any proper divisor of $n$ does (which are listed as A119425 in the OEIS).\n\nBenkoski and Erd\\H{o}s \\cite{BeEr74} ask about these two sets, and also about the set of $n$ that have a divisor expressible as a distinct sum of other divisors of $n$, but where no proper divisor of $n$ has this property.\n\n\n\n\nReferences\n\n\n[BeEr74] Benkoski, S. J. and Erd\\H{o}s, P., On weird and pseudoperfect numbers. Math. Comp. (1974), 617-623.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $A$ be the set of all $n$ such that $n=d_1+\\cdots+d_k$ with $d_i$ distinct proper divisors of $n$, but this is not true for any $m\\mid n$ with $m<n$. Does\\[\\sum_{n\\in A}\\frac{1}{n}\\]converge?\n\n\n\nThe integers in $A$ are also known as primitive pseudoperfect numbers and are listed as A006036 in the OEIS.\n\nThe same question can be asked for those $n$ which do not have distinct sums of sets of divisors, but any proper divisor of $n$ does (which are listed as A119425 in the OEIS).\n\nBenkoski and Erd\\H{o}s \\cite{BeEr74} ask about these two sets, and also about the set of $n$ that have a divisor expressible as a distinct sum of other divisors of $n$, but where no proper divisor of $n$ has this property.",
+    "plain": "Let $A$ be the set of all $n$ such that $n=d_1+\\cdots+d_k$ with $d_i$ distinct proper divisors of $n$, but this is not true for any $m\\mid n$ with $m<n$. Does\\[\\sum_{n\\in A}\\frac{1}{n}\\]converge?",
     "whyMatters": []
   },
   "knownResults": {

@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Given $n$ points in $\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.
 
 
@@ -21,18 +11,9 @@ There are examples of sets of $n$ points with $\sim n^2/6$ many collinear triple
 
 Gr\"{u}nbaum \cite{Gr76} constructed an example with $\gg n^{3/...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Given $n$ points in $\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.
 
 
@@ -44,24 +25,6 @@ Gr\"{u}nbaum \cite{Gr76} constructed an example with $\gg n^{3/2}$ such lines. E
 See also [102] and [669]. A generalisation of this problem is asked in [588].
 
 This problem is Problem 71 on Green's open problems list.
-
-
-
-
-References
-
-
-[BGS74] Burr, Stefan A. and Gr\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.
-
-[FuPa84] F\"{u}redi, Z. and Pal\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.
-
-[Gr76] Gr\"{u}nbaum, Branko, New views on some old questions of combinatorial geometry. Colloquio Internazionale sulle Teorie Combinatorie
-(Roma, 1973), Tomo I (1976), 451-468.
-
-[SoSt13] Solymosi, J\'{o}zsef and Stojakovi\'C, Milo\vS, Many collinear {$k$}-tuples with no {$k+1$} collinear points. Discrete Comput. Geom. (2013), 811-820.
-
-
-Back to the problem
 $$
 
 ## Classification

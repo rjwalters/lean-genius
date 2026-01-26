@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m0$ such that there are infinitely many $n$ where $m+\epsilon \omega(m)\leq n$ for all $m<n$?
 
 
 
 In \cite{Er79} Erd\H{o}s calls such an $n$ a 'barrier' for $\omega$. Some other natural number theoretic functions (such as $\phi$ and $\sigma$) have no barriers because they increase too rapidly. Erd\H{o}s belie...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m<n$, we have $m+\omega(m) \leq n$?
 
 Can one show that there exists an $\epsilon>0$ such that there are infinitely many $n$ where $m+\epsilon \omega(m)\leq n$ for all $m<n$?
@@ -50,23 +31,6 @@ See also [647] and [679].
 The sequence of barriers for $\omega$ is A005236 in the OEIS.
 
 This is discussed in problem B8 of Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[Er79] Erd\H{o}s, Paul, Some unconventional problems in number theory. Math. Mag. (1979), 67-70.
-
-[Er79d] Erd\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.
-
-[ErGr80] Erd\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

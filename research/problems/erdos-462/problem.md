@@ -3,45 +3,12 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $p(n)$ denote the least prime factor of $n$. There is a constant $c>0$ such that\[\sum_{\substack{n0$ such that\[\sum_{x\leq n\leq x+Cx^{1/2}(\log x)^2}\frac{p(n)}{n} \gg 1\]for all large $x$?
 
 
-
-
-
-
-Back to the problem
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $p(n)$ denote the least prime factor of $n$. There is a constant $c>0$ such that\[\sum_{\substack{n<x\\ n\textrm{ not prime}}}\frac{p(n)}{n}\sim c\frac{x^{1/2}}{(\log x)^2}.\]Is it true that there exists a constant $C>0$ such that\[\sum_{x\leq n\leq x+Cx^{1/2}(\log x)^2}\frac{p(n)}{n} \gg 1\]for all large $x$?
-
-
-
-
-
-
-Back to the problem
 $$
 
 ## Classification

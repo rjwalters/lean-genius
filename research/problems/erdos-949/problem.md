@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $S\subset \mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\subseteq \mathbb{R}\backslash S$ of cardinality continuum such that $A+A\subseteq \mathbb{R}\backslash S$?
 
 
@@ -21,18 +11,9 @@ Erd\H{o}s suggests that if the answer is no one could consider the variant where
 
 In the comments Dillies giv...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $S\subset \mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\subseteq \mathbb{R}\backslash S$ of cardinality continuum such that $A+A\subseteq \mathbb{R}\backslash S$?
 
 
@@ -40,9 +21,6 @@ Let $S\subset \mathbb{R}$ be a set containing no solutions to $a+b=c$. Must ther
 Erd\H{o}s suggests that if the answer is no one could consider the variant where we assume that $S$ is Sidon (i.e. all $a+b$ with $a,b\in S$ are distinct, aside from the trivial coincidences).
 
 In the comments Dillies gives a positive proof of this, found by AlphaProof: in other words, if $S\subset \mathbb{R}$ is a Sidon set then there exists $A\subseteq \mathbb{R}\backslash S$ of cardinality continuum such that $A+A\subseteq \mathbb{R}\backslash S$.
-
-
-Back to the problem
 $$
 
 ## Classification

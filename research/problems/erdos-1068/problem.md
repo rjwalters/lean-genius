@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does every graph with chromatic number $\aleph_1$ contain a countable subgraph which is infinitely connected?
 
 
@@ -21,21 +11,9 @@ A question of Erd\H{o}s and Hajnal. We say a graph is infinitely connected if an
 
 See also [1067].
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does every graph with chromatic number $\aleph_1$ contain a countable subgraph which is infinitely connected?
 
 
@@ -43,9 +21,6 @@ Does every graph with chromatic number $\aleph_1$ contain a countable subgraph w
 A question of Erd\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.
 
 See also [1067].
-
-
-Back to the problem
 $$
 
 ## Classification

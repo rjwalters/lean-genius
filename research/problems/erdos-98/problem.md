@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $h(n)$ be such that any $n$ points in $\mathbb{R}^2$, with no three on a line and no four on a circle, determine at least $h(n)$ distinct distances. Does $h(n)/n\to \infty$?
 
 
@@ -20,46 +10,13 @@ Let $h(n)$ be such that any $n$ points in $\mathbb{R}^2$, with no three on a lin
 Erd\H{o}s could not even prove $h(n)\geq n$. Pach has shown $h(n)0$.
 
 
-
-
-References
-
-
-[EFPR93] Erd\H{o}s, Paul and F\"{u}redi, Zolt\'{a}n and Pach, J\'{a}nos and
-Ruzsa, Imre Z., The grid revisited. Discrete Math. (1993), 189--196.
-
-
-Back to the...
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $h(n)$ be such that any $n$ points in $\mathbb{R}^2$, with no three on a line and no four on a circle, determine at least $h(n)$ distinct distances. Does $h(n)/n\to \infty$?
 
 
 
 Erd\H{o}s could not even prove $h(n)\geq n$. Pach has shown $h(n)<n^{\log_23}$. Erd\H{o}s, F\"{u}redi, and Pach \cite{EFPR93} have improved this to\[h(n) < n\exp(c\sqrt{\log n})\]for some constant $c>0$.
-
-
-
-
-References
-
-
-[EFPR93] Erd\H{o}s, Paul and F\"{u}redi, Zolt\'{a}n and Pach, J\'{a}nos and
-Ruzsa, Imre Z., The grid revisited. Discrete Math. (1993), 189--196.
-
-
-Back to the problem
 $$
 
 ## Classification

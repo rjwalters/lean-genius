@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\alpha>0$ and $n\geq 1$. Let $F(n,\alpha)$ be the largest $k$ such that there exists some 2-colouring of the edges of $K_n$ in which any induced subgraph $H$ on at least $k$ vertices contains more than $\alpha\binom{\lvert H\rvert}{2}$ many edges of each colour.
 
 Prove that for every fixed $0\leq \alpha \leq 1/2$, as $n\to\infty$,\[F(n,\alpha)\sim c_\alpha \log n\]for some constant $c_\alpha$.
@@ -21,18 +11,9 @@ Prove that for every fixed $0\leq \alpha \leq 1/2$, as $n\to\infty$,\[F(n,\alpha
 
 It is easy to show w...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\alpha>0$ and $n\geq 1$. Let $F(n,\alpha)$ be the largest $k$ such that there exists some 2-colouring of the edges of $K_n$ in which any induced subgraph $H$ on at least $k$ vertices contains more than $\alpha\binom{\lvert H\rvert}{2}$ many edges of each colour.
 
 Prove that for every fixed $0\leq \alpha \leq 1/2$, as $n\to\infty$,\[F(n,\alpha)\sim c_\alpha \log n\]for some constant $c_\alpha$.
@@ -40,9 +21,6 @@ Prove that for every fixed $0\leq \alpha \leq 1/2$, as $n\to\infty$,\[F(n,\alpha
 
 
 It is easy to show with the probabilistic method that there exist $c_1(\alpha),c_2(\alpha)$ such that\[c_1(\alpha)\log n < F(n,\alpha) < c_2(\alpha)\log n.\]
-
-
-Back to the problem
 $$
 
 ## Classification

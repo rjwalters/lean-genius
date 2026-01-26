@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $n$ let $D_n$ be the set of sums of the shape $d_1,d_1+d_2,d_1+d_2+d_3,\\ldots$ where $1<d_1<d_2<\\cdots$ are the divisors of $n$.\n\nWhat is the size of $D_n\\backslash \\cup_{m<n}D_m$?\n\nIf $f(N)$ is the minimal $n$ such that $N\\in D_n$ then is it true that $f(N)=o(N)$? Perhaps just for almost all $N$?\n\n\n\n\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "For any $n$ let $D_n$ be the set of sums of the shape $d_1,d_1+d_2,d_1+d_2+d_3,\\ldots$ where $1<d_1<d_2<\\cdots$ are the divisors of $n$.\n\nWhat is the size of $D_n\\backslash \\cup_{m<n}D_m$?\n\nIf $f(N)$ is the minimal $n$ such that $N\\in D_n$ then is it true that $f(N)=o(N)$? Perhaps just for almost all $N$?",
+    "plain": "For any $n$ let $D_n$ be the set of sums of the shape $d_1,d_1+d_2,d_1+d_2+d_3,\\ldots$ where $1<d_1<d_2<\\cdots$ are the divisors of $n$.",
     "whyMatters": []
   },
   "knownResults": {

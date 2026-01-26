@@ -3,58 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is\[\sum_{n\geq 2}\frac{1}{n!-1}\]irrational?
 
 
 
 The decimal expansion is A331373 in the OEIS. Weisenberg has observed that this sum can also be written as\[\sum_{k\geq 1}\sum_{n\geq 2}\frac{1}{(n!)^k}.\]Erd\H{o}s \cite{Er88c} notes that $\sum \frac{1}{n!+t}$ should be transcendental for every integer $t$.
 
-
-
-
-References
-
-
-[Er88c] Erd\"{o}s, P., On the irrationality of certain series: problems and results. New advances in...
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is\[\sum_{n\geq 2}\frac{1}{n!-1}\]irrational?
 
 
 
 The decimal expansion is A331373 in the OEIS. Weisenberg has observed that this sum can also be written as\[\sum_{k\geq 1}\sum_{n\geq 2}\frac{1}{(n!)^k}.\]Erd\H{o}s \cite{Er88c} notes that $\sum \frac{1}{n!+t}$ should be transcendental for every integer $t$.
-
-
-
-
-References
-
-
-[Er88c] Erd\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.
-
-
-Back to the problem
 $$
 
 ## Classification
