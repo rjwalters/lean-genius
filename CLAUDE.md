@@ -102,6 +102,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 
 ---
 
+<!-- BEGIN LOOM ORCHESTRATION -->
 # Loom Development Orchestration
 
 **Loom Version**: 0.2.0
@@ -535,6 +536,7 @@ If setup fails, it's usually due to:
 - Lacking admin permissions (ask repo owner)
 - Branch doesn't exist yet (push at least one commit)
 - GitHub API unreachable (check network/auth)
+<!-- END LOOM ORCHESTRATION -->
 
 ---
 
