@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-119-poly",
+    "proofId": "erdos-119",
+    "type": "definition",
+    "range": { "startLine": 33, "endLine": 36 },
+    "title": "Unit Circle Polynomial",
+    "content": "unitCirclePoly z n w = ∏_{i<n} (w - z i), the monic polynomial with roots z_0,...,z_{n-1} on the unit circle.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-119-maxmod",
+    "proofId": "erdos-119",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 41 },
+    "title": "Maximum Modulus M_n",
+    "content": "maxModulus z n = sup { ‖unitCirclePoly z n w‖ : ‖w‖ = 1 }, the maximum of |p_n| on the unit circle.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-119-part1",
+    "proofId": "erdos-119",
+    "type": "result",
+    "range": { "startLine": 52, "endLine": 54 },
+    "title": "Part 1: limsup M_n = ∞",
+    "content": "For any unit circle sequence, limsup M_n = ⊤. Solved by Wagner (1980) who showed M_n > (log n)^c infinitely often.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-119-part2",
+    "proofId": "erdos-119",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 68 },
+    "title": "Part 2: Polynomial Growth",
+    "content": "There exists c > 0 with max_{n≤N} M_n > N^c. Solved by Beck (1991).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-119-part3",
+    "proofId": "erdos-119",
+    "type": "conjecture",
+    "range": { "startLine": 77, "endLine": 80 },
+    "title": "Part 3: Partial Sum Growth (Open)",
+    "content": "ErdosProblem119: ∃ c > 0, ∀ᶠ n, ∑_{k<n} M_k > n^{1+c}. Open with $100 prize.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-119-implications",
+    "proofId": "erdos-119",
+    "type": "result",
+    "range": { "startLine": 100, "endLine": 112 },
+    "title": "Implication Chain",
+    "content": "Part 3 ⟹ Part 2 ⟹ Part 1: cumulative growth implies polynomial growth implies unbounded limsup.",
+    "significance": "supporting"
+  }
+]
