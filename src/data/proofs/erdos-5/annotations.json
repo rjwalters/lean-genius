@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-5-ann-1",
+    "proofId": "erdos-5",
+    "range": { "startLine": 30, "endLine": 38 },
+    "type": "definition",
+    "title": "The n-th Prime Axiomatization",
+    "content": "We axiomatize nthPrime as a function ℕ → ℕ that is strictly monotone and yields primes for n ≥ 1. This avoids the computability issues of defining p_n constructively while capturing the essential properties needed for the gap analysis.",
+    "significance": "The axiomatization is standard for number-theoretic formalizations where explicit prime enumeration is unnecessary."
+  },
+  {
+    "id": "erdos-5-ann-2",
+    "proofId": "erdos-5",
+    "range": { "startLine": 40, "endLine": 48 },
+    "type": "definition",
+    "title": "Normalized Gap and Limit Point Definitions",
+    "content": "normalizedGap(n) = (p_{n+1} - p_n) / log(p_n) is the key quantity. A value C is a limit point (IsLimitPointOfGaps) if for every ε > 0 and every N, some n ≥ N has |g(n) - C| < ε. This is the standard ε-N formulation of cluster points for real sequences.",
+    "significance": "The normalization by log(p_n) is crucial: by PNT, the average gap is ~ log(p_n), so g(n) has average value 1. The question is about the full set of accumulation points."
+  },
+  {
+    "id": "erdos-5-ann-3",
+    "proofId": "erdos-5",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "result",
+    "title": "Goldston–Pintz–Yıldırım: 0 ∈ S",
+    "content": "GPY (2009) proved lim inf (p_{n+1} - p_n)/log(p_n) = 0, establishing that 0 is a limit point. This breakthrough later led to Zhang (2013) and Maynard (2013) proving bounded gaps between primes.",
+    "significance": "This is one of the landmark results in analytic number theory, showing primes can be much closer together than average infinitely often."
+  },
+  {
+    "id": "erdos-5-ann-4",
+    "proofId": "erdos-5",
+    "range": { "startLine": 56, "endLine": 65 },
+    "type": "result",
+    "title": "Unbounded Gaps and Large Limit Points",
+    "content": "Westzynthius (1931) showed lim sup (p_{n+1} - p_n)/log(p_n) = ∞. Hildebrand and Maier strengthened this to show S contains arbitrarily large finite values. The current best quantitative result on large gaps is due to Ford–Green–Konyagin–Maynard–Tao (2018).",
+    "significance": "Together with GPY, this shows S contains both 0 and ∞, but the question of whether S fills all of [0, ∞) remains elusive."
+  },
+  {
+    "id": "erdos-5-ann-5",
+    "proofId": "erdos-5",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "result",
+    "title": "Merikoski Density Bound",
+    "content": "Merikoski (2020) proved that at least 1/3 of [0, ∞) belongs to S (in the sense of Lebesgue density). Earlier, Erdős and Ricci had shown S has positive measure. Banks, Freiberg, and Maynard established at least 12.5% coverage.",
+    "significance": "The improving density bounds (positive measure → 12.5% → 1/3) suggest the full conjecture S = [0, ∞) may be true, but the gap from 1/3 to 1 remains substantial."
+  },
+  {
+    "id": "erdos-5-ann-6",
+    "proofId": "erdos-5",
+    "range": { "startLine": 76, "endLine": 80 },
+    "type": "conjecture",
+    "title": "The Full Conjecture: S = [0, ∞)",
+    "content": "Erdős conjectured that every non-negative real number is a limit point of g(n). This is formalized as: ∀ C ≥ 0, IsLimitPointOfGaps C. The conjecture implies complete understanding of the fluctuations of prime gaps at the logarithmic scale.",
+    "significance": "This is one of the most fundamental open problems about the distribution of primes, connecting to the Hardy–Littlewood conjecture, sieve methods, and the statistical behavior of primes."
+  }
+]
