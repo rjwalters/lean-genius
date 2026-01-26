@@ -1,0 +1,82 @@
+{
+  "id": "erdos-201",
+  "title": "Erdős Problem #201: Arithmetic Progressions in Integer Sets",
+  "slug": "erdos-201",
+  "description": "Let G_k(N) be the minimum AP-free subset size guaranteed in any N-element integer set, and R_k(N) the maximum AP-free subset of {1,…,N}. Is lim R_3(N)/G_3(N) = 1?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/201",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos201Problem.lean",
+    "tags": ["additive combinatorics", "arithmetic progressions", "Szemerédi"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 201,
+    "erdosUrl": "https://erdosproblems.com/201",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "First investigated by Riddell (1969), this problem connects two natural measures of arithmetic-progression-free subsets. Erdős asked whether the extremal function R_k(N) for {1,…,N} and the guaranteed function G_k(N) for arbitrary N-element integer sets are asymptotically equal for k=3.",
+    "problemStatement": "Let G_k(N) denote the minimum size of a k-AP-free subset guaranteed in any set of N integers, and R_k(N) the maximum size of a k-AP-free subset of {1,…,N}. Is lim_{N→∞} R_3(N)/G_3(N) = 1?",
+    "proofStrategy": "The formalization defines k-term arithmetic progressions, AP-free sets, R_k(N) via powerset filtration, and G_k(N) axiomatically. The conjecture is stated as: for every ε > 0, R_3(N) ≤ (1+ε) G_3(N) for large N.",
+    "keyInsights": [
+      "G_k(N) ≤ R_k(N) trivially since {1,…,N} is an N-element set",
+      "Strict inequality: G_3(5) = 3 while R_3(5) = 4",
+      "Komlós–Sulyok–Szemerédi (1975) proved R_k(N) ≪_k G_k(N), establishing the same order of magnitude",
+      "The conjecture asks whether the constant in the KSS bound approaches 1 for k=3"
+    ]
+  },
+  "sections": [
+    {
+      "id": "arithmetic-progressions",
+      "title": "Arithmetic Progressions",
+      "startLine": 24,
+      "endLine": 42,
+      "summary": "Definitions of k-term arithmetic progressions in integer sets and AP-free sets."
+    },
+    {
+      "id": "rk-gk",
+      "title": "The Functions G_k and R_k",
+      "startLine": 44,
+      "endLine": 56,
+      "summary": "R_k(N) as the maximum AP-free subset of {1,…,N}; G_k(N) as the guaranteed AP-free subset in arbitrary N-element sets."
+    },
+    {
+      "id": "basic-bounds",
+      "title": "Basic Bounds",
+      "startLine": 58,
+      "endLine": 72,
+      "summary": "Trivial bound G_k(N) ≤ R_k(N) and concrete examples showing strict inequality."
+    },
+    {
+      "id": "kss-bound",
+      "title": "Komlós–Sulyok–Szemerédi Bound",
+      "startLine": 74,
+      "endLine": 80,
+      "summary": "R_k(N) and G_k(N) have the same order of magnitude (1975 result)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 82,
+      "endLine": 91,
+      "summary": "Erdős Problem 201: the ratio R_3(N)/G_3(N) tends to 1."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 93,
+      "endLine": 100,
+      "summary": "R_k is monotone in N and anti-monotone in k."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 201 on the asymptotic equality of R_3(N) and G_3(N), with the Komlós–Sulyok–Szemerédi bound and concrete examples as supporting results.",
+    "implications": "A positive answer would show that arbitrary N-element integer sets behave like {1,…,N} with respect to 3-AP-free subsets, unifying two fundamental measures in additive combinatorics.",
+    "openQuestions": [
+      "Is lim R_3(N)/G_3(N) = 1?",
+      "What is the precise growth rate of G_k(N) for general k?",
+      "Can the KSS bound constant be made explicit?"
+    ]
+  }
+}
